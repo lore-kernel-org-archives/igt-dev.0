@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AAE8E10E108
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 14:38:39 +0000 (UTC)
-Date: Fri, 1 Dec 2023 15:38:20 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B715010E8B6
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 14:58:20 +0000 (UTC)
+Date: Fri, 1 Dec 2023 15:58:15 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231201143820.q4fkuoycxqg2sdeo@kamilkon-desk.igk.intel.com>
-References: <20231201132706.84787-1-mwen@igalia.com>
+Message-ID: <20231201145815.b74e75efkyvsrdst@kamilkon-desk.igk.intel.com>
+References: <20231130171850.461941-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231201132706.84787-1-mwen@igalia.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_atomic: skip mutable zpos
- test on non-mutable planes
+In-Reply-To: <20231130171850.461941-1-matthew.auld@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/intel/xe_create: sanity
+ check all MBZ fields
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,115 +20,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: kernel-dev@igalia.com
+Cc: Matthew Auld <matthew.auld@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Melissa,
-On 2023-12-01 at 12:26:09 -0100, Melissa Wen wrote:
-> plane-primary-overlay-mutable-zpos only works if both plane types have
-> mutable zpos property. However, drivers usually set primary zpos as
-> immutable and the test case just fails. Create a helper to check if a
-> plane have mutable zpos and skip the test case if zpos changes are not
-> allowed.
+Hi Matthew,
+On 2023-11-30 at 17:18:49 +0000, Matthew Auld wrote:
+> Explicitly check that all MBZ (must-be-zero) fields are currently
+> rejected, including the currently unused extensions.
 > 
-> v1: https://patchwork.freedesktop.org/patch/554257
+> v2: (Kamil)
+>   - Various improvements
 > 
-> v2:
-> - document the new public function (Kamil)
-> - improve commit message (Kamil)
-> - rebase on master and replace has_zpos() by has_mutable_zpos()
-> 
-> Signed-off-by: Melissa Wen <mwen@igalia.com>
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Pallavi Mishra <pallavi.mishra@intel.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+Please wait with merge or talk to Francios as he prepared xe-uapi change.
+
+Regards,
+Kamil
+
 > ---
->  lib/igt_kms.c      | 28 ++++++++++++++++++++++++++++
->  lib/igt_kms.h      |  2 ++
->  tests/kms_atomic.c |  8 ++++----
->  3 files changed, 34 insertions(+), 4 deletions(-)
+>  tests/intel/xe_create.c | 59 +++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 54 insertions(+), 5 deletions(-)
 > 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 28105a9ef..e4dea1a60 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -3970,6 +3970,34 @@ void igt_plane_set_prop_enum(igt_plane_t *plane,
->  	igt_assert(igt_plane_try_prop_enum(plane, prop, val));
+> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+> index bb55a15e1..986b078dd 100644
+> --- a/tests/intel/xe_create.c
+> +++ b/tests/intel/xe_create.c
+> @@ -18,6 +18,18 @@
+>  
+>  #define PAGE_SIZE 0x1000
+>  
+> +static int __ioctl_create(int fd, struct drm_xe_gem_create *create)
+> +{
+> +	int ret = 0;
+> +
+> +	if (igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, create)) {
+> +		ret = -errno;
+> +		errno = 0;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+>  static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+>  		       uint32_t *handlep)
+>  {
+> @@ -27,14 +39,11 @@ static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+>  		.flags = flags,
+>  		.cpu_caching = __xe_default_cpu_caching_from_flags(fd, flags),
+>  	};
+> -	int ret = 0;
+> +	int ret;
+>  
+>  	igt_assert(handlep);
+>  
+> -	if (igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create)) {
+> -		ret = -errno;
+> -		errno = 0;
+> -	}
+> +	ret = __ioctl_create(fd, &create);
+>  	*handlep = create.handle;
+>  
+>  	return ret;
+> @@ -88,6 +97,43 @@ static void create_invalid_size(int fd)
+>  	xe_vm_destroy(fd, vm);
 >  }
 >  
 > +/**
-> + * igt_plane_check_prop_is_mutable:
-> + * @plane: Target plane.
-> + * @prop: Property to check.
-> + *
-> + * Check if a plane supports a given property and if this property is mutable.
-> + *
-> + * Returns true if the plane has the mutable property. False if the property is
-> + * not support or it's immutable.
+> + * SUBTEST: create-invalid-mbz
+> + * Functionality: ioctl
+> + * Test category: negative test
+> + * Description: Verifies xe bo create returns expected error code on all MBZ fields.
 > + */
-> +bool igt_plane_check_prop_is_mutable(igt_plane_t *plane,
-> +				     enum igt_atomic_plane_properties igt_prop)
+> +static void create_invalid_mbz(int fd)
 > +{
-> +	drmModePropertyPtr prop;
-> +	uint64_t value;
-> +	bool has_prop;
+> +	struct drm_xe_gem_create create = {
+> +		.size = PAGE_SIZE,
+> +		.flags = system_memory(fd),
+> +		.cpu_caching = DRM_XE_GEM_CPU_CACHING_WB,
+> +	};
+> +	int i;
 > +
-> +	has_prop = kmstest_get_property(plane->pipe->display->drm_fd,
-> +					plane->drm_plane->plane_id,
-> +					DRM_MODE_OBJECT_PLANE,
-> +				        igt_plane_prop_names[igt_prop], NULL,
-> +					&value, &prop);
-> +	if (!has_prop)
-> +		return false;
+> +	/* Make sure the baseline passes */
+> +	igt_assert_eq(__ioctl_create(fd, &create), 0);
+> +	gem_close(fd, create.handle);
+> +	create.handle = 0;
 > +
-> +	return !(prop->flags & DRM_MODE_PROP_IMMUTABLE);
+> +	/* No supported extensions yet */
+> +	create.extensions = -1;
+> +	igt_assert_eq(__ioctl_create(fd, &create), -EINVAL);
+> +	create.extensions = 0;
+> +
+> +	/* Make sure KMD rejects non-zero padding/reserved fields */
+> +	create.pad = -1;
+> +	igt_assert_eq(__ioctl_create(fd, &create), -EINVAL);
+> +	create.pad = 0;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(create.reserved); i++) {
+> +		create.reserved[i] = -1;
+> +		igt_assert_eq(__ioctl_create(fd, &create), -EINVAL);
+> +		create.reserved[i] = 0;
+> +	}
 > +}
 > +
->  /**
->   * igt_plane_replace_prop_blob:
->   * @plane: plane to set property on.
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 8e7801a78..b3882808b 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -812,6 +812,8 @@ extern void igt_plane_replace_prop_blob(igt_plane_t *plane,
->  					enum igt_atomic_plane_properties prop,
->  					const void *ptr, size_t length);
+>  enum exec_queue_destroy {
+>  	NOLEAK,
+>  	LEAK
+> @@ -222,6 +268,9 @@ igt_main
+>  	igt_fixture
+>  		xe = drm_open_driver(DRIVER_XE);
 >  
-> +extern bool igt_plane_check_prop_is_mutable(igt_plane_t *plane,
-> +					    enum igt_atomic_plane_properties igt_prop);
->  /**
->   * igt_output_has_prop:
->   * @output: Output to check.
-> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-> index aa3af936a..96cd58571 100644
-> --- a/tests/kms_atomic.c
-> +++ b/tests/kms_atomic.c
-> @@ -1354,10 +1354,10 @@ static void atomic_clear(data_t *data, enum pipe pipe, igt_output_t *output)
->  	igt_remove_fb(data->drm_fd, &data->fb);
->  }
->  
-> -/* Returns true if plane supports zpos property. */
-> -static bool has_zpos(igt_plane_t *plane)
-> +/* Returns true if plane supports zpos property and it's mutable. */
-> +static bool has_mutable_zpos(igt_plane_t *plane)
->  {
-> -	return igt_plane_has_prop(plane, IGT_PLANE_ZPOS);
-> +	return igt_plane_check_prop_is_mutable(plane, IGT_PLANE_ZPOS);
->  }
->  
->  static bool
-> @@ -1457,7 +1457,7 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
->  			atomic_setup(&data, pipe, output);
->  			if (!overlay)
->  				continue;
-> -			if (!has_zpos(data.primary) || !has_zpos(overlay))
-> +			if (!has_mutable_zpos(data.primary) || !has_mutable_zpos(overlay))
->  				continue;
->  			if (!igt_plane_has_format_mod(data.primary, DRM_FORMAT_ARGB8888, 0x0) ||
->  			    !igt_plane_has_format_mod(overlay, DRM_FORMAT_ARGB1555, 0x0))
+> +	igt_subtest("create-invalid-mbz")
+> +		create_invalid_mbz(xe);
+> +
+>  	igt_subtest("create-invalid-size") {
+>  		create_invalid_size(xe);
+>  	}
 > -- 
-> 2.42.0
+> 2.43.0
 > 
