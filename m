@@ -1,23 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2082410E0EE
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 11:44:56 +0000 (UTC)
-From: "Illipilli, TejasreeX" <tejasreex.illipilli@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 1 Dec 2023 11:44:49 +0000
-Message-ID: <DM6PR11MB381996C75734AD60F44EF650F281A@DM6PR11MB3819.namprd11.prod.outlook.com>
-References: <20231017125428.607100-1-marcin.bernatowicz@linux.intel.com>
- <169757011230.14379.7167114649167668325@emeril.freedesktop.org>
- <20231130140114.usu5r6grr74rpkr6@kamilkon-desk.igk.intel.com>
-In-Reply-To: <20231130140114.usu5r6grr74rpkr6@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 80FA210E0EE
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 11:47:54 +0000 (UTC)
+Message-ID: <2e7040d6-8cf5-4aaf-89df-3ab99b7cdb41@intel.com>
+Date: Fri, 1 Dec 2023 17:17:49 +0530
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliL2Ry?=
- =?utf-8?q?mtest=2Eh=3A_make_ALIGN_work_with_uint64=5Ft_values?=
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20231128061533.2612350-1-bhanuprakash.modem@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20231128061533.2612350-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t 1/3] tests/kms_addfb_basic: Fix testplan
+ documentation for tiled tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,78 +22,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: LGCI Bug Filing <lgci.bug.filing@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGksDQoNClRoaXMgcGF0Y2h3b3JrIGNhbm5vdCBiZSByZS1yZXBvcnRlZCBhcyByZXN1bHRzIHdl
-cmUgYWxyZWFkeSBkcm9wcGVkIGZyb20gdGhlIHNlcnZlci4gUmVzdWx0cyBhcmUga2VwdCBmb3Ig
-YSB3ZWVrIG9ubHkuIFBsZWFzZSB0cnkgcmUtdGVzdC4NCg0KaHR0cHM6Ly9wYXRjaHdvcmsuZnJl
-ZWRlc2t0b3Aub3JnL3Nlcmllcy8xMjUyMzUvDQoNClRoYW5rcywNClRlamFzcmVlDQoNCi0tLS0t
-T3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBLYW1pbCBLb25pZWN6bnkgPGthbWlsLmtvbmll
-Y3pueUBsaW51eC5pbnRlbC5jb20+IA0KU2VudDogVGh1cnNkYXksIE5vdmVtYmVyIDMwLCAyMDIz
-IDc6MzEgUE0NClRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KQ2M6IE1hcmNpbiBC
-ZXJuYXRvd2ljeiA8bWFyY2luLmJlcm5hdG93aWN6QGxpbnV4LmludGVsLmNvbT47IExHQ0kgQnVn
-IEZpbGluZyA8bGdjaS5idWcuZmlsaW5nQGludGVsLmNvbT47IElsbGlwaWxsaSwgVGVqYXNyZWVY
-IDx0ZWphc3JlZXguaWxsaXBpbGxpQGludGVsLmNvbT4NClN1YmplY3Q6IFJlOiBbaWd0LWRldl0g
-4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliL2RybXRlc3QuaDogbWFrZSBBTElHTiB3b3Jr
-IHdpdGggdWludDY0X3QgdmFsdWVzDQoNCkhpLA0KDQpiZWxvdyByZWdyZXNzaW9ucyB3ZXJlIHVu
-cmVsYXRlZCB0byBjaGFuZ2UsIG5vIG5lZWQgZm9yIHJlc3BpbmluZyB0ZXN0cy4NCg0KUmVnYXJk
-cywNCkthbWlsDQoNCk9uIDIwMjMtMTAtMTcgYXQgMTk6MTU6MTIgLTAwMDAsIFBhdGNod29yayB3
-cm90ZToNCj4gPT0gU2VyaWVzIERldGFpbHMgPT0NCj4gDQo+IFNlcmllczogbGliL2RybXRlc3Qu
-aDogbWFrZSBBTElHTiB3b3JrIHdpdGggdWludDY0X3QgdmFsdWVzDQo+IFVSTCAgIDogaHR0cHM6
-Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy8xMjUyMzUvDQo+IFN0YXRlIDogZmFp
-bHVyZQ0KPiANCj4gPT0gU3VtbWFyeSA9PQ0KPiANCj4gQ0kgQnVnIExvZyAtIGNoYW5nZXMgZnJv
-bSBJR1RfNzU0M19mdWxsIC0+IElHVFBXXzEwMDE3X2Z1bGwgDQo+ID09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0NCj4gDQo+IFN1bW1hcnkNCj4gLS0t
-LS0tLQ0KPiANCj4gICAqKkZBSUxVUkUqKg0KPiANCj4gICBTZXJpb3VzIHVua25vd24gY2hhbmdl
-cyBjb21pbmcgd2l0aCBJR1RQV18xMDAxN19mdWxsIGFic29sdXRlbHkgbmVlZCB0byBiZQ0KPiAg
-IHZlcmlmaWVkIG1hbnVhbGx5Lg0KPiAgIA0KPiAgIElmIHlvdSB0aGluayB0aGUgcmVwb3J0ZWQg
-Y2hhbmdlcyBoYXZlIG5vdGhpbmcgdG8gZG8gd2l0aCB0aGUgY2hhbmdlcw0KPiAgIGludHJvZHVj
-ZWQgaW4gSUdUUFdfMTAwMTdfZnVsbCwgcGxlYXNlIG5vdGlmeSB5b3VyIGJ1ZyB0ZWFtIChsZ2Np
-LmJ1Zy5maWxpbmdAaW50ZWwuY29tKSB0byBhbGxvdyB0aGVtDQo+ICAgdG8gZG9jdW1lbnQgdGhp
-cyBuZXcgZmFpbHVyZSBtb2RlLCB3aGljaCB3aWxsIHJlZHVjZSBmYWxzZSBwb3NpdGl2ZXMgaW4g
-Q0kuDQo+IA0KPiAgIEV4dGVybmFsIFVSTDogDQo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
-Zy90cmVlL2RybS10aXAvSUdUUFdfMTAwMTcvaW5kZXguaHRtbA0KPiANCj4gUGFydGljaXBhdGlu
-ZyBob3N0cyAoMTAgLT4gMTApDQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiAN
-Cj4gICBBZGRpdGlvbmFsICgxKTogc2hhcmQtcmtsMCANCj4gICBNaXNzaW5nICAgICgxKTogc2hh
-cmQtdGdsdTAgDQo+IA0KPiBQb3NzaWJsZSBuZXcgaXNzdWVzDQo+IC0tLS0tLS0tLS0tLS0tLS0t
-LS0NCj4gDQo+ICAgSGVyZSBhcmUgdGhlIHVua25vd24gY2hhbmdlcyB0aGF0IG1heSBoYXZlIGJl
-ZW4gaW50cm9kdWNlZCBpbiBJR1RQV18xMDAxN19mdWxsOg0KPiANCj4gIyMjIElHVCBjaGFuZ2Vz
-ICMjIw0KPiANCj4gIyMjIyBQb3NzaWJsZSByZWdyZXNzaW9ucyAjIyMjDQo+IA0KPiAgICogaWd0
-QGdlbV9leGVjX3BhcmFsbGVsQGNvbnRleHRzQHZjczA6DQo+ICAgICAtIHNoYXJkLXRnbHU6ICAg
-ICAgICAgTk9UUlVOIC0+IFtJTkNPTVBMRVRFXVsxXQ0KPiAgICBbMV06IA0KPiBodHRwczovL2lu
-dGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzEwMDE3L3NoYXJkLXRnbHUtOS9p
-Z3RADQo+IGdlbV9leGVjX3BhcmFsbGVsQGNvbnRleHRzQHZjczAuaHRtbA0KPiANCj4gICAqIGln
-dEBrbXNfcHNyQHBzcjJfc3ByaXRlX3JlbmRlcjoNCj4gICAgIC0gc2hhcmQtbXRscDogICAgICAg
-ICBbUEFTU11bMl0gLT4gW0ZBSUxdWzNdDQo+ICAgIFsyXTogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RfNzU0My9zaGFyZC1tdGxwLTQvaWd0QGttc19wc3JAcHNy
-Ml9zcHJpdGVfcmVuZGVyLmh0bWwNCj4gICAgWzNdOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMDAxNy9zaGFyZC1tdGxwLTgvaWd0QA0KPiBrbXNf
-cHNyQHBzcjJfc3ByaXRlX3JlbmRlci5odG1sDQo+IA0KPiAgICogaWd0QHN3X3N5bmNAc3luY19i
-dXN5X2Zvcms6DQo+ICAgICAtIHNoYXJkLXRnbHU6ICAgICAgICAgW1BBU1NdWzRdIC0+IFtJTkNP
-TVBMRVRFXVs1XQ0KPiAgICBbNF06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2Ry
-bS10aXAvSUdUXzc1NDMvc2hhcmQtdGdsdS0zL2lndEBzd19zeW5jQHN5bmNfYnVzeV9mb3JrLmh0
-bWwNCj4gICAgWzVdOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRp
-cC9JR1RQV18xMDAxNy9zaGFyZC10Z2x1LTcvaWd0QA0KPiBzd19zeW5jQHN5bmNfYnVzeV9mb3Jr
-Lmh0bWwNCj4gDQo+ICAgDQo+ICMjIyMgV2FybmluZ3MgIyMjIw0KPiANCj4gICAqIGlndEBpOTE1
-X3N1c3BlbmRAYmFzaWMtczMtd2l0aG91dC1pOTE1Og0KPiAgICAgLSBzaGFyZC1zbmI6ICAgICAg
-ICAgIFtETUVTRy1XQVJOXVs2XSAoW2k5MTUjODg0MV0pIC0+IFtJTkNPTVBMRVRFXVs3XQ0KPiAg
-ICBbNl06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUXzc1NDMv
-c2hhcmQtc25iMS9pZ3RAaTkxNV9zdXNwZW5kQGJhc2ljLXMzLXdpdGhvdXQtaTkxNS5odG1sDQo+
-ICAgIFs3XTogDQo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdU
-UFdfMTAwMTcvc2hhcmQtc25iMS9pZ3RAaTkNCj4gMTVfc3VzcGVuZEBiYXNpYy1zMy13aXRob3V0
-LWk5MTUuaHRtbA0KPiANCj4gICANCj4gS25vd24gaXNzdWVzDQo+IC0tLS0tLS0tLS0tLQ0KPiAN
-Cj4gICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV18xMDAxN19mdWxsIHRoYXQg
-Y29tZSBmcm9tIGtub3duIGlzc3VlczoNCj4gDQoNClsuLi5jdXQuLi5dDQoNCj4gDQo+IEJ1aWxk
-IGNoYW5nZXMNCj4gLS0tLS0tLS0tLS0tLQ0KPiANCj4gICAqIENJOiBDSS0yMDE5MDUyOSAtPiBO
-b25lDQo+ICAgKiBJR1Q6IElHVF83NTQzIC0+IElHVFBXXzEwMDE3DQo+IA0KPiAgIENJLTIwMTkw
-NTI5OiAyMDE5MDUyOQ0KPiAgIENJX0RSTV8xMzc2NTogMjAxYzhhN2JkMWYzZjQxNTkyMGEyZGY0
-YjhhODgxN2U5NzNmNDJmZSBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL2dmeC1jaS9s
-aW51eA0KPiAgIElHVFBXXzEwMDE3OiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9k
-cm0tdGlwL0lHVFBXXzEwMDE3L2luZGV4Lmh0bWwNCj4gICBJR1RfNzU0MzogNjg4ZjEyODMxZjg3
-NjU5MGUwODRlOWIxM2I0ZDVhYjg1ZmUxM2Q1MSBAIA0KPiBodHRwczovL2dpdGxhYi5mcmVlZGVz
-a3RvcC5vcmcvZHJtL2lndC1ncHUtdG9vbHMuZ2l0DQo+IA0KPiA9PSBMb2dzID09DQo+IA0KPiBG
-b3IgbW9yZSBkZXRhaWxzIHNlZTogDQo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVl
-L2RybS10aXAvSUdUUFdfMTAwMTcvaW5kZXguaHRtbA0K
+LGTM
+
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+
+On 28-Nov-23 11:45 AM, Bhanuprakash Modem wrote:
+> Fix 'Driver requirement' field for recently modified tests by the
+> commit: 2ddd8cac9 tests/kms_addfb_basic: Skip not relevant subtests for Xe
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/kms_addfb_basic.c | 13 ++++++-------
+>   1 file changed, 6 insertions(+), 7 deletions(-)
+> 
+> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+> index 337fef77e..877c70ded 100644
+> --- a/tests/kms_addfb_basic.c
+> +++ b/tests/kms_addfb_basic.c
+> @@ -95,8 +95,12 @@
+>    */
+>   
+>   /**
+> - * SUBTEST: basic-%s-tiled-legacy
+> - * Description: Check if addfb2 and rmfb call works for basic %arg[1] test
+> + * SUBTEST: basic-x-tiled-legacy
+> + * Description: Check if addfb2 and rmfb call works for basic x-tiling test
+> + * Functionality: kms_gem_interop, tiling
+> + *
+> + * SUBTEST: basic-y-tiled-legacy
+> + * Description: Check if addfb2 and rmfb call works for basic y-tiling test
+>    * Driver requirement: i915
+>    * Functionality: kms_gem_interop, tiling
+>    *
+> @@ -109,11 +113,6 @@
+>    * Description: Test that addfb2 call fails correctly for pitches mismatch
+>    * Driver requirement: i915
+>    * Functionality: kms_gem_interop, tiling
+> - *
+> - * arg[1]:
+> - *
+> - * @x:        x-tiling
+> - * @y:        y-tiling
+>    */
+>   
+>   /**
