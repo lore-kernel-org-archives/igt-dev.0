@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 03BA210E859
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 12:39:51 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75BDA10E7DA
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 10:45:39 +0000 (UTC)
+Date: Fri, 1 Dec 2023 11:45:35 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  1 Dec 2023 18:17:33 +0530
-Message-Id: <20231201124737.2172099-1-jeevan.b@intel.com>
+Message-ID: <20231201104535.gmwuhpb6bpk3spxw@kamilkon-desk.igk.intel.com>
+References: <20231201100725.8646-1-mohammed.thasleem@intel.com>
+ <20231201100725.8646-2-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/4] Update PSR/PSR2_SF documenation and Add
- FBC support
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231201100725.8646-2-mohammed.thasleem@intel.com>
+Subject: Re: [igt-dev] [PATCH v3 1/2] lib/intel_chipset: Add
+ AT_LEAST_DISPLAY for display version compare
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,25 +25,31 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-fix kms_psr documentation, subtest naming and add fbc support/test
-for kms_psr, kms_psr2_sf.
+Hi Mohammed,
+On 2023-12-01 at 15:37:24 +0530, Mohammed Thasleem wrote:
+> Added AT_LEAST_DISPLAY check for display version compare.
+> 
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 
-v2: rebase
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
-
-Jeevan B (3):
-  tests/intel/kms_psr: fix subtest naming
-  tests/intel/kms_psr: Add FBC support to PSR/PSR2/PR tests
-  tests/intel/kms_psr2_sf: Add FBC support to PSR2 tests
-
-Swati Sharma (1):
-  tests/intel/kms_psr: fix documentation
-
- lib/igt_psr.h             |   5 +
- tests/intel/kms_psr.c     | 569 ++++++++++++++++++----------------
- tests/intel/kms_psr2_sf.c | 623 +++++++++++++++++++++-----------------
- 3 files changed, 662 insertions(+), 535 deletions(-)
-
--- 
-2.25.1
+> ---
+>  lib/intel_chipset.h | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+> index 1edc8e92c..3f2534519 100644
+> --- a/lib/intel_chipset.h
+> +++ b/lib/intel_chipset.h
+> @@ -208,6 +208,7 @@ void intel_check_pch(void);
+>  
+>  #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
+>  #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver >= x)
+> +#define AT_LEAST_DISPLAY(devid, x) (intel_get_device_info(devid)->display_ver >= x)
+>  
+>  #define IS_GEN2(devid)		IS_GEN(devid, 2)
+>  #define IS_GEN3(devid)		IS_GEN(devid, 3)
+> -- 
+> 2.25.1
+> 
