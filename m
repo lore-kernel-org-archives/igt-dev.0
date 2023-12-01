@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: "Illipilli, TejasreeX" <tejasreex.illipilli@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 1 Dec 2023 11:07:51 +0000
-Message-ID: <DM6PR11MB38197283C92C850C9F24DF91F281A@DM6PR11MB3819.namprd11.prod.outlook.com>
-References: <20231130032130.2709-1-quic_abhinavk@quicinc.com>
- <170131887097.15646.16663714203706169165@emeril.freedesktop.org>
- <20231130140706.s3fhrtjmeitegrpi@kamilkon-desk.igk.intel.com>
-In-Reply-To: <20231130140706.s3fhrtjmeitegrpi@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7BE1210E0EE
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 11:15:02 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri,  1 Dec 2023 16:52:45 +0530
+Message-Id: <20231201112249.2169767-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fwriteback=3A_fix_kms=5Fwriteback_failure_for_XRGB8888_onl?=
- =?utf-8?q?y_devices?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 0/4] Update PSR/PSR2_SF documenation and Add
+ FBC support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,73 +17,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: LGCI Bug Filing <lgci.bug.filing@intel.com>,
- "I915-ci-infra@lists.freedesktop.org" <I915-ci-infra@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGksDQoNCmh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMTI3MDk3LyAt
-IFJlLXJlcG9ydGVkDQoNClRoYW5rcywNClRlamFzcmVlDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2Fn
-ZS0tLS0tDQpGcm9tOiBLYW1pbCBLb25pZWN6bnkgPGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRl
-bC5jb20+IA0KU2VudDogVGh1cnNkYXksIE5vdmVtYmVyIDMwLCAyMDIzIDc6MzcgUE0NClRvOiBp
-Z3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KQ2M6IEFiaGluYXYgS3VtYXIgPHF1aWNfYWJo
-aW5hdmtAcXVpY2luYy5jb20+OyBJOTE1LWNpLWluZnJhQGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsg
-TEdDSSBCdWcgRmlsaW5nIDxsZ2NpLmJ1Zy5maWxpbmdAaW50ZWwuY29tPjsgSWxsaXBpbGxpLCBU
-ZWphc3JlZVggPHRlamFzcmVleC5pbGxpcGlsbGlAaW50ZWwuY29tPg0KU3ViamVjdDogUmU6IFtp
-Z3QtZGV2XSDinJcgRmkuQ0kuQkFUOiBmYWlsdXJlIGZvciB0ZXN0cy9rbXNfd3JpdGViYWNrOiBm
-aXgga21zX3dyaXRlYmFjayBmYWlsdXJlIGZvciBYUkdCODg4OCBvbmx5IGRldmljZXMNCg0KSGks
-DQoNCmJlbG93IGNoYW5nZSBpcyB1bnJlbGF0ZWQgdG8ga213X3dyaXRlYmFjayB0ZXN0cy4NCg0K
-UmVnYXJkcywNCkthbWlsDQoNCk9uIDIwMjMtMTEtMzAgYXQgMDQ6MzQ6MzAgLTAwMDAsIFBhdGNo
-d29yayB3cm90ZToNCj4gPT0gU2VyaWVzIERldGFpbHMgPT0NCj4gDQo+IFNlcmllczogdGVzdHMv
-a21zX3dyaXRlYmFjazogZml4IGttc193cml0ZWJhY2sgZmFpbHVyZSBmb3IgWFJHQjg4ODggb25s
-eSBkZXZpY2VzDQo+IFVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nl
-cmllcy8xMjcwOTcvDQo+IFN0YXRlIDogZmFpbHVyZQ0KPiANCj4gPT0gU3VtbWFyeSA9PQ0KPiAN
-Cj4gQ0kgQnVnIExvZyAtIGNoYW5nZXMgZnJvbSBDSV9EUk1fMTM5NTEgLT4gSUdUUFdfMTAyOTgg
-DQo+ID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0N
-Cj4gDQo+IFN1bW1hcnkNCj4gLS0tLS0tLQ0KPiANCj4gICAqKkZBSUxVUkUqKg0KPiANCj4gICBT
-ZXJpb3VzIHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0aCBJR1RQV18xMDI5OCBhYnNvbHV0ZWx5
-IG5lZWQgdG8gYmUNCj4gICB2ZXJpZmllZCBtYW51YWxseS4NCj4gICANCj4gICBJZiB5b3UgdGhp
-bmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNoYW5n
-ZXMNCj4gICBpbnRyb2R1Y2VkIGluIElHVFBXXzEwMjk4LCBwbGVhc2Ugbm90aWZ5IHlvdXIgYnVn
-IHRlYW0gKEk5MTUtY2ktaW5mcmFAbGlzdHMuZnJlZWRlc2t0b3Aub3JnKSB0byBhbGxvdyB0aGVt
-DQo+ICAgdG8gZG9jdW1lbnQgdGhpcyBuZXcgZmFpbHVyZSBtb2RlLCB3aGljaCB3aWxsIHJlZHVj
-ZSBmYWxzZSBwb3NpdGl2ZXMgaW4gQ0kuDQo+IA0KPiAgIEV4dGVybmFsIFVSTDogDQo+IGh0dHBz
-Oi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTAyOTgvaW5kZXguaHRt
-bA0KPiANCj4gUGFydGljaXBhdGluZyBob3N0cyAoMzYgLT4gMzUpDQo+IC0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLQ0KPiANCj4gICBBZGRpdGlvbmFsICgyKTogYmF0LWtibC0yIGJhdC1t
-dGxwLTggDQo+ICAgTWlzc2luZyAgICAoMyk6IGJhdC1qc2wtMSBmaS1zbmItMjUyMG0gYmF0LWRn
-MS01IA0KPiANCj4gUG9zc2libGUgbmV3IGlzc3Vlcw0KPiAtLS0tLS0tLS0tLS0tLS0tLS0tDQo+
-IA0KPiAgIEhlcmUgYXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVuIGlu
-dHJvZHVjZWQgaW4gSUdUUFdfMTAyOTg6DQo+IA0KPiAjIyMgSUdUIGNoYW5nZXMgIyMjDQo+IA0K
-PiAjIyMjIFBvc3NpYmxlIHJlZ3Jlc3Npb25zICMjIyMNCj4gDQo+ICAgKiBpZ3RAaTkxNV9zZWxm
-dGVzdEBsaXZlQGd0X3RpbWVsaW5lczoNCj4gICAgIC0gYmF0LXJwbHMtMTogICAgICAgICBbUEFT
-U11bMV0gLT4gW0lOQ09NUExFVEVdWzJdDQo+ICAgIFsxXTogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fMTM5NTEvYmF0LXJwbHMtMS9pZ3RAaTkxNV9zZWxm
-dGVzdEBsaXZlQGd0X3RpbWVsaW5lcy5odG1sDQo+ICAgIFsyXTogDQo+IGh0dHBzOi8vaW50ZWwt
-Z2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTAyOTgvYmF0LXJwbHMtMS9pZ3RAaTkN
-Cj4gMTVfc2VsZnRlc3RAbGl2ZUBndF90aW1lbGluZXMuaHRtbA0KPiANCj4gICAqIGlndEBrbXNf
-cGlwZV9jcmNfYmFzaWNAY29tcGFyZS1jcmMtc2FuaXR5Y2hlY2steHIyNEBwaXBlLWMtZHAtNToN
-Cj4gICAgIC0gYmF0LWFkbHAtMTE6ICAgICAgICBbUEFTU11bM10gLT4gW0ZBSUxdWzRdICsxIG90
-aGVyIHRlc3QgZmFpbA0KPiAgICBbM106IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVl
-L2RybS10aXAvQ0lfRFJNXzEzOTUxL2JhdC1hZGxwLTExL2lndEBrbXNfcGlwZV9jcmNfYmFzaWNA
-Y29tcGFyZS1jcmMtc2FuaXR5Y2hlY2steHIyNEBwaXBlLWMtZHAtNS5odG1sDQo+ICAgIFs0XTog
-DQo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTAyOTgv
-YmF0LWFkbHAtMTEvaWd0QGsNCj4gbXNfcGlwZV9jcmNfYmFzaWNAY29tcGFyZS1jcmMtc2FuaXR5
-Y2hlY2steHIyNEBwaXBlLWMtZHAtNS5odG1sDQo+IA0KPiAgIA0KPiBLbm93biBpc3N1ZXMNCj4g
-LS0tLS0tLS0tLS0tDQo+IA0KPiAgIEhlcmUgYXJlIHRoZSBjaGFuZ2VzIGZvdW5kIGluIElHVFBX
-XzEwMjk4IHRoYXQgY29tZSBmcm9tIGtub3duIGlzc3VlczoNCj4gDQo+ICMjIyBJR1QgY2hhbmdl
-cyAjIyMNCj4gDQo+ICMjIyMgSXNzdWVzIGhpdCAjIyMjDQo+IA0KPiAgICogaWd0QGRlYnVnZnNf
-dGVzdEBiYXNpYy1od21vbjoNCj4gICAgIC0gYmF0LW10bHAtODogICAgICAgICBOT1RSVU4gLT4g
-W1NLSVBdWzVdIChbaTkxNSM5MzE4XSkNCj4gICAgWzVdOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngt
-Y2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMDI5OC9iYXQtbXRscC04L2lndEBkZQ0KPiBi
-dWdmc190ZXN0QGJhc2ljLWh3bW9uLmh0bWwNCg0KWy4uLmN1dC4uLl0NCg0KPiANCj4gQnVpbGQg
-Y2hhbmdlcw0KPiAtLS0tLS0tLS0tLS0tDQo+IA0KPiAgICogQ0k6IENJLTIwMTkwNTI5IC0+IE5v
-bmUNCj4gICAqIElHVDogSUdUXzc2MTAgLT4gSUdUUFdfMTAyOTgNCj4gDQo+ICAgQ0ktMjAxOTA1
-Mjk6IDIwMTkwNTI5DQo+ICAgQ0lfRFJNXzEzOTUxOiA3YmQzNDIzMjNkNWJkNDA1YjAyZmQyMWNk
-NzhmMTU3ZjM2MzI3OGFjIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xp
-bnV4DQo+ICAgSUdUUFdfMTAyOTg6IDEwMjk4DQo+ICAgSUdUXzc2MTA6IDc2MTANCj4gDQo+IA0K
-PiBUZXN0bGlzdCBjaGFuZ2VzDQo+IC0tLS0tLS0tLS0tLS0tLS0NCj4gDQo+IC1pZ3RAa21zX3Zy
-ckBzZWFtbGVzcy1yci1zd2l0Y2gNCj4gDQo+ID09IExvZ3MgPT0NCj4gDQo+IEZvciBtb3JlIGRl
-dGFpbHMgc2VlOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9J
-R1RQV18xMDI5OC9pbmRleC5odG1sDQo=
+fix kms_psr documentation, subtest naming and add fbc support/test
+for kms_psr, kms_psr2_sf.
+
+v2: rebase
+
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+
+Jeevan B (3):
+  tests/intel/kms_psr: fix subtest naming
+  tests/intel/kms_psr: Add FBC support to PSR/PSR2/PR tests
+  tests/intel/kms_psr2_sf: Add FBC support to PSR2 tests
+
+Swati Sharma (1):
+  tests/intel/kms_psr: fix documentation
+
+ lib/igt_psr.h             |   5 +
+ tests/intel/kms_psr.c     | 569 ++++++++++++++++++-----------------
+ tests/intel/kms_psr2_sf.c | 606 +++++++++++++++++++++-----------------
+ 3 files changed, 646 insertions(+), 534 deletions(-)
+
+-- 
+2.25.1
