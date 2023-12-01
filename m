@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73B4010E95C
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 22D0310E955
  for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 21:00:23 +0000 (UTC)
 From: Brian Welty <brian.welty@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  1 Dec 2023 13:00:12 -0800
-Message-Id: <20231201210013.16147-2-brian.welty@intel.com>
+Date: Fri,  1 Dec 2023 13:00:13 -0800
+Message-Id: <20231201210013.16147-3-brian.welty@intel.com>
 In-Reply-To: <20231201210013.16147-1-brian.welty@intel.com>
 References: <20231201210013.16147-1-brian.welty@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/xe_ioctl: Add _xe_wait_ufence()
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/xe/exec_reset: Fix cm-gt-reset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,75 +22,36 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-xe_wait_ufence is expected to fail if GPU hangs or is reset. We need
-a version of calling XE_WAIT_USER_FENCE without the assertion that it
-won't expire (timeout), for use with IGTs that intentionally cause
-hangs or reset.
+With use of GT_RESET and forcing GT reset, it is expected for the
+xe_wait_ufence to expire. Move the assertion checking into the IGT
+by using _xe_wait_ufence().
 
 Signed-off-by: Brian Welty <brian.welty@intel.com>
 ---
- lib/xe/xe_ioctl.c | 22 ++++++++++++++++------
- lib/xe/xe_ioctl.h |  3 +++
- 2 files changed, 19 insertions(+), 6 deletions(-)
+ tests/intel/xe_exec_reset.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index a5fe7dd792..b9828fc49f 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -446,9 +446,9 @@ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
- 	syncobj_destroy(fd, sync.handle);
- }
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 195e62911f..6fed0dd19e 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -612,9 +612,14 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 		return;
+ 	}
  
--int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
--		       struct drm_xe_engine_class_instance *eci,
--		       int64_t timeout)
-+int _xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
-+		    struct drm_xe_engine_class_instance *eci,
-+		    int64_t *timeout)
- {
- 	struct drm_xe_wait_user_fence wait = {
- 		.addr = to_user_pointer(addr),
-@@ -456,14 +456,24 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 		.flags = !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP : 0,
- 		.value = value,
- 		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
--		.timeout = timeout,
-+		.timeout = *timeout,
- 		.num_engines = eci ? 1 :0,
- 		.instances = eci ? to_user_pointer(eci) : 0,
- 	};
- 
--	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
-+	if (igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait))
-+		return -errno;
- 
--	return wait.timeout;
-+	*timeout = wait.timeout;
-+	return 0;
-+}
+-	for (i = 1; i < n_execs; i++)
+-		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+-			       NULL, THREE_SEC);
++	for (i = 1; i < n_execs; i++) {
++		int64_t timeout = THREE_SEC;
++		int err;
 +
-+int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
-+		       struct drm_xe_engine_class_instance *eci,
-+		       int64_t timeout)
-+{
-+	igt_assert_eq(_xe_wait_ufence(fd, addr, value, eci, &timeout), 0);
-+	return timeout;
- }
++		err = _xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
++				      NULL, &timeout);
++		igt_assert_eq(err, flags & GT_RESET ? -ETIME : 0);
++	}
  
- /**
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index 6d91d3e8e6..7476a62c81 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -88,6 +88,9 @@ void xe_exec(int fd, struct drm_xe_exec *exec);
- void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
- 		  struct drm_xe_sync *sync, uint32_t num_syncs);
- void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);
-+int _xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
-+		    struct drm_xe_engine_class_instance *eci,
-+		    int64_t *timeout);
- int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 		       struct drm_xe_engine_class_instance *eci,
- 		       int64_t timeout);
+ 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+ 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
 -- 
 2.38.0
