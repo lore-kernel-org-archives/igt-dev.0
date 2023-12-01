@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36ACA10E8B6
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 15:21:41 +0000 (UTC)
-Date: Fri, 1 Dec 2023 16:21:37 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231201152137.g6vcrbuubtk66yaf@kamilkon-desk.igk.intel.com>
-References: <20231130124841.16248-1-lukasz.laguna@intel.com>
- <20231130124841.16248-2-lukasz.laguna@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3005198248033617489=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231130124841.16248-2-lukasz.laguna@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/8] lib/igt_sriov_device: add core
- SR-IOV helpers
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Date: Fri, 01 Dec 2023 15:24:43 -0000
+Message-ID: <170144428378.19688.2215033294680724456@emeril.freedesktop.org>
+References: <20231201124953.2172215-1-jeevan.b@intel.com>
+In-Reply-To: <20231201124953.2172215-1-jeevan.b@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Update_P?=
+ =?utf-8?q?SR/PSR2=5FSF_documenation_and_Add_FBC_support_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,315 +17,193 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Lukasz,
-On 2023-11-30 at 13:48:34 +0100, Lukasz Laguna wrote:
-> From: Katarzyna Dec <katarzyna.dec@intel.com>
-> 
-> Create lib for core SR-IOV (Single Root I/O Virtualization) helpers
-> that allow to manage SR-IOV devices.
-> 
-> v2:
->  - change functions description (Michal)
-> v3:
->  - decipher SR-IOV shortcut in commit message (Kamil)
->  - add SR-IOV description in header file (Kamil)
->  - remove old r-b and add cc (Kamil)
->  - return bool result in functions prefixed with "__" (Kamil)
->  - add brief description in functions documentation (Michal)
->  - add asserts in helpers (Michal)
-> 
-> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-> Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> ---
->  lib/igt_sriov_device.c | 213 +++++++++++++++++++++++++++++++++++++++++
->  lib/igt_sriov_device.h |  29 ++++++
->  lib/meson.build        |   1 +
->  3 files changed, 243 insertions(+)
->  create mode 100644 lib/igt_sriov_device.c
->  create mode 100644 lib/igt_sriov_device.h
-> 
-> diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
-> new file mode 100644
-> index 000000000..c5c594c2c
-> --- /dev/null
-> +++ b/lib/igt_sriov_device.c
-> @@ -0,0 +1,213 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright(c) 2023 Intel Corporation. All rights reserved.
-> + */
-> +
-> +#include <errno.h>
-> +
-> +#include "igt_core.h"
-> +#include "igt_sriov_device.h"
-> +#include "igt_sysfs.h"
-> +
-> +/**
-> + * igt_sriov_is_pf - Check if device is PF
-> + * @device: device file descriptor
-> + *
-> + * Determine if device is PF by checking existence of sriov_totalvfs file.
-> + *
-> + * Return:
-> + * True if device is PF, false otherwise.
-> + */
-> +bool igt_sriov_is_pf(int device)
-> +{
-> +	int sysfs;
-> +	bool ret;
-> +
-> +	sysfs = igt_sysfs_open(device);
-> +	igt_assert_fd(sysfs);
-> +
-> +	ret = igt_sysfs_has_attr(sysfs, "device/sriov_totalvfs");
-> +	close(sysfs);
-> +
-> +	return ret;
-> +}
-> +
-> +static bool __pf_attr_get_u32(int pf, const char *attr, uint32_t *value)
-> +{
-> +	int sysfs;
-> +	bool ret;
-> +
-> +	igt_assert(igt_sriov_is_pf(pf));
-> +
-> +	sysfs = igt_sysfs_open(pf);
-> +	igt_assert_fd(sysfs);
-> +
-> +	ret = __igt_sysfs_get_u32(sysfs, attr, value);
-> +	close(sysfs);
-> +
-> +	return ret;
-> +}
-> +
-> +static uint32_t pf_attr_get_u32(int pf, const char *attr)
-> +{
-> +	uint32_t value;
-> +
-> +	igt_assert_f(__pf_attr_get_u32(pf, attr, &value),
-> +		     "Failed to read %s attribute (%s)\n", attr, strerror(errno));
-> +
-> +	return value;
-> +}
-> +
-> +static bool __pf_attr_set_u32(int pf, const char *attr, uint32_t value)
-> +{
-> +	int sysfs;
-> +	bool ret;
-> +
-> +	igt_assert(igt_sriov_is_pf(pf));
-> +
-> +	sysfs = igt_sysfs_open(pf);
-> +	igt_assert_fd(sysfs);
-> +
-> +	ret = __igt_sysfs_set_u32(sysfs, attr, value);
-> +	close(sysfs);
-> +
-> +	return ret;
-> +}
-> +
-> +static void pf_attr_set_u32(int pf, const char *attr, uint32_t value)
-> +{
-> +	igt_assert_f(__pf_attr_set_u32(pf, attr, value),
-> +		     "Failed to write %u to %s attribute (%s)\n", value, attr, strerror(errno));
-> +}
-> +
-> +/**
-> + * igt_sriov_vfs_supported - Check if VFs are supported
-> + * @pf: PF device file descriptor
-> + *
-> + * Determine VFs support by checking if value of sriov_totalvfs attribute
-> + * corresponding to @pf device is bigger than 0.
-> + *
-> + * Return:
-> + * True if VFs are supported, false otherwise.
-> + */
-> +bool igt_sriov_vfs_supported(int pf)
-> +{
-> +	uint32_t totalvfs;
-> +
-> +	if (!__pf_attr_get_u32(pf, "device/sriov_totalvfs", &totalvfs))
-> +		return false;
-> +
-> +	return totalvfs > 0;
-> +}
-> +
-> +/**
-> + * igt_sriov_get_totalvfs - Get maximum number of VFs that can be enabled
-> + * @pf: PF device file descriptor
-> + *
-> + * Maximum number of VFs that can be enabled is checked by reading
-> + * sriov_totalvfs attribute corresponding to @pf device.
-> + *
-> + * It asserts on failure.
-> + *
-> + * Return:
-> + * Maximum number of VFs that can be associated with given PF.
-> + */
-> +unsigned int igt_sriov_get_total_vfs(int pf)
-> +{
-> +	return pf_attr_get_u32(pf, "device/sriov_totalvfs");
-> +}
-> +
-> +/**
-> + * igt_sriov_get_numvfs - Get number of enabled VFs
-> + * @pf: PF device file descriptor
-> + *
-> + * Number of enabled VFs is checked by reading sriov_numvfs attribute
-> + * corresponding to @pf device.
-> + *
-> + * It asserts on failure.
-> + *
-> + * Return:
-> + * Number of VFs enabled by given PF.
-> + */
-> +unsigned int igt_sriov_get_enabled_vfs(int pf)
-> +{
-> +	return pf_attr_get_u32(pf, "device/sriov_numvfs");
-> +}
-> +
-> +/**
-> + * igt_sriov_enable_vfs - Enable VFs
-> + * @pf: PF device file descriptor
-> + * @num_vfs: Number of virtual functions to be enabled
-> + *
-> + * Enable VFs by writing @num_vfs to sriov_numvfs attribute corresponding to
-> + * @pf device.
-> + * It asserts on failure.
-> + */
-> +void igt_sriov_enable_vfs(int pf, unsigned int num_vfs)
-> +{
-> +	igt_assert(num_vfs > 0);
-> +
-> +	igt_debug("Enabling %u VFs\n", num_vfs);
-> +	pf_attr_set_u32(pf, "device/sriov_numvfs", num_vfs);
-> +}
-> +
-> +/**
-> + * igt_sriov_disable_vfs - Disable VFs
-> + * @pf: PF device file descriptor
-> + *
-> + * Disable VFs by writing 0 to sriov_numvfs attribute corresponding to @pf
-> + * device.
-> + * It asserts on failure.
-> + */
-> +void igt_sriov_disable_vfs(int pf)
-> +{
-> +	pf_attr_set_u32(pf, "device/sriov_numvfs", 0);
-> +}
-> +
-> +/**
-> + * igt_sriov_is_driver_autoprobe_enabled - Get VF driver autoprobe setting
-> + * @pf: PF device file descriptor
-> + *
-> + * Get current VF driver autoprobe setting by reading sriov_drivers_autoprobe
-> + * attribute corresponding to @pf device.
-> + *
-> + * It asserts on failure.
-> + *
-> + * Return:
-> + * True if autoprobe is enabled, false otherwise.
-> + */
-> +bool igt_sriov_is_driver_autoprobe_enabled(int pf)
-> +{
-> +	return pf_attr_get_u32(pf, "device/sriov_drivers_autoprobe");
-> +}
-> +
-> +/**
-> + * igt_sriov_enable_driver_autoprobe - Enable VF driver autoprobe
-> + * @pf: PF device file descriptor
-> + *
-> + * Enable VF driver autoprobe setting by writing 1 to sriov_drivers_autoprobe
-> + * attribute corresponding to @pf device.
-> + *
-> + * If successful, kernel will automatically bind VFs to a compatible driver
-> + * immediately after they are enabled.
-> + * It asserts on failure.
-> + */
-> +void igt_sriov_enable_driver_autoprobe(int pf)
-> +{
-> +	pf_attr_set_u32(pf,  "device/sriov_drivers_autoprobe", true);
-> +}
-> +
-> +/**
-> + * igt_sriov_disable_driver_autoprobe - Disable VF driver autoprobe
-> + * @pf: PF device file descriptor
-> + *
-> + * Disable VF driver autoprobe setting by writing 0 to sriov_drivers_autoprobe
-> + * attribute corresponding to @pf device.
-> + *
-> + * During VFs enabling driver won't be bound to VFs.
-> + * It asserts on failure.
-> + */
-> +void igt_sriov_disable_driver_autoprobe(int pf)
-> +{
-> +	pf_attr_set_u32(pf,  "device/sriov_drivers_autoprobe", false);
-> +}
-> diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
-> new file mode 100644
-> index 000000000..337fdf84b
-> --- /dev/null
-> +++ b/lib/igt_sriov_device.h
-> @@ -0,0 +1,29 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright(c) 2023 Intel Corporation. All rights reserved.
-> + */
-> +
-> +#ifndef __IGT_SRIOV_DEVICE_H__
-> +#define __IGT_SRIOV_DEVICE_H__
-> +
-> +/* Library for managing SR-IOV (Single Root I/O Virtualization)
-> + * devices.
-> + *
-> + * SR-IOV is a specification that allows a single PCIe physical
-> + * device to appear as a physical function (PF) and multiple virtual
-> + * functions (VFs) to the operating system.
-> + */
-> +
-> +#include <stdint.h>
+--===============3005198248033617489==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Please remove this inlcude from header, it is not needed here
-(or move it to .c file if needed).
+== Series Details ==
 
-Rest looks good, with this
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: Update PSR/PSR2_SF documenation and Add FBC support (rev4)
+URL   : https://patchwork.freedesktop.org/series/127121/
+State : success
 
-Regards,
-Kamil
+== Summary ==
 
-> +
-> +bool igt_sriov_is_pf(int device);
-> +bool igt_sriov_vfs_supported(int pf);
-> +unsigned int igt_sriov_get_total_vfs(int pf);
-> +unsigned int igt_sriov_get_enabled_vfs(int pf);
-> +void igt_sriov_enable_vfs(int pf, unsigned int num_vfs);
-> +void igt_sriov_disable_vfs(int pf);
-> +bool igt_sriov_is_driver_autoprobe_enabled(int pf);
-> +void igt_sriov_enable_driver_autoprobe(int pf);
-> +void igt_sriov_disable_driver_autoprobe(int pf);
-> +
-> +#endif /* __IGT_SRIOV_DEVICE_H__ */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 48466a2e9..0fc11b26c 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -38,6 +38,7 @@ lib_sources = [
->  	'igt_primes.c',
->  	'igt_pci.c',
->  	'igt_rand.c',
-> +	'igt_sriov_device.c',
->  	'igt_stats.c',
->  	'igt_syncobj.c',
->  	'igt_sysfs.c',
-> -- 
-> 2.40.0
-> 
+CI Bug Log - changes from XEIGT_7614_BAT -> XEIGTPW_10318_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_10318_BAT:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * {igt@kms_psr@psr_cursor_plane_move}:
+    - bat-adlp-7:         [PASS][1] -> [SKIP][2] +2 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-adlp-7/igt@kms_psr@psr_cursor_plane_move.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10318/bat-adlp-7/igt@kms_psr@psr_cursor_plane_move.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10318_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
+    - bat-dg2-oem2:       [PASS][3] -> [FAIL][4] ([Intel XE#692] / [Intel XE#773])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10318/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - bat-adlp-7:         [FAIL][5] ([i915#2346]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10318/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+
+  * {igt@xe_create@create-execqueues-leak}:
+    - bat-atsm-2:         [FAIL][7] ([Intel XE#524]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10318/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#692]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/692
+  [Intel XE#773]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/773
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7614 -> IGTPW_10318
+
+  IGTPW_10318: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10318/index.html
+  IGT_7614: c7298ec108dc1c861c9a2593e973648ad9b420b4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-544-a8b405ffc0326c79abf737389d99c290648f381d: a8b405ffc0326c79abf737389d99c290648f381d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10318/index.html
+
+--===============3005198248033617489==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Update PSR/PSR2_SF documenation and Add FBC support (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127121/">https://patchwork.freedesktop.org/series/127121/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10318/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10318/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7614_BAT -&gt; XEIGTPW_10318_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_10318_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>{igt@kms_psr@psr_cursor_plane_move}:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-adlp-7/igt@kms_psr@psr_cursor_plane_move.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10318/bat-adlp-7/igt@kms_psr@psr_cursor_plane_move.html">SKIP</a> +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10318_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10318/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/692">Intel XE#692</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/773">Intel XE#773</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10318/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_create@create-execqueues-leak}:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10318/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7614 -&gt; IGTPW_10318</li>
+</ul>
+<p>IGTPW_10318: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10318/index.html<br />
+  IGT_7614: c7298ec108dc1c861c9a2593e973648ad9b420b4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-544-a8b405ffc0326c79abf737389d99c290648f381d: a8b405ffc0326c79abf737389d99c290648f381d</p>
+
+</body>
+</html>
+
+--===============3005198248033617489==--
