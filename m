@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C25D510E10B
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 11:30:58 +0000 (UTC)
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Date: Fri,  1 Dec 2023 17:05:06 +0530
-Message-Id: <20231201113507.3535939-3-janga.rahul.kumar@intel.com>
-In-Reply-To: <20231201113507.3535939-1-janga.rahul.kumar@intel.com>
-References: <20231201113507.3535939-1-janga.rahul.kumar@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD4D110E028
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 11:44:08 +0000 (UTC)
+Message-ID: <67c0d954-d7da-4824-9a1e-e48ec8b84534@intel.com>
+Date: Fri, 1 Dec 2023 17:14:03 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] lib/intel_compute: Add XE2 compute
- implementation
+Content-Language: en-US
+To: Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org
+References: <20231201112249.2169767-1-jeevan.b@intel.com>
+ <20231201112249.2169767-5-jeevan.b@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20231201112249.2169767-5-jeevan.b@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/intel/kms_psr2_sf: Add FBC
+ support to PSR2 tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,251 +26,797 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Hi Jeevan,
 
-Add compute pipeline and walker instrcutions for xe2lpg.
+On 01-Dec-23 4:52 PM, Jeevan B wrote:
+> For LunarLake (intel_display_ver 20), FBC can be enabled along with PSR2,
+> thereby adding FBC checks to validate this scenario.
+> 
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> Reviewed-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
+> ---
+>   tests/intel/kms_psr2_sf.c | 606 +++++++++++++++++++++-----------------
+>   1 file changed, 335 insertions(+), 271 deletions(-)
+> 
+> diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
+> index 27faa93d9..77bc23213 100644
+> --- a/tests/intel/kms_psr2_sf.c
+> +++ b/tests/intel/kms_psr2_sf.c
+> @@ -37,6 +37,7 @@
+>   #include "igt_sysfs.h"
+>   #include "igt_psr.h"
+>   #include "kms_dsc_helper.h"
+> +#include "i915/intel_fbc.h"
 
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
----
- lib/intel_compute.c | 212 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 212 insertions(+)
+Add header in alphabetical order.
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index dd921bf46..22480c920 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -41,6 +41,13 @@
- #define XEHP_ADDR_INSTRUCTION_STATE_BASE	0x90000000UL
- #define XEHP_OFFSET_BINDING_TABLE		0x1000
- 
-+#define XE2_ADDR_GENERAL_STATE_BASE		0x80010000UL
-+#define XE2_ADDR_INSTRUCTION_STATE_BASE		0x800100000000
-+#define XE2_ADDR_STATE_CONTEXT_DATA_BASE	0x7F567C800000
-+#define XE2_ADDR_SURFACE_STATE_BASE		0x7F5652600000
-+#define XE2_ADDR_DYNAMIC_STATE_BASE		0x7F56831C8000
-+#define XE2_OFFSET_KERNEL			0xFFFEF000
-+
- struct bo_dict_entry {
- 	uint64_t addr;
- 	uint32_t size;
-@@ -1137,6 +1144,206 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
- 	bo_execenv_destroy(&execenv);
- }
- 
-+static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
-+					uint64_t addr_general_state_base,
-+					uint64_t addr_surface_state_base,
-+					uint64_t addr_dynamic_state_base,
-+					uint64_t addr_instruction_state_base,
-+					uint64_t addr_state_contect_data_base,
-+					uint64_t offset_indirect_data_start,
-+					uint64_t kernel_start_pointer)
-+{
-+	int b = 0;
-+
-+	igt_debug("general   state base: %lx\n", addr_general_state_base);
-+	igt_debug("surface   state base: %lx\n", addr_surface_state_base);
-+	igt_debug("dynamic   state base: %lx\n", addr_dynamic_state_base);
-+	igt_debug("instruct   base addr: %lx\n", addr_instruction_state_base);
-+	igt_debug("bindless   base addr: %lx\n", addr_surface_state_base);
-+	igt_debug("state context data base addr: %lx\n", addr_state_contect_data_base);
-+	igt_debug("offset indirect addr: %lx\n", offset_indirect_data_start);
-+	igt_debug("kernel start pointer: %lx\n", kernel_start_pointer);
-+
-+	addr_bo_buffer_batch[b++] = GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
-+				    PIPELINE_SELECT_GPGPU;
-+
-+	addr_bo_buffer_batch[b++] = XEHP_STATE_COMPUTE_MODE | 0x1;
-+	addr_bo_buffer_batch[b++] = 0xE0004000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+
-+#define XE2_STATE_CONTEXT_DATA_BASE_ADDRESS ((3 << 29) | (0 << 27) | (1 << 24) | (11 << 16) | (1 << 0))
-+	addr_bo_buffer_batch[b++] = XE2_STATE_CONTEXT_DATA_BASE_ADDRESS;
-+	// Split into low and high 32 bits
-+	addr_bo_buffer_batch[b++] = addr_state_contect_data_base & 0xFFFFFFFF; // Mask the low 32 bits ;
-+	addr_bo_buffer_batch[b++] = (addr_state_contect_data_base >> 32) & 0xFFFFFFFF;
-+
-+	addr_bo_buffer_batch[b++] = XEHP_CFE_STATE | 0x4;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x03808800;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = STATE_BASE_ADDRESS | 0x14;
-+	addr_bo_buffer_batch[b++] = (addr_general_state_base & 0xffffffff) | 0x21;
-+	addr_bo_buffer_batch[b++] = addr_general_state_base >> 32;
-+	addr_bo_buffer_batch[b++] = 0x0002C000;
-+	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x21;
-+	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-+	addr_bo_buffer_batch[b++] = (addr_dynamic_state_base & 0xffffffff) | 0x21;
-+	addr_bo_buffer_batch[b++] = addr_dynamic_state_base >> 32;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = (addr_instruction_state_base & 0xffffffff) | 0x21;
-+	addr_bo_buffer_batch[b++] = addr_instruction_state_base >> 32;
-+	addr_bo_buffer_batch[b++] = 0xfffff001;
-+	addr_bo_buffer_batch[b++] = 0x00010001;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0xfffff001;
-+	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x21;
-+	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-+	addr_bo_buffer_batch[b++] = 0x00007fbe;
-+	addr_bo_buffer_batch[b++] = 0x00000021;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+
-+	addr_bo_buffer_batch[b++] = GEN8_3DSTATE_BINDING_TABLE_POOL_ALLOC | 2;
-+	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x2;
-+	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-+	addr_bo_buffer_batch[b++] = 0x001ff000;
-+
-+	addr_bo_buffer_batch[b++] = XEHP_COMPUTE_WALKER | 0x26;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000040;
-+	addr_bo_buffer_batch[b++] = offset_indirect_data_start;
-+	addr_bo_buffer_batch[b++] = 0xbe040000;
-+	addr_bo_buffer_batch[b++] = 0xffffffff;
-+	addr_bo_buffer_batch[b++] = 0x000003ff;
-+	addr_bo_buffer_batch[b++] = 0x00000002;
-+	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+
-+	addr_bo_buffer_batch[b++] = kernel_start_pointer;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x0c000020;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00001047;
-+	addr_bo_buffer_batch[b++] = ADDR_BATCH;
-+	addr_bo_buffer_batch[b++] = ADDR_BATCH >> 32;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000400;
-+	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = 0x00000000;
-+
-+	addr_bo_buffer_batch[b++] = MI_BATCH_BUFFER_END;
-+}
-+
-+/**
-+ * xe2lpg_compute_exec - run a pipeline compatible with XE2
-+ *
-+ * @fd: file descriptor of the opened DRM device
-+ * @kernel: GPU Kernel binary to be executed
-+ * @size: size of @kernel.
-+ */
-+static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
-+				unsigned int size)
-+{
-+#define XE2_BO_DICT_ENTRIES 10
-+	struct bo_dict_entry bo_dict[XE2_BO_DICT_ENTRIES] = {
-+		{ .addr = XE2_ADDR_INSTRUCTION_STATE_BASE + XE2_OFFSET_KERNEL,
-+		  .name = "instr state base"},
-+		{ .addr = XE2_ADDR_DYNAMIC_STATE_BASE,
-+		  .size = 0x100000,
-+		  .name = "dynamic state base"},
-+		{ .addr = XE2_ADDR_SURFACE_STATE_BASE,
-+		  .size = 0x1000,
-+		  .name = "surface state base"},
-+		{ .addr = XE2_ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
-+		  .size =  0x1000,
-+		  .name = "indirect object base"},
-+		{ .addr = ADDR_INPUT, .size = SIZE_BUFFER_INPUT,
-+		  .name = "addr input"},
-+		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
-+		  .name = "addr output" },
-+		{ .addr = XE2_ADDR_GENERAL_STATE_BASE, .size = 0x100000,
-+		  .name = "general state base" },
-+		{ .addr = XE2_ADDR_SURFACE_STATE_BASE + XEHP_OFFSET_BINDING_TABLE,
-+		  .size = 0x1000,
-+		  .name = "binding table" },
-+		{ .addr = ADDR_BATCH,
-+		  .size = SIZE_BATCH,
-+		  .name = "batch" },
-+		{ .addr = XE2_ADDR_STATE_CONTEXT_DATA_BASE,
-+		  .size = 0x10000,
-+		  .name = "state context data base"},
-+	};
-+
-+	struct bo_execenv execenv;
-+	float *dinput;
-+
-+	bo_execenv_create(fd, &execenv);
-+
-+	/* Sets Kernel size */
-+	bo_dict[0].size = ALIGN(size, 0x1000);
-+
-+	bo_execenv_bind(&execenv, bo_dict, XE2_BO_DICT_ENTRIES);
-+
-+	memcpy(bo_dict[0].data, kernel, size);
-+	create_dynamic_state(bo_dict[1].data, XE2_OFFSET_KERNEL);
-+	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT);
-+	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
-+
-+	dinput = (float *)bo_dict[4].data;
-+	srand(time(NULL));
-+
-+	for (int i = 0; i < SIZE_DATA; i++)
-+		((float *)dinput)[i] = rand() / (float)RAND_MAX;
-+
-+	xe2lpg_compute_exec_compute(bo_dict[8].data,
-+				  XE2_ADDR_GENERAL_STATE_BASE,
-+				  XE2_ADDR_SURFACE_STATE_BASE,
-+				  XE2_ADDR_DYNAMIC_STATE_BASE,
-+				  XE2_ADDR_INSTRUCTION_STATE_BASE,
-+				  XE2_ADDR_STATE_CONTEXT_DATA_BASE,
-+				  OFFSET_INDIRECT_DATA_START,
-+				  XE2_OFFSET_KERNEL);
-+
-+	bo_execenv_exec(&execenv, ADDR_BATCH);
-+
-+	for (int i = 0; i < SIZE_DATA; i++) {
-+		float f1, f2;
-+
-+		f1 = ((float *) bo_dict[5].data)[i];
-+		f2 = ((float *) bo_dict[4].data)[i];
-+
-+		if (f1 != f2 * f2)
-+			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
-+		igt_assert(f1 == f2 * f2);
-+	}
-+
-+	bo_execenv_unbind(&execenv, bo_dict, XEHPC_BO_DICT_ENTRIES);
-+	bo_execenv_destroy(&execenv);
-+}
-+
- /*
-  * Compatibility flags.
-  *
-@@ -1175,6 +1382,11 @@ static const struct {
- 		.compute_exec = xehpc_compute_exec,
- 		.compat = COMPAT_DRIVER_XE,
- 	},
-+	{
-+		.ip_ver = IP_VER(20, 04),
-+		.compute_exec = xe2lpg_compute_exec,
-+		.compat = COMPAT_DRIVER_XE,
-+	},
- };
- 
- bool run_intel_compute_kernel(int fd)
--- 
-2.25.1
+>   #include <errno.h>
+>   #include <stdbool.h>
+>   #include <stdio.h>
+> @@ -47,6 +48,10 @@
+>    * Description: Test that selective fetch works on moving %arg[1] plane %arg[2]
+>    *              visible area (no update)
+>    *
+> + * SUBTEST: fbc-%s-plane-move-continuous-%s
+> + * Description: Test that fbc with selective fetch works on moving %arg[1] plane %arg[2]
+> + *              visible area (no update)
+> + *
+
+Functionality: plane, psr2, selective_fetch is defined in top and will 
+be used by all subtests, so now we have fbc related tests too, we need 
+to add fbc in functionality.
+
+Remove this functionality from top and add at individual subtest level 
+like how you have done for kms_psr.
+
+>    * arg[1]:
+>    *
+>    * @cursor:               Cursor
+> @@ -63,24 +68,46 @@
+>    * SUBTEST: cursor-plane-update-sf
+>    * Description: Test that selective fetch works on cursor plane
+>    *
+> + * SUBTEST: fbc-cursor-plane-update-continuous-sf
+> + * Description: Test that fbc with selective fetch works on cursor plane
+> + *
+>    * SUBTEST: overlay-plane-update-continuous-sf
+>    * Description: Test that selective fetch works on overlay plane
+>    *
+> + * SUBTEST: fbc-overlay-plane-update-continuous-sf-dmg-area
+> + * Description: Test that fbc with selective fetch works on overlay plane
+> + *
+>    * SUBTEST: overlay-plane-update-sf-dmg-area
+>    * Description: Test that selective fetch works on overlay plane
+>    *
+> + * SUBTEST: fbc-overlay-plane-update-continuous-sf
+> + * Description: Test that fbc with selective fetch works on overlay plane
+> + *
+>    * SUBTEST: overlay-primary-update-sf-dmg-area
+>    * Description: Test that selective fetch works on primary plane with blended
+>    *              overlay plane
+>    *
+> + * SUBTEST: fbc-overlay-primary-update-sf-dmg-area
+> + * Description: Test that fbc with selective fetch works on primary plane with blended
+> + *              overlay plane
+> + *
+>    * SUBTEST: plane-move-sf-dmg-area
+>    * Description: Test that selective fetch works on moving overlay plane
+>    *
+> + * SUBTEST: fbc-plane-move-sf-dmg-area
+> + * Description: Test that fbc with selective fetch works on moving overlay plane
+> + *
+>    * SUBTEST: primary-plane-update-sf-dmg-area
+>    * Description: Test that selective fetch works on primary plane
+>    *
+> + * SUBTEST: fbc-primary-plane-update-continuous-sf-dmg-area
+> + * Description: Test that fbc with selective fetch works on primary plane
+> + *
+>    * SUBTEST: primary-plane-update-sf-dmg-area-big-fb
+>    * Description: Test that selective fetch works on primary plane with big fb
+> + *
+> + * SUBTEST: fbc-primary-plane-update-continuous-sf-dmg-area-big-fb
+> + * Description: Test that fbc with selective fetch works on primary plane with big fb
+>    */
+>   
+>   IGT_TEST_DESCRIPTION("Tests to varify PSR2 selective fetch by sending multiple"
+> @@ -131,10 +158,12 @@ typedef struct {
+>   	struct drm_mode_rect plane_move_clip;
+>   	struct drm_mode_rect cursor_clip;
+>   	enum operations op;
+> +	enum fbc_mode op_fbc_mode;
+>   	enum plane_move_postion pos;
+>   	int test_plane_id;
+>   	igt_plane_t *test_plane;
+>   	bool big_fb_test;
+> +	bool fbc_flag;
+>   	cairo_t *cr;
+>   	uint32_t screen_changes;
+>   	int cur_x, cur_y;
+> @@ -840,6 +869,11 @@ static void run(data_t *data)
+>   
+>   	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
+>   
+> +	if (data->fbc_flag == true && data->op_fbc_mode == FBC_ENABLED)
+> +		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
+> +							  data->pipe),
+> +							  "FBC still disabled");
+> +
+>   	data->screen_changes = 0;
+>   
+>   	switch (data->op) {
+> @@ -942,10 +976,15 @@ igt_main
+>   {
+>   	data_t data = {};
+>   	igt_output_t *outputs[IGT_MAX_PIPES * IGT_MAX_PIPES];
+> -	int i, j, k;
+> +	int i, j, k, y;
+>   	int pipes[IGT_MAX_PIPES * IGT_MAX_PIPES];
+>   	int n_pipes = 0;
+>   	int coexist_features[IGT_MAX_PIPES * IGT_MAX_PIPES];
+> +	const char *append_fbc_subtest[2] = {
+> +		"",
+> +		"fbc-"
+> +	};
+> +	int fbc_status[] = {FBC_DISABLED, FBC_ENABLED};
+>   
+>   	igt_fixture {
+>   		drmModeResPtr res;
+> @@ -961,6 +1000,11 @@ igt_main
+>   
+>   		display_init(&data);
+>   
+> +		if ((intel_display_ver(intel_get_drm_devid(data.drm_fd) == 20)) &&
+> +		    (intel_fbc_supported_on_chipset(data.drm_fd, data.pipe))) {
+> +			data.fbc_flag = true;
+> +		}
+> +
+>   		/* Test if PSR2 can be enabled */
+>   		igt_require_f(psr_enable(data.drm_fd,
+>   					 data.debugfs_fd, PSR_MODE_2_SEL_FETCH),
+> @@ -995,54 +1039,116 @@ igt_main
+>   		}
+>   	}
+>   
+> -	/* Verify primary plane selective fetch */
+> -	igt_describe("Test that selective fetch works on primary plane");
+> -	igt_subtest_with_dynamic_f("primary-%s-sf-dmg-area", op_str(data.op)) {
+> -		for (i = 0; i < n_pipes; i++) {
+> -			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+> -				continue;
+> +	for (y = 0; y < ARRAY_SIZE(fbc_status); y++) {
+> +		data.op_fbc_mode = fbc_status[y];
+> +		/* Verify primary plane selective fetch */
+> +		igt_describe("Test that selective fetch works on primary plane");
+> +		igt_subtest_with_dynamic_f("%sprimary-%s-sf-dmg-area", append_fbc_subtest[y],
+> +					   op_str(data.op)) {
+> +			for (i = 0; i < n_pipes; i++) {
+> +				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+> +					continue;
+>   
+> -			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> -				if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> +					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +						continue;
+> +					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> +						      igt_output_name(outputs[i]),
+> +						      coexist_feature_str(j)) {
+> +						data.pipe = pipes[i];
+> +						data.output = outputs[i];
+> +						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+> +						data.coexist_feature = j;
+> +						for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
+> +							data.damage_area_count = k;
+> +							prepare(&data);
+> +							run(&data);
+> +							cleanup(&data);
+> +						}
+> +					}
+> +				}
+> +			}
+> +		}
+> +
+> +		/* Verify primary plane selective fetch with big fb */
+> +		data.big_fb_test = 1;
+> +		igt_describe("Test that selective fetch works on primary plane with big fb");
+> +		igt_subtest_with_dynamic_f("%sprimary-%s-sf-dmg-area-big-fb", append_fbc_subtest[y],
+> +					   op_str(data.op)) {
+> +			for (i = 0; i < n_pipes; i++) {
+> +				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+>   					continue;
+> -				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> -					      igt_output_name(outputs[i]),
+> -					      coexist_feature_str(j)) {
+> -					data.pipe = pipes[i];
+> -					data.output = outputs[i];
+> -					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+> -					data.coexist_feature = j;
+> -					for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
+> -						data.damage_area_count = k;
+> -						prepare(&data);
+> -						run(&data);
+> -						cleanup(&data);
+> +
+> +				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> +					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +						continue;
+> +					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> +						      igt_output_name(outputs[i]),
+> +						      coexist_feature_str(j)) {
+> +						data.pipe = pipes[i];
+> +						data.output = outputs[i];
+> +						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+> +						data.coexist_feature = j;
+> +						for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
+> +							data.damage_area_count = k;
+> +							prepare(&data);
+> +							run(&data);
+> +							cleanup(&data);
+> +						}
+>   					}
+>   				}
+>   			}
+>   		}
+> -	}
+>   
+> -	/* Verify primary plane selective fetch with big fb */
+> -	data.big_fb_test = 1;
+> -	igt_describe("Test that selective fetch works on primary plane with big fb");
+> -	igt_subtest_with_dynamic_f("primary-%s-sf-dmg-area-big-fb", op_str(data.op)) {
+> -		for (i = 0; i < n_pipes; i++) {
+> -			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+> -				continue;
+> +		data.big_fb_test = 0;
+> +		/* Verify overlay plane selective fetch */
+> +		igt_describe("Test that selective fetch works on overlay plane");
+> +		igt_subtest_with_dynamic_f("%soverlay-%s-sf-dmg-area", append_fbc_subtest[y],
+> +					   op_str(data.op)) {
+> +			for (i = 0; i < n_pipes; i++) {
+> +				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+> +					continue;
+> +
+> +				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> +					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +						continue;
+> +					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> +						      igt_output_name(outputs[i]),
+> +						      coexist_feature_str(j)) {
+> +						data.pipe = pipes[i];
+> +						data.output = outputs[i];
+> +						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+> +						data.coexist_feature = j;
+> +						for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
+> +							data.damage_area_count = k;
+> +							prepare(&data);
+> +							run(&data);
+> +							cleanup(&data);
+> +						}
+> +					}
+> +				}
+> +			}
+> +		}
+>   
+> -			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> -				if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +		data.damage_area_count = 1;
+> +		/* Verify cursor plane selective fetch */
+> +		igt_describe("Test that selective fetch works on cursor plane");
+> +		igt_subtest_with_dynamic_f("%scursor-%s-sf", append_fbc_subtest[y],
+> +					   op_str(data.op)) {
+> +			for (i = 0; i < n_pipes; i++) {
+> +				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+>   					continue;
+> -				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> -					      igt_output_name(outputs[i]),
+> -					      coexist_feature_str(j)) {
+> -					data.pipe = pipes[i];
+> -					data.output = outputs[i];
+> -					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+> -					data.coexist_feature = j;
+> -					for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
+> -						data.damage_area_count = k;
+> +
+> +				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> +					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +						continue;
+> +					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> +						      igt_output_name(outputs[i]),
+> +						      coexist_feature_str(j)) {
+> +						data.pipe = pipes[i];
+> +						data.output = outputs[i];
+> +						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+> +						data.coexist_feature = j;
+>   						prepare(&data);
+>   						run(&data);
+>   						cleanup(&data);
+> @@ -1050,28 +1156,25 @@ igt_main
+>   				}
+>   			}
+>   		}
+> -	}
+> -
+> -	data.big_fb_test = 0;
+> -	/* Verify overlay plane selective fetch */
+> -	igt_describe("Test that selective fetch works on overlay plane");
+> -	igt_subtest_with_dynamic_f("overlay-%s-sf-dmg-area", op_str(data.op)) {
+> -		for (i = 0; i < n_pipes; i++) {
+> -			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+> -				continue;
+>   
+> -			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> -				if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +		data.op = PLANE_MOVE_CONTINUOUS;
+> +		igt_describe("Test that selective fetch works on moving cursor plane (no update)");
+> +		igt_subtest_with_dynamic_f("%scursor-%s-sf", append_fbc_subtest[y],
+> +					   op_str(data.op)) {
+> +			for (i = 0; i < n_pipes; i++) {
+> +				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+>   					continue;
+> -				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> -					      igt_output_name(outputs[i]),
+> -					      coexist_feature_str(j)) {
+> -					data.pipe = pipes[i];
+> -					data.output = outputs[i];
+> -					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+> -					data.coexist_feature = j;
+> -					for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
+> -						data.damage_area_count = k;
+> +
+> +				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> +					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +						continue;
+> +					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> +						      igt_output_name(outputs[i]),
+> +						      coexist_feature_str(j)) {
+> +						data.pipe = pipes[i];
+> +						data.output = outputs[i];
+> +						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+> +						data.coexist_feature = j;
+>   						prepare(&data);
+>   						run(&data);
+>   						cleanup(&data);
+> @@ -1079,130 +1182,137 @@ igt_main
+>   				}
+>   			}
+>   		}
+> -	}
+>   
+> -	data.damage_area_count = 1;
+> -	/* Verify cursor plane selective fetch */
+> -	igt_describe("Test that selective fetch works on cursor plane");
+> -	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
+> -		for (i = 0; i < n_pipes; i++) {
+> -			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+> -				continue;
+> -
+> -			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> -				if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +		data.op = PLANE_MOVE_CONTINUOUS_EXCEED;
+> +		igt_describe("Test that selective fetch works on moving cursor plane exceeding "
+> +			     "partially visible area (no update)");
+> +		igt_subtest_with_dynamic_f("%scursor-%s-sf", append_fbc_subtest[y],
+> +					   op_str(data.op)) {
+> +			for (i = 0; i < n_pipes; i++) {
+> +				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+>   					continue;
+> -				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> -					      igt_output_name(outputs[i]),
+> -					      coexist_feature_str(j)) {
+> -					data.pipe = pipes[i];
+> -					data.output = outputs[i];
+> -					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+> -					data.coexist_feature = j;
+> -					prepare(&data);
+> -					run(&data);
+> -					cleanup(&data);
+> +
+> +				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> +					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +						continue;
+> +					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> +						      igt_output_name(outputs[i]),
+> +						      coexist_feature_str(j)) {
+> +						data.pipe = pipes[i];
+> +						data.output = outputs[i];
+> +						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+> +						data.coexist_feature = j;
+> +						prepare(&data);
+> +						run(&data);
+> +						cleanup(&data);
+> +					}
+>   				}
+>   			}
+>   		}
+> -	}
+> -
+> -	data.op = PLANE_MOVE_CONTINUOUS;
+> -	igt_describe("Test that selective fetch works on moving cursor plane (no update)");
+> -	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
+> -		for (i = 0; i < n_pipes; i++) {
+> -			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+> -				continue;
+>   
+> -			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> -				if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +		data.op = PLANE_MOVE_CONTINUOUS_EXCEED_FULLY;
+> +		igt_describe("Test that selective fetch works on moving cursor plane exceeding "
+> +			     "fully visible area (no update)");
+> +		igt_subtest_with_dynamic_f("%scursor-%s-sf", append_fbc_subtest[y],
+> +					   op_str(data.op)) {
+> +			for (i = 0; i < n_pipes; i++) {
+> +				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+>   					continue;
+> -				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> -					      igt_output_name(outputs[i]),
+> -					      coexist_feature_str(j)) {
+> -					data.pipe = pipes[i];
+> -					data.output = outputs[i];
+> -					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+> -					data.coexist_feature = j;
+> -					prepare(&data);
+> -					run(&data);
+> -					cleanup(&data);
+> +
+> +				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> +					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +						continue;
+> +					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> +						      igt_output_name(outputs[i]),
+> +						      coexist_feature_str(j)) {
+> +						data.pipe = pipes[i];
+> +						data.output = outputs[i];
+> +						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+> +						data.coexist_feature = j;
+> +						prepare(&data);
+> +						run(&data);
+> +						cleanup(&data);
+> +					}
+>   				}
+>   			}
+>   		}
+> -	}
+> -
+> -	data.op = PLANE_MOVE_CONTINUOUS_EXCEED;
+> -	igt_describe("Test that selective fetch works on moving cursor plane exceeding partially visible area (no update)");
+> -	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
+> -		for (i = 0; i < n_pipes; i++) {
+> -			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+> -				continue;
+>   
+> -			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> -				if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +		/* Only for overlay plane */
+> +		data.op = PLANE_MOVE;
+> +		/* Verify overlay plane move selective fetch */
+> +		igt_describe("Test that selective fetch works on moving overlay plane");
+> +		igt_subtest_with_dynamic_f("%s%s-sf-dmg-area", append_fbc_subtest[y],
+> +					   op_str(data.op)) {
+> +			for (i = 0; i < n_pipes; i++) {
+> +				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+>   					continue;
+> -				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> -					      igt_output_name(outputs[i]),
+> -					      coexist_feature_str(j)) {
+> -					data.pipe = pipes[i];
+> -					data.output = outputs[i];
+> -					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+> -					data.coexist_feature = j;
+> -					prepare(&data);
+> -					run(&data);
+> -					cleanup(&data);
+> +
+> +				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> +					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +						continue;
+> +					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> +						      igt_output_name(outputs[i]),
+> +						      coexist_feature_str(j)) {
+> +						data.pipe = pipes[i];
+> +						data.output = outputs[i];
+> +						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+> +						data.coexist_feature = j;
+> +						for (k = POS_TOP_LEFT; k <= POS_BOTTOM_RIGHT ; k++) {
+> +							data.pos = k;
+> +							prepare(&data);
+> +							run(&data);
+> +							cleanup(&data);
+> +						}
+> +					}
+>   				}
+>   			}
+>   		}
+> -	}
+>   
+> -	data.op = PLANE_MOVE_CONTINUOUS_EXCEED_FULLY;
+> -	igt_describe("Test that selective fetch works on moving cursor plane exceeding fully visible area (no update)");
+> -	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
+> -		for (i = 0; i < n_pipes; i++) {
+> -			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+> -				continue;
+> -
+> -			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> -				if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +		data.op = PLANE_MOVE_CONTINUOUS;
+> +		igt_describe("Test that selective fetch works on moving overlay plane (no update)");
+> +		igt_subtest_with_dynamic_f("%soverlay-%s-sf", append_fbc_subtest[y],
+> +					   op_str(data.op)) {
+> +			for (i = 0; i < n_pipes; i++) {
+> +				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+>   					continue;
+> -				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> -					      igt_output_name(outputs[i]),
+> -					      coexist_feature_str(j)) {
+> +
+> +				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> +					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +						continue;
+> +					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> +						      igt_output_name(outputs[i]),
+> +						      coexist_feature_str(j)) {
+>   					data.pipe = pipes[i];
+>   					data.output = outputs[i];
+> -					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+> +					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+>   					data.coexist_feature = j;
+>   					prepare(&data);
+>   					run(&data);
+>   					cleanup(&data);
+> +					}
+>   				}
+>   			}
+>   		}
+> -	}
+>   
+> -	/* Only for overlay plane */
+> -	data.op = PLANE_MOVE;
+> -	/* Verify overlay plane move selective fetch */
+> -	igt_describe("Test that selective fetch works on moving overlay plane");
+> -	igt_subtest_with_dynamic_f("%s-sf-dmg-area", op_str(data.op)) {
+> -		for (i = 0; i < n_pipes; i++) {
+> -			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+> -				continue;
+> -
+> -			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> -				if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +		data.op = PLANE_MOVE_CONTINUOUS_EXCEED;
+> +		igt_describe("Test that selective fetch works on moving overlay plane partially "
+> +			     "exceeding visible area (no update)");
+> +		igt_subtest_with_dynamic_f("%soverlay-%s-sf", append_fbc_subtest[y],
+> +					   op_str(data.op)) {
+> +			for (i = 0; i < n_pipes; i++) {
+> +				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+>   					continue;
+> -				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> -					      igt_output_name(outputs[i]),
+> -					      coexist_feature_str(j)) {
+> -					data.pipe = pipes[i];
+> -					data.output = outputs[i];
+> -					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+> -					data.coexist_feature = j;
+> -					for (k = POS_TOP_LEFT; k <= POS_BOTTOM_RIGHT ; k++) {
+> -						data.pos = k;
+> +
+> +				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> +					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +						continue;
+> +					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> +						      igt_output_name(outputs[i]),
+> +						      coexist_feature_str(j)) {
+> +						data.pipe = pipes[i];
+> +						data.output = outputs[i];
+> +						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+> +						data.coexist_feature = j;
+>   						prepare(&data);
+>   						run(&data);
+>   						cleanup(&data);
+> @@ -1210,103 +1320,88 @@ igt_main
+>   				}
+>   			}
+>   		}
+> -	}
+> -
+> -	data.op = PLANE_MOVE_CONTINUOUS;
+> -	igt_describe("Test that selective fetch works on moving overlay plane (no update)");
+> -	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
+> -		for (i = 0; i < n_pipes; i++) {
+> -			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+> -				continue;
+>   
+> -			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> -				if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +		data.op = PLANE_MOVE_CONTINUOUS_EXCEED_FULLY;
+> +		igt_describe("Test that selective fetch works on moving overlay plane fully "
+> +			     "exceeding visible area (no update)");
+> +		igt_subtest_with_dynamic_f("%soverlay-%s-sf", append_fbc_subtest[y],
+> +					   op_str(data.op)) {
+> +			for (i = 0; i < n_pipes; i++) {
+> +				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+>   					continue;
+> -				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> -					      igt_output_name(outputs[i]),
+> -					      coexist_feature_str(j)) {
+> -				data.pipe = pipes[i];
+> -				data.output = outputs[i];
+> -				data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+> -				data.coexist_feature = j;
+> -				prepare(&data);
+> -				run(&data);
+> -				cleanup(&data);
+> -				}
+> -			}
+> -		}
+> -	}
+> -
+> -	data.op = PLANE_MOVE_CONTINUOUS_EXCEED;
+> -	igt_describe("Test that selective fetch works on moving overlay plane partially exceeding visible area (no update)");
+> -	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
+> -		for (i = 0; i < n_pipes; i++) {
+> -			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+> -				continue;
+>   
+> -			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> -				if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> -					continue;
+> -				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> -					      igt_output_name(outputs[i]),
+> -					      coexist_feature_str(j)) {
+> -					data.pipe = pipes[i];
+> -					data.output = outputs[i];
+> -					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+> -					data.coexist_feature = j;
+> -					prepare(&data);
+> -					run(&data);
+> -					cleanup(&data);
+> +				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> +					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +						continue;
+> +					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> +						      igt_output_name(outputs[i]),
+> +						      coexist_feature_str(j)) {
+> +						data.pipe = pipes[i];
+> +						data.output = outputs[i];
+> +						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+> +						data.coexist_feature = j;
+> +						prepare(&data);
+> +						run(&data);
+> +						cleanup(&data);
+> +					}
+>   				}
+>   			}
+>   		}
+> -	}
+>   
+> -	data.op = PLANE_MOVE_CONTINUOUS_EXCEED_FULLY;
+> -	igt_describe("Test that selective fetch works on moving overlay plane fully exceeding visible area (no update)");
+> -	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
+> -		for (i = 0; i < n_pipes; i++) {
+> -			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+> -				continue;
+> -
+> -			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> -				if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +		/* Verify primary plane selective fetch with overplay plane blended */
+> +		data.op = OVERLAY_PRIM_UPDATE;
+> +		igt_describe("Test that selective fetch works on primary plane "
+> +			     "with blended overlay plane");
+> +		igt_subtest_with_dynamic_f("%s%s-sf-dmg-area", append_fbc_subtest[y],
+> +					   op_str(data.op)) {
+> +			for (i = 0; i < n_pipes; i++) {
+> +				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+>   					continue;
+> -				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> -					      igt_output_name(outputs[i]),
+> -					      coexist_feature_str(j)) {
+> -					data.pipe = pipes[i];
+> -					data.output = outputs[i];
+> -					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+> -					data.coexist_feature = j;
+> -					prepare(&data);
+> -					run(&data);
+> -					cleanup(&data);
+> +
+> +				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> +					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +						continue;
+> +					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> +						      igt_output_name(outputs[i]),
+> +						      coexist_feature_str(j)) {
+> +						data.pipe = pipes[i];
+> +						data.output = outputs[i];
+> +						for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
+> +							data.damage_area_count = k;
+> +							data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+> +							data.coexist_feature = j;
+> +							prepare(&data);
+> +							run(&data);
+> +							cleanup(&data);
+> +						}
+> +					}
+>   				}
+>   			}
+>   		}
+> -	}
+>   
+> -	/* Verify primary plane selective fetch with overplay plane blended */
+> -	data.op = OVERLAY_PRIM_UPDATE;
+> -	igt_describe("Test that selective fetch works on primary plane "
+> -		     "with blended overlay plane");
+> -	igt_subtest_with_dynamic_f("%s-sf-dmg-area", op_str(data.op)) {
+> -		for (i = 0; i < n_pipes; i++) {
+> -			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+> -				continue;
+> -
+> -			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> -				if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +		/*
+> +		 * Verify overlay plane selective fetch using NV12 primary
+> +		 * plane and continuous updates.
+> +		 */
+> +		data.op = PLANE_UPDATE_CONTINUOUS;
+> +		data.primary_format = DRM_FORMAT_NV12;
+> +		igt_describe("Test that selective fetch works on overlay plane");
+> +		igt_subtest_with_dynamic_f("%soverlay-%s-sf", append_fbc_subtest[y],
+> +					   op_str(data.op)) {
+> +			for (i = 0; i < n_pipes; i++) {
+> +				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+>   					continue;
+> -				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> -					      igt_output_name(outputs[i]),
+> -					      coexist_feature_str(j)) {
+> -					data.pipe = pipes[i];
+> -					data.output = outputs[i];
+> -					for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
+> -						data.damage_area_count = k;
+> -						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+> +
+> +				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> +					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> +						continue;
+> +					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> +						      igt_output_name(outputs[i]),
+> +						      coexist_feature_str(j)) {
+> +						data.pipe = pipes[i];
+> +						data.output = outputs[i];
+> +						data.damage_area_count = 1;
+> +						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+>   						data.coexist_feature = j;
+>   						prepare(&data);
+>   						run(&data);
+> @@ -1317,37 +1412,6 @@ igt_main
+>   		}
+>   	}
+>   
+> -	/*
+> -	 * Verify overlay plane selective fetch using NV12 primary
+> -	 * plane and continuous updates.
+> -	 */
+> -	data.op = PLANE_UPDATE_CONTINUOUS;
+> -	data.primary_format = DRM_FORMAT_NV12;
+> -	igt_describe("Test that selective fetch works on overlay plane");
+> -	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
+> -		for (i = 0; i < n_pipes; i++) {
+> -			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+> -				continue;
+> -
+> -			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+> -				if (j != FEATURE_NONE && !(coexist_features[i] & j))
+> -					continue;
+> -				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+> -					      igt_output_name(outputs[i]),
+> -					      coexist_feature_str(j)) {
+> -					data.pipe = pipes[i];
+> -					data.output = outputs[i];
+> -					data.damage_area_count = 1;
+> -					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+> -					data.coexist_feature = j;
+> -					prepare(&data);
+> -					run(&data);
+> -					cleanup(&data);
+> -				}
+> -			}
+> -		}
+> -	}
+> -
+>   	igt_fixture {
+>   		close(data.debugfs_fd);
+>   		display_fini(&data);
