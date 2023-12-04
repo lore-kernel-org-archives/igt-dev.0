@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B86310E2BC
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6145910E2D7
  for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 07:52:12 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	vidya.srinivas@intel.com
-Date: Mon,  4 Dec 2023 13:11:08 +0530
-Message-Id: <20231204074111.3167784-7-bhanuprakash.modem@intel.com>
+Date: Mon,  4 Dec 2023 13:11:10 +0530
+Message-Id: <20231204074111.3167784-9-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231204074111.3167784-1-bhanuprakash.modem@intel.com>
 References: <20231204074111.3167784-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V5 6/9] tests/kms_vrr: Add a helper to get the low
- refresh mode
+Subject: [igt-dev] [i-g-t V5 8/9] tests/kms_vrr: Add new subtest for DRRS
+ without modeset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,43 +24,183 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-To switch the refresh rate seamlessly, add a new helper to
-identify the mode with the same resolution but low vrefresh
-and clock.
+This test is same as 'seamless-rr-switch-vrr' but performs
+on DRRS panel without VRR.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vrr.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tests/kms_vrr.c | 69 +++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 49 insertions(+), 20 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 422d89073..26f89f7a8 100644
+index 74f1b0d09..b8e5c4608 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -166,6 +166,24 @@ output_mode_with_maxrate(igt_output_t *output, unsigned int vrr_max)
- 	return mode;
+@@ -31,6 +31,7 @@
+  */
+ 
+ #include "igt.h"
++#include "i915/intel_drrs.h"
+ #include "sw_sync.h"
+ #include <fcntl.h>
+ #include <signal.h>
+@@ -57,6 +58,10 @@
+  * Description: Test to switch RR seamlessly without modeset.
+  * Functionality: adaptive_sync, lrr
+  *
++ * SUBTEST: seamless-rr-switch-drrs
++ * Description: Test to switch RR seamlessly without modeset.
++ * Functionality: adaptive_sync, drrs
++ *
+  * SUBTEST: negative-basic
+  * Description: Make sure that VRR should not be enabled on the Non-VRR panel.
+  */
+@@ -75,7 +80,8 @@ enum {
+ 	TEST_SUSPEND = 1 << 2,
+ 	TEST_FLIPLINE = 1 << 3,
+ 	TEST_SEAMLESS_VRR = 1 << 4,
+-	TEST_NEGATIVE = 1 << 5,
++	TEST_SEAMLESS_DRRS = 1 << 5,
++	TEST_NEGATIVE = 1 << 6,
+ };
+ 
+ enum {
+@@ -492,24 +498,27 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
+ 	uint32_t result;
+ 	vtest_ns_t vtest_ns;
+ 	uint64_t rate;
++	bool vrr = !!(flags & TEST_SEAMLESS_VRR);
+ 
+-	igt_info("Use HIGH_RR Mode as default: ");
++	igt_info("Use HIGH_RR Mode as default (VRR: %s): ", vrr ? "ON" : "OFF");
+ 	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
+ 
+ 	prepare_test(data, output, pipe);
+ 	vtest_ns = get_test_rate_ns(data->range);
+ 
+-	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, true);
+-	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
++	if (vrr) {
++		igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, true);
++		igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
++	}
+ 
+ 	rate = vtest_ns.max;
+ 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+ 	igt_assert_f(result > 75,
+-		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
+-		     data->range.max, rate, result);
++		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold not reached, result was %u%%\n",
++		     data->range.max, rate, vrr ? "on" : "off", result);
+ 
+ 	/* Switch to low rr mode without modeset. */
+-	igt_info("Switch to LOW_RR Mode: ");
++	igt_info("Switch to LOW_RR Mode (VRR: %s): ", vrr ? "ON" : "OFF");
+ 	kmstest_dump_mode(&data->switch_modes[LOW_RR_MODE]);
+ 	igt_output_override_mode(output, &data->switch_modes[LOW_RR_MODE]);
+ 	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
+@@ -517,25 +526,28 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
+ 	rate = vtest_ns.min;
+ 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+ 	igt_assert_f(result > 75,
+-		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
+-		     data->range.min, rate, result);
++		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold not reached, result was %u%%\n",
++		     data->range.min, rate, vrr ? "on" : "off", result);
+ 
+ 	/* Switch back to high rr mode without modeset. */
+-	igt_info("Switch back to HIGH_RR Mode: ");
++	igt_info("Switch back to HIGH_RR Mode (VRR: %s): ", vrr ? "ON" : "OFF");
+ 	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
+ 	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
+ 	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
+ 
+ 	rate = vtest_ns.mid;
+ 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+-	igt_assert_f(result > 75,
+-		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
+-		     ((data->range.max + data->range.min) / 2), rate, result);
++	igt_assert_f(vrr ? (result > 75) : (result < 10),
++		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold %s, result was %u%%\n",
++		     ((data->range.max + data->range.min) / 2), rate,
++		     vrr ? "on" : "off", vrr ? "not reached" : "exceeded", result);
  }
  
-+static drmModeModeInfo
-+low_rr_mode_with_same_res(igt_output_t *output, unsigned int vrr_min)
-+{
-+	int i;
-+	drmModeConnectorPtr connector = output->config.connector;
-+	drmModeModeInfo mode = *igt_output_get_mode(output);
+ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
+ {
+-	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, false);
++	if (vrr_capable(output))
++		igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, false);
 +
-+	for (i = 0; i < connector->count_modes; i++)
-+		if (connector->modes[i].hdisplay == mode.hdisplay &&
-+		    connector->modes[i].vdisplay == mode.vdisplay &&
-+		    connector->modes[i].clock < mode.clock &&
-+		    connector->modes[i].vrefresh < mode.vrefresh &&
-+		    connector->modes[i].vrefresh >= vrr_min)
-+			mode = connector->modes[i];
+ 	igt_plane_set_fb(data->primary, NULL);
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_output_override_mode(output, NULL);
+@@ -547,10 +559,16 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
+ 
+ static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags)
+ {
+-	if ((flags & TEST_SEAMLESS_VRR) &&
++	if ((flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS)) &&
+ 	    output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
+ 		return false;
+ 
++	if ((flags & TEST_SEAMLESS_DRRS) &&
++	    !intel_output_has_drrs(data->drm_fd, output)) {
++		igt_info("Selected panel won't support DRRS.\n");
++		return false;
++	}
 +
-+	return mode;
-+}
+ 	/* Reset output */
+ 	igt_display_reset(&data->display);
+ 
+@@ -570,7 +588,7 @@ static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags
+ 	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
+ 
+ 	/* Search for a low refresh rate mode. */
+-	if (!(flags & TEST_SEAMLESS_VRR))
++	if (!(flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS)))
+ 		return true;
+ 
+ 	data->switch_modes[LOW_RR_MODE] = low_rr_mode_with_same_res(output, data->range.min);
+@@ -587,6 +605,9 @@ static bool config_constraint(data_t *data, igt_output_t *output, uint32_t flags
+ 	if (!has_vrr(output))
+ 		return false;
+ 
++	if (flags & TEST_SEAMLESS_DRRS)
++		goto out;
 +
- /* Read min and max vrr range from the connector debugfs. */
- static range_t
- get_vrr_range(data_t *data, igt_output_t *output)
+ 	/* For Negative tests, panel should be non-vrr. */
+ 	if ((flags & TEST_NEGATIVE) && vrr_capable(output))
+ 		return false;
+@@ -594,6 +615,7 @@ static bool config_constraint(data_t *data, igt_output_t *output, uint32_t flags
+ 	if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
+ 		return false;
+ 
++out:
+ 	if (!output_constraint(data, output, flags))
+ 		return false;
+ 
+@@ -670,10 +692,17 @@ igt_main
+ 	igt_subtest_with_dynamic("negative-basic")
+ 		run_vrr_test(&data, test_basic, TEST_NEGATIVE);
+ 
+-	igt_describe("Test to switch RR seamlessly without modeset.");
+-	igt_subtest_with_dynamic("seamless-rr-switch-vrr"){
+-		igt_require_intel(data.drm_fd);
+-		run_vrr_test(&data, test_seamless_rr_basic, TEST_SEAMLESS_VRR);
++	igt_subtest_group {
++		igt_fixture
++			igt_require_intel(data.drm_fd);
++
++		igt_describe("Test to switch RR seamlessly without modeset.");
++		igt_subtest_with_dynamic("seamless-rr-switch-vrr")
++			run_vrr_test(&data, test_seamless_rr_basic, TEST_SEAMLESS_VRR);
++
++		igt_describe("Test to switch RR seamlessly without modeset.");
++		igt_subtest_with_dynamic("seamless-rr-switch-drrs")
++			run_vrr_test(&data, test_seamless_rr_basic, TEST_SEAMLESS_DRRS);
+ 	}
+ 
+ 	igt_fixture {
 -- 
 2.40.0
