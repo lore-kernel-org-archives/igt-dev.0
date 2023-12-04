@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5812E10E176
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 05:36:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 07EEC10E176
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 05:36:43 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sun,  3 Dec 2023 21:36:35 -0800
-Message-Id: <20231204053638.29960-1-niranjana.vishwanathapura@intel.com>
+Date: Sun,  3 Dec 2023 21:36:38 -0800
+Message-Id: <20231204053638.29960-4-niranjana.vishwanathapura@intel.com>
+In-Reply-To: <20231204053638.29960-1-niranjana.vishwanathapura@intel.com>
+References: <20231204053638.29960-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 0/3] xe: Validate fixed CCS mode setting
+Subject: [igt-dev] [PATCH i-g-t v3 3/3] tests/xe_compute: Validate ccs_mode
+ setting
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,32 +23,191 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Validate static assignment of compute slices to a user selected
-number of compute engines. Select number of compute engines by
-writing it to the per-gt 'ccs_mode' sysfs interface. Validate
-that compute kernels can be run on enabled CCS engines and
-submitting jobs on disabled compute engines is not permitted.
+Validate 'ccs_mode' sysfs uapi interface and ensure compute
+kernels can be run on enabled compute engines.
 
-NOTE: Corresponding driver changes is,
-[PATCH v3 0/3] drm/xe: Enable fixed CCS mode
-
-v2: Rebase
-v3: Separate num_cslices sysfs interface
+v2: Separate num_cslices sysfs interface
 
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-
-Niranjana Vishwanathapura (3):
-  lib/xe: Add __xe_exec_queue_create()
-  lib/intel_compute: Update intel_compute to run on specified engine
-  tests/xe_compute: Validate ccs_mode setting
-
- lib/intel_compute.c      |  80 +++++++++++++++------
- lib/intel_compute.h      |   3 +
- lib/xe/xe_ioctl.c        |  29 ++++++--
- lib/xe/xe_ioctl.h        |   3 +
+---
  tests/intel/xe_compute.c | 149 ++++++++++++++++++++++++++++++++++++++-
- tests/intel/xe_create.c  |  26 -------
- 6 files changed, 234 insertions(+), 56 deletions(-)
+ 1 file changed, 147 insertions(+), 2 deletions(-)
 
+diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+index 35ba8b346..49bf61586 100644
+--- a/tests/intel/xe_compute.c
++++ b/tests/intel/xe_compute.c
+@@ -13,9 +13,145 @@
+ #include <string.h>
+ 
+ #include "igt.h"
++#include "igt_sysfs.h"
+ #include "intel_compute.h"
++#include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ 
++static int gt_sysfs_open(int gt)
++{
++	int fd, gt_fd;
++
++	fd = drm_open_driver(DRIVER_XE);
++	gt_fd = xe_sysfs_gt_open(fd, gt);
++	drm_close_driver(fd);
++
++	return gt_fd;
++}
++
++static bool get_num_cslices(u32 gt, u32 *num_slices)
++{
++	int gt_fd, ret;
++
++	gt_fd = gt_sysfs_open(gt);
++	ret = igt_sysfs_scanf(gt_fd, "num_cslices", "%u", num_slices);
++	close(gt_fd);
++
++	return ret > 0;
++}
++
++/**
++ * SUBTEST: ccs-mode-basic
++ * GPU requirement: PVC
++ * Description: Validate 'ccs_mode' sysfs uapi
++ * Functionality: ccs_mode user interface
++ */
++static void
++test_ccs_mode(int num_gt)
++{
++	struct drm_xe_engine_class_instance *hwe;
++	u32 gt, m, ccs_mode, vm, q, num_slices;
++	int fd, gt_fd;
++
++	for (gt = 0; gt < num_gt; gt++) {
++		igt_require(get_num_cslices(gt, &num_slices));
++
++		gt_fd = gt_sysfs_open(gt);
++		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 0) < 0);
++		for (m = 1; m <= num_slices; m++) {
++			/* compute slices are to be equally distributed among enabled engines */
++			if (num_slices % m) {
++				igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) < 0);
++				continue;
++			}
++
++			/* Validate allowed ccs modes by setting them and reading back */
++			igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) > 0);
++			igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
++			igt_assert(m == ccs_mode);
++
++			/* Validate exec queues creation with enabled ccs engines */
++			fd = drm_open_driver(DRIVER_XE);
++			vm = xe_vm_create(fd, 0, 0);
++			xe_for_each_hw_engine(fd, hwe) {
++				if (hwe->gt_id != gt ||
++				    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
++					continue;
++
++				q = xe_exec_queue_create(fd, vm, hwe, 0);
++				xe_exec_queue_destroy(fd, q);
++			}
++
++			/* Ensure exec queue creation fails for disabled ccs engines */
++			hwe->gt_id = gt;
++			hwe->engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
++			hwe->engine_instance = m;
++			igt_assert_neq(__xe_exec_queue_create(fd, vm, hwe, 0, &q), 0);
++
++			xe_vm_destroy(fd, vm);
++			drm_close_driver(fd);
++		}
++
++		/* Ensure invalid ccs mode setting is rejected */
++		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) < 0);
++
++		/* Can't change ccs mode with an open drm clients */
++		fd = drm_open_driver(DRIVER_XE);
++		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 1) < 0);
++		drm_close_driver(fd);
++
++		/* Set ccs mode back to default value */
++		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 1) > 0);
++
++		close(gt_fd);
++	}
++}
++
++/**
++ * SUBTEST: ccs-mode-compute-kernel
++ * GPU requirement: PVC
++ * Description: Validate 'ccs_mode' by running compute kernel
++ * Functionality: CCS mode funtionality
++ */
++static void
++test_compute_kernel_with_ccs_mode(int num_gt)
++{
++	struct drm_xe_engine_class_instance *hwe;
++	u32 gt, m, num_slices;
++	int fd, gt_fd;
++
++	for (gt = 0; gt < num_gt; gt++) {
++		igt_require(get_num_cslices(gt, &num_slices));
++
++		gt_fd = gt_sysfs_open(gt);
++		for (m = 1; m <= num_slices; m++) {
++			if (num_slices % m)
++				continue;
++
++			igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) > 0);
++
++			/* Run compute kernel on enabled ccs engines */
++			fd = drm_open_driver(DRIVER_XE);
++			xe_for_each_hw_engine(fd, hwe) {
++				if (hwe->gt_id != gt ||
++				    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
++					continue;
++
++				igt_info("GT-%d: Running compute kernel with ccs_mode %d on ccs engine %d\n",
++					 gt, m, hwe->engine_instance);
++				igt_assert_f(run_intel_compute_kernel_on_engine(fd, hwe),
++					     "Unable to run compute kernel successfully\n");
++			}
++			drm_close_driver(fd);
++		}
++
++		/* Set ccs mode back to default value */
++		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 1) > 0);
++
++		close(gt_fd);
++	}
++}
++
+ /**
+  * SUBTEST: compute-square
+  * GPU requirement: TGL, PVC
+@@ -32,14 +168,23 @@ test_compute_square(int fd)
+ 
+ igt_main
+ {
+-	int xe;
++	int xe, num_gt;
+ 
+-	igt_fixture
++	igt_fixture {
+ 		xe = drm_open_driver(DRIVER_XE);
++		num_gt = xe_number_gt(xe);
++	}
+ 
+ 	igt_subtest("compute-square")
+ 		test_compute_square(xe);
+ 
+ 	igt_fixture
+ 		drm_close_driver(xe);
++
++	/* ccs mode tests should be run without open gpu file handles */
++	igt_subtest("ccs-mode-basic")
++		test_ccs_mode(num_gt);
++
++	igt_subtest("ccs-mode-compute-kernel")
++		test_compute_kernel_with_ccs_mode(num_gt);
+ }
 -- 
 2.21.0.rc0.32.g243a4c7e27
