@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6145910E2D7
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 07:52:12 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	vidya.srinivas@intel.com
-Date: Mon,  4 Dec 2023 13:11:10 +0530
-Message-Id: <20231204074111.3167784-9-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231204074111.3167784-1-bhanuprakash.modem@intel.com>
-References: <20231204074111.3167784-1-bhanuprakash.modem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F0AA210E1E9
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 07:58:04 +0000 (UTC)
+Date: Mon, 4 Dec 2023 08:58:00 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: janga.rahul.kumar@intel.com
+Message-ID: <20231204075800.smdpsc7nprysd2ae@zkempczy-mobl2>
+References: <20231201113507.3535939-1-janga.rahul.kumar@intel.com>
+ <20231201113507.3535939-2-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V5 8/9] tests/kms_vrr: Add new subtest for DRRS
- without modeset
+In-Reply-To: <20231201113507.3535939-2-janga.rahul.kumar@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/intel_compute_square_kernels:
+ Add xe2lpg compute sqaure kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,187 +22,81 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This test is same as 'seamless-rr-switch-vrr' but performs
-on DRRS panel without VRR.
+On Fri, Dec 01, 2023 at 05:05:05PM +0530, janga.rahul.kumar@intel.com wrote:
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> 
+> Add xe2lpg compute sqaure kernel created using iga64.
+> 
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> ---
+>  lib/intel_compute_square_kernels.c | 36 ++++++++++++++++++++++++++++++
+>  1 file changed, 36 insertions(+)
+> 
+> diff --git a/lib/intel_compute_square_kernels.c b/lib/intel_compute_square_kernels.c
+> index 3d5b1ad47..682fdfcf6 100644
+> --- a/lib/intel_compute_square_kernels.c
+> +++ b/lib/intel_compute_square_kernels.c
+> @@ -183,6 +183,37 @@ static const unsigned char xehpc_kernel_square_bin[] = {
+>  	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+>  };
+>  
+> +static const unsigned char xe2lpg_kernel_square_bin[] = {
+> +	0x65, 0x00, 0x00, 0x80, 0x20, 0x82, 0x05, 0x7f, 0x04, 0x00, 0x00, 0x02,
+> +	0xc0, 0xff, 0xff, 0xff, 0x40, 0x19, 0x00, 0x80, 0x20, 0x82, 0x05, 0x7f,
+> +	0x04, 0x7f, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x31, 0x22, 0x03, 0x80,
+> +	0x00, 0x00, 0x0c, 0x05, 0x8f, 0x7f, 0x00, 0xfa, 0x03, 0x00, 0x70, 0xf6,
+> +	0x01, 0x00, 0x00, 0x00, 0x00, 0x42, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20,
+> +	0x04, 0x00, 0x00, 0x00, 0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
+> +	0x00, 0x80, 0x00, 0x02, 0xc0, 0x04, 0x00, 0x40, 0x41, 0x22, 0x03, 0x80,
+> +	0x60, 0x06, 0x01, 0x20, 0x54, 0x05, 0x00, 0x01, 0x14, 0x00, 0x00, 0x00,
+> +	0x53, 0x80, 0x00, 0x80, 0x60, 0x06, 0x05, 0x02, 0x54, 0x05, 0x00, 0x06,
+> +	0x14, 0x00, 0x00, 0x00, 0x52, 0x19, 0x14, 0x00, 0x60, 0x06, 0x04, 0x06,
+> +	0x04, 0x02, 0x0e, 0x01, 0x04, 0x01, 0x04, 0x04, 0x70, 0x19, 0x14, 0x00,
+> +	0x20, 0x02, 0x01, 0x00, 0x04, 0x06, 0x10, 0x52, 0x44, 0x05, 0x00, 0x00,
+> +	0x2e, 0x00, 0x14, 0x14, 0x00, 0xc0, 0x00, 0x00, 0x98, 0x00, 0x00, 0x00,
+> +	0x98, 0x00, 0x00, 0x00, 0x61, 0x00, 0x00, 0xb4, 0x14, 0x06, 0x10, 0x00,
+> +	0x61, 0x00, 0x08, 0xb4, 0x16, 0x07, 0x10, 0x00, 0x69, 0x1a, 0x10, 0x00,
+> +	0x70, 0x86, 0x05, 0x18, 0x04, 0x14, 0x20, 0x05, 0x02, 0x00, 0x02, 0x00,
+> +	0x69, 0x1a, 0x10, 0x02, 0x70, 0x86, 0x05, 0x1a, 0x04, 0x16, 0x20, 0x05,
+> +	0x02, 0x00, 0x02, 0x00, 0x40, 0x1a, 0x00, 0x38, 0x08, 0x18, 0x10, 0x05,
+> +	0x40, 0x1a, 0x08, 0x38, 0x0a, 0x1a, 0x10, 0x05, 0x31, 0x23, 0x17, 0x00,
+> +	0x00, 0x00, 0x14, 0x0c, 0x24, 0x08, 0x00, 0xfb, 0x00, 0x00, 0x00, 0x00,
+> +	0x40, 0x00, 0x00, 0x38, 0x10, 0x18, 0x30, 0x05, 0x40, 0x00, 0x08, 0x38,
+> +	0x12, 0x1a, 0x30, 0x05, 0x41, 0x83, 0x20, 0x20, 0x0e, 0x0c, 0x00, 0x0c,
+> +	0x31, 0x24, 0x15, 0x00, 0x00, 0x00, 0x00, 0x00, 0x24, 0x10, 0x08, 0xfb,
+> +	0x14, 0x0e, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x42, 0x01, 0x00,
+> +	0x00, 0x00, 0x00, 0x20, 0x10, 0x00, 0x00, 0x00, 0x2f, 0x00, 0x14, 0x00,
+> +	0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00,
+> +	0x61, 0x00, 0x10, 0x28, 0x7f, 0x00, 0x10, 0x00, 0x31, 0x20, 0x02, 0x80,
+> +	0x04, 0x00, 0x00, 0x00, 0x0c, 0x7f, 0x20, 0x30, 0x00, 0x00, 0x00, 0x00
+> +};
+> +
+>  const struct intel_compute_kernels intel_compute_square_kernels[] = {
+>  	{
+>  		.ip_ver = IP_VER(12, 0),
+> @@ -204,5 +235,10 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
+>  		.size = sizeof(xehpc_kernel_square_bin),
+>  		.kernel = xehpc_kernel_square_bin,
+>  	},
+> +	{
+> +		.ip_ver = IP_VER(20, 04),
+> +		.size = sizeof(xe2lpg_kernel_square_bin),
+> +		.kernel = xe2lpg_kernel_square_bin,
+> +	},
+>  	{}
+>  };
+> -- 
+> 2.25.1
+> 
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_vrr.c | 69 +++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 49 insertions(+), 20 deletions(-)
+LGTM:
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 74f1b0d09..b8e5c4608 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -31,6 +31,7 @@
-  */
- 
- #include "igt.h"
-+#include "i915/intel_drrs.h"
- #include "sw_sync.h"
- #include <fcntl.h>
- #include <signal.h>
-@@ -57,6 +58,10 @@
-  * Description: Test to switch RR seamlessly without modeset.
-  * Functionality: adaptive_sync, lrr
-  *
-+ * SUBTEST: seamless-rr-switch-drrs
-+ * Description: Test to switch RR seamlessly without modeset.
-+ * Functionality: adaptive_sync, drrs
-+ *
-  * SUBTEST: negative-basic
-  * Description: Make sure that VRR should not be enabled on the Non-VRR panel.
-  */
-@@ -75,7 +80,8 @@ enum {
- 	TEST_SUSPEND = 1 << 2,
- 	TEST_FLIPLINE = 1 << 3,
- 	TEST_SEAMLESS_VRR = 1 << 4,
--	TEST_NEGATIVE = 1 << 5,
-+	TEST_SEAMLESS_DRRS = 1 << 5,
-+	TEST_NEGATIVE = 1 << 6,
- };
- 
- enum {
-@@ -492,24 +498,27 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
- 	uint32_t result;
- 	vtest_ns_t vtest_ns;
- 	uint64_t rate;
-+	bool vrr = !!(flags & TEST_SEAMLESS_VRR);
- 
--	igt_info("Use HIGH_RR Mode as default: ");
-+	igt_info("Use HIGH_RR Mode as default (VRR: %s): ", vrr ? "ON" : "OFF");
- 	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
- 
- 	prepare_test(data, output, pipe);
- 	vtest_ns = get_test_rate_ns(data->range);
- 
--	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, true);
--	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
-+	if (vrr) {
-+		igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, true);
-+		igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
-+	}
- 
- 	rate = vtest_ns.max;
- 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
- 	igt_assert_f(result > 75,
--		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
--		     data->range.max, rate, result);
-+		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold not reached, result was %u%%\n",
-+		     data->range.max, rate, vrr ? "on" : "off", result);
- 
- 	/* Switch to low rr mode without modeset. */
--	igt_info("Switch to LOW_RR Mode: ");
-+	igt_info("Switch to LOW_RR Mode (VRR: %s): ", vrr ? "ON" : "OFF");
- 	kmstest_dump_mode(&data->switch_modes[LOW_RR_MODE]);
- 	igt_output_override_mode(output, &data->switch_modes[LOW_RR_MODE]);
- 	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
-@@ -517,25 +526,28 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
- 	rate = vtest_ns.min;
- 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
- 	igt_assert_f(result > 75,
--		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
--		     data->range.min, rate, result);
-+		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold not reached, result was %u%%\n",
-+		     data->range.min, rate, vrr ? "on" : "off", result);
- 
- 	/* Switch back to high rr mode without modeset. */
--	igt_info("Switch back to HIGH_RR Mode: ");
-+	igt_info("Switch back to HIGH_RR Mode (VRR: %s): ", vrr ? "ON" : "OFF");
- 	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
- 	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
- 	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
- 
- 	rate = vtest_ns.mid;
- 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
--	igt_assert_f(result > 75,
--		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
--		     ((data->range.max + data->range.min) / 2), rate, result);
-+	igt_assert_f(vrr ? (result > 75) : (result < 10),
-+		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold %s, result was %u%%\n",
-+		     ((data->range.max + data->range.min) / 2), rate,
-+		     vrr ? "on" : "off", vrr ? "not reached" : "exceeded", result);
- }
- 
- static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
- {
--	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, false);
-+	if (vrr_capable(output))
-+		igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, false);
-+
- 	igt_plane_set_fb(data->primary, NULL);
- 	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_output_override_mode(output, NULL);
-@@ -547,10 +559,16 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
- 
- static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags)
- {
--	if ((flags & TEST_SEAMLESS_VRR) &&
-+	if ((flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS)) &&
- 	    output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
- 		return false;
- 
-+	if ((flags & TEST_SEAMLESS_DRRS) &&
-+	    !intel_output_has_drrs(data->drm_fd, output)) {
-+		igt_info("Selected panel won't support DRRS.\n");
-+		return false;
-+	}
-+
- 	/* Reset output */
- 	igt_display_reset(&data->display);
- 
-@@ -570,7 +588,7 @@ static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags
- 	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
- 
- 	/* Search for a low refresh rate mode. */
--	if (!(flags & TEST_SEAMLESS_VRR))
-+	if (!(flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS)))
- 		return true;
- 
- 	data->switch_modes[LOW_RR_MODE] = low_rr_mode_with_same_res(output, data->range.min);
-@@ -587,6 +605,9 @@ static bool config_constraint(data_t *data, igt_output_t *output, uint32_t flags
- 	if (!has_vrr(output))
- 		return false;
- 
-+	if (flags & TEST_SEAMLESS_DRRS)
-+		goto out;
-+
- 	/* For Negative tests, panel should be non-vrr. */
- 	if ((flags & TEST_NEGATIVE) && vrr_capable(output))
- 		return false;
-@@ -594,6 +615,7 @@ static bool config_constraint(data_t *data, igt_output_t *output, uint32_t flags
- 	if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
- 		return false;
- 
-+out:
- 	if (!output_constraint(data, output, flags))
- 		return false;
- 
-@@ -670,10 +692,17 @@ igt_main
- 	igt_subtest_with_dynamic("negative-basic")
- 		run_vrr_test(&data, test_basic, TEST_NEGATIVE);
- 
--	igt_describe("Test to switch RR seamlessly without modeset.");
--	igt_subtest_with_dynamic("seamless-rr-switch-vrr"){
--		igt_require_intel(data.drm_fd);
--		run_vrr_test(&data, test_seamless_rr_basic, TEST_SEAMLESS_VRR);
-+	igt_subtest_group {
-+		igt_fixture
-+			igt_require_intel(data.drm_fd);
-+
-+		igt_describe("Test to switch RR seamlessly without modeset.");
-+		igt_subtest_with_dynamic("seamless-rr-switch-vrr")
-+			run_vrr_test(&data, test_seamless_rr_basic, TEST_SEAMLESS_VRR);
-+
-+		igt_describe("Test to switch RR seamlessly without modeset.");
-+		igt_subtest_with_dynamic("seamless-rr-switch-drrs")
-+			run_vrr_test(&data, test_seamless_rr_basic, TEST_SEAMLESS_DRRS);
- 	}
- 
- 	igt_fixture {
--- 
-2.40.0
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
