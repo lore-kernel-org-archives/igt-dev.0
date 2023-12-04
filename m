@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76B4310E1D1
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 13:51:47 +0000 (UTC)
-Date: Mon, 4 Dec 2023 14:51:43 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: janga.rahul.kumar@intel.com
-Message-ID: <20231204135143.3rwmwwdxs5tbjvf2@zkempczy-mobl2>
-References: <20231204122825.3689117-1-janga.rahul.kumar@intel.com>
- <20231204122825.3689117-4-janga.rahul.kumar@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6628210E1D2
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 14:06:26 +0000 (UTC)
+Date: Mon, 4 Dec 2023 15:06:21 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231204140621.pi52mpx455p3sd7s@kamilkon-desk.igk.intel.com>
+References: <20231130214032.4152491-1-david.kershner@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231204122825.3689117-4-janga.rahul.kumar@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 3/4] lib/intel_compute: Add XE2
- compute implementation
+In-Reply-To: <20231130214032.4152491-1-david.kershner@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/intel: Add Xe peer2peer test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,262 +20,441 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com
+Cc: john.fleck@intel.com, katarzyna.piecielska@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Dec 04, 2023 at 05:58:24PM +0530, janga.rahul.kumar@intel.com wrote:
-> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Hi David,
+On 2023-11-30 at 16:40:32 -0500, David Kershner wrote:
+> Add tests to read/write data between two different GPUs using DMABUF
+> and P2PDMA. The kernel must have P2PDMA and DMABUF enabled for the test
+> pass.
 > 
-> Add compute pipeline and walker instructions for xe2lpg.
-> 
-> v2: Reuse address variables. (Zbigniew)
-> 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Acked-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+- ^^
+Please upgrade to r-b, Michael sent it for your v3.
+
+Also I added Francois to Cc as he is updating xe uAPI.
+
+> Signed-off-by: David Kershner <david.kershner@intel.com>
 > ---
->  lib/intel_compute.c | 207 ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 207 insertions(+)
+> Changes from v1 --
+>    - fixed whitespace issues
+>    - fixed review comments
+> Changes from v2 --
+>    - fixed peer2peer test description
+>    - updates due to rebase
+> Changes from v3 -- 
+>    - updaets due to rebase
+> ---
+>  tests/intel/xe_peer2peer.c | 374 +++++++++++++++++++++++++++++++++++++
+>  tests/meson.build          |   1 +
+>  2 files changed, 375 insertions(+)
+>  create mode 100644 tests/intel/xe_peer2peer.c
 > 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index c8dc42338..65a85d335 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -41,6 +41,8 @@
->  #define ADDR_INSTRUCTION_STATE_BASE	0x90000000UL
->  #define OFFSET_BINDING_TABLE		0x1000
->  
-> +#define XE2_ADDR_STATE_CONTEXT_DATA_BASE	0x900000UL
+> diff --git a/tests/intel/xe_peer2peer.c b/tests/intel/xe_peer2peer.c
+> new file mode 100644
+> index 000000000..e81c5bd7b
+> --- /dev/null
+> +++ b/tests/intel/xe_peer2peer.c
+> @@ -0,0 +1,374 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
 > +
->  struct bo_dict_entry {
->  	uint64_t addr;
->  	uint32_t size;
-> @@ -1137,6 +1139,206 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
->  	bo_execenv_destroy(&execenv);
->  }
->  
-> +static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
-> +					uint64_t addr_general_state_base,
-> +					uint64_t addr_surface_state_base,
-> +					uint64_t addr_dynamic_state_base,
-> +					uint64_t addr_instruction_state_base,
-> +					uint64_t addr_state_contect_data_base,
-> +					uint64_t offset_indirect_data_start,
-> +					uint64_t kernel_start_pointer)
+> +#include "drm.h"
+> +#include "igt.h"
+> +#include "igt_device.h"
+> +#include "intel_blt.h"
+> +#include "intel_mocs.h"
+> +#include "lib/igt_sysfs.h"
+> +#include "lib/intel_chipset.h"
+> +#include "lib/intel_pat.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include "xe/xe_util.h"
+> +
+> +/**
+> + * TEST: xe_peer2peer
+> + * Category: Hardware building block
+----- ^
+This should be: "Test category:"
+
+> + * Sub-category: MultiGPU
+> + * Functionality: dma buf copy
+> + * Description: Peer2peer dma buf copy tests
+> + * Test category: xe
+----- ^^^^^^^^^^^^^
+Do you mean driver requirement? It is indirectly implied as "xe"
+from a test filename: xe_peer2peer.c
+
+Regards,
+Kamil
+
+> + *
+> + * SUBTEST: read
+> + * Description:
+> + *   dma buf copy read
+> + *
+> + * SUBTEST: write
+> + * Description:
+> + *   dma buf copy write
+> + */
+> +
+> +IGT_TEST_DESCRIPTION("Exercise blitter read/writes between two Xe devices");
+> +
+> +struct blt_fast_copy_data {
+> +	int xe;
+> +	struct blt_copy_object src;
+> +	struct blt_copy_object mid;
+> +	struct blt_copy_object dst;
+> +
+> +	struct blt_copy_batch bb;
+> +	enum blt_color_depth color_depth;
+> +};
+> +
+> +struct gpu_info {
+> +	uint32_t id;
+> +	int fd;
+> +	struct igt_collection *set;
+> +};
+> +
+> +static bool has_prime(int fd)
 > +{
-> +	int b = 0;
+> +	uint64_t value;
+> +	uint64_t mask = DRM_PRIME_CAP_IMPORT | DRM_PRIME_CAP_EXPORT;
 > +
-> +	igt_debug("general   state base: %lx\n", addr_general_state_base);
-> +	igt_debug("surface   state base: %lx\n", addr_surface_state_base);
-> +	igt_debug("dynamic   state base: %lx\n", addr_dynamic_state_base);
-> +	igt_debug("instruct   base addr: %lx\n", addr_instruction_state_base);
-> +	igt_debug("bindless   base addr: %lx\n", addr_surface_state_base);
-> +	igt_debug("state context data base addr: %lx\n", addr_state_contect_data_base);
-> +	igt_debug("offset indirect addr: %lx\n", offset_indirect_data_start);
-> +	igt_debug("kernel start pointer: %lx\n", kernel_start_pointer);
+> +	if (drmGetCap(fd, DRM_CAP_PRIME, &value))
+> +		return false;
 > +
-> +	addr_bo_buffer_batch[b++] = GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
-> +				    PIPELINE_SELECT_GPGPU;
+> +	return (value & mask) == mask;
+> +}
 > +
-> +	addr_bo_buffer_batch[b++] = XEHP_STATE_COMPUTE_MODE | 0x1;
-> +	addr_bo_buffer_batch[b++] = 0xE0004000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
+> +static int get_device_info(struct gpu_info gpus[], int num_gpus)
+> +{
+> +	int cnt;
+> +	int xe;
+> +	int i;
 > +
-> +#define XE2_STATE_CONTEXT_DATA_BASE_ADDRESS ((3 << 29) | (0 << 27) | (1 << 24) | (11 << 16) | (1 << 0))
-> +	addr_bo_buffer_batch[b++] = XE2_STATE_CONTEXT_DATA_BASE_ADDRESS;
-> +	// Split into low and high 32 bits
-> +	addr_bo_buffer_batch[b++] = addr_state_contect_data_base & 0xFFFFFFFF; // Mask the low 32 bits ;
-> +	addr_bo_buffer_batch[b++] = (addr_state_contect_data_base >> 32) & 0xFFFFFFFF;
+> +	for (i = 0, cnt = 0 && i < 128; cnt < num_gpus; i++) {
+> +		xe = __drm_open_driver_another(i, DRIVER_XE);
+> +		if (xe < 0)
+> +			break;
 > +
-> +	addr_bo_buffer_batch[b++] = XEHP_CFE_STATE | 0x4;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x03808800;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = STATE_BASE_ADDRESS | 0x14;
-> +	addr_bo_buffer_batch[b++] = (addr_general_state_base & 0xffffffff) | 0x21;
-> +	addr_bo_buffer_batch[b++] = addr_general_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = 0x0002C000;
-> +	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x21;
-> +	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = (addr_dynamic_state_base & 0xffffffff) | 0x21;
-> +	addr_bo_buffer_batch[b++] = addr_dynamic_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = (addr_instruction_state_base & 0xffffffff) | 0x21;
-> +	addr_bo_buffer_batch[b++] = addr_instruction_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = 0xfffff001;
-> +	addr_bo_buffer_batch[b++] = 0x00010001;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0xfffff001;
-> +	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x21;
-> +	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = 0x00007fbe;
-> +	addr_bo_buffer_batch[b++] = 0x00000021;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
+> +		/* dma-buf is required */
+> +		if (!has_prime(xe) || !blt_has_fast_copy(xe)) {
+> +			close(xe);
+> +			continue;
+> +		}
 > +
-> +	addr_bo_buffer_batch[b++] = GEN8_3DSTATE_BINDING_TABLE_POOL_ALLOC | 2;
-> +	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x2;
-> +	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
-> +	addr_bo_buffer_batch[b++] = 0x001ff000;
+> +		gpus[cnt].fd = xe;
+> +		gpus[cnt].set = xe_get_memory_region_set(xe,
+> +							 DRM_XE_MEM_REGION_CLASS_SYSMEM,
+> +							 DRM_XE_MEM_REGION_CLASS_VRAM);
+> +		cnt++;
+> +	}
 > +
-> +	addr_bo_buffer_batch[b++] = XEHP_COMPUTE_WALKER | 0x26;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000040;
-> +	addr_bo_buffer_batch[b++] = offset_indirect_data_start;
-> +	addr_bo_buffer_batch[b++] = 0xbe040000;
-> +	addr_bo_buffer_batch[b++] = 0xffffffff;
-> +	addr_bo_buffer_batch[b++] = 0x000003ff;
-> +	addr_bo_buffer_batch[b++] = 0x00000002;
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +
-> +	addr_bo_buffer_batch[b++] = kernel_start_pointer;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x0c000020;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00001047;
-> +	addr_bo_buffer_batch[b++] = ADDR_BATCH;
-> +	addr_bo_buffer_batch[b++] = ADDR_BATCH >> 32;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000400;
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +
-> +	addr_bo_buffer_batch[b++] = MI_BATCH_BUFFER_END;
+> +	return cnt;
 > +}
 > +
 > +/**
-> + * xe2lpg_compute_exec - run a pipeline compatible with XE2
+> + * test_read - Read an imported buffer from an external GPU via dma-buf
+> + * @ex_gpu: device providing the original object
+> + * @im_gpu: device doing the read
+> + * @ex_reg: the source region to copy from
+> + * @im_reg: the destination region to copy to
 > + *
-> + * @fd: file descriptor of the opened DRM device
-> + * @kernel: GPU Kernel binary to be executed
-> + * @size: size of @kernel.
 > + */
-> +static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
-> +				unsigned int size)
+> +static void test_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
+> +		      uint32_t ex_reg, uint32_t im_reg)
 > +{
-> +#define XE2_BO_DICT_ENTRIES 10
-> +	struct bo_dict_entry bo_dict[XE2_BO_DICT_ENTRIES] = {
-> +		{ .addr = ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
-> +		  .name = "instr state base"},
-> +		{ .addr = ADDR_DYNAMIC_STATE_BASE,
-> +		  .size = 0x100000,
-> +		  .name = "dynamic state base"},
-> +		{ .addr = ADDR_SURFACE_STATE_BASE,
-> +		  .size = 0x1000,
-> +		  .name = "surface state base"},
-> +		{ .addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
-> +		  .size =  0x1000,
-> +		  .name = "indirect object base"},
-> +		{ .addr = ADDR_INPUT, .size = SIZE_BUFFER_INPUT,
-> +		  .name = "addr input"},
-> +		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
-> +		  .name = "addr output" },
-> +		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x100000,
-> +		  .name = "general state base" },
-> +		{ .addr = ADDR_SURFACE_STATE_BASE + OFFSET_BINDING_TABLE,
-> +		  .size = 0x1000,
-> +		  .name = "binding table" },
-> +		{ .addr = ADDR_BATCH,
-> +		  .size = SIZE_BATCH,
-> +		  .name = "batch" },
-> +		{ .addr = XE2_ADDR_STATE_CONTEXT_DATA_BASE,
-> +		  .size = 0x10000,
-> +		  .name = "state context data base"},
+> +	struct blt_copy_data im_blt = {};
+> +	struct blt_copy_data ex_blt = {};
+> +	struct blt_copy_object *dst;
+> +	struct blt_copy_object *im_src;
+> +	struct blt_copy_object *src;
+> +	const uint32_t bpp = 32;
+> +	uint64_t im_bb_size = xe_get_default_alignment(im_gpu->fd);
+> +	uint64_t ahnd;
+> +	uint32_t bb;
+> +	uint32_t width = 1024, height = 1024;
+> +	int result;
+> +	uint32_t vm, exec_queue;
+> +	uint32_t ex_xe = ex_gpu->fd;
+> +	uint32_t im_xe = im_gpu->fd;
+> +	uint32_t ex_src, dmabuf;
+> +	uint32_t stride;
+> +
+> +	struct drm_xe_engine_class_instance inst = {
+> +		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
 > +	};
+> +	intel_ctx_t *ctx;
 > +
-> +	struct bo_execenv execenv;
-> +	float *dinput;
+> +	vm = xe_vm_create(im_xe, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+> +	exec_queue = xe_exec_queue_create(im_xe, vm, &inst, 0);
+> +	ctx = intel_ctx_xe(im_xe, vm, exec_queue, 0, 0, 0);
+> +	ahnd = intel_allocator_open_full(im_xe, ctx->vm, 0, 0,
+> +					 INTEL_ALLOCATOR_SIMPLE,
+> +					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
 > +
-> +	bo_execenv_create(fd, &execenv);
+> +	blt_copy_init(ex_xe, &ex_blt);
+> +	blt_copy_init(im_xe, &im_blt);
 > +
-> +	/* Sets Kernel size */
-> +	bo_dict[0].size = ALIGN(size, 0x1000);
+> +	src = blt_create_object(&ex_blt, ex_reg, width, height, bpp, 0,
+> +				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> +	dst = blt_create_object(&im_blt, im_reg, width, height, bpp, 0,
+> +				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> +	blt_surface_fill_rect(ex_xe, src, width, height);
 > +
-> +	bo_execenv_bind(&execenv, bo_dict, XE2_BO_DICT_ENTRIES);
+> +	dmabuf = prime_handle_to_fd(ex_xe, src->handle);
+> +	ex_src = prime_fd_to_handle(im_xe, dmabuf);
+> +	im_src = calloc(1, sizeof(*im_src));
 > +
-> +	memcpy(bo_dict[0].data, kernel, size);
-> +	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
-> +	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
-> +	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT);
-> +	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
+> +	stride = width * 4;
+> +	blt_set_object(im_src, ex_src, src->size, ex_reg, 0, DEFAULT_PAT_INDEX,
+> +		       T_LINEAR, COMPRESSION_DISABLED, 0);
+> +	blt_set_geom(im_src, stride, 0, 0, width, height, 0, 0);
+> +	igt_assert(im_src->size == dst->size);
 > +
-> +	dinput = (float *)bo_dict[4].data;
-> +	srand(time(NULL));
+> +	im_blt.color_depth = CD_32bit;
+> +	blt_set_copy_object(&im_blt.src, im_src);
+> +	blt_set_copy_object(&im_blt.dst, dst);
 > +
-> +	for (int i = 0; i < SIZE_DATA; i++)
-> +		((float *)dinput)[i] = rand() / (float)RAND_MAX;
+> +	bb = xe_bo_create_flags(im_xe, 0, im_bb_size, im_reg);
+> +	blt_set_batch(&im_blt.bb, bb, im_bb_size, im_reg);
 > +
-> +	xe2lpg_compute_exec_compute(bo_dict[8].data,
-> +				  ADDR_GENERAL_STATE_BASE,
-> +				  ADDR_SURFACE_STATE_BASE,
-> +				  ADDR_DYNAMIC_STATE_BASE,
-> +				  ADDR_INSTRUCTION_STATE_BASE,
-> +				  XE2_ADDR_STATE_CONTEXT_DATA_BASE,
-> +				  OFFSET_INDIRECT_DATA_START,
-> +				  OFFSET_KERNEL);
+> +	blt_fast_copy(im_xe, ctx, NULL, ahnd, &im_blt);
 > +
-> +	bo_execenv_exec(&execenv, ADDR_BATCH);
+> +	result = memcmp(src->ptr, im_blt.dst.ptr, src->size);
 > +
-> +	for (int i = 0; i < SIZE_DATA; i++) {
-> +		float f1, f2;
+> +	put_offset(ahnd, im_src->handle);
+> +	put_offset(ahnd, dst->handle);
+> +	put_offset(ahnd, bb);
+> +	intel_allocator_bind(ahnd, 0, 0);
+> +	blt_destroy_object(im_xe, im_src);
+> +	blt_destroy_object(im_xe, dst);
+> +	blt_destroy_object(ex_xe, src);
+> +	put_ahnd(ahnd);
 > +
-> +		f1 = ((float *) bo_dict[5].data)[i];
-> +		f2 = ((float *) bo_dict[4].data)[i];
-> +
-> +		if (f1 != f2 * f2)
-> +			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
-> +		igt_assert(f1 == f2 * f2);
-> +	}
-> +
-> +	bo_execenv_unbind(&execenv, bo_dict, XEHPC_BO_DICT_ENTRIES);
-> +	bo_execenv_destroy(&execenv);
+> +	igt_assert_f(!result, "source and destination surfaces differs!\n");
 > +}
 > +
->  /*
->   * Compatibility flags.
->   *
-> @@ -1175,6 +1377,11 @@ static const struct {
->  		.compute_exec = xehpc_compute_exec,
->  		.compat = COMPAT_DRIVER_XE,
->  	},
-> +	{
-> +		.ip_ver = IP_VER(20, 04),
-> +		.compute_exec = xe2lpg_compute_exec,
-> +		.compat = COMPAT_DRIVER_XE,
-> +	},
->  };
->  
->  bool run_intel_compute_kernel(int fd)
+> +/**
+> + * test_write - Write an imported buffer to an external GPU via dma-buf
+> + * @ex_gpu: device providing the destination object
+> + * @im_gpu: device doing the write
+> + * @ex_reg: the source region to copy from
+> + * @im_reg: the destination region to copy to
+> + *
+> + */
+> +static void test_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
+> +		       uint32_t ex_reg, uint32_t im_reg)
+> +{
+> +	struct blt_copy_data im_blt = {};
+> +	struct blt_copy_data ex_blt = {};
+> +	struct blt_copy_object *dst;
+> +	struct blt_copy_object *im_dst;
+> +	struct blt_copy_object *src;
+> +	const uint32_t bpp = 32;
+> +	uint64_t im_bb_size = xe_get_default_alignment(im_gpu->fd);
+> +	uint64_t ahnd;
+> +	uint32_t bb;
+> +	uint32_t width = 1024, height = 1024;
+> +	int result;
+> +	uint32_t vm, exec_queue;
+> +	uint32_t ex_xe = ex_gpu->fd;
+> +	uint32_t im_xe = im_gpu->fd;
+> +	uint32_t ex_dst, dmabuf;
+> +	uint32_t stride;
+> +
+> +	struct drm_xe_engine_class_instance inst = {
+> +		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+> +	};
+> +	intel_ctx_t *ctx;
+> +
+> +	vm = xe_vm_create(im_xe, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+> +	exec_queue = xe_exec_queue_create(im_xe, vm, &inst, 0);
+> +	ctx = intel_ctx_xe(im_xe, vm, exec_queue, 0, 0, 0);
+> +	ahnd = intel_allocator_open_full(im_xe, ctx->vm, 0, 0,
+> +					 INTEL_ALLOCATOR_SIMPLE,
+> +					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+> +
+> +	blt_copy_init(ex_xe, &ex_blt);
+> +	blt_copy_init(im_xe, &im_blt);
+> +
+> +	dst = blt_create_object(&ex_blt, ex_reg, width, height, bpp, 0,
+> +				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> +	src = blt_create_object(&im_blt, im_reg, width, height, bpp, 0,
+> +				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> +	blt_surface_fill_rect(im_xe, src, width, height);
+> +
+> +	dmabuf = prime_handle_to_fd(ex_xe, dst->handle);
+> +	ex_dst = prime_fd_to_handle(im_xe, dmabuf);
+> +	im_dst = calloc(1, sizeof(*im_dst));
+> +
+> +	stride = width * 4;
+> +	blt_set_object(im_dst, ex_dst, src->size, ex_reg, 0, DEFAULT_PAT_INDEX,
+> +		       T_LINEAR, COMPRESSION_DISABLED, 0);
+> +	blt_set_geom(im_dst, stride, 0, 0, width, height, 0, 0);
+> +	igt_assert(im_dst->size == src->size);
+> +
+> +	im_blt.color_depth = CD_32bit;
+> +	blt_set_copy_object(&im_blt.src, src);
+> +	blt_set_copy_object(&im_blt.dst, im_dst);
+> +
+> +	bb = xe_bo_create_flags(im_xe, 0, im_bb_size, im_reg);
+> +	blt_set_batch(&im_blt.bb, bb, im_bb_size, im_reg);
+> +
+> +	blt_fast_copy(im_xe, ctx, NULL, ahnd, &im_blt);
+> +
+> +	result = memcmp(dst->ptr, im_blt.src.ptr, src->size);
+> +
+> +	put_offset(ahnd, im_dst->handle);
+> +	put_offset(ahnd, dst->handle);
+> +	put_offset(ahnd, bb);
+> +	intel_allocator_bind(ahnd, 0, 0);
+> +	blt_destroy_object(im_xe, src);
+> +	blt_destroy_object(im_xe, im_dst);
+> +	blt_destroy_object(ex_xe, dst);
+> +	put_ahnd(ahnd);
+> +
+> +	igt_assert_f(!result, "source and destination surfaces differs!\n");
+> +}
+> +
+> +static const char *p2p_path(int ex_reg, struct gpu_info *ex_gpu, struct gpu_info *im_gpu)
+> +{
+> +	return "-p2p";
+> +}
+> +
+> +static char *region_name(int xe, uint32_t region)
+> +{
+> +	char *name;
+> +	struct drm_xe_query_mem_region *memreg;
+> +	int r;
+> +	int len = 7;
+> +
+> +	/* enough for "name%d" * n */
+> +	name = malloc(len);
+> +	igt_assert(name);
+> +
+> +	memreg = xe_mem_region(xe, region);
+> +
+> +	if (XE_IS_CLASS_VRAM(memreg))
+> +		r = snprintf(name, len, "%s%d",
+> +			     xe_region_name(region),
+> +			     memreg->instance);
+> +	else
+> +		r = snprintf(name, len, "%s",
+> +			     xe_region_name(region));
+> +
+> +	igt_assert(r > 0);
+> +
+> +	return name;
+> +}
+> +
+> +/**
+> + * gpu_read - Set up a read from the exporting GPU to the importing GPU
+> + * @ex_gpu: GPU that is exporting a buffer for read
+> + * @im_gpu: GPU that is importing and reading the buffer
+> + */
+> +static void gpu_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu)
+> +{
+> +	struct igt_collection *ex_regs, *im_regs;
+> +	int ex_reg, im_reg;
+> +	char *ex_name, *im_name;
+> +	const char *path;
+> +
+> +	for_each_variation_r(ex_regs, 1, ex_gpu->set) {
+> +		ex_reg = igt_collection_get_value(ex_regs, 0);
+> +		ex_name = region_name(ex_gpu->fd, ex_reg);
+> +
+> +		for_each_variation_r(im_regs, 1, im_gpu->set) {
+> +			im_reg = igt_collection_get_value(im_regs, 0);
+> +			im_name = region_name(im_gpu->fd, im_reg);
+> +
+> +			path = p2p_path(ex_reg, ex_gpu, im_gpu);
+> +			igt_dynamic_f("read-gpuA-%s-gpuB-%s%s", ex_name,
+> +				      im_name, path)
+> +			test_read(ex_gpu, im_gpu, ex_reg, im_reg);
+> +
+> +			free(im_name);
+> +		}
+> +		free(ex_name);
+> +	}
+> +}
+> +
+> +/**
+> + * gpu_write - Set up a write from the importing GPU to the exporting GPU
+> + * @ex_gpu: GPU that is exporting a buffer for read
+> + * @im_gpu: GPU that is importing and reading the buffer
+> + */
+> +static void gpu_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu)
+> +{
+> +	struct igt_collection *ex_regs, *im_regs;
+> +	int ex_reg, im_reg;
+> +	char *ex_name, *im_name;
+> +	const char *path;
+> +
+> +	for_each_variation_r(ex_regs, 1, ex_gpu->set) {
+> +		ex_reg = igt_collection_get_value(ex_regs, 0);
+> +		ex_name = region_name(ex_gpu->fd, ex_reg);
+> +
+> +		for_each_variation_r(im_regs, 1, im_gpu->set) {
+> +			im_reg = igt_collection_get_value(im_regs, 0);
+> +			im_name = region_name(im_gpu->fd, im_reg);
+> +
+> +			path = p2p_path(ex_reg, ex_gpu, im_gpu);
+> +			igt_dynamic_f("write-gpuA-%s-gpuB-%s%s", ex_name,
+> +				      im_name, path)
+> +			test_write(ex_gpu, im_gpu, ex_reg, im_reg);
+> +
+> +			free(im_name);
+> +		}
+> +		free(ex_name);
+> +	}
+> +}
+> +
+> +#define DEFAULT_SIZE 0
+> +
+> +igt_main_args("", NULL, NULL, NULL, NULL)
+> +{
+> +	struct gpu_info gpus[2];
+> +	int gpu_cnt;
+> +
+> +	igt_fixture {
+> +		gpu_cnt = get_device_info(gpus, ARRAY_SIZE(gpus));
+> +		igt_skip_on(gpu_cnt < 2);
+> +	}
+> +
+> +	igt_describe("dmabuf gpu-gpu read");
+> +	igt_subtest_with_dynamic_f("read")
+> +		gpu_read(&gpus[0], &gpus[1]);
+> +
+> +	igt_describe("dmabuf gpu-gpu write");
+> +	igt_subtest_with_dynamic_f("write")
+> +		gpu_write(&gpus[0], &gpus[1]);
+> +
+> +	igt_fixture {
+> +		int cnt;
+> +
+> +		for (cnt = 0; cnt < gpu_cnt; cnt++)
+> +			drm_close_driver(gpus[cnt].fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index facf60ccf..514f8ac85 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -302,6 +302,7 @@ intel_xe_progs = [
+>  	'xe_module_load',
+>  	'xe_noexec_ping_pong',
+>  	'xe_pat',
+> +	'xe_peer2peer',
+>  	'xe_pm',
+>  	'xe_pm_residency',
+>  	'xe_prime_self_import',
 > -- 
-> 2.25.1
+> 2.38.1
 > 
-
-Good job! Looks good to me:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
---
-Zbigniew
