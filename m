@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 05AA910E404
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 20:47:19 +0000 (UTC)
-Message-ID: <79c11e97-7185-4aad-adc3-0dd36f8a1382@intel.com>
-Date: Mon, 4 Dec 2023 21:47:13 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 93F7E10E408
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 20:50:36 +0000 (UTC)
+Message-ID: <d41dcdf3-fc00-45e1-b911-099107f76262@intel.com>
+Date: Mon, 4 Dec 2023 21:50:32 +0100
 MIME-Version: 1.0
 Content-Language: en-US
 To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
 References: <20231204171033.2167-1-lukasz.laguna@intel.com>
- <20231204171033.2167-8-lukasz.laguna@intel.com>
+ <20231204171033.2167-6-lukasz.laguna@intel.com>
 From: Michal Wajdeczko <michal.wajdeczko@intel.com>
-In-Reply-To: <20231204171033.2167-8-lukasz.laguna@intel.com>
+In-Reply-To: <20231204171033.2167-6-lukasz.laguna@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v6 7/8] tests/sriov_basic: validate
- driver binding to VFs
+Subject: Re: [igt-dev] [PATCH i-g-t v6 5/8] tests/sriov_basic: add basic
+ tests for enabling SR-IOV VFs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,96 +31,171 @@ List-ID: <igt-dev@lists.freedesktop.org>
 On 04.12.2023 18:10, Lukasz Laguna wrote:
 > From: Katarzyna Dec <katarzyna.dec@intel.com>
 > 
-> Test enables VFs in range <1..totalvfs>, bind driver to all of them and
-> then unbind driver from all of them.
+> Add subtests that validate SR-IOV VFs enabling in two variants: with
+> autoprobe disabled and enabled.
 > 
 > v2:
+>  - rename function (Michal)
 >  - remove checks that are outside the scope of the test (Michal)
->  - change subtest run type (Michal)
+> v3:
+>  - change run type of enable-vfs-autoprobe-on subtest (Michal)
+>  - don't init random seed in test code (Michal)
 > 
 > Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 > Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
 > Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
 > Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 > ---
->  tests/sriov_basic.c | 49 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 49 insertions(+)
+>  tests/meson.build   |   1 +
+>  tests/sriov_basic.c | 123 ++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 124 insertions(+)
+>  create mode 100644 tests/sriov_basic.c
 > 
+> diff --git a/tests/meson.build b/tests/meson.build
+> index facf60ccf..a6673c511 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -71,6 +71,7 @@ test_progs = [
+>  	'panfrost_submit',
+>  	'prime_udl',
+>  	'prime_vgem',
+> +	'sriov_basic',
+>  	'syncobj_basic',
+>  	'syncobj_eventfd',
+>  	'syncobj_wait',
 > diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
-> index 582e644f2..c2c8e5b6b 100644
-> --- a/tests/sriov_basic.c
+> new file mode 100644
+> index 000000000..582e644f2
+> --- /dev/null
 > +++ b/tests/sriov_basic.c
-> @@ -60,6 +60,36 @@ static void enable_vfs_autoprobe_on(int pf_fd, unsigned int num_vfs)
->  	igt_assert(!err);
->  }
->  
-> +/**
-> + * SUBTEST: enable-vfs-bind-all-unbind-all
-> + * Description:
-> + *   Verify VFs enabling, binding the driver and then unbinding it from all of them
-> + * Run type: FULL
+> @@ -0,0 +1,123 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright(c) 2023 Intel Corporation. All rights reserved.
 > + */
-> +static void enable_vfs_bind_all_unbind_all(int pf_fd, unsigned int num_vfs)
+> +
+> +#include "drmtest.h"
+> +#include "igt_core.h"
+> +#include "igt_sriov_device.h"
+> +
+> +IGT_TEST_DESCRIPTION("Basic tests for enabling SR-IOV Virtual Functions");
+> +
+> +/**
+> + * TEST: sriov_basic
+> + * Category: Software building block
+> + * Mega feature: SR-IOV
+> + * Sub-category: VFs enabling
+> + * Description: Validate SR-IOV VFs enabling
+> + */
+> +
+> +/**
+> + * SUBTEST: enable-vfs-autoprobe-off
+> + * Description:
+> + *   Verify VFs enabling without probing VF driver
+> + * Run type: BAT
+> + */
+> +static void enable_vfs_autoprobe_off(int pf_fd, unsigned int num_vfs)
 > +{
 > +	igt_debug("Testing %u VFs\n", num_vfs);
 > +
 > +	igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
-> +
 > +	igt_sriov_disable_driver_autoprobe(pf_fd);
 > +	igt_sriov_enable_vfs(pf_fd, num_vfs);
-> +	igt_sriov_enable_driver_autoprobe(pf_fd);
-> +
-> +	for (int i = 1; i <= num_vfs; i++) {
-> +		igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-> +		igt_sriov_bind_vf_drm_driver(pf_fd, i);
-> +		igt_assert(igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-> +	}
-
-what's the point in keeping all VFs drivers loaded ?
-do we really want to stress the system ?
-our goal should be to check that VF driver loads on each VF
-
-IMO the enable_vfs_bind_unbind_each() from 8/8 provides sufficient
-coverage, while this one will just consume machine-test-hours
-
-also this test duplicates enable_vfs_autoprobe_on() from 5/8 (just loads
-the all drivers manually instead of PCI-subsystem autoprobe)
-
-> +
-> +	for (int i = 1; i <= num_vfs; i++) {
-> +		igt_sriov_unbind_vf_drm_driver(pf_fd, i);
-> +		igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-> +	}
-> +
+> +	igt_assert_eq(num_vfs, igt_sriov_get_enabled_vfs(pf_fd));
 > +	igt_sriov_disable_vfs(pf_fd);
 > +}
 > +
->  igt_main
->  {
->  	int pf_fd;
-> @@ -110,6 +140,25 @@ igt_main
->  		}
->  	}
->  
-> +	igt_describe("Verify VFs enabling, binding the driver and then unbinding it from all of them");
-> +	igt_subtest_with_dynamic("enable-vfs-bind-all-unbind-all") {
+> +/**
+> + * SUBTEST: enable-vfs-autoprobe-on
+> + * Description:
+> + *   Verify VFs enabling and auto-probing VF driver
+> + * Run type: FULL
+
+can't we just have enable_vfs_bind_unbind_each() from 8/8 ?
+
+this test as-is is still from STRESS category, that I'm not sure we use
+elsewhere, while enable_vfs_bind_unbind_each() will provide solid
+functional coverage that we are looking for
+
+> + */
+> +static void enable_vfs_autoprobe_on(int pf_fd, unsigned int num_vfs)
+> +{
+> +	bool err = false;
+> +
+> +	igt_debug("Testing %u VFs\n", num_vfs);
+> +
+> +	igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
+> +	igt_sriov_enable_driver_autoprobe(pf_fd);
+> +	igt_sriov_enable_vfs(pf_fd, num_vfs);
+> +	igt_assert_eq(num_vfs, igt_sriov_get_enabled_vfs(pf_fd));
+> +	for (int vf_num = 1; vf_num <= num_vfs; ++vf_num) {
+> +		if (!igt_sriov_is_vf_drm_driver_probed(pf_fd, vf_num)) {
+> +			igt_debug("VF%u probe failed\n", vf_num);
+> +			err = true;
+> +		}
+> +	}
+> +	igt_sriov_disable_vfs(pf_fd);
+> +	igt_assert(!err);
+> +}
+> +
+> +igt_main
+> +{
+> +	int pf_fd;
+> +	bool autoprobe;
+> +
+> +	igt_fixture {
+> +		pf_fd = drm_open_driver(DRIVER_ANY);
+> +		igt_require(igt_sriov_is_pf(pf_fd));
+> +		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
+> +		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
+> +	}
+> +
+> +	igt_describe("Verify VFs enabling without probing VF driver");
+> +	igt_subtest_with_dynamic("enable-vfs-autoprobe-off") {
 > +		for_each_sriov_num_vfs(pf_fd, num_vfs) {
 > +			igt_dynamic_f("numvfs-%u", num_vfs) {
-> +				enable_vfs_bind_all_unbind_all(pf_fd, num_vfs);
+> +				enable_vfs_autoprobe_off(pf_fd, num_vfs);
 > +			}
 > +		}
 > +		for_random_sriov_num_vfs(pf_fd, num_vfs) {
 > +			igt_dynamic_f("numvfs-random") {
-> +				enable_vfs_bind_all_unbind_all(pf_fd, num_vfs);
+> +				enable_vfs_autoprobe_off(pf_fd, num_vfs);
 > +			}
 > +		}
 > +		for_max_sriov_num_vfs(pf_fd, num_vfs) {
 > +			igt_dynamic_f("numvfs-all") {
-> +				enable_vfs_bind_all_unbind_all(pf_fd, num_vfs);
+> +				enable_vfs_autoprobe_off(pf_fd, num_vfs);
 > +			}
 > +		}
 > +	}
 > +
->  	igt_fixture {
->  		igt_sriov_disable_vfs(pf_fd);
->  		/* abort to avoid execution of next tests with enabled VFs */
+> +	igt_describe("Verify VFs enabling and auto-probing VF driver");
+> +	igt_subtest_with_dynamic("enable-vfs-autoprobe-on") {
+> +		for_each_sriov_num_vfs(pf_fd, num_vfs) {
+> +			igt_dynamic_f("numvfs-%u", num_vfs) {
+> +				enable_vfs_autoprobe_on(pf_fd, num_vfs);
+> +			}
+> +		}
+> +		for_random_sriov_num_vfs(pf_fd, num_vfs) {
+> +			igt_dynamic_f("numvfs-random") {
+> +				enable_vfs_autoprobe_on(pf_fd, num_vfs);
+> +			}
+> +		}
+> +		for_max_sriov_num_vfs(pf_fd, num_vfs) {
+> +			igt_dynamic_f("numvfs-all") {
+> +				enable_vfs_autoprobe_on(pf_fd, num_vfs);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		igt_sriov_disable_vfs(pf_fd);
+> +		/* abort to avoid execution of next tests with enabled VFs */
+> +		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
+> +		autoprobe ? igt_sriov_enable_driver_autoprobe(pf_fd) :
+> +			    igt_sriov_disable_driver_autoprobe(pf_fd);
+> +		igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
+> +			       "Failed to restore sriov_drivers_autoprobe value\n");
+> +		close(pf_fd);
+> +	}
+> +}
