@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 508A410E2B6
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 09:32:54 +0000 (UTC)
-Date: Mon, 4 Dec 2023 10:32:38 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC71810E332
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 09:45:20 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231204093238.xl776blxtttdovnr@kamilkon-desk.igk.intel.com>
-References: <20231201192134.40927-1-mohammed.thasleem@intel.com>
- <20231201192134.40927-2-mohammed.thasleem@intel.com>
+Date: Mon,  4 Dec 2023 15:23:00 +0530
+Message-Id: <20231204095302.2232468-3-jeevan.b@intel.com>
+In-Reply-To: <20231204095302.2232468-1-jeevan.b@intel.com>
+References: <20231204095302.2232468-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231201192134.40927-2-mohammed.thasleem@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t,
- v5 1/1] tests/intel/xe_pm: Fix d3cold subtests
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/4] tests/intel/kms_psr: fix subtest naming
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,152 +22,236 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mohammed,
-On 2023-12-02 at 00:51:34 +0530, Mohammed Thasleem wrote:
-> From: Anshuman Gupta <anshuman.gupta@intel.com>
-> 
-> xe_pm d3 test requires to turn off all display in order to
-> enter to d3 state therefore, adding the support to triggering
-> "DRM_MODE_DPMS_OFF" in setup_d3() and "DRM_MODE_DPMS_ON" in
-> cleanup_d3().
-> 
-> tests/intel/xe_pm: Add helper to turn on and off the displays
-> 
-> v2: Use IGT_CRTC_ACTIVE for displays On/Off.
-> v3: -Update commit message and helper names.
->     -Update display on and off helpers.
-> v4: Remove redundant code. (Bhanu)
-> v5: Move helper calls to test file.
-> v6: -Update function name as dpms_on_off. (Anshuman)
->     -Update subject and commit message. (Kamil)
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> ---
->  tests/intel/xe_pm.c | 38 ++++++++++++++++++++++++++++++++++++++
->  1 file changed, 38 insertions(+)
-> 
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index 9423984cc..42e00abb3 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -16,6 +16,7 @@
->  
->  #include "igt.h"
->  #include "lib/igt_device.h"
-> +#include "lib/igt_kms.h"
->  #include "lib/igt_pm.h"
->  #include "lib/igt_sysfs.h"
->  #include "lib/igt_syncobj.h"
-> @@ -36,10 +37,31 @@ typedef struct {
->  	struct pci_device *pci_xe;
->  	struct pci_device *pci_root;
->  	char pci_slot_name[NAME_MAX];
-> +	drmModeResPtr res;
->  } device_t;
->  
->  uint64_t orig_threshold;
->  
-> +static void dpms_on_off(device_t device, int mode)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < device.res->count_connectors; i++) {
-> +		drmModeConnector *connector = drmModeGetConnectorCurrent(device.fd_xe,
-> +					      device.res->connectors[i]);
-> +
-> +		if (!connector)
-> +			continue;
-> +
-> +		if (connector->connection != DRM_MODE_CONNECTED)
-> +			continue;
+update subtest naming from sub_test to sub-test.
 
-This will skip free below, imho revert this condition into:
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+---
+ tests/intel/kms_psr.c | 72 +++++++++++++++++++++----------------------
+ 1 file changed, 36 insertions(+), 36 deletions(-)
 
-		if (connector->connection == DRM_MODE_CONNECTED)
-    		kmstest_set_connector_dpms(device.fd_xe, connector, mode);
-
-so that below free(connector) will be called.
-
-Regards,
-Kamil
-
-> +
-> +		kmstest_set_connector_dpms(device.fd_xe, connector, mode);
-> +
-> +		drmModeFreeConnector(connector);
-> +	}
-> +}
-> +
->  /* runtime_usage is only available if kernel build CONFIG_PM_ADVANCED_DEBUG */
->  static bool runtime_usage_available(struct pci_device *pci)
->  {
-> @@ -94,6 +116,9 @@ static void vram_d3cold_threshold_restore(int sig)
->  
->  static bool setup_d3(device_t device, enum igt_acpi_d_state state)
->  {
-> +	if (device.res)
-> +		dpms_on_off(device, DRM_MODE_DPMS_OFF);
-> +
->  	switch (state) {
->  	case IGT_ACPI_D3Cold:
->  		igt_require(igt_pm_acpi_d3cold_supported(device.pci_root));
-> @@ -110,6 +135,14 @@ static bool setup_d3(device_t device, enum igt_acpi_d_state state)
->  	return false;
->  }
->  
-> +static void cleanup_d3(device_t device)
-> +{
-> +	if (device.res) {
-> +		dpms_on_off(device, DRM_MODE_DPMS_ON);
-> +		drmModeFreeResources(device.res);
-> +	}
-> +}
-> +
->  static bool in_d3(device_t device, enum igt_acpi_d_state state)
->  {
->  	uint16_t val;
-> @@ -476,6 +509,7 @@ igt_main
->  		igt_pm_get_d3cold_allowed(device.pci_slot_name, &d3cold_allowed);
->  		igt_assert(igt_setup_runtime_pm(device.fd_xe));
->  		sysfs_fd = igt_sysfs_open(device.fd_xe);
-> +		device.res = drmModeGetResources(device.fd_xe);
->  	}
->  
->  	for (const struct s_state *s = s_states; s->name; s++) {
-> @@ -510,6 +544,7 @@ igt_main
->  				xe_for_each_hw_engine(device.fd_xe, hwe)
->  					test_exec(device, hwe, 1, 2, s->state,
->  						  NO_RPM);
-> +				cleanup_d3(device);
->  			}
->  		}
->  	}
-> @@ -518,6 +553,7 @@ igt_main
->  		igt_subtest_f("%s-basic", d->name) {
->  			igt_assert(setup_d3(device, d->state));
->  			igt_assert(in_d3(device, d->state));
-> +			cleanup_d3(device);
->  		}
->  
->  		igt_subtest_f("%s-basic-exec", d->name) {
-> @@ -525,6 +561,7 @@ igt_main
->  			xe_for_each_hw_engine(device.fd_xe, hwe)
->  				test_exec(device, hwe, 1, 1,
->  					  NO_SUSPEND, d->state);
-> +			cleanup_d3(device);
->  		}
->  
->  		igt_subtest_f("%s-multiple-execs", d->name) {
-> @@ -532,6 +569,7 @@ igt_main
->  			xe_for_each_hw_engine(device.fd_xe, hwe)
->  				test_exec(device, hwe, 16, 32,
->  					  NO_SUSPEND, d->state);
-> +			cleanup_d3(device);
->  		}
->  	}
->  
-> -- 
-> 2.25.1
-> 
+diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
+index 31d6f779c..aea8b0b3f 100644
+--- a/tests/intel/kms_psr.c
++++ b/tests/intel/kms_psr.c
+@@ -43,20 +43,20 @@
+ #include "xe/xe_query.h"
+ 
+ /**
+- * SUBTEST: %s_basic
++ * SUBTEST: %s-basic
+  * Description: Basic check for %arg[1] if it is detecting changes made in planes
+  * Functionality: %arg[1]
+  *
+- * SUBTEST: %s_dpms
++ * SUBTEST: %s-dpms
+  * Description: Check if %arg[1] is detecting changes when rendering operation
+  *              is performed with dpms enabled or disabled
+  * Functionality: %arg[1], dpms
+  *
+- * SUBTEST: %s_no_drrs
++ * SUBTEST: %s-no-drrs
+  * Description: Check if %arg[1] is detecting changes when drrs is disabled
+  * Functionality: %arg[1], drrs
+  *
+- * SUBTEST: %s_suspend
++ * SUBTEST: %s-suspend
+  * Description: Check if %arg[1] is detecting changes when plane operation is
+  *              performed with suspend resume cycles
+  * Functionality: %arg[1], suspend
+@@ -68,7 +68,7 @@
+  */
+ 
+ /**
+- * SUBTEST: %s_%s_%s
++ * SUBTEST: %s-%s-%s
+  * Description: Check if %arg[1] is detecting memory mapping %arg[3] operations
+  * 		performed on %arg[2] planes
+  * Driver requirement: i915
+@@ -87,17 +87,17 @@
+  *
+  * arg[3]:
+  *
+- * @mmap_cpu:           MMAP CPU
+- * @mmap_gtt:           MMAP GTT
++ * @mmap-cpu:           MMAP CPU
++ * @mmap-gtt:           MMAP GTT
+  */
+ 
+ /**
+- * SUBTEST: %s_primary_page_flip
++ * SUBTEST: %s-primary-page-flip
+  * Description: Check if %arg[1] is detecting page-flipping operation
+  * 		performed on primary plane
+  * Functionality: %arg[1], plane
+  *
+- * SUBTEST: %s_primary_%s
++ * SUBTEST: %s-primary-%s
+  * Description: Check if %arg[1] is detecting rendering operations %arg[2]
+  * 		when performed on primary plane
+  * Functionality: %arg[1], plane
+@@ -114,7 +114,7 @@
+  */
+ 
+ /**
+- * SUBTEST: %s_%s_%s
++ * SUBTEST: %s-%s-%s
+  * Description: Check if %arg[1] is detecting rendering and plane
+  *              operations %arg[3] performed on %arg[2] planes
+  * Functionality: %arg[1], plane
+@@ -133,28 +133,28 @@
+  *
+  * @blt:                Blitter
+  * @render:             Render
+- * @plane_onoff:        Plane On off
+- * @plane_move:         Move plane position
++ * @plane-onoff:        Plane On off
++ * @plane-move:         Move plane position
+  */
+ 
+ /**
+- * SUBTEST: pr_basic
++ * SUBTEST: pr-basic
+  * Description: Basic check for pr if it is detecting changes made in planes
+  * Functionality: pr
+  * Mega feature: DP2.0
+  *
+- * SUBTEST: pr_dpms
++ * SUBTEST: pr-dpms
+  * Description: Check if pr is detecting changes when rendering operation
+  *              is performed with dpms enabled or disabled
+  * Functionality: pr, dpms
+  * Mega feature: DP2.0
+  *
+- * SUBTEST: pr_no_drrs
++ * SUBTEST: pr-no-drrs
+  * Description: Check if pr is detecting changes when drrs is disabled
+  * Functionality: pr, drrs
+  * Mega feature: DP2.0
+  *
+- * SUBTEST: pr_suspend
++ * SUBTEST: pr-suspend
+  * Description: Check if pr is detecting changes when plane operation is
+  *              performed with suspend resume cycles
+  * Functionality: pr, suspend
+@@ -162,7 +162,7 @@
+  */
+ 
+ /**
+- * SUBTEST: pr_%s_%s
++ * SUBTEST: pr-%s-%s
+  * Description: Check if pr is detecting memory mapping %arg[2] operations
+  * 		performed on %arg[1] planes
+  * Driver requirement: i915
+@@ -177,18 +177,18 @@
+  *
+  * arg[2]:
+  *
+- * @mmap_cpu:           MMAP CPU
+- * @mmap_gtt:           MMAP GTT
++ * @mmap-cpu:           MMAP CPU
++ * @mmap-gtt:           MMAP GTT
+  */
+ 
+ /**
+- * SUBTEST: pr_primary_page_flip
++ * SUBTEST: pr-primary-page-flip
+  * Description: Check if pr is detecting page-flipping operation
+  * 		performed on primary plane
+  * Functionality: pr, plane
+  * Mega feature: DP2.0
+  *
+- * SUBTEST: pr_primary_%s
++ * SUBTEST: pr-primary-%s
+  * Description: Check if pr is detecting rendering operations %arg[1]
+  * 		when performed on primary plane
+  * Functionality: pr, plane
+@@ -201,7 +201,7 @@
+  */
+ 
+ /**
+- * SUBTEST: pr_%s_%s
++ * SUBTEST: pr-%s-%s
+  * Description: Check if pr is detecting rendering and plane
+  *              operations %arg[2] performed on %arg[1] planes
+  * Functionality: pr, plane
+@@ -216,8 +216,8 @@
+  *
+  * @blt:                Blitter
+  * @render:             Render
+- * @plane_onoff:        Plane On off
+- * @plane_move:         Move plane position
++ * @plane-onoff:        Plane On off
++ * @plane-move:         Move plane position
+  */
+ 
+ enum operations {
+@@ -233,13 +233,13 @@ enum operations {
+ static const char *op_str(enum operations op)
+ {
+ 	static const char * const name[] = {
+-		[PAGE_FLIP] = "page_flip",
+-		[MMAP_GTT] = "mmap_gtt",
+-		[MMAP_CPU] = "mmap_cpu",
++		[PAGE_FLIP] = "page-flip",
++		[MMAP_GTT] = "mmap-gtt",
++		[MMAP_CPU] = "mmap-cpu",
+ 		[BLT] = "blt",
+ 		[RENDER] = "render",
+-		[PLANE_MOVE] = "plane_move",
+-		[PLANE_ONOFF] = "plane_onoff",
++		[PLANE_MOVE] = "plane-move",
++		[PLANE_ONOFF] = "plane-onoff",
+ 	};
+ 
+ 	return name[op];
+@@ -682,9 +682,9 @@ igt_main
+ 	int z;
+ 	enum operations op;
+ 	const char *append_subtest_name[3] = {
+-		"psr_",
+-		"psr2_",
+-		"pr_"
++		"psr-",
++		"psr2-",
++		"pr-"
+ 	};
+ 	int modes[] = {PSR_MODE_1, PSR_MODE_2, PR_MODE};
+ 	igt_output_t *output;
+@@ -719,7 +719,7 @@ igt_main
+ 		}
+ 
+ 		igt_describe("Check if psr is detecting changes when drrs is disabled");
+-		igt_subtest_with_dynamic_f("%sno_drrs", append_subtest_name[z]) {
++		igt_subtest_with_dynamic_f("%sno-drrs", append_subtest_name[z]) {
+ 			for_each_connected_output(&data.display, output) {
+ 				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
+ 						      data.op_psr_mode, output))
+@@ -738,7 +738,7 @@ igt_main
+ 		for (op = PAGE_FLIP; op <= RENDER; op++) {
+ 			igt_describe("Check if psr is detecting page-flipping,memory mapping and "
+ 					"rendering operations performed on primary planes");
+-			igt_subtest_with_dynamic_f("%sprimary_%s",
++			igt_subtest_with_dynamic_f("%sprimary-%s",
+ 				      append_subtest_name[z],
+ 				      op_str(op)) {
+ 				igt_skip_on(is_xe_device(data.drm_fd) &&
+@@ -763,7 +763,7 @@ igt_main
+ 		for (op = MMAP_GTT; op <= PLANE_ONOFF; op++) {
+ 			igt_describe("Check if psr is detecting memory mapping,rendering "
+ 					"and plane operations performed on sprite planes");
+-			igt_subtest_with_dynamic_f("%ssprite_%s",
++			igt_subtest_with_dynamic_f("%ssprite-%s",
+ 				      append_subtest_name[z],
+ 				      op_str(op)) {
+ 				igt_skip_on(is_xe_device(data.drm_fd) &&
+@@ -786,7 +786,7 @@ igt_main
+ 
+ 			igt_describe("Check if psr is detecting memory mapping, rendering "
+ 					"and plane operations performed on cursor planes");
+-			igt_subtest_with_dynamic_f("%scursor_%s",
++			igt_subtest_with_dynamic_f("%scursor-%s",
+ 				      append_subtest_name[z],
+ 				      op_str(op)) {
+ 				igt_skip_on(is_xe_device(data.drm_fd) &&
+-- 
+2.25.1
