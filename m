@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 597ED10E22D
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 03:30:15 +0000 (UTC)
-From: "Mishra, Pallavi" <pallavi.mishra@intel.com>
-To: "Welty, Brian" <brian.welty@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Mon, 4 Dec 2023 03:30:09 +0000
-Message-ID: <PH0PR11MB57829DF26B7BDD9912EC56468286A@PH0PR11MB5782.namprd11.prod.outlook.com>
-References: <20231201210013.16147-1-brian.welty@intel.com>
- <20231201210013.16147-3-brian.welty@intel.com>
-In-Reply-To: <20231201210013.16147-3-brian.welty@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/alternative;
+ boundary="===============2914920514260697335=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/xe/exec_reset: Fix cm-gt-reset
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jesse Zhang" <jesse.zhang@amd.com>
+Date: Mon, 04 Dec 2023 03:51:52 -0000
+Message-ID: <170166191233.20593.4554831995237300620@emeril.freedesktop.org>
+References: <20231204030007.326044-1-jesse.zhang@amd.com>
+In-Reply-To: <20231204030007.326044-1-jesse.zhang@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/am?=
+ =?utf-8?q?d=5Fsecurity=3A_fix_secure_bounce_test_issue?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,56 +17,150 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============2914920514260697335==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/amd_security: fix secure bounce test issue
+URL   : https://patchwork.freedesktop.org/series/127256/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7614_BAT -> XEIGTPW_10325_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10325_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - bat-adlp-7:         [FAIL][1] ([i915#2346]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10325/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+
+  * {igt@xe_create@create-execqueues-leak}:
+    - bat-atsm-2:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10325/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
 
 
-> -----Original Message-----
-> From: Welty, Brian <brian.welty@intel.com>
-> Sent: Friday, December 1, 2023 1:00 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Mishra, Pallavi <pallavi.mishra@intel.com>
-> Subject: [PATCH i-g-t 2/2] tests/xe/exec_reset: Fix cm-gt-reset
->=20
-> With use of GT_RESET and forcing GT reset, it is expected for the
-> xe_wait_ufence to expire. Move the assertion checking into the IGT by usi=
-ng
-> _xe_wait_ufence().
->=20
-> Signed-off-by: Brian Welty <brian.welty@intel.com>
-> ---
->  tests/intel/xe_exec_reset.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
->=20
-> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c in=
-dex
-> 195e62911f..6fed0dd19e 100644
-> --- a/tests/intel/xe_exec_reset.c
-> +++ b/tests/intel/xe_exec_reset.c
-> @@ -612,9 +612,14 @@ test_compute_mode(int fd, struct
-> drm_xe_engine_class_instance *eci,
->  		return;
->  	}
->=20
-> -	for (i =3D 1; i < n_execs; i++)
-> -		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
-> -			       NULL, THREE_SEC);
-> +	for (i =3D 1; i < n_execs; i++) {
-> +		int64_t timeout =3D THREE_SEC;
-> +		int err;
-> +
-> +		err =3D _xe_wait_ufence(fd, &data[i].exec_sync,
-> USER_FENCE_VALUE,
-> +				      NULL, &timeout);
-> +		igt_assert_eq(err, flags & GT_RESET ? -ETIME : 0);
-> +	}
+Build changes
+-------------
 
-Similar condition for GT_RESET will be required for igt_assert_eq(data[i].d=
-ata, 0xc0ffee);=20
->=20
->  	sync[0].addr =3D to_user_pointer(&data[0].vm_sync);
->  	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
-> --
-> 2.38.0
+  * IGT: IGT_7614 -> IGTPW_10325
+  * Linux: xe-544-a8b405ffc0326c79abf737389d99c290648f381d -> xe-545-38dc2e0d8c28a817f2c727402e2638f3ea2accb4
+
+  IGTPW_10325: 10325
+  IGT_7614: c7298ec108dc1c861c9a2593e973648ad9b420b4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-544-a8b405ffc0326c79abf737389d99c290648f381d: a8b405ffc0326c79abf737389d99c290648f381d
+  xe-545-38dc2e0d8c28a817f2c727402e2638f3ea2accb4: 38dc2e0d8c28a817f2c727402e2638f3ea2accb4
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10325/index.html
+
+--===============2914920514260697335==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amd_security: fix secure bounce test issue</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127256/">https://patchwork.freedesktop.org/series/127256/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10325/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10325/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7614_BAT -&gt; XEIGTPW_10325_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10325_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10325/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_create@create-execqueues-leak}:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10325/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7614 -&gt; IGTPW_10325</li>
+<li>Linux: xe-544-a8b405ffc0326c79abf737389d99c290648f381d -&gt; xe-545-38dc2e0d8c28a817f2c727402e2638f3ea2accb4</li>
+</ul>
+<p>IGTPW_10325: 10325<br />
+  IGT_7614: c7298ec108dc1c861c9a2593e973648ad9b420b4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-544-a8b405ffc0326c79abf737389d99c290648f381d: a8b405ffc0326c79abf737389d99c290648f381d<br />
+  xe-545-38dc2e0d8c28a817f2c727402e2638f3ea2accb4: 38dc2e0d8c28a817f2c727402e2638f3ea2accb4</p>
+
+</body>
+</html>
+
+--===============2914920514260697335==--
