@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33E5610E3FE
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 20:38:31 +0000 (UTC)
-From: "Mishra, Pallavi" <pallavi.mishra@intel.com>
-To: "Welty, Brian" <brian.welty@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Mon, 4 Dec 2023 20:38:26 +0000
-Message-ID: <PH0PR11MB5782103F7ACBD6A65857687B8286A@PH0PR11MB5782.namprd11.prod.outlook.com>
-References: <20231204194306.12950-1-brian.welty@intel.com>
- <20231204194306.12950-3-brian.welty@intel.com>
-In-Reply-To: <20231204194306.12950-3-brian.welty@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3190B10E1D1
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 13:51:02 +0000 (UTC)
+Date: Mon, 4 Dec 2023 14:50:56 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: janga.rahul.kumar@intel.com
+Message-ID: <20231204135056.4z46dvh3vekz76mz@zkempczy-mobl2>
+References: <20231204122825.3689117-1-janga.rahul.kumar@intel.com>
+ <20231204122825.3689117-2-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] tests/intel/xe_exec_reset: Fix
- cm-gt-reset
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231204122825.3689117-2-janga.rahul.kumar@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/4] lib/intel_compute: Rename
+ compute state addresses
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,74 +22,123 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Mon, Dec 04, 2023 at 05:58:22PM +0530, janga.rahul.kumar@intel.com wrote:
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> 
+> Rename platform specific state base and binding offset address variable
+> names to generic ones as they can be resued for most of the platforms.
+> 
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
+Yes, that I was asking about:
 
-> -----Original Message-----
-> From: Welty, Brian <brian.welty@intel.com>
-> Sent: Monday, December 4, 2023 11:43 AM
-> To: igt-dev@lists.freedesktop.org; Mishra, Pallavi <pallavi.mishra@intel.=
-com>
-> Subject: [PATCH i-g-t v2 2/2] tests/intel/xe_exec_reset: Fix cm-gt-reset
->=20
-> With use of GT_RESET and forcing GT reset, it is expected for the
-> xe_wait_ufence to expire. Move the assertion checking into the IGT by usi=
-ng
-> __xe_wait_ufence().
-> In addition, we cannot validate the exec operation was successful for
-> GT_RESET case.
->=20
-> Signed-off-by: Brian Welty <brian.welty@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
+
 > ---
->  tests/intel/xe_exec_reset.c | 21 ++++++++++++++++-----
->  1 file changed, 16 insertions(+), 5 deletions(-)
-
-Reviewed-by: Pallavi Mishra <pallavi.mishra@intel.com>
-
->=20
-> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c in=
-dex
-> 195e62911f..d322cf4bdd 100644
-> --- a/tests/intel/xe_exec_reset.c
-> +++ b/tests/intel/xe_exec_reset.c
-> @@ -612,16 +612,27 @@ test_compute_mode(int fd, struct
-> drm_xe_engine_class_instance *eci,
->  		return;
->  	}
->=20
-> -	for (i =3D 1; i < n_execs; i++)
-> -		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
-> -			       NULL, THREE_SEC);
-> +	for (i =3D 1; i < n_execs; i++) {
-> +		int64_t timeout =3D THREE_SEC;
-> +		int err;
-> +
-> +		err =3D __xe_wait_ufence(fd, &data[i].exec_sync,
-> USER_FENCE_VALUE,
-> +				       NULL, &timeout);
-> +		if (flags & GT_RESET)
-> +			/* exec races with reset: may timeout or complete */
-> +			igt_assert(err =3D=3D -ETIME || !err);
-> +		else
-> +			igt_assert_eq(err, 0);
-> +	}
->=20
->  	sync[0].addr =3D to_user_pointer(&data[0].vm_sync);
->  	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
->  	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-> THREE_SEC);
->=20
-> -	for (i =3D 1; i < n_execs; i++)
-> -		igt_assert_eq(data[i].data, 0xc0ffee);
-> +	if (!(flags & GT_RESET)) {
-> +		for (i =3D 1; i < n_execs; i++)
-> +			igt_assert_eq(data[i].data, 0xc0ffee);
-> +	}
->=20
->  	for (i =3D 0; i < n_exec_queues; i++)
->  		xe_exec_queue_destroy(fd, exec_queues[i]);
-> --
-> 2.38.0
+>  lib/intel_compute.c | 28 ++++++++++++++--------------
+>  1 file changed, 14 insertions(+), 14 deletions(-)
+> 
+> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+> index dd921bf46..c8dc42338 100644
+> --- a/lib/intel_compute.c
+> +++ b/lib/intel_compute.c
+> @@ -37,9 +37,9 @@
+>  #define OFFSET_INDIRECT_DATA_START	0xFFFD0000
+>  #define OFFSET_KERNEL			0xFFFE0000
+>  
+> -#define XEHP_ADDR_GENERAL_STATE_BASE		0x80000000UL
+> -#define XEHP_ADDR_INSTRUCTION_STATE_BASE	0x90000000UL
+> -#define XEHP_OFFSET_BINDING_TABLE		0x1000
+> +#define ADDR_GENERAL_STATE_BASE		0x80000000UL
+> +#define ADDR_INSTRUCTION_STATE_BASE	0x90000000UL
+> +#define OFFSET_BINDING_TABLE		0x1000
+>  
+>  struct bo_dict_entry {
+>  	uint64_t addr;
+> @@ -867,7 +867,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+>  {
+>  #define XEHP_BO_DICT_ENTRIES 9
+>  	struct bo_dict_entry bo_dict[XEHP_BO_DICT_ENTRIES] = {
+> -		{ .addr = XEHP_ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
+> +		{ .addr = ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
+>  		  .name = "instr state base"},
+>  		{ .addr = ADDR_DYNAMIC_STATE_BASE,
+>  		  .size = 0x100000,
+> @@ -875,16 +875,16 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+>  		{ .addr = ADDR_SURFACE_STATE_BASE,
+>  		  .size = 0x1000,
+>  		  .name = "surface state base"},
+> -		{ .addr = XEHP_ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
+> +		{ .addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
+>  		  .size =  0x1000,
+>  		  .name = "indirect object base"},
+>  		{ .addr = ADDR_INPUT, .size = SIZE_BUFFER_INPUT,
+>  		  .name = "addr input"},
+>  		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
+>  		  .name = "addr output" },
+> -		{ .addr = XEHP_ADDR_GENERAL_STATE_BASE, .size = 0x100000,
+> +		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x100000,
+>  		  .name = "general state base" },
+> -		{ .addr = ADDR_SURFACE_STATE_BASE + XEHP_OFFSET_BINDING_TABLE,
+> +		{ .addr = ADDR_SURFACE_STATE_BASE + OFFSET_BINDING_TABLE,
+>  		  .size = 0x1000,
+>  		  .name = "binding table" },
+>  		{ .addr = ADDR_BATCH, .size = SIZE_BATCH,
+> @@ -912,10 +912,10 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+>  		((float *)dinput)[i] = rand() / (float)RAND_MAX;
+>  
+>  	xehp_compute_exec_compute(bo_dict[8].data,
+> -				  XEHP_ADDR_GENERAL_STATE_BASE,
+> +				  ADDR_GENERAL_STATE_BASE,
+>  				  ADDR_SURFACE_STATE_BASE,
+>  				  ADDR_DYNAMIC_STATE_BASE,
+> -				  XEHP_ADDR_INSTRUCTION_STATE_BASE,
+> +				  ADDR_INSTRUCTION_STATE_BASE,
+>  				  OFFSET_INDIRECT_DATA_START,
+>  				  OFFSET_KERNEL);
+>  
+> @@ -1081,16 +1081,16 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+>  {
+>  #define XEHPC_BO_DICT_ENTRIES 6
+>  	struct bo_dict_entry bo_dict[XEHPC_BO_DICT_ENTRIES] = {
+> -		{ .addr = XEHP_ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
+> +		{ .addr = ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
+>  		  .name = "instr state base"},
+> -		{ .addr = XEHP_ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
+> +		{ .addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
+>  		  .size =  0x10000,
+>  		  .name = "indirect object base"},
+>  		{ .addr = ADDR_INPUT, .size = SIZE_BUFFER_INPUT,
+>  		  .name = "addr input"},
+>  		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
+>  		  .name = "addr output" },
+> -		{ .addr = XEHP_ADDR_GENERAL_STATE_BASE, .size = 0x10000,
+> +		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x10000,
+>  		  .name = "general state base" },
+>  		{ .addr = ADDR_BATCH, .size = SIZE_BATCH,
+>  		  .name = "batch" },
+> @@ -1114,10 +1114,10 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+>  		((float *)dinput)[i] = rand() / (float)RAND_MAX;
+>  
+>  	xehpc_compute_exec_compute(bo_dict[5].data,
+> -				   XEHP_ADDR_GENERAL_STATE_BASE,
+> +				   ADDR_GENERAL_STATE_BASE,
+>  				   ADDR_SURFACE_STATE_BASE,
+>  				   ADDR_DYNAMIC_STATE_BASE,
+> -				   XEHP_ADDR_INSTRUCTION_STATE_BASE,
+> +				   ADDR_INSTRUCTION_STATE_BASE,
+>  				   OFFSET_INDIRECT_DATA_START,
+>  				   OFFSET_KERNEL);
+>  
+> -- 
+> 2.25.1
+> 
