@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC71810E332
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 09:45:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3009210E31C
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 09:45:19 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  4 Dec 2023 15:23:00 +0530
-Message-Id: <20231204095302.2232468-3-jeevan.b@intel.com>
+Date: Mon,  4 Dec 2023 15:22:59 +0530
+Message-Id: <20231204095302.2232468-2-jeevan.b@intel.com>
 In-Reply-To: <20231204095302.2232468-1-jeevan.b@intel.com>
 References: <20231204095302.2232468-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/4] tests/intel/kms_psr: fix subtest naming
+Subject: [igt-dev] [PATCH i-g-t 1/4] tests/intel/kms_psr: fix documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,236 +22,326 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-update subtest naming from sub_test to sub-test.
+From: Swati Sharma <swati2.sharma@intel.com>
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Optimize documentation and update mega features accordingly.
+
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/intel/kms_psr.c | 72 +++++++++++++++++++++----------------------
- 1 file changed, 36 insertions(+), 36 deletions(-)
+ tests/intel/kms_psr.c | 215 +++++++++++++++---------------------------
+ 1 file changed, 74 insertions(+), 141 deletions(-)
 
 diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
-index 31d6f779c..aea8b0b3f 100644
+index 05bdd7b98..31d6f779c 100644
 --- a/tests/intel/kms_psr.c
 +++ b/tests/intel/kms_psr.c
-@@ -43,20 +43,20 @@
+@@ -43,143 +43,93 @@
  #include "xe/xe_query.h"
  
  /**
-- * SUBTEST: %s_basic
-+ * SUBTEST: %s-basic
-  * Description: Basic check for %arg[1] if it is detecting changes made in planes
-  * Functionality: %arg[1]
+- * SUBTEST: psr_basic
+- * Description: Basic check for psr if it is detecting changes made in planes
+- * Functionality: psr1
++ * SUBTEST: %s_basic
++ * Description: Basic check for %arg[1] if it is detecting changes made in planes
++ * Functionality: %arg[1]
   *
-- * SUBTEST: %s_dpms
-+ * SUBTEST: %s-dpms
-  * Description: Check if %arg[1] is detecting changes when rendering operation
-  *              is performed with dpms enabled or disabled
-  * Functionality: %arg[1], dpms
-  *
-- * SUBTEST: %s_no_drrs
-+ * SUBTEST: %s-no-drrs
-  * Description: Check if %arg[1] is detecting changes when drrs is disabled
-  * Functionality: %arg[1], drrs
-  *
-- * SUBTEST: %s_suspend
-+ * SUBTEST: %s-suspend
-  * Description: Check if %arg[1] is detecting changes when plane operation is
-  *              performed with suspend resume cycles
-  * Functionality: %arg[1], suspend
-@@ -68,7 +68,7 @@
-  */
- 
- /**
-- * SUBTEST: %s_%s_%s
-+ * SUBTEST: %s-%s-%s
-  * Description: Check if %arg[1] is detecting memory mapping %arg[3] operations
-  * 		performed on %arg[2] planes
-  * Driver requirement: i915
-@@ -87,17 +87,17 @@
-  *
-  * arg[3]:
+- * SUBTEST: psr_%s_%s
+- * Description: Check if psr is detecting memory mapping, rendering and plane
+- *              operations performed on %arg[1]
+- * Driver requirement: i915
+- * Functionality: kms_core, plane, psr1
+- *
+- * arg[1]:
+- *
+- * @cursor:             Cursor plane
+- * @primary:            Primary plane
+- * @sprite:             Sprite plane
+- *
+- * arg[2]:
++ * SUBTEST: %s_dpms
++ * Description: Check if %arg[1] is detecting changes when rendering operation
++ *              is performed with dpms enabled or disabled
++ * Functionality: %arg[1], dpms
   *
 - * @mmap_cpu:           MMAP CPU
 - * @mmap_gtt:           MMAP GTT
-+ * @mmap-cpu:           MMAP CPU
-+ * @mmap-gtt:           MMAP GTT
-  */
- 
- /**
-- * SUBTEST: %s_primary_page_flip
-+ * SUBTEST: %s-primary-page-flip
-  * Description: Check if %arg[1] is detecting page-flipping operation
-  * 		performed on primary plane
-  * Functionality: %arg[1], plane
+- */
+-
+-/**
+- * SUBTEST: psr_sprite_plane_move
+- * Description: Check if psr is detecting memory mapping, rendering and plane
+- *              operations performed on sprite planes
+- * Functionality: plane, psr1
++ * SUBTEST: %s_no_drrs
++ * Description: Check if %arg[1] is detecting changes when drrs is disabled
++ * Functionality: %arg[1], drrs
   *
-- * SUBTEST: %s_primary_%s
-+ * SUBTEST: %s-primary-%s
-  * Description: Check if %arg[1] is detecting rendering operations %arg[2]
-  * 		when performed on primary plane
-  * Functionality: %arg[1], plane
-@@ -114,7 +114,7 @@
+- * SUBTEST: psr_%s_%s
+- * Description: Check if psr is detecting memory mapping, rendering and plane
+- *              operations performed on %arg[1] planes
+- * Functionality: kms_core, plane, psr1
++ * SUBTEST: %s_suspend
++ * Description: Check if %arg[1] is detecting changes when plane operation is
++ *              performed with suspend resume cycles
++ * Functionality: %arg[1], suspend
+  *
+  * arg[1]:
+  *
+- * @cursor:             Cursor plane
+- * @sprite:             Sprite plane
+- *
+- * arg[2]:
+- *
+- * @blt:                Blitter
+- * @render:             Render
+- * @plane_onoff:        Plane On off
++ * @psr:             psr1
++ * @psr2:            psr2
   */
  
  /**
-- * SUBTEST: %s_%s_%s
-+ * SUBTEST: %s-%s-%s
-  * Description: Check if %arg[1] is detecting rendering and plane
-  *              operations %arg[3] performed on %arg[2] planes
-  * Functionality: %arg[1], plane
-@@ -133,28 +133,28 @@
+- * SUBTEST: psr_primary_%s
+- * Description: Check if psr is detecting memory mapping, rendering and plane
+- *              operations performed on %arg[1] planes
+- * Functionality: kms_core, psr1
++ * SUBTEST: %s_%s_%s
++ * Description: Check if %arg[1] is detecting memory mapping %arg[3] operations
++ * 		performed on %arg[2] planes
++ * Driver requirement: i915
++ * Functionality: %arg[1], plane
+  *
+  * arg[1]:
+  *
+- * @blt:                Blitter
+- * @render:             Render
+- */
+-
+-/**
+- * SUBTEST: psr_dpms
+- * Description: Check if psr is detecting changes when rendering operation is
+- *              performed  with dpms enabled or disabled
+- * Functionality: dpms, psr1
+- *
+- * SUBTEST: psr_no_drrs
+- * Description: Check if psr is detecting changes when drrs is disabled
+- * Functionality: drrs, psr1
+- *
+- * SUBTEST: psr_suspend
+- * Description: Check if psr is detecting changes when plane operation
+- *              is performed with suspend resume cycles
+- * Functionality: psr1, suspend
+- *
+- * SUBTEST: psr2_dpms
+- * Description: Check if psr is detecting changes when rendering operation
+- *              is performed  with dpms enabled or disabled
+- * Functionality: dpms, psr2
+- *
+- * SUBTEST: psr2_no_drrs
+- * Description: Check if psr is detecting changes when drrs is disabled
+- * Functionality: drrs, psr2
+- *
+- * SUBTEST: psr2_suspend
+- * Description: Check if psr is detecting changes when plane operation is
+- *              performed with suspend resume cycles
+- * Functionality: psr2, suspend
+- *
+- * SUBTEST: psr2_basic
+- * Description: Basic check for psr if it is detecting changes made in planes
+- * Functionality: psr2
++ * @psr:		psr1
++ * @psr2:		psr2
+  *
+- * SUBTEST: psr2_%s_%s
+- * Description: Check if psr2 is detecting memory mapping, rendering and plane
+- *              operations performed on %arg[1] planes
+- * Driver requirement: i915
+- * Functionality: kms_core, plane, psr2
+- *
+- * arg[1]:
++ * arg[2]:
+  *
+  * @cursor:             Cursor plane
+  * @primary:            Primary plane
+  * @sprite:             Sprite plane
+  *
+- * arg[2]:
++ * arg[3]:
+  *
+  * @mmap_cpu:           MMAP CPU
+  * @mmap_gtt:           MMAP GTT
+  */
+ 
+ /**
+- * SUBTEST: psr2_primary_page_flip
+- * Description: Check if psr is detecting memory mapping, rendering and plane
+- *              operations performed on primary planes
+- * Functionality: plane, psr2
++ * SUBTEST: %s_primary_page_flip
++ * Description: Check if %arg[1] is detecting page-flipping operation
++ * 		performed on primary plane
++ * Functionality: %arg[1], plane
+  *
+- * SUBTEST: psr2_primary_%s
+- * Description: Check if psr is detecting memory mapping, rendering and plane
+- *              operations performed on primary planes
+- * Functionality: kms_core, plane, psr2
++ * SUBTEST: %s_primary_%s
++ * Description: Check if %arg[1] is detecting rendering operations %arg[2]
++ * 		when performed on primary plane
++ * Functionality: %arg[1], plane
+  *
+  * arg[1]:
+  *
++ * @psr:		psr1
++ * @psr2:		psr2
++ *
++ * arg[2]:
++ *
+  * @blt:                Blitter
+  * @render:             Render
+  */
+ 
+ /**
+- * SUBTEST: psr2_%s_%s
+- * Description: Check if psr is detecting memory mapping, rendering and plane
+- *              operations performed on %arg[1] planes
+- * Functionality: kms_core, plane, psr2
++ * SUBTEST: %s_%s_%s
++ * Description: Check if %arg[1] is detecting rendering and plane
++ *              operations %arg[3] performed on %arg[2] planes
++ * Functionality: %arg[1], plane
+  *
+  * arg[1]:
+  *
++ * @psr:		psr1
++ * @psr2:		psr2
++ *
++ * arg[2]:
++ *
+  * @cursor:             Cursor plane
+  * @sprite:             Sprite plane
+  *
+- * arg[2]:
++ * arg[3]:
   *
   * @blt:                Blitter
   * @render:             Render
-- * @plane_onoff:        Plane On off
-- * @plane_move:         Move plane position
-+ * @plane-onoff:        Plane On off
-+ * @plane-move:         Move plane position
+@@ -188,36 +138,36 @@
   */
  
  /**
-- * SUBTEST: pr_basic
-+ * SUBTEST: pr-basic
-  * Description: Basic check for pr if it is detecting changes made in planes
-  * Functionality: pr
-  * Mega feature: DP2.0
-  *
-- * SUBTEST: pr_dpms
-+ * SUBTEST: pr-dpms
++ * SUBTEST: pr_basic
++ * Description: Basic check for pr if it is detecting changes made in planes
++ * Functionality: pr
++ * Mega feature: DP2.0
++ *
+  * SUBTEST: pr_dpms
   * Description: Check if pr is detecting changes when rendering operation
   *              is performed with dpms enabled or disabled
-  * Functionality: pr, dpms
-  * Mega feature: DP2.0
+- * Functionality: dpms, pr
+- * Mega feature: Panel Replay
++ * Functionality: pr, dpms
++ * Mega feature: DP2.0
   *
-- * SUBTEST: pr_no_drrs
-+ * SUBTEST: pr-no-drrs
+  * SUBTEST: pr_no_drrs
   * Description: Check if pr is detecting changes when drrs is disabled
-  * Functionality: pr, drrs
-  * Mega feature: DP2.0
+- * Functionality: drrs, pr
+- * Mega feature: Panel Replay
++ * Functionality: pr, drrs
++ * Mega feature: DP2.0
   *
-- * SUBTEST: pr_suspend
-+ * SUBTEST: pr-suspend
+  * SUBTEST: pr_suspend
   * Description: Check if pr is detecting changes when plane operation is
   *              performed with suspend resume cycles
   * Functionality: pr, suspend
-@@ -162,7 +162,7 @@
+- * Mega feature: Panel Replay
+- *
+- * SUBTEST: pr_basic
+- * Description: Basic check for pr if it is detecting changes made in planes
+- * Functionality: pr
+- * Mega feature: Panel Replay
++ * Mega feature: DP2.0
   */
  
  /**
-- * SUBTEST: pr_%s_%s
-+ * SUBTEST: pr-%s-%s
-  * Description: Check if pr is detecting memory mapping %arg[2] operations
-  * 		performed on %arg[1] planes
+  * SUBTEST: pr_%s_%s
+- * Description: Check if pr is detecting memory mapping, rendering and plane
+- *              operations performed on %arg[1] planes
++ * Description: Check if pr is detecting memory mapping %arg[2] operations
++ * 		performed on %arg[1] planes
   * Driver requirement: i915
-@@ -177,18 +177,18 @@
+- * Functionality: kms_core, plane, pr
+- * Mega feature: Panel Replay
++ * Functionality: pr, plane
++ * Mega feature: DP2.0
   *
-  * arg[2]:
+  * arg[1]:
   *
-- * @mmap_cpu:           MMAP CPU
-- * @mmap_gtt:           MMAP GTT
-+ * @mmap-cpu:           MMAP CPU
-+ * @mmap-gtt:           MMAP GTT
-  */
+@@ -233,16 +183,16 @@
  
  /**
-- * SUBTEST: pr_primary_page_flip
-+ * SUBTEST: pr-primary-page-flip
-  * Description: Check if pr is detecting page-flipping operation
-  * 		performed on primary plane
-  * Functionality: pr, plane
-  * Mega feature: DP2.0
+  * SUBTEST: pr_primary_page_flip
+- * Description: Check if pr is detecting memory mapping, rendering and plane
+- *              operations performed on primary planes
+- * Functionality: plane, pr
+- * Mega feature: Panel Replay
++ * Description: Check if pr is detecting page-flipping operation
++ * 		performed on primary plane
++ * Functionality: pr, plane
++ * Mega feature: DP2.0
   *
-- * SUBTEST: pr_primary_%s
-+ * SUBTEST: pr-primary-%s
-  * Description: Check if pr is detecting rendering operations %arg[1]
-  * 		when performed on primary plane
-  * Functionality: pr, plane
-@@ -201,7 +201,7 @@
-  */
+  * SUBTEST: pr_primary_%s
+- * Description: Check if pr is detecting memory mapping, rendering and plane
+- *              operations performed on primary planes
+- * Functionality: kms_core, plane, pr
+- * Mega feature: Panel Replay
++ * Description: Check if pr is detecting rendering operations %arg[1]
++ * 		when performed on primary plane
++ * Functionality: pr, plane
++ * Mega feature: DP2.0
+  *
+  * arg[1]:
+  *
+@@ -252,10 +202,10 @@
  
  /**
-- * SUBTEST: pr_%s_%s
-+ * SUBTEST: pr-%s-%s
-  * Description: Check if pr is detecting rendering and plane
-  *              operations %arg[2] performed on %arg[1] planes
-  * Functionality: pr, plane
-@@ -216,8 +216,8 @@
+  * SUBTEST: pr_%s_%s
+- * Description: Check if pr is detecting memory mapping, rendering and plane
+- *              operations performed on %arg[1] planes
+- * Functionality: kms_core, plane, pr
+- * Mega feature: Panel Replay
++ * Description: Check if pr is detecting rendering and plane
++ *              operations %arg[2] performed on %arg[1] planes
++ * Functionality: pr, plane
++ * Mega feature: DP2.0
   *
-  * @blt:                Blitter
-  * @render:             Render
-- * @plane_onoff:        Plane On off
-- * @plane_move:         Move plane position
-+ * @plane-onoff:        Plane On off
-+ * @plane-move:         Move plane position
+  * arg[1]:
+  *
+@@ -270,23 +220,6 @@
+  * @plane_move:         Move plane position
   */
  
+-/**
+- * SUBTEST: psr_cursor_plane_move
+- * Description: Check if psr is detecting the plane operations performed on
+- *		cursor planes
+- * Functionality: psr1
+- *
+- * SUBTEST: psr_primary_page_flip
+- * Description: Check if psr is detecting page-flipping operations performed
+- *		on primary planes
+- * Functionality: psr1
+- *
+- * SUBTEST: psr_sprite_plane_onoff
+- * Description: Check if psr is detecting the plane operations performed on
+- *		sprite planes
+- * Functionality: psr1
+- */
+-
  enum operations {
-@@ -233,13 +233,13 @@ enum operations {
- static const char *op_str(enum operations op)
- {
- 	static const char * const name[] = {
--		[PAGE_FLIP] = "page_flip",
--		[MMAP_GTT] = "mmap_gtt",
--		[MMAP_CPU] = "mmap_cpu",
-+		[PAGE_FLIP] = "page-flip",
-+		[MMAP_GTT] = "mmap-gtt",
-+		[MMAP_CPU] = "mmap-cpu",
- 		[BLT] = "blt",
- 		[RENDER] = "render",
--		[PLANE_MOVE] = "plane_move",
--		[PLANE_ONOFF] = "plane_onoff",
-+		[PLANE_MOVE] = "plane-move",
-+		[PLANE_ONOFF] = "plane-onoff",
- 	};
- 
- 	return name[op];
-@@ -682,9 +682,9 @@ igt_main
- 	int z;
- 	enum operations op;
- 	const char *append_subtest_name[3] = {
--		"psr_",
--		"psr2_",
--		"pr_"
-+		"psr-",
-+		"psr2-",
-+		"pr-"
- 	};
- 	int modes[] = {PSR_MODE_1, PSR_MODE_2, PR_MODE};
- 	igt_output_t *output;
-@@ -719,7 +719,7 @@ igt_main
- 		}
- 
- 		igt_describe("Check if psr is detecting changes when drrs is disabled");
--		igt_subtest_with_dynamic_f("%sno_drrs", append_subtest_name[z]) {
-+		igt_subtest_with_dynamic_f("%sno-drrs", append_subtest_name[z]) {
- 			for_each_connected_output(&data.display, output) {
- 				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
- 						      data.op_psr_mode, output))
-@@ -738,7 +738,7 @@ igt_main
- 		for (op = PAGE_FLIP; op <= RENDER; op++) {
- 			igt_describe("Check if psr is detecting page-flipping,memory mapping and "
- 					"rendering operations performed on primary planes");
--			igt_subtest_with_dynamic_f("%sprimary_%s",
-+			igt_subtest_with_dynamic_f("%sprimary-%s",
- 				      append_subtest_name[z],
- 				      op_str(op)) {
- 				igt_skip_on(is_xe_device(data.drm_fd) &&
-@@ -763,7 +763,7 @@ igt_main
- 		for (op = MMAP_GTT; op <= PLANE_ONOFF; op++) {
- 			igt_describe("Check if psr is detecting memory mapping,rendering "
- 					"and plane operations performed on sprite planes");
--			igt_subtest_with_dynamic_f("%ssprite_%s",
-+			igt_subtest_with_dynamic_f("%ssprite-%s",
- 				      append_subtest_name[z],
- 				      op_str(op)) {
- 				igt_skip_on(is_xe_device(data.drm_fd) &&
-@@ -786,7 +786,7 @@ igt_main
- 
- 			igt_describe("Check if psr is detecting memory mapping, rendering "
- 					"and plane operations performed on cursor planes");
--			igt_subtest_with_dynamic_f("%scursor_%s",
-+			igt_subtest_with_dynamic_f("%scursor-%s",
- 				      append_subtest_name[z],
- 				      op_str(op)) {
- 				igt_skip_on(is_xe_device(data.drm_fd) &&
+ 	PAGE_FLIP,
+ 	MMAP_GTT,
 -- 
 2.25.1
