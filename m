@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6ABC610E397
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 17:16:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB00010E398
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 17:16:50 +0000 (UTC)
 From: Lukasz Laguna <lukasz.laguna@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  4 Dec 2023 18:10:32 +0100
-Message-Id: <20231204171033.2167-8-lukasz.laguna@intel.com>
+Date: Mon,  4 Dec 2023 18:10:31 +0100
+Message-Id: <20231204171033.2167-7-lukasz.laguna@intel.com>
 In-Reply-To: <20231204171033.2167-1-lukasz.laguna@intel.com>
 References: <20231204171033.2167-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 7/8] tests/sriov_basic: validate driver
- binding to VFs
+Subject: [igt-dev] [PATCH i-g-t v6 6/8] lib/igt_sriov_device: add helpers
+ for VF DRM driver bind and unbind
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,89 +23,99 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Katarzyna Dec <katarzyna.dec@intel.com>
-
-Test enables VFs in range <1..totalvfs>, bind driver to all of them and
-then unbind driver from all of them.
-
-v2:
- - remove checks that are outside the scope of the test (Michal)
- - change subtest run type (Michal)
+Helpers allow to bind and unbind a DRM driver for specified VF of a
+given PF device.
 
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
 Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 ---
- tests/sriov_basic.c | 49 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 49 insertions(+)
+ lib/igt_sriov_device.c | 52 ++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_sriov_device.h |  2 ++
+ 2 files changed, 54 insertions(+)
 
-diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
-index 582e644f2..c2c8e5b6b 100644
---- a/tests/sriov_basic.c
-+++ b/tests/sriov_basic.c
-@@ -60,6 +60,36 @@ static void enable_vfs_autoprobe_on(int pf_fd, unsigned int num_vfs)
- 	igt_assert(!err);
- }
+diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
+index c643f47d1..354125974 100644
+--- a/lib/igt_sriov_device.c
++++ b/lib/igt_sriov_device.c
+@@ -5,9 +5,11 @@
  
-+/**
-+ * SUBTEST: enable-vfs-bind-all-unbind-all
-+ * Description:
-+ *   Verify VFs enabling, binding the driver and then unbinding it from all of them
-+ * Run type: FULL
-+ */
-+static void enable_vfs_bind_all_unbind_all(int pf_fd, unsigned int num_vfs)
+ #include <dirent.h>
+ #include <errno.h>
++#include <pciaccess.h>
+ 
+ #include "drmtest.h"
+ #include "igt_core.h"
++#include "igt_device.h"
+ #include "igt_sriov_device.h"
+ #include "igt_sysfs.h"
+ 
+@@ -287,3 +289,53 @@ bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num)
+ 
+ 	return ret;
+ }
++
++static bool __igt_sriov_bind_vf_drm_driver(int pf, unsigned int vf_num, bool bind)
 +{
-+	igt_debug("Testing %u VFs\n", num_vfs);
++	int sysfs, ret;
++	struct pci_device *pci_dev;
++	char pci_slot[14];
 +
-+	igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
++	igt_assert(vf_num > 0);
 +
-+	igt_sriov_disable_driver_autoprobe(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, num_vfs);
-+	igt_sriov_enable_driver_autoprobe(pf_fd);
++	pci_dev = __igt_device_get_pci_device(pf, vf_num);
++	igt_assert_f(pci_dev, "No PCI device for given VF number: %d\n", vf_num);
++	sprintf(pci_slot, "%04x:%02x:%02x.%x",
++		pci_dev->domain_16, pci_dev->bus, pci_dev->dev, pci_dev->func);
 +
-+	for (int i = 1; i <= num_vfs; i++) {
-+		igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-+		igt_sriov_bind_vf_drm_driver(pf_fd, i);
-+		igt_assert(igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-+	}
++	sysfs = igt_sysfs_open(pf);
++	igt_assert_fd(sysfs);
 +
-+	for (int i = 1; i <= num_vfs; i++) {
-+		igt_sriov_unbind_vf_drm_driver(pf_fd, i);
-+		igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-+	}
++	igt_debug("vf_num: %u, pci_slot: %s\n", vf_num, pci_slot);
++	ret = igt_sysfs_set(sysfs, bind ? "device/driver/bind" : "device/driver/unbind", pci_slot);
 +
-+	igt_sriov_disable_vfs(pf_fd);
++	close(sysfs);
++
++	return ret;
 +}
 +
- igt_main
- {
- 	int pf_fd;
-@@ -110,6 +140,25 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Verify VFs enabling, binding the driver and then unbinding it from all of them");
-+	igt_subtest_with_dynamic("enable-vfs-bind-all-unbind-all") {
-+		for_each_sriov_num_vfs(pf_fd, num_vfs) {
-+			igt_dynamic_f("numvfs-%u", num_vfs) {
-+				enable_vfs_bind_all_unbind_all(pf_fd, num_vfs);
-+			}
-+		}
-+		for_random_sriov_num_vfs(pf_fd, num_vfs) {
-+			igt_dynamic_f("numvfs-random") {
-+				enable_vfs_bind_all_unbind_all(pf_fd, num_vfs);
-+			}
-+		}
-+		for_max_sriov_num_vfs(pf_fd, num_vfs) {
-+			igt_dynamic_f("numvfs-all") {
-+				enable_vfs_bind_all_unbind_all(pf_fd, num_vfs);
-+			}
-+		}
-+	}
++/**
++ * igt_sriov_bind_vf_drm_driver - Bind DRM driver to VF
++ * @pf: PF device file descriptor
++ * @vf_num: VF number (1-based to identify single VF)
++ *
++ * Bind the DRM driver to given VF.
++ * It asserts on failure.
++ */
++void igt_sriov_bind_vf_drm_driver(int pf, unsigned int vf_num)
++{
++	igt_assert(__igt_sriov_bind_vf_drm_driver(pf, vf_num, true));
++}
 +
- 	igt_fixture {
- 		igt_sriov_disable_vfs(pf_fd);
- 		/* abort to avoid execution of next tests with enabled VFs */
++/**
++ * igt_sriov_unbind_vf_drm_driver - Unbind DRM driver from VF
++ * @pf: PF device file descriptor
++ * @vf_num: VF number (1-based to identify single VF)
++ *
++ * Unbind the DRM driver from given VF.
++ * It asserts on failure.
++ */
++void igt_sriov_unbind_vf_drm_driver(int pf, unsigned int vf_num)
++{
++	igt_assert(__igt_sriov_bind_vf_drm_driver(pf, vf_num, false));
++}
+diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
+index c442c41a7..a3a08f8e1 100644
+--- a/lib/igt_sriov_device.h
++++ b/lib/igt_sriov_device.h
+@@ -25,6 +25,8 @@ void igt_sriov_enable_driver_autoprobe(int pf);
+ void igt_sriov_disable_driver_autoprobe(int pf);
+ int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
+ bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
++void igt_sriov_bind_vf_drm_driver(int pf, unsigned int vf_num);
++void igt_sriov_unbind_vf_drm_driver(int pf, unsigned int vf_num);
+ 
+ /**
+  * for_each_sriov_vf - Helper for running code on each VF
 -- 
 2.40.0
