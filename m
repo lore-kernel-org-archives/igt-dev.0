@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A35110E2BC
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7528D10E2D4
  for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 07:52:11 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	vidya.srinivas@intel.com
-Date: Mon,  4 Dec 2023 13:11:03 +0530
-Message-Id: <20231204074111.3167784-2-bhanuprakash.modem@intel.com>
+Date: Mon,  4 Dec 2023 13:11:06 +0530
+Message-Id: <20231204074111.3167784-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231204074111.3167784-1-bhanuprakash.modem@intel.com>
 References: <20231204074111.3167784-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V5 1/9] tests/kms_vrr: Use lib helper to print
- connector modes
+Subject: [igt-dev] [i-g-t V5 4/9] tests/kms_vrr: Fix bigjoiner constraint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,50 +23,124 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of writing a new logic at test level, use library helper
-to print connector modes.
+Before starting the subtest, we are checking the selected pipe/output
+combo validity with default mode, but inside the subtest we are using
+the mode with highest resolution.
+
+Few panels exposing 4K as a default mode even though it supports 8K,
+in this scenario test may misbehave due to the bigjoiner involvement.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vrr.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ tests/kms_vrr.c | 62 +++++++++++++++++++++++++++++++------------------
+ 1 file changed, 39 insertions(+), 23 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 13b347631..a9098597b 100644
+index 4cad663e4..2918f7860 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -65,13 +65,6 @@
-  */
- #define TEST_DURATION_NS (5000000000ull)
- 
--#define DRM_MODE_FMT    "\"%s\": %d %d %d %d %d %d %d %d %d %d 0x%x 0x%x"
--#define DRM_MODE_ARG(m) \
--	(m)->name, (m)->vrefresh, (m)->clock, \
--	(m)->hdisplay, (m)->hsync_start, (m)->hsync_end, (m)->htotal, \
--	(m)->vdisplay, (m)->vsync_start, (m)->vsync_end, (m)->vtotal, \
--	(m)->type, (m)->flags
--
- enum {
- 	TEST_BASIC = 1 << 0,
- 	TEST_DPMS = 1 << 1,
-@@ -162,14 +155,16 @@ output_mode_with_maxrate(igt_output_t *output, unsigned int vrr_max)
- 	drmModeConnectorPtr connector = output->config.connector;
- 	drmModeModeInfo mode = *igt_output_get_mode(output);
- 
--	igt_debug("Default Mode " DRM_MODE_FMT "\n", DRM_MODE_ARG(&mode));
-+	igt_info("Default Mode: ");
-+	kmstest_dump_mode(&mode);
- 
- 	for (i = 0; i < connector->count_modes; i++)
- 		if (connector->modes[i].vrefresh > mode.vrefresh &&
+@@ -163,9 +163,6 @@ output_mode_with_maxrate(igt_output_t *output, unsigned int vrr_max)
  		    connector->modes[i].vrefresh <= vrr_max)
  			mode = connector->modes[i];
  
--	igt_debug("Override Mode " DRM_MODE_FMT "\n", DRM_MODE_ARG(&mode));
-+	igt_info("Override Mode: ");
-+	kmstest_dump_mode(&mode);
- 
+-	igt_info("Override Mode: ");
+-	kmstest_dump_mode(&mode);
+-
  	return mode;
  }
+ 
+@@ -233,21 +230,7 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 	drmModeModeInfo mode;
+ 	cairo_t *cr;
+ 
+-	/* Reset output */
+-	igt_display_reset(&data->display);
+-	igt_output_set_pipe(output, pipe);
+-
+-	/* Capture VRR range */
+-	data->range = get_vrr_range(data, output);
+-
+-	/* Override mode with max vrefresh.
+-	 *   - vrr_min range should be less than the override mode vrefresh.
+-	 *   - Limit the vrr_max range with the override mode vrefresh.
+-	 */
+-	mode = output_mode_with_maxrate(output, data->range.max);
+-	igt_require(mode.vrefresh > data->range.min);
+-	data->range.max = mode.vrefresh;
+-	igt_output_override_mode(output, &mode);
++	mode = *igt_output_get_mode(output);
+ 
+ 	/* Prepare resources */
+ 	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
+@@ -483,7 +466,36 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_remove_fb(data->drm_fd, &data->fb0);
+ }
+ 
+-static bool config_constraint(igt_output_t *output, uint32_t flags)
++static bool output_constraint(data_t *data, igt_output_t *output)
++{
++	drmModeModeInfo mode;
++
++	/* Reset output */
++	igt_display_reset(&data->display);
++
++	/* Capture VRR range */
++	data->range = get_vrr_range(data, output);
++
++	/*
++	 * Override mode with max vrefresh.
++	 *   - vrr_min range should be less than the override mode vrefresh.
++	 *   - Limit the vrr_max range with the override mode vrefresh.
++	 */
++	mode = output_mode_with_maxrate(output, data->range.max);
++	if (mode.vrefresh < data->range.min)
++		return false;
++
++	data->range.max = mode.vrefresh;
++
++	igt_info("Override Mode: ");
++	kmstest_dump_mode(&mode);
++
++	igt_output_override_mode(output, &mode);
++
++	return true;
++}
++
++static bool config_constraint(data_t *data, igt_output_t *output, uint32_t flags)
+ {
+ 	if (!has_vrr(output))
+ 		return false;
+@@ -495,6 +507,9 @@ static bool config_constraint(igt_output_t *output, uint32_t flags)
+ 	if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
+ 		return false;
+ 
++	if (!output_constraint(data, output))
++		return false;
++
+ 	return true;
+ }
+ 
+@@ -507,16 +522,17 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
+ 	for_each_connected_output(&data->display, output) {
+ 		enum pipe pipe;
+ 
+-		if (!config_constraint(output, flags))
++		if (!config_constraint(data, output, flags))
+ 			continue;
+ 
+ 		for_each_pipe(&data->display, pipe) {
+ 			if (igt_pipe_connector_valid(pipe, output)) {
+-				igt_display_reset(&data->display);
+-
+ 				igt_output_set_pipe(output, pipe);
+-				if (!intel_pipe_output_combo_valid(&data->display))
++
++				if (!intel_pipe_output_combo_valid(&data->display)) {
++					igt_output_set_pipe(output, PIPE_NONE);
+ 					continue;
++				}
+ 
+ 				igt_dynamic_f("pipe-%s-%s",
+ 					      kmstest_pipe_name(pipe), output->name)
 -- 
 2.40.0
