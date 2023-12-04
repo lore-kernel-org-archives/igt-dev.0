@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============2982711895731014663=="
+ boundary="===============8904281186341431326=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 06 Dec 2023 13:33:08 -0000
-Message-ID: <170186958871.26425.6912721878496804888@emeril.freedesktop.org>
-References: <20231206105206.115463-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20231206105206.115463-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_some?=
- =?utf-8?q?_missing_descriptions?=
+Date: Mon, 04 Dec 2023 18:26:12 -0000
+Message-ID: <170171437294.20592.1544658711774121353@emeril.freedesktop.org>
+References: <c4d830023b60b1bc2c09d1383230afabe445248e.1701693214.git.mchehab@kernel.org>
+In-Reply-To: <c4d830023b60b1bc2c09d1383230afabe445248e.1701693214.git.mchehab@kernel.org>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_scripts/?=
+ =?utf-8?q?test=5Flist=2Epy=3A_better_identify_planned_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,33 +23,28 @@ To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2982711895731014663==
+--===============8904281186341431326==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Add some missing descriptions
-URL   : https://patchwork.freedesktop.org/series/127419/
+Series: scripts/test_list.py: better identify planned tests
+URL   : https://patchwork.freedesktop.org/series/127294/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7623_BAT -> XEIGTPW_10350_BAT
+CI Bug Log - changes from XEIGT_7617_BAT -> XEIGTPW_10331_BAT
 ====================================================
 
 Summary
 -------
 
-  **WARNING**
+  **SUCCESS**
 
-  Minor unknown changes coming with XEIGTPW_10350_BAT need to be verified
-  manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_10350_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
   
 
@@ -58,67 +53,62 @@ Participating hosts (4 -> 4)
 
   No changes in participating hosts
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_10350_BAT:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@xe_prime_self_import@basic-with_one_bo:
-    - bat-pvc-2:          [FAIL][1] ([Intel XE#999]) -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7623/bat-pvc-2/igt@xe_prime_self_import@basic-with_one_bo.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10350/bat-pvc-2/igt@xe_prime_self_import@basic-with_one_bo.html
-
-  
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_10350_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_10331_BAT that come from known issues:
 
 ### IGT changes ###
 
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7617/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10331/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
+
+  
 #### Possible fixes ####
 
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-adlp-7:         [FAIL][3] ([Intel XE#480]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7623/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10350/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#480]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7617/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10331/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
 
-  * igt@xe_prime_self_import@basic-with_fd_dup:
-    - bat-atsm-2:         [FAIL][5] ([Intel XE#999]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7623/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10350/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:
+    - bat-dg2-oem2:       [FAIL][5] ([Intel XE#480]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7617/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10331/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
 
-  
-#### Warnings ####
-
-  * igt@xe_prime_self_import@basic-with_fd_dup:
-    - bat-pvc-2:          [FAIL][7] -> [FAIL][8] ([Intel XE#999])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7623/bat-pvc-2/igt@xe_prime_self_import@basic-with_fd_dup.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10350/bat-pvc-2/igt@xe_prime_self_import@basic-with_fd_dup.html
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][7] ([Intel XE#282] / [i915#2017]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7617/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10331/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
 
   
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
   [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#999]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/999
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
 
 
 Build changes
 -------------
 
-  * IGT: IGT_7623 -> IGTPW_10350
+  * IGT: IGT_7617 -> IGTPW_10331
 
-  IGTPW_10350: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10350/index.html
-  IGT_7623: f42cda2a9ad74846fb59eea436cc98c8789849f9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-554-9d76164e08c68a3d5d081ff7b07c15a2cadf741a: 9d76164e08c68a3d5d081ff7b07c15a2cadf741a
+  IGTPW_10331: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10331/index.html
+  IGT_7617: 15eebc01e498c61f96928fa7fa3a0d53bdead193 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-547-3cf2df8b17f8be54008581a37361e6ec36dc3d87: 3cf2df8b17f8be54008581a37361e6ec36dc3d87
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10350/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10331/index.html
 
---===============2982711895731014663==
+--===============8904281186341431326==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -138,70 +128,64 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Add some missing descriptions</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127419/">https://patchwork.freedesktop.org/series/127419/</a></td></tr>
+<tr><td><b>Series:</b></td><td>scripts/test_list.py: better identify planned tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127294/">https://patchwork.freedesktop.org/series/127294/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10350/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10350/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10331/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10331/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7623_BAT -&gt; XEIGTPW_10350_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_7617_BAT -&gt; XEIGTPW_10331_BAT</h1>
 <h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with XEIGTPW_10350_BAT need to be verified<br />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_10350_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
 <h2>Participating hosts (4 -&gt; 4)</h2>
 <p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_10350_BAT:</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10331_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Warnings</h4>
+<h4>Issues hit</h4>
 <ul>
-<li>igt@xe_prime_self_import@basic-with_one_bo:<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7623/bat-pvc-2/igt@xe_prime_self_import@basic-with_one_bo.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/999">Intel XE#999</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10350/bat-pvc-2/igt@xe_prime_self_import@basic-with_one_bo.html">FAIL</a></li>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7617/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10331/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>)</li>
 </ul>
 </li>
 </ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10350_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
 <h4>Possible fixes</h4>
 <ul>
 <li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:</p>
 <ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7623/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10350/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7617/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10331/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a></li>
 </ul>
 </li>
 <li>
-<p>igt@xe_prime_self_import@basic-with_fd_dup:</p>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:</p>
 <ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7623/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/999">Intel XE#999</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10350/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">PASS</a></li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7617/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10331/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7617/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10331/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
 </ul>
 </li>
 </ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_prime_self_import@basic-with_fd_dup:<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7623/bat-pvc-2/igt@xe_prime_self_import@basic-with_fd_dup.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10350/bat-pvc-2/igt@xe_prime_self_import@basic-with_fd_dup.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/999">Intel XE#999</a>)</li>
-</ul>
-</li>
-</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_7623 -&gt; IGTPW_10350</li>
+<li>IGT: IGT_7617 -&gt; IGTPW_10331</li>
 </ul>
-<p>IGTPW_10350: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10350/index.html<br />
-  IGT_7623: f42cda2a9ad74846fb59eea436cc98c8789849f9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-554-9d76164e08c68a3d5d081ff7b07c15a2cadf741a: 9d76164e08c68a3d5d081ff7b07c15a2cadf741a</p>
+<p>IGTPW_10331: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10331/index.html<br />
+  IGT_7617: 15eebc01e498c61f96928fa7fa3a0d53bdead193 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-547-3cf2df8b17f8be54008581a37361e6ec36dc3d87: 3cf2df8b17f8be54008581a37361e6ec36dc3d87</p>
 
 </body>
 </html>
 
---===============2982711895731014663==--
+--===============8904281186341431326==--
 
