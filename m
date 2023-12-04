@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 07B8A10E206
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 19:43:10 +0000 (UTC)
-From: Brian Welty <brian.welty@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Pallavi Mishra <pallavi.mishra@intel.com>
-Date: Mon,  4 Dec 2023 11:43:06 -0800
-Message-Id: <20231204194306.12950-3-brian.welty@intel.com>
-In-Reply-To: <20231204194306.12950-1-brian.welty@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C65FE10E402
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Dec 2023 20:38:50 +0000 (UTC)
+Date: Mon, 4 Dec 2023 21:38:29 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231204203829.j76a3orpongfqfvm@kamilkon-desk.igk.intel.com>
 References: <20231204194306.12950-1-brian.welty@intel.com>
+ <20231204194306.12950-2-brian.welty@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/2] tests/intel/xe_exec_reset: Fix
- cm-gt-reset
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231204194306.12950-2-brian.welty@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] lib/xe_ioctl: Add
+ __xe_wait_ufence()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,53 +25,87 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With use of GT_RESET and forcing GT reset, it is expected for the
-xe_wait_ufence to expire. Move the assertion checking into the IGT
-by using __xe_wait_ufence().
-In addition, we cannot validate the exec operation was successful
-for GT_RESET case.
+Hi Brian,
+On 2023-12-04 at 11:43:05 -0800, Brian Welty wrote:
+> xe_wait_ufence is expected to fail if GPU hangs or is reset. We need
+> a version of calling XE_WAIT_USER_FENCE without the assertion that it
+> won't expire (timeout), for use with IGTs that intentionally cause
+> hangs or reset.
+> 
+> Signed-off-by: Brian Welty <brian.welty@intel.com>
+> ---
+>  lib/xe/xe_ioctl.c | 24 ++++++++++++++++++------
+>  lib/xe/xe_ioctl.h |  3 +++
+>  2 files changed, 21 insertions(+), 6 deletions(-)
+> 
+> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> index a5fe7dd792..36c3bd2f39 100644
+> --- a/lib/xe/xe_ioctl.c
+> +++ b/lib/xe/xe_ioctl.c
+> @@ -446,9 +446,9 @@ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
+>  	syncobj_destroy(fd, sync.handle);
+>  }
+>  
 
-Signed-off-by: Brian Welty <brian.welty@intel.com>
----
- tests/intel/xe_exec_reset.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+One more thing (sorry I forgot it in previous review), each new
+public function needs to be described, please write it here.
 
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index 195e62911f..d322cf4bdd 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -612,16 +612,27 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 		return;
- 	}
- 
--	for (i = 1; i < n_execs; i++)
--		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
--			       NULL, THREE_SEC);
-+	for (i = 1; i < n_execs; i++) {
-+		int64_t timeout = THREE_SEC;
-+		int err;
-+
-+		err = __xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
-+				       NULL, &timeout);
-+		if (flags & GT_RESET)
-+			/* exec races with reset: may timeout or complete */
-+			igt_assert(err == -ETIME || !err);
-+		else
-+			igt_assert_eq(err, 0);
-+	}
- 
- 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
- 	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, THREE_SEC);
- 
--	for (i = 1; i < n_execs; i++)
--		igt_assert_eq(data[i].data, 0xc0ffee);
-+	if (!(flags & GT_RESET)) {
-+		for (i = 1; i < n_execs; i++)
-+			igt_assert_eq(data[i].data, 0xc0ffee);
-+	}
- 
- 	for (i = 0; i < n_exec_queues; i++)
- 		xe_exec_queue_destroy(fd, exec_queues[i]);
--- 
-2.38.0
+Rest looks good, with that addressed
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+> -int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> -		       struct drm_xe_engine_class_instance *eci,
+> -		       int64_t timeout)
+> +int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> +		     struct drm_xe_engine_class_instance *eci,
+> +		     int64_t *timeout)
+>  {
+>  	struct drm_xe_wait_user_fence wait = {
+>  		.addr = to_user_pointer(addr),
+> @@ -456,14 +456,26 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  		.flags = !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP : 0,
+>  		.value = value,
+>  		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+> -		.timeout = timeout,
+>  		.num_engines = eci ? 1 :0,
+>  		.instances = eci ? to_user_pointer(eci) : 0,
+>  	};
+>  
+> -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
+> +	igt_assert(timeout);
+> +	wait.timeout = *timeout;
+> +
+> +	if (igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait))
+> +		return -errno;
+>  
+> -	return wait.timeout;
+> +	*timeout = wait.timeout;
+> +	return 0;
+> +}
+> +
+> +int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> +		       struct drm_xe_engine_class_instance *eci,
+> +		       int64_t timeout)
+> +{
+> +	igt_assert_eq(__xe_wait_ufence(fd, addr, value, eci, &timeout), 0);
+> +	return timeout;
+>  }
+>  
+>  /**
+> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+> index 6d91d3e8e6..0ecc04baf4 100644
+> --- a/lib/xe/xe_ioctl.h
+> +++ b/lib/xe/xe_ioctl.h
+> @@ -88,6 +88,9 @@ void xe_exec(int fd, struct drm_xe_exec *exec);
+>  void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+>  		  struct drm_xe_sync *sync, uint32_t num_syncs);
+>  void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);
+> +int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> +		     struct drm_xe_engine_class_instance *eci,
+> +		     int64_t *timeout);
+>  int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  		       struct drm_xe_engine_class_instance *eci,
+>  		       int64_t timeout);
+> -- 
+> 2.38.0
+> 
