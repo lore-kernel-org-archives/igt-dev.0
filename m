@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6909910E60F
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Dec 2023 20:42:05 +0000 (UTC)
-From: Matthew Brost <matthew.brost@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2DFC910E60C
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Dec 2023 21:21:11 +0000 (UTC)
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Dec 2023 12:42:17 -0800
-Message-Id: <20231205204217.322849-3-matthew.brost@intel.com>
-In-Reply-To: <20231205204217.322849-1-matthew.brost@intel.com>
-References: <20231205204217.322849-1-matthew.brost@intel.com>
+Date: Tue,  5 Dec 2023 13:10:20 -0800
+Message-Id: <20231205211020.226517-1-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 2/2] xe_exec_basic: Add section to test zero
- number of BB in exec IOCTL
+Subject: [igt-dev] [PATCH i-g-t] tests/xe_create: Unthread create-execqueues
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,150 +18,102 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: lucas.demarchi@intel.com, jonathan.cavitt@intel.com,
+ saurabhg.gupta@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Verify the exec queue ordering works wrt out-sync signaling when zero
-number of BB passed to exec IOCTL.
+The inclusion of igt_fork in the test is designed to improve performance
+by multithreading the process of execqueue creation.  However, after
+each execqueue is created on a thread, a context switch appears to occur,
+causing all the execqueues created for that thread to be stored in memory
+and all the execqueues for the other thread to be loaded.  At scale, the
+delays caused by repeated memory loads and unloads actually cause a
+reduction in performance, and as such it's actually more performant to
+create the execqueues serially rather than rely on forking.
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+CC: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+CC: Lucas de Marchi <lucas.demarchi@intel.com>
+CC: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/intel/xe_exec_basic.c | 108 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 108 insertions(+)
+ tests/intel/xe_create.c | 51 +++++++++++++++++------------------------
+ 1 file changed, 21 insertions(+), 30 deletions(-)
 
-diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
-index 2defd1e358..b20581382c 100644
---- a/tests/intel/xe_exec_basic.c
-+++ b/tests/intel/xe_exec_basic.c
-@@ -17,6 +17,7 @@
- 
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-+#include "xe/xe_spin.h"
- #include <string.h>
- 
- #define MAX_N_EXEC_QUEUES 16
-@@ -300,6 +301,109 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	}
- }
- 
-+/**
-+ * SUBTEST: zero-execs
-+ * Description: Test zero execs in IOCTL
-+ * Functionality: exec IOCTL
-+ * Run type: BAT
-+ */
-+
-+static void test_zero_execs(int fd, struct drm_xe_engine_class_instance *eci,
-+			    int n_execs)
-+{
-+	uint32_t vm;
-+	uint64_t addr = 0x1a0000;
-+	struct drm_xe_sync sync[2] = {
-+		{ .flags = DRM_XE_SYNC_TYPE_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_TYPE_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(sync),
-+	};
-+	size_t bo_size;
-+	uint32_t bo = 0;
-+	uint32_t syncobj;
-+	uint32_t exec_queue;
-+	struct xe_cork cork;
-+	struct {
-+		uint32_t batch[16];
-+		uint64_t pad;
-+		uint32_t data;
-+	} *data;
-+	int i, b;
-+
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-+	bo_size = sizeof(*data) * n_execs;
-+	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-+			xe_get_default_alignment(fd));
-+	bo = xe_bo_create(fd, vm, bo_size,
-+			  vram_if_possible(fd, eci->gt_id),
-+			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	data = xe_bo_map(fd, bo, bo_size);
-+	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-+
-+	xe_cork_init(fd, eci, &cork);
-+	xe_cork_wait_started(&cork);
-+
-+	/* Initial bind behind cork */
-+	sync[0].handle = syncobj = syncobj_create(fd, 0);
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+	sync[1].handle = cork.syncobj;
-+	sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 2);
-+
-+	/* Exec behind bind */
-+	for (i = 0; i < n_execs; i++) {
-+		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
-+		uint64_t batch_addr = addr + batch_offset;
-+		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
-+		uint64_t sdi_addr = addr + sdi_offset;
-+
-+		b = 0;
-+		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+		data[i].batch[b++] = sdi_addr;
-+		data[i].batch[b++] = sdi_addr >> 32;
-+		data[i].batch[b++] = 0xc0ffee;
-+		data[i].batch[b++] = MI_BATCH_BUFFER_END;
-+		igt_assert(b <= ARRAY_SIZE(data[i].batch));
-+
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+
-+		exec.exec_queue_id = exec_queue;
-+		exec.address = batch_addr;
-+		xe_exec(fd, &exec);
-+	}
-+
-+	/* Exec with no batch buffer */
-+	sync[0].handle = syncobj_create(fd, 0);
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+	exec.num_batch_buffer = 0;
-+	exec.address = 0;
-+	xe_exec(fd, &exec);
-+
-+	/* Let jobs runs for a bit */
-+	usleep(100000);
-+
-+	/* both bind and execs are waiting */
-+	igt_assert(!syncobj_wait(fd, &syncobj, 1, 0, 0, NULL));
-+	igt_assert(!syncobj_wait(fd, &sync[0].handle, 1, 0, 0, NULL));
-+
-+	/* Release cork */
-+	xe_cork_end(&cork);
-+	xe_cork_wait_done(&cork);
-+	xe_cork_fini(&cork);
-+
-+	/* both binds are done */
-+	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+
-+	syncobj_destroy(fd, sync[0].handle);
-+	gem_close(fd, bo);
-+	xe_vm_destroy(fd, vm);
-+}
-+
- igt_main
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index bbdddc7c9b..f4a80aa155 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -136,47 +136,38 @@ static uint32_t __xe_exec_queue_create(int fd, uint32_t vm,
+ static void create_execqueues(int fd, enum exec_queue_destroy ed)
  {
- 	struct drm_xe_engine_class_instance *hwe;
-@@ -369,6 +473,10 @@ igt_main
- 				test_exec(fd, hwe, 1, 0, 1, s->flags);
- 	}
+ 	struct timespec tv = { };
+-	uint32_t num_engines, exec_queues_per_process, vm;
+-	int nproc = sysconf(_SC_NPROCESSORS_ONLN), seconds;
++	struct drm_xe_engine *engine;
++	uint32_t num_engines, vm;
++	int idx, err, i, seconds;
++	uint32_t exec_queue, exec_queues[MAXEXECQUEUES];
  
-+	igt_subtest("zero-execs")
-+		xe_for_each_engine(fd, hwe)
-+			test_zero_execs(fd, hwe, 1);
+ 	fd = drm_reopen_driver(fd);
+ 	num_engines = xe_number_engines(fd);
+ 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+ 
+-	exec_queues_per_process = max_t(uint32_t, 1, MAXEXECQUEUES / nproc);
+-	igt_debug("nproc: %u, exec_queues per process: %u\n", nproc, exec_queues_per_process);
+ 
+ 	igt_nsec_elapsed(&tv);
+ 
+-	igt_fork(n, nproc) {
+-		struct drm_xe_engine *engine;
+-		uint32_t exec_queue, exec_queues[exec_queues_per_process];
+-		int idx, err, i;
+-
+-		srandom(n);
+-
+-		for (i = 0; i < exec_queues_per_process; i++) {
+-			idx = rand() % num_engines;
+-			engine = xe_engine(fd, idx);
+-			err = __xe_exec_queue_create(fd, vm, &engine->instance,
+-						     0, &exec_queue);
+-			igt_debug("[%2d] Create exec_queue: err=%d, exec_queue=%u [idx = %d]\n",
+-				  n, err, exec_queue, i);
+-			if (err)
+-				break;
+-
+-			if (ed == NOLEAK)
+-				exec_queues[i] = exec_queue;
+-		}
++	for (i = 0; i < MAXEXECQUEUES; i++) {
++		idx = rand() % num_engines;
++		engine = xe_engine(fd, idx);
++		err = __xe_exec_queue_create(fd, vm, &engine->instance,
++					     0, &exec_queue);
++		igt_debug("Create exec_queue: err=%d, exec_queue=%u [idx = %d]\n",
++			  err, exec_queue, i);
++		if (err)
++			break;
 +
- 	igt_fixture
- 		drm_close_driver(fd);
- }
++		if (ed == NOLEAK)
++			exec_queues[i] = exec_queue;
++	}
+ 
+-		if (ed == NOLEAK) {
+-			while (--i >= 0) {
+-				igt_debug("[%2d] Destroy exec_queue: %u\n", n, exec_queues[i]);
+-				xe_exec_queue_destroy(fd, exec_queues[i]);
+-			}
++	if (ed == NOLEAK) {
++		while (--i >= 0) {
++			igt_debug("Destroy exec_queue: %u\n", exec_queues[i]);
++			xe_exec_queue_destroy(fd, exec_queues[i]);
+ 		}
+ 	}
+-	igt_waitchildren();
+ 
+ 	xe_vm_destroy(fd, vm);
+ 	drm_close_driver(fd);
 -- 
-2.34.1
+2.25.1
