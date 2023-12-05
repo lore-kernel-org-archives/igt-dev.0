@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8863510E5B9
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Dec 2023 17:47:52 +0000 (UTC)
-From: David Kershner <david.kershner@intel.com>
-To: igt-dev@lists.freedesktop.org, michael.j.ruhl@intel.com,
- john.fleck@intel.com, katarzyna.piecielska@intel.com
-Date: Tue,  5 Dec 2023 12:47:44 -0500
-Message-Id: <20231205174744.613573-1-david.kershner@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5] tests/intel: Add Xe peer2peer test
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "David Kershner" <david.kershner@intel.com>
+Date: Tue, 05 Dec 2023 18:00:53 -0000
+Message-ID: <170179925323.24284.12827142902129362114@emeril.freedesktop.org>
+References: <20231205174744.613573-1-david.kershner@intel.com>
+In-Reply-To: <20231205174744.613573-1-david.kershner@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/intel=3A_Add_Xe_peer2peer_test_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,425 +17,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add tests to read/write data between two different GPUs using DMABUF
-and P2PDMA. The kernel must have P2PDMA and DMABUF enabled for the test
-pass.
+== Series Details ==
 
-Reviewed-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
-Signed-off-by: David Kershner <david.kershner@intel.com>
----
-Changes from v1 --
-   - fixed whitespace issues
-   - fixed review comments
-Changes from v2 --
-   - fixed peer2peer test description
-   - updates due to rebase
-Changes from v3 --
-   - updates due to rebase
-Changes from v4 --
-   - updates due to rebase
-   - promoted a-b to r-b
----
- tests/intel/xe_peer2peer.c | 374 +++++++++++++++++++++++++++++++++++++
- tests/meson.build          |   1 +
- 2 files changed, 375 insertions(+)
- create mode 100644 tests/intel/xe_peer2peer.c
+Series: tests/intel: Add Xe peer2peer test (rev5)
+URL   : https://patchwork.freedesktop.org/series/126343/
+State : failure
 
-diff --git a/tests/intel/xe_peer2peer.c b/tests/intel/xe_peer2peer.c
-new file mode 100644
-index 000000000..e81c5bd7b
---- /dev/null
-+++ b/tests/intel/xe_peer2peer.c
-@@ -0,0 +1,374 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+#include "drm.h"
-+#include "igt.h"
-+#include "igt_device.h"
-+#include "intel_blt.h"
-+#include "intel_mocs.h"
-+#include "lib/igt_sysfs.h"
-+#include "lib/intel_chipset.h"
-+#include "lib/intel_pat.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+#include "xe/xe_util.h"
-+
-+/**
-+ * TEST: xe_peer2peer
-+ * Category: Hardware building block
-+ * Sub-category: MultiGPU
-+ * Functionality: dma buf copy
-+ * Description: Peer2peer dma buf copy tests
-+ * Test category: xe
-+ *
-+ * SUBTEST: read
-+ * Description:
-+ *   dma buf copy read
-+ *
-+ * SUBTEST: write
-+ * Description:
-+ *   dma buf copy write
-+ */
-+
-+IGT_TEST_DESCRIPTION("Exercise blitter read/writes between two Xe devices");
-+
-+struct blt_fast_copy_data {
-+	int xe;
-+	struct blt_copy_object src;
-+	struct blt_copy_object mid;
-+	struct blt_copy_object dst;
-+
-+	struct blt_copy_batch bb;
-+	enum blt_color_depth color_depth;
-+};
-+
-+struct gpu_info {
-+	uint32_t id;
-+	int fd;
-+	struct igt_collection *set;
-+};
-+
-+static bool has_prime(int fd)
-+{
-+	uint64_t value;
-+	uint64_t mask = DRM_PRIME_CAP_IMPORT | DRM_PRIME_CAP_EXPORT;
-+
-+	if (drmGetCap(fd, DRM_CAP_PRIME, &value))
-+		return false;
-+
-+	return (value & mask) == mask;
-+}
-+
-+static int get_device_info(struct gpu_info gpus[], int num_gpus)
-+{
-+	int cnt;
-+	int xe;
-+	int i;
-+
-+	for (i = 0, cnt = 0 && i < 128; cnt < num_gpus; i++) {
-+		xe = __drm_open_driver_another(i, DRIVER_XE);
-+		if (xe < 0)
-+			break;
-+
-+		/* dma-buf is required */
-+		if (!has_prime(xe) || !blt_has_fast_copy(xe)) {
-+			close(xe);
-+			continue;
-+		}
-+
-+		gpus[cnt].fd = xe;
-+		gpus[cnt].set = xe_get_memory_region_set(xe,
-+							 DRM_XE_MEM_REGION_CLASS_SYSMEM,
-+							 DRM_XE_MEM_REGION_CLASS_VRAM);
-+		cnt++;
-+	}
-+
-+	return cnt;
-+}
-+
-+/**
-+ * test_read - Read an imported buffer from an external GPU via dma-buf
-+ * @ex_gpu: device providing the original object
-+ * @im_gpu: device doing the read
-+ * @ex_reg: the source region to copy from
-+ * @im_reg: the destination region to copy to
-+ *
-+ */
-+static void test_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
-+		      uint32_t ex_reg, uint32_t im_reg)
-+{
-+	struct blt_copy_data im_blt = {};
-+	struct blt_copy_data ex_blt = {};
-+	struct blt_copy_object *dst;
-+	struct blt_copy_object *im_src;
-+	struct blt_copy_object *src;
-+	const uint32_t bpp = 32;
-+	uint64_t im_bb_size = xe_get_default_alignment(im_gpu->fd);
-+	uint64_t ahnd;
-+	uint32_t bb;
-+	uint32_t width = 1024, height = 1024;
-+	int result;
-+	uint32_t vm, exec_queue;
-+	uint32_t ex_xe = ex_gpu->fd;
-+	uint32_t im_xe = im_gpu->fd;
-+	uint32_t ex_src, dmabuf;
-+	uint32_t stride;
-+
-+	struct drm_xe_engine_class_instance inst = {
-+		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-+	};
-+	intel_ctx_t *ctx;
-+
-+	vm = xe_vm_create(im_xe, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-+	exec_queue = xe_exec_queue_create(im_xe, vm, &inst, 0);
-+	ctx = intel_ctx_xe(im_xe, vm, exec_queue, 0, 0, 0);
-+	ahnd = intel_allocator_open_full(im_xe, ctx->vm, 0, 0,
-+					 INTEL_ALLOCATOR_SIMPLE,
-+					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+
-+	blt_copy_init(ex_xe, &ex_blt);
-+	blt_copy_init(im_xe, &im_blt);
-+
-+	src = blt_create_object(&ex_blt, ex_reg, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	dst = blt_create_object(&im_blt, im_reg, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	blt_surface_fill_rect(ex_xe, src, width, height);
-+
-+	dmabuf = prime_handle_to_fd(ex_xe, src->handle);
-+	ex_src = prime_fd_to_handle(im_xe, dmabuf);
-+	im_src = calloc(1, sizeof(*im_src));
-+
-+	stride = width * 4;
-+	blt_set_object(im_src, ex_src, src->size, ex_reg, 0, DEFAULT_PAT_INDEX,
-+		       T_LINEAR, COMPRESSION_DISABLED, 0);
-+	blt_set_geom(im_src, stride, 0, 0, width, height, 0, 0);
-+	igt_assert(im_src->size == dst->size);
-+
-+	im_blt.color_depth = CD_32bit;
-+	blt_set_copy_object(&im_blt.src, im_src);
-+	blt_set_copy_object(&im_blt.dst, dst);
-+
-+	bb = xe_bo_create_flags(im_xe, 0, im_bb_size, im_reg);
-+	blt_set_batch(&im_blt.bb, bb, im_bb_size, im_reg);
-+
-+	blt_fast_copy(im_xe, ctx, NULL, ahnd, &im_blt);
-+
-+	result = memcmp(src->ptr, im_blt.dst.ptr, src->size);
-+
-+	put_offset(ahnd, im_src->handle);
-+	put_offset(ahnd, dst->handle);
-+	put_offset(ahnd, bb);
-+	intel_allocator_bind(ahnd, 0, 0);
-+	blt_destroy_object(im_xe, im_src);
-+	blt_destroy_object(im_xe, dst);
-+	blt_destroy_object(ex_xe, src);
-+	put_ahnd(ahnd);
-+
-+	igt_assert_f(!result, "source and destination surfaces differs!\n");
-+}
-+
-+/**
-+ * test_write - Write an imported buffer to an external GPU via dma-buf
-+ * @ex_gpu: device providing the destination object
-+ * @im_gpu: device doing the write
-+ * @ex_reg: the source region to copy from
-+ * @im_reg: the destination region to copy to
-+ *
-+ */
-+static void test_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
-+		       uint32_t ex_reg, uint32_t im_reg)
-+{
-+	struct blt_copy_data im_blt = {};
-+	struct blt_copy_data ex_blt = {};
-+	struct blt_copy_object *dst;
-+	struct blt_copy_object *im_dst;
-+	struct blt_copy_object *src;
-+	const uint32_t bpp = 32;
-+	uint64_t im_bb_size = xe_get_default_alignment(im_gpu->fd);
-+	uint64_t ahnd;
-+	uint32_t bb;
-+	uint32_t width = 1024, height = 1024;
-+	int result;
-+	uint32_t vm, exec_queue;
-+	uint32_t ex_xe = ex_gpu->fd;
-+	uint32_t im_xe = im_gpu->fd;
-+	uint32_t ex_dst, dmabuf;
-+	uint32_t stride;
-+
-+	struct drm_xe_engine_class_instance inst = {
-+		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-+	};
-+	intel_ctx_t *ctx;
-+
-+	vm = xe_vm_create(im_xe, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-+	exec_queue = xe_exec_queue_create(im_xe, vm, &inst, 0);
-+	ctx = intel_ctx_xe(im_xe, vm, exec_queue, 0, 0, 0);
-+	ahnd = intel_allocator_open_full(im_xe, ctx->vm, 0, 0,
-+					 INTEL_ALLOCATOR_SIMPLE,
-+					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+
-+	blt_copy_init(ex_xe, &ex_blt);
-+	blt_copy_init(im_xe, &im_blt);
-+
-+	dst = blt_create_object(&ex_blt, ex_reg, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	src = blt_create_object(&im_blt, im_reg, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	blt_surface_fill_rect(im_xe, src, width, height);
-+
-+	dmabuf = prime_handle_to_fd(ex_xe, dst->handle);
-+	ex_dst = prime_fd_to_handle(im_xe, dmabuf);
-+	im_dst = calloc(1, sizeof(*im_dst));
-+
-+	stride = width * 4;
-+	blt_set_object(im_dst, ex_dst, src->size, ex_reg, 0, DEFAULT_PAT_INDEX,
-+		       T_LINEAR, COMPRESSION_DISABLED, 0);
-+	blt_set_geom(im_dst, stride, 0, 0, width, height, 0, 0);
-+	igt_assert(im_dst->size == src->size);
-+
-+	im_blt.color_depth = CD_32bit;
-+	blt_set_copy_object(&im_blt.src, src);
-+	blt_set_copy_object(&im_blt.dst, im_dst);
-+
-+	bb = xe_bo_create_flags(im_xe, 0, im_bb_size, im_reg);
-+	blt_set_batch(&im_blt.bb, bb, im_bb_size, im_reg);
-+
-+	blt_fast_copy(im_xe, ctx, NULL, ahnd, &im_blt);
-+
-+	result = memcmp(dst->ptr, im_blt.src.ptr, src->size);
-+
-+	put_offset(ahnd, im_dst->handle);
-+	put_offset(ahnd, dst->handle);
-+	put_offset(ahnd, bb);
-+	intel_allocator_bind(ahnd, 0, 0);
-+	blt_destroy_object(im_xe, src);
-+	blt_destroy_object(im_xe, im_dst);
-+	blt_destroy_object(ex_xe, dst);
-+	put_ahnd(ahnd);
-+
-+	igt_assert_f(!result, "source and destination surfaces differs!\n");
-+}
-+
-+static const char *p2p_path(int ex_reg, struct gpu_info *ex_gpu, struct gpu_info *im_gpu)
-+{
-+	return "-p2p";
-+}
-+
-+static char *region_name(int xe, uint32_t region)
-+{
-+	char *name;
-+	struct drm_xe_query_mem_region *memreg;
-+	int r;
-+	int len = 7;
-+
-+	/* enough for "name%d" * n */
-+	name = malloc(len);
-+	igt_assert(name);
-+
-+	memreg = xe_mem_region(xe, region);
-+
-+	if (XE_IS_CLASS_VRAM(memreg))
-+		r = snprintf(name, len, "%s%d",
-+			     xe_region_name(region),
-+			     memreg->instance);
-+	else
-+		r = snprintf(name, len, "%s",
-+			     xe_region_name(region));
-+
-+	igt_assert(r > 0);
-+
-+	return name;
-+}
-+
-+/**
-+ * gpu_read - Set up a read from the exporting GPU to the importing GPU
-+ * @ex_gpu: GPU that is exporting a buffer for read
-+ * @im_gpu: GPU that is importing and reading the buffer
-+ */
-+static void gpu_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu)
-+{
-+	struct igt_collection *ex_regs, *im_regs;
-+	int ex_reg, im_reg;
-+	char *ex_name, *im_name;
-+	const char *path;
-+
-+	for_each_variation_r(ex_regs, 1, ex_gpu->set) {
-+		ex_reg = igt_collection_get_value(ex_regs, 0);
-+		ex_name = region_name(ex_gpu->fd, ex_reg);
-+
-+		for_each_variation_r(im_regs, 1, im_gpu->set) {
-+			im_reg = igt_collection_get_value(im_regs, 0);
-+			im_name = region_name(im_gpu->fd, im_reg);
-+
-+			path = p2p_path(ex_reg, ex_gpu, im_gpu);
-+			igt_dynamic_f("read-gpuA-%s-gpuB-%s%s", ex_name,
-+				      im_name, path)
-+			test_read(ex_gpu, im_gpu, ex_reg, im_reg);
-+
-+			free(im_name);
-+		}
-+		free(ex_name);
-+	}
-+}
-+
-+/**
-+ * gpu_write - Set up a write from the importing GPU to the exporting GPU
-+ * @ex_gpu: GPU that is exporting a buffer for read
-+ * @im_gpu: GPU that is importing and reading the buffer
-+ */
-+static void gpu_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu)
-+{
-+	struct igt_collection *ex_regs, *im_regs;
-+	int ex_reg, im_reg;
-+	char *ex_name, *im_name;
-+	const char *path;
-+
-+	for_each_variation_r(ex_regs, 1, ex_gpu->set) {
-+		ex_reg = igt_collection_get_value(ex_regs, 0);
-+		ex_name = region_name(ex_gpu->fd, ex_reg);
-+
-+		for_each_variation_r(im_regs, 1, im_gpu->set) {
-+			im_reg = igt_collection_get_value(im_regs, 0);
-+			im_name = region_name(im_gpu->fd, im_reg);
-+
-+			path = p2p_path(ex_reg, ex_gpu, im_gpu);
-+			igt_dynamic_f("write-gpuA-%s-gpuB-%s%s", ex_name,
-+				      im_name, path)
-+			test_write(ex_gpu, im_gpu, ex_reg, im_reg);
-+
-+			free(im_name);
-+		}
-+		free(ex_name);
-+	}
-+}
-+
-+#define DEFAULT_SIZE 0
-+
-+igt_main_args("", NULL, NULL, NULL, NULL)
-+{
-+	struct gpu_info gpus[2];
-+	int gpu_cnt;
-+
-+	igt_fixture {
-+		gpu_cnt = get_device_info(gpus, ARRAY_SIZE(gpus));
-+		igt_skip_on(gpu_cnt < 2);
-+	}
-+
-+	igt_describe("dmabuf gpu-gpu read");
-+	igt_subtest_with_dynamic_f("read")
-+		gpu_read(&gpus[0], &gpus[1]);
-+
-+	igt_describe("dmabuf gpu-gpu write");
-+	igt_subtest_with_dynamic_f("write")
-+		gpu_write(&gpus[0], &gpus[1]);
-+
-+	igt_fixture {
-+		int cnt;
-+
-+		for (cnt = 0; cnt < gpu_cnt; cnt++)
-+			drm_close_driver(gpus[cnt].fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index facf60ccf..514f8ac85 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -302,6 +302,7 @@ intel_xe_progs = [
- 	'xe_module_load',
- 	'xe_noexec_ping_pong',
- 	'xe_pat',
-+	'xe_peer2peer',
- 	'xe_pm',
- 	'xe_pm_residency',
- 	'xe_prime_self_import',
--- 
-2.38.1
+== Summary ==
+
+IGT patchset build failed on latest successful build
+48a47d91b7727215b965690c69d84159c8fb1aa2 Revert "test/xe_spin_batch: Add spin-fixed-duration-with-preempter"
+
+Tail of build.log:
+[632/1665] Compiling C object 'tests/59830eb@@gem_softpin@exe/intel_gem_softpin.c.o'.
+[633/1665] Compiling C object 'tests/vc4/e4667e8@@vc4_dmabuf_poll@exe/vc4_dmabuf_poll.c.o'.
+[634/1665] Compiling C object 'tests/59830eb@@xe_exec_balancer@exe/intel_xe_exec_balancer.c.o'.
+[635/1665] Compiling C object 'tests/v3d/cad21b8@@v3d_mmap@exe/v3d_mmap.c.o'.
+[636/1665] Compiling C object 'tests/59830eb@@kms_chamelium_hpd@exe/chamelium_kms_chamelium_helper.c.o'.
+[637/1665] Compiling C object 'tests/v3d/cad21b8@@v3d_perfmon@exe/v3d_perfmon.c.o'.
+[638/1665] Compiling C object 'tests/vc4/e4667e8@@vc4_lookup_fail@exe/vc4_lookup_fail.c.o'.
+[639/1665] Compiling C object 'tests/59830eb@@kms_chamelium_edid@exe/chamelium_kms_chamelium_helper.c.o'.
+[640/1665] Compiling C object 'tests/59830eb@@kms_chamelium_frames@exe/chamelium_kms_chamelium_helper.c.o'.
+[641/1665] Compiling C object 'tests/vc4/e4667e8@@vc4_tiling@exe/vc4_tiling.c.o'.
+[642/1665] Compiling C object 'tests/59830eb@@xe_pm@exe/intel_xe_pm.c.o'.
+[643/1665] Compiling C object 'tests/vc4/e4667e8@@vc4_wait_seqno@exe/vc4_wait_seqno.c.o'.
+[644/1665] Compiling C object 'tests/vc4/e4667e8@@vc4_label_bo@exe/vc4_label_bo.c.o'.
+[645/1665] Compiling C object 'tests/vc4/e4667e8@@vc4_mmap@exe/vc4_mmap.c.o'.
+[646/1665] Compiling C object 'tests/59830eb@@kms_chamelium_color@exe/kms_color_helper.c.o'.
+[647/1665] Compiling C object 'tests/v3d/cad21b8@@v3d_wait_bo@exe/v3d_wait_bo.c.o'.
+[648/1665] Compiling C object 'tests/59830eb@@xe_query@exe/intel_xe_query.c.o'.
+[649/1665] Compiling C object 'tests/v3d/cad21b8@@v3d_job_submission@exe/v3d_job_submission.c.o'.
+[650/1665] Compiling C object 'tests/vc4/e4667e8@@vc4_wait_bo@exe/vc4_wait_bo.c.o'.
+[651/1665] Compiling C object 'tests/vc4/e4667e8@@vc4_purgeable_bo@exe/vc4_purgeable_bo.c.o'.
+[652/1665] Compiling C object 'tests/v3d/cad21b8@@v3d_submit_csd@exe/v3d_submit_csd.c.o'.
+[653/1665] Compiling C object 'tests/vc4/e4667e8@@vc4_perfmon@exe/vc4_perfmon.c.o'.
+[654/1665] Compiling C object 'tests/59830eb@@xe_exec_reset@exe/intel_xe_exec_reset.c.o'.
+[655/1665] Compiling C object 'tests/vmwgfx/776e741@@vmw_tri@exe/vmw_tri.c.o'.
+[656/1665] Compiling C object 'tests/59830eb@@xe_evict@exe/intel_xe_evict.c.o'.
+[657/1665] Compiling C object 'tests/vmwgfx/776e741@@vmw_mob_stress@exe/vmw_mob_stress.c.o'.
+[658/1665] Compiling C object 'tests/59830eb@@kms_chamelium_edid@exe/chamelium_kms_chamelium_edid.c.o'.
+[659/1665] Compiling C object 'tests/59830eb@@kms_chamelium_audio@exe/chamelium_kms_chamelium_audio.c.o'.
+[660/1665] Compiling C object 'tests/vmwgfx/776e741@@vmw_surface_copy@exe/vmw_surface_copy.c.o'.
+[661/1665] Compiling C object 'tests/59830eb@@xe_pat@exe/intel_xe_pat.c.o'.
+[662/1665] Compiling C object 'tests/59830eb@@gem_exec_balancer@exe/intel_gem_exec_balancer.c.o'.
+[663/1665] Compiling C object 'tests/v3d/cad21b8@@v3d_submit_cl@exe/v3d_submit_cl.c.o'.
+[664/1665] Compiling C object 'tests/59830eb@@kms_chamelium_color@exe/chamelium_kms_chamelium_color.c.o'.
+[665/1665] Compiling C object 'tests/vmwgfx/776e741@@vmw_execution_buffer@exe/vmw_execution_buffer.c.o'.
+[666/1665] Compiling C object 'tests/59830eb@@kms_psr2_sf@exe/intel_kms_psr2_sf.c.o'.
+[667/1665] Compiling C object 'tests/59830eb@@i915_query@exe/intel_i915_query.c.o'.
+[668/1665] Compiling C object 'tests/59830eb@@kms_pm_rpm@exe/intel_kms_pm_rpm.c.o'.
+[669/1665] Compiling C object 'tests/59830eb@@kms_chamelium_hpd@exe/chamelium_kms_chamelium_hpd.c.o'.
+[670/1665] Compiling C object 'tests/59830eb@@xe_intel_bb@exe/intel_xe_intel_bb.c.o'.
+[671/1665] Compiling C object 'tests/59830eb@@xe_exec_threads@exe/intel_xe_exec_threads.c.o'.
+[672/1665] Generating i915-perf-equations with a custom command.
+[673/1665] Compiling C object 'tests/59830eb@@kms_chamelium_frames@exe/chamelium_kms_chamelium_frames.c.o'.
+[674/1665] Compiling C object 'tests/59830eb@@gem_exec_fence@exe/intel_gem_exec_fence.c.o'.
+[675/1665] Compiling C object 'tests/59830eb@@xe_vm@exe/intel_xe_vm.c.o'.
+[676/1665] Compiling C object 'tests/59830eb@@perf_pmu@exe/intel_perf_pmu.c.o'.
+[677/1665] Compiling C object 'tests/59830eb@@kms_frontbuffer_tracking@exe/intel_kms_frontbuffer_tracking.c.o'.
+[678/1665] Compiling C object 'tests/59830eb@@perf@exe/intel_perf.c.o'.
+[679/1665] Compiling C object 'tests/59830eb@@gem_exec_schedule@exe/intel_gem_exec_schedule.c.o'.
+[680/1665] Linking target lib/libigt.so.0.
+ninja: build stopped: subcommand failed.
+
