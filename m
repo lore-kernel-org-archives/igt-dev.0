@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8151141697225516740=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC72910E045
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Dec 2023 11:42:45 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>, "Ch, Sai Gowtham"
+ <sai.gowtham.ch@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Tue, 5 Dec 2023 11:42:39 +0000
+Message-ID: <MW3PR11MB4748A6CC9EC92493AE62CDD0AE85A@MW3PR11MB4748.namprd11.prod.outlook.com>
+References: <20231130135259.2220370-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20231130135259.2220370-1-priyanka.dandamudi@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Tue, 05 Dec 2023 10:28:39 -0000
-Message-ID: <170177211955.24286.12805356945877493573@emeril.freedesktop.org>
-References: <20231201100725.8646-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20231201100725.8646-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgTE5MX0RD?=
- =?utf-8?q?9?=
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/intel/xe_exec_store: Test to
+ check CONDITIONAL_BATCH_BUFFER_END
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,232 +23,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8151141697225516740==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: LNL_DC9
-URL   : https://patchwork.freedesktop.org/series/127180/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_13958 -> IGTPW_10315
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/index.html
-
-Participating hosts (40 -> 38)
-------------------------------
-
-  Missing    (2): fi-snb-2520m fi-pnv-d510 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10315 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - bat-rpls-1:         NOTRUN -> [ABORT][1] ([i915#7978])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * igt@gem_lmem_swapping@basic@lmem0:
-    - bat-atsm-1:         [PASS][2] -> [DMESG-WARN][3] ([i915#9795])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13958/bat-atsm-1/igt@gem_lmem_swapping@basic@lmem0.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/bat-atsm-1/igt@gem_lmem_swapping@basic@lmem0.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-apl-guc:         [PASS][4] -> [INCOMPLETE][5] ([i915#180] / [i915#8585])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13958/fi-apl-guc/igt@i915_pm_rpm@module-reload.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/fi-apl-guc/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-nick:        [PASS][6] -> [ABORT][7] ([i915#9662])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13958/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-kbl-guc:         [PASS][8] -> [FAIL][9] ([IGT#3])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13958/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
-    - bat-rplp-1:         [PASS][10] -> [ABORT][11] ([i915#8668])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13958/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-rpls-1:         [ABORT][12] ([i915#7978] / [i915#9631]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13958/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1:
-    - fi-rkl-11600:       [FAIL][14] ([fdo#103375]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13958/fi-rkl-11600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/fi-rkl-11600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1.html
-
-  
-  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
-  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
-  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
-  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
-  [i915#8585]: https://gitlab.freedesktop.org/drm/intel/issues/8585
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#9631]: https://gitlab.freedesktop.org/drm/intel/issues/9631
-  [i915#9662]: https://gitlab.freedesktop.org/drm/intel/issues/9662
-  [i915#9795]: https://gitlab.freedesktop.org/drm/intel/issues/9795
 
 
-Build changes
--------------
+> -----Original Message-----
+> From: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
+> Sent: Thursday, November 30, 2023 7:23 PM
+> To: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>; Kumar, Janga
+> Rahul <janga.rahul.kumar@intel.com>; Ch, Sai Gowtham
+> <sai.gowtham.ch@intel.com>; igt-dev@lists.freedesktop.org
+> Subject: [PATCH i-g-t] tests/intel/xe_exec_store: Test to check
+> CONDITIONAL_BATCH_BUFFER_END
+>=20
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+>=20
+> Added a basic test to check MI_CONDITIONAL_BATCH_BUFFER_END
+> instruction.
+>=20
+> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> ---
+>  tests/intel/xe_exec_store.c | 45 ++++++++++++++++++++++++++++++++++---
+>  1 file changed, 42 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c in=
+dex
+> 9c14bfd14..66fbacc77 100644
+> --- a/tests/intel/xe_exec_store.c
+> +++ b/tests/intel/xe_exec_store.c
+> @@ -21,6 +21,8 @@
+>   */
+>=20
+>  #define MAX_INSTANCE 9
+> +#define STORE 0
+> +#define COND_BATCH 1
+>=20
+>  struct data {
+>  	uint32_t batch[16];
+> @@ -48,11 +50,38 @@ static void store_dword_batch(struct data *data,
+> uint64_t addr, int value)
+>  	data->addr =3D batch_addr;
+>  }
+>=20
+> +static void cond_batch(struct data *data, uint64_t addr, int value) {
+> +	int b;
+> +	uint64_t batch_offset =3D (char *)&(data->batch) - (char *)data;
+> +	uint64_t batch_addr =3D addr + batch_offset;
+> +	uint64_t sdi_offset =3D (char *)&(data->data) - (char *)data;
+> +	uint64_t sdi_addr =3D addr + sdi_offset;
+> +
+> +	b =3D 0;
+> +	data->batch[b++] =3D MI_ATOMIC | MI_ATOMIC_INC;
+> +	data->batch[b++] =3D sdi_addr;
+> +	data->batch[b++] =3D sdi_addr >> 32;
+> +	data->batch[b++] =3D MI_COND_BATCH_BUFFER_END |
+> MI_DO_COMPARE | 5 << 12 | 2;
+MI_DO_COMPARE is setting 21st bit in the instruction, Does it make any diff=
+erence if we don't add it ?
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7613 -> IGTPW_10315
+> +	data->batch[b++] =3D value;
+> +	data->batch[b++] =3D sdi_addr;
+> +	data->batch[b++] =3D sdi_addr >> 32;
+> +	data->batch[b++] =3D MI_BATCH_BUFFER_START | 1;
+> +	data->batch[b++] =3D lower_32_bits(batch_addr);
+> +	data->batch[b++] =3D upper_32_bits(batch_addr);
+> +	data->batch[b++] =3D MI_BATCH_BUFFER_END;
+MI_BATCH_BUFFER_END might not be needed here as we are trying to END buffer=
+ execution conditionally using MI_COND_BATCH_BUFFER_END
 
-  CI-20190529: 20190529
-  CI_DRM_13958: bc2cf1c63329e388b826fc83b93ba8d723556452 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10315: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/index.html
-  IGT_7613: 378017d8fa63defde11c0b4bc72025c64b70607d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> +	igt_assert(b <=3D ARRAY_SIZE(data->batch));
+> +
+> +	data->addr =3D batch_addr;
+> +}
+> +
+>  /**
+>   * SUBTEST: basic-store
+>   * Description: Basic test to verify store dword.
+> + * SUBTEST: basic-cond-batch
+> + * Description: Basic test to verify cond batch end instruction.
+>   */
+> -static void store(int fd)
+> +static void basic_inst(int fd, int inst_type)
+>  {
+>  	struct drm_xe_sync sync =3D {
+>  		.flags =3D DRM_XE_SYNC_FLAG_SYNCOBJ |
+> DRM_XE_SYNC_FLAG_SIGNAL, @@ -86,7 +115,14 @@ static void store(int fd)
+>=20
+>  	xe_vm_bind_async(fd, vm, hw_engine->gt_id, bo, 0, addr, bo_size,
+> &sync, 1);
+>  	data =3D xe_bo_map(fd, bo, bo_size);
+> -	store_dword_batch(data, addr, value);
+> +
+> +	if (inst_type =3D=3D STORE)
+> +		store_dword_batch(data, addr, value);
+> +	else {
+Use COND_BATCH check to make this function future proof.
 
+> +		/* A random value where it stops at the below value. */
+> +		value =3D 20;
+> +		cond_batch(data, addr, value);
+Validate that the buffer executed in a conditional loop by checking the inc=
+remented address with the value "20" here.
 
-Testlist changes
-----------------
+-Rahul
 
--igt@kms_vrr@seamless-rr-switch
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/index.html
-
---===============8151141697225516740==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>LNL_DC9</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127180/">https://patchwork.freedesktop.org/series/127180/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13958 -&gt; IGTPW_10315</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/index.html</p>
-<h2>Participating hosts (40 -&gt; 38)</h2>
-<p>Missing    (2): fi-snb-2520m fi-pnv-d510 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10315 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic@lmem0:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13958/bat-atsm-1/igt@gem_lmem_swapping@basic@lmem0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/bat-atsm-1/igt@gem_lmem_swapping@basic@lmem0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9795">i915#9795</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13958/fi-apl-guc/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/fi-apl-guc/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8585">i915#8585</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13958/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/fi-bsw-nick/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9662">i915#9662</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13958/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
-<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13958/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13958/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9631">i915#9631</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13958/fi-rkl-11600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/fi-rkl-11600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7613 -&gt; IGTPW_10315</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13958: bc2cf1c63329e388b826fc83b93ba8d723556452 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10315: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/index.html<br />
-  IGT_7613: 378017d8fa63defde11c0b4bc72025c64b70607d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>-igt@kms_vrr@seamless-rr-switch</p>
-
-</body>
-</html>
-
---===============8151141697225516740==--
+> +	}
+>=20
+>  	exec_queue =3D xe_exec_queue_create(fd, vm, hw_engine, 0);
+>  	exec.exec_queue_id =3D exec_queue;
+> @@ -302,7 +338,10 @@ igt_main
+>  	}
+>=20
+>  	igt_subtest("basic-store")
+> -		store(fd);
+> +		basic_inst(fd, STORE);
+> +
+> +	igt_subtest("basic-cond-batch")
+> +		basic_inst(fd, COND_BATCH);
+>=20
+>  	igt_subtest("basic-all") {
+>  		xe_for_each_gt(fd, gt)
+> --
+> 2.25.1
