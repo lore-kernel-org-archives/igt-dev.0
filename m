@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA09810E550
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Dec 2023 21:38:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 56B8210E550
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Dec 2023 21:38:23 +0000 (UTC)
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Tue, 5 Dec 2023 16:38:13 -0500
-Message-ID: <20231205213814.179963-3-rodrigo.vivi@intel.com>
-In-Reply-To: <20231205213814.179963-1-rodrigo.vivi@intel.com>
-References: <20231205213814.179963-1-rodrigo.vivi@intel.com>
+Date: Tue, 5 Dec 2023 16:38:11 -0500
+Message-ID: <20231205213814.179963-1-rodrigo.vivi@intel.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/3] tests/intel/freq: Test throttle basic
- API infra
+Subject: [igt-dev] [PATCH i-g-t 1/3] tests/intel/xe: Align change in the
+ name of frequency sysfs attributes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,80 +23,39 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For now we don't have a reliable way to force PCODE throttling,
-but let's at least check for some sanity on our exposed API.
+Aligns with kernel commit ("drm/xe: Change the name of frequency sysfs attributes")
 
 Cc: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/intel/xe_gt_freq.c | 48 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+ tests/intel/{xe_guc_pc.c => xe_gt_freq.c} | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+ rename tests/intel/{xe_guc_pc.c => xe_gt_freq.c} (98%)
 
-diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
-index 719852530..650c54005 100644
---- a/tests/intel/xe_gt_freq.c
+diff --git a/tests/intel/xe_guc_pc.c b/tests/intel/xe_gt_freq.c
+similarity index 98%
+rename from tests/intel/xe_guc_pc.c
+rename to tests/intel/xe_gt_freq.c
+index 3376e838f..a92833acb 100644
+--- a/tests/intel/xe_guc_pc.c
 +++ b/tests/intel/xe_gt_freq.c
-@@ -68,6 +68,49 @@ static uint32_t get_freq(int fd, int gt_id, const char *freq_name)
- 	return freq;
- }
+@@ -37,7 +37,7 @@ static int set_freq(int fd, int gt_id, const char *freq_name, uint32_t freq)
+ 	char freq_attr[16];
+ 	int gt_fd;
  
-+static uint32_t get_throttle(int fd, int gt_id, const char *throttle_file)
-+{
-+	uint32_t val;
-+	char throttle_attr[40];
-+	int gt_fd;
-+
-+	snprintf(throttle_attr, sizeof(throttle_attr),
-+		 "freq0/throttle/%s", throttle_file);
-+	gt_fd = xe_sysfs_gt_open(fd, gt_id);
-+	igt_assert(gt_fd >= 0);
-+
-+	igt_sysfs_scanf(gt_fd, throttle_attr, "%u", &val);
-+
-+	igt_debug("gt%d/freq0/throttle/%s: %u\n", gt_id, throttle_file, val);
-+
-+	close(gt_fd);
-+	return val;
-+}
-+
-+/**
-+ * SUBTEST: throttle_basic_api
-+ * Description: Test basic throttle API
-+ */
-+
-+static void test_throttle_basic_api(int fd, int gt_id)
-+{
-+	uint32_t status, reasons;
-+
-+	status = get_throttle(fd, gt_id, "status");
-+	reasons = get_throttle(fd, gt_id, "reason_pl1");
-+	reasons |= get_throttle(fd, gt_id, "reason_pl2");
-+        reasons |= get_throttle(fd, gt_id, "reason_pl4");
-+	reasons |= get_throttle(fd, gt_id, "reason_prochot");
-+	reasons |= get_throttle(fd, gt_id, "reason_ratl");
-+	reasons |= get_throttle(fd, gt_id, "reason_thermal");
-+        reasons |= get_throttle(fd, gt_id, "reason_vr_tdc");
-+	reasons |= get_throttle(fd, gt_id, "reason_vr_thermalert");
-+
-+	if (status)
-+		igt_assert(reasons);
-+	else
-+		igt_assert(!reasons);
-+}
+-	snprintf(freq_attr, sizeof(freq_attr), "freq_%s", freq_name);
++	snprintf(freq_attr, sizeof(freq_attr), "%s_freq", freq_name);
+ 	gt_fd = xe_sysfs_gt_open(fd, gt_id);
+ 	igt_assert(gt_fd >= 0);
  
- /**
-  * SUBTEST: freq_basic_api
-@@ -289,6 +332,11 @@ igt_main
- 		stash_max = get_freq(fd, 0, "max");
- 	}
+@@ -55,7 +55,7 @@ static uint32_t get_freq(int fd, int gt_id, const char *freq_name)
+ 	char freq_attr[16];
+ 	int gt_fd;
  
-+	igt_subtest("throttle_basic_api") {
-+		xe_for_each_gt(fd, gt)
-+			test_throttle_basic_api(fd, gt);
-+	}
-+
- 	igt_subtest("freq_basic_api") {
- 		xe_for_each_gt(fd, gt)
- 			test_freq_basic_api(fd, gt);
+-	snprintf(freq_attr, sizeof(freq_attr), "freq_%s", freq_name);
++	snprintf(freq_attr, sizeof(freq_attr), "%s_freq", freq_name);
+ 	gt_fd = xe_sysfs_gt_open(fd, gt_id);
+ 	igt_assert(gt_fd >= 0);
+ 
 -- 
 2.43.0
