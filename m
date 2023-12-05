@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3AE0510E384
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F9D310E54F
  for <igt-dev@lists.freedesktop.org>; Tue,  5 Dec 2023 14:41:27 +0000 (UTC)
 From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Dec 2023 20:06:22 +0530
-Message-Id: <20231205143622.4704-3-krishnaiah.bommu@intel.com>
+Date: Tue,  5 Dec 2023 20:06:21 +0530
+Message-Id: <20231205143622.4704-2-krishnaiah.bommu@intel.com>
 In-Reply-To: <20231205143622.4704-1-krishnaiah.bommu@intel.com>
 References: <20231205143622.4704-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 2/2] drm-uapi/xe: kill xe_wait_user_fence_ioctl
- when exec_queue reset
+Subject: [igt-dev] [PATCH 1/2] drm-uapi/xe: Kill exec_queue_set_property
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,129 +18,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Skipping the GPU mapping(vm_bind) for object, so that exec_queue
-reset will happen and xe_wait_ufence will end return EIO not ETIME
+From: Francois Dugast <francois.dugast@intel.com>
 
-Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Align with commit ("drm/xe/uapi: Kill exec_queue_set_property")
+
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/intel/xe_waitfence.c | 83 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
+ include/drm-uapi/xe_drm.h | 48 +++++++++++----------------------------
+ 1 file changed, 13 insertions(+), 35 deletions(-)
 
-diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-index 3be987954..ac3c64652 100644
---- a/tests/intel/xe_waitfence.c
-+++ b/tests/intel/xe_waitfence.c
-@@ -152,6 +152,9 @@ waitfence(int fd, enum waittype wt)
-  *
-  * SUBTEST: invalid-engine
-  * Description: Check query with invalid engine info returns expected error code
-+ *
-+ * SUBTEST: invalid-exec_queue-wait
-+ * Description: Check xe_wait_ufence will return expected error code while exec_queue reset happen
-  */
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index e2cce951c..590f7b7af 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -105,10 +105,9 @@ struct xe_user_extension {
+ #define DRM_XE_VM_BIND			0x05
+ #define DRM_XE_EXEC_QUEUE_CREATE	0x06
+ #define DRM_XE_EXEC_QUEUE_DESTROY	0x07
+-#define DRM_XE_EXEC_QUEUE_SET_PROPERTY	0x08
+-#define DRM_XE_EXEC_QUEUE_GET_PROPERTY	0x09
+-#define DRM_XE_EXEC			0x0a
+-#define DRM_XE_WAIT_USER_FENCE		0x0b
++#define DRM_XE_EXEC_QUEUE_GET_PROPERTY	0x08
++#define DRM_XE_EXEC			0x09
++#define DRM_XE_WAIT_USER_FENCE		0x0a
+ /* Must be kept compact -- no holes */
  
- static void
-@@ -229,6 +232,83 @@ invalid_engine(int fd)
- 	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EFAULT);
- }
+ #define DRM_IOCTL_XE_DEVICE_QUERY		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_DEVICE_QUERY, struct drm_xe_device_query)
+@@ -860,38 +859,17 @@ struct drm_xe_vm_bind {
+ /* Monitor 64MB contiguous region with 2M sub-granularity */
+ #define DRM_XE_ACC_GRANULARITY_64M 3
  
-+static void
-+invalid_exec_queue_wait(int fd)
-+{
-+	uint32_t bo, b;
-+	uint64_t batch_offset;
-+	uint64_t batch_addr;
-+	uint64_t sdi_offset;
-+	uint64_t sdi_addr;
-+	uint64_t addr = 0x1a0000;
+-/**
+- * struct drm_xe_exec_queue_set_property - exec queue set property
+- *
+- * Same namespace for extensions as drm_xe_exec_queue_create
+- */
+-struct drm_xe_exec_queue_set_property {
+-	/** @extensions: Pointer to the first extension struct, if any */
+-	__u64 extensions;
+-
+-	/** @exec_queue_id: Exec queue ID */
+-	__u32 exec_queue_id;
+-
+-#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY			0
+-#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE		1
+-#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT	2
+-#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_PERSISTENCE		3
+-#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT		4
+-#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_TRIGGER		5
+-#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_NOTIFY		6
+-#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY		7
+-	/** @property: property to set */
+-	__u32 property;
+-
+-	/** @value: property value */
+-	__u64 value;
+-
+-	/** @reserved: Reserved */
+-	__u64 reserved[2];
+-};
+-
+ struct drm_xe_exec_queue_create {
+-#define DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY               0
++#define DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY		0
++#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY		0
++#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE		1
++#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT	2
++#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PERSISTENCE		3
++#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT		4
++#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_TRIGGER		5
++#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_NOTIFY		6
++#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY	7
 +
-+	struct {
-+		uint32_t batch[16];
-+		uint64_t pad;
-+		uint64_t vm_sync;
-+		uint64_t exec_sync;
-+		uint32_t data;
-+	} *data;
-+
-+#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
-+	struct drm_xe_sync sync[1] = {
-+		{ .flags = DRM_XE_SYNC_FLAG_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
-+			.timeline_value = USER_FENCE_VALUE },
-+	};
-+
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(sync),
-+	};
-+
-+	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-+	uint32_t exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
-+	struct drm_xe_wait_user_fence1 wait = {
-+		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
-+		.flags = 0,
-+		.value = 0xaabbaa,
-+		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
-+		.timeout = -1,
-+		.exec_queue_id = exec_queue,
-+	};
-+
-+	bo = xe_bo_create_flags(fd, vm, 0x40000, MY_FLAG);
-+	data = xe_bo_map(fd, bo, 0x40000);
-+
-+	batch_offset = (char *)&data[0].batch - (char *)data;
-+	batch_addr = addr + batch_offset;
-+	sdi_offset = (char *)&data[0].data - (char *)data;
-+	sdi_addr = addr + sdi_offset;
-+
-+	b = 0;
-+	data[0].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+	data[0].batch[b++] = sdi_addr;
-+	data[0].batch[b++] = sdi_addr >> 32;
-+	data[0].batch[b++] = 0xaabbcc;
-+	data[0].batch[b++] = MI_BATCH_BUFFER_END;
-+	igt_assert(b <= ARRAY_SIZE(data[0].batch));
-+
-+	wait.addr = to_user_pointer(&data[0].exec_sync);
-+	exec.exec_queue_id = exec_queue;
-+	exec.address = batch_addr;
-+
-+	xe_exec(fd, &exec);
-+
-+	/**
-+	 * Skipping the GPU mapping(vm_bind) for object, so that exec_queue
-+	 * reset will happen and xe_wait_ufence will end return EIO not ETIME
-+	 */
-+	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EIO);
-+
-+	xe_exec_queue_destroy(fd, exec_queue);
-+
-+	if (bo) {
-+		munmap(data, 0x40000);
-+		gem_close(fd, bo);
-+	}
-+}
-+
+ 	/** @extensions: Pointer to the first extension struct, if any */
+ 	__u64 extensions;
  
- igt_main
- {
-@@ -255,6 +335,9 @@ igt_main
- 	igt_subtest("invalid-engine")
- 		invalid_engine(fd);
- 
-+	igt_subtest("invalid-exec_queue-wait")
-+		invalid_exec_queue_wait(fd);
-+
- 	igt_fixture
- 		drm_close_driver(fd);
- }
 -- 
 2.25.1
