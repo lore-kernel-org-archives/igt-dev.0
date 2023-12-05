@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CF0810E4A4
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Dec 2023 08:16:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 320CF10E4A4
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Dec 2023 08:16:38 +0000 (UTC)
 From: Lukasz Laguna <lukasz.laguna@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Dec 2023 09:16:14 +0100
-Message-Id: <20231205081618.18143-4-lukasz.laguna@intel.com>
+Date: Tue,  5 Dec 2023 09:16:15 +0100
+Message-Id: <20231205081618.18143-5-lukasz.laguna@intel.com>
 In-Reply-To: <20231205081618.18143-1-lukasz.laguna@intel.com>
 References: <20231205081618.18143-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 3/7] lib/igt_sriov_device: add helper for
- checking if VF DRM driver is probed
+Subject: [igt-dev] [PATCH i-g-t v7 4/7] lib/igt_sriov_device: add helpers
+ for operations in different VFs scenarios
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,67 +23,72 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
+Added helpers:
+- for_each_vf and for_each_num_vfs
+- for_random_vf and for_random_num_vfs
+- for_last_vf and for_max_num_vfs
 
-Probe check is based on existence of the DRM subsystem attribute in
-sysfs.
+v2:
+ - document helpers (Michal)
+v3:
+ - add "_sriov_" in helpers name (Kamil)
 
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Signed-off-by: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
 Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 ---
- lib/igt_sriov_device.c | 29 +++++++++++++++++++++++++++++
- lib/igt_sriov_device.h |  1 +
- 2 files changed, 30 insertions(+)
+ lib/igt_sriov_device.h | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
-index 36116058a..c643f47d1 100644
---- a/lib/igt_sriov_device.c
-+++ b/lib/igt_sriov_device.c
-@@ -258,3 +258,32 @@ int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num)
- 
- 	return __drm_open_device(dev_name, DRIVER_ANY);
- }
-+
-+/**
-+ * igt_sriov_is_vf_drm_driver_probed - Check if VF DRM driver is probed
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based to identify single VF)
-+ *
-+ * Verify if DRM driver is bound to VF device. Probe check is based on
-+ * existence of the DRM subsystem attribute in sysfs.
-+ *
-+ * Returns:
-+ * True if VF has DRM driver loaded, false if not.
-+ */
-+bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num)
-+{
-+	char path[PATH_MAX];
-+	int sysfs;
-+	bool ret;
-+
-+	igt_assert(vf_num > 0);
-+
-+	sysfs = igt_sysfs_open(pf);
-+	igt_assert_fd(sysfs);
-+	/* vf_num is 1-based, but virtfn is 0-based */
-+	snprintf(path, sizeof(path), "device/virtfn%u/drm", vf_num - 1);
-+	ret = igt_sysfs_has_attr(sysfs, path);
-+	close(sysfs);
-+
-+	return ret;
-+}
 diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
-index 2baf183fb..ddbda6cd6 100644
+index ddbda6cd6..c442c41a7 100644
 --- a/lib/igt_sriov_device.h
 +++ b/lib/igt_sriov_device.h
-@@ -24,5 +24,6 @@ bool igt_sriov_is_driver_autoprobe_enabled(int pf);
- void igt_sriov_enable_driver_autoprobe(int pf);
- void igt_sriov_disable_driver_autoprobe(int pf);
+@@ -26,4 +26,45 @@ void igt_sriov_disable_driver_autoprobe(int pf);
  int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
-+bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
+ bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
  
++/**
++ * for_each_sriov_vf - Helper for running code on each VF
++ * @__pf_fd: PF device file descriptor
++ * @__vf_num: VFs iterator
++ *
++ * For loop that iterates over all VFs associated with given PF @__pf_fd.
++ */
++#define for_each_sriov_vf(__pf_fd, __vf_num) \
++	for (unsigned int __vf_num = 1, __total_vfs = igt_sriov_get_total_vfs(__pf_fd); \
++	     __vf_num <= __total_vfs; \
++	     ++__vf_num)
++#define for_each_sriov_num_vfs for_each_sriov_vf
++
++/**
++ * for_random_sriov_vf - Helper for running code on random VF
++ * @__pf_fd: PF device file descriptor
++ * @__vf_num: stores random VF
++ *
++ * Helper allows to run code using random VF number (stored in @__vf_num)
++ * picked from the range of all VFs associated with given PF @__pf_fd.
++ */
++#define for_random_sriov_vf(__pf_fd, __vf_num) \
++	for (unsigned int __vf_num = 1 + random() % igt_sriov_get_total_vfs(__pf_fd), __tmp = 0; \
++	     __tmp < 1; \
++	     ++__tmp)
++#define for_random_sriov_num_vfs for_random_sriov_vf
++
++/**
++ * for_last_sriov_vf - Helper for running code on last VF
++ * @__pf_fd: PF device file descriptor
++ * @__vf_num: stores last VF number
++ *
++ * Helper allows to run code using last VF number (stored in @__vf_num)
++ * associated with given PF @__pf_fd.
++ */
++#define for_last_sriov_vf(__pf_fd, __vf_num) \
++	for (unsigned int __vf_num = igt_sriov_get_total_vfs(__pf_fd), __tmp = 0; \
++	     __tmp < 1; \
++	     ++__tmp)
++#define for_max_sriov_num_vfs for_last_sriov_vf
++
  #endif /* __IGT_SRIOV_DEVICE_H__ */
 -- 
 2.40.0
