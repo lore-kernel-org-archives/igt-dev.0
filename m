@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E1FA410E49C
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Dec 2023 08:16:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4037C10E49D
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Dec 2023 08:16:31 +0000 (UTC)
 From: Lukasz Laguna <lukasz.laguna@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Dec 2023 09:16:12 +0100
-Message-Id: <20231205081618.18143-2-lukasz.laguna@intel.com>
+Date: Tue,  5 Dec 2023 09:16:13 +0100
+Message-Id: <20231205081618.18143-3-lukasz.laguna@intel.com>
 In-Reply-To: <20231205081618.18143-1-lukasz.laguna@intel.com>
 References: <20231205081618.18143-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 1/7] lib/igt_sriov_device: add core
- SR-IOV helpers
+Subject: [igt-dev] [PATCH i-g-t v7 2/7] lib/igt_sriov_device: add helper for
+ opening VF device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,20 +25,15 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Katarzyna Dec <katarzyna.dec@intel.com>
 
-Create lib for core SR-IOV (Single Root I/O Virtualization) helpers
-that allow to manage SR-IOV devices.
+Helper opens DRM device node and returns its file descriptor.
 
 v2:
- - change functions description (Michal)
+ - s/drm_open_device/__drm_open_device (Kamil)
+ - combine string with one go (Kamil)
 v3:
- - decipher SR-IOV shortcut in commit message (Kamil)
- - add SR-IOV description in header file (Kamil)
- - remove old r-b and add cc (Kamil)
- - return bool result in functions prefixed with "__" (Kamil)
- - add brief description in functions documentation (Michal)
- - add asserts in helpers (Michal)
+ - change description of __drm_open_device() (Kamil)
 v4:
- - remove unnecessary include (Kamil)
+ - return error on wrong input (!vf_num) instead of assert (Kamil)
 
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
@@ -46,276 +41,150 @@ Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
 Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/igt_sriov_device.c | 213 +++++++++++++++++++++++++++++++++++++++++
- lib/igt_sriov_device.h |  27 ++++++
- lib/meson.build        |   1 +
- 3 files changed, 241 insertions(+)
- create mode 100644 lib/igt_sriov_device.c
- create mode 100644 lib/igt_sriov_device.h
+ lib/drmtest.c          | 22 ++++++++++++++++----
+ lib/drmtest.h          |  1 +
+ lib/igt_sriov_device.c | 47 ++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_sriov_device.h |  1 +
+ 4 files changed, 67 insertions(+), 4 deletions(-)
 
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index f0b97e362..c98754798 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -245,7 +245,21 @@ static void log_opened_device_path(const char *device_path)
+ 	igt_info("Opened device: %s\n", item->path);
+ }
+ 
+-static int open_device(const char *name, unsigned int chipset)
++/**
++ * __drm_open_device:
++ * @name: DRM node name
++ * @chipset: OR'd flags for chipset to be opened
++ *
++ * Open a drm legacy device node with given @name and compatible with given
++ * @chipset flag.
++ *
++ * A special case is the use of the IGT_FORCE_DRIVER environment variable. In
++ * such case, even if opened device is compatible with given @chipset flag, the
++ * function returns error if forced driver is not compatible with @chipset.
++ *
++ * Returns: DRM file descriptor or -1 on error
++ */
++int __drm_open_device(const char *name, unsigned int chipset)
+ {
+ 	const char *forced;
+ 	char dev_name[16] = "";
+@@ -350,7 +364,7 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
+ 		if (_is_already_opened(name, as_idx))
+ 			continue;
+ 
+-		fd = open_device(name, chipset);
++		fd = __drm_open_device(name, chipset);
+ 		if (fd != -1)
+ 			return fd;
+ 	}
+@@ -392,13 +406,13 @@ static int __open_driver_exact(const char *name, unsigned int chipset)
+ {
+ 	int fd;
+ 
+-	fd = open_device(name, chipset);
++	fd = __drm_open_device(name, chipset);
+ 	if (fd != -1)
+ 		return fd;
+ 
+ 	drm_load_module(chipset);
+ 
+-	return open_device(name, chipset);
++	return __drm_open_device(name, chipset);
+ }
+ 
+ /*
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index 909a0c12c..271a93e8b 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -98,6 +98,7 @@ void __set_forced_driver(const char *name);
+  */
+ #define ALIGN_DOWN(x, a)	ALIGN((x) - ((a) - 1), (a))
+ 
++int __drm_open_device(const char *name, unsigned int chipset);
+ void drm_load_module(unsigned int chipset);
+ int drm_open_driver(int chipset);
+ int drm_open_driver_master(int chipset);
 diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
-new file mode 100644
-index 000000000..c5c594c2c
---- /dev/null
+index c5c594c2c..36116058a 100644
+--- a/lib/igt_sriov_device.c
 +++ b/lib/igt_sriov_device.c
-@@ -0,0 +1,213 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright(c) 2023 Intel Corporation. All rights reserved.
-+ */
-+
-+#include <errno.h>
-+
-+#include "igt_core.h"
-+#include "igt_sriov_device.h"
-+#include "igt_sysfs.h"
+@@ -3,8 +3,10 @@
+  * Copyright(c) 2023 Intel Corporation. All rights reserved.
+  */
+ 
++#include <dirent.h>
+ #include <errno.h>
+ 
++#include "drmtest.h"
+ #include "igt_core.h"
+ #include "igt_sriov_device.h"
+ #include "igt_sysfs.h"
+@@ -211,3 +213,48 @@ void igt_sriov_disable_driver_autoprobe(int pf)
+ {
+ 	pf_attr_set_u32(pf,  "device/sriov_drivers_autoprobe", false);
+ }
 +
 +/**
-+ * igt_sriov_is_pf - Check if device is PF
-+ * @device: device file descriptor
++ * igt_sriov_open_vf_drm_device - Open VF DRM device node
++ * @pf: PF device file descriptor
++ * @vf_num: VF number (1-based to identify single VF)
 + *
-+ * Determine if device is PF by checking existence of sriov_totalvfs file.
++ * Open DRM device node for given VF.
 + *
 + * Return:
-+ * True if device is PF, false otherwise.
++ * VF file descriptor or -1 on error.
 + */
-+bool igt_sriov_is_pf(int device)
++int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num)
 +{
-+	int sysfs;
-+	bool ret;
++	char dir_path[PATH_MAX], path[256], dev_name[16];
++	DIR *dir;
++	struct dirent *de;
++	bool found = false;
 +
-+	sysfs = igt_sysfs_open(device);
-+	igt_assert_fd(sysfs);
++	if (!vf_num)
++		return -1;
 +
-+	ret = igt_sysfs_has_attr(sysfs, "device/sriov_totalvfs");
-+	close(sysfs);
++	if (!igt_sysfs_path(pf, path, sizeof(path)))
++		return -1;
++	/* vf_num is 1-based, but virtfn is 0-based */
++	snprintf(dir_path, sizeof(dir_path), "%s/device/virtfn%u/drm", path, vf_num - 1);
 +
-+	return ret;
-+}
++	dir = opendir(dir_path);
++	if (!dir)
++		return -1;
++	while ((de = readdir(dir))) {
++		unsigned int card_num;
 +
-+static bool __pf_attr_get_u32(int pf, const char *attr, uint32_t *value)
-+{
-+	int sysfs;
-+	bool ret;
++		if (sscanf(de->d_name, "card%d", &card_num) == 1) {
++			snprintf(dev_name, sizeof(dev_name), "/dev/dri/card%u", card_num);
++			found = true;
++			break;
++		}
++	}
++	closedir(dir);
 +
-+	igt_assert(igt_sriov_is_pf(pf));
++	if (!found)
++		return -1;
 +
-+	sysfs = igt_sysfs_open(pf);
-+	igt_assert_fd(sysfs);
-+
-+	ret = __igt_sysfs_get_u32(sysfs, attr, value);
-+	close(sysfs);
-+
-+	return ret;
-+}
-+
-+static uint32_t pf_attr_get_u32(int pf, const char *attr)
-+{
-+	uint32_t value;
-+
-+	igt_assert_f(__pf_attr_get_u32(pf, attr, &value),
-+		     "Failed to read %s attribute (%s)\n", attr, strerror(errno));
-+
-+	return value;
-+}
-+
-+static bool __pf_attr_set_u32(int pf, const char *attr, uint32_t value)
-+{
-+	int sysfs;
-+	bool ret;
-+
-+	igt_assert(igt_sriov_is_pf(pf));
-+
-+	sysfs = igt_sysfs_open(pf);
-+	igt_assert_fd(sysfs);
-+
-+	ret = __igt_sysfs_set_u32(sysfs, attr, value);
-+	close(sysfs);
-+
-+	return ret;
-+}
-+
-+static void pf_attr_set_u32(int pf, const char *attr, uint32_t value)
-+{
-+	igt_assert_f(__pf_attr_set_u32(pf, attr, value),
-+		     "Failed to write %u to %s attribute (%s)\n", value, attr, strerror(errno));
-+}
-+
-+/**
-+ * igt_sriov_vfs_supported - Check if VFs are supported
-+ * @pf: PF device file descriptor
-+ *
-+ * Determine VFs support by checking if value of sriov_totalvfs attribute
-+ * corresponding to @pf device is bigger than 0.
-+ *
-+ * Return:
-+ * True if VFs are supported, false otherwise.
-+ */
-+bool igt_sriov_vfs_supported(int pf)
-+{
-+	uint32_t totalvfs;
-+
-+	if (!__pf_attr_get_u32(pf, "device/sriov_totalvfs", &totalvfs))
-+		return false;
-+
-+	return totalvfs > 0;
-+}
-+
-+/**
-+ * igt_sriov_get_totalvfs - Get maximum number of VFs that can be enabled
-+ * @pf: PF device file descriptor
-+ *
-+ * Maximum number of VFs that can be enabled is checked by reading
-+ * sriov_totalvfs attribute corresponding to @pf device.
-+ *
-+ * It asserts on failure.
-+ *
-+ * Return:
-+ * Maximum number of VFs that can be associated with given PF.
-+ */
-+unsigned int igt_sriov_get_total_vfs(int pf)
-+{
-+	return pf_attr_get_u32(pf, "device/sriov_totalvfs");
-+}
-+
-+/**
-+ * igt_sriov_get_numvfs - Get number of enabled VFs
-+ * @pf: PF device file descriptor
-+ *
-+ * Number of enabled VFs is checked by reading sriov_numvfs attribute
-+ * corresponding to @pf device.
-+ *
-+ * It asserts on failure.
-+ *
-+ * Return:
-+ * Number of VFs enabled by given PF.
-+ */
-+unsigned int igt_sriov_get_enabled_vfs(int pf)
-+{
-+	return pf_attr_get_u32(pf, "device/sriov_numvfs");
-+}
-+
-+/**
-+ * igt_sriov_enable_vfs - Enable VFs
-+ * @pf: PF device file descriptor
-+ * @num_vfs: Number of virtual functions to be enabled
-+ *
-+ * Enable VFs by writing @num_vfs to sriov_numvfs attribute corresponding to
-+ * @pf device.
-+ * It asserts on failure.
-+ */
-+void igt_sriov_enable_vfs(int pf, unsigned int num_vfs)
-+{
-+	igt_assert(num_vfs > 0);
-+
-+	igt_debug("Enabling %u VFs\n", num_vfs);
-+	pf_attr_set_u32(pf, "device/sriov_numvfs", num_vfs);
-+}
-+
-+/**
-+ * igt_sriov_disable_vfs - Disable VFs
-+ * @pf: PF device file descriptor
-+ *
-+ * Disable VFs by writing 0 to sriov_numvfs attribute corresponding to @pf
-+ * device.
-+ * It asserts on failure.
-+ */
-+void igt_sriov_disable_vfs(int pf)
-+{
-+	pf_attr_set_u32(pf, "device/sriov_numvfs", 0);
-+}
-+
-+/**
-+ * igt_sriov_is_driver_autoprobe_enabled - Get VF driver autoprobe setting
-+ * @pf: PF device file descriptor
-+ *
-+ * Get current VF driver autoprobe setting by reading sriov_drivers_autoprobe
-+ * attribute corresponding to @pf device.
-+ *
-+ * It asserts on failure.
-+ *
-+ * Return:
-+ * True if autoprobe is enabled, false otherwise.
-+ */
-+bool igt_sriov_is_driver_autoprobe_enabled(int pf)
-+{
-+	return pf_attr_get_u32(pf, "device/sriov_drivers_autoprobe");
-+}
-+
-+/**
-+ * igt_sriov_enable_driver_autoprobe - Enable VF driver autoprobe
-+ * @pf: PF device file descriptor
-+ *
-+ * Enable VF driver autoprobe setting by writing 1 to sriov_drivers_autoprobe
-+ * attribute corresponding to @pf device.
-+ *
-+ * If successful, kernel will automatically bind VFs to a compatible driver
-+ * immediately after they are enabled.
-+ * It asserts on failure.
-+ */
-+void igt_sriov_enable_driver_autoprobe(int pf)
-+{
-+	pf_attr_set_u32(pf,  "device/sriov_drivers_autoprobe", true);
-+}
-+
-+/**
-+ * igt_sriov_disable_driver_autoprobe - Disable VF driver autoprobe
-+ * @pf: PF device file descriptor
-+ *
-+ * Disable VF driver autoprobe setting by writing 0 to sriov_drivers_autoprobe
-+ * attribute corresponding to @pf device.
-+ *
-+ * During VFs enabling driver won't be bound to VFs.
-+ * It asserts on failure.
-+ */
-+void igt_sriov_disable_driver_autoprobe(int pf)
-+{
-+	pf_attr_set_u32(pf,  "device/sriov_drivers_autoprobe", false);
++	return __drm_open_device(dev_name, DRIVER_ANY);
 +}
 diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
-new file mode 100644
-index 000000000..63359d57c
---- /dev/null
+index 63359d57c..2baf183fb 100644
+--- a/lib/igt_sriov_device.h
 +++ b/lib/igt_sriov_device.h
-@@ -0,0 +1,27 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright(c) 2023 Intel Corporation. All rights reserved.
-+ */
-+
-+#ifndef __IGT_SRIOV_DEVICE_H__
-+#define __IGT_SRIOV_DEVICE_H__
-+
-+/* Library for managing SR-IOV (Single Root I/O Virtualization)
-+ * devices.
-+ *
-+ * SR-IOV is a specification that allows a single PCIe physical
-+ * device to appear as a physical function (PF) and multiple virtual
-+ * functions (VFs) to the operating system.
-+ */
-+
-+bool igt_sriov_is_pf(int device);
-+bool igt_sriov_vfs_supported(int pf);
-+unsigned int igt_sriov_get_total_vfs(int pf);
-+unsigned int igt_sriov_get_enabled_vfs(int pf);
-+void igt_sriov_enable_vfs(int pf, unsigned int num_vfs);
-+void igt_sriov_disable_vfs(int pf);
-+bool igt_sriov_is_driver_autoprobe_enabled(int pf);
-+void igt_sriov_enable_driver_autoprobe(int pf);
-+void igt_sriov_disable_driver_autoprobe(int pf);
-+
-+#endif /* __IGT_SRIOV_DEVICE_H__ */
-diff --git a/lib/meson.build b/lib/meson.build
-index 48466a2e9..0fc11b26c 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -38,6 +38,7 @@ lib_sources = [
- 	'igt_primes.c',
- 	'igt_pci.c',
- 	'igt_rand.c',
-+	'igt_sriov_device.c',
- 	'igt_stats.c',
- 	'igt_syncobj.c',
- 	'igt_sysfs.c',
+@@ -23,5 +23,6 @@ void igt_sriov_disable_vfs(int pf);
+ bool igt_sriov_is_driver_autoprobe_enabled(int pf);
+ void igt_sriov_enable_driver_autoprobe(int pf);
+ void igt_sriov_disable_driver_autoprobe(int pf);
++int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
+ 
+ #endif /* __IGT_SRIOV_DEVICE_H__ */
 -- 
 2.40.0
