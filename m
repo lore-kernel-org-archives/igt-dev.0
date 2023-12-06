@@ -1,22 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A68410E049
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 04:40:13 +0000 (UTC)
-From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
-To: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>, "Ch, Sai Gowtham"
- <sai.gowtham.ch@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Wed, 6 Dec 2023 04:40:03 +0000
-Message-ID: <CH3PR11MB84344B8AA1FBC94165B988CD8D84A@CH3PR11MB8434.namprd11.prod.outlook.com>
-References: <20231130135259.2220370-1-priyanka.dandamudi@intel.com>
- <MW3PR11MB4748A6CC9EC92493AE62CDD0AE85A@MW3PR11MB4748.namprd11.prod.outlook.com>
-In-Reply-To: <MW3PR11MB4748A6CC9EC92493AE62CDD0AE85A@MW3PR11MB4748.namprd11.prod.outlook.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CBC8010E049
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 04:44:55 +0000 (UTC)
+Message-ID: <3dcb72ab-9053-41f9-9d74-dd4f9664e872@intel.com>
+Date: Wed, 6 Dec 2023 10:14:36 +0530
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20231205213814.179963-1-rodrigo.vivi@intel.com>
+ <20231205213814.179963-3-rodrigo.vivi@intel.com>
+From: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>
+In-Reply-To: <20231205213814.179963-3-rodrigo.vivi@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/intel/xe_exec_store: Test to
- check CONDITIONAL_BATCH_BUFFER_END
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests/intel/freq: Test throttle
+ basic API infra
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,141 +27,88 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
+On 12/6/2023 3:08 AM, Rodrigo Vivi wrote:
+> For now we don't have a reliable way to force PCODE throttling,
+> but let's at least check for some sanity on our exposed API.
+>
+> Cc: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> ---
+>   tests/intel/xe_gt_freq.c | 48 ++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 48 insertions(+)
+>
+> diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
+> index 719852530..650c54005 100644
+> --- a/tests/intel/xe_gt_freq.c
+> +++ b/tests/intel/xe_gt_freq.c
+> @@ -68,6 +68,49 @@ static uint32_t get_freq(int fd, int gt_id, const char *freq_name)
+>   	return freq;
+>   }
+>   
+> +static uint32_t get_throttle(int fd, int gt_id, const char *throttle_file)
+> +{
+> +	uint32_t val;
+> +	char throttle_attr[40];
+> +	int gt_fd;
+> +
+> +	snprintf(throttle_attr, sizeof(throttle_attr),
+> +		 "freq0/throttle/%s", throttle_file);
+> +	gt_fd = xe_sysfs_gt_open(fd, gt_id);
+> +	igt_assert(gt_fd >= 0);
+> +
+> +	igt_sysfs_scanf(gt_fd, throttle_attr, "%u", &val);
+> +
+> +	igt_debug("gt%d/freq0/throttle/%s: %u\n", gt_id, throttle_file, val);
+> +
+> +	close(gt_fd);
+> +	return val;
+> +}
+> +
+> +/**
+> + * SUBTEST: throttle_basic_api
+> + * Description: Test basic throttle API
+> + */
+> +
+> +static void test_throttle_basic_api(int fd, int gt_id)
+> +{
+> +	uint32_t status, reasons;
+> +
+> +	status = get_throttle(fd, gt_id, "status");
+> +	reasons = get_throttle(fd, gt_id, "reason_pl1");
+> +	reasons |= get_throttle(fd, gt_id, "reason_pl2");
+> +        reasons |= get_throttle(fd, gt_id, "reason_pl4");
+> +	reasons |= get_throttle(fd, gt_id, "reason_prochot");
+> +	reasons |= get_throttle(fd, gt_id, "reason_ratl");
+> +	reasons |= get_throttle(fd, gt_id, "reason_thermal");
+> +        reasons |= get_throttle(fd, gt_id, "reason_vr_tdc");
+> +	reasons |= get_throttle(fd, gt_id, "reason_vr_thermalert");
+> +
+> +	if (status)
+> +		igt_assert(reasons);
+> +	else
+> +		igt_assert(!reasons);
+> +}
 
-> -----Original Message-----
-> From: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>
-> Sent: Tuesday, December 5, 2023 5:13 PM
-> To: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>; Ch, Sai
-> Gowtham <sai.gowtham.ch@intel.com>; igt-dev@lists.freedesktop.org
-> Subject: RE: [PATCH i-g-t] tests/intel/xe_exec_store: Test to check
-> CONDITIONAL_BATCH_BUFFER_END
->=20
->=20
->=20
-> > -----Original Message-----
-> > From: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
-> > Sent: Thursday, November 30, 2023 7:23 PM
-> > To: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>; Kumar, Janga
-> > Rahul <janga.rahul.kumar@intel.com>; Ch, Sai Gowtham
-> > <sai.gowtham.ch@intel.com>; igt-dev@lists.freedesktop.org
-> > Subject: [PATCH i-g-t] tests/intel/xe_exec_store: Test to check
-> > CONDITIONAL_BATCH_BUFFER_END
-> >
-> > From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> >
-> > Added a basic test to check MI_CONDITIONAL_BATCH_BUFFER_END
-> > instruction.
-> >
-> > Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> > Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> > Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> > ---
-> >  tests/intel/xe_exec_store.c | 45
-> > ++++++++++++++++++++++++++++++++++---
-> >  1 file changed, 42 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-> > index
-> > 9c14bfd14..66fbacc77 100644
-> > --- a/tests/intel/xe_exec_store.c
-> > +++ b/tests/intel/xe_exec_store.c
-> > @@ -21,6 +21,8 @@
-> >   */
-> >
-> >  #define MAX_INSTANCE 9
-> > +#define STORE 0
-> > +#define COND_BATCH 1
-> >
-> >  struct data {
-> >  	uint32_t batch[16];
-> > @@ -48,11 +50,38 @@ static void store_dword_batch(struct data *data,
-> > uint64_t addr, int value)
-> >  	data->addr =3D batch_addr;
-> >  }
-> >
-> > +static void cond_batch(struct data *data, uint64_t addr, int value) {
-> > +	int b;
-> > +	uint64_t batch_offset =3D (char *)&(data->batch) - (char *)data;
-> > +	uint64_t batch_addr =3D addr + batch_offset;
-> > +	uint64_t sdi_offset =3D (char *)&(data->data) - (char *)data;
-> > +	uint64_t sdi_addr =3D addr + sdi_offset;
-> > +
-> > +	b =3D 0;
-> > +	data->batch[b++] =3D MI_ATOMIC | MI_ATOMIC_INC;
-> > +	data->batch[b++] =3D sdi_addr;
-> > +	data->batch[b++] =3D sdi_addr >> 32;
-> > +	data->batch[b++] =3D MI_COND_BATCH_BUFFER_END |
-> > MI_DO_COMPARE | 5 << 12 | 2;
-> MI_DO_COMPARE is setting 21st bit in the instruction, Does it make any
-> difference if we don't add it ?
->=20
-> > +	data->batch[b++] =3D value;
-> > +	data->batch[b++] =3D sdi_addr;
-> > +	data->batch[b++] =3D sdi_addr >> 32;
-> > +	data->batch[b++] =3D MI_BATCH_BUFFER_START | 1;
-> > +	data->batch[b++] =3D lower_32_bits(batch_addr);
-> > +	data->batch[b++] =3D upper_32_bits(batch_addr);
-> > +	data->batch[b++] =3D MI_BATCH_BUFFER_END;
-> MI_BATCH_BUFFER_END might not be needed here as we are trying to END
-> buffer execution conditionally using MI_COND_BATCH_BUFFER_END
-> Will look into it, and update it if required.
--Priyanka
-> > +	igt_assert(b <=3D ARRAY_SIZE(data->batch));
-> > +
-> > +	data->addr =3D batch_addr;
-> > +}
-> > +
-> >  /**
-> >   * SUBTEST: basic-store
-> >   * Description: Basic test to verify store dword.
-> > + * SUBTEST: basic-cond-batch
-> > + * Description: Basic test to verify cond batch end instruction.
-> >   */
-> > -static void store(int fd)
-> > +static void basic_inst(int fd, int inst_type)
-> >  {
-> >  	struct drm_xe_sync sync =3D {
-> >  		.flags =3D DRM_XE_SYNC_FLAG_SYNCOBJ |
-> DRM_XE_SYNC_FLAG_SIGNAL, @@
-> > -86,7 +115,14 @@ static void store(int fd)
-> >
-> >  	xe_vm_bind_async(fd, vm, hw_engine->gt_id, bo, 0, addr, bo_size,
-> > &sync, 1);
-> >  	data =3D xe_bo_map(fd, bo, bo_size);
-> > -	store_dword_batch(data, addr, value);
-> > +
-> > +	if (inst_type =3D=3D STORE)
-> > +		store_dword_batch(data, addr, value);
-> > +	else {
-> Use COND_BATCH check to make this function future proof.
->=20
-> > +		/* A random value where it stops at the below value. */
-> > +		value =3D 20;
-> > +		cond_batch(data, addr, value);
-> Validate that the buffer executed in a conditional loop by checking the
-> incremented address with the value "20" here.
->=20
-> -Rahul
+Hi Rodrigo,
 
-This validation is already present in the test in the next lines. So, no ne=
-ed to add it.
--Priyanka
->=20
-> > +	}
-> >
-> >  	exec_queue =3D xe_exec_queue_create(fd, vm, hw_engine, 0);
-> >  	exec.exec_queue_id =3D exec_queue;
-> > @@ -302,7 +338,10 @@ igt_main
-> >  	}
-> >
-> >  	igt_subtest("basic-store")
-> > -		store(fd);
-> > +		basic_inst(fd, STORE);
-> > +
-> > +	igt_subtest("basic-cond-batch")
-> > +		basic_inst(fd, COND_BATCH);
-> >
-> >  	igt_subtest("basic-all") {
-> >  		xe_for_each_gt(fd, gt)
-> > --
-> > 2.25.1
+Some weird alignment issues above ?
+
+Otherwise LGTM.
+
+Reviewed-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+
+>   
+>   /**
+>    * SUBTEST: freq_basic_api
+> @@ -289,6 +332,11 @@ igt_main
+>   		stash_max = get_freq(fd, 0, "max");
+>   	}
+>   
+> +	igt_subtest("throttle_basic_api") {
+> +		xe_for_each_gt(fd, gt)
+> +			test_throttle_basic_api(fd, gt);
+> +	}
+> +
+>   	igt_subtest("freq_basic_api") {
+>   		xe_for_each_gt(fd, gt)
+>   			test_freq_basic_api(fd, gt);
