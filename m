@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2698E10E02C
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 17:24:04 +0000 (UTC)
-From: "Bommu, Krishnaiah" <krishnaiah.bommu@intel.com>
-To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
-Date: Wed, 6 Dec 2023 17:23:43 +0000
-Message-ID: <DM4PR11MB5293BBD727FDF15428C92AA29D84A@DM4PR11MB5293.namprd11.prod.outlook.com>
-References: <20231206144452.19745-1-krishnaiah.bommu@intel.com>
- <20231206144452.19745-2-krishnaiah.bommu@intel.com>
- <ZXCpmPTieKBeE387@intel.com>
-In-Reply-To: <ZXCpmPTieKBeE387@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/alternative;
+ boundary="===============3728264484845846076=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v4 1/2] drm-uapi/xe: add exec_queue_id member
- to drm_xe_wait_user_fence structure
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bommu, Krishnaiah" <krishnaiah.bommu@intel.com>
+Date: Wed, 06 Dec 2023 17:25:03 -0000
+Message-ID: <170188350384.26426.4469012799606919834@emeril.freedesktop.org>
+References: <20231206144452.19745-1-krishnaiah.bommu@intel.com>
+In-Reply-To: <20231206144452.19745-1-krishnaiah.bommu@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgUkZDOiBk?=
+ =?utf-8?q?rm-uapi/xe=3A_add_exec=5Fqueue=5Fid_member_to_drm=5Fxe=5Fwait?=
+ =?utf-8?q?=5Fuser=5Ffence_structure_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,791 +18,340 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============3728264484845846076==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: RFC: drm-uapi/xe: add exec_queue_id member to drm_xe_wait_user_fence structure (rev4)
+URL   : https://patchwork.freedesktop.org/series/127364/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13988 -> IGTPW_10354
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/index.html
+
+Participating hosts (37 -> 37)
+------------------------------
+
+  Additional (1): bat-dg1-5 
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10354 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-dg1-5:          NOTRUN -> [ABORT][1] ([i915#8213])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@gem_mmap@basic:
+    - bat-dg1-5:          NOTRUN -> [SKIP][2] ([i915#4083])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@gem_mmap@basic.html
+
+  * igt@gem_tiled_fence_blits@basic:
+    - bat-dg1-5:          NOTRUN -> [SKIP][3] ([i915#4077]) +2 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@gem_tiled_fence_blits@basic.html
+
+  * igt@gem_tiled_pread_basic:
+    - bat-dg1-5:          NOTRUN -> [SKIP][4] ([i915#4079]) +1 other test skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-dg1-5:          NOTRUN -> [SKIP][5] ([i915#6621])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@i915_pm_rps@basic-api.html
+
+  * igt@kms_addfb_basic@basic-x-tiled-legacy:
+    - bat-dg1-5:          NOTRUN -> [SKIP][6] ([i915#4212]) +7 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_addfb_basic@basic-x-tiled-legacy.html
+
+  * igt@kms_addfb_basic@basic-y-tiled-legacy:
+    - bat-dg1-5:          NOTRUN -> [SKIP][7] ([i915#4215])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - bat-dg1-5:          NOTRUN -> [SKIP][8] ([i915#4103] / [i915#4213]) +1 other test skip
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-dg1-5:          NOTRUN -> [SKIP][9] ([i915#3555] / [i915#3840])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-dg1-5:          NOTRUN -> [SKIP][10] ([fdo#109285])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - bat-dg1-5:          NOTRUN -> [SKIP][11] ([i915#433])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - bat-dg1-5:          NOTRUN -> [SKIP][12] ([i915#5354])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_psr@psr_primary_mmap_gtt:
+    - bat-dg1-5:          NOTRUN -> [SKIP][13] ([i915#9673] / [i915#9732]) +3 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_psr@psr_primary_mmap_gtt.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-dg1-5:          NOTRUN -> [SKIP][14] ([i915#3555])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-read:
+    - bat-dg1-5:          NOTRUN -> [SKIP][15] ([i915#3708]) +3 other tests skip
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@prime_vgem@basic-fence-read.html
+
+  * igt@prime_vgem@basic-gtt:
+    - bat-dg1-5:          NOTRUN -> [SKIP][16] ([i915#3708] / [i915#4077]) +1 other test skip
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@prime_vgem@basic-gtt.html
+
+  
+#### Warnings ####
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc:
+    - bat-mtlp-6:         [SKIP][17] -> [SKIP][18] ([i915#9792]) +3 other tests skip
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13988/bat-mtlp-6/igt@kms_pipe_crc_basic@nonblocking-crc.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-mtlp-6/igt@kms_pipe_crc_basic@nonblocking-crc.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - bat-mtlp-6:         [SKIP][19] ([i915#3708]) -> [SKIP][20] ([i915#3708] / [i915#9792])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13988/bat-mtlp-6/igt@prime_vgem@basic-fence-flip.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-mtlp-6/igt@prime_vgem@basic-fence-flip.html
+
+  
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
+  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
+  [i915#433]: https://gitlab.freedesktop.org/drm/intel/issues/433
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#8213]: https://gitlab.freedesktop.org/drm/intel/issues/8213
+  [i915#9673]: https://gitlab.freedesktop.org/drm/intel/issues/9673
+  [i915#9732]: https://gitlab.freedesktop.org/drm/intel/issues/9732
+  [i915#9792]: https://gitlab.freedesktop.org/drm/intel/issues/9792
 
 
-> -----Original Message-----
-> From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> Sent: Wednesday, December 6, 2023 10:34 PM
-> To: Bommu, Krishnaiah <krishnaiah.bommu@intel.com>
-> Cc: igt-dev@lists.freedesktop.org
-> Subject: Re: [igt-dev] [PATCH v4 1/2] drm-uapi/xe: add exec_queue_id
-> member to drm_xe_wait_user_fence structure
->=20
-> On Wed, Dec 06, 2023 at 08:14:50PM +0530, Bommu Krishnaiah wrote:
-> > remove the num_engines/instances members from
-> drm_xe_wait_user_fence
-> > structure and add a exec_queue_id member
-> >
-> > Right now this is only checking if the engine list is sane and nothing
-> > else. In the end every operation with this IOCTL is a soft check.
-> > So, let's formalize that and only use this IOCTL to wait on the fence.
-> >
-> > exec_queue_id member will help to user space to get proper error code
-> > from kernel while in exec_queue reset
-> >
-> > Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > Cc: Francois Dugast <francois.dugast@intel.com>
-> > ---
-> >  include/drm-uapi/xe_drm.h          | 16 ++----
->=20
-> Since you are touching the header file it would be good if you could add =
-a
-> mention to the commit message of which kernel patch you were when you
-> aligned this header.
->=20
-> Something like xe_drm.h aligns with kernel commit ("drm/xe/uapi: Return
-> correct error code for xe_wait_user_fence_ioctl")
->=20
-> (no need to add the commit hash since it is still volatile in drm-xe-next=
-)
->=20
-> Also ensure that you do not copy the header directly, but always make it
-> from the kernel and then copy the 'built' one.
->=20
-> make headers_install  INSTALL_HDR_PATH=3D/tmp/blah cp
-> /tmp/blah/include/drm/xe_drm.h ./include/drm-uapi/xe_drm.h
+Build changes
+-------------
 
-I will update in next version
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7625 -> IGTPW_10354
 
->=20
->=20
-> >  lib/xe/xe_ioctl.c                  | 42 +-------------
-> >  lib/xe/xe_ioctl.h                  |  6 +-
-> >  tests/intel/xe_evict.c             |  4 +-
-> >  tests/intel/xe_exec_balancer.c     | 12 ++--
-> >  tests/intel/xe_exec_compute_mode.c | 12 ++--
-> >  tests/intel/xe_exec_fault_mode.c   | 14 ++---
-> >  tests/intel/xe_exec_reset.c        |  6 +-
-> >  tests/intel/xe_exec_threads.c      | 12 ++--
-> >  tests/intel/xe_waitfence.c         | 88 ++++++++++++++----------------
-> >  10 files changed, 82 insertions(+), 130 deletions(-)
-> >
-> > diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> > index 590f7b7af..ceaca3991 100644
-> > --- a/include/drm-uapi/xe_drm.h
-> > +++ b/include/drm-uapi/xe_drm.h
-> > @@ -1024,8 +1024,7 @@ struct drm_xe_wait_user_fence {
-> >  	/** @op: wait operation (type of comparison) */
-> >  	__u16 op;
-> >
-> > -#define DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP	(1 << 0)	/* e.g. Wait
-> on VM bind */
-> > -#define DRM_XE_UFENCE_WAIT_FLAG_ABSTIME	(1 << 1)
-> > +#define DRM_XE_UFENCE_WAIT_FLAG_ABSTIME	(1 << 0)
-> >  	/** @flags: wait flags */
-> >  	__u16 flags;
-> >
-> > @@ -1059,16 +1058,13 @@ struct drm_xe_wait_user_fence {
-> >  	__s64 timeout;
-> >
-> >  	/**
-> > -	 * @num_engines: number of engine instances to wait on, must be
-> zero
-> > -	 * when DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP set
-> > +	 * @exec_queue_id: exec_queue_id returned from
-> xe_exec_queue_create_ioctl
-> > +	 * exec_queue_id is help to find exec_queue reset status
-> >  	 */
-> > -	__u64 num_engines;
-> > +	__u32 exec_queue_id;
-> >
-> > -	/**
-> > -	 * @instances: user pointer to array of
-> drm_xe_engine_class_instance to
-> > -	 * wait on, must be NULL when
-> DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP set
-> > -	 */
-> > -	__u64 instances;
-> > +	/** @reserved: Reserved */
->=20
-> please fix the alignments and pad doc as Francois already pointed out and
-> then when that is finalized, import the result here as mentioned above.
+  CI-20190529: 20190529
+  CI_DRM_13988: 6ae23377ae459d8506ecdd2f538bfee2f52652f6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10354: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/index.html
+  IGT_7625: f40c67d84e142095ac6215be154e1f3710f26cba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
-I will update in next version
 
->=20
-> > +	__u32 pad2;
-> >
-> >  	/** @reserved: Reserved */
-> >  	__u64 reserved[2];
-> > diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c index
-> > c91bf25c4..87e2db5b4 100644
-> > --- a/lib/xe/xe_ioctl.c
-> > +++ b/lib/xe/xe_ioctl.c
-> > @@ -458,18 +458,16 @@ void xe_exec_wait(int fd, uint32_t exec_queue,
-> > uint64_t addr)  }
-> >
-> >  int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
-> > -		       struct drm_xe_engine_class_instance *eci,
-> > -		       int64_t timeout)
-> > +		       uint32_t exec_queue, int64_t timeout)
-> >  {
-> >  	struct drm_xe_wait_user_fence wait =3D {
-> >  		.addr =3D to_user_pointer(addr),
-> >  		.op =3D DRM_XE_UFENCE_WAIT_OP_EQ,
-> > -		.flags =3D !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP : 0,
-> > +		.flags =3D 0,
-> >  		.value =3D value,
-> >  		.mask =3D DRM_XE_UFENCE_WAIT_MASK_U64,
-> >  		.timeout =3D timeout,
-> > -		.num_engines =3D eci ? 1 :0,
-> > -		.instances =3D eci ? to_user_pointer(eci) : 0,
-> > +		.exec_queue_id =3D exec_queue,
-> >  	};
-> >
-> >  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE,
-> &wait),
-> > 0); @@ -477,40 +475,6 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr,
-> uint64_t value,
-> >  	return wait.timeout;
-> >  }
-> >
-> > -/**
-> > - * xe_wait_ufence_abstime:
-> > - * @fd: xe device fd
-> > - * @addr: address of value to compare
-> > - * @value: expected value (equal) in @address
-> > - * @eci: engine class instance
-> > - * @timeout: absolute time when wait expire
-> > - *
-> > - * Function compares @value with memory pointed by @addr until they
-> are equal.
-> > - *
-> > - * Returns elapsed time in nanoseconds if user fence was signalled.
-> > - */
-> > -int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
-> > -			       struct drm_xe_engine_class_instance *eci,
-> > -			       int64_t timeout)
-> > -{
-> > -	struct drm_xe_wait_user_fence wait =3D {
-> > -		.addr =3D to_user_pointer(addr),
-> > -		.op =3D DRM_XE_UFENCE_WAIT_OP_EQ,
-> > -		.flags =3D !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP |
-> DRM_XE_UFENCE_WAIT_FLAG_ABSTIME : 0,
-> > -		.value =3D value,
-> > -		.mask =3D DRM_XE_UFENCE_WAIT_MASK_U64,
-> > -		.timeout =3D timeout,
-> > -		.num_engines =3D eci ? 1 : 0,
-> > -		.instances =3D eci ? to_user_pointer(eci) : 0,
-> > -	};
-> > -	struct timespec ts;
-> > -
-> > -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE,
-> &wait), 0);
-> > -	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &ts), 0);
-> > -
-> > -	return ts.tv_sec * 1e9 + ts.tv_nsec;
-> > -}
->=20
-> Well, I believe it would be better this movement in a separated patch.
-ok
->=20
-> > -
-> >  void xe_force_gt_reset(int fd, int gt)  {
-> >  	char reset_string[128];
-> > diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h index
-> > 32b34b15a..186544a34 100644
-> > --- a/lib/xe/xe_ioctl.h
-> > +++ b/lib/xe/xe_ioctl.h
-> > @@ -89,11 +89,9 @@ void xe_exec_sync(int fd, uint32_t exec_queue,
-> uint64_t addr,
-> >  		  struct drm_xe_sync *sync, uint32_t num_syncs);  void
-> > xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);  int64_t
-> > xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
-> > -		       struct drm_xe_engine_class_instance *eci,
-> > -		       int64_t timeout);
-> > +		       uint32_t exec_queue,int64_t timeout);
-> >  int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
-> > -			       struct drm_xe_engine_class_instance *eci,
-> > -			       int64_t timeout);
-> > +			       uint32_t exec_queue, int64_t timeout);
-> >  void xe_force_gt_reset(int fd, int gt);
-> >
-> >  #endif /* XE_IOCTL_H */
-> > diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c index
-> > 89dc46fae..12fbaf586 100644
-> > --- a/tests/intel/xe_evict.c
-> > +++ b/tests/intel/xe_evict.c
-> > @@ -317,7 +317,7 @@ test_evict_cm(int fd, struct
-> drm_xe_engine_class_instance *eci,
-> >  			}
-> >  #define TWENTY_SEC	MS_TO_NS(20000)
-> >  			xe_wait_ufence(fd, &data[i].vm_sync,
-> USER_FENCE_VALUE,
-> > -				       NULL, TWENTY_SEC);
-> > +				       0, TWENTY_SEC);
-> >  		}
-> >  		sync[0].addr =3D addr + (char *)&data[i].exec_sync -
-> >  			(char *)data;
-> > @@ -352,7 +352,7 @@ test_evict_cm(int fd, struct
-> drm_xe_engine_class_instance *eci,
-> >  		data =3D xe_bo_map(fd, __bo,
-> >  				 ALIGN(sizeof(*data) * n_execs, 0x1000));
-> >  		xe_wait_ufence(fd, &data[i].exec_sync,
-> USER_FENCE_VALUE,
-> > -			       NULL, TWENTY_SEC);
-> > +			       exec_queues[i], TWENTY_SEC);
-> >  		igt_assert_eq(data[i].data, 0xc0ffee);
-> >  	}
-> >  	munmap(data, ALIGN(sizeof(*data) * n_execs, 0x1000)); diff --git
-> > a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-> > index 79ff65e89..0a02c6767 100644
-> > --- a/tests/intel/xe_exec_balancer.c
-> > +++ b/tests/intel/xe_exec_balancer.c
-> > @@ -483,7 +483,7 @@ test_cm(int fd, int gt, int class, int n_exec_queue=
-s,
-> int n_execs,
-> >  					 bo_size, sync, 1);
-> >
-> >  #define ONE_SEC	MS_TO_NS(1000)
-> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-> ONE_SEC);
-> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
-> ONE_SEC);
-> >  	data[0].vm_sync =3D 0;
-> >
-> >  	for (i =3D 0; i < n_execs; i++) {
-> > @@ -514,7 +514,7 @@ test_cm(int fd, int gt, int class, int
-> > n_exec_queues, int n_execs,
-> >
-> >  		if (flags & REBIND && i + 1 !=3D n_execs) {
-> >  			xe_wait_ufence(fd, &data[i].exec_sync,
-> USER_FENCE_VALUE,
-> > -				       NULL, ONE_SEC);
-> > +				        exec_queues[e], ONE_SEC);
-> >  			xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size,
-> NULL,
-> >  					   0);
-> >
-> > @@ -529,7 +529,7 @@ test_cm(int fd, int gt, int class, int n_exec_queue=
-s,
-> int n_execs,
-> >  							 addr, bo_size, sync,
-> >  							 1);
-> >  			xe_wait_ufence(fd, &data[0].vm_sync,
-> USER_FENCE_VALUE,
-> > -				       NULL, ONE_SEC);
-> > +				       0, ONE_SEC);
-> >  			data[0].vm_sync =3D 0;
-> >  		}
-> >
-> > @@ -542,7 +542,7 @@ test_cm(int fd, int gt, int class, int n_exec_queue=
-s,
-> int n_execs,
-> >  				 * an invalidate.
-> >  				 */
-> >  				xe_wait_ufence(fd, &data[i].exec_sync,
-> > -					       USER_FENCE_VALUE, NULL,
-> ONE_SEC);
-> > +					       USER_FENCE_VALUE,
-> exec_queues[e], ONE_SEC);
-> >  				igt_assert_eq(data[i].data, 0xc0ffee);
-> >  			} else if (i * 2 !=3D n_execs) {
-> >  				/*
-> > @@ -571,7 +571,7 @@ test_cm(int fd, int gt, int class, int
-> > n_exec_queues, int n_execs,
-> >
-> >  	j =3D flags & INVALIDATE && n_execs ? n_execs - 1 : 0;
-> >  	for (i =3D j; i < n_execs; i++)
-> > -		xe_wait_ufence(fd, &data[i].exec_sync,
-> USER_FENCE_VALUE, NULL,
-> > +		xe_wait_ufence(fd, &data[i].exec_sync,
-> USER_FENCE_VALUE,
-> > +exec_queues[i],
-> >  			       ONE_SEC);
-> >
-> >  	/* Wait for all execs to complete */ @@ -580,7 +580,7 @@
-> test_cm(int
-> > fd, int gt, int class, int n_exec_queues, int n_execs,
-> >
-> >  	sync[0].addr =3D to_user_pointer(&data[0].vm_sync);
-> >  	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
-> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-> ONE_SEC);
-> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
-> ONE_SEC);
-> >
-> >  	for (i =3D (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
-> >  	     i < n_execs; i++)
-> > diff --git a/tests/intel/xe_exec_compute_mode.c
-> > b/tests/intel/xe_exec_compute_mode.c
-> > index 7d3004d65..e8497a520 100644
-> > --- a/tests/intel/xe_exec_compute_mode.c
-> > +++ b/tests/intel/xe_exec_compute_mode.c
-> > @@ -171,7 +171,7 @@ test_exec(int fd, struct
-> > drm_xe_engine_class_instance *eci,
-> >
-> >  	fence_timeout =3D igt_run_in_simulation() ? HUNDRED_SEC :
-> ONE_SEC;
-> >
-> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
-> >  		       fence_timeout);
-> >  	data[0].vm_sync =3D 0;
-> >
-> > @@ -198,7 +198,7 @@ test_exec(int fd, struct
-> > drm_xe_engine_class_instance *eci,
-> >
-> >  		if (flags & REBIND && i + 1 !=3D n_execs) {
-> >  			xe_wait_ufence(fd, &data[i].exec_sync,
-> USER_FENCE_VALUE,
-> > -				       NULL, fence_timeout);
-> > +				       exec_queues[e], fence_timeout);
-> >  			xe_vm_unbind_async(fd, vm, bind_exec_queues[e],
-> 0,
-> >  					   addr, bo_size, NULL, 0);
-> >
-> > @@ -214,7 +214,7 @@ test_exec(int fd, struct
-> drm_xe_engine_class_instance *eci,
-> >  							 addr, bo_size, sync,
-> >  							 1);
-> >  			xe_wait_ufence(fd, &data[0].vm_sync,
-> USER_FENCE_VALUE,
-> > -				       NULL, fence_timeout);
-> > +				       0, fence_timeout);
-> >  			data[0].vm_sync =3D 0;
-> >  		}
-> >
-> > @@ -227,7 +227,7 @@ test_exec(int fd, struct
-> drm_xe_engine_class_instance *eci,
-> >  				 * an invalidate.
-> >  				 */
-> >  				xe_wait_ufence(fd, &data[i].exec_sync,
-> > -					       USER_FENCE_VALUE, NULL,
-> > +					       USER_FENCE_VALUE,
-> exec_queues[e],
-> >  					       fence_timeout);
-> >  				igt_assert_eq(data[i].data, 0xc0ffee);
-> >  			} else if (i * 2 !=3D n_execs) {
-> > @@ -257,7 +257,7 @@ test_exec(int fd, struct
-> > drm_xe_engine_class_instance *eci,
-> >
-> >  	j =3D flags & INVALIDATE ? n_execs - 1 : 0;
-> >  	for (i =3D j; i < n_execs; i++)
-> > -		xe_wait_ufence(fd, &data[i].exec_sync,
-> USER_FENCE_VALUE, NULL,
-> > +		xe_wait_ufence(fd, &data[i].exec_sync,
-> USER_FENCE_VALUE,
-> > +exec_queues[i],
-> >  			       fence_timeout);
-> >
-> >  	/* Wait for all execs to complete */ @@ -267,7 +267,7 @@
-> > test_exec(int fd, struct drm_xe_engine_class_instance *eci,
-> >  	sync[0].addr =3D to_user_pointer(&data[0].vm_sync);
-> >  	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr,
-> bo_size,
-> >  			   sync, 1);
-> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
-> >  		       fence_timeout);
-> >
-> >  	for (i =3D j; i < n_execs; i++)
-> > diff --git a/tests/intel/xe_exec_fault_mode.c
-> > b/tests/intel/xe_exec_fault_mode.c
-> > index ee7cbb604..27921f47a 100644
-> > --- a/tests/intel/xe_exec_fault_mode.c
-> > +++ b/tests/intel/xe_exec_fault_mode.c
-> > @@ -195,14 +195,14 @@ test_exec(int fd, struct
-> drm_xe_engine_class_instance *eci,
-> >  	}
-> >
-> >  #define ONE_SEC	MS_TO_NS(1000)
-> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-> ONE_SEC);
-> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
-> ONE_SEC);
-> >  	data[0].vm_sync =3D 0;
-> >
-> >  	if (flags & PREFETCH) {
-> >  		/* Should move to system memory */
-> >  		xe_vm_prefetch_async(fd, vm, bind_exec_queues[0], 0,
-> addr,
-> >  				     bo_size, sync, 1, 0);
-> > -		xe_wait_ufence(fd, &data[0].vm_sync,
-> USER_FENCE_VALUE, NULL,
-> > +		xe_wait_ufence(fd, &data[0].vm_sync,
-> USER_FENCE_VALUE, 0,
-> >  			       ONE_SEC);
-> >  		data[0].vm_sync =3D 0;
-> >  	}
-> > @@ -230,7 +230,7 @@ test_exec(int fd, struct
-> > drm_xe_engine_class_instance *eci,
-> >
-> >  		if (flags & REBIND && i + 1 !=3D n_execs) {
-> >  			xe_wait_ufence(fd, &data[i].exec_sync,
-> USER_FENCE_VALUE,
-> > -				       NULL, ONE_SEC);
-> > +				       exec_queues[e], ONE_SEC);
-> >  			xe_vm_unbind_async(fd, vm, bind_exec_queues[e],
-> 0,
-> >  					   addr, bo_size, NULL, 0);
-> >
-> > @@ -246,7 +246,7 @@ test_exec(int fd, struct
-> drm_xe_engine_class_instance *eci,
-> >  							 addr, bo_size, sync,
-> >  							 1);
-> >  			xe_wait_ufence(fd, &data[0].vm_sync,
-> USER_FENCE_VALUE,
-> > -				       NULL, ONE_SEC);
-> > +				       0, ONE_SEC);
-> >  			data[0].vm_sync =3D 0;
-> >  		}
-> >
-> > @@ -259,7 +259,7 @@ test_exec(int fd, struct
-> drm_xe_engine_class_instance *eci,
-> >  				 * an invalidate.
-> >  				 */
-> >  				xe_wait_ufence(fd, &data[i].exec_sync,
-> > -					       USER_FENCE_VALUE, NULL,
-> ONE_SEC);
-> > +					       USER_FENCE_VALUE,
-> exec_queues[e], ONE_SEC);
-> >  				igt_assert_eq(data[i].data, 0xc0ffee);
-> >  			} else if (i * 2 !=3D n_execs) {
-> >  				/*
-> > @@ -290,13 +290,13 @@ test_exec(int fd, struct
-> drm_xe_engine_class_instance *eci,
-> >  		j =3D flags & INVALIDATE ? n_execs - 1 : 0;
-> >  		for (i =3D j; i < n_execs; i++)
-> >  			xe_wait_ufence(fd, &data[i].exec_sync,
-> > -				       USER_FENCE_VALUE, NULL, ONE_SEC);
-> > +				       USER_FENCE_VALUE, exec_queues[i],
-> ONE_SEC);
-> >  	}
-> >
-> >  	sync[0].addr =3D to_user_pointer(&data[0].vm_sync);
-> >  	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr,
-> bo_size,
-> >  			   sync, 1);
->=20
-> just to confirm... we don't need to get the bind_exec_queues there right?=
-!
-Here I can use the bind_exec_queues for vm_bind instead of '0' below
->=20
-> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-> ONE_SEC);
-> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
-> ONE_SEC);
-> >
-> >  	if (!(flags & INVALID_FAULT)) {
-> >  		for (i =3D j; i < n_execs; i++)
-> > diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-> > index edfd27fe0..e133706ee 100644
-> > --- a/tests/intel/xe_exec_reset.c
-> > +++ b/tests/intel/xe_exec_reset.c
-> > @@ -564,7 +564,7 @@ test_compute_mode(int fd, struct
-> drm_xe_engine_class_instance *eci,
-> >  	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
-> >
-> >  #define THREE_SEC	MS_TO_NS(3000)
-> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-> THREE_SEC);
-> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
-> > +THREE_SEC);
-> >  	data[0].vm_sync =3D 0;
-> >
-> >  	for (i =3D 0; i < n_execs; i++) {
-> > @@ -618,11 +618,11 @@ test_compute_mode(int fd, struct
-> > drm_xe_engine_class_instance *eci,
-> >
-> >  	for (i =3D 1; i < n_execs; i++)
-> >  		xe_wait_ufence(fd, &data[i].exec_sync,
-> USER_FENCE_VALUE,
-> > -			       NULL, THREE_SEC);
-> > +			       exec_queues[i], THREE_SEC);
-> >
-> >  	sync[0].addr =3D to_user_pointer(&data[0].vm_sync);
-> >  	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
-> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-> THREE_SEC);
-> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
-> > +THREE_SEC);
->=20
-> why do you pick '0' here and 'exec_queue' in other places in this same co=
-de?
-For vm_bind we didn't have any exec_queue, because of this I used "0"
->=20
-> >
-> >  	for (i =3D 1; i < n_execs; i++)
-> >  		igt_assert_eq(data[i].data, 0xc0ffee); diff --git
-> > a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c index
-> > fcb926698..f8450a844 100644
-> > --- a/tests/intel/xe_exec_threads.c
-> > +++ b/tests/intel/xe_exec_threads.c
-> > @@ -331,7 +331,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t
-> > addr, uint64_t userptr,
-> >
-> >  	fence_timeout =3D igt_run_in_simulation() ? THIRTY_SEC : THREE_SEC;
-> >
-> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-> fence_timeout);
-> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
-> > +fence_timeout);
-> >  	data[0].vm_sync =3D 0;
-> >
-> >  	for (i =3D 0; i < n_execs; i++) {
-> > @@ -359,7 +359,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t
-> addr, uint64_t userptr,
-> >  			for (j =3D i - 0x20; j <=3D i; ++j)
-> >  				xe_wait_ufence(fd, &data[j].exec_sync,
-> >  					       USER_FENCE_VALUE,
-> > -					       NULL, fence_timeout);
-> > +					       exec_queues[e], fence_timeout);
-> >  			xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size,
-> >  					   NULL, 0);
-> >
-> > @@ -374,7 +374,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t
-> addr, uint64_t userptr,
-> >  							 addr, bo_size, sync,
-> >  							 1);
-> >  			xe_wait_ufence(fd, &data[0].vm_sync,
-> USER_FENCE_VALUE,
-> > -				       NULL, fence_timeout);
-> > +				       0, fence_timeout);
-> >  			data[0].vm_sync =3D 0;
-> >  		}
-> >
-> > @@ -389,7 +389,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t
-> addr, uint64_t userptr,
-> >  				for (j =3D i =3D=3D 0x20 ? 0 : i - 0x1f; j <=3D i; ++j)
-> >  					xe_wait_ufence(fd,
-> &data[j].exec_sync,
-> >  						       USER_FENCE_VALUE,
-> > -						       NULL, fence_timeout);
-> > +						       exec_queues[e],
-> fence_timeout);
-> >  				igt_assert_eq(data[i].data, 0xc0ffee);
-> >  			} else if (i * 2 !=3D n_execs) {
-> >  				/*
-> > @@ -421,7 +421,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t
-> addr, uint64_t userptr,
-> >  	j =3D flags & INVALIDATE ?
-> >  		(flags & RACE ? n_execs / 2 + 1 : n_execs - 1) : 0;
-> >  	for (i =3D j; i < n_execs; i++)
-> > -		xe_wait_ufence(fd, &data[i].exec_sync,
-> USER_FENCE_VALUE, NULL,
-> > +		xe_wait_ufence(fd, &data[i].exec_sync,
-> USER_FENCE_VALUE,
-> > +exec_queues[i],
-> >  			       fence_timeout);
-> >
-> >  	/* Wait for all execs to complete */ @@ -430,7 +430,7 @@
-> > test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t
-> > userptr,
-> >
-> >  	sync[0].addr =3D to_user_pointer(&data[0].vm_sync);
-> >  	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
-> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-> fence_timeout);
-> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
-> > +fence_timeout);
-> >
-> >  	for (i =3D j; i < n_execs; i++)
-> >  		igt_assert_eq(data[i].data, 0xc0ffee); diff --git
-> > a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c index
-> > 3be987954..0bd7e5dce 100644
-> > --- a/tests/intel/xe_waitfence.c
-> > +++ b/tests/intel/xe_waitfence.c
-> > @@ -37,22 +37,51 @@ static void do_bind(int fd, uint32_t vm, uint32_t
-> > bo, uint64_t offset,  }
-> >
-> >  static int64_t wait_with_eci_abstime(int fd, uint64_t *addr, uint64_t =
-value,
-> > -				     struct drm_xe_engine_class_instance *eci,
-> > -				     int64_t timeout)
-> > +				     uint32_t exec_queue, int64_t timeout)
-> >  {
-> >  	struct drm_xe_wait_user_fence wait =3D {
-> >  		.addr =3D to_user_pointer(addr),
-> >  		.op =3D DRM_XE_UFENCE_WAIT_OP_EQ,
-> > -		.flags =3D !eci ? 0 : DRM_XE_UFENCE_WAIT_FLAG_ABSTIME,
-> > +		.flags =3D !exec_queue ? 0 :
-> DRM_XE_UFENCE_WAIT_FLAG_ABSTIME,
-> >  		.value =3D value,
-> >  		.mask =3D DRM_XE_UFENCE_WAIT_MASK_U64,
-> >  		.timeout =3D timeout,
-> > -		.num_engines =3D eci ? 1 : 0,
-> > -		.instances =3D eci ? to_user_pointer(eci) : 0,
-> > +		.exec_queue_id =3D exec_queue,
-> > +	};
-> > +	struct timespec ts;
-> > +
-> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE,
-> &wait), 0);
-> > +	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &ts), 0);
-> > +
-> > +	return ts.tv_sec * 1e9 + ts.tv_nsec; }
-> > +
-> > +/**
-> > + * xe_wait_ufence_abstime:
-> > + * @fd: xe device fd
-> > + * @addr: address of value to compare
-> > + * @value: expected value (equal) in @address
-> > + * @exec_queue: exec_queue id
-> > + * @timeout: absolute time when wait expire
-> > + *
-> > + * Function compares @value with memory pointed by @addr until they
-> are equal.
-> > + *
-> > + * Returns elapsed time in nanoseconds if user fence was signalled.
-> > + */
-> > +int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
-> > +			       uint32_t exec_queue, int64_t timeout) {
-> > +	struct drm_xe_wait_user_fence wait =3D {
-> > +		.addr =3D to_user_pointer(addr),
-> > +		.op =3D DRM_XE_UFENCE_WAIT_OP_EQ,
-> > +		.flags =3D !exec_queue ?
-> DRM_XE_UFENCE_WAIT_FLAG_ABSTIME : 0,
-> > +		.value =3D value,
-> > +		.mask =3D DRM_XE_UFENCE_WAIT_MASK_U64,
-> > +		.timeout =3D timeout,
-> > +		.exec_queue_id =3D exec_queue,
-> >  	};
-> >  	struct timespec ts;
-> >
-> > -	igt_assert(eci);
-> >  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE,
-> &wait), 0);
-> >  	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &ts), 0);
-> >
-> > @@ -82,7 +111,6 @@ enum waittype {
-> >  static void
-> >  waitfence(int fd, enum waittype wt)
-> >  {
-> > -	struct drm_xe_engine *engine =3D NULL;
-> >  	struct timespec ts;
-> >  	int64_t current, signalled;
-> >  	uint32_t bo_1;
-> > @@ -111,15 +139,15 @@ waitfence(int fd, enum waittype wt)
-> >  	do_bind(fd, vm, bo_7, 0, 0xeffff0000, 0x10000, 7);
-> >
-> >  	if (wt =3D=3D RELTIME) {
-> > -		timeout =3D xe_wait_ufence(fd, &wait_fence, 7, NULL,
-> MS_TO_NS(10));
-> > +		timeout =3D xe_wait_ufence(fd, &wait_fence, 7, 0,
-> MS_TO_NS(10));
-> >  		igt_debug("wait type: RELTIME - timeout: %ld, timeout left:
-> %ld\n",
-> >  			  MS_TO_NS(10), timeout);
-> >  	} else if (wt =3D=3D ENGINE) {
-> > -		engine =3D xe_engine(fd, 1);
-> > +		uint32_t exec_queue =3D xe_exec_queue_create_class(fd,
-> vm,
-> > +DRM_XE_ENGINE_CLASS_COPY);
-> >  		clock_gettime(CLOCK_MONOTONIC, &ts);
-> >  		current =3D ts.tv_sec * 1e9 + ts.tv_nsec;
-> >  		timeout =3D current + MS_TO_NS(10);
-> > -		signalled =3D wait_with_eci_abstime(fd, &wait_fence, 7,
-> &engine->instance, timeout);
-> > +		signalled =3D wait_with_eci_abstime(fd, &wait_fence, 7,
-> exec_queue,
-> > +timeout);
-> >  		igt_debug("wait type: ENGINE ABSTIME - timeout: %" PRId64
-> >  			  ", signalled: %" PRId64
-> >  			  ", elapsed: %" PRId64 "\n",
-> > @@ -128,7 +156,7 @@ waitfence(int fd, enum waittype wt)
-> >  		clock_gettime(CLOCK_MONOTONIC, &ts);
-> >  		current =3D ts.tv_sec * 1e9 + ts.tv_nsec;
-> >  		timeout =3D current + MS_TO_NS(10);
-> > -		signalled =3D xe_wait_ufence_abstime(fd, &wait_fence, 7,
-> NULL, timeout);
-> > +		signalled =3D xe_wait_ufence_abstime(fd, &wait_fence, 7, 0,
-> timeout);
-> >  		igt_debug("wait type: ABSTIME - timeout: %" PRId64
-> >  			  ", signalled: %" PRId64
-> >  			  ", elapsed: %" PRId64 "\n",
-> > @@ -149,9 +177,6 @@ waitfence(int fd, enum waittype wt)
-> >   *
-> >   * SUBTEST: invalid-ops
-> >   * Description: Check query with invalid ops returns expected error
-> > code
-> > - *
-> > - * SUBTEST: invalid-engine
-> > - * Description: Check query with invalid engine info returns expected =
-error
-> code
-> >   */
-> >
-> >  static void
-> > @@ -166,8 +191,7 @@ invalid_flag(int fd)
-> >  		.value =3D 1,
-> >  		.mask =3D DRM_XE_UFENCE_WAIT_MASK_U64,
-> >  		.timeout =3D -1,
-> > -		.num_engines =3D 0,
-> > -		.instances =3D 0,
-> > +		.exec_queue_id =3D 0,
-> >  	};
-> >
-> >  	uint32_t vm =3D xe_vm_create(fd,
-> DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT,
-> > 0); @@ -191,8 +215,7 @@ invalid_ops(int fd)
-> >  		.value =3D 1,
-> >  		.mask =3D DRM_XE_UFENCE_WAIT_MASK_U64,
-> >  		.timeout =3D 1,
-> > -		.num_engines =3D 0,
-> > -		.instances =3D 0,
-> > +		.exec_queue_id =3D 0,
-> >  	};
-> >
-> >  	uint32_t vm =3D xe_vm_create(fd,
-> DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT,
-> > 0); @@ -204,32 +227,6 @@ invalid_ops(int fd)
-> >  	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait,
-> EINVAL);  }
-> >
-> > -static void
-> > -invalid_engine(int fd)
-> > -{
-> > -	uint32_t bo;
-> > -
-> > -	struct drm_xe_wait_user_fence wait =3D {
-> > -		.addr =3D to_user_pointer(&wait_fence),
-> > -		.op =3D DRM_XE_UFENCE_WAIT_OP_EQ,
-> > -		.flags =3D 0,
-> > -		.value =3D 1,
-> > -		.mask =3D DRM_XE_UFENCE_WAIT_MASK_U64,
-> > -		.timeout =3D -1,
-> > -		.num_engines =3D 1,
-> > -		.instances =3D 0,
-> > -	};
-> > -
-> > -	uint32_t vm =3D xe_vm_create(fd,
-> DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-> > -
-> > -	bo =3D xe_bo_create(fd, vm, 0x40000, vram_if_possible(fd, 0), 0);
-> > -
-> > -	do_bind(fd, vm, bo, 0, 0x200000, 0x40000, 1);
-> > -
-> > -	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait,
-> EFAULT);
-> > -}
-> > -
->=20
-> why are you removing this?
-> should be in a separate patch as well
->
-I will keep this for now and remove later
- Krishna
-> > -
-> >  igt_main
-> >  {
-> >  	int fd;
-> > @@ -252,9 +249,6 @@ igt_main
-> >  	igt_subtest("invalid-ops")
-> >  		invalid_ops(fd);
-> >
-> > -	igt_subtest("invalid-engine")
-> > -		invalid_engine(fd);
-> > -
-> >  	igt_fixture
-> >  		drm_close_driver(fd);
-> >  }
-> > --
-> > 2.25.1
-> >
+Testlist changes
+----------------
+
++igt@xe_waitfence@invalid-exec_queue-wait
+-igt@xe_waitfence@invalid-engine
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/index.html
+
+--===============3728264484845846076==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>RFC: drm-uapi/xe: add exec_queue_id member to drm_xe_wait_user_fence structure (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127364/">https://patchwork.freedesktop.org/series/127364/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13988 -&gt; IGTPW_10354</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/index.html</p>
+<h2>Participating hosts (37 -&gt; 37)</h2>
+<p>Additional (1): bat-dg1-5 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10354 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8213">i915#8213</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_mmap@basic:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4083">i915#4083</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_fence_blits@basic:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@gem_tiled_fence_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4079">i915#4079</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-x-tiled-legacy:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_addfb_basic@basic-x-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4212">i915#4212</a>) +7 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4215">i915#4215</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4213">i915#4213</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/433">i915#433</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@basic-brightness:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr_primary_mmap_gtt:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_psr@psr_primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9673">i915#9673</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9732">i915#9732</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-read:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-gtt:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-dg1-5/igt@prime_vgem@basic-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13988/bat-mtlp-6/igt@kms_pipe_crc_basic@nonblocking-crc.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-mtlp-6/igt@kms_pipe_crc_basic@nonblocking-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-flip:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13988/bat-mtlp-6/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/bat-mtlp-6/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7625 -&gt; IGTPW_10354</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13988: 6ae23377ae459d8506ecdd2f538bfee2f52652f6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10354: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10354/index.html<br />
+  IGT_7625: f40c67d84e142095ac6215be154e1f3710f26cba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@xe_waitfence@invalid-exec_queue-wait<br />
+-igt@xe_waitfence@invalid-engine</p>
+
+</body>
+</html>
+
+--===============3728264484845846076==--
