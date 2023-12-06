@@ -1,26 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 050C010E0D1
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 10:52:10 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.246.34.73])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id D52AA580C9B
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 02:52:09 -0800 (PST)
-Received: from maurocar by linux.intel.com with local (Exim 4.96.2)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1rApVg-000U2y-0R
- for igt-dev@lists.freedesktop.org; Wed, 06 Dec 2023 11:52:08 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF06910E0C2
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 11:02:26 +0000 (UTC)
+Date: Wed, 6 Dec 2023 12:02:22 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  6 Dec 2023 11:51:30 +0100
-Message-ID: <20231206105206.115463-2-mauro.chehab@linux.intel.com>
-In-Reply-To: <20231206105206.115463-1-mauro.chehab@linux.intel.com>
-References: <20231206105206.115463-1-mauro.chehab@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20231206120222.3c34a552@maurocar-mobl2>
+In-Reply-To: <20231130150923.17707-1-kamil.konieczny@linux.intel.com>
+References: <20231130150923.17707-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/1] intel/xe_media_fill.c: address a
- documentation warning
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] runner/resultgen: Fix subtest runtimes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,43 +19,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Piotr Kira <piotr.kira@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+On Thu, 30 Nov 2023 16:09:23 +0100
+Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 
-Currently, this warning is happening when building IGT:
-	Warning: igt@xe_media_fill@media-fill Description documentation is missing
+> From: Piotr Kira <piotr.kira@intel.com>
+> 
+> Runtimes for single subtest are not included in results json object
+> after switching to socket communication. Make times for both subtests
+> and dynamic subtests when using comms.
+> 
+> v2: added GitLab issue number, added Petri to Cc (Kamil)
+>   reformat so it could be applied (Kamil)
+> 
+> Cc: Petri Latvala <adrinael@adrinael.net>
+> Fixes: 9d889fa6b8f0 ("runner: Use socket communications")
+> Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/132
+> Signed-off-by: Piotr Kira <piotr.kira@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-The documentation is there, but not for the subtests. Address it
-by moving it to the right place while adding a description for the
-test, as other subtests could be added there in the future.
+Didn't test it, but LGTM.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/intel/xe_media_fill.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-diff --git a/tests/intel/xe_media_fill.c b/tests/intel/xe_media_fill.c
-index 6b8494537038..ddda1b535ba0 100644
---- a/tests/intel/xe_media_fill.c
-+++ b/tests/intel/xe_media_fill.c
-@@ -30,12 +30,13 @@
-  * Category: Hardware building block
-  * Sub-category: Media
-  * Functionality: fill surface with media block
-- * Description: Basic test for the media_fill() function,
-- *              a very simple workload for the Media pipeline.
-+ * Description: Basic tests for the media_fill() function.
-  * Feature: media
-  * Test category: functionality test
-  *
-  * SUBTEST: media-fill
-+ * Description: Basic test for the media_fill() function,
-+ *              a very simple workload for the Media pipeline.
-  */
- 
- IGT_TEST_DESCRIPTION("Basic test for the media_fill() function, a very simple"
--- 
-2.43.0
+> ---
+>  runner/resultgen.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/runner/resultgen.c b/runner/resultgen.c
+> index b00bb6ba5..63f5b26d7 100644
+> --- a/runner/resultgen.c
+> +++ b/runner/resultgen.c
+> @@ -1262,6 +1262,9 @@ struct comms_context
+>  	char *subtestresult;
+>  	char *dynamicsubtestresult;
+>  
+> +	double subtest_execution_time;
+> +	double dynamic_subtest_execution_time;
+> +
+>  	char *cmdline;
+>  	int exitcode;
+>  
+> @@ -1321,6 +1324,7 @@ static void comms_finish_subtest(struct comms_context *context)
+>  	if (context->subtestresult == NULL)
+>  		context->subtestresult = strdup("incomplete");
+>  	set_result(context->current_test, context->subtestresult);
+> +	add_runtime(context->current_test, context->subtest_execution_time);
+>  
+>  	free(context->subtestresult);
+>  	context->subtestresult = NULL;
+> @@ -1343,6 +1347,7 @@ static void comms_finish_dynamic_subtest(struct comms_context *context)
+>  	if (context->dynamicsubtestresult == NULL)
+>  		context->dynamicsubtestresult = strdup("incomplete");
+>  	set_result(context->current_dynamic_subtest, context->dynamicsubtestresult);
+> +	add_runtime(context->current_dynamic_subtest, context->dynamic_subtest_execution_time);
+>  
+>  	free(context->dynamicsubtestresult);
+>  	context->dynamicsubtestresult = NULL;
+> @@ -1617,6 +1622,7 @@ static bool comms_handle_subtest_result(const struct runnerpacket *packet,
+>  				    strlen(helper.subtestresult.result),
+>  				    &mappedresult, NULL);
+>  		context->subtestresult = strdup(mappedresult);
+> +		context->subtest_execution_time = strtod(helper.subtestresult.timeused, NULL);
+>  	}
+>  
+>  	context->state = STATE_BETWEEN_SUBTESTS;
+> @@ -1757,6 +1763,7 @@ static bool comms_handle_dynamic_subtest_result(const struct runnerpacket *packe
+>  				    strlen(helper.dynamicsubtestresult.result),
+>  				    &mappedresult, NULL);
+>  		context->dynamicsubtestresult = strdup(mappedresult);
+> +		context->dynamic_subtest_execution_time = strtod(helper.dynamicsubtestresult.timeused, NULL);
+>  	}
+>  
+>  	context->state = STATE_BETWEEN_DYNAMIC_SUBTESTS;
