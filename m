@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 43A9B10E10B
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 12:46:06 +0000 (UTC)
-Date: Wed, 6 Dec 2023 13:45:44 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231206124544.ubphdvgulti3uov7@kamilkon-desk.igk.intel.com>
-References: <20231205213814.179963-1-rodrigo.vivi@intel.com>
- <20231205213814.179963-2-rodrigo.vivi@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============9080814079049294508=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231205213814.179963-2-rodrigo.vivi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/intel/xe: Align with new
- xe_gt_freq component
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matthew Auld" <matthew.auld@intel.com>
+Date: Wed, 06 Dec 2023 12:59:32 -0000
+Message-ID: <170186757241.26424.306572401066411818@emeril.freedesktop.org>
+References: <20231206121203.270852-1-matthew.auld@intel.com>
+In-Reply-To: <20231206121203.270852-1-matthew.auld@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?intel/xe=5Fpat=3A_limit_number_of_dynamic_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,123 +17,162 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Rodrigo,
-On 2023-12-05 at 16:38:12 -0500, Rodrigo Vivi wrote:
-> Aligns with kernel commit ("drm/xe: Create a xe_gt_freq component for raw management and sysfs")
-> 
-> Cc: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
-> Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-> Cc: Riana Tauro <riana.tauro@intel.com>
-> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> ---
->  tests/intel-ci/xe-fast-feedback.testlist |  6 +++---
->  tests/intel/xe_gt_freq.c                 | 16 ++++++++--------
->  tests/meson.build                        |  2 +-
->  3 files changed, 12 insertions(+), 12 deletions(-)
-> 
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> index f48e8fb67..7648ec3f3 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -83,9 +83,9 @@ igt@xe_exec_threads@threads-mixed-fd-basic
->  igt@xe_exec_threads@threads-mixed-userptr-invalidate
->  igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race
->  igt@xe_gpgpu_fill@basic
-> -igt@xe_guc_pc@freq_basic_api
-> -igt@xe_guc_pc@freq_fixed_idle
-> -igt@xe_guc_pc@freq_range_idle
-> +igt@xe_gt_freq@freq_basic_api
-> +igt@xe_gt_freq@freq_fixed_idle
-> +igt@xe_gt_freq@freq_range_idle
->  igt@xe_huc_copy@huc_copy
->  igt@xe_intel_bb@add-remove-objects
->  igt@xe_intel_bb@bb-with-allocator
-> diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
-> index a92833acb..719852530 100644
-> --- a/tests/intel/xe_gt_freq.c
-> +++ b/tests/intel/xe_gt_freq.c
-> @@ -1,12 +1,12 @@
->  // SPDX-License-Identifier: MIT
->  /*
-> - * Copyright © 2022 Intel Corporation
-> + * Copyright © 2023 Intel Corporation
----------------------^
-Please just add new year after 2022, for example:
+--===============9080814079049294508==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
- * Copyright © 2022,2023 Intel Corporation
+== Series Details ==
 
->   */
->  
->  /**
-> - * TEST: Test GuC frequency request functionality
-> - * Category: Firmware building block
-> - * Sub-category: GuC
-> + * TEST: Test Xe GT frequency request functionality
-> + * Category: Infrastructure
-> + * Sub-category: frequency
->   * Functionality: frequency request
->   * Test category: functionality test
->   */
-> @@ -34,10 +34,10 @@
->  static int set_freq(int fd, int gt_id, const char *freq_name, uint32_t freq)
->  {
->  	int ret = -EAGAIN;
-> -	char freq_attr[16];
-> +	char freq_attr[22];
------------------- ^^
-Why not define it and use in all places?
+Series: tests/intel/xe_pat: limit number of dynamic tests
+URL   : https://patchwork.freedesktop.org/series/127429/
+State : success
 
->  	int gt_fd;
->  
-> -	snprintf(freq_attr, sizeof(freq_attr), "%s_freq", freq_name);
-> +	snprintf(freq_attr, sizeof(freq_attr), "freq0/%s_freq", freq_name);
---- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-See below.
+== Summary ==
 
->  	gt_fd = xe_sysfs_gt_open(fd, gt_id);
->  	igt_assert(gt_fd >= 0);
->  
-> @@ -52,10 +52,10 @@ static uint32_t get_freq(int fd, int gt_id, const char *freq_name)
->  {
->  	uint32_t freq;
->  	int err = -EAGAIN;
-> -	char freq_attr[16];
-> +	char freq_attr[22];
->  	int gt_fd;
->  
-> -	snprintf(freq_attr, sizeof(freq_attr), "%s_freq", freq_name);
-> +	snprintf(freq_attr, sizeof(freq_attr), "freq0/%s_freq", freq_name);
+CI Bug Log - changes from IGT_7623 -> IGTPW_10352
+====================================================
 
-This is duplicated code, it can be written in one function,
-may be left to follow up.
+Summary
+-------
 
-With above copyright fixed:
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+  **SUCCESS**
 
-Regards,
-Kamil
+  No regressions found.
 
->  	gt_fd = xe_sysfs_gt_open(fd, gt_id);
->  	igt_assert(gt_fd >= 0);
->  
-> diff --git a/tests/meson.build b/tests/meson.build
-> index facf60ccf..f6cfbcf5e 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -293,7 +293,7 @@ intel_xe_progs = [
->  	'xe_exec_threads',
->  	'xe_exercise_blt',
->  	'xe_gpgpu_fill',
-> -	'xe_guc_pc',
-> +	'xe_gt_freq',
->  	'xe_huc_copy',
->  	'xe_intel_bb',
->  	'xe_live_ktest',
-> -- 
-> 2.43.0
-> 
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/index.html
+
+Participating hosts (39 -> 38)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10352 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-dpms@d-dp6:
+    - bat-adlp-11:        [PASS][1] -> [DMESG-WARN][2] ([i915#6868])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7623/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-kbl-guc:         [PASS][3] -> [FAIL][4] ([IGT#3])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7623/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-1:
+    - bat-dg2-8:          [DMESG-WARN][5] ([i915#1982]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7623/bat-dg2-8/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-1.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/bat-dg2-8/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-1.html
+
+  
+  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#6868]: https://gitlab.freedesktop.org/drm/intel/issues/6868
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7623 -> IGTPW_10352
+
+  CI-20190529: 20190529
+  CI_DRM_13986: b441e2df33ada84a77c2da0b5619e212e94675bf @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10352: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/index.html
+  IGT_7623: f42cda2a9ad74846fb59eea436cc98c8789849f9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/index.html
+
+--===============9080814079049294508==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_pat: limit number of dynamic tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127429/">https://patchwork.freedesktop.org/series/127429/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7623 -&gt; IGTPW_10352</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/index.html</p>
+<h2>Participating hosts (39 -&gt; 38)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10352 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@d-dp6:</p>
+<ul>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7623/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6868">i915#6868</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7623/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-1:<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7623/bat-dg2-8/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/bat-dg2-8/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7623 -&gt; IGTPW_10352</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13986: b441e2df33ada84a77c2da0b5619e212e94675bf @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10352: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/index.html<br />
+  IGT_7623: f42cda2a9ad74846fb59eea436cc98c8789849f9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============9080814079049294508==--
