@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1559410E74D
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 15:56:16 +0000 (UTC)
-Date: Wed, 6 Dec 2023 16:56:10 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231206155610.4riiavkwoaih7txz@kamilkon-desk.igk.intel.com>
-References: <20231206144051.150420-1-mauro.chehab@linux.intel.com>
- <20231206144051.150420-3-mauro.chehab@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231206144051.150420-3-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/3] tests/xe_sysfs_defaults: add a
- description for engine-defaults
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 06 Dec 2023 11:53:45 -0000
+Message-ID: <170186362506.26423.17526489120744141800@emeril.freedesktop.org>
+References: <20231206105206.115463-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20231206105206.115463-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_A?=
+ =?utf-8?q?dd_some_missing_descriptions?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,40 +16,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
-On 2023-12-06 at 15:39:38 +0100, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Description for such subtest is missing, cleaning up this warning:
-> 
-> 	Warning: igt@xe_sysfs_defaults@engine-defaults Description documentation is missing
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+== Series Details ==
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: Add some missing descriptions
+URL   : https://patchwork.freedesktop.org/series/127419/
+State : warning
 
-> ---
->  tests/intel/xe_sysfs_defaults.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/tests/intel/xe_sysfs_defaults.c b/tests/intel/xe_sysfs_defaults.c
-> index a1cbfb11d7dd..4a6b3ba6dcd7 100644
-> --- a/tests/intel/xe_sysfs_defaults.c
-> +++ b/tests/intel/xe_sysfs_defaults.c
-> @@ -10,6 +10,7 @@
->   * Sub-category: sysman
->   * Test category: functionality test
->   * SUBTEST: engine-defaults
-> + * Description: check if the sysfs engine .defaults node has all values.
->   */
->  
->  #include <dirent.h>
-> -- 
-> 2.43.0
-> 
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1050754 for the overview.
+
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/52433259):
+  section_start:1701863248:get_sources
+  Getting source from Git repository
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out 5d657be6 as detached HEAD (ref is intel/IGTPW_10350)...
+  
+  Skipping Git submodules setup
+  section_end:1701863252:get_sources
+  section_start:1701863252:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:ca01fc804bb92e5df42a202dd7e0470610c6711c66a808525defcb8bbb774078 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian:commit-5d657be67c25d67d581dfd37b7ddd176d9a48272 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian@sha256:b9fe73c6ff5d68f5692fd18b9076735679c8bfa7ed393e752dd4927a2cdf9874 ...
+  section_end:1701863256:step_script
+  section_start:1701863256:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1701863257:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:ca01fc804bb92e5df42a202dd7e0470610c6711c66a808525defcb8bbb774078: image not known (docker.go:570:0s)
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1050754
 
