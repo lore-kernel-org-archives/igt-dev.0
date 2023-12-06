@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 175F110E704
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 13:05:20 +0000 (UTC)
-Date: Wed, 6 Dec 2023 14:05:15 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 734CF10E720
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 12:51:26 +0000 (UTC)
+Date: Wed, 6 Dec 2023 13:51:01 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231206130515.3l6clr5yvabnzn6s@kamilkon-desk.igk.intel.com>
+Message-ID: <20231206125101.34ovomyrohgbfq6m@kamilkon-desk.igk.intel.com>
 References: <20231206105206.115463-1-mauro.chehab@linux.intel.com>
  <20231206105206.115463-2-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
@@ -22,23 +22,13 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
 On 2023-12-06 at 11:51:30 +0100, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-
-One small nit, please add 'tests/' before test name in subject,
-also remove ".c", so it will be:
-
-[PATCH i-g-t 1/1] tests/intel/xe_media_fill: address a doc warning
-
-Regards,
-Kamil
-
 > Currently, this warning is happening when building IGT:
 > 	Warning: igt@xe_media_fill@media-fill Description documentation is missing
 > 
@@ -47,6 +37,10 @@ Kamil
 > test, as other subtests could be added there in the future.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Thank you for fixing this,
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
 >  tests/intel/xe_media_fill.c | 5 +++--
 >  1 file changed, 3 insertions(+), 2 deletions(-)
