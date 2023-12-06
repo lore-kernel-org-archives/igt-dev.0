@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A09CE10E70A
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 12:12:32 +0000 (UTC)
-From: Matthew Auld <matthew.auld@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 013DB10E6EE
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 11:52:20 +0000 (UTC)
+From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  6 Dec 2023 12:12:03 +0000
-Message-ID: <20231206121203.270852-1-matthew.auld@intel.com>
+Date: Wed,  6 Dec 2023 17:17:33 +0530
+Message-Id: <20231206114733.16121-3-krishnaiah.bommu@intel.com>
+In-Reply-To: <20231206114733.16121-1-krishnaiah.bommu@intel.com>
+References: <20231206114733.16121-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/intel/xe_pat: limit number of dynamic
- tests
+Subject: [igt-dev] [PATCH v3 2/2] drm-uapi/xe: kill xe_wait_user_fence_ioctl
+ when exec_queue reset happen
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,199 +19,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Himanshu Girotra <himanshu.girotra@intel.com>
+Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Due to of the all the combinations here, we generate hundreds of dynamic
-testcases. This does allow running any individual testcase quite easily,
-but the sheer number of tests is a bit unwieldy for CI to handle. Trim
-this back to the following tests:
+Skipping the GPU mapping(vm_bind) for object, so that exec_queue
+reset will happen and xe_wait_ufence will end return EIO not ETIME
 
-xe-pat-index@{xelp, xehpc, xelpg, xe2}-{dw, blt, render}
-
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Himanshu Girotra <himanshu.girotra@intel.com>
+Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
 ---
- tests/intel/xe_pat.c | 128 +++++++++++++++++++++----------------------
- 1 file changed, 64 insertions(+), 64 deletions(-)
+ tests/intel/xe_waitfence.c | 84 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 82 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index 8189390a8..7273242b0 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -369,13 +369,15 @@ static void pat_index_render(struct xe_pat_param *p)
- 	int bpp = 32;
- 	int i;
+diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
+index b724eaa0e..1e2fd1661 100644
+--- a/tests/intel/xe_waitfence.c
++++ b/tests/intel/xe_waitfence.c
+@@ -178,8 +178,8 @@ waitfence(int fd, enum waittype wt)
+  * SUBTEST: invalid-ops
+  * Description: Check query with invalid ops returns expected error code
+  *
+- * SUBTEST: invalid-engine
+- * Description: Check query with invalid engine info returns expected error code
++ * SUBTEST: invalid-exec_queue-wait
++ * Description: Check xe_wait_ufence will return expected error code while exec_queue reset happen
+  */
  
--	bops = buf_ops_create(fd);
--
- 	render_copy = igt_get_render_copyfunc(devid);
- 	igt_require(render_copy);
--	igt_require(!p->r2_compressed); /* XXX */
- 	igt_require(xe_has_engine_class(fd, DRM_XE_ENGINE_CLASS_RENDER));
+ static void
+@@ -230,6 +230,83 @@ invalid_ops(int fd)
+ 	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EINVAL);
+ }
  
-+	if (p->r2_compressed) /* XXX */
-+		return;
++static void
++invalid_exec_queue_wait(int fd)
++{
++	uint32_t bo, b;
++	uint64_t batch_offset;
++	uint64_t batch_addr;
++	uint64_t sdi_offset;
++	uint64_t sdi_addr;
++	uint64_t addr = 0x1a0000;
 +
-+	bops = buf_ops_create(fd);
++	struct {
++		uint32_t batch[16];
++		uint64_t pad;
++		uint64_t vm_sync;
++		uint64_t exec_sync;
++		uint32_t data;
++	} *data;
 +
- 	ibb = intel_bb_create_full(fd, 0, 0, NULL, xe_get_default_alignment(fd),
- 				   0, 0, p->size->alignment,
- 				   INTEL_ALLOCATOR_SIMPLE,
-@@ -456,8 +458,8 @@ static void pat_index_dw(struct xe_pat_param *p)
- 	int bpp = 32, i, n_engines;
- 	uint32_t ctx, vm;
- 
--	igt_require(!p->r1_compressed);
--	igt_require(!p->r2_compressed);
-+	if (p->r1_compressed || p->r2_compressed)
-+		return;
- 
- 	bops = buf_ops_create(fd);
- 
-@@ -901,84 +903,82 @@ static void subtest_pat_index_modes_with_regions(int fd,
- 
- 		copy_mode = copy_modes[igt_collection_get_value(copies, 0)];
- 
--		for_each_variation_r(regions, 2, regions_set) {
--			struct igt_collection *pat_modes;
--			uint32_t r1, r2;
--			char *reg_str;
-+		igt_dynamic_f("%s", copy_mode.name) {
-+			for_each_variation_r(regions, 2, regions_set) {
-+				struct igt_collection *pat_modes;
-+				uint32_t r1, r2;
-+				char *reg_str;
- 
--			r1 = igt_collection_get_value(regions, 0);
--			r2 = igt_collection_get_value(regions, 1);
-+				r1 = igt_collection_get_value(regions, 0);
-+				r2 = igt_collection_get_value(regions, 1);
- 
--			reg_str = xe_memregion_dynamic_subtest_name(fd, regions);
-+				reg_str = xe_memregion_dynamic_subtest_name(fd, regions);
- 
--			for_each_variation_r(pat_modes, 2, pat_index_set) {
--				struct igt_collection *sizes;
--				struct pat_index_entry r1_entry, r2_entry;
--				int r1_idx, r2_idx;
-+				for_each_variation_r(pat_modes, 2, pat_index_set) {
-+					struct igt_collection *sizes;
-+					struct pat_index_entry r1_entry, r2_entry;
-+					int r1_idx, r2_idx;
- 
--				r1_idx = igt_collection_get_value(pat_modes, 0);
--				r2_idx = igt_collection_get_value(pat_modes, 1);
-+					r1_idx = igt_collection_get_value(pat_modes, 0);
-+					r2_idx = igt_collection_get_value(pat_modes, 1);
- 
--				r1_entry = modes_arr[r1_idx];
--				r2_entry = modes_arr[r2_idx];
-+					r1_entry = modes_arr[r1_idx];
-+					r2_entry = modes_arr[r2_idx];
- 
--				if (r1_entry.get_pat_index) {
--					p.r1_pat_index = r1_entry.get_pat_index(fd, &p.r1_compressed);
--				} else {
--					p.r1_pat_index = r1_entry.pat_index;
--					p.r1_compressed = r1_entry.compressed;
--				}
-+					if (r1_entry.get_pat_index) {
-+						p.r1_pat_index = r1_entry.get_pat_index(fd, &p.r1_compressed);
-+					} else {
-+						p.r1_pat_index = r1_entry.pat_index;
-+						p.r1_compressed = r1_entry.compressed;
-+					}
- 
--				if (r2_entry.get_pat_index)
--					p.r2_pat_index = r2_entry.get_pat_index(fd, &p.r2_compressed);
--				else {
--					p.r2_pat_index = r2_entry.pat_index;
--					p.r2_compressed = r2_entry.compressed;
--				}
-+					if (r2_entry.get_pat_index)
-+						p.r2_pat_index = r2_entry.get_pat_index(fd, &p.r2_compressed);
-+					else {
-+						p.r2_pat_index = r2_entry.pat_index;
-+						p.r2_compressed = r2_entry.compressed;
-+					}
- 
--				p.r1 = r1;
--				p.r2 = r2;
-+					p.r1 = r1;
-+					p.r2 = r2;
- 
--				for_each_variation_r(sizes, 1, sizes_set) {
--					int size_mode_idx = igt_collection_get_value(sizes, 0);
--					int bpp = 32;
--					int size;
-+					for_each_variation_r(sizes, 1, sizes_set) {
-+						int size_mode_idx = igt_collection_get_value(sizes, 0);
-+						int bpp = 32;
-+						int size;
- 
--					p.size = &size_modes[size_mode_idx];
-+						p.size = &size_modes[size_mode_idx];
- 
--					size = p.size->width * p.size->height * bpp / 8;
--					p.r1_bo = create_object(fd, p.r1, size, r1_entry.coh_mode,
--								r1_entry.force_cpu_wc);
--					p.r1_map = xe_bo_map(fd, p.r1_bo, size);
-+						size = p.size->width * p.size->height * bpp / 8;
-+						p.r1_bo = create_object(fd, p.r1, size, r1_entry.coh_mode,
-+									r1_entry.force_cpu_wc);
-+						p.r1_map = xe_bo_map(fd, p.r1_bo, size);
- 
--					p.r2_bo = create_object(fd, p.r2, size, r2_entry.coh_mode,
--								r2_entry.force_cpu_wc);
--					p.r2_map = xe_bo_map(fd, p.r2_bo, size);
-+						p.r2_bo = create_object(fd, p.r2, size, r2_entry.coh_mode,
-+									r2_entry.force_cpu_wc);
-+						p.r2_map = xe_bo_map(fd, p.r2_bo, size);
- 
--					igt_debug("[r1]: r: %u, idx: %u, coh: %u, wc: %d, comp: %d\n",
--						  p.r1, p.r1_pat_index, r1_entry.coh_mode,
--						  r1_entry.force_cpu_wc, p.r1_compressed);
--					igt_debug("[r2]: r: %u, idx: %u, coh: %u, wc: %d, comp: %d, w: %u, h: %u, a: %u\n",
--						  p.r2, p.r2_pat_index, r2_entry.coh_mode,
--						  r1_entry.force_cpu_wc, p.r2_compressed,
--						  p.size->width, p.size->height,
--						  p.size->alignment);
-+						igt_debug("[r1]: r: %u, idx: %u (%s), coh: %u, wc: %d, comp: %d\n",
-+							  p.r1, p.r1_pat_index, r1_entry.name, r1_entry.coh_mode,
-+							  r1_entry.force_cpu_wc, p.r1_compressed);
-+						igt_debug("[r2]: r: %u, idx: %u (%s), coh: %u, wc: %d, comp: %d, w: %u, h: %u, a: %u\n",
-+							  p.r2, p.r2_pat_index, r2_entry.name, r2_entry.coh_mode,
-+							  r1_entry.force_cpu_wc, p.r2_compressed,
-+							  p.size->width, p.size->height,
-+							  p.size->alignment);
- 
--					igt_dynamic_f("%s-%s-%s-%s-%s",
--						      copy_mode.name,
--						      reg_str, r1_entry.name,
--						      r2_entry.name, p.size->name)
- 						copy_mode.fn(&p);
- 
--					munmap(p.r1_map, size);
--					munmap(p.r2_map, size);
-+						munmap(p.r1_map, size);
-+						munmap(p.r2_map, size);
- 
--					gem_close(fd, p.r1_bo);
--					gem_close(fd, p.r2_bo);
-+						gem_close(fd, p.r1_bo);
-+						gem_close(fd, p.r2_bo);
-+					}
- 				}
++#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
++	struct drm_xe_sync sync[1] = {
++		{ .flags = DRM_XE_SYNC_FLAG_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
++			.timeline_value = USER_FENCE_VALUE },
++	};
 +
-+				free(reg_str);
- 			}
--
--			free(reg_str);
- 		}
- 	}
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(sync),
++	};
++
++	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
++	uint32_t exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
++	struct drm_xe_wait_user_fence1 wait = {
++		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
++		.flags = 0,
++		.value = 0xaabbaa,
++		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
++		.timeout = -1,
++		.exec_queue_id = exec_queue,
++	};
++
++	bo = xe_bo_create_flags(fd, vm, 0x40000, MY_FLAG);
++	data = xe_bo_map(fd, bo, 0x40000);
++
++	batch_offset = (char *)&data[0].batch - (char *)data;
++	batch_addr = addr + batch_offset;
++	sdi_offset = (char *)&data[0].data - (char *)data;
++	sdi_addr = addr + sdi_offset;
++
++	b = 0;
++	data[0].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++	data[0].batch[b++] = sdi_addr;
++	data[0].batch[b++] = sdi_addr >> 32;
++	data[0].batch[b++] = 0xaabbcc;
++	data[0].batch[b++] = MI_BATCH_BUFFER_END;
++	igt_assert(b <= ARRAY_SIZE(data[0].batch));
++
++	wait.addr = to_user_pointer(&data[0].exec_sync);
++	exec.exec_queue_id = exec_queue;
++	exec.address = batch_addr;
++
++	xe_exec(fd, &exec);
++
++	/**
++	  * Skipping the GPU mapping(vm_bind) for object, so that exec_queue
++	  * reset will happen and xe_wait_ufence will end return EIO not ETIME
++	  */
++	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EIO);
++
++	xe_exec_queue_destroy(fd, exec_queue);
++
++	if (bo) {
++		 munmap(data, 0x40000);
++		 gem_close(fd, bo);
++	}
++}
++
+ igt_main
+ {
+ 	int fd;
+@@ -252,6 +329,9 @@ igt_main
+ 	igt_subtest("invalid-ops")
+ 		invalid_ops(fd);
+ 
++	igt_subtest("invalid-exec_queue-wait")
++		invalid_exec_queue_wait(fd);
++
+ 	igt_fixture
+ 		drm_close_driver(fd);
  }
 -- 
-2.43.0
+2.25.1
