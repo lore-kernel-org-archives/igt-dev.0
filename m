@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7666343931809545769=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A947310E113
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 18:02:36 +0000 (UTC)
+Date: Wed, 6 Dec 2023 19:02:32 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231206180232.po4yzg7efaojhpmw@kamilkon-desk.igk.intel.com>
+References: <20231204194306.12950-1-brian.welty@intel.com>
+ <20231204194306.12950-2-brian.welty@intel.com>
+ <20231204203829.j76a3orpongfqfvm@kamilkon-desk.igk.intel.com>
+ <1482c523-5652-4d07-b879-f88cf815f4b3@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Marcin Bernatowicz" <marcin.bernatowicz@intel.com>
-Date: Wed, 06 Dec 2023 18:03:13 -0000
-Message-ID: <170188579365.26424.1949134346224593865@emeril.freedesktop.org>
-References: <20231206170156.23120-1-marcin.bernatowicz@intel.com>
-In-Reply-To: <20231206170156.23120-1-marcin.bernatowicz@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgYWRkIGNy?=
- =?utf-8?q?eate-big-vram_subtest_=28rev3=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1482c523-5652-4d07-b879-f88cf815f4b3@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] lib/xe_ioctl: Add
+ __xe_wait_ufence()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,174 +23,164 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7666343931809545769==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Brian,
 
-== Series Details ==
+On 2023-12-05 at 11:21:07 -0800, Welty, Brian wrote:
+> 
+> On 12/4/2023 12:38 PM, Kamil Konieczny wrote:
+> > Hi Brian,
+> > On 2023-12-04 at 11:43:05 -0800, Brian Welty wrote:
+> > > xe_wait_ufence is expected to fail if GPU hangs or is reset. We need
+> > > a version of calling XE_WAIT_USER_FENCE without the assertion that it
+> > > won't expire (timeout), for use with IGTs that intentionally cause
+> > > hangs or reset.
+> > > 
+> > > Signed-off-by: Brian Welty <brian.welty@intel.com>
+> > > ---
+> > >   lib/xe/xe_ioctl.c | 24 ++++++++++++++++++------
+> > >   lib/xe/xe_ioctl.h |  3 +++
+> > >   2 files changed, 21 insertions(+), 6 deletions(-)
+> > > 
+> > > diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> > > index a5fe7dd792..36c3bd2f39 100644
+> > > --- a/lib/xe/xe_ioctl.c
+> > > +++ b/lib/xe/xe_ioctl.c
+> > > @@ -446,9 +446,9 @@ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
+> > >   	syncobj_destroy(fd, sync.handle);
+> > >   }
+> > 
+> > One more thing (sorry I forgot it in previous review), each new
+> > public function needs to be described, please write it here.
+> 
+> Hi Kamil.  Makes sense.
+> But it doesn't make sense to document __xe_wait_ufence(), but not the
+> existing xe_wait_ufence().
+> 
+> I notice that prior public functions in xe_ioctl.c (there are many)
+> are not documented.  Is it because these are just simple ioctl system
+> call wrappers, so they were not documented?
+> Somebody familiar with uAPI should be asked to document them all?
 
-Series: add create-big-vram subtest (rev3)
-URL   : https://patchwork.freedesktop.org/series/126831/
-State : success
+Yes, they all should be documented.
 
-== Summary ==
+> 
+> Well, since you asked, I can document the ones in scope for my patch...
+> Can you please comment on if the comment blocks in the diff below are
+> adequate ?
+> 
+> Thanks, -Brian
+> 
+> 
+> --- a/lib/xe/xe_ioctl.c
+> +++ b/lib/xe/xe_ioctl.c
+> @@ -446,6 +446,19 @@ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t
+> addr)
+>         syncobj_destroy(fd, sync.handle);
+>  }
+> 
+> +/**
+> + * __xe_wait_ufence:
+> + * @fd: xe device fd
+> + * @addr: address of value to compare
+> + * @value: expected value (equal) in @address
+> + * @eci: engine class instance
+> + * @timeout: pointer to time to wait in nanoseconds
+> + *
+> + * Function compares @value with memory pointed by @addr until they are
+> equal.
+> + *
+> + * Returns (in @timeout), the elapsed time in nanoseconds if user fence was
+> + * signalled. Returns 0 on success, -errno of ioctl on error.
+> + */
+>  int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>                      struct drm_xe_engine_class_instance *eci,
+>                      int64_t *timeout)
+> @@ -470,6 +483,18 @@ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t
+> value,
+>         return 0;
+>  }
+> 
+> +/**
+> + * xe_wait_ufence:
+> + * @fd: xe device fd
+> + * @addr: address of value to compare
+> + * @value: expected value (equal) in @address
+> + * @eci: engine class instance
+> + * @timeout: time to wait in nanoseconds
+> + *
+> + * Function compares @value with memory pointed by @addr until they are
+> equal.
 
-CI Bug Log - changes from CI_DRM_13988 -> IGTPW_10355
-====================================================
+Looks good, you may add here that it will assert on error.
 
-Summary
--------
+Regards,
+Kamil
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10355/index.html
-
-Participating hosts (37 -> 33)
-------------------------------
-
-  Missing    (4): bat-mtlp-8 bat-adlp-11 bat-jsl-1 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10355 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
-    - bat-rplp-1:         [PASS][1] -> [ABORT][2] ([i915#8668])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13988/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10355/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-
-  
-#### Warnings ####
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc:
-    - bat-mtlp-6:         [SKIP][3] -> [SKIP][4] ([i915#9792]) +3 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13988/bat-mtlp-6/igt@kms_pipe_crc_basic@nonblocking-crc.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10355/bat-mtlp-6/igt@kms_pipe_crc_basic@nonblocking-crc.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - bat-mtlp-6:         [SKIP][5] ([i915#3708]) -> [SKIP][6] ([i915#3708] / [i915#9792])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13988/bat-mtlp-6/igt@prime_vgem@basic-fence-flip.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10355/bat-mtlp-6/igt@prime_vgem@basic-fence-flip.html
-
-  
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#9792]: https://gitlab.freedesktop.org/drm/intel/issues/9792
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7625 -> IGTPW_10355
-
-  CI-20190529: 20190529
-  CI_DRM_13988: 6ae23377ae459d8506ecdd2f538bfee2f52652f6 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10355: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10355/index.html
-  IGT_7625: f40c67d84e142095ac6215be154e1f3710f26cba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@xe_create@create-big-vram
-+igt@xe_waitfence@invalid-engine
--igt@xe_waitfence@invalid-exec_queue-wait
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10355/index.html
-
---===============7666343931809545769==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>add create-big-vram subtest (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126831/">https://patchwork.freedesktop.org/series/126831/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10355/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10355/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13988 -&gt; IGTPW_10355</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10355/index.html</p>
-<h2>Participating hosts (37 -&gt; 33)</h2>
-<p>Missing    (4): bat-mtlp-8 bat-adlp-11 bat-jsl-1 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10355 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13988/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10355/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13988/bat-mtlp-6/igt@kms_pipe_crc_basic@nonblocking-crc.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10355/bat-mtlp-6/igt@kms_pipe_crc_basic@nonblocking-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13988/bat-mtlp-6/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10355/bat-mtlp-6/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7625 -&gt; IGTPW_10355</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13988: 6ae23377ae459d8506ecdd2f538bfee2f52652f6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10355: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10355/index.html<br />
-  IGT_7625: f40c67d84e142095ac6215be154e1f3710f26cba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@xe_create@create-big-vram<br />
-+igt@xe_waitfence@invalid-engine<br />
--igt@xe_waitfence@invalid-exec_queue-wait</p>
-
-</body>
-</html>
-
---===============7666343931809545769==--
+> + *
+> + * Returns elapsed time in nanoseconds if user fence was signalled.
+> + */
+>  int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>                        struct drm_xe_engine_class_instance *eci,
+> 
+> 
+> > 
+> > Rest looks good, with that addressed
+> > Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > 
+> > > -int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > > -		       struct drm_xe_engine_class_instance *eci,
+> > > -		       int64_t timeout)
+> > > +int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > > +		     struct drm_xe_engine_class_instance *eci,
+> > > +		     int64_t *timeout)
+> > >   {
+> > >   	struct drm_xe_wait_user_fence wait = {
+> > >   		.addr = to_user_pointer(addr),
+> > > @@ -456,14 +456,26 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > >   		.flags = !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP : 0,
+> > >   		.value = value,
+> > >   		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+> > > -		.timeout = timeout,
+> > >   		.num_engines = eci ? 1 :0,
+> > >   		.instances = eci ? to_user_pointer(eci) : 0,
+> > >   	};
+> > > -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
+> > > +	igt_assert(timeout);
+> > > +	wait.timeout = *timeout;
+> > > +
+> > > +	if (igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait))
+> > > +		return -errno;
+> > > -	return wait.timeout;
+> > > +	*timeout = wait.timeout;
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > > +		       struct drm_xe_engine_class_instance *eci,
+> > > +		       int64_t timeout)
+> > > +{
+> > > +	igt_assert_eq(__xe_wait_ufence(fd, addr, value, eci, &timeout), 0);
+> > > +	return timeout;
+> > >   }
+> > >   /**
+> > > diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+> > > index 6d91d3e8e6..0ecc04baf4 100644
+> > > --- a/lib/xe/xe_ioctl.h
+> > > +++ b/lib/xe/xe_ioctl.h
+> > > @@ -88,6 +88,9 @@ void xe_exec(int fd, struct drm_xe_exec *exec);
+> > >   void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+> > >   		  struct drm_xe_sync *sync, uint32_t num_syncs);
+> > >   void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);
+> > > +int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > > +		     struct drm_xe_engine_class_instance *eci,
+> > > +		     int64_t *timeout);
+> > >   int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > >   		       struct drm_xe_engine_class_instance *eci,
+> > >   		       int64_t timeout);
+> > > -- 
+> > > 2.38.0
+> > > 
