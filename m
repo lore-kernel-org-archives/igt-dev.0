@@ -1,23 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21DD010E6BB
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 10:52:11 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.246.34.73])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id E125B580DA0
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 02:52:09 -0800 (PST)
-Received: from maurocar by linux.intel.com with local (Exim 4.96.2)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1rApVg-000U2v-0N
- for igt-dev@lists.freedesktop.org; Wed, 06 Dec 2023 11:52:08 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1774110E774
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 17:02:03 +0000 (UTC)
+From: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  6 Dec 2023 11:51:29 +0100
-Message-ID: <20231206105206.115463-1-mauro.chehab@linux.intel.com>
+Date: Wed,  6 Dec 2023 18:01:54 +0100
+Message-Id: <20231206170156.23120-1-marcin.bernatowicz@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/1] Add some missing descriptions
+Subject: [igt-dev] [PATCH v6 i-g-t 0/2] add create-big-vram subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,25 +17,24 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: adam.miszczak@intel.com, matthew.auld@intel.com,
+ jakub1.kolakowski@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Validate the creation of significant Buffer Object (BO) within VRAM,
+considering the entire available CPU-visible VRAM size.
 
-Address those build time warnings:
+Marcin Bernatowicz (2):
+  lib/xe/xe_query: xe_visible_available_vram_size helper
+  tests/intel/xe_create: create-big-vram subtest
 
-	Warning: igt@xe_live_ktest@bo Description documentation is missing
-	Warning: igt@xe_live_ktest@dmabuf Description documentation is missing
-	Warning: igt@xe_live_ktest@migrate Description documentation is missing
-	Warning: igt@xe_media_fill@media-fill Description documentation is missing
-	Warning: igt@xe_sysfs_defaults@engine-defaults Description documentation is missing
-
-Mauro Carvalho Chehab (1):
-  intel/xe_media_fill.c: address a documentation warning
-
- tests/intel/xe_media_fill.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ lib/xe/xe_query.c          | 58 ++++++++++++++++++-------
+ lib/xe/xe_query.h          |  3 +-
+ tests/intel/xe_create.c    | 86 +++++++++++++++++++++++++++++++++++++-
+ tests/intel/xe_evict_ccs.c |  2 +-
+ 4 files changed, 132 insertions(+), 17 deletions(-)
 
 -- 
-2.43.0
+2.31.1
