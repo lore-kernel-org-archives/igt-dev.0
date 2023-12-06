@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 461F310E73E
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 14:49:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EF6110E742
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 14:49:42 +0000 (UTC)
 From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  6 Dec 2023 20:14:51 +0530
-Message-Id: <20231206144452.19745-3-krishnaiah.bommu@intel.com>
+Date: Wed,  6 Dec 2023 20:14:52 +0530
+Message-Id: <20231206144452.19745-4-krishnaiah.bommu@intel.com>
 In-Reply-To: <20231206144452.19745-1-krishnaiah.bommu@intel.com>
 References: <20231206144452.19745-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4 1/1] drm-uapi/xe: kill xe_wait_user_fence_ioctl
+Subject: [igt-dev] [PATCH v4 2/2] drm-uapi/xe: kill xe_wait_user_fence_ioctl
  when exec_queue reset happen
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
