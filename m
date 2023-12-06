@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0314510E78B
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 17:07:33 +0000 (UTC)
-Date: Wed, 6 Dec 2023 12:06:40 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9591E10E794
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 17:08:27 +0000 (UTC)
+Date: Wed, 6 Dec 2023 12:08:17 -0500
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Message-ID: <ZXCqICWncxDikEVK@intel.com>
+Message-ID: <ZXCqgergcl_iCMIW@intel.com>
 References: <20231206144452.19745-1-krishnaiah.bommu@intel.com>
- <20231206144452.19745-3-krishnaiah.bommu@intel.com>
+ <20231206144452.19745-4-krishnaiah.bommu@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20231206144452.19745-3-krishnaiah.bommu@intel.com>
+In-Reply-To: <20231206144452.19745-4-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v4 1/1] drm-uapi/xe: kill
+Subject: Re: [igt-dev] [PATCH v4 2/2] drm-uapi/xe: kill
  xe_wait_user_fence_ioctl when exec_queue reset happen
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,9 +26,15 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Dec 06, 2023 at 08:14:51PM +0530, Bommu Krishnaiah wrote:
+On Wed, Dec 06, 2023 at 08:14:52PM +0530, Bommu Krishnaiah wrote:
 > Skipping the GPU mapping(vm_bind) for object, so that exec_queue
 > reset will happen and xe_wait_ufence will end return EIO not ETIME
+
+oh, now I saw that this is really the second patch in the series and
+that number in the subject was wrong...
+
+Anyway, I see the test below adding a new check, not 'killing' or 'skipping' anything.
+
 > 
 > Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
@@ -94,10 +100,6 @@ On Wed, Dec 06, 2023 at 08:14:51PM +0530, Bommu Krishnaiah wrote:
 > +		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
 > +		.timeout = -1,
 > +		.exec_queue_id = exec_queue,
-
-this doesn't exist without the patch 2, so this shouldn't be the first patch in the series.
-Also, the patch is not doing what the subject tells, so I'm really confused here.
-
 > +	};
 > +
 > +	bo = xe_bo_create(fd, vm, 0x40000, vram_if_possible(fd, 0), 0);
