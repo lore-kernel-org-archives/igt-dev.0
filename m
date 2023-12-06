@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 734CF10E720
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 12:51:26 +0000 (UTC)
-Date: Wed, 6 Dec 2023 13:51:01 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231206125101.34ovomyrohgbfq6m@kamilkon-desk.igk.intel.com>
-References: <20231206105206.115463-1-mauro.chehab@linux.intel.com>
- <20231206105206.115463-2-mauro.chehab@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6758138636586358382=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231206105206.115463-2-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] intel/xe_media_fill.c: address a
- documentation warning
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 06 Dec 2023 17:04:32 -0000
+Message-ID: <170188227224.26424.3859490647871672983@emeril.freedesktop.org>
+References: <20231206144051.150420-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20231206144051.150420-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_some?=
+ =?utf-8?q?_missing_descriptions_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,52 +16,181 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
-On 2023-12-06 at 11:51:30 +0100, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Currently, this warning is happening when building IGT:
-> 	Warning: igt@xe_media_fill@media-fill Description documentation is missing
-> 
-> The documentation is there, but not for the subtests. Address it
-> by moving it to the right place while adding a description for the
-> test, as other subtests could be added there in the future.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+--===============6758138636586358382==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thank you for fixing this,
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Series Details ==
 
-> ---
->  tests/intel/xe_media_fill.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/intel/xe_media_fill.c b/tests/intel/xe_media_fill.c
-> index 6b8494537038..ddda1b535ba0 100644
-> --- a/tests/intel/xe_media_fill.c
-> +++ b/tests/intel/xe_media_fill.c
-> @@ -30,12 +30,13 @@
->   * Category: Hardware building block
->   * Sub-category: Media
->   * Functionality: fill surface with media block
-> - * Description: Basic test for the media_fill() function,
-> - *              a very simple workload for the Media pipeline.
-> + * Description: Basic tests for the media_fill() function.
->   * Feature: media
->   * Test category: functionality test
->   *
->   * SUBTEST: media-fill
-> + * Description: Basic test for the media_fill() function,
-> + *              a very simple workload for the Media pipeline.
->   */
->  
->  IGT_TEST_DESCRIPTION("Basic test for the media_fill() function, a very simple"
-> -- 
-> 2.43.0
-> 
+Series: Add some missing descriptions (rev2)
+URL   : https://patchwork.freedesktop.org/series/127419/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7625_BAT -> XEIGTPW_10353_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10353_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#692])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7625/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10353/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [PASS][3] -> [FAIL][4] ([Intel XE#480])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7625/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10353/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+
+  * igt@xe_create@create-execqueues-leak:
+    - bat-atsm-2:         [PASS][5] -> [FAIL][6] ([Intel XE#524])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7625/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10353/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+
+  * igt@xe_create@create-execqueues-noleak:
+    - bat-adlp-7:         [PASS][7] -> [FAIL][8] ([Intel XE#524])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7625/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10353/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [FAIL][9] ([Intel XE#480]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7625/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10353/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#692]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/692
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7625 -> IGTPW_10353
+
+  IGTPW_10353: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10353/index.html
+  IGT_7625: f40c67d84e142095ac6215be154e1f3710f26cba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-554-9d76164e08c68a3d5d081ff7b07c15a2cadf741a: 9d76164e08c68a3d5d081ff7b07c15a2cadf741a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10353/index.html
+
+--===============6758138636586358382==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add some missing descriptions (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127419/">https://patchwork.freedesktop.org/series/127419/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10353/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10353/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7625_BAT -&gt; XEIGTPW_10353_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10353_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7625/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10353/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/692">Intel XE#692</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7625/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10353/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_create@create-execqueues-leak:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7625/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10353/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_create@create-execqueues-noleak:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7625/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10353/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7625/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10353/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7625 -&gt; IGTPW_10353</li>
+</ul>
+<p>IGTPW_10353: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10353/index.html<br />
+  IGT_7625: f40c67d84e142095ac6215be154e1f3710f26cba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-554-9d76164e08c68a3d5d081ff7b07c15a2cadf741a: 9d76164e08c68a3d5d081ff7b07c15a2cadf741a</p>
+
+</body>
+</html>
+
+--===============6758138636586358382==--
 
