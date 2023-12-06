@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B0BC10E5C9
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB0C010E5C9
  for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 20:01:08 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  6 Dec 2023 12:00:55 -0800
-Message-Id: <20231206200055.20417-4-niranjana.vishwanathapura@intel.com>
+Date: Wed,  6 Dec 2023 12:00:53 -0800
+Message-Id: <20231206200055.20417-2-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20231206200055.20417-1-niranjana.vishwanathapura@intel.com>
 References: <20231206200055.20417-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 3/3] tests/xe_compute: Validate ccs_mode
- setting
+Subject: [igt-dev] [PATCH i-g-t v4 1/3] lib/xe: Add __xe_exec_queue_create()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,192 +23,115 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Validate 'ccs_mode' sysfs uapi interface and ensure compute
-kernels can be run on enabled compute engines.
+Add __xe_exec_queue_create() which does not assert upon error.
 
-v2: Separate num_cslices sysfs interface
-
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/intel/xe_compute.c | 149 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 147 insertions(+), 2 deletions(-)
+ lib/xe/xe_ioctl.c       | 29 ++++++++++++++++++++++++-----
+ lib/xe/xe_ioctl.h       |  3 +++
+ tests/intel/xe_create.c | 26 --------------------------
+ 3 files changed, 27 insertions(+), 31 deletions(-)
 
-diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index 1db72785b..c9a3549a6 100644
---- a/tests/intel/xe_compute.c
-+++ b/tests/intel/xe_compute.c
-@@ -13,9 +13,145 @@
- #include <string.h>
- 
- #include "igt.h"
-+#include "igt_sysfs.h"
- #include "intel_compute.h"
-+#include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- 
-+static int gt_sysfs_open(int gt)
-+{
-+	int fd, gt_fd;
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+	gt_fd = xe_sysfs_gt_open(fd, gt);
-+	drm_close_driver(fd);
-+
-+	return gt_fd;
-+}
-+
-+static bool get_num_cslices(u32 gt, u32 *num_slices)
-+{
-+	int gt_fd, ret;
-+
-+	gt_fd = gt_sysfs_open(gt);
-+	ret = igt_sysfs_scanf(gt_fd, "num_cslices", "%u", num_slices);
-+	close(gt_fd);
-+
-+	return ret > 0;
-+}
-+
-+/**
-+ * SUBTEST: ccs-mode-basic
-+ * GPU requirement: PVC
-+ * Description: Validate 'ccs_mode' sysfs uapi
-+ * Functionality: ccs_mode user interface
-+ */
-+static void
-+test_ccs_mode(int num_gt)
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+	u32 gt, m, ccs_mode, vm, q, num_slices;
-+	int fd, gt_fd;
-+
-+	for (gt = 0; gt < num_gt; gt++) {
-+		igt_require(get_num_cslices(gt, &num_slices));
-+
-+		gt_fd = gt_sysfs_open(gt);
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 0) < 0);
-+		for (m = 1; m <= num_slices; m++) {
-+			/* compute slices are to be equally distributed among enabled engines */
-+			if (num_slices % m) {
-+				igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) < 0);
-+				continue;
-+			}
-+
-+			/* Validate allowed ccs modes by setting them and reading back */
-+			igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) > 0);
-+			igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
-+			igt_assert(m == ccs_mode);
-+
-+			/* Validate exec queues creation with enabled ccs engines */
-+			fd = drm_open_driver(DRIVER_XE);
-+			vm = xe_vm_create(fd, 0, 0);
-+			xe_for_each_engine(fd, hwe) {
-+				if (hwe->gt_id != gt ||
-+				    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-+					continue;
-+
-+				q = xe_exec_queue_create(fd, vm, hwe, 0);
-+				xe_exec_queue_destroy(fd, q);
-+			}
-+
-+			/* Ensure exec queue creation fails for disabled ccs engines */
-+			hwe->gt_id = gt;
-+			hwe->engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
-+			hwe->engine_instance = m;
-+			igt_assert_neq(__xe_exec_queue_create(fd, vm, hwe, 0, &q), 0);
-+
-+			xe_vm_destroy(fd, vm);
-+			drm_close_driver(fd);
-+		}
-+
-+		/* Ensure invalid ccs mode setting is rejected */
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) < 0);
-+
-+		/* Can't change ccs mode with an open drm clients */
-+		fd = drm_open_driver(DRIVER_XE);
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 1) < 0);
-+		drm_close_driver(fd);
-+
-+		/* Set ccs mode back to default value */
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 1) > 0);
-+
-+		close(gt_fd);
-+	}
-+}
-+
-+/**
-+ * SUBTEST: ccs-mode-compute-kernel
-+ * GPU requirement: PVC
-+ * Description: Validate 'ccs_mode' by running compute kernel
-+ * Functionality: CCS mode funtionality
-+ */
-+static void
-+test_compute_kernel_with_ccs_mode(int num_gt)
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+	u32 gt, m, num_slices;
-+	int fd, gt_fd;
-+
-+	for (gt = 0; gt < num_gt; gt++) {
-+		igt_require(get_num_cslices(gt, &num_slices));
-+
-+		gt_fd = gt_sysfs_open(gt);
-+		for (m = 1; m <= num_slices; m++) {
-+			if (num_slices % m)
-+				continue;
-+
-+			igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) > 0);
-+
-+			/* Run compute kernel on enabled ccs engines */
-+			fd = drm_open_driver(DRIVER_XE);
-+			xe_for_each_engine(fd, hwe) {
-+				if (hwe->gt_id != gt ||
-+				    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-+					continue;
-+
-+				igt_info("GT-%d: Running compute kernel with ccs_mode %d on ccs engine %d\n",
-+					 gt, m, hwe->engine_instance);
-+				igt_assert_f(run_intel_compute_kernel_on_engine(fd, hwe),
-+					     "Unable to run compute kernel successfully\n");
-+			}
-+			drm_close_driver(fd);
-+		}
-+
-+		/* Set ccs mode back to default value */
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 1) > 0);
-+
-+		close(gt_fd);
-+	}
-+}
-+
- /**
-  * SUBTEST: compute-square
-  * GPU requirement: TGL, PVC, LNL
-@@ -32,14 +168,23 @@ test_compute_square(int fd)
- 
- igt_main
- {
--	int xe;
-+	int xe, num_gt;
- 
--	igt_fixture
-+	igt_fixture {
- 		xe = drm_open_driver(DRIVER_XE);
-+		num_gt = xe_number_gt(xe);
-+	}
- 
- 	igt_subtest("compute-square")
- 		test_compute_square(xe);
- 
- 	igt_fixture
- 		drm_close_driver(xe);
-+
-+	/* ccs mode tests should be run without open gpu file handles */
-+	igt_subtest("ccs-mode-basic")
-+		test_ccs_mode(num_gt);
-+
-+	igt_subtest("ccs-mode-compute-kernel")
-+		test_compute_kernel_with_ccs_mode(num_gt);
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index b29ca40ad..f87cbdba4 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -334,9 +334,9 @@ uint32_t xe_bind_exec_queue_create(int fd, uint32_t vm, uint64_t ext, bool async
+ 	return create.exec_queue_id;
  }
+ 
+-uint32_t xe_exec_queue_create(int fd, uint32_t vm,
+-			  struct drm_xe_engine_class_instance *instance,
+-			  uint64_t ext)
++uint32_t __xe_exec_queue_create(int fd, uint32_t vm,
++				struct drm_xe_engine_class_instance *instance,
++				uint64_t ext, uint32_t *exec_queue_id)
+ {
+ 	struct drm_xe_exec_queue_create create = {
+ 		.extensions = ext,
+@@ -345,10 +345,29 @@ uint32_t xe_exec_queue_create(int fd, uint32_t vm,
+ 		.num_placements = 1,
+ 		.instances = to_user_pointer(instance),
+ 	};
++	int err;
+ 
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create), 0);
++	err = igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create);
++	if (err) {
++		err = -errno;
++		igt_assume(err);
++		errno = 0;
++		return err;
++	}
+ 
+-	return create.exec_queue_id;
++	*exec_queue_id = create.exec_queue_id;
++	return 0;
++}
++
++uint32_t xe_exec_queue_create(int fd, uint32_t vm,
++			      struct drm_xe_engine_class_instance *instance,
++			      uint64_t ext)
++{
++	uint32_t exec_queue_id;
++
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, instance, ext, &exec_queue_id), 0);
++
++	return exec_queue_id;
+ }
+ 
+ uint32_t xe_exec_queue_create_class(int fd, uint32_t vm, uint16_t class)
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index bd660bd27..e9ccb4b5b 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -73,6 +73,9 @@ uint32_t __xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t pla
+ uint32_t xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t placement,
+ 			      uint32_t flags, uint16_t cpu_caching);
+ uint16_t __xe_default_cpu_caching_from_placement(int fd, uint32_t placement);
++uint32_t __xe_exec_queue_create(int fd, uint32_t vm,
++				struct drm_xe_engine_class_instance *instance,
++				uint64_t ext, uint32_t *exec_queue_id);
+ uint32_t xe_exec_queue_create(int fd, uint32_t vm,
+ 			  struct drm_xe_engine_class_instance *instance,
+ 			  uint64_t ext);
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index bbdddc7c9..077743ef6 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -93,32 +93,6 @@ enum exec_queue_destroy {
+ 	LEAK
+ };
+ 
+-static uint32_t __xe_exec_queue_create(int fd, uint32_t vm,
+-				   struct drm_xe_engine_class_instance *instance,
+-				   uint64_t ext,
+-				   uint32_t *exec_queuep)
+-{
+-	struct drm_xe_exec_queue_create create = {
+-		.extensions = ext,
+-		.vm_id = vm,
+-		.width = 1,
+-		.num_placements = 1,
+-		.instances = to_user_pointer(instance),
+-	};
+-	int err = 0;
+-
+-	if (igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create) == 0) {
+-		*exec_queuep = create.exec_queue_id;
+-	} else {
+-		igt_warn("Can't create exec_queue, errno: %d\n", errno);
+-		err = -errno;
+-		igt_assume(err);
+-	}
+-	errno = 0;
+-
+-	return err;
+-}
+-
+ #define MAXEXECQUEUES 2048
+ #define MAXTIME 5
+ 
 -- 
 2.21.0.rc0.32.g243a4c7e27
