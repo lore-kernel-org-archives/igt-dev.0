@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============2646507766238475442=="
+ boundary="===============9028557197977897629=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jonathan Cavitt" <jonathan.cavitt@intel.com>
-Date: Tue, 05 Dec 2023 23:49:46 -0000
-Message-ID: <170182018663.24285.6190974739031092406@emeril.freedesktop.org>
-References: <20231205211020.226517-1-jonathan.cavitt@intel.com>
-In-Reply-To: <20231205211020.226517-1-jonathan.cavitt@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/xe?=
- =?utf-8?q?=5Fcreate=3A_Unthread_create-execqueues_tests?=
+To: "Rodrigo Vivi" <rodrigo.vivi@intel.com>
+Date: Wed, 06 Dec 2023 00:13:29 -0000
+Message-ID: <170182160917.26426.17368822571014765573@emeril.freedesktop.org>
+References: <20231205213814.179963-1-rodrigo.vivi@intel.com>
+In-Reply-To: <20231205213814.179963-1-rodrigo.vivi@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
+ =?utf-8?q?tarting_with_=5Bi-g-t=2C1/3=5D_tests/intel/xe=3A_Align_change_i?=
+ =?utf-8?q?n_the_name_of_frequency_sysfs_attributes?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,119 +24,110 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2646507766238475442==
+--===============9028557197977897629==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/xe_create: Unthread create-execqueues tests
-URL   : https://patchwork.freedesktop.org/series/127389/
-State : failure
+Series: series starting with [i-g-t,1/3] tests/intel/xe: Align change in the name of frequency sysfs attributes
+URL   : https://patchwork.freedesktop.org/series/127392/
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7622_BAT -> XEIGTPW_10345_BAT
+CI Bug Log - changes from XEIGT_7622_BAT -> XEIGTPW_10346_BAT
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with XEIGTPW_10345_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_10345_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
   
 
-Participating hosts (4 -> 4)
+Participating hosts (4 -> 2)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (2): bat-pvc-2 bat-atsm-2 
 
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in XEIGTPW_10345_BAT:
+  Here are the unknown changes that may have been introduced in XEIGTPW_10346_BAT:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
-  * igt@xe_prime_self_import@basic-with_fd_dup:
-    - bat-atsm-2:         [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7622/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10345/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
+  * {igt@xe_gt_freq@freq_basic_api} (NEW):
+    - bat-adlp-7:         NOTRUN -> [FAIL][1] +2 other tests fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10346/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][2] +2 other tests fail
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10346/bat-dg2-oem2/igt@xe_gt_freq@freq_basic_api.html
 
   
+New tests
+---------
+
+  New tests have been introduced between XEIGT_7622_BAT and XEIGTPW_10346_BAT:
+
+### New IGT tests (3) ###
+
+  * igt@xe_gt_freq@freq_basic_api:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_gt_freq@freq_fixed_idle:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_gt_freq@freq_range_idle:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  
+
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_10345_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_10346_BAT that come from known issues:
 
 ### IGT changes ###
 
-#### Issues hit ####
-
-  * igt@kms_pipe_crc_basic@hang-read-crc:
-    - bat-dg2-oem2:       [PASS][3] -> [DMESG-WARN][4] ([Intel XE#282] / [i915#2017]) +5 other tests dmesg-warn
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7622/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10345/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
-
-  
 #### Possible fixes ####
 
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3:
-    - bat-dg2-oem2:       [FAIL][5] ([Intel XE#480]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7622/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10345/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3.html
-
   * igt@xe_create@create-execqueues-noleak:
-    - bat-adlp-7:         [FAIL][7] ([Intel XE#524]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7622/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10345/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-    - bat-atsm-2:         [FAIL][9] ([Intel XE#524]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7622/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10345/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7622/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10346/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
 
   
-#### Warnings ####
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
 
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
-    - bat-dg2-oem2:       [FAIL][11] ([Intel XE#400] / [Intel XE#616]) -> [DMESG-FAIL][12] ([Intel XE#282] / [i915#2017]) +1 other test dmesg-fail
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7622/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10345/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-
-  
-  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
-  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
   [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
-  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
 
 
 Build changes
 -------------
 
-  * IGT: IGT_7622 -> IGTPW_10345
+  * IGT: IGT_7622 -> IGTPW_10346
   * Linux: xe-550-ac7b89571d802765762e7c15d78a6dcd5d92c41b -> xe-551-176c42b6ba690d4c84e37f151e832d5520a38354
 
-  IGTPW_10345: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10345/index.html
+  IGTPW_10346: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10346/index.html
   IGT_7622: 48a47d91b7727215b965690c69d84159c8fb1aa2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-550-ac7b89571d802765762e7c15d78a6dcd5d92c41b: ac7b89571d802765762e7c15d78a6dcd5d92c41b
   xe-551-176c42b6ba690d4c84e37f151e832d5520a38354: 176c42b6ba690d4c84e37f151e832d5520a38354
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10345/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10346/index.html
 
---===============2646507766238475442==
+--===============9028557197977897629==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -155,78 +147,82 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/xe_create: Unthread create-execqueues tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127389/">https://patchwork.freedesktop.org/series/127389/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/3] tests/intel/xe: Align change in the name of frequency sysfs attributes</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127392/">https://patchwork.freedesktop.org/series/127392/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10345/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10345/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10346/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10346/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7622_BAT -&gt; XEIGTPW_10345_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_7622_BAT -&gt; XEIGTPW_10346_BAT</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_10345_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_10345_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 2)</h2>
+<p>Missing    (2): bat-pvc-2 bat-atsm-2 </p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_10345_BAT:</p>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_10346_BAT:</p>
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
-<li>igt@xe_prime_self_import@basic-with_fd_dup:<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7622/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10345/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">FAIL</a></li>
+<li>
+<p>{igt@xe_gt_freq@freq_basic_api} (NEW):</p>
+<ul>
+<li>
+<p>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10346/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html">FAIL</a> +2 other tests fail</p>
+</li>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10346/bat-dg2-oem2/igt@xe_gt_freq@freq_basic_api.html">FAIL</a> +2 other tests fail</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_7622_BAT and XEIGTPW_10346_BAT:</p>
+<h3>New IGT tests (3)</h3>
+<ul>
+<li>
+<p>igt@xe_gt_freq@freq_basic_api:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_gt_freq@freq_fixed_idle:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_gt_freq@freq_range_idle:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 </ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10345_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_10346_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@hang-read-crc:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7622/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10345/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) +5 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
 <h4>Possible fixes</h4>
 <ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7622/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10345/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_create@create-execqueues-noleak:</p>
-<ul>
-<li>
-<p>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7622/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10345/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></p>
-</li>
-<li>
-<p>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7622/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10345/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">PASS</a></p>
-</li>
+<li>igt@xe_create@create-execqueues-noleak:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7622/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10346/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
 </ul>
 </li>
 </ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7622/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10345/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_7622 -&gt; IGTPW_10345</li>
+<li>IGT: IGT_7622 -&gt; IGTPW_10346</li>
 <li>Linux: xe-550-ac7b89571d802765762e7c15d78a6dcd5d92c41b -&gt; xe-551-176c42b6ba690d4c84e37f151e832d5520a38354</li>
 </ul>
-<p>IGTPW_10345: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10345/index.html<br />
+<p>IGTPW_10346: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10346/index.html<br />
   IGT_7622: 48a47d91b7727215b965690c69d84159c8fb1aa2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-550-ac7b89571d802765762e7c15d78a6dcd5d92c41b: ac7b89571d802765762e7c15d78a6dcd5d92c41b<br />
   xe-551-176c42b6ba690d4c84e37f151e832d5520a38354: 176c42b6ba690d4c84e37f151e832d5520a38354</p>
@@ -234,4 +230,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============2646507766238475442==--
+--===============9028557197977897629==--
