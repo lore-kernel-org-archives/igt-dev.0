@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 013DB10E6EE
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Dec 2023 11:52:20 +0000 (UTC)
-From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  6 Dec 2023 17:17:33 +0530
-Message-Id: <20231206114733.16121-3-krishnaiah.bommu@intel.com>
-In-Reply-To: <20231206114733.16121-1-krishnaiah.bommu@intel.com>
-References: <20231206114733.16121-1-krishnaiah.bommu@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 2/2] drm-uapi/xe: kill xe_wait_user_fence_ioctl
- when exec_queue reset happen
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bommu Krishnaiah" <krishnaiah.bommu@intel.com>
+Date: Wed, 06 Dec 2023 12:27:25 -0000
+Message-ID: <170186564527.26426.8505865855517504929@emeril.freedesktop.org>
+References: <20231206114733.16121-1-krishnaiah.bommu@intel.com>
+In-Reply-To: <20231206114733.16121-1-krishnaiah.bommu@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBSRkM6?=
+ =?utf-8?q?_drm-uapi/xe=3A_add_exec=5Fqueue=5Fid_member_to_drm=5Fxe=5Fwait?=
+ =?utf-8?q?=5Fuser=5Ffence_structure_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,130 +18,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Skipping the GPU mapping(vm_bind) for object, so that exec_queue
-reset will happen and xe_wait_ufence will end return EIO not ETIME
+== Series Details ==
 
-Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>
----
- tests/intel/xe_waitfence.c | 84 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 82 insertions(+), 2 deletions(-)
+Series: RFC: drm-uapi/xe: add exec_queue_id member to drm_xe_wait_user_fence structure (rev3)
+URL   : https://patchwork.freedesktop.org/series/127364/
+State : failure
 
-diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-index b724eaa0e..1e2fd1661 100644
---- a/tests/intel/xe_waitfence.c
-+++ b/tests/intel/xe_waitfence.c
-@@ -178,8 +178,8 @@ waitfence(int fd, enum waittype wt)
-  * SUBTEST: invalid-ops
-  * Description: Check query with invalid ops returns expected error code
-  *
-- * SUBTEST: invalid-engine
-- * Description: Check query with invalid engine info returns expected error code
-+ * SUBTEST: invalid-exec_queue-wait
-+ * Description: Check xe_wait_ufence will return expected error code while exec_queue reset happen
-  */
- 
- static void
-@@ -230,6 +230,83 @@ invalid_ops(int fd)
- 	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EINVAL);
- }
- 
-+static void
-+invalid_exec_queue_wait(int fd)
-+{
-+	uint32_t bo, b;
-+	uint64_t batch_offset;
-+	uint64_t batch_addr;
-+	uint64_t sdi_offset;
-+	uint64_t sdi_addr;
-+	uint64_t addr = 0x1a0000;
-+
-+	struct {
-+		uint32_t batch[16];
-+		uint64_t pad;
-+		uint64_t vm_sync;
-+		uint64_t exec_sync;
-+		uint32_t data;
-+	} *data;
-+
-+#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
-+	struct drm_xe_sync sync[1] = {
-+		{ .flags = DRM_XE_SYNC_FLAG_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
-+			.timeline_value = USER_FENCE_VALUE },
-+	};
-+
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(sync),
-+	};
-+
-+	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-+	uint32_t exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
-+	struct drm_xe_wait_user_fence1 wait = {
-+		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
-+		.flags = 0,
-+		.value = 0xaabbaa,
-+		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
-+		.timeout = -1,
-+		.exec_queue_id = exec_queue,
-+	};
-+
-+	bo = xe_bo_create_flags(fd, vm, 0x40000, MY_FLAG);
-+	data = xe_bo_map(fd, bo, 0x40000);
-+
-+	batch_offset = (char *)&data[0].batch - (char *)data;
-+	batch_addr = addr + batch_offset;
-+	sdi_offset = (char *)&data[0].data - (char *)data;
-+	sdi_addr = addr + sdi_offset;
-+
-+	b = 0;
-+	data[0].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+	data[0].batch[b++] = sdi_addr;
-+	data[0].batch[b++] = sdi_addr >> 32;
-+	data[0].batch[b++] = 0xaabbcc;
-+	data[0].batch[b++] = MI_BATCH_BUFFER_END;
-+	igt_assert(b <= ARRAY_SIZE(data[0].batch));
-+
-+	wait.addr = to_user_pointer(&data[0].exec_sync);
-+	exec.exec_queue_id = exec_queue;
-+	exec.address = batch_addr;
-+
-+	xe_exec(fd, &exec);
-+
-+	/**
-+	  * Skipping the GPU mapping(vm_bind) for object, so that exec_queue
-+	  * reset will happen and xe_wait_ufence will end return EIO not ETIME
-+	  */
-+	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EIO);
-+
-+	xe_exec_queue_destroy(fd, exec_queue);
-+
-+	if (bo) {
-+		 munmap(data, 0x40000);
-+		 gem_close(fd, bo);
-+	}
-+}
-+
- igt_main
- {
- 	int fd;
-@@ -252,6 +329,9 @@ igt_main
- 	igt_subtest("invalid-ops")
- 		invalid_ops(fd);
- 
-+	igt_subtest("invalid-exec_queue-wait")
-+		invalid_exec_queue_wait(fd);
-+
- 	igt_fixture
- 		drm_close_driver(fd);
- }
--- 
-2.25.1
+== Summary ==
+
+IGT patchset build failed on latest successful build
+f42cda2a9ad74846fb59eea436cc98c8789849f9 lib/igt_core: initialize srandom seed on startup
+
+Tail of build.log:
+      |            void *
+In file included from ../../../usr/src/igt-gpu-tools/tests/intel/xe_exec_threads.c:21:
+../../../usr/src/igt-gpu-tools/lib/xe/xe_ioctl.h:92:19: note: expected ‘uint32_t’ {aka ‘unsigned int’} but argument is of type ‘void *’
+   92 |          uint32_t exec_queue,int64_t timeout);
+      |          ~~~~~~~~~^~~~~~~~~~
+../../../usr/src/igt-gpu-tools/tests/intel/xe_exec_threads.c:433:57: warning: passing argument 4 of ‘xe_wait_ufence’ makes integer from pointer without a cast [-Wint-conversion]
+  433 |  xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, fence_timeout);
+      |                                                         ^~~~
+      |                                                         |
+      |                                                         void *
+In file included from ../../../usr/src/igt-gpu-tools/tests/intel/xe_exec_threads.c:21:
+../../../usr/src/igt-gpu-tools/lib/xe/xe_ioctl.h:92:19: note: expected ‘uint32_t’ {aka ‘unsigned int’} but argument is of type ‘void *’
+   92 |          uint32_t exec_queue,int64_t timeout);
+      |          ~~~~~~~~~^~~~~~~~~~
+[690/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_registers_dg1.c.o'.
+[691/1662] Compiling C object 'tests/59830eb@@kms_chamelium_hpd@exe/chamelium_kms_chamelium_hpd.c.o'.
+[692/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_registers_adl.c.o'.
+[693/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_chv.c.o'.
+[694/1662] Compiling C object 'tests/59830eb@@kms_chamelium_frames@exe/chamelium_kms_chamelium_frames.c.o'.
+[695/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_kblgt3.c.o'.
+[696/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_cflgt3.c.o'.
+[697/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_tglgt1.c.o'.
+[698/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_sklgt3.c.o'.
+[699/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_sklgt2.c.o'.
+[700/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_sklgt4.c.o'.
+[701/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_glk.c.o'.
+[702/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_cnl.c.o'.
+[703/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_bxt.c.o'.
+[704/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_cflgt2.c.o'.
+[705/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_kblgt2.c.o'.
+[706/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_bdw.c.o'.
+[707/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_rkl.c.o'.
+[708/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_dg1.c.o'.
+[709/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_icl.c.o'.
+[710/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_tglgt2.c.o'.
+[711/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_adl.c.o'.
+[712/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_ehl.c.o'.
+[713/1662] Compiling C object 'tests/59830eb@@gem_exec_fence@exe/intel_gem_exec_fence.c.o'.
+[714/1662] Compiling C object 'tests/59830eb@@xe_vm@exe/intel_xe_vm.c.o'.
+[715/1662] Compiling C object 'tests/59830eb@@kms_frontbuffer_tracking@exe/intel_kms_frontbuffer_tracking.c.o'.
+[716/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_registers_acmgt1.c.o'.
+[717/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_registers_acmgt2.c.o'.
+[718/1662] Compiling C object 'tests/59830eb@@perf_pmu@exe/intel_perf_pmu.c.o'.
+[719/1662] Compiling C object 'tests/59830eb@@perf@exe/intel_perf.c.o'.
+[720/1662] Compiling C object 'tests/59830eb@@gem_exec_schedule@exe/intel_gem_exec_schedule.c.o'.
+[721/1662] Linking target lib/libigt.so.0.
+[722/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_equations.c.o'.
+[723/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt1.c.o'.
+[724/1662] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt2.c.o'.
+ninja: build stopped: subcommand failed.
+
