@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============1676196795697988389=="
+ boundary="===============5334998202399997752=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Brian Welty" <brian.welty@intel.com>
-Date: Thu, 07 Dec 2023 02:40:07 -0000
-Message-ID: <170191680784.28719.16159650094500296323@emeril.freedesktop.org>
-References: <20231207012623.15901-1-brian.welty@intel.com>
-In-Reply-To: <20231207012623.15901-1-brian.welty@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL3hl?=
- =?utf-8?q?=5Fquery=3A_Fix_xe=5Fsupports=5Ffaults=28=29?=
+To: "Akshata Jahagirdar" <akshata.jahagirdar@intel.com>
+Date: Thu, 07 Dec 2023 02:51:26 -0000
+Message-ID: <170191748697.28721.17083778333694933543@emeril.freedesktop.org>
+References: <cover.1701951594.git.akshata.jahagirdar@intel.com>
+In-Reply-To: <cover.1701951594.git.akshata.jahagirdar@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Compress?=
+ =?utf-8?q?ion_support_for_Lunarlake_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,171 +23,70 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1676196795697988389==
+--===============5334998202399997752==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/xe_query: Fix xe_supports_faults()
-URL   : https://patchwork.freedesktop.org/series/127467/
-State : failure
+Series: Compression support for Lunarlake (rev4)
+URL   : https://patchwork.freedesktop.org/series/126254/
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_13990 -> IGTPW_10361
+CI Bug Log - changes from XEIGT_7626_BAT -> XEIGTPW_10360_BAT
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_10361 absolutely need to be
-  verified manually.
+  No regressions found.
+
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_10361, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/index.html
-
-Participating hosts (37 -> 32)
+Participating hosts (4 -> 4)
 ------------------------------
 
-  Missing    (5): bat-adls-5 bat-dg1-5 bat-dg2-9 fi-snb-2520m fi-pnv-d510 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_10361:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-6:
-    - bat-adlp-11:        [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13990/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-6.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-6.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_13990 and IGTPW_10361:
-
-### New IGT tests (12) ###
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-dp-7:
-    - Statuses : 1 pass(s)
-    - Exec time: [2.01] s
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-7:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.85] s
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-7:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.90] s
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dp-7:
-    - Statuses : 1 pass(s)
-    - Exec time: [2.18] s
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-7:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.98] s
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-7:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.89] s
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-7:
-    - Statuses : 1 abort(s)
-    - Exec time: [1.94] s
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-dp-7:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.85] s
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-dp-7:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.78] s
-
-  * igt@kms_pipe_crc_basic@read-crc@pipe-a-dp-7:
-    - Statuses : 1 pass(s)
-    - Exec time: [2.06] s
-
-  * igt@kms_pipe_crc_basic@read-crc@pipe-c-dp-7:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.76] s
-
-  * igt@kms_pipe_crc_basic@read-crc@pipe-d-dp-7:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.78] s
-
-  
+  No changes in participating hosts
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_10361 that come from known issues:
+  Here are the changes found in XEIGTPW_10360_BAT that come from known issues:
 
 ### IGT changes ###
 
-#### Issues hit ####
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-dp-5:
-    - bat-adlp-11:        [PASS][3] -> [DMESG-FAIL][4] ([i915#6868])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13990/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-dp-5.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-dp-5.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5:
-    - bat-adlp-11:        [PASS][5] -> [FAIL][6] ([i915#9666]) +1 other test fail
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13990/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-7 (NEW):
-    - bat-adlp-11:        NOTRUN -> [ABORT][7] ([i915#8668])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-7.html
-
-  
 #### Possible fixes ####
 
-  * igt@kms_flip@basic-flip-vs-dpms@d-dp6:
-    - bat-adlp-11:        [DMESG-FAIL][8] ([i915#6868]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13990/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@d-dp6:
-    - bat-adlp-11:        [DMESG-WARN][10] -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13990/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@d-dp6.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@d-dp6.html
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
+    - bat-adlp-7:         [FAIL][1] ([i915#2346]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7626/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10360/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
 
   
-  [i915#6868]: https://gitlab.freedesktop.org/drm/intel/issues/6868
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#9666]: https://gitlab.freedesktop.org/drm/intel/issues/9666
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7626 -> IGTPW_10361
+  * IGT: IGT_7626 -> IGTPW_10360
+  * Linux: xe-556-d33ebd7511c2b53c5dc006e2daa25214fc8a5921 -> xe-557-668d13abebbbc3812de86be1f8477475e1d90728
 
-  CI-20190529: 20190529
-  CI_DRM_13990: 85d33d0ad82a5c1a71492f14a5ceb67ada6a22d8 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10361: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/index.html
+  IGTPW_10360: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10360/index.html
   IGT_7626: 154b7288552cd7ed3033f8ef396e88d0bd1b7646 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-556-d33ebd7511c2b53c5dc006e2daa25214fc8a5921: d33ebd7511c2b53c5dc006e2daa25214fc8a5921
+  xe-557-668d13abebbbc3812de86be1f8477475e1d90728: 668d13abebbbc3812de86be1f8477475e1d90728
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10360/index.html
 
---===============1676196795697988389==
+--===============5334998202399997752==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -207,175 +106,42 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/xe_query: Fix xe_supports_faults()</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127467/">https://patchwork.freedesktop.org/series/127467/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>Compression support for Lunarlake (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126254/">https://patchwork.freedesktop.org/series/126254/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10360/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10360/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_13990 -&gt; IGTPW_10361</h1>
+    <h1>CI Bug Log - changes from XEIGT_7626_BAT -&gt; XEIGTPW_10360_BAT</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_10361 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_10361, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/index.html</p>
-<h2>Participating hosts (37 -&gt; 32)</h2>
-<p>Missing    (5): bat-adls-5 bat-dg1-5 bat-dg2-9 fi-snb-2520m fi-pnv-d510 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_10361:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-6:<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13990/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-6.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-6.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_13990 and IGTPW_10361:</p>
-<h3>New IGT tests (12)</h3>
-<ul>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-dp-7:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [2.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-7:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.85] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-7:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.90] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dp-7:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [2.18] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-7:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.98] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-7:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-7:</p>
-<ul>
-<li>Statuses : 1 abort(s)</li>
-<li>Exec time: [1.94] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-dp-7:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.85] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-dp-7:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.78] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc@pipe-a-dp-7:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [2.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc@pipe-c-dp-7:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.76] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc@pipe-d-dp-7:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.78] s</li>
-</ul>
-</li>
-</ul>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10361 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_10360_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-dp-5:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13990/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-dp-5.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-dp-5.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6868">i915#6868</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13990/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9666">i915#9666</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-7 (NEW):</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-7.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-</ul>
 <h4>Possible fixes</h4>
 <ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@d-dp6:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13990/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6868">i915#6868</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@d-dp6:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13990/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@d-dp6.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@d-dp6.html">PASS</a></li>
+<li>igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7626/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10360/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">PASS</a></li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7626 -&gt; IGTPW_10361</li>
+<li>IGT: IGT_7626 -&gt; IGTPW_10360</li>
+<li>Linux: xe-556-d33ebd7511c2b53c5dc006e2daa25214fc8a5921 -&gt; xe-557-668d13abebbbc3812de86be1f8477475e1d90728</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13990: 85d33d0ad82a5c1a71492f14a5ceb67ada6a22d8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10361: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10361/index.html<br />
-  IGT_7626: 154b7288552cd7ed3033f8ef396e88d0bd1b7646 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_10360: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10360/index.html<br />
+  IGT_7626: 154b7288552cd7ed3033f8ef396e88d0bd1b7646 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-556-d33ebd7511c2b53c5dc006e2daa25214fc8a5921: d33ebd7511c2b53c5dc006e2daa25214fc8a5921<br />
+  xe-557-668d13abebbbc3812de86be1f8477475e1d90728: 668d13abebbbc3812de86be1f8477475e1d90728</p>
 
 </body>
 </html>
 
---===============1676196795697988389==--
+--===============5334998202399997752==--
