@@ -1,21 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7193A10E060
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Dec 2023 00:34:04 +0000 (UTC)
-From: "Jahagirdar, Akshata" <akshata.jahagirdar@intel.com>
-To: "Stolarek, Karolina" <karolina.stolarek@intel.com>
-Date: Thu, 7 Dec 2023 00:33:58 +0000
-Message-ID: <CO1PR11MB49777B7DF9BF755F9305B4BA8D8BA@CO1PR11MB4977.namprd11.prod.outlook.com>
-References: <cover.1701180818.git.akshata.jahagirdar@intel.com>
- <49026bb5be7adbd33485c61581824076397a0c38.1701180818.git.akshata.jahagirdar@intel.com>
- <ed408f06-0a28-45bb-9562-6f077ebe5ac3@intel.com>
-In-Reply-To: <ed408f06-0a28-45bb-9562-6f077ebe5ac3@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D62C910E060
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Dec 2023 00:42:54 +0000 (UTC)
+From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+To: 
+Date: Thu,  7 Dec 2023 04:42:35 -0800
+Message-Id: <cover.1701951594.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/6] lib: Add blt command properties
- for lunarlake
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4 0/6] Compression support for Lunarlake
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,70 +16,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: igt-dev@lists.freedesktop.org, ayaz.siddiqui@intel.com,
+ akshata.jahagirdar@intel.com, matthew.auld@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IFN0b2xhcmVrLCBLYXJvbGlu
-YSA8a2Fyb2xpbmEuc3RvbGFyZWtAaW50ZWwuY29tPiANCj5TZW50OiBXZWRuZXNkYXksIE5vdmVt
-YmVyIDI5LCAyMDIzIDExOjQxIFBNDQo+VG86IEphaGFnaXJkYXIsIEFrc2hhdGEgPGFrc2hhdGEu
-amFoYWdpcmRhckBpbnRlbC5jb20+DQo+Q2M6IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-OyBTaWRkaXF1aSwgQXlheiBBIDxheWF6LnNpZGRpcXVpQGludGVsLmNvbT47IE1tYXR0aGV3LmF1
-bGRAaW50ZWwuY29tOyBLZW1wY3p5bnNraSwgWmJpZ25pZXcgPHpiaWduaWV3LmtlbXBjenluc2tp
-QGludGVsLmNvbT47ID5NaXNocmEsIFBhbGxhdmkgPHBhbGxhdmkubWlzaHJhQGludGVsLmNvbT4N
-Cj5TdWJqZWN0OiBSZTogW1BBVENIIGktZy10IHYzIDEvNl0gbGliOiBBZGQgYmx0IGNvbW1hbmQg
-cHJvcGVydGllcyBmb3IgbHVuYXJsYWtlDQo+DQo+DQo+T24gMzAuMTEuMjAyMyAxMzozNSwgQWtz
-aGF0YSBKYWhhZ2lyZGFyIHdyb3RlOg0KPj4gQWRkIGJsdF9jbWRfaW5mbyBzdHJ1Y3RzIHRvIGRl
-c2NyaWJlIHByb3BlcnRpZXMgb2YgWFlfQkxPQ0tfQ09QWSBhbmQgWFlfRkFTVF9DT1BZIGJsaXR0
-ZXIgY29tbWFuZHMgZm9yIFhFMiBwbGF0Zm9ybS4gVXBkYXRlZCB0aGUgZGVmaW5pdGlvbnMgZm9y
-IEx1bmFybGFrZS4NCj4+IA0KPj4gU2lnbmVkLW9mZi1ieTogQWtzaGF0YSBKYWhhZ2lyZGFyIDxh
-a3NoYXRhLmphaGFnaXJkYXJAaW50ZWwuY29tPg0KPj4gLS0tDQo+PiAgIGxpYi9pbnRlbF9jbWRz
-X2luZm8uYyAgIHwgMTcgKysrKysrKysrKysrKysrKysNCj4+ICAgbGliL2ludGVsX2NtZHNfaW5m
-by5oICAgfCAgMSArDQo+PiAgIGxpYi9pbnRlbF9kZXZpY2VfaW5mby5jIHwgIDIgKy0NCj4+ICAg
-MyBmaWxlcyBjaGFuZ2VkLCAxOSBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+PiANCj4+
-IGRpZmYgLS1naXQgYS9saWIvaW50ZWxfY21kc19pbmZvLmMgYi9saWIvaW50ZWxfY21kc19pbmZv
-LmMgaW5kZXggDQo+PiAyZTUxZWMwODEuLjdjODc5MGQ4ZSAxMDA2NDQNCj4+IC0tLSBhL2xpYi9p
-bnRlbF9jbWRzX2luZm8uYw0KPj4gKysrIGIvbGliL2ludGVsX2NtZHNfaW5mby5jDQo+PiBAQCAt
-NjcsNiArNjcsMTUgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBibHRfY21kX2luZm8NCj4+ICAgCQkJ
-CQkJIEJMVF9DTURfRVhURU5ERUQgfA0KPj4gICAJCQkJCQkgQkxUX0NNRF9TVVBQT1JUU19DT01Q
-UkVTU0lPTik7DQo+PiAgIA0KPj4gK3N0YXRpYyBjb25zdCBzdHJ1Y3QgYmx0X2NtZF9pbmZvCQkJ
-CQ0KPj4gKwkJeGUyX3h5X2Jsb2NrX2NvcHkgPSBCTFRfSU5GT19FWFQoWFlfQkxPQ0tfQ09QWSwN
-Cj4+ICsJCQkJCQkgQklUKFRfTElORUFSKSB8DQo+PiArCQkJCQkJIEJJVChUX1hNQUpPUikgfA0K
-Pj4gKwkJCQkJCSBCSVQoVF9USUxFNCkgIHwNCj4+ICsJCQkJCQkgQklUKFRfVElMRTY0KSwNCj4+
-ICsJCQkJCQkgQkxUX0NNRF9FWFRFTkRFRCB8DQo+PiArCQkJCQkJIEJMVF9DTURfU1VQUE9SVFNf
-Q09NUFJFU1NJT04pOw0KPj4gKw0KPj4gICBzdGF0aWMgY29uc3Qgc3RydWN0IGJsdF9jbWRfaW5m
-bw0KPj4gICAJCW10bF94eV9ibG9ja19jb3B5ID0gQkxUX0lORk9fRVhUKFhZX0JMT0NLX0NPUFks
-DQo+PiAgIAkJCQkJCSBCSVQoVF9MSU5FQVIpIHwNCj4+IEBAIC0xNjksNiArMTc4LDE0IEBAIGNv
-bnN0IHN0cnVjdCBpbnRlbF9jbWRzX2luZm8gZ2VuMTJfcHZjX2NtZHNfaW5mbyA9IHsNCj4+ICAg
-CX0NCj4+ICAgfTsNCj4+ICAgDQo+PiArDQo+DQo+VGhpcyBibGFuayBsaW5lIGlzIHVubmVjZXNz
-YXJ5LiBPbmNlIHlvdSBmaXggdGhhdCBhbmQgd3JhcCB0aGUgY29tbWl0IG1lc3NhZ2UgdG8gODAg
-Y2hhcnMsIGZlZWwgZnJlZSB0byBhZGQgbXk6DQo+DQo+UmV2aWV3ZWQtYnk6IEthcm9saW5hIFN0
-b2xhcmVrIDxrYXJvbGluYS5zdG9sYXJla0BpbnRlbC5jb20+DQo+DQo+QWxsIHRoZSBiZXN0LA0K
-Pkthcm9saW5hDQo+DQpTdXJlLCB3aWxsIGNoYW5nZSBpdC4gVGhhbmsgeW91Lg0KQmVzdCwNCkFr
-c2hhdGEuDQoNCj4+ICtjb25zdCBzdHJ1Y3QgaW50ZWxfY21kc19pbmZvIHhlMl9jbWRzX2luZm8g
-ID0gew0KPj4gKwkuYmx0X2NtZHMgPSB7DQo+PiArCQlbWFlfRkFTVF9DT1BZXSA9ICZkZzJfeHlf
-ZmFzdF9jb3B5LA0KPj4gKwkJW1hZX0JMT0NLX0NPUFldID0gJnhlMl94eV9ibG9ja19jb3B5LA0K
-Pj4gKwl9DQo+PiArfTsNCj4+ICsNCj4+ICAgY29uc3Qgc3RydWN0IGJsdF9jbWRfaW5mbyAqYmx0
-X2dldF9jbWRfaW5mbyhjb25zdCBzdHJ1Y3QgaW50ZWxfY21kc19pbmZvICpjbWRzX2luZm8sDQo+
-PiAgIAkJCQkJICAgIGVudW0gYmx0X2NtZF90eXBlIGNtZCkNCj4+ICAgew0KPj4gZGlmZiAtLWdp
-dCBhL2xpYi9pbnRlbF9jbWRzX2luZm8uaCBiL2xpYi9pbnRlbF9jbWRzX2luZm8uaCBpbmRleCAN
-Cj4+IGY5ZTM5MzJkMS4uMGE4M2I2YTQ0IDEwMDY0NA0KPj4gLS0tIGEvbGliL2ludGVsX2NtZHNf
-aW5mby5oDQo+PiArKysgYi9saWIvaW50ZWxfY21kc19pbmZvLmgNCj4+IEBAIC01NSw2ICs1NSw3
-IEBAIGV4dGVybiBjb25zdCBzdHJ1Y3QgaW50ZWxfY21kc19pbmZvIGdlbjEyX2NtZHNfaW5mbzsN
-Cj4+ICAgZXh0ZXJuIGNvbnN0IHN0cnVjdCBpbnRlbF9jbWRzX2luZm8gZ2VuMTJfZGcyX2NtZHNf
-aW5mbzsNCj4+ICAgZXh0ZXJuIGNvbnN0IHN0cnVjdCBpbnRlbF9jbWRzX2luZm8gZ2VuMTJfbXRs
-X2NtZHNfaW5mbzsNCj4+ICAgZXh0ZXJuIGNvbnN0IHN0cnVjdCBpbnRlbF9jbWRzX2luZm8gZ2Vu
-MTJfcHZjX2NtZHNfaW5mbzsNCj4+ICtleHRlcm4gY29uc3Qgc3RydWN0IGludGVsX2NtZHNfaW5m
-byB4ZTJfY21kc19pbmZvOw0KPj4gICANCj4+ICAgI2RlZmluZSBmb3JfZWFjaF90aWxpbmcoX190
-aWxpbmcpIFwNCj4+ICAgCWZvciAoX190aWxpbmcgPSBUX0xJTkVBUjsgX190aWxpbmcgPCBfX0JM
-VF9NQVhfVElMSU5HOyBfX3RpbGluZysrKSANCj4+IGRpZmYgLS1naXQgYS9saWIvaW50ZWxfZGV2
-aWNlX2luZm8uYyBiL2xpYi9pbnRlbF9kZXZpY2VfaW5mby5jIGluZGV4IA0KPj4gMzQ4MTdmN2I2
-Li5hNjY5Nzk3YzMgMTAwNjQ0DQo+PiAtLS0gYS9saWIvaW50ZWxfZGV2aWNlX2luZm8uYw0KPj4g
-KysrIGIvbGliL2ludGVsX2RldmljZV9pbmZvLmMNCj4+IEBAIC01MTEsNyArNTExLDcgQEAgc3Rh
-dGljIGNvbnN0IHN0cnVjdCBpbnRlbF9kZXZpY2VfaW5mbyBpbnRlbF9sdW5hcmxha2VfaW5mbyA9
-IHsNCj4+ICAgCS5oYXNfNHRpbGUgPSB0cnVlLA0KPj4gICAJLmlzX2x1bmFybGFrZSA9IHRydWUs
-DQo+PiAgIAkuY29kZW5hbWUgPSAibHVuYXJsYWtlIiwNCj4+IC0JLmNtZHNfaW5mbyA9ICZnZW4x
-Ml9wdmNfY21kc19pbmZvLA0KPj4gKwkuY21kc19pbmZvID0gJnhlMl9jbWRzX2luZm8sDQo+PiAg
-IH07DQo+PiAgIA0KPj4gICBzdGF0aWMgY29uc3Qgc3RydWN0IHBjaV9pZF9tYXRjaCBpbnRlbF9k
-ZXZpY2VfbWF0Y2hbXSA9IHsNCg==
+Series enables the compression feature for Lunarlake and address various
+changes of the feature from Gen12. The Main-to-CCS ratio has been
+changed to 512:1. This changes the calculations and value for fields
+such as CCS Copy size for blitter command APIs. 
+This patch series updates tests xe_ccs and gem_ccs for XE2.  
+
+These changes are based on top of the "vm_bind pat_index" patch here:
+https://patchwork.freedesktop.org/series/124667/
+
+v2: Lots of improvements/tweaks (Kamil)
+    Addressed review comments (Matthew, Karolina)
+v3: Reused dg2_xy_fast_copy definition for defing xe2_cmds_info struct(Karolina)
+    Split the patch to address ccs_size calculation and updating
+pat_index, updated the intel_get_pat_idx_uc_comp function as per review
+comments (Kamil)
+v4: Addressed review comments (Karolina)
+    Rebase. Removed few unnecessary conditions, plus few fixes.
+
+Akshata Jahagirdar (6):
+  lib: Add blt command properties for lunarlake
+  lib/intel_blt: Update calculation of ccs_size and size_of_ctrl_copy
+  lib/intel_pat: Add uc_comp pat_index
+  lib/intel_blt: Update caching mode and pat_index
+  tests/intel/gem_ccs: Add compression support for Lunarlake
+  tests/intel/xe_ccs: Add compression support for Lunarlake
+
+ lib/intel_blt.c         | 19 +++++++++++--------
+ lib/intel_blt.h         |  2 +-
+ lib/intel_cmds_info.c   | 16 ++++++++++++++++
+ lib/intel_cmds_info.h   |  1 +
+ lib/intel_device_info.c |  2 +-
+ lib/intel_pat.c         | 14 +++++++++++++-
+ lib/intel_pat.h         |  2 ++
+ tests/intel/gem_ccs.c   |  2 +-
+ tests/intel/xe_ccs.c    | 40 +++++++++++++++++++++-------------------
+ 9 files changed, 67 insertions(+), 31 deletions(-)
