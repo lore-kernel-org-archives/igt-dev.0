@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E14E710E7B6
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Dec 2023 06:59:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D6A410E7E6
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Dec 2023 06:59:59 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com,
  mitulkumar.ajitkumar.golani@intel.com
-Date: Thu,  7 Dec 2023 12:18:51 +0530
-Message-Id: <20231207064900.3328723-2-bhanuprakash.modem@intel.com>
+Date: Thu,  7 Dec 2023 12:18:53 +0530
+Message-Id: <20231207064900.3328723-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231207064900.3328723-1-bhanuprakash.modem@intel.com>
 References: <20231207064900.3328723-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 01/10] tests/kms_vrr: Use lib helper to print
- connector modes
+Subject: [igt-dev] [i-g-t V6 03/10] tests/kms_vrr: Move all config
+ constaints to new function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,50 +24,55 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of writing a new logic at test level, use library helper
-to print connector modes.
+No functional change, cleanup only. Move all config checks
+to new function.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vrr.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ tests/kms_vrr.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 5c190cd8c..bbdb54682 100644
+index 13e7f3ca6..df241aa6c 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -65,13 +65,6 @@
-  */
- #define TEST_DURATION_NS (5000000000ull)
- 
--#define DRM_MODE_FMT    "\"%s\": %d %d %d %d %d %d %d %d %d %d 0x%x 0x%x"
--#define DRM_MODE_ARG(m) \
--	(m)->name, (m)->vrefresh, (m)->clock, \
--	(m)->hdisplay, (m)->hsync_start, (m)->hsync_end, (m)->htotal, \
--	(m)->vdisplay, (m)->vsync_start, (m)->vsync_end, (m)->vtotal, \
--	(m)->type, (m)->flags
--
- enum {
- 	TEST_BASIC = 1 << 0,
- 	TEST_DPMS = 1 << 1,
-@@ -162,14 +155,16 @@ output_mode_with_maxrate(igt_output_t *output, unsigned int vrr_max)
- 	drmModeConnectorPtr connector = output->config.connector;
- 	drmModeModeInfo mode = *igt_output_get_mode(output);
- 
--	igt_debug("Default Mode " DRM_MODE_FMT "\n", DRM_MODE_ARG(&mode));
-+	igt_info("Default Mode: ");
-+	kmstest_dump_mode(&mode);
- 
- 	for (i = 0; i < connector->count_modes; i++)
- 		if (connector->modes[i].vrefresh > mode.vrefresh &&
- 		    connector->modes[i].vrefresh <= vrr_max)
- 			mode = connector->modes[i];
- 
--	igt_debug("Override Mode " DRM_MODE_FMT "\n", DRM_MODE_ARG(&mode));
-+	igt_info("Override Mode: ");
-+	kmstest_dump_mode(&mode);
- 
- 	return mode;
+@@ -483,6 +483,21 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_remove_fb(data->drm_fd, &data->fb0);
  }
+ 
++static bool config_constraint(igt_output_t *output, uint32_t flags)
++{
++	if (!has_vrr(output))
++		return false;
++
++	/* For Negative tests, panel should be non-vrr. */
++	if ((flags & TEST_NEGATIVE) && vrr_capable(output))
++		return false;
++
++	if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
++		return false;
++
++	return true;
++}
++
+ /* Runs tests on outputs that are VRR capable. */
+ static void
+ run_vrr_test(data_t *data, test_t test, uint32_t flags)
+@@ -492,14 +507,7 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
+ 	for_each_connected_output(&data->display, output) {
+ 		enum pipe pipe;
+ 
+-		if (!has_vrr(output))
+-			continue;
+-
+-		/* For Negative tests, panel should be non-vrr. */
+-		if ((flags & TEST_NEGATIVE) && vrr_capable(output))
+-			continue;
+-
+-		if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
++		if (!config_constraint(output, flags))
+ 			continue;
+ 
+ 		for_each_pipe(&data->display, pipe) {
 -- 
 2.40.0
