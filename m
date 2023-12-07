@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3818650314229472004=="
+Date: Thu, 7 Dec 2023 15:16:41 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: Re: [igt-dev] =?utf-8?B?4pyXIEZpLkNJLklHVDogZmFpbHVy?= =?utf-8?Q?e?=
+ for tests/intel/xe_pat: limit number of dynamic tests
+Message-ID: <20231207141641.dntxo5rw2nugdcgw@kamilkon-desk.igk.intel.com>
+References: <20231206121203.270852-1-matthew.auld@intel.com>
+ <170187336815.26425.10955147857289494593@emeril.freedesktop.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_add_create-big-vram_subtest_?=
- =?utf-8?q?=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Marcin Bernatowicz" <marcin.bernatowicz@intel.com>
-Date: Thu, 07 Dec 2023 14:15:22 -0000
-Message-ID: <170195852282.28720.7892457296940891856@emeril.freedesktop.org>
-References: <20231207124418.26414-1-marcin.bernatowicz@intel.com>
-In-Reply-To: <20231207124418.26414-1-marcin.bernatowicz@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <170187336815.26425.10955147857289494593@emeril.freedesktop.org>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,131 +18,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: lgci.bug.filing@intel.com, I915-ci-infra@lists.freedesktop.org,
+ Matthew Auld <matthew.auld@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3818650314229472004==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi,
 
-== Series Details ==
+this are unrelated to Xe test.
 
-Series: add create-big-vram subtest (rev4)
-URL   : https://patchwork.freedesktop.org/series/126831/
-State : success
+Regards,
+Kamil
 
-== Summary ==
+On 2023-12-06 at 14:36:08 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/intel/xe_pat: limit number of dynamic tests
+> URL   : https://patchwork.freedesktop.org/series/127429/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from IGT_7623_full -> IGTPW_10352_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10352_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10352_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/index.html
+> 
+> Participating hosts (8 -> 7)
+> ------------------------------
+> 
+>   Missing    (1): shard-glk-0 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10352_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_lmem_swapping@heavy-verify-random@lmem0:
+>     - shard-dg2:          NOTRUN -> [ABORT][1] +4 other tests abort
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/shard-dg2-2/igt@gem_lmem_swapping@heavy-verify-random@lmem0.html
+>     - shard-dg1:          NOTRUN -> [ABORT][2] +4 other tests abort
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/shard-dg1-13/igt@gem_lmem_swapping@heavy-verify-random@lmem0.html
+> 
+>   * igt@i915_pm_rc6_residency@rc6-idle@gt0-vecs0:
+>     - shard-tglu:         NOTRUN -> [WARN][3]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/shard-tglu-2/igt@i915_pm_rc6_residency@rc6-idle@gt0-vecs0.html
+> 
+>   * igt@i915_selftest@live@gt_lrc:
+>     - shard-mtlp:         [PASS][4] -> [DMESG-WARN][5]
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7623/shard-mtlp-7/igt@i915_selftest@live@gt_lrc.html
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/shard-mtlp-8/igt@i915_selftest@live@gt_lrc.html
+> 
+>   * igt@kms_dirtyfb@drrs-dirtyfb-ioctl:
+>     - shard-dg2:          NOTRUN -> [SKIP][6]
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/shard-dg2-2/igt@kms_dirtyfb@drrs-dirtyfb-ioctl.html
+> 
+>   * igt@kms_pm_backlight@basic-brightness:
+>     - shard-tglu:         NOTRUN -> [SKIP][7]
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/shard-tglu-9/igt@kms_pm_backlight@basic-brightness.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@i915_module_load@reload-with-fault-injection:
+>     - shard-dg2:          [ABORT][8] -> [INCOMPLETE][9]
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7623/shard-dg2-11/igt@i915_module_load@reload-with-fault-injection.html
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/shard-dg2-1/igt@i915_module_load@reload-with-fault-injection.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_10352_full that come from known issues:
+> 
 
-CI Bug Log - changes from XEIGT_7626_BAT -> XEIGTPW_10366_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10366_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
-    - bat-adlp-7:         [FAIL][1] ([i915#2346]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7626/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10366/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
-
-  
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
-
-
-Build changes
--------------
-
-  * IGT: IGT_7626 -> IGTPW_10366
-  * Linux: xe-556-d33ebd7511c2b53c5dc006e2daa25214fc8a5921 -> xe-557-668d13abebbbc3812de86be1f8477475e1d90728
-
-  IGTPW_10366: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10366/index.html
-  IGT_7626: 154b7288552cd7ed3033f8ef396e88d0bd1b7646 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-556-d33ebd7511c2b53c5dc006e2daa25214fc8a5921: d33ebd7511c2b53c5dc006e2daa25214fc8a5921
-  xe-557-668d13abebbbc3812de86be1f8477475e1d90728: 668d13abebbbc3812de86be1f8477475e1d90728
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10366/index.html
-
---===============3818650314229472004==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>add create-big-vram subtest (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126831/">https://patchwork.freedesktop.org/series/126831/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10366/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10366/index.html</a></td></tr>
-
-</table>
+[...cut...]
 
 
-    <h1>CI Bug Log - changes from XEIGT_7626_BAT -&gt; XEIGTPW_10366_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10366_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7626/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10366/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7626 -&gt; IGTPW_10366</li>
-<li>Linux: xe-556-d33ebd7511c2b53c5dc006e2daa25214fc8a5921 -&gt; xe-557-668d13abebbbc3812de86be1f8477475e1d90728</li>
-</ul>
-<p>IGTPW_10366: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10366/index.html<br />
-  IGT_7626: 154b7288552cd7ed3033f8ef396e88d0bd1b7646 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-556-d33ebd7511c2b53c5dc006e2daa25214fc8a5921: d33ebd7511c2b53c5dc006e2daa25214fc8a5921<br />
-  xe-557-668d13abebbbc3812de86be1f8477475e1d90728: 668d13abebbbc3812de86be1f8477475e1d90728</p>
-
-</body>
-</html>
-
---===============3818650314229472004==--
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10352/index.html
