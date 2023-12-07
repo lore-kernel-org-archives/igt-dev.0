@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D6A410E7E6
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Dec 2023 06:59:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 654A310E7F1
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Dec 2023 07:00:05 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com,
  mitulkumar.ajitkumar.golani@intel.com
-Date: Thu,  7 Dec 2023 12:18:53 +0530
-Message-Id: <20231207064900.3328723-4-bhanuprakash.modem@intel.com>
+Date: Thu,  7 Dec 2023 12:18:56 +0530
+Message-Id: <20231207064900.3328723-7-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231207064900.3328723-1-bhanuprakash.modem@intel.com>
 References: <20231207064900.3328723-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 03/10] tests/kms_vrr: Move all config
- constaints to new function
+Subject: [igt-dev] [i-g-t V6 06/10] tests/kms_vrr: Add a helper to get the
+ low refresh mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,55 +24,43 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-No functional change, cleanup only. Move all config checks
-to new function.
+To switch the refresh rate seamlessly, add a new helper to
+identify the mode with the same resolution but low vrefresh
+and clock.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vrr.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ tests/kms_vrr.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 13e7f3ca6..df241aa6c 100644
+index db82cd008..f3cd18dcd 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -483,6 +483,21 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_remove_fb(data->drm_fd, &data->fb0);
+@@ -166,6 +166,24 @@ output_mode_with_maxrate(igt_output_t *output, unsigned int vrr_max)
+ 	return mode;
  }
  
-+static bool config_constraint(igt_output_t *output, uint32_t flags)
++static drmModeModeInfo
++low_rr_mode_with_same_res(igt_output_t *output, unsigned int vrr_min)
 +{
-+	if (!has_vrr(output))
-+		return false;
++	int i;
++	drmModeConnectorPtr connector = output->config.connector;
++	drmModeModeInfo mode = *igt_output_get_mode(output);
 +
-+	/* For Negative tests, panel should be non-vrr. */
-+	if ((flags & TEST_NEGATIVE) && vrr_capable(output))
-+		return false;
++	for (i = 0; i < connector->count_modes; i++)
++		if (connector->modes[i].hdisplay == mode.hdisplay &&
++		    connector->modes[i].vdisplay == mode.vdisplay &&
++		    connector->modes[i].clock < mode.clock &&
++		    connector->modes[i].vrefresh < mode.vrefresh &&
++		    connector->modes[i].vrefresh >= vrr_min)
++			mode = connector->modes[i];
 +
-+	if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
-+		return false;
-+
-+	return true;
++	return mode;
 +}
 +
- /* Runs tests on outputs that are VRR capable. */
- static void
- run_vrr_test(data_t *data, test_t test, uint32_t flags)
-@@ -492,14 +507,7 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
- 	for_each_connected_output(&data->display, output) {
- 		enum pipe pipe;
- 
--		if (!has_vrr(output))
--			continue;
--
--		/* For Negative tests, panel should be non-vrr. */
--		if ((flags & TEST_NEGATIVE) && vrr_capable(output))
--			continue;
--
--		if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
-+		if (!config_constraint(output, flags))
- 			continue;
- 
- 		for_each_pipe(&data->display, pipe) {
+ /* Read min and max vrr range from the connector debugfs. */
+ static range_t
+ get_vrr_range(data_t *data, igt_output_t *output)
 -- 
 2.40.0
