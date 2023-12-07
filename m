@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2616110E91D
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Dec 2023 16:04:43 +0000 (UTC)
-From: "Golani, Mitulkumar Ajitkumar" <mitulkumar.ajitkumar.golani@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: RE: [i-g-t V6 03/10] tests/kms_vrr: Move all config constaints to new
- function
-Date: Thu, 7 Dec 2023 16:04:38 +0000
-Message-ID: <IA1PR11MB6348264130965D2A3FBD89DCB28BA@IA1PR11MB6348.namprd11.prod.outlook.com>
-References: <20231207064900.3328723-1-bhanuprakash.modem@intel.com>
- <20231207064900.3328723-4-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231207064900.3328723-4-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41A6D10E934
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Dec 2023 16:35:24 +0000 (UTC)
+From: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t] benchmarks/gem_wsim: Fix array index issue in xe_sync
+ object referencing
+Date: Thu,  7 Dec 2023 17:35:16 +0100
+Message-Id: <20231207163516.8036-1-marcin.bernatowicz@intel.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,69 +21,32 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+During the split of xe_sync types from flags introduced in commit ce4e53b0faecde8884f1d4eac81d604b6e1904b8,
+the array index of xe_sync objects was unnecessarily incremented in one of the lines.
+This caused the next line to reference the wrong xe_sync object.
 
+This patch fixes the array index issue, ensuring the correct xe_sync object is referenced.
 
-> -----Original Message-----
-> From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> Sent: Thursday, December 7, 2023 12:19 PM
-> To: igt-dev@lists.freedesktop.org; ville.syrjala@linux.intel.com; Golani,
-> Mitulkumar Ajitkumar <mitulkumar.ajitkumar.golani@intel.com>
-> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> Subject: [i-g-t V6 03/10] tests/kms_vrr: Move all config constaints to ne=
-w
-> function
->=20
-> No functional change, cleanup only. Move all config checks to new functio=
-n.
->=20
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  tests/kms_vrr.c | 24 ++++++++++++++++--------
->  1 file changed, 16 insertions(+), 8 deletions(-)
->=20
-> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c index 13e7f3ca6..df241aa6c
-> 100644
-> --- a/tests/kms_vrr.c
-> +++ b/tests/kms_vrr.c
-> @@ -483,6 +483,21 @@ static void test_cleanup(data_t *data, enum pipe
-> pipe, igt_output_t *output)
->  	igt_remove_fb(data->drm_fd, &data->fb0);  }
->=20
-> +static bool config_constraint(igt_output_t *output, uint32_t flags) {
-> +	if (!has_vrr(output))
-> +		return false;
-> +
-> +	/* For Negative tests, panel should be non-vrr. */
-> +	if ((flags & TEST_NEGATIVE) && vrr_capable(output))
-> +		return false;
-> +
-> +	if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
-> +		return false;
-> +
-> +	return true;
-> +}
-> +
->  /* Runs tests on outputs that are VRR capable. */  static void
-> run_vrr_test(data_t *data, test_t test, uint32_t flags) @@ -492,14 +507,7
-> @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
->  	for_each_connected_output(&data->display, output) {
->  		enum pipe pipe;
->=20
-> -		if (!has_vrr(output))
-> -			continue;
-> -
-> -		/* For Negative tests, panel should be non-vrr. */
-> -		if ((flags & TEST_NEGATIVE) && vrr_capable(output))
-> -			continue;
-> -
-> -		if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
-> +		if (!config_constraint(output, flags))
+Fixes: ce4e53b0faecde8884f1d4eac81d604b6e1904b8 ("drm-uapi/xe: Split xe_sync types from flags")
 
-Change LGTM. Thanks
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
+---
+ benchmarks/gem_wsim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
->  			continue;
->=20
->  		for_each_pipe(&data->display, pipe) {
-> --
-> 2.40.0
+diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+index e937e1027..30673da8f 100644
+--- a/benchmarks/gem_wsim.c
++++ b/benchmarks/gem_wsim.c
+@@ -1784,7 +1784,7 @@ xe_alloc_step_batch(struct workload *wrk, struct w_step *w)
+ 	i = 0;
+ 	/* out fence */
+ 	w->xe.syncs[i].handle = syncobj_create(fd, 0);
+-	w->xe.syncs[i++].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
++	w->xe.syncs[i].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+ 	w->xe.syncs[i++].flags = DRM_XE_SYNC_FLAG_SIGNAL;
+ 	/* in fence(s) */
+ 	for_each_dep(dep, w->data_deps) {
+-- 
+2.31.1
