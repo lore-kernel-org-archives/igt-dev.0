@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C764910E7DA
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Dec 2023 05:25:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE8D610E7DD
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Dec 2023 05:29:44 +0000 (UTC)
 From: priyanka.dandamudi@intel.com
 To: priyanka.dandamudi@intel.com, janga.rahul.kumar@intel.com,
  sai.gowtham.ch@intel.com, igt-dev@lists.freedesktop.org
-Date: Thu,  7 Dec 2023 10:50:27 +0530
-Message-Id: <20231207052027.2256633-1-priyanka.dandamudi@intel.com>
+Date: Thu,  7 Dec 2023 10:54:38 +0530
+Message-Id: <20231207052438.2256795-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [PATCH i-g-t 1/2] tests/intel/xe_exec_store: Test to
@@ -27,6 +27,7 @@ From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 Added a basic test to check MI_CONDITIONAL_BATCH_BUFFER_END instruction.
 
 v2: Remove BATCH_BUFFER_END instruction. (Rahul)
+Modified random value. (kamil)
 
 Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
@@ -36,7 +37,7 @@ Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
  1 file changed, 41 insertions(+), 3 deletions(-)
 
 diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-index dec8546a3..87178b0a2 100644
+index dec8546a3..e33f77134 100644
 --- a/tests/intel/xe_exec_store.c
 +++ b/tests/intel/xe_exec_store.c
 @@ -21,6 +21,8 @@
@@ -97,7 +98,7 @@ index dec8546a3..87178b0a2 100644
 +		store_dword_batch(data, addr, value);
 +	else {
 +		/* A random value where it stops at the below value. */
-+		value = 20;
++		value = 20 + random() % 10;
 +		cond_batch(data, addr, value);
 +	}
  
