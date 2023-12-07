@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 4 Dec 2023 11:12:41 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231204101241.xnmben7oks6i7anr@kamilkon-desk.igk.intel.com>
-References: <20231201132706.84787-1-mwen@igalia.com>
- <170156650294.25279.2916285420244157981@emeril.freedesktop.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 197D310E15E
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Dec 2023 00:42:55 +0000 (UTC)
+From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+To: 
+Date: Thu,  7 Dec 2023 04:42:37 -0800
+Message-Id: <6d6f4b6b626075cc647783f2bde3c9f500068c35.1701951594.git.akshata.jahagirdar@intel.com>
+In-Reply-To: <cover.1701951594.git.akshata.jahagirdar@intel.com>
+References: <cover.1701951594.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <170156650294.25279.2916285420244157981@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fatomic=3A_skip_mutable_zpos_test_on_non-mutable_planes?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4 2/6] lib/intel_blt: Update calculation of
+ ccs_size and size_of_ctrl_copy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,73 +19,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: lgci.bug.filing@intel.com, I915-ci-infra@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, ayaz.siddiqui@intel.com,
+ akshata.jahagirdar@intel.com, matthew.auld@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+The Main-to-CCS Ratio for XE2 has been changed to 512:1.
+Update the CCS_RATIO macro to select relevant ratio based on platform.
+Since the PAGE_SIZE of sysmem is 4K, update the size of ctrl_copy to reflect this change.
 
-below is unrelated to kms_atomic change.
+Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+---
+ lib/intel_blt.c | 14 ++++++++------
+ lib/intel_blt.h |  2 +-
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
-Regards,
-Kamil
-
-On 2023-12-03 at 01:21:42 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: tests/kms_atomic: skip mutable zpos test on non-mutable planes
-> URL   : https://patchwork.freedesktop.org/series/127190/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_13959_full -> IGTPW_10319_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_10319_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_10319_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10319/index.html
-> 
-> Participating hosts (10 -> 10)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_10319_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_selftest@live@gt_heartbeat:
->     - shard-mtlp:         [PASS][1] -> [INCOMPLETE][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13959/shard-mtlp-8/igt@i915_selftest@live@gt_heartbeat.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10319/shard-mtlp-4/igt@i915_selftest@live@gt_heartbeat.html
-> 
->   * igt@kms_rotation_crc@multiplane-rotation-cropping-bottom:
->     - shard-glk:          NOTRUN -> [INCOMPLETE][3]
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10319/shard-glk7/igt@kms_rotation_crc@multiplane-rotation-cropping-bottom.html
-> 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_10319_full that come from known issues:
-> 
-> ### IGT changes ###
-
-[...cut...]
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index 1116c978e..a2e64586b 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -948,15 +948,16 @@ int blt_block_copy(int fd,
+ 	return ret;
+ }
+ 
+-static uint16_t __ccs_size(const struct blt_ctrl_surf_copy_data *surf)
++static uint16_t __ccs_size(int fd, const struct blt_ctrl_surf_copy_data *surf)
+ {
+ 	uint32_t src_size, dst_size;
++	uint16_t ccsratio = CCS_RATIO(fd);
+ 
+ 	src_size = surf->src.access_type == DIRECT_ACCESS ?
+-				surf->src.size : surf->src.size / CCS_RATIO;
++				surf->src.size : surf->src.size / ccsratio;
+ 
+ 	dst_size = surf->dst.access_type == DIRECT_ACCESS ?
+-				surf->dst.size : surf->dst.size / CCS_RATIO;
++				surf->dst.size : surf->dst.size / ccsratio;
+ 
+ 	igt_assert_f(src_size <= dst_size, "dst size must be >= src size for CCS copy\n");
+ 
+@@ -1118,6 +1119,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+ 	uint64_t dst_offset, src_offset, bb_offset, alignment;
+ 	uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	uint32_t *bb;
++	uint16_t num_ccs_blocks = xe_get_default_alignment(fd) / (CCS_RATIO(fd));
+ 
+ 	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
+ 	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
+@@ -1136,7 +1138,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+ 		data.xe2.dw00.dst_access_type = surf->dst.access_type;
+ 
+ 		/* Ensure dst has size capable to keep src ccs aux */
+-		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
++		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
+ 		data.xe2.dw00.length = 0x3;
+ 
+ 		data.xe2.dw01.src_address_lo = src_offset;
+@@ -1155,7 +1157,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+ 		data.gen12.dw00.dst_access_type = surf->dst.access_type;
+ 
+ 		/* Ensure dst has size capable to keep src ccs aux */
+-		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
++		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(fd,surf) / num_ccs_blocks - 1;
+ 		data.gen12.dw00.length = 0x3;
+ 
+ 		data.gen12.dw01.src_address_lo = src_offset;
+@@ -1808,7 +1810,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+ 			flags |= DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
+ 
+ 		size = ALIGN(size, xe_get_default_alignment(blt->fd));
+-		handle = xe_bo_create(blt->fd, 0, size, region, flags);
++		handle = xe_bo_create_flags(blt->fd, 0, size, region);
+ 	} else {
+ 		igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
+ 							  &size, region) == 0);
+diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+index 5934ccd67..a7aeab595 100644
+--- a/lib/intel_blt.h
++++ b/lib/intel_blt.h
+@@ -52,7 +52,7 @@
+ #include "igt.h"
+ #include "intel_cmds_info.h"
+ 
+-#define CCS_RATIO 256
++#define CCS_RATIO(xe) AT_LEAST_GEN(intel_get_drm_devid(xe), 20) ? 512 : 256
+ 
+ enum blt_color_depth {
+ 	CD_8bit,
+-- 
+2.34.1
