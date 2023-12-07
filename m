@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9331C10E7B6
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Dec 2023 06:59:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0006A10E7DD
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Dec 2023 06:59:56 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com,
  mitulkumar.ajitkumar.golani@intel.com
-Date: Thu,  7 Dec 2023 12:18:50 +0530
-Message-Id: <20231207064900.3328723-1-bhanuprakash.modem@intel.com>
+Date: Thu,  7 Dec 2023 12:18:52 +0530
+Message-Id: <20231207064900.3328723-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231207064900.3328723-1-bhanuprakash.modem@intel.com>
+References: <20231207064900.3328723-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 00/10] tests/kms_vrr: Add new subtest to switch
- RR without modeset
+Subject: [igt-dev] [i-g-t V6 02/10] tests/kms_vrr: Clear VRR before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,34 +23,41 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new subtests to
-- Toggle the VRR enabled
-- Switch between low refresh rate to high refresh rate and vice versa
+Before exiting the subtest, make sure to clear the VRR.
 
-seamlessly without modeset.
+V2: - New function for cleanup
 
-V2: Minor cleanups
-V3: Fix few condition checks
-V4: Fix Negative subtest
-V5: Different tests for VRR & DRRS
-V6: Include VRR-fastset as part of this series.
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_vrr.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-Bhanuprakash Modem (10):
-  tests/kms_vrr: Use lib helper to print connector modes
-  tests/kms_vrr: Clear VRR before exit
-  tests/kms_vrr: Move all config constaints to new function
-  tests/kms_vrr: Fix bigjoiner constraint
-  tests/kms_vrr: Fix the logic to calculate expected rate
-  tests/kms_vrr: Add a helper to get the low refresh mode
-  tests/kms_vrr: Add new subtest to switch RR without modeset
-  tests/kms_vrr: Add new subtest for DRRS without modeset
-  tests/kms_vrr: New subtest for toggle VRR during fastsets
-  HAX: DO_NOT_MERGE: test only vrr tests
-
- tests/intel-ci/fast-feedback.testlist    | 180 +--------------
- tests/intel-ci/xe-fast-feedback.testlist | 267 +----------------------
- tests/kms_vrr.c                          | 243 +++++++++++++++++----
- 3 files changed, 213 insertions(+), 477 deletions(-)
-
---
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index bbdb54682..13e7f3ca6 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -469,8 +469,11 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	igt_assert_f(result < 10,
+ 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold exceeded, result was %u%%\n",
+ 		     ((range.max + range.min) / 2), rate, (flags & TEST_NEGATIVE)? "on" : "off", result);
++}
+ 
+-	/* Clean-up */
++static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
++{
++	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, false);
+ 	igt_plane_set_fb(data->primary, NULL);
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_output_override_mode(output, NULL);
+@@ -510,6 +513,9 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
+ 				igt_dynamic_f("pipe-%s-%s",
+ 					      kmstest_pipe_name(pipe), output->name)
+ 					test(data, pipe, output, flags);
++
++				test_cleanup(data, pipe, output);
++
+ 				break;
+ 			}
+ 		}
+-- 
 2.40.0
