@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E3C510E7F0
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Dec 2023 07:06:42 +0000 (UTC)
-From: sai.gowtham.ch@intel.com
-To: igt-dev@lists.freedesktop.org,
-	sai.gowtham.ch@intel.com
-Date: Thu,  7 Dec 2023 12:35:03 +0530
-Message-Id: <20231207070503.6705-1-sai.gowtham.ch@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 47BB210E7E8
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Dec 2023 07:24:40 +0000 (UTC)
+Date: Thu, 7 Dec 2023 08:24:35 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Message-ID: <20231207072435.yqr4jyjsw3oakm5q@zkempczy-mobl2>
+References: <20231206194512.332721-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] intel/xe_exec_compute_mode: Add
- non-blocking subtest
+In-Reply-To: <20231206194512.332721-1-dominik.grzegorzek@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_batchbuffer: Use COMPUTE
+ instead of RENDER engine for Xe if missing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,132 +21,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+On Wed, Dec 06, 2023 at 08:45:12PM +0100, Dominik Grzegorzek wrote:
+> Make engine fallback in intel_batchbuffer more generic. Up to this
+> point, we were replacing render with compute only on PVC.
+> Replace it whenever there is no compute engine. As was stated in
+> 989920cfc4 this still remains only a workaround, more rework
+> in intel-bb is necessary to better support both - i915 and xe.
 
-Fill the ring with maximum workload and expecte kernel to return
--EWOULDBLOCK error.
+Agree, this solution is more generic:
 
-Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
----
- tests/intel/xe_exec_compute_mode.c | 95 ++++++++++++++++++++++++++++++
- 1 file changed, 95 insertions(+)
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-index 7d3004d65..56bd6cb49 100644
---- a/tests/intel/xe_exec_compute_mode.c
-+++ b/tests/intel/xe_exec_compute_mode.c
-@@ -290,6 +290,97 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		close(map_fd);
- }
- 
-+/**
-+ * SUBTEST: non-blocking
-+ * Description: Fill the ring and check we get expected errors.
-+ * Test category: functionality test
-+ */
-+static void non_block(int fd, int expect)
-+{
-+	struct drm_xe_sync sync = {
-+		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+	};
-+
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(&sync),
-+	};
-+	struct {
-+		uint32_t batch[16];
-+		uint64_t pad;
-+		uint32_t data;
-+		uint64_t addr;
-+	} *data;
-+	struct drm_xe_engine *engine;
-+	uint32_t vm, exec_queue, syncobj;
-+	size_t bo_size;
-+	int value = 0x123456;
-+	uint64_t addr = 0x100000;
-+	uint32_t bo = 0;
-+	int b, count, intr, err;
-+
-+	syncobj = syncobj_create(fd, 0);
-+	sync.handle = syncobj;
-+
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT |
-+			      DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-+	bo_size = sizeof(*data);
-+	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
-+
-+	engine = xe_engine(fd, 1);
-+	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, engine->instance.gt_id),
-+					   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+
-+	xe_vm_bind_async(fd, vm, engine->instance.gt_id, bo, 0, addr, bo_size, &sync, 1);
-+	exec_queue = xe_exec_queue_create(fd, vm, &engine->instance, 0);
-+	data = xe_bo_map(fd, bo, bo_size);
-+
-+	count = 0;
-+	intr = 0;
-+	do {
-+		uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
-+		uint64_t batch_addr = addr + batch_offset;
-+		uint64_t sdi_offset = (char *) & (data->data) - (char *)data;
-+		uint64_t sdi_addr = addr + sdi_offset;
-+
-+		b = 0;
-+		data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+		data->batch[b++] = sdi_addr;
-+		data->batch[b++] = sdi_addr >> 32;
-+		data->batch[b++] = value;
-+		data->batch[b++] = MI_BATCH_BUFFER_END;
-+		igt_assert(b <= ARRAY_SIZE(data->batch));
-+
-+		exec.exec_queue_id = exec_queue;
-+		exec.address = batch_addr;
-+		sync.flags &= DRM_XE_SYNC_FLAG_SIGNAL;
-+
-+		err = __xe_exec(fd, &exec);
-+		igt_assert(syncobj_wait(fd, &sync.handle, 1,
-+					INT64_MAX, 0, NULL));
-+
-+		if (err == -EWOULDBLOCK) {
-+			if (intr != count)
-+				err = 0;
-+			intr = count + 1;
-+		}
-+		if (err)
-+			break;
-+		count++;
-+	} while (1);
-+
-+	igt_assert_eq(err, expect);
-+
-+	syncobj_destroy(fd, syncobj);
-+	munmap(data, bo_size);
-+	gem_close(fd, bo);
-+
-+	xe_exec_queue_destroy(fd, exec_queue);
-+	xe_vm_destroy(fd, vm);
-+}
-+
- igt_main
- {
- 	struct drm_xe_engine_class_instance *hwe;
-@@ -347,6 +438,10 @@ igt_main
- 					  s->flags);
- 	}
- 
-+	igt_subtest("non-blocking")
-+		non_block(fd, -EWOULDBLOCK);
-+
-+
- 	igt_fixture
- 		drm_close_driver(fd);
- }
--- 
-2.39.1
+--
+Zbigniew
+
+> 
+> Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>  lib/intel_batchbuffer.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index 472c88129..1268ac8f0 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -2366,10 +2366,10 @@ __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
+>  			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
+>  			break;
+>  		case I915_EXEC_RENDER:
+> -			if (IS_PONTEVECCHIO(xe_dev_id(ibb->fd)))
+> -				inst.engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
+> -			else
+> +			if (xe_has_engine_class(ibb->fd, DRM_XE_ENGINE_CLASS_RENDER))
+>  				inst.engine_class = DRM_XE_ENGINE_CLASS_RENDER;
+> +			else
+> +				inst.engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
+>  			break;
+>  		case I915_EXEC_VEBOX:
+>  			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
+> -- 
+> 2.34.1
+> 
