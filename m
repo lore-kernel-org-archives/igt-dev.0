@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 20C1010E292
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Dec 2023 11:58:46 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>, "Ch, Sai Gowtham"
- <sai.gowtham.ch@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Subject: RE: [PATCH i-g-t] tests/intel/xe_exec_store: Test to check
- CONDITIONAL_BATCH_BUFFER_END
-Date: Fri, 8 Dec 2023 11:58:42 +0000
-Message-ID: <MW3PR11MB47483DA2FD21A430F28450C2AE8AA@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20231208051831.2276393-1-priyanka.dandamudi@intel.com>
-In-Reply-To: <20231208051831.2276393-1-priyanka.dandamudi@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/alternative;
+ boundary="===============7885769922378791174=="
 MIME-Version: 1.0
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_benchmarks/gem=5Fwsim=3A_Fix_a?=
+ =?utf-8?q?rray_index_issue_in_xe=5Fsync_object_referencing_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@intel.com>
+Date: Fri, 08 Dec 2023 12:32:03 -0000
+Message-ID: <170203872304.7325.2952206550137865829@emeril.freedesktop.org>
+References: <20231208102438.12894-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20231208102438.12894-1-marcin.bernatowicz@linux.intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,123 +17,172 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============7885769922378791174==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: benchmarks/gem_wsim: Fix array index issue in xe_sync object referencing (rev2)
+URL   : https://patchwork.freedesktop.org/series/127512/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7628_BAT -> XEIGTPW_10382_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10382_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10382/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
+    - bat-adlp-7:         [FAIL][3] ([i915#2346]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10382/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-adlp-7:         [FAIL][5] ([Intel XE#480]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10382/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@xe_prime_self_import@basic-with_fd_dup:
+    - bat-atsm-2:         [FAIL][7] ([Intel XE#999]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10382/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
+
+  
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#999]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/999
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
 
 
-> -----Original Message-----
-> From: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
-> Sent: Friday, December 8, 2023 10:49 AM
-> To: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>; Kumar, Janga
-> Rahul <janga.rahul.kumar@intel.com>; Ch, Sai Gowtham
-> <sai.gowtham.ch@intel.com>; igt-dev@lists.freedesktop.org
-> Subject: [PATCH i-g-t] tests/intel/xe_exec_store: Test to check
-> CONDITIONAL_BATCH_BUFFER_END
->=20
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
->=20
-> Added a basic test to check MI_CONDITIONAL_BATCH_BUFFER_END
-> instruction.
->=20
-> v2: Remove BATCH_BUFFER_END instruction, add else to check for wrong
-> inst_type. (Rahul) and modified random value. (kamil)
->=20
-> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Build changes
+-------------
 
-LGTM,
-Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> ---
->  tests/intel/xe_exec_store.c | 46 ++++++++++++++++++++++++++++++++++---
->  1 file changed, 43 insertions(+), 3 deletions(-)
->=20
-> diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c in=
-dex
-> dec8546a3..6d5a1bbac 100644
-> --- a/tests/intel/xe_exec_store.c
-> +++ b/tests/intel/xe_exec_store.c
-> @@ -21,6 +21,8 @@
->   */
->=20
->  #define MAX_INSTANCE 9
-> +#define STORE 0
-> +#define COND_BATCH 1
->=20
->  struct data {
->  	uint32_t batch[16];
-> @@ -48,11 +50,37 @@ static void store_dword_batch(struct data *data,
-> uint64_t addr, int value)
->  	data->addr =3D batch_addr;
->  }
->=20
-> +static void cond_batch(struct data *data, uint64_t addr, int value) {
-> +	int b;
-> +	uint64_t batch_offset =3D (char *)&(data->batch) - (char *)data;
-> +	uint64_t batch_addr =3D addr + batch_offset;
-> +	uint64_t sdi_offset =3D (char *)&(data->data) - (char *)data;
-> +	uint64_t sdi_addr =3D addr + sdi_offset;
-> +
-> +	b =3D 0;
-> +	data->batch[b++] =3D MI_ATOMIC | MI_ATOMIC_INC;
-> +	data->batch[b++] =3D sdi_addr;
-> +	data->batch[b++] =3D sdi_addr >> 32;
-> +	data->batch[b++] =3D MI_CONDITIONAL_BATCH_BUFFER_END |
-> MI_DO_COMPARE | 5 << 12 | 2;
-> +	data->batch[b++] =3D value;
-> +	data->batch[b++] =3D sdi_addr;
-> +	data->batch[b++] =3D sdi_addr >> 32;
-> +	data->batch[b++] =3D MI_BATCH_BUFFER_START | 1;
-> +	data->batch[b++] =3D lower_32_bits(batch_addr);
-> +	data->batch[b++] =3D upper_32_bits(batch_addr);
-> +	igt_assert(b <=3D ARRAY_SIZE(data->batch));
-> +
-> +	data->addr =3D batch_addr;
-> +}
-> +
->  /**
->   * SUBTEST: basic-store
->   * Description: Basic test to verify store dword.
-> + * SUBTEST: basic-cond-batch
-> + * Description: Basic test to verify cond batch end instruction.
->   */
-> -static void store(int fd)
-> +static void basic_inst(int fd, int inst_type)
->  {
->  	struct drm_xe_sync sync =3D {
->  		.type =3D DRM_XE_SYNC_TYPE_SYNCOBJ,
-> @@ -88,7 +116,16 @@ static void store(int fd)
->=20
->  	xe_vm_bind_async(fd, vm, engine->instance.gt_id, bo, 0, addr, bo_size,
-> &sync, 1);
->  	data =3D xe_bo_map(fd, bo, bo_size);
-> -	store_dword_batch(data, addr, value);
-> +
-> +	if (inst_type =3D=3D STORE)
-> +		store_dword_batch(data, addr, value);
-> +	else if (inst_type =3D=3D COND_BATCH) {
-> +		/* A random value where it stops at the below value. */
-> +		value =3D 20 + random() % 10;
-> +		cond_batch(data, addr, value);
-> +	}
-> +	else
-> +		igt_assert_f(inst_type < 2, "Entered wrong inst_type.\n");
->=20
->  	exec_queue =3D xe_exec_queue_create(fd, vm, &engine->instance, 0);
->  	exec.exec_queue_id =3D exec_queue;
-> @@ -306,7 +343,10 @@ igt_main
->  	}
->=20
->  	igt_subtest("basic-store")
-> -		store(fd);
-> +		basic_inst(fd, STORE);
-> +
-> +	igt_subtest("basic-cond-batch")
-> +		basic_inst(fd, COND_BATCH);
->=20
->  	igt_subtest("basic-all") {
->  		xe_for_each_gt(fd, gt)
-> --
-> 2.25.1
+  * IGT: IGT_7628 -> IGTPW_10382
+  * Linux: xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04 -> xe-561-c4235ef53c0265159d2c5f34459a3b6c37ab1995
+
+  IGTPW_10382: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/index.html
+  IGT_7628: 431c2d2dd5828b25fcbe1c82afbac865f4771aee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04: 2a7dcf14d4abe82a88d846a3bf875e0611d83b04
+  xe-561-c4235ef53c0265159d2c5f34459a3b6c37ab1995: c4235ef53c0265159d2c5f34459a3b6c37ab1995
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10382/index.html
+
+--===============7885769922378791174==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>benchmarks/gem_wsim: Fix array index issue in xe_sync object referencing (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127512/">https://patchwork.freedesktop.org/series/127512/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10382/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10382/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7628_BAT -&gt; XEIGTPW_10382_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10382_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10382/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10382/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10382/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_prime_self_import@basic-with_fd_dup:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/999">Intel XE#999</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10382/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7628 -&gt; IGTPW_10382</li>
+<li>Linux: xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04 -&gt; xe-561-c4235ef53c0265159d2c5f34459a3b6c37ab1995</li>
+</ul>
+<p>IGTPW_10382: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/index.html<br />
+  IGT_7628: 431c2d2dd5828b25fcbe1c82afbac865f4771aee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04: 2a7dcf14d4abe82a88d846a3bf875e0611d83b04<br />
+  xe-561-c4235ef53c0265159d2c5f34459a3b6c37ab1995: c4235ef53c0265159d2c5f34459a3b6c37ab1995</p>
+
+</body>
+</html>
+
+--===============7885769922378791174==--
