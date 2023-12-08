@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15BAF10E08B
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Dec 2023 18:29:31 +0000 (UTC)
-Date: Fri, 8 Dec 2023 20:29:26 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Subject: Re: [PATCH i-g-t 1/2] tests/kms_async_flip: Speed up the CRC test on
- Intel hw
-Message-ID: <ZXNghruElE-P8ExS@intel.com>
-References: <20231207171136.30669-1-ville.syrjala@linux.intel.com>
- <a9bada27-9c8a-4636-985e-4623b610c923@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB67110EB08
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Dec 2023 20:06:24 +0000 (UTC)
+Date: Fri, 8 Dec 2023 13:05:19 +0000
+From: Matthew Brost <matthew.brost@intel.com>
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: Re: [PATCH v4 1/2] drm-uapi/xe: add exec_queue_id member to
+ drm_xe_wait_user_fence structure
+Message-ID: <ZXMUjxfz8kqCzWes@DUT025-TGLU.fm.intel.com>
+References: <20231208041825.32421-1-krishnaiah.bommu@intel.com>
+ <20231208041825.32421-2-krishnaiah.bommu@intel.com>
+ <ZXKwZH2x30Ny7QOv@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a9bada27-9c8a-4636-985e-4623b610c923@intel.com>
+In-Reply-To: <ZXKwZH2x30Ny7QOv@intel.com>
+MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,210 +22,634 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org,
+ Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Dec 08, 2023 at 10:31:35AM +0530, Modem, Bhanuprakash wrote:
-> 
-> On 07-12-2023 10:41 pm, Ville Syrjala wrote:
-> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+On Fri, Dec 08, 2023 at 12:57:56AM -0500, Rodrigo Vivi wrote:
+> On Fri, Dec 08, 2023 at 09:48:24AM +0530, Bommu Krishnaiah wrote:
+> > remove the num_engines/instances members from drm_xe_wait_user_fence structure
+> > and add a exec_queue_id member
 > > 
-> > Go back to using igt_draw mmap stuff to do the mid-test
-> > rendering in the CRC subtest to make it faster. Going
-> > via all the cairo machinery is very very slow, but we'll
-> > leave that codepath in place for non-Intel hw. This makes
-> > the test pass on a DG2 here as we can now produce enough
-> > frames to have some confidence in the results.
+> > Right now this is only checking if the engine list is sane and nothing
+> > else. In the end every operation with this IOCTL is a soft check.
+> > So, let's formalize that and only use this IOCTL to wait on the fence.
 > > 
-> > Note that some extra care is apparently needed with the order
-> > in which things are done. If we pin the buffers to the display
-> > first the mmap is likely to fail (due to the FB getting pinned
-> > outside the reach of the small BAR presumably). Curiosuly the
-> > mmap itself succeeds but we get a SIGBUS when trying to acccess
-> > the buffer contents. If we touch the FBs first via mmap and only
-> > then pin them to the display everything works correctly.
+> > exec_queue_id member will help to user space to get proper error code
+> > from kernel while in exec_queue reset
 > > 
-> > Cc: Melissa Wen <mwen@igalia.com>
-> > Cc: Alex Hung <alex.hung@amd.com>
-> > Cc: André Almeida <andrealmeid@igalia.com>
-> > Fixes: 8ba806e7e196 ("tests/kms_async_flips: Support more vendors")
-> > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > Cc: Francois Dugast <francois.dugast@intel.com>
 > > ---
-> >   tests/kms_async_flips.c | 66 +++++++++++++++++++++++++++++------------
-> >   1 file changed, 47 insertions(+), 19 deletions(-)
+> >  include/drm-uapi/xe_drm.h          | 28 ++++++++++++++--------------
+> >  lib/xe/xe_ioctl.c                  | 27 +++++++++++----------------
+> >  lib/xe/xe_ioctl.h                  |  9 +++------
+> >  tests/intel/xe_evict.c             |  4 ++--
+> >  tests/intel/xe_exec_balancer.c     | 15 ++++++++-------
+> >  tests/intel/xe_exec_compute_mode.c | 18 +++++++++---------
+> >  tests/intel/xe_exec_fault_mode.c   | 19 +++++++++++--------
+> >  tests/intel/xe_exec_reset.c        |  6 +++---
+> >  tests/intel/xe_exec_threads.c      | 15 ++++++++-------
+> >  tests/intel/xe_waitfence.c         | 25 ++++++++++---------------
+> >  10 files changed, 79 insertions(+), 87 deletions(-)
 > > 
-> > diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-> > index 6fddad093913..f7f9add89548 100644
-> > --- a/tests/kms_async_flips.c
-> > +++ b/tests/kms_async_flips.c
-> > @@ -100,6 +100,7 @@ typedef struct {
-> >   	enum pipe pipe;
-> >   	bool alternate_sync_async;
-> >   	bool allow_fail;
-> > +	struct buf_ops *bops;
-> >   } data_t;
-> >   
-> >   static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
-> > @@ -230,8 +231,6 @@ static void test_init_fbs(data_t *data)
-> >   
-> >   	igt_plane_set_fb(data->plane, &data->bufs[0]);
-> >   	igt_plane_set_size(data->plane, width, height);
+> > diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> > index 590f7b7af..fd06e4920 100644
+> > --- a/include/drm-uapi/xe_drm.h
+> > +++ b/include/drm-uapi/xe_drm.h
+> > @@ -129,7 +129,6 @@ struct xe_user_extension {
+> >   * It is returned as part of the @drm_xe_engine, but it also is used as
+> >   * the input of engine selection for both @drm_xe_exec_queue_create and
+> >   * @drm_xe_query_engine_cycles
+> > - *
+> >   */
+> >  struct drm_xe_engine_class_instance {
+> >  #define DRM_XE_ENGINE_CLASS_RENDER		0
+> > @@ -143,9 +142,11 @@ struct drm_xe_engine_class_instance {
+> >  	 */
+> >  #define DRM_XE_ENGINE_CLASS_VM_BIND_ASYNC	5
+> >  #define DRM_XE_ENGINE_CLASS_VM_BIND_SYNC	6
+> > +	/** @engine_class: engine class id */
+> >  	__u16 engine_class;
 > > -
-> > -	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> >   }
-> >   
-> >   static void test_async_flip(data_t *data)
-> > @@ -240,6 +239,8 @@ static void test_async_flip(data_t *data)
-> >   	long long int fps;
-> >   	struct timeval start, end, diff;
-> >   
-> > +	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> > +
-> >   	gettimeofday(&start, NULL);
-> >   	frame = 1;
-> >   	do {
-> > @@ -336,6 +337,8 @@ static void test_timestamp(data_t *data)
-> >   	unsigned int seq, seq1;
-> >   	int ret;
-> >   
-> > +	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> > +
-> >   	/*
-> >   	 * In older platforms(<= gen10), async address update bit is double buffered.
-> >   	 * So flip timestamp can be verified only from the second flip.
-> > @@ -381,6 +384,8 @@ static void test_cursor(data_t *data)
-> >   	struct igt_fb cursor_fb;
-> >   	struct drm_mode_cursor cur;
-> >   
-> > +	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> > +
-> >   	/*
-> >   	 * Intel's PSR2 selective fetch adds other planes to state when
-> >   	 * necessary, causing the async flip to fail because async flip is not
-> > @@ -429,6 +434,8 @@ static void test_invalid(data_t *data)
-> >   	struct igt_fb fb;
-> >   	drmModeModeInfo *mode;
-> >   
-> > +	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> > +
-> >   	mode = igt_output_get_mode(data->output);
-> >   	width = mode->hdisplay;
-> >   	height = mode->vdisplay;
-> > @@ -525,28 +532,48 @@ static unsigned int clock_ms(void)
-> >   	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
-> >   }
-> >   
-> > +static void paint_fb(data_t *data, struct igt_fb *fb,
-> > +		     int width, int height,
-> > +		     uint32_t color)
-> > +{
-> > +	if (is_intel_device(data->drm_fd)) {
-> > +		igt_draw_rect_fb(data->drm_fd, data->bops, 0, fb,
-> > +				 gem_has_mappable_ggtt(data->drm_fd) ?
-> ---------------------------------^
-> This is i915 specific, and expected to fail on XE.
-
-Sigh. I did ask for a unified library API for i915 and xe but I guess
-that still didn't happen :(
-
+> > +	/** @engine_instance: engine instance id */
+> >  	__u16 engine_instance;
+> > +	/** @gt_id: Unique ID of this GT within the PCI Device */
+> >  	__u16 gt_id;
+> >  	/** @pad: MBZ */
+> >  	__u16 pad;
+> > @@ -736,6 +737,12 @@ struct drm_xe_vm_bind_op {
+> >  	 *
+> >  	 * Note: For userptr and externally imported dma-buf the kernel expects
+> >  	 * either 1WAY or 2WAY for the @pat_index.
+> > +	 *
+> > +	 * For DRM_XE_VM_BIND_FLAG_NULL bindings there are no KMD restrictions
+> > +	 * on the @pat_index. For such mappings there is no actual memory being
+> > +	 * mapped (the address in the PTE is invalid), so the various PAT memory
+> > +	 * attributes likely do not apply.  Simply leaving as zero is one
+> > +	 * option (still a valid pat_index).
+> >  	 */
+> >  	__u16 pat_index;
+> >  
+> > @@ -1024,8 +1031,7 @@ struct drm_xe_wait_user_fence {
+> >  	/** @op: wait operation (type of comparison) */
+> >  	__u16 op;
+> >  
+> > -#define DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP	(1 << 0)	/* e.g. Wait on VM bind */
+> > -#define DRM_XE_UFENCE_WAIT_FLAG_ABSTIME	(1 << 1)
+> > +#define DRM_XE_UFENCE_WAIT_FLAG_ABSTIME	(1 << 0)
+> >  	/** @flags: wait flags */
+> >  	__u16 flags;
+> >  
+> > @@ -1058,17 +1064,11 @@ struct drm_xe_wait_user_fence {
+> >  	 */
+> >  	__s64 timeout;
+> >  
+> > -	/**
+> > -	 * @num_engines: number of engine instances to wait on, must be zero
+> > -	 * when DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP set
+> > -	 */
+> > -	__u64 num_engines;
+> > +	/** @exec_queue_id: exec_queue_id returned from xe_exec_queue_create_ioctl */
+> > +	__u32 exec_queue_id;
+> >  
+> > -	/**
+> > -	 * @instances: user pointer to array of drm_xe_engine_class_instance to
+> > -	 * wait on, must be NULL when DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP set
+> > -	 */
+> > -	__u64 instances;
+> > +	/** @pad2: MBZ */
+> > +	__u32 pad2;
+> >  
+> >  	/** @reserved: Reserved */
+> >  	__u64 reserved[2];
+> > diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> > index b29ca40ad..0a1ddc86b 100644
+> > --- a/lib/xe/xe_ioctl.c
+> > +++ b/lib/xe/xe_ioctl.c
+> > @@ -462,7 +462,7 @@ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
+> >   * @fd: xe device fd
+> >   * @addr: address of value to compare
+> >   * @value: expected value (equal) in @address
+> > - * @eci: engine class instance
+> > + * @exec_queue: exec_queue id
+> >   * @timeout: pointer to time to wait in nanoseconds
+> >   *
+> >   * Function compares @value with memory pointed by @addr until they are equal.
+> > @@ -471,17 +471,15 @@ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
+> >   * signalled. Returns 0 on success, -errno of ioctl on error.
+> >   */
+> >  int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > -		     struct drm_xe_engine_class_instance *eci,
+> > -		     int64_t *timeout)
+> > +		     uint32_t exec_queue, int64_t *timeout)
+> >  {
+> >  	struct drm_xe_wait_user_fence wait = {
+> >  		.addr = to_user_pointer(addr),
+> >  		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
+> > -		.flags = !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP : 0,
+> > +		.flags = 0,
+> >  		.value = value,
+> >  		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+> > -		.num_engines = eci ? 1 :0,
+> > -		.instances = eci ? to_user_pointer(eci) : 0,
+> > +		.exec_queue_id = exec_queue,
+> >  	};
+> >  
+> >  	igt_assert(timeout);
+> > @@ -499,7 +497,7 @@ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> >   * @fd: xe device fd
+> >   * @addr: address of value to compare
+> >   * @value: expected value (equal) in @address
+> > - * @eci: engine class instance
+> > + * @exec_queue: exec_queue id
+> >   * @timeout: time to wait in nanoseconds
+> >   *
+> >   * Function compares @value with memory pointed by @addr until they are equal.
+> > @@ -508,10 +506,9 @@ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> >   * Returns elapsed time in nanoseconds if user fence was signalled.
+> >   */
+> >  int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > -		       struct drm_xe_engine_class_instance *eci,
+> > -		       int64_t timeout)
+> > +		       uint32_t exec_queue, int64_t timeout)
+> >  {
+> > -	igt_assert_eq(__xe_wait_ufence(fd, addr, value, eci, &timeout), 0);
+> > +	igt_assert_eq(__xe_wait_ufence(fd, addr, value, exec_queue, &timeout), 0);
+> >  	return timeout;
+> >  }
+> >  
+> > @@ -520,7 +517,7 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> >   * @fd: xe device fd
+> >   * @addr: address of value to compare
+> >   * @value: expected value (equal) in @address
+> > - * @eci: engine class instance
+> > + * @exec_queue: exec_queue id
+> >   * @timeout: absolute time when wait expire
+> >   *
+> >   * Function compares @value with memory pointed by @addr until they are equal.
+> > @@ -529,18 +526,16 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> >   * Returns elapsed time in nanoseconds if user fence was signalled.
+> >   */
+> >  int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
+> > -			       struct drm_xe_engine_class_instance *eci,
+> > -			       int64_t timeout)
+> > +			       uint32_t exec_queue, int64_t timeout)
+> >  {
+> >  	struct drm_xe_wait_user_fence wait = {
+> >  		.addr = to_user_pointer(addr),
+> >  		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
+> > -		.flags = !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP | DRM_XE_UFENCE_WAIT_FLAG_ABSTIME : 0,
+> > +		.flags = !exec_queue ? DRM_XE_UFENCE_WAIT_FLAG_ABSTIME : 0,
 > 
-> Instead, we could use igt_draw_supports_method() here.
+> To be on the safe side we should probably change the signature of this function
+> to explicitly receive this flag instead of relying on the invalid exec_queue_id number.
 > 
-> - Bhanu
+> Also it is strange to me that DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP was used here...
 > 
-> > +				 IGT_DRAW_MMAP_GTT : IGT_DRAW_MMAP_WC,
-> > +				 0, 0, width, height, color);
-> > +	} else {
-> > +		cairo_t *cr;
-> > +
-> > +		cr = igt_get_cairo_ctx(data->drm_fd, fb);
-> > +		igt_paint_color(cr, 0, 0, width, height,
-> > +				((color & 0xff0000) >> 16) / 255.0,
-> > +				((color & 0xff00) >> 8) / 255.0,
-> > +				((color & 0xff) >> 9) / 255.0);
-> > +		igt_put_cairo_ctx(cr);
-> > +	}
-> > +}
-> > +
-> >   static void test_crc(data_t *data)
-> >   {
-> >   	unsigned int frame = 0;
-> >   	unsigned int start;
-> > -	cairo_t *cr;
-> > -	int ret;
-> > +	int ret, width, height;
-> > +	drmModeModeInfoPtr mode;
-> > +
-> > +	/* make things faster by using a smallish mode */
-> > +	mode = &data->output->config.connector->modes[0];
-> > +	width = mode->hdisplay;
-> > +	height = mode->vdisplay;
-> >   
-> >   	data->flip_count = 0;
-> >   	data->frame_count = 0;
-> >   	data->flip_pending = false;
-> >   
-> > -	cr = igt_get_cairo_ctx(data->drm_fd, &data->bufs[frame]);
-> > -	igt_paint_color(cr, 0, 0, data->bufs[frame].width, data->bufs[frame].height, 1.0, 0.0, 0.0);
-> > -	igt_put_cairo_ctx(cr);
-> > -
-> > -	cr = igt_get_cairo_ctx(data->drm_fd, &data->bufs[!frame]);
-> > -	igt_paint_color(cr, 0, 0, data->bufs[!frame].width, data->bufs[!frame].height, 1.0, 0.0, 0.0);
-> > -	igt_put_cairo_ctx(cr);
-> > +	paint_fb(data, &data->bufs[frame], width, height, 0xff0000ff);
-> > +	paint_fb(data, &data->bufs[!frame], width, height, 0xff0000ff);
-> >   
-> >   	ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id, 0, 0,
-> > -			     &data->output->config.connector->connector_id, 1,
-> > -			     &data->output->config.connector->modes[0]);
-> > +			     &data->output->config.connector->connector_id, 1, mode);
-> >   	igt_assert_eq(ret, 0);
-> >   
-> >   	data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
-> > @@ -562,9 +589,7 @@ static void test_crc(data_t *data)
-> >   
-> >   	while (clock_ms() - start < 2000) {
-> >   		/* fill the next fb with the expected color */
-> > -		cr = igt_get_cairo_ctx(data->drm_fd, &data->bufs[frame]);
-> > -		igt_paint_color(cr, 0, 0, 1, data->bufs[frame].height, 1.0, 0.0, 0.0);
-> > -		igt_put_cairo_ctx(cr);
-> > +		paint_fb(data, &data->bufs[frame], 1, height, 0xff0000ff);
-> >   
-> >   		data->flip_pending = true;
-> >   		ret = drmModePageFlip(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id,
-> > @@ -575,9 +600,7 @@ static void test_crc(data_t *data)
-> >   
-> >   		/* clobber the previous fb which should no longer be scanned out */
-> >   		frame = !frame;
-> > -		cr = igt_get_cairo_ctx(data->drm_fd, &data->bufs[frame]);
-> > -		igt_paint_color_rand(cr, 0, 0, 1, data->bufs[frame].height);
-> > -		igt_put_cairo_ctx(cr);
-> > +		paint_fb(data, &data->bufs[frame], 1, height, rand());
-> >   	}
-> >   
-> >   	igt_pipe_crc_stop(data->pipe_crc);
-> > @@ -644,6 +667,9 @@ igt_main
-> >   
-> >   		igt_require_f(igt_has_drm_cap(data.drm_fd, DRM_CAP_ASYNC_PAGE_FLIP),
-> >   			      "Async Flip is not supported\n");
-> > +
-> > +		if (is_intel_device(data.drm_fd))
-> > +			data.bops = buf_ops_create(data.drm_fd);
-> >   	}
-> >   
-> >   	igt_describe("Verify the async flip functionality and the fps during async flips");
-> > @@ -704,6 +730,8 @@ igt_main
-> >   		for (i = 0; i < NUM_FBS; i++)
-> >   			igt_remove_fb(data.drm_fd, &data.bufs[i]);
-> >   
-> > +		if (is_intel_device(data.drm_fd))
-> > +			buf_ops_destroy(data.bops);
-> >   		igt_display_reset(&data.display);
-> >   		igt_display_commit(&data.display);
-> >   		igt_display_fini(&data.display);
+> Matt, thoughts?
+> 
 
--- 
-Ville Syrjälä
-Intel
+Agree with everything here, !exec_queue really has nothing to do with
+setting DRM_XE_UFENCE_WAIT_FLAG_ABSTIME. Setting
+DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP when eci did make sense. So yes, please
+change this function to accpt a flags field.
+
+Everything else LGTM.
+
+Matt
+
+> Everything else in the patch looks good to me.
+> 
+> >  		.value = value,
+> >  		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+> >  		.timeout = timeout,
+> > -		.num_engines = eci ? 1 : 0,
+> > -		.instances = eci ? to_user_pointer(eci) : 0,
+> > +		.exec_queue_id = exec_queue,
+> >  	};
+> >  	struct timespec ts;
+> >  
+> > diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+> > index bd660bd27..9c0b4b9bc 100644
+> > --- a/lib/xe/xe_ioctl.h
+> > +++ b/lib/xe/xe_ioctl.h
+> > @@ -89,14 +89,11 @@ void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+> >  		  struct drm_xe_sync *sync, uint32_t num_syncs);
+> >  void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);
+> >  int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > -		     struct drm_xe_engine_class_instance *eci,
+> > -		     int64_t *timeout);
+> > +		     uint32_t exec_queue, int64_t *timeout);
+> >  int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > -		       struct drm_xe_engine_class_instance *eci,
+> > -		       int64_t timeout);
+> > +		       uint32_t exec_queue, int64_t timeout);
+> >  int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
+> > -			       struct drm_xe_engine_class_instance *eci,
+> > -			       int64_t timeout);
+> > +			       uint32_t exec_queue, int64_t timeout);
+> >  void xe_force_gt_reset(int fd, int gt);
+> >  
+> >  #endif /* XE_IOCTL_H */
+> > diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
+> > index 89dc46fae..a37c2d97a 100644
+> > --- a/tests/intel/xe_evict.c
+> > +++ b/tests/intel/xe_evict.c
+> > @@ -317,7 +317,7 @@ test_evict_cm(int fd, struct drm_xe_engine_class_instance *eci,
+> >  			}
+> >  #define TWENTY_SEC	MS_TO_NS(20000)
+> >  			xe_wait_ufence(fd, &data[i].vm_sync, USER_FENCE_VALUE,
+> > -				       NULL, TWENTY_SEC);
+> > +				       bind_exec_queues[0], TWENTY_SEC);
+> >  		}
+> >  		sync[0].addr = addr + (char *)&data[i].exec_sync -
+> >  			(char *)data;
+> > @@ -352,7 +352,7 @@ test_evict_cm(int fd, struct drm_xe_engine_class_instance *eci,
+> >  		data = xe_bo_map(fd, __bo,
+> >  				 ALIGN(sizeof(*data) * n_execs, 0x1000));
+> >  		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+> > -			       NULL, TWENTY_SEC);
+> > +			       exec_queues[i], TWENTY_SEC);
+> >  		igt_assert_eq(data[i].data, 0xc0ffee);
+> >  	}
+> >  	munmap(data, ALIGN(sizeof(*data) * n_execs, 0x1000));
+> > diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
+> > index 79ff65e89..2448d49bc 100644
+> > --- a/tests/intel/xe_exec_balancer.c
+> > +++ b/tests/intel/xe_exec_balancer.c
+> > @@ -483,7 +483,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
+> >  					 bo_size, sync, 1);
+> >  
+> >  #define ONE_SEC	MS_TO_NS(1000)
+> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
+> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, ONE_SEC);
+> >  	data[0].vm_sync = 0;
+> >  
+> >  	for (i = 0; i < n_execs; i++) {
+> > @@ -514,7 +514,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
+> >  
+> >  		if (flags & REBIND && i + 1 != n_execs) {
+> >  			xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+> > -				       NULL, ONE_SEC);
+> > +				       exec_queues[e], ONE_SEC);
+> >  			xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, NULL,
+> >  					   0);
+> >  
+> > @@ -529,7 +529,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
+> >  							 addr, bo_size, sync,
+> >  							 1);
+> >  			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> > -				       NULL, ONE_SEC);
+> > +				       0, ONE_SEC);
+> >  			data[0].vm_sync = 0;
+> >  		}
+> >  
+> > @@ -542,7 +542,8 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
+> >  				 * an invalidate.
+> >  				 */
+> >  				xe_wait_ufence(fd, &data[i].exec_sync,
+> > -					       USER_FENCE_VALUE, NULL, ONE_SEC);
+> > +					       USER_FENCE_VALUE, exec_queues[e],
+> > +					       ONE_SEC);
+> >  				igt_assert_eq(data[i].data, 0xc0ffee);
+> >  			} else if (i * 2 != n_execs) {
+> >  				/*
+> > @@ -571,8 +572,8 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
+> >  
+> >  	j = flags & INVALIDATE && n_execs ? n_execs - 1 : 0;
+> >  	for (i = j; i < n_execs; i++)
+> > -		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE, NULL,
+> > -			       ONE_SEC);
+> > +		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+> > +			       exec_queues[i], ONE_SEC);
+> >  
+> >  	/* Wait for all execs to complete */
+> >  	if (flags & INVALIDATE)
+> > @@ -580,7 +581,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
+> >  
+> >  	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+> >  	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
+> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, ONE_SEC);
+> >  
+> >  	for (i = (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
+> >  	     i < n_execs; i++)
+> > diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
+> > index 7d3004d65..749a9b634 100644
+> > --- a/tests/intel/xe_exec_compute_mode.c
+> > +++ b/tests/intel/xe_exec_compute_mode.c
+> > @@ -171,8 +171,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+> >  
+> >  	fence_timeout = igt_run_in_simulation() ? HUNDRED_SEC : ONE_SEC;
+> >  
+> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> > -		       fence_timeout);
+> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> > +		       bind_exec_queues[0], fence_timeout);
+> >  	data[0].vm_sync = 0;
+> >  
+> >  	for (i = 0; i < n_execs; i++) {
+> > @@ -198,7 +198,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+> >  
+> >  		if (flags & REBIND && i + 1 != n_execs) {
+> >  			xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+> > -				       NULL, fence_timeout);
+> > +				       exec_queues[e], fence_timeout);
+> >  			xe_vm_unbind_async(fd, vm, bind_exec_queues[e], 0,
+> >  					   addr, bo_size, NULL, 0);
+> >  
+> > @@ -214,7 +214,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+> >  							 addr, bo_size, sync,
+> >  							 1);
+> >  			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> > -				       NULL, fence_timeout);
+> > +				       bind_exec_queues[e], fence_timeout);
+> >  			data[0].vm_sync = 0;
+> >  		}
+> >  
+> > @@ -227,7 +227,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+> >  				 * an invalidate.
+> >  				 */
+> >  				xe_wait_ufence(fd, &data[i].exec_sync,
+> > -					       USER_FENCE_VALUE, NULL,
+> > +					       USER_FENCE_VALUE, exec_queues[e],
+> >  					       fence_timeout);
+> >  				igt_assert_eq(data[i].data, 0xc0ffee);
+> >  			} else if (i * 2 != n_execs) {
+> > @@ -257,8 +257,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+> >  
+> >  	j = flags & INVALIDATE ? n_execs - 1 : 0;
+> >  	for (i = j; i < n_execs; i++)
+> > -		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE, NULL,
+> > -			       fence_timeout);
+> > +		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+> > +			       exec_queues[i], fence_timeout);
+> >  
+> >  	/* Wait for all execs to complete */
+> >  	if (flags & INVALIDATE)
+> > @@ -267,8 +267,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+> >  	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+> >  	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr, bo_size,
+> >  			   sync, 1);
+> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> > -		       fence_timeout);
+> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> > +		       bind_exec_queues[0], fence_timeout);
+> >  
+> >  	for (i = j; i < n_execs; i++)
+> >  		igt_assert_eq(data[i].data, 0xc0ffee);
+> > diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
+> > index ee7cbb604..d76b3a056 100644
+> > --- a/tests/intel/xe_exec_fault_mode.c
+> > +++ b/tests/intel/xe_exec_fault_mode.c
+> > @@ -195,15 +195,16 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+> >  	}
+> >  
+> >  #define ONE_SEC	MS_TO_NS(1000)
+> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
+> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> > +		       bind_exec_queues[0], ONE_SEC);
+> >  	data[0].vm_sync = 0;
+> >  
+> >  	if (flags & PREFETCH) {
+> >  		/* Should move to system memory */
+> >  		xe_vm_prefetch_async(fd, vm, bind_exec_queues[0], 0, addr,
+> >  				     bo_size, sync, 1, 0);
+> > -		xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> > -			       ONE_SEC);
+> > +		xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> > +			       bind_exec_queues[0], ONE_SEC);
+> >  		data[0].vm_sync = 0;
+> >  	}
+> >  
+> > @@ -230,7 +231,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+> >  
+> >  		if (flags & REBIND && i + 1 != n_execs) {
+> >  			xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+> > -				       NULL, ONE_SEC);
+> > +				       exec_queues[e], ONE_SEC);
+> >  			xe_vm_unbind_async(fd, vm, bind_exec_queues[e], 0,
+> >  					   addr, bo_size, NULL, 0);
+> >  
+> > @@ -246,7 +247,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+> >  							 addr, bo_size, sync,
+> >  							 1);
+> >  			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> > -				       NULL, ONE_SEC);
+> > +				       bind_exec_queues[e], ONE_SEC);
+> >  			data[0].vm_sync = 0;
+> >  		}
+> >  
+> > @@ -259,7 +260,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+> >  				 * an invalidate.
+> >  				 */
+> >  				xe_wait_ufence(fd, &data[i].exec_sync,
+> > -					       USER_FENCE_VALUE, NULL, ONE_SEC);
+> > +					       USER_FENCE_VALUE, exec_queues[e],
+> > +					       ONE_SEC);
+> >  				igt_assert_eq(data[i].data, 0xc0ffee);
+> >  			} else if (i * 2 != n_execs) {
+> >  				/*
+> > @@ -290,13 +292,14 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+> >  		j = flags & INVALIDATE ? n_execs - 1 : 0;
+> >  		for (i = j; i < n_execs; i++)
+> >  			xe_wait_ufence(fd, &data[i].exec_sync,
+> > -				       USER_FENCE_VALUE, NULL, ONE_SEC);
+> > +				       USER_FENCE_VALUE, exec_queues[i], ONE_SEC);
+> >  	}
+> >  
+> >  	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+> >  	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr, bo_size,
+> >  			   sync, 1);
+> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
+> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> > +		       bind_exec_queues[0], ONE_SEC);
+> >  
+> >  	if (!(flags & INVALID_FAULT)) {
+> >  		for (i = j; i < n_execs; i++)
+> > diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+> > index 094b34896..398c90af5 100644
+> > --- a/tests/intel/xe_exec_reset.c
+> > +++ b/tests/intel/xe_exec_reset.c
+> > @@ -564,7 +564,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+> >  	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
+> >  
+> >  #define THREE_SEC	MS_TO_NS(3000)
+> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, THREE_SEC);
+> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, THREE_SEC);
+> >  	data[0].vm_sync = 0;
+> >  
+> >  	for (i = 0; i < n_execs; i++) {
+> > @@ -621,7 +621,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+> >  		int err;
+> >  
+> >  		err = __xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+> > -				       NULL, &timeout);
+> > +				       exec_queues[i], &timeout);
+> >  		if (flags & GT_RESET)
+> >  			/* exec races with reset: may timeout or complete */
+> >  			igt_assert(err == -ETIME || !err);
+> > @@ -631,7 +631,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+> >  
+> >  	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+> >  	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, THREE_SEC);
+> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, THREE_SEC);
+> >  
+> >  	if (!(flags & GT_RESET)) {
+> >  		for (i = 1; i < n_execs; i++)
+> > diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+> > index fcb926698..7985240c9 100644
+> > --- a/tests/intel/xe_exec_threads.c
+> > +++ b/tests/intel/xe_exec_threads.c
+> > @@ -331,7 +331,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+> >  
+> >  	fence_timeout = igt_run_in_simulation() ? THIRTY_SEC : THREE_SEC;
+> >  
+> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, fence_timeout);
+> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, fence_timeout);
+> >  	data[0].vm_sync = 0;
+> >  
+> >  	for (i = 0; i < n_execs; i++) {
+> > @@ -359,7 +359,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+> >  			for (j = i - 0x20; j <= i; ++j)
+> >  				xe_wait_ufence(fd, &data[j].exec_sync,
+> >  					       USER_FENCE_VALUE,
+> > -					       NULL, fence_timeout);
+> > +					       exec_queues[e], fence_timeout);
+> >  			xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size,
+> >  					   NULL, 0);
+> >  
+> > @@ -374,7 +374,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+> >  							 addr, bo_size, sync,
+> >  							 1);
+> >  			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> > -				       NULL, fence_timeout);
+> > +				       0, fence_timeout);
+> >  			data[0].vm_sync = 0;
+> >  		}
+> >  
+> > @@ -389,7 +389,8 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+> >  				for (j = i == 0x20 ? 0 : i - 0x1f; j <= i; ++j)
+> >  					xe_wait_ufence(fd, &data[j].exec_sync,
+> >  						       USER_FENCE_VALUE,
+> > -						       NULL, fence_timeout);
+> > +						       exec_queues[e],
+> > +						       fence_timeout);
+> >  				igt_assert_eq(data[i].data, 0xc0ffee);
+> >  			} else if (i * 2 != n_execs) {
+> >  				/*
+> > @@ -421,8 +422,8 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+> >  	j = flags & INVALIDATE ?
+> >  		(flags & RACE ? n_execs / 2 + 1 : n_execs - 1) : 0;
+> >  	for (i = j; i < n_execs; i++)
+> > -		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE, NULL,
+> > -			       fence_timeout);
+> > +		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+> > +			       exec_queues[e], fence_timeout);
+> >  
+> >  	/* Wait for all execs to complete */
+> >  	if (flags & INVALIDATE)
+> > @@ -430,7 +431,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+> >  
+> >  	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+> >  	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, fence_timeout);
+> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, fence_timeout);
+> >  
+> >  	for (i = j; i < n_execs; i++)
+> >  		igt_assert_eq(data[i].data, 0xc0ffee);
+> > diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
+> > index 3be987954..4e94403a3 100644
+> > --- a/tests/intel/xe_waitfence.c
+> > +++ b/tests/intel/xe_waitfence.c
+> > @@ -37,22 +37,19 @@ static void do_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+> >  }
+> >  
+> >  static int64_t wait_with_eci_abstime(int fd, uint64_t *addr, uint64_t value,
+> > -				     struct drm_xe_engine_class_instance *eci,
+> > -				     int64_t timeout)
+> > +				     uint32_t exec_queue, int64_t timeout)
+> >  {
+> >  	struct drm_xe_wait_user_fence wait = {
+> >  		.addr = to_user_pointer(addr),
+> >  		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
+> > -		.flags = !eci ? 0 : DRM_XE_UFENCE_WAIT_FLAG_ABSTIME,
+> > +		.flags = !exec_queue ? 0 : DRM_XE_UFENCE_WAIT_FLAG_ABSTIME,
+> >  		.value = value,
+> >  		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+> >  		.timeout = timeout,
+> > -		.num_engines = eci ? 1 : 0,
+> > -		.instances = eci ? to_user_pointer(eci) : 0,
+> > +		.exec_queue_id = exec_queue,
+> >  	};
+> >  	struct timespec ts;
+> >  
+> > -	igt_assert(eci);
+> >  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
+> >  	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &ts), 0);
+> >  
+> > @@ -82,7 +79,7 @@ enum waittype {
+> >  static void
+> >  waitfence(int fd, enum waittype wt)
+> >  {
+> > -	struct drm_xe_engine *engine = NULL;
+> > +	uint32_t exec_queue;
+> >  	struct timespec ts;
+> >  	int64_t current, signalled;
+> >  	uint32_t bo_1;
+> > @@ -111,15 +108,15 @@ waitfence(int fd, enum waittype wt)
+> >  	do_bind(fd, vm, bo_7, 0, 0xeffff0000, 0x10000, 7);
+> >  
+> >  	if (wt == RELTIME) {
+> > -		timeout = xe_wait_ufence(fd, &wait_fence, 7, NULL, MS_TO_NS(10));
+> > +		timeout = xe_wait_ufence(fd, &wait_fence, 7, 0, MS_TO_NS(10));
+> >  		igt_debug("wait type: RELTIME - timeout: %ld, timeout left: %ld\n",
+> >  			  MS_TO_NS(10), timeout);
+> >  	} else if (wt == ENGINE) {
+> > -		engine = xe_engine(fd, 1);
+> > +		exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
+> >  		clock_gettime(CLOCK_MONOTONIC, &ts);
+> >  		current = ts.tv_sec * 1e9 + ts.tv_nsec;
+> >  		timeout = current + MS_TO_NS(10);
+> > -		signalled = wait_with_eci_abstime(fd, &wait_fence, 7, &engine->instance, timeout);
+> > +		signalled = wait_with_eci_abstime(fd, &wait_fence, 7, exec_queue, timeout);
+> >  		igt_debug("wait type: ENGINE ABSTIME - timeout: %" PRId64
+> >  			  ", signalled: %" PRId64
+> >  			  ", elapsed: %" PRId64 "\n",
+> > @@ -128,7 +125,7 @@ waitfence(int fd, enum waittype wt)
+> >  		clock_gettime(CLOCK_MONOTONIC, &ts);
+> >  		current = ts.tv_sec * 1e9 + ts.tv_nsec;
+> >  		timeout = current + MS_TO_NS(10);
+> > -		signalled = xe_wait_ufence_abstime(fd, &wait_fence, 7, NULL, timeout);
+> > +		signalled = xe_wait_ufence_abstime(fd, &wait_fence, 7, 0, timeout);
+> >  		igt_debug("wait type: ABSTIME - timeout: %" PRId64
+> >  			  ", signalled: %" PRId64
+> >  			  ", elapsed: %" PRId64 "\n",
+> > @@ -191,8 +188,7 @@ invalid_ops(int fd)
+> >  		.value = 1,
+> >  		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+> >  		.timeout = 1,
+> > -		.num_engines = 0,
+> > -		.instances = 0,
+> > +		.exec_queue_id = 0,
+> >  	};
+> >  
+> >  	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+> > @@ -216,8 +212,7 @@ invalid_engine(int fd)
+> >  		.value = 1,
+> >  		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+> >  		.timeout = -1,
+> > -		.num_engines = 1,
+> > -		.instances = 0,
+> > +		.exec_queue_id = 0,
+> >  	};
+> >  
+> >  	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+> > -- 
+> > 2.25.1
+> > 
