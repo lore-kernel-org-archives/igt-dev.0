@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============3262201521660396475=="
+ boundary="===============3908652408492779946=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel=3A_Add_Xe_peer2pee?=
- =?utf-8?q?r_test_=28rev7=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_xe=3A_Validate_fixed_CCS_mode_?=
+ =?utf-8?q?setting?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "David Kershner" <david.kershner@intel.com>
-Date: Fri, 08 Dec 2023 00:33:06 -0000
-Message-ID: <170199558635.7325.16770905767867887429@emeril.freedesktop.org>
-References: <20231207174033.1277332-1-david.kershner@intel.com>
-In-Reply-To: <20231207174033.1277332-1-david.kershner@intel.com>
+To: "Niranjana Vishwanathapura" <niranjana.vishwanathapura@intel.com>
+Date: Fri, 08 Dec 2023 01:09:42 -0000
+Message-ID: <170199778289.7325.5362353150493787174@emeril.freedesktop.org>
+References: <20231207212429.7690-1-niranjana.vishwanathapura@intel.com>
+In-Reply-To: <20231207212429.7690-1-niranjana.vishwanathapura@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +23,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3262201521660396475==
+--===============3908652408492779946==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel: Add Xe peer2peer test (rev7)
-URL   : https://patchwork.freedesktop.org/series/126343/
+Series: xe: Validate fixed CCS mode setting
+URL   : https://patchwork.freedesktop.org/series/127527/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7628_BAT -> XEIGTPW_10371_BAT
+CI Bug Log - changes from XEIGT_7628_BAT -> XEIGTPW_10372_BAT
 ====================================================
 
 Summary
@@ -56,57 +56,43 @@ Participating hosts (4 -> 4)
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_10371_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_10372_BAT that come from known issues:
 
 ### IGT changes ###
 
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3:
-    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10371/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html
-
-  * igt@xe_create@create-execqueues-leak:
-    - bat-atsm-2:         [PASS][3] -> [FAIL][4] ([Intel XE#524])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10371/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-
-  
 #### Possible fixes ####
 
   * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
-    - bat-adlp-7:         [FAIL][5] ([i915#2346]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10371/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+    - bat-adlp-7:         [FAIL][1] ([i915#2346]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10372/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
 
   * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-adlp-7:         [FAIL][7] ([Intel XE#480]) -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10371/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#480]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10372/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
 
   
   [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
   [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
 
 
 Build changes
 -------------
 
-  * IGT: IGT_7628 -> IGTPW_10371
+  * IGT: IGT_7628 -> IGTPW_10372
   * Linux: xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04 -> xe-560-ca0510637dca8ce9658a2797626a2a558025ec3c
 
-  IGTPW_10371: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10371/index.html
+  IGTPW_10372: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10372/index.html
   IGT_7628: 431c2d2dd5828b25fcbe1c82afbac865f4771aee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04: 2a7dcf14d4abe82a88d846a3bf875e0611d83b04
   xe-560-ca0510637dca8ce9658a2797626a2a558025ec3c: ca0510637dca8ce9658a2797626a2a558025ec3c
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10371/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10372/index.html
 
---===============3262201521660396475==
+--===============3908652408492779946==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -126,60 +112,45 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel: Add Xe peer2peer test (rev7)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126343/">https://patchwork.freedesktop.org/series/126343/</a></td></tr>
+<tr><td><b>Series:</b></td><td>xe: Validate fixed CCS mode setting</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127527/">https://patchwork.freedesktop.org/series/127527/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10371/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10371/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10372/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10372/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7628_BAT -&gt; XEIGTPW_10371_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_7628_BAT -&gt; XEIGTPW_10372_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (4 -&gt; 4)</h2>
 <p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10371_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_10372_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10371/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_create@create-execqueues-leak:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10371/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>)</li>
-</ul>
-</li>
-</ul>
 <h4>Possible fixes</h4>
 <ul>
 <li>
 <p>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:</p>
 <ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10371/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">PASS</a></li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10372/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">PASS</a></li>
 </ul>
 </li>
 <li>
 <p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
 <ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10371/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10372/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_7628 -&gt; IGTPW_10371</li>
+<li>IGT: IGT_7628 -&gt; IGTPW_10372</li>
 <li>Linux: xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04 -&gt; xe-560-ca0510637dca8ce9658a2797626a2a558025ec3c</li>
 </ul>
-<p>IGTPW_10371: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10371/index.html<br />
+<p>IGTPW_10372: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10372/index.html<br />
   IGT_7628: 431c2d2dd5828b25fcbe1c82afbac865f4771aee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04: 2a7dcf14d4abe82a88d846a3bf875e0611d83b04<br />
   xe-560-ca0510637dca8ce9658a2797626a2a558025ec3c: ca0510637dca8ce9658a2797626a2a558025ec3c</p>
@@ -187,4 +158,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============3262201521660396475==--
+--===============3908652408492779946==--
