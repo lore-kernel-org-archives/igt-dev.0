@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9CEAC10E990
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Dec 2023 05:13:10 +0000 (UTC)
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: <igt-dev@lists.freedesktop.org>
-Subject: [PATCH i-g-t 3/3] tests/intel/freq: Test throttle basic API infra
-Date: Fri, 8 Dec 2023 00:12:29 -0500
-Message-ID: <20231208051230.664226-3-rodrigo.vivi@intel.com>
-In-Reply-To: <20231208051230.664226-1-rodrigo.vivi@intel.com>
-References: <20231208051230.664226-1-rodrigo.vivi@intel.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D382310E990
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Dec 2023 05:23:37 +0000 (UTC)
+From: priyanka.dandamudi@intel.com
+To: priyanka.dandamudi@intel.com, janga.rahul.kumar@intel.com,
+ sai.gowtham.ch@intel.com, igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t] tests/intel/xe_exec_store: Test to check
+ CONDITIONAL_BATCH_BUFFER_END
+Date: Fri,  8 Dec 2023 10:48:31 +0530
+Message-Id: <20231208051831.2276393-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,88 +18,105 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For now we don't have a reliable way to force PCODE throttling,
-but let's at least check for some sanity on our exposed API.
+From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-v2: Fix indentation issues (Sujaritha)
+Added a basic test to check MI_CONDITIONAL_BATCH_BUFFER_END instruction.
 
-Cc: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Reviewed-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+v2: Remove BATCH_BUFFER_END instruction, add else to check for wrong inst_type. (Rahul)
+and modified random value. (kamil)
+
+Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- tests/intel/xe_gt_freq.c | 48 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+ tests/intel/xe_exec_store.c | 46 ++++++++++++++++++++++++++++++++++---
+ 1 file changed, 43 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
-index 5bc26aa52..4334a8a41 100644
---- a/tests/intel/xe_gt_freq.c
-+++ b/tests/intel/xe_gt_freq.c
-@@ -68,6 +68,49 @@ static uint32_t get_freq(int fd, int gt_id, const char *freq_name)
- 	return freq;
+diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
+index dec8546a3..6d5a1bbac 100644
+--- a/tests/intel/xe_exec_store.c
++++ b/tests/intel/xe_exec_store.c
+@@ -21,6 +21,8 @@
+  */
+ 
+ #define MAX_INSTANCE 9
++#define STORE 0
++#define COND_BATCH 1
+ 
+ struct data {
+ 	uint32_t batch[16];
+@@ -48,11 +50,37 @@ static void store_dword_batch(struct data *data, uint64_t addr, int value)
+ 	data->addr = batch_addr;
  }
  
-+static uint32_t get_throttle(int fd, int gt_id, const char *throttle_file)
++static void cond_batch(struct data *data, uint64_t addr, int value)
 +{
-+	uint32_t val;
-+	char throttle_attr[40];
-+	int gt_fd;
++	int b;
++	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
++	uint64_t batch_addr = addr + batch_offset;
++	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
++	uint64_t sdi_addr = addr + sdi_offset;
 +
-+	snprintf(throttle_attr, sizeof(throttle_attr),
-+		 "freq0/throttle/%s", throttle_file);
-+	gt_fd = xe_sysfs_gt_open(fd, gt_id);
-+	igt_assert(gt_fd >= 0);
++	b = 0;
++	data->batch[b++] = MI_ATOMIC | MI_ATOMIC_INC;
++	data->batch[b++] = sdi_addr;
++	data->batch[b++] = sdi_addr >> 32;
++	data->batch[b++] = MI_CONDITIONAL_BATCH_BUFFER_END | MI_DO_COMPARE | 5 << 12 | 2;
++	data->batch[b++] = value;
++	data->batch[b++] = sdi_addr;
++	data->batch[b++] = sdi_addr >> 32;
++	data->batch[b++] = MI_BATCH_BUFFER_START | 1;
++	data->batch[b++] = lower_32_bits(batch_addr);
++	data->batch[b++] = upper_32_bits(batch_addr);
++	igt_assert(b <= ARRAY_SIZE(data->batch));
 +
-+	igt_sysfs_scanf(gt_fd, throttle_attr, "%u", &val);
-+
-+	igt_debug("gt%d/freq0/throttle/%s: %u\n", gt_id, throttle_file, val);
-+
-+	close(gt_fd);
-+	return val;
++	data->addr = batch_addr;
 +}
 +
-+/**
-+ * SUBTEST: throttle_basic_api
-+ * Description: Test basic throttle API
-+ */
-+
-+static void test_throttle_basic_api(int fd, int gt_id)
-+{
-+	uint32_t status, reasons;
-+
-+	status = get_throttle(fd, gt_id, "status");
-+	reasons = get_throttle(fd, gt_id, "reason_pl1");
-+	reasons |= get_throttle(fd, gt_id, "reason_pl2");
-+	reasons |= get_throttle(fd, gt_id, "reason_pl4");
-+	reasons |= get_throttle(fd, gt_id, "reason_prochot");
-+	reasons |= get_throttle(fd, gt_id, "reason_ratl");
-+	reasons |= get_throttle(fd, gt_id, "reason_thermal");
-+	reasons |= get_throttle(fd, gt_id, "reason_vr_tdc");
-+	reasons |= get_throttle(fd, gt_id, "reason_vr_thermalert");
-+
-+	if (status)
-+		igt_assert(reasons);
-+	else
-+		igt_assert(!reasons);
-+}
- 
  /**
-  * SUBTEST: freq_basic_api
-@@ -289,6 +332,11 @@ igt_main
- 		stash_max = get_freq(fd, 0, "max");
+  * SUBTEST: basic-store
+  * Description: Basic test to verify store dword.
++ * SUBTEST: basic-cond-batch
++ * Description: Basic test to verify cond batch end instruction.
+  */
+-static void store(int fd)
++static void basic_inst(int fd, int inst_type)
+ {
+ 	struct drm_xe_sync sync = {
+ 		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
+@@ -88,7 +116,16 @@ static void store(int fd)
+ 
+ 	xe_vm_bind_async(fd, vm, engine->instance.gt_id, bo, 0, addr, bo_size, &sync, 1);
+ 	data = xe_bo_map(fd, bo, bo_size);
+-	store_dword_batch(data, addr, value);
++
++	if (inst_type == STORE)
++		store_dword_batch(data, addr, value);
++	else if (inst_type == COND_BATCH) {
++		/* A random value where it stops at the below value. */
++		value = 20 + random() % 10;
++		cond_batch(data, addr, value);
++	}
++	else
++		igt_assert_f(inst_type < 2, "Entered wrong inst_type.\n");
+ 
+ 	exec_queue = xe_exec_queue_create(fd, vm, &engine->instance, 0);
+ 	exec.exec_queue_id = exec_queue;
+@@ -306,7 +343,10 @@ igt_main
  	}
  
-+	igt_subtest("throttle_basic_api") {
-+		xe_for_each_gt(fd, gt)
-+			test_throttle_basic_api(fd, gt);
-+	}
+ 	igt_subtest("basic-store")
+-		store(fd);
++		basic_inst(fd, STORE);
 +
- 	igt_subtest("freq_basic_api") {
++	igt_subtest("basic-cond-batch")
++		basic_inst(fd, COND_BATCH);
+ 
+ 	igt_subtest("basic-all") {
  		xe_for_each_gt(fd, gt)
- 			test_freq_basic_api(fd, gt);
 -- 
-2.43.0
+2.25.1
