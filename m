@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E84610E27A
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Dec 2023 12:59:52 +0000 (UTC)
-From: "Bommu, Krishnaiah" <krishnaiah.bommu@intel.com>
-To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
-Subject: RE: [PATCH v4 2/2] drm-uapi/xe: Skip xe_wait_user_fence_ioctl when
- exec_queue reset happen
-Date: Fri, 8 Dec 2023 12:59:34 +0000
-Message-ID: <DM4PR11MB529301FB88558A5561F7FFFC9D8AA@DM4PR11MB5293.namprd11.prod.outlook.com>
-References: <20231208041825.32421-1-krishnaiah.bommu@intel.com>
- <20231208041825.32421-3-krishnaiah.bommu@intel.com>
- <ZXKxFpBYOCCjqZ0p@intel.com>
-In-Reply-To: <ZXKxFpBYOCCjqZ0p@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_RFC=3A_drm-uapi/xe=3A_add?=
+ =?utf-8?q?_exec=5Fqueue=5Fid_member_to_drm=5Fxe=5Fwait=5Fuser=5Ffence_struc?=
+ =?utf-8?q?ture_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bommu, Krishnaiah" <krishnaiah.bommu@intel.com>
+Date: Fri, 08 Dec 2023 13:16:43 -0000
+Message-ID: <170204140363.7325.801525495434457226@emeril.freedesktop.org>
+References: <20231208041825.32421-1-krishnaiah.bommu@intel.com>
+In-Reply-To: <20231208041825.32421-1-krishnaiah.bommu@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,226 +18,26 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+== Series Details ==
 
+Series: RFC: drm-uapi/xe: add exec_queue_id member to drm_xe_wait_user_fence structure (rev6)
+URL   : https://patchwork.freedesktop.org/series/127364/
+State : failure
 
-> -----Original Message-----
-> From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> Sent: Friday, December 8, 2023 11:31 AM
-> To: Bommu, Krishnaiah <krishnaiah.bommu@intel.com>
-> Cc: igt-dev@lists.freedesktop.org
-> Subject: Re: [PATCH v4 2/2] drm-uapi/xe: Skip xe_wait_user_fence_ioctl
-> when exec_queue reset happen
->=20
-> On Fri, Dec 08, 2023 at 09:48:25AM +0530, Bommu Krishnaiah wrote:
-> > Skipping the GPU mapping(vm_bind) for object, so that exec_queue
->=20
-> 'skipping' sounds like you are not waiting at all...
->=20
-> > reset will happen and xe_wait_ufence will end return EIO not ETIME
-> >
-> > Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > Cc: Francois Dugast <francois.dugast@intel.com>
-> > ---
-> >  tests/intel/xe_waitfence.c | 82
-> > ++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 82 insertions(+)
-> >
-> > diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-> > index 4e94403a3..bd95fa1f8 100644
-> > --- a/tests/intel/xe_waitfence.c
-> > +++ b/tests/intel/xe_waitfence.c
-> > @@ -149,6 +149,9 @@ waitfence(int fd, enum waittype wt)
-> >   *
-> >   * SUBTEST: invalid-engine
-> >   * Description: Check query with invalid engine info returns expected
-> > error code
-> > + *
-> > + * SUBTEST: invalid-exec_queue-wait
->=20
-> 'invalid wait' sounded to me like a negative test with invalid timeout.
->=20
-> So I believe we need to rephrase some stuff here, but the test looks righ=
-t.
->=20
+== Summary ==
 
-Commit message:
-drm-uapi/xe: Don't wait on user_fence during exec queue reset
+Applying: drm-uapi/xe: add exec_queue_id member to drm_xe_wait_user_fence structure
+Applying: drm-uapi/xe: Skip xe_wait_user_fence_ioctl when exec_queue reset happen
+Using index info to reconstruct a base tree...
+M	tests/intel/xe_waitfence.c
+Patch failed at 0002 drm-uapi/xe: Skip xe_wait_user_fence_ioctl when exec_queue reset happen
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
-don't wait till timeout on user fence when exec_queue reset is detected
-and return return  proper error code
-
-
-root@kbommu-desk:/home/kbommu/xe_public/igt-gpu-tools# git diff
-diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-index bd95fa1f8..9a2c854c1 100644
---- a/tests/intel/xe_waitfence.c
-+++ b/tests/intel/xe_waitfence.c
-@@ -150,8 +150,8 @@ waitfence(int fd, enum waittype wt)
-  * SUBTEST: invalid-engine
-  * Description: Check query with invalid engine info returns expected erro=
-r code
-  *
-- * SUBTEST: invalid-exec_queue-wait
-- * Description: Check xe_wait_ufence will return expected error code while=
- exec_queue reset happen
-+ * SUBTEST: exec_queue-reset-wait
-+ * Description: Don't wait till timeout on user fence when exec_queue rese=
-t is detected and return return proper error
-  */
-
- static void
-@@ -228,7 +228,7 @@ invalid_engine(int fd)
- }
-
- static void
--invalid_exec_queue_wait(int fd)
-+exec_queue_reset_wait(int fd)
- {
-        uint32_t bo, b;
-        uint64_t batch_offset;
-@@ -291,8 +291,8 @@ invalid_exec_queue_wait(int fd)
-        xe_exec(fd, &exec);
-
-        /**
--         * Skipping the GPU mapping(vm_bind) for object, so that exec_queu=
-e
--         * reset will happen and xe_wait_ufence will end return EIO not ET=
-IME
-+         * Don't do the GPU mapping(vm_bind) for object, so that exec_queu=
-e
-+         * reset will happen and xe_wait_ufence will return EIO not ETIME
-          */
-        do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EIO);
-
-@@ -329,8 +329,8 @@ igt_main
-        igt_subtest("invalid-engine")
-                invalid_engine(fd);
-
--       igt_subtest("invalid-exec_queue-wait")
--               invalid_exec_queue_wait(fd);
-+       igt_subtest("exec_queue-reset-wait")
-+               exec_queue_reset_wait(fd);
-
-        igt_fixture
-                drm_close_driver(fd);
-root@kbommu-desk:/home/kbommu/xe_public/igt-gpu-tools#
-root@kbommu-desk:/home/kbommu/xe_public/igt-gpu-tools#
-
-This is what I can think of now, please suggest anything need to be changed=
-=20
-
-Regards,
-Krishna
-
-> > + * Description: Check xe_wait_ufence will return expected error code
-> > + while exec_queue reset happen
-> >   */
-> >
-> >  static void
-> > @@ -224,6 +227,82 @@ invalid_engine(int fd)
-> >  	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait,
-> EFAULT);  }
-> >
-> > +static void
-> > +invalid_exec_queue_wait(int fd)
-> > +{
-> > +	uint32_t bo, b;
-> > +	uint64_t batch_offset;
-> > +	uint64_t batch_addr;
-> > +	uint64_t sdi_offset;
-> > +	uint64_t sdi_addr;
-> > +	uint64_t addr =3D 0x1a0000;
-> > +
-> > +	struct {
-> > +		uint32_t batch[16];
-> > +		uint64_t pad;
-> > +		uint64_t vm_sync;
-> > +		uint64_t exec_sync;
-> > +		uint32_t data;
-> > +	} *data;
-> > +
-> > +#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
-> > +	struct drm_xe_sync sync[1] =3D {
-> > +		{ .flags =3D DRM_XE_SYNC_TYPE_USER_FENCE |
-> DRM_XE_SYNC_FLAG_SIGNAL,
-> > +			.timeline_value =3D USER_FENCE_VALUE },
-> > +	};
-> > +
-> > +	struct drm_xe_exec exec =3D {
-> > +		.num_batch_buffer =3D 1,
-> > +		.num_syncs =3D 1,
-> > +		.syncs =3D to_user_pointer(sync),
-> > +	};
-> > +
-> > +	uint32_t vm =3D xe_vm_create(fd,
-> DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-> > +	uint32_t exec_queue =3D xe_exec_queue_create_class(fd, vm,
-> DRM_XE_ENGINE_CLASS_COPY);
-> > +	struct drm_xe_wait_user_fence1 wait =3D {
-> > +		.op =3D DRM_XE_UFENCE_WAIT_OP_EQ,
-> > +		.flags =3D 0,
-> > +		.value =3D 0xc0ffee,
-> > +		.mask =3D DRM_XE_UFENCE_WAIT_MASK_U64,
-> > +		.timeout =3D -1,
-> > +		.exec_queue_id =3D exec_queue,
-> > +	};
-> > +
-> > +	bo =3D xe_bo_create(fd, vm, 0x40000, vram_if_possible(fd, 0), 0);
-> > +	data =3D xe_bo_map(fd, bo, 0x40000);
-> > +
-> > +	batch_offset =3D (char *)&data[0].batch - (char *)data;
-> > +	batch_addr =3D addr + batch_offset;
-> > +	sdi_offset =3D (char *)&data[0].data - (char *)data;
-> > +	sdi_addr =3D addr + sdi_offset;
-> > +
-> > +	b =3D 0;
-> > +	data[0].batch[b++] =3D MI_STORE_DWORD_IMM_GEN4;
-> > +	data[0].batch[b++] =3D sdi_addr;
-> > +	data[0].batch[b++] =3D sdi_addr >> 32;
-> > +	data[0].batch[b++] =3D 0xc0ffee;
-> > +	data[0].batch[b++] =3D MI_BATCH_BUFFER_END;
-> > +	igt_assert(b <=3D ARRAY_SIZE(data[0].batch));
-> > +
-> > +	wait.addr =3D to_user_pointer(&data[0].exec_sync);
-> > +	exec.exec_queue_id =3D exec_queue;
-> > +	exec.address =3D batch_addr;
-> > +
-> > +	xe_exec(fd, &exec);
-> > +
-> > +	/**
-> > +	  * Skipping the GPU mapping(vm_bind) for object, so that
-> exec_queue
-> > +	  * reset will happen and xe_wait_ufence will end return EIO not
-> ETIME
-> > +	  */
-> > +	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EIO);
-> > +
-> > +	xe_exec_queue_destroy(fd, exec_queue);
-> > +
-> > +	if (bo) {
-> > +		munmap(data, 0x40000);
-> > +		gem_close(fd, bo);
-> > +	}
-> > +}
-> >
-> >  igt_main
-> >  {
-> > @@ -250,6 +329,9 @@ igt_main
-> >  	igt_subtest("invalid-engine")
-> >  		invalid_engine(fd);
-> >
-> > +	igt_subtest("invalid-exec_queue-wait")
-> > +		invalid_exec_queue_wait(fd);
-> > +
-> >  	igt_fixture
-> >  		drm_close_driver(fd);
-> >  }
-> > --
-> > 2.25.1
-> >
