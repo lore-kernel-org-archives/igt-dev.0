@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7250232270838883631=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 33F9010E9BB
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Dec 2023 03:38:49 +0000 (UTC)
+From: Karthik B S <karthik.b.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t] tests/intel-ci: Update kms_psr subtest names on bat
+Date: Fri,  8 Dec 2023 09:08:33 +0530
+Message-Id: <20231208033833.19325-1-karthik.b.s@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_GT_IP_version_query_suppor?=
- =?utf-8?q?t_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matt Roper" <matthew.d.roper@intel.com>
-Date: Fri, 08 Dec 2023 02:33:49 -0000
-Message-ID: <170200282988.7327.17283848221324660073@emeril.freedesktop.org>
-References: <20231208002944.1290951-1-matthew.d.roper@intel.com>
-In-Reply-To: <20231208002944.1290951-1-matthew.d.roper@intel.com>
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,161 +16,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7250232270838883631==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+kms_psr subtest names have been changed resulting in skips on CI bat
+testlist. Update the test names accordingly.
 
-== Series Details ==
+Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/9806
 
-Series: Add GT IP version query support (rev2)
-URL   : https://patchwork.freedesktop.org/series/127456/
-State : success
+Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+---
+ tests/intel-ci/fast-feedback.testlist    | 8 ++++----
+ tests/intel-ci/xe-fast-feedback.testlist | 6 +++---
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7628_BAT -> XEIGTPW_10373_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10373_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10373/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-
-  * igt@xe_create@create-execqueues-leak:
-    - bat-atsm-2:         [PASS][3] -> [FAIL][4] ([Intel XE#524])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10373/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
-    - bat-adlp-7:         [FAIL][5] ([i915#2346]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10373/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
-
-  
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
-
-
-Build changes
--------------
-
-  * IGT: IGT_7628 -> IGTPW_10373
-  * Linux: xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04 -> xe-560-ca0510637dca8ce9658a2797626a2a558025ec3c
-
-  IGTPW_10373: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10373/index.html
-  IGT_7628: 431c2d2dd5828b25fcbe1c82afbac865f4771aee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04: 2a7dcf14d4abe82a88d846a3bf875e0611d83b04
-  xe-560-ca0510637dca8ce9658a2797626a2a558025ec3c: ca0510637dca8ce9658a2797626a2a558025ec3c
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10373/index.html
-
---===============7250232270838883631==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add GT IP version query support (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127456/">https://patchwork.freedesktop.org/series/127456/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10373/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10373/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7628_BAT -&gt; XEIGTPW_10373_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10373_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10373/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_create@create-execqueues-leak:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10373/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10373/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7628 -&gt; IGTPW_10373</li>
-<li>Linux: xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04 -&gt; xe-560-ca0510637dca8ce9658a2797626a2a558025ec3c</li>
-</ul>
-<p>IGTPW_10373: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10373/index.html<br />
-  IGT_7628: 431c2d2dd5828b25fcbe1c82afbac865f4771aee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04: 2a7dcf14d4abe82a88d846a3bf875e0611d83b04<br />
-  xe-560-ca0510637dca8ce9658a2797626a2a558025ec3c: ca0510637dca8ce9658a2797626a2a558025ec3c</p>
-
-</body>
-</html>
-
---===============7250232270838883631==--
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index aeba0ab29..60ce1efa4 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -123,10 +123,10 @@ igt@kms_pipe_crc_basic@read-crc-frame-sequence
+ igt@kms_pm_backlight@basic-brightness
+ igt@kms_pm_rpm@basic-pci-d3-state
+ igt@kms_pm_rpm@basic-rte
+-igt@kms_psr@psr_primary_page_flip
+-igt@kms_psr@psr_cursor_plane_move
+-igt@kms_psr@psr_sprite_plane_onoff
+-igt@kms_psr@psr_primary_mmap_gtt
++igt@kms_psr@psr-primary-page-flip
++igt@kms_psr@psr-cursor-plane-move
++igt@kms_psr@psr-sprite-plane-onoff
++igt@kms_psr@psr-primary-mmap-gtt
+ igt@kms_setmode@basic-clone-single-crtc
+ igt@i915_pm_rps@basic-api
+ igt@prime_self_import@basic-llseek-bad
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index f48e8fb67..45d115d35 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -214,9 +214,9 @@ igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+ igt@kms_pipe_crc_basic@read-crc
+ igt@kms_pipe_crc_basic@read-crc-frame-sequence
+ igt@kms_prop_blob@basic
+-igt@kms_psr@psr_primary_page_flip
+-igt@kms_psr@psr_cursor_plane_move
+-igt@kms_psr@psr_sprite_plane_onoff
++igt@kms_psr@psr-primary-page-flip
++igt@kms_psr@psr-cursor-plane-move
++igt@kms_psr@psr-sprite-plane-onoff
+ 
+ # All tests that do module unloading and reloading are executed last.
+ # They will sometimes reveal issues of earlier tests leaving the
+-- 
+2.39.1
