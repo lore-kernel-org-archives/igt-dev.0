@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA59610EA3D
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Dec 2023 10:24:42 +0000 (UTC)
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH v2 i-g-t] benchmarks/gem_wsim: Fix array index issue in
- xe_sync object referencing
-Date: Fri,  8 Dec 2023 11:24:38 +0100
-Message-Id: <20231208102438.12894-1-marcin.bernatowicz@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0194779598004010837=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_intel/xe=5Fexec=5Fstore=2Ec=3A?=
+ =?utf-8?q?_Fix_the_execution_of_basic-all_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: sai.gowtham.ch@intel.com
+Date: Fri, 08 Dec 2023 10:32:56 -0000
+Message-ID: <170203157657.7324.11760998445821874621@emeril.freedesktop.org>
+References: <20231208071743.17473-1-sai.gowtham.ch@intel.com>
+In-Reply-To: <20231208071743.17473-1-sai.gowtham.ch@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,36 +17,173 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-During the split of xe_sync types from flags introduced in commit
-ce4e53b0faec ("drm-uapi/xe: Split xe_sync types from flags"), the array
-index of xe_sync objects was unnecessarily incremented in one of the lines.
-This caused the next line to reference the wrong xe_sync object.
+--===============0194779598004010837==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This patch fixes the array index issue, ensuring the correct xe_sync
-object is referenced.
+== Series Details ==
 
-Fixes: ce4e53b0faec ("drm-uapi/xe: Split xe_sync types from flags")
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
----
- benchmarks/gem_wsim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Series: intel/xe_exec_store.c: Fix the execution of basic-all test
+URL   : https://patchwork.freedesktop.org/series/127550/
+State : success
 
-diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index e937e1027..30673da8f 100644
---- a/benchmarks/gem_wsim.c
-+++ b/benchmarks/gem_wsim.c
-@@ -1784,7 +1784,7 @@ xe_alloc_step_batch(struct workload *wrk, struct w_step *w)
- 	i = 0;
- 	/* out fence */
- 	w->xe.syncs[i].handle = syncobj_create(fd, 0);
--	w->xe.syncs[i++].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-+	w->xe.syncs[i].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
- 	w->xe.syncs[i++].flags = DRM_XE_SYNC_FLAG_SIGNAL;
- 	/* in fence(s) */
- 	for_each_dep(dep, w->data_deps) {
--- 
-2.31.1
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7628_BAT -> XEIGTPW_10379_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10379_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#906]) +2 other tests fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10379/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
+    - bat-adlp-7:         [FAIL][3] ([i915#2346]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10379/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-adlp-7:         [FAIL][5] ([Intel XE#480]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10379/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@xe_prime_self_import@basic-with_fd_dup:
+    - bat-atsm-2:         [FAIL][7] ([Intel XE#999]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10379/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
+
+  
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#906]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/906
+  [Intel XE#999]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/999
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7628 -> IGTPW_10379
+  * Linux: xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04 -> xe-561-c4235ef53c0265159d2c5f34459a3b6c37ab1995
+
+  IGTPW_10379: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10379/index.html
+  IGT_7628: 431c2d2dd5828b25fcbe1c82afbac865f4771aee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04: 2a7dcf14d4abe82a88d846a3bf875e0611d83b04
+  xe-561-c4235ef53c0265159d2c5f34459a3b6c37ab1995: c4235ef53c0265159d2c5f34459a3b6c37ab1995
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10379/index.html
+
+--===============0194779598004010837==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>intel/xe_exec_store.c: Fix the execution of basic-all test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127550/">https://patchwork.freedesktop.org/series/127550/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10379/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10379/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7628_BAT -&gt; XEIGTPW_10379_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10379_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10379/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/906">Intel XE#906</a>) +2 other tests fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10379/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10379/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_prime_self_import@basic-with_fd_dup:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7628/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/999">Intel XE#999</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10379/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7628 -&gt; IGTPW_10379</li>
+<li>Linux: xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04 -&gt; xe-561-c4235ef53c0265159d2c5f34459a3b6c37ab1995</li>
+</ul>
+<p>IGTPW_10379: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10379/index.html<br />
+  IGT_7628: 431c2d2dd5828b25fcbe1c82afbac865f4771aee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-558-2a7dcf14d4abe82a88d846a3bf875e0611d83b04: 2a7dcf14d4abe82a88d846a3bf875e0611d83b04<br />
+  xe-561-c4235ef53c0265159d2c5f34459a3b6c37ab1995: c4235ef53c0265159d2c5f34459a3b6c37ab1995</p>
+
+</body>
+</html>
+
+--===============0194779598004010837==--
