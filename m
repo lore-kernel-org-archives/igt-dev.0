@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B6DD10E39E
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 11:48:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1558410E39E
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 11:48:17 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	mitulkumar.ajitkumar.golani@intel.com
-Subject: [i-g-t V7 1/8] tests/kms_vrr: Use lib helper to print connector modes
-Date: Mon, 11 Dec 2023 17:06:43 +0530
-Message-Id: <20231211113650.3520399-2-bhanuprakash.modem@intel.com>
+Subject: [i-g-t V7 2/8] tests/kms_vrr: Clear VRR before exit
+Date: Mon, 11 Dec 2023 17:06:44 +0530
+Message-Id: <20231211113650.3520399-3-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231211113650.3520399-1-bhanuprakash.modem@intel.com>
 References: <20231211113650.3520399-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
@@ -23,51 +23,42 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of writing a new logic at test level, use library helper
-to print connector modes.
+Before exiting the subtest, make sure to clear the VRR.
+
+V2: - New function for cleanup
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
 ---
- tests/kms_vrr.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ tests/kms_vrr.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 5c190cd8c..bbdb54682 100644
+index bbdb54682..13e7f3ca6 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -65,13 +65,6 @@
-  */
- #define TEST_DURATION_NS (5000000000ull)
+@@ -469,8 +469,11 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	igt_assert_f(result < 10,
+ 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold exceeded, result was %u%%\n",
+ 		     ((range.max + range.min) / 2), rate, (flags & TEST_NEGATIVE)? "on" : "off", result);
++}
  
--#define DRM_MODE_FMT    "\"%s\": %d %d %d %d %d %d %d %d %d %d 0x%x 0x%x"
--#define DRM_MODE_ARG(m) \
--	(m)->name, (m)->vrefresh, (m)->clock, \
--	(m)->hdisplay, (m)->hsync_start, (m)->hsync_end, (m)->htotal, \
--	(m)->vdisplay, (m)->vsync_start, (m)->vsync_end, (m)->vtotal, \
--	(m)->type, (m)->flags
--
- enum {
- 	TEST_BASIC = 1 << 0,
- 	TEST_DPMS = 1 << 1,
-@@ -162,14 +155,16 @@ output_mode_with_maxrate(igt_output_t *output, unsigned int vrr_max)
- 	drmModeConnectorPtr connector = output->config.connector;
- 	drmModeModeInfo mode = *igt_output_get_mode(output);
- 
--	igt_debug("Default Mode " DRM_MODE_FMT "\n", DRM_MODE_ARG(&mode));
-+	igt_info("Default Mode: ");
-+	kmstest_dump_mode(&mode);
- 
- 	for (i = 0; i < connector->count_modes; i++)
- 		if (connector->modes[i].vrefresh > mode.vrefresh &&
- 		    connector->modes[i].vrefresh <= vrr_max)
- 			mode = connector->modes[i];
- 
--	igt_debug("Override Mode " DRM_MODE_FMT "\n", DRM_MODE_ARG(&mode));
-+	igt_info("Override Mode: ");
-+	kmstest_dump_mode(&mode);
- 
- 	return mode;
- }
+-	/* Clean-up */
++static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
++{
++	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, false);
+ 	igt_plane_set_fb(data->primary, NULL);
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_output_override_mode(output, NULL);
+@@ -510,6 +513,9 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
+ 				igt_dynamic_f("pipe-%s-%s",
+ 					      kmstest_pipe_name(pipe), output->name)
+ 					test(data, pipe, output, flags);
++
++				test_cleanup(data, pipe, output);
++
+ 				break;
+ 			}
+ 		}
 -- 
 2.40.0
