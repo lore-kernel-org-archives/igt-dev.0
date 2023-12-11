@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1558410E39E
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 11:48:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A09A510E3AD
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 11:48:18 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	mitulkumar.ajitkumar.golani@intel.com
-Subject: [i-g-t V7 2/8] tests/kms_vrr: Clear VRR before exit
-Date: Mon, 11 Dec 2023 17:06:44 +0530
-Message-Id: <20231211113650.3520399-3-bhanuprakash.modem@intel.com>
+Subject: [i-g-t V7 3/8] tests/kms_vrr: Move all config constaints to new
+ function
+Date: Mon, 11 Dec 2023 17:06:45 +0530
+Message-Id: <20231211113650.3520399-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231211113650.3520399-1-bhanuprakash.modem@intel.com>
 References: <20231211113650.3520399-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
@@ -23,42 +24,56 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Before exiting the subtest, make sure to clear the VRR.
-
-V2: - New function for cleanup
+No functional change, cleanup only. Move all config checks
+to new function.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
 ---
- tests/kms_vrr.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tests/kms_vrr.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index bbdb54682..13e7f3ca6 100644
+index 13e7f3ca6..df241aa6c 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -469,8 +469,11 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	igt_assert_f(result < 10,
- 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold exceeded, result was %u%%\n",
- 		     ((range.max + range.min) / 2), rate, (flags & TEST_NEGATIVE)? "on" : "off", result);
-+}
+@@ -483,6 +483,21 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_remove_fb(data->drm_fd, &data->fb0);
+ }
  
--	/* Clean-up */
-+static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
++static bool config_constraint(igt_output_t *output, uint32_t flags)
 +{
-+	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, false);
- 	igt_plane_set_fb(data->primary, NULL);
- 	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_output_override_mode(output, NULL);
-@@ -510,6 +513,9 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
- 				igt_dynamic_f("pipe-%s-%s",
- 					      kmstest_pipe_name(pipe), output->name)
- 					test(data, pipe, output, flags);
++	if (!has_vrr(output))
++		return false;
 +
-+				test_cleanup(data, pipe, output);
++	/* For Negative tests, panel should be non-vrr. */
++	if ((flags & TEST_NEGATIVE) && vrr_capable(output))
++		return false;
 +
- 				break;
- 			}
- 		}
++	if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
++		return false;
++
++	return true;
++}
++
+ /* Runs tests on outputs that are VRR capable. */
+ static void
+ run_vrr_test(data_t *data, test_t test, uint32_t flags)
+@@ -492,14 +507,7 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
+ 	for_each_connected_output(&data->display, output) {
+ 		enum pipe pipe;
+ 
+-		if (!has_vrr(output))
+-			continue;
+-
+-		/* For Negative tests, panel should be non-vrr. */
+-		if ((flags & TEST_NEGATIVE) && vrr_capable(output))
+-			continue;
+-
+-		if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
++		if (!config_constraint(output, flags))
+ 			continue;
+ 
+ 		for_each_pipe(&data->display, pipe) {
 -- 
 2.40.0
