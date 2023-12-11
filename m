@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27EBA10E483
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 15:33:11 +0000 (UTC)
-Message-ID: <3730377f-d52c-4d1c-8f06-86efa5305f23@linux.intel.com>
-Date: Mon, 11 Dec 2023 16:33:06 +0100
+Content-Type: multipart/alternative;
+ boundary="===============2206747788790887102=="
 MIME-Version: 1.0
-Subject: Re: [PATCH i-g-t 1/1] tests/intel/xe_create: create-contexts subtest
-To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
-References: <20231208090558.17004-1-lukasz.laguna@intel.com>
- <20231208090558.17004-2-lukasz.laguna@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20231208090558.17004-2-lukasz.laguna@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fpat=3A_limit_?=
+ =?utf-8?q?number_of_dynamic_tests_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matthew Auld" <matthew.auld@intel.com>
+Date: Mon, 11 Dec 2023 15:46:05 -0000
+Message-ID: <170230956570.19580.11243961357027088562@emeril.freedesktop.org>
+References: <20231211101251.20604-1-matthew.auld@intel.com>
+In-Reply-To: <20231211101251.20604-1-matthew.auld@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,137 +17,269 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Lukasz,
+--===============2206747788790887102==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 12/8/2023 10:05 AM, Lukasz Laguna wrote:
-> Validates the creation of significant number of HW contexts (4096 as
-> default). The number of contexts to create can be adjusted using command
-> line '-Q' parameter representing resource quantity.
-> 
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> ---
->   tests/intel/xe_create.c | 65 ++++++++++++++++++++++++++++++++---------
->   1 file changed, 51 insertions(+), 14 deletions(-)
-> 
-> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-> index cef9db23d..45b0c116c 100644
-> --- a/tests/intel/xe_create.c
-> +++ b/tests/intel/xe_create.c
-> @@ -19,11 +19,11 @@
->   #define PAGE_SIZE 0x1000
->   
->   static struct param {
-> -	unsigned int size_mb;
-> -	unsigned int vram_percent;
-> +	unsigned int quantity;
-> +	unsigned int percent;
->   } params = {
-> -	.size_mb = 0,
-> -	.vram_percent = 100,
-> +	.quantity = 0,
-> +	.percent = 100,
->   };
->   
->   static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t placement,
-> @@ -244,8 +244,8 @@ static void create_big_vram(int fd, int gt)
->   	visible_avail_size = xe_visible_available_vram_size(fd, gt);
->   	igt_require(visible_avail_size);
->   
-> -	bo_size = params.size_mb ? params.size_mb * 1024ULL * 1024ULL
-> -		  : ALIGN_DOWN(visible_avail_size * params.vram_percent / 100, alignment);
-> +	bo_size = params.quantity ? params.quantity * 1024ULL * 1024ULL
-> +		  : ALIGN_DOWN(visible_avail_size * params.percent / 100, alignment);
->   	igt_require(bo_size);
->   	igt_info("gt%u bo_size=%lu visible_available_vram_size=%lu\n",
->   		gt, bo_size, visible_avail_size);
-> @@ -268,16 +268,49 @@ static void create_big_vram(int fd, int gt)
->   	xe_vm_destroy(fd, vm);
->   }
->   
-> +/**
-> + * SUBTEST: create-contexts
-> + * Functionality: contexts creation
-> + * Test category: functionality test
-> + * Description: Verifies the creation of substantial number of HW contexts
-> + *		(4096 as default).
-> + */
-> +static void create_contexts(int fd)
-> +{
-> +	unsigned int i, n = params.quantity ? params.quantity : 4096;
-> +	uint64_t bo_size = xe_get_default_alignment(fd), bo_addr = 0x1a0000;
-> +	uint32_t vm, bo, *batch, exec_queues[n];
-> +
-> +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
-> +	bo = xe_bo_create(fd, vm, bo_size, system_memory(fd), 0);
-> +
-> +	batch = xe_bo_map(fd, bo, bo_size);
-> +	*batch = MI_BATCH_BUFFER_END;
-> +	munmap(batch, bo_size);
-> +
-> +	xe_vm_bind_sync(fd, vm, bo, 0, bo_addr, bo_size);
-> +
-> +	for (i = 0; i < n; i++) {
-> +		exec_queues[i] = xe_exec_queue_create(fd, vm, &xe_engine(fd, 0)->instance, 0);
-> +		xe_exec_wait(fd, exec_queues[i], bo_addr);
-> +	}
+== Series Details ==
 
-Perhaps it would be beneficial to include information about which 
-iteration the failure occurs in, if any.
-Other than that LGTM.
---
-marcin
-> +
-> +	for (i = 0; i < n; i++)
-> +		xe_exec_queue_destroy(fd, exec_queues[i]);
-> +	gem_close(fd, bo);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
->   static int opt_handler(int opt, int opt_index, void *data)
->   {
->   	switch (opt) {
-> -	case 'S':
-> -		params.size_mb = atoi(optarg);
-> -		igt_debug("Size MB: %d\n", params.size_mb);
-> +	case 'Q':
-> +		params.quantity = atoi(optarg);
-> +		igt_debug("Resource quantity (memory in MB): %d\n", params.quantity);
->   		break;
->   	case 'p':
-> -		params.vram_percent = atoi(optarg);
-> -		igt_debug("Percent of VRAM: %d\n", params.vram_percent);
-> +		params.percent = atoi(optarg);
-> +		igt_debug("Percent of available resource: %d\n", params.percent);
->   		break;
->   	default:
->   		return IGT_OPT_HANDLER_ERROR;
-> @@ -287,11 +320,11 @@ static int opt_handler(int opt, int opt_index, void *data)
->   }
->   
->   const char *help_str =
-> -	"  -S\tBO size in MB\n"
-> -	"  -p\tPercent of VRAM for BO\n"
-> +	"  -Q\tresource quantity (memory in MB)\n"
-> +	"  -p\tpercent of available resource\n"
->   	;
->   
-> -igt_main_args("S:p:", NULL, help_str, opt_handler, NULL)
-> +igt_main_args("Q:p:", NULL, help_str, opt_handler, NULL)
->   {
->   	int xe;
->   
-> @@ -322,6 +355,10 @@ igt_main_args("S:p:", NULL, help_str, opt_handler, NULL)
->   				create_big_vram(xe, gt);
->   	}
->   
-> +	igt_subtest("create-contexts") {
-> +		create_contexts(xe);
-> +	}
-> +
->   	igt_subtest("multigpu-create-massive-size") {
->   		int gpu_count = drm_prepare_filtered_multigpu(DRIVER_XE);
->   
+Series: tests/intel/xe_pat: limit number of dynamic tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/127429/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7632_BAT -> XEIGTPW_10387_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_10387_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@xe_pat@pat-index-xehpc@render} (NEW):
+    - bat-pvc-2:          NOTRUN -> [SKIP][1]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10387/bat-pvc-2/igt@xe_pat@pat-index-xehpc@render.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between XEIGT_7632_BAT and XEIGTPW_10387_BAT:
+
+### New IGT tests (6) ###
+
+  * igt@xe_pat@pat-index-xehpc@blt:
+    - Statuses : 1 pass(s)
+    - Exec time: [14.59] s
+
+  * igt@xe_pat@pat-index-xehpc@dw:
+    - Statuses : 1 pass(s)
+    - Exec time: [24.32] s
+
+  * igt@xe_pat@pat-index-xehpc@render:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_pat@pat-index-xelp@blt:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.81, 6.41] s
+
+  * igt@xe_pat@pat-index-xelp@dw:
+    - Statuses : 3 pass(s)
+    - Exec time: [1.07, 9.78] s
+
+  * igt@xe_pat@pat-index-xelp@render:
+    - Statuses : 3 pass(s)
+    - Exec time: [2.28, 21.62] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10387_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:
+    - bat-dg2-oem2:       [PASS][2] -> [FAIL][3] ([Intel XE#480]) +1 other test fail
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7632/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10387/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [PASS][4] -> [FAIL][5] ([Intel XE#480])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7632/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10387/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_prime_self_import@basic-with_fd_dup:
+    - bat-atsm-2:         [FAIL][6] ([Intel XE#999]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7632/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10387/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#999]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/999
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7632 -> IGTPW_10387
+  * Linux: xe-565-1fc141d1f445b8e5ab4ff14645b0482dd98460b9 -> xe-566-00175313322325f73095e61b6cbe550f47184408
+
+  IGTPW_10387: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10387/index.html
+  IGT_7632: 3fff86827c4728708072b9accbc990fa1084c95d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-565-1fc141d1f445b8e5ab4ff14645b0482dd98460b9: 1fc141d1f445b8e5ab4ff14645b0482dd98460b9
+  xe-566-00175313322325f73095e61b6cbe550f47184408: 00175313322325f73095e61b6cbe550f47184408
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10387/index.html
+
+--===============2206747788790887102==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_pat: limit number of dynamic tests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127429/">https://patchwork.freedesktop.org/series/127429/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10387/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10387/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7632_BAT -&gt; XEIGTPW_10387_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_10387_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>{igt@xe_pat@pat-index-xehpc@render} (NEW):<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10387/bat-pvc-2/igt@xe_pat@pat-index-xehpc@render.html">SKIP</a></li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_7632_BAT and XEIGTPW_10387_BAT:</p>
+<h3>New IGT tests (6)</h3>
+<ul>
+<li>
+<p>igt@xe_pat@pat-index-xehpc@blt:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [14.59] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc@dw:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [24.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc@render:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp@blt:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.81, 6.41] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp@dw:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [1.07, 9.78] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp@render:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [2.28, 21.62] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10387_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7632/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10387/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7632/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10387/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_prime_self_import@basic-with_fd_dup:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7632/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/999">Intel XE#999</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10387/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7632 -&gt; IGTPW_10387</li>
+<li>Linux: xe-565-1fc141d1f445b8e5ab4ff14645b0482dd98460b9 -&gt; xe-566-00175313322325f73095e61b6cbe550f47184408</li>
+</ul>
+<p>IGTPW_10387: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10387/index.html<br />
+  IGT_7632: 3fff86827c4728708072b9accbc990fa1084c95d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-565-1fc141d1f445b8e5ab4ff14645b0482dd98460b9: 1fc141d1f445b8e5ab4ff14645b0482dd98460b9<br />
+  xe-566-00175313322325f73095e61b6cbe550f47184408: 00175313322325f73095e61b6cbe550f47184408</p>
+
+</body>
+</html>
+
+--===============2206747788790887102==--
