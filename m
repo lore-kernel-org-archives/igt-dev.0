@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88B1610E3E5
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 12:30:49 +0000 (UTC)
-Date: Mon, 11 Dec 2023 13:30:25 +0100
+Date: Mon, 11 Dec 2023 13:32:08 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v2] tests/intel/xe_pat: limit number of dynamic tests
-Message-ID: <20231211123025.xp4pq6jcszybvcgo@kamilkon-desk.igk.intel.com>
-References: <20231211101251.20604-1-matthew.auld@intel.com>
+Subject: Re: =?utf-8?Q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_benchmarks?=
+ =?utf-8?B?L2dlbV93c2lt?= =?utf-8?Q?=3A?= Fix array index issue in xe_sync
+ object referencing (rev2)
+Message-ID: <20231211123208.nozeyibqqpvpnw6j@kamilkon-desk.igk.intel.com>
+References: <20231208102438.12894-1-marcin.bernatowicz@linux.intel.com>
+ <170203572276.7325.4812979580658943477@emeril.freedesktop.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231211101251.20604-1-matthew.auld@intel.com>
+In-Reply-To: <170203572276.7325.4812979580658943477@emeril.freedesktop.org>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,210 +19,168 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Himanshu Girotra <himanshu.girotra@intel.com>,
- Matthew Auld <matthew.auld@intel.com>
+Cc: Marcin Bernatowicz <marcin.bernatowicz@intel.com>,
+ lgci.bug.filing@intel.com, I915-ci-infra@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Matthew,
-On 2023-12-11 at 10:12:51 +0000, Matthew Auld wrote:
-> Due to of the all the combinations here, we generate hundreds of dynamic
-> testcases. This does allow running any individual testcase quite easily,
-> but the sheer number of tests is a bit unwieldy for CI to handle. Trim
-> this back to the following tests:
-> 
-> pat-index-{xelp, xehpc, xelpg, xe2}@{dw, blt, render}
-> 
-> v2 (Kamil): Tweak the pat-index-* test description in the commit
-> message.
-> 
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Himanshu Girotra <himanshu.girotra@intel.com>
+Hi,
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+this is unrelated to benchmark change,
 
-> ---
->  tests/intel/xe_pat.c | 128 +++++++++++++++++++++----------------------
->  1 file changed, 64 insertions(+), 64 deletions(-)
+Regards,
+Kamil
+
+On 2023-12-08 at 11:42:02 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-> index 8189390a8..7273242b0 100644
-> --- a/tests/intel/xe_pat.c
-> +++ b/tests/intel/xe_pat.c
-> @@ -369,13 +369,15 @@ static void pat_index_render(struct xe_pat_param *p)
->  	int bpp = 32;
->  	int i;
->  
-> -	bops = buf_ops_create(fd);
-> -
->  	render_copy = igt_get_render_copyfunc(devid);
->  	igt_require(render_copy);
-> -	igt_require(!p->r2_compressed); /* XXX */
->  	igt_require(xe_has_engine_class(fd, DRM_XE_ENGINE_CLASS_RENDER));
->  
-> +	if (p->r2_compressed) /* XXX */
-> +		return;
-> +
-> +	bops = buf_ops_create(fd);
-> +
->  	ibb = intel_bb_create_full(fd, 0, 0, NULL, xe_get_default_alignment(fd),
->  				   0, 0, p->size->alignment,
->  				   INTEL_ALLOCATOR_SIMPLE,
-> @@ -456,8 +458,8 @@ static void pat_index_dw(struct xe_pat_param *p)
->  	int bpp = 32, i, n_engines;
->  	uint32_t ctx, vm;
->  
-> -	igt_require(!p->r1_compressed);
-> -	igt_require(!p->r2_compressed);
-> +	if (p->r1_compressed || p->r2_compressed)
-> +		return;
->  
->  	bops = buf_ops_create(fd);
->  
-> @@ -901,84 +903,82 @@ static void subtest_pat_index_modes_with_regions(int fd,
->  
->  		copy_mode = copy_modes[igt_collection_get_value(copies, 0)];
->  
-> -		for_each_variation_r(regions, 2, regions_set) {
-> -			struct igt_collection *pat_modes;
-> -			uint32_t r1, r2;
-> -			char *reg_str;
-> +		igt_dynamic_f("%s", copy_mode.name) {
-> +			for_each_variation_r(regions, 2, regions_set) {
-> +				struct igt_collection *pat_modes;
-> +				uint32_t r1, r2;
-> +				char *reg_str;
->  
-> -			r1 = igt_collection_get_value(regions, 0);
-> -			r2 = igt_collection_get_value(regions, 1);
-> +				r1 = igt_collection_get_value(regions, 0);
-> +				r2 = igt_collection_get_value(regions, 1);
->  
-> -			reg_str = xe_memregion_dynamic_subtest_name(fd, regions);
-> +				reg_str = xe_memregion_dynamic_subtest_name(fd, regions);
->  
-> -			for_each_variation_r(pat_modes, 2, pat_index_set) {
-> -				struct igt_collection *sizes;
-> -				struct pat_index_entry r1_entry, r2_entry;
-> -				int r1_idx, r2_idx;
-> +				for_each_variation_r(pat_modes, 2, pat_index_set) {
-> +					struct igt_collection *sizes;
-> +					struct pat_index_entry r1_entry, r2_entry;
-> +					int r1_idx, r2_idx;
->  
-> -				r1_idx = igt_collection_get_value(pat_modes, 0);
-> -				r2_idx = igt_collection_get_value(pat_modes, 1);
-> +					r1_idx = igt_collection_get_value(pat_modes, 0);
-> +					r2_idx = igt_collection_get_value(pat_modes, 1);
->  
-> -				r1_entry = modes_arr[r1_idx];
-> -				r2_entry = modes_arr[r2_idx];
-> +					r1_entry = modes_arr[r1_idx];
-> +					r2_entry = modes_arr[r2_idx];
->  
-> -				if (r1_entry.get_pat_index) {
-> -					p.r1_pat_index = r1_entry.get_pat_index(fd, &p.r1_compressed);
-> -				} else {
-> -					p.r1_pat_index = r1_entry.pat_index;
-> -					p.r1_compressed = r1_entry.compressed;
-> -				}
-> +					if (r1_entry.get_pat_index) {
-> +						p.r1_pat_index = r1_entry.get_pat_index(fd, &p.r1_compressed);
-> +					} else {
-> +						p.r1_pat_index = r1_entry.pat_index;
-> +						p.r1_compressed = r1_entry.compressed;
-> +					}
->  
-> -				if (r2_entry.get_pat_index)
-> -					p.r2_pat_index = r2_entry.get_pat_index(fd, &p.r2_compressed);
-> -				else {
-> -					p.r2_pat_index = r2_entry.pat_index;
-> -					p.r2_compressed = r2_entry.compressed;
-> -				}
-> +					if (r2_entry.get_pat_index)
-> +						p.r2_pat_index = r2_entry.get_pat_index(fd, &p.r2_compressed);
-> +					else {
-> +						p.r2_pat_index = r2_entry.pat_index;
-> +						p.r2_compressed = r2_entry.compressed;
-> +					}
->  
-> -				p.r1 = r1;
-> -				p.r2 = r2;
-> +					p.r1 = r1;
-> +					p.r2 = r2;
->  
-> -				for_each_variation_r(sizes, 1, sizes_set) {
-> -					int size_mode_idx = igt_collection_get_value(sizes, 0);
-> -					int bpp = 32;
-> -					int size;
-> +					for_each_variation_r(sizes, 1, sizes_set) {
-> +						int size_mode_idx = igt_collection_get_value(sizes, 0);
-> +						int bpp = 32;
-> +						int size;
->  
-> -					p.size = &size_modes[size_mode_idx];
-> +						p.size = &size_modes[size_mode_idx];
->  
-> -					size = p.size->width * p.size->height * bpp / 8;
-> -					p.r1_bo = create_object(fd, p.r1, size, r1_entry.coh_mode,
-> -								r1_entry.force_cpu_wc);
-> -					p.r1_map = xe_bo_map(fd, p.r1_bo, size);
-> +						size = p.size->width * p.size->height * bpp / 8;
-> +						p.r1_bo = create_object(fd, p.r1, size, r1_entry.coh_mode,
-> +									r1_entry.force_cpu_wc);
-> +						p.r1_map = xe_bo_map(fd, p.r1_bo, size);
->  
-> -					p.r2_bo = create_object(fd, p.r2, size, r2_entry.coh_mode,
-> -								r2_entry.force_cpu_wc);
-> -					p.r2_map = xe_bo_map(fd, p.r2_bo, size);
-> +						p.r2_bo = create_object(fd, p.r2, size, r2_entry.coh_mode,
-> +									r2_entry.force_cpu_wc);
-> +						p.r2_map = xe_bo_map(fd, p.r2_bo, size);
->  
-> -					igt_debug("[r1]: r: %u, idx: %u, coh: %u, wc: %d, comp: %d\n",
-> -						  p.r1, p.r1_pat_index, r1_entry.coh_mode,
-> -						  r1_entry.force_cpu_wc, p.r1_compressed);
-> -					igt_debug("[r2]: r: %u, idx: %u, coh: %u, wc: %d, comp: %d, w: %u, h: %u, a: %u\n",
-> -						  p.r2, p.r2_pat_index, r2_entry.coh_mode,
-> -						  r1_entry.force_cpu_wc, p.r2_compressed,
-> -						  p.size->width, p.size->height,
-> -						  p.size->alignment);
-> +						igt_debug("[r1]: r: %u, idx: %u (%s), coh: %u, wc: %d, comp: %d\n",
-> +							  p.r1, p.r1_pat_index, r1_entry.name, r1_entry.coh_mode,
-> +							  r1_entry.force_cpu_wc, p.r1_compressed);
-> +						igt_debug("[r2]: r: %u, idx: %u (%s), coh: %u, wc: %d, comp: %d, w: %u, h: %u, a: %u\n",
-> +							  p.r2, p.r2_pat_index, r2_entry.name, r2_entry.coh_mode,
-> +							  r1_entry.force_cpu_wc, p.r2_compressed,
-> +							  p.size->width, p.size->height,
-> +							  p.size->alignment);
->  
-> -					igt_dynamic_f("%s-%s-%s-%s-%s",
-> -						      copy_mode.name,
-> -						      reg_str, r1_entry.name,
-> -						      r2_entry.name, p.size->name)
->  						copy_mode.fn(&p);
->  
-> -					munmap(p.r1_map, size);
-> -					munmap(p.r2_map, size);
-> +						munmap(p.r1_map, size);
-> +						munmap(p.r2_map, size);
->  
-> -					gem_close(fd, p.r1_bo);
-> -					gem_close(fd, p.r2_bo);
-> +						gem_close(fd, p.r1_bo);
-> +						gem_close(fd, p.r2_bo);
-> +					}
->  				}
-> +
-> +				free(reg_str);
->  			}
-> -
-> -			free(reg_str);
->  		}
->  	}
->  }
-> -- 
-> 2.43.0
+> Series: benchmarks/gem_wsim: Fix array index issue in xe_sync object referencing (rev2)
+> URL   : https://patchwork.freedesktop.org/series/127512/
+> State : failure
 > 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_13998 -> IGTPW_10382
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10382 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10382, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/index.html
+> 
+> Participating hosts (35 -> 35)
+> ------------------------------
+> 
+>   Additional (1): bat-dg2-8 
+>   Missing    (1): fi-snb-2520m 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10382:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_busy@basic@flip:
+>     - bat-adlp-11:        NOTRUN -> [ABORT][1]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/bat-adlp-11/igt@kms_busy@basic@flip.html
+>     - bat-dg2-8:          NOTRUN -> [INCOMPLETE][2]
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/bat-dg2-8/igt@kms_busy@basic@flip.html
+>     - bat-jsl-1:          NOTRUN -> [INCOMPLETE][3]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/bat-jsl-1/igt@kms_busy@basic@flip.html
+> 
+>   * igt@kms_force_connector_basic@force-connector-state:
+>     - fi-kbl-guc:         NOTRUN -> [ABORT][4]
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/fi-kbl-guc/igt@kms_force_connector_basic@force-connector-state.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_10382 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@debugfs_test@basic-hwmon:
+>     - bat-adlp-11:        NOTRUN -> [SKIP][5] ([i915#9318])
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/bat-adlp-11/igt@debugfs_test@basic-hwmon.html
+>     - bat-jsl-1:          NOTRUN -> [SKIP][6] ([i915#9318])
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/bat-jsl-1/igt@debugfs_test@basic-hwmon.html
+> 
+>   * igt@fbdev@info:
+>     - fi-kbl-guc:         NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#1849])
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/fi-kbl-guc/igt@fbdev@info.html
+> 
+>   * igt@gem_huc_copy@huc-copy:
+>     - bat-jsl-1:          NOTRUN -> [SKIP][8] ([i915#2190])
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/bat-jsl-1/igt@gem_huc_copy@huc-copy.html
+> 
+>   * igt@gem_mmap@basic:
+>     - bat-dg2-8:          NOTRUN -> [SKIP][9] ([i915#4083])
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/bat-dg2-8/igt@gem_mmap@basic.html
+> 
+>   * igt@gem_mmap_gtt@basic:
+>     - bat-dg2-8:          NOTRUN -> [SKIP][10] ([i915#4077]) +2 other tests skip
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/bat-dg2-8/igt@gem_mmap_gtt@basic.html
+> 
+>   * igt@gem_tiled_pread_basic:
+>     - bat-dg2-8:          NOTRUN -> [SKIP][11] ([i915#4079]) +1 other test skip
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/bat-dg2-8/igt@gem_tiled_pread_basic.html
+>     - bat-adlp-11:        NOTRUN -> [SKIP][12] ([i915#3282])
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/bat-adlp-11/igt@gem_tiled_pread_basic.html
+> 
+>   * igt@i915_module_load@load:
+>     - bat-adlp-6:         [PASS][13] -> [DMESG-WARN][14] ([i915#8449])
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13998/bat-adlp-6/igt@i915_module_load@load.html
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/bat-adlp-6/igt@i915_module_load@load.html
+> 
+>   * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+>     - bat-dg2-8:          NOTRUN -> [SKIP][15] ([i915#5190])
+>    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/bat-dg2-8/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+> 
+>   * igt@kms_addfb_basic@basic-y-tiled-legacy:
+>     - bat-dg2-8:          NOTRUN -> [SKIP][16] ([i915#4215] / [i915#5190])
+>    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/bat-dg2-8/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+> 
+>   * igt@kms_addfb_basic@framebuffer-vs-set-tiling:
+>     - bat-dg2-8:          NOTRUN -> [SKIP][17] ([i915#4212]) +6 other tests skip
+>    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/bat-dg2-8/igt@kms_addfb_basic@framebuffer-vs-set-tiling.html
+> 
+>   * igt@kms_addfb_basic@tile-pitch-mismatch:
+>     - bat-dg2-8:          NOTRUN -> [SKIP][18] ([i915#4212] / [i915#5608])
+>    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/bat-dg2-8/igt@kms_addfb_basic@tile-pitch-mismatch.html
+> 
+>   * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
+>     - fi-kbl-guc:         NOTRUN -> [SKIP][19] ([fdo#109271]) +18 other tests skip
+>    [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/fi-kbl-guc/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+> 
+>   
+>   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+>   [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+>   [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+>   [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+>   [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+>   [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+>   [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+>   [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
+>   [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
+>   [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
+>   [i915#5608]: https://gitlab.freedesktop.org/drm/intel/issues/5608
+>   [i915#8449]: https://gitlab.freedesktop.org/drm/intel/issues/8449
+>   [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7628 -> IGTPW_10382
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_13998: 25a1f5a87b8a320992918d224a548bb13a68c378 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10382: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/index.html
+>   IGT_7628: 431c2d2dd5828b25fcbe1c82afbac865f4771aee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> 
+> Testlist changes
+> ----------------
+> 
+> -igt@xe_create@create-contexts
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10382/index.html
