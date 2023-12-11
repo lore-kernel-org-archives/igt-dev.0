@@ -1,22 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81BC610E366
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 08:51:40 +0000 (UTC)
-From: "Golani, Mitulkumar Ajitkumar" <mitulkumar.ajitkumar.golani@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: RE: [igt-dev] [i-g-t V6 09/10] tests/kms_vrr: New subtest for toggle
- VRR during fastsets
-Date: Mon, 11 Dec 2023 08:51:31 +0000
-Message-ID: <IA1PR11MB6348DB9C38D7CF32C9AE2040B28FA@IA1PR11MB6348.namprd11.prod.outlook.com>
-References: <20231207064900.3328723-1-bhanuprakash.modem@intel.com>
- <20231207064900.3328723-10-bhanuprakash.modem@intel.com>
- <BY5PR11MB4195B49632C52328EB8A106B898BA@BY5PR11MB4195.namprd11.prod.outlook.com>
-In-Reply-To: <BY5PR11MB4195B49632C52328EB8A106B898BA@BY5PR11MB4195.namprd11.prod.outlook.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FFAA10E36D
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 09:00:35 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t v8] tests/intel/xe_pm: Fix d3 subtest
+Date: Mon, 11 Dec 2023 14:19:18 +0530
+Message-Id: <20231211084918.45829-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20220421130704.934-2-mohammed.thasleem@intel.com>
+References: <20220421130704.934-2-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,153 +22,144 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+xe_pm d3 test requires to turn off all display in order to
+enter to d3 state therefore, adding the support to triggering
+"DRM_MODE_DPMS_OFF" in setup_d3() and "DRM_MODE_DPMS_ON" in
+cleanup_d3().
 
+v2: Use IGT_CRTC_ACTIVE for displays On/Off.
+v3: -Update commit message and helper names.
+    -Update display on and off helpers.
+v4: Remove redundant code. (Bhanu)
+v5: Move helper calls to test file.
+v6: -Update function name as dpms_on_off. (Anshuman)
+    -Update subject and commit message. (Kamil)
+v7: -Update subjact. (Anshuman)
+    -Move device.res to dpms_on_off(). (Bhanu)
+    -Free device.res in igt_fixture. (Bhanu)
+    -Call kmstest_set_connector_dpms if DRM_MODE_CONNECTED is found. (Kamil)
+v8: Update if condition to fix dereferencing of NULL pointer. (Bhanu)
 
-> -----Original Message-----
-> From: Srinivas, Vidya <vidya.srinivas@intel.com>
-> Sent: Thursday, December 7, 2023 4:11 PM
-> To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; igt-
-> dev@lists.freedesktop.org; ville.syrjala@linux.intel.com; Golani, Mitulku=
-mar
-> Ajitkumar <mitulkumar.ajitkumar.golani@intel.com>
-> Cc: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
-> Subject: RE: [igt-dev] [i-g-t V6 09/10] tests/kms_vrr: New subtest for to=
-ggle
-> VRR during fastsets
->=20
-> Tested-by: Vidya Srinivas <vidya.srinivas@intel.com>
->=20
-> > -----Original Message-----
-> > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> > Bhanuprakash Modem
-> > Sent: Thursday, December 7, 2023 12:19 PM
-> > To: igt-dev@lists.freedesktop.org; ville.syrjala@linux.intel.com;
-> > Golani, Mitulkumar Ajitkumar <mitulkumar.ajitkumar.golani@intel.com>
-> > Cc: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
-> > Subject: [igt-dev] [i-g-t V6 09/10] tests/kms_vrr: New subtest for
-> > toggle VRR during fastsets
-> >
-> > Allow VRR to be toggled during fastsets, without full modeset.
-> > This patch enables 'kms_vrr@flip-basic' subtest to verify fastset too.
-> >
-> > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> > Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> > ---
-> >  tests/kms_vrr.c | 30 +++++++++++++++++++++---------
-> >  1 file changed, 21 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c index
-> > de2ee13c7..1ace970a5
-> > 100644
-> > --- a/tests/kms_vrr.c
-> > +++ b/tests/kms_vrr.c
-> > @@ -41,6 +41,10 @@
-> >   * Description: Tests that VRR is enabled and that the difference betw=
-een
-> flip
-> >   *              timestamps converges to the requested rate
-> >   *
-> > + * SUBTEST: flip-basic-fastset
-> > + * Description: Tests that VRR is enabled without modeset and that
-> > + the
-> > difference
-> > + *              between flip timestamps converges to the requested rat=
-e
-> > + *
-> >   * SUBTEST: flip-dpms
-> >   * Description: Tests with DPMS that VRR is enabled and that the diffe=
-rence
-> >   *              between flip timestamps converges to the requested rat=
-e.
-> > @@ -81,7 +85,8 @@ enum {
-> >  	TEST_FLIPLINE =3D 1 << 3,
-> >  	TEST_SEAMLESS_VRR =3D 1 << 4,
-> >  	TEST_SEAMLESS_DRRS =3D 1 << 5,
-> > -	TEST_NEGATIVE =3D 1 << 6,
-> > +	TEST_FASTSET =3D 1 << 6,
-> > +	TEST_NEGATIVE =3D 1 << 7,
-> >  };
-> >
-> >  enum {
-> > @@ -253,11 +258,15 @@ static bool vrr_capable(igt_output_t *output)  }
-> >
-> >  /* Toggles variable refresh rate on the pipe. */ -static void
-> > set_vrr_on_pipe(data_t *data, enum pipe pipe, bool enabled)
-> > +static void set_vrr_on_pipe(data_t *data, enum pipe pipe,
-> > +			    bool need_modeset, bool enabled)
-> >  {
-> >  	igt_pipe_set_prop_value(&data->display, pipe,
-> IGT_CRTC_VRR_ENABLED,
-> >  				enabled);
-> > -	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> > +
-> > +	igt_assert(igt_display_try_commit_atomic(&data->display,
-> > +						 need_modeset ?
-> > DRM_MODE_ATOMIC_ALLOW_MODESET : 0,
-> > +						 NULL) =3D=3D 0);
-> >  }
-> >
-> >  /* Prepare the display for testing on the given pipe. */ @@ -418,7
-> > +427,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t
-> > *output, uint32_t
-> > flags)
-> >  	igt_info("Override Mode: ");
-> >  	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
-> >
-> > -	set_vrr_on_pipe(data, pipe, true);
-> > +	set_vrr_on_pipe(data, pipe, !(flags & TEST_FASTSET), true);
-> >
-> >  	/*
-> >  	 * Do a short run with VRR, but don't check the result.
-> > @@ -484,7 +493,7 @@ test_basic(data_t *data, enum pipe pipe,
-> > igt_output_t *output, uint32_t flags)
-> >  	 * modeset. And the expected behavior is the same as disabling VRR
-> > on
-> >  	 * a VRR capable panel.
-> >  	 */
-> > -	set_vrr_on_pipe(data, pipe, (flags & TEST_NEGATIVE)? true : false);
-> > +	set_vrr_on_pipe(data, pipe, !(flags & TEST_FASTSET), (flags &
-> > +TEST_NEGATIVE) ? true : false);
-> >  	rate =3D vtest_ns.mid;
-> >  	result =3D flip_and_measure(data, output, pipe, rate,
-> > TEST_DURATION_NS);
-> >  	igt_assert_f(result < 10,
-> > @@ -506,10 +515,8 @@ test_seamless_rr_basic(data_t *data, enum pipe
-> > pipe, igt_output_t *output, uint3
-> >  	prepare_test(data, output, pipe);
-> >  	vtest_ns =3D get_test_rate_ns(data->range);
-> >
-> > -	if (vrr) {
-> > -		igt_pipe_set_prop_value(&data->display, pipe,
-> > IGT_CRTC_VRR_ENABLED, true);
-> > -		igt_assert(igt_display_try_commit_atomic(&data->display, 0,
-> > NULL) =3D=3D 0);
-> > -	}
-> > +	if (vrr)
-> > +		set_vrr_on_pipe(data, pipe, false, true);
-> >
-> >  	rate =3D vtest_ns.max;
-> >  	result =3D flip_and_measure(data, output, pipe, rate,
-> > TEST_DURATION_NS); @@ -703,6 +710,11 @@ igt_main
-> >  		igt_describe("Test to switch RR seamlessly without
-> modeset.");
-> >  		igt_subtest_with_dynamic("seamless-rr-switch-drrs")
-> >  			run_vrr_test(&data, test_seamless_rr_basic,
-> TEST_SEAMLESS_DRRS);
-> > +
-> > +		igt_describe("Tests that VRR is enabled without modeset and
-> > that the difference "
-> > +			     "between flip timestamps converges to the
-> > requested rate");
-> > +		igt_subtest_with_dynamic("flip-basic-fastset")
-> > +			run_vrr_test(&data, test_basic, TEST_FASTSET);
-> >  	}
-> >
-> >  	igt_fixture {
-> > --
-> > 2.40.0
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/intel/xe_pm.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-With assumed approach changes looks good to me, after removing logs history=
-, recommended to validate VRR toggle accurately from kernel logs.
-
-Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index c899bd67a..3d6acfbab 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -16,6 +16,7 @@
+ 
+ #include "igt.h"
+ #include "lib/igt_device.h"
++#include "lib/igt_kms.h"
+ #include "lib/igt_pm.h"
+ #include "lib/igt_sysfs.h"
+ #include "lib/igt_syncobj.h"
+@@ -36,10 +37,32 @@ typedef struct {
+ 	struct pci_device *pci_xe;
+ 	struct pci_device *pci_root;
+ 	char pci_slot_name[NAME_MAX];
++	drmModeResPtr res;
+ } device_t;
+ 
+ uint64_t orig_threshold;
+ 
++static void dpms_on_off(device_t device, int mode)
++{
++	int i;
++
++	if (!device.res)
++		return;
++
++	for (i = 0; i < device.res->count_connectors; i++) {
++		drmModeConnector *connector = drmModeGetConnectorCurrent(device.fd_xe,
++					      device.res->connectors[i]);
++
++		if (!connector)
++			continue;
++
++		if (connector->connection == DRM_MODE_CONNECTED)
++			kmstest_set_connector_dpms(device.fd_xe, connector, mode);
++
++		drmModeFreeConnector(connector);
++	}
++}
++
+ /* runtime_usage is only available if kernel build CONFIG_PM_ADVANCED_DEBUG */
+ static bool runtime_usage_available(struct pci_device *pci)
+ {
+@@ -94,6 +117,8 @@ static void vram_d3cold_threshold_restore(int sig)
+ 
+ static bool setup_d3(device_t device, enum igt_acpi_d_state state)
+ {
++	dpms_on_off(device, DRM_MODE_DPMS_OFF);
++
+ 	switch (state) {
+ 	case IGT_ACPI_D3Cold:
+ 		igt_require(igt_pm_acpi_d3cold_supported(device.pci_root));
+@@ -110,6 +135,11 @@ static bool setup_d3(device_t device, enum igt_acpi_d_state state)
+ 	return false;
+ }
+ 
++static void cleanup_d3(device_t device)
++{
++	dpms_on_off(device, DRM_MODE_DPMS_ON);
++}
++
+ static bool in_d3(device_t device, enum igt_acpi_d_state state)
+ {
+ 	uint16_t val;
+@@ -477,6 +507,7 @@ igt_main
+ 		igt_pm_get_d3cold_allowed(device.pci_slot_name, &d3cold_allowed);
+ 		igt_assert(igt_setup_runtime_pm(device.fd_xe));
+ 		sysfs_fd = igt_sysfs_open(device.fd_xe);
++		device.res = drmModeGetResources(device.fd_xe);
+ 	}
+ 
+ 	for (const struct s_state *s = s_states; s->name; s++) {
+@@ -511,6 +542,7 @@ igt_main
+ 				xe_for_each_engine(device.fd_xe, hwe)
+ 					test_exec(device, hwe, 1, 2, s->state,
+ 						  NO_RPM);
++				cleanup_d3(device);
+ 			}
+ 		}
+ 	}
+@@ -519,6 +551,7 @@ igt_main
+ 		igt_subtest_f("%s-basic", d->name) {
+ 			igt_assert(setup_d3(device, d->state));
+ 			igt_assert(in_d3(device, d->state));
++			cleanup_d3(device);
+ 		}
+ 
+ 		igt_subtest_f("%s-basic-exec", d->name) {
+@@ -526,6 +559,7 @@ igt_main
+ 			xe_for_each_engine(device.fd_xe, hwe)
+ 				test_exec(device, hwe, 1, 1,
+ 					  NO_SUSPEND, d->state);
++			cleanup_d3(device);
+ 		}
+ 
+ 		igt_subtest_f("%s-multiple-execs", d->name) {
+@@ -533,6 +567,7 @@ igt_main
+ 			xe_for_each_engine(device.fd_xe, hwe)
+ 				test_exec(device, hwe, 16, 32,
+ 					  NO_SUSPEND, d->state);
++			cleanup_d3(device);
+ 		}
+ 	}
+ 
+@@ -547,6 +582,7 @@ igt_main
+ 		close(sysfs_fd);
+ 		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
+ 		igt_restore_runtime_pm();
++		drmModeFreeResources(device.res);
+ 		drm_close_driver(device.fd_xe);
+ 	}
+ }
+-- 
+2.25.1
