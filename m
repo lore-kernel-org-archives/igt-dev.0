@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB8D510E3AD
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 10:58:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A21E310E3AD
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 10:58:53 +0000 (UTC)
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 1/2] lib/xe_ioctl: fix default cpu_caching helper
-Date: Mon, 11 Dec 2023 10:58:43 +0000
-Message-ID: <20231211105844.30534-1-matthew.auld@intel.com>
+Subject: [PATCH i-g-t 2/2] lib: restore FLAG_SCANOUT usage for Xe
+Date: Mon, 11 Dec 2023 10:58:44 +0000
+Message-ID: <20231211105844.30534-2-matthew.auld@intel.com>
+In-Reply-To: <20231211105844.30534-1-matthew.auld@intel.com>
+References: <20231211105844.30534-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -20,70 +22,44 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The placement and flags were split in some recent refactoring, but looks
-like we forgot to update __xe_default_cpu_caching_from_placement to
-account for flags and placement. In particular we are no longer
-considering the FLAG_SCANOUT here.
+Looks to have been accidentally removed in all the various uapi
+refactoring and cleanup. Selecting SCANOUT here is needed to ensure that
+WC is also selected for the cpu_caching.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Francois Dugast <francois.dugast@intel.com>
 ---
- lib/xe/xe_ioctl.c       | 6 +++---
- lib/xe/xe_ioctl.h       | 2 +-
- tests/intel/xe_create.c | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ lib/igt_draw.c | 3 ++-
+ lib/igt_fb.c   | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 8b12c0369..cdad3d7e2 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -230,10 +230,10 @@ void xe_vm_destroy(int fd, uint32_t vm)
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_DESTROY, &destroy), 0);
- }
+diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+index 6d0bcb997..637b9ba76 100644
+--- a/lib/igt_draw.c
++++ b/lib/igt_draw.c
+@@ -802,7 +802,8 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+ 		tmp.handle = xe_bo_create(fd, 0,
+ 					  ALIGN(tmp.size, xe_get_default_alignment(fd)),
+ 					  vram_if_possible(fd, 0),
+-					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM |
++					  DRM_XE_GEM_CREATE_FLAG_SCANOUT);
  
--uint16_t __xe_default_cpu_caching_from_placement(int fd, uint32_t placement)
-+uint16_t __xe_default_cpu_caching(int fd, uint32_t placement, uint32_t flags)
- {
- 	if ((placement & all_memory_regions(fd)) != system_memory(fd) ||
--	    placement & DRM_XE_GEM_CREATE_FLAG_SCANOUT)
-+	    flags & DRM_XE_GEM_CREATE_FLAG_SCANOUT)
- 		/* VRAM placements or scanout should always use WC */
- 		return DRM_XE_GEM_CPU_CACHING_WC;
+ 	tmp.stride = rect->w * pixel_size;
+ 	tmp.bpp = buf->bpp;
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 907464273..0446cefc9 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -1208,7 +1208,8 @@ static int create_bo_for_fb(struct igt_fb *fb, bool prefer_sysmem)
+ 		} else if (is_xe_device(fd)) {
+ 			fb->gem_handle = xe_bo_create(fd, 0, fb->size,
+ 						      vram_if_possible(fd, 0),
+-						      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++						      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM |
++						      DRM_XE_GEM_CREATE_FLAG_SCANOUT);
+ 		} else if (is_vc4_device(fd)) {
+ 			fb->gem_handle = igt_vc4_create_bo(fd, fb->size);
  
-@@ -283,7 +283,7 @@ static uint32_t ___xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t pla
- uint32_t __xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t placement,
- 			uint32_t flags, uint32_t *handle)
- {
--	uint16_t cpu_caching = __xe_default_cpu_caching_from_placement(fd, placement);
-+	uint16_t cpu_caching = __xe_default_cpu_caching(fd, placement, flags);
- 
- 	return ___xe_bo_create(fd, vm, size, placement, flags, cpu_caching, handle);
- }
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index bbfa40391..c8d46fb29 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -72,7 +72,7 @@ uint32_t __xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t pla
- 				uint32_t flags, uint16_t cpu_caching, uint32_t *handle);
- uint32_t xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t placement,
- 			      uint32_t flags, uint16_t cpu_caching);
--uint16_t __xe_default_cpu_caching_from_placement(int fd, uint32_t placement);
-+uint16_t __xe_default_cpu_caching(int fd, uint32_t placement, uint32_t flags);
- int __xe_exec_queue_create(int fd, uint32_t vm,
- 			   struct drm_xe_engine_class_instance *instance,
- 			   uint64_t ext, uint32_t *exec_queue_id);
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index 64eadc734..1ed48a5d3 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -32,7 +32,7 @@ static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t placement,
- 	struct drm_xe_gem_create create = {
- 		.vm_id = vm,
- 		.size = size,
--		.cpu_caching = __xe_default_cpu_caching_from_placement(fd, placement),
-+		.cpu_caching = __xe_default_cpu_caching(fd, placement, 0),
- 		.placement = placement,
- 	};
- 	int ret = 0;
 -- 
 2.43.0
