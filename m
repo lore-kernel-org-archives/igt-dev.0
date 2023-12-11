@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9FFAA10E36D
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 09:00:35 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v8] tests/intel/xe_pm: Fix d3 subtest
-Date: Mon, 11 Dec 2023 14:19:18 +0530
-Message-Id: <20231211084918.45829-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20220421130704.934-2-mohammed.thasleem@intel.com>
-References: <20220421130704.934-2-mohammed.thasleem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0863610E371
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 09:16:35 +0000 (UTC)
+Date: Mon, 11 Dec 2023 10:16:30 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Subject: Re: [PATCH i-g-t v4 4/6] lib/intel_blt: Update caching mode and
+ pat_index
+Message-ID: <20231211091630.3uk6q545j27q2xr2@zkempczy-mobl2>
+References: <cover.1701951594.git.akshata.jahagirdar@intel.com>
+ <94a074ff51568bea158bc9dad6aa12e1882ae92a.1701951594.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <94a074ff51568bea158bc9dad6aa12e1882ae92a.1701951594.git.akshata.jahagirdar@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,148 +22,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, ayaz.siddiqui@intel.com,
+ matthew.auld@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-xe_pm d3 test requires to turn off all display in order to
-enter to d3 state therefore, adding the support to triggering
-"DRM_MODE_DPMS_OFF" in setup_d3() and "DRM_MODE_DPMS_ON" in
-cleanup_d3().
+On Thu, Dec 07, 2023 at 04:42:39AM -0800, Akshata Jahagirdar wrote:
+> The pat-index and caching mode for compression need to change to uc_comp in case
+> of compression, else they just take the default value of pat_index.
+> 
+> Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+> ---
+>  lib/intel_blt.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+> index a2e64586b..d54b19340 100644
+> --- a/lib/intel_blt.c
+> +++ b/lib/intel_blt.c
+> @@ -1796,7 +1796,8 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+>  	uint64_t size = width * height * bpp / 8;
+>  	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
+>  	uint32_t handle;
+> -
+> +	uint8_t pat_index = (AT_LEAST_GEN(intel_get_drm_devid(blt->fd), 20) && compression) ? intel_get_pat_idx_uc_comp(blt->fd) : DEFAULT_PAT_INDEX;
 
-v2: Use IGT_CRTC_ACTIVE for displays On/Off.
-v3: -Update commit message and helper names.
-    -Update display on and off helpers.
-v4: Remove redundant code. (Bhanu)
-v5: Move helper calls to test file.
-v6: -Update function name as dpms_on_off. (Anshuman)
-    -Update subject and commit message. (Kamil)
-v7: -Update subjact. (Anshuman)
-    -Move device.res to dpms_on_off(). (Bhanu)
-    -Free device.res in igt_fixture. (Bhanu)
-    -Call kmstest_set_connector_dpms if DRM_MODE_CONNECTED is found. (Kamil)
-v8: Update if condition to fix dereferencing of NULL pointer. (Bhanu)
+Too long line - please refactor. AT_LEAST_GEN() is already protected by ()
+and there's no need to add it here. With this fixed:
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/intel/xe_pm.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index c899bd67a..3d6acfbab 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -16,6 +16,7 @@
- 
- #include "igt.h"
- #include "lib/igt_device.h"
-+#include "lib/igt_kms.h"
- #include "lib/igt_pm.h"
- #include "lib/igt_sysfs.h"
- #include "lib/igt_syncobj.h"
-@@ -36,10 +37,32 @@ typedef struct {
- 	struct pci_device *pci_xe;
- 	struct pci_device *pci_root;
- 	char pci_slot_name[NAME_MAX];
-+	drmModeResPtr res;
- } device_t;
- 
- uint64_t orig_threshold;
- 
-+static void dpms_on_off(device_t device, int mode)
-+{
-+	int i;
-+
-+	if (!device.res)
-+		return;
-+
-+	for (i = 0; i < device.res->count_connectors; i++) {
-+		drmModeConnector *connector = drmModeGetConnectorCurrent(device.fd_xe,
-+					      device.res->connectors[i]);
-+
-+		if (!connector)
-+			continue;
-+
-+		if (connector->connection == DRM_MODE_CONNECTED)
-+			kmstest_set_connector_dpms(device.fd_xe, connector, mode);
-+
-+		drmModeFreeConnector(connector);
-+	}
-+}
-+
- /* runtime_usage is only available if kernel build CONFIG_PM_ADVANCED_DEBUG */
- static bool runtime_usage_available(struct pci_device *pci)
- {
-@@ -94,6 +117,8 @@ static void vram_d3cold_threshold_restore(int sig)
- 
- static bool setup_d3(device_t device, enum igt_acpi_d_state state)
- {
-+	dpms_on_off(device, DRM_MODE_DPMS_OFF);
-+
- 	switch (state) {
- 	case IGT_ACPI_D3Cold:
- 		igt_require(igt_pm_acpi_d3cold_supported(device.pci_root));
-@@ -110,6 +135,11 @@ static bool setup_d3(device_t device, enum igt_acpi_d_state state)
- 	return false;
- }
- 
-+static void cleanup_d3(device_t device)
-+{
-+	dpms_on_off(device, DRM_MODE_DPMS_ON);
-+}
-+
- static bool in_d3(device_t device, enum igt_acpi_d_state state)
- {
- 	uint16_t val;
-@@ -477,6 +507,7 @@ igt_main
- 		igt_pm_get_d3cold_allowed(device.pci_slot_name, &d3cold_allowed);
- 		igt_assert(igt_setup_runtime_pm(device.fd_xe));
- 		sysfs_fd = igt_sysfs_open(device.fd_xe);
-+		device.res = drmModeGetResources(device.fd_xe);
- 	}
- 
- 	for (const struct s_state *s = s_states; s->name; s++) {
-@@ -511,6 +542,7 @@ igt_main
- 				xe_for_each_engine(device.fd_xe, hwe)
- 					test_exec(device, hwe, 1, 2, s->state,
- 						  NO_RPM);
-+				cleanup_d3(device);
- 			}
- 		}
- 	}
-@@ -519,6 +551,7 @@ igt_main
- 		igt_subtest_f("%s-basic", d->name) {
- 			igt_assert(setup_d3(device, d->state));
- 			igt_assert(in_d3(device, d->state));
-+			cleanup_d3(device);
- 		}
- 
- 		igt_subtest_f("%s-basic-exec", d->name) {
-@@ -526,6 +559,7 @@ igt_main
- 			xe_for_each_engine(device.fd_xe, hwe)
- 				test_exec(device, hwe, 1, 1,
- 					  NO_SUSPEND, d->state);
-+			cleanup_d3(device);
- 		}
- 
- 		igt_subtest_f("%s-multiple-execs", d->name) {
-@@ -533,6 +567,7 @@ igt_main
- 			xe_for_each_engine(device.fd_xe, hwe)
- 				test_exec(device, hwe, 16, 32,
- 					  NO_SUSPEND, d->state);
-+			cleanup_d3(device);
- 		}
- 	}
- 
-@@ -547,6 +582,7 @@ igt_main
- 		close(sysfs_fd);
- 		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
- 		igt_restore_runtime_pm();
-+		drmModeFreeResources(device.res);
- 		drm_close_driver(device.fd_xe);
- 	}
- }
--- 
-2.25.1
+--
+Zbigniew
+
+> +	uint16_t cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
+>  	igt_assert_f(blt->driver, "Driver isn't set, have you called blt_copy_init()?\n");
+>  
+>  	obj = calloc(1, sizeof(*obj));
+> @@ -1810,13 +1811,13 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+>  			flags |= DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
+>  
+>  		size = ALIGN(size, xe_get_default_alignment(blt->fd));
+> -		handle = xe_bo_create_flags(blt->fd, 0, size, region);
+> +		handle = xe_bo_create_caching(blt->fd, 0, size, region, flags, cpu_caching);
+>  	} else {
+>  		igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
+>  							  &size, region) == 0);
+>  	}
+>  
+> -	blt_set_object(obj, handle, size, region, mocs_index, DEFAULT_PAT_INDEX, tiling,
+> +	blt_set_object(obj, handle, size, region, mocs_index, pat_index, tiling,
+>  		       compression, compression_type);
+>  	blt_set_geom(obj, stride, 0, 0, width, height, 0, 0);
+>  
+> -- 
+> 2.34.1
+> 
