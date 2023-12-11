@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 63D9010E3E2
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 12:44:49 +0000 (UTC)
-Date: Mon, 11 Dec 2023 13:44:44 +0100
+Date: Mon, 11 Dec 2023 13:46:44 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH] tests/kms_sysfs_edid_timing: increase thresholds
-Message-ID: <20231211124444.f62euqvbg7posuxn@kamilkon-desk.igk.intel.com>
-References: <20231208224205.3428717-1-charlton.lin@intel.com>
+Subject: Re: =?utf-8?Q?=E2=9C=97_Fi=2ECI=2EIGT=3A_failure_for_tests=2Finte?=
+ =?utf-8?B?bC94ZV9leGVjX3N0b3Jl?= =?utf-8?Q?=3A?= Test to check
+ CONDITIONAL_BATCH_BUFFER_END (rev3)
+Message-ID: <20231211124644.leizajsmxlenwzia@kamilkon-desk.igk.intel.com>
+References: <20231208051831.2276393-1-priyanka.dandamudi@intel.com>
+ <170205443792.7327.4591888345893014129@emeril.freedesktop.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231208224205.3428717-1-charlton.lin@intel.com>
+In-Reply-To: <170205443792.7327.4591888345893014129@emeril.freedesktop.org>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,65 +19,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Charlton Lin <charlton.lin@intel.com>,
- Khaled Almahallawy <khaled.almahallawy@intel.com>
+Cc: lgci.bug.filing@intel.com, I915-ci-infra@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Charlton,
-On 2023-12-08 at 14:42:05 -0800, Charlton Lin wrote:
+Hi,
 
-Please subscribe to igt-dev list, also when sending igt patches
-add i-g-t after PATCH:
-
-[PATCH i-g-t] tests/kms_sysfs_edid_timing: increase thresholds
-
-> A customer panel consistently exceeds 150ms. Additionally, the
-> timing may be impacted by certain power states.
-> 
-> Increase all thresholds to accommodate.
-> 
-> Cc: Sharma, Swati2 <swati2.sharma@intel.com>
------ ^^^^^^^^^^^^^^
-This breaks your git send-email, correct is:
-
-Cc: Swati Sharma <swati2.sharma@intel.com>
-
-> Cc: Khaled Almahallawy <khaled.almahallawy@intel.com>
-> Cc: Mark Yacoub <markyacoub@chromium.org>
-
-I don't see this in header? Added to cc.
-
-> Signed-off-by: Charlton Lin <charlton.lin@intel.com>
-> ---
->  tests/kms_sysfs_edid_timing.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/kms_sysfs_edid_timing.c b/tests/kms_sysfs_edid_timing.c
-> index 775211089f81..582133ea002e 100644
-> --- a/tests/kms_sysfs_edid_timing.c
-> +++ b/tests/kms_sysfs_edid_timing.c
-> @@ -26,9 +26,9 @@
->  #include <fcntl.h>
->  #include <sys/stat.h>
->  
-> -#define THRESHOLD_PER_CONNECTOR		150
-> -#define THRESHOLD_PER_CONNECTOR_MEAN	140
-> -#define THRESHOLD_ALL_CONNECTORS_MEAN	100
-> +#define THRESHOLD_PER_CONNECTOR		1500
-> +#define THRESHOLD_PER_CONNECTOR_MEAN	1400
-> +#define THRESHOLD_ALL_CONNECTORS_MEAN	1000
-
-This is like increasing it ten times, add this to description.
-I am not KMS nor panel expert but is it really that long?
+this is unrelated to Xe subtest,
 
 Regards,
 Kamil
 
->  #define CHECK_TIMES			15
->  
->  IGT_TEST_DESCRIPTION("This test checks the time it takes to reprobe each "
-> -- 
-> 2.25.1
+On 2023-12-08 at 16:53:57 -0000, Patchwork wrote:
+> == Series Details ==
 > 
+> Series: tests/intel/xe_exec_store: Test to check CONDITIONAL_BATCH_BUFFER_END (rev3)
+> URL   : https://patchwork.freedesktop.org/series/127123/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_13997_full -> IGTPW_10378_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10378_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10378_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10378/index.html
+> 
+> Participating hosts (8 -> 8)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10378_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_plane@pixel-format-source-clamping@pipe-a:
+>     - shard-mtlp:         [PASS][1] -> [ABORT][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13997/shard-mtlp-2/igt@kms_plane@pixel-format-source-clamping@pipe-a.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10378/shard-mtlp-5/igt@kms_plane@pixel-format-source-clamping@pipe-a.html
+> 
+>   * igt@perf@blocking@0-rcs0:
+>     - shard-glk:          [PASS][3] -> [INCOMPLETE][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13997/shard-glk7/igt@perf@blocking@0-rcs0.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10378/shard-glk1/igt@perf@blocking@0-rcs0.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_10378_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+
+[...cut...]
+
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7628 -> IGTPW_10378
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_13997: b8c52dddcf3b2e88a54e5e5cd6973ccc5880b31d @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10378: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10378/index.html
+>   IGT_7628: 431c2d2dd5828b25fcbe1c82afbac865f4771aee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10378/index.html
