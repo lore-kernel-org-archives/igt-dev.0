@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB35E10E521
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 22:45:23 +0000 (UTC)
-Date: Mon, 11 Dec 2023 14:45:15 -0800
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: Re: [PATCH i-g-t] tests/xe: Remove xe_perf_pmu
-Message-ID: <ZXeQ+9z7ZLdmZHNu@unerlige-ril>
-References: <20231211162536.2790126-1-ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231211162536.2790126-1-ashutosh.dixit@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3592357811658136911=="
 MIME-Version: 1.0
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/xe=3A_Remove_xe=5Fperf?=
+ =?utf-8?q?=5Fpmu?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Ashutosh Dixit" <ashutosh.dixit@intel.com>
+Date: Mon, 11 Dec 2023 23:07:49 -0000
+Message-ID: <170233606973.19579.2619480459812753599@emeril.freedesktop.org>
+References: <20231211162536.2790126-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20231211162536.2790126-1-ashutosh.dixit@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,384 +17,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: venkata.ramana.nayana@intel.com, Lucas De Marchi <lucas.demarchi@intel.com>,
- igt-dev@lists.freedesktop.org, Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Dec 11, 2023 at 08:25:36AM -0800, Ashutosh Dixit wrote:
->Group busyness uapi implemented in PMU in the kernel has been discontinued
->and will be replaced by a different group busyness uapi and a different
->implementation. Because of this, we are proposing to remove the PMU code
->from the kernel, till the correct uapi is implemented. Therefore drop the
->corresponding IGT too, since it caters to the old uapi.
->
->Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+--===============3592357811658136911==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Since the corresponding xe implementation will be removed, this is a 
-required change.
+== Series Details ==
 
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Series: tests/xe: Remove xe_perf_pmu
+URL   : https://patchwork.freedesktop.org/series/127638/
+State : success
 
-Thanks,
-Umesh
+== Summary ==
 
->---
-> tests/intel/xe_perf_pmu.c | 331 --------------------------------------
-> tests/meson.build         |   1 -
-> 2 files changed, 332 deletions(-)
-> delete mode 100644 tests/intel/xe_perf_pmu.c
->
->diff --git a/tests/intel/xe_perf_pmu.c b/tests/intel/xe_perf_pmu.c
->deleted file mode 100644
->index 42cf62729142..000000000000
->--- a/tests/intel/xe_perf_pmu.c
->+++ /dev/null
->@@ -1,331 +0,0 @@
->-// SPDX-License-Identifier: MIT
->-/*
->- * Copyright © 2021 Intel Corporation
->- */
->-
->-/**
->- * TEST: Basic tests for verify pmu perf interface
->- * Category: Hardware building block
->- * Sub-category: pmu interface
->- * Functionality: pmu
->- * Test category: functionality test
->- */
->-
->-#include <fcntl.h>
->-#include <string.h>
->-
->-#include "igt.h"
->-#include "lib/igt_syncobj.h"
->-#include "lib/intel_reg.h"
->-#include "lib/igt_perf.h"
->-#include "xe_drm.h"
->-#include "xe/xe_ioctl.h"
->-#include "xe/xe_query.h"
->-#include "xe/xe_spin.h"
->-
->-#define MAX_INSTANCE 9
->-
->-static uint64_t pmu_read(int fd)
->-{
->-	uint64_t  data[2];
->-
->-	igt_assert_eq(read(fd, data, sizeof(data)), sizeof(data));
->-
->-	return data[0];
->-}
->-
->-static int open_pmu(int fd, uint64_t config)
->-{
->-	int perf_fd;
->-
->-	perf_fd = perf_xe_open(fd, config);
->-	igt_skip_on(perf_fd < 0 && errno == ENODEV);
->-	igt_assert(perf_fd >= 0);
->-
->-	return perf_fd;
->-}
->-
->-static uint64_t engine_group_get_config(int gt, int class)
->-{
->-	uint64_t config;
->-
->-	switch (class) {
->-	case DRM_XE_ENGINE_CLASS_COPY:
->-		config = DRM_XE_PMU_COPY_GROUP_BUSY(gt);
->-		break;
->-	case DRM_XE_ENGINE_CLASS_RENDER:
->-	case DRM_XE_ENGINE_CLASS_COMPUTE:
->-		config = DRM_XE_PMU_RENDER_GROUP_BUSY(gt);
->-		break;
->-	case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
->-	case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
->-		config = DRM_XE_PMU_MEDIA_GROUP_BUSY(gt);
->-		break;
->-	}
->-
->-	return config;
->-}
->-
->-/**
->- * Test: Basic test for measure the active time when engine of any class active
->- *
->- * SUBTEST: any-engine-group-busy
->- * Description:
->- *      Run a test to measure the global activity time by submitting
->- *      the WL to all existing engines.
->- * Run type: FULL
->- *
->- */
->-static void test_any_engine_busyness(int fd, struct drm_xe_engine_class_instance *eci)
->-{
->-	uint32_t vm;
->-	uint64_t addr = 0x1a0000;
->-	struct drm_xe_sync sync[2] = {
->-		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
->-		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
->-	};
->-	struct drm_xe_exec exec = {
->-		.num_batch_buffer = 1,
->-		.num_syncs = 2,
->-		.syncs = to_user_pointer(sync),
->-	};
->-	uint32_t exec_queue;
->-	uint32_t syncobj;
->-	size_t bo_size;
->-	uint32_t bo = 0;
->-	struct xe_spin *spin;
->-	struct xe_spin_opts spin_opts = { .addr = addr, .preempt = false };
->-	uint32_t pmu_fd;
->-	uint64_t count, idle;
->-
->-	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
->-	bo_size = sizeof(*spin);
->-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
->-			xe_get_default_alignment(fd));
->-
->-	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id), 0);
->-	spin = xe_bo_map(fd, bo, bo_size);
->-
->-	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
->-	syncobj = syncobj_create(fd, 0);
->-
->-	sync[0].handle = syncobj_create(fd, 0);
->-	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
->-
->-	pmu_fd = open_pmu(fd, DRM_XE_PMU_ANY_ENGINE_GROUP_BUSY(eci->gt_id));
->-	idle = pmu_read(pmu_fd);
->-	igt_assert(!idle);
->-
->-	xe_spin_init(spin, &spin_opts);
->-
->-	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
->-	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
->-	sync[1].handle = syncobj;
->-
->-	exec.exec_queue_id = exec_queue;
->-	exec.address = addr;
->-	xe_exec(fd, &exec);
->-
->-	xe_spin_wait_started(spin);
->-	usleep(50000);
->-
->-	igt_assert(!syncobj_wait(fd, &syncobj, 1, 1, 0, NULL));
->-	xe_spin_end(spin);
->-
->-	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
->-	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
->-
->-	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
->-	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
->-	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
->-
->-	syncobj_destroy(fd, sync[0].handle);
->-	syncobj_destroy(fd, syncobj);
->-
->-	count = pmu_read(pmu_fd);
->-	igt_assert_lt_u64(idle, count);
->-	igt_debug("Incrementing counter all-busy-group %ld ns\n", count);
->-
->-	xe_exec_queue_destroy(fd, exec_queue);
->-	munmap(spin, bo_size);
->-	gem_close(fd, bo);
->-	xe_vm_destroy(fd, vm);
->-	close(pmu_fd);
->-}
->-
->-/**
->- * Test: Basic test for measure the active time across engine class
->- *
->- * SUBTEST: render-busy
->- * Description:
->- *	Run a test to measure the active engine class time by submitting the
->- *	WL to all instances of a class
->- * Run type: FULL
->- *
->- * SUBTEST: compute-busy
->- * Description: Run copy-group-busy test
->- * Run type: FULL
->- *
->- * SUBTEST: copy-busy
->- * Description: Run copy-group-busy test
->- * Run type: FULL
->- *
->- * SUBTEST: vcs-busy
->- * Description: Run copy-group-busy test
->- * Run type: FULL
->- *
->- * SUBTEST: vecs-busy
->- * Description: Run copy-group-busy test
->- * Run type: FULL
->- *
->- */
->-
->-static void test_engine_group_busyness(int fd, int gt, int class, const char *name)
->-{
->-	uint32_t vm;
->-	uint64_t addr = 0x1a0000;
->-	struct drm_xe_sync sync[2] = {
->-		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
->-		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
->-	};
->-	struct drm_xe_exec exec = {
->-		.num_batch_buffer = 1,
->-		.num_syncs = 2,
->-		.syncs = to_user_pointer(sync),
->-	};
->-	uint32_t exec_queues[MAX_INSTANCE];
->-	uint32_t syncobjs[MAX_INSTANCE];
->-	int    pmu_fd;
->-	size_t bo_size;
->-	uint32_t bo = 0, i = 0;
->-	struct {
->-		struct xe_spin spin;
->-	} *data;
->-	struct xe_spin_opts spin_opts = { .addr = addr, .preempt = false };
->-	struct drm_xe_engine_class_instance *hwe;
->-	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
->-	int num_placements = 0;
->-	uint64_t config, count, idle;
->-
->-	config = engine_group_get_config(gt, class);
->-
->-	xe_for_each_engine(fd, hwe) {
->-		if (hwe->engine_class != class || hwe->gt_id != gt)
->-			continue;
->-
->-		eci[num_placements++] = *hwe;
->-	}
->-
->-	igt_skip_on_f(!num_placements, "Engine class:%d gt:%d not enabled on this platform\n",
->-		      class, gt);
->-
->-	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
->-	bo_size = sizeof(*data) * num_placements;
->-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
->-
->-	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, gt), 0);
->-	data = xe_bo_map(fd, bo, bo_size);
->-
->-	for (i = 0; i < num_placements; i++) {
->-		struct drm_xe_exec_queue_create create = {
->-			.vm_id = vm,
->-			.width = 1,
->-			.num_placements = num_placements,
->-			.instances = to_user_pointer(eci),
->-		};
->-
->-		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE,
->-					&create), 0);
->-		exec_queues[i] = create.exec_queue_id;
->-		syncobjs[i] = syncobj_create(fd, 0);
->-	};
->-
->-	sync[0].handle = syncobj_create(fd, 0);
->-	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
->-
->-	pmu_fd = open_pmu(fd, config);
->-	idle = pmu_read(pmu_fd);
->-	igt_assert(!idle);
->-
->-	for (i = 0; i < num_placements; i++) {
->-		spin_opts.addr = addr + (char *)&data[i].spin - (char *)data;
->-		xe_spin_init(&data[i].spin, &spin_opts);
->-		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
->-		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
->-		sync[1].handle = syncobjs[i];
->-
->-		exec.exec_queue_id = exec_queues[i];
->-		exec.address = spin_opts.addr;
->-		xe_exec(fd, &exec);
->-		xe_spin_wait_started(&data[i].spin);
->-	}
->-
->-	for (i = 0; i < num_placements; i++) {
->-		xe_spin_end(&data[i].spin);
->-		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
->-					NULL));
->-	}
->-
->-	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
->-
->-	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
->-	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
->-	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
->-
->-
->-	syncobj_destroy(fd, sync[0].handle);
->-	for (i = 0; i < num_placements; i++) {
->-		syncobj_destroy(fd, syncobjs[i]);
->-		xe_exec_queue_destroy(fd, exec_queues[i]);
->-	}
->-
->-	count = pmu_read(pmu_fd);
->-	igt_assert_lt_u64(idle, count);
->-	igt_debug("Incrementing counter %s-gt-%d  %ld ns\n", name, gt, count);
->-
->-	munmap(data, bo_size);
->-	gem_close(fd, bo);
->-	xe_vm_destroy(fd, vm);
->-	close(pmu_fd);
->-}
->-
->-igt_main
->-{
->-	struct drm_xe_engine_class_instance *hwe;
->-	const struct section {
->-		const char *name;
->-		int class;
->-	} sections[] = {
->-		{ "render-busy", DRM_XE_ENGINE_CLASS_RENDER },
->-		{ "compute-busy", DRM_XE_ENGINE_CLASS_COMPUTE },
->-		{ "copy-busy", DRM_XE_ENGINE_CLASS_COPY },
->-		{ "vcs-busy", DRM_XE_ENGINE_CLASS_VIDEO_DECODE },
->-		{ "vecs-busy", DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE },
->-		{ NULL },
->-	};
->-	int gt;
->-	int class;
->-	int fd;
->-
->-	igt_fixture {
->-		fd = drm_open_driver(DRIVER_XE);
->-		xe_device_get(fd);
->-	}
->-
->-	for (const struct section *s = sections; s->name; s++) {
->-		igt_subtest_f("%s", s->name)
->-			xe_for_each_gt(fd, gt)
->-				xe_for_each_engine_class(class)
->-					if (class == s->class)
->-						test_engine_group_busyness(fd, gt, class, s->name);
->-	}
->-
->-	igt_subtest("any-engine-group-busy")
->-		xe_for_each_engine(fd, hwe)
->-			test_any_engine_busyness(fd, hwe);
->-
->-	igt_fixture {
->-		xe_device_put(fd);
->-		close(fd);
->-	}
->-}
->diff --git a/tests/meson.build b/tests/meson.build
->index f6cfbcf5ef9f..4430ca739275 100644
->--- a/tests/meson.build
->+++ b/tests/meson.build
->@@ -305,7 +305,6 @@ intel_xe_progs = [
-> 	'xe_pm',
-> 	'xe_pm_residency',
-> 	'xe_prime_self_import',
->-	'xe_perf_pmu',
-> 	'xe_query',
-> 	'xe_sysfs_tile',
-> 	'xe_uevent',
->-- 
->2.41.0
->
+CI Bug Log - changes from XEIGT_7635_BAT -> XEIGTPW_10393_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10393_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][1] ([Intel XE#282] / [i915#2017]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10393/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@xe_create@create-execqueues-leak:
+    - bat-atsm-2:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10393/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+
+  
+  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7635 -> IGTPW_10393
+  * Linux: xe-566-00175313322325f73095e61b6cbe550f47184408 -> xe-568-b76c0e2128dd79ee1609d0d389e040c6e7499261
+
+  IGTPW_10393: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10393/index.html
+  IGT_7635: 0b796be8ce05cb2070ce5136d248f438c962d11e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-566-00175313322325f73095e61b6cbe550f47184408: 00175313322325f73095e61b6cbe550f47184408
+  xe-568-b76c0e2128dd79ee1609d0d389e040c6e7499261: b76c0e2128dd79ee1609d0d389e040c6e7499261
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10393/index.html
+
+--===============3592357811658136911==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe: Remove xe_perf_pmu</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127638/">https://patchwork.freedesktop.org/series/127638/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10393/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10393/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7635_BAT -&gt; XEIGTPW_10393_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10393_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10393/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_create@create-execqueues-leak:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10393/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7635 -&gt; IGTPW_10393</li>
+<li>Linux: xe-566-00175313322325f73095e61b6cbe550f47184408 -&gt; xe-568-b76c0e2128dd79ee1609d0d389e040c6e7499261</li>
+</ul>
+<p>IGTPW_10393: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10393/index.html<br />
+  IGT_7635: 0b796be8ce05cb2070ce5136d248f438c962d11e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-566-00175313322325f73095e61b6cbe550f47184408: 00175313322325f73095e61b6cbe550f47184408<br />
+  xe-568-b76c0e2128dd79ee1609d0d389e040c6e7499261: b76c0e2128dd79ee1609d0d389e040c6e7499261</p>
+
+</body>
+</html>
+
+--===============3592357811658136911==--
