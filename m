@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 901E510E06F
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 04:58:08 +0000 (UTC)
-Message-ID: <d8afecd9-25e8-416f-976e-48d32e42fbd2@intel.com>
-Date: Mon, 11 Dec 2023 10:27:48 +0530
-Subject: Re: [PATCH i-g-t v7] tests/intel/xe_pm: Fix d3 subtest
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F1CA10E012
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Dec 2023 05:36:12 +0000 (UTC)
+From: "Bommu, Krishnaiah" <krishnaiah.bommu@intel.com>
+To: "Brost, Matthew" <matthew.brost@intel.com>, "Vivi, Rodrigo"
+ <rodrigo.vivi@intel.com>
+Subject: RE: [PATCH v4 1/2] drm-uapi/xe: add exec_queue_id member to
+ drm_xe_wait_user_fence structure
+Date: Mon, 11 Dec 2023 05:36:06 +0000
+Message-ID: <DM4PR11MB52934FCCC68888FFCB7BE3689D8FA@DM4PR11MB5293.namprd11.prod.outlook.com>
+References: <20231208041825.32421-1-krishnaiah.bommu@intel.com>
+ <20231208041825.32421-2-krishnaiah.bommu@intel.com>
+ <ZXKwZH2x30Ny7QOv@intel.com> <ZXMUjxfz8kqCzWes@DUT025-TGLU.fm.intel.com>
+In-Reply-To: <ZXMUjxfz8kqCzWes@DUT025-TGLU.fm.intel.com>
 Content-Language: en-US
-To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20220421130704.934-2-mohammed.thasleem@intel.com>
- <20231209194449.28690-1-mohammed.thasleem@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20231209194449.28690-1-mohammed.thasleem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -22,153 +24,778 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Thasleem,
 
-On 10-12-2023 01:14 am, Mohammed Thasleem wrote:
-> xe_pm d3 test requires to turn off all display in order to
-> enter to d3 state therefore, adding the support to triggering
-> "DRM_MODE_DPMS_OFF" in setup_d3() and "DRM_MODE_DPMS_ON" in
-> cleanup_d3().
-> 
-> v2: Use IGT_CRTC_ACTIVE for displays On/Off.
-> v3: -Update commit message and helper names.
->      -Update display on and off helpers.
-> v4: Remove redundant code. (Bhanu)
-> v5: Move helper calls to test file.
-> v6: -Update function name as dpms_on_off. (Anshuman)
->      -Update subject and commit message. (Kamil)
-> v7: -Update subjact. (Anshuman)
->      -Move device.res to dpms_on_off(). (Bhanu)
->      -Free device.res in igt_fixture. (Bhanu)
->      -Call kmstest_set_connector_dpms if DRM_MODE_CONNECTED is found. (Kamil)
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> ---
->   tests/intel/xe_pm.c | 36 ++++++++++++++++++++++++++++++++++++
->   1 file changed, 36 insertions(+)
-> 
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index c899bd67a..8c7fb92ad 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -16,6 +16,7 @@
->   
->   #include "igt.h"
->   #include "lib/igt_device.h"
-> +#include "lib/igt_kms.h"
->   #include "lib/igt_pm.h"
->   #include "lib/igt_sysfs.h"
->   #include "lib/igt_syncobj.h"
-> @@ -36,10 +37,32 @@ typedef struct {
->   	struct pci_device *pci_xe;
->   	struct pci_device *pci_root;
->   	char pci_slot_name[NAME_MAX];
-> +	drmModeResPtr res;
->   } device_t;
->   
->   uint64_t orig_threshold;
->   
-> +static void dpms_on_off(device_t device, int mode)
-> +{
-> +	int i;
-> +
-> +	if (device.res)
-> +		return;
-> +
-> +	for (i = 0; i < device.res->count_connectors; i++) {
---------------------------------^^
-De-referencing of NULL pointer is not acceptable.
 
-- Bhanu
+> -----Original Message-----
+> From: Brost, Matthew <matthew.brost@intel.com>
+> Sent: Friday, December 8, 2023 6:35 PM
+> To: Vivi, Rodrigo <rodrigo.vivi@intel.com>
+> Cc: Bommu, Krishnaiah <krishnaiah.bommu@intel.com>; igt-
+> dev@lists.freedesktop.org
+> Subject: Re: [PATCH v4 1/2] drm-uapi/xe: add exec_queue_id member to
+> drm_xe_wait_user_fence structure
+>=20
+> On Fri, Dec 08, 2023 at 12:57:56AM -0500, Rodrigo Vivi wrote:
+> > On Fri, Dec 08, 2023 at 09:48:24AM +0530, Bommu Krishnaiah wrote:
+> > > remove the num_engines/instances members from
+> drm_xe_wait_user_fence
+> > > structure and add a exec_queue_id member
+> > >
+> > > Right now this is only checking if the engine list is sane and
+> > > nothing else. In the end every operation with this IOCTL is a soft ch=
+eck.
+> > > So, let's formalize that and only use this IOCTL to wait on the fence=
+.
+> > >
+> > > exec_queue_id member will help to user space to get proper error
+> > > code from kernel while in exec_queue reset
+> > >
+> > > Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+> > > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > > Cc: Francois Dugast <francois.dugast@intel.com>
+> > > ---
+> > >  include/drm-uapi/xe_drm.h          | 28 ++++++++++++++--------------
+> > >  lib/xe/xe_ioctl.c                  | 27 +++++++++++----------------
+> > >  lib/xe/xe_ioctl.h                  |  9 +++------
+> > >  tests/intel/xe_evict.c             |  4 ++--
+> > >  tests/intel/xe_exec_balancer.c     | 15 ++++++++-------
+> > >  tests/intel/xe_exec_compute_mode.c | 18 +++++++++---------
+> > >  tests/intel/xe_exec_fault_mode.c   | 19 +++++++++++--------
+> > >  tests/intel/xe_exec_reset.c        |  6 +++---
+> > >  tests/intel/xe_exec_threads.c      | 15 ++++++++-------
+> > >  tests/intel/xe_waitfence.c         | 25 ++++++++++---------------
+> > >  10 files changed, 79 insertions(+), 87 deletions(-)
+> > >
+> > > diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> > > index 590f7b7af..fd06e4920 100644
+> > > --- a/include/drm-uapi/xe_drm.h
+> > > +++ b/include/drm-uapi/xe_drm.h
+> > > @@ -129,7 +129,6 @@ struct xe_user_extension {
+> > >   * It is returned as part of the @drm_xe_engine, but it also is used=
+ as
+> > >   * the input of engine selection for both @drm_xe_exec_queue_create
+> and
+> > >   * @drm_xe_query_engine_cycles
+> > > - *
+> > >   */
+> > >  struct drm_xe_engine_class_instance {
+> > >  #define DRM_XE_ENGINE_CLASS_RENDER		0
+> > > @@ -143,9 +142,11 @@ struct drm_xe_engine_class_instance {
+> > >  	 */
+> > >  #define DRM_XE_ENGINE_CLASS_VM_BIND_ASYNC	5
+> > >  #define DRM_XE_ENGINE_CLASS_VM_BIND_SYNC	6
+> > > +	/** @engine_class: engine class id */
+> > >  	__u16 engine_class;
+> > > -
+> > > +	/** @engine_instance: engine instance id */
+> > >  	__u16 engine_instance;
+> > > +	/** @gt_id: Unique ID of this GT within the PCI Device */
+> > >  	__u16 gt_id;
+> > >  	/** @pad: MBZ */
+> > >  	__u16 pad;
+> > > @@ -736,6 +737,12 @@ struct drm_xe_vm_bind_op {
+> > >  	 *
+> > >  	 * Note: For userptr and externally imported dma-buf the kernel
+> expects
+> > >  	 * either 1WAY or 2WAY for the @pat_index.
+> > > +	 *
+> > > +	 * For DRM_XE_VM_BIND_FLAG_NULL bindings there are no KMD
+> restrictions
+> > > +	 * on the @pat_index. For such mappings there is no actual memory
+> being
+> > > +	 * mapped (the address in the PTE is invalid), so the various PAT
+> memory
+> > > +	 * attributes likely do not apply.  Simply leaving as zero is one
+> > > +	 * option (still a valid pat_index).
+> > >  	 */
+> > >  	__u16 pat_index;
+> > >
+> > > @@ -1024,8 +1031,7 @@ struct drm_xe_wait_user_fence {
+> > >  	/** @op: wait operation (type of comparison) */
+> > >  	__u16 op;
+> > >
+> > > -#define DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP	(1 << 0)	/* e.g. Wait
+> on VM bind */
+> > > -#define DRM_XE_UFENCE_WAIT_FLAG_ABSTIME	(1 << 1)
+> > > +#define DRM_XE_UFENCE_WAIT_FLAG_ABSTIME	(1 << 0)
+> > >  	/** @flags: wait flags */
+> > >  	__u16 flags;
+> > >
+> > > @@ -1058,17 +1064,11 @@ struct drm_xe_wait_user_fence {
+> > >  	 */
+> > >  	__s64 timeout;
+> > >
+> > > -	/**
+> > > -	 * @num_engines: number of engine instances to wait on, must be
+> zero
+> > > -	 * when DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP set
+> > > -	 */
+> > > -	__u64 num_engines;
+> > > +	/** @exec_queue_id: exec_queue_id returned from
+> xe_exec_queue_create_ioctl */
+> > > +	__u32 exec_queue_id;
+> > >
+> > > -	/**
+> > > -	 * @instances: user pointer to array of
+> drm_xe_engine_class_instance to
+> > > -	 * wait on, must be NULL when
+> DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP set
+> > > -	 */
+> > > -	__u64 instances;
+> > > +	/** @pad2: MBZ */
+> > > +	__u32 pad2;
+> > >
+> > >  	/** @reserved: Reserved */
+> > >  	__u64 reserved[2];
+> > > diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c index
+> > > b29ca40ad..0a1ddc86b 100644
+> > > --- a/lib/xe/xe_ioctl.c
+> > > +++ b/lib/xe/xe_ioctl.c
+> > > @@ -462,7 +462,7 @@ void xe_exec_wait(int fd, uint32_t exec_queue,
+> uint64_t addr)
+> > >   * @fd: xe device fd
+> > >   * @addr: address of value to compare
+> > >   * @value: expected value (equal) in @address
+> > > - * @eci: engine class instance
+> > > + * @exec_queue: exec_queue id
+> > >   * @timeout: pointer to time to wait in nanoseconds
+> > >   *
+> > >   * Function compares @value with memory pointed by @addr until they
+> are equal.
+> > > @@ -471,17 +471,15 @@ void xe_exec_wait(int fd, uint32_t
+> exec_queue, uint64_t addr)
+> > >   * signalled. Returns 0 on success, -errno of ioctl on error.
+> > >   */
+> > >  int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > > -		     struct drm_xe_engine_class_instance *eci,
+> > > -		     int64_t *timeout)
+> > > +		     uint32_t exec_queue, int64_t *timeout)
+> > >  {
+> > >  	struct drm_xe_wait_user_fence wait =3D {
+> > >  		.addr =3D to_user_pointer(addr),
+> > >  		.op =3D DRM_XE_UFENCE_WAIT_OP_EQ,
+> > > -		.flags =3D !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP : 0,
+> > > +		.flags =3D 0,
+> > >  		.value =3D value,
+> > >  		.mask =3D DRM_XE_UFENCE_WAIT_MASK_U64,
+> > > -		.num_engines =3D eci ? 1 :0,
+> > > -		.instances =3D eci ? to_user_pointer(eci) : 0,
+> > > +		.exec_queue_id =3D exec_queue,
+> > >  	};
+> > >
+> > >  	igt_assert(timeout);
+> > > @@ -499,7 +497,7 @@ int __xe_wait_ufence(int fd, uint64_t *addr,
+> uint64_t value,
+> > >   * @fd: xe device fd
+> > >   * @addr: address of value to compare
+> > >   * @value: expected value (equal) in @address
+> > > - * @eci: engine class instance
+> > > + * @exec_queue: exec_queue id
+> > >   * @timeout: time to wait in nanoseconds
+> > >   *
+> > >   * Function compares @value with memory pointed by @addr until they
+> are equal.
+> > > @@ -508,10 +506,9 @@ int __xe_wait_ufence(int fd, uint64_t *addr,
+> uint64_t value,
+> > >   * Returns elapsed time in nanoseconds if user fence was signalled.
+> > >   */
+> > >  int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > > -		       struct drm_xe_engine_class_instance *eci,
+> > > -		       int64_t timeout)
+> > > +		       uint32_t exec_queue, int64_t timeout)
+> > >  {
+> > > -	igt_assert_eq(__xe_wait_ufence(fd, addr, value, eci, &timeout), 0);
+> > > +	igt_assert_eq(__xe_wait_ufence(fd, addr, value, exec_queue,
+> > > +&timeout), 0);
+> > >  	return timeout;
+> > >  }
+> > >
+> > > @@ -520,7 +517,7 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr,
+> uint64_t value,
+> > >   * @fd: xe device fd
+> > >   * @addr: address of value to compare
+> > >   * @value: expected value (equal) in @address
+> > > - * @eci: engine class instance
+> > > + * @exec_queue: exec_queue id
+> > >   * @timeout: absolute time when wait expire
+> > >   *
+> > >   * Function compares @value with memory pointed by @addr until they
+> are equal.
+> > > @@ -529,18 +526,16 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr,
+> uint64_t value,
+> > >   * Returns elapsed time in nanoseconds if user fence was signalled.
+> > >   */
+> > >  int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t valu=
+e,
+> > > -			       struct drm_xe_engine_class_instance *eci,
+> > > -			       int64_t timeout)
+> > > +			       uint32_t exec_queue, int64_t timeout)
+> > >  {
+> > >  	struct drm_xe_wait_user_fence wait =3D {
+> > >  		.addr =3D to_user_pointer(addr),
+> > >  		.op =3D DRM_XE_UFENCE_WAIT_OP_EQ,
+> > > -		.flags =3D !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP |
+> DRM_XE_UFENCE_WAIT_FLAG_ABSTIME : 0,
+> > > +		.flags =3D !exec_queue ?
+> DRM_XE_UFENCE_WAIT_FLAG_ABSTIME : 0,
+> >
+> > To be on the safe side we should probably change the signature of this
+> > function to explicitly receive this flag instead of relying on the inva=
+lid
+> exec_queue_id number.
+> >
+> > Also it is strange to me that DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP was
+> used here...
+> >
+> > Matt, thoughts?
+> >
+>=20
+> Agree with everything here, !exec_queue really has nothing to do with
+> setting DRM_XE_UFENCE_WAIT_FLAG_ABSTIME. Setting
+> DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP when eci did make sense. So yes,
+> please change this function to accpt a flags field.
+>=20
+> Everything else LGTM.
+>=20
+> Matt
 
-> +		drmModeConnector *connector = drmModeGetConnectorCurrent(device.fd_xe,
-> +					      device.res->connectors[i]);
-> +
-> +		if (!connector)
-> +			continue;
-> +
-> +		if (connector->connection == DRM_MODE_CONNECTED)
-> +			kmstest_set_connector_dpms(device.fd_xe, connector, mode);
-> +
-> +		drmModeFreeConnector(connector);
-> +	}
-> +}
-> +
->   /* runtime_usage is only available if kernel build CONFIG_PM_ADVANCED_DEBUG */
->   static bool runtime_usage_available(struct pci_device *pci)
->   {
-> @@ -94,6 +117,8 @@ static void vram_d3cold_threshold_restore(int sig)
->   
->   static bool setup_d3(device_t device, enum igt_acpi_d_state state)
->   {
-> +	dpms_on_off(device, DRM_MODE_DPMS_OFF);
-> +
->   	switch (state) {
->   	case IGT_ACPI_D3Cold:
->   		igt_require(igt_pm_acpi_d3cold_supported(device.pci_root));
-> @@ -110,6 +135,11 @@ static bool setup_d3(device_t device, enum igt_acpi_d_state state)
->   	return false;
->   }
->   
-> +static void cleanup_d3(device_t device)
-> +{
-> +	dpms_on_off(device, DRM_MODE_DPMS_ON);
-> +}
-> +
->   static bool in_d3(device_t device, enum igt_acpi_d_state state)
->   {
->   	uint16_t val;
-> @@ -477,6 +507,7 @@ igt_main
->   		igt_pm_get_d3cold_allowed(device.pci_slot_name, &d3cold_allowed);
->   		igt_assert(igt_setup_runtime_pm(device.fd_xe));
->   		sysfs_fd = igt_sysfs_open(device.fd_xe);
-> +		device.res = drmModeGetResources(device.fd_xe);
->   	}
->   
->   	for (const struct s_state *s = s_states; s->name; s++) {
-> @@ -511,6 +542,7 @@ igt_main
->   				xe_for_each_engine(device.fd_xe, hwe)
->   					test_exec(device, hwe, 1, 2, s->state,
->   						  NO_RPM);
-> +				cleanup_d3(device);
->   			}
->   		}
->   	}
-> @@ -519,6 +551,7 @@ igt_main
->   		igt_subtest_f("%s-basic", d->name) {
->   			igt_assert(setup_d3(device, d->state));
->   			igt_assert(in_d3(device, d->state));
-> +			cleanup_d3(device);
->   		}
->   
->   		igt_subtest_f("%s-basic-exec", d->name) {
-> @@ -526,6 +559,7 @@ igt_main
->   			xe_for_each_engine(device.fd_xe, hwe)
->   				test_exec(device, hwe, 1, 1,
->   					  NO_SUSPEND, d->state);
-> +			cleanup_d3(device);
->   		}
->   
->   		igt_subtest_f("%s-multiple-execs", d->name) {
-> @@ -533,6 +567,7 @@ igt_main
->   			xe_for_each_engine(device.fd_xe, hwe)
->   				test_exec(device, hwe, 16, 32,
->   					  NO_SUSPEND, d->state);
-> +			cleanup_d3(device);
->   		}
->   	}
->   
-> @@ -547,6 +582,7 @@ igt_main
->   		close(sysfs_fd);
->   		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
->   		igt_restore_runtime_pm();
-> +		drmModeFreeResources(device.res);
->   		drm_close_driver(device.fd_xe);
->   	}
->   }
+I agree with setting DRM_XE_UFENCE_WAIT_FLAG_ABSTIME it is not thing to do =
+with exec_queue, I will change this function to accept flag, but DRM_XE_UFE=
+NCE_WAIT_FLAG_SOFT_OP is not required since it is related to "no_engines" I=
+ removed from kernel side also https://patchwork.freedesktop.org/patch/5712=
+36/?series=3D127365&rev=3D5
+
+Matt please let me know your insights on DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP fl=
+ag
+
+Regards,
+Krishna.
+>=20
+> > Everything else in the patch looks good to me.
+> >
+> > >  		.value =3D value,
+> > >  		.mask =3D DRM_XE_UFENCE_WAIT_MASK_U64,
+> > >  		.timeout =3D timeout,
+> > > -		.num_engines =3D eci ? 1 : 0,
+> > > -		.instances =3D eci ? to_user_pointer(eci) : 0,
+> > > +		.exec_queue_id =3D exec_queue,
+> > >  	};
+> > >  	struct timespec ts;
+> > >
+> > > diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h index
+> > > bd660bd27..9c0b4b9bc 100644
+> > > --- a/lib/xe/xe_ioctl.h
+> > > +++ b/lib/xe/xe_ioctl.h
+> > > @@ -89,14 +89,11 @@ void xe_exec_sync(int fd, uint32_t exec_queue,
+> uint64_t addr,
+> > >  		  struct drm_xe_sync *sync, uint32_t num_syncs);  void
+> > > xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);  int
+> > > __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > > -		     struct drm_xe_engine_class_instance *eci,
+> > > -		     int64_t *timeout);
+> > > +		     uint32_t exec_queue, int64_t *timeout);
+> > >  int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > > -		       struct drm_xe_engine_class_instance *eci,
+> > > -		       int64_t timeout);
+> > > +		       uint32_t exec_queue, int64_t timeout);
+> > >  int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t valu=
+e,
+> > > -			       struct drm_xe_engine_class_instance *eci,
+> > > -			       int64_t timeout);
+> > > +			       uint32_t exec_queue, int64_t timeout);
+> > >  void xe_force_gt_reset(int fd, int gt);
+> > >
+> > >  #endif /* XE_IOCTL_H */
+> > > diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c index
+> > > 89dc46fae..a37c2d97a 100644
+> > > --- a/tests/intel/xe_evict.c
+> > > +++ b/tests/intel/xe_evict.c
+> > > @@ -317,7 +317,7 @@ test_evict_cm(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> > >  			}
+> > >  #define TWENTY_SEC	MS_TO_NS(20000)
+> > >  			xe_wait_ufence(fd, &data[i].vm_sync,
+> USER_FENCE_VALUE,
+> > > -				       NULL, TWENTY_SEC);
+> > > +				       bind_exec_queues[0], TWENTY_SEC);
+> > >  		}
+> > >  		sync[0].addr =3D addr + (char *)&data[i].exec_sync -
+> > >  			(char *)data;
+> > > @@ -352,7 +352,7 @@ test_evict_cm(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> > >  		data =3D xe_bo_map(fd, __bo,
+> > >  				 ALIGN(sizeof(*data) * n_execs, 0x1000));
+> > >  		xe_wait_ufence(fd, &data[i].exec_sync,
+> USER_FENCE_VALUE,
+> > > -			       NULL, TWENTY_SEC);
+> > > +			       exec_queues[i], TWENTY_SEC);
+> > >  		igt_assert_eq(data[i].data, 0xc0ffee);
+> > >  	}
+> > >  	munmap(data, ALIGN(sizeof(*data) * n_execs, 0x1000)); diff --git
+> > > a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
+> > > index 79ff65e89..2448d49bc 100644
+> > > --- a/tests/intel/xe_exec_balancer.c
+> > > +++ b/tests/intel/xe_exec_balancer.c
+> > > @@ -483,7 +483,7 @@ test_cm(int fd, int gt, int class, int
+> n_exec_queues, int n_execs,
+> > >  					 bo_size, sync, 1);
+> > >
+> > >  #define ONE_SEC	MS_TO_NS(1000)
+> > > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> ONE_SEC);
+> > > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
+> > > +ONE_SEC);
+> > >  	data[0].vm_sync =3D 0;
+> > >
+> > >  	for (i =3D 0; i < n_execs; i++) {
+> > > @@ -514,7 +514,7 @@ test_cm(int fd, int gt, int class, int
+> > > n_exec_queues, int n_execs,
+> > >
+> > >  		if (flags & REBIND && i + 1 !=3D n_execs) {
+> > >  			xe_wait_ufence(fd, &data[i].exec_sync,
+> USER_FENCE_VALUE,
+> > > -				       NULL, ONE_SEC);
+> > > +				       exec_queues[e], ONE_SEC);
+> > >  			xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size,
+> NULL,
+> > >  					   0);
+> > >
+> > > @@ -529,7 +529,7 @@ test_cm(int fd, int gt, int class, int
+> n_exec_queues, int n_execs,
+> > >  							 addr, bo_size, sync,
+> > >  							 1);
+> > >  			xe_wait_ufence(fd, &data[0].vm_sync,
+> USER_FENCE_VALUE,
+> > > -				       NULL, ONE_SEC);
+> > > +				       0, ONE_SEC);
+> > >  			data[0].vm_sync =3D 0;
+> > >  		}
+> > >
+> > > @@ -542,7 +542,8 @@ test_cm(int fd, int gt, int class, int
+> n_exec_queues, int n_execs,
+> > >  				 * an invalidate.
+> > >  				 */
+> > >  				xe_wait_ufence(fd, &data[i].exec_sync,
+> > > -					       USER_FENCE_VALUE, NULL,
+> ONE_SEC);
+> > > +					       USER_FENCE_VALUE,
+> exec_queues[e],
+> > > +					       ONE_SEC);
+> > >  				igt_assert_eq(data[i].data, 0xc0ffee);
+> > >  			} else if (i * 2 !=3D n_execs) {
+> > >  				/*
+> > > @@ -571,8 +572,8 @@ test_cm(int fd, int gt, int class, int
+> > > n_exec_queues, int n_execs,
+> > >
+> > >  	j =3D flags & INVALIDATE && n_execs ? n_execs - 1 : 0;
+> > >  	for (i =3D j; i < n_execs; i++)
+> > > -		xe_wait_ufence(fd, &data[i].exec_sync,
+> USER_FENCE_VALUE, NULL,
+> > > -			       ONE_SEC);
+> > > +		xe_wait_ufence(fd, &data[i].exec_sync,
+> USER_FENCE_VALUE,
+> > > +			       exec_queues[i], ONE_SEC);
+> > >
+> > >  	/* Wait for all execs to complete */
+> > >  	if (flags & INVALIDATE)
+> > > @@ -580,7 +581,7 @@ test_cm(int fd, int gt, int class, int
+> > > n_exec_queues, int n_execs,
+> > >
+> > >  	sync[0].addr =3D to_user_pointer(&data[0].vm_sync);
+> > >  	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+> > > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> ONE_SEC);
+> > > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
+> > > +ONE_SEC);
+> > >
+> > >  	for (i =3D (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
+> > >  	     i < n_execs; i++)
+> > > diff --git a/tests/intel/xe_exec_compute_mode.c
+> > > b/tests/intel/xe_exec_compute_mode.c
+> > > index 7d3004d65..749a9b634 100644
+> > > --- a/tests/intel/xe_exec_compute_mode.c
+> > > +++ b/tests/intel/xe_exec_compute_mode.c
+> > > @@ -171,8 +171,8 @@ test_exec(int fd, struct
+> > > drm_xe_engine_class_instance *eci,
+> > >
+> > >  	fence_timeout =3D igt_run_in_simulation() ? HUNDRED_SEC :
+> ONE_SEC;
+> > >
+> > > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> > > -		       fence_timeout);
+> > > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> > > +		       bind_exec_queues[0], fence_timeout);
+> > >  	data[0].vm_sync =3D 0;
+> > >
+> > >  	for (i =3D 0; i < n_execs; i++) {
+> > > @@ -198,7 +198,7 @@ test_exec(int fd, struct
+> > > drm_xe_engine_class_instance *eci,
+> > >
+> > >  		if (flags & REBIND && i + 1 !=3D n_execs) {
+> > >  			xe_wait_ufence(fd, &data[i].exec_sync,
+> USER_FENCE_VALUE,
+> > > -				       NULL, fence_timeout);
+> > > +				       exec_queues[e], fence_timeout);
+> > >  			xe_vm_unbind_async(fd, vm, bind_exec_queues[e],
+> 0,
+> > >  					   addr, bo_size, NULL, 0);
+> > >
+> > > @@ -214,7 +214,7 @@ test_exec(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> > >  							 addr, bo_size, sync,
+> > >  							 1);
+> > >  			xe_wait_ufence(fd, &data[0].vm_sync,
+> USER_FENCE_VALUE,
+> > > -				       NULL, fence_timeout);
+> > > +				       bind_exec_queues[e], fence_timeout);
+> > >  			data[0].vm_sync =3D 0;
+> > >  		}
+> > >
+> > > @@ -227,7 +227,7 @@ test_exec(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> > >  				 * an invalidate.
+> > >  				 */
+> > >  				xe_wait_ufence(fd, &data[i].exec_sync,
+> > > -					       USER_FENCE_VALUE, NULL,
+> > > +					       USER_FENCE_VALUE,
+> exec_queues[e],
+> > >  					       fence_timeout);
+> > >  				igt_assert_eq(data[i].data, 0xc0ffee);
+> > >  			} else if (i * 2 !=3D n_execs) {
+> > > @@ -257,8 +257,8 @@ test_exec(int fd, struct
+> > > drm_xe_engine_class_instance *eci,
+> > >
+> > >  	j =3D flags & INVALIDATE ? n_execs - 1 : 0;
+> > >  	for (i =3D j; i < n_execs; i++)
+> > > -		xe_wait_ufence(fd, &data[i].exec_sync,
+> USER_FENCE_VALUE, NULL,
+> > > -			       fence_timeout);
+> > > +		xe_wait_ufence(fd, &data[i].exec_sync,
+> USER_FENCE_VALUE,
+> > > +			       exec_queues[i], fence_timeout);
+> > >
+> > >  	/* Wait for all execs to complete */
+> > >  	if (flags & INVALIDATE)
+> > > @@ -267,8 +267,8 @@ test_exec(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> > >  	sync[0].addr =3D to_user_pointer(&data[0].vm_sync);
+> > >  	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr,
+> bo_size,
+> > >  			   sync, 1);
+> > > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> > > -		       fence_timeout);
+> > > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> > > +		       bind_exec_queues[0], fence_timeout);
+> > >
+> > >  	for (i =3D j; i < n_execs; i++)
+> > >  		igt_assert_eq(data[i].data, 0xc0ffee); diff --git
+> > > a/tests/intel/xe_exec_fault_mode.c
+> > > b/tests/intel/xe_exec_fault_mode.c
+> > > index ee7cbb604..d76b3a056 100644
+> > > --- a/tests/intel/xe_exec_fault_mode.c
+> > > +++ b/tests/intel/xe_exec_fault_mode.c
+> > > @@ -195,15 +195,16 @@ test_exec(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> > >  	}
+> > >
+> > >  #define ONE_SEC	MS_TO_NS(1000)
+> > > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> ONE_SEC);
+> > > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> > > +		       bind_exec_queues[0], ONE_SEC);
+> > >  	data[0].vm_sync =3D 0;
+> > >
+> > >  	if (flags & PREFETCH) {
+> > >  		/* Should move to system memory */
+> > >  		xe_vm_prefetch_async(fd, vm, bind_exec_queues[0], 0,
+> addr,
+> > >  				     bo_size, sync, 1, 0);
+> > > -		xe_wait_ufence(fd, &data[0].vm_sync,
+> USER_FENCE_VALUE, NULL,
+> > > -			       ONE_SEC);
+> > > +		xe_wait_ufence(fd, &data[0].vm_sync,
+> USER_FENCE_VALUE,
+> > > +			       bind_exec_queues[0], ONE_SEC);
+> > >  		data[0].vm_sync =3D 0;
+> > >  	}
+> > >
+> > > @@ -230,7 +231,7 @@ test_exec(int fd, struct
+> > > drm_xe_engine_class_instance *eci,
+> > >
+> > >  		if (flags & REBIND && i + 1 !=3D n_execs) {
+> > >  			xe_wait_ufence(fd, &data[i].exec_sync,
+> USER_FENCE_VALUE,
+> > > -				       NULL, ONE_SEC);
+> > > +				       exec_queues[e], ONE_SEC);
+> > >  			xe_vm_unbind_async(fd, vm, bind_exec_queues[e],
+> 0,
+> > >  					   addr, bo_size, NULL, 0);
+> > >
+> > > @@ -246,7 +247,7 @@ test_exec(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> > >  							 addr, bo_size, sync,
+> > >  							 1);
+> > >  			xe_wait_ufence(fd, &data[0].vm_sync,
+> USER_FENCE_VALUE,
+> > > -				       NULL, ONE_SEC);
+> > > +				       bind_exec_queues[e], ONE_SEC);
+> > >  			data[0].vm_sync =3D 0;
+> > >  		}
+> > >
+> > > @@ -259,7 +260,8 @@ test_exec(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> > >  				 * an invalidate.
+> > >  				 */
+> > >  				xe_wait_ufence(fd, &data[i].exec_sync,
+> > > -					       USER_FENCE_VALUE, NULL,
+> ONE_SEC);
+> > > +					       USER_FENCE_VALUE,
+> exec_queues[e],
+> > > +					       ONE_SEC);
+> > >  				igt_assert_eq(data[i].data, 0xc0ffee);
+> > >  			} else if (i * 2 !=3D n_execs) {
+> > >  				/*
+> > > @@ -290,13 +292,14 @@ test_exec(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> > >  		j =3D flags & INVALIDATE ? n_execs - 1 : 0;
+> > >  		for (i =3D j; i < n_execs; i++)
+> > >  			xe_wait_ufence(fd, &data[i].exec_sync,
+> > > -				       USER_FENCE_VALUE, NULL, ONE_SEC);
+> > > +				       USER_FENCE_VALUE, exec_queues[i],
+> ONE_SEC);
+> > >  	}
+> > >
+> > >  	sync[0].addr =3D to_user_pointer(&data[0].vm_sync);
+> > >  	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr,
+> bo_size,
+> > >  			   sync, 1);
+> > > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> ONE_SEC);
+> > > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> > > +		       bind_exec_queues[0], ONE_SEC);
+> > >
+> > >  	if (!(flags & INVALID_FAULT)) {
+> > >  		for (i =3D j; i < n_execs; i++)
+> > > diff --git a/tests/intel/xe_exec_reset.c
+> > > b/tests/intel/xe_exec_reset.c index 094b34896..398c90af5 100644
+> > > --- a/tests/intel/xe_exec_reset.c
+> > > +++ b/tests/intel/xe_exec_reset.c
+> > > @@ -564,7 +564,7 @@ test_compute_mode(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> > >  	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
+> > >
+> > >  #define THREE_SEC	MS_TO_NS(3000)
+> > > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> THREE_SEC);
+> > > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
+> > > +THREE_SEC);
+> > >  	data[0].vm_sync =3D 0;
+> > >
+> > >  	for (i =3D 0; i < n_execs; i++) {
+> > > @@ -621,7 +621,7 @@ test_compute_mode(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> > >  		int err;
+> > >
+> > >  		err =3D __xe_wait_ufence(fd, &data[i].exec_sync,
+> USER_FENCE_VALUE,
+> > > -				       NULL, &timeout);
+> > > +				       exec_queues[i], &timeout);
+> > >  		if (flags & GT_RESET)
+> > >  			/* exec races with reset: may timeout or complete */
+> > >  			igt_assert(err =3D=3D -ETIME || !err); @@ -631,7 +631,7
+> @@
+> > > test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+> > >
+> > >  	sync[0].addr =3D to_user_pointer(&data[0].vm_sync);
+> > >  	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+> > > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> THREE_SEC);
+> > > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
+> > > +THREE_SEC);
+> > >
+> > >  	if (!(flags & GT_RESET)) {
+> > >  		for (i =3D 1; i < n_execs; i++)
+> > > diff --git a/tests/intel/xe_exec_threads.c
+> > > b/tests/intel/xe_exec_threads.c index fcb926698..7985240c9 100644
+> > > --- a/tests/intel/xe_exec_threads.c
+> > > +++ b/tests/intel/xe_exec_threads.c
+> > > @@ -331,7 +331,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t
+> > > addr, uint64_t userptr,
+> > >
+> > >  	fence_timeout =3D igt_run_in_simulation() ? THIRTY_SEC : THREE_SEC;
+> > >
+> > > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> fence_timeout);
+> > > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
+> > > +fence_timeout);
+> > >  	data[0].vm_sync =3D 0;
+> > >
+> > >  	for (i =3D 0; i < n_execs; i++) {
+> > > @@ -359,7 +359,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t
+> addr, uint64_t userptr,
+> > >  			for (j =3D i - 0x20; j <=3D i; ++j)
+> > >  				xe_wait_ufence(fd, &data[j].exec_sync,
+> > >  					       USER_FENCE_VALUE,
+> > > -					       NULL, fence_timeout);
+> > > +					       exec_queues[e], fence_timeout);
+> > >  			xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size,
+> > >  					   NULL, 0);
+> > >
+> > > @@ -374,7 +374,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t
+> addr, uint64_t userptr,
+> > >  							 addr, bo_size, sync,
+> > >  							 1);
+> > >  			xe_wait_ufence(fd, &data[0].vm_sync,
+> USER_FENCE_VALUE,
+> > > -				       NULL, fence_timeout);
+> > > +				       0, fence_timeout);
+> > >  			data[0].vm_sync =3D 0;
+> > >  		}
+> > >
+> > > @@ -389,7 +389,8 @@ test_compute_mode(int fd, uint32_t vm, uint64_t
+> addr, uint64_t userptr,
+> > >  				for (j =3D i =3D=3D 0x20 ? 0 : i - 0x1f; j <=3D i; ++j)
+> > >  					xe_wait_ufence(fd,
+> &data[j].exec_sync,
+> > >  						       USER_FENCE_VALUE,
+> > > -						       NULL, fence_timeout);
+> > > +						       exec_queues[e],
+> > > +						       fence_timeout);
+> > >  				igt_assert_eq(data[i].data, 0xc0ffee);
+> > >  			} else if (i * 2 !=3D n_execs) {
+> > >  				/*
+> > > @@ -421,8 +422,8 @@ test_compute_mode(int fd, uint32_t vm, uint64_t
+> addr, uint64_t userptr,
+> > >  	j =3D flags & INVALIDATE ?
+> > >  		(flags & RACE ? n_execs / 2 + 1 : n_execs - 1) : 0;
+> > >  	for (i =3D j; i < n_execs; i++)
+> > > -		xe_wait_ufence(fd, &data[i].exec_sync,
+> USER_FENCE_VALUE, NULL,
+> > > -			       fence_timeout);
+> > > +		xe_wait_ufence(fd, &data[i].exec_sync,
+> USER_FENCE_VALUE,
+> > > +			       exec_queues[e], fence_timeout);
+> > >
+> > >  	/* Wait for all execs to complete */
+> > >  	if (flags & INVALIDATE)
+> > > @@ -430,7 +431,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t
+> > > addr, uint64_t userptr,
+> > >
+> > >  	sync[0].addr =3D to_user_pointer(&data[0].vm_sync);
+> > >  	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+> > > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> fence_timeout);
+> > > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
+> > > +fence_timeout);
+> > >
+> > >  	for (i =3D j; i < n_execs; i++)
+> > >  		igt_assert_eq(data[i].data, 0xc0ffee); diff --git
+> > > a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c index
+> > > 3be987954..4e94403a3 100644
+> > > --- a/tests/intel/xe_waitfence.c
+> > > +++ b/tests/intel/xe_waitfence.c
+> > > @@ -37,22 +37,19 @@ static void do_bind(int fd, uint32_t vm,
+> > > uint32_t bo, uint64_t offset,  }
+> > >
+> > >  static int64_t wait_with_eci_abstime(int fd, uint64_t *addr, uint64_=
+t
+> value,
+> > > -				     struct drm_xe_engine_class_instance *eci,
+> > > -				     int64_t timeout)
+> > > +				     uint32_t exec_queue, int64_t timeout)
+> > >  {
+> > >  	struct drm_xe_wait_user_fence wait =3D {
+> > >  		.addr =3D to_user_pointer(addr),
+> > >  		.op =3D DRM_XE_UFENCE_WAIT_OP_EQ,
+> > > -		.flags =3D !eci ? 0 : DRM_XE_UFENCE_WAIT_FLAG_ABSTIME,
+> > > +		.flags =3D !exec_queue ? 0 :
+> DRM_XE_UFENCE_WAIT_FLAG_ABSTIME,
+> > >  		.value =3D value,
+> > >  		.mask =3D DRM_XE_UFENCE_WAIT_MASK_U64,
+> > >  		.timeout =3D timeout,
+> > > -		.num_engines =3D eci ? 1 : 0,
+> > > -		.instances =3D eci ? to_user_pointer(eci) : 0,
+> > > +		.exec_queue_id =3D exec_queue,
+> > >  	};
+> > >  	struct timespec ts;
+> > >
+> > > -	igt_assert(eci);
+> > >  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE,
+> &wait), 0);
+> > >  	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &ts), 0);
+> > >
+> > > @@ -82,7 +79,7 @@ enum waittype {
+> > >  static void
+> > >  waitfence(int fd, enum waittype wt)  {
+> > > -	struct drm_xe_engine *engine =3D NULL;
+> > > +	uint32_t exec_queue;
+> > >  	struct timespec ts;
+> > >  	int64_t current, signalled;
+> > >  	uint32_t bo_1;
+> > > @@ -111,15 +108,15 @@ waitfence(int fd, enum waittype wt)
+> > >  	do_bind(fd, vm, bo_7, 0, 0xeffff0000, 0x10000, 7);
+> > >
+> > >  	if (wt =3D=3D RELTIME) {
+> > > -		timeout =3D xe_wait_ufence(fd, &wait_fence, 7, NULL,
+> MS_TO_NS(10));
+> > > +		timeout =3D xe_wait_ufence(fd, &wait_fence, 7, 0,
+> MS_TO_NS(10));
+> > >  		igt_debug("wait type: RELTIME - timeout: %ld, timeout left:
+> %ld\n",
+> > >  			  MS_TO_NS(10), timeout);
+> > >  	} else if (wt =3D=3D ENGINE) {
+> > > -		engine =3D xe_engine(fd, 1);
+> > > +		exec_queue =3D xe_exec_queue_create_class(fd, vm,
+> > > +DRM_XE_ENGINE_CLASS_COPY);
+> > >  		clock_gettime(CLOCK_MONOTONIC, &ts);
+> > >  		current =3D ts.tv_sec * 1e9 + ts.tv_nsec;
+> > >  		timeout =3D current + MS_TO_NS(10);
+> > > -		signalled =3D wait_with_eci_abstime(fd, &wait_fence, 7,
+> &engine->instance, timeout);
+> > > +		signalled =3D wait_with_eci_abstime(fd, &wait_fence, 7,
+> exec_queue,
+> > > +timeout);
+> > >  		igt_debug("wait type: ENGINE ABSTIME - timeout: %" PRId64
+> > >  			  ", signalled: %" PRId64
+> > >  			  ", elapsed: %" PRId64 "\n",
+> > > @@ -128,7 +125,7 @@ waitfence(int fd, enum waittype wt)
+> > >  		clock_gettime(CLOCK_MONOTONIC, &ts);
+> > >  		current =3D ts.tv_sec * 1e9 + ts.tv_nsec;
+> > >  		timeout =3D current + MS_TO_NS(10);
+> > > -		signalled =3D xe_wait_ufence_abstime(fd, &wait_fence, 7,
+> NULL, timeout);
+> > > +		signalled =3D xe_wait_ufence_abstime(fd, &wait_fence, 7, 0,
+> > > +timeout);
+> > >  		igt_debug("wait type: ABSTIME - timeout: %" PRId64
+> > >  			  ", signalled: %" PRId64
+> > >  			  ", elapsed: %" PRId64 "\n",
+> > > @@ -191,8 +188,7 @@ invalid_ops(int fd)
+> > >  		.value =3D 1,
+> > >  		.mask =3D DRM_XE_UFENCE_WAIT_MASK_U64,
+> > >  		.timeout =3D 1,
+> > > -		.num_engines =3D 0,
+> > > -		.instances =3D 0,
+> > > +		.exec_queue_id =3D 0,
+> > >  	};
+> > >
+> > >  	uint32_t vm =3D xe_vm_create(fd,
+> > > DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0); @@ -216,8 +212,7
+> @@ invalid_engine(int fd)
+> > >  		.value =3D 1,
+> > >  		.mask =3D DRM_XE_UFENCE_WAIT_MASK_U64,
+> > >  		.timeout =3D -1,
+> > > -		.num_engines =3D 1,
+> > > -		.instances =3D 0,
+> > > +		.exec_queue_id =3D 0,
+> > >  	};
+> > >
+> > >  	uint32_t vm =3D xe_vm_create(fd,
+> > > DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+> > > --
+> > > 2.25.1
+> > >
