@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6954710E04C
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 18:47:35 +0000 (UTC)
-Date: Tue, 12 Dec 2023 13:46:43 -0500
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 87E3D10E696
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 18:47:36 +0000 (UTC)
+Date: Tue, 12 Dec 2023 13:47:03 -0500
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: Francois Dugast <francois.dugast@intel.com>
-Subject: Re: [PATCH v1 1/6] drm-uapi/xe: Align header with current kernel uAPI
-Message-ID: <ZXiqk3ogsAG_EQRc@intel.com>
+Subject: Re: [PATCH v1 4/6] drm-uapi/xe: Remove
+ DRM_IOCTL_XE_EXEC_QUEUE_SET_PROPERTY
+Message-ID: <ZXiqp3mWJpKiFTjT@intel.com>
 References: <20231212173059.7-1-francois.dugast@intel.com>
- <20231212173059.7-2-francois.dugast@intel.com>
+ <20231212173059.7-5-francois.dugast@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20231212173059.7-2-francois.dugast@intel.com>
+In-Reply-To: <20231212173059.7-5-francois.dugast@intel.com>
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -25,57 +26,29 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Dec 12, 2023 at 05:30:54PM +0000, Francois Dugast wrote:
-> A few non functional changes from kernel commits below were missing:
->     drm/xe/uapi: support pat_index selection with vm_bind
->     drm/xe: Make DRM_XE_DEVICE_QUERY_ENGINES future proof
+On Tue, Dec 12, 2023 at 05:30:57PM +0000, Francois Dugast wrote:
+> Align with commit ("drm/xe/uapi: Remove DRM_IOCTL_XE_EXEC_QUEUE_SET_PROPERTY")
 > 
 > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
 > ---
->  include/drm-uapi/xe_drm.h | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
+>  include/drm-uapi/xe_drm.h | 1 -
+>  1 file changed, 1 deletion(-)
 > 
 > diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 590f7b7af..313e555d2 100644
+> index fd06e4920..b543207bf 100644
 > --- a/include/drm-uapi/xe_drm.h
 > +++ b/include/drm-uapi/xe_drm.h
-> @@ -129,7 +129,6 @@ struct xe_user_extension {
->   * It is returned as part of the @drm_xe_engine, but it also is used as
->   * the input of engine selection for both @drm_xe_exec_queue_create and
->   * @drm_xe_query_engine_cycles
-> - *
->   */
->  struct drm_xe_engine_class_instance {
->  #define DRM_XE_ENGINE_CLASS_RENDER		0
-> @@ -143,9 +142,11 @@ struct drm_xe_engine_class_instance {
->  	 */
->  #define DRM_XE_ENGINE_CLASS_VM_BIND_ASYNC	5
->  #define DRM_XE_ENGINE_CLASS_VM_BIND_SYNC	6
-> +	/** @engine_class: engine class id */
->  	__u16 engine_class;
-> -
-> +	/** @engine_instance: engine instance id */
->  	__u16 engine_instance;
-> +	/** @gt_id: Unique ID of this GT within the PCI Device */
->  	__u16 gt_id;
->  	/** @pad: MBZ */
->  	__u16 pad;
-> @@ -736,6 +737,12 @@ struct drm_xe_vm_bind_op {
->  	 *
->  	 * Note: For userptr and externally imported dma-buf the kernel expects
->  	 * either 1WAY or 2WAY for the @pat_index.
-> +	 *
-> +	 * For DRM_XE_VM_BIND_FLAG_NULL bindings there are no KMD restrictions
-> +	 * on the @pat_index. For such mappings there is no actual memory being
-> +	 * mapped (the address in the PTE is invalid), so the various PAT memory
-> +	 * attributes likely do not apply.  Simply leaving as zero is one
-> +	 * option (still a valid pat_index).
->  	 */
->  	__u16 pat_index;
->  
+> @@ -118,7 +118,6 @@ struct xe_user_extension {
+>  #define DRM_IOCTL_XE_VM_BIND			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_VM_BIND, struct drm_xe_vm_bind)
+>  #define DRM_IOCTL_XE_EXEC_QUEUE_CREATE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_CREATE, struct drm_xe_exec_queue_create)
+>  #define DRM_IOCTL_XE_EXEC_QUEUE_DESTROY		DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_DESTROY, struct drm_xe_exec_queue_destroy)
+> -#define DRM_IOCTL_XE_EXEC_QUEUE_SET_PROPERTY	DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_SET_PROPERTY, struct drm_xe_exec_queue_set_property)
+>  #define DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY	DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_GET_PROPERTY, struct drm_xe_exec_queue_get_property)
+>  #define DRM_IOCTL_XE_EXEC			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC, struct drm_xe_exec)
+>  #define DRM_IOCTL_XE_WAIT_USER_FENCE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_WAIT_USER_FENCE, struct drm_xe_wait_user_fence)
 > -- 
 > 2.34.1
 > 
