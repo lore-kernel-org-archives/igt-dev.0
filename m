@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3592357811658136911=="
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27C2610E109
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 00:21:23 +0000 (UTC)
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: <igt-dev@lists.freedesktop.org>
+Subject: [PATCH i-g-t] xe/tests: Remove tile_sysfs test for now
+Date: Mon, 11 Dec 2023 19:21:14 -0500
+Message-ID: <20231212002115.1105927-1-rodrigo.vivi@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/xe=3A_Remove_xe=5Fperf?=
- =?utf-8?q?=5Fpmu?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ashutosh Dixit" <ashutosh.dixit@intel.com>
-Date: Mon, 11 Dec 2023 23:07:49 -0000
-Message-ID: <170233606973.19579.2619480459812753599@emeril.freedesktop.org>
-References: <20231211162536.2790126-1-ashutosh.dixit@intel.com>
-In-Reply-To: <20231211162536.2790126-1-ashutosh.dixit@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,146 +17,99 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3592357811658136911==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The only case in this test was for the physical_memsize_attr
+that is getting removed from kernel. So, let's entirely remove
+this test case for now and re-add it when we have another reason.
 
-== Series Details ==
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+---
+ tests/intel/xe_sysfs_tile.c | 59 -------------------------------------
+ tests/meson.build           |  1 -
+ 2 files changed, 60 deletions(-)
+ delete mode 100644 tests/intel/xe_sysfs_tile.c
 
-Series: tests/xe: Remove xe_perf_pmu
-URL   : https://patchwork.freedesktop.org/series/127638/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7635_BAT -> XEIGTPW_10393_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10393_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [DMESG-FAIL][1] ([Intel XE#282] / [i915#2017]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10393/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@xe_create@create-execqueues-leak:
-    - bat-atsm-2:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10393/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-
-  
-  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
-
-
-Build changes
--------------
-
-  * IGT: IGT_7635 -> IGTPW_10393
-  * Linux: xe-566-00175313322325f73095e61b6cbe550f47184408 -> xe-568-b76c0e2128dd79ee1609d0d389e040c6e7499261
-
-  IGTPW_10393: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10393/index.html
-  IGT_7635: 0b796be8ce05cb2070ce5136d248f438c962d11e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-566-00175313322325f73095e61b6cbe550f47184408: 00175313322325f73095e61b6cbe550f47184408
-  xe-568-b76c0e2128dd79ee1609d0d389e040c6e7499261: b76c0e2128dd79ee1609d0d389e040c6e7499261
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10393/index.html
-
---===============3592357811658136911==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe: Remove xe_perf_pmu</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127638/">https://patchwork.freedesktop.org/series/127638/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10393/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10393/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7635_BAT -&gt; XEIGTPW_10393_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10393_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10393/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_create@create-execqueues-leak:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10393/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7635 -&gt; IGTPW_10393</li>
-<li>Linux: xe-566-00175313322325f73095e61b6cbe550f47184408 -&gt; xe-568-b76c0e2128dd79ee1609d0d389e040c6e7499261</li>
-</ul>
-<p>IGTPW_10393: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10393/index.html<br />
-  IGT_7635: 0b796be8ce05cb2070ce5136d248f438c962d11e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-566-00175313322325f73095e61b6cbe550f47184408: 00175313322325f73095e61b6cbe550f47184408<br />
-  xe-568-b76c0e2128dd79ee1609d0d389e040c6e7499261: b76c0e2128dd79ee1609d0d389e040c6e7499261</p>
-
-</body>
-</html>
-
---===============3592357811658136911==--
+diff --git a/tests/intel/xe_sysfs_tile.c b/tests/intel/xe_sysfs_tile.c
+deleted file mode 100644
+index ba970cda8..000000000
+--- a/tests/intel/xe_sysfs_tile.c
++++ /dev/null
+@@ -1,59 +0,0 @@
+-// SPDX-License-Identifier: MIT
+-/*
+- * Copyright © 2023 Intel Corporation
+- */
+-
+-/**
+- * TEST: Verify physical_vram_size_bytes of each tiles
+- * Category: Software building block
+- * SUBTEST: physical_vram_size_bytes
+- * Functionality: Vram
+- * Sub-category: Total vram per tile
+- * Test category: functionality test
+- * Description:
+- *             Read sysfs entry for physical_vram_size_bytes and compare with
+- *             vram size. physical_vram_size_bytes should be more than vram size.
+- */
+-
+-#include <string.h>
+-#include <sys/time.h>
+-
+-#include "igt.h"
+-#include "igt_sysfs.h"
+-
+-#include "xe_drm.h"
+-#include "xe/xe_ioctl.h"
+-#include "xe/xe_query.h"
+-
+-static void test_vram_physical_vram_size_bytes(int tile_fd, int tile_num, u64 vram_size)
+-{
+-	u64 physical_vram_size_bytes;
+-
+-	igt_assert(igt_sysfs_scanf(tile_fd, "physical_vram_size_bytes",
+-				   "%lx", &physical_vram_size_bytes) > 0);
+-	igt_assert_lt_u64(vram_size, physical_vram_size_bytes);
+-}
+-
+-igt_main
+-{
+-	int fd, tilefd, tile;
+-	u64 vram_size;
+-
+-	igt_fixture {
+-		fd = drm_open_driver(DRIVER_XE);
+-		xe_device_get(fd);
+-	}
+-
+-	igt_subtest("physical_vram_size_bytes") {
+-		igt_require(xe_has_vram(fd));
+-		for_each_sysfs_tile_dirfd(fd, tilefd, tile) {
+-			vram_size = xe_vram_size(fd, tile);
+-			test_vram_physical_vram_size_bytes(tilefd, tile, vram_size);
+-		}
+-	}
+-
+-	igt_fixture {
+-		xe_device_put(fd);
+-		close(fd);
+-	}
+-}
+diff --git a/tests/meson.build b/tests/meson.build
+index f6cfbcf5e..4591ca256 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -307,7 +307,6 @@ intel_xe_progs = [
+ 	'xe_prime_self_import',
+ 	'xe_perf_pmu',
+ 	'xe_query',
+-	'xe_sysfs_tile',
+ 	'xe_uevent',
+ 	'xe_vm',
+ 	'xe_waitfence',
+-- 
+2.43.0
