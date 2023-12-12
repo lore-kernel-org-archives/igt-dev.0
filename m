@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21DF810E5B2
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 09:28:51 +0000 (UTC)
-Message-ID: <de68644e-def3-443a-b3df-6414d60a41cd@intel.com>
-Date: Tue, 12 Dec 2023 09:28:46 +0000
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: Re: [PATCH i-g-t v5 2/6] lib/intel_blt: Update calculation of
- ccs_size and size_of_ctrl_copy
-Content-Language: en-GB
-To: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-References: <cover.1702402592.git.akshata.jahagirdar@intel.com>
- <ee74ba991e506182a7f89eb4fda6197e26e58413.1702402592.git.akshata.jahagirdar@intel.com>
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <ee74ba991e506182a7f89eb4fda6197e26e58413.1702402592.git.akshata.jahagirdar@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_RFC=3A_drm-uapi/xe=3A_add?=
+ =?utf-8?q?_exec=5Fqueue=5Fid_member_to_drm=5Fxe=5Fwait=5Fuser=5Ffence_struc?=
+ =?utf-8?q?ture_=28rev7=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bommu Krishnaiah" <krishnaiah.bommu@intel.com>
+Date: Tue, 12 Dec 2023 05:35:57 -0000
+Message-ID: <170235935725.31293.3050107583521937203@emeril.freedesktop.org>
+References: <20231212051040.6912-1-krishnaiah.bommu@intel.com>
+In-Reply-To: <20231212051040.6912-1-krishnaiah.bommu@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,98 +18,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, ayaz.siddiqui@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 12/12/2023 17:39, Akshata Jahagirdar wrote:
-> The Main-to-CCS Ratio for XE2 has been changed to 512:1.
-> Update the CCS_RATIO macro to select relevant ratio based on platform.
-> 
-> Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-> ---
->   lib/intel_blt.c | 15 +++++++++------
->   lib/intel_blt.h |  2 +-
->   2 files changed, 10 insertions(+), 7 deletions(-)
-> 
-> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index 1116c978e..5399be20a 100644
-> --- a/lib/intel_blt.c
-> +++ b/lib/intel_blt.c
-> @@ -948,15 +948,16 @@ int blt_block_copy(int fd,
->   	return ret;
->   }
->   
-> -static uint16_t __ccs_size(const struct blt_ctrl_surf_copy_data *surf)
-> +static uint16_t __ccs_size(int fd, const struct blt_ctrl_surf_copy_data *surf)
->   {
->   	uint32_t src_size, dst_size;
-> +	uint16_t ccsratio = CCS_RATIO(fd);
->   
->   	src_size = surf->src.access_type == DIRECT_ACCESS ?
-> -				surf->src.size : surf->src.size / CCS_RATIO;
-> +				surf->src.size : surf->src.size / ccsratio;
->   
->   	dst_size = surf->dst.access_type == DIRECT_ACCESS ?
-> -				surf->dst.size : surf->dst.size / CCS_RATIO;
-> +				surf->dst.size : surf->dst.size / ccsratio;
->   
->   	igt_assert_f(src_size <= dst_size, "dst size must be >= src size for CCS copy\n");
->   
-> @@ -1118,6 +1119,8 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
->   	uint64_t dst_offset, src_offset, bb_offset, alignment;
->   	uint32_t bbe = MI_BATCH_BUFFER_END;
->   	uint32_t *bb;
-> +	uint16_t num_ccs_blocks = (ip_ver >= IP_VER(20, 0)) ?
-> +				(xe_get_default_alignment(fd) / CCS_RATIO(fd)) : CCS_RATIO(fd);
->   
->   	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
->   	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
-> @@ -1136,7 +1139,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
->   		data.xe2.dw00.dst_access_type = surf->dst.access_type;
->   
->   		/* Ensure dst has size capable to keep src ccs aux */
-> -		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
-> +		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
->   		data.xe2.dw00.length = 0x3;
->   
->   		data.xe2.dw01.src_address_lo = src_offset;
-> @@ -1155,7 +1158,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
->   		data.gen12.dw00.dst_access_type = surf->dst.access_type;
->   
->   		/* Ensure dst has size capable to keep src ccs aux */
-> -		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
-> +		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
->   		data.gen12.dw00.length = 0x3;
->   
->   		data.gen12.dw01.src_address_lo = src_offset;
-> @@ -1808,7 +1811,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
->   			flags |= DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
->   
->   		size = ALIGN(size, xe_get_default_alignment(blt->fd));
-> -		handle = xe_bo_create(blt->fd, 0, size, region, flags);
-> +		handle = xe_bo_create_flags(blt->fd, 0, size, region);
+== Series Details ==
 
-create_flags() looks have been removed?
+Series: RFC: drm-uapi/xe: add exec_queue_id member to drm_xe_wait_user_fence structure (rev7)
+URL   : https://patchwork.freedesktop.org/series/127364/
+State : failure
 
->   	} else {
->   		igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
->   							  &size, region) == 0);
-> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-> index 5934ccd67..69eb2195f 100644
-> --- a/lib/intel_blt.h
-> +++ b/lib/intel_blt.h
-> @@ -52,7 +52,7 @@
->   #include "igt.h"
->   #include "intel_cmds_info.h"
->   
-> -#define CCS_RATIO 256
-> +#define CCS_RATIO(xe) (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) ? 512 : 256)
+== Summary ==
 
-Probably s/xe/intel/ or just fd, since this is not specific to xe, but 
-is also used for i915.
+IGT patchset build failed on latest successful build
+0b796be8ce05cb2070ce5136d248f438c962d11e tests/intel: Add Xe peer2peer test
 
->   
->   enum blt_color_depth {
->   	CD_8bit,
+Tail of build.log:
+[621/1665] Compiling C object 'tests/59830eb@@kms_chamelium_edid@exe/chamelium_kms_chamelium_helper.c.o'.
+[622/1665] Compiling C object 'tests/59830eb@@kms_chamelium_audio@exe/chamelium_kms_chamelium_helper.c.o'.
+[623/1665] Compiling C object 'tests/59830eb@@kms_psr@exe/intel_kms_psr.c.o'.
+[624/1665] Compiling C object 'tests/v3d/cad21b8@@v3d_mmap@exe/v3d_mmap.c.o'.
+[625/1665] Compiling C object 'tests/v3d/cad21b8@@v3d_get_param@exe/v3d_get_param.c.o'.
+[626/1665] Compiling C object 'tests/59830eb@@i915_pm_rpm@exe/intel_i915_pm_rpm.c.o'.
+[627/1665] Compiling C object 'tests/vc4/e4667e8@@vc4_create_bo@exe/vc4_create_bo.c.o'.
+[628/1665] Compiling C object 'tests/vc4/e4667e8@@vc4_lookup_fail@exe/vc4_lookup_fail.c.o'.
+[629/1665] Compiling C object 'tests/59830eb@@gem_sync@exe/intel_gem_sync.c.o'.
+[630/1665] Compiling C object 'tests/59830eb@@msm_shrink@exe/msm_msm_shrink.c.o'.
+[631/1665] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
+[632/1665] Compiling C object 'tests/59830eb@@kms_chamelium_hpd@exe/chamelium_kms_chamelium_helper.c.o'.
+[633/1665] Compiling C object 'tests/v3d/cad21b8@@v3d_get_bo_offset@exe/v3d_get_bo_offset.c.o'.
+[634/1665] Compiling C object 'tests/vc4/e4667e8@@vc4_mmap@exe/vc4_mmap.c.o'.
+[635/1665] Compiling C object 'tests/v3d/cad21b8@@v3d_wait_bo@exe/v3d_wait_bo.c.o'.
+[636/1665] Compiling C object 'tests/vc4/e4667e8@@vc4_dmabuf_poll@exe/vc4_dmabuf_poll.c.o'.
+[637/1665] Compiling C object 'tests/59830eb@@kms_chamelium_frames@exe/chamelium_kms_chamelium_helper.c.o'.
+[638/1665] Compiling C object 'tests/59830eb@@xe_pm@exe/intel_xe_pm.c.o'.
+[639/1665] Compiling C object 'tests/59830eb@@xe_exec_balancer@exe/intel_xe_exec_balancer.c.o'.
+[640/1665] Compiling C object 'tests/59830eb@@xe_exec_reset@exe/intel_xe_exec_reset.c.o'.
+[641/1665] Compiling C object 'tests/59830eb@@kms_chamelium_color@exe/kms_color_helper.c.o'.
+[642/1665] Compiling C object 'tests/59830eb@@gem_softpin@exe/intel_gem_softpin.c.o'.
+[643/1665] Compiling C object 'tests/59830eb@@xe_query@exe/intel_xe_query.c.o'.
+[644/1665] Compiling C object 'tests/vc4/e4667e8@@vc4_label_bo@exe/vc4_label_bo.c.o'.
+[645/1665] Compiling C object 'tests/vc4/e4667e8@@vc4_purgeable_bo@exe/vc4_purgeable_bo.c.o'.
+[646/1665] Compiling C object 'tests/59830eb@@kms_chamelium_color@exe/chamelium_kms_chamelium_color.c.o'.
+[647/1665] Compiling C object 'tests/v3d/cad21b8@@v3d_perfmon@exe/v3d_perfmon.c.o'.
+[648/1665] Compiling C object 'tests/v3d/cad21b8@@v3d_job_submission@exe/v3d_job_submission.c.o'.
+[649/1665] Compiling C object 'tests/59830eb@@xe_evict@exe/intel_xe_evict.c.o'.
+[650/1665] Compiling C object 'tests/v3d/cad21b8@@v3d_submit_csd@exe/v3d_submit_csd.c.o'.
+[651/1665] Compiling C object 'tests/59830eb@@kms_psr2_sf@exe/intel_kms_psr2_sf.c.o'.
+[652/1665] Compiling C object 'tests/59830eb@@kms_chamelium_hpd@exe/chamelium_kms_chamelium_hpd.c.o'.
+[653/1665] Compiling C object 'tests/59830eb@@kms_chamelium_audio@exe/chamelium_kms_chamelium_audio.c.o'.
+[654/1665] Compiling C object 'tests/v3d/cad21b8@@v3d_submit_cl@exe/v3d_submit_cl.c.o'.
+[655/1665] Compiling C object 'tests/59830eb@@xe_pat@exe/intel_xe_pat.c.o'.
+[656/1665] Compiling C object 'tests/59830eb@@kms_chamelium_edid@exe/chamelium_kms_chamelium_edid.c.o'.
+[657/1665] Compiling C object 'tests/59830eb@@xe_exec_threads@exe/intel_xe_exec_threads.c.o'.
+[658/1665] Compiling C object 'tests/59830eb@@kms_pm_rpm@exe/intel_kms_pm_rpm.c.o'.
+[659/1665] Compiling C object 'tests/59830eb@@i915_query@exe/intel_i915_query.c.o'.
+[660/1665] Compiling C object 'tests/59830eb@@xe_intel_bb@exe/intel_xe_intel_bb.c.o'.
+[661/1665] Compiling C object 'tests/59830eb@@kms_chamelium_frames@exe/chamelium_kms_chamelium_frames.c.o'.
+[662/1665] Compiling C object 'tests/59830eb@@gem_exec_balancer@exe/intel_gem_exec_balancer.c.o'.
+[663/1665] Compiling C object 'tests/59830eb@@gem_exec_fence@exe/intel_gem_exec_fence.c.o'.
+[664/1665] Compiling C object 'tests/59830eb@@xe_vm@exe/intel_xe_vm.c.o'.
+[665/1665] Generating i915-perf-equations with a custom command.
+[666/1665] Compiling C object 'tests/59830eb@@kms_frontbuffer_tracking@exe/intel_kms_frontbuffer_tracking.c.o'.
+[667/1665] Compiling C object 'tests/59830eb@@perf_pmu@exe/intel_perf_pmu.c.o'.
+[668/1665] Compiling C object 'tests/59830eb@@gem_exec_schedule@exe/intel_gem_exec_schedule.c.o'.
+[669/1665] Compiling C object 'tests/59830eb@@perf@exe/intel_perf.c.o'.
+ninja: build stopped: subcommand failed.
+
