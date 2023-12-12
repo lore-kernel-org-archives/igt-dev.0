@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 46EE110E62D
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 14:29:55 +0000 (UTC)
-Date: Tue, 12 Dec 2023 15:29:42 +0100
-From: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
-To: sai.gowtham.ch@intel.com
-Subject: Re: [igt-dev] [PATCH i-g-t] intel/xe_exec_compute_mode: Add
- non-blocking subtest
-Message-ID: <ZXhuVvCxraLHz1qu@dtmrzgl-desk.ger.corp.intel.com>
-References: <20231207070503.6705-1-sai.gowtham.ch@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B09B410E615
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 15:30:10 +0000 (UTC)
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t v3 1/2] tests/intel/xe_create: sanity check all MBZ
+ fields
+Date: Tue, 12 Dec 2023 15:29:39 +0000
+Message-ID: <20231212152940.293533-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231207070503.6705-1-sai.gowtham.ch@intel.com>
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,139 +17,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Dec 07, 2023 at 12:35:03PM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> 
-> Fill the ring with maximum workload and expecte kernel to return
-> -EWOULDBLOCK error.
-> 
-LGTM,
-Reviewed-by: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
+Explicitly check that all MBZ (must-be-zero) fields are currently
+rejected, including the currently unused extensions.
 
+v2: (Kamil)
+  - Various improvements
+v3: Rebase on uapi changes
 
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> ---
->  tests/intel/xe_exec_compute_mode.c | 95 ++++++++++++++++++++++++++++++
->  1 file changed, 95 insertions(+)
-> 
-> diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-> index 7d3004d65..56bd6cb49 100644
-> --- a/tests/intel/xe_exec_compute_mode.c
-> +++ b/tests/intel/xe_exec_compute_mode.c
-> @@ -290,6 +290,97 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  		close(map_fd);
->  }
->  
-> +/**
-> + * SUBTEST: non-blocking
-> + * Description: Fill the ring and check we get expected errors.
-> + * Test category: functionality test
-> + */
-> +static void non_block(int fd, int expect)
-> +{
-> +	struct drm_xe_sync sync = {
-> +		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-> +		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> +	};
-> +
-> +	struct drm_xe_exec exec = {
-> +		.num_batch_buffer = 1,
-> +		.num_syncs = 1,
-> +		.syncs = to_user_pointer(&sync),
-> +	};
-> +	struct {
-> +		uint32_t batch[16];
-> +		uint64_t pad;
-> +		uint32_t data;
-> +		uint64_t addr;
-> +	} *data;
-> +	struct drm_xe_engine *engine;
-> +	uint32_t vm, exec_queue, syncobj;
-> +	size_t bo_size;
-> +	int value = 0x123456;
-> +	uint64_t addr = 0x100000;
-> +	uint32_t bo = 0;
-> +	int b, count, intr, err;
-> +
-> +	syncobj = syncobj_create(fd, 0);
-> +	sync.handle = syncobj;
-> +
-> +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT |
-> +			      DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-> +	bo_size = sizeof(*data);
-> +	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
-> +
-> +	engine = xe_engine(fd, 1);
-> +	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, engine->instance.gt_id),
-> +					   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +
-> +	xe_vm_bind_async(fd, vm, engine->instance.gt_id, bo, 0, addr, bo_size, &sync, 1);
-> +	exec_queue = xe_exec_queue_create(fd, vm, &engine->instance, 0);
-> +	data = xe_bo_map(fd, bo, bo_size);
-> +
-> +	count = 0;
-> +	intr = 0;
-> +	do {
-> +		uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
-> +		uint64_t batch_addr = addr + batch_offset;
-> +		uint64_t sdi_offset = (char *) & (data->data) - (char *)data;
-> +		uint64_t sdi_addr = addr + sdi_offset;
-> +
-> +		b = 0;
-> +		data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-> +		data->batch[b++] = sdi_addr;
-> +		data->batch[b++] = sdi_addr >> 32;
-> +		data->batch[b++] = value;
-> +		data->batch[b++] = MI_BATCH_BUFFER_END;
-> +		igt_assert(b <= ARRAY_SIZE(data->batch));
-> +
-> +		exec.exec_queue_id = exec_queue;
-> +		exec.address = batch_addr;
-> +		sync.flags &= DRM_XE_SYNC_FLAG_SIGNAL;
-> +
-> +		err = __xe_exec(fd, &exec);
-> +		igt_assert(syncobj_wait(fd, &sync.handle, 1,
-> +					INT64_MAX, 0, NULL));
-> +
-> +		if (err == -EWOULDBLOCK) {
-> +			if (intr != count)
-> +				err = 0;
-> +			intr = count + 1;
-> +		}
-> +		if (err)
-> +			break;
-> +		count++;
-> +	} while (1);
-> +
-> +	igt_assert_eq(err, expect);
-> +
-> +	syncobj_destroy(fd, syncobj);
-> +	munmap(data, bo_size);
-> +	gem_close(fd, bo);
-> +
-> +	xe_exec_queue_destroy(fd, exec_queue);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
->  igt_main
->  {
->  	struct drm_xe_engine_class_instance *hwe;
-> @@ -347,6 +438,10 @@ igt_main
->  					  s->flags);
->  	}
->  
-> +	igt_subtest("non-blocking")
-> +		non_block(fd, -EWOULDBLOCK);
-> +
-> +
->  	igt_fixture
->  		drm_close_driver(fd);
->  }
-> -- 
-> 2.39.1
-> 
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Pallavi Mishra <pallavi.mishra@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/intel/xe_create.c | 61 +++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 56 insertions(+), 5 deletions(-)
+
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index 1ed48a5d3..09355cc5c 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -26,6 +26,18 @@ static struct param {
+ 	.vram_percent = 100,
+ };
+ 
++static int __ioctl_create(int fd, struct drm_xe_gem_create *create)
++{
++	int ret = 0;
++
++	if (igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, create)) {
++		ret = -errno;
++		errno = 0;
++	}
++
++	return ret;
++}
++
+ static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t placement,
+ 		       uint32_t *handlep)
+ {
+@@ -35,14 +47,11 @@ static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t placement,
+ 		.cpu_caching = __xe_default_cpu_caching(fd, placement, 0),
+ 		.placement = placement,
+ 	};
+-	int ret = 0;
++	int ret;
+ 
+ 	igt_assert(handlep);
+ 
+-	if (igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create)) {
+-		ret = -errno;
+-		errno = 0;
+-	}
++	ret = __ioctl_create(fd, &create);
+ 	*handlep = create.handle;
+ 
+ 	return ret;
+@@ -96,6 +105,45 @@ static void create_invalid_size(int fd)
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
++/**
++ * SUBTEST: create-invalid-mbz
++ * Functionality: ioctl
++ * Test category: negative test
++ * Description: Verifies xe bo create returns expected error code on all MBZ fields.
++ */
++static void create_invalid_mbz(int fd)
++{
++	struct drm_xe_gem_create create = {
++		.size = PAGE_SIZE,
++		.placement = system_memory(fd),
++		.cpu_caching = DRM_XE_GEM_CPU_CACHING_WB,
++	};
++	int i;
++
++	/* Make sure the baseline passes */
++	igt_assert_eq(__ioctl_create(fd, &create), 0);
++	gem_close(fd, create.handle);
++	create.handle = 0;
++
++	/* No supported extensions yet */
++	create.extensions = -1;
++	igt_assert_eq(__ioctl_create(fd, &create), -EINVAL);
++	create.extensions = 0;
++
++	/* Make sure KMD rejects non-zero padding/reserved fields */
++	for (i = 0; i < ARRAY_SIZE(create.pad); i++) {
++		create.pad[i] = -1;
++		igt_assert_eq(__ioctl_create(fd, &create), -EINVAL);
++		create.pad[i] = 0;
++	}
++
++	for (i = 0; i < ARRAY_SIZE(create.reserved); i++) {
++		create.reserved[i] = -1;
++		igt_assert_eq(__ioctl_create(fd, &create), -EINVAL);
++		create.reserved[i] = 0;
++	}
++}
++
+ enum exec_queue_destroy {
+ 	NOLEAK,
+ 	LEAK
+@@ -272,6 +320,9 @@ igt_main_args("S:p:", NULL, help_str, opt_handler, NULL)
+ 	igt_fixture
+ 		xe = drm_open_driver(DRIVER_XE);
+ 
++	igt_subtest("create-invalid-mbz")
++		create_invalid_mbz(xe);
++
+ 	igt_subtest("create-invalid-size") {
+ 		create_invalid_size(xe);
+ 	}
+-- 
+2.43.0
