@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D52C110E649
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 17:48:28 +0000 (UTC)
-From: Lukasz Laguna <lukasz.laguna@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 93BB110E649
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 17:31:18 +0000 (UTC)
+From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 1/2] lib/xe/xe_ioctl: add __xe_exec_sync() helper
-Date: Tue, 12 Dec 2023 18:48:15 +0100
-Message-Id: <20231212174816.5292-2-lukasz.laguna@intel.com>
-In-Reply-To: <20231212174816.5292-1-lukasz.laguna@intel.com>
-References: <20231212174816.5292-1-lukasz.laguna@intel.com>
+Subject: [PATCH v1 6/6] drm-uapi/xe: Remove PMU from Xe till uapi is finalized
+Date: Tue, 12 Dec 2023 17:30:59 +0000
+Message-Id: <20231212173059.7-7-francois.dugast@intel.com>
+In-Reply-To: <20231212173059.7-1-francois.dugast@intel.com>
+References: <20231212173059.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -22,56 +22,63 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add non-asserting variant of xe_exec_sync().
+Align with commit ("drm/xe/pmu: Remove PMU from Xe till uapi is finalized")
 
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- lib/xe/xe_ioctl.c | 12 +++++++++---
- lib/xe/xe_ioctl.h |  2 ++
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ include/drm-uapi/xe_drm.h | 40 ---------------------------------------
+ 1 file changed, 40 deletions(-)
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index cdad3d7e2..b5cd3ae35 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -448,8 +448,8 @@ void xe_exec(int fd, struct drm_xe_exec *exec)
- 	igt_assert_eq(__xe_exec(fd, exec), 0);
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 8f09e9681..b1839df48 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -1074,46 +1074,6 @@ struct drm_xe_wait_user_fence {
+ 	/** @reserved: Reserved */
+ 	__u64 reserved[2];
+ };
+-
+-/**
+- * DOC: XE PMU event config IDs
+- *
+- * Check 'man perf_event_open' to use the ID's DRM_XE_PMU_XXXX listed in xe_drm.h
+- * in 'struct perf_event_attr' as part of perf_event_open syscall to read a
+- * particular event.
+- *
+- * For example to open the DRMXE_PMU_RENDER_GROUP_BUSY(0):
+- *
+- * .. code-block:: C
+- *
+- *	struct perf_event_attr attr;
+- *	long long count;
+- *	int cpu = 0;
+- *	int fd;
+- *
+- *	memset(&attr, 0, sizeof(struct perf_event_attr));
+- *	attr.type = type; // eg: /sys/bus/event_source/devices/xe_0000_56_00.0/type
+- *	attr.read_format = PERF_FORMAT_TOTAL_TIME_ENABLED;
+- *	attr.use_clockid = 1;
+- *	attr.clockid = CLOCK_MONOTONIC;
+- *	attr.config = DRM_XE_PMU_RENDER_GROUP_BUSY(0);
+- *
+- *	fd = syscall(__NR_perf_event_open, &attr, -1, cpu, -1, 0);
+- */
+-
+-/*
+- * Top bits of every counter are GT id.
+- */
+-#define __DRM_XE_PMU_GT_SHIFT (56)
+-
+-#define ___DRM_XE_PMU_OTHER(gt, x) \
+-	(((__u64)(x)) | ((__u64)(gt) << __DRM_XE_PMU_GT_SHIFT))
+-
+-#define DRM_XE_PMU_RENDER_GROUP_BUSY(gt)	___DRM_XE_PMU_OTHER(gt, 0)
+-#define DRM_XE_PMU_COPY_GROUP_BUSY(gt)		___DRM_XE_PMU_OTHER(gt, 1)
+-#define DRM_XE_PMU_MEDIA_GROUP_BUSY(gt)		___DRM_XE_PMU_OTHER(gt, 2)
+-#define DRM_XE_PMU_ANY_ENGINE_GROUP_BUSY(gt)	___DRM_XE_PMU_OTHER(gt, 3)
+-
+ #if defined(__cplusplus)
  }
- 
--void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
--		  struct drm_xe_sync *sync, uint32_t num_syncs)
-+int __xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
-+		   struct drm_xe_sync *sync, uint32_t num_syncs)
- {
- 	struct drm_xe_exec exec = {
- 		.exec_queue_id = exec_queue,
-@@ -459,7 +459,13 @@ void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
- 		.num_batch_buffer = 1,
- 	};
- 
--	igt_assert_eq(__xe_exec(fd, &exec), 0);
-+	return __xe_exec(fd, &exec);
-+}
-+
-+void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
-+		    struct drm_xe_sync *sync, uint32_t num_syncs)
-+{
-+	igt_assert_eq(__xe_exec_sync(fd, exec_queue, addr, sync, num_syncs), 0);
- }
- 
- void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index c8d46fb29..3679ce66b 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -88,6 +88,8 @@ void *xe_bo_map(int fd, uint32_t bo, size_t size);
- void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot);
- int __xe_exec(int fd, struct drm_xe_exec *exec);
- void xe_exec(int fd, struct drm_xe_exec *exec);
-+int __xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
-+		   struct drm_xe_sync *sync, uint32_t num_syncs);
- void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
- 		  struct drm_xe_sync *sync, uint32_t num_syncs);
- void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);
+ #endif
 -- 
-2.40.0
+2.34.1
