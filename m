@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88A7110E557
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5708410E16D
  for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 05:39:46 +0000 (UTC)
 From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 To: 
-Subject: [PATCH i-g-t v5 5/6] tests/intel/gem_ccs: Add compression support for
- Lunarlake
-Date: Tue, 12 Dec 2023 09:39:27 -0800
-Message-Id: <d57e380afd85e47a685684847ef2adfa709734e8.1702402592.git.akshata.jahagirdar@intel.com>
+Subject: [PATCH i-g-t v5 3/6] lib/intel_pat: Add uc_comp pat_index
+Date: Tue, 12 Dec 2023 09:39:25 -0800
+Message-Id: <938cceb1db7d0aeb62eda4e35d53e21ffb86a241.1702402592.git.akshata.jahagirdar@intel.com>
 In-Reply-To: <cover.1702402592.git.akshata.jahagirdar@intel.com>
 References: <cover.1702402592.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
@@ -25,25 +24,65 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update the ccs_ratio call to get value according to platform.
+Compression in XE2 is programmed through pat-index attribute.
+Add a dedicated pat-index for compression for XE2 and later platforms.
+The caller to this helper function ensures GFX version is correct.
 
 Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 ---
- tests/intel/gem_ccs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/intel_pat.c | 14 +++++++++++++-
+ lib/intel_pat.h |  2 ++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
-index 0a691778d..5a17be4cb 100644
---- a/tests/intel/gem_ccs.c
-+++ b/tests/intel/gem_ccs.c
-@@ -99,7 +99,7 @@ static void surf_copy(int i915,
- 	struct blt_block_copy_data_ext ext = {};
- 	struct blt_ctrl_surf_copy_data surf = {};
- 	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
--	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
-+	uint64_t bb_size, ccssize = mid->size / (CCS_RATIO(i915));
- 	uint32_t *ccscopy;
- 	uint8_t uc_mocs = intel_get_uc_mocs_index(i915);
- 	int result;
+diff --git a/lib/intel_pat.c b/lib/intel_pat.c
+index 2b892ee52..8ec8b72a8 100644
+--- a/lib/intel_pat.c
++++ b/lib/intel_pat.c
+@@ -11,7 +11,7 @@ struct intel_pat_cache {
+ 	uint8_t uc; /* UC + COH_NONE */
+ 	uint8_t wt; /* WT + COH_NONE */
+ 	uint8_t wb; /* WB + COH_AT_LEAST_1WAY */
+-
++	uint8_t uc_comp; /* UC + COH_NONE + COMPRESSION, XE2 and later*/
+ 	uint8_t max_index;
+ };
+ 
+@@ -23,6 +23,7 @@ static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
+ 		pat->uc = 3;
+ 		pat->wt = 15; /* Compressed + WB-transient */
+ 		pat->wb = 2;
++		pat->uc_comp = 12; /* Compressed + UC, XE2 and later */
+ 		pat->max_index = 31;
+ 	} else if (IS_METEORLAKE(dev_id)) {
+ 		pat->uc = 2;
+@@ -60,6 +61,17 @@ uint8_t intel_get_pat_idx_uc(int fd)
+ 	return pat.uc;
+ }
+ 
++uint8_t intel_get_pat_idx_uc_comp(int fd)
++{
++	struct intel_pat_cache pat = {};
++
++	uint16_t dev_id = intel_get_drm_devid(fd);
++	igt_assert(AT_LEAST_GEN(dev_id, 20));
++
++	intel_get_pat_idx(fd, &pat);
++	return pat.uc_comp;
++}
++
+ uint8_t intel_get_pat_idx_wt(int fd)
+ {
+ 	struct intel_pat_cache pat = {};
+diff --git a/lib/intel_pat.h b/lib/intel_pat.h
+index c24dbc275..eb48cbc65 100644
+--- a/lib/intel_pat.h
++++ b/lib/intel_pat.h
+@@ -16,4 +16,6 @@ uint8_t intel_get_pat_idx_uc(int fd);
+ uint8_t intel_get_pat_idx_wt(int fd);
+ uint8_t intel_get_pat_idx_wb(int fd);
+ 
++uint8_t intel_get_pat_idx_uc_comp(int fd);
++
+ #endif /* INTEL_PAT_H */
 -- 
 2.34.1
