@@ -1,14 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27C2610E109
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 00:21:23 +0000 (UTC)
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: <igt-dev@lists.freedesktop.org>
-Subject: [PATCH i-g-t] xe/tests: Remove tile_sysfs test for now
-Date: Mon, 11 Dec 2023 19:21:14 -0500
-Message-ID: <20231212002115.1105927-1-rodrigo.vivi@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78F2210E53A
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 00:34:41 +0000 (UTC)
+From: "Jahagirdar, Akshata" <akshata.jahagirdar@intel.com>
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
+Subject: RE: [PATCH i-g-t v4 4/6] lib/intel_blt: Update caching mode and
+ pat_index
+Date: Tue, 12 Dec 2023 00:34:34 +0000
+Message-ID: <CO1PR11MB497715ABC5D005C8A504E3948D8EA@CO1PR11MB4977.namprd11.prod.outlook.com>
+References: <cover.1701951594.git.akshata.jahagirdar@intel.com>
+ <94a074ff51568bea158bc9dad6aa12e1882ae92a.1701951594.git.akshata.jahagirdar@intel.com>
+ <20231211091630.3uk6q545j27q2xr2@zkempczy-mobl2>
+In-Reply-To: <20231211091630.3uk6q545j27q2xr2@zkempczy-mobl2>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -17,99 +23,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Siddiqui,
+ Ayaz A" <ayaz.siddiqui@intel.com>, "Auld, Matthew" <matthew.auld@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The only case in this test was for the physical_memsize_attr
-that is getting removed from kernel. So, let's entirely remove
-this test case for now and re-add it when we have another reason.
-
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- tests/intel/xe_sysfs_tile.c | 59 -------------------------------------
- tests/meson.build           |  1 -
- 2 files changed, 60 deletions(-)
- delete mode 100644 tests/intel/xe_sysfs_tile.c
-
-diff --git a/tests/intel/xe_sysfs_tile.c b/tests/intel/xe_sysfs_tile.c
-deleted file mode 100644
-index ba970cda8..000000000
---- a/tests/intel/xe_sysfs_tile.c
-+++ /dev/null
-@@ -1,59 +0,0 @@
--// SPDX-License-Identifier: MIT
--/*
-- * Copyright © 2023 Intel Corporation
-- */
--
--/**
-- * TEST: Verify physical_vram_size_bytes of each tiles
-- * Category: Software building block
-- * SUBTEST: physical_vram_size_bytes
-- * Functionality: Vram
-- * Sub-category: Total vram per tile
-- * Test category: functionality test
-- * Description:
-- *             Read sysfs entry for physical_vram_size_bytes and compare with
-- *             vram size. physical_vram_size_bytes should be more than vram size.
-- */
--
--#include <string.h>
--#include <sys/time.h>
--
--#include "igt.h"
--#include "igt_sysfs.h"
--
--#include "xe_drm.h"
--#include "xe/xe_ioctl.h"
--#include "xe/xe_query.h"
--
--static void test_vram_physical_vram_size_bytes(int tile_fd, int tile_num, u64 vram_size)
--{
--	u64 physical_vram_size_bytes;
--
--	igt_assert(igt_sysfs_scanf(tile_fd, "physical_vram_size_bytes",
--				   "%lx", &physical_vram_size_bytes) > 0);
--	igt_assert_lt_u64(vram_size, physical_vram_size_bytes);
--}
--
--igt_main
--{
--	int fd, tilefd, tile;
--	u64 vram_size;
--
--	igt_fixture {
--		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
--	}
--
--	igt_subtest("physical_vram_size_bytes") {
--		igt_require(xe_has_vram(fd));
--		for_each_sysfs_tile_dirfd(fd, tilefd, tile) {
--			vram_size = xe_vram_size(fd, tile);
--			test_vram_physical_vram_size_bytes(tilefd, tile, vram_size);
--		}
--	}
--
--	igt_fixture {
--		xe_device_put(fd);
--		close(fd);
--	}
--}
-diff --git a/tests/meson.build b/tests/meson.build
-index f6cfbcf5e..4591ca256 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -307,7 +307,6 @@ intel_xe_progs = [
- 	'xe_prime_self_import',
- 	'xe_perf_pmu',
- 	'xe_query',
--	'xe_sysfs_tile',
- 	'xe_uevent',
- 	'xe_vm',
- 	'xe_waitfence',
--- 
-2.43.0
+DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBLZW1wY3p5bnNraSwgWmJpZ25p
+ZXcgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4gDQpTZW50OiBNb25kYXksIERlY2Vt
+YmVyIDExLCAyMDIzIDE6MTcgQU0NClRvOiBKYWhhZ2lyZGFyLCBBa3NoYXRhIDxha3NoYXRhLmph
+aGFnaXJkYXJAaW50ZWwuY29tPg0KQ2M6IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBT
+aWRkaXF1aSwgQXlheiBBIDxheWF6LnNpZGRpcXVpQGludGVsLmNvbT47IFN0b2xhcmVrLCBLYXJv
+bGluYSA8a2Fyb2xpbmEuc3RvbGFyZWtAaW50ZWwuY29tPjsgQXVsZCwgTWF0dGhldyA8bWF0dGhl
+dy5hdWxkQGludGVsLmNvbT47IE1pc2hyYSwgUGFsbGF2aSA8cGFsbGF2aS5taXNocmFAaW50ZWwu
+Y29tPg0KU3ViamVjdDogUmU6IFtQQVRDSCBpLWctdCB2NCA0LzZdIGxpYi9pbnRlbF9ibHQ6IFVw
+ZGF0ZSBjYWNoaW5nIG1vZGUgYW5kIHBhdF9pbmRleA0KDQpPbiBUaHUsIERlYyAwNywgMjAyMyBh
+dCAwNDo0MjozOUFNIC0wODAwLCBBa3NoYXRhIEphaGFnaXJkYXIgd3JvdGU6DQo+IFRoZSBwYXQt
+aW5kZXggYW5kIGNhY2hpbmcgbW9kZSBmb3IgY29tcHJlc3Npb24gbmVlZCB0byBjaGFuZ2UgdG8g
+DQo+IHVjX2NvbXAgaW4gY2FzZSBvZiBjb21wcmVzc2lvbiwgZWxzZSB0aGV5IGp1c3QgdGFrZSB0
+aGUgZGVmYXVsdCB2YWx1ZSBvZiBwYXRfaW5kZXguDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBBa3No
+YXRhIEphaGFnaXJkYXIgPGFrc2hhdGEuamFoYWdpcmRhckBpbnRlbC5jb20+DQo+IC0tLQ0KPiAg
+bGliL2ludGVsX2JsdC5jIHwgNyArKysrLS0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRp
+b25zKCspLCAzIGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9ibHQu
+YyBiL2xpYi9pbnRlbF9ibHQuYyBpbmRleCANCj4gYTJlNjQ1ODZiLi5kNTRiMTkzNDAgMTAwNjQ0
+DQo+IC0tLSBhL2xpYi9pbnRlbF9ibHQuYw0KPiArKysgYi9saWIvaW50ZWxfYmx0LmMNCj4gQEAg
+LTE3OTYsNyArMTc5Niw4IEBAIGJsdF9jcmVhdGVfb2JqZWN0KGNvbnN0IHN0cnVjdCBibHRfY29w
+eV9kYXRhICpibHQsIHVpbnQzMl90IHJlZ2lvbiwNCj4gIAl1aW50NjRfdCBzaXplID0gd2lkdGgg
+KiBoZWlnaHQgKiBicHAgLyA4Ow0KPiAgCXVpbnQzMl90IHN0cmlkZSA9IHRpbGluZyA9PSBUX0xJ
+TkVBUiA/IHdpZHRoICogNCA6IHdpZHRoOw0KPiAgCXVpbnQzMl90IGhhbmRsZTsNCj4gLQ0KPiAr
+CXVpbnQ4X3QgcGF0X2luZGV4ID0gKEFUX0xFQVNUX0dFTihpbnRlbF9nZXRfZHJtX2RldmlkKGJs
+dC0+ZmQpLCAyMCkgDQo+ICsmJiBjb21wcmVzc2lvbikgPyBpbnRlbF9nZXRfcGF0X2lkeF91Y19j
+b21wKGJsdC0+ZmQpIDogDQo+ICtERUZBVUxUX1BBVF9JTkRFWDsNCg0KVG9vIGxvbmcgbGluZSAt
+IHBsZWFzZSByZWZhY3Rvci4gQVRfTEVBU1RfR0VOKCkgaXMgYWxyZWFkeSBwcm90ZWN0ZWQgYnkg
+KCkgYW5kIHRoZXJlJ3Mgbm8gbmVlZCB0byBhZGQgaXQgaGVyZS4gV2l0aCB0aGlzIGZpeGVkOg0K
+DQpBY2tlZC1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBp
+bnRlbC5jb20+DQoNCi0tDQpaYmlnbmlldw0KDQpBSjogU3VyZSwgdGhhbmtzLiBXaWxsIGZpeCB0
+aGlzIQ0KDQo+ICsJdWludDE2X3QgY3B1X2NhY2hpbmcgPSBEUk1fWEVfR0VNX0NQVV9DQUNISU5H
+X1dDOw0KPiAgCWlndF9hc3NlcnRfZihibHQtPmRyaXZlciwgIkRyaXZlciBpc24ndCBzZXQsIGhh
+dmUgeW91IGNhbGxlZCANCj4gYmx0X2NvcHlfaW5pdCgpP1xuIik7DQo+ICANCj4gIAlvYmogPSBj
+YWxsb2MoMSwgc2l6ZW9mKCpvYmopKTsNCj4gQEAgLTE4MTAsMTMgKzE4MTEsMTMgQEAgYmx0X2Ny
+ZWF0ZV9vYmplY3QoY29uc3Qgc3RydWN0IGJsdF9jb3B5X2RhdGEgKmJsdCwgdWludDMyX3QgcmVn
+aW9uLA0KPiAgCQkJZmxhZ3MgfD0gRFJNX1hFX0dFTV9DUkVBVEVfRkxBR19ORUVEU19WSVNJQkxF
+X1ZSQU07DQo+ICANCj4gIAkJc2l6ZSA9IEFMSUdOKHNpemUsIHhlX2dldF9kZWZhdWx0X2FsaWdu
+bWVudChibHQtPmZkKSk7DQo+IC0JCWhhbmRsZSA9IHhlX2JvX2NyZWF0ZV9mbGFncyhibHQtPmZk
+LCAwLCBzaXplLCByZWdpb24pOw0KPiArCQloYW5kbGUgPSB4ZV9ib19jcmVhdGVfY2FjaGluZyhi
+bHQtPmZkLCAwLCBzaXplLCByZWdpb24sIGZsYWdzLCANCj4gK2NwdV9jYWNoaW5nKTsNCj4gIAl9
+IGVsc2Ugew0KPiAgCQlpZ3RfYXNzZXJ0KF9fZ2VtX2NyZWF0ZV9pbl9tZW1vcnlfcmVnaW9ucyhi
+bHQtPmZkLCAmaGFuZGxlLA0KPiAgCQkJCQkJCSAgJnNpemUsIHJlZ2lvbikgPT0gMCk7DQo+ICAJ
+fQ0KPiAgDQo+IC0JYmx0X3NldF9vYmplY3Qob2JqLCBoYW5kbGUsIHNpemUsIHJlZ2lvbiwgbW9j
+c19pbmRleCwgREVGQVVMVF9QQVRfSU5ERVgsIHRpbGluZywNCj4gKwlibHRfc2V0X29iamVjdChv
+YmosIGhhbmRsZSwgc2l6ZSwgcmVnaW9uLCBtb2NzX2luZGV4LCBwYXRfaW5kZXgsIA0KPiArdGls
+aW5nLA0KPiAgCQkgICAgICAgY29tcHJlc3Npb24sIGNvbXByZXNzaW9uX3R5cGUpOw0KPiAgCWJs
+dF9zZXRfZ2VvbShvYmosIHN0cmlkZSwgMCwgMCwgd2lkdGgsIGhlaWdodCwgMCwgMCk7DQo+ICAN
+Cj4gLS0NCj4gMi4zNC4xDQo+IA0K
