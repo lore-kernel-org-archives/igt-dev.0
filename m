@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7884713462139817854=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 91C3A10E061
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 09:12:26 +0000 (UTC)
+From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH] lib: sync i915_pciids.h with kernel
+Date: Tue, 12 Dec 2023 14:38:41 +0530
+Message-Id: <20231212090841.2060493-1-chaitanya.kumar.borah@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_intel-ci/xe=2Eblocklist=3A_Upd?=
- =?utf-8?q?ate_PSR_subtests?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Tue, 12 Dec 2023 08:47:37 -0000
-Message-ID: <170237085747.31292.13063615865549294658@emeril.freedesktop.org>
-References: <20231212061003.3575145-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231212061003.3575145-1-bhanuprakash.modem@intel.com>
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,172 +16,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: nemesa.garg@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7884713462139817854==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This synchronizes with kernel commit
 
-== Series Details ==
+8940da9fe5f27 ("drm/i915/mtl: Adding DeviceID for Arrowlake-S under MTL")
+to bring in ARL-S PCI IDs.
 
-Series: intel-ci/xe.blocklist: Update PSR subtests
-URL   : https://patchwork.freedesktop.org/series/127667/
-State : success
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+---
+ lib/i915_pciids.h       | 4 ++++
+ lib/intel_device_info.c | 1 +
+ 2 files changed, 5 insertions(+)
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7635_BAT -> XEIGTPW_10399_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10399_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_prime_self_import@basic-with_fd_dup:
-    - bat-atsm-2:         [PASS][1] -> [FAIL][2] ([Intel XE#999])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10399/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - bat-adlp-7:         [FAIL][3] ([Intel XE#480]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10399/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-
-  * igt@xe_create@create-execqueues-leak:
-    - bat-atsm-2:         [FAIL][5] ([Intel XE#524]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10399/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-
-  * igt@xe_create@create-execqueues-noleak:
-    - bat-adlp-7:         [FAIL][7] ([Intel XE#524]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10399/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-
-  
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#999]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/999
-
-
-Build changes
--------------
-
-  * IGT: IGT_7635 -> IGTPW_10399
-  * Linux: xe-566-00175313322325f73095e61b6cbe550f47184408 -> xe-570-0c30a1b58ce6096e5d6a6c9ba32961c345fab7c8
-
-  IGTPW_10399: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10399/index.html
-  IGT_7635: 0b796be8ce05cb2070ce5136d248f438c962d11e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-566-00175313322325f73095e61b6cbe550f47184408: 00175313322325f73095e61b6cbe550f47184408
-  xe-570-0c30a1b58ce6096e5d6a6c9ba32961c345fab7c8: 0c30a1b58ce6096e5d6a6c9ba32961c345fab7c8
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10399/index.html
-
---===============7884713462139817854==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>intel-ci/xe.blocklist: Update PSR subtests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127667/">https://patchwork.freedesktop.org/series/127667/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10399/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10399/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7635_BAT -&gt; XEIGTPW_10399_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10399_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_prime_self_import@basic-with_fd_dup:<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10399/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/999">Intel XE#999</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10399/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_create@create-execqueues-leak:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10399/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_create@create-execqueues-noleak:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10399/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7635 -&gt; IGTPW_10399</li>
-<li>Linux: xe-566-00175313322325f73095e61b6cbe550f47184408 -&gt; xe-570-0c30a1b58ce6096e5d6a6c9ba32961c345fab7c8</li>
-</ul>
-<p>IGTPW_10399: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10399/index.html<br />
-  IGT_7635: 0b796be8ce05cb2070ce5136d248f438c962d11e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-566-00175313322325f73095e61b6cbe550f47184408: 00175313322325f73095e61b6cbe550f47184408<br />
-  xe-570-0c30a1b58ce6096e5d6a6c9ba32961c345fab7c8: 0c30a1b58ce6096e5d6a6c9ba32961c345fab7c8</p>
-
-</body>
-</html>
-
---===============7884713462139817854==--
+diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
+index bee58554d..106e42f84 100644
+--- a/lib/i915_pciids.h
++++ b/lib/i915_pciids.h
+@@ -750,6 +750,10 @@
+ 	INTEL_MTL_M_IDS(info), \
+ 	INTEL_MTL_P_IDS(info)
+ 
++/* ARL-S */
++#define INTEL_ARLS_IDS(info) \
++	INTEL_VGA_DEVICE(0x7D67, info)
++
+ /* PVC */
+ #define INTEL_PVC_IDS(info) \
+ 	INTEL_VGA_DEVICE(0x0BD0, info),	\
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 34817f7b6..48036bec5 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -614,6 +614,7 @@ static const struct pci_id_match intel_device_match[] = {
+ 	INTEL_ATS_M_IDS(&intel_ats_m_info),
+ 
+ 	INTEL_MTL_IDS(&intel_meteorlake_info),
++	INTEL_ARLS_IDS(&intel_meteorlake_info),
+ 
+ 	INTEL_PVC_IDS(&intel_pontevecchio_info),
+ 
+-- 
+2.25.1
