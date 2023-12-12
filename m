@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE3DE10E1B5
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 12:08:07 +0000 (UTC)
-Date: Tue, 12 Dec 2023 13:07:23 +0100
-From: Francois Dugast <francois.dugast@intel.com>
-To: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Subject: Re: [PATCH v5 2/2] drm-uapi/xe: Don't wait on user_fence during exec
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E34D710E5A9
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 12:16:21 +0000 (UTC)
+From: "Bommu, Krishnaiah" <krishnaiah.bommu@intel.com>
+To: "Dugast, Francois" <francois.dugast@intel.com>
+Subject: RE: [PATCH v5 2/2] drm-uapi/xe: Don't wait on user_fence during exec
  queue reset
-Message-ID: <ZXhM-37HdYEM3RxB@fdugast-desk.home>
+Date: Tue, 12 Dec 2023 12:16:17 +0000
+Message-ID: <DM4PR11MB5293E9C9BF4A343D15EE30309D8EA@DM4PR11MB5293.namprd11.prod.outlook.com>
 References: <20231212051040.6912-1-krishnaiah.bommu@intel.com>
  <20231212051040.6912-3-krishnaiah.bommu@intel.com>
+ <ZXhM-37HdYEM3RxB@fdugast-desk.home>
+In-Reply-To: <ZXhM-37HdYEM3RxB@fdugast-desk.home>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231212051040.6912-3-krishnaiah.bommu@intel.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -22,138 +23,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Vivi,
+ Rodrigo" <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Dec 12, 2023 at 10:40:40AM +0530, Bommu Krishnaiah wrote:
-> Don't wait till timeout on user fence when exec_queue reset is detected
-> and return return  proper error code
-> 
-> Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: Francois Dugast <francois.dugast@intel.com>
-> ---
->  tests/intel/xe_waitfence.c | 82 ++++++++++++++++++++++++++++++++++++++
->  1 file changed, 82 insertions(+)
-> 
-> diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-> index c272d8a83..2eb3a28b2 100644
-> --- a/tests/intel/xe_waitfence.c
-> +++ b/tests/intel/xe_waitfence.c
-> @@ -153,6 +153,9 @@ waitfence(int fd, enum waittype wt)
->   *
->   * SUBTEST: invalid-engine
->   * Description: Check query with invalid engine info returns expected error code
-> + *
-> + * SUBTEST: exec_queue-reset-wait
-> + * Description: Don’t wait till timeout on user fence when exec_queue reset is detected and return return proper error
->   */
->  
->  static void
-> @@ -228,6 +231,82 @@ invalid_engine(int fd)
->  	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EFAULT);
->  }
->  
-> +static void
-> +exec_queue_reset_wait(int fd)
-> +{
-> +	uint32_t bo, b;
-> +	uint64_t batch_offset;
-> +	uint64_t batch_addr;
-> +	uint64_t sdi_offset;
-> +	uint64_t sdi_addr;
-> +	uint64_t addr = 0x1a0000;
-> +
-> +	struct {
-> +		uint32_t batch[16];
-> +		uint64_t pad;
-> +		uint64_t vm_sync;
-> +		uint64_t exec_sync;
-> +		uint32_t data;
-> +	} *data;
-> +
-> +#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
-> +	struct drm_xe_sync sync[1] = {
-> +		{ .flags = DRM_XE_SYNC_TYPE_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
-> +			.timeline_value = USER_FENCE_VALUE },
-> +	};
-> +
-> +	struct drm_xe_exec exec = {
-> +		.num_batch_buffer = 1,
-> +		.num_syncs = 1,
-> +		.syncs = to_user_pointer(sync),
-> +	};
-> +
-> +	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-> +	uint32_t exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
-> +	struct drm_xe_wait_user_fence1 wait = {
-
-Hi Bommu,
-
-I assume this is a typo and should be like this, right?
-s/drm_xe_wait_user_fence1/drm_xe_wait_user_fence/
-
-Francois
-
-> +		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
-> +		.flags = 0,
-> +		.value = 0xc0ffee,
-> +		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
-> +		.timeout = -1,
-> +		.exec_queue_id = exec_queue,
-> +	};
-> +
-> +	bo = xe_bo_create(fd, vm, 0x40000, vram_if_possible(fd, 0), 0);
-> +	data = xe_bo_map(fd, bo, 0x40000);
-> +
-> +	batch_offset = (char *)&data[0].batch - (char *)data;
-> +	batch_addr = addr + batch_offset;
-> +	sdi_offset = (char *)&data[0].data - (char *)data;
-> +	sdi_addr = addr + sdi_offset;
-> +
-> +	b = 0;
-> +	data[0].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-> +	data[0].batch[b++] = sdi_addr;
-> +	data[0].batch[b++] = sdi_addr >> 32;
-> +	data[0].batch[b++] = 0xc0ffee;
-> +	data[0].batch[b++] = MI_BATCH_BUFFER_END;
-> +	igt_assert(b <= ARRAY_SIZE(data[0].batch));
-> +
-> +	wait.addr = to_user_pointer(&data[0].exec_sync);
-> +	exec.exec_queue_id = exec_queue;
-> +	exec.address = batch_addr;
-> +
-> +	xe_exec(fd, &exec);
-> +
-> +	/**
-> +	  * Don't do the GPU mapping(vm_bind) for object, so that exec_queue
-> +	  * reset will happen and xe_wait_ufence will return EIO not ETIME
-> +	  */
-> +	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EIO);
-> +
-> +	xe_exec_queue_destroy(fd, exec_queue);
-> +
-> +	if (bo) {
-> +		munmap(data, 0x40000);
-> +		gem_close(fd, bo);
-> +	}
-> +}
->  
->  igt_main
->  {
-> @@ -254,6 +333,9 @@ igt_main
->  	igt_subtest("invalid-engine")
->  		invalid_engine(fd);
->  
-> +	igt_subtest("exec_queue-reset-wait")
-> +		exec_queue_reset_wait(fd);
-> +
->  	igt_fixture
->  		drm_close_driver(fd);
->  }
-> -- 
-> 2.25.1
-> 
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRHVnYXN0LCBGcmFuY29p
+cyA8ZnJhbmNvaXMuZHVnYXN0QGludGVsLmNvbT4NCj4gU2VudDogVHVlc2RheSwgRGVjZW1iZXIg
+MTIsIDIwMjMgNTozNyBQTQ0KPiBUbzogQm9tbXUsIEtyaXNobmFpYWggPGtyaXNobmFpYWguYm9t
+bXVAaW50ZWwuY29tPg0KPiBDYzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IFZpdmks
+IFJvZHJpZ28gPHJvZHJpZ28udml2aUBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0gg
+djUgMi8yXSBkcm0tdWFwaS94ZTogRG9uJ3Qgd2FpdCBvbiB1c2VyX2ZlbmNlIGR1cmluZyBleGVj
+DQo+IHF1ZXVlIHJlc2V0DQo+IA0KPiBPbiBUdWUsIERlYyAxMiwgMjAyMyBhdCAxMDo0MDo0MEFN
+ICswNTMwLCBCb21tdSBLcmlzaG5haWFoIHdyb3RlOg0KPiA+IERvbid0IHdhaXQgdGlsbCB0aW1l
+b3V0IG9uIHVzZXIgZmVuY2Ugd2hlbiBleGVjX3F1ZXVlIHJlc2V0IGlzDQo+ID4gZGV0ZWN0ZWQg
+YW5kIHJldHVybiByZXR1cm4gIHByb3BlciBlcnJvciBjb2RlDQo+ID4NCj4gPiBTaWduZWQtb2Zm
+LWJ5OiBCb21tdSBLcmlzaG5haWFoIDxrcmlzaG5haWFoLmJvbW11QGludGVsLmNvbT4NCj4gPiBS
+ZXZpZXdlZC1ieTogUm9kcmlnbyBWaXZpIDxyb2RyaWdvLnZpdmlAaW50ZWwuY29tPg0KPiA+IENj
+OiBSb2RyaWdvIFZpdmkgPHJvZHJpZ28udml2aUBpbnRlbC5jb20+DQo+ID4gQ2M6IEZyYW5jb2lz
+IER1Z2FzdCA8ZnJhbmNvaXMuZHVnYXN0QGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgdGVzdHMv
+aW50ZWwveGVfd2FpdGZlbmNlLmMgfCA4Mg0KPiA+ICsrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA4MiBpbnNlcnRpb25zKCspDQo+ID4N
+Cj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaW50ZWwveGVfd2FpdGZlbmNlLmMgYi90ZXN0cy9pbnRl
+bC94ZV93YWl0ZmVuY2UuYw0KPiA+IGluZGV4IGMyNzJkOGE4My4uMmViM2EyOGIyIDEwMDY0NA0K
+PiA+IC0tLSBhL3Rlc3RzL2ludGVsL3hlX3dhaXRmZW5jZS5jDQo+ID4gKysrIGIvdGVzdHMvaW50
+ZWwveGVfd2FpdGZlbmNlLmMNCj4gPiBAQCAtMTUzLDYgKzE1Myw5IEBAIHdhaXRmZW5jZShpbnQg
+ZmQsIGVudW0gd2FpdHR5cGUgd3QpDQo+ID4gICAqDQo+ID4gICAqIFNVQlRFU1Q6IGludmFsaWQt
+ZW5naW5lDQo+ID4gICAqIERlc2NyaXB0aW9uOiBDaGVjayBxdWVyeSB3aXRoIGludmFsaWQgZW5n
+aW5lIGluZm8gcmV0dXJucyBleHBlY3RlZA0KPiA+IGVycm9yIGNvZGUNCj4gPiArICoNCj4gPiAr
+ICogU1VCVEVTVDogZXhlY19xdWV1ZS1yZXNldC13YWl0DQo+ID4gKyAqIERlc2NyaXB0aW9uOiBE
+b27igJl0IHdhaXQgdGlsbCB0aW1lb3V0IG9uIHVzZXIgZmVuY2Ugd2hlbiBleGVjX3F1ZXVlDQo+
+ID4gKyByZXNldCBpcyBkZXRlY3RlZCBhbmQgcmV0dXJuIHJldHVybiBwcm9wZXIgZXJyb3INCj4g
+PiAgICovDQo+ID4NCj4gPiAgc3RhdGljIHZvaWQNCj4gPiBAQCAtMjI4LDYgKzIzMSw4MiBAQCBp
+bnZhbGlkX2VuZ2luZShpbnQgZmQpDQo+ID4gIAlkb19pb2N0bF9lcnIoZmQsIERSTV9JT0NUTF9Y
+RV9XQUlUX1VTRVJfRkVOQ0UsICZ3YWl0LCBFRkFVTFQpOw0KPiB9DQo+ID4NCj4gPiArc3RhdGlj
+IHZvaWQNCj4gPiArZXhlY19xdWV1ZV9yZXNldF93YWl0KGludCBmZCkNCj4gPiArew0KPiA+ICsJ
+dWludDMyX3QgYm8sIGI7DQo+ID4gKwl1aW50NjRfdCBiYXRjaF9vZmZzZXQ7DQo+ID4gKwl1aW50
+NjRfdCBiYXRjaF9hZGRyOw0KPiA+ICsJdWludDY0X3Qgc2RpX29mZnNldDsNCj4gPiArCXVpbnQ2
+NF90IHNkaV9hZGRyOw0KPiA+ICsJdWludDY0X3QgYWRkciA9IDB4MWEwMDAwOw0KPiA+ICsNCj4g
+PiArCXN0cnVjdCB7DQo+ID4gKwkJdWludDMyX3QgYmF0Y2hbMTZdOw0KPiA+ICsJCXVpbnQ2NF90
+IHBhZDsNCj4gPiArCQl1aW50NjRfdCB2bV9zeW5jOw0KPiA+ICsJCXVpbnQ2NF90IGV4ZWNfc3lu
+YzsNCj4gPiArCQl1aW50MzJfdCBkYXRhOw0KPiA+ICsJfSAqZGF0YTsNCj4gPiArDQo+ID4gKyNk
+ZWZpbmUgVVNFUl9GRU5DRV9WQUxVRSAgICAgICAgMHhkZWFkYmVlZmRlYWRiZWVmdWxsDQo+ID4g
+KwlzdHJ1Y3QgZHJtX3hlX3N5bmMgc3luY1sxXSA9IHsNCj4gPiArCQl7IC5mbGFncyA9IERSTV9Y
+RV9TWU5DX1RZUEVfVVNFUl9GRU5DRSB8DQo+IERSTV9YRV9TWU5DX0ZMQUdfU0lHTkFMLA0KPiA+
+ICsJCQkudGltZWxpbmVfdmFsdWUgPSBVU0VSX0ZFTkNFX1ZBTFVFIH0sDQo+ID4gKwl9Ow0KPiA+
+ICsNCj4gPiArCXN0cnVjdCBkcm1feGVfZXhlYyBleGVjID0gew0KPiA+ICsJCS5udW1fYmF0Y2hf
+YnVmZmVyID0gMSwNCj4gPiArCQkubnVtX3N5bmNzID0gMSwNCj4gPiArCQkuc3luY3MgPSB0b191
+c2VyX3BvaW50ZXIoc3luYyksDQo+ID4gKwl9Ow0KPiA+ICsNCj4gPiArCXVpbnQzMl90IHZtID0g
+eGVfdm1fY3JlYXRlKGZkLA0KPiBEUk1fWEVfVk1fQ1JFQVRFX0ZMQUdfQVNZTkNfREVGQVVMVCwg
+MCk7DQo+ID4gKwl1aW50MzJfdCBleGVjX3F1ZXVlID0geGVfZXhlY19xdWV1ZV9jcmVhdGVfY2xh
+c3MoZmQsIHZtLA0KPiBEUk1fWEVfRU5HSU5FX0NMQVNTX0NPUFkpOw0KPiA+ICsJc3RydWN0IGRy
+bV94ZV93YWl0X3VzZXJfZmVuY2UxIHdhaXQgPSB7DQo+IA0KPiBIaSBCb21tdSwNCj4gDQo+IEkg
+YXNzdW1lIHRoaXMgaXMgYSB0eXBvIGFuZCBzaG91bGQgYmUgbGlrZSB0aGlzLCByaWdodD8NCj4g
+cy9kcm1feGVfd2FpdF91c2VyX2ZlbmNlMS9kcm1feGVfd2FpdF91c2VyX2ZlbmNlLw0KPiANCj4g
+RnJhbmNvaXMNClllcyBpdCBpcyB0eXBvLCB0aGFuayB5b3UgZm9yIHBvaW50aW5nIG91dA0KUmVn
+YXJkcywNCktyaXNobmENCj4gDQo+ID4gKwkJLm9wID0gRFJNX1hFX1VGRU5DRV9XQUlUX09QX0VR
+LA0KPiA+ICsJCS5mbGFncyA9IDAsDQo+ID4gKwkJLnZhbHVlID0gMHhjMGZmZWUsDQo+ID4gKwkJ
+Lm1hc2sgPSBEUk1fWEVfVUZFTkNFX1dBSVRfTUFTS19VNjQsDQo+ID4gKwkJLnRpbWVvdXQgPSAt
+MSwNCj4gPiArCQkuZXhlY19xdWV1ZV9pZCA9IGV4ZWNfcXVldWUsDQo+ID4gKwl9Ow0KPiA+ICsN
+Cj4gPiArCWJvID0geGVfYm9fY3JlYXRlKGZkLCB2bSwgMHg0MDAwMCwgdnJhbV9pZl9wb3NzaWJs
+ZShmZCwgMCksIDApOw0KPiA+ICsJZGF0YSA9IHhlX2JvX21hcChmZCwgYm8sIDB4NDAwMDApOw0K
+PiA+ICsNCj4gPiArCWJhdGNoX29mZnNldCA9IChjaGFyICopJmRhdGFbMF0uYmF0Y2ggLSAoY2hh
+ciAqKWRhdGE7DQo+ID4gKwliYXRjaF9hZGRyID0gYWRkciArIGJhdGNoX29mZnNldDsNCj4gPiAr
+CXNkaV9vZmZzZXQgPSAoY2hhciAqKSZkYXRhWzBdLmRhdGEgLSAoY2hhciAqKWRhdGE7DQo+ID4g
+KwlzZGlfYWRkciA9IGFkZHIgKyBzZGlfb2Zmc2V0Ow0KPiA+ICsNCj4gPiArCWIgPSAwOw0KPiA+
+ICsJZGF0YVswXS5iYXRjaFtiKytdID0gTUlfU1RPUkVfRFdPUkRfSU1NX0dFTjQ7DQo+ID4gKwlk
+YXRhWzBdLmJhdGNoW2IrK10gPSBzZGlfYWRkcjsNCj4gPiArCWRhdGFbMF0uYmF0Y2hbYisrXSA9
+IHNkaV9hZGRyID4+IDMyOw0KPiA+ICsJZGF0YVswXS5iYXRjaFtiKytdID0gMHhjMGZmZWU7DQo+
+ID4gKwlkYXRhWzBdLmJhdGNoW2IrK10gPSBNSV9CQVRDSF9CVUZGRVJfRU5EOw0KPiA+ICsJaWd0
+X2Fzc2VydChiIDw9IEFSUkFZX1NJWkUoZGF0YVswXS5iYXRjaCkpOw0KPiA+ICsNCj4gPiArCXdh
+aXQuYWRkciA9IHRvX3VzZXJfcG9pbnRlcigmZGF0YVswXS5leGVjX3N5bmMpOw0KPiA+ICsJZXhl
+Yy5leGVjX3F1ZXVlX2lkID0gZXhlY19xdWV1ZTsNCj4gPiArCWV4ZWMuYWRkcmVzcyA9IGJhdGNo
+X2FkZHI7DQo+ID4gKw0KPiA+ICsJeGVfZXhlYyhmZCwgJmV4ZWMpOw0KPiA+ICsNCj4gPiArCS8q
+Kg0KPiA+ICsJICAqIERvbid0IGRvIHRoZSBHUFUgbWFwcGluZyh2bV9iaW5kKSBmb3Igb2JqZWN0
+LCBzbyB0aGF0IGV4ZWNfcXVldWUNCj4gPiArCSAgKiByZXNldCB3aWxsIGhhcHBlbiBhbmQgeGVf
+d2FpdF91ZmVuY2Ugd2lsbCByZXR1cm4gRUlPIG5vdCBFVElNRQ0KPiA+ICsJICAqLw0KPiA+ICsJ
+ZG9faW9jdGxfZXJyKGZkLCBEUk1fSU9DVExfWEVfV0FJVF9VU0VSX0ZFTkNFLCAmd2FpdCwgRUlP
+KTsNCj4gPiArDQo+ID4gKwl4ZV9leGVjX3F1ZXVlX2Rlc3Ryb3koZmQsIGV4ZWNfcXVldWUpOw0K
+PiA+ICsNCj4gPiArCWlmIChibykgew0KPiA+ICsJCW11bm1hcChkYXRhLCAweDQwMDAwKTsNCj4g
+PiArCQlnZW1fY2xvc2UoZmQsIGJvKTsNCj4gPiArCX0NCj4gPiArfQ0KPiA+DQo+ID4gIGlndF9t
+YWluDQo+ID4gIHsNCj4gPiBAQCAtMjU0LDYgKzMzMyw5IEBAIGlndF9tYWluDQo+ID4gIAlpZ3Rf
+c3VidGVzdCgiaW52YWxpZC1lbmdpbmUiKQ0KPiA+ICAJCWludmFsaWRfZW5naW5lKGZkKTsNCj4g
+Pg0KPiA+ICsJaWd0X3N1YnRlc3QoImV4ZWNfcXVldWUtcmVzZXQtd2FpdCIpDQo+ID4gKwkJZXhl
+Y19xdWV1ZV9yZXNldF93YWl0KGZkKTsNCj4gPiArDQo+ID4gIAlpZ3RfZml4dHVyZQ0KPiA+ICAJ
+CWRybV9jbG9zZV9kcml2ZXIoZmQpOw0KPiA+ICB9DQo+ID4gLS0NCj4gPiAyLjI1LjENCj4gPg0K
