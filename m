@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF83010E540
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 01:13:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21D2010E546
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 01:13:34 +0000 (UTC)
 From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 To: 
-Subject: [PATCH i-g-t v5 2/6] lib/intel_blt: Update calculation of ccs_size
- and size_of_ctrl_copy
-Date: Tue, 12 Dec 2023 05:13:11 -0800
-Message-Id: <f8fb003fcc1f9119957e4f823fd7534479cfd406.1702386259.git.akshata.jahagirdar@intel.com>
+Subject: [PATCH i-g-t v5 6/6] tests/intel/xe_ccs: Add compression support for
+ Lunarlake
+Date: Tue, 12 Dec 2023 05:13:15 -0800
+Message-Id: <b88880cd89c0a8e42a0b88bedf82dfb22da0fc11.1702386259.git.akshata.jahagirdar@intel.com>
 In-Reply-To: <cover.1702386259.git.akshata.jahagirdar@intel.com>
 References: <cover.1702386259.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
@@ -25,87 +25,132 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The Main-to-CCS Ratio for XE2 has been changed to 512:1.
-Update the CCS_RATIO macro to select relevant ratio based on platform.
+In XE2 IGFX platform, sysmem also participates in compression.
+So create all blt objects in sysmem itself, and update the pat-index to reflect
+the compression status. Since we need to align the buffer object size with page
+size and also have the src size and dst size of CCS copy to be equal,
+change the default width and height to 1024.
 
 Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 ---
- lib/intel_blt.c | 15 +++++++++------
- lib/intel_blt.h |  2 +-
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ tests/intel/xe_ccs.c | 45 +++++++++++++++++++++++++-------------------
+ 1 file changed, 26 insertions(+), 19 deletions(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 1116c978e..2abfa15af 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -948,15 +948,16 @@ int blt_block_copy(int fd,
- 	return ret;
- }
+diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+index 77d3020bc..4ee4642be 100644
+--- a/tests/intel/xe_ccs.c
++++ b/tests/intel/xe_ccs.c
+@@ -63,8 +63,8 @@ static struct param {
+ 	.write_png = false,
+ 	.print_bb = false,
+ 	.print_surface_info = false,
+-	.width = 512,
+-	.height = 512,
++	.width = 1024,
++	.height = 1024,
+ };
  
--static uint16_t __ccs_size(const struct blt_ctrl_surf_copy_data *surf)
-+static uint16_t __ccs_size(int fd, const struct blt_ctrl_surf_copy_data *surf)
- {
- 	uint32_t src_size, dst_size;
-+	uint16_t ccsratio = CCS_RATIO(fd);
+ struct test_config {
+@@ -95,21 +95,27 @@ static void surf_copy(int xe,
+ 	struct blt_block_copy_data_ext ext = {};
+ 	struct blt_ctrl_surf_copy_data surf = {};
+ 	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
+-	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
++	uint64_t bb_size, ccssize = mid->size / (CCS_RATIO(xe));
+ 	uint32_t *ccscopy;
+ 	uint8_t uc_mocs = intel_get_uc_mocs_index(xe);
+ 	uint32_t sysmem = system_memory(xe);
++	uint8_t comp_pat_index = DEFAULT_PAT_INDEX;
++	uint16_t cpu_caching = __xe_default_cpu_caching_from_placement(xe, sysmem);
+ 	int result;
  
- 	src_size = surf->src.access_type == DIRECT_ACCESS ?
--				surf->src.size : surf->src.size / CCS_RATIO;
-+				surf->src.size : surf->src.size / ccsratio;
+ 	igt_assert(mid->compression);
++	if (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) && mid->compression) {
++		comp_pat_index  = intel_get_pat_idx_uc_comp(xe);
++		cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
++	}
+ 	ccscopy = (uint32_t *) malloc(ccssize);
+-	ccs = xe_bo_create(xe, 0, ccssize, sysmem, 0);
+-	ccs2 = xe_bo_create(xe, 0, ccssize, sysmem, 0);
++	ccs = xe_bo_create_caching(xe, 0, ccssize, sysmem, 0, cpu_caching);
++	ccs2 = xe_bo_create_caching(xe, 0, ccssize, sysmem, 0, cpu_caching);
  
- 	dst_size = surf->dst.access_type == DIRECT_ACCESS ?
--				surf->dst.size : surf->dst.size / CCS_RATIO;
-+				surf->dst.size : surf->dst.size / ccsratio;
+ 	blt_ctrl_surf_copy_init(xe, &surf);
+ 	surf.print_bb = param.print_bb;
+ 	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
+-				 uc_mocs, DEFAULT_PAT_INDEX, BLT_INDIRECT_ACCESS);
++				 uc_mocs, comp_pat_index, BLT_INDIRECT_ACCESS);
+ 	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs,
+ 				 DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+ 	bb_size = xe_get_default_alignment(xe);
+@@ -157,7 +163,7 @@ static void surf_copy(int xe,
+ 	blt_set_ctrl_surf_object(&surf.src, ccs, sysmem, ccssize,
+ 				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+ 	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
+-				 uc_mocs, DEFAULT_PAT_INDEX, INDIRECT_ACCESS);
++				 uc_mocs, comp_pat_index, INDIRECT_ACCESS);
+ 	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
+ 	intel_ctx_xe_sync(ctx, true);
  
- 	igt_assert_f(src_size <= dst_size, "dst size must be >= src size for CCS copy\n");
+@@ -234,10 +240,10 @@ static int blt_block_copy3(int xe,
+ 	igt_assert_f(blt3, "block-copy3 requires data to do blit\n");
  
-@@ -1118,6 +1119,8 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
- 	uint64_t dst_offset, src_offset, bb_offset, alignment;
- 	uint32_t bbe = MI_BATCH_BUFFER_END;
- 	uint32_t *bb;
-+	uint16_t num_ccs_blocks = (ip_ver >= IP_VER(20, 0)) ? 
-+				(xe_get_default_alignment(fd) / CCS_RATIO(fd)) : CCS_RATIO(fd);
+ 	alignment = xe_get_default_alignment(xe);
+-	get_offset(ahnd, blt3->src.handle, blt3->src.size, alignment);
+-	get_offset(ahnd, blt3->mid.handle, blt3->mid.size, alignment);
+-	get_offset(ahnd, blt3->dst.handle, blt3->dst.size, alignment);
+-	get_offset(ahnd, blt3->final.handle, blt3->final.size, alignment);
++	get_offset_pat_index(ahnd, blt3->src.handle, blt3->src.size, alignment, blt3->src.pat_index);
++	get_offset_pat_index(ahnd, blt3->mid.handle, blt3->mid.size, alignment, blt3->mid.pat_index);
++	get_offset_pat_index(ahnd, blt3->dst.handle, blt3->dst.size, alignment, blt3->dst.pat_index);
++	get_offset_pat_index(ahnd, blt3->final.handle, blt3->final.size, alignment, blt3->final.pat_index);
+ 	bb_offset = get_offset(ahnd, blt3->bb.handle, blt3->bb.size, alignment);
  
- 	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
- 	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
-@@ -1136,7 +1139,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
- 		data.xe2.dw00.dst_access_type = surf->dst.access_type;
+ 	/* First blit src -> mid */
+@@ -291,8 +297,8 @@ static void block_copy(int xe,
+ 	uint64_t bb_size = xe_get_default_alignment(xe);
+ 	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
+ 	uint32_t run_id = mid_tiling;
+-	uint32_t mid_region = region2, bb;
+-	uint32_t width = param.width, height = param.height;
++	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) & !xe_has_vram(xe)) ? region1 : region2;
++	uint32_t width = param.width, height = param.height, bb;
+ 	enum blt_compression mid_compression = config->compression;
+ 	int mid_compression_format = param.compression_format;
+ 	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+@@ -413,8 +419,8 @@ static void block_multicopy(int xe,
+ 	uint64_t bb_size = xe_get_default_alignment(xe);
+ 	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
+ 	uint32_t run_id = mid_tiling;
+-	uint32_t mid_region = region2, bb;
+-	uint32_t width = param.width, height = param.height;
++	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) & !xe_has_vram(xe)) ? region1 : region2;
++	uint32_t width = param.width, height = param.height, bb;
+ 	enum blt_compression mid_compression = config->compression;
+ 	int mid_compression_format = param.compression_format;
+ 	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+@@ -539,8 +545,9 @@ static void block_copy_test(int xe,
+ 			region1 = igt_collection_get_value(regions, 0);
+ 			region2 = igt_collection_get_value(regions, 1);
  
- 		/* Ensure dst has size capable to keep src ccs aux */
--		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
-+		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
- 		data.xe2.dw00.length = 0x3;
+-			/* Compressed surface must be in device memory */
+-			if (config->compression && !XE_IS_VRAM_MEMORY_REGION(xe, region2))
++			/* if not XE2, then Compressed surface must be in device memory */
++			if (config->compression && !(AT_LEAST_GEN((intel_get_drm_devid(xe)), 20)) && 
++									!XE_IS_VRAM_MEMORY_REGION(xe, region2))
+ 				continue;
  
- 		data.xe2.dw01.src_address_lo = src_offset;
-@@ -1155,7 +1158,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
- 		data.gen12.dw00.dst_access_type = surf->dst.access_type;
+ 			regtxt = xe_memregion_dynamic_subtest_name(xe, regions);
+@@ -621,8 +628,8 @@ const char *help_str =
+ 	"  -p\tWrite PNG\n"
+ 	"  -s\tPrint surface info\n"
+ 	"  -t\tTiling format (0 - linear, 1 - XMAJOR, 2 - YMAJOR, 3 - TILE4, 4 - TILE64)\n"
+-	"  -W\tWidth (default 512)\n"
+-	"  -H\tHeight (default 512)"
++	"  -W\tWidth (default 1024)\n"
++	"  -H\tHeight (default 1024)"
+ 	;
  
- 		/* Ensure dst has size capable to keep src ccs aux */
--		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
-+		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
- 		data.gen12.dw00.length = 0x3;
- 
- 		data.gen12.dw01.src_address_lo = src_offset;
-@@ -1808,7 +1811,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
- 			flags |= DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
- 
- 		size = ALIGN(size, xe_get_default_alignment(blt->fd));
--		handle = xe_bo_create(blt->fd, 0, size, region, flags);
-+		handle = xe_bo_create_flags(blt->fd, 0, size, region);
- 	} else {
- 		igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
- 							  &size, region) == 0);
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index 5934ccd67..69eb2195f 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -52,7 +52,7 @@
- #include "igt.h"
- #include "intel_cmds_info.h"
- 
--#define CCS_RATIO 256
-+#define CCS_RATIO(xe) (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) ? 512 : 256)
- 
- enum blt_color_depth {
- 	CD_8bit,
+ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
 -- 
 2.34.1
