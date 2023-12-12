@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0277847974939350058=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B7E6A10E56A
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 08:22:49 +0000 (UTC)
+Date: Tue, 12 Dec 2023 09:22:29 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] intel/xe_exec_store.c: Fix the execution of
+ basic-all test.
+Message-ID: <20231212082229.khvj4se57f6bnjqy@kamilkon-desk.igk.intel.com>
+References: <20231211130735.10497-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Compression_support_for_Lunarl?=
- =?utf-8?q?ake?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Akshata Jahagirdar" <akshata.jahagirdar@intel.com>
-Date: Tue, 12 Dec 2023 08:13:12 -0000
-Message-ID: <170236879208.31292.7963255978126382335@emeril.freedesktop.org>
-References: <cover.1702402592.git.akshata.jahagirdar@intel.com>
-In-Reply-To: <cover.1702402592.git.akshata.jahagirdar@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231211130735.10497-1-sai.gowtham.ch@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,163 +20,225 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0277847974939350058==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Sai,
+On 2023-12-11 at 18:37:35 +0530, sai.gowtham.ch@intel.com wrote:
+> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> 
 
-== Series Details ==
+One small nit about subject:
 
-Series: Compression support for Lunarlake
-URL   : https://patchwork.freedesktop.org/series/127666/
-State : success
+[PATCH i-g-t] intel/xe_exec_store.c: Fix the execution of basic-all test.
 
-== Summary ==
+Add 'tests/', remove '.c', remove final dot '.', also imho it could be
+somewhat shorter:
 
-CI Bug Log - changes from XEIGT_7635_BAT -> XEIGTPW_10398_BAT
-====================================================
+[PATCH i-g-t] tests/intel/xe_exec_store: Fix basic-all subtest
 
-Summary
--------
+I will merge it with this correction.
 
-  **SUCCESS**
+Regards,
+Kamil
 
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10398_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10398/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - bat-adlp-7:         [FAIL][3] ([Intel XE#480]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10398/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-
-  
-#### Warnings ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [DMESG-FAIL][5] ([Intel XE#282] / [i915#2017]) -> [DMESG-WARN][6] ([Intel XE#282] / [i915#2017])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10398/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
-
-
-Build changes
--------------
-
-  * IGT: IGT_7635 -> IGTPW_10398
-  * Linux: xe-566-00175313322325f73095e61b6cbe550f47184408 -> xe-570-0c30a1b58ce6096e5d6a6c9ba32961c345fab7c8
-
-  IGTPW_10398: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10398/index.html
-  IGT_7635: 0b796be8ce05cb2070ce5136d248f438c962d11e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-566-00175313322325f73095e61b6cbe550f47184408: 00175313322325f73095e61b6cbe550f47184408
-  xe-570-0c30a1b58ce6096e5d6a6c9ba32961c345fab7c8: 0c30a1b58ce6096e5d6a6c9ba32961c345fab7c8
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10398/index.html
-
---===============0277847974939350058==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Compression support for Lunarlake</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127666/">https://patchwork.freedesktop.org/series/127666/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10398/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10398/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7635_BAT -&gt; XEIGTPW_10398_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10398_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10398/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10398/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7635/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10398/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7635 -&gt; IGTPW_10398</li>
-<li>Linux: xe-566-00175313322325f73095e61b6cbe550f47184408 -&gt; xe-570-0c30a1b58ce6096e5d6a6c9ba32961c345fab7c8</li>
-</ul>
-<p>IGTPW_10398: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10398/index.html<br />
-  IGT_7635: 0b796be8ce05cb2070ce5136d248f438c962d11e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-566-00175313322325f73095e61b6cbe550f47184408: 00175313322325f73095e61b6cbe550f47184408<br />
-  xe-570-0c30a1b58ce6096e5d6a6c9ba32961c345fab7c8: 0c30a1b58ce6096e5d6a6c9ba32961c345fab7c8</p>
-
-</body>
-</html>
-
---===============0277847974939350058==--
+> implement xe_for_each_engine in basic-all test so that,
+> it queries all the supported classes and instances for a gt
+> and submits workload to it. which fixes the num_placements issue.
+> 
+> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> ---
+>  tests/intel/xe_exec_store.c | 131 ++++++++----------------------------
+>  1 file changed, 27 insertions(+), 104 deletions(-)
+> 
+> diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
+> index 6d5a1bbac..7a66d744c 100644
+> --- a/tests/intel/xe_exec_store.c
+> +++ b/tests/intel/xe_exec_store.c
+> @@ -79,8 +79,10 @@ static void cond_batch(struct data *data, uint64_t addr, int value)
+>   * Description: Basic test to verify store dword.
+>   * SUBTEST: basic-cond-batch
+>   * Description: Basic test to verify cond batch end instruction.
+> + * SUBTEST: basic-all
+> + * Description: Test to verify store dword on all available engines.
+>   */
+> -static void basic_inst(int fd, int inst_type)
+> +static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instance *eci)
+>  {
+>  	struct drm_xe_sync sync = {
+>  		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
+> @@ -92,9 +94,9 @@ static void basic_inst(int fd, int inst_type)
+>  		.syncs = to_user_pointer(&sync),
+>  	};
+>  	struct data *data;
+> -	struct drm_xe_engine *engine;
+>  	uint32_t vm;
+>  	uint32_t exec_queue;
+> +	uint32_t bind_engine;
+>  	uint32_t syncobj;
+>  	size_t bo_size;
+>  	int value = 0x123456;
+> @@ -109,12 +111,13 @@ static void basic_inst(int fd, int inst_type)
+>  	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+>  			xe_get_default_alignment(fd));
+>  
+> -	engine = xe_engine(fd, 1);
+>  	bo = xe_bo_create(fd, vm, bo_size,
+> -			  vram_if_possible(fd, engine->instance.gt_id),
+> +			  vram_if_possible(fd, eci->gt_id),
+>  			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+>  
+> -	xe_vm_bind_async(fd, vm, engine->instance.gt_id, bo, 0, addr, bo_size, &sync, 1);
+> +	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
+> +	bind_engine = xe_bind_exec_queue_create(fd, vm, 0, true);
+> +	xe_vm_bind_async(fd, vm, bind_engine, bo, 0, addr, bo_size, &sync, 1);
+>  	data = xe_bo_map(fd, bo, bo_size);
+>  
+>  	if (inst_type == STORE)
+> @@ -127,7 +130,7 @@ static void basic_inst(int fd, int inst_type)
+>  	else
+>  		igt_assert_f(inst_type < 2, "Entered wrong inst_type.\n");
+>  
+> -	exec_queue = xe_exec_queue_create(fd, vm, &engine->instance, 0);
+> +	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
+>  	exec.exec_queue_id = exec_queue;
+>  	exec.address = data->addr;
+>  	sync.flags &= DRM_XE_SYNC_FLAG_SIGNAL;
+> @@ -243,115 +246,35 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
+>  	xe_vm_destroy(fd, vm);
+>  }
+>  
+> -/**
+> - * SUBTEST: basic-all
+> - * Description: Test to verify store dword on all available engines.
+> - */
+> -static void store_all(int fd, int gt, int class)
+> -{
+> -	struct drm_xe_sync sync[2] = {
+> -		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
+> -		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, }
+> -	};
+> -	struct drm_xe_exec exec = {
+> -		.num_batch_buffer = 1,
+> -		.num_syncs = 2,
+> -		.syncs = to_user_pointer(&sync),
+> -	};
+> -
+> -	struct data *data;
+> -	uint32_t syncobjs[MAX_INSTANCE];
+> -	uint32_t exec_queues[MAX_INSTANCE];
+> -	uint32_t vm;
+> -	size_t bo_size;
+> -	uint64_t addr = 0x100000;
+> -	uint32_t bo = 0;
+> -	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
+> -	struct drm_xe_engine_class_instance *hwe;
+> -	int i, num_placements = 0;
+> -
+> -	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+> -	bo_size = sizeof(*data);
+> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+> -			xe_get_default_alignment(fd));
+> -
+> -	bo = xe_bo_create(fd, vm, bo_size,
+> -			  vram_if_possible(fd, 0),
+> -			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> -	data = xe_bo_map(fd, bo, bo_size);
+> -
+> -	xe_for_each_engine(fd, hwe) {
+> -		if (hwe->engine_class != class || hwe->gt_id != gt)
+> -			continue;
+> -		eci[num_placements++] = *hwe;
+> -	}
+> -
+> -	igt_require(num_placements);
+> -
+> -	for (i = 0; i < num_placements; i++) {
+> -		struct drm_xe_exec_queue_create create = {
+> -			.vm_id = vm,
+> -			.width = 1,
+> -			.num_placements = num_placements,
+> -			.instances = to_user_pointer(eci),
+> -		};
+> -
+> -		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE,
+> -					&create), 0);
+> -		exec_queues[i] = create.exec_queue_id;
+> -		syncobjs[i] = syncobj_create(fd, 0);
+> -	};
+> -
+> -	sync[0].handle = syncobj_create(fd, 0);
+> -	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
+> -
+> -	for (i = 0; i < num_placements; i++) {
+> -
+> -		store_dword_batch(data, addr, i);
+> -		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+> -		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+> -		sync[1].handle = syncobjs[i];
+> -
+> -		exec.exec_queue_id = exec_queues[i];
+> -		exec.address = data->addr;
+> -		xe_exec(fd, &exec);
+> -
+> -		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0, NULL));
+> -		igt_assert_eq(data->data, i);
+> -	}
+> -
+> -	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+> -	syncobj_destroy(fd, sync[0].handle);
+> -	munmap(data, bo_size);
+> -	gem_close(fd, bo);
+> -
+> -	for (i = 0; i < num_placements; i++) {
+> -		syncobj_destroy(fd, syncobjs[i]);
+> -		xe_exec_queue_destroy(fd, exec_queues[i]);
+> -	}
+> -	xe_vm_destroy(fd, vm);
+> -}
+> -
+>  igt_main
+>  {
+>  	struct drm_xe_engine_class_instance *hwe;
+> -	int fd, class, gt;
+> +	int fd;
+> +	struct drm_xe_engine *engine;
+>  
+>  	igt_fixture {
+>  		fd = drm_open_driver(DRIVER_XE);
+>  		xe_device_get(fd);
+>  	}
+>  
+> -	igt_subtest("basic-store")
+> -		basic_inst(fd, STORE);
+> +	igt_subtest("basic-store") {
+> +		engine = xe_engine(fd, 1);
+> +		basic_inst(fd, STORE, &engine->instance);
+> +	}
+>  
+> -	igt_subtest("basic-cond-batch")
+> -		basic_inst(fd, COND_BATCH);
+> +	igt_subtest("basic-cond-batch") {
+> +		engine = xe_engine(fd, 1);
+> +		basic_inst(fd, COND_BATCH, &engine->instance);
+> +	}
+>  
+> -	igt_subtest("basic-all") {
+> -		xe_for_each_gt(fd, gt)
+> -			xe_for_each_engine_class(class)
+> -				store_all(fd, gt, class);
+> +	igt_subtest_with_dynamic("basic-all") {
+> +		xe_for_each_engine(fd, hwe) {
+> +			igt_dynamic_f("Engine-%s-Instance-%d-Tile-%d",
+> +				      xe_engine_class_string(hwe->engine_class),
+> +				      hwe->engine_instance,
+> +				      hwe->gt_id);
+> +			basic_inst(fd, STORE, hwe);
+> +		}
+>  	}
+>  
+>  	igt_subtest("cachelines")
+> -- 
+> 2.39.1
+> 
