@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B485F10E594
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 08:27:10 +0000 (UTC)
-Date: Tue, 12 Dec 2023 09:27:06 +0100
+Date: Tue, 12 Dec 2023 09:29:44 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] xe/tests: Remove tile_sysfs test for now
-Message-ID: <20231212082706.tlj43t5q2jbgnwhp@kamilkon-desk.igk.intel.com>
-References: <20231212002115.1105927-1-rodrigo.vivi@intel.com>
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmbw==?= =?utf-8?Q?r?=
+ intel/xe_exec_store.c: Fix the execution of basic-all test.
+Message-ID: <20231212082944.cdfvsckhmr3ajvfc@kamilkon-desk.igk.intel.com>
+References: <20231211130735.10497-1-sai.gowtham.ch@intel.com>
+ <170232811737.19579.14674337072112286082@emeril.freedesktop.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231212002115.1105927-1-rodrigo.vivi@intel.com>
+In-Reply-To: <170232811737.19579.14674337072112286082@emeril.freedesktop.org>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,118 +18,137 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: lgci.bug.filing@intel.com, I915-ci-infra@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Rodrigo,
-On 2023-12-11 at 19:21:14 -0500, Rodrigo Vivi wrote:
+Hi,
 
-Small nit about subject:
-[PATCH i-g-t] xe/tests: Remove tile_sysfs test for now
-
-should be:
-[PATCH i-g-t] tests/xe: Remove tile_sysfs test for now
-
-or better:
-[PATCH i-g-t] tests/intel/xe_tile_sysfs: Remove it for now
-
-With this fixed:
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+below is unrelated to Xe test.
 
 Regards,
 Kamil
 
-> The only case in this test was for the physical_memsize_attr
-> that is getting removed from kernel. So, let's entirely remove
-> this test case for now and re-add it when we have another reason.
+On 2023-12-11 at 20:55:17 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> ---
->  tests/intel/xe_sysfs_tile.c | 59 -------------------------------------
->  tests/meson.build           |  1 -
->  2 files changed, 60 deletions(-)
->  delete mode 100644 tests/intel/xe_sysfs_tile.c
+> Series: intel/xe_exec_store.c: Fix the execution of basic-all test.
+> URL   : https://patchwork.freedesktop.org/series/127630/
+> State : failure
 > 
-> diff --git a/tests/intel/xe_sysfs_tile.c b/tests/intel/xe_sysfs_tile.c
-> deleted file mode 100644
-> index ba970cda8..000000000
-> --- a/tests/intel/xe_sysfs_tile.c
-> +++ /dev/null
-> @@ -1,59 +0,0 @@
-> -// SPDX-License-Identifier: MIT
-> -/*
-> - * Copyright © 2023 Intel Corporation
-> - */
-> -
-> -/**
-> - * TEST: Verify physical_vram_size_bytes of each tiles
-> - * Category: Software building block
-> - * SUBTEST: physical_vram_size_bytes
-> - * Functionality: Vram
-> - * Sub-category: Total vram per tile
-> - * Test category: functionality test
-> - * Description:
-> - *             Read sysfs entry for physical_vram_size_bytes and compare with
-> - *             vram size. physical_vram_size_bytes should be more than vram size.
-> - */
-> -
-> -#include <string.h>
-> -#include <sys/time.h>
-> -
-> -#include "igt.h"
-> -#include "igt_sysfs.h"
-> -
-> -#include "xe_drm.h"
-> -#include "xe/xe_ioctl.h"
-> -#include "xe/xe_query.h"
-> -
-> -static void test_vram_physical_vram_size_bytes(int tile_fd, int tile_num, u64 vram_size)
-> -{
-> -	u64 physical_vram_size_bytes;
-> -
-> -	igt_assert(igt_sysfs_scanf(tile_fd, "physical_vram_size_bytes",
-> -				   "%lx", &physical_vram_size_bytes) > 0);
-> -	igt_assert_lt_u64(vram_size, physical_vram_size_bytes);
-> -}
-> -
-> -igt_main
-> -{
-> -	int fd, tilefd, tile;
-> -	u64 vram_size;
-> -
-> -	igt_fixture {
-> -		fd = drm_open_driver(DRIVER_XE);
-> -		xe_device_get(fd);
-> -	}
-> -
-> -	igt_subtest("physical_vram_size_bytes") {
-> -		igt_require(xe_has_vram(fd));
-> -		for_each_sysfs_tile_dirfd(fd, tilefd, tile) {
-> -			vram_size = xe_vram_size(fd, tile);
-> -			test_vram_physical_vram_size_bytes(tilefd, tile, vram_size);
-> -		}
-> -	}
-> -
-> -	igt_fixture {
-> -		xe_device_put(fd);
-> -		close(fd);
-> -	}
-> -}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index f6cfbcf5e..4591ca256 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -307,7 +307,6 @@ intel_xe_progs = [
->  	'xe_prime_self_import',
->  	'xe_perf_pmu',
->  	'xe_query',
-> -	'xe_sysfs_tile',
->  	'xe_uevent',
->  	'xe_vm',
->  	'xe_waitfence',
-> -- 
-> 2.43.0
+> == Summary ==
 > 
+> CI Bug Log - changes from CI_DRM_14007_full -> IGTPW_10392_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10392_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10392_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/index.html
+> 
+> Participating hosts (9 -> 7)
+> ------------------------------
+> 
+>   Missing    (2): shard-snb-0 shard-glk-0 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10392_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_exec_balancer@fairslice:
+>     - shard-dg1:          NOTRUN -> [ABORT][1] +2 other tests abort
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/shard-dg1-13/igt@gem_exec_balancer@fairslice.html
+> 
+>   * igt@gem_exec_balancer@full-late-pulse:
+>     - shard-tglu:         NOTRUN -> [INCOMPLETE][2] +7 other tests incomplete
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/shard-tglu-4/igt@gem_exec_balancer@full-late-pulse.html
+> 
+>   * igt@gem_exec_whisper@basic-fds-forked-all:
+>     - shard-glk:          NOTRUN -> [INCOMPLETE][3] +8 other tests incomplete
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/shard-glk9/igt@gem_exec_whisper@basic-fds-forked-all.html
+> 
+>   * igt@i915_pm_rc6_residency@rc6-idle@gt0-bcs0:
+>     - shard-mtlp:         NOTRUN -> [INCOMPLETE][4]
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/shard-mtlp-3/igt@i915_pm_rc6_residency@rc6-idle@gt0-bcs0.html
+> 
+>   * igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0:
+>     - shard-mtlp:         NOTRUN -> [ABORT][5] +12 other tests abort
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/shard-mtlp-3/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html
+>     - shard-dg2:          NOTRUN -> [ABORT][6] +1 other test abort
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/shard-dg2-3/igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0.html
+> 
+>   * igt@perf@invalid-oa-metric-set-id:
+>     - shard-glk:          NOTRUN -> [ABORT][7]
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/shard-glk1/igt@perf@invalid-oa-metric-set-id.html
+> 
+>   * igt@perf_pmu@busy-hang@rcs0:
+>     - shard-dg2:          NOTRUN -> [INCOMPLETE][8] +4 other tests incomplete
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/shard-dg2-10/igt@perf_pmu@busy-hang@rcs0.html
+>     - shard-rkl:          NOTRUN -> [ABORT][9] +1 other test abort
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/shard-rkl-3/igt@perf_pmu@busy-hang@rcs0.html
+> 
+>   * igt@perf_pmu@most-busy-check-all@rcs0:
+>     - shard-snb:          NOTRUN -> [INCOMPLETE][10] +11 other tests incomplete
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/shard-snb5/igt@perf_pmu@most-busy-check-all@rcs0.html
+> 
+>   * igt@perf_pmu@most-busy-idle-check-all@rcs0:
+>     - shard-rkl:          NOTRUN -> [INCOMPLETE][11] +4 other tests incomplete
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/shard-rkl-2/igt@perf_pmu@most-busy-idle-check-all@rcs0.html
+>     - shard-dg1:          NOTRUN -> [INCOMPLETE][12] +6 other tests incomplete
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/shard-dg1-16/igt@perf_pmu@most-busy-idle-check-all@rcs0.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@gem_exec_balancer@full-late-pulse:
+>     - shard-rkl:          [ABORT][13] -> [INCOMPLETE][14]
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14007/shard-rkl-5/igt@gem_exec_balancer@full-late-pulse.html
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/shard-rkl-7/igt@gem_exec_balancer@full-late-pulse.html
+> 
+>   
+> New tests
+> ---------
+> 
+>   New tests have been introduced between CI_DRM_14007_full and IGTPW_10392_full:
+> 
+> ### New IGT tests (1) ###
+> 
+>   * igt@i915_power:
+>     - Statuses : 2 incomplete(s)
+>     - Exec time: [0.0] s
+> 
+
+[...cut...]
+
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7635 -> IGTPW_10392
+>   * Piglit: piglit_4509 -> None
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14007: e888b3a5196ef64c917c30f387276bdcedc9d23b @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10392: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/index.html
+>   IGT_7635: 0b796be8ce05cb2070ce5136d248f438c962d11e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10392/index.html
