@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98D8910E16D
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 05:17:02 +0000 (UTC)
-Message-ID: <614076ae-8184-4584-a6a6-751a83184144@linux.intel.com>
-Date: Tue, 12 Dec 2023 10:49:47 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21DF810E5B2
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 09:28:51 +0000 (UTC)
+Message-ID: <de68644e-def3-443a-b3df-6414d60a41cd@intel.com>
+Date: Tue, 12 Dec 2023 09:28:46 +0000
 MIME-Version: 1.0
-Subject: Re: [PATCH i-g-t] tests/xe: Remove xe_perf_pmu
-Content-Language: en-US
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>, igt-dev@lists.freedesktop.org
-References: <20231211162536.2790126-1-ashutosh.dixit@intel.com>
-From: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
-In-Reply-To: <20231211162536.2790126-1-ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH i-g-t v5 2/6] lib/intel_blt: Update calculation of
+ ccs_size and size_of_ctrl_copy
+Content-Language: en-GB
+To: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+References: <cover.1702402592.git.akshata.jahagirdar@intel.com>
+ <ee74ba991e506182a7f89eb4fda6197e26e58413.1702402592.git.akshata.jahagirdar@intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <ee74ba991e506182a7f89eb4fda6197e26e58413.1702402592.git.akshata.jahagirdar@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,378 +22,98 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: venkata.ramana.nayana@intel.com, Lucas De Marchi <lucas.demarchi@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: igt-dev@lists.freedesktop.org, ayaz.siddiqui@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 12/11/23 21:55, Ashutosh Dixit wrote:
-> Group busyness uapi implemented in PMU in the kernel has been discontinued
-> and will be replaced by a different group busyness uapi and a different
-> implementation. Because of this, we are proposing to remove the PMU code
-> from the kernel, till the correct uapi is implemented. Therefore drop the
-> corresponding IGT too, since it caters to the old uapi.
->
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-
-Acked-by: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
-
-Thanks,
-Aravind,
+On 12/12/2023 17:39, Akshata Jahagirdar wrote:
+> The Main-to-CCS Ratio for XE2 has been changed to 512:1.
+> Update the CCS_RATIO macro to select relevant ratio based on platform.
+> 
+> Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 > ---
->  tests/intel/xe_perf_pmu.c | 331 --------------------------------------
->  tests/meson.build         |   1 -
->  2 files changed, 332 deletions(-)
->  delete mode 100644 tests/intel/xe_perf_pmu.c
->
-> diff --git a/tests/intel/xe_perf_pmu.c b/tests/intel/xe_perf_pmu.c
-> deleted file mode 100644
-> index 42cf62729142..000000000000
-> --- a/tests/intel/xe_perf_pmu.c
-> +++ /dev/null
-> @@ -1,331 +0,0 @@
-> -// SPDX-License-Identifier: MIT
-> -/*
-> - * Copyright © 2021 Intel Corporation
-> - */
-> -
-> -/**
-> - * TEST: Basic tests for verify pmu perf interface
-> - * Category: Hardware building block
-> - * Sub-category: pmu interface
-> - * Functionality: pmu
-> - * Test category: functionality test
-> - */
-> -
-> -#include <fcntl.h>
-> -#include <string.h>
-> -
-> -#include "igt.h"
-> -#include "lib/igt_syncobj.h"
-> -#include "lib/intel_reg.h"
-> -#include "lib/igt_perf.h"
-> -#include "xe_drm.h"
-> -#include "xe/xe_ioctl.h"
-> -#include "xe/xe_query.h"
-> -#include "xe/xe_spin.h"
-> -
-> -#define MAX_INSTANCE 9
-> -
-> -static uint64_t pmu_read(int fd)
-> -{
-> -	uint64_t  data[2];
-> -
-> -	igt_assert_eq(read(fd, data, sizeof(data)), sizeof(data));
-> -
-> -	return data[0];
-> -}
-> -
-> -static int open_pmu(int fd, uint64_t config)
-> -{
-> -	int perf_fd;
-> -
-> -	perf_fd = perf_xe_open(fd, config);
-> -	igt_skip_on(perf_fd < 0 && errno == ENODEV);
-> -	igt_assert(perf_fd >= 0);
-> -
-> -	return perf_fd;
-> -}
-> -
-> -static uint64_t engine_group_get_config(int gt, int class)
-> -{
-> -	uint64_t config;
-> -
-> -	switch (class) {
-> -	case DRM_XE_ENGINE_CLASS_COPY:
-> -		config = DRM_XE_PMU_COPY_GROUP_BUSY(gt);
-> -		break;
-> -	case DRM_XE_ENGINE_CLASS_RENDER:
-> -	case DRM_XE_ENGINE_CLASS_COMPUTE:
-> -		config = DRM_XE_PMU_RENDER_GROUP_BUSY(gt);
-> -		break;
-> -	case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
-> -	case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
-> -		config = DRM_XE_PMU_MEDIA_GROUP_BUSY(gt);
-> -		break;
-> -	}
-> -
-> -	return config;
-> -}
-> -
-> -/**
-> - * Test: Basic test for measure the active time when engine of any class active
-> - *
-> - * SUBTEST: any-engine-group-busy
-> - * Description:
-> - *      Run a test to measure the global activity time by submitting
-> - *      the WL to all existing engines.
-> - * Run type: FULL
-> - *
-> - */
-> -static void test_any_engine_busyness(int fd, struct drm_xe_engine_class_instance *eci)
-> -{
-> -	uint32_t vm;
-> -	uint64_t addr = 0x1a0000;
-> -	struct drm_xe_sync sync[2] = {
-> -		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-> -		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-> -	};
-> -	struct drm_xe_exec exec = {
-> -		.num_batch_buffer = 1,
-> -		.num_syncs = 2,
-> -		.syncs = to_user_pointer(sync),
-> -	};
-> -	uint32_t exec_queue;
-> -	uint32_t syncobj;
-> -	size_t bo_size;
-> -	uint32_t bo = 0;
-> -	struct xe_spin *spin;
-> -	struct xe_spin_opts spin_opts = { .addr = addr, .preempt = false };
-> -	uint32_t pmu_fd;
-> -	uint64_t count, idle;
-> -
-> -	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-> -	bo_size = sizeof(*spin);
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> -
-> -	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id), 0);
-> -	spin = xe_bo_map(fd, bo, bo_size);
-> -
-> -	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-> -	syncobj = syncobj_create(fd, 0);
-> -
-> -	sync[0].handle = syncobj_create(fd, 0);
-> -	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
-> -
-> -	pmu_fd = open_pmu(fd, DRM_XE_PMU_ANY_ENGINE_GROUP_BUSY(eci->gt_id));
-> -	idle = pmu_read(pmu_fd);
-> -	igt_assert(!idle);
-> -
-> -	xe_spin_init(spin, &spin_opts);
-> -
-> -	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-> -	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-> -	sync[1].handle = syncobj;
-> -
-> -	exec.exec_queue_id = exec_queue;
-> -	exec.address = addr;
-> -	xe_exec(fd, &exec);
-> -
-> -	xe_spin_wait_started(spin);
-> -	usleep(50000);
-> -
-> -	igt_assert(!syncobj_wait(fd, &syncobj, 1, 1, 0, NULL));
-> -	xe_spin_end(spin);
-> -
-> -	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
-> -	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-> -
-> -	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-> -	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
-> -	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-> -
-> -	syncobj_destroy(fd, sync[0].handle);
-> -	syncobj_destroy(fd, syncobj);
-> -
-> -	count = pmu_read(pmu_fd);
-> -	igt_assert_lt_u64(idle, count);
-> -	igt_debug("Incrementing counter all-busy-group %ld ns\n", count);
-> -
-> -	xe_exec_queue_destroy(fd, exec_queue);
-> -	munmap(spin, bo_size);
-> -	gem_close(fd, bo);
-> -	xe_vm_destroy(fd, vm);
-> -	close(pmu_fd);
-> -}
-> -
-> -/**
-> - * Test: Basic test for measure the active time across engine class
-> - *
-> - * SUBTEST: render-busy
-> - * Description:
-> - *	Run a test to measure the active engine class time by submitting the
-> - *	WL to all instances of a class
-> - * Run type: FULL
-> - *
-> - * SUBTEST: compute-busy
-> - * Description: Run copy-group-busy test
-> - * Run type: FULL
-> - *
-> - * SUBTEST: copy-busy
-> - * Description: Run copy-group-busy test
-> - * Run type: FULL
-> - *
-> - * SUBTEST: vcs-busy
-> - * Description: Run copy-group-busy test
-> - * Run type: FULL
-> - *
-> - * SUBTEST: vecs-busy
-> - * Description: Run copy-group-busy test
-> - * Run type: FULL
-> - *
-> - */
-> -
-> -static void test_engine_group_busyness(int fd, int gt, int class, const char *name)
-> -{
-> -	uint32_t vm;
-> -	uint64_t addr = 0x1a0000;
-> -	struct drm_xe_sync sync[2] = {
-> -		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-> -		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-> -	};
-> -	struct drm_xe_exec exec = {
-> -		.num_batch_buffer = 1,
-> -		.num_syncs = 2,
-> -		.syncs = to_user_pointer(sync),
-> -	};
-> -	uint32_t exec_queues[MAX_INSTANCE];
-> -	uint32_t syncobjs[MAX_INSTANCE];
-> -	int    pmu_fd;
-> -	size_t bo_size;
-> -	uint32_t bo = 0, i = 0;
-> -	struct {
-> -		struct xe_spin spin;
-> -	} *data;
-> -	struct xe_spin_opts spin_opts = { .addr = addr, .preempt = false };
-> -	struct drm_xe_engine_class_instance *hwe;
-> -	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
-> -	int num_placements = 0;
-> -	uint64_t config, count, idle;
-> -
-> -	config = engine_group_get_config(gt, class);
-> -
-> -	xe_for_each_engine(fd, hwe) {
-> -		if (hwe->engine_class != class || hwe->gt_id != gt)
-> -			continue;
-> -
-> -		eci[num_placements++] = *hwe;
-> -	}
-> -
-> -	igt_skip_on_f(!num_placements, "Engine class:%d gt:%d not enabled on this platform\n",
-> -		      class, gt);
-> -
-> -	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-> -	bo_size = sizeof(*data) * num_placements;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
-> -
-> -	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, gt), 0);
-> -	data = xe_bo_map(fd, bo, bo_size);
-> -
-> -	for (i = 0; i < num_placements; i++) {
-> -		struct drm_xe_exec_queue_create create = {
-> -			.vm_id = vm,
-> -			.width = 1,
-> -			.num_placements = num_placements,
-> -			.instances = to_user_pointer(eci),
-> -		};
-> -
-> -		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE,
-> -					&create), 0);
-> -		exec_queues[i] = create.exec_queue_id;
-> -		syncobjs[i] = syncobj_create(fd, 0);
-> -	};
-> -
-> -	sync[0].handle = syncobj_create(fd, 0);
-> -	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
-> -
-> -	pmu_fd = open_pmu(fd, config);
-> -	idle = pmu_read(pmu_fd);
-> -	igt_assert(!idle);
-> -
-> -	for (i = 0; i < num_placements; i++) {
-> -		spin_opts.addr = addr + (char *)&data[i].spin - (char *)data;
-> -		xe_spin_init(&data[i].spin, &spin_opts);
-> -		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-> -		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-> -		sync[1].handle = syncobjs[i];
-> -
-> -		exec.exec_queue_id = exec_queues[i];
-> -		exec.address = spin_opts.addr;
-> -		xe_exec(fd, &exec);
-> -		xe_spin_wait_started(&data[i].spin);
-> -	}
-> -
-> -	for (i = 0; i < num_placements; i++) {
-> -		xe_spin_end(&data[i].spin);
-> -		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
-> -					NULL));
-> -	}
-> -
-> -	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-> -
-> -	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-> -	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
-> -	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-> -
-> -
-> -	syncobj_destroy(fd, sync[0].handle);
-> -	for (i = 0; i < num_placements; i++) {
-> -		syncobj_destroy(fd, syncobjs[i]);
-> -		xe_exec_queue_destroy(fd, exec_queues[i]);
-> -	}
-> -
-> -	count = pmu_read(pmu_fd);
-> -	igt_assert_lt_u64(idle, count);
-> -	igt_debug("Incrementing counter %s-gt-%d  %ld ns\n", name, gt, count);
-> -
-> -	munmap(data, bo_size);
-> -	gem_close(fd, bo);
-> -	xe_vm_destroy(fd, vm);
-> -	close(pmu_fd);
-> -}
-> -
-> -igt_main
-> -{
-> -	struct drm_xe_engine_class_instance *hwe;
-> -	const struct section {
-> -		const char *name;
-> -		int class;
-> -	} sections[] = {
-> -		{ "render-busy", DRM_XE_ENGINE_CLASS_RENDER },
-> -		{ "compute-busy", DRM_XE_ENGINE_CLASS_COMPUTE },
-> -		{ "copy-busy", DRM_XE_ENGINE_CLASS_COPY },
-> -		{ "vcs-busy", DRM_XE_ENGINE_CLASS_VIDEO_DECODE },
-> -		{ "vecs-busy", DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE },
-> -		{ NULL },
-> -	};
-> -	int gt;
-> -	int class;
-> -	int fd;
-> -
-> -	igt_fixture {
-> -		fd = drm_open_driver(DRIVER_XE);
-> -		xe_device_get(fd);
-> -	}
-> -
-> -	for (const struct section *s = sections; s->name; s++) {
-> -		igt_subtest_f("%s", s->name)
-> -			xe_for_each_gt(fd, gt)
-> -				xe_for_each_engine_class(class)
-> -					if (class == s->class)
-> -						test_engine_group_busyness(fd, gt, class, s->name);
-> -	}
-> -
-> -	igt_subtest("any-engine-group-busy")
-> -		xe_for_each_engine(fd, hwe)
-> -			test_any_engine_busyness(fd, hwe);
-> -
-> -	igt_fixture {
-> -		xe_device_put(fd);
-> -		close(fd);
-> -	}
-> -}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index f6cfbcf5ef9f..4430ca739275 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -305,7 +305,6 @@ intel_xe_progs = [
->  	'xe_pm',
->  	'xe_pm_residency',
->  	'xe_prime_self_import',
-> -	'xe_perf_pmu',
->  	'xe_query',
->  	'xe_sysfs_tile',
->  	'xe_uevent',
+>   lib/intel_blt.c | 15 +++++++++------
+>   lib/intel_blt.h |  2 +-
+>   2 files changed, 10 insertions(+), 7 deletions(-)
+> 
+> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+> index 1116c978e..5399be20a 100644
+> --- a/lib/intel_blt.c
+> +++ b/lib/intel_blt.c
+> @@ -948,15 +948,16 @@ int blt_block_copy(int fd,
+>   	return ret;
+>   }
+>   
+> -static uint16_t __ccs_size(const struct blt_ctrl_surf_copy_data *surf)
+> +static uint16_t __ccs_size(int fd, const struct blt_ctrl_surf_copy_data *surf)
+>   {
+>   	uint32_t src_size, dst_size;
+> +	uint16_t ccsratio = CCS_RATIO(fd);
+>   
+>   	src_size = surf->src.access_type == DIRECT_ACCESS ?
+> -				surf->src.size : surf->src.size / CCS_RATIO;
+> +				surf->src.size : surf->src.size / ccsratio;
+>   
+>   	dst_size = surf->dst.access_type == DIRECT_ACCESS ?
+> -				surf->dst.size : surf->dst.size / CCS_RATIO;
+> +				surf->dst.size : surf->dst.size / ccsratio;
+>   
+>   	igt_assert_f(src_size <= dst_size, "dst size must be >= src size for CCS copy\n");
+>   
+> @@ -1118,6 +1119,8 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+>   	uint64_t dst_offset, src_offset, bb_offset, alignment;
+>   	uint32_t bbe = MI_BATCH_BUFFER_END;
+>   	uint32_t *bb;
+> +	uint16_t num_ccs_blocks = (ip_ver >= IP_VER(20, 0)) ?
+> +				(xe_get_default_alignment(fd) / CCS_RATIO(fd)) : CCS_RATIO(fd);
+>   
+>   	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
+>   	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
+> @@ -1136,7 +1139,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+>   		data.xe2.dw00.dst_access_type = surf->dst.access_type;
+>   
+>   		/* Ensure dst has size capable to keep src ccs aux */
+> -		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
+> +		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
+>   		data.xe2.dw00.length = 0x3;
+>   
+>   		data.xe2.dw01.src_address_lo = src_offset;
+> @@ -1155,7 +1158,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+>   		data.gen12.dw00.dst_access_type = surf->dst.access_type;
+>   
+>   		/* Ensure dst has size capable to keep src ccs aux */
+> -		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
+> +		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
+>   		data.gen12.dw00.length = 0x3;
+>   
+>   		data.gen12.dw01.src_address_lo = src_offset;
+> @@ -1808,7 +1811,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+>   			flags |= DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
+>   
+>   		size = ALIGN(size, xe_get_default_alignment(blt->fd));
+> -		handle = xe_bo_create(blt->fd, 0, size, region, flags);
+> +		handle = xe_bo_create_flags(blt->fd, 0, size, region);
+
+create_flags() looks have been removed?
+
+>   	} else {
+>   		igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
+>   							  &size, region) == 0);
+> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+> index 5934ccd67..69eb2195f 100644
+> --- a/lib/intel_blt.h
+> +++ b/lib/intel_blt.h
+> @@ -52,7 +52,7 @@
+>   #include "igt.h"
+>   #include "intel_cmds_info.h"
+>   
+> -#define CCS_RATIO 256
+> +#define CCS_RATIO(xe) (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) ? 512 : 256)
+
+Probably s/xe/intel/ or just fd, since this is not specific to xe, but 
+is also used for i915.
+
+>   
+>   enum blt_color_depth {
+>   	CD_8bit,
