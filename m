@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A83A710E55C
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BCF1710E16D
  for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 05:39:46 +0000 (UTC)
 From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 To: 
-Subject: [PATCH i-g-t v5 4/6] lib/intel_blt: Update caching mode and pat_index
-Date: Tue, 12 Dec 2023 09:39:26 -0800
-Message-Id: <d7f6b28bdb2d02cac0757d15e8382bd39ad56dcd.1702402592.git.akshata.jahagirdar@intel.com>
+Subject: [PATCH i-g-t v5 6/6] tests/intel/xe_ccs: Add compression support for
+ Lunarlake
+Date: Tue, 12 Dec 2023 09:39:28 -0800
+Message-Id: <afdf39527e8ef0e2a6ec39f7c9dfabdc42698c2a.1702402592.git.akshata.jahagirdar@intel.com>
 In-Reply-To: <cover.1702402592.git.akshata.jahagirdar@intel.com>
 References: <cover.1702402592.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -25,51 +25,132 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The pat-index and caching mode for compression need to change to uc_comp in case
-of compression, else they just take the default value of pat_index and caching.
+In XE2 IGFX platform, sysmem also participates in compression.
+So create all blt objects in sysmem itself, and update the pat-index to reflect
+the compression status. Since we need to align the buffer object size with page
+size and also have the src size and dst size of CCS copy to be equal,
+change the default width and height to 1024.
 
 Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/intel_blt.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ tests/intel/xe_ccs.c | 45 +++++++++++++++++++++++++-------------------
+ 1 file changed, 26 insertions(+), 19 deletions(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 5399be20a..31b9f250e 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -1797,7 +1797,8 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
- 	uint64_t size = width * height * bpp / 8;
- 	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
- 	uint32_t handle;
--
-+	uint8_t pat_index = DEFAULT_PAT_INDEX;
-+	uint16_t cpu_caching;
- 	igt_assert_f(blt->driver, "Driver isn't set, have you called blt_copy_init()?\n");
+diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+index 77d3020bc..23fda5ed3 100644
+--- a/tests/intel/xe_ccs.c
++++ b/tests/intel/xe_ccs.c
+@@ -63,8 +63,8 @@ static struct param {
+ 	.write_png = false,
+ 	.print_bb = false,
+ 	.print_surface_info = false,
+-	.width = 512,
+-	.height = 512,
++	.width = 1024,
++	.height = 1024,
+ };
  
- 	obj = calloc(1, sizeof(*obj));
-@@ -1810,14 +1811,20 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
- 		if (create_mapping && region != system_memory(blt->fd))
- 			flags |= DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
+ struct test_config {
+@@ -95,21 +95,27 @@ static void surf_copy(int xe,
+ 	struct blt_block_copy_data_ext ext = {};
+ 	struct blt_ctrl_surf_copy_data surf = {};
+ 	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
+-	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
++	uint64_t bb_size, ccssize = mid->size / (CCS_RATIO(xe));
+ 	uint32_t *ccscopy;
+ 	uint8_t uc_mocs = intel_get_uc_mocs_index(xe);
+ 	uint32_t sysmem = system_memory(xe);
++	uint8_t comp_pat_index = DEFAULT_PAT_INDEX;
++	uint16_t cpu_caching = __xe_default_cpu_caching(xe, sysmem, 0);
+ 	int result;
  
-+		if (AT_LEAST_GEN(intel_get_drm_devid(blt->fd), 20) && compression) {
-+			pat_index = intel_get_pat_idx_uc_comp(blt->fd);
-+			cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
-+		} else
-+			cpu_caching = __xe_default_cpu_caching(blt->fd, region, flags);
-+
- 		size = ALIGN(size, xe_get_default_alignment(blt->fd));
--		handle = xe_bo_create_flags(blt->fd, 0, size, region);
-+		handle = xe_bo_create_caching(blt->fd, 0, size, region, flags, cpu_caching);
- 	} else {
- 		igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
- 							  &size, region) == 0);
- 	}
+ 	igt_assert(mid->compression);
++	if (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) && mid->compression) {
++		comp_pat_index  = intel_get_pat_idx_uc_comp(xe);
++		cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
++	}
+ 	ccscopy = (uint32_t *) malloc(ccssize);
+-	ccs = xe_bo_create(xe, 0, ccssize, sysmem, 0);
+-	ccs2 = xe_bo_create(xe, 0, ccssize, sysmem, 0);
++	ccs = xe_bo_create_caching(xe, 0, ccssize, sysmem, 0, cpu_caching);
++	ccs2 = xe_bo_create_caching(xe, 0, ccssize, sysmem, 0, cpu_caching);
  
--	blt_set_object(obj, handle, size, region, mocs_index, DEFAULT_PAT_INDEX, tiling,
-+	blt_set_object(obj, handle, size, region, mocs_index, pat_index, tiling,
- 		       compression, compression_type);
- 	blt_set_geom(obj, stride, 0, 0, width, height, 0, 0);
+ 	blt_ctrl_surf_copy_init(xe, &surf);
+ 	surf.print_bb = param.print_bb;
+ 	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
+-				 uc_mocs, DEFAULT_PAT_INDEX, BLT_INDIRECT_ACCESS);
++				 uc_mocs, comp_pat_index, BLT_INDIRECT_ACCESS);
+ 	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs,
+ 				 DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+ 	bb_size = xe_get_default_alignment(xe);
+@@ -157,7 +163,7 @@ static void surf_copy(int xe,
+ 	blt_set_ctrl_surf_object(&surf.src, ccs, sysmem, ccssize,
+ 				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+ 	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
+-				 uc_mocs, DEFAULT_PAT_INDEX, INDIRECT_ACCESS);
++				 uc_mocs, comp_pat_index, INDIRECT_ACCESS);
+ 	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
+ 	intel_ctx_xe_sync(ctx, true);
  
+@@ -234,10 +240,10 @@ static int blt_block_copy3(int xe,
+ 	igt_assert_f(blt3, "block-copy3 requires data to do blit\n");
+ 
+ 	alignment = xe_get_default_alignment(xe);
+-	get_offset(ahnd, blt3->src.handle, blt3->src.size, alignment);
+-	get_offset(ahnd, blt3->mid.handle, blt3->mid.size, alignment);
+-	get_offset(ahnd, blt3->dst.handle, blt3->dst.size, alignment);
+-	get_offset(ahnd, blt3->final.handle, blt3->final.size, alignment);
++	get_offset_pat_index(ahnd, blt3->src.handle, blt3->src.size, alignment, blt3->src.pat_index);
++	get_offset_pat_index(ahnd, blt3->mid.handle, blt3->mid.size, alignment, blt3->mid.pat_index);
++	get_offset_pat_index(ahnd, blt3->dst.handle, blt3->dst.size, alignment, blt3->dst.pat_index);
++	get_offset_pat_index(ahnd, blt3->final.handle, blt3->final.size, alignment, blt3->final.pat_index);
+ 	bb_offset = get_offset(ahnd, blt3->bb.handle, blt3->bb.size, alignment);
+ 
+ 	/* First blit src -> mid */
+@@ -291,8 +297,8 @@ static void block_copy(int xe,
+ 	uint64_t bb_size = xe_get_default_alignment(xe);
+ 	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
+ 	uint32_t run_id = mid_tiling;
+-	uint32_t mid_region = region2, bb;
+-	uint32_t width = param.width, height = param.height;
++	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) & !xe_has_vram(xe)) ? region1 : region2;
++	uint32_t width = param.width, height = param.height, bb;
+ 	enum blt_compression mid_compression = config->compression;
+ 	int mid_compression_format = param.compression_format;
+ 	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+@@ -413,8 +419,8 @@ static void block_multicopy(int xe,
+ 	uint64_t bb_size = xe_get_default_alignment(xe);
+ 	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
+ 	uint32_t run_id = mid_tiling;
+-	uint32_t mid_region = region2, bb;
+-	uint32_t width = param.width, height = param.height;
++	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) & !xe_has_vram(xe)) ? region1 : region2;
++	uint32_t width = param.width, height = param.height, bb;
+ 	enum blt_compression mid_compression = config->compression;
+ 	int mid_compression_format = param.compression_format;
+ 	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+@@ -539,8 +545,9 @@ static void block_copy_test(int xe,
+ 			region1 = igt_collection_get_value(regions, 0);
+ 			region2 = igt_collection_get_value(regions, 1);
+ 
+-			/* Compressed surface must be in device memory */
+-			if (config->compression && !XE_IS_VRAM_MEMORY_REGION(xe, region2))
++			/* if not XE2, then Compressed surface must be in device memory */
++			if (config->compression && !(AT_LEAST_GEN((intel_get_drm_devid(xe)), 20)) &&
++									!XE_IS_VRAM_MEMORY_REGION(xe, region2))
+ 				continue;
+ 
+ 			regtxt = xe_memregion_dynamic_subtest_name(xe, regions);
+@@ -621,8 +628,8 @@ const char *help_str =
+ 	"  -p\tWrite PNG\n"
+ 	"  -s\tPrint surface info\n"
+ 	"  -t\tTiling format (0 - linear, 1 - XMAJOR, 2 - YMAJOR, 3 - TILE4, 4 - TILE64)\n"
+-	"  -W\tWidth (default 512)\n"
+-	"  -H\tHeight (default 512)"
++	"  -W\tWidth (default 1024)\n"
++	"  -H\tHeight (default 1024)"
+ 	;
+ 
+ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
 -- 
 2.34.1
