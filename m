@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F56310E135
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 17:46:09 +0000 (UTC)
-From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: RE: [PATCH i-g-t v8] tests/intel/xe_pm: Fix d3 subtest
-Date: Tue, 12 Dec 2023 17:46:04 +0000
-Message-ID: <PH0PR11MB4806B21BF64A78E46D924153E48EA@PH0PR11MB4806.namprd11.prod.outlook.com>
-References: <20220421130704.934-2-mohammed.thasleem@intel.com>
- <20231211084918.45829-1-mohammed.thasleem@intel.com>
- <786fc325-9e26-4c6e-b6db-744076686760@gmail.com>
-In-Reply-To: <786fc325-9e26-4c6e-b6db-744076686760@gmail.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D52C110E649
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Dec 2023 17:48:28 +0000 (UTC)
+From: Lukasz Laguna <lukasz.laguna@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t v2 1/2] lib/xe/xe_ioctl: add __xe_exec_sync() helper
+Date: Tue, 12 Dec 2023 18:48:15 +0100
+Message-Id: <20231212174816.5292-2-lukasz.laguna@intel.com>
+In-Reply-To: <20231212174816.5292-1-lukasz.laguna@intel.com>
+References: <20231212174816.5292-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,102 +22,56 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBKdWhhLVBla2thIEhlaWtraWxh
-IDxqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tPiANClNlbnQ6IFR1ZXNkYXksIERlY2VtYmVy
-IDEyLCAyMDIzIDU6NTQgUE0NClRvOiBUaGFzbGVlbSwgTW9oYW1tZWQgPG1vaGFtbWVkLnRoYXNs
-ZWVtQGludGVsLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQpTdWJqZWN0OiBS
-ZTogW1BBVENIIGktZy10IHY4XSB0ZXN0cy9pbnRlbC94ZV9wbTogRml4IGQzIHN1YnRlc3QNCg0K
-SGkgTW9oYW1tZWQsDQoNCk9uIDExLjEyLjIwMjMgMTAuNDksIE1vaGFtbWVkIFRoYXNsZWVtIHdy
-b3RlOg0KPiB4ZV9wbSBkMyB0ZXN0IHJlcXVpcmVzIHRvIHR1cm4gb2ZmIGFsbCBkaXNwbGF5IGlu
-IG9yZGVyIHRvIGVudGVyIHRvIGQzIA0KPiBzdGF0ZSB0aGVyZWZvcmUsIGFkZGluZyB0aGUgc3Vw
-cG9ydCB0byB0cmlnZ2VyaW5nICJEUk1fTU9ERV9EUE1TX09GRiIgDQo+IGluIHNldHVwX2QzKCkg
-YW5kICJEUk1fTU9ERV9EUE1TX09OIiBpbiBjbGVhbnVwX2QzKCkuDQo+IA0KPiB2MjogVXNlIElH
-VF9DUlRDX0FDVElWRSBmb3IgZGlzcGxheXMgT24vT2ZmLg0KPiB2MzogLVVwZGF0ZSBjb21taXQg
-bWVzc2FnZSBhbmQgaGVscGVyIG5hbWVzLg0KPiAgICAgIC1VcGRhdGUgZGlzcGxheSBvbiBhbmQg
-b2ZmIGhlbHBlcnMuDQo+IHY0OiBSZW1vdmUgcmVkdW5kYW50IGNvZGUuIChCaGFudSkNCj4gdjU6
-IE1vdmUgaGVscGVyIGNhbGxzIHRvIHRlc3QgZmlsZS4NCj4gdjY6IC1VcGRhdGUgZnVuY3Rpb24g
-bmFtZSBhcyBkcG1zX29uX29mZi4gKEFuc2h1bWFuKQ0KPiAgICAgIC1VcGRhdGUgc3ViamVjdCBh
-bmQgY29tbWl0IG1lc3NhZ2UuIChLYW1pbCkNCj4gdjc6IC1VcGRhdGUgc3ViamFjdC4gKEFuc2h1
-bWFuKQ0KPiAgICAgIC1Nb3ZlIGRldmljZS5yZXMgdG8gZHBtc19vbl9vZmYoKS4gKEJoYW51KQ0K
-PiAgICAgIC1GcmVlIGRldmljZS5yZXMgaW4gaWd0X2ZpeHR1cmUuIChCaGFudSkNCj4gICAgICAt
-Q2FsbCBrbXN0ZXN0X3NldF9jb25uZWN0b3JfZHBtcyBpZiBEUk1fTU9ERV9DT05ORUNURUQgaXMg
-Zm91bmQuIA0KPiAoS2FtaWwpDQo+IHY4OiBVcGRhdGUgaWYgY29uZGl0aW9uIHRvIGZpeCBkZXJl
-ZmVyZW5jaW5nIG9mIE5VTEwgcG9pbnRlci4gKEJoYW51KQ0KPiANCj4gU2lnbmVkLW9mZi1ieTog
-QmhhbnVwcmFrYXNoIE1vZGVtIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPg0KPiBTaWdu
-ZWQtb2ZmLWJ5OiBBbnNodW1hbiBHdXB0YSA8YW5zaHVtYW4uZ3VwdGFAaW50ZWwuY29tPg0KPiBT
-aWduZWQtb2ZmLWJ5OiBNb2hhbW1lZCBUaGFzbGVlbSA8bW9oYW1tZWQudGhhc2xlZW1AaW50ZWwu
-Y29tPg0KPiAtLS0NCj4gICB0ZXN0cy9pbnRlbC94ZV9wbS5jIHwgMzYgKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrDQo+ICAgMSBmaWxlIGNoYW5nZWQsIDM2IGluc2VydGlvbnMo
-KykNCj4gDQo+IGRpZmYgLS1naXQgYS90ZXN0cy9pbnRlbC94ZV9wbS5jIGIvdGVzdHMvaW50ZWwv
-eGVfcG0uYyBpbmRleCANCj4gYzg5OWJkNjdhLi4zZDZhY2ZiYWIgMTAwNjQ0DQo+IC0tLSBhL3Rl
-c3RzL2ludGVsL3hlX3BtLmMNCj4gKysrIGIvdGVzdHMvaW50ZWwveGVfcG0uYw0KPiBAQCAtMTYs
-NiArMTYsNyBAQA0KPiAgIA0KPiAgICNpbmNsdWRlICJpZ3QuaCINCj4gICAjaW5jbHVkZSAibGli
-L2lndF9kZXZpY2UuaCINCj4gKyNpbmNsdWRlICJsaWIvaWd0X2ttcy5oIg0KDQpJcyB0aGlzIGlu
-Y2x1ZGUgbmVlZGVkPw0KDQo+ICAgI2luY2x1ZGUgImxpYi9pZ3RfcG0uaCINCj4gICAjaW5jbHVk
-ZSAibGliL2lndF9zeXNmcy5oIg0KPiAgICNpbmNsdWRlICJsaWIvaWd0X3N5bmNvYmouaCINCj4g
-QEAgLTM2LDEwICszNywzMiBAQCB0eXBlZGVmIHN0cnVjdCB7DQo+ICAgCXN0cnVjdCBwY2lfZGV2
-aWNlICpwY2lfeGU7DQo+ICAgCXN0cnVjdCBwY2lfZGV2aWNlICpwY2lfcm9vdDsNCj4gICAJY2hh
-ciBwY2lfc2xvdF9uYW1lW05BTUVfTUFYXTsNCj4gKwlkcm1Nb2RlUmVzUHRyIHJlczsNCj4gICB9
-IGRldmljZV90Ow0KPiAgIA0KPiAgIHVpbnQ2NF90IG9yaWdfdGhyZXNob2xkOw0KPiAgIA0KPiAr
-c3RhdGljIHZvaWQgZHBtc19vbl9vZmYoZGV2aWNlX3QgZGV2aWNlLCBpbnQgbW9kZSkgew0KPiAr
-CWludCBpOw0KPiArDQo+ICsJaWYgKCFkZXZpY2UucmVzKQ0KPiArCQlyZXR1cm47DQoNCldoZW4g
-Y29tbWl0IG1lc3NhZ2Ugc2FpZCB0aGVzZSBkcG1zIHNldHRpbmcgYXJlIHJlcXVpcmVkIGZvciB0
-aGUgdGVzdCwgc2hvdWxkIHRoaXMgZGV2aWNlLnJlcyBiZSBkZWNvcmF0ZWQgaGVyZSB3aXRoIGln
-dF9yZXF1aXJlKCkgaW5zdGVhZCBvZiBjaGVja2luZyBhZ2FpbnN0IG51bGw/DQotLT5IZXJlIHdl
-IGV4Y2x1ZGUgZm9sbG93aW5nIGNvZGUgdG8gcnVuIGlmIGRldmljZS5yZXMgbm90IGZvdW5kIGJ1
-dCBub3QgdG8gc2tpcCB0aGUgdGVzdCBiZWNhdXNlIHRoaXMgdGVzdCBleHBlY3RlZCB0byBydW4g
-bW9yZSBvbiBoZWFkbGVzcyBzY2VuYXJpb3MuDQogICAgIEluIGNhc2UsIGlmIHdlIGZvdW5kIGRl
-dmljZS5yZXMgdGhlbiB0dXJuIG9mZiB0aGUgZGlzcGxheXMgdXNpbmcgYmVsb3cgbG9vcCB0byBy
-dW4gdGhlIHRlc3QgYW5kIHNldCBpdCBiYWNrIHRvIHR1cm4gb24gdGhlIGRpc3BsYXlzIHVzaW5n
-IGRwbXNfb25fb2ZmIG9uY2UgdGVzdCBnZXRzIGV4ZWN1dGVkLiANCj4gKw0KPiArCWZvciAoaSA9
-IDA7IGkgPCBkZXZpY2UucmVzLT5jb3VudF9jb25uZWN0b3JzOyBpKyspIHsNCj4gKwkJZHJtTW9k
-ZUNvbm5lY3RvciAqY29ubmVjdG9yID0gZHJtTW9kZUdldENvbm5lY3RvckN1cnJlbnQoZGV2aWNl
-LmZkX3hlLA0KPiArCQkJCQkgICAgICBkZXZpY2UucmVzLT5jb25uZWN0b3JzW2ldKTsNCiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXiBpbmRlbnRhdGlvbg0K
-DQpPdGhlciB0aGFuIHRoZXNlIGNvdXBsZSBvZiBtaW5vciBjb21tZW50cywgdGhpbmdzIGxvb2sg
-b2sgdG8gbWUuDQoNCi9KdWhhLVBla2thDQo+ICsNCj4gKwkJaWYgKCFjb25uZWN0b3IpDQo+ICsJ
-CQljb250aW51ZTsNCj4gKw0KPiArCQlpZiAoY29ubmVjdG9yLT5jb25uZWN0aW9uID09IERSTV9N
-T0RFX0NPTk5FQ1RFRCkNCj4gKwkJCWttc3Rlc3Rfc2V0X2Nvbm5lY3Rvcl9kcG1zKGRldmljZS5m
-ZF94ZSwgY29ubmVjdG9yLCBtb2RlKTsNCj4gKw0KPiArCQlkcm1Nb2RlRnJlZUNvbm5lY3Rvcihj
-b25uZWN0b3IpOw0KPiArCX0NCj4gK30NCj4gKw0KPiAgIC8qIHJ1bnRpbWVfdXNhZ2UgaXMgb25s
-eSBhdmFpbGFibGUgaWYga2VybmVsIGJ1aWxkIENPTkZJR19QTV9BRFZBTkNFRF9ERUJVRyAqLw0K
-PiAgIHN0YXRpYyBib29sIHJ1bnRpbWVfdXNhZ2VfYXZhaWxhYmxlKHN0cnVjdCBwY2lfZGV2aWNl
-ICpwY2kpDQo+ICAgew0KPiBAQCAtOTQsNiArMTE3LDggQEAgc3RhdGljIHZvaWQgdnJhbV9kM2Nv
-bGRfdGhyZXNob2xkX3Jlc3RvcmUoaW50IHNpZykNCj4gICANCj4gICBzdGF0aWMgYm9vbCBzZXR1
-cF9kMyhkZXZpY2VfdCBkZXZpY2UsIGVudW0gaWd0X2FjcGlfZF9zdGF0ZSBzdGF0ZSkNCj4gICB7
-DQo+ICsJZHBtc19vbl9vZmYoZGV2aWNlLCBEUk1fTU9ERV9EUE1TX09GRik7DQo+ICsNCj4gICAJ
-c3dpdGNoIChzdGF0ZSkgew0KPiAgIAljYXNlIElHVF9BQ1BJX0QzQ29sZDoNCj4gICAJCWlndF9y
-ZXF1aXJlKGlndF9wbV9hY3BpX2QzY29sZF9zdXBwb3J0ZWQoZGV2aWNlLnBjaV9yb290KSk7DQo+
-IEBAIC0xMTAsNiArMTM1LDExIEBAIHN0YXRpYyBib29sIHNldHVwX2QzKGRldmljZV90IGRldmlj
-ZSwgZW51bSBpZ3RfYWNwaV9kX3N0YXRlIHN0YXRlKQ0KPiAgIAlyZXR1cm4gZmFsc2U7DQo+ICAg
-fQ0KPiAgIA0KPiArc3RhdGljIHZvaWQgY2xlYW51cF9kMyhkZXZpY2VfdCBkZXZpY2UpIHsNCj4g
-KwlkcG1zX29uX29mZihkZXZpY2UsIERSTV9NT0RFX0RQTVNfT04pOyB9DQo+ICsNCj4gICBzdGF0
-aWMgYm9vbCBpbl9kMyhkZXZpY2VfdCBkZXZpY2UsIGVudW0gaWd0X2FjcGlfZF9zdGF0ZSBzdGF0
-ZSkNCj4gICB7DQo+ICAgCXVpbnQxNl90IHZhbDsNCj4gQEAgLTQ3Nyw2ICs1MDcsNyBAQCBpZ3Rf
-bWFpbg0KPiAgIAkJaWd0X3BtX2dldF9kM2NvbGRfYWxsb3dlZChkZXZpY2UucGNpX3Nsb3RfbmFt
-ZSwgJmQzY29sZF9hbGxvd2VkKTsNCj4gICAJCWlndF9hc3NlcnQoaWd0X3NldHVwX3J1bnRpbWVf
-cG0oZGV2aWNlLmZkX3hlKSk7DQo+ICAgCQlzeXNmc19mZCA9IGlndF9zeXNmc19vcGVuKGRldmlj
-ZS5mZF94ZSk7DQo+ICsJCWRldmljZS5yZXMgPSBkcm1Nb2RlR2V0UmVzb3VyY2VzKGRldmljZS5m
-ZF94ZSk7DQo+ICAgCX0NCj4gICANCj4gICAJZm9yIChjb25zdCBzdHJ1Y3Qgc19zdGF0ZSAqcyA9
-IHNfc3RhdGVzOyBzLT5uYW1lOyBzKyspIHsgQEAgLTUxMSw2IA0KPiArNTQyLDcgQEAgaWd0X21h
-aW4NCj4gICAJCQkJeGVfZm9yX2VhY2hfZW5naW5lKGRldmljZS5mZF94ZSwgaHdlKQ0KPiAgIAkJ
-CQkJdGVzdF9leGVjKGRldmljZSwgaHdlLCAxLCAyLCBzLT5zdGF0ZSwNCj4gICAJCQkJCQkgIE5P
-X1JQTSk7DQo+ICsJCQkJY2xlYW51cF9kMyhkZXZpY2UpOw0KPiAgIAkJCX0NCj4gICAJCX0NCj4g
-ICAJfQ0KPiBAQCAtNTE5LDYgKzU1MSw3IEBAIGlndF9tYWluDQo+ICAgCQlpZ3Rfc3VidGVzdF9m
-KCIlcy1iYXNpYyIsIGQtPm5hbWUpIHsNCj4gICAJCQlpZ3RfYXNzZXJ0KHNldHVwX2QzKGRldmlj
-ZSwgZC0+c3RhdGUpKTsNCj4gICAJCQlpZ3RfYXNzZXJ0KGluX2QzKGRldmljZSwgZC0+c3RhdGUp
-KTsNCj4gKwkJCWNsZWFudXBfZDMoZGV2aWNlKTsNCj4gICAJCX0NCj4gICANCj4gICAJCWlndF9z
-dWJ0ZXN0X2YoIiVzLWJhc2ljLWV4ZWMiLCBkLT5uYW1lKSB7IEBAIC01MjYsNiArNTU5LDcgQEAg
-DQo+IGlndF9tYWluDQo+ICAgCQkJeGVfZm9yX2VhY2hfZW5naW5lKGRldmljZS5mZF94ZSwgaHdl
-KQ0KPiAgIAkJCQl0ZXN0X2V4ZWMoZGV2aWNlLCBod2UsIDEsIDEsDQo+ICAgCQkJCQkgIE5PX1NV
-U1BFTkQsIGQtPnN0YXRlKTsNCj4gKwkJCWNsZWFudXBfZDMoZGV2aWNlKTsNCj4gICAJCX0NCj4g
-ICANCj4gICAJCWlndF9zdWJ0ZXN0X2YoIiVzLW11bHRpcGxlLWV4ZWNzIiwgZC0+bmFtZSkgeyBA
-QCAtNTMzLDYgKzU2Nyw3IEBAIA0KPiBpZ3RfbWFpbg0KPiAgIAkJCXhlX2Zvcl9lYWNoX2VuZ2lu
-ZShkZXZpY2UuZmRfeGUsIGh3ZSkNCj4gICAJCQkJdGVzdF9leGVjKGRldmljZSwgaHdlLCAxNiwg
-MzIsDQo+ICAgCQkJCQkgIE5PX1NVU1BFTkQsIGQtPnN0YXRlKTsNCj4gKwkJCWNsZWFudXBfZDMo
-ZGV2aWNlKTsNCj4gICAJCX0NCj4gICAJfQ0KPiAgIA0KPiBAQCAtNTQ3LDYgKzU4Miw3IEBAIGln
-dF9tYWluDQo+ICAgCQljbG9zZShzeXNmc19mZCk7DQo+ICAgCQlpZ3RfcG1fc2V0X2QzY29sZF9h
-bGxvd2VkKGRldmljZS5wY2lfc2xvdF9uYW1lLCBkM2NvbGRfYWxsb3dlZCk7DQo+ICAgCQlpZ3Rf
-cmVzdG9yZV9ydW50aW1lX3BtKCk7DQo+ICsJCWRybU1vZGVGcmVlUmVzb3VyY2VzKGRldmljZS5y
-ZXMpOw0KPiAgIAkJZHJtX2Nsb3NlX2RyaXZlcihkZXZpY2UuZmRfeGUpOw0KPiAgIAl9DQo+ICAg
-fQ0KDQo=
+Add non-asserting variant of xe_exec_sync().
+
+Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+---
+ lib/xe/xe_ioctl.c | 12 +++++++++---
+ lib/xe/xe_ioctl.h |  2 ++
+ 2 files changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index cdad3d7e2..b5cd3ae35 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -448,8 +448,8 @@ void xe_exec(int fd, struct drm_xe_exec *exec)
+ 	igt_assert_eq(__xe_exec(fd, exec), 0);
+ }
+ 
+-void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+-		  struct drm_xe_sync *sync, uint32_t num_syncs)
++int __xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
++		   struct drm_xe_sync *sync, uint32_t num_syncs)
+ {
+ 	struct drm_xe_exec exec = {
+ 		.exec_queue_id = exec_queue,
+@@ -459,7 +459,13 @@ void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+ 		.num_batch_buffer = 1,
+ 	};
+ 
+-	igt_assert_eq(__xe_exec(fd, &exec), 0);
++	return __xe_exec(fd, &exec);
++}
++
++void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
++		    struct drm_xe_sync *sync, uint32_t num_syncs)
++{
++	igt_assert_eq(__xe_exec_sync(fd, exec_queue, addr, sync, num_syncs), 0);
+ }
+ 
+ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index c8d46fb29..3679ce66b 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -88,6 +88,8 @@ void *xe_bo_map(int fd, uint32_t bo, size_t size);
+ void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot);
+ int __xe_exec(int fd, struct drm_xe_exec *exec);
+ void xe_exec(int fd, struct drm_xe_exec *exec);
++int __xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
++		   struct drm_xe_sync *sync, uint32_t num_syncs);
+ void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+ 		  struct drm_xe_sync *sync, uint32_t num_syncs);
+ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);
+-- 
+2.40.0
