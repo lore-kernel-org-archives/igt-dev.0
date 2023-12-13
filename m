@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A140810E718
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 07:55:30 +0000 (UTC)
-From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-To: 
-Subject: [PATCH i-g-t v6 2/5] lib/intel_blt: Update calculation of ccs_size
- and size_of_ctrl_copy
-Date: Wed, 13 Dec 2023 11:55:06 -0800
-Message-Id: <4a058a897cf9e21f0dc74c453c23d3cfe5f49a85.1702496855.git.akshata.jahagirdar@intel.com>
-In-Reply-To: <cover.1702496855.git.akshata.jahagirdar@intel.com>
-References: <cover.1702496855.git.akshata.jahagirdar@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8BDEC10E762
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 10:38:03 +0000 (UTC)
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 0/2] add new test for dark screen detection
+In-Reply-To: <20231213103442.2599632-1-kunal1.joshi@intel.com>
+References: <20231213103442.2599632-1-kunal1.joshi@intel.com>
+Date: Wed, 13 Dec 2023 12:37:59 +0200
+Message-ID: <87bkauwfp4.fsf@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,114 +18,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, ayaz.siddiqui@intel.com,
- akshata.jahagirdar@intel.com, matthew.auld@intel.com
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The Main-to-CCS Ratio for XE2 has been changed to 512:1.
-Update the CCS_RATIO macro to select relevant ratio based on platform.
-Update the ccs_ratio call in gem_ccs and xe_ccs tests
-based on previous change.
+On Wed, 13 Dec 2023, Kunal Joshi <kunal1.joshi@intel.com> wrote:
+> dark screen detection feature when enable will monitor frames
+> and if black frame is detcted it will raise drm_error, added
+> two tests for positive (black frame) and negative case (white frame)
 
-Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
----
- lib/intel_blt.c       | 13 ++++++++-----
- lib/intel_blt.h       |  2 +-
- tests/intel/gem_ccs.c |  2 +-
- tests/intel/xe_ccs.c  |  2 +-
- 4 files changed, 11 insertions(+), 8 deletions(-)
+Please settle on either "darkscreen" or "dark_screen" throughout the
+kernel and igt, and stick to it. Either one is fine, but please don't
+mix.
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 1116c978e..1be289ad6 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -948,15 +948,16 @@ int blt_block_copy(int fd,
- 	return ret;
- }
- 
--static uint16_t __ccs_size(const struct blt_ctrl_surf_copy_data *surf)
-+static uint16_t __ccs_size(int fd, const struct blt_ctrl_surf_copy_data *surf)
- {
- 	uint32_t src_size, dst_size;
-+	uint16_t ccsratio = CCS_RATIO(fd);
- 
- 	src_size = surf->src.access_type == DIRECT_ACCESS ?
--				surf->src.size : surf->src.size / CCS_RATIO;
-+				surf->src.size : surf->src.size / ccsratio;
- 
- 	dst_size = surf->dst.access_type == DIRECT_ACCESS ?
--				surf->dst.size : surf->dst.size / CCS_RATIO;
-+				surf->dst.size : surf->dst.size / ccsratio;
- 
- 	igt_assert_f(src_size <= dst_size, "dst size must be >= src size for CCS copy\n");
- 
-@@ -1118,6 +1119,8 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
- 	uint64_t dst_offset, src_offset, bb_offset, alignment;
- 	uint32_t bbe = MI_BATCH_BUFFER_END;
- 	uint32_t *bb;
-+	uint16_t num_ccs_blocks = (ip_ver >= IP_VER(20, 0)) ?
-+				(xe_get_default_alignment(fd) / CCS_RATIO(fd)) : CCS_RATIO(fd);
- 
- 	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
- 	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
-@@ -1136,7 +1139,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
- 		data.xe2.dw00.dst_access_type = surf->dst.access_type;
- 
- 		/* Ensure dst has size capable to keep src ccs aux */
--		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
-+		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
- 		data.xe2.dw00.length = 0x3;
- 
- 		data.xe2.dw01.src_address_lo = src_offset;
-@@ -1155,7 +1158,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
- 		data.gen12.dw00.dst_access_type = surf->dst.access_type;
- 
- 		/* Ensure dst has size capable to keep src ccs aux */
--		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
-+		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
- 		data.gen12.dw00.length = 0x3;
- 
- 		data.gen12.dw01.src_address_lo = src_offset;
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index 5934ccd67..d9be22fdf 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -52,7 +52,7 @@
- #include "igt.h"
- #include "intel_cmds_info.h"
- 
--#define CCS_RATIO 256
-+#define CCS_RATIO(fd) (AT_LEAST_GEN(intel_get_drm_devid(fd), 20) ? 512 : 256)
- 
- enum blt_color_depth {
- 	CD_8bit,
-diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
-index 0a691778d..80a29ecab 100644
---- a/tests/intel/gem_ccs.c
-+++ b/tests/intel/gem_ccs.c
-@@ -99,7 +99,7 @@ static void surf_copy(int i915,
- 	struct blt_block_copy_data_ext ext = {};
- 	struct blt_ctrl_surf_copy_data surf = {};
- 	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
--	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
-+	uint64_t bb_size, ccssize = mid->size / CCS_RATIO(i915);
- 	uint32_t *ccscopy;
- 	uint8_t uc_mocs = intel_get_uc_mocs_index(i915);
- 	int result;
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index 77d3020bc..ac0805017 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -95,7 +95,7 @@ static void surf_copy(int xe,
- 	struct blt_block_copy_data_ext ext = {};
- 	struct blt_ctrl_surf_copy_data surf = {};
- 	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
--	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
-+	uint64_t bb_size, ccssize = mid->size / CCS_RATIO(xe);
- 	uint32_t *ccscopy;
- 	uint8_t uc_mocs = intel_get_uc_mocs_index(xe);
- 	uint32_t sysmem = system_memory(xe);
+And please figure out the design [1].
+
+BR,
+Jani.
+
+
+[1] https://lore.kernel.org/r/87sf46whjj.fsf@intel.com
+
+
+>
+> Kunal Joshi (2):
+>   lib/igt_debugfs: added helper to enable/disable dark screen detection
+>   tests/intel/kms_dark_screen_detection: Added IGT for validating dark
+>     screen detection
+>
+>  lib/igt_debugfs.c                      |  39 +++++
+>  lib/igt_debugfs.h                      |   2 +
+>  tests/intel/kms_darkscreen_detection.c | 196 +++++++++++++++++++++++++
+>  tests/meson.build                      |   1 +
+>  4 files changed, 238 insertions(+)
+>  create mode 100644 tests/intel/kms_darkscreen_detection.c
+
 -- 
-2.34.1
+Jani Nikula, Intel
