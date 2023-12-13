@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A90A10E6D6
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 04:48:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7777410E6D9
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 04:48:32 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [i-g-t V8 2/7] tests/kms_vrr: Clear VRR before exit
-Date: Wed, 13 Dec 2023 10:07:36 +0530
-Message-Id: <20231213043741.3640374-3-bhanuprakash.modem@intel.com>
+Subject: [i-g-t V8 4/7] tests/kms_vrr: Fix pipe/output combo validity
+ constraint
+Date: Wed, 13 Dec 2023 10:07:38 +0530
+Message-Id: <20231213043741.3640374-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231213043741.3640374-1-bhanuprakash.modem@intel.com>
 References: <20231213043741.3640374-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
@@ -23,42 +24,130 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Before exiting the subtest, make sure to clear the VRR.
+Before starting the subtest, we are checking the selected pipe/output
+combo validity with default mode, but inside the subtest we are using
+the mode with highest resolution.
 
-V2: - New function for cleanup
+Few panels exposes 4K as a default mode even though it supports 8K,
+in this scenario test may misbehave.
+
+So, check the pipe/output combo validity with the mode that we are
+actually going to use in the subtest.
+
+V2: Reword the commit message
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
 ---
- tests/kms_vrr.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tests/kms_vrr.c | 62 +++++++++++++++++++++++++++++++------------------
+ 1 file changed, 39 insertions(+), 23 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index bbdb54682..13e7f3ca6 100644
+index df241aa6c..4540d8b4b 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -469,8 +469,11 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	igt_assert_f(result < 10,
- 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold exceeded, result was %u%%\n",
- 		     ((range.max + range.min) / 2), rate, (flags & TEST_NEGATIVE)? "on" : "off", result);
-+}
+@@ -163,9 +163,6 @@ output_mode_with_maxrate(igt_output_t *output, unsigned int vrr_max)
+ 		    connector->modes[i].vrefresh <= vrr_max)
+ 			mode = connector->modes[i];
  
--	/* Clean-up */
-+static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
+-	igt_info("Override Mode: ");
+-	kmstest_dump_mode(&mode);
+-
+ 	return mode;
+ }
+ 
+@@ -233,21 +230,7 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 	drmModeModeInfo mode;
+ 	cairo_t *cr;
+ 
+-	/* Reset output */
+-	igt_display_reset(&data->display);
+-	igt_output_set_pipe(output, pipe);
+-
+-	/* Capture VRR range */
+-	data->range = get_vrr_range(data, output);
+-
+-	/* Override mode with max vrefresh.
+-	 *   - vrr_min range should be less than the override mode vrefresh.
+-	 *   - Limit the vrr_max range with the override mode vrefresh.
+-	 */
+-	mode = output_mode_with_maxrate(output, data->range.max);
+-	igt_require(mode.vrefresh > data->range.min);
+-	data->range.max = mode.vrefresh;
+-	igt_output_override_mode(output, &mode);
++	mode = *igt_output_get_mode(output);
+ 
+ 	/* Prepare resources */
+ 	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
+@@ -483,7 +466,36 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_remove_fb(data->drm_fd, &data->fb0);
+ }
+ 
+-static bool config_constraint(igt_output_t *output, uint32_t flags)
++static bool output_constraint(data_t *data, igt_output_t *output)
 +{
-+	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, false);
- 	igt_plane_set_fb(data->primary, NULL);
- 	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_output_override_mode(output, NULL);
-@@ -510,6 +513,9 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
++	drmModeModeInfo mode;
++
++	/* Reset output */
++	igt_display_reset(&data->display);
++
++	/* Capture VRR range */
++	data->range = get_vrr_range(data, output);
++
++	/*
++	 * Override mode with max vrefresh.
++	 *   - vrr_min range should be less than the override mode vrefresh.
++	 *   - Limit the vrr_max range with the override mode vrefresh.
++	 */
++	mode = output_mode_with_maxrate(output, data->range.max);
++	if (mode.vrefresh < data->range.min)
++		return false;
++
++	data->range.max = mode.vrefresh;
++
++	igt_info("Override Mode: ");
++	kmstest_dump_mode(&mode);
++
++	igt_output_override_mode(output, &mode);
++
++	return true;
++}
++
++static bool config_constraint(data_t *data, igt_output_t *output, uint32_t flags)
+ {
+ 	if (!has_vrr(output))
+ 		return false;
+@@ -495,6 +507,9 @@ static bool config_constraint(igt_output_t *output, uint32_t flags)
+ 	if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
+ 		return false;
+ 
++	if (!output_constraint(data, output))
++		return false;
++
+ 	return true;
+ }
+ 
+@@ -507,16 +522,17 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
+ 	for_each_connected_output(&data->display, output) {
+ 		enum pipe pipe;
+ 
+-		if (!config_constraint(output, flags))
++		if (!config_constraint(data, output, flags))
+ 			continue;
+ 
+ 		for_each_pipe(&data->display, pipe) {
+ 			if (igt_pipe_connector_valid(pipe, output)) {
+-				igt_display_reset(&data->display);
+-
+ 				igt_output_set_pipe(output, pipe);
+-				if (!intel_pipe_output_combo_valid(&data->display))
++
++				if (!intel_pipe_output_combo_valid(&data->display)) {
++					igt_output_set_pipe(output, PIPE_NONE);
+ 					continue;
++				}
+ 
  				igt_dynamic_f("pipe-%s-%s",
  					      kmstest_pipe_name(pipe), output->name)
- 					test(data, pipe, output, flags);
-+
-+				test_cleanup(data, pipe, output);
-+
- 				break;
- 			}
- 		}
 -- 
 2.40.0
