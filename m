@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DBC3C10E6D6
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 04:48:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2927810E6F2
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 04:48:40 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [i-g-t V8 3/7] tests/kms_vrr: Move all config constaints to new
- function
-Date: Wed, 13 Dec 2023 10:07:37 +0530
-Message-Id: <20231213043741.3640374-4-bhanuprakash.modem@intel.com>
+Subject: [i-g-t V8 7/7] tests/kms_vrr: New subtest for toggle VRR during
+ fastsets
+Date: Wed, 13 Dec 2023 10:07:41 +0530
+Message-Id: <20231213043741.3640374-8-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231213043741.3640374-1-bhanuprakash.modem@intel.com>
 References: <20231213043741.3640374-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
@@ -19,61 +19,109 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>,
+ Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-No functional change, cleanup only. Move all config checks
-to new function.
+Allow VRR to be toggled during fastsets, without full modeset.
+This patch enables 'kms_vrr@flip-basic' subtest to verify fastset
+too.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Tested-by: Vidya Srinivas <vidya.srinivas@intel.com>
 Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
 ---
- tests/kms_vrr.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ tests/kms_vrr.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 13e7f3ca6..df241aa6c 100644
+index de2ee13c7..1ace970a5 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -483,6 +483,21 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_remove_fb(data->drm_fd, &data->fb0);
+@@ -41,6 +41,10 @@
+  * Description: Tests that VRR is enabled and that the difference between flip
+  *              timestamps converges to the requested rate
+  *
++ * SUBTEST: flip-basic-fastset
++ * Description: Tests that VRR is enabled without modeset and that the difference
++ *              between flip timestamps converges to the requested rate
++ *
+  * SUBTEST: flip-dpms
+  * Description: Tests with DPMS that VRR is enabled and that the difference
+  *              between flip timestamps converges to the requested rate.
+@@ -81,7 +85,8 @@ enum {
+ 	TEST_FLIPLINE = 1 << 3,
+ 	TEST_SEAMLESS_VRR = 1 << 4,
+ 	TEST_SEAMLESS_DRRS = 1 << 5,
+-	TEST_NEGATIVE = 1 << 6,
++	TEST_FASTSET = 1 << 6,
++	TEST_NEGATIVE = 1 << 7,
+ };
+ 
+ enum {
+@@ -253,11 +258,15 @@ static bool vrr_capable(igt_output_t *output)
  }
  
-+static bool config_constraint(igt_output_t *output, uint32_t flags)
-+{
-+	if (!has_vrr(output))
-+		return false;
+ /* Toggles variable refresh rate on the pipe. */
+-static void set_vrr_on_pipe(data_t *data, enum pipe pipe, bool enabled)
++static void set_vrr_on_pipe(data_t *data, enum pipe pipe,
++			    bool need_modeset, bool enabled)
+ {
+ 	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED,
+ 				enabled);
+-	igt_display_commit2(&data->display, COMMIT_ATOMIC);
 +
-+	/* For Negative tests, panel should be non-vrr. */
-+	if ((flags & TEST_NEGATIVE) && vrr_capable(output))
-+		return false;
-+
-+	if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
-+		return false;
-+
-+	return true;
-+}
-+
- /* Runs tests on outputs that are VRR capable. */
- static void
- run_vrr_test(data_t *data, test_t test, uint32_t flags)
-@@ -492,14 +507,7 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
- 	for_each_connected_output(&data->display, output) {
- 		enum pipe pipe;
++	igt_assert(igt_display_try_commit_atomic(&data->display,
++						 need_modeset ? DRM_MODE_ATOMIC_ALLOW_MODESET : 0,
++						 NULL) == 0);
+ }
  
--		if (!has_vrr(output))
--			continue;
--
--		/* For Negative tests, panel should be non-vrr. */
--		if ((flags & TEST_NEGATIVE) && vrr_capable(output))
--			continue;
--
--		if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
-+		if (!config_constraint(output, flags))
- 			continue;
+ /* Prepare the display for testing on the given pipe. */
+@@ -418,7 +427,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	igt_info("Override Mode: ");
+ 	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
  
- 		for_each_pipe(&data->display, pipe) {
+-	set_vrr_on_pipe(data, pipe, true);
++	set_vrr_on_pipe(data, pipe, !(flags & TEST_FASTSET), true);
+ 
+ 	/*
+ 	 * Do a short run with VRR, but don't check the result.
+@@ -484,7 +493,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	 * modeset. And the expected behavior is the same as disabling VRR on
+ 	 * a VRR capable panel.
+ 	 */
+-	set_vrr_on_pipe(data, pipe, (flags & TEST_NEGATIVE)? true : false);
++	set_vrr_on_pipe(data, pipe, !(flags & TEST_FASTSET), (flags & TEST_NEGATIVE) ? true : false);
+ 	rate = vtest_ns.mid;
+ 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+ 	igt_assert_f(result < 10,
+@@ -506,10 +515,8 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
+ 	prepare_test(data, output, pipe);
+ 	vtest_ns = get_test_rate_ns(data->range);
+ 
+-	if (vrr) {
+-		igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, true);
+-		igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
+-	}
++	if (vrr)
++		set_vrr_on_pipe(data, pipe, false, true);
+ 
+ 	rate = vtest_ns.max;
+ 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+@@ -703,6 +710,11 @@ igt_main
+ 		igt_describe("Test to switch RR seamlessly without modeset.");
+ 		igt_subtest_with_dynamic("seamless-rr-switch-drrs")
+ 			run_vrr_test(&data, test_seamless_rr_basic, TEST_SEAMLESS_DRRS);
++
++		igt_describe("Tests that VRR is enabled without modeset and that the difference "
++			     "between flip timestamps converges to the requested rate");
++		igt_subtest_with_dynamic("flip-basic-fastset")
++			run_vrr_test(&data, test_basic, TEST_FASTSET);
+ 	}
+ 
+ 	igt_fixture {
 -- 
 2.40.0
