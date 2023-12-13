@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC6BE10E7A4
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 11:52:31 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20231208002944.1290951-3-matthew.d.roper@intel.com>
-References: <20231208002944.1290951-1-matthew.d.roper@intel.com>
- <20231208002944.1290951-3-matthew.d.roper@intel.com>
-Subject: Re: [PATCH i-g-t v2 2/2] tests/xe_query: Query and sanity-check GT ip
- versions
-From: Gustavo Sousa <gustavo.sousa@intel.com>
-To: Matt Roper <matthew.d.roper@intel.com>, <igt-dev@lists.freedesktop.org>
-Date: Wed, 13 Dec 2023 08:52:18 -0300
-Message-ID: <170246833854.7223.1917836669854933971@gjsousa-mobl2>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA56E10E7B8
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 12:00:50 +0000 (UTC)
+Message-ID: <84082d79-28fd-46f8-aa94-315f61c393c5@linux.intel.com>
+Date: Wed, 13 Dec 2023 13:00:45 +0100
 MIME-Version: 1.0
+Subject: Re: [PATCH i-g-t v2 1/2] lib/xe/xe_ioctl: add __xe_exec_sync() helper
+Content-Language: en-US
+To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
+References: <20231212174816.5292-1-lukasz.laguna@intel.com>
+ <20231212174816.5292-2-lukasz.laguna@intel.com>
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20231212174816.5292-2-lukasz.laguna@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,92 +25,64 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Matt Roper (2023-12-07 21:29:44-03:00)
->Update the query test to include the GT's IP version in the output and
->to also perform some simple sanity checks on the version received.  We
->don't want to try to match any specific version numbers (since we expect
->new versions to show up in the future), but we do know that the uapi
->should never return version numbers older than 12.70 for the primary GT
->or 13.00 for the media GT since those were the first IP versions to
->include GMD_ID support.  We also know that MTL/ARL are the only pre-Xe2
->platforms to support GMD_ID, so if we're not running on MTL/ARL, the
->version numbers must always be 20.00 or greater.
->
->Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Hi,
 
-I would only replace "Query" with "Print" in the commit subject, as we
-are not extending the query (or making a new one) to get ip versions -
-they are going to be there by default for the platforms that contain
-GMD_ID.
+On 12/12/2023 6:48 PM, Lukasz Laguna wrote:
+> Add non-asserting variant of xe_exec_sync().
+> 
+> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+> ---
+>   lib/xe/xe_ioctl.c | 12 +++++++++---
+>   lib/xe/xe_ioctl.h |  2 ++
+>   2 files changed, 11 insertions(+), 3 deletions(-)
+> 
+> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> index cdad3d7e2..b5cd3ae35 100644
+> --- a/lib/xe/xe_ioctl.c
+> +++ b/lib/xe/xe_ioctl.c
+> @@ -448,8 +448,8 @@ void xe_exec(int fd, struct drm_xe_exec *exec)
+>   	igt_assert_eq(__xe_exec(fd, exec), 0);
+>   }
+>   
+> -void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+> -		  struct drm_xe_sync *sync, uint32_t num_syncs)
+> +int __xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+> +		   struct drm_xe_sync *sync, uint32_t num_syncs)
+>   {
+>   	struct drm_xe_exec exec = {
+>   		.exec_queue_id = exec_queue,
+> @@ -459,7 +459,13 @@ void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+>   		.num_batch_buffer = 1,
+>   	};
+>   
+> -	igt_assert_eq(__xe_exec(fd, &exec), 0);
+> +	return __xe_exec(fd, &exec);
+> +}
+> +
+> +void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+> +		    struct drm_xe_sync *sync, uint32_t num_syncs)
+> +{
+> +	igt_assert_eq(__xe_exec_sync(fd, exec_queue, addr, sync, num_syncs), 0);
+>   }
 
-Other than that,
+To be honest, I'm a bit confused with the xe_exec_sync naming.
 
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
+sync typically refers to synchronous operations, which are operations 
+that block further execution until they have finished, so I would
+actually expect the xe_exec_wait behavior.
 
->---
-> tests/intel/xe_query.c | 28 ++++++++++++++++++++++++++++
-> 1 file changed, 28 insertions(+)
->
->diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
->index 338ef6151..0e66b2eec 100644
->--- a/tests/intel/xe_query.c
->+++ b/tests/intel/xe_query.c
->@@ -259,6 +259,7 @@ test_query_mem_regions(int fd)
-> static void
-> test_query_gt_list(int fd)
-> {
->+        uint16_t dev_id =3D intel_get_drm_devid(fd);
->         struct drm_xe_query_gt_list *gt_list;
->         struct drm_xe_device_query query =3D {
->                 .extensions =3D 0,
->@@ -278,13 +279,40 @@ test_query_gt_list(int fd)
->         igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0=
-);
->=20
->         for (i =3D 0; i < gt_list->num_gt; i++) {
->+                int verx100 =3D 100 * gt_list->gt_list[i].ip_ver_major +
->+                        gt_list->gt_list[i].ip_ver_minor;
->+
->                 igt_info("type: %d\n", gt_list->gt_list[i].type);
->                 igt_info("gt_id: %d\n", gt_list->gt_list[i].gt_id);
->+                igt_info("IP version: %d.%02d, stepping %d\n",
->+                         gt_list->gt_list[i].ip_ver_major,
->+                         gt_list->gt_list[i].ip_ver_minor,
->+                         gt_list->gt_list[i].ip_ver_rev);
->                 igt_info("reference_clock: %u\n", gt_list->gt_list[i].ref=
-erence_clock);
->                 igt_info("near_mem_regions: 0x%016llx\n",
->                        gt_list->gt_list[i].near_mem_regions);
->                 igt_info("far_mem_regions: 0x%016llx\n",
->                        gt_list->gt_list[i].far_mem_regions);
->+
->+                /* Sanity check IP version. */
->+                if (verx100) {
->+                        /*
->+                         * First GMD_ID platforms had graphics 12.70 and =
-media
->+                         * 13.00 so we should never see non-zero values l=
-ower
->+                         * than those.
->+                         */
->+                        if (gt_list->gt_list[i].type =3D=3D DRM_XE_QUERY_=
-GT_TYPE_MEDIA)
->+                                igt_assert_lte(1300, verx100);
->+                        else
->+                                igt_assert_lte(1270, verx100);
->+
->+                        /*
->+                         * Aside from MTL/ARL, all version numbers should=
- be
->+                         * 20.00 or higher.
->+                         */
->+                        if (!IS_METEORLAKE(dev_id))
->+                                igt_assert_lte(20, gt_list->gt_list[i].ip=
-_ver_major);
->+                }
->         }
-> }
->=20
->--=20
->2.43.0
->
+>   
+>   void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
+> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+> index c8d46fb29..3679ce66b 100644
+> --- a/lib/xe/xe_ioctl.h
+> +++ b/lib/xe/xe_ioctl.h
+> @@ -88,6 +88,8 @@ void *xe_bo_map(int fd, uint32_t bo, size_t size);
+>   void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot);
+>   int __xe_exec(int fd, struct drm_xe_exec *exec);
+>   void xe_exec(int fd, struct drm_xe_exec *exec);
+> +int __xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+> +		   struct drm_xe_sync *sync, uint32_t num_syncs);
+>   void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+>   		  struct drm_xe_sync *sync, uint32_t num_syncs);
+>   void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);
