@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Wed, 13 Dec 2023 16:11:49 +0100
+Date: Wed, 13 Dec 2023 16:14:21 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: [igt-dev] =?utf-8?B?4pyXIENJLnhlQkFU?= =?utf-8?Q?=3A?= failure
- for Initial SR-IOV validation (rev8)
-Message-ID: <20231213151149.pkmb42fh2oayhvss@kamilkon-desk.igk.intel.com>
+Subject: Re: [igt-dev] =?utf-8?B?4pyXIEZpLkNJLklHVA==?= =?utf-8?Q?=3A?=
+ failure for Initial SR-IOV validation (rev8)
+Message-ID: <20231213151421.wnqbaf5duqpwamh2@kamilkon-desk.igk.intel.com>
 References: <20231205081618.18143-1-lukasz.laguna@intel.com>
- <170178631718.24285.11991045043018542795@emeril.freedesktop.org>
+ <170180549273.24283.10848125298099811670@emeril.freedesktop.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <170178631718.24285.11991045043018542795@emeril.freedesktop.org>
+In-Reply-To: <170180549273.24283.10848125298099811670@emeril.freedesktop.org>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,12 +25,13 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi,
 
-this is unrelated to new sr-iov (sriov) libs and tests.
+below regressions are unrelated to new libs and tests for sr-iov (sriov)
+while skips are ok (as there are no sr-iov configs now).
 
 Regards,
 Kamil
 
-On 2023-12-05 at 14:25:17 -0000, Patchwork wrote:
+On 2023-12-05 at 19:44:52 -0000, Patchwork wrote:
 > == Series Details ==
 > 
 > Series: Initial SR-IOV validation (rev8)
@@ -39,7 +40,7 @@ On 2023-12-05 at 14:25:17 -0000, Patchwork wrote:
 > 
 > == Summary ==
 > 
-> CI Bug Log - changes from XEIGT_7620_BAT -> XEIGTPW_10335_BAT
+> CI Bug Log - changes from CI_DRM_13981_full -> IGTPW_10335_full
 > ====================================================
 > 
 > Summary
@@ -47,73 +48,100 @@ On 2023-12-05 at 14:25:17 -0000, Patchwork wrote:
 > 
 >   **FAILURE**
 > 
->   Serious unknown changes coming with XEIGTPW_10335_BAT absolutely need to be
+>   Serious unknown changes coming with IGTPW_10335_full absolutely need to be
 >   verified manually.
 >   
 >   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_10335_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   introduced in IGTPW_10335_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
 >   to document this new failure mode, which will reduce false positives in CI.
 > 
->   
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10335/index.html
 > 
-> Participating hosts (3 -> 4)
+> Participating hosts (7 -> 7)
 > ------------------------------
 > 
->   Additional (1): bat-dg2-oem2 
+>   No changes in participating hosts
 > 
 > Possible new issues
 > -------------------
 > 
->   Here are the unknown changes that may have been introduced in XEIGTPW_10335_BAT:
+>   Here are the unknown changes that may have been introduced in IGTPW_10335_full:
 > 
 > ### IGT changes ###
 > 
 > #### Possible regressions ####
 > 
->   * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-edp-1:
->     - bat-adlp-7:         NOTRUN -> [FAIL][1] +3 other tests fail
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10335/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-edp-1.html
+>   * igt@device_reset@unbind-reset-rebind:
+>     - shard-tglu:         NOTRUN -> [ABORT][1] +1 other test abort
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10335/shard-tglu-6/igt@device_reset@unbind-reset-rebind.html
+> 
+>   * igt@gem_lmem_swapping@parallel-multi@lmem0:
+>     - shard-dg2:          NOTRUN -> [ABORT][2] +9 other tests abort
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10335/shard-dg2-2/igt@gem_lmem_swapping@parallel-multi@lmem0.html
+>     - shard-dg1:          NOTRUN -> [ABORT][3] +8 other tests abort
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10335/shard-dg1-19/igt@gem_lmem_swapping@parallel-multi@lmem0.html
+> 
+>   * igt@i915_selftest@live@guc_multi_lrc:
+>     - shard-mtlp:         [PASS][4] -> [DMESG-WARN][5] +3 other tests dmesg-warn
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13981/shard-mtlp-2/igt@i915_selftest@live@guc_multi_lrc.html
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10335/shard-mtlp-1/igt@i915_selftest@live@guc_multi_lrc.html
+> 
+>   * igt@kms_cursor_legacy@2x-cursor-vs-flip-legacy:
+>     - shard-mtlp:         NOTRUN -> [SKIP][6] +8 other tests skip
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10335/shard-mtlp-2/igt@kms_cursor_legacy@2x-cursor-vs-flip-legacy.html
+> 
+>   * igt@kms_dirtyfb@drrs-dirtyfb-ioctl:
+>     - shard-dg2:          NOTRUN -> [SKIP][7] +2 other tests skip
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10335/shard-dg2-1/igt@kms_dirtyfb@drrs-dirtyfb-ioctl.html
+
+New tests for sriov - skips are ok.
+
+> 
+>   * igt@sriov_basic@bind-unbind-vf (NEW):
+>     - shard-dg1:          NOTRUN -> [SKIP][8] +2 other tests skip
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10335/shard-dg1-15/igt@sriov_basic@bind-unbind-vf.html
+> 
+>   * igt@sriov_basic@enable-vfs-autoprobe-off (NEW):
+>     - shard-rkl:          NOTRUN -> [SKIP][9] +2 other tests skip
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10335/shard-rkl-3/igt@sriov_basic@enable-vfs-autoprobe-off.html
+> 
+>   * igt@sriov_basic@enable-vfs-autoprobe-on (NEW):
+>     - shard-tglu:         NOTRUN -> [SKIP][10] +3 other tests skip
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10335/shard-tglu-5/igt@sriov_basic@enable-vfs-autoprobe-on.html
 > 
 >   
 > #### Warnings ####
 > 
->   * igt@xe_evict@evict-beng-small-external:
->     - bat-pvc-2:          [SKIP][2] ([Intel XE#688]) -> [FAIL][3] +3 other tests fail
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7620/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10335/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html
+>   * igt@gem_lmem_swapping@basic@lmem0:
+>     - shard-dg1:          [ABORT][11] ([i915#4391] / [i915#4423]) -> [ABORT][12]
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13981/shard-dg1-19/igt@gem_lmem_swapping@basic@lmem0.html
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10335/shard-dg1-15/igt@gem_lmem_swapping@basic@lmem0.html
 > 
->   * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate:
->     - bat-pvc-2:          [FAIL][4] -> [SKIP][5] +32 other tests skip
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7620/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html
->    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10335/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html
-> 
->   * igt@xe_mmap@vram:
->     - bat-adlp-7:         [FAIL][6] -> [SKIP][7]
->    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7620/bat-adlp-7/igt@xe_mmap@vram.html
->    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10335/bat-adlp-7/igt@xe_mmap@vram.html
+>   * igt@kms_content_protection@srm:
+>     - shard-snb:          [SKIP][13] ([fdo#109271]) -> [INCOMPLETE][14]
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13981/shard-snb2/igt@kms_content_protection@srm.html
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10335/shard-snb7/igt@kms_content_protection@srm.html
 > 
 >   
-> Known issues
-> ------------
+> #### Suppressed ####
 > 
->   Here are the changes found in XEIGTPW_10335_BAT that come from known issues:
-> 
-> ### IGT changes ###
 
 [...cut...]
-
+> 
 > 
 > Build changes
 > -------------
 > 
+>   * CI: CI-20190529 -> None
 >   * IGT: IGT_7620 -> IGTPW_10335
->   * Linux: xe-549-9c26345b7aaf1e2fa46cf8ee34b60d587790d600 -> xe-550-ac7b89571d802765762e7c15d78a6dcd5d92c41b
+>   * Piglit: piglit_4509 -> None
 > 
+>   CI-20190529: 20190529
+>   CI_DRM_13981: aaf3a2f69283b9783afb92c0aa5463f7176d20dd @ git://anongit.freedesktop.org/gfx-ci/linux
 >   IGTPW_10335: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10335/index.html
 >   IGT_7620: 6714b814e7f82743abf45c33361fbe057a22880a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   xe-549-9c26345b7aaf1e2fa46cf8ee34b60d587790d600: 9c26345b7aaf1e2fa46cf8ee34b60d587790d600
->   xe-550-ac7b89571d802765762e7c15d78a6dcd5d92c41b: ac7b89571d802765762e7c15d78a6dcd5d92c41b
+>   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
 > 
 > == Logs ==
 > 
-> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10335/index.html
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10335/index.html
