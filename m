@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: "Illipilli, TejasreeX" <tejasreex.illipilli@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: =?utf-8?B?UkU6IOKclyBGaS5DSS5JR1Q6IGZhaWx1cmUgZm9yIHRlc3RzL2ludGVsL3hl?=
- =?utf-8?B?X2V4ZWNfc3RvcmU6IFRlc3QgdG8gY2hlY2sgQ09ORElUSU9OQUxfQkFUQ0hf?=
- =?utf-8?Q?BUFFER=5FEND_(rev3)?=
-Date: Wed, 13 Dec 2023 09:38:40 +0000
-Message-ID: <DM6PR11MB38195F6EBB1431B1FC90EF5AF28DA@DM6PR11MB3819.namprd11.prod.outlook.com>
-References: <20231208051831.2276393-1-priyanka.dandamudi@intel.com>
- <170205443792.7327.4591888345893014129@emeril.freedesktop.org>
- <20231211124644.leizajsmxlenwzia@kamilkon-desk.igk.intel.com>
-In-Reply-To: <20231211124644.leizajsmxlenwzia@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E5FAB10E56E
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 10:04:39 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [i-g-t 1/2] tests/kms_vrr: Tweak flipline subtest
+Date: Wed, 13 Dec 2023 15:23:50 +0530
+Message-Id: <20231213095350.3684163-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231213081652.3662325-1-bhanuprakash.modem@intel.com>
+References: <20231213081652.3662325-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,67 +18,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: LGCI Bug Filing <lgci.bug.filing@intel.com>,
- "I915-ci-infra@lists.freedesktop.org" <I915-ci-infra@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGksDQoNCmh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMTI3MTIzLyAt
-IFJlLXJlcG9ydGVkDQoNClRoYW5rcywNClRlamFzcmVlDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2Fn
-ZS0tLS0tDQpGcm9tOiBLYW1pbCBLb25pZWN6bnkgPGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRl
-bC5jb20+IA0KU2VudDogTW9uZGF5LCBEZWNlbWJlciAxMSwgMjAyMyA2OjE3IFBNDQpUbzogaWd0
-LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCkNjOiBEYW5kYW11ZGksIFByaXlhbmthIDxwcml5
-YW5rYS5kYW5kYW11ZGlAaW50ZWwuY29tPjsgSTkxNS1jaS1pbmZyYUBsaXN0cy5mcmVlZGVza3Rv
-cC5vcmc7IExHQ0kgQnVnIEZpbGluZyA8bGdjaS5idWcuZmlsaW5nQGludGVsLmNvbT47IElsbGlw
-aWxsaSwgVGVqYXNyZWVYIDx0ZWphc3JlZXguaWxsaXBpbGxpQGludGVsLmNvbT4NClN1YmplY3Q6
-IFJlOiDinJcgRmkuQ0kuSUdUOiBmYWlsdXJlIGZvciB0ZXN0cy9pbnRlbC94ZV9leGVjX3N0b3Jl
-OiBUZXN0IHRvIGNoZWNrIENPTkRJVElPTkFMX0JBVENIX0JVRkZFUl9FTkQgKHJldjMpDQoNCkhp
-LA0KDQp0aGlzIGlzIHVucmVsYXRlZCB0byBYZSBzdWJ0ZXN0LA0KDQpSZWdhcmRzLA0KS2FtaWwN
-Cg0KT24gMjAyMy0xMi0wOCBhdCAxNjo1Mzo1NyAtMDAwMCwgUGF0Y2h3b3JrIHdyb3RlOg0KPiA9
-PSBTZXJpZXMgRGV0YWlscyA9PQ0KPiANCj4gU2VyaWVzOiB0ZXN0cy9pbnRlbC94ZV9leGVjX3N0
-b3JlOiBUZXN0IHRvIGNoZWNrIENPTkRJVElPTkFMX0JBVENIX0JVRkZFUl9FTkQgKHJldjMpDQo+
-IFVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy8xMjcxMjMv
-DQo+IFN0YXRlIDogZmFpbHVyZQ0KPiANCj4gPT0gU3VtbWFyeSA9PQ0KPiANCj4gQ0kgQnVnIExv
-ZyAtIGNoYW5nZXMgZnJvbSBDSV9EUk1fMTM5OTdfZnVsbCAtPiBJR1RQV18xMDM3OF9mdWxsIA0K
-PiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09DQo+
-IA0KPiBTdW1tYXJ5DQo+IC0tLS0tLS0NCj4gDQo+ICAgKipGQUlMVVJFKioNCj4gDQo+ICAgU2Vy
-aW91cyB1bmtub3duIGNoYW5nZXMgY29taW5nIHdpdGggSUdUUFdfMTAzNzhfZnVsbCBhYnNvbHV0
-ZWx5IG5lZWQgdG8gYmUNCj4gICB2ZXJpZmllZCBtYW51YWxseS4NCj4gICANCj4gICBJZiB5b3Ug
-dGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNo
-YW5nZXMNCj4gICBpbnRyb2R1Y2VkIGluIElHVFBXXzEwMzc4X2Z1bGwsIHBsZWFzZSBub3RpZnkg
-eW91ciBidWcgdGVhbSAoSTkxNS1jaS1pbmZyYUBsaXN0cy5mcmVlZGVza3RvcC5vcmcpIHRvIGFs
-bG93IHRoZW0NCj4gICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJlIG1vZGUsIHdoaWNoIHdp
-bGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4NCj4gDQo+ICAgRXh0ZXJuYWwgVVJMOiAN
-Cj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMDM3OC9p
-bmRleC5odG1sDQo+IA0KPiBQYXJ0aWNpcGF0aW5nIGhvc3RzICg4IC0+IDgpDQo+IC0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiANCj4gICBObyBjaGFuZ2VzIGluIHBhcnRpY2lwYXRp
-bmcgaG9zdHMNCj4gDQo+IFBvc3NpYmxlIG5ldyBpc3N1ZXMNCj4gLS0tLS0tLS0tLS0tLS0tLS0t
-LQ0KPiANCj4gICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQgbWF5IGhhdmUgYmVl
-biBpbnRyb2R1Y2VkIGluIElHVFBXXzEwMzc4X2Z1bGw6DQo+IA0KPiAjIyMgSUdUIGNoYW5nZXMg
-IyMjDQo+IA0KPiAjIyMjIFBvc3NpYmxlIHJlZ3Jlc3Npb25zICMjIyMNCj4gDQo+ICAgKiBpZ3RA
-a21zX3BsYW5lQHBpeGVsLWZvcm1hdC1zb3VyY2UtY2xhbXBpbmdAcGlwZS1hOg0KPiAgICAgLSBz
-aGFyZC1tdGxwOiAgICAgICAgIFtQQVNTXVsxXSAtPiBbQUJPUlRdWzJdDQo+ICAgIFsxXTogaHR0
-cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fMTM5OTcvc2hhcmQt
-bXRscC0yL2lndEBrbXNfcGxhbmVAcGl4ZWwtZm9ybWF0LXNvdXJjZS1jbGFtcGluZ0BwaXBlLWEu
-aHRtbA0KPiAgICBbMl06IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0t
-dGlwL0lHVFBXXzEwMzc4L3NoYXJkLW10bHAtNS9pZ3RADQo+IGttc19wbGFuZUBwaXhlbC1mb3Jt
-YXQtc291cmNlLWNsYW1waW5nQHBpcGUtYS5odG1sDQo+IA0KPiAgICogaWd0QHBlcmZAYmxvY2tp
-bmdAMC1yY3MwOg0KPiAgICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIFtQQVNTXVszXSAtPiBbSU5D
-T01QTEVURV1bNF0NCj4gICAgWzNdOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9k
-cm0tdGlwL0NJX0RSTV8xMzk5Ny9zaGFyZC1nbGs3L2lndEBwZXJmQGJsb2NraW5nQDAtcmNzMC5o
-dG1sDQo+ICAgIFs0XTogDQo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10
-aXAvSUdUUFdfMTAzNzgvc2hhcmQtZ2xrMS9pZ3RAcGUNCj4gcmZAYmxvY2tpbmdAMC1yY3MwLmh0
-bWwNCj4gDQo+ICAgDQo+IEtub3duIGlzc3Vlcw0KPiAtLS0tLS0tLS0tLS0NCj4gDQo+ICAgSGVy
-ZSBhcmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gSUdUUFdfMTAzNzhfZnVsbCB0aGF0IGNvbWUgZnJv
-bSBrbm93biBpc3N1ZXM6DQo+IA0KPiAjIyMgSUdUIGNoYW5nZXMgIyMjDQo+IA0KDQpbLi4uY3V0
-Li4uXQ0KDQo+IEJ1aWxkIGNoYW5nZXMNCj4gLS0tLS0tLS0tLS0tLQ0KPiANCj4gICAqIENJOiBD
-SS0yMDE5MDUyOSAtPiBOb25lDQo+ICAgKiBJR1Q6IElHVF83NjI4IC0+IElHVFBXXzEwMzc4DQo+
-IA0KPiAgIENJLTIwMTkwNTI5OiAyMDE5MDUyOQ0KPiAgIENJX0RSTV8xMzk5NzogYjhjNTJkZGRj
-ZjNiMmU4OGE1NGU1ZTVjZDY5NzNjY2M1ODgwYjMxZCBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0
-b3Aub3JnL2dmeC1jaS9saW51eA0KPiAgIElHVFBXXzEwMzc4OiBodHRwczovL2ludGVsLWdmeC1j
-aS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzEwMzc4L2luZGV4Lmh0bWwNCj4gICBJR1RfNzYy
-ODogNDMxYzJkMmRkNTgyOGIyNWZjYmUxYzgyYWZiYWM4NjVmNDc3MWFlZSBAIA0KPiBodHRwczov
-L2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2lndC1ncHUtdG9vbHMuZ2l0DQo+IA0KPiA9PSBM
-b2dzID09DQo+IA0KPiBGb3IgbW9yZSBkZXRhaWxzIHNlZTogDQo+IGh0dHBzOi8vaW50ZWwtZ2Z4
-LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTAzNzgvaW5kZXguaHRtbA0K
+As per the spec: If there is no flip request with in Vmax,
+Hardware will terminate the Vblank at Vmax.
+
+If we flip with the interval > Vmax, the expected refresh rate
+could be: (Vmax + time left for the next flip + Vmin), and it
+is very difficult to generalize. For low refresh rate panels
+(like 40 - 60 Hz), result is not falling into the threshold.
+
+Hence, tweak the test to increase the flip request interval.
+
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_vrr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 1ace970a5..71fc36162 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -481,11 +481,11 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	}
+ 
+ 	if (flags & TEST_FLIPLINE) {
+-		rate = rate_from_refresh(range.min - 5);
++		rate = rate_from_refresh(range.min - 10);
+ 		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+ 		igt_assert_f(result < 50,
+ 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold exceeded, result was %u%%\n",
+-			     (range.min - 5), rate, result);
++			     (range.min - 10), rate, result);
+ 	}
+ 
+ 	/*
+-- 
+2.40.0
