@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39AA710E718
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 07:55:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1008910E722
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 07:55:31 +0000 (UTC)
 From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 To: 
-Subject: [PATCH i-g-t v6 0/5] Compression support for Lunarlake
-Date: Wed, 13 Dec 2023 11:55:04 -0800
-Message-Id: <cover.1702496855.git.akshata.jahagirdar@intel.com>
+Subject: [PATCH i-g-t v6 4/5] lib/intel_blt: Update caching mode and pat_index
+Date: Wed, 13 Dec 2023 11:55:08 -0800
+Message-Id: <91ba0ce1de4335d879bf5582a0e2ded19a8de406.1702496855.git.akshata.jahagirdar@intel.com>
+In-Reply-To: <cover.1702496855.git.akshata.jahagirdar@intel.com>
+References: <cover.1702496855.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -23,45 +25,54 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Series enables the compression feature for Lunarlake and address various
-changes of the feature from Gen12. The Main-to-CCS ratio has been
-changed to 512:1. This changes the calculations and value for fields
-such as CCS Copy size for blitter command APIs. 
-This patch series updates tests xe_ccs and gem_ccs for XE2.
-This series doesn't solve "in-place" and "suspend-resume" subtests.
+The pat-index and caching mode for compression need to change to uc_comp in case
+of compression, else they just take the default value of pat_index and caching.
 
-These changes are based on top of the "vm_bind pat_index" patch here:
-https://patchwork.freedesktop.org/series/124667/
+Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+---
+ lib/intel_blt.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-v2: Lots of improvements/tweaks (Kamil)
-    Addressed review comments (Matthew, Karolina)
-v3: Reused dg2_xy_fast_copy definition for defing xe2_cmds_info struct(Karolina)
-    Split the patch to address ccs_size calculation and updating
-pat_index, updated the intel_get_pat_idx_uc_comp function as per review
-comments (Kamil)
-v4: Addressed review comments (Karolina)
-    Rebase. Removed few unnecessary conditions, plus few fixes.
-v5: Addressed Review comments (Matthew, Zbigniew)
-    Rebase, Fixes for pre-merge IGT tests.
-v6: Addressed Review comments (Matthew)
-
-Akshata Jahagirdar (5):
-  lib: Add blt command properties for lunarlake
-  lib/intel_blt: Update calculation of ccs_size and size_of_ctrl_copy
-  lib/intel_pat: Add uc_comp pat_index
-  lib/intel_blt: Update caching mode and pat_index
-  tests/intel/xe_ccs: Add compression support for Lunarlake
-
- lib/intel_blt.c         | 24 +++++++++++++++------
- lib/intel_blt.h         |  2 +-
- lib/intel_cmds_info.c   | 16 ++++++++++++++
- lib/intel_cmds_info.h   |  1 +
- lib/intel_device_info.c |  2 +-
- lib/intel_pat.c         | 14 +++++++++++-
- lib/intel_pat.h         |  2 ++
- tests/intel/gem_ccs.c   |  2 +-
- tests/intel/xe_ccs.c    | 47 ++++++++++++++++++++++++-----------------
- 9 files changed, 80 insertions(+), 30 deletions(-)
-
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index 1be289ad6..e41e261ea 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -1797,6 +1797,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+ 	uint64_t size = width * height * bpp / 8;
+ 	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
+ 	uint32_t handle;
++	uint8_t pat_index = DEFAULT_PAT_INDEX;
+ 
+ 	igt_assert_f(blt->driver, "Driver isn't set, have you called blt_copy_init()?\n");
+ 
+@@ -1806,18 +1807,24 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+ 
+ 	if (blt->driver == INTEL_DRIVER_XE) {
+ 		uint64_t flags = 0;
++		uint16_t cpu_caching = __xe_default_cpu_caching(blt->fd, region, flags);
+ 
+ 		if (create_mapping && region != system_memory(blt->fd))
+ 			flags |= DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
+ 
++		if (AT_LEAST_GEN(intel_get_drm_devid(blt->fd), 20) && compression) {
++			pat_index = intel_get_pat_idx_uc_comp(blt->fd);
++			cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
++		}
++
+ 		size = ALIGN(size, xe_get_default_alignment(blt->fd));
+-		handle = xe_bo_create(blt->fd, 0, size, region, flags);
++		handle = xe_bo_create_caching(blt->fd, 0, size, region, flags, cpu_caching);
+ 	} else {
+ 		igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
+ 							  &size, region) == 0);
+ 	}
+ 
+-	blt_set_object(obj, handle, size, region, mocs_index, DEFAULT_PAT_INDEX, tiling,
++	blt_set_object(obj, handle, size, region, mocs_index, pat_index, tiling,
+ 		       compression, compression_type);
+ 	blt_set_geom(obj, stride, 0, 0, width, height, 0, 0);
+ 
 -- 
 2.34.1
