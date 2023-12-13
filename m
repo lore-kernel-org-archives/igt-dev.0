@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4129500443510323573=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3632F10E2B4
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 13:47:26 +0000 (UTC)
+Message-ID: <1de0993e-22dc-4952-b024-1b4022d0a8c5@linux.intel.com>
+Date: Wed, 13 Dec 2023 13:47:22 +0000
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_add_new_test_for_dark_scree?=
- =?utf-8?q?n_detection?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kunal Joshi" <kunal1.joshi@intel.com>
-Date: Wed, 13 Dec 2023 13:44:38 -0000
-Message-ID: <170247507816.10260.11658440264560550465@emeril.freedesktop.org>
-References: <20231213103442.2599632-1-kunal1.joshi@intel.com>
-In-Reply-To: <20231213103442.2599632-1-kunal1.joshi@intel.com>
+Subject: Re: [PATCH i-g-t] benchmarks/gem_wsim: Support gens without
+ relocations
+Content-Language: en-US
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20231212113449.26800-1-marcin.bernatowicz@linux.intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20231212113449.26800-1-marcin.bernatowicz@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,347 +22,309 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4129500443510323573==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
+On 12/12/2023 11:34, Marcin Bernatowicz wrote:
+> This commit adopts the approach present in lib/igt_dummyload
+> to support generations that do not use relocations.
+> The intel_allocator is leveraged to compute offsets on these generations.
+> Apart of this change, the 'struct vm' is now shared by both i915 and
+> Xe. It includes a 'vm_id' that the intel_allocator uses for address
+> assignment.
+> This modification enhances gem_wsim compatibility with newer platforms
+> running i915.
+> 
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> ---
+>   benchmarks/gem_wsim.c | 106 +++++++++++++++++++++++++++++++-----------
+>   1 file changed, 80 insertions(+), 26 deletions(-)
+> 
+> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+> index 30673da8f..7455cd6a1 100644
+> --- a/benchmarks/gem_wsim.c
+> +++ b/benchmarks/gem_wsim.c
+> @@ -205,7 +205,7 @@ struct w_step {
+>   	uint32_t bb_handle;
+>   };
+>   
+> -struct xe_vm {
+> +struct vm {
+>   	uint32_t id;
+>   	bool compute_mode;
+>   	uint64_t ahnd;
+> @@ -226,9 +226,9 @@ struct ctx {
+>   	struct bond *bonds;
+>   	bool load_balance;
+>   	uint64_t sseu;
+> +	/* reference to vm */
+> +	struct vm *vm;
+>   	struct {
+> -		/* reference to vm */
+> -		struct xe_vm *vm;
+>   		/* exec queues */
+>   		unsigned int nr_queues;
+>   		struct xe_exec_queue *queue_list;
+> @@ -256,10 +256,8 @@ struct workload {
+>   	unsigned int nr_ctxs;
+>   	struct ctx *ctx_list;
+>   
+> -	struct {
+> -		unsigned int nr_vms;
+> -		struct xe_vm *vm_list;
+> -	} xe;
+> +	unsigned int nr_vms;
+> +	struct vm *vm_list;
+>   
+>   	struct working_set **working_sets; /* array indexed by set id */
+>   	int max_working_set_id;
+> @@ -1504,7 +1502,16 @@ static unsigned int create_bb(struct w_step *w, int self)
+>   	gem_set_domain(fd, w->bb_handle,
+>   		       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
+>   
+> -	cs = ptr = gem_mmap__wc(fd, w->bb_handle, 0, w->bb_size, PROT_WRITE);
+> +	if (__gem_set_caching(fd, w->bb_handle,
+> +			      I915_CACHING_CACHED) == 0) {
+> +		cs = ptr = gem_mmap__cpu(fd, w->bb_handle,
+> +					   0, w->bb_size,
+> +					   PROT_READ | PROT_WRITE);
+> +	} else
+> +		cs = ptr = gem_mmap__device_coherent(fd,
+> +						       w->bb_handle,
+> +						       0, w->bb_size,
+> +						       PROT_READ | PROT_WRITE);
 
-Series: add new test for dark screen detection
-URL   : https://patchwork.freedesktop.org/series/127745/
-State : failure
+How is this hink related I did not get it? Should it be a separate patch?
 
-== Summary ==
+>   
+>   	/* Store initial 64b timestamp: start */
+>   	*cs++ = MI_LOAD_REGISTER_IMM(1) | MI_CS_MMIO_DST;
+> @@ -1539,9 +1546,11 @@ static unsigned int create_bb(struct w_step *w, int self)
+>   	/* Save delta for indirect read by COND_BBE */
+>   	*cs++ = MI_STORE_REGISTER_MEM_CMD | (1 + use_64b) | MI_CS_MMIO_DST;
+>   	*cs++ = CS_GPR(NOW_TS);
+> +	w->i915.reloc[r].presumed_offset = w->i915.obj[self].offset;
+>   	w->i915.reloc[r].target_handle = self;
+>   	w->i915.reloc[r].offset = offset_in_page(cs);
+> -	*cs++ = w->i915.reloc[r].delta = 4000;
+> +	w->i915.reloc[r].delta = 4000;
+> +	*cs++ = w->i915.reloc[r].presumed_offset + w->i915.reloc[r].delta;
+>   	*cs++ = 0;
+>   	r++;
+>   
+> @@ -1556,17 +1565,21 @@ static unsigned int create_bb(struct w_step *w, int self)
+>   	*cs++ = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | (1 + use_64b);
+>   	w->i915.bb_duration = cs;
+>   	*cs++ = 0;
+> +	w->i915.reloc[r].presumed_offset = w->i915.obj[self].offset;
+>   	w->i915.reloc[r].target_handle = self;
+>   	w->i915.reloc[r].offset = offset_in_page(cs);
+> -	*cs++ = w->i915.reloc[r].delta = 4000;
+> +	w->i915.reloc[r].delta = 4000;
+> +	*cs++ = w->i915.reloc[r].presumed_offset + w->i915.reloc[r].delta;
+>   	*cs++ = 0;
+>   	r++;
+>   
+>   	/* Otherwise back to recalculating delta */
+>   	*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | use_64b;
+> +	w->i915.reloc[r].presumed_offset = w->i915.obj[self].offset;
+>   	w->i915.reloc[r].target_handle = self;
+>   	w->i915.reloc[r].offset = offset_in_page(cs);
+> -	*cs++ = w->i915.reloc[r].delta = offset_in_page(jmp);
+> +	w->i915.reloc[r].delta = offset_in_page(jmp);
+> +	*cs++ = w->i915.reloc[r].presumed_offset + w->i915.reloc[r].delta;
+>   	*cs++ = 0;
+>   	r++;
+>   
+> @@ -1648,10 +1661,10 @@ xe_get_eq(struct workload *wrk, const struct w_step *w)
+>   	return eq;
+>   }
+>   
+> -static struct xe_vm *
+> -xe_get_vm(struct workload *wrk, const struct w_step *w)
+> +static struct vm *
+> +get_vm(struct workload *wrk, const struct w_step *w)
+>   {
+> -	return wrk->xe.vm_list;
+> +	return wrk->vm_list;
 
-CI Bug Log - changes from CI_DRM_14012 -> IGTPW_10412
-====================================================
+Why does this have 'w' as an argument but doesn't use it?
 
-Summary
--------
+>   }
+>   
+>   static uint32_t alloc_bo(int i915, unsigned long *size)
+> @@ -1673,6 +1686,16 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
+>   	struct dep_entry *dep;
+>   	unsigned int j = 0;
+>   	unsigned int nr_obj = 2 + w->data_deps.nr;
+> +	unsigned int objflags = 0;
+> +	uint64_t addr;
+> +	struct vm *vm = get_vm(wrk, w);
+> +
+> +	addr = gem_aperture_size(fd) / 2;
+> +	if (addr >> 32)
+> +		objflags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +
+> +	if (vm->ahnd)
+> +		objflags |= EXEC_OBJECT_PINNED;
+>   
+>   	w->i915.obj = calloc(nr_obj, sizeof(*w->i915.obj));
+>   	igt_assert(w->i915.obj);
+> @@ -1680,11 +1703,18 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
+>   	w->bb_size = PAGE_SIZE;
+>   	w->i915.obj[j].handle = alloc_bo(fd, &w->bb_size);
+>   	w->i915.obj[j].flags = EXEC_OBJECT_WRITE;
+> +	if (vm->ahnd) {
+> +		addr = get_offset(vm->ahnd, w->i915.obj[j].handle, w->bb_size, 0);
+> +		w->i915.obj[j].offset = CANONICAL(addr);
+> +		w->i915.obj[j].flags |= objflags;
+> +	}
+> +
+>   	j++;
+>   	igt_assert(j < nr_obj);
+>   
+>   	for_each_dep(dep, w->data_deps) {
+>   		uint32_t dep_handle;
+> +		uint64_t dep_size;
 
-  **FAILURE**
+w->bb_size is unsigned long, the two should probably match.
 
-  Serious unknown changes coming with IGTPW_10412 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_10412, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+>   
+>   		if (dep->working_set == -1) {
+>   			int dep_idx = w->idx + dep->target;
+> @@ -1694,6 +1724,7 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
+>   			igt_assert(wrk->steps[dep_idx].type == BATCH);
+>   
+>   			dep_handle = wrk->steps[dep_idx].i915.obj[0].handle;
+> +			dep_size = w->bb_size;
+>   		} else {
+>   			struct working_set *set;
+>   
+> @@ -1707,18 +1738,33 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
+>   			igt_assert(set->sizes[dep->target].size);
+>   
+>   			dep_handle = set->handles[dep->target];
+> +			dep_size = set->sizes[dep->target].size;
+>   		}
+>   
+>   		w->i915.obj[j].flags = dep->write ? EXEC_OBJECT_WRITE : 0;
+>   		w->i915.obj[j].handle = dep_handle;
+> +		if (vm->ahnd) {
+> +			addr = get_offset(vm->ahnd, w->i915.obj[j].handle, dep_size, 0);
+> +			w->i915.obj[j].offset = CANONICAL(addr);
+> +			w->i915.obj[j].flags |= objflags;
+> +		}
+>   		j++;
+>   		igt_assert(j < nr_obj);
+>   	}
+>   
+>   	w->bb_handle = w->i915.obj[j].handle = alloc_bo(fd, &w->bb_size);
+> +	if (vm->ahnd) {
+> +		addr = get_offset(vm->ahnd, w->i915.obj[j].handle, w->bb_size, 0);
+> +		w->i915.obj[j].offset = CANONICAL(addr);
+> +		w->i915.obj[j].flags |= objflags;
+> +	}
+>   	w->i915.obj[j].relocation_count = create_bb(w, j);
+> -	igt_assert(w->i915.obj[j].relocation_count <= ARRAY_SIZE(w->i915.reloc));
+> -	w->i915.obj[j].relocs_ptr = to_user_pointer(&w->i915.reloc);
+> +	if (vm->ahnd) {
+> +		w->i915.obj[j].relocation_count = 0;
+> +	} else {
+> +		igt_assert(w->i915.obj[j].relocation_count <= ARRAY_SIZE(w->i915.reloc));
+> +		w->i915.obj[j].relocs_ptr = to_user_pointer(&w->i915.reloc);
+> +	}
+>   
+>   	w->i915.eb.buffers_ptr = to_user_pointer(w->i915.obj);
+>   	w->i915.eb.buffer_count = j + 1;
+> @@ -1738,7 +1784,7 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
+>   static void
+>   xe_alloc_step_batch(struct workload *wrk, struct w_step *w)
+>   {
+> -	struct xe_vm *vm = xe_get_vm(wrk, w);
+> +	struct vm *vm = get_vm(wrk, w);
+>   	struct xe_exec_queue *eq = xe_get_eq(wrk, w);
+>   	struct dep_entry *dep;
+>   	int i;
+> @@ -2032,7 +2078,7 @@ static void measure_active_set(struct workload *wrk)
+>   
+>   #define alloca0(sz) ({ size_t sz__ = (sz); memset(alloca(sz__), 0, sz__); })
+>   
+> -static void xe_vm_create_(struct xe_vm *vm)
+> +static void xe_vm_create_(struct vm *vm)
+>   {
+>   	uint32_t flags = 0;
+>   
+> @@ -2046,7 +2092,7 @@ static void xe_vm_create_(struct xe_vm *vm)
+>   static void xe_exec_queue_create_(struct ctx *ctx, struct xe_exec_queue *eq)
+>   {
+>   	struct drm_xe_exec_queue_create create = {
+> -		.vm_id = ctx->xe.vm->id,
+> +		.vm_id = ctx->vm->id,
+>   		.width = 1,
+>   		.num_placements = eq->nr_hwes,
+>   		.instances = to_user_pointer(eq->hwe_list),
+> @@ -2159,6 +2205,12 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
+>   				gem_context_get_param(fd, &param);
+>   				igt_assert(param.value);
+>   				share_vm = param.value;
+> +				wrk->nr_vms = 1;
+> +				wrk->vm_list = calloc(wrk->nr_vms, sizeof(struct vm));
+> +				igt_assert(wrk->vm_list);
+> +				wrk->vm_list->id = share_vm;
+> +				wrk->vm_list->ahnd = get_reloc_ahnd(fd, share_vm);
+> +				ctx2->vm = wrk->vm_list;
+>   				break;
+>   			}
+>   
+> @@ -2174,6 +2226,7 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
+>   		ctx_id = args.ctx_id;
+>   		ctx->id = ctx_id;
+>   		ctx->sseu = device_sseu.slice_mask;
+> +		ctx->vm = wrk->vm_list;
+>   
+>   		__configure_context(ctx_id, wrk->prio);
+>   
+> @@ -2267,16 +2320,17 @@ static int xe_prepare_contexts(unsigned int id, struct workload *wrk)
+>   	unsigned int i;
+>   
+>   	/* shortcut, create one vm */
+> -	wrk->xe.nr_vms = 1;
+> -	wrk->xe.vm_list = calloc(wrk->xe.nr_vms, sizeof(struct xe_vm));
+> -	wrk->xe.vm_list->compute_mode = false;
+> -	xe_vm_create_(wrk->xe.vm_list);
+> -	wrk->xe.vm_list->ahnd = intel_allocator_open(fd, wrk->xe.vm_list->id,
+> +	wrk->nr_vms = 1;
+> +	wrk->vm_list = calloc(wrk->nr_vms, sizeof(struct vm));
+> +	igt_assert(wrk->vm_list);
+> +	wrk->vm_list->compute_mode = false;
+> +	xe_vm_create_(wrk->vm_list);
+> +	wrk->vm_list->ahnd = intel_allocator_open(fd, wrk->vm_list->id,
+>   						     INTEL_ALLOCATOR_RELOC)
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/index.html
+Can some of this go to common, now that struct vm is common? Maybe not.. 
+remind me, plan is for xe backend to support more than one vm? That's 
+why get_vm has w_step as argument?
 
-Participating hosts (34 -> 34)
-------------------------------
+Regards,
 
-  Additional (2): bat-adlm-1 bat-rpls-3 
-  Missing    (2): bat-dg2-9 fi-snb-2520m 
+Tvrtko
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_10412:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
-    - bat-adlm-1:         NOTRUN -> [SKIP][1] +16 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
-
-  
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_selftest@live@hangcheck:
-    - {bat-rpls-3}:       NOTRUN -> [DMESG-WARN][2]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-rpls-3/igt@i915_selftest@live@hangcheck.html
-
-  * {igt@kms_psr@psr-cursor-plane-move}:
-    - {bat-rpls-3}:       NOTRUN -> [SKIP][3] +43 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-rpls-3/igt@kms_psr@psr-cursor-plane-move.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10412 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@debugfs_test@basic-hwmon:
-    - bat-adlm-1:         NOTRUN -> [SKIP][4] ([i915#3826])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@debugfs_test@basic-hwmon.html
-
-  * igt@fbdev@eof:
-    - bat-adlm-1:         NOTRUN -> [SKIP][5] ([i915#2582]) +3 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@fbdev@eof.html
-
-  * igt@fbdev@info:
-    - bat-adlm-1:         NOTRUN -> [SKIP][6] ([i915#1849] / [i915#2582])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@fbdev@info.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - bat-adlm-1:         NOTRUN -> [SKIP][7] ([i915#4613]) +3 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@gem_tiled_pread_basic:
-    - bat-adlm-1:         NOTRUN -> [SKIP][8] ([i915#3282])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@gem_tiled_pread_basic.html
-
-  * igt@i915_pm_rps@basic-api:
-    - bat-adlm-1:         NOTRUN -> [SKIP][9] ([i915#6621])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@i915_pm_rps@basic-api.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-adlm-1:         NOTRUN -> [INCOMPLETE][10] ([i915#9413])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_flip@basic-plain-flip:
-    - bat-adlm-1:         NOTRUN -> [SKIP][11] ([i915#3637]) +3 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@kms_flip@basic-plain-flip.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-adlm-1:         NOTRUN -> [SKIP][12] ([fdo#109285])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlm-1:         NOTRUN -> [SKIP][13] ([i915#1849] / [i915#4342])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pm_backlight@basic-brightness:
-    - bat-adlm-1:         NOTRUN -> [SKIP][14] ([i915#5354])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@kms_pm_backlight@basic-brightness.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-adlm-1:         NOTRUN -> [SKIP][15] ([i915#3555])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - bat-adlm-1:         NOTRUN -> [SKIP][16] ([i915#3708]) +3 other tests skip
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@prime_vgem@basic-fence-flip.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#3826]: https://gitlab.freedesktop.org/drm/intel/issues/3826
-  [i915#4342]: https://gitlab.freedesktop.org/drm/intel/issues/4342
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#9413]: https://gitlab.freedesktop.org/drm/intel/issues/9413
-  [i915#9673]: https://gitlab.freedesktop.org/drm/intel/issues/9673
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7638 -> IGTPW_10412
-
-  CI-20190529: 20190529
-  CI_DRM_14012: 3dbd9e32db3edc72f8b7d82a75c0e7355e1bac92 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10412: 10412
-  IGT_7638: 52ca619dfeae57348b957778dcfdd8117d8ff9f0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_darkscreen_detection@basic
-+igt@kms_darkscreen_detection@negative
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/index.html
-
---===============4129500443510323573==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>add new test for dark screen detection</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127745/">https://patchwork.freedesktop.org/series/127745/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14012 -&gt; IGTPW_10412</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_10412 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_10412, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/index.html</p>
-<h2>Participating hosts (34 -&gt; 34)</h2>
-<p>Additional (2): bat-adlm-1 bat-rpls-3 <br />
-  Missing    (2): bat-dg2-9 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_10412:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">SKIP</a> +16 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>{bat-rpls-3}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-rpls-3/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a></li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@psr-cursor-plane-move}:</p>
-<ul>
-<li>{bat-rpls-3}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-rpls-3/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> +43 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10412 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@basic-hwmon:</p>
-<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3826">i915#3826</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@eof:</p>
-<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@fbdev@eof.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@info:</p>
-<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic:</p>
-<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rps@basic-api:</p>
-<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9413">i915#9413</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-plain-flip:</p>
-<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@kms_flip@basic-plain-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3637">i915#3637</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4342">i915#4342</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_backlight@basic-brightness:</p>
-<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10412/bat-adlm-1/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +3 other tests skip</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7638 -&gt; IGTPW_10412</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14012: 3dbd9e32db3edc72f8b7d82a75c0e7355e1bac92 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10412: 10412<br />
-  IGT_7638: 52ca619dfeae57348b957778dcfdd8117d8ff9f0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_darkscreen_detection@basic<br />
-+igt@kms_darkscreen_detection@negative</p>
-
-</body>
-</html>
-
---===============4129500443510323573==--
+>   
+>   	__for_each_ctx(ctx, wrk, ctx_idx) {
+>   		/* link with vm */
+> -		ctx->xe.vm = wrk->xe.vm_list;
+> +		ctx->vm = wrk->vm_list;
+>   		for_each_w_step(w, wrk) {
+>   			if (w->context != ctx_idx)
+>   				continue;
+> @@ -2846,7 +2900,7 @@ static void *run_workload(void *data)
+>   				w_step_sync(w);
+>   				syncobj_destroy(fd, w->xe.syncs[0].handle);
+>   				free(w->xe.syncs);
+> -				xe_vm_unbind_sync(fd, xe_get_vm(wrk, w)->id, 0, w->xe.exec.address,
+> +				xe_vm_unbind_sync(fd, get_vm(wrk, w)->id, 0, w->xe.exec.address,
+>   						  w->bb_size);
+>   				gem_munmap(w->xe.data, w->bb_size);
+>   				gem_close(fd, w->bb_handle);
