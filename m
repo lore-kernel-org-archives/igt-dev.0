@@ -1,22 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 110B410E004
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 03:11:11 +0000 (UTC)
-From: "Bommu, Krishnaiah" <krishnaiah.bommu@intel.com>
-To: "Welty, Brian" <brian.welty@intel.com>, "Dugast, Francois"
- <francois.dugast@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Subject: RE: [PATCH v1 2/6] drm-uapi/xe: add exec_queue_id member to
- drm_xe_wait_user_fence structure
-Date: Wed, 13 Dec 2023 03:11:07 +0000
-Message-ID: <DM4PR11MB5293C62A699F01D68B0EDAA19D8DA@DM4PR11MB5293.namprd11.prod.outlook.com>
-References: <20231212173059.7-1-francois.dugast@intel.com>
- <20231212173059.7-3-francois.dugast@intel.com>
- <0f65d2d6-9f6e-4fbb-bb01-6121cf77c879@intel.com>
-In-Reply-To: <0f65d2d6-9f6e-4fbb-bb01-6121cf77c879@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83D4710E241
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 03:16:48 +0000 (UTC)
+From: "Golani, Mitulkumar Ajitkumar" <mitulkumar.ajitkumar.golani@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: RE: [i-g-t V7 4/8] tests/kms_vrr: Fix pipe/output combo validity
+ constraint
+Date: Wed, 13 Dec 2023 03:16:44 +0000
+Message-ID: <IA1PR11MB63480AC13F228046F5A75306B28DA@IA1PR11MB6348.namprd11.prod.outlook.com>
+References: <20231211113650.3520399-1-bhanuprakash.modem@intel.com>
+ <20231211113650.3520399-5-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231211113650.3520399-5-bhanuprakash.modem@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -25,76 +23,160 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogV2VsdHksIEJyaWFuIDxi
-cmlhbi53ZWx0eUBpbnRlbC5jb20+DQo+IFNlbnQ6IFdlZG5lc2RheSwgRGVjZW1iZXIgMTMsIDIw
-MjMgMzowMSBBTQ0KPiBUbzogRHVnYXN0LCBGcmFuY29pcyA8ZnJhbmNvaXMuZHVnYXN0QGludGVs
-LmNvbT47IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogQm9tbXUsIEty
-aXNobmFpYWggPGtyaXNobmFpYWguYm9tbXVAaW50ZWwuY29tPjsgVml2aSwgUm9kcmlnbw0KPiA8
-cm9kcmlnby52aXZpQGludGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2MSAyLzZdIGRy
-bS11YXBpL3hlOiBhZGQgZXhlY19xdWV1ZV9pZCBtZW1iZXIgdG8NCj4gZHJtX3hlX3dhaXRfdXNl
-cl9mZW5jZSBzdHJ1Y3R1cmUNCj4gDQo+IA0KPiBPbiAxMi8xMi8yMDIzIDk6MzAgQU0sIEZyYW5j
-b2lzIER1Z2FzdCB3cm90ZToNCj4gPiBGcm9tOiBCb21tdSBLcmlzaG5haWFoIDxrcmlzaG5haWFo
-LmJvbW11QGludGVsLmNvbT4NCj4gPg0KPiA+IHJlbW92ZSB0aGUgbnVtX2VuZ2luZXMvaW5zdGFu
-Y2VzIG1lbWJlcnMgZnJvbQ0KPiBkcm1feGVfd2FpdF91c2VyX2ZlbmNlDQo+ID4gc3RydWN0dXJl
-IGFuZCBhZGQgYSBleGVjX3F1ZXVlX2lkIG1lbWJlcg0KPiA+DQo+ID4gUmlnaHQgbm93IHRoaXMg
-aXMgb25seSBjaGVja2luZyBpZiB0aGUgZW5naW5lIGxpc3QgaXMgc2FuZSBhbmQgbm90aGluZw0K
-PiA+IGVsc2UuIEluIHRoZSBlbmQgZXZlcnkgb3BlcmF0aW9uIHdpdGggdGhpcyBJT0NUTCBpcyBh
-IHNvZnQgY2hlY2suDQo+ID4gU28sIGxldCdzIGZvcm1hbGl6ZSB0aGF0IGFuZCBvbmx5IHVzZSB0
-aGlzIElPQ1RMIHRvIHdhaXQgb24gdGhlIGZlbmNlLg0KPiA+DQo+ID4gZXhlY19xdWV1ZV9pZCBt
-ZW1iZXIgd2lsbCBoZWxwIHRvIHVzZXIgc3BhY2UgdG8gZ2V0IHByb3BlciBlcnJvciBjb2RlDQo+
-ID4gZnJvbSBrZXJuZWwgd2hpbGUgaW4gZXhlY19xdWV1ZSByZXNldA0KPiA+DQo+ID4gdjI6IEFs
-c28gZml4IHRlc3QgaW52YWxpZF9mbGFnIChGcmFuY29pcyBEdWdhc3QpDQo+ID4NCj4gPiBTaWdu
-ZWQtb2ZmLWJ5OiBCb21tdSBLcmlzaG5haWFoIDxrcmlzaG5haWFoLmJvbW11QGludGVsLmNvbT4N
-Cj4gPiBDYzogUm9kcmlnbyBWaXZpIDxyb2RyaWdvLnZpdmlAaW50ZWwuY29tPg0KPiA+IENjOiBG
-cmFuY29pcyBEdWdhc3QgPGZyYW5jb2lzLmR1Z2FzdEBpbnRlbC5jb20+DQo+ID4gUmV2aWV3ZWQt
-Ynk6IFJvZHJpZ28gVml2aSA8cm9kcmlnby52aXZpQGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAg
-IGluY2x1ZGUvZHJtLXVhcGkveGVfZHJtLmggICAgICAgICAgfCAxNyArKysrKy0tLS0tLS0tLS0t
-DQo+ID4gICBsaWIveGUveGVfaW9jdGwuYyAgICAgICAgICAgICAgICAgIHwgMjkgKysrKysrKysr
-KysrLS0tLS0tLS0tLS0tLS0tDQo+ID4gICBsaWIveGUveGVfaW9jdGwuaCAgICAgICAgICAgICAg
-ICAgIHwgMTEgKysrKy0tLS0tLQ0KPiA+ICAgdGVzdHMvaW50ZWwveGVfZXZpY3QuYyAgICAgICAg
-ICAgICB8ICA0ICsrLS0NCj4gPiAgIHRlc3RzL2ludGVsL3hlX2V4ZWNfYmFsYW5jZXIuYyAgICAg
-fCAxNSArKysrKysrLS0tLS0tLQ0KPiA+ICAgdGVzdHMvaW50ZWwveGVfZXhlY19jb21wdXRlX21v
-ZGUuYyB8IDE4ICsrKysrKysrLS0tLS0tLS0tDQo+ID4gICB0ZXN0cy9pbnRlbC94ZV9leGVjX2Zh
-dWx0X21vZGUuYyAgIHwgMjEgKysrKysrKysrKystLS0tLS0tLS0NCj4gPiAgIHRlc3RzL2ludGVs
-L3hlX2V4ZWNfcmVzZXQuYyAgICAgICAgfCAgNiArKystLS0NCj4gPiAgIHRlc3RzL2ludGVsL3hl
-X2V4ZWNfdGhyZWFkcy5jICAgICAgfCAxNSArKysrKysrLS0tLS0tLQ0KPiA+ICAgdGVzdHMvaW50
-ZWwveGVfd2FpdGZlbmNlLmMgICAgICAgICB8IDMyICsrKysrKysrKysrKysrLS0tLS0tLS0tLS0t
-LS0tLQ0KPiA+ICAgMTAgZmlsZXMgY2hhbmdlZCwgNzkgaW5zZXJ0aW9ucygrKSwgODkgZGVsZXRp
-b25zKC0pDQo+ID4NCj4gW3NuaXBdDQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ludGVsL3hlX2V4
-ZWNfcmVzZXQuYyBiL3Rlc3RzL2ludGVsL3hlX2V4ZWNfcmVzZXQuYw0KPiA+IGluZGV4IDA5NGIz
-NDg5Ni4uOGU2YzJlMmU0IDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL2ludGVsL3hlX2V4ZWNfcmVz
-ZXQuYw0KPiA+ICsrKyBiL3Rlc3RzL2ludGVsL3hlX2V4ZWNfcmVzZXQuYw0KPiA+IEBAIC01NjQs
-NyArNTY0LDcgQEAgdGVzdF9jb21wdXRlX21vZGUoaW50IGZkLCBzdHJ1Y3QNCj4gZHJtX3hlX2Vu
-Z2luZV9jbGFzc19pbnN0YW5jZSAqZWNpLA0KPiA+ICAgCXhlX3ZtX2JpbmRfYXN5bmMoZmQsIHZt
-LCAwLCBibywgMCwgYWRkciwgYm9fc2l6ZSwgc3luYywgMSk7DQo+ID4NCj4gPiAgICNkZWZpbmUg
-VEhSRUVfU0VDCU1TX1RPX05TKDMwMDApDQo+ID4gLQl4ZV93YWl0X3VmZW5jZShmZCwgJmRhdGFb
-MF0udm1fc3luYywgVVNFUl9GRU5DRV9WQUxVRSwgTlVMTCwNCj4gVEhSRUVfU0VDKTsNCj4gPiAr
-CXhlX3dhaXRfdWZlbmNlKGZkLCAmZGF0YVswXS52bV9zeW5jLCBVU0VSX0ZFTkNFX1ZBTFVFLCAw
-LA0KPiA+ICtUSFJFRV9TRUMpOw0KPiA+ICAgCWRhdGFbMF0udm1fc3luYyA9IDA7DQo+ID4NCj4g
-PiAgIAlmb3IgKGkgPSAwOyBpIDwgbl9leGVjczsgaSsrKSB7DQo+ID4gQEAgLTYyMSw3ICs2MjEs
-NyBAQCB0ZXN0X2NvbXB1dGVfbW9kZShpbnQgZmQsIHN0cnVjdA0KPiBkcm1feGVfZW5naW5lX2Ns
-YXNzX2luc3RhbmNlICplY2ksDQo+ID4gICAJCWludCBlcnI7DQo+ID4NCj4gPiAgIAkJZXJyID0g
-X194ZV93YWl0X3VmZW5jZShmZCwgJmRhdGFbaV0uZXhlY19zeW5jLA0KPiBVU0VSX0ZFTkNFX1ZB
-TFVFLA0KPiA+IC0JCQkJICAgICAgIE5VTEwsICZ0aW1lb3V0KTsNCj4gPiArCQkJCSAgICAgICBl
-eGVjX3F1ZXVlc1tpICUgbl9leGVjX3F1ZXVlc10sDQo+ICZ0aW1lb3V0KTsNCj4gPiAgIAkJaWYg
-KGZsYWdzICYgR1RfUkVTRVQpDQo+ID4gICAJCQkvKiBleGVjIHJhY2VzIHdpdGggcmVzZXQ6IG1h
-eSB0aW1lb3V0IG9yIGNvbXBsZXRlICovDQo+ID4gICAJCQlpZ3RfYXNzZXJ0KGVyciA9PSAtRVRJ
-TUUgfHwgIWVycik7DQo+IA0KPiBJIGJlbGlldmUgZHJpdmVyIG5vdyByZXR1cm5zIEVJTyBpbnN0
-ZWFkIG9mIEVUSU1FLCBpZiBJIHVuZGVyc3RhbmQgdGhlIGRyaXZlcg0KPiBjaGFuZ2VzIGZyb20g
-S3Jpc2huYWlhaC4NCj4gU28gc2VlbXMgaWd0X2Fzc2VydCBhYm92ZSBuZWVkcyB0byByZXBsYWNl
-IC1FVElNRSB3aXRoIC1FSU8uDQo+IA0KPiAtQnJpYW4NCg0KWWVzIEkgYWdyZWUsIHdlIG5lZWQg
-dG8gY2hhbmdlIC1FVElNRSB0byAtRUlPLg0KVGhhbmsgeW91IGZvciBwb2ludGluZyBvdXQNCg0K
-UmVnYXJkcywNCktyaXNobmEuDQo+IA0KPiANCj4gPiBAQCAtNjMxLDcgKzYzMSw3IEBAIHRlc3Rf
-Y29tcHV0ZV9tb2RlKGludCBmZCwgc3RydWN0DQo+ID4gZHJtX3hlX2VuZ2luZV9jbGFzc19pbnN0
-YW5jZSAqZWNpLA0KPiA+DQo+ID4gICAJc3luY1swXS5hZGRyID0gdG9fdXNlcl9wb2ludGVyKCZk
-YXRhWzBdLnZtX3N5bmMpOw0KPiA+ICAgCXhlX3ZtX3VuYmluZF9hc3luYyhmZCwgdm0sIDAsIDAs
-IGFkZHIsIGJvX3NpemUsIHN5bmMsIDEpOw0KPiA+IC0JeGVfd2FpdF91ZmVuY2UoZmQsICZkYXRh
-WzBdLnZtX3N5bmMsIFVTRVJfRkVOQ0VfVkFMVUUsIE5VTEwsDQo+IFRIUkVFX1NFQyk7DQo+ID4g
-Kwl4ZV93YWl0X3VmZW5jZShmZCwgJmRhdGFbMF0udm1fc3luYywgVVNFUl9GRU5DRV9WQUxVRSwg
-MCwNCj4gPiArVEhSRUVfU0VDKTsNCj4gPg0KPiA+ICAgCWlmICghKGZsYWdzICYgR1RfUkVTRVQp
-KSB7DQo+ID4gICAJCWZvciAoaSA9IDE7IGkgPCBuX2V4ZWNzOyBpKyspDQo+IFtzbmlwXQ0K
+
+
+> -----Original Message-----
+> From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> Sent: Monday, December 11, 2023 5:07 PM
+> To: igt-dev@lists.freedesktop.org; Golani, Mitulkumar Ajitkumar
+> <mitulkumar.ajitkumar.golani@intel.com>
+> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> Subject: [i-g-t V7 4/8] tests/kms_vrr: Fix pipe/output combo validity
+> constraint
+>=20
+> Before starting the subtest, we are checking the selected pipe/output com=
+bo
+> validity with default mode, but inside the subtest we are using the mode =
+with
+> highest resolution.
+>=20
+> Few panels exposes 4K as a default mode even though it supports 8K, in th=
+is
+> scenario test may misbehave.
+>=20
+> So, check the pipe/output combo validity with the mode that we are actual=
+ly
+> going to use in the subtest.
+>=20
+> V2: Reword the commit message
+>=20
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>  tests/kms_vrr.c | 62 +++++++++++++++++++++++++++++++------------------
+>  1 file changed, 39 insertions(+), 23 deletions(-)
+>=20
+> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c index df241aa6c..4540d8b4b
+> 100644
+> --- a/tests/kms_vrr.c
+> +++ b/tests/kms_vrr.c
+> @@ -163,9 +163,6 @@ output_mode_with_maxrate(igt_output_t *output,
+> unsigned int vrr_max)
+>  		    connector->modes[i].vrefresh <=3D vrr_max)
+>  			mode =3D connector->modes[i];
+>=20
+> -	igt_info("Override Mode: ");
+> -	kmstest_dump_mode(&mode);
+> -
+>  	return mode;
+>  }
+>=20
+> @@ -233,21 +230,7 @@ static void prepare_test(data_t *data, igt_output_t
+> *output, enum pipe pipe)
+>  	drmModeModeInfo mode;
+>  	cairo_t *cr;
+>=20
+> -	/* Reset output */
+> -	igt_display_reset(&data->display);
+> -	igt_output_set_pipe(output, pipe);
+> -
+> -	/* Capture VRR range */
+> -	data->range =3D get_vrr_range(data, output);
+> -
+> -	/* Override mode with max vrefresh.
+> -	 *   - vrr_min range should be less than the override mode vrefresh.
+> -	 *   - Limit the vrr_max range with the override mode vrefresh.
+> -	 */
+> -	mode =3D output_mode_with_maxrate(output, data->range.max);
+> -	igt_require(mode.vrefresh > data->range.min);
+> -	data->range.max =3D mode.vrefresh;
+> -	igt_output_override_mode(output, &mode);
+> +	mode =3D *igt_output_get_mode(output);
+>=20
+>  	/* Prepare resources */
+>  	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
+> @@ -483,7 +466,36 @@ static void test_cleanup(data_t *data, enum pipe
+> pipe, igt_output_t *output)
+>  	igt_remove_fb(data->drm_fd, &data->fb0);  }
+>=20
+> -static bool config_constraint(igt_output_t *output, uint32_t flags)
+> +static bool output_constraint(data_t *data, igt_output_t *output) {
+> +	drmModeModeInfo mode;
+> +
+> +	/* Reset output */
+> +	igt_display_reset(&data->display);
+> +
+> +	/* Capture VRR range */
+> +	data->range =3D get_vrr_range(data, output);
+> +
+> +	/*
+> +	 * Override mode with max vrefresh.
+> +	 *   - vrr_min range should be less than the override mode vrefresh.
+> +	 *   - Limit the vrr_max range with the override mode vrefresh.
+> +	 */
+> +	mode =3D output_mode_with_maxrate(output, data->range.max);
+> +	if (mode.vrefresh < data->range.min)
+> +		return false;
+> +
+> +	data->range.max =3D mode.vrefresh;
+> +
+> +	igt_info("Override Mode: ");
+> +	kmstest_dump_mode(&mode);
+> +
+> +	igt_output_override_mode(output, &mode);
+> +
+> +	return true;
+> +}
+> +
+> +static bool config_constraint(data_t *data, igt_output_t *output,
+> +uint32_t flags)
+>  {
+>  	if (!has_vrr(output))
+>  		return false;
+> @@ -495,6 +507,9 @@ static bool config_constraint(igt_output_t *output,
+> uint32_t flags)
+>  	if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
+>  		return false;
+>=20
+> +	if (!output_constraint(data, output))
+> +		return false;
+> +
+>  	return true;
+>  }
+>=20
+> @@ -507,16 +522,17 @@ run_vrr_test(data_t *data, test_t test, uint32_t
+> flags)
+>  	for_each_connected_output(&data->display, output) {
+>  		enum pipe pipe;
+>=20
+> -		if (!config_constraint(output, flags))
+> +		if (!config_constraint(data, output, flags))
+>  			continue;
+>=20
+>  		for_each_pipe(&data->display, pipe) {
+>  			if (igt_pipe_connector_valid(pipe, output)) {
+> -				igt_display_reset(&data->display);
+> -
+>  				igt_output_set_pipe(output, pipe);
+> -				if (!intel_pipe_output_combo_valid(&data-
+> >display))
+> +
+> +				if (!intel_pipe_output_combo_valid(&data-
+> >display)) {
+> +					igt_output_set_pipe(output,
+> PIPE_NONE);
+>  					continue;
+> +				}
+
+Change LGTM
+Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+
+>=20
+>  				igt_dynamic_f("pipe-%s-%s",
+>  					      kmstest_pipe_name(pipe),
+> output->name)
+> --
+> 2.40.0
