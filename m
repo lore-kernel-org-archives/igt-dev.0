@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: "Illipilli, TejasreeX" <tejasreex.illipilli@intel.com>
-To: "Musial, Ewelina" <ewelina.musial@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Subject: =?utf-8?B?UkU6IFtpZ3QtZGV2XSDinJcgRmkuQ0kuQkFUOiBmYWlsdXJlIGZvciBsaWIv?=
- =?utf-8?B?eGVfcXVlcnk6IEZpeCB4ZV9zdXBwb3J0c19mYXVsdHMoKQ==?=
-Date: Wed, 13 Dec 2023 08:33:56 +0000
-Message-ID: <DM6PR11MB38195F73B790887F50515A20F28DA@DM6PR11MB3819.namprd11.prod.outlook.com>
-References: <20231207012623.15901-1-brian.welty@intel.com>
- <170191680784.28719.16159650094500296323@emeril.freedesktop.org>
- <20231207113306.6rzkze3s4sstfexu@kamilkon-desk.igk.intel.com>
- <PH7PR11MB7073DD02801408107FC9280E938DA@PH7PR11MB7073.namprd11.prod.outlook.com>
-In-Reply-To: <PH7PR11MB7073DD02801408107FC9280E938DA@PH7PR11MB7073.namprd11.prod.outlook.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 96E9610E71F
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 08:50:09 +0000 (UTC)
+Date: Wed, 13 Dec 2023 09:50:02 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Subject: Re: [PATCH i-g-t v6 2/5] lib/intel_blt: Update calculation of
+ ccs_size and size_of_ctrl_copy
+Message-ID: <20231213085002.tp5otoyvp3767i2h@zkempczy-mobl2>
+References: <cover.1702496855.git.akshata.jahagirdar@intel.com>
+ <4a058a897cf9e21f0dc74c453c23d3cfe5f49a85.1702496855.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4a058a897cf9e21f0dc74c453c23d3cfe5f49a85.1702496855.git.akshata.jahagirdar@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,96 +22,124 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "I915-ci-infra@lists.freedesktop.org" <I915-ci-infra@lists.freedesktop.org>
+Cc: igt-dev@lists.freedesktop.org, ayaz.siddiqui@intel.com,
+ matthew.auld@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGksDQoNCmh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMTI3NDY3LyAt
-IFJlLXJlcG9ydGVkLg0KDQpUaGFua3MsDQpUZWphc3JlZQ0KDQotLS0tLU9yaWdpbmFsIE1lc3Nh
-Z2UtLS0tLQ0KRnJvbTogTXVzaWFsLCBFd2VsaW5hIDxld2VsaW5hLm11c2lhbEBpbnRlbC5jb20+
-IA0KU2VudDogV2VkbmVzZGF5LCBEZWNlbWJlciAxMywgMjAyMyAxMjoyOSBQTQ0KVG86IEthbWls
-IEtvbmllY3pueSA8a2FtaWwua29uaWVjem55QGxpbnV4LmludGVsLmNvbT47IGlndC1kZXZAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnOyBJbGxpcGlsbGksIFRlamFzcmVlWCA8dGVqYXNyZWV4LmlsbGlw
-aWxsaUBpbnRlbC5jb20+DQpDYzogV2VsdHksIEJyaWFuIDxicmlhbi53ZWx0eUBpbnRlbC5jb20+
-OyBJOTE1LWNpLWluZnJhQGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KU3ViamVjdDogUkU6IFtpZ3Qt
-ZGV2XSDinJcgRmkuQ0kuQkFUOiBmYWlsdXJlIGZvciBsaWIveGVfcXVlcnk6IEZpeCB4ZV9zdXBw
-b3J0c19mYXVsdHMoKQ0KDQorIEBJbGxpcGlsbGksIFRlamFzcmVlWA0KDQotLS0tLU9yaWdpbmFs
-IE1lc3NhZ2UtLS0tLQ0KRnJvbTogSTkxNS1jaS1pbmZyYSA8aTkxNS1jaS1pbmZyYS1ib3VuY2Vz
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mIEthbWlsIEtvbmllY3pueQ0KU2Vu
-dDogVGh1cnNkYXksIERlY2VtYmVyIDcsIDIwMjMgMTI6MzMgUE0NClRvOiBpZ3QtZGV2QGxpc3Rz
-LmZyZWVkZXNrdG9wLm9yZw0KQ2M6IFdlbHR5LCBCcmlhbiA8YnJpYW4ud2VsdHlAaW50ZWwuY29t
-PjsgSTkxNS1jaS1pbmZyYUBsaXN0cy5mcmVlZGVza3RvcC5vcmcNClN1YmplY3Q6IFJlOiBbaWd0
-LWRldl0g4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL3hlX3F1ZXJ5OiBGaXggeGVfc3Vw
-cG9ydHNfZmF1bHRzKCkNCg0KSGksDQoNCmJlbG93IGZhaWx1cmUgaXMgdW5yZWxhdGVkIHRvIFhl
-IHBhdGggZml4LiBQbGVhc2UgZG8gbm90IHJ1bg0KaTkxNSBCQVQgbm9yIEZVTEwuDQoNClJlZ2Fy
-ZHMsDQpLYW1pbA0KDQpPbiAyMDIzLTEyLTA3IGF0IDAyOjQwOjA3IC0wMDAwLCBQYXRjaHdvcmsg
-d3JvdGU6DQo+ID09IFNlcmllcyBEZXRhaWxzID09DQo+IA0KPiBTZXJpZXM6IGxpYi94ZV9xdWVy
-eTogRml4IHhlX3N1cHBvcnRzX2ZhdWx0cygpDQo+IFVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsu
-ZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy8xMjc0NjcvDQo+IFN0YXRlIDogZmFpbHVyZQ0KPiANCj4g
-PT0gU3VtbWFyeSA9PQ0KPiANCj4gQ0kgQnVnIExvZyAtIGNoYW5nZXMgZnJvbSBDSV9EUk1fMTM5
-OTAgLT4gSUdUUFdfMTAzNjEgDQo+ID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT0NCj4gDQo+IFN1bW1hcnkNCj4gLS0tLS0tLQ0KPiANCj4gICAqKkZB
-SUxVUkUqKg0KPiANCj4gICBTZXJpb3VzIHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0aCBJR1RQ
-V18xMDM2MSBhYnNvbHV0ZWx5IG5lZWQgdG8gYmUNCj4gICB2ZXJpZmllZCBtYW51YWxseS4NCj4g
-ICANCj4gICBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5nIHRv
-IGRvIHdpdGggdGhlIGNoYW5nZXMNCj4gICBpbnRyb2R1Y2VkIGluIElHVFBXXzEwMzYxLCBwbGVh
-c2Ugbm90aWZ5IHlvdXIgYnVnIHRlYW0gKEk5MTUtY2ktaW5mcmFAbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnKSB0byBhbGxvdyB0aGVtDQo+ICAgdG8gZG9jdW1lbnQgdGhpcyBuZXcgZmFpbHVyZSBtb2Rl
-LCB3aGljaCB3aWxsIHJlZHVjZSBmYWxzZSBwb3NpdGl2ZXMgaW4gQ0kuDQo+IA0KPiAgIEV4dGVy
-bmFsIFVSTDogDQo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdU
-UFdfMTAzNjEvaW5kZXguaHRtbA0KPiANCj4gUGFydGljaXBhdGluZyBob3N0cyAoMzcgLT4gMzIp
-DQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiANCj4gICBNaXNzaW5nICAgICg1
-KTogYmF0LWFkbHMtNSBiYXQtZGcxLTUgYmF0LWRnMi05IGZpLXNuYi0yNTIwbSBmaS1wbnYtZDUx
-MCANCj4gDQo+IFBvc3NpYmxlIG5ldyBpc3N1ZXMNCj4gLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiAN
-Cj4gICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQgbWF5IGhhdmUgYmVlbiBpbnRy
-b2R1Y2VkIGluIElHVFBXXzEwMzYxOg0KPiANCj4gIyMjIElHVCBjaGFuZ2VzICMjIw0KPiANCj4g
-IyMjIyBQb3NzaWJsZSByZWdyZXNzaW9ucyAjIyMjDQo+IA0KPiAgICogaWd0QGttc19waXBlX2Ny
-Y19iYXNpY0Bjb21wYXJlLWNyYy1zYW5pdHljaGVjay1udjEyQHBpcGUtYi1kcC02Og0KPiAgICAg
-LSBiYXQtYWRscC0xMTogICAgICAgIFtQQVNTXVsxXSAtPiBbRkFJTF1bMl0NCj4gICAgWzFdOiBo
-dHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV8xMzk5MC9iYXQt
-YWRscC0xMS9pZ3RAa21zX3BpcGVfY3JjX2Jhc2ljQGNvbXBhcmUtY3JjLXNhbml0eWNoZWNrLW52
-MTJAcGlwZS1iLWRwLTYuaHRtbA0KPiAgICBbMl06IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4w
-MS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzEwMzYxL2JhdC1hZGxwLTExL2lndEBrDQo+IG1zX3Bp
-cGVfY3JjX2Jhc2ljQGNvbXBhcmUtY3JjLXNhbml0eWNoZWNrLW52MTJAcGlwZS1iLWRwLTYuaHRt
-bA0KPiANCj4gICANCj4gTmV3IHRlc3RzDQo+IC0tLS0tLS0tLQ0KPiANCj4gICBOZXcgdGVzdHMg
-aGF2ZSBiZWVuIGludHJvZHVjZWQgYmV0d2VlbiBDSV9EUk1fMTM5OTAgYW5kIElHVFBXXzEwMzYx
-Og0KPiANCj4gIyMjIE5ldyBJR1QgdGVzdHMgKDEyKSAjIyMNCj4gDQo+ICAgKiBpZ3RAa21zX3Bp
-cGVfY3JjX2Jhc2ljQG5vbmJsb2NraW5nLWNyYy1mcmFtZS1zZXF1ZW5jZUBwaXBlLWEtZHAtNzoN
-Cj4gICAgIC0gU3RhdHVzZXMgOiAxIHBhc3MocykNCj4gICAgIC0gRXhlYyB0aW1lOiBbMi4wMV0g
-cw0KPiANCj4gICAqIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAbm9uYmxvY2tpbmctY3JjLWZyYW1l
-LXNlcXVlbmNlQHBpcGUtYy1kcC03Og0KPiAgICAgLSBTdGF0dXNlcyA6IDEgcGFzcyhzKQ0KPiAg
-ICAgLSBFeGVjIHRpbWU6IFswLjg1XSBzDQo+IA0KPiAgICogaWd0QGttc19waXBlX2NyY19iYXNp
-Y0Bub25ibG9ja2luZy1jcmMtZnJhbWUtc2VxdWVuY2VAcGlwZS1kLWRwLTc6DQo+ICAgICAtIFN0
-YXR1c2VzIDogMSBwYXNzKHMpDQo+ICAgICAtIEV4ZWMgdGltZTogWzAuOTBdIHMNCj4gDQo+ICAg
-KiBpZ3RAa21zX3BpcGVfY3JjX2Jhc2ljQG5vbmJsb2NraW5nLWNyY0BwaXBlLWEtZHAtNzoNCj4g
-ICAgIC0gU3RhdHVzZXMgOiAxIHBhc3MocykNCj4gICAgIC0gRXhlYyB0aW1lOiBbMi4xOF0gcw0K
-PiANCj4gICAqIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAbm9uYmxvY2tpbmctY3JjQHBpcGUtYy1k
-cC03Og0KPiAgICAgLSBTdGF0dXNlcyA6IDEgcGFzcyhzKQ0KPiAgICAgLSBFeGVjIHRpbWU6IFsw
-Ljk4XSBzDQo+IA0KPiAgICogaWd0QGttc19waXBlX2NyY19iYXNpY0Bub25ibG9ja2luZy1jcmNA
-cGlwZS1kLWRwLTc6DQo+ICAgICAtIFN0YXR1c2VzIDogMSBwYXNzKHMpDQo+ICAgICAtIEV4ZWMg
-dGltZTogWzAuODldIHMNCj4gDQo+ICAgKiBpZ3RAa21zX3BpcGVfY3JjX2Jhc2ljQHJlYWQtY3Jj
-LWZyYW1lLXNlcXVlbmNlQHBpcGUtYS1kcC03Og0KPiAgICAgLSBTdGF0dXNlcyA6IDEgYWJvcnQo
-cykNCj4gICAgIC0gRXhlYyB0aW1lOiBbMS45NF0gcw0KPiANCj4gICAqIGlndEBrbXNfcGlwZV9j
-cmNfYmFzaWNAcmVhZC1jcmMtZnJhbWUtc2VxdWVuY2VAcGlwZS1jLWRwLTc6DQo+ICAgICAtIFN0
-YXR1c2VzIDogMSBwYXNzKHMpDQo+ICAgICAtIEV4ZWMgdGltZTogWzAuODVdIHMNCj4gDQo+ICAg
-KiBpZ3RAa21zX3BpcGVfY3JjX2Jhc2ljQHJlYWQtY3JjLWZyYW1lLXNlcXVlbmNlQHBpcGUtZC1k
-cC03Og0KPiAgICAgLSBTdGF0dXNlcyA6IDEgcGFzcyhzKQ0KPiAgICAgLSBFeGVjIHRpbWU6IFsw
-Ljc4XSBzDQo+IA0KPiAgICogaWd0QGttc19waXBlX2NyY19iYXNpY0ByZWFkLWNyY0BwaXBlLWEt
-ZHAtNzoNCj4gICAgIC0gU3RhdHVzZXMgOiAxIHBhc3MocykNCj4gICAgIC0gRXhlYyB0aW1lOiBb
-Mi4wNl0gcw0KPiANCj4gICAqIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAcmVhZC1jcmNAcGlwZS1j
-LWRwLTc6DQo+ICAgICAtIFN0YXR1c2VzIDogMSBwYXNzKHMpDQo+ICAgICAtIEV4ZWMgdGltZTog
-WzAuNzZdIHMNCj4gDQo+ICAgKiBpZ3RAa21zX3BpcGVfY3JjX2Jhc2ljQHJlYWQtY3JjQHBpcGUt
-ZC1kcC03Og0KPiAgICAgLSBTdGF0dXNlcyA6IDEgcGFzcyhzKQ0KPiAgICAgLSBFeGVjIHRpbWU6
-IFswLjc4XSBzDQo+IA0KPiAgIA0KPiANCj4gS25vd24gaXNzdWVzDQo+IC0tLS0tLS0tLS0tLQ0K
-PiANCg0KWy4uLmN1dC4uLl0NCg0KPiANCj4gQnVpbGQgY2hhbmdlcw0KPiAtLS0tLS0tLS0tLS0t
-DQo+IA0KPiAgICogQ0k6IENJLTIwMTkwNTI5IC0+IE5vbmUNCj4gICAqIElHVDogSUdUXzc2MjYg
-LT4gSUdUUFdfMTAzNjENCj4gDQo+ICAgQ0ktMjAxOTA1Mjk6IDIwMTkwNTI5DQo+ICAgQ0lfRFJN
-XzEzOTkwOiA4NWQzM2QwYWQ4MmE1YzFhNzE0OTJmMTRhNWNlYjY3YWRhNmEyMmQ4IEAgZ2l0Oi8v
-YW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xpbnV4DQo+ICAgSUdUUFdfMTAzNjE6IGh0
-dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTAzNjEvaW5kZXgu
-aHRtbA0KPiAgIElHVF83NjI2OiAxNTRiNzI4ODU1MmNkN2VkMzAzM2Y4ZWYzOTZlODhkMGJkMWI3
-NjQ2IEAgDQo+IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaWd0LWdwdS10b29s
-cy5naXQNCj4gDQo+ID09IExvZ3MgPT0NCj4gDQo+IEZvciBtb3JlIGRldGFpbHMgc2VlOiANCj4g
-aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMDM2MS9pbmRl
-eC5odG1sDQo=
+On Wed, Dec 13, 2023 at 11:55:06AM -0800, Akshata Jahagirdar wrote:
+> The Main-to-CCS Ratio for XE2 has been changed to 512:1.
+> Update the CCS_RATIO macro to select relevant ratio based on platform.
+> Update the ccs_ratio call in gem_ccs and xe_ccs tests
+> based on previous change.
+> 
+> Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+
+LGTM now:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
+
+> ---
+>  lib/intel_blt.c       | 13 ++++++++-----
+>  lib/intel_blt.h       |  2 +-
+>  tests/intel/gem_ccs.c |  2 +-
+>  tests/intel/xe_ccs.c  |  2 +-
+>  4 files changed, 11 insertions(+), 8 deletions(-)
+> 
+> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+> index 1116c978e..1be289ad6 100644
+> --- a/lib/intel_blt.c
+> +++ b/lib/intel_blt.c
+> @@ -948,15 +948,16 @@ int blt_block_copy(int fd,
+>  	return ret;
+>  }
+>  
+> -static uint16_t __ccs_size(const struct blt_ctrl_surf_copy_data *surf)
+> +static uint16_t __ccs_size(int fd, const struct blt_ctrl_surf_copy_data *surf)
+>  {
+>  	uint32_t src_size, dst_size;
+> +	uint16_t ccsratio = CCS_RATIO(fd);
+>  
+>  	src_size = surf->src.access_type == DIRECT_ACCESS ?
+> -				surf->src.size : surf->src.size / CCS_RATIO;
+> +				surf->src.size : surf->src.size / ccsratio;
+>  
+>  	dst_size = surf->dst.access_type == DIRECT_ACCESS ?
+> -				surf->dst.size : surf->dst.size / CCS_RATIO;
+> +				surf->dst.size : surf->dst.size / ccsratio;
+>  
+>  	igt_assert_f(src_size <= dst_size, "dst size must be >= src size for CCS copy\n");
+>  
+> @@ -1118,6 +1119,8 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+>  	uint64_t dst_offset, src_offset, bb_offset, alignment;
+>  	uint32_t bbe = MI_BATCH_BUFFER_END;
+>  	uint32_t *bb;
+> +	uint16_t num_ccs_blocks = (ip_ver >= IP_VER(20, 0)) ?
+> +				(xe_get_default_alignment(fd) / CCS_RATIO(fd)) : CCS_RATIO(fd);
+>  
+>  	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
+>  	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
+> @@ -1136,7 +1139,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+>  		data.xe2.dw00.dst_access_type = surf->dst.access_type;
+>  
+>  		/* Ensure dst has size capable to keep src ccs aux */
+> -		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
+> +		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
+>  		data.xe2.dw00.length = 0x3;
+>  
+>  		data.xe2.dw01.src_address_lo = src_offset;
+> @@ -1155,7 +1158,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+>  		data.gen12.dw00.dst_access_type = surf->dst.access_type;
+>  
+>  		/* Ensure dst has size capable to keep src ccs aux */
+> -		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
+> +		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
+>  		data.gen12.dw00.length = 0x3;
+>  
+>  		data.gen12.dw01.src_address_lo = src_offset;
+> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+> index 5934ccd67..d9be22fdf 100644
+> --- a/lib/intel_blt.h
+> +++ b/lib/intel_blt.h
+> @@ -52,7 +52,7 @@
+>  #include "igt.h"
+>  #include "intel_cmds_info.h"
+>  
+> -#define CCS_RATIO 256
+> +#define CCS_RATIO(fd) (AT_LEAST_GEN(intel_get_drm_devid(fd), 20) ? 512 : 256)
+>  
+>  enum blt_color_depth {
+>  	CD_8bit,
+> diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
+> index 0a691778d..80a29ecab 100644
+> --- a/tests/intel/gem_ccs.c
+> +++ b/tests/intel/gem_ccs.c
+> @@ -99,7 +99,7 @@ static void surf_copy(int i915,
+>  	struct blt_block_copy_data_ext ext = {};
+>  	struct blt_ctrl_surf_copy_data surf = {};
+>  	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
+> -	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
+> +	uint64_t bb_size, ccssize = mid->size / CCS_RATIO(i915);
+>  	uint32_t *ccscopy;
+>  	uint8_t uc_mocs = intel_get_uc_mocs_index(i915);
+>  	int result;
+> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+> index 77d3020bc..ac0805017 100644
+> --- a/tests/intel/xe_ccs.c
+> +++ b/tests/intel/xe_ccs.c
+> @@ -95,7 +95,7 @@ static void surf_copy(int xe,
+>  	struct blt_block_copy_data_ext ext = {};
+>  	struct blt_ctrl_surf_copy_data surf = {};
+>  	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
+> -	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
+> +	uint64_t bb_size, ccssize = mid->size / CCS_RATIO(xe);
+>  	uint32_t *ccscopy;
+>  	uint8_t uc_mocs = intel_get_uc_mocs_index(xe);
+>  	uint32_t sysmem = system_memory(xe);
+> -- 
+> 2.34.1
+> 
