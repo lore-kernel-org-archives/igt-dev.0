@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4246653690049252129=="
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 549C210E180
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 13:01:43 +0000 (UTC)
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org,
+	sai.gowtham.ch@intel.com
+Subject: [PATCH i-g-t] intel/xe_exec_store: Add Persistent subtest
+Date: Wed, 13 Dec 2023 18:29:14 +0530
+Message-Id: <20231213125914.10821-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
- =?utf-8?q?=2C1/2=5D_tests/kms=5Fvrr=3A_Tweak_flipline_subtest_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Wed, 13 Dec 2023 12:53:07 -0000
-Message-ID: <170247198752.10264.10925774040696795229@emeril.freedesktop.org>
-References: <20231213081652.3662325-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231213081652.3662325-1-bhanuprakash.modem@intel.com>
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,165 +17,137 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4246653690049252129==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-== Series Details ==
+Add persistent subtest to validate MI_PRT_BATCH_BUFFER_START.
 
-Series: series starting with [i-g-t,1/2] tests/kms_vrr: Tweak flipline subtest (rev2)
-URL   : https://patchwork.freedesktop.org/series/127740/
-State : success
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+---
+ tests/intel/xe_exec_store.c | 87 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 87 insertions(+)
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7638_BAT -> XEIGTPW_10411_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 3)
-------------------------------
-
-  Missing    (1): bat-dg2-oem2 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10411_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#1033])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7638/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10411/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_vrr@flipline:
-    - bat-atsm-2:         NOTRUN -> [SKIP][3] ([Intel XE#1024])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10411/bat-atsm-2/igt@kms_vrr@flipline.html
-    - bat-pvc-2:          NOTRUN -> [SKIP][4] ([Intel XE#1024])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10411/bat-pvc-2/igt@kms_vrr@flipline.html
-    - bat-adlp-7:         NOTRUN -> [SKIP][5] ([Intel XE#455])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10411/bat-adlp-7/igt@kms_vrr@flipline.html
-
-  * igt@xe_prime_self_import@basic-with_one_bo:
-    - bat-pvc-2:          [PASS][6] -> [FAIL][7] ([Intel XE#999]) +1 other test fail
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7638/bat-pvc-2/igt@xe_prime_self_import@basic-with_one_bo.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10411/bat-pvc-2/igt@xe_prime_self_import@basic-with_one_bo.html
-
-  
-  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
-  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-  [Intel XE#999]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/999
-
-
-Build changes
--------------
-
-  * IGT: IGT_7638 -> IGTPW_10411
-
-  IGTPW_10411: 10411
-  IGT_7638: 52ca619dfeae57348b957778dcfdd8117d8ff9f0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-577-5cd1893366708380854f4694ae57417192458a6b: 5cd1893366708380854f4694ae57417192458a6b
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10411/index.html
-
---===============4246653690049252129==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/kms_vrr: Tweak flipline subtest (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127740/">https://patchwork.freedesktop.org/series/127740/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10411/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10411/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7638_BAT -&gt; XEIGTPW_10411_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 3)</h2>
-<p>Missing    (1): bat-dg2-oem2 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10411_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7638/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10411/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_vrr@flipline:</p>
-<ul>
-<li>
-<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10411/bat-atsm-2/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>)</p>
-</li>
-<li>
-<p>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10411/bat-pvc-2/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>)</p>
-</li>
-<li>
-<p>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10411/bat-adlp-7/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_prime_self_import@basic-with_one_bo:</p>
-<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7638/bat-pvc-2/igt@xe_prime_self_import@basic-with_one_bo.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10411/bat-pvc-2/igt@xe_prime_self_import@basic-with_one_bo.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/999">Intel XE#999</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7638 -&gt; IGTPW_10411</li>
-</ul>
-<p>IGTPW_10411: 10411<br />
-  IGT_7638: 52ca619dfeae57348b957778dcfdd8117d8ff9f0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-577-5cd1893366708380854f4694ae57417192458a6b: 5cd1893366708380854f4694ae57417192458a6b</p>
-
-</body>
-</html>
-
---===============4246653690049252129==--
+diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
+index 7a66d744c..ea7ecb01f 100644
+--- a/tests/intel/xe_exec_store.c
++++ b/tests/intel/xe_exec_store.c
+@@ -23,6 +23,7 @@
+ #define MAX_INSTANCE 9
+ #define STORE 0
+ #define COND_BATCH 1
++#define MI_PRT_BATCH_BUFFER_START (0x39 << 23)
+ 
+ struct data {
+ 	uint32_t batch[16];
+@@ -74,6 +75,24 @@ static void cond_batch(struct data *data, uint64_t addr, int value)
+ 	data->addr = batch_addr;
+ }
+ 
++static void persistance_batch(struct data *data, uint64_t addr)
++{
++	int b;
++	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
++	uint64_t batch_addr = addr + batch_offset;
++	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
++	uint64_t sdi_addr = addr + sdi_offset;
++
++	b = 0;
++	data->batch[b++] = MI_BATCH_BUFFER_START;
++	data->batch[b++] = MI_PRT_BATCH_BUFFER_START;
++	data->batch[b++] = sdi_addr;
++	data->batch[b++] = sdi_addr >> 32;
++	data->batch[b++] = MI_BATCH_BUFFER_END;
++
++	data->addr = batch_addr;
++
++}
+ /**
+  * SUBTEST: basic-store
+  * Description: Basic test to verify store dword.
+@@ -246,6 +265,71 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
++/**
++ * SUBTEST: persistent
++ * DESCRIPTION: Validate MI_PRT_BATCH_BUFFER_START functionality
++ */
++static void persistent(int fd)
++{
++	struct drm_xe_sync sync = {
++		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++	struct data *data1;
++	struct data *data2;
++	struct drm_xe_engine *engine;
++	uint32_t vm, exec_queue,syncobj;
++	uint32_t batch1, batch2;
++	uint64_t addr = 0x100000;
++	int value = 0x123456;
++	size_t batch_size = 4096;
++
++	syncobj = syncobj_create(fd, 0);
++	sync.handle = syncobj;
++
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
++	batch_size = ALIGN(batch_size + xe_cs_prefetch_size(fd),
++					xe_get_default_alignment(fd));
++
++	engine = xe_engine(fd, 1);
++	batch1 = xe_bo_create(fd, vm, batch_size,
++			      vram_if_possible(fd, engine->instance.gt_id),
++			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	batch2 = xe_bo_create(fd, vm, batch_size,
++			      vram_if_possible(fd, engine->instance.gt_id),
++			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++
++	xe_vm_bind_async(fd, vm, engine->instance.gt_id, batch1, 0, addr, batch_size, &sync, 1);
++	data1 = xe_bo_map(fd, batch1, batch_size);
++	data2 = xe_bo_map(fd, batch2, batch_size);
++
++	store_dword_batch(data1, addr, value);
++	persistance_batch(data2, addr);
++
++	exec_queue = xe_exec_queue_create(fd, vm, &engine->instance, 0);
++	exec.exec_queue_id = exec_queue;
++	exec.address = data2->addr;
++	sync.flags &= DRM_XE_SYNC_FLAG_SIGNAL;
++	xe_exec(fd, &exec);
++
++	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
++	igt_assert_eq(data1->data, value);
++
++	syncobj_destroy(fd, syncobj);
++	munmap(data1, batch_size);
++	munmap(data2, batch_size);
++	gem_close(fd, batch1);
++	gem_close(fd, batch2);
++
++	xe_exec_queue_destroy(fd, exec_queue);
++	xe_vm_destroy(fd, vm);
++}
++
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -285,6 +369,9 @@ igt_main
+ 		xe_for_each_engine(fd, hwe)
+ 			store_cachelines(fd, hwe, PAGES);
+ 
++	igt_subtest("persistent")
++		persistent(fd);
++
+ 	igt_fixture {
+ 		xe_device_put(fd);
+ 		close(fd);
+-- 
+2.39.1
