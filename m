@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DD1310E07F
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 15:07:16 +0000 (UTC)
-Date: Wed, 13 Dec 2023 16:07:11 +0100
+Date: Wed, 13 Dec 2023 16:11:49 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v7 7/7] tests/sriov_basic: validate driver binding
- to VFs
-Message-ID: <20231213150711.pxfpukg352p3pnft@kamilkon-desk.igk.intel.com>
+Subject: Re: [igt-dev] =?utf-8?B?4pyXIENJLnhlQkFU?= =?utf-8?Q?=3A?= failure
+ for Initial SR-IOV validation (rev8)
+Message-ID: <20231213151149.pkmb42fh2oayhvss@kamilkon-desk.igk.intel.com>
 References: <20231205081618.18143-1-lukasz.laguna@intel.com>
- <20231205081618.18143-8-lukasz.laguna@intel.com>
+ <170178631718.24285.11991045043018542795@emeril.freedesktop.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231205081618.18143-8-lukasz.laguna@intel.com>
+In-Reply-To: <170178631718.24285.11991045043018542795@emeril.freedesktop.org>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,149 +18,102 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Lukasz,
-On 2023-12-05 at 09:16:18 +0100, Lukasz Laguna wrote:
-> - bind-unbind-vf: validate driver binding and unbinding to specified VF
-> - enable-vfs-bind-unbind-each: validate driver binding and unbinding to
->   VFs from specified range.
+Hi,
+
+this is unrelated to new sr-iov (sriov) libs and tests.
+
+Regards,
+Kamil
+
+On 2023-12-05 at 14:25:17 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> v2:
->  - remove checks that are outside the scope of the test (Michal)
+> Series: Initial SR-IOV validation (rev8)
+> URL   : https://patchwork.freedesktop.org/series/126034/
+> State : failure
 > 
-> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> ---
->  tests/sriov_basic.c | 90 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 90 insertions(+)
+> == Summary ==
 > 
-> diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
-> index 582e644f2..96ee5943e 100644
-> --- a/tests/sriov_basic.c
-> +++ b/tests/sriov_basic.c
-> @@ -60,6 +60,58 @@ static void enable_vfs_autoprobe_on(int pf_fd, unsigned int num_vfs)
->  	igt_assert(!err);
->  }
->  
-> +/**
-> + * SUBTEST: enable-vfs-bind-unbind-each
-> + * Description:
-> + *   Verify VFs enabling with binding and unbinding the driver one be one to each of them
-> + * Run type: BAT
-> + */
-> +static void enable_vfs_bind_unbind_each(int pf_fd, unsigned int num_vfs)
-> +{
-> +	igt_debug("Testing %u VFs\n", num_vfs);
-> +
-> +	igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
-> +
-> +	igt_sriov_disable_driver_autoprobe(pf_fd);
-> +	igt_sriov_enable_vfs(pf_fd, num_vfs);
-> +	igt_sriov_enable_driver_autoprobe(pf_fd);
-> +
-> +	for (int i = 1; i <= num_vfs; i++) {
-> +		igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-
-Put newline here.
-
-> +		igt_sriov_bind_vf_drm_driver(pf_fd, i);
-> +		igt_assert(igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-
-Put newline here.
-
-> +		igt_sriov_unbind_vf_drm_driver(pf_fd, i);
-> +		igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-> +	}
-> +
-> +	igt_sriov_disable_vfs(pf_fd);
-> +}
-> +
-> +/**
-> + * SUBTEST: bind-unbind-vf
-> + * Description:
-> + *   Verify binding and unbinding the driver to specific VF
-> + * Run type: BAT
-> + */
-> +static void bind_unbind_vf(int pf_fd, unsigned int vf_num)
-> +{
-> +	igt_debug("Testing VF%u\n", vf_num);
-> +
-> +	igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
-> +
-> +	igt_sriov_disable_driver_autoprobe(pf_fd);
-> +	igt_sriov_enable_vfs(pf_fd, vf_num);
-> +	igt_sriov_enable_driver_autoprobe(pf_fd);
-> +
-> +	igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, vf_num));
-
-Put newline here.
-
-> +	igt_sriov_bind_vf_drm_driver(pf_fd, vf_num);
-> +	igt_assert(igt_sriov_is_vf_drm_driver_probed(pf_fd, vf_num));
-
-Put newline here.
-
-With that:
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-> +	igt_sriov_unbind_vf_drm_driver(pf_fd, vf_num);
-> +	igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, vf_num));
-> +
-> +	igt_sriov_disable_vfs(pf_fd);
-> +}
-> +
->  igt_main
->  {
->  	int pf_fd;
-> @@ -110,6 +162,44 @@ igt_main
->  		}
->  	}
->  
-> +	igt_describe("Verify VFs enabling with binding and unbinding the driver one be one to each of them");
-> +	igt_subtest_with_dynamic("enable-vfs-bind-unbind-each") {
-> +		for_each_sriov_num_vfs(pf_fd, num_vfs) {
-> +			igt_dynamic_f("numvfs-%u", num_vfs) {
-> +				enable_vfs_bind_unbind_each(pf_fd, num_vfs);
-> +			}
-> +		}
-> +		for_random_sriov_num_vfs(pf_fd, num_vfs) {
-> +			igt_dynamic_f("numvfs-random") {
-> +				enable_vfs_bind_unbind_each(pf_fd, num_vfs);
-> +			}
-> +		}
-> +		for_max_sriov_num_vfs(pf_fd, num_vfs) {
-> +			igt_dynamic_f("numvfs-all") {
-> +				enable_vfs_bind_unbind_each(pf_fd, num_vfs);
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_describe("Test binds and unbinds the driver to specific VF");
-> +	igt_subtest_with_dynamic("bind-unbind-vf") {
-> +		for_each_sriov_vf(pf_fd, vf) {
-> +			igt_dynamic_f("vf-%u", vf) {
-> +				bind_unbind_vf(pf_fd, vf);
-> +			}
-> +		}
-> +		for_random_sriov_vf(pf_fd, vf) {
-> +			igt_dynamic_f("vf-random") {
-> +				bind_unbind_vf(pf_fd, vf);
-> +			}
-> +		}
-> +		for_last_sriov_vf(pf_fd, vf) {
-> +			igt_dynamic_f("vf-last") {
-> +				bind_unbind_vf(pf_fd, vf);
-> +			}
-> +		}
-> +	}
-> +
->  	igt_fixture {
->  		igt_sriov_disable_vfs(pf_fd);
->  		/* abort to avoid execution of next tests with enabled VFs */
-> -- 
-> 2.40.0
+> CI Bug Log - changes from XEIGT_7620_BAT -> XEIGTPW_10335_BAT
+> ====================================================
 > 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_10335_BAT absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_10335_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (3 -> 4)
+> ------------------------------
+> 
+>   Additional (1): bat-dg2-oem2 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_10335_BAT:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-edp-1:
+>     - bat-adlp-7:         NOTRUN -> [FAIL][1] +3 other tests fail
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10335/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-edp-1.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@xe_evict@evict-beng-small-external:
+>     - bat-pvc-2:          [SKIP][2] ([Intel XE#688]) -> [FAIL][3] +3 other tests fail
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7620/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10335/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html
+> 
+>   * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate:
+>     - bat-pvc-2:          [FAIL][4] -> [SKIP][5] +32 other tests skip
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7620/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10335/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html
+> 
+>   * igt@xe_mmap@vram:
+>     - bat-adlp-7:         [FAIL][6] -> [SKIP][7]
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7620/bat-adlp-7/igt@xe_mmap@vram.html
+>    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10335/bat-adlp-7/igt@xe_mmap@vram.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_10335_BAT that come from known issues:
+> 
+> ### IGT changes ###
+
+[...cut...]
+
+> 
+> Build changes
+> -------------
+> 
+>   * IGT: IGT_7620 -> IGTPW_10335
+>   * Linux: xe-549-9c26345b7aaf1e2fa46cf8ee34b60d587790d600 -> xe-550-ac7b89571d802765762e7c15d78a6dcd5d92c41b
+> 
+>   IGTPW_10335: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10335/index.html
+>   IGT_7620: 6714b814e7f82743abf45c33361fbe057a22880a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   xe-549-9c26345b7aaf1e2fa46cf8ee34b60d587790d600: 9c26345b7aaf1e2fa46cf8ee34b60d587790d600
+>   xe-550-ac7b89571d802765762e7c15d78a6dcd5d92c41b: ac7b89571d802765762e7c15d78a6dcd5d92c41b
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10335/index.html
