@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B05710E710
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0180610E710
  for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 08:27:34 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [i-g-t 1/2] tests/kms_vrr: Tweak flipline subtest
-Date: Wed, 13 Dec 2023 13:46:51 +0530
-Message-Id: <20231213081652.3662325-1-bhanuprakash.modem@intel.com>
+Subject: [i-g-t 2/2] HAX: DO_NOT_MERGE: Add vrr flipline test to BAT
+Date: Wed, 13 Dec 2023 13:46:52 +0530
+Message-Id: <20231213081652.3662325-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231213081652.3662325-1-bhanuprakash.modem@intel.com>
+References: <20231213081652.3662325-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -20,33 +22,37 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As per the spec: If there is no flip request with in Vmax,
-Hardware will terminate the Vblank at Vmax.
-
-If we flip with the interval > Vmax, the expected refresh rate
-could be: (Vmax + time left for the next flip + Vmin), and it
-is very difficult to generalize. For low refresh rate panels
-(like 40 - 60 Hz), result is not falling into the threshold.
-
-Hence, tweak the test to increase the flip request interval.
-
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vrr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/intel-ci/fast-feedback.testlist    | 2 ++
+ tests/intel-ci/xe-fast-feedback.testlist | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 5c190cd8c..7cb7c3ef5 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -456,7 +456,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	}
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 60ce1efa4..982f89340 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,6 +1,8 @@
+ # Try to load the driver if it's not available yet.
+ igt@i915_module_load@load
  
- 	if (flags & TEST_FLIPLINE) {
--		rate = rate_from_refresh(range.min - 5);
-+		rate = rate_from_refresh(range.min - 10);
- 		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
- 		igt_assert_f(result < 50,
- 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold exceeded, result was %u%%\n",
++igt@kms_vrr@flipline
++
+ # Keep alphabetically sorted by default
+ igt@core_auth@basic-auth
+ igt@debugfs_test@read_all_entries
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index d7caa25c4..e6cc9672c 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -1,6 +1,8 @@
+ # Should be the first test
+ igt@xe_module_load@load
+ 
++igt@kms_vrr@flipline
++
+ igt@xe_compute@compute-square
+ igt@xe_create@create-execqueues-noleak
+ igt@xe_create@create-execqueues-leak
 -- 
 2.40.0
