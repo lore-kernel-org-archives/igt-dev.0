@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: "Illipilli, TejasreeX" <tejasreex.illipilli@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: =?utf-8?B?UkU6IOKclyBGaS5DSS5JR1Q6IGZhaWx1cmUgZm9yIGludGVsL3hlX2V4ZWNf?=
- =?utf-8?Q?store.c:_Fix_the_execution_of_basic-all_test.?=
-Date: Wed, 13 Dec 2023 14:41:58 +0000
-Message-ID: <DM6PR11MB3819DD240178A55571028A08F28DA@DM6PR11MB3819.namprd11.prod.outlook.com>
-References: <20231211130735.10497-1-sai.gowtham.ch@intel.com>
- <170232811737.19579.14674337072112286082@emeril.freedesktop.org>
- <20231212082944.cdfvsckhmr3ajvfc@kamilkon-desk.igk.intel.com>
-In-Reply-To: <20231212082944.cdfvsckhmr3ajvfc@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3BBEE10E7B8
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Dec 2023 14:44:11 +0000 (UTC)
+Date: Wed, 13 Dec 2023 15:44:06 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Lukasz Laguna <lukasz.laguna@intel.com>
+Subject: Re: [PATCH i-g-t v7 5/7] tests/sriov_basic: add basic tests for
+ enabling SR-IOV VFs
+Message-ID: <20231213144406.yqafudfhw43rwoeh@kamilkon-desk.igk.intel.com>
+References: <20231205081618.18143-1-lukasz.laguna@intel.com>
+ <20231205081618.18143-6-lukasz.laguna@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231205081618.18143-6-lukasz.laguna@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,115 +21,179 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: LGCI Bug Filing <lgci.bug.filing@intel.com>,
- "I915-ci-infra@lists.freedesktop.org" <I915-ci-infra@lists.freedesktop.org>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGksDQoNCmh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMTI3NjMwLyAt
-IFJlLXJlcG9ydGVkLg0KDQpUaGFua3MsDQpUZWphc3JlZQ0KDQotLS0tLU9yaWdpbmFsIE1lc3Nh
-Z2UtLS0tLQ0KRnJvbTogS2FtaWwgS29uaWVjem55IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50
-ZWwuY29tPiANClNlbnQ6IFR1ZXNkYXksIERlY2VtYmVyIDEyLCAyMDIzIDI6MDAgUE0NClRvOiBp
-Z3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KQ2M6IENoLCBTYWkgR293dGhhbSA8c2FpLmdv
-d3RoYW0uY2hAaW50ZWwuY29tPjsgSTkxNS1jaS1pbmZyYUBsaXN0cy5mcmVlZGVza3RvcC5vcmc7
-IExHQ0kgQnVnIEZpbGluZyA8bGdjaS5idWcuZmlsaW5nQGludGVsLmNvbT47IElsbGlwaWxsaSwg
-VGVqYXNyZWVYIDx0ZWphc3JlZXguaWxsaXBpbGxpQGludGVsLmNvbT4NClN1YmplY3Q6IFJlOiDi
-nJcgRmkuQ0kuSUdUOiBmYWlsdXJlIGZvciBpbnRlbC94ZV9leGVjX3N0b3JlLmM6IEZpeCB0aGUg
-ZXhlY3V0aW9uIG9mIGJhc2ljLWFsbCB0ZXN0Lg0KDQpIaSwNCg0KYmVsb3cgaXMgdW5yZWxhdGVk
-IHRvIFhlIHRlc3QuDQoNClJlZ2FyZHMsDQpLYW1pbA0KDQpPbiAyMDIzLTEyLTExIGF0IDIwOjU1
-OjE3IC0wMDAwLCBQYXRjaHdvcmsgd3JvdGU6DQo+ID09IFNlcmllcyBEZXRhaWxzID09DQo+IA0K
-PiBTZXJpZXM6IGludGVsL3hlX2V4ZWNfc3RvcmUuYzogRml4IHRoZSBleGVjdXRpb24gb2YgYmFz
-aWMtYWxsIHRlc3QuDQo+IFVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3Jn
-L3Nlcmllcy8xMjc2MzAvDQo+IFN0YXRlIDogZmFpbHVyZQ0KPiANCj4gPT0gU3VtbWFyeSA9PQ0K
-PiANCj4gQ0kgQnVnIExvZyAtIGNoYW5nZXMgZnJvbSBDSV9EUk1fMTQwMDdfZnVsbCAtPiBJR1RQ
-V18xMDM5Ml9mdWxsIA0KPiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09DQo+IA0KPiBTdW1tYXJ5DQo+IC0tLS0tLS0NCj4gDQo+ICAgKipGQUlMVVJF
-KioNCj4gDQo+ICAgU2VyaW91cyB1bmtub3duIGNoYW5nZXMgY29taW5nIHdpdGggSUdUUFdfMTAz
-OTJfZnVsbCBhYnNvbHV0ZWx5IG5lZWQgdG8gYmUNCj4gICB2ZXJpZmllZCBtYW51YWxseS4NCj4g
-ICANCj4gICBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5nIHRv
-IGRvIHdpdGggdGhlIGNoYW5nZXMNCj4gICBpbnRyb2R1Y2VkIGluIElHVFBXXzEwMzkyX2Z1bGws
-IHBsZWFzZSBub3RpZnkgeW91ciBidWcgdGVhbSAoSTkxNS1jaS1pbmZyYUBsaXN0cy5mcmVlZGVz
-a3RvcC5vcmcpIHRvIGFsbG93IHRoZW0NCj4gICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJl
-IG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4NCj4gDQo+ICAg
-RXh0ZXJuYWwgVVJMOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRp
-cC9JR1RQV18xMDM5Mi9pbmRleC5odG1sDQo+IA0KPiBQYXJ0aWNpcGF0aW5nIGhvc3RzICg5IC0+
-IDcpDQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiANCj4gICBNaXNzaW5nICAg
-ICgyKTogc2hhcmQtc25iLTAgc2hhcmQtZ2xrLTAgDQo+IA0KPiBQb3NzaWJsZSBuZXcgaXNzdWVz
-DQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gDQo+ICAgSGVyZSBhcmUgdGhlIHVua25vd24gY2hh
-bmdlcyB0aGF0IG1heSBoYXZlIGJlZW4gaW50cm9kdWNlZCBpbiBJR1RQV18xMDM5Ml9mdWxsOg0K
-PiANCj4gIyMjIElHVCBjaGFuZ2VzICMjIw0KPiANCj4gIyMjIyBQb3NzaWJsZSByZWdyZXNzaW9u
-cyAjIyMjDQo+IA0KPiAgICogaWd0QGdlbV9leGVjX2JhbGFuY2VyQGZhaXJzbGljZToNCj4gICAg
-IC0gc2hhcmQtZGcxOiAgICAgICAgICBOT1RSVU4gLT4gW0FCT1JUXVsxXSArMiBvdGhlciB0ZXN0
-cyBhYm9ydA0KPiAgICBbMV06IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9k
-cm0tdGlwL0lHVFBXXzEwMzkyL3NoYXJkLWRnMS0xMy9pZ3RADQo+IGdlbV9leGVjX2JhbGFuY2Vy
-QGZhaXJzbGljZS5odG1sDQo+IA0KPiAgICogaWd0QGdlbV9leGVjX2JhbGFuY2VyQGZ1bGwtbGF0
-ZS1wdWxzZToNCj4gICAgIC0gc2hhcmQtdGdsdTogICAgICAgICBOT1RSVU4gLT4gW0lOQ09NUExF
-VEVdWzJdICs3IG90aGVyIHRlc3RzIGluY29tcGxldGUNCj4gICAgWzJdOiANCj4gaHR0cHM6Ly9p
-bnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMDM5Mi9zaGFyZC10Z2x1LTQv
-aWd0QA0KPiBnZW1fZXhlY19iYWxhbmNlckBmdWxsLWxhdGUtcHVsc2UuaHRtbA0KPiANCj4gICAq
-IGlndEBnZW1fZXhlY193aGlzcGVyQGJhc2ljLWZkcy1mb3JrZWQtYWxsOg0KPiAgICAgLSBzaGFy
-ZC1nbGs6ICAgICAgICAgIE5PVFJVTiAtPiBbSU5DT01QTEVURV1bM10gKzggb3RoZXIgdGVzdHMg
-aW5jb21wbGV0ZQ0KPiAgICBbM106IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJl
-ZS9kcm0tdGlwL0lHVFBXXzEwMzkyL3NoYXJkLWdsazkvaWd0QGdlDQo+IG1fZXhlY193aGlzcGVy
-QGJhc2ljLWZkcy1mb3JrZWQtYWxsLmh0bWwNCj4gDQo+ICAgKiBpZ3RAaTkxNV9wbV9yYzZfcmVz
-aWRlbmN5QHJjNi1pZGxlQGd0MC1iY3MwOg0KPiAgICAgLSBzaGFyZC1tdGxwOiAgICAgICAgIE5P
-VFJVTiAtPiBbSU5DT01QTEVURV1bNF0NCj4gICAgWzRdOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngt
-Y2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMDM5Mi9zaGFyZC1tdGxwLTMvaWd0QA0KPiBp
-OTE1X3BtX3JjNl9yZXNpZGVuY3lAcmM2LWlkbGVAZ3QwLWJjczAuaHRtbA0KPiANCj4gICAqIGln
-dEBpOTE1X3BtX3JjNl9yZXNpZGVuY3lAcmM2LWlkbGVAZ3QwLXJjczA6DQo+ICAgICAtIHNoYXJk
-LW10bHA6ICAgICAgICAgTk9UUlVOIC0+IFtBQk9SVF1bNV0gKzEyIG90aGVyIHRlc3RzIGFib3J0
-DQo+ICAgIFs1XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQ
-V18xMDM5Mi9zaGFyZC1tdGxwLTMvaWd0QGk5MTVfcG1fcmM2X3Jlc2lkZW5jeUByYzYtaWRsZUBn
-dDAtcmNzMC5odG1sDQo+ICAgICAtIHNoYXJkLWRnMjogICAgICAgICAgTk9UUlVOIC0+IFtBQk9S
-VF1bNl0gKzEgb3RoZXIgdGVzdCBhYm9ydA0KPiAgICBbNl06IA0KPiBodHRwczovL2ludGVsLWdm
-eC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzEwMzkyL3NoYXJkLWRnMi0zL2lndEBpDQo+
-IDkxNV9wbV9yYzZfcmVzaWRlbmN5QHJjNi1pZGxlQGd0MC1yY3MwLmh0bWwNCj4gDQo+ICAgKiBp
-Z3RAcGVyZkBpbnZhbGlkLW9hLW1ldHJpYy1zZXQtaWQ6DQo+ICAgICAtIHNoYXJkLWdsazogICAg
-ICAgICAgTk9UUlVOIC0+IFtBQk9SVF1bN10NCj4gICAgWzddOiANCj4gaHR0cHM6Ly9pbnRlbC1n
-ZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMDM5Mi9zaGFyZC1nbGsxL2lndEBwZQ0K
-PiByZkBpbnZhbGlkLW9hLW1ldHJpYy1zZXQtaWQuaHRtbA0KPiANCj4gICAqIGlndEBwZXJmX3Bt
-dUBidXN5LWhhbmdAcmNzMDoNCj4gICAgIC0gc2hhcmQtZGcyOiAgICAgICAgICBOT1RSVU4gLT4g
-W0lOQ09NUExFVEVdWzhdICs0IG90aGVyIHRlc3RzIGluY29tcGxldGUNCj4gICAgWzhdOiBodHRw
-czovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzEwMzkyL3NoYXJkLWRn
-Mi0xMC9pZ3RAcGVyZl9wbXVAYnVzeS1oYW5nQHJjczAuaHRtbA0KPiAgICAgLSBzaGFyZC1ya2w6
-ICAgICAgICAgIE5PVFJVTiAtPiBbQUJPUlRdWzldICsxIG90aGVyIHRlc3QgYWJvcnQNCj4gICAg
-WzldOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18x
-MDM5Mi9zaGFyZC1ya2wtMy9pZ3RAcA0KPiBlcmZfcG11QGJ1c3ktaGFuZ0ByY3MwLmh0bWwNCj4g
-DQo+ICAgKiBpZ3RAcGVyZl9wbXVAbW9zdC1idXN5LWNoZWNrLWFsbEByY3MwOg0KPiAgICAgLSBz
-aGFyZC1zbmI6ICAgICAgICAgIE5PVFJVTiAtPiBbSU5DT01QTEVURV1bMTBdICsxMSBvdGhlciB0
-ZXN0cyBpbmNvbXBsZXRlDQo+ICAgIFsxMF06IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5v
-cmcvdHJlZS9kcm0tdGlwL0lHVFBXXzEwMzkyL3NoYXJkLXNuYjUvaWd0QHBlDQo+IHJmX3BtdUBt
-b3N0LWJ1c3ktY2hlY2stYWxsQHJjczAuaHRtbA0KPiANCj4gICAqIGlndEBwZXJmX3BtdUBtb3N0
-LWJ1c3ktaWRsZS1jaGVjay1hbGxAcmNzMDoNCj4gICAgIC0gc2hhcmQtcmtsOiAgICAgICAgICBO
-T1RSVU4gLT4gW0lOQ09NUExFVEVdWzExXSArNCBvdGhlciB0ZXN0cyBpbmNvbXBsZXRlDQo+ICAg
-IFsxMV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTAz
-OTIvc2hhcmQtcmtsLTIvaWd0QHBlcmZfcG11QG1vc3QtYnVzeS1pZGxlLWNoZWNrLWFsbEByY3Mw
-Lmh0bWwNCj4gICAgIC0gc2hhcmQtZGcxOiAgICAgICAgICBOT1RSVU4gLT4gW0lOQ09NUExFVEVd
-WzEyXSArNiBvdGhlciB0ZXN0cyBpbmNvbXBsZXRlDQo+ICAgIFsxMl06IA0KPiBodHRwczovL2lu
-dGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzEwMzkyL3NoYXJkLWRnMS0xNi9p
-Z3RADQo+IHBlcmZfcG11QG1vc3QtYnVzeS1pZGxlLWNoZWNrLWFsbEByY3MwLmh0bWwNCj4gDQo+
-ICAgDQo+ICMjIyMgV2FybmluZ3MgIyMjIw0KPiANCj4gICAqIGlndEBnZW1fZXhlY19iYWxhbmNl
-ckBmdWxsLWxhdGUtcHVsc2U6DQo+ICAgICAtIHNoYXJkLXJrbDogICAgICAgICAgW0FCT1JUXVsx
-M10gLT4gW0lOQ09NUExFVEVdWzE0XQ0KPiAgICBbMTNdOiBodHRwczovL2ludGVsLWdmeC1jaS4w
-MS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV8xNDAwNy9zaGFyZC1ya2wtNS9pZ3RAZ2VtX2V4ZWNf
-YmFsYW5jZXJAZnVsbC1sYXRlLXB1bHNlLmh0bWwNCj4gICAgWzE0XTogDQo+IGh0dHBzOi8vaW50
-ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTAzOTIvc2hhcmQtcmtsLTcvaWd0
-QGcNCj4gZW1fZXhlY19iYWxhbmNlckBmdWxsLWxhdGUtcHVsc2UuaHRtbA0KPiANCj4gICANCj4g
-TmV3IHRlc3RzDQo+IC0tLS0tLS0tLQ0KPiANCj4gICBOZXcgdGVzdHMgaGF2ZSBiZWVuIGludHJv
-ZHVjZWQgYmV0d2VlbiBDSV9EUk1fMTQwMDdfZnVsbCBhbmQgSUdUUFdfMTAzOTJfZnVsbDoNCj4g
-DQo+ICMjIyBOZXcgSUdUIHRlc3RzICgxKSAjIyMNCj4gDQo+ICAgKiBpZ3RAaTkxNV9wb3dlcjoN
-Cj4gICAgIC0gU3RhdHVzZXMgOiAyIGluY29tcGxldGUocykNCj4gICAgIC0gRXhlYyB0aW1lOiBb
-MC4wXSBzDQo+IA0KDQpbLi4uY3V0Li4uXQ0KDQo+IA0KPiBCdWlsZCBjaGFuZ2VzDQo+IC0tLS0t
-LS0tLS0tLS0NCj4gDQo+ICAgKiBDSTogQ0ktMjAxOTA1MjkgLT4gTm9uZQ0KPiAgICogSUdUOiBJ
-R1RfNzYzNSAtPiBJR1RQV18xMDM5Mg0KPiAgICogUGlnbGl0OiBwaWdsaXRfNDUwOSAtPiBOb25l
-DQo+IA0KPiAgIENJLTIwMTkwNTI5OiAyMDE5MDUyOQ0KPiAgIENJX0RSTV8xNDAwNzogZTg4OGIz
-YTUxOTZlZjY0YzkxN2MzMGYzODcyNzZiZGNlZGM5ZDIzYiBAIGdpdDovL2Fub25naXQuZnJlZWRl
-c2t0b3Aub3JnL2dmeC1jaS9saW51eA0KPiAgIElHVFBXXzEwMzkyOiBodHRwczovL2ludGVsLWdm
-eC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzEwMzkyL2luZGV4Lmh0bWwNCj4gICBJR1Rf
-NzYzNTogMGI3OTZiZThjZTA1Y2IyMDcwY2U1MTM2ZDI0OGY0MzhjOTYyZDExZSBAIGh0dHBzOi8v
-Z2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaWd0LWdwdS10b29scy5naXQNCj4gICBwaWdsaXRf
-NDUwOTogZmRjNWE0Y2ExMTEyNGFiODQxM2M3OTg4ODk2ZWVjNGM5NzMzNjY5NCBAIA0KPiBnaXQ6
-Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9waWdsaXQNCj4gDQo+ID09IExvZ3MgPT0NCj4gDQo+
-IEZvciBtb3JlIGRldGFpbHMgc2VlOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3Ry
-ZWUvZHJtLXRpcC9JR1RQV18xMDM5Mi9pbmRleC5odG1sDQo=
+Hi Lukasz,
+On 2023-12-05 at 09:16:16 +0100, Lukasz Laguna wrote:
+> From: Katarzyna Dec <katarzyna.dec@intel.com>
+> 
+> Add subtests that validate SR-IOV VFs enabling in two variants: with
+> autoprobe disabled and enabled.
+> 
+> v2:
+>  - rename function (Michal)
+>  - remove checks that are outside the scope of the test (Michal)
+> v3:
+>  - change run type of enable-vfs-autoprobe-on subtest (Michal)
+>  - don't init random seed in test code (Michal)
+> 
+> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+> Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
+> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+> ---
+>  tests/meson.build   |   1 +
+>  tests/sriov_basic.c | 123 ++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 124 insertions(+)
+>  create mode 100644 tests/sriov_basic.c
+> 
+> diff --git a/tests/meson.build b/tests/meson.build
+> index facf60ccf..a6673c511 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -71,6 +71,7 @@ test_progs = [
+>  	'panfrost_submit',
+>  	'prime_udl',
+>  	'prime_vgem',
+> +	'sriov_basic',
+>  	'syncobj_basic',
+>  	'syncobj_eventfd',
+>  	'syncobj_wait',
+> diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
+> new file mode 100644
+> index 000000000..582e644f2
+> --- /dev/null
+> +++ b/tests/sriov_basic.c
+> @@ -0,0 +1,123 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright(c) 2023 Intel Corporation. All rights reserved.
+> + */
+> +
+> +#include "drmtest.h"
+> +#include "igt_core.h"
+> +#include "igt_sriov_device.h"
+> +
+> +IGT_TEST_DESCRIPTION("Basic tests for enabling SR-IOV Virtual Functions");
+> +
+> +/**
+> + * TEST: sriov_basic
+> + * Category: Software building block
+> + * Mega feature: SR-IOV
+> + * Sub-category: VFs enabling
+> + * Description: Validate SR-IOV VFs enabling
+> + */
+> +
+> +/**
+> + * SUBTEST: enable-vfs-autoprobe-off
+> + * Description:
+> + *   Verify VFs enabling without probing VF driver
+> + * Run type: BAT
+> + */
+> +static void enable_vfs_autoprobe_off(int pf_fd, unsigned int num_vfs)
+> +{
+> +	igt_debug("Testing %u VFs\n", num_vfs);
+> +
+> +	igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
+> +	igt_sriov_disable_driver_autoprobe(pf_fd);
+> +	igt_sriov_enable_vfs(pf_fd, num_vfs);
+> +	igt_assert_eq(num_vfs, igt_sriov_get_enabled_vfs(pf_fd));
+> +	igt_sriov_disable_vfs(pf_fd);
+> +}
+> +
+> +/**
+> + * SUBTEST: enable-vfs-autoprobe-on
+> + * Description:
+> + *   Verify VFs enabling and auto-probing VF driver
+> + * Run type: FULL
+> + */
+> +static void enable_vfs_autoprobe_on(int pf_fd, unsigned int num_vfs)
+> +{
+> +	bool err = false;
+> +
+> +	igt_debug("Testing %u VFs\n", num_vfs);
+> +
+> +	igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
+> +	igt_sriov_enable_driver_autoprobe(pf_fd);
+> +	igt_sriov_enable_vfs(pf_fd, num_vfs);
+> +	igt_assert_eq(num_vfs, igt_sriov_get_enabled_vfs(pf_fd));
+> +	for (int vf_num = 1; vf_num <= num_vfs; ++vf_num) {
+> +		if (!igt_sriov_is_vf_drm_driver_probed(pf_fd, vf_num)) {
+> +			igt_debug("VF%u probe failed\n", vf_num);
+> +			err = true;
+> +		}
+> +	}
+> +	igt_sriov_disable_vfs(pf_fd);
+> +	igt_assert(!err);
+> +}
+> +
+> +igt_main
+> +{
+> +	int pf_fd;
+> +	bool autoprobe;
+> +
+> +	igt_fixture {
+> +		pf_fd = drm_open_driver(DRIVER_ANY);
+> +		igt_require(igt_sriov_is_pf(pf_fd));
+> +		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
+> +		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
+> +	}
+> +
+> +	igt_describe("Verify VFs enabling without probing VF driver");
+> +	igt_subtest_with_dynamic("enable-vfs-autoprobe-off") {
+> +		for_each_sriov_num_vfs(pf_fd, num_vfs) {
+> +			igt_dynamic_f("numvfs-%u", num_vfs) {
+> +				enable_vfs_autoprobe_off(pf_fd, num_vfs);
+> +			}
+> +		}
+> +		for_random_sriov_num_vfs(pf_fd, num_vfs) {
+> +			igt_dynamic_f("numvfs-random") {
+> +				enable_vfs_autoprobe_off(pf_fd, num_vfs);
+> +			}
+> +		}
+> +		for_max_sriov_num_vfs(pf_fd, num_vfs) {
+> +			igt_dynamic_f("numvfs-all") {
+> +				enable_vfs_autoprobe_off(pf_fd, num_vfs);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_describe("Verify VFs enabling and auto-probing VF driver");
+> +	igt_subtest_with_dynamic("enable-vfs-autoprobe-on") {
+> +		for_each_sriov_num_vfs(pf_fd, num_vfs) {
+> +			igt_dynamic_f("numvfs-%u", num_vfs) {
+> +				enable_vfs_autoprobe_on(pf_fd, num_vfs);
+> +			}
+> +		}
+> +		for_random_sriov_num_vfs(pf_fd, num_vfs) {
+> +			igt_dynamic_f("numvfs-random") {
+> +				enable_vfs_autoprobe_on(pf_fd, num_vfs);
+> +			}
+> +		}
+> +		for_max_sriov_num_vfs(pf_fd, num_vfs) {
+> +			igt_dynamic_f("numvfs-all") {
+> +				enable_vfs_autoprobe_on(pf_fd, num_vfs);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		igt_sriov_disable_vfs(pf_fd);
+> +		/* abort to avoid execution of next tests with enabled VFs */
+> +		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
+> +		autoprobe ? igt_sriov_enable_driver_autoprobe(pf_fd) :
+> +			    igt_sriov_disable_driver_autoprobe(pf_fd);
+> +		igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
+> +			       "Failed to restore sriov_drivers_autoprobe value\n");
+> +		close(pf_fd);
+> +	}
+> +}
+> -- 
+> 2.40.0
+> 
