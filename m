@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF0CB10E8F9
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Dec 2023 08:51:12 +0000 (UTC)
-From: Lukasz Laguna <lukasz.laguna@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v3 1/1] tests/intel/xe_create: create-contexts subtest
-Date: Thu, 14 Dec 2023 09:50:41 +0100
-Message-Id: <20231214085041.16866-2-lukasz.laguna@intel.com>
-In-Reply-To: <20231214085041.16866-1-lukasz.laguna@intel.com>
-References: <20231214085041.16866-1-lukasz.laguna@intel.com>
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2060c.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e88::60c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E173910E919
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Dec 2023 09:08:45 +0000 (UTC)
+From: Jesse Zhang <jesse.zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Subject: [PATCH i-g-t] tests/amdgpu: fix VM test issue
+Date: Thu, 14 Dec 2023 17:07:49 +0800
+Message-ID: <20231214090749.1711421-1-jesse.zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,163 +19,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Luben Tuikov <luben.tuikov@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>, Christian
+ Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Validates the creation of significant number of HW contexts (4096 as
-default). The number of contexts to create can be adjusted using command
-line '-Q' parameter representing resource quantity.
+In some cases, the size of Vram and GTT is not large, such as mobile devices.
+It should be skipped.
 
-v2: print iteration number in case of an error (Marcin)
-v3: use __xe_exec() (Marcin)
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+Signed-off-by: Jesse zhang <jesse.zhang@amd.com>
 ---
- tests/intel/xe_create.c | 88 ++++++++++++++++++++++++++++++++++-------
- 1 file changed, 74 insertions(+), 14 deletions(-)
+ tests/amdgpu/amd_vm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index 09355cc5c..75f802247 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -12,6 +12,7 @@
- #include <string.h>
+diff --git a/tests/amdgpu/amd_vm.c b/tests/amdgpu/amd_vm.c
+index 11be25ae8..0dde28e2e 100644
+--- a/tests/amdgpu/amd_vm.c
++++ b/tests/amdgpu/amd_vm.c
+@@ -127,8 +127,8 @@ amdgpu_vm_unaligned_map(amdgpu_device_handle device_handle)
+ 	request.preferred_heap = AMDGPU_GEM_DOMAIN_VRAM;
+ 	request.flags = AMDGPU_GEM_CREATE_NO_CPU_ACCESS;
  
- #include "igt.h"
-+#include "igt_syncobj.h"
- #include "xe_drm.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-@@ -19,11 +20,11 @@
- #define PAGE_SIZE 0x1000
+-	r = amdgpu_bo_alloc(device_handle, &request, &buf_handle);
+-	igt_assert_eq(r, 0);
++	/* Don't let the test fail if the device doesn't have enough VRAM */
++	igt_skip_on(amdgpu_bo_alloc(device_handle, &request, &buf_handle));
  
- static struct param {
--	unsigned int size_mb;
--	unsigned int vram_percent;
-+	unsigned int quantity;
-+	unsigned int percent;
- } params = {
--	.size_mb = 0,
--	.vram_percent = 100,
-+	.quantity = 0,
-+	.percent = 100,
- };
- 
- static int __ioctl_create(int fd, struct drm_xe_gem_create *create)
-@@ -266,8 +267,8 @@ static void create_big_vram(int fd, int gt)
- 	visible_avail_size = xe_visible_available_vram_size(fd, gt);
- 	igt_require(visible_avail_size);
- 
--	bo_size = params.size_mb ? params.size_mb * 1024ULL * 1024ULL
--		  : ALIGN_DOWN(visible_avail_size * params.vram_percent / 100, alignment);
-+	bo_size = params.quantity ? params.quantity * 1024ULL * 1024ULL
-+		  : ALIGN_DOWN(visible_avail_size * params.percent / 100, alignment);
- 	igt_require(bo_size);
- 	igt_info("gt%u bo_size=%lu visible_available_vram_size=%lu\n",
- 		gt, bo_size, visible_avail_size);
-@@ -290,16 +291,71 @@ static void create_big_vram(int fd, int gt)
- 	xe_vm_destroy(fd, vm);
- }
- 
-+/**
-+ * SUBTEST: create-contexts
-+ * Functionality: contexts creation
-+ * Test category: functionality test
-+ * Description: Verifies the creation of substantial number of HW contexts
-+ *		(4096 as default).
-+ */
-+static void create_contexts(int fd)
-+{
-+	unsigned int i, n = params.quantity ? params.quantity : 4096;
-+	uint64_t bo_size = xe_get_default_alignment(fd), bo_addr = 0x1a0000;
-+	uint32_t vm, bo, *batch, exec_queues[n];
-+	struct drm_xe_sync sync = {
-+		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		.handle = syncobj_create(fd, 0),
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(&sync),
-+		.address = bo_addr,
-+		.num_batch_buffer = 1,
-+	};
-+
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
-+	bo = xe_bo_create(fd, vm, bo_size, system_memory(fd), 0);
-+
-+	batch = xe_bo_map(fd, bo, bo_size);
-+	*batch = MI_BATCH_BUFFER_END;
-+	munmap(batch, bo_size);
-+
-+	xe_vm_bind_sync(fd, vm, bo, 0, bo_addr, bo_size);
-+
-+	for (i = 0; i < n; i++) {
-+		int err = __xe_exec_queue_create(fd, vm, &xe_engine(fd, 0)->instance, 0,
-+						 &exec_queues[i]);
-+		igt_assert_f(!err, "Failed to create exec queue (%d), iteration: %d\n", err,
-+			     i + 1);
-+
-+		exec.exec_queue_id = exec_queues[i];
-+		err = __xe_exec(fd, &exec);
-+		igt_assert_f(!err, "Failed to execute batch (%d), iteration: %d\n", err, i + 1);
-+
-+		err = syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
-+		igt_assert_f(err, "Timeout while waiting for syncobj signal, iteration: %d\n",
-+			     i + 1);
-+	}
-+
-+	for (i = 0; i < n; i++)
-+		xe_exec_queue_destroy(fd, exec_queues[i]);
-+	gem_close(fd, bo);
-+	xe_vm_destroy(fd, vm);
-+	syncobj_destroy(fd, sync.handle);
-+}
-+
- static int opt_handler(int opt, int opt_index, void *data)
- {
- 	switch (opt) {
--	case 'S':
--		params.size_mb = atoi(optarg);
--		igt_debug("Size MB: %d\n", params.size_mb);
-+	case 'Q':
-+		params.quantity = atoi(optarg);
-+		igt_debug("Resource quantity (memory in MB): %d\n", params.quantity);
- 		break;
- 	case 'p':
--		params.vram_percent = atoi(optarg);
--		igt_debug("Percent of VRAM: %d\n", params.vram_percent);
-+		params.percent = atoi(optarg);
-+		igt_debug("Percent of available resource: %d\n", params.percent);
- 		break;
- 	default:
- 		return IGT_OPT_HANDLER_ERROR;
-@@ -309,11 +365,11 @@ static int opt_handler(int opt, int opt_index, void *data)
- }
- 
- const char *help_str =
--	"  -S\tBO size in MB\n"
--	"  -p\tPercent of VRAM for BO\n"
-+	"  -Q\tresource quantity (memory in MB)\n"
-+	"  -p\tpercent of available resource\n"
- 	;
- 
--igt_main_args("S:p:", NULL, help_str, opt_handler, NULL)
-+igt_main_args("Q:p:", NULL, help_str, opt_handler, NULL)
- {
- 	int xe;
- 
-@@ -347,6 +403,10 @@ igt_main_args("S:p:", NULL, help_str, opt_handler, NULL)
- 				create_big_vram(xe, gt);
- 	}
- 
-+	igt_subtest("create-contexts") {
-+		create_contexts(xe);
-+	}
-+
- 	igt_subtest("multigpu-create-massive-size") {
- 		int gpu_count = drm_prepare_filtered_multigpu(DRIVER_XE);
- 
+ 	r = amdgpu_va_range_alloc(device_handle, amdgpu_gpu_va_range_general,
+ 				4ULL << 30, 1ULL << 30, 0, &vmc_addr,
 -- 
-2.40.0
+2.25.1
