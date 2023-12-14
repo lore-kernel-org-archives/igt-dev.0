@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 86CC010E959
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Dec 2023 10:16:06 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: RE: [PATCH i-g-t v8] tests/intel/xe_pm: Fix d3 subtest
-Date: Thu, 14 Dec 2023 10:16:00 +0000
-Message-ID: <CY5PR11MB6211B9AA43983074148BE0E7958CA@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20220421130704.934-2-mohammed.thasleem@intel.com>
- <20231211084918.45829-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20231211084918.45829-1-mohammed.thasleem@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42F2210E092
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Dec 2023 10:41:01 +0000 (UTC)
+Message-ID: <80221e0c-da76-473f-84bd-767191f004a9@linux.intel.com>
+Date: Thu, 14 Dec 2023 11:40:51 +0100
 MIME-Version: 1.0
+Subject: Re: [PATCH i-g-t v3 1/1] tests/intel/xe_create: create-contexts
+ subtest
+Content-Language: en-US
+To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
+References: <20231214085041.16866-1-lukasz.laguna@intel.com>
+ <20231214085041.16866-2-lukasz.laguna@intel.com>
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20231214085041.16866-2-lukasz.laguna@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,156 +28,161 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 
-> -----Original Message-----
-> From: Thasleem, Mohammed <mohammed.thasleem@intel.com>
-> Sent: Monday, December 11, 2023 2:19 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Thasleem, Mohammed <mohammed.thasleem@intel.com>; Modem,
-> Bhanuprakash <bhanuprakash.modem@intel.com>; Gupta, Anshuman
-> <anshuman.gupta@intel.com>
-> Subject: [PATCH i-g-t v8] tests/intel/xe_pm: Fix d3 subtest
->=20
-> xe_pm d3 test requires to turn off all display in order to enter to d3 st=
-ate
-> therefore, adding the support to triggering "DRM_MODE_DPMS_OFF" in
-> setup_d3() and "DRM_MODE_DPMS_ON" in cleanup_d3().
->=20
-> v2: Use IGT_CRTC_ACTIVE for displays On/Off.
-> v3: -Update commit message and helper names.
->     -Update display on and off helpers.
-> v4: Remove redundant code. (Bhanu)
-> v5: Move helper calls to test file.
-> v6: -Update function name as dpms_on_off. (Anshuman)
->     -Update subject and commit message. (Kamil)
-> v7: -Update subjact. (Anshuman)
->     -Move device.res to dpms_on_off(). (Bhanu)
->     -Free device.res in igt_fixture. (Bhanu)
->     -Call kmstest_set_connector_dpms if DRM_MODE_CONNECTED is found.
-> (Kamil)
-> v8: Update if condition to fix dereferencing of NULL pointer. (Bhanu)
->=20
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Acked-by: Anshuman Gupta <anshuman.gupta@intel.com>
+On 12/14/2023 9:50 AM, Lukasz Laguna wrote:
+> Validates the creation of significant number of HW contexts (4096 as
+> default). The number of contexts to create can be adjusted using command
+> line '-Q' parameter representing resource quantity.
+> 
+> v2: print iteration number in case of an error (Marcin)
+> v3: use __xe_exec() (Marcin)
+> 
+> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 > ---
->  tests/intel/xe_pm.c | 36 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 36 insertions(+)
->=20
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c index
-> c899bd67a..3d6acfbab 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -16,6 +16,7 @@
->=20
->  #include "igt.h"
->  #include "lib/igt_device.h"
-> +#include "lib/igt_kms.h"
->  #include "lib/igt_pm.h"
->  #include "lib/igt_sysfs.h"
->  #include "lib/igt_syncobj.h"
-> @@ -36,10 +37,32 @@ typedef struct {
->  	struct pci_device *pci_xe;
->  	struct pci_device *pci_root;
->  	char pci_slot_name[NAME_MAX];
-> +	drmModeResPtr res;
->  } device_t;
->=20
->  uint64_t orig_threshold;
->=20
-> +static void dpms_on_off(device_t device, int mode) {
-> +	int i;
+>   tests/intel/xe_create.c | 88 ++++++++++++++++++++++++++++++++++-------
+>   1 file changed, 74 insertions(+), 14 deletions(-)
+> 
+> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+> index 09355cc5c..75f802247 100644
+> --- a/tests/intel/xe_create.c
+> +++ b/tests/intel/xe_create.c
+> @@ -12,6 +12,7 @@
+>   #include <string.h>
+>   
+>   #include "igt.h"
+> +#include "igt_syncobj.h"
+>   #include "xe_drm.h"
+>   #include "xe/xe_ioctl.h"
+>   #include "xe/xe_query.h"
+> @@ -19,11 +20,11 @@
+>   #define PAGE_SIZE 0x1000
+>   
+>   static struct param {
+> -	unsigned int size_mb;
+> -	unsigned int vram_percent;
+> +	unsigned int quantity;
+> +	unsigned int percent;
+>   } params = {
+> -	.size_mb = 0,
+> -	.vram_percent = 100,
+> +	.quantity = 0,
+> +	.percent = 100,
+>   };
+>   
+>   static int __ioctl_create(int fd, struct drm_xe_gem_create *create)
+> @@ -266,8 +267,8 @@ static void create_big_vram(int fd, int gt)
+>   	visible_avail_size = xe_visible_available_vram_size(fd, gt);
+>   	igt_require(visible_avail_size);
+>   
+> -	bo_size = params.size_mb ? params.size_mb * 1024ULL * 1024ULL
+> -		  : ALIGN_DOWN(visible_avail_size * params.vram_percent / 100, alignment);
+> +	bo_size = params.quantity ? params.quantity * 1024ULL * 1024ULL
+> +		  : ALIGN_DOWN(visible_avail_size * params.percent / 100, alignment);
+>   	igt_require(bo_size);
+>   	igt_info("gt%u bo_size=%lu visible_available_vram_size=%lu\n",
+>   		gt, bo_size, visible_avail_size);
+> @@ -290,16 +291,71 @@ static void create_big_vram(int fd, int gt)
+>   	xe_vm_destroy(fd, vm);
+>   }
+>   
+> +/**
+> + * SUBTEST: create-contexts
+> + * Functionality: contexts creation
+> + * Test category: functionality test
+> + * Description: Verifies the creation of substantial number of HW contexts
+> + *		(4096 as default).
+> + */
+> +static void create_contexts(int fd)
+> +{
+> +	unsigned int i, n = params.quantity ? params.quantity : 4096;
+> +	uint64_t bo_size = xe_get_default_alignment(fd), bo_addr = 0x1a0000;
+> +	uint32_t vm, bo, *batch, exec_queues[n];
+> +	struct drm_xe_sync sync = {
+> +		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
+> +		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> +		.handle = syncobj_create(fd, 0),
+> +	};
+> +	struct drm_xe_exec exec = {
+> +		.num_syncs = 1,
+> +		.syncs = to_user_pointer(&sync),
+> +		.address = bo_addr,
+> +		.num_batch_buffer = 1,
+> +	};
 > +
-> +	if (!device.res)
-> +		return;
+> +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
+> +	bo = xe_bo_create(fd, vm, bo_size, system_memory(fd), 0);
 > +
-> +	for (i =3D 0; i < device.res->count_connectors; i++) {
-> +		drmModeConnector *connector =3D
-> drmModeGetConnectorCurrent(device.fd_xe,
-> +					      device.res->connectors[i]);
+> +	batch = xe_bo_map(fd, bo, bo_size);
+> +	*batch = MI_BATCH_BUFFER_END;
+> +	munmap(batch, bo_size);
 > +
-> +		if (!connector)
-> +			continue;
+> +	xe_vm_bind_sync(fd, vm, bo, 0, bo_addr, bo_size);
 > +
-> +		if (connector->connection =3D=3D DRM_MODE_CONNECTED)
-> +			kmstest_set_connector_dpms(device.fd_xe, connector,
-> mode);
+> +	for (i = 0; i < n; i++) {
+> +		int err = __xe_exec_queue_create(fd, vm, &xe_engine(fd, 0)->instance, 0,
+> +						 &exec_queues[i]);
+> +		igt_assert_f(!err, "Failed to create exec queue (%d), iteration: %d\n", err,
+> +			     i + 1);
 > +
-> +		drmModeFreeConnector(connector);
+> +		exec.exec_queue_id = exec_queues[i];
+> +		err = __xe_exec(fd, &exec);
+> +		igt_assert_f(!err, "Failed to execute batch (%d), iteration: %d\n", err, i + 1);
+> +
+> +		err = syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
+> +		igt_assert_f(err, "Timeout while waiting for syncobj signal, iteration: %d\n",
+> +			     i + 1);
 > +	}
+> +
+> +	for (i = 0; i < n; i++)
+> +		xe_exec_queue_destroy(fd, exec_queues[i]);
+> +	gem_close(fd, bo);
+> +	xe_vm_destroy(fd, vm);
+> +	syncobj_destroy(fd, sync.handle);
 > +}
 > +
->  /* runtime_usage is only available if kernel build
-> CONFIG_PM_ADVANCED_DEBUG */  static bool runtime_usage_available(struct
-> pci_device *pci)  { @@ -94,6 +117,8 @@ static void
-> vram_d3cold_threshold_restore(int sig)
->=20
->  static bool setup_d3(device_t device, enum igt_acpi_d_state state)  {
-> +	dpms_on_off(device, DRM_MODE_DPMS_OFF);
+>   static int opt_handler(int opt, int opt_index, void *data)
+>   {
+>   	switch (opt) {
+> -	case 'S':
+> -		params.size_mb = atoi(optarg);
+> -		igt_debug("Size MB: %d\n", params.size_mb);
+> +	case 'Q':
+> +		params.quantity = atoi(optarg);
+> +		igt_debug("Resource quantity (memory in MB): %d\n", params.quantity);
+>   		break;
+>   	case 'p':
+> -		params.vram_percent = atoi(optarg);
+> -		igt_debug("Percent of VRAM: %d\n", params.vram_percent);
+> +		params.percent = atoi(optarg);
+> +		igt_debug("Percent of available resource: %d\n", params.percent);
+>   		break;
+>   	default:
+>   		return IGT_OPT_HANDLER_ERROR;
+> @@ -309,11 +365,11 @@ static int opt_handler(int opt, int opt_index, void *data)
+>   }
+>   
+>   const char *help_str =
+> -	"  -S\tBO size in MB\n"
+> -	"  -p\tPercent of VRAM for BO\n"
+> +	"  -Q\tresource quantity (memory in MB)\n"
+> +	"  -p\tpercent of available resource\n"
+>   	;
+>   
+> -igt_main_args("S:p:", NULL, help_str, opt_handler, NULL)
+> +igt_main_args("Q:p:", NULL, help_str, opt_handler, NULL)
+>   {
+>   	int xe;
+>   
+> @@ -347,6 +403,10 @@ igt_main_args("S:p:", NULL, help_str, opt_handler, NULL)
+>   				create_big_vram(xe, gt);
+>   	}
+>   
+> +	igt_subtest("create-contexts") {
+> +		create_contexts(xe);
+> +	}
 > +
->  	switch (state) {
->  	case IGT_ACPI_D3Cold:
->  		igt_require(igt_pm_acpi_d3cold_supported(device.pci_root));
-> @@ -110,6 +135,11 @@ static bool setup_d3(device_t device, enum
-> igt_acpi_d_state state)
->  	return false;
->  }
->=20
-> +static void cleanup_d3(device_t device) {
-> +	dpms_on_off(device, DRM_MODE_DPMS_ON); }
-> +
->  static bool in_d3(device_t device, enum igt_acpi_d_state state)  {
->  	uint16_t val;
-> @@ -477,6 +507,7 @@ igt_main
->  		igt_pm_get_d3cold_allowed(device.pci_slot_name,
-> &d3cold_allowed);
->  		igt_assert(igt_setup_runtime_pm(device.fd_xe));
->  		sysfs_fd =3D igt_sysfs_open(device.fd_xe);
-> +		device.res =3D drmModeGetResources(device.fd_xe);
->  	}
->=20
->  	for (const struct s_state *s =3D s_states; s->name; s++) { @@ -511,6 +5=
-42,7
-> @@ igt_main
->  				xe_for_each_engine(device.fd_xe, hwe)
->  					test_exec(device, hwe, 1, 2, s->state,
->  						  NO_RPM);
-> +				cleanup_d3(device);
->  			}
->  		}
->  	}
-> @@ -519,6 +551,7 @@ igt_main
->  		igt_subtest_f("%s-basic", d->name) {
->  			igt_assert(setup_d3(device, d->state));
->  			igt_assert(in_d3(device, d->state));
-> +			cleanup_d3(device);
->  		}
->=20
->  		igt_subtest_f("%s-basic-exec", d->name) { @@ -526,6 +559,7
-> @@ igt_main
->  			xe_for_each_engine(device.fd_xe, hwe)
->  				test_exec(device, hwe, 1, 1,
->  					  NO_SUSPEND, d->state);
-> +			cleanup_d3(device);
->  		}
->=20
->  		igt_subtest_f("%s-multiple-execs", d->name) { @@ -533,6
-> +567,7 @@ igt_main
->  			xe_for_each_engine(device.fd_xe, hwe)
->  				test_exec(device, hwe, 16, 32,
->  					  NO_SUSPEND, d->state);
-> +			cleanup_d3(device);
->  		}
->  	}
->=20
-> @@ -547,6 +582,7 @@ igt_main
->  		close(sysfs_fd);
->  		igt_pm_set_d3cold_allowed(device.pci_slot_name,
-> d3cold_allowed);
->  		igt_restore_runtime_pm();
-> +		drmModeFreeResources(device.res);
->  		drm_close_driver(device.fd_xe);
->  	}
->  }
-> --
-> 2.25.1
+LGTM,
+Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+
+>   	igt_subtest("multigpu-create-massive-size") {
+>   		int gpu_count = drm_prepare_filtered_multigpu(DRIVER_XE);
+>   
