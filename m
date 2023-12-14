@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E137610E190
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Dec 2023 06:41:25 +0000 (UTC)
+Message-ID: <cdeb947b-6883-4245-a693-9463cd67669a@intel.com>
+Date: Thu, 14 Dec 2023 12:11:04 +0530
+Subject: Re: [PATCH v2 0/8] tests/kms_vrr: Modify kms_vrr to allow flicker
+ profiling
+Content-Language: en-US
+To: Sean Paul <seanpaul@chromium.org>, Sean Paul <sean@poorly.run>
+References: <20231023205910.3556533-1-sean@poorly.run>
+ <CAOw6vbKBCHreAuaW0d3qB5hk4FcJZAqLSU6yOL=o_DwHtU_1Qw@mail.gmail.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <CAOw6vbKBCHreAuaW0d3qB5hk4FcJZAqLSU6yOL=o_DwHtU_1Qw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_lib=3A_sync_i915=5Fpciids?=
- =?utf-8?q?=2Eh_with_kernel_=28rev15=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
-Date: Thu, 14 Dec 2023 05:03:42 -0000
-Message-ID: <170253022232.19956.3906491682570882171@emeril.freedesktop.org>
-References: <20231212090841.2060493-1-chaitanya.kumar.borah@intel.com>
-In-Reply-To: <20231212090841.2060493-1-chaitanya.kumar.borah@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,24 +22,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Hello Sean Paul,
 
-Series: lib: sync i915_pciids.h with kernel (rev15)
-URL   : https://patchwork.freedesktop.org/series/50957/
-State : failure
+Are you planning to send a new rev, as we have few review comments?
 
-== Summary ==
+FYI, I have merged few changes recently [*], you need to rebase this series.
 
-Applying: lib: sync i915_pciids.h with kernel
-Using index info to reconstruct a base tree...
-Patch failed at 0001 lib: sync i915_pciids.h with kernel
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+[*]: https://patchwork.freedesktop.org/series/127047/
 
+- Bhanu
+
+On 14-11-2023 09:49 pm, Sean Paul wrote:
+> Friendly review ping.
+> 
+> On Mon, Oct 23, 2023 at 4:59 PM Sean Paul <sean@poorly.run> wrote:
+> 
+>     From: Sean Paul <seanpaul@chromium.org <mailto:seanpaul@chromium.org>>
+> 
+>     Second revision of the set. New version addresses the review comments
+>     from Bhanu and adds a new maxmin subtest which alternates the rate
+>     between max and min every frame.
+> 
+>     Sean Paul (8):
+>        tests/kms_vrr: Move fb0 and fb1 to an array
+>        tests/kms_vrr: Move vtest_ns into data_t
+>        tests/kms_vrr: Allow test rate to be altered from the command line
+>        tests/kms_vrr: Allow test duration to be specified from the command
+>          line
+>        tests/kms_vrr: Change the pattern displayed in the test
+>        tests/kms_vrr: Add ability to flip static image for flicker profiling
+>        tests/kms_vrr: Allow for multiple rates in a test
+>        tests/kms_vrr: Add a max/min test to oscillate between rates
+> 
+>       tests/kms_vrr.c | 213 +++++++++++++++++++++++++++++++++++-------------
+>       1 file changed, 156 insertions(+), 57 deletions(-)
+> 
+>     -- 
+>     Sean Paul, Software Engineer, Google / Chromium OS
+> 
