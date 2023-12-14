@@ -1,23 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B8F8E10E17A
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Dec 2023 02:51:52 +0000 (UTC)
-Message-ID: <9c606285-9b7c-4d4b-8de7-fb479309c5d4@intel.com>
-Date: Wed, 13 Dec 2023 18:51:17 -0800
-Subject: Re: [PATCH i-g-t v6 5/5] tests/intel/xe_ccs: Add compression support
- for Lunarlake
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B1B5D10E179
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Dec 2023 04:48:36 +0000 (UTC)
+From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
+To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: RE: [PATCH] lib: sync i915_pciids.h with kernel
+Date: Thu, 14 Dec 2023 04:48:27 +0000
+Message-ID: <DM4PR11MB614147FFF506542FADD01654B98CA@DM4PR11MB6141.namprd11.prod.outlook.com>
+References: <20231212090841.2060493-1-chaitanya.kumar.borah@intel.com>
+ <c3cae6fc-8a97-4abd-9918-bba55c1757ca@gmail.com>
+In-Reply-To: <c3cae6fc-8a97-4abd-9918-bba55c1757ca@gmail.com>
 Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>, <ayaz.siddiqui@intel.com>,
- <matthew.auld@intel.com>, =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?=
- <zbigniew.kempczynski@intel.com>
-References: <cover.1702496855.git.akshata.jahagirdar@intel.com>
- <637f94bec53885ab6553e77eb538d02fb8f67f04.1702496856.git.akshata.jahagirdar@intel.com>
- <20231213141549.uvsihsettaayicas@kamilkon-desk.igk.intel.com>
-From: "Jahagirdar, Akshata" <akshata.jahagirdar@intel.com>
-In-Reply-To: <20231213141549.uvsihsettaayicas@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,153 +22,118 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Garg, Nemesa" <nemesa.garg@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 12/13/2023 6:15 AM, Kamil Konieczny wrote:
-> Hi Akshata,
-> On 2023-12-13 at 11:55:09 -0800, Akshata Jahagirdar wrote:
->> In XE2 IGFX platform, sysmem also participates in compression.
-> -------- ^^^^ ---------------- ^^^^
-> On iGPGX you have only sysmem, or am I missing something? So this should be:
->
-> In XE2 iGFX platform only sysmem participates in compression.
-Yep, this is correct. Will change it.
-> Second concern is why do impose only sysmen for all platforms,
-> including dGPU?
->
-> Regards,
-> Kamil
-
-In case of XE2 iGFX, we are creating the blt objects in sysmem. For all 
-other platforms, we will be creating in vram itself (as per previous 
-implementation)
-
->> So create all blt objects in sysmem itself, and update the pat-index to reflect
->> the compression status. Since we need to align the buffer object size with page
->> size and also have the src size and dst size of CCS copy to be equal,
->> change the default width and height to 1024.
->>
->> Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
->> ---
->>   tests/intel/xe_ccs.c | 45 ++++++++++++++++++++++++++------------------
->>   1 file changed, 27 insertions(+), 18 deletions(-)
->>
->> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
->> index ac0805017..a780140fd 100644
->> --- a/tests/intel/xe_ccs.c
->> +++ b/tests/intel/xe_ccs.c
->> @@ -63,8 +63,8 @@ static struct param {
->>   	.write_png = false,
->>   	.print_bb = false,
->>   	.print_surface_info = false,
->> -	.width = 512,
->> -	.height = 512,
->> +	.width = 1024,
->> +	.height = 1024,
->>   };
->>   
->>   struct test_config {
->> @@ -99,17 +99,23 @@ static void surf_copy(int xe,
->>   	uint32_t *ccscopy;
->>   	uint8_t uc_mocs = intel_get_uc_mocs_index(xe);
->>   	uint32_t sysmem = system_memory(xe);
->> +	uint8_t comp_pat_index = DEFAULT_PAT_INDEX;
->> +	uint16_t cpu_caching = __xe_default_cpu_caching(xe, sysmem, 0);
->>   	int result;
->>   
->>   	igt_assert(mid->compression);
->> +	if (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) && mid->compression) {
->> +		comp_pat_index  = intel_get_pat_idx_uc_comp(xe);
->> +		cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
->> +	}
->>   	ccscopy = (uint32_t *) malloc(ccssize);
->> -	ccs = xe_bo_create(xe, 0, ccssize, sysmem, 0);
->> -	ccs2 = xe_bo_create(xe, 0, ccssize, sysmem, 0);
->> +	ccs = xe_bo_create_caching(xe, 0, ccssize, sysmem, 0, cpu_caching);
->> +	ccs2 = xe_bo_create_caching(xe, 0, ccssize, sysmem, 0, cpu_caching);
->>   
->>   	blt_ctrl_surf_copy_init(xe, &surf);
->>   	surf.print_bb = param.print_bb;
->>   	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
->> -				 uc_mocs, DEFAULT_PAT_INDEX, BLT_INDIRECT_ACCESS);
->> +				 uc_mocs, comp_pat_index, BLT_INDIRECT_ACCESS);
->>   	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs,
->>   				 DEFAULT_PAT_INDEX, DIRECT_ACCESS);
->>   	bb_size = xe_get_default_alignment(xe);
->> @@ -157,7 +163,7 @@ static void surf_copy(int xe,
->>   	blt_set_ctrl_surf_object(&surf.src, ccs, sysmem, ccssize,
->>   				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
->>   	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
->> -				 uc_mocs, DEFAULT_PAT_INDEX, INDIRECT_ACCESS);
->> +				 uc_mocs, comp_pat_index, INDIRECT_ACCESS);
->>   	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
->>   	intel_ctx_xe_sync(ctx, true);
->>   
->> @@ -234,10 +240,10 @@ static int blt_block_copy3(int xe,
->>   	igt_assert_f(blt3, "block-copy3 requires data to do blit\n");
->>   
->>   	alignment = xe_get_default_alignment(xe);
->> -	get_offset(ahnd, blt3->src.handle, blt3->src.size, alignment);
->> -	get_offset(ahnd, blt3->mid.handle, blt3->mid.size, alignment);
->> -	get_offset(ahnd, blt3->dst.handle, blt3->dst.size, alignment);
->> -	get_offset(ahnd, blt3->final.handle, blt3->final.size, alignment);
->> +	get_offset_pat_index(ahnd, blt3->src.handle, blt3->src.size, alignment, blt3->src.pat_index);
->> +	get_offset_pat_index(ahnd, blt3->mid.handle, blt3->mid.size, alignment, blt3->mid.pat_index);
->> +	get_offset_pat_index(ahnd, blt3->dst.handle, blt3->dst.size, alignment, blt3->dst.pat_index);
->> +	get_offset_pat_index(ahnd, blt3->final.handle, blt3->final.size, alignment, blt3->final.pat_index);
->>   	bb_offset = get_offset(ahnd, blt3->bb.handle, blt3->bb.size, alignment);
->>   
->>   	/* First blit src -> mid */
->> @@ -291,8 +297,9 @@ static void block_copy(int xe,
->>   	uint64_t bb_size = xe_get_default_alignment(xe);
->>   	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
->>   	uint32_t run_id = mid_tiling;
->> -	uint32_t mid_region = region2, bb;
->> -	uint32_t width = param.width, height = param.height;
->> +	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &
->> +							!xe_has_vram(xe)) ? region1 : region2;
->> +	uint32_t width = param.width, height = param.height, bb;
->>   	enum blt_compression mid_compression = config->compression;
->>   	int mid_compression_format = param.compression_format;
->>   	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
->> @@ -413,8 +420,9 @@ static void block_multicopy(int xe,
->>   	uint64_t bb_size = xe_get_default_alignment(xe);
->>   	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
->>   	uint32_t run_id = mid_tiling;
->> -	uint32_t mid_region = region2, bb;
->> -	uint32_t width = param.width, height = param.height;
->> +	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &
->> +							!xe_has_vram(xe)) ? region1 : region2;
->> +	uint32_t width = param.width, height = param.height, bb;
->>   	enum blt_compression mid_compression = config->compression;
->>   	int mid_compression_format = param.compression_format;
->>   	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
->> @@ -539,8 +547,9 @@ static void block_copy_test(int xe,
->>   			region1 = igt_collection_get_value(regions, 0);
->>   			region2 = igt_collection_get_value(regions, 1);
->>   
->> -			/* Compressed surface must be in device memory */
->> -			if (config->compression && !XE_IS_VRAM_MEMORY_REGION(xe, region2))
->> +			/* if not XE2, then Compressed surface must be in device memory */
->> +			if (config->compression && !(AT_LEAST_GEN((intel_get_drm_devid(xe)), 20)) &&
->> +									!XE_IS_VRAM_MEMORY_REGION(xe, region2))
->>   				continue;
->>   
->>   			regtxt = xe_memregion_dynamic_subtest_name(xe, regions);
->> @@ -621,8 +630,8 @@ const char *help_str =
->>   	"  -p\tWrite PNG\n"
->>   	"  -s\tPrint surface info\n"
->>   	"  -t\tTiling format (0 - linear, 1 - XMAJOR, 2 - YMAJOR, 3 - TILE4, 4 - TILE64)\n"
->> -	"  -W\tWidth (default 512)\n"
->> -	"  -H\tHeight (default 512)"
->> +	"  -W\tWidth (default 1024)\n"
->> +	"  -H\tHeight (default 1024)"
->>   	;
->>   
->>   igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->> -- 
->> 2.34.1
->>
+SGVsbG8gSlAsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSnVoYS1Q
+ZWtrYSBIZWlra2lsYSA8anVoYXBla2thLmhlaWtraWxhQGdtYWlsLmNvbT4NCj4gU2VudDogV2Vk
+bmVzZGF5LCBEZWNlbWJlciAxMywgMjAyMyA2OjQ3IFBNDQo+IFRvOiBCb3JhaCwgQ2hhaXRhbnlh
+IEt1bWFyIDxjaGFpdGFueWEua3VtYXIuYm9yYWhAaW50ZWwuY29tPjsgaWd0LQ0KPiBkZXZAbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBHYXJnLCBOZW1lc2EgPG5lbWVzYS5nYXJnQGludGVs
+LmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSF0gbGliOiBzeW5jIGk5MTVfcGNpaWRzLmggd2l0
+aCBrZXJuZWwNCj4gDQo+IFRoaXMgaXMgbm90IGNvcnJlY3QuIFRoaXMgZG9lcyBub3Qgc3luY2hy
+b25pemUgd2l0aCBrZXJuZWwgY29tbWl0Lg0KPiBpOTE1X3BjaWlkcy5oIGlzIHN1cHBvc2VkIHRv
+IGJlIGNvcGllZCBhcyBpcyBmcm9tIGtlcm5lbC4NCg0KVGhpcyBoYXMgY3Jvc3NlZCBteSBtaW5k
+IGJ1dCB0aGVyZSBhcmUgYSBsb3Qgb2YgY2hhbmdlc1sxXSB1bnJlbGF0ZWQgdG8gQVJMLVMgaWYg
+d2UganVzdCBjb3B5IHRoZSBmaWxlLg0KVGhlcmVmb3JlLCBpdCBtYWRlIG1lIGEgYml0IHVuY29t
+Zm9ydGFibGUuIFNob3VsZCBJIGdvIGFoZWFkIGFueXdheT8NCg0KQXQgbGVhc3QgZm9yIFBWQyBk
+ZXZpY2UgaWRzLCB3ZSBtaWdodCBoYXZlIHRvIHRha2UgYW4gZXhjZXB0aW9uLiBPciBtYXkgYmUg
+dGhleSBkaWQgbm90IGJlbG9uZyB0aGVyZSBpbiB0aGUgZmlyc3QgcGxhY2UuDQoNCj4gQWxzbyBk
+b24ndCBkbyBvdGhlcg0KPiBjaGFuZ2VzIGluIHNhbWUgcGF0Y2gsIHB1dCBpbnRlbF9kZXZpY2Vf
+aW5mby5jIGNoYW5nZXMgaW50byB0aGVpciBvd24gcGF0Y2guDQo+IA0KDQpBY2suDQoNClJlZ2Fy
+ZHMNCg0KQ2hhaXRhbnlhDQoNClsxXQ0KZ2l0IGRpZmYNCmRpZmYgLS1naXQgYS9saWIvaTkxNV9w
+Y2lpZHMuaCBiL2xpYi9pOTE1X3BjaWlkcy5oDQppbmRleCBiZWU1ODU1NGQuLmZjZjE4NDlhYSAx
+MDA2NDQNCi0tLSBhL2xpYi9pOTE1X3BjaWlkcy5oDQorKysgYi9saWIvaTkxNV9wY2lpZHMuaA0K
+QEAgLTU4OCw2ICs1ODgsNyBAQA0KICAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4NDU1MSwgaW5m
+byksIFwNCiAgICAgICAgSU5URUxfVkdBX0RFVklDRSgweDQ1NTUsIGluZm8pLCBcDQogICAgICAg
+IElOVEVMX1ZHQV9ERVZJQ0UoMHg0NTU3LCBpbmZvKSwgXA0KKyAgICAgICBJTlRFTF9WR0FfREVW
+SUNFKDB4NDU3MCwgaW5mbyksIFwNCiAgICAgICAgSU5URUxfVkdBX0RFVklDRSgweDQ1NzEsIGlu
+Zm8pDQoNCiAvKiBKU0wgKi8NCkBAIC02NDEsNiArNjQyLDcgQEANCiAgICAgICAgSU5URUxfVkdB
+X0RFVklDRSgweDQ2ODIsIGluZm8pLCBcDQogICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg0Njg4
+LCBpbmZvKSwgXA0KICAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4NDY4QSwgaW5mbyksIFwNCisg
+ICAgICAgSU5URUxfVkdBX0RFVklDRSgweDQ2OEIsIGluZm8pLCBcDQogICAgICAgIElOVEVMX1ZH
+QV9ERVZJQ0UoMHg0NjkwLCBpbmZvKSwgXA0KICAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4NDY5
+MiwgaW5mbyksIFwNCiAgICAgICAgSU5URUxfVkdBX0RFVklDRSgweDQ2OTMsIGluZm8pDQpAQCAt
+NjgzLDE0ICs2ODUsMjIgQEANCiAgICAgICAgSU5URUxfVkdBX0RFVklDRSgweEE3OEEsIGluZm8p
+LCBcDQogICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHhBNzhCLCBpbmZvKQ0KDQorLyogUlBMLVUg
+Ki8NCisjZGVmaW5lIElOVEVMX1JQTFVfSURTKGluZm8pIFwNCisgICAgICAgSU5URUxfVkdBX0RF
+VklDRSgweEE3MjEsIGluZm8pLCBcDQorICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHhBN0ExLCBp
+bmZvKSwgXA0KKyAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4QTdBOSwgaW5mbyksIFwNCisgICAg
+ICAgSU5URUxfVkdBX0RFVklDRSgweEE3QUMsIGluZm8pLCBcDQorICAgICAgIElOVEVMX1ZHQV9E
+RVZJQ0UoMHhBN0FELCBpbmZvKQ0KKw0KIC8qIFJQTC1QICovDQogI2RlZmluZSBJTlRFTF9SUExQ
+X0lEUyhpbmZvKSBcDQorICAgICAgIElOVEVMX1JQTFVfSURTKGluZm8pLCBcDQogICAgICAgIElO
+VEVMX1ZHQV9ERVZJQ0UoMHhBNzIwLCBpbmZvKSwgXA0KLSAgICAgICBJTlRFTF9WR0FfREVWSUNF
+KDB4QTcyMSwgaW5mbyksIFwNCiAgICAgICAgSU5URUxfVkdBX0RFVklDRSgweEE3QTAsIGluZm8p
+LCBcDQotICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHhBN0ExLCBpbmZvKSwgXA0KICAgICAgICBJ
+TlRFTF9WR0FfREVWSUNFKDB4QTdBOCwgaW5mbyksIFwNCi0gICAgICAgSU5URUxfVkdBX0RFVklD
+RSgweEE3QTksIGluZm8pDQorICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHhBN0FBLCBpbmZvKSwg
+XA0KKyAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4QTdBQiwgaW5mbykNCg0KIC8qIERHMiAqLw0K
+ICNkZWZpbmUgSU5URUxfREcyX0cxMF9JRFMoaW5mbykgXA0KQEAgLTcwNSwxMSArNzE1LDE0IEBA
+DQogICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg1NjkzLCBpbmZvKSwgXA0KICAgICAgICBJTlRF
+TF9WR0FfREVWSUNFKDB4NTY5NCwgaW5mbyksIFwNCiAgICAgICAgSU5URUxfVkdBX0RFVklDRSgw
+eDU2OTUsIGluZm8pLCBcDQotICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg1Njk4LCBpbmZvKSwg
+XA0KICAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4NTZBNSwgaW5mbyksIFwNCiAgICAgICAgSU5U
+RUxfVkdBX0RFVklDRSgweDU2QTYsIGluZm8pLCBcDQogICAgICAgIElOVEVMX1ZHQV9ERVZJQ0Uo
+MHg1NkIwLCBpbmZvKSwgXA0KLSAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4NTZCMSwgaW5mbykN
+CisgICAgICAgSU5URUxfVkdBX0RFVklDRSgweDU2QjEsIGluZm8pLCBcDQorICAgICAgIElOVEVM
+X1ZHQV9ERVZJQ0UoMHg1NkJBLCBpbmZvKSwgXA0KKyAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4
+NTZCQiwgaW5mbyksIFwNCisgICAgICAgSU5URUxfVkdBX0RFVklDRSgweDU2QkMsIGluZm8pLCBc
+DQorICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg1NkJELCBpbmZvKQ0KDQogI2RlZmluZSBJTlRF
+TF9ERzJfRzEyX0lEUyhpbmZvKSBcDQogICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg1Njk2LCBp
+bmZvKSwgXA0KQEAgLTcyNSw3ICs3MzgsOCBAQA0KICAgICAgICBJTlRFTF9ERzJfRzEyX0lEUyhp
+bmZvKQ0KDQogI2RlZmluZSBJTlRFTF9BVFNfTTE1MF9JRFMoaW5mbykgXA0KLSAgICAgICBJTlRF
+TF9WR0FfREVWSUNFKDB4NTZDMCwgaW5mbykNCisgICAgICAgSU5URUxfVkdBX0RFVklDRSgweDU2
+QzAsIGluZm8pLCBcDQorICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg1NkMyLCBpbmZvKQ0KDQog
+I2RlZmluZSBJTlRFTF9BVFNfTTc1X0lEUyhpbmZvKSBcDQogICAgICAgIElOVEVMX1ZHQV9ERVZJ
+Q0UoMHg1NkMxLCBpbmZvKQ0KQEAgLTczMywzNCArNzQ3LDE0IEBADQogI2RlZmluZSBJTlRFTF9B
+VFNfTV9JRFMoaW5mbykgXA0KICAgICAgICBJTlRFTF9BVFNfTTE1MF9JRFMoaW5mbyksIFwNCiAg
+ICAgICAgSU5URUxfQVRTX003NV9JRFMoaW5mbykNCisNCiAvKiBNVEwgKi8NCi0jZGVmaW5lIElO
+VEVMX01UTF9NX0lEUyhpbmZvKSBcDQorI2RlZmluZSBJTlRFTF9NVExfSURTKGluZm8pIFwNCiAg
+ICAgICAgSU5URUxfVkdBX0RFVklDRSgweDdENDAsIGluZm8pLCBcDQotICAgICAgIElOVEVMX1ZH
+QV9ERVZJQ0UoMHg3RDYwLCBpbmZvKQ0KLSNkZWZpbmUgSU5URUxfTVRMX1BfR1QyX0lEUyhpbmZv
+KSBcDQotICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg3RDQ1LCBpbmZvKQ0KLSNkZWZpbmUgSU5U
+RUxfTVRMX1BfR1QzX0lEUyhpbmZvKSBcDQorICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg3RDQ1
+LCBpbmZvKSwgXA0KICAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4N0Q1NSwgaW5mbyksIFwNCisg
+ICAgICAgSU5URUxfVkdBX0RFVklDRSgweDdENjAsIGluZm8pLCBcDQorICAgICAgIElOVEVMX1ZH
+QV9ERVZJQ0UoMHg3RDY3LCBpbmZvKSwgXA0KICAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4N0RE
+NSwgaW5mbykNCi0jZGVmaW5lIElOVEVMX01UTF9QX0lEUyhpbmZvKSBcDQotICAgICAgIElOVEVM
+X01UTF9QX0dUMl9JRFMoaW5mbyksIFwNCi0gICAgICAgSU5URUxfTVRMX1BfR1QzX0lEUyhpbmZv
+KQ0KLQ0KLSNkZWZpbmUgSU5URUxfTVRMX0lEUyhpbmZvKSBcDQotICAgICAgIElOVEVMX01UTF9N
+X0lEUyhpbmZvKSwgXA0KLSAgICAgICBJTlRFTF9NVExfUF9JRFMoaW5mbykNCi0NCi0vKiBQVkMg
+Ki8NCi0jZGVmaW5lIElOVEVMX1BWQ19JRFMoaW5mbykgXA0KLSAgICAgICBJTlRFTF9WR0FfREVW
+SUNFKDB4MEJEMCwgaW5mbyksIFwNCi0gICAgICAgSU5URUxfVkdBX0RFVklDRSgweDBCRDUsIGlu
+Zm8pLCBcDQotICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHgwQkQ2LCBpbmZvKSwgXA0KLSAgICAg
+ICBJTlRFTF9WR0FfREVWSUNFKDB4MEJENywgaW5mbyksIFwNCi0gICAgICAgSU5URUxfVkdBX0RF
+VklDRSgweDBCRDgsIGluZm8pLCBcDQotICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHgwQkQ5LCBp
+bmZvKSwgXA0KLSAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4MEJEQSwgaW5mbyksIFwNCi0gICAg
+ICAgSU5URUxfVkdBX0RFVklDRSgweDBCREIsIGluZm8pLCBcDQotICAgICAgIElOVEVMX1ZHQV9E
+RVZJQ0UoMHgwQkQxLCBpbmZvKSwgXA0KLSAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4MEJEMiwg
+aW5mbykNCg0KICNlbmRpZiAvKiBfSTkxNV9QQ0lJRFNfSCAqLw0KDQoNCg0KPiBZb3UgY2FuIHNl
+ZSAiZ2l0IGxvZyBsaWIvaTkxNV9wY2lpZHMuaCIgZm9yIGV4YW1wbGVzLCBzYW5zIHR3byBsYXRl
+c3QgY2hhbmdlcw0KPiBpbnRvIHRoZSBmaWxlLiBUd28gdHdvIGxhdGVzdCBjaGFuZ2VzIGFyZSBi
+cm9rZW4uDQo+IA0KPiAvSnVoYS1QZWtrYQ0KPiANCj4gT24gMTIuMTIuMjAyMyAxMS4wOCwgQ2hh
+aXRhbnlhIEt1bWFyIEJvcmFoIHdyb3RlOg0KPiA+IFRoaXMgc3luY2hyb25pemVzIHdpdGgga2Vy
+bmVsIGNvbW1pdA0KPiA+DQo+ID4gODk0MGRhOWZlNWYyNyAoImRybS9pOTE1L210bDogQWRkaW5n
+IERldmljZUlEIGZvciBBcnJvd2xha2UtUyB1bmRlcg0KPiA+IE1UTCIpIHRvIGJyaW5nIGluIEFS
+TC1TIFBDSSBJRHMuDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBDaGFpdGFueWEgS3VtYXIgQm9y
+YWggPGNoYWl0YW55YS5rdW1hci5ib3JhaEBpbnRlbC5jb20+DQo+ID4gLS0tDQo+ID4gICBsaWIv
+aTkxNV9wY2lpZHMuaCAgICAgICB8IDQgKysrKw0KPiA+ICAgbGliL2ludGVsX2RldmljZV9pbmZv
+LmMgfCAxICsNCj4gPiAgIDIgZmlsZXMgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspDQo+ID4NCj4g
+PiBkaWZmIC0tZ2l0IGEvbGliL2k5MTVfcGNpaWRzLmggYi9saWIvaTkxNV9wY2lpZHMuaCBpbmRl
+eA0KPiA+IGJlZTU4NTU0ZC4uMTA2ZTQyZjg0IDEwMDY0NA0KPiA+IC0tLSBhL2xpYi9pOTE1X3Bj
+aWlkcy5oDQo+ID4gKysrIGIvbGliL2k5MTVfcGNpaWRzLmgNCj4gPiBAQCAtNzUwLDYgKzc1MCwx
+MCBAQA0KPiA+ICAgCUlOVEVMX01UTF9NX0lEUyhpbmZvKSwgXA0KPiA+ICAgCUlOVEVMX01UTF9Q
+X0lEUyhpbmZvKQ0KPiA+DQo+ID4gKy8qIEFSTC1TICovDQo+ID4gKyNkZWZpbmUgSU5URUxfQVJM
+U19JRFMoaW5mbykgXA0KPiA+ICsJSU5URUxfVkdBX0RFVklDRSgweDdENjcsIGluZm8pDQo+ID4g
+Kw0KPiA+ICAgLyogUFZDICovDQo+ID4gICAjZGVmaW5lIElOVEVMX1BWQ19JRFMoaW5mbykgXA0K
+PiA+ICAgCUlOVEVMX1ZHQV9ERVZJQ0UoMHgwQkQwLCBpbmZvKSwJXA0KPiA+IGRpZmYgLS1naXQg
+YS9saWIvaW50ZWxfZGV2aWNlX2luZm8uYyBiL2xpYi9pbnRlbF9kZXZpY2VfaW5mby5jIGluZGV4
+DQo+ID4gMzQ4MTdmN2I2Li40ODAzNmJlYzUgMTAwNjQ0DQo+ID4gLS0tIGEvbGliL2ludGVsX2Rl
+dmljZV9pbmZvLmMNCj4gPiArKysgYi9saWIvaW50ZWxfZGV2aWNlX2luZm8uYw0KPiA+IEBAIC02
+MTQsNiArNjE0LDcgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBwY2lfaWRfbWF0Y2gNCj4gaW50ZWxf
+ZGV2aWNlX21hdGNoW10gPSB7DQo+ID4gICAJSU5URUxfQVRTX01fSURTKCZpbnRlbF9hdHNfbV9p
+bmZvKSwNCj4gPg0KPiA+ICAgCUlOVEVMX01UTF9JRFMoJmludGVsX21ldGVvcmxha2VfaW5mbyks
+DQo+ID4gKwlJTlRFTF9BUkxTX0lEUygmaW50ZWxfbWV0ZW9ybGFrZV9pbmZvKSwNCj4gPg0KPiA+
+ICAgCUlOVEVMX1BWQ19JRFMoJmludGVsX3BvbnRldmVjY2hpb19pbmZvKSwNCj4gPg0KDQo=
