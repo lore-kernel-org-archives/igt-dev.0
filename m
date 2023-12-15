@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F75C10E297
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6234D10E297
  for <igt-dev@lists.freedesktop.org>; Fri, 15 Dec 2023 09:10:06 +0000 (UTC)
 From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 To: 
-Subject: [PATCH i-g-t v7 0/6] Compression support for Lunarlake
-Date: Fri, 15 Dec 2023 13:09:41 -0800
-Message-Id: <cover.1702674322.git.akshata.jahagirdar@intel.com>
+Subject: [PATCH i-g-t v7 3/6] lib/intel_pat: Add uc_comp pat_index
+Date: Fri, 15 Dec 2023 13:09:44 -0800
+Message-Id: <742a4385f7db7a03e8c9fbd171be73d85e60f9e4.1702674322.git.akshata.jahagirdar@intel.com>
+In-Reply-To: <cover.1702674322.git.akshata.jahagirdar@intel.com>
+References: <cover.1702674322.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -24,48 +25,66 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Series enables the compression feature for Lunarlake and address various
-changes of the feature from Gen12. The Main-to-CCS ratio has been
-changed to 512:1. This changes the calculations and value for fields
-such as CCS Copy size for blitter command APIs. 
-This patch series updates tests xe_ccs and gem_ccs for XE2.
-This series doesn't solve "in-place" and "suspend-resume" subtests.
+Compression in XE2 is programmed through pat-index attribute.
+Add a dedicated pat-index for compression for XE2 and later platforms.
+The caller to this helper function ensures GFX version is correct.
 
-These changes are based on top of the "vm_bind pat_index" patch here:
-https://patchwork.freedesktop.org/series/124667/
+Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+---
+ lib/intel_pat.c | 14 +++++++++++++-
+ lib/intel_pat.h |  2 ++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-v2: Lots of improvements/tweaks (Kamil)
-    Addressed review comments (Matthew, Karolina)
-v3: Reused dg2_xy_fast_copy definition for defing xe2_cmds_info struct(Karolina)
-    Split the patch to address ccs_size calculation and updating
-pat_index, updated the intel_get_pat_idx_uc_comp function as per review
-comments (Kamil)
-v4: Addressed review comments (Karolina)
-    Rebase. Removed few unnecessary conditions, plus few fixes.
-v5: Addressed Review comments (Matthew, Zbigniew)
-    Rebase, Fixes for pre-merge IGT tests.
-v6: Addressed Review comments (Matthew)
-v7: Addressed Review comments (Zbigniew, Kamil)
-
-Akshata Jahagirdar (6):
-  lib: Add blt command properties for lunarlake
-  lib/intel_blt: Update calculation of ccs_size and size_of_ctrl_copy
-  lib/intel_pat: Add uc_comp pat_index
-  lib/intel_blt: Update caching mode and pat_index
-  lib/xe/xe_util: Align obj size before bind/unbind
-  tests/intel/xe_ccs: Add compression support for Lunarlake
-
- lib/intel_blt.c         | 24 +++++++++++++++++-------
- lib/intel_blt.h         |  2 +-
- lib/intel_cmds_info.c   | 16 ++++++++++++++++
- lib/intel_cmds_info.h   |  1 +
- lib/intel_device_info.c |  2 +-
- lib/intel_pat.c         | 14 +++++++++++++-
- lib/intel_pat.h         |  2 ++
- lib/xe/xe_util.c        |  2 +-
- tests/intel/gem_ccs.c   |  2 +-
- tests/intel/xe_ccs.c    | 40 +++++++++++++++++++++++++---------------
- 10 files changed, 78 insertions(+), 27 deletions(-)
-
+diff --git a/lib/intel_pat.c b/lib/intel_pat.c
+index 2b892ee52..041952bd8 100644
+--- a/lib/intel_pat.c
++++ b/lib/intel_pat.c
+@@ -11,7 +11,7 @@ struct intel_pat_cache {
+ 	uint8_t uc; /* UC + COH_NONE */
+ 	uint8_t wt; /* WT + COH_NONE */
+ 	uint8_t wb; /* WB + COH_AT_LEAST_1WAY */
+-
++	uint8_t uc_comp; /* UC + COH_NONE + COMPRESSION, XE2 and later*/
+ 	uint8_t max_index;
+ };
+ 
+@@ -23,6 +23,7 @@ static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
+ 		pat->uc = 3;
+ 		pat->wt = 15; /* Compressed + WB-transient */
+ 		pat->wb = 2;
++		pat->uc_comp = 12; /* Compressed + UC, XE2 and later */
+ 		pat->max_index = 31;
+ 	} else if (IS_METEORLAKE(dev_id)) {
+ 		pat->uc = 2;
+@@ -60,6 +61,17 @@ uint8_t intel_get_pat_idx_uc(int fd)
+ 	return pat.uc;
+ }
+ 
++uint8_t intel_get_pat_idx_uc_comp(int fd)
++{
++	struct intel_pat_cache pat = {};
++	uint16_t dev_id = intel_get_drm_devid(fd);
++
++	igt_assert(AT_LEAST_GEN(dev_id, 20));
++
++	intel_get_pat_idx(fd, &pat);
++	return pat.uc_comp;
++}
++
+ uint8_t intel_get_pat_idx_wt(int fd)
+ {
+ 	struct intel_pat_cache pat = {};
+diff --git a/lib/intel_pat.h b/lib/intel_pat.h
+index c24dbc275..eb48cbc65 100644
+--- a/lib/intel_pat.h
++++ b/lib/intel_pat.h
+@@ -16,4 +16,6 @@ uint8_t intel_get_pat_idx_uc(int fd);
+ uint8_t intel_get_pat_idx_wt(int fd);
+ uint8_t intel_get_pat_idx_wb(int fd);
+ 
++uint8_t intel_get_pat_idx_uc_comp(int fd);
++
+ #endif /* INTEL_PAT_H */
 -- 
 2.34.1
