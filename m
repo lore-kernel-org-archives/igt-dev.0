@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD1FB10E21B
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Dec 2023 00:52:35 +0000 (UTC)
-Date: Thu, 14 Dec 2023 19:51:51 -0500
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Francois Dugast <francois.dugast@intel.com>
-Subject: Re: [PATCH i-g-t] drm-uapi/xe: Ensure every uapi struct has drm_xe
- prefix
-Message-ID: <ZXujJ7DX0br9KlbL@intel.com>
-References: <20231214194925.7-1-francois.dugast@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20231214194925.7-1-francois.dugast@intel.com>
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2086.outbound.protection.outlook.com [40.107.237.86])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A87510E317
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Dec 2023 01:43:24 +0000 (UTC)
+From: "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>
+To: "Koenig, Christian" <Christian.Koenig@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: RE: [PATCH i-g-t] tests/amdgpu: fix VM test issue
+Date: Fri, 15 Dec 2023 01:43:21 +0000
+Message-ID: <DM4PR12MB5152AEF19DF4D43F9276809BE393A@DM4PR12MB5152.namprd12.prod.outlook.com>
+References: <20231214090749.1711421-1-jesse.zhang@amd.com>
+ <cadc9180-d2b4-4dee-890b-96c3dc5402d3@amd.com>
+In-Reply-To: <cadc9180-d2b4-4dee-890b-96c3dc5402d3@amd.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -20,103 +23,98 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ Luben Tuikov <luben.tuikov@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Dec 14, 2023 at 07:49:25PM +0000, Francois Dugast wrote:
-> Align with commit ("drm/xe/uapi: Ensure every uapi struct has drm_xe prefix")
-> 
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-
-> ---
->  include/drm-uapi/xe_drm.h | 18 +++++++++---------
->  tests/intel/xe_mmap.c     |  2 +-
->  2 files changed, 10 insertions(+), 10 deletions(-)
-> 
-> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index b1839df48..9609194c1 100644
-> --- a/include/drm-uapi/xe_drm.h
-> +++ b/include/drm-uapi/xe_drm.h
-> @@ -27,7 +27,7 @@ extern "C" {
->  #define DRM_XE_RESET_FAILED_UEVENT "DEVICE_STATUS"
->  
->  /**
-> - * struct xe_user_extension - Base class for defining a chain of extensions
-> + * struct drm_xe_user_extension - Base class for defining a chain of extensions
->   *
->   * Many interfaces need to grow over time. In most cases we can simply
->   * extend the struct and have userspace pass in more data. Another option,
-> @@ -45,29 +45,29 @@ extern "C" {
->   *
->   * .. code-block:: C
->   *
-> - *	struct xe_user_extension ext3 {
-> + *	struct drm_xe_user_extension ext3 {
->   *		.next_extension = 0, // end
->   *		.name = ...,
->   *	};
-> - *	struct xe_user_extension ext2 {
-> + *	struct drm_xe_user_extension ext2 {
->   *		.next_extension = (uintptr_t)&ext3,
->   *		.name = ...,
->   *	};
-> - *	struct xe_user_extension ext1 {
-> + *	struct drm_xe_user_extension ext1 {
->   *		.next_extension = (uintptr_t)&ext2,
->   *		.name = ...,
->   *	};
->   *
-> - * Typically the struct xe_user_extension would be embedded in some uAPI
-> + * Typically the struct drm_xe_user_extension would be embedded in some uAPI
->   * struct, and in this case we would feed it the head of the chain(i.e ext1),
->   * which would then apply all of the above extensions.
->   *
->   */
-> -struct xe_user_extension {
-> +struct drm_xe_user_extension {
->  	/**
->  	 * @next_extension:
->  	 *
-> -	 * Pointer to the next struct xe_user_extension, or zero if the end.
-> +	 * Pointer to the next struct drm_xe_user_extension, or zero if the end.
->  	 */
->  	__u64 next_extension;
->  
-> @@ -78,7 +78,7 @@ struct xe_user_extension {
->  	 *
->  	 * Also note that the name space for this is not global for the whole
->  	 * driver, but rather its scope/meaning is limited to the specific piece
-> -	 * of uAPI which has embedded the struct xe_user_extension.
-> +	 * of uAPI which has embedded the struct drm_xe_user_extension.
->  	 */
->  	__u32 name;
->  
-> @@ -625,7 +625,7 @@ struct drm_xe_gem_mmap_offset {
->  /** struct drm_xe_ext_set_property - XE set property extension */
->  struct drm_xe_ext_set_property {
->  	/** @base: base user extension */
-> -	struct xe_user_extension base;
-> +	struct drm_xe_user_extension base;
->  
->  	/** @property: property to set */
->  	__u32 property;
-> diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
-> index 63fdf46a8..e96192d23 100644
-> --- a/tests/intel/xe_mmap.c
-> +++ b/tests/intel/xe_mmap.c
-> @@ -92,7 +92,7 @@ static void test_bad_flags(int fd)
->  static void test_bad_extensions(int fd)
->  {
->  	uint64_t size = xe_get_default_alignment(fd);
-> -	struct xe_user_extension ext;
-> +	struct drm_xe_user_extension ext;
->  	struct drm_xe_gem_mmap_offset mmo = {
->  		.handle = xe_bo_create(fd, 0, size,
->  				       vram_if_possible(fd, 0),
-> -- 
-> 2.34.1
-> 
+W0FNRCBPZmZpY2lhbCBVc2UgT25seSAtIEdlbmVyYWxdDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2Fn
+ZS0tLS0tDQpGcm9tOiBLb2VuaWcsIENocmlzdGlhbiA8Q2hyaXN0aWFuLktvZW5pZ0BhbWQuY29t
+Pg0KU2VudDogVGh1cnNkYXksIERlY2VtYmVyIDE0LCAyMDIzIDU6NTQgUE0NClRvOiBaaGFuZywg
+SmVzc2UoSmllKSA8SmVzc2UuWmhhbmdAYW1kLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnDQpDYzogUHJvc3lhaywgVml0YWx5IDxWaXRhbHkuUHJvc3lha0BhbWQuY29tPjsgRGV1
+Y2hlciwgQWxleGFuZGVyIDxBbGV4YW5kZXIuRGV1Y2hlckBhbWQuY29tPjsgTHViZW4gVHVpa292
+IDxsdWJlbi50dWlrb3ZAYW1kLmNvbT47IEthbWlsIEtvbmllY3pueSA8a2FtaWwua29uaWVjem55
+QGxpbnV4LmludGVsLmNvbT4NClN1YmplY3Q6IFJlOiBbUEFUQ0ggaS1nLXRdIHRlc3RzL2FtZGdw
+dTogZml4IFZNIHRlc3QgaXNzdWUNCg0KQW0gMTQuMTIuMjMgdW0gMTA6MDcgc2NocmllYiBKZXNz
+ZSBaaGFuZzoNCj4gSW4gc29tZSBjYXNlcywgdGhlIHNpemUgb2YgVnJhbSBhbmQgR1RUIGlzIG5v
+dCBsYXJnZSwgc3VjaCBhcyBtb2JpbGUgZGV2aWNlcy4NCj4gSXQgc2hvdWxkIGJlIHNraXBwZWQu
+DQoNCldlbGwgaG93IG11Y2ggbWVtb3J5IGlzIGFjdHVhbGx5IG5lZWRlZD8gVGhlIHVuYWxpZ25l
+ZCBtbWFwIHRlc3Qgc2hvdWxkIGJlIGFibGUgdG8gd29yayB3aXRoIHNvbWV0aGluZyBsaWtlIDIt
+OE1pQi4NCg0KTWF5YmUgd2UgYXJlIGp1c3QgdXNpbmcgc29tZXRoaW5nIHRvIGJpZyBoZXJlLCB0
+aGF0IGJlbG93IGxvb2tzIGxpa2Ugd2UgYXJlIHVzaW5nIGEgMUdpQiBidWZmZXIuDQpbWmhhbmcs
+IEplc3NlKEppZSldIEhpIENocmlzdGlhbiwNCiAgSGkgQ2hyaXN0aWFuLA0KYWxsb2NhdGUgc2l6
+ZSBpcyA0Ryg0VUxMIDw8MzApIGluIHRoaXMgdGVzdC4gQnV0IGZvciBzb21lIEFQVXMsIFZSQU0g
+c2l6ZSBpcyA1MTJNIGFuZCBHVFQgc2l6ZSBpcyAgMzcyNzY4MzU4NCAoPTM1NTRNID0zRykuDQpI
+ZXJlIGlzIHRoZSB0ZXN0IGNvZGU6DQoNCnN0YXRpYyB2b2lkDQphbWRncHVfdm1fdW5hbGlnbmVk
+X21hcChhbWRncHVfZGV2aWNlX2hhbmRsZSBkZXZpY2VfaGFuZGxlKQ0Kew0KICAgICAgICBjb25z
+dCB1aW50NjRfdCBtYXBfc2l6ZSA9ICg0VUxMIDw8IDMwKSAtICgyIDw8IDEyKTsNCiAgICAgICAg
+c3RydWN0IGFtZGdwdV9ib19hbGxvY19yZXF1ZXN0IHJlcXVlc3QgPSB7fTsNCiAgICAgICAgYW1k
+Z3B1X2JvX2hhbmRsZSBidWZfaGFuZGxlOw0KICAgICAgICBhbWRncHVfdmFfaGFuZGxlIGhhbmRs
+ZTsNCiAgICAgICAgdWludDY0X3Qgdm1jX2FkZHI7DQogICAgICAgIGludCByOw0KDQogICAgICAg
+IHJlcXVlc3QuYWxsb2Nfc2l6ZSA9IDRVTEwgPDwgMzA7ID0gNDI5NDk2NzI5NiA9IDRHDQogICAg
+ICAgIHJlcXVlc3QucGh5c19hbGlnbm1lbnQgPSA0MDk2Ow0KICAgICAgICByZXF1ZXN0LnByZWZl
+cnJlZF9oZWFwID0gQU1ER1BVX0dFTV9ET01BSU5fVlJBTTsNCiAgICAgICAgcmVxdWVzdC5mbGFn
+cyA9IEFNREdQVV9HRU1fQ1JFQVRFX05PX0NQVV9BQ0NFU1M7DQogICAgICAgICAgICAgIC4uLg0K
+SGVyZSBpcyB0aGUga2VybmVsIGxvZzoNCiAgMjAwLjY4OTEzM10gW2RybV0gaW5pdGlhbGl6aW5n
+IGtlcm5lbCBtb2Rlc2V0dGluZyAoSVAgRElTQ09WRVJZIDB4MTAwMjoweDE1QkYgMHgxMDAyOjB4
+MDEyNCAweDAzKS4NClsgIDIwMC42OTAxMDNdIFtkcm1dIHJlZ2lzdGVyIG1taW8gYmFzZTogMHhC
+MDYwMDAwMA0KWyAgMjAwLjY5MDEwNV0gW2RybV0gcmVnaXN0ZXIgbW1pbyBzaXplOiA1MjQyODgN
+ClsgIDIwMC42OTM3MDldIFtkcm1dIGFkZCBpcCBibG9jayBudW1iZXIgMCA8c29jMjFfY29tbW9u
+Pg0KWyAgMjAwLjY5MzcxMV0gW2RybV0gYWRkIGlwIGJsb2NrIG51bWJlciAxIDxnbWNfdjExXzA+
+DQpbICAyMDAuNjkzNzEzXSBbZHJtXSBhZGQgaXAgYmxvY2sgbnVtYmVyIDIgPGloX3Y2XzA+DQpb
+ICAyMDAuNjkzNzE0XSBbZHJtXSBhZGQgaXAgYmxvY2sgbnVtYmVyIDMgPHBzcD4NClsgIDIwMC42
+OTM3MTVdIFtkcm1dIGFkZCBpcCBibG9jayBudW1iZXIgNCA8c211Pg0KWyAgMjAwLjY5MzcxNl0g
+W2RybV0gYWRkIGlwIGJsb2NrIG51bWJlciA1IDxkbT4NClsgIDIwMC42OTM3MThdIFtkcm1dIGFk
+ZCBpcCBibG9jayBudW1iZXIgNiA8Z2Z4X3YxMV8wPg0KWyAgMjAwLjY5MzcxOV0gW2RybV0gYWRk
+IGlwIGJsb2NrIG51bWJlciA3IDxzZG1hX3Y2XzA+DQpbICAyMDAuNjkzNzIwXSBbZHJtXSBhZGQg
+aXAgYmxvY2sgbnVtYmVyIDggPHZjbl92NF8wPg0KWyAgMjAwLjY5MzcyMl0gW2RybV0gYWRkIGlw
+IGJsb2NrIG51bWJlciA5IDxqcGVnX3Y0XzA+DQpbICAyMDAuNjkzNzIzXSBbZHJtXSBhZGQgaXAg
+YmxvY2sgbnVtYmVyIDEwIDxtZXNfdjExXzA+DQpbICAyMDAuNjkzNzM2XSBhbWRncHUgMDAwMDpj
+MjowMC4wOiBhbWRncHU6IEZldGNoZWQgVkJJT1MgZnJvbSBWRkNUDQpbICAyMDAuNjkzNzM4XSBh
+bWRncHU6IEFUT00gQklPUzogMTEzLVBIWEdFTkVSSUMtMDAxDQpbICAyMDAuNzEwMDY4XSBbZHJt
+XSBWQ04oMCkgZW5jb2RlL2RlY29kZSBhcmUgZW5hYmxlZCBpbiBWTSBtb2RlDQpbICAyMDAuNzEx
+NTc1XSBhbWRncHUgMDAwMDpjMjowMC4wOiBbZHJtOmpwZWdfdjRfMF9lYXJseV9pbml0IFthbWRn
+cHVdXSBKUEVHIGRlY29kZSBpcyBlbmFibGVkIGluIFZNIG1vZGUNClsgIDIwMC43MTM5OTFdIENv
+bnNvbGU6IHN3aXRjaGluZyB0byBjb2xvdXIgZHVtbXkgZGV2aWNlIDgweDI1DQpbICAyMDAuNzE0
+MDQzXSBhbWRncHUgMDAwMDpjMjowMC4wOiB2Z2FhcmI6IGRlYWN0aXZhdGUgdmdhIGNvbnNvbGUN
+ClsgIDIwMC43MTQwNDZdIGFtZGdwdSAwMDAwOmMyOjAwLjA6IGFtZGdwdTogVHJ1c3RlZCBNZW1v
+cnkgWm9uZSAoVE1aKSBmZWF0dXJlIGVuYWJsZWQNClsgIDIwMC43MTQwOTRdIFtkcm1dIHZtIHNp
+emUgaXMgMjYyMTQ0IEdCLCA0IGxldmVscywgYmxvY2sgc2l6ZSBpcyA5LWJpdCwgZnJhZ21lbnQg
+c2l6ZSBpcyA5LWJpdA0KWyAgMjAwLjcxNDExN10gYW1kZ3B1IDAwMDA6YzI6MDAuMDogYW1kZ3B1
+OiBWUkFNOiA1MTJNIDB4MDAwMDAwODAwMDAwMDAwMCAtIDB4MDAwMDAwODAxRkZGRkZGRiAoNTEy
+TSB1c2VkKQ0KWyAgMjAwLjcxNDExOV0gYW1kZ3B1IDAwMDA6YzI6MDAuMDogYW1kZ3B1OiBHQVJU
+OiA1MTJNIDB4MDAwMDdGRkYwMDAwMDAwMCAtIDB4MDAwMDdGRkYxRkZGRkZGRg0KWyAgMjAwLjcx
+NDEzM10gW2RybV0gRGV0ZWN0ZWQgVlJBTSBSQU09NTEyTSwgQkFSPTUxMk0NClsgIDIwMC43MTQx
+MzRdIFtkcm1dIFJBTSB3aWR0aCAxMjhiaXRzIExQRERSNQ0KWyAgMjAwLjcxNDY4NF0gW2RybV0g
+YW1kZ3B1OiA1MTJNIG9mIFZSQU0gbWVtb3J5IHJlYWR5DQpbICAyMDAuNzE0Njg2XSBbZHJtXSBh
+bWRncHU6IDM1NTRNIG9mIEdUVCBtZW1vcnkgcmVhZHkuDQoNCi4uLg0KLy9kbWVzZyBsb2cgd2hl
+biBydW4gdm0gdGVzdC4NCls2MzI2MS4yMjY5NThdIGFtZGdwdV9ib192YWxpZGF0ZV9zaXplWzQ3
+Ml0gZG9tYWluOjQgIyMjIw0KWzYzMjYxLjIyNjk2MV0gQk8gc2l6ZSA0Mjk0OTY3Mjk2ID4gdG90
+YWwgbWVtb3J5IGluIGRvbWFpbjogNTM2ODcwOTEyDQpbNjMyNjEuMjI2OTYzXSBhbWRncHVfYm9f
+Y3JlYXRlWzU3M10gcmV0dW5yIC1FTk9NRU0gIyMjIw0KWzYzMjYxLjIyNjk2N10gYW1kZ3B1X2Jv
+X3ZhbGlkYXRlX3NpemVbNDcyXSBkb21haW46NiAjIyMjDQpbNjMyNjEuMjI2OTY4XSBCTyBzaXpl
+IDQyOTQ5NjcyOTYgPiB0b3RhbCBtZW1vcnkgaW4gZG9tYWluOiAzNzI3NjgzNTg0DQpbNjMyNjEu
+MjI2OTcwXSBhbWRncHVfYm9fY3JlYXRlWzU3M10gcmV0dW5yIC1FTk9NRU0gIyMjIw0KDQpUaGFu
+a3MNCkplc3NlDQoNCkNocmlzdGlhbi4NCg0KPg0KPiBDYzogVml0YWx5IFByb3N5YWsgPHZpdGFs
+eS5wcm9zeWFrQGFtZC5jb20+DQo+IENjOiBBbGV4IERldWNoZXIgPGFsZXhhbmRlci5kZXVjaGVy
+QGFtZC5jb20+DQo+IENjOiBDaHJpc3RpYW4gS29lbmlnIDxjaHJpc3RpYW4ua29lbmlnQGFtZC5j
+b20+DQo+IENjOiBLYW1pbCBLb25pZWN6bnkgPGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5j
+b20+DQo+DQo+IFNpZ25lZC1vZmYtYnk6IEplc3NlIHpoYW5nIDxqZXNzZS56aGFuZ0BhbWQuY29t
+Pg0KPiAtLS0NCj4gICB0ZXN0cy9hbWRncHUvYW1kX3ZtLmMgfCA0ICsrLS0NCj4gICAxIGZpbGUg
+Y2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPg0KPiBkaWZmIC0tZ2l0
+IGEvdGVzdHMvYW1kZ3B1L2FtZF92bS5jIGIvdGVzdHMvYW1kZ3B1L2FtZF92bS5jIGluZGV4DQo+
+IDExYmUyNWFlOC4uMGRkZTI4ZTJlIDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9hbWRncHUvYW1kX3Zt
+LmMNCj4gKysrIGIvdGVzdHMvYW1kZ3B1L2FtZF92bS5jDQo+IEBAIC0xMjcsOCArMTI3LDggQEAg
+YW1kZ3B1X3ZtX3VuYWxpZ25lZF9tYXAoYW1kZ3B1X2RldmljZV9oYW5kbGUgZGV2aWNlX2hhbmRs
+ZSkNCj4gICAgICAgcmVxdWVzdC5wcmVmZXJyZWRfaGVhcCA9IEFNREdQVV9HRU1fRE9NQUlOX1ZS
+QU07DQo+ICAgICAgIHJlcXVlc3QuZmxhZ3MgPSBBTURHUFVfR0VNX0NSRUFURV9OT19DUFVfQUND
+RVNTOw0KPg0KPiAtICAgICByID0gYW1kZ3B1X2JvX2FsbG9jKGRldmljZV9oYW5kbGUsICZyZXF1
+ZXN0LCAmYnVmX2hhbmRsZSk7DQo+IC0gICAgIGlndF9hc3NlcnRfZXEociwgMCk7DQo+ICsgICAg
+IC8qIERvbid0IGxldCB0aGUgdGVzdCBmYWlsIGlmIHRoZSBkZXZpY2UgZG9lc24ndCBoYXZlIGVu
+b3VnaCBWUkFNICovDQo+ICsgICAgIGlndF9za2lwX29uKGFtZGdwdV9ib19hbGxvYyhkZXZpY2Vf
+aGFuZGxlLCAmcmVxdWVzdCwgJmJ1Zl9oYW5kbGUpKTsNCj4NCj4gICAgICAgciA9IGFtZGdwdV92
+YV9yYW5nZV9hbGxvYyhkZXZpY2VfaGFuZGxlLCBhbWRncHVfZ3B1X3ZhX3JhbmdlX2dlbmVyYWws
+DQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDRVTEwgPDwgMzAsIDFVTEwgPDwgMzAs
+IDAsICZ2bWNfYWRkciwNCg0K
