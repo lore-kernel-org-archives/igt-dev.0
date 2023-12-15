@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CDDDB10E388
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Dec 2023 20:16:00 +0000 (UTC)
-From: Matt Roper <matthew.d.roper@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] lib/intel_mocs: Initialize MOCS values directly
-Date: Thu, 21 Dec 2023 12:15:43 -0800
-Message-ID: <20231221201543.3162414-1-matthew.d.roper@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D87C10E990
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Dec 2023 07:42:09 +0000 (UTC)
+From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+To: 
+Subject: [PATCH i-g-t v7 2/5] lib/intel_blt: Update calculation of ccs_size
+ and size_of_ctrl_copy
+Date: Fri, 15 Dec 2023 11:41:46 -0800
+Message-Id: <e63a301a5f117ad8ea927b953ae28c7403e159d8.1702669191.git.akshata.jahagirdar@intel.com>
+In-Reply-To: <cover.1702669191.git.akshata.jahagirdar@intel.com>
+References: <cover.1702669191.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -16,72 +20,116 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, matthew.auld@intel.com,
+ Akshata Jahagirdar <akshata.jahagirdar@intel.com>, akshata.jahagirdar@intel.co,
+ ayaz.siddiqui@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The #define's at the top of the file don't really provide any value and
-just make it harder to quickly check which numeric index is associated
-with which behavior on a given platform.  Drop them and assign the index
-fields directly.
+The Main-to-CCS Ratio for XE2 has been changed to 512:1.
+Update the CCS_RATIO macro to select relevant ratio based on platform.
+Update the ccs_ratio call in gem_ccs and xe_ccs tests
+based on previous change.
 
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/intel_mocs.c | 31 ++++++++++---------------------
- 1 file changed, 10 insertions(+), 21 deletions(-)
+ lib/intel_blt.c       | 13 ++++++++-----
+ lib/intel_blt.h       |  2 +-
+ tests/intel/gem_ccs.c |  2 +-
+ tests/intel/xe_ccs.c  |  2 +-
+ 4 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/lib/intel_mocs.c b/lib/intel_mocs.c
-index 0659ff50b..4a9c305dc 100644
---- a/lib/intel_mocs.c
-+++ b/lib/intel_mocs.c
-@@ -6,17 +6,6 @@
- #include "igt.h"
- #include "intel_mocs.h"
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index 1116c978e..1be289ad6 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -948,15 +948,16 @@ int blt_block_copy(int fd,
+ 	return ret;
+ }
  
--#define DG1_MOCS_UC_IDX				1
--#define DG1_MOCS_WB_IDX				5
--#define DG2_MOCS_UC_IDX				1
--#define DG2_MOCS_WB_IDX				3
--#define MTL_MOCS_UC_IDX				5
--#define MTL_MOCS_WB_IDX				10
--#define GEN12_MOCS_UC_IDX			3
--#define GEN12_MOCS_WB_IDX			2
--#define XE2_MOCS_UC_IDX				3
--#define XE2_MOCS_WB_IDX				4
--
- struct drm_intel_mocs_index {
- 	uint8_t uc_index;
- 	uint8_t wb_index;
-@@ -34,20 +23,20 @@ static void get_mocs_index(int fd, struct drm_intel_mocs_index *mocs)
- 	 * as WB MOCS index based on platform.
- 	 */
- 	if (intel_graphics_ver(devid) >= IP_VER(20, 0)) {
--		mocs->uc_index = XE2_MOCS_UC_IDX;
--		mocs->wb_index = XE2_MOCS_WB_IDX;
-+		mocs->uc_index = 3;
-+		mocs->wb_index = 4;
- 	} else if (IS_METEORLAKE(devid)) {
--		mocs->uc_index = MTL_MOCS_UC_IDX;
--		mocs->wb_index = MTL_MOCS_WB_IDX;
-+		mocs->uc_index = 5;
-+		mocs->wb_index = 10;
- 	} else if (IS_DG2(devid)) {
--		mocs->uc_index = DG2_MOCS_UC_IDX;
--		mocs->wb_index = DG2_MOCS_WB_IDX;
-+		mocs->uc_index = 1;
-+		mocs->wb_index = 3;
- 	} else if (IS_DG1(devid)) {
--		mocs->uc_index = DG1_MOCS_UC_IDX;
--		mocs->wb_index = DG1_MOCS_WB_IDX;
-+		mocs->uc_index = 1;
-+		mocs->wb_index = 5;
- 	} else if (IS_GEN12(devid)) {
--		mocs->uc_index = GEN12_MOCS_UC_IDX;
--		mocs->wb_index = GEN12_MOCS_WB_IDX;
-+		mocs->uc_index = 3;
-+		mocs->wb_index = 2;
- 	} else {
- 		mocs->uc_index = I915_MOCS_PTE;
- 		mocs->wb_index = I915_MOCS_CACHED;
+-static uint16_t __ccs_size(const struct blt_ctrl_surf_copy_data *surf)
++static uint16_t __ccs_size(int fd, const struct blt_ctrl_surf_copy_data *surf)
+ {
+ 	uint32_t src_size, dst_size;
++	uint16_t ccsratio = CCS_RATIO(fd);
+ 
+ 	src_size = surf->src.access_type == DIRECT_ACCESS ?
+-				surf->src.size : surf->src.size / CCS_RATIO;
++				surf->src.size : surf->src.size / ccsratio;
+ 
+ 	dst_size = surf->dst.access_type == DIRECT_ACCESS ?
+-				surf->dst.size : surf->dst.size / CCS_RATIO;
++				surf->dst.size : surf->dst.size / ccsratio;
+ 
+ 	igt_assert_f(src_size <= dst_size, "dst size must be >= src size for CCS copy\n");
+ 
+@@ -1118,6 +1119,8 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+ 	uint64_t dst_offset, src_offset, bb_offset, alignment;
+ 	uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	uint32_t *bb;
++	uint16_t num_ccs_blocks = (ip_ver >= IP_VER(20, 0)) ?
++				(xe_get_default_alignment(fd) / CCS_RATIO(fd)) : CCS_RATIO(fd);
+ 
+ 	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
+ 	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
+@@ -1136,7 +1139,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+ 		data.xe2.dw00.dst_access_type = surf->dst.access_type;
+ 
+ 		/* Ensure dst has size capable to keep src ccs aux */
+-		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
++		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
+ 		data.xe2.dw00.length = 0x3;
+ 
+ 		data.xe2.dw01.src_address_lo = src_offset;
+@@ -1155,7 +1158,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+ 		data.gen12.dw00.dst_access_type = surf->dst.access_type;
+ 
+ 		/* Ensure dst has size capable to keep src ccs aux */
+-		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
++		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
+ 		data.gen12.dw00.length = 0x3;
+ 
+ 		data.gen12.dw01.src_address_lo = src_offset;
+diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+index 5934ccd67..d9be22fdf 100644
+--- a/lib/intel_blt.h
++++ b/lib/intel_blt.h
+@@ -52,7 +52,7 @@
+ #include "igt.h"
+ #include "intel_cmds_info.h"
+ 
+-#define CCS_RATIO 256
++#define CCS_RATIO(fd) (AT_LEAST_GEN(intel_get_drm_devid(fd), 20) ? 512 : 256)
+ 
+ enum blt_color_depth {
+ 	CD_8bit,
+diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
+index 0a691778d..80a29ecab 100644
+--- a/tests/intel/gem_ccs.c
++++ b/tests/intel/gem_ccs.c
+@@ -99,7 +99,7 @@ static void surf_copy(int i915,
+ 	struct blt_block_copy_data_ext ext = {};
+ 	struct blt_ctrl_surf_copy_data surf = {};
+ 	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
+-	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
++	uint64_t bb_size, ccssize = mid->size / CCS_RATIO(i915);
+ 	uint32_t *ccscopy;
+ 	uint8_t uc_mocs = intel_get_uc_mocs_index(i915);
+ 	int result;
+diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+index 77d3020bc..ac0805017 100644
+--- a/tests/intel/xe_ccs.c
++++ b/tests/intel/xe_ccs.c
+@@ -95,7 +95,7 @@ static void surf_copy(int xe,
+ 	struct blt_block_copy_data_ext ext = {};
+ 	struct blt_ctrl_surf_copy_data surf = {};
+ 	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
+-	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
++	uint64_t bb_size, ccssize = mid->size / CCS_RATIO(xe);
+ 	uint32_t *ccscopy;
+ 	uint8_t uc_mocs = intel_get_uc_mocs_index(xe);
+ 	uint32_t sysmem = system_memory(xe);
 -- 
-2.43.0
+2.34.1
