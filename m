@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1nam02on2089.outbound.protection.outlook.com [40.107.96.89])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 518FE10E127
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Dec 2023 03:23:52 +0000 (UTC)
-From: Jesse Zhang <jesse.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Subject: [PATCH i-g-t V2] tests/amdgpu: fix VM test issue
-Date: Fri, 15 Dec 2023 11:23:21 +0800
-Message-ID: <20231215032321.1737305-1-jesse.zhang@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============4680697904968826579=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/amdgpu=3A_fix_VM_test_is?=
+ =?utf-8?q?sue_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jesse Zhang" <jesse.zhang@amd.com>
+Date: Fri, 15 Dec 2023 04:35:58 -0000
+Message-ID: <170261495812.27833.11865756254306257944@emeril.freedesktop.org>
+References: <20231215032321.1737305-1-jesse.zhang@amd.com>
+In-Reply-To: <20231215032321.1737305-1-jesse.zhang@amd.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,72 +17,198 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Luben Tuikov <luben.tuikov@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, Christian
- Koenig <christian.koenig@amd.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Test case name:igt@amdgpu/amd_vm@amdgpu-vm-unaligned-map
-Fail error: "Starting subtest: amdgpu-vm-unaligned-map
-(amd_vm:8876) CRITICAL: Test assertion failure function amdgpu_vm_unaligned_map, file ../tests/amdgpu/amd_vm.c:131:
-(amd_vm:8876) CRITICAL: Failed assertion: r == 0
-(amd_vm:8876) CRITICAL: Last errno: 12, Cannot allocate memory
-(amd_vm:8876) CRITICAL: error: -12 != 0
-Subtest amdgpu-vm-unaligned-map failed.
+--===============4680697904968826579==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Because of some device don't have lots of memories,
-such as mobile devices. So change test memory size for them.
+== Series Details ==
 
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: tests/amdgpu: fix VM test issue (rev2)
+URL   : https://patchwork.freedesktop.org/series/127794/
+State : success
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
----
- tests/amdgpu/amd_vm.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+== Summary ==
 
-diff --git a/tests/amdgpu/amd_vm.c b/tests/amdgpu/amd_vm.c
-index 11be25ae8..d0cf3676d 100644
---- a/tests/amdgpu/amd_vm.c
-+++ b/tests/amdgpu/amd_vm.c
-@@ -115,11 +115,11 @@ amdgpu_vmid_reserve_test(amdgpu_device_handle device_handle,
- static void
- amdgpu_vm_unaligned_map(amdgpu_device_handle device_handle)
- {
--	const uint64_t map_size = (4ULL << 30) - (2 << 12);
-+	uint64_t map_size = (4ULL << 30) - (2 << 12);
- 	struct amdgpu_bo_alloc_request request = {};
- 	amdgpu_bo_handle buf_handle;
- 	amdgpu_va_handle handle;
--	uint64_t vmc_addr;
-+	uint64_t vmc_addr, alignment = 1ULL << 30;
- 	int r;
- 
- 	request.alloc_size = 4ULL << 30;
-@@ -127,11 +127,18 @@ amdgpu_vm_unaligned_map(amdgpu_device_handle device_handle)
- 	request.preferred_heap = AMDGPU_GEM_DOMAIN_VRAM;
- 	request.flags = AMDGPU_GEM_CREATE_NO_CPU_ACCESS;
- 
--	r = amdgpu_bo_alloc(device_handle, &request, &buf_handle);
-+	if (-ENOMEM == amdgpu_bo_alloc(device_handle, &request, &buf_handle)) {
-+		/* Try allocate on the device of small memory */
-+		request.alloc_size = 4ULL << 20;
-+		map_size = (4ULL << 20) - (2 << 12);
-+		alignment = 4ULL << 20;
-+		r = amdgpu_bo_alloc(device_handle, &request, &buf_handle);
-+	}
-+
- 	igt_assert_eq(r, 0);
- 
- 	r = amdgpu_va_range_alloc(device_handle, amdgpu_gpu_va_range_general,
--				4ULL << 30, 1ULL << 30, 0, &vmc_addr,
-+				request.alloc_size, alignment, 0, &vmc_addr,
- 				&handle, 0);
- 	igt_assert_eq(r, 0);
- 
--- 
-2.25.1
+CI Bug Log - changes from XEIGT_7643_BAT -> XEIGTPW_10425_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10425_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10425/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+
+  * igt@xe_prime_self_import@basic-with_fd_dup:
+    - bat-atsm-2:         [PASS][3] -> [FAIL][4] ([Intel XE#999])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10425/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:
+    - bat-adlp-7:         [FAIL][5] ([i915#2346]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10425/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-dg2-oem2:       [FAIL][7] ([Intel XE#480]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10425/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][9] ([Intel XE#1033]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10425/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@xe_create@create-execqueues-noleak:
+    - bat-adlp-7:         [FAIL][11] ([Intel XE#524]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10425/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+
+  
+  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#999]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/999
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7643 -> IGTPW_10425
+  * Linux: xe-577-5cd1893366708380854f4694ae57417192458a6b -> xe-579-6154a8abd3c0766b93740feb7e0268ae3f425849
+
+  IGTPW_10425: 10425
+  IGT_7643: ced22f8bf4263ff395dc852c86b682e62a7a1c1b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-577-5cd1893366708380854f4694ae57417192458a6b: 5cd1893366708380854f4694ae57417192458a6b
+  xe-579-6154a8abd3c0766b93740feb7e0268ae3f425849: 6154a8abd3c0766b93740feb7e0268ae3f425849
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10425/index.html
+
+--===============4680697904968826579==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: fix VM test issue (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127794/">https://patchwork.freedesktop.org/series/127794/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10425/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10425/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7643_BAT -&gt; XEIGTPW_10425_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10425_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10425/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_prime_self_import@basic-with_fd_dup:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10425/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/999">Intel XE#999</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10425/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10425/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10425/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_create@create-execqueues-noleak:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10425/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7643 -&gt; IGTPW_10425</li>
+<li>Linux: xe-577-5cd1893366708380854f4694ae57417192458a6b -&gt; xe-579-6154a8abd3c0766b93740feb7e0268ae3f425849</li>
+</ul>
+<p>IGTPW_10425: 10425<br />
+  IGT_7643: ced22f8bf4263ff395dc852c86b682e62a7a1c1b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-577-5cd1893366708380854f4694ae57417192458a6b: 5cd1893366708380854f4694ae57417192458a6b<br />
+  xe-579-6154a8abd3c0766b93740feb7e0268ae3f425849: 6154a8abd3c0766b93740feb7e0268ae3f425849</p>
+
+</body>
+</html>
+
+--===============4680697904968826579==--
