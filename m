@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8377138033529017283=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 92D7E10E0D2
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Dec 2023 10:09:43 +0000 (UTC)
+Message-ID: <32cc9475-189d-4d14-8050-7cc4d94f0a19@linux.intel.com>
+Date: Fri, 15 Dec 2023 15:42:16 +0530
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Compression_support_for_Lunarl?=
- =?utf-8?q?ake?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Akshata Jahagirdar" <akshata.jahagirdar@intel.com>
-Date: Fri, 15 Dec 2023 09:55:07 -0000
-Message-ID: <170263410734.27834.5031761614227559932@emeril.freedesktop.org>
-References: <cover.1702669191.git.akshata.jahagirdar@intel.com>
-In-Reply-To: <cover.1702669191.git.akshata.jahagirdar@intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/xe: Remove xe_uevent for now
+Content-Language: en-US
+To: Francois Dugast <francois.dugast@intel.com>, igt-dev@lists.freedesktop.org
+References: <20231215095029.7-1-francois.dugast@intel.com>
+From: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
+In-Reply-To: <20231215095029.7-1-francois.dugast@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,185 +20,217 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8377138033529017283==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
+On 12/15/23 15:20, Francois Dugast wrote:
+> From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+>
+> This kernel uevent is getting removed for now. It will come
+> back later with a better future proof name.
+>
+> v2: Align with kernel commit ("drm/xe/uapi: Remove reset uevent \
+>     for now") (Francois Dugast)
+with the test being dropped we should drop the corresponding debugfs
+interface introduced to test this feature.
 
-Series: Compression support for Lunarlake
-URL   : https://patchwork.freedesktop.org/series/127857/
-State : success
+14a663d83da2 drm/xe: Introduce fault injection for gt reset.
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7643_BAT -> XEIGTPW_10426_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10426_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10426/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
-
-  * igt@xe_create@create-execqueues-leak:
-    - bat-atsm-2:         [PASS][3] -> [FAIL][4] ([Intel XE#524])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10426/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:
-    - bat-adlp-7:         [FAIL][5] ([i915#2346]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10426/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-dg2-oem2:       [FAIL][7] ([Intel XE#480]) -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10426/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  * igt@xe_create@create-execqueues-noleak:
-    - bat-adlp-7:         [FAIL][9] ([Intel XE#524]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10426/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-
-  
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+Thanks,
+Aravind.
 
 
-Build changes
--------------
-
-  * IGT: IGT_7643 -> IGTPW_10426
-  * Linux: xe-577-5cd1893366708380854f4694ae57417192458a6b -> xe-579-6154a8abd3c0766b93740feb7e0268ae3f425849
-
-  IGTPW_10426: 10426
-  IGT_7643: ced22f8bf4263ff395dc852c86b682e62a7a1c1b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-577-5cd1893366708380854f4694ae57417192458a6b: 5cd1893366708380854f4694ae57417192458a6b
-  xe-579-6154a8abd3c0766b93740feb7e0268ae3f425849: 6154a8abd3c0766b93740feb7e0268ae3f425849
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10426/index.html
-
---===============8377138033529017283==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Compression support for Lunarlake</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127857/">https://patchwork.freedesktop.org/series/127857/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10426/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10426/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7643_BAT -&gt; XEIGTPW_10426_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10426_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10426/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_create@create-execqueues-leak:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10426/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10426/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10426/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_create@create-execqueues-noleak:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7643/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10426/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7643 -&gt; IGTPW_10426</li>
-<li>Linux: xe-577-5cd1893366708380854f4694ae57417192458a6b -&gt; xe-579-6154a8abd3c0766b93740feb7e0268ae3f425849</li>
-</ul>
-<p>IGTPW_10426: 10426<br />
-  IGT_7643: ced22f8bf4263ff395dc852c86b682e62a7a1c1b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-577-5cd1893366708380854f4694ae57417192458a6b: 5cd1893366708380854f4694ae57417192458a6b<br />
-  xe-579-6154a8abd3c0766b93740feb7e0268ae3f425849: 6154a8abd3c0766b93740feb7e0268ae3f425849</p>
-
-</body>
-</html>
-
---===============8377138033529017283==--
+>
+> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> Cc: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
+> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> ---
+>  include/drm-uapi/xe_drm.h |  11 ----
+>  tests/intel/xe_uevent.c   | 129 --------------------------------------
+>  tests/meson.build         |   1 -
+>  3 files changed, 141 deletions(-)
+>  delete mode 100644 tests/intel/xe_uevent.c
+>
+> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> index ccf577bc0..9e29bbd70 100644
+> --- a/include/drm-uapi/xe_drm.h
+> +++ b/include/drm-uapi/xe_drm.h
+> @@ -20,7 +20,6 @@ extern "C" {
+>   *   2. Extension definition and helper structs
+>   *   3. IOCTL's Query structs in the order of the Query's entries.
+>   *   4. The rest of IOCTL structs in the order of IOCTL declaration.
+> - *   5. uEvents
+>   */
+>  
+>  /**
+> @@ -1341,16 +1340,6 @@ struct drm_xe_wait_user_fence {
+>  	__u64 reserved[2];
+>  };
+>  
+> -/**
+> - * DOC: uevent generated by xe on it's pci node.
+> - *
+> - * DRM_XE_RESET_FAILED_UEVENT - Event is generated when attempt to reset gt
+> - * fails. The value supplied with the event is always "NEEDS_RESET".
+> - * Additional information supplied is tile id and gt id of the gt unit for
+> - * which reset has failed.
+> - */
+> -#define DRM_XE_RESET_FAILED_UEVENT "DEVICE_STATUS"
+> -
+>  #if defined(__cplusplus)
+>  }
+>  #endif
+> diff --git a/tests/intel/xe_uevent.c b/tests/intel/xe_uevent.c
+> deleted file mode 100644
+> index d30931714..000000000
+> --- a/tests/intel/xe_uevent.c
+> +++ /dev/null
+> @@ -1,129 +0,0 @@
+> -// SPDX-License-Identifier: MIT
+> -/*
+> - * Copyright © 2023 Intel Corporation
+> - */
+> -
+> -/**
+> - * TEST: cause fake gt reset failure and listen uevent from KMD
+> - * Category: Software building block
+> - * SUBTEST:fake_reset_uevent_listener
+> - * Functionality: uevent
+> - * Sub-category: GT reset failure uevent
+> - * Test category: functionality test
+> - * Description:
+> - *		Test creates uevent listener and causes fake reset failure for gt0
+> - *		and returns success if uevent is sent by driver and listened by listener.
+> - */
+> -
+> -#include <libudev.h>
+> -#include <string.h>
+> -#include <sys/stat.h>
+> -
+> -#include "igt.h"
+> -
+> -#include "xe_drm.h"
+> -#include "xe/xe_ioctl.h"
+> -#include "xe/xe_query.h"
+> -
+> -static void xe_fail_gt_reset(int fd, int gt)
+> -{
+> -	igt_debugfs_write(fd, "fail_gt_reset/probability", "100");
+> -	igt_debugfs_write(fd, "fail_gt_reset/times", "2");
+> -
+> -	xe_force_gt_reset(fd, gt);
+> -}
+> -
+> -static bool listen_reset_fail_uevent(struct udev_device *device, const char *source, int gt_id)
+> -{
+> -	struct udev_list_entry *list_entry;
+> -	bool dev_needs_reset = false;
+> -	bool tile_id_passed = false;
+> -	bool gt_id_matches = false;
+> -	const char *name, *val;
+> -
+> -	udev_list_entry_foreach(list_entry, udev_device_get_properties_list_entry(device))
+> -	{
+> -		name = udev_list_entry_get_name(list_entry);
+> -		val = udev_list_entry_get_value(list_entry);
+> -
+> -		if (!strcmp(name, "DEVICE_STATUS") && !strcmp(val, "NEEDS_RESET")) {
+> -			igt_debug("%s = %s\n", name, val);
+> -			dev_needs_reset = true;
+> -			continue;
+> -		}
+> -
+> -		if (!strcmp(name, "TILE_ID")) {
+> -			igt_debug("%s = %s\n", name, val);
+> -			tile_id_passed = true;
+> -			continue;
+> -		}
+> -
+> -		if (!strcmp(name, "GT_ID") && (atoi(val) == gt_id)) {
+> -			igt_debug("%s = %s\n", name, val);
+> -			gt_id_matches = true;
+> -			continue;
+> -		}
+> -	}
+> -
+> -	return (dev_needs_reset && tile_id_passed && gt_id_matches);
+> -}
+> -
+> -static void fake_reset_uevent_listener(int fd, int gt_id)
+> -{
+> -	struct udev *udev;
+> -	struct udev_device *dev;
+> -	struct udev_monitor *mon;
+> -	bool event_received = false;
+> -	bool event_sent = false;
+> -	const u32 listener_timeout = 5;
+> -
+> -	/* create udev object */
+> -	udev = udev_new();
+> -	if (!udev)
+> -		igt_assert_f(false, "New udev object creation failed");
+> -
+> -	mon = udev_monitor_new_from_netlink(udev, "kernel");
+> -	udev_monitor_filter_add_match_subsystem_devtype(mon, "pci", NULL);
+> -	udev_monitor_enable_receiving(mon);
+> -	igt_until_timeout(listener_timeout) {
+> -		if (event_sent) {
+> -			dev = udev_monitor_receive_device(mon);
+> -			if (dev) {
+> -				event_received = listen_reset_fail_uevent(dev, "kernel", gt_id);
+> -				udev_device_unref(dev);
+> -			}
+> -		} else {
+> -			event_sent = true;
+> -			xe_fail_gt_reset(fd, gt_id);
+> -		}
+> -
+> -		if (event_received)
+> -			break;
+> -	}
+> -
+> -	udev_unref(udev);
+> -	igt_assert_f(event_received, "Event not received");
+> -}
+> -
+> -igt_main
+> -{
+> -	int fd;
+> -	int gt;
+> -	const u32 settle_xe_load_uevents = 50000;
+> -
+> -	igt_fixture
+> -		fd = drm_open_driver(DRIVER_XE);
+> -
+> -	/* Ensures uevents triggered in case of driver
+> -	 * load are settled down.
+> -	 */
+> -	usleep(settle_xe_load_uevents);
+> -
+> -	igt_subtest("fake_reset_uevent_listener")
+> -		xe_for_each_gt(fd, gt) {
+> -			fake_reset_uevent_listener(fd, gt);
+> -		}
+> -
+> -	igt_fixture
+> -		drm_close_driver(fd);
+> -}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index a5f5c143c..6dbe45e93 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -307,7 +307,6 @@ intel_xe_progs = [
+>  	'xe_pm_residency',
+>  	'xe_prime_self_import',
+>  	'xe_query',
+> -	'xe_uevent',
+>  	'xe_vm',
+>  	'xe_waitfence',
+>  	'xe_spin_batch',
