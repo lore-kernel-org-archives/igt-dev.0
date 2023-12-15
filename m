@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6234D10E297
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7168110E339
  for <igt-dev@lists.freedesktop.org>; Fri, 15 Dec 2023 09:10:06 +0000 (UTC)
 From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 To: 
-Subject: [PATCH i-g-t v7 3/6] lib/intel_pat: Add uc_comp pat_index
-Date: Fri, 15 Dec 2023 13:09:44 -0800
-Message-Id: <742a4385f7db7a03e8c9fbd171be73d85e60f9e4.1702674322.git.akshata.jahagirdar@intel.com>
+Subject: [PATCH i-g-t v7 4/6] lib/intel_blt: Update caching mode and pat_index
+Date: Fri, 15 Dec 2023 13:09:45 -0800
+Message-Id: <15792000f364f5d45b0caef5392a4b61284b463f.1702674322.git.akshata.jahagirdar@intel.com>
 In-Reply-To: <cover.1702674322.git.akshata.jahagirdar@intel.com>
 References: <cover.1702674322.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -25,66 +26,54 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Compression in XE2 is programmed through pat-index attribute.
-Add a dedicated pat-index for compression for XE2 and later platforms.
-The caller to this helper function ensures GFX version is correct.
+The pat-index and caching mode for compression need to change to uc_comp in case
+of compression, else they just take the default value of pat_index and caching.
 
 Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 ---
- lib/intel_pat.c | 14 +++++++++++++-
- lib/intel_pat.h |  2 ++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ lib/intel_blt.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/lib/intel_pat.c b/lib/intel_pat.c
-index 2b892ee52..041952bd8 100644
---- a/lib/intel_pat.c
-+++ b/lib/intel_pat.c
-@@ -11,7 +11,7 @@ struct intel_pat_cache {
- 	uint8_t uc; /* UC + COH_NONE */
- 	uint8_t wt; /* WT + COH_NONE */
- 	uint8_t wb; /* WB + COH_AT_LEAST_1WAY */
--
-+	uint8_t uc_comp; /* UC + COH_NONE + COMPRESSION, XE2 and later*/
- 	uint8_t max_index;
- };
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index 1be289ad6..e41e261ea 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -1797,6 +1797,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+ 	uint64_t size = width * height * bpp / 8;
+ 	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
+ 	uint32_t handle;
++	uint8_t pat_index = DEFAULT_PAT_INDEX;
  
-@@ -23,6 +23,7 @@ static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
- 		pat->uc = 3;
- 		pat->wt = 15; /* Compressed + WB-transient */
- 		pat->wb = 2;
-+		pat->uc_comp = 12; /* Compressed + UC, XE2 and later */
- 		pat->max_index = 31;
- 	} else if (IS_METEORLAKE(dev_id)) {
- 		pat->uc = 2;
-@@ -60,6 +61,17 @@ uint8_t intel_get_pat_idx_uc(int fd)
- 	return pat.uc;
- }
+ 	igt_assert_f(blt->driver, "Driver isn't set, have you called blt_copy_init()?\n");
  
-+uint8_t intel_get_pat_idx_uc_comp(int fd)
-+{
-+	struct intel_pat_cache pat = {};
-+	uint16_t dev_id = intel_get_drm_devid(fd);
-+
-+	igt_assert(AT_LEAST_GEN(dev_id, 20));
-+
-+	intel_get_pat_idx(fd, &pat);
-+	return pat.uc_comp;
-+}
-+
- uint8_t intel_get_pat_idx_wt(int fd)
- {
- 	struct intel_pat_cache pat = {};
-diff --git a/lib/intel_pat.h b/lib/intel_pat.h
-index c24dbc275..eb48cbc65 100644
---- a/lib/intel_pat.h
-+++ b/lib/intel_pat.h
-@@ -16,4 +16,6 @@ uint8_t intel_get_pat_idx_uc(int fd);
- uint8_t intel_get_pat_idx_wt(int fd);
- uint8_t intel_get_pat_idx_wb(int fd);
+@@ -1806,18 +1807,24 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
  
-+uint8_t intel_get_pat_idx_uc_comp(int fd);
+ 	if (blt->driver == INTEL_DRIVER_XE) {
+ 		uint64_t flags = 0;
++		uint16_t cpu_caching = __xe_default_cpu_caching(blt->fd, region, flags);
+ 
+ 		if (create_mapping && region != system_memory(blt->fd))
+ 			flags |= DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
+ 
++		if (AT_LEAST_GEN(intel_get_drm_devid(blt->fd), 20) && compression) {
++			pat_index = intel_get_pat_idx_uc_comp(blt->fd);
++			cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
++		}
 +
- #endif /* INTEL_PAT_H */
+ 		size = ALIGN(size, xe_get_default_alignment(blt->fd));
+-		handle = xe_bo_create(blt->fd, 0, size, region, flags);
++		handle = xe_bo_create_caching(blt->fd, 0, size, region, flags, cpu_caching);
+ 	} else {
+ 		igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
+ 							  &size, region) == 0);
+ 	}
+ 
+-	blt_set_object(obj, handle, size, region, mocs_index, DEFAULT_PAT_INDEX, tiling,
++	blt_set_object(obj, handle, size, region, mocs_index, pat_index, tiling,
+ 		       compression, compression_type);
+ 	blt_set_geom(obj, stride, 0, 0, width, height, 0, 0);
+ 
 -- 
 2.34.1
