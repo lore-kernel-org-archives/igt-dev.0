@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 366D210E320
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F75C10E297
  for <igt-dev@lists.freedesktop.org>; Fri, 15 Dec 2023 09:10:06 +0000 (UTC)
 From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 To: 
-Subject: [PATCH i-g-t v7 1/6] lib: Add blt command properties for lunarlake
-Date: Fri, 15 Dec 2023 13:09:42 -0800
-Message-Id: <bb62fcc2be6b94da4f85c0e99fcf2365ee27037b.1702674322.git.akshata.jahagirdar@intel.com>
-In-Reply-To: <cover.1702674322.git.akshata.jahagirdar@intel.com>
-References: <cover.1702674322.git.akshata.jahagirdar@intel.com>
+Subject: [PATCH i-g-t v7 0/6] Compression support for Lunarlake
+Date: Fri, 15 Dec 2023 13:09:41 -0800
+Message-Id: <cover.1702674322.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -26,77 +24,48 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add struct to describe properties of XY_BLOCK_COPY for XE2 platform.
-Reuse XY_FAST_COPY struct from DG2 and Update the definitions for Lunarlake.
+Series enables the compression feature for Lunarlake and address various
+changes of the feature from Gen12. The Main-to-CCS ratio has been
+changed to 512:1. This changes the calculations and value for fields
+such as CCS Copy size for blitter command APIs. 
+This patch series updates tests xe_ccs and gem_ccs for XE2.
+This series doesn't solve "in-place" and "suspend-resume" subtests.
 
-Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+These changes are based on top of the "vm_bind pat_index" patch here:
+https://patchwork.freedesktop.org/series/124667/
 
-Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
+v2: Lots of improvements/tweaks (Kamil)
+    Addressed review comments (Matthew, Karolina)
+v3: Reused dg2_xy_fast_copy definition for defing xe2_cmds_info struct(Karolina)
+    Split the patch to address ccs_size calculation and updating
+pat_index, updated the intel_get_pat_idx_uc_comp function as per review
+comments (Kamil)
+v4: Addressed review comments (Karolina)
+    Rebase. Removed few unnecessary conditions, plus few fixes.
+v5: Addressed Review comments (Matthew, Zbigniew)
+    Rebase, Fixes for pre-merge IGT tests.
+v6: Addressed Review comments (Matthew)
+v7: Addressed Review comments (Zbigniew, Kamil)
+
+Akshata Jahagirdar (6):
+  lib: Add blt command properties for lunarlake
+  lib/intel_blt: Update calculation of ccs_size and size_of_ctrl_copy
+  lib/intel_pat: Add uc_comp pat_index
+  lib/intel_blt: Update caching mode and pat_index
+  lib/xe/xe_util: Align obj size before bind/unbind
+  tests/intel/xe_ccs: Add compression support for Lunarlake
+
+ lib/intel_blt.c         | 24 +++++++++++++++++-------
+ lib/intel_blt.h         |  2 +-
  lib/intel_cmds_info.c   | 16 ++++++++++++++++
  lib/intel_cmds_info.h   |  1 +
  lib/intel_device_info.c |  2 +-
- 3 files changed, 18 insertions(+), 1 deletion(-)
+ lib/intel_pat.c         | 14 +++++++++++++-
+ lib/intel_pat.h         |  2 ++
+ lib/xe/xe_util.c        |  2 +-
+ tests/intel/gem_ccs.c   |  2 +-
+ tests/intel/xe_ccs.c    | 40 +++++++++++++++++++++++++---------------
+ 10 files changed, 78 insertions(+), 27 deletions(-)
 
-diff --git a/lib/intel_cmds_info.c b/lib/intel_cmds_info.c
-index 2e51ec081..56073bd6d 100644
---- a/lib/intel_cmds_info.c
-+++ b/lib/intel_cmds_info.c
-@@ -67,6 +67,15 @@ static const struct blt_cmd_info
- 						 BLT_CMD_EXTENDED |
- 						 BLT_CMD_SUPPORTS_COMPRESSION);
- 
-+static const struct blt_cmd_info
-+		xe2_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
-+						 BIT(T_LINEAR) |
-+						 BIT(T_XMAJOR) |
-+						 BIT(T_TILE4)  |
-+						 BIT(T_TILE64),
-+						 BLT_CMD_EXTENDED |
-+						 BLT_CMD_SUPPORTS_COMPRESSION);
-+
- static const struct blt_cmd_info
- 		mtl_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
- 						 BIT(T_LINEAR) |
-@@ -169,6 +178,13 @@ const struct intel_cmds_info gen12_pvc_cmds_info = {
- 	}
- };
- 
-+const struct intel_cmds_info xe2_cmds_info  = {
-+	.blt_cmds = {
-+		[XY_FAST_COPY] = &dg2_xy_fast_copy,
-+		[XY_BLOCK_COPY] = &xe2_xy_block_copy,
-+	}
-+};
-+
- const struct blt_cmd_info *blt_get_cmd_info(const struct intel_cmds_info *cmds_info,
- 					    enum blt_cmd_type cmd)
- {
-diff --git a/lib/intel_cmds_info.h b/lib/intel_cmds_info.h
-index f9e3932d1..0a83b6a44 100644
---- a/lib/intel_cmds_info.h
-+++ b/lib/intel_cmds_info.h
-@@ -55,6 +55,7 @@ extern const struct intel_cmds_info gen12_cmds_info;
- extern const struct intel_cmds_info gen12_dg2_cmds_info;
- extern const struct intel_cmds_info gen12_mtl_cmds_info;
- extern const struct intel_cmds_info gen12_pvc_cmds_info;
-+extern const struct intel_cmds_info xe2_cmds_info;
- 
- #define for_each_tiling(__tiling) \
- 	for (__tiling = T_LINEAR; __tiling < __BLT_MAX_TILING; __tiling++)
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index 34817f7b6..a669797c3 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -511,7 +511,7 @@ static const struct intel_device_info intel_lunarlake_info = {
- 	.has_4tile = true,
- 	.is_lunarlake = true,
- 	.codename = "lunarlake",
--	.cmds_info = &gen12_pvc_cmds_info,
-+	.cmds_info = &xe2_cmds_info,
- };
- 
- static const struct pci_id_match intel_device_match[] = {
 -- 
 2.34.1
