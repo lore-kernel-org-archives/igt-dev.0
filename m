@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
- [205.220.168.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C83E10E057
- for <igt-dev@lists.freedesktop.org>; Sat, 16 Dec 2023 00:41:12 +0000 (UTC)
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
-Date: Fri, 15 Dec 2023 16:40:24 -0800
-Subject: [PATCH i-g-t 4/4] tests/kms_atomic: Add subtest for solid fill
- cursor planes
-MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Message-ID: <20231215-solid-fill-v1-4-12932f9f452d@quicinc.com>
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_Add_tests_for_solid_fill_?=
+ =?utf-8?q?planes?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jessica Zhang" <quic_jesszhan@quicinc.com>
+Date: Sat, 16 Dec 2023 00:49:22 -0000
+Message-ID: <170268776264.3476.7273696966043459064@emeril.freedesktop.org>
 References: <20231215-solid-fill-v1-0-12932f9f452d@quicinc.com>
 In-Reply-To: <20231215-solid-fill-v1-0-12932f9f452d@quicinc.com>
-To: <igt-dev@lists.freedesktop.org>, Petri Latvala <adrinael@adrinael.net>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,76 +17,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Pekka Paalanen <pekka.paalanen@collabora.com>,
- Simon Ser <contact@emersion.fr>, Rob Clark <robdclark@gmail.com>, Dmitry
- Baryshkov <dmitry.baryshkov@linaro.org>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a subtest for testing solid fill cursor planes.
+== Series Details ==
 
-This test will commit a solid fill cursor plane on top of a normal
-framebuffer primary plane and compare the resulting CRC with the CRC
-value of a framebuffer cursor and primary plane of the same contents.
+Series: Add tests for solid fill planes
+URL   : https://patchwork.freedesktop.org/series/127900/
+State : failure
 
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
----
- tests/kms_atomic.c | 34 ++++++++++++++++++++++++++++++----
- 1 file changed, 30 insertions(+), 4 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index 8f81e65ad84f..057fba0d6767 100755
---- a/tests/kms_atomic.c
-+++ b/tests/kms_atomic.c
-@@ -1349,10 +1349,18 @@ static void test_solid_fill_plane(data_t *data, igt_output_t *output,  igt_plane
- 		.pad = 0x0,
- 	};
- 
--	rect.x1 = 0;
--	rect.x2 = mode->hdisplay;
--	rect.y1 = 0;
--	rect.y2 = mode->vdisplay;
-+	if (plane->type == DRM_PLANE_TYPE_PRIMARY)
-+	{
-+		rect.x1 = 0;
-+		rect.x2 = mode->hdisplay;
-+		rect.y1 = 0;
-+		rect.y2 = mode->vdisplay;
-+	} else {
-+		rect.x1 = mode->hdisplay / 2 - 50;
-+		rect.x2 = mode->hdisplay / 2 + 50;
-+		rect.y1 = mode->vdisplay / 2 - 50;
-+		rect.y2 = mode->vdisplay / 2 + 50;
-+	}
- 
- 	height = rect.y2 - rect.y1;
- 	width = rect.x2 - rect.x1;
-@@ -1728,6 +1736,24 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 		}
- 	}
- 
-+	igt_describe("Test case for solid fill cursor planes");
-+	igt_subtest_with_dynamic("plane-cursor-solid-fill") {
-+		for_each_pipe_with_single_output(&data.display, pipe, output) {
-+			igt_plane_t *cursor =
-+				igt_pipe_get_plane_type(&data.display.pipes[pipe], DRM_PLANE_TYPE_CURSOR);
-+			if (!pipe_output_combo_valid(&data.display, pipe, output))
-+				continue;
-+			if (!cursor)
-+				continue;
-+
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+				atomic_setup(&data, pipe, output);
-+				test_solid_fill_plane(&data, output, cursor);
-+				atomic_clear(&data, pipe, output);
-+			}
-+		}
-+	}
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
+IGT patchset build failed on latest successful build
+2a2b716161007f885855d6dfcb90b526183e624e tests/intel/xe: Remove xe_uevent for now
 
--- 
-2.43.0
+Tail of build.log:
+[1611/1656] Linking target tools/intel_stepping.
+[1612/1656] Linking target runner/testdata/abort.
+[1613/1656] Linking target tools/intel_watermark.
+[1614/1656] Linking target tools/intel_dp_compliance.
+[1615/1656] Linking target runner/testdata/successtest.
+[1616/1656] Linking target runner/testdata/dynamic.
+[1617/1656] Linking target runner/testdata/no-subtests.
+[1618/1656] Linking target tools/intel_vbt_decode.
+[1619/1656] Linking target runner/testdata/abort-dynamic.
+[1620/1656] Linking target tools/intel_gem_info.
+[1621/1656] Linking target runner/igt_runner.
+[1622/1656] Linking target tools/amd_hdmi_compliance.
+[1623/1656] Generating gem_stress.testlist with a meson_exe.py custom command.
+[1624/1656] Linking target runner/igt_comms_decoder.
+[1625/1656] Linking target tools/intel_l3_parity.
+[1626/1656] Linking target tools/msm_dp_compliance.
+[1627/1656] Linking target runner/igt_results.
+[1628/1656] Linking target tools/intel_reg.
+[1629/1656] Linking target runner/igt_resume.
+[1630/1656] Linking target runner/testdata/abort-simple.
+[1631/1656] Linking target runner/testdata/abort-fixture.
+[1632/1656] Linking target runner/runner_json_test.
+[1633/1656] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_mtlgt3.c.o'.
+[1634/1656] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt1.c.o'.
+[1635/1656] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+[1636/1656] Linking target runner/runner_test.
+[1637/1656] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt2.c.o'.
+[1638/1656] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt3.c.o'.
+[1639/1656] Linking target lib/libi915_perf.so.1.5.
+[1640/1656] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
+[1641/1656] Linking target tools/i915-perf/i915-perf-configs.
+[1642/1656] Linking target tools/i915-perf/i915-perf-reader.
+[1643/1656] Linking target tools/i915-perf/i915-perf-recorder.
+[1644/1656] Linking target tests/gem_barrier_race.
+[1645/1656] Linking target tests/core_hotunplug.
+[1646/1656] Linking target tests/perf.
+[1647/1656] Generating perf.testlist with a meson_exe.py custom command.
+[1648/1656] Generating core_hotunplug.testlist with a meson_exe.py custom command.
+[1649/1656] Generating gem_barrier_race.testlist with a meson_exe.py custom command.
+[1650/1656] Generating xe_tests.rst with a custom command.
+[1651/1656] Generating i915_tests.rst with a custom command.
+[1652/1656] Generating kms_tests.rst with a custom command.
+FAILED: docs/testplan/kms_tests.rst 
+/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /opt/igt/build
+Warning: Missing documentation for igt@kms_atomic@plane-cursor-solid-fill
+Warning: Missing documentation for igt@kms_atomic@plane-primary-solid-fill
+Please refer: docs/test_documentation.md for more details
+[1653/1656] Generating xe_tests.html with a custom command.
+[1654/1656] Generating i915_tests.html with a custom command.
+ninja: build stopped: subcommand failed.
+
