@@ -2,13 +2,13 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 From: Jessica Zhang <quic_jesszhan@quicinc.com>
-Date: Fri, 15 Dec 2023 16:40:22 -0800
-Subject: [PATCH i-g-t 2/4] lib: Add support for solid_fill and pixel_source
- plane properties
+Date: Fri, 15 Dec 2023 16:40:24 -0800
+Subject: [PATCH i-g-t 4/4] tests/kms_atomic: Add subtest for solid fill
+ cursor planes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20231215-solid-fill-v1-2-12932f9f452d@quicinc.com>
+Message-ID: <20231215-solid-fill-v1-4-12932f9f452d@quicinc.com>
 References: <20231215-solid-fill-v1-0-12932f9f452d@quicinc.com>
 In-Reply-To: <20231215-solid-fill-v1-0-12932f9f452d@quicinc.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -23,119 +23,71 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>
 Cc: Pekka Paalanen <pekka.paalanen@collabora.com>, Simon Ser <contact@emersion.fr>, Rob Clark <robdclark@gmail.com>, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Message-ID: <20231216004022.o7Rsa8HW2KaSZnYHXTOjJqu6Gmj5nASGVwydyIMr3f0@z>
+Message-ID: <20231216004024.5uJFZlnK4KnNf2VkHv3_kK4fk--IUkjmrb-RnbODbtE@z>
 
-Add corresponding IGT macros for solid_fill and pixel_source DRM
-properties, and change IGT commit behavior to allow for NULL FB commits.
+Add a subtest for testing solid fill cursor planes.
+
+This test will commit a solid fill cursor plane on top of a normal
+framebuffer primary plane and compare the resulting CRC with the CRC
+value of a framebuffer cursor and primary plane of the same contents.
 
 Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
 ---
- lib/igt_kms.c | 37 ++++++++++++++++++++++++++++++++++---
- lib/igt_kms.h |  4 ++++
- 2 files changed, 38 insertions(+), 3 deletions(-)
+ tests/kms_atomic.c | 34 ++++++++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index e4dea1a604dc..6a339766ca31 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -669,6 +669,8 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
- 	[IGT_PLANE_HOTSPOT_X] = "HOTSPOT_X",
- 	[IGT_PLANE_HOTSPOT_Y] = "HOTSPOT_Y",
- 	[IGT_PLANE_FB_ID] = "FB_ID",
-+	[IGT_PLANE_SOLID_FILL] = "solid_fill",
-+	[IGT_PLANE_PIXEL_SOURCE] = "pixel_source",
- 	[IGT_PLANE_CRTC_ID] = "CRTC_ID",
- 	[IGT_PLANE_IN_FENCE_FD] = "IN_FENCE_FD",
- 	[IGT_PLANE_TYPE] = "type",
-@@ -3417,6 +3419,12 @@ static igt_output_t *igt_pipe_get_output(igt_pipe_t *pipe)
- 	return NULL;
- }
+diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+index 8f81e65ad84f..057fba0d6767 100755
+--- a/tests/kms_atomic.c
++++ b/tests/kms_atomic.c
+@@ -1349,10 +1349,18 @@ static void test_solid_fill_plane(data_t *data, igt_output_t *output,  igt_plane
+ 		.pad = 0x0,
+ 	};
  
-+static uint32_t igt_plane_get_solid_fill_id(igt_plane_t *plane)
-+{
-+	return plane->values[IGT_PLANE_SOLID_FILL];
-+}
+-	rect.x1 = 0;
+-	rect.x2 = mode->hdisplay;
+-	rect.y1 = 0;
+-	rect.y2 = mode->vdisplay;
++	if (plane->type == DRM_PLANE_TYPE_PRIMARY)
++	{
++		rect.x1 = 0;
++		rect.x2 = mode->hdisplay;
++		rect.y1 = 0;
++		rect.y2 = mode->vdisplay;
++	} else {
++		rect.x1 = mode->hdisplay / 2 - 50;
++		rect.x2 = mode->hdisplay / 2 + 50;
++		rect.y1 = mode->vdisplay / 2 - 50;
++		rect.y2 = mode->vdisplay / 2 + 50;
++	}
+ 
+ 	height = rect.y2 - rect.y1;
+ 	width = rect.x2 - rect.x1;
+@@ -1728,6 +1736,24 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 		}
+ 	}
+ 
++	igt_describe("Test case for solid fill cursor planes");
++	igt_subtest_with_dynamic("plane-cursor-solid-fill") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			igt_plane_t *cursor =
++				igt_pipe_get_plane_type(&data.display.pipes[pipe], DRM_PLANE_TYPE_CURSOR);
++			if (!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++			if (!cursor)
++				continue;
 +
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
++				atomic_setup(&data, pipe, output);
++				test_solid_fill_plane(&data, output, cursor);
++				atomic_clear(&data, pipe, output);
++			}
++		}
++	}
 +
- static uint32_t igt_plane_get_fb_id(igt_plane_t *plane)
- {
- 	return plane->values[IGT_PLANE_FB_ID];
-@@ -3648,7 +3656,7 @@ static int igt_primary_plane_commit_legacy(igt_plane_t *primary,
- 	struct igt_display *display = primary->pipe->display;
- 	igt_output_t *output = igt_pipe_get_output(pipe);
- 	drmModeModeInfo *mode;
--	uint32_t fb_id, crtc_id;
-+	uint32_t fb_id, solid_fill_id, crtc_id;
- 	int ret;
- 
- 	/* Primary planes can't be windowed when using a legacy commit */
-@@ -3665,12 +3673,14 @@ static int igt_primary_plane_commit_legacy(igt_plane_t *primary,
- 
- 	crtc_id = pipe->crtc_id;
- 	fb_id = output ? igt_plane_get_fb_id(primary) : 0;
--	if (fb_id)
-+	solid_fill_id = output ? igt_plane_get_solid_fill_id(primary) : 0;
-+
-+	if (fb_id || solid_fill_id)
- 		mode = igt_output_get_mode(output);
- 	else
- 		mode = NULL;
- 
--	if (fb_id) {
-+	if (fb_id || solid_fill_id) {
- 		uint32_t src_x = primary->values[IGT_PLANE_SRC_X] >> 16;
- 		uint32_t src_y = primary->values[IGT_PLANE_SRC_Y] >> 16;
- 
-@@ -4935,6 +4945,27 @@ igt_plane_t *igt_output_get_plane_type_index(igt_output_t *output,
- 	return igt_pipe_get_plane_type_index(pipe, plane_type, index);
- }
- 
-+void igt_plane_set_solid_fill(igt_plane_t *plane, struct drm_mode_rect *rect,
-+		int solid_fill_id)
-+{
-+	igt_pipe_t *pipe = plane->pipe;
-+	igt_display_t *display = pipe->display;
-+	int width = rect->x2 - rect->x1;
-+	int height = rect->y2 - rect->y1;
-+
-+	igt_plane_set_prop_value(plane, IGT_PLANE_CRTC_ID,
-+			solid_fill_id ? pipe->crtc_id : 0);
-+	igt_plane_set_prop_value(plane, IGT_PLANE_SOLID_FILL, solid_fill_id);
-+
-+	plane->gem_handle = 0;
-+
-+	LOG(display, "%s.%d: plane_set_solid_fill(%d)\n", kmstest_pipe_name(pipe->pipe),
-+	    plane->index, solid_fill_id);
-+
-+	igt_plane_set_position(plane, rect->x1, rect->y1);
-+	igt_plane_set_size(plane, width, height);
-+}
-+
- /**
-  * igt_plane_set_fb:
-  * @plane: Plane
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index b3882808b42f..9c05272abe1e 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -330,6 +330,8 @@ enum igt_atomic_plane_properties {
- #define IGT_PLANE_COORD_CHANGED_MASK 0xff
- 
-        IGT_PLANE_FB_ID,
-+       IGT_PLANE_SOLID_FILL,
-+       IGT_PLANE_PIXEL_SOURCE,
-        IGT_PLANE_CRTC_ID,
-        IGT_PLANE_IN_FENCE_FD,
-        IGT_PLANE_TYPE,
-@@ -537,6 +539,8 @@ igt_output_t *igt_get_single_output_for_pipe(igt_display_t *display, enum pipe p
- 
- void igt_pipe_request_out_fence(igt_pipe_t *pipe);
- 
-+void igt_plane_set_solid_fill(igt_plane_t *plane, struct drm_mode_rect *rect,
-+		int solid_fill_id);
- void igt_plane_set_fb(igt_plane_t *plane, struct igt_fb *fb);
- void igt_plane_set_fence_fd(igt_plane_t *plane, int fence_fd);
- void igt_plane_set_pipe(igt_plane_t *plane, igt_pipe_t *pipe);
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
 
 -- 
 2.43.0
