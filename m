@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5924238163270249397=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED5B210E2BA
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Dec 2023 19:45:50 +0000 (UTC)
+Date: Mon, 18 Dec 2023 14:45:42 -0500
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+Subject: Re: [PATCH] tests/xe_waitfence: removed invalid_engine subtest
+Message-ID: <ZYChZnDIYErL18bK@intel.com>
+References: <20231218084134.296548-1-krishnaiah.bommu@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231218084134.296548-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_Compression_support_for_Lun?=
- =?utf-8?q?arlake?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Akshata Jahagirdar" <akshata.jahagirdar@intel.com>
-Date: Mon, 18 Dec 2023 19:39:59 -0000
-Message-ID: <170292839976.12106.5720080625351717944@emeril.freedesktop.org>
-References: <cover.1702933241.git.akshata.jahagirdar@intel.com>
-In-Reply-To: <cover.1702933241.git.akshata.jahagirdar@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,272 +20,199 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Bommu@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5924238163270249397==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, Dec 18, 2023 at 02:11:34PM +0530, Bommu Krishnaiah wrote:
+> From: "Bommu, Krishnaiah" <krishnaiah.bommu@intel.com>
+> 
+> Removed unsupported invalid_engine subtest as per kernel implantation
+> (remove the num_engines/instances members from drm_xe_wait_user_fence structure
+> and add a exec_queue_id member) and removed unwanted code
+> 
+> Kernel commit:
+> drm/xe/uapi: add exec_queue_id member to drm_xe_wait_user_fence structure
+> 
+> Signed-off-by: Bommu, Krishnaiah <krishnaiah.bommu@intel.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> ---
+>  lib/xe/xe_ioctl.c          | 35 ------------------------
+>  lib/xe/xe_ioctl.h          |  2 --
+>  tests/intel/xe_waitfence.c | 56 +++++++++++---------------------------
+>  3 files changed, 16 insertions(+), 77 deletions(-)
+> 
+> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> index 39605a019..49c5d359e 100644
+> --- a/lib/xe/xe_ioctl.c
+> +++ b/lib/xe/xe_ioctl.c
+> @@ -523,41 +523,6 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  	return timeout;
+>  }
+>  
+> -/**
+> - * xe_wait_ufence_abstime:
+> - * @fd: xe device fd
+> - * @addr: address of value to compare
+> - * @value: expected value (equal) in @address
+> - * @exec_queue: exec_queue id
+> - * @timeout: absolute time when wait expire
+> - * @flag: wait flag
+> - *
+> - * Function compares @value with memory pointed by @addr until they are equal.
+> - * Asserts that ioctl returned without error.
+> - *
+> - * Returns elapsed time in nanoseconds if user fence was signalled.
+> - */
+> -int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
+> -			       uint32_t exec_queue, int64_t timeout,
+> -			       uint16_t flag)
+> -{
+> -	struct drm_xe_wait_user_fence wait = {
+> -		.addr = to_user_pointer(addr),
+> -		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
+> -		.flags = flag,
+> -		.value = value,
+> -		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+> -		.timeout = timeout,
+> -		.exec_queue_id = exec_queue,
+> -	};
+> -	struct timespec ts;
+> -
+> -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
+> -	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &ts), 0);
+> -
+> -	return ts.tv_sec * 1e9 + ts.tv_nsec;
+> -}
+> -
+>  void xe_force_gt_reset(int fd, int gt)
+>  {
+>  	char reset_string[128];
+> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+> index 8a92073b0..03932561d 100644
+> --- a/lib/xe/xe_ioctl.h
+> +++ b/lib/xe/xe_ioctl.h
+> @@ -90,8 +90,6 @@ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  		     uint32_t exec_queue, int64_t *timeout);
+>  int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  		       uint32_t exec_queue, int64_t timeout);
+> -int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value, uint32_t
+> -			       exec_queue, int64_t timeout, uint16_t flag);
+>  void xe_force_gt_reset(int fd, int gt);
+>  
+>  #endif /* XE_IOCTL_H */
+> diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
+> index 7ba20764c..5c7bb2baf 100644
+> --- a/tests/intel/xe_waitfence.c
+> +++ b/tests/intel/xe_waitfence.c
+> @@ -36,7 +36,21 @@ static void do_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+>  	xe_vm_bind_async(fd, vm, 0, bo, offset, addr, size, sync, 1);
+>  }
+>  
+> -static int64_t wait_with_eci_abstime(int fd, uint64_t *addr, uint64_t value,
+> +/**
+> + * xe_wait_ufence_abstime:
+> + * @fd: xe device fd
+> + * @addr: address of value to compare
+> + * @value: expected value (equal) in @address
+> + * @exec_queue: exec_queue id
+> + * @timeout: absolute time when wait expire
+> + * @flag: wait flag
+> + *
+> + * Function compares @value with memory pointed by @addr until they are equal.
+> + * Asserts that ioctl returned without error.
+> + *
+> + * Returns elapsed time in nanoseconds if user fence was signalled.
+> + */
+> +static int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
+>  				     uint32_t exec_queue, int64_t timeout,
+>  				     uint16_t flag)
+>  {
+> @@ -117,7 +131,7 @@ waitfence(int fd, enum waittype wt)
+>  		clock_gettime(CLOCK_MONOTONIC, &ts);
+>  		current = ts.tv_sec * 1e9 + ts.tv_nsec;
+>  		timeout = current + MS_TO_NS(10);
+> -		signalled = wait_with_eci_abstime(fd, &wait_fence, 7,
+> +		signalled = xe_wait_ufence_abstime(fd, &wait_fence, 7,
+>  						  exec_queue, timeout,
+>  						  DRM_XE_UFENCE_WAIT_FLAG_ABSTIME);
 
-== Series Details ==
+none of the code above is mentioned in the commit message... probably some
+git left over included with commit -a?
 
-Series: Compression support for Lunarlake
-URL   : https://patchwork.freedesktop.org/series/127917/
-State : success
+>  		igt_debug("wait type: ENGINE ABSTIME - timeout: %" PRId64
+> @@ -151,9 +165,6 @@ waitfence(int fd, enum waittype wt)
+>   * SUBTEST: invalid-ops
+>   * Description: Check query with invalid ops returns expected error code
+>   *
+> - * SUBTEST: invalid-engine
+> - * Description: Check query with invalid engine info returns expected error code
+> - *
+>   * SUBTEST: exec_queue-reset-wait
+>   * Description: Don’t wait till timeout on user fence when exec_queue reset is detected and return return proper error
+>   */
+> @@ -206,30 +217,6 @@ invalid_ops(int fd)
+>  	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EINVAL);
+>  }
+>  
+> -static void
+> -invalid_engine(int fd)
+> -{
+> -	uint32_t bo;
+> -
+> -	struct drm_xe_wait_user_fence wait = {
+> -		.addr = to_user_pointer(&wait_fence),
+> -		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
+> -		.flags = 0,
+> -		.value = 1,
+> -		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+> -		.timeout = -1,
+> -		.exec_queue_id = 0,
 
-== Summary ==
+well, exec_queue_id = 0 should be invalid, no?! why you want to remove it?
 
-CI Bug Log - changes from CI_DRM_14039 -> IGTPW_10436
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/index.html
-
-Participating hosts (38 -> 37)
-------------------------------
-
-  Additional (1): bat-rpls-2 
-  Missing    (2): bat-kbl-2 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10436 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@debugfs_test@basic-hwmon:
-    - bat-rpls-2:         NOTRUN -> [SKIP][1] ([i915#9318])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rpls-2/igt@debugfs_test@basic-hwmon.html
-
-  * igt@gem_lmem_swapping@random-engines:
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][2] ([fdo#109271]) +15 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html
-
-  * igt@gem_tiled_pread_basic:
-    - bat-rpls-2:         NOTRUN -> [SKIP][3] ([i915#3282])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rpls-2/igt@gem_tiled_pread_basic.html
-
-  * igt@i915_hangman@error-state-basic:
-    - bat-mtlp-6:         [PASS][4] -> [ABORT][5] ([i915#9414])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14039/bat-mtlp-6/igt@i915_hangman@error-state-basic.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-mtlp-6/igt@i915_hangman@error-state-basic.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-    - bat-rpls-2:         NOTRUN -> [SKIP][6] ([i915#4103]) +1 other test skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rpls-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-rpls-2:         NOTRUN -> [SKIP][7] ([i915#3555] / [i915#3840] / [i915#9886])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rpls-2/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-rpls-2:         NOTRUN -> [SKIP][8] ([fdo#109285])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rpls-2/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_pm_backlight@basic-brightness:
-    - bat-rpls-2:         NOTRUN -> [SKIP][9] ([i915#5354])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rpls-2/igt@kms_pm_backlight@basic-brightness.html
-
-  * igt@kms_pm_backlight@basic-brightness@edp-1:
-    - bat-rplp-1:         NOTRUN -> [ABORT][10] ([i915#8668])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rplp-1/igt@kms_pm_backlight@basic-brightness@edp-1.html
-
-  * igt@kms_pm_rpm@basic-rte:
-    - bat-rpls-2:         NOTRUN -> [ABORT][11] ([i915#8668] / [i915#9897])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rpls-2/igt@kms_pm_rpm@basic-rte.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - fi-rkl-11600:       [FAIL][12] ([fdo#103375]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14039/fi-rkl-11600/igt@gem_exec_suspend@basic-s0@smem.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/fi-rkl-11600/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
-    - bat-rplp-1:         [ABORT][14] ([i915#8668]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14039/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
-  [i915#9414]: https://gitlab.freedesktop.org/drm/intel/issues/9414
-  [i915#9886]: https://gitlab.freedesktop.org/drm/intel/issues/9886
-  [i915#9897]: https://gitlab.freedesktop.org/drm/intel/issues/9897
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7645 -> IGTPW_10436
-
-  CI-20190529: 20190529
-  CI_DRM_14039: 43b8af5aaa4420c1f0206b7343a37a750fbcc8a0 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10436: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/index.html
-  IGT_7645: dfa7c0983c9f0cec68fe289dca5f40d3ca00712d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/index.html
-
---===============5924238163270249397==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Compression support for Lunarlake</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127917/">https://patchwork.freedesktop.org/series/127917/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14039 -&gt; IGTPW_10436</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/index.html</p>
-<h2>Participating hosts (38 -&gt; 37)</h2>
-<p>Additional (1): bat-rpls-2 <br />
-  Missing    (2): bat-kbl-2 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10436 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@basic-hwmon:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rpls-2/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9318">i915#9318</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@random-engines:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +15 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rpls-2/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_hangman@error-state-basic:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14039/bat-mtlp-6/igt@i915_hangman@error-state-basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-mtlp-6/igt@i915_hangman@error-state-basic.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9414">i915#9414</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rpls-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rpls-2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9886">i915#9886</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rpls-2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_backlight@basic-brightness:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rpls-2/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_backlight@basic-brightness@edp-1:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rplp-1/igt@kms_pm_backlight@basic-brightness@edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-rte:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rpls-2/igt@kms_pm_rpm@basic-rte.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9897">i915#9897</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14039/fi-rkl-11600/igt@gem_exec_suspend@basic-s0@smem.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/fi-rkl-11600/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
-<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14039/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7645 -&gt; IGTPW_10436</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14039: 43b8af5aaa4420c1f0206b7343a37a750fbcc8a0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10436: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10436/index.html<br />
-  IGT_7645: dfa7c0983c9f0cec68fe289dca5f40d3ca00712d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5924238163270249397==--
+> -	};
+> -
+> -	uint32_t vm = xe_vm_create(fd, 0, 0);
+> -
+> -	bo = xe_bo_create(fd, vm, 0x40000, vram_if_possible(fd, 0), 0);
+> -
+> -	do_bind(fd, vm, bo, 0, 0x200000, 0x40000, 1);
+> -
+> -	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EFAULT);
+> -}
+> -
+>  static void
+>  exec_queue_reset_wait(int fd)
+>  {
+> @@ -248,16 +235,8 @@ exec_queue_reset_wait(int fd)
+>  		uint32_t data;
+>  	} *data;
+>  
+> -#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
+> -	struct drm_xe_sync sync[1] = {
+> -		{ .flags = DRM_XE_SYNC_TYPE_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
+> -			.timeline_value = USER_FENCE_VALUE },
+> -	};
+> -
+>  	struct drm_xe_exec exec = {
+>  		.num_batch_buffer = 1,
+> -		.num_syncs = 1,
+> -		.syncs = to_user_pointer(sync),
+>  	};
+>  
+>  	uint32_t vm = xe_vm_create(fd, 0, 0);
+> @@ -329,9 +308,6 @@ igt_main
+>  	igt_subtest("invalid-ops")
+>  		invalid_ops(fd);
+>  
+> -	igt_subtest("invalid-engine")
+> -		invalid_engine(fd);
+> -
+>  	igt_subtest("exec_queue-reset-wait")
+>  		exec_queue_reset_wait(fd);
+>  
+> -- 
+> 2.25.1
+> 
