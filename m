@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2633252749096942589=="
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDD5A10E390
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Dec 2023 18:46:13 +0000 (UTC)
+From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH] tests/xe_waitfence: removed invalid_engine subtest
+Date: Mon, 18 Dec 2023 14:11:34 +0530
+Message-Id: <20231218084134.296548-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/xe=5Fcreate=3A_Use_separ?=
- =?utf-8?q?ate_VMs_per_process_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jonathan Cavitt" <jonathan.cavitt@intel.com>
-Date: Tue, 19 Dec 2023 02:44:34 -0000
-Message-ID: <170295387475.17581.11647029662964900283@emeril.freedesktop.org>
-References: <20231218145051.1869466-1-jonathan.cavitt@intel.com>
-In-Reply-To: <20231218145051.1869466-1-jonathan.cavitt@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,177 +17,191 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: "Bommu, Krishnaiah" <krishnaiah.bommu@intel.com>,
+	Bommu@freedesktop.org, Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2633252749096942589==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: "Bommu, Krishnaiah" <krishnaiah.bommu@intel.com>
 
-== Series Details ==
+Removed unsupported invalid_engine subtest as per kernel implantation
+(remove the num_engines/instances members from drm_xe_wait_user_fence structure
+and add a exec_queue_id member) and removed unwanted code
 
-Series: tests/xe_create: Use separate VMs per process (rev2)
-URL   : https://patchwork.freedesktop.org/series/127938/
-State : success
+Kernel commit:
+drm/xe/uapi: add exec_queue_id member to drm_xe_wait_user_fence structure
 
-== Summary ==
+Signed-off-by: Bommu, Krishnaiah <krishnaiah.bommu@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+---
+ lib/xe/xe_ioctl.c          | 35 ------------------------
+ lib/xe/xe_ioctl.h          |  2 --
+ tests/intel/xe_waitfence.c | 56 +++++++++++---------------------------
+ 3 files changed, 16 insertions(+), 77 deletions(-)
 
-CI Bug Log - changes from XEIGT_7647_BAT -> XEIGTPW_10440_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10440_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#1033])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7647/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10440/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:
-    - bat-adlp-7:         [FAIL][3] ([Intel XE#480]) -> [PASS][4] +2 other tests pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7647/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10440/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:
-    - bat-dg2-oem2:       [FAIL][5] ([Intel XE#906]) -> [PASS][6] +2 other tests pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7647/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10440/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
-
-  * igt@xe_create@create-execqueues-noleak:
-    - bat-adlp-7:         [FAIL][7] ([Intel XE#524]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7647/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10440/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-    - bat-atsm-2:         [FAIL][9] ([Intel XE#524]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7647/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10440/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
-
-  
-  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#906]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/906
-
-
-Build changes
--------------
-
-  * IGT: IGT_7647 -> IGTPW_10440
-
-  IGTPW_10440: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10440/index.html
-  IGT_7647: c5db51a88823962e79d41cff10fe1bdd8ea92d89 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-585-3b0bde77a8c4304c0fe3b6a4f8661dc34b82f920: 3b0bde77a8c4304c0fe3b6a4f8661dc34b82f920
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10440/index.html
-
---===============2633252749096942589==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe_create: Use separate VMs per process (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127938/">https://patchwork.freedesktop.org/series/127938/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10440/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10440/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7647_BAT -&gt; XEIGTPW_10440_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10440_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7647/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10440/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7647/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10440/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7647/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/906">Intel XE#906</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10440/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_create@create-execqueues-noleak:</p>
-<ul>
-<li>
-<p>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7647/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10440/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></p>
-</li>
-<li>
-<p>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7647/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10440/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">PASS</a></p>
-</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7647 -&gt; IGTPW_10440</li>
-</ul>
-<p>IGTPW_10440: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10440/index.html<br />
-  IGT_7647: c5db51a88823962e79d41cff10fe1bdd8ea92d89 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-585-3b0bde77a8c4304c0fe3b6a4f8661dc34b82f920: 3b0bde77a8c4304c0fe3b6a4f8661dc34b82f920</p>
-
-</body>
-</html>
-
---===============2633252749096942589==--
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 39605a019..49c5d359e 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -523,41 +523,6 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 	return timeout;
+ }
+ 
+-/**
+- * xe_wait_ufence_abstime:
+- * @fd: xe device fd
+- * @addr: address of value to compare
+- * @value: expected value (equal) in @address
+- * @exec_queue: exec_queue id
+- * @timeout: absolute time when wait expire
+- * @flag: wait flag
+- *
+- * Function compares @value with memory pointed by @addr until they are equal.
+- * Asserts that ioctl returned without error.
+- *
+- * Returns elapsed time in nanoseconds if user fence was signalled.
+- */
+-int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
+-			       uint32_t exec_queue, int64_t timeout,
+-			       uint16_t flag)
+-{
+-	struct drm_xe_wait_user_fence wait = {
+-		.addr = to_user_pointer(addr),
+-		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
+-		.flags = flag,
+-		.value = value,
+-		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+-		.timeout = timeout,
+-		.exec_queue_id = exec_queue,
+-	};
+-	struct timespec ts;
+-
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
+-	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &ts), 0);
+-
+-	return ts.tv_sec * 1e9 + ts.tv_nsec;
+-}
+-
+ void xe_force_gt_reset(int fd, int gt)
+ {
+ 	char reset_string[128];
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index 8a92073b0..03932561d 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -90,8 +90,6 @@ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 		     uint32_t exec_queue, int64_t *timeout);
+ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 		       uint32_t exec_queue, int64_t timeout);
+-int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value, uint32_t
+-			       exec_queue, int64_t timeout, uint16_t flag);
+ void xe_force_gt_reset(int fd, int gt);
+ 
+ #endif /* XE_IOCTL_H */
+diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
+index 7ba20764c..5c7bb2baf 100644
+--- a/tests/intel/xe_waitfence.c
++++ b/tests/intel/xe_waitfence.c
+@@ -36,7 +36,21 @@ static void do_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+ 	xe_vm_bind_async(fd, vm, 0, bo, offset, addr, size, sync, 1);
+ }
+ 
+-static int64_t wait_with_eci_abstime(int fd, uint64_t *addr, uint64_t value,
++/**
++ * xe_wait_ufence_abstime:
++ * @fd: xe device fd
++ * @addr: address of value to compare
++ * @value: expected value (equal) in @address
++ * @exec_queue: exec_queue id
++ * @timeout: absolute time when wait expire
++ * @flag: wait flag
++ *
++ * Function compares @value with memory pointed by @addr until they are equal.
++ * Asserts that ioctl returned without error.
++ *
++ * Returns elapsed time in nanoseconds if user fence was signalled.
++ */
++static int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
+ 				     uint32_t exec_queue, int64_t timeout,
+ 				     uint16_t flag)
+ {
+@@ -117,7 +131,7 @@ waitfence(int fd, enum waittype wt)
+ 		clock_gettime(CLOCK_MONOTONIC, &ts);
+ 		current = ts.tv_sec * 1e9 + ts.tv_nsec;
+ 		timeout = current + MS_TO_NS(10);
+-		signalled = wait_with_eci_abstime(fd, &wait_fence, 7,
++		signalled = xe_wait_ufence_abstime(fd, &wait_fence, 7,
+ 						  exec_queue, timeout,
+ 						  DRM_XE_UFENCE_WAIT_FLAG_ABSTIME);
+ 		igt_debug("wait type: ENGINE ABSTIME - timeout: %" PRId64
+@@ -151,9 +165,6 @@ waitfence(int fd, enum waittype wt)
+  * SUBTEST: invalid-ops
+  * Description: Check query with invalid ops returns expected error code
+  *
+- * SUBTEST: invalid-engine
+- * Description: Check query with invalid engine info returns expected error code
+- *
+  * SUBTEST: exec_queue-reset-wait
+  * Description: Don’t wait till timeout on user fence when exec_queue reset is detected and return return proper error
+  */
+@@ -206,30 +217,6 @@ invalid_ops(int fd)
+ 	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EINVAL);
+ }
+ 
+-static void
+-invalid_engine(int fd)
+-{
+-	uint32_t bo;
+-
+-	struct drm_xe_wait_user_fence wait = {
+-		.addr = to_user_pointer(&wait_fence),
+-		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
+-		.flags = 0,
+-		.value = 1,
+-		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+-		.timeout = -1,
+-		.exec_queue_id = 0,
+-	};
+-
+-	uint32_t vm = xe_vm_create(fd, 0, 0);
+-
+-	bo = xe_bo_create(fd, vm, 0x40000, vram_if_possible(fd, 0), 0);
+-
+-	do_bind(fd, vm, bo, 0, 0x200000, 0x40000, 1);
+-
+-	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EFAULT);
+-}
+-
+ static void
+ exec_queue_reset_wait(int fd)
+ {
+@@ -248,16 +235,8 @@ exec_queue_reset_wait(int fd)
+ 		uint32_t data;
+ 	} *data;
+ 
+-#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
+-	struct drm_xe_sync sync[1] = {
+-		{ .flags = DRM_XE_SYNC_TYPE_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
+-			.timeline_value = USER_FENCE_VALUE },
+-	};
+-
+ 	struct drm_xe_exec exec = {
+ 		.num_batch_buffer = 1,
+-		.num_syncs = 1,
+-		.syncs = to_user_pointer(sync),
+ 	};
+ 
+ 	uint32_t vm = xe_vm_create(fd, 0, 0);
+@@ -329,9 +308,6 @@ igt_main
+ 	igt_subtest("invalid-ops")
+ 		invalid_ops(fd);
+ 
+-	igt_subtest("invalid-engine")
+-		invalid_engine(fd);
+-
+ 	igt_subtest("exec_queue-reset-wait")
+ 		exec_queue_reset_wait(fd);
+ 
+-- 
+2.25.1
