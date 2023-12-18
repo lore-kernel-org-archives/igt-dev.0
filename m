@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 45F3A10E259
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B3D810E259
  for <igt-dev@lists.freedesktop.org>; Mon, 18 Dec 2023 18:30:23 +0000 (UTC)
 From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 To: 
-Subject: [PATCH i-g-t v8 0/6] Compression support for Lunarlake
-Date: Mon, 18 Dec 2023 13:14:33 -0800
-Message-Id: <cover.1702933241.git.akshata.jahagirdar@intel.com>
+Subject: [PATCH i-g-t v8 2/6] lib/intel_blt: Update calculation of ccs_size
+ and size_of_ctrl_copy
+Date: Mon, 18 Dec 2023 13:14:35 -0800
+Message-Id: <e63a301a5f117ad8ea927b953ae28c7403e159d8.1702933241.git.akshata.jahagirdar@intel.com>
+In-Reply-To: <cover.1702933241.git.akshata.jahagirdar@intel.com>
+References: <cover.1702933241.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -23,46 +26,109 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Series enables the compression feature for Lunarlake and address various
-changes of the feature from Gen12. The Main-to-CCS ratio has been
-changed to 512:1. This changes the calculations and value for fields
-such as CCS Copy size for blitter command APIs. 
-This patch series updates tests xe_ccs and gem_ccs for XE2.
-This series doesn't solve "in-place" and "suspend-resume" subtests.
+The Main-to-CCS Ratio for XE2 has been changed to 512:1.
+Update the CCS_RATIO macro to select relevant ratio based on platform.
+Update the ccs_ratio call in gem_ccs and xe_ccs tests
+based on previous change.
 
-These changes are based on top of the "vm_bind pat_index" patch here:
-https://patchwork.freedesktop.org/series/124667/
+Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/intel_blt.c       | 13 ++++++++-----
+ lib/intel_blt.h       |  2 +-
+ tests/intel/gem_ccs.c |  2 +-
+ tests/intel/xe_ccs.c  |  2 +-
+ 4 files changed, 11 insertions(+), 8 deletions(-)
 
-v2: Lots of improvements/tweaks (Kamil)
-    Addressed review comments (Matthew, Karolina)
-v3: Reused dg2_xy_fast_copy definition for defing xe2_cmds_info struct(Karolina)
-    Split the patch to address ccs_size calculation and updating
-pat_index, updated the intel_get_pat_idx_uc_comp function as per review
-comments (Kamil)
-v4: Addressed review comments (Karolina)
-    Rebase. Removed few unnecessary conditions, plus few fixes.
-v5: Addressed Review comments (Matthew, Zbigniew)
-    Rebase, Fixes for pre-merge IGT tests.
-v6: Addressed Review comments (Matthew)
-v7: Addressed Review comments (Zbigniew, Kamil)
-v8: Addressed Review comments (Zbigniew)
-
-Akshata Jahagirdar (6):
-  lib: Add blt command properties for lunarlake
-  lib/intel_blt: Update calculation of ccs_size and size_of_ctrl_copy
-  lib/intel_pat: Add uc_comp pat_index
-  lib/intel_blt: Update caching mode and pat_index
-  lib/xe/xe_util: Align obj size before bind/unbind
-  tests/intel/xe_ccs: Add compression support for Lunarlake
-
- lib/intel_blt.c         | 24 +++++++++++++++++-------
- lib/intel_blt.h         |  2 +-
- lib/intel_cmds_info.c   | 16 ++++++++++++++++
- lib/intel_cmds_info.h   |  1 +
- lib/intel_device_info.c |  2 +-
- lib/intel_pat.c         | 14 +++++++++++++-
- lib/intel_pat.h         |  2 ++
- lib/xe/xe_util.c        |  2 +-
- tests/intel/gem_ccs.c   |  2 +-
- tests/intel/xe_ccs.c    | 40 +++++++++++++++++++++++++---------------
- 10 files changed, 78 insertions(+), 27 deletions(-)
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index 1116c978e..1be289ad6 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -948,15 +948,16 @@ int blt_block_copy(int fd,
+ 	return ret;
+ }
+ 
+-static uint16_t __ccs_size(const struct blt_ctrl_surf_copy_data *surf)
++static uint16_t __ccs_size(int fd, const struct blt_ctrl_surf_copy_data *surf)
+ {
+ 	uint32_t src_size, dst_size;
++	uint16_t ccsratio = CCS_RATIO(fd);
+ 
+ 	src_size = surf->src.access_type == DIRECT_ACCESS ?
+-				surf->src.size : surf->src.size / CCS_RATIO;
++				surf->src.size : surf->src.size / ccsratio;
+ 
+ 	dst_size = surf->dst.access_type == DIRECT_ACCESS ?
+-				surf->dst.size : surf->dst.size / CCS_RATIO;
++				surf->dst.size : surf->dst.size / ccsratio;
+ 
+ 	igt_assert_f(src_size <= dst_size, "dst size must be >= src size for CCS copy\n");
+ 
+@@ -1118,6 +1119,8 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+ 	uint64_t dst_offset, src_offset, bb_offset, alignment;
+ 	uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	uint32_t *bb;
++	uint16_t num_ccs_blocks = (ip_ver >= IP_VER(20, 0)) ?
++				(xe_get_default_alignment(fd) / CCS_RATIO(fd)) : CCS_RATIO(fd);
+ 
+ 	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
+ 	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
+@@ -1136,7 +1139,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+ 		data.xe2.dw00.dst_access_type = surf->dst.access_type;
+ 
+ 		/* Ensure dst has size capable to keep src ccs aux */
+-		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
++		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
+ 		data.xe2.dw00.length = 0x3;
+ 
+ 		data.xe2.dw01.src_address_lo = src_offset;
+@@ -1155,7 +1158,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+ 		data.gen12.dw00.dst_access_type = surf->dst.access_type;
+ 
+ 		/* Ensure dst has size capable to keep src ccs aux */
+-		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
++		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
+ 		data.gen12.dw00.length = 0x3;
+ 
+ 		data.gen12.dw01.src_address_lo = src_offset;
+diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+index 5934ccd67..d9be22fdf 100644
+--- a/lib/intel_blt.h
++++ b/lib/intel_blt.h
+@@ -52,7 +52,7 @@
+ #include "igt.h"
+ #include "intel_cmds_info.h"
+ 
+-#define CCS_RATIO 256
++#define CCS_RATIO(fd) (AT_LEAST_GEN(intel_get_drm_devid(fd), 20) ? 512 : 256)
+ 
+ enum blt_color_depth {
+ 	CD_8bit,
+diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
+index 0a691778d..80a29ecab 100644
+--- a/tests/intel/gem_ccs.c
++++ b/tests/intel/gem_ccs.c
+@@ -99,7 +99,7 @@ static void surf_copy(int i915,
+ 	struct blt_block_copy_data_ext ext = {};
+ 	struct blt_ctrl_surf_copy_data surf = {};
+ 	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
+-	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
++	uint64_t bb_size, ccssize = mid->size / CCS_RATIO(i915);
+ 	uint32_t *ccscopy;
+ 	uint8_t uc_mocs = intel_get_uc_mocs_index(i915);
+ 	int result;
+diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+index 77d3020bc..ac0805017 100644
+--- a/tests/intel/xe_ccs.c
++++ b/tests/intel/xe_ccs.c
+@@ -95,7 +95,7 @@ static void surf_copy(int xe,
+ 	struct blt_block_copy_data_ext ext = {};
+ 	struct blt_ctrl_surf_copy_data surf = {};
+ 	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
+-	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
++	uint64_t bb_size, ccssize = mid->size / CCS_RATIO(xe);
+ 	uint32_t *ccscopy;
+ 	uint8_t uc_mocs = intel_get_uc_mocs_index(xe);
+ 	uint32_t sysmem = system_memory(xe);
+-- 
+2.34.1
