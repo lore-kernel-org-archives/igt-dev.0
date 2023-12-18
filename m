@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0861110E399
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Dec 2023 18:43:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C2EB610E39E
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Dec 2023 18:43:34 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [i-g-t v3 8/9] tests/kms_vrr: Add a max/min test to oscillate between
- rates
-Date: Mon, 18 Dec 2023 13:52:06 +0530
-Message-Id: <20231218082207.32719-9-bhanuprakash.modem@intel.com>
+Subject: [i-g-t v3 4/9] tests/kms_vrr: Allow test duration to be specified
+ from the command line
+Date: Mon, 18 Dec 2023 13:52:02 +0530
+Message-Id: <20231218082207.32719-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231218082207.32719-1-bhanuprakash.modem@intel.com>
 References: <20231218082207.32719-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
@@ -26,74 +26,136 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Sean Paul <seanpaul@chromium.org>
 
-The new MAXMIN test will oscillate between the max and min
-refresh rates every frame to stress test the panel. This is
-useful for manual profiling of flicker.
+Using --duration argument, otherwise use default.
 
 v2:
-- Added to the set
+- Add short opt to the main callsite (Bhanu)
 v3: (Bhanu)
 - Rebase
-- Add testplan documentation
+- Nit: 's/d:r:/dr:/'
 
-Signed-off-by: Sean Paul <seanpaul@chromium.org>
+Cc: Mark Yacoub <markyacoub@chromium.org>
 Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Sean Paul <seanpaul@chromium.org>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vrr.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ tests/kms_vrr.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 2b6e1064b..77791dfb6 100644
+index 014497bcd..cf42b4345 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -66,6 +66,10 @@
-  * Description: Test to switch RR seamlessly without modeset.
-  * Functionality: adaptive_sync, drrs
-  *
-+ * SUBTEST: max-min
-+ * Description: Oscillates between highest and lowest refresh each frame for
-+ *              manual flicker profiling
-+ *
-  * SUBTEST: negative-basic
-  * Description: Make sure that VRR should not be enabled on the Non-VRR panel.
-  */
-@@ -86,7 +90,8 @@ enum {
- 	TEST_SEAMLESS_VRR = 1 << 4,
- 	TEST_SEAMLESS_DRRS = 1 << 5,
- 	TEST_FASTSET = 1 << 6,
--	TEST_NEGATIVE = 1 << 7,
-+	TEST_MAXMIN = 1 << 7,
-+	TEST_NEGATIVE = 1 << 8,
+@@ -114,6 +114,7 @@ typedef struct data {
+ 	range_t range;
+ 	drmModeModeInfo switch_modes[RR_MODES_COUNT];
+ 	vtest_ns_t vtest_ns;
++	uint64_t duration_ns;
+ } data_t;
+ 
+ typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, uint32_t);
+@@ -278,6 +279,9 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 		     data->vtest_ns.rate_ns >= data->vtest_ns.max,
+ 		     "Invalid test rate specified!\n");
+ 
++	if (data->duration_ns == 0)
++		data->duration_ns = TEST_DURATION_NS;
++
+ 	/* Prepare resources */
+ 	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
+ 			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+@@ -467,7 +471,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	 */
+ 	if (flags & TEST_FLIPLINE) {
+ 		rate = rate_from_refresh(range.max + 5);
+-		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+ 		igt_assert_f(result > 75,
+ 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
+ 			     (range.max + 5), rate, result);
+@@ -475,7 +479,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 
+ 	if (flags & ~TEST_NEGATIVE) {
+ 		rate = vtest_ns.rate_ns;
+-		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+ 		igt_assert_f(result > 75,
+ 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
+ 			     ((range.max + range.min) / 2), rate, result);
+@@ -483,7 +487,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 
+ 	if (flags & TEST_FLIPLINE) {
+ 		rate = rate_from_refresh(range.min - 5);
+-		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+ 		igt_assert_f(result < 50,
+ 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold exceeded, result was %u%%\n",
+ 			     (range.min - 5), rate, result);
+@@ -496,7 +500,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	 */
+ 	set_vrr_on_pipe(data, pipe, !(flags & TEST_FASTSET), (flags & TEST_NEGATIVE) ? true : false);
+ 	rate = vtest_ns.rate_ns;
+-	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+ 	igt_assert_f(result < 10,
+ 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold exceeded, result was %u%%\n",
+ 		     ((range.max + range.min) / 2), rate, (flags & TEST_NEGATIVE)? "on" : "off", result);
+@@ -520,7 +524,7 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
+ 		set_vrr_on_pipe(data, pipe, false, true);
+ 
+ 	rate = vtest_ns.max;
+-	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+ 	igt_assert_f(result > 75,
+ 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold not reached, result was %u%%\n",
+ 		     data->range.max, rate, vrr ? "on" : "off", result);
+@@ -532,7 +536,7 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
+ 	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
+ 
+ 	rate = vtest_ns.min;
+-	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+ 	igt_assert_f(result > 75,
+ 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold not reached, result was %u%%\n",
+ 		     data->range.min, rate, vrr ? "on" : "off", result);
+@@ -544,7 +548,7 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
+ 	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
+ 
+ 	rate = vtest_ns.rate_ns;
+-	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+ 	igt_assert_f(vrr ? (result > 75) : (result < 10),
+ 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold %s, result was %u%%\n",
+ 		     ((data->range.max + data->range.min) / 2), rate,
+@@ -668,6 +672,9 @@ static int opt_handler(int opt, int opt_index, void *_data)
+ 	data_t *data = _data;
+ 
+ 	switch (opt) {
++	case 'd':
++		data->duration_ns = atoi(optarg) * NSECS_PER_SEC;
++		break;
+ 	case 'r':
+ 		data->vtest_ns.rate_ns = rate_from_refresh(atoi(optarg));
+ 		break;
+@@ -676,16 +683,18 @@ static int opt_handler(int opt, int opt_index, void *_data)
+ }
+ 
+ static const struct option long_opts[] = {
++	{ .name = "duration", .has_arg = true, .val = 'd', },
+ 	{ .name = "refresh-rate", .has_arg = true, .val = 'r', },
+ 	{}
  };
  
- enum {
-@@ -543,6 +548,14 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 			     (range.min - 5), rate[0], result);
- 	}
+ static const char help_str[] =
++	"  --duration <duration-seconds>\t\tHow long to run the test for\n"
+ 	"  --refresh-rate <refresh-hz>\t\tThe refresh rate to flip at\n";
  
-+	if (flags & TEST_MAXMIN) {
-+		uint64_t maxmin_rates[] = {vtest_ns.max, vtest_ns.min};
-+		result = flip_and_measure(data, output, pipe, maxmin_rates, 2, data->duration_ns);
-+		igt_assert_f(result < 50,
-+			     "Refresh rate (%u Hz) %"PRIu64"ns/%"PRIu64"ns: Target VRR on threshold exceeded, result was %u%%\n",
-+			     (range.min - 5), maxmin_rates[0], maxmin_rates[1], result);
-+	}
-+
- 	/*
- 	 * If we request VRR on a non-VRR panel, it is unlikely to reject the
- 	 * modeset. And the expected behavior is the same as disabling VRR on
-@@ -784,6 +797,11 @@ igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
- 	igt_subtest_with_dynamic("negative-basic")
- 		run_vrr_test(&data, test_basic, TEST_NEGATIVE);
+ static data_t data;
  
-+	igt_describe("Oscillates between highest and lowest refresh each frame for manual "
-+		     "flicker profiling");
-+	igt_subtest_with_dynamic("max-min")
-+		run_vrr_test(&data, test_basic, TEST_MAXMIN);
-+
- 	igt_subtest_group {
- 		igt_fixture
- 			igt_require_intel(data.drm_fd);
+-igt_main_args("r:", long_opts, help_str, opt_handler, &data)
++igt_main_args("dr:", long_opts, help_str, opt_handler, &data)
+ {
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
 -- 
 2.40.0
