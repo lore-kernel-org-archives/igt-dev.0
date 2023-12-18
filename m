@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
-Date: Fri, 15 Dec 2023 16:40:24 -0800
-Subject: [PATCH i-g-t 4/4] tests/kms_atomic: Add subtest for solid fill
- cursor planes
+From: Jesse Zhang <jesse.zhang@amd.com>
+Subject: [PATCH i-g-t V3] tests/amdgpu: fix VM test issue
+Date: Mon, 18 Dec 2023 10:53:07 +0800
+Message-ID: <20231218025307.1837517-1-jesse.zhang@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20231215-solid-fill-v1-4-12932f9f452d@quicinc.com>
-References: <20231215-solid-fill-v1-0-12932f9f452d@quicinc.com>
-In-Reply-To: <20231215-solid-fill-v1-0-12932f9f452d@quicinc.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,73 +18,70 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>
-Cc: Pekka Paalanen <pekka.paalanen@collabora.com>, Simon Ser <contact@emersion.fr>, Rob Clark <robdclark@gmail.com>, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Message-ID: <20231216004024.5uJFZlnK4KnNf2VkHv3_kK4fk--IUkjmrb-RnbODbtE@z>
+To: igt-dev@lists.freedesktop.org
+Cc: Alex Deucher <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>
+Message-ID: <20231218025307.M6DxaIytRMGulIFM6lAVuQzqRdRDZAm8-KLry6AcQ4Q@z>
 
-Add a subtest for testing solid fill cursor planes.
+Test case name:igt@amdgpu/amd_vm@amdgpu-vm-unaligned-map
+Fail error: "Starting subtest: amdgpu-vm-unaligned-map
+(amd_vm:8876) CRITICAL: Test assertion failure function amdgpu_vm_unaligned_map, file ../tests/amdgpu/amd_vm.c:131:
+(amd_vm:8876) CRITICAL: Failed assertion: r == 0
+(amd_vm:8876) CRITICAL: Last errno: 12, Cannot allocate memory
+(amd_vm:8876) CRITICAL: error: -12 != 0
+Subtest amdgpu-vm-unaligned-map failed.
 
-This test will commit a solid fill cursor plane on top of a normal
-framebuffer primary plane and compare the resulting CRC with the CRC
-value of a framebuffer cursor and primary plane of the same contents.
+V3:
+   - Split the test into two, one for the 2M (using 8M allocations)
+     case and one for the 1G case (using 4G allocation). (Christian)
 
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 ---
- tests/kms_atomic.c | 34 ++++++++++++++++++++++++++++++----
- 1 file changed, 30 insertions(+), 4 deletions(-)
+ tests/amdgpu/amd_vm.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index 8f81e65ad84f..057fba0d6767 100755
---- a/tests/kms_atomic.c
-+++ b/tests/kms_atomic.c
-@@ -1349,10 +1349,18 @@ static void test_solid_fill_plane(data_t *data, igt_output_t *output,  igt_plane
- 		.pad = 0x0,
- 	};
+diff --git a/tests/amdgpu/amd_vm.c b/tests/amdgpu/amd_vm.c
+index 11be25ae8..dab91f291 100644
+--- a/tests/amdgpu/amd_vm.c
++++ b/tests/amdgpu/amd_vm.c
+@@ -115,11 +115,11 @@ amdgpu_vmid_reserve_test(amdgpu_device_handle device_handle,
+ static void
+ amdgpu_vm_unaligned_map(amdgpu_device_handle device_handle)
+ {
+-	const uint64_t map_size = (4ULL << 30) - (2 << 12);
++	uint64_t map_size = (4ULL << 30) - (2 << 12);
+ 	struct amdgpu_bo_alloc_request request = {};
+ 	amdgpu_bo_handle buf_handle;
+ 	amdgpu_va_handle handle;
+-	uint64_t vmc_addr;
++	uint64_t vmc_addr, alignment = 1ULL << 30;
+ 	int r;
  
--	rect.x1 = 0;
--	rect.x2 = mode->hdisplay;
--	rect.y1 = 0;
--	rect.y2 = mode->vdisplay;
-+	if (plane->type == DRM_PLANE_TYPE_PRIMARY)
-+	{
-+		rect.x1 = 0;
-+		rect.x2 = mode->hdisplay;
-+		rect.y1 = 0;
-+		rect.y2 = mode->vdisplay;
-+	} else {
-+		rect.x1 = mode->hdisplay / 2 - 50;
-+		rect.x2 = mode->hdisplay / 2 + 50;
-+		rect.y1 = mode->vdisplay / 2 - 50;
-+		rect.y2 = mode->vdisplay / 2 + 50;
-+	}
+ 	request.alloc_size = 4ULL << 30;
+@@ -127,11 +127,18 @@ amdgpu_vm_unaligned_map(amdgpu_device_handle device_handle)
+ 	request.preferred_heap = AMDGPU_GEM_DOMAIN_VRAM;
+ 	request.flags = AMDGPU_GEM_CREATE_NO_CPU_ACCESS;
  
- 	height = rect.y2 - rect.y1;
- 	width = rect.x2 - rect.x1;
-@@ -1728,6 +1736,24 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 		}
- 	}
- 
-+	igt_describe("Test case for solid fill cursor planes");
-+	igt_subtest_with_dynamic("plane-cursor-solid-fill") {
-+		for_each_pipe_with_single_output(&data.display, pipe, output) {
-+			igt_plane_t *cursor =
-+				igt_pipe_get_plane_type(&data.display.pipes[pipe], DRM_PLANE_TYPE_CURSOR);
-+			if (!pipe_output_combo_valid(&data.display, pipe, output))
-+				continue;
-+			if (!cursor)
-+				continue;
-+
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+				atomic_setup(&data, pipe, output);
-+				test_solid_fill_plane(&data, output, cursor);
-+				atomic_clear(&data, pipe, output);
-+			}
-+		}
+-	r = amdgpu_bo_alloc(device_handle, &request, &buf_handle);
++	if (-ENOMEM == amdgpu_bo_alloc(device_handle, &request, &buf_handle)) {
++		/* Try allocate on the device of small memory */
++		request.alloc_size = 8ULL << 20;
++		map_size = (8ULL << 20) - (2 << 12);
++		alignment = 2ULL << 20;
++		r = amdgpu_bo_alloc(device_handle, &request, &buf_handle);
 +	}
 +
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
-
+ 	igt_assert_eq(r, 0);
+ 
+ 	r = amdgpu_va_range_alloc(device_handle, amdgpu_gpu_va_range_general,
+-				4ULL << 30, 1ULL << 30, 0, &vmc_addr,
++				request.alloc_size, alignment, 0, &vmc_addr,
+ 				&handle, 0);
+ 	igt_assert_eq(r, 0);
+ 
 -- 
-2.43.0
+2.25.1
