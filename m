@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2082.outbound.protection.outlook.com [40.107.244.82])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B17010E27E
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Dec 2023 18:20:17 +0000 (UTC)
-From: Jesse Zhang <jesse.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Subject: [PATCH i-g-t V3] tests/amdgpu: fix VM test issue
-Date: Mon, 18 Dec 2023 10:53:07 +0800
-Message-ID: <20231218025307.1837517-1-jesse.zhang@amd.com>
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2053.outbound.protection.outlook.com [40.107.243.53])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A37A10E2BB
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Dec 2023 18:21:10 +0000 (UTC)
+From: Hersen Wu <hersenxs.wu@amd.com>
+To: <igt-dev@lists.freedesktop.org>, <rodrigo.siqueira@amd.com>,
+ <aurabindo.pillai@amd.com>, <alex.hung@amd.com>, <hamza.mahfooz@amd.com>,
+ <wayne.lin@amd.com>
+Subject: [PATCH] [i-g-t] tests/amdgpu/amd_link_settings: Fix run eDP link
+ training with unsupported link rate
+Date: Mon, 18 Dec 2023 08:59:28 -0500
+Message-ID: <20231218135928.35390-1-hersenxs.wu@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -18,72 +21,117 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
+Cc: Hersen Wu <hersenxs.wu@amd.com>, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Test case name:igt@amdgpu/amd_vm@amdgpu-vm-unaligned-map
-Fail error: "Starting subtest: amdgpu-vm-unaligned-map
-(amd_vm:8876) CRITICAL: Test assertion failure function amdgpu_vm_unaligned_map, file ../tests/amdgpu/amd_vm.c:131:
-(amd_vm:8876) CRITICAL: Failed assertion: r == 0
-(amd_vm:8876) CRITICAL: Last errno: 12, Cannot allocate memory
-(amd_vm:8876) CRITICAL: error: -12 != 0
-Subtest amdgpu-vm-unaligned-map failed.
+From: Hersen Wu <Hersenxs.Wu@amd.com>
 
-V3:
-   - Split the test into two, one for the 2M (using 8M allocations)
-     case and one for the 1G case (using 4G allocation). (Christian)
+Add check eDP intermedidate link rate caps from DPCD
+offset 0x10 - 0x1f. Only run DP link training for link
+rate supported by eDP.
 
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Beside max link rate, eDP1.4b introduces intermediate link
+rate. eDP reports ilr caps with DPCD register 0x10 - 0x1f.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
 ---
- tests/amdgpu/amd_vm.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ lib/igt_amd.h                    |  1 +
+ tests/amdgpu/amd_ilr.c           |  2 --
+ tests/amdgpu/amd_link_settings.c | 32 ++++++++++++++++++++++++++++----
+ 3 files changed, 29 insertions(+), 6 deletions(-)
 
-diff --git a/tests/amdgpu/amd_vm.c b/tests/amdgpu/amd_vm.c
-index 11be25ae8..dab91f291 100644
---- a/tests/amdgpu/amd_vm.c
-+++ b/tests/amdgpu/amd_vm.c
-@@ -115,11 +115,11 @@ amdgpu_vmid_reserve_test(amdgpu_device_handle device_handle,
- static void
- amdgpu_vm_unaligned_map(amdgpu_device_handle device_handle)
+diff --git a/lib/igt_amd.h b/lib/igt_amd.h
+index 1e66348ad..254b5d37b 100644
+--- a/lib/igt_amd.h
++++ b/lib/igt_amd.h
+@@ -46,6 +46,7 @@
+ /* eDP related */
+ #define DEBUGFS_EDP_ILR_SETTING "ilr_setting"
+ #define MAX_SUPPORTED_ILR 8
++#define MULTIPLIER_TO_LR 270000
+ #define DEBUGFS_EDP_PSR_CAP	"psr_capability"
+ #define DEBUGFS_EDP_PSR_STATE	"psr_state"
+ #define DEBUGFS_ALLOW_EDP_HOTPLUG_DETECT "allow_edp_hotplug_detection"
+diff --git a/tests/amdgpu/amd_ilr.c b/tests/amdgpu/amd_ilr.c
+index 50ca93a14..b2c0f294d 100644
+--- a/tests/amdgpu/amd_ilr.c
++++ b/tests/amdgpu/amd_ilr.c
+@@ -29,8 +29,6 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ 
+-#define MULTIPLIER_TO_LR 270000
+-
+ IGT_TEST_DESCRIPTION("This igt test validates ILR (Intermediate Link Rate) "
+ 	"feature from two perspective: "
+ 	"1. Test if we can sucessfully train link rate at all supported ILRs"
+diff --git a/tests/amdgpu/amd_link_settings.c b/tests/amdgpu/amd_link_settings.c
+index 6a7e8cc53..226c94d73 100644
+--- a/tests/amdgpu/amd_link_settings.c
++++ b/tests/amdgpu/amd_link_settings.c
+@@ -34,6 +34,7 @@ typedef struct
+         enum pipe pipe_id;
+ 	int connector_type;
+ 	int w, h;
++	int supported_ilr[MAX_SUPPORTED_ILR];
+ } data_t;
+ 
+ const enum dc_lane_count lane_count_values[] =
+@@ -51,12 +52,17 @@ const enum dc_link_rate dp_link_rate_values[] =
+ 	LINK_RATE_HIGH3
+ };
+ 
++/* eDP 1.4b */
+ const enum dc_link_rate edp_link_rate_values[] =
  {
--	const uint64_t map_size = (4ULL << 30) - (2 << 12);
-+	uint64_t map_size = (4ULL << 30) - (2 << 12);
- 	struct amdgpu_bo_alloc_request request = {};
- 	amdgpu_bo_handle buf_handle;
- 	amdgpu_va_handle handle;
--	uint64_t vmc_addr;
-+	uint64_t vmc_addr, alignment = 1ULL << 30;
- 	int r;
+-	LINK_RATE_LOW,
+-	LINK_RATE_HIGH,
+-	LINK_RATE_RBR2,
+-	LINK_RATE_HIGH2
++	LINK_RATE_LOW,		/* 0x6 Rate_1 (RBR)	- 1.62 Gbps/Lane */
++	LINK_RATE_RATE_2,	/* 0x8 Rate_2		- 2.16 Gbps/Lane */
++	LINK_RATE_RATE_3,	/* 0x9 Rate_3		- 2.43 Gbps/Lane */
++	LINK_RATE_HIGH,		/* 0xA Rate_4 (HBR)	- 2.70 Gbps/Lane */
++	LINK_RATE_RBR2,		/* 0xC Rate_5 (RBR2)	- 3.24 Gbps/Lane */
++	LINK_RATE_RATE_6,	/* 0x10 Rate_6		- 4.32 Gbps/Lane */
++	LINK_RATE_HIGH2,	/* 0x14 Rate_7 (HBR2)	- 5.40 Gbps/Lane */
++	LINK_RATE_HIGH3		/* 0x1E Rate_8 (HBR3)	- 8.10 Gbps/Lane */
+ };
  
- 	request.alloc_size = 4ULL << 30;
-@@ -127,11 +127,18 @@ amdgpu_vm_unaligned_map(amdgpu_device_handle device_handle)
- 	request.preferred_heap = AMDGPU_GEM_DOMAIN_VRAM;
- 	request.flags = AMDGPU_GEM_CREATE_NO_CPU_ACCESS;
+ static void test_fini(data_t *data)
+@@ -116,6 +122,8 @@ static void run_link_training_config(data_t *data, igt_output_t *output)
+ 	} else if (data->connector_type == DRM_MODE_CONNECTOR_eDP) {
+ 		link_rate_values = edp_link_rate_values;
+ 		num_link_rates = ARRAY_SIZE(edp_link_rate_values);
++		igt_amd_read_ilr_setting(data->drm_fd, connector_name,
++			data->supported_ilr);
+ 	} else {
+ 		igt_info("Not a DP or eDP connector\n");
+ 		return;
+@@ -137,6 +145,22 @@ static void run_link_training_config(data_t *data, igt_output_t *output)
+ 			if (link_rate_values[j] > max_lr)
+ 				continue;
  
--	r = amdgpu_bo_alloc(device_handle, &request, &buf_handle);
-+	if (-ENOMEM == amdgpu_bo_alloc(device_handle, &request, &buf_handle)) {
-+		/* Try allocate on the device of small memory */
-+		request.alloc_size = 8ULL << 20;
-+		map_size = (8ULL << 20) - (2 << 12);
-+		alignment = 2ULL << 20;
-+		r = amdgpu_bo_alloc(device_handle, &request, &buf_handle);
-+	}
++			/* Check if ilr link rate is supported */
++			if (data->connector_type == DRM_MODE_CONNECTOR_eDP) {
++				bool valid_link_rate = false;
 +
- 	igt_assert_eq(r, 0);
- 
- 	r = amdgpu_va_range_alloc(device_handle, amdgpu_gpu_va_range_general,
--				4ULL << 30, 1ULL << 30, 0, &vmc_addr,
-+				request.alloc_size, alignment, 0, &vmc_addr,
- 				&handle, 0);
- 	igt_assert_eq(r, 0);
- 
++				for (int k = 0; k < MAX_SUPPORTED_ILR; k++) {
++					if (data->supported_ilr[k] ==
++						link_rate_values[j] * MULTIPLIER_TO_LR) {
++						valid_link_rate = true;
++						break;
++					} else if (data->supported_ilr[k] == 0)
++						break;
++				}
++				if (!valid_link_rate)
++					continue;
++			}
++
+ 			/* Write link settings */
+ 			igt_info("Applying lane count: %d, link rate 0x%02x, on default training\n",
+ 				  lane_count_values[i], link_rate_values[j]);
 -- 
 2.25.1
