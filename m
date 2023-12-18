@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1124410E29B
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Dec 2023 18:25:18 +0000 (UTC)
+From: "Govindapillai, Vinod" <vinod.govindapillai@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "B,
+ Jeevan" <jeevan.b@intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/kms_psr2_sf: Fix primary_format setting
+Date: Mon, 18 Dec 2023 12:12:39 +0000
+Message-ID: <3078182a95bbba4e94abcf6f621e944109e059c4.camel@intel.com>
+References: <20231214154219.2638408-1-jeevan.b@intel.com>
+In-Reply-To: <20231214154219.2638408-1-jeevan.b@intel.com>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
+Content-ID: <1182404F5E2CA64A9D56B3E8E581C372@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_Compression_support_for_L?=
- =?utf-8?q?unarlake_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon, 18 Dec 2023 18:23:59 -0000
-Message-ID: <170292383953.12104.4828451664302497653@emeril.freedesktop.org>
-References: <cover.1702674322.git.akshata.jahagirdar@intel.com>
-In-Reply-To: <cover.1702674322.git.akshata.jahagirdar@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,28 +22,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: Compression support for Lunarlake (rev3)
-URL   : https://patchwork.freedesktop.org/series/127863/
-State : failure
-
-== Summary ==
-
-Applying: lib: Add blt command properties for lunarlake
-Applying: lib/intel_blt: Update calculation of ccs_size and size_of_ctrl_copy
-Applying: lib/intel_pat: Add uc_comp pat_index
-Applying: lib/intel_blt: Update caching mode and pat_index
-Applying: lib/xe/xe_util: Align obj size before bind/unbind
-Applying: tests/intel/xe_ccs: Add compression support for Lunarlake
-Patch failed at 0006 tests/intel/xe_ccs: Add compression support for Lunarlake
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
+SGkgamVldmFuLAoKVGhpcyBtaWdodCBub3QgYmUgZW5vdWdoLiAKCkZvciBleGFtcGxlLCBpZiB5
+b3UgYXJlIGV4ZWN1dGluZyBhbGwgdGhlIHRlc3RzLCBhZnRlciB0aGUgZmlyc3QgaXRlcmF0aW9u
+IHkgPSAwLCB0aGUKZGF0YS5wcmltYXJ5X2Zvcm1hdCBpcyBzZXQgdG8gRFJNX0ZPUk1BVF9OVjEy
+LiBUaGVuIGluIHkgPSAxIChGQkMgY2FzZXMpIHdpbGwgYmUgZXhlY3V0ZWQgd2l0aApmb3JtYXQg
+YXMgRFJNX0ZPUk1BVF9OVjEyIHdoaWNoIHdpbGwgZmFpbC4KCkFmdGVyIGludHJvZHVjaW5nIHRo
+ZSBGQkMgb24vb2ZmIGxvb3AsIEkgdGhpbmsgdGhlcmUgY291bGQgYmUgb3RoZXIgaXNzdWVzIGFz
+IHdlbGwsIGJlY2F1c2UgImRhdGEiCm1lbWJlcnMgYXJlIGRpcmVjdGx5IG1vZGlmaWVkIGFzIHJl
+cXVpcmVkIGJ5IHRoZSB0ZXN0cyBpbiB0aGF0IGxvb3AuCgpBbHNvIGZvciBwcmUtbG5sIHBsYXRm
+b3JtcywgZG8gd2UgbmVlZCB0byBldmVuIGxpc3QgYW5kIGV4ZWN1dGUgImZiYy0iIGNhc2VzIGFz
+IGl0IGlzIG5vdCBzdXBvcnRlZAphbmQgd2lsbCBiZSBza2lwcGVkPwoKQlIKVmlub2QKCgpPbiBU
+aHUsIDIwMjMtMTItMTQgYXQgMjE6MTIgKzA1MzAsIEplZXZhbiBCIHdyb3RlOgo+IFRoZSBmb3Jt
+YXQgaXMgYmVpbmcgY2hhbmdlZCBnbG9iYWxseSB0byBEUk1fRk9STUFUX05WMTIuIGFkZGl0aW9u
+YWxseSwKPiBGQkMgZG9lc24ndCBzdXBwb3J0IHRoZSBOVjEyIGZvcm1hdCwgc28gdGhpcyBpc3N1
+ZSBpcyBiZWluZyBhZGRyZXNzZWQuCj4gCj4gU2lnbmVkLW9mZi1ieTogSmVldmFuIEIgPGplZXZh
+bi5iQGludGVsLmNvbT4KPiAtLS0KPiDCoHRlc3RzL2ludGVsL2ttc19wc3IyX3NmLmMgfCA2ICsr
+KysrLQo+IMKgMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQo+
+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9pbnRlbC9rbXNfcHNyMl9zZi5jIGIvdGVzdHMvaW50ZWwv
+a21zX3BzcjJfc2YuYwo+IGluZGV4IDc2NDM1ZjUwMS4uMjcyMjYwY2RmIDEwMDY0NAo+IC0tLSBh
+L3Rlc3RzL2ludGVsL2ttc19wc3IyX3NmLmMKPiArKysgYi90ZXN0cy9pbnRlbC9rbXNfcHNyMl9z
+Zi5jCj4gQEAgLTEzODcsNyArMTM4Nyw2IEBAIGlndF9tYWluCj4gwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgKiBwbGFuZSBhbmQgY29udGludW91cyB1cGRhdGVzLgo+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICovCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBkYXRhLm9wID0gUExBTkVfVVBEQVRFX0NPTlRJTlVPVVM7Cj4gLcKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoGRhdGEucHJpbWFyeV9mb3JtYXQgPSBEUk1fRk9STUFUX05WMTI7Cj4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIlRlc3QgdGhhdCBz
+ZWxlY3RpdmUgZmV0Y2ggd29ya3Mgb24gb3ZlcmxheSBwbGFuZSIpOwo+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljX2YoIiVzb3ZlcmxheS0l
+cy1zZiIsIGFwcGVuZF9mYmNfc3VidGVzdFt5XSwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgb3Bfc3RyKGRhdGEub3ApKSB7Cj4gQEAgLTE0MDQsNiArMTQwMywxMSBAQCBpZ3RfbWFpbgo+
+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEucGlwZSA9IHBpcGVz
+W2ldOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEub3V0cHV0
+ID0gb3V0cHV0c1tpXTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBk
+YXRhLmRhbWFnZV9hcmVhX2NvdW50ID0gMTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoGlmIChkYXRhLmZiY19mbGFnID09IHRydWUgJiYKPiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBkYXRhLm9wX2ZiY19tb2RlID09IEZCQ19FTkFC
+TEVEKQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGRhdGEucHJpbWFyeV9mb3JtYXQgPSBEUk1fRk9STUFUX1hSR0I4ODg4Owo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZWxzZQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEucHJpbWFyeV9mb3JtYXQgPSBE
+Uk1fRk9STUFUX05WMTI7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+ZGF0YS50ZXN0X3BsYW5lX2lkID0gRFJNX1BMQU5FX1RZUEVfT1ZFUkxBWTsKPiDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLmNvZXhpc3RfZmVhdHVyZSA9IGo7Cj4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJlcGFyZSgmZGF0YSk7Cgo=
