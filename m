@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-From: Hersen Wu <hersenxs.wu@amd.com>
-Subject: [PATCH] [i-g-t] tests/amdgpu/amd_link_settings: Fix run eDP link
- training with unsupported link rate
-Date: Mon, 18 Dec 2023 08:59:28 -0500
-Message-ID: <20231218135928.35390-1-hersenxs.wu@amd.com>
-MIME-Version: 1.0
+Message-ID: <03d8c64e-b5a4-4b8e-81fa-e5b041edd26f@intel.com>
+Date: Mon, 18 Dec 2023 10:06:59 +0530
+Subject: Re: [igt-dev] [PATCH v2 5/8] tests/kms_vrr: Change the pattern
+ displayed in the test
+Content-Language: en-US
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+References: <20231023205910.3556533-1-sean@poorly.run>
+ <20231023205910.3556533-6-sean@poorly.run>
+ <64e81c86-4676-375b-c8be-d140de1256b0@intel.com>
+In-Reply-To: <64e81c86-4676-375b-c8be-d140de1256b0@intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,116 +24,118 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, rodrigo.siqueira@amd.com, aurabindo.pillai@amd.com, alex.hung@amd.com, hamza.mahfooz@amd.com, wayne.lin@amd.com
-Cc: Hersen Wu <hersenxs.wu@amd.com>, markyacoub@google.com
-Message-ID: <20231218135928.0Ctd6ZLDI-Yhl77lQV5cKz0U6aTrxoiX2pRn-vhfRNE@z>
+To: Sean Paul <sean@poorly.run>, igt-dev@lists.freedesktop.org
+Cc: Sean Paul <seanpaul@chromium.org>
+Message-ID: <20231218043659.8k49l8YZ5R7Ryy1qCXuWS3uIFaXRWu-srz1l8cTV3hM@z>
 
-From: Hersen Wu <Hersenxs.Wu@amd.com>
 
-Add check eDP intermedidate link rate caps from DPCD
-offset 0x10 - 0x1f. Only run DP link training for link
-rate supported by eDP.
+On 16-11-2023 01:55 pm, Modem, Bhanuprakash wrote:
+> 
+> On Tue-24-10-2023 02:26 am, Sean Paul wrote:
+>> From: Sean Paul <seanpaul@chromium.org>
+>>
+>> Upgrade the tiny box in the top left corner to some vertical color
+>> bars with horizontal grey and white bars at the bottom.
+>>
+>> Cc: Mark Yacoub <markyacoub@chromium.org>
+>> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> Signed-off-by: Sean Paul <seanpaul@chromium.org>
+>>
+>> Changes in v2 (Bhanu):
+>> - Removed hardcoded bar heights
+>> - Made number of vertical bars configurable
+>> - Fill in the entire screen horizontally
+>> ---
+>>   tests/kms_vrr.c | 45 +++++++++++++++++++++++++++++++++++++++++----
+>>   1 file changed, 41 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+>> index af61c312e..34d75d648 100644
+>> --- a/tests/kms_vrr.c
+>> +++ b/tests/kms_vrr.c
+>> @@ -232,11 +232,31 @@ static void set_vrr_on_pipe(data_t *data, enum 
+>> pipe pipe, bool enabled)
+>>       igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>>   }
+>> +static void paint_bar(cairo_t *cr, unsigned int x, unsigned int y,
+>> +              unsigned int w, unsigned int h,
+>> +              unsigned int bar, unsigned int num_bars,
+>> +              float start_r, float start_g, float start_b,
+>> +              float end_r, float end_g, float end_b)
+>> +{
+>> +    float progress = (float)bar / (float)num_bars;
+>> +    float color[] = {
+>> +        start_r + progress * (end_r - start_r),
+>> +        start_g + progress * (end_g - start_g),
+>> +        start_b + progress * (end_b - start_b)
+>> +    };
+>> +    igt_paint_color(cr, x, y, w, h,
+>> +            color[0] > 0 ? color[0] : 0.0,
+>> +            color[1] > 0 ? color[1] : 0.0,
+>> +            color[2] > 0 ? color[2] : 0.0);
+>> +}
+>> +
+>>   /* Prepare the display for testing on the given pipe. */
+>>   static void prepare_test(data_t *data, igt_output_t *output, enum 
+>> pipe pipe)
+>>   {
+>> +    static const unsigned int num_bars = 256;
+> 
+> Why static?
+> 
+>>       drmModeModeInfo mode;
+>>       cairo_t *cr;
+>> +    int bar_width, bar_height, bar_remaining, horizontal_bar_height;
+>>       /* Reset output */
+>>       igt_display_reset(&data->display);
+>> @@ -279,11 +299,28 @@ static void prepare_test(data_t *data, 
+>> igt_output_t *output, enum pipe pipe)
+>>                   DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+>>                   0.50, 0.50, 0.50, &data->fb[1]);
+>> +    bar_width = mode.hdisplay / num_bars;
+>> +    horizontal_bar_height = mode.vdisplay / 8 > +    bar_height = 
+>> mode.vdisplay - horizontal_bar_height * 2;
+>> +    bar_remaining = mode.hdisplay % bar_width;
+>>       cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[0]);
+>> -
+>> -    igt_paint_color(cr, 0, 0, mode.hdisplay / 10, mode.vdisplay / 10,
+>> -            1.00, 0.00, 0.00);
+>> -
+>> +    for (int j = 0; j < num_bars; ++j) {
+>> +        unsigned int width = bar_width;
+>> +        if (j == num_bars - 1)
+>> +            width += bar_remaining;
+>> +
+>> +        /* Red->Green->Blue gradient */
+>> +        if (j < num_bars / 2)
+>> +            paint_bar(cr, j * bar_width, 0, width, bar_height,
+>> +                  j, num_bars / 2,
+>> +                  1.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+>> +        else
+>> +            paint_bar(cr, j * bar_width, 0, width, bar_height,
+>> +                  j - num_bars / 2, num_bars / 2,
+>> +                  0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
+>> +    }
+> 
+> As per the commit message, grey bar is missing here.
+> 
+> igt_paint_color(cr, 0, bar_height,
+>          mode.hdisplay, horizontal_bar_height, 0.5, 0.5, 0.5);
 
-Beside max link rate, eDP1.4b introduces intermediate link
-rate. eDP reports ilr caps with DPCD register 0x10 - 0x1f.
+Got it, As we already created a gray framebuffer & painting the patters 
+on it, no need to paint the gray bar again.
 
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
----
- lib/igt_amd.h                    |  1 +
- tests/amdgpu/amd_ilr.c           |  2 --
- tests/amdgpu/amd_link_settings.c | 32 ++++++++++++++++++++++++++++----
- 3 files changed, 29 insertions(+), 6 deletions(-)
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index 1e66348ad..254b5d37b 100644
---- a/lib/igt_amd.h
-+++ b/lib/igt_amd.h
-@@ -46,6 +46,7 @@
- /* eDP related */
- #define DEBUGFS_EDP_ILR_SETTING "ilr_setting"
- #define MAX_SUPPORTED_ILR 8
-+#define MULTIPLIER_TO_LR 270000
- #define DEBUGFS_EDP_PSR_CAP	"psr_capability"
- #define DEBUGFS_EDP_PSR_STATE	"psr_state"
- #define DEBUGFS_ALLOW_EDP_HOTPLUG_DETECT "allow_edp_hotplug_detection"
-diff --git a/tests/amdgpu/amd_ilr.c b/tests/amdgpu/amd_ilr.c
-index 50ca93a14..b2c0f294d 100644
---- a/tests/amdgpu/amd_ilr.c
-+++ b/tests/amdgpu/amd_ilr.c
-@@ -29,8 +29,6 @@
- #include <sys/types.h>
- #include <sys/stat.h>
- 
--#define MULTIPLIER_TO_LR 270000
--
- IGT_TEST_DESCRIPTION("This igt test validates ILR (Intermediate Link Rate) "
- 	"feature from two perspective: "
- 	"1. Test if we can sucessfully train link rate at all supported ILRs"
-diff --git a/tests/amdgpu/amd_link_settings.c b/tests/amdgpu/amd_link_settings.c
-index 6a7e8cc53..226c94d73 100644
---- a/tests/amdgpu/amd_link_settings.c
-+++ b/tests/amdgpu/amd_link_settings.c
-@@ -34,6 +34,7 @@ typedef struct
-         enum pipe pipe_id;
- 	int connector_type;
- 	int w, h;
-+	int supported_ilr[MAX_SUPPORTED_ILR];
- } data_t;
- 
- const enum dc_lane_count lane_count_values[] =
-@@ -51,12 +52,17 @@ const enum dc_link_rate dp_link_rate_values[] =
- 	LINK_RATE_HIGH3
- };
- 
-+/* eDP 1.4b */
- const enum dc_link_rate edp_link_rate_values[] =
- {
--	LINK_RATE_LOW,
--	LINK_RATE_HIGH,
--	LINK_RATE_RBR2,
--	LINK_RATE_HIGH2
-+	LINK_RATE_LOW,		/* 0x6 Rate_1 (RBR)	- 1.62 Gbps/Lane */
-+	LINK_RATE_RATE_2,	/* 0x8 Rate_2		- 2.16 Gbps/Lane */
-+	LINK_RATE_RATE_3,	/* 0x9 Rate_3		- 2.43 Gbps/Lane */
-+	LINK_RATE_HIGH,		/* 0xA Rate_4 (HBR)	- 2.70 Gbps/Lane */
-+	LINK_RATE_RBR2,		/* 0xC Rate_5 (RBR2)	- 3.24 Gbps/Lane */
-+	LINK_RATE_RATE_6,	/* 0x10 Rate_6		- 4.32 Gbps/Lane */
-+	LINK_RATE_HIGH2,	/* 0x14 Rate_7 (HBR2)	- 5.40 Gbps/Lane */
-+	LINK_RATE_HIGH3		/* 0x1E Rate_8 (HBR3)	- 8.10 Gbps/Lane */
- };
- 
- static void test_fini(data_t *data)
-@@ -116,6 +122,8 @@ static void run_link_training_config(data_t *data, igt_output_t *output)
- 	} else if (data->connector_type == DRM_MODE_CONNECTOR_eDP) {
- 		link_rate_values = edp_link_rate_values;
- 		num_link_rates = ARRAY_SIZE(edp_link_rate_values);
-+		igt_amd_read_ilr_setting(data->drm_fd, connector_name,
-+			data->supported_ilr);
- 	} else {
- 		igt_info("Not a DP or eDP connector\n");
- 		return;
-@@ -137,6 +145,22 @@ static void run_link_training_config(data_t *data, igt_output_t *output)
- 			if (link_rate_values[j] > max_lr)
- 				continue;
- 
-+			/* Check if ilr link rate is supported */
-+			if (data->connector_type == DRM_MODE_CONNECTOR_eDP) {
-+				bool valid_link_rate = false;
-+
-+				for (int k = 0; k < MAX_SUPPORTED_ILR; k++) {
-+					if (data->supported_ilr[k] ==
-+						link_rate_values[j] * MULTIPLIER_TO_LR) {
-+						valid_link_rate = true;
-+						break;
-+					} else if (data->supported_ilr[k] == 0)
-+						break;
-+				}
-+				if (!valid_link_rate)
-+					continue;
-+			}
-+
- 			/* Write link settings */
- 			igt_info("Applying lane count: %d, link rate 0x%02x, on default training\n",
- 				  lane_count_values[i], link_rate_values[j]);
--- 
-2.25.1
+- Bhanu
+
+> 
+>> +    igt_paint_color(cr, 0, mode.vdisplay - horizontal_bar_height,
+> -------------------------------^
+> Should be (bar_height + horizontal_bar_height), right?
+> 
+> - Bhanu
+> 
+>> +            mode.hdisplay, horizontal_bar_height, 1.00, 1.00, 1.00);
+>>       igt_put_cairo_ctx(cr);
+>>       /* Take care of any required modesetting before the test begins. */
