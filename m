@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C84510E171
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Dec 2023 02:11:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 085DE10E171
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Dec 2023 02:11:33 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [i-g-t v3 1/9] tests/kms_vrr: Move fb0 and fb1 to an array
-Date: Tue, 19 Dec 2023 07:36:05 +0530
-Message-Id: <20231219020613.113772-2-bhanuprakash.modem@intel.com>
+Subject: [i-g-t v3 2/9] tests/kms_vrr: Move vtest_ns into data_t
+Date: Tue, 19 Dec 2023 07:36:06 +0530
+Message-Id: <20231219020613.113772-3-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231219020613.113772-1-bhanuprakash.modem@intel.com>
 References: <20231219020613.113772-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
@@ -25,11 +25,10 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Sean Paul <seanpaul@chromium.org>
 
-Consolidate the 2 fb variables into an array. No functional changes.
+vtest_ns is derived from data->range which is fixed. Move it into data_t
+and generate it once in prepare_test().
 
-v2:
-- Clarified commit msg (Bhanu)
-v3: (Bhanu)
+v2: (Bhanu)
 - Rebase
 
 Cc: Mark Yacoub <markyacoub@chromium.org>
@@ -37,77 +36,99 @@ Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Sean Paul <seanpaul@chromium.org>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vrr.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ tests/kms_vrr.c | 36 +++++++++++++++---------------------
+ 1 file changed, 15 insertions(+), 21 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 1ace970a5..dda716ff3 100644
+index dda716ff3..505bad44b 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -104,8 +104,7 @@ typedef struct data {
+@@ -100,6 +100,12 @@ typedef struct range {
+ 	unsigned int max;
+ } range_t;
+ 
++typedef struct vtest_ns {
++	uint64_t min;
++	uint64_t mid;
++	uint64_t max;
++} vtest_ns_t;
++
+ typedef struct data {
  	igt_display_t display;
  	int drm_fd;
- 	igt_plane_t *primary;
--	igt_fb_t fb0;
--	igt_fb_t fb1;
-+	igt_fb_t fb[2];
+@@ -107,14 +113,9 @@ typedef struct data {
+ 	igt_fb_t fb[2];
  	range_t range;
  	drmModeModeInfo switch_modes[RR_MODES_COUNT];
++	vtest_ns_t vtest_ns;
  } data_t;
-@@ -280,13 +279,13 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 
+-typedef struct vtest_ns {
+-	uint64_t min;
+-	uint64_t mid;
+-	uint64_t max;
+-} vtest_ns_t;
+-
+ typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, uint32_t);
+ 
+ /* Converts a timespec structure to nanoseconds. */
+@@ -232,18 +233,6 @@ get_vrr_range(data_t *data, igt_output_t *output)
+ 	return range;
+ }
+ 
+-/* Returns vrr test frequency for min, mid & max range. */
+-static vtest_ns_t get_test_rate_ns(range_t range)
+-{
+-	vtest_ns_t vtest_ns;
+-
+-	vtest_ns.min = rate_from_refresh(range.min);
+-	vtest_ns.mid = rate_from_refresh(((range.max + range.min) / 2));
+-	vtest_ns.max = rate_from_refresh(range.max);
+-
+-	return vtest_ns;
+-}
+-
+ /* Returns true if driver supports VRR. */
+ static bool has_vrr(igt_output_t *output)
+ {
+@@ -276,6 +265,11 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 
+ 	mode = *igt_output_get_mode(output);
+ 
++	data->vtest_ns.min = rate_from_refresh(data->range.min);
++	data->vtest_ns.mid = rate_from_refresh(
++				(data->range.min + data->range.max) / 2);
++	data->vtest_ns.max = rate_from_refresh(data->range.max);
++
  	/* Prepare resources */
  	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
  			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
--			    0.50, 0.50, 0.50, &data->fb0);
-+			    0.50, 0.50, 0.50, &data->fb[0]);
- 
- 	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
- 			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
--			    0.50, 0.50, 0.50, &data->fb1);
-+			    0.50, 0.50, 0.50, &data->fb[1]);
- 
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb0);
-+	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[0]);
- 
- 	igt_paint_color(cr, 0, 0, mode.hdisplay / 10, mode.vdisplay / 10,
- 			1.00, 0.00, 0.00);
-@@ -295,7 +294,7 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
- 
- 	/* Take care of any required modesetting before the test begins. */
- 	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
--	igt_plane_set_fb(data->primary, &data->fb0);
-+	igt_plane_set_fb(data->primary, &data->fb[0]);
- 
- 	/* Clear vrr_enabled state before enabling it, because
- 	 * it might be left enabled if the previous test fails.
-@@ -345,7 +344,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
- 	vtest_ns_t vtest_ns = get_test_rate_ns(data->range);
+@@ -341,7 +335,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 	uint64_t start_ns, last_event_ns, target_ns;
+ 	uint32_t total_flip = 0, total_pass = 0;
+ 	bool front = false;
+-	vtest_ns_t vtest_ns = get_test_rate_ns(data->range);
++	vtest_ns_t vtest_ns = data->vtest_ns;
  
  	/* Align with the flip completion event to speed up convergence. */
--	do_flip(data, &data->fb0);
-+	do_flip(data, &data->fb[0]);
- 	start_ns = last_event_ns = target_ns = get_kernel_event_ns(data,
- 							DRM_EVENT_FLIP_COMPLETE);
+ 	do_flip(data, &data->fb[0]);
+@@ -418,7 +412,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
  
-@@ -354,7 +353,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
- 		int64_t diff_ns;
+ 	prepare_test(data, output, pipe);
+ 	range = data->range;
+-	vtest_ns = get_test_rate_ns(range);
++	vtest_ns = data->vtest_ns;
+ 	rate = vtest_ns.mid;
  
- 		front = !front;
--		do_flip(data, front ? &data->fb1 : &data->fb0);
-+		do_flip(data, front ? &data->fb[1] : &data->fb[0]);
+ 	igt_info("VRR Test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\n",
+@@ -512,7 +506,7 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
+ 	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
  
- 		/* We need to cpture flip event instead of vblank event,
- 		 * because vblank is triggered after each frame, but depending
-@@ -560,8 +559,8 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_output_override_mode(output, NULL);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 	prepare_test(data, output, pipe);
+-	vtest_ns = get_test_rate_ns(data->range);
++	vtest_ns = data->vtest_ns;
  
--	igt_remove_fb(data->drm_fd, &data->fb1);
--	igt_remove_fb(data->drm_fd, &data->fb0);
-+	igt_remove_fb(data->drm_fd, &data->fb[1]);
-+	igt_remove_fb(data->drm_fd, &data->fb[0]);
- }
- 
- static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags)
+ 	if (vrr)
+ 		set_vrr_on_pipe(data, pipe, false, true);
 -- 
 2.40.0
