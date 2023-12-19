@@ -1,17 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82D9610E3DF
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Dec 2023 05:01:25 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [i-g-t v4 3/9] tests/kms_vrr: Allow test rate to be altered from the
- command line
-Date: Tue, 19 Dec 2023 10:26:18 +0530
-Message-Id: <20231219045618.128087-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231219020613.113772-4-bhanuprakash.modem@intel.com>
-References: <20231219020613.113772-4-bhanuprakash.modem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D3E1610E182
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Dec 2023 05:43:16 +0000 (UTC)
+From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: RE: [PATCH] lib: sync i915_pciids.h with kernel
+Date: Tue, 19 Dec 2023 05:43:13 +0000
+Message-ID: <SJ1PR11MB6129BD2C80EB786A916F0A09B997A@SJ1PR11MB6129.namprd11.prod.outlook.com>
+References: <20231212090841.2060493-1-chaitanya.kumar.borah@intel.com>
+ <c3cae6fc-8a97-4abd-9918-bba55c1757ca@gmail.com>
+ <DM4PR11MB614147FFF506542FADD01654B98CA@DM4PR11MB6141.namprd11.prod.outlook.com>
+ <20231214143628.xyisz4tovwg3jjo2@kamilkon-desk.igk.intel.com>
+ <SJ1PR11MB61292ABDFB706F233E749456B990A@SJ1PR11MB6129.namprd11.prod.outlook.com>
+ <20231218161918.dj4b5zqdzwogdbkg@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20231218161918.dj4b5zqdzwogdbkg@kamilkon-desk.igk.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,131 +26,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Sean Paul <seanpaul@chromium.org>
+Cc: "Garg, Nemesa" <nemesa.garg@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Sean Paul <seanpaul@chromium.org>
-
-Instead of always using the midpoint, introduce optional argument
---refresh-rate to allow callers to specify the target refresh rate for
-the test.
-
-v2:
-- Add short opt to the main callsite (Bhanu)
-v3: (Bhanu)
-- Rebase
-v4: (Bhanu)
-- Not necessary to keep the refresh rate within the VRR range
-
-Cc: Mark Yacoub <markyacoub@chromium.org>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Sean Paul <seanpaul@chromium.org>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_vrr.c | 43 ++++++++++++++++++++++++++++++++++---------
- 1 file changed, 34 insertions(+), 9 deletions(-)
-
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 505bad44b..553b8d356 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -102,7 +102,7 @@ typedef struct range {
- 
- typedef struct vtest_ns {
- 	uint64_t min;
--	uint64_t mid;
-+	uint64_t rate_ns;
- 	uint64_t max;
- } vtest_ns_t;
- 
-@@ -266,10 +266,15 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
- 	mode = *igt_output_get_mode(output);
- 
- 	data->vtest_ns.min = rate_from_refresh(data->range.min);
--	data->vtest_ns.mid = rate_from_refresh(
--				(data->range.min + data->range.max) / 2);
- 	data->vtest_ns.max = rate_from_refresh(data->range.max);
- 
-+	/* If unspecified on the command line, default rate to the midpoint */
-+	if (data->vtest_ns.rate_ns == 0) {
-+		range_t *range = &data->range;
-+		data->vtest_ns.rate_ns = rate_from_refresh(
-+						(range->min + range->max) / 2);
-+	}
-+
- 	/* Prepare resources */
- 	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
- 			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-@@ -413,7 +418,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	prepare_test(data, output, pipe);
- 	range = data->range;
- 	vtest_ns = data->vtest_ns;
--	rate = vtest_ns.mid;
-+	rate = vtest_ns.rate_ns;
- 
- 	igt_info("VRR Test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\n",
- 		 output->name, kmstest_pipe_name(pipe), range.min, range.max);
-@@ -466,7 +471,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	}
- 
- 	if (flags & ~TEST_NEGATIVE) {
--		rate = vtest_ns.mid;
-+		rate = vtest_ns.rate_ns;
- 		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
- 		igt_assert_f(result > 75,
- 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
-@@ -487,7 +492,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	 * a VRR capable panel.
- 	 */
- 	set_vrr_on_pipe(data, pipe, !(flags & TEST_FASTSET), (flags & TEST_NEGATIVE) ? true : false);
--	rate = vtest_ns.mid;
-+	rate = vtest_ns.rate_ns;
- 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
- 	igt_assert_f(result < 10,
- 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold exceeded, result was %u%%\n",
-@@ -535,7 +540,7 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
- 	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
- 	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
- 
--	rate = vtest_ns.mid;
-+	rate = vtest_ns.rate_ns;
- 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
- 	igt_assert_f(vrr ? (result > 75) : (result < 10),
- 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold %s, result was %u%%\n",
-@@ -655,10 +660,30 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
- 	}
- }
- 
--igt_main
-+static int opt_handler(int opt, int opt_index, void *_data)
- {
--	data_t data = {};
-+	data_t *data = _data;
-+
-+	switch (opt) {
-+	case 'r':
-+		data->vtest_ns.rate_ns = rate_from_refresh(atoi(optarg));
-+		break;
-+	}
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
- 
-+static const struct option long_opts[] = {
-+	{ .name = "refresh-rate", .has_arg = true, .val = 'r', },
-+	{}
-+};
-+
-+static const char help_str[] =
-+	"  --refresh-rate <refresh-hz>\t\tThe refresh rate to flip at\n";
-+
-+static data_t data;
-+
-+igt_main_args("r:", long_opts, help_str, opt_handler, &data)
-+{
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 
--- 
-2.40.0
+SGVsbG8sDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwgS29u
+aWVjem55IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiBNb25kYXks
+IERlY2VtYmVyIDE4LCAyMDIzIDk6NDkgUE0NCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnDQo+IENjOiBCb3JhaCwgQ2hhaXRhbnlhIEt1bWFyIDxjaGFpdGFueWEua3VtYXIuYm9y
+YWhAaW50ZWwuY29tPjsgSnVoYS1QZWtrYQ0KPiBIZWlra2lsYSA8anVoYXBla2thLmhlaWtraWxh
+QGdtYWlsLmNvbT47IEdhcmcsIE5lbWVzYQ0KPiA8bmVtZXNhLmdhcmdAaW50ZWwuY29tPg0KPiBT
+dWJqZWN0OiBSZTogW1BBVENIXSBsaWI6IHN5bmMgaTkxNV9wY2lpZHMuaCB3aXRoIGtlcm5lbA0K
+PiANCj4gSGksDQo+IA0KPiBPbiAyMDIzLTEyLTE4IGF0IDEwOjE0OjM0ICswMDAwLCBCb3JhaCwg
+Q2hhaXRhbnlhIEt1bWFyIHdyb3RlOg0KPiA+IEhlbGxvIEthbWlsLA0KPiA+DQo+ID4gPiAtLS0t
+LU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4gRnJvbTogS2FtaWwgS29uaWVjem55IDxrYW1p
+bC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiA+ID4gU2VudDogVGh1cnNkYXksIERlY2Vt
+YmVyIDE0LCAyMDIzIDg6MDYgUE0NCj4gPiA+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
+Lm9yZw0KPiA+ID4gQ2M6IEJvcmFoLCBDaGFpdGFueWEgS3VtYXIgPGNoYWl0YW55YS5rdW1hci5i
+b3JhaEBpbnRlbC5jb20+Ow0KPiA+ID4gSnVoYS1QZWtrYSBIZWlra2lsYSA8anVoYXBla2thLmhl
+aWtraWxhQGdtYWlsLmNvbT47IEdhcmcsIE5lbWVzYQ0KPiA+ID4gPG5lbWVzYS5nYXJnQGludGVs
+LmNvbT4NCj4gPiA+IFN1YmplY3Q6IFJlOiBbUEFUQ0hdIGxpYjogc3luYyBpOTE1X3BjaWlkcy5o
+IHdpdGgga2VybmVsDQo+ID4gPg0KPiA+ID4gSGksDQo+ID4gPg0KPiA+ID4gT24gMjAyMy0xMi0x
+NCBhdCAwNDo0ODoyNyArMDAwMCwgQm9yYWgsIENoYWl0YW55YSBLdW1hciB3cm90ZToNCj4gPiA+
+ID4gSGVsbG8gSlAsDQo+ID4gPiA+DQo+ID4gPiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0t
+LS0NCj4gPiA+ID4gPiBGcm9tOiBKdWhhLVBla2thIEhlaWtraWxhIDxqdWhhcGVra2EuaGVpa2tp
+bGFAZ21haWwuY29tPg0KPiA+ID4gPiA+IFNlbnQ6IFdlZG5lc2RheSwgRGVjZW1iZXIgMTMsIDIw
+MjMgNjo0NyBQTQ0KPiA+ID4gPiA+IFRvOiBCb3JhaCwgQ2hhaXRhbnlhIEt1bWFyIDxjaGFpdGFu
+eWEua3VtYXIuYm9yYWhAaW50ZWwuY29tPjsNCj4gPiA+ID4gPiBpZ3QtIGRldkBsaXN0cy5mcmVl
+ZGVza3RvcC5vcmcNCj4gPiA+ID4gPiBDYzogR2FyZywgTmVtZXNhIDxuZW1lc2EuZ2FyZ0BpbnRl
+bC5jb20+DQo+ID4gPiA+ID4gU3ViamVjdDogUmU6IFtQQVRDSF0gbGliOiBzeW5jIGk5MTVfcGNp
+aWRzLmggd2l0aCBrZXJuZWwNCj4gPiA+ID4gPg0KPiA+ID4gPiA+IFRoaXMgaXMgbm90IGNvcnJl
+Y3QuIFRoaXMgZG9lcyBub3Qgc3luY2hyb25pemUgd2l0aCBrZXJuZWwgY29tbWl0Lg0KPiA+ID4g
+PiA+IGk5MTVfcGNpaWRzLmggaXMgc3VwcG9zZWQgdG8gYmUgY29waWVkIGFzIGlzIGZyb20ga2Vy
+bmVsLg0KPiA+ID4gPg0KPiA+ID4gPiBUaGlzIGhhcyBjcm9zc2VkIG15IG1pbmQgYnV0IHRoZXJl
+IGFyZSBhIGxvdCBvZiBjaGFuZ2VzWzFdDQo+ID4gPiA+IHVucmVsYXRlZCB0bw0KPiA+ID4gQVJM
+LVMgaWYgd2UganVzdCBjb3B5IHRoZSBmaWxlLg0KPiA+ID4gPiBUaGVyZWZvcmUsIGl0IG1hZGUg
+bWUgYSBiaXQgdW5jb21mb3J0YWJsZS4gU2hvdWxkIEkgZ28gYWhlYWQgYW55d2F5Pw0KPiA+ID4g
+Pg0KPiA+ID4gPiBBdCBsZWFzdCBmb3IgUFZDIGRldmljZSBpZHMsIHdlIG1pZ2h0IGhhdmUgdG8g
+dGFrZSBhbiBleGNlcHRpb24uDQo+ID4gPiA+IE9yIG1heSBiZQ0KPiA+ID4gdGhleSBkaWQgbm90
+IGJlbG9uZyB0aGVyZSBpbiB0aGUgZmlyc3QgcGxhY2UuDQo+ID4gPiA+DQo+ID4gPg0KPiA+ID4g
+WW91IG1heSBhZGQgb25seSBBUkwtUyBidXQgdGhlbiB3cml0ZSBpbiBzdWJqZWN0IHdoYXQgeW91
+IGRpZCBhcyBpdA0KPiA+ID4gaXMgbm90IHN5bmNpbmcsIGZvciBleGFtcGxlOg0KPiA+ID4NCj4g
+PiA+IFtQQVRDSF0gbGliL2k5MTVfcGNpaWRzOiBBZGQgQVJMLVMNCj4gPiA+DQo+ID4gPiBhbmQg
+ZGVzY3JpYmUgd2h5IHlvdSBhZGRlZCBvbmx5IHRoYXQuIFdyaXRlIGFsc28gd2hpY2ggY29tbWl0
+IChoYXNoDQo+ID4gPiBhbmQNCj4gPiA+IHN1YmplY3QpIHlvdSB1c2VkICh3b3JraW5nIGxpbmsg
+Y291bGQgYWxzbyBoZWxwKS4NCj4gPiA+DQo+ID4gPiBPbmUgbW9yZSB0aGluZzogd2h5IG5vdCBh
+ZGRpbmcgYWxsIHdpdGhvdXQgcmVtb3ZpbmcgUFZDIGlkcz8NCj4gPiA+DQo+ID4NCj4gPiBBY3R1
+YWxseSwgSSB3aWxsIGdvIGFoZWFkIGFuZCBkbyB0aGF0LiBJIHdpbGwgcG9zdCBhIHBhdGNoIHNv
+b24uDQo+ID4NCg0KK01hdHQsIExpb25lbA0KDQpTcG9rZSB0byBzb29uISBXZSBhcmUgcnVubmlu
+ZyBpbnRvIGJ1aWxkIGVycm9ycyBmb3IgTVRMIFBDSSBJRHMgYXMgdGhlIGtlcm5lbCBkb2VzIG5v
+dCBkZWZpbmUgdGhlIG1hY3Jvcw0KDQpJTlRFTF9NVExfUF9HVDJfSURTDQpJTlRFTF9NVExfUF9H
+VDNfSURTDQoNCkkgYW0gbm90IHN1cmUgaG93IHRvIGhhbmRsZSB0aGlzIG5vdy4gTWFrZSBhbiBl
+eGNlcHRpb24gZm9yIE1UTCB0b28/IE9yIFNob3VsZCB0aGVzZSBjaGFuZ2VzIGJlIGFkZGVkIGJh
+Y2sgdG8gdGhlIGtlcm5lbCBoZWFkZXI/DQoNCg0KLi4vbGliL2k5MTUvcGVyZi5jOiBJbiBmdW5j
+dGlvbiDigJhpc19tdGxfZ3Qy4oCZOg0KLi4vbGliL2k5MTUvcGVyZi5jOjIxNjozOiBlcnJvcjog
+aW1wbGljaXQgZGVjbGFyYXRpb24gb2YgZnVuY3Rpb24g4oCYSU5URUxfTVRMX01fSURT4oCZOyBk
+aWQgeW91IG1lYW4g4oCYSU5URUxfTVRMX0lEU+KAmT8gWy1XZXJyb3I9aW1wbGljaXQtZnVuY3Rp
+b24tZGVjbGFyYXRpb25dDQogIDIxNiB8ICAgSU5URUxfTVRMX01fSURTKE5VTEwpLA0KICAgICAg
+fCAgIF5+fn5+fn5+fn5+fn5+fg0KICAgICAgfCAgIElOVEVMX01UTF9JRFMNCi4uL2xpYi9pOTE1
+L3BlcmYuYzoyMTY6Mzogd2FybmluZzogbmVzdGVkIGV4dGVybiBkZWNsYXJhdGlvbiBvZiDigJhJ
+TlRFTF9NVExfTV9JRFPigJkgWy1XbmVzdGVkLWV4dGVybnNdDQouLi9saWIvaTkxNS9wZXJmLmM6
+MjE2OjM6IGVycm9yOiBpbml0aWFsaXplciBlbGVtZW50IGlzIG5vdCBjb25zdGFudA0KLi4vbGli
+L2k5MTUvcGVyZi5jOjIxNjozOiBub3RlOiAobmVhciBpbml0aWFsaXphdGlvbiBmb3Ig4oCYZGV2
+aWRzWzBd4oCZKQ0KLi4vbGliL2k5MTUvcGVyZi5jOjIxNzozOiBlcnJvcjogaW1wbGljaXQgZGVj
+bGFyYXRpb24gb2YgZnVuY3Rpb24g4oCYSU5URUxfTVRMX1BfR1QyX0lEU+KAmTsgZGlkIHlvdSBt
+ZWFuIOKAmElOVEVMX0NGTF9VX0dUMl9JRFPigJk/IFstV2Vycm9yPWltcGxpY2l0LWZ1bmN0aW9u
+LWRlY2xhcmF0aW9uXQ0KICAyMTcgfCAgIElOVEVMX01UTF9QX0dUMl9JRFMoTlVMTCksDQogICAg
+ICB8ICAgXn5+fn5+fn5+fn5+fn5+fn5+fg0KICAgICAgfCAgIElOVEVMX0NGTF9VX0dUMl9JRFMN
+Ci4uL2xpYi9pOTE1L3BlcmYuYzoyMTc6Mzogd2FybmluZzogbmVzdGVkIGV4dGVybiBkZWNsYXJh
+dGlvbiBvZiDigJhJTlRFTF9NVExfUF9HVDJfSURT4oCZIFstV25lc3RlZC1leHRlcm5zXQ0KLi4v
+bGliL2k5MTUvcGVyZi5jOjIxNzozOiBlcnJvcjogaW5pdGlhbGl6ZXIgZWxlbWVudCBpcyBub3Qg
+Y29uc3RhbnQNCi4uL2xpYi9pOTE1L3BlcmYuYzoyMTc6Mzogbm90ZTogKG5lYXIgaW5pdGlhbGl6
+YXRpb24gZm9yIOKAmGRldmlkc1sxXeKAmSkNCi4uL2xpYi9pOTE1L3BlcmYuYzogSW4gZnVuY3Rp
+b24g4oCYaXNfbXRsX2d0M+KAmToNCi4uL2xpYi9pOTE1L3BlcmYuYzoyMzQ6MzogZXJyb3I6IGlt
+cGxpY2l0IGRlY2xhcmF0aW9uIG9mIGZ1bmN0aW9uIOKAmElOVEVMX01UTF9QX0dUM19JRFPigJk7
+IGRpZCB5b3UgbWVhbiDigJhJTlRFTF9XSExfVV9HVDNfSURT4oCZPyBbLVdlcnJvcj1pbXBsaWNp
+dC1mdW5jdGlvbi1kZWNsYXJhdGlvbl0NCiAgMjM0IHwgICBJTlRFTF9NVExfUF9HVDNfSURTKE5V
+TEwpLA0KICAgICAgfCAgIF5+fn5+fn5+fn5+fn5+fn5+fn4NCiAgICAgIHwgICBJTlRFTF9XSExf
+VV9HVDNfSURTDQouLi9saWIvaTkxNS9wZXJmLmM6MjM0OjM6IHdhcm5pbmc6IG5lc3RlZCBleHRl
+cm4gZGVjbGFyYXRpb24gb2Yg4oCYSU5URUxfTVRMX1BfR1QzX0lEU+KAmSBbLVduZXN0ZWQtZXh0
+ZXJuc10NCi4uL2xpYi9pOTE1L3BlcmYuYzoyMzQ6MzogZXJyb3I6IGluaXRpYWxpemVyIGVsZW1l
+bnQgaXMgbm90IGNvbnN0YW50DQouLi9saWIvaTkxNS9wZXJmLmM6MjM0OjM6IG5vdGU6IChuZWFy
+IGluaXRpYWxpemF0aW9uIGZvciDigJhkZXZpZHNbMF3igJkpDQoNCj4gPiBSZWdhcmRzDQo+ID4N
+Cj4gPiBDaGFpdGFueWENCj4gDQo+IExhc3QgdGhpbmcsIHBsZWFzZSBhZGQgaS1nLXQgaW4gc3Vi
+amVjdCBhZnRlciBQQVRDSCwgc28gaXQgd2lsbCBiZToNCj4gDQo+IFtQQVRDSCBpLWctdF0gZGVz
+Y3JpYmUgaGVyZSB5b3VyIHBhdGNoDQo+IA0KDQpBY2suDQoNClJlZ2FyZHMNCg0KQ2hhaXRhbnlh
+DQoNCj4gUmVnYXJkcywNCj4gS2FtaWwNCj4gDQo+IFsuLi5jdXQuLi5dDQoNCg==
