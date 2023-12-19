@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A773A10E4D2
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Dec 2023 15:27:44 +0000 (UTC)
-From: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
-Subject: RE: [PATCH i-g-t] tests/xe_create: Use separate VMs per process
-Date: Tue, 19 Dec 2023 15:27:41 +0000
-Message-ID: <CH0PR11MB544423D6926CEF01FDB989CFE597A@CH0PR11MB5444.namprd11.prod.outlook.com>
-References: <20231218145051.1869466-1-jonathan.cavitt@intel.com>
- <20231219044845.cqzbiqf4bndxpva3@zkempczy-mobl2>
-In-Reply-To: <20231219044845.cqzbiqf4bndxpva3@zkempczy-mobl2>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/alternative;
+ boundary="===============1603072529218048159=="
 MIME-Version: 1.0
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Ffrontbuff?=
+ =?utf-8?q?er=5Ftracking=3A_Cleanup_pipe_crc_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
+Date: Tue, 19 Dec 2023 15:32:48 -0000
+Message-ID: <170299996847.17580.10207399756966943533@emeril.freedesktop.org>
+References: <20231206083136.16099-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20231206083136.16099-1-nidhi1.gupta@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,131 +17,165 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>, "De
- Marchi, Lucas" <lucas.demarchi@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gupta,
- saurabhg" <saurabhg.gupta@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
------Original Message-----
-From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>=20
-Sent: Monday, December 18, 2023 8:49 PM
-To: Cavitt, Jonathan <jonathan.cavitt@intel.com>
-Cc: igt-dev@lists.freedesktop.org; Gupta, saurabhg <saurabhg.gupta@intel.co=
-m>; Welty, Brian <brian.welty@intel.com>; kamil.konieczny@linux.intel.com; =
-De Marchi, Lucas <lucas.demarchi@intel.com>; Vishwanathapura, Niranjana <ni=
-ranjana.vishwanathapura@intel.com>
-Subject: Re: [PATCH i-g-t] tests/xe_create: Use separate VMs per process
->=20
-> On Mon, Dec 18, 2023 at 06:50:51AM -0800, Jonathan Cavitt wrote:
-> > We currently exercise cross-user impact in xe_create by attempting to
-> > concurrently create a large number of exec queues on a single vm using
-> > forked child processes.  This is unrealistic, as multiple users are mor=
-e
-> > likely to be using separate file descriptors for creating exec queues.
-> >=20
-> > Update the test to reflect this use case.
->=20
-> As original version of the test reveals bug in KMD Brian suggested in off=
-line
-> discussion we should keep current test behavior (but not executed in BAT
-> with MAXTIME tweaked to relatively large value). I mean we should have fo=
-ur
-> subtests - two with current behavior with increased maxtime not executed =
-in
-> BAT + two with maxtime set to 5/6. I see ATSM passed with your change but
-> it is on the time limit boundary.
+--===============1603072529218048159==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/intel/kms_frontbuffer_tracking: Cleanup pipe crc (rev2)
+URL   : https://patchwork.freedesktop.org/series/127412/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_14043 -> IGTPW_10444
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10444/index.html
+
+Participating hosts (38 -> 38)
+------------------------------
+
+  Additional (1): fi-pnv-d510 
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10444 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s0@lmem0:
+    - bat-dg2-9:          [PASS][1] -> [INCOMPLETE][2] ([i915#9275])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14043/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10444/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][3] ([fdo#109271]) +28 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10444/fi-pnv-d510/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg2-11:         [PASS][4] -> [ABORT][5] ([i915#9840])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14043/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10444/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
+  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
+  [i915#9840]: https://gitlab.freedesktop.org/drm/intel/issues/9840
 
 
-I'm sorry.  I don't fully understand what change you're suggesting here.
+Build changes
+-------------
 
-It sounds like you want me to create a duplicate of the original test that
-increases MAXTIME to, say, 15, while also leaving an old version that
-leaves MAXTIME at 5.  That's doable, but it also sounds like you want
-to run the test with the low MAXTIME on BAT and not the test with
-the high MAXTIME.
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7648 -> IGTPW_10444
 
-Doesn't that defeat the purpose of creating a duplicate test, since
-we're not changing the test behavior on BAT and thus the issue would
-still get reported?  Or did you mean for those tests to be put the other
-way around?  Or are you referring to the test change in this patch when
-referring to the "two [tests] with maxtime set to 5/6"?  Or am I
-misunderstanding what the BAT tests are?
+  CI-20190529: 20190529
+  CI_DRM_14043: 8c4f2d88dd9d7a32b8e16171c29edbe41ca1e8af @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10444: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10444/index.html
+  IGT_7648: 5c7b44f13c9c5bc15af0cb2b6a5ea10a8a468ac0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
--Jonathan Cavitt
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10444/index.html
+
+--===============1603072529218048159==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
->=20
-> --
-> Zbigniew
->=20
-> >=20
-> > Suggested-by: Brian Welty <brian.welty@intel.com>
-> > Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> > CC: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
-> > CC: Lucas De Marchi <lucas.demarchi@intel.com>
-> > CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > CC: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-> > ---
-> >  tests/intel/xe_create.c | 17 +++++++++--------
-> >  1 file changed, 9 insertions(+), 8 deletions(-)
-> >=20
-> > diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-> > index 0aa32c788a..22f9464161 100644
-> > --- a/tests/intel/xe_create.c
-> > +++ b/tests/intel/xe_create.c
-> > @@ -167,13 +167,9 @@ enum exec_queue_destroy {
-> >  static void create_execqueues(int fd, enum exec_queue_destroy ed)
-> >  {
-> >  	struct timespec tv =3D { };
-> > -	uint32_t num_engines, exec_queues_per_process, vm;
-> > +	uint32_t exec_queues_per_process;
-> >  	int nproc =3D sysconf(_SC_NPROCESSORS_ONLN), seconds;
-> > =20
-> > -	fd =3D drm_reopen_driver(fd);
-> > -	num_engines =3D xe_number_engines(fd);
-> > -	vm =3D xe_vm_create(fd, 0, 0);
-> > -
-> >  	exec_queues_per_process =3D max_t(uint32_t, 1, MAXEXECQUEUES / nproc)=
-;
-> >  	igt_debug("nproc: %u, exec_queues per process: %u\n", nproc, exec_que=
-ues_per_process);
-> > =20
-> > @@ -182,8 +178,13 @@ static void create_execqueues(int fd, enum exec_qu=
-eue_destroy ed)
-> >  	igt_fork(n, nproc) {
-> >  		struct drm_xe_engine *engine;
-> >  		uint32_t exec_queue, exec_queues[exec_queues_per_process];
-> > +		uint32_t num_engines, vm;
-> >  		int idx, err, i;
-> > =20
-> > +		fd =3D drm_reopen_driver(fd);
-> > +		num_engines =3D xe_number_engines(fd);
-> > +		vm =3D xe_vm_create(fd, 0, 0);
-> > +
-> >  		srandom(n);
-> > =20
-> >  		for (i =3D 0; i < exec_queues_per_process; i++) {
-> > @@ -206,12 +207,12 @@ static void create_execqueues(int fd, enum exec_q=
-ueue_destroy ed)
-> >  				xe_exec_queue_destroy(fd, exec_queues[i]);
-> >  			}
-> >  		}
-> > +
-> > +		xe_vm_destroy(fd, vm);
-> > +		drm_close_driver(fd);
-> >  	}
-> >  	igt_waitchildren();
-> > =20
-> > -	xe_vm_destroy(fd, vm);
-> > -	drm_close_driver(fd);
-> > -
-> >  	seconds =3D igt_seconds_elapsed(&tv);
-> >  	igt_assert_f(seconds < MAXTIME,
-> >  		     "Creating %d exec_queues tooks too long: %d [limit: %d]\n",
-> > --=20
-> > 2.25.1
-> >=20
->=20
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_frontbuffer_tracking: Cleanup pipe crc (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127412/">https://patchwork.freedesktop.org/series/127412/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10444/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10444/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_14043 -&gt; IGTPW_10444</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10444/index.html</p>
+<h2>Participating hosts (38 -&gt; 38)</h2>
+<p>Additional (1): fi-pnv-d510 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10444 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@lmem0:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14043/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10444/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10444/fi-pnv-d510/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +28 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14043/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10444/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9840">i915#9840</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7648 -&gt; IGTPW_10444</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14043: 8c4f2d88dd9d7a32b8e16171c29edbe41ca1e8af @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10444: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10444/index.html<br />
+  IGT_7648: 5c7b44f13c9c5bc15af0cb2b6a5ea10a8a468ac0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1603072529218048159==--
