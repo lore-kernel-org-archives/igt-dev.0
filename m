@@ -1,22 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C25C210E15D
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Dec 2023 07:12:22 +0000 (UTC)
-From: "Govindapillai, Vinod" <vinod.govindapillai@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "B,
- Jeevan" <jeevan.b@intel.com>
-Subject: Re: [PATCH i-g-t] tests/intel/kms_psr2_sf: Fix primary_format setting
-Date: Tue, 19 Dec 2023 07:12:19 +0000
-Message-ID: <676a3cc3088542205d697501aafe19ac3586af11.camel@intel.com>
-References: <20231214154219.2638408-1-jeevan.b@intel.com>
- <3078182a95bbba4e94abcf6f621e944109e059c4.camel@intel.com>
- <DM4PR11MB63127B1BB1D76F8CA1FB17EB9097A@DM4PR11MB6312.namprd11.prod.outlook.com>
-In-Reply-To: <DM4PR11MB63127B1BB1D76F8CA1FB17EB9097A@DM4PR11MB6312.namprd11.prod.outlook.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BDA65C4C93573844929DABCC71C6DD8C@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48A6710E27D
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Dec 2023 07:29:18 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [i-g-t v4 8/9] tests/kms_vrr: Add a max/min test to oscillate between
+ rates
+Date: Tue, 19 Dec 2023 12:54:02 +0530
+Message-Id: <20231219072402.148738-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231219020613.113772-9-bhanuprakash.modem@intel.com>
+References: <20231219020613.113772-9-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,82 +19,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Sean Paul <seanpaul@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDIzLTEyLTE5IGF0IDA2OjQzICswMDAwLCBCLCBKZWV2YW4gd3JvdGU6Cj4gPiAt
-LS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQo+ID4gRnJvbTogR292aW5kYXBpbGxhaSwgVmlub2Qg
-PHZpbm9kLmdvdmluZGFwaWxsYWlAaW50ZWwuY29tPgo+ID4gU2VudDogTW9uZGF5LCBEZWNlbWJl
-ciAxOCwgMjAyMyA1OjQzIFBNCj4gPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7
-IEIsIEplZXZhbiA8amVldmFuLmJAaW50ZWwuY29tPgo+ID4gQ2M6IFNoYXJtYSwgU3dhdGkyIDxz
-d2F0aTIuc2hhcm1hQGludGVsLmNvbT4KPiA+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggaS1nLXRdIHRl
-c3RzL2ludGVsL2ttc19wc3IyX3NmOiBGaXggcHJpbWFyeV9mb3JtYXQgc2V0dGluZwo+ID4gCj4g
-PiBIaSBqZWV2YW4sCj4gPiAKPiA+IFRoaXMgbWlnaHQgbm90IGJlIGVub3VnaC4KPiA+IAo+ID4g
-Rm9yIGV4YW1wbGUsIGlmIHlvdSBhcmUgZXhlY3V0aW5nIGFsbCB0aGUgdGVzdHMsIGFmdGVyIHRo
-ZSBmaXJzdCBpdGVyYXRpb24geSA9IDAsIHRoZQo+ID4gZGF0YS5wcmltYXJ5X2Zvcm1hdCBpcyBz
-ZXQgdG8gRFJNX0ZPUk1BVF9OVjEyLiBUaGVuIGluIHkgPSAxIChGQkMgY2FzZXMpIHdpbGwKPiA+
-IGJlIGV4ZWN1dGVkIHdpdGggZm9ybWF0IGFzIERSTV9GT1JNQVRfTlYxMiB3aGljaCB3aWxsIGZh
-aWwuCj4gPiAKPiA+IEFmdGVyIGludHJvZHVjaW5nIHRoZSBGQkMgb24vb2ZmIGxvb3AsIEkgdGhp
-bmsgdGhlcmUgY291bGQgYmUgb3RoZXIgaXNzdWVzIGFzIHdlbGwsCj4gPiBiZWNhdXNlICJkYXRh
-Igo+ID4gbWVtYmVycyBhcmUgZGlyZWN0bHkgbW9kaWZpZWQgYXMgcmVxdWlyZWQgYnkgdGhlIHRl
-c3RzIGluIHRoYXQgbG9vcC4KPiA+IAo+ID4gQWxzbyBmb3IgcHJlLWxubCBwbGF0Zm9ybXMsIGRv
-IHdlIG5lZWQgdG8gZXZlbiBsaXN0IGFuZCBleGVjdXRlICJmYmMtIiBjYXNlcyBhcyBpdCBpcwo+
-ID4gbm90IHN1cG9ydGVkIGFuZCB3aWxsIGJlIHNraXBwZWQ/Cj4gPiAKPiBTaG91bGQgd2UgcmVz
-dHJ1Y3R1cmUgdGhlIHRlc3QgYnkgYWRkIG5ldyBzdWJ0ZXN0cyBpbnN0ZWFkIG9mIGxvb3Bpbmcg
-aXQgPwo+IApBIHF1aWNrIHNvbHV0aW9uIGNvdWxkIGJlIHRvIG1vdmUgdGhlIGluaXRpYWxpemF0
-aW9uIHNvbWUgb2YgdGhlIGNvbW1vbiAiZGF0YSIgbWVtYmVycyB0byB0aGUgdGhlCmJlZ2lubmlu
-ZyBvZiB0aGUgImZvciIgbG9vcCBpbmNsdWRpbmcgdGhlIGRhdGEucHJpbWFyeV9mb3JtYXQgZnJv
-bSAiaWd0X2ZpeHR1cmUiLiBPciBjcmVhdGUgYW5vdGhlcgpmdW5jdGlvbiB0byBpbml0IHRoZSBk
-YXRhIG1lbWJlcnMgYWNjb3JkaW5nIHRvIHRoZSB0ZXN0LiBJIGFtIG5vdCBzdXJlIGlmIHRoYXQg
-aXMgYWNjb3JkaW5nIHRvIHRoZQpwcmFjdGljZXMgaW4gSUdULgoKPiBOVjEyIHNob3VsZCBiZSBm
-aXhlZCB3aXRoIHRoaXMgbG9naWMswqAKSSBkb250IHRoaW5rIHNvISBBcyBtZW50aW9uZWQgaWYg
-eW91IGV4ZWN1dGUgdGhlIGZ1bGwgImttc19wc3IyX3NmIiwgeSA9IDEgKEZCQykgaXRlcmF0aW9u
-IHRlc3RzCndpbGwgYmUgZXhlY3V0ZWQgd2l0aCBmb3JtYXQgYXMgTlYxMiBhbmQgd2lsbCBmYWls
-LgoKQlIKVmlub2QKCj4gYnV0IG90aGVyIHBhcmFtZXRlcnMgbWlnaHQgYmUgYWZmZWN0ZWQgYXMg
-eW91IHBvaW50ZWQgb3V0LiAKCj4gCj4gPiBCUgo+ID4gVmlub2QKPiA+IAo+ID4gCj4gPiBPbiBU
-aHUsIDIwMjMtMTItMTQgYXQgMjE6MTIgKzA1MzAsIEplZXZhbiBCIHdyb3RlOgo+ID4gPiBUaGUg
-Zm9ybWF0IGlzIGJlaW5nIGNoYW5nZWQgZ2xvYmFsbHkgdG8gRFJNX0ZPUk1BVF9OVjEyLiBhZGRp
-dGlvbmFsbHksCj4gPiA+IEZCQyBkb2Vzbid0IHN1cHBvcnQgdGhlIE5WMTIgZm9ybWF0LCBzbyB0
-aGlzIGlzc3VlIGlzIGJlaW5nIGFkZHJlc3NlZC4KPiA+ID4gCj4gPiA+IFNpZ25lZC1vZmYtYnk6
-IEplZXZhbiBCIDxqZWV2YW4uYkBpbnRlbC5jb20+Cj4gPiA+IC0tLQo+ID4gPiDCoHRlc3RzL2lu
-dGVsL2ttc19wc3IyX3NmLmMgfCA2ICsrKysrLQo+ID4gPiDCoDEgZmlsZSBjaGFuZ2VkLCA1IGlu
-c2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKPiA+ID4gCj4gPiA+IGRpZmYgLS1naXQgYS90ZXN0
-cy9pbnRlbC9rbXNfcHNyMl9zZi5jIGIvdGVzdHMvaW50ZWwva21zX3BzcjJfc2YuYwo+ID4gPiBp
-bmRleCA3NjQzNWY1MDEuLjI3MjI2MGNkZiAxMDA2NDQKPiA+ID4gLS0tIGEvdGVzdHMvaW50ZWwv
-a21zX3BzcjJfc2YuYwo+ID4gPiArKysgYi90ZXN0cy9pbnRlbC9rbXNfcHNyMl9zZi5jCj4gPiA+
-IEBAIC0xMzg3LDcgKzEzODcsNiBAQCBpZ3RfbWFpbgo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCAqIHBsYW5lIGFuZCBjb250aW51b3VzIHVwZGF0ZXMuCj4gPiA+IMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICovCj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgZGF0YS5vcCA9IFBMQU5FX1VQREFURV9DT05USU5VT1VTOwo+ID4gPiAtwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5wcmltYXJ5X2Zvcm1hdCA9IERSTV9GT1JN
-QVRfTlYxMjsKPiA+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVzY3Jp
-YmUoIlRlc3QgdGhhdCBzZWxlY3RpdmUgZmV0Y2ggd29ya3Mgb24KPiA+ID4gb3ZlcmxheSBwbGFu
-ZSIpOwo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0X3dp
-dGhfZHluYW1pY19mKCIlc292ZXJsYXktJXMtc2YiLAo+ID4gPiBhcHBlbmRfZmJjX3N1YnRlc3Rb
-eV0sCj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBvcF9zdHIoZGF0YS5vcCkpIHsg
-QEAKPiA+ID4gLTE0MDQsNiArMTQwMywxMSBAQCBpZ3RfbWFpbgo+ID4gPiDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnBpcGUgPSBwaXBlc1tpXTsKPiA+ID4gwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5vdXRwdXQgPQo+ID4gPiBv
-dXRwdXRzW2ldOwo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBk
-YXRhLmRhbWFnZV9hcmVhX2NvdW50Cj4gPiA+ID0gMTsKPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAoZGF0YS5mYmNfZmxhZyA9PQo+ID4gPiArdHJ1ZSAmJgo+
-ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBkYXRhLm9w
-X2ZiY19tb2RlCj4gPiA+ICs9PSBGQkNfRU5BQkxFRCkKPiA+ID4gKwo+ID4gPiArZGF0YS5wcmlt
-YXJ5X2Zvcm1hdCA9IERSTV9GT1JNQVRfWFJHQjg4ODg7Cj4gPiA+ICvCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgZWxzZQo+ID4gPiArCj4gPiA+ICtkYXRhLnByaW1hcnlfZm9y
-bWF0ID0gRFJNX0ZPUk1BVF9OVjEyOwo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqBkYXRhLnRlc3RfcGxhbmVfaWQgPQo+ID4gPiBEUk1fUExBTkVfVFlQRV9PVkVS
-TEFZOwo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLmNv
-ZXhpc3RfZmVhdHVyZSA9Cj4gPiA+IGo7Cj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoHByZXBhcmUoJmRhdGEpOwo+IAoK
+From: Sean Paul <seanpaul@chromium.org>
+
+The new MAXMIN test will oscillate between the max and min
+refresh rates every frame to stress test the panel. This is
+useful for manual profiling of flicker.
+
+v2:
+- Added to the set
+v3: (Bhanu)
+- Rebase
+- Add testplan documentation
+v4: (Bhanu)
+- Don't execute other stuff in max-min
+
+Signed-off-by: Sean Paul <seanpaul@chromium.org>
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_vrr.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
+
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 7640ee0b6..fb812041e 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -66,6 +66,10 @@
+  * Description: Test to switch RR seamlessly without modeset.
+  * Functionality: adaptive_sync, drrs
+  *
++ * SUBTEST: max-min
++ * Description: Oscillates between highest and lowest refresh each frame for
++ *              manual flicker profiling
++ *
+  * SUBTEST: negative-basic
+  * Description: Make sure that VRR should not be enabled on the Non-VRR panel.
+  */
+@@ -86,7 +90,8 @@ enum {
+ 	TEST_SEAMLESS_VRR = 1 << 4,
+ 	TEST_SEAMLESS_DRRS = 1 << 5,
+ 	TEST_FASTSET = 1 << 6,
+-	TEST_NEGATIVE = 1 << 7,
++	TEST_MAXMIN = 1 << 7,
++	TEST_NEGATIVE = 1 << 8,
+ };
+ 
+ enum {
+@@ -524,7 +529,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 			     (range.max + 5), rate[0], result);
+ 	}
+ 
+-	if (flags & ~TEST_NEGATIVE) {
++	if (flags & ~(TEST_NEGATIVE | TEST_MAXMIN)) {
+ 		rate[0] = vtest_ns.rate_ns;
+ 		result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
+ 		igt_assert_f(result > 75,
+@@ -540,6 +545,16 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 			     (range.min - 5), rate[0], result);
+ 	}
+ 
++	if (flags & TEST_MAXMIN) {
++		uint64_t maxmin_rates[] = {vtest_ns.max, vtest_ns.min};
++
++		result = flip_and_measure(data, output, pipe, maxmin_rates, 2, data->duration_ns);
++		igt_assert_f(result < 50,
++			     "Refresh rates (%u/%u Hz) %"PRIu64"ns/%"PRIu64"ns: Target VRR on threshold exceeded, result was %u%%\n",
++			     range.max, range.min, maxmin_rates[0], maxmin_rates[1], result);
++		return;
++	}
++
+ 	/*
+ 	 * If we request VRR on a non-VRR panel, it is unlikely to reject the
+ 	 * modeset. And the expected behavior is the same as disabling VRR on
+@@ -781,6 +796,11 @@ igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
+ 	igt_subtest_with_dynamic("negative-basic")
+ 		run_vrr_test(&data, test_basic, TEST_NEGATIVE);
+ 
++	igt_describe("Oscillates between highest and lowest refresh each frame for manual "
++		     "flicker profiling");
++	igt_subtest_with_dynamic("max-min")
++		run_vrr_test(&data, test_basic, TEST_MAXMIN);
++
+ 	igt_subtest_group {
+ 		igt_fixture
+ 			igt_require_intel(data.drm_fd);
+-- 
+2.40.0
