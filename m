@@ -1,24 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6200010E09A
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Dec 2023 07:00:58 +0000 (UTC)
-Date: Tue, 19 Dec 2023 08:00:42 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH] lib: sync i915_pciids.h with kernel
-Message-ID: <20231219070042.l5yhwd6lmoe7chvn@kamilkon-desk.igk.intel.com>
-References: <20231212090841.2060493-1-chaitanya.kumar.borah@intel.com>
- <c3cae6fc-8a97-4abd-9918-bba55c1757ca@gmail.com>
- <DM4PR11MB614147FFF506542FADD01654B98CA@DM4PR11MB6141.namprd11.prod.outlook.com>
- <20231214143628.xyisz4tovwg3jjo2@kamilkon-desk.igk.intel.com>
- <SJ1PR11MB61292ABDFB706F233E749456B990A@SJ1PR11MB6129.namprd11.prod.outlook.com>
- <20231218161918.dj4b5zqdzwogdbkg@kamilkon-desk.igk.intel.com>
- <SJ1PR11MB6129BD2C80EB786A916F0A09B997A@SJ1PR11MB6129.namprd11.prod.outlook.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C25C210E15D
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Dec 2023 07:12:22 +0000 (UTC)
+From: "Govindapillai, Vinod" <vinod.govindapillai@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "B,
+ Jeevan" <jeevan.b@intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/kms_psr2_sf: Fix primary_format setting
+Date: Tue, 19 Dec 2023 07:12:19 +0000
+Message-ID: <676a3cc3088542205d697501aafe19ac3586af11.camel@intel.com>
+References: <20231214154219.2638408-1-jeevan.b@intel.com>
+ <3078182a95bbba4e94abcf6f621e944109e059c4.camel@intel.com>
+ <DM4PR11MB63127B1BB1D76F8CA1FB17EB9097A@DM4PR11MB6312.namprd11.prod.outlook.com>
+In-Reply-To: <DM4PR11MB63127B1BB1D76F8CA1FB17EB9097A@DM4PR11MB6312.namprd11.prod.outlook.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <BDA65C4C93573844929DABCC71C6DD8C@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <SJ1PR11MB6129BD2C80EB786A916F0A09B997A@SJ1PR11MB6129.namprd11.prod.outlook.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,138 +24,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Garg, Nemesa" <nemesa.garg@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
-
-On 2023-12-19 at 05:43:13 +0000, Borah, Chaitanya Kumar wrote:
-> Hello,
-> 
-> > -----Original Message-----
-> > From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > Sent: Monday, December 18, 2023 9:49 PM
-> > To: igt-dev@lists.freedesktop.org
-> > Cc: Borah, Chaitanya Kumar <chaitanya.kumar.borah@intel.com>; Juha-Pekka
-> > Heikkila <juhapekka.heikkila@gmail.com>; Garg, Nemesa
-> > <nemesa.garg@intel.com>
-> > Subject: Re: [PATCH] lib: sync i915_pciids.h with kernel
-> > 
-> > Hi,
-> > 
-> > On 2023-12-18 at 10:14:34 +0000, Borah, Chaitanya Kumar wrote:
-> > > Hello Kamil,
-> > >
-> > > > -----Original Message-----
-> > > > From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > > > Sent: Thursday, December 14, 2023 8:06 PM
-> > > > To: igt-dev@lists.freedesktop.org
-> > > > Cc: Borah, Chaitanya Kumar <chaitanya.kumar.borah@intel.com>;
-> > > > Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>; Garg, Nemesa
-> > > > <nemesa.garg@intel.com>
-> > > > Subject: Re: [PATCH] lib: sync i915_pciids.h with kernel
-> > > >
-> > > > Hi,
-> > > >
-> > > > On 2023-12-14 at 04:48:27 +0000, Borah, Chaitanya Kumar wrote:
-> > > > > Hello JP,
-> > > > >
-> > > > > > -----Original Message-----
-> > > > > > From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> > > > > > Sent: Wednesday, December 13, 2023 6:47 PM
-> > > > > > To: Borah, Chaitanya Kumar <chaitanya.kumar.borah@intel.com>;
-> > > > > > igt- dev@lists.freedesktop.org
-> > > > > > Cc: Garg, Nemesa <nemesa.garg@intel.com>
-> > > > > > Subject: Re: [PATCH] lib: sync i915_pciids.h with kernel
-> > > > > >
-> > > > > > This is not correct. This does not synchronize with kernel commit.
-> > > > > > i915_pciids.h is supposed to be copied as is from kernel.
-> > > > >
-> > > > > This has crossed my mind but there are a lot of changes[1]
-> > > > > unrelated to
-> > > > ARL-S if we just copy the file.
-> > > > > Therefore, it made me a bit uncomfortable. Should I go ahead anyway?
-> > > > >
-> > > > > At least for PVC device ids, we might have to take an exception.
-> > > > > Or may be
-> > > > they did not belong there in the first place.
-> > > > >
-> > > >
-> > > > You may add only ARL-S but then write in subject what you did as it
-> > > > is not syncing, for example:
-> > > >
-> > > > [PATCH] lib/i915_pciids: Add ARL-S
-> > > >
-> > > > and describe why you added only that. Write also which commit (hash
-> > > > and
-> > > > subject) you used (working link could also help).
-> > > >
-> > > > One more thing: why not adding all without removing PVC ids?
-> > > >
-> > >
-> > > Actually, I will go ahead and do that. I will post a patch soon.
-> > >
-> 
-> +Matt, Lionel
-> 
-> Spoke to soon! We are running into build errors for MTL PCI IDs as the kernel does not define the macros
-> 
-> INTEL_MTL_P_GT2_IDS
-> INTEL_MTL_P_GT3_IDS
-> 
-> I am not sure how to handle this now. Make an exception for MTL too? Or Should these changes be added back to the kernel header?
-> 
-
-Looks like it can be deleted from lib perf.c?
-Please verify such change on MTL.
-
-Regards,
-Kamil
-
-> 
-> ../lib/i915/perf.c: In function ‘is_mtl_gt2’:
-> ../lib/i915/perf.c:216:3: error: implicit declaration of function ‘INTEL_MTL_M_IDS’; did you mean ‘INTEL_MTL_IDS’? [-Werror=implicit-function-declaration]
->   216 |   INTEL_MTL_M_IDS(NULL),
->       |   ^~~~~~~~~~~~~~~
->       |   INTEL_MTL_IDS
-> ../lib/i915/perf.c:216:3: warning: nested extern declaration of ‘INTEL_MTL_M_IDS’ [-Wnested-externs]
-> ../lib/i915/perf.c:216:3: error: initializer element is not constant
-> ../lib/i915/perf.c:216:3: note: (near initialization for ‘devids[0]’)
-> ../lib/i915/perf.c:217:3: error: implicit declaration of function ‘INTEL_MTL_P_GT2_IDS’; did you mean ‘INTEL_CFL_U_GT2_IDS’? [-Werror=implicit-function-declaration]
->   217 |   INTEL_MTL_P_GT2_IDS(NULL),
->       |   ^~~~~~~~~~~~~~~~~~~
->       |   INTEL_CFL_U_GT2_IDS
-> ../lib/i915/perf.c:217:3: warning: nested extern declaration of ‘INTEL_MTL_P_GT2_IDS’ [-Wnested-externs]
-> ../lib/i915/perf.c:217:3: error: initializer element is not constant
-> ../lib/i915/perf.c:217:3: note: (near initialization for ‘devids[1]’)
-> ../lib/i915/perf.c: In function ‘is_mtl_gt3’:
-> ../lib/i915/perf.c:234:3: error: implicit declaration of function ‘INTEL_MTL_P_GT3_IDS’; did you mean ‘INTEL_WHL_U_GT3_IDS’? [-Werror=implicit-function-declaration]
->   234 |   INTEL_MTL_P_GT3_IDS(NULL),
->       |   ^~~~~~~~~~~~~~~~~~~
->       |   INTEL_WHL_U_GT3_IDS
-> ../lib/i915/perf.c:234:3: warning: nested extern declaration of ‘INTEL_MTL_P_GT3_IDS’ [-Wnested-externs]
-> ../lib/i915/perf.c:234:3: error: initializer element is not constant
-> ../lib/i915/perf.c:234:3: note: (near initialization for ‘devids[0]’)
-> 
-> > > Regards
-> > >
-> > > Chaitanya
-> > 
-> > Last thing, please add i-g-t in subject after PATCH, so it will be:
-> > 
-> > [PATCH i-g-t] describe here your patch
-> > 
-> 
-> Ack.
-> 
-> Regards
-> 
-> Chaitanya
-> 
-> > Regards,
-> > Kamil
-> > 
-> > [...cut...]
-> 
+T24gVHVlLCAyMDIzLTEyLTE5IGF0IDA2OjQzICswMDAwLCBCLCBKZWV2YW4gd3JvdGU6Cj4gPiAt
+LS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQo+ID4gRnJvbTogR292aW5kYXBpbGxhaSwgVmlub2Qg
+PHZpbm9kLmdvdmluZGFwaWxsYWlAaW50ZWwuY29tPgo+ID4gU2VudDogTW9uZGF5LCBEZWNlbWJl
+ciAxOCwgMjAyMyA1OjQzIFBNCj4gPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7
+IEIsIEplZXZhbiA8amVldmFuLmJAaW50ZWwuY29tPgo+ID4gQ2M6IFNoYXJtYSwgU3dhdGkyIDxz
+d2F0aTIuc2hhcm1hQGludGVsLmNvbT4KPiA+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggaS1nLXRdIHRl
+c3RzL2ludGVsL2ttc19wc3IyX3NmOiBGaXggcHJpbWFyeV9mb3JtYXQgc2V0dGluZwo+ID4gCj4g
+PiBIaSBqZWV2YW4sCj4gPiAKPiA+IFRoaXMgbWlnaHQgbm90IGJlIGVub3VnaC4KPiA+IAo+ID4g
+Rm9yIGV4YW1wbGUsIGlmIHlvdSBhcmUgZXhlY3V0aW5nIGFsbCB0aGUgdGVzdHMsIGFmdGVyIHRo
+ZSBmaXJzdCBpdGVyYXRpb24geSA9IDAsIHRoZQo+ID4gZGF0YS5wcmltYXJ5X2Zvcm1hdCBpcyBz
+ZXQgdG8gRFJNX0ZPUk1BVF9OVjEyLiBUaGVuIGluIHkgPSAxIChGQkMgY2FzZXMpIHdpbGwKPiA+
+IGJlIGV4ZWN1dGVkIHdpdGggZm9ybWF0IGFzIERSTV9GT1JNQVRfTlYxMiB3aGljaCB3aWxsIGZh
+aWwuCj4gPiAKPiA+IEFmdGVyIGludHJvZHVjaW5nIHRoZSBGQkMgb24vb2ZmIGxvb3AsIEkgdGhp
+bmsgdGhlcmUgY291bGQgYmUgb3RoZXIgaXNzdWVzIGFzIHdlbGwsCj4gPiBiZWNhdXNlICJkYXRh
+Igo+ID4gbWVtYmVycyBhcmUgZGlyZWN0bHkgbW9kaWZpZWQgYXMgcmVxdWlyZWQgYnkgdGhlIHRl
+c3RzIGluIHRoYXQgbG9vcC4KPiA+IAo+ID4gQWxzbyBmb3IgcHJlLWxubCBwbGF0Zm9ybXMsIGRv
+IHdlIG5lZWQgdG8gZXZlbiBsaXN0IGFuZCBleGVjdXRlICJmYmMtIiBjYXNlcyBhcyBpdCBpcwo+
+ID4gbm90IHN1cG9ydGVkIGFuZCB3aWxsIGJlIHNraXBwZWQ/Cj4gPiAKPiBTaG91bGQgd2UgcmVz
+dHJ1Y3R1cmUgdGhlIHRlc3QgYnkgYWRkIG5ldyBzdWJ0ZXN0cyBpbnN0ZWFkIG9mIGxvb3Bpbmcg
+aXQgPwo+IApBIHF1aWNrIHNvbHV0aW9uIGNvdWxkIGJlIHRvIG1vdmUgdGhlIGluaXRpYWxpemF0
+aW9uIHNvbWUgb2YgdGhlIGNvbW1vbiAiZGF0YSIgbWVtYmVycyB0byB0aGUgdGhlCmJlZ2lubmlu
+ZyBvZiB0aGUgImZvciIgbG9vcCBpbmNsdWRpbmcgdGhlIGRhdGEucHJpbWFyeV9mb3JtYXQgZnJv
+bSAiaWd0X2ZpeHR1cmUiLiBPciBjcmVhdGUgYW5vdGhlcgpmdW5jdGlvbiB0byBpbml0IHRoZSBk
+YXRhIG1lbWJlcnMgYWNjb3JkaW5nIHRvIHRoZSB0ZXN0LiBJIGFtIG5vdCBzdXJlIGlmIHRoYXQg
+aXMgYWNjb3JkaW5nIHRvIHRoZQpwcmFjdGljZXMgaW4gSUdULgoKPiBOVjEyIHNob3VsZCBiZSBm
+aXhlZCB3aXRoIHRoaXMgbG9naWMswqAKSSBkb250IHRoaW5rIHNvISBBcyBtZW50aW9uZWQgaWYg
+eW91IGV4ZWN1dGUgdGhlIGZ1bGwgImttc19wc3IyX3NmIiwgeSA9IDEgKEZCQykgaXRlcmF0aW9u
+IHRlc3RzCndpbGwgYmUgZXhlY3V0ZWQgd2l0aCBmb3JtYXQgYXMgTlYxMiBhbmQgd2lsbCBmYWls
+LgoKQlIKVmlub2QKCj4gYnV0IG90aGVyIHBhcmFtZXRlcnMgbWlnaHQgYmUgYWZmZWN0ZWQgYXMg
+eW91IHBvaW50ZWQgb3V0LiAKCj4gCj4gPiBCUgo+ID4gVmlub2QKPiA+IAo+ID4gCj4gPiBPbiBU
+aHUsIDIwMjMtMTItMTQgYXQgMjE6MTIgKzA1MzAsIEplZXZhbiBCIHdyb3RlOgo+ID4gPiBUaGUg
+Zm9ybWF0IGlzIGJlaW5nIGNoYW5nZWQgZ2xvYmFsbHkgdG8gRFJNX0ZPUk1BVF9OVjEyLiBhZGRp
+dGlvbmFsbHksCj4gPiA+IEZCQyBkb2Vzbid0IHN1cHBvcnQgdGhlIE5WMTIgZm9ybWF0LCBzbyB0
+aGlzIGlzc3VlIGlzIGJlaW5nIGFkZHJlc3NlZC4KPiA+ID4gCj4gPiA+IFNpZ25lZC1vZmYtYnk6
+IEplZXZhbiBCIDxqZWV2YW4uYkBpbnRlbC5jb20+Cj4gPiA+IC0tLQo+ID4gPiDCoHRlc3RzL2lu
+dGVsL2ttc19wc3IyX3NmLmMgfCA2ICsrKysrLQo+ID4gPiDCoDEgZmlsZSBjaGFuZ2VkLCA1IGlu
+c2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKPiA+ID4gCj4gPiA+IGRpZmYgLS1naXQgYS90ZXN0
+cy9pbnRlbC9rbXNfcHNyMl9zZi5jIGIvdGVzdHMvaW50ZWwva21zX3BzcjJfc2YuYwo+ID4gPiBp
+bmRleCA3NjQzNWY1MDEuLjI3MjI2MGNkZiAxMDA2NDQKPiA+ID4gLS0tIGEvdGVzdHMvaW50ZWwv
+a21zX3BzcjJfc2YuYwo+ID4gPiArKysgYi90ZXN0cy9pbnRlbC9rbXNfcHNyMl9zZi5jCj4gPiA+
+IEBAIC0xMzg3LDcgKzEzODcsNiBAQCBpZ3RfbWFpbgo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCAqIHBsYW5lIGFuZCBjb250aW51b3VzIHVwZGF0ZXMuCj4gPiA+IMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICovCj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgZGF0YS5vcCA9IFBMQU5FX1VQREFURV9DT05USU5VT1VTOwo+ID4gPiAtwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5wcmltYXJ5X2Zvcm1hdCA9IERSTV9GT1JN
+QVRfTlYxMjsKPiA+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVzY3Jp
+YmUoIlRlc3QgdGhhdCBzZWxlY3RpdmUgZmV0Y2ggd29ya3Mgb24KPiA+ID4gb3ZlcmxheSBwbGFu
+ZSIpOwo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0X3dp
+dGhfZHluYW1pY19mKCIlc292ZXJsYXktJXMtc2YiLAo+ID4gPiBhcHBlbmRfZmJjX3N1YnRlc3Rb
+eV0sCj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBvcF9zdHIoZGF0YS5vcCkpIHsg
+QEAKPiA+ID4gLTE0MDQsNiArMTQwMywxMSBAQCBpZ3RfbWFpbgo+ID4gPiDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnBpcGUgPSBwaXBlc1tpXTsKPiA+ID4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5vdXRwdXQgPQo+ID4gPiBv
+dXRwdXRzW2ldOwo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBk
+YXRhLmRhbWFnZV9hcmVhX2NvdW50Cj4gPiA+ID0gMTsKPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAoZGF0YS5mYmNfZmxhZyA9PQo+ID4gPiArdHJ1ZSAmJgo+
+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBkYXRhLm9w
+X2ZiY19tb2RlCj4gPiA+ICs9PSBGQkNfRU5BQkxFRCkKPiA+ID4gKwo+ID4gPiArZGF0YS5wcmlt
+YXJ5X2Zvcm1hdCA9IERSTV9GT1JNQVRfWFJHQjg4ODg7Cj4gPiA+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgZWxzZQo+ID4gPiArCj4gPiA+ICtkYXRhLnByaW1hcnlfZm9y
+bWF0ID0gRFJNX0ZPUk1BVF9OVjEyOwo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBkYXRhLnRlc3RfcGxhbmVfaWQgPQo+ID4gPiBEUk1fUExBTkVfVFlQRV9PVkVS
+TEFZOwo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLmNv
+ZXhpc3RfZmVhdHVyZSA9Cj4gPiA+IGo7Cj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoHByZXBhcmUoJmRhdGEpOwo+IAoK
