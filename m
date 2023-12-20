@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6008D10E242
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC8FE10E242
  for <igt-dev@lists.freedesktop.org>; Wed, 20 Dec 2023 17:59:56 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 00/12] tests/kms_big_fb: Test planar formats, and CCS
-Date: Wed, 20 Dec 2023 19:59:22 +0200
-Message-ID: <20231220175934.22849-1-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 02/12] tests/kms_big_fb: Use igt_fb_create_intel_buf()
+Date: Wed, 20 Dec 2023 19:59:24 +0200
+Message-ID: <20231220175934.22849-3-ville.syrjala@linux.intel.com>
+In-Reply-To: <20231220175934.22849-1-ville.syrjala@linux.intel.com>
+References: <20231220175934.22849-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -23,56 +25,52 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-While poking around in the i915 display surface address
-calculations I decided that we should increase our testing
-coverage to include planar formats, and compressed modifiers.
+Use igt_fb_create_intel_buf() instead of hand rolling something
+similar but less capable (igt_fb_create_intel_buf() handles
+planar and compressed formats, the hand rolled version does not).
 
-This series achieves the bare minimum of that; We now test
-uncompressed NV12 and P016 [1], and compressed RGB on
-pre-TGL [2].
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ tests/intel/kms_big_fb.c | 27 +--------------------------
+ 1 file changed, 1 insertion(+), 26 deletions(-)
 
-[1] compressed planar formats would require a mechanism to do
-    the copy_pattern() stuff, and unfortunately the current
-    vebox copy implementation leaves us hanging by not
-    supporting arbitraty coordinates
-[2] On TGL the CCS results are garbage, which I suspect is due
-    to some issue(s) with rendercopy/aux pagetables since
-    pre-TGL CCS is fine
-
-Side note: It took me about as much time to write and debug
-the actual code here as it took me to figure out how to get
-past the inane igt "missing documentation" checks...
-
-Ville Syrjälä (12):
-  lib/rendercopy: Add deltas to all surface relocs
-  tests/kms_big_fb: Use igt_fb_create_intel_buf()
-  lib/igt_fb: Expose igt_fb_is_ccs_modifier()
-  tests/kms_big_fb: Fix async
-  tests/kms_big_fb: Test async flips + linear on tgl+
-  tests/kms_big_fb: Determine the max fb size the same way always
-  tests/kms_frontbuffer_tracking: Use igt_create_fb()
-  lib/igt_fb: Make igt_calc_fb_size() somewhat usable
-  tests/kms_big_fb: Nuke fliptab[]
-  tests/kms_big_fb: Replace 'bpp' with 'name'
-  tests/kms_big_fb: Test planar YCbCr formats
-  tests/kms_big_fb: Also test some CCS modifiers
-
- lib/igt_fb.c                           |  73 ++----
- lib/igt_fb.h                           |   4 +-
- lib/rendercopy_gen4.c                  |   9 +-
- lib/rendercopy_gen6.c                  |   9 +-
- lib/rendercopy_gen7.c                  |   9 +-
- lib/rendercopy_gen8.c                  |   9 +-
- lib/rendercopy_gen9.c                  |  13 +-
- lib/rendercopy_i830.c                  |  10 +-
- lib/rendercopy_i915.c                  |   6 +-
- tests/intel/gem_pxp.c                  |   4 +-
- tests/intel/kms_big_fb.c               | 323 ++++++++++++++-----------
- tests/intel/kms_frontbuffer_tracking.c |  11 +-
- tests/kms_addfb_basic.c                |  14 +-
- tests/kms_prime.c                      |  12 +-
- tests/kms_rotation_crc.c               |  10 +-
- 15 files changed, 277 insertions(+), 239 deletions(-)
-
+diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+index 3eb43515a1fd..eef8148d2ba3 100644
+--- a/tests/intel/kms_big_fb.c
++++ b/tests/intel/kms_big_fb.c
+@@ -187,32 +187,7 @@ static struct intel_buf *init_buf(data_t *data,
+ 				  const struct igt_fb *fb,
+ 				  const char *buf_name)
+ {
+-	struct intel_buf *buf;
+-	enum intel_driver driver = buf_ops_get_driver(data->bops);
+-	uint32_t name, handle, tiling, stride, width, height, bpp, size;
+-	uint64_t region = driver == INTEL_DRIVER_XE ?
+-				vram_if_possible(data->drm_fd, 0) : -1;
+-
+-	igt_assert_eq(fb->offsets[0], 0);
+-
+-	tiling = igt_fb_mod_to_tiling(fb->modifier);
+-	stride = fb->strides[0];
+-	bpp = fb->plane_bpp[0];
+-	size = fb->size;
+-	width = stride / (bpp / 8);
+-	height = size / stride;
+-
+-	name = gem_flink(data->drm_fd, fb->gem_handle);
+-	handle = gem_open(data->drm_fd, name);
+-	buf = intel_buf_create_full(data->bops, handle, width, height,
+-				    bpp, 0, tiling, 0, size, 0,
+-				    region,
+-				    intel_get_pat_idx_uc(data->drm_fd));
+-
+-	intel_buf_set_name(buf, buf_name);
+-	intel_buf_set_ownership(buf, true);
+-
+-	return buf;
++	return igt_fb_create_intel_buf(data->drm_fd, data->bops, fb, buf_name);
+ }
+ 
+ static void fini_buf(struct intel_buf *buf)
 -- 
 2.41.0
