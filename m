@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4EE3610E170
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Dec 2023 15:43:18 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB16810E5CF
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Dec 2023 15:48:44 +0000 (UTC)
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] tests/kms_display_modes: Fix the plane setup in
- extended-mode-basic
-Date: Wed, 20 Dec 2023 17:43:07 +0200
-Message-ID: <20231220154307.32424-1-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2] tests/xe_create: Use separate VMs per process
+Date: Wed, 20 Dec 2023 07:37:56 -0800
+Message-Id: <20231220153756.2171550-1-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -18,43 +16,137 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: lucas.demarchi@intel.com, jonathan.cavitt@intel.com,
+ saurabhg.gupta@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+We currently exercise cross-user impact in xe_create by attempting to
+concurrently create a large number of exec queues on a single vm using
+forked child processes.  This is unrealistic, as multiple users are more
+likely to be using separate file descriptors for creating exec queues.
 
-The test forgets to set the output size of the planes. The
-default plane output size will be taken from the fb dimensions
-which means we end up upscaling the planes, which may not work
-on all hardware.
+Update the test to reflect this use case.
 
-Set the planes' output size to match the input size to avoid this.
-The frambuffer was specifically created wide enough to cover both
-outputs with 1:1 scaling.
+v2:
+- Keep the original test path (which uses a single shared vm across
+multiple forked processes) intact, using a flag to denote which path to
+take.
+- Increase the MAXTIME in the shared vm case.
 
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9841
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Suggested-by: Brian Welty <brian.welty@intel.com>
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+CC: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
+CC: Lucas De Marchi <lucas.demarchi@intel.com>
+CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+CC: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/kms_display_modes.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/intel/xe_create.c | 50 ++++++++++++++++++++++++++++++++---------
+ 1 file changed, 40 insertions(+), 10 deletions(-)
 
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-index 1f0f811c8367..f1d8ab03d501 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -180,10 +180,12 @@ static void run_extendedmode_basic(data_t *data,
- 	igt_plane_set_fb(plane[0], &fb);
- 	igt_fb_set_position(&fb, plane[0], 0, 0);
- 	igt_fb_set_size(&fb, plane[0], mode[0]->hdisplay, mode[0]->vdisplay);
-+	igt_plane_set_size(plane[0], mode[0]->hdisplay, mode[0]->vdisplay);
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index 0aa32c788a..6d06708492 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -150,6 +150,11 @@ enum exec_queue_destroy {
+ 	LEAK
+ };
  
- 	igt_plane_set_fb(plane[1], &fb);
- 	igt_fb_set_position(&fb, plane[1], mode[0]->hdisplay, 0);
- 	igt_fb_set_size(&fb, plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
-+	igt_plane_set_size(plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
++enum vm_count {
++	MULTI,
++	SHARED
++};
++
+ #define MAXEXECQUEUES 2048
+ #define MAXTIME 5
  
- 	igt_display_commit2(display, COMMIT_ATOMIC);
+@@ -163,16 +168,22 @@ enum exec_queue_destroy {
+  *
+  * @noleak:				destroy exec_queues in the code
+  * @leak:				destroy exec_queues in close() path
++ * @noleak-shared:			same as noleak, but with a shared vm
++ * @leak-shared:			same as leak, but with a shared vm
+  */
+-static void create_execqueues(int fd, enum exec_queue_destroy ed)
++static void create_execqueues(int fd, enum exec_queue_destroy ed,
++			      enum vm_count vc)
+ {
+ 	struct timespec tv = { };
+ 	uint32_t num_engines, exec_queues_per_process, vm;
+ 	int nproc = sysconf(_SC_NPROCESSORS_ONLN), seconds;
++	int real_timeout = MAXTIME * (vc == SHARED ? 4 : 1);
  
+-	fd = drm_reopen_driver(fd);
+-	num_engines = xe_number_engines(fd);
+-	vm = xe_vm_create(fd, 0, 0);
++	if (vc == SHARED) {
++		fd = drm_reopen_driver(fd);
++		num_engines = xe_number_engines(fd);
++		vm = xe_vm_create(fd, 0, 0);
++	}
+ 
+ 	exec_queues_per_process = max_t(uint32_t, 1, MAXEXECQUEUES / nproc);
+ 	igt_debug("nproc: %u, exec_queues per process: %u\n", nproc, exec_queues_per_process);
+@@ -184,6 +195,12 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
+ 		uint32_t exec_queue, exec_queues[exec_queues_per_process];
+ 		int idx, err, i;
+ 
++		if (vc == MULTI) {
++			fd = drm_reopen_driver(fd);
++			num_engines = xe_number_engines(fd);
++			vm = xe_vm_create(fd, 0, 0);
++		}
++
+ 		srandom(n);
+ 
+ 		for (i = 0; i < exec_queues_per_process; i++) {
+@@ -206,16 +223,23 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
+ 				xe_exec_queue_destroy(fd, exec_queues[i]);
+ 			}
+ 		}
++
++		if (vc == MULTI) {
++			xe_vm_destroy(fd, vm);
++			drm_close_driver(fd);
++		}
+ 	}
+ 	igt_waitchildren();
+ 
+-	xe_vm_destroy(fd, vm);
+-	drm_close_driver(fd);
++	if (vc == SHARED) {
++		xe_vm_destroy(fd, vm);
++		drm_close_driver(fd);
++	}
+ 
+ 	seconds = igt_seconds_elapsed(&tv);
+-	igt_assert_f(seconds < MAXTIME,
++	igt_assert_f(seconds < real_timeout,
+ 		     "Creating %d exec_queues tooks too long: %d [limit: %d]\n",
+-		     MAXEXECQUEUES, seconds, MAXTIME);
++		     MAXEXECQUEUES, seconds, real_timeout);
+ }
+ 
+ /**
+@@ -384,10 +408,16 @@ igt_main_args("Q:p:", NULL, help_str, opt_handler, NULL)
+ 	}
+ 
+ 	igt_subtest("create-execqueues-noleak")
+-		create_execqueues(xe, NOLEAK);
++		create_execqueues(xe, NOLEAK, MULTI);
+ 
+ 	igt_subtest("create-execqueues-leak")
+-		create_execqueues(xe, LEAK);
++		create_execqueues(xe, LEAK, MULTI);
++
++	igt_subtest("create-execqueues-noleak-shared")
++		create_execqueues(xe, NOLEAK, SHARED);
++
++	igt_subtest("create-execqueues-leak-shared")
++		create_execqueues(xe, LEAK, SHARED);
+ 
+ 	igt_subtest("create-massive-size") {
+ 		create_massive_size(xe);
 -- 
-2.41.0
+2.25.1
