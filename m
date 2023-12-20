@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B5C910E307
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Dec 2023 02:42:25 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] tests/kms_prime: Add XE support
-Date: Wed, 20 Dec 2023 08:22:41 +0530
-Message-Id: <20231220025241.18739-1-nidhi1.gupta@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF61310E312
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Dec 2023 07:13:59 +0000 (UTC)
+Date: Wed, 20 Dec 2023 08:13:54 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
+Subject: Re: [PATCH i-g-t] tests/xe_create: Use separate VMs per process
+Message-ID: <20231220071354.scpr62ujthylvt7s@zkempczy-mobl2>
+References: <20231218145051.1869466-1-jonathan.cavitt@intel.com>
+ <20231219044845.cqzbiqf4bndxpva3@zkempczy-mobl2>
+ <CH0PR11MB544423D6926CEF01FDB989CFE597A@CH0PR11MB5444.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CH0PR11MB544423D6926CEF01FDB989CFE597A@CH0PR11MB5444.namprd11.prod.outlook.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,372 +21,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: "De Marchi, Lucas" <lucas.demarchi@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gupta,
+ saurabhg" <saurabhg.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+On Tue, Dec 19, 2023 at 04:27:41PM +0100, Cavitt, Jonathan wrote:
+> -----Original Message-----
+> From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com> 
+> Sent: Monday, December 18, 2023 8:49 PM
+> To: Cavitt, Jonathan <jonathan.cavitt@intel.com>
+> Cc: igt-dev@lists.freedesktop.org; Gupta, saurabhg <saurabhg.gupta@intel.com>; Welty, Brian <brian.welty@intel.com>; kamil.konieczny@linux.intel.com; De Marchi, Lucas <lucas.demarchi@intel.com>; Vishwanathapura, Niranjana <niranjana.vishwanathapura@intel.com>
+> Subject: Re: [PATCH i-g-t] tests/xe_create: Use separate VMs per process
+> > 
+> > On Mon, Dec 18, 2023 at 06:50:51AM -0800, Jonathan Cavitt wrote:
+> > > We currently exercise cross-user impact in xe_create by attempting to
+> > > concurrently create a large number of exec queues on a single vm using
+> > > forked child processes.  This is unrealistic, as multiple users are more
+> > > likely to be using separate file descriptors for creating exec queues.
+> > > 
+> > > Update the test to reflect this use case.
+> > 
+> > As original version of the test reveals bug in KMD Brian suggested in offline
+> > discussion we should keep current test behavior (but not executed in BAT
+> > with MAXTIME tweaked to relatively large value). I mean we should have four
+> > subtests - two with current behavior with increased maxtime not executed in
+> > BAT + two with maxtime set to 5/6. I see ATSM passed with your change but
+> > it is on the time limit boundary.
+> 
+> 
+> I'm sorry.  I don't fully understand what change you're suggesting here.
+> 
+> It sounds like you want me to create a duplicate of the original test that
+> increases MAXTIME to, say, 15, while also leaving an old version that
+> leaves MAXTIME at 5.  That's doable, but it also sounds like you want
+> to run the test with the low MAXTIME on BAT and not the test with
+> the high MAXTIME.
+> 
+> Doesn't that defeat the purpose of creating a duplicate test, since
+> we're not changing the test behavior on BAT and thus the issue would
+> still get reported?  Or did you mean for those tests to be put the other
+> way around?  Or are you referring to the test change in this patch when
+> referring to the "two [tests] with maxtime set to 5/6"?  Or am I
+> misunderstanding what the BAT tests are?
+> 
+> -Jonathan Cavitt
 
-Add XE driver support for kms tests.
+Don't duplicate, just diverge code logic adding flag passed to the function
+(like MULTI_VM or sth.).
 
-V2: - Use rendercopy method for both i915 & xe
-    - Minor cleanup
-V3: - New patch for cleanup & rendercopy
-V4: - Fallback to blitter
-V5: - Rebase
-v6: - Patch cleanup & rebased
+Then we would have:
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_prime.c | 261 +++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 223 insertions(+), 38 deletions(-)
+	igt_subtest("create-execqueues-noleak")
+		create_execqueues(xe, NOLEAK, MULTI_VM);
 
-diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-index 135c75168..f8afb2680 100644
---- a/tests/kms_prime.c
-+++ b/tests/kms_prime.c
-@@ -37,9 +37,15 @@
- #include "igt_sysfs.h"
- #include <fcntl.h>
- 
-+#include <limits.h>
- #include <sys/ioctl.h>
- #include <sys/poll.h>
- #include <time.h>
-+#include "lib/intel_blt.h"
-+#include "lib/intel_mocs.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+
- 
- /**
-  * SUBTEST: D3hot
-@@ -140,7 +146,29 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
- 	scratch->height = mode->vdisplay;
- 	scratch->bpp = 32;
- 
--	if (!is_i915_device(exporter_fd)) {
-+	if (is_intel_device(exporter_fd)) {
-+		igt_calc_fb_size(exporter_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
-+				 DRM_FORMAT_MOD_LINEAR, &scratch->size, &scratch->pitch);
-+
-+		if (is_i915_device(exporter_fd)) {
-+			if (gem_has_lmem(exporter_fd))
-+				scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
-+								       REGION_LMEM(0), REGION_SMEM);
-+			else
-+				scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
-+								       REGION_SMEM);
-+
-+			ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0,
-+							scratch->size, PROT_WRITE | PROT_READ);
-+		} else {
-+			scratch->handle = xe_bo_create(exporter_fd, 0,
-+							     ALIGN(scratch->size, xe_get_default_alignment(exporter_fd)),
-+							     vram_if_possible(exporter_fd, 0), 0);
-+
-+			ptr = xe_bo_mmap_ext(exporter_fd, scratch->handle,
-+					     scratch->size, PROT_READ | PROT_WRITE);
-+		}
-+	} else {
- 		scratch->handle = kmstest_dumb_create(exporter_fd,
- 						      ALIGN(scratch->width, 256),
- 						      scratch->height, scratch->bpp,
-@@ -148,18 +176,6 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
- 
- 		ptr = kmstest_dumb_map_buffer(exporter_fd, scratch->handle,
- 					      scratch->size, PROT_WRITE);
--	} else {
--		igt_calc_fb_size(exporter_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
--				 DRM_FORMAT_MOD_LINEAR, &scratch->size, &scratch->pitch);
--		if (gem_has_lmem(exporter_fd))
--			scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
--								       REGION_LMEM(0), REGION_SMEM);
--		else
--			scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
--								       REGION_SMEM);
--
--		ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0, scratch->size,
--						PROT_WRITE | PROT_READ);
- 	}
- 
- 	for (size_t idx = 0; idx < scratch->size / sizeof(*ptr); ++idx)
-@@ -178,23 +194,52 @@ static void prepare_fb(int importer_fd, struct dumb_bo *scratch, struct igt_fb *
- 		    color_encoding, color_range);
- }
- 
-+static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
-+					   uint32_t memregion, uint32_t pitch)
-+{
-+	uint32_t name, handle;
-+	struct blt_copy_object *blt;
-+
-+	blt = malloc(sizeof(*blt));
-+	igt_assert(blt);
-+
-+	name = gem_flink(fb->fd, fb->gem_handle);
-+	handle = gem_open(fb->fd, name);
-+
-+	blt_set_object(blt, handle, fb->size, memregion,
-+		       intel_get_uc_mocs_index(fb->fd),
-+		       0, 0, 0, 0);
-+
-+	blt_set_geom(blt, pitch, 0, 0, fb->width, fb->height, 0, 0);
-+
-+	blt->plane_offset = 0;
-+
-+	blt->ptr = xe_bo_mmap_ext(fb->fd, handle, fb->size,
-+				  PROT_READ | PROT_WRITE);
-+	return blt;
-+}
-+
- static void import_fb(int importer_fd, struct igt_fb *fb,
- 		      int dmabuf_fd, uint32_t pitch)
- {
- 	uint32_t offsets[4] = {}, pitches[4] = {}, handles[4] = {}, temp_buf_handle;
- 	int ret;
-+	struct igt_fb dst_fb;
-+
-+	if ((is_i915_device(importer_fd) && gem_has_lmem(importer_fd)) ||
-+	    (is_xe_device(importer_fd) && xe_has_vram(importer_fd)))  {
-+		uint64_t fb_size = 0;
-+		uint64_t ahnd = 0;
- 
--	if (is_i915_device(importer_fd)) {
--		if (gem_has_lmem(importer_fd)) {
--			uint64_t ahnd = get_reloc_ahnd(importer_fd, 0);
--			uint64_t fb_size = 0;
-+		igt_info("Importer is dGPU\n");
-+		temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-+		igt_assert(temp_buf_handle > 0);
-+		fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width, fb->height,
-+							       fb->drm_format, fb->modifier, pitch, &fb_size, NULL, NULL);
-+		igt_assert(fb->gem_handle > 0);
- 
--			igt_info("Importer is dGPU\n");
--			temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
--			igt_assert(temp_buf_handle > 0);
--			fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width, fb->height,
--								       fb->drm_format, fb->modifier, pitch, &fb_size, NULL, NULL);
--			igt_assert(fb->gem_handle > 0);
-+		if (is_i915_device(importer_fd)) {
-+			ahnd = get_reloc_ahnd(importer_fd, 0);
- 
- 			igt_blitter_src_copy(importer_fd, ahnd, 0, NULL, temp_buf_handle,
- 					     0, pitch, fb->modifier, 0, 0, fb_size, fb->width,
-@@ -205,7 +250,62 @@ static void import_fb(int importer_fd, struct igt_fb *fb,
- 			gem_close(importer_fd, temp_buf_handle);
- 			put_ahnd(ahnd);
- 		} else {
--			fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-+			uint32_t xe_bb;
-+			uint64_t bb_size = 4096;
-+			struct blt_copy_data blt = {};
-+			struct blt_copy_object *src, *dst;
-+			struct blt_block_copy_data_ext ext = {};
-+			uint32_t mem_region;
-+			intel_ctx_t *xe_ctx;
-+			uint32_t vm, xe_exec;
-+
-+			struct drm_xe_engine_class_instance inst = {
-+				.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-+			};
-+			vm = xe_vm_create(importer_fd, DRM_XE_GEM_CREATE_FLAG_SCANOUT, 0);
-+			xe_exec = xe_exec_queue_create(importer_fd, vm, &inst, 0);
-+			xe_ctx = intel_ctx_xe(importer_fd, vm, xe_exec, 0, 0, 0);
-+			mem_region = vram_if_possible(importer_fd, 0);
-+
-+			ahnd = intel_allocator_open_full(importer_fd, xe_ctx->vm, 0, 0,
-+							 INTEL_ALLOCATOR_SIMPLE,
-+							 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+
-+			bb_size = ALIGN(bb_size + xe_cs_prefetch_size(importer_fd),
-+					xe_get_default_alignment(importer_fd));
-+			xe_bb = xe_bo_create(importer_fd, 0, bb_size, mem_region, 0);
-+
-+
-+
-+			igt_init_fb(&dst_fb, importer_fd, fb->width, fb->height,
-+				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+				    IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE);
-+			dst_fb.gem_handle = temp_buf_handle;
-+
-+			src = blt_fb_init(fb, mem_region, pitch);
-+			dst = blt_fb_init(&dst_fb, mem_region, pitch);
-+
-+			blt_copy_init(importer_fd, &blt);
-+			blt.color_depth = 32;
-+			blt_set_copy_object(&blt.src, src);
-+			blt_set_copy_object(&blt.dst, dst);
-+
-+			blt_set_object_ext(&ext.src, 0, fb->width, fb->height,
-+					   SURFACE_TYPE_2D);
-+			blt_set_object_ext(&ext.src, 0, fb->width, fb->height,
-+					   SURFACE_TYPE_2D);
-+
-+			blt_set_batch(&blt.bb, xe_bb, bb_size, mem_region);
-+
-+			blt_block_copy(importer_fd, xe_ctx, NULL, ahnd, &blt, &ext);
-+
-+			blt_destroy_object(importer_fd, dst);
-+
-+			put_ahnd(ahnd);
-+			gem_close(importer_fd, xe_bb);
-+			xe_exec_queue_destroy(importer_fd, xe_exec);
-+			xe_vm_destroy(importer_fd, vm);
-+			free(xe_ctx);
- 		}
- 	} else {
- 		fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-@@ -358,12 +458,6 @@ static bool has_connected_output(int drm_fd)
- 	return false;
- }
- 
--static void validate_d3_hot(int drm_fd)
--{
--	igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "GPU idle: yes"));
--	igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "PCI device power state: D3hot [3]"));
--}
--
- static void kms_poll_state_restore(void)
- {
- 	int sysfs_fd;
-@@ -385,6 +479,88 @@ static void kms_poll_disable(void)
- 	close(sysfs_fd);
- }
- 
-+static bool runtime_usage_available(struct pci_device *pci)
-+{
-+	char name[PATH_MAX];
-+	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/runtime_usage",
-+		 pci->domain, pci->bus, pci->dev, pci->func);
-+	return access(name, F_OK) == 0;
-+}
-+
-+static bool in_d3_hot(struct pci_device *pci)
-+{
-+	uint16_t val;
-+
-+	/* We need to wait for the autosuspend to kick in before we can check */
-+	if (!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED))
-+		return false;
-+
-+	if (runtime_usage_available(pci) &&
-+	    igt_pm_get_runtime_usage(pci) != 0)
-+		return false;
-+
-+	igt_assert_eq(pci_device_cfg_read_u16(pci, &val, 0xd4), 0);
-+
-+	return (val & 0x3) == 0x3;
-+}
-+
-+static void validate_d3_hot(int drm_fd, struct pci_device *pci)
-+{
-+	if (is_i915_device(drm_fd)) {
-+		igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "GPU idle: yes"));
-+		igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "PCI device power state: D3hot [3]"));
-+	} else {
-+		igt_assert(in_d3_hot(pci));
-+	}
-+}
-+
-+static int open_d3_allowed(struct pci_device *pci)
-+{
-+	char name[PATH_MAX];
-+	int fd;
-+
-+	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/d3cold_allowed",
-+		 pci->domain, pci->bus, pci->dev, pci->func);
-+
-+	fd = open(name, O_RDWR);
-+	igt_assert_f(fd >= 0, "Can't open %s\n", name);
-+
-+	return fd;
-+}
-+
-+static void get_d3_allowed(struct pci_device *pci, char *d3_allowed)
-+{
-+	int fd = open_d3_allowed(pci);
-+
-+	igt_assert(read(fd, d3_allowed, 2));
-+	close(fd);
-+}
-+
-+static void set_d3_allowed(struct pci_device *pci, const char *d3_allowed)
-+{
-+	int fd = open_d3_allowed(pci);
-+
-+	igt_assert(write(fd, d3_allowed, 2));
-+	close(fd);
-+}
-+
-+static void setup_d3_hot(int fd, struct pci_device *pci)
-+{
-+	if (is_xe_device(fd)) {
-+		igt_assert(igt_setup_runtime_pm(fd));
-+
-+		set_d3_allowed(pci, "0\n");
-+
-+		igt_assert(in_d3_hot(pci));
-+	} else {
-+		igt_set_timeout(10, "Wait for dGPU to enter D3hot before starting the subtest");
-+		while (!igt_debugfs_search(fd,
-+			"i915_runtime_pm_status",
-+			"PCI device power state: D3hot [3]"));
-+		igt_reset_timeout();
-+	}
-+}
-+
- igt_main
- {
- 	int first_fd = -1;
-@@ -438,21 +614,28 @@ igt_main
- 
- 		igt_describe("Validate pci state of dGPU when dGPU is idle and  scanout is on iGPU");
- 		igt_subtest("D3hot") {
--			igt_require_f(is_i915_device(second_fd_hybrid), "i915 device required\n");
--			igt_require_f(gem_has_lmem(second_fd_hybrid), "Second GPU is not dGPU\n");
-+			char d3_allowed[2];
-+			struct pci_device *pci;
-+
-+			igt_require_f(is_intel_device(second_fd_hybrid), "intel device required\n");
-+			if (is_i915_device(second_fd_hybrid))
-+				igt_require_f(gem_has_lmem(second_fd_hybrid), "Second GPU is not dGPU\n");
-+			else
-+				igt_require_f(xe_has_vram(second_fd_hybrid), "Second GPU is not dGPU\n");
- 			igt_require_f(first_output, "No display connected to iGPU\n");
- 			igt_require_f(!second_output, "Display connected to dGPU\n");
- 
- 			kms_poll_disable();
- 
--			igt_set_timeout(10, "Wait for dGPU to enter D3hot before starting the subtest");
--			while (!igt_debugfs_search(second_fd_hybrid,
--			       "i915_runtime_pm_status",
--			       "PCI device power state: D3hot [3]"));
--			igt_reset_timeout();
-+			pci = igt_device_get_pci_device(second_fd_hybrid);
-+			get_d3_allowed(pci, d3_allowed);
-+
-+			setup_d3_hot(second_fd_hybrid, pci);
- 
- 			test_basic_modeset(first_fd);
--			validate_d3_hot(second_fd_hybrid);
-+			validate_d3_hot(second_fd_hybrid, pci);
-+
-+			set_d3_allowed(pci, d3_allowed);
- 		}
- 
- 		igt_fixture {
-@@ -470,6 +653,8 @@ igt_main
- 			igt_require(second_fd_vgem >= 0);
- 			if (is_i915_device(first_fd))
- 				igt_require(!gem_has_lmem(first_fd));
-+			if (is_xe_device(first_fd))
-+				igt_require(!xe_has_vram(first_fd));
- 		}
- 
- 		igt_describe("Make a dumb color buffer, export to another device and"
--- 
-2.39.0
+	igt_subtest("create-execqueues-leak")
+		create_execqueues(xe, LEAK, MULTI_VM);
+
+	igt_subtest("create-execqueues-noleak-single")
+		create_execqueues(xe, NOLEAK, 0);
+
+	igt_subtest("create-execqueues-leak-single")
+		create_execqueues(xe, LEAK, 0);
+
+So in BAT run stays test changed to be executed "quickly" on
+multi-fd/vm. In full run we would have original (current) test
+code with max_time increased (use variable altered to some big value
+for single).
+
+--
+Zbigniew
+
+> 
+> 
+> > 
+> > --
+> > Zbigniew
+> > 
+> > > 
+> > > Suggested-by: Brian Welty <brian.welty@intel.com>
+> > > Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> > > CC: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
+> > > CC: Lucas De Marchi <lucas.demarchi@intel.com>
+> > > CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > > CC: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+> > > ---
+> > >  tests/intel/xe_create.c | 17 +++++++++--------
+> > >  1 file changed, 9 insertions(+), 8 deletions(-)
+> > > 
+> > > diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+> > > index 0aa32c788a..22f9464161 100644
+> > > --- a/tests/intel/xe_create.c
+> > > +++ b/tests/intel/xe_create.c
+> > > @@ -167,13 +167,9 @@ enum exec_queue_destroy {
+> > >  static void create_execqueues(int fd, enum exec_queue_destroy ed)
+> > >  {
+> > >  	struct timespec tv = { };
+> > > -	uint32_t num_engines, exec_queues_per_process, vm;
+> > > +	uint32_t exec_queues_per_process;
+> > >  	int nproc = sysconf(_SC_NPROCESSORS_ONLN), seconds;
+> > >  
+> > > -	fd = drm_reopen_driver(fd);
+> > > -	num_engines = xe_number_engines(fd);
+> > > -	vm = xe_vm_create(fd, 0, 0);
+> > > -
+> > >  	exec_queues_per_process = max_t(uint32_t, 1, MAXEXECQUEUES / nproc);
+> > >  	igt_debug("nproc: %u, exec_queues per process: %u\n", nproc, exec_queues_per_process);
+> > >  
+> > > @@ -182,8 +178,13 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
+> > >  	igt_fork(n, nproc) {
+> > >  		struct drm_xe_engine *engine;
+> > >  		uint32_t exec_queue, exec_queues[exec_queues_per_process];
+> > > +		uint32_t num_engines, vm;
+> > >  		int idx, err, i;
+> > >  
+> > > +		fd = drm_reopen_driver(fd);
+> > > +		num_engines = xe_number_engines(fd);
+> > > +		vm = xe_vm_create(fd, 0, 0);
+> > > +
+> > >  		srandom(n);
+> > >  
+> > >  		for (i = 0; i < exec_queues_per_process; i++) {
+> > > @@ -206,12 +207,12 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
+> > >  				xe_exec_queue_destroy(fd, exec_queues[i]);
+> > >  			}
+> > >  		}
+> > > +
+> > > +		xe_vm_destroy(fd, vm);
+> > > +		drm_close_driver(fd);
+> > >  	}
+> > >  	igt_waitchildren();
+> > >  
+> > > -	xe_vm_destroy(fd, vm);
+> > > -	drm_close_driver(fd);
+> > > -
+> > >  	seconds = igt_seconds_elapsed(&tv);
+> > >  	igt_assert_f(seconds < MAXTIME,
+> > >  		     "Creating %d exec_queues tooks too long: %d [limit: %d]\n",
+> > > -- 
+> > > 2.25.1
+> > > 
+> > 
