@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 57E0710E242
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A02B010E242
  for <igt-dev@lists.freedesktop.org>; Wed, 20 Dec 2023 17:59:57 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 03/12] lib/igt_fb: Expose igt_fb_is_ccs_modifier()
-Date: Wed, 20 Dec 2023 19:59:25 +0200
-Message-ID: <20231220175934.22849-4-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 04/12] tests/kms_big_fb: Fix async
+Date: Wed, 20 Dec 2023 19:59:26 +0200
+Message-ID: <20231220175934.22849-5-ville.syrjala@linux.intel.com>
 In-Reply-To: <20231220175934.22849-1-ville.syrjala@linux.intel.com>
 References: <20231220175934.22849-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
@@ -25,114 +25,77 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-I'm going to need is_ccs_modifier() outside of igt_fb.c.
-Rename it to igt_fb_is_ccs_modifier() and expose it to everyone.
+The 'continue' statement causes us to skip test_cleanup()
+which means the next iteration of the loop will not re-create
+the fb, instead attempting to use the previous fb which has
+the wrong format. The result is that things blow up. Skip
+the async flip test using igt_require() instead which will let
+the cleanup fixture do its job.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_fb.c | 21 ++++++++++++---------
- lib/igt_fb.h |  1 +
- 2 files changed, 13 insertions(+), 9 deletions(-)
+ tests/intel/kms_big_fb.c | 33 ++++++++++++++++++++++++---------
+ 1 file changed, 24 insertions(+), 9 deletions(-)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 683eb176b7a4..d7d8840fa432 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -605,7 +605,7 @@ static bool is_gen12_ccs_modifier(uint64_t modifier)
- 		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC;
+diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+index eef8148d2ba3..6393504be7d7 100644
+--- a/tests/intel/kms_big_fb.c
++++ b/tests/intel/kms_big_fb.c
+@@ -75,6 +75,12 @@
+  *              and %arg[2]-rotation
+  * Functionality: big_fbs, kms_gem_interop, rotation
+  *
++ * SUBTEST: linear-max-hw-stride-%dbpp-rotate-%d-async-flip
++ * Description: Test maximum hardware supported stride length for given combination
++ *              of linear modifier with max hardware stride length, %arg[1]-bpp,
++ *              and %arg[2]-rotation
++ * Functionality: async_flips, big_fbs, kms_gem_interop, rotation
++ *
+  * arg[1].values:       32, 64
+  * arg[2].values:       0, 180
+  */
+@@ -918,6 +924,18 @@ static void test_cleanup(data_t *data)
+ 	data->output = NULL;
  }
  
--static bool is_ccs_modifier(uint64_t modifier)
-+bool igt_fb_is_ccs_modifier(uint64_t modifier)
- {
- 	return is_gen12_ccs_modifier(modifier) ||
- 		modifier == I915_FORMAT_MOD_Y_TILED_CCS ||
-@@ -614,7 +614,8 @@ static bool is_ccs_modifier(uint64_t modifier)
++static bool has_async_flip(data_t *data)
++{
++	/*
++	 * TODO: preferably probe all this stuff with
++	 * TEST_ONLY rather than hardcoding it...
++	 */
++	if (data->modifier == DRM_FORMAT_MOD_LINEAR)
++		return false;
++
++	return igt_has_drm_cap(data->drm_fd, DRM_CAP_ASYNC_PAGE_FLIP);
++}
++
+ static data_t data = {};
  
- static bool is_ccs_plane(const struct igt_fb *fb, int plane)
- {
--	if (!is_ccs_modifier(fb->modifier) || HAS_FLATCCS(intel_get_drm_devid(fb->fd)))
-+	if (!igt_fb_is_ccs_modifier(fb->modifier) ||
-+	    HAS_FLATCCS(intel_get_drm_devid(fb->fd)))
- 		return false;
+ static const struct {
+@@ -1108,17 +1126,14 @@ igt_main
+ 						test_scanout(&data);
+ 					}
  
- 	return plane >= fb->num_planes / 2;
-@@ -724,7 +725,8 @@ static int fb_num_planes(const struct igt_fb *fb)
- {
- 	int num_planes = lookup_drm_format(fb->drm_format)->num_planes;
+-					// async flip doesn't support linear fbs.
+-					if (modifiers[i].modifier == DRM_FORMAT_MOD_LINEAR)
+-						continue;
+-
+ 					data.async_flip_test = true;
+ 					igt_describe("test async flip on maximum hardware supported stride length for given bpp and modifiers.");
+-					igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%d%s-async-flip", modifiers[i].name,
+-						formats[j].bpp, rotations[k].angle, fliptab[l].flipname) {
+-							igt_require(igt_has_drm_cap(data.drm_fd, DRM_CAP_ASYNC_PAGE_FLIP));
+-							data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
+-							test_scanout(&data);
++					igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%d%s-async-flip",
++						      modifiers[i].name, formats[j].bpp,
++						      rotations[k].angle, fliptab[l].flipname) {
++						igt_require(has_async_flip(&data));
++						data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
++						test_scanout(&data);
+ 					}
+ 					data.async_flip_test = false;
  
--	if (is_ccs_modifier(fb->modifier) && !HAS_FLATCCS(intel_get_drm_devid(fb->fd)))
-+	if (igt_fb_is_ccs_modifier(fb->modifier) &&
-+	    !HAS_FLATCCS(intel_get_drm_devid(fb->fd)))
- 		num_planes *= 2;
- 
- 	if (fb->modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
-@@ -2491,7 +2493,7 @@ static enum blt_tiling_type fb_tile_to_blt_tile(uint64_t tile)
- static bool fast_blit_ok(const struct igt_fb *fb)
- {
- 	return blt_has_fast_copy(fb->fd) &&
--		!is_ccs_modifier(fb->modifier) &&
-+		!igt_fb_is_ccs_modifier(fb->modifier) &&
- 		blt_fast_copy_supports_tiling(fb->fd,
- 					      fb_tile_to_blt_tile(fb->modifier));
- }
-@@ -2508,7 +2510,7 @@ static bool blitter_ok(const struct igt_fb *fb)
- 	if (!is_intel_device(fb->fd))
- 		return false;
- 
--	if ((is_ccs_modifier(fb->modifier) &&
-+	if ((igt_fb_is_ccs_modifier(fb->modifier) &&
- 	     !HAS_FLATCCS(intel_get_drm_devid(fb->fd))) ||
- 	     is_gen12_mc_ccs_modifier(fb->modifier))
- 		return false;
-@@ -2548,7 +2550,8 @@ static bool use_enginecopy(const struct igt_fb *fb)
- 		return false;
- 
- 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
--	       (!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) && is_ccs_modifier(fb->modifier)) ||
-+	       (!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) &&
-+		igt_fb_is_ccs_modifier(fb->modifier)) ||
- 	       is_gen12_mc_ccs_modifier(fb->modifier);
- }
- 
-@@ -2608,7 +2611,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
- 
- 	igt_assert_eq(fb->offsets[0], 0);
- 
--	if (is_ccs_modifier(fb->modifier)) {
-+	if (igt_fb_is_ccs_modifier(fb->modifier)) {
- 		igt_assert_eq(fb->strides[0] & 127, 0);
- 
- 		if (is_gen12_ccs_modifier(fb->modifier)) {
-@@ -2651,7 +2654,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
- 	if (buf->format_is_yuv_semiplanar)
- 		buf->yuv_semiplanar_bpp = yuv_semiplanar_bpp(fb->drm_format);
- 
--	if (is_ccs_modifier(fb->modifier)) {
-+	if (igt_fb_is_ccs_modifier(fb->modifier)) {
- 		num_surfaces = fb->num_planes / (HAS_FLATCCS(intel_get_drm_devid(fb->fd)) ? 1 : 2);
- 		for (i = 0; i < num_surfaces; i++)
- 			init_buf_ccs(buf, i,
-@@ -2773,7 +2776,7 @@ static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
- 		       intel_get_uc_mocs_index(fb->fd),
- 		       intel_get_pat_idx_uc(fb->fd),
- 		       blt_tile,
--		       is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
-+		       igt_fb_is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
- 		       is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
- 
- 	blt_set_geom(blt, stride, 0, 0, fb->width, fb->plane_height[plane], 0, 0);
-diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-index 834aaef54dea..0b85819b0f9e 100644
---- a/lib/igt_fb.h
-+++ b/lib/igt_fb.h
-@@ -182,6 +182,7 @@ void igt_fb_calc_crc(struct igt_fb *fb, igt_crc_t *crc);
- uint64_t igt_fb_mod_to_tiling(uint64_t modifier);
- uint64_t igt_fb_tiling_to_mod(uint64_t tiling);
- 
-+bool igt_fb_is_ccs_modifier(uint64_t modifier);
- bool igt_fb_is_ccs_plane(const struct igt_fb *fb, int plane);
- bool igt_fb_is_gen12_ccs_cc_plane(const struct igt_fb *fb, int plane);
- int igt_fb_ccs_to_main_plane(const struct igt_fb *fb, int ccs_plane);
 -- 
 2.41.0
