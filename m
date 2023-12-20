@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DCF0F10E602
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Dec 2023 18:00:36 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBF7A10E239
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Dec 2023 18:24:30 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 09/12] tests/kms_big_fb: Nuke fliptab[]
-Date: Wed, 20 Dec 2023 19:59:31 +0200
-Message-ID: <20231220175934.22849-10-ville.syrjala@linux.intel.com>
-In-Reply-To: <20231220175934.22849-1-ville.syrjala@linux.intel.com>
-References: <20231220175934.22849-1-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_psr2_sf: Fix primary_format setting
+Date: Thu, 21 Dec 2023 00:01:29 +0530
+Message-Id: <20231220183129.2797363-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,209 +20,141 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+The format is being changed globally to DRM_FORMAT_NV12. Additionally,
+FBC doesn't support the NV12 format, so this issue is being addressed.
 
-Let's just stuff the full transformation into rotations[]
-and get rid of fliptab[] and yet another nested loop.
+v2: Initialize data members at the beginning of the loop.
+    bigfb plane size is too big for FBC, so skipping that test.
 
-This also extends the hflip tests to be done universally
-(as opposed to just in combination with the max-hw-stride
-tests).
-
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/intel/kms_big_fb.c | 139 ++++++++++++++++++++++-----------------
- 1 file changed, 77 insertions(+), 62 deletions(-)
+ tests/intel/kms_psr2_sf.c | 68 +++++++++++++++++++++++----------------
+ 1 file changed, 40 insertions(+), 28 deletions(-)
 
-diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
-index f0b3ac7d66c3..675afb54905d 100644
---- a/tests/intel/kms_big_fb.c
-+++ b/tests/intel/kms_big_fb.c
-@@ -47,6 +47,11 @@
-  *              of Linear modifier with %arg[1]-bpp & %arg[2]-rotation
-  * Functionality: big_fbs, kms_gem_interop, rotation
+diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
+index 76435f501..9cafe1f7a 100644
+--- a/tests/intel/kms_psr2_sf.c
++++ b/tests/intel/kms_psr2_sf.c
+@@ -68,13 +68,13 @@
+  * SUBTEST: cursor-plane-update-sf
+  * Description: Test that selective fetch works on cursor plane
   *
-+ * SUBTEST: linear-%dbpp-rotate-%d-hflip
-+ * Description: Sanity check if addfb ioctl works correctly for given combination
-+ *              of Linear modifier with %arg[1]-bpp & %arg[2]-rotation
-+ * Functionality: big_fbs, kms_gem_interop, rotation
-+ *
-  * arg[1].values:       8, 16, 32, 64
-  * arg[2].values:       0, 90, 180, 270
+- * SUBTEST: fbc-cursor-plane-update-continuous-sf
++ * SUBTEST: fbc-cursor-plane-update-sf
+  * Description: Test that fbc with selective fetch works on cursor plane
+  *
+  * SUBTEST: overlay-plane-update-continuous-sf
+  * Description: Test that selective fetch works on overlay plane
+  *
+- * SUBTEST: fbc-overlay-plane-update-continuous-sf-dmg-area
++ * SUBTEST: fbc-overlay-plane-update-sf-dmg-area
+  * Description: Test that fbc with selective fetch works on overlay plane
+  *
+  * SUBTEST: overlay-plane-update-sf-dmg-area
+@@ -100,14 +100,12 @@
+  * SUBTEST: primary-plane-update-sf-dmg-area
+  * Description: Test that selective fetch works on primary plane
+  *
+- * SUBTEST: fbc-primary-plane-update-continuous-sf-dmg-area
++ * SUBTEST:  fbc-primary-plane-update-sf-dmg-area
+  * Description: Test that fbc with selective fetch works on primary plane
+  *
+  * SUBTEST: primary-plane-update-sf-dmg-area-big-fb
+  * Description: Test that selective fetch works on primary plane with big fb
+  *
+- * SUBTEST: fbc-primary-plane-update-continuous-sf-dmg-area-big-fb
+- * Description: Test that fbc with selective fetch works on primary plane with big fb
   */
-@@ -57,6 +62,11 @@
-  *              of %arg[1] with %arg[2]-bpp & %arg[3]-rotation
-  * Functionality: big_fbs, kms_gem_interop, rotation, tiling
-  *
-+ * SUBTEST: %s-%dbpp-rotate-%d-hflip
-+ * Description: Sanity check if addfb ioctl works correctly for given combination
-+ *              of %arg[1] with %arg[2]-bpp & %arg[3]-rotation
-+ * Functionality: big_fbs, kms_gem_interop, rotation, tiling
-+*
-  * arg[1]:
-  *
-  * @4-tiled:            TILE-4 modifier
-@@ -66,6 +76,8 @@
-  *
-  * arg[2].values:       8, 16, 32, 64
-  * arg[3].values:       0, 90, 180, 270
-+ *
-+ * arg[4]:
-  */
  
- /**
-@@ -958,23 +970,22 @@ static const struct {
- 	{ DRM_FORMAT_XBGR16161616F, 64, },
- };
- 
--static const struct {
--	igt_rotation_t rotation;
--	uint16_t angle;
--} rotations[] = {
--	{ IGT_ROTATION_0, 0, },
--	{ IGT_ROTATION_90, 90, },
--	{ IGT_ROTATION_180, 180, },
--	{ IGT_ROTATION_270, 270, },
-+static const igt_rotation_t rotations[] = {
-+	 IGT_ROTATION_0,
-+	 IGT_ROTATION_90,
-+	 IGT_ROTATION_180,
-+	 IGT_ROTATION_270,
-+	 IGT_ROTATION_0 | IGT_REFLECT_X,
-+	 IGT_ROTATION_90 | IGT_REFLECT_X,
-+	 IGT_ROTATION_180 | IGT_REFLECT_X,
-+	 IGT_ROTATION_270 | IGT_REFLECT_X,
- };
- 
--static const struct {
--	igt_rotation_t flip;
--	const char *flipname;
--} fliptab[] = {
--	{ 0, "" },
--	{ IGT_REFLECT_X, "-hflip" },
--};
-+static const char *rotation_flip_str(igt_rotation_t rotation)
-+{
-+	return rotation & IGT_REFLECT_X ? "-hflip" : "";
-+}
-+
- igt_main
- {
- 	igt_fixture {
-@@ -1074,12 +1085,15 @@ igt_main
- 			data.format = formats[j].format;
- 
- 			for (int k = 0; k < ARRAY_SIZE(rotations); k++) {
--				data.rotation = rotations[k].rotation;
--
--				igt_describe("Sanity check if addfb ioctl works correctly for given "
--						"combination of modifier formats and rotation");
--				igt_subtest_f("%s-%dbpp-rotate-%d", modifiers[i].name,
--					      formats[j].bpp, rotations[k].angle)
-+				data.rotation = rotations[k];
-+
-+				igt_describe("Sanity check if scanout of big framebuffers works "
-+					     "correctly for given combination of modifier formats "
-+					     "and rotation");
-+				igt_subtest_f("%s-%dbpp-rotate-%s%s", modifiers[i].name,
-+					      formats[j].bpp,
-+					      igt_plane_rotation_name(data.rotation),
-+					      rotation_flip_str(data.rotation))
- 					test_scanout(&data);
- 			}
- 
-@@ -1095,50 +1109,51 @@ igt_main
- 
- 		set_max_hw_stride(&data);
- 
--		for (int l = 0; l < ARRAY_SIZE(fliptab); l++) {
--			for (int j = 0; j < ARRAY_SIZE(formats); j++) {
--				/*
--				* try only those formats which can show full length.
--				* Here 32K is used to have CI test results consistent
--				* for all platforms, 32K is smallest number possbily
--				* coming to data.hw_stride from above set_max_hw_stride()
--				*/
--				if (32768 / (formats[j].bpp >> 3) > 8192)
-+		for (int j = 0; j < ARRAY_SIZE(formats); j++) {
-+			/*
-+			 * try only those formats which can show full length.
-+			 * Here 32K is used to have CI test results consistent
-+			 * for all platforms, 32K is smallest number possbily
-+			 * coming to data.hw_stride from above set_max_hw_stride()
-+			 */
-+			if (32768 / (formats[j].bpp >> 3) > 8192)
-+				continue;
-+
-+			data.format = formats[j].format;
-+
-+			for (int k = 0; k < ARRAY_SIZE(rotations); k++) {
-+				data.rotation = rotations[k];
-+
-+				// this combination will never happen.
-+				if (igt_rotation_90_or_270(data.rotation) ||
-+				    (data.rotation & IGT_REFLECT_X &&
-+				     modifiers[i].modifier == DRM_FORMAT_MOD_LINEAR))
- 					continue;
- 
--				data.format = formats[j].format;
--
--				for (int k = 0; k < ARRAY_SIZE(rotations); k++) {
--					data.rotation = rotations[k].rotation | fliptab[l].flip;
--
--					// this combination will never happen.
--					if (igt_rotation_90_or_270(data.rotation) ||
--					    (fliptab[l].flip == IGT_REFLECT_X && modifiers[i].modifier == DRM_FORMAT_MOD_LINEAR))
--						continue;
--
--					igt_describe("test maximum hardware supported stride length for given bpp and modifiers.");
--					igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%d%s", modifiers[i].name,
--						formats[j].bpp, rotations[k].angle, fliptab[l].flipname) {
--						igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 5);
--						data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
--
--						test_scanout(&data);
--					}
--
--					data.async_flip_test = true;
--					igt_describe("test async flip on maximum hardware supported stride length for given bpp and modifiers.");
--					igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%d%s-async-flip",
--						      modifiers[i].name, formats[j].bpp,
--						      rotations[k].angle, fliptab[l].flipname) {
--						igt_require(has_async_flip(&data));
--						data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
--						test_scanout(&data);
--					}
--					data.async_flip_test = false;
--
--					igt_fixture
--						test_cleanup(&data);
-+				igt_describe("test maximum hardware supported stride length for given bpp and modifiers.");
-+				igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%s%s",
-+					      modifiers[i].name, formats[j].bpp,
-+					      igt_plane_rotation_name(data.rotation),
-+					      rotation_flip_str(data.rotation)) {
-+					igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 5);
-+					data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
-+					test_scanout(&data);
- 				}
-+
-+				data.async_flip_test = true;
-+				igt_describe("test async flip on maximum hardware supported stride length for given bpp and modifiers.");
-+				igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%s%s-async-flip",
-+					      modifiers[i].name, formats[j].bpp,
-+					      igt_plane_rotation_name(data.rotation),
-+					      rotation_flip_str(data.rotation)) {
-+					igt_require(has_async_flip(&data));
-+					data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
-+					test_scanout(&data);
-+				}
-+				data.async_flip_test = false;
-+
-+				igt_fixture
-+					test_cleanup(&data);
- 			}
- 		}
+ IGT_TEST_DESCRIPTION("Tests to varify PSR2 selective fetch by sending multiple"
+@@ -1043,6 +1041,11 @@ igt_main
  	}
+ 
+ 	for (y = 0; y < ARRAY_SIZE(fbc_status); y++) {
++		data.op = PLANE_UPDATE;
++		data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
++		data.primary_format = DRM_FORMAT_XRGB8888;
++		data.big_fb_test = 0;
++
+ 		data.op_fbc_mode = fbc_status[y];
+ 		/* Verify primary plane selective fetch */
+ 		igt_describe("Test that selective fetch works on primary plane");
+@@ -1074,29 +1077,35 @@ igt_main
+ 		}
+ 
+ 		/* Verify primary plane selective fetch with big fb */
+-		data.big_fb_test = 1;
+-		igt_describe("Test that selective fetch works on primary plane with big fb");
+-		igt_subtest_with_dynamic_f("%sprimary-%s-sf-dmg-area-big-fb", append_fbc_subtest[y],
+-					   op_str(data.op)) {
+-			for (i = 0; i < n_pipes; i++) {
+-				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+-					continue;
+-
+-				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+-					if (j != FEATURE_NONE && !(coexist_features[i] & j))
++		if (data.op_fbc_mode == FBC_DISABLED) {
++			data.big_fb_test = 1;
++			igt_describe("Test that selective fetch works on primary plane with "
++				     "big fb");
++			igt_subtest_with_dynamic_f("%sprimary-%s-sf-dmg-area-big-fb",
++						   append_fbc_subtest[y],
++						   op_str(data.op)) {
++				for (i = 0; i < n_pipes; i++) {
++					if (!pipe_output_combo_valid(&data.display, pipes[i],
++								     outputs[i]))
+ 						continue;
+-					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-						      igt_output_name(outputs[i]),
+-						      coexist_feature_str(j)) {
+-						data.pipe = pipes[i];
+-						data.output = outputs[i];
+-						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+-						data.coexist_feature = j;
+-						for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
+-							data.damage_area_count = k;
+-							prepare(&data);
+-							run(&data);
+-							cleanup(&data);
++
++					for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
++						if (j != FEATURE_NONE && !(coexist_features[i] & j))
++							continue;
++						igt_dynamic_f("pipe-%s-%s%s",
++							      kmstest_pipe_name(pipes[i]),
++							      igt_output_name(outputs[i]),
++							      coexist_feature_str(j)) {
++							data.pipe = pipes[i];
++							data.output = outputs[i];
++							data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
++							data.coexist_feature = j;
++							for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
++								data.damage_area_count = k;
++								prepare(&data);
++								run(&data);
++								cleanup(&data);
++							}
+ 						}
+ 					}
+ 				}
+@@ -1387,7 +1396,6 @@ igt_main
+ 		 * plane and continuous updates.
+ 		 */
+ 		data.op = PLANE_UPDATE_CONTINUOUS;
+-		data.primary_format = DRM_FORMAT_NV12;
+ 		igt_describe("Test that selective fetch works on overlay plane");
+ 		igt_subtest_with_dynamic_f("%soverlay-%s-sf", append_fbc_subtest[y],
+ 					   op_str(data.op)) {
+@@ -1404,6 +1412,10 @@ igt_main
+ 						data.pipe = pipes[i];
+ 						data.output = outputs[i];
+ 						data.damage_area_count = 1;
++						if (data.op_fbc_mode == FBC_ENABLED)
++							data.primary_format = DRM_FORMAT_XRGB8888;
++						else
++							data.primary_format = DRM_FORMAT_NV12;
+ 						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+ 						data.coexist_feature = j;
+ 						prepare(&data);
 -- 
-2.41.0
+2.25.1
