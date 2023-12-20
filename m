@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24DCD10E5FE
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Dec 2023 18:00:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D06310E609
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Dec 2023 18:00:36 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 07/12] tests/kms_frontbuffer_tracking: Use
- igt_create_fb()
-Date: Wed, 20 Dec 2023 19:59:29 +0200
-Message-ID: <20231220175934.22849-8-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 10/12] tests/kms_big_fb: Replace 'bpp' with 'name'
+Date: Wed, 20 Dec 2023 19:59:32 +0200
+Message-ID: <20231220175934.22849-11-ville.syrjala@linux.intel.com>
 In-Reply-To: <20231220175934.22849-1-ville.syrjala@linux.intel.com>
 References: <20231220175934.22849-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
@@ -26,42 +25,97 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Calling igt_calc_fb_size() and igt_create_fb_with_bo_size() like
-this back to back is the same as just calling igt_create_fb().
+Instead of storing the bpp in the formats[] array let's instead
+store a string represtantion. I want to add planar YCbCr tests
+to the mix, and so a simple bpp value will no logner cut it.
+
+A bunch of stuff is using the numerical bpp value for some things,
+but we can replace those with igt_drm_format_to_bpp().
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/intel/kms_frontbuffer_tracking.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ tests/intel/kms_big_fb.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 1daf27d2e006..f3dc30024691 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -1615,8 +1615,7 @@ static void create_fb(enum pixel_format pformat, int width, int height,
- 		      enum tiling_type tiling, int plane, struct igt_fb *fb)
- {
+diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+index 675afb54905d..80644ce94ab6 100644
+--- a/tests/intel/kms_big_fb.c
++++ b/tests/intel/kms_big_fb.c
+@@ -962,12 +962,12 @@ static const struct {
+ 
+ static const struct {
  	uint32_t format;
--	uint64_t size, modifier;
--	unsigned int stride;
-+	uint64_t modifier;
+-	uint8_t bpp;
++	const char *name;
+ } formats[] = {
+-	{ DRM_FORMAT_C8, 8, },
+-	{ DRM_FORMAT_RGB565, 16, },
+-	{ DRM_FORMAT_XRGB8888, 32, },
+-	{ DRM_FORMAT_XBGR16161616F, 64, },
++	{ DRM_FORMAT_C8, "8bpp", },
++	{ DRM_FORMAT_RGB565, "16bpp", },
++	{ DRM_FORMAT_XRGB8888, "32bpp", },
++	{ DRM_FORMAT_XBGR16161616F, "64bpp", },
+ };
  
- 	switch (pformat) {
- 	case FORMAT_RGB888:
-@@ -1650,13 +1649,7 @@ static void create_fb(enum pixel_format pformat, int width, int height,
+ static const igt_rotation_t rotations[] = {
+@@ -1090,8 +1090,8 @@ igt_main
+ 				igt_describe("Sanity check if scanout of big framebuffers works "
+ 					     "correctly for given combination of modifier formats "
+ 					     "and rotation");
+-				igt_subtest_f("%s-%dbpp-rotate-%s%s", modifiers[i].name,
+-					      formats[j].bpp,
++				igt_subtest_f("%s-%s-rotate-%s%s", modifiers[i].name,
++					      formats[j].name,
+ 					      igt_plane_rotation_name(data.rotation),
+ 					      rotation_flip_str(data.rotation))
+ 					test_scanout(&data);
+@@ -1110,13 +1110,15 @@ igt_main
+ 		set_max_hw_stride(&data);
  
- 	igt_warn_on(plane == PLANE_CUR && tiling != TILING_LINEAR);
+ 		for (int j = 0; j < ARRAY_SIZE(formats); j++) {
++			int bpp = igt_drm_format_to_bpp(formats[j].format);
++
+ 			/*
+ 			 * try only those formats which can show full length.
+ 			 * Here 32K is used to have CI test results consistent
+ 			 * for all platforms, 32K is smallest number possbily
+ 			 * coming to data.hw_stride from above set_max_hw_stride()
+ 			 */
+-			if (32768 / (formats[j].bpp >> 3) > 8192)
++			if (32768 / (bpp >> 3) > 8192)
+ 				continue;
  
--	igt_calc_fb_size(drm.fd, width, height, format, modifier, &size,
--			 &stride);
--
--	igt_create_fb_with_bo_size(drm.fd, width, height, format, modifier,
--				   IGT_COLOR_YCBCR_BT709,
--				   IGT_COLOR_YCBCR_LIMITED_RANGE,
--				   fb, size, stride);
-+	igt_create_fb(drm.fd, width, height, format, modifier, fb);
- }
+ 			data.format = formats[j].format;
+@@ -1131,23 +1133,23 @@ igt_main
+ 					continue;
  
- static uint32_t pick_color(struct igt_fb *fb, enum color ecolor)
+ 				igt_describe("test maximum hardware supported stride length for given bpp and modifiers.");
+-				igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%s%s",
+-					      modifiers[i].name, formats[j].bpp,
++				igt_subtest_f("%s-max-hw-stride-%s-rotate-%s%s",
++					      modifiers[i].name, formats[j].name,
+ 					      igt_plane_rotation_name(data.rotation),
+ 					      rotation_flip_str(data.rotation)) {
+ 					igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 5);
+-					data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
++					data.max_hw_fb_width = min(data.hw_stride / (bpp >> 3), data.max_fb_width);
+ 					test_scanout(&data);
+ 				}
+ 
+ 				data.async_flip_test = true;
+ 				igt_describe("test async flip on maximum hardware supported stride length for given bpp and modifiers.");
+-				igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%s%s-async-flip",
+-					      modifiers[i].name, formats[j].bpp,
++				igt_subtest_f("%s-max-hw-stride-%s-rotate-%s%s-async-flip",
++					      modifiers[i].name, formats[j].name,
+ 					      igt_plane_rotation_name(data.rotation),
+ 					      rotation_flip_str(data.rotation)) {
+ 					igt_require(has_async_flip(&data));
+-					data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
++					data.max_hw_fb_width = min(data.hw_stride / (bpp >> 3), data.max_fb_width);
+ 					test_scanout(&data);
+ 				}
+ 				data.async_flip_test = false;
 -- 
 2.41.0
