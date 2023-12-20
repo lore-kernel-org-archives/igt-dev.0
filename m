@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D06310E609
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Dec 2023 18:00:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D77B210E5FB
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Dec 2023 18:00:38 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 10/12] tests/kms_big_fb: Replace 'bpp' with 'name'
-Date: Wed, 20 Dec 2023 19:59:32 +0200
-Message-ID: <20231220175934.22849-11-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 11/12] tests/kms_big_fb: Test planar YCbCr formats
+Date: Wed, 20 Dec 2023 19:59:33 +0200
+Message-ID: <20231220175934.22849-12-ville.syrjala@linux.intel.com>
 In-Reply-To: <20231220175934.22849-1-ville.syrjala@linux.intel.com>
 References: <20231220175934.22849-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
@@ -25,97 +25,126 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Instead of storing the bpp in the formats[] array let's instead
-store a string represtantion. I want to add planar YCbCr tests
-to the mix, and so a simple bpp value will no logner cut it.
+Panning around inside planar YCbCr framebuffers is a bit
+more involved that the RGB counterpart. It seems prudent
+to test that we are correctly handling these case.
 
-A bunch of stuff is using the numerical bpp value for some things,
-but we can replace those with igt_drm_format_to_bpp().
+We'll manually trick rendercopy to also copy the chroma
+plane for us. It might be nice to make rendercopy eventually
+handle this entirely on its own, but for now we'll take this
+slight shortcut.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/intel/kms_big_fb.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ tests/intel/kms_big_fb.c | 38 ++++++++++++++++++++++++++++++--------
+ 1 file changed, 30 insertions(+), 8 deletions(-)
 
 diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
-index 675afb54905d..80644ce94ab6 100644
+index 80644ce94ab6..f8dd5a015ee1 100644
 --- a/tests/intel/kms_big_fb.c
 +++ b/tests/intel/kms_big_fb.c
-@@ -962,12 +962,12 @@ static const struct {
+@@ -42,27 +42,27 @@
+ #include "xe/xe_query.h"
  
- static const struct {
- 	uint32_t format;
--	uint8_t bpp;
-+	const char *name;
- } formats[] = {
--	{ DRM_FORMAT_C8, 8, },
--	{ DRM_FORMAT_RGB565, 16, },
--	{ DRM_FORMAT_XRGB8888, 32, },
--	{ DRM_FORMAT_XBGR16161616F, 64, },
-+	{ DRM_FORMAT_C8, "8bpp", },
-+	{ DRM_FORMAT_RGB565, "16bpp", },
-+	{ DRM_FORMAT_XRGB8888, "32bpp", },
-+	{ DRM_FORMAT_XBGR16161616F, "64bpp", },
+ /**
+- * SUBTEST: linear-%dbpp-rotate-%d
++ * SUBTEST: linear-%s-rotate-%d
+  * Description: Sanity check if addfb ioctl works correctly for given combination
+  *              of Linear modifier with %arg[1]-bpp & %arg[2]-rotation
+  * Functionality: big_fbs, kms_gem_interop, rotation
+  *
+- * SUBTEST: linear-%dbpp-rotate-%d-hflip
++ * SUBTEST: linear-%s-rotate-%d-hflip
+  * Description: Sanity check if addfb ioctl works correctly for given combination
+  *              of Linear modifier with %arg[1]-bpp & %arg[2]-rotation
+  * Functionality: big_fbs, kms_gem_interop, rotation
+  *
+- * arg[1].values:       8, 16, 32, 64
++ * arg[1].values:       8bpp, 16bpp, 32bpp, 64bpp, nv12, p016
+  * arg[2].values:       0, 90, 180, 270
+  */
+ 
+ /**
+- * SUBTEST: %s-%dbpp-rotate-%d
++ * SUBTEST: %s-%s-rotate-%d
+  * Description: Sanity check if addfb ioctl works correctly for given combination
+  *              of %arg[1] with %arg[2]-bpp & %arg[3]-rotation
+  * Functionality: big_fbs, kms_gem_interop, rotation, tiling
+  *
+- * SUBTEST: %s-%dbpp-rotate-%d-hflip
++ * SUBTEST: %s-%s-rotate-%d-hflip
+  * Description: Sanity check if addfb ioctl works correctly for given combination
+  *              of %arg[1] with %arg[2]-bpp & %arg[3]-rotation
+  * Functionality: big_fbs, kms_gem_interop, rotation, tiling
+@@ -74,7 +74,7 @@
+  * @y-tiled:            TILE-Y modifier
+  * @yf-tiled:           TILE-YF modifier
+  *
+- * arg[2].values:       8, 16, 32, 64
++ * arg[2].values:       8bpp, 16bpp, 32bpp, 64bpp, nv12, p016
+  * arg[3].values:       0, 90, 180, 270
+  *
+  * arg[4]:
+@@ -237,6 +237,18 @@ static void copy_pattern(data_t *data,
+ 	 */
+ 	if (data->render_copy) {
+ 		data->render_copy(data->ibb, src, sx, sy, w, h, dst, dx, dy);
++
++		/* FIXME rendercopy should do this for us perhaps? */
++		if (igt_format_is_yuv_semiplanar(data->format)) {
++			igt_assert(!igt_fb_is_ccs_modifier(data->modifier));
++
++			src->bpp *= 2;
++			src->surface[0] = src->surface[1];
++			dst->bpp *= 2;
++			dst->surface[0] = dst->surface[1];
++
++			data->render_copy(data->ibb, src, sx/2, sy/2, w/2, h/2, dst, dx/2, dy/2);
++		}
+ 	} else {
+ 		w = min(w, src_fb->width - sx);
+ 		w = min(w, dst_fb->width - dx);
+@@ -320,6 +332,10 @@ static void generate_pattern(data_t *data,
+ 				     pat_fb.width, pat_fb.height);
+ 			w++;
+ 			h++;
++			if (igt_format_is_yuv_semiplanar(data->format)) {
++				w++;
++				h++;
++			}
+ 		}
+ 	}
+ 
+@@ -478,8 +494,9 @@ static bool test_plane(data_t *data)
+ 		int y = coords[i].y;
+ 
+ 		/* Hardware limitation */
+-		if (data->format == DRM_FORMAT_RGB565 &&
+-		    igt_rotation_90_or_270(data->rotation)) {
++		if ((data->format == DRM_FORMAT_RGB565 &&
++		     igt_rotation_90_or_270(data->rotation)) ||
++		    igt_format_is_yuv_semiplanar(data->format)) {
+ 			x &= ~1;
+ 			y &= ~1;
+ 		}
+@@ -940,6 +957,9 @@ static bool has_async_flip(data_t *data)
+ 	 * TODO: preferably probe all this stuff with
+ 	 * TEST_ONLY rather than hardcoding it...
+ 	 */
++	if (igt_format_is_yuv_semiplanar(data->format))
++		return false;
++
+ 	if (intel_display_ver(data->devid) < 12 &&
+ 	    data->modifier == DRM_FORMAT_MOD_LINEAR)
+ 		return false;
+@@ -968,6 +988,8 @@ static const struct {
+ 	{ DRM_FORMAT_RGB565, "16bpp", },
+ 	{ DRM_FORMAT_XRGB8888, "32bpp", },
+ 	{ DRM_FORMAT_XBGR16161616F, "64bpp", },
++	{ DRM_FORMAT_NV12, "nv12", },
++	{ DRM_FORMAT_P016, "p016", },
  };
  
  static const igt_rotation_t rotations[] = {
-@@ -1090,8 +1090,8 @@ igt_main
- 				igt_describe("Sanity check if scanout of big framebuffers works "
- 					     "correctly for given combination of modifier formats "
- 					     "and rotation");
--				igt_subtest_f("%s-%dbpp-rotate-%s%s", modifiers[i].name,
--					      formats[j].bpp,
-+				igt_subtest_f("%s-%s-rotate-%s%s", modifiers[i].name,
-+					      formats[j].name,
- 					      igt_plane_rotation_name(data.rotation),
- 					      rotation_flip_str(data.rotation))
- 					test_scanout(&data);
-@@ -1110,13 +1110,15 @@ igt_main
- 		set_max_hw_stride(&data);
- 
- 		for (int j = 0; j < ARRAY_SIZE(formats); j++) {
-+			int bpp = igt_drm_format_to_bpp(formats[j].format);
-+
- 			/*
- 			 * try only those formats which can show full length.
- 			 * Here 32K is used to have CI test results consistent
- 			 * for all platforms, 32K is smallest number possbily
- 			 * coming to data.hw_stride from above set_max_hw_stride()
- 			 */
--			if (32768 / (formats[j].bpp >> 3) > 8192)
-+			if (32768 / (bpp >> 3) > 8192)
- 				continue;
- 
- 			data.format = formats[j].format;
-@@ -1131,23 +1133,23 @@ igt_main
- 					continue;
- 
- 				igt_describe("test maximum hardware supported stride length for given bpp and modifiers.");
--				igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%s%s",
--					      modifiers[i].name, formats[j].bpp,
-+				igt_subtest_f("%s-max-hw-stride-%s-rotate-%s%s",
-+					      modifiers[i].name, formats[j].name,
- 					      igt_plane_rotation_name(data.rotation),
- 					      rotation_flip_str(data.rotation)) {
- 					igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 5);
--					data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
-+					data.max_hw_fb_width = min(data.hw_stride / (bpp >> 3), data.max_fb_width);
- 					test_scanout(&data);
- 				}
- 
- 				data.async_flip_test = true;
- 				igt_describe("test async flip on maximum hardware supported stride length for given bpp and modifiers.");
--				igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%s%s-async-flip",
--					      modifiers[i].name, formats[j].bpp,
-+				igt_subtest_f("%s-max-hw-stride-%s-rotate-%s%s-async-flip",
-+					      modifiers[i].name, formats[j].name,
- 					      igt_plane_rotation_name(data.rotation),
- 					      rotation_flip_str(data.rotation)) {
- 					igt_require(has_async_flip(&data));
--					data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
-+					data.max_hw_fb_width = min(data.hw_stride / (bpp >> 3), data.max_fb_width);
- 					test_scanout(&data);
- 				}
- 				data.async_flip_test = false;
 -- 
 2.41.0
