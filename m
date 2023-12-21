@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Message-ID: <d8d3c3b9-91c1-4d6b-8e4a-a1531de3b07d@intel.com>
-Date: Thu, 21 Dec 2023 10:22:39 +0530
-Subject: Re: [PATCH i-g-t] tests/kms_display_modes: Fix the plane setup in
- extended-mode-basic
+Message-ID: <580ad5c1-40d3-4e31-b6b9-5ca3a28a053e@intel.com>
+Date: Thu, 21 Dec 2023 10:30:47 +0530
+Subject: Re: [PATCH i-g-t 2/3] lib/igt_fb: With Intel blitter path ignore
+ legacy rules on Xe
 Content-Language: en-US
-References: <20231220154307.32424-1-ville.syrjala@linux.intel.com>
+References: <20231220195940.3778662-1-juhapekka.heikkila@gmail.com>
+ <20231220195940.3778662-2-juhapekka.heikkila@gmail.com>
 From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20231220154307.32424-1-ville.syrjala@linux.intel.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231220195940.3778662-2-juhapekka.heikkila@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -22,45 +23,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
-Message-ID: <20231221045239.MtZfNhPlVJyWQhz7uU3pVe-QNv5GKwt5haeDf3adLnU@z>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, igt-dev@lists.freedesktop.org
+Message-ID: <20231221050047.nEZk4XvvKzTIgrKbrIVuESO_JTalTRdgmZz1X6BfLZY@z>
 
 
-On 20-12-2023 09:13 pm, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+On 21-12-2023 01:29 am, Juha-Pekka Heikkila wrote:
+> If running with Xe device there's no need to care about legacy
+> size limitations, just say blitter is ok before checking for
+> legacy blitter size limits.
 > 
-> The test forgets to set the output size of the planes. The
-> default plane output size will be taken from the fb dimensions
-> which means we end up upscaling the planes, which may not work
-> on all hardware.
-> 
-> Set the planes' output size to match the input size to avoid this.
-> The frambuffer was specifically created wide enough to cover both
-> outputs with 1:1 scaling.
-> 
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9841
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
 Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
 > ---
->   tests/kms_display_modes.c | 2 ++
->   1 file changed, 2 insertions(+)
+>   lib/igt_fb.c | 3 +++
+>   1 file changed, 3 insertions(+)
 > 
-> diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-> index 1f0f811c8367..f1d8ab03d501 100644
-> --- a/tests/kms_display_modes.c
-> +++ b/tests/kms_display_modes.c
-> @@ -180,10 +180,12 @@ static void run_extendedmode_basic(data_t *data,
->   	igt_plane_set_fb(plane[0], &fb);
->   	igt_fb_set_position(&fb, plane[0], 0, 0);
->   	igt_fb_set_size(&fb, plane[0], mode[0]->hdisplay, mode[0]->vdisplay);
-> +	igt_plane_set_size(plane[0], mode[0]->hdisplay, mode[0]->vdisplay);
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 683eb176b..06374efa0 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -2513,6 +2513,9 @@ static bool blitter_ok(const struct igt_fb *fb)
+>   	     is_gen12_mc_ccs_modifier(fb->modifier))
+>   		return false;
 >   
->   	igt_plane_set_fb(plane[1], &fb);
->   	igt_fb_set_position(&fb, plane[1], mode[0]->hdisplay, 0);
->   	igt_fb_set_size(&fb, plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
-> +	igt_plane_set_size(plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
->   
->   	igt_display_commit2(display, COMMIT_ATOMIC);
+> +	if (is_xe_device(fb->fd))
+> +		return true;
+> +
+>   	for (int i = 0; i < fb->num_planes; i++) {
+>   		int width = fb->plane_width[i];
 >   
