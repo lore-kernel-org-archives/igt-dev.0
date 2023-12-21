@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com
- [IPv6:2a00:1450:4864:20::231])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0344A10E669
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Dec 2023 09:49:16 +0000 (UTC)
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2cc99fc1858so5227701fa.2
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Dec 2023 01:49:16 -0800 (PST)
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com
+ [IPv6:2a00:1450:4864:20::22a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A70D10E666
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Dec 2023 09:49:15 +0000 (UTC)
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2cc7d2c1ff0so6177331fa.3
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Dec 2023 01:49:15 -0800 (PST)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 3/3] tests/i915/kms_big_fb: take out blitter fallback
- path as it is replaced with Cairo
-Date: Thu, 21 Dec 2023 11:49:03 +0200
-Message-Id: <20231221094903.3782509-3-juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 2/3] lib/igt_fb: With Intel blitter path ignore legacy
+ rules on Xe
+Date: Thu, 21 Dec 2023 11:49:02 +0200
+Message-Id: <20231221094903.3782509-2-juhapekka.heikkila@gmail.com>
 In-Reply-To: <20231221094903.3782509-1-juhapekka.heikkila@gmail.com>
 References: <20231221094903.3782509-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
@@ -27,52 +27,28 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-After adding cairo fallback path blitter path will never be used anymore
+If running with Xe device there's no need to care about legacy
+size limitations, just say blitter is ok before checking for
+legacy blitter size limits.
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- tests/intel/kms_big_fb.c | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+ lib/igt_fb.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
-index 768dac0d2..1a4929fc7 100644
---- a/tests/intel/kms_big_fb.c
-+++ b/tests/intel/kms_big_fb.c
-@@ -258,20 +258,9 @@ static void copy_pattern(data_t *data,
- 	/*
- 	 * We expect the kernel to limit the max fb
- 	 * size/stride to something that can still
--	 * rendered with the blitter/render engine.
-+	 * rendered with the render engine.
- 	 */
--	if (data->render_copy) {
--		data->render_copy(data->ibb, src, sx, sy, w, h, dst, dx, dy);
--	} else {
--		w = min(w, src_fb->width - sx);
--		w = min(w, dst_fb->width - dx);
--
--		h = min(h, src_fb->height - sy);
--		h = min(h, dst_fb->height - dy);
--
--		intel_bb_blt_copy(data->ibb, src, sx, sy, src->surface[0].stride,
--				  dst, dx, dy, dst->surface[0].stride, w, h, dst->bpp);
--	}
-+	data->render_copy(data->ibb, src, sx, sy, w, h, dst, dx, dy);
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 683eb176b..06374efa0 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2513,6 +2513,9 @@ static bool blitter_ok(const struct igt_fb *fb)
+ 	     is_gen12_mc_ccs_modifier(fb->modifier))
+ 		return false;
  
- 	fini_buf(dst);
- 	fini_buf(src);
-@@ -1123,10 +1112,10 @@ igt_main
++	if (is_xe_device(fb->fd))
++		return true;
++
+ 	for (int i = 0; i < fb->num_planes; i++) {
+ 		int width = fb->plane_width[i];
  
- 		/*
- 		 * Gen3 render engine is limited to 2kx2k, whereas
--		 * the display engine can do 4kx4k. Use the blitter
-+		 * the display engine can do 4kx4k. Use fallback cairo path
- 		 * on gen3 to avoid exceeding the render engine limits.
- 		 * On gen2 we could use either, but let's go for the
--		 * blitter there as well.
-+		 * cairo there as well.
- 		 */
- 		if (intel_display_ver(data.devid) >= 4)
- 			data.render_copy = igt_get_render_copyfunc(data.devid);
 -- 
 2.25.1
