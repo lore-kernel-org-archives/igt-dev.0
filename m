@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AAB1310E6D3
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Dec 2023 16:35:04 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D950810E6EF
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Dec 2023 20:26:40 +0000 (UTC)
+From: Pallavi Mishra <pallavi.mishra@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v4 3/4] tests/xe_pm: Add d3-mmap IGT test
-Date: Thu, 21 Dec 2023 22:03:37 +0530
-Message-Id: <20231221163338.2157257-4-anshuman.gupta@intel.com>
-In-Reply-To: <20231221163338.2157257-1-anshuman.gupta@intel.com>
-References: <20231221163338.2157257-1-anshuman.gupta@intel.com>
+Subject: [PATCH i-g-t v2 2/2] tests/intel/xe_clos: CLOS Based Cache
+ Reservation test
+Date: Fri, 22 Dec 2023 02:04:19 +0530
+Message-Id: <20231221203419.3924552-3-pallavi.mishra@intel.com>
+In-Reply-To: <20231221203419.3924552-1-pallavi.mishra@intel.com>
+References: <20231221203419.3924552-1-pallavi.mishra@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -18,153 +19,183 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: kamil.konieczny@intel.com, rodrigo.vivi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding a test to validate mmap memory mappings along with runtime
-suspend and resume for both xe device and it's pci parent bridge
-in device hierarchy.
+Add basic test for new Class of Service interface
 
-v2:
-- Use 0xc00fee pattern. [Rodrigo]
-- Test the pagefault case on read and write the mapping. [Rodrigo]
+PVC and XE2 expose control over each Cache through the
+Class of Service (CLOS) feature. CLOS allows to define
+which portions of a cache may be used for a given
+allocation through a set of Waymask controls grouped
+into multiple sets.
 
-v3:
-- Cosmetic comment. [Kamil]
-- Use MAGIC macro for 0xc0ffe and 0xdeadbeef. [Kamil]
-- Fix xe_bo_create() with respect to Xe uapi.
-- Set auto_suspend delay to 1000ms and restore it.
-
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Pallavi Mishra <pallavi.mishra@intel.com>
 ---
- tests/intel/xe_pm.c | 97 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 97 insertions(+)
+ tests/intel/xe_clos.c | 141 ++++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build     |   1 +
+ 2 files changed, 142 insertions(+)
+ create mode 100644 tests/intel/xe_clos.c
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index c4ec38ae3..9e7c523eb 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -30,6 +30,8 @@
- #define NO_RPM -1
- 
- #define SIZE (4096 * 1024)
-+#define MAGIC_1 0xc0ffee
-+#define MAGIC_2 0xdeadbeef
- 
- typedef struct {
- 	int fd_xe;
-@@ -447,6 +449,84 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
- 	igt_assert(in_d3(device, IGT_ACPI_D3Cold));
- }
- 
-+/**
-+ * SUBTEST: d3-mmap-%s
-+ * Description:
-+ *	Validate mmap memory mapping with d3 state, for %arg[1] region,
-+ *	if supported by device.
-+ * arg[1]:
-+ *
-+ * @vram:	vram region
-+ * @system:	system region
-+ *
-+ * Functionality: pm-d3
-+ * Run type: FULL
+diff --git a/tests/intel/xe_clos.c b/tests/intel/xe_clos.c
+new file mode 100644
+index 000000000..37dfb22f3
+--- /dev/null
++++ b/tests/intel/xe_clos.c
+@@ -0,0 +1,141 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright(c) 2023 Intel Corporation. All rights reserved.
 + */
-+static void test_mmap(device_t device, uint32_t placement, uint32_t flags)
++
++/** TEST: Basic test for clos functionality.
++ *  Category: Software building block
++ *  Sub-category: uapi
++ */
++
++#include "igt.h"
++#include "xe_drm.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++
++static uint16_t clos_entry_alloc(int fd)
 +{
-+	size_t bo_size = 8192;
-+	uint32_t *map = NULL;
-+	uint32_t bo;
-+	int i, delay_ms;
++	struct drm_xe_clos_reserve clos = {};
 +
-+	igt_require_f(placement, "Device doesn't support such memory region\n");
-+
-+	bo_size = ALIGN(bo_size, xe_get_default_alignment(device.fd_xe));
-+
-+	bo = xe_bo_create(device.fd_xe, 0, bo_size, placement, flags);
-+	map = xe_bo_map(device.fd_xe, bo, bo_size);
-+	igt_assert(map);
-+	memset(map, 0, bo_size);
-+
-+	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
-+
-+	igt_assert(fw_handle >= 0);
-+	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-+
-+	for (i = 0; i < bo_size / sizeof(*map); i++)
-+		map[i] = MAGIC_1;
-+
-+	for (i = 0; i < bo_size / sizeof(*map); i++)
-+		igt_assert(map[i] == MAGIC_1);
-+
-+	/* Runtime suspend and validate the pattern and changed the pattern */
-+	close(fw_handle);
-+	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-+
-+	for (i = 0; i < bo_size / sizeof(*map); i++)
-+		igt_assert(map[i] == MAGIC_1);
-+
-+	/* dgfx page-fault on mmaping should wake the gpu */
-+	if (xe_has_vram(device.fd_xe)) {
-+		/* Give some auto suspend delay to validate rpm active */
-+		delay_ms = igt_pm_get_autosuspend_delay(device.pci_xe);
-+		igt_pm_set_autosuspend_delay(device.pci_xe, 1000);
-+		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-+		igt_pm_set_autosuspend_delay(device.pci_xe, delay_ms);
-+	}
-+
-+	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-+
-+	for (i = 0; i < bo_size / sizeof(*map); i++)
-+		map[i] = MAGIC_2;
-+
-+	if (xe_has_vram(device.fd_xe))
-+		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-+
-+	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-+
-+	/* Runtime resume and check the pattern */
-+	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
-+	igt_assert(fw_handle >= 0);
-+	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-+	for (i = 0; i < bo_size / sizeof(*map); i++)
-+		igt_assert(map[i] == MAGIC_2);
-+
-+	igt_assert(munmap(map, bo_size) == 0);
-+	gem_close(device.fd_xe, bo);
-+	close(fw_handle);
++	igt_ioctl(fd, DRM_IOCTL_XE_CLOS_RESERVE, &clos);
++	return clos.clos_index;
 +}
 +
- igt_main
- {
- 	struct drm_xe_engine_class_instance *hwe;
-@@ -557,6 +637,23 @@ igt_main
- 			igt_install_exit_handler(vram_d3cold_threshold_restore);
- 			test_vram_d3cold_threshold(device, sysfs_fd);
- 		}
++static void clos_entry_free(int fd, uint16_t clos_index)
++{
++	struct drm_xe_clos_reserve clos = {};
 +
-+		igt_describe("Validate mmap memory mappings with system region,"
-+			     "when device along with parent bridge in d3");
-+		igt_subtest("d3-mmap-system") {
-+			test_mmap(device, system_memory(device.fd_xe), 0);
-+		}
++	clos.clos_index = clos_index;
++	igt_ioctl(fd, DRM_IOCTL_XE_CLOS_FREE, &clos);
++}
 +
-+		igt_describe("Validate mmap memory mappings with vram region,"
-+			     "when device along with parent bridge in d3");
-+		igt_subtest("d3-mmap-vram") {
-+			if (device.pci_root != device.pci_xe) {
-+				igt_pm_enable_pci_card_runtime_pm(device.pci_root, NULL);
-+				igt_pm_set_d3cold_allowed(device.pci_slot_name, 1);
-+			}
++static int cache_way_alloc(int fd, uint16_t clos_index, uint16_t cache_level, uint16_t num_ways)
++{
++	struct drm_xe_cache_reserve cache = {};
 +
-+			test_mmap(device, vram_memory(device.fd_xe, 0), DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+		}
- 	}
- 
- 	igt_fixture {
++	cache.clos_index = clos_index;
++	cache.cache_level = cache_level;
++	cache.num_ways = num_ways;
++	igt_ioctl(fd, DRM_IOCTL_XE_CACHE_RESERVE, &cache);
++
++	return cache.num_ways;
++}
++
++#define MEM_TYPE_UC 0
++#define MEM_TYPE_WC 1
++#define MEM_TYPE_WT 2
++#define MEM_TYPE_WB 3
++
++/* PVC
++PAT Index      CLOS    MemType
++       0       0       UC (00)
++       1       0       WC (01)
++       2       0       WT (10)
++       3       0       WB (11)
++       4       1       WT (10)
++       5       1       WB (11)
++       6       2       WT (10)
++       7       2       WB (11)
++*/
++
++/* XE2
++ PAT Index      CLOS
++  0 - 15         0
++ 20 - 23         1
++ 24 - 27         2
++ 23 - 31         3
++*/
++
++/*Select a pat index for given clos index */
++static uint8_t pat_index(uint16_t clos_index, uint8_t cache_type, uint16_t devid)
++{
++	if (IS_PONTEVECCHIO(devid))
++		return (clos_index == 0 ? cache_type :
++		       (4 + (clos_index - 1) * 2 + (cache_type - MEM_TYPE_WT) ));
++	else
++		return (clos_index == 0 ? cache_type :
++			(22 + (clos_index - 1) * 4)); /* pat index mapped to 1 - way*/
++}
++
++#define PAGE_SIZE      4096l
++#define BATCH_VA       0x8000000000
++
++static void vm_bind_clos(int fd, uint16_t clos_index, uint16_t devid)
++{
++	size_t size = xe_get_default_alignment(fd);
++	uint32_t vm, bo;
++	uint8_t pat;
++	void *data;
++
++	data = mmap(0, size, PROT_READ |
++		    PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
++	igt_assert(data != MAP_FAILED);
++
++	vm = xe_vm_create(fd, 0, 0);
++
++	bo = xe_bo_create_caching(fd, 0, size, system_memory(fd), 0,
++				  DRM_XE_GEM_CPU_CACHING_WB);
++
++	pat = pat_index(clos_index, MEM_TYPE_WB, devid);
++	
++	igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
++				   size, DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
++				   pat, 0),
++				   0);
++	
++	xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
++
++	munmap(data, size);
++	gem_close(fd, bo);
++	xe_vm_destroy(fd, vm);	
++}
++
++#define NUM_WAYS 2
++igt_main
++{
++	int fd;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_XE);
++	}
++
++	igt_subtest("clos_basic"){
++		uint16_t devid;
++		uint16_t clos_index;
++
++		devid = intel_get_drm_devid(fd);
++		igt_require((IS_PONTEVECCHIO(devid)) || (intel_get_device_info(devid)->graphics_ver >= 20));
++
++		clos_index = clos_entry_alloc(fd);
++		igt_debug("clos index=%d\n", clos_index);
++		cache_way_alloc(fd, clos_index, 3, NUM_WAYS);
++ 		vm_bind_clos(fd, clos_index, devid);
++		clos_entry_free(fd, clos_index);
++		cache_way_alloc(fd, clos_index, 3, 0);
++	}
++	igt_fixture {
++		close(fd);
++	}
++
++	igt_exit();
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index a6a8498e2..1628311de 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -279,6 +279,7 @@ intel_xe_progs = [
+ 	'xe_create',
+ 	'xe_compute',
+ 	'xe_copy_basic',
++	'xe_clos',
+ 	'xe_dma_buf_sync',
+ 	'xe_debugfs',
+ 	'xe_drm_fdinfo',
 -- 
 2.25.1
