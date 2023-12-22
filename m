@@ -1,23 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68CC210E751
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 07:26:13 +0000 (UTC)
-Date: Fri, 22 Dec 2023 08:26:08 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Subject: Re: [PATCH i-g-t 01/12] lib/rendercopy: Add deltas to all surface
- relocs
-Message-ID: <20231222072608.rpv2zyglnk6jm566@zkempczy-mobl2>
-References: <20231220175934.22849-1-ville.syrjala@linux.intel.com>
- <20231220175934.22849-2-ville.syrjala@linux.intel.com>
- <20231222053731.ph6cjqgis2yh6upr@zkempczy-mobl2>
- <ZYUmH-o0eH2qVM30@intel.com> <ZYUnaMTEkCV2ZDZi@intel.com>
- <ZYUyRaXo_P4KF4VX@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 107D310E759
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 07:48:41 +0000 (UTC)
+Message-ID: <7e626fed-2148-4d52-976e-c3456827a681@intel.com>
+Date: Fri, 22 Dec 2023 13:18:25 +0530
+Subject: Re: [PATCH i-g-t v4 3/4] tests/xe_pm: Add d3-mmap IGT test
+Content-Language: en-US
+To: Anshuman Gupta <anshuman.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20231221163338.2157257-1-anshuman.gupta@intel.com>
+ <20231221163338.2157257-4-anshuman.gupta@intel.com>
+From: "Nilawar, Badal" <badal.nilawar@intel.com>
+In-Reply-To: <20231221163338.2157257-4-anshuman.gupta@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZYUyRaXo_P4KF4VX@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,112 +21,160 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@intel.com, rodrigo.vivi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Dec 22, 2023 at 08:52:53AM +0200, Ville Syrjälä wrote:
-> On Fri, Dec 22, 2023 at 08:06:32AM +0200, Ville Syrjälä wrote:
-> > On Fri, Dec 22, 2023 at 08:01:03AM +0200, Ville Syrjälä wrote:
-> > > On Fri, Dec 22, 2023 at 06:37:31AM +0100, Zbigniew Kempczyński wrote:
-> > > > On Wed, Dec 20, 2023 at 07:59:23PM +0200, Ville Syrjala wrote:
-> > > > > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > > > > 
-> > > > > In order to copy stuff not at offset 0 in the BO we need
-> > > > > to include the delta in the relocs/etc.
-> > > > > 
-> > > > > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > > > > ---
-> > > > >  lib/rendercopy_gen4.c |  9 +++++----
-> > > > >  lib/rendercopy_gen6.c |  9 +++++----
-> > > > >  lib/rendercopy_gen7.c |  9 +++++----
-> > > > >  lib/rendercopy_gen8.c |  9 +++++----
-> > > > >  lib/rendercopy_gen9.c | 13 +++++++------
-> > > > >  lib/rendercopy_i830.c | 10 +++++++---
-> > > > >  lib/rendercopy_i915.c |  6 ++++--
-> > > > >  7 files changed, 38 insertions(+), 27 deletions(-)
-> > > > > 
-> > > > > diff --git a/lib/rendercopy_gen4.c b/lib/rendercopy_gen4.c
-> > > > > index 8536d6b632c5..d10e5b7780c0 100644
-> > > > > --- a/lib/rendercopy_gen4.c
-> > > > > +++ b/lib/rendercopy_gen4.c
-> > > > > @@ -148,10 +148,11 @@ gen4_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst)
-> > > > >  	ss->ss0.data_return_format = SURFACERETURNFORMAT_FLOAT32;
-> > > > >  	ss->ss0.color_blend = 1;
-> > > > >  
-> > > > > -	address = intel_bb_offset_reloc(ibb, buf->handle,
-> > > > > -					read_domain, write_domain,
-> > > > > -					intel_bb_offset(ibb) + 4,
-> > > > > -					buf->addr.offset);
-> > > > > +	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-> > > > > +						   read_domain, write_domain,
-> > > > > +						   buf->surface[0].offset,
-> > > > > +						   intel_bb_offset(ibb) + 4,
-> > > > > +						   buf->addr.offset);
-> > > > >  	ss->ss1.base_addr = (uint32_t) address;
-> > > > 
-> > > > I've just took a look to intel_bb_add_reloc() because I didn't
-> > > > remember all details and I see address returned there is offset
-> > > > at which object will be binded, not offset + delta.
-> > > > Until this patch only users of this function reside in
-> > > > rendercopy_gen9.c so for older platforms it doesn't matter
-> > > > (xe driver doesn't support them).
-> > > > 
-> > > > Anyway, delta addition sets up 10-bit if buf->cc.offset is not zero.
-> > > > I mean:
-> > > > 
-> > > > address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-> > > > 					   read_domain, write_domain,
-> > > > 					   (buf->cc.offset ? (1 << 10) : 0)
-> > > > 					   | buf->ccs[0].offset,
-> > > > 					   intel_bb_offset(ibb) + 4 * 10,
-> > > > 					   buf->addr.offset);
-> > > > ss->ss10.aux_base_addr = (address + buf->ccs[0].offset) >> 12;
-> > > > ss->ss11.aux_base_addr_hi = (address + buf->ccs[0].offset) >> 32;
-> > > > 
-> > > > I wonder shouldn't intel_bb_add_reloc() return offset + delta.
-> > > > 
-> > > > I also have some doubts regarding:
-> > > > 
-> > > > 	(buf->cc.offset ? (1 << 10) : 0) | buf->ccs[0].offset
-> > > > 
-> > > > This will set up bit-10 (if I'm not wrong clearvalue enable) only
-> > > > when relocation will happen. Without relocation or on softpinning
-> > > > this bit is never set.
-> > > > 
-> > > > Above also would require remove delta in __intel_bb_emit_reloc()
-> > > > but if I'm not wrong this would be enough to start directly using
-> > > > offset returned in intel_bb_add_reloc() derivatives.
-> > > > 
-> > > > Have I missed something?
-> > > 
-> > > No, I think you're right. The lack of the cc enable bit diretly
-> > > written to ss10 would seem to be wrong for the no-reloc case.
-> > > Also the >>12 there looks wrong. And the >>6 in the ss12 clear
-> > > color address looks wrong (and the reloc case should again
-> > > get fixed up by the kernel).
-> > 
-> > Actually no, the extra shift are correct due to the bitfields.
-> > But yeah clear color enable was missing for the no-reloc case.
-> > But that doesn't help either. And I just realized that I'm actually
-> > testing a modifier w/o CC anyway so the problem must be elsewhere.
+
+
+On 21-12-2023 22:03, Anshuman Gupta wrote:
+> Adding a test to validate mmap memory mappings along with runtime
+> suspend and resume for both xe device and it's pci parent bridge
+> in device hierarchy.
 > 
-> OK, the problem seems to be that somehow the hardware thinks the
-> initial state of the AUX surface is compressed. So any part of the
-> FB I don't explicitly touch is left with interesting rainbow colors
-> when the zeroed main surface data is treated as compressed.
-> Did the AUX format change such that all zeroes in AUX is no 
-> longer uncompressed?
-
-I don't know, but I would expect zero means uncompressed.
-
-Maybe J-P knows more about it?
-
---
-Zbigniew
-
+> v2:
+> - Use 0xc00fee pattern. [Rodrigo]
+> - Test the pagefault case on read and write the mapping. [Rodrigo]
 > 
-> -- 
-> Ville Syrjälä
-> Intel
+> v3:
+> - Cosmetic comment. [Kamil]
+> - Use MAGIC macro for 0xc0ffe and 0xdeadbeef. [Kamil]
+> - Fix xe_bo_create() with respect to Xe uapi.
+> - Set auto_suspend delay to 1000ms and restore it.
+> 
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> ---
+>   tests/intel/xe_pm.c | 97 +++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 97 insertions(+)
+> 
+> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+> index c4ec38ae3..9e7c523eb 100644
+> --- a/tests/intel/xe_pm.c
+> +++ b/tests/intel/xe_pm.c
+> @@ -30,6 +30,8 @@
+>   #define NO_RPM -1
+>   
+>   #define SIZE (4096 * 1024)
+> +#define MAGIC_1 0xc0ffee
+> +#define MAGIC_2 0xdeadbeef
+>   
+>   typedef struct {
+>   	int fd_xe;
+> @@ -447,6 +449,84 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
+>   	igt_assert(in_d3(device, IGT_ACPI_D3Cold));
+>   }
+>   
+> +/**
+> + * SUBTEST: d3-mmap-%s
+> + * Description:
+> + *	Validate mmap memory mapping with d3 state, for %arg[1] region,
+> + *	if supported by device.
+> + * arg[1]:
+> + *
+> + * @vram:	vram region
+> + * @system:	system region
+> + *
+> + * Functionality: pm-d3
+> + * Run type: FULL
+> + */
+> +static void test_mmap(device_t device, uint32_t placement, uint32_t flags)
+> +{
+> +	size_t bo_size = 8192;
+> +	uint32_t *map = NULL;
+> +	uint32_t bo;
+> +	int i, delay_ms;
+> +
+> +	igt_require_f(placement, "Device doesn't support such memory region\n");
+> +
+> +	bo_size = ALIGN(bo_size, xe_get_default_alignment(device.fd_xe));
+> +
+> +	bo = xe_bo_create(device.fd_xe, 0, bo_size, placement, flags);
+> +	map = xe_bo_map(device.fd_xe, bo, bo_size);
+> +	igt_assert(map);
+> +	memset(map, 0, bo_size);
+> +
+> +	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
+> +
+> +	igt_assert(fw_handle >= 0);
+> +	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
+> +
+> +	for (i = 0; i < bo_size / sizeof(*map); i++)
+> +		map[i] = MAGIC_1;
+> +
+> +	for (i = 0; i < bo_size / sizeof(*map); i++)
+> +		igt_assert(map[i] == MAGIC_1);
+> +
+> +	/* Runtime suspend and validate the pattern and changed the pattern */
+> +	close(fw_handle);
+> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+> +
+> +	for (i = 0; i < bo_size / sizeof(*map); i++)
+> +		igt_assert(map[i] == MAGIC_1);
+> +
+> +	/* dgfx page-fault on mmaping should wake the gpu */
+> +	if (xe_has_vram(device.fd_xe)) {
+> +		/* Give some auto suspend delay to validate rpm active */
+> +		delay_ms = igt_pm_get_autosuspend_delay(device.pci_xe);
+> +		igt_pm_set_autosuspend_delay(device.pci_xe, 1000);
+> +		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
+> +		igt_pm_set_autosuspend_delay(device.pci_xe, delay_ms);
+> +	}
+> +
+> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+> +
+> +	for (i = 0; i < bo_size / sizeof(*map); i++)
+> +		map[i] = MAGIC_2;
+> +
+> +	if (xe_has_vram(device.fd_xe))
+> +		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
+Need to increase auto suspend delay at this place as well. I think 
+better to change it at the beginning of test and restore back at the end 
+of test.
+
+Regards,
+Badal
+> +
+> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+> +
+> +	/* Runtime resume and check the pattern */
+> +	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
+> +	igt_assert(fw_handle >= 0);
+> +	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
+> +	for (i = 0; i < bo_size / sizeof(*map); i++)
+> +		igt_assert(map[i] == MAGIC_2);
+> +
+> +	igt_assert(munmap(map, bo_size) == 0);
+> +	gem_close(device.fd_xe, bo);
+> +	close(fw_handle);
+> +}
+> +
+>   igt_main
+>   {
+>   	struct drm_xe_engine_class_instance *hwe;
+> @@ -557,6 +637,23 @@ igt_main
+>   			igt_install_exit_handler(vram_d3cold_threshold_restore);
+>   			test_vram_d3cold_threshold(device, sysfs_fd);
+>   		}
+> +
+> +		igt_describe("Validate mmap memory mappings with system region,"
+> +			     "when device along with parent bridge in d3");
+> +		igt_subtest("d3-mmap-system") {
+> +			test_mmap(device, system_memory(device.fd_xe), 0);
+> +		}
+> +
+> +		igt_describe("Validate mmap memory mappings with vram region,"
+> +			     "when device along with parent bridge in d3");
+> +		igt_subtest("d3-mmap-vram") {
+> +			if (device.pci_root != device.pci_xe) {
+> +				igt_pm_enable_pci_card_runtime_pm(device.pci_root, NULL);
+> +				igt_pm_set_d3cold_allowed(device.pci_slot_name, 1);
+> +			}
+> +
+> +			test_mmap(device, vram_memory(device.fd_xe, 0), DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +		}
+>   	}
+>   
+>   	igt_fixture {
