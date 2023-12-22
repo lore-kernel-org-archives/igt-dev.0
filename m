@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E3F8210E0DC
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 80E7810E1B5
  for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 14:32:22 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 01/15] lib/rendercopy: Add deltas to all surface
- relocs
-Date: Fri, 22 Dec 2023 16:31:45 +0200
-Message-ID: <20231222143159.24662-2-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2 03/15] lib/igt_fb: Expose igt_fb_is_ccs_modifier()
+Date: Fri, 22 Dec 2023 16:31:47 +0200
+Message-ID: <20231222143159.24662-4-ville.syrjala@linux.intel.com>
 In-Reply-To: <20231222143159.24662-1-ville.syrjala@linux.intel.com>
 References: <20231222143159.24662-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
@@ -26,187 +25,114 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-In order to copy stuff not at offset 0 in the BO we need
-to include the delta in the relocs/etc.
-
-v2: fix the address in the command packets
+I'm going to need is_ccs_modifier() outside of igt_fb.c.
+Rename it to igt_fb_is_ccs_modifier() and expose it to everyone.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/rendercopy_gen4.c | 11 ++++++-----
- lib/rendercopy_gen6.c | 11 ++++++-----
- lib/rendercopy_gen7.c | 11 ++++++-----
- lib/rendercopy_gen8.c | 13 +++++++------
- lib/rendercopy_gen9.c | 13 +++++++------
- lib/rendercopy_i830.c | 10 +++++++---
- lib/rendercopy_i915.c |  6 ++++--
- 7 files changed, 43 insertions(+), 32 deletions(-)
+ lib/igt_fb.c | 21 ++++++++++++---------
+ lib/igt_fb.h |  1 +
+ 2 files changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/lib/rendercopy_gen4.c b/lib/rendercopy_gen4.c
-index 8536d6b632c5..8582e0efb886 100644
---- a/lib/rendercopy_gen4.c
-+++ b/lib/rendercopy_gen4.c
-@@ -148,11 +148,12 @@ gen4_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst)
- 	ss->ss0.data_return_format = SURFACERETURNFORMAT_FLOAT32;
- 	ss->ss0.color_blend = 1;
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 683eb176b7a4..d7d8840fa432 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -605,7 +605,7 @@ static bool is_gen12_ccs_modifier(uint64_t modifier)
+ 		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC;
+ }
  
--	address = intel_bb_offset_reloc(ibb, buf->handle,
--					read_domain, write_domain,
--					intel_bb_offset(ibb) + 4,
--					buf->addr.offset);
--	ss->ss1.base_addr = (uint32_t) address;
-+	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-+						   read_domain, write_domain,
-+						   buf->surface[0].offset,
-+						   intel_bb_offset(ibb) + 4,
-+						   buf->addr.offset);
-+	ss->ss1.base_addr = address + buf->surface[0].offset;
+-static bool is_ccs_modifier(uint64_t modifier)
++bool igt_fb_is_ccs_modifier(uint64_t modifier)
+ {
+ 	return is_gen12_ccs_modifier(modifier) ||
+ 		modifier == I915_FORMAT_MOD_Y_TILED_CCS ||
+@@ -614,7 +614,8 @@ static bool is_ccs_modifier(uint64_t modifier)
  
- 	ss->ss2.height = intel_buf_height(buf) - 1;
- 	ss->ss2.width  = intel_buf_width(buf) - 1;
-diff --git a/lib/rendercopy_gen6.c b/lib/rendercopy_gen6.c
-index e941257eb606..ec197661702f 100644
---- a/lib/rendercopy_gen6.c
-+++ b/lib/rendercopy_gen6.c
-@@ -91,11 +91,12 @@ gen6_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst)
- 	ss->ss0.data_return_format = SURFACERETURNFORMAT_FLOAT32;
- 	ss->ss0.color_blend = 1;
+ static bool is_ccs_plane(const struct igt_fb *fb, int plane)
+ {
+-	if (!is_ccs_modifier(fb->modifier) || HAS_FLATCCS(intel_get_drm_devid(fb->fd)))
++	if (!igt_fb_is_ccs_modifier(fb->modifier) ||
++	    HAS_FLATCCS(intel_get_drm_devid(fb->fd)))
+ 		return false;
  
--	address = intel_bb_offset_reloc(ibb, buf->handle,
--					read_domain, write_domain,
--					intel_bb_offset(ibb) + 4,
--					buf->addr.offset);
--	ss->ss1.base_addr = (uint32_t) address;
-+	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-+						   read_domain, write_domain,
-+						   buf->surface[0].offset,
-+						   intel_bb_offset(ibb) + 4,
-+						   buf->addr.offset);
-+	ss->ss1.base_addr = address + buf->surface[0].offset;
+ 	return plane >= fb->num_planes / 2;
+@@ -724,7 +725,8 @@ static int fb_num_planes(const struct igt_fb *fb)
+ {
+ 	int num_planes = lookup_drm_format(fb->drm_format)->num_planes;
  
- 	ss->ss2.height = intel_buf_height(buf) - 1;
- 	ss->ss2.width  = intel_buf_width(buf) - 1;
-diff --git a/lib/rendercopy_gen7.c b/lib/rendercopy_gen7.c
-index 267f6f8038ba..095ba7bde654 100644
---- a/lib/rendercopy_gen7.c
-+++ b/lib/rendercopy_gen7.c
-@@ -86,11 +86,12 @@ gen7_bind_buf(struct intel_bb *ibb,
- 		 gen7_tiling_bits(buf->tiling) |
- 		format << GEN7_SURFACE_FORMAT_SHIFT);
+-	if (is_ccs_modifier(fb->modifier) && !HAS_FLATCCS(intel_get_drm_devid(fb->fd)))
++	if (igt_fb_is_ccs_modifier(fb->modifier) &&
++	    !HAS_FLATCCS(intel_get_drm_devid(fb->fd)))
+ 		num_planes *= 2;
  
--	address = intel_bb_offset_reloc(ibb, buf->handle,
--					read_domain, write_domain,
--					intel_bb_offset(ibb) + 4,
--					buf->addr.offset);
--	ss[1] = address;
-+	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-+						   read_domain, write_domain,
-+						   intel_bb_offset(ibb) + 4,
-+						   buf->surface[0].offset,
-+						   buf->addr.offset);
-+	ss[1] = address + buf->surface[0].offset;
- 	ss[2] = ((intel_buf_width(buf) - 1)  << GEN7_SURFACE_WIDTH_SHIFT |
- 		 (intel_buf_height(buf) - 1) << GEN7_SURFACE_HEIGHT_SHIFT);
- 	ss[3] = (buf->surface[0].stride - 1) << GEN7_SURFACE_PITCH_SHIFT;
-diff --git a/lib/rendercopy_gen8.c b/lib/rendercopy_gen8.c
-index ba7897fb475f..8c08bab6d52e 100644
---- a/lib/rendercopy_gen8.c
-+++ b/lib/rendercopy_gen8.c
-@@ -109,12 +109,13 @@ gen8_bind_buf(struct intel_bb *ibb,
- 		ss->ss1.memory_object_control = BDW_MOCS_PTE |
- 			BDW_MOCS_TC_L3_PTE | BDW_MOCS_AGE(0);
+ 	if (fb->modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
+@@ -2491,7 +2493,7 @@ static enum blt_tiling_type fb_tile_to_blt_tile(uint64_t tile)
+ static bool fast_blit_ok(const struct igt_fb *fb)
+ {
+ 	return blt_has_fast_copy(fb->fd) &&
+-		!is_ccs_modifier(fb->modifier) &&
++		!igt_fb_is_ccs_modifier(fb->modifier) &&
+ 		blt_fast_copy_supports_tiling(fb->fd,
+ 					      fb_tile_to_blt_tile(fb->modifier));
+ }
+@@ -2508,7 +2510,7 @@ static bool blitter_ok(const struct igt_fb *fb)
+ 	if (!is_intel_device(fb->fd))
+ 		return false;
  
--	address = intel_bb_offset_reloc(ibb, buf->handle,
--					read_domain, write_domain,
--					intel_bb_offset(ibb) + 4 * 8,
--					buf->addr.offset);
--	ss->ss8.base_addr = address;
--	ss->ss9.base_addr_hi = address >> 32;
-+	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-+						   read_domain, write_domain,
-+						   buf->surface[0].offset,
-+						   intel_bb_offset(ibb) + 4 * 8,
-+						   buf->addr.offset);
-+	ss->ss8.base_addr = (address + buf->surface[0].offset);
-+	ss->ss9.base_addr_hi = (address + buf->surface[0].offset) >> 32;
+-	if ((is_ccs_modifier(fb->modifier) &&
++	if ((igt_fb_is_ccs_modifier(fb->modifier) &&
+ 	     !HAS_FLATCCS(intel_get_drm_devid(fb->fd))) ||
+ 	     is_gen12_mc_ccs_modifier(fb->modifier))
+ 		return false;
+@@ -2548,7 +2550,8 @@ static bool use_enginecopy(const struct igt_fb *fb)
+ 		return false;
  
- 	ss->ss2.height = intel_buf_height(buf) - 1;
- 	ss->ss2.width  = intel_buf_width(buf) - 1;
-diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-index 363bc6c1b203..bfac62b0fc23 100644
---- a/lib/rendercopy_gen9.c
-+++ b/lib/rendercopy_gen9.c
-@@ -194,12 +194,13 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
- 	else if (buf->tiling == I915_TILING_Ys)
- 		ss->ss5.trmode = 2;
+ 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+-	       (!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) && is_ccs_modifier(fb->modifier)) ||
++	       (!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) &&
++		igt_fb_is_ccs_modifier(fb->modifier)) ||
+ 	       is_gen12_mc_ccs_modifier(fb->modifier);
+ }
  
--	address = intel_bb_offset_reloc(ibb, buf->handle,
--					read_domain, write_domain,
--					intel_bb_offset(ibb) + 4 * 8,
--					buf->addr.offset);
--	ss->ss8.base_addr = address;
--	ss->ss9.base_addr_hi = address >> 32;
-+	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-+						   read_domain, write_domain,
-+						   buf->surface[0].offset,
-+						   intel_bb_offset(ibb) + 4 * 8,
-+						   buf->addr.offset);
-+	ss->ss8.base_addr = (address + buf->surface[0].offset);
-+	ss->ss9.base_addr_hi = (address + buf->surface[0].offset) >> 32;
+@@ -2608,7 +2611,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
  
- 	ss->ss2.height = intel_buf_height(buf) - 1;
- 	ss->ss2.width  = intel_buf_width(buf) - 1;
-diff --git a/lib/rendercopy_i830.c b/lib/rendercopy_i830.c
-index 4c4271493b4b..4b0ea3b859e2 100644
---- a/lib/rendercopy_i830.c
-+++ b/lib/rendercopy_i830.c
-@@ -158,8 +158,10 @@ static void gen2_emit_target(struct intel_bb *ibb,
- 	intel_bb_out(ibb, _3DSTATE_BUF_INFO_CMD);
- 	intel_bb_out(ibb, BUF_3D_ID_COLOR_BACK | tiling |
- 		     BUF_3D_PITCH(dst->surface[0].stride));
--	intel_bb_emit_reloc(ibb, dst->handle, I915_GEM_DOMAIN_RENDER,
--			    I915_GEM_DOMAIN_RENDER, 0, dst->addr.offset);
-+	intel_bb_emit_reloc(ibb, dst->handle,
-+			    I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER,
-+			    dst->surface[0].offset,
-+			    dst->addr.offset);
+ 	igt_assert_eq(fb->offsets[0], 0);
  
- 	intel_bb_out(ibb, _3DSTATE_DST_BUF_VARS_CMD);
- 	intel_bb_out(ibb, format |
-@@ -199,7 +201,9 @@ static void gen2_emit_texture(struct intel_bb *ibb,
- 		tiling |= TM0S1_TILE_WALK;
+-	if (is_ccs_modifier(fb->modifier)) {
++	if (igt_fb_is_ccs_modifier(fb->modifier)) {
+ 		igt_assert_eq(fb->strides[0] & 127, 0);
  
- 	intel_bb_out(ibb, _3DSTATE_LOAD_STATE_IMMEDIATE_2 | LOAD_TEXTURE_MAP(unit) | 4);
--	intel_bb_emit_reloc(ibb, src->handle, I915_GEM_DOMAIN_SAMPLER, 0, 0,
-+	intel_bb_emit_reloc(ibb, src->handle,
-+			    I915_GEM_DOMAIN_SAMPLER, 0,
-+			    src->surface[0].offset,
- 			    src->addr.offset);
- 	intel_bb_out(ibb, (intel_buf_height(src) - 1) << TM0S1_HEIGHT_SHIFT |
- 		     (intel_buf_width(src) - 1) << TM0S1_WIDTH_SHIFT |
-diff --git a/lib/rendercopy_i915.c b/lib/rendercopy_i915.c
-index 3e421301e6a6..94cdfb99af9a 100644
---- a/lib/rendercopy_i915.c
-+++ b/lib/rendercopy_i915.c
-@@ -112,7 +112,8 @@ void gen3_render_copyfunc(struct intel_bb *ibb,
- 		intel_bb_out(ibb, (1 << TEX_COUNT) - 1);
- 		intel_bb_emit_reloc(ibb, src->handle,
- 				    I915_GEM_DOMAIN_SAMPLER, 0,
--				    0, src->addr.offset);
-+				    src->surface[0].offset,
-+				    src->addr.offset);
- 		intel_bb_out(ibb, format_bits | tiling_bits |
- 			     (intel_buf_height(src) - 1) << MS3_HEIGHT_SHIFT |
- 			     (intel_buf_width(src) - 1) << MS3_WIDTH_SHIFT);
-@@ -155,7 +156,8 @@ void gen3_render_copyfunc(struct intel_bb *ibb,
- 			     BUF_3D_PITCH(dst->surface[0].stride));
- 		intel_bb_emit_reloc(ibb, dst->handle,
- 				    I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER,
--				    0, dst->addr.offset);
-+				    dst->surface[0].offset,
-+				    dst->addr.offset);
+ 		if (is_gen12_ccs_modifier(fb->modifier)) {
+@@ -2651,7 +2654,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
+ 	if (buf->format_is_yuv_semiplanar)
+ 		buf->yuv_semiplanar_bpp = yuv_semiplanar_bpp(fb->drm_format);
  
- 		intel_bb_out(ibb, _3DSTATE_DST_BUF_VARS_CMD);
- 		intel_bb_out(ibb, format_bits |
+-	if (is_ccs_modifier(fb->modifier)) {
++	if (igt_fb_is_ccs_modifier(fb->modifier)) {
+ 		num_surfaces = fb->num_planes / (HAS_FLATCCS(intel_get_drm_devid(fb->fd)) ? 1 : 2);
+ 		for (i = 0; i < num_surfaces; i++)
+ 			init_buf_ccs(buf, i,
+@@ -2773,7 +2776,7 @@ static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
+ 		       intel_get_uc_mocs_index(fb->fd),
+ 		       intel_get_pat_idx_uc(fb->fd),
+ 		       blt_tile,
+-		       is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
++		       igt_fb_is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
+ 		       is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
+ 
+ 	blt_set_geom(blt, stride, 0, 0, fb->width, fb->plane_height[plane], 0, 0);
+diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+index 834aaef54dea..0b85819b0f9e 100644
+--- a/lib/igt_fb.h
++++ b/lib/igt_fb.h
+@@ -182,6 +182,7 @@ void igt_fb_calc_crc(struct igt_fb *fb, igt_crc_t *crc);
+ uint64_t igt_fb_mod_to_tiling(uint64_t modifier);
+ uint64_t igt_fb_tiling_to_mod(uint64_t tiling);
+ 
++bool igt_fb_is_ccs_modifier(uint64_t modifier);
+ bool igt_fb_is_ccs_plane(const struct igt_fb *fb, int plane);
+ bool igt_fb_is_gen12_ccs_cc_plane(const struct igt_fb *fb, int plane);
+ int igt_fb_ccs_to_main_plane(const struct igt_fb *fb, int ccs_plane);
 -- 
 2.41.0
