@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 70B5410E0DC
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 14:32:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA7C510E1E4
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 14:32:24 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 02/15] tests/kms_big_fb: Use igt_fb_create_intel_buf()
-Date: Fri, 22 Dec 2023 16:31:46 +0200
-Message-ID: <20231222143159.24662-3-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2 07/15] tests/kms_frontbuffer_tracking: Use
+ igt_create_fb()
+Date: Fri, 22 Dec 2023 16:31:51 +0200
+Message-ID: <20231222143159.24662-8-ville.syrjala@linux.intel.com>
 In-Reply-To: <20231222143159.24662-1-ville.syrjala@linux.intel.com>
 References: <20231222143159.24662-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
@@ -25,52 +26,42 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Use igt_fb_create_intel_buf() instead of hand rolling something
-similar but less capable (igt_fb_create_intel_buf() handles
-planar and compressed formats, the hand rolled version does not).
+Calling igt_calc_fb_size() and igt_create_fb_with_bo_size() like
+this back to back is the same as just calling igt_create_fb().
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/intel/kms_big_fb.c | 27 +--------------------------
- 1 file changed, 1 insertion(+), 26 deletions(-)
+ tests/intel/kms_frontbuffer_tracking.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
-index 3eb43515a1fd..eef8148d2ba3 100644
---- a/tests/intel/kms_big_fb.c
-+++ b/tests/intel/kms_big_fb.c
-@@ -187,32 +187,7 @@ static struct intel_buf *init_buf(data_t *data,
- 				  const struct igt_fb *fb,
- 				  const char *buf_name)
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index 1daf27d2e006..f3dc30024691 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -1615,8 +1615,7 @@ static void create_fb(enum pixel_format pformat, int width, int height,
+ 		      enum tiling_type tiling, int plane, struct igt_fb *fb)
  {
--	struct intel_buf *buf;
--	enum intel_driver driver = buf_ops_get_driver(data->bops);
--	uint32_t name, handle, tiling, stride, width, height, bpp, size;
--	uint64_t region = driver == INTEL_DRIVER_XE ?
--				vram_if_possible(data->drm_fd, 0) : -1;
+ 	uint32_t format;
+-	uint64_t size, modifier;
+-	unsigned int stride;
++	uint64_t modifier;
+ 
+ 	switch (pformat) {
+ 	case FORMAT_RGB888:
+@@ -1650,13 +1649,7 @@ static void create_fb(enum pixel_format pformat, int width, int height,
+ 
+ 	igt_warn_on(plane == PLANE_CUR && tiling != TILING_LINEAR);
+ 
+-	igt_calc_fb_size(drm.fd, width, height, format, modifier, &size,
+-			 &stride);
 -
--	igt_assert_eq(fb->offsets[0], 0);
--
--	tiling = igt_fb_mod_to_tiling(fb->modifier);
--	stride = fb->strides[0];
--	bpp = fb->plane_bpp[0];
--	size = fb->size;
--	width = stride / (bpp / 8);
--	height = size / stride;
--
--	name = gem_flink(data->drm_fd, fb->gem_handle);
--	handle = gem_open(data->drm_fd, name);
--	buf = intel_buf_create_full(data->bops, handle, width, height,
--				    bpp, 0, tiling, 0, size, 0,
--				    region,
--				    intel_get_pat_idx_uc(data->drm_fd));
--
--	intel_buf_set_name(buf, buf_name);
--	intel_buf_set_ownership(buf, true);
--
--	return buf;
-+	return igt_fb_create_intel_buf(data->drm_fd, data->bops, fb, buf_name);
+-	igt_create_fb_with_bo_size(drm.fd, width, height, format, modifier,
+-				   IGT_COLOR_YCBCR_BT709,
+-				   IGT_COLOR_YCBCR_LIMITED_RANGE,
+-				   fb, size, stride);
++	igt_create_fb(drm.fd, width, height, format, modifier, fb);
  }
  
- static void fini_buf(struct intel_buf *buf)
+ static uint32_t pick_color(struct igt_fb *fb, enum color ecolor)
 -- 
 2.41.0
