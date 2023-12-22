@@ -1,19 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
  [205.220.168.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3F1F10E721
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Dec 2023 23:58:09 +0000 (UTC)
-Message-ID: <6c910eb7-5f4b-4b03-ae3c-ca0498f0c667@quicinc.com>
-Date: Thu, 21 Dec 2023 15:57:51 -0800
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B023710E72B
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 00:00:50 +0000 (UTC)
+Message-ID: <a89be9f3-abee-4e08-bc11-25641eb01faf@quicinc.com>
+Date: Thu, 21 Dec 2023 16:00:33 -0800
 MIME-Version: 1.0
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
-Subject: Re: [PATCH i-g-t 3/4] tests/kms_atomic: Add solid fill plane subtest
-To: Pekka Paalanen <pekka.paalanen@collabora.com>
-References: <20231215-solid-fill-v1-0-12932f9f452d@quicinc.com>
- <20231215-solid-fill-v1-3-12932f9f452d@quicinc.com>
- <20231218121247.454bc00a.pekka.paalanen@collabora.com>
+Subject: Re: [PATCH i-g-t 2/4] lib: Add support for solid_fill and
+ pixel_source plane properties
 Content-Language: en-US
-In-Reply-To: <20231218121247.454bc00a.pekka.paalanen@collabora.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>, Petri Latvala <adrinael@adrinael.net>,
+ Pekka Paalanen <pekka.paalanen@collabora.com>,
+ Simon Ser <contact@emersion.fr>, Rob Clark <robdclark@gmail.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+References: <20231215-solid-fill-v1-0-12932f9f452d@quicinc.com>
+ <20231215-solid-fill-v1-2-12932f9f452d@quicinc.com>
+ <20231219135100.ztoh23633leqs7vq@kamilkon-desk.igk.intel.com>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
+In-Reply-To: <20231219135100.ztoh23633leqs7vq@kamilkon-desk.igk.intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -23,159 +28,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Simon Ser <contact@emersion.fr>, igt-dev@lists.freedesktop.org,
- Rob Clark <robdclark@gmail.com>, Dmitry
- Baryshkov <dmitry.baryshkov@linaro.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
 
-On 12/18/2023 2:12 AM, Pekka Paalanen wrote:
-> On Fri, 15 Dec 2023 16:40:23 -0800
-> Jessica Zhang <quic_jesszhan@quicinc.com> wrote:
-> 
->> Add a basic test for solid fill planes.
->>
->> This test will first commit a single-color framebuffer plane then
->> a solid fill plane with the same contents. It then validates the solid
->> fill plane by comparing the resulting CRC with the CRC of the reference
->> framebuffer commit.
+On 12/19/2023 5:51 AM, Kamil Konieczny wrote:
+> Hi Jessica,
+> On 2023-12-15 at 16:40:22 -0800, Jessica Zhang wrote:
+>> Add corresponding IGT macros for solid_fill and pixel_source DRM
+>> properties, and change IGT commit behavior to allow for NULL FB commits.
 >>
 >> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
 >> ---
->>   tests/kms_atomic.c | 94 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 94 insertions(+)
+>>   lib/igt_kms.c | 37 ++++++++++++++++++++++++++++++++++---
+>>   lib/igt_kms.h |  4 ++++
+>>   2 files changed, 38 insertions(+), 3 deletions(-)
 >>
->> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
->> old mode 100644
->> new mode 100755
->> index 2b6e9a8f0383..8f81e65ad84f
->> --- a/tests/kms_atomic.c
->> +++ b/tests/kms_atomic.c
->> @@ -128,6 +128,13 @@ enum kms_atomic_check_relax {
->>   	PLANE_RELAX_FB = (1 << 1)
->>   };
->>   
->> +struct solid_fill_blob {
->> +	uint32_t r;
->> +	uint32_t g;
->> +	uint32_t b;
->> +	uint32_t pad;
->> +};
->> +
->>   static inline int damage_rect_width(struct drm_mode_rect *r)
->>   {
->>   	return r->x2 - r->x1;
->> @@ -1322,6 +1329,79 @@ static void atomic_plane_damage(data_t *data)
->>   	igt_remove_fb(data->drm_fd, &fb_2);
+>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>> index e4dea1a604dc..6a339766ca31 100644
+>> --- a/lib/igt_kms.c
+>> +++ b/lib/igt_kms.c
+>> @@ -669,6 +669,8 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
+>>   	[IGT_PLANE_HOTSPOT_X] = "HOTSPOT_X",
+>>   	[IGT_PLANE_HOTSPOT_Y] = "HOTSPOT_Y",
+>>   	[IGT_PLANE_FB_ID] = "FB_ID",
+>> +	[IGT_PLANE_SOLID_FILL] = "solid_fill",
+>> +	[IGT_PLANE_PIXEL_SOURCE] = "pixel_source",
+>>   	[IGT_PLANE_CRTC_ID] = "CRTC_ID",
+>>   	[IGT_PLANE_IN_FENCE_FD] = "IN_FENCE_FD",
+>>   	[IGT_PLANE_TYPE] = "type",
+>> @@ -3417,6 +3419,12 @@ static igt_output_t *igt_pipe_get_output(igt_pipe_t *pipe)
+>>   	return NULL;
 >>   }
 >>   
->> +static void test_solid_fill_plane(data_t *data, igt_output_t *output,  igt_plane_t *plane)
+>> +static uint32_t igt_plane_get_solid_fill_id(igt_plane_t *plane)
 >> +{
->> +	struct drm_mode_create_blob c;
->> +	struct drm_mode_destroy_blob d;
->> +	drmModeModeInfo *mode = igt_output_get_mode(output);
->> +	struct drm_mode_rect rect = { 0 };
->> +	struct igt_fb ref_fb;
->> +	igt_pipe_crc_t *pipe_crc;
->> +	igt_crc_t ref_crc, new_crc;
->> +	enum pipe pipe = data->pipe->pipe;
->> +	int height, width;
->> +	int ret;
+>> +	return plane->values[IGT_PLANE_SOLID_FILL];
+>> +}
 >> +
->> +	struct solid_fill_blob blob_data = {
->> +		.r = 0x00000000,
->> +		.g = 0x00000000,
->> +		.b = 0xff000000,
->> +		.pad = 0x0,
->> +	};
+>> +
 > 
-> Hi Jessica!
-> 
-> This is the blob sent to KMS as the solid fill color...
-> 
-> ...
-> 
->> +	igt_create_color_fb(data->drm_fd, width, height,
->> +			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
->> +			    0.0, 0.0, 1.0, &ref_fb);
-> 
-> ..and this (0.0, 0.0, 1.0) is the corresponding color in normalized
-> values, I presume.
-> 
-> So you say that 0xff000000 = 1.0.
-> 
-> However, the patch for the kernel UAPI header says this:
-> 
-> +/**
-> + * struct drm_mode_solid_fill - User info for solid fill planes
-> + *
-> + * This is the userspace API solid fill information structure.
-> + *
-> + * Userspace can enable solid fill planes by assigning the plane "solid_fill"
-> + * property to a blob containing a single drm_mode_solid_fill struct populated with an RGB323232
-> + * color and setting the pixel source to "SOLID_FILL".
-> + *
-> + * For information on the plane property, see drm_plane_create_solid_fill_property()
-> + *
-> + * @r: Red color value of single pixel
-> + * @g: Green color value of single pixel
-> + * @b: Blue color value of single pixel
-> + * @pad: padding, must be zero
-> + */
-> +struct drm_mode_solid_fill {
-> +	__u32 r;
-> +	__u32 g;
-> +	__u32 b;
-> +	__u32 pad;
-> +};
-> 
-> I assume that RGB323232 means unsigned 32-bit UNORM (Vulkan term)
-> format. That means 1.0 is 0xffffffff, not 0xff000000. This looks like a
-> bug in the test.
+> Remove one empty line.
 
-Hey Pekka,
+Hi Kamil,
 
-Ah, thanks for catching this -- I'll change the blob value to 0xffffffff 
-so it matches the 1.0.
-
-While we're talking about the UAPI struct, I'll also add the actual 
-drm_mode_solid_fill struct to the IGT drm-uapi instead of the current 
-workaround.
-
-> 
-> It would be good to test more than one color:
-> - 0.0, 0.0, 0.0
-> - 1.0, 0.0, 0.0
-> - 0.0, 1.0, 0.0
-> - 0.0, 0.0, 1.0
-> - 1.0, 1.0, 1.0
-
-Sounds good, will change the test to validate these combinations.
-
-> 
-> for example. That would get at least the so often used black explicitly
-> tested, and verify each channel gets mapped correctly rather than only
-> blue.
-> 
-> It would also be really good to test dim and mid grays, but I assume it
-> might be difficult to get CRC to match over various hardware. You'd
-> need to use writeback with an error tolerance. (For watching photos for
-> example, the background is not usually black but dim gray I believe.)
-
-Got it, we can add this to the list of colors to test.
-
-FWIW, I think as long as we keep the test structure as grabbing a 
-reference CRC from an FB commit then comparing that to a CRC from a 
-solid fill commit, I'm not expecting a difference in CRC values.
+Thanks for taking a look at this series. Will make the changes you 
+suggested in this patch and in the following patch.
 
 Thanks,
 
 Jessica Zhang
 
 > 
+>>   static uint32_t igt_plane_get_fb_id(igt_plane_t *plane)
+>>   {
+>>   	return plane->values[IGT_PLANE_FB_ID];
+>> @@ -3648,7 +3656,7 @@ static int igt_primary_plane_commit_legacy(igt_plane_t *primary,
+>>   	struct igt_display *display = primary->pipe->display;
+>>   	igt_output_t *output = igt_pipe_get_output(pipe);
+>>   	drmModeModeInfo *mode;
+>> -	uint32_t fb_id, crtc_id;
+>> +	uint32_t fb_id, solid_fill_id, crtc_id;
+>>   	int ret;
+>>   
+>>   	/* Primary planes can't be windowed when using a legacy commit */
+>> @@ -3665,12 +3673,14 @@ static int igt_primary_plane_commit_legacy(igt_plane_t *primary,
+>>   
+>>   	crtc_id = pipe->crtc_id;
+>>   	fb_id = output ? igt_plane_get_fb_id(primary) : 0;
+>> -	if (fb_id)
+>> +	solid_fill_id = output ? igt_plane_get_solid_fill_id(primary) : 0;
+>> +
+>> +	if (fb_id || solid_fill_id)
+>>   		mode = igt_output_get_mode(output);
+>>   	else
+>>   		mode = NULL;
+>>   
+>> -	if (fb_id) {
+>> +	if (fb_id || solid_fill_id) {
+>>   		uint32_t src_x = primary->values[IGT_PLANE_SRC_X] >> 16;
+>>   		uint32_t src_y = primary->values[IGT_PLANE_SRC_Y] >> 16;
+>>   
+>> @@ -4935,6 +4945,27 @@ igt_plane_t *igt_output_get_plane_type_index(igt_output_t *output,
+>>   	return igt_pipe_get_plane_type_index(pipe, plane_type, index);
+>>   }
+>>   
 > 
-> Thanks,
-> pq
+> Please add description to each new public function.
+> 
+> Regards,
+> Kamil
+> 
+>> +void igt_plane_set_solid_fill(igt_plane_t *plane, struct drm_mode_rect *rect,
+>> +		int solid_fill_id)
+>> +{
+>> +	igt_pipe_t *pipe = plane->pipe;
+>> +	igt_display_t *display = pipe->display;
+>> +	int width = rect->x2 - rect->x1;
+>> +	int height = rect->y2 - rect->y1;
+>> +
+>> +	igt_plane_set_prop_value(plane, IGT_PLANE_CRTC_ID,
+>> +			solid_fill_id ? pipe->crtc_id : 0);
+>> +	igt_plane_set_prop_value(plane, IGT_PLANE_SOLID_FILL, solid_fill_id);
+>> +
+>> +	plane->gem_handle = 0;
+>> +
+>> +	LOG(display, "%s.%d: plane_set_solid_fill(%d)\n", kmstest_pipe_name(pipe->pipe),
+>> +	    plane->index, solid_fill_id);
+>> +
+>> +	igt_plane_set_position(plane, rect->x1, rect->y1);
+>> +	igt_plane_set_size(plane, width, height);
+>> +}
+>> +
+>>   /**
+>>    * igt_plane_set_fb:
+>>    * @plane: Plane
+>> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+>> index b3882808b42f..9c05272abe1e 100644
+>> --- a/lib/igt_kms.h
+>> +++ b/lib/igt_kms.h
+>> @@ -330,6 +330,8 @@ enum igt_atomic_plane_properties {
+>>   #define IGT_PLANE_COORD_CHANGED_MASK 0xff
+>>   
+>>          IGT_PLANE_FB_ID,
+>> +       IGT_PLANE_SOLID_FILL,
+>> +       IGT_PLANE_PIXEL_SOURCE,
+>>          IGT_PLANE_CRTC_ID,
+>>          IGT_PLANE_IN_FENCE_FD,
+>>          IGT_PLANE_TYPE,
+>> @@ -537,6 +539,8 @@ igt_output_t *igt_get_single_output_for_pipe(igt_display_t *display, enum pipe p
+>>   
+>>   void igt_pipe_request_out_fence(igt_pipe_t *pipe);
+>>   
+>> +void igt_plane_set_solid_fill(igt_plane_t *plane, struct drm_mode_rect *rect,
+>> +		int solid_fill_id);
+>>   void igt_plane_set_fb(igt_plane_t *plane, struct igt_fb *fb);
+>>   void igt_plane_set_fence_fd(igt_plane_t *plane, int fence_fd);
+>>   void igt_plane_set_pipe(igt_plane_t *plane, igt_pipe_t *pipe);
+>>
+>> -- 
+>> 2.43.0
+>>
