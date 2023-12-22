@@ -1,26 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
- [205.220.168.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B023710E72B
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 00:00:50 +0000 (UTC)
-Message-ID: <a89be9f3-abee-4e08-bc11-25641eb01faf@quicinc.com>
-Date: Thu, 21 Dec 2023 16:00:33 -0800
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F6C810E72F
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 05:03:15 +0000 (UTC)
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t v2 01/12] lib/rendercopy: Add deltas to all surface
+ relocs
+Date: Fri, 22 Dec 2023 07:03:11 +0200
+Message-ID: <20231222050311.25970-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20231220175934.22849-2-ville.syrjala@linux.intel.com>
+References: <20231220175934.22849-2-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH i-g-t 2/4] lib: Add support for solid_fill and
- pixel_source plane properties
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>, Petri Latvala <adrinael@adrinael.net>,
- Pekka Paalanen <pekka.paalanen@collabora.com>,
- Simon Ser <contact@emersion.fr>, Rob Clark <robdclark@gmail.com>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-References: <20231215-solid-fill-v1-0-12932f9f452d@quicinc.com>
- <20231215-solid-fill-v1-2-12932f9f452d@quicinc.com>
- <20231219135100.ztoh23633leqs7vq@kamilkon-desk.igk.intel.com>
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
-In-Reply-To: <20231219135100.ztoh23633leqs7vq@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,142 +24,189 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
+In order to copy stuff not at offset 0 in the BO we need
+to include the delta in the relocs/etc.
 
-On 12/19/2023 5:51 AM, Kamil Konieczny wrote:
-> Hi Jessica,
-> On 2023-12-15 at 16:40:22 -0800, Jessica Zhang wrote:
->> Add corresponding IGT macros for solid_fill and pixel_source DRM
->> properties, and change IGT commit behavior to allow for NULL FB commits.
->>
->> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
->> ---
->>   lib/igt_kms.c | 37 ++++++++++++++++++++++++++++++++++---
->>   lib/igt_kms.h |  4 ++++
->>   2 files changed, 38 insertions(+), 3 deletions(-)
->>
->> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
->> index e4dea1a604dc..6a339766ca31 100644
->> --- a/lib/igt_kms.c
->> +++ b/lib/igt_kms.c
->> @@ -669,6 +669,8 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
->>   	[IGT_PLANE_HOTSPOT_X] = "HOTSPOT_X",
->>   	[IGT_PLANE_HOTSPOT_Y] = "HOTSPOT_Y",
->>   	[IGT_PLANE_FB_ID] = "FB_ID",
->> +	[IGT_PLANE_SOLID_FILL] = "solid_fill",
->> +	[IGT_PLANE_PIXEL_SOURCE] = "pixel_source",
->>   	[IGT_PLANE_CRTC_ID] = "CRTC_ID",
->>   	[IGT_PLANE_IN_FENCE_FD] = "IN_FENCE_FD",
->>   	[IGT_PLANE_TYPE] = "type",
->> @@ -3417,6 +3419,12 @@ static igt_output_t *igt_pipe_get_output(igt_pipe_t *pipe)
->>   	return NULL;
->>   }
->>   
->> +static uint32_t igt_plane_get_solid_fill_id(igt_plane_t *plane)
->> +{
->> +	return plane->values[IGT_PLANE_SOLID_FILL];
->> +}
->> +
->> +
-> 
-> Remove one empty line.
+v2: also add the offset to the surface state on gen4/6/7/8
 
-Hi Kamil,
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ lib/rendercopy_gen4.c | 11 ++++++-----
+ lib/rendercopy_gen6.c | 11 ++++++-----
+ lib/rendercopy_gen7.c | 11 ++++++-----
+ lib/rendercopy_gen8.c | 13 +++++++------
+ lib/rendercopy_gen9.c | 13 +++++++------
+ lib/rendercopy_i830.c | 10 +++++++---
+ lib/rendercopy_i915.c |  6 ++++--
+ 7 files changed, 43 insertions(+), 32 deletions(-)
 
-Thanks for taking a look at this series. Will make the changes you 
-suggested in this patch and in the following patch.
-
-Thanks,
-
-Jessica Zhang
-
-> 
->>   static uint32_t igt_plane_get_fb_id(igt_plane_t *plane)
->>   {
->>   	return plane->values[IGT_PLANE_FB_ID];
->> @@ -3648,7 +3656,7 @@ static int igt_primary_plane_commit_legacy(igt_plane_t *primary,
->>   	struct igt_display *display = primary->pipe->display;
->>   	igt_output_t *output = igt_pipe_get_output(pipe);
->>   	drmModeModeInfo *mode;
->> -	uint32_t fb_id, crtc_id;
->> +	uint32_t fb_id, solid_fill_id, crtc_id;
->>   	int ret;
->>   
->>   	/* Primary planes can't be windowed when using a legacy commit */
->> @@ -3665,12 +3673,14 @@ static int igt_primary_plane_commit_legacy(igt_plane_t *primary,
->>   
->>   	crtc_id = pipe->crtc_id;
->>   	fb_id = output ? igt_plane_get_fb_id(primary) : 0;
->> -	if (fb_id)
->> +	solid_fill_id = output ? igt_plane_get_solid_fill_id(primary) : 0;
->> +
->> +	if (fb_id || solid_fill_id)
->>   		mode = igt_output_get_mode(output);
->>   	else
->>   		mode = NULL;
->>   
->> -	if (fb_id) {
->> +	if (fb_id || solid_fill_id) {
->>   		uint32_t src_x = primary->values[IGT_PLANE_SRC_X] >> 16;
->>   		uint32_t src_y = primary->values[IGT_PLANE_SRC_Y] >> 16;
->>   
->> @@ -4935,6 +4945,27 @@ igt_plane_t *igt_output_get_plane_type_index(igt_output_t *output,
->>   	return igt_pipe_get_plane_type_index(pipe, plane_type, index);
->>   }
->>   
-> 
-> Please add description to each new public function.
-> 
-> Regards,
-> Kamil
-> 
->> +void igt_plane_set_solid_fill(igt_plane_t *plane, struct drm_mode_rect *rect,
->> +		int solid_fill_id)
->> +{
->> +	igt_pipe_t *pipe = plane->pipe;
->> +	igt_display_t *display = pipe->display;
->> +	int width = rect->x2 - rect->x1;
->> +	int height = rect->y2 - rect->y1;
->> +
->> +	igt_plane_set_prop_value(plane, IGT_PLANE_CRTC_ID,
->> +			solid_fill_id ? pipe->crtc_id : 0);
->> +	igt_plane_set_prop_value(plane, IGT_PLANE_SOLID_FILL, solid_fill_id);
->> +
->> +	plane->gem_handle = 0;
->> +
->> +	LOG(display, "%s.%d: plane_set_solid_fill(%d)\n", kmstest_pipe_name(pipe->pipe),
->> +	    plane->index, solid_fill_id);
->> +
->> +	igt_plane_set_position(plane, rect->x1, rect->y1);
->> +	igt_plane_set_size(plane, width, height);
->> +}
->> +
->>   /**
->>    * igt_plane_set_fb:
->>    * @plane: Plane
->> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
->> index b3882808b42f..9c05272abe1e 100644
->> --- a/lib/igt_kms.h
->> +++ b/lib/igt_kms.h
->> @@ -330,6 +330,8 @@ enum igt_atomic_plane_properties {
->>   #define IGT_PLANE_COORD_CHANGED_MASK 0xff
->>   
->>          IGT_PLANE_FB_ID,
->> +       IGT_PLANE_SOLID_FILL,
->> +       IGT_PLANE_PIXEL_SOURCE,
->>          IGT_PLANE_CRTC_ID,
->>          IGT_PLANE_IN_FENCE_FD,
->>          IGT_PLANE_TYPE,
->> @@ -537,6 +539,8 @@ igt_output_t *igt_get_single_output_for_pipe(igt_display_t *display, enum pipe p
->>   
->>   void igt_pipe_request_out_fence(igt_pipe_t *pipe);
->>   
->> +void igt_plane_set_solid_fill(igt_plane_t *plane, struct drm_mode_rect *rect,
->> +		int solid_fill_id);
->>   void igt_plane_set_fb(igt_plane_t *plane, struct igt_fb *fb);
->>   void igt_plane_set_fence_fd(igt_plane_t *plane, int fence_fd);
->>   void igt_plane_set_pipe(igt_plane_t *plane, igt_pipe_t *pipe);
->>
->> -- 
->> 2.43.0
->>
+diff --git a/lib/rendercopy_gen4.c b/lib/rendercopy_gen4.c
+index 8536d6b632c5..8582e0efb886 100644
+--- a/lib/rendercopy_gen4.c
++++ b/lib/rendercopy_gen4.c
+@@ -148,11 +148,12 @@ gen4_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst)
+ 	ss->ss0.data_return_format = SURFACERETURNFORMAT_FLOAT32;
+ 	ss->ss0.color_blend = 1;
+ 
+-	address = intel_bb_offset_reloc(ibb, buf->handle,
+-					read_domain, write_domain,
+-					intel_bb_offset(ibb) + 4,
+-					buf->addr.offset);
+-	ss->ss1.base_addr = (uint32_t) address;
++	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
++						   read_domain, write_domain,
++						   buf->surface[0].offset,
++						   intel_bb_offset(ibb) + 4,
++						   buf->addr.offset);
++	ss->ss1.base_addr = address + buf->surface[0].offset;
+ 
+ 	ss->ss2.height = intel_buf_height(buf) - 1;
+ 	ss->ss2.width  = intel_buf_width(buf) - 1;
+diff --git a/lib/rendercopy_gen6.c b/lib/rendercopy_gen6.c
+index e941257eb606..ec197661702f 100644
+--- a/lib/rendercopy_gen6.c
++++ b/lib/rendercopy_gen6.c
+@@ -91,11 +91,12 @@ gen6_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst)
+ 	ss->ss0.data_return_format = SURFACERETURNFORMAT_FLOAT32;
+ 	ss->ss0.color_blend = 1;
+ 
+-	address = intel_bb_offset_reloc(ibb, buf->handle,
+-					read_domain, write_domain,
+-					intel_bb_offset(ibb) + 4,
+-					buf->addr.offset);
+-	ss->ss1.base_addr = (uint32_t) address;
++	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
++						   read_domain, write_domain,
++						   buf->surface[0].offset,
++						   intel_bb_offset(ibb) + 4,
++						   buf->addr.offset);
++	ss->ss1.base_addr = address + buf->surface[0].offset;
+ 
+ 	ss->ss2.height = intel_buf_height(buf) - 1;
+ 	ss->ss2.width  = intel_buf_width(buf) - 1;
+diff --git a/lib/rendercopy_gen7.c b/lib/rendercopy_gen7.c
+index 267f6f8038ba..095ba7bde654 100644
+--- a/lib/rendercopy_gen7.c
++++ b/lib/rendercopy_gen7.c
+@@ -86,11 +86,12 @@ gen7_bind_buf(struct intel_bb *ibb,
+ 		 gen7_tiling_bits(buf->tiling) |
+ 		format << GEN7_SURFACE_FORMAT_SHIFT);
+ 
+-	address = intel_bb_offset_reloc(ibb, buf->handle,
+-					read_domain, write_domain,
+-					intel_bb_offset(ibb) + 4,
+-					buf->addr.offset);
+-	ss[1] = address;
++	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
++						   read_domain, write_domain,
++						   intel_bb_offset(ibb) + 4,
++						   buf->surface[0].offset,
++						   buf->addr.offset);
++	ss[1] = address + buf->surface[0].offset;
+ 	ss[2] = ((intel_buf_width(buf) - 1)  << GEN7_SURFACE_WIDTH_SHIFT |
+ 		 (intel_buf_height(buf) - 1) << GEN7_SURFACE_HEIGHT_SHIFT);
+ 	ss[3] = (buf->surface[0].stride - 1) << GEN7_SURFACE_PITCH_SHIFT;
+diff --git a/lib/rendercopy_gen8.c b/lib/rendercopy_gen8.c
+index ba7897fb475f..8c08bab6d52e 100644
+--- a/lib/rendercopy_gen8.c
++++ b/lib/rendercopy_gen8.c
+@@ -109,12 +109,13 @@ gen8_bind_buf(struct intel_bb *ibb,
+ 		ss->ss1.memory_object_control = BDW_MOCS_PTE |
+ 			BDW_MOCS_TC_L3_PTE | BDW_MOCS_AGE(0);
+ 
+-	address = intel_bb_offset_reloc(ibb, buf->handle,
+-					read_domain, write_domain,
+-					intel_bb_offset(ibb) + 4 * 8,
+-					buf->addr.offset);
+-	ss->ss8.base_addr = address;
+-	ss->ss9.base_addr_hi = address >> 32;
++	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
++						   read_domain, write_domain,
++						   buf->surface[0].offset,
++						   intel_bb_offset(ibb) + 4 * 8,
++						   buf->addr.offset);
++	ss->ss8.base_addr = (address + buf->surface[0].offset);
++	ss->ss9.base_addr_hi = (address + buf->surface[0].offset) >> 32;
+ 
+ 	ss->ss2.height = intel_buf_height(buf) - 1;
+ 	ss->ss2.width  = intel_buf_width(buf) - 1;
+diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+index 363bc6c1b203..bfac62b0fc23 100644
+--- a/lib/rendercopy_gen9.c
++++ b/lib/rendercopy_gen9.c
+@@ -194,12 +194,13 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+ 	else if (buf->tiling == I915_TILING_Ys)
+ 		ss->ss5.trmode = 2;
+ 
+-	address = intel_bb_offset_reloc(ibb, buf->handle,
+-					read_domain, write_domain,
+-					intel_bb_offset(ibb) + 4 * 8,
+-					buf->addr.offset);
+-	ss->ss8.base_addr = address;
+-	ss->ss9.base_addr_hi = address >> 32;
++	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
++						   read_domain, write_domain,
++						   buf->surface[0].offset,
++						   intel_bb_offset(ibb) + 4 * 8,
++						   buf->addr.offset);
++	ss->ss8.base_addr = (address + buf->surface[0].offset);
++	ss->ss9.base_addr_hi = (address + buf->surface[0].offset) >> 32;
+ 
+ 	ss->ss2.height = intel_buf_height(buf) - 1;
+ 	ss->ss2.width  = intel_buf_width(buf) - 1;
+diff --git a/lib/rendercopy_i830.c b/lib/rendercopy_i830.c
+index 4c4271493b4b..4b0ea3b859e2 100644
+--- a/lib/rendercopy_i830.c
++++ b/lib/rendercopy_i830.c
+@@ -158,8 +158,10 @@ static void gen2_emit_target(struct intel_bb *ibb,
+ 	intel_bb_out(ibb, _3DSTATE_BUF_INFO_CMD);
+ 	intel_bb_out(ibb, BUF_3D_ID_COLOR_BACK | tiling |
+ 		     BUF_3D_PITCH(dst->surface[0].stride));
+-	intel_bb_emit_reloc(ibb, dst->handle, I915_GEM_DOMAIN_RENDER,
+-			    I915_GEM_DOMAIN_RENDER, 0, dst->addr.offset);
++	intel_bb_emit_reloc(ibb, dst->handle,
++			    I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER,
++			    dst->surface[0].offset,
++			    dst->addr.offset);
+ 
+ 	intel_bb_out(ibb, _3DSTATE_DST_BUF_VARS_CMD);
+ 	intel_bb_out(ibb, format |
+@@ -199,7 +201,9 @@ static void gen2_emit_texture(struct intel_bb *ibb,
+ 		tiling |= TM0S1_TILE_WALK;
+ 
+ 	intel_bb_out(ibb, _3DSTATE_LOAD_STATE_IMMEDIATE_2 | LOAD_TEXTURE_MAP(unit) | 4);
+-	intel_bb_emit_reloc(ibb, src->handle, I915_GEM_DOMAIN_SAMPLER, 0, 0,
++	intel_bb_emit_reloc(ibb, src->handle,
++			    I915_GEM_DOMAIN_SAMPLER, 0,
++			    src->surface[0].offset,
+ 			    src->addr.offset);
+ 	intel_bb_out(ibb, (intel_buf_height(src) - 1) << TM0S1_HEIGHT_SHIFT |
+ 		     (intel_buf_width(src) - 1) << TM0S1_WIDTH_SHIFT |
+diff --git a/lib/rendercopy_i915.c b/lib/rendercopy_i915.c
+index 3e421301e6a6..94cdfb99af9a 100644
+--- a/lib/rendercopy_i915.c
++++ b/lib/rendercopy_i915.c
+@@ -112,7 +112,8 @@ void gen3_render_copyfunc(struct intel_bb *ibb,
+ 		intel_bb_out(ibb, (1 << TEX_COUNT) - 1);
+ 		intel_bb_emit_reloc(ibb, src->handle,
+ 				    I915_GEM_DOMAIN_SAMPLER, 0,
+-				    0, src->addr.offset);
++				    src->surface[0].offset,
++				    src->addr.offset);
+ 		intel_bb_out(ibb, format_bits | tiling_bits |
+ 			     (intel_buf_height(src) - 1) << MS3_HEIGHT_SHIFT |
+ 			     (intel_buf_width(src) - 1) << MS3_WIDTH_SHIFT);
+@@ -155,7 +156,8 @@ void gen3_render_copyfunc(struct intel_bb *ibb,
+ 			     BUF_3D_PITCH(dst->surface[0].stride));
+ 		intel_bb_emit_reloc(ibb, dst->handle,
+ 				    I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER,
+-				    0, dst->addr.offset);
++				    dst->surface[0].offset,
++				    dst->addr.offset);
+ 
+ 		intel_bb_out(ibb, _3DSTATE_DST_BUF_VARS_CMD);
+ 		intel_bb_out(ibb, format_bits |
+-- 
+2.41.0
