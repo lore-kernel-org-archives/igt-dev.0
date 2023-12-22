@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB42C10E0DC
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 14:32:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2235E10E0DC
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 14:32:23 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 00/15] tests/kms_big_fb: Test planar formats, and CCS
-Date: Fri, 22 Dec 2023 16:31:44 +0200
-Message-ID: <20231222143159.24662-1-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2 05/15] tests/kms_big_fb: Test async flips + linear on
+ tgl+
+Date: Fri, 22 Dec 2023 16:31:49 +0200
+Message-ID: <20231222143159.24662-6-ville.syrjala@linux.intel.com>
+In-Reply-To: <20231222143159.24662-1-ville.syrjala@linux.intel.com>
+References: <20231222143159.24662-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -23,55 +26,27 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-While poking around in the i915 display surface address
-calculations I decided that we should increase our testing
-coverage to include planar formats, and compressed modifiers.
+i915 claims to support linear+async flips on TGL+,
+so let's test that here as well.
 
-This series achieves the bare minimum of that; We now test
-uncompressed NV12 and P016 [1], and compressed RGB on
-up to TGL (not sure about anything more recent yet).
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ tests/intel/kms_big_fb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-[1] compressed planar formats would require a mechanism to do
-    the copy_pattern() stuff, and unfortunately the current
-    vebox copy implementation leaves us hanging by not
-    supporting arbitraty coordinates
-
-v2: Hopefully fixed the TGL clear color woes
-
-Ville Syrjälä (15):
-  lib/rendercopy: Add deltas to all surface relocs
-  tests/kms_big_fb: Use igt_fb_create_intel_buf()
-  lib/igt_fb: Expose igt_fb_is_ccs_modifier()
-  tests/kms_big_fb: Fix async
-  tests/kms_big_fb: Test async flips + linear on tgl+
-  tests/kms_big_fb: Determine the max fb size the same way always
-  tests/kms_frontbuffer_tracking: Use igt_create_fb()
-  lib/igt_fb: Make igt_calc_fb_size() somewhat usable
-  tests/kms_big_fb: Nuke fliptab[]
-  tests/kms_big_fb: Replace 'bpp' with 'name'
-  tests/kms_big_fb: Test planar YCbCr formats
-  tests/kms_big_fb: Also test some CCS modifiers
-  lib/rendercopy: Always setup clear color for TGL
-  tests/kms_big_fb: Enable CCS testing for TGL
-  lib/rendercopy: Enable clear color consistently
-
- lib/igt_fb.c                           |  94 +++----
- lib/igt_fb.h                           |   4 +-
- lib/intel_bufops.h                     |   2 +
- lib/rendercopy_gen4.c                  |  11 +-
- lib/rendercopy_gen6.c                  |  11 +-
- lib/rendercopy_gen7.c                  |  11 +-
- lib/rendercopy_gen8.c                  |  13 +-
- lib/rendercopy_gen9.c                  |  37 ++-
- lib/rendercopy_i830.c                  |  10 +-
- lib/rendercopy_i915.c                  |   6 +-
- tests/intel/gem_pxp.c                  |   4 +-
- tests/intel/kms_big_fb.c               | 328 +++++++++++++++----------
- tests/intel/kms_frontbuffer_tracking.c |  11 +-
- tests/kms_addfb_basic.c                |  14 +-
- tests/kms_prime.c                      |  12 +-
- tests/kms_rotation_crc.c               |  10 +-
- 16 files changed, 333 insertions(+), 245 deletions(-)
-
+diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+index 6393504be7d7..75b0c4758743 100644
+--- a/tests/intel/kms_big_fb.c
++++ b/tests/intel/kms_big_fb.c
+@@ -930,7 +930,8 @@ static bool has_async_flip(data_t *data)
+ 	 * TODO: preferably probe all this stuff with
+ 	 * TEST_ONLY rather than hardcoding it...
+ 	 */
+-	if (data->modifier == DRM_FORMAT_MOD_LINEAR)
++	if (intel_display_ver(data->devid) < 12 &&
++	    data->modifier == DRM_FORMAT_MOD_LINEAR)
+ 		return false;
+ 
+ 	return igt_has_drm_cap(data->drm_fd, DRM_CAP_ASYNC_PAGE_FLIP);
 -- 
 2.41.0
