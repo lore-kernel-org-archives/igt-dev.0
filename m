@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C2A8610E7CF
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 15:32:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 289C110E798
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 15:46:30 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH v3 i-g-t] lib/drmtest: load forced module
-Date: Fri, 22 Dec 2023 16:31:43 +0100
-Message-ID: <20231222153143.37937-1-kamil.konieczny@linux.intel.com>
+Subject: [PATCH v4 i-g-t] lib/drmtest: load forced module
+Date: Fri, 22 Dec 2023 16:46:24 +0100
+Message-ID: <20231222154624.38436-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -16,8 +16,6 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>, Helen Koike <helen.koike@collabora.com>,
- Rob Clark <robdclark@gmail.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
@@ -34,11 +32,8 @@ Special case is VGEM which should always be loaded as itself.
 v2: fixed typo, added r-b (Lukasz)
     rebase (Kamil)
 v3: moved info about VGEM to end od description (Kamil)
+v4: test for patchwork, removed all cc
 
-Cc: Rob Clark <robdclark@gmail.com>
-Cc: Rob Clark <robdclark@chromium.org>
-Cc: Helen Koike <helen.koike@collabora.com>
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
 ---
