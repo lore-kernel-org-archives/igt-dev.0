@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 19A0F10E798
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 14:32:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 364E910E798
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 14:32:49 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 14/15] tests/kms_big_fb: Enable CCS testing for TGL
-Date: Fri, 22 Dec 2023 16:31:58 +0200
-Message-ID: <20231222143159.24662-15-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2 15/15] lib/rendercopy: Enable clear color consistently
+Date: Fri, 22 Dec 2023 16:31:59 +0200
+Message-ID: <20231222143159.24662-16-ville.syrjala@linux.intel.com>
 In-Reply-To: <20231222143159.24662-1-ville.syrjala@linux.intel.com>
 References: <20231222143159.24662-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
@@ -25,62 +25,49 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-With the TGL clear color/fast clear nonsense sorted we can
-finally test big CCS fbs on TGL. Make it so.
+We are computing the clear color enable bit differently
+for the reloc vs. what we stuff into the surface state
+directly. Unify.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/intel/kms_big_fb.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ lib/rendercopy_gen9.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
-index 24b6836296f6..90edccffbc64 100644
---- a/tests/intel/kms_big_fb.c
-+++ b/tests/intel/kms_big_fb.c
-@@ -75,6 +75,8 @@
-  * @yf-tiled:           TILE-YF modifier
-  * @y-tiled-ccs:        TILE-Y+CCS modifier
-  * @yf-tiled-ccs:       TILE-YF+CCS modifier
-+ * @y-tiled-rc-ccs:     TILE-Y+CCS modifier
-+ * @y-tiled-rc-ccs-cc:  TILE-Y+CCS+CC modifier
-  *
-  * arg[2].values:       8bpp, 16bpp, 32bpp, 64bpp, nv12, p016
-  * arg[3].values:       0, 90, 180, 270
-@@ -114,6 +116,8 @@
-  * @yf-tiled:           TILE-YF modifier
-  * @y-tiled-ccs:        TILE-Y+CCS modifier
-  * @yf-tiled-ccs:       TILE-YF+CCS modifier
-+ * @y-tiled-rc-ccs:     TILE-Y+CCS modifier
-+ * @y-tiled-rc-ccs-cc:  TILE-Y+CCS+CC modifier
-  *
-  * arg[2].values:       32, 64
-  * arg[3].values:       0, 180
-@@ -140,6 +144,8 @@
-  * @yf-tiled:           TILE-YF modifier
-  * @y-tiled-ccs:        TILE-Y+CCS modifier
-  * @yf-tiled-ccs:       TILE-YF+CCS modifier
-+ * @y-tiled-rc-ccs:     TILE-Y+CCS modifier
-+ * @y-tiled-rc-ccs-cc:  TILE-Y+CCS+CC modifier
-  *
-  * arg[2].values:       32, 64
-  * arg[3].values:       0, 180
-@@ -179,6 +185,8 @@
-  * @yf-tiled:   TILE-YF
-  * @y-tiled-ccs:        TILE-Y+CCS modifier
-  * @yf-tiled-ccs:       TILE-YF+CCS modifier
-+ * @y-tiled-rc-ccs:     TILE-Y+CCS modifier
-+ * @y-tiled-rc-ccs-cc:  TILE-Y+CCS+CC modifier
-  */
- 
- IGT_TEST_DESCRIPTION("Test big framebuffers");
-@@ -996,6 +1004,8 @@ static const struct {
- 	{ I915_FORMAT_MOD_4_TILED, "4-tiled", },
- 	{ I915_FORMAT_MOD_Y_TILED_CCS, "y-tiled-ccs", },
- 	{ I915_FORMAT_MOD_Yf_TILED_CCS, "yf-tiled-ccs", },
-+	{ I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, "y-tiled-rc-ccs", },
-+	{ I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC, "y-tiled-rc-ccs-cc", },
+diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+index 359dda73182a..f3f3f06d8d21 100644
+--- a/lib/rendercopy_gen9.c
++++ b/lib/rendercopy_gen9.c
+@@ -136,6 +136,12 @@ static const uint32_t gen12p71_render_copy[][4] = {
+ 	{ 0x80041131, 0x00000004, 0x50007144, 0x00c40000 },
  };
  
- static const struct {
++static bool cc_enable(struct intel_bb *ibb,
++		      const struct intel_buf *buf, bool fast_clear)
++{
++	return fast_clear || (buf->cc.offset && !HAS_FLATCCS(ibb->devid));
++}
++
+ /* Mostly copy+paste from gen6, except height, width, pitch moved */
+ static uint32_t
+ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+@@ -222,7 +228,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+ 
+ 			address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
+ 								   read_domain, write_domain,
+-								   (buf->cc.offset ? (1 << 10) : 0)
++								   (cc_enable(ibb, buf, fast_clear) ? (1 << 10) : 0)
+ 								   | buf->ccs[0].offset,
+ 								   intel_bb_offset(ibb) + 4 * 10,
+ 								   buf->addr.offset);
+@@ -230,7 +236,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+ 			ss->ss11.aux_base_addr_hi = (address + buf->ccs[0].offset) >> 32;
+ 		}
+ 
+-		if (fast_clear || (buf->cc.offset && !HAS_FLATCCS(ibb->devid))) {
++		if (cc_enable(ibb, buf, fast_clear)) {
+ 			igt_assert(buf->compression == I915_COMPRESSION_RENDER);
+ 
+ 			ss->ss10.clearvalue_addr_enable = 1;
 -- 
 2.41.0
