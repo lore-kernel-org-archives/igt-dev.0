@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Message-ID: <a89be9f3-abee-4e08-bc11-25641eb01faf@quicinc.com>
-Date: Thu, 21 Dec 2023 16:00:33 -0800
-MIME-Version: 1.0
-Subject: Re: [PATCH i-g-t 2/4] lib: Add support for solid_fill and
- pixel_source plane properties
+Message-ID: <b52a2b39-cc88-4655-955b-f7739f0a778b@intel.com>
+Date: Fri, 22 Dec 2023 12:34:43 +0530
+Subject: Re: [PATCH i-g-t] tests/kms_lease: Cache xe_device info for lease fd
 Content-Language: en-US
-References: <20231215-solid-fill-v1-0-12932f9f452d@quicinc.com>
- <20231215-solid-fill-v1-2-12932f9f452d@quicinc.com>
- <20231219135100.ztoh23633leqs7vq@kamilkon-desk.igk.intel.com>
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
-In-Reply-To: <20231219135100.ztoh23633leqs7vq@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+References: <20231212100712.3301571-1-mohammed.thasleem@intel.com>
+ <4dadb6ba-89e5-48bd-9de3-548533864c01@intel.com>
+In-Reply-To: <4dadb6ba-89e5-48bd-9de3-548533864c01@intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,145 +22,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>, Pekka Paalanen <pekka.paalanen@collabora.com>, Simon Ser <contact@emersion.fr>, Rob Clark <robdclark@gmail.com>, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Message-ID: <20231222000033.92jmh0MwHKgogvDN30SH5SmiXwaaO3LJuH0BKKCGAyA@z>
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>, igt-dev@lists.freedesktop.org
+Message-ID: <20231222070443.0vxPplmNMWQ-JoaQ1WX-9rvjb_KV1GK-iPpRGUDO_do@z>
 
 
-
-On 12/19/2023 5:51 AM, Kamil Konieczny wrote:
-> Hi Jessica,
-> On 2023-12-15 at 16:40:22 -0800, Jessica Zhang wrote:
->> Add corresponding IGT macros for solid_fill and pixel_source DRM
->> properties, and change IGT commit behavior to allow for NULL FB commits.
+On 12/13/2023 11:20 AM, Nautiyal, Ankit K wrote:
+>
+> On 12/12/2023 3:37 PM, Mohammed Thasleem wrote:
+>> Cache xe_device struct info for lease fd before perpare crtc
+>> with lessee's fd.
+>
+> I think we should add why this is required for this test.
+>
+>
 >>
->> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+>> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 >> ---
->>   lib/igt_kms.c | 37 ++++++++++++++++++++++++++++++++++---
->>   lib/igt_kms.h |  4 ++++
->>   2 files changed, 38 insertions(+), 3 deletions(-)
+>>   tests/kms_lease.c | 10 ++++++++++
+>>   1 file changed, 10 insertions(+)
 >>
->> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
->> index e4dea1a604dc..6a339766ca31 100644
->> --- a/lib/igt_kms.c
->> +++ b/lib/igt_kms.c
->> @@ -669,6 +669,8 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
->>   	[IGT_PLANE_HOTSPOT_X] = "HOTSPOT_X",
->>   	[IGT_PLANE_HOTSPOT_Y] = "HOTSPOT_Y",
->>   	[IGT_PLANE_FB_ID] = "FB_ID",
->> +	[IGT_PLANE_SOLID_FILL] = "solid_fill",
->> +	[IGT_PLANE_PIXEL_SOURCE] = "pixel_source",
->>   	[IGT_PLANE_CRTC_ID] = "CRTC_ID",
->>   	[IGT_PLANE_IN_FENCE_FD] = "IN_FENCE_FD",
->>   	[IGT_PLANE_TYPE] = "type",
->> @@ -3417,6 +3419,12 @@ static igt_output_t *igt_pipe_get_output(igt_pipe_t *pipe)
->>   	return NULL;
->>   }
->>   
->> +static uint32_t igt_plane_get_solid_fill_id(igt_plane_t *plane)
->> +{
->> +	return plane->values[IGT_PLANE_SOLID_FILL];
->> +}
->> +
->> +
-> 
-> Remove one empty line.
+>> diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+>> index 8ac58af38..e57aea2a2 100644
+>> --- a/tests/kms_lease.c
+>> +++ b/tests/kms_lease.c
+>> @@ -48,6 +48,8 @@
+>>     #include <drm.h>
+>>   #include "igt_device.h"
+>> +#include "xe_drm.h"
+>> +#include "xe/xe_query.h"
+>>     /**
+>>    * SUBTEST: atomic-implicit-crtc
+>> @@ -305,6 +307,10 @@ static void simple_lease(data_t *data)
+>>       /* Create a valid lease */
+>>       igt_assert_eq(make_lease(data), 0);
+>>   +    /* Cache xe_device struct */
+>> +    if (is_xe_device(data->lease.fd))
+>> +        xe_device_get(data->lease.fd);
+>
+>
+> I wonder this will be required for other subtests too.
+>
+> I think we should call this in make_lease(), after create_lease() is 
+> successful and we get file descriptor for the lease.
 
-Hi Kamil,
 
-Thanks for taking a look at this series. Will make the changes you 
-suggested in this patch and in the following patch.
+Missed to mention, we also need to remove it with xe_device_put, while 
+terminating the lease.
 
-Thanks,
+Regards,
 
-Jessica Zhang
+Ankit
 
-> 
->>   static uint32_t igt_plane_get_fb_id(igt_plane_t *plane)
->>   {
->>   	return plane->values[IGT_PLANE_FB_ID];
->> @@ -3648,7 +3656,7 @@ static int igt_primary_plane_commit_legacy(igt_plane_t *primary,
->>   	struct igt_display *display = primary->pipe->display;
->>   	igt_output_t *output = igt_pipe_get_output(pipe);
->>   	drmModeModeInfo *mode;
->> -	uint32_t fb_id, crtc_id;
->> +	uint32_t fb_id, solid_fill_id, crtc_id;
->>   	int ret;
->>   
->>   	/* Primary planes can't be windowed when using a legacy commit */
->> @@ -3665,12 +3673,14 @@ static int igt_primary_plane_commit_legacy(igt_plane_t *primary,
->>   
->>   	crtc_id = pipe->crtc_id;
->>   	fb_id = output ? igt_plane_get_fb_id(primary) : 0;
->> -	if (fb_id)
->> +	solid_fill_id = output ? igt_plane_get_solid_fill_id(primary) : 0;
->> +
->> +	if (fb_id || solid_fill_id)
->>   		mode = igt_output_get_mode(output);
->>   	else
->>   		mode = NULL;
->>   
->> -	if (fb_id) {
->> +	if (fb_id || solid_fill_id) {
->>   		uint32_t src_x = primary->values[IGT_PLANE_SRC_X] >> 16;
->>   		uint32_t src_y = primary->values[IGT_PLANE_SRC_Y] >> 16;
->>   
->> @@ -4935,6 +4945,27 @@ igt_plane_t *igt_output_get_plane_type_index(igt_output_t *output,
->>   	return igt_pipe_get_plane_type_index(pipe, plane_type, index);
->>   }
->>   
-> 
-> Please add description to each new public function.
-> 
+>
+>
 > Regards,
-> Kamil
-> 
->> +void igt_plane_set_solid_fill(igt_plane_t *plane, struct drm_mode_rect *rect,
->> +		int solid_fill_id)
->> +{
->> +	igt_pipe_t *pipe = plane->pipe;
->> +	igt_display_t *display = pipe->display;
->> +	int width = rect->x2 - rect->x1;
->> +	int height = rect->y2 - rect->y1;
+>
+> Ankit
+>
+>
+>
 >> +
->> +	igt_plane_set_prop_value(plane, IGT_PLANE_CRTC_ID,
->> +			solid_fill_id ? pipe->crtc_id : 0);
->> +	igt_plane_set_prop_value(plane, IGT_PLANE_SOLID_FILL, solid_fill_id);
+>>       igt_display_require(&data->lease.display, data->lease.fd);
+>>         /* Set a mode on the leased output */
+>> @@ -772,6 +778,10 @@ static void lease_revoke(data_t *data)
+>>       /* Create a valid lease */
+>>       igt_assert_eq(make_lease(data), 0);
+>>   +    /* Cache xe_device struct */
+>> +    if (is_xe_device(data->lease.fd))
+>> +        xe_device_get(data->lease.fd);
 >> +
->> +	plane->gem_handle = 0;
->> +
->> +	LOG(display, "%s.%d: plane_set_solid_fill(%d)\n", kmstest_pipe_name(pipe->pipe),
->> +	    plane->index, solid_fill_id);
->> +
->> +	igt_plane_set_position(plane, rect->x1, rect->y1);
->> +	igt_plane_set_size(plane, width, height);
->> +}
->> +
->>   /**
->>    * igt_plane_set_fb:
->>    * @plane: Plane
->> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
->> index b3882808b42f..9c05272abe1e 100644
->> --- a/lib/igt_kms.h
->> +++ b/lib/igt_kms.h
->> @@ -330,6 +330,8 @@ enum igt_atomic_plane_properties {
->>   #define IGT_PLANE_COORD_CHANGED_MASK 0xff
->>   
->>          IGT_PLANE_FB_ID,
->> +       IGT_PLANE_SOLID_FILL,
->> +       IGT_PLANE_PIXEL_SOURCE,
->>          IGT_PLANE_CRTC_ID,
->>          IGT_PLANE_IN_FENCE_FD,
->>          IGT_PLANE_TYPE,
->> @@ -537,6 +539,8 @@ igt_output_t *igt_get_single_output_for_pipe(igt_display_t *display, enum pipe p
->>   
->>   void igt_pipe_request_out_fence(igt_pipe_t *pipe);
->>   
->> +void igt_plane_set_solid_fill(igt_plane_t *plane, struct drm_mode_rect *rect,
->> +		int solid_fill_id);
->>   void igt_plane_set_fb(igt_plane_t *plane, struct igt_fb *fb);
->>   void igt_plane_set_fence_fd(igt_plane_t *plane, int fence_fd);
->>   void igt_plane_set_pipe(igt_plane_t *plane, igt_pipe_t *pipe);
->>
->> -- 
->> 2.43.0
->>
+>>       igt_display_require(&data->lease.display, data->lease.fd);
+>>         /* try to revoke an invalid lease */
