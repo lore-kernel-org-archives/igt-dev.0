@@ -1,22 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F024910E74B
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 06:52:56 +0000 (UTC)
-Date: Fri, 22 Dec 2023 08:52:53 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t 01/12] lib/rendercopy: Add deltas to all surface
- relocs
-Message-ID: <ZYUyRaXo_P4KF4VX@intel.com>
-References: <20231220175934.22849-1-ville.syrjala@linux.intel.com>
- <20231220175934.22849-2-ville.syrjala@linux.intel.com>
- <20231222053731.ph6cjqgis2yh6upr@zkempczy-mobl2>
- <ZYUmH-o0eH2qVM30@intel.com> <ZYUnaMTEkCV2ZDZi@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28A0010E751
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 07:05:21 +0000 (UTC)
+Message-ID: <b52a2b39-cc88-4655-955b-f7739f0a778b@intel.com>
+Date: Fri, 22 Dec 2023 12:34:43 +0530
+Subject: Re: [PATCH i-g-t] tests/kms_lease: Cache xe_device info for lease fd
+Content-Language: en-US
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20231212100712.3301571-1-mohammed.thasleem@intel.com>
+ <4dadb6ba-89e5-48bd-9de3-548533864c01@intel.com>
+In-Reply-To: <4dadb6ba-89e5-48bd-9de3-548533864c01@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZYUnaMTEkCV2ZDZi@intel.com>
+MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,103 +22,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Dec 22, 2023 at 08:06:32AM +0200, Ville Syrjälä wrote:
-> On Fri, Dec 22, 2023 at 08:01:03AM +0200, Ville Syrjälä wrote:
-> > On Fri, Dec 22, 2023 at 06:37:31AM +0100, Zbigniew Kempczyński wrote:
-> > > On Wed, Dec 20, 2023 at 07:59:23PM +0200, Ville Syrjala wrote:
-> > > > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > > > 
-> > > > In order to copy stuff not at offset 0 in the BO we need
-> > > > to include the delta in the relocs/etc.
-> > > > 
-> > > > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > > > ---
-> > > >  lib/rendercopy_gen4.c |  9 +++++----
-> > > >  lib/rendercopy_gen6.c |  9 +++++----
-> > > >  lib/rendercopy_gen7.c |  9 +++++----
-> > > >  lib/rendercopy_gen8.c |  9 +++++----
-> > > >  lib/rendercopy_gen9.c | 13 +++++++------
-> > > >  lib/rendercopy_i830.c | 10 +++++++---
-> > > >  lib/rendercopy_i915.c |  6 ++++--
-> > > >  7 files changed, 38 insertions(+), 27 deletions(-)
-> > > > 
-> > > > diff --git a/lib/rendercopy_gen4.c b/lib/rendercopy_gen4.c
-> > > > index 8536d6b632c5..d10e5b7780c0 100644
-> > > > --- a/lib/rendercopy_gen4.c
-> > > > +++ b/lib/rendercopy_gen4.c
-> > > > @@ -148,10 +148,11 @@ gen4_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst)
-> > > >  	ss->ss0.data_return_format = SURFACERETURNFORMAT_FLOAT32;
-> > > >  	ss->ss0.color_blend = 1;
-> > > >  
-> > > > -	address = intel_bb_offset_reloc(ibb, buf->handle,
-> > > > -					read_domain, write_domain,
-> > > > -					intel_bb_offset(ibb) + 4,
-> > > > -					buf->addr.offset);
-> > > > +	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-> > > > +						   read_domain, write_domain,
-> > > > +						   buf->surface[0].offset,
-> > > > +						   intel_bb_offset(ibb) + 4,
-> > > > +						   buf->addr.offset);
-> > > >  	ss->ss1.base_addr = (uint32_t) address;
-> > > 
-> > > I've just took a look to intel_bb_add_reloc() because I didn't
-> > > remember all details and I see address returned there is offset
-> > > at which object will be binded, not offset + delta.
-> > > Until this patch only users of this function reside in
-> > > rendercopy_gen9.c so for older platforms it doesn't matter
-> > > (xe driver doesn't support them).
-> > > 
-> > > Anyway, delta addition sets up 10-bit if buf->cc.offset is not zero.
-> > > I mean:
-> > > 
-> > > address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-> > > 					   read_domain, write_domain,
-> > > 					   (buf->cc.offset ? (1 << 10) : 0)
-> > > 					   | buf->ccs[0].offset,
-> > > 					   intel_bb_offset(ibb) + 4 * 10,
-> > > 					   buf->addr.offset);
-> > > ss->ss10.aux_base_addr = (address + buf->ccs[0].offset) >> 12;
-> > > ss->ss11.aux_base_addr_hi = (address + buf->ccs[0].offset) >> 32;
-> > > 
-> > > I wonder shouldn't intel_bb_add_reloc() return offset + delta.
-> > > 
-> > > I also have some doubts regarding:
-> > > 
-> > > 	(buf->cc.offset ? (1 << 10) : 0) | buf->ccs[0].offset
-> > > 
-> > > This will set up bit-10 (if I'm not wrong clearvalue enable) only
-> > > when relocation will happen. Without relocation or on softpinning
-> > > this bit is never set.
-> > > 
-> > > Above also would require remove delta in __intel_bb_emit_reloc()
-> > > but if I'm not wrong this would be enough to start directly using
-> > > offset returned in intel_bb_add_reloc() derivatives.
-> > > 
-> > > Have I missed something?
-> > 
-> > No, I think you're right. The lack of the cc enable bit diretly
-> > written to ss10 would seem to be wrong for the no-reloc case.
-> > Also the >>12 there looks wrong. And the >>6 in the ss12 clear
-> > color address looks wrong (and the reloc case should again
-> > get fixed up by the kernel).
-> 
-> Actually no, the extra shift are correct due to the bitfields.
-> But yeah clear color enable was missing for the no-reloc case.
-> But that doesn't help either. And I just realized that I'm actually
-> testing a modifier w/o CC anyway so the problem must be elsewhere.
 
-OK, the problem seems to be that somehow the hardware thinks the
-initial state of the AUX surface is compressed. So any part of the
-FB I don't explicitly touch is left with interesting rainbow colors
-when the zeroed main surface data is treated as compressed.
-Did the AUX format change such that all zeroes in AUX is no 
-longer uncompressed?
+On 12/13/2023 11:20 AM, Nautiyal, Ankit K wrote:
+>
+> On 12/12/2023 3:37 PM, Mohammed Thasleem wrote:
+>> Cache xe_device struct info for lease fd before perpare crtc
+>> with lessee's fd.
+>
+> I think we should add why this is required for this test.
+>
+>
+>>
+>> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+>> ---
+>>   tests/kms_lease.c | 10 ++++++++++
+>>   1 file changed, 10 insertions(+)
+>>
+>> diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+>> index 8ac58af38..e57aea2a2 100644
+>> --- a/tests/kms_lease.c
+>> +++ b/tests/kms_lease.c
+>> @@ -48,6 +48,8 @@
+>>     #include <drm.h>
+>>   #include "igt_device.h"
+>> +#include "xe_drm.h"
+>> +#include "xe/xe_query.h"
+>>     /**
+>>    * SUBTEST: atomic-implicit-crtc
+>> @@ -305,6 +307,10 @@ static void simple_lease(data_t *data)
+>>       /* Create a valid lease */
+>>       igt_assert_eq(make_lease(data), 0);
+>>   +    /* Cache xe_device struct */
+>> +    if (is_xe_device(data->lease.fd))
+>> +        xe_device_get(data->lease.fd);
+>
+>
+> I wonder this will be required for other subtests too.
+>
+> I think we should call this in make_lease(), after create_lease() is 
+> successful and we get file descriptor for the lease.
 
--- 
-Ville Syrjälä
-Intel
+
+Missed to mention, we also need to remove it with xe_device_put, while 
+terminating the lease.
+
+Regards,
+
+Ankit
+
+>
+>
+> Regards,
+>
+> Ankit
+>
+>
+>
+>> +
+>>       igt_display_require(&data->lease.display, data->lease.fd);
+>>         /* Set a mode on the leased output */
+>> @@ -772,6 +778,10 @@ static void lease_revoke(data_t *data)
+>>       /* Create a valid lease */
+>>       igt_assert_eq(make_lease(data), 0);
+>>   +    /* Cache xe_device struct */
+>> +    if (is_xe_device(data->lease.fd))
+>> +        xe_device_get(data->lease.fd);
+>> +
+>>       igt_display_require(&data->lease.display, data->lease.fd);
+>>         /* try to revoke an invalid lease */
