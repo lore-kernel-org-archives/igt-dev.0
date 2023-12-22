@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2828210E0B5
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 13:10:39 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 59F0010E10D
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 13:19:17 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH v2 i-g-t] lib/drmtest: load forced module
-Date: Fri, 22 Dec 2023 14:10:31 +0100
-Message-ID: <20231222131031.33880-1-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v2] tests/kms_lease: Cache xe_device info for lease fd
+Date: Fri, 22 Dec 2023 18:37:49 +0530
+Message-Id: <20231222130749.19711-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20231212100712.3301571-1-mohammed.thasleem@intel.com>
+References: <20231212100712.3301571-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -16,133 +18,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>, Helen Koike <helen.koike@collabora.com>,
- Rob Clark <robdclark@gmail.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Opening drm card may end up in loading kernel module. Take into
-account forced driver set by IGT_FORCE_DRIVER and load that one.
-If forced is in known ones, use function for loading it
-otherwise load it only when requested was DRIVER_ANY. Special
-case is VGEM which should always be loaded as itself. It can
-end up in not loading any module in case when igt test requested
-specific one, for example i915 but forced is different.
+In case of xe device for lessor fd, the xe_device struct gets
+created and cached during drm_open. But for the lessee fd,
+the xe_device info struct is not created and cached.
 
-v2: fixed typo, added r-b (Lukasz)
-    rebase
+This causes problem in prepare_crtc() for lessee with xe, which
+needs the xe_device info struct. So, create and cache the xe_device
+struct info for lease fd, when we make lease and remove it from
+cache while terminating the lease.
 
-Cc: Rob Clark <robdclark@gmail.com>
-Cc: Rob Clark <robdclark@chromium.org>
-Cc: Helen Koike <helen.koike@collabora.com>
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
+v2: -Update description and move logic to make_lease call. (Ankit)
+    -Add xe_device_put, while terminating the lease. (Ankit)
+
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- lib/drmtest.c | 65 ++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 46 insertions(+), 19 deletions(-)
+ tests/kms_lease.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index c98754798..52b5a2020 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -221,6 +221,26 @@ struct _opened_device_path {
- 	struct igt_list_head link;
- };
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index 8ac58af38..f7531c803 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -48,6 +48,8 @@
  
-+static void modulename_to_chipset(const char *name, unsigned int *chip)
-+{
-+	if (!name)
-+		return;
-+
-+	for (int start = 0, end = ARRAY_SIZE(modules) - 1; start < end; ) {
-+		int mid = start + (end - start) / 2;
-+		int ret = strcmp(modules[mid].module, name);
-+
-+		if (ret < 0) {
-+			start = mid + 1;
-+		} else if (ret > 0) {
-+			end = mid;
-+		} else {
-+			*chip = modules[mid].bit;
-+			break;
-+		}
-+	}
-+}
-+
- /*
-  * Logs path of opened device. Device path opened for the first time is logged at info level,
-  * subsequent opens (if any) are logged at debug level.
-@@ -263,7 +283,7 @@ int __drm_open_device(const char *name, unsigned int chipset)
- {
- 	const char *forced;
- 	char dev_name[16] = "";
--	int chip = DRIVER_ANY;
-+	unsigned int chip = DRIVER_ANY;
- 	int fd;
+ #include <drm.h>
+ #include "igt_device.h"
++#include "xe_drm.h"
++#include "xe/xe_query.h"
  
- 	fd = open(name, O_RDWR);
-@@ -280,18 +300,7 @@ int __drm_open_device(const char *name, unsigned int chipset)
- 		goto err;
- 	}
+ /**
+  * SUBTEST: atomic-implicit-crtc
+@@ -267,12 +269,20 @@ static int make_lease(data_t *data)
+ 	if (ret)
+ 		return ret;
  
--	for (int start = 0, end = ARRAY_SIZE(modules) - 1; start < end; ){
--		int mid = start + (end - start) / 2;
--		int ret = strcmp(modules[mid].module, dev_name);
--		if (ret < 0) {
--			start = mid + 1;
--		} else if (ret > 0) {
--			end = mid;
--		} else {
--			chip = modules[mid].bit;
--			break;
--		}
--	}
-+	modulename_to_chipset(dev_name, &chip);
- 
- 	if ((chipset & chip) == chip) {
- 		log_opened_device_path(name);
-@@ -375,16 +384,34 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
- void drm_load_module(unsigned int chipset)
- {
- 	static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-+	const char *forced = forced_driver();
-+	unsigned int chip = 0;
-+	bool want_any = chipset == DRIVER_ANY;
++	/* Cache xe_device struct */
++	if (is_xe_device(data->lease.fd))
++		xe_device_get(data->lease.fd);
 +
-+	if (forced) {
-+		if (chipset == DRIVER_VGEM)
-+			chip = DRIVER_VGEM; /* ignore forced */
-+		else
-+			modulename_to_chipset(forced, &chip);
-+
-+		chipset &= chip; /* forced can be in known modules */
-+	}
- 
- 	pthread_mutex_lock(&mutex);
--	for (const struct module *m = modules; m->module; m++) {
--		if (chipset & m->bit) {
--			if (m->modprobe)
--				m->modprobe(m->module);
--			else
--				modprobe(m->module);
-+	if (forced && chipset == 0) {
-+		if (want_any)
-+			modprobe(forced);
-+	} else {
-+		for (const struct module *m = modules; m->module; m++) {
-+			if (chipset & m->bit) {
-+				if (m->modprobe)
-+					m->modprobe(m->module);
-+				else
-+					modprobe(m->module);
-+			}
- 		}
- 	}
-+
- 	pthread_mutex_unlock(&mutex);
- 	igt_devices_scan(true);
+ 	data->lease.lessee_id = mcl.lessee_id;
+ 	return 0;
  }
+ 
+ static void terminate_lease(int lease_fd)
+ {
++	/* Remove xe_device from cache. */
++	if (is_xe_device(lease_fd))
++		xe_device_put(lease_fd);
++
+ 	close(lease_fd);
+ }
+ 
 -- 
-2.42.0
+2.25.1
