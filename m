@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD5AE10E714
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 15:52:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C93410E7C3
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 16:22:49 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH v5 i-g-t] lib/drmtest: load forced module
-Date: Fri, 22 Dec 2023 16:51:59 +0100
-Message-ID: <20231222155159.38660-1-kamil.konieczny@linux.intel.com>
+Subject: [PATCH v6 i-g-t] lib/drmtest: load forced module
+Date: Fri, 22 Dec 2023 17:22:35 +0100
+Message-ID: <20231222162235.39413-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -32,7 +32,7 @@ Special case is VGEM which should always be loaded as itself.
 v2: fixed typo, added r-b (Lukasz)
     rebase (Kamil)
 v3: moved info about VGEM to end od description (Kamil)
-v4: test for patchwork, removed all cc
+v4,5,6: test for patchwork, removed all cc
 
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
