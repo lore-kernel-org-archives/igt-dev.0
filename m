@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 59F0010E10D
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 13:19:17 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9A14210E1E4
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 14:32:22 +0000 (UTC)
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2] tests/kms_lease: Cache xe_device info for lease fd
-Date: Fri, 22 Dec 2023 18:37:49 +0530
-Message-Id: <20231222130749.19711-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20231212100712.3301571-1-mohammed.thasleem@intel.com>
-References: <20231212100712.3301571-1-mohammed.thasleem@intel.com>
+Subject: [PATCH i-g-t v2 04/15] tests/kms_big_fb: Fix async
+Date: Fri, 22 Dec 2023 16:31:48 +0200
+Message-ID: <20231222143159.24662-5-ville.syrjala@linux.intel.com>
+In-Reply-To: <20231222143159.24662-1-ville.syrjala@linux.intel.com>
+References: <20231222143159.24662-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -22,56 +23,79 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In case of xe device for lessor fd, the xe_device struct gets
-created and cached during drm_open. But for the lessee fd,
-the xe_device info struct is not created and cached.
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-This causes problem in prepare_crtc() for lessee with xe, which
-needs the xe_device info struct. So, create and cache the xe_device
-struct info for lease fd, when we make lease and remove it from
-cache while terminating the lease.
+The 'continue' statement causes us to skip test_cleanup()
+which means the next iteration of the loop will not re-create
+the fb, instead attempting to use the previous fb which has
+the wrong format. The result is that things blow up. Skip
+the async flip test using igt_require() instead which will let
+the cleanup fixture do its job.
 
-v2: -Update description and move logic to make_lease call. (Ankit)
-    -Add xe_device_put, while terminating the lease. (Ankit)
-
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_lease.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tests/intel/kms_big_fb.c | 33 ++++++++++++++++++++++++---------
+ 1 file changed, 24 insertions(+), 9 deletions(-)
 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 8ac58af38..f7531c803 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -48,6 +48,8 @@
- 
- #include <drm.h>
- #include "igt_device.h"
-+#include "xe_drm.h"
-+#include "xe/xe_query.h"
- 
- /**
-  * SUBTEST: atomic-implicit-crtc
-@@ -267,12 +269,20 @@ static int make_lease(data_t *data)
- 	if (ret)
- 		return ret;
- 
-+	/* Cache xe_device struct */
-+	if (is_xe_device(data->lease.fd))
-+		xe_device_get(data->lease.fd);
-+
- 	data->lease.lessee_id = mcl.lessee_id;
- 	return 0;
+diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+index eef8148d2ba3..6393504be7d7 100644
+--- a/tests/intel/kms_big_fb.c
++++ b/tests/intel/kms_big_fb.c
+@@ -75,6 +75,12 @@
+  *              and %arg[2]-rotation
+  * Functionality: big_fbs, kms_gem_interop, rotation
+  *
++ * SUBTEST: linear-max-hw-stride-%dbpp-rotate-%d-async-flip
++ * Description: Test maximum hardware supported stride length for given combination
++ *              of linear modifier with max hardware stride length, %arg[1]-bpp,
++ *              and %arg[2]-rotation
++ * Functionality: async_flips, big_fbs, kms_gem_interop, rotation
++ *
+  * arg[1].values:       32, 64
+  * arg[2].values:       0, 180
+  */
+@@ -918,6 +924,18 @@ static void test_cleanup(data_t *data)
+ 	data->output = NULL;
  }
  
- static void terminate_lease(int lease_fd)
- {
-+	/* Remove xe_device from cache. */
-+	if (is_xe_device(lease_fd))
-+		xe_device_put(lease_fd);
++static bool has_async_flip(data_t *data)
++{
++	/*
++	 * TODO: preferably probe all this stuff with
++	 * TEST_ONLY rather than hardcoding it...
++	 */
++	if (data->modifier == DRM_FORMAT_MOD_LINEAR)
++		return false;
 +
- 	close(lease_fd);
- }
++	return igt_has_drm_cap(data->drm_fd, DRM_CAP_ASYNC_PAGE_FLIP);
++}
++
+ static data_t data = {};
+ 
+ static const struct {
+@@ -1108,17 +1126,14 @@ igt_main
+ 						test_scanout(&data);
+ 					}
+ 
+-					// async flip doesn't support linear fbs.
+-					if (modifiers[i].modifier == DRM_FORMAT_MOD_LINEAR)
+-						continue;
+-
+ 					data.async_flip_test = true;
+ 					igt_describe("test async flip on maximum hardware supported stride length for given bpp and modifiers.");
+-					igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%d%s-async-flip", modifiers[i].name,
+-						formats[j].bpp, rotations[k].angle, fliptab[l].flipname) {
+-							igt_require(igt_has_drm_cap(data.drm_fd, DRM_CAP_ASYNC_PAGE_FLIP));
+-							data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
+-							test_scanout(&data);
++					igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%d%s-async-flip",
++						      modifiers[i].name, formats[j].bpp,
++						      rotations[k].angle, fliptab[l].flipname) {
++						igt_require(has_async_flip(&data));
++						data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
++						test_scanout(&data);
+ 					}
+ 					data.async_flip_test = false;
  
 -- 
-2.25.1
+2.41.0
