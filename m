@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1192210E7D5
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 14:32:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19A0F10E798
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 14:32:46 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 12/15] tests/kms_big_fb: Also test some CCS modifiers
-Date: Fri, 22 Dec 2023 16:31:56 +0200
-Message-ID: <20231222143159.24662-13-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2 14/15] tests/kms_big_fb: Enable CCS testing for TGL
+Date: Fri, 22 Dec 2023 16:31:58 +0200
+Message-ID: <20231222143159.24662-15-ville.syrjala@linux.intel.com>
 In-Reply-To: <20231222143159.24662-1-ville.syrjala@linux.intel.com>
 References: <20231222143159.24662-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
@@ -25,89 +25,60 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Panning inside compressed framebuffers has similar challenges
-as planar YCbCr framebuffers. So let's test this as well.
-The difference is that i915 can't do GGTT remapping for CCS,
-so we must limit the fb size to fit insie the hw limits.
-
-Only enable this for the pre-TGL modifiers for now as testing
-on TGL didn't go well. I suspect the problem lies with rendercopy
-but until that is sorted let's not add tons of failures to CI.
+With the TGL clear color/fast clear nonsense sorted we can
+finally test big CCS fbs on TGL. Make it so.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/intel/kms_big_fb.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ tests/intel/kms_big_fb.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
-index 5dadf67bb020..24b6836296f6 100644
+index 24b6836296f6..90edccffbc64 100644
 --- a/tests/intel/kms_big_fb.c
 +++ b/tests/intel/kms_big_fb.c
-@@ -73,6 +73,8 @@
-  * @x-tiled:            TILE-X modifier
-  * @y-tiled:            TILE-Y modifier
+@@ -75,6 +75,8 @@
   * @yf-tiled:           TILE-YF modifier
-+ * @y-tiled-ccs:        TILE-Y+CCS modifier
-+ * @yf-tiled-ccs:       TILE-YF+CCS modifier
+  * @y-tiled-ccs:        TILE-Y+CCS modifier
+  * @yf-tiled-ccs:       TILE-YF+CCS modifier
++ * @y-tiled-rc-ccs:     TILE-Y+CCS modifier
++ * @y-tiled-rc-ccs-cc:  TILE-Y+CCS+CC modifier
   *
   * arg[2].values:       8bpp, 16bpp, 32bpp, 64bpp, nv12, p016
   * arg[3].values:       0, 90, 180, 270
-@@ -110,6 +112,8 @@
-  * @x-tiled:            TILE-X modifier
-  * @y-tiled:            TILE-Y modifier
+@@ -114,6 +116,8 @@
   * @yf-tiled:           TILE-YF modifier
-+ * @y-tiled-ccs:        TILE-Y+CCS modifier
-+ * @yf-tiled-ccs:       TILE-YF+CCS modifier
+  * @y-tiled-ccs:        TILE-Y+CCS modifier
+  * @yf-tiled-ccs:       TILE-YF+CCS modifier
++ * @y-tiled-rc-ccs:     TILE-Y+CCS modifier
++ * @y-tiled-rc-ccs-cc:  TILE-Y+CCS+CC modifier
   *
   * arg[2].values:       32, 64
   * arg[3].values:       0, 180
-@@ -134,6 +138,8 @@
-  * @x-tiled:            TILE-X modifier
-  * @y-tiled:            TILE-Y modifier
+@@ -140,6 +144,8 @@
   * @yf-tiled:           TILE-YF modifier
-+ * @y-tiled-ccs:        TILE-Y+CCS modifier
-+ * @yf-tiled-ccs:       TILE-YF+CCS modifier
+  * @y-tiled-ccs:        TILE-Y+CCS modifier
+  * @yf-tiled-ccs:       TILE-YF+CCS modifier
++ * @y-tiled-rc-ccs:     TILE-Y+CCS modifier
++ * @y-tiled-rc-ccs-cc:  TILE-Y+CCS+CC modifier
   *
   * arg[2].values:       32, 64
   * arg[3].values:       0, 180
-@@ -171,6 +177,8 @@
-  * @x-tiled:    TILE-X
-  * @y-tiled:    TILE-Y
+@@ -179,6 +185,8 @@
   * @yf-tiled:   TILE-YF
-+ * @y-tiled-ccs:        TILE-Y+CCS modifier
-+ * @yf-tiled-ccs:       TILE-YF+CCS modifier
+  * @y-tiled-ccs:        TILE-Y+CCS modifier
+  * @yf-tiled-ccs:       TILE-YF+CCS modifier
++ * @y-tiled-rc-ccs:     TILE-Y+CCS modifier
++ * @y-tiled-rc-ccs-cc:  TILE-Y+CCS+CC modifier
   */
  
  IGT_TEST_DESCRIPTION("Test big framebuffers");
-@@ -372,7 +380,11 @@ static void max_fb_size(data_t *data, int *width, int *height,
- 	struct igt_fb fb;
- 	int i = 0;
- 
--	if (data->max_hw_stride_test) {
-+	if (igt_fb_is_ccs_modifier(data->modifier)) {
-+		/* FIXME figure out what's correct */
-+		*width = 8192;
-+		*height = 8192;
-+	} else if (data->max_hw_stride_test) {
- 		igt_output_t *output;
- 
- 		*width = data->max_hw_fb_width;
-@@ -958,6 +970,9 @@ static bool has_async_flip(data_t *data)
- 	 * TODO: preferably probe all this stuff with
- 	 * TEST_ONLY rather than hardcoding it...
- 	 */
-+	if (igt_fb_is_ccs_modifier(data->modifier))
-+		return false;
-+
- 	if (igt_format_is_yuv_semiplanar(data->format))
- 		return false;
- 
-@@ -979,6 +994,8 @@ static const struct {
- 	{ I915_FORMAT_MOD_Y_TILED, "y-tiled", },
- 	{ I915_FORMAT_MOD_Yf_TILED, "yf-tiled", },
+@@ -996,6 +1004,8 @@ static const struct {
  	{ I915_FORMAT_MOD_4_TILED, "4-tiled", },
-+	{ I915_FORMAT_MOD_Y_TILED_CCS, "y-tiled-ccs", },
-+	{ I915_FORMAT_MOD_Yf_TILED_CCS, "yf-tiled-ccs", },
+ 	{ I915_FORMAT_MOD_Y_TILED_CCS, "y-tiled-ccs", },
+ 	{ I915_FORMAT_MOD_Yf_TILED_CCS, "yf-tiled-ccs", },
++	{ I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, "y-tiled-rc-ccs", },
++	{ I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC, "y-tiled-rc-ccs-cc", },
  };
  
  static const struct {
