@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4A7A10E1E4
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 14:32:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A11C10E7D2
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Dec 2023 14:32:43 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 06/15] tests/kms_big_fb: Determine the max fb size
- the same way always
-Date: Fri, 22 Dec 2023 16:31:50 +0200
-Message-ID: <20231222143159.24662-7-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2 13/15] lib/rendercopy: Always setup clear color for
+ TGL
+Date: Fri, 22 Dec 2023 16:31:57 +0200
+Message-ID: <20231222143159.24662-14-ville.syrjala@linux.intel.com>
 In-Reply-To: <20231222143159.24662-1-ville.syrjala@linux.intel.com>
 References: <20231222143159.24662-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
@@ -26,101 +26,119 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Currently the scanout tests and the addfb test may determine
-the max framebuffer size differently. That may be OK for now,
-but I have plans to extend the test to cover compressed formats
-as well, and those can't generally use the reported max fb size.
-So reuse the same piece of code to always determine the max fb
-size (to which I can add compressed formats checks later).
+TGL apparently automagically converts regular output to fast
+clears when the output matches the configured clear color.
+And if we don't enable the clear color packet at all then we
+just get some rainbow gibberish on all black parts of the
+output.
+
+To avoid always set up the clear color packet, and when we
+don't want fast clear (when not using a _CC modifier) we'll
+just stich a bunch of NaNs into the clear value so it'll
+never match any legitimate output.
+
+TODO: Hide this better inside rendercopy_gen9.c without
+      requring extra allocation in the FB BO
+TODO: Figure out if other platforms need this sort stuff
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/intel/kms_big_fb.c | 40 ++++++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ lib/igt_fb.c          | 23 +++++++++++++++++++++++
+ lib/intel_bufops.h    |  2 ++
+ lib/rendercopy_gen9.c | 14 +++++++++++---
+ 3 files changed, 36 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
-index 75b0c4758743..f9584392f1ab 100644
---- a/tests/intel/kms_big_fb.c
-+++ b/tests/intel/kms_big_fb.c
-@@ -345,6 +345,21 @@ static void max_fb_size(data_t *data, int *width, int *height,
- 	uint64_t size;
- 	int i = 0;
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 4ed08e44070e..1c65d4343c78 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -965,6 +965,16 @@ void igt_calc_fb_size(struct igt_fb *fb)
+ 		size += calc_plane_size(fb, plane);
+ 	}
  
-+	if (data->max_hw_stride_test) {
-+		igt_output_t *output;
++	/*
++	 * We always need a clear color on TGL, make some extra
++	 * room for one it if it's not explicit in the modifier.
++	 *
++	 * TODO: probably better to allocate this as part of the
++	 * batch instead so the fb size doesn't need to change...
++	 */
++	if (fb->modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS)
++		size = ALIGN(size + 64, 64);
 +
-+		*width = data->max_hw_fb_width;
-+		*height = 0;
-+
-+		for_each_connected_output(&data->display, output) {
-+			if (*height < output->config.default_mode.vdisplay * 2)
-+				*height = output->config.default_mode.vdisplay * 2;
-+		}
-+	} else {
-+		*width = data->max_fb_width;
-+		*height = data->max_fb_height;
+ 	if (is_xe_device(fb->fd))
+ 		size = ALIGN(size, xe_get_default_alignment(fb->fd));
+ 
+@@ -2656,6 +2666,19 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
+ 	if (fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC)
+ 		buf->cc.offset = fb->offsets[1];
+ 
++	/*
++	 * TGL appears to do automagic fast clear when rendering
++	 * black and the clear color isn't specified. Always specify
++	 * one. It doesn't appear to do fast clears anymore even
++	 * if the clear color is black.
++	 *
++	 * TODO: figure out if other platforms are affected...
++	 */
++	if (fb->modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS) {
++		buf->cc.disable = true;
++		buf->cc.offset = fb->size - 64;
 +	}
 +
- 	/* max fence stride is only 8k bytes on gen3 */
- 	if (intel_display_ver(data->devid) < 4 &&
- 	    format == DRM_FORMAT_XRGB8888)
-@@ -690,26 +705,11 @@ max_hw_stride_async_flip_test(data_t *data)
+ 	return buf;
+ }
  
- static void test_scanout(data_t *data)
- {
--	igt_output_t *output;
--
- 	igt_require(data->format == DRM_FORMAT_C8 ||
- 		    igt_fb_supported_format(data->format));
+diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
+index b6048402bb6c..ef3df491c677 100644
+--- a/lib/intel_bufops.h
++++ b/lib/intel_bufops.h
+@@ -32,6 +32,7 @@ struct intel_buf {
+ 	enum intel_buf_mocs mocs;
+ 	bool format_is_yuv;
+ 	bool format_is_yuv_semiplanar;
++	bool disable_clear_color;
+ 	struct {
+ 		uint32_t offset;
+ 		uint32_t stride;
+@@ -43,6 +44,7 @@ struct intel_buf {
+ 	} ccs[2];
+ 	struct {
+ 		uint32_t offset;
++		bool disable;
+ 	} cc;
+ 	struct {
+ 		uint64_t offset;
+diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+index bfac62b0fc23..359dda73182a 100644
+--- a/lib/rendercopy_gen9.c
++++ b/lib/rendercopy_gen9.c
+@@ -1078,15 +1078,23 @@ void _gen9_render_op(struct intel_bb *ibb,
  
- 	igt_require(igt_display_has_format_mod(&data->display, data->format, data->modifier));
+ 	gen12_emit_aux_pgtable_state(ibb, aux_pgtable_state, true);
  
--	if (data->max_hw_stride_test) {
--		data->big_fb_width = data->max_hw_fb_width;
--		data->big_fb_height = 0;
--
--		for_each_connected_output(&data->display, output) {
--			if (data->big_fb_height < output->config.default_mode.vdisplay * 2)
--				data->big_fb_height = output->config.default_mode.vdisplay * 2;
--		}
--	} else {
--		data->big_fb_width = data->max_fb_width;
--		data->big_fb_height = data->max_fb_height;
--	}
--
- 	max_fb_size(data, &data->big_fb_width, &data->big_fb_height,
- 		    data->format, data->modifier);
+-	if (fast_clear) {
++	if (fast_clear || dst->cc.disable) {
+ 		for (int i = 0; i < 4; i++) {
+ 			intel_bb_out(ibb, MI_STORE_DWORD_IMM_GEN4);
+ 			intel_bb_emit_reloc(ibb, dst->handle,
+ 					    I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER,
+                                             dst->cc.offset + i*sizeof(float),
+ 					    dst->addr.offset);
+-			intel_bb_out(ibb, *(uint32_t*)&clear_color[i]);
+-               }
++			if (fast_clear) {
++				intel_bb_out(ibb, *(uint32_t*)&clear_color[i]);
++			} else {
++				/*
++				 * Emit NaN so it'll match nothing and thus prevent
++				 * TGL from doing its automagic fast clear tricks.
++				 */
++				intel_bb_out(ibb, 0xffffffff);
++			}
++		}
+        }
  
-@@ -844,6 +844,7 @@ test_addfb(data_t *data)
- 	uint32_t offsets[4] = {};
- 	uint32_t strides[4] = {};
- 	uint32_t format;
-+	int width, height;
- 	int ret;
  
- 	/*
-@@ -859,9 +860,9 @@ test_addfb(data_t *data)
- 	igt_require(igt_display_has_format_mod(&data->display,
- 					       format, data->modifier));
- 
--	igt_calc_fb_size(data->drm_fd,
--			 data->max_fb_width,
--			 data->max_fb_height,
-+	max_fb_size(data, &width, &height, format, data->modifier);
-+
-+	igt_calc_fb_size(data->drm_fd, width, height,
- 			 format, data->modifier,
- 			 &size, &strides[0]);
- 
-@@ -878,8 +879,7 @@ test_addfb(data_t *data)
- 			       igt_fb_mod_to_tiling(data->modifier), strides[0]);
- 
- 	ret = __kms_addfb(data->drm_fd, bo,
--			  data->max_fb_width,
--			  data->max_fb_height,
-+			  width, height,
- 			  format, data->modifier,
- 			  strides, offsets, 1,
- 			  DRM_MODE_FB_MODIFIERS, &fb_id);
 -- 
 2.41.0
