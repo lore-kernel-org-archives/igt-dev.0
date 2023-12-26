@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Message-ID: <7e626fed-2148-4d52-976e-c3456827a681@intel.com>
-Date: Fri, 22 Dec 2023 13:18:25 +0530
-Subject: Re: [PATCH i-g-t v4 3/4] tests/xe_pm: Add d3-mmap IGT test
+Message-ID: <f7962bc5-e5cf-490e-bc01-7064816b2b3b@intel.com>
+Date: Tue, 26 Dec 2023 14:17:20 +0530
+Subject: Re: [PATCH i-g-t v2] tests/kms_lease: Cache xe_device info for lease
+ fd
+References: <20231212100712.3301571-1-mohammed.thasleem@intel.com>
+ <20231226080930.32272-1-mohammed.thasleem@intel.com>
 Content-Language: en-US
-References: <20231221163338.2157257-1-anshuman.gupta@intel.com>
- <20231221163338.2157257-4-anshuman.gupta@intel.com>
-From: "Nilawar, Badal" <badal.nilawar@intel.com>
-In-Reply-To: <20231221163338.2157257-4-anshuman.gupta@intel.com>
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <20231226080930.32272-1-mohammed.thasleem@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
@@ -22,159 +23,69 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: Anshuman Gupta <anshuman.gupta@intel.com>, igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@intel.com, rodrigo.vivi@intel.com
-Message-ID: <20231222074825.YRj-pvcEg45tnBiM9y2sdHpYB0Sf3dLU9oY8sT6vCns@z>
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>, igt-dev@lists.freedesktop.org
+Message-ID: <20231226084720.wvIBRlBavM3l1nXd0TaqaDQXQIePUP9aRS80mxrCciM@z>
 
 
+On 12/26/2023 1:39 PM, Mohammed Thasleem wrote:
+> In case of xe device for lessor fd, the xe_device struct gets
+> created and cached during drm_open. But for the lessee fd,
+> the xe_device info struct is not created and cached.
+>
+> This causes problem in prepare_crtc() for lessee with xe, which
+> needs the xe_device info struct. So, create and cache the xe_device
+> struct info for lease fd, when we make lease and remove it from
+> cache while terminating the lease.
+>
+> v2: -Update description and move logic to make_lease call. (Ankit)
+>      -Add xe_device_put, while terminating the lease. (Ankit)
+>
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 
-On 21-12-2023 22:03, Anshuman Gupta wrote:
-> Adding a test to validate mmap memory mappings along with runtime
-> suspend and resume for both xe device and it's pci parent bridge
-> in device hierarchy.
-> 
-> v2:
-> - Use 0xc00fee pattern. [Rodrigo]
-> - Test the pagefault case on read and write the mapping. [Rodrigo]
-> 
-> v3:
-> - Cosmetic comment. [Kamil]
-> - Use MAGIC macro for 0xc0ffe and 0xdeadbeef. [Kamil]
-> - Fix xe_bo_create() with respect to Xe uapi.
-> - Set auto_suspend delay to 1000ms and restore it.
-> 
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> ---
->   tests/intel/xe_pm.c | 97 +++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 97 insertions(+)
-> 
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index c4ec38ae3..9e7c523eb 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -30,6 +30,8 @@
->   #define NO_RPM -1
->   
->   #define SIZE (4096 * 1024)
-> +#define MAGIC_1 0xc0ffee
-> +#define MAGIC_2 0xdeadbeef
->   
->   typedef struct {
->   	int fd_xe;
-> @@ -447,6 +449,84 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
->   	igt_assert(in_d3(device, IGT_ACPI_D3Cold));
->   }
->   
-> +/**
-> + * SUBTEST: d3-mmap-%s
-> + * Description:
-> + *	Validate mmap memory mapping with d3 state, for %arg[1] region,
-> + *	if supported by device.
-> + * arg[1]:
-> + *
-> + * @vram:	vram region
-> + * @system:	system region
-> + *
-> + * Functionality: pm-d3
-> + * Run type: FULL
-> + */
-> +static void test_mmap(device_t device, uint32_t placement, uint32_t flags)
-> +{
-> +	size_t bo_size = 8192;
-> +	uint32_t *map = NULL;
-> +	uint32_t bo;
-> +	int i, delay_ms;
-> +
-> +	igt_require_f(placement, "Device doesn't support such memory region\n");
-> +
-> +	bo_size = ALIGN(bo_size, xe_get_default_alignment(device.fd_xe));
-> +
-> +	bo = xe_bo_create(device.fd_xe, 0, bo_size, placement, flags);
-> +	map = xe_bo_map(device.fd_xe, bo, bo_size);
-> +	igt_assert(map);
-> +	memset(map, 0, bo_size);
-> +
-> +	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
-> +
-> +	igt_assert(fw_handle >= 0);
-> +	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-> +
-> +	for (i = 0; i < bo_size / sizeof(*map); i++)
-> +		map[i] = MAGIC_1;
-> +
-> +	for (i = 0; i < bo_size / sizeof(*map); i++)
-> +		igt_assert(map[i] == MAGIC_1);
-> +
-> +	/* Runtime suspend and validate the pattern and changed the pattern */
-> +	close(fw_handle);
-> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-> +
-> +	for (i = 0; i < bo_size / sizeof(*map); i++)
-> +		igt_assert(map[i] == MAGIC_1);
-> +
-> +	/* dgfx page-fault on mmaping should wake the gpu */
-> +	if (xe_has_vram(device.fd_xe)) {
-> +		/* Give some auto suspend delay to validate rpm active */
-> +		delay_ms = igt_pm_get_autosuspend_delay(device.pci_xe);
-> +		igt_pm_set_autosuspend_delay(device.pci_xe, 1000);
-> +		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-> +		igt_pm_set_autosuspend_delay(device.pci_xe, delay_ms);
-> +	}
-> +
-> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-> +
-> +	for (i = 0; i < bo_size / sizeof(*map); i++)
-> +		map[i] = MAGIC_2;
-> +
-> +	if (xe_has_vram(device.fd_xe))
-> +		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-Need to increase auto suspend delay at this place as well. I think 
-better to change it at the beginning of test and restore back at the end 
-of test.
+LGTM.
+
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+
 
 Regards,
-Badal
-> +
-> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-> +
-> +	/* Runtime resume and check the pattern */
-> +	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
-> +	igt_assert(fw_handle >= 0);
-> +	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-> +	for (i = 0; i < bo_size / sizeof(*map); i++)
-> +		igt_assert(map[i] == MAGIC_2);
-> +
-> +	igt_assert(munmap(map, bo_size) == 0);
-> +	gem_close(device.fd_xe, bo);
-> +	close(fw_handle);
-> +}
-> +
->   igt_main
->   {
->   	struct drm_xe_engine_class_instance *hwe;
-> @@ -557,6 +637,23 @@ igt_main
->   			igt_install_exit_handler(vram_d3cold_threshold_restore);
->   			test_vram_d3cold_threshold(device, sysfs_fd);
->   		}
-> +
-> +		igt_describe("Validate mmap memory mappings with system region,"
-> +			     "when device along with parent bridge in d3");
-> +		igt_subtest("d3-mmap-system") {
-> +			test_mmap(device, system_memory(device.fd_xe), 0);
-> +		}
-> +
-> +		igt_describe("Validate mmap memory mappings with vram region,"
-> +			     "when device along with parent bridge in d3");
-> +		igt_subtest("d3-mmap-vram") {
-> +			if (device.pci_root != device.pci_xe) {
-> +				igt_pm_enable_pci_card_runtime_pm(device.pci_root, NULL);
-> +				igt_pm_set_d3cold_allowed(device.pci_slot_name, 1);
-> +			}
-> +
-> +			test_mmap(device, vram_memory(device.fd_xe, 0), DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +		}
->   	}
+
+Ankit
+
+> ---
+>   tests/kms_lease.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
+>
+> diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+> index 8ac58af38..f7531c803 100644
+> --- a/tests/kms_lease.c
+> +++ b/tests/kms_lease.c
+> @@ -48,6 +48,8 @@
 >   
->   	igt_fixture {
+>   #include <drm.h>
+>   #include "igt_device.h"
+> +#include "xe_drm.h"
+> +#include "xe/xe_query.h"
+>   
+>   /**
+>    * SUBTEST: atomic-implicit-crtc
+> @@ -267,12 +269,20 @@ static int make_lease(data_t *data)
+>   	if (ret)
+>   		return ret;
+>   
+> +	/* Cache xe_device struct */
+> +	if (is_xe_device(data->lease.fd))
+> +		xe_device_get(data->lease.fd);
+> +
+>   	data->lease.lessee_id = mcl.lessee_id;
+>   	return 0;
+>   }
+>   
+>   static void terminate_lease(int lease_fd)
+>   {
+> +	/* Remove xe_device from cache. */
+> +	if (is_xe_device(lease_fd))
+> +		xe_device_put(lease_fd);
+> +
+>   	close(lease_fd);
+>   }
+>   
