@@ -1,7 +1,7 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A38AD10E0E1
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Dec 2023 19:11:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A37BE10E1E5
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Dec 2023 19:11:44 +0000 (UTC)
 From: Melissa Wen <mwen@igalia.com>
 To: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
  Arkadiusz Hiler <arek@hiler.eu>,
@@ -9,10 +9,10 @@ To: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
  Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>,
  Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 1/3] test/kms_async_flips: fix test abortion due to
- unreadable mod name
-Date: Tue, 26 Dec 2023 17:57:32 -0100
-Message-ID: <20231226191054.23794-2-mwen@igalia.com>
+Subject: [PATCH i-g-t 3/3] tests/kms_async_flips: test with modifiers only on
+ intel devices
+Date: Tue, 26 Dec 2023 17:57:34 -0100
+Message-ID: <20231226191054.23794-4-mwen@igalia.com>
 In-Reply-To: <20231226191054.23794-1-mwen@igalia.com>
 References: <20231226191054.23794-1-mwen@igalia.com>
 MIME-Version: 1.0
@@ -29,51 +29,32 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When looking for names of non-intel modifiers, igt_fb_modifier_name()
-returns "?" which causes run_test_with_modifiers abortion and therefore
-a regression to `async-flip-with-page-flip-events` test case, as below:
+Although increasing the coverage of tests with modifiers, the change
+from run_test() to run_test_with_modifiers() is now a regression on
+non-intel devices. run_test_with_modifiers() only ensures conditions for
+modifiers != LINEAR on intel devices, and the original run_test() is
+more consistent across vendors.
 
-(kms_async_flips:9663) igt_core-CRITICAL: Invalid dynamic subtest name "pipe-A-eDP-1-?".
-kms_async_flips: ../lib/igt_core.c:2296: igt_exit: Assertion `!test_with_subtests || skipped_one || succeeded_one || failed_one' failed.
-Received signal SIGABRT.
-Stack trace:
- #0 [fatal_sig_handler+0x17b]
- #1 [__sigaction+0x40]
- #2 [pthread_key_delete+0x14c]
- #3 [gsignal+0x12]
- #4 [abort+0xd3]
- #5 [<unknown>+0xd3]
- #6 [__assert_fail+0x42]
- #7 [igt_exit+0x1ca]
- #8 [__igt_run_dynamic_subtest+0x122]
- #9 [run_test_with_modifiers.constprop.0+0x1c7]
- #10 [__igt_unique____real_main635+0x56b]
- #11 [main+0x27]
- #12 [__libc_init_first+0x8a]
- #13 [__libc_start_main+0x85]
- #14 [_start+0x21]
-Aborted
-
-Replacing "?" with "unknown" solves the issue and async flip tests run
-again.
-
-Fixes: 7fa7602ccf ("tests/kms_async_flips: Test all modifiers")
 Signed-off-by: Melissa Wen <mwen@igalia.com>
 ---
- lib/igt_fb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/kms_async_flips.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 683eb176b..2cf94013e 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -4951,6 +4951,6 @@ const char *igt_fb_modifier_name(uint64_t modifier)
- 	case I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC:
- 		return "4-rc-ccs-cc";
- 	default:
--		return "?";
-+		return "unknown";
- 	}
- }
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 6fddad093..55d59196e 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -654,7 +654,10 @@ igt_main
+ 		igt_describe("Wait for page flip events in between successive asynchronous flips");
+ 		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
+ 			data.alternate_sync_async = false;
+-			run_test_with_modifiers(&data, test_async_flip);
++			if (is_intel_device(data.drm_fd))
++				run_test_with_modifiers(&data, test_async_flip);
++			else
++				run_test(&data, test_async_flip);
+ 		}
+ 
+ 		igt_describe("Alternate between sync and async flips");
 -- 
 2.43.0
