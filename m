@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6081310E04E
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Dec 2023 06:59:10 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Ch, Sai
- Gowtham" <sai.gowtham.ch@intel.com>
-Subject: RE: [PATCH i-g-t 0/2] Add Persistent support.
-Date: Tue, 26 Dec 2023 06:59:06 +0000
-Message-ID: <MW3PR11MB47481E019AAEB9601C52A816AE98A@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20231222105353.23355-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20231222105353.23355-1-sai.gowtham.ch@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8961310E00B
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Dec 2023 08:21:15 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t v2] tests/kms_lease: Cache xe_device info for lease fd
+Date: Tue, 26 Dec 2023 13:39:30 +0530
+Message-Id: <20231226080930.32272-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20231212100712.3301571-1-mohammed.thasleem@intel.com>
+References: <20231212100712.3301571-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,37 +22,56 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+In case of xe device for lessor fd, the xe_device struct gets
+created and cached during drm_open. But for the lessee fd,
+the xe_device info struct is not created and cached.
 
+This causes problem in prepare_crtc() for lessee with xe, which
+needs the xe_device info struct. So, create and cache the xe_device
+struct info for lease fd, when we make lease and remove it from
+cache while terminating the lease.
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> sai.gowtham.ch@intel.com
-> Sent: Friday, December 22, 2023 4:24 PM
-> To: igt-dev@lists.freedesktop.org; Ch, Sai Gowtham
-> <sai.gowtham.ch@intel.com>
-> Subject: [PATCH i-g-t 0/2] Add Persistent support.
->=20
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->=20
-> This series has two changes as followes:
-> 1. Add persistent batch buffer instruction to the lib.
-> 2. Add Persistent subtest to xe_exec_store.
->=20
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+v2: -Update description and move logic to make_lease call. (Ankit)
+    -Add xe_device_put, while terminating the lease. (Ankit)
 
-With the suggested minor nits done,
-You can add my r-b.
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/kms_lease.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-
->=20
-> Sai Gowtham Ch (2):
->   include/intel_gpu_commands: Add persistent batch buffer instruction.
->   intel/xe_exec_store: Add Persistent subtest
->=20
->  include/intel_gpu_commands.h |  1 +
->  tests/intel/xe_exec_store.c  | 86 ++++++++++++++++++++++++++++++++++++
->  2 files changed, 87 insertions(+)
->=20
-> --
-> 2.39.1
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index 8ac58af38..f7531c803 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -48,6 +48,8 @@
+ 
+ #include <drm.h>
+ #include "igt_device.h"
++#include "xe_drm.h"
++#include "xe/xe_query.h"
+ 
+ /**
+  * SUBTEST: atomic-implicit-crtc
+@@ -267,12 +269,20 @@ static int make_lease(data_t *data)
+ 	if (ret)
+ 		return ret;
+ 
++	/* Cache xe_device struct */
++	if (is_xe_device(data->lease.fd))
++		xe_device_get(data->lease.fd);
++
+ 	data->lease.lessee_id = mcl.lessee_id;
+ 	return 0;
+ }
+ 
+ static void terminate_lease(int lease_fd)
+ {
++	/* Remove xe_device from cache. */
++	if (is_xe_device(lease_fd))
++		xe_device_put(lease_fd);
++
+ 	close(lease_fd);
+ }
+ 
+-- 
+2.25.1
