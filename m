@@ -1,6 +1,6 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A54B810E0E5
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A38AD10E0E1
  for <igt-dev@lists.freedesktop.org>; Tue, 26 Dec 2023 19:11:42 +0000 (UTC)
 From: Melissa Wen <mwen@igalia.com>
 To: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
@@ -9,9 +9,12 @@ To: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
  Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>,
  Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 0/3] test/kms_async_flip: fixes to get execution
-Date: Tue, 26 Dec 2023 17:57:31 -0100
-Message-ID: <20231226191054.23794-1-mwen@igalia.com>
+Subject: [PATCH i-g-t 1/3] test/kms_async_flips: fix test abortion due to
+ unreadable mod name
+Date: Tue, 26 Dec 2023 17:57:32 -0100
+Message-ID: <20231226191054.23794-2-mwen@igalia.com>
+In-Reply-To: <20231226191054.23794-1-mwen@igalia.com>
+References: <20231226191054.23794-1-mwen@igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -26,40 +29,51 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+When looking for names of non-intel modifiers, igt_fb_modifier_name()
+returns "?" which causes run_test_with_modifiers abortion and therefore
+a regression to `async-flip-with-page-flip-events` test case, as below:
 
-When I was reviewing "tests/kms_async_flip: Speed up the CRC test on
-Intel hw" (https://patchwork.freedesktop.org/patch/572473/), I noticied
-kms_async_flip aborts in the first test case with non-intel device since
-commit 7fa7602ccf ("tests/kms_async_flips: Test all modifiers").
-To get the execution back, the first patch changes the name of a
-non-intel modifier from "?" to "unknown".
+(kms_async_flips:9663) igt_core-CRITICAL: Invalid dynamic subtest name "pipe-A-eDP-1-?".
+kms_async_flips: ../lib/igt_core.c:2296: igt_exit: Assertion `!test_with_subtests || skipped_one || succeeded_one || failed_one' failed.
+Received signal SIGABRT.
+Stack trace:
+ #0 [fatal_sig_handler+0x17b]
+ #1 [__sigaction+0x40]
+ #2 [pthread_key_delete+0x14c]
+ #3 [gsignal+0x12]
+ #4 [abort+0xd3]
+ #5 [<unknown>+0xd3]
+ #6 [__assert_fail+0x42]
+ #7 [igt_exit+0x1ca]
+ #8 [__igt_run_dynamic_subtest+0x122]
+ #9 [run_test_with_modifiers.constprop.0+0x1c7]
+ #10 [__igt_unique____real_main635+0x56b]
+ #11 [main+0x27]
+ #12 [__libc_init_first+0x8a]
+ #13 [__libc_start_main+0x85]
+ #14 [_start+0x21]
+Aborted
 
-The same commit also claims to allow failure with some modifiers, but
-the path for handling fb with modifiers != LINEAR and != intel doesn't
-cover other vendors requirements and isn't consistent yet. Ofc,
-increasing coverage with other vendor modifiers would be nice, but before
-changing from run_test() to run_test_with_modifiers() the test case was
-working as expected. Moreover, it seems we need a good rework of the
-_with_modifiers path to make it stable again. This regression is the
-reason I choose to bring back the original approach for non-intel
-devices in the third path of this series. Follow-up patches can be sent
-to increase test coverage with modifiers for non-intel device.
+Replacing "?" with "unknown" solves the issue and async flip tests run
+again.
 
-Let me know your thoughts.
+Fixes: 7fa7602ccf ("tests/kms_async_flips: Test all modifiers")
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+---
+ lib/igt_fb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-
-Melissa
-
-Melissa Wen (3):
-  test/kms_async_flips: fix test abortion due to unreadable mod name
-  lib/igt_fb: fix documentation of igt_create_color_fb return
-  tests/kms_async_flips: test with modifiers only on intel devices
-
- lib/igt_fb.c            | 5 ++---
- tests/kms_async_flips.c | 5 ++++-
- 2 files changed, 6 insertions(+), 4 deletions(-)
-
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 683eb176b..2cf94013e 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -4951,6 +4951,6 @@ const char *igt_fb_modifier_name(uint64_t modifier)
+ 	case I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC:
+ 		return "4-rc-ccs-cc";
+ 	default:
+-		return "?";
++		return "unknown";
+ 	}
+ }
 -- 
 2.43.0
