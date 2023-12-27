@@ -1,22 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A37BE10E1E5
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Dec 2023 19:11:44 +0000 (UTC)
-From: Melissa Wen <mwen@igalia.com>
-To: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 3/3] tests/kms_async_flips: test with modifiers only on
- intel devices
-Date: Tue, 26 Dec 2023 17:57:34 -0100
-Message-ID: <20231226191054.23794-4-mwen@igalia.com>
-In-Reply-To: <20231226191054.23794-1-mwen@igalia.com>
-References: <20231226191054.23794-1-mwen@igalia.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 733588930B
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Dec 2023 04:54:25 +0000 (UTC)
+Message-ID: <2b4f115c-f084-499f-976d-365b791ea3d8@intel.com>
+Date: Wed, 27 Dec 2023 10:24:13 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/intel/kms_frontbuffer_tracking:
+ Cleanup pipe crc
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, igt-dev@lists.freedesktop.org
+References: <20231206083136.16099-1-nidhi1.gupta@intel.com>
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20231206083136.16099-1-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,37 +21,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: kernel-dev@igalia.com, Arun R Murthy <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Although increasing the coverage of tests with modifiers, the change
-from run_test() to run_test_with_modifiers() is now a regression on
-non-intel devices. run_test_with_modifiers() only ensures conditions for
-modifiers != LINEAR on intel devices, and the original run_test() is
-more consistent across vendors.
+LGTM
 
-Signed-off-by: Melissa Wen <mwen@igalia.com>
----
- tests/kms_async_flips.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 6fddad093..55d59196e 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -654,7 +654,10 @@ igt_main
- 		igt_describe("Wait for page flip events in between successive asynchronous flips");
- 		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
- 			data.alternate_sync_async = false;
--			run_test_with_modifiers(&data, test_async_flip);
-+			if (is_intel_device(data.drm_fd))
-+				run_test_with_modifiers(&data, test_async_flip);
-+			else
-+				run_test(&data, test_async_flip);
- 		}
- 
- 		igt_describe("Alternate between sync and async flips");
--- 
-2.43.0
+On 06-Dec-23 2:01 PM, Nidhi Gupta wrote:
+> Before testing FBC on next pipe, cleanup pipe CRCs
+> to avoid any mismatch.
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>   tests/intel/kms_frontbuffer_tracking.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+> index 1daf27d2e..e10803b62 100644
+> --- a/tests/intel/kms_frontbuffer_tracking.c
+> +++ b/tests/intel/kms_frontbuffer_tracking.c
+> @@ -4532,6 +4532,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>   					continue;
+>   				}
+>   
+> +				pipe_crc = NULL;
+> +				setup_crcs();
+> +
+>   				for_each_valid_output_on_pipe(&drm.display, pipe, output) {
+>   					init_mode_params(&prim_mode_params, output, pipe);
+>   					setup_fbc();
