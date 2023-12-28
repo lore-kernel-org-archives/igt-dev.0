@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1846110E04D
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Dec 2023 06:14:56 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 2/2] tests/intel/kms_psr2_sf: Skip the test for bigfb
- with FBC enabled
-Date: Tue, 26 Dec 2023 11:54:15 +0530
-Message-Id: <20231226062415.23338-3-jeevan.b@intel.com>
-In-Reply-To: <20231226062415.23338-1-jeevan.b@intel.com>
-References: <20231226062415.23338-1-jeevan.b@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B77510E23D
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Dec 2023 00:10:33 +0000 (UTC)
+From: janga.rahul.kumar@intel.com
+To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
+ janga.rahul.kumar@intel.com, nirmoy.das@intel.com
+Subject: [PATCH i-g-t 3/3] tests/intel/xe_compute_preempt: Add compute preempt
+ test
+Date: Thu, 28 Dec 2023 05:45:10 +0530
+Message-Id: <20231228001510.1399329-4-janga.rahul.kumar@intel.com>
+In-Reply-To: <20231228001510.1399329-1-janga.rahul.kumar@intel.com>
+References: <20231228001510.1399329-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,85 +25,81 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The size of the 'bigfb' plane is too large for FBC, so we are
-skipping that test.
+From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
-Reviewed-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
+Test submits long and short opencl kernels to exercise
+preemption scenario.
+
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 ---
- tests/intel/kms_psr2_sf.c | 52 ++++++++++++++++++++-------------------
- 1 file changed, 27 insertions(+), 25 deletions(-)
+ tests/intel/xe_compute_preempt.c | 46 ++++++++++++++++++++++++++++++++
+ tests/meson.build                |  1 +
+ 2 files changed, 47 insertions(+)
+ create mode 100644 tests/intel/xe_compute_preempt.c
 
-diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-index 68cedf577..08dcb4bfb 100644
---- a/tests/intel/kms_psr2_sf.c
-+++ b/tests/intel/kms_psr2_sf.c
-@@ -105,9 +105,6 @@
-  *
-  * SUBTEST: primary-plane-update-sf-dmg-area-big-fb
-  * Description: Test that selective fetch works on primary plane with big fb
-- *
-- * SUBTEST: fbc-primary-plane-update-sf-dmg-area-big-fb
-- * Description: Test that fbc with selective fetch works on primary plane with big fb
-  */
-
- IGT_TEST_DESCRIPTION("Tests to varify PSR2 selective fetch by sending multiple"
-@@ -1075,29 +1072,34 @@ igt_main
- 		}
-
- 		/* Verify primary plane selective fetch with big fb */
--		data.big_fb_test = 1;
--		igt_describe("Test that selective fetch works on primary plane with big fb");
--		igt_subtest_with_dynamic_f("%sprimary-%s-sf-dmg-area-big-fb", append_fbc_subtest[y],
--					   op_str(data.op)) {
--			for (i = 0; i < n_pipes; i++) {
--				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
--					continue;
--
--				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
--					if (j != FEATURE_NONE && !(coexist_features[i] & j))
-+		if (data.op_fbc_mode == FBC_DISABLED) {
-+			data.big_fb_test = 1;
-+			igt_describe("Test that selective fetch works on primary plane with "
-+				     "big fb");
-+			igt_subtest_with_dynamic_f("%sprimary-%s-sf-dmg-area-big-fb",
-+						   append_fbc_subtest[y], op_str(data.op)) {
-+				for (i = 0; i < n_pipes; i++) {
-+					if (!pipe_output_combo_valid(&data.display, pipes[i],
-+								     outputs[i]))
- 						continue;
--					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
--						      igt_output_name(outputs[i]),
--						      coexist_feature_str(j)) {
--						data.pipe = pipes[i];
--						data.output = outputs[i];
--						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
--						data.coexist_feature = j;
--						for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
--							data.damage_area_count = k;
--							prepare(&data);
--							run(&data);
--							cleanup(&data);
+diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
+new file mode 100644
+index 000000000..fdf817d12
+--- /dev/null
++++ b/tests/intel/xe_compute_preempt.c
+@@ -0,0 +1,46 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
++ */
 +
-+					for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
-+						if (j != FEATURE_NONE && !(coexist_features[i] & j))
-+							continue;
-+						igt_dynamic_f("pipe-%s-%s%s",
-+							      kmstest_pipe_name(pipes[i]),
-+							      igt_output_name(outputs[i]),
-+							      coexist_feature_str(j)) {
-+							data.pipe = pipes[i];
-+							data.output = outputs[i];
-+							data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-+							data.coexist_feature = j;
-+							for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
-+								data.damage_area_count = k;
-+								prepare(&data);
-+								run(&data);
-+								cleanup(&data);
-+							}
- 						}
- 					}
- 				}
---
++/**
++ * TEST: Check compute-related preemption functionality
++ * Category: Hardware building block
++ * Sub-category: compute
++ * Test category: functionality test
++ */
++
++#include <string.h>
++
++#include "igt.h"
++#include "intel_compute.h"
++#include "xe/xe_query.h"
++
++/**
++ * SUBTEST: compute-preempt
++ * GPU requirement: LNL
++ * Description:
++ *      Exercise preemption scenario
++ * Functionality: compute openCL kernel
++ */
++static void
++test_compute_preempt(int fd)
++{
++	igt_require_f(run_intel_compute_kernel_preempt(fd), "GPU not supported\n");
++}
++
++igt_main
++{
++	int xe;
++
++	igt_fixture
++		xe = drm_open_driver(DRIVER_XE);
++
++	igt_subtest("compute-preempt")
++		test_compute_preempt(xe);
++
++	igt_fixture
++		drm_close_driver(xe);
++
++}
++
+diff --git a/tests/meson.build b/tests/meson.build
+index a6a8498e2..24dd1caba 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -278,6 +278,7 @@ intel_xe_progs = [
+ 	'xe_ccs',
+ 	'xe_create',
+ 	'xe_compute',
++	'xe_compute_preempt',
+ 	'xe_copy_basic',
+ 	'xe_dma_buf_sync',
+ 	'xe_debugfs',
+-- 
 2.25.1
