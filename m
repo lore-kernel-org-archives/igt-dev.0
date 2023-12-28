@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9929010E08F
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Dec 2023 07:55:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D725B10E090
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Dec 2023 07:57:11 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	kunal1.joshi@intel.com
-Subject: [i-g-t 1/7] lib/i915/intel_drrs: Fix igt helper to get drrs status
-Date: Thu, 28 Dec 2023 13:20:17 +0530
-Message-Id: <20231228075017.745594-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231227133020.685916-1-bhanuprakash.modem@intel.com>
-References: <20231227133020.685916-1-bhanuprakash.modem@intel.com>
+Subject: [i-g-t 1/4] lib/i915/intel_drrs: Fix igt helper to get drrs status
+Date: Thu, 28 Dec 2023 13:21:49 +0530
+Message-Id: <20231228075149.745785-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231228075017.745594-1-bhanuprakash.modem@intel.com>
+References: <20231228075017.745594-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -45,11 +45,11 @@ index deaec90d3..9c6aefbf6 100644
  	close(dir);
 -	if (*buf == '\0')
 -		return false;
- 
+
 -	return !strcasestr(buf, "DRRS enabled:");
 +	return strstr(buf, "DRRS enabled: yes");
  }
- 
+
  /**
--- 
+--
 2.40.0
