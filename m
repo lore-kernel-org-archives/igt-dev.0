@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36C4E10E04B
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Dec 2023 19:16:46 +0000 (UTC)
-From: Arthur Grillo <arthurgrillo@riseup.net>
-Date: Thu, 28 Dec 2023 16:10:04 -0300
-Subject: [PATCH i-g-t] lib: Add non-subsampled YUV formats
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5395110E292
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Dec 2023 09:30:41 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: RE: [PATCH] [RFC] tests/intel: Add tests to run suspend without
+ display
+Date: Fri, 29 Dec 2023 09:30:35 +0000
+Message-ID: <CY5PR11MB6211813F1C521B84C5E4C544959DA@CY5PR11MB6211.namprd11.prod.outlook.com>
+References: <20231222093654.923541-1-sujaritha.sundaresan@intel.com>
+In-Reply-To: <20231222093654.923541-1-sujaritha.sundaresan@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231228-non-ssampled-yuv-v1-1-06f8e877b566@riseup.net>
-To: igt-dev@lists.freedesktop.org
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,211 +22,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Arthur Grillo <arthurgrillo@riseup.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add support to NV24, NV42, YUV444 and YVU444 non-subsampled YUV formats
 
-Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
----
- lib/igt_color_encoding.c |  4 ++++
- lib/igt_fb.c             | 44 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 48 insertions(+)
 
-diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
-index a7bd2b22f73b..286784f10bbf 100644
---- a/lib/igt_color_encoding.c
-+++ b/lib/igt_color_encoding.c
-@@ -139,11 +139,15 @@ static const struct color_encoding_format {
- 	{ DRM_FORMAT_NV12, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_NV16, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_NV21, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_NV24, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_NV42, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_NV61, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YUV420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YUV422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YUV444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YVU420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YVU422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YVU444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YUYV, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YVYU, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_UYVY, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 683eb176b7a4..6e83f817f89c 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -257,6 +257,16 @@ static const struct format_desc_struct {
- 	  .num_planes = 2, .plane_bpp = { 8, 16, },
- 	  .hsub = 2, .vsub = 2,
- 	},
-+	{ .name = "NV24", .depth = -1, .drm_id = DRM_FORMAT_NV24,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 2, .plane_bpp = { 8, 16, },
-+	  .hsub = 1, .vsub = 1,
-+	},
-+	{ .name = "NV42", .depth = -1, .drm_id = DRM_FORMAT_NV42,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 2, .plane_bpp = { 8, 16, },
-+	  .hsub = 1, .vsub = 1,
-+	},
- 	{ .name = "NV61", .depth = -1, .drm_id = DRM_FORMAT_NV61,
- 	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
- 	  .num_planes = 2, .plane_bpp = { 8, 16, },
-@@ -292,6 +302,11 @@ static const struct format_desc_struct {
- 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
- 	  .hsub = 2, .vsub = 1,
- 	},
-+	{ .name = "YU24", .depth = -1, .drm_id = DRM_FORMAT_YUV444,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 1, .vsub = 1,
-+	},
- 	{ .name = "YV12", .depth = -1, .drm_id = DRM_FORMAT_YVU420,
- 	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
- 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-@@ -302,6 +317,11 @@ static const struct format_desc_struct {
- 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
- 	  .hsub = 2, .vsub = 1,
- 	},
-+	{ .name = "YV24", .depth = -1, .drm_id = DRM_FORMAT_YVU444,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 1, .vsub = 1,
-+	},
- 	{ .name = "Y410", .depth = -1, .drm_id = DRM_FORMAT_Y410,
- 	  .cairo_id = CAIRO_FORMAT_RGBA128F, .convert = true,
- 	  .num_planes = 1, .plane_bpp = { 32, },
-@@ -3395,6 +3415,8 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 	case DRM_FORMAT_NV12:
- 	case DRM_FORMAT_NV16:
- 	case DRM_FORMAT_NV21:
-+	case DRM_FORMAT_NV24:
-+	case DRM_FORMAT_NV42:
- 	case DRM_FORMAT_NV61:
- 	case DRM_FORMAT_P010:
- 	case DRM_FORMAT_P012:
-@@ -3405,8 +3427,10 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 		params->ay_inc = 1;
- 		params->uv_inc = 1;
- 		break;
-@@ -3436,11 +3460,15 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 	case DRM_FORMAT_NV12:
- 	case DRM_FORMAT_NV16:
- 	case DRM_FORMAT_NV21:
-+	case DRM_FORMAT_NV24:
-+	case DRM_FORMAT_NV42:
- 	case DRM_FORMAT_NV61:
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 	case DRM_FORMAT_P010:
- 	case DRM_FORMAT_P012:
- 	case DRM_FORMAT_P016:
-@@ -3467,6 +3495,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 
- 	switch (fb->drm_format) {
- 	case DRM_FORMAT_NV12:
-+	case DRM_FORMAT_NV24:
- 	case DRM_FORMAT_NV16:
- 		params->y_offset = fb->offsets[0];
- 		params->u_offset = fb->offsets[1];
-@@ -3474,6 +3503,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 		break;
- 
- 	case DRM_FORMAT_NV21:
-+	case DRM_FORMAT_NV42:
- 	case DRM_FORMAT_NV61:
- 		params->y_offset = fb->offsets[0];
- 		params->u_offset = fb->offsets[1] + 1;
-@@ -3482,6 +3512,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
- 		params->y_offset = fb->offsets[0];
- 		params->u_offset = fb->offsets[1];
- 		params->v_offset = fb->offsets[2];
-@@ -3489,6 +3520,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 		params->y_offset = fb->offsets[0];
- 		params->u_offset = fb->offsets[2];
- 		params->v_offset = fb->offsets[1];
-@@ -4222,14 +4254,18 @@ static void fb_convert(struct fb_convert *cvt)
- 		case DRM_FORMAT_NV12:
- 		case DRM_FORMAT_NV16:
- 		case DRM_FORMAT_NV21:
-+		case DRM_FORMAT_NV24:
-+		case DRM_FORMAT_NV42:
- 		case DRM_FORMAT_NV61:
- 		case DRM_FORMAT_UYVY:
- 		case DRM_FORMAT_VYUY:
- 		case DRM_FORMAT_YUV420:
- 		case DRM_FORMAT_YUV422:
-+		case DRM_FORMAT_YUV444:
- 		case DRM_FORMAT_YUYV:
- 		case DRM_FORMAT_YVU420:
- 		case DRM_FORMAT_YVU422:
-+		case DRM_FORMAT_YVU444:
- 		case DRM_FORMAT_YVYU:
- 			convert_yuv_to_rgb24(cvt);
- 			return;
-@@ -4240,14 +4276,18 @@ static void fb_convert(struct fb_convert *cvt)
- 		case DRM_FORMAT_NV12:
- 		case DRM_FORMAT_NV16:
- 		case DRM_FORMAT_NV21:
-+		case DRM_FORMAT_NV24:
-+		case DRM_FORMAT_NV42:
- 		case DRM_FORMAT_NV61:
- 		case DRM_FORMAT_UYVY:
- 		case DRM_FORMAT_VYUY:
- 		case DRM_FORMAT_YUV420:
- 		case DRM_FORMAT_YUV422:
-+		case DRM_FORMAT_YUV444:
- 		case DRM_FORMAT_YUYV:
- 		case DRM_FORMAT_YVU420:
- 		case DRM_FORMAT_YVU422:
-+		case DRM_FORMAT_YVU444:
- 		case DRM_FORMAT_YVYU:
- 			convert_rgb24_to_yuv(cvt);
- 			return;
-@@ -4820,11 +4860,15 @@ bool igt_format_is_yuv(uint32_t drm_format)
- 	case DRM_FORMAT_NV12:
- 	case DRM_FORMAT_NV16:
- 	case DRM_FORMAT_NV21:
-+	case DRM_FORMAT_NV24:
-+	case DRM_FORMAT_NV42:
- 	case DRM_FORMAT_NV61:
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 	case DRM_FORMAT_P010:
- 	case DRM_FORMAT_P012:
- 	case DRM_FORMAT_P016:
+> -----Original Message-----
+> From: Sundaresan, Sujaritha <sujaritha.sundaresan@intel.com>
+> Sent: Friday, December 22, 2023 3:07 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Gupta, Anshuman <anshuman.gupta@intel.com>; Sundaresan, Sujaritha
+> <sujaritha.sundaresan@intel.com>
+> Subject: [PATCH] [RFC] tests/intel: Add tests to run suspend without disp=
+lay
 
----
-base-commit: 0340f23b38ce0fdab61fd0fbe5bc94cd91bcaa0d
-change-id: 20231228-non-ssampled-yuv-e50c1269e225
-
-Best regards,
--- 
-Arthur Grillo <arthurgrillo@riseup.net>
+>=20
+> Add tests to validate s3/s2idle suspend cycle without display module to r=
+ule
+> out display related issues from the suspend/resume stack.
+Can you extend the existing xe_pm s2idle/s3 test which also submits the wor=
+kload.
+Idea is to get the existing test results without display module.
+Thanks,
+Anshuman Gupta.
+>=20
+> Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+> ---
+>  tests/intel/xe_pm.c | 33 +++++++++++++++++++++++++++++++++
+>  1 file changed, 33 insertions(+)
+>=20
+> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c index
+> 602729daf..55088e7fa 100644
+> --- a/tests/intel/xe_pm.c
+> +++ b/tests/intel/xe_pm.c
+> @@ -17,6 +17,7 @@
+>  #include "igt.h"
+>  #include "lib/igt_device.h"
+>  #include "lib/igt_pm.h"
+> +#include "lib/igt_kmod.h"
+>  #include "lib/igt_sysfs.h"
+>  #include "lib/igt_syncobj.h"
+>  #include "lib/intel_reg.h"
+> @@ -364,6 +365,30 @@ NULL));
+>  		igt_assert(in_d3(device, d_state));
+>  }
+>=20
+> +/**
+> + * SUBTEST: s2idle-without-display
+> + * Functionality: pm
+> + * Description: validate the s2idle cycle without display  */
+> +
+> +/**
+> + * SUBTEST: s3-without-display
+> + * Functionality: pm
+> + * Description: validate the s3 cycle without display  */
+> +
+> +static void
+> +test_suspend_without_display(int state) {
+> +	igt_kmsg(KMSG_INFO "Unloading Xe\n");
+> +	igt_assert_eq(igt_xe_driver_unload(),0);
+> +
+> +	igt_kmsg(KMSG_INFO "Re-loading Xe\n");
+> +	igt_assert_eq(igt_xe_driver_load("enable_display=3D0"),0);
+> +
+> +	igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE); }
+> +
+>  /**
+>   * SUBTEST: vram-d3cold-threshold
+>   * Functionality: pm - d3cold
+> @@ -536,6 +561,14 @@ igt_main
+>  		}
+>  	}
+>=20
+> +	igt_describe("Validate s2idle without display");
+> +	igt_subtest("s2idle-without-display")
+> +		test_suspend_without_display(SUSPEND_STATE_FREEZE);
+> +
+> +	igt_describe("Validate s3 without display");
+> +	igt_subtest("s3-without-display")
+> +		test_suspend_without_display(SUSPEND_STATE_S3);
+> +
+>  	igt_describe("Validate whether card is limited to d3hot, if vram used >
+> vram threshold");
+>  	igt_subtest("vram-d3cold-threshold") {
+>  		orig_threshold =3D get_vram_d3cold_threshold(sysfs_fd);
+> --
+> 2.25.1
