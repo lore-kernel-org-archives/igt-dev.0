@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4011710E130
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jan 2024 09:05:01 +0000 (UTC)
-Message-ID: <9dd9361c-8030-4e1f-9235-4838110e792a@intel.com>
-Date: Tue, 2 Jan 2024 14:34:20 +0530
-Subject: Re: [PATCH] [RFC] tests/intel: Add tests to run suspend without
- display
-To: "Gupta, Anshuman" <anshuman.gupta@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <20231222093654.923541-1-sujaritha.sundaresan@intel.com>
- <CY5PR11MB6211813F1C521B84C5E4C544959DA@CY5PR11MB6211.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>
-In-Reply-To: <CY5PR11MB6211813F1C521B84C5E4C544959DA@CY5PR11MB6211.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19A3A10E12E
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jan 2024 18:35:32 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH v1 2/2] HAX/DO_NOT_MERGE: Patch adding to test to kms_lease
+Date: Wed,  3 Jan 2024 00:05:42 +0530
+Message-Id: <20240102183542.26064-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20240102080923.97366-2-mohammed.thasleem@intel.com>
+References: <20240102080923.97366-2-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,89 +22,301 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/intel-ci/xe-fast-feedback.testlist | 283 ++---------------------
+ 1 file changed, 21 insertions(+), 262 deletions(-)
 
-On 12/29/2023 3:00 PM, Gupta, Anshuman wrote:
->
->> -----Original Message-----
->> From: Sundaresan, Sujaritha <sujaritha.sundaresan@intel.com>
->> Sent: Friday, December 22, 2023 3:07 PM
->> To: igt-dev@lists.freedesktop.org
->> Cc: Gupta, Anshuman <anshuman.gupta@intel.com>; Sundaresan, Sujaritha
->> <sujaritha.sundaresan@intel.com>
->> Subject: [PATCH] [RFC] tests/intel: Add tests to run suspend without display
->> Add tests to validate s3/s2idle suspend cycle without display module to rule
->> out display related issues from the suspend/resume stack.
-> Can you extend the existing xe_pm s2idle/s3 test which also submits the workload.
-> Idea is to get the existing test results without display module.
-> Thanks,
-> Anshuman Gupta.
-
-The last time I checked those tests are difficult to run for only 
-s2idle/s3, they run the full suite from s0-s4. But let me double check.
-
-Thanks,
-
-Suja
-
->> Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
->> ---
->>   tests/intel/xe_pm.c | 33 +++++++++++++++++++++++++++++++++
->>   1 file changed, 33 insertions(+)
->>
->> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c index
->> 602729daf..55088e7fa 100644
->> --- a/tests/intel/xe_pm.c
->> +++ b/tests/intel/xe_pm.c
->> @@ -17,6 +17,7 @@
->>   #include "igt.h"
->>   #include "lib/igt_device.h"
->>   #include "lib/igt_pm.h"
->> +#include "lib/igt_kmod.h"
->>   #include "lib/igt_sysfs.h"
->>   #include "lib/igt_syncobj.h"
->>   #include "lib/intel_reg.h"
->> @@ -364,6 +365,30 @@ NULL));
->>   		igt_assert(in_d3(device, d_state));
->>   }
->>
->> +/**
->> + * SUBTEST: s2idle-without-display
->> + * Functionality: pm
->> + * Description: validate the s2idle cycle without display  */
->> +
->> +/**
->> + * SUBTEST: s3-without-display
->> + * Functionality: pm
->> + * Description: validate the s3 cycle without display  */
->> +
->> +static void
->> +test_suspend_without_display(int state) {
->> +	igt_kmsg(KMSG_INFO "Unloading Xe\n");
->> +	igt_assert_eq(igt_xe_driver_unload(),0);
->> +
->> +	igt_kmsg(KMSG_INFO "Re-loading Xe\n");
->> +	igt_assert_eq(igt_xe_driver_load("enable_display=0"),0);
->> +
->> +	igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE); }
->> +
->>   /**
->>    * SUBTEST: vram-d3cold-threshold
->>    * Functionality: pm - d3cold
->> @@ -536,6 +561,14 @@ igt_main
->>   		}
->>   	}
->>
->> +	igt_describe("Validate s2idle without display");
->> +	igt_subtest("s2idle-without-display")
->> +		test_suspend_without_display(SUSPEND_STATE_FREEZE);
->> +
->> +	igt_describe("Validate s3 without display");
->> +	igt_subtest("s3-without-display")
->> +		test_suspend_without_display(SUSPEND_STATE_S3);
->> +
->>   	igt_describe("Validate whether card is limited to d3hot, if vram used >
->> vram threshold");
->>   	igt_subtest("vram-d3cold-threshold") {
->>   		orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
->> --
->> 2.25.1
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index bef5b0b8a..ab1cb135f 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -1,265 +1,24 @@
+ # Should be the first test
+ igt@xe_module_load@load
+ 
+-igt@xe_compute@compute-square
+-igt@xe_create@create-execqueues-noleak
+-igt@xe_create@create-execqueues-leak
+-igt@xe_create@create-invalid-mbz
+-igt@xe_create@create-massive-size
+-igt@xe_debugfs@base
+-igt@xe_debugfs@gt
+-igt@xe_debugfs@forcewake
+-igt@xe_dma_buf_sync@export-dma-buf-once
+-igt@xe_dma_buf_sync@export-dma-buf-once-read-sync
+-igt@xe_evict@evict-beng-mixed-threads-small-multi-vm
+-igt@xe_evict@evict-beng-small
+-igt@xe_evict@evict-beng-small-cm
+-igt@xe_evict@evict-beng-small-external
+-igt@xe_evict@evict-beng-small-external-cm
+-igt@xe_evict@evict-beng-small-multi-vm
+-igt@xe_evict@evict-cm-threads-small
+-igt@xe_evict@evict-mixed-threads-small
+-igt@xe_evict@evict-mixed-threads-small-multi-vm
+-igt@xe_evict@evict-small
+-igt@xe_evict@evict-small-cm
+-igt@xe_evict@evict-small-external
+-igt@xe_evict@evict-small-external-cm
+-igt@xe_evict@evict-small-multi-vm
+-igt@xe_evict@evict-small-multi-vm-cm
+-igt@xe_evict@evict-threads-small
+-igt@xe_evict_ccs@evict-overcommit-simple
+-igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd
+-igt@xe_exec_balancer@twice-virtual-basic
+-igt@xe_exec_balancer@no-exec-virtual-basic
+-igt@xe_exec_balancer@twice-cm-virtual-basic
+-igt@xe_exec_balancer@no-exec-cm-virtual-basic
+-igt@xe_exec_balancer@twice-virtual-userptr
+-igt@xe_exec_balancer@twice-cm-virtual-userptr
+-igt@xe_exec_balancer@twice-virtual-rebind
+-igt@xe_exec_balancer@twice-cm-virtual-rebind
+-igt@xe_exec_balancer@twice-virtual-userptr-rebind
+-igt@xe_exec_balancer@twice-cm-virtual-userptr-rebind
+-igt@xe_exec_balancer@twice-virtual-userptr-invalidate
+-igt@xe_exec_balancer@twice-cm-virtual-userptr-invalidate
+-igt@xe_exec_balancer@twice-parallel-basic
+-igt@xe_exec_balancer@no-exec-parallel-basic
+-igt@xe_exec_balancer@twice-parallel-userptr
+-igt@xe_exec_balancer@twice-parallel-rebind
+-igt@xe_exec_balancer@twice-parallel-userptr-rebind
+-igt@xe_exec_balancer@twice-parallel-userptr-invalidate
+-igt@xe_exec_basic@twice-basic
+-igt@xe_exec_basic@no-exec-basic
+-igt@xe_exec_basic@twice-basic-defer-mmap
+-igt@xe_exec_basic@twice-basic-defer-bind
+-igt@xe_exec_basic@twice-userptr
+-igt@xe_exec_basic@twice-rebind
+-igt@xe_exec_basic@twice-userptr-rebind
+-igt@xe_exec_basic@twice-userptr-invalidate
+-igt@xe_exec_basic@no-exec-userptr-invalidate
+-igt@xe_exec_basic@twice-bindexecqueue
+-igt@xe_exec_basic@no-exec-bindexecqueue
+-igt@xe_exec_basic@twice-bindexecqueue-userptr
+-igt@xe_exec_basic@twice-bindexecqueue-rebind
+-igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind
+-igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate
+-igt@xe_exec_compute_mode@twice-basic
+-igt@xe_exec_compute_mode@twice-preempt-fence-early
+-igt@xe_exec_compute_mode@twice-userptr
+-igt@xe_exec_compute_mode@twice-rebind
+-igt@xe_exec_compute_mode@twice-userptr-rebind
+-igt@xe_exec_compute_mode@twice-userptr-invalidate
+-igt@xe_exec_compute_mode@twice-bindexecqueue
+-igt@xe_exec_compute_mode@twice-bindexecqueue-userptr
+-igt@xe_exec_compute_mode@twice-bindexecqueue-rebind
+-igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind
+-igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate
+-igt@xe_exec_reset@close-fd-no-exec
+-igt@xe_exec_reset@cm-close-fd-no-exec
+-igt@xe_exec_reset@virtual-close-fd-no-exec
+-igt@xe_exec_store@basic-store
+-igt@xe_exec_threads@threads-basic
+-igt@xe_exec_threads@threads-mixed-basic
+-igt@xe_exec_threads@threads-mixed-shared-vm-basic
+-igt@xe_exec_threads@threads-mixed-fd-basic
+-igt@xe_exec_threads@threads-mixed-userptr-invalidate
+-igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race
+-igt@xe_gpgpu_fill@basic
+-igt@xe_gt_freq@freq_basic_api
+-igt@xe_gt_freq@freq_fixed_idle
+-igt@xe_gt_freq@freq_range_idle
+-igt@xe_huc_copy@huc_copy
+-igt@xe_intel_bb@add-remove-objects
+-igt@xe_intel_bb@bb-with-allocator
+-igt@xe_intel_bb@blit-reloc
+-igt@xe_intel_bb@blit-simple
+-igt@xe_intel_bb@create-in-region
+-igt@xe_intel_bb@delta-check
+-igt@xe_intel_bb@destroy-bb
+-igt@xe_intel_bb@intel-bb-blit-none
+-igt@xe_intel_bb@intel-bb-blit-x
+-igt@xe_intel_bb@intel-bb-blit-y
+-igt@xe_intel_bb@lot-of-buffers
+-igt@xe_intel_bb@offset-control
+-igt@xe_intel_bb@purge-bb
+-igt@xe_intel_bb@render
+-igt@xe_intel_bb@reset-bb
+-igt@xe_intel_bb@simple-bb
+-igt@xe_intel_bb@simple-bb-ctx
+-igt@xe_mmap@bad-extensions
+-igt@xe_mmap@bad-flags
+-igt@xe_mmap@bad-object
+-igt@xe_mmap@cpu-caching
+-igt@xe_mmap@system
+-igt@xe_mmap@vram
+-igt@xe_mmap@vram-system
+-igt@xe_pm_residency@gt-c6-on-idle
+-igt@xe_prime_self_import@basic-with_one_bo
+-igt@xe_prime_self_import@basic-with_fd_dup
+-#igt@xe_prime_self_import@basic-llseek-size
+-igt@xe_query@query-engines
+-igt@xe_query@query-mem-usage
+-igt@xe_query@query-gt-list
+-igt@xe_query@query-config
+-igt@xe_query@query-hwconfig
+-igt@xe_query@query-topology
+-igt@xe_query@query-invalid-extension
+-igt@xe_query@query-invalid-query
+-igt@xe_query@query-invalid-size
+-igt@xe_spin_batch@spin-basic
+-igt@xe_spin_batch@spin-batch
+-igt@xe_sysfs_defaults@engine-defaults
+-igt@xe_sysfs_scheduler@preempt_timeout_us-invalid
+-igt@xe_sysfs_scheduler@preempt_timeout_us-min-max
+-igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
+-igt@xe_sysfs_scheduler@timeslice_duration_us-min-max
+-igt@xe_sysfs_scheduler@job_timeout_ms-invalid
+-igt@xe_sysfs_scheduler@job_timeout_ms-min-max
+-#igt@xe_vm@bind-once
+-#igt@xe_vm@scratch
+-igt@xe_vm@shared-pte-page
+-igt@xe_vm@shared-pde-page
+-igt@xe_vm@shared-pde2-page
+-igt@xe_vm@shared-pde3-page
+-igt@xe_vm@bind-execqueues-independent
+-igt@xe_vm@munmap-style-unbind-one-partial
+-igt@xe_vm@munmap-style-unbind-end
+-igt@xe_vm@munmap-style-unbind-front
+-igt@xe_vm@munmap-style-unbind-userptr-one-partial
+-igt@xe_vm@munmap-style-unbind-userptr-end
+-igt@xe_vm@munmap-style-unbind-userptr-front
+-igt@xe_vm@munmap-style-unbind-userptr-inval-end
+-igt@xe_vm@munmap-style-unbind-userptr-inval-front
+-igt@xe_pat@userptr-coh-none
+-igt@xe_pat@prime-self-import-coh
+-igt@xe_pat@prime-external-import-coh
+-igt@xe_pat@pat-index-all
+-igt@xe_pat@pat-index-xelp
+-igt@xe_pat@pat-index-xehpc
+-igt@xe_pat@pat-index-xelpg
+-igt@xe_pat@pat-index-xe2
+-igt@xe_waitfence@abstime
+-igt@xe_waitfence@engine
+-igt@xe_waitfence@reltime
+-igt@kms_addfb_basic@addfb25-4-tiled
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled-legacy
+-igt@kms_addfb_basic@addfb25-yf-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled-legacy
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
+-igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
+-igt@kms_dsc@dsc-basic
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_hdmi_inject@inject-audio
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
+-igt@kms_pipe_crc_basic@hang-read-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc
+-igt@kms_pipe_crc_basic@read-crc-frame-sequence
+-igt@kms_prop_blob@basic
+-igt@kms_psr@psr-primary-page-flip
+-igt@kms_psr@psr-cursor-plane-move
+-igt@kms_psr@psr-sprite-plane-onoff
+-
+-# All tests that do module unloading and reloading are executed last.
+-# They will sometimes reveal issues of earlier tests leaving the
+-# driver in a broken state that is not otherwise noticed in that test.
+-igt@core_hotunplug@unbind-rebind
+-
+-# Run KUnit tests at the end
+-igt@xe_live_ktest@bo
+-igt@xe_live_ktest@dmabuf
+-igt@xe_live_ktest@migrate
+-
+-# Move fault_mode tests at the end to unblock execution
+-igt@xe_exec_fault_mode@twice-basic
+-igt@xe_exec_fault_mode@many-basic
+-igt@xe_exec_fault_mode@twice-userptr
+-igt@xe_exec_fault_mode@twice-rebind
+-igt@xe_exec_fault_mode@twice-userptr-rebind
+-igt@xe_exec_fault_mode@twice-userptr-invalidate
+-igt@xe_exec_fault_mode@twice-bindexecqueue
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr
+-igt@xe_exec_fault_mode@twice-bindexecqueue-rebind
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate
+-igt@xe_exec_fault_mode@twice-basic-imm
+-igt@xe_exec_fault_mode@twice-userptr-imm
+-igt@xe_exec_fault_mode@twice-rebind-imm
+-igt@xe_exec_fault_mode@twice-userptr-rebind-imm
+-igt@xe_exec_fault_mode@twice-userptr-invalidate-imm
+-igt@xe_exec_fault_mode@twice-bindexecqueue-imm
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-imm
+-igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-imm
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-imm
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-imm
+-igt@xe_exec_fault_mode@twice-basic-prefetch
+-igt@xe_exec_fault_mode@twice-userptr-prefetch
+-igt@xe_exec_fault_mode@twice-rebind-prefetch
+-igt@xe_exec_fault_mode@twice-userptr-rebind-prefetch
+-igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch
+-igt@xe_exec_fault_mode@twice-bindexecqueue-prefetch
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-prefetch
+-igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-prefetch
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-prefetch
+-igt@xe_exec_fault_mode@twice-invalid-fault
+-igt@xe_exec_fault_mode@twice-invalid-userptr-fault
++igt@kms_lease@simple-lease
++igt@kms_lease@empty-lease
++igt@kms_lease@lessee-list
++igt@kms_lease@lease-get
++igt@kms_lease@lease-unleased-connector
++igt@kms_lease@lease-unleased-crtc
++igt@kms_lease@lease-revoke
++igt@kms_lease@lease-again
++igt@kms_lease@lease-invalid-connector
++igt@kms_lease@lease-invalid-crtc
++igt@kms_lease@lease-invalid-plane
++igt@kms_lease@page-flip-implicit-plane
++igt@kms_lease@setcrtc-implicit-plane
++igt@kms_lease@cursor-implicit-plane
++igt@kms_lease@atomic-implicit-crtc
++igt@kms_lease@invalid-create-leases
++igt@kms_lease@possible-crtcs-filtering
++igt@kms_lease@master-vs-lease
++igt@kms_lease@multimaster-lease
++igt@kms_lease@implicit-plane-lease
++igt@kms_lease@lease-uevent
+-- 
+2.25.1
