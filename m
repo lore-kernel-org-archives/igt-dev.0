@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3496631955547770744=="
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C4B510E164
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Jan 2024 15:09:20 +0000 (UTC)
+Date: Wed, 3 Jan 2024 16:08:56 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] lib: Add non-subsampled YUV formats
+Message-ID: <20240103150856.xzddwlvcy4qykgnk@kamilkon-desk.igk.intel.com>
+References: <20231228-non-ssampled-yuv-v1-1-06f8e877b566@riseup.net>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Cache_xe=5Fdevice_info_for_lea?=
- =?utf-8?q?se_fd_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Wed, 03 Jan 2024 13:29:37 -0000
-Message-ID: <170428857770.82.6256261333419899527@5338d5abeb45>
-References: <20220422020458.2877-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20220422020458.2877-1-mohammed.thasleem@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231228-non-ssampled-yuv-v1-1-06f8e877b566@riseup.net>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,138 +19,226 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Arthur Grillo <arthurgrillo@riseup.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3496631955547770744==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Arthur,
+On 2023-12-28 at 16:10:04 -0300, Arthur Grillo wrote:
+> Add support to NV24, NV42, YUV444 and YVU444 non-subsampled YUV formats
 
-== Series Details ==
+Put dot "." at end of sentence above.
 
-Series: Cache xe_device info for lease fd (rev3)
-URL   : https://patchwork.freedesktop.org/series/128101/
-State : success
+One small nit below.
 
-== Summary ==
+> 
+> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
+> ---
+>  lib/igt_color_encoding.c |  4 ++++
+>  lib/igt_fb.c             | 44 ++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 48 insertions(+)
+> 
+> diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
+> index a7bd2b22f73b..286784f10bbf 100644
+> --- a/lib/igt_color_encoding.c
+> +++ b/lib/igt_color_encoding.c
+> @@ -139,11 +139,15 @@ static const struct color_encoding_format {
+>  	{ DRM_FORMAT_NV12, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_NV16, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_NV21, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> +	{ DRM_FORMAT_NV24, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> +	{ DRM_FORMAT_NV42, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_NV61, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_YUV420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_YUV422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> +	{ DRM_FORMAT_YUV444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_YVU420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_YVU422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> +	{ DRM_FORMAT_YVU444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_YUYV, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_YVYU, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_UYVY, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 683eb176b7a4..6e83f817f89c 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -257,6 +257,16 @@ static const struct format_desc_struct {
+>  	  .num_planes = 2, .plane_bpp = { 8, 16, },
+>  	  .hsub = 2, .vsub = 2,
+>  	},
+> +	{ .name = "NV24", .depth = -1, .drm_id = DRM_FORMAT_NV24,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 2, .plane_bpp = { 8, 16, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+> +	{ .name = "NV42", .depth = -1, .drm_id = DRM_FORMAT_NV42,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 2, .plane_bpp = { 8, 16, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+>  	{ .name = "NV61", .depth = -1, .drm_id = DRM_FORMAT_NV61,
+>  	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+>  	  .num_planes = 2, .plane_bpp = { 8, 16, },
+> @@ -292,6 +302,11 @@ static const struct format_desc_struct {
+>  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+>  	  .hsub = 2, .vsub = 1,
+>  	},
+> +	{ .name = "YU24", .depth = -1, .drm_id = DRM_FORMAT_YUV444,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+>  	{ .name = "YV12", .depth = -1, .drm_id = DRM_FORMAT_YVU420,
+>  	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+>  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> @@ -302,6 +317,11 @@ static const struct format_desc_struct {
+>  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+>  	  .hsub = 2, .vsub = 1,
+>  	},
+> +	{ .name = "YV24", .depth = -1, .drm_id = DRM_FORMAT_YVU444,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+>  	{ .name = "Y410", .depth = -1, .drm_id = DRM_FORMAT_Y410,
+>  	  .cairo_id = CAIRO_FORMAT_RGBA128F, .convert = true,
+>  	  .num_planes = 1, .plane_bpp = { 32, },
+> @@ -3395,6 +3415,8 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  	case DRM_FORMAT_NV12:
+>  	case DRM_FORMAT_NV16:
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV24:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  	case DRM_FORMAT_P010:
+>  	case DRM_FORMAT_P012:
+> @@ -3405,8 +3427,10 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  		params->ay_inc = 1;
+>  		params->uv_inc = 1;
+>  		break;
+> @@ -3436,11 +3460,15 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  	case DRM_FORMAT_NV12:
+>  	case DRM_FORMAT_NV16:
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV24:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  	case DRM_FORMAT_P010:
+>  	case DRM_FORMAT_P012:
+>  	case DRM_FORMAT_P016:
+> @@ -3467,6 +3495,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  
+>  	switch (fb->drm_format) {
+>  	case DRM_FORMAT_NV12:
+> +	case DRM_FORMAT_NV24:
+--------------------- ^^
 
-CI Bug Log - changes from XEIGT_7655_BAT -> XEIGTPW_10469_BAT
-====================================================
+imho this should be below NV16.
 
-Summary
--------
+Regards,
+Kamil
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 3)
-------------------------------
-
-  Missing    (1): bat-dg2-oem2 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10469_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_lease@lease-get:
-    - bat-atsm-2:         NOTRUN -> [SKIP][1] ([Intel XE#1024]) +20 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10469/bat-atsm-2/igt@kms_lease@lease-get.html
-
-  * igt@kms_lease@lease-unleased-crtc:
-    - bat-pvc-2:          NOTRUN -> [SKIP][2] ([Intel XE#1024]) +20 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10469/bat-pvc-2/igt@kms_lease@lease-unleased-crtc.html
-
-  
-  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
-
-
-Build changes
--------------
-
-  * IGT: IGT_7655 -> IGTPW_10469
-
-  IGTPW_10469: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10469/index.html
-  IGT_7655: ddf7cf40a00caa7d02f3729e1e50f78f102463d9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-598-7b3b98d034784b125bad7aca46f9e7a3cfcde45a: 7b3b98d034784b125bad7aca46f9e7a3cfcde45a
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10469/index.html
-
---===============3496631955547770744==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Cache xe_device info for lease fd (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128101/">https://patchwork.freedesktop.org/series/128101/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10469/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10469/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7655_BAT -&gt; XEIGTPW_10469_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 3)</h2>
-<p>Missing    (1): bat-dg2-oem2 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10469_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_lease@lease-get:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10469/bat-atsm-2/igt@kms_lease@lease-get.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +20 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_lease@lease-unleased-crtc:</p>
-<ul>
-<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10469/bat-pvc-2/igt@kms_lease@lease-unleased-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +20 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7655 -&gt; IGTPW_10469</li>
-</ul>
-<p>IGTPW_10469: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10469/index.html<br />
-  IGT_7655: ddf7cf40a00caa7d02f3729e1e50f78f102463d9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-598-7b3b98d034784b125bad7aca46f9e7a3cfcde45a: 7b3b98d034784b125bad7aca46f9e7a3cfcde45a</p>
-
-</body>
-</html>
-
---===============3496631955547770744==--
+>  	case DRM_FORMAT_NV16:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[1];
+> @@ -3474,6 +3503,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  		break;
+>  
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[1] + 1;
+> @@ -3482,6 +3512,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[1];
+>  		params->v_offset = fb->offsets[2];
+> @@ -3489,6 +3520,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[2];
+>  		params->v_offset = fb->offsets[1];
+> @@ -4222,14 +4254,18 @@ static void fb_convert(struct fb_convert *cvt)
+>  		case DRM_FORMAT_NV12:
+>  		case DRM_FORMAT_NV16:
+>  		case DRM_FORMAT_NV21:
+> +		case DRM_FORMAT_NV24:
+> +		case DRM_FORMAT_NV42:
+>  		case DRM_FORMAT_NV61:
+>  		case DRM_FORMAT_UYVY:
+>  		case DRM_FORMAT_VYUY:
+>  		case DRM_FORMAT_YUV420:
+>  		case DRM_FORMAT_YUV422:
+> +		case DRM_FORMAT_YUV444:
+>  		case DRM_FORMAT_YUYV:
+>  		case DRM_FORMAT_YVU420:
+>  		case DRM_FORMAT_YVU422:
+> +		case DRM_FORMAT_YVU444:
+>  		case DRM_FORMAT_YVYU:
+>  			convert_yuv_to_rgb24(cvt);
+>  			return;
+> @@ -4240,14 +4276,18 @@ static void fb_convert(struct fb_convert *cvt)
+>  		case DRM_FORMAT_NV12:
+>  		case DRM_FORMAT_NV16:
+>  		case DRM_FORMAT_NV21:
+> +		case DRM_FORMAT_NV24:
+> +		case DRM_FORMAT_NV42:
+>  		case DRM_FORMAT_NV61:
+>  		case DRM_FORMAT_UYVY:
+>  		case DRM_FORMAT_VYUY:
+>  		case DRM_FORMAT_YUV420:
+>  		case DRM_FORMAT_YUV422:
+> +		case DRM_FORMAT_YUV444:
+>  		case DRM_FORMAT_YUYV:
+>  		case DRM_FORMAT_YVU420:
+>  		case DRM_FORMAT_YVU422:
+> +		case DRM_FORMAT_YVU444:
+>  		case DRM_FORMAT_YVYU:
+>  			convert_rgb24_to_yuv(cvt);
+>  			return;
+> @@ -4820,11 +4860,15 @@ bool igt_format_is_yuv(uint32_t drm_format)
+>  	case DRM_FORMAT_NV12:
+>  	case DRM_FORMAT_NV16:
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV24:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  	case DRM_FORMAT_P010:
+>  	case DRM_FORMAT_P012:
+>  	case DRM_FORMAT_P016:
+> 
+> ---
+> base-commit: 0340f23b38ce0fdab61fd0fbe5bc94cd91bcaa0d
+> change-id: 20231228-non-ssampled-yuv-e50c1269e225
+> 
+> Best regards,
+> -- 
+> Arthur Grillo <arthurgrillo@riseup.net>
+> 
