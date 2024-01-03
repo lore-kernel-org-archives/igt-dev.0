@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Message-ID: <f7962bc5-e5cf-490e-bc01-7064816b2b3b@intel.com>
-Date: Tue, 26 Dec 2023 14:17:20 +0530
-Subject: Re: [PATCH i-g-t v2] tests/kms_lease: Cache xe_device info for lease
- fd
-References: <20231212100712.3301571-1-mohammed.thasleem@intel.com>
- <20231226080930.32272-1-mohammed.thasleem@intel.com>
-Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20231226080930.32272-1-mohammed.thasleem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Hersen Wu <hersenxs.wu@amd.com>
+Subject: [PATCH] [i-g-t] tests/amdgpu/amd_link_settings: Fix run eDP link
+ training with unsupported link rate
+Date: Wed, 3 Jan 2024 09:46:24 -0500
+Message-ID: <20240103144624.59716-1-hersenxs.wu@amd.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,69 +19,116 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: Mohammed Thasleem <mohammed.thasleem@intel.com>, igt-dev@lists.freedesktop.org
-Message-ID: <20231226084720.wvIBRlBavM3l1nXd0TaqaDQXQIePUP9aRS80mxrCciM@z>
+To: igt-dev@lists.freedesktop.org, rodrigo.siqueira@amd.com, aurabindo.pillai@amd.com, alex.hung@amd.com, hamza.mahfooz@amd.com, wayne.lin@amd.com
+Cc: Hersen Wu <hersenxs.wu@amd.com>, markyacoub@google.com
+Message-ID: <20240103144624.OYZDWVRijjF_IhCXhXE9oZjGiphiH62Ov0JBurgpXEQ@z>
 
+From: Hersen Wu <Hersenxs.Wu@amd.com>
 
-On 12/26/2023 1:39 PM, Mohammed Thasleem wrote:
-> In case of xe device for lessor fd, the xe_device struct gets
-> created and cached during drm_open. But for the lessee fd,
-> the xe_device info struct is not created and cached.
->
-> This causes problem in prepare_crtc() for lessee with xe, which
-> needs the xe_device info struct. So, create and cache the xe_device
-> struct info for lease fd, when we make lease and remove it from
-> cache while terminating the lease.
->
-> v2: -Update description and move logic to make_lease call. (Ankit)
->      -Add xe_device_put, while terminating the lease. (Ankit)
->
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Add check eDP intermedidate link rate caps from DPCD
+offset 0x10 - 0x1f. Only run DP link training for link
+rate supported by eDP.
 
-LGTM.
+Beside max link rate, eDP1.4b introduces intermediate link
+rate. eDP reports ilr caps with DPCD register 0x10 - 0x1f.
 
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+---
+ lib/igt_amd.h                    |  1 +
+ tests/amdgpu/amd_ilr.c           |  2 --
+ tests/amdgpu/amd_link_settings.c | 32 ++++++++++++++++++++++++++++----
+ 3 files changed, 29 insertions(+), 6 deletions(-)
 
-
-Regards,
-
-Ankit
-
-> ---
->   tests/kms_lease.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
->
-> diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-> index 8ac58af38..f7531c803 100644
-> --- a/tests/kms_lease.c
-> +++ b/tests/kms_lease.c
-> @@ -48,6 +48,8 @@
->   
->   #include <drm.h>
->   #include "igt_device.h"
-> +#include "xe_drm.h"
-> +#include "xe/xe_query.h"
->   
->   /**
->    * SUBTEST: atomic-implicit-crtc
-> @@ -267,12 +269,20 @@ static int make_lease(data_t *data)
->   	if (ret)
->   		return ret;
->   
-> +	/* Cache xe_device struct */
-> +	if (is_xe_device(data->lease.fd))
-> +		xe_device_get(data->lease.fd);
-> +
->   	data->lease.lessee_id = mcl.lessee_id;
->   	return 0;
->   }
->   
->   static void terminate_lease(int lease_fd)
->   {
-> +	/* Remove xe_device from cache. */
-> +	if (is_xe_device(lease_fd))
-> +		xe_device_put(lease_fd);
-> +
->   	close(lease_fd);
->   }
->   
+diff --git a/lib/igt_amd.h b/lib/igt_amd.h
+index 1e66348ad..254b5d37b 100644
+--- a/lib/igt_amd.h
++++ b/lib/igt_amd.h
+@@ -46,6 +46,7 @@
+ /* eDP related */
+ #define DEBUGFS_EDP_ILR_SETTING "ilr_setting"
+ #define MAX_SUPPORTED_ILR 8
++#define MULTIPLIER_TO_LR 270000
+ #define DEBUGFS_EDP_PSR_CAP	"psr_capability"
+ #define DEBUGFS_EDP_PSR_STATE	"psr_state"
+ #define DEBUGFS_ALLOW_EDP_HOTPLUG_DETECT "allow_edp_hotplug_detection"
+diff --git a/tests/amdgpu/amd_ilr.c b/tests/amdgpu/amd_ilr.c
+index 50ca93a14..b2c0f294d 100644
+--- a/tests/amdgpu/amd_ilr.c
++++ b/tests/amdgpu/amd_ilr.c
+@@ -29,8 +29,6 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ 
+-#define MULTIPLIER_TO_LR 270000
+-
+ IGT_TEST_DESCRIPTION("This igt test validates ILR (Intermediate Link Rate) "
+ 	"feature from two perspective: "
+ 	"1. Test if we can sucessfully train link rate at all supported ILRs"
+diff --git a/tests/amdgpu/amd_link_settings.c b/tests/amdgpu/amd_link_settings.c
+index 6a7e8cc53..226c94d73 100644
+--- a/tests/amdgpu/amd_link_settings.c
++++ b/tests/amdgpu/amd_link_settings.c
+@@ -34,6 +34,7 @@ typedef struct
+         enum pipe pipe_id;
+ 	int connector_type;
+ 	int w, h;
++	int supported_ilr[MAX_SUPPORTED_ILR];
+ } data_t;
+ 
+ const enum dc_lane_count lane_count_values[] =
+@@ -51,12 +52,17 @@ const enum dc_link_rate dp_link_rate_values[] =
+ 	LINK_RATE_HIGH3
+ };
+ 
++/* eDP 1.4b */
+ const enum dc_link_rate edp_link_rate_values[] =
+ {
+-	LINK_RATE_LOW,
+-	LINK_RATE_HIGH,
+-	LINK_RATE_RBR2,
+-	LINK_RATE_HIGH2
++	LINK_RATE_LOW,		/* 0x6 Rate_1 (RBR)	- 1.62 Gbps/Lane */
++	LINK_RATE_RATE_2,	/* 0x8 Rate_2		- 2.16 Gbps/Lane */
++	LINK_RATE_RATE_3,	/* 0x9 Rate_3		- 2.43 Gbps/Lane */
++	LINK_RATE_HIGH,		/* 0xA Rate_4 (HBR)	- 2.70 Gbps/Lane */
++	LINK_RATE_RBR2,		/* 0xC Rate_5 (RBR2)	- 3.24 Gbps/Lane */
++	LINK_RATE_RATE_6,	/* 0x10 Rate_6		- 4.32 Gbps/Lane */
++	LINK_RATE_HIGH2,	/* 0x14 Rate_7 (HBR2)	- 5.40 Gbps/Lane */
++	LINK_RATE_HIGH3		/* 0x1E Rate_8 (HBR3)	- 8.10 Gbps/Lane */
+ };
+ 
+ static void test_fini(data_t *data)
+@@ -116,6 +122,8 @@ static void run_link_training_config(data_t *data, igt_output_t *output)
+ 	} else if (data->connector_type == DRM_MODE_CONNECTOR_eDP) {
+ 		link_rate_values = edp_link_rate_values;
+ 		num_link_rates = ARRAY_SIZE(edp_link_rate_values);
++		igt_amd_read_ilr_setting(data->drm_fd, connector_name,
++			data->supported_ilr);
+ 	} else {
+ 		igt_info("Not a DP or eDP connector\n");
+ 		return;
+@@ -137,6 +145,22 @@ static void run_link_training_config(data_t *data, igt_output_t *output)
+ 			if (link_rate_values[j] > max_lr)
+ 				continue;
+ 
++			/* Check if ilr link rate is supported */
++			if (data->connector_type == DRM_MODE_CONNECTOR_eDP) {
++				bool valid_link_rate = false;
++
++				for (int k = 0; k < MAX_SUPPORTED_ILR; k++) {
++					if (data->supported_ilr[k] ==
++						link_rate_values[j] * MULTIPLIER_TO_LR) {
++						valid_link_rate = true;
++						break;
++					} else if (data->supported_ilr[k] == 0)
++						break;
++				}
++				if (!valid_link_rate)
++					continue;
++			}
++
+ 			/* Write link settings */
+ 			igt_info("Applying lane count: %d, link rate 0x%02x, on default training\n",
+ 				  lane_count_values[i], link_rate_values[j]);
+-- 
+2.25.1
