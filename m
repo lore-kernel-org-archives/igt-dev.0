@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5679610348369724403=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/intel/i915=5Fsuspend?=
- =?utf-8?q?=3A_Fix_WARNs_of_invalid_fd?=
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_series_starting_with_=5B1?=
+ =?utf-8?q?/2=5D_tests/kms=5Fbw=3A_Use_reduced_blanking_mode_1920x1080p_timi?=
+ =?utf-8?q?ngs?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Tue, 09 Jan 2024 15:53:13 -0000
-Message-ID: <170481559360.216241.17445906011910662695@5338d5abeb45>
-References: <20240109131802.2624834-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20240109131802.2624834-1-bhanuprakash.modem@intel.com>
+To: "Rob Clark" <robdclark@gmail.com>
+Date: Fri, 05 Jan 2024 21:52:11 -0000
+Message-ID: <170449153169.40937.6014705799946068201@5338d5abeb45>
+References: <20240105213603.109149-1-robdclark@gmail.com>
+In-Reply-To: <20240105213603.109149-1-robdclark@gmail.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,145 +24,66 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5679610348369724403==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: tests/intel/i915_suspend: Fix WARNs of invalid fd
-URL   : https://patchwork.freedesktop.org/series/128374/
-State : success
+Series: series starting with [1/2] tests/kms_bw: Use reduced blanking mode 1920x1080p timings
+URL   : https://patchwork.freedesktop.org/series/128283/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from IGT_7664 -> IGTPW_10496
-====================================================
+IGT patchset build failed on latest successful build
+dcc68cc6c562866584feac3ffadab65dfa9a402b lib/intel_mmio: Allow access to full register space on modern platforms
 
-Summary
--------
+Tail of build.log:
+[1630/1661] Linking target runner/igt_comms_decoder.
+[1631/1661] Linking target tools/intel_reg.
+[1632/1661] Linking target runner/igt_runner.
+[1633/1661] Linking target runner/testdata/abort-simple.
+[1634/1661] Linking target runner/runner_json_test.
+[1635/1661] Linking target runner/testdata/skippers.
+[1636/1661] Linking target runner/testdata/abort.
+[1637/1661] Linking target runner/igt_resume.
+[1638/1661] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_mtlgt3.c.o'.
+[1639/1661] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt1.c.o'.
+[1640/1661] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+[1641/1661] Linking target runner/runner_test.
+[1642/1661] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt2.c.o'.
+[1643/1661] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt3.c.o'.
+[1644/1661] Linking target lib/libi915_perf.so.1.5.
+[1645/1661] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
+[1646/1661] Linking target tools/i915-perf/i915-perf-configs.
+[1647/1661] Linking target tools/i915-perf/i915-perf-reader.
+[1648/1661] Linking target tools/i915-perf/i915-perf-recorder.
+[1649/1661] Linking target tests/gem_barrier_race.
+[1650/1661] Linking target tests/core_hotunplug.
+[1651/1661] Linking target tests/perf.
+[1652/1661] Generating gem_barrier_race.testlist with a meson_exe.py custom command.
+[1653/1661] Generating perf.testlist with a meson_exe.py custom command.
+[1654/1661] Generating core_hotunplug.testlist with a meson_exe.py custom command.
+[1655/1661] Generating xe_tests.rst with a custom command.
+[1656/1661] Generating i915_tests.rst with a custom command.
+[1657/1661] Generating kms_tests.rst with a custom command.
+FAILED: docs/testplan/kms_tests.rst 
+/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /opt/igt/build
+Warning: Missing documentation for igt@kms_bw@linear-tiling-1-displays-2160x1440p
+Warning: Missing documentation for igt@kms_bw@linear-tiling-10-displays-2160x1440p
+Warning: Missing documentation for igt@kms_bw@linear-tiling-11-displays-2160x1440p
+Warning: Missing documentation for igt@kms_bw@linear-tiling-12-displays-2160x1440p
+Warning: Missing documentation for igt@kms_bw@linear-tiling-13-displays-2160x1440p
+Warning: Missing documentation for igt@kms_bw@linear-tiling-14-displays-2160x1440p
+Warning: Missing documentation for igt@kms_bw@linear-tiling-15-displays-2160x1440p
+Warning: Missing documentation for igt@kms_bw@linear-tiling-16-displays-2160x1440p
+Warning: Missing documentation for igt@kms_bw@linear-tiling-2-displays-2160x1440p
+Warning: Missing documentation for igt@kms_bw@linear-tiling-3-displays-2160x1440p
+Warning: Missing documentation for igt@kms_bw@linear-tiling-4-displays-2160x1440p
+Warning: Missing documentation for igt@kms_bw@linear-tiling-5-displays-2160x1440p
+Warning: Missing documentation for igt@kms_bw@linear-tiling-6-displays-2160x1440p
+Warning: Missing documentation for igt@kms_bw@linear-tiling-7-displays-2160x1440p
+Warning: Missing documentation for igt@kms_bw@linear-tiling-8-displays-2160x1440p
+Warning: Missing documentation for igt@kms_bw@linear-tiling-9-displays-2160x1440p
+Please refer: docs/test_documentation.md for more details
+[1658/1661] Generating xe_tests.html with a custom command.
+[1659/1661] Generating i915_tests.html with a custom command.
+ninja: build stopped: subcommand failed.
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10496/index.html
-
-Participating hosts (36 -> 34)
-------------------------------
-
-  Additional (1): bat-kbl-2 
-  Missing    (3): bat-mtlp-8 bat-rpls-2 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10496 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@fbdev@info:
-    - bat-kbl-2:          NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#1849])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10496/bat-kbl-2/igt@fbdev@info.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - bat-kbl-2:          NOTRUN -> [SKIP][2] ([fdo#109271]) +36 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10496/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7664 -> IGTPW_10496
-
-  CI-20190529: 20190529
-  CI_DRM_14100: 88035acade648815ca1e0c27c44abd96b258c7e7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10496: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10496/index.html
-  IGT_7664: 5b8a8dcca7711c73f9cfeb66b5deb27751290fb4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10496/index.html
-
---===============5679610348369724403==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/i915_suspend: Fix WARNs of invalid fd</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128374/">https://patchwork.freedesktop.org/series/128374/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10496/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10496/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7664 -&gt; IGTPW_10496</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10496/index.html</p>
-<h2>Participating hosts (36 -&gt; 34)</h2>
-<p>Additional (1): bat-kbl-2 <br />
-  Missing    (3): bat-mtlp-8 bat-rpls-2 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10496 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@fbdev@info:</p>
-<ul>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10496/bat-kbl-2/igt@fbdev@info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10496/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +36 other tests skip</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7664 -&gt; IGTPW_10496</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14100: 88035acade648815ca1e0c27c44abd96b258c7e7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10496: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10496/index.html<br />
-  IGT_7664: 5b8a8dcca7711c73f9cfeb66b5deb27751290fb4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5679610348369724403==--
