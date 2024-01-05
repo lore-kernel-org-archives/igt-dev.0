@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D60A910E0FA
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Jan 2024 06:00:40 +0000 (UTC)
-Message-ID: <ee67fc9d-611e-4c9e-b912-153db30edba1@intel.com>
-Date: Fri, 5 Jan 2024 11:30:26 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC4A410E0FA
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Jan 2024 06:02:18 +0000 (UTC)
+Date: Fri, 5 Jan 2024 07:02:14 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Francois Dugast <francois.dugast@intel.com>
+Subject: Re: [PATCH i-g-t] lib/intel_compute: Do not skip test with Xe on DG2
+Message-ID: <20240105060214.owesljl2dnnjebyf@zkempczy-mobl2>
+References: <20240104163018.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
-Subject: Re: [i-g-t,1/4] lib/i915/intel_drrs: Fix igt helper to get drrs status
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20231228075149.745785-1-bhanuprakash.modem@intel.com>
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20231228075149.745785-1-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240104163018.7-1-francois.dugast@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,17 +20,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Thu, Jan 04, 2024 at 04:30:18PM +0000, Francois Dugast wrote:
+> This combination used to fail but not anymore so let's add compatibility
+> with Xe when executing on DG2.
 
-On 12/28/2023 1:21 PM, Bhanuprakash Modem wrote:
-> intel_is_drrs_supported() helper is giving False if DRRS
-> supports on selected pipe which is not correct. Fix the
-> helper to give True if DRRS supports on selected pipe.
->
-> Fixes: c6f857e46 lib/i915/drrs: Add drrs helpers
-> Cc: Jouni Högander <jouni.hogander@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+Nice! Happy to see this on dg2/atsm.
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
+
+> 
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>  lib/intel_compute.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+> index bf6a91109..1f1c79fd3 100644
+> --- a/lib/intel_compute.c
+> +++ b/lib/intel_compute.c
+> @@ -1386,7 +1386,7 @@ static const struct {
+>  	{
+>  		.ip_ver = IP_VER(12, 55),
+>  		.compute_exec = xehp_compute_exec,
+> -		.compat = COMPAT_DRIVER_I915,
+> +		.compat = COMPAT_DRIVER_I915 | COMPAT_DRIVER_XE,
+>  	},
+>  	{
+>  		.ip_ver = IP_VER(12, 60),
+> -- 
+> 2.34.1
+> 
