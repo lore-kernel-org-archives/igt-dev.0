@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4FEC10E5A2
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Jan 2024 09:45:48 +0000 (UTC)
-Date: Fri, 5 Jan 2024 10:45:44 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] lib/intel_mmio: Allow access to full register
- space on modern platforms
-Message-ID: <20240105094544.dkzptpch4gjeo5fl@kamilkon-desk.igk.intel.com>
-References: <20240103234929.132148-1-matthew.d.roper@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8040638368377981770=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240103234929.132148-1-matthew.d.roper@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fdsc=3A_ad?=
+ =?utf-8?q?d_new_constraint_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Fri, 05 Jan 2024 09:50:35 -0000
+Message-ID: <170444823563.20654.1233063323711187847@5338d5abeb45>
+References: <20240105090243.58192-1-swati2.sharma@intel.com>
+In-Reply-To: <20240105090243.58192-1-swati2.sharma@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,60 +17,217 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Matt,
-On 2024-01-03 at 15:49:29 -0800, Matt Roper wrote:
-> PCI BAR0 on almost all Intel GPUs is a 16MB range composed of 8MB for
-> MMIO space and 8MB for GTT.  The current MMIO library code is limiting
-> the iomap to just 2MB (which is where most of the registers live), but
-> we actually need access to at least 4MB to access some of the registers
-> that are appearing on newer platforms.  However since this library is
-> mostly used for developer debug tools, there's no need to artificially
-> limit the map to just the range where registers exist today; from gen12
-> onward (where it's easy to find supporting documentation) map the full
-> 8MB space so that tools like intel_reg get accurate results rather than
-> random garbage when reading any MMIO offset.
-> 
-> While we're at it, reverse the if/else ladder to match typical coding
-> conventions and combine the redundant pre-gen3 and gen3/gen4 conditions.
-> 
-> Bspec: 44980
-- ^^^^^^^^^^^^
-Remove this before merge.
+--===============8040638368377981770==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Regards,
-Kamil
+== Series Details ==
 
-> Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-> ---
->  lib/intel_mmio.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/lib/intel_mmio.c b/lib/intel_mmio.c
-> index 10b07aabe..4b6820787 100644
-> --- a/lib/intel_mmio.c
-> +++ b/lib/intel_mmio.c
-> @@ -153,12 +153,12 @@ intel_mmio_use_pci_bar(struct intel_mmio_data *mmio_data, struct pci_device *pci
->  		mmio_bar = 0;
->  
->  	gen = intel_gen(devid);
-> -	if (gen < 3)
-> -		mmio_size = 512*1024;
-> -	else if (gen < 5)
-> -		mmio_size = 512*1024;
-> +	if (gen >= 12)
-> +		mmio_size = 8 * 1024 * 1024;
-> +	else if (gen >= 5)
-> +		mmio_size = 2 * 1024 * 1024;
->  	else
-> -		mmio_size = 2*1024*1024;
-> +		mmio_size = 512 * 1024;
->  
->  	error = pci_device_map_range (pci_dev,
->  				      pci_dev->regions[mmio_bar].base_addr,
-> -- 
-> 2.43.0
-> 
+Series: tests/intel/kms_dsc: add new constraint (rev2)
+URL   : https://patchwork.freedesktop.org/series/128239/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_7657 -> IGTPW_10478
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/index.html
+
+Participating hosts (37 -> 37)
+------------------------------
+
+  Additional (1): bat-rpls-2 
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10478 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - bat-rpls-2:         NOTRUN -> [SKIP][1] ([i915#9318])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/bat-rpls-2/igt@debugfs_test@basic-hwmon.html
+
+  * igt@gem_tiled_pread_basic:
+    - bat-rpls-2:         NOTRUN -> [SKIP][2] ([i915#3282])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/bat-rpls-2/igt@gem_tiled_pread_basic.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - bat-rpls-2:         NOTRUN -> [SKIP][3] ([i915#4103]) +1 other test skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/bat-rpls-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-rpls-2:         NOTRUN -> [SKIP][4] ([i915#3555] / [i915#3840] / [i915#9886])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/bat-rpls-2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-rpls-2:         NOTRUN -> [SKIP][5] ([fdo#109285])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/bat-rpls-2/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-hdmi-a-2:
+    - fi-bsw-n3050:       [PASS][6] -> [DMESG-WARN][7] ([i915#1982])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7657/fi-bsw-n3050/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-hdmi-a-2.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/fi-bsw-n3050/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-hdmi-a-2.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - bat-rpls-2:         NOTRUN -> [SKIP][8] ([i915#5354])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/bat-rpls-2/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_pm_rpm@basic-rte:
+    - bat-rpls-2:         NOTRUN -> [ABORT][9] ([i915#8668] / [i915#9368] / [i915#9897])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/bat-rpls-2/igt@kms_pm_rpm@basic-rte.html
+
+  
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
+  [i915#9368]: https://gitlab.freedesktop.org/drm/intel/issues/9368
+  [i915#9886]: https://gitlab.freedesktop.org/drm/intel/issues/9886
+  [i915#9897]: https://gitlab.freedesktop.org/drm/intel/issues/9897
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7657 -> IGTPW_10478
+
+  CI-20190529: 20190529
+  CI_DRM_14080: d7426b5fc261046501ca418fe0e69ad1d6ba59be @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10478: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/index.html
+  IGT_7657: e43732850c6fa590d4a26413289be4edbbdcaaac @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/index.html
+
+--===============8040638368377981770==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_dsc: add new constraint (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128239/">https://patchwork.freedesktop.org/series/128239/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7657 -&gt; IGTPW_10478</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/index.html</p>
+<h2>Participating hosts (37 -&gt; 37)</h2>
+<p>Additional (1): bat-rpls-2 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10478 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@basic-hwmon:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/bat-rpls-2/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9318">i915#9318</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/bat-rpls-2/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/bat-rpls-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/bat-rpls-2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9886">i915#9886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/bat-rpls-2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-hdmi-a-2:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7657/fi-bsw-n3050/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-hdmi-a-2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/fi-bsw-n3050/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-hdmi-a-2.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@basic-brightness:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/bat-rpls-2/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@basic-rte:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/bat-rpls-2/igt@kms_pm_rpm@basic-rte.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9368">i915#9368</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9897">i915#9897</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7657 -&gt; IGTPW_10478</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14080: d7426b5fc261046501ca418fe0e69ad1d6ba59be @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10478: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10478/index.html<br />
+  IGT_7657: e43732850c6fa590d4a26413289be4edbbdcaaac @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8040638368377981770==--
