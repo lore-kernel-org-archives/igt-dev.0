@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-From: Jesse Zhang <jesse.zhang@amd.com>
-Subject: [PATCH i-g-t] tests/amdgpu:fix vm test issue
-Date: Fri, 5 Jan 2024 13:18:28 +0800
-Message-ID: <20240105051828.3679085-1-jesse.zhang@amd.com>
+Message-ID: <3a621274-5c3d-477a-9f84-00e0b058b744@intel.com>
+Date: Fri, 5 Jan 2024 13:56:21 +0530
+Subject: Re: [PATCH i-g-t] tests/intel/kms_dsc: add new constraint
+References: <20240105065236.57782-1-swati2.sharma@intel.com>
+Content-Language: en-US
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <20240105065236.57782-1-swati2.sharma@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,35 +21,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Alex Deucher <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>
-Message-ID: <20240105051828.5j8BK8Pb_jYZnYUttH-NvISFxGPtCUrqj-uJ0ycFq8U@z>
+To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
+Message-ID: <20240105082621.wS5PWAGS4mrrl-gjU5hnVeKfTc8GdIARZo6VmB6YdGg@z>
 
-Initialize the variable "r" before using it.
 
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+On 1/5/2024 12:22 PM, Swati Sharma wrote:
+> If output max bpc is less than min dsc bpc (8) which is supported
+> by intel driver, don't execute test.
+>
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1066
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>   tests/intel/kms_dsc.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+>
+> diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
+> index 3433e0907..8ea15f4d2 100644
+> --- a/tests/intel/kms_dsc.c
+> +++ b/tests/intel/kms_dsc.c
+> @@ -63,6 +63,7 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+>   
+>   #define LEN		20
+>   #define DEFAULT_BPC	0
+> +#define MIN_DSC_BPC	8
+>   
+>   #define TEST_DSC_BASIC		(0<<0)
+>   #define TEST_DSC_BPC		(1<<0)
+> @@ -283,6 +284,9 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+>   		      check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe)))
+>   			continue;
+>   
+> +		if (igt_get_output_max_bpc(data->drm_fd, output->name) < MIN_DSC_BPC)
+> +			continue;
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
----
- tests/amdgpu/amd_vm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Makes sense. Perhaps add this as part of above check and simplify:
 
-diff --git a/tests/amdgpu/amd_vm.c b/tests/amdgpu/amd_vm.c
-index dab91f291..bb7b6f173 100644
---- a/tests/amdgpu/amd_vm.c
-+++ b/tests/amdgpu/amd_vm.c
-@@ -127,7 +127,8 @@ amdgpu_vm_unaligned_map(amdgpu_device_handle device_handle)
- 	request.preferred_heap = AMDGPU_GEM_DOMAIN_VRAM;
- 	request.flags = AMDGPU_GEM_CREATE_NO_CPU_ACCESS;
- 
--	if (-ENOMEM == amdgpu_bo_alloc(device_handle, &request, &buf_handle)) {
-+	r = amdgpu_bo_alloc(device_handle, &request, &buf_handle);
-+	if (-ENOMEM == r) {
- 		/* Try allocate on the device of small memory */
- 		request.alloc_size = 8ULL << 20;
- 		map_size = (8ULL << 20) - (2 << 12);
--- 
-2.25.1
+if (!is_dsc_supported_by_sink() ||
+
+!check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe) ||
+
+igt_get_output_max_bpc(data->drm_fd, output->name) < MIN_DSC_BPC))
+
+continue;
+
+Regards,
+
+Ankit
+
+
+> +
+>   		if ((test_type & TEST_DSC_OUTPUT_FORMAT) &&
+>   		    (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
+>   						     data->output, data->output_format)))
