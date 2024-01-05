@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2056.outbound.protection.outlook.com [40.107.220.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1457A10E598
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Jan 2024 09:43:41 +0000 (UTC)
-Message-ID: <0bc50215-ecb2-4e10-8b00-e239e3ffe840@amd.com>
-Date: Fri, 5 Jan 2024 10:43:33 +0100
-Subject: Re: [PATCH i-g-t] tests/amdgpu:fix vm test issue
-Content-Language: en-US
-To: Jesse Zhang <jesse.zhang@amd.com>, igt-dev@lists.freedesktop.org
-References: <20240105051828.3679085-1-jesse.zhang@amd.com>
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20240105051828.3679085-1-jesse.zhang@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E4FEC10E5A2
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Jan 2024 09:45:48 +0000 (UTC)
+Date: Fri, 5 Jan 2024 10:45:44 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] lib/intel_mmio: Allow access to full register
+ space on modern platforms
+Message-ID: <20240105094544.dkzptpch4gjeo5fl@kamilkon-desk.igk.intel.com>
+References: <20240103234929.132148-1-matthew.d.roper@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240103234929.132148-1-matthew.d.roper@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,45 +20,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Am 05.01.24 um 06:18 schrieb Jesse Zhang:
-> Initialize the variable "r" before using it.
->
-> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->
-> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-> ---
->   tests/amdgpu/amd_vm.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/amdgpu/amd_vm.c b/tests/amdgpu/amd_vm.c
-> index dab91f291..bb7b6f173 100644
-> --- a/tests/amdgpu/amd_vm.c
-> +++ b/tests/amdgpu/amd_vm.c
-> @@ -127,7 +127,8 @@ amdgpu_vm_unaligned_map(amdgpu_device_handle device_handle)
->   	request.preferred_heap = AMDGPU_GEM_DOMAIN_VRAM;
->   	request.flags = AMDGPU_GEM_CREATE_NO_CPU_ACCESS;
->   
-> -	if (-ENOMEM == amdgpu_bo_alloc(device_handle, &request, &buf_handle)) {
-> +	r = amdgpu_bo_alloc(device_handle, &request, &buf_handle);
-> +	if (-ENOMEM == r) {
-
-For the kernel it's usually preferred to write "r == -ENOMEM", but could 
-be that it's just the other way around here.  Not sure what coding style 
-the IGT tests prefer.
-
-Either way Acked-by: Christian König <christian.koenig@amd.com>.
+Hi Matt,
+On 2024-01-03 at 15:49:29 -0800, Matt Roper wrote:
+> PCI BAR0 on almost all Intel GPUs is a 16MB range composed of 8MB for
+> MMIO space and 8MB for GTT.  The current MMIO library code is limiting
+> the iomap to just 2MB (which is where most of the registers live), but
+> we actually need access to at least 4MB to access some of the registers
+> that are appearing on newer platforms.  However since this library is
+> mostly used for developer debug tools, there's no need to artificially
+> limit the map to just the range where registers exist today; from gen12
+> onward (where it's easy to find supporting documentation) map the full
+> 8MB space so that tools like intel_reg get accurate results rather than
+> random garbage when reading any MMIO offset.
+> 
+> While we're at it, reverse the if/else ladder to match typical coding
+> conventions and combine the redundant pre-gen3 and gen3/gen4 conditions.
+> 
+> Bspec: 44980
+- ^^^^^^^^^^^^
+Remove this before merge.
 
 Regards,
-Christian.
+Kamil
 
->   		/* Try allocate on the device of small memory */
->   		request.alloc_size = 8ULL << 20;
->   		map_size = (8ULL << 20) - (2 << 12);
+> Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+> ---
+>  lib/intel_mmio.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/lib/intel_mmio.c b/lib/intel_mmio.c
+> index 10b07aabe..4b6820787 100644
+> --- a/lib/intel_mmio.c
+> +++ b/lib/intel_mmio.c
+> @@ -153,12 +153,12 @@ intel_mmio_use_pci_bar(struct intel_mmio_data *mmio_data, struct pci_device *pci
+>  		mmio_bar = 0;
+>  
+>  	gen = intel_gen(devid);
+> -	if (gen < 3)
+> -		mmio_size = 512*1024;
+> -	else if (gen < 5)
+> -		mmio_size = 512*1024;
+> +	if (gen >= 12)
+> +		mmio_size = 8 * 1024 * 1024;
+> +	else if (gen >= 5)
+> +		mmio_size = 2 * 1024 * 1024;
+>  	else
+> -		mmio_size = 2*1024*1024;
+> +		mmio_size = 512 * 1024;
+>  
+>  	error = pci_device_map_range (pci_dev,
+>  				      pci_dev->regions[mmio_bar].base_addr,
+> -- 
+> 2.43.0
+> 
