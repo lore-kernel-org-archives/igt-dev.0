@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============5374848770129449585=="
+ boundary="===============0412969870843890097=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_Add_dsc+bigjoiner_subtest?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_dsc+bigjoiner_subtest?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Fri, 05 Jan 2024 17:41:12 -0000
-Message-ID: <170447647275.57116.12088178571584747279@5338d5abeb45>
+Date: Fri, 05 Jan 2024 19:44:17 -0000
+Message-ID: <170448385714.57116.5577741198645453725@5338d5abeb45>
 References: <20240105155951.124374-1-swati2.sharma@intel.com>
 In-Reply-To: <20240105155951.124374-1-swati2.sharma@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -22,7 +22,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5374848770129449585==
+--===============0412969870843890097==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -31,115 +31,70 @@ Content-Transfer-Encoding: 7bit
 
 Series: Add dsc+bigjoiner subtest
 URL   : https://patchwork.freedesktop.org/series/128266/
-State : failure
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_7658 -> IGTPW_10480
+CI Bug Log - changes from XEIGT_7658_BAT -> XEIGTPW_10480_BAT
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_10480 absolutely need to be
-  verified manually.
+  No regressions found.
+
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_10480, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/index.html
-
-Participating hosts (37 -> 35)
+Participating hosts (4 -> 4)
 ------------------------------
 
-  Additional (1): fi-bsw-n3050 
-  Missing    (3): bat-kbl-2 bat-jsl-1 fi-snb-2520m 
+  No changes in participating hosts
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_10480:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-bsw-n3050:       NOTRUN -> [ABORT][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/fi-bsw-n3050/igt@i915_selftest@live@hangcheck.html
-
-  
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_10480 that come from known issues:
+  Here are the changes found in XEIGTPW_10480_BAT that come from known issues:
 
 ### IGT changes ###
 
-#### Issues hit ####
-
-  * igt@gem_lmem_swapping@random-engines:
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][2] ([fdo#109271]) +15 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-adlp-9:         NOTRUN -> [SKIP][3] ([i915#9826]) +2 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/bat-adlp-9/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
-    - bat-rplp-1:         [PASS][4] -> [ABORT][5] ([i915#8668] / [i915#9368])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7658/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-
-  * igt@kms_pm_rpm@basic-rte:
-    - bat-rpls-2:         [PASS][6] -> [ABORT][7] ([i915#8668] / [i915#9368] / [i915#9897])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7658/bat-rpls-2/igt@kms_pm_rpm@basic-rte.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/bat-rpls-2/igt@kms_pm_rpm@basic-rte.html
-
-  
 #### Possible fixes ####
 
-  * igt@i915_selftest@live@guc:
-    - bat-jsl-3:          [INCOMPLETE][8] -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7658/bat-jsl-3/igt@i915_selftest@live@guc.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/bat-jsl-3/igt@i915_selftest@live@guc.html
+  * igt@xe_prime_self_import@basic-with_fd_dup:
+    - bat-atsm-2:         [FAIL][1] ([Intel XE#999]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7658/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10480/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html
 
   
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
+#### Warnings ####
 
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#9368]: https://gitlab.freedesktop.org/drm/intel/issues/9368
-  [i915#9826]: https://gitlab.freedesktop.org/drm/intel/issues/9826
-  [i915#9897]: https://gitlab.freedesktop.org/drm/intel/issues/9897
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][3] ([Intel XE#1033]) -> [DMESG-WARN][4] ([Intel XE#1033])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7658/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10480/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
+  [Intel XE#999]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/999
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
   * IGT: IGT_7658 -> IGTPW_10480
+  * Linux: xe-601-1525770606970ebaeb0ae7d9907991f899f153f3 -> xe-602-2f34bf674c7dad8d0cb6ae92d4e56805d63d0513
 
-  CI-20190529: 20190529
-  CI_DRM_14080: d7426b5fc261046501ca418fe0e69ad1d6ba59be @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_10480: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/index.html
   IGT_7658: 97b342e1e5de7c6bcf7d76edc388392f7a340d62 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_dsc@dsc-with-bigjoiner
+  xe-601-1525770606970ebaeb0ae7d9907991f899f153f3: 1525770606970ebaeb0ae7d9907991f899f153f3
+  xe-602-2f34bf674c7dad8d0cb6ae92d4e56805d63d0513: 2f34bf674c7dad8d0cb6ae92d4e56805d63d0513
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10480/index.html
 
---===============5374848770129449585==
+--===============0412969870843890097==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -161,87 +116,47 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>Add dsc+bigjoiner subtest</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128266/">https://patchwork.freedesktop.org/series/128266/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10480/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10480/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_7658 -&gt; IGTPW_10480</h1>
+    <h1>CI Bug Log - changes from XEIGT_7658_BAT -&gt; XEIGTPW_10480_BAT</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_10480 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_10480, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/index.html</p>
-<h2>Participating hosts (37 -&gt; 35)</h2>
-<p>Additional (1): fi-bsw-n3050 <br />
-  Missing    (3): bat-kbl-2 bat-jsl-1 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_10480:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/fi-bsw-n3050/igt@i915_selftest@live@hangcheck.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10480 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_10480_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_lmem_swapping@random-engines:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +15 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
-<ul>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/bat-adlp-9/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9826">i915#9826</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
-<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7658/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9368">i915#9368</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-rte:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7658/bat-rpls-2/igt@kms_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/bat-rpls-2/igt@kms_pm_rpm@basic-rte.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9368">i915#9368</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9897">i915#9897</a>)</li>
-</ul>
-</li>
-</ul>
 <h4>Possible fixes</h4>
 <ul>
-<li>igt@i915_selftest@live@guc:<ul>
-<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7658/bat-jsl-3/igt@i915_selftest@live@guc.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/bat-jsl-3/igt@i915_selftest@live@guc.html">PASS</a></li>
+<li>igt@xe_prime_self_import@basic-with_fd_dup:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7658/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/999">Intel XE#999</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10480/bat-atsm-2/igt@xe_prime_self_import@basic-with_fd_dup.html">PASS</a></li>
 </ul>
 </li>
 </ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7658/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10480/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>)</li>
+</ul>
+</li>
+</ul>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7658 -&gt; IGTPW_10480</li>
+<li>Linux: xe-601-1525770606970ebaeb0ae7d9907991f899f153f3 -&gt; xe-602-2f34bf674c7dad8d0cb6ae92d4e56805d63d0513</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14080: d7426b5fc261046501ca418fe0e69ad1d6ba59be @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10480: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/index.html<br />
-  IGT_7658: 97b342e1e5de7c6bcf7d76edc388392f7a340d62 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_dsc@dsc-with-bigjoiner</p>
+<p>IGTPW_10480: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10480/index.html<br />
+  IGT_7658: 97b342e1e5de7c6bcf7d76edc388392f7a340d62 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-601-1525770606970ebaeb0ae7d9907991f899f153f3: 1525770606970ebaeb0ae7d9907991f899f153f3<br />
+  xe-602-2f34bf674c7dad8d0cb6ae92d4e56805d63d0513: 2f34bf674c7dad8d0cb6ae92d4e56805d63d0513</p>
 
 </body>
 </html>
 
---===============5374848770129449585==--
+--===============0412969870843890097==--
