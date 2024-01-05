@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0BB010E62C
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Jan 2024 15:58:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B3D710E638
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Jan 2024 15:58:33 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 2/3] tests/intel/kms_dsc: add new subtest
-Date: Fri,  5 Jan 2024 21:29:50 +0530
-Message-Id: <20240105155951.124374-3-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 1/3] lib/igt_kms: add helpers for big joiner debugfs
+Date: Fri,  5 Jan 2024 21:29:49 +0530
+Message-Id: <20240105155951.124374-2-swati2.sharma@intel.com>
 In-Reply-To: <20240105155951.124374-1-swati2.sharma@intel.com>
 References: <20240105155951.124374-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
@@ -22,67 +22,109 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new subtest to validate dsc and big joiner usecase.
+Add helpers for big joiner debugfs.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/intel/kms_dsc.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ lib/igt_kms.c | 75 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h |  3 +++
+ 2 files changed, 78 insertions(+)
 
-diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
-index 3433e0907..a71c69e16 100644
---- a/tests/intel/kms_dsc.c
-+++ b/tests/intel/kms_dsc.c
-@@ -50,6 +50,7 @@
-  * arg[1]:
-  *
-  * @basic:                        DSC with default parameters
-+ * @with-bigjoiner:               DSC with default parameters and big joiner
-  * @with-bpc:                     DSC with certain input BPC for the connector
-  * @with-bpc-formats:             DSC with certain input BPC for the connector and diff formats
-  * @with-formats:                 DSC with default parameters and creating fb with diff formats
-@@ -69,6 +70,7 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
- #define TEST_DSC_FORMAT		(1<<1)
- #define TEST_DSC_OUTPUT_FORMAT	(1<<2)
- #define TEST_DSC_FRACTIONAL_BPP (1<<3)
-+#define TEST_DSC_BIGJOINER	(1<<4)
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index e4dea1a60..d8ed81e9b 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6368,3 +6368,78 @@ int get_num_scalers(int drm_fd, enum pipe pipe)
  
- typedef struct {
- 	int drm_fd;
-@@ -177,6 +179,12 @@ static void update_display(data_t *data, uint32_t test_type)
- 		force_dsc_fractional_bpp_enable(data->drm_fd, data->output);
- 	}
- 
-+	if (test_type & TEST_DSC_BIGJOINER) {
-+		igt_debug("DSC big joiner is supported on %s\n", data->output->name);
-+		save_force_dsc_bigjoiner_en(data->drm_fd, data->output);
-+		force_dsc_bigjoiner_enable(data->drm_fd, data->output);
-+	}
+ 	return num_scalers;
+ }
 +
- 	igt_output_set_pipe(output, data->pipe);
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 
-@@ -237,6 +245,7 @@ static void update_display(data_t *data, uint32_t test_type)
- 
- 	restore_force_dsc_en();
- 	restore_force_dsc_fractional_bpp_en();
-+	restore_force_dsc_bigjoiner_en();
- 
- 	if (test_type & TEST_DSC_BPC) {
- 		current_bpc = igt_get_pipe_current_bpc(data->drm_fd, data->pipe);
-@@ -349,6 +358,13 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
- 			test_dsc(&data, TEST_DSC_BASIC, DEFAULT_BPC,
- 				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
- 
-+	igt_describe("Tests basic display stream compression functionality with big joiner "
-+		     "if supported by a connector by forcing DSC and big joiner on all connectors "
-+		     "that support it with default parameters");
-+	igt_subtest_with_dynamic("dsc-with-bigjoiner")
-+			test_dsc(&data, TEST_DSC_BASIC | TEST_DSC_BIGJOINER, DEFAULT_BPC,
-+				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
++static int write_bigjoiner_debugfs(int drmfd, char *connector_name, const char *file_name,
++				   const char *write_buf)
++{
++	int debugfs_fd = igt_debugfs_dir(drmfd);
++	int len = strlen(write_buf);
++	int ret;
++	char file_path[128] = {0};
 +
- 	igt_describe("Tests basic display stream compression functionality if supported "
- 		     "by a connector by forcing DSC on all connectors that support it "
- 		     "with default parameters and creating fb with diff formats");
++	sprintf(file_path, "%s/%s", connector_name, file_name);
++
++	ret = igt_sysfs_write(debugfs_fd, file_path, write_buf, len);
++
++	close(debugfs_fd);
++
++	if (ret > 0)
++		return 0;
++
++	return ret;
++}
++
++static bool check_bigjoiner_debugfs(int drmfd, char *connector_name,
++				    const char *check_str)
++{
++	char file_name[128] = {0};
++	char buf[512];
++
++	sprintf(file_name, "%s/i915_bigjoiner_force_enable", connector_name);
++
++	igt_debugfs_read(drmfd, file_name, buf);
++
++	return strstr(buf, check_str);
++}
++
++/**
++ * igt_is_force_bigjoiner_enabled:
++ * @drmfd: A drm file descriptor
++ * @connector_name: Name of the libdrm connector we're going to use
++ *
++ * Returns: True if Big Joiner is force enabled (via debugfs) for the given connector,
++ * false otherwise.
++ */
++bool igt_is_force_bigjoiner_enabled(int drmfd, char *connector_name)
++{
++	return check_bigjoiner_debugfs(drmfd, connector_name, "Bigjoiner enable: 1");
++}
++
++/**
++ * igt_force_bigjoiner_enable:
++ * @drmfd: A drm file descriptor
++ * @connector_name: Name of the libdrm connector we're going to use
++ *
++ * Returns: 0 on success or negative error code, in case of failure.
++ */
++int igt_force_bigjoiner_enable(int drmfd, char *connector_name)
++{
++	return write_bigjoiner_debugfs(drmfd, connector_name, "i915_bigjoiner_force_enable", "1");
++}
++
++/**
++ * igt_get_bigjoiner_debugfs_fd:
++ * @drmfd: A drm file descriptor
++ * @connector_name: Name of the libdrm connector we're going to use
++ *
++ * Returns: fd of the Big Joiner debugfs for the given connector,
++ * else returns -1.
++ */
++int igt_get_bigjoiner_debugfs_fd(int drmfd, char *connector_name)
++{
++	char file_name[128] = {0};
++
++	sprintf(file_name, "%s/i915_bigjoiner_force_enable", connector_name);
++
++	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
++}
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index b3882808b..1b973a7fc 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1218,5 +1218,8 @@ bool intel_pipe_output_combo_valid(igt_display_t *display);
+ bool igt_check_output_is_dp_mst(igt_output_t *output);
+ int igt_get_dp_mst_connector_id(igt_output_t *output);
+ int get_num_scalers(int drm_fd, enum pipe pipe);
++bool igt_is_force_bigjoiner_enabled(int drmfd, char *connector_name);
++int igt_force_bigjoiner_enable(int drmfd, char *connector_name);
++int igt_get_bigjoiner_debugfs_fd(int drmfd, char *connector_name);
+ 
+ #endif /* __IGT_KMS_H__ */
 -- 
 2.25.1
