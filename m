@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8038810E4BE
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Jan 2024 06:02:51 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="------------67KYcJ22YEZsuu1Esbi9t0GR"
-Message-ID: <4d2dfe71-76e1-4b1f-b27e-4a6e9922cb18@intel.com>
-Date: Fri, 5 Jan 2024 11:32:47 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9F0610E02B
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Jan 2024 06:07:12 +0000 (UTC)
+Date: Fri, 5 Jan 2024 07:07:08 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Matt Roper <matthew.d.roper@intel.com>
+Subject: Re: [PATCH i-g-t] lib/intel_mmio: Allow access to full register
+ space on modern platforms
+Message-ID: <20240105060708.qzib3uwpaczy3oye@zkempczy-mobl2>
+References: <20240103234929.132148-1-matthew.d.roper@intel.com>
 MIME-Version: 1.0
-Subject: Re: [i-g-t,2/4] tests/intel/kms_frontbuffer_tracking: Drop unused
- macros
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20231227133020.685916-2-bhanuprakash.modem@intel.com>
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20231227133020.685916-2-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240103234929.132148-1-matthew.d.roper@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,50 +21,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is a multi-part message in MIME format.
---------------67KYcJ22YEZsuu1Esbi9t0GR
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-
-On 12/27/2023 7:00 PM, Bhanuprakash Modem wrote:
-> Cleanup only, no functional change: Drop all unused macros
-> from the code.
+On Wed, Jan 03, 2024 at 03:49:29PM -0800, Matt Roper wrote:
+> PCI BAR0 on almost all Intel GPUs is a 16MB range composed of 8MB for
+> MMIO space and 8MB for GTT.  The current MMIO library code is limiting
+> the iomap to just 2MB (which is where most of the registers live), but
+> we actually need access to at least 4MB to access some of the registers
+> that are appearing on newer platforms.  However since this library is
+> mostly used for developer debug tools, there's no need to artificially
+> limit the map to just the range where registers exist today; from gen12
+> onward (where it's easy to find supporting documentation) map the full
+> 8MB space so that tools like intel_reg get accurate results rather than
+> random garbage when reading any MMIO offset.
+> 
+> While we're at it, reverse the if/else ladder to match typical coding
+> conventions and combine the redundant pre-gen3 and gen3/gen4 conditions.
+> 
+> Bspec: 44980
+> Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+> ---
+>  lib/intel_mmio.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/lib/intel_mmio.c b/lib/intel_mmio.c
+> index 10b07aabe..4b6820787 100644
+> --- a/lib/intel_mmio.c
+> +++ b/lib/intel_mmio.c
+> @@ -153,12 +153,12 @@ intel_mmio_use_pci_bar(struct intel_mmio_data *mmio_data, struct pci_device *pci
+>  		mmio_bar = 0;
+>  
+>  	gen = intel_gen(devid);
+> -	if (gen < 3)
+> -		mmio_size = 512*1024;
+> -	else if (gen < 5)
+> -		mmio_size = 512*1024;
+> +	if (gen >= 12)
+> +		mmio_size = 8 * 1024 * 1024;
+> +	else if (gen >= 5)
+> +		mmio_size = 2 * 1024 * 1024;
+>  	else
+> -		mmio_size = 2*1024*1024;
+> +		mmio_size = 512 * 1024;
+>  
+>  	error = pci_device_map_range (pci_dev,
+>  				      pci_dev->regions[mmio_bar].base_addr,
+> -- 
+> 2.43.0
 >
-> Signed-off-by: Bhanuprakash Modem<bhanuprakash.modem@intel.com>
 
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+Well described, makes sense to me:
 
---------------67KYcJ22YEZsuu1Esbi9t0GR
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 12/27/2023 7:00 PM, Bhanuprakash
-      Modem wrote:<br>
-    </div>
-    <blockquote type="cite">
-      <pre class="moz-quote-pre" wrap="">Cleanup only, no functional change: Drop all unused macros
-from the code.
-
-Signed-off-by: Bhanuprakash Modem <a class="moz-txt-link-rfc2396E" href="mailto:bhanuprakash.modem@intel.com">&lt;bhanuprakash.modem@intel.com&gt;</a>
-</pre>
-    </blockquote>
-    <p>Reviewed-by: Kunal Joshi <a class="moz-txt-link-rfc2396E" href="mailto:kunal1.joshi@intel.com">&lt;kunal1.joshi@intel.com&gt;</a><span
-      style="white-space: pre-wrap">
-</span></p>
-  </body>
-</html>
-
---------------67KYcJ22YEZsuu1Esbi9t0GR--
+--
+Zbigniew
