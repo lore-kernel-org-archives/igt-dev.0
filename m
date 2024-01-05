@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CD4510E63B
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Jan 2024 15:58:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E0BB010E62C
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Jan 2024 15:58:43 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 3/3] tests/intel/kms_dsc_helper: add dsc+big joiner
- helper func
-Date: Fri,  5 Jan 2024 21:29:51 +0530
-Message-Id: <20240105155951.124374-4-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 2/3] tests/intel/kms_dsc: add new subtest
+Date: Fri,  5 Jan 2024 21:29:50 +0530
+Message-Id: <20240105155951.124374-3-swati2.sharma@intel.com>
 In-Reply-To: <20240105155951.124374-1-swati2.sharma@intel.com>
 References: <20240105155951.124374-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
@@ -23,75 +22,67 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add helper functions dsc with big joiner helper functions.
+Add new subtest to validate dsc and big joiner usecase.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/intel/kms_dsc_helper.c | 32 ++++++++++++++++++++++++++++++++
- tests/intel/kms_dsc_helper.h |  3 +++
- 2 files changed, 35 insertions(+)
+ tests/intel/kms_dsc.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/tests/intel/kms_dsc_helper.c b/tests/intel/kms_dsc_helper.c
-index 58057aca3..91ce21062 100644
---- a/tests/intel/kms_dsc_helper.c
-+++ b/tests/intel/kms_dsc_helper.c
-@@ -7,8 +7,10 @@
+diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
+index 3433e0907..a71c69e16 100644
+--- a/tests/intel/kms_dsc.c
++++ b/tests/intel/kms_dsc.c
+@@ -50,6 +50,7 @@
+  * arg[1]:
+  *
+  * @basic:                        DSC with default parameters
++ * @with-bigjoiner:               DSC with default parameters and big joiner
+  * @with-bpc:                     DSC with certain input BPC for the connector
+  * @with-bpc-formats:             DSC with certain input BPC for the connector and diff formats
+  * @with-formats:                 DSC with default parameters and creating fb with diff formats
+@@ -69,6 +70,7 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+ #define TEST_DSC_FORMAT		(1<<1)
+ #define TEST_DSC_OUTPUT_FORMAT	(1<<2)
+ #define TEST_DSC_FRACTIONAL_BPP (1<<3)
++#define TEST_DSC_BIGJOINER	(1<<4)
  
- static bool force_dsc_en_orig;
- static bool force_dsc_fractional_bpp_en_orig;
-+static bool force_dsc_bigjoiner_en_orig;
- static int force_dsc_restore_fd = -1;
- static int force_dsc_fractional_bpp_restore_fd = -1;
-+static int force_dsc_bigjoiner_restore_fd = -1;
+ typedef struct {
+ 	int drm_fd;
+@@ -177,6 +179,12 @@ static void update_display(data_t *data, uint32_t test_type)
+ 		force_dsc_fractional_bpp_enable(data->drm_fd, data->output);
+ 	}
  
- void force_dsc_enable(int drmfd, igt_output_t *output)
- {
-@@ -201,3 +203,33 @@ bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *outp
++	if (test_type & TEST_DSC_BIGJOINER) {
++		igt_debug("DSC big joiner is supported on %s\n", data->output->name);
++		save_force_dsc_bigjoiner_en(data->drm_fd, data->output);
++		force_dsc_bigjoiner_enable(data->drm_fd, data->output);
++	}
++
+ 	igt_output_set_pipe(output, data->pipe);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
  
- 	return true;
- }
-+
-+void force_dsc_bigjoiner_enable(int drmfd, igt_output_t *output)
-+{
-+	int ret;
-+
-+	igt_debug("Forcing DSC Big Joiner on %s\n", output->name);
-+	ret = igt_force_bigjoiner_enable(drmfd, output->name);
-+	igt_assert_f(ret == 0, "forcing dsc big joiner debugfs_write failed\n");
-+}
-+
-+void save_force_dsc_bigjoiner_en(int drmfd, igt_output_t *output)
-+{
-+	force_dsc_bigjoiner_en_orig =
-+		igt_is_force_bigjoiner_enabled(drmfd, output->name);
-+	force_dsc_bigjoiner_restore_fd =
-+		igt_get_bigjoiner_debugfs_fd(drmfd, output->name);
-+	igt_assert(force_dsc_bigjoiner_restore_fd >= 0);
-+}
-+
-+void restore_force_dsc_bigjoiner_en(void)
-+{
-+	if (force_dsc_bigjoiner_restore_fd < 0)
-+		return;
-+
-+	igt_debug("Restoring DSC Big Joiner enable\n");
-+	igt_assert(write(force_dsc_bigjoiner_restore_fd, force_dsc_bigjoiner_en_orig ? "1" : "0", 1) == 1);
-+
-+	close(force_dsc_bigjoiner_restore_fd);
-+	force_dsc_bigjoiner_restore_fd = -1;
-+}
-diff --git a/tests/intel/kms_dsc_helper.h b/tests/intel/kms_dsc_helper.h
-index 4dbd88fe7..b2f8ea1ca 100644
---- a/tests/intel/kms_dsc_helper.h
-+++ b/tests/intel/kms_dsc_helper.h
-@@ -38,5 +38,8 @@ void force_dsc_fractional_bpp_enable(int drmfd, igt_output_t *output);
- void save_force_dsc_fractional_bpp_en(int drmfd, igt_output_t *output);
- void restore_force_dsc_fractional_bpp_en(void);
- bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *output);
-+void force_dsc_bigjoiner_enable(int drmfd, igt_output_t *output);
-+void save_force_dsc_bigjoiner_en(int drmfd, igt_output_t *output);
-+void restore_force_dsc_bigjoiner_en(void);
+@@ -237,6 +245,7 @@ static void update_display(data_t *data, uint32_t test_type)
  
- #endif
+ 	restore_force_dsc_en();
+ 	restore_force_dsc_fractional_bpp_en();
++	restore_force_dsc_bigjoiner_en();
+ 
+ 	if (test_type & TEST_DSC_BPC) {
+ 		current_bpc = igt_get_pipe_current_bpc(data->drm_fd, data->pipe);
+@@ -349,6 +358,13 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+ 			test_dsc(&data, TEST_DSC_BASIC, DEFAULT_BPC,
+ 				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
+ 
++	igt_describe("Tests basic display stream compression functionality with big joiner "
++		     "if supported by a connector by forcing DSC and big joiner on all connectors "
++		     "that support it with default parameters");
++	igt_subtest_with_dynamic("dsc-with-bigjoiner")
++			test_dsc(&data, TEST_DSC_BASIC | TEST_DSC_BIGJOINER, DEFAULT_BPC,
++				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
++
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+ 		     "by a connector by forcing DSC on all connectors that support it "
+ 		     "with default parameters and creating fb with diff formats");
 -- 
 2.25.1
