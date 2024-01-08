@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
- [IPv6:2607:f8b0:4864:20::434])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 115E810E306
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Jan 2024 21:50:13 +0000 (UTC)
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6da9c834646so1920605b3a.3
- for <igt-dev@lists.freedesktop.org>; Mon, 08 Jan 2024 13:50:13 -0800 (PST)
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com
+ [IPv6:2607:f8b0:4864:20::433])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 32CC889DFB
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Jan 2024 21:59:11 +0000 (UTC)
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6d9bee259c5so1216124b3a.1
+ for <igt-dev@lists.freedesktop.org>; Mon, 08 Jan 2024 13:59:11 -0800 (PST)
 From: Rob Clark <robdclark@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH v2] tests/kms_bw: Add 2160x1440p mode
-Date: Mon,  8 Jan 2024 13:50:06 -0800
-Message-ID: <20240108215006.170234-1-robdclark@gmail.com>
-In-Reply-To: <20240105213603.109149-2-robdclark@gmail.com>
-References: <20240105213603.109149-2-robdclark@gmail.com>
+Subject: [PATCH] tests/msm: Add parallel recovery test
+Date: Mon,  8 Jan 2024 13:59:06 -0800
+Message-ID: <20240108215906.170647-1-robdclark@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -29,43 +27,85 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Rob Clark <robdclark@chromium.org>
 
-Add an additional mode so that we can get more kms_bw coverage on
-sc7180.
-
-v2: Add missing comment listing subtest name
+Add parallel recovery test to validate that the kernel does actually
+manage to recover the gpu and successfully run unrelated (not hanging)
+submits.
 
 Signed-off-by: Rob Clark <robdclark@chromium.org>
 ---
- tests/kms_bw.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tests/msm/msm_recovery.c | 53 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-index f1d2a1b64577..96b19199d4d6 100644
---- a/tests/kms_bw.c
-+++ b/tests/kms_bw.c
-@@ -47,6 +47,7 @@
-  * @1920x1080p:       1920x1080 resolution
-  * @2560x1440p:       2560x1440 resolution
-  * @3840x2160p:       3840x2160 resolution
-+ * @2160x1440p:       2160x1440 resolution
-  */
+diff --git a/tests/msm/msm_recovery.c b/tests/msm/msm_recovery.c
+index 05c89948bf9a..6088368660f4 100644
+--- a/tests/msm/msm_recovery.c
++++ b/tests/msm/msm_recovery.c
+@@ -148,6 +148,49 @@ do_hang_test(struct msm_pipe *pipe)
+ 	read_and_clear_devcore();
+ }
  
- /* Common test data. */
-@@ -91,6 +92,15 @@ static drmModeModeInfo test_mode[] = {
- 	"3840x2160p\0",
- 	}, /* test_mode_3 */
- 
-+	{ 207800,
-+	2160, 2208, 2240, 2340, 0,
-+	1440, 1443, 1449, 1480, 0,
-+	60,
-+	DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_PHSYNC,
-+	0x48,
-+	"2160x1440p\0",
-+	}, /* test_mode_4 */
++/**
++ * SUBTEST: gpu-fault-parallel
++ *
++ * Description: does a bunch of submits in parallel threads, a subset of
++ * which trigger GPU hangs.  For the submits which do not trigger hangs,
++ * validate that they executed properly by checking that they were able
++ * to write to the scratch buffer, so that we can see that the kernel
++ * properly re-plays the non-faulting submits.
++ */
++static void
++do_parallel_test(struct msm_pipe *pipe, int child)
++{
++	struct msm_cmd *cmd = igt_msm_cmd_new(pipe, 0x1000);
++	bool hang = child == 5;
++	int fence_fd;
 +
- };
++	msm_cmd_pkt7(cmd, CP_NOP, 0);
++
++	if (hang) {
++		msm_cmd_emit(cmd, 0xdeaddead);
++	} else {
++		/* Each forked thread writes/reads offset of child idx dwords: */
++		msm_cmd_pkt7(cmd, CP_MEM_WRITE, 3);
++		msm_cmd_bo  (cmd, scratch_bo, child * 4); /* ADDR_LO/HI */
++		msm_cmd_emit(cmd, child + 1);             /* VAL */
++	}
++
++	igt_until_timeout(15) {
++		scratch[child] = 0;
++		fence_fd = igt_msm_cmd_submit(cmd);
++		igt_wait_and_close(fence_fd);
++
++		if (hang) {
++			read_and_clear_devcore();
++		} else {
++			/* verify that non-crashing submits succeeded: */
++			igt_assert_eq(scratch[child], child + 1);
++		}
++	}
++
++	igt_msm_cmd_free(cmd);
++}
++
+ /*
+  * Tests for drm/msm hangcheck, recovery, and fault handling
+  */
+@@ -183,6 +226,16 @@ igt_main
+ 		do_hang_test(pipe);
+ 	}
  
- static void test_init(data_t *data)
++	igt_describe("Parallel fault handling");
++	igt_subtest("gpu-fault-parallel") {
++		igt_require(dev->gen >= 6);
++
++		igt_fork(child, 20) {
++			do_parallel_test(pipe, child);
++		}
++		igt_waitchildren();
++	}
++
+ 	igt_describe("Test iova fault handling");
+ 	igt_subtest("iova-fault") {
+ 		struct msm_cmd *cmd;
 -- 
 2.43.0
