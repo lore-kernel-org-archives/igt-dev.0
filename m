@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (unknown [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6F8510E0BA
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Jan 2024 06:16:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CE7310E34C
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jan 2024 06:16:50 +0000 (UTC)
 From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 1/3] lib/i915/perf: include i915_pciid_local.h
-Date: Tue,  9 Jan 2024 11:39:41 +0530
-Message-Id: <20240109060943.1236373-2-chaitanya.kumar.borah@intel.com>
+Subject: [PATCH i-g-t 2/3] lib: Add non-kernel macros to i915_pciids_local.h
+Date: Tue,  9 Jan 2024 11:39:42 +0530
+Message-Id: <20240109060943.1236373-3-chaitanya.kumar.borah@intel.com>
 In-Reply-To: <20240109060943.1236373-1-chaitanya.kumar.borah@intel.com>
 References: <20240109060943.1236373-1-chaitanya.kumar.borah@intel.com>
 MIME-Version: 1.0
@@ -22,10 +22,9 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-perf.c uses PCI ID macros not found in kernel header i915_pciid.h.
-Therefore include i915_pciid_local.h instead of i915_pciid.h so that
-we can move these macros to the local file. That way we don't lose
-them when i915_pciid.h is synced with kernel.
+Add MTL and PVC PCI-ID macros which are not present in kernel
+header to i915_pciids_local.h. This will help us sync the kernel
+and IGT headers.
 
 Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 Cc: Matt Roper <matthew.d.roper@intel.com> 
@@ -35,21 +34,55 @@ Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 
 ---
- lib/i915/perf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/i915_pciids_local.h | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index ddadb53b6..2006dd4ad 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -37,7 +37,7 @@
+diff --git a/lib/i915_pciids_local.h b/lib/i915_pciids_local.h
+index 91c26152a..1ed8364c5 100644
+--- a/lib/i915_pciids_local.h
++++ b/lib/i915_pciids_local.h
+@@ -7,4 +7,42 @@
  
- #include <i915_drm.h>
+ #include "i915_pciids.h"
  
--#include "i915_pciids.h"
-+#include "i915_pciids_local.h"
- 
- #include "intel_chipset.h"
- #include "perf.h"
++/* MTL perf */
++#ifndef INTEL_MTL_M_IDS
++#define INTEL_MTL_M_IDS(info) \
++       INTEL_VGA_DEVICE(0x7D60, info)
++#endif
++
++#ifndef INTEL_MTL_P_GT2_IDS
++#define INTEL_MTL_P_GT2_IDS(info) \
++       INTEL_VGA_DEVICE(0x7D45, info)
++#endif
++
++#ifndef INTEL_MTL_P_GT3_IDS
++#define INTEL_MTL_P_GT3_IDS(info) \
++        INTEL_VGA_DEVICE(0x7D55, info), \
++        INTEL_VGA_DEVICE(0x7DD5, info)
++#endif
++
++#ifndef INTEL_MTL_P_IDS
++#define INTEL_MTL_P_IDS(info) \
++       INTEL_MTL_P_GT2_IDS(info), \
++       INTEL_MTL_P_GT3_IDS(info)
++#endif
++
++/* PVC */
++#ifndef INTEL_PVC_IDS
++#define INTEL_PVC_IDS(info) \
++       INTEL_VGA_DEVICE(0x0BD0, info), \
++       INTEL_VGA_DEVICE(0x0BD5, info), \
++       INTEL_VGA_DEVICE(0x0BD6, info), \
++       INTEL_VGA_DEVICE(0x0BD7, info), \
++       INTEL_VGA_DEVICE(0x0BD8, info), \
++       INTEL_VGA_DEVICE(0x0BD9, info), \
++       INTEL_VGA_DEVICE(0x0BDA, info), \
++       INTEL_VGA_DEVICE(0x0BDB, info), \
++       INTEL_VGA_DEVICE(0x0BD1, info), \
++       INTEL_VGA_DEVICE(0x0BD2, info)
++#endif
++
+ #endif /* _I915_PCIIDS_LOCAL_H */
 -- 
 2.25.1
