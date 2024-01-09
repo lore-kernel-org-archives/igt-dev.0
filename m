@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D016910E423
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Jan 2024 13:21:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5A6A510E440
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jan 2024 13:21:31 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 0/3] Add Xe2 render-copy implementation
-Date: Tue,  9 Jan 2024 14:21:02 +0100
-Message-Id: <20240109132105.10958-1-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v2 3/3] tests/xe_intel_bb: Use Tile4 instead Y on render
+ subtest
+Date: Tue,  9 Jan 2024 14:21:05 +0100
+Message-Id: <20240109132105.10958-4-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20240109132105.10958-1-zbigniew.kempczynski@intel.com>
+References: <20240109132105.10958-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -21,27 +24,29 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Change touches render-copy only where source and destination surfaces
-exists. I didn't touch fast clear as I don't know how it works for Xe2.
-This may be subject for extension, but for now we need render-copy for
-kms.
+Discrete and beyond (Xe2) replaced Y tiling with 4Tile. Reflect
+this in render subtest as it is used only on those platforms on Xe.
 
-v2: Addressing review comments (Dominik)
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Acked-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+---
+ tests/intel/xe_intel_bb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Zbigniew Kempczyński (3):
-  lib/rendercopy: Add render-copy xe2 implementation
-  lib/intel_batchbuffer: Select xe2 rendercopy for LunarLake
-  tests/xe_intel_bb: Use Tile4 instead Y on render subtest
-
- lib/i915/shaders/ps/gen20_render_copy.asm |  8 ++++
- lib/intel_batchbuffer.c                   | 38 ++++++++-------
- lib/rendercopy.h                          |  4 ++
- lib/rendercopy_gen9.c                     | 57 +++++++++++++++++++++--
- lib/xe2_render.h                          | 14 ++++++
- tests/intel/xe_intel_bb.c                 |  2 +-
- 6 files changed, 100 insertions(+), 23 deletions(-)
- create mode 100644 lib/i915/shaders/ps/gen20_render_copy.asm
- create mode 100644 lib/xe2_render.h
-
+diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
+index d3d7a4fb69..161f766a05 100644
+--- a/tests/intel/xe_intel_bb.c
++++ b/tests/intel/xe_intel_bb.c
+@@ -1052,7 +1052,7 @@ igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
+ 	} tests[] = {
+ 		{ I915_TILING_NONE, "none" },
+ 		{ I915_TILING_X, "x" },
+-		{ I915_TILING_Y, "y" },
++		{ I915_TILING_4, "4" },
+ 	};
+ 
+ 	igt_fixture {
 -- 
 2.34.1
