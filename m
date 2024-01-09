@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2459410064746954690=="
+Message-ID: <b439f2c8-4557-4df6-a5d9-fe61076e2158@intel.com>
+Date: Mon, 8 Jan 2024 17:12:12 -0800
+Subject: Re: [PATCH i-g-t] tests/perf_pmu: Restore sysfs freq in exit handler
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>
+References: <20240105011000.138538-1-vinay.belgaumkar@intel.com>
+ <20240105113330.zyvhe33igdugsakh@kamilkon-desk.igk.intel.com>
+From: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
+In-Reply-To: <20240105113330.zyvhe33igdugsakh@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/msm=3A_Add_parallel_reco?=
- =?utf-8?q?very_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Rob Clark" <robdclark@gmail.com>
-Date: Tue, 09 Jan 2024 00:59:47 -0000
-Message-ID: <170476198724.196237.14519428490939554132@5338d5abeb45>
-References: <20240108215906.170647-1-robdclark@gmail.com>
-In-Reply-To: <20240108215906.170647-1-robdclark@gmail.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,178 +19,166 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2459410064746954690==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
+On 1/5/2024 3:33 AM, Kamil Konieczny wrote:
+> Hi Vinay,
+> On 2024-01-04 at 17:10:00 -0800, Vinay Belgaumkar wrote:
+>
+> looks good, there are some nits, first about subject:
+>
+> [PATCH i-g-t] tests/perf_pmu: Restore sysfs freq in exit handler
+>
+> s!tests/perf_pmu:!tests/intel/perf_pmu:!
+> Also you can drop "sysfs", so it will look:
+>
+> [PATCH i-g-t] tests/intel/perf_pmu: Restore freq in exit handler
+>
+>> Seeing random issues where this test starts with invalid values.
+> Btw if issue is it starts with invalid values maybe culprit is in
+> some previous test, not this one? What about setting freq values
+> to defaults first? This can be done in separate patch.
+>
+> I looked into log from test here:
+> https://intel-gfx-ci.01.org/tree/drm-tip/drmtip_1438/bat-dg2-11/igt_runner10.txt
+> and here:
+> https://intel-gfx-ci.01.org/tree/drm-tip/drmtip_1438/bat-dg2-11/igt@perf_pmu@frequency@gt0.html
+>
+> One more thing, why is boost < max? Is it allowed? What about
+> just restore it to max (or other value?) before testing and
+> skipping only when min == max? But even then it seems like
+> restoring defaults should be first step before freq checks.
+The only freq related test in that log is gem_ctx_freq which never 
+modifies boost freq. AFAICS, this is the only test that modifies boost 
+freq to be below RP0. I am thinking a previous iteration of this test 
+left it in this state, not impossible I guess. Boost freq can be < max, 
+it is allowed. We could "restore" to default,  but if we have exit 
+handlers in place, that should never be needed.
+>
+> For more nits see below.
+>
+>> Ensure that we restore the frequencies in case test exits early
+>> due to some system issues.
+>>
+>> Link: https://gitlab.freedesktop.org/drm/intel/-/issues/9432
+>> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+>> ---
+>>   tests/intel/perf_pmu.c | 53 +++++++++++++++++++++++++++++++++++++++++-
+>>   1 file changed, 52 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
+>> index c6e6a8b77..ceacc1d3d 100644
+>> --- a/tests/intel/perf_pmu.c
+>> +++ b/tests/intel/perf_pmu.c
+>> @@ -2454,12 +2454,59 @@ static void pmu_read(int i915)
+>>   		for_each_if((e)->class == I915_ENGINE_CLASS_RENDER) \
+>>   			igt_dynamic_f("%s", e->name)
+>>   
+>> +int fd = -1;
+>> +uint32_t *stash_min, *stash_max, *stash_boost;
+>> +
+>> +static void save_sysfs_freq(int i915)
+>> +{
+>> +	int gt, num_gts, sysfs, tmp;
+>> +
+>> +	num_gts = igt_sysfs_get_num_gt(i915);
+>> +
+>> +	stash_min = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
+>> +	stash_max = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
+>> +	stash_boost = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
+>> +
+>> +	/* Save boost, min and max across GTs */
+>> +	i915_for_each_gt(i915, tmp, gt) {
+>> +		sysfs = igt_sysfs_gt_open(i915, gt);
+>> +		igt_require(sysfs >= 0);
+>> +
+>> +		stash_min[gt] = igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz");
+>> +		stash_max[gt] = igt_sysfs_get_u32(sysfs, "rps_max_freq_mhz");
+>> +		stash_boost[gt] = igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz");
+>> +		igt_debug("GT: %d, min: %d, max: %d, boost:%d\n",
+>> +			  gt, stash_min[gt], stash_max[gt], stash_boost[gt]);
+>> +
+>> +		close(sysfs);
+>> +	}
+>> +}
+>> +
+>> +static void restore_sysfs_freq(int sig)
+>> +{
+>> +	int sysfs, gt, tmp;
+>> +
+>> +	/* Restore frequencies */
+>> +	i915_for_each_gt(fd, tmp, gt) {
+>> +		sysfs = igt_sysfs_gt_open(fd, gt);
+>> +		igt_require(sysfs >= 0);
+> --------^
+> Don't use require at exit handler, better use continue.
+Not sure about this. If we cannot restore, doesn't it mean there is an 
+issue writing to sysfs and we should fail?
+>
+>> +
+>> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", stash_max[gt]));
+> --------^
+> Same here.
+>
+>> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", stash_min[gt]));
+> --------^
+> Same.
+>
+>> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_boost_freq_mhz", stash_boost[gt]));
+> --------^
+> Same.
+>
+>> +
+>> +		close(sysfs);
+>> +	}
+>> +	free(stash_min);
+>> +	free(stash_max);
+> Free also stash_boost.
+ok.
+>
+>> +}
+>> +
+>>   igt_main
+>>   {
+>>   	const struct intel_execution_engine2 *e;
+>>   	unsigned int num_engines = 0;
+>>   	const intel_ctx_t *ctx = NULL;
+>> -	int gt, tmp, fd = -1;
+>> +	int gt, tmp;
+>>   	int num_gt = 0;
+>>   
+>>   	/**
+>> @@ -2482,6 +2529,7 @@ igt_main
+>>   
+>>   		i915_for_each_gt(fd, tmp, gt)
+>>   			num_gt++;
+>> +
+> Remove this empty line.
 
-Series: tests/msm: Add parallel recovery test
-URL   : https://patchwork.freedesktop.org/series/128336/
-State : success
+ok, thanks,
 
-== Summary ==
+Vinay,
 
-CI Bug Log - changes from XEIGT_7663_BAT -> XEIGTPW_10487_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10487_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#1033])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7663/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10487/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
-    - bat-adlp-7:         [FAIL][3] ([Intel XE#480]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7663/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10487/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
-    - bat-dg2-oem2:       [FAIL][5] ([Intel XE#400] / [Intel XE#616]) -> [PASS][6] +2 other tests pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7663/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10487/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-
-  * igt@xe_prime_self_import@basic-with_one_bo:
-    - bat-atsm-2:         [FAIL][7] ([Intel XE#999]) -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7663/bat-atsm-2/igt@xe_prime_self_import@basic-with_one_bo.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10487/bat-atsm-2/igt@xe_prime_self_import@basic-with_one_bo.html
-    - bat-pvc-2:          [FAIL][9] ([Intel XE#999]) -> [PASS][10] +1 other test pass
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7663/bat-pvc-2/igt@xe_prime_self_import@basic-with_one_bo.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10487/bat-pvc-2/igt@xe_prime_self_import@basic-with_one_bo.html
-
-  
-  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
-  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
-  [Intel XE#999]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/999
-
-
-Build changes
--------------
-
-  * IGT: IGT_7663 -> IGTPW_10487
-  * Linux: xe-604-a3e6b7b90ce1ff725d7585cbd2c9279e6e39b914 -> xe-607-eacbcdb537a2774959d012206aba22848fdade26
-
-  IGTPW_10487: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10487/index.html
-  IGT_7663: b5eca7b97430309e320874594feaeaa8e770e25e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-604-a3e6b7b90ce1ff725d7585cbd2c9279e6e39b914: a3e6b7b90ce1ff725d7585cbd2c9279e6e39b914
-  xe-607-eacbcdb537a2774959d012206aba22848fdade26: eacbcdb537a2774959d012206aba22848fdade26
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10487/index.html
-
---===============2459410064746954690==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/msm: Add parallel recovery test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128336/">https://patchwork.freedesktop.org/series/128336/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10487/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10487/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7663_BAT -&gt; XEIGTPW_10487_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10487_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7663/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10487/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7663/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10487/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7663/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10487/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_prime_self_import@basic-with_one_bo:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7663/bat-atsm-2/igt@xe_prime_self_import@basic-with_one_bo.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/999">Intel XE#999</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10487/bat-atsm-2/igt@xe_prime_self_import@basic-with_one_bo.html">PASS</a> +1 other test pass</li>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7663/bat-pvc-2/igt@xe_prime_self_import@basic-with_one_bo.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/999">Intel XE#999</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10487/bat-pvc-2/igt@xe_prime_self_import@basic-with_one_bo.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7663 -&gt; IGTPW_10487</li>
-<li>Linux: xe-604-a3e6b7b90ce1ff725d7585cbd2c9279e6e39b914 -&gt; xe-607-eacbcdb537a2774959d012206aba22848fdade26</li>
-</ul>
-<p>IGTPW_10487: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10487/index.html<br />
-  IGT_7663: b5eca7b97430309e320874594feaeaa8e770e25e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-604-a3e6b7b90ce1ff725d7585cbd2c9279e6e39b914: a3e6b7b90ce1ff725d7585cbd2c9279e6e39b914<br />
-  xe-607-eacbcdb537a2774959d012206aba22848fdade26: eacbcdb537a2774959d012206aba22848fdade26</p>
-
-</body>
-</html>
-
---===============2459410064746954690==--
+>
+> Regards,
+> Kamil
+>
+>>   	}
+>>   
+>>   	igt_describe("Verify i915 pmu dir exists and read all events");
+>> @@ -2664,6 +2712,9 @@ igt_main
+>>   	 * Test GPU frequency.
+>>   	 */
+>>   	igt_subtest_with_dynamic("frequency") {
+>> +		save_sysfs_freq(fd);
+>> +		igt_install_exit_handler(restore_sysfs_freq);
+>> +
+>>   		i915_for_each_gt(fd, tmp, gt) {
+>>   			igt_dynamic_f("gt%u", gt)
+>>   				test_frequency(fd, gt);
+>> -- 
+>> 2.38.1
+>>
