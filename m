@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-From: Jesse Zhang <jesse.zhang@amd.com>
-Subject: [PATCH] [PATCH i-g-t v2] tests/amdgpu/amd_vm: fix vm test issue
-Date: Mon, 8 Jan 2024 09:21:57 +0800
-Message-ID: <20240108012157.3781758-1-jesse.zhang@amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Message-ID: <b439f2c8-4557-4df6-a5d9-fe61076e2158@intel.com>
+Date: Mon, 8 Jan 2024 17:12:12 -0800
+Subject: Re: [PATCH i-g-t] tests/perf_pmu: Restore sysfs freq in exit handler
+Content-Language: en-US
+References: <20240105011000.138538-1-vinay.belgaumkar@intel.com>
+ <20240105113330.zyvhe33igdugsakh@kamilkon-desk.igk.intel.com>
+From: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
+In-Reply-To: <20240105113330.zyvhe33igdugsakh@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,38 +22,165 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Alex Deucher <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>
-Message-ID: <20240108012157.QpOst2ly4OzhEGUTBVT27lJvAHvoajl6Ky2tMmET89c@z>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+Message-ID: <20240109011212.WWSLqQ2WgSK3n_Ncm6z77ZGP7qOIU0AhMF6l43UarIg@z>
 
-Initialize the variable "r" before using it,
-in the subtest amdgpu-vm-unaligned-map.
-V2:
-  --fix code style and description (Kamil and Christian).
 
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
----
- tests/amdgpu/amd_vm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+On 1/5/2024 3:33 AM, Kamil Konieczny wrote:
+> Hi Vinay,
+> On 2024-01-04 at 17:10:00 -0800, Vinay Belgaumkar wrote:
+>
+> looks good, there are some nits, first about subject:
+>
+> [PATCH i-g-t] tests/perf_pmu: Restore sysfs freq in exit handler
+>
+> s!tests/perf_pmu:!tests/intel/perf_pmu:!
+> Also you can drop "sysfs", so it will look:
+>
+> [PATCH i-g-t] tests/intel/perf_pmu: Restore freq in exit handler
+>
+>> Seeing random issues where this test starts with invalid values.
+> Btw if issue is it starts with invalid values maybe culprit is in
+> some previous test, not this one? What about setting freq values
+> to defaults first? This can be done in separate patch.
+>
+> I looked into log from test here:
+> https://intel-gfx-ci.01.org/tree/drm-tip/drmtip_1438/bat-dg2-11/igt_runner10.txt
+> and here:
+> https://intel-gfx-ci.01.org/tree/drm-tip/drmtip_1438/bat-dg2-11/igt@perf_pmu@frequency@gt0.html
+>
+> One more thing, why is boost < max? Is it allowed? What about
+> just restore it to max (or other value?) before testing and
+> skipping only when min == max? But even then it seems like
+> restoring defaults should be first step before freq checks.
+The only freq related test in that log is gem_ctx_freq which never 
+modifies boost freq. AFAICS, this is the only test that modifies boost 
+freq to be below RP0. I am thinking a previous iteration of this test 
+left it in this state, not impossible I guess. Boost freq can be < max, 
+it is allowed. We could "restore" to default,  but if we have exit 
+handlers in place, that should never be needed.
+>
+> For more nits see below.
+>
+>> Ensure that we restore the frequencies in case test exits early
+>> due to some system issues.
+>>
+>> Link: https://gitlab.freedesktop.org/drm/intel/-/issues/9432
+>> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+>> ---
+>>   tests/intel/perf_pmu.c | 53 +++++++++++++++++++++++++++++++++++++++++-
+>>   1 file changed, 52 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
+>> index c6e6a8b77..ceacc1d3d 100644
+>> --- a/tests/intel/perf_pmu.c
+>> +++ b/tests/intel/perf_pmu.c
+>> @@ -2454,12 +2454,59 @@ static void pmu_read(int i915)
+>>   		for_each_if((e)->class == I915_ENGINE_CLASS_RENDER) \
+>>   			igt_dynamic_f("%s", e->name)
+>>   
+>> +int fd = -1;
+>> +uint32_t *stash_min, *stash_max, *stash_boost;
+>> +
+>> +static void save_sysfs_freq(int i915)
+>> +{
+>> +	int gt, num_gts, sysfs, tmp;
+>> +
+>> +	num_gts = igt_sysfs_get_num_gt(i915);
+>> +
+>> +	stash_min = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
+>> +	stash_max = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
+>> +	stash_boost = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
+>> +
+>> +	/* Save boost, min and max across GTs */
+>> +	i915_for_each_gt(i915, tmp, gt) {
+>> +		sysfs = igt_sysfs_gt_open(i915, gt);
+>> +		igt_require(sysfs >= 0);
+>> +
+>> +		stash_min[gt] = igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz");
+>> +		stash_max[gt] = igt_sysfs_get_u32(sysfs, "rps_max_freq_mhz");
+>> +		stash_boost[gt] = igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz");
+>> +		igt_debug("GT: %d, min: %d, max: %d, boost:%d\n",
+>> +			  gt, stash_min[gt], stash_max[gt], stash_boost[gt]);
+>> +
+>> +		close(sysfs);
+>> +	}
+>> +}
+>> +
+>> +static void restore_sysfs_freq(int sig)
+>> +{
+>> +	int sysfs, gt, tmp;
+>> +
+>> +	/* Restore frequencies */
+>> +	i915_for_each_gt(fd, tmp, gt) {
+>> +		sysfs = igt_sysfs_gt_open(fd, gt);
+>> +		igt_require(sysfs >= 0);
+> --------^
+> Don't use require at exit handler, better use continue.
+Not sure about this. If we cannot restore, doesn't it mean there is an 
+issue writing to sysfs and we should fail?
+>
+>> +
+>> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", stash_max[gt]));
+> --------^
+> Same here.
+>
+>> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", stash_min[gt]));
+> --------^
+> Same.
+>
+>> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_boost_freq_mhz", stash_boost[gt]));
+> --------^
+> Same.
+>
+>> +
+>> +		close(sysfs);
+>> +	}
+>> +	free(stash_min);
+>> +	free(stash_max);
+> Free also stash_boost.
+ok.
+>
+>> +}
+>> +
+>>   igt_main
+>>   {
+>>   	const struct intel_execution_engine2 *e;
+>>   	unsigned int num_engines = 0;
+>>   	const intel_ctx_t *ctx = NULL;
+>> -	int gt, tmp, fd = -1;
+>> +	int gt, tmp;
+>>   	int num_gt = 0;
+>>   
+>>   	/**
+>> @@ -2482,6 +2529,7 @@ igt_main
+>>   
+>>   		i915_for_each_gt(fd, tmp, gt)
+>>   			num_gt++;
+>> +
+> Remove this empty line.
 
-diff --git a/tests/amdgpu/amd_vm.c b/tests/amdgpu/amd_vm.c
-index dab91f291..9cd56e2b5 100644
---- a/tests/amdgpu/amd_vm.c
-+++ b/tests/amdgpu/amd_vm.c
-@@ -127,7 +127,8 @@ amdgpu_vm_unaligned_map(amdgpu_device_handle device_handle)
- 	request.preferred_heap = AMDGPU_GEM_DOMAIN_VRAM;
- 	request.flags = AMDGPU_GEM_CREATE_NO_CPU_ACCESS;
- 
--	if (-ENOMEM == amdgpu_bo_alloc(device_handle, &request, &buf_handle)) {
-+	r = amdgpu_bo_alloc(device_handle, &request, &buf_handle);
-+	if (r == -ENOMEM) {
- 		/* Try allocate on the device of small memory */
- 		request.alloc_size = 8ULL << 20;
- 		map_size = (8ULL << 20) - (2 << 12);
--- 
-2.25.1
+ok, thanks,
+
+Vinay,
+
+>
+> Regards,
+> Kamil
+>
+>>   	}
+>>   
+>>   	igt_describe("Verify i915 pmu dir exists and read all events");
+>> @@ -2664,6 +2712,9 @@ igt_main
+>>   	 * Test GPU frequency.
+>>   	 */
+>>   	igt_subtest_with_dynamic("frequency") {
+>> +		save_sysfs_freq(fd);
+>> +		igt_install_exit_handler(restore_sysfs_freq);
+>> +
+>>   		i915_for_each_gt(fd, tmp, gt) {
+>>   			igt_dynamic_f("gt%u", gt)
+>>   				test_frequency(fd, gt);
+>> -- 
+>> 2.38.1
+>>
