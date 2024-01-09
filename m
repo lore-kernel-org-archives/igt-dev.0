@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A6A510E440
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Jan 2024 13:21:31 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C2CA10E447
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jan 2024 13:23:42 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 3/3] tests/xe_intel_bb: Use Tile4 instead Y on render
- subtest
-Date: Tue,  9 Jan 2024 14:21:05 +0100
-Message-Id: <20240109132105.10958-4-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20240109132105.10958-1-zbigniew.kempczynski@intel.com>
-References: <20240109132105.10958-1-zbigniew.kempczynski@intel.com>
+Subject: [i-g-t] tests/intel/i915_suspend: Fix WARNs of invalid fd
+Date: Tue,  9 Jan 2024 18:48:02 +0530
+Message-Id: <20240109131802.2624834-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -24,29 +20,29 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Discrete and beyond (Xe2) replaced Y tiling with 4Tile. Reflect
-this in render subtest as it is used only on those platforms on Xe.
+Call drm_close_driver() only if fd >=0, otherwise it'll will throw WARN:
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Acked-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+(i915_suspend:7563) drmtest-WARNING: Don't attempt to close standard/invalid file descriptor: -1
+
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel/xe_intel_bb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/intel/i915_suspend.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
-index d3d7a4fb69..161f766a05 100644
---- a/tests/intel/xe_intel_bb.c
-+++ b/tests/intel/xe_intel_bb.c
-@@ -1052,7 +1052,7 @@ igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
- 	} tests[] = {
- 		{ I915_TILING_NONE, "none" },
- 		{ I915_TILING_X, "x" },
--		{ I915_TILING_Y, "y" },
-+		{ I915_TILING_4, "4" },
- 	};
+diff --git a/tests/intel/i915_suspend.c b/tests/intel/i915_suspend.c
+index c25805584..82cabfa41 100644
+--- a/tests/intel/i915_suspend.c
++++ b/tests/intel/i915_suspend.c
+@@ -300,7 +300,9 @@ test_suspend_without_i915(int state)
+ 		igt_pm_get_d3cold_allowed(card.pci_slot_name, &d3cold_allowed);
+ 		igt_pm_set_d3cold_allowed(card.pci_slot_name, 0);
+ 	}
+-	drm_close_driver(fd);
++
++	if (fd >= 0)
++		drm_close_driver(fd);
  
- 	igt_fixture {
+ 	igt_kmsg(KMSG_INFO "Unloading i915\n");
+ 	igt_assert_eq(igt_i915_driver_unload(),0);
 -- 
-2.34.1
+2.40.0
