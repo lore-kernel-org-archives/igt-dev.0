@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A527510E531
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jan 2024 22:19:49 +0000 (UTC)
+Date: Tue, 9 Jan 2024 17:19:35 -0500
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+Subject: Re: [PATCH v2] tests/xe_waitfence: removed invalid_engine subtest
+Message-ID: <ZZ3GdyhgHB14bygN@intel.com>
+References: <20240102083447.339057-1-krishnaiah.bommu@intel.com>
 Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240102083447.339057-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/intel/xe=5Fccs=3A?=
- =?utf-8?q?_Fix_block-multicopy-inplace_subtest?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Akshata Jahagirdar" <akshata.jahagirdar@intel.com>
-Date: Tue, 09 Jan 2024 22:09:19 -0000
-Message-ID: <170483815903.240792.14348610748703610762@5338d5abeb45>
-References: <cover.1704874216.git.akshata.jahagirdar@intel.com>
-In-Reply-To: <cover.1704874216.git.akshata.jahagirdar@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,46 +20,200 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Tue, Jan 02, 2024 at 02:04:47PM +0530, Bommu Krishnaiah wrote:
+> Rename invalid_engine to invalid-exec_queue subtest and changed return value
 
-Series: tests/intel/xe_ccs: Fix block-multicopy-inplace subtest
-URL   : https://patchwork.freedesktop.org/series/128391/
-State : warning
+this doesn't match the patch subject now.
 
-== Summary ==
+> as per kernel implantation
 
-Pipeline status: FAILED.
+implementation?!
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1074260 for the overview.
+> 
+> Removed drm_xe_sync data in exec_queue_reset_wait since it was unused
+> and removed unwanted code
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/53544954):
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out c952b9a2 as detached HEAD (ref is intel/IGTPW_10497)...
-  Removing build/
-  Removing lib/i915/perf-configs/__pycache__/
-  Removing scripts/__pycache__/
-  
-  Skipping Git submodules setup
-  section_end:1704837642:get_sources
-  section_start:1704837642:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:ca01fc804bb92e5df42a202dd7e0470610c6711c66a808525defcb8bbb774078 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian:commit-c952b9a2f3b62a0a3a81b7699a2aa636be52879c with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian@sha256:b9fe73c6ff5d68f5692fd18b9076735679c8bfa7ed393e752dd4927a2cdf9874 ...
-  section_end:1704837646:step_script
-  section_start:1704837646:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1704837648:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:ca01fc804bb92e5df42a202dd7e0470610c6711c66a808525defcb8bbb774078: image not known (docker.go:570:0s)
+But I believe this patch should be split in many smaller patches so
+we can really understand easily what's going on.
 
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1074260
+> 
+> Kernel commit:
+> drm/xe/uapi: add exec_queue_id member to drm_xe_wait_user_fence structure
+> 
+> Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> ---
+>  lib/xe/xe_ioctl.c          | 35 ---------------------------------
+>  lib/xe/xe_ioctl.h          |  2 --
+>  tests/intel/xe_waitfence.c | 40 ++++++++++++++++++++++----------------
+>  3 files changed, 23 insertions(+), 54 deletions(-)
+> 
+> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> index 39605a019..49c5d359e 100644
+> --- a/lib/xe/xe_ioctl.c
+> +++ b/lib/xe/xe_ioctl.c
+> @@ -523,41 +523,6 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  	return timeout;
+>  }
+>  
+> -/**
+> - * xe_wait_ufence_abstime:
+> - * @fd: xe device fd
+> - * @addr: address of value to compare
+> - * @value: expected value (equal) in @address
+> - * @exec_queue: exec_queue id
+> - * @timeout: absolute time when wait expire
+> - * @flag: wait flag
+> - *
+> - * Function compares @value with memory pointed by @addr until they are equal.
+> - * Asserts that ioctl returned without error.
+> - *
+> - * Returns elapsed time in nanoseconds if user fence was signalled.
+> - */
+> -int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
+> -			       uint32_t exec_queue, int64_t timeout,
+> -			       uint16_t flag)
+> -{
+> -	struct drm_xe_wait_user_fence wait = {
+> -		.addr = to_user_pointer(addr),
+> -		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
+> -		.flags = flag,
+> -		.value = value,
+> -		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+> -		.timeout = timeout,
+> -		.exec_queue_id = exec_queue,
+> -	};
+> -	struct timespec ts;
+> -
+> -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
+> -	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &ts), 0);
+> -
+> -	return ts.tv_sec * 1e9 + ts.tv_nsec;
+> -}
+> -
+>  void xe_force_gt_reset(int fd, int gt)
+>  {
+>  	char reset_string[128];
+> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+> index 8a92073b0..03932561d 100644
+> --- a/lib/xe/xe_ioctl.h
+> +++ b/lib/xe/xe_ioctl.h
+> @@ -90,8 +90,6 @@ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  		     uint32_t exec_queue, int64_t *timeout);
+>  int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  		       uint32_t exec_queue, int64_t timeout);
+> -int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value, uint32_t
+> -			       exec_queue, int64_t timeout, uint16_t flag);
+>  void xe_force_gt_reset(int fd, int gt);
+>  
+>  #endif /* XE_IOCTL_H */
+> diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
+> index 7ba20764c..f4592bfb3 100644
+> --- a/tests/intel/xe_waitfence.c
+> +++ b/tests/intel/xe_waitfence.c
+> @@ -36,7 +36,21 @@ static void do_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+>  	xe_vm_bind_async(fd, vm, 0, bo, offset, addr, size, sync, 1);
+>  }
+>  
+> -static int64_t wait_with_eci_abstime(int fd, uint64_t *addr, uint64_t value,
+> +/**
+> + * xe_wait_ufence_abstime:
+> + * @fd: xe device fd
+> + * @addr: address of value to compare
+> + * @value: expected value (equal) in @address
+> + * @exec_queue: exec_queue id
+> + * @timeout: absolute time when wait expire
+> + * @flag: wait flag
+> + *
+> + * Function compares @value with memory pointed by @addr until they are equal.
+> + * Asserts that ioctl returned without error.
+> + *
+> + * Returns elapsed time in nanoseconds if user fence was signalled.
+> + */
+> +static int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
+>  				     uint32_t exec_queue, int64_t timeout,
+>  				     uint16_t flag)
+>  {
+> @@ -117,7 +131,7 @@ waitfence(int fd, enum waittype wt)
+>  		clock_gettime(CLOCK_MONOTONIC, &ts);
+>  		current = ts.tv_sec * 1e9 + ts.tv_nsec;
+>  		timeout = current + MS_TO_NS(10);
+> -		signalled = wait_with_eci_abstime(fd, &wait_fence, 7,
+> +		signalled = xe_wait_ufence_abstime(fd, &wait_fence, 7,
+>  						  exec_queue, timeout,
+>  						  DRM_XE_UFENCE_WAIT_FLAG_ABSTIME);
+>  		igt_debug("wait type: ENGINE ABSTIME - timeout: %" PRId64
+> @@ -151,8 +165,8 @@ waitfence(int fd, enum waittype wt)
+>   * SUBTEST: invalid-ops
+>   * Description: Check query with invalid ops returns expected error code
+>   *
+> - * SUBTEST: invalid-engine
+> - * Description: Check query with invalid engine info returns expected error code
+> + * SUBTEST: invalid-exec_queue
+> + * Description: Check query with invalid exec_queue info returns expected error code
+>   *
+>   * SUBTEST: exec_queue-reset-wait
+>   * Description: Don’t wait till timeout on user fence when exec_queue reset is detected and return return proper error
+> @@ -207,7 +221,7 @@ invalid_ops(int fd)
+>  }
+>  
+>  static void
+> -invalid_engine(int fd)
+> +invalid_exec_queue(int fd)
+>  {
+>  	uint32_t bo;
+>  
+> @@ -218,7 +232,7 @@ invalid_engine(int fd)
+>  		.value = 1,
+>  		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+>  		.timeout = -1,
+> -		.exec_queue_id = 0,
+> +		.exec_queue_id = -1,
+>  	};
+>  
+>  	uint32_t vm = xe_vm_create(fd, 0, 0);
+> @@ -227,7 +241,7 @@ invalid_engine(int fd)
+>  
+>  	do_bind(fd, vm, bo, 0, 0x200000, 0x40000, 1);
+>  
+> -	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EFAULT);
+> +	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, ENOENT);
+>  }
+>  
+>  static void
+> @@ -248,16 +262,8 @@ exec_queue_reset_wait(int fd)
+>  		uint32_t data;
+>  	} *data;
+>  
+> -#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
+> -	struct drm_xe_sync sync[1] = {
+> -		{ .flags = DRM_XE_SYNC_TYPE_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
+> -			.timeline_value = USER_FENCE_VALUE },
+> -	};
+> -
+>  	struct drm_xe_exec exec = {
+>  		.num_batch_buffer = 1,
+> -		.num_syncs = 1,
+> -		.syncs = to_user_pointer(sync),
+>  	};
+>  
+>  	uint32_t vm = xe_vm_create(fd, 0, 0);
+> @@ -329,8 +335,8 @@ igt_main
+>  	igt_subtest("invalid-ops")
+>  		invalid_ops(fd);
+>  
+> -	igt_subtest("invalid-engine")
+> -		invalid_engine(fd);
+> +	igt_subtest("invalid-exec_queue")
+> +		invalid_exec_queue(fd);
+>  
+>  	igt_subtest("exec_queue-reset-wait")
+>  		exec_queue_reset_wait(fd);
+> -- 
+> 2.25.1
+> 
