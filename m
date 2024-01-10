@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 676BB10E571
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Jan 2024 11:29:44 +0000 (UTC)
-From: Kunal Joshi <kunal1.joshi@intel.com>
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com
+ [IPv6:2607:f8b0:4864:20::52c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2271210E65B
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Jan 2024 20:04:39 +0000 (UTC)
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-5cedfc32250so2178435a12.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Jan 2024 12:04:39 -0800 (PST)
+From: Rob Clark <robdclark@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH 1/2] lib/igt_kms: add helpers for big joiner debugfs
-Date: Wed, 10 Jan 2024 17:09:05 +0530
-Message-Id: <20240110113906.523857-2-kunal1.joshi@intel.com>
-In-Reply-To: <20240110113906.523857-1-kunal1.joshi@intel.com>
-References: <20240110113906.523857-1-kunal1.joshi@intel.com>
+Subject: [PATCH] tests/kms_universal_plane: Re-work expectations for non-intel
+ hw
+Date: Wed, 10 Jan 2024 12:04:34 -0800
+Message-ID: <20240110200434.218120-1-robdclark@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -18,117 +21,149 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Cc: Rob Clark <robdclark@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Swati Sharma <swati2.sharma@intel.com>
+From: Rob Clark <robdclark@chromium.org>
 
-Add helpers for big joiner debugfs.
+The expectation assumptions do not fit for non-intel hw.  So re-work the
+expectations and add msm support.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 ---
- lib/igt_kms.c | 75 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  3 +++
- 2 files changed, 78 insertions(+)
+ tests/kms_universal_plane.c | 102 +++++++++++++++++++++++++-----------
+ 1 file changed, 72 insertions(+), 30 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index e4dea1a60..0208eccc4 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -6368,3 +6368,78 @@ int get_num_scalers(int drm_fd, enum pipe pipe)
+diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+index 6a39f93cc5aa..3158ff816046 100644
+--- a/tests/kms_universal_plane.c
++++ b/tests/kms_universal_plane.c
+@@ -402,8 +402,7 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	sanity_test_t test = { .data = data };
+ 	igt_plane_t *primary;
+ 	drmModeModeInfo *mode;
+-	int i;
+-	int expect = 0;
++	int i, ret;
  
- 	return num_scalers;
- }
-+
-+static int write_bigjoiner_debugfs(int drmfd, char *connector_name, const char *file_name,
-+				   const char *write_buf)
-+{
-+	int debugfs_fd = igt_debugfs_dir(drmfd);
-+	int len = strlen(write_buf);
-+	int ret;
-+	char file_path[128] = {0};
-+
-+	sprintf(file_path, "%s/%s", connector_name, file_name);
-+
-+	ret = igt_sysfs_write(debugfs_fd, file_path, write_buf, len);
-+
-+	close(debugfs_fd);
-+
-+	if (ret > 0)
-+		return 0;
-+
-+	return ret;
-+}
-+
-+static bool check_bigjoiner_debugfs(int drmfd, char *connector_name,
-+				    const char *check_str)
-+{
-+	char file_name[128] = {0};
-+	char buf[512];
-+
-+	sprintf(file_name, "%s/i915_bigjoiner_force_enable", connector_name);
-+
-+	igt_debugfs_read(drmfd, file_name, buf);
-+
-+	return strstr(buf, check_str);
-+}
-+
-+/**
-+ * igt_is_force_bigjoiner_enabled:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: True if Big Joiner is force enabled (via debugfs) for the given connector,
-+ * false otherwise.
-+ */
-+bool igt_is_force_bigjoiner_enabled(int drmfd, char *connector_name)
-+{
-+	return check_bigjoiner_debugfs(drmfd, connector_name, "Bigjoiner enable: 1");
-+}
-+
-+/**
-+ * igt_force_bigjoiner_enable:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: 0 on success or negative error code, in case of failure.
-+ */
-+int igt_force_bigjoiner_enable(int drmfd, char *connector_name, bool enable)
-+{
-+	return write_bigjoiner_debugfs(drmfd, connector_name, "i915_bigjoiner_force_enable", enable ? "1" : "0");
-+}
-+
-+/**
-+ * igt_get_bigjoiner_debugfs_fd:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: fd of the Big Joiner debugfs for the given connector,
-+ * else returns -1.
-+ */
-+int igt_get_bigjoiner_debugfs_fd(int drmfd, char *connector_name)
-+{
-+	char file_name[128] = {0};
-+
-+	sprintf(file_name, "%s/i915_bigjoiner_force_enable", connector_name);
-+
-+	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
-+}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index b3882808b..2d000d54d 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1218,5 +1218,8 @@ bool intel_pipe_output_combo_valid(igt_display_t *display);
- bool igt_check_output_is_dp_mst(igt_output_t *output);
- int igt_get_dp_mst_connector_id(igt_output_t *output);
- int get_num_scalers(int drm_fd, enum pipe pipe);
-+bool igt_is_force_bigjoiner_enabled(int drmfd, char *connector_name);
-+int igt_force_bigjoiner_enable(int drmfd, char *connector_name, bool enable);
-+int igt_get_bigjoiner_debugfs_fd(int drmfd, char *connector_name);
+ 	igt_output_set_pipe(output, pipe);
+ 	mode = igt_output_get_mode(output);
+@@ -418,43 +417,86 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
  
- #endif /* __IGT_KMS_H__ */
+ 	/*
+ 	 * Try to use universal plane API to set primary plane that
+-	 * doesn't cover CRTC (should fail on pre-gen9 and succeed on
+-	 * gen9+).
++	 * doesn't cover CRTC.
+ 	 */
+ 	igt_plane_set_fb(primary, &test.undersized_fb);
+-	if (is_intel_device(data->drm_fd))
+-		expect = (data->display_ver < 9) ? -EINVAL : 0;
+-	igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL) == expect);
++	ret = igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL);
++
++	if (is_intel_device(data->drm_fd)) {
++		/* should fail on pre-gen9 and succeed on gen9+: */
++		if (data->display_ver < 9)
++			igt_assert_eq(ret, -EINVAL);
++		else
++			igt_assert_eq(ret, 0);
++	} else if (is_msm_device(data->drm_fd)) {
++		/* Should be supported on all gens: */
++		igt_assert_eq(ret, 0);
++	} else {
++		igt_assert_eq(ret, 0);
++	}
+ 
+-	/* Same as above, but different plane positioning. */
++	/* Same as above, but different plane positioning: */
+ 	igt_plane_set_position(primary, 100, 100);
+-	igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL) == expect);
++	ret = igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL);
++
++	if (is_intel_device(data->drm_fd)) {
++		/* should fail on pre-gen9 and succeed on gen9+: */
++		if (data->display_ver < 9)
++			igt_assert_eq(ret, -EINVAL);
++		else
++			igt_assert_eq(ret, 0);
++	} else if (is_msm_device(data->drm_fd)) {
++		/* Should be supported on all gens: */
++		igt_assert_eq(ret, 0);
++	} else {
++		igt_assert_eq(ret, 0);
++	}
+ 
+ 	igt_plane_set_position(primary, 0, 0);
+ 
+-	/* Try to use universal plane API to scale down (should fail on pre-gen9) */
+-	if (is_intel_device(data->drm_fd))
+-		expect = (data->display_ver < 9) ? -ERANGE : 0;
+-	igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
+-				   output->config.crtc->crtc_id,
+-				   test.oversized_fb.fb_id, 0,
+-				   0, 0,
+-				   mode->hdisplay + 100,
+-				   mode->vdisplay + 100,
+-				   IGT_FIXED(0,0), IGT_FIXED(0,0),
+-				   IGT_FIXED(mode->hdisplay,0),
+-				   IGT_FIXED(mode->vdisplay,0)) == expect);
++	/* Try to use universal plane API to scale down */
++	ret = drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
++			      output->config.crtc->crtc_id,
++			      test.oversized_fb.fb_id, 0,
++			      0, 0,
++			      mode->hdisplay + 100,
++			      mode->vdisplay + 100,
++			      IGT_FIXED(0,0), IGT_FIXED(0,0),
++			      IGT_FIXED(mode->hdisplay,0),
++			      IGT_FIXED(mode->vdisplay,0));
++
++	if (is_intel_device(data->drm_fd)) {
++		/* should fail on pre-gen9 and succeed on gen9+: */
++		if (data->display_ver < 9)
++			igt_assert_eq(ret, -ERANGE);
++		else
++			igt_assert_eq(ret, 0);
++	} else {
++		/* Could succeed or fail with -ERANGE depending on hw limits: */
++		igt_assert((ret == 0) || (ret == -ERANGE));
++	}
+ 
+ 	/* Try to use universal plane API to scale up (should fail on pre-gen9) */
+-	igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
+-				   output->config.crtc->crtc_id,
+-				   test.oversized_fb.fb_id, 0,
+-				   0, 0,
+-				   mode->hdisplay,
+-				   mode->vdisplay,
+-				   IGT_FIXED(0,0), IGT_FIXED(0,0),
+-				   IGT_FIXED(mode->hdisplay - 100,0),
+-				   IGT_FIXED(mode->vdisplay - 100,0)) == expect);
++	ret = drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
++			      output->config.crtc->crtc_id,
++			      test.oversized_fb.fb_id, 0,
++			      0, 0,
++			      mode->hdisplay,
++			      mode->vdisplay,
++			      IGT_FIXED(0,0), IGT_FIXED(0,0),
++			      IGT_FIXED(mode->hdisplay - 100,0),
++			      IGT_FIXED(mode->vdisplay - 100,0));
++
++	if (is_intel_device(data->drm_fd)) {
++		/* should fail on pre-gen9 and succeed on gen9+: */
++		if (data->display_ver < 9)
++			igt_assert_eq(ret, -ERANGE);
++		else
++			igt_assert_eq(ret, 0);
++	} else {
++		/* Could succeed or fail with -ERANGE depending on hw limits: */
++		igt_assert((ret == 0) || (ret == -ERANGE));
++	}
+ 
+ 	/* Find other crtcs and try to program our primary plane on them */
+ 	for (i = 0; i < test.moderes->count_crtcs; i++)
 -- 
-2.25.1
+2.43.0
