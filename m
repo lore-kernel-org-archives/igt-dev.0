@@ -1,15 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4188925918144409311=="
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2061b.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:fe5b::61b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E91510E5B6
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Jan 2024 10:15:58 +0000 (UTC)
+Message-ID: <98f0eaf7-a449-437b-a3d5-1d2e21f5137c@amd.com>
+Date: Wed, 10 Jan 2024 11:15:50 +0100
+Subject: Re: [PATCH i-g-t] tests/amd_security: fix secure bounce test issue
+Content-Language: en-US
+To: "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+References: <20231204030007.326044-1-jesse.zhang@amd.com>
+ <DM4PR12MB51524419519645808B321A18E3692@DM4PR12MB5152.namprd12.prod.outlook.com>
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <DM4PR12MB51524419519645808B321A18E3692@DM4PR12MB5152.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_lib/intel=5Fcompute=3A_Fix_inc?=
- =?utf-8?q?orrect_check_for_opencl_kernel_support?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: janga.rahul.kumar@intel.com
-Date: Wed, 10 Jan 2024 09:56:14 -0000
-Message-ID: <170488057444.240792.13173882888063454515@5338d5abeb45>
-References: <20240110065353.2271236-1-janga.rahul.kumar@intel.com>
-In-Reply-To: <20240110065353.2271236-1-janga.rahul.kumar@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,216 +24,96 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4188925918144409311==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ From coding style etc it looks good and of hand it seems to make sense.
 
-== Series Details ==
+But I don't understand the background of the test and why that direction 
+needs to be reverted.
 
-Series: lib/intel_compute: Fix incorrect check for opencl kernel support
-URL   : https://patchwork.freedesktop.org/series/128413/
-State : failure
+So Vitaly can you take a look?
 
-== Summary ==
+Thanks,
+Christian.
 
-CI Bug Log - changes from XEIGT_7666_BAT -> XEIGTPW_10498_BAT
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_10498_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_10498_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_10498_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_exec_fault_mode@twice-bindexecqueue-imm:
-    - bat-pvc-2:          [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7666/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-imm.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10498/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-imm.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10498_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:
-    - bat-adlp-7:         [PASS][3] -> [FAIL][4] ([Intel XE#692] / [Intel XE#773])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7666/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10498/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
-
-  * igt@xe_create@create-execqueues-leak:
-    - bat-atsm-2:         [PASS][5] -> [FAIL][6] ([Intel XE#1099])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7666/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10498/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
-    - bat-adlp-7:         [FAIL][7] ([Intel XE#692] / [Intel XE#773]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7666/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10498/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - bat-adlp-7:         [FAIL][9] ([Intel XE#480]) -> [PASS][10] +1 other test pass
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7666/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10498/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-
-  * igt@xe_create@create-execqueues-noleak:
-    - bat-atsm-2:         [FAIL][11] ([Intel XE#1099]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7666/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10498/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
-
-  
-  [Intel XE#1099]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1099
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#692]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/692
-  [Intel XE#773]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/773
-
-
-Build changes
--------------
-
-  * IGT: IGT_7666 -> IGTPW_10498
-
-  IGTPW_10498: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10498/index.html
-  IGT_7666: 5f97adfd0e1636788a6af5b592f0d15b4f1027c8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-613-c170f452b2634a920b2251f825648abaca53e5cb: c170f452b2634a920b2251f825648abaca53e5cb
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10498/index.html
-
---===============4188925918144409311==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/intel_compute: Fix incorrect check for opencl kernel support</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128413/">https://patchwork.freedesktop.org/series/128413/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10498/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10498/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7666_BAT -&gt; XEIGTPW_10498_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_10498_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_10498_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_10498_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@xe_exec_fault_mode@twice-bindexecqueue-imm:<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7666/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-imm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10498/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-imm.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10498_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7666/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10498/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/692">Intel XE#692</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/773">Intel XE#773</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_create@create-execqueues-leak:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7666/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10498/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1099">Intel XE#1099</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7666/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/692">Intel XE#692</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/773">Intel XE#773</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10498/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7666/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10498/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_create@create-execqueues-noleak:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7666/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1099">Intel XE#1099</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10498/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7666 -&gt; IGTPW_10498</li>
-</ul>
-<p>IGTPW_10498: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10498/index.html<br />
-  IGT_7666: 5f97adfd0e1636788a6af5b592f0d15b4f1027c8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-613-c170f452b2634a920b2251f825648abaca53e5cb: c170f452b2634a920b2251f825648abaca53e5cb</p>
-
-</body>
-</html>
-
---===============4188925918144409311==--
+Am 10.01.24 um 10:13 schrieb Zhang, Jesse(Jie):
+> [AMD Official Use Only - General]
+>
+> Ping ...
+> Can anyone help review this.
+> -----Original Message-----
+> From: Jesse Zhang <jesse.zhang@amd.com>
+> Sent: Monday, December 4, 2023 11:00 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>; Deucher, Alexander <Alexander.Deucher@amd.com>; Tuikov, Luben <Luben.Tuikov@amd.com>; Koenig, Christian <Christian.Koenig@amd.com>; Zhang, Jesse(Jie) <Jesse.Zhang@amd.com>; Kamil Konieczny <kamil.konieczny@linux.intel.com>; Zhang, Jesse(Jie) <Jesse.Zhang@amd.com>
+> Subject: [PATCH i-g-t] tests/amd_security: fix secure bounce test issue
+>
+> When it copy from scr (bo) to destination (bo2), and move bo2 from vram to gtt.
+> Then it need to copy from bo2(src)
+> to bo (destination) for verification.
+>
+> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Cc: Luben Tuikov <luben.tuikov@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Christian Koenig <christian.koenig@amd.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>
+> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+> ---
+>   tests/amdgpu/amd_security.c | 17 ++++++++++++-----
+>   1 file changed, 12 insertions(+), 5 deletions(-)
+>
+> diff --git a/tests/amdgpu/amd_security.c b/tests/amdgpu/amd_security.c index d1146a7ce..7fb6df3b6 100644
+> --- a/tests/amdgpu/amd_security.c
+> +++ b/tests/amdgpu/amd_security.c
+> @@ -99,7 +99,7 @@ static void
+>   amdgpu_bo_lcopy(amdgpu_device_handle device,
+>                  struct amdgpu_ring_context *ring_context,
+>                  const struct amdgpu_ip_block_version *ip_block, uint32_t size,
+> -               uint32_t secure)
+> +               uint32_t secure, int direction)
+>   {
+>          ring_context->pm4 = calloc(PACKET_LCOPY_SIZE, sizeof(*ring_context->pm4));
+>          ring_context->secure = secure;
+> @@ -108,8 +108,15 @@ amdgpu_bo_lcopy(amdgpu_device_handle device,
+>          ring_context->res_cnt = 2;
+>          igt_assert(ring_context->pm4);
+>
+> -       amdgpu_sdma_lcopy(ring_context->pm4, ring_context->bo_mc2,
+> -                       ring_context->bo_mc, size, secure);
+> +       if (direction) {
+> +               /* copy from bo2 to bo */
+> +               amdgpu_sdma_lcopy(ring_context->pm4, ring_context->bo_mc,
+> +                               ring_context->bo_mc2, size, secure);
+> +       } else {
+> +               /* copy from bo to bo bo2 */
+> +               amdgpu_sdma_lcopy(ring_context->pm4, ring_context->bo_mc2,
+> +                               ring_context->bo_mc, size, secure);
+> +       }
+>          amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
+>          free(ring_context->pm4);
+>   }
+> @@ -222,7 +229,7 @@ amdgpu_secure_bounce(amdgpu_device_handle device_handle, int fd,
+>          ring_context->resources[1] = ring_context->bo;  // Alice
+>
+>          amdgpu_bo_lcopy(device_handle, ring_context, ip_block, SECURE_BUFFER_SIZE,
+> -                       secure == true ? 1 : 0);
+> +                       secure == true ? 1 : 0, 0);
+>
+>          /* Verify the contents of Bob. */
+>          for (pp = (__typeof__(pp))ring_context->bo2_cpu;
+> @@ -249,7 +256,7 @@ amdgpu_secure_bounce(amdgpu_device_handle device_handle, int fd,
+>
+>          /* sDMA TMZ copy from Bob to Alice. */
+>          amdgpu_bo_lcopy(device_handle, ring_context, ip_block, SECURE_BUFFER_SIZE,
+> -                       secure == true ? 1 : 0);
+> +                       secure == true ? 1 : 0, 1);
+>
+>          /* Verify the contents of Alice */
+>          for (pp = (__typeof__(pp))ring_context->bo_cpu;
+> --
+> 2.25.1
+>
