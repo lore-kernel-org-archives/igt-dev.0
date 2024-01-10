@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3938210E5A2
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Jan 2024 13:06:50 +0000 (UTC)
-Date: Wed, 10 Jan 2024 14:06:45 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Matthew Auld <matthew.william.auld@gmail.com>
-Subject: Re: [PATCH i-g-t v3 2/3] lib/intel_batchbuffer: Select xe2
- rendercopy for LunarLake
-Message-ID: <20240110130645.qbmixhr6lbjvbwwp@zkempczy-mobl2>
-References: <20240110122514.33495-1-zbigniew.kempczynski@intel.com>
- <20240110122514.33495-3-zbigniew.kempczynski@intel.com>
- <CAM0jSHPWbbtp+FDieJ3udWAdDYZSfnXCTU5NSJSh=3Cog5ZcvA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAM0jSHPWbbtp+FDieJ3udWAdDYZSfnXCTU5NSJSh=3Cog5ZcvA@mail.gmail.com>
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_add_force_bigjoiner_tes?=
+ =?utf-8?q?t?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Date: Wed, 10 Jan 2024 13:09:06 -0000
+Message-ID: <170489214695.240792.2184401669336614685@5338d5abeb45>
+References: <20240110113906.523857-1-kunal1.joshi@intel.com>
+In-Reply-To: <20240110113906.523857-1-kunal1.joshi@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,94 +17,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jan 10, 2024 at 12:33:03PM +0000, Matthew Auld wrote:
-> On Wed, 10 Jan 2024 at 12:25, Zbigniew Kempczyński
-> <zbigniew.kempczynski@intel.com> wrote:
-> >
-> > Along with rendercopy xe2 pipeline / shader selection for LunarLake
-> > reorganize if/else conditionals to handle specific selection first.
-> >
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> > Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-> > Cc: Matthew Auld <matthew.william.auld@gmail.com>
-> > ---
-> > v3: Drop feature selection toward direct ver/platform (Matt)
-> > ---
-> >  lib/intel_batchbuffer.c | 40 +++++++++++++++++++++-------------------
-> >  1 file changed, 21 insertions(+), 19 deletions(-)
-> >
-> > diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> > index ccab55cec7..85023f9e6f 100644
-> > --- a/lib/intel_batchbuffer.c
-> > +++ b/lib/intel_batchbuffer.c
-> > @@ -656,28 +656,30 @@ igt_render_copyfunc_t igt_get_render_copyfunc(int devid)
-> >  {
-> >         igt_render_copyfunc_t copy = NULL;
-> >
-> > -       if (IS_GEN2(devid))
-> > -               copy = gen2_render_copyfunc;
-> > -       else if (IS_GEN3(devid))
-> > -               copy = gen3_render_copyfunc;
-> > -       else if (IS_GEN4(devid) || IS_GEN5(devid))
-> > -               copy = gen4_render_copyfunc;
-> > -       else if (IS_GEN6(devid))
-> > -               copy = gen6_render_copyfunc;
-> > -       else if (IS_GEN7(devid))
-> > -               copy = gen7_render_copyfunc;
-> > -       else if (IS_GEN8(devid))
-> > -               copy = gen8_render_copyfunc;
-> > -       else if (IS_GEN9(devid) || IS_GEN10(devid))
-> > -               copy = gen9_render_copyfunc;
-> > -       else if (IS_GEN11(devid))
-> > -               copy = gen11_render_copyfunc;
-> > -       else if (HAS_FLATCCS(devid))
-> > -               copy = gen12p71_render_copyfunc;
-> > -       else if (IS_METEORLAKE(devid))
-> > +       if (IS_METEORLAKE(devid))
-> >                 copy = mtl_render_copyfunc;
-> > +       else if (IS_DG2(devid))
-> > +               copy = gen12p71_render_copyfunc;
-> > +       else if (IS_GEN(devid, 20))
-> > +               copy = xe2_render_copyfunc;
-> 
-> Nit: Maybe keep this sorted by platform. i.e xe2 at the top.
-> 
-> Reviewed-by: Matthew Auld <matthew.auld@Intel.com>
+== Series Details ==
 
-I think direct platform selection should be first, then
-version to avoid being incidentally catched on IS_GEN() macro.
+Series: add force bigjoiner test
+URL   : https://patchwork.freedesktop.org/series/128426/
+State : warning
 
---
-Zbigniew
+== Summary ==
 
-> 
-> >         else if (IS_GEN12(devid))
-> >                 copy = gen12_render_copyfunc;
-> > +       else if (IS_GEN11(devid))
-> > +               copy = gen11_render_copyfunc;
-> > +       else if (IS_GEN9(devid) || IS_GEN10(devid))
-> > +               copy = gen9_render_copyfunc;
-> > +       else if (IS_GEN8(devid))
-> > +               copy = gen8_render_copyfunc;
-> > +       else if (IS_GEN7(devid))
-> > +               copy = gen7_render_copyfunc;
-> > +       else if (IS_GEN6(devid))
-> > +               copy = gen6_render_copyfunc;
-> > +       else if (IS_GEN4(devid) || IS_GEN5(devid))
-> > +               copy = gen4_render_copyfunc;
-> > +       else if (IS_GEN3(devid))
-> > +               copy = gen3_render_copyfunc;
-> > +       else if (IS_GEN2(devid))
-> > +               copy = gen2_render_copyfunc;
-> >
-> >         return copy;
-> >  }
-> > --
-> > 2.34.1
-> >
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1074724 for the overview.
+
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/53570581):
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out 3ab49f9e as detached HEAD (ref is intel/IGTPW_10501)...
+  Removing build/
+  Removing lib/i915/perf-configs/__pycache__/
+  Removing scripts/__pycache__/
+  
+  Skipping Git submodules setup
+  section_end:1704891789:get_sources
+  section_start:1704891789:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-3ab49f9e5214070391356577d100df8a81b76c31 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64@sha256:df8438cd0e218646c3bdc2eb6abccb43c4e884bfd40a1a4dd0365f1f8031d21f ...
+  section_end:1704891795:step_script
+  section_start:1704891795:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1704891796:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: container create: reading image "7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c": locating image with ID "7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c": image not known (docker.go:570:0s)
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1074724
