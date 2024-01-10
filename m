@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D2F110E574
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Jan 2024 08:22:53 +0000 (UTC)
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 3/3] lib: sync i915_pciids.h with kernel
-Date: Wed, 10 Jan 2024 13:45:32 +0530
-Message-Id: <20240110081532.1378038-4-chaitanya.kumar.borah@intel.com>
-In-Reply-To: <20240110081532.1378038-1-chaitanya.kumar.borah@intel.com>
-References: <20240110081532.1378038-1-chaitanya.kumar.borah@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E5B0A10E6C6
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Jan 2024 08:26:03 +0000 (UTC)
+From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: RE: [PATCH i-g-t 1/3] lib/i915/perf: include i915_pciid_local.h
+Date: Wed, 10 Jan 2024 08:26:00 +0000
+Message-ID: <SJ1PR11MB612979C8E981C0CEC4EC8E64B9692@SJ1PR11MB6129.namprd11.prod.outlook.com>
+References: <20240109060943.1236373-1-chaitanya.kumar.borah@intel.com>
+ <20240109060943.1236373-2-chaitanya.kumar.borah@intel.com>
+ <20240109123713.vhdgk33mplgj7gac@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20240109123713.vhdgk33mplgj7gac@kamilkon-desk.igk.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,134 +27,45 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This synchronizes with kernel commit
-
-    5032c607e886 ("drm/i915: ATS-M device ID update")
-
-v2: Keep i915_pciids.h changes only (Juha-Pekka Heikkila)
-
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
----
- lib/i915_pciids.h | 56 +++++++++++++++++++++--------------------------
- 1 file changed, 25 insertions(+), 31 deletions(-)
-
-diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
-index bee58554d..fcf1849aa 100644
---- a/lib/i915_pciids.h
-+++ b/lib/i915_pciids.h
-@@ -588,6 +588,7 @@
- 	INTEL_VGA_DEVICE(0x4551, info), \
- 	INTEL_VGA_DEVICE(0x4555, info), \
- 	INTEL_VGA_DEVICE(0x4557, info), \
-+	INTEL_VGA_DEVICE(0x4570, info), \
- 	INTEL_VGA_DEVICE(0x4571, info)
- 
- /* JSL */
-@@ -641,6 +642,7 @@
- 	INTEL_VGA_DEVICE(0x4682, info), \
- 	INTEL_VGA_DEVICE(0x4688, info), \
- 	INTEL_VGA_DEVICE(0x468A, info), \
-+	INTEL_VGA_DEVICE(0x468B, info), \
- 	INTEL_VGA_DEVICE(0x4690, info), \
- 	INTEL_VGA_DEVICE(0x4692, info), \
- 	INTEL_VGA_DEVICE(0x4693, info)
-@@ -683,14 +685,22 @@
- 	INTEL_VGA_DEVICE(0xA78A, info), \
- 	INTEL_VGA_DEVICE(0xA78B, info)
- 
-+/* RPL-U */
-+#define INTEL_RPLU_IDS(info) \
-+	INTEL_VGA_DEVICE(0xA721, info), \
-+	INTEL_VGA_DEVICE(0xA7A1, info), \
-+	INTEL_VGA_DEVICE(0xA7A9, info), \
-+	INTEL_VGA_DEVICE(0xA7AC, info), \
-+	INTEL_VGA_DEVICE(0xA7AD, info)
-+
- /* RPL-P */
- #define INTEL_RPLP_IDS(info) \
-+	INTEL_RPLU_IDS(info), \
- 	INTEL_VGA_DEVICE(0xA720, info), \
--	INTEL_VGA_DEVICE(0xA721, info), \
- 	INTEL_VGA_DEVICE(0xA7A0, info), \
--	INTEL_VGA_DEVICE(0xA7A1, info), \
- 	INTEL_VGA_DEVICE(0xA7A8, info), \
--	INTEL_VGA_DEVICE(0xA7A9, info)
-+	INTEL_VGA_DEVICE(0xA7AA, info), \
-+	INTEL_VGA_DEVICE(0xA7AB, info)
- 
- /* DG2 */
- #define INTEL_DG2_G10_IDS(info) \
-@@ -705,11 +715,14 @@
- 	INTEL_VGA_DEVICE(0x5693, info), \
- 	INTEL_VGA_DEVICE(0x5694, info), \
- 	INTEL_VGA_DEVICE(0x5695, info), \
--	INTEL_VGA_DEVICE(0x5698, info), \
- 	INTEL_VGA_DEVICE(0x56A5, info), \
- 	INTEL_VGA_DEVICE(0x56A6, info), \
- 	INTEL_VGA_DEVICE(0x56B0, info), \
--	INTEL_VGA_DEVICE(0x56B1, info)
-+	INTEL_VGA_DEVICE(0x56B1, info), \
-+	INTEL_VGA_DEVICE(0x56BA, info), \
-+	INTEL_VGA_DEVICE(0x56BB, info), \
-+	INTEL_VGA_DEVICE(0x56BC, info), \
-+	INTEL_VGA_DEVICE(0x56BD, info)
- 
- #define INTEL_DG2_G12_IDS(info) \
- 	INTEL_VGA_DEVICE(0x5696, info), \
-@@ -725,7 +738,8 @@
- 	INTEL_DG2_G12_IDS(info)
- 
- #define INTEL_ATS_M150_IDS(info) \
--	INTEL_VGA_DEVICE(0x56C0, info)
-+	INTEL_VGA_DEVICE(0x56C0, info), \
-+	INTEL_VGA_DEVICE(0x56C2, info)
- 
- #define INTEL_ATS_M75_IDS(info) \
- 	INTEL_VGA_DEVICE(0x56C1, info)
-@@ -733,34 +747,14 @@
- #define INTEL_ATS_M_IDS(info) \
- 	INTEL_ATS_M150_IDS(info), \
- 	INTEL_ATS_M75_IDS(info)
-+
- /* MTL */
--#define INTEL_MTL_M_IDS(info) \
-+#define INTEL_MTL_IDS(info) \
- 	INTEL_VGA_DEVICE(0x7D40, info), \
--	INTEL_VGA_DEVICE(0x7D60, info)
--#define INTEL_MTL_P_GT2_IDS(info) \
--	INTEL_VGA_DEVICE(0x7D45, info)
--#define INTEL_MTL_P_GT3_IDS(info) \
-+	INTEL_VGA_DEVICE(0x7D45, info), \
- 	INTEL_VGA_DEVICE(0x7D55, info), \
-+	INTEL_VGA_DEVICE(0x7D60, info), \
-+	INTEL_VGA_DEVICE(0x7D67, info), \
- 	INTEL_VGA_DEVICE(0x7DD5, info)
--#define INTEL_MTL_P_IDS(info) \
--	INTEL_MTL_P_GT2_IDS(info), \
--	INTEL_MTL_P_GT3_IDS(info)
--
--#define INTEL_MTL_IDS(info) \
--	INTEL_MTL_M_IDS(info), \
--	INTEL_MTL_P_IDS(info)
--
--/* PVC */
--#define INTEL_PVC_IDS(info) \
--	INTEL_VGA_DEVICE(0x0BD0, info),	\
--	INTEL_VGA_DEVICE(0x0BD5, info),	\
--	INTEL_VGA_DEVICE(0x0BD6, info),	\
--	INTEL_VGA_DEVICE(0x0BD7, info),	\
--	INTEL_VGA_DEVICE(0x0BD8, info),	\
--	INTEL_VGA_DEVICE(0x0BD9, info),	\
--	INTEL_VGA_DEVICE(0x0BDA, info),	\
--	INTEL_VGA_DEVICE(0x0BDB, info),	\
--	INTEL_VGA_DEVICE(0x0BD1, info),	\
--	INTEL_VGA_DEVICE(0x0BD2, info)
- 
- #endif /* _I915_PCIIDS_H */
--- 
-2.25.1
+SGVsbG8gS2FtaWwsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2Ft
+aWwgS29uaWVjem55IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiBU
+dWVzZGF5LCBKYW51YXJ5IDksIDIwMjQgNjowNyBQTQ0KPiBUbzogaWd0LWRldkBsaXN0cy5mcmVl
+ZGVza3RvcC5vcmcNCj4gQ2M6IEJvcmFoLCBDaGFpdGFueWEgS3VtYXIgPGNoYWl0YW55YS5rdW1h
+ci5ib3JhaEBpbnRlbC5jb20+Ow0KPiBqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tOyBMYW5k
+d2VybGluLCBMaW9uZWwgRw0KPiA8bGlvbmVsLmcubGFuZHdlcmxpbkBpbnRlbC5jb20+OyBWaXNo
+d2FuYXRoYXB1cmEsIE5pcmFuamFuYQ0KPiA8bmlyYW5qYW5hLnZpc2h3YW5hdGhhcHVyYUBpbnRl
+bC5jb20+OyBSb3BlciwgTWF0dGhldyBEDQo+IDxtYXR0aGV3LmQucm9wZXJAaW50ZWwuY29tPg0K
+PiBTdWJqZWN0OiBSZTogW1BBVENIIGktZy10IDEvM10gbGliL2k5MTUvcGVyZjogaW5jbHVkZSBp
+OTE1X3BjaWlkX2xvY2FsLmgNCj4gDQo+IEhpIENoYWl0YW55YSwNCj4gT24gMjAyNC0wMS0wOSBh
+dCAxMTozOTo0MSArMDUzMCwgQ2hhaXRhbnlhIEt1bWFyIEJvcmFoIHdyb3RlOg0KPiA+IHBlcmYu
+YyB1c2VzIFBDSSBJRCBtYWNyb3Mgbm90IGZvdW5kIGluIGtlcm5lbCBoZWFkZXIgaTkxNV9wY2lp
+ZC5oLg0KPiA+IFRoZXJlZm9yZSBpbmNsdWRlIGk5MTVfcGNpaWRfbG9jYWwuaCBpbnN0ZWFkIG9m
+IGk5MTVfcGNpaWQuaCBzbyB0aGF0DQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tIF5eXl5eXl5eXl4gVGhpcyBpcyBzb21ld2hhdCBtaXNsZWFkaW5nDQo+IGJlY2F1c2Ug
+X2xvY2FsLmggd2lsbCBpbmNsdWRlIGk5MTVfcGNpaWRzLmggaW1obyBzL2luc3RlYWQgb2YvYW5k
+Lw0KPiANCj4gT3Igb3RoZXIgd2F5IHRvIHB1dCBpdDoNCj4gDQo+IFRoZXJlZm9yZSBpbmNsdWRl
+IGk5MTVfcGNpaWRfbG9jYWwuaCAod2hpY2ggd2lsbCBpbmNsdWRlIGk5MTVfcGNpaWQuaCkgc28g
+dGhhdA0KPiANCj4gPiB3ZSBjYW4gbW92ZSB0aGVzZSBtYWNyb3MgdG8gdGhlIGxvY2FsIGZpbGUu
+IFRoYXQgd2F5IHdlIGRvbid0IGxvc2UNCj4gPiB0aGVtIHdoZW4gaTkxNV9wY2lpZC5oIGlzIHN5
+bmNlZCB3aXRoIGtlcm5lbC4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IENoYWl0YW55YSBLdW1h
+ciBCb3JhaCA8Y2hhaXRhbnlhLmt1bWFyLmJvcmFoQGludGVsLmNvbT4NCj4gPiBDYzogTWF0dCBS
+b3BlciA8bWF0dGhldy5kLnJvcGVyQGludGVsLmNvbT4NCj4gPiBDYzogSnVoYS1QZWtrYSBIZWlr
+a2lsYSA8anVoYXBla2thLmhlaWtraWxhQGdtYWlsLmNvbT4NCj4gPiBDYzogS2FtaWwgS29uaWVj
+em55IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiA+IENjOiBMaW9uZWwgTGFu
+ZHdlcmxpbiA8bGlvbmVsLmcubGFuZHdlcmxpbkBpbnRlbC5jb20+DQo+ID4gQ2M6IE5pcmFuamFu
+YSBWaXNod2FuYXRoYXB1cmEgPG5pcmFuamFuYS52aXNod2FuYXRoYXB1cmFAaW50ZWwuY29tPg0K
+PiA+DQo+ID4gLS0tDQo+ID4gIGxpYi9pOTE1L3BlcmYuYyB8IDIgKy0NCj4gPiAgMSBmaWxlIGNo
+YW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0
+IGEvbGliL2k5MTUvcGVyZi5jIGIvbGliL2k5MTUvcGVyZi5jIGluZGV4DQo+ID4gZGRhZGI1M2I2
+Li4yMDA2ZGQ0YWQgMTAwNjQ0DQo+ID4gLS0tIGEvbGliL2k5MTUvcGVyZi5jDQo+ID4gKysrIGIv
+bGliL2k5MTUvcGVyZi5jDQo+ID4gQEAgLTM3LDcgKzM3LDcgQEANCj4gPg0KPiA+ICAjaW5jbHVk
+ZSA8aTkxNV9kcm0uaD4NCj4gPg0KPiA+IC0jaW5jbHVkZSAiaTkxNV9wY2lpZHMuaCINCj4gXl5e
+Xl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eDQo+IENvbnNpZGVyIGFkZGluZyBoZXJlIGNvbW1lbnQg
+bGlrZToNCj4gLyogaTkxNV9wY2lpZHMuaCB3aWxsIGJlIGluY2x1ZGVkIGJ5IGk5MTVfcGNpaWRz
+X2xvY2FsLmggKi8NCj4gDQo+IG9yIG1heWJlIGV2ZW4ganVzdCBsZWF2ZSB0aGF0IGluY2x1ZGUg
+aGVyZS4NCj4gDQoNCkkgZGVjaWRlZCB0byBnbyB3aXRoIHRoaXMgYXMgdGhlcmUgaXMgYWxyZWFk
+eSBhIHByZWNlZGVuY2UgaW4gbGliL2ludGVsX2RldmljZV9pbmZvLmMNCg0KVGhhbmsgeW91IGZv
+ciB5b3VyIGZlZWRiYWNrLiBBIG5ldyB2ZXJzaW9uIGlzIGF2YWlsYWJsZSBub3cuDQoNClJlZ2Fy
+ZHMNCkNoYWl0YW55YQ0KDQo+IFJlZ2FyZHMsDQo+IEthbWlsDQo+IA0KPiA+ICsjaW5jbHVkZSAi
+aTkxNV9wY2lpZHNfbG9jYWwuaCINCj4gPg0KPiA+ICAjaW5jbHVkZSAiaW50ZWxfY2hpcHNldC5o
+Ig0KPiA+ICAjaW5jbHVkZSAicGVyZi5oIg0KPiA+IC0tDQo+ID4gMi4yNS4xDQo+ID4NCg==
