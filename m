@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4BB0710E0F8
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Jan 2024 06:01:49 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6192301407265573291=="
+ boundary="------------88v0JDubO7Cst3YLGJ0c0R0w"
+Message-ID: <078f8a4d-56ea-4b3b-9f5b-2a69853696ba@intel.com>
+Date: Wed, 10 Jan 2024 11:31:42 +0530
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fccs=3A_Fix_bl?=
- =?utf-8?q?ock-multicopy-inplace_subtest?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Akshata Jahagirdar" <akshata.jahagirdar@intel.com>
-Date: Tue, 09 Jan 2024 22:32:20 -0000
-Message-ID: <170483954085.240792.143901904481485998@5338d5abeb45>
-References: <cover.1704874216.git.akshata.jahagirdar@intel.com>
-In-Reply-To: <cover.1704874216.git.akshata.jahagirdar@intel.com>
+Subject: Re: [i-g-t, 3/3] tests/intel/kms_dsc_helper: add dsc+big joiner helper
+ func
+Content-Language: en-US
+To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
+References: <20240105155951.124374-4-swati2.sharma@intel.com>
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <20240105155951.124374-4-swati2.sharma@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,161 +21,179 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6192301407265573291==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
+This is a multi-part message in MIME format.
+--------------88v0JDubO7Cst3YLGJ0c0R0w
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-== Series Details ==
 
-Series: tests/intel/xe_ccs: Fix block-multicopy-inplace subtest
-URL   : https://patchwork.freedesktop.org/series/128391/
-State : success
+On 1/5/2024 9:29 PM, Swati Sharma wrote:
+> Add helper functions dsc with big joiner helper functions.
+>
+> Signed-off-by: Swati Sharma<swati2.sharma@intel.com>
+> ---
+>   tests/intel/kms_dsc_helper.c | 32 ++++++++++++++++++++++++++++++++
+>   tests/intel/kms_dsc_helper.h |  3 +++
+>   2 files changed, 35 insertions(+)
+>
+> diff --git a/tests/intel/kms_dsc_helper.c b/tests/intel/kms_dsc_helper.c
+> index 58057aca3..91ce21062 100644
+> --- a/tests/intel/kms_dsc_helper.c
+> +++ b/tests/intel/kms_dsc_helper.c
+> @@ -7,8 +7,10 @@
+>   
+>   static bool force_dsc_en_orig;
+>   static bool force_dsc_fractional_bpp_en_orig;
+> +static bool force_dsc_bigjoiner_en_orig;
+>   static int force_dsc_restore_fd = -1;
+>   static int force_dsc_fractional_bpp_restore_fd = -1;
+> +static int force_dsc_bigjoiner_restore_fd = -1;
+>   
+>   void force_dsc_enable(int drmfd, igt_output_t *output)
+>   {
+> @@ -201,3 +203,33 @@ bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *outp
+>   
+>   	return true;
+>   }
+> +
+> +void force_dsc_bigjoiner_enable(int drmfd, igt_output_t *output)
+> +{
+> +	int ret;
+> +
+> +	igt_debug("Forcing DSC Big Joiner on %s\n", output->name);
+> +	ret = igt_force_bigjoiner_enable(drmfd, output->name);
+> +	igt_assert_f(ret == 0, "forcing dsc big joiner debugfs_write failed\n");
+> +}
+> +
+> +void save_force_dsc_bigjoiner_en(int drmfd, igt_output_t *output)
+> +{
+> +	force_dsc_bigjoiner_en_orig =
+> +		igt_is_force_bigjoiner_enabled(drmfd, output->name);
+> +	force_dsc_bigjoiner_restore_fd =
+> +		igt_get_bigjoiner_debugfs_fd(drmfd, output->name);
+> +	igt_assert(force_dsc_bigjoiner_restore_fd >= 0);
+> +}
+> +
+> +void restore_force_dsc_bigjoiner_en(void)
+> +{
+> +	if (force_dsc_bigjoiner_restore_fd < 0)
+> +		return;
+> +
+> +	igt_debug("Restoring DSC Big Joiner enable\n");
+> +	igt_assert(write(force_dsc_bigjoiner_restore_fd, force_dsc_bigjoiner_en_orig ? "1" : "0", 1) == 1);
+> +
+> +	close(force_dsc_bigjoiner_restore_fd);
+> +	force_dsc_bigjoiner_restore_fd = -1;
+> +}
 
-== Summary ==
 
-CI Bug Log - changes from XEIGT_7664_BAT -> XEIGTPW_10497_BAT
-====================================================
+Hello Swati,
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10497_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_create@create-execqueues-noleak:
-    - bat-atsm-2:         [PASS][1] -> [FAIL][2] ([Intel XE#1099])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7664/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10497/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:
-    - bat-dg2-oem2:       [FAIL][3] ([Intel XE#480]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7664/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10497/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [DMESG-FAIL][5] ([Intel XE#1033]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7664/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10497/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
-  [Intel XE#1099]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1099
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+These functions (force_dsc_enable, save_force_dsc_bigjoiner_en and restore_force_dsc_bigjoiner_en) seems to be generic and not dsc specific.
+Can this be somewhere where other IGT"s can use them?
 
 
-Build changes
--------------
+Thanks and Regards
+Kunal Joshi
 
-  * IGT: IGT_7664 -> IGTPW_10497
-  * Linux: xe-607-eacbcdb537a2774959d012206aba22848fdade26 -> xe-611-39df1f6b1259816cc42b5f2451ca5092fad340ce
 
-  IGTPW_10497: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10497/index.html
-  IGT_7664: 5b8a8dcca7711c73f9cfeb66b5deb27751290fb4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-607-eacbcdb537a2774959d012206aba22848fdade26: eacbcdb537a2774959d012206aba22848fdade26
-  xe-611-39df1f6b1259816cc42b5f2451ca5092fad340ce: 39df1f6b1259816cc42b5f2451ca5092fad340ce
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10497/index.html
-
---===============6192301407265573291==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
+--------------88v0JDubO7Cst3YLGJ0c0R0w
+Content-Type: text/html; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 1/5/2024 9:29 PM, Swati Sharma
+      wrote:<br>
+    </div>
+    <blockquote type="cite">
+      <pre class="moz-quote-pre" wrap="">Add helper functions dsc with big joiner helper functions.
+
+Signed-off-by: Swati Sharma <a class="moz-txt-link-rfc2396E" href="mailto:swati2.sharma@intel.com">&lt;swati2.sharma@intel.com&gt;</a>
+---
+ tests/intel/kms_dsc_helper.c | 32 ++++++++++++++++++++++++++++++++
+ tests/intel/kms_dsc_helper.h |  3 +++
+ 2 files changed, 35 insertions(+)
+
+diff --git a/tests/intel/kms_dsc_helper.c b/tests/intel/kms_dsc_helper.c
+index 58057aca3..91ce21062 100644
+--- a/tests/intel/kms_dsc_helper.c
++++ b/tests/intel/kms_dsc_helper.c
+@@ -7,8 +7,10 @@
+ 
+ static bool force_dsc_en_orig;
+ static bool force_dsc_fractional_bpp_en_orig;
++static bool force_dsc_bigjoiner_en_orig;
+ static int force_dsc_restore_fd = -1;
+ static int force_dsc_fractional_bpp_restore_fd = -1;
++static int force_dsc_bigjoiner_restore_fd = -1;
+ 
+ void force_dsc_enable(int drmfd, igt_output_t *output)
+ {
+@@ -201,3 +203,33 @@ bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *outp
+ 
+ 	return true;
+ }
++
++void force_dsc_bigjoiner_enable(int drmfd, igt_output_t *output)
++{
++	int ret;
++
++	igt_debug("Forcing DSC Big Joiner on %s\n", output-&gt;name);
++	ret = igt_force_bigjoiner_enable(drmfd, output-&gt;name);
++	igt_assert_f(ret == 0, "forcing dsc big joiner debugfs_write failed\n");
++}
++
++void save_force_dsc_bigjoiner_en(int drmfd, igt_output_t *output)
++{
++	force_dsc_bigjoiner_en_orig =
++		igt_is_force_bigjoiner_enabled(drmfd, output-&gt;name);
++	force_dsc_bigjoiner_restore_fd =
++		igt_get_bigjoiner_debugfs_fd(drmfd, output-&gt;name);
++	igt_assert(force_dsc_bigjoiner_restore_fd &gt;= 0);
++}
++
++void restore_force_dsc_bigjoiner_en(void)
++{
++	if (force_dsc_bigjoiner_restore_fd &lt; 0)
++		return;
++
++	igt_debug("Restoring DSC Big Joiner enable\n");
++	igt_assert(write(force_dsc_bigjoiner_restore_fd, force_dsc_bigjoiner_en_orig ? "1" : "0", 1) == 1);
++
++	close(force_dsc_bigjoiner_restore_fd);
++	force_dsc_bigjoiner_restore_fd = -1;
++}</pre>
+    </blockquote>
+    <p><br>
+    </p>
+    <p>Hello Swati,<br>
+    </p>
+    <pre class="moz-quote-pre" wrap="">These functions (force_dsc_enable, save_force_dsc_bigjoiner_en and restore_force_dsc_bigjoiner_en) seems to be generic and not dsc specific.
+Can this be somewhere where other IGT"s can use them?
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_ccs: Fix block-multicopy-inplace subtest</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128391/">https://patchwork.freedesktop.org/series/128391/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10497/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10497/index.html</a></td></tr>
-
-</table>
+Thanks and Regards
+Kunal Joshi
 
 
-    <h1>CI Bug Log - changes from XEIGT_7664_BAT -&gt; XEIGTPW_10497_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10497_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_create@create-execqueues-noleak:<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7664/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10497/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1099">Intel XE#1099</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7664/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10497/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7664/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10497/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7664 -&gt; IGTPW_10497</li>
-<li>Linux: xe-607-eacbcdb537a2774959d012206aba22848fdade26 -&gt; xe-611-39df1f6b1259816cc42b5f2451ca5092fad340ce</li>
-</ul>
-<p>IGTPW_10497: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10497/index.html<br />
-  IGT_7664: 5b8a8dcca7711c73f9cfeb66b5deb27751290fb4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-607-eacbcdb537a2774959d012206aba22848fdade26: eacbcdb537a2774959d012206aba22848fdade26<br />
-  xe-611-39df1f6b1259816cc42b5f2451ca5092fad340ce: 39df1f6b1259816cc42b5f2451ca5092fad340ce</p>
-
-</body>
+<span style="white-space: normal"></span></pre>
+    <p></p>
+    <blockquote type="cite">
+      <pre class="moz-quote-pre" wrap="">
+</pre>
+    </blockquote>
+  </body>
 </html>
 
---===============6192301407265573291==--
+--------------88v0JDubO7Cst3YLGJ0c0R0w--
