@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1046010E562
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Jan 2024 08:22:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6D7510E565
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Jan 2024 08:22:40 +0000 (UTC)
 From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 0/3] Sync i915_pciid.h
-Date: Wed, 10 Jan 2024 13:45:29 +0530
-Message-Id: <20240110081532.1378038-1-chaitanya.kumar.borah@intel.com>
+Subject: [PATCH i-g-t 1/3] lib/i915/perf: include i915_pciids_local.h
+Date: Wed, 10 Jan 2024 13:45:30 +0530
+Message-Id: <20240110081532.1378038-2-chaitanya.kumar.borah@intel.com>
+In-Reply-To: <20240110081532.1378038-1-chaitanya.kumar.borah@intel.com>
+References: <20240110081532.1378038-1-chaitanya.kumar.borah@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -20,40 +22,34 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Our original intent was to add ARL-S PCI IDs to IGT header. The ideal way
-to do that would be to sync i915_pciids.h between kernel and IGT.
-However, recently both files have diverged. See [2]
+perf.c uses PCI ID macros not found in kernel header i915_pciids.h.
+Therefore include i915_pciids_local.h so that we can move these
+macros from i915_pciids.h to this file. That way we don't lose
+them when lib/i915_pciids.h is synced with kernel.
 
-We tried adding just the ARL-S PCI ID to the IGT i915_pciids.h but
-this will further diverge both the files. Please see the discussions
-in [1].
+v2: Retain i915_pciids.h inclusion (Kamil Konieczny)
 
-To avoid this, we have decided to use i915_pciids_local.h to move out
-any difference between the kernel and IGT header and then sync both
-the headers.
-
-I have not tested if the PVC and MTL changes causes any functional issue
-but verified that the build works.
-
-[1] https://patchwork.freedesktop.org/patch/572027/?series=50957&rev=15
-[2] 17f9914c47c9 (lib: Add Pontevecchio platform)
-    77dd5222d165 (v2: Add mtl to perf-metrics-codegen.py (Umesh))
-	
-Cc: Matt Roper <matthew.d.roper@intel.com> 
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+---
+ lib/i915/perf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Chaitanya Kumar Borah (3):
-  lib/i915/perf: include i915_pciids_local.h
-  lib: Add non-kernel macros to i915_pciids_local.h
-  lib: sync i915_pciids.h with kernel
-
- lib/i915/perf.c         |  1 +
- lib/i915_pciids.h       | 56 ++++++++++++++++++-----------------------
- lib/i915_pciids_local.h | 38 ++++++++++++++++++++++++++++
- 3 files changed, 64 insertions(+), 31 deletions(-)
-
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index ddadb53b6..bbfa36060 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -38,6 +38,7 @@
+ #include <i915_drm.h>
+ 
+ #include "i915_pciids.h"
++#include "i915_pciids_local.h"
+ 
+ #include "intel_chipset.h"
+ #include "perf.h"
 -- 
 2.25.1
