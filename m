@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
- [IPv6:2607:f8b0:4864:20::62e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2EEA310E675
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Jan 2024 21:07:13 +0000 (UTC)
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1d54b86538aso21945695ad.0
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Jan 2024 13:07:13 -0800 (PST)
-From: Rob Clark <robdclark@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH] tests/kms_plane_cursor: Skip unneeded overlay requirement
-Date: Wed, 10 Jan 2024 13:07:09 -0800
-Message-ID: <20240110210709.219979-1-robdclark@gmail.com>
+Content-Type: multipart/alternative;
+ boundary="===============3001081626343976239=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Funiversal=5Fplane?=
+ =?utf-8?q?=3A_Re-work_expectations_for_non-intel_hw?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Rob Clark" <robdclark@gmail.com>
+Date: Wed, 10 Jan 2024 22:06:46 -0000
+Message-ID: <170492440604.270358.13365415043280968999@5338d5abeb45>
+References: <20240110200434.218120-1-robdclark@gmail.com>
+In-Reply-To: <20240110200434.218120-1-robdclark@gmail.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,76 +17,211 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rob Clark <robdclark@chromium.org>
+--===============3001081626343976239==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Tests that aren't using an overlay plan should not require one.
+== Series Details ==
 
-Some qcom devices only have primary and cursor planes (but those planes
-are not restricted to a single CRTC).  Requiring an overlay plane even
-for subtests that didn't need one, was causing all the tests to SKIP.
+Series: tests/kms_universal_plane: Re-work expectations for non-intel hw
+URL   : https://patchwork.freedesktop.org/series/128450/
+State : success
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
----
- tests/kms_plane_cursor.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
-index dd33d8129626..5b3cdc06901b 100644
---- a/tests/kms_plane_cursor.c
-+++ b/tests/kms_plane_cursor.c
-@@ -91,7 +91,8 @@ typedef struct data {
- } data_t;
- 
- /* Common test setup. */
--static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output)
-+static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output,
-+		      unsigned int flags)
- {
- 	data->pipe_id = pipe_id;
- 	data->pipe = &data->display.pipes[data->pipe_id];
-@@ -100,7 +101,8 @@ static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output)
- 	data->mode = igt_output_get_mode(data->output);
- 
- 	data->primary = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
--	data->overlay = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVERLAY);
-+	if (flags & TEST_OVERLAY)
-+		data->overlay = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVERLAY);
- 	data->cursor = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
- 
- 	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-@@ -123,7 +125,8 @@ static void test_fini(data_t *data)
- 	igt_pipe_crc_free(data->pipe_crc);
- 	igt_display_reset(&data->display);
- 	igt_plane_set_fb(data->primary, NULL);
--	igt_plane_set_fb(data->overlay, NULL);
-+	if (data->overlay)
-+		igt_plane_set_fb(data->overlay, NULL);
- 	igt_plane_set_fb(data->cursor, NULL);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- }
-@@ -167,7 +170,8 @@ static void test_cursor_pos(data_t *data, int x, int y, unsigned int flags)
- 	igt_paint_color(cr, x, y, cw, ch, 1.0, 0.0, 1.0);
- 	igt_put_cairo_ctx(cr);
- 
--	igt_plane_set_fb(data->overlay, NULL);
-+	if (flags & TEST_OVERLAY)
-+		igt_plane_set_fb(data->overlay, NULL);
- 	igt_plane_set_fb(data->cursor, NULL);
- 	igt_display_commit_atomic(&data->display, 0, NULL);
- 
-@@ -333,7 +337,7 @@ igt_main
- 				if (!intel_pipe_output_combo_valid(display))
- 					continue;
- 
--				test_init(&data, pipe, output);
-+				test_init(&data, pipe, output, tests[i].flags);
- 
- 				for (j = 0; j < ARRAY_SIZE(cursor_sizes); j++) {
- 					int size = cursor_sizes[j];
--- 
-2.43.0
+CI Bug Log - changes from XEIGT_7668_BAT -> XEIGTPW_10504_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (3 -> 4)
+------------------------------
+
+  Additional (1): bat-dg2-oem2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10504_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] ([Intel XE#623])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] ([Intel XE#455])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] ([i915#5274])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][4] ([Intel XE#608])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][5] ([Intel XE#288]) +32 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][6] ([Intel XE#255])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][7] ([Intel XE#977])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][8] ([Intel XE#979]) +1 other test skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
+  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
+  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7668 -> IGTPW_10504
+
+  IGTPW_10504: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10504/index.html
+  IGT_7668: 3f2879fef93c0c546a2f1c0aa48a9cc2a594b9d2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-614-bb9e8031d2feb59becdea41e54e62f1bc47f3ef9: bb9e8031d2feb59becdea41e54e62f1bc47f3ef9
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/index.html
+
+--===============3001081626343976239==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_universal_plane: Re-work expectations for non-intel hw</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128450/">https://patchwork.freedesktop.org/series/128450/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7668_BAT -&gt; XEIGTPW_10504_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (3 -&gt; 4)</h2>
+<p>Additional (1): bat-dg2-oem2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10504_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10504/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7668 -&gt; IGTPW_10504</li>
+</ul>
+<p>IGTPW_10504: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10504/index.html<br />
+  IGT_7668: 3f2879fef93c0c546a2f1c0aa48a9cc2a594b9d2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-614-bb9e8031d2feb59becdea41e54e62f1bc47f3ef9: bb9e8031d2feb59becdea41e54e62f1bc47f3ef9</p>
+
+</body>
+</html>
+
+--===============3001081626343976239==--
