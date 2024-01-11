@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6383E10E92D
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 14:55:01 +0000 (UTC)
-Date: Thu, 11 Jan 2024 09:54:24 -0500
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Subject: Re: [PATCH v3 3/3] tests/xe_waitfence: Removed duplicate code in
- waitfence
-Message-ID: <ZaABIAHrGJoRvYVQ@intel.com>
-References: <20240111062518.393544-1-krishnaiah.bommu@intel.com>
- <20240111062518.393544-4-krishnaiah.bommu@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240111062518.393544-4-krishnaiah.bommu@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21F2910E909
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 15:05:15 +0000 (UTC)
+Date: Thu, 11 Jan 2024 16:04:51 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH] RFC: tests/xe_svm: basic svm test
+Message-ID: <20240111150451.22hg5bjjsoglompg@kamilkon-desk.igk.intel.com>
+References: <20240111094304.395181-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240111094304.395181-1-krishnaiah.bommu@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,124 +20,212 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
+ Oak Zeng <oak.zeng@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jan 11, 2024 at 11:55:18AM +0530, Bommu Krishnaiah wrote:
-> Removed duplicate cod in xe_waitfence@waitfence
+Hi Bommu,
+On 2024-01-11 at 15:13:04 +0530, Bommu Krishnaiah wrote:
+> Test will verify SVM basic functionality, by allocating a memory with
+> system allocator(malloc()) and accessing in GPU.
+> 
 
-Good catch, but why to do this instead of the other way around?
+I have few nits, see below.
 
+> Kernel changes:
+> https://lore.kernel.org/dri-devel/20231221043812.3783313-1-oak.zeng@intel.com/
 > 
 > Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Cc: Oak Zeng <oak.zeng@intel.com>
+> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+
+I do not see Himal on Cc in header, I added him now.
+
 > ---
->  lib/xe/xe_ioctl.c          | 35 -----------------------------------
->  lib/xe/xe_ioctl.h          |  2 --
->  tests/intel/xe_waitfence.c | 18 ++++++++++++++++--
->  3 files changed, 16 insertions(+), 39 deletions(-)
+>  tests/intel/xe_svm.c | 136 +++++++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build    |   1 +
+>  2 files changed, 137 insertions(+)
+>  create mode 100644 tests/intel/xe_svm.c
 > 
-> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-> index 39605a019..49c5d359e 100644
-> --- a/lib/xe/xe_ioctl.c
-> +++ b/lib/xe/xe_ioctl.c
-> @@ -523,41 +523,6 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
->  	return timeout;
->  }
->  
-> -/**
-> - * xe_wait_ufence_abstime:
-> - * @fd: xe device fd
-> - * @addr: address of value to compare
-> - * @value: expected value (equal) in @address
-> - * @exec_queue: exec_queue id
-> - * @timeout: absolute time when wait expire
-> - * @flag: wait flag
-> - *
-> - * Function compares @value with memory pointed by @addr until they are equal.
-> - * Asserts that ioctl returned without error.
-> - *
-> - * Returns elapsed time in nanoseconds if user fence was signalled.
-> - */
-> -int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
-> -			       uint32_t exec_queue, int64_t timeout,
-> -			       uint16_t flag)
-> -{
-> -	struct drm_xe_wait_user_fence wait = {
-> -		.addr = to_user_pointer(addr),
-> -		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
-> -		.flags = flag,
-> -		.value = value,
-> -		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
-> -		.timeout = timeout,
-> -		.exec_queue_id = exec_queue,
-> -	};
-> -	struct timespec ts;
-> -
-> -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
-> -	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &ts), 0);
-> -
-> -	return ts.tv_sec * 1e9 + ts.tv_nsec;
-> -}
-> -
->  void xe_force_gt_reset(int fd, int gt)
->  {
->  	char reset_string[128];
-> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-> index 8a92073b0..03932561d 100644
-> --- a/lib/xe/xe_ioctl.h
-> +++ b/lib/xe/xe_ioctl.h
-> @@ -90,8 +90,6 @@ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
->  		     uint32_t exec_queue, int64_t *timeout);
->  int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
->  		       uint32_t exec_queue, int64_t timeout);
-> -int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value, uint32_t
-> -			       exec_queue, int64_t timeout, uint16_t flag);
->  void xe_force_gt_reset(int fd, int gt);
->  
->  #endif /* XE_IOCTL_H */
-> diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-> index 2f0f00cf4..f4592bfb3 100644
-> --- a/tests/intel/xe_waitfence.c
-> +++ b/tests/intel/xe_waitfence.c
-> @@ -36,7 +36,21 @@ static void do_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
->  	xe_vm_bind_async(fd, vm, 0, bo, offset, addr, size, sync, 1);
->  }
->  
-> -static int64_t wait_with_eci_abstime(int fd, uint64_t *addr, uint64_t value,
-> +/**
-> + * xe_wait_ufence_abstime:
-> + * @fd: xe device fd
-> + * @addr: address of value to compare
-> + * @value: expected value (equal) in @address
-> + * @exec_queue: exec_queue id
-> + * @timeout: absolute time when wait expire
-> + * @flag: wait flag
-> + *
-> + * Function compares @value with memory pointed by @addr until they are equal.
-> + * Asserts that ioctl returned without error.
-> + *
-> + * Returns elapsed time in nanoseconds if user fence was signalled.
+> diff --git a/tests/intel/xe_svm.c b/tests/intel/xe_svm.c
+> new file mode 100644
+> index 000000000..f82cb8fc7
+> --- /dev/null
+> +++ b/tests/intel/xe_svm.c
+> @@ -0,0 +1,136 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2021 Intel Corporation
+------------------^^^^
+s/2021/2024/
+
 > + */
+> +
+> +/**
+> + * TEST: Basic tests for svm functionality
+> + * Category: Hardware building block
+> + * Sub-category: svm-basic
+> + * Functionality: svm
+> + */
+> +
+> +#include "igt.h"
+> +#include "lib/igt_syncobj.h"
+> +#include "lib/intel_reg.h"
+> +#include "xe_drm.h"
+> +
 
-if you stay with this option, then you don't need to add the doc here since
-this is a local static function.
+Remove empty line.
 
-> +static int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
->  				     uint32_t exec_queue, int64_t timeout,
->  				     uint16_t flag)
->  {
-> @@ -117,7 +131,7 @@ waitfence(int fd, enum waittype wt)
->  		clock_gettime(CLOCK_MONOTONIC, &ts);
->  		current = ts.tv_sec * 1e9 + ts.tv_nsec;
->  		timeout = current + MS_TO_NS(10);
-> -		signalled = wait_with_eci_abstime(fd, &wait_fence, 7,
-> +		signalled = xe_wait_ufence_abstime(fd, &wait_fence, 7,
->  						  exec_queue, timeout,
->  						  DRM_XE_UFENCE_WAIT_FLAG_ABSTIME);
->  		igt_debug("wait type: ENGINE ABSTIME - timeout: %" PRId64
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+
+System include should be before igt.
+
+> +#include <string.h>
+> +
+> +/**
+> + * SUBTEST: svm-basic
+> + * Description: Run svm basic test only once
+> + * Test category: functionality test
+> + */
+> +
+> +static void
+> +test_exec(int fd)
+> +{
+> +	uint32_t vm;
+> +	uint64_t addr = 0x1a0000;
+> +#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
+> +	struct drm_xe_sync sync[1] = {
+> +		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> +			.timeline_value = USER_FENCE_VALUE },
+> +	};
+> +	struct drm_xe_exec exec = {
+> +		.num_batch_buffer = 1,
+> +		.num_syncs = 1,
+> +		.syncs = to_user_pointer(sync),
+> +	};
+> +	uint32_t exec_queues;
+> +	uint32_t bind_exec_queues;
+> +	uint64_t batch_offset;
+> +	uint64_t batch_addr;
+> +	size_t bo_size;
+> +	uint32_t bo = 0;
+> +	struct {
+> +		uint32_t batch[16];
+> +		uint64_t pad;
+> +		uint64_t vm_sync;
+> +		uint64_t exec_sync;
+> +		uint32_t data;
+> +	} *data;
+> +	int b;
+> +	uint64_t dst = (uint64_t *)malloc(4);
+> +
+> +	vm = xe_vm_create(fd, 0, 0);
+> +	bo_size = sizeof(*data) ;
+-------------------------- ^
+No space before closing semicolon, this should be ');'
+
+> +	bo_size = ALIGN(bo_size, xe_get_default_alignment(fd));
+> +
+> +	bo = xe_bo_create(fd, 0, bo_size,
+> +			all_memory_regions(fd) |
+> +			vram_if_possible(fd, 0),
+> +			DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +
+> +	data = xe_bo_map(fd, bo, bo_size);
+> +	memset(data, 0, bo_size);
+> +
+> +	exec_queues = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
+> +	bind_exec_queues = xe_bind_exec_queue_create(fd, vm, 0);
+> +
+> +	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+> +
+> +	xe_vm_bind_async_flags(fd, vm, bind_exec_queues, bo, 0,
+> +			addr, bo_size, sync, 1,
+> +			DRM_XE_VM_BIND_FLAG_IMMEDIATE);
+> +
+> +#define ONE_SEC MS_TO_NS(1000)
+> +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, bind_exec_queues, ONE_SEC);
+> +	data[0].vm_sync = 0;
+> +
+> +	batch_offset = (char *)&data[0].batch - (char *)data;
+> +	batch_addr = addr + batch_offset;
+> +
+> +	b = 0;
+> +	data[0].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+> +	data[0].batch[b++] = dst;
+> +	data[0].batch[b++] = dst >> 32;
+> +	data[0].batch[b++] = 0xc0ffee;
+> +	data[0].batch[b++] = MI_BATCH_BUFFER_END;
+> +	igt_assert(b <= ARRAY_SIZE(data[0].batch));
+> +
+> +	sync[0].addr = addr + (char *)&data[0].exec_sync - (char *)data;
+> +
+> +	exec.exec_queue_id = exec_queues;
+> +	exec.address = batch_addr;
+> +	xe_exec(fd, &exec);
+> +
+> +	xe_wait_ufence(fd, &data[0].exec_sync, USER_FENCE_VALUE, exec_queues, ONE_SEC);
+> +
+> +	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+> +
+> +	xe_vm_unbind_async(fd, vm, bind_exec_queues, 0, addr, bo_size, sync, 1);
+> +
+> +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, bind_exec_queues, ONE_SEC);
+> +
+> +	igt_assert_eq(dst, 0xc0ffee);
+> +
+> +	if (exec_queues)
+> +		xe_exec_queue_destroy(fd, exec_queues);
+> +	if (bind_exec_queues)
+> +		xe_exec_queue_destroy(fd, bind_exec_queues);
+> +
+> +	free(data);
+> +	free(dst);
+> +	gem_close(fd, bo);
+> +
+> +	xe_vm_destroy(fd, vm);
+> +}
+> +
+> +igt_main
+> +{
+> +	int fd;
+> +
+> +	igt_fixture {
+--------------- ^
+> +		fd = drm_open_driver(DRIVER_XE);
+> +	}
+----^
+
+No need for braces '{' and '}' when you have only sigle statement.
+
+> +
+> +	igt_subtest_f("svm-basic")
+> +		test_exec(fd);
+> +
+> +	igt_fixture
+> +		drm_close_driver(fd);
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index a6a8498e2..13cc7acae 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -313,6 +313,7 @@ intel_xe_progs = [
+>  	'xe_spin_batch',
+>  	'xe_sysfs_defaults',
+>  	'xe_sysfs_scheduler',
+> +	'xe_svm',
+
+Keep it sorted, before xe_sysfs...
+
+Reagrds,
+Kamil
+
+>  ]
+>  
+>  msm_progs = [
 > -- 
 > 2.25.1
 > 
