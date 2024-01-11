@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AAE310E8D5
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 11:08:42 +0000 (UTC)
-Date: Thu, 11 Jan 2024 12:08:37 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 2/3] lib: Add non-kernel macros to
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9B0810E898
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 11:12:04 +0000 (UTC)
+From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: RE: [PATCH i-g-t 2/3] lib: Add non-kernel macros to
  i915_pciids_local.h
-Message-ID: <20240111110837.npduonhpz7ss7sxr@kamilkon-desk.igk.intel.com>
+Date: Thu, 11 Jan 2024 11:11:52 +0000
+Message-ID: <SJ1PR11MB612985D325A13B8EB57C38EAB9682@SJ1PR11MB6129.namprd11.prod.outlook.com>
 References: <20240110081532.1378038-1-chaitanya.kumar.borah@intel.com>
  <20240110081532.1378038-3-chaitanya.kumar.borah@intel.com>
+ <20240111110837.npduonhpz7ss7sxr@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20240111110837.npduonhpz7ss7sxr@kamilkon-desk.igk.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240110081532.1378038-3-chaitanya.kumar.borah@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,80 +28,61 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Chaitanya,
-On 2024-01-10 at 13:45:31 +0530, Chaitanya Kumar Borah wrote:
-> Add MTL and PVC PCI-ID macros which are not present in kernel
-> header to i915_pciids_local.h. This will help us sync the kernel
-> and IGT headers.
-> 
-> Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-> Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-> ---
->  lib/i915_pciids_local.h | 38 ++++++++++++++++++++++++++++++++++++++
->  1 file changed, 38 insertions(+)
-> 
-> diff --git a/lib/i915_pciids_local.h b/lib/i915_pciids_local.h
-> index 91c26152a..1ed8364c5 100644
-> --- a/lib/i915_pciids_local.h
-> +++ b/lib/i915_pciids_local.h
-> @@ -7,4 +7,42 @@
->  
->  #include "i915_pciids.h"
->  
-> +/* MTL perf */
-> +#ifndef INTEL_MTL_M_IDS
-> +#define INTEL_MTL_M_IDS(info) \
-> +       INTEL_VGA_DEVICE(0x7D60, info)
--- ^
-Please use tabs instead of spaces, here and below.
-
-You can catch such problems with script checkpatch.pl from linux kernel,
-here you can ignore error on paranthesis in macros but this one needs to
-be corrected. I will do it before merge but please check it yourself in
-future.
-
-Regards,
-Kamil
-
-> +#endif
-> +
-> +#ifndef INTEL_MTL_P_GT2_IDS
-> +#define INTEL_MTL_P_GT2_IDS(info) \
-> +       INTEL_VGA_DEVICE(0x7D45, info)
-> +#endif
-> +
-> +#ifndef INTEL_MTL_P_GT3_IDS
-> +#define INTEL_MTL_P_GT3_IDS(info) \
-> +        INTEL_VGA_DEVICE(0x7D55, info), \
-> +        INTEL_VGA_DEVICE(0x7DD5, info)
-> +#endif
-> +
-> +#ifndef INTEL_MTL_P_IDS
-> +#define INTEL_MTL_P_IDS(info) \
-> +       INTEL_MTL_P_GT2_IDS(info), \
-> +       INTEL_MTL_P_GT3_IDS(info)
-> +#endif
-> +
-> +/* PVC */
-> +#ifndef INTEL_PVC_IDS
-> +#define INTEL_PVC_IDS(info) \
-> +       INTEL_VGA_DEVICE(0x0BD0, info), \
-> +       INTEL_VGA_DEVICE(0x0BD5, info), \
-> +       INTEL_VGA_DEVICE(0x0BD6, info), \
-> +       INTEL_VGA_DEVICE(0x0BD7, info), \
-> +       INTEL_VGA_DEVICE(0x0BD8, info), \
-> +       INTEL_VGA_DEVICE(0x0BD9, info), \
-> +       INTEL_VGA_DEVICE(0x0BDA, info), \
-> +       INTEL_VGA_DEVICE(0x0BDB, info), \
-> +       INTEL_VGA_DEVICE(0x0BD1, info), \
-> +       INTEL_VGA_DEVICE(0x0BD2, info)
-> +#endif
-> +
->  #endif /* _I915_PCIIDS_LOCAL_H */
-> -- 
-> 2.25.1
-> 
+SGVsbG8gS2FtaWwsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2Ft
+aWwgS29uaWVjem55IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiBU
+aHVyc2RheSwgSmFudWFyeSAxMSwgMjAyNCA0OjM5IFBNDQo+IFRvOiBpZ3QtZGV2QGxpc3RzLmZy
+ZWVkZXNrdG9wLm9yZw0KPiBDYzogQm9yYWgsIENoYWl0YW55YSBLdW1hciA8Y2hhaXRhbnlhLmt1
+bWFyLmJvcmFoQGludGVsLmNvbT47DQo+IGp1aGFwZWtrYS5oZWlra2lsYUBnbWFpbC5jb207IExh
+bmR3ZXJsaW4sIExpb25lbCBHDQo+IDxsaW9uZWwuZy5sYW5kd2VybGluQGludGVsLmNvbT47IFZp
+c2h3YW5hdGhhcHVyYSwgTmlyYW5qYW5hDQo+IDxuaXJhbmphbmEudmlzaHdhbmF0aGFwdXJhQGlu
+dGVsLmNvbT47IFJvcGVyLCBNYXR0aGV3IEQNCj4gPG1hdHRoZXcuZC5yb3BlckBpbnRlbC5jb20+
+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggaS1nLXQgMi8zXSBsaWI6IEFkZCBub24ta2VybmVsIG1h
+Y3JvcyB0bw0KPiBpOTE1X3BjaWlkc19sb2NhbC5oDQo+IA0KPiBIaSBDaGFpdGFueWEsDQo+IE9u
+IDIwMjQtMDEtMTAgYXQgMTM6NDU6MzEgKzA1MzAsIENoYWl0YW55YSBLdW1hciBCb3JhaCB3cm90
+ZToNCj4gPiBBZGQgTVRMIGFuZCBQVkMgUENJLUlEIG1hY3JvcyB3aGljaCBhcmUgbm90IHByZXNl
+bnQgaW4ga2VybmVsIGhlYWRlcg0KPiA+IHRvIGk5MTVfcGNpaWRzX2xvY2FsLmguIFRoaXMgd2ls
+bCBoZWxwIHVzIHN5bmMgdGhlIGtlcm5lbCBhbmQgSUdUDQo+ID4gaGVhZGVycy4NCj4gPg0KPiA+
+IFNpZ25lZC1vZmYtYnk6IENoYWl0YW55YSBLdW1hciBCb3JhaCA8Y2hhaXRhbnlhLmt1bWFyLmJv
+cmFoQGludGVsLmNvbT4NCj4gPiBDYzogTWF0dCBSb3BlciA8bWF0dGhldy5kLnJvcGVyQGludGVs
+LmNvbT4NCj4gPiBDYzogSnVoYS1QZWtrYSBIZWlra2lsYSA8anVoYXBla2thLmhlaWtraWxhQGdt
+YWlsLmNvbT4NCj4gPiBDYzogS2FtaWwgS29uaWVjem55IDxrYW1pbC5rb25pZWN6bnlAbGludXgu
+aW50ZWwuY29tPg0KPiA+IENjOiBMaW9uZWwgTGFuZHdlcmxpbiA8bGlvbmVsLmcubGFuZHdlcmxp
+bkBpbnRlbC5jb20+DQo+ID4gQ2M6IE5pcmFuamFuYSBWaXNod2FuYXRoYXB1cmEgPG5pcmFuamFu
+YS52aXNod2FuYXRoYXB1cmFAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICBsaWIvaTkxNV9wY2lp
+ZHNfbG9jYWwuaCB8IDM4ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+
+ID4gIDEgZmlsZSBjaGFuZ2VkLCAzOCBpbnNlcnRpb25zKCspDQo+ID4NCj4gPiBkaWZmIC0tZ2l0
+IGEvbGliL2k5MTVfcGNpaWRzX2xvY2FsLmggYi9saWIvaTkxNV9wY2lpZHNfbG9jYWwuaCBpbmRl
+eA0KPiA+IDkxYzI2MTUyYS4uMWVkODM2NGM1IDEwMDY0NA0KPiA+IC0tLSBhL2xpYi9pOTE1X3Bj
+aWlkc19sb2NhbC5oDQo+ID4gKysrIGIvbGliL2k5MTVfcGNpaWRzX2xvY2FsLmgNCj4gPiBAQCAt
+Nyw0ICs3LDQyIEBADQo+ID4NCj4gPiAgI2luY2x1ZGUgImk5MTVfcGNpaWRzLmgiDQo+ID4NCj4g
+PiArLyogTVRMIHBlcmYgKi8NCj4gPiArI2lmbmRlZiBJTlRFTF9NVExfTV9JRFMNCj4gPiArI2Rl
+ZmluZSBJTlRFTF9NVExfTV9JRFMoaW5mbykgXA0KPiA+ICsgICAgICAgSU5URUxfVkdBX0RFVklD
+RSgweDdENjAsIGluZm8pDQo+IC0tIF4NCj4gUGxlYXNlIHVzZSB0YWJzIGluc3RlYWQgb2Ygc3Bh
+Y2VzLCBoZXJlIGFuZCBiZWxvdy4NCj4gDQo+IFlvdSBjYW4gY2F0Y2ggc3VjaCBwcm9ibGVtcyB3
+aXRoIHNjcmlwdCBjaGVja3BhdGNoLnBsIGZyb20gbGludXgga2VybmVsLCBoZXJlDQo+IHlvdSBj
+YW4gaWdub3JlIGVycm9yIG9uIHBhcmFudGhlc2lzIGluIG1hY3JvcyBidXQgdGhpcyBvbmUgbmVl
+ZHMgdG8gYmUNCj4gY29ycmVjdGVkLiBJIHdpbGwgZG8gaXQgYmVmb3JlIG1lcmdlIGJ1dCBwbGVh
+c2UgY2hlY2sgaXQgeW91cnNlbGYgaW4gZnV0dXJlLg0KPiANCg0KTm90ZWQuIEkgbWlzc2VkIGl0
+IGFtb25nIHRoZSBvdGhlciB3YXJuaW5ncy4NCg0KVGhhbmsgeW91LiBJIHdpbGwgdGFrZSBleHRy
+YSBjYXJlIGZyb20gaGVyZSBvbndhcmRzLg0KDQpSZWdhcmRzDQpDaGFpdGFueWENCg0KPiBSZWdh
+cmRzLA0KPiBLYW1pbA0KPiANCj4gPiArI2VuZGlmDQo+ID4gKw0KPiA+ICsjaWZuZGVmIElOVEVM
+X01UTF9QX0dUMl9JRFMNCj4gPiArI2RlZmluZSBJTlRFTF9NVExfUF9HVDJfSURTKGluZm8pIFwN
+Cj4gPiArICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg3RDQ1LCBpbmZvKSAjZW5kaWYNCj4gPiAr
+DQo+ID4gKyNpZm5kZWYgSU5URUxfTVRMX1BfR1QzX0lEUw0KPiA+ICsjZGVmaW5lIElOVEVMX01U
+TF9QX0dUM19JRFMoaW5mbykgXA0KPiA+ICsgICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg3RDU1
+LCBpbmZvKSwgXA0KPiA+ICsgICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg3REQ1LCBpbmZvKSAj
+ZW5kaWYNCj4gPiArDQo+ID4gKyNpZm5kZWYgSU5URUxfTVRMX1BfSURTDQo+ID4gKyNkZWZpbmUg
+SU5URUxfTVRMX1BfSURTKGluZm8pIFwNCj4gPiArICAgICAgIElOVEVMX01UTF9QX0dUMl9JRFMo
+aW5mbyksIFwNCj4gPiArICAgICAgIElOVEVMX01UTF9QX0dUM19JRFMoaW5mbykNCj4gPiArI2Vu
+ZGlmDQo+ID4gKw0KPiA+ICsvKiBQVkMgKi8NCj4gPiArI2lmbmRlZiBJTlRFTF9QVkNfSURTDQo+
+ID4gKyNkZWZpbmUgSU5URUxfUFZDX0lEUyhpbmZvKSBcDQo+ID4gKyAgICAgICBJTlRFTF9WR0Ff
+REVWSUNFKDB4MEJEMCwgaW5mbyksIFwNCj4gPiArICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHgw
+QkQ1LCBpbmZvKSwgXA0KPiA+ICsgICAgICAgSU5URUxfVkdBX0RFVklDRSgweDBCRDYsIGluZm8p
+LCBcDQo+ID4gKyAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4MEJENywgaW5mbyksIFwNCj4gPiAr
+ICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHgwQkQ4LCBpbmZvKSwgXA0KPiA+ICsgICAgICAgSU5U
+RUxfVkdBX0RFVklDRSgweDBCRDksIGluZm8pLCBcDQo+ID4gKyAgICAgICBJTlRFTF9WR0FfREVW
+SUNFKDB4MEJEQSwgaW5mbyksIFwNCj4gPiArICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHgwQkRC
+LCBpbmZvKSwgXA0KPiA+ICsgICAgICAgSU5URUxfVkdBX0RFVklDRSgweDBCRDEsIGluZm8pLCBc
+DQo+ID4gKyAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4MEJEMiwgaW5mbykgI2VuZGlmDQo+ID4g
+Kw0KPiA+ICAjZW5kaWYgLyogX0k5MTVfUENJSURTX0xPQ0FMX0ggKi8NCj4gPiAtLQ0KPiA+IDIu
+MjUuMQ0KPiA+DQo=
