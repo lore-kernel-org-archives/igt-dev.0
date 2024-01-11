@@ -1,12 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] tests/perf_pmu: Set defaults before frequency test
-Date: Thu, 11 Jan 2024 14:20:54 -0800
-Message-Id: <20240111222054.2403101-1-vinay.belgaumkar@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0CBB910E0F2
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 22:27:32 +0000 (UTC)
+From: "Zeng, Oak" <oak.zeng@intel.com>
+To: "Bommu, Krishnaiah" <krishnaiah.bommu@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Chehab,
+ Mauro" <mauro.chehab@intel.com>
+Subject: RE: [PATCH] RFC: tests/xe_svm: basic svm test
+Date: Thu, 11 Jan 2024 22:27:22 +0000
+Message-ID: <SA1PR11MB6991D88518823FCAFF5677A292682@SA1PR11MB6991.namprd11.prod.outlook.com>
+References: <20240111094304.395181-1-krishnaiah.bommu@intel.com>
+In-Reply-To: <20240111094304.395181-1-krishnaiah.bommu@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,111 +26,111 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Seeing random issues where this test skips due to invalid
-boost freq at the start. Also ensure that we restore the frequencies at the end.
-
-v2: Use save/restore functions instead of exit_handler. Adding an
-exit_handler necessitated moving drm_close() into the handler. However,
-the module-reload subtest at the end expects drm-fd to be closed.
-Also setup expected frequencies (Kamil) and address other nits (Kamil)
-
-Link: https://gitlab.freedesktop.org/drm/intel/-/issues/9432
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
----
- tests/intel/perf_pmu.c | 62 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 61 insertions(+), 1 deletion(-)
-
-diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
-index c6e6a8b77..4ae2b60ae 100644
---- a/tests/intel/perf_pmu.c
-+++ b/tests/intel/perf_pmu.c
-@@ -2454,12 +2454,69 @@ static void pmu_read(int i915)
- 		for_each_if((e)->class == I915_ENGINE_CLASS_RENDER) \
- 			igt_dynamic_f("%s", e->name)
- 
-+int fd = -1;
-+uint32_t *stash_min, *stash_max, *stash_boost;
-+
-+static void save_sysfs_freq(int i915)
-+{
-+	int gt, num_gts, sysfs, tmp;
-+	uint32_t rpn_freq, rp0_freq;
-+
-+	num_gts = igt_sysfs_get_num_gt(i915);
-+
-+	stash_min = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
-+	stash_max = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
-+	stash_boost = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
-+
-+	/* Save boost, min and max across GTs */
-+	i915_for_each_gt(i915, tmp, gt) {
-+		sysfs = igt_sysfs_gt_open(i915, gt);
-+		igt_require(sysfs >= 0);
-+
-+		stash_min[gt] = igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz");
-+		stash_max[gt] = igt_sysfs_get_u32(sysfs, "rps_max_freq_mhz");
-+		stash_boost[gt] = igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz");
-+		igt_debug("GT: %d, min: %d, max: %d, boost:%d\n",
-+			  gt, stash_min[gt], stash_max[gt], stash_boost[gt]);
-+
-+		rpn_freq = igt_sysfs_get_u32(sysfs, "rps_RPn_freq_mhz");
-+		rp0_freq = igt_sysfs_get_u32(sysfs, "rps_RP0_freq_mhz");
-+
-+		/* Set pre-conditions, in case frequencies are in non-default state */
-+		igt_require(__igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", rp0_freq));
-+		igt_require(__igt_sysfs_set_u32(sysfs, "rps_boost_freq_mhz", rp0_freq));
-+		igt_require(__igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", rpn_freq));
-+
-+		close(sysfs);
-+	}
-+}
-+
-+static void restore_sysfs_freq(int i915)
-+{
-+	int sysfs, gt, tmp;
-+
-+	/* Restore frequencies */
-+	i915_for_each_gt(fd, tmp, gt) {
-+		sysfs = igt_sysfs_gt_open(fd, gt);
-+		igt_require(sysfs >= 0);
-+
-+		igt_require(__igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", stash_max[gt]));
-+		igt_require(__igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", stash_min[gt]));
-+		igt_require(__igt_sysfs_set_u32(sysfs, "rps_boost_freq_mhz", stash_boost[gt]));
-+
-+		close(sysfs);
-+	}
-+	free(stash_min);
-+	free(stash_max);
-+	free(stash_boost);
-+}
-+
- igt_main
- {
- 	const struct intel_execution_engine2 *e;
- 	unsigned int num_engines = 0;
- 	const intel_ctx_t *ctx = NULL;
--	int gt, tmp, fd = -1;
-+	int gt, tmp;
- 	int num_gt = 0;
- 
- 	/**
-@@ -2664,12 +2721,15 @@ igt_main
- 	 * Test GPU frequency.
- 	 */
- 	igt_subtest_with_dynamic("frequency") {
-+		save_sysfs_freq(fd);
-+
- 		i915_for_each_gt(fd, tmp, gt) {
- 			igt_dynamic_f("gt%u", gt)
- 				test_frequency(fd, gt);
- 			igt_dynamic_f("idle-gt%u", gt)
- 				test_frequency_idle(fd, gt);
- 		}
-+		restore_sysfs_freq(fd);
- 	}
- 
- 	/**
--- 
-2.38.1
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQm9tbXUsIEtyaXNobmFp
+YWggPGtyaXNobmFpYWguYm9tbXVAaW50ZWwuY29tPg0KPiBTZW50OiBUaHVyc2RheSwgSmFudWFy
+eSAxMSwgMjAyNCA0OjQzIEFNDQo+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0K
+PiBDYzogQm9tbXUsIEtyaXNobmFpYWggPGtyaXNobmFpYWguYm9tbXVAaW50ZWwuY29tPjsgWmVu
+ZywgT2FrDQo+IDxvYWsuemVuZ0BpbnRlbC5jb20+OyBHaGltaXJheSwgSGltYWwgUHJhc2FkDQo+
+IDxoaW1hbC5wcmFzYWQuZ2hpbWlyYXlAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBbUEFUQ0hdIFJG
+QzogdGVzdHMveGVfc3ZtOiBiYXNpYyBzdm0gdGVzdA0KPiANCj4gVGVzdCB3aWxsIHZlcmlmeSBT
+Vk0gYmFzaWMgZnVuY3Rpb25hbGl0eSwgYnkgYWxsb2NhdGluZyBhIG1lbW9yeSB3aXRoDQo+IHN5
+c3RlbSBhbGxvY2F0b3IobWFsbG9jKCkpIGFuZCBhY2Nlc3NpbmcgaW4gR1BVLg0KPiANCj4gS2Vy
+bmVsIGNoYW5nZXM6DQo+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2RyaS1kZXZlbC8yMDIzMTIy
+MTA0MzgxMi4zNzgzMzEzLTEtDQo+IG9hay56ZW5nQGludGVsLmNvbS8NCj4gDQo+IFNpZ25lZC1v
+ZmYtYnk6IEJvbW11IEtyaXNobmFpYWggPGtyaXNobmFpYWguYm9tbXVAaW50ZWwuY29tPg0KPiBD
+YzogT2FrIFplbmcgPG9hay56ZW5nQGludGVsLmNvbT4NCj4gQ2M6IEhpbWFsIFByYXNhZCBHaGlt
+aXJheSA8aGltYWwucHJhc2FkLmdoaW1pcmF5QGludGVsLmNvbT4NCj4gLS0tDQo+ICB0ZXN0cy9p
+bnRlbC94ZV9zdm0uYyB8IDEzNg0KPiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrDQo+ICB0ZXN0cy9tZXNvbi5idWlsZCAgICB8ICAgMSArDQo+ICAyIGZpbGVzIGNo
+YW5nZWQsIDEzNyBpbnNlcnRpb25zKCspDQo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgdGVzdHMvaW50
+ZWwveGVfc3ZtLmMNCj4gDQo+IGRpZmYgLS1naXQgYS90ZXN0cy9pbnRlbC94ZV9zdm0uYyBiL3Rl
+c3RzL2ludGVsL3hlX3N2bS5jDQo+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0DQo+IGluZGV4IDAwMDAw
+MDAwMC4uZjgyY2I4ZmM3DQo+IC0tLSAvZGV2L251bGwNCj4gKysrIGIvdGVzdHMvaW50ZWwveGVf
+c3ZtLmMNCj4gQEAgLTAsMCArMSwxMzYgQEANCj4gKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVy
+OiBNSVQNCj4gKy8qDQo+ICsgKiBDb3B5cmlnaHQgwqkgMjAyMSBJbnRlbCBDb3Jwb3JhdGlvbg0K
+DQoyMDI0DQoNCj4gKyAqLw0KPiArDQo+ICsvKioNCj4gKyAqIFRFU1Q6IEJhc2ljIHRlc3RzIGZv
+ciBzdm0gZnVuY3Rpb25hbGl0eQ0KPiArICogQ2F0ZWdvcnk6IEhhcmR3YXJlIGJ1aWxkaW5nIGJs
+b2NrDQo+ICsgKiBTdWItY2F0ZWdvcnk6IHN2bS1iYXNpYw0KPiArICogRnVuY3Rpb25hbGl0eTog
+c3ZtDQoNCkkgZG9uJ3Qga25vdyBtdWNoIGFib3V0IHRoZSBjYXRlZ29yaWVzIGRlZmluaXRpb24g
+b2YgaWd0IHRlc3QuIEkgZmVlbCBsaWtlIHRoaXMgZG9lc24ndCBiZWxvbmcgdG8gaGFyZHdhcmUg
+YnVpbGRpbmcgYmxvY2suIFN2bSBpcyBtYWlubHkgYSBzb2Z0d2FyZSBmZWF0dXJlLiBPZiBjb3Vy
+c2UgaXQgZGVwZW5kcyBvbiBodyBmZWF0dXJlcyBzdWNoIGFzIGdwdSByZWNvdmVyYWJsZSBwYWdl
+IGZhdWx0IHRvIHdvcmsuDQoNCk1heWJlIHRoZSBzdWItY2F0ZSBpcyBzdm0/DQoNCkBDaGVoYWIs
+IE1hdXJvIHNob3VsZCBiZSBhYmxlIHRvIGJldHRlciBjYXRlZ29yaXplIHRoZSB0ZXN0Lg0KDQo+
+ICsgKi8NCj4gKw0KPiArI2luY2x1ZGUgImlndC5oIg0KPiArI2luY2x1ZGUgImxpYi9pZ3Rfc3lu
+Y29iai5oIg0KPiArI2luY2x1ZGUgImxpYi9pbnRlbF9yZWcuaCINCj4gKyNpbmNsdWRlICJ4ZV9k
+cm0uaCINCj4gKw0KPiArI2luY2x1ZGUgInhlL3hlX2lvY3RsLmgiDQo+ICsjaW5jbHVkZSAieGUv
+eGVfcXVlcnkuaCINCj4gKyNpbmNsdWRlIDxzdHJpbmcuaD4NCj4gKw0KPiArLyoqDQo+ICsgKiBT
+VUJURVNUOiBzdm0tYmFzaWMNCj4gKyAqIERlc2NyaXB0aW9uOiBSdW4gc3ZtIGJhc2ljIHRlc3Qg
+b25seSBvbmNlDQoNClRlc3QgYmFzaWMgc3ZtIGZ1bmN0aW9uYWxpdHk6IG1hbGxvYyBtZW1vcnkg
+YW5kIGRpcmVjdGx5IGFjY2VzcyBpdCBmcm9tIGdwdS4NCg0KPiArICogVGVzdCBjYXRlZ29yeTog
+ZnVuY3Rpb25hbGl0eSB0ZXN0DQo+ICsgKi8NCj4gKw0KPiArc3RhdGljIHZvaWQNCj4gK3Rlc3Rf
+ZXhlYyhpbnQgZmQpDQpUZXN0X3N2bV9iYXNpYw0KDQo+ICt7DQo+ICsJdWludDMyX3Qgdm07DQo+
+ICsJdWludDY0X3QgYWRkciA9IDB4MWEwMDAwOw0KPiArI2RlZmluZSBVU0VSX0ZFTkNFX1ZBTFVF
+ICAgICAgICAweGRlYWRiZWVmZGVhZGJlZWZ1bGwNCj4gKwlzdHJ1Y3QgZHJtX3hlX3N5bmMgc3lu
+Y1sxXSA9IHsNCj4gKwkJeyAudHlwZSA9IERSTV9YRV9TWU5DX1RZUEVfVVNFUl9GRU5DRSwgLmZs
+YWdzID0NCj4gRFJNX1hFX1NZTkNfRkxBR19TSUdOQUwsDQoNCk1ha2UgYWJvdmUgdHdvIGxpbmVz
+IGZvciBiZXR0ZXIgcmVhZGluZw0KDQo+ICsJCQkudGltZWxpbmVfdmFsdWUgPSBVU0VSX0ZFTkNF
+X1ZBTFVFIH0sDQo+ICsJfTsNCj4gKwlzdHJ1Y3QgZHJtX3hlX2V4ZWMgZXhlYyA9IHsNCj4gKwkJ
+Lm51bV9iYXRjaF9idWZmZXIgPSAxLA0KPiArCQkubnVtX3N5bmNzID0gMSwNCj4gKwkJLnN5bmNz
+ID0gdG9fdXNlcl9wb2ludGVyKHN5bmMpLA0KPiArCX07DQo+ICsJdWludDMyX3QgZXhlY19xdWV1
+ZXM7DQoNCkV4ZWNfcXVldWUNCj4gKwl1aW50MzJfdCBiaW5kX2V4ZWNfcXVldWVzOw0KDQpCaW5k
+X2V4ZWNfcXVldWUNCj4gKwl1aW50NjRfdCBiYXRjaF9vZmZzZXQ7DQo+ICsJdWludDY0X3QgYmF0
+Y2hfYWRkcjsNCj4gKwlzaXplX3QgYm9fc2l6ZTsNCj4gKwl1aW50MzJfdCBibyA9IDA7DQo+ICsJ
+c3RydWN0IHsNCj4gKwkJdWludDMyX3QgYmF0Y2hbMTZdOw0KPiArCQl1aW50NjRfdCBwYWQ7DQo+
+ICsJCXVpbnQ2NF90IHZtX3N5bmM7DQoNCg0KUmVuYW1lIHZtX3N5bmMgdG8gYmluZF9zeW5jDQoN
+CkFjdHVhbGx5IEkgdGhpbmsgd2UgY2FuIHNpbXBsaWZ5IHRoaXMgdGVzdCBieSBub3QgdXNpbmcg
+dXNlciBmZW5jZS4gVGhlIHB1cnBvc2Ugb2YgdGhpcyB0ZXN0IGlzIHRvIHRlc3Qgc3ZtLiBTbyB3
+ZSBjYW4gdXNlIHhlX3ZtX2JpbmRfc3luYyBmdW5jdGlvbiBkaXJlY3RseSBpbnN0ZWFkIG9mIHRo
+ZSBfYXN5bmMgZnVuY3Rpb24uIFRoZSBfc3luYyBmdW5jdGlvbiBpbnRlcm5hbGx5IHVzZSBzeW5j
+b2JqZWN0ICh2cyB1c2VyIGZlbmNlKSBmb3IgdGhlIHN5bmNocm9uaXphdGlvbi4gU28gd2UgZG9u
+J3QgbmVlZCB0byBjYXJlIGFib3V0IHVzZXIgZmVuY2UgaW4gdGhpcyB0ZXN0Lg0KDQpTYW1lIHRo
+aW5nIHdpdGggdGhlIHhlX2V4ZWMuIFdlIGNhbiB1c2UgeGVfZXhlY193YWl0IGluc3RlYWQuDQoN
+Ck9haw0KDQo+ICsJCXVpbnQ2NF90IGV4ZWNfc3luYzsNCj4gKwkJdWludDMyX3QgZGF0YTsNCj4g
+Kwl9ICpkYXRhOw0KPiArCWludCBiOw0KPiArCXVpbnQ2NF90IGRzdCA9ICh1aW50NjRfdCAqKW1h
+bGxvYyg0KTsNCj4gKw0KPiArCXZtID0geGVfdm1fY3JlYXRlKGZkLCAwLCAwKTsNCj4gKwlib19z
+aXplID0gc2l6ZW9mKCpkYXRhKSA7DQo+ICsJYm9fc2l6ZSA9IEFMSUdOKGJvX3NpemUsIHhlX2dl
+dF9kZWZhdWx0X2FsaWdubWVudChmZCkpOw0KPiArDQo+ICsJYm8gPSB4ZV9ib19jcmVhdGUoZmQs
+IDAsIGJvX3NpemUsDQo+ICsJCQlhbGxfbWVtb3J5X3JlZ2lvbnMoZmQpIHwNCj4gKwkJCXZyYW1f
+aWZfcG9zc2libGUoZmQsIDApLA0KPiArCQkJRFJNX1hFX0dFTV9DUkVBVEVfRkxBR19ORUVEU19W
+SVNJQkxFX1ZSQU0pOw0KPiArDQo+ICsJZGF0YSA9IHhlX2JvX21hcChmZCwgYm8sIGJvX3NpemUp
+Ow0KPiArCW1lbXNldChkYXRhLCAwLCBib19zaXplKTsNCj4gKw0KPiArCWV4ZWNfcXVldWVzID0g
+eGVfZXhlY19xdWV1ZV9jcmVhdGVfY2xhc3MoZmQsIHZtLA0KPiBEUk1fWEVfRU5HSU5FX0NMQVNT
+X0NPUFkpOw0KPiArCWJpbmRfZXhlY19xdWV1ZXMgPSB4ZV9iaW5kX2V4ZWNfcXVldWVfY3JlYXRl
+KGZkLCB2bSwgMCk7DQo+ICsNCj4gKwlzeW5jWzBdLmFkZHIgPSB0b191c2VyX3BvaW50ZXIoJmRh
+dGFbMF0udm1fc3luYyk7DQo+ICsNCj4gKwl4ZV92bV9iaW5kX2FzeW5jX2ZsYWdzKGZkLCB2bSwg
+YmluZF9leGVjX3F1ZXVlcywgYm8sIDAsDQo+ICsJCQlhZGRyLCBib19zaXplLCBzeW5jLCAxLA0K
+PiArCQkJRFJNX1hFX1ZNX0JJTkRfRkxBR19JTU1FRElBVEUpOw0KPiArDQo+ICsjZGVmaW5lIE9O
+RV9TRUMgTVNfVE9fTlMoMTAwMCkNCj4gKwl4ZV93YWl0X3VmZW5jZShmZCwgJmRhdGFbMF0udm1f
+c3luYywgVVNFUl9GRU5DRV9WQUxVRSwNCj4gYmluZF9leGVjX3F1ZXVlcywgT05FX1NFQyk7DQo+
+ICsJZGF0YVswXS52bV9zeW5jID0gMDsNCj4gKw0KPiArCWJhdGNoX29mZnNldCA9IChjaGFyICop
+JmRhdGFbMF0uYmF0Y2ggLSAoY2hhciAqKWRhdGE7DQo+ICsJYmF0Y2hfYWRkciA9IGFkZHIgKyBi
+YXRjaF9vZmZzZXQ7DQo+ICsNCj4gKwliID0gMDsNCj4gKwlkYXRhWzBdLmJhdGNoW2IrK10gPSBN
+SV9TVE9SRV9EV09SRF9JTU1fR0VONDsNCj4gKwlkYXRhWzBdLmJhdGNoW2IrK10gPSBkc3Q7DQo+
+ICsJZGF0YVswXS5iYXRjaFtiKytdID0gZHN0ID4+IDMyOw0KPiArCWRhdGFbMF0uYmF0Y2hbYisr
+XSA9IDB4YzBmZmVlOw0KPiArCWRhdGFbMF0uYmF0Y2hbYisrXSA9IE1JX0JBVENIX0JVRkZFUl9F
+TkQ7DQo+ICsJaWd0X2Fzc2VydChiIDw9IEFSUkFZX1NJWkUoZGF0YVswXS5iYXRjaCkpOw0KPiAr
+DQo+ICsJc3luY1swXS5hZGRyID0gYWRkciArIChjaGFyICopJmRhdGFbMF0uZXhlY19zeW5jIC0g
+KGNoYXIgKilkYXRhOw0KPiArDQo+ICsJZXhlYy5leGVjX3F1ZXVlX2lkID0gZXhlY19xdWV1ZXM7
+DQo+ICsJZXhlYy5hZGRyZXNzID0gYmF0Y2hfYWRkcjsNCj4gKwl4ZV9leGVjKGZkLCAmZXhlYyk7
+DQo+ICsNCj4gKwl4ZV93YWl0X3VmZW5jZShmZCwgJmRhdGFbMF0uZXhlY19zeW5jLCBVU0VSX0ZF
+TkNFX1ZBTFVFLA0KPiBleGVjX3F1ZXVlcywgT05FX1NFQyk7DQo+ICsNCj4gKwlzeW5jWzBdLmFk
+ZHIgPSB0b191c2VyX3BvaW50ZXIoJmRhdGFbMF0udm1fc3luYyk7DQo+ICsNCj4gKwl4ZV92bV91
+bmJpbmRfYXN5bmMoZmQsIHZtLCBiaW5kX2V4ZWNfcXVldWVzLCAwLCBhZGRyLCBib19zaXplLCBz
+eW5jLA0KPiAxKTsNCj4gKw0KPiArCXhlX3dhaXRfdWZlbmNlKGZkLCAmZGF0YVswXS52bV9zeW5j
+LCBVU0VSX0ZFTkNFX1ZBTFVFLA0KPiBiaW5kX2V4ZWNfcXVldWVzLCBPTkVfU0VDKTsNCj4gKw0K
+PiArCWlndF9hc3NlcnRfZXEoZHN0LCAweGMwZmZlZSk7DQo+ICsNCj4gKwlpZiAoZXhlY19xdWV1
+ZXMpDQo+ICsJCXhlX2V4ZWNfcXVldWVfZGVzdHJveShmZCwgZXhlY19xdWV1ZXMpOw0KPiArCWlm
+IChiaW5kX2V4ZWNfcXVldWVzKQ0KPiArCQl4ZV9leGVjX3F1ZXVlX2Rlc3Ryb3koZmQsIGJpbmRf
+ZXhlY19xdWV1ZXMpOw0KPiArDQo+ICsJZnJlZShkYXRhKTsNCj4gKwlmcmVlKGRzdCk7DQo+ICsJ
+Z2VtX2Nsb3NlKGZkLCBibyk7DQo+ICsNCj4gKwl4ZV92bV9kZXN0cm95KGZkLCB2bSk7DQo+ICt9
+DQo+ICsNCj4gK2lndF9tYWluDQo+ICt7DQo+ICsJaW50IGZkOw0KPiArDQo+ICsJaWd0X2ZpeHR1
+cmUgew0KPiArCQlmZCA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJfWEUpOw0KPiArCX0NCj4gKw0K
+PiArCWlndF9zdWJ0ZXN0X2YoInN2bS1iYXNpYyIpDQo+ICsJCXRlc3RfZXhlYyhmZCk7DQo+ICsN
+Cj4gKwlpZ3RfZml4dHVyZQ0KPiArCQlkcm1fY2xvc2VfZHJpdmVyKGZkKTsNCj4gK30NCj4gZGlm
+ZiAtLWdpdCBhL3Rlc3RzL21lc29uLmJ1aWxkIGIvdGVzdHMvbWVzb24uYnVpbGQNCj4gaW5kZXgg
+YTZhODQ5OGUyLi4xM2NjN2FjYWUgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL21lc29uLmJ1aWxkDQo+
+ICsrKyBiL3Rlc3RzL21lc29uLmJ1aWxkDQo+IEBAIC0zMTMsNiArMzEzLDcgQEAgaW50ZWxfeGVf
+cHJvZ3MgPSBbDQo+ICAJJ3hlX3NwaW5fYmF0Y2gnLA0KPiAgCSd4ZV9zeXNmc19kZWZhdWx0cycs
+DQo+ICAJJ3hlX3N5c2ZzX3NjaGVkdWxlcicsDQo+ICsJJ3hlX3N2bScsDQo+ICBdDQo+IA0KPiAg
+bXNtX3Byb2dzID0gWw0KPiAtLQ0KPiAyLjI1LjENCg0K
