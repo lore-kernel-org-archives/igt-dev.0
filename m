@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B31DE10E851
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 10:02:19 +0000 (UTC)
-Date: Thu, 11 Jan 2024 11:02:04 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1FC8010E8D3
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 10:54:15 +0000 (UTC)
+Date: Thu, 11 Jan 2024 11:54:10 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 1/3] lib/i915/perf: include i915_pciids_local.h
-Message-ID: <20240111100204.zoh7guefjb3ppv7r@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH i-g-t 3/3] lib: sync i915_pciids.h with kernel
+Message-ID: <20240111105410.sluji6uglfvnqaxr@kamilkon-desk.igk.intel.com>
 References: <20240110081532.1378038-1-chaitanya.kumar.borah@intel.com>
- <20240110081532.1378038-2-chaitanya.kumar.borah@intel.com>
+ <20240110081532.1378038-4-chaitanya.kumar.borah@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240110081532.1378038-2-chaitanya.kumar.borah@intel.com>
+In-Reply-To: <20240110081532.1378038-4-chaitanya.kumar.borah@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,13 +25,12 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Chaitanya,
-On 2024-01-10 at 13:45:30 +0530, Chaitanya Kumar Borah wrote:
-> perf.c uses PCI ID macros not found in kernel header i915_pciids.h.
-> Therefore include i915_pciids_local.h so that we can move these
-> macros from i915_pciids.h to this file. That way we don't lose
-> them when lib/i915_pciids.h is synced with kernel.
+On 2024-01-10 at 13:45:32 +0530, Chaitanya Kumar Borah wrote:
+> This synchronizes with kernel commit
 > 
-> v2: Retain i915_pciids.h inclusion (Kamil Konieczny)
+>     5032c607e886 ("drm/i915: ATS-M device ID update")
+> 
+> v2: Keep i915_pciids.h changes only (Juha-Pekka Heikkila)
 > 
 > Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 > Cc: Matt Roper <matthew.d.roper@intel.com>
@@ -43,21 +42,122 @@ On 2024-01-10 at 13:45:30 +0530, Chaitanya Kumar Borah wrote:
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  lib/i915/perf.c | 1 +
->  1 file changed, 1 insertion(+)
+>  lib/i915_pciids.h | 56 +++++++++++++++++++++--------------------------
+>  1 file changed, 25 insertions(+), 31 deletions(-)
 > 
-> diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-> index ddadb53b6..bbfa36060 100644
-> --- a/lib/i915/perf.c
-> +++ b/lib/i915/perf.c
-> @@ -38,6 +38,7 @@
->  #include <i915_drm.h>
+> diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
+> index bee58554d..fcf1849aa 100644
+> --- a/lib/i915_pciids.h
+> +++ b/lib/i915_pciids.h
+> @@ -588,6 +588,7 @@
+>  	INTEL_VGA_DEVICE(0x4551, info), \
+>  	INTEL_VGA_DEVICE(0x4555, info), \
+>  	INTEL_VGA_DEVICE(0x4557, info), \
+> +	INTEL_VGA_DEVICE(0x4570, info), \
+>  	INTEL_VGA_DEVICE(0x4571, info)
 >  
->  #include "i915_pciids.h"
-> +#include "i915_pciids_local.h"
+>  /* JSL */
+> @@ -641,6 +642,7 @@
+>  	INTEL_VGA_DEVICE(0x4682, info), \
+>  	INTEL_VGA_DEVICE(0x4688, info), \
+>  	INTEL_VGA_DEVICE(0x468A, info), \
+> +	INTEL_VGA_DEVICE(0x468B, info), \
+>  	INTEL_VGA_DEVICE(0x4690, info), \
+>  	INTEL_VGA_DEVICE(0x4692, info), \
+>  	INTEL_VGA_DEVICE(0x4693, info)
+> @@ -683,14 +685,22 @@
+>  	INTEL_VGA_DEVICE(0xA78A, info), \
+>  	INTEL_VGA_DEVICE(0xA78B, info)
 >  
->  #include "intel_chipset.h"
->  #include "perf.h"
+> +/* RPL-U */
+> +#define INTEL_RPLU_IDS(info) \
+> +	INTEL_VGA_DEVICE(0xA721, info), \
+> +	INTEL_VGA_DEVICE(0xA7A1, info), \
+> +	INTEL_VGA_DEVICE(0xA7A9, info), \
+> +	INTEL_VGA_DEVICE(0xA7AC, info), \
+> +	INTEL_VGA_DEVICE(0xA7AD, info)
+> +
+>  /* RPL-P */
+>  #define INTEL_RPLP_IDS(info) \
+> +	INTEL_RPLU_IDS(info), \
+>  	INTEL_VGA_DEVICE(0xA720, info), \
+> -	INTEL_VGA_DEVICE(0xA721, info), \
+>  	INTEL_VGA_DEVICE(0xA7A0, info), \
+> -	INTEL_VGA_DEVICE(0xA7A1, info), \
+>  	INTEL_VGA_DEVICE(0xA7A8, info), \
+> -	INTEL_VGA_DEVICE(0xA7A9, info)
+> +	INTEL_VGA_DEVICE(0xA7AA, info), \
+> +	INTEL_VGA_DEVICE(0xA7AB, info)
+>  
+>  /* DG2 */
+>  #define INTEL_DG2_G10_IDS(info) \
+> @@ -705,11 +715,14 @@
+>  	INTEL_VGA_DEVICE(0x5693, info), \
+>  	INTEL_VGA_DEVICE(0x5694, info), \
+>  	INTEL_VGA_DEVICE(0x5695, info), \
+> -	INTEL_VGA_DEVICE(0x5698, info), \
+>  	INTEL_VGA_DEVICE(0x56A5, info), \
+>  	INTEL_VGA_DEVICE(0x56A6, info), \
+>  	INTEL_VGA_DEVICE(0x56B0, info), \
+> -	INTEL_VGA_DEVICE(0x56B1, info)
+> +	INTEL_VGA_DEVICE(0x56B1, info), \
+> +	INTEL_VGA_DEVICE(0x56BA, info), \
+> +	INTEL_VGA_DEVICE(0x56BB, info), \
+> +	INTEL_VGA_DEVICE(0x56BC, info), \
+> +	INTEL_VGA_DEVICE(0x56BD, info)
+>  
+>  #define INTEL_DG2_G12_IDS(info) \
+>  	INTEL_VGA_DEVICE(0x5696, info), \
+> @@ -725,7 +738,8 @@
+>  	INTEL_DG2_G12_IDS(info)
+>  
+>  #define INTEL_ATS_M150_IDS(info) \
+> -	INTEL_VGA_DEVICE(0x56C0, info)
+> +	INTEL_VGA_DEVICE(0x56C0, info), \
+> +	INTEL_VGA_DEVICE(0x56C2, info)
+>  
+>  #define INTEL_ATS_M75_IDS(info) \
+>  	INTEL_VGA_DEVICE(0x56C1, info)
+> @@ -733,34 +747,14 @@
+>  #define INTEL_ATS_M_IDS(info) \
+>  	INTEL_ATS_M150_IDS(info), \
+>  	INTEL_ATS_M75_IDS(info)
+> +
+>  /* MTL */
+> -#define INTEL_MTL_M_IDS(info) \
+> +#define INTEL_MTL_IDS(info) \
+>  	INTEL_VGA_DEVICE(0x7D40, info), \
+> -	INTEL_VGA_DEVICE(0x7D60, info)
+> -#define INTEL_MTL_P_GT2_IDS(info) \
+> -	INTEL_VGA_DEVICE(0x7D45, info)
+> -#define INTEL_MTL_P_GT3_IDS(info) \
+> +	INTEL_VGA_DEVICE(0x7D45, info), \
+>  	INTEL_VGA_DEVICE(0x7D55, info), \
+> +	INTEL_VGA_DEVICE(0x7D60, info), \
+> +	INTEL_VGA_DEVICE(0x7D67, info), \
+>  	INTEL_VGA_DEVICE(0x7DD5, info)
+> -#define INTEL_MTL_P_IDS(info) \
+> -	INTEL_MTL_P_GT2_IDS(info), \
+> -	INTEL_MTL_P_GT3_IDS(info)
+> -
+> -#define INTEL_MTL_IDS(info) \
+> -	INTEL_MTL_M_IDS(info), \
+> -	INTEL_MTL_P_IDS(info)
+> -
+> -/* PVC */
+> -#define INTEL_PVC_IDS(info) \
+> -	INTEL_VGA_DEVICE(0x0BD0, info),	\
+> -	INTEL_VGA_DEVICE(0x0BD5, info),	\
+> -	INTEL_VGA_DEVICE(0x0BD6, info),	\
+> -	INTEL_VGA_DEVICE(0x0BD7, info),	\
+> -	INTEL_VGA_DEVICE(0x0BD8, info),	\
+> -	INTEL_VGA_DEVICE(0x0BD9, info),	\
+> -	INTEL_VGA_DEVICE(0x0BDA, info),	\
+> -	INTEL_VGA_DEVICE(0x0BDB, info),	\
+> -	INTEL_VGA_DEVICE(0x0BD1, info),	\
+> -	INTEL_VGA_DEVICE(0x0BD2, info)
+>  
+>  #endif /* _I915_PCIIDS_H */
 > -- 
 > 2.25.1
 > 
