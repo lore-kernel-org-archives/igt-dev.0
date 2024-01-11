@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BF8710E6C8
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 13:09:58 +0000 (UTC)
-Date: Thu, 11 Jan 2024 14:09:37 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A0C5610E089
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 13:37:04 +0000 (UTC)
+Date: Thu, 11 Jan 2024 14:36:59 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH 1/2] lib/amdgpu: add secure flag to sdma packet
-Message-ID: <20240111130937.4mh4y7zgx53yuxqr@kamilkon-desk.igk.intel.com>
-References: <20240111003156.375379-1-vitaly.prosyak@amd.com>
+Subject: Re: [PATCH] tests/kms_universal_plane: Re-work expectations for
+ non-intel hw
+Message-ID: <20240111133659.xvhekkoisi44vk3f@kamilkon-desk.igk.intel.com>
+References: <20240110200434.218120-1-robdclark@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240111003156.375379-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20240110200434.218120-1-robdclark@gmail.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,49 +20,184 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
+Cc: Rob Clark <robdclark@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Vitaly,
-
-On 2024-01-10 at 19:31:55 -0500, vitaly.prosyak@amd.com wrote:
-> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Hi Rob,
+On 2024-01-10 at 12:04:34 -0800, Rob Clark wrote:
+> From: Rob Clark <robdclark@chromium.org>
 > 
-
-Please describe your change here, why it is needed.
-
-> Cc: Jesse Zhang <jesse.zhang@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> The expectation assumptions do not fit for non-intel hw.  So re-work the
+> expectations and add msm support.
 > 
-> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Signed-off-by: Rob Clark <robdclark@chromium.org>
 > ---
->  lib/amdgpu/amd_ip_blocks.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  tests/kms_universal_plane.c | 102 +++++++++++++++++++++++++-----------
+>  1 file changed, 72 insertions(+), 30 deletions(-)
 > 
-> diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-> index 1adea6987..a7ccfa38b 100644
-> --- a/lib/amdgpu/amd_ip_blocks.c
-> +++ b/lib/amdgpu/amd_ip_blocks.c
-> @@ -139,7 +139,7 @@ sdma_ring_copy_linear(const struct amdgpu_ip_funcs *func,
->  	} else {
->  		context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_COPY,
->  				       SDMA_COPY_SUB_OPCODE_LINEAR,
-> -				       0);
-> +					context->secure ? 0x4 : 0);
+> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+> index 6a39f93cc5aa..3158ff816046 100644
+> --- a/tests/kms_universal_plane.c
+> +++ b/tests/kms_universal_plane.c
+> @@ -402,8 +402,7 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>  	sanity_test_t test = { .data = data };
+>  	igt_plane_t *primary;
+>  	drmModeModeInfo *mode;
+> -	int i;
+> -	int expect = 0;
 
-imho just 4 would be ok.
+Could you keep this var?
+
+> +	int i, ret;
+>  
+>  	igt_output_set_pipe(output, pipe);
+>  	mode = igt_output_get_mode(output);
+> @@ -418,43 +417,86 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>  
+>  	/*
+>  	 * Try to use universal plane API to set primary plane that
+> -	 * doesn't cover CRTC (should fail on pre-gen9 and succeed on
+> -	 * gen9+).
+> +	 * doesn't cover CRTC.
+>  	 */
+>  	igt_plane_set_fb(primary, &test.undersized_fb);
+> -	if (is_intel_device(data->drm_fd))
+> -		expect = (data->display_ver < 9) ? -EINVAL : 0;
+> -	igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL) == expect);
+> +	ret = igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL);
+> +
+> +	if (is_intel_device(data->drm_fd)) {
+> +		/* should fail on pre-gen9 and succeed on gen9+: */
+> +		if (data->display_ver < 9)
+> +			igt_assert_eq(ret, -EINVAL);
+> +		else
+> +			igt_assert_eq(ret, 0);
+> +	} else if (is_msm_device(data->drm_fd)) {
+> +		/* Should be supported on all gens: */
+> +		igt_assert_eq(ret, 0);
+> +	} else {
+> +		igt_assert_eq(ret, 0);
+> +	}
+
+The old code above should work on msm, why do you changed it?
+
+>  
+> -	/* Same as above, but different plane positioning. */
+> +	/* Same as above, but different plane positioning: */
+
+Drop this change.
+
+>  	igt_plane_set_position(primary, 100, 100);
+> -	igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL) == expect);
+> +	ret = igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL);
+> +
+> +	if (is_intel_device(data->drm_fd)) {
+> +		/* should fail on pre-gen9 and succeed on gen9+: */
+> +		if (data->display_ver < 9)
+> +			igt_assert_eq(ret, -EINVAL);
+> +		else
+> +			igt_assert_eq(ret, 0);
+> +	} else if (is_msm_device(data->drm_fd)) {
+> +		/* Should be supported on all gens: */
+> +		igt_assert_eq(ret, 0);
+> +	} else {
+> +		igt_assert_eq(ret, 0);
+> +	}
+
+Same here, old code should just work for msm.
+
+>  
+>  	igt_plane_set_position(primary, 0, 0);
+>  
+> -	/* Try to use universal plane API to scale down (should fail on pre-gen9) */
+> -	if (is_intel_device(data->drm_fd))
+> -		expect = (data->display_ver < 9) ? -ERANGE : 0;
+
+Please keep this if(...) expect = ...
+for a reason which follows.
+
+> -	igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
+> -				   output->config.crtc->crtc_id,
+> -				   test.oversized_fb.fb_id, 0,
+> -				   0, 0,
+> -				   mode->hdisplay + 100,
+> -				   mode->vdisplay + 100,
+> -				   IGT_FIXED(0,0), IGT_FIXED(0,0),
+> -				   IGT_FIXED(mode->hdisplay,0),
+> -				   IGT_FIXED(mode->vdisplay,0)) == expect);
+> +	/* Try to use universal plane API to scale down */
+> +	ret = drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
+> +			      output->config.crtc->crtc_id,
+> +			      test.oversized_fb.fb_id, 0,
+> +			      0, 0,
+> +			      mode->hdisplay + 100,
+> +			      mode->vdisplay + 100,
+> +			      IGT_FIXED(0,0), IGT_FIXED(0,0),
+> +			      IGT_FIXED(mode->hdisplay,0),
+> +			      IGT_FIXED(mode->vdisplay,0));
+> +
+> +	if (is_intel_device(data->drm_fd)) {
+> +		/* should fail on pre-gen9 and succeed on gen9+: */
+> +		if (data->display_ver < 9)
+> +			igt_assert_eq(ret, -ERANGE);
+> +		else
+> +			igt_assert_eq(ret, 0);
+
+Or just simple
+			igt_assert_eq(ret, expect);
+
+> +	} else {
+> +		/* Could succeed or fail with -ERANGE depending on hw limits: */
+> +		igt_assert((ret == 0) || (ret == -ERANGE));
+> +	}
+
+This is a real change, it relaxed checks for non-intel HW.
+imho we should ask others, for example amd developers if that is ok
+for them.
+
+>  
+>  	/* Try to use universal plane API to scale up (should fail on pre-gen9) */
+> -	igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
+> -				   output->config.crtc->crtc_id,
+> -				   test.oversized_fb.fb_id, 0,
+> -				   0, 0,
+> -				   mode->hdisplay,
+> -				   mode->vdisplay,
+> -				   IGT_FIXED(0,0), IGT_FIXED(0,0),
+> -				   IGT_FIXED(mode->hdisplay - 100,0),
+> -				   IGT_FIXED(mode->vdisplay - 100,0)) == expect);
+> +	ret = drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
+> +			      output->config.crtc->crtc_id,
+> +			      test.oversized_fb.fb_id, 0,
+> +			      0, 0,
+> +			      mode->hdisplay,
+> +			      mode->vdisplay,
+> +			      IGT_FIXED(0,0), IGT_FIXED(0,0),
+> +			      IGT_FIXED(mode->hdisplay - 100,0),
+> +			      IGT_FIXED(mode->vdisplay - 100,0));
+> +
+> +	if (is_intel_device(data->drm_fd)) {
+> +		/* should fail on pre-gen9 and succeed on gen9+: */
+> +		if (data->display_ver < 9)
+> +			igt_assert_eq(ret, -ERANGE);
+> +		else
+> +			igt_assert_eq(ret, 0);
+
+Same here, just simple:
+			igt_assert_eq(ret, expect);
 
 Regards,
 Kamil
 
->  		if (func->family_id >= AMDGPU_FAMILY_AI)
->  			context->pm4[i++] = context->write_length - 1;
->  		else
+> +	} else {
+> +		/* Could succeed or fail with -ERANGE depending on hw limits: */
+> +		igt_assert((ret == 0) || (ret == -ERANGE));
+> +	}
+>  
+>  	/* Find other crtcs and try to program our primary plane on them */
+>  	for (i = 0; i < test.moderes->count_crtcs; i++)
 > -- 
-> 2.25.1
+> 2.43.0
 > 
