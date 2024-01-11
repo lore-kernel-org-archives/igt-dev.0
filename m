@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 888EE10E942
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 14:45:28 +0000 (UTC)
-Date: Thu, 11 Jan 2024 09:45:22 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BFB0E10E0C5
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 14:51:23 +0000 (UTC)
+Date: Thu, 11 Jan 2024 09:51:16 -0500
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Subject: Re: [PATCH v3 1/3] tests/xe_waitfence: Rename invalid_engine to
- invalid-exec_queue
-Message-ID: <ZZ__Ag5vzCIjxQWj@intel.com>
+CC: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH v3 2/3] tests/xe_waitfence: Removed drm_xe_sync data in
+ exec_queue_reset_wait
+Message-ID: <ZaAAZNFrRe25Atxd@intel.com>
 References: <20240111062518.393544-1-krishnaiah.bommu@intel.com>
- <20240111062518.393544-2-krishnaiah.bommu@intel.com>
-Content-Type: text/plain; charset="utf-8"
+ <20240111062518.393544-3-krishnaiah.bommu@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240111062518.393544-2-krishnaiah.bommu@intel.com>
+In-Reply-To: <20240111062518.393544-3-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -22,92 +21,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jan 11, 2024 at 11:55:16AM +0530, Bommu Krishnaiah wrote:
-> Rename invalid_engine to invalid-exec_queue subtest and changed return value
-> as per kernel implementation.
+On Thu, Jan 11, 2024 at 11:55:17AM +0530, Bommu Krishnaiah wrote:
+> Removed drm_xe_sync data in exec_queue_reset_wait since it was declared
+> and unused, 
+
+are you sure this is unused? or this is what will force the timeout,
+then reset, then the wait_user_fence to really wait to the end?
+
+Cc: Matthew Brost
+
+> failure Intel XE#1081
+
+What is 'Intel XE#1081'?
+
 > 
 > Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > ---
->  tests/intel/xe_waitfence.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+>  tests/intel/xe_waitfence.c | 8 --------
+>  1 file changed, 8 deletions(-)
 > 
 > diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-> index 7ba20764c..fd515a151 100644
+> index fd515a151..2f0f00cf4 100644
 > --- a/tests/intel/xe_waitfence.c
 > +++ b/tests/intel/xe_waitfence.c
-> @@ -151,8 +151,8 @@ waitfence(int fd, enum waittype wt)
->   * SUBTEST: invalid-ops
->   * Description: Check query with invalid ops returns expected error code
->   *
-> - * SUBTEST: invalid-engine
-> - * Description: Check query with invalid engine info returns expected error code
-> + * SUBTEST: invalid-exec_queue
-> + * Description: Check query with invalid exec_queue info returns expected error code
->   *
->   * SUBTEST: exec_queue-reset-wait
->   * Description: Don’t wait till timeout on user fence when exec_queue reset is detected and return return proper error
-> @@ -207,7 +207,7 @@ invalid_ops(int fd)
->  }
+> @@ -248,16 +248,8 @@ exec_queue_reset_wait(int fd)
+>  		uint32_t data;
+>  	} *data;
 >  
->  static void
-> -invalid_engine(int fd)
-> +invalid_exec_queue(int fd)
->  {
->  	uint32_t bo;
->  
-> @@ -218,7 +218,7 @@ invalid_engine(int fd)
->  		.value = 1,
->  		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
->  		.timeout = -1,
-> -		.exec_queue_id = 0,
-> +		.exec_queue_id = -1,
-
-The exec_queue_id shouldn't be here. It is totally ignored in the
-exec_queue_create ioctl that is what is getting tested here.
-
+> -#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
+> -	struct drm_xe_sync sync[1] = {
+> -		{ .flags = DRM_XE_SYNC_TYPE_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
+> -			.timeline_value = USER_FENCE_VALUE },
+> -	};
+> -
+>  	struct drm_xe_exec exec = {
+>  		.num_batch_buffer = 1,
+> -		.num_syncs = 1,
+> -		.syncs = to_user_pointer(sync),
 >  	};
 >  
 >  	uint32_t vm = xe_vm_create(fd, 0, 0);
-> @@ -227,7 +227,7 @@ invalid_engine(int fd)
->  
->  	do_bind(fd, vm, bo, 0, 0x200000, 0x40000, 1);
->  
-> -	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EFAULT);
-> +	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, ENOENT);
-
-I'm afraid that this is wrong as well. ENOENT is not returned
-in the exec_queue_create.
-
-It is EFAULT that is returned when the wrong 'engine' (hw_engine) is
-selected for this exec_queue.
-
-Also, with this in mind, I believe this patch is entirely going to
-the wrong direction. We are stop validating the invalid_engine and
-trying to validate some other thing.
-
-If you need to validate the exec_queue_id you likely need a new
-test, instead of replacing this one like this.
-
->  }
->  
->  static void
-> @@ -329,8 +329,8 @@ igt_main
->  	igt_subtest("invalid-ops")
->  		invalid_ops(fd);
->  
-> -	igt_subtest("invalid-engine")
-> -		invalid_engine(fd);
-> +	igt_subtest("invalid-exec_queue")
-> +		invalid_exec_queue(fd);
->  
->  	igt_subtest("exec_queue-reset-wait")
->  		exec_queue_reset_wait(fd);
 > -- 
 > 2.25.1
 > 
