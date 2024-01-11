@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D46810E03A
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 07:33:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C37410E7D7
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 07:33:24 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [v2 1/3] lib/igt_kms: add helpers for big joiner debugfs
-Date: Thu, 11 Jan 2024 13:05:00 +0530
-Message-Id: <20240111073502.151340-2-swati2.sharma@intel.com>
+Subject: [v2 2/3] tests/intel/kms_dsc_helper: add dsc+big joiner helper func
+Date: Thu, 11 Jan 2024 13:05:01 +0530
+Message-Id: <20240111073502.151340-3-swati2.sharma@intel.com>
 In-Reply-To: <20240111073502.151340-1-swati2.sharma@intel.com>
 References: <20240111073502.151340-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
@@ -22,109 +22,75 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add helpers for big joiner debugfs.
+Add helper functions dsc with big joiner helper functions.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_kms.c | 75 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  3 +++
- 2 files changed, 78 insertions(+)
+ tests/intel/kms_dsc_helper.c | 32 ++++++++++++++++++++++++++++++++
+ tests/intel/kms_dsc_helper.h |  3 +++
+ 2 files changed, 35 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index e4dea1a60..d8ed81e9b 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -6368,3 +6368,78 @@ int get_num_scalers(int drm_fd, enum pipe pipe)
+diff --git a/tests/intel/kms_dsc_helper.c b/tests/intel/kms_dsc_helper.c
+index 58057aca3..91ce21062 100644
+--- a/tests/intel/kms_dsc_helper.c
++++ b/tests/intel/kms_dsc_helper.c
+@@ -7,8 +7,10 @@
  
- 	return num_scalers;
+ static bool force_dsc_en_orig;
+ static bool force_dsc_fractional_bpp_en_orig;
++static bool force_dsc_bigjoiner_en_orig;
+ static int force_dsc_restore_fd = -1;
+ static int force_dsc_fractional_bpp_restore_fd = -1;
++static int force_dsc_bigjoiner_restore_fd = -1;
+ 
+ void force_dsc_enable(int drmfd, igt_output_t *output)
+ {
+@@ -201,3 +203,33 @@ bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *outp
+ 
+ 	return true;
  }
 +
-+static int write_bigjoiner_debugfs(int drmfd, char *connector_name, const char *file_name,
-+				   const char *write_buf)
++void force_dsc_bigjoiner_enable(int drmfd, igt_output_t *output)
 +{
-+	int debugfs_fd = igt_debugfs_dir(drmfd);
-+	int len = strlen(write_buf);
 +	int ret;
-+	char file_path[128] = {0};
 +
-+	sprintf(file_path, "%s/%s", connector_name, file_name);
-+
-+	ret = igt_sysfs_write(debugfs_fd, file_path, write_buf, len);
-+
-+	close(debugfs_fd);
-+
-+	if (ret > 0)
-+		return 0;
-+
-+	return ret;
++	igt_debug("Forcing DSC Big Joiner on %s\n", output->name);
++	ret = igt_force_bigjoiner_enable(drmfd, output->name);
++	igt_assert_f(ret == 0, "forcing dsc big joiner debugfs_write failed\n");
 +}
 +
-+static bool check_bigjoiner_debugfs(int drmfd, char *connector_name,
-+				    const char *check_str)
++void save_force_dsc_bigjoiner_en(int drmfd, igt_output_t *output)
 +{
-+	char file_name[128] = {0};
-+	char buf[512];
-+
-+	sprintf(file_name, "%s/i915_bigjoiner_force_enable", connector_name);
-+
-+	igt_debugfs_read(drmfd, file_name, buf);
-+
-+	return strstr(buf, check_str);
++	force_dsc_bigjoiner_en_orig =
++		igt_is_force_bigjoiner_enabled(drmfd, output->name);
++	force_dsc_bigjoiner_restore_fd =
++		igt_get_bigjoiner_debugfs_fd(drmfd, output->name);
++	igt_assert(force_dsc_bigjoiner_restore_fd >= 0);
 +}
 +
-+/**
-+ * igt_is_force_bigjoiner_enabled:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: True if Big Joiner is force enabled (via debugfs) for the given connector,
-+ * false otherwise.
-+ */
-+bool igt_is_force_bigjoiner_enabled(int drmfd, char *connector_name)
++void restore_force_dsc_bigjoiner_en(void)
 +{
-+	return check_bigjoiner_debugfs(drmfd, connector_name, "Bigjoiner enable: 1");
++	if (force_dsc_bigjoiner_restore_fd < 0)
++		return;
++
++	igt_debug("Restoring DSC Big Joiner enable\n");
++	igt_assert(write(force_dsc_bigjoiner_restore_fd, force_dsc_bigjoiner_en_orig ? "1" : "0", 1) == 1);
++
++	close(force_dsc_bigjoiner_restore_fd);
++	force_dsc_bigjoiner_restore_fd = -1;
 +}
-+
-+/**
-+ * igt_force_bigjoiner_enable:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: 0 on success or negative error code, in case of failure.
-+ */
-+int igt_force_bigjoiner_enable(int drmfd, char *connector_name)
-+{
-+	return write_bigjoiner_debugfs(drmfd, connector_name, "i915_bigjoiner_force_enable", "1");
-+}
-+
-+/**
-+ * igt_get_bigjoiner_debugfs_fd:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: fd of the Big Joiner debugfs for the given connector,
-+ * else returns -1.
-+ */
-+int igt_get_bigjoiner_debugfs_fd(int drmfd, char *connector_name)
-+{
-+	char file_name[128] = {0};
-+
-+	sprintf(file_name, "%s/i915_bigjoiner_force_enable", connector_name);
-+
-+	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
-+}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index b3882808b..1b973a7fc 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1218,5 +1218,8 @@ bool intel_pipe_output_combo_valid(igt_display_t *display);
- bool igt_check_output_is_dp_mst(igt_output_t *output);
- int igt_get_dp_mst_connector_id(igt_output_t *output);
- int get_num_scalers(int drm_fd, enum pipe pipe);
-+bool igt_is_force_bigjoiner_enabled(int drmfd, char *connector_name);
-+int igt_force_bigjoiner_enable(int drmfd, char *connector_name);
-+int igt_get_bigjoiner_debugfs_fd(int drmfd, char *connector_name);
+diff --git a/tests/intel/kms_dsc_helper.h b/tests/intel/kms_dsc_helper.h
+index 4dbd88fe7..b2f8ea1ca 100644
+--- a/tests/intel/kms_dsc_helper.h
++++ b/tests/intel/kms_dsc_helper.h
+@@ -38,5 +38,8 @@ void force_dsc_fractional_bpp_enable(int drmfd, igt_output_t *output);
+ void save_force_dsc_fractional_bpp_en(int drmfd, igt_output_t *output);
+ void restore_force_dsc_fractional_bpp_en(void);
+ bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *output);
++void force_dsc_bigjoiner_enable(int drmfd, igt_output_t *output);
++void save_force_dsc_bigjoiner_en(int drmfd, igt_output_t *output);
++void restore_force_dsc_bigjoiner_en(void);
  
- #endif /* __IGT_KMS_H__ */
+ #endif
 -- 
 2.25.1
