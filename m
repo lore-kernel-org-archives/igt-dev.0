@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Date: Mon, 15 Jan 2024 03:50:16 +0000
-From: Matthew Brost <matthew.brost@intel.com>
-Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_compute_mode: Fix non-blocking
- subtest
-Message-ID: <ZaSrePffu4Zthdla@DUT025-TGLU.fm.intel.com>
-References: <20240115031942.29658-1-sai.gowtham.ch@intel.com>
+Date: Thu, 11 Jan 2024 09:51:16 -0500
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: Re: [PATCH v3 2/3] tests/xe_waitfence: Removed drm_xe_sync data in
+ exec_queue_reset_wait
+Message-ID: <ZaAAZNFrRe25Atxd@intel.com>
+References: <20240111062518.393544-1-krishnaiah.bommu@intel.com>
+ <20240111062518.393544-3-krishnaiah.bommu@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20240115031942.29658-1-sai.gowtham.ch@intel.com>
+In-Reply-To: <20240111062518.393544-3-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -21,100 +22,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: sai.gowtham.ch@intel.com
 Cc: igt-dev@lists.freedesktop.org
-Message-ID: <20240115035016.Kx4NNC84TWCG6tp4p-sJlWSfWOAK1B-hhohBzfPJIeM@z>
+Message-ID: <20240111145116.xDZsBW3IQ7Sgr0GGTN5jEAdIzekdWvQPNKDTsP0gbG8@z>
 
-On Mon, Jan 15, 2024 at 08:49:42AM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+On Thu, Jan 11, 2024 at 11:55:17AM +0530, Bommu Krishnaiah wrote:
+> Removed drm_xe_sync data in exec_queue_reset_wait since it was declared
+> and unused, 
+
+are you sure this is unused? or this is what will force the timeout,
+then reset, then the wait_user_fence to really wait to the end?
+
+Cc: Matthew Brost
+
+> failure Intel XE#1081
+
+What is 'Intel XE#1081'?
+
 > 
-> Fix submission of exec, Call exec ioctl sperately instead existing
-> igt wrapper _xe_exec which leads to infinite loop even kernel throws an
-> error.
-> 
-> Cc: Matthew Brost <matthew.brost@intel.com>
-
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > ---
->  tests/intel/xe_exec_compute_mode.c | 25 +++++++++++++++----------
->  1 file changed, 15 insertions(+), 10 deletions(-)
+>  tests/intel/xe_waitfence.c | 8 --------
+>  1 file changed, 8 deletions(-)
 > 
-> diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-> index 6ebfa1a86..473b11ae9 100644
-> --- a/tests/intel/xe_exec_compute_mode.c
-> +++ b/tests/intel/xe_exec_compute_mode.c
-> @@ -15,6 +15,7 @@
->  #include "igt.h"
->  #include "lib/igt_syncobj.h"
->  #include "lib/intel_reg.h"
-> +#include <sys/ioctl.h>
->  #include "xe_drm.h"
->  
->  #include "xe/xe_ioctl.h"
-> @@ -320,7 +321,7 @@ static void non_block(int fd, int expect)
+> diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
+> index fd515a151..2f0f00cf4 100644
+> --- a/tests/intel/xe_waitfence.c
+> +++ b/tests/intel/xe_waitfence.c
+> @@ -248,16 +248,8 @@ exec_queue_reset_wait(int fd)
 >  		uint32_t data;
->  		uint64_t exec_sync;
->  	} *data = NULL;
-> -	struct xe_spin_opts spin_opts = { .addr = addr, .preempt = false };
-> +	struct xe_spin_opts spin_opts = { .preempt = false };
->  	struct drm_xe_engine *engine;
->  	uint64_t batch_offset = (char *)&data[EXEC_DATA].batch - (char *)data;
->  	uint64_t batch_addr = addr + batch_offset;
-> @@ -350,6 +351,7 @@ static void non_block(int fd, int expect)
->  	xe_wait_ufence(fd, &data[VM_DATA].vm_sync, USER_FENCE_VALUE, 0, ONE_SEC);
->  	data[VM_DATA].vm_sync = 0;
+>  	} *data;
 >  
-> +	spin_opts.addr = addr + (char *)&data[SPIN_DATA].spin - (char *)data;
->  	xe_spin_init(&data[SPIN_DATA].spin, &spin_opts);
->  	sync[0].addr = addr + (char *)&data[SPIN_DATA].exec_sync - (char *)data;
->  	exec.exec_queue_id = exec_queue;
-> @@ -358,11 +360,11 @@ static void non_block(int fd, int expect)
->  	xe_spin_wait_started(&data[SPIN_DATA].spin);
+> -#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
+> -	struct drm_xe_sync sync[1] = {
+> -		{ .flags = DRM_XE_SYNC_TYPE_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
+> -			.timeline_value = USER_FENCE_VALUE },
+> -	};
+> -
+>  	struct drm_xe_exec exec = {
+>  		.num_batch_buffer = 1,
+> -		.num_syncs = 1,
+> -		.syncs = to_user_pointer(sync),
+>  	};
 >  
->  	b = 0;
-> -	data[0].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-> -	data[0].batch[b++] = sdi_addr;
-> -	data[0].batch[b++] = sdi_addr >> 32;
-> -	data[0].batch[b++] = value;
-> -	data[0].batch[b++] = MI_BATCH_BUFFER_END;
-> +	data[EXEC_DATA].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-> +	data[EXEC_DATA].batch[b++] = sdi_addr;
-> +	data[EXEC_DATA].batch[b++] = sdi_addr >> 32;
-> +	data[EXEC_DATA].batch[b++] = value;
-> +	data[EXEC_DATA].batch[b++] = MI_BATCH_BUFFER_END;
->  	igt_assert(b <= ARRAY_SIZE(data->batch));
->  
->  	sync[0].addr = addr + (char *)&data[EXEC_DATA].exec_sync - (char *)data;
-> @@ -371,12 +373,15 @@ static void non_block(int fd, int expect)
->  	exec.address = batch_addr;
->  
->  	while (1) {
-> -		err = __xe_exec(fd, &exec);
->  
-> -		if (err == -EWOULDBLOCK)
-> +		err = ioctl(fd, DRM_IOCTL_XE_EXEC, &exec);
-> +
-> +		if (err == -1 && errno == EWOULDBLOCK)
->  			break;
-> +
-> +		igt_assert_eq(err, 0);
->  	}
-> -	igt_assert_eq(err, expect);
-> +	igt_assert_eq(errno, expect);
->  
->  	xe_spin_end(&data[SPIN_DATA].spin);
->  	xe_wait_ufence(fd, &data[SPIN_DATA].exec_sync, USER_FENCE_VALUE, 0, ONE_SEC);
-> @@ -454,7 +459,7 @@ igt_main
->  	}
->  
->  	igt_subtest("non-blocking")
-> -		non_block(fd, -EWOULDBLOCK);
-> +		non_block(fd, EWOULDBLOCK);
->  
->  
->  	igt_fixture
+>  	uint32_t vm = xe_vm_create(fd, 0, 0);
 > -- 
-> 2.39.1
+> 2.25.1
 > 
