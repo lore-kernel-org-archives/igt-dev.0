@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Date: Thu, 11 Jan 2024 09:51:16 -0500
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: Re: [PATCH v3 2/3] tests/xe_waitfence: Removed drm_xe_sync data in
- exec_queue_reset_wait
-Message-ID: <ZaAAZNFrRe25Atxd@intel.com>
-References: <20240111062518.393544-1-krishnaiah.bommu@intel.com>
- <20240111062518.393544-3-krishnaiah.bommu@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240111062518.393544-3-krishnaiah.bommu@intel.com>
+From: <vitaly.prosyak@amd.com>
+Subject: [PATCH 1/2] lib/amdgpu: add secure flag to sdma packet
+Date: Thu, 11 Jan 2024 14:25:52 -0500
+Message-ID: <20240111192553.113902-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,50 +18,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-Cc: igt-dev@lists.freedesktop.org
-Message-ID: <20240111145116.xDZsBW3IQ7Sgr0GGTN5jEAdIzekdWvQPNKDTsP0gbG8@z>
+To: igt-dev@lists.freedesktop.org
+Cc: Alex Deucher <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>
+Message-ID: <20240111192552.z7abfb5hywTguxn3jTNXOZQmWUYhxRTcK2O1ENOWlJQ@z>
 
-On Thu, Jan 11, 2024 at 11:55:17AM +0530, Bommu Krishnaiah wrote:
-> Removed drm_xe_sync data in exec_queue_reset_wait since it was declared
-> and unused, 
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-are you sure this is unused? or this is what will force the timeout,
-then reset, then the wait_user_fence to really wait to the end?
+The change is required to handle the security flag for
+trusted memory zone copy operation(TMZ feature).
+Previously the security test was its own hardcoded version,
+now we are allowed to use ASIC -the dependent version function
+to create the SDMA packet.
 
-Cc: Matthew Brost
+v2 : added description to commit message (Kamil)
 
-> failure Intel XE#1081
+Cc: Jesse Zhang <jesse.zhang@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-What is 'Intel XE#1081'?
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
+---
+ lib/amdgpu/amd_ip_blocks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
-> Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> ---
->  tests/intel/xe_waitfence.c | 8 --------
->  1 file changed, 8 deletions(-)
-> 
-> diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-> index fd515a151..2f0f00cf4 100644
-> --- a/tests/intel/xe_waitfence.c
-> +++ b/tests/intel/xe_waitfence.c
-> @@ -248,16 +248,8 @@ exec_queue_reset_wait(int fd)
->  		uint32_t data;
->  	} *data;
->  
-> -#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
-> -	struct drm_xe_sync sync[1] = {
-> -		{ .flags = DRM_XE_SYNC_TYPE_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
-> -			.timeline_value = USER_FENCE_VALUE },
-> -	};
-> -
->  	struct drm_xe_exec exec = {
->  		.num_batch_buffer = 1,
-> -		.num_syncs = 1,
-> -		.syncs = to_user_pointer(sync),
->  	};
->  
->  	uint32_t vm = xe_vm_create(fd, 0, 0);
-> -- 
-> 2.25.1
-> 
+diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+index 1adea6987..a7ccfa38b 100644
+--- a/lib/amdgpu/amd_ip_blocks.c
++++ b/lib/amdgpu/amd_ip_blocks.c
+@@ -139,7 +139,7 @@ sdma_ring_copy_linear(const struct amdgpu_ip_funcs *func,
+ 	} else {
+ 		context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_COPY,
+ 				       SDMA_COPY_SUB_OPCODE_LINEAR,
+-				       0);
++					context->secure ? 0x4 : 0);
+ 		if (func->family_id >= AMDGPU_FAMILY_AI)
+ 			context->pm4[i++] = context->write_length - 1;
+ 		else
+-- 
+2.25.1
