@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Message-ID: <3602fae0-75e6-3f40-b818-a6dc45567264@quicinc.com>
-Date: Wed, 10 Jan 2024 12:39:23 -0800
+From: <vitaly.prosyak@amd.com>
+Subject: [PATCH 1/2] lib/amdgpu: add secure flag to sdma packet
+Date: Wed, 10 Jan 2024 19:31:55 -0500
+Message-ID: <20240111003156.375379-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] tests/kms_bw: Add 2160x1440p mode
-Content-Language: en-US
-References: <20240105213603.109149-2-robdclark@gmail.com>
- <20240108215006.170234-1-robdclark@gmail.com>
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <20240108215006.170234-1-robdclark@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,27 +18,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: Rob Clark <robdclark@gmail.com>, igt-dev@lists.freedesktop.org
-Cc: Rob Clark <robdclark@chromium.org>
-Message-ID: <20240110203923.bnzl4yhBzoHrla75mZZynRu_2FAq7SPh9NbOhv1Da2A@z>
+To: igt-dev@lists.freedesktop.org
+Cc: Alex Deucher <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>
+Message-ID: <20240111003155.GvXPbF8VzOG_go4qWL-0XTVEndLqM052xUBeKeq9IVs@z>
 
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
+Cc: Jesse Zhang <jesse.zhang@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-On 1/8/2024 1:50 PM, Rob Clark wrote:
-> From: Rob Clark <robdclark@chromium.org>
-> 
-> Add an additional mode so that we can get more kms_bw coverage on
-> sc7180.
-> 
-> v2: Add missing comment listing subtest name
-> 
-> Signed-off-by: Rob Clark <robdclark@chromium.org>
-> ---
->   tests/kms_bw.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
-> 
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+---
+ lib/amdgpu/amd_ip_blocks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Matches the timings of sc7180,
-
-
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+index 1adea6987..a7ccfa38b 100644
+--- a/lib/amdgpu/amd_ip_blocks.c
++++ b/lib/amdgpu/amd_ip_blocks.c
+@@ -139,7 +139,7 @@ sdma_ring_copy_linear(const struct amdgpu_ip_funcs *func,
+ 	} else {
+ 		context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_COPY,
+ 				       SDMA_COPY_SUB_OPCODE_LINEAR,
+-				       0);
++					context->secure ? 0x4 : 0);
+ 		if (func->family_id >= AMDGPU_FAMILY_AI)
+ 			context->pm4[i++] = context->write_length - 1;
+ 		else
+-- 
+2.25.1
