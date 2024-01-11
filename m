@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8280810E8E7
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 20:32:49 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="------------x2FEeMSnwBMtS87gH9mo3MmQ"
-Message-ID: <82b68f58-a219-441e-b09f-cafa1185bd98@intel.com>
-Date: Thu, 11 Jan 2024 12:32:43 -0800
-Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_store: don't pass gt_id as bind
- queue
-Content-Language: en-US
-To: Matthew Auld <matthew.auld@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20240111090152.296752-1-matthew.auld@intel.com>
-From: "Randhawa, Jagmeet" <jagmeet.randhawa@intel.com>
-In-Reply-To: <20240111090152.296752-1-matthew.auld@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB5EC10E0BE
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 20:53:18 +0000 (UTC)
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t] tests/kms_rmfb: Fix subtest description
+Date: Thu, 11 Jan 2024 12:53:16 -0800
+Message-Id: <20240111205316.1640003-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,105 +16,76 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---------------x2FEeMSnwBMtS87gH9mo3MmQ
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Kernel driver is responsible to do those actions. kms_rmfb is then
+checking if that was true in 2 cases: a) DRM_IOCTL_MODE_RMFB was called
+or b) the file descriptor was closed.
 
-
-On 1/11/2024 1:01 AM, Matthew Auld wrote:
-> The gt_id of the engine is not a valid bind queue. Typically it is zero
-> so we likely don't notice anything, but that might not always be the
-> case.
->
-> Signed-off-by: Matthew Auld<matthew.auld@intel.com>
-> Cc: Jagmeet Randhawa<jagmeet.randhawa@intel.com>
-> ---
->   tests/intel/xe_exec_store.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-> index 870394d3c..3ec84295b 100644
-> --- a/tests/intel/xe_exec_store.c
-> +++ b/tests/intel/xe_exec_store.c
-> @@ -217,7 +217,7 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
->   		dst_offset[i] = intel_allocator_alloc_with_strategy(ahnd, bo[i],
->   								    bo_size, 0,
->   								    ALLOC_STRATEGY_LOW_TO_HIGH);
-> -		xe_vm_bind_async(fd, vm, eci->gt_id, bo[i], 0, dst_offset[i], bo_size, sync, 1);
-> +		xe_vm_bind_async(fd, vm, 0, bo[i], 0, dst_offset[i], bo_size, sync, 1);
->   	}
->   
->   	batch_map = xe_bo_map(fd, bo[i-1], bo_size);
-> @@ -303,7 +303,7 @@ static void persistent(int fd)
->   			      vram_if_possible(fd, engine->instance.gt_id),
->   			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->   
-> -	xe_vm_bind_async(fd, vm, engine->instance.gt_id, sd_batch, 0, addr, batch_size, &sync, 1);
-> +	xe_vm_bind_async(fd, vm, 0, sd_batch, 0, addr, batch_size, &sync, 1);
->   	sd_data = xe_bo_map(fd, sd_batch, batch_size);
->   	prt_data = xe_bo_map(fd, prt_batch, batch_size);
->   
-
-Reviewed-by: Jagmeet Randhawa<jagmeet.randhawa@intel.com>
-
---------------x2FEeMSnwBMtS87gH9mo3MmQ
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 1/11/2024 1:01 AM, Matthew Auld
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20240111090152.296752-1-matthew.auld@intel.com">
-      <pre class="moz-quote-pre" wrap="">The gt_id of the engine is not a valid bind queue. Typically it is zero
-so we likely don't notice anything, but that might not always be the
-case.
-
-Signed-off-by: Matthew Auld <a class="moz-txt-link-rfc2396E" href="mailto:matthew.auld@intel.com">&lt;matthew.auld@intel.com&gt;</a>
-Cc: Jagmeet Randhawa <a class="moz-txt-link-rfc2396E" href="mailto:jagmeet.randhawa@intel.com">&lt;jagmeet.randhawa@intel.com&gt;</a>
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tests/intel/xe_exec_store.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/kms_rmfb.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-index 870394d3c..3ec84295b 100644
---- a/tests/intel/xe_exec_store.c
-+++ b/tests/intel/xe_exec_store.c
-@@ -217,7 +217,7 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
- 		dst_offset[i] = intel_allocator_alloc_with_strategy(ahnd, bo[i],
- 								    bo_size, 0,
- 								    ALLOC_STRATEGY_LOW_TO_HIGH);
--		xe_vm_bind_async(fd, vm, eci-&gt;gt_id, bo[i], 0, dst_offset[i], bo_size, sync, 1);
-+		xe_vm_bind_async(fd, vm, 0, bo[i], 0, dst_offset[i], bo_size, sync, 1);
- 	}
+diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
+index 39e8bbd55..8a27f4fac 100644
+--- a/tests/kms_rmfb.c
++++ b/tests/kms_rmfb.c
+@@ -24,7 +24,7 @@
+ /**
+  * TEST: kms rmfb
+  * Category: Display
+- * Description: This tests rmfb and close-fd behavior. In these casesthe
++ * Description: This tests rmfb and close-fd behavior. In these cases the
+  *              framebuffers should be removed from the crtc.
+  * Driver requirement: i915, xe
+  * Functionality: kms_gem_interop
+@@ -42,12 +42,13 @@
  
- 	batch_map = xe_bo_map(fd, bo[i-1], bo_size);
-@@ -303,7 +303,7 @@ static void persistent(int fd)
- 			      vram_if_possible(fd, engine-&gt;instance.gt_id),
- 			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+ /**
+  * SUBTEST: close-fd
+- * Description: RMFB is supposed to free the framebuffers from any and all planes
+- *              so test this and make sure it works with fd close and reopen.
++ * Description: Kernel driver is supposed to free the framebuffers from any and all planes
++ *		when the fd is closed. Ensure that is the case by closing and re-opening
++ *		it.
+  *
+  * SUBTEST: rmfb-ioctl
+- * Description: RMFB is supposed to free the framebuffers from any and all planes
+- *              so test this and make sure it works.
++ * Description: Kernel driver is supposed to free the framebuffers from any and all planes
++ *              when DRM_IOCTL_MODE_RMFB ioctl is called. Ensure that is the case.
+  */
  
--	xe_vm_bind_async(fd, vm, engine-&gt;instance.gt_id, sd_batch, 0, addr, batch_size, &amp;sync, 1);
-+	xe_vm_bind_async(fd, vm, 0, sd_batch, 0, addr, batch_size, &amp;sync, 1);
- 	sd_data = xe_bo_map(fd, sd_batch, batch_size);
- 	prt_data = xe_bo_map(fd, prt_batch, batch_size);
- </pre>
-    </blockquote>
-    <br>
-    <pre class="moz-quote-pre" wrap=""><span class="reviewed-by" style="box-sizing: border-box;">Reviewed-by: </span>Jagmeet Randhawa <a class="moz-txt-link-rfc2396E" href="mailto:jagmeet.randhawa@intel.com">&lt;jagmeet.randhawa@intel.com&gt;</a></pre>
-    <blockquote type="cite" cite="mid:20240111090152.296752-1-matthew.auld@intel.com">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------x2FEeMSnwBMtS87gH9mo3MmQ--
+ #ifndef DRM_CAP_CURSOR_WIDTH
+@@ -57,7 +58,7 @@
+ #define DRM_CAP_CURSOR_HEIGHT 0x9
+ #endif
+ 
+-IGT_TEST_DESCRIPTION("This tests rmfb and close-fd behavior. In these cases"
++IGT_TEST_DESCRIPTION("This tests rmfb and close-fd behavior. In these cases "
+ 		     "the framebuffers should be removed from the crtc.");
+ 
+ struct rmfb_data {
+@@ -198,11 +199,11 @@ igt_main
+ 		const char *name;
+ 		const char *description;
+ 	} tests[] = {
+-		{ false, "rmfb-ioctl", "RMFB is supposed to free the framebuffers from any and all "
+-				       "planes so test this and make sure it works."},
+-		{ true, "close-fd", "RMFB is supposed to free the framebuffers from any and all "
+-				    "planes so test this and make sure it works with fd close "
+-				    "and reopen."},
++		{ false, "rmfb-ioctl", "Kernel driver is supposed to free the framebuffers from any and all planes "
++				       "when the fd is closed. Ensure that is the case by closing and re-opening "
++				       "it" },
++		{ true, "close-fd", "Kernel driver is supposed to free the framebuffers from any and all planes "
++				    "when DRM_IOCTL_MODE_RMFB ioctl is called. Ensure that is the case." },
+ 	};
+ 	struct rmfb_data data = {};
+ 	int i;
+-- 
+2.40.1
