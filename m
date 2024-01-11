@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 43DED10E656
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Jan 2024 18:30:45 +0000 (UTC)
-Date: Wed, 10 Jan 2024 19:30:39 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: sai.gowtham.ch@intel.com
-Subject: Re: [PATCH i-g-t] lib/intel_cmds_info: Add MEM_COPY/SET support for
- Lunarlake
-Message-ID: <20240110183039.eri6nrjts6hmwx57@zkempczy-mobl2>
-References: <20240109095602.9620-1-sai.gowtham.ch@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D0FA10E813
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 09:02:23 +0000 (UTC)
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t] tests/intel/xe_exec_store: don't pass gt_id as bind
+ queue
+Date: Thu, 11 Jan 2024 09:01:52 +0000
+Message-ID: <20240111090152.296752-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240109095602.9620-1-sai.gowtham.ch@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,42 +17,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jan 09, 2024 at 03:26:02PM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> 
-> Enable MEM_COPY/SET instructions support for Lunarlake, which
-> allows to validate MEM_COPY/SET tests.
-> 
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> ---
->  lib/intel_cmds_info.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/lib/intel_cmds_info.c b/lib/intel_cmds_info.c
-> index 56073bd6d..669d3e500 100644
-> --- a/lib/intel_cmds_info.c
-> +++ b/lib/intel_cmds_info.c
-> @@ -182,6 +182,8 @@ const struct intel_cmds_info xe2_cmds_info  = {
->  	.blt_cmds = {
->  		[XY_FAST_COPY] = &dg2_xy_fast_copy,
->  		[XY_BLOCK_COPY] = &xe2_xy_block_copy,
-> +		[MEM_COPY] = &pvc_mem_copy,
-> +		[MEM_SET] = &pvc_mem_set,
->  	}
->  };
->  
-> -- 
-> 2.39.1
-> 
+The gt_id of the engine is not a valid bind queue. Typically it is zero
+so we likely don't notice anything, but that might not always be the
+case.
 
-Looks good and works fine:
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+---
+ tests/intel/xe_exec_store.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
+diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
+index 870394d3c..3ec84295b 100644
+--- a/tests/intel/xe_exec_store.c
++++ b/tests/intel/xe_exec_store.c
+@@ -217,7 +217,7 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
+ 		dst_offset[i] = intel_allocator_alloc_with_strategy(ahnd, bo[i],
+ 								    bo_size, 0,
+ 								    ALLOC_STRATEGY_LOW_TO_HIGH);
+-		xe_vm_bind_async(fd, vm, eci->gt_id, bo[i], 0, dst_offset[i], bo_size, sync, 1);
++		xe_vm_bind_async(fd, vm, 0, bo[i], 0, dst_offset[i], bo_size, sync, 1);
+ 	}
+ 
+ 	batch_map = xe_bo_map(fd, bo[i-1], bo_size);
+@@ -303,7 +303,7 @@ static void persistent(int fd)
+ 			      vram_if_possible(fd, engine->instance.gt_id),
+ 			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+ 
+-	xe_vm_bind_async(fd, vm, engine->instance.gt_id, sd_batch, 0, addr, batch_size, &sync, 1);
++	xe_vm_bind_async(fd, vm, 0, sd_batch, 0, addr, batch_size, &sync, 1);
+ 	sd_data = xe_bo_map(fd, sd_batch, batch_size);
+ 	prt_data = xe_bo_map(fd, prt_batch, batch_size);
+ 
+-- 
+2.43.0
