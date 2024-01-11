@@ -1,22 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2056.outbound.protection.outlook.com [40.107.243.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D85B610E6C7
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 00:39:24 +0000 (UTC)
-Message-ID: <95c141f0-ed84-42ac-abf9-5c6e9e0404f2@amd.com>
-Date: Wed, 10 Jan 2024 19:39:16 -0500
-Subject: Re: [PATCH i-g-t] tests/amd_security: fix secure bounce test issue
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>,
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam04on2069.outbound.protection.outlook.com [40.107.100.69])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BF0310E07A
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jan 2024 01:13:19 +0000 (UTC)
+From: "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>
+To: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <20231204030007.326044-1-jesse.zhang@amd.com>
- <DM4PR12MB51524419519645808B321A18E3692@DM4PR12MB5152.namprd12.prod.outlook.com>
- <98f0eaf7-a449-437b-a3d5-1d2e21f5137c@amd.com>
+Subject: RE: [PATCH 2/2] tests/amd_security: fix secure bounce test
+Date: Thu, 11 Jan 2024 01:13:16 +0000
+Message-ID: <DM4PR12MB5152D50F6889E6C3853517EDE3682@DM4PR12MB5152.namprd12.prod.outlook.com>
+References: <20240111003156.375379-1-vitaly.prosyak@amd.com>
+ <20240111003156.375379-2-vitaly.prosyak@amd.com>
+In-Reply-To: <20240111003156.375379-2-vitaly.prosyak@amd.com>
 Content-Language: en-US
-From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <98f0eaf7-a449-437b-a3d5-1d2e21f5137c@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -25,111 +23,161 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>
+Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>, "Koenig,
+ Christian" <Christian.Koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+[AMD Official Use Only - General]
 
-On 2024-01-10 05:15, Christian König wrote:
->  From coding style etc it looks good and of hand it seems to make sense.
->
-> But I don't understand the background of the test and why that direction 
-> needs to be reverted.
->
-> So Vitaly can you take a look?
-Hi Christian,
+This patch is good for me.
+So it is Reviewed-by: Jesse Zhang <Jesse.Zhang@amd.com>.
 
-The issue was real.
-The typo was hidden in the fact that the same pattern was used for
-both buffers and even when the second copy did not occur due to an
-incorrect address, the problem did not pop up. To address the issue
+Thanks
+Jesse
 
-i use the second pattern for the second copy.
+-----Original Message-----
+From: vitaly.prosyak@amd.com <vitaly.prosyak@amd.com>
+Sent: Thursday, January 11, 2024 8:32 AM
+To: igt-dev@lists.freedesktop.org
+Cc: Zhang, Jesse(Jie) <Jesse.Zhang@amd.com>; Deucher, Alexander <Alexander.=
+Deucher@amd.com>; Koenig, Christian <Christian.Koenig@amd.com>; Kamil Konie=
+czny <kamil.konieczny@linux.intel.com>; Prosyak, Vitaly <Vitaly.Prosyak@amd=
+.com>
+Subject: [PATCH 2/2] tests/amd_security: fix secure bounce test
 
-I reworked and posted Jesse's finding with 2 patches. There is some improvement like using ASIC-dependent linear copy function vs hard coded earlier.
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-Thanks, Vitaly
+When it copy from scr (bo) to destination (bo2), and move bo2 from vram to =
+gtt. Then it need to copy from bo2(src) to bo (destination) for verificatio=
+n.
 
->
-> Thanks,
-> Christian.
->
-> Am 10.01.24 um 10:13 schrieb Zhang, Jesse(Jie):
->> [AMD Official Use Only - General]
->>
->> Ping ...
->> Can anyone help review this.
->> -----Original Message-----
->> From: Jesse Zhang <jesse.zhang@amd.com>
->> Sent: Monday, December 4, 2023 11:00 AM
->> To: igt-dev@lists.freedesktop.org
->> Cc: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>; Deucher, Alexander <Alexander.Deucher@amd.com>; Tuikov, Luben <Luben.Tuikov@amd.com>; Koenig, Christian <Christian.Koenig@amd.com>; Zhang, Jesse(Jie) <Jesse.Zhang@amd.com>; Kamil Konieczny <kamil.konieczny@linux.intel.com>; Zhang, Jesse(Jie) <Jesse.Zhang@amd.com>
->> Subject: [PATCH i-g-t] tests/amd_security: fix secure bounce test issue
->>
->> When it copy from scr (bo) to destination (bo2), and move bo2 from vram to gtt.
->> Then it need to copy from bo2(src)
->> to bo (destination) for verification.
->>
->> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
->> Cc: Luben Tuikov <luben.tuikov@amd.com>
->> Cc: Alex Deucher <alexander.deucher@amd.com>
->> Cc: Christian Koenig <christian.koenig@amd.com>
->> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->>
->> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
->> ---
->>   tests/amdgpu/amd_security.c | 17 ++++++++++++-----
->>   1 file changed, 12 insertions(+), 5 deletions(-)
->>
->> diff --git a/tests/amdgpu/amd_security.c b/tests/amdgpu/amd_security.c index d1146a7ce..7fb6df3b6 100644
->> --- a/tests/amdgpu/amd_security.c
->> +++ b/tests/amdgpu/amd_security.c
->> @@ -99,7 +99,7 @@ static void
->>   amdgpu_bo_lcopy(amdgpu_device_handle device,
->>                  struct amdgpu_ring_context *ring_context,
->>                  const struct amdgpu_ip_block_version *ip_block, uint32_t size,
->> -               uint32_t secure)
->> +               uint32_t secure, int direction)
->>   {
->>          ring_context->pm4 = calloc(PACKET_LCOPY_SIZE, sizeof(*ring_context->pm4));
->>          ring_context->secure = secure;
->> @@ -108,8 +108,15 @@ amdgpu_bo_lcopy(amdgpu_device_handle device,
->>          ring_context->res_cnt = 2;
->>          igt_assert(ring_context->pm4);
->>
->> -       amdgpu_sdma_lcopy(ring_context->pm4, ring_context->bo_mc2,
->> -                       ring_context->bo_mc, size, secure);
->> +       if (direction) {
->> +               /* copy from bo2 to bo */
->> +               amdgpu_sdma_lcopy(ring_context->pm4, ring_context->bo_mc,
->> +                               ring_context->bo_mc2, size, secure);
->> +       } else {
->> +               /* copy from bo to bo bo2 */
->> +               amdgpu_sdma_lcopy(ring_context->pm4, ring_context->bo_mc2,
->> +                               ring_context->bo_mc, size, secure);
->> +       }
->>          amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
->>          free(ring_context->pm4);
->>   }
->> @@ -222,7 +229,7 @@ amdgpu_secure_bounce(amdgpu_device_handle device_handle, int fd,
->>          ring_context->resources[1] = ring_context->bo;  // Alice
->>
->>          amdgpu_bo_lcopy(device_handle, ring_context, ip_block, SECURE_BUFFER_SIZE,
->> -                       secure == true ? 1 : 0);
->> +                       secure == true ? 1 : 0, 0);
->>
->>          /* Verify the contents of Bob. */
->>          for (pp = (__typeof__(pp))ring_context->bo2_cpu;
->> @@ -249,7 +256,7 @@ amdgpu_secure_bounce(amdgpu_device_handle device_handle, int fd,
->>
->>          /* sDMA TMZ copy from Bob to Alice. */
->>          amdgpu_bo_lcopy(device_handle, ring_context, ip_block, SECURE_BUFFER_SIZE,
->> -                       secure == true ? 1 : 0);
->> +                       secure == true ? 1 : 0, 1);
->>
->>          /* Verify the contents of Alice */
->>          for (pp = (__typeof__(pp))ring_context->bo_cpu;
->> --
->> 2.25.1
->>
+v2:
+  - The typo was hidden in the fact that the same pattern was used for
+    both buffers and even when the second copy did not occur due to an
+    incorrect address, the problem did not pop up. To address the issue
+    we use the second pattern for the second copy.(Vitaly)
+
+  - Use ASIC-dependent linear copy function vs hardcoded earlier.(Vitaly)
+
+  - Remove obsolete amdgpu_sdma_lcopy.(Vitaly)
+
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+---
+ tests/amdgpu/amd_security.c | 45 ++++++++++++++++++-------------------
+ 1 file changed, 22 insertions(+), 23 deletions(-)
+
+diff --git a/tests/amdgpu/amd_security.c b/tests/amdgpu/amd_security.c inde=
+x d1146a7ce..ec6883d3d 100644
+--- a/tests/amdgpu/amd_security.c
++++ b/tests/amdgpu/amd_security.c
+@@ -58,22 +58,6 @@ get_handle(struct amdgpu_bo *bo)
+        return handle;
+ }
+
+-static void
+-amdgpu_sdma_lcopy(uint32_t *packet, uint64_t dst, uint64_t src, uint32_t s=
+ize,
+-                               uint32_t secure)
+-{
+-       /* Set the packet to Linear copy with TMZ set.
+-        */
+-       packet[0] =3D htole32(secure << 18 | 1);
+-       packet[1] =3D htole32(size-1);
+-       packet[2] =3D htole32(0);
+-       packet[3] =3D htole32((uint32_t)(src & 0xFFFFFFFFU));
+-       packet[4] =3D htole32((uint32_t)(src >> 32));
+-       packet[5] =3D htole32((uint32_t)(dst & 0xFFFFFFFFU));
+-       packet[6] =3D htole32((uint32_t)(dst >> 32));
+-       packet[7] =3D htole32(0);
+-}
+-
+ static void
+ amdgpu_sdma_nop(uint32_t *packet, uint32_t nop_count)  { @@ -106,10 +90,10=
+ @@ amdgpu_bo_lcopy(amdgpu_device_handle device,
+        ring_context->pm4_size =3D PACKET_LCOPY_SIZE;
+        ring_context->pm4_dw =3D PACKET_LCOPY_SIZE;
+        ring_context->res_cnt =3D 2;
++       ring_context->write_length =3D  size;
+        igt_assert(ring_context->pm4);
+-
+-       amdgpu_sdma_lcopy(ring_context->pm4, ring_context->bo_mc2,
+-                       ring_context->bo_mc, size, secure);
++       ip_block->funcs->copy_linear(ip_block->funcs, ring_context,
++                       &ring_context->pm4_dw);
+        amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0)=
+;
+        free(ring_context->pm4);
+ }
+@@ -163,7 +147,7 @@ amdgpu_bo_move(amdgpu_device_handle device, int fd,
+  */
+ static const uint8_t secure_pattern[] =3D { 0x5A, 0xFE, 0x05, 0xEC };
+
+-
++static const uint8_t secure_pattern2[] =3D { 0xDE, 0xAD, 0xBE, 0xEF };
+
+ static void
+ amdgpu_secure_bounce(amdgpu_device_handle device_handle, int fd, @@ -175,6=
+ +159,7 @@ amdgpu_secure_bounce(amdgpu_device_handle device_handle, int fd,
+        long page_size;
+        uint8_t *pp;
+        int r;
++       uint64_t tmp_mc;
+
+        ring_context =3D calloc(1, sizeof(*ring_context));
+        igt_assert(ring_context);
+@@ -235,6 +220,11 @@ amdgpu_secure_bounce(amdgpu_device_handle device_handl=
+e, int fd,
+                        break;
+                }
+        }
++       /* Fill Bob with a pattern2 */
++       for (pp =3D (__typeof__(pp))ring_context->bo2_cpu;
++               pp < (__typeof__(pp)) ring_context->bo2_cpu + SECURE_BUFFER=
+_SIZE;
++               pp +=3D sizeof(secure_pattern2))
++               memcpy(pp, secure_pattern2, sizeof(secure_pattern2));
+
+        /* Move Bob to the GTT domain. */
+        amdgpu_bo_move(device_handle, fd, ring_context, ip_block, @@ -247,1=
+5 +237,24 @@ amdgpu_secure_bounce(amdgpu_device_handle device_handle, int f=
+d,
+        ring_context->resources[0] =3D ring_context->bo; // Alice
+        ring_context->resources[1] =3D ring_context->bo2; // Bob
+
++       /*
++        * Swap mc addresses between Bob(bo_mc2) and Alice(bo_mc) since we =
+copy now
++        * from Bob to Alice and using ASIC dependant implementation sdma_r=
+ing_copy_linear
++        * which uses context->bo_mc as source and context->bo_mc2 as desti=
+nation
++        */
++       tmp_mc =3D ring_context->bo_mc2;
++       ring_context->bo_mc2 =3D ring_context->bo_mc;
++       ring_context->bo_mc =3D tmp_mc;
++
+        /* sDMA TMZ copy from Bob to Alice. */
+        amdgpu_bo_lcopy(device_handle, ring_context, ip_block, SECURE_BUFFE=
+R_SIZE,
+                        secure =3D=3D true ? 1 : 0);
+
+-       /* Verify the contents of Alice */
++       /* Verify the content of Alice if it matches to pattern2*/
+        for (pp =3D (__typeof__(pp))ring_context->bo_cpu;
+             pp < (__typeof__(pp)) ring_context->bo_cpu + SECURE_BUFFER_SIZ=
+E;
+-            pp +=3D sizeof(secure_pattern)) {
+-               r =3D memcmp(pp, secure_pattern, sizeof(secure_pattern));
++            pp +=3D sizeof(secure_pattern2)) {
++               r =3D memcmp(pp, secure_pattern2, sizeof(secure_pattern2));
+                if (r) {
+                        // test failure
+                        igt_assert(false);
+--
+2.25.1
