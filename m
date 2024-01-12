@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2860A10EAB8
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 09:07:54 +0000 (UTC)
-From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
-To: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gandi,
- Ramadevi" <ramadevi.gandi@intel.com>
-Subject: RE: [PATCH i-g-t] tests/intel/xe_exec_store: Remove redundant code
-Date: Fri, 12 Jan 2024 09:07:45 +0000
-Message-ID: <BL3PR11MB5747D05B4745FE94B30A3B9BD06F2@BL3PR11MB5747.namprd11.prod.outlook.com>
-References: <20240112074902.2455804-1-janga.rahul.kumar@intel.com>
-In-Reply-To: <20240112074902.2455804-1-janga.rahul.kumar@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89A2810E083
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 13:09:55 +0000 (UTC)
+Date: Fri, 12 Jan 2024 14:09:46 +0100
+From: Francois Dugast <francois.dugast@intel.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Subject: Re: [PATCH 1/2] tests/intel: Sync headers to grab DUMPABLE changes.
+Message-ID: <ZaE6Go7MdJkQyaCQ@fdugast-desk.home>
+References: <20240112124043.166886-1-maarten.lankhorst@linux.intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240112124043.166886-1-maarten.lankhorst@linux.intel.com>
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -22,45 +20,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Maarten,
 
+On Fri, Jan 12, 2024 at 01:40:42PM +0100, Maarten Lankhorst wrote:
+> Required for devcoredump test.
+> 
+> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> ---
+>  include/drm-uapi/xe_drm.h | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> index bacdca787..0f975f57f 100644
+> --- a/include/drm-uapi/xe_drm.h
+> +++ b/include/drm-uapi/xe_drm.h
+> @@ -3,8 +3,8 @@
+>   * Copyright © 2023 Intel Corporation
+>   */
+>  
+> -#ifndef _XE_DRM_H_
+> -#define _XE_DRM_H_
+> +#ifndef _UAPI_XE_DRM_H_
+> +#define _UAPI_XE_DRM_H_
 
->-----Original Message-----
->From: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>
->Sent: Friday, January 12, 2024 1:19 PM
->To: igt-dev@lists.freedesktop.org; Gandi, Ramadevi <ramadevi.gandi@intel.c=
-om>;
->Kumar, Janga Rahul <janga.rahul.kumar@intel.com>; Ch, Sai Gowtham
-><sai.gowtham.ch@intel.com>
->Subject: [PATCH i-g-t] tests/intel/xe_exec_store: Remove redundant code
->
->From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
->
->Remove redundant code related to exec queue creation.
->
->Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
->---
-> tests/intel/xe_exec_store.c | 1 -
-> 1 file changed, 1 deletion(-)
->
->diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c ind=
-ex
->870394d3c..3fa8880ba 100644
->--- a/tests/intel/xe_exec_store.c
->+++ b/tests/intel/xe_exec_store.c
->@@ -148,7 +148,6 @@ static void basic_inst(int fd, int inst_type, struct
->drm_xe_engine_class_instanc
-> 	else
-> 		igt_assert_f(inst_type < 2, "Entered wrong inst_type.\n");
->
->-	exec_queue =3D xe_exec_queue_create(fd, vm, eci, 0);
-> 	exec.exec_queue_id =3D exec_queue;
-> 	exec.address =3D data->addr;
-> 	sync.flags &=3D DRM_XE_SYNC_FLAG_SIGNAL;
->--
-Looks good to me.
-Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->2.25.1
+This ^ and __user below seem to indicate the header was copied from
+KMD sources instead of being generated, for example with:
+
+    $ make headers_install INSTALL_HDR_PATH=/tmp/headers
+
+See https://www.kernel.org/doc/html/latest/kbuild/headers_install.html
+
+Francois
+
+>  
+>  #include "drm.h"
+>  
+> @@ -130,7 +130,7 @@ extern "C" {
+>   * redefine the interface more easily than an ever growing struct of
+>   * increasing complexity, and for large parts of that interface to be
+>   * entirely optional. The downside is more pointer chasing; chasing across
+> - * the boundary with pointers encapsulated inside u64.
+> + * the __user boundary with pointers encapsulated inside u64.
+>   *
+>   * Example chaining:
+>   *
+> @@ -832,7 +832,6 @@ struct drm_xe_vm_destroy {
+>   *
+>   * and the @flags can be:
+>   *  - %DRM_XE_VM_BIND_FLAG_READONLY
+> - *  - %DRM_XE_VM_BIND_FLAG_ASYNC
+>   *  - %DRM_XE_VM_BIND_FLAG_IMMEDIATE - Valid on a faulting VM only, do the
+>   *    MAP operation immediately rather than deferring the MAP to the page
+>   *    fault handler.
+> @@ -931,6 +930,7 @@ struct drm_xe_vm_bind_op {
+>  #define DRM_XE_VM_BIND_FLAG_READONLY	(1 << 0)
+>  #define DRM_XE_VM_BIND_FLAG_IMMEDIATE	(1 << 1)
+>  #define DRM_XE_VM_BIND_FLAG_NULL	(1 << 2)
+> +#define DRM_XE_VM_BIND_FLAG_DUMPABLE	(1 << 3)
+>  	/** @flags: Bind flags */
+>  	__u32 flags;
+>  
+> @@ -1344,4 +1344,4 @@ struct drm_xe_wait_user_fence {
+>  }
+>  #endif
+>  
+> -#endif /* _XE_DRM_H_ */
+> +#endif /* _UAPI_XE_DRM_H_ */
+> -- 
+> 2.40.1
+> 
