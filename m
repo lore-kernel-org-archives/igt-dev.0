@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73A4210E31F
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 14:13:25 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH v4 3/3] HAX/DO_NOT_MERGE: Patch adding to test to kms_lease
-Date: Wed, 17 Jan 2024 19:43:23 +0530
-Message-Id: <20240117141323.14994-4-mohammed.thasleem@intel.com>
-In-Reply-To: <20240117141323.14994-1-mohammed.thasleem@intel.com>
-References: <20240117141323.14994-1-mohammed.thasleem@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B477E10EAD5
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 10:28:02 +0000 (UTC)
+Date: Fri, 12 Jan 2024 11:27:38 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH i-g-t v2] lib/*.h: ensure that all includes will be there
+Message-ID: <20240112102738.qovde4gx2gpwlilk@kamilkon-desk.igk.intel.com>
+References: <20240111140218.464265-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240111140218.464265-1-mauro.chehab@linux.intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,303 +23,328 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist | 283 ++---------------------
- 1 file changed, 21 insertions(+), 262 deletions(-)
+Hi Mauro,
+On 2024-01-11 at 15:01:27 +0100, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Headers should be self-contained, having all includes they need
+> to built. Add the missing ones (alphabetically sorted).
+> 
+> Checking what includes were missed was done with the help of
+> this small script:
+> 
+>     for i in $(ls lib/*.h|grep -v igt_freebsd.h|sort); do
+> 	gcc -I . -I build/ -I include/ -I ./include/drm-uapi/ -I lib/ -I /usr/include/cairo/ -I /usr/include/glib-2.0 -I /usr/lib64/glib-2.0/include/ -c $i
+>     done
+> 
+> While at this also sorted includes and added a missing logic
+> to detect duplicated includes at igt_tread.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index bef5b0b8a..ab1cb135f 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -1,265 +1,24 @@
- # Should be the first test
- igt@xe_module_load@load
- 
--igt@xe_compute@compute-square
--igt@xe_create@create-execqueues-noleak
--igt@xe_create@create-execqueues-leak
--igt@xe_create@create-invalid-mbz
--igt@xe_create@create-massive-size
--igt@xe_debugfs@base
--igt@xe_debugfs@gt
--igt@xe_debugfs@forcewake
--igt@xe_dma_buf_sync@export-dma-buf-once
--igt@xe_dma_buf_sync@export-dma-buf-once-read-sync
--igt@xe_evict@evict-beng-mixed-threads-small-multi-vm
--igt@xe_evict@evict-beng-small
--igt@xe_evict@evict-beng-small-cm
--igt@xe_evict@evict-beng-small-external
--igt@xe_evict@evict-beng-small-external-cm
--igt@xe_evict@evict-beng-small-multi-vm
--igt@xe_evict@evict-cm-threads-small
--igt@xe_evict@evict-mixed-threads-small
--igt@xe_evict@evict-mixed-threads-small-multi-vm
--igt@xe_evict@evict-small
--igt@xe_evict@evict-small-cm
--igt@xe_evict@evict-small-external
--igt@xe_evict@evict-small-external-cm
--igt@xe_evict@evict-small-multi-vm
--igt@xe_evict@evict-small-multi-vm-cm
--igt@xe_evict@evict-threads-small
--igt@xe_evict_ccs@evict-overcommit-simple
--igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd
--igt@xe_exec_balancer@twice-virtual-basic
--igt@xe_exec_balancer@no-exec-virtual-basic
--igt@xe_exec_balancer@twice-cm-virtual-basic
--igt@xe_exec_balancer@no-exec-cm-virtual-basic
--igt@xe_exec_balancer@twice-virtual-userptr
--igt@xe_exec_balancer@twice-cm-virtual-userptr
--igt@xe_exec_balancer@twice-virtual-rebind
--igt@xe_exec_balancer@twice-cm-virtual-rebind
--igt@xe_exec_balancer@twice-virtual-userptr-rebind
--igt@xe_exec_balancer@twice-cm-virtual-userptr-rebind
--igt@xe_exec_balancer@twice-virtual-userptr-invalidate
--igt@xe_exec_balancer@twice-cm-virtual-userptr-invalidate
--igt@xe_exec_balancer@twice-parallel-basic
--igt@xe_exec_balancer@no-exec-parallel-basic
--igt@xe_exec_balancer@twice-parallel-userptr
--igt@xe_exec_balancer@twice-parallel-rebind
--igt@xe_exec_balancer@twice-parallel-userptr-rebind
--igt@xe_exec_balancer@twice-parallel-userptr-invalidate
--igt@xe_exec_basic@twice-basic
--igt@xe_exec_basic@no-exec-basic
--igt@xe_exec_basic@twice-basic-defer-mmap
--igt@xe_exec_basic@twice-basic-defer-bind
--igt@xe_exec_basic@twice-userptr
--igt@xe_exec_basic@twice-rebind
--igt@xe_exec_basic@twice-userptr-rebind
--igt@xe_exec_basic@twice-userptr-invalidate
--igt@xe_exec_basic@no-exec-userptr-invalidate
--igt@xe_exec_basic@twice-bindexecqueue
--igt@xe_exec_basic@no-exec-bindexecqueue
--igt@xe_exec_basic@twice-bindexecqueue-userptr
--igt@xe_exec_basic@twice-bindexecqueue-rebind
--igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind
--igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate
--igt@xe_exec_compute_mode@twice-basic
--igt@xe_exec_compute_mode@twice-preempt-fence-early
--igt@xe_exec_compute_mode@twice-userptr
--igt@xe_exec_compute_mode@twice-rebind
--igt@xe_exec_compute_mode@twice-userptr-rebind
--igt@xe_exec_compute_mode@twice-userptr-invalidate
--igt@xe_exec_compute_mode@twice-bindexecqueue
--igt@xe_exec_compute_mode@twice-bindexecqueue-userptr
--igt@xe_exec_compute_mode@twice-bindexecqueue-rebind
--igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind
--igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate
--igt@xe_exec_reset@close-fd-no-exec
--igt@xe_exec_reset@cm-close-fd-no-exec
--igt@xe_exec_reset@virtual-close-fd-no-exec
--igt@xe_exec_store@basic-store
--igt@xe_exec_threads@threads-basic
--igt@xe_exec_threads@threads-mixed-basic
--igt@xe_exec_threads@threads-mixed-shared-vm-basic
--igt@xe_exec_threads@threads-mixed-fd-basic
--igt@xe_exec_threads@threads-mixed-userptr-invalidate
--igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race
--igt@xe_gpgpu_fill@basic
--igt@xe_gt_freq@freq_basic_api
--igt@xe_gt_freq@freq_fixed_idle
--igt@xe_gt_freq@freq_range_idle
--igt@xe_huc_copy@huc_copy
--igt@xe_intel_bb@add-remove-objects
--igt@xe_intel_bb@bb-with-allocator
--igt@xe_intel_bb@blit-reloc
--igt@xe_intel_bb@blit-simple
--igt@xe_intel_bb@create-in-region
--igt@xe_intel_bb@delta-check
--igt@xe_intel_bb@destroy-bb
--igt@xe_intel_bb@intel-bb-blit-none
--igt@xe_intel_bb@intel-bb-blit-x
--igt@xe_intel_bb@intel-bb-blit-y
--igt@xe_intel_bb@lot-of-buffers
--igt@xe_intel_bb@offset-control
--igt@xe_intel_bb@purge-bb
--igt@xe_intel_bb@render
--igt@xe_intel_bb@reset-bb
--igt@xe_intel_bb@simple-bb
--igt@xe_intel_bb@simple-bb-ctx
--igt@xe_mmap@bad-extensions
--igt@xe_mmap@bad-flags
--igt@xe_mmap@bad-object
--igt@xe_mmap@cpu-caching
--igt@xe_mmap@system
--igt@xe_mmap@vram
--igt@xe_mmap@vram-system
--igt@xe_pm_residency@gt-c6-on-idle
--igt@xe_prime_self_import@basic-with_one_bo
--igt@xe_prime_self_import@basic-with_fd_dup
--#igt@xe_prime_self_import@basic-llseek-size
--igt@xe_query@query-engines
--igt@xe_query@query-mem-usage
--igt@xe_query@query-gt-list
--igt@xe_query@query-config
--igt@xe_query@query-hwconfig
--igt@xe_query@query-topology
--igt@xe_query@query-invalid-extension
--igt@xe_query@query-invalid-query
--igt@xe_query@query-invalid-size
--igt@xe_spin_batch@spin-basic
--igt@xe_spin_batch@spin-batch
--igt@xe_sysfs_defaults@engine-defaults
--igt@xe_sysfs_scheduler@preempt_timeout_us-invalid
--igt@xe_sysfs_scheduler@preempt_timeout_us-min-max
--igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
--igt@xe_sysfs_scheduler@timeslice_duration_us-min-max
--igt@xe_sysfs_scheduler@job_timeout_ms-invalid
--igt@xe_sysfs_scheduler@job_timeout_ms-min-max
--#igt@xe_vm@bind-once
--#igt@xe_vm@scratch
--igt@xe_vm@shared-pte-page
--igt@xe_vm@shared-pde-page
--igt@xe_vm@shared-pde2-page
--igt@xe_vm@shared-pde3-page
--igt@xe_vm@bind-execqueues-independent
--igt@xe_vm@munmap-style-unbind-one-partial
--igt@xe_vm@munmap-style-unbind-end
--igt@xe_vm@munmap-style-unbind-front
--igt@xe_vm@munmap-style-unbind-userptr-one-partial
--igt@xe_vm@munmap-style-unbind-userptr-end
--igt@xe_vm@munmap-style-unbind-userptr-front
--igt@xe_vm@munmap-style-unbind-userptr-inval-end
--igt@xe_vm@munmap-style-unbind-userptr-inval-front
--igt@xe_pat@userptr-coh-none
--igt@xe_pat@prime-self-import-coh
--igt@xe_pat@prime-external-import-coh
--igt@xe_pat@pat-index-all
--igt@xe_pat@pat-index-xelp
--igt@xe_pat@pat-index-xehpc
--igt@xe_pat@pat-index-xelpg
--igt@xe_pat@pat-index-xe2
--igt@xe_waitfence@abstime
--igt@xe_waitfence@engine
--igt@xe_waitfence@reltime
--igt@kms_addfb_basic@addfb25-4-tiled
--igt@kms_addfb_basic@addfb25-bad-modifier
--igt@kms_addfb_basic@addfb25-modifier-no-flag
--igt@kms_addfb_basic@addfb25-x-tiled-legacy
--igt@kms_addfb_basic@addfb25-yf-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
--igt@kms_addfb_basic@bad-pitch-0
--igt@kms_addfb_basic@bad-pitch-1024
--igt@kms_addfb_basic@bad-pitch-128
--igt@kms_addfb_basic@bad-pitch-256
--igt@kms_addfb_basic@bad-pitch-32
--igt@kms_addfb_basic@bad-pitch-63
--igt@kms_addfb_basic@bad-pitch-65536
--igt@kms_addfb_basic@bad-pitch-999
--igt@kms_addfb_basic@basic
--igt@kms_addfb_basic@basic-x-tiled-legacy
--igt@kms_addfb_basic@bo-too-small
--igt@kms_addfb_basic@invalid-get-prop
--igt@kms_addfb_basic@invalid-get-prop-any
--igt@kms_addfb_basic@invalid-set-prop
--igt@kms_addfb_basic@invalid-set-prop-any
--igt@kms_addfb_basic@no-handle
--igt@kms_addfb_basic@size-max
--igt@kms_addfb_basic@small-bo
--igt@kms_addfb_basic@too-high
--igt@kms_addfb_basic@too-wide
--igt@kms_addfb_basic@unused-handle
--igt@kms_addfb_basic@unused-modifier
--igt@kms_addfb_basic@unused-offsets
--igt@kms_addfb_basic@unused-pitches
--igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
--igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
--igt@kms_dsc@dsc-basic
--igt@kms_flip@basic-flip-vs-dpms
--igt@kms_flip@basic-flip-vs-modeset
--igt@kms_flip@basic-flip-vs-wf_vblank
--igt@kms_flip@basic-plain-flip
--igt@kms_force_connector_basic@force-connector-state
--igt@kms_force_connector_basic@force-edid
--igt@kms_force_connector_basic@prune-stale-modes
--igt@kms_frontbuffer_tracking@basic
--igt@kms_hdmi_inject@inject-audio
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
--igt@kms_pipe_crc_basic@hang-read-crc
--igt@kms_pipe_crc_basic@nonblocking-crc
--igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
--igt@kms_pipe_crc_basic@read-crc
--igt@kms_pipe_crc_basic@read-crc-frame-sequence
--igt@kms_prop_blob@basic
--igt@kms_psr@psr-primary-page-flip
--igt@kms_psr@psr-cursor-plane-move
--igt@kms_psr@psr-sprite-plane-onoff
--
--# All tests that do module unloading and reloading are executed last.
--# They will sometimes reveal issues of earlier tests leaving the
--# driver in a broken state that is not otherwise noticed in that test.
--igt@core_hotunplug@unbind-rebind
--
--# Run KUnit tests at the end
--igt@xe_live_ktest@bo
--igt@xe_live_ktest@dmabuf
--igt@xe_live_ktest@migrate
--
--# Move fault_mode tests at the end to unblock execution
--igt@xe_exec_fault_mode@twice-basic
--igt@xe_exec_fault_mode@many-basic
--igt@xe_exec_fault_mode@twice-userptr
--igt@xe_exec_fault_mode@twice-rebind
--igt@xe_exec_fault_mode@twice-userptr-rebind
--igt@xe_exec_fault_mode@twice-userptr-invalidate
--igt@xe_exec_fault_mode@twice-bindexecqueue
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr
--igt@xe_exec_fault_mode@twice-bindexecqueue-rebind
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate
--igt@xe_exec_fault_mode@twice-basic-imm
--igt@xe_exec_fault_mode@twice-userptr-imm
--igt@xe_exec_fault_mode@twice-rebind-imm
--igt@xe_exec_fault_mode@twice-userptr-rebind-imm
--igt@xe_exec_fault_mode@twice-userptr-invalidate-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-imm
--igt@xe_exec_fault_mode@twice-basic-prefetch
--igt@xe_exec_fault_mode@twice-userptr-prefetch
--igt@xe_exec_fault_mode@twice-rebind-prefetch
--igt@xe_exec_fault_mode@twice-userptr-rebind-prefetch
--igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-prefetch
--igt@xe_exec_fault_mode@twice-invalid-fault
--igt@xe_exec_fault_mode@twice-invalid-userptr-fault
-+igt@kms_lease@simple-lease
-+igt@kms_lease@empty-lease
-+igt@kms_lease@lessee-list
-+igt@kms_lease@lease-get
-+igt@kms_lease@lease-unleased-connector
-+igt@kms_lease@lease-unleased-crtc
-+igt@kms_lease@lease-revoke
-+igt@kms_lease@lease-again
-+igt@kms_lease@lease-invalid-connector
-+igt@kms_lease@lease-invalid-crtc
-+igt@kms_lease@lease-invalid-plane
-+igt@kms_lease@page-flip-implicit-plane
-+igt@kms_lease@setcrtc-implicit-plane
-+igt@kms_lease@cursor-implicit-plane
-+igt@kms_lease@atomic-implicit-crtc
-+igt@kms_lease@invalid-create-leases
-+igt@kms_lease@possible-crtcs-filtering
-+igt@kms_lease@master-vs-lease
-+igt@kms_lease@multimaster-lease
-+igt@kms_lease@implicit-plane-lease
-+igt@kms_lease@lease-uevent
--- 
-2.25.1
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+> ---
+> 
+> v2:
+>   - improved patch description;
+>   - sorted lib/intel_allocator_msgchannel.h alphabetically.
+> 
+>  lib/debug.h                      | 3 +++
+>  lib/igt_chamelium_stream.h       | 3 +++
+>  lib/igt_frame.h                  | 1 +
+>  lib/igt_os.h                     | 2 ++
+>  lib/igt_panfrost.h               | 4 ++++
+>  lib/igt_pm.h                     | 5 +++++
+>  lib/igt_sriov_device.h           | 3 +++
+>  lib/igt_sysfs.h                  | 3 ++-
+>  lib/igt_sysrq.h                  | 2 ++
+>  lib/igt_thread.h                 | 7 +++++++
+>  lib/igt_v3d.h                    | 3 +++
+>  lib/igt_vc4.h                    | 5 +++++
+>  lib/intel_allocator_msgchannel.h | 3 ++-
+>  lib/intel_aub.h                  | 2 ++
+>  lib/intel_compute.h              | 2 ++
+>  lib/intel_io.h                   | 3 ++-
+>  lib/intel_mocs.h                 | 2 ++
+>  lib/media_spin.h                 | 2 ++
+>  lib/veboxcopy.h                  | 2 ++
+>  19 files changed, 54 insertions(+), 3 deletions(-)
+> 
+> diff --git a/lib/debug.h b/lib/debug.h
+> index af9cf391e6a7..ca4b31e6c9da 100644
+> --- a/lib/debug.h
+> +++ b/lib/debug.h
+> @@ -28,6 +28,9 @@
+>  #ifndef _DEBUG_H_
+>  #define _DEBUG_H_
+>  
+> +#include <stdint.h>
+> +#include <stdio.h>
+> +
+>  #define DEBUG_PROTOCOL_VERSION 1
+>  #define COMMUNICATION_OFFSET 0xc00
+>  #define COMMUNICATION_QWORD 0xc0
+> diff --git a/lib/igt_chamelium_stream.h b/lib/igt_chamelium_stream.h
+> index 3e1c5d14ea55..685d9508a2d5 100644
+> --- a/lib/igt_chamelium_stream.h
+> +++ b/lib/igt_chamelium_stream.h
+> @@ -27,6 +27,9 @@
+>  #define IGT_CHAMELIUM_STREAM_H
+>  
+>  #include "config.h"
+> +#include <stdbool.h>
+> +#include <stddef.h>
+> +#include <stdint.h>
+>  
+>  enum chamelium_stream_realtime_mode {
+>  	CHAMELIUM_STREAM_REALTIME_NONE = 0,
+> diff --git a/lib/igt_frame.h b/lib/igt_frame.h
+> index f44f57d7ce73..cf2009716bdf 100644
+> --- a/lib/igt_frame.h
+> +++ b/lib/igt_frame.h
+> @@ -29,6 +29,7 @@
+>  
+>  #include "config.h"
+>  
+> +#include <cairo.h>
+>  #include <stdbool.h>
+>  
+>  bool igt_frame_dump_is_enabled(void);
+> diff --git a/lib/igt_os.h b/lib/igt_os.h
+> index 79363b291e5d..b9af0a4b7ca0 100644
+> --- a/lib/igt_os.h
+> +++ b/lib/igt_os.h
+> @@ -25,6 +25,8 @@
+>  #ifndef IGT_OS_H
+>  #define IGT_OS_H
+>  
+> +#include <stddef.h>
+> +#include <stdint.h>
+>  
+>  /* These are separate to allow easier testing when porting, see the comment at
+>   * the bottom of intel_os.c. */
+> diff --git a/lib/igt_panfrost.h b/lib/igt_panfrost.h
+> index d67947572e25..4412670bb849 100644
+> --- a/lib/igt_panfrost.h
+> +++ b/lib/igt_panfrost.h
+> @@ -25,6 +25,10 @@
+>  #ifndef IGT_PANFROST_H
+>  #define IGT_PANFROST_H
+>  
+> +#include <stdbool.h>
+> +#include <stddef.h>
+> +#include <stdint.h>
+> +
+>  #include "panfrost_drm.h"
+>  
+>  struct panfrost_bo {
+> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+> index 306a9eb46af4..538b6e39e2e3 100644
+> --- a/lib/igt_pm.h
+> +++ b/lib/igt_pm.h
+> @@ -24,6 +24,11 @@
+>  #ifndef IGT_PM_H
+>  #define IGT_PM_H
+>  
+> +#include <stdbool.h>
+> +#include <stdint.h>
+> +
+> +#include "igt_kms.h"
+> +
+>  void igt_pm_enable_audio_runtime_pm(void);
+>  void igt_pm_enable_sata_link_power_management(void);
+>  void igt_pm_restore_sata_link_power_management(void);
+> diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
+> index a3a08f8e1e24..20ffc515fd38 100644
+> --- a/lib/igt_sriov_device.h
+> +++ b/lib/igt_sriov_device.h
+> @@ -6,6 +6,9 @@
+>  #ifndef __IGT_SRIOV_DEVICE_H__
+>  #define __IGT_SRIOV_DEVICE_H__
+>  
+> +#include <stdbool.h>
+> +#include <stddef.h>
+> +
+>  /* Library for managing SR-IOV (Single Root I/O Virtualization)
+>   * devices.
+>   *
+> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+> index e804cf8e109d..f37d80ec130e 100644
+> --- a/lib/igt_sysfs.h
+> +++ b/lib/igt_sysfs.h
+> @@ -25,8 +25,9 @@
+>  #ifndef __IGT_SYSFS_H__
+>  #define __IGT_SYSFS_H__
+>  
+> -#include <stdbool.h>
+>  #include <stdarg.h>
+> +#include <stdbool.h>
+> +#include <stdint.h>
+>  
+>  #define for_each_sysfs_gt_path(i915__, path__, pathlen__) \
+>  	for (int gt__ = 0; \
+> diff --git a/lib/igt_sysrq.h b/lib/igt_sysrq.h
+> index c941029d5961..72bfc3403a17 100644
+> --- a/lib/igt_sysrq.h
+> +++ b/lib/igt_sysrq.h
+> @@ -25,6 +25,8 @@
+>  #ifndef __IGT_SYSRQ_H__
+>  #define __IGT_SYSRQ_H__
+>  
+> +#include "igt_core.h"
+> +
+>  __noreturn void igt_sysrq_reboot(void);
+>  
+>  #endif /* __IGT_SYSRQ_H__ */
+> diff --git a/lib/igt_thread.h b/lib/igt_thread.h
+> index 4b9c222d12a5..d0333cd2495a 100644
+> --- a/lib/igt_thread.h
+> +++ b/lib/igt_thread.h
+> @@ -21,8 +21,15 @@
+>   * IN THE SOFTWARE.
+>   */
+>  
+> +#ifndef __IGT_THREAD_H__
+> +#define __IGT_THREAD_H__
+> +
+> +#include <stdbool.h>
+> +
+>  void igt_thread_clear_fail_state(void);
+>  void igt_thread_fail(void);
+>  void igt_thread_assert_no_failures(void);
+>  
+>  bool igt_thread_is_main(void);
+> +
+> +#endif  /* __IGT_THREAD_H__ */
+> diff --git a/lib/igt_v3d.h b/lib/igt_v3d.h
+> index b96a3b43a36a..3e08b1aa3b93 100644
+> --- a/lib/igt_v3d.h
+> +++ b/lib/igt_v3d.h
+> @@ -24,6 +24,9 @@
+>  #ifndef IGT_V3D_H
+>  #define IGT_V3D_H
+>  
+> +#include <stddef.h>
+> +#include <stdint.h>
+> +
+>  #include "v3d_drm.h"
+>  
+>  #define PAGE_SIZE 4096
+> diff --git a/lib/igt_vc4.h b/lib/igt_vc4.h
+> index 4c08f1754e00..fe7173c50eaa 100644
+> --- a/lib/igt_vc4.h
+> +++ b/lib/igt_vc4.h
+> @@ -24,6 +24,11 @@
+>  #ifndef IGT_VC4_H
+>  #define IGT_VC4_H
+>  
+> +#include <stdbool.h>
+> +#include <stddef.h>
+> +#include <stdint.h>
+> +
+> +#include "igt_fb.h"
+>  #include "vc4_drm.h"
+>  
+>  #define PAGE_SIZE 4096
+> diff --git a/lib/intel_allocator_msgchannel.h b/lib/intel_allocator_msgchannel.h
+> index 55e2e0ed693f..4e51bf779f45 100644
+> --- a/lib/intel_allocator_msgchannel.h
+> +++ b/lib/intel_allocator_msgchannel.h
+> @@ -6,9 +6,10 @@
+>  #ifndef __INTEL_ALLOCATOR_MSGCHANNEL_H__
+>  #define __INTEL_ALLOCATOR_MSGCHANNEL_H__
+>  
+> -#include <sys/types.h>
+>  #include <unistd.h>
+> +#include <stdbool.h>
+>  #include <stdint.h>
+> +#include <sys/types.h>
+>  
+>  enum reqtype {
+>  	REQ_STOP,
+> diff --git a/lib/intel_aub.h b/lib/intel_aub.h
+> index 9ca548edaf34..22f23968b84c 100644
+> --- a/lib/intel_aub.h
+> +++ b/lib/intel_aub.h
+> @@ -40,6 +40,8 @@
+>  #ifndef _INTEL_AUB_H
+>  #define _INTEL_AUB_H
+>  
+> +#include <stdint.h>
+> +
+>  #define AUB_MI_NOOP			(0)
+>  #define AUB_MI_BATCH_BUFFER_START 	(0x31 << 23)
+>  #define AUB_PIPE_CONTROL		(0x7a000002)
+> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
+> index bd0348da3207..1499eef0c8e8 100644
+> --- a/lib/intel_compute.h
+> +++ b/lib/intel_compute.h
+> @@ -9,6 +9,8 @@
+>  #ifndef INTEL_COMPUTE_H
+>  #define INTEL_COMPUTE_H
+>  
+> +#include <stdbool.h>
+> +
+>  #include "xe_drm.h"
+>  
+>  /*
+> diff --git a/lib/intel_io.h b/lib/intel_io.h
+> index ea2649d9bcf3..e39384ca57f2 100644
+> --- a/lib/intel_io.h
+> +++ b/lib/intel_io.h
+> @@ -28,9 +28,10 @@
+>  #ifndef INTEL_GPU_TOOLS_H
+>  #define INTEL_GPU_TOOLS_H
+>  
+> -#include <stdint.h>
+>  #include <pciaccess.h>
+>  #include <stdbool.h>
+> +#include <stddef.h>
+> +#include <stdint.h>
+>  
+>  extern void *igt_global_mmio;
+>  
+> diff --git a/lib/intel_mocs.h b/lib/intel_mocs.h
+> index 278f143ec54f..a9e075273ed8 100644
+> --- a/lib/intel_mocs.h
+> +++ b/lib/intel_mocs.h
+> @@ -6,6 +6,8 @@
+>  #ifndef _INTEL_MOCS_H
+>  #define _INTEL_MOCS_H
+>  
+> +#include <stdint.h>
+> +
+>  uint8_t intel_get_wb_mocs_index(int fd);
+>  uint8_t intel_get_uc_mocs_index(int fd);
+>  
+> diff --git a/lib/media_spin.h b/lib/media_spin.h
+> index 5e15e0216fea..8da86e6f33b8 100644
+> --- a/lib/media_spin.h
+> +++ b/lib/media_spin.h
+> @@ -27,6 +27,8 @@
+>  #ifndef MEDIA_SPIN_H
+>  #define MEDIA_SPIN_H
+>  
+> +#include <stdint.h>
+> +
+>  struct intel_buf;
+>  
+>  void gen8_media_spinfunc(int i915, struct intel_buf *buf, uint32_t spins);
+> diff --git a/lib/veboxcopy.h b/lib/veboxcopy.h
+> index 925b8f52b82c..fb52b50f5da7 100644
+> --- a/lib/veboxcopy.h
+> +++ b/lib/veboxcopy.h
+> @@ -1,6 +1,8 @@
+>  #ifndef __VEBOXCOPY_H__
+>  #define __VEBOXCOPY_H__
+>  
+> +#include "intel_bufops.h"
+> +
+>  void gen12_vebox_copyfunc(struct intel_bb *ibb,
+>  			  struct intel_buf *src,
+>  			  unsigned int width, unsigned int height,
+> -- 
+> 2.43.0
+> 
 
