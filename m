@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/alternative;
+ boundary="===============2282209265795340553=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/syncobj=5Ftimelin?=
- =?utf-8?q?e=3A_test_delayed_submission_with=2C_WAIT=5FAVAILABLE?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/syncobj=5Ftimeline=3A_te?=
+ =?utf-8?q?st_delayed_submission_with=2C_WAIT=5FAVAILABLE_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Erik Kurzinger" <ekurzinger@nvidia.com>
-Date: Fri, 12 Jan 2024 22:28:25 -0000
-Message-ID: <170509850565.338258.937818085542498676@5338d5abeb45>
-References: <58b60f0a-f28b-42b5-b94b-91c8a5db8465@nvidia.com>
-In-Reply-To: <58b60f0a-f28b-42b5-b94b-91c8a5db8465@nvidia.com>
+Date: Fri, 12 Jan 2024 23:17:37 -0000
+Message-ID: <170510145756.338258.14272501184722625957@5338d5abeb45>
+References: <477888e4-637a-4704-88f5-cde3c10e0ae0@nvidia.com>
+In-Reply-To: <477888e4-637a-4704-88f5-cde3c10e0ae0@nvidia.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,149 +23,134 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============2282209265795340553==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: tests/syncobj_timeline: test delayed submission with, WAIT_AVAILABLE
+Series: tests/syncobj_timeline: test delayed submission with, WAIT_AVAILABLE (rev2)
 URL   : https://patchwork.freedesktop.org/series/128742/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7673_BAT -> XEIGTPW_10529_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1076865 for the overview.
+Summary
+-------
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/53689306):
-  [1652/1656] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/733] Generating version.h with a custom command.
-  [2/6] Linking target runner/runner_test.
-  [3/6] Linking target assembler/intel-gen4asm.
-  [4/6] Generating kms_tests.html with a custom command.
-  [5/6] Generating i915_tests.rst with a custom command.
-  FAILED: docs/testplan/i915_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Missing documentation for igt@syncobj_timeline@wait-all-available-delayed-submit
-  Warning: Missing documentation for igt@syncobj_timeline@wait-available-delayed-submit
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1705098197:step_script
-  section_start:1705098197:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1705098198:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  **SUCCESS**
+
+  No regressions found.
+
   
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/53689301):
-  Please refer: docs/test_documentation.md for more details
-  [1658/1662] Generating kms_tests.rst with a custom command.
-  [1659/1662] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/735] Generating version.h with a custom command.
-  [2/5] Linking target runner/runner_test.
-  [3/5] Generating i915_tests.rst with a custom command.
-  FAILED: docs/testplan/i915_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Missing documentation for igt@syncobj_timeline@wait-all-available-delayed-submit
-  Warning: Missing documentation for igt@syncobj_timeline@wait-available-delayed-submit
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1705098194:step_script
-  section_start:1705098194:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1705098194:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+Participating hosts (4 -> 4)
+------------------------------
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/53689305):
-  Warning: Missing documentation for igt@syncobj_timeline@wait-available-delayed-submit
-  Please refer: docs/test_documentation.md for more details
-  [1660/1662] Generating kms_tests.rst with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/735] Generating version.h with a custom command.
-  [2/4] Generating kms_tests.html with a custom command.
-  [3/4] Generating i915_tests.rst with a custom command.
-  FAILED: docs/testplan/i915_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Missing documentation for igt@syncobj_timeline@wait-all-available-delayed-submit
-  Warning: Missing documentation for igt@syncobj_timeline@wait-available-delayed-submit
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1705098222:step_script
-  section_start:1705098222:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1705098223:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+  No changes in participating hosts
 
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/53689304):
-  Please refer: docs/test_documentation.md for more details
-  [1498/1502] Generating kms_tests.rst with a custom command.
-  [1499/1502] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/687] Generating version.h with a custom command.
-  [2/5] Linking target runner/runner_test.
-  [3/5] Generating i915_tests.rst with a custom command.
-  FAILED: docs/testplan/i915_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Missing documentation for igt@syncobj_timeline@wait-all-available-delayed-submit
-  Warning: Missing documentation for igt@syncobj_timeline@wait-available-delayed-submit
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1705098195:step_script
-  section_start:1705098195:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1705098196:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+Known issues
+------------
 
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/53689302):
-  Please refer: docs/test_documentation.md for more details
-  [1658/1662] Generating kms_tests.rst with a custom command.
-  [1659/1662] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/735] Generating version.h with a custom command.
-  [2/5] Linking target runner/runner_test.
-  [3/5] Generating i915_tests.rst with a custom command.
-  FAILED: docs/testplan/i915_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Missing documentation for igt@syncobj_timeline@wait-all-available-delayed-submit
-  Warning: Missing documentation for igt@syncobj_timeline@wait-available-delayed-submit
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1705098192:step_script
-  section_start:1705098192:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1705098193:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+  Here are the changes found in XEIGTPW_10529_BAT that come from known issues:
 
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/53689303):
-  Please refer: docs/test_documentation.md for more details
-  [1658/1662] Generating kms_tests.rst with a custom command.
-  [1659/1662] Compiling C object 'runner/runner@@runner_test@exe/runner_tests.c.o'.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/735] Generating version.h with a custom command.
-  [2/5] Linking target runner/runner_test.
-  [3/5] Generating i915_tests.rst with a custom command.
-  FAILED: docs/testplan/i915_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Missing documentation for igt@syncobj_timeline@wait-all-available-delayed-submit
-  Warning: Missing documentation for igt@syncobj_timeline@wait-available-delayed-submit
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1705098197:step_script
-  section_start:1705098197:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1705098197:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][1] ([Intel XE#1033]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7673/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10529/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@xe_exec_threads@threads-mixed-fd-basic:
+    - bat-dg2-oem2:       [TIMEOUT][3] -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7673/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10529/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
+
+  
+  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7673 -> IGTPW_10529
+
+  IGTPW_10529: 10529
+  IGT_7673: 7673
+  xe-627-d1296191ba3a2fb8300d9887bd56b8613c1bc18d: d1296191ba3a2fb8300d9887bd56b8613c1bc18d
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1076865
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10529/index.html
+
+--===============2282209265795340553==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/syncobj_timeline: test delayed submission with, WAIT_AVAILABLE (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128742/">https://patchwork.freedesktop.org/series/128742/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10529/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10529/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7673_BAT -&gt; XEIGTPW_10529_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10529_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7673/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10529/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_threads@threads-mixed-fd-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7673/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">TIMEOUT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10529/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7673 -&gt; IGTPW_10529</li>
+</ul>
+<p>IGTPW_10529: 10529<br />
+  IGT_7673: 7673<br />
+  xe-627-d1296191ba3a2fb8300d9887bd56b8613c1bc18d: d1296191ba3a2fb8300d9887bd56b8613c1bc18d</p>
+
+</body>
+</html>
+
+--===============2282209265795340553==--
