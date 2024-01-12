@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F88E10EAA8
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 09:03:20 +0000 (UTC)
-Date: Fri, 12 Jan 2024 10:03:10 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Subject: Re: [PATCH i-g-t 1/1] tests/intel/xe_ccs: fix
- block-multicopy-inplace subtest
-Message-ID: <20240112090310.gpo432xo7vv33weg@zkempczy-mobl2>
-References: <cover.1704874216.git.akshata.jahagirdar@intel.com>
- <afd4943c5e6b3540c90b998150c51e2ee2cb9d21.1704874216.git.akshata.jahagirdar@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8550873103183040318=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afd4943c5e6b3540c90b998150c51e2ee2cb9d21.1704874216.git.akshata.jahagirdar@intel.com>
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_add_support_for_choosing_bi?=
+ =?utf-8?q?g_joiner_mode?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Date: Fri, 12 Jan 2024 09:32:31 -0000
+Message-ID: <170505195139.332228.11412822670540433181@5338d5abeb45>
+References: <20240112085547.673712-1-kunal1.joshi@intel.com>
+In-Reply-To: <20240112085547.673712-1-kunal1.joshi@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,61 +17,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, matthew.auld@intel.com,
- ayaz.siddiqui@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jan 10, 2024 at 01:31:26AM -0800, Akshata Jahagirdar wrote:
-> Passing correct pat_index based on compression and graphics version,
-> fixes the "block-multicopy-inplace" subtest of xe_ccs.
-> 
-> Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-> ---
->  tests/intel/xe_ccs.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-> index 596735aaa..ac99ecd1e 100644
-> --- a/tests/intel/xe_ccs.c
-> +++ b/tests/intel/xe_ccs.c
-> @@ -378,8 +378,13 @@ static void block_copy(int xe,
->  	blt_set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
->  	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
->  	if (config->inplace) {
-> +		uint8_t pat_index = DEFAULT_PAT_INDEX;
-> +
-> +        if (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) && config->compression)
-> +            pat_index = intel_get_pat_idx_uc_comp(xe);
-> +		
+--===============8550873103183040318==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Please fix whitespacing. Use kernel checkpatch then resubmit.
+== Series Details ==
 
---
-Zbigniew
+Series: add support for choosing big joiner mode
+URL   : https://patchwork.freedesktop.org/series/128706/
+State : failure
 
->  		blt_set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
-> -			       DEFAULT_PAT_INDEX, T_LINEAR, COMPRESSION_DISABLED,
-> +			       pat_index, T_LINEAR, COMPRESSION_DISABLED,
->  			       comp_type);
->  		blt.dst.ptr = mid->ptr;
->  	}
-> @@ -461,8 +466,13 @@ static void block_multicopy(int xe,
->  	blt_set_copy_object(&blt3.final, final);
->  
->  	if (config->inplace) {
-> +		uint8_t pat_index = DEFAULT_PAT_INDEX;
-> +
-> +        if (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) && config->compression)
-> +            pat_index = intel_get_pat_idx_uc_comp(xe);
-> +		
->  		blt_set_object(&blt3.dst, mid->handle, dst->size, mid->region,
-> -			       mid->mocs_index, DEFAULT_PAT_INDEX, mid_tiling,
-> +			       mid->mocs_index, pat_index, mid_tiling,
->  			       COMPRESSION_DISABLED, comp_type);
->  		blt3.dst.ptr = mid->ptr;
->  	}
-> -- 
-> 2.34.1
-> 
+== Summary ==
+
+CI Bug Log - changes from IGT_7671 -> IGTPW_10522
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_10522 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_10522, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10522/index.html
+
+Participating hosts (39 -> 14)
+------------------------------
+
+  ERROR: It appears as if the changes made in IGTPW_10522 prevented too many machines from booting.
+
+  Missing    (25): fi-rkl-11600 fi-snb-2520m bat-rpls-3 fi-pnv-d510 fi-blb-e6850 fi-skl-6600u fi-bsw-n3050 bat-adlm-1 fi-ilk-650 fi-ivb-3770 fi-elk-e7500 fi-bsw-nick fi-kbl-7567u bat-dg1-7 bat-kbl-2 bat-adlp-9 fi-cfl-8700k bat-mtlp-8 bat-jsl-1 fi-tgl-1115g4 fi-cfl-guc fi-kbl-guc fi-cfl-8109u bat-dg2-14 bat-dg2-13 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10522 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@reset:
+    - fi-apl-guc:         [PASS][1] -> [DMESG-WARN][2] ([i915#9730]) +31 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7671/fi-apl-guc/igt@i915_selftest@live@reset.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10522/fi-apl-guc/igt@i915_selftest@live@reset.html
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - fi-apl-guc:         [PASS][3] -> [DMESG-WARN][4] ([i915#180] / [i915#1982])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7671/fi-apl-guc/igt@i915_suspend@basic-s2idle-without-i915.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10522/fi-apl-guc/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  
+  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#9730]: https://gitlab.freedesktop.org/drm/intel/issues/9730
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7671 -> IGTPW_10522
+
+  CI-20190529: 20190529
+  CI_DRM_14116: 3b92a66f4bc89f4fa6e9e9369ac8243e23670030 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10522: 10522
+  IGT_7671: 7671
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10522/index.html
+
+--===============8550873103183040318==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>add support for choosing big joiner mode</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128706/">https://patchwork.freedesktop.org/series/128706/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10522/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10522/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7671 -&gt; IGTPW_10522</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_10522 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_10522, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10522/index.html</p>
+<h2>Participating hosts (39 -&gt; 14)</h2>
+<p>ERROR: It appears as if the changes made in IGTPW_10522 prevented too many machines from booting.</p>
+<p>Missing    (25): fi-rkl-11600 fi-snb-2520m bat-rpls-3 fi-pnv-d510 fi-blb-e6850 fi-skl-6600u fi-bsw-n3050 bat-adlm-1 fi-ilk-650 fi-ivb-3770 fi-elk-e7500 fi-bsw-nick fi-kbl-7567u bat-dg1-7 bat-kbl-2 bat-adlp-9 fi-cfl-8700k bat-mtlp-8 bat-jsl-1 fi-tgl-1115g4 fi-cfl-guc fi-kbl-guc fi-cfl-8109u bat-dg2-14 bat-dg2-13 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10522 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7671/fi-apl-guc/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10522/fi-apl-guc/igt@i915_selftest@live@reset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9730">i915#9730</a>) +31 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7671/fi-apl-guc/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10522/fi-apl-guc/igt@i915_suspend@basic-s2idle-without-i915.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7671 -&gt; IGTPW_10522</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14116: 3b92a66f4bc89f4fa6e9e9369ac8243e23670030 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10522: 10522<br />
+  IGT_7671: 7671</p>
+
+</body>
+</html>
+
+--===============8550873103183040318==--
