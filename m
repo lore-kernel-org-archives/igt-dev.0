@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DCF010EB4A
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 17:47:40 +0000 (UTC)
-Message-ID: <be6f28ac-1ebf-4b2a-8b03-5adcf0da0fc0@intel.com>
-Date: Fri, 12 Jan 2024 17:47:36 +0000
+Date: Fri, 12 Jan 2024 18:51:08 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIENJLnhlQkFUOiBmYWlsdXI=?= =?utf-8?Q?e?= for
+ tests/perf_pmu: Set defaults before frequency test
+Message-ID: <20240112175108.fzcjnuko7ufoehqd@kamilkon-desk.igk.intel.com>
+References: <20240111222054.2403101-1-vinay.belgaumkar@intel.com>
+ <170501970390.290000.6603325616123794587@5338d5abeb45>
 MIME-Version: 1.0
-Subject: Re: [PATCH i-g-t 1/1] tests/intel/xe_ccs: fix block-multicopy-inplace
- subtest
-To: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-References: <cover.1705103321.git.akshata.jahagirdar@intel.com>
- <1ffebacea9673a0c143e535bd0b5fe9ff8c65e9d.1705103321.git.akshata.jahagirdar@intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <1ffebacea9673a0c143e535bd0b5fe9ff8c65e9d.1705103321.git.akshata.jahagirdar@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <170501970390.290000.6603325616123794587@5338d5abeb45>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,14 +18,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: lgci.bug.filing@intel.com, I915-ci-infra@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 12/01/2024 23:54, Akshata Jahagirdar wrote:
-> Passing correct pat_index based on compression and graphics version,
-> fixes the "block-multicopy-inplace" subtest of xe_ccs.
+Hi igt-dev,
+On 2024-01-12 at 00:35:03 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+> Series: tests/perf_pmu: Set defaults before frequency test
+> URL   : https://patchwork.freedesktop.org/series/128695/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_7670_BAT -> XEIGTPW_10517_BAT
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_10517_BAT absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_10517_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (4 -> 4)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_10517_BAT:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
+>     - bat-dg2-oem2:       [PASS][1] -> [SKIP][2] +1 other test skip
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7670/bat-dg2-oem2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10517/bat-dg2-oem2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_10517_BAT that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Possible fixes ####
+> 
+>   * igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch:
+>     - bat-pvc-2:          [INCOMPLETE][3] -> [PASS][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7670/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch.html
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10517/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch.html
+> 
+>   
+
+Unrelated, this is i915 test.
+
+Regards,
+Kamil
+
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * IGT: IGT_7670 -> IGTPW_10517
+>   * Linux: xe-618-79184e72263e91528195db01783148435c7e4fad -> xe-621-3095fbb4deb0722d417b6a4ad4213e2ed9ecd052
+> 
+>   IGTPW_10517: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10517/index.html
+>   IGT_7670: 1b32bcdb2d9965090234739aba891a90743e01c4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   xe-618-79184e72263e91528195db01783148435c7e4fad: 79184e72263e91528195db01783148435c7e4fad
+>   xe-621-3095fbb4deb0722d417b6a4ad4213e2ed9ecd052: 3095fbb4deb0722d417b6a4ad4213e2ed9ecd052
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10517/index.html
