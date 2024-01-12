@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 743EA10E030
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 07:33:15 +0000 (UTC)
-Message-ID: <24f8f54e-978c-4a5a-9a67-5efc53107bce@intel.com>
-Date: Fri, 12 Jan 2024 13:02:54 +0530
-Subject: Re: [PATCH] lib/igt_kms: add support for choosing big joiner mode
-Content-Language: en-US
-To: Kunal Joshi <kunal1.joshi@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20240112053932.570651-1-kunal1.joshi@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20240112053932.570651-1-kunal1.joshi@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8FA8310EA88
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 07:44:03 +0000 (UTC)
+From: janga.rahul.kumar@intel.com
+To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
+ janga.rahul.kumar@intel.com, sai.gowtham.ch@intel.com
+Subject: [PATCH i-g-t] tests/intel/xe_exec_store: Remove redundant code
+Date: Fri, 12 Jan 2024 13:19:02 +0530
+Message-Id: <20240112074902.2455804-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,72 +21,26 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kunal,
+From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-On 12-01-2024 11:09 am, Kunal Joshi wrote:
-> add support to choose big joiner mode with environment
-> variable, use mode with highest clock if no mode with big joiner
-> found.
-> 
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> ---
->   lib/igt_kms.c | 17 ++++++++++++++++-
->   1 file changed, 16 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index e4dea1a60..3d0fe635c 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -1783,15 +1783,30 @@ bool kmstest_get_connector_default_mode(int drm_fd, drmModeConnector *connector,
->   	env = getenv("IGT_KMS_RESOLUTION");
->   	if (env) {
->   		/*
-> -		 * Only (0 or 1) and (lowest or highest) are allowed.
-> +		 * Only (0 or 1 or 2) and (lowest or highest or joiner) are allowed.
->   		 *
->   		 * 0/lowest: Choose connector mode with lowest possible resolution.
->   		 * 1/highest: Choose connector mode with highest possible resolution.
-> +		 * 2/joiner: Choose connector mode with big joiner output or output
-> +		 *           with max clock requirement
+Remove redundant code related to exec queue creation.
 
-Please re-write this to choose bigjoiner mode if found any.
->   		 */
->   		if (!strcmp(env, "highest") || !strcmp(env, "1"))
->   			igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
->   		else if (!strcmp(env, "lowest") || !strcmp(env, "0"))
->   			igt_sort_connector_modes(connector, sort_drm_modes_by_res_asc);
-> +		else if (!strcmp(env, "joiner") || !strcmp(env, "2")) {
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+---
+ tests/intel/xe_exec_store.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Let's sort the if-else ladder as "0->1->2" or "2->1->0".
-
-> +			igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
-> +			if (igt_bigjoiner_possible(&connector->modes[0], igt_get_max_dotclock(drm_fd))) {
-> +				*mode = connector->modes[0];
-> +				return true;
-> +			}
-> +			igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
-------------------------------------------------------------^
-typo: s/sort_drm_modes_by_res_dsc/sort_modes_by_clk_dsc/
-
-> +			if(igt_bigjoiner_possible(&connector->modes[0], igt_get_max_dotclock(drm_fd))) {
-> +				*mode = connector->modes[0];
-> +				return true;
-> +			}
-> +			igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
-
-Please drop this sorting.
-
-IMHO, Instead of returning from multiple places, try to adopt this [*] 
-cleaner way.
-
-[*]: 
-https://cgit.freedesktop.org/drm/igt-gpu-tools/tree/tests/intel/kms_big_joiner.c#n235
-
-- Bhanu
-
-> +		}
->   		else
->   			goto default_mode;
->   
+diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
+index 870394d3c..3fa8880ba 100644
+--- a/tests/intel/xe_exec_store.c
++++ b/tests/intel/xe_exec_store.c
+@@ -148,7 +148,6 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
+ 	else
+ 		igt_assert_f(inst_type < 2, "Entered wrong inst_type.\n");
+ 
+-	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
+ 	exec.exec_queue_id = exec_queue;
+ 	exec.address = data->addr;
+ 	sync.flags &= DRM_XE_SYNC_FLAG_SIGNAL;
+-- 
+2.25.1
