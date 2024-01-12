@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2183010E064
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Jan 2024 15:59:25 +0000 (UTC)
-From: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t 1/3] lib/rendercopy: Add render-copy xe2
- implementation
-Date: Mon, 8 Jan 2024 15:59:21 +0000
-Message-ID: <eeb22ef9c7ffe590dd94df1b5cea7ee2deddb408.camel@intel.com>
-References: <20240108113012.382557-1-zbigniew.kempczynski@intel.com>
- <20240108113012.382557-2-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20240108113012.382557-2-zbigniew.kempczynski@intel.com>
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on20601.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7eae::601])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 784B910E0E3
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 22:17:10 +0000 (UTC)
+Message-ID: <58b60f0a-f28b-42b5-b94b-91c8a5db8465@nvidia.com>
+Date: Fri, 12 Jan 2024 14:17:02 -0800
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <5EAD88B91B4AC440BD2AB177BAC472B0@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+To: igt-dev@lists.freedesktop.org
+From: Erik Kurzinger <ekurzinger@nvidia.com>
+Subject: [PATCH] tests/syncobj_timeline: test delayed submission with,
+ WAIT_AVAILABLE
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,165 +25,130 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCAyMDI0LTAxLTA4IGF0IDEyOjMwICswMTAwLCBaYmlnbmlldyBLZW1wY3p5xYRza2kg
-d3JvdGU6DQo+IER1ZSB0byBzbWFsbCBkaWZmZXJlbmNlcyBiZXR3ZWVuIHhlMiBhbmQgcHJldmlv
-dXMgM2QgcGlwZWxpbmUgSSBkZWNpZGVkDQo+IHRvIGFkb3B0IHRoaXMgaW4gZ2VuOSByZW5kZXIt
-Y29weSBmdW5jdGlvbiBpbnN0ZWFkIG9mIGludHJvZHVjaW5nIGEgbmV3IG9uZS4NCj4gWGUyIHVz
-ZXMgbGFyZ2UgR1JGcyAoNTEyLWJpdCkgd2hlcmUgY29vcmRpbmF0ZXMgb2NjdXB5IG9ubHkgMiBH
-UkYNCj4gcmVnaXN0ZXJzIChpbnN0ZWFkIDQgb24gMjU2LWJpdCBHUkZzKS4gVGhpcyByZXF1aXJl
-cyBzaGFkZXIgYWRvcHRpb24NCj4gb24gZGF0YSBwcmVwYXJhdGlvbiBmb3Igc2FtcGxlci9yZW5k
-ZXIgdGFyZ2V0IHdyaXRlLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWE
-c2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+DQo+IENjOiBKdWhhLVBla2thIEhl
-aWtraWxhIDxqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tPg0KPiAtLS0NCj4gIGxpYi9nZW54
-ZTJfcmVuZGVyLmggICAgICAgICAgICAgICAgICAgICAgIHwgMTQgKysrKysrDQo+IA0KSSBiZWxp
-ZXZlIHdlIHNob3VsZCBub3QgdXNlICdnZW4nIG5vdGF0aW9uIGFueW1vcmUuIFNvIGVpdGhlciB1
-c2UgYXMgYSBwcmVmaXgNCmZpcnN0IHBsYXRmb3JtIHdoaWNoIHVzZXMgdGhpcyAoeGUybHBnXyBp
-biB0aGlzIGNhc2UpIG9yIHNpbXBseSBhcmNoaXRlY3R1cmUgeGUyXy4gQXBwbGllcyB0byBhbGwN
-CidHRU5YRTIsIGdlbnhlMicgcHJlZml4ZXMuDQoNCj4gIGxpYi9pOTE1L3NoYWRlcnMvcHMvZ2Vu
-MjBfcmVuZGVyX2NvcHkuYXNtIHwgIDggKysrDQo+ICBsaWIvcmVuZGVyY29weS5oICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8ICA0ICsrDQo+ICBsaWIvcmVuZGVyY29weV9nZW45LmMgICAgICAg
-ICAgICAgICAgICAgICB8IDYwICsrKysrKysrKysrKysrKysrKysrKy0tDQo+ICA0IGZpbGVzIGNo
-YW5nZWQsIDgxIGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pDQo+ICBjcmVhdGUgbW9kZSAx
-MDA2NDQgbGliL2dlbnhlMl9yZW5kZXIuaA0KPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGxpYi9pOTE1
-L3NoYWRlcnMvcHMvZ2VuMjBfcmVuZGVyX2NvcHkuYXNtDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGli
-L2dlbnhlMl9yZW5kZXIuaCBiL2xpYi9nZW54ZTJfcmVuZGVyLmgNCj4gbmV3IGZpbGUgbW9kZSAx
-MDA2NDQNCj4gaW5kZXggMDAwMDAwMDAwMC4uM2RiN2E4NDg5NA0KPiAtLS0gL2Rldi9udWxsDQo+
-ICsrKyBiL2xpYi9nZW54ZTJfcmVuZGVyLmgNCj4gQEAgLTAsMCArMSwxNCBAQA0KPiArLyogU1BE
-WC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVCAqLw0KPiArLyoNCj4gKyAqIENvcHlyaWdodCDCqSAy
-MDI0IEludGVsIENvcnBvcmF0aW9uDQo+ICsgKi8NCj4gKyNpZm5kZWYgR0VOWEUyX1JFTkRFUl9I
-DQo+ICsjZGVmaW5lIEdFTlhFMl9SRU5ERVJfSA0KPiArDQo+ICsjZGVmaW5lIEdFTlhFMl8zRFNU
-QVRFX0RSQVdJTkdfUkVDVEFOR0xFX0ZBU1QJR0VONF8zRCgzLCAwLCAwKQ0KPiArDQo+ICsvKiAz
-RFNUQVRFX1BTIGR3b3JkNiAqLw0KPiArIyBkZWZpbmUgR0VOWEVfS0VSTkVMMF9QQUNLSU5HX1BP
-TElDWQkJMjQNCj4gKyMgIGRlZmluZSBHRU5YRV9LRVJORUwwX1BPTFlfUEFDSzE2X0ZJWEVECTMN
-Cj4gKw0KPiArI2VuZGlmDQo+IGRpZmYgLS1naXQgYS9saWIvaTkxNS9zaGFkZXJzL3BzL2dlbjIw
-X3JlbmRlcl9jb3B5LmFzbSBiL2xpYi9pOTE1L3NoYWRlcnMvcHMvZ2VuMjBfcmVuZGVyX2NvcHku
-YXNtDQo+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0DQo+IGluZGV4IDAwMDAwMDAwMDAuLjMzMDQxNzk2
-NmQNCj4gLS0tIC9kZXYvbnVsbA0KPiArKysgYi9saWIvaTkxNS9zaGFkZXJzL3BzL2dlbjIwX3Jl
-bmRlcl9jb3B5LmFzbQ0KPiBAQCAtMCwwICsxLDggQEANCj4gK0wwOg0KPiArKFcpICAgICBtYWQg
-KDE2fE0wKSAgICAgICAgICAgICAgYWNjMC4wPDE+OmYgICByNi4zPDA7MD46ZiAgICAgIHIxLjA8
-MTsxPjpmICAgICAgIHI2LjA8MD46Zg0KPiArKFcpICAgICBtYWQgKDE2fE0wKSAgICAgICAgICAg
-ICAgcjExMy4wPDE+OmYgICBhY2MwLjA8MTsxPjpmICAgIHIxLjA8MTsxPjpmICAgICAgIHI2LjE8
-MD46Zg0KPiArKFcpICAgICBtYWQgKDE2fE0wKSAgICAgICAgICAgICAgYWNjMC4wPDE+OmYgICBy
-Ni43PDA7MD46ZiAgICAgIHIxLjA8MTsxPjpmICAgICAgIHI2LjQ8MD46Zg0KPiArKFcpICAgICBt
-YWQgKDE2fE0wKSAgICAgICAgICAgICAgcjExNC4wPDE+OmYgICBhY2MwLjA8MTsxPjpmICAgIHIy
-LjA8MTsxPjpmICAgICAgIHI2LjU8MD46Zg0KPiArKFcpICAgICBzZW5kLnNtcGwgKDE2fE0wKSAg
-ICAgICAgcjEyICAgICAgcjExMyAgbnVsbDowICAweDAgICAgICAgICAgICAweDA0NDIwMDAxICAg
-ICAgICAgICB7RkAxLCQwfSAvLyB3cjoyKzAsIHJkOjQ7IHNpbWQxNiBzYW1wbGU6dSt2K3IrYWkr
-bWxvZCB1c2luZyBzYW1wbGVyIGluZGV4IDANCj4gKyhXKSAgICAgc2VuZC5yYyAoMTZ8TTApICAg
-ICAgICAgIG51bGwgICAgIHIxMiAgIG51bGw6MCAgMHgwICAgICAgICAgICAgMHgwODAzMTQwMCAg
-ICAgICAgICAge0VPVCwkMH0gLy8gd3I6NCswLCByZDowOyBmdWxsLXByZWNpc2lvbiByZW5kZXIg
-dGFyZ2V0IHdyaXRlIFNJTUQxNjsgbGFzdCByZW5kZXIgdGFyZ2V0IHRvIHN1cmZhY2UgMA0KPiAr
-TDk2Og0KPiBkaWZmIC0tZ2l0IGEvbGliL3JlbmRlcmNvcHkuaCBiL2xpYi9yZW5kZXJjb3B5LmgN
-Cg0KPiBpbmRleCAwZDgxZDI3ZjgzLi4xYTk3YTcyNTczIDEwMDY0NA0KPiAtLS0gYS9saWIvcmVu
-ZGVyY29weS5oDQo+ICsrKyBiL2xpYi9yZW5kZXJjb3B5LmgNCj4gQEAgLTQzLDYgKzQzLDEwIEBA
-IHZvaWQgZ2VuMTJwNzFfcmVuZGVyX2NvcHlmdW5jKHN0cnVjdCBpbnRlbF9iYiAqaWJiLA0KPiAg
-CQkJICAgICAgc3RydWN0IGludGVsX2J1ZiAqc3JjLCB1aW50MzJfdCBzcmNfeCwgdWludDMyX3Qg
-c3JjX3ksDQo+ICAJCQkgICAgICB1aW50MzJfdCB3aWR0aCwgdWludDMyX3QgaGVpZ2h0LA0KPiAg
-CQkJICAgICAgc3RydWN0IGludGVsX2J1ZiAqZHN0LCB1aW50MzJfdCBkc3RfeCwgdWludDMyX3Qg
-ZHN0X3kpOw0KPiArdm9pZCBnZW54ZTJfcmVuZGVyX2NvcHlmdW5jKHN0cnVjdCBpbnRlbF9iYiAq
-aWJiLA0KPiArCQkJICAgIHN0cnVjdCBpbnRlbF9idWYgKnNyYywgdWludDMyX3Qgc3JjX3gsIHVp
-bnQzMl90IHNyY195LA0KPiArCQkJICAgIHVpbnQzMl90IHdpZHRoLCB1aW50MzJfdCBoZWlnaHQs
-DQo+ICsJCQkgICAgc3RydWN0IGludGVsX2J1ZiAqZHN0LCB1aW50MzJfdCBkc3RfeCwgdWludDMy
-X3QgZHN0X3kpOw0KPiAgdm9pZCBnZW4xMl9yZW5kZXJfY29weWZ1bmMoc3RydWN0IGludGVsX2Ji
-ICppYmIsDQo+ICAJCQkgICBzdHJ1Y3QgaW50ZWxfYnVmICpzcmMsIHVpbnQzMl90IHNyY194LCB1
-aW50MzJfdCBzcmNfeSwNCj4gIAkJCSAgIHVpbnQzMl90IHdpZHRoLCB1aW50MzJfdCBoZWlnaHQs
-DQo+IGRpZmYgLS1naXQgYS9saWIvcmVuZGVyY29weV9nZW45LmMgYi9saWIvcmVuZGVyY29weV9n
-ZW45LmMNCj4gaW5kZXggMzYzYmM2YzFiMi4uZjBlZmFkZWI1MCAxMDA2NDQNCj4gLS0tIGEvbGli
-L3JlbmRlcmNvcHlfZ2VuOS5jDQo+ICsrKyBiL2xpYi9yZW5kZXJjb3B5X2dlbjkuYw0KPiBAQCAt
-MjIsNiArMjIsNyBAQA0KPiAgI2luY2x1ZGUgImludGVsX21vY3MuaCINCj4gICNpbmNsdWRlICJy
-ZW5kZXJjb3B5LmgiDQo+ICAjaW5jbHVkZSAiZ2VuOV9yZW5kZXIuaCINCj4gKyNpbmNsdWRlICJn
-ZW54ZTJfcmVuZGVyLmgiDQo+ICAjaW5jbHVkZSAiaW50ZWxfcmVnLmgiDQo+ICAjaW5jbHVkZSAi
-aWd0X2F1eC5oIg0KPiAgI2luY2x1ZGUgImludGVsX2NoaXBzZXQuaCINCj4gQEAgLTEzNiw2ICsx
-MzcsMTUgQEAgc3RhdGljIGNvbnN0IHVpbnQzMl90IGdlbjEycDcxX3JlbmRlcl9jb3B5W11bNF0g
-PSB7DQo+ICAJeyAweDgwMDQxMTMxLCAweDAwMDAwMDA0LCAweDUwMDA3MTQ0LCAweDAwYzQwMDAw
-IH0sDQo+ICB9Ow0KPiAgDQo+ICtzdGF0aWMgY29uc3QgdWludDMyX3QgeGUyX3JlbmRlcl9jb3B5
-W11bNF0gPSB7DQo+ICsJeyAweDgwMTAwMDViLCAweDIwMDAwMmEwLCAweDAyMGEwNjM0LCAweDA2
-MDQwMTA1IH0sDQo+ICsJeyAweDgwMTAwMDViLCAweDcxMDQwMmE4LCAweDAyMGEyMDAxLCAweDA2
-MTQwMTA1IH0sDQo+ICsJeyAweDgwMTAwMDViLCAweDIwMDAwMmEwLCAweDAyMGEwNjc0LCAweDA2
-NDQwMTA1IH0sDQo+ICsJeyAweDgwMTAwMDViLCAweDcyMDQwMmE4LCAweDAyMGEyMDAxLCAweDA2
-NTQwMjA1IH0sDQo+ICsJeyAweDgwMTIyMDMxLCAweDBjMjQwMDAwLCAweDIwMDI3MTE0LCAweDAw
-ODAwMDAwIH0sDQo+ICsJeyAweDgwMTBjMDMxLCAweDAwMDAwMDA0LCAweDU4MDAwYzI0LCAweDAw
-YzQwMDAwIH0sDQo+ICt9Ow0KPiArDQo+ICAvKiBNb3N0bHkgY29weStwYXN0ZSBmcm9tIGdlbjYs
-IGV4Y2VwdCBoZWlnaHQsIHdpZHRoLCBwaXRjaCBtb3ZlZCAqLw0KPiAgc3RhdGljIHVpbnQzMl90
-DQo+ICBnZW45X2JpbmRfYnVmKHN0cnVjdCBpbnRlbF9iYiAqaWJiLCBjb25zdCBzdHJ1Y3QgaW50
-ZWxfYnVmICpidWYsIGludCBpc19kc3QsDQo+IEBAIC01NDUsNyArNTU1LDEwIEBAIGdlbjlfZW1p
-dF9zdGF0ZV9iYXNlX2FkZHJlc3Moc3RydWN0IGludGVsX2JiICppYmIpIHsNCj4gIAkvKiBXYUJp
-bmRsZXNzU3VyZmFjZVN0YXRlTW9kaWZ5RW5hYmxlOnNrbCxieHQgKi8NCj4gIAkvKiBUaGUgbGVu
-Z3RoIGhhcyB0byBiZSBvbmUgbGVzcyBpZiB3ZSBkb250IG1vZGlmeQ0KPiAgCSAgIGJpbmRsZXNz
-IHN0YXRlICovDQo+IC0JaW50ZWxfYmJfb3V0KGliYiwgR0VONF9TVEFURV9CQVNFX0FERFJFU1Mg
-fCAoMTkgLSAxIC0gMikpOw0KPiArCWlmIChBVF9MRUFTVF9HRU4oaW50ZWxfZ2V0X2RybV9kZXZp
-ZChpYmItPmZkKSwgMjApKQ0KPiArCQlpbnRlbF9iYl9vdXQoaWJiLCBHRU40X1NUQVRFX0JBU0Vf
-QUREUkVTUyB8IDIwKTsNCj4gKwllbHNlDQo+ICsJCWludGVsX2JiX291dChpYmIsIEdFTjRfU1RB
-VEVfQkFTRV9BRERSRVNTIHwgKDE5IC0gMSAtIDIpKTsNCj4gIA0KPiAgCS8qIGdlbmVyYWwgKi8N
-Cj4gIAlpbnRlbF9iYl9vdXQoaWJiLCAwIHwgQkFTRV9BRERSRVNTX01PRElGWSk7DQo+IEBAIC01
-ODYsNiArNTk5LDEzIEBAIGdlbjlfZW1pdF9zdGF0ZV9iYXNlX2FkZHJlc3Moc3RydWN0IGludGVs
-X2JiICppYmIpIHsNCj4gIAlpbnRlbF9iYl9vdXQoaWJiLCAwKTsNCj4gIAlpbnRlbF9iYl9vdXQo
-aWJiLCAwKTsNCj4gIAlpbnRlbF9iYl9vdXQoaWJiLCAwKTsNCj4gKw0KPiArCWlmIChBVF9MRUFT
-VF9HRU4oaW50ZWxfZ2V0X2RybV9kZXZpZChpYmItPmZkKSwgMjApKSB7DQo+ICsJCS8qIEJpbmRs
-ZXNzIHNhbXBsZXIgKi8NCj4gKwkJaW50ZWxfYmJfb3V0KGliYiwgMCk7DQo+ICsJCWludGVsX2Ji
-X291dChpYmIsIDApOw0KPiArCQlpbnRlbF9iYl9vdXQoaWJiLCAwKTsNCj4gKwl9DQo+ICB9DQo+
-ICANCj4gIHN0YXRpYyB2b2lkDQo+IEBAIC03NTMsNyArNzczLDEwIEBAIGdlbjlfZW1pdF9kcyhz
-dHJ1Y3QgaW50ZWxfYmIgKmliYikgew0KPiAgDQo+ICBzdGF0aWMgdm9pZA0KPiAgZ2VuOF9lbWl0
-X3dtX2h6X29wKHN0cnVjdCBpbnRlbF9iYiAqaWJiKSB7DQo+IC0JaW50ZWxfYmJfb3V0KGliYiwg
-R0VOOF8zRFNUQVRFX1dNX0haX09QIHwgKDUtMikpOw0KPiArCWlmIChBVF9MRUFTVF9HRU4oaW50
-ZWxfZ2V0X2RybV9kZXZpZChpYmItPmZkKSwgMjApKQ0KPiArCQlpbnRlbF9iYl9vdXQoaWJiLCBH
-RU44XzNEU1RBVEVfV01fSFpfT1AgfCAoNi0yKSk7DQo+ICsJZWxzZQ0KPiArCQlpbnRlbF9iYl9v
-dXQoaWJiLCBHRU44XzNEU1RBVEVfV01fSFpfT1AgfCAoNS0yKSk7DQo+ICAJaW50ZWxfYmJfb3V0
-KGliYiwgMCk7DQo+ICAJaW50ZWxfYmJfb3V0KGliYiwgMCk7DQo+ICAJaW50ZWxfYmJfb3V0KGli
-YiwgMCk7DQo+IA0KU2hvdWxkbid0IHdlIGFkZCBoZXJlIGludGVsX2JiX291dChpYmIsIDApOyBh
-cyB3ZWxsPyBZb3UgaW5jcmVhc2VkIGxlbmdodCBvZiB0aGUgaW5zdHJ1Y3Rpb24uDQo+IEBAIC04
-NTIsNyArODc1LDExIEBAIGdlbjhfZW1pdF9wcyhzdHJ1Y3QgaW50ZWxfYmIgKmliYiwgdWludDMy
-X3Qga2VybmVsLCBib29sIGZhc3RfY2xlYXIpIHsNCj4gIAlpbnRlbF9iYl9vdXQoaWJiLCAobWF4
-X3RocmVhZHMgLSAxKSA8PCBHRU44XzNEU1RBVEVfUFNfTUFYX1RIUkVBRFNfU0hJRlQgfA0KPiAg
-CSAgICAgICAgICAgICBHRU42XzNEU1RBVEVfV01fMTZfRElTUEFUQ0hfRU5BQkxFIHwNCj4gIAkg
-ICAgICAgICAgICAgKGZhc3RfY2xlYXIgPyBHRU44XzNEU1RBVEVfRkFTVF9DTEVBUl9FTkFCTEUg
-OiAwKSk7DQo+IC0JaW50ZWxfYmJfb3V0KGliYiwgNiA8PCBHRU42XzNEU1RBVEVfV01fRElTUEFU
-Q0hfU1RBUlRfR1JGXzBfU0hJRlQpOw0KPiArCWlmIChBVF9MRUFTVF9HRU4oaW50ZWxfZ2V0X2Ry
-bV9kZXZpZChpYmItPmZkKSwgMjApKQ0KPiArCQlpbnRlbF9iYl9vdXQoaWJiLCA2IDw8IEdFTjZf
-M0RTVEFURV9XTV9ESVNQQVRDSF9TVEFSVF9HUkZfMF9TSElGVCB8DQo+ICsJCQkgICAgIEdFTlhF
-X0tFUk5FTDBfUE9MWV9QQUNLMTZfRklYRUQgPDwgR0VOWEVfS0VSTkVMMF9QQUNLSU5HX1BPTElD
-WSk7DQpMb29rcyBzYW5lLg0KPiArCWVsc2UNCj4gKwkJaW50ZWxfYmJfb3V0KGliYiwgNiA8PCBH
-RU42XzNEU1RBVEVfV01fRElTUEFUQ0hfU1RBUlRfR1JGXzBfU0hJRlQpOw0KPiAgCWludGVsX2Ji
-X291dChpYmIsIDApOyAvLyBrZXJuZWwgMQ0KPiAgCWludGVsX2JiX291dChpYmIsIDApOyAvKiBr
-ZXJuZWwgMSBoaSAqLw0KPiAgCWludGVsX2JiX291dChpYmIsIDApOyAvLyBrZXJuZWwgMg0KPiBA
-QCAtODYyLDcgKzg4OSwxMSBAQCBnZW44X2VtaXRfcHMoc3RydWN0IGludGVsX2JiICppYmIsIHVp
-bnQzMl90IGtlcm5lbCwgYm9vbCBmYXN0X2NsZWFyKSB7DQo+ICAJaW50ZWxfYmJfb3V0KGliYiwg
-R0VOOF9QU19CTEVORF9IQVNfV1JJVEVBQkxFX1JUKTsNCj4gIA0KPiAgCWludGVsX2JiX291dChp
-YmIsIEdFTjhfM0RTVEFURV9QU19FWFRSQSB8ICgyIC0gMikpOw0KPiAtCWludGVsX2JiX291dChp
-YmIsIEdFTjhfUFNYX1BJWEVMX1NIQURFUl9WQUxJRCB8IEdFTjhfUFNYX0FUVFJJQlVURV9FTkFC
-TEUpOw0KPiArDQo+ICsJaWYgKEFUX0xFQVNUX0dFTihpbnRlbF9nZXRfZHJtX2RldmlkKGliYi0+
-ZmQpLCAyMCkpDQo+ICsJCWludGVsX2JiX291dChpYmIsIEdFTjhfUFNYX1BJWEVMX1NIQURFUl9W
-QUxJRCk7DQo+ICsJZWxzZQ0KPiArCQlpbnRlbF9iYl9vdXQoaWJiLCBHRU44X1BTWF9QSVhFTF9T
-SEFERVJfVkFMSUQgfCBHRU44X1BTWF9BVFRSSUJVVEVfRU5BQkxFKTsNCkxvb2tpbmcgYXQgdGhl
-IHNwZWMsIG1lYW5pbmcgb2YgdGhhdCBmaWVsZCBoYXMgbm90IGNoYW5nZS4gU28gd2h5IGRvIHdl
-IG5lZWQgdG8gY2xlYXIgdGhpcz8gV2FzDQp3cm9uZyBiZWZvcmU/DQoNCk92ZXJhbGwsIGl0IGxv
-b2tzIGdvb2QgdG8gbWUsIGp1c3QgbWlub3Igbml0cyBzcG90dGVkLg0KDQpSZWdhcmRzLCANCkRv
-bWluaWsgDQo+ICB9DQo+ICANCj4gIHN0YXRpYyB2b2lkDQo+IEBAIC05MDMsNiArOTM0LDkgQEAg
-Z2VuOV9lbWl0X2RlcHRoKHN0cnVjdCBpbnRlbF9iYiAqaWJiKQ0KPiAgDQo+ICBzdGF0aWMgdm9p
-ZA0KPiAgZ2VuN19lbWl0X2NsZWFyKHN0cnVjdCBpbnRlbF9iYiAqaWJiKSB7DQo+ICsJaWYgKEFU
-X0xFQVNUX0dFTihpbnRlbF9nZXRfZHJtX2RldmlkKGliYi0+ZmQpLCAyMCkpDQo+ICsJCXJldHVy
-bjsNCj4gKw0KPiAgCWludGVsX2JiX291dChpYmIsIEdFTjdfM0RTVEFURV9DTEVBUl9QQVJBTVMg
-fCAoMy0yKSk7DQo+ICAJaW50ZWxfYmJfb3V0KGliYiwgMCk7DQo+ICAJaW50ZWxfYmJfb3V0KGli
-YiwgMSk7IC8vIGNsZWFyIHZhbGlkDQo+IEBAIC05MTEsNyArOTQ1LDEwIEBAIGdlbjdfZW1pdF9j
-bGVhcihzdHJ1Y3QgaW50ZWxfYmIgKmliYikgew0KPiAgc3RhdGljIHZvaWQNCj4gIGdlbjZfZW1p
-dF9kcmF3aW5nX3JlY3RhbmdsZShzdHJ1Y3QgaW50ZWxfYmIgKmliYiwgY29uc3Qgc3RydWN0IGlu
-dGVsX2J1ZiAqZHN0KQ0KPiAgew0KPiAtCWludGVsX2JiX291dChpYmIsIEdFTjRfM0RTVEFURV9E
-UkFXSU5HX1JFQ1RBTkdMRSB8ICg0IC0gMikpOw0KPiArCWlmIChBVF9MRUFTVF9HRU4oaW50ZWxf
-Z2V0X2RybV9kZXZpZChpYmItPmZkKSwgMjApKQ0KPiArCQlpbnRlbF9iYl9vdXQoaWJiLCBHRU5Y
-RTJfM0RTVEFURV9EUkFXSU5HX1JFQ1RBTkdMRV9GQVNUIHwgKDQgLSAyKSk7DQo+ICsJZWxzZQ0K
-PiArCQlpbnRlbF9iYl9vdXQoaWJiLCBHRU40XzNEU1RBVEVfRFJBV0lOR19SRUNUQU5HTEUgfCAo
-NCAtIDIpKTsNCj4gIAlpbnRlbF9iYl9vdXQoaWJiLCAwKTsNCj4gIAlpbnRlbF9iYl9vdXQoaWJi
-LCAoaW50ZWxfYnVmX2hlaWdodChkc3QpIC0gMSkgPDwgMTYgfCAoaW50ZWxfYnVmX3dpZHRoKGRz
-dCkgLSAxKSk7DQo+ICAJaW50ZWxfYmJfb3V0KGliYiwgMCk7DQo+IEBAIC0xMjIwLDYgKzEyNTcs
-MTkgQEAgdm9pZCBnZW4xMnA3MV9yZW5kZXJfY29weWZ1bmMoc3RydWN0IGludGVsX2JiICppYmIs
-DQo+ICAJCQlzaXplb2YoZ2VuMTJwNzFfcmVuZGVyX2NvcHkpKTsNCj4gIH0NCj4gIA0KPiArdm9p
-ZCBnZW54ZTJfcmVuZGVyX2NvcHlmdW5jKHN0cnVjdCBpbnRlbF9iYiAqaWJiLA0KPiArCQkJICAg
-IHN0cnVjdCBpbnRlbF9idWYgKnNyYywgdWludDMyX3Qgc3JjX3gsIHVpbnQzMl90IHNyY195LA0K
-PiArCQkJICAgIHVpbnQzMl90IHdpZHRoLCB1aW50MzJfdCBoZWlnaHQsDQo+ICsJCQkgICAgc3Ry
-dWN0IGludGVsX2J1ZiAqZHN0LCB1aW50MzJfdCBkc3RfeCwgdWludDMyX3QgZHN0X3kpDQo+ICt7
-DQo+ICsJX2dlbjlfcmVuZGVyX29wKGliYiwgc3JjLCBzcmNfeCwgc3JjX3ksDQo+ICsJCQkgIHdp
-ZHRoLCBoZWlnaHQsIGRzdCwgZHN0X3gsIGRzdF95LA0KPiArCQkJICBOVUxMLA0KPiArCQkJICBO
-VUxMLA0KPiArCQkJICB4ZTJfcmVuZGVyX2NvcHksDQo+ICsJCQkgIHNpemVvZih4ZTJfcmVuZGVy
-X2NvcHkpKTsNCj4gK30NCj4gKw0KPiAgdm9pZCBtdGxfcmVuZGVyX2NvcHlmdW5jKHN0cnVjdCBp
-bnRlbF9iYiAqaWJiLA0KPiAgCQkJIHN0cnVjdCBpbnRlbF9idWYgKnNyYywNCj4gIAkJCSB1bnNp
-Z25lZCBpbnQgc3JjX3gsIHVuc2lnbmVkIGludCBzcmNfeSwNCg0K
+The syncobj_timeline test suite includes cases where
+drmSyncobjTimelineWait is called with the WAIT_FOR_SUBMIT flag before
+the timeline point has been submitted. Then, after a short delay, the
+timeline point does get submitted and signaled and the test verifies
+that the drmSyncobjTimelineWait call is unblocked as expected.
+
+Alas, while this was working correctly with the WAIT_FOR_SUBMIT flag, if
+the WAIT_AVAILABLE flag is used instead the wait will *always* block for
+the full timeout duration even if the timeline point is submitted
+earlier due to a bug in the kernel. The return value would still
+indicate that the wait completed successfully, though. That is, it
+wouldn't return -ETIME.
+
+To ensure test coverage for such a scenario, this change adds delayed
+submission test cases which use the WAIT_AVAILABLE flag. These will be
+similar to the WAIT_FOR_SUBMIT cases mentioned above except that, after
+the delay, the timeline point will only submitted, not signaled.
+
+Furthermore, it adds an assertion that the drmSyncobjTimelineWait call
+returned *before* the timeout expired, which it always should since the
+timeout is a full 100ms longer than the delay.
+
+Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
+---
+ tests/syncobj_timeline.c | 40 ++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 36 insertions(+), 4 deletions(-)
+
+diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
+index ea8341a30..1815c2941 100644
+--- a/tests/syncobj_timeline.c
++++ b/tests/syncobj_timeline.c
+@@ -490,6 +490,13 @@ syncobj_trigger(int fd, uint32_t handle, uint64_t point)
+ 	close(timeline);
+ }
+ 
++static void
++syncobj_submit(int fd, uint32_t handle, uint64_t point)
++{
++	int timeline = syncobj_attach_sw_sync(fd, handle, point);
++	close(timeline);
++}
++
+ static timer_t
+ set_timer(void (*cb)(union sigval), void *ptr, int i, uint64_t nsec)
+ {
+@@ -534,8 +541,17 @@ syncobj_trigger_free_pair_func(union sigval sigval)
+ 	free(pair);
+ }
+ 
++static void
++syncobj_submit_free_pair_func(union sigval sigval)
++{
++	struct fd_handle_pair *pair = sigval.sival_ptr;
++	syncobj_submit(pair->fd, pair->handle, pair->point);
++	free(pair);
++}
++
+ static timer_t
+-syncobj_trigger_delayed(int fd, uint32_t syncobj, uint64_t point, uint64_t nsec)
++syncobj_delayed_operation(int fd, uint32_t syncobj, uint64_t point, uint64_t nsec,
++			  void (*operation)(union sigval))
+ {
+ 	struct fd_handle_pair *pair = malloc(sizeof(*pair));
+ 
+@@ -543,7 +559,7 @@ syncobj_trigger_delayed(int fd, uint32_t syncobj, uint64_t point, uint64_t nsec)
+ 	pair->handle = syncobj;
+ 	pair->point = point;
+ 
+-	return set_timer(syncobj_trigger_free_pair_func, pair, 0, nsec);
++	return set_timer(operation, pair, 0, nsec);
+ }
+ 
+ static const char *test_wait_bad_flags_desc =
+@@ -942,18 +958,26 @@ test_wait_delayed_signal(int fd, uint32_t test_flags)
+ 	uint64_t point = 1;
+ 	int timeline = -1;
+ 	timer_t timer;
++	uint64_t start_time;
+ 
+ 	if (test_flags & WAIT_FOR_SUBMIT) {
+-		timer = syncobj_trigger_delayed(fd, syncobj, point, SHORT_TIME_NSEC);
++		timer = syncobj_delayed_operation(fd, syncobj, point, SHORT_TIME_NSEC,
++						  syncobj_trigger_free_pair_func);
++	} else if (test_flags & WAIT_AVAILABLE) {
++		timer = syncobj_delayed_operation(fd, syncobj, point, SHORT_TIME_NSEC,
++						  syncobj_submit_free_pair_func);
+ 	} else {
+ 		timeline = syncobj_attach_sw_sync(fd, syncobj, point);
+ 		timer = set_timer(timeline_inc_func, NULL,
+ 				  timeline, SHORT_TIME_NSEC);
+ 	}
+ 
++	start_time = gettime_ns();
+ 	igt_assert(syncobj_timeline_wait(fd, &syncobj, &point, 1,
+-				gettime_ns() + SHORT_TIME_NSEC * 2,
++				start_time + SHORT_TIME_NSEC * 2,
+ 				flags, NULL));
++	/* ensure we were unblocked before the timeout expired */
++	igt_assert(gettime_ns() - start_time < SHORT_TIME_NSEC * 2);
+ 
+ 	timer_delete(timer);
+ 
+@@ -1809,6 +1833,10 @@ igt_main
+ 	igt_subtest("wait-for-submit-delayed-submit")
+ 		test_wait_delayed_signal(fd, WAIT_FOR_SUBMIT);
+ 
++	igt_describe(test_wait_delayed_signal_desc);
++	igt_subtest("wait-available-delayed-submit")
++		test_wait_delayed_signal(fd, WAIT_AVAILABLE);
++
+ 	igt_describe(test_wait_delayed_signal_desc);
+ 	igt_subtest("wait-all-delayed-signal")
+ 		test_wait_delayed_signal(fd, WAIT_ALL);
+@@ -1817,6 +1845,10 @@ igt_main
+ 	igt_subtest("wait-all-for-submit-delayed-submit")
+ 		test_wait_delayed_signal(fd, WAIT_ALL | WAIT_FOR_SUBMIT);
+ 
++	igt_describe(test_wait_delayed_signal_desc);
++	igt_subtest("wait-all-available-delayed-submit")
++		test_wait_delayed_signal(fd, WAIT_ALL | WAIT_AVAILABLE);
++
+ 	igt_describe(test_reset_unsignaled_desc);
+ 	igt_subtest("reset-unsignaled")
+ 		test_reset_unsignaled(fd);
+-- 
+2.43.0
+
