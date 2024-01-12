@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B12410E6D1
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 02:20:48 +0000 (UTC)
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH] tests/intel/perf_pmu: Add a test to repro NPD during FLR
-Date: Fri, 12 Jan 2024 02:20:38 +0000
-Message-Id: <20240112022038.16485-1-umesh.nerlige.ramappa@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1789687049292701583=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/intel/perf=5Fpmu=3A_Add_?=
+ =?utf-8?q?a_test_to_repro_NPD_during_FLR?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Umesh Nerlige Ramappa" <umesh.nerlige.ramappa@intel.com>
+Date: Fri, 12 Jan 2024 03:14:21 -0000
+Message-ID: <170502926137.331937.4506201970878571640@5338d5abeb45>
+References: <20240112022038.16485-1-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20240112022038.16485-1-umesh.nerlige.ramappa@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,102 +17,177 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Open a PMU event (actual-frequency) and then do an unbind, followed by a bind.
-This is causing NPD during bind.
+--===============1789687049292701583==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
----
- tests/intel/perf_pmu.c | 60 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+== Series Details ==
 
-diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
-index c6e6a8b77..06b02e18a 100644
---- a/tests/intel/perf_pmu.c
-+++ b/tests/intel/perf_pmu.c
-@@ -249,6 +249,11 @@
-  * Description: Test the i915 pmu perf interface
-  * Feature: i915 pmu perf interface, pmu
-  * Test category: Perf
-+ *
-+ * SUBTEST: npd
-+ * Description: Test null pointer dereference case
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  */
- 
- IGT_TEST_DESCRIPTION("Test the i915 pmu perf interface");
-@@ -2417,6 +2422,58 @@ static void test_unload(unsigned int num_engines)
- 	igt_assert_eq(__igt_i915_driver_unload(NULL), 0);
- }
- 
-+static int sysfs_driver(int i915)
-+{
-+	int dir, drv;
-+
-+	dir = igt_sysfs_open(i915);
-+	igt_assert(dir != -1);
-+
-+	drv = openat(dir, "device/driver", O_DIRECTORY);
-+	close(dir);
-+
-+	igt_assert(drv != -1);
-+	return drv;
-+}
-+
-+static void test_npd(void)
-+{
-+	struct pci_device *pdev;
-+	int fd, i915, drv;
-+	char *snd = NULL;
-+	char addr[80];
-+	uint64_t val;
-+
-+	i915 = __drm_open_driver(DRIVER_INTEL);
-+	pdev = igt_device_get_pci_device(i915);
-+
-+	snprintf(addr, sizeof(addr), "%04x:%02x:%02x.%d",
-+		 pdev->domain, pdev->bus, pdev->dev, pdev->func);
-+	igt_debug("Opened %s\n", addr);
-+
-+	fd = open_pmu(i915, I915_PMU_ACTUAL_FREQUENCY);
-+
-+	drv = sysfs_driver(i915);
-+	close(i915);
-+
-+	igt_audio_driver_unload(&snd);
-+
-+	val = pmu_read_single(fd);
-+
-+	igt_set_timeout(30, "Driver unbind timeout!");
-+	igt_assert_f(igt_sysfs_set(drv, "unbind", addr),
-+		     "Driver unbind failure (%s)!\n", addr);
-+	igt_reset_timeout();
-+
-+	igt_set_timeout(30, "Driver bind timeout!");
-+	igt_assert_f(igt_sysfs_set(drv, "bind", addr),
-+		     "Driver bind failure (%s)!\n", addr);
-+	igt_reset_timeout();
-+
-+	close(drv);
-+	close(fd);
-+}
-+
- static void pmu_read(int i915)
- {
- 	char val[128];
-@@ -2745,6 +2802,9 @@ igt_main
- 		free(drpc);
- 	}
- 
-+	igt_subtest("npd")
-+		test_npd();
-+
- 	igt_subtest("module-unload") {
- 		igt_require(igt_i915_driver_unload() == 0);
- 		for (int pass = 0; pass < 3; pass++)
--- 
-2.34.1
+Series: tests/intel/perf_pmu: Add a test to repro NPD during FLR
+URL   : https://patchwork.freedesktop.org/series/128698/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7670_BAT -> XEIGTPW_10519_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_10519_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_10519_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_10519_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
+    - bat-dg2-oem2:       [PASS][1] -> [SKIP][2] +1 other test skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7670/bat-dg2-oem2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10519/bat-dg2-oem2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
+
+  * igt@xe_evict@evict-cm-threads-small:
+    - bat-dg2-oem2:       [PASS][3] -> [TIMEOUT][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7670/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10519/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10519_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch:
+    - bat-pvc-2:          [INCOMPLETE][5] -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7670/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10519/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch.html
+
+  
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7670 -> IGTPW_10519
+  * Linux: xe-618-79184e72263e91528195db01783148435c7e4fad -> xe-621-3095fbb4deb0722d417b6a4ad4213e2ed9ecd052
+
+  IGTPW_10519: 10519
+  IGT_7670: 1b32bcdb2d9965090234739aba891a90743e01c4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-618-79184e72263e91528195db01783148435c7e4fad: 79184e72263e91528195db01783148435c7e4fad
+  xe-621-3095fbb4deb0722d417b6a4ad4213e2ed9ecd052: 3095fbb4deb0722d417b6a4ad4213e2ed9ecd052
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10519/index.html
+
+--===============1789687049292701583==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/perf_pmu: Add a test to repro NPD during FLR</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128698/">https://patchwork.freedesktop.org/series/128698/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10519/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10519/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7670_BAT -&gt; XEIGTPW_10519_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_10519_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_10519_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_10519_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7670/bat-dg2-oem2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10519/bat-dg2-oem2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">SKIP</a> +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-cm-threads-small:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7670/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10519/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html">TIMEOUT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10519_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch:<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7670/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10519/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7670 -&gt; IGTPW_10519</li>
+<li>Linux: xe-618-79184e72263e91528195db01783148435c7e4fad -&gt; xe-621-3095fbb4deb0722d417b6a4ad4213e2ed9ecd052</li>
+</ul>
+<p>IGTPW_10519: 10519<br />
+  IGT_7670: 1b32bcdb2d9965090234739aba891a90743e01c4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-618-79184e72263e91528195db01783148435c7e4fad: 79184e72263e91528195db01783148435c7e4fad<br />
+  xe-621-3095fbb4deb0722d417b6a4ad4213e2ed9ecd052: 3095fbb4deb0722d417b6a4ad4213e2ed9ecd052</p>
+
+</body>
+</html>
+
+--===============1789687049292701583==--
