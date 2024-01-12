@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Message-ID: <24f8f54e-978c-4a5a-9a67-5efc53107bce@intel.com>
-Date: Fri, 12 Jan 2024 13:02:54 +0530
-Subject: Re: [PATCH] lib/igt_kms: add support for choosing big joiner mode
+Message-ID: <35878e85-b17b-41bf-b9e7-047841a0504b@intel.com>
+Date: Fri, 12 Jan 2024 11:27:50 -0800
+Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_reset: Do not validate data on
+ GT reset
+References: <20240112154611.1395699-1-jonathan.cavitt@intel.com>
 Content-Language: en-US
-References: <20240112053932.570651-1-kunal1.joshi@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20240112053932.570651-1-kunal1.joshi@intel.com>
+From: "Welty, Brian" <brian.welty@intel.com>
+In-Reply-To: <20240112154611.1395699-1-jonathan.cavitt@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
@@ -21,75 +22,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org
-Message-ID: <20240112073254.ecc5fkeCgzEp5X8z2FHgUd-cLsAXpunhggjKXi_2Spc@z>
+To: Jonathan Cavitt <jonathan.cavitt@intel.com>, igt-dev@lists.freedesktop.org
+Cc: saurabhg.gupta@intel.com
+Message-ID: <20240112192750.02ogLvREH1AubVGsaXD0ow_XSgrTha5egP-v_Ah75p0@z>
 
-Hi Kunal,
 
-On 12-01-2024 11:09 am, Kunal Joshi wrote:
-> add support to choose big joiner mode with environment
-> variable, use mode with highest clock if no mode with big joiner
-> found.
+
+On 1/12/2024 7:46 AM, Jonathan Cavitt wrote:
+> In the cm-gt-reset test, data validation is blocked because a GT reset
+> means that we cannot verify the completion of the exec operations.
+> Extend this logic to all other tests that perform GT resets in
+> xe_exec_reset.
 > 
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+
+Thanks for extending the fix to the other subtests.
+
+Reviewed-by: Brian Welty <brian.welty@intel.com>
+
+
+
 > ---
->   lib/igt_kms.c | 17 ++++++++++++++++-
->   1 file changed, 16 insertions(+), 1 deletion(-)
+>   tests/intel/xe_exec_reset.c | 12 ++++++++----
+>   1 file changed, 8 insertions(+), 4 deletions(-)
 > 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index e4dea1a60..3d0fe635c 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -1783,15 +1783,30 @@ bool kmstest_get_connector_default_mode(int drm_fd, drmModeConnector *connector,
->   	env = getenv("IGT_KMS_RESOLUTION");
->   	if (env) {
->   		/*
-> -		 * Only (0 or 1) and (lowest or highest) are allowed.
-> +		 * Only (0 or 1 or 2) and (lowest or highest or joiner) are allowed.
->   		 *
->   		 * 0/lowest: Choose connector mode with lowest possible resolution.
->   		 * 1/highest: Choose connector mode with highest possible resolution.
-> +		 * 2/joiner: Choose connector mode with big joiner output or output
-> +		 *           with max clock requirement
-
-Please re-write this to choose bigjoiner mode if found any.
->   		 */
->   		if (!strcmp(env, "highest") || !strcmp(env, "1"))
->   			igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
->   		else if (!strcmp(env, "lowest") || !strcmp(env, "0"))
->   			igt_sort_connector_modes(connector, sort_drm_modes_by_res_asc);
-> +		else if (!strcmp(env, "joiner") || !strcmp(env, "2")) {
-
-Let's sort the if-else ladder as "0->1->2" or "2->1->0".
-
-> +			igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
-> +			if (igt_bigjoiner_possible(&connector->modes[0], igt_get_max_dotclock(drm_fd))) {
-> +				*mode = connector->modes[0];
-> +				return true;
-> +			}
-> +			igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
-------------------------------------------------------------^
-typo: s/sort_drm_modes_by_res_dsc/sort_modes_by_clk_dsc/
-
-> +			if(igt_bigjoiner_possible(&connector->modes[0], igt_get_max_dotclock(drm_fd))) {
-> +				*mode = connector->modes[0];
-> +				return true;
-> +			}
-> +			igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
-
-Please drop this sorting.
-
-IMHO, Instead of returning from multiple places, try to adopt this [*] 
-cleaner way.
-
-[*]: 
-https://cgit.freedesktop.org/drm/igt-gpu-tools/tree/tests/intel/kms_big_joiner.c#n235
-
-- Bhanu
-
-> +		}
->   		else
->   			goto default_mode;
+> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+> index 0cd5b10517..168523c64c 100644
+> --- a/tests/intel/xe_exec_reset.c
+> +++ b/tests/intel/xe_exec_reset.c
+> @@ -294,8 +294,10 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+>   	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+>   	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
 >   
+> -	for (i = bad_batches; i < n_execs; i++)
+> -		igt_assert_eq(data[i].data, 0xc0ffee);
+> +	if (!(flags & GT_RESET)) {
+> +		for (i = bad_batches; i < n_execs; i++)
+> +			igt_assert_eq(data[i].data, 0xc0ffee);
+> +	}
+>   
+>   	syncobj_destroy(fd, sync[0].handle);
+>   	for (i = 0; i < n_exec_queues; i++) {
+> @@ -462,8 +464,10 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
+>   	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+>   	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+>   
+> -	for (i = 1; i < n_execs; i++)
+> -		igt_assert_eq(data[i].data, 0xc0ffee);
+> +	if (!(flags & GT_RESET)) {
+> +		for (i = 1; i < n_execs; i++)
+> +			igt_assert_eq(data[i].data, 0xc0ffee);
+> +	}
+>   
+>   	syncobj_destroy(fd, sync[0].handle);
+>   	for (i = 0; i < n_exec_queues; i++) {
