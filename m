@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 12 Jan 2024 18:35:23 +0100
+Date: Fri, 12 Jan 2024 18:39:44 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] tests/perf_pmu: Set defaults before frequency test
-Message-ID: <20240112173523.o2yjp3dyixa5wuz6@kamilkon-desk.igk.intel.com>
-References: <20240111222054.2403101-1-vinay.belgaumkar@intel.com>
+Subject: Re: =?utf-8?Q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests=2Fintel?=
+ =?utf-8?Q?=2Fgem=5Fexec=5Fschedule=3A?= Update for MTL RCS/CCS w/a (rev3)
+Message-ID: <20240112173944.zfdu2oe55vsez5pt@kamilkon-desk.igk.intel.com>
+References: <20240111185645.4056250-1-John.C.Harrison@Intel.com>
+ <170500449210.290000.1016677963749010043@5338d5abeb45>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240111222054.2403101-1-vinay.belgaumkar@intel.com>
+In-Reply-To: <170500449210.290000.1016677963749010043@5338d5abeb45>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,122 +18,97 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org
+Cc: lgci.bug.filing@intel.com, I915-ci-infra@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Vinay,
-On 2024-01-11 at 14:20:54 -0800, Vinay Belgaumkar wrote:
-> Seeing random issues where this test skips due to invalid
-> boost freq at the start. Also ensure that we restore the frequencies at the end.
+Hi,
+On 2024-01-11 at 20:21:32 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> v2: Use save/restore functions instead of exit_handler. Adding an
-> exit_handler necessitated moving drm_close() into the handler. However,
-> the module-reload subtest at the end expects drm-fd to be closed.
-> Also setup expected frequencies (Kamil) and address other nits (Kamil)
+> Series: tests/intel/gem_exec_schedule: Update for MTL RCS/CCS w/a (rev3)
+> URL   : https://patchwork.freedesktop.org/series/128342/
+> State : failure
 > 
-> Link: https://gitlab.freedesktop.org/drm/intel/-/issues/9432
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_7670_BAT -> XEIGTPW_10513_BAT
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_10513_BAT absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_10513_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (4 -> 4)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_10513_BAT:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
+>     - bat-dg2-oem2:       [PASS][1] -> [SKIP][2] +1 other test skip
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7670/bat-dg2-oem2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10513/bat-dg2-oem2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
+> 
+>   * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
+>     - bat-dg2-oem2:       [PASS][3] -> [TIMEOUT][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7670/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10513/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+> 
+>   * igt@xe_evict@evict-mixed-threads-small:
+>     - bat-atsm-2:         [PASS][5] -> [DMESG-WARN][6]
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7670/bat-atsm-2/igt@xe_evict@evict-mixed-threads-small.html
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10513/bat-atsm-2/igt@xe_evict@evict-mixed-threads-small.html
+> 
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+This is unrelated to gem_ (i915) test.
 
-> ---
->  tests/intel/perf_pmu.c | 62 +++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 61 insertions(+), 1 deletion(-)
+Regards,
+Kamil
+
+>   
+> Known issues
+> ------------
 > 
-> diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
-> index c6e6a8b77..4ae2b60ae 100644
-> --- a/tests/intel/perf_pmu.c
-> +++ b/tests/intel/perf_pmu.c
-> @@ -2454,12 +2454,69 @@ static void pmu_read(int i915)
->  		for_each_if((e)->class == I915_ENGINE_CLASS_RENDER) \
->  			igt_dynamic_f("%s", e->name)
->  
-> +int fd = -1;
-> +uint32_t *stash_min, *stash_max, *stash_boost;
-> +
-> +static void save_sysfs_freq(int i915)
-> +{
-> +	int gt, num_gts, sysfs, tmp;
-> +	uint32_t rpn_freq, rp0_freq;
-> +
-> +	num_gts = igt_sysfs_get_num_gt(i915);
-> +
-> +	stash_min = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
-> +	stash_max = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
-> +	stash_boost = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
-> +
-> +	/* Save boost, min and max across GTs */
-> +	i915_for_each_gt(i915, tmp, gt) {
-> +		sysfs = igt_sysfs_gt_open(i915, gt);
-> +		igt_require(sysfs >= 0);
-> +
-> +		stash_min[gt] = igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz");
-> +		stash_max[gt] = igt_sysfs_get_u32(sysfs, "rps_max_freq_mhz");
-> +		stash_boost[gt] = igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz");
-> +		igt_debug("GT: %d, min: %d, max: %d, boost:%d\n",
-> +			  gt, stash_min[gt], stash_max[gt], stash_boost[gt]);
-> +
-> +		rpn_freq = igt_sysfs_get_u32(sysfs, "rps_RPn_freq_mhz");
-> +		rp0_freq = igt_sysfs_get_u32(sysfs, "rps_RP0_freq_mhz");
-> +
-> +		/* Set pre-conditions, in case frequencies are in non-default state */
-> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", rp0_freq));
-> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_boost_freq_mhz", rp0_freq));
-> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", rpn_freq));
-> +
-> +		close(sysfs);
-> +	}
-> +}
-> +
-> +static void restore_sysfs_freq(int i915)
-> +{
-> +	int sysfs, gt, tmp;
-> +
-> +	/* Restore frequencies */
-> +	i915_for_each_gt(fd, tmp, gt) {
-> +		sysfs = igt_sysfs_gt_open(fd, gt);
-> +		igt_require(sysfs >= 0);
-> +
-> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", stash_max[gt]));
-> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", stash_min[gt]));
-> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_boost_freq_mhz", stash_boost[gt]));
-> +
-> +		close(sysfs);
-> +	}
-> +	free(stash_min);
-> +	free(stash_max);
-> +	free(stash_boost);
-> +}
-> +
->  igt_main
->  {
->  	const struct intel_execution_engine2 *e;
->  	unsigned int num_engines = 0;
->  	const intel_ctx_t *ctx = NULL;
-> -	int gt, tmp, fd = -1;
-> +	int gt, tmp;
->  	int num_gt = 0;
->  
->  	/**
-> @@ -2664,12 +2721,15 @@ igt_main
->  	 * Test GPU frequency.
->  	 */
->  	igt_subtest_with_dynamic("frequency") {
-> +		save_sysfs_freq(fd);
-> +
->  		i915_for_each_gt(fd, tmp, gt) {
->  			igt_dynamic_f("gt%u", gt)
->  				test_frequency(fd, gt);
->  			igt_dynamic_f("idle-gt%u", gt)
->  				test_frequency_idle(fd, gt);
->  		}
-> +		restore_sysfs_freq(fd);
->  	}
->  
->  	/**
-> -- 
-> 2.38.1
+>   Here are the changes found in XEIGTPW_10513_BAT that come from known issues:
 > 
+
+[...cut...]
+
+>   
+>   [Intel XE#1009]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * IGT: IGT_7670 -> IGTPW_10513
+>   * Linux: xe-618-79184e72263e91528195db01783148435c7e4fad -> xe-619-85bad57174d54b8cd91e4ce3da9fe7091d53d98c
+> 
+>   IGTPW_10513: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10513/index.html
+>   IGT_7670: 1b32bcdb2d9965090234739aba891a90743e01c4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   xe-618-79184e72263e91528195db01783148435c7e4fad: 79184e72263e91528195db01783148435c7e4fad
+>   xe-619-85bad57174d54b8cd91e4ce3da9fe7091d53d98c: 85bad57174d54b8cd91e4ce3da9fe7091d53d98c
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10513/index.html
