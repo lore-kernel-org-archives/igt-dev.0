@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 42F8710EA99
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 08:46:19 +0000 (UTC)
-From: Kunal Joshi <kunal1.joshi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 2/2] lib/igt_kms: add support for choosing big joiner
- mode
-Date: Fri, 12 Jan 2024 14:25:47 +0530
-Message-Id: <20240112085547.673712-3-kunal1.joshi@intel.com>
-In-Reply-To: <20240112085547.673712-1-kunal1.joshi@intel.com>
-References: <20240112085547.673712-1-kunal1.joshi@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2860A10EAB8
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 09:07:54 +0000 (UTC)
+From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
+To: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gandi,
+ Ramadevi" <ramadevi.gandi@intel.com>
+Subject: RE: [PATCH i-g-t] tests/intel/xe_exec_store: Remove redundant code
+Date: Fri, 12 Jan 2024 09:07:45 +0000
+Message-ID: <BL3PR11MB5747D05B4745FE94B30A3B9BD06F2@BL3PR11MB5747.namprd11.prod.outlook.com>
+References: <20240112074902.2455804-1-janga.rahul.kumar@intel.com>
+In-Reply-To: <20240112074902.2455804-1-janga.rahul.kumar@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,40 +22,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-add support to choose big joiner mode with environment
-variable, use mode with highest clock if no mode with big joiner
-found.
 
-v2: reuse bigjoiner_mode_found (Bhanu)
 
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
----
- lib/igt_kms.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 2c55af05f..c4ecb0907 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1788,7 +1788,11 @@ bool kmstest_get_connector_default_mode(int drm_fd, drmModeConnector *connector,
- 		 * 0/lowest: Choose connector mode with lowest possible resolution.
- 		 * 1/highest: Choose connector mode with highest possible resolution.
- 		 */
--		if (!strcmp(env, "highest") || !strcmp(env, "1"))
-+		if (!strcmp(env, "joiner") || !strcmp(env, "2"))
-+			return bigjoiner_mode_found(drm_fd, connector, sort_drm_modes_by_clk_dsc, mode) ||
-+			       bigjoiner_mode_found(drm_fd, connector, sort_drm_modes_by_res_dsc, mode) ||
-+			       bigjoiner_mode_found(drm_fd, connector, sort_drm_modes_by_clk_dsc, mode);
-+		else if (!strcmp(env, "highest") || !strcmp(env, "1"))
- 			igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
- 		else if (!strcmp(env, "lowest") || !strcmp(env, "0"))
- 			igt_sort_connector_modes(connector, sort_drm_modes_by_res_asc);
--- 
-2.25.1
+>-----Original Message-----
+>From: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>
+>Sent: Friday, January 12, 2024 1:19 PM
+>To: igt-dev@lists.freedesktop.org; Gandi, Ramadevi <ramadevi.gandi@intel.c=
+om>;
+>Kumar, Janga Rahul <janga.rahul.kumar@intel.com>; Ch, Sai Gowtham
+><sai.gowtham.ch@intel.com>
+>Subject: [PATCH i-g-t] tests/intel/xe_exec_store: Remove redundant code
+>
+>From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+>
+>Remove redundant code related to exec queue creation.
+>
+>Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+>---
+> tests/intel/xe_exec_store.c | 1 -
+> 1 file changed, 1 deletion(-)
+>
+>diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c ind=
+ex
+>870394d3c..3fa8880ba 100644
+>--- a/tests/intel/xe_exec_store.c
+>+++ b/tests/intel/xe_exec_store.c
+>@@ -148,7 +148,6 @@ static void basic_inst(int fd, int inst_type, struct
+>drm_xe_engine_class_instanc
+> 	else
+> 		igt_assert_f(inst_type < 2, "Entered wrong inst_type.\n");
+>
+>-	exec_queue =3D xe_exec_queue_create(fd, vm, eci, 0);
+> 	exec.exec_queue_id =3D exec_queue;
+> 	exec.address =3D data->addr;
+> 	sync.flags &=3D DRM_XE_SYNC_FLAG_SIGNAL;
+>--
+Looks good to me.
+Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+>2.25.1
