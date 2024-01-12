@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 11 Jan 2024 17:45:37 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] xe_live_ktest: Use xe_live_test kernel
- module
-Message-ID: <dzacvbdditbneiu3e3fmstjmttcbne44yspumpkd6sjn56jqpk@vxu7sksbqrp6>
-References: <20231205224926.2188996-1-lucas.demarchi@intel.com>
- <20231207164152.57be3d07@maurocar-mobl2>
- <3kunqgqyf7tobiwhcpvjp7rcvidrgnz2jq3qqoxjbl7kaftdq7@7hdweo57htff>
- <njwvai6cu7jwmy7lmg3vkg4jd52uq2f6es4obvdplkz43i6hpe@jqrzk4bveqqc>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <njwvai6cu7jwmy7lmg3vkg4jd52uq2f6es4obvdplkz43i6hpe@jqrzk4bveqqc>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CCC7610E0FE
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 10:31:33 +0000 (UTC)
+Date: Fri, 12 Jan 2024 11:31:26 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH i-g-t 2/2] build: Remove xe_driver options
+Message-ID: <20240112103126.cmycjpnia74to5ss@kamilkon-desk.igk.intel.com>
+References: <20240111213358.1656641-1-lucas.demarchi@intel.com>
+ <20240111213358.1656641-2-lucas.demarchi@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240111213358.1656641-2-lucas.demarchi@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,158 +21,100 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Dec 21, 2023 at 04:15:23PM -0600, Lucas De Marchi wrote:
->On Fri, Dec 08, 2023 at 12:13:36PM -0600, Lucas De Marchi wrote:
->>On Thu, Dec 07, 2023 at 04:41:52PM +0100, Mauro Carvalho Chehab wrote:
->>>On Tue,  5 Dec 2023 14:49:26 -0800
->>>Lucas De Marchi <lucas.demarchi@intel.com> wrote:
->>>
->>>>https://patchwork.freedesktop.org/series/126786/ groups all the live
->>>>tests into a single kernel module. Use that module to run any of the
->>>>tests triggered by igt.
->>>>
->>>>Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->>>>---
->>>>tests/intel/xe_live_ktest.c | 15 +++++----------
->>>>1 file changed, 5 insertions(+), 10 deletions(-)
->>>>
->>>>diff --git a/tests/intel/xe_live_ktest.c b/tests/intel/xe_live_ktest.c
->>>>index fe7b2e69f..c8bd68928 100644
->>>>--- a/tests/intel/xe_live_ktest.c
->>>>+++ b/tests/intel/xe_live_ktest.c
->>>>@@ -19,15 +19,10 @@
->>>> * Functionality: migrate
->>>> */
->>>>
->>>>-struct kunit_tests {
->>>>-	const char *kunit;
->>>>-	const char *name;
->>>>-};
->>>>-
->>>>-static const struct kunit_tests live_tests[] = {
->>>>-	{ "xe_bo_test",		"bo" },
->>>>-	{ "xe_dma_buf_test",	"dmabuf" },
->>>>-	{ "xe_migrate_test",	"migrate" },
->>>>+static const char *live_tests[] = {
->>>>+	"bo",
->>>>+	"dmabuf",
->>>>+	"migrate",
->>>>};
->>>>
->>>>igt_main
->>>>@@ -35,5 +30,5 @@ igt_main
->>>>	int i;
->>>>
->>>>	for (i = 0; i < ARRAY_SIZE(live_tests); i++)
->>>>-		igt_kunit(live_tests[i].kunit, live_tests[i].name, NULL);
->>>>+		igt_kunit("xe_live_test", live_tests[i], NULL);
->>>
->>>This loop will modprobe xe_live_test the times. Just do something
->>>like:
->>>
->>>	igt_kunit("xe_live_test", "live_tests", NULL);
->>
->>but there's no such "live_tests" suite and we want to run each of
->>them individually, not together.  How would you select the subtest
->>otherwise?
->
->gentle ping as I want to merge the kernel patch that is blocked on this
->one.
+Hi Lucas,
+On 2024-01-11 at 13:33:58 -0800, Lucas De Marchi wrote:
+> Always build with xe tests.
+> 
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
-I did some tests today and... current situation is not very good. The
-kunit module has the param filter_glob to filter the testsuite, but it's
-not used at all by igt.  live_tests[i].name is more informational than
-to really do any filtering.
++cc Mauro
 
-Another issue I see is that since we have the dep xe.ko -> kunit.ko, as
-soon as we load xe, kunit comes as a dependency. Since kunit's param are
-read-only, we can't really change the testsuite that will run without
-first remove xe. Having to reload xe multiple times doesn't seem a good
-option.
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Some manual tests I did here. First a kernel patch:
-
-	diff --git a/lib/kunit/executor.c b/lib/kunit/executor.c
-	index 1236b3cd2fbb..30ed9d321c19 100644
-	--- a/lib/kunit/executor.c
-	+++ b/lib/kunit/executor.c
-	@@ -31,7 +31,7 @@ static char *filter_glob_param;
-	 static char *filter_param;
-	 static char *filter_action_param;
-
-	-module_param_named(filter_glob, filter_glob_param, charp, 0400);
-	+module_param_named(filter_glob, filter_glob_param, charp, 0600);
-	 MODULE_PARM_DESC(filter_glob,
-			"Filter which KUnit test suites/tests run at boot-time, e.g. list* or list*.*del_test");
-	 module_param_named(filter, filter_param, charp, 0400);
-
-Now we can filter the testsuite at will:
-
-	# modprobe xe
-	
-Run only xe_bo tests:
-
-	# echo -n xe_bo > /sys/modules/kunit/parameters/filter_glob
-	# dmesg -C
-	# modprobe xe_live_test
-	# dmesg
-	[ 4064.402190] KTAP version 1
-	[ 4064.402195] 1..1
-	[ 4064.403336]     KTAP version 1
-	[ 4064.403339]     # Subtest: xe_bo
-	[ 4064.403342]     # module: xe_live_test
-	[ 4064.403410]     1..2
-	...
-	[ 4065.712622]     ok 2 xe_bo_evict_kunit
-	[ 4065.712646] # xe_bo: pass:2 fail:0 skip:0 total:2
-	[ 4065.712668] # Totals: pass:2 fail:0 skip:0 total:2
-	[ 4065.712700] ok 1 xe_bo
-
-Execute all live tests:
-
-	# modprobe -r xe_live_test
-	# dmesg -C
-	# echo -n \* > /sys/modules/kunit/parameters/filter_glob
-	# modprobe xe_live_test
-	# dmesg
-	[ 5010.536719] KTAP version 1
-	[ 5010.536725] 1..4
-	[ 5010.537618]     KTAP version 1
-	[ 5010.537620]     # Subtest: xe_bo
-	[ 5010.537623]     # module: xe_live_test
-	...
-	[ 5011.831597]     KTAP version 1
-	[ 5011.831599]     # Subtest: xe_dma_buf
-	[ 5011.831601]     # module: xe_live_test
-	...
-	[ 5011.867751]     KTAP version 1
-	[ 5011.867753]     # Subtest: xe_migrate
-	[ 5011.867755]     # module: xe_live_test
-	...
-	[ 5011.882481]     KTAP version 1
-	[ 5011.882483]     # Subtest: xe_mocs
-	[ 5011.882485]     # module: xe_live_test
-
-To simplify our kunit lib, we could also rely on kunit_debugfs to list
-tests.
-
-I will prepare a patch for the kunit part in the kernel.
-
-Lucas De Marchi
-
->
->Lucas De Marchi
->
->>
->>Lucas De Marchi
->>
->>>
->>>>}
->>>
->>>Regards,
->>>Mauro
+> ---
+>  docs/testplan/meson.build | 17 +++++------------
+>  meson.build               |  1 -
+>  meson_options.txt         |  5 -----
+>  tests/meson.build         |  5 +----
+>  4 files changed, 6 insertions(+), 22 deletions(-)
+> 
+> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+> index 9e0c3aee0..e027e41ed 100644
+> --- a/docs/testplan/meson.build
+> +++ b/docs/testplan/meson.build
+> @@ -31,18 +31,11 @@ else
+>  	doc_dependencies = []
+>  endif
+>  
+> -if build_xe
+> -	test_dict = {
+> -		'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
+> -		'kms_tests': { 'input': kms_test_config, 'extra_args': kms_check_testlist },
+> -		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
+> -	    }
+> -else
+> -	test_dict = {
+> -	      'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
+> -	      'kms_tests': { 'input': kms_test_config, 'extra_args': kms_check_testlist }
+> -	    }
+> -endif
+> +test_dict = {
+> +	'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
+> +	'kms_tests': { 'input': kms_test_config, 'extra_args': kms_check_testlist },
+> +	'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
+> +}
+>  
+>  foreach testplan, fields: test_dict
+>  	rst = custom_target(testplan + '.rst',
+> diff --git a/meson.build b/meson.build
+> index b35a00faa..a16fdbc46 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -85,7 +85,6 @@ endforeach
+>  build_chamelium = get_option('chamelium')
+>  build_docs = get_option('docs')
+>  build_tests = not get_option('tests').disabled()
+> -build_xe = not get_option('xe_driver').disabled()
+>  with_libdrm = get_option('libdrm_drivers')
+>  
+>  build_info = ['Build type: ' + get_option('buildtype')]
+> diff --git a/meson_options.txt b/meson_options.txt
+> index 6a9493ea6..2cb44f201 100644
+> --- a/meson_options.txt
+> +++ b/meson_options.txt
+> @@ -37,11 +37,6 @@ option('tests',
+>         type : 'feature',
+>         description : 'Build tests')
+>  
+> -option('xe_driver',
+> -       type : 'feature',
+> -       value : 'enabled',
+> -       description : 'Build tests for Xe driver')
+> -
+>  option('libdrm_drivers',
+>         type : 'array',
+>         value : ['auto'],
+> diff --git a/tests/meson.build b/tests/meson.build
+> index a6a8498e2..f783903f5 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -401,10 +401,7 @@ endforeach
+>  
+>  intel_progs = intel_i915_xe_progs
+>  intel_progs += intel_i915_progs + intel_kms_progs
+> -if build_xe
+> -	build_info += 'Xe **experimental** tests enabled.'
+> -	intel_progs += intel_xe_progs
+> -endif
+> +intel_progs += intel_xe_progs
+>  
+>  foreach prog : intel_progs
+>  	testexe = executable(prog,
+> -- 
+> 2.40.1
+> 
 
