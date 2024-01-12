@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 12 Jan 2024 18:51:08 +0100
+Date: Fri, 12 Jan 2024 18:52:07 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIENJLnhlQkFUOiBmYWlsdXI=?= =?utf-8?Q?e?= for
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLkJBVDogZmFpbHVy?= =?utf-8?Q?e?= for
  tests/perf_pmu: Set defaults before frequency test
-Message-ID: <20240112175108.fzcjnuko7ufoehqd@kamilkon-desk.igk.intel.com>
+Message-ID: <20240112175207.6t2h5q4cfgae4fpo@kamilkon-desk.igk.intel.com>
 References: <20240111222054.2403101-1-vinay.belgaumkar@intel.com>
- <170501970390.290000.6603325616123794587@5338d5abeb45>
+ <170501605878.290000.2720917775519946602@5338d5abeb45>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <170501970390.290000.6603325616123794587@5338d5abeb45>
+In-Reply-To: <170501605878.290000.2720917775519946602@5338d5abeb45>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,7 +24,7 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi igt-dev,
-On 2024-01-12 at 00:35:03 -0000, Patchwork wrote:
+On 2024-01-11 at 23:34:18 -0000, Patchwork wrote:
 > == Series Details ==
 > 
 > Series: tests/perf_pmu: Set defaults before frequency test
@@ -33,7 +33,7 @@ On 2024-01-12 at 00:35:03 -0000, Patchwork wrote:
 > 
 > == Summary ==
 > 
-> CI Bug Log - changes from XEIGT_7670_BAT -> XEIGTPW_10517_BAT
+> CI Bug Log - changes from CI_DRM_14116 -> IGTPW_10517
 > ====================================================
 > 
 > Summary
@@ -41,69 +41,64 @@ On 2024-01-12 at 00:35:03 -0000, Patchwork wrote:
 > 
 >   **FAILURE**
 > 
->   Serious unknown changes coming with XEIGTPW_10517_BAT absolutely need to be
+>   Serious unknown changes coming with IGTPW_10517 absolutely need to be
 >   verified manually.
 >   
 >   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_10517_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   introduced in IGTPW_10517, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
 >   to document this new failure mode, which will reduce false positives in CI.
 > 
->   
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10517/index.html
 > 
-> Participating hosts (4 -> 4)
+> Participating hosts (37 -> 26)
 > ------------------------------
 > 
->   No changes in participating hosts
+>   Additional (1): bat-adls-6 
+>   Missing    (12): fi-rkl-11600 fi-skl-guc fi-tgl-1115g4 bat-dg2-9 fi-cfl-guc fi-snb-2520m fi-ivb-3770 fi-elk-e7500 bat-rplp-1 fi-blb-e6850 bat-dg2-11 bat-jsl-1 
 > 
 > Possible new issues
 > -------------------
 > 
->   Here are the unknown changes that may have been introduced in XEIGTPW_10517_BAT:
+>   Here are the unknown changes that may have been introduced in IGTPW_10517:
 > 
 > ### IGT changes ###
 > 
 > #### Possible regressions ####
 > 
->   * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
->     - bat-dg2-oem2:       [PASS][1] -> [SKIP][2] +1 other test skip
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7670/bat-dg2-oem2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10517/bat-dg2-oem2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
+>   * igt@i915_selftest@live@coherency:
+>     - bat-adlm-1:         [PASS][1] -> [INCOMPLETE][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14116/bat-adlm-1/igt@i915_selftest@live@coherency.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10517/bat-adlm-1/igt@i915_selftest@live@coherency.html
 > 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_10517_BAT that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Possible fixes ####
-> 
->   * igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch:
->     - bat-pvc-2:          [INCOMPLETE][3] -> [PASS][4]
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7670/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch.html
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10517/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch.html
-> 
->   
 
-Unrelated, this is i915 test.
+Unrelated to perf_pmu test, please respin.
 
 Regards,
 Kamil
 
+>   
+> Known issues
+> ------------
 > 
+>   Here are the changes found in IGTPW_10517 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+
+...cut...
+
 > 
 > Build changes
 > -------------
 > 
+>   * CI: CI-20190529 -> None
 >   * IGT: IGT_7670 -> IGTPW_10517
->   * Linux: xe-618-79184e72263e91528195db01783148435c7e4fad -> xe-621-3095fbb4deb0722d417b6a4ad4213e2ed9ecd052
 > 
+>   CI-20190529: 20190529
+>   CI_DRM_14116: 3b92a66f4bc89f4fa6e9e9369ac8243e23670030 @ git://anongit.freedesktop.org/gfx-ci/linux
 >   IGTPW_10517: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10517/index.html
 >   IGT_7670: 1b32bcdb2d9965090234739aba891a90743e01c4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   xe-618-79184e72263e91528195db01783148435c7e4fad: 79184e72263e91528195db01783148435c7e4fad
->   xe-621-3095fbb4deb0722d417b6a4ad4213e2ed9ecd052: 3095fbb4deb0722d417b6a4ad4213e2ed9ecd052
 > 
 > == Logs ==
 > 
-> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10517/index.html
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10517/index.html
