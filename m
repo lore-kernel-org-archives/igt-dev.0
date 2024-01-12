@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7520309334897597767=="
+Date: Fri, 12 Jan 2024 18:35:23 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] tests/perf_pmu: Set defaults before frequency test
+Message-ID: <20240112173523.o2yjp3dyixa5wuz6@kamilkon-desk.igk.intel.com>
+References: <20240111222054.2403101-1-vinay.belgaumkar@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fexec=5Freset?=
- =?utf-8?q?=3A_Do_not_validate_data_on_GT_reset?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jonathan Cavitt" <jonathan.cavitt@intel.com>
-Date: Fri, 12 Jan 2024 17:10:08 -0000
-Message-ID: <170507940839.332901.16526166239565383237@5338d5abeb45>
-References: <20240112154611.1395699-1-jonathan.cavitt@intel.com>
-In-Reply-To: <20240112154611.1395699-1-jonathan.cavitt@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240111222054.2403101-1-vinay.belgaumkar@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,153 +16,122 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7520309334897597767==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Vinay,
+On 2024-01-11 at 14:20:54 -0800, Vinay Belgaumkar wrote:
+> Seeing random issues where this test skips due to invalid
+> boost freq at the start. Also ensure that we restore the frequencies at the end.
+> 
+> v2: Use save/restore functions instead of exit_handler. Adding an
+> exit_handler necessitated moving drm_close() into the handler. However,
+> the module-reload subtest at the end expects drm-fd to be closed.
+> Also setup expected frequencies (Kamil) and address other nits (Kamil)
+> 
+> Link: https://gitlab.freedesktop.org/drm/intel/-/issues/9432
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
 
-== Series Details ==
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: tests/intel/xe_exec_reset: Do not validate data on GT reset
-URL   : https://patchwork.freedesktop.org/series/128730/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7672_BAT -> XEIGTPW_10526_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_10526_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * {igt@xe_exec_compute_mode} (NEW):
-    - bat-dg2-oem2:       NOTRUN -> [INCOMPLETE][1]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10526/bat-dg2-oem2/igt@xe_exec_compute_mode.html
-
-  
-New tests
----------
-
-  New tests have been introduced between XEIGT_7672_BAT and XEIGTPW_10526_BAT:
-
-### New IGT tests (1) ###
-
-  * igt@xe_exec_compute_mode:
-    - Statuses : 1 incomplete(s)
-    - Exec time: [0.0] s
-
-  
-
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-
-
-Build changes
--------------
-
-  * IGT: IGT_7672 -> IGTPW_10526
-
-  IGTPW_10526: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10526/index.html
-  IGT_7672: 16d7484a28cc1aaf2dfb9e9c73c011daf602d926 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-624-7a20187068bed91b523795a18219e570f1e84eb1: 7a20187068bed91b523795a18219e570f1e84eb1
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10526/index.html
-
---===============7520309334897597767==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_reset: Do not validate data on GT reset</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128730/">https://patchwork.freedesktop.org/series/128730/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10526/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10526/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7672_BAT -&gt; XEIGTPW_10526_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_10526_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>{igt@xe_exec_compute_mode} (NEW):<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10526/bat-dg2-oem2/igt@xe_exec_compute_mode.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between XEIGT_7672_BAT and XEIGTPW_10526_BAT:</p>
-<h3>New IGT tests (1)</h3>
-<ul>
-<li>igt@xe_exec_compute_mode:<ul>
-<li>Statuses : 1 incomplete(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7672 -&gt; IGTPW_10526</li>
-</ul>
-<p>IGTPW_10526: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10526/index.html<br />
-  IGT_7672: 16d7484a28cc1aaf2dfb9e9c73c011daf602d926 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-624-7a20187068bed91b523795a18219e570f1e84eb1: 7a20187068bed91b523795a18219e570f1e84eb1</p>
-
-</body>
-</html>
-
---===============7520309334897597767==--
+> ---
+>  tests/intel/perf_pmu.c | 62 +++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 61 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
+> index c6e6a8b77..4ae2b60ae 100644
+> --- a/tests/intel/perf_pmu.c
+> +++ b/tests/intel/perf_pmu.c
+> @@ -2454,12 +2454,69 @@ static void pmu_read(int i915)
+>  		for_each_if((e)->class == I915_ENGINE_CLASS_RENDER) \
+>  			igt_dynamic_f("%s", e->name)
+>  
+> +int fd = -1;
+> +uint32_t *stash_min, *stash_max, *stash_boost;
+> +
+> +static void save_sysfs_freq(int i915)
+> +{
+> +	int gt, num_gts, sysfs, tmp;
+> +	uint32_t rpn_freq, rp0_freq;
+> +
+> +	num_gts = igt_sysfs_get_num_gt(i915);
+> +
+> +	stash_min = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
+> +	stash_max = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
+> +	stash_boost = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
+> +
+> +	/* Save boost, min and max across GTs */
+> +	i915_for_each_gt(i915, tmp, gt) {
+> +		sysfs = igt_sysfs_gt_open(i915, gt);
+> +		igt_require(sysfs >= 0);
+> +
+> +		stash_min[gt] = igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz");
+> +		stash_max[gt] = igt_sysfs_get_u32(sysfs, "rps_max_freq_mhz");
+> +		stash_boost[gt] = igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz");
+> +		igt_debug("GT: %d, min: %d, max: %d, boost:%d\n",
+> +			  gt, stash_min[gt], stash_max[gt], stash_boost[gt]);
+> +
+> +		rpn_freq = igt_sysfs_get_u32(sysfs, "rps_RPn_freq_mhz");
+> +		rp0_freq = igt_sysfs_get_u32(sysfs, "rps_RP0_freq_mhz");
+> +
+> +		/* Set pre-conditions, in case frequencies are in non-default state */
+> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", rp0_freq));
+> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_boost_freq_mhz", rp0_freq));
+> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", rpn_freq));
+> +
+> +		close(sysfs);
+> +	}
+> +}
+> +
+> +static void restore_sysfs_freq(int i915)
+> +{
+> +	int sysfs, gt, tmp;
+> +
+> +	/* Restore frequencies */
+> +	i915_for_each_gt(fd, tmp, gt) {
+> +		sysfs = igt_sysfs_gt_open(fd, gt);
+> +		igt_require(sysfs >= 0);
+> +
+> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", stash_max[gt]));
+> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", stash_min[gt]));
+> +		igt_require(__igt_sysfs_set_u32(sysfs, "rps_boost_freq_mhz", stash_boost[gt]));
+> +
+> +		close(sysfs);
+> +	}
+> +	free(stash_min);
+> +	free(stash_max);
+> +	free(stash_boost);
+> +}
+> +
+>  igt_main
+>  {
+>  	const struct intel_execution_engine2 *e;
+>  	unsigned int num_engines = 0;
+>  	const intel_ctx_t *ctx = NULL;
+> -	int gt, tmp, fd = -1;
+> +	int gt, tmp;
+>  	int num_gt = 0;
+>  
+>  	/**
+> @@ -2664,12 +2721,15 @@ igt_main
+>  	 * Test GPU frequency.
+>  	 */
+>  	igt_subtest_with_dynamic("frequency") {
+> +		save_sysfs_freq(fd);
+> +
+>  		i915_for_each_gt(fd, tmp, gt) {
+>  			igt_dynamic_f("gt%u", gt)
+>  				test_frequency(fd, gt);
+>  			igt_dynamic_f("idle-gt%u", gt)
+>  				test_frequency_idle(fd, gt);
+>  		}
+> +		restore_sysfs_freq(fd);
+>  	}
+>  
+>  	/**
+> -- 
+> 2.38.1
+> 
