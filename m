@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 56F4210E0C9
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 18:04:57 +0000 (UTC)
-Date: Fri, 12 Jan 2024 19:04:31 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Subject: Re: [PATCH i-g-t 1/1] tests/intel/xe_ccs: fix
- block-multicopy-inplace subtest
-Message-ID: <20240112180431.rhwjlo5nqokaejx7@zkempczy-mobl2>
-References: <cover.1705103321.git.akshata.jahagirdar@intel.com>
- <1ffebacea9673a0c143e535bd0b5fe9ff8c65e9d.1705103321.git.akshata.jahagirdar@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7315880036734504750=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1ffebacea9673a0c143e535bd0b5fe9ff8c65e9d.1705103321.git.akshata.jahagirdar@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/gem=5Fexec=5Fsched?=
+ =?utf-8?q?ule=3A_Update_for_MTL_RCS/CCS_w/a_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: john.c.harrison@intel.com
+Date: Fri, 12 Jan 2024 18:53:27 -0000
+Message-ID: <170508560756.338258.3166152801000703073@5338d5abeb45>
+References: <20240111185645.4056250-1-John.C.Harrison@Intel.com>
+In-Reply-To: <20240111185645.4056250-1-John.C.Harrison@Intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,61 +17,112 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, matthew.auld@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jan 12, 2024 at 03:54:14PM -0800, Akshata Jahagirdar wrote:
-> Passing correct pat_index based on compression and graphics version,
-> fixes the "block-multicopy-inplace" subtest of xe_ccs.
-> 
-> Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-> ---
->  tests/intel/xe_ccs.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-> index 596735aaa..55ae0e46c 100644
-> --- a/tests/intel/xe_ccs.c
-> +++ b/tests/intel/xe_ccs.c
-> @@ -378,8 +378,13 @@ static void block_copy(int xe,
->  	blt_set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
->  	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
->  	if (config->inplace) {
-> +		uint8_t pat_index = DEFAULT_PAT_INDEX;
-> +
-> +		if (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) && config->compression)
-> +			pat_index = intel_get_pat_idx_uc_comp(xe);
-> +
->  		blt_set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
-> -			       DEFAULT_PAT_INDEX, T_LINEAR, COMPRESSION_DISABLED,
-> +			       pat_index, T_LINEAR, COMPRESSION_DISABLED,
->  			       comp_type);
->  		blt.dst.ptr = mid->ptr;
->  	}
-> @@ -461,8 +466,13 @@ static void block_multicopy(int xe,
->  	blt_set_copy_object(&blt3.final, final);
->  
->  	if (config->inplace) {
-> +		uint8_t pat_index = DEFAULT_PAT_INDEX;
-> +
-> +		if (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) && config->compression)
-> +			pat_index = intel_get_pat_idx_uc_comp(xe);
-> +
->  		blt_set_object(&blt3.dst, mid->handle, dst->size, mid->region,
-> -			       mid->mocs_index, DEFAULT_PAT_INDEX, mid_tiling,
-> +			       mid->mocs_index, pat_index, mid_tiling,
->  			       COMPRESSION_DISABLED, comp_type);
->  		blt3.dst.ptr = mid->ptr;
->  	}
-> -- 
-> 2.34.1
-> 
+--===============7315880036734504750==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Now it's fine:
+== Series Details ==
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Series: tests/intel/gem_exec_schedule: Update for MTL RCS/CCS w/a (rev4)
+URL   : https://patchwork.freedesktop.org/series/128342/
+State : success
 
---
-Zbigniew
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7672_BAT -> XEIGTPW_10527_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7672 -> IGTPW_10527
+  * Linux: xe-624-7a20187068bed91b523795a18219e570f1e84eb1 -> xe-626-062b18ef510c517876e3315216a09ee67b811c29
+
+  IGTPW_10527: 10527
+  IGT_7672: 16d7484a28cc1aaf2dfb9e9c73c011daf602d926 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-624-7a20187068bed91b523795a18219e570f1e84eb1: 7a20187068bed91b523795a18219e570f1e84eb1
+  xe-626-062b18ef510c517876e3315216a09ee67b811c29: 062b18ef510c517876e3315216a09ee67b811c29
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10527/index.html
+
+--===============7315880036734504750==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/gem_exec_schedule: Update for MTL RCS/CCS w/a (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128342/">https://patchwork.freedesktop.org/series/128342/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10527/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10527/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7672_BAT -&gt; XEIGTPW_10527_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7672 -&gt; IGTPW_10527</li>
+<li>Linux: xe-624-7a20187068bed91b523795a18219e570f1e84eb1 -&gt; xe-626-062b18ef510c517876e3315216a09ee67b811c29</li>
+</ul>
+<p>IGTPW_10527: 10527<br />
+  IGT_7672: 16d7484a28cc1aaf2dfb9e9c73c011daf602d926 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-624-7a20187068bed91b523795a18219e570f1e84eb1: 7a20187068bed91b523795a18219e570f1e84eb1<br />
+  xe-626-062b18ef510c517876e3315216a09ee67b811c29: 062b18ef510c517876e3315216a09ee67b811c29</p>
+
+</body>
+</html>
+
+--===============7315880036734504750==--
