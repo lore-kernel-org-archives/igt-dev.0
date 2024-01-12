@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Content-Type: multipart/alternative;
- boundary="------------x2FEeMSnwBMtS87gH9mo3MmQ"
-Message-ID: <82b68f58-a219-441e-b09f-cafa1185bd98@intel.com>
-Date: Thu, 11 Jan 2024 12:32:43 -0800
-Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_store: don't pass gt_id as bind
- queue
+Message-ID: <24f8f54e-978c-4a5a-9a67-5efc53107bce@intel.com>
+Date: Fri, 12 Jan 2024 13:02:54 +0530
+Subject: Re: [PATCH] lib/igt_kms: add support for choosing big joiner mode
 Content-Language: en-US
-References: <20240111090152.296752-1-matthew.auld@intel.com>
-From: "Randhawa, Jagmeet" <jagmeet.randhawa@intel.com>
-In-Reply-To: <20240111090152.296752-1-matthew.auld@intel.com>
+References: <20240112053932.570651-1-kunal1.joshi@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20240112053932.570651-1-kunal1.joshi@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -22,104 +21,75 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
-Message-ID: <20240111203243.ROnOCRFXz6nIZhB1533-ZDGvYzuf086BRgCAxnFTVIs@z>
+To: Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org
+Message-ID: <20240112073254.ecc5fkeCgzEp5X8z2FHgUd-cLsAXpunhggjKXi_2Spc@z>
 
---------------x2FEeMSnwBMtS87gH9mo3MmQ
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi Kunal,
 
-
-On 1/11/2024 1:01 AM, Matthew Auld wrote:
-> The gt_id of the engine is not a valid bind queue. Typically it is zero
-> so we likely don't notice anything, but that might not always be the
-> case.
->
-> Signed-off-by: Matthew Auld<matthew.auld@intel.com>
-> Cc: Jagmeet Randhawa<jagmeet.randhawa@intel.com>
+On 12-01-2024 11:09 am, Kunal Joshi wrote:
+> add support to choose big joiner mode with environment
+> variable, use mode with highest clock if no mode with big joiner
+> found.
+> 
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 > ---
->   tests/intel/xe_exec_store.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-> index 870394d3c..3ec84295b 100644
-> --- a/tests/intel/xe_exec_store.c
-> +++ b/tests/intel/xe_exec_store.c
-> @@ -217,7 +217,7 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
->   		dst_offset[i] = intel_allocator_alloc_with_strategy(ahnd, bo[i],
->   								    bo_size, 0,
->   								    ALLOC_STRATEGY_LOW_TO_HIGH);
-> -		xe_vm_bind_async(fd, vm, eci->gt_id, bo[i], 0, dst_offset[i], bo_size, sync, 1);
-> +		xe_vm_bind_async(fd, vm, 0, bo[i], 0, dst_offset[i], bo_size, sync, 1);
->   	}
+>   lib/igt_kms.c | 17 ++++++++++++++++-
+>   1 file changed, 16 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index e4dea1a60..3d0fe635c 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -1783,15 +1783,30 @@ bool kmstest_get_connector_default_mode(int drm_fd, drmModeConnector *connector,
+>   	env = getenv("IGT_KMS_RESOLUTION");
+>   	if (env) {
+>   		/*
+> -		 * Only (0 or 1) and (lowest or highest) are allowed.
+> +		 * Only (0 or 1 or 2) and (lowest or highest or joiner) are allowed.
+>   		 *
+>   		 * 0/lowest: Choose connector mode with lowest possible resolution.
+>   		 * 1/highest: Choose connector mode with highest possible resolution.
+> +		 * 2/joiner: Choose connector mode with big joiner output or output
+> +		 *           with max clock requirement
+
+Please re-write this to choose bigjoiner mode if found any.
+>   		 */
+>   		if (!strcmp(env, "highest") || !strcmp(env, "1"))
+>   			igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
+>   		else if (!strcmp(env, "lowest") || !strcmp(env, "0"))
+>   			igt_sort_connector_modes(connector, sort_drm_modes_by_res_asc);
+> +		else if (!strcmp(env, "joiner") || !strcmp(env, "2")) {
+
+Let's sort the if-else ladder as "0->1->2" or "2->1->0".
+
+> +			igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
+> +			if (igt_bigjoiner_possible(&connector->modes[0], igt_get_max_dotclock(drm_fd))) {
+> +				*mode = connector->modes[0];
+> +				return true;
+> +			}
+> +			igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
+------------------------------------------------------------^
+typo: s/sort_drm_modes_by_res_dsc/sort_modes_by_clk_dsc/
+
+> +			if(igt_bigjoiner_possible(&connector->modes[0], igt_get_max_dotclock(drm_fd))) {
+> +				*mode = connector->modes[0];
+> +				return true;
+> +			}
+> +			igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
+
+Please drop this sorting.
+
+IMHO, Instead of returning from multiple places, try to adopt this [*] 
+cleaner way.
+
+[*]: 
+https://cgit.freedesktop.org/drm/igt-gpu-tools/tree/tests/intel/kms_big_joiner.c#n235
+
+- Bhanu
+
+> +		}
+>   		else
+>   			goto default_mode;
 >   
->   	batch_map = xe_bo_map(fd, bo[i-1], bo_size);
-> @@ -303,7 +303,7 @@ static void persistent(int fd)
->   			      vram_if_possible(fd, engine->instance.gt_id),
->   			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->   
-> -	xe_vm_bind_async(fd, vm, engine->instance.gt_id, sd_batch, 0, addr, batch_size, &sync, 1);
-> +	xe_vm_bind_async(fd, vm, 0, sd_batch, 0, addr, batch_size, &sync, 1);
->   	sd_data = xe_bo_map(fd, sd_batch, batch_size);
->   	prt_data = xe_bo_map(fd, prt_batch, batch_size);
->   
-
-Reviewed-by: Jagmeet Randhawa<jagmeet.randhawa@intel.com>
-
---------------x2FEeMSnwBMtS87gH9mo3MmQ
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 1/11/2024 1:01 AM, Matthew Auld
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20240111090152.296752-1-matthew.auld@intel.com">
-      <pre class="moz-quote-pre" wrap="">The gt_id of the engine is not a valid bind queue. Typically it is zero
-so we likely don't notice anything, but that might not always be the
-case.
-
-Signed-off-by: Matthew Auld <a class="moz-txt-link-rfc2396E" href="mailto:matthew.auld@intel.com">&lt;matthew.auld@intel.com&gt;</a>
-Cc: Jagmeet Randhawa <a class="moz-txt-link-rfc2396E" href="mailto:jagmeet.randhawa@intel.com">&lt;jagmeet.randhawa@intel.com&gt;</a>
----
- tests/intel/xe_exec_store.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-index 870394d3c..3ec84295b 100644
---- a/tests/intel/xe_exec_store.c
-+++ b/tests/intel/xe_exec_store.c
-@@ -217,7 +217,7 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
- 		dst_offset[i] = intel_allocator_alloc_with_strategy(ahnd, bo[i],
- 								    bo_size, 0,
- 								    ALLOC_STRATEGY_LOW_TO_HIGH);
--		xe_vm_bind_async(fd, vm, eci-&gt;gt_id, bo[i], 0, dst_offset[i], bo_size, sync, 1);
-+		xe_vm_bind_async(fd, vm, 0, bo[i], 0, dst_offset[i], bo_size, sync, 1);
- 	}
- 
- 	batch_map = xe_bo_map(fd, bo[i-1], bo_size);
-@@ -303,7 +303,7 @@ static void persistent(int fd)
- 			      vram_if_possible(fd, engine-&gt;instance.gt_id),
- 			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 
--	xe_vm_bind_async(fd, vm, engine-&gt;instance.gt_id, sd_batch, 0, addr, batch_size, &amp;sync, 1);
-+	xe_vm_bind_async(fd, vm, 0, sd_batch, 0, addr, batch_size, &amp;sync, 1);
- 	sd_data = xe_bo_map(fd, sd_batch, batch_size);
- 	prt_data = xe_bo_map(fd, prt_batch, batch_size);
- </pre>
-    </blockquote>
-    <br>
-    <pre class="moz-quote-pre" wrap=""><span class="reviewed-by" style="box-sizing: border-box;">Reviewed-by: </span>Jagmeet Randhawa <a class="moz-txt-link-rfc2396E" href="mailto:jagmeet.randhawa@intel.com">&lt;jagmeet.randhawa@intel.com&gt;</a></pre>
-    <blockquote type="cite" cite="mid:20240111090152.296752-1-matthew.auld@intel.com">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------x2FEeMSnwBMtS87gH9mo3MmQ--
