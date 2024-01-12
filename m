@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 12 Jan 2024 18:41:29 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 25C1510E0AB
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 15:57:07 +0000 (UTC)
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: =?utf-8?Q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests=2Finte?=
- =?utf-8?Q?l=2Fgem=5Fexec=5Fschedule=3A?= Update for MTL RCS/CCS w/a (rev3)
-Message-ID: <20240112174129.t2fwax4gg6bx4tf6@kamilkon-desk.igk.intel.com>
-References: <20240111185645.4056250-1-John.C.Harrison@Intel.com>
- <170500264616.290001.12543351368731359269@5338d5abeb45>
+Subject: [PATCH i-g-t] tests/intel/xe_exec_reset: Do not validate data on GT
+ reset
+Date: Fri, 12 Jan 2024 07:46:11 -0800
+Message-Id: <20240112154611.1395699-1-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <170500264616.290001.12543351368731359269@5338d5abeb45>
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,90 +17,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: lgci.bug.filing@intel.com, I915-ci-infra@lists.freedesktop.org
+Cc: saurabhg.gupta@intel.com, jonathan.cavitt@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-01-11 at 19:50:46 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: tests/intel/gem_exec_schedule: Update for MTL RCS/CCS w/a (rev3)
-> URL   : https://patchwork.freedesktop.org/series/128342/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_14116 -> IGTPW_10513
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_10513 absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_10513, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10513/index.html
-> 
-> Participating hosts (37 -> 35)
-> ------------------------------
-> 
->   Additional (1): bat-mtlp-8 
->   Missing    (3): bat-rpls-2 bat-dg2-9 fi-snb-2520m 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_10513:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_selftest@live@gem_contexts:
->     - bat-atsm-1:         [PASS][1] -> [INCOMPLETE][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14116/bat-atsm-1/igt@i915_selftest@live@gem_contexts.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10513/bat-atsm-1/igt@i915_selftest@live@gem_contexts.html
-> 
->   * igt@i915_selftest@live@hangcheck:
->     - fi-skl-guc:         [PASS][3] -> [DMESG-FAIL][4]
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14116/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10513/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
-> 
+In the cm-gt-reset test, data validation is blocked because a GT reset
+means that we cannot verify the completion of the exec operations.
+Extend this logic to all other tests that perform GT resets in
+xe_exec_reset.
 
-This is unrelated to gem_exec_schedule, please respin.
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+---
+ tests/intel/xe_exec_reset.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-Regards,
-Kamil
-
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_10513 that come from known issues:
-> 
-
-[...cut...]
-
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7670 -> IGTPW_10513
-> 
->   CI-20190529: 20190529
->   CI_DRM_14116: 3b92a66f4bc89f4fa6e9e9369ac8243e23670030 @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_10513: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10513/index.html
->   IGT_7670: 1b32bcdb2d9965090234739aba891a90743e01c4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10513/index.html
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 0cd5b10517..168523c64c 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -294,8 +294,10 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+ 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+ 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+ 
+-	for (i = bad_batches; i < n_execs; i++)
+-		igt_assert_eq(data[i].data, 0xc0ffee);
++	if (!(flags & GT_RESET)) {
++		for (i = bad_batches; i < n_execs; i++)
++			igt_assert_eq(data[i].data, 0xc0ffee);
++	}
+ 
+ 	syncobj_destroy(fd, sync[0].handle);
+ 	for (i = 0; i < n_exec_queues; i++) {
+@@ -462,8 +464,10 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+ 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+ 
+-	for (i = 1; i < n_execs; i++)
+-		igt_assert_eq(data[i].data, 0xc0ffee);
++	if (!(flags & GT_RESET)) {
++		for (i = 1; i < n_execs; i++)
++			igt_assert_eq(data[i].data, 0xc0ffee);
++	}
+ 
+ 	syncobj_destroy(fd, sync[0].handle);
+ 	for (i = 0; i < n_exec_queues; i++) {
+-- 
+2.25.1
