@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 25C1510E0AB
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 15:57:07 +0000 (UTC)
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 493BD10EB34
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jan 2024 16:06:04 +0000 (UTC)
+Date: Fri, 12 Jan 2024 17:05:40 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] tests/intel/xe_exec_reset: Do not validate data on GT
- reset
-Date: Fri, 12 Jan 2024 07:46:11 -0800
-Message-Id: <20240112154611.1395699-1-jonathan.cavitt@intel.com>
+Subject: Re: [PATCH 1/2] tests/intel: Sync headers to grab DUMPABLE changes.
+Message-ID: <20240112160540.wrmogha2ekc5fatw@kamilkon-desk.igk.intel.com>
+References: <20240112124043.166886-1-maarten.lankhorst@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240112124043.166886-1-maarten.lankhorst@linux.intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,50 +20,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: saurabhg.gupta@intel.com, jonathan.cavitt@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In the cm-gt-reset test, data validation is blocked because a GT reset
-means that we cannot verify the completion of the exec operations.
-Extend this logic to all other tests that perform GT resets in
-xe_exec_reset.
+Hi Maarten,
+On 2024-01-12 at 13:40:42 +0100, Maarten Lankhorst wrote:
+> Required for devcoredump test.
 
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
----
- tests/intel/xe_exec_reset.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+please change subject and commit description to something like
+in commit bc36d4f06ca0557371fda2e97361147d6ac4a3e6, so for subject:
 
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index 0cd5b10517..168523c64c 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -294,8 +294,10 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
--	for (i = bad_batches; i < n_execs; i++)
--		igt_assert_eq(data[i].data, 0xc0ffee);
-+	if (!(flags & GT_RESET)) {
-+		for (i = bad_batches; i < n_execs; i++)
-+			igt_assert_eq(data[i].data, 0xc0ffee);
-+	}
- 
- 	syncobj_destroy(fd, sync[0].handle);
- 	for (i = 0; i < n_exec_queues; i++) {
-@@ -462,8 +464,10 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
--	for (i = 1; i < n_execs; i++)
--		igt_assert_eq(data[i].data, 0xc0ffee);
-+	if (!(flags & GT_RESET)) {
-+		for (i = 1; i < n_execs; i++)
-+			igt_assert_eq(data[i].data, 0xc0ffee);
-+	}
- 
- 	syncobj_destroy(fd, sync[0].handle);
- 	for (i = 0; i < n_exec_queues; i++) {
--- 
-2.25.1
+drm-uapi/xe: Sync with DUMPABLE vm_bind flag
+
+and for description cite commit from kernel (taken from above example):
+
+Align with commit ("drm/xe/uapi: Remove sync binds")
+
+If it was not accepted and you need it for testing, declare it in
+test and send proper uapi/xe sync later.
+Other way would be to introduce lib/xe/xe_drm_local.h like similar
+lib/i915/i915_drm_local.h for i915.
+
++cc Francois
+
+Regards,
+Kamil
+
+> 
+> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> ---
+>  include/drm-uapi/xe_drm.h | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> index bacdca787..0f975f57f 100644
+> --- a/include/drm-uapi/xe_drm.h
+> +++ b/include/drm-uapi/xe_drm.h
+> @@ -3,8 +3,8 @@
+>   * Copyright © 2023 Intel Corporation
+>   */
+>  
+> -#ifndef _XE_DRM_H_
+> -#define _XE_DRM_H_
+> +#ifndef _UAPI_XE_DRM_H_
+> +#define _UAPI_XE_DRM_H_
+>  
+>  #include "drm.h"
+>  
+> @@ -130,7 +130,7 @@ extern "C" {
+>   * redefine the interface more easily than an ever growing struct of
+>   * increasing complexity, and for large parts of that interface to be
+>   * entirely optional. The downside is more pointer chasing; chasing across
+> - * the boundary with pointers encapsulated inside u64.
+> + * the __user boundary with pointers encapsulated inside u64.
+>   *
+>   * Example chaining:
+>   *
+> @@ -832,7 +832,6 @@ struct drm_xe_vm_destroy {
+>   *
+>   * and the @flags can be:
+>   *  - %DRM_XE_VM_BIND_FLAG_READONLY
+> - *  - %DRM_XE_VM_BIND_FLAG_ASYNC
+>   *  - %DRM_XE_VM_BIND_FLAG_IMMEDIATE - Valid on a faulting VM only, do the
+>   *    MAP operation immediately rather than deferring the MAP to the page
+>   *    fault handler.
+> @@ -931,6 +930,7 @@ struct drm_xe_vm_bind_op {
+>  #define DRM_XE_VM_BIND_FLAG_READONLY	(1 << 0)
+>  #define DRM_XE_VM_BIND_FLAG_IMMEDIATE	(1 << 1)
+>  #define DRM_XE_VM_BIND_FLAG_NULL	(1 << 2)
+> +#define DRM_XE_VM_BIND_FLAG_DUMPABLE	(1 << 3)
+>  	/** @flags: Bind flags */
+>  	__u32 flags;
+>  
+> @@ -1344,4 +1344,4 @@ struct drm_xe_wait_user_fence {
+>  }
+>  #endif
+>  
+> -#endif /* _XE_DRM_H_ */
+> +#endif /* _UAPI_XE_DRM_H_ */
+> -- 
+> 2.40.1
+> 
