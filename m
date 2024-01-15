@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 532E210E169
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Jan 2024 03:23:06 +0000 (UTC)
-From: sai.gowtham.ch@intel.com
-To: igt-dev@lists.freedesktop.org, matthew.brost@intel.com,
- sai.gowtham.ch@intel.com
-Subject: [PATCH i-g-t] tests/intel/xe_exec_compute_mode: Fix non-blocking
- subtest
-Date: Mon, 15 Jan 2024 08:49:42 +0530
-Message-Id: <20240115031942.29658-1-sai.gowtham.ch@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2862390060101309094=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fexec=5Fcomput?=
+ =?utf-8?q?e=5Fmode=3A_Fix_non-blocking_subtest?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: sai.gowtham.ch@intel.com
+Date: Mon, 15 Jan 2024 03:52:43 -0000
+Message-ID: <170529076393.386718.12092202680816451198@5338d5abeb45>
+References: <20240115031942.29658-1-sai.gowtham.ch@intel.com>
+In-Reply-To: <20240115031942.29658-1-sai.gowtham.ch@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,95 +17,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+--===============2862390060101309094==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Fix submission of exec, Call exec ioctl sperately instead existing
-igt wrapper _xe_exec which leads to infinite loop even kernel throws an
-error.
+== Series Details ==
 
-Cc: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
----
- tests/intel/xe_exec_compute_mode.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+Series: tests/intel/xe_exec_compute_mode: Fix non-blocking subtest
+URL   : https://patchwork.freedesktop.org/series/128762/
+State : success
 
-diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-index 6ebfa1a86..473b11ae9 100644
---- a/tests/intel/xe_exec_compute_mode.c
-+++ b/tests/intel/xe_exec_compute_mode.c
-@@ -15,6 +15,7 @@
- #include "igt.h"
- #include "lib/igt_syncobj.h"
- #include "lib/intel_reg.h"
-+#include <sys/ioctl.h>
- #include "xe_drm.h"
- 
- #include "xe/xe_ioctl.h"
-@@ -320,7 +321,7 @@ static void non_block(int fd, int expect)
- 		uint32_t data;
- 		uint64_t exec_sync;
- 	} *data = NULL;
--	struct xe_spin_opts spin_opts = { .addr = addr, .preempt = false };
-+	struct xe_spin_opts spin_opts = { .preempt = false };
- 	struct drm_xe_engine *engine;
- 	uint64_t batch_offset = (char *)&data[EXEC_DATA].batch - (char *)data;
- 	uint64_t batch_addr = addr + batch_offset;
-@@ -350,6 +351,7 @@ static void non_block(int fd, int expect)
- 	xe_wait_ufence(fd, &data[VM_DATA].vm_sync, USER_FENCE_VALUE, 0, ONE_SEC);
- 	data[VM_DATA].vm_sync = 0;
- 
-+	spin_opts.addr = addr + (char *)&data[SPIN_DATA].spin - (char *)data;
- 	xe_spin_init(&data[SPIN_DATA].spin, &spin_opts);
- 	sync[0].addr = addr + (char *)&data[SPIN_DATA].exec_sync - (char *)data;
- 	exec.exec_queue_id = exec_queue;
-@@ -358,11 +360,11 @@ static void non_block(int fd, int expect)
- 	xe_spin_wait_started(&data[SPIN_DATA].spin);
- 
- 	b = 0;
--	data[0].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
--	data[0].batch[b++] = sdi_addr;
--	data[0].batch[b++] = sdi_addr >> 32;
--	data[0].batch[b++] = value;
--	data[0].batch[b++] = MI_BATCH_BUFFER_END;
-+	data[EXEC_DATA].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+	data[EXEC_DATA].batch[b++] = sdi_addr;
-+	data[EXEC_DATA].batch[b++] = sdi_addr >> 32;
-+	data[EXEC_DATA].batch[b++] = value;
-+	data[EXEC_DATA].batch[b++] = MI_BATCH_BUFFER_END;
- 	igt_assert(b <= ARRAY_SIZE(data->batch));
- 
- 	sync[0].addr = addr + (char *)&data[EXEC_DATA].exec_sync - (char *)data;
-@@ -371,12 +373,15 @@ static void non_block(int fd, int expect)
- 	exec.address = batch_addr;
- 
- 	while (1) {
--		err = __xe_exec(fd, &exec);
- 
--		if (err == -EWOULDBLOCK)
-+		err = ioctl(fd, DRM_IOCTL_XE_EXEC, &exec);
-+
-+		if (err == -1 && errno == EWOULDBLOCK)
- 			break;
-+
-+		igt_assert_eq(err, 0);
- 	}
--	igt_assert_eq(err, expect);
-+	igt_assert_eq(errno, expect);
- 
- 	xe_spin_end(&data[SPIN_DATA].spin);
- 	xe_wait_ufence(fd, &data[SPIN_DATA].exec_sync, USER_FENCE_VALUE, 0, ONE_SEC);
-@@ -454,7 +459,7 @@ igt_main
- 	}
- 
- 	igt_subtest("non-blocking")
--		non_block(fd, -EWOULDBLOCK);
-+		non_block(fd, EWOULDBLOCK);
- 
- 
- 	igt_fixture
--- 
-2.39.1
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7673_BAT -> XEIGTPW_10530_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10530_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_exec_threads@threads-mixed-fd-basic:
+    - bat-dg2-oem2:       [TIMEOUT][1] -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7673/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10530/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
+
+  
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7673 -> IGTPW_10530
+  * Linux: xe-627-d1296191ba3a2fb8300d9887bd56b8613c1bc18d -> xe-629-3a1d727c0061b96ddf8e653130f94ab331e2f065
+
+  IGTPW_10530: 10530
+  IGT_7673: 7673
+  xe-627-d1296191ba3a2fb8300d9887bd56b8613c1bc18d: d1296191ba3a2fb8300d9887bd56b8613c1bc18d
+  xe-629-3a1d727c0061b96ddf8e653130f94ab331e2f065: 3a1d727c0061b96ddf8e653130f94ab331e2f065
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10530/index.html
+
+--===============2862390060101309094==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_compute_mode: Fix non-blocking subtest</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128762/">https://patchwork.freedesktop.org/series/128762/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10530/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10530/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7673_BAT -&gt; XEIGTPW_10530_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10530_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_threads@threads-mixed-fd-basic:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7673/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">TIMEOUT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10530/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7673 -&gt; IGTPW_10530</li>
+<li>Linux: xe-627-d1296191ba3a2fb8300d9887bd56b8613c1bc18d -&gt; xe-629-3a1d727c0061b96ddf8e653130f94ab331e2f065</li>
+</ul>
+<p>IGTPW_10530: 10530<br />
+  IGT_7673: 7673<br />
+  xe-627-d1296191ba3a2fb8300d9887bd56b8613c1bc18d: d1296191ba3a2fb8300d9887bd56b8613c1bc18d<br />
+  xe-629-3a1d727c0061b96ddf8e653130f94ab331e2f065: 3a1d727c0061b96ddf8e653130f94ab331e2f065</p>
+
+</body>
+</html>
+
+--===============2862390060101309094==--
