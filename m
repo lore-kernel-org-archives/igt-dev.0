@@ -1,29 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com
- [209.85.167.46])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C96810E0C5
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 15:56:16 +0000 (UTC)
-Received: by mail-lf1-f46.google.com with SMTP id
- 2adb3069b0e04-50e835800adso11196328e87.0
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 07:56:16 -0800 (PST)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A7A010E38C
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Jan 2024 19:42:13 +0000 (UTC)
+From: "Zeng, Oak" <oak.zeng@intel.com>
+To: "Bommu, Krishnaiah" <krishnaiah.bommu@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Chehab,
+ Mauro" <mauro.chehab@intel.com>
+Subject: RE: [PATCH] RFC: tests/xe_svm: basic svm test
+Date: Mon, 15 Jan 2024 19:42:03 +0000
+Message-ID: <SA1PR11MB69911CC0285541A6FCAF793F926C2@SA1PR11MB6991.namprd11.prod.outlook.com>
+References: <20240111094304.395181-1-krishnaiah.bommu@intel.com>
+ <SA1PR11MB6991D88518823FCAFF5677A292682@SA1PR11MB6991.namprd11.prod.outlook.com>
+In-Reply-To: <SA1PR11MB6991D88518823FCAFF5677A292682@SA1PR11MB6991.namprd11.prod.outlook.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20240110200434.218120-1-robdclark@gmail.com>
- <20240111133659.xvhekkoisi44vk3f@kamilkon-desk.igk.intel.com>
- <CAF6AEGu4SHNRu0wZ2XZoe-5BZjjiHkZZRT49z_RvyVdvHmaoBA@mail.gmail.com>
- <20240116094251.wyqyhmpdeebrx5sx@kamilkon-desk.igk.intel.com>
-In-Reply-To: <20240116094251.wyqyhmpdeebrx5sx@kamilkon-desk.igk.intel.com>
-From: Rob Clark <robdclark@gmail.com>
-Date: Tue, 16 Jan 2024 07:55:02 -0800
-Message-ID: <CAF6AEGss5DgJxGHJjUgaK_mABPxThycqTjmemjFfSAiQvH_nzQ@mail.gmail.com>
-Subject: Re: [PATCH] tests/kms_universal_plane: Re-work expectations for
- non-intel hw
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Rob Clark <robdclark@gmail.com>, Rob Clark <robdclark@chromium.org>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- juha-pekka.heikkila@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -35,259 +27,142 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jan 16, 2024 at 1:43=E2=80=AFAM Kamil Konieczny
-<kamil.konieczny@linux.intel.com> wrote:
->
-> Hi Rob,
-> On 2024-01-11 at 09:30:08 -0800, Rob Clark wrote:
-> > On Thu, Jan 11, 2024 at 5:37=E2=80=AFAM Kamil Konieczny
-> > <kamil.konieczny@linux.intel.com> wrote:
-> > >
-> > > Hi Rob,
-> > > On 2024-01-10 at 12:04:34 -0800, Rob Clark wrote:
-> > > > From: Rob Clark <robdclark@chromium.org>
-> > > >
-> > > > The expectation assumptions do not fit for non-intel hw.  So re-wor=
-k the
-> > > > expectations and add msm support.
-> > > >
-> > > > Signed-off-by: Rob Clark <robdclark@chromium.org>
-> > > > ---
-> > > >  tests/kms_universal_plane.c | 102 +++++++++++++++++++++++++-------=
-----
-> > > >  1 file changed, 72 insertions(+), 30 deletions(-)
-> > > >
-> > > > diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plan=
-e.c
-> > > > index 6a39f93cc5aa..3158ff816046 100644
-> > > > --- a/tests/kms_universal_plane.c
-> > > > +++ b/tests/kms_universal_plane.c
-> > > > @@ -402,8 +402,7 @@ sanity_test_pipe(data_t *data, enum pipe pipe, =
-igt_output_t *output)
-> > > >       sanity_test_t test =3D { .data =3D data };
-> > > >       igt_plane_t *primary;
-> > > >       drmModeModeInfo *mode;
-> > > > -     int i;
-> > > > -     int expect =3D 0;
-> > >
-> > > Could you keep this var?
-> > >
-> > > > +     int i, ret;
-> > > >
-> > > >       igt_output_set_pipe(output, pipe);
-> > > >       mode =3D igt_output_get_mode(output);
-> > > > @@ -418,43 +417,86 @@ sanity_test_pipe(data_t *data, enum pipe pipe=
-, igt_output_t *output)
-> > > >
-> > > >       /*
-> > > >        * Try to use universal plane API to set primary plane that
-> > > > -      * doesn't cover CRTC (should fail on pre-gen9 and succeed on
-> > > > -      * gen9+).
-> > > > +      * doesn't cover CRTC.
-> > > >        */
-> > > >       igt_plane_set_fb(primary, &test.undersized_fb);
-> > > > -     if (is_intel_device(data->drm_fd))
-> > > > -             expect =3D (data->display_ver < 9) ? -EINVAL : 0;
-> > > > -     igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNI=
-VERSAL) =3D=3D expect);
-> > > > +     ret =3D igt_display_try_commit2(&data->display, COMMIT_UNIVER=
-SAL);
-> > > > +
-> > > > +     if (is_intel_device(data->drm_fd)) {
-> > > > +             /* should fail on pre-gen9 and succeed on gen9+: */
-> > > > +             if (data->display_ver < 9)
-> > > > +                     igt_assert_eq(ret, -EINVAL);
-> > > > +             else
-> > > > +                     igt_assert_eq(ret, 0);
-> > > > +     } else if (is_msm_device(data->drm_fd)) {
-> > > > +             /* Should be supported on all gens: */
-> > > > +             igt_assert_eq(ret, 0);
-> > > > +     } else {
-> > > > +             igt_assert_eq(ret, 0);
-> > > > +     }
-> > >
-> > > The old code above should work on msm, why do you changed it?
-> >
-> > The reason for this change, and several other similar but (for msm)
-> > non-functionally-changing hunks was to document the expectations for
-> > msm and to give folks working on other drivers a guide about where to
-> > insert their specific expectations.
-> >
-> > The alternative, I think, if we don't want to keep adding driver
-> > specifics is to just change all cases to allow either success or the
-> > correct error code.
-> >
-> > BR,
-> > -R
-> >
->
-> imho we should leave it as is and introduce changes when they will be
-> needed and keep lines of code low. If someone will have other error
-> it can be instroduced with before:
->
-> if (is_intel_device(data->drm_fd))
->   expect =3D (data->display_ver < 9) ? -EINVAL : 0;
-> else if (is_msm_device(data->drm_fd))
-
-The problem with (and the reason I removed) the expect variable
-approach is that it can't deal with two possible results.  And short
-of enumerating every single different device, I don't think there is a
-good way to know the exact expected device.  But changing things to
-allow either success or checking for the expected errno would be
-possible.
-
-> As this is display code I will add Juha-Pekka to Cc.
->
-> > > > -             expect =3D (data->display_ver < 9) ? -EINVAL : 0;
-> > > > -     igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNI=
-VERSAL) =3D=3D expect);
-> > > > +     ret =3D igt_display_try_commit2(&data->display, COMMIT_UNIVER=
-SAL);
->
-> > >
-> > > >
-> > > > -     /* Same as above, but different plane positioning. */
-> > > > +     /* Same as above, but different plane positioning: */
-> > >
-> > > Drop this change.
-> > >
-> > > >       igt_plane_set_position(primary, 100, 100);
-> > > > -     igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNI=
-VERSAL) =3D=3D expect);
-> > > > +     ret =3D igt_display_try_commit2(&data->display, COMMIT_UNIVER=
-SAL);
-> > > > +
-> > > > +     if (is_intel_device(data->drm_fd)) {
-> > > > +             /* should fail on pre-gen9 and succeed on gen9+: */
-> > > > +             if (data->display_ver < 9)
-> > > > +                     igt_assert_eq(ret, -EINVAL);
-> > > > +             else
-> > > > +                     igt_assert_eq(ret, 0);
-> > > > +     } else if (is_msm_device(data->drm_fd)) {
-> > > > +             /* Should be supported on all gens: */
-> > > > +             igt_assert_eq(ret, 0);
-> > > > +     } else {
-> > > > +             igt_assert_eq(ret, 0);
-> > > > +     }
-> > >
-> > > Same here, old code should just work for msm.
-> > >
-> > > >
-> > > >       igt_plane_set_position(primary, 0, 0);
-> > > >
-> > > > -     /* Try to use universal plane API to scale down (should fail =
-on pre-gen9) */
-> > > > -     if (is_intel_device(data->drm_fd))
-> > > > -             expect =3D (data->display_ver < 9) ? -ERANGE : 0;
-> > >
-> > > Please keep this if(...) expect =3D ...
-> > > for a reason which follows.
-> > >
-> > > > -     igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->=
-plane_id,
-> > > > -                                output->config.crtc->crtc_id,
-> > > > -                                test.oversized_fb.fb_id, 0,
-> > > > -                                0, 0,
-> > > > -                                mode->hdisplay + 100,
-> > > > -                                mode->vdisplay + 100,
-> > > > -                                IGT_FIXED(0,0), IGT_FIXED(0,0),
-> > > > -                                IGT_FIXED(mode->hdisplay,0),
-> > > > -                                IGT_FIXED(mode->vdisplay,0)) =3D=
-=3D expect);
-> > > > +     /* Try to use universal plane API to scale down */
-> > > > +     ret =3D drmModeSetPlane(data->drm_fd, primary->drm_plane->pla=
-ne_id,
-> > > > +                           output->config.crtc->crtc_id,
-> > > > +                           test.oversized_fb.fb_id, 0,
-> > > > +                           0, 0,
-> > > > +                           mode->hdisplay + 100,
-> > > > +                           mode->vdisplay + 100,
-> > > > +                           IGT_FIXED(0,0), IGT_FIXED(0,0),
-> > > > +                           IGT_FIXED(mode->hdisplay,0),
-> > > > +                           IGT_FIXED(mode->vdisplay,0));
-> > > > +
-> > > > +     if (is_intel_device(data->drm_fd)) {
-> > > > +             /* should fail on pre-gen9 and succeed on gen9+: */
-> > > > +             if (data->display_ver < 9)
-> > > > +                     igt_assert_eq(ret, -ERANGE);
-> > > > +             else
-> > > > +                     igt_assert_eq(ret, 0);
-> > >
-> > > Or just simple
-> > >                         igt_assert_eq(ret, expect);
-> > >
-> > > > +     } else {
-> > > > +             /* Could succeed or fail with -ERANGE depending on hw=
- limits: */
-> > > > +             igt_assert((ret =3D=3D 0) || (ret =3D=3D -ERANGE));
->
-> Could you read/discover those limits and check for actual
-> expected error?
-
-Not really, other than doing atomic-test commits.  Because of the way
-this all turns into atomic test+commit on the driver side, I'm not
-sure if that really adds value compared to just allowing each of these
-to return zero or expected error code.
-
-BR,
--R
-
-> Regards,
-> Kamil
->
-> > > > +     }
-> > >
-> > > This is a real change, it relaxed checks for non-intel HW.
-> > > imho we should ask others, for example amd developers if that is ok
-> > > for them.
-> > >
-> > > >
-> > > >       /* Try to use universal plane API to scale up (should fail on=
- pre-gen9) */
-> > > > -     igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->=
-plane_id,
-> > > > -                                output->config.crtc->crtc_id,
-> > > > -                                test.oversized_fb.fb_id, 0,
-> > > > -                                0, 0,
-> > > > -                                mode->hdisplay,
-> > > > -                                mode->vdisplay,
-> > > > -                                IGT_FIXED(0,0), IGT_FIXED(0,0),
-> > > > -                                IGT_FIXED(mode->hdisplay - 100,0),
-> > > > -                                IGT_FIXED(mode->vdisplay - 100,0))=
- =3D=3D expect);
-> > > > +     ret =3D drmModeSetPlane(data->drm_fd, primary->drm_plane->pla=
-ne_id,
-> > > > +                           output->config.crtc->crtc_id,
-> > > > +                           test.oversized_fb.fb_id, 0,
-> > > > +                           0, 0,
-> > > > +                           mode->hdisplay,
-> > > > +                           mode->vdisplay,
-> > > > +                           IGT_FIXED(0,0), IGT_FIXED(0,0),
-> > > > +                           IGT_FIXED(mode->hdisplay - 100,0),
-> > > > +                           IGT_FIXED(mode->vdisplay - 100,0));
-> > > > +
-> > > > +     if (is_intel_device(data->drm_fd)) {
-> > > > +             /* should fail on pre-gen9 and succeed on gen9+: */
-> > > > +             if (data->display_ver < 9)
-> > > > +                     igt_assert_eq(ret, -ERANGE);
-> > > > +             else
-> > > > +                     igt_assert_eq(ret, 0);
-> > >
-> > > Same here, just simple:
-> > >                         igt_assert_eq(ret, expect);
-> > >
-> > > Regards,
-> > > Kamil
-> > >
-> > > > +     } else {
-> > > > +             /* Could succeed or fail with -ERANGE depending on hw=
- limits: */
-> > > > +             igt_assert((ret =3D=3D 0) || (ret =3D=3D -ERANGE));
-> > > > +     }
-> > > >
-> > > >       /* Find other crtcs and try to program our primary plane on t=
-hem */
-> > > >       for (i =3D 0; i < test.moderes->count_crtcs; i++)
-> > > > --
-> > > > 2.43.0
-> > > >
+SGkgS3Jpc2huYSwNCg0KU2VlIHR3byBtb3JlIGNvbW1lbnRzDQoNCk9haw0KDQo+IC0tLS0tT3Jp
+Z2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFplbmcsIE9haw0KPiBTZW50OiBUaHVyc2RheSwg
+SmFudWFyeSAxMSwgMjAyNCA1OjI3IFBNDQo+IFRvOiBCb21tdSwgS3Jpc2huYWlhaCA8a3Jpc2hu
+YWlhaC5ib21tdUBpbnRlbC5jb20+OyBpZ3QtDQo+IGRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7
+IENoZWhhYiwgTWF1cm8gPG1hdXJvLmNoZWhhYkBpbnRlbC5jb20+DQo+IENjOiBHaGltaXJheSwg
+SGltYWwgUHJhc2FkIDxoaW1hbC5wcmFzYWQuZ2hpbWlyYXlAaW50ZWwuY29tPg0KPiBTdWJqZWN0
+OiBSRTogW1BBVENIXSBSRkM6IHRlc3RzL3hlX3N2bTogYmFzaWMgc3ZtIHRlc3QNCj4gDQo+IA0K
+PiANCj4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+IEZyb206IEJvbW11LCBLcmlz
+aG5haWFoIDxrcmlzaG5haWFoLmJvbW11QGludGVsLmNvbT4NCj4gPiBTZW50OiBUaHVyc2RheSwg
+SmFudWFyeSAxMSwgMjAyNCA0OjQzIEFNDQo+ID4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnDQo+ID4gQ2M6IEJvbW11LCBLcmlzaG5haWFoIDxrcmlzaG5haWFoLmJvbW11QGludGVs
+LmNvbT47IFplbmcsIE9haw0KPiA+IDxvYWsuemVuZ0BpbnRlbC5jb20+OyBHaGltaXJheSwgSGlt
+YWwgUHJhc2FkDQo+ID4gPGhpbWFsLnByYXNhZC5naGltaXJheUBpbnRlbC5jb20+DQo+ID4gU3Vi
+amVjdDogW1BBVENIXSBSRkM6IHRlc3RzL3hlX3N2bTogYmFzaWMgc3ZtIHRlc3QNCj4gPg0KPiA+
+IFRlc3Qgd2lsbCB2ZXJpZnkgU1ZNIGJhc2ljIGZ1bmN0aW9uYWxpdHksIGJ5IGFsbG9jYXRpbmcg
+YSBtZW1vcnkgd2l0aA0KPiA+IHN5c3RlbSBhbGxvY2F0b3IobWFsbG9jKCkpIGFuZCBhY2Nlc3Np
+bmcgaW4gR1BVLg0KPiA+DQo+ID4gS2VybmVsIGNoYW5nZXM6DQo+ID4gaHR0cHM6Ly9sb3JlLmtl
+cm5lbC5vcmcvZHJpLWRldmVsLzIwMjMxMjIxMDQzODEyLjM3ODMzMTMtMS0NCj4gPiBvYWsuemVu
+Z0BpbnRlbC5jb20vDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBCb21tdSBLcmlzaG5haWFoIDxr
+cmlzaG5haWFoLmJvbW11QGludGVsLmNvbT4NCj4gPiBDYzogT2FrIFplbmcgPG9hay56ZW5nQGlu
+dGVsLmNvbT4NCj4gPiBDYzogSGltYWwgUHJhc2FkIEdoaW1pcmF5IDxoaW1hbC5wcmFzYWQuZ2hp
+bWlyYXlAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICB0ZXN0cy9pbnRlbC94ZV9zdm0uYyB8IDEz
+Ng0KPiA+ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gPiAg
+dGVzdHMvbWVzb24uYnVpbGQgICAgfCAgIDEgKw0KPiA+ICAyIGZpbGVzIGNoYW5nZWQsIDEzNyBp
+bnNlcnRpb25zKCspDQo+ID4gIGNyZWF0ZSBtb2RlIDEwMDY0NCB0ZXN0cy9pbnRlbC94ZV9zdm0u
+Yw0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ludGVsL3hlX3N2bS5jIGIvdGVzdHMvaW50
+ZWwveGVfc3ZtLmMNCj4gPiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiA+IGluZGV4IDAwMDAwMDAw
+MC4uZjgyY2I4ZmM3DQo+ID4gLS0tIC9kZXYvbnVsbA0KPiA+ICsrKyBiL3Rlc3RzL2ludGVsL3hl
+X3N2bS5jDQo+ID4gQEAgLTAsMCArMSwxMzYgQEANCj4gPiArLy8gU1BEWC1MaWNlbnNlLUlkZW50
+aWZpZXI6IE1JVA0KPiA+ICsvKg0KPiA+ICsgKiBDb3B5cmlnaHQgwqkgMjAyMSBJbnRlbCBDb3Jw
+b3JhdGlvbg0KPiANCj4gMjAyNA0KPiANCj4gPiArICovDQo+ID4gKw0KPiA+ICsvKioNCj4gPiAr
+ICogVEVTVDogQmFzaWMgdGVzdHMgZm9yIHN2bSBmdW5jdGlvbmFsaXR5DQo+ID4gKyAqIENhdGVn
+b3J5OiBIYXJkd2FyZSBidWlsZGluZyBibG9jaw0KPiA+ICsgKiBTdWItY2F0ZWdvcnk6IHN2bS1i
+YXNpYw0KPiA+ICsgKiBGdW5jdGlvbmFsaXR5OiBzdm0NCj4gDQo+IEkgZG9uJ3Qga25vdyBtdWNo
+IGFib3V0IHRoZSBjYXRlZ29yaWVzIGRlZmluaXRpb24gb2YgaWd0IHRlc3QuIEkgZmVlbCBsaWtl
+IHRoaXMNCj4gZG9lc24ndCBiZWxvbmcgdG8gaGFyZHdhcmUgYnVpbGRpbmcgYmxvY2suIFN2bSBp
+cyBtYWlubHkgYSBzb2Z0d2FyZSBmZWF0dXJlLiBPZg0KPiBjb3Vyc2UgaXQgZGVwZW5kcyBvbiBo
+dyBmZWF0dXJlcyBzdWNoIGFzIGdwdSByZWNvdmVyYWJsZSBwYWdlIGZhdWx0IHRvIHdvcmsuDQo+
+IA0KPiBNYXliZSB0aGUgc3ViLWNhdGUgaXMgc3ZtPw0KPiANCj4gQENoZWhhYiwgTWF1cm8gc2hv
+dWxkIGJlIGFibGUgdG8gYmV0dGVyIGNhdGVnb3JpemUgdGhlIHRlc3QuDQo+IA0KPiA+ICsgKi8N
+Cj4gPiArDQo+ID4gKyNpbmNsdWRlICJpZ3QuaCINCj4gPiArI2luY2x1ZGUgImxpYi9pZ3Rfc3lu
+Y29iai5oIg0KPiA+ICsjaW5jbHVkZSAibGliL2ludGVsX3JlZy5oIg0KPiA+ICsjaW5jbHVkZSAi
+eGVfZHJtLmgiDQo+ID4gKw0KPiA+ICsjaW5jbHVkZSAieGUveGVfaW9jdGwuaCINCj4gPiArI2lu
+Y2x1ZGUgInhlL3hlX3F1ZXJ5LmgiDQo+ID4gKyNpbmNsdWRlIDxzdHJpbmcuaD4NCj4gPiArDQo+
+ID4gKy8qKg0KPiA+ICsgKiBTVUJURVNUOiBzdm0tYmFzaWMNCj4gPiArICogRGVzY3JpcHRpb246
+IFJ1biBzdm0gYmFzaWMgdGVzdCBvbmx5IG9uY2UNCj4gDQo+IFRlc3QgYmFzaWMgc3ZtIGZ1bmN0
+aW9uYWxpdHk6IG1hbGxvYyBtZW1vcnkgYW5kIGRpcmVjdGx5IGFjY2VzcyBpdCBmcm9tIGdwdS4N
+Cj4gDQo+ID4gKyAqIFRlc3QgY2F0ZWdvcnk6IGZ1bmN0aW9uYWxpdHkgdGVzdA0KPiA+ICsgKi8N
+Cj4gPiArDQo+ID4gK3N0YXRpYyB2b2lkDQo+ID4gK3Rlc3RfZXhlYyhpbnQgZmQpDQo+IFRlc3Rf
+c3ZtX2Jhc2ljDQo+IA0KPiA+ICt7DQo+ID4gKwl1aW50MzJfdCB2bTsNCj4gPiArCXVpbnQ2NF90
+IGFkZHIgPSAweDFhMDAwMDsNCj4gPiArI2RlZmluZSBVU0VSX0ZFTkNFX1ZBTFVFICAgICAgICAw
+eGRlYWRiZWVmZGVhZGJlZWZ1bGwNCj4gPiArCXN0cnVjdCBkcm1feGVfc3luYyBzeW5jWzFdID0g
+ew0KPiA+ICsJCXsgLnR5cGUgPSBEUk1fWEVfU1lOQ19UWVBFX1VTRVJfRkVOQ0UsIC5mbGFncyA9
+DQo+ID4gRFJNX1hFX1NZTkNfRkxBR19TSUdOQUwsDQo+IA0KPiBNYWtlIGFib3ZlIHR3byBsaW5l
+cyBmb3IgYmV0dGVyIHJlYWRpbmcNCj4gDQo+ID4gKwkJCS50aW1lbGluZV92YWx1ZSA9IFVTRVJf
+RkVOQ0VfVkFMVUUgfSwNCj4gPiArCX07DQo+ID4gKwlzdHJ1Y3QgZHJtX3hlX2V4ZWMgZXhlYyA9
+IHsNCj4gPiArCQkubnVtX2JhdGNoX2J1ZmZlciA9IDEsDQo+ID4gKwkJLm51bV9zeW5jcyA9IDEs
+DQo+ID4gKwkJLnN5bmNzID0gdG9fdXNlcl9wb2ludGVyKHN5bmMpLA0KPiA+ICsJfTsNCj4gPiAr
+CXVpbnQzMl90IGV4ZWNfcXVldWVzOw0KPiANCj4gRXhlY19xdWV1ZQ0KPiA+ICsJdWludDMyX3Qg
+YmluZF9leGVjX3F1ZXVlczsNCj4gDQo+IEJpbmRfZXhlY19xdWV1ZQ0KPiA+ICsJdWludDY0X3Qg
+YmF0Y2hfb2Zmc2V0Ow0KPiA+ICsJdWludDY0X3QgYmF0Y2hfYWRkcjsNCj4gPiArCXNpemVfdCBi
+b19zaXplOw0KPiA+ICsJdWludDMyX3QgYm8gPSAwOw0KPiA+ICsJc3RydWN0IHsNCj4gPiArCQl1
+aW50MzJfdCBiYXRjaFsxNl07DQo+ID4gKwkJdWludDY0X3QgcGFkOw0KPiA+ICsJCXVpbnQ2NF90
+IHZtX3N5bmM7DQo+IA0KPiANCj4gUmVuYW1lIHZtX3N5bmMgdG8gYmluZF9zeW5jDQo+IA0KPiBB
+Y3R1YWxseSBJIHRoaW5rIHdlIGNhbiBzaW1wbGlmeSB0aGlzIHRlc3QgYnkgbm90IHVzaW5nIHVz
+ZXIgZmVuY2UuIFRoZSBwdXJwb3NlIG9mDQo+IHRoaXMgdGVzdCBpcyB0byB0ZXN0IHN2bS4gU28g
+d2UgY2FuIHVzZSB4ZV92bV9iaW5kX3N5bmMgZnVuY3Rpb24gZGlyZWN0bHkgaW5zdGVhZA0KPiBv
+ZiB0aGUgX2FzeW5jIGZ1bmN0aW9uLiBUaGUgX3N5bmMgZnVuY3Rpb24gaW50ZXJuYWxseSB1c2Ug
+c3luY29iamVjdCAodnMgdXNlcg0KPiBmZW5jZSkgZm9yIHRoZSBzeW5jaHJvbml6YXRpb24uIFNv
+IHdlIGRvbid0IG5lZWQgdG8gY2FyZSBhYm91dCB1c2VyIGZlbmNlIGluIHRoaXMNCj4gdGVzdC4N
+Cj4gDQo+IFNhbWUgdGhpbmcgd2l0aCB0aGUgeGVfZXhlYy4gV2UgY2FuIHVzZSB4ZV9leGVjX3dh
+aXQgaW5zdGVhZC4NCg0KUGxlYXNlIGlnbm9yZSBteSBjb21tZW50cyBhYm92ZS4gSSB0aGluayB3
+ZSBzaG91bGQgc3RpbGwgdXNlIHVzZXIgZmVuY2UgaW5zdGVhZCBvZiBhIHN5bmNvYmplY3RzLiBU
+aGUgcmVhc29uIGlzLCBzeW5jb2JqZWN0IGludGVybmFsbHkgdXNlIGRtYS1mZW5jZSwgYnV0IGRt
+YS1mZW5jZSBkb2Vzbid0IHdvcmsgZm9yIGxvbmcgcnVuIGNvbXB1dGUgd29yay4gRXZlbiB0aG91
+Z2ggc3ZtIGlzIHN1cHBvc2VkIHRvIHdvcmsgZm9yIGJvdGggbG9uZyBydW4gYW5kIHNob3J0IHJ1
+biB3b3JrbG9hZCwgb3VyIHByaW9yaXR5IGF0IHRoZSBmaXJzdCBzdGFnZSBpcyBsb25nIHJ1biB3
+b3JrbG9hZC4gU28gbGV0cyBjb250aW51ZSB0byB1c2UgdXNlcnB0ci4NCg0KWW91IGFsc28gbmVl
+ZCB0byBjcmVhdGUgdGhlIHZtIHdpdGggTFIgYW5kIEZBVUxUIGZsYWcgZW5hYmxlZCwgc2VlIGJl
+bG93Lg0KDQoNCj4gDQo+IE9haw0KPiANCj4gPiArCQl1aW50NjRfdCBleGVjX3N5bmM7DQo+ID4g
+KwkJdWludDMyX3QgZGF0YTsNCj4gPiArCX0gKmRhdGE7DQo+ID4gKwlpbnQgYjsNCj4gPiArCXVp
+bnQ2NF90IGRzdCA9ICh1aW50NjRfdCAqKW1hbGxvYyg0KTsNCj4gPiArDQo+ID4gKwl2bSA9IHhl
+X3ZtX2NyZWF0ZShmZCwgMCwgMCk7DQoNClZtIG5lZWQgdG8gYmUgY3JlYXRlZCBhdCBsZWFzdCB3
+aXRoIERSTV9YRV9WTV9DUkVBVEVfRkxBR19GQVVMVF9NT0RFIGZsYWcuIFNWTSBkZXBlbmRzIG9u
+IEdQVSBwYWdlIGZhdWx0IHRvIHdvcmsuDQoNCldlIHNob3VsZCBhbHNvIHNldCB0aGUgRFJNX1hF
+X1ZNX0NSRUFURV9GTEFHX0xSX01PREUgZmxhZyBhbHNvLCBhcyB3ZSB3YW50IHRvIHByaW9yaXRp
+emUgbG9uZyBydW4gY29tcHV0ZSB3b3JrbG9hZCBpbiB0aGlzIHN0YWdlLiBXaXRob3V0IERSTV9Y
+RV9WTV9DUkVBVEVfRkxBR19MUl9NT0RFIGZsYWcsIHdlIGRvbid0IGhhdmUgdG8gdXNlIHVzZXJw
+dHIuIFN5bmNvYmogc2hvdWxkIHdvcmsgZm9yIHNob3J0IHJ1biB3b3JrbG9hZC4gU2luY2Ugd2Ug
+d2FudCBwcmlvcml0aXplIExSLCBsZXRzIGNvbnRpbnVlIHRvIHVzZSB1c2VycHRyLg0KDQpPYWsN
+Cg0KDQo+ID4gKwlib19zaXplID0gc2l6ZW9mKCpkYXRhKSA7DQo+ID4gKwlib19zaXplID0gQUxJ
+R04oYm9fc2l6ZSwgeGVfZ2V0X2RlZmF1bHRfYWxpZ25tZW50KGZkKSk7DQo+ID4gKw0KPiA+ICsJ
+Ym8gPSB4ZV9ib19jcmVhdGUoZmQsIDAsIGJvX3NpemUsDQo+ID4gKwkJCWFsbF9tZW1vcnlfcmVn
+aW9ucyhmZCkgfA0KPiA+ICsJCQl2cmFtX2lmX3Bvc3NpYmxlKGZkLCAwKSwNCj4gPiArCQkJRFJN
+X1hFX0dFTV9DUkVBVEVfRkxBR19ORUVEU19WSVNJQkxFX1ZSQU0pOw0KPiA+ICsNCj4gPiArCWRh
+dGEgPSB4ZV9ib19tYXAoZmQsIGJvLCBib19zaXplKTsNCj4gPiArCW1lbXNldChkYXRhLCAwLCBi
+b19zaXplKTsNCj4gPiArDQo+ID4gKwlleGVjX3F1ZXVlcyA9IHhlX2V4ZWNfcXVldWVfY3JlYXRl
+X2NsYXNzKGZkLCB2bSwNCj4gPiBEUk1fWEVfRU5HSU5FX0NMQVNTX0NPUFkpOw0KPiA+ICsJYmlu
+ZF9leGVjX3F1ZXVlcyA9IHhlX2JpbmRfZXhlY19xdWV1ZV9jcmVhdGUoZmQsIHZtLCAwKTsNCj4g
+PiArDQo+ID4gKwlzeW5jWzBdLmFkZHIgPSB0b191c2VyX3BvaW50ZXIoJmRhdGFbMF0udm1fc3lu
+Yyk7DQo+ID4gKw0KPiA+ICsJeGVfdm1fYmluZF9hc3luY19mbGFncyhmZCwgdm0sIGJpbmRfZXhl
+Y19xdWV1ZXMsIGJvLCAwLA0KPiA+ICsJCQlhZGRyLCBib19zaXplLCBzeW5jLCAxLA0KPiA+ICsJ
+CQlEUk1fWEVfVk1fQklORF9GTEFHX0lNTUVESUFURSk7DQo+ID4gKw0KPiA+ICsjZGVmaW5lIE9O
+RV9TRUMgTVNfVE9fTlMoMTAwMCkNCj4gPiArCXhlX3dhaXRfdWZlbmNlKGZkLCAmZGF0YVswXS52
+bV9zeW5jLCBVU0VSX0ZFTkNFX1ZBTFVFLA0KPiA+IGJpbmRfZXhlY19xdWV1ZXMsIE9ORV9TRUMp
+Ow0KPiA+ICsJZGF0YVswXS52bV9zeW5jID0gMDsNCj4gPiArDQo+ID4gKwliYXRjaF9vZmZzZXQg
+PSAoY2hhciAqKSZkYXRhWzBdLmJhdGNoIC0gKGNoYXIgKilkYXRhOw0KPiA+ICsJYmF0Y2hfYWRk
+ciA9IGFkZHIgKyBiYXRjaF9vZmZzZXQ7DQo+ID4gKw0KPiA+ICsJYiA9IDA7DQo+ID4gKwlkYXRh
+WzBdLmJhdGNoW2IrK10gPSBNSV9TVE9SRV9EV09SRF9JTU1fR0VONDsNCj4gPiArCWRhdGFbMF0u
+YmF0Y2hbYisrXSA9IGRzdDsNCj4gPiArCWRhdGFbMF0uYmF0Y2hbYisrXSA9IGRzdCA+PiAzMjsN
+Cj4gPiArCWRhdGFbMF0uYmF0Y2hbYisrXSA9IDB4YzBmZmVlOw0KPiA+ICsJZGF0YVswXS5iYXRj
+aFtiKytdID0gTUlfQkFUQ0hfQlVGRkVSX0VORDsNCj4gPiArCWlndF9hc3NlcnQoYiA8PSBBUlJB
+WV9TSVpFKGRhdGFbMF0uYmF0Y2gpKTsNCj4gPiArDQo+ID4gKwlzeW5jWzBdLmFkZHIgPSBhZGRy
+ICsgKGNoYXIgKikmZGF0YVswXS5leGVjX3N5bmMgLSAoY2hhciAqKWRhdGE7DQo+ID4gKw0KPiA+
+ICsJZXhlYy5leGVjX3F1ZXVlX2lkID0gZXhlY19xdWV1ZXM7DQo+ID4gKwlleGVjLmFkZHJlc3Mg
+PSBiYXRjaF9hZGRyOw0KPiA+ICsJeGVfZXhlYyhmZCwgJmV4ZWMpOw0KPiA+ICsNCj4gPiArCXhl
+X3dhaXRfdWZlbmNlKGZkLCAmZGF0YVswXS5leGVjX3N5bmMsIFVTRVJfRkVOQ0VfVkFMVUUsDQo+
+ID4gZXhlY19xdWV1ZXMsIE9ORV9TRUMpOw0KPiA+ICsNCj4gPiArCXN5bmNbMF0uYWRkciA9IHRv
+X3VzZXJfcG9pbnRlcigmZGF0YVswXS52bV9zeW5jKTsNCj4gPiArDQo+ID4gKwl4ZV92bV91bmJp
+bmRfYXN5bmMoZmQsIHZtLCBiaW5kX2V4ZWNfcXVldWVzLCAwLCBhZGRyLCBib19zaXplLCBzeW5j
+LA0KPiA+IDEpOw0KPiA+ICsNCj4gPiArCXhlX3dhaXRfdWZlbmNlKGZkLCAmZGF0YVswXS52bV9z
+eW5jLCBVU0VSX0ZFTkNFX1ZBTFVFLA0KPiA+IGJpbmRfZXhlY19xdWV1ZXMsIE9ORV9TRUMpOw0K
+PiA+ICsNCj4gPiArCWlndF9hc3NlcnRfZXEoZHN0LCAweGMwZmZlZSk7DQo+ID4gKw0KPiA+ICsJ
+aWYgKGV4ZWNfcXVldWVzKQ0KPiA+ICsJCXhlX2V4ZWNfcXVldWVfZGVzdHJveShmZCwgZXhlY19x
+dWV1ZXMpOw0KPiA+ICsJaWYgKGJpbmRfZXhlY19xdWV1ZXMpDQo+ID4gKwkJeGVfZXhlY19xdWV1
+ZV9kZXN0cm95KGZkLCBiaW5kX2V4ZWNfcXVldWVzKTsNCj4gPiArDQo+ID4gKwlmcmVlKGRhdGEp
+Ow0KPiA+ICsJZnJlZShkc3QpOw0KPiA+ICsJZ2VtX2Nsb3NlKGZkLCBibyk7DQo+ID4gKw0KPiA+
+ICsJeGVfdm1fZGVzdHJveShmZCwgdm0pOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICtpZ3RfbWFpbg0K
+PiA+ICt7DQo+ID4gKwlpbnQgZmQ7DQo+ID4gKw0KPiA+ICsJaWd0X2ZpeHR1cmUgew0KPiA+ICsJ
+CWZkID0gZHJtX29wZW5fZHJpdmVyKERSSVZFUl9YRSk7DQo+ID4gKwl9DQo+ID4gKw0KPiA+ICsJ
+aWd0X3N1YnRlc3RfZigic3ZtLWJhc2ljIikNCj4gPiArCQl0ZXN0X2V4ZWMoZmQpOw0KPiA+ICsN
+Cj4gPiArCWlndF9maXh0dXJlDQo+ID4gKwkJZHJtX2Nsb3NlX2RyaXZlcihmZCk7DQo+ID4gK30N
+Cj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMvbWVzb24uYnVpbGQgYi90ZXN0cy9tZXNvbi5idWlsZA0K
+PiA+IGluZGV4IGE2YTg0OThlMi4uMTNjYzdhY2FlIDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL21l
+c29uLmJ1aWxkDQo+ID4gKysrIGIvdGVzdHMvbWVzb24uYnVpbGQNCj4gPiBAQCAtMzEzLDYgKzMx
+Myw3IEBAIGludGVsX3hlX3Byb2dzID0gWw0KPiA+ICAJJ3hlX3NwaW5fYmF0Y2gnLA0KPiA+ICAJ
+J3hlX3N5c2ZzX2RlZmF1bHRzJywNCj4gPiAgCSd4ZV9zeXNmc19zY2hlZHVsZXInLA0KPiA+ICsJ
+J3hlX3N2bScsDQo+ID4gIF0NCj4gPg0KPiA+ICBtc21fcHJvZ3MgPSBbDQo+ID4gLS0NCj4gPiAy
+LjI1LjENCg0K
