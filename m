@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DEE1610E26C
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Jan 2024 10:49:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B34C110E292
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Jan 2024 10:49:33 +0000 (UTC)
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 1/2] lib/igt_kms: move bigjoiner_mode_found to lib.
-Date: Mon, 15 Jan 2024 16:28:53 +0530
-Message-Id: <20240115105854.827266-2-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 2/2] lib/igt_kms: add support for choosing big joiner
+ mode
+Date: Mon, 15 Jan 2024 16:28:54 +0530
+Message-Id: <20240115105854.827266-3-kunal1.joshi@intel.com>
 In-Reply-To: <20240115105854.827266-1-kunal1.joshi@intel.com>
 References: <20240115105854.827266-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
@@ -23,91 +24,74 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-move bigjoiner_mode_found to lib/igt_kms with some modification
+add support to choose big joiner mode with environment
+variable, use mode with highest clock if no mode with big joiner
+found.
+
+v2: reuse bigjoiner_mode_found (Bhanu)
+v3: avoid returning from multiple places (Bhanu)
+    avoid frequent debugfs reads (Bhanu)
 
 Cc: Karthik B S <karthik.b.s@intel.com>
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_kms.c                | 18 ++++++++++++++++++
- lib/igt_kms.h                |  3 +++
- tests/intel/kms_big_joiner.c | 14 ++------------
- 3 files changed, 23 insertions(+), 12 deletions(-)
+ lib/igt_kms.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index e4dea1a60..cb6d57c2d 100644
+index cb6d57c2d..2c4210d4b 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -6142,6 +6142,24 @@ bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock)
- 		mode->clock > max_dotclock);
- }
- 
-+/**
-+ * bigjoiner_mode_found:
-+ * @connector: libdrm connector
-+ * @sort_method: comparator method
-+ * @mode: libdrm mode
-+ *
-+ * Returns: True if big joiner found in connector modes
-+ */
-+bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
-+			  int (*sort_method)(const void *, const void*),
-+			  drmModeModeInfo *mode, int max_dotclock)
-+{
-+        igt_sort_connector_modes(connector, sort_method);
-+        *mode = connector->modes[0];
-+
-+        return igt_bigjoiner_possible(mode, max_dotclock);
-+}
-+
- /**
-  * igt_check_bigjoiner_support:
-  * @display: a pointer to an #igt_display_t structure
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index b3882808b..d4464c51a 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1212,6 +1212,9 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
- 		igt_output_t *output, int bpc);
- int igt_get_max_dotclock(int fd);
- bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
-+bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
-+                                 int (*sort_method)(const void *, const void*),
-+                                 drmModeModeInfo *mode, int max_dotclock);
- bool igt_check_bigjoiner_support(igt_display_t *display);
- bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
- bool intel_pipe_output_combo_valid(igt_display_t *display);
-diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
-index aba2adfbe..80344d411 100644
---- a/tests/intel/kms_big_joiner.c
-+++ b/tests/intel/kms_big_joiner.c
-@@ -199,16 +199,6 @@ static void test_dual_display(data_t *data)
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- }
- 
--static bool bigjoiner_mode_found(drmModeConnector *connector,
--				 int (*sort_method)(const void *, const void*),
--				 drmModeModeInfo *mode)
--{
--	igt_sort_connector_modes(connector, sort_method);
--	*mode = connector->modes[0];
--
--	return igt_bigjoiner_possible(mode, max_dotclock);
--}
--
- igt_main
+@@ -1771,8 +1771,9 @@ void igt_sort_connector_modes(drmModeConnector *connector,
+ bool kmstest_get_connector_default_mode(int drm_fd, drmModeConnector *connector,
+ 					drmModeModeInfo *mode)
  {
- 	data_t data;
-@@ -235,8 +225,8 @@ igt_main
- 			 * Bigjoiner will come in to the picture when the
- 			 * resolution > 5K or clock > max-dot-clock.
- 			 */
--			found = (bigjoiner_mode_found(connector, sort_drm_modes_by_res_dsc, &mode) ||
--				 bigjoiner_mode_found(connector, sort_drm_modes_by_clk_dsc, &mode)) ?
-+			found = (bigjoiner_mode_found(data.drm_fd, connector, sort_drm_modes_by_res_dsc, &mode, max_dotclock) ||
-+				 bigjoiner_mode_found(data.drm_fd, connector, sort_drm_modes_by_clk_dsc, &mode, max_dotclock)) ?
- 					true : false;
++	bool found;
+ 	char *env;
+-	int i;
++	int i, max_dotclock;
  
- 			if (found) {
+ 	if (!connector->count_modes) {
+ 		igt_warn("no modes for connector %d\n",
+@@ -1781,21 +1782,34 @@ bool kmstest_get_connector_default_mode(int drm_fd, drmModeConnector *connector,
+ 	}
+ 
+ 	env = getenv("IGT_KMS_RESOLUTION");
++	max_dotclock = igt_get_max_dotclock(drm_fd);
+ 	if (env) {
+ 		/*
+-		 * Only (0 or 1) and (lowest or highest) are allowed.
++		 * Only (0 or 1 or 2) and (lowest or highest or joiner) are allowed.
+ 		 *
+ 		 * 0/lowest: Choose connector mode with lowest possible resolution.
+ 		 * 1/highest: Choose connector mode with highest possible resolution.
++		 * 2/joiner: Choose connector mode with bigjoiner support or with
++			     highest clock if can't support  big joiner
+ 		 */
+-		if (!strcmp(env, "highest") || !strcmp(env, "1"))
++		if (!strcmp(env, "joiner") || !strcmp(env, "2"))
++			found = bigjoiner_mode_found(drm_fd, connector,
++						     sort_drm_modes_by_clk_dsc,mode,
++						     max_dotclock) ||
++				bigjoiner_mode_found(drm_fd, connector,
++						     sort_drm_modes_by_res_dsc, mode,
++						     max_dotclock) ||
++				bigjoiner_mode_found(drm_fd, connector,
++						     sort_drm_modes_by_clk_dsc, mode,
++						     max_dotclock);
++		else if (!strcmp(env, "highest") || !strcmp(env, "1"))
+ 			igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
+ 		else if (!strcmp(env, "lowest") || !strcmp(env, "0"))
+ 			igt_sort_connector_modes(connector, sort_drm_modes_by_res_asc);
+ 		else
+ 			goto default_mode;
+-
+-		*mode = connector->modes[0];
++		if (!found)
++			*mode = connector->modes[0];
+ 		return true;
+ 	}
+ 
 -- 
 2.25.1
