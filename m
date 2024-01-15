@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 15 Jan 2024 14:39:14 +0100
+Date: Mon, 15 Jan 2024 14:43:54 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: =?utf-8?Q?=E2=9C=97_Fi=2ECI=2EIGT=3A_failure_for_serie?=
- =?utf-8?Q?s?= starting with [i-g-t,1/2] build: Build xe tests by default
-Message-ID: <20240115133914.qdyzbbbh4k3e4tdp@kamilkon-desk.igk.intel.com>
-References: <20240111213358.1656641-1-lucas.demarchi@intel.com>
- <170502791987.331936.4998809070151488985@5338d5abeb45>
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmbw==?= =?utf-8?Q?r?=
+ tests/intel/xe_exec_compute_mode: Fix non-blocking subtest
+Message-ID: <20240115134354.n43qiyqnwyvlk64q@kamilkon-desk.igk.intel.com>
+References: <20240115031942.29658-1-sai.gowtham.ch@intel.com>
+ <170529184723.386718.5134695795318875851@5338d5abeb45>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <170502791987.331936.4998809070151488985@5338d5abeb45>
+In-Reply-To: <170529184723.386718.5134695795318875851@5338d5abeb45>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,23 +18,22 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
- Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: lgci.bug.filing@intel.com, I915-ci-infra@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi igt-dev,
-On 2024-01-12 at 02:51:59 -0000, Patchwork wrote:
+On 2024-01-15 at 04:10:47 -0000, Patchwork wrote:
 > == Series Details ==
 > 
-> Series: series starting with [i-g-t,1/2] build: Build xe tests by default
-> URL   : https://patchwork.freedesktop.org/series/128693/
+> Series: tests/intel/xe_exec_compute_mode: Fix non-blocking subtest
+> URL   : https://patchwork.freedesktop.org/series/128762/
 > State : failure
 > 
 > == Summary ==
 > 
-> CI Bug Log - changes from CI_DRM_14116_full -> IGTPW_10516_full
+> CI Bug Log - changes from CI_DRM_14121 -> IGTPW_10530
 > ====================================================
 > 
 > Summary
@@ -42,38 +41,37 @@ On 2024-01-12 at 02:51:59 -0000, Patchwork wrote:
 > 
 >   **FAILURE**
 > 
->   Serious unknown changes coming with IGTPW_10516_full absolutely need to be
+>   Serious unknown changes coming with IGTPW_10530 absolutely need to be
 >   verified manually.
 >   
 >   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_10516_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   introduced in IGTPW_10530, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
 >   to document this new failure mode, which will reduce false positives in CI.
 > 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10516/index.html
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10530/index.html
 > 
-> Participating hosts (9 -> 8)
+> Participating hosts (32 -> 34)
 > ------------------------------
 > 
->   Missing    (1): pig-kbl-iris 
+>   Additional (3): bat-dg2-8 bat-kbl-2 bat-dg2-9 
+>   Missing    (1): fi-snb-2520m 
 > 
 > Possible new issues
 > -------------------
 > 
->   Here are the unknown changes that may have been introduced in IGTPW_10516_full:
+>   Here are the unknown changes that may have been introduced in IGTPW_10530:
 > 
 > ### IGT changes ###
 > 
 > #### Possible regressions ####
 > 
->   * igt@i915_pm_rps@waitboost:
->     - shard-dg2:          [PASS][1] -> [FAIL][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14116/shard-dg2-1/igt@i915_pm_rps@waitboost.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10516/shard-dg2-5/igt@i915_pm_rps@waitboost.html
->     - shard-dg1:          NOTRUN -> [FAIL][3]
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10516/shard-dg1-15/igt@i915_pm_rps@waitboost.html
+>   * igt@i915_selftest@live@hangcheck:
+>     - fi-skl-guc:         [PASS][1] -> [DMESG-FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14121/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10530/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
 > 
 
-This is unrelated to change in meson file, no need for respin.
+This is unrelated to Xe test, no need for respin nor fill IGT tests.
 
 Regards,
 Kamil
@@ -82,21 +80,37 @@ Kamil
 > Known issues
 > ------------
 > 
->   Here are the changes found in IGTPW_10516_full that come from known issues:
+>   Here are the changes found in IGTPW_10530 that come from known issues:
 > 
 > ### IGT changes ###
 > 
 > #### Issues hit ####
 > 
->   * igt@api_intel_bb@blit-reloc-purge-cache:
->     - shard-mtlp:         NOTRUN -> [SKIP][4] ([i915#8411])
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10516/shard-mtlp-8/igt@api_intel_bb@blit-reloc-purge-cache.html
->     - shard-dg2:          NOTRUN -> [SKIP][5] ([i915#8411]) +1 other test skip
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10516/shard-dg2-1/igt@api_intel_bb@blit-reloc-purge-cache.html
+>   * igt@fbdev@info:
+>     - bat-kbl-2:          NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#1849])
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10530/bat-kbl-2/igt@fbdev@info.html
+> 
 
-[...cut...]
+...cut...
 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7673 -> IGTPW_10530
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14121: 771f65be648bbe45f9adaae7f3a1cbc31faab9ae @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10530: 10530
+>   IGT_7673: 7673
+> 
+> 
+> Testlist changes
+> ----------------
+> 
+> -igt@syncobj_timeline@wait-all-available-delayed-submit
+> -igt@syncobj_timeline@wait-available-delayed-submit
 > 
 > == Logs ==
 > 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10516/index.html
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10530/index.html
