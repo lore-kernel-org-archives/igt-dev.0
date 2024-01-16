@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 788CA10E1F2
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 09:43:12 +0000 (UTC)
-Date: Tue, 16 Jan 2024 10:42:51 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH] tests/kms_universal_plane: Re-work expectations for
- non-intel hw
-Message-ID: <20240116094251.wyqyhmpdeebrx5sx@kamilkon-desk.igk.intel.com>
-References: <20240110200434.218120-1-robdclark@gmail.com>
- <20240111133659.xvhekkoisi44vk3f@kamilkon-desk.igk.intel.com>
- <CAF6AEGu4SHNRu0wZ2XZoe-5BZjjiHkZZRT49z_RvyVdvHmaoBA@mail.gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFB5810E456
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 09:48:43 +0000 (UTC)
+Message-ID: <cee84e7f-e739-4db9-a104-a9a80799a765@intel.com>
+Date: Tue, 16 Jan 2024 15:18:37 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Subject: Re: [PATCH i-g-t] tests/kms_content_protection: Add LIC Type 1
+ scenario
+To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>,
+ Suraj Kandpal <suraj.kandpal@intel.com>, igt-dev@lists.freedesktop.org
+References: <20240112103330.169688-1-suraj.kandpal@intel.com>
+ <89c29c53-e4b9-403b-826b-a681bad2d9ab@intel.com>
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <89c29c53-e4b9-403b-826b-a681bad2d9ab@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAF6AEGu4SHNRu0wZ2XZoe-5BZjjiHkZZRT49z_RvyVdvHmaoBA@mail.gmail.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,224 +23,76 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>, juha-pekka.heikkila@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Rob,
-On 2024-01-11 at 09:30:08 -0800, Rob Clark wrote:
-> On Thu, Jan 11, 2024 at 5:37 AM Kamil Konieczny
-> <kamil.konieczny@linux.intel.com> wrote:
-> >
-> > Hi Rob,
-> > On 2024-01-10 at 12:04:34 -0800, Rob Clark wrote:
-> > > From: Rob Clark <robdclark@chromium.org>
-> > >
-> > > The expectation assumptions do not fit for non-intel hw.  So re-work the
-> > > expectations and add msm support.
-> > >
-> > > Signed-off-by: Rob Clark <robdclark@chromium.org>
-> > > ---
-> > >  tests/kms_universal_plane.c | 102 +++++++++++++++++++++++++-----------
-> > >  1 file changed, 72 insertions(+), 30 deletions(-)
-> > >
-> > > diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-> > > index 6a39f93cc5aa..3158ff816046 100644
-> > > --- a/tests/kms_universal_plane.c
-> > > +++ b/tests/kms_universal_plane.c
-> > > @@ -402,8 +402,7 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
-> > >       sanity_test_t test = { .data = data };
-> > >       igt_plane_t *primary;
-> > >       drmModeModeInfo *mode;
-> > > -     int i;
-> > > -     int expect = 0;
-> >
-> > Could you keep this var?
-> >
-> > > +     int i, ret;
-> > >
-> > >       igt_output_set_pipe(output, pipe);
-> > >       mode = igt_output_get_mode(output);
-> > > @@ -418,43 +417,86 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
-> > >
-> > >       /*
-> > >        * Try to use universal plane API to set primary plane that
-> > > -      * doesn't cover CRTC (should fail on pre-gen9 and succeed on
-> > > -      * gen9+).
-> > > +      * doesn't cover CRTC.
-> > >        */
-> > >       igt_plane_set_fb(primary, &test.undersized_fb);
-> > > -     if (is_intel_device(data->drm_fd))
-> > > -             expect = (data->display_ver < 9) ? -EINVAL : 0;
-> > > -     igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL) == expect);
-> > > +     ret = igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL);
-> > > +
-> > > +     if (is_intel_device(data->drm_fd)) {
-> > > +             /* should fail on pre-gen9 and succeed on gen9+: */
-> > > +             if (data->display_ver < 9)
-> > > +                     igt_assert_eq(ret, -EINVAL);
-> > > +             else
-> > > +                     igt_assert_eq(ret, 0);
-> > > +     } else if (is_msm_device(data->drm_fd)) {
-> > > +             /* Should be supported on all gens: */
-> > > +             igt_assert_eq(ret, 0);
-> > > +     } else {
-> > > +             igt_assert_eq(ret, 0);
-> > > +     }
-> >
-> > The old code above should work on msm, why do you changed it?
+Hi Suraj,
+
+On 16-Jan-24 3:04 PM, Nautiyal, Ankit K wrote:
+> LGTM.
 > 
-> The reason for this change, and several other similar but (for msm)
-> non-functionally-changing hunks was to document the expectations for
-> msm and to give folks working on other drivers a guide about where to
-> insert their specific expectations.
+> Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 > 
-> The alternative, I think, if we don't want to keep adding driver
-> specifics is to just change all cases to allow either success or the
-> correct error code.
-> 
-> BR,
-> -R
-> 
+> On 1/12/2024 4:03 PM, Suraj Kandpal wrote:
+>> Currently LIC is done only for type0 content this patch
+>> adds LIC for type1 content too.
+>>
+>> Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+>> ---
+>>   tests/kms_content_protection.c | 16 ++++++++++++----
+>>   1 file changed, 12 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/tests/kms_content_protection.c 
+>> b/tests/kms_content_protection.c
+>> index 6d472ee02..38e4143c8 100644
+>> --- a/tests/kms_content_protection.c
+>> +++ b/tests/kms_content_protection.c
+>> @@ -43,8 +43,11 @@
+>>   #include "igt_kmod.h"
+>>   /**
+>> - * SUBTEST: lic
+>> - * Description: Test for the integrity of link.
+>> + * SUBTEST: lic-type-0
+>> + * Description: Test for the integrity of link for type 0 content.
+>> + *
+>> + * SUBTEST: lic-type-1
+>> + * Description: Test for the integrity of link for type 1 content.
+>>    *
 
-imho we should leave it as is and introduce changes when they will be
-needed and keep lines of code low. If someone will have other error
-it can be instroduced with before:
+Instead if writing description like this you can add
+lic-%arg[1]
 
-if (is_intel_device(data->drm_fd))
-  expect = (data->display_ver < 9) ? -EINVAL : 0;
-else if (is_msm_device(data->drm_fd))
+@arg[1]:
+@type0:		type-0
+@type1:		type-1
 
-As this is display code I will add Juha-Pekka to Cc.
+Check this 
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/docs/test_documentation.md?ref_type=heads
 
-> > > -             expect = (data->display_ver < 9) ? -EINVAL : 0;
-> > > -     igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL) == expect);
-> > > +     ret = igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL);
+And functionality for both these tests will be hdcp1.4. Is this correct?
+Or do we need to add hdcp2.2 too?
+Please update functionality.
 
-> >
-> > >
-> > > -     /* Same as above, but different plane positioning. */
-> > > +     /* Same as above, but different plane positioning: */
-> >
-> > Drop this change.
-> >
-> > >       igt_plane_set_position(primary, 100, 100);
-> > > -     igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL) == expect);
-> > > +     ret = igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL);
-> > > +
-> > > +     if (is_intel_device(data->drm_fd)) {
-> > > +             /* should fail on pre-gen9 and succeed on gen9+: */
-> > > +             if (data->display_ver < 9)
-> > > +                     igt_assert_eq(ret, -EINVAL);
-> > > +             else
-> > > +                     igt_assert_eq(ret, 0);
-> > > +     } else if (is_msm_device(data->drm_fd)) {
-> > > +             /* Should be supported on all gens: */
-> > > +             igt_assert_eq(ret, 0);
-> > > +     } else {
-> > > +             igt_assert_eq(ret, 0);
-> > > +     }
-> >
-> > Same here, old code should just work for msm.
-> >
-> > >
-> > >       igt_plane_set_position(primary, 0, 0);
-> > >
-> > > -     /* Try to use universal plane API to scale down (should fail on pre-gen9) */
-> > > -     if (is_intel_device(data->drm_fd))
-> > > -             expect = (data->display_ver < 9) ? -ERANGE : 0;
-> >
-> > Please keep this if(...) expect = ...
-> > for a reason which follows.
-> >
-> > > -     igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
-> > > -                                output->config.crtc->crtc_id,
-> > > -                                test.oversized_fb.fb_id, 0,
-> > > -                                0, 0,
-> > > -                                mode->hdisplay + 100,
-> > > -                                mode->vdisplay + 100,
-> > > -                                IGT_FIXED(0,0), IGT_FIXED(0,0),
-> > > -                                IGT_FIXED(mode->hdisplay,0),
-> > > -                                IGT_FIXED(mode->vdisplay,0)) == expect);
-> > > +     /* Try to use universal plane API to scale down */
-> > > +     ret = drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
-> > > +                           output->config.crtc->crtc_id,
-> > > +                           test.oversized_fb.fb_id, 0,
-> > > +                           0, 0,
-> > > +                           mode->hdisplay + 100,
-> > > +                           mode->vdisplay + 100,
-> > > +                           IGT_FIXED(0,0), IGT_FIXED(0,0),
-> > > +                           IGT_FIXED(mode->hdisplay,0),
-> > > +                           IGT_FIXED(mode->vdisplay,0));
-> > > +
-> > > +     if (is_intel_device(data->drm_fd)) {
-> > > +             /* should fail on pre-gen9 and succeed on gen9+: */
-> > > +             if (data->display_ver < 9)
-> > > +                     igt_assert_eq(ret, -ERANGE);
-> > > +             else
-> > > +                     igt_assert_eq(ret, 0);
-> >
-> > Or just simple
-> >                         igt_assert_eq(ret, expect);
-> >
-> > > +     } else {
-> > > +             /* Could succeed or fail with -ERANGE depending on hw limits: */
-> > > +             igt_assert((ret == 0) || (ret == -ERANGE));
-
-Could you read/discover those limits and check for actual
-expected error?
-
-Regards,
-Kamil
-
-> > > +     }
-> >
-> > This is a real change, it relaxed checks for non-intel HW.
-> > imho we should ask others, for example amd developers if that is ok
-> > for them.
-> >
-> > >
-> > >       /* Try to use universal plane API to scale up (should fail on pre-gen9) */
-> > > -     igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
-> > > -                                output->config.crtc->crtc_id,
-> > > -                                test.oversized_fb.fb_id, 0,
-> > > -                                0, 0,
-> > > -                                mode->hdisplay,
-> > > -                                mode->vdisplay,
-> > > -                                IGT_FIXED(0,0), IGT_FIXED(0,0),
-> > > -                                IGT_FIXED(mode->hdisplay - 100,0),
-> > > -                                IGT_FIXED(mode->vdisplay - 100,0)) == expect);
-> > > +     ret = drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
-> > > +                           output->config.crtc->crtc_id,
-> > > +                           test.oversized_fb.fb_id, 0,
-> > > +                           0, 0,
-> > > +                           mode->hdisplay,
-> > > +                           mode->vdisplay,
-> > > +                           IGT_FIXED(0,0), IGT_FIXED(0,0),
-> > > +                           IGT_FIXED(mode->hdisplay - 100,0),
-> > > +                           IGT_FIXED(mode->vdisplay - 100,0));
-> > > +
-> > > +     if (is_intel_device(data->drm_fd)) {
-> > > +             /* should fail on pre-gen9 and succeed on gen9+: */
-> > > +             if (data->display_ver < 9)
-> > > +                     igt_assert_eq(ret, -ERANGE);
-> > > +             else
-> > > +                     igt_assert_eq(ret, 0);
-> >
-> > Same here, just simple:
-> >                         igt_assert_eq(ret, expect);
-> >
-> > Regards,
-> > Kamil
-> >
-> > > +     } else {
-> > > +             /* Could succeed or fail with -ERANGE depending on hw limits: */
-> > > +             igt_assert((ret == 0) || (ret == -ERANGE));
-> > > +     }
-> > >
-> > >       /* Find other crtcs and try to program our primary plane on them */
-> > >       for (i = 0; i < test.moderes->count_crtcs; i++)
-> > > --
-> > > 2.43.0
-> > >
+>>    * SUBTEST: content-type-change
+>>    * Description: Test the content type change when the content 
+>> protection already
+>> @@ -783,11 +786,16 @@ static const struct {
+>>         .cp_tests = CP_DPMS,
+>>         .content_type = HDCP_CONTENT_TYPE_0
+>>       },
+>> -    { .desc = "Test for the integrity of link.",
+>> -      .name = "lic",
+>> +    { .desc = "Test for the integrity of link with type 0 content.",
+>> +      .name = "lic-type-0",
+>>         .cp_tests = CP_LIC,
+>>         .content_type = HDCP_CONTENT_TYPE_0,
+>>       },
+>> +    { .desc = "Test for the integrity of link with type 1 content",
+>> +      .name = "lic-type-1",
+>> +      .cp_tests = CP_LIC,
+>> +      .content_type = HDCP_CONTENT_TYPE_1,
+>> +    },
+>>       { .desc = "Test content protection with content type 1 "
+>>             "that can be handled only through HDCP2.2.",
+>>         .name = "type1",
