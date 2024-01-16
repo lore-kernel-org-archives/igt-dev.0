@@ -1,23 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2079.outbound.protection.outlook.com [40.107.223.79])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2925910E3E3
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 04:18:37 +0000 (UTC)
-Message-ID: <4a5c81ae-e562-45a0-bd7c-40f00f777984@amd.com>
-Date: Mon, 15 Jan 2024 23:18:14 -0500
-Subject: Re: [PATCH 1/2] lib/amdgpu: add secure flag to sdma packet
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, vitaly.prosyak@amd.com,
- Jesse Zhang <jesse.zhang@amd.com>, Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
-References: <20240111192553.113902-1-vitaly.prosyak@amd.com>
- <20240115151619.2r65k52bwlaypvbo@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <20240115151619.2r65k52bwlaypvbo@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38E3310E448
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 08:49:55 +0000 (UTC)
+Message-ID: <960382c0-a8ef-464b-ada5-c9d66a58561e@linux.intel.com>
+Date: Tue, 16 Jan 2024 08:49:50 +0000
 MIME-Version: 1.0
+Subject: Re: [PATCH i-g-t] tools/intel_gpu_top: Fix misaligned rendering
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, anonymoustranquillity@proton.me
+References: <cPSpR9MXRhQ1yFaJm1l9QDoVT9SiH_resuKtBB52HnpHOiI5AO2BPTNYg3Srfj_vaU8_u-cSp5u7luqyAUta-9p8EjyIGKhizxL4hCwMNpY=@proton.me>
+ <20240115152907.ilhrhy5zhegt4b7l@kamilkon-desk.igk.intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20240115152907.ilhrhy5zhegt4b7l@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,57 +27,63 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 2024-01-15 10:16, Kamil Konieczny wrote:
-> Hi,
->
-> On 2024-01-11 at 14:25:52 -0500, vitaly.prosyak@amd.com wrote:
->> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Hi,
+
+On 15/01/2024 15:29, Kamil Konieczny wrote:
+> Hi anonymoustranquillity,
+> On 2024-01-14 at 21:26:36 +0000, anonymoustranquillity@proton.me wrote:
+>> Hello,
 >>
->> The change is required to handle the security flag for
->> trusted memory zone copy operation(TMZ feature).
->> Previously the security test was its own hardcoded version,
->> now we are allowed to use ASIC -the dependent version function
-> ------------------------------------- ^^^^^^^^^
-> Small nit:
-> 'dependant' may be misspelled - perhaps 'dependent'?
-Thanks for paying attention to this, yes, you are correct, the 'dependent' word is required.
+>> there seems to be a problem with rendering in the interactive
+>> mode in intel_gpu_top, seems to be a simple off-by-one. Below
+>> is a patch. I am new to contributing via email, so I apologize
+>> if I did something wrong - I tried to follow CONTRIBUTING.md
+>> to the best of my ability.
 
-The main difference is that a 'dependant' is a person, whereas a 'dependent' is an adjective describing a status and that is what we want.
+What renders incorrectly? Asking since locally things look fine for me.
 
-Vitaly
+Regards,
 
->
+Tvrtko
+
+>>
+>> Have a nice day,
+>> - Ity.
+> 
+> Thank you for patch, if you would like to use git and re-send
+> with the help of 'git format-patch -1' and then
+> 'git send e-mail 0001-your-first.patch'
+> 
+> Before that setup your real name and e-mail in git configuration,
+> like "First Last <your@email-address.me>"
+> 
+> If it is too much bother someone can take it from here
+> but without your real name we cannot give you contribution
+> (except for link into patchwork).
+> 
+> +cc Tvrtko
+> 
 > Regards,
 > Kamil
->
->> to create the SDMA packet.
+> 
 >>
->> v2 : added description to commit message (Kamil)
->>
->> Cc: Jesse Zhang <jesse.zhang@amd.com>
->> Cc: Alex Deucher <alexander.deucher@amd.com>
->> Cc: Christian Koenig <christian.koenig@amd.com>
->> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->>
->> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
->> Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
 >> ---
->>  lib/amdgpu/amd_ip_blocks.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>   tools/intel_gpu_top.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
 >>
->> diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
->> index 1adea6987..a7ccfa38b 100644
->> --- a/lib/amdgpu/amd_ip_blocks.c
->> +++ b/lib/amdgpu/amd_ip_blocks.c
->> @@ -139,7 +139,7 @@ sdma_ring_copy_linear(const struct amdgpu_ip_funcs *func,
->>  	} else {
->>  		context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_COPY,
->>  				       SDMA_COPY_SUB_OPCODE_LINEAR,
->> -				       0);
->> +					context->secure ? 0x4 : 0);
->>  		if (func->family_id >= AMDGPU_FAMILY_AI)
->>  			context->pm4[i++] = context->write_length - 1;
->>  		else
+>> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+>> index 046ead15a..24363e72f 100644
+>> --- a/tools/intel_gpu_top.c
+>> +++ b/tools/intel_gpu_top.c
+>> @@ -2178,7 +2178,7 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
+>>   			len += *class_w;
+>>   		}
+>>   
+>> -		printf(" %-*s\n", con_w - len - 1, c->print_name);
+>> +		printf(" %-*s\n", con_w - len - 2, c->print_name);
+>>   	} else if (output_mode == JSON) {
+>>   		char buf[64];
+>>   
 >> -- 
->> 2.25.1
+>> 2.43.0
 >>
