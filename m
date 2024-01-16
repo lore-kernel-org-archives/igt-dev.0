@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch
- [185.70.40.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0803410E187
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 09:42:45 +0000 (UTC)
-Date: Tue, 16 Jan 2024 09:42:18 +0000
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-From: anonymoustranquillity@proton.me
-Subject: Fw: Re: [PATCH i-g-t] tools/intel_gpu_top: Fix misaligned rendering
-Message-ID: <sDG41kRU_kjcZBjomgFKvKfqGmuzm1Y2OVrU_uNvhtrlrTPWH3OxbiO2xwZO82sfYX1BWFfXWwQmJQlLqKv0uKqVzD4ArE_MZ0p1EDB50Cc=@proton.me>
-In-Reply-To: <EOyBwdNxkVNQWyfdtYOrT4lVOSHddYw7GcBAVb3X7zd7i4PXIZfA2qPVZmOW89smu3o4u4cXUs5I6ebB2SxI-cC9JuCwyrsEBLPv9tjRRLk=@proton.me>
-References: <cPSpR9MXRhQ1yFaJm1l9QDoVT9SiH_resuKtBB52HnpHOiI5AO2BPTNYg3Srfj_vaU8_u-cSp5u7luqyAUta-9p8EjyIGKhizxL4hCwMNpY=@proton.me>
- <20240115152907.ilhrhy5zhegt4b7l@kamilkon-desk.igk.intel.com>
- <960382c0-a8ef-464b-ada5-c9d66a58561e@linux.intel.com>
- <EOyBwdNxkVNQWyfdtYOrT4lVOSHddYw7GcBAVb3X7zd7i4PXIZfA2qPVZmOW89smu3o4u4cXUs5I6ebB2SxI-cC9JuCwyrsEBLPv9tjRRLk=@proton.me>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 788CA10E1F2
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 09:43:12 +0000 (UTC)
+Date: Tue, 16 Jan 2024 10:42:51 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH] tests/kms_universal_plane: Re-work expectations for
+ non-intel hw
+Message-ID: <20240116094251.wyqyhmpdeebrx5sx@kamilkon-desk.igk.intel.com>
+References: <20240110200434.218120-1-robdclark@gmail.com>
+ <20240111133659.xvhekkoisi44vk3f@kamilkon-desk.igk.intel.com>
+ <CAF6AEGu4SHNRu0wZ2XZoe-5BZjjiHkZZRT49z_RvyVdvHmaoBA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAF6AEGu4SHNRu0wZ2XZoe-5BZjjiHkZZRT49z_RvyVdvHmaoBA@mail.gmail.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,107 +23,224 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Rob Clark <robdclark@chromium.org>, juha-pekka.heikkila@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-I forgot to include the mailing list in the CC, I apologize. Forwarding it.
+Hi Rob,
+On 2024-01-11 at 09:30:08 -0800, Rob Clark wrote:
+> On Thu, Jan 11, 2024 at 5:37 AM Kamil Konieczny
+> <kamil.konieczny@linux.intel.com> wrote:
+> >
+> > Hi Rob,
+> > On 2024-01-10 at 12:04:34 -0800, Rob Clark wrote:
+> > > From: Rob Clark <robdclark@chromium.org>
+> > >
+> > > The expectation assumptions do not fit for non-intel hw.  So re-work the
+> > > expectations and add msm support.
+> > >
+> > > Signed-off-by: Rob Clark <robdclark@chromium.org>
+> > > ---
+> > >  tests/kms_universal_plane.c | 102 +++++++++++++++++++++++++-----------
+> > >  1 file changed, 72 insertions(+), 30 deletions(-)
+> > >
+> > > diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+> > > index 6a39f93cc5aa..3158ff816046 100644
+> > > --- a/tests/kms_universal_plane.c
+> > > +++ b/tests/kms_universal_plane.c
+> > > @@ -402,8 +402,7 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+> > >       sanity_test_t test = { .data = data };
+> > >       igt_plane_t *primary;
+> > >       drmModeModeInfo *mode;
+> > > -     int i;
+> > > -     int expect = 0;
+> >
+> > Could you keep this var?
+> >
+> > > +     int i, ret;
+> > >
+> > >       igt_output_set_pipe(output, pipe);
+> > >       mode = igt_output_get_mode(output);
+> > > @@ -418,43 +417,86 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+> > >
+> > >       /*
+> > >        * Try to use universal plane API to set primary plane that
+> > > -      * doesn't cover CRTC (should fail on pre-gen9 and succeed on
+> > > -      * gen9+).
+> > > +      * doesn't cover CRTC.
+> > >        */
+> > >       igt_plane_set_fb(primary, &test.undersized_fb);
+> > > -     if (is_intel_device(data->drm_fd))
+> > > -             expect = (data->display_ver < 9) ? -EINVAL : 0;
+> > > -     igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL) == expect);
+> > > +     ret = igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL);
+> > > +
+> > > +     if (is_intel_device(data->drm_fd)) {
+> > > +             /* should fail on pre-gen9 and succeed on gen9+: */
+> > > +             if (data->display_ver < 9)
+> > > +                     igt_assert_eq(ret, -EINVAL);
+> > > +             else
+> > > +                     igt_assert_eq(ret, 0);
+> > > +     } else if (is_msm_device(data->drm_fd)) {
+> > > +             /* Should be supported on all gens: */
+> > > +             igt_assert_eq(ret, 0);
+> > > +     } else {
+> > > +             igt_assert_eq(ret, 0);
+> > > +     }
+> >
+> > The old code above should work on msm, why do you changed it?
+> 
+> The reason for this change, and several other similar but (for msm)
+> non-functionally-changing hunks was to document the expectations for
+> msm and to give folks working on other drivers a guide about where to
+> insert their specific expectations.
+> 
+> The alternative, I think, if we don't want to keep adding driver
+> specifics is to just change all cases to allow either success or the
+> correct error code.
+> 
+> BR,
+> -R
+> 
 
+imho we should leave it as is and introduce changes when they will be
+needed and keep lines of code low. If someone will have other error
+it can be instroduced with before:
 
+if (is_intel_device(data->drm_fd))
+  expect = (data->display_ver < 9) ? -EINVAL : 0;
+else if (is_msm_device(data->drm_fd))
 
+As this is display code I will add Juha-Pekka to Cc.
 
-------- Forwarded Message -------
-From: anonymoustranquillity@proton.me <anonymoustranquillity@proton.me>
-Date: On Tuesday, January 16th, 2024 at 10:39 AM
-Subject: Re: [PATCH i-g-t] tools/intel_gpu_top: Fix misaligned rendering
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+> > > -             expect = (data->display_ver < 9) ? -EINVAL : 0;
+> > > -     igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL) == expect);
+> > > +     ret = igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL);
 
+> >
+> > >
+> > > -     /* Same as above, but different plane positioning. */
+> > > +     /* Same as above, but different plane positioning: */
+> >
+> > Drop this change.
+> >
+> > >       igt_plane_set_position(primary, 100, 100);
+> > > -     igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL) == expect);
+> > > +     ret = igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL);
+> > > +
+> > > +     if (is_intel_device(data->drm_fd)) {
+> > > +             /* should fail on pre-gen9 and succeed on gen9+: */
+> > > +             if (data->display_ver < 9)
+> > > +                     igt_assert_eq(ret, -EINVAL);
+> > > +             else
+> > > +                     igt_assert_eq(ret, 0);
+> > > +     } else if (is_msm_device(data->drm_fd)) {
+> > > +             /* Should be supported on all gens: */
+> > > +             igt_assert_eq(ret, 0);
+> > > +     } else {
+> > > +             igt_assert_eq(ret, 0);
+> > > +     }
+> >
+> > Same here, old code should just work for msm.
+> >
+> > >
+> > >       igt_plane_set_position(primary, 0, 0);
+> > >
+> > > -     /* Try to use universal plane API to scale down (should fail on pre-gen9) */
+> > > -     if (is_intel_device(data->drm_fd))
+> > > -             expect = (data->display_ver < 9) ? -ERANGE : 0;
+> >
+> > Please keep this if(...) expect = ...
+> > for a reason which follows.
+> >
+> > > -     igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
+> > > -                                output->config.crtc->crtc_id,
+> > > -                                test.oversized_fb.fb_id, 0,
+> > > -                                0, 0,
+> > > -                                mode->hdisplay + 100,
+> > > -                                mode->vdisplay + 100,
+> > > -                                IGT_FIXED(0,0), IGT_FIXED(0,0),
+> > > -                                IGT_FIXED(mode->hdisplay,0),
+> > > -                                IGT_FIXED(mode->vdisplay,0)) == expect);
+> > > +     /* Try to use universal plane API to scale down */
+> > > +     ret = drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
+> > > +                           output->config.crtc->crtc_id,
+> > > +                           test.oversized_fb.fb_id, 0,
+> > > +                           0, 0,
+> > > +                           mode->hdisplay + 100,
+> > > +                           mode->vdisplay + 100,
+> > > +                           IGT_FIXED(0,0), IGT_FIXED(0,0),
+> > > +                           IGT_FIXED(mode->hdisplay,0),
+> > > +                           IGT_FIXED(mode->vdisplay,0));
+> > > +
+> > > +     if (is_intel_device(data->drm_fd)) {
+> > > +             /* should fail on pre-gen9 and succeed on gen9+: */
+> > > +             if (data->display_ver < 9)
+> > > +                     igt_assert_eq(ret, -ERANGE);
+> > > +             else
+> > > +                     igt_assert_eq(ret, 0);
+> >
+> > Or just simple
+> >                         igt_assert_eq(ret, expect);
+> >
+> > > +     } else {
+> > > +             /* Could succeed or fail with -ERANGE depending on hw limits: */
+> > > +             igt_assert((ret == 0) || (ret == -ERANGE));
 
->=20
->=20
->=20
-> Hello,
->=20
-> I have not used send-email as my email provider (protonmail) does not see=
-m to support SMTP (I have been meaning to switch to a self hosted provider =
-for a while now, haven't been able to yet).
->=20
-> This email is the one I use for FOSS contributions, it's the same one as =
-the one I used to sign up to the freedesktop gitlab (https://gitlab.freedes=
-ktop.org/tranquillity-codes). I am unable to include my real name due to pe=
-rsonal reasons related to my safety (since it will be visible publicly).
->=20
-> Running intel_gpu_top on some terminal sizes seems to overflow a characte=
-r at end of line N to the first character of line N+1, misalign the column =
-marker for PIDs, and sometimes hide the first few lines describing the engi=
-nes. I used alacritty on X11 to test this.
->=20
-> Thank you for your time,
-> Ity
->=20
-> On Tuesday, January 16th, 2024 at 9:49 AM, Tvrtko Ursulin tvrtko.ursulin@=
-linux.intel.com wrote:
->=20
->=20
->=20
-> > Hi,
-> >=20
-> > On 15/01/2024 15:29, Kamil Konieczny wrote:
-> >=20
-> > > Hi anonymoustranquillity,
-> > > On 2024-01-14 at 21:26:36 +0000, anonymoustranquillity@proton.me wrot=
-e:
-> > >=20
-> > > > Hello,
-> > > >=20
-> > > > there seems to be a problem with rendering in the interactive
-> > > > mode in intel_gpu_top, seems to be a simple off-by-one. Below
-> > > > is a patch. I am new to contributing via email, so I apologize
-> > > > if I did something wrong - I tried to follow CONTRIBUTING.md
-> > > > to the best of my ability.
-> >=20
-> > What renders incorrectly? Asking since locally things look fine for me.
-> >=20
+Could you read/discover those limits and check for actual
+expected error?
+
+Regards,
+Kamil
+
+> > > +     }
+> >
+> > This is a real change, it relaxed checks for non-intel HW.
+> > imho we should ask others, for example amd developers if that is ok
+> > for them.
+> >
+> > >
+> > >       /* Try to use universal plane API to scale up (should fail on pre-gen9) */
+> > > -     igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
+> > > -                                output->config.crtc->crtc_id,
+> > > -                                test.oversized_fb.fb_id, 0,
+> > > -                                0, 0,
+> > > -                                mode->hdisplay,
+> > > -                                mode->vdisplay,
+> > > -                                IGT_FIXED(0,0), IGT_FIXED(0,0),
+> > > -                                IGT_FIXED(mode->hdisplay - 100,0),
+> > > -                                IGT_FIXED(mode->vdisplay - 100,0)) == expect);
+> > > +     ret = drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
+> > > +                           output->config.crtc->crtc_id,
+> > > +                           test.oversized_fb.fb_id, 0,
+> > > +                           0, 0,
+> > > +                           mode->hdisplay,
+> > > +                           mode->vdisplay,
+> > > +                           IGT_FIXED(0,0), IGT_FIXED(0,0),
+> > > +                           IGT_FIXED(mode->hdisplay - 100,0),
+> > > +                           IGT_FIXED(mode->vdisplay - 100,0));
+> > > +
+> > > +     if (is_intel_device(data->drm_fd)) {
+> > > +             /* should fail on pre-gen9 and succeed on gen9+: */
+> > > +             if (data->display_ver < 9)
+> > > +                     igt_assert_eq(ret, -ERANGE);
+> > > +             else
+> > > +                     igt_assert_eq(ret, 0);
+> >
+> > Same here, just simple:
+> >                         igt_assert_eq(ret, expect);
+> >
 > > Regards,
-> >=20
-> > Tvrtko
-> >=20
-> > > > Have a nice day,
-> > > > - Ity.
-> > >=20
-> > > Thank you for patch, if you would like to use git and re-send
-> > > with the help of 'git format-patch -1' and then
-> > > 'git send e-mail 0001-your-first.patch'
-> > >=20
-> > > Before that setup your real name and e-mail in git configuration,
-> > > like "First Last your@email-address.me"
-> > >=20
-> > > If it is too much bother someone can take it from here
-> > > but without your real name we cannot give you contribution
-> > > (except for link into patchwork).
-> > >=20
-> > > +cc Tvrtko
-> > >=20
-> > > Regards,
-> > > Kamil
-> > >=20
-> > > > ---
-> > > > tools/intel_gpu_top.c | 2 +-
-> > > > 1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >=20
-> > > > diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-> > > > index 046ead15a..24363e72f 100644
-> > > > --- a/tools/intel_gpu_top.c
-> > > > +++ b/tools/intel_gpu_top.c
-> > > > @@ -2178,7 +2178,7 @@ print_client(struct igt_drm_client *c, struct=
- engines *engines, double t, int li
-> > > > len +=3D *class_w;
-> > > > }
-> > > >=20
-> > > > - printf(" %-*s\n", con_w - len - 1, c->print_name);
-> > > > + printf(" %-*s\n", con_w - len - 2, c->print_name);
-> > > > } else if (output_mode =3D=3D JSON) {
-> > > > char buf[64];
-> > > >=20
-> > > > --
-> > > > 2.43.0
+> > Kamil
+> >
+> > > +     } else {
+> > > +             /* Could succeed or fail with -ERANGE depending on hw limits: */
+> > > +             igt_assert((ret == 0) || (ret == -ERANGE));
+> > > +     }
+> > >
+> > >       /* Find other crtcs and try to program our primary plane on them */
+> > >       for (i = 0; i < test.moderes->count_crtcs; i++)
+> > > --
+> > > 2.43.0
+> > >
