@@ -1,24 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3969A10E4F1
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 13:03:09 +0000 (UTC)
-Message-ID: <feda6b18-51bc-4080-8fa2-c1a6447519a0@linux.intel.com>
-Date: Tue, 16 Jan 2024 13:03:05 +0000
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C3CD10E549
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 14:57:06 +0000 (UTC)
+From: Nirmoy Das <nirmoy.das@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t 1/2] tests/intel: Add xe_exec_atomic test
+Date: Tue, 16 Jan 2024 15:43:32 +0100
+Message-ID: <20240116144336.18068-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH i-g-t] tools/intel_gpu_top: Fix misaligned rendering
-Content-Language: en-US
-To: anonymoustranquillity@proton.me,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <cPSpR9MXRhQ1yFaJm1l9QDoVT9SiH_resuKtBB52HnpHOiI5AO2BPTNYg3Srfj_vaU8_u-cSp5u7luqyAUta-9p8EjyIGKhizxL4hCwMNpY=@proton.me>
- <20240115152907.ilhrhy5zhegt4b7l@kamilkon-desk.igk.intel.com>
- <960382c0-a8ef-464b-ada5-c9d66a58561e@linux.intel.com>
- <EOyBwdNxkVNQWyfdtYOrT4lVOSHddYw7GcBAVb3X7zd7i4PXIZfA2qPVZmOW89smu3o4u4cXUs5I6ebB2SxI-cC9JuCwyrsEBLPv9tjRRLk=@proton.me>
- <02ed8aa7-f4e3-4648-b393-81cf103112e3@linux.intel.com>
- <xOvoNSfmYKg4CYcHk28rPS4wPszrNXK0BIPk5FCiG1dG_-vDr-bI8VsmK8MiZs5fHS3mhZcfBxqctGkLNtM0-UZPmMnDDOQNfIobtI_M_P8=@proton.me>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <xOvoNSfmYKg4CYcHk28rPS4wPszrNXK0BIPk5FCiG1dG_-vDr-bI8VsmK8MiZs5fHS3mhZcfBxqctGkLNtM0-UZPmMnDDOQNfIobtI_M_P8=@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,131 +17,224 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Implement xe_exec_atomic test which will validate
+MI_ATOMIC(increment, decrement) operations for all
+engines and all memory regions. The test is skipped
+on system memory for PVC as this is known to be not
+supported.
 
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+---
+ lib/intel_reg.h              |   1 +
+ tests/intel/xe_exec_atomic.c | 170 +++++++++++++++++++++++++++++++++++
+ tests/meson.build            |   1 +
+ 3 files changed, 172 insertions(+)
+ create mode 100644 tests/intel/xe_exec_atomic.c
 
-On 16/01/2024 12:32, anonymoustranquillity@proton.me wrote:
-> I have done some further testing, and it seems that my patch does in fact not resolve the issue. I am attaching a few screenshots that I was able to reproduce. I am not sure why the patch seemed to work yesterday, I apologize, I should have done more thorough testing.
-
-No worries.
-
-It seems load in the percentage bar is the key to repro. Can you try this:
-
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 046ead15a122..5b4f94d7de7a 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -1015,9 +1015,8 @@ print_percentage_bar(double percent, double max, 
-int max_len, bool numeric)
-                 printf("%s", bars[i]);
-
-         len -= (bar_len + (w - 1)) / w;
--       if (len < 1)
--               return;
--       n_spaces(len);
-+       if (len >= 1)
-+               n_spaces(len);
-
-         putchar('|');
-
-Regards,
-
-Tvrtko
-
-> 
-> 
-> On Tuesday, January 16th, 2024 at 12:48 PM, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com> wrote:
-> 
->>
->>
->>
->> On 16/01/2024 09:39, anonymoustranquillity@proton.me wrote:
->>
->>> Hello,
->>>
->>> I have not used send-email as my email provider (protonmail) does not seem to support SMTP (I have been meaning to switch to a self hosted provider for a while now, haven't been able to yet).
->>>
->>> This email is the one I use for FOSS contributions, it's the same one as the one I used to sign up to the freedesktop gitlab (https://gitlab.freedesktop.org/tranquillity-codes). I am unable to include my real name due to personal reasons related to my safety (since it will be visible publicly).
->>>
->>> Running intel_gpu_top on some terminal sizes seems to overflow a character at end of line N to the first character of line N+1, misalign the column marker for PIDs, and sometimes hide the first few lines describing the engines. I used alacritty on X11 to test this.
->>
->>
->> I can't repro it I'm afraid. Tried xterm, alactritty and konsole.
->> Resizing the windows to large or small it always re-renders mostly OK.
->> Mostly because if you go too small then parts of the UI start to get
->> dropped but can't really show everything if there is no space.
->>
->> What terminal size should I try, at least roughly? Or could you share a
->> screenshot somewhere?
->>
->> Regards,
->>
->> Tvrtko
->>
->>> Thank you for your time,
->>> Ity
->>>
->>> On Tuesday, January 16th, 2024 at 9:49 AM, Tvrtko Ursulin tvrtko.ursulin@linux.intel.com wrote:
->>>
->>>> Hi,
->>>>
->>>> On 15/01/2024 15:29, Kamil Konieczny wrote:
->>>>
->>>>> Hi anonymoustranquillity,
->>>>> On 2024-01-14 at 21:26:36 +0000, anonymoustranquillity@proton.me wrote:
->>>>>
->>>>>> Hello,
->>>>>>
->>>>>> there seems to be a problem with rendering in the interactive
->>>>>> mode in intel_gpu_top, seems to be a simple off-by-one. Below
->>>>>> is a patch. I am new to contributing via email, so I apologize
->>>>>> if I did something wrong - I tried to follow CONTRIBUTING.md
->>>>>> to the best of my ability.
->>>>
->>>> What renders incorrectly? Asking since locally things look fine for me.
->>>>
->>>> Regards,
->>>>
->>>> Tvrtko
->>>>
->>>>>> Have a nice day,
->>>>>> - Ity.
->>>>>
->>>>> Thank you for patch, if you would like to use git and re-send
->>>>> with the help of 'git format-patch -1' and then
->>>>> 'git send e-mail 0001-your-first.patch'
->>>>>
->>>>> Before that setup your real name and e-mail in git configuration,
->>>>> like "First Last your@email-address.me"
->>>>>
->>>>> If it is too much bother someone can take it from here
->>>>> but without your real name we cannot give you contribution
->>>>> (except for link into patchwork).
->>>>>
->>>>> +cc Tvrtko
->>>>>
->>>>> Regards,
->>>>> Kamil
->>>>>
->>>>>> ---
->>>>>> tools/intel_gpu_top.c | 2 +-
->>>>>> 1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>>
->>>>>> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
->>>>>> index 046ead15a..24363e72f 100644
->>>>>> --- a/tools/intel_gpu_top.c
->>>>>> +++ b/tools/intel_gpu_top.c
->>>>>> @@ -2178,7 +2178,7 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
->>>>>> len += *class_w;
->>>>>> }
->>>>>>
->>>>>> - printf(" %-*s\n", con_w - len - 1, c->print_name);
->>>>>> + printf(" %-*s\n", con_w - len - 2, c->print_name);
->>>>>> } else if (output_mode == JSON) {
->>>>>> char buf[64];
->>>>>>
->>>>>> --
->>>>>> 2.43.0
+diff --git a/lib/intel_reg.h b/lib/intel_reg.h
+index a8190d683..26833c66f 100644
+--- a/lib/intel_reg.h
++++ b/lib/intel_reg.h
+@@ -2647,6 +2647,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ 
+ /* Atomics */
+ #define   MI_ATOMIC_INC                 (0x5 << 8)
++#define   MI_ATOMIC_DEC                 (0x6 << 8)
+ #define   MI_ATOMIC_ADD                 (0x7 << 8)
+ 
+ /* Batch */
+diff --git a/tests/intel/xe_exec_atomic.c b/tests/intel/xe_exec_atomic.c
+new file mode 100644
+index 000000000..b67efc866
+--- /dev/null
++++ b/tests/intel/xe_exec_atomic.c
+@@ -0,0 +1,170 @@
++/* SPDX-License-Identifier: MIT */
++/*
++* Copyright © 2023 Intel Corporation
++*
++* Authors:
++*    Sai Gowtham Ch <sai.gowtham.ch@intel.com>
++*/
++
++#include "igt.h"
++#include "lib/igt_syncobj.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe_drm.h"
++
++/**
++ * TEST: Tests to verify atomic functionality.
++ * Category: Software building block
++ * Sub-category: HW
++ * Functionality: intel-bb
++ * Test category: functionality test
++ */
++
++struct data {
++	uint32_t batch[16];
++	uint64_t pad;
++	uint32_t data;
++	uint64_t addr;
++};
++
++static void atomic_batch(struct data *data, uint64_t addr, int ops)
++{
++	int b;
++	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
++	uint64_t batch_addr = addr + batch_offset;
++	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
++	uint64_t sdi_addr = addr + sdi_offset;
++
++	b = 0;
++	data->batch[b++] = MI_ATOMIC | ops;
++	data->batch[b++] = sdi_addr;
++	data->batch[b++] = sdi_addr >> 32;
++	data->batch[b++] = MI_BATCH_BUFFER_END;
++	igt_assert(b <= ARRAY_SIZE(data->batch));
++
++	data->addr = batch_addr;
++}
++
++/**
++ * SUBTEST: basic-inc-all
++ * Description: Test to verify atomic increment on all available engines and memory types.
++ * SUBTEST: basic-dec-all
++ * Description: Test to verify atomic decrement on all available engines and memory types.
++ */
++static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instance *eci,
++		       uint32_t placement)
++{
++	struct drm_xe_sync sync = {
++		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++	struct data *data;
++	uint32_t vm;
++	uint32_t exec_queue;
++	uint32_t bind_engine;
++	uint32_t syncobj;
++	size_t bo_size;
++	int value = 0x123456, match;
++	uint64_t addr = 0x100000;
++	uint32_t bo = 0;
++
++	syncobj = syncobj_create(fd, 0);
++	sync.handle = syncobj;
++
++	vm = xe_vm_create(fd, 0, 0);
++	bo_size = sizeof(*data);
++	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
++			xe_get_default_alignment(fd));
++
++	bo = xe_bo_create(fd, vm, bo_size, placement,
++			  I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS);
++
++	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
++	bind_engine = xe_bind_exec_queue_create(fd, vm, 0);
++	xe_vm_bind_async(fd, vm, bind_engine, bo, 0, addr, bo_size, &sync, 1);
++	data = xe_bo_mmap_ext(fd, bo, bo_size, PROT_READ|PROT_WRITE);
++	data->data = value;
++
++	atomic_batch(data, addr, inst_type);
++
++	exec.exec_queue_id = exec_queue;
++	exec.address = data->addr;
++	sync.flags &= DRM_XE_SYNC_FLAG_SIGNAL;
++	xe_exec(fd, &exec);
++
++	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
++	munmap(data, bo_size);
++	data = xe_bo_mmap_ext(fd, bo, bo_size, PROT_READ|PROT_WRITE);
++	match = (inst_type == MI_ATOMIC_INC) ? ++value : --value;
++	igt_assert_eq(data->data, match);
++
++	syncobj_destroy(fd, syncobj);
++	munmap(data, bo_size);
++	gem_close(fd, bo);
++
++	xe_exec_queue_destroy(fd, exec_queue);
++	xe_vm_destroy(fd, vm);
++}
++
++static bool has_atomics(int fd, uint32_t region)
++{
++	/* System memory atomics on PVC doesn't work */
++	if (region == system_memory(fd) && IS_PONTEVECCHIO(fd))
++		return false;
++
++	return true;
++}
++
++igt_main
++{
++	struct drm_xe_engine_class_instance *hwe;
++	int fd;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_XE);
++		xe_device_get(fd);
++	}
++
++	igt_subtest_with_dynamic("basic-inc-all") {
++		xe_for_each_engine(fd, hwe) {
++			uint64_t memreg = all_memory_regions(fd), region;
++
++			xe_for_each_mem_region(fd, memreg, region) {
++				if (region == system_memory(fd))
++					igt_skip_on(!has_atomics(fd, region));
++
++				igt_dynamic_f("Engine-%s-Instance-%d-Tile-%d-%s-memory",
++					      xe_engine_class_string(hwe->engine_class),
++					      hwe->engine_instance,
++					      hwe->gt_id, xe_region_name(region));
++				basic_inst(fd, MI_ATOMIC_INC, hwe, region);
++			}
++		}
++	}
++
++	igt_subtest_with_dynamic("basic-dec-all") {
++		xe_for_each_engine(fd, hwe) {
++			uint64_t memreg = all_memory_regions(fd), region;
++
++			xe_for_each_mem_region(fd, memreg, region) {
++				if (region == system_memory(fd))
++					igt_skip_on(!has_atomics(fd, region));
++
++				igt_dynamic_f("Engine-%s-Instance-%d-Tile-%d-%s-memory",
++					      xe_engine_class_string(hwe->engine_class),
++					      hwe->engine_instance,
++					      hwe->gt_id, xe_region_name(region));
++				basic_inst(fd, MI_ATOMIC_DEC, hwe, region);
++			}
++		}
++	}
++	igt_fixture {
++		xe_device_put(fd);
++		close(fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index a6a8498e2..bd2fefee4 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -291,6 +291,7 @@ intel_xe_progs = [
+ 	'xe_exec_queue_property',
+ 	'xe_exec_reset',
+ 	'xe_exec_store',
++	'xe_exec_atomic',
+ 	'xe_exec_threads',
+ 	'xe_exercise_blt',
+ 	'xe_gpgpu_fill',
+-- 
+2.42.0
