@@ -1,18 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9DCE210E499
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 12:00:01 +0000 (UTC)
-Message-ID: <f846c6b1-6845-41fc-a5e6-cc530200f143@intel.com>
-Date: Tue, 16 Jan 2024 17:29:54 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C93810E4B1
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 12:03:34 +0000 (UTC)
+Message-ID: <6f95475b-1d5c-43ba-9fe3-310475ef7898@intel.com>
+Date: Tue, 16 Jan 2024 17:33:28 +0530
 MIME-Version: 1.0
-Subject: Re: [PATCH i-g-t] tests/kms_rmfb: Fix subtest description
+Subject: Re: [PATCH i-g-t 2/2] lib/igt_kms: add support for choosing big
+ joiner mode
 Content-Language: en-US
-To: Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
-References: <20240111205316.1640003-1-lucas.demarchi@intel.com>
+To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org
+References: <20240115105854.827266-1-kunal1.joshi@intel.com>
+ <20240115105854.827266-3-kunal1.joshi@intel.com>
+ <b5389ad8-8b98-4c04-b337-e39e7d20f5cb@intel.com>
+ <0173fd3b-cf12-4aa1-977e-a994af9c91b0@intel.com>
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20240111205316.1640003-1-lucas.demarchi@intel.com>
+In-Reply-To: <0173fd3b-cf12-4aa1-977e-a994af9c91b0@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,75 +28,103 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Lucas,
+Hi Kunal,
 
-On 12-Jan-24 2:23 AM, Lucas De Marchi wrote:
-> Kernel driver is responsible to do those actions. kms_rmfb is then
-> checking if that was true in 2 cases: a) DRM_IOCTL_MODE_RMFB was called
-> or b) the file descriptor was closed.
+On 16-Jan-24 5:29 PM, Joshi, Kunal1 wrote:
+> Hello Swati,
 > 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->   tests/kms_rmfb.c | 23 ++++++++++++-----------
->   1 file changed, 12 insertions(+), 11 deletions(-)
-> 
-> diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
-> index 39e8bbd55..8a27f4fac 100644
-> --- a/tests/kms_rmfb.c
-> +++ b/tests/kms_rmfb.c
-> @@ -24,7 +24,7 @@
->   /**
->    * TEST: kms rmfb
->    * Category: Display
-> - * Description: This tests rmfb and close-fd behavior. In these casesthe
-> + * Description: This tests rmfb and close-fd behavior. In these cases the
->    *              framebuffers should be removed from the crtc.
->    * Driver requirement: i915, xe
->    * Functionality: kms_gem_interop
-> @@ -42,12 +42,13 @@
->   
->   /**
->    * SUBTEST: close-fd
-> - * Description: RMFB is supposed to free the framebuffers from any and all planes
-> - *              so test this and make sure it works with fd close and reopen.
-> + * Description: Kernel driver is supposed to free the framebuffers from any and all planes
-> + *		when the fd is closed. Ensure that is the case by closing and re-opening
-> + *		it.
->    *
->    * SUBTEST: rmfb-ioctl
-> - * Description: RMFB is supposed to free the framebuffers from any and all planes
-> - *              so test this and make sure it works.
-> + * Description: Kernel driver is supposed to free the framebuffers from any and all planes
-> + *              when DRM_IOCTL_MODE_RMFB ioctl is called. Ensure that is the case.
->    */
->   
->   #ifndef DRM_CAP_CURSOR_WIDTH
-> @@ -57,7 +58,7 @@
->   #define DRM_CAP_CURSOR_HEIGHT 0x9
->   #endif
->   
-> -IGT_TEST_DESCRIPTION("This tests rmfb and close-fd behavior. In these cases"
-> +IGT_TEST_DESCRIPTION("This tests rmfb and close-fd behavior. In these cases "
->   		     "the framebuffers should be removed from the crtc.");
->   
->   struct rmfb_data {
-> @@ -198,11 +199,11 @@ igt_main
->   		const char *name;
->   		const char *description;
->   	} tests[] = {
-> -		{ false, "rmfb-ioctl", "RMFB is supposed to free the framebuffers from any and all "
-> -				       "planes so test this and make sure it works."},
-> -		{ true, "close-fd", "RMFB is supposed to free the framebuffers from any and all "
-> -				    "planes so test this and make sure it works with fd close "
-> -				    "and reopen."},
-> +		{ false, "rmfb-ioctl", "Kernel driver is supposed to free the framebuffers from any and all planes "
-> +				       "when the fd is closed. Ensure that is the case by closing and re-opening "
-> +				       "it" },
-> +		{ true, "close-fd", "Kernel driver is supposed to free the framebuffers from any and all planes "
-> +				    "when DRM_IOCTL_MODE_RMFB ioctl is called. Ensure that is the case." },
+> On 1/16/2024 4:34 PM, Sharma, Swati2 wrote:
+>> Hi Kunal,
+>>
+>> On 15-Jan-24 4:28 PM, Kunal Joshi wrote:
+>>> add support to choose big joiner mode with environment
+>>> variable, use mode with highest clock if no mode with big joiner
+>>> found.
+>>>
+>>> v2: reuse bigjoiner_mode_found (Bhanu)
+>>> v3: avoid returning from multiple places (Bhanu)
+>>>      avoid frequent debugfs reads (Bhanu)
+>>>
+>>> Cc: Karthik B S <karthik.b.s@intel.com>
+>>> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>>> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+>>> ---
+>>>   lib/igt_kms.c | 24 +++++++++++++++++++-----
+>>>   1 file changed, 19 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>>> index cb6d57c2d..2c4210d4b 100644
+>>> --- a/lib/igt_kms.c
+>>> +++ b/lib/igt_kms.c
+>>> @@ -1771,8 +1771,9 @@ void igt_sort_connector_modes(drmModeConnector 
+>>> *connector,
+>>>   bool kmstest_get_connector_default_mode(int drm_fd, 
+>>> drmModeConnector *connector,
+>>>                       drmModeModeInfo *mode)
+>>>   {
+>>> +    bool found;
+>>>       char *env;
+>>> -    int i;
+>>> +    int i, max_dotclock;
+>>>         if (!connector->count_modes) {
+>>>           igt_warn("no modes for connector %d\n",
+>>> @@ -1781,21 +1782,34 @@ bool kmstest_get_connector_default_mode(int 
+>>> drm_fd, drmModeConnector *connector,
+>>>       }
+>>>         env = getenv("IGT_KMS_RESOLUTION");
+>>> +    max_dotclock = igt_get_max_dotclock(drm_fd);
+>>>       if (env) {
+>>>           /*
+>>> -         * Only (0 or 1) and (lowest or highest) are allowed.
+>>> +         * Only (0 or 1 or 2) and (lowest or highest or joiner) are 
+>>> allowed.
+>>>            *
+>>>            * 0/lowest: Choose connector mode with lowest possible 
+>>> resolution.
+>>>            * 1/highest: Choose connector mode with highest possible 
+>>> resolution.
+>>> +         * 2/joiner: Choose connector mode with bigjoiner support or 
+>>> with
+>>> +                 highest clock if can't support  big joiner
+>>
+>> Shouldn't this be only joiner mode?
+>>
+>>
+> You mean can be named as joiner mode because same can be used for big 
+> joiner / ultra joiner?
 
-Shouldn't description be reversed?
+I guess this should be bigjoiner mode only. For ultra there might be 
+other restrictions which we need to look at.
 
->   	};
->   	struct rmfb_data data = {};
->   	int i;
+> or
+> We are returning the highest clock mode if no big joiner mode found?
+
+Yes, this is my query here. Why are we returning highest clock mode if 
+no big joiner mode found?
+
+>>>            */
+>>> -        if (!strcmp(env, "highest") || !strcmp(env, "1"))
+>>> +        if (!strcmp(env, "joiner") || !strcmp(env, "2"))
+>>> +            found = bigjoiner_mode_found(drm_fd, connector,
+>>> +                             sort_drm_modes_by_clk_dsc,mode,
+>>> +                             max_dotclock) ||
+>>> +                bigjoiner_mode_found(drm_fd, connector,
+>>> +                             sort_drm_modes_by_res_dsc, mode,
+>>> +                             max_dotclock) ||
+>>> +                bigjoiner_mode_found(drm_fd, connector,
+>>> +                             sort_drm_modes_by_clk_dsc, mode,
+>>> +                             max_dotclock);
+>>> +        else if (!strcmp(env, "highest") || !strcmp(env, "1"))
+>>>               igt_sort_connector_modes(connector, 
+>>> sort_drm_modes_by_res_dsc);
+>>>           else if (!strcmp(env, "lowest") || !strcmp(env, "0"))
+>>>               igt_sort_connector_modes(connector, 
+>>> sort_drm_modes_by_res_asc);
+>>>           else
+>>>               goto default_mode;
+>>> -
+>>> -        *mode = connector->modes[0];
+>>> +        if (!found)
+>>> +            *mode = connector->modes[0];
+>>>           return true;
+>>>       }
