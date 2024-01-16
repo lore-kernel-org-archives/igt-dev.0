@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Message-ID: <35878e85-b17b-41bf-b9e7-047841a0504b@intel.com>
-Date: Fri, 12 Jan 2024 11:27:50 -0800
-Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_reset: Do not validate data on
- GT reset
-References: <20240112154611.1395699-1-jonathan.cavitt@intel.com>
+Message-ID: <89c29c53-e4b9-403b-826b-a681bad2d9ab@intel.com>
+Date: Tue, 16 Jan 2024 15:04:11 +0530
+Subject: Re: [PATCH i-g-t] tests/kms_content_protection: Add LIC Type 1
+ scenario
+References: <20240112103330.169688-1-suraj.kandpal@intel.com>
 Content-Language: en-US
-From: "Welty, Brian" <brian.welty@intel.com>
-In-Reply-To: <20240112154611.1395699-1-jonathan.cavitt@intel.com>
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <20240112103330.169688-1-suraj.kandpal@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
@@ -22,57 +22,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: Jonathan Cavitt <jonathan.cavitt@intel.com>, igt-dev@lists.freedesktop.org
-Cc: saurabhg.gupta@intel.com
-Message-ID: <20240112192750.02ogLvREH1AubVGsaXD0ow_XSgrTha5egP-v_Ah75p0@z>
+To: Suraj Kandpal <suraj.kandpal@intel.com>, igt-dev@lists.freedesktop.org
+Message-ID: <20240116093411.wL6VqAVVznNx_4yua02bTAo0NJIXV8aVRVbi-vGYds0@z>
 
+LGTM.
 
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-On 1/12/2024 7:46 AM, Jonathan Cavitt wrote:
-> In the cm-gt-reset test, data validation is blocked because a GT reset
-> means that we cannot verify the completion of the exec operations.
-> Extend this logic to all other tests that perform GT resets in
-> xe_exec_reset.
-> 
-> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-
-Thanks for extending the fix to the other subtests.
-
-Reviewed-by: Brian Welty <brian.welty@intel.com>
-
-
-
+On 1/12/2024 4:03 PM, Suraj Kandpal wrote:
+> Currently LIC is done only for type0 content this patch
+> adds LIC for type1 content too.
+>
+> Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
 > ---
->   tests/intel/xe_exec_reset.c | 12 ++++++++----
->   1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-> index 0cd5b10517..168523c64c 100644
-> --- a/tests/intel/xe_exec_reset.c
-> +++ b/tests/intel/xe_exec_reset.c
-> @@ -294,8 +294,10 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
->   	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
->   	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+>   tests/kms_content_protection.c | 16 ++++++++++++----
+>   1 file changed, 12 insertions(+), 4 deletions(-)
+>
+> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+> index 6d472ee02..38e4143c8 100644
+> --- a/tests/kms_content_protection.c
+> +++ b/tests/kms_content_protection.c
+> @@ -43,8 +43,11 @@
+>   #include "igt_kmod.h"
 >   
-> -	for (i = bad_batches; i < n_execs; i++)
-> -		igt_assert_eq(data[i].data, 0xc0ffee);
-> +	if (!(flags & GT_RESET)) {
-> +		for (i = bad_batches; i < n_execs; i++)
-> +			igt_assert_eq(data[i].data, 0xc0ffee);
-> +	}
->   
->   	syncobj_destroy(fd, sync[0].handle);
->   	for (i = 0; i < n_exec_queues; i++) {
-> @@ -462,8 +464,10 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
->   	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
->   	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
->   
-> -	for (i = 1; i < n_execs; i++)
-> -		igt_assert_eq(data[i].data, 0xc0ffee);
-> +	if (!(flags & GT_RESET)) {
-> +		for (i = 1; i < n_execs; i++)
-> +			igt_assert_eq(data[i].data, 0xc0ffee);
-> +	}
->   
->   	syncobj_destroy(fd, sync[0].handle);
->   	for (i = 0; i < n_exec_queues; i++) {
+>   /**
+> - * SUBTEST: lic
+> - * Description: Test for the integrity of link.
+> + * SUBTEST: lic-type-0
+> + * Description: Test for the integrity of link for type 0 content.
+> + *
+> + * SUBTEST: lic-type-1
+> + * Description: Test for the integrity of link for type 1 content.
+>    *
+>    * SUBTEST: content-type-change
+>    * Description: Test the content type change when the content protection already
+> @@ -783,11 +786,16 @@ static const struct {
+>   	  .cp_tests = CP_DPMS,
+>   	  .content_type = HDCP_CONTENT_TYPE_0
+>   	},
+> -	{ .desc = "Test for the integrity of link.",
+> -	  .name = "lic",
+> +	{ .desc = "Test for the integrity of link with type 0 content.",
+> +	  .name = "lic-type-0",
+>   	  .cp_tests = CP_LIC,
+>   	  .content_type = HDCP_CONTENT_TYPE_0,
+>   	},
+> +	{ .desc = "Test for the integrity of link with type 1 content",
+> +	  .name = "lic-type-1",
+> +	  .cp_tests = CP_LIC,
+> +	  .content_type = HDCP_CONTENT_TYPE_1,
+> +	},
+>   	{ .desc = "Test content protection with content type 1 "
+>   		  "that can be handled only through HDCP2.2.",
+>   	  .name = "type1",
