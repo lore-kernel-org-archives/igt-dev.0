@@ -1,23 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 15 Jan 2024 20:52:07 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Jani Nikula <jani.nikula@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] xe_live_ktest: Use xe_live_test kernel
- module
-Message-ID: <20240115205207.5b491e3e@maurocar-mobl2>
-In-Reply-To: <87mst7rri8.fsf@intel.com>
-References: <20231205224926.2188996-1-lucas.demarchi@intel.com>
- <20231207164152.57be3d07@maurocar-mobl2>
- <3kunqgqyf7tobiwhcpvjp7rcvidrgnz2jq3qqoxjbl7kaftdq7@7hdweo57htff>
- <njwvai6cu7jwmy7lmg3vkg4jd52uq2f6es4obvdplkz43i6hpe@jqrzk4bveqqc>
- <dzacvbdditbneiu3e3fmstjmttcbne44yspumpkd6sjn56jqpk@vxu7sksbqrp6>
- <20240112093252.0a4bf850@maurocar-mobl2>
- <57epajumgzrllmyufx7233yjja2c3fbs2zgfflkhcspfvwak47@h64l4uzne54h>
- <11e1b3f4-b0ba-4095-96c6-f2bf18f27fd2@linux.intel.com>
- <87mst7rri8.fsf@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2079.outbound.protection.outlook.com [40.107.223.79])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2925910E3E3
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 04:18:37 +0000 (UTC)
+Message-ID: <4a5c81ae-e562-45a0-bd7c-40f00f777984@amd.com>
+Date: Mon, 15 Jan 2024 23:18:14 -0500
+Subject: Re: [PATCH 1/2] lib/amdgpu: add secure flag to sdma packet
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, vitaly.prosyak@amd.com,
+ Jesse Zhang <jesse.zhang@amd.com>, Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
+References: <20240111192553.113902-1-vitaly.prosyak@amd.com>
+ <20240115151619.2r65k52bwlaypvbo@kamilkon-desk.igk.intel.com>
+Content-Language: en-US
+From: vitaly prosyak <vprosyak@amd.com>
+In-Reply-To: <20240115151619.2r65k52bwlaypvbo@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,46 +25,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Lucas De Marchi <lucas.demarchi@intel.com>,
- intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, 15 Jan 2024 09:21:35 +0200
-Jani Nikula <jani.nikula@linux.intel.com> wrote:
 
-> On Mon, 15 Jan 2024, Mauro Carvalho Chehab <mauro.chehab@linux.intel.com> wrote:
-> > On 1/12/24 15:29, Lucas De Marchi wrote:  
-> >>> On such case, you should document kunit_debugfs at Documentation/ABI.  
-> >>
-> >> debugfs is not part of ABI.  
-> >
-> > That's arguable. Check Documentation/ABI and you'll see several debugfs 
-> > nodes documented there.  
-> 
-> I guess you could argue documenting your debugfs under Documentation/ABI
-> makes it ABI, but I'd avoid doing that. Usually we use debugfs precisely
-> to avoid the burden of ABI and all the baggage that brings.
+On 2024-01-15 10:16, Kamil Konieczny wrote:
+> Hi,
+>
+> On 2024-01-11 at 14:25:52 -0500, vitaly.prosyak@amd.com wrote:
+>> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+>>
+>> The change is required to handle the security flag for
+>> trusted memory zone copy operation(TMZ feature).
+>> Previously the security test was its own hardcoded version,
+>> now we are allowed to use ASIC -the dependent version function
+> ------------------------------------- ^^^^^^^^^
+> Small nit:
+> 'dependant' may be misspelled - perhaps 'dependent'?
+Thanks for paying attention to this, yes, you are correct, the 'dependent' word is required.
 
-Placing things at debugfs "precisely to avoid the burden of ABI and all
-the baggage that brings" sounds a bad practice to me, but you can ask 
-others at LKML and see if this is a acceptable.
+The main difference is that a 'dependant' is a person, whereas a 'dependent' is an adjective describing a status and that is what we want.
 
-My understanding is that, if userspace tools rely on what's there at
-debugfs, and a change break such tools, there is a high chance that
-such change will end being reverted - at best, it will surely provide
-some flame wars.
+Vitaly
 
-I remember we had some troubles related to trace logic in the past,
-due to something similar: even not originally meant to provide a stable
-ABI, and being under debugfs, there were some changes breaking userspace 
-which caused lots of discussions. Can't remember anymore if the changes
-were reverted or not, but at the end ftrace ABI was considered as stable.
-I have an userspace program which depends on it (rasdaemon).
-
-Also, having it documented or not doesn't mean it is not ABI. See, for
-instance, this article: https://lwn.net/Articles/309298/.
-
-Regards,
-Mauro
+>
+> Regards,
+> Kamil
+>
+>> to create the SDMA packet.
+>>
+>> v2 : added description to commit message (Kamil)
+>>
+>> Cc: Jesse Zhang <jesse.zhang@amd.com>
+>> Cc: Alex Deucher <alexander.deucher@amd.com>
+>> Cc: Christian Koenig <christian.koenig@amd.com>
+>> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>>
+>> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+>> Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
+>> ---
+>>  lib/amdgpu/amd_ip_blocks.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+>> index 1adea6987..a7ccfa38b 100644
+>> --- a/lib/amdgpu/amd_ip_blocks.c
+>> +++ b/lib/amdgpu/amd_ip_blocks.c
+>> @@ -139,7 +139,7 @@ sdma_ring_copy_linear(const struct amdgpu_ip_funcs *func,
+>>  	} else {
+>>  		context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_COPY,
+>>  				       SDMA_COPY_SUB_OPCODE_LINEAR,
+>> -				       0);
+>> +					context->secure ? 0x4 : 0);
+>>  		if (func->family_id >= AMDGPU_FAMILY_AI)
+>>  			context->pm4[i++] = context->write_length - 1;
+>>  		else
+>> -- 
+>> 2.25.1
+>>
