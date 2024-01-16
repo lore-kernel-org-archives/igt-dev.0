@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D9B610E486
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 11:59:21 +0000 (UTC)
+Message-ID: <0173fd3b-cf12-4aa1-977e-a994af9c91b0@intel.com>
+Date: Tue, 16 Jan 2024 17:29:10 +0530
+Subject: Re: [PATCH i-g-t 2/2] lib/igt_kms: add support for choosing big
+ joiner mode
+Content-Language: en-US
+To: "Sharma, Swati2" <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20240115105854.827266-1-kunal1.joshi@intel.com>
+ <20240115105854.827266-3-kunal1.joshi@intel.com>
+ <b5389ad8-8b98-4c04-b337-e39e7d20f5cb@intel.com>
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <b5389ad8-8b98-4c04-b337-e39e7d20f5cb@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/kms=5Fcontent=5Fp?=
- =?utf-8?q?rotection=3A_Add_LIC_Type_1_scenario_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Suraj Kandpal" <suraj.kandpal@intel.com>
-Date: Tue, 16 Jan 2024 11:48:16 -0000
-Message-ID: <170540569657.501310.11904346849962944850@5338d5abeb45>
-References: <20240112103330.169688-1-suraj.kandpal@intel.com>
-In-Reply-To: <20240112103330.169688-1-suraj.kandpal@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,155 +23,96 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Hello Swati,
 
-Series: tests/kms_content_protection: Add LIC Type 1 scenario (rev2)
-URL   : https://patchwork.freedesktop.org/series/128714/
-State : warning
-
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1079197 for the overview.
-
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/53794350):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/813] Generating version.h with a custom command.
-  [2/4] Linking target runner/runner_test.
-  [3/4] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_content_protection@lic-atomic doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-atomic-dpms doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-legacy doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-type1 doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@type-0 doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@type-1 doesn't exist on source files
-  ninja: build stopped: subcommand failed.
-  section_end:1705405503:step_script
-  section_start:1705405503:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1705405503:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/53794345):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/815] Generating version.h with a custom command.
-  [2/4] Linking target runner/runner_test.
-  [3/4] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_content_protection@lic-atomic doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-atomic-dpms doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-legacy doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-type1 doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@type-0 doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@type-1 doesn't exist on source files
-  ninja: build stopped: subcommand failed.
-  section_end:1705405515:step_script
-  section_start:1705405515:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1705405516:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/53794349):
-  [1780/1781] Generating i915_tests.html with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/815] Generating version.h with a custom command.
-  [2/3] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_content_protection@lic-atomic doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-atomic-dpms doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-legacy doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-type1 doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@type-0 doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@type-1 doesn't exist on source files
-  ninja: build stopped: subcommand failed.
-  section_end:1705405538:step_script
-  section_start:1705405538:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1705405539:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/53794348):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/767] Generating version.h with a custom command.
-  [2/4] Linking target runner/runner_test.
-  [3/4] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_content_protection@lic-atomic doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-atomic-dpms doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-legacy doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-type1 doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@type-0 doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@type-1 doesn't exist on source files
-  ninja: build stopped: subcommand failed.
-  section_end:1705405503:step_script
-  section_start:1705405503:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1705405504:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/53794346):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/815] Generating version.h with a custom command.
-  [2/4] Linking target runner/runner_test.
-  [3/4] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_content_protection@lic-atomic doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-atomic-dpms doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-legacy doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-type1 doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@type-0 doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@type-1 doesn't exist on source files
-  ninja: build stopped: subcommand failed.
-  section_end:1705405519:step_script
-  section_start:1705405519:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1705405519:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/53794347):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/815] Generating version.h with a custom command.
-  [2/4] Linking target runner/runner_test.
-  [3/4] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_content_protection@lic-atomic doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-atomic-dpms doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-legacy doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@lic-type1 doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@type-0 doesn't exist on source files
-  Warning: Documented igt@kms_content_protection@type-1 doesn't exist on source files
-  ninja: build stopped: subcommand failed.
-  section_end:1705405516:step_script
-  section_start:1705405516:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1705405517:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1079197
+On 1/16/2024 4:34 PM, Sharma, Swati2 wrote:
+> Hi Kunal,
+>
+> On 15-Jan-24 4:28 PM, Kunal Joshi wrote:
+>> add support to choose big joiner mode with environment
+>> variable, use mode with highest clock if no mode with big joiner
+>> found.
+>>
+>> v2: reuse bigjoiner_mode_found (Bhanu)
+>> v3: avoid returning from multiple places (Bhanu)
+>>      avoid frequent debugfs reads (Bhanu)
+>>
+>> Cc: Karthik B S <karthik.b.s@intel.com>
+>> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+>> ---
+>>   lib/igt_kms.c | 24 +++++++++++++++++++-----
+>>   1 file changed, 19 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>> index cb6d57c2d..2c4210d4b 100644
+>> --- a/lib/igt_kms.c
+>> +++ b/lib/igt_kms.c
+>> @@ -1771,8 +1771,9 @@ void igt_sort_connector_modes(drmModeConnector 
+>> *connector,
+>>   bool kmstest_get_connector_default_mode(int drm_fd, 
+>> drmModeConnector *connector,
+>>                       drmModeModeInfo *mode)
+>>   {
+>> +    bool found;
+>>       char *env;
+>> -    int i;
+>> +    int i, max_dotclock;
+>>         if (!connector->count_modes) {
+>>           igt_warn("no modes for connector %d\n",
+>> @@ -1781,21 +1782,34 @@ bool kmstest_get_connector_default_mode(int 
+>> drm_fd, drmModeConnector *connector,
+>>       }
+>>         env = getenv("IGT_KMS_RESOLUTION");
+>> +    max_dotclock = igt_get_max_dotclock(drm_fd);
+>>       if (env) {
+>>           /*
+>> -         * Only (0 or 1) and (lowest or highest) are allowed.
+>> +         * Only (0 or 1 or 2) and (lowest or highest or joiner) are 
+>> allowed.
+>>            *
+>>            * 0/lowest: Choose connector mode with lowest possible 
+>> resolution.
+>>            * 1/highest: Choose connector mode with highest possible 
+>> resolution.
+>> +         * 2/joiner: Choose connector mode with bigjoiner support or 
+>> with
+>> +                 highest clock if can't support  big joiner
+>
+> Shouldn't this be only joiner mode?
+>
+>
+You mean can be named as joiner mode because same can be used for big 
+joiner / ultra joiner?
+or
+We are returning the highest clock mode if no big joiner mode found?
+>>            */
+>> -        if (!strcmp(env, "highest") || !strcmp(env, "1"))
+>> +        if (!strcmp(env, "joiner") || !strcmp(env, "2"))
+>> +            found = bigjoiner_mode_found(drm_fd, connector,
+>> +                             sort_drm_modes_by_clk_dsc,mode,
+>> +                             max_dotclock) ||
+>> +                bigjoiner_mode_found(drm_fd, connector,
+>> +                             sort_drm_modes_by_res_dsc, mode,
+>> +                             max_dotclock) ||
+>> +                bigjoiner_mode_found(drm_fd, connector,
+>> +                             sort_drm_modes_by_clk_dsc, mode,
+>> +                             max_dotclock);
+>> +        else if (!strcmp(env, "highest") || !strcmp(env, "1"))
+>>               igt_sort_connector_modes(connector, 
+>> sort_drm_modes_by_res_dsc);
+>>           else if (!strcmp(env, "lowest") || !strcmp(env, "0"))
+>>               igt_sort_connector_modes(connector, 
+>> sort_drm_modes_by_res_asc);
+>>           else
+>>               goto default_mode;
+>> -
+>> -        *mode = connector->modes[0];
+>> +        if (!found)
+>> +            *mode = connector->modes[0];
+>>           return true;
+>>       }
