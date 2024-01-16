@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A34A110E074
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 21:22:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE1ED10E5B8
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 21:22:49 +0000 (UTC)
 From: janga.rahul.kumar@intel.com
 To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
  janga.rahul.kumar@intel.com
-Subject: [PATCH i-g-t v2 0/4] Add LNL compute preempt test
-Date: Wed, 17 Jan 2024 02:57:52 +0530
-Message-Id: <20240116212756.2687603-1-janga.rahul.kumar@intel.com>
+Subject: [PATCH i-g-t v2 1/4] opencl/compute_increment_kernel: Add opencl
+ increment kernel
+Date: Wed, 17 Jan 2024 02:57:53 +0530
+Message-Id: <20240116212756.2687603-2-janga.rahul.kumar@intel.com>
+In-Reply-To: <20240116212756.2687603-1-janga.rahul.kumar@intel.com>
+References: <20240116212756.2687603-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -24,31 +27,27 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Test compute wmtp preemption scenario by submitting opencl kernels.
+Compute opencl increment kernel provided here is used in
+xe_compute_preempt test.
 
-v2:
--Address review comments. (Nirmoy)
--Use compute increment kernel as long kernel.
--Increase state context data base size to fix cat errors.
--Enable mid thread preemption in the pipeline.
-
-Janga Rahul Kumar (4):
-  opencl/compute_increment_kernel: Add opencl increment kernel
-  lib/intel_compute_square_kernels: Add xe2lpg wmtp sip and long running
-    opencl kernel
-  lib/intel_compute: Add LNL compute preempt library support
-  tests/intel/xe_compute_preempt: Add compute preempt test
-
- include/intel_gpu_commands.h       |    2 +
- lib/intel_compute.c                |  270 ++-
- lib/intel_compute.h                |    6 +-
- lib/intel_compute_square_kernels.c | 3635 ++++++++++++++++++++++++++++
- opencl/compute_increment_kernel.cl |    6 +
- tests/intel/xe_compute_preempt.c   |   45 +
- tests/meson.build                  |    1 +
- 7 files changed, 3961 insertions(+), 4 deletions(-)
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+---
+ opencl/compute_increment_kernel.cl | 6 ++++++
+ 1 file changed, 6 insertions(+)
  create mode 100644 opencl/compute_increment_kernel.cl
- create mode 100644 tests/intel/xe_compute_preempt.c
 
+diff --git a/opencl/compute_increment_kernel.cl b/opencl/compute_increment_kernel.cl
+new file mode 100644
+index 000000000..976c5a338
+--- /dev/null
++++ b/opencl/compute_increment_kernel.cl
+@@ -0,0 +1,6 @@
++__kernel void square(__global float* input, __global float* output, const unsigned int count) {
++  int i = get_global_id(0);
++  for (int j = 0; j < count ; j++) {
++    output[i] = output[i] + 1;
++   }
++}
 -- 
 2.25.1
