@@ -1,21 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CFB5810E456
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 09:48:43 +0000 (UTC)
-Message-ID: <cee84e7f-e739-4db9-a104-a9a80799a765@intel.com>
-Date: Tue, 16 Jan 2024 15:18:37 +0530
-MIME-Version: 1.0
-Subject: Re: [PATCH i-g-t] tests/kms_content_protection: Add LIC Type 1
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 366C810E45E
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 09:51:17 +0000 (UTC)
+From: "Kandpal, Suraj" <suraj.kandpal@intel.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>, "Nautiyal, Ankit K"
+ <ankit.k.nautiyal@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Subject: RE: [PATCH i-g-t] tests/kms_content_protection: Add LIC Type 1
  scenario
-To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>,
- Suraj Kandpal <suraj.kandpal@intel.com>, igt-dev@lists.freedesktop.org
+Date: Tue, 16 Jan 2024 09:51:14 +0000
+Message-ID: <SN7PR11MB67507F017A68B1EEF3DC5D61E3732@SN7PR11MB6750.namprd11.prod.outlook.com>
 References: <20240112103330.169688-1-suraj.kandpal@intel.com>
  <89c29c53-e4b9-403b-826b-a681bad2d9ab@intel.com>
+ <cee84e7f-e739-4db9-a104-a9a80799a765@intel.com>
+In-Reply-To: <cee84e7f-e739-4db9-a104-a9a80799a765@intel.com>
 Content-Language: en-US
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <89c29c53-e4b9-403b-826b-a681bad2d9ab@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,72 +29,58 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Suraj,
-
-On 16-Jan-24 3:04 PM, Nautiyal, Ankit K wrote:
-> LGTM.
-> 
-> Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> 
-> On 1/12/2024 4:03 PM, Suraj Kandpal wrote:
->> Currently LIC is done only for type0 content this patch
->> adds LIC for type1 content too.
->>
->> Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
->> ---
->>   tests/kms_content_protection.c | 16 ++++++++++++----
->>   1 file changed, 12 insertions(+), 4 deletions(-)
->>
->> diff --git a/tests/kms_content_protection.c 
->> b/tests/kms_content_protection.c
->> index 6d472ee02..38e4143c8 100644
->> --- a/tests/kms_content_protection.c
->> +++ b/tests/kms_content_protection.c
->> @@ -43,8 +43,11 @@
->>   #include "igt_kmod.h"
->>   /**
->> - * SUBTEST: lic
->> - * Description: Test for the integrity of link.
->> + * SUBTEST: lic-type-0
->> + * Description: Test for the integrity of link for type 0 content.
->> + *
->> + * SUBTEST: lic-type-1
->> + * Description: Test for the integrity of link for type 1 content.
->>    *
-
-Instead if writing description like this you can add
-lic-%arg[1]
-
-@arg[1]:
-@type0:		type-0
-@type1:		type-1
-
-Check this 
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/docs/test_documentation.md?ref_type=heads
-
-And functionality for both these tests will be hdcp1.4. Is this correct?
-Or do we need to add hdcp2.2 too?
-Please update functionality.
-
->>    * SUBTEST: content-type-change
->>    * Description: Test the content type change when the content 
->> protection already
->> @@ -783,11 +786,16 @@ static const struct {
->>         .cp_tests = CP_DPMS,
->>         .content_type = HDCP_CONTENT_TYPE_0
->>       },
->> -    { .desc = "Test for the integrity of link.",
->> -      .name = "lic",
->> +    { .desc = "Test for the integrity of link with type 0 content.",
->> +      .name = "lic-type-0",
->>         .cp_tests = CP_LIC,
->>         .content_type = HDCP_CONTENT_TYPE_0,
->>       },
->> +    { .desc = "Test for the integrity of link with type 1 content",
->> +      .name = "lic-type-1",
->> +      .cp_tests = CP_LIC,
->> +      .content_type = HDCP_CONTENT_TYPE_1,
->> +    },
->>       { .desc = "Test content protection with content type 1 "
->>             "that can be handled only through HDCP2.2.",
->>         .name = "type1",
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU2hhcm1hLCBTd2F0aTIg
+PHN3YXRpMi5zaGFybWFAaW50ZWwuY29tPg0KPiBTZW50OiBUdWVzZGF5LCBKYW51YXJ5IDE2LCAy
+MDI0IDM6MTkgUE0NCj4gVG86IE5hdXRpeWFsLCBBbmtpdCBLIDxhbmtpdC5rLm5hdXRpeWFsQGlu
+dGVsLmNvbT47IEthbmRwYWwsIFN1cmFqDQo+IDxzdXJhai5rYW5kcGFsQGludGVsLmNvbT47IGln
+dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBCLCBKZWV2YW4gPGplZXZhbi5iQGlu
+dGVsLmNvbT47IEIgUywgS2FydGhpayA8a2FydGhpay5iLnNAaW50ZWwuY29tPg0KPiBTdWJqZWN0
+OiBSZTogW1BBVENIIGktZy10XSB0ZXN0cy9rbXNfY29udGVudF9wcm90ZWN0aW9uOiBBZGQgTElD
+IFR5cGUgMQ0KPiBzY2VuYXJpbw0KPiANCj4gSGkgU3VyYWosDQo+IA0KPiBPbiAxNi1KYW4tMjQg
+MzowNCBQTSwgTmF1dGl5YWwsIEFua2l0IEsgd3JvdGU6DQo+ID4gTEdUTS4NCj4gPg0KPiA+IFJl
+dmlld2VkLWJ5OiBBbmtpdCBOYXV0aXlhbCA8YW5raXQuay5uYXV0aXlhbEBpbnRlbC5jb20+DQo+
+ID4NCj4gPiBPbiAxLzEyLzIwMjQgNDowMyBQTSwgU3VyYWogS2FuZHBhbCB3cm90ZToNCj4gPj4g
+Q3VycmVudGx5IExJQyBpcyBkb25lIG9ubHkgZm9yIHR5cGUwIGNvbnRlbnQgdGhpcyBwYXRjaCBh
+ZGRzIExJQyBmb3INCj4gPj4gdHlwZTEgY29udGVudCB0b28uDQo+ID4+DQo+ID4+IFNpZ25lZC1v
+ZmYtYnk6IFN1cmFqIEthbmRwYWwgPHN1cmFqLmthbmRwYWxAaW50ZWwuY29tPg0KPiA+PiAtLS0N
+Cj4gPj4gwqAgdGVzdHMva21zX2NvbnRlbnRfcHJvdGVjdGlvbi5jIHwgMTYgKysrKysrKysrKysr
+LS0tLQ0KPiA+PiDCoCAxIGZpbGUgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlv
+bnMoLSkNCj4gPj4NCj4gPj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19jb250ZW50X3Byb3RlY3Rp
+b24uYw0KPiA+PiBiL3Rlc3RzL2ttc19jb250ZW50X3Byb3RlY3Rpb24uYyBpbmRleCA2ZDQ3MmVl
+MDIuLjM4ZTQxNDNjOCAxMDA2NDQNCj4gPj4gLS0tIGEvdGVzdHMva21zX2NvbnRlbnRfcHJvdGVj
+dGlvbi5jDQo+ID4+ICsrKyBiL3Rlc3RzL2ttc19jb250ZW50X3Byb3RlY3Rpb24uYw0KPiA+PiBA
+QCAtNDMsOCArNDMsMTEgQEANCj4gPj4gwqAgI2luY2x1ZGUgImlndF9rbW9kLmgiDQo+ID4+IMKg
+IC8qKg0KPiA+PiAtICogU1VCVEVTVDogbGljDQo+ID4+IC0gKiBEZXNjcmlwdGlvbjogVGVzdCBm
+b3IgdGhlIGludGVncml0eSBvZiBsaW5rLg0KPiA+PiArICogU1VCVEVTVDogbGljLXR5cGUtMA0K
+PiA+PiArICogRGVzY3JpcHRpb246IFRlc3QgZm9yIHRoZSBpbnRlZ3JpdHkgb2YgbGluayBmb3Ig
+dHlwZSAwIGNvbnRlbnQuDQo+ID4+ICsgKg0KPiA+PiArICogU1VCVEVTVDogbGljLXR5cGUtMQ0K
+PiA+PiArICogRGVzY3JpcHRpb246IFRlc3QgZm9yIHRoZSBpbnRlZ3JpdHkgb2YgbGluayBmb3Ig
+dHlwZSAxIGNvbnRlbnQuDQo+ID4+IMKgwqAgKg0KPiANCj4gSW5zdGVhZCBpZiB3cml0aW5nIGRl
+c2NyaXB0aW9uIGxpa2UgdGhpcyB5b3UgY2FuIGFkZCBsaWMtJWFyZ1sxXQ0KPiANCj4gQGFyZ1sx
+XToNCj4gQHR5cGUwOgkJdHlwZS0wDQo+IEB0eXBlMToJCXR5cGUtMQ0KPiANClN1cmUgd2lsbCB1
+cGRhdGUgdGhpcw0KDQo+IENoZWNrIHRoaXMNCj4gaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Au
+b3JnL2RybS9pZ3QtZ3B1LXRvb2xzLy0NCj4gL2Jsb2IvbWFzdGVyL2RvY3MvdGVzdF9kb2N1bWVu
+dGF0aW9uLm1kP3JlZl90eXBlPWhlYWRzDQo+IA0KPiBBbmQgZnVuY3Rpb25hbGl0eSBmb3IgYm90
+aCB0aGVzZSB0ZXN0cyB3aWxsIGJlIGhkY3AxLjQuIElzIHRoaXMgY29ycmVjdD8NCj4gT3IgZG8g
+d2UgbmVlZCB0byBhZGQgaGRjcDIuMiB0b28/DQoNClNvIHR5cGUgMCB3aWxsIHJ1biBvbmx5IGZv
+ciBoZGNwIDEuNCBhbmQgaGRjcCAyLjINCldoaWxlIHR5cGUgMSB3aWxsIHJ1biBmb3Igb25seSBo
+ZGNwIDIuMg0KDQpSZWdhcmRzLA0KU3VyYWogS2FuZHBhbA0KPiBQbGVhc2UgdXBkYXRlIGZ1bmN0
+aW9uYWxpdHkuDQo+IA0KPiA+PiDCoMKgICogU1VCVEVTVDogY29udGVudC10eXBlLWNoYW5nZQ0K
+PiA+PiDCoMKgICogRGVzY3JpcHRpb246IFRlc3QgdGhlIGNvbnRlbnQgdHlwZSBjaGFuZ2Ugd2hl
+biB0aGUgY29udGVudA0KPiA+PiBwcm90ZWN0aW9uIGFscmVhZHkgQEAgLTc4MywxMSArNzg2LDE2
+IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3Qgew0KPiA+PiDCoMKgwqDCoMKgwqDCoCAuY3BfdGVzdHMg
+PSBDUF9EUE1TLA0KPiA+PiDCoMKgwqDCoMKgwqDCoCAuY29udGVudF90eXBlID0gSERDUF9DT05U
+RU5UX1RZUEVfMA0KPiA+PiDCoMKgwqDCoMKgIH0sDQo+ID4+IC3CoMKgwqAgeyAuZGVzYyA9ICJU
+ZXN0IGZvciB0aGUgaW50ZWdyaXR5IG9mIGxpbmsuIiwNCj4gPj4gLcKgwqDCoMKgwqAgLm5hbWUg
+PSAibGljIiwNCj4gPj4gK8KgwqDCoCB7IC5kZXNjID0gIlRlc3QgZm9yIHRoZSBpbnRlZ3JpdHkg
+b2YgbGluayB3aXRoIHR5cGUgMCBjb250ZW50LiIsDQo+ID4+ICvCoMKgwqDCoMKgIC5uYW1lID0g
+ImxpYy10eXBlLTAiLA0KPiA+PiDCoMKgwqDCoMKgwqDCoCAuY3BfdGVzdHMgPSBDUF9MSUMsDQo+
+ID4+IMKgwqDCoMKgwqDCoMKgIC5jb250ZW50X3R5cGUgPSBIRENQX0NPTlRFTlRfVFlQRV8wLA0K
+PiA+PiDCoMKgwqDCoMKgIH0sDQo+ID4+ICvCoMKgwqAgeyAuZGVzYyA9ICJUZXN0IGZvciB0aGUg
+aW50ZWdyaXR5IG9mIGxpbmsgd2l0aCB0eXBlIDEgY29udGVudCIsDQo+ID4+ICvCoMKgwqDCoMKg
+IC5uYW1lID0gImxpYy10eXBlLTEiLA0KPiA+PiArwqDCoMKgwqDCoCAuY3BfdGVzdHMgPSBDUF9M
+SUMsDQo+ID4+ICvCoMKgwqDCoMKgIC5jb250ZW50X3R5cGUgPSBIRENQX0NPTlRFTlRfVFlQRV8x
+LA0KPiA+PiArwqDCoMKgIH0sDQo+ID4+IMKgwqDCoMKgwqAgeyAuZGVzYyA9ICJUZXN0IGNvbnRl
+bnQgcHJvdGVjdGlvbiB3aXRoIGNvbnRlbnQgdHlwZSAxICINCj4gPj4gwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCAidGhhdCBjYW4gYmUgaGFuZGxlZCBvbmx5IHRocm91Z2ggSERDUDIuMi4iLA0KPiA+
+PiDCoMKgwqDCoMKgwqDCoCAubmFtZSA9ICJ0eXBlMSIsDQo=
