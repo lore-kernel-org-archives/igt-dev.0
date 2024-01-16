@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BAA2F10E486
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 11:04:49 +0000 (UTC)
-Message-ID: <b5389ad8-8b98-4c04-b337-e39e7d20f5cb@intel.com>
-Date: Tue, 16 Jan 2024 16:34:43 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3264010E32F
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jan 2024 11:25:40 +0000 (UTC)
+From: Suraj Kandpal <suraj.kandpal@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t] tests/kms_content_protection: Add LIC Type 1 scenario
+Date: Tue, 16 Jan 2024 16:53:35 +0530
+Message-Id: <20240116112335.353869-1-suraj.kandpal@intel.com>
+In-Reply-To: <20240112103330.169688-1-suraj.kandpal@intel.com>
+References: <20240112103330.169688-1-suraj.kandpal@intel.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH i-g-t 2/2] lib/igt_kms: add support for choosing big
- joiner mode
-Content-Language: en-US
-To: Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org
-References: <20240115105854.827266-1-kunal1.joshi@intel.com>
- <20240115105854.827266-3-kunal1.joshi@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20240115105854.827266-3-kunal1.joshi@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,82 +18,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Suraj Kandpal <suraj.kandpal@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kunal,
+Currently LIC is done only for type0 content this patch
+adds LIC for type1 content too.
 
-On 15-Jan-24 4:28 PM, Kunal Joshi wrote:
-> add support to choose big joiner mode with environment
-> variable, use mode with highest clock if no mode with big joiner
-> found.
-> 
-> v2: reuse bigjoiner_mode_found (Bhanu)
-> v3: avoid returning from multiple places (Bhanu)
->      avoid frequent debugfs reads (Bhanu)
-> 
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> ---
->   lib/igt_kms.c | 24 +++++++++++++++++++-----
->   1 file changed, 19 insertions(+), 5 deletions(-)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index cb6d57c2d..2c4210d4b 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -1771,8 +1771,9 @@ void igt_sort_connector_modes(drmModeConnector *connector,
->   bool kmstest_get_connector_default_mode(int drm_fd, drmModeConnector *connector,
->   					drmModeModeInfo *mode)
->   {
-> +	bool found;
->   	char *env;
-> -	int i;
-> +	int i, max_dotclock;
->   
->   	if (!connector->count_modes) {
->   		igt_warn("no modes for connector %d\n",
-> @@ -1781,21 +1782,34 @@ bool kmstest_get_connector_default_mode(int drm_fd, drmModeConnector *connector,
->   	}
->   
->   	env = getenv("IGT_KMS_RESOLUTION");
-> +	max_dotclock = igt_get_max_dotclock(drm_fd);
->   	if (env) {
->   		/*
-> -		 * Only (0 or 1) and (lowest or highest) are allowed.
-> +		 * Only (0 or 1 or 2) and (lowest or highest or joiner) are allowed.
->   		 *
->   		 * 0/lowest: Choose connector mode with lowest possible resolution.
->   		 * 1/highest: Choose connector mode with highest possible resolution.
-> +		 * 2/joiner: Choose connector mode with bigjoiner support or with
-> +			     highest clock if can't support  big joiner
+--v2
+-Use arg[1] [Swati]
+-Mention Functionality [Swati]
 
-Shouldn't this be only joiner mode?
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+---
+ tests/kms_content_protection.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
->   		 */
-> -		if (!strcmp(env, "highest") || !strcmp(env, "1"))
-> +		if (!strcmp(env, "joiner") || !strcmp(env, "2"))
-> +			found = bigjoiner_mode_found(drm_fd, connector,
-> +						     sort_drm_modes_by_clk_dsc,mode,
-> +						     max_dotclock) ||
-> +				bigjoiner_mode_found(drm_fd, connector,
-> +						     sort_drm_modes_by_res_dsc, mode,
-> +						     max_dotclock) ||
-> +				bigjoiner_mode_found(drm_fd, connector,
-> +						     sort_drm_modes_by_clk_dsc, mode,
-> +						     max_dotclock);
-> +		else if (!strcmp(env, "highest") || !strcmp(env, "1"))
->   			igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
->   		else if (!strcmp(env, "lowest") || !strcmp(env, "0"))
->   			igt_sort_connector_modes(connector, sort_drm_modes_by_res_asc);
->   		else
->   			goto default_mode;
-> -
-> -		*mode = connector->modes[0];
-> +		if (!found)
-> +			*mode = connector->modes[0];
->   		return true;
->   	}
->   
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 6d472ee02..7368cb982 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -43,8 +43,14 @@
+ #include "igt_kmod.h"
+ 
+ /**
+- * SUBTEST: lic
+- * Description: Test for the integrity of link.
++ * SUBTEST: lic-%s
++ * Description: Test for the integrity of link for %arg[1] content.
++ * Functionality: hdcp1.4, hdcp2.2
++ *
++ * arg[1]:
++ *
++ * @type-0:	Type 0 with LIC
++ * @type-1:	Type 1 with LIC
+  *
+  * SUBTEST: content-type-change
+  * Description: Test the content type change when the content protection already
+@@ -783,11 +789,16 @@ static const struct {
+ 	  .cp_tests = CP_DPMS,
+ 	  .content_type = HDCP_CONTENT_TYPE_0
+ 	},
+-	{ .desc = "Test for the integrity of link.",
+-	  .name = "lic",
++	{ .desc = "Test for the integrity of link with type 0 content.",
++	  .name = "lic-type-0",
+ 	  .cp_tests = CP_LIC,
+ 	  .content_type = HDCP_CONTENT_TYPE_0,
+ 	},
++	{ .desc = "Test for the integrity of link with type 1 content",
++	  .name = "lic-type-1",
++	  .cp_tests = CP_LIC,
++	  .content_type = HDCP_CONTENT_TYPE_1,
++	},
+ 	{ .desc = "Test content protection with content type 1 "
+ 		  "that can be handled only through HDCP2.2.",
+ 	  .name = "type1",
+-- 
+2.25.1
