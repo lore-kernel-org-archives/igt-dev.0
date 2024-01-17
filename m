@@ -2,9 +2,11 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 From: <vitaly.prosyak@amd.com>
-Subject: [PATCH 1/2] lib/amdgpu: add support for gang cs
-Date: Tue, 16 Jan 2024 23:54:40 -0500
-Message-ID: <20240117045441.256498-1-vitaly.prosyak@amd.com>
+Subject: [PATCH 2/2] tests/amdgpu: add gang cs test
+Date: Tue, 16 Jan 2024 23:54:41 -0500
+Message-ID: <20240117045441.256498-2-vitaly.prosyak@amd.com>
+In-Reply-To: <20240117045441.256498-1-vitaly.prosyak@amd.com>
+References: <20240117045441.256498-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -20,16 +22,17 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 Cc: Alex Deucher <alexander.deucher@amd.com>, Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>, Christian Koenig <christian.koenig@amd.com>
-Message-ID: <20240117045440.Lj9P2laiot2vxh3I9zY_zAQNhCdtKHy8nsdy8bEDx9M@z>
+Message-ID: <20240117045441.BFpXC94T7zn1q91TBvff9rEq3dNKbazzOg22H5HX2yc@z>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-When gang command submission is used we need to add fields
-for the second buf and second pm4 packet.
-
-Add ASIC-dependent implementation of WAIT_REG_MEM used to poll on
-location in the register or memory space until a reference value
-is satisfied.
+Add gang command submission test.
+We submit ibs from different HW IP as a single command.
+The test submits the copy command to the gfx ring and then
+waits for the completion of another copy command to the compute
+ring which takes longer due to its much bigger copy size.
+So the copy commands are executed on COMPUTE and GFX ring as a
+single command from the user.
 
 Cc: Jesse Zhang <jesse.zhang@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
@@ -37,126 +40,262 @@ Cc: Christian Koenig <christian.koenig@amd.com>
 Signed-off-by: Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_ip_blocks.c | 35 +++++++++++++++++++++++++++++++++++
- lib/amdgpu/amd_ip_blocks.h | 20 ++++++++++++++++----
- 2 files changed, 51 insertions(+), 4 deletions(-)
+ tests/amdgpu/amd_gang_cs.c | 229 +++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build   |   6 +-
+ 2 files changed, 234 insertions(+), 1 deletion(-)
+ create mode 100644 tests/amdgpu/amd_gang_cs.c
 
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-index 1adea6987..20264c019 100644
---- a/lib/amdgpu/amd_ip_blocks.c
-+++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -288,6 +288,39 @@ gfx_ring_copy_linear(const struct amdgpu_ip_funcs *func,
- 	return 0;
- }
- 
-+static int
-+gfx_ring_wait_reg_mem(const struct amdgpu_ip_funcs *func,
-+			const struct amdgpu_ring_context *ring_context,
-+			uint32_t *pm4_dw)
-+{
-+	uint32_t i;
+diff --git a/tests/amdgpu/amd_gang_cs.c b/tests/amdgpu/amd_gang_cs.c
+new file mode 100644
+index 000000000..b6aa3940d
+--- /dev/null
++++ b/tests/amdgpu/amd_gang_cs.c
+@@ -0,0 +1,229 @@
++// SPDX-License-Identifier: MIT
++// Copyright 2023 Advanced Micro Devices, Inc.
 +
-+	i = *pm4_dw;
-+	ring_context->pm4[i++] = PACKET3(PACKET3_WAIT_REG_MEM, 5);
-+	ring_context->pm4[i++] = (WAIT_REG_MEM_MEM_SPACE(1) | /* memory */
-+							WAIT_REG_MEM_FUNCTION(3) | /* == */
-+							WAIT_REG_MEM_ENGINE(0));  /* me */
-+	ring_context->pm4[i++] = lower_32_bits(ring_context->bo_mc);
-+	ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
-+	ring_context->pm4[i++] = func->deadbeaf; /* reference value */
-+	ring_context->pm4[i++] = 0xffffffff; /* and mask */
-+	ring_context->pm4[i++] = 0x00000004; /* poll interval */
-+	*pm4_dw = i;
++#include "igt.h"
++#include "drmtest.h"
++#include <amdgpu.h>
++#include <amdgpu_drm.h>
++#include "lib/amdgpu/amd_PM4.h"
++#include "lib/amdgpu/amd_ip_blocks.h"
++#include "lib/amdgpu/amd_memory.h"
 +
-+	return 0;
-+}
++#define IB_SIZE	4096
 +
-+static int
-+sdma_ring_wait_reg_mem(const struct amdgpu_ip_funcs *func,
-+			const struct amdgpu_ring_context *ring_context,
-+			uint32_t *pm4_dw)
++static void
++prepare_compute_cp_packet(amdgpu_device_handle device,
++		struct amdgpu_ring_context *ring_context,
++		const struct amdgpu_ip_block_version *ip_block)
 +{
 +	int r;
 +
-+	r = gfx_ring_wait_reg_mem(func, ring_context, pm4_dw);
-+	return r;
++	/* allocate buffer for compute  ring*/
++	r = amdgpu_bo_alloc_and_map(device,
++					ring_context->write_length * sizeof(uint32_t),
++					IB_SIZE, AMDGPU_GEM_DOMAIN_GTT, 0,
++					&ring_context->bo, (void **)&ring_context->bo_cpu,
++					&ring_context->bo_mc, &ring_context->va_handle);
++	igt_assert_eq(r, 0);
++	memset((void *)ring_context->bo_cpu, 0,
++			ring_context->write_length * sizeof(uint32_t));
++
++	/* allocate buffer for pm4 packet for compute ring*/
++	r = amdgpu_bo_alloc_and_map(device, IB_SIZE + ring_context->write_length *
++					sizeof(uint32_t),
++					IB_SIZE, AMDGPU_GEM_DOMAIN_GTT, 0,
++					&ring_context->bo2, (void **)&ring_context->bo2_cpu,
++					&ring_context->bo_mc2, &ring_context->va_handle2);
++	igt_assert_eq(r, 0);
++
++	memset((void *)ring_context->bo2_cpu, 0,
++				ring_context->write_length * sizeof(uint32_t));
++	/* assign fields used by ASIC dependent function */
++	ring_context->pm4 = (uint32_t *)ring_context->bo2_cpu;
++	ip_block->funcs->write_linear(ip_block->funcs, ring_context,
++				&ring_context->pm4_dw);
 +}
 +
- /* we may cobine these two functions later */
- static int
- x_compare(const struct amdgpu_ip_funcs *func,
-@@ -336,6 +369,7 @@ static struct amdgpu_ip_funcs gfx_v8_x_ip_funcs = {
- 	.compare = x_compare,
- 	.compare_pattern = x_compare_pattern,
- 	.get_reg_offset = gfx_v8_0_get_reg_offset,
-+	.wait_reg_mem = gfx_ring_wait_reg_mem,
- };
- 
- static struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
-@@ -351,6 +385,7 @@ static struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
- 	.compare = x_compare,
- 	.compare_pattern = x_compare_pattern,
- 	.get_reg_offset = gfx_v8_0_get_reg_offset,
-+	.wait_reg_mem = sdma_ring_wait_reg_mem,
- };
- 
- struct amdgpu_ip_block_version gfx_v8_x_ip_block = {
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index aef433e7f..4cad30d1e 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -31,22 +31,31 @@ struct amdgpu_ring_context {
- 	int res_cnt; /* num of bo in amdgpu_bo_handle resources[2] */
- 
- 	uint32_t write_length;  /* length of data */
-+	uint32_t write_length2; /* length of data for second packet */
- 	uint32_t *pm4;		/* data of the packet */
- 	uint32_t pm4_size;	/* max allocated packet size */
- 	bool secure;		/* secure or not */
- 
--	uint64_t bo_mc;		/* result from amdgpu_bo_alloc_and_map */
--	uint64_t bo_mc2;	/* result from amdgpu_bo_alloc_and_map */
-+	uint64_t bo_mc;		/* GPU address of first buffer */
-+	uint64_t bo_mc2;	/* GPU address for p4 packet */
-+	uint64_t bo_mc3;	/* GPU address of second buffer */
-+	uint64_t bo_mc4;	/* GPU address of second p4 packet */
- 
- 	uint32_t pm4_dw;	/* actual size of pm4 */
-+	uint32_t pm4_dw2;	/* actual size of second pm4 */
- 
--	volatile uint32_t *bo_cpu;
--	volatile uint32_t *bo2_cpu;
-+	volatile uint32_t *bo_cpu;	/* cpu adddress of mapped GPU buf */
-+	volatile uint32_t *bo2_cpu;	/* cpu adddress of mapped pm4 */
-+	volatile uint32_t *bo3_cpu;	/* cpu adddress of mapped GPU second buf */
-+	volatile uint32_t *bo4_cpu;	/* cpu adddress of mapped second pm4 */
- 
- 	uint32_t bo_cpu_origin;
- 
- 	amdgpu_bo_handle bo;
- 	amdgpu_bo_handle bo2;
-+	amdgpu_bo_handle bo3;
-+	amdgpu_bo_handle bo4;
++static void
++prepare_gfx_cp_mem_packet(amdgpu_device_handle device,
++		struct amdgpu_ring_context *ring_context,
++		const struct amdgpu_ip_block_version *ip_block)
++{
++	int r;
++	uint32_t write_length;
++	uint64_t bo_mc;
 +
- 	amdgpu_bo_handle boa_vram[2];
- 	amdgpu_bo_handle boa_gtt[2];
- 
-@@ -56,6 +65,8 @@ struct amdgpu_ring_context {
- 	amdgpu_bo_handle resources[4]; /* amdgpu_bo_alloc_and_map */
- 	amdgpu_va_handle va_handle;    /* amdgpu_bo_alloc_and_map */
- 	amdgpu_va_handle va_handle2;   /* amdgpu_bo_alloc_and_map */
-+	amdgpu_va_handle va_handle3;   /* amdgpu_bo_alloc_and_map */
-+	amdgpu_va_handle va_handle4;   /* amdgpu_bo_alloc_and_map */
- 
- 	struct amdgpu_cs_ib_info ib_info;     /* amdgpu_bo_list_create */
- 	struct amdgpu_cs_request ibs_request; /* amdgpu_cs_query_fence_status */
-@@ -76,6 +87,7 @@ struct amdgpu_ip_funcs {
- 	int (*compare)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, int div);
- 	int (*compare_pattern)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, int div);
- 	int (*get_reg_offset)(enum general_reg reg);
-+	int (*wait_reg_mem)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, uint32_t *pm4_dw);
- 
- };
++	/* allocate buffer for gfx  */
++	r = amdgpu_bo_alloc_and_map(device,
++					ring_context->write_length2 * sizeof(uint32_t),
++					IB_SIZE, AMDGPU_GEM_DOMAIN_GTT, 0,
++					&ring_context->bo3, (void **)&ring_context->bo3_cpu,
++					&ring_context->bo_mc3, &ring_context->va_handle3);
++	igt_assert_eq(r, 0);
++	memset((void *)ring_context->bo3_cpu, 0,
++			ring_context->write_length2 * sizeof(uint32_t));
++
++	/* allocate buffer for pm4 packet gfx*/
++	r = amdgpu_bo_alloc_and_map(device,  IB_SIZE + ring_context->write_length2 *
++					sizeof(uint32_t),
++					IB_SIZE, AMDGPU_GEM_DOMAIN_GTT, 0,
++					&ring_context->bo4, (void **)&ring_context->bo4_cpu,
++					&ring_context->bo_mc4, &ring_context->va_handle4);
++	igt_assert_eq(r, 0);
++	memset((void *)ring_context->bo4_cpu, 0,
++			ring_context->write_length2 * sizeof(uint32_t));
++	/* assign fields used by ASIC dependent functions */
++	ring_context->pm4 = (uint32_t *)ring_context->bo4_cpu;
++	bo_mc = ring_context->bo_mc;
++	ring_context->bo_mc = ring_context->bo_mc3;
++	write_length = ring_context->write_length;
++	ring_context->write_length = ring_context->write_length2;
++
++	ip_block->funcs->write_linear(ip_block->funcs, ring_context,
++				&ring_context->pm4_dw2);
++	/* addr -1 of compute buf*/
++	ring_context->bo_mc = bo_mc + (write_length - 1) * 4;
++	ip_block->funcs->wait_reg_mem(ip_block->funcs, ring_context,
++				&ring_context->pm4_dw2);
++	ring_context->bo_mc = bo_mc;
++}
++
++static void
++amdgpu_cs_gang(amdgpu_device_handle device)
++{
++	/* keep as big as ib can hold for compute write data packet so that even
++	 * for powerful gpu, wait_data packet in gfx queue will have need to wait.
++	 */
++	const int sdma_write_length_compute = IB_SIZE * 3;
++	/* keep it small for gfx write data packet so that gfx need to wait for compute */
++	const int sdma_write_length_gfx = 4;
++
++	amdgpu_context_handle context_handle;
++	struct amdgpu_ring_context *ring_context = NULL;
++
++	int r;
++
++	const struct amdgpu_ip_block_version *gfx_ip_block =
++			get_ip_block(device, AMD_IP_GFX);
++	const struct amdgpu_ip_block_version *compute_ip_block =
++			get_ip_block(device, AMD_IP_COMPUTE);
++
++	struct amdgpu_cs_request ibs_request = {0};
++	struct amdgpu_cs_ib_info_gang ib_info_gang[2] = {0};
++	struct amdgpu_cs_fence fence_status = {0};
++	uint32_t expired;
++
++	ring_context = malloc(sizeof(*ring_context));
++	memset(ring_context, 0, sizeof(*ring_context));
++	ring_context->write_length = sdma_write_length_compute;
++	ring_context->write_length2 = sdma_write_length_gfx;
++
++	r = amdgpu_cs_ctx_create(device, &context_handle);
++	igt_assert_eq(r, 0);
++
++	prepare_compute_cp_packet(device, ring_context, compute_ip_block);
++	prepare_gfx_cp_mem_packet(device, ring_context, gfx_ip_block);
++
++	ib_info_gang[0].ib_mc_address = ring_context->bo_mc2; /* pm4 packet addr compute */
++	ib_info_gang[0].size = ring_context->pm4_dw; /*size p4 compute */
++	ib_info_gang[0].ip_type = AMDGPU_HW_IP_COMPUTE;
++	ib_info_gang[0].ip_instance = 0;
++	ib_info_gang[0].ring = 0;
++
++	ib_info_gang[1].ib_mc_address = ring_context->bo_mc4; /* p4 packet addr gfx */
++	ib_info_gang[1].size = ring_context->pm4_dw2;	/* size p4 gfx */
++	ib_info_gang[1].ip_type =  AMDGPU_HW_IP_GFX;
++	ib_info_gang[1].ip_instance = 0;
++	ib_info_gang[1].ring = 0;
++
++	ibs_request.ip_type = AMDGPU_HW_IP_GFX;
++	ibs_request.number_of_ibs = 2;
++	ibs_request.ibs_gang = ib_info_gang;
++	ibs_request.fence_info.handle = NULL;
++
++	r = amdgpu_get_bo_list(device, ring_context->bo4,
++			ring_context->bo2, &ibs_request.resources);
++	igt_assert_eq(r, 0);
++
++	/* submit pm4 packets for gfx and compute as gang */
++	r = amdgpu_cs_submit_gang(context_handle, 0, &ibs_request, 1);
++	igt_assert_eq(r, 0);
++
++	/* wait for fence */
++	fence_status.context = context_handle;
++	fence_status.ip_type = AMDGPU_HW_IP_GFX;
++	fence_status.fence = ibs_request.seq_no;
++	r = amdgpu_cs_wait_fences(&fence_status, 1, 1,
++				  AMDGPU_TIMEOUT_INFINITE,
++				  &expired, NULL);
++	igt_assert_eq(r, 0);
++
++	/* verify compute test result meets with expected */
++
++	ring_context->bo_cpu = ring_context->bo_cpu;
++	ring_context->write_length = sdma_write_length_gfx;
++	gfx_ip_block->funcs->compare(gfx_ip_block->funcs, ring_context, 1);
++
++	ring_context->bo_cpu = ring_context->bo3_cpu;
++	ring_context->write_length = sdma_write_length_compute;
++	compute_ip_block->funcs->compare(compute_ip_block->funcs, ring_context, 1);
++
++
++	amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle,
++			ring_context->bo_mc, sdma_write_length_gfx * sizeof(uint32_t));
++
++	amdgpu_bo_unmap_and_free(ring_context->bo2, ring_context->va_handle2,
++			ring_context->bo_mc2, IB_SIZE);
++
++	amdgpu_bo_unmap_and_free(ring_context->bo3, ring_context->va_handle3,
++			ring_context->bo_mc3, sdma_write_length_compute * sizeof(uint32_t));
++
++	amdgpu_bo_unmap_and_free(ring_context->bo4, ring_context->va_handle4,
++			ring_context->bo_mc4, IB_SIZE);
++
++	r = amdgpu_cs_ctx_free(context_handle);
++	igt_assert_eq(r, 0);
++	free(ring_context);
++}
++
++igt_main
++{
++	amdgpu_device_handle device;
++	struct amdgpu_gpu_info gpu_info = {0};
++	int fd = -1;
++	int r;
++	bool arr_cap[AMD_IP_MAX] = {0};
++
++	igt_fixture {
++		uint32_t major, minor;
++		int err;
++
++		fd = drm_open_driver(DRIVER_AMDGPU);
++
++		err = amdgpu_device_initialize(fd, &major, &minor, &device);
++		igt_require(err == 0);
++
++		igt_info("Initialized amdgpu, driver version %d.%d\n",
++			 major, minor);
++
++		r = amdgpu_query_gpu_info(device, &gpu_info);
++		igt_assert_eq(r, 0);
++		r = setup_amdgpu_ip_blocks(major, minor, &gpu_info, device);
++		igt_assert_eq(r, 0);
++		asic_rings_readness(device, 1, arr_cap);
++
++	}
++
++	igt_describe("Test GPU gang cs for gfx and compute rings");
++	igt_subtest_with_dynamic("amdgpu-cs-gang") {
++		if (arr_cap[AMD_IP_GFX] && arr_cap[AMD_IP_COMPUTE]) {
++			igt_dynamic_f("amdgpu-cs-gang-AMD_IP_GFX-AMD_IP_COMPUTE")
++				amdgpu_cs_gang(device);
++		}
++	}
++
++	igt_fixture {
++		amdgpu_device_deinitialize(device);
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index bbb8edc93..6798668c2 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -54,7 +54,11 @@ if libdrm_amdgpu.found()
+ 	else
+ 		warning('libdrm <= 2.4.109 found, amd_pstate test not applicable')
+ 	endif
+-
++	if libdrm_amdgpu.version().version_compare('> 2.4.120')
++		amdgpu_progs +=[ 'amd_gang_cs', ]
++	else
++		warning('libdrm <= 2.4.120 found, amd_gang_cs test not applicable')
++	endif
+ 	amdgpu_deps += libdrm_amdgpu
+ endif
  
 -- 
 2.25.1
