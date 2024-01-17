@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BC7CF10E6B4
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 16:02:14 +0000 (UTC)
-From: "Golani, Mitulkumar Ajitkumar" <mitulkumar.ajitkumar.golani@intel.com>
-Subject: RE: [i-g-t 1/2] tests/kms_vrr: Enhance flip accuracy measurement
-Date: Wed, 17 Jan 2024 16:00:59 +0000
-Message-ID: <IA1PR11MB634877D74DAD6311F6EF572FB2722@IA1PR11MB6348.namprd11.prod.outlook.com>
-References: <20240117063339.3805517-1-bhanuprakash.modem@intel.com>
- <20240117063339.3805517-2-bhanuprakash.modem@intel.com>
-In-Reply-To: <20240117063339.3805517-2-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF28710E0B0
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 11:28:36 +0000 (UTC)
+Message-ID: <b204fa15-e193-41ba-8b75-afbfebaeaff4@intel.com>
+Date: Wed, 17 Jan 2024 16:58:30 +0530
 MIME-Version: 1.0
+Subject: Re: [PATCH i-g-t] tests/kms_content_protection: Add LIC Type 1
+ scenario
+Content-Language: en-US
+References: <20240112103330.169688-1-suraj.kandpal@intel.com>
+ <20240116112335.353869-1-suraj.kandpal@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20240116112335.353869-1-suraj.kandpal@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,95 +23,71 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Suraj Kandpal <suraj.kandpal@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Suraj,
 
-
-> -----Original Message-----
-> From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> Sent: Wednesday, January 17, 2024 12:04 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Golani,
-> Mitulkumar Ajitkumar <mitulkumar.ajitkumar.golani@intel.com>
-> Subject: [i-g-t 1/2] tests/kms_vrr: Enhance flip accuracy measurement
->=20
-> The threshold of ~50us, which is roughly the difference between 144Hz &
-> 143Hz, to be too high for high refresh rate panels (like
-> 60-360Hz) and too low for low refresh rate panels (like 40-60Hz) when
-> measuring flip accuracy.
->=20
-> Revise the threshold to allow for a deviation of approximately
-> (+/-) 1 Hz will improve the accuracy of flip measurements across a wider
-> range of panel refresh rates.
->=20
-> Cc: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+On 16-Jan-24 4:53 PM, Suraj Kandpal wrote:
+> Currently LIC is done only for type0 content this patch
+> adds LIC for type1 content too.
+> 
+> --v2
+> -Use arg[1] [Swati]
+> -Mention Functionality [Swati]
+> 
+> Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+> Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 > ---
->  tests/kms_vrr.c | 27 ++++++++++++++++-----------
->  1 file changed, 16 insertions(+), 11 deletions(-)
->=20
-> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c index 71fc36162..44bc3480d
-> 100644
-> --- a/tests/kms_vrr.c
-> +++ b/tests/kms_vrr.c
-> @@ -339,10 +339,23 @@ static uint32_t
->  flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
->  		 uint64_t rate_ns, uint64_t duration_ns)  {
-> -	uint64_t start_ns, last_event_ns, target_ns;
-> +	uint64_t start_ns, last_event_ns, target_ns, exp_rate_ns;
->  	uint32_t total_flip =3D 0, total_pass =3D 0;
->  	bool front =3D false;
->  	vtest_ns_t vtest_ns =3D get_test_rate_ns(data->range);
-> +	uint64_t threshold_hi, threshold_lo;
-> +
-> +	if ((rate_ns <=3D vtest_ns.min) && (rate_ns >=3D vtest_ns.max))
-> +		exp_rate_ns =3D rate_ns;
-> +	else
-> +		exp_rate_ns =3D vtest_ns.max;
-> +
-> +	/* Allow ~1 Hz deviation for different reasons causing delay. */
-> +	threshold_hi =3D NSECS_PER_SEC / (((float)NSECS_PER_SEC /
-> exp_rate_ns) + 1);
-> +	threshold_lo =3D NSECS_PER_SEC / (((float)NSECS_PER_SEC /
-> exp_rate_ns) -
-> +1);
-> +
-> +	igt_info("Requested rate: %"PRIu64" ns, Expected rate between:
-> %"PRIu64" ns to %"PRIu64" ns\n",
-> +			rate_ns, threshold_hi, threshold_lo);
->=20
->  	/* Align with the flip completion event to speed up convergence. */
->  	do_flip(data, &data->fb0);
-> @@ -369,18 +382,10 @@ flip_and_measure(data_t *data, igt_output_t
-> *output, enum pipe pipe,
->  		/*
->  		 * Check if the difference between the two flip timestamps
->  		 * was within the required threshold from the expected rate.
-> -		 *
-> -		 * A ~50us threshold is arbitrary, but it's roughly the
-> -		 * difference between 144Hz and 143Hz which should give
-> this
-> -		 * enough accuracy for most use cases.
->  		 */
-> -		if ((rate_ns <=3D vtest_ns.min) && (rate_ns >=3D vtest_ns.max))
-> -			diff_ns =3D rate_ns;
-> -		else
-> -			diff_ns =3D vtest_ns.max;
-> -		diff_ns -=3D event_ns - last_event_ns;
-> +		diff_ns =3D event_ns - last_event_ns;
->=20
-> -		if (llabs(diff_ns) < 50000ll)
-> +		if (llabs(diff_ns) < threshold_lo && llabs(diff_ns) >
-> threshold_hi)
+>   tests/kms_content_protection.c | 19 +++++++++++++++----
+>   1 file changed, 15 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+> index 6d472ee02..7368cb982 100644
+> --- a/tests/kms_content_protection.c
+> +++ b/tests/kms_content_protection.c
+> @@ -43,8 +43,14 @@
+>   #include "igt_kmod.h"
+>   
+>   /**
+> - * SUBTEST: lic
+> - * Description: Test for the integrity of link.
+> + * SUBTEST: lic-%s
+> + * Description: Test for the integrity of link for %arg[1] content.
+> + * Functionality: hdcp1.4, hdcp2.2
+> + *
+> + * arg[1]:
+> + *
+> + * @type-0:	Type 0 with LIC
+> + * @type-1:	Type 1 with LIC
 
-Changes LGTM
-Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+Since both types support different hdcp versions, we need to revert to 
+prev version.
 
->  			total_pass +=3D 1;
->=20
->  		last_event_ns =3D event_ns;
-> --
-> 2.40.0
-
+lic-type-0
+Functionality: hdcp1.4, hdcp2.2
+lic-type-1
+Functionality: hdcp2.2
+>    *
+>    * SUBTEST: content-type-change
+>    * Description: Test the content type change when the content protection already
+> @@ -783,11 +789,16 @@ static const struct {
+>   	  .cp_tests = CP_DPMS,
+>   	  .content_type = HDCP_CONTENT_TYPE_0
+>   	},
+> -	{ .desc = "Test for the integrity of link.",
+> -	  .name = "lic",
+> +	{ .desc = "Test for the integrity of link with type 0 content.",
+> +	  .name = "lic-type-0",
+>   	  .cp_tests = CP_LIC,
+>   	  .content_type = HDCP_CONTENT_TYPE_0,
+>   	},
+> +	{ .desc = "Test for the integrity of link with type 1 content",
+> +	  .name = "lic-type-1",
+> +	  .cp_tests = CP_LIC,
+> +	  .content_type = HDCP_CONTENT_TYPE_1,
+> +	},
+>   	{ .desc = "Test content protection with content type 1 "
+>   		  "that can be handled only through HDCP2.2.",
+>   	  .name = "type1",
 
