@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D2CF010E652
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 09:49:30 +0000 (UTC)
-From: soumya prabhu nidoni <soumya.prabhu.nidoni@intel.com>
-Subject: [PATCH] [i-g-t] lib/kms_psr: Honour PSR OS capability alongside Sink
- capability
-Date: Wed, 17 Jan 2024 15:19:07 +0530
-Message-Id: <20240117094907.401866-1-soumya.prabhu.nidoni@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A0EE910E113
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 14:13:22 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Subject: [PATCH v4 1/3] tests/kms_lease: Cache xe_device info for lease fd
+Date: Wed, 17 Jan 2024 19:43:21 +0530
+Message-Id: <20240117141323.14994-2-mohammed.thasleem@intel.com>
+In-Reply-To: <20240117141323.14994-1-mohammed.thasleem@intel.com>
+References: <20240117141323.14994-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -21,72 +22,58 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Currently IGT code is checking only the Sink Support it's not verifying
-OS capability.So this patch is verifying OS PSR capability.
+In case of xe device for lessor fd, the xe_device struct gets
+created and cached during drm_open. But for the lessee fd,
+the xe_device info struct is not created and cached.
 
-Signed-off-by: soumya prabhu nidoni <soumya.prabhu.nidoni@intel.com>
+This causes problem in prepare_crtc() for lessee with xe, which
+needs the xe_device info struct. So, create and cache the xe_device
+struct info for lease fd, when we make lease and remove it from
+cache while terminating the lease.
+
+v2: -Update description and move logic to make_lease call. (Ankit)
+    -Add xe_device_put, while terminating the lease. (Ankit)
+
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- lib/igt_psr.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ tests/kms_lease.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index 663bac163..f43d46dfb 100644
---- a/lib/igt_psr.c
-+++ b/lib/igt_psr.c
-@@ -208,7 +208,8 @@ bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output
- {
- 	char *line;
- 	char debugfs_file[128] = {0};
--	char buf[PSR_STATUS_MAX_LEN];
-+	char debugfs_file1[128] = {0};
-+	char buf[PSR_STATUS_MAX_LEN], buf1[5000];
- 	int ret;
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index 8ac58af38..f7531c803 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -48,6 +48,8 @@
  
- 	if (output)
-@@ -216,10 +217,16 @@ bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output
- 	else
- 		sprintf(debugfs_file, "%s", "i915_edp_psr_status");
+ #include <drm.h>
+ #include "igt_device.h"
++#include "xe_drm.h"
++#include "xe/xe_query.h"
  
-+	sprintf(debugfs_file1, "%s", "i915_capabilities");
+ /**
+  * SUBTEST: atomic-implicit-crtc
+@@ -267,12 +269,20 @@ static int make_lease(data_t *data)
+ 	if (ret)
+ 		return ret;
+ 
++	/* Cache xe_device struct */
++	if (is_xe_device(data->lease.fd))
++		xe_device_get(data->lease.fd);
 +
- 	ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file, buf,
- 				      sizeof(buf));
- 	if (ret < 1)
- 		return false;
-+	ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file1, buf1,
-+				      sizeof(buf1));
-+	if (ret < 1)
-+		return false;
+ 	data->lease.lessee_id = mcl.lessee_id;
+ 	return 0;
+ }
  
- 	line = strstr(buf, "Sink support: ");
- 	if (!line)
-@@ -227,9 +234,10 @@ bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output
+ static void terminate_lease(int lease_fd)
+ {
++	/* Remove xe_device from cache. */
++	if (is_xe_device(lease_fd))
++		xe_device_put(lease_fd);
++
+ 	close(lease_fd);
+ }
  
- 	switch (mode) {
- 	case PSR_MODE_1:
--		return strstr(line, "PSR = yes") ||
-+		return ((strstr(line, "PSR = yes") ||
- 		       strstr(buf, "Sink_Support: yes\n") ||
--		       strstr(buf, "Sink support: yes");
-+		       strstr(buf, "Sink support: yes")) &&
-+		       strstr(buf1, "i915.enable_psr=1"));
- 	case PSR_MODE_2:
- 	case PSR_MODE_2_SEL_FETCH:
- 		/*
-@@ -240,10 +248,11 @@ bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output
- 		 * PSR version 0x4 that is PSR2 + SU w/ Y-coordinate and SU
- 		 * Region Early Transport to support PSR2 (eDP 1.5)
- 		 */
--		return strstr(buf, "Sink support: yes [0x03]") ||
-+		return ((strstr(buf, "Sink support: yes [0x03]") ||
- 		       strstr(buf, "Sink support: yes [0x04]") ||
- 		       (strstr(line, "PSR = yes") &&
--		       (strstr(line, "[0x03]") || strstr(line, "[0x04]")));
-+		       (strstr(line, "[0x03]") || strstr(line, "[0x04]")))) &&
-+			strstr(buf1, "i915.enable_psr=2"));
- 	case PR_MODE:
- 		return strstr(line, "Panel Replay = yes");
- 	default:
 -- 
 2.25.1
 
