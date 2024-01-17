@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECB0910E6AE
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 13:44:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3911F10E67A
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 13:39:31 +0000 (UTC)
 From: Nirmoy Das <nirmoy.das@intel.com>
-Subject: [PATCH i-g-t v4 1/3] tests/intel: Add xe_exec_atomic test
-Date: Wed, 17 Jan 2024 14:30:47 +0100
-Message-ID: <20240117133050.19605-1-nirmoy.das@intel.com>
+Subject: [PATCH i-g-t v3 1/3] tests/intel: Add xe_exec_atomic test
+Date: Wed, 17 Jan 2024 14:26:08 +0100
+Message-ID: <20240117132612.4836-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
