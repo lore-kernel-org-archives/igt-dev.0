@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7311725150791420758=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5634B10E691
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 13:39:31 +0000 (UTC)
+From: Nirmoy Das <nirmoy.das@intel.com>
+Subject: [PATCH i-g-t v3] tests/xe_spin_batch: Add
+ spin-fixed-duration-with-preempter
+Date: Wed, 17 Jan 2024 14:26:09 +0100
+Message-ID: <20240117132612.4836-2-nirmoy.das@intel.com>
+In-Reply-To: <20240117132612.4836-1-nirmoy.das@intel.com>
+References: <20240117132612.4836-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
- =?utf-8?q?=2C1/3=5D_tests/intel=3A_Add_xe=5Fexec=5Fatomic_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 17 Jan 2024 12:38:53 -0000
-Message-ID: <170549513368.525621.8183579176740596889@5338d5abeb45>
-References: <20240117111234.28312-1-nirmoy.das@intel.com>
-In-Reply-To: <20240117111234.28312-1-nirmoy.das@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,476 +19,212 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Nirmoy Das <nirmoy.das@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Nirmoy Das <nirmoy.das@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7311725150791420758==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add a variation of spin-fixed-duration where the spinners
+gets preempted with a short duration high priority task.
+
+This validates preemption in GPU and xe_spin.
+
+v2-3: rebase
+
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+---
+ tests/intel/xe_spin_batch.c | 127 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 123 insertions(+), 4 deletions(-)
+
+diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
+index c75709c4e..e8dca7826 100644
+--- a/tests/intel/xe_spin_batch.c
++++ b/tests/intel/xe_spin_batch.c
+@@ -136,12 +136,103 @@ static void spin_all(int fd, int gt, int class)
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
++struct data {
++	uint32_t batch[16];
++	uint64_t pad;
++	uint32_t data;
++	uint64_t addr;
++};
++
++static void store_dword_batch(struct data *data, uint64_t addr, int value)
++{
++	int b;
++	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
++	uint64_t batch_addr = addr + batch_offset;
++	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
++	uint64_t sdi_addr = addr + sdi_offset;
++
++	b = 0;
++	data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++	data->batch[b++] = sdi_addr;
++	data->batch[b++] = sdi_addr >> 32;
++	data->batch[b++] = value;
++	data->batch[b++] = MI_BATCH_BUFFER_END;
++	igt_assert(b <= ARRAY_SIZE(data->batch));
++
++	data->addr = batch_addr;
++}
++
++static void preempter(int fd, struct drm_xe_engine_class_instance *hwe)
++{
++	struct drm_xe_sync sync = {
++		.flags = DRM_XE_SYNC_TYPE_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++	struct drm_xe_ext_set_property ext = {
++		.base.next_extension = 0,
++		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
++		.value = 2, /* High priority */
++	};
++	struct data *data;
++	uint32_t vm;
++	uint32_t exec_queue;
++	uint32_t syncobj;
++	size_t bo_size;
++	int value = 0x123456;
++	uint64_t addr = 0x100000;
++	uint32_t bo = 0;
++
++	syncobj = syncobj_create(fd, 0);
++	sync.handle = syncobj;
++
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
++	bo_size = sizeof(*data);
++	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
++			xe_get_default_alignment(fd));
++
++	bo = xe_bo_create(fd, vm, bo_size,
++			  vram_if_possible(fd, hwe->gt_id),
++			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++
++	xe_vm_bind_async(fd, vm, hwe->gt_id, bo, 0, addr, bo_size, &sync, 1);
++	data = xe_bo_map(fd, bo, bo_size);
++	store_dword_batch(data, addr, value);
++
++	exec_queue = xe_exec_queue_create(fd, vm, hwe, to_user_pointer(&ext));
++	exec.exec_queue_id = exec_queue;
++	exec.address = data->addr;
++	sync.flags &= DRM_XE_SYNC_FLAG_SIGNAL;
++	xe_exec(fd, &exec);
++
++	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
++	igt_assert_eq(data->data, value);
++
++	syncobj_destroy(fd, syncobj);
++	munmap(data, bo_size);
++	gem_close(fd, bo);
++
++	xe_exec_queue_destroy(fd, exec_queue);
++	xe_vm_destroy(fd, vm);
++}
++
++#define SPIN_FIX_DURATION_NORMAL		0
++#define SPIN_FIX_DURATION_PREEMPT		1
+ /**
+  * SUBTEST: spin-fixed-duration
+  * Description: Basic test which validates the functionality of xe_spin with fixed duration.
+  * Run type: FULL
+  */
+-static void xe_spin_fixed_duration(int fd)
++/**
++ * SUBTEST: spin-fixed-duration-with-preempter
++ * Description: Basic test which validates the functionality of xe_spin preemption which gets preempted with a short duration high-priority task.
++ * Run type: FULL
++ */
++static void xe_spin_fixed_duration(int fd, int gt, int class, int flags)
+ {
+ 	struct drm_xe_sync sync = {
+ 		.handle = syncobj_create(fd, 0),
+@@ -153,12 +244,20 @@ static void xe_spin_fixed_duration(int fd)
+ 		.num_syncs = 1,
+ 		.syncs = to_user_pointer(&sync),
+ 	};
++	struct drm_xe_ext_set_property ext_prio = {
++		.base.next_extension = 0,
++		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
++		.value = 0, /* Low priority */
++	};
++	struct drm_xe_engine_class_instance *hwe = NULL, *_hwe;
+ 	const uint64_t duration_ns = NSEC_PER_SEC / 10; /* 100ms */
+ 	uint64_t spin_addr;
+ 	uint64_t ahnd;
+ 	uint32_t exec_queue;
+ 	uint32_t vm;
+ 	uint32_t bo;
++	uint64_t ext = 0;
+ 	size_t bo_size;
+ 	struct xe_spin *spin;
+ 	struct timespec tv;
+@@ -166,8 +265,18 @@ static void xe_spin_fixed_duration(int fd)
+ 	igt_stats_t stats;
+ 	int i;
+ 
++	if (flags & SPIN_FIX_DURATION_PREEMPT)
++		ext = to_user_pointer(&ext_prio);
++
++	xe_for_each_engine(fd, _hwe)
++		if (_hwe->engine_class == class && _hwe->gt_id == gt)
++			hwe = _hwe;
++
++	if (!hwe)
++		return;
++
+ 	vm = xe_vm_create(fd, 0, 0);
+-	exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
++	exec_queue = xe_exec_queue_create(fd, vm, hwe, ext);
+ 	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
+ 	bo_size = ALIGN(sizeof(*spin) + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
+ 	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, 0), 0);
+@@ -187,13 +296,17 @@ static void xe_spin_fixed_duration(int fd)
+ 		igt_gettime(&tv);
+ 		xe_exec(fd, &exec);
+ 		xe_spin_wait_started(spin);
++		if (flags & SPIN_FIX_DURATION_PREEMPT)
++			preempter(fd, hwe);
++
+ 		igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
+ 		igt_stats_push_float(&stats, igt_nsec_elapsed(&tv) * 1e-6);
+ 		syncobj_reset(fd, &sync.handle, 1);
+ 		igt_debug("i=%d %.2fms\n", i, stats.values_f[i]);
+ 	}
+ 	elapsed_ms = igt_stats_get_median(&stats);
+-	igt_info("%.0fms spin took %.2fms (median)\n", duration_ns * 1e-6, elapsed_ms);
++	igt_info("%s: %.0fms spin took %.2fms (median)\n", xe_engine_class_string(hwe->engine_class),
++		 duration_ns * 1e-6, elapsed_ms);
+ 	igt_assert(elapsed_ms < duration_ns * 1.5e-6 && elapsed_ms > duration_ns * 0.5e-6);
+ 
+ 	xe_vm_unbind_sync(fd, vm, 0, spin_addr, bo_size);
+@@ -231,7 +344,13 @@ igt_main
+ 	}
+ 
+ 	igt_subtest("spin-fixed-duration")
+-		xe_spin_fixed_duration(fd);
++		xe_spin_fixed_duration(fd, 0, DRM_XE_ENGINE_CLASS_COPY, SPIN_FIX_DURATION_NORMAL);
++
++
++	igt_subtest("spin-fixed-duration-with-preempter")
++		xe_for_each_gt(fd, gt)
++			xe_for_each_engine_class(class)
++				xe_spin_fixed_duration(fd, gt, class, SPIN_FIX_DURATION_PREEMPT);
+ 
+ 	igt_fixture
+ 		drm_close_driver(fd);
+-- 
+2.42.0
 
-== Series Details ==
-
-Series: series starting with [i-g-t,1/3] tests/intel: Add xe_exec_atomic test
-URL   : https://patchwork.freedesktop.org/series/128875/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7677_BAT -> XEIGTPW_10542_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_10542_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * {igt@xe_exec_atomic@basic-dec-all} (NEW):
-    - bat-pvc-2:          NOTRUN -> [INCOMPLETE][1] +1 other test incomplete
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10542/bat-pvc-2/igt@xe_exec_atomic@basic-dec-all.html
-
-  
-New tests
----------
-
-  New tests have been introduced between XEIGT_7677_BAT and XEIGTPW_10542_BAT:
-
-### New IGT tests (30) ###
-
-  * igt@xe_exec_atomic@basic-dec-all:
-    - Statuses : 1 incomplete(s) 3 pass(s)
-    - Exec time: [0.0, 0.08] s
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_compute-instance-0-tile-0-system-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_compute-instance-0-tile-0-vram0-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_copy-instance-0-tile-0-system-memory:
-    - Statuses : 4 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_copy-instance-0-tile-0-vram0-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_render-instance-0-tile-0-system-memory:
-    - Statuses : 3 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_render-instance-0-tile-0-vram0-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_decode-instance-0-tile-0-system-memory:
-    - Statuses : 3 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_decode-instance-0-tile-0-vram0-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_decode-instance-1-tile-0-system-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_decode-instance-1-tile-0-vram0-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_enhance-instance-0-tile-0-system-memory:
-    - Statuses : 3 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_enhance-instance-0-tile-0-vram0-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_enhance-instance-1-tile-0-system-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_enhance-instance-1-tile-0-vram0-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-inc-all:
-    - Statuses : 1 incomplete(s) 3 pass(s)
-    - Exec time: [0.0, 0.07] s
-
-  * igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_compute-instance-0-tile-0-system-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_compute-instance-0-tile-0-vram0-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_copy-instance-0-tile-0-system-memory:
-    - Statuses : 4 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_copy-instance-0-tile-0-vram0-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_render-instance-0-tile-0-system-memory:
-    - Statuses : 3 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_render-instance-0-tile-0-vram0-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_decode-instance-0-tile-0-system-memory:
-    - Statuses : 3 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_decode-instance-0-tile-0-vram0-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_decode-instance-1-tile-0-system-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_decode-instance-1-tile-0-vram0-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_enhance-instance-0-tile-0-system-memory:
-    - Statuses : 3 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_enhance-instance-0-tile-0-vram0-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_enhance-instance-1-tile-0-system-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_enhance-instance-1-tile-0-vram0-memory:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  
-
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-
-
-Build changes
--------------
-
-  * IGT: IGT_7677 -> IGTPW_10542
-
-  IGTPW_10542: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10542/index.html
-  IGT_7677: 57ed393a5b5d04e985f9950a7f1546fc95f4001e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-638-802f9a6662f7ad62bf92457f62a5d42c7249bb5c: 802f9a6662f7ad62bf92457f62a5d42c7249bb5c
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10542/index.html
-
---===============7311725150791420758==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/3] tests/intel: Add xe_exec_atomic test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128875/">https://patchwork.freedesktop.org/series/128875/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10542/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10542/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7677_BAT -&gt; XEIGTPW_10542_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_10542_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>{igt@xe_exec_atomic@basic-dec-all} (NEW):<ul>
-<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10542/bat-pvc-2/igt@xe_exec_atomic@basic-dec-all.html">INCOMPLETE</a> +1 other test incomplete</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between XEIGT_7677_BAT and XEIGTPW_10542_BAT:</p>
-<h3>New IGT tests (30)</h3>
-<ul>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all:</p>
-<ul>
-<li>Statuses : 1 incomplete(s) 3 pass(s)</li>
-<li>Exec time: [0.0, 0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_compute-instance-0-tile-0-system-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_compute-instance-0-tile-0-vram0-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_copy-instance-0-tile-0-system-memory:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_copy-instance-0-tile-0-vram0-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_render-instance-0-tile-0-system-memory:</p>
-<ul>
-<li>Statuses : 3 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_render-instance-0-tile-0-vram0-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_decode-instance-0-tile-0-system-memory:</p>
-<ul>
-<li>Statuses : 3 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_decode-instance-0-tile-0-vram0-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_decode-instance-1-tile-0-system-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_decode-instance-1-tile-0-vram0-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_enhance-instance-0-tile-0-system-memory:</p>
-<ul>
-<li>Statuses : 3 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_enhance-instance-0-tile-0-vram0-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_enhance-instance-1-tile-0-system-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_video_enhance-instance-1-tile-0-vram0-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all:</p>
-<ul>
-<li>Statuses : 1 incomplete(s) 3 pass(s)</li>
-<li>Exec time: [0.0, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_compute-instance-0-tile-0-system-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_compute-instance-0-tile-0-vram0-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_copy-instance-0-tile-0-system-memory:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_copy-instance-0-tile-0-vram0-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_render-instance-0-tile-0-system-memory:</p>
-<ul>
-<li>Statuses : 3 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_render-instance-0-tile-0-vram0-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_decode-instance-0-tile-0-system-memory:</p>
-<ul>
-<li>Statuses : 3 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_decode-instance-0-tile-0-vram0-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_decode-instance-1-tile-0-system-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_decode-instance-1-tile-0-vram0-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_enhance-instance-0-tile-0-system-memory:</p>
-<ul>
-<li>Statuses : 3 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_enhance-instance-0-tile-0-vram0-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_enhance-instance-1-tile-0-system-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_video_enhance-instance-1-tile-0-vram0-memory:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7677 -&gt; IGTPW_10542</li>
-</ul>
-<p>IGTPW_10542: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10542/index.html<br />
-  IGT_7677: 57ed393a5b5d04e985f9950a7f1546fc95f4001e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-638-802f9a6662f7ad62bf92457f62a5d42c7249bb5c: 802f9a6662f7ad62bf92457f62a5d42c7249bb5c</p>
-
-</body>
-</html>
-
---===============7311725150791420758==--
 
