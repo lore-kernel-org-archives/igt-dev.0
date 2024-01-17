@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3911F10E67A
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 13:39:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 978DE10E650
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 11:25:55 +0000 (UTC)
 From: Nirmoy Das <nirmoy.das@intel.com>
-Subject: [PATCH i-g-t v3 1/3] tests/intel: Add xe_exec_atomic test
-Date: Wed, 17 Jan 2024 14:26:08 +0100
-Message-ID: <20240117132612.4836-1-nirmoy.das@intel.com>
+Subject: [PATCH i-g-t 1/3] tests/intel: Add xe_exec_atomic test
+Date: Wed, 17 Jan 2024 12:12:31 +0100
+Message-ID: <20240117111234.28312-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -32,9 +32,9 @@ Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
 Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 ---
  lib/intel_reg.h              |   1 +
- tests/intel/xe_exec_atomic.c | 174 +++++++++++++++++++++++++++++++++++
+ tests/intel/xe_exec_atomic.c | 170 +++++++++++++++++++++++++++++++++++
  tests/meson.build            |   1 +
- 3 files changed, 176 insertions(+)
+ 3 files changed, 172 insertions(+)
  create mode 100644 tests/intel/xe_exec_atomic.c
 
 diff --git a/lib/intel_reg.h b/lib/intel_reg.h
@@ -51,10 +51,10 @@ index a8190d683..26833c66f 100644
  /* Batch */
 diff --git a/tests/intel/xe_exec_atomic.c b/tests/intel/xe_exec_atomic.c
 new file mode 100644
-index 000000000..a21def999
+index 000000000..630ae6db0
 --- /dev/null
 +++ b/tests/intel/xe_exec_atomic.c
-@@ -0,0 +1,174 @@
+@@ -0,0 +1,170 @@
 +/* SPDX-License-Identifier: MIT */
 +/*
 +* Copyright © 2024 Intel Corporation
@@ -171,8 +171,7 @@ index 000000000..a21def999
 +static bool has_atomics(int fd, uint32_t region)
 +{
 +	/* System memory atomics on PVC doesn't work */
-+	if (region == system_memory(fd) &&
-+	    IS_PONTEVECCHIO(intel_get_drm_devid(fd)))
++	if (region == system_memory(fd) && IS_PONTEVECCHIO(fd))
 +		return false;
 +
 +	return true;
@@ -188,42 +187,39 @@ index 000000000..a21def999
 +		xe_device_get(fd);
 +	}
 +
-+	igt_subtest_with_dynamic("basic-dec-all") {
-+		xe_for_each_engine(fd, hwe) {
-+			uint64_t memreg = all_memory_regions(fd), region;
-+
-+			xe_for_each_mem_region(fd, memreg, region) {
-+
-+				igt_dynamic_f("Engine-%s-Instance-%d-Tile-%d-%s-memory",
-+					      xe_engine_class_string(hwe->engine_class),
-+					      hwe->engine_instance,
-+					      hwe->gt_id, xe_region_name(region)) {
-+
-+					igt_skip_on(!has_atomics(fd, region));
-+					basic_inst(fd, MI_ATOMIC_DEC, hwe, region);
-+				}
-+			}
-+		}
-+	}
-+
 +	igt_subtest_with_dynamic("basic-inc-all") {
 +		xe_for_each_engine(fd, hwe) {
 +			uint64_t memreg = all_memory_regions(fd), region;
 +
 +			xe_for_each_mem_region(fd, memreg, region) {
++				if (region == system_memory(fd))
++					igt_skip_on(!has_atomics(fd, region));
 +
 +				igt_dynamic_f("Engine-%s-Instance-%d-Tile-%d-%s-memory",
 +					      xe_engine_class_string(hwe->engine_class),
 +					      hwe->engine_instance,
-+					      hwe->gt_id, xe_region_name(region)) {
-+
-+					igt_skip_on(!has_atomics(fd, region));
-+					basic_inst(fd, MI_ATOMIC_INC, hwe, region);
-+				}
++					      hwe->gt_id, xe_region_name(region));
++				basic_inst(fd, MI_ATOMIC_INC, hwe, region);
 +			}
 +		}
 +	}
 +
++	igt_subtest_with_dynamic("basic-dec-all") {
++		xe_for_each_engine(fd, hwe) {
++			uint64_t memreg = all_memory_regions(fd), region;
++
++			xe_for_each_mem_region(fd, memreg, region) {
++				if (region == system_memory(fd))
++					igt_skip_on(!has_atomics(fd, region));
++
++				igt_dynamic_f("Engine-%s-Instance-%d-Tile-%d-%s-memory",
++					      xe_engine_class_string(hwe->engine_class),
++					      hwe->engine_instance,
++					      hwe->gt_id, xe_region_name(region));
++				basic_inst(fd, MI_ATOMIC_DEC, hwe, region);
++			}
++		}
++	}
 +	igt_fixture {
 +		xe_device_put(fd);
 +		close(fd);
