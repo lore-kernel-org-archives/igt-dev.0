@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Message-ID: <8573f07f-aa61-4e30-90f1-97c9f76ef9b4@intel.com>
-Date: Wed, 17 Jan 2024 18:40:11 +0100
-Subject: Re: [PATCH i-g-t v4 3/3] tests/intel-ci: Add mi_atomic test to
- fast-feedback
+Message-ID: <2012b655-b96d-4782-9d69-92666bb57060@intel.com>
+Date: Wed, 17 Jan 2024 23:46:30 +0530
+Subject: Re: [PATCH 1/2] lib/igt_kms: add helpers for big joiner debugfs
 Content-Language: en-US
-References: <20240117133050.19605-1-nirmoy.das@intel.com>
- <20240117133050.19605-3-nirmoy.das@intel.com>
- <20240117171327.dcgqvtuitm67ydtr@kamilkon-desk.igk.intel.com>
-From: Nirmoy Das <nirmoy.das@intel.com>
-In-Reply-To: <20240117171327.dcgqvtuitm67ydtr@kamilkon-desk.igk.intel.com>
+References: <20240110113906.523857-1-kunal1.joshi@intel.com>
+ <20240110113906.523857-2-kunal1.joshi@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20240110113906.523857-2-kunal1.joshi@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
@@ -24,49 +22,131 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, igt-dev@lists.freedesktop.org
-Message-ID: <20240117174011.bK5h07o_r15rSYGGkSNmTsmwf2rcoaxbrbE2vKcjjy8@z>
+To: Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org, Swati Sharma <swati2.sharma@intel.com>
+Message-ID: <20240117181630.PoRijRbZ0viwqBu9Qlf_qd2oAuVLH4_kDK-K7UdydqA@z>
 
 
-On 1/17/2024 6:13 PM, Kamil Konieczny wrote:
-> Hi Nirmoy,
-> On 2024-01-17 at 14:30:49 +0100, Nirmoy Das wrote:
->> Add this basic functionality test the fast feedback list.
->>
->> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
->> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->> ---
->>   tests/intel-ci/xe-fast-feedback.testlist | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
->> index bef5b0b8a..da79c76b4 100644
->> --- a/tests/intel-ci/xe-fast-feedback.testlist
->> +++ b/tests/intel-ci/xe-fast-feedback.testlist
->> @@ -29,6 +29,8 @@ igt@xe_evict@evict-small-multi-vm-cm
->>   igt@xe_evict@evict-threads-small
->>   igt@xe_evict_ccs@evict-overcommit-simple
->>   igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd
->> +igt@xe_exec_atomic@basic-inc-all
->> +igt@xe_exec_atomic@basic-dec-all
-> Now test itself is in correct place but -dec- should be before -inc-.
-I did that locally but didn't commit that change :/
->
-> This can be corrected at merge.
+On 10-01-2024 05:09 pm, Kunal Joshi wrote:
+> From: Swati Sharma <swati2.sharma@intel.com>
+> 
+> Add helpers for big joiner debugfs.
+> 
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> ---
+>   lib/igt_kms.c | 75 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>   lib/igt_kms.h |  3 +++
+>   2 files changed, 78 insertions(+)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index e4dea1a60..0208eccc4 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -6368,3 +6368,78 @@ int get_num_scalers(int drm_fd, enum pipe pipe)
+>   
+>   	return num_scalers;
+>   }
+> +
+> +static int write_bigjoiner_debugfs(int drmfd, char *connector_name, const char *file_name,
+> +				   const char *write_buf)
 
-I will resend as I have to do that anyway for the patch2
+IMHO, we need to drop this static function and move the logic to 
+igt_force_bigjoiner_enable()
 
-Thanks,
+> +{
+> +	int debugfs_fd = igt_debugfs_dir(drmfd);
+> +	int len = strlen(write_buf);
+> +	int ret;
+> +	char file_path[128] = {0};
+> +
+> +	sprintf(file_path, "%s/%s", connector_name, file_name);
+> +
+> +	ret = igt_sysfs_write(debugfs_fd, file_path, write_buf, len);
+> +
+> +	close(debugfs_fd);
+> +
+> +	if (ret > 0)
+> +		return 0;
+> +
+> +	return ret;
+> +}
+> +
+> +static bool check_bigjoiner_debugfs(int drmfd, char *connector_name,
+> +				    const char *check_str)
 
-Nirmoy
+we need to drop this static function and move the logic to 
+igt_is_force_bigjoiner_enabled()
 
->
-> Regards,
-> Kamil
->
->>   igt@xe_exec_balancer@twice-virtual-basic
->>   igt@xe_exec_balancer@no-exec-virtual-basic
->>   igt@xe_exec_balancer@twice-cm-virtual-basic
->> -- 
->> 2.42.0
->>
+> +{
+> +	char file_name[128] = {0};
+> +	char buf[512];
+> +
+> +	sprintf(file_name, "%s/i915_bigjoiner_force_enable", connector_name);
+> +
+> +	igt_debugfs_read(drmfd, file_name, buf);
+> +
+> +	return strstr(buf, check_str);
+> +}
+> +
+> +/**
+> + * igt_is_force_bigjoiner_enabled:
+> + * @drmfd: A drm file descriptor
+> + * @connector_name: Name of the libdrm connector we're going to use
+> + *
+> + * Returns: True if Big Joiner is force enabled (via debugfs) for the given connector,
+> + * false otherwise.
+> + */
+> +bool igt_is_force_bigjoiner_enabled(int drmfd, char *connector_name)
+> +{
+> +	return check_bigjoiner_debugfs(drmfd, connector_name, "Bigjoiner enable: 1");
+> +}
+> +
+> +/**
+> + * igt_force_bigjoiner_enable:
+> + * @drmfd: A drm file descriptor
+> + * @connector_name: Name of the libdrm connector we're going to use
+> + *
+> + * Returns: 0 on success or negative error code, in case of failure.
+> + */
+> +int igt_force_bigjoiner_enable(int drmfd, char *connector_name, bool enable)
+> +{
+> +	return write_bigjoiner_debugfs(drmfd, connector_name, "i915_bigjoiner_force_enable", enable ? "1" : "0");
+> +}
+> +
+> +/**
+> + * igt_get_bigjoiner_debugfs_fd:
+
+Not understood the purpose of this helper.
+
+igt_debugfs_connector_dir() will give the directory fd, then we can 
+perform igt_debugfs_simple_read() or igt_sysfs_write() with that fd.
+
+- Bhanu
+
+> + * @drmfd: A drm file descriptor
+> + * @connector_name: Name of the libdrm connector we're going to use
+> + *
+> + * Returns: fd of the Big Joiner debugfs for the given connector,
+> + * else returns -1.
+> + */
+> +int igt_get_bigjoiner_debugfs_fd(int drmfd, char *connector_name)
+> +{
+> +	char file_name[128] = {0};
+> +
+> +	sprintf(file_name, "%s/i915_bigjoiner_force_enable", connector_name);
+> +
+> +	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
+> +}
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index b3882808b..2d000d54d 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -1218,5 +1218,8 @@ bool intel_pipe_output_combo_valid(igt_display_t *display);
+>   bool igt_check_output_is_dp_mst(igt_output_t *output);
+>   int igt_get_dp_mst_connector_id(igt_output_t *output);
+>   int get_num_scalers(int drm_fd, enum pipe pipe);
+> +bool igt_is_force_bigjoiner_enabled(int drmfd, char *connector_name);
+> +int igt_force_bigjoiner_enable(int drmfd, char *connector_name, bool enable);
+> +int igt_get_bigjoiner_debugfs_fd(int drmfd, char *connector_name);
+>   
+>   #endif /* __IGT_KMS_H__ */
