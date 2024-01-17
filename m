@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-From: <vitaly.prosyak@amd.com>
-Subject: [PATCH 2/2] tests/amdgpu: add gang cs test
-Date: Tue, 16 Jan 2024 23:54:41 -0500
-Message-ID: <20240117045441.256498-2-vitaly.prosyak@amd.com>
-In-Reply-To: <20240117045441.256498-1-vitaly.prosyak@amd.com>
-References: <20240117045441.256498-1-vitaly.prosyak@amd.com>
-MIME-Version: 1.0
+Message-ID: <8fbaa612-67e2-4d7d-9f0b-eefd394ddf93@intel.com>
+Date: Wed, 17 Jan 2024 11:14:43 +0530
+Subject: Re: [PATCH i-g-t 2/2] lib/igt_kms: add support for choosing big
+ joiner mode
+Content-Language: en-US
+References: <20240115105854.827266-1-kunal1.joshi@intel.com>
+ <20240115105854.827266-3-kunal1.joshi@intel.com>
+ <b5389ad8-8b98-4c04-b337-e39e7d20f5cb@intel.com>
+ <0173fd3b-cf12-4aa1-977e-a994af9c91b0@intel.com>
+ <6f95475b-1d5c-43ba-9fe3-310475ef7898@intel.com>
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <6f95475b-1d5c-43ba-9fe3-310475ef7898@intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,282 +26,112 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Alex Deucher <alexander.deucher@amd.com>, Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>, Christian Koenig <christian.koenig@amd.com>
-Message-ID: <20240117045441.BFpXC94T7zn1q91TBvff9rEq3dNKbazzOg22H5HX2yc@z>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
+Message-ID: <20240117054443.psQ18Ppcljyne8Xrm3a2h7dlf4rAeczRF8e8pikZ8e8@z>
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Hello Swati,
 
-Add gang command submission test.
-We submit ibs from different HW IP as a single command.
-The test submits the copy command to the gfx ring and then
-waits for the completion of another copy command to the compute
-ring which takes longer due to its much bigger copy size.
-So the copy commands are executed on COMPUTE and GFX ring as a
-single command from the user.
-
-Cc: Jesse Zhang <jesse.zhang@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Signed-off-by: Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
----
- tests/amdgpu/amd_gang_cs.c | 229 +++++++++++++++++++++++++++++++++++++
- tests/amdgpu/meson.build   |   6 +-
- 2 files changed, 234 insertions(+), 1 deletion(-)
- create mode 100644 tests/amdgpu/amd_gang_cs.c
-
-diff --git a/tests/amdgpu/amd_gang_cs.c b/tests/amdgpu/amd_gang_cs.c
-new file mode 100644
-index 000000000..b6aa3940d
---- /dev/null
-+++ b/tests/amdgpu/amd_gang_cs.c
-@@ -0,0 +1,229 @@
-+// SPDX-License-Identifier: MIT
-+// Copyright 2023 Advanced Micro Devices, Inc.
-+
-+#include "igt.h"
-+#include "drmtest.h"
-+#include <amdgpu.h>
-+#include <amdgpu_drm.h>
-+#include "lib/amdgpu/amd_PM4.h"
-+#include "lib/amdgpu/amd_ip_blocks.h"
-+#include "lib/amdgpu/amd_memory.h"
-+
-+#define IB_SIZE	4096
-+
-+static void
-+prepare_compute_cp_packet(amdgpu_device_handle device,
-+		struct amdgpu_ring_context *ring_context,
-+		const struct amdgpu_ip_block_version *ip_block)
-+{
-+	int r;
-+
-+	/* allocate buffer for compute  ring*/
-+	r = amdgpu_bo_alloc_and_map(device,
-+					ring_context->write_length * sizeof(uint32_t),
-+					IB_SIZE, AMDGPU_GEM_DOMAIN_GTT, 0,
-+					&ring_context->bo, (void **)&ring_context->bo_cpu,
-+					&ring_context->bo_mc, &ring_context->va_handle);
-+	igt_assert_eq(r, 0);
-+	memset((void *)ring_context->bo_cpu, 0,
-+			ring_context->write_length * sizeof(uint32_t));
-+
-+	/* allocate buffer for pm4 packet for compute ring*/
-+	r = amdgpu_bo_alloc_and_map(device, IB_SIZE + ring_context->write_length *
-+					sizeof(uint32_t),
-+					IB_SIZE, AMDGPU_GEM_DOMAIN_GTT, 0,
-+					&ring_context->bo2, (void **)&ring_context->bo2_cpu,
-+					&ring_context->bo_mc2, &ring_context->va_handle2);
-+	igt_assert_eq(r, 0);
-+
-+	memset((void *)ring_context->bo2_cpu, 0,
-+				ring_context->write_length * sizeof(uint32_t));
-+	/* assign fields used by ASIC dependent function */
-+	ring_context->pm4 = (uint32_t *)ring_context->bo2_cpu;
-+	ip_block->funcs->write_linear(ip_block->funcs, ring_context,
-+				&ring_context->pm4_dw);
-+}
-+
-+static void
-+prepare_gfx_cp_mem_packet(amdgpu_device_handle device,
-+		struct amdgpu_ring_context *ring_context,
-+		const struct amdgpu_ip_block_version *ip_block)
-+{
-+	int r;
-+	uint32_t write_length;
-+	uint64_t bo_mc;
-+
-+	/* allocate buffer for gfx  */
-+	r = amdgpu_bo_alloc_and_map(device,
-+					ring_context->write_length2 * sizeof(uint32_t),
-+					IB_SIZE, AMDGPU_GEM_DOMAIN_GTT, 0,
-+					&ring_context->bo3, (void **)&ring_context->bo3_cpu,
-+					&ring_context->bo_mc3, &ring_context->va_handle3);
-+	igt_assert_eq(r, 0);
-+	memset((void *)ring_context->bo3_cpu, 0,
-+			ring_context->write_length2 * sizeof(uint32_t));
-+
-+	/* allocate buffer for pm4 packet gfx*/
-+	r = amdgpu_bo_alloc_and_map(device,  IB_SIZE + ring_context->write_length2 *
-+					sizeof(uint32_t),
-+					IB_SIZE, AMDGPU_GEM_DOMAIN_GTT, 0,
-+					&ring_context->bo4, (void **)&ring_context->bo4_cpu,
-+					&ring_context->bo_mc4, &ring_context->va_handle4);
-+	igt_assert_eq(r, 0);
-+	memset((void *)ring_context->bo4_cpu, 0,
-+			ring_context->write_length2 * sizeof(uint32_t));
-+	/* assign fields used by ASIC dependent functions */
-+	ring_context->pm4 = (uint32_t *)ring_context->bo4_cpu;
-+	bo_mc = ring_context->bo_mc;
-+	ring_context->bo_mc = ring_context->bo_mc3;
-+	write_length = ring_context->write_length;
-+	ring_context->write_length = ring_context->write_length2;
-+
-+	ip_block->funcs->write_linear(ip_block->funcs, ring_context,
-+				&ring_context->pm4_dw2);
-+	/* addr -1 of compute buf*/
-+	ring_context->bo_mc = bo_mc + (write_length - 1) * 4;
-+	ip_block->funcs->wait_reg_mem(ip_block->funcs, ring_context,
-+				&ring_context->pm4_dw2);
-+	ring_context->bo_mc = bo_mc;
-+}
-+
-+static void
-+amdgpu_cs_gang(amdgpu_device_handle device)
-+{
-+	/* keep as big as ib can hold for compute write data packet so that even
-+	 * for powerful gpu, wait_data packet in gfx queue will have need to wait.
-+	 */
-+	const int sdma_write_length_compute = IB_SIZE * 3;
-+	/* keep it small for gfx write data packet so that gfx need to wait for compute */
-+	const int sdma_write_length_gfx = 4;
-+
-+	amdgpu_context_handle context_handle;
-+	struct amdgpu_ring_context *ring_context = NULL;
-+
-+	int r;
-+
-+	const struct amdgpu_ip_block_version *gfx_ip_block =
-+			get_ip_block(device, AMD_IP_GFX);
-+	const struct amdgpu_ip_block_version *compute_ip_block =
-+			get_ip_block(device, AMD_IP_COMPUTE);
-+
-+	struct amdgpu_cs_request ibs_request = {0};
-+	struct amdgpu_cs_ib_info_gang ib_info_gang[2] = {0};
-+	struct amdgpu_cs_fence fence_status = {0};
-+	uint32_t expired;
-+
-+	ring_context = malloc(sizeof(*ring_context));
-+	memset(ring_context, 0, sizeof(*ring_context));
-+	ring_context->write_length = sdma_write_length_compute;
-+	ring_context->write_length2 = sdma_write_length_gfx;
-+
-+	r = amdgpu_cs_ctx_create(device, &context_handle);
-+	igt_assert_eq(r, 0);
-+
-+	prepare_compute_cp_packet(device, ring_context, compute_ip_block);
-+	prepare_gfx_cp_mem_packet(device, ring_context, gfx_ip_block);
-+
-+	ib_info_gang[0].ib_mc_address = ring_context->bo_mc2; /* pm4 packet addr compute */
-+	ib_info_gang[0].size = ring_context->pm4_dw; /*size p4 compute */
-+	ib_info_gang[0].ip_type = AMDGPU_HW_IP_COMPUTE;
-+	ib_info_gang[0].ip_instance = 0;
-+	ib_info_gang[0].ring = 0;
-+
-+	ib_info_gang[1].ib_mc_address = ring_context->bo_mc4; /* p4 packet addr gfx */
-+	ib_info_gang[1].size = ring_context->pm4_dw2;	/* size p4 gfx */
-+	ib_info_gang[1].ip_type =  AMDGPU_HW_IP_GFX;
-+	ib_info_gang[1].ip_instance = 0;
-+	ib_info_gang[1].ring = 0;
-+
-+	ibs_request.ip_type = AMDGPU_HW_IP_GFX;
-+	ibs_request.number_of_ibs = 2;
-+	ibs_request.ibs_gang = ib_info_gang;
-+	ibs_request.fence_info.handle = NULL;
-+
-+	r = amdgpu_get_bo_list(device, ring_context->bo4,
-+			ring_context->bo2, &ibs_request.resources);
-+	igt_assert_eq(r, 0);
-+
-+	/* submit pm4 packets for gfx and compute as gang */
-+	r = amdgpu_cs_submit_gang(context_handle, 0, &ibs_request, 1);
-+	igt_assert_eq(r, 0);
-+
-+	/* wait for fence */
-+	fence_status.context = context_handle;
-+	fence_status.ip_type = AMDGPU_HW_IP_GFX;
-+	fence_status.fence = ibs_request.seq_no;
-+	r = amdgpu_cs_wait_fences(&fence_status, 1, 1,
-+				  AMDGPU_TIMEOUT_INFINITE,
-+				  &expired, NULL);
-+	igt_assert_eq(r, 0);
-+
-+	/* verify compute test result meets with expected */
-+
-+	ring_context->bo_cpu = ring_context->bo_cpu;
-+	ring_context->write_length = sdma_write_length_gfx;
-+	gfx_ip_block->funcs->compare(gfx_ip_block->funcs, ring_context, 1);
-+
-+	ring_context->bo_cpu = ring_context->bo3_cpu;
-+	ring_context->write_length = sdma_write_length_compute;
-+	compute_ip_block->funcs->compare(compute_ip_block->funcs, ring_context, 1);
-+
-+
-+	amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle,
-+			ring_context->bo_mc, sdma_write_length_gfx * sizeof(uint32_t));
-+
-+	amdgpu_bo_unmap_and_free(ring_context->bo2, ring_context->va_handle2,
-+			ring_context->bo_mc2, IB_SIZE);
-+
-+	amdgpu_bo_unmap_and_free(ring_context->bo3, ring_context->va_handle3,
-+			ring_context->bo_mc3, sdma_write_length_compute * sizeof(uint32_t));
-+
-+	amdgpu_bo_unmap_and_free(ring_context->bo4, ring_context->va_handle4,
-+			ring_context->bo_mc4, IB_SIZE);
-+
-+	r = amdgpu_cs_ctx_free(context_handle);
-+	igt_assert_eq(r, 0);
-+	free(ring_context);
-+}
-+
-+igt_main
-+{
-+	amdgpu_device_handle device;
-+	struct amdgpu_gpu_info gpu_info = {0};
-+	int fd = -1;
-+	int r;
-+	bool arr_cap[AMD_IP_MAX] = {0};
-+
-+	igt_fixture {
-+		uint32_t major, minor;
-+		int err;
-+
-+		fd = drm_open_driver(DRIVER_AMDGPU);
-+
-+		err = amdgpu_device_initialize(fd, &major, &minor, &device);
-+		igt_require(err == 0);
-+
-+		igt_info("Initialized amdgpu, driver version %d.%d\n",
-+			 major, minor);
-+
-+		r = amdgpu_query_gpu_info(device, &gpu_info);
-+		igt_assert_eq(r, 0);
-+		r = setup_amdgpu_ip_blocks(major, minor, &gpu_info, device);
-+		igt_assert_eq(r, 0);
-+		asic_rings_readness(device, 1, arr_cap);
-+
-+	}
-+
-+	igt_describe("Test GPU gang cs for gfx and compute rings");
-+	igt_subtest_with_dynamic("amdgpu-cs-gang") {
-+		if (arr_cap[AMD_IP_GFX] && arr_cap[AMD_IP_COMPUTE]) {
-+			igt_dynamic_f("amdgpu-cs-gang-AMD_IP_GFX-AMD_IP_COMPUTE")
-+				amdgpu_cs_gang(device);
-+		}
-+	}
-+
-+	igt_fixture {
-+		amdgpu_device_deinitialize(device);
-+		drm_close_driver(fd);
-+	}
-+}
-diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-index bbb8edc93..6798668c2 100644
---- a/tests/amdgpu/meson.build
-+++ b/tests/amdgpu/meson.build
-@@ -54,7 +54,11 @@ if libdrm_amdgpu.found()
- 	else
- 		warning('libdrm <= 2.4.109 found, amd_pstate test not applicable')
- 	endif
--
-+	if libdrm_amdgpu.version().version_compare('> 2.4.120')
-+		amdgpu_progs +=[ 'amd_gang_cs', ]
-+	else
-+		warning('libdrm <= 2.4.120 found, amd_gang_cs test not applicable')
-+	endif
- 	amdgpu_deps += libdrm_amdgpu
- endif
- 
--- 
-2.25.1
+On 1/16/2024 5:33 PM, Sharma, Swati2 wrote:
+> Hi Kunal,
+>
+> On 16-Jan-24 5:29 PM, Joshi, Kunal1 wrote:
+>> Hello Swati,
+>>
+>> On 1/16/2024 4:34 PM, Sharma, Swati2 wrote:
+>>> Hi Kunal,
+>>>
+>>> On 15-Jan-24 4:28 PM, Kunal Joshi wrote:
+>>>> add support to choose big joiner mode with environment
+>>>> variable, use mode with highest clock if no mode with big joiner
+>>>> found.
+>>>>
+>>>> v2: reuse bigjoiner_mode_found (Bhanu)
+>>>> v3: avoid returning from multiple places (Bhanu)
+>>>>      avoid frequent debugfs reads (Bhanu)
+>>>>
+>>>> Cc: Karthik B S <karthik.b.s@intel.com>
+>>>> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>>>> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+>>>> ---
+>>>>   lib/igt_kms.c | 24 +++++++++++++++++++-----
+>>>>   1 file changed, 19 insertions(+), 5 deletions(-)
+>>>>
+>>>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>>>> index cb6d57c2d..2c4210d4b 100644
+>>>> --- a/lib/igt_kms.c
+>>>> +++ b/lib/igt_kms.c
+>>>> @@ -1771,8 +1771,9 @@ void 
+>>>> igt_sort_connector_modes(drmModeConnector *connector,
+>>>>   bool kmstest_get_connector_default_mode(int drm_fd, 
+>>>> drmModeConnector *connector,
+>>>>                       drmModeModeInfo *mode)
+>>>>   {
+>>>> +    bool found;
+>>>>       char *env;
+>>>> -    int i;
+>>>> +    int i, max_dotclock;
+>>>>         if (!connector->count_modes) {
+>>>>           igt_warn("no modes for connector %d\n",
+>>>> @@ -1781,21 +1782,34 @@ bool kmstest_get_connector_default_mode(int 
+>>>> drm_fd, drmModeConnector *connector,
+>>>>       }
+>>>>         env = getenv("IGT_KMS_RESOLUTION");
+>>>> +    max_dotclock = igt_get_max_dotclock(drm_fd);
+>>>>       if (env) {
+>>>>           /*
+>>>> -         * Only (0 or 1) and (lowest or highest) are allowed.
+>>>> +         * Only (0 or 1 or 2) and (lowest or highest or joiner) 
+>>>> are allowed.
+>>>>            *
+>>>>            * 0/lowest: Choose connector mode with lowest possible 
+>>>> resolution.
+>>>>            * 1/highest: Choose connector mode with highest possible 
+>>>> resolution.
+>>>> +         * 2/joiner: Choose connector mode with bigjoiner support 
+>>>> or with
+>>>> +                 highest clock if can't support  big joiner
+>>>
+>>> Shouldn't this be only joiner mode?
+>>>
+>>>
+>> You mean can be named as joiner mode because same can be used for big 
+>> joiner / ultra joiner?
+>
+> I guess this should be bigjoiner mode only. For ultra there might be 
+> other restrictions which we need to look at.
+>
+>> or
+>> We are returning the highest clock mode if no big joiner mode found?
+>
+> Yes, this is my query here. Why are we returning highest clock mode if 
+> no big joiner mode found?
+>
+We can return either with highest clock or highest resolution or default 
+mode,
+Since we have the other two already covered used highest clock.
+>>>>            */
+>>>> -        if (!strcmp(env, "highest") || !strcmp(env, "1"))
+>>>> +        if (!strcmp(env, "joiner") || !strcmp(env, "2"))
+>>>> +            found = bigjoiner_mode_found(drm_fd, connector,
+>>>> + sort_drm_modes_by_clk_dsc,mode,
+>>>> +                             max_dotclock) ||
+>>>> +                bigjoiner_mode_found(drm_fd, connector,
+>>>> +                             sort_drm_modes_by_res_dsc, mode,
+>>>> +                             max_dotclock) ||
+>>>> +                bigjoiner_mode_found(drm_fd, connector,
+>>>> +                             sort_drm_modes_by_clk_dsc, mode,
+>>>> +                             max_dotclock);
+>>>> +        else if (!strcmp(env, "highest") || !strcmp(env, "1"))
+>>>>               igt_sort_connector_modes(connector, 
+>>>> sort_drm_modes_by_res_dsc);
+>>>>           else if (!strcmp(env, "lowest") || !strcmp(env, "0"))
+>>>>               igt_sort_connector_modes(connector, 
+>>>> sort_drm_modes_by_res_asc);
+>>>>           else
+>>>>               goto default_mode;
+>>>> -
+>>>> -        *mode = connector->modes[0];
+>>>> +        if (!found)
+>>>> +            *mode = connector->modes[0];
+>>>>           return true;
+>>>>       }
