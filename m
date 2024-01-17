@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 394D010E023
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 07:33:51 +0000 (UTC)
-Message-ID: <a7ccc730-1802-41a6-b3e0-dd992dae802f@amd.com>
-Date: Wed, 17 Jan 2024 08:33:42 +0100
-Subject: Re: [PATCH 1/2] lib/amdgpu: add support for gang cs
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B00CA10E683
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 09:31:54 +0000 (UTC)
+Message-ID: <f30abc31-8c18-47cb-9f21-ebe3e3b2cde4@linux.intel.com>
+Date: Wed, 17 Jan 2024 10:31:52 +0100
+MIME-Version: 1.0
+Subject: Re: [PATCH i-g-t v2 4/4] tests/intel/xe_compute_preempt: Add compute
+ preempt test
 Content-Language: en-US
-To: vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org
-References: <20240117045441.256498-1-vitaly.prosyak@amd.com>
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20240117045441.256498-1-vitaly.prosyak@amd.com>
+To: janga.rahul.kumar@intel.com, igt-dev@lists.freedesktop.org,
+ ramadevi.gandi@intel.com
+References: <20240116212756.2687603-1-janga.rahul.kumar@intel.com>
+ <20240116212756.2687603-5-janga.rahul.kumar@intel.com>
+From: Nirmoy Das <nirmoy.das@linux.intel.com>
+In-Reply-To: <20240116212756.2687603-5-janga.rahul.kumar@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,157 +23,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
- Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>
+Cc: nirmoy.das@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-
-Am 17.01.24 um 05:54 schrieb vitaly.prosyak@amd.com:
-> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+On 1/16/2024 10:27 PM, janga.rahul.kumar@intel.com wrote:
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 >
-> When gang command submission is used we need to add fields
-> for the second buf and second pm4 packet.
+> Test submits long and short opencl kernels to exercise
+> preemption scenario.
 >
-> Add ASIC-dependent implementation of WAIT_REG_MEM used to poll on
-> location in the register or memory space until a reference value
-> is satisfied.
->
-> Cc: Jesse Zhang <jesse.zhang@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Signed-off-by: Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>
-> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-
-Acked-by: Christian König <christian.koenig@amd.com> for the series.
-
-Going to give those a testing round since I'm working on gang submit 
-improvements anyway.
-
-Thanks,
-Christian.
-
+> Cc: Nirmoy Das <nirmoy.das@intel.com>
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
 > ---
->   lib/amdgpu/amd_ip_blocks.c | 35 +++++++++++++++++++++++++++++++++++
->   lib/amdgpu/amd_ip_blocks.h | 20 ++++++++++++++++----
->   2 files changed, 51 insertions(+), 4 deletions(-)
+>   tests/intel/xe_compute_preempt.c | 45 ++++++++++++++++++++++++++++++++
+>   tests/meson.build                |  1 +
+>   2 files changed, 46 insertions(+)
+>   create mode 100644 tests/intel/xe_compute_preempt.c
 >
-> diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-> index 1adea6987..20264c019 100644
-> --- a/lib/amdgpu/amd_ip_blocks.c
-> +++ b/lib/amdgpu/amd_ip_blocks.c
-> @@ -288,6 +288,39 @@ gfx_ring_copy_linear(const struct amdgpu_ip_funcs *func,
->   	return 0;
->   }
->   
-> +static int
-> +gfx_ring_wait_reg_mem(const struct amdgpu_ip_funcs *func,
-> +			const struct amdgpu_ring_context *ring_context,
-> +			uint32_t *pm4_dw)
+> diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
+> new file mode 100644
+> index 000000000..31703638e
+> --- /dev/null
+> +++ b/tests/intel/xe_compute_preempt.c
+> @@ -0,0 +1,45 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2022 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: Check compute-related preemption functionality
+> + * Category: Hardware building block
+> + * Sub-category: compute
+> + * Test category: functionality test
+> + */
+> +
+> +#include <string.h>
+> +
+> +#include "igt.h"
+> +#include "intel_compute.h"
+> +#include "xe/xe_query.h"
+> +
+> +/**
+> + * SUBTEST: compute-preempt
+> + * GPU requirement: LNL
+> + * Description:
+> + *      Exercise compute walker mid thread preemption scenario
+> + * Functionality: compute openCL kernel
+> + */
+> +static void
+> +test_compute_preempt(int fd)
 > +{
-> +	uint32_t i;
-> +
-> +	i = *pm4_dw;
-> +	ring_context->pm4[i++] = PACKET3(PACKET3_WAIT_REG_MEM, 5);
-> +	ring_context->pm4[i++] = (WAIT_REG_MEM_MEM_SPACE(1) | /* memory */
-> +							WAIT_REG_MEM_FUNCTION(3) | /* == */
-> +							WAIT_REG_MEM_ENGINE(0));  /* me */
-> +	ring_context->pm4[i++] = lower_32_bits(ring_context->bo_mc);
-> +	ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
-> +	ring_context->pm4[i++] = func->deadbeaf; /* reference value */
-> +	ring_context->pm4[i++] = 0xffffffff; /* and mask */
-> +	ring_context->pm4[i++] = 0x00000004; /* poll interval */
-> +	*pm4_dw = i;
-> +
-> +	return 0;
+> +	igt_require_f(run_intel_compute_kernel_preempt(fd), "GPU not supported\n");
 > +}
 > +
-> +static int
-> +sdma_ring_wait_reg_mem(const struct amdgpu_ip_funcs *func,
-> +			const struct amdgpu_ring_context *ring_context,
-> +			uint32_t *pm4_dw)
+> +igt_main
 > +{
-> +	int r;
+> +	int xe;
 > +
-> +	r = gfx_ring_wait_reg_mem(func, ring_context, pm4_dw);
-> +	return r;
+> +	igt_fixture
+> +		xe = drm_open_driver(DRIVER_XE);
+> +
+> +	igt_subtest("compute-preempt")
+> +		test_compute_preempt(xe);
+> +
+> +	igt_fixture
+> +		drm_close_driver(xe);
+> +
 > +}
-> +
->   /* we may cobine these two functions later */
->   static int
->   x_compare(const struct amdgpu_ip_funcs *func,
-> @@ -336,6 +369,7 @@ static struct amdgpu_ip_funcs gfx_v8_x_ip_funcs = {
->   	.compare = x_compare,
->   	.compare_pattern = x_compare_pattern,
->   	.get_reg_offset = gfx_v8_0_get_reg_offset,
-> +	.wait_reg_mem = gfx_ring_wait_reg_mem,
->   };
->   
->   static struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
-> @@ -351,6 +385,7 @@ static struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
->   	.compare = x_compare,
->   	.compare_pattern = x_compare_pattern,
->   	.get_reg_offset = gfx_v8_0_get_reg_offset,
-> +	.wait_reg_mem = sdma_ring_wait_reg_mem,
->   };
->   
->   struct amdgpu_ip_block_version gfx_v8_x_ip_block = {
-> diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-> index aef433e7f..4cad30d1e 100644
-> --- a/lib/amdgpu/amd_ip_blocks.h
-> +++ b/lib/amdgpu/amd_ip_blocks.h
-> @@ -31,22 +31,31 @@ struct amdgpu_ring_context {
->   	int res_cnt; /* num of bo in amdgpu_bo_handle resources[2] */
->   
->   	uint32_t write_length;  /* length of data */
-> +	uint32_t write_length2; /* length of data for second packet */
->   	uint32_t *pm4;		/* data of the packet */
->   	uint32_t pm4_size;	/* max allocated packet size */
->   	bool secure;		/* secure or not */
->   
-> -	uint64_t bo_mc;		/* result from amdgpu_bo_alloc_and_map */
-> -	uint64_t bo_mc2;	/* result from amdgpu_bo_alloc_and_map */
-> +	uint64_t bo_mc;		/* GPU address of first buffer */
-> +	uint64_t bo_mc2;	/* GPU address for p4 packet */
-> +	uint64_t bo_mc3;	/* GPU address of second buffer */
-> +	uint64_t bo_mc4;	/* GPU address of second p4 packet */
->   
->   	uint32_t pm4_dw;	/* actual size of pm4 */
-> +	uint32_t pm4_dw2;	/* actual size of second pm4 */
->   
-> -	volatile uint32_t *bo_cpu;
-> -	volatile uint32_t *bo2_cpu;
-> +	volatile uint32_t *bo_cpu;	/* cpu adddress of mapped GPU buf */
-> +	volatile uint32_t *bo2_cpu;	/* cpu adddress of mapped pm4 */
-> +	volatile uint32_t *bo3_cpu;	/* cpu adddress of mapped GPU second buf */
-> +	volatile uint32_t *bo4_cpu;	/* cpu adddress of mapped second pm4 */
->   
->   	uint32_t bo_cpu_origin;
->   
->   	amdgpu_bo_handle bo;
->   	amdgpu_bo_handle bo2;
-> +	amdgpu_bo_handle bo3;
-> +	amdgpu_bo_handle bo4;
-> +
->   	amdgpu_bo_handle boa_vram[2];
->   	amdgpu_bo_handle boa_gtt[2];
->   
-> @@ -56,6 +65,8 @@ struct amdgpu_ring_context {
->   	amdgpu_bo_handle resources[4]; /* amdgpu_bo_alloc_and_map */
->   	amdgpu_va_handle va_handle;    /* amdgpu_bo_alloc_and_map */
->   	amdgpu_va_handle va_handle2;   /* amdgpu_bo_alloc_and_map */
-> +	amdgpu_va_handle va_handle3;   /* amdgpu_bo_alloc_and_map */
-> +	amdgpu_va_handle va_handle4;   /* amdgpu_bo_alloc_and_map */
->   
->   	struct amdgpu_cs_ib_info ib_info;     /* amdgpu_bo_list_create */
->   	struct amdgpu_cs_request ibs_request; /* amdgpu_cs_query_fence_status */
-> @@ -76,6 +87,7 @@ struct amdgpu_ip_funcs {
->   	int (*compare)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, int div);
->   	int (*compare_pattern)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, int div);
->   	int (*get_reg_offset)(enum general_reg reg);
-> +	int (*wait_reg_mem)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, uint32_t *pm4_dw);
->   
->   };
->   
+> diff --git a/tests/meson.build b/tests/meson.build
+> index a6a8498e2..24dd1caba 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -278,6 +278,7 @@ intel_xe_progs = [
+>   	'xe_ccs',
+>   	'xe_create',
+>   	'xe_compute',
+> +	'xe_compute_preempt',
+>   	'xe_copy_basic',
+>   	'xe_dma_buf_sync',
+>   	'xe_debugfs',
