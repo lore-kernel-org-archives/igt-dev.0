@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33BED10E635
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 09:49:05 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-Subject: RE: [PATCH i-g-t 1/2] tests/intel: Add xe_exec_atomic test
-Date: Wed, 17 Jan 2024 09:48:56 +0000
-Message-ID: <MW3PR11MB4748B0BC74A3BF4AD6F70CD8AE722@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20240116144336.18068-1-nirmoy.das@intel.com>
-In-Reply-To: <20240116144336.18068-1-nirmoy.das@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC7CF10E6B4
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 16:02:14 +0000 (UTC)
+From: "Golani, Mitulkumar Ajitkumar" <mitulkumar.ajitkumar.golani@intel.com>
+Subject: RE: [i-g-t 1/2] tests/kms_vrr: Enhance flip accuracy measurement
+Date: Wed, 17 Jan 2024 16:00:59 +0000
+Message-ID: <IA1PR11MB634877D74DAD6311F6EF572FB2722@IA1PR11MB6348.namprd11.prod.outlook.com>
+References: <20240117063339.3805517-1-bhanuprakash.modem@intel.com>
+ <20240117063339.3805517-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20240117063339.3805517-2-bhanuprakash.modem@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -21,132 +22,95 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Das, Nirmoy" <nirmoy.das@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Das, Nirmoy" <nirmoy.das@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogaWd0LWRldiA8aWd0LWRl
-di1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mIE5pcm1veQ0KPiBE
-YXMNCj4gU2VudDogVHVlc2RheSwgSmFudWFyeSAxNiwgMjAyNCA4OjE0IFBNDQo+IFRvOiBpZ3Qt
-ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogRGFzLCBOaXJtb3kgPG5pcm1veS5kYXNA
-aW50ZWwuY29tPg0KPiBTdWJqZWN0OiBbUEFUQ0ggaS1nLXQgMS8yXSB0ZXN0cy9pbnRlbDogQWRk
-IHhlX2V4ZWNfYXRvbWljIHRlc3QNCj4gDQo+IEltcGxlbWVudCB4ZV9leGVjX2F0b21pYyB0ZXN0
-IHdoaWNoIHdpbGwgdmFsaWRhdGUgTUlfQVRPTUlDKGluY3JlbWVudCwNCj4gZGVjcmVtZW50KSBv
-cGVyYXRpb25zIGZvciBhbGwgZW5naW5lcyBhbmQgYWxsIG1lbW9yeSByZWdpb25zLiBUaGUgdGVz
-dCBpcw0KPiBza2lwcGVkIG9uIHN5c3RlbSBtZW1vcnkgZm9yIFBWQyBhcyB0aGlzIGlzIGtub3du
-IHRvIGJlIG5vdCBzdXBwb3J0ZWQuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBOaXJtb3kgRGFzIDxu
-aXJtb3kuZGFzQGludGVsLmNvbT4NCj4gLS0tDQo+ICBsaWIvaW50ZWxfcmVnLmggICAgICAgICAg
-ICAgIHwgICAxICsNCj4gIHRlc3RzL2ludGVsL3hlX2V4ZWNfYXRvbWljLmMgfCAxNzAgKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gIHRlc3RzL21lc29uLmJ1aWxkICAgICAg
-ICAgICAgfCAgIDEgKw0KPiAgMyBmaWxlcyBjaGFuZ2VkLCAxNzIgaW5zZXJ0aW9ucygrKQ0KPiAg
-Y3JlYXRlIG1vZGUgMTAwNjQ0IHRlc3RzL2ludGVsL3hlX2V4ZWNfYXRvbWljLmMNCj4gDQo+IGRp
-ZmYgLS1naXQgYS9saWIvaW50ZWxfcmVnLmggYi9saWIvaW50ZWxfcmVnLmggaW5kZXggYTgxOTBk
-NjgzLi4yNjgzM2M2NmYgMTAwNjQ0DQo+IC0tLSBhL2xpYi9pbnRlbF9yZWcuaA0KPiArKysgYi9s
-aWIvaW50ZWxfcmVnLmgNCj4gQEAgLTI2NDcsNiArMjY0Nyw3IEBAIFNPRlRXQVJFIE9SIFRIRSBV
-U0UgT1IgT1RIRVIgREVBTElOR1MgSU4gVEhFDQo+IFNPRlRXQVJFLg0KPiANCj4gIC8qIEF0b21p
-Y3MgKi8NCj4gICNkZWZpbmUgICBNSV9BVE9NSUNfSU5DICAgICAgICAgICAgICAgICAoMHg1IDw8
-IDgpDQo+ICsjZGVmaW5lICAgTUlfQVRPTUlDX0RFQyAgICAgICAgICAgICAgICAgKDB4NiA8PCA4
-KQ0KPiAgI2RlZmluZSAgIE1JX0FUT01JQ19BREQgICAgICAgICAgICAgICAgICgweDcgPDwgOCkN
-Cj4gDQo+ICAvKiBCYXRjaCAqLw0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaW50ZWwveGVfZXhlY19h
-dG9taWMuYyBiL3Rlc3RzL2ludGVsL3hlX2V4ZWNfYXRvbWljLmMgbmV3DQo+IGZpbGUgbW9kZSAx
-MDA2NDQgaW5kZXggMDAwMDAwMDAwLi5iNjdlZmM4NjYNCj4gLS0tIC9kZXYvbnVsbA0KPiArKysg
-Yi90ZXN0cy9pbnRlbC94ZV9leGVjX2F0b21pYy5jDQo+IEBAIC0wLDAgKzEsMTcwIEBADQo+ICsv
-KiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogTUlUICovDQo+ICsvKg0KPiArKiBDb3B5cmlnaHQg
-wqkgMjAyMyBJbnRlbCBDb3Jwb3JhdGlvbg0KPiArKg0KPiArKiBBdXRob3JzOg0KPiArKiAgICBT
-YWkgR293dGhhbSBDaCA8c2FpLmdvd3RoYW0uY2hAaW50ZWwuY29tPg0KPiArKi8NCj4gKw0KPiAr
-I2luY2x1ZGUgImlndC5oIg0KPiArI2luY2x1ZGUgImxpYi9pZ3Rfc3luY29iai5oIg0KPiArI2lu
-Y2x1ZGUgInhlL3hlX2lvY3RsLmgiDQo+ICsjaW5jbHVkZSAieGUveGVfcXVlcnkuaCINCj4gKyNp
-bmNsdWRlICJ4ZV9kcm0uaCINCj4gKw0KPiArLyoqDQo+ICsgKiBURVNUOiBUZXN0cyB0byB2ZXJp
-ZnkgYXRvbWljIGZ1bmN0aW9uYWxpdHkuDQo+ICsgKiBDYXRlZ29yeTogU29mdHdhcmUgYnVpbGRp
-bmcgYmxvY2sNCj4gKyAqIFN1Yi1jYXRlZ29yeTogSFcNCj4gKyAqIEZ1bmN0aW9uYWxpdHk6IGlu
-dGVsLWJiDQo+ICsgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QNCj4gKyAqLw0K
-PiArDQo+ICtzdHJ1Y3QgZGF0YSB7DQo+ICsJdWludDMyX3QgYmF0Y2hbMTZdOw0KPiArCXVpbnQ2
-NF90IHBhZDsNCj4gKwl1aW50MzJfdCBkYXRhOw0KPiArCXVpbnQ2NF90IGFkZHI7DQo+ICt9Ow0K
-PiArDQo+ICtzdGF0aWMgdm9pZCBhdG9taWNfYmF0Y2goc3RydWN0IGRhdGEgKmRhdGEsIHVpbnQ2
-NF90IGFkZHIsIGludCBvcHMpIHsNCj4gKwlpbnQgYjsNCj4gKwl1aW50NjRfdCBiYXRjaF9vZmZz
-ZXQgPSAoY2hhciAqKSYoZGF0YS0+YmF0Y2gpIC0gKGNoYXIgKilkYXRhOw0KPiArCXVpbnQ2NF90
-IGJhdGNoX2FkZHIgPSBhZGRyICsgYmF0Y2hfb2Zmc2V0Ow0KPiArCXVpbnQ2NF90IHNkaV9vZmZz
-ZXQgPSAoY2hhciAqKSYoZGF0YS0+ZGF0YSkgLSAoY2hhciAqKWRhdGE7DQo+ICsJdWludDY0X3Qg
-c2RpX2FkZHIgPSBhZGRyICsgc2RpX29mZnNldDsNCj4gKw0KPiArCWIgPSAwOw0KPiArCWRhdGEt
-PmJhdGNoW2IrK10gPSBNSV9BVE9NSUMgfCBvcHM7DQo+ICsJZGF0YS0+YmF0Y2hbYisrXSA9IHNk
-aV9hZGRyOw0KPiArCWRhdGEtPmJhdGNoW2IrK10gPSBzZGlfYWRkciA+PiAzMjsNCj4gKwlkYXRh
-LT5iYXRjaFtiKytdID0gTUlfQkFUQ0hfQlVGRkVSX0VORDsNCj4gKwlpZ3RfYXNzZXJ0KGIgPD0g
-QVJSQVlfU0laRShkYXRhLT5iYXRjaCkpOw0KPiArDQo+ICsJZGF0YS0+YWRkciA9IGJhdGNoX2Fk
-ZHI7DQo+ICt9DQo+ICsNCj4gKy8qKg0KPiArICogU1VCVEVTVDogYmFzaWMtaW5jLWFsbA0KPiAr
-ICogRGVzY3JpcHRpb246IFRlc3QgdG8gdmVyaWZ5IGF0b21pYyBpbmNyZW1lbnQgb24gYWxsIGF2
-YWlsYWJsZSBlbmdpbmVzIGFuZA0KPiBtZW1vcnkgdHlwZXMuDQo+ICsgKiBTVUJURVNUOiBiYXNp
-Yy1kZWMtYWxsDQo+ICsgKiBEZXNjcmlwdGlvbjogVGVzdCB0byB2ZXJpZnkgYXRvbWljIGRlY3Jl
-bWVudCBvbiBhbGwgYXZhaWxhYmxlIGVuZ2luZXMgYW5kDQo+IG1lbW9yeSB0eXBlcy4NCj4gKyAq
-Lw0KPiArc3RhdGljIHZvaWQgYmFzaWNfaW5zdChpbnQgZmQsIGludCBpbnN0X3R5cGUsIHN0cnVj
-dCBkcm1feGVfZW5naW5lX2NsYXNzX2luc3RhbmNlDQo+ICplY2ksDQo+ICsJCSAgICAgICB1aW50
-MzJfdCBwbGFjZW1lbnQpDQo+ICt7DQo+ICsJc3RydWN0IGRybV94ZV9zeW5jIHN5bmMgPSB7DQo+
-ICsJCS50eXBlID0gRFJNX1hFX1NZTkNfVFlQRV9TWU5DT0JKLA0KPiArCQkuZmxhZ3MgPSBEUk1f
-WEVfU1lOQ19GTEFHX1NJR05BTCwNCj4gKwl9Ow0KPiArCXN0cnVjdCBkcm1feGVfZXhlYyBleGVj
-ID0gew0KPiArCQkubnVtX2JhdGNoX2J1ZmZlciA9IDEsDQo+ICsJCS5udW1fc3luY3MgPSAxLA0K
-PiArCQkuc3luY3MgPSB0b191c2VyX3BvaW50ZXIoJnN5bmMpLA0KPiArCX07DQo+ICsJc3RydWN0
-IGRhdGEgKmRhdGE7DQo+ICsJdWludDMyX3Qgdm07DQo+ICsJdWludDMyX3QgZXhlY19xdWV1ZTsN
-Cj4gKwl1aW50MzJfdCBiaW5kX2VuZ2luZTsNCj4gKwl1aW50MzJfdCBzeW5jb2JqOw0KPiArCXNp
-emVfdCBib19zaXplOw0KPiArCWludCB2YWx1ZSA9IDB4MTIzNDU2LCBtYXRjaDsNCj4gKwl1aW50
-NjRfdCBhZGRyID0gMHgxMDAwMDA7DQo+ICsJdWludDMyX3QgYm8gPSAwOw0KPiArDQo+ICsJc3lu
-Y29iaiA9IHN5bmNvYmpfY3JlYXRlKGZkLCAwKTsNCj4gKwlzeW5jLmhhbmRsZSA9IHN5bmNvYmo7
-DQo+ICsNCj4gKwl2bSA9IHhlX3ZtX2NyZWF0ZShmZCwgMCwgMCk7DQo+ICsJYm9fc2l6ZSA9IHNp
-emVvZigqZGF0YSk7DQo+ICsJYm9fc2l6ZSA9IEFMSUdOKGJvX3NpemUgKyB4ZV9jc19wcmVmZXRj
-aF9zaXplKGZkKSwNCj4gKwkJCXhlX2dldF9kZWZhdWx0X2FsaWdubWVudChmZCkpOw0KPiArDQo+
-ICsJYm8gPSB4ZV9ib19jcmVhdGUoZmQsIHZtLCBib19zaXplLCBwbGFjZW1lbnQsDQo+ICsJCQkg
-IEk5MTVfR0VNX0NSRUFURV9FWFRfRkxBR19ORUVEU19DUFVfQUNDRVNTKTsNCj4gKw0KPiArCWV4
-ZWNfcXVldWUgPSB4ZV9leGVjX3F1ZXVlX2NyZWF0ZShmZCwgdm0sIGVjaSwgMCk7DQo+ICsJYmlu
-ZF9lbmdpbmUgPSB4ZV9iaW5kX2V4ZWNfcXVldWVfY3JlYXRlKGZkLCB2bSwgMCk7DQo+ICsJeGVf
-dm1fYmluZF9hc3luYyhmZCwgdm0sIGJpbmRfZW5naW5lLCBibywgMCwgYWRkciwgYm9fc2l6ZSwg
-JnN5bmMsIDEpOw0KPiArCWRhdGEgPSB4ZV9ib19tbWFwX2V4dChmZCwgYm8sIGJvX3NpemUsIFBS
-T1RfUkVBRHxQUk9UX1dSSVRFKTsNCj4gKwlkYXRhLT5kYXRhID0gdmFsdWU7DQo+ICsNCj4gKwlh
-dG9taWNfYmF0Y2goZGF0YSwgYWRkciwgaW5zdF90eXBlKTsNCj4gKw0KPiArCWV4ZWMuZXhlY19x
-dWV1ZV9pZCA9IGV4ZWNfcXVldWU7DQo+ICsJZXhlYy5hZGRyZXNzID0gZGF0YS0+YWRkcjsNCj4g
-KwlzeW5jLmZsYWdzICY9IERSTV9YRV9TWU5DX0ZMQUdfU0lHTkFMOw0KPiArCXhlX2V4ZWMoZmQs
-ICZleGVjKTsNCj4gKw0KPiArCWlndF9hc3NlcnQoc3luY29ial93YWl0KGZkLCAmc3luY29iaiwg
-MSwgSU5UNjRfTUFYLCAwLCBOVUxMKSk7DQo+ICsJbXVubWFwKGRhdGEsIGJvX3NpemUpOw0KPiAr
-CWRhdGEgPSB4ZV9ib19tbWFwX2V4dChmZCwgYm8sIGJvX3NpemUsIFBST1RfUkVBRHxQUk9UX1dS
-SVRFKTsNCj4gKwltYXRjaCA9IChpbnN0X3R5cGUgPT0gTUlfQVRPTUlDX0lOQykgPyArK3ZhbHVl
-IDogLS12YWx1ZTsNCj4gKwlpZ3RfYXNzZXJ0X2VxKGRhdGEtPmRhdGEsIG1hdGNoKTsNCj4gKw0K
-PiArCXN5bmNvYmpfZGVzdHJveShmZCwgc3luY29iaik7DQo+ICsJbXVubWFwKGRhdGEsIGJvX3Np
-emUpOw0KPiArCWdlbV9jbG9zZShmZCwgYm8pOw0KPiArDQo+ICsJeGVfZXhlY19xdWV1ZV9kZXN0
-cm95KGZkLCBleGVjX3F1ZXVlKTsNCj4gKwl4ZV92bV9kZXN0cm95KGZkLCB2bSk7DQo+ICt9DQo+
-ICsNCj4gK3N0YXRpYyBib29sIGhhc19hdG9taWNzKGludCBmZCwgdWludDMyX3QgcmVnaW9uKSB7
-DQo+ICsJLyogU3lzdGVtIG1lbW9yeSBhdG9taWNzIG9uIFBWQyBkb2Vzbid0IHdvcmsgKi8NCj4g
-KwlpZiAocmVnaW9uID09IHN5c3RlbV9tZW1vcnkoZmQpICYmIElTX1BPTlRFVkVDQ0hJTyhmZCkp
-DQo+ICsJCXJldHVybiBmYWxzZTsNCj4gKw0KPiArCXJldHVybiB0cnVlOw0KPiArfQ0KPiArDQo+
-ICtpZ3RfbWFpbg0KPiArew0KPiArCXN0cnVjdCBkcm1feGVfZW5naW5lX2NsYXNzX2luc3RhbmNl
-ICpod2U7DQo+ICsJaW50IGZkOw0KPiArDQo+ICsJaWd0X2ZpeHR1cmUgew0KPiArCQlmZCA9IGRy
-bV9vcGVuX2RyaXZlcihEUklWRVJfWEUpOw0KPiArCQl4ZV9kZXZpY2VfZ2V0KGZkKTsNCj4gKwl9
-DQo+ICsNCj4gKwlpZ3Rfc3VidGVzdF93aXRoX2R5bmFtaWMoImJhc2ljLWluYy1hbGwiKSB7DQo+
-ICsJCXhlX2Zvcl9lYWNoX2VuZ2luZShmZCwgaHdlKSB7DQo+ICsJCQl1aW50NjRfdCBtZW1yZWcg
-PSBhbGxfbWVtb3J5X3JlZ2lvbnMoZmQpLCByZWdpb247DQo+ICsNCj4gKwkJCXhlX2Zvcl9lYWNo
-X21lbV9yZWdpb24oZmQsIG1lbXJlZywgcmVnaW9uKSB7DQo+ICsJCQkJaWYgKHJlZ2lvbiA9PSBz
-eXN0ZW1fbWVtb3J5KGZkKSkNCj4gKwkJCQkJaWd0X3NraXBfb24oIWhhc19hdG9taWNzKGZkLCBy
-ZWdpb24pKTsNCj4gKw0KPiArCQkJCWlndF9keW5hbWljX2YoIkVuZ2luZS0lcy1JbnN0YW5jZS0l
-ZC1UaWxlLQ0KPiAlZC0lcy1tZW1vcnkiLA0KPiArCQkJCQkgICAgICB4ZV9lbmdpbmVfY2xhc3Nf
-c3RyaW5nKGh3ZS0NCj4gPmVuZ2luZV9jbGFzcyksDQo+ICsJCQkJCSAgICAgIGh3ZS0+ZW5naW5l
-X2luc3RhbmNlLA0KPiArCQkJCQkgICAgICBod2UtPmd0X2lkLA0KPiB4ZV9yZWdpb25fbmFtZShy
-ZWdpb24pKTsNCj4gKwkJCQliYXNpY19pbnN0KGZkLCBNSV9BVE9NSUNfSU5DLCBod2UsIHJlZ2lv
-bik7DQo+ICsJCQl9DQo+ICsJCX0NCj4gKwl9DQo+ICsNCj4gKwlpZ3Rfc3VidGVzdF93aXRoX2R5
-bmFtaWMoImJhc2ljLWRlYy1hbGwiKSB7DQo+ICsJCXhlX2Zvcl9lYWNoX2VuZ2luZShmZCwgaHdl
-KSB7DQo+ICsJCQl1aW50NjRfdCBtZW1yZWcgPSBhbGxfbWVtb3J5X3JlZ2lvbnMoZmQpLCByZWdp
-b247DQo+ICsNCj4gKwkJCXhlX2Zvcl9lYWNoX21lbV9yZWdpb24oZmQsIG1lbXJlZywgcmVnaW9u
-KSB7DQo+ICsJCQkJaWYgKHJlZ2lvbiA9PSBzeXN0ZW1fbWVtb3J5KGZkKSkNCj4gKwkJCQkJaWd0
-X3NraXBfb24oIWhhc19hdG9taWNzKGZkLCByZWdpb24pKTsNCj4gKw0KPiArCQkJCWlndF9keW5h
-bWljX2YoIkVuZ2luZS0lcy1JbnN0YW5jZS0lZC1UaWxlLQ0KPiAlZC0lcy1tZW1vcnkiLA0KPiAr
-CQkJCQkgICAgICB4ZV9lbmdpbmVfY2xhc3Nfc3RyaW5nKGh3ZS0NCj4gPmVuZ2luZV9jbGFzcyks
-DQo+ICsJCQkJCSAgICAgIGh3ZS0+ZW5naW5lX2luc3RhbmNlLA0KPiArCQkJCQkgICAgICBod2Ut
-Pmd0X2lkLA0KPiB4ZV9yZWdpb25fbmFtZShyZWdpb24pKTsNCj4gKwkJCQliYXNpY19pbnN0KGZk
-LCBNSV9BVE9NSUNfREVDLCBod2UsIHJlZ2lvbik7DQo+ICsJCQl9DQo+ICsJCX0NCj4gKwl9DQo+
-ICsJaWd0X2ZpeHR1cmUgew0KPiArCQl4ZV9kZXZpY2VfcHV0KGZkKTsNCj4gKwkJY2xvc2UoZmQp
-Ow0KPiArCX0NCj4gK30NCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL21lc29uLmJ1aWxkIGIvdGVzdHMv
-bWVzb24uYnVpbGQgaW5kZXggYTZhODQ5OGUyLi5iZDJmZWZlZTQNCj4gMTAwNjQ0DQo+IC0tLSBh
-L3Rlc3RzL21lc29uLmJ1aWxkDQo+ICsrKyBiL3Rlc3RzL21lc29uLmJ1aWxkDQo+IEBAIC0yOTEs
-NiArMjkxLDcgQEAgaW50ZWxfeGVfcHJvZ3MgPSBbDQo+ICAJJ3hlX2V4ZWNfcXVldWVfcHJvcGVy
-dHknLA0KPiAgCSd4ZV9leGVjX3Jlc2V0JywNCj4gIAkneGVfZXhlY19zdG9yZScsDQo+ICsJJ3hl
-X2V4ZWNfYXRvbWljJywNCj4gIAkneGVfZXhlY190aHJlYWRzJywNCj4gIAkneGVfZXhlcmNpc2Vf
-Ymx0JywNCj4gIAkneGVfZ3BncHVfZmlsbCcsDQo+IC0tDQo+IDIuNDIuMA0KDQpMR1RNLA0KVXBk
-YXRlIHRoZSBDb3B5cmlnaHQgZGV0YWlscy4gV2l0aCB0aGF0IGNoYW5nZSwNCg0KUmV2aWV3ZWQt
-Ynk6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5yYWh1bC5rdW1hckBpbnRlbC5jb20+DQoNClRo
-YW5rcywNClJhaHVsDQoNCg==
+
+
+> -----Original Message-----
+> From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> Sent: Wednesday, January 17, 2024 12:04 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Golani,
+> Mitulkumar Ajitkumar <mitulkumar.ajitkumar.golani@intel.com>
+> Subject: [i-g-t 1/2] tests/kms_vrr: Enhance flip accuracy measurement
+>=20
+> The threshold of ~50us, which is roughly the difference between 144Hz &
+> 143Hz, to be too high for high refresh rate panels (like
+> 60-360Hz) and too low for low refresh rate panels (like 40-60Hz) when
+> measuring flip accuracy.
+>=20
+> Revise the threshold to allow for a deviation of approximately
+> (+/-) 1 Hz will improve the accuracy of flip measurements across a wider
+> range of panel refresh rates.
+>=20
+> Cc: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>  tests/kms_vrr.c | 27 ++++++++++++++++-----------
+>  1 file changed, 16 insertions(+), 11 deletions(-)
+>=20
+> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c index 71fc36162..44bc3480d
+> 100644
+> --- a/tests/kms_vrr.c
+> +++ b/tests/kms_vrr.c
+> @@ -339,10 +339,23 @@ static uint32_t
+>  flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+>  		 uint64_t rate_ns, uint64_t duration_ns)  {
+> -	uint64_t start_ns, last_event_ns, target_ns;
+> +	uint64_t start_ns, last_event_ns, target_ns, exp_rate_ns;
+>  	uint32_t total_flip =3D 0, total_pass =3D 0;
+>  	bool front =3D false;
+>  	vtest_ns_t vtest_ns =3D get_test_rate_ns(data->range);
+> +	uint64_t threshold_hi, threshold_lo;
+> +
+> +	if ((rate_ns <=3D vtest_ns.min) && (rate_ns >=3D vtest_ns.max))
+> +		exp_rate_ns =3D rate_ns;
+> +	else
+> +		exp_rate_ns =3D vtest_ns.max;
+> +
+> +	/* Allow ~1 Hz deviation for different reasons causing delay. */
+> +	threshold_hi =3D NSECS_PER_SEC / (((float)NSECS_PER_SEC /
+> exp_rate_ns) + 1);
+> +	threshold_lo =3D NSECS_PER_SEC / (((float)NSECS_PER_SEC /
+> exp_rate_ns) -
+> +1);
+> +
+> +	igt_info("Requested rate: %"PRIu64" ns, Expected rate between:
+> %"PRIu64" ns to %"PRIu64" ns\n",
+> +			rate_ns, threshold_hi, threshold_lo);
+>=20
+>  	/* Align with the flip completion event to speed up convergence. */
+>  	do_flip(data, &data->fb0);
+> @@ -369,18 +382,10 @@ flip_and_measure(data_t *data, igt_output_t
+> *output, enum pipe pipe,
+>  		/*
+>  		 * Check if the difference between the two flip timestamps
+>  		 * was within the required threshold from the expected rate.
+> -		 *
+> -		 * A ~50us threshold is arbitrary, but it's roughly the
+> -		 * difference between 144Hz and 143Hz which should give
+> this
+> -		 * enough accuracy for most use cases.
+>  		 */
+> -		if ((rate_ns <=3D vtest_ns.min) && (rate_ns >=3D vtest_ns.max))
+> -			diff_ns =3D rate_ns;
+> -		else
+> -			diff_ns =3D vtest_ns.max;
+> -		diff_ns -=3D event_ns - last_event_ns;
+> +		diff_ns =3D event_ns - last_event_ns;
+>=20
+> -		if (llabs(diff_ns) < 50000ll)
+> +		if (llabs(diff_ns) < threshold_lo && llabs(diff_ns) >
+> threshold_hi)
+
+Changes LGTM
+Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+
+>  			total_pass +=3D 1;
+>=20
+>  		last_event_ns =3D event_ns;
+> --
+> 2.40.0
+
 
