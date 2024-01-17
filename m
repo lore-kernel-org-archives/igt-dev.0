@@ -1,15 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0102011257358667361=="
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D866510E091
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 05:44:58 +0000 (UTC)
+Message-ID: <8fbaa612-67e2-4d7d-9f0b-eefd394ddf93@intel.com>
+Date: Wed, 17 Jan 2024 11:14:43 +0530
+Subject: Re: [PATCH i-g-t 2/2] lib/igt_kms: add support for choosing big
+ joiner mode
+Content-Language: en-US
+To: "Sharma, Swati2" <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20240115105854.827266-1-kunal1.joshi@intel.com>
+ <20240115105854.827266-3-kunal1.joshi@intel.com>
+ <b5389ad8-8b98-4c04-b337-e39e7d20f5cb@intel.com>
+ <0173fd3b-cf12-4aa1-977e-a994af9c91b0@intel.com>
+ <6f95475b-1d5c-43ba-9fe3-310475ef7898@intel.com>
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <6f95475b-1d5c-43ba-9fe3-310475ef7898@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_series_starting_with_=5B1/2?=
- =?utf-8?q?=5D_lib/amdgpu=3A_add_support_for_gang_cs?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: vitaly.prosyak@amd.com
-Date: Wed, 17 Jan 2024 05:33:42 -0000
-Message-ID: <170546962298.519920.4858947810427966738@5338d5abeb45>
-References: <20240117045441.256498-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20240117045441.256498-1-vitaly.prosyak@amd.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,174 +25,113 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0102011257358667361==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hello Swati,
 
-== Series Details ==
-
-Series: series starting with [1/2] lib/amdgpu: add support for gang cs
-URL   : https://patchwork.freedesktop.org/series/128859/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_14129 -> IGTPW_10538
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10538/index.html
-
-Participating hosts (39 -> 35)
-------------------------------
-
-  Missing    (4): bat-mtlp-8 bat-rpls-2 bat-adlm-1 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10538 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - bat-dg2-9:          [PASS][1] -> [INCOMPLETE][2] ([i915#9275])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14129/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10538/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - bat-dg2-8:          [PASS][3] -> [INCOMPLETE][4] ([i915#9275])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14129/bat-dg2-8/igt@gem_exec_suspend@basic-s3@smem.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10538/bat-dg2-8/igt@gem_exec_suspend@basic-s3@smem.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - {bat-rpls-3}:       [DMESG-WARN][5] ([i915#5591]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14129/bat-rpls-3/igt@i915_selftest@live@hangcheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10538/bat-rpls-3/igt@i915_selftest@live@hangcheck.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
-  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7675 -> IGTPW_10538
-
-  CI-20190529: 20190529
-  CI_DRM_14129: b6b50ad4c8d61b14de0ffcf0d52ae2adc0ef39cf @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10538: 10538
-  IGT_7675: ffde49e0583ee5053f25a065356bce6bce91047a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
--igt@xe_compute_preempt@compute-preempt
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10538/index.html
-
---===============0102011257358667361==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [1/2] lib/amdgpu: add support for gang cs</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128859/">https://patchwork.freedesktop.org/series/128859/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10538/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10538/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14129 -&gt; IGTPW_10538</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10538/index.html</p>
-<h2>Participating hosts (39 -&gt; 35)</h2>
-<p>Missing    (4): bat-mtlp-8 bat-rpls-2 bat-adlm-1 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10538 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14129/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10538/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14129/bat-dg2-8/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10538/bat-dg2-8/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>{bat-rpls-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14129/bat-rpls-3/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5591">i915#5591</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10538/bat-rpls-3/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7675 -&gt; IGTPW_10538</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14129: b6b50ad4c8d61b14de0ffcf0d52ae2adc0ef39cf @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10538: 10538<br />
-  IGT_7675: ffde49e0583ee5053f25a065356bce6bce91047a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>-igt@xe_compute_preempt@compute-preempt</p>
-
-</body>
-</html>
-
---===============0102011257358667361==--
+On 1/16/2024 5:33 PM, Sharma, Swati2 wrote:
+> Hi Kunal,
+>
+> On 16-Jan-24 5:29 PM, Joshi, Kunal1 wrote:
+>> Hello Swati,
+>>
+>> On 1/16/2024 4:34 PM, Sharma, Swati2 wrote:
+>>> Hi Kunal,
+>>>
+>>> On 15-Jan-24 4:28 PM, Kunal Joshi wrote:
+>>>> add support to choose big joiner mode with environment
+>>>> variable, use mode with highest clock if no mode with big joiner
+>>>> found.
+>>>>
+>>>> v2: reuse bigjoiner_mode_found (Bhanu)
+>>>> v3: avoid returning from multiple places (Bhanu)
+>>>>      avoid frequent debugfs reads (Bhanu)
+>>>>
+>>>> Cc: Karthik B S <karthik.b.s@intel.com>
+>>>> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>>>> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+>>>> ---
+>>>>   lib/igt_kms.c | 24 +++++++++++++++++++-----
+>>>>   1 file changed, 19 insertions(+), 5 deletions(-)
+>>>>
+>>>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>>>> index cb6d57c2d..2c4210d4b 100644
+>>>> --- a/lib/igt_kms.c
+>>>> +++ b/lib/igt_kms.c
+>>>> @@ -1771,8 +1771,9 @@ void 
+>>>> igt_sort_connector_modes(drmModeConnector *connector,
+>>>>   bool kmstest_get_connector_default_mode(int drm_fd, 
+>>>> drmModeConnector *connector,
+>>>>                       drmModeModeInfo *mode)
+>>>>   {
+>>>> +    bool found;
+>>>>       char *env;
+>>>> -    int i;
+>>>> +    int i, max_dotclock;
+>>>>         if (!connector->count_modes) {
+>>>>           igt_warn("no modes for connector %d\n",
+>>>> @@ -1781,21 +1782,34 @@ bool kmstest_get_connector_default_mode(int 
+>>>> drm_fd, drmModeConnector *connector,
+>>>>       }
+>>>>         env = getenv("IGT_KMS_RESOLUTION");
+>>>> +    max_dotclock = igt_get_max_dotclock(drm_fd);
+>>>>       if (env) {
+>>>>           /*
+>>>> -         * Only (0 or 1) and (lowest or highest) are allowed.
+>>>> +         * Only (0 or 1 or 2) and (lowest or highest or joiner) 
+>>>> are allowed.
+>>>>            *
+>>>>            * 0/lowest: Choose connector mode with lowest possible 
+>>>> resolution.
+>>>>            * 1/highest: Choose connector mode with highest possible 
+>>>> resolution.
+>>>> +         * 2/joiner: Choose connector mode with bigjoiner support 
+>>>> or with
+>>>> +                 highest clock if can't support  big joiner
+>>>
+>>> Shouldn't this be only joiner mode?
+>>>
+>>>
+>> You mean can be named as joiner mode because same can be used for big 
+>> joiner / ultra joiner?
+>
+> I guess this should be bigjoiner mode only. For ultra there might be 
+> other restrictions which we need to look at.
+>
+>> or
+>> We are returning the highest clock mode if no big joiner mode found?
+>
+> Yes, this is my query here. Why are we returning highest clock mode if 
+> no big joiner mode found?
+>
+We can return either with highest clock or highest resolution or default 
+mode,
+Since we have the other two already covered used highest clock.
+>>>>            */
+>>>> -        if (!strcmp(env, "highest") || !strcmp(env, "1"))
+>>>> +        if (!strcmp(env, "joiner") || !strcmp(env, "2"))
+>>>> +            found = bigjoiner_mode_found(drm_fd, connector,
+>>>> + sort_drm_modes_by_clk_dsc,mode,
+>>>> +                             max_dotclock) ||
+>>>> +                bigjoiner_mode_found(drm_fd, connector,
+>>>> +                             sort_drm_modes_by_res_dsc, mode,
+>>>> +                             max_dotclock) ||
+>>>> +                bigjoiner_mode_found(drm_fd, connector,
+>>>> +                             sort_drm_modes_by_clk_dsc, mode,
+>>>> +                             max_dotclock);
+>>>> +        else if (!strcmp(env, "highest") || !strcmp(env, "1"))
+>>>>               igt_sort_connector_modes(connector, 
+>>>> sort_drm_modes_by_res_dsc);
+>>>>           else if (!strcmp(env, "lowest") || !strcmp(env, "0"))
+>>>>               igt_sort_connector_modes(connector, 
+>>>> sort_drm_modes_by_res_asc);
+>>>>           else
+>>>>               goto default_mode;
+>>>> -
+>>>> -        *mode = connector->modes[0];
+>>>> +        if (!found)
+>>>> +            *mode = connector->modes[0];
+>>>>           return true;
+>>>>       }
