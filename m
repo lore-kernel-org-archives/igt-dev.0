@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4C4310E660
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jan 2024 11:25:57 +0000 (UTC)
-From: Nirmoy Das <nirmoy.das@intel.com>
-Subject: [PATCH i-g-t 3/3] tests/intel-ci: Add mi_atomic test to fast-feedback
-Date: Wed, 17 Jan 2024 12:12:33 +0100
-Message-ID: <20240117111234.28312-3-nirmoy.das@intel.com>
-In-Reply-To: <20240117111234.28312-1-nirmoy.das@intel.com>
-References: <20240117111234.28312-1-nirmoy.das@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5830287609332485214=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_Cache_xe=5Fdevice_info_for_lea?=
+ =?utf-8?q?se_fd_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 17 Jan 2024 15:48:02 -0000
+Message-ID: <170550648295.537518.7319036826492337888@5338d5abeb45>
+References: <20240117141323.14994-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20240117141323.14994-1-mohammed.thasleem@intel.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,33 +16,180 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Nirmoy Das <nirmoy.das@intel.com>
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add this basic functionality test the fast feedback list.
+--===============5830287609332485214==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist | 2 ++
- 1 file changed, 2 insertions(+)
+== Series Details ==
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index bef5b0b8a..da79c76b4 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -29,6 +29,8 @@ igt@xe_evict@evict-small-multi-vm-cm
- igt@xe_evict@evict-threads-small
- igt@xe_evict_ccs@evict-overcommit-simple
- igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd
-+igt@xe_exec_atomic@basic-inc-all
-+igt@xe_exec_atomic@basic-dec-all
- igt@xe_exec_balancer@twice-virtual-basic
- igt@xe_exec_balancer@no-exec-virtual-basic
- igt@xe_exec_balancer@twice-cm-virtual-basic
--- 
-2.42.0
+Series: Cache xe_device info for lease fd (rev4)
+URL   : https://patchwork.freedesktop.org/series/128101/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7677_BAT -> XEIGTPW_10544_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_10544_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_10544_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_10544_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_lease@lease-invalid-plane:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] +2 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10544/bat-dg2-oem2/igt@kms_lease@lease-invalid-plane.html
+    - bat-adlp-7:         NOTRUN -> [SKIP][2] +2 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10544/bat-adlp-7/igt@kms_lease@lease-invalid-plane.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10544_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_lease@lease-get:
+    - bat-atsm-2:         NOTRUN -> [SKIP][3] ([Intel XE#1024]) +20 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10544/bat-atsm-2/igt@kms_lease@lease-get.html
+
+  * igt@kms_lease@lease-unleased-crtc:
+    - bat-pvc-2:          NOTRUN -> [SKIP][4] ([Intel XE#1024]) +20 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10544/bat-pvc-2/igt@kms_lease@lease-unleased-crtc.html
+
+  
+  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7677 -> IGTPW_10544
+  * Linux: xe-638-802f9a6662f7ad62bf92457f62a5d42c7249bb5c -> xe-639-b42f47ca5fff1d04fb8eb02d64520b3f338a495d
+
+  IGTPW_10544: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10544/index.html
+  IGT_7677: 57ed393a5b5d04e985f9950a7f1546fc95f4001e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-638-802f9a6662f7ad62bf92457f62a5d42c7249bb5c: 802f9a6662f7ad62bf92457f62a5d42c7249bb5c
+  xe-639-b42f47ca5fff1d04fb8eb02d64520b3f338a495d: b42f47ca5fff1d04fb8eb02d64520b3f338a495d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10544/index.html
+
+--===============5830287609332485214==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Cache xe_device info for lease fd (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128101/">https://patchwork.freedesktop.org/series/128101/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10544/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10544/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7677_BAT -&gt; XEIGTPW_10544_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_10544_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_10544_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_10544_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_lease@lease-invalid-plane:<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10544/bat-dg2-oem2/igt@kms_lease@lease-invalid-plane.html">SKIP</a> +2 other tests skip</li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10544/bat-adlp-7/igt@kms_lease@lease-invalid-plane.html">SKIP</a> +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10544_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_lease@lease-get:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10544/bat-atsm-2/igt@kms_lease@lease-get.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +20 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_lease@lease-unleased-crtc:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10544/bat-pvc-2/igt@kms_lease@lease-unleased-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +20 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7677 -&gt; IGTPW_10544</li>
+<li>Linux: xe-638-802f9a6662f7ad62bf92457f62a5d42c7249bb5c -&gt; xe-639-b42f47ca5fff1d04fb8eb02d64520b3f338a495d</li>
+</ul>
+<p>IGTPW_10544: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10544/index.html<br />
+  IGT_7677: 57ed393a5b5d04e985f9950a7f1546fc95f4001e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-638-802f9a6662f7ad62bf92457f62a5d42c7249bb5c: 802f9a6662f7ad62bf92457f62a5d42c7249bb5c<br />
+  xe-639-b42f47ca5fff1d04fb8eb02d64520b3f338a495d: b42f47ca5fff1d04fb8eb02d64520b3f338a495d</p>
+
+</body>
+</html>
+
+--===============5830287609332485214==--
 
