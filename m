@@ -2,10 +2,10 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 From: Hersen Wu <hersenxs.wu@amd.com>
-Subject: [PATCH 3/3] [i-g-t] tests/amdgpu/amd_ilr: Fix psr edp rx crc read
+Subject: [PATCH 2/3] [i-g-t] tests/amdgpu/amd_bypass: Fix psr edp r/x crc read
  timeout
-Date: Wed, 17 Jan 2024 21:36:08 -0500
-Message-ID: <20240118023608.55865-3-hersenxs.wu@amd.com>
+Date: Wed, 17 Jan 2024 21:36:07 -0500
+Message-ID: <20240118023608.55865-2-hersenxs.wu@amd.com>
 In-Reply-To: <20240118023608.55865-1-hersenxs.wu@amd.com>
 References: <20240118023608.55865-1-hersenxs.wu@amd.com>
 MIME-Version: 1.0
@@ -24,69 +24,59 @@ List-ID: <igt-dev.lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org, rodrigo.siqueira@amd.com, aurabindo.pillai@amd.com, alex.hung@amd.com, hamza.mahfooz@amd.com, wayne.lin@amd.com
 Cc: Hersen Wu <hersenxs.wu@amd.com>, markyacoub@google.com
 
-With debugfs disallow_edp_enter_psr, disable edp
-psr before tx read rx crc.
+With debugfs disallow_edp_enter_psr, disable edp psr before
+tx read rx crc.
 
-With set_all_output_pipe_to_none of test_init,
-tx write dpcd 0x600=2. this will let dpcd 0x170=0.
+dpms off, tx write dpcd 0x600=2. this will let dpcd 0x170=0.
 rx psr and crc check for rx internal logic are disabled.
-with disallow_edp_enter_psr, when set test patterns
-are committed by igt_display_commit_atomic, kernel
-driver will turn on edp with dpcd 0x170=0. then tx
-read rx crc successfully.
+with disallow_edp_enter_psr, when dpms on, kernel driver will
+light up edp with dpcd 0x170=0. then tx read rx crc successfully.
 
 Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
 ---
- tests/amdgpu/amd_ilr.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ tests/amdgpu/amd_bypass.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/tests/amdgpu/amd_ilr.c b/tests/amdgpu/amd_ilr.c
-index b2c0f294d..1f048d665 100644
---- a/tests/amdgpu/amd_ilr.c
-+++ b/tests/amdgpu/amd_ilr.c
-@@ -205,11 +205,32 @@ static void test_flow(data_t *data, enum sub_test option)
- 			continue;
- 		}
+diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
+index d192a30ea..d82e22ded 100644
+--- a/tests/amdgpu/amd_bypass.c
++++ b/tests/amdgpu/amd_bypass.c
+@@ -72,6 +72,24 @@ static void test_init(data_t *data)
+ 	data->output = igt_get_single_output_for_pipe(display, data->pipe_id);
+ 	igt_assert(data->output);
  
-+		/* igt_amd_output_has_ilr_setting check if debugfs exist,
-+		 * but ilr settings could be all 0s -- not supported.
-+		 * need check if ilr settings values are supported.
-+		 */
-+		igt_amd_read_ilr_setting(data->drm_fd, output->name, data->supported_ilr);
-+		if (data->supported_ilr[0] == 0)
-+			continue;
++	if (data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
++		kmstest_set_connector_dpms(data->output->display->drm_fd,
++			data->output->config.connector, DRM_MODE_DPMS_OFF);
 +
- 		igt_info("Testing on output: %s\n", output->name);
- 
- 		/* Init only if display supports ilr link settings */
- 		test_init(data, output);
- 
-+		/* with set_all_output_pipe_to_none within test_init,
-+		 * kernel driver tx write dpcd 0x600=2 to rx. edp rx
++		/* with dmps off, tx write dpcd 0x600=2 to rx. edp rx
 +		 * exit psr state and stop verify crc from main link.
 +		 * with disabllow edp enter psr within kernel, when run
-+		 * set test pattern, display is turned on. kernel driver
-+		 * tx will not notify rx psr enable and crc checking by
-+		 * rx. by this, when tx want to read crc from rx, rx will
-+		 * check crc and response right away. timeout will not
-+		 * happens.
++		 * dmps on to turn on display, kernel tx will not notify
++		 * rx psr enable and crc checking by rx. by this, when tx
++		 * want to read crc from rx, rx will check crc and response
++		 * right away. timeout will not happens.
 +		 */
-+		if (option == ILR_POLICY)
-+			igt_amd_disallow_edp_enter_psr(data->drm_fd, output->name, true);
++		igt_amd_disallow_edp_enter_psr(data->drm_fd, data->output->name, true);
 +
- 		mode = igt_output_get_mode(output);
- 		igt_assert(mode);
- 
-@@ -243,6 +264,10 @@ static void test_flow(data_t *data, enum sub_test option)
- 		igt_remove_fb(data->drm_fd, &data->fb);
- 
- 		test_fini(data);
++		kmstest_set_connector_dpms(data->output->display->drm_fd,
++			data->output->config.connector, DRM_MODE_DPMS_ON);
++	}
 +
+ 	data->mode = igt_output_get_mode(data->output);
+ 	igt_assert(data->mode);
+ 
+@@ -370,6 +388,11 @@ static void bypass_8bpc_test(data_t *data)
+ 	igt_plane_set_fb(data->primary, NULL);
+ 	test_fini(data);
+ 	igt_remove_fb(data->drm_fd, &fb);
++
++	if (data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
 +		/* restore allow kernel driver eDP PSR */
-+		if (option == ILR_POLICY)
-+			igt_amd_disallow_edp_enter_psr(data->drm_fd, output->name, false);
- 	}
- 
++		igt_amd_disallow_edp_enter_psr(data->drm_fd, data->output->name, false);
++	}
  }
+ 
+ igt_main
 -- 
 2.25.1
