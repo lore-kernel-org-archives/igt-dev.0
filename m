@@ -4,45 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58A96C47DAF
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jan 2024 16:19:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77948C47DAF
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jan 2024 16:40:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0D8D010E880;
-	Thu, 18 Jan 2024 16:19:12 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0DAB210E880
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Jan 2024 16:19:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705594751; x=1737130751;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=3Tqh9xlNXQqOfJdo9QZFbZ3KsHH6MQA+hMedrbfkAVg=;
- b=BS7sotJNiNBosPsOInV26pXXiUUVTpk2t+HD/JckvZzCjZ3sOfEU1eof
- l2+2c2DK5iPCUVoL7sE+WlXc4u9qRvSMhYFo8dzCfzpTh3bZP0fA4WVQz
- dRKVM1Bg2j8+lCvfjl+TIS3Q/DCghoWaNUaomYuPAbPH2kLeaqmw/OjIi
- +lMogme5e5tR+MtaCC5nlQ1JJ09QEFd1ro/Cc655idJGyB7vEAAQy8gN+
- 9awesl6PKK1HMBHs093gglHBbE64OAMgNT+roV+Y4kc6ScKPZFisi/7hz
- 3cRE2hcAxiemvPg7j9y/M7+pbf4pzlHgogrs/Ta7d75CUPWQS7aGwwzOk Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="13845440"
-X-IronPort-AV: E=Sophos;i="6.05,203,1701158400"; d="scan'208";a="13845440"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2024 08:19:10 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,203,1701158400"; d="scan'208";a="33147706"
-Received: from jeevanb-desk.iind.intel.com ([10.223.74.192])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2024 08:19:09 -0800
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] Add a new test to validate the deep sleep state during
- extended vblank
-Date: Thu, 18 Jan 2024 21:51:00 +0530
-Message-Id: <20240118162100.797712-1-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 222A710E88B;
+	Thu, 18 Jan 2024 16:40:08 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA60310E84F;
+ Thu, 18 Jan 2024 16:40:06 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1951707929344495872=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_series_starting_with_=5B1/3?=
+ =?utf-8?q?=2Ci-g-t=5D_lib/igt=5Famd=3A_add_debugfs_disallow_edp_enter_psr?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Hersen Wu" <hersenxs.wu@amd.com>
+Date: Thu, 18 Jan 2024 16:40:06 -0000
+Message-ID: <170559600695.558446.4099193563365261801@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240118131454.19652-1-hersenxs.wu@amd.com>
+In-Reply-To: <20240118131454.19652-1-hersenxs.wu@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,340 +36,312 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: suraj.kandpal@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a new test to validate deep sleep states during extended vblank
-scenarios, where two frames are committed simultaneously for a give
-time with reduced refresh rate.
+--===============1951707929344495872==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/intel/kms_pm_dc.c | 262 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 262 insertions(+)
+== Series Details ==
 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 0d5824e67..da5d0e819 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -74,6 +74,10 @@
-  * Description: This test validates display engine entry to DC6 state while PSR is active
-  * Functionality: pm_dc, psr1
-  *
-+ * SUBTEST: deep-pkgc
-+ * Description: This test validates display engine entry to Deep PKGC state for extended vblank
-+ * Functionality: pm_dc
-+ *
-  * SUBTEST: dc9-dpms
-  * Description: This test validates display engine entry to DC9 state
-  */
-@@ -89,6 +93,14 @@
- #define PACKAGE_CSTATE_PATH  "pmc_core/package_cstate_show"
- #define KMS_POLL_DISABLE 0
- #define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid) || AT_LEAST_DISPLAY(devid, 14)))
-+#define DRM_MODE_FMT    "\"%s\": %d %d %d %d %d %d %d %d %d %d 0x%x 0x%x"
-+#define NSECS_PER_SEC (1000000000ull)
-+#define TEST_DURATION_NS (5000000000ull)
-+#define DRM_MODE_ARG(m) \
-+                (m)->name, (m)->vrefresh, (m)->clock, \
-+                (m)->hdisplay, (m)->hsync_start, (m)->hsync_end, (m)->htotal, \
-+                (m)->vdisplay, (m)->vsync_start, (m)->vsync_end, (m)->vtotal, \
-+                (m)->type, (m)->flags
- 
- IGT_TEST_DESCRIPTION("Tests to validate display power DC states.");
- 
-@@ -98,6 +110,11 @@ typedef struct {
- 	double r, g, b;
- } color_t;
- 
-+typedef struct range {
-+        unsigned int min;
-+        unsigned int max;
-+} range_t;
-+
- typedef struct {
- 	int drm_fd;
- 	int msr_fd;
-@@ -110,12 +127,32 @@ typedef struct {
- 	enum psr_mode op_psr_mode;
- 	drmModeModeInfo *mode;
- 	igt_output_t *output;
-+	range_t range;
- 	bool runtime_suspend_disabled;
-+	igt_plane_t *primary;
- } data_t;
- 
-+typedef struct vtest_ns {
-+        uint64_t min;
-+        uint64_t mid;
-+        uint64_t max;
-+} vtest_ns_t;
-+
- static bool dc_state_wait_entry(int drm_fd, int dc_flag, int prev_dc_count);
- static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count);
- 
-+/* Returns true if driver supports VRR. */
-+static bool has_vrr(igt_output_t *output)
-+{
-+        return igt_output_has_prop(output, IGT_CONNECTOR_VRR_CAPABLE);
-+}
-+
-+/* Returns true if an output supports VRR. */
-+static bool vrr_capable(igt_output_t *output)
-+{
-+        return igt_output_get_prop(output, IGT_CONNECTOR_VRR_CAPABLE);
-+}
-+
- static void setup_output(data_t *data)
- {
- 	igt_display_t *display = &data->display;
-@@ -136,6 +173,53 @@ static void setup_output(data_t *data)
- 	}
- }
- 
-+/* Read min and max vrr range from the connector debugfs. */
-+static range_t
-+get_vrr_range(data_t *data, igt_output_t *output)
-+{
-+        char buf[256];
-+        char *start_loc;
-+        int fd, res;
-+        range_t range;
-+
-+        fd = igt_debugfs_connector_dir(data->drm_fd, output->name, O_RDONLY);
-+        igt_assert(fd >= 0);
-+
-+        res = igt_debugfs_simple_read(fd, "vrr_range", buf, sizeof(buf));
-+        igt_require(res > 0);
-+
-+        close(fd);
-+
-+        igt_assert(start_loc = strstr(buf, "Min: "));
-+        igt_assert_eq(sscanf(start_loc, "Min: %u", &range.min), 1);
-+
-+        igt_assert(start_loc = strstr(buf, "Max: "));
-+        igt_assert_eq(sscanf(start_loc, "Max: %u", &range.max), 1);
-+
-+        return range;
-+}
-+
-+/* Instead of running on default mode, loop through the connector modes
-+ * and find the mode with max refresh rate to exercise full vrr range.
-+ */
-+static drmModeModeInfo
-+output_mode_with_maxrate(igt_output_t *output, unsigned int vrr_max)
-+{
-+        int i;
-+        drmModeConnectorPtr connector = output->config.connector;
-+        drmModeModeInfo mode = *igt_output_get_mode(output);
-+
-+        igt_debug("Default Mode " DRM_MODE_FMT "\n", DRM_MODE_ARG(&mode));
-+
-+        for (i = 0; i < connector->count_modes; i++)
-+                if (connector->modes[i].vrefresh > mode.vrefresh &&
-+                    connector->modes[i].vrefresh <= vrr_max)
-+                        mode = connector->modes[i];
-+        igt_debug("Override Mode " DRM_MODE_FMT "\n", DRM_MODE_ARG(&mode));
-+
-+        return mode;
-+}
-+
- static void display_fini(data_t *data)
- {
- 	igt_display_fini(&data->display);
-@@ -582,6 +666,173 @@ static unsigned int read_pkgc_counter(int debugfs_root_fd)
- 	return get_dc_counter(str);
- }
- 
-+/* Converts a timespec structure to nanoseconds. */
-+static uint64_t timespec_to_ns(struct timespec *ts)
-+{
-+        return ts->tv_sec * NSECS_PER_SEC + ts->tv_nsec;
-+}
-+
-+/*
-+ * Returns the current CLOCK_MONOTONIC time in nanoseconds.
-+ * The regular IGT helpers can't be used since they default to
-+ * CLOCK_MONOTONIC_RAW - which isn't what the kernel uses for its timestamps.
-+ */
-+static uint64_t get_time_ns(void)
-+{
-+        struct timespec ts;
-+        memset(&ts, 0, sizeof(ts));
-+        errno = 0;
-+
-+        if (!clock_gettime(CLOCK_MONOTONIC, &ts))
-+                return timespec_to_ns(&ts);
-+
-+        igt_warn("Could not read monotonic time: %s\n", strerror(errno));
-+        igt_fail(-errno);
-+
-+        return 0;
-+}
-+
-+/*
-+ * Gets an event from DRM and returns its timestamp in nanoseconds.
-+ * Asserts if the event from DRM is not matched with requested one.
-+ *
-+ * This blocks until the event is received.
-+ */
-+static uint64_t get_kernel_event_ns(data_t *data, uint32_t event)
-+{
-+        struct drm_event_vblank ev;
-+
-+        igt_set_timeout(1, "Waiting for an event\n");
-+        igt_assert_eq(read(data->drm_fd, &ev, sizeof(ev)), sizeof(ev));
-+        igt_assert_eq(ev.base.type, event);
-+        igt_reset_timeout();
-+
-+        return ev.tv_sec * NSECS_PER_SEC + ev.tv_usec * 1000ull;
-+}
-+
-+/* Performs an atomic non-blocking page-flip on a pipe. */
-+static void
-+do_flip(data_t *data, igt_fb_t *fb)
-+{
-+        int ret;
-+
-+        igt_set_timeout(1, "Scheduling page flip\n");
-+
-+        igt_plane_set_fb(data->primary, fb);
-+
-+        do {
-+                ret = igt_display_try_commit_atomic(&data->display,
-+                                  DRM_MODE_ATOMIC_NONBLOCK |
-+                                  DRM_MODE_PAGE_FLIP_EVENT,
-+                                  data);
-+        } while (ret == -EBUSY);
-+
-+        igt_assert_eq(ret, 0);
-+        igt_reset_timeout();
-+}
-+
-+/* Prepare the display for testing on the given pipe. */
-+static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
-+{
-+        drmModeModeInfo mode;
-+        cairo_t *cr;
-+
-+        mode = *igt_output_get_mode(output);
-+
-+        /* Prepare resources */
-+        igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
-+                            DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+                            0.50, 0.50, 0.50, &data->fb_rgb);
-+
-+        igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
-+                            DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+                            0.50, 0.50, 0.50, &data->fb_rgr);
-+
-+        cr = igt_get_cairo_ctx(data->drm_fd, &data->fb_rgb);
-+
-+        igt_paint_color(cr, 0, 0, mode.hdisplay / 10, mode.vdisplay / 10,
-+                        1.00, 0.00, 0.00);
-+
-+        igt_put_cairo_ctx(cr);
-+
-+        /* Take care of any required modesetting before the test begins. */
-+        data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+        igt_plane_set_fb(data->primary, &data->fb_rgb);
-+
-+        /* Clear vrr_enabled state before enabling it, because
-+         * it might be left enabled if the previous test fails.
-+         */
-+        igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, 0);
-+
-+        igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+
-+static void test_deep_pkgc_state(data_t *data)
-+{
-+        unsigned int pre_val = 0, cur_val = 0;
-+        bool flag, front = false, pkgc_flag = false;
-+        uint64_t start_ns, target_ns, event_ns;
-+        drmModeModeInfo mode;
-+        enum pipe pipe;
-+        igt_display_t *display = &data->display;
-+        igt_output_t *output;
-+
-+	pre_val = read_pkgc_counter(data->debugfs_root_fd);
-+        psr_dpms(data, DRM_MODE_DPMS_OFF);
-+
-+	for_each_pipe_with_valid_output(display, pipe, output) {
-+                igt_display_reset(display);
-+                igt_output_set_pipe(output, pipe);
-+                data->output = output;
-+                data->mode = igt_output_get_mode(output);
-+                igt_require(has_vrr(data->output));
-+                if (!vrr_capable(data->output)) {
-+                        flag = false;
-+			continue;
-+                }
-+
-+                /* Capture VRR range */
-+                data->range = get_vrr_range(data, data->output);
-+                /* Override mode with max vrefresh.
-+                 *   - vrr_min range should be less than the override mode vrefresh.
-+                 *   - Limit the vrr_max range with the override mode vrefresh.
-+                 */
-+                mode = output_mode_with_maxrate(data->output, data->range.max);
-+                igt_require(mode.vrefresh > data->range.min);
-+                data->range.max = mode.vrefresh;
-+                igt_output_override_mode(data->output, &mode);
-+                prepare_test(data, output, pipe);
-+                data->primary = igt_output_get_plane_type(data->output,
-+                                            DRM_PLANE_TYPE_PRIMARY);
-+		target_ns = NSECS_PER_SEC / (data->range.max - 10);
-+		do_flip(data, &data->fb_rgb);
-+		start_ns = get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
-+
-+		while(event_ns - start_ns > TEST_DURATION_NS) {
-+			front = !front;
-+			do_flip(data, front ? &data->fb_rgb : &data->fb_rgr);
-+			event_ns = get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
-+
-+			cur_val = read_pkgc_counter(data->debugfs_root_fd);
-+			if (cur_val > pre_val) {
-+				pkgc_flag = true;
-+			}
-+
-+			if ( pkgc_flag == true)
-+				break;
-+			while (get_time_ns() < target_ns);
-+		}
-+
-+                psr_dpms(data, DRM_MODE_DPMS_ON);
-+                cleanup_dc3co_fbs(data);
-+        }
-+
-+        if (flag)
-+                igt_skip("No connector with VRR found\n");
-+	igt_assert_f(pkgc_flag, "PKGC10 is not achieved.\n");
-+
-+}
-+
- static void test_pkgc_state_dpms(data_t *data)
- {
- 	unsigned int timeout_sec = 6;
-@@ -669,6 +920,17 @@ igt_main
- 		test_dc_state_psr(&data, CHECK_DC5);
- 	}
- 
-+	igt_describe("This test validates display engine entry to DC8 state "
-+		     "while extended vblank");
-+	igt_subtest("deep-pkgc") {
-+		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
-+			      "PC8+ residencies not supported\n");
-+		if (intel_display_ver(data.devid) >= 20)
-+			test_deep_pkgc_state(&data);
-+		else
-+			igt_skip("Deep PKGC not supported on this platform");
-+	}
-+
- 	igt_describe("This test validates display engine entry to DC6 state "
- 		     "while PSR is active");
- 	igt_subtest("dc6-psr") {
--- 
-2.25.1
+Series: series starting with [1/3,i-g-t] lib/igt_amd: add debugfs disallow edp enter psr
+URL   : https://patchwork.freedesktop.org/series/128941/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from IGT_7683 -> IGTPW_10555
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_10555 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_10555, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/index.html
+
+Participating hosts (38 -> 36)
+------------------------------
+
+  Missing    (2): bat-mtlp-8 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_10555:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1:
+    - fi-rkl-11600:       [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7683/fi-rkl-11600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/fi-rkl-11600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10555 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - bat-rpls-2:         NOTRUN -> [SKIP][3] ([i915#9318])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@debugfs_test@basic-hwmon.html
+
+  * igt@gem_lmem_swapping@verify-random:
+    - bat-rpls-2:         NOTRUN -> [SKIP][4] ([i915#4613]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@gem_tiled_pread_basic:
+    - bat-rpls-2:         NOTRUN -> [SKIP][5] ([i915#3282])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-rpls-2:         NOTRUN -> [SKIP][6] ([i915#6621])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - bat-rpls-2:         NOTRUN -> [DMESG-FAIL][7] ([i915#10010])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - bat-rpls-2:         NOTRUN -> [SKIP][8] ([i915#4103]) +1 other test skip
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-rpls-2:         NOTRUN -> [SKIP][9] ([i915#3555] / [i915#3840] / [i915#9886])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-rpls-2:         NOTRUN -> [SKIP][10] ([fdo#109285])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-2:
+    - bat-dg1-7:          [PASS][11] -> [FAIL][12] ([i915#10053]) +1 other test fail
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7683/bat-dg1-7/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-2.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-dg1-7/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-2.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - bat-rpls-2:         NOTRUN -> [SKIP][13] ([i915#5354])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-rpls-2:         NOTRUN -> [SKIP][14] ([i915#3555])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-read:
+    - bat-rpls-2:         NOTRUN -> [SKIP][15] ([fdo#109295] / [i915#3708]) +2 other tests skip
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@prime_vgem@basic-fence-read.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-apl-guc:         [DMESG-WARN][16] ([i915#8703]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7683/fi-apl-guc/igt@gem_exec_suspend@basic-s3@smem.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/fi-apl-guc/igt@gem_exec_suspend@basic-s3@smem.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [i915#10010]: https://gitlab.freedesktop.org/drm/intel/issues/10010
+  [i915#10053]: https://gitlab.freedesktop.org/drm/intel/issues/10053
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#8703]: https://gitlab.freedesktop.org/drm/intel/issues/8703
+  [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
+  [i915#9732]: https://gitlab.freedesktop.org/drm/intel/issues/9732
+  [i915#9886]: https://gitlab.freedesktop.org/drm/intel/issues/9886
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7683 -> IGTPW_10555
+
+  CI-20190529: 20190529
+  CI_DRM_14137: 238e8655c184b7cf16731690b59da560641a07ad @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10555: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/index.html
+  IGT_7683: 7683
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/index.html
+
+--===============1951707929344495872==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/3,i-g-t] lib/igt_amd: add debugfs disallow edp enter psr</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128941/">https://patchwork.freedesktop.org/series/128941/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7683 -&gt; IGTPW_10555</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_10555 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_10555, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/index.html</p>
+<h2>Participating hosts (38 -&gt; 36)</h2>
+<p>Missing    (2): bat-mtlp-8 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_10555:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1:<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7683/fi-rkl-11600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/fi-rkl-11600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10555 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@basic-hwmon:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9318">i915#9318</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10010">i915#10010</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9886">i915#9886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-2:</p>
+<ul>
+<li>bat-dg1-7:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7683/bat-dg1-7/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-dg1-7/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10053">i915#10053</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@basic-brightness:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-read:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/bat-rpls-2/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_exec_suspend@basic-s3@smem:<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7683/fi-apl-guc/igt@gem_exec_suspend@basic-s3@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8703">i915#8703</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/fi-apl-guc/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7683 -&gt; IGTPW_10555</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14137: 238e8655c184b7cf16731690b59da560641a07ad @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10555: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10555/index.html<br />
+  IGT_7683: 7683</p>
+
+</body>
+</html>
+
+--===============1951707929344495872==--
