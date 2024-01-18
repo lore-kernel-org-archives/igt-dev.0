@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-From: Hersen Wu <hersenxs.wu@amd.com>
-Subject: [PATCH 1/3] [i-g-t] lib/igt_amd: add debugfs disallow edp enter psr
-Date: Wed, 17 Jan 2024 21:36:06 -0500
-Message-ID: <20240118023608.55865-1-hersenxs.wu@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============6587394765821908316=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5B1/3=2C?=
+ =?utf-8?q?i-g-t=5D_lib/igt=5Famd=3A_add_debugfs_disallow_edp_enter_psr?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 18 Jan 2024 03:20:04 -0000
+Message-ID: <170554800479.537693.17265367719781694784@5338d5abeb45>
+References: <20240118023608.55865-1-hersenxs.wu@amd.com>
+In-Reply-To: <20240118023608.55865-1-hersenxs.wu@amd.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,121 +18,244 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, rodrigo.siqueira@amd.com, aurabindo.pillai@amd.com, alex.hung@amd.com, hamza.mahfooz@amd.com, wayne.lin@amd.com
-Cc: Hersen Wu <hersenxs.wu@amd.com>, markyacoub@google.com
+To: Hersen Wu <hersenxs.wu@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 
-When igt app call this debugfs, it will pass disable flag
-to kernel. The flag  will block psr setup and enable.
+--===============6587394765821908316==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-When igt read psr edp rx crc, read may be timeout.
-After bootup, AMD kernel driver setup psr with dpcd 0x170 = 5.
-this notify rx psr enable and let rx fw start checking crc
-for rx fw internal logic. rx fw may not update crc read count
-within dpcd 0x246. read count is always 0. this  will lead tx
-crc reading timeout.
+== Series Details ==
 
-With IGT app sequence below, rx fw crc checking for rx internal
-logic is disabled. upon tx read rx crc, rx fw will check crc and
-update crc count within dpcd 0x246. so IGT app can read rx crc
-successfully.
+Series: series starting with [1/3,i-g-t] lib/igt_amd: add debugfs disallow edp enter psr
+URL   : https://patchwork.freedesktop.org/series/128914/
+State : success
 
-expected app sequence is as below:
-1. disable eDP PHY and notify eDP rx with dpcd 0x600 = 2.
-2. echo 0x1 /sys/kernel/debug/dri/0/eDP-X/disallow_edp_enter_psr
-3. enable eDP PHY and notify eDP rx with dpcd 0x600 = 1 but
-   without dpcd 0x170 = 5.
-4. read crc from rx dpcd 0x270, 0x246, etc.
-5. echo 0x0 /sys/kernel/debug/dri/0/eDP-X/disallow_edp_enter_psr.
-   this will let eDP back to normal with psr setup dpcd 0x170 = 5.
+== Summary ==
 
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
----
- lib/igt_amd.c | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_amd.h |  2 ++
- 2 files changed, 51 insertions(+)
+CI Bug Log - changes from XEIGT_7678_BAT -> XEIGTPW_10549_BAT
+====================================================
 
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index 247a42f37..d0b53c08a 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -1153,6 +1153,55 @@ void igt_amd_allow_edp_hotplug_detect(int drm_fd, char *connector_name, bool ena
- 	close(hpd_fd);
- }
- 
-+/**
-+ * igt_amd_disallow_edp_enter_psr: notify kernel skip edp psr setup and enable
-+ * @drm_fd: DRM file descriptor
-+ * @connector_name: The connector's name
-+ * @enable: skip kernel eDP psr setup and enable -- disallow edp enter psr
-+ * example usage: disallow psr
-+ * echo 0x1 >
-+ * /sys/kernel/debug/dri/0/eDP-1/disallow_edp_enter_psr
-+ *
-+ * expected IGT sequence is as below:
-+ * 1. disable eDP PHY and notify eDP rx with dpcd 0x600 = 2.
-+ *    for example, kmstest_set_connector_dpms off will do this.
-+ * 2. echo 0x1 /sys/kernel/debug/dri/0/eDP-X/disallow_edp_enter_psr
-+ * 3. enable eDP PHY and notify eDP rx with dpcd 0x600 = 1 but
-+ *    without dpcd 0x170 = 5.
-+ *    for example, kmstest_set_connector_dpms on will do this.
-+ * 4. read crc from rx dpcd 0x270, 0x246, etc.
-+ *    igt_pipe_crc_collect_crc will do this.
-+ * 5. echo 0x0 /sys/kernel/debug/dri/0/eDP-X/disallow_edp_enter_psr.
-+ *    this will let eDP back to normal with psr setup dpcd 0x170 = 5.
-+ */
-+void igt_amd_disallow_edp_enter_psr(int drm_fd, char *connector_name, bool enable)
-+{
-+	int fd, ret, wr_len;
-+	const char *allow_edp_psr = "1";
-+	const char *dis_allow_edp_psr = "0";
-+
-+	/* if current psr is not enabled, skip this debugfs */
-+	if (!igt_amd_psr_support_drv(drm_fd, connector_name, PSR_MODE_1) &&
-+		!igt_amd_psr_support_drv(drm_fd, connector_name, PSR_MODE_2))
-+		return;
-+
-+	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-+	igt_assert(fd >= 0);
-+	ret = openat(fd, DEBUGFS_DISALLOW_EDP_ENTER_PSR, O_WRONLY);
-+	close(fd);
-+	igt_assert(ret >= 0);
-+
-+	if (enable) {
-+		wr_len = write(ret, allow_edp_psr, strlen(allow_edp_psr));
-+		igt_assert_eq(wr_len, strlen(allow_edp_psr));
-+	} else {
-+		wr_len = write(ret, dis_allow_edp_psr, strlen(dis_allow_edp_psr));
-+		igt_assert_eq(wr_len, strlen(dis_allow_edp_psr));
-+	}
-+
-+	close(ret);
-+}
-+
- static bool get_dm_capabilities(int drm_fd, char *buf, size_t size)
- {
- 	int ret, fd;
-diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index 254b5d37b..6780b99de 100644
---- a/lib/igt_amd.h
-+++ b/lib/igt_amd.h
-@@ -50,6 +50,7 @@
- #define DEBUGFS_EDP_PSR_CAP	"psr_capability"
- #define DEBUGFS_EDP_PSR_STATE	"psr_state"
- #define DEBUGFS_ALLOW_EDP_HOTPLUG_DETECT "allow_edp_hotplug_detection"
-+#define DEBUGFS_DISALLOW_EDP_ENTER_PSR "disallow_edp_enter_psr"
- 
- /* amdgpu DM interface entries */
- #define DEBUGFS_DM_VISUAL_CONFIRM "amdgpu_dm_visual_confirm"
-@@ -194,6 +195,7 @@ bool igt_amd_psr_support_drv(int drm_fd, char *connector_name, enum psr_mode mod
- bool igt_amd_output_has_psr_state(int drm_fd, char *connector_name);
- int  igt_amd_read_psr_state(int drm_fd, char *connector_name);
- void igt_amd_allow_edp_hotplug_detect(int drm_fd, char *connector_name, bool enable);
-+void igt_amd_disallow_edp_enter_psr(int drm_fd, char *connector_name, bool enable);
- 
- /* DM interface helpers */
- bool igt_amd_has_visual_confirm(int drm_fd);
--- 
-2.25.1
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10549_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] ([Intel XE#623])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] ([Intel XE#455])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] ([i915#5274])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][4] ([Intel XE#608])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@xe_exec_fault_mode@many-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][5] ([Intel XE#288]) +32 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][6] ([Intel XE#255])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][7] ([Intel XE#977])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][8] ([Intel XE#979]) +1 other test skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_exec_fault_mode@twice-userptr-rebind-imm:
+    - bat-pvc-2:          [INCOMPLETE][9] -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7678/bat-pvc-2/igt@xe_exec_fault_mode@twice-userptr-rebind-imm.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-pvc-2/igt@xe_exec_fault_mode@twice-userptr-rebind-imm.html
+
+  * igt@xe_exec_threads@threads-mixed-shared-vm-basic:
+    - bat-dg2-oem2:       [INCOMPLETE][11] -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7678/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
+  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
+  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7678 -> IGTPW_10549
+  * Linux: xe-639-b42f47ca5fff1d04fb8eb02d64520b3f338a495d -> xe-642-2d422dec58e0dfd61d6c9842de7f83289803dccb
+
+  IGTPW_10549: 10549
+  IGT_7678: 9f0b63bae98fa6164dd2262f8890a964fb1fc23d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-639-b42f47ca5fff1d04fb8eb02d64520b3f338a495d: b42f47ca5fff1d04fb8eb02d64520b3f338a495d
+  xe-642-2d422dec58e0dfd61d6c9842de7f83289803dccb: 2d422dec58e0dfd61d6c9842de7f83289803dccb
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/index.html
+
+--===============6587394765821908316==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/3,i-g-t] lib/igt_amd: add debugfs disallow edp enter psr</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128914/">https://patchwork.freedesktop.org/series/128914/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7678_BAT -&gt; XEIGTPW_10549_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10549_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@many-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@xe_exec_fault_mode@twice-userptr-rebind-imm:</p>
+<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7678/bat-pvc-2/igt@xe_exec_fault_mode@twice-userptr-rebind-imm.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-pvc-2/igt@xe_exec_fault_mode@twice-userptr-rebind-imm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_threads@threads-mixed-shared-vm-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7678/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10549/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7678 -&gt; IGTPW_10549</li>
+<li>Linux: xe-639-b42f47ca5fff1d04fb8eb02d64520b3f338a495d -&gt; xe-642-2d422dec58e0dfd61d6c9842de7f83289803dccb</li>
+</ul>
+<p>IGTPW_10549: 10549<br />
+  IGT_7678: 9f0b63bae98fa6164dd2262f8890a964fb1fc23d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-639-b42f47ca5fff1d04fb8eb02d64520b3f338a495d: b42f47ca5fff1d04fb8eb02d64520b3f338a495d<br />
+  xe-642-2d422dec58e0dfd61d6c9842de7f83289803dccb: 2d422dec58e0dfd61d6c9842de7f83289803dccb</p>
+
+</body>
+</html>
+
+--===============6587394765821908316==--
