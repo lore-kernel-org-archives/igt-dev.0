@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-Subject: RE: [i-g-t] tests/intel/i915_suspend: Fix WARNs of invalid fd
-Date: Thu, 18 Jan 2024 04:44:59 +0000
-Message-ID: <CY5PR11MB62118F52982F03F5F42AA42295712@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20240109131802.2624834-1-bhanuprakash.modem@intel.com>
- <20240117111256.yb7fs23zrr36xvtl@kamilkon-desk.igk.intel.com>
- <d9621791-8a6e-4cb0-8da3-7d03bf328761@intel.com>
-In-Reply-To: <d9621791-8a6e-4cb0-8da3-7d03bf328761@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t] i915/perf: Fix loop termination logic in two tests
+Date: Wed, 17 Jan 2024 20:55:25 -0800
+Message-ID: <20240118045525.911523-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,52 +17,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, Kamil Konieczny <kamil.konieczny@linux.intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTW9kZW0sIEJoYW51cHJh
-a2FzaCA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT4NCj4gU2VudDogV2VkbmVzZGF5LCBK
-YW51YXJ5IDE3LCAyMDI0IDg6NTIgUE0NCj4gVG86IEthbWlsIEtvbmllY3pueSA8a2FtaWwua29u
-aWVjem55QGxpbnV4LmludGVsLmNvbT47IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
-ZzsgR3VwdGEsIEFuc2h1bWFuIDxhbnNodW1hbi5ndXB0YUBpbnRlbC5jb20+DQo+IFN1YmplY3Q6
-IFJlOiBbaS1nLXRdIHRlc3RzL2ludGVsL2k5MTVfc3VzcGVuZDogRml4IFdBUk5zIG9mIGludmFs
-aWQgZmQNCj4gDQo+IEhpIEthbWlsLA0KPiANCj4gT24gMTctMDEtMjAyNCAwNDo0MiBwbSwgS2Ft
-aWwgS29uaWVjem55IHdyb3RlOg0KPiA+IEhpIEJoYW51cHJha2FzaCwNCj4gPiBPbiAyMDI0LTAx
-LTA5IGF0IDE4OjQ4OjAyICswNTMwLCBCaGFudXByYWthc2ggTW9kZW0gd3JvdGU6DQo+ID4+IENh
-bGwgZHJtX2Nsb3NlX2RyaXZlcigpIG9ubHkgaWYgZmQgPj0wLCBvdGhlcndpc2UgaXQnbGwgd2ls
-bCB0aHJvdyBXQVJOOg0KPiA+Pg0KPiA+PiAoaTkxNV9zdXNwZW5kOjc1NjMpIGRybXRlc3QtV0FS
-TklORzogRG9uJ3QgYXR0ZW1wdCB0byBjbG9zZQ0KPiA+PiBzdGFuZGFyZC9pbnZhbGlkIGZpbGUg
-ZGVzY3JpcHRvcjogLTENCj4gPj4NCj4gPj4gU2lnbmVkLW9mZi1ieTogQmhhbnVwcmFrYXNoIE1v
-ZGVtIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPg0KPiA+PiAtLS0NCj4gPj4gICB0ZXN0
-cy9pbnRlbC9pOTE1X3N1c3BlbmQuYyB8IDQgKysrLQ0KPiA+PiAgIDEgZmlsZSBjaGFuZ2VkLCAz
-IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4gPj4NCj4gPj4gZGlmZiAtLWdpdCBhL3Rl
-c3RzL2ludGVsL2k5MTVfc3VzcGVuZC5jIGIvdGVzdHMvaW50ZWwvaTkxNV9zdXNwZW5kLmMNCj4g
-Pj4gaW5kZXggYzI1ODA1NTg0Li44MmNhYmZhNDEgMTAwNjQ0DQo+ID4+IC0tLSBhL3Rlc3RzL2lu
-dGVsL2k5MTVfc3VzcGVuZC5jDQo+ID4+ICsrKyBiL3Rlc3RzL2ludGVsL2k5MTVfc3VzcGVuZC5j
-DQo+ID4+IEBAIC0zMDAsNyArMzAwLDkgQEAgdGVzdF9zdXNwZW5kX3dpdGhvdXRfaTkxNShpbnQg
-c3RhdGUpDQo+ID4+ICAgCQlpZ3RfcG1fZ2V0X2QzY29sZF9hbGxvd2VkKGNhcmQucGNpX3Nsb3Rf
-bmFtZSwNCj4gJmQzY29sZF9hbGxvd2VkKTsNCj4gPj4gICAJCWlndF9wbV9zZXRfZDNjb2xkX2Fs
-bG93ZWQoY2FyZC5wY2lfc2xvdF9uYW1lLCAwKTsNCj4gPj4gICAJfQ0KPiA+PiAtCWRybV9jbG9z
-ZV9kcml2ZXIoZmQpOw0KPiA+DQo+ID4gaW1obyBwcm9wZXIgZml4IHdvdWxkIGJlIHJlbW92ZSB0
-aGlzIGFuZA0KPiA+IGZkPV9fZHJtX29wZW5fZHJpdmVyKERSSVZFUl9JTlRFTCkNCj4gPiBmcm9t
-IHRoaXMgZnVuY3Rpb24sIGFzIGZ1bmN0aW9uIGlzIG5hbWVkOg0KPiA+IHRlc3Rfc3VzcGVuZF93
-aXRob3V0X2k5MTUNCj4gDQo+IEkgZG9uJ3QgaGF2ZSBtdWNoIGV4cGVydGlzZSBpbiBEIHN0YXRl
-cy4gQWZ0ZXIgcmVhZGluZyB0aGUgY29tbWVudHMgaW4gdGhlDQo+IHN1YnRlc3QgIldoZW4gbW9k
-dWxlIGlzIHVubG9hZGVkIGFuZCBzMmlkbGUgaXMgdHJpZ2dlcmVkLCBQQ0kgY29yZSBsZWF2ZXMg
-dGhlDQo+IGVuZHBvaW50IGluIEQwIGFuZCB0aGUgYnJpZGdlIGluIEQzIHN0YXRlIGNhdXNpbmcg
-UENJRSBzcGVjIHZpb2xhdGlvbiBhbmQNCj4gY29uZmlnIHNwYWNlIGlzIHJlYWQgYXMgMHhGRi4g
-S2VlcCB0aGUgYnJpZGdlIGluIEQwIGJlZm9yZSBtb2R1bGUgdW5sb2FkIHRvDQo+IHByZXZlbnQg
-dGhpcyBpc3N1ZSINClRoaXMgaXMgbm90IGEgcmVhbCB0aW1lIHVzZSBjYXNlLCBlaXRoZXIgYSBz
-eXN0ZW0gYm9vdHMgd2l0aCBpOTE1IGRyaXZlciBvciBub3QuDQpSZW1vdmluZyBpOTE1IG1vZHVs
-ZSBhbmQgdHJpZ2dlciBzdXNwZW5kIGlzIG5vdCBhIHZhbGlkIHVzZSBjYXNlIGJ1dCB3ZSB3YW50
-IHRvIHRlc3QgdGhhdA0Kc3VzcGVuZCBjb3ZlcmFnZSB3aXRob3V0IGk5MTUuIFNvIHdlIG5lZWQg
-dG8gZGlzYWxsb3cgZDNjb2xkKHdoaWNoIHdpbGwgYnJpbmcgdGhlIHBjaWUgYnJpZGdlIHRvIEQw
-KS4NCmlndF9wbV9zZXRfZDNjb2xkX2FsbG93ZWQoY2FyZC5wY2lfc2xvdF9uYW1lLCAwKTsNCioq
-KmFib3ZlIGlzIGFwcGxpY2FibGUgdHAgIGRpc2NyZXRlIGNhcmQuDQogDQpUaGFua3MsDQpBbnNo
-dW1hbiBHdXB0YSAgDQo+IA0KPiBJTUhPLCBzdGlsbCB0aGlzIHBhdGNoIGlzIGEgdmFsaWQgZml4
-LiBQZXJoYXBzLCB3ZSBjYW4gZHJvcA0KPiBkcm1fY2xvc2VfZHJpdmVyKCkgYW5kIHVzZSBjbG9z
-ZSgpLg0KPiANCj4gKyBBbnNodW1hbiB0byBjb21tZW50DQo+IA0KPiAtIEJoYW51DQo+IA0KPiA+
-DQo+ID4gd2UgYXJlIGV4cGVjdGluZyBpOTE1IGRyaXZlciB0byBiZSBfdW5sb2FkZWRfLg0KPiA+
-DQo+ID4gUmVnYXJkcywNCj4gPiBLYW1pbA0KPiA+DQo+ID4+ICsNCj4gPj4gKwlpZiAoZmQgPj0g
-MCkNCj4gPj4gKwkJZHJtX2Nsb3NlX2RyaXZlcihmZCk7DQo+ID4+DQo+ID4+ICAgCWlndF9rbXNn
-KEtNU0dfSU5GTyAiVW5sb2FkaW5nIGk5MTVcbiIpOw0KPiA+PiAgIAlpZ3RfYXNzZXJ0X2VxKGln
-dF9pOTE1X2RyaXZlcl91bmxvYWQoKSwwKTsNCj4gPj4gLS0NCj4gPj4gMi40MC4wDQo+ID4+DQo=
+The code in af9910b3967d ("i915/perf: Check regularly if we are done
+reading reports") does not match the commit description. Fix the code to
+match the commit description.
+
+Fixes: af9910b3967d ("i915/perf: Check regularly if we are done reading reports")
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/intel/perf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tests/intel/perf.c b/tests/intel/perf.c
+index 3565d61cc393..94738b8a58b4 100644
+--- a/tests/intel/perf.c
++++ b/tests/intel/perf.c
+@@ -3052,7 +3052,7 @@ test_buffer_fill(const struct intel_execution_engine2 *e)
+ 						first_timestamp = oa_timestamp(report, fmt);
+ 					last_timestamp = oa_timestamp(report, fmt);
+ 
+-					if (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2))
++					if (((last_timestamp - first_timestamp) * oa_period) >= (fill_duration / 2))
+ 						break;
+ 
+ 					if (oa_report_is_periodic(oa_exponent, report)) {
+@@ -3279,7 +3279,7 @@ test_enable_disable(const struct intel_execution_engine2 *e)
+ 						  oa_report_is_periodic(oa_exponent, report),
+ 						  oa_report_get_ctx_id(report));
+ 
+-					if (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2))
++					if (((last_timestamp - first_timestamp) * oa_period) >= (fill_duration / 2))
+ 						break;
+ 
+ 					if (oa_report_is_periodic(oa_exponent, report)) {
+-- 
+2.41.0
