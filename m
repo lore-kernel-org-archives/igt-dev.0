@@ -4,49 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE640C4707B
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jan 2024 09:45:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20B3BC4707B
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jan 2024 09:47:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8F0F510E780;
-	Thu, 18 Jan 2024 09:45:36 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A656110E750
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Jan 2024 09:45:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D1CF210E777;
+	Thu, 18 Jan 2024 09:47:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 924F110E770;
+ Thu, 18 Jan 2024 09:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705571135; x=1737107135;
+ t=1705571231; x=1737107231;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=umFj1JERwiFoio+iwOocm2pJmcDPk2mIXaiXQauC+T0=;
- b=XE5iV9O2lllVaWXlHz0pB7ZS742xqZQE1dQccI7ihZvfkh4qrhhZ5Jlk
- jIGFfJkeDumXrdQ/US1sgm6xxZXmwOYcMDRlxEZUuyWNuMLlWfMWAn6PX
- 1fXFY/fPwLMZKQomGesCJSfG+CBWm8xPSlgD/qPv3Hr7JeGSGD12E33gS
- qzKXqP6NXVK5wM9EQdwDNVgkhIS3IjGymZfgWk/tKkKr4UMdzvrkqbIz7
- 7HbP9ZxHGB+tXoWxouStmvQB1XG+P3dxwQxvaWtabTc0GmCVJALDmbVKJ
- I2A64uYpyfvNcBYbEC6PPI8wgXh/2qJYtkN+rsiqYP/adTHyMHR6l3Z1M w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="400068803"
-X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; d="scan'208";a="400068803"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2024 01:45:33 -0800
+ bh=xLelL1tMu4LRgcDCFlZC9P2bUUDsNdExC3E3NXnFm0o=;
+ b=VoiHvkF8vPRElf3VQsDoUx/k6uJVH9YKKwa0Qg8p3hbGq7zQzRznMYOQ
+ ux/GKEjlztEu/up+0rvFdB7LSw4DQDz/nVPGd8XBBJtGGDSY4XyN7crQS
+ sUxnQIFJPfgwmmzRTkhtpLjjf7Uh/QRE1iiOUneSmqE/znniNOEhjMfJN
+ a4WRrMOQ28u0MaV/kTSHpG/cZHo9r27bK0eWpk9CpsQFp0EjrXkoypn7M
+ 5IRlPbPqwwyN4bIzJovc/9bDkyaGLWKnaAXGPrBFgg7E6kjQgvEU1wna0
+ nqG7dgcKU3/HBAbh8sOuDUkHGaVIw8CXBKQgV8c2NzH4zHvrAFMEfbYy4 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="7098187"
+X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; 
+   d="scan'208";a="7098187"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jan 2024 01:47:10 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; d="scan'208";a="33064125"
+X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="957771008"
+X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; d="scan'208";a="957771008"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2024 01:45:32 -0800
-Date: Thu, 18 Jan 2024 10:45:29 +0100
+ by orsmga005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2024 01:47:08 -0800
+Date: Thu, 18 Jan 2024 10:47:06 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] tests/kms: fix pixel format functionality
-Message-ID: <20240118094529.7gdevtv7tuvi2pzq@kamilkon-desk.igk.intel.com>
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVA==?= =?utf-8?Q?=3A?= failure for
+ tests/kms: fix pixel format functionality
+Message-ID: <20240118094706.hfml2n4scwtju3qd@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Swati Sharma <swati2.sharma@intel.com>
+ "Sharma, Swati2" <swati2.sharma@intel.com>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
 References: <20240117081416.234172-1-swati2.sharma@intel.com>
+ <170549024593.520770.1242418493532134542@5338d5abeb45>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240117081416.234172-1-swati2.sharma@intel.com>
+In-Reply-To: <170549024593.520770.1242418493532134542@5338d5abeb45>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,84 +65,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: lgci.bug.filing@intel.com, I915-ci-infra@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Swati,
-On 2024-01-17 at 13:44:16 +0530, Swati Sharma wrote:
+Hi igt-dev,
+On 2024-01-17 at 11:17:25 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/kms: fix pixel format functionality
+> URL   : https://patchwork.freedesktop.org/series/128866/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from IGT_7676_full -> IGTPW_10540_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10540_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10540_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10540/index.html
+> 
+> Participating hosts (8 -> 8)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10540_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@live@gt_pm:
+>     - shard-rkl:          [PASS][1] -> [DMESG-FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7676/shard-rkl-1/igt@i915_selftest@live@gt_pm.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10540/shard-rkl-4/igt@i915_selftest@live@gt_pm.html
+> 
+>   * igt@kms_flip@flip-vs-rmfb-interruptible@d-hdmi-a1:
+>     - shard-tglu:         [PASS][3] -> [INCOMPLETE][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7676/shard-tglu-4/igt@kms_flip@flip-vs-rmfb-interruptible@d-hdmi-a1.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10540/shard-tglu-8/igt@kms_flip@flip-vs-rmfb-interruptible@d-hdmi-a1.html
+> 
 
-in subject add "doc", like:
+Unrelated to documentation (comments) introduced in a patch, no need for respin.
 
-[PATCH i-g-t] tests/kms: fix doc pixel format functionality
----------------------------- ^^^ added
-
-> Pixel format functionality is used in different ways. Align all.
-
-Better:
-In tests documentation, pixel format ...
-
-with that:
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Regards,
+Regrads,
 Kamil
 
+>   
+> Known issues
+> ------------
 > 
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->  tests/intel/kms_psr2_su.c  | 2 +-
->  tests/kms_pipe_crc_basic.c | 2 +-
->  tests/kms_plane.c          | 4 ++--
->  3 files changed, 4 insertions(+), 4 deletions(-)
+>   Here are the changes found in IGTPW_10540_full that come from known issues:
 > 
-> diff --git a/tests/intel/kms_psr2_su.c b/tests/intel/kms_psr2_su.c
-> index 96b4fd2b4..936b5beb3 100644
-> --- a/tests/intel/kms_psr2_su.c
-> +++ b/tests/intel/kms_psr2_su.c
-> @@ -47,7 +47,7 @@
->   *
->   * SUBTEST: page_flip-%s
->   * Description: Test the selective update with %arg[1] when screen changes
-> - * Functionality: pixel-format, psr2, selective_update
-> + * Functionality: pixel_formats, psr2, selective_update
->   *
->   * arg[1]:
->   *
-> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-> index 3c12d8098..0c19745bc 100644
-> --- a/tests/kms_pipe_crc_basic.c
-> +++ b/tests/kms_pipe_crc_basic.c
-> @@ -68,7 +68,7 @@
->  /**
->   * SUBTEST: compare-crc-sanitycheck-%s
->   * Description: Basic sanity check for CRC mismatches with %arg[1]
-> - * Functionality: crc, pixel_format
-> + * Functionality: crc, pixel_formats
->   *
->   * arg[1]:
->   *
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 51ca082ae..406aecc04 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -44,7 +44,7 @@
->  /**
->   * SUBTEST: planar-pixel-format-settings
->   * Description: verify planar settings for pixel format are handled correctly
-> - * Functionality: pixel_format, plane
-> + * Functionality: pixel_formats, plane
->   *
->   * SUBTEST: plane-position-%s
->   * Description: Verify plane position using two planes to create a %arg[1]
-> @@ -80,7 +80,7 @@
->  /**
->   * SUBTEST: pixel-%s
->   * Description: verify the pixel formats for given plane and pipe
-> - * Functionality: pixel_format, plane
-> + * Functionality: pixel_formats, plane
->   *
->   * arg[1]:
->   *
-> -- 
-> 2.25.1
+> ### IGT changes ###
 > 
+
+...cut...
+
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7676 -> IGTPW_10540
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14129: b6b50ad4c8d61b14de0ffcf0d52ae2adc0ef39cf @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10540: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10540/index.html
+>   IGT_7676: 7676
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10540/index.html
