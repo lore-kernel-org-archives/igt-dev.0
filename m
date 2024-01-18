@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Message-ID: <48ce7aa7-3475-4ce5-9087-3f53560af0e8@intel.com>
-Date: Thu, 18 Jan 2024 10:57:26 +0530
-Subject: Re: [PATCH i-g-t v2 1/2] tests/kms_async_flip: Speed up the CRC test
- on Intel hw
-References: <20231207171136.30669-1-ville.syrjala@linux.intel.com>
- <20231219010231.6329-1-ville.syrjala@linux.intel.com>
+Message-ID: <761f6968-1f07-4d5b-a2dd-9482b44915df@intel.com>
+Date: Thu, 18 Jan 2024 11:45:21 +0530
+Subject: Re: [PATCH v5 2/3] lib/igt_kms: Correct the check for igt_require
+References: <20240117141323.14994-3-mohammed.thasleem@intel.com>
+ <20240117145308.26010-1-mohammed.thasleem@intel.com>
 Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20231219010231.6329-1-ville.syrjala@linux.intel.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <20240117145308.26010-1-mohammed.thasleem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,205 +22,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev.lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
-Message-ID: <20240118052726.4RlHPPTZKCwxhoaKYOazW9yctQ-04SwIBhmmVkTPrmk@z>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20240118061521.31UKoKt5SOrMraHWDissd_v1BKftS0Z0NNFoOEGimto@z>
 
 
-On 12/19/2023 6:32 AM, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+On 1/17/2024 8:23 PM, Mohammed Thasleem wrote:
+> The function 'igt_debugfs_dir()' returns -1, if it fails and a non-negative
+> fd otherwise. However in the function igt_get_max_dotclock() the condition
+> to check the debugfs directory uses igt_require (dir), which fails even if
+> the dir is 0.
+> So correct the igt_require check for a valid igt_debugfs fd.
 >
-> Go back to using igt_draw mmap stuff to do the mid-test
-> rendering in the CRC subtest to make it faster. Going
-> via all the cairo machinery is very very slow, but we'll
-> leave that codepath in place for non-Intel hw. This makes
-> the test pass on a DG2 here as we can now produce enough
-> frames to have some confidence in the results.
+> v2: Correct the logic in igt_require.
 >
-> Note that some extra care is apparently needed with the order
-> in which things are done. If we pin the buffers to the display
-> first the mmap is likely to fail (due to the FB getting pinned
-> outside the reach of the small BAR presumably). Curiosuly the
-> mmap itself succeeds but we get a SIGBUS when trying to acccess
-> the buffer contents. If we touch the FBs first via mmap and only
-> then pin them to the display everything works correctly.
->
-> v2: Use igt_draw_supports_method() so it works on xe (Bhanu)
->
-> Cc: Melissa Wen <mwen@igalia.com>
-> Cc: Alex Hung <alex.hung@amd.com>
-> Cc: André Almeida <andrealmeid@igalia.com>
-> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Fixes: 8ba806e7e196 ("tests/kms_async_flips: Support more vendors")
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-
-Also had locally verified using v1 of this patch that this also fixes 
-https://gitlab.freedesktop.org/drm/intel/-/issues/8561, which was seen 
-consistently with the high RR eDP panel on MTL. The change b/n v1 and v2 
-shouldn't affect this in any case.
-
-Tested-by: Karthik B S <karthik.b.s@intel.com>
-
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 > ---
->   tests/kms_async_flips.c | 66 +++++++++++++++++++++++++++++------------
->   1 file changed, 47 insertions(+), 19 deletions(-)
+>   lib/igt_kms.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-> index 6fddad093913..31573f7065e6 100644
-> --- a/tests/kms_async_flips.c
-> +++ b/tests/kms_async_flips.c
-> @@ -100,6 +100,7 @@ typedef struct {
->   	enum pipe pipe;
->   	bool alternate_sync_async;
->   	bool allow_fail;
-> +	struct buf_ops *bops;
->   } data_t;
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index e4dea1a60..1b4d0d761 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -6100,7 +6100,7 @@ int igt_get_max_dotclock(int fd)
+>   	drmModeFreeResources(resources);
 >   
->   static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
-> @@ -230,8 +231,6 @@ static void test_init_fbs(data_t *data)
+>   	dir = igt_debugfs_dir(fd);
+> -	igt_require(dir);
+> +	igt_require(dir != -1);
+
+Open() does return -1 in case of failure, with errorno set, so looks 
+good to me.
+
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+
+
 >   
->   	igt_plane_set_fb(data->plane, &data->bufs[0]);
->   	igt_plane_set_size(data->plane, width, height);
-> -
-> -	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
->   }
->   
->   static void test_async_flip(data_t *data)
-> @@ -240,6 +239,8 @@ static void test_async_flip(data_t *data)
->   	long long int fps;
->   	struct timeval start, end, diff;
->   
-> +	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> +
->   	gettimeofday(&start, NULL);
->   	frame = 1;
->   	do {
-> @@ -336,6 +337,8 @@ static void test_timestamp(data_t *data)
->   	unsigned int seq, seq1;
->   	int ret;
->   
-> +	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> +
 >   	/*
->   	 * In older platforms(<= gen10), async address update bit is double buffered.
->   	 * So flip timestamp can be verified only from the second flip.
-> @@ -381,6 +384,8 @@ static void test_cursor(data_t *data)
->   	struct igt_fb cursor_fb;
->   	struct drm_mode_cursor cur;
->   
-> +	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> +
->   	/*
->   	 * Intel's PSR2 selective fetch adds other planes to state when
->   	 * necessary, causing the async flip to fail because async flip is not
-> @@ -429,6 +434,8 @@ static void test_invalid(data_t *data)
->   	struct igt_fb fb;
->   	drmModeModeInfo *mode;
->   
-> +	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> +
->   	mode = igt_output_get_mode(data->output);
->   	width = mode->hdisplay;
->   	height = mode->vdisplay;
-> @@ -525,28 +532,48 @@ static unsigned int clock_ms(void)
->   	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
->   }
->   
-> +static void paint_fb(data_t *data, struct igt_fb *fb,
-> +		     int width, int height,
-> +		     uint32_t color)
-> +{
-> +	if (is_intel_device(data->drm_fd)) {
-> +		igt_draw_rect_fb(data->drm_fd, data->bops, 0, fb,
-> +				 igt_draw_supports_method(data->drm_fd, IGT_DRAW_MMAP_GTT) ?
-> +				 IGT_DRAW_MMAP_GTT : IGT_DRAW_MMAP_WC,
-> +				 0, 0, width, height, color);
-> +	} else {
-> +		cairo_t *cr;
-> +
-> +		cr = igt_get_cairo_ctx(data->drm_fd, fb);
-> +		igt_paint_color(cr, 0, 0, width, height,
-> +				((color & 0xff0000) >> 16) / 255.0,
-> +				((color & 0xff00) >> 8) / 255.0,
-> +				((color & 0xff) >> 9) / 255.0);
-> +		igt_put_cairo_ctx(cr);
-> +	}
-> +}
-> +
->   static void test_crc(data_t *data)
->   {
->   	unsigned int frame = 0;
->   	unsigned int start;
-> -	cairo_t *cr;
-> -	int ret;
-> +	int ret, width, height;
-> +	drmModeModeInfoPtr mode;
-> +
-> +	/* make things faster by using a smallish mode */
-> +	mode = &data->output->config.connector->modes[0];
-> +	width = mode->hdisplay;
-> +	height = mode->vdisplay;
->   
->   	data->flip_count = 0;
->   	data->frame_count = 0;
->   	data->flip_pending = false;
->   
-> -	cr = igt_get_cairo_ctx(data->drm_fd, &data->bufs[frame]);
-> -	igt_paint_color(cr, 0, 0, data->bufs[frame].width, data->bufs[frame].height, 1.0, 0.0, 0.0);
-> -	igt_put_cairo_ctx(cr);
-> -
-> -	cr = igt_get_cairo_ctx(data->drm_fd, &data->bufs[!frame]);
-> -	igt_paint_color(cr, 0, 0, data->bufs[!frame].width, data->bufs[!frame].height, 1.0, 0.0, 0.0);
-> -	igt_put_cairo_ctx(cr);
-> +	paint_fb(data, &data->bufs[frame], width, height, 0xff0000ff);
-> +	paint_fb(data, &data->bufs[!frame], width, height, 0xff0000ff);
->   
->   	ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id, 0, 0,
-> -			     &data->output->config.connector->connector_id, 1,
-> -			     &data->output->config.connector->modes[0]);
-> +			     &data->output->config.connector->connector_id, 1, mode);
->   	igt_assert_eq(ret, 0);
->   
->   	data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
-> @@ -562,9 +589,7 @@ static void test_crc(data_t *data)
->   
->   	while (clock_ms() - start < 2000) {
->   		/* fill the next fb with the expected color */
-> -		cr = igt_get_cairo_ctx(data->drm_fd, &data->bufs[frame]);
-> -		igt_paint_color(cr, 0, 0, 1, data->bufs[frame].height, 1.0, 0.0, 0.0);
-> -		igt_put_cairo_ctx(cr);
-> +		paint_fb(data, &data->bufs[frame], 1, height, 0xff0000ff);
->   
->   		data->flip_pending = true;
->   		ret = drmModePageFlip(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id,
-> @@ -575,9 +600,7 @@ static void test_crc(data_t *data)
->   
->   		/* clobber the previous fb which should no longer be scanned out */
->   		frame = !frame;
-> -		cr = igt_get_cairo_ctx(data->drm_fd, &data->bufs[frame]);
-> -		igt_paint_color_rand(cr, 0, 0, 1, data->bufs[frame].height);
-> -		igt_put_cairo_ctx(cr);
-> +		paint_fb(data, &data->bufs[frame], 1, height, rand());
->   	}
->   
->   	igt_pipe_crc_stop(data->pipe_crc);
-> @@ -644,6 +667,9 @@ igt_main
->   
->   		igt_require_f(igt_has_drm_cap(data.drm_fd, DRM_CAP_ASYNC_PAGE_FLIP),
->   			      "Async Flip is not supported\n");
-> +
-> +		if (is_intel_device(data.drm_fd))
-> +			data.bops = buf_ops_create(data.drm_fd);
->   	}
->   
->   	igt_describe("Verify the async flip functionality and the fps during async flips");
-> @@ -704,6 +730,8 @@ igt_main
->   		for (i = 0; i < NUM_FBS; i++)
->   			igt_remove_fb(data.drm_fd, &data.bufs[i]);
->   
-> +		if (is_intel_device(data.drm_fd))
-> +			buf_ops_destroy(data.bops);
->   		igt_display_reset(&data.display);
->   		igt_display_commit(&data.display);
->   		igt_display_fini(&data.display);
+>   	 * Display specific clock frequency info is moved to i915_cdclk_info,
