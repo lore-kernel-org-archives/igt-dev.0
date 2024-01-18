@@ -4,43 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DDC3C47DAF
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jan 2024 10:36:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A400AC4707B
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jan 2024 10:36:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A864E10E76A;
-	Thu, 18 Jan 2024 10:36:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 499A010E772;
+	Thu, 18 Jan 2024 10:36:53 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6AA5810E76C
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Jan 2024 10:36:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F63410E761
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Jan 2024 10:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705574210; x=1737110210;
+ t=1705574208; x=1737110208;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=KvuOtTaEyQ8ageNQL0I1CiNNJEXh3upCI4/DXAWL5UA=;
- b=U63innVUQtmZmSA0ixYTlwuZzmPtzFrUMg5UEA7ZK1E76FunSiQVHaW1
- Js1LVPvDaR09WOoqCL3KBMPvGmExhLoElz6+uv/zK6hvPIAQOorEQw9N+
- boeF3IesuQALmNXUVoC5uy18E1Uckr9oUs8Y/8fcHQZt/sIFzUO2vCrVG
- USr2t+VkSs1yvo5G1rWplbCKbMqbpfHH05dbsPWITjQCNYo/xJAv07+VN
- HEDEui/IUIv8twYBiZ0e33IM3Cm3kqnQnQTR5lx9iV7ih0oMJ2SOFx+Vo
- H+XreGS1onLNi4z2HH5a77Cw7lMx2BHamVKdIPDWkj2i61oTb07FgHAZz w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="13761000"
-X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; d="scan'208";a="13761000"
+ bh=shVgBNqTPEqE4W0EmTutHV6yRUXK8l/cwoB0WrkJDvQ=;
+ b=CIs0Zt0Biq8DiuzjIXzo1kw8g64ZxmIHbirUgLN0X5TlNMClCbcWc6s4
+ ukN0Pnxq5EejUw7xqW8whdf0sYW+YdgB4l8nJumH1YX5o0TOdV1t8BP1W
+ Z+kuy+nSXmMRa4tI+CKPA+fHszDo60KD8ACBFFH36P+COndtndW8H4pfz
+ 3Z0HYlWECoYn229eiGZhlhm1mC7Nb66FFVKQmypAWJp9cebrqzSaKcx8j
+ tjzt75caj6LmOTSIS7DZrQbebo783s0aWB0CeOpLUT1J52CY+j4RtrGQa
+ 3I169uszjr8fNpi1BGXu2C1El80DgksWD2lDCJ74uUM6nivBbN7Tlpbhp A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="13760996"
+X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; d="scan'208";a="13760996"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2024 02:36:50 -0800
+ 18 Jan 2024 02:36:48 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; 
-   d="scan'208";a="369809"
+   d="scan'208";a="369797"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2024 02:36:49 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2024 02:36:46 -0800
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 2/2] lib/igt_kms: add support for choosing big joiner
- mode
-Date: Thu, 18 Jan 2024 16:16:16 +0530
-Message-Id: <20240118104616.988247-3-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 1/2] lib/igt_kms: move bigjoiner_mode_found to lib.
+Date: Thu, 18 Jan 2024 16:16:15 +0530
+Message-Id: <20240118104616.988247-2-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240118104616.988247-1-kunal1.joshi@intel.com>
 References: <20240118104616.988247-1-kunal1.joshi@intel.com>
@@ -62,64 +61,98 @@ Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-add support to choose big joiner mode with environment
-variable, use mode with highest clock if no mode with big joiner
-found.
+move bigjoiner_mode_found to lib/igt_kms with some modification
 
-v2: reuse bigjoiner_mode_found (Bhanu)
-v3: avoid returning from multiple places (Bhanu)
-    avoid frequent debugfs reads (Bhanu)
-v4: use default mode (Bhanu)
+v2: combine both big joiner checks (Bhanu)
 
 Cc: Swati Sharma <swati2.sharma@intel.com>
 Cc: Karthik B S <karthik.b.s@intel.com>
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_kms.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ lib/igt_kms.c                | 22 ++++++++++++++++++++++
+ lib/igt_kms.h                |  2 ++
+ tests/intel/kms_big_joiner.c | 14 +-------------
+ 3 files changed, 25 insertions(+), 13 deletions(-)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 7a07e62f8..77059dd34 100644
+index 1b4d0d761..7a07e62f8 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -1771,8 +1771,9 @@ void igt_sort_connector_modes(drmModeConnector *connector,
- bool kmstest_get_connector_default_mode(int drm_fd, drmModeConnector *connector,
- 					drmModeModeInfo *mode)
+@@ -6142,6 +6142,28 @@ bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock)
+ 		mode->clock > max_dotclock);
+ }
+ 
++/**
++ * bigjoiner_mode_found:
++ * @connector: libdrm connector
++ * @sort_method: comparator method
++ * @mode: libdrm mode
++ *
++ * Returns: True if big joiner found in connector modes
++ */
++bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
++			  int max_dotclock)
++{
++	bool found = false;
++
++	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
++	found = igt_bigjoiner_possible(&connector->modes[0], max_dotclock);
++	if (!found) {
++		igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
++		found = igt_bigjoiner_possible(&connector->modes[0], max_dotclock);
++	}
++	return found;
++}
++
+ /**
+  * igt_check_bigjoiner_support:
+  * @display: a pointer to an #igt_display_t structure
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index b3882808b..488637d4b 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1212,6 +1212,8 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
+ 		igt_output_t *output, int bpc);
+ int igt_get_max_dotclock(int fd);
+ bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
++bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
++                          int max_dotclock);
+ bool igt_check_bigjoiner_support(igt_display_t *display);
+ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
+ bool intel_pipe_output_combo_valid(igt_display_t *display);
+diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
+index aba2adfbe..28678b958 100644
+--- a/tests/intel/kms_big_joiner.c
++++ b/tests/intel/kms_big_joiner.c
+@@ -199,16 +199,6 @@ static void test_dual_display(data_t *data)
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ }
+ 
+-static bool bigjoiner_mode_found(drmModeConnector *connector,
+-				 int (*sort_method)(const void *, const void*),
+-				 drmModeModeInfo *mode)
+-{
+-	igt_sort_connector_modes(connector, sort_method);
+-	*mode = connector->modes[0];
+-
+-	return igt_bigjoiner_possible(mode, max_dotclock);
+-}
+-
+ igt_main
  {
-+	bool found;
- 	char *env;
--	int i;
-+	int i, max_dotclock;
+ 	data_t data;
+@@ -235,9 +225,7 @@ igt_main
+ 			 * Bigjoiner will come in to the picture when the
+ 			 * resolution > 5K or clock > max-dot-clock.
+ 			 */
+-			found = (bigjoiner_mode_found(connector, sort_drm_modes_by_res_dsc, &mode) ||
+-				 bigjoiner_mode_found(connector, sort_drm_modes_by_clk_dsc, &mode)) ?
+-					true : false;
++			found = bigjoiner_mode_found(data.drm_fd, connector, max_dotclock);
  
- 	if (!connector->count_modes) {
- 		igt_warn("no modes for connector %d\n",
-@@ -1781,14 +1782,23 @@ bool kmstest_get_connector_default_mode(int drm_fd, drmModeConnector *connector,
- 	}
- 
- 	env = getenv("IGT_KMS_RESOLUTION");
-+	max_dotclock = igt_get_max_dotclock(drm_fd);
- 	if (env) {
- 		/*
--		 * Only (0 or 1) and (lowest or highest) are allowed.
-+		 * Only (0 or 1 or 2) and (lowest or highest or joiner) are allowed.
- 		 *
- 		 * 0/lowest: Choose connector mode with lowest possible resolution.
- 		 * 1/highest: Choose connector mode with highest possible resolution.
-+		 * 2/joiner: Choose connector mode with bigjoiner support or default
-+		 *	     mode if can't support  big joiner
- 		 */
--		if (!strcmp(env, "highest") || !strcmp(env, "1"))
-+		if (!strcmp(env, "joiner") || !strcmp(env, "2")) {
-+			found = bigjoiner_mode_found(drm_fd, connector,
-+						     max_dotclock);
-+			if (!found)
-+				goto default_mode;
-+		}
-+		else if (!strcmp(env, "highest") || !strcmp(env, "1"))
- 			igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
- 		else if (!strcmp(env, "lowest") || !strcmp(env, "0"))
- 			igt_sort_connector_modes(connector, sort_drm_modes_by_res_asc);
+ 			if (found) {
+ 				data.output[count].output_id = output->id;
 -- 
 2.25.1
 
