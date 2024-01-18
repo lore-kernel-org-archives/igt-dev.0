@@ -4,149 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13C03C4707B
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jan 2024 09:29:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57C34C47DAF
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jan 2024 09:36:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AC6B310E761;
-	Thu, 18 Jan 2024 09:29:13 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA38A10E761
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Jan 2024 09:29:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 14FBA10E06E;
+	Thu, 18 Jan 2024 09:36:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BDCC210E06E;
+ Thu, 18 Jan 2024 09:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705570152; x=1737106152;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=V4BOLjuCnNOCx/LkcqVf97hmvvjUleAQMv8DQ2zUMCo=;
- b=fLlKICPQF0qSWt7JZ49lD+qQc8YVyzPeaeKozg4Th4DRamLgT3NQ7TjT
- XRpg0WQRQnertrvk4Kblo6U84ZPw5bF5HImDScOVbyUFd+z0C/sdDwaLy
- aSJkO9nrrdszHF27tnoX4lLr59Wos/2/S1QkqemKBvaNydMgyX9xIRrI7
- UTV9k4vHcCYTUawZCY338JfuT9cMrYg6ZAHe16D2cPju6VAYEo78wNrRG
- PXuQJ/79FVhiGw9MeFxEZSMvoUKtiNa8w4JaNkVJxv8oxqsFcnjWLtOQs
- Q9lugx9IYZd01fxLFAZ3AOAoIq7x/Lzfq64oS/WwGRNtvaGwgthOcGdQa g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="7773699"
-X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; 
-   d="scan'208";a="7773699"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2024 01:29:11 -0800
+ t=1705570582; x=1737106582;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=0HsWc1kDOUQbjGczu+4IB6wqVnvzhXTK0onkoHdAVEo=;
+ b=iQt0YEZpPqv/bQIbRGM5f9WE0xyCznJfA6YOfCurPl88UQZ221M7JJJm
+ l7liRuOQz/r8XXvzVg9/v/2MFS3GAz8dfVjxcWHBzpcw0iTt6cavM0zM1
+ K1hCaEb4cX4Vlt+H1fyiakxnoiGIQiZVVHbsCjNzvo7jsylu/wEEw59/h
+ 7rKra7TUzd0e3B4lEWXjqcn0HnsZpWmWNSQyTyHvEDtq2lMNu/Xuvp2Su
+ L3Pf8Auif8yMYmx7vOfH30Uh4TkYiBSp4vzNx4c57FnYLdtwC4J2y7q07
+ v8fqBt2wyBvYJFirrKqUP4Bxkh/A3GNDtsEQR5ChUvfmfBflrKRZpxWg3 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="18996954"
+X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; d="scan'208";a="18996954"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jan 2024 01:36:20 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; d="scan'208";a="19063178"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 18 Jan 2024 01:29:11 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 18 Jan 2024 01:29:10 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 18 Jan 2024 01:29:10 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 18 Jan 2024 01:29:10 -0800
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.40) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 18 Jan 2024 01:29:09 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D/culzsRv3WiughERBsQ2gB/+xfv6ctt+UHhmoXoxizbk3Mu1FdUPDTxraCEQNlOYwb/xo9pkFmFnMlC4Khq8aF6bFQtH8EXJQY+J+w/kBHbS7iva0/HjVsvFHef8kll7SXXavWXG96s01iZy/yGscE4Aj0NGAVOut5AEEIeS7Sk59tXI/MTssEP7VeD4pGWZ4vWAM8McT/GMWVg8RyUUv016fHHWVC4ffehsxV7SBicckN1bNQRCS/xRE3VAB3Y0MVeFv+v8ciS6/aIOkeeMg7R/6dDt6M5ngKymZKbUjINKXvrIWFNNpwBl/ZH0jsrYhthmiLeKX+xmUM0a5GPjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=p42JqlBbC1RnRG4PWBTQ9jX2Bc8onHeZeCN7C1HlVdE=;
- b=fviowypQ5ehyUOwtpq9GVdjL2O4t8zgeJgXstR/qntQkYt87lNn+SZa7B0itCd86oXRSLKGuNjfNg6zDKRVDIn7Bu9PaXM++XItgkRxXjsMrxNbFznYi9wzy3xOhar+EWG6vpB8sJGJNCaHm0/F76m57PnyTy0sAN3YryIss7dG9ZUBCQBBjHgW/3DRAV/2DAHxE5pc4IBkmWTId0MGJ1QozseQTlqEj/bM09R17qUpvYtjYxAwjhAPJ983WknNDdL+PxL9gRixGVB5Sa6lnhx6AAp4ab5hWs8kpb16ysadxE4Y6jTZ2yMACGBh8AI7oxmb7DKkKctkHUC6sU6c9FA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM8PR11MB5719.namprd11.prod.outlook.com (2603:10b6:8:10::6) by
- BN9PR11MB5436.namprd11.prod.outlook.com (2603:10b6:408:101::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.24; Thu, 18 Jan
- 2024 09:29:07 +0000
-Received: from DM8PR11MB5719.namprd11.prod.outlook.com
- ([fe80::7b54:ba1:d53e:7d2d]) by DM8PR11MB5719.namprd11.prod.outlook.com
- ([fe80::7b54:ba1:d53e:7d2d%4]) with mapi id 15.20.7202.024; Thu, 18 Jan 2024
- 09:29:07 +0000
-Message-ID: <04d7322b-8914-4812-9a32-3db684a5fd52@intel.com>
-Date: Thu, 18 Jan 2024 14:58:49 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/2] lib/igt_kms: move bigjoiner_mode_found to lib.
-Content-Language: en-US
-To: Kunal Joshi <kunal1.joshi@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20240112085547.673712-1-kunal1.joshi@intel.com>
- <20240112085547.673712-2-kunal1.joshi@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20240112085547.673712-2-kunal1.joshi@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN3PR01CA0014.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:95::23) To DM8PR11MB5719.namprd11.prod.outlook.com
- (2603:10b6:8:10::6)
+X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; 
+   d="scan'208";a="271764"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2024 01:36:18 -0800
+Date: Thu, 18 Jan 2024 10:36:04 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: Re: =?utf-8?Q?=E2=9C=97_Fi=2ECI=2EIGT=3A_failure_for_series_start?=
+ =?utf-8?Q?ing?= with [i-g-t,v5,1/3] tests/intel: Add xe_exec_atomic test
+Message-ID: <20240118093604.yg2pofg7pcdih6ly@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+References: <20240117172848.21144-1-nirmoy.das@intel.com>
+ <170553338164.537693.14927519181958937800@5338d5abeb45>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM8PR11MB5719:EE_|BN9PR11MB5436:EE_
-X-MS-Office365-Filtering-Correlation-Id: b5158f9e-ae88-45ce-0a2f-08dc1807eb03
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: UHAVtpBGY9k8EWk842D0gJQsLNA4IN5l6IbWlIWsOdFew9WzX2XtC/ggtCLA6PrBAzB2oefAzewNQCEXmNgj+vLZU9vzx3K2Yrsyx+MaGRDN1D1a+wRCC6UXb+BnB1IYR3MoF+mE9+znIDYPfwfJZi+26hSfqgmpOqS9zauVPVH54BGPGiF9CejBnxETnIhr9OmksVUG2tjVm4mFvs/hoAjshvLknRBGZe6MdznXyZESTTrfoKZtJym9uhaxs7s0Nns9MzKpT0UZVC63+WovLvlVAJ7t/qICQdFuqIy7WvMlSHzEnKCpdCApL5Pg82OmRJSc8CzT36SRjbhcdDv6wgW6PiJywvtN7B9vprGLMw7NJ0JMVVMFfsqfBmGHgCg3UpPNwSASELePLX8gM9OTNohvHtPt9lKBKTAzBSsvrNFEpEi1cntYIx65aU5ODbvhyMoRWZMj1xv7GCDryTrQIqJr9nw9W8dWxyt1G7J5X3wvgoNtzQHbpIs9OHn6LPX0h4xYUWkOttrefS8CZTym/3tWZlUyDpCgPAbHglSJaNOE1I+mir4rggGuLndta83wStD/vARBUUB+KrjyoV0LkBtzyxX5aICSklcyQxj/WlP5vpM493O1UzSpSpqMG4wmrsgCG82PBFIkrSYdpVIX3w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM8PR11MB5719.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366004)(396003)(136003)(39860400002)(376002)(346002)(230922051799003)(1800799012)(451199024)(64100799003)(186009)(53546011)(26005)(83380400001)(6512007)(6506007)(107886003)(2616005)(38100700002)(4326008)(5660300002)(8676002)(8936002)(41300700001)(2906002)(6486002)(6666004)(478600001)(316002)(66476007)(66556008)(66946007)(36756003)(31696002)(86362001)(82960400001)(31686004)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VjJLbERxVnVob0xmTTB5SFk3c3dwOGhpbERtUzFpQlZxZ1NLNzdDb2FDdW1z?=
- =?utf-8?B?UlpCUWpybVRNRFJSTmJ1MmlQd01GeUwyNUkvUjRiaERWdUpldkRkL0kzZ1ZY?=
- =?utf-8?B?bXh0djErLzFsOG0zYnkyZERXV3lJVEMxbnZaUVdZOFZoZGU1TGdJQUNVMTdt?=
- =?utf-8?B?VDF3U3VBUlhGcDk3eDFxenh2ZUt1NE9udjZjR2JyZi8yZDdRMS9NK3FSeVQy?=
- =?utf-8?B?QmJmMmxrWVZSVjhibXUxejEyUjM0M1FTby9sSmluNWlzS0xKTHBwNkFWZktu?=
- =?utf-8?B?VTBqMk1HQXlDc0cwS2R1N0c2MldQbG42ZmZhZngvcXpGT3g2aUNCWHdFcTlX?=
- =?utf-8?B?ZzB1eGQ0MUg2M1orMGVSaHdWbFl5MkpmN2J3MDJlbXIzc09yVHhuOElVaDF3?=
- =?utf-8?B?bXVBc01MY21ZYXAwY1Y5WXA5ckJrYmZPSjNCOGIwd011Vkk3cnNEdmhVa09Q?=
- =?utf-8?B?VXJJeC9IR1J2QU5rdm02WDZ0U2ZkMUszUndXMHFoS2dNRGJPOExjZkFkWXAx?=
- =?utf-8?B?U3U3bFdaUDJJYzFjbGFobE9LOUVWOFNEajMrTjNLaW40TWR4YVhiRVBmbE1H?=
- =?utf-8?B?YVNBbHJUZ2UzMXM3WG9YZVA4bjhEdi9IRExwVFhsQnU2WWdwSHJJS2VLLzRw?=
- =?utf-8?B?SDVYRldNMlJ6MmpYTUVLS0p6REo2SG56NDN3cVFyQ0x5NXdLdEE0eHZCaXdS?=
- =?utf-8?B?eFljOVhNTGRVbzdxVVZMVXJDY2RsSVRQd0R3bHFjb3ZHVE90dU9iYWMzUFdl?=
- =?utf-8?B?djlpeTRreEtJbzRmL29JY1lQV0syUExialBPMTc4Zkg3WXh5Q2xxZXM4aHNL?=
- =?utf-8?B?a2l2TzRNUGVjbUVDMk5TQ1B1WUp2MndUNkxqaUhKMGNvWG9XL0N3cko4c0xw?=
- =?utf-8?B?M3RFSlZueTNIeFFmNlpnRTlRalVJcldPTUJINVlyZE1XUjhveEE4cFlpV0sy?=
- =?utf-8?B?RHpTNm4rSHhOcXJBa2N0S0NZWXExOXRKd2YrbzRlSXRIUkVPcUFrdWErUkp2?=
- =?utf-8?B?RGR3WnpWak5rL1N6M0hBeG9PNEM2YUFhYmZZRUxPRE4yb0pHMmd2cGlya0Qx?=
- =?utf-8?B?NjJnZlBTazVPMnZUY3hCblcxbHBFYUMydGhKcmhJSWFocTdKc3BvUjhoZE5q?=
- =?utf-8?B?dy96Q0s4dHdpUkMyNFdvM3A0OWZOSXFUR0kyOTdFTGp5eFNnaXI4aHA4UXhW?=
- =?utf-8?B?RlVpRzJNZzhPQ0J6Y2RxaWJEUXlDejl3NVFwa0hEU2c2TzVXTUZ6T3d2WllQ?=
- =?utf-8?B?djVpTUUwTkxmdVR4QWJmcmliTjFWTVZXYUYxQlNRaTMxc25Fb2N0M2svdnZs?=
- =?utf-8?B?d2R3azNkNjdITGs0cmRMZ3pVaU1YdjEydmhmcmtCaklHZE5oNEw0bDMzWkpF?=
- =?utf-8?B?ZzZtK1VzVU8zM3NSU3JTOVQ2clZrTUUxYm5vQzMvYUpYcXhEeDRQcnBwY1du?=
- =?utf-8?B?QURwMU51c282NmdjQzRaVXdlRWZoeERjWER1eWEyQ1B3S1R2eUNPR0VmOFU2?=
- =?utf-8?B?b2RhZUU5ZnZQdDhNSVJTUE1XbzBtSG5oayszTU9MZ2ZBZlBzRjNNMlA0YmVi?=
- =?utf-8?B?QWc4NS9RY1htY0NNM1VHWGI2UTV1V2lwS3ZzSGFCTUJ1blZKcUdwYldrRUxU?=
- =?utf-8?B?ZVM4bWI3SHFQeThSM0hYNk43WXV4RE1ySFMwS3VEbDNNU3hkbUlXd0x0dVlC?=
- =?utf-8?B?YnV2SmZuZ3lESmdDVk8wcnovU0lUK0xPTHpwdFNLRVl3TzA2SUJBTTQvZzJW?=
- =?utf-8?B?a2Y4Q3IzVzNuRDNOYUJoenQzUkhGS1RDM2pOM3JyZmt0Z2l1Zko1V0FYM2h6?=
- =?utf-8?B?cE1CcFpUaFFlLzhjaEhJaWxCY3VPMFNkV2tUb3NUdmdDdzZyeVk1eUhJRitL?=
- =?utf-8?B?ZlE1Vk54ZDlFKzc2MEQwNSt1SDhoN2RpWjlrQU9MSFZPelFFa3RUdWZkMFVu?=
- =?utf-8?B?YU84cXQrS0xuYTlDSmtwempMVitNTVJmbDBUaE0xS2ZVdjhUbUhHZ2JLTDBm?=
- =?utf-8?B?S0hEZ2tDWjJNVGlRZEVXR3hTdk1QeE5VWGtHc2pFbVpKQTNZTitFbkZwQ3Jx?=
- =?utf-8?B?MmRTRmltcGJHVUIyYXA0SDNlbUpDc01IWkJIM0tlV0lYb1BUV09lcGV1Z09y?=
- =?utf-8?B?cFZPTDNyVldGV0gvNUUyM0NyOVYwcGFhTVV0MWtmOTBhNEtkT0x6eUdGQlpT?=
- =?utf-8?B?MHc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: b5158f9e-ae88-45ce-0a2f-08dc1807eb03
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5719.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jan 2024 09:29:06.9609 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Kwsdf76cd2qYZwopJ9S8UBKQ1WYvbbSK4keiFCXKOwvrz+uFveRQ1FXU/Oap8+mBG9EWExLzARcB/b57BsqfTdxkY1taickmNoB9HEIRrOM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR11MB5436
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <170553338164.537693.14927519181958937800@5338d5abeb45>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -159,111 +63,103 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: lgci.bug.filing@intel.com, I915-ci-infra@lists.freedesktop.org,
+ Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kunal,
-
-On 12-01-2024 02:25 pm, Kunal Joshi wrote:
-> move bigjoiner_mode_found to lib/igt_kms with some modification
+Hi igt-dev,
+On 2024-01-17 at 23:16:21 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> ---
->   lib/igt_kms.c                | 19 +++++++++++++++++++
->   lib/igt_kms.h                |  3 +++
->   tests/intel/kms_big_joiner.c | 14 ++------------
->   3 files changed, 24 insertions(+), 12 deletions(-)
+> Series: series starting with [i-g-t,v5,1/3] tests/intel: Add xe_exec_atomic test
+> URL   : https://patchwork.freedesktop.org/series/128891/
+> State : failure
 > 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index e4dea1a60..2c55af05f 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -6142,6 +6142,25 @@ bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock)
->   		mode->clock > max_dotclock);
->   }
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_14133_full -> IGTPW_10547_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10547_full absolutely need to be
+>   verified manually.
 >   
-> +/**
-> + * bigjoiner_mode_found:
-> + * @connector: libdrm connector
-> + * @sort_method: comparator method
-> + * @mode: libdrm mode
-> + *
-> + * Returns: True if big joiner found in connector modes
-> + */
-> +bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
-> +			  int (*sort_method)(const void *, const void*),
-> +			  drmModeModeInfo *mode)
-> +{
-> +        igt_sort_connector_modes(connector, sort_method);
-> +        *mode = connector->modes[0];
-
-IMHO, Instead of calling this helper multiple times with different sort 
-methods, let's consolidate here only. Example below:
-
-bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
-                          int max_dotclock)
-{
-   igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
-   if (igt_bigjoiner_possible(&connector->modes[0], max_dotclock))
-     return true;
-
-   igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
-   return igt_bigjoiner_possible(&connector->modes[0], max_dotclock);
-}
-
-> +
-> +        return igt_bigjoiner_possible(mode,
-> +				      igt_get_max_dotclock(drm_fd));
-> +}
-> +
->   /**
->    * igt_check_bigjoiner_support:
->    * @display: a pointer to an #igt_display_t structure
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index b3882808b..9f5676d35 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1212,6 +1212,9 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
->   		igt_output_t *output, int bpc);
->   int igt_get_max_dotclock(int fd);
->   bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
-> +bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
-> +                                 int (*sort_method)(const void *, const void*),
-> +                                 drmModeModeInfo *mode);
->   bool igt_check_bigjoiner_support(igt_display_t *display);
->   bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
->   bool intel_pipe_output_combo_valid(igt_display_t *display);
-> diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
-> index aba2adfbe..1858c6362 100644
-> --- a/tests/intel/kms_big_joiner.c
-> +++ b/tests/intel/kms_big_joiner.c
-> @@ -199,16 +199,6 @@ static void test_dual_display(data_t *data)
->   	igt_display_commit2(display, COMMIT_ATOMIC);
->   }
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10547_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10547/index.html
+> 
+> Participating hosts (9 -> 8)
+> ------------------------------
+> 
+>   Missing    (1): pig-kbl-iris 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10547_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_softpin@noreloc-s3:
+>     - shard-dg2:          [PASS][1] -> [FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14133/shard-dg2-1/igt@gem_softpin@noreloc-s3.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10547/shard-dg2-1/igt@gem_softpin@noreloc-s3.html
+> 
+>   * igt@i915_hangman@detector@vcs0:
+>     - shard-mtlp:         [PASS][3] -> [ABORT][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14133/shard-mtlp-2/igt@i915_hangman@detector@vcs0.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10547/shard-mtlp-4/igt@i915_hangman@detector@vcs0.html
+> 
+>   * igt@kms_flip@flip-vs-suspend@c-hdmi-a3:
+>     - shard-dg2:          NOTRUN -> [FAIL][5] +2 other tests fail
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10547/shard-dg2-1/igt@kms_flip@flip-vs-suspend@c-hdmi-a3.html
+> 
 >   
-> -static bool bigjoiner_mode_found(drmModeConnector *connector,
-> -				 int (*sort_method)(const void *, const void*),
-> -				 drmModeModeInfo *mode)
-> -{
-> -	igt_sort_connector_modes(connector, sort_method);
-> -	*mode = connector->modes[0];
-> -
-> -	return igt_bigjoiner_possible(mode, max_dotclock);
-> -}
-> -
->   igt_main
->   {
->   	data_t data;
-> @@ -235,8 +225,8 @@ igt_main
->   			 * Bigjoiner will come in to the picture when the
->   			 * resolution > 5K or clock > max-dot-clock.
->   			 */
-> -			found = (bigjoiner_mode_found(connector, sort_drm_modes_by_res_dsc, &mode) ||
-> -				 bigjoiner_mode_found(connector, sort_drm_modes_by_clk_dsc, &mode)) ?
-> +			found = (bigjoiner_mode_found(data.drm_fd, connector, sort_drm_modes_by_res_dsc, &mode) ||
-> +				 bigjoiner_mode_found(data.drm_fd, connector, sort_drm_modes_by_clk_dsc, &mode)) ?
->   					true : false;
+> #### Warnings ####
+> 
+>   * igt@kms_pm_dc@dc3co-vpb-simulation:
+>     - shard-mtlp:         [SKIP][6] ([i915#9292]) -> [SKIP][7]
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14133/shard-mtlp-2/igt@kms_pm_dc@dc3co-vpb-simulation.html
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10547/shard-mtlp-8/igt@kms_pm_dc@dc3co-vpb-simulation.html
+> 
+
+These are unrelated to change in Xe test, no need for respin.
+
+Regards,
+Kamil
+
 >   
->   			if (found) {
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_10547_full that come from known issues:
+
+...cut...
+
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7678 -> IGTPW_10547
+>   * Piglit: piglit_4509 -> None
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14133: e492ced01835ac1c2712724ed5728057f267b111 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10547: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10547/index.html
+>   IGT_7678: 9f0b63bae98fa6164dd2262f8890a964fb1fc23d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10547/index.html
