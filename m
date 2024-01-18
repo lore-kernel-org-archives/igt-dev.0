@@ -2,12 +2,9 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 From: Hersen Wu <hersenxs.wu@amd.com>
-Subject: [PATCH 2/3] [i-g-t] tests/amdgpu/amd_bypass: Fix psr edp r/x crc read
- timeout
-Date: Wed, 17 Jan 2024 21:36:07 -0500
-Message-ID: <20240118023608.55865-2-hersenxs.wu@amd.com>
-In-Reply-To: <20240118023608.55865-1-hersenxs.wu@amd.com>
-References: <20240118023608.55865-1-hersenxs.wu@amd.com>
+Subject: [PATCH 1/3] [i-g-t] lib/igt_amd: add debugfs disallow edp enter psr
+Date: Wed, 17 Jan 2024 21:36:06 -0500
+Message-ID: <20240118023608.55865-1-hersenxs.wu@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -24,59 +21,115 @@ List-ID: <igt-dev.lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org, rodrigo.siqueira@amd.com, aurabindo.pillai@amd.com, alex.hung@amd.com, hamza.mahfooz@amd.com, wayne.lin@amd.com
 Cc: Hersen Wu <hersenxs.wu@amd.com>, markyacoub@google.com
 
-With debugfs disallow_edp_enter_psr, disable edp psr before
-tx read rx crc.
+When igt app call this debugfs, it will pass disable flag
+to kernel. The flag  will block psr setup and enable.
 
-dpms off, tx write dpcd 0x600=2. this will let dpcd 0x170=0.
-rx psr and crc check for rx internal logic are disabled.
-with disallow_edp_enter_psr, when dpms on, kernel driver will
-light up edp with dpcd 0x170=0. then tx read rx crc successfully.
+When igt read psr edp rx crc, read may be timeout.
+After bootup, AMD kernel driver setup psr with dpcd 0x170 = 5.
+this notify rx psr enable and let rx fw start checking crc
+for rx fw internal logic. rx fw may not update crc read count
+within dpcd 0x246. read count is always 0. this  will lead tx
+crc reading timeout.
+
+With IGT app sequence below, rx fw crc checking for rx internal
+logic is disabled. upon tx read rx crc, rx fw will check crc and
+update crc count within dpcd 0x246. so IGT app can read rx crc
+successfully.
+
+expected app sequence is as below:
+1. disable eDP PHY and notify eDP rx with dpcd 0x600 = 2.
+2. echo 0x1 /sys/kernel/debug/dri/0/eDP-X/disallow_edp_enter_psr
+3. enable eDP PHY and notify eDP rx with dpcd 0x600 = 1 but
+   without dpcd 0x170 = 5.
+4. read crc from rx dpcd 0x270, 0x246, etc.
+5. echo 0x0 /sys/kernel/debug/dri/0/eDP-X/disallow_edp_enter_psr.
+   this will let eDP back to normal with psr setup dpcd 0x170 = 5.
 
 Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
 ---
- tests/amdgpu/amd_bypass.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ lib/igt_amd.c | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_amd.h |  2 ++
+ 2 files changed, 51 insertions(+)
 
-diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
-index d192a30ea..d82e22ded 100644
---- a/tests/amdgpu/amd_bypass.c
-+++ b/tests/amdgpu/amd_bypass.c
-@@ -72,6 +72,24 @@ static void test_init(data_t *data)
- 	data->output = igt_get_single_output_for_pipe(display, data->pipe_id);
- 	igt_assert(data->output);
- 
-+	if (data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
-+		kmstest_set_connector_dpms(data->output->display->drm_fd,
-+			data->output->config.connector, DRM_MODE_DPMS_OFF);
-+
-+		/* with dmps off, tx write dpcd 0x600=2 to rx. edp rx
-+		 * exit psr state and stop verify crc from main link.
-+		 * with disabllow edp enter psr within kernel, when run
-+		 * dmps on to turn on display, kernel tx will not notify
-+		 * rx psr enable and crc checking by rx. by this, when tx
-+		 * want to read crc from rx, rx will check crc and response
-+		 * right away. timeout will not happens.
-+		 */
-+		igt_amd_disallow_edp_enter_psr(data->drm_fd, data->output->name, true);
-+
-+		kmstest_set_connector_dpms(data->output->display->drm_fd,
-+			data->output->config.connector, DRM_MODE_DPMS_ON);
-+	}
-+
- 	data->mode = igt_output_get_mode(data->output);
- 	igt_assert(data->mode);
- 
-@@ -370,6 +388,11 @@ static void bypass_8bpc_test(data_t *data)
- 	igt_plane_set_fb(data->primary, NULL);
- 	test_fini(data);
- 	igt_remove_fb(data->drm_fd, &fb);
-+
-+	if (data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
-+		/* restore allow kernel driver eDP PSR */
-+		igt_amd_disallow_edp_enter_psr(data->drm_fd, data->output->name, false);
-+	}
+diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+index 247a42f37..d0b53c08a 100644
+--- a/lib/igt_amd.c
++++ b/lib/igt_amd.c
+@@ -1153,6 +1153,55 @@ void igt_amd_allow_edp_hotplug_detect(int drm_fd, char *connector_name, bool ena
+ 	close(hpd_fd);
  }
  
- igt_main
++/**
++ * igt_amd_disallow_edp_enter_psr: notify kernel skip edp psr setup and enable
++ * @drm_fd: DRM file descriptor
++ * @connector_name: The connector's name
++ * @enable: skip kernel eDP psr setup and enable -- disallow edp enter psr
++ * example usage: disallow psr
++ * echo 0x1 >
++ * /sys/kernel/debug/dri/0/eDP-1/disallow_edp_enter_psr
++ *
++ * expected IGT sequence is as below:
++ * 1. disable eDP PHY and notify eDP rx with dpcd 0x600 = 2.
++ *    for example, kmstest_set_connector_dpms off will do this.
++ * 2. echo 0x1 /sys/kernel/debug/dri/0/eDP-X/disallow_edp_enter_psr
++ * 3. enable eDP PHY and notify eDP rx with dpcd 0x600 = 1 but
++ *    without dpcd 0x170 = 5.
++ *    for example, kmstest_set_connector_dpms on will do this.
++ * 4. read crc from rx dpcd 0x270, 0x246, etc.
++ *    igt_pipe_crc_collect_crc will do this.
++ * 5. echo 0x0 /sys/kernel/debug/dri/0/eDP-X/disallow_edp_enter_psr.
++ *    this will let eDP back to normal with psr setup dpcd 0x170 = 5.
++ */
++void igt_amd_disallow_edp_enter_psr(int drm_fd, char *connector_name, bool enable)
++{
++	int fd, ret, wr_len;
++	const char *allow_edp_psr = "1";
++	const char *dis_allow_edp_psr = "0";
++
++	/* if current psr is not enabled, skip this debugfs */
++	if (!igt_amd_psr_support_drv(drm_fd, connector_name, PSR_MODE_1) &&
++		!igt_amd_psr_support_drv(drm_fd, connector_name, PSR_MODE_2))
++		return;
++
++	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
++	igt_assert(fd >= 0);
++	ret = openat(fd, DEBUGFS_DISALLOW_EDP_ENTER_PSR, O_WRONLY);
++	close(fd);
++	igt_assert(ret >= 0);
++
++	if (enable) {
++		wr_len = write(ret, allow_edp_psr, strlen(allow_edp_psr));
++		igt_assert_eq(wr_len, strlen(allow_edp_psr));
++	} else {
++		wr_len = write(ret, dis_allow_edp_psr, strlen(dis_allow_edp_psr));
++		igt_assert_eq(wr_len, strlen(dis_allow_edp_psr));
++	}
++
++	close(ret);
++}
++
+ static bool get_dm_capabilities(int drm_fd, char *buf, size_t size)
+ {
+ 	int ret, fd;
+diff --git a/lib/igt_amd.h b/lib/igt_amd.h
+index 254b5d37b..6780b99de 100644
+--- a/lib/igt_amd.h
++++ b/lib/igt_amd.h
+@@ -50,6 +50,7 @@
+ #define DEBUGFS_EDP_PSR_CAP	"psr_capability"
+ #define DEBUGFS_EDP_PSR_STATE	"psr_state"
+ #define DEBUGFS_ALLOW_EDP_HOTPLUG_DETECT "allow_edp_hotplug_detection"
++#define DEBUGFS_DISALLOW_EDP_ENTER_PSR "disallow_edp_enter_psr"
+ 
+ /* amdgpu DM interface entries */
+ #define DEBUGFS_DM_VISUAL_CONFIRM "amdgpu_dm_visual_confirm"
+@@ -194,6 +195,7 @@ bool igt_amd_psr_support_drv(int drm_fd, char *connector_name, enum psr_mode mod
+ bool igt_amd_output_has_psr_state(int drm_fd, char *connector_name);
+ int  igt_amd_read_psr_state(int drm_fd, char *connector_name);
+ void igt_amd_allow_edp_hotplug_detect(int drm_fd, char *connector_name, bool enable);
++void igt_amd_disallow_edp_enter_psr(int drm_fd, char *connector_name, bool enable);
+ 
+ /* DM interface helpers */
+ bool igt_amd_has_visual_confirm(int drm_fd);
 -- 
 2.25.1
