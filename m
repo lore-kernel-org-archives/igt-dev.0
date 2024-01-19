@@ -4,43 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8700C4725D
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Jan 2024 11:58:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DF37C47DAF
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Jan 2024 11:58:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9642910E9E5;
-	Fri, 19 Jan 2024 11:58:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 28AD010E9E0;
+	Fri, 19 Jan 2024 11:58:26 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6ECE10E9E7
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A942010E9E5
  for <igt-dev@lists.freedesktop.org>; Fri, 19 Jan 2024 11:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1705665503; x=1737201503;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0SBrNFfHK4tAaxcdEuGlNeI2Q7vXO/gbPUxfEFylnOw=;
- b=RSGCM1/6krk2RKmP0DfVSNkWY31AugFT32iDZ2NGE5Mu6fwGLjVqgk8z
- BR30V7YCa+SJWhG5+gBOkWuK8O0kC2BpAba61aELp1pK0tPRT6XI2Kdyb
- XstYRx4Q/jGnK3xm1fhvTNwgJxLlUMfzczme6wcHSA/lSRc1w4fg8EElE
- iXoh6Zi6NQYQ/vmgiUJQdZVst7ZrhOuKsxjos4ZzdNySxma7Iz4zMwCSF
- na1qsiMflm/mLkfEHq/D04nqHC+KyxOLzux41LVHyGNTkPSNaIYQM+AKH
- z9ilZTsoR21rOIsz+u9xSSo/HPksMi4iGCMwd+t6uBtt6mbeOz7zVwjbO Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="465008185"
-X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="465008185"
+ bh=QGF/hdsBPBK2obZP2GCx0pRY8KZ7sCoe0nuO0Ude1DU=;
+ b=Jbo265fCS65NULUEEh+sFVq4aksGeMEXxZK7R3vec1dF/FR414kJgUzE
+ SRZ0hd0J0NlFw19k0t7ICqzmugVTif0pWru1651SY5nT3fSUOt5TN4qHK
+ TK9E95n5Q64lXFdteawz95CbQNjCzswo5MYYb2MYL5CQx5MIeBK9CxxNI
+ VvRvwtc13FLo/+IawSw4B+0tbnaMJGdycy0CiDBdcl997mk/h7r0QxfAD
+ 31iWFokibff1M9C3w8N2vUyo5X0Z4dpJbFFPmCXqn6KfUfGkygYdMH0XZ
+ P2aEqiYV+zOEr7YvAMZybf3ei1uhWrBpsWEzRbJ3dM6oUZ+FrVE5B4RJ5 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="465008181"
+X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="465008181"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2024 03:58:23 -0800
+ 19 Jan 2024 03:58:21 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="788346445"
-X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="788346445"
+X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="788346436"
+X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="788346436"
 Received: from anshuma1-desk.iind.intel.com ([10.190.239.112])
  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2024 03:58:21 -0800
+ 19 Jan 2024 03:58:18 -0800
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v5 2/4] lib/igt_pm: Add helper to get/set
- auto_suspenddelay_ms
-Date: Fri, 19 Jan 2024 17:25:52 +0530
-Message-Id: <20240119115554.1699060-3-anshuman.gupta@intel.com>
+Subject: [PATCH i-g-t v5 1/4] test/xe_pm: Add exit handler to close fw handle
+Date: Fri, 19 Jan 2024 17:25:51 +0530
+Message-Id: <20240119115554.1699060-2-anshuman.gupta@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240119115554.1699060-1-anshuman.gupta@intel.com>
 References: <20240119115554.1699060-1-anshuman.gupta@intel.com>
@@ -62,100 +61,95 @@ Cc: kamil.konieczny@intel.com, rodrigo.vivi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Sometimes we want to test pm igt test with an explicit auto
-suspend delay, therefore adding helpers to get/set the pci_dev
-auto_suspenddelay_ms.
+Adding an exit handler to close the fw handle to make sure we don't
+leak the fw in CI environment. Adding a IGT subtest group for the
+test using the fw handle to runtime wake the device.
+Scaling forcewake close exit handler for vram-d3cold-threshold
+subtest, while doing so add the missing subtest Functionality
+as well.
 
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- lib/igt_pm.c | 53 ++++++++++++++++++++++++++++++++++++++++------------
- lib/igt_pm.h |  2 ++
- 2 files changed, 43 insertions(+), 12 deletions(-)
+ tests/intel/xe_pm.c | 34 +++++++++++++++++++++++++---------
+ 1 file changed, 25 insertions(+), 9 deletions(-)
 
-diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-index c2d98fceb..d436c2c50 100644
---- a/lib/igt_pm.c
-+++ b/lib/igt_pm.c
-@@ -1068,18 +1068,6 @@ static void igt_pm_write_power_attr(int fd, const char *val, int len)
- 	igt_assert(strncmp(buf, val, len) == 0);
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index 4afe37d93..f793fd24e 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -40,6 +40,7 @@ typedef struct {
+ } device_t;
+ 
+ uint64_t orig_threshold;
++int fw_handle = -1;
+ 
+ static void dpms_on_off(device_t device, int mode)
+ {
+@@ -195,6 +196,14 @@ static bool out_of_d3(device_t device, enum igt_acpi_d_state state)
+ 	return true;
  }
  
--static int igt_pm_get_autosuspend_delay(struct pci_device *pci_dev)
--{
--	char delay_str[64];
--	int delay, delay_fd;
--
--	delay_fd = igt_pm_get_power_attr_fd(pci_dev, "autosuspend_delay_ms");
--	if (igt_pm_read_power_attr(delay_fd, delay_str, 64, true))
--		igt_assert(sscanf(delay_str, "%d", &delay) > 0);
--
--	return delay;
--}
--
- static void
- igt_pm_setup_pci_dev_power_attrs(struct pci_device *pci_dev,
- 				 struct igt_pm_pci_dev_pwrattr *pwrattr, int delay_ms)
-@@ -1165,6 +1153,47 @@ igt_pm_setup_pci_card_power_attrs(struct pci_device *pci_dev, bool save_attrs, i
- 	pci_iterator_destroy(iter);
- }
- 
-+/**
-+ * igt_pm_get_autosuspend_delay:
-+ * @pci_dev: pci_dev.
-+ * Get pci_dev autosuspend delay value from pci sysfs "autosuspend_delay_ms".
-+ *
-+ * Returns:
-+ * autosuspend_delay_ms.
-+ */
-+int igt_pm_get_autosuspend_delay(struct pci_device *pci_dev)
++static void close_fw_handle(int sig)
 +{
-+	char delay_str[64];
-+	int delay, delay_fd;
++	if (fw_handle < 0)
++		return;
 +
-+	delay_fd = igt_pm_get_power_attr_fd(pci_dev, "autosuspend_delay_ms");
-+	if (igt_pm_read_power_attr(delay_fd, delay_str, 64, true))
-+		igt_assert(sscanf(delay_str, "%d", &delay) > 0);
-+
-+	return delay;
-+}
-+
-+/**
-+ * igt_pm_set_autosuspend_delay:
-+ * @pci_dev: pci_dev.
-+ * @delay_ms: autosuspend delay in ms.
-+ * Set pci_dev autosuspend delay value through pci sysfs "autosuspend_delay_ms".
-+ */
-+void igt_pm_set_autosuspend_delay(struct pci_device *pci_dev, int delay_ms)
-+{
-+	char delay_str[64];
-+	int delay_fd;
-+
-+	delay_fd = igt_pm_get_power_attr_fd(pci_dev, "autosuspend_delay_ms");
-+
-+	if (delay_ms >= 0) {
-+		int wc;
-+
-+		wc = snprintf(delay_str, 64, "%d\n", delay_ms);
-+		igt_pm_write_power_attr(delay_fd, delay_str, wc);
-+	}
++	close(fw_handle);
 +}
 +
  /**
-  * igt_pm_enable_pci_card_runtime_pm:
-  * @root: root port pci_dev.
-diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-index 306a9eb46..8394315c6 100644
---- a/lib/igt_pm.h
-+++ b/lib/igt_pm.h
-@@ -77,6 +77,8 @@ int igt_pm_get_pcie_acpihp_slot(struct pci_device *pci_dev);
- bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev);
- enum igt_acpi_d_state
- igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev);
-+int igt_pm_get_autosuspend_delay(struct pci_device *pci_dev);
-+void igt_pm_set_autosuspend_delay(struct pci_device *pci_dev, int delay_ms);
- void igt_pm_enable_pci_card_runtime_pm(struct pci_device *root,
- 				       struct pci_device *i915);
- void igt_pm_get_d3cold_allowed(const char *pci_slot_name, uint32_t *value);
+  * SUBTEST: %s-basic
+  * Description: set GPU state to %arg[1] and test suspend/autoresume
+@@ -411,9 +420,9 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
+ 	};
+ 	uint64_t vram_used_mb = 0, vram_total_mb = 0, threshold;
+ 	uint32_t bo, placement;
+-	int handle, i;
+ 	bool active;
+ 	void *map;
++	int i;
+ 
+ 	igt_require(xe_has_vram(device.fd_xe));
+ 
+@@ -457,10 +466,10 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
+ 	 * the device from runtime suspend.
+ 	 * Therefore open and close fw handle to wake the device.
+ 	 */
+-	handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
+-	igt_assert(handle >= 0);
++	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
++	igt_assert(fw_handle >= 0);
+ 	active = igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE;
+-	close(handle);
++	close(fw_handle);
+ 	igt_assert(active);
+ 
+ 	/* Test D3Cold again after freeing up the Xe BO */
+@@ -570,11 +579,18 @@ igt_main
+ 		}
+ 	}
+ 
+-	igt_describe("Validate whether card is limited to d3hot, if vram used > vram threshold");
+-	igt_subtest("vram-d3cold-threshold") {
+-		orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
+-		igt_install_exit_handler(vram_d3cold_threshold_restore);
+-		test_vram_d3cold_threshold(device, sysfs_fd);
++	igt_subtest_group {
++		igt_fixture {
++			igt_install_exit_handler(close_fw_handle);
++		}
++
++		igt_describe("Validate whether card is limited to d3hot,"
++			     "if vram used > vram threshold");
++		igt_subtest("vram-d3cold-threshold") {
++			orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
++			igt_install_exit_handler(vram_d3cold_threshold_restore);
++			test_vram_d3cold_threshold(device, sysfs_fd);
++		}
+ 	}
+ 
+ 	igt_fixture {
 -- 
 2.25.1
 
