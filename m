@@ -4,47 +4,25 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 821C9C47DB7
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Jan 2024 11:58:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90738C4725D
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Jan 2024 12:46:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2B7EB10E9B7;
-	Fri, 19 Jan 2024 11:58:29 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB9E510E9B7
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Jan 2024 11:58:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705665507; x=1737201507;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=oCv+AHYN0ShdBKzK8GiLIaC5cy+9YGD3+bigQXEGYGM=;
- b=KNR1TPA8FqxubnXRFf8aNrwCkk//i5A7GT8Tpw8m3TsdP6+oB2BzUGWJ
- Bc586tUj4kg6UBAIBvncEJ2qTBqgDuhfzCPqT8Q/yAkhXH9qWNwsIXt9J
- 6acL34rQZBhDyt68Dy1W8osZKn9w6tq0hGnvRZ/5M4nq1BzJNPPdCvr9y
- 5kKW63PPrqAibmO8+GQBV63CxZiugQOQV1qiQl+G46e9FHGNjDJmRiPE4
- EVbETgCWM809FfUs/aKk3d0ecjN/e80Jgu7tSO6/PVmjOjEjT27cNSKX3
- Qs6bD1jVmTUmI8u99MCuWzUPAJp0crlND4Bfd7LUxNKbsGcXsgFWOIRL9 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="465008217"
-X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="465008217"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2024 03:58:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="788346454"
-X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="788346454"
-Received: from anshuma1-desk.iind.intel.com ([10.190.239.112])
- by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2024 03:58:25 -0800
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v5 4/4] HAX: Add d3-mmap to xe-fast-feedback
-Date: Fri, 19 Jan 2024 17:25:54 +0530
-Message-Id: <20240119115554.1699060-5-anshuman.gupta@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240119115554.1699060-1-anshuman.gupta@intel.com>
-References: <20240119115554.1699060-1-anshuman.gupta@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4F89010E9F9;
+	Fri, 19 Jan 2024 12:46:47 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C32B310E9D6;
+ Fri, 19 Jan 2024 12:46:45 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8910218755802163628=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_Add_d3_mmap_test_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Anshuman Gupta" <anshuman.gupta@intel.com>
+Date: Fri, 19 Jan 2024 12:46:45 -0000
+Message-ID: <170566840579.592635.17178018428186277757@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240119115554.1699060-1-anshuman.gupta@intel.com>
+In-Reply-To: <20240119115554.1699060-1-anshuman.gupta@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,29 +35,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: kamil.konieczny@intel.com, rodrigo.vivi@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Adding d3-mmap to xe-fast-feedback.
+--===============8910218755802163628==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+== Series Details ==
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index f297fe965..f35871dd1 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -115,6 +115,7 @@ igt@xe_mmap@system
- igt@xe_mmap@vram
- igt@xe_mmap@vram-system
- igt@xe_pm_residency@gt-c6-on-idle
-+igt@xe_pm@d3-mmap
- igt@xe_prime_self_import@basic-with_one_bo
- igt@xe_prime_self_import@basic-with_fd_dup
- #igt@xe_prime_self_import@basic-llseek-size
--- 
-2.25.1
+Series: Add d3 mmap test (rev3)
+URL   : https://patchwork.freedesktop.org/series/124115/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7683_BAT -> XEIGTPW_10562_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_10562_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_10562_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_10562_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_pm@d3-mmap:
+    - bat-atsm-2:         NOTRUN -> [SKIP][1]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10562/bat-atsm-2/igt@xe_pm@d3-mmap.html
+    - bat-adlp-7:         NOTRUN -> [SKIP][2]
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10562/bat-adlp-7/igt@xe_pm@d3-mmap.html
+    - bat-pvc-2:          NOTRUN -> [SKIP][3]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10562/bat-pvc-2/igt@xe_pm@d3-mmap.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][4]
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10562/bat-dg2-oem2/igt@xe_pm@d3-mmap.html
+
+  
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7683 -> IGTPW_10562
+  * Linux: xe-644-238e8655c184b7cf16731690b59da560641a07ad -> xe-652-ad8fc2d4a396b1123c48340004d8c35dd0320817
+
+  IGTPW_10562: 10562
+  IGT_7683: 7683
+  xe-644-238e8655c184b7cf16731690b59da560641a07ad: 238e8655c184b7cf16731690b59da560641a07ad
+  xe-652-ad8fc2d4a396b1123c48340004d8c35dd0320817: ad8fc2d4a396b1123c48340004d8c35dd0320817
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10562/index.html
+
+--===============8910218755802163628==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add d3 mmap test (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124115/">https://patchwork.freedesktop.org/series/124115/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10562/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10562/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7683_BAT -&gt; XEIGTPW_10562_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_10562_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_10562_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_10562_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@xe_pm@d3-mmap:<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10562/bat-atsm-2/igt@xe_pm@d3-mmap.html">SKIP</a></li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10562/bat-adlp-7/igt@xe_pm@d3-mmap.html">SKIP</a></li>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10562/bat-pvc-2/igt@xe_pm@d3-mmap.html">SKIP</a></li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10562/bat-dg2-oem2/igt@xe_pm@d3-mmap.html">SKIP</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7683 -&gt; IGTPW_10562</li>
+<li>Linux: xe-644-238e8655c184b7cf16731690b59da560641a07ad -&gt; xe-652-ad8fc2d4a396b1123c48340004d8c35dd0320817</li>
+</ul>
+<p>IGTPW_10562: 10562<br />
+  IGT_7683: 7683<br />
+  xe-644-238e8655c184b7cf16731690b59da560641a07ad: 238e8655c184b7cf16731690b59da560641a07ad<br />
+  xe-652-ad8fc2d4a396b1123c48340004d8c35dd0320817: ad8fc2d4a396b1123c48340004d8c35dd0320817</p>
+
+</body>
+</html>
+
+--===============8910218755802163628==--
