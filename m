@@ -4,43 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28268C47DD3
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Jan 2024 14:28:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C3C8C47DAF
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Jan 2024 14:28:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D457010E9FE;
-	Fri, 19 Jan 2024 14:28:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 28F8B10E9F9;
+	Fri, 19 Jan 2024 14:28:41 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00B8410E9F9
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Jan 2024 14:28:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C5B9110E9F9
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Jan 2024 14:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705674517; x=1737210517;
+ t=1705674519; x=1737210519;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8bFtxvRE3LmgLFrhfoXcH8WpxM7uht2IWYynHCMjt+I=;
- b=k4TAVp45fXGAg3sDmWK11I46fqzud+/KfD8DijeJju+a6m1KgsfqCojc
- SCLkycrcOaoy5vuGodSYS/Rb1Nh9rAc5dxoYUTiAgENL+XYAhQLFQUnw8
- 09rpjpI9hR302Myubu22DU+B5eyRZxia4nPW6M34M4wY3hGRTi6lY9qsA
- YzLHiWgov0z9Om8hI346PFn2Y9Y5Sw7IYaCp2cViOR0usN9RfYAnsw5u+
- 9qb5ygH3OEN50yDzc/eJQLmUB47z9HbbyylOcOvqgfzAUts0dK8RfwOqB
- AbUQruuC7kUCP++0E2V15e0KP9vWL0pgFyqsRqP9ecMDUV2lKvqx6ImoG A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="14278425"
-X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="14278425"
+ bh=LkfXi6bFaQXqVrtdPgW+oU/rix0bbQb/gdFv4prQW/8=;
+ b=BIrolYEY+Cv4LxRyYWr69i+WKoXUAInyhoYpSZF5dKBw8wyJXGSchTdr
+ bCdWpQA/dTrCisEa6yqF+ogG/IhBNc48SuuQQ2P25uAmsGVw3wUltMD3t
+ 6wXWVK6ixlnqu3fPWStjednyzpRZB5jL6+q8b1dcEoqQaXaz5qGa4wgTb
+ bWU9E18HLsr5yplgx4HF0r5Xg19wgpa8kY9G1AIqmNyyfxLzzZxQhIVZ2
+ Z+UC0Oz/KwCG5cK4Eq3gAoGcJcsRjvmjgSa6hz32j8wyenNLBkjZZVHK3
+ 6Tkx5ZVAB9roxXCfP6SWxUP0XYHgNWNTdmvLKJy/K4ndq2M7HosfrwUSb Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="14278428"
+X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="14278428"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2024 06:28:37 -0800
+ 19 Jan 2024 06:28:38 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="1031963538"
-X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="1031963538"
+X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="1031963547"
+X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="1031963547"
 Received: from anshuma1-desk.iind.intel.com ([10.190.239.112])
  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2024 06:28:35 -0800
+ 19 Jan 2024 06:28:37 -0800
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v5 2/4] lib/igt_pm: Add helper to get/set
- auto_suspenddelay_ms
-Date: Fri, 19 Jan 2024 19:58:21 +0530
-Message-Id: <20240119142823.1711688-3-anshuman.gupta@intel.com>
+Subject: [PATCH i-g-t v5 3/4] tests/xe_pm: Add d3-mmap IGT test
+Date: Fri, 19 Jan 2024 19:58:22 +0530
+Message-Id: <20240119142823.1711688-4-anshuman.gupta@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240119142823.1711688-1-anshuman.gupta@intel.com>
 References: <20240119142823.1711688-1-anshuman.gupta@intel.com>
@@ -62,101 +61,154 @@ Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Sometimes we want to test pm igt test with an explicit auto
-suspend delay, therefore adding helpers to get/set the pci_dev
-auto_suspenddelay_ms.
+Adding a test to validate mmap memory mappings along with runtime
+suspend and resume for both xe device and it's pci parent bridge
+in device hierarchy.
 
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+v2:
+- Use 0xc00fee pattern. [Rodrigo]
+- Test the pagefault case on read and write the mapping. [Rodrigo]
+
+v3:
+- Cosmetic comment. [Kamil]
+- Use MAGIC macro for 0xc0ffe and 0xdeadbeef. [Kamil]
+- Fix xe_bo_create() with respect to Xe uapi.
+- Set auto_suspend delay to 1000ms and restore it.
+
+v4:
+- Set autosuspend delay to 1 sec for entire test. [Badal]
+
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- lib/igt_pm.c | 53 ++++++++++++++++++++++++++++++++++++++++------------
- lib/igt_pm.h |  2 ++
- 2 files changed, 43 insertions(+), 12 deletions(-)
+ tests/intel/xe_pm.c | 99 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 99 insertions(+)
 
-diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-index c2d98fceb..d436c2c50 100644
---- a/lib/igt_pm.c
-+++ b/lib/igt_pm.c
-@@ -1068,18 +1068,6 @@ static void igt_pm_write_power_attr(int fd, const char *val, int len)
- 	igt_assert(strncmp(buf, val, len) == 0);
- }
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index f793fd24e..9cb25d47c 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -30,6 +30,8 @@
+ #define NO_RPM -1
  
--static int igt_pm_get_autosuspend_delay(struct pci_device *pci_dev)
--{
--	char delay_str[64];
--	int delay, delay_fd;
--
--	delay_fd = igt_pm_get_power_attr_fd(pci_dev, "autosuspend_delay_ms");
--	if (igt_pm_read_power_attr(delay_fd, delay_str, 64, true))
--		igt_assert(sscanf(delay_str, "%d", &delay) > 0);
--
--	return delay;
--}
--
- static void
- igt_pm_setup_pci_dev_power_attrs(struct pci_device *pci_dev,
- 				 struct igt_pm_pci_dev_pwrattr *pwrattr, int delay_ms)
-@@ -1165,6 +1153,47 @@ igt_pm_setup_pci_card_power_attrs(struct pci_device *pci_dev, bool save_attrs, i
- 	pci_iterator_destroy(iter);
+ #define SIZE (4096 * 1024)
++#define MAGIC_1 0xc0ffee
++#define MAGIC_2 0xdeadbeef
+ 
+ typedef struct {
+ 	int fd_xe;
+@@ -476,6 +478,79 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
+ 	igt_assert(in_d3(device, IGT_ACPI_D3Cold));
  }
  
 +/**
-+ * igt_pm_get_autosuspend_delay:
-+ * @pci_dev: pci_dev.
-+ * Get pci_dev autosuspend delay value from pci sysfs "autosuspend_delay_ms".
++ * SUBTEST: d3-mmap-%s
++ * Description:
++ *	Validate mmap memory mapping with d3 state, for %arg[1] region,
++ *	if supported by device.
++ * arg[1]:
 + *
-+ * Returns:
-+ * autosuspend_delay_ms.
++ * @vram:	vram region
++ * @system:	system region
++ *
++ * Functionality: pm-d3
++ * Run type: FULL
 + */
-+int igt_pm_get_autosuspend_delay(struct pci_device *pci_dev)
++static void test_mmap(device_t device, uint32_t placement, uint32_t flags)
 +{
-+	char delay_str[64];
-+	int delay, delay_fd;
++	size_t bo_size = 8192;
++	uint32_t *map = NULL;
++	uint32_t bo;
++	int i;
 +
-+	delay_fd = igt_pm_get_power_attr_fd(pci_dev, "autosuspend_delay_ms");
-+	if (igt_pm_read_power_attr(delay_fd, delay_str, 64, true))
-+		igt_assert(sscanf(delay_str, "%d", &delay) > 0);
++	igt_require_f(placement, "Device doesn't support such memory region\n");
 +
-+	return delay;
++	bo_size = ALIGN(bo_size, xe_get_default_alignment(device.fd_xe));
++
++	bo = xe_bo_create(device.fd_xe, 0, bo_size, placement, flags);
++	map = xe_bo_map(device.fd_xe, bo, bo_size);
++	igt_assert(map);
++	memset(map, 0, bo_size);
++
++	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
++
++	igt_assert(fw_handle >= 0);
++	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
++
++	for (i = 0; i < bo_size / sizeof(*map); i++)
++		map[i] = MAGIC_1;
++
++	for (i = 0; i < bo_size / sizeof(*map); i++)
++		igt_assert(map[i] == MAGIC_1);
++
++	/* Runtime suspend and validate the pattern and changed the pattern */
++	close(fw_handle);
++	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
++
++	for (i = 0; i < bo_size / sizeof(*map); i++)
++		igt_assert(map[i] == MAGIC_1);
++
++	/* dgfx page-fault on mmaping should wake the gpu */
++	if (xe_has_vram(device.fd_xe))
++		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
++
++	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
++
++	for (i = 0; i < bo_size / sizeof(*map); i++)
++		map[i] = MAGIC_2;
++
++	if (xe_has_vram(device.fd_xe))
++		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
++
++	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
++
++	/* Runtime resume and check the pattern */
++	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
++	igt_assert(fw_handle >= 0);
++	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
++	for (i = 0; i < bo_size / sizeof(*map); i++)
++		igt_assert(map[i] == MAGIC_2);
++
++	igt_assert(munmap(map, bo_size) == 0);
++	gem_close(device.fd_xe, bo);
++	close(fw_handle);
 +}
 +
-+/**
-+ * igt_pm_set_autosuspend_delay:
-+ * @pci_dev: pci_dev.
-+ * @delay_ms: autosuspend delay in ms.
-+ * Set pci_dev autosuspend delay value through pci sysfs "autosuspend_delay_ms".
-+ */
-+void igt_pm_set_autosuspend_delay(struct pci_device *pci_dev, int delay_ms)
-+{
-+	char delay_str[64];
-+	int delay_fd;
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -591,6 +666,30 @@ igt_main
+ 			igt_install_exit_handler(vram_d3cold_threshold_restore);
+ 			test_vram_d3cold_threshold(device, sysfs_fd);
+ 		}
 +
-+	delay_fd = igt_pm_get_power_attr_fd(pci_dev, "autosuspend_delay_ms");
++		igt_describe("Validate mmap memory mappings with system region,"
++			     "when device along with parent bridge in d3");
++		igt_subtest("d3-mmap-system") {
++			test_mmap(device, system_memory(device.fd_xe), 0);
++		}
 +
-+	if (delay_ms >= 0) {
-+		int wc;
++		igt_describe("Validate mmap memory mappings with vram region,"
++			     "when device along with parent bridge in d3");
++		igt_subtest("d3-mmap-vram") {
++			int delay_ms;
 +
-+		wc = snprintf(delay_str, 64, "%d\n", delay_ms);
-+		igt_pm_write_power_attr(delay_fd, delay_str, wc);
-+	}
-+}
++			if (device.pci_root != device.pci_xe) {
++				igt_pm_enable_pci_card_runtime_pm(device.pci_root, NULL);
++				igt_pm_set_d3cold_allowed(device.pci_slot_name, 1);
++			}
 +
- /**
-  * igt_pm_enable_pci_card_runtime_pm:
-  * @root: root port pci_dev.
-diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-index 306a9eb46..8394315c6 100644
---- a/lib/igt_pm.h
-+++ b/lib/igt_pm.h
-@@ -77,6 +77,8 @@ int igt_pm_get_pcie_acpihp_slot(struct pci_device *pci_dev);
- bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev);
- enum igt_acpi_d_state
- igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev);
-+int igt_pm_get_autosuspend_delay(struct pci_device *pci_dev);
-+void igt_pm_set_autosuspend_delay(struct pci_device *pci_dev, int delay_ms);
- void igt_pm_enable_pci_card_runtime_pm(struct pci_device *root,
- 				       struct pci_device *i915);
- void igt_pm_get_d3cold_allowed(const char *pci_slot_name, uint32_t *value);
++			delay_ms = igt_pm_get_autosuspend_delay(device.pci_xe);
++
++			/* Give some auto suspend delay to validate rpm active during page fault */
++			igt_pm_set_autosuspend_delay(device.pci_xe, 1000);
++			test_mmap(device, vram_memory(device.fd_xe, 0), DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++			igt_pm_set_autosuspend_delay(device.pci_xe, delay_ms);
++		}
+ 	}
+ 
+ 	igt_fixture {
 -- 
 2.25.1
 
