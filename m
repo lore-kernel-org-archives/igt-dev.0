@@ -4,46 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9D01C47422
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB78CC47DD9
 	for <igt-dev@archiver.kernel.org>; Mon, 22 Jan 2024 02:45:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4550310E318;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 41F3610E317;
 	Mon, 22 Jan 2024 02:45:20 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B21AD10E1C1
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8921F10E315
  for <igt-dev@lists.freedesktop.org>; Mon, 22 Jan 2024 02:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1705891519; x=1737427519;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=7a9SdKBlY4kxEdKHNCn3hOgs4E+js6w2CqyiNfAHohs=;
- b=l8QkcWVQxBlUzTySm9JW4LQLVHnOChZGRdPEZVVzV0t/rfipdROeJ2oF
- pBgcvJZjwwZ1AKzvFmO5/G/tqaQ1CnxaodrjFRaGPVF6PMgaT/96uiT9x
- XXSprxJqFpWlXoJCAqCISlwwaBDvRNWONbyN2BmxTzwrgMFT8+c68Jp1k
- dyd2vS8UcbB30zF5tDS4CtjPmhdBFviEttxWLZRk2/pQhw9/Sp/6RMwHn
- lKc037jVhTsibfd719Oibh/slDPJwR2H/u9crCbgkVX5PBVdvE0MUg8SY
- gvTHoLrsMFl1k7305RuKz8ythh5n7harYsEsDc5MAtTTk/CeYUWfteXEp Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="22570004"
-X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; d="scan'208";a="22570004"
+ bh=82sQTgkO/Z0HKKU8bG1RRjowCE6uak4MbaO22t6QYIM=;
+ b=O1ruJGWLu7u+wVrc+IF+yuCN0zCiwMqd63+vEe76IDJQGdN+6Nz43FSM
+ JSW3Au/YLLRrQx4r75LUmeD+lBe+dJaH6Co1U94h1LbEmHS5j9EUKnikH
+ +AM0tjKW39iXDfVZS+atn8VolJyNxXRq43TOpg2z0PEfuv1uwHiYNe4y/
+ 53fxOWPkzsLu0XU2qKQH982JHyFqwyGUYOk6Ck0qPWx/UFRHT1kAvlZrm
+ IrkCE1LTFWmuyH6d7WIq/W0Sf//8G0ytJ8/lKZySyIO15l2RvNa8Vo+gq
+ qGnxcVyOdTlFkxVMPsXbkBbfYhLVPq0UZElWh/IoiVN46e3W1DRmDmMxZ A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="22570000"
+X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; d="scan'208";a="22570000"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2024 18:45:15 -0800
+ 21 Jan 2024 18:45:14 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="819533115"
-X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; d="scan'208";a="819533115"
+X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="819533111"
+X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; d="scan'208";a="819533111"
 Received: from bommu-optiplex-5060.iind.intel.com ([10.145.169.63])
- by orsmga001.jf.intel.com with ESMTP; 21 Jan 2024 18:45:13 -0800
+ by orsmga001.jf.intel.com with ESMTP; 21 Jan 2024 18:45:12 -0800
 From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH v4 2/3] tests/xe_waitfence: Removed drm_xe_sync data in
- exec_queue_reset_wait
-Date: Mon, 22 Jan 2024 08:15:42 +0530
-Message-Id: <20240122024543.456795-3-krishnaiah.bommu@intel.com>
+Subject: [PATCH v4 1/3] tests/xe_waitfence: remove invalid_engine subtest from
+ xe_waitfence
+Date: Mon, 22 Jan 2024 08:15:41 +0530
+Message-Id: <20240122024543.456795-2-krishnaiah.bommu@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240122024543.456795-1-krishnaiah.bommu@intel.com>
 References: <20240122024543.456795-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -62,36 +63,73 @@ Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-drm_xe_sync flags are declared wrongly and drm_xe_sync data is not used
-in this test, hence removing drm_xe_sync which is unused.
+engine and instance members are removed from drm_xe_wait_user_fence,
+hence invalid_engine subtest is invalid and removing it.
+
+kernel implementation:
+	https://patchwork.freedesktop.org/series/127365/
 
 Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/intel/xe_waitfence.c | 8 --------
- 1 file changed, 8 deletions(-)
+ tests/intel/xe_waitfence.c | 30 ------------------------------
+ 1 file changed, 30 deletions(-)
 
 diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-index dfdb97fb5..e6354b3ff 100644
+index 7ba20764c..dfdb97fb5 100644
 --- a/tests/intel/xe_waitfence.c
 +++ b/tests/intel/xe_waitfence.c
-@@ -221,16 +221,8 @@ exec_queue_reset_wait(int fd)
- 		uint32_t data;
- 	} *data;
+@@ -151,9 +151,6 @@ waitfence(int fd, enum waittype wt)
+  * SUBTEST: invalid-ops
+  * Description: Check query with invalid ops returns expected error code
+  *
+- * SUBTEST: invalid-engine
+- * Description: Check query with invalid engine info returns expected error code
+- *
+  * SUBTEST: exec_queue-reset-wait
+  * Description: Don’t wait till timeout on user fence when exec_queue reset is detected and return return proper error
+  */
+@@ -206,30 +203,6 @@ invalid_ops(int fd)
+ 	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EINVAL);
+ }
  
--#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
--	struct drm_xe_sync sync[1] = {
--		{ .flags = DRM_XE_SYNC_TYPE_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
--			.timeline_value = USER_FENCE_VALUE },
+-static void
+-invalid_engine(int fd)
+-{
+-	uint32_t bo;
+-
+-	struct drm_xe_wait_user_fence wait = {
+-		.addr = to_user_pointer(&wait_fence),
+-		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
+-		.flags = 0,
+-		.value = 1,
+-		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+-		.timeout = -1,
+-		.exec_queue_id = 0,
 -	};
 -
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
--		.num_syncs = 1,
--		.syncs = to_user_pointer(sync),
- 	};
+-	uint32_t vm = xe_vm_create(fd, 0, 0);
+-
+-	bo = xe_bo_create(fd, vm, 0x40000, vram_if_possible(fd, 0), 0);
+-
+-	do_bind(fd, vm, bo, 0, 0x200000, 0x40000, 1);
+-
+-	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EFAULT);
+-}
+-
+ static void
+ exec_queue_reset_wait(int fd)
+ {
+@@ -329,9 +302,6 @@ igt_main
+ 	igt_subtest("invalid-ops")
+ 		invalid_ops(fd);
  
- 	uint32_t vm = xe_vm_create(fd, 0, 0);
+-	igt_subtest("invalid-engine")
+-		invalid_engine(fd);
+-
+ 	igt_subtest("exec_queue-reset-wait")
+ 		exec_queue_reset_wait(fd);
+ 
 -- 
 2.25.1
 
