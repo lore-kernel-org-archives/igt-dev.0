@@ -4,48 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B574C47DAF
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Jan 2024 14:44:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDC84C47DAF
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jan 2024 14:49:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E4E3410F1A1;
-	Mon, 22 Jan 2024 14:44:33 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 993A510F19B
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Jan 2024 14:44:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705934673; x=1737470673;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Amr4QAPZsQuSsZigGegw8Jxz68bSMf2Gv4POTYln5qY=;
- b=YpI6G2/eSBWZphcKjWfdlfTnYX4HBFRmZP+mQOcCNbhiItr+SHH7d0lz
- fz6xOFnXzyuhp8KTNNBE/wZhaE6oQsQBLMxbDOjfYPYAxZQOGBgytM5Pq
- U1qQrTIhRMFQzM8qfGMPB9JVnuXslQYyLPjFMPnuX1GnE3adW52LK3hE3
- brZM6tmpq/sPEQ6jn0qB0NHPlqvHW06gfp5ijwVQT5AMV7kW6YW3+BTzF
- KpIRyrdLoNXCZi7dKI660lqp4OhXzWnZCm6PHnINgHJfvn5TNjOx9D1iQ
- 8sC8e0q64D6Vc9ET+J9gQMkuuujuzpz9dynvOmPWV9dnPPnkBbKzKG/AL w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="22700789"
-X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; d="scan'208";a="22700789"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2024 06:44:25 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; 
-   d="scan'208";a="1304236"
-Received: from dniestep-mobl5.ger.corp.intel.com (HELO localhost)
- ([10.246.17.55])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2024 06:44:24 -0800
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] lib/intel_batchbuffer: Extend requested size by 4K for
- Xe2+
-Date: Mon, 22 Jan 2024 15:44:19 +0100
-Message-Id: <20240122144419.325452-1-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9506C10F1E8;
+	Mon, 22 Jan 2024 14:49:36 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67D9010F1E5;
+ Mon, 22 Jan 2024 14:49:35 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4752599939858776923=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5B1/3=2C?=
+ =?utf-8?q?i-g-t=5D_lib/igt=5Famd=3A_add_debugfs_disallow_edp_enter_psr_=28r?=
+ =?utf-8?q?ev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Hersen Wu" <hersenxs.wu@amd.com>
+Date: Mon, 22 Jan 2024 14:49:35 -0000
+Message-ID: <170593497542.646837.11364724687818152011@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240118131454.19652-1-hersenxs.wu@amd.com>
+In-Reply-To: <20240118131454.19652-1-hersenxs.wu@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,37 +37,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Matthew Auld <matthew.auld@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Due to batch prefetching on Xe2+ lets add implicitly 4K page
-to user requested batch size. Such should protect the user from
-being affected by CAT errors when hw will touch offsets after
-user requested batch size.
+--===============4752599939858776923==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
----
- lib/intel_batchbuffer.c | 5 +++++
- 1 file changed, 5 insertions(+)
+== Series Details ==
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 85023f9e6f..1596e95427 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -959,6 +959,11 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
- 			alignment = xe_get_default_alignment(fd);
- 
- 		ibb->alignment = alignment;
-+
-+		/* Xe2+ hw requires additional page due to prefetching */
-+		if (AT_LEAST_GEN(intel_get_drm_devid(ibb->fd), 20))
-+			size += SZ_4K;
-+
- 		size = ALIGN(size, ibb->alignment);
- 		ibb->handle = xe_bo_create(fd, 0, size, vram_if_possible(fd, 0),
- 					   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
--- 
-2.34.1
+Series: series starting with [1/3,i-g-t] lib/igt_amd: add debugfs disallow edp enter psr (rev2)
+URL   : https://patchwork.freedesktop.org/series/128941/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7683_BAT -> XEIGTPW_10569_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7683 -> IGTPW_10569
+  * Linux: xe-644-238e8655c184b7cf16731690b59da560641a07ad -> xe-661-aa09aa0293f752644c8c5d040e4a7af4e463627f
+
+  IGTPW_10569: 10569
+  IGT_7683: 7683
+  xe-644-238e8655c184b7cf16731690b59da560641a07ad: 238e8655c184b7cf16731690b59da560641a07ad
+  xe-661-aa09aa0293f752644c8c5d040e4a7af4e463627f: aa09aa0293f752644c8c5d040e4a7af4e463627f
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10569/index.html
+
+--===============4752599939858776923==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/3,i-g-t] lib/igt_amd: add debugfs disallow edp enter psr (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128941/">https://patchwork.freedesktop.org/series/128941/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10569/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10569/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7683_BAT -&gt; XEIGTPW_10569_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7683 -&gt; IGTPW_10569</li>
+<li>Linux: xe-644-238e8655c184b7cf16731690b59da560641a07ad -&gt; xe-661-aa09aa0293f752644c8c5d040e4a7af4e463627f</li>
+</ul>
+<p>IGTPW_10569: 10569<br />
+  IGT_7683: 7683<br />
+  xe-644-238e8655c184b7cf16731690b59da560641a07ad: 238e8655c184b7cf16731690b59da560641a07ad<br />
+  xe-661-aa09aa0293f752644c8c5d040e4a7af4e463627f: aa09aa0293f752644c8c5d040e4a7af4e463627f</p>
+
+</body>
+</html>
+
+--===============4752599939858776923==--
