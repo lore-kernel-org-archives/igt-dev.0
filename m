@@ -4,46 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6997C47DD3
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Jan 2024 02:45:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BE65C47DD3
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jan 2024 03:13:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 26BCD10E315;
-	Mon, 22 Jan 2024 02:45:20 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0EBC10E317
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Jan 2024 02:45:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705891519; x=1737427519;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=ylQkjvTSYV9PydmPEif1T6A3Ap7bsECfMUqBuidxkas=;
- b=ZWJXwVmWGGW0Le1jhuJS+vO05c7EPSt2Smjo0r34TF0MtTj3+en1OZQU
- xnMUhGYophzDLy1wbLPaeoNvvpJ2alcwUHzXOZn80cLxmnGYiSX7Dflyg
- eLxiEFB/6n96egoppFZSEMJNGZHf9p01DN7sxggl4vJNY3mdebSS6vWN5
- 3Bg18Fnz2MOtfQuEkOcNcY9oMP+wsrrWkMhIgBwQlDGIW5I9q6nssTTZM
- Wpo214nocT1x4ivzUdeysVEMpShEnkswrXobSvr+IUewTo+TYdG9lEc4f
- 1dt9FCAT7QpjqK4Ek2hiIEjXwRiBApEPb2Un9AqqmkJYPDRfpX4M91rIh w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="22570009"
-X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; d="scan'208";a="22570009"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2024 18:45:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="819533126"
-X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; d="scan'208";a="819533126"
-Received: from bommu-optiplex-5060.iind.intel.com ([10.145.169.63])
- by orsmga001.jf.intel.com with ESMTP; 21 Jan 2024 18:45:15 -0800
-From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH v4 3/3] tests/xe_waitfence: Removed duplicate code in waitfence
-Date: Mon, 22 Jan 2024 08:15:43 +0530
-Message-Id: <20240122024543.456795-4-krishnaiah.bommu@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240122024543.456795-1-krishnaiah.bommu@intel.com>
-References: <20240122024543.456795-1-krishnaiah.bommu@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 23B7810E338;
+	Mon, 22 Jan 2024 03:13:45 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 61D0810E338;
+ Mon, 22 Jan 2024 03:13:44 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2071698980425222801=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/xe=5Fwaitfence=3A_remove?=
+ =?utf-8?q?d_invalid=5Fengine_subtest_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bommu Krishnaiah" <krishnaiah.bommu@intel.com>
+Date: Mon, 22 Jan 2024 03:13:44 -0000
+Message-ID: <170589322439.645498.9184704383025789486@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240122024543.456795-1-krishnaiah.bommu@intel.com>
+In-Reply-To: <20240122024543.456795-1-krishnaiah.bommu@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,102 +36,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Removed duplicate code in xe_waitfence@waitfence
+--===============2071698980425222801==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- lib/xe/xe_ioctl.c          | 35 -----------------------------------
- lib/xe/xe_ioctl.h          |  2 --
- tests/intel/xe_waitfence.c |  4 ++--
- 3 files changed, 2 insertions(+), 39 deletions(-)
+== Series Details ==
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 39605a019..49c5d359e 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -523,41 +523,6 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 	return timeout;
- }
- 
--/**
-- * xe_wait_ufence_abstime:
-- * @fd: xe device fd
-- * @addr: address of value to compare
-- * @value: expected value (equal) in @address
-- * @exec_queue: exec_queue id
-- * @timeout: absolute time when wait expire
-- * @flag: wait flag
-- *
-- * Function compares @value with memory pointed by @addr until they are equal.
-- * Asserts that ioctl returned without error.
-- *
-- * Returns elapsed time in nanoseconds if user fence was signalled.
-- */
--int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
--			       uint32_t exec_queue, int64_t timeout,
--			       uint16_t flag)
--{
--	struct drm_xe_wait_user_fence wait = {
--		.addr = to_user_pointer(addr),
--		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
--		.flags = flag,
--		.value = value,
--		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
--		.timeout = timeout,
--		.exec_queue_id = exec_queue,
--	};
--	struct timespec ts;
--
--	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
--	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &ts), 0);
--
--	return ts.tv_sec * 1e9 + ts.tv_nsec;
--}
--
- void xe_force_gt_reset(int fd, int gt)
- {
- 	char reset_string[128];
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index 8a92073b0..03932561d 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -90,8 +90,6 @@ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 		     uint32_t exec_queue, int64_t *timeout);
- int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 		       uint32_t exec_queue, int64_t timeout);
--int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value, uint32_t
--			       exec_queue, int64_t timeout, uint16_t flag);
- void xe_force_gt_reset(int fd, int gt);
- 
- #endif /* XE_IOCTL_H */
-diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-index e6354b3ff..6ed9d56f8 100644
---- a/tests/intel/xe_waitfence.c
-+++ b/tests/intel/xe_waitfence.c
-@@ -36,7 +36,7 @@ static void do_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
- 	xe_vm_bind_async(fd, vm, 0, bo, offset, addr, size, sync, 1);
- }
- 
--static int64_t wait_with_eci_abstime(int fd, uint64_t *addr, uint64_t value,
-+static int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
- 				     uint32_t exec_queue, int64_t timeout,
- 				     uint16_t flag)
- {
-@@ -117,7 +117,7 @@ waitfence(int fd, enum waittype wt)
- 		clock_gettime(CLOCK_MONOTONIC, &ts);
- 		current = ts.tv_sec * 1e9 + ts.tv_nsec;
- 		timeout = current + MS_TO_NS(10);
--		signalled = wait_with_eci_abstime(fd, &wait_fence, 7,
-+		signalled = xe_wait_ufence_abstime(fd, &wait_fence, 7,
- 						  exec_queue, timeout,
- 						  DRM_XE_UFENCE_WAIT_FLAG_ABSTIME);
- 		igt_debug("wait type: ENGINE ABSTIME - timeout: %" PRId64
--- 
-2.25.1
+Series: tests/xe_waitfence: removed invalid_engine subtest (rev4)
+URL   : https://patchwork.freedesktop.org/series/127926/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7683_BAT -> XEIGTPW_10567_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7683 -> IGTPW_10567
+  * Linux: xe-644-238e8655c184b7cf16731690b59da560641a07ad -> xe-656-b239ffd479309ebbf0bd530ef632c8ef3ee78d7a
+
+  IGTPW_10567: 10567
+  IGT_7683: 7683
+  xe-644-238e8655c184b7cf16731690b59da560641a07ad: 238e8655c184b7cf16731690b59da560641a07ad
+  xe-656-b239ffd479309ebbf0bd530ef632c8ef3ee78d7a: b239ffd479309ebbf0bd530ef632c8ef3ee78d7a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10567/index.html
+
+--===============2071698980425222801==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe_waitfence: removed invalid_engine subtest (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127926/">https://patchwork.freedesktop.org/series/127926/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10567/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10567/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7683_BAT -&gt; XEIGTPW_10567_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7683 -&gt; IGTPW_10567</li>
+<li>Linux: xe-644-238e8655c184b7cf16731690b59da560641a07ad -&gt; xe-656-b239ffd479309ebbf0bd530ef632c8ef3ee78d7a</li>
+</ul>
+<p>IGTPW_10567: 10567<br />
+  IGT_7683: 7683<br />
+  xe-644-238e8655c184b7cf16731690b59da560641a07ad: 238e8655c184b7cf16731690b59da560641a07ad<br />
+  xe-656-b239ffd479309ebbf0bd530ef632c8ef3ee78d7a: b239ffd479309ebbf0bd530ef632c8ef3ee78d7a</p>
+
+</body>
+</html>
+
+--===============2071698980425222801==--
