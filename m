@@ -4,42 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A943AC47DD3
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFA19C4725D
 	for <igt-dev@archiver.kernel.org>; Mon, 22 Jan 2024 07:39:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8407F10E903;
-	Mon, 22 Jan 2024 07:39:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7AD0410E760;
+	Mon, 22 Jan 2024 07:39:51 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 842A110E903
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Jan 2024 07:39:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8017510E760
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Jan 2024 07:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705909186; x=1737445186;
+ t=1705909188; x=1737445188;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=yV70J0gfG6FrST4RwnQG11kAyEl2BAcMeBIZabsiIKo=;
- b=Oei1Dve10jrvNGukPoTENVPwPpnbE7kAzVwXW9ZHB/8N/bT999LBEMhy
- Xukqjn7PFU7Qvygq5zz3yh9PHOvXd5h5kl0+Df62E50UWa9flCH/ZXQWD
- geX5CdwQPEuseX3PcpdOKYkW0C4w2P704QXUOVyK41L1yAqKShU3b8GLJ
- FD6Os67uuyM9b4ApLPP8V27jZ1nOWW0qUy2YXsLXnlXwkpvHxIy5XWiaH
- XHtIvjLqcoHECnWr+87jUwPcvdw2wK3PBf6bjT+uQNQvkFNosCOEseeC+
- 9efJujVBAZEfO2Dl5jJsXwS8zI7sKuUgZAaUTEnEFVh+Xw67WH9YiIPny w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="14640893"
-X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; d="scan'208";a="14640893"
+ bh=HAKXP2PyKrS0v9VIbD/9BbVE6+/6AzKSKTKzqMGSCDU=;
+ b=EmVtPjpM1dC0f4PebiJa5vCDO7aihnDRr3/26SVT9kmxVvrfwNeXZXGD
+ X3YPVMmcKES84Xg6kWvmIWW2WgfrvfrbjhoqcGagYGicHTLakULZ+T6+w
+ CaZJhecPrFwZrVPLBzpBmE7cMxsEwtGdvbDGuPLuLyYndnePgkTzNhKa1
+ gSwAJ1hHNhrW6HxPO2nDtuwNVbLeCtuiUAv1s5W4AFmiQ7oUsLEQ3jo3d
+ boCbt8Dm7kwmQgX0KEPerwkLIqua+gsWTQWSnI/M+KA5d8BIS4kubJqvA
+ WR7Nvj9Fy4tns2yFFJewPbwuA4rXtN95WCBED1Zdi6skPJsulPm/7OMKk A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="14640903"
+X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; d="scan'208";a="14640903"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2024 23:39:46 -0800
+ 21 Jan 2024 23:39:48 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; 
-   d="scan'208";a="1084759"
+   d="scan'208";a="1084774"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2024 23:39:45 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2024 23:39:47 -0800
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 1/2] lib/igt_psr.c: add support for panel replay sf
-Date: Mon, 22 Jan 2024 13:19:13 +0530
-Message-Id: <20240122074914.1161997-2-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 2/2] tests/intel/kms_psr2_sf: extend tests for panel
+ replay sf
+Date: Mon, 22 Jan 2024 13:19:14 +0530
+Message-Id: <20240122074914.1161997-3-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240122074914.1161997-1-kunal1.joshi@intel.com>
 References: <20240122074914.1161997-1-kunal1.joshi@intel.com>
@@ -63,217 +64,258 @@ Cc: Kunal Joshi <kunal1.joshi@intel.com>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-modify functions in igt_psr to extend support for validating
-panel replay selective fetch.
+v2: fixed dynamic test name
 
 Cc: Jouni Högander <jouni.hogander@intel.com>
 Cc: Animesh Manna <animesh.manna@intel.com>
 Cc: Arun R Murthy <arun.r.murthy@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_psr.c             | 46 ++++++++++++++++++++++++++-------------
- lib/igt_psr.h             |  6 ++---
- tests/intel/kms_psr2_sf.c |  8 ++++---
- tests/kms_async_flips.c   |  4 ++--
- tests/kms_cursor_legacy.c |  2 +-
- 5 files changed, 42 insertions(+), 24 deletions(-)
+ tests/intel/kms_psr2_sf.c | 119 ++++++++++++++++++++++----------------
+ 1 file changed, 69 insertions(+), 50 deletions(-)
 
-diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index 663bac163..1123c8d98 100644
---- a/lib/igt_psr.c
-+++ b/lib/igt_psr.c
-@@ -37,14 +37,21 @@ bool psr_disabled_check(int debugfs_fd)
- 	return strstr(buf, "PSR mode: disabled\n");
- }
- 
--bool psr2_selective_fetch_check(int debugfs_fd)
-+enum psr_mode selective_fetch_check(int debugfs_fd, igt_output_t *output)
- {
-+	char debugfs_file[128] = {0};
- 	char buf[PSR_STATUS_MAX_LEN];
- 
--	igt_debugfs_simple_read(debugfs_fd, "i915_edp_psr_status", buf,
--				sizeof(buf));
-+	if (output)
-+		sprintf(debugfs_file, "%s/i915_psr_status", output->name);
-+	else
-+		sprintf(debugfs_file, "%s", "i915_edp_psr_status");
- 
--	return strstr(buf, "PSR2 selective fetch: enabled");
-+	igt_debugfs_simple_read(debugfs_fd, debugfs_file, buf,
-+							sizeof(buf));
-+
-+	return strstr(buf, "PSR2 selective fetch: enabled") ? PSR_MODE_2_SEL_FETCH :
-+		   strstr(buf, "Panel Replay Selective Update Enabled") ? PR_MODE_SEL_FETCH : PSR_DISABLED;
- }
- 
- static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
-@@ -246,6 +253,8 @@ bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output
- 		       (strstr(line, "[0x03]") || strstr(line, "[0x04]")));
- 	case PR_MODE:
- 		return strstr(line, "Panel Replay = yes");
-+	case PR_MODE_SEL_FETCH:
-+		return strstr(line, "Panel Replay = yes, Panel Replay Selective Update = yes");
- 	default:
- 		igt_assert_f(false, "Invalid psr mode\n");
- 		return false;
-@@ -305,7 +314,7 @@ void psr_print_debugfs(int debugfs_fd)
- 	igt_info("%s", buf);
- }
- 
--bool i915_psr2_selective_fetch_check(int drm_fd)
-+bool i915_psr2_selective_fetch_check(int drm_fd, igt_output_t *output)
- {
- 	int debugfs_fd;
- 	bool ret;
-@@ -314,24 +323,24 @@ bool i915_psr2_selective_fetch_check(int drm_fd)
- 		return false;
- 
- 	debugfs_fd = igt_debugfs_dir(drm_fd);
--	ret = psr2_selective_fetch_check(debugfs_fd);
-+	ret = selective_fetch_check(debugfs_fd, output) != PSR_DISABLED;
- 	close(debugfs_fd);
- 
- 	return ret;
- }
- 
--/**
-- * i915_psr2_sel_fetch_to_psr1
-+/*
-+ * i915_pr_psr2_sel_fetch_to_pr_psr1
-  *
-- * Check if PSR2 selective fetch is enabled, if yes switch to PSR1 and returns
-+ * Check if PR/PSR2 selective fetch is enabled, if yes switch to PR/PSR1 and returns
-  * true otherwise returns false.
-- * This function should be called from tests that are not compatible with PSR2
-- * selective fetch.
-  *
-+ * @param drm_fd The file descriptor of the DRM device.
-+ * @param output The output for which the conversion is performed.
-  * Returns:
-- * True if PSR mode changed to PSR1, false otherwise.
-+ *	True if the conversion was successful, false otherwise.
-  */
--bool i915_psr2_sel_fetch_to_psr1(int drm_fd)
-+bool i915_pr_psr2_sel_fetch_to_pr_psr1(int drm_fd, igt_output_t *output)
- {
- 	int debugfs_fd;
- 	bool ret = false;
-@@ -340,11 +349,18 @@ bool i915_psr2_sel_fetch_to_psr1(int drm_fd)
- 		return ret;
- 
- 	debugfs_fd = igt_debugfs_dir(drm_fd);
--	if (psr2_selective_fetch_check(debugfs_fd)) {
-+	switch (selective_fetch_check(debugfs_fd, output)) {
-+	case PSR_MODE_2_SEL_FETCH:
- 		psr_set(drm_fd, debugfs_fd, PSR_MODE_1);
- 		ret = true;
-+		break;
-+	case PR_MODE_SEL_FETCH:
-+		psr_set(drm_fd, debugfs_fd, PR_MODE);
-+		ret = true;
-+		break;
-+	default:
-+		ret = false;
- 	}
--
- 	close(debugfs_fd);
- 	return ret;
- }
-diff --git a/lib/igt_psr.h b/lib/igt_psr.h
-index 36711c0d4..5dc70f23e 100644
---- a/lib/igt_psr.h
-+++ b/lib/igt_psr.h
-@@ -46,7 +46,7 @@ enum fbc_mode {
- };
- 
- bool psr_disabled_check(int debugfs_fd);
--bool psr2_selective_fetch_check(int debugfs_fd);
-+enum psr_mode selective_fetch_check(int debugfs_fd, igt_output_t *output);
- bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
- bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
- bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
-@@ -57,9 +57,9 @@ bool psr2_wait_su(int debugfs_fd, uint16_t *num_su_blocks);
- void psr_print_debugfs(int debugfs_fd);
- enum psr_mode psr_get_mode(int debugfs_fd);
- 
--bool i915_psr2_selective_fetch_check(int drm_fd);
-+bool i915_psr2_selective_fetch_check(int drm_fd, igt_output_t *output);
- 
--bool i915_psr2_sel_fetch_to_psr1(int drm_fd);
-+bool i915_pr_psr2_sel_fetch_to_pr_psr1(int drm_fd, igt_output_t *output);
- void i915_psr2_sel_fetch_restore(int drm_fd);
- 
- #endif
 diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-index ecf9ad77f..c826cd7c3 100644
+index c826cd7c3..29a187fc4 100644
 --- a/tests/intel/kms_psr2_sf.c
 +++ b/tests/intel/kms_psr2_sf.c
-@@ -994,6 +994,7 @@ igt_main
- 	int fbc_status[] = {FBC_DISABLED, FBC_ENABLED};
+@@ -979,6 +979,21 @@ pipe_output_combo_valid(igt_display_t *display,
+ 	return ret;
+ }
  
- 	igt_fixture {
-+		bool pr_or_psr2_selective_fetch_supported = false;
- 		drmModeResPtr res;
++static const char *get_psr_mode_for_output(data_t *data, igt_output_t *output)
++{
++	const char *psr_mode = NULL;
++
++	if (psr_sink_support(data->drm_fd, data->debugfs_fd, PR_MODE_SEL_FETCH,
++			     output))
++		psr_mode = "pr-";
++	else if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_2,
++				  output))
++		psr_mode = "psr2-";
++	else
++		igt_assert_f(false, "PR/PSR2 selective fetch not supported\n");
++	return psr_mode;
++}
++
+ igt_main
+ {
+ 	data_t data = {};
+@@ -1001,11 +1016,6 @@ igt_main
+ 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+ 		kmstest_set_vt_graphics_mode();
  
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
-@@ -1026,10 +1027,9 @@ igt_main
- 		igt_info("Big framebuffer size %dx%d\n",
- 			 data.big_fb_width, data.big_fb_height);
- 
--		igt_require_f(psr2_selective_fetch_check(data.debugfs_fd),
--			      "PSR2 selective fetch not enabled\n");
+-		igt_require_f(psr_sink_support(data.drm_fd,
+-					       data.debugfs_fd, PSR_MODE_2,
+-					       NULL),
+-			      "Sink does not support PSR2\n");
 -
- 		for_each_pipe_with_valid_output(&data.display, data.pipe, data.output) {
-+			pr_or_psr2_selective_fetch_supported |= (selective_fetch_check(data.debugfs_fd,
-+													 data.output) != PSR_DISABLED);
- 			coexist_features[n_pipes] = 0;
- 			if (check_psr2_support(&data)) {
- 				pipes[n_pipes] = data.pipe;
-@@ -1041,6 +1041,8 @@ igt_main
- 				n_pipes++;
- 			}
+ 		display_init(&data);
+ 
+ 		if ((intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 20) &&
+@@ -1013,10 +1023,6 @@ igt_main
+ 			data.fbc_flag = true;
  		}
-+		igt_require_f(pr_or_psr2_selective_fetch_supported,
-+					  "PR/PSR2 selective fetch not supported\n");
- 	}
  
- 	for (y = 0; y < ARRAY_SIZE(fbc_status); y++) {
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index a0349fa03..0ab8ea429 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -391,7 +391,7 @@ static void test_cursor(data_t *data)
- 	 * necessary, causing the async flip to fail because async flip is not
- 	 * supported in cursor plane.
- 	 */
--	igt_skip_on_f(i915_psr2_selective_fetch_check(data->drm_fd),
-+	igt_skip_on_f(i915_pr_psr2_sel_fetch_to_pr_psr1(data->drm_fd, NULL),
- 		      "PSR2 sel fetch causes cursor to be added to primary plane " \
- 		      "pages flips and async flip is not supported in cursor\n");
+-		/* Test if PSR2 can be enabled */
+-		igt_require_f(psr_enable(data.drm_fd,
+-					 data.debugfs_fd, PSR_MODE_2_SEL_FETCH),
+-			      "Error enabling PSR2\n");
  
-@@ -704,7 +704,7 @@ igt_main
- 		 * necessary, causing the async flip to fail because async flip is not
- 		 * supported in cursor plane.
- 		 */
--		igt_skip_on_f(i915_psr2_selective_fetch_check(data.drm_fd),
-+		igt_skip_on_f(i915_pr_psr2_sel_fetch_to_pr_psr1(data.drm_fd, NULL),
- 			      "PSR2 sel fetch causes cursor to be added to primary plane " \
- 			      "pages flips and async flip is not supported in cursor\n");
- 
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 0017659d4..f453e2998 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -1849,7 +1849,7 @@ igt_main
- 		 * page flip with cursor legacy APIS when Intel's PSR2 selective
- 		 * fetch is enabled, so switching PSR1 for this whole test.
- 		 */
--		intel_psr2_restore = i915_psr2_sel_fetch_to_psr1(display.drm_fd);
-+		intel_psr2_restore = i915_pr_psr2_sel_fetch_to_pr_psr1(display.drm_fd, NULL);
- 	}
- 
- 	igt_describe("Test checks how many cursor updates we can fit between vblanks "
+ 		data.damage_area_count = MAX_DAMAGE_AREAS;
+ 		data.primary_format = DRM_FORMAT_XRGB8888;
+@@ -1055,7 +1061,7 @@ igt_main
+ 		/* Verify primary plane selective fetch */
+ 		igt_describe("Test that selective fetch works on primary plane");
+ 		igt_subtest_with_dynamic_f("%sprimary-%s-sf-dmg-area", append_fbc_subtest[y],
+-					   op_str(data.op)) {
++								   op_str(data.op)) {
+ 			for (i = 0; i < n_pipes; i++) {
+ 				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+ 					continue;
+@@ -1063,9 +1069,10 @@ igt_main
+ 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 						continue;
+-					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-						      igt_output_name(outputs[i]),
+-						      coexist_feature_str(j)) {
++					igt_dynamic_f("%spipe-%s-%s%s", get_psr_mode_for_output(&data, outputs[i]),
++								  kmstest_pipe_name(pipes[i]),
++								  igt_output_name(outputs[i]),
++								  coexist_feature_str(j)) {
+ 						data.pipe = pipes[i];
+ 						data.output = outputs[i];
+ 						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+@@ -1096,10 +1103,11 @@ igt_main
+ 					for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 						if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 							continue;
+-						igt_dynamic_f("pipe-%s-%s%s",
+-							      kmstest_pipe_name(pipes[i]),
+-							      igt_output_name(outputs[i]),
+-							      coexist_feature_str(j)) {
++						igt_dynamic_f("%spipe-%s-%s%s",
++									  get_psr_mode_for_output(&data, outputs[i]),
++									  kmstest_pipe_name(pipes[i]),
++									  igt_output_name(outputs[i]),
++									  coexist_feature_str(j)) {
+ 							data.pipe = pipes[i];
+ 							data.output = outputs[i];
+ 							data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+@@ -1128,9 +1136,10 @@ igt_main
+ 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 						continue;
+-					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-						      igt_output_name(outputs[i]),
+-						      coexist_feature_str(j)) {
++					igt_dynamic_f("%spipe-%s-%s%s", get_psr_mode_for_output(&data, outputs[i]),
++								  kmstest_pipe_name(pipes[i]),
++								  igt_output_name(outputs[i]),
++								  coexist_feature_str(j)) {
+ 						data.pipe = pipes[i];
+ 						data.output = outputs[i];
+ 						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+@@ -1158,9 +1167,10 @@ igt_main
+ 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 						continue;
+-					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-						      igt_output_name(outputs[i]),
+-						      coexist_feature_str(j)) {
++					igt_dynamic_f("%spipe-%s-%s%s", get_psr_mode_for_output(&data, outputs[i]),
++								  kmstest_pipe_name(pipes[i]),
++								  igt_output_name(outputs[i]),
++								  coexist_feature_str(j)) {
+ 						data.pipe = pipes[i];
+ 						data.output = outputs[i];
+ 						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+@@ -1184,9 +1194,10 @@ igt_main
+ 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 						continue;
+-					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-						      igt_output_name(outputs[i]),
+-						      coexist_feature_str(j)) {
++					igt_dynamic_f("%spipe-%s-%s%s", get_psr_mode_for_output(&data, outputs[i]),
++								  kmstest_pipe_name(pipes[i]),
++								  igt_output_name(outputs[i]),
++								  coexist_feature_str(j)) {
+ 						data.pipe = pipes[i];
+ 						data.output = outputs[i];
+ 						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+@@ -1211,9 +1222,10 @@ igt_main
+ 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 						continue;
+-					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-						      igt_output_name(outputs[i]),
+-						      coexist_feature_str(j)) {
++					igt_dynamic_f("%spipe-%s-%s%s", get_psr_mode_for_output(&data, outputs[i]),
++								  kmstest_pipe_name(pipes[i]),
++								  igt_output_name(outputs[i]),
++								  coexist_feature_str(j)) {
+ 						data.pipe = pipes[i];
+ 						data.output = outputs[i];
+ 						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+@@ -1238,9 +1250,10 @@ igt_main
+ 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 						continue;
+-					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-						      igt_output_name(outputs[i]),
+-						      coexist_feature_str(j)) {
++					igt_dynamic_f("%spipe-%s-%s%s", get_psr_mode_for_output(&data, outputs[i]),
++								  kmstest_pipe_name(pipes[i]),
++								  igt_output_name(outputs[i]),
++								  coexist_feature_str(j)) {
+ 						data.pipe = pipes[i];
+ 						data.output = outputs[i];
+ 						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+@@ -1266,9 +1279,10 @@ igt_main
+ 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 						continue;
+-					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-						      igt_output_name(outputs[i]),
+-						      coexist_feature_str(j)) {
++					igt_dynamic_f("%spipe-%s-%s%s", get_psr_mode_for_output(&data, outputs[i]),
++								  kmstest_pipe_name(pipes[i]),
++								  igt_output_name(outputs[i]),
++								  coexist_feature_str(j)) {
+ 						data.pipe = pipes[i];
+ 						data.output = outputs[i];
+ 						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+@@ -1295,9 +1309,10 @@ igt_main
+ 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 						continue;
+-					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-						      igt_output_name(outputs[i]),
+-						      coexist_feature_str(j)) {
++					igt_dynamic_f("%spipe-%s-%s%s", get_psr_mode_for_output(&data, outputs[i]),
++								  kmstest_pipe_name(pipes[i]),
++								  igt_output_name(outputs[i]),
++								  coexist_feature_str(j)) {
+ 					data.pipe = pipes[i];
+ 					data.output = outputs[i];
+ 					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+@@ -1322,9 +1337,10 @@ igt_main
+ 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 						continue;
+-					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-						      igt_output_name(outputs[i]),
+-						      coexist_feature_str(j)) {
++					igt_dynamic_f("%spipe-%s-%s%s", get_psr_mode_for_output(&data, outputs[i]),
++								  kmstest_pipe_name(pipes[i]),
++								  igt_output_name(outputs[i]),
++								  coexist_feature_str(j)) {
+ 						data.pipe = pipes[i];
+ 						data.output = outputs[i];
+ 						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+@@ -1349,9 +1365,10 @@ igt_main
+ 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 						continue;
+-					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-						      igt_output_name(outputs[i]),
+-						      coexist_feature_str(j)) {
++					igt_dynamic_f("%spipe-%s-%s%s", get_psr_mode_for_output(&data, outputs[i]),
++								  kmstest_pipe_name(pipes[i]),
++								  igt_output_name(outputs[i]),
++								  coexist_feature_str(j)) {
+ 						data.pipe = pipes[i];
+ 						data.output = outputs[i];
+ 						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+@@ -1377,9 +1394,10 @@ igt_main
+ 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 						continue;
+-					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-						      igt_output_name(outputs[i]),
+-						      coexist_feature_str(j)) {
++					igt_dynamic_f("%spipe-%s-%s%s", get_psr_mode_for_output(&data, outputs[i]),
++								  kmstest_pipe_name(pipes[i]),
++								  igt_output_name(outputs[i]),
++								  coexist_feature_str(j)) {
+ 						data.pipe = pipes[i];
+ 						data.output = outputs[i];
+ 						for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
+@@ -1410,9 +1428,10 @@ igt_main
+ 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 						continue;
+-					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-						      igt_output_name(outputs[i]),
+-						      coexist_feature_str(j)) {
++					igt_dynamic_f("%spipe-%s-%s%s", get_psr_mode_for_output(&data, outputs[i]),
++								  kmstest_pipe_name(pipes[i]),
++								  igt_output_name(outputs[i]),
++								  coexist_feature_str(j)) {
+ 						data.pipe = pipes[i];
+ 						data.output = outputs[i];
+ 						data.damage_area_count = 1;
 -- 
 2.25.1
 
