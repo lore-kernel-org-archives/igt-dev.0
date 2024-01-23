@@ -4,26 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7FA8C47258
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Jan 2024 11:40:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A76E8C47258
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Jan 2024 13:29:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 576D610E733;
-	Tue, 23 Jan 2024 11:40:01 +0000 (UTC)
-Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5BDCE10E733;
- Tue, 23 Jan 2024 11:39:59 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7844474899256249841=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4440B10E7DA;
+	Tue, 23 Jan 2024 13:29:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 029C110E7DA
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Jan 2024 13:28:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1706016539; x=1737552539;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=gKa1GUajNrcdTKcOdli99lSbqzHu1wxirG3pc7tu+Ck=;
+ b=iRi/Y4stJrjTUTMN7crduIp7cbu0WoJTif9HNxMhCsuLyDW7ME81HnEY
+ MU6Jv8yRkFn05YSTWFS26sSQw7B091zb7oHeqThxt8k8M5U9FQ9e9EHP6
+ OnKPAqyHH0GU+Op9WETXHRjD219t5ggteLqOkMYum01QZ2mHiXeVdERCp
+ L+JQAsm7bTB7+Osp33uKN1eL1Oan/vSpBk/E7vLLGoMm2jwSJCNAaBVzN
+ B6nFQvuyvzlEfMl48ykhA+aQ4LSVvDPr/nCg8jrrN26Iyv+YhsDmUdMPQ
+ Ln+NF9LBAb6KAzI56hlQflaG+8cTarwkcDheRnuYghX/i2j5gl5dFATAz A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="391944095"
+X-IronPort-AV: E=Sophos;i="6.05,214,1701158400"; d="scan'208";a="391944095"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jan 2024 05:28:59 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,214,1701158400"; d="scan'208";a="34414761"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+ by orviesa001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 23 Jan 2024 05:28:59 -0800
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 23 Jan 2024 05:28:58 -0800
+Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 23 Jan 2024 05:28:57 -0800
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 23 Jan 2024 05:28:57 -0800
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.41) by
+ edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 23 Jan 2024 05:28:57 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=aHo4ZpPhQgODazffH7jLD1hXahCvoJCjxqlDnJsvpjdY3uJL/KYcS9GkjI0DxaHZw2kVLlz3s+7OZdj74nCA8BMrzxVHT66FyJlCvNqM5e1PRvaMHVikanmtG6KARwweXvlkR/8I8OClIGpsFZ8mmcGTb9DxeEzYytvIQX8umEuecCeMOrSExVmRUlk8cPVGyt3sj6yM0QiFXd0zyAKLw96Gj4jdu3zQtKn2bUNze/JigWiMeaSjKtHIn4BsOCx3MmjrcVe4SXDb6klp9R0sB6OGJzTNeijBR/P3rKCShKeIWDpQER66rasAL3ZxEY8K8INCKVdPEDJC+R/CXrNGsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NCfmRBfRAkEOXYK1AS180DaYppJu0E9lg8zK+A1QsrQ=;
+ b=FxQC05uBcynyAu2WGTb6AaUyVCcYDvusxq/16cg5PqiHAGrMd1UcYUFEx8uoD/PM3m0ZwZbgwW+hR+sPa2WDGljuUXRL/0rONxO1HKrj3d+tpbAN+gQoeYnmwCgY9sAORWzdkwEaN5GQH0Ha07rKHOLOa82fth/vwF+heFhlR7tSt/HWMqBs8zeZDUlDX0+V7kmTE7Vm2qrNvgeS7wHdsFN/8a/rR1eEs/ffhhbIKKXXzsfcNayv64zx2soXgytQ9uG2nGZomRs7ORZWyj6TrNeDhqy5pwZX208QIwJAcLdjm8AIjkdFq58AWPLoqCe6gq7CtSZdpQQqsHKnaGUPtw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CY5PR11MB6211.namprd11.prod.outlook.com (2603:10b6:930:25::6)
+ by SN7PR11MB7465.namprd11.prod.outlook.com (2603:10b6:806:34e::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.37; Tue, 23 Jan
+ 2024 13:28:50 +0000
+Received: from CY5PR11MB6211.namprd11.prod.outlook.com
+ ([fe80::35eb:1d4b:b90f:e584]) by CY5PR11MB6211.namprd11.prod.outlook.com
+ ([fe80::35eb:1d4b:b90f:e584%3]) with mapi id 15.20.7202.034; Tue, 23 Jan 2024
+ 13:28:50 +0000
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: RE: [i-g-t] intel-ci/fast-feedback.testlist: Remove system wide
+ suspend testing
+Thread-Topic: [i-g-t] intel-ci/fast-feedback.testlist: Remove system wide
+ suspend testing
+Thread-Index: AQHaTb9eZZy8ViDE9k+pPNExhZmUa7DnYrzA
+Date: Tue, 23 Jan 2024 13:28:50 +0000
+Message-ID: <CY5PR11MB6211D90334A2E63E28645EC795742@CY5PR11MB6211.namprd11.prod.outlook.com>
+References: <20240123060047.2844372-1-sujaritha.sundaresan@intel.com>
+In-Reply-To: <20240123060047.2844372-1-sujaritha.sundaresan@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY5PR11MB6211:EE_|SN7PR11MB7465:EE_
+x-ms-office365-filtering-correlation-id: 5cd168f9-516d-40e3-2b6b-08dc1c173c7a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: PajXogDDQV8/EURGY/A+8/iBRKrOmnMdm37FbHgGCwgxgGbJLO3/CIhrDJ8WgY2lJbwjjbCTM64vCFexy4pL5CvdOA2qiQYqfRRqog7ggze5u38krFgRJpljdmic9Ihb8zuv2XSKszm9wSmp/Ju0lIKBZNo2ixVlV3oSivG3Z9jZeMlVR0o2JZlddBzZVftvgU6t3xpbLkFMvVd3hgogWDrVLLtjQPql/rGgK5lCddUY4jLGZ+P3h/+yp7ZpLCnFIoLvrGiB1eQP12tkzBlHCpez6whsM1VgoJS8nnX8w70U0G6UGjN/gIpU3WeYtJsVPZcweBZaJKJjtUqw7YFuW+3lje9tGwt4N0StsmbvyAUuHLgcFA04CTN61h8Uc1slbaDJ8fU4Xxm6y52nstoXaECKhv8WUgROPPAhw57hUUBseBM0txVRO1xlED/qnS9rYNfJe3eDubOZqCqy/0+QbKaewe2o9p3LE3buqSNnX9vcxoFHgPV1UhG+yb7yz+PG1UnngWtEoZjQlgCU/4RMi6C4/hEIQ+nf3nVmKtIsr54oZmMau+Lj8gLeUwIGFwf0y9EUVyt5VEEE74umWt8FzmMtr5LTmT/Zi5E13sRe0A/aF5BBPObbtcBL3Bh4/SQe
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY5PR11MB6211.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(396003)(366004)(376002)(136003)(39860400002)(346002)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(55016003)(66446008)(5660300002)(66946007)(66476007)(64756008)(76116006)(107886003)(66556008)(110136005)(316002)(26005)(6506007)(7696005)(9686003)(53546011)(71200400001)(478600001)(52536014)(83380400001)(4326008)(2906002)(86362001)(122000001)(82960400001)(38100700002)(41300700001)(15650500001)(38070700009)(8936002)(8676002)(33656002);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?HXQaGCo5l7oI8lTv2b7nroG/86K7AG7ciOOyCV3/Q9xSZ+Q0vp9YNCnpMy/K?=
+ =?us-ascii?Q?DEhlvs8iQxFtUIIO0aStgMCOL77tTBZEkRTOlcQxWInGntWB1dUCRrcQ3O5d?=
+ =?us-ascii?Q?2S0YXKMtaTDj9USxRXeD4B7xMet4x4dknz97cFBVf+msKRtRHw5klggcpAcD?=
+ =?us-ascii?Q?eGKPZ9PlouWrRdhvJLN5pskLDUBNta4GVIK+OCUkyjr+YyRwPZbJZP8K0fNj?=
+ =?us-ascii?Q?b50vmZWjWiqW/TtSPASdgwMkVP5WN5Riv2ZguwocoUrG2uJY8tASNDmoGiUR?=
+ =?us-ascii?Q?WiOo4jcE5weV9r7pQekHcBHs9ydvsJG2dZQ1X6mvMtTyxBOD30IyHiSWo3DK?=
+ =?us-ascii?Q?3jRli8+U3vuL9vU01MTMT2rpNtyPv2zOKh8AsJoJDqYygl3z5JPudp2JitQM?=
+ =?us-ascii?Q?GA1HOE03u4rfgUDPX9c5yqFY74qogifTGfQjqE7bjhEeuJHR/GXw06ZqcTpL?=
+ =?us-ascii?Q?Xugp1KxxRY+wzPPQ19HJBqdempAMaydWF16kqk+4JCuh57Mf7Jm3DrnLKYY2?=
+ =?us-ascii?Q?MWkNGG3zbdHnAqDMZG+QiwhujCy6DVg4l5Fj4aGDsjh2TS7mJ85CMaCPpmwE?=
+ =?us-ascii?Q?bl+iTbBFHglBJnIMaDdWI5kvWKaTcClkB8qtQpOoRE9esi6kz/ycBwj/rCyP?=
+ =?us-ascii?Q?hNUgNLvGA22Eij6o9jA/eHuM34FDO7wXug8/H/QI/N3hIEF6HzST9xfWhoGI?=
+ =?us-ascii?Q?QXKZvV8I07bWVq8pqypUnTTjSS1N6vBQXummesjv7aPKLZJ8QkO5UUgwvzS+?=
+ =?us-ascii?Q?+yw/kSVRNnZCaWgkrRlSHw+KXQJNHuiepQVgZLlp/v3dwaUvYe2v3l9Bz2yl?=
+ =?us-ascii?Q?z+dMr6CqC+TNeEJ+ciIbhT3Eol79NcSq4iuBMwzQBH6LsSdDp9bwhVEH2kIl?=
+ =?us-ascii?Q?BHAEXLTRQ1DPlTQP/EHzjHLONZA6i+cWoE9AK8c9k4J3cLh8+e+XzXOfEme1?=
+ =?us-ascii?Q?BjV5bLuVwPCmNOpo4IWg23ifCZOpqhs1kHp31KuQr0t39dsWYZmTVYhQ+LNe?=
+ =?us-ascii?Q?d1VBAEVz8YeVrDmR33uuJRLj7YQh4RcahOlAVS4h62fKBkK92+3JmFpBxnzJ?=
+ =?us-ascii?Q?zRuV36TYr22iweEmCqeC53OcE0mWPqIAoWfx7iI861IM/TeCG4FxZxrGvPy4?=
+ =?us-ascii?Q?c2pGAPjKr0/ceWtENi18JkGgkRTTOexpVdSTCYLuk+OsVEpM8jQ2OndE8wgo?=
+ =?us-ascii?Q?WcX9Oxf17y5+5n9uK1iLfAbb1PI1SbZZM1wnnXif+q+C4hst4dejSEf4GMEh?=
+ =?us-ascii?Q?bQ2wpebY22enb/piuCiVi6QOR1UjipKkR4UjDNHftgPVHfIotpjcdj8Yo8HU?=
+ =?us-ascii?Q?lKC35JQwLL1I/f4h21kvtLvsklkzqYU8KFh0TpVcXAMkt09ScsZGGheQ/Ool?=
+ =?us-ascii?Q?o9kNDaRFqhnpVMrYksJeYyjsbzTvvK+4Yd84n5Pava4hZjZBqZZl9hQdbog1?=
+ =?us-ascii?Q?H7pGoIcApPynXa1BrhQ++tfAz8v6/K1mUTnCcELkVSM7XAhaYwZvsKpNL87g?=
+ =?us-ascii?Q?N6FZYlP3hzGMrlANltXNQM2LteYya6KRcLAT2cGhBT+5GVW0/vS9bo9j8o6A?=
+ =?us-ascii?Q?T/pi9zyc035CuMqRcJjL/Y4qxpTENZkn6PTn6nSz?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/kms=5Fvrr=3A_Reset_to?=
- =?utf-8?q?_High_refresh_rate_before_begin_drrs_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vidya Srinivas" <vidya.srinivas@intel.com>
-Date: Tue, 23 Jan 2024 11:39:59 -0000
-Message-ID: <170600999937.682640.14609718934022753457@5338d5abeb45>
-X-Patchwork-Hint: ignore
-References: <20240123041403.31259-1-vidya.srinivas@intel.com>
-In-Reply-To: <20240123041403.31259-1-vidya.srinivas@intel.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6211.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5cd168f9-516d-40e3-2b6b-08dc1c173c7a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jan 2024 13:28:50.4169 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: KkQ+KB8z89sYJWVqtPm8JM4iCh57C8ylESJIoGUtfX55PewLOPxKcrCoNv+3/Y7AX1dVG4qAUyslh/Rdc7THykIbw0aYx47A/Jg68mm7kJ0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7465
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,178 +151,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7844474899256249841==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/kms_vrr: Reset to High refresh rate before begin drrs test
-URL   : https://patchwork.freedesktop.org/series/129064/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_14160 -> IGTPW_10573
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10573/index.html
-
-Participating hosts (39 -> 37)
-------------------------------
-
-  Missing    (2): bat-dg2-8 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10573 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@gt_lrc:
-    - fi-tgl-1115g4:      [PASS][1] -> [DMESG-FAIL][2] ([i915#10141])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14160/fi-tgl-1115g4/igt@i915_selftest@live@gt_lrc.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10573/fi-tgl-1115g4/igt@i915_selftest@live@gt_lrc.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_parallel@engines@fds:
-    - fi-kbl-7567u:       [DMESG-WARN][3] -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14160/fi-kbl-7567u/igt@gem_exec_parallel@engines@fds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10573/fi-kbl-7567u/igt@gem_exec_parallel@engines@fds.html
-
-  * igt@gem_tiled_blits@basic:
-    - fi-pnv-d510:        [SKIP][5] ([fdo#109271]) -> [PASS][6] +2 other tests pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14160/fi-pnv-d510/igt@gem_tiled_blits@basic.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10573/fi-pnv-d510/igt@gem_tiled_blits@basic.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-dp-1:
-    - fi-kbl-7567u:       [DMESG-WARN][7] ([i915#1982]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14160/fi-kbl-7567u/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-dp-1.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10573/fi-kbl-7567u/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-dp-1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#10141]: https://gitlab.freedesktop.org/drm/intel/issues/10141
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
 
 
-Build changes
--------------
+> -----Original Message-----
+> From: Sundaresan, Sujaritha <sujaritha.sundaresan@intel.com>
+> Sent: Tuesday, January 23, 2024 11:31 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Gupta, Anshuman <anshuman.gupta@intel.com>; Sharma, Swati2
+> <swati2.sharma@intel.com>; Sundaresan, Sujaritha
+> <sujaritha.sundaresan@intel.com>
+> Subject: [i-g-t] intel-ci/fast-feedback.testlist: Remove system wide susp=
+end
+> testing
+>=20
+> Remove system wide suspend/resume testing from fast feedback testlist.
+> This will be in place until we have a proper logging to from CI to obtain=
+ reliable
+> test results for the same.
+>=20
+> Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Also pushed to origin/master.
+Thanks,
+Anshuman
+> ---
+>  tests/intel-ci/fast-feedback.testlist | 7 -------
+>  1 file changed, 7 deletions(-)
+>=20
+> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-
+> feedback.testlist
+> index 60ce1efa4..662e49cc3 100644
+> --- a/tests/intel-ci/fast-feedback.testlist
+> +++ b/tests/intel-ci/fast-feedback.testlist
+> @@ -168,10 +168,3 @@ igt@i915_pm_rpm@module-reload  # Kernel selftests
+> igt@i915_selftest@live  igt@dmabuf@all-tests
+> -
+> -# System wide suspend tests
+> -igt@i915_suspend@basic-s2idle-without-i915
+> -igt@i915_suspend@basic-s3-without-i915
+> -igt@gem_exec_suspend@basic-s0
+> -igt@gem_exec_suspend@basic-s3
+> -igt@kms_pipe_crc_basic@suspend-read-crc
+> --
+> 2.25.1
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7685 -> IGTPW_10573
-
-  CI-20190529: 20190529
-  CI_DRM_14160: 1cd8b030edf847fb2aaf5dae007e93eea64f704f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10573: 10573
-  IGT_7685: 7685
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10573/index.html
-
---===============7844474899256249841==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_vrr: Reset to High refresh rate before begin drrs test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129064/">https://patchwork.freedesktop.org/series/129064/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10573/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10573/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14160 -&gt; IGTPW_10573</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10573/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Missing    (2): bat-dg2-8 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10573 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@gt_lrc:<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14160/fi-tgl-1115g4/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10573/fi-tgl-1115g4/igt@i915_selftest@live@gt_lrc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10141">i915#10141</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_parallel@engines@fds:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14160/fi-kbl-7567u/igt@gem_exec_parallel@engines@fds.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10573/fi-kbl-7567u/igt@gem_exec_parallel@engines@fds.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_blits@basic:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14160/fi-pnv-d510/igt@gem_tiled_blits@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10573/fi-pnv-d510/igt@gem_tiled_blits@basic.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-dp-1:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14160/fi-kbl-7567u/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-dp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10573/fi-kbl-7567u/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-dp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7685 -&gt; IGTPW_10573</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14160: 1cd8b030edf847fb2aaf5dae007e93eea64f704f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10573: 10573<br />
-  IGT_7685: 7685</p>
-
-</body>
-</html>
-
---===============7844474899256249841==--
