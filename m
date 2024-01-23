@@ -4,46 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C2DDC47258
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Jan 2024 05:45:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC234C47258
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Jan 2024 05:56:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C85FD10E127;
-	Tue, 23 Jan 2024 05:45:17 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D3AB10E125
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Jan 2024 05:45:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7C13A10E04B;
+	Tue, 23 Jan 2024 05:56:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D8C2D10E04B
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Jan 2024 05:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705988717; x=1737524717;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=7PrLcecY25VrQC19mbbY6/DZsLKWVAmKI+QMB/94l4I=;
- b=fXZ4pQcnBqeEUT0KMCK/SXG93fxMOE6CiWr5kiMkTL2DsBvbN2NAregW
- G9MwsSszT7nXshddhqOUDFlHgJ9DqGjVlXj5UESqVmeKp1HTeaO4k7Mb8
- dsNByq52nIZbXMvgl8WdbqPUVM/3Xl8WosMmqNz4ssp9iMJpz5+H8kgTg
- DeBUHQV+F6WdxLLJJiDH95b0ffFOwRBgAl04BiIu59nrgMgbuRzec3atS
- qe6MdldwfbJazv6sNcPYmnd0x/D+rFBIsPCzp6RilQVop2phFm4xUughG
- c7lREE5ECaKEbK3X4ONunmI3gtG9ehnyM2XMddlxFqA88UejWJb7zCNFU Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="8789495"
-X-IronPort-AV: E=Sophos;i="6.05,213,1701158400"; 
-   d="scan'208";a="8789495"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2024 21:45:17 -0800
+ t=1705989401; x=1737525401;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=szMbOqsqqaAW6nrKA0eH9mZPEKo7gmoi3He0O3paUwE=;
+ b=Q/zzTtet4KwAqvvw/o3NBAJEy0KXnRdTWwBQD5q6vHs9kLuuxyLnRJDY
+ HuwpcIRyZUBpdMsAGmWgBJiuKo/IaPUWbB4n2tsryUiP5foibJFTJ8kVm
+ Y8hp3A4r1ncn6AFp0Yoa/SUO0Tb9LffqkRhGMFJkNjRzYKOa4SgW1+oym
+ +La4lYE8iZU/CIrg2xnV9LE4fPA6EaTNJsWK18BiYUby64Uuv74FSTVRY
+ Gmzn2qCu0ZLDc/Q0emal/gv8CPRkdBSUUEgyG4cWwGMwkCkbZFsAuJ0Kf
+ kp0BnOSEokax7azQIaWWNCZQO/H0Ss1A6Q8D7pAgEC/1tmJyh28Q4p+AK w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="14772809"
+X-IronPort-AV: E=Sophos;i="6.05,213,1701158400"; d="scan'208";a="14772809"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2024 21:56:40 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="735446659"
-X-IronPort-AV: E=Sophos;i="6.05,213,1701158400"; d="scan'208";a="735446659"
-Received: from suja-super-server.iind.intel.com ([10.145.169.64])
- by orsmga003.jf.intel.com with ESMTP; 22 Jan 2024 21:45:15 -0800
-From: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [i-g-t] intel-ci/fast-feedback.testlist: Remove system wide suspend
- testing
-Date: Tue, 23 Jan 2024 11:30:47 +0530
-Message-Id: <20240123060047.2844372-1-sujaritha.sundaresan@intel.com>
-X-Mailer: git-send-email 2.25.1
+X-IronPort-AV: E=Sophos;i="6.05,213,1701158400"; 
+   d="scan'208";a="1476716"
+Received: from unknown (HELO localhost) ([10.245.116.51])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2024 21:56:39 -0800
+Date: Tue, 23 Jan 2024 06:56:36 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: Re: [PATCH i-g-t] lib/xe: Boost prefetch size to 4KB
+Message-ID: <20240123055636.l367u7xqd6jcqygn@zkempczy-mobl2>
+References: <20240122154302.54660-1-matthew.auld@intel.com>
+ <hz2mhm64qw3vusw4qgwvf5pvib3xskw6ldn7zjgjeqgfm7j5f2@swwcz2vw5s4l>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <hz2mhm64qw3vusw4qgwvf5pvib3xskw6ldn7zjgjeqgfm7j5f2@swwcz2vw5s4l>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,33 +59,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Matthew Auld <matthew.auld@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Remove system wide suspend/resume testing from fast feedback testlist.
-This will be in place until we have a proper logging to from CI to
-obtain reliable test results for the same.
+On Mon, Jan 22, 2024 at 10:22:29AM -0600, Lucas De Marchi wrote:
+> On Mon, Jan 22, 2024 at 03:43:02PM +0000, Matthew Auld wrote:
+> > From: Lucas De Marchi <lucas.demarchi@intel.com>
+> > 
+> > For Xe2, the prefetch for RCS is 4KB, so boost it.
+> > 
+> > BSpec: 60223
+> > Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> > Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> 
+> 
+> humn... looks like I forgot to merge this?
+> 
+> pushed now. Thanks for the reminder.
 
-Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 7 -------
- 1 file changed, 7 deletions(-)
+Nice, but where's r-b?
+--
+Zbigniew
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 60ce1efa4..662e49cc3 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -168,10 +168,3 @@ igt@i915_pm_rpm@module-reload
- # Kernel selftests
- igt@i915_selftest@live
- igt@dmabuf@all-tests
--
--# System wide suspend tests
--igt@i915_suspend@basic-s2idle-without-i915
--igt@i915_suspend@basic-s3-without-i915
--igt@gem_exec_suspend@basic-s0
--igt@gem_exec_suspend@basic-s3
--igt@kms_pipe_crc_basic@suspend-read-crc
--- 
-2.25.1
-
+> 
+> Lucas De Marchi
+> 
+> > ---
+> > lib/xe/xe_ioctl.c | 2 +-
+> > 1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> > index 39605a019..0979eec6d 100644
+> > --- a/lib/xe/xe_ioctl.c
+> > +++ b/lib/xe/xe_ioctl.c
+> > @@ -48,7 +48,7 @@
+> > 
+> > uint32_t xe_cs_prefetch_size(int fd)
+> > {
+> > -	return 2048;
+> > +	return 4096;
+> > }
+> > 
+> > uint32_t xe_vm_create(int fd, uint32_t flags, uint64_t ext)
+> > -- 
+> > 2.43.0
+> > 
