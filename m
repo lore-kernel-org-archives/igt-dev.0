@@ -4,26 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D923C47258
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Jan 2024 19:55:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74A3DC47258
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Jan 2024 20:15:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1D23E10E050;
-	Tue, 23 Jan 2024 19:55:27 +0000 (UTC)
-Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D873F10E050;
- Tue, 23 Jan 2024 19:55:25 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2456406257311547905=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 18ABD10E87B;
+	Tue, 23 Jan 2024 20:15:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3FB2E10E87B
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Jan 2024 20:15:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1706040946; x=1737576946;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=2iTFGKsjdd8SyyQsk7aiyH6hNyRBHhXCg1Tep0832DA=;
+ b=ZgDPUDpWHoYBA7LzfKOGaVirLxnd1Bz5gvDHQ5uuw4Ryyvqt4VWnLgMd
+ SXu6JwpPOyuRrrdvGV6H6D0zHcZGOJqp3c7OuLDiyeel23VESP0kwPb8V
+ zO/46e8yhs/gO+jq4W7AtI0o+X251hIKD8+CZf/TsyqrS69ln95TQ1YHt
+ WWhNvvtGQTDafyUCxtcKbuA0gDKQOnqfR9TnEAS0ObwbHGUSY+Y9kr664
+ fgHEPOab4N7Vu6HIfmsYw2+np6vI/80TQemWWt7dGexYVIb7qm0SYoWA2
+ KOOZUWQ+EIUCMbYZeVQ0wbNJdm8DELGJAVWdjQrDbmNwyGPiNU2vTS+qw Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="1485618"
+X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; 
+   d="scan'208";a="1485618"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jan 2024 12:15:44 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="820218744"
+X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; d="scan'208";a="820218744"
+Received: from unknown (HELO localhost) ([10.246.3.60])
+ by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jan 2024 12:15:43 -0800
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t v1 0/8] introduce Xe multigpu and other multi-GPU helpers
+Date: Tue, 23 Jan 2024 21:15:27 +0100
+Message-ID: <20240123201535.108793-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
- =?utf-8?q?=2C1/2=5D_tests/intel/xe=5Fcopy=5Fbasic=3A_account_for_prefetch?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matthew Auld" <matthew.auld@intel.com>
-Date: Tue, 23 Jan 2024 19:55:25 -0000
-Message-ID: <170603972588.684601.4176196556421830250@5338d5abeb45>
-X-Patchwork-Hint: ignore
-References: <20240123183323.173424-1-matthew.auld@intel.com>
-In-Reply-To: <20240123183323.173424-1-matthew.auld@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,111 +57,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2456406257311547905==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Introduce some multi-gpu function helpers and macros. Change in drmtest
+base opening function allows it to use __drm_open_driver_another(N, ...)
+out of order, for example on board with three discrete GPUs:
+__drm_open_driver_another(2, DRIVER_INTEL);
+__drm_open_driver_another(0, DRIVER_INTEL);
 
-== Series Details ==
+Second solution for Xe is based on filtered views. Both allows to
+quickly write tests. There is still drawback of not printing in
+children logs <g:gpu-number> for first opened device. I renamed
+header from lib/i915/igt_multigpu.h to lib/intel_multigu.h
+as I do not know of any non Intel developer using igt for such tests.
 
-Series: series starting with [i-g-t,1/2] tests/intel/xe_copy_basic: account for prefetch
-URL   : https://patchwork.freedesktop.org/series/129097/
-State : success
+Dominik Karol Piątkowski (4):
+  lib/igt_device_scan: Introduce filtering out non-PCI devices
+  lib/drmtest: Introduced drm_open_driver_another
+  lib/intel_multigpu: Introduce library for multi-GPU scenarios
+  lib/intel_multigpu: Introduced gem_multigpu_count_class and
+    igt_multi_fork_foreach_gpu
 
-== Summary ==
+Kamil Konieczny (4):
+  lib/drmtest: allow opening cards out of order
+  lib/intel_multigpu: Add xe_multi_fork_foreach_gpu
+  tests/intel/xe_exec_basic: add multigpu subtests
+  tests/intel/gem_mmap: add basic multi-GPU subtest
 
-CI Bug Log - changes from XEIGT_7690_BAT -> XEIGTPW_10577_BAT
-====================================================
+ lib/drmtest.c               | 119 +++++++++++++++++++++++++++++-----
+ lib/drmtest.h               |   1 +
+ lib/igt_device_scan.c       |  21 ++++++
+ lib/igt_device_scan.h       |   2 +
+ lib/intel_multigpu.c        | 125 ++++++++++++++++++++++++++++++++++++
+ lib/intel_multigpu.h        |  35 ++++++++++
+ lib/meson.build             |   1 +
+ tests/intel/gem_mmap.c      |  77 ++++++++++++++--------
+ tests/intel/xe_exec_basic.c |  36 +++++++++++
+ 9 files changed, 373 insertions(+), 44 deletions(-)
+ create mode 100644 lib/intel_multigpu.c
+ create mode 100644 lib/intel_multigpu.h
 
-Summary
--------
+-- 
+2.42.0
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7690 -> IGTPW_10577
-  * Linux: xe-669-741c439503ee0986a7b7c5b590cbd9813b8841f6 -> xe-672-fc6b7c6ee7d786e6ed48425a2ce0e674906e4e5c
-
-  IGTPW_10577: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10577/index.html
-  IGT_7690: aa45298ff675abbe6bf8f04ae186e2388c35f03a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-669-741c439503ee0986a7b7c5b590cbd9813b8841f6: 741c439503ee0986a7b7c5b590cbd9813b8841f6
-  xe-672-fc6b7c6ee7d786e6ed48425a2ce0e674906e4e5c: fc6b7c6ee7d786e6ed48425a2ce0e674906e4e5c
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10577/index.html
-
---===============2456406257311547905==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/intel/xe_copy_basic: account for prefetch</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129097/">https://patchwork.freedesktop.org/series/129097/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10577/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10577/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7690_BAT -&gt; XEIGTPW_10577_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7690 -&gt; IGTPW_10577</li>
-<li>Linux: xe-669-741c439503ee0986a7b7c5b590cbd9813b8841f6 -&gt; xe-672-fc6b7c6ee7d786e6ed48425a2ce0e674906e4e5c</li>
-</ul>
-<p>IGTPW_10577: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10577/index.html<br />
-  IGT_7690: aa45298ff675abbe6bf8f04ae186e2388c35f03a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-669-741c439503ee0986a7b7c5b590cbd9813b8841f6: 741c439503ee0986a7b7c5b590cbd9813b8841f6<br />
-  xe-672-fc6b7c6ee7d786e6ed48425a2ce0e674906e4e5c: fc6b7c6ee7d786e6ed48425a2ce0e674906e4e5c</p>
-
-</body>
-</html>
-
---===============2456406257311547905==--
