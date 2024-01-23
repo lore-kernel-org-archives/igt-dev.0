@@ -4,49 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E4CCC47258
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Jan 2024 04:37:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87771C47258
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Jan 2024 05:15:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BCE3510E110;
-	Tue, 23 Jan 2024 04:37:27 +0000 (UTC)
-X-Greylist: delayed 426 seconds by postgrey-1.36 at gabe;
- Tue, 23 Jan 2024 04:37:26 UTC
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 42ABA10E110
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Jan 2024 04:37:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705984646; x=1737520646;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=h5owflL28KvsDZsdCNzzs1Pjq8Fym0Bs299dJiF+UqE=;
- b=hAN4b4WwjoisRo8kR+bOD3ohFdXxBVFRmYybE8G0CEVYSIBPyztgdeNZ
- zekw2LLO1rpAenJhcS5yaaSZocQBzgmIm4aFibsahXXDv4BKN0Jn90BZc
- h/48fCS8Qy35LlQqwnTJHRps7V526aoE7RQ+BFG+VLGKU7/DaZMf2qaeV
- 03jfd7veucboxB9cM54QhWim+ScorzdXSs1qEFAtasOKeFHwGvZlCkDgQ
- nAIQvqz2hKg+BmCb7OxrLimhD1TXDhJK1cDLcKN8XnGNAcIdp6J/ubDJ+
- yBowVetrNOdMS4qDqUHc9lg8oRSEyU+zvgsoq0pSMRSciNQTb22cjzFu5 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="307061"
-X-IronPort-AV: E=Sophos;i="6.05,213,1701158400"; 
-   d="scan'208";a="307061"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2024 20:30:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="876210552"
-X-IronPort-AV: E=Sophos;i="6.05,213,1701158400"; d="scan'208";a="876210552"
-Received: from vsrini4-xps-8920.iind.intel.com (HELO localhost.localdomain)
- ([10.223.163.48])
- by FMSMGA003.fm.intel.com with ESMTP; 22 Jan 2024 20:30:17 -0800
-From: Vidya Srinivas <vidya.srinivas@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] tests/kms_vrr: Reset to High refresh rate before begin
- drrs test
-Date: Tue, 23 Jan 2024 09:44:03 +0530
-Message-Id: <20240123041403.31259-1-vidya.srinivas@intel.com>
-X-Mailer: git-send-email 2.33.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 449EB10E04B;
+	Tue, 23 Jan 2024 05:15:31 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB0BD10E04B;
+ Tue, 23 Jan 2024 05:15:29 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3705379432385634767=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Fvrr=3A_Reset_to_Hi?=
+ =?utf-8?q?gh_refresh_rate_before_begin_drrs_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Vidya Srinivas" <vidya.srinivas@intel.com>
+Date: Tue, 23 Jan 2024 05:15:29 -0000
+Message-ID: <170598692996.666090.7843213177567129138@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240123041403.31259-1-vidya.srinivas@intel.com>
+In-Reply-To: <20240123041403.31259-1-vidya.srinivas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,33 +36,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Patch ensures a prepare state of moving panel to high RR
-by waiting on FLIP event with high RR. This is more of a
-prepare condition for drrs test.
+--===============3705379432385634767==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
----
- tests/kms_vrr.c | 4 ++++
- 1 file changed, 4 insertions(+)
+== Series Details ==
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 44bc3480d..07b50cb4c 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -522,6 +522,10 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
- 
- 	if (vrr)
- 		set_vrr_on_pipe(data, pipe, false, true);
-+	else {
-+		igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
-+		igt_assert(igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_EVENT, NULL) == 0);
-+	}
- 
- 	rate = vtest_ns.max;
- 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
--- 
-2.33.0
+Series: tests/kms_vrr: Reset to High refresh rate before begin drrs test
+URL   : https://patchwork.freedesktop.org/series/129064/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7685_BAT -> XEIGTPW_10573_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10573_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@xe_exec_fault_mode@twice-basic:
+    - bat-atsm-2:         [SKIP][1] ([Intel XE#1130]) -> [SKIP][2] ([Intel XE#288])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7685/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10573/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html
+
+  
+  [Intel XE#1130]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7685 -> IGTPW_10573
+  * Linux: xe-661-aa09aa0293f752644c8c5d040e4a7af4e463627f -> xe-666-1cd8b030edf847fb2aaf5dae007e93eea64f704f
+
+  IGTPW_10573: 10573
+  IGT_7685: 7685
+  xe-661-aa09aa0293f752644c8c5d040e4a7af4e463627f: aa09aa0293f752644c8c5d040e4a7af4e463627f
+  xe-666-1cd8b030edf847fb2aaf5dae007e93eea64f704f: 1cd8b030edf847fb2aaf5dae007e93eea64f704f
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10573/index.html
+
+--===============3705379432385634767==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_vrr: Reset to High refresh rate before begin drrs test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129064/">https://patchwork.freedesktop.org/series/129064/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10573/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10573/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7685_BAT -&gt; XEIGTPW_10573_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10573_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@xe_exec_fault_mode@twice-basic:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7685/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10573/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7685 -&gt; IGTPW_10573</li>
+<li>Linux: xe-661-aa09aa0293f752644c8c5d040e4a7af4e463627f -&gt; xe-666-1cd8b030edf847fb2aaf5dae007e93eea64f704f</li>
+</ul>
+<p>IGTPW_10573: 10573<br />
+  IGT_7685: 7685<br />
+  xe-661-aa09aa0293f752644c8c5d040e4a7af4e463627f: aa09aa0293f752644c8c5d040e4a7af4e463627f<br />
+  xe-666-1cd8b030edf847fb2aaf5dae007e93eea64f704f: 1cd8b030edf847fb2aaf5dae007e93eea64f704f</p>
+
+</body>
+</html>
+
+--===============3705379432385634767==--
