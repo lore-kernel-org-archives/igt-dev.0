@@ -4,59 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DB47C47DDB
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59A91C47258
 	for <igt-dev@archiver.kernel.org>; Tue, 23 Jan 2024 23:30:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B060510F035;
+	by gabe.freedesktop.org (Postfix) with ESMTP id AFF0110F02D;
 	Tue, 23 Jan 2024 23:30:08 +0000 (UTC)
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
  [205.220.180.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7BA9310EFF1
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 480CC10EFD2
  for <igt-dev@lists.freedesktop.org>; Tue, 23 Jan 2024 23:29:58 +0000 (UTC)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
  by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 40NNJeBY004866; Tue, 23 Jan 2024 23:29:46 GMT
+ 40NMRqRL019010; Tue, 23 Jan 2024 23:29:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
  from:date:subject:mime-version:content-type
  :content-transfer-encoding:message-id:references:in-reply-to:to
- :cc; s=qcppdkim1; bh=7whDdB1rQMoU+Use0M0NKD7blRg0Hc2RT6/ZfqXYII4
- =; b=dwUBzpLOKoLqwCy7BMpPYl0JYfTcpidX0dGjgBioSPPR2W4lKvbsLfuCxff
- av9kOeY88yCWYZMEjzfLxHbFucTGuttmrKCR2WB/ViICrUVMjSXeIMoC1Px36+lV
- 4OoGcuVrfItlANjSBFkc6TQs23RmKTeSn7IR/5vVwIdXE+JSCnmPVUwtuQG+W+ka
- hK3XQMhIFKm7iMxcW1STG9KXRjMtgs/Yvlt0dpauBK82pTgwJ7il97zu/C0P+2xs
- 73b9jAej1iXLTNPBv+uuRUpnU/QbXXdvPITU67nSkxcgmWl0GIvGO7XzopzE5n2Y
- 6twTPQHR4gNPRbx3L/gA3OWg4ZA==
+ :cc; s=qcppdkim1; bh=5y636ckUACFyvD2wZpwkjh5oPOhvq0GInKyxgQlPgXY
+ =; b=nbjGB4V8NTH17RNc7j3WYnmSgONzz5GIhmXS4CReSyAFaW+8gppJHpVsh9q
+ O54ydv4r8f/TgUMsnns9r9M/h2GML1R7VM65sfs64PKeJkzmgJ6QD3nXCmYqo2bn
+ LCbtQ0fQKvY4UaLML76QhjuANESlBsvlmMhgTpJz0414WvUiJVJprCqfLoLniLgG
+ ekWDt0w6YzptK3FdRExHLyxlR4/pkxya5xYkjEuqZzDpLup7USivEC1mSTpxgIYM
+ wj44uoEZMuS2Q/zS/pVqdU59ko+Qh4/sQ0TiT3zp+HmnkRKIeLuu2msy3lXYQ+F3
+ +Q5x9/voypEKX3P5f63apjG6V5Q==
 Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com
  [199.106.103.254])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vtmhn8a31-1
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vtmhmra3q-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Tue, 23 Jan 2024 23:29:45 +0000 (GMT)
 Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com
  [10.46.141.250])
- by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40NNTinG007248
+ by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40NNTi37007239
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Tue, 23 Jan 2024 23:29:44 GMT
 Received: from jesszhan-linux.qualcomm.com (10.80.80.8) by
  nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Tue, 23 Jan 2024 15:29:44 -0800
+ 15.2.1118.40; Tue, 23 Jan 2024 15:29:43 -0800
 From: Jessica Zhang <quic_jesszhan@quicinc.com>
-Date: Tue, 23 Jan 2024 15:28:59 -0800
-Subject: [PATCH i-g-t v2 6/6] tests/kms_atomic: Add subtest for solid fill
- cursor planes
+Date: Tue, 23 Jan 2024 15:28:56 -0800
+Subject: [PATCH i-g-t v2 3/6] drm-uapi: Add drm_mode_solid_fill
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20240123-solid-fill-v2-6-4ecd2cf767fe@quicinc.com>
+Message-ID: <20240123-solid-fill-v2-3-4ecd2cf767fe@quicinc.com>
 References: <20240123-solid-fill-v2-0-4ecd2cf767fe@quicinc.com>
 In-Reply-To: <20240123-solid-fill-v2-0-4ecd2cf767fe@quicinc.com>
 To: <igt-dev@lists.freedesktop.org>, Petri Latvala <adrinael@adrinael.net>
 X-Mailer: b4 0.13-dev-f0463
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1706052582; l=2300;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1706052582; l=1384;
  i=quic_jesszhan@quicinc.com; s=20230329; h=from:subject:message-id;
- bh=MSy+Yai47HZ/UDvtiLXGY0C5qNpuClk/H4IAvjNiRxg=;
- b=fZ4FPmPcSfopj0RgXPiR22jYI3Ju0LA72K7xeJGF3kW27wVl2Q9RRfWzdY6rEfARGBP1oD4lF
- 6pwdvtdVEVnD03Zy7dnyg7Q5wlTyGQzUPzSRLAWycukWZdOJCy3qPFF
+ bh=zcBxmybBJvtkCjSZ7USi2zIUAEPg2ptajFs4WA6GklM=;
+ b=88vNHn+n9gi06bSsDHn2t0eNxm01hLeMgkZRNQakAshasbkfEP3+Cz//2gVb8CbmXDkt22ypH
+ 9R+t1OvdpBFC8bFuez9+0ONCIutAm+FM3sAhVWB9L3rOh57aLnZfCJa
 X-Developer-Key: i=quic_jesszhan@quicinc.com; a=ed25519;
  pk=gAUCgHZ6wTJOzQa3U0GfeCDH7iZLlqIEPo4rrjfDpWE=
 X-Originating-IP: [10.80.80.8]
@@ -65,16 +64,16 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
  signatures=585085
-X-Proofpoint-GUID: C8S7LX1Z6-NTNNwH77PQh_yJldj6KeLd
-X-Proofpoint-ORIG-GUID: C8S7LX1Z6-NTNNwH77PQh_yJldj6KeLd
+X-Proofpoint-GUID: 0pVSFD7q-pwr8xr6m16JkSHWjiIw6y3U
+X-Proofpoint-ORIG-GUID: 0pVSFD7q-pwr8xr6m16JkSHWjiIw6y3U
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-23_13,2024-01-23_02,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- impostorscore=0 clxscore=1015 malwarescore=0 mlxlogscore=366 adultscore=0
- spamscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ malwarescore=0
+ mlxlogscore=756 spamscore=0 mlxscore=0 phishscore=0 clxscore=1015
+ impostorscore=0 suspectscore=0 bulkscore=0 adultscore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2401190000 definitions=main-2401230175
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -94,77 +93,50 @@ Cc: Pekka Paalanen <pekka.paalanen@collabora.com>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a subtest for testing solid fill cursor planes.
+Add the drm_mode_solid_fill struct to drm_mode.h
 
-This test will commit a solid fill cursor plane on top of a normal
-framebuffer primary plane and compare the resulting CRC with the CRC
-value of a framebuffer cursor and primary plane of the same contents.
+This is required for https://patchwork.freedesktop.org/series/110283/
 
 Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
 ---
- tests/kms_atomic.c | 35 +++++++++++++++++++++++++++++++----
- 1 file changed, 31 insertions(+), 4 deletions(-)
+ include/drm-uapi/drm_mode.h | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index 35ac5f198524..95f349d40684 100755
---- a/tests/kms_atomic.c
-+++ b/tests/kms_atomic.c
-@@ -109,6 +109,7 @@
-  * arg[1]:
-  *
-  * @primary:        Primary plane
-+ * @cursor:         Cursor plane
-  */
+diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
+index 7040e7ea80c7..91b468348ba1 100644
+--- a/include/drm-uapi/drm_mode.h
++++ b/include/drm-uapi/drm_mode.h
+@@ -259,6 +259,30 @@ struct drm_mode_modeinfo {
+ 	char name[DRM_DISPLAY_MODE_LEN];
+ };
  
- #ifndef DRM_CAP_CURSOR_WIDTH
-@@ -1373,10 +1374,18 @@ static void test_solid_fill_plane(data_t *data, igt_output_t *output, igt_plane_
- 	igt_require(igt_plane_has_prop(plane, IGT_PLANE_SOLID_FILL));
- 	igt_require(igt_plane_has_prop(plane, IGT_PLANE_PIXEL_SOURCE));
- 
--	rect.x1 = 0;
--	rect.x2 = mode->hdisplay;
--	rect.y1 = 0;
--	rect.y2 = mode->vdisplay;
-+	if (plane->type == DRM_PLANE_TYPE_PRIMARY)
-+	{
-+		rect.x1 = 0;
-+		rect.x2 = mode->hdisplay;
-+		rect.y1 = 0;
-+		rect.y2 = mode->vdisplay;
-+	} else {
-+		rect.x1 = mode->hdisplay / 2 - 50;
-+		rect.x2 = mode->hdisplay / 2 + 50;
-+		rect.y1 = mode->vdisplay / 2 - 50;
-+		rect.y2 = mode->vdisplay / 2 + 50;
-+	}
- 
- 	width = rect_width(&rect);
- 	height = rect_height(&rect);
-@@ -1777,6 +1786,24 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 		}
- 	}
- 
-+	igt_describe("Test case for solid fill cursor planes");
-+	igt_subtest_with_dynamic("plane-cursor-solid-fill") {
-+		for_each_pipe_with_single_output(&data.display, pipe, output) {
-+			igt_plane_t *cursor =
-+				igt_pipe_get_plane_type(&data.display.pipes[pipe], DRM_PLANE_TYPE_CURSOR);
-+			if (!pipe_output_combo_valid(&data.display, pipe, output))
-+				continue;
-+			if (!cursor)
-+				continue;
++/**
++ * struct drm_mode_solid_fill - User info for solid fill planes
++ *
++ * This is the userspace API solid fill information structure.
++ *
++ * Userspace can enable solid fill planes by assigning the plane "solid_fill"
++ * property to a blob containing a single drm_mode_solid_fill struct populated with an RGB323232
++ * color and setting the pixel source to "SOLID_FILL".
++ *
++ * For information on the plane property, see drm_plane_create_solid_fill_property()
++ *
++ * @r: Red color value of single pixel
++ * @g: Green color value of single pixel
++ * @b: Blue color value of single pixel
++ * @pad: padding, must be zero
++ */
++struct drm_mode_solid_fill {
++	__u32 r;
++	__u32 g;
++	__u32 b;
++	__u32 pad;
++};
 +
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+				atomic_setup(&data, pipe, output);
-+				test_solid_fill_plane(&data, output, cursor);
-+				atomic_clear(&data, pipe, output);
-+			}
-+		}
-+	}
 +
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
+ struct drm_mode_card_res {
+ 	__u64 fb_id_ptr;
+ 	__u64 crtc_id_ptr;
 
 -- 
 2.43.0
