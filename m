@@ -4,58 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5BF3C47E49
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Jan 2024 23:29:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 974ECC47258
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Jan 2024 23:30:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4620B10EFF1;
-	Tue, 23 Jan 2024 23:29:59 +0000 (UTC)
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
- [205.220.180.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D1C0310EFD2
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Jan 2024 23:29:57 +0000 (UTC)
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2648810F047;
+	Tue, 23 Jan 2024 23:30:03 +0000 (UTC)
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
+ [205.220.168.131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3743F10F028
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Jan 2024 23:30:01 +0000 (UTC)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
  by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 40NMu6Dr017240; Tue, 23 Jan 2024 23:29:44 GMT
+ 40NNTj8b027843; Tue, 23 Jan 2024 23:29:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
  from:date:subject:mime-version:content-type
  :content-transfer-encoding:message-id:references:in-reply-to:to
- :cc; s=qcppdkim1; bh=kSn9cJWb+5/55hrP51hi3jwqGlozX3Nhmyi3SR4T0mE
- =; b=VswkE4Um5dlMOi3GMFGwW2O7Klwv5bpCPCtKSGIyX2fklzbvKN9WCBOzFkF
- DR1KiQDpOdtNmbsYeAHUP/JJTw5IdzCxZO6GUV7pfcJktLrOVk/HgaZVTwOXNt2o
- l9W73L6RmbZEya4hO8EAHk47/nP0TmKmod6ed5en3TZvp3RqW2CCjy4hzPGdMEWP
- tihh9RMwiqum9dgDmAAH5sClbDA8BmRNqeUi6+Fmny+Ws/ovXKdNyDU5fEYBXx0/
- IJKX+VCpB2kUHOBs+Qkg20IL0w7fHU4a+uP9JNMZZrzPElnhyFrFNSGvwCkqn9BZ
- jYkJnyBv3uwPDcwaC7PMU4/9WmA==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com
+ :cc; s=qcppdkim1; bh=JkjX6xmHOYl9X9aERCJReVhGRtYvi9Hdl6dEg8/I4GE
+ =; b=JDHD0ZEmcQIj0usI4mTXoBK1+fRe4DrPFXQYJLtc+m+V000wDW+L2puXfM4
+ I7X8mn7xzBrr/b9TCZbgM90TPmz0qsiTy84GjmMtoeUWI0tMsnkIPbi03ynyNnNi
+ VqrXmuYf5KVADMSHe7qcsyDlYtoWkmjHucadzQKURPOXktv6m0y5/w0rzDM++X29
+ bGhqRFWxPFJG+7junddvygvACrMq2EZavuCOUWSxYZTY26VgIt3DZSCAIoHO2Wuf
+ ssrIqHFU08y9rCxEGkfhnIMQeB0GmElwuHxDlESwzLO9obws4pnnMh8Gen5oh2xn
+ q1+mN2d5FrsMDplj4Uhu26Ssvvg==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com
  [199.106.103.254])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vtmhmra3p-1
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vtmgwg9s4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Jan 2024 23:29:44 +0000 (GMT)
+ Tue, 23 Jan 2024 23:29:45 +0000 (GMT)
 Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com
  [10.46.141.250])
- by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40NNThPR002937
+ by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40NNTi3g021149
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Jan 2024 23:29:43 GMT
+ Tue, 23 Jan 2024 23:29:44 GMT
 Received: from jesszhan-linux.qualcomm.com (10.80.80.8) by
  nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Tue, 23 Jan 2024 15:29:43 -0800
+ 15.2.1118.40; Tue, 23 Jan 2024 15:29:44 -0800
 From: Jessica Zhang <quic_jesszhan@quicinc.com>
-Date: Tue, 23 Jan 2024 15:28:54 -0800
-Subject: [PATCH i-g-t v2 1/6] tests/kms_atomic: Free pipe_crc object
+Date: Tue, 23 Jan 2024 15:28:58 -0800
+Subject: [PATCH i-g-t v2 5/6] tests/kms_atomic: Add solid fill plane
+ subtest
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20240123-solid-fill-v2-1-4ecd2cf767fe@quicinc.com>
+Message-ID: <20240123-solid-fill-v2-5-4ecd2cf767fe@quicinc.com>
 References: <20240123-solid-fill-v2-0-4ecd2cf767fe@quicinc.com>
 In-Reply-To: <20240123-solid-fill-v2-0-4ecd2cf767fe@quicinc.com>
 To: <igt-dev@lists.freedesktop.org>, Petri Latvala <adrinael@adrinael.net>
 X-Mailer: b4 0.13-dev-f0463
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1706052582; l=740;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1706052582; l=9395;
  i=quic_jesszhan@quicinc.com; s=20230329; h=from:subject:message-id;
- bh=RGDY8Ybpb5EhhhlCxixUCNEAXv2BaJeVFaMoObxXefQ=;
- b=7Zx7LzZ6JBky67Z4Z7dVUWxffS6CWCLGf2diKNe0l/K5TQTYr6J31xZ2XwXKNXDBP8pg0/uKA
- LhH50pBpkhlAksvhWWpmeTEat9GefwEBSVLuRH+j8NXUk6Rj+mZ85AJ
+ bh=UCUJedi1884/6e/WTvPlclfDnTctqSZ1vpWieGZJqDQ=;
+ b=43zUUbgp+lA+O8ewyNq1gd9i/DAZmO38gCThWFZrh+1fQZj1wvCcEpjffeR6rYn22cknGP6ZF
+ aZGgdsQtCOmDg2xJPzTofMrxD68Ko8KjVUmYPbD7xfulKxUp3D6daVJ
 X-Developer-Key: i=quic_jesszhan@quicinc.com; a=ed25519;
  pk=gAUCgHZ6wTJOzQa3U0GfeCDH7iZLlqIEPo4rrjfDpWE=
 X-Originating-IP: [10.80.80.8]
@@ -64,15 +65,15 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
  signatures=585085
-X-Proofpoint-GUID: iV97mTMqX7lesYj2GP7LqxAVY9KXgQ0i
-X-Proofpoint-ORIG-GUID: iV97mTMqX7lesYj2GP7LqxAVY9KXgQ0i
+X-Proofpoint-GUID: KWA0dFrXptb2481fvLCLel_NLWOr9f7D
+X-Proofpoint-ORIG-GUID: KWA0dFrXptb2481fvLCLel_NLWOr9f7D
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-23_13,2024-01-23_02,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- mlxlogscore=560 spamscore=0 mlxscore=0 phishscore=0 clxscore=1015
- impostorscore=0 suspectscore=0 bulkscore=0 adultscore=0 lowpriorityscore=0
+ malwarescore=0 adultscore=0
+ impostorscore=0 spamscore=0 mlxscore=0 bulkscore=0 suspectscore=0
+ lowpriorityscore=0 clxscore=1015 mlxlogscore=267 phishscore=0
  priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2401190000 definitions=main-2401230175
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -93,27 +94,292 @@ Cc: Pekka Paalanen <pekka.paalanen@collabora.com>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Free dangling pipe_crc object in plane_immutable_zpos()
+Add a basic test for solid fill planes.
 
-Fixes: 149c3d0b321c ("tests/kms_atomic: Add test to validate immutable zpos")
+This test will first commit a single-color framebuffer plane then
+a solid fill plane with the same contents. It then validates the solid
+fill plane by comparing the resulting CRC with the CRC of the reference
+framebuffer commit.
+
 Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
 ---
- tests/kms_atomic.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/kms_atomic.c | 179 +++++++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 161 insertions(+), 18 deletions(-)
 
 diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index 96cd58571666..2b6e9a8f0383 100644
+old mode 100644
+new mode 100755
+index 2b6e9a8f0383..35ac5f198524
 --- a/tests/kms_atomic.c
 +++ b/tests/kms_atomic.c
-@@ -560,6 +560,8 @@ plane_immutable_zpos(data_t *data, igt_output_t *output, enum pipe pipe, int n_p
- 		igt_plane_set_fb(plane_upper, NULL);
+@@ -43,6 +43,7 @@
+ #include <stdint.h>
+ #include <string.h>
+ #include <errno.h>
++#include <math.h>
+ #include <xf86drmMode.h>
+ #include <cairo.h>
+ #include "drm.h"
+@@ -101,6 +102,15 @@
+  * @params-fence:     fence parameters
+  */
+ 
++/**
++ * SUBTEST: plane-%s-solid-fill
++ * Description: Test atomic modesetting on %arg[1] using solid fill property.
++ *
++ * arg[1]:
++ *
++ * @primary:        Primary plane
++ */
++
+ #ifndef DRM_CAP_CURSOR_WIDTH
+ #define DRM_CAP_CURSOR_WIDTH 0x8
+ #endif
+@@ -122,18 +132,45 @@ typedef struct {
+ 	igt_fb_t fb;
+ } data_t;
+ 
++static struct {
++	uint32_t r, g, b;
++} colors[8] = {
++	/* Basic Colors */
++	{ .r = 0x00000000, .g = 0x00000000, .b = 0x00000000 },
++	{ .r = 0xffffffff, .g = 0x00000000, .b = 0x00000000 },
++	{ .r = 0x00000000, .g = 0xffffffff, .b = 0x00000000 },
++	{ .r = 0x00000000, .g = 0x00000000, .b = 0xffffffff },
++	{ .r = 0xffffffff, .g = 0xffffffff, .b = 0xffffffff },
++
++	/* Mid-grays */
++	{ .r = 0x40000000, .g = 0x40000000, .b = 0x40000000 },
++	{ .r = 0x80000000, .g = 0x80000000, .b = 0x80000000 },
++	{ .r = 0xcccccccc, .g = 0xcccccccc, .b = 0xcccccccc },
++};
++
+ enum kms_atomic_check_relax {
+ 	ATOMIC_RELAX_NONE = 0,
+ 	CRTC_RELAX_MODE = (1 << 0),
+ 	PLANE_RELAX_FB = (1 << 1)
+ };
+ 
+-static inline int damage_rect_width(struct drm_mode_rect *r)
++/*
++ * Fixed point uint to floating point conversion based on
++ * Vulkan's UNORM conversion:
++ *
++ * https://registry.khronos.org/vulkan/specs/1.3/html/chap3.html#fundamentals-fixedconv
++ */
++static inline double unorm_to_float(uint32_t x)
++{
++	return x / (pow(2, 32) - 1);
++}
++
++static inline int rect_width(struct drm_mode_rect *r)
+ {
+ 	return r->x2 - r->x1;
+ }
+ 
+-static inline int damage_rect_height(struct drm_mode_rect *r)
++static inline int rect_height(struct drm_mode_rect *r)
+ {
+ 	return r->y2 - r->y1;
+ }
+@@ -1156,8 +1193,8 @@ static void atomic_plane_damage(data_t *data)
+ 
+ 	cr_1 = igt_get_cairo_ctx(data->drm_fd, &fb_1);
+ 	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
+-			damage_rect_width(&damage[0]),
+-			damage_rect_height(&damage[0]), 1.0, 0, 0);
++			rect_width(&damage[0]),
++			rect_height(&damage[0]), 1.0, 0, 0);
+ 	igt_put_cairo_ctx(cr_1);
+ 
+ 	igt_plane_set_fb(data->primary, &fb_1);
+@@ -1183,8 +1220,8 @@ static void atomic_plane_damage(data_t *data)
+ 	cairo_set_source_surface(cr_2, fb_1.cairo_surface, 0, 0);
+ 	cairo_paint(cr_2);
+ 	igt_paint_color(cr_2, damage[0].x1, damage[0].y1,
+-			damage_rect_width(&damage[0]),
+-			damage_rect_height(&damage[0]), 0, 1.0, 0);
++			rect_width(&damage[0]),
++			rect_height(&damage[0]), 0, 1.0, 0);
+ 	igt_put_cairo_ctx(cr_1);
+ 	igt_put_cairo_ctx(cr_2);
+ 	igt_plane_set_fb(data->primary, &fb_2);
+@@ -1213,8 +1250,8 @@ static void atomic_plane_damage(data_t *data)
+ 	cairo_set_source_surface(cr_1, fb_2.cairo_surface, 0, 0);
+ 	cairo_paint(cr_1);
+ 	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
+-			damage_rect_width(&damage[0]),
+-			damage_rect_height(&damage[0]), 0, 1.0, 0);
++			rect_width(&damage[0]),
++			rect_height(&damage[0]), 0, 1.0, 0);
+ 	igt_put_cairo_ctx(cr_2);
+ 	igt_put_cairo_ctx(cr_1);
+ 	igt_plane_set_fb(data->primary, &fb_1);
+@@ -1238,8 +1275,8 @@ static void atomic_plane_damage(data_t *data)
+ 
+ 	cr_1 = igt_get_cairo_ctx(data->drm_fd, &fb_1);
+ 	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
+-			damage_rect_width(&damage[0]),
+-			damage_rect_height(&damage[0]), 1.0, 1.0, 0);
++			rect_width(&damage[0]),
++			rect_height(&damage[0]), 1.0, 1.0, 0);
+ 	igt_put_cairo_ctx(cr_1);
+ 	igt_plane_set_fb(data->primary, &fb_1);
+ 	igt_plane_set_size(data->primary, data->fb.width, data->fb.height);
+@@ -1266,11 +1303,11 @@ static void atomic_plane_damage(data_t *data)
+ 
+ 	cr_1 = igt_get_cairo_ctx(data->drm_fd, &fb_1);
+ 	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
+-			damage_rect_width(&damage[0]),
+-			damage_rect_height(&damage[0]), 0, 1.0, 1.0);
++			rect_width(&damage[0]),
++			rect_height(&damage[0]), 0, 1.0, 1.0);
+ 	igt_paint_color(cr_1, damage[1].x1, damage[1].y1,
+-			damage_rect_width(&damage[1]),
+-			damage_rect_height(&damage[1]), 0, 1.0, 0);
++			rect_width(&damage[1]),
++			rect_height(&damage[1]), 0, 1.0, 0);
+ 	igt_put_cairo_ctx(cr_1);
+ 	igt_plane_set_fb(data->primary, &fb_1);
+ 	igt_plane_set_size(data->primary, data->fb.width, data->fb.height);
+@@ -1299,11 +1336,11 @@ static void atomic_plane_damage(data_t *data)
+ 
+ 	cr_1 = igt_get_cairo_ctx(data->drm_fd, &fb_1);
+ 	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
+-			damage_rect_width(&damage[0]),
+-			damage_rect_height(&damage[0]), 1.0, 0, 0);
++			rect_width(&damage[0]),
++			rect_height(&damage[0]), 1.0, 0, 0);
+ 	igt_paint_color(cr_1, damage[1].x1, damage[1].y1,
+-			damage_rect_width(&damage[1]),
+-			damage_rect_height(&damage[1]), 1.0, 1.0, 1.0);
++			rect_width(&damage[1]),
++			rect_height(&damage[1]), 1.0, 1.0, 1.0);
+ 	igt_put_cairo_ctx(cr_1);
+ 	igt_plane_set_fb(data->primary, &fb_1);
+ 	igt_plane_set_size(data->primary, data->fb.width, data->fb.height);
+@@ -1322,6 +1359,98 @@ static void atomic_plane_damage(data_t *data)
+ 	igt_remove_fb(data->drm_fd, &fb_2);
+ }
+ 
++static void test_solid_fill_plane(data_t *data, igt_output_t *output, igt_plane_t *plane)
++{
++	drmModeModeInfo *mode = igt_output_get_mode(output);
++	struct drm_mode_rect rect = { 0 };
++	struct igt_fb ref_fb;
++	igt_pipe_crc_t *pipe_crc;
++	igt_crc_t ref_crc, new_crc;
++	enum pipe pipe = data->pipe->pipe;
++	int height, width, i;
++	int ret;
++
++	igt_require(igt_plane_has_prop(plane, IGT_PLANE_SOLID_FILL));
++	igt_require(igt_plane_has_prop(plane, IGT_PLANE_PIXEL_SOURCE));
++
++	rect.x1 = 0;
++	rect.x2 = mode->hdisplay;
++	rect.y1 = 0;
++	rect.y2 = mode->vdisplay;
++
++	width = rect_width(&rect);
++	height = rect_height(&rect);
++
++	igt_plane_set_position(plane, rect.x1, rect.y1);
++	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
++			    IGT_PIPE_CRC_SOURCE_AUTO);
++
++
++	for (i = 0; i < ARRAY_SIZE(colors); i++) {
++		uint32_t r = colors[i].r;
++		uint32_t g = colors[i].g;
++		uint32_t b = colors[i].b;
++
++		struct drm_mode_create_blob c;
++		struct drm_mode_destroy_blob d;
++		struct drm_mode_solid_fill blob_data = {
++			.r = r,
++			.g = g,
++			.b = b,
++			.pad = 0x0,
++		};
++
++		c.data = (uintptr_t) &blob_data;
++		c.length = sizeof(blob_data);
++
++		igt_debug("Testing color r: 0x%x (%f), g: 0x%x (%f), b: 0x%x (%f)\n",
++				r, unorm_to_float(r),
++				g, unorm_to_float(g),
++				b, unorm_to_float(b));
++
++		/* get reference CRC */
++		igt_create_color_fb(data->drm_fd, width, height,
++				    DRM_FORMAT_ABGR8888, DRM_FORMAT_MOD_LINEAR,
++				    unorm_to_float(r),
++				    unorm_to_float(g),
++				    unorm_to_float(b),
++				    &ref_fb);
++		igt_plane_set_fb(plane, &ref_fb);
++		igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++		igt_pipe_crc_start(pipe_crc);
++		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
++
++		ret = drmIoctl(data->display.drm_fd, DRM_IOCTL_MODE_CREATEPROPBLOB, &c);
++		igt_assert(ret == 0);
++
++		/* test solid fill plane */
++		igt_plane_set_solid_fill(plane, &rect, c.blob_id);
++		igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_SOURCE, "SOLID_FILL");
++
++		igt_display_commit_atomic(&data->display,
++					  DRM_MODE_ATOMIC_ALLOW_MODESET,
++					  NULL);
++
++		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &new_crc);
++
++		igt_assert_crc_equal(&ref_crc, &new_crc);
++
++		/* Switch back to FB pixel source */
++		igt_plane_set_prop_value(plane, IGT_PLANE_SOLID_FILL, 0);
++		igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_SOURCE, "FB");
++		igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++		d.blob_id = c.blob_id;
++		ret = drmIoctl(data->drm_fd, DRM_IOCTL_MODE_DESTROYPROPBLOB, &d);
++		igt_assert(ret == 0);
++	}
++
++	igt_pipe_crc_stop(pipe_crc);
++	igt_pipe_crc_free(pipe_crc);
++	igt_remove_fb(data->drm_fd, &ref_fb);
++}
++
+ static void atomic_setup(data_t *data, enum pipe pipe, igt_output_t *output)
+ {
+ 	drmModeModeInfo *mode;
+@@ -1634,6 +1763,20 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 		}
  	}
  
-+	igt_pipe_crc_free(pipe_crc);
++	igt_describe("Test case for solid fill primary planes");
++	igt_subtest_with_dynamic("plane-primary-solid-fill") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
 +
- 	igt_remove_fb(data->drm_fd, &fb_ref);
- 	igt_remove_fb(data->drm_fd, &fb_lower);
- 	igt_remove_fb(data->drm_fd, &fb_upper);
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
++				atomic_setup(&data, pipe, output);
++				test_solid_fill_plane(&data, output, data.primary);
++				atomic_clear(&data, pipe, output);
++			}
++		}
++	}
++
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
 
 -- 
 2.43.0
