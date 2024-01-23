@@ -4,26 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFCABC47258
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Jan 2024 21:09:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 583ADC47258
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Jan 2024 23:29:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9C18510E90D;
-	Tue, 23 Jan 2024 21:09:58 +0000 (UTC)
-Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 70A0610E90D;
- Tue, 23 Jan 2024 21:09:57 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6852408334796910548=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id EF33210EF2A;
+	Tue, 23 Jan 2024 23:29:04 +0000 (UTC)
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
+ [205.220.168.131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CC9010EF2A
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Jan 2024 23:29:03 +0000 (UTC)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
+ 40NMe5eV002012; Tue, 23 Jan 2024 23:28:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ message-id:date:mime-version:subject:to:cc:references:from
+ :in-reply-to:content-type:content-transfer-encoding; s=
+ qcppdkim1; bh=tUiT5d/D737d/DziJcBqKeLQ40npBiitGaaQra0vKc4=; b=T+
+ CpxVbjAYob5lpGWAcii42ORnwAsrSjGKZX9lh/uqzwG6VlNXHOEp5E1HJAxCiUc/
+ 7Ul63j3aQr9VF3XLbBzh4PZIHaPrKiK76OrU0iKJJsm1rW4BkYWbhbdDyIIlh14E
+ pHaaC0xrV88X6/0EWIhXMwkf1iKG52OwU6YNEIUIAZxtDre4F+kenfKnXpb6MPWB
+ YMFXRAbiymNSXRvChDqWUPiFFwpF9Oh8fadXviJs5wCpSXQlmaFoRDr22brxy8o2
+ btf/8sNcVdGLt68xR43hkLyMQXMIvb5VzzmE/3IgWf+9L+hv4rAeEEyzVOR+K5YJ
+ lmXuQp9OOQ4Q8MySdrHQ==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com
+ [199.106.103.254])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vtmmeg95k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 23 Jan 2024 23:28:49 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com
+ [10.46.141.250])
+ by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40NNSmZM001969
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 23 Jan 2024 23:28:48 GMT
+Received: from [10.71.111.207] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 23 Jan
+ 2024 15:28:48 -0800
+Message-ID: <b8a92429-b597-4e3c-9642-7a9add445d07@quicinc.com>
+Date: Tue, 23 Jan 2024 15:28:47 -0800
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_introduce_Xe_multigpu_and_o?=
- =?utf-8?q?ther_multi-GPU_helpers?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Date: Tue, 23 Jan 2024 21:09:57 -0000
-Message-ID: <170604419745.684313.16236807144259474211@5338d5abeb45>
-X-Patchwork-Hint: ignore
-References: <20240123201535.108793-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20240123201535.108793-1-kamil.konieczny@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 3/4] tests/kms_atomic: Add solid fill plane subtest
+Content-Language: en-US
+To: Pekka Paalanen <pekka.paalanen@collabora.com>, Abhinav Kumar
+ <quic_abhinavk@quicinc.com>
+References: <20231215-solid-fill-v1-0-12932f9f452d@quicinc.com>
+ <20231215-solid-fill-v1-3-12932f9f452d@quicinc.com>
+ <20231218121247.454bc00a.pekka.paalanen@collabora.com>
+ <6c910eb7-5f4b-4b03-ae3c-ca0498f0c667@quicinc.com>
+ <20240111112028.36736525.pekka.paalanen@collabora.com>
+ <f9054b1a-d020-4e1f-a010-fcff8bd651e2@quicinc.com>
+ <20240119110042.3114f54c.pekka.paalanen@collabora.com>
+ <65b91019-2aed-a06d-5a98-e146dd866e6a@quicinc.com>
+ <20240122095641.690857ca.pekka.paalanen@collabora.com>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
+In-Reply-To: <20240122095641.690857ca.pekka.paalanen@collabora.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: ZXW-xNQmEbutoWtAf_tASr6aRNkYCwGx
+X-Proofpoint-ORIG-GUID: ZXW-xNQmEbutoWtAf_tASr6aRNkYCwGx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-23_12,2024-01-23_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0
+ phishscore=0 lowpriorityscore=0 suspectscore=0 mlxscore=0 adultscore=0
+ clxscore=1011 priorityscore=1501 spamscore=0 mlxlogscore=921
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2401230175
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,441 +90,225 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Simon Ser <contact@emersion.fr>,
+ Rob Clark <robdclark@gmail.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6852408334796910548==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: introduce Xe multigpu and other multi-GPU helpers
-URL   : https://patchwork.freedesktop.org/series/129101/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_14166 -> IGTPW_10578
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/index.html
-
-Participating hosts (38 -> 34)
-------------------------------
-
-  Additional (1): fi-pnv-d510 
-  Missing    (5): bat-kbl-2 fi-snb-2520m bat-atsm-1 bat-rpls-2 bat-mtlp-8 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10578 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][1] ([fdo#109271]) +31 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/fi-pnv-d510/igt@gem_lmem_swapping@basic.html
-
-  * igt@gem_lmem_swapping@verify-random:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@gem_lmem_swapping@verify-random.html
-
-  * igt@i915_pm_rps@basic-api:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][3] ([i915#6621])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@i915_pm_rps@basic-api.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-11:         [PASS][4] -> [DMESG-FAIL][5] ([i915#9500])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14166/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_addfb_basic@addfb25-x-tiled-legacy:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][6] ([i915#4212] / [i915#9792]) +8 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][7] ([i915#5190] / [i915#9792])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][8] ([i915#9792]) +16 other tests skip
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
-
-  * igt@kms_flip@basic-flip-vs-dpms:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][9] ([i915#3637] / [i915#9792]) +3 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_flip@basic-flip-vs-dpms.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][10] ([fdo#109285] / [i915#9792])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_force_connector_basic@prune-stale-modes:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][11] ([i915#5274] / [i915#9792])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_force_connector_basic@prune-stale-modes.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][12] ([i915#4342] / [i915#5354] / [i915#9792])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pm_backlight@basic-brightness:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][13] ([i915#5354] / [i915#9792])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_pm_backlight@basic-brightness.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][14] ([i915#3555] / [i915#8809] / [i915#9792])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][15] ([i915#3708] / [i915#9792])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@prime_vgem@basic-fence-flip.html
-
-  * igt@prime_vgem@basic-fence-mmap:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][16] ([i915#3708] / [i915#4077]) +1 other test skip
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@prime_vgem@basic-fence-mmap.html
-
-  * igt@prime_vgem@basic-write:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][17] ([i915#3708]) +2 other tests skip
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@prime_vgem@basic-write.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_hangman@error-state-basic:
-    - bat-mtlp-6:         [ABORT][18] ([i915#9414]) -> [PASS][19]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14166/bat-mtlp-6/igt@i915_hangman@error-state-basic.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@i915_hangman@error-state-basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4342]: https://gitlab.freedesktop.org/drm/intel/issues/4342
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#8809]: https://gitlab.freedesktop.org/drm/intel/issues/8809
-  [i915#9414]: https://gitlab.freedesktop.org/drm/intel/issues/9414
-  [i915#9500]: https://gitlab.freedesktop.org/drm/intel/issues/9500
-  [i915#9673]: https://gitlab.freedesktop.org/drm/intel/issues/9673
-  [i915#9732]: https://gitlab.freedesktop.org/drm/intel/issues/9732
-  [i915#9792]: https://gitlab.freedesktop.org/drm/intel/issues/9792
 
 
-Build changes
--------------
+On 1/21/2024 11:56 PM, Pekka Paalanen wrote:
+> On Fri, 19 Jan 2024 09:40:52 -0800
+> Abhinav Kumar <quic_abhinavk@quicinc.com> wrote:
+> 
+>> On 1/19/2024 1:00 AM, Pekka Paalanen wrote:
+>>> On Thu, 18 Jan 2024 15:35:10 -0800
+>>> Jessica Zhang <quic_jesszhan@quicinc.com> wrote:
+>>>    
+>>>> On 1/11/2024 1:20 AM, Pekka Paalanen wrote:
+>>>>> On Thu, 21 Dec 2023 15:57:51 -0800
+>>>>> Jessica Zhang <quic_jesszhan@quicinc.com> wrote:
+>>>>>       
+>>>>>> On 12/18/2023 2:12 AM, Pekka Paalanen wrote:
+>>>>>>> On Fri, 15 Dec 2023 16:40:23 -0800
+>>>>>>> Jessica Zhang <quic_jesszhan@quicinc.com> wrote:
+>>>>>>>          
+>>>>>>>> Add a basic test for solid fill planes.
+>>>>>>>>
+>>>>>>>> This test will first commit a single-color framebuffer plane then
+>>>>>>>> a solid fill plane with the same contents. It then validates the solid
+>>>>>>>> fill plane by comparing the resulting CRC with the CRC of the reference
+>>>>>>>> framebuffer commit.
+>>>>>>>>
+>>>>>>>> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+>>>>>>>> ---
+>>>>>>>>      tests/kms_atomic.c | 94 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>>>>>>>>      1 file changed, 94 insertions(+)
+>>>>>>>>
+>>>>>>>> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+>>>>>>>> old mode 100644
+>>>>>>>> new mode 100755
+>>>>>>>> index 2b6e9a8f0383..8f81e65ad84f
+>>>>>>>> --- a/tests/kms_atomic.c
+>>>>>>>> +++ b/tests/kms_atomic.c
+>>>>>>>> @@ -128,6 +128,13 @@ enum kms_atomic_check_relax {
+>>>>>>>>      	PLANE_RELAX_FB = (1 << 1)
+>>>>>>>>      };
+>>>>>>>>      
+>>>>>>>> +struct solid_fill_blob {
+>>>>>>>> +	uint32_t r;
+>>>>>>>> +	uint32_t g;
+>>>>>>>> +	uint32_t b;
+>>>>>>>> +	uint32_t pad;
+>>>>>>>> +};
+>>>>>>>> +
+>>>>>>>>      static inline int damage_rect_width(struct drm_mode_rect *r)
+>>>>>>>>      {
+>>>>>>>>      	return r->x2 - r->x1;
+>>>>>>>> @@ -1322,6 +1329,79 @@ static void atomic_plane_damage(data_t *data)
+>>>>>>>>      	igt_remove_fb(data->drm_fd, &fb_2);
+>>>>>>>>      }
+>>>>>>>>      
+>>>>>>>> +static void test_solid_fill_plane(data_t *data, igt_output_t *output,  igt_plane_t *plane)
+>>>>>>>> +{
+>>>>>>>> +	struct drm_mode_create_blob c;
+>>>>>>>> +	struct drm_mode_destroy_blob d;
+>>>>>>>> +	drmModeModeInfo *mode = igt_output_get_mode(output);
+>>>>>>>> +	struct drm_mode_rect rect = { 0 };
+>>>>>>>> +	struct igt_fb ref_fb;
+>>>>>>>> +	igt_pipe_crc_t *pipe_crc;
+>>>>>>>> +	igt_crc_t ref_crc, new_crc;
+>>>>>>>> +	enum pipe pipe = data->pipe->pipe;
+>>>>>>>> +	int height, width;
+>>>>>>>> +	int ret;
+>>>>>>>> +
+>>>>>>>> +	struct solid_fill_blob blob_data = {
+>>>>>>>> +		.r = 0x00000000,
+>>>>>>>> +		.g = 0x00000000,
+>>>>>>>> +		.b = 0xff000000,
+>>>>>>>> +		.pad = 0x0,
+>>>>>>>> +	};
+>>>>>>>
+>>>>>>> Hi Jessica!
+>>>>>>>
+>>>>>>> This is the blob sent to KMS as the solid fill color...
+>>>>>>>
+>>>>>>> ...
+>>>>>>>          
+>>>>>>>> +	igt_create_color_fb(data->drm_fd, width, height,
+>>>>>>>> +			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+>>>>>>>> +			    0.0, 0.0, 1.0, &ref_fb);
+>>>>>>>
+>>>>>>> ..and this (0.0, 0.0, 1.0) is the corresponding color in normalized
+>>>>>>> values, I presume.
+>>>>>>>
+>>>>>>> So you say that 0xff000000 = 1.0.
+>>>>>>>
+>>>>>>> However, the patch for the kernel UAPI header says this:
+>>>>>>>
+>>>>>>> +/**
+>>>>>>> + * struct drm_mode_solid_fill - User info for solid fill planes
+>>>>>>> + *
+>>>>>>> + * This is the userspace API solid fill information structure.
+>>>>>>> + *
+>>>>>>> + * Userspace can enable solid fill planes by assigning the plane "solid_fill"
+>>>>>>> + * property to a blob containing a single drm_mode_solid_fill struct populated with an RGB323232
+>>>>>>> + * color and setting the pixel source to "SOLID_FILL".
+>>>>>>> + *
+>>>>>>> + * For information on the plane property, see drm_plane_create_solid_fill_property()
+>>>>>>> + *
+>>>>>>> + * @r: Red color value of single pixel
+>>>>>>> + * @g: Green color value of single pixel
+>>>>>>> + * @b: Blue color value of single pixel
+>>>>>>> + * @pad: padding, must be zero
+>>>>>>> + */
+>>>>>>> +struct drm_mode_solid_fill {
+>>>>>>> +	__u32 r;
+>>>>>>> +	__u32 g;
+>>>>>>> +	__u32 b;
+>>>>>>> +	__u32 pad;
+>>>>>>> +};
+>>>>>>>
+>>>>>>> I assume that RGB323232 means unsigned 32-bit UNORM (Vulkan term)
+>>>>>>> format. That means 1.0 is 0xffffffff, not 0xff000000. This looks like a
+>>>>>>> bug in the test.
+>>>>>>
+>>>>>> Hey Pekka,
+>>>>>>
+>>>>>> Ah, thanks for catching this -- I'll change the blob value to 0xffffffff
+>>>>>> so it matches the 1.0.
+>>>>>>
+>>>>>> While we're talking about the UAPI struct, I'll also add the actual
+>>>>>> drm_mode_solid_fill struct to the IGT drm-uapi instead of the current
+>>>>>> workaround.
+>>>>>>      
+>>>>>>>
+>>>>>>> It would be good to test more than one color:
+>>>>>>> - 0.0, 0.0, 0.0
+>>>>>>> - 1.0, 0.0, 0.0
+>>>>>>> - 0.0, 1.0, 0.0
+>>>>>>> - 0.0, 0.0, 1.0
+>>>>>>> - 1.0, 1.0, 1.0
+>>>>>>
+>>>>>> Sounds good, will change the test to validate these combinations.
+>>>>>>      
+>>>>>>>
+>>>>>>> for example. That would get at least the so often used black explicitly
+>>>>>>> tested, and verify each channel gets mapped correctly rather than only
+>>>>>>> blue.
+>>>>>>>
+>>>>>>> It would also be really good to test dim and mid grays, but I assume it
+>>>>>>> might be difficult to get CRC to match over various hardware. You'd
+>>>>>>> need to use writeback with an error tolerance. (For watching photos for
+>>>>>>> example, the background is not usually black but dim gray I believe.)
+>>>>>>
+>>>>>> Got it, we can add this to the list of colors to test.
+>>>>>>
+>>>>>> FWIW, I think as long as we keep the test structure as grabbing a
+>>>>>> reference CRC from an FB commit then comparing that to a CRC from a
+>>>>>> solid fill commit, I'm not expecting a difference in CRC values.
+>>>>>
+>>>>> The worry I had here, is that different hardware may have different
+>>>>> precision for the solid fill. Maybe that can be worked around by
+>>>>> computing the solid fill blob values from the raw FB pixel values? Then
+>>>>> even if something gets rounded/truncated somewhere in the hardware, the
+>>>>> end result should be the same between FB and solid fill, right?
+>>>>
+>>>> Hi Pekka,
+>>>>
+>>>> Got it -- I see what you mean.
+>>>>
+>>>> In that case, can we stick to just testing the basic RGB + black/white
+>>>> colors? I want to avoid adding writeback as a dependency for the solid
+>>>> fill test since it's not a dependency for the solid fill feature itself.
+>>>
+>>> Up to you. My worries here are hypothetical, I don't know about
+>>> hardware. It's also possible to adjust tests later if people find false
+>>> positives or false negatives.
+>>>
+>>> Personally, I'd start with optimistically strict tests. False negatives
+>>> will be found by driver developers easily, while false negatives would
+>>> need an actual user reporting a bug.
+>>>
+>>>
+>>> Thanks,
+>>> pq
+>>>    
+>>
+>> I agree with Jessica here. We can start with the basic RGB + black/white.
+>>
+>> We dont want to put an extra writeback dependency on this test as there
+>> is no hardware dependency of solid fill planes with writeback connector.
+> 
+> Yes, but you can still test mid-gray pixel values with CRC. Craft the
+> test values to carefully match the FB pixel values, and see if any
+> driver has a problem with it. Maybe it just works.
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7690 -> IGTPW_10578
+Hi Pekka,
 
-  CI-20190529: 20190529
-  CI_DRM_14166: fc6b7c6ee7d786e6ed48425a2ce0e674906e4e5c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10578: 10578
-  IGT_7690: aa45298ff675abbe6bf8f04ae186e2388c35f03a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+Sounds good. I'll add a few mid gray test cases with pixel values that 
+work for us.
 
+Thanks,
 
-Testlist changes
-----------------
+Jessica Zhang
 
-+igt@gem_mmap@basic-multigpu
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind
-+igt@xe_exec_basic@multigpu-no-exec-basic
-+igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind
-+igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind
-+igt@xe_exec_basic@multigpu-no-exec-null
-+igt@xe_exec_basic@multigpu-no-exec-null-defer-bind
-+igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap
-+igt@xe_exec_basic@multigpu-no-exec-null-rebind
-+igt@xe_exec_basic@multigpu-no-exec-rebind
-+igt@xe_exec_basic@multigpu-no-exec-userptr
-+igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate
-+igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race
-+igt@xe_exec_basic@multigpu-no-exec-userptr-rebind
-+igt@xe_exec_basic@multigpu-once-basic
-+igt@xe_exec_basic@multigpu-once-basic-defer-bind
-+igt@xe_exec_basic@multigpu-once-basic-defer-mmap
-+igt@xe_exec_basic@multigpu-once-bindexecqueue
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind
-+igt@xe_exec_basic@multigpu-once-null
-+igt@xe_exec_basic@multigpu-once-null-defer-bind
-+igt@xe_exec_basic@multigpu-once-null-defer-mmap
-+igt@xe_exec_basic@multigpu-once-null-rebind
-+igt@xe_exec_basic@multigpu-once-rebind
-+igt@xe_exec_basic@multigpu-once-userptr
-+igt@xe_exec_basic@multigpu-once-userptr-invalidate
-+igt@xe_exec_basic@multigpu-once-userptr-invalidate-race
-+igt@xe_exec_basic@multigpu-once-userptr-rebind
--igt@xe_intel_bb@demo-kms-fbt-failure
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/index.html
-
---===============6852408334796910548==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>introduce Xe multigpu and other multi-GPU helpers</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129101/">https://patchwork.freedesktop.org/series/129101/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14166 -&gt; IGTPW_10578</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/index.html</p>
-<h2>Participating hosts (38 -&gt; 34)</h2>
-<p>Additional (1): fi-pnv-d510 <br />
-  Missing    (5): bat-kbl-2 fi-snb-2520m bat-atsm-1 bat-rpls-2 bat-mtlp-8 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10578 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/fi-pnv-d510/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +31 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rps@basic-api:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14166/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9500">i915#9500</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@addfb25-x-tiled-legacy:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4212">i915#4212</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>) +8 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5190">i915#5190</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>) +16 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_flip@basic-flip-vs-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3637">i915#3637</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4342">i915#4342</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_backlight@basic-brightness:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8809">i915#8809</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-mmap:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@prime_vgem@basic-fence-mmap.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-write:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_hangman@error-state-basic:<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14166/bat-mtlp-6/igt@i915_hangman@error-state-basic.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9414">i915#9414</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10578/bat-mtlp-6/igt@i915_hangman@error-state-basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7690 -&gt; IGTPW_10578</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14166: fc6b7c6ee7d786e6ed48425a2ce0e674906e4e5c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10578: 10578<br />
-  IGT_7690: aa45298ff675abbe6bf8f04ae186e2388c35f03a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@gem_mmap@basic-multigpu<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind<br />
-+igt@xe_exec_basic@multigpu-no-exec-basic<br />
-+igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind<br />
-+igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap<br />
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue<br />
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind<br />
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr<br />
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate<br />
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race<br />
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind<br />
-+igt@xe_exec_basic@multigpu-no-exec-null<br />
-+igt@xe_exec_basic@multigpu-no-exec-null-defer-bind<br />
-+igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap<br />
-+igt@xe_exec_basic@multigpu-no-exec-null-rebind<br />
-+igt@xe_exec_basic@multigpu-no-exec-rebind<br />
-+igt@xe_exec_basic@multigpu-no-exec-userptr<br />
-+igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate<br />
-+igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race<br />
-+igt@xe_exec_basic@multigpu-no-exec-userptr-rebind<br />
-+igt@xe_exec_basic@multigpu-once-basic<br />
-+igt@xe_exec_basic@multigpu-once-basic-defer-bind<br />
-+igt@xe_exec_basic@multigpu-once-basic-defer-mmap<br />
-+igt@xe_exec_basic@multigpu-once-bindexecqueue<br />
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind<br />
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr<br />
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate<br />
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race<br />
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind<br />
-+igt@xe_exec_basic@multigpu-once-null<br />
-+igt@xe_exec_basic@multigpu-once-null-defer-bind<br />
-+igt@xe_exec_basic@multigpu-once-null-defer-mmap<br />
-+igt@xe_exec_basic@multigpu-once-null-rebind<br />
-+igt@xe_exec_basic@multigpu-once-rebind<br />
-+igt@xe_exec_basic@multigpu-once-userptr<br />
-+igt@xe_exec_basic@multigpu-once-userptr-invalidate<br />
-+igt@xe_exec_basic@multigpu-once-userptr-invalidate-race<br />
-+igt@xe_exec_basic@multigpu-once-userptr-rebind<br />
--igt@xe_intel_bb@demo-kms-fbt-failure</p>
-
-</body>
-</html>
-
---===============6852408334796910548==--
+> 
+> 
+> Thanks,
+> pq
+> 
+>> If others would like to extend this later on based on the writeback
+>> client cap to add another sub-test that would be a separate effort.
+>>
+>>>>>
+>>>>> Unless, the hardware precision on solid fill values is less than FB
+>>>>> pixel precision, and the CRC input precision is high enough to show
+>>>>> that difference.
+>>>>>
+>>>>>
+>>>>> Thanks,
+>>>>> pq
+>>>    
+> 
