@@ -4,44 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C781C47DDB
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Jan 2024 20:15:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 428FDC47DDB
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Jan 2024 20:16:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E5B4D10E8AD;
-	Tue, 23 Jan 2024 20:15:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E93F110E8B1;
+	Tue, 23 Jan 2024 20:16:00 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8715A10E8AA
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Jan 2024 20:15:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC39B10E8B1
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Jan 2024 20:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706040956; x=1737576956;
+ t=1706040960; x=1737576960;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=WGJZUn2hM7z1vbooyXzq5S8B5IKPW1JxiBYRSVjofo4=;
- b=V1Na+q2+52yDcdhiDIav4EhOKAcqACInwwjcmu+9ColE/Z4y6F1D489b
- qDpdJvGGBbmNAl8W0QspLked1vcRucqbC2LK6bXA05fNebu9x6zF7HSmY
- jMOVXAWy19+EePOp/bN2gOE1+lWqm2QggwgXO92txNRhrelsTwbCIp5X8
- afuOu9qbpH5WLzUOJ9/f9aUvUkfHo9QgH7ir4KzHY/zU8d+5AcNlWsSR4
- uIss8X9xtsG78LyKCtHqoM0x/ttEcDoWr5ieZYohr0DvFNx1E8411Ip+j
- BrQF/pKUbimdl167wTIgx3Lj9Qs6NS26l0pWPvSKZXPv9a9nxqVJRoF50 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="8755388"
+ bh=RVVBlKSPnZH5KxFUL4CcbDCSMpc/bLECF61hn8OhJFg=;
+ b=ID+QPEwPVAkfiGod7XvKMIPF3ho4yZzEHIk3gb1V54ddF4xtxTTEii1C
+ xvSoUsgPNZbHKfpN3o+iLsGUIecJ3lE+Ul6gTPMCUvjB0BiFXOZiUHIe7
+ 8+gEhAUofowDV/FqnZtbldTsjcGZtMxm0T1aNmzM4B0ngcMq1O1yqoAHC
+ MzDEhm7u5yw8dyIt11nzrCCAcdmgjMP6Ttxs5HTD2JsMiYI1gFlfWyrMz
+ CoCPAXJCTE+CY0M7Bak0tSHF7G7VJAKdUssXwJ3IErWdg3iLx6RiK8EJB
+ BpVo1yshpg7uBICMDWOPkDC5Ge6d4wy5+n5LiGQWpqZ0MOYnGbcVippCd w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="8755504"
 X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; 
-   d="scan'208";a="8755388"
+   d="scan'208";a="8755504"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2024 12:15:50 -0800
+ 23 Jan 2024 12:15:57 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; 
-   d="scan'208";a="1662967"
+   d="scan'208";a="1663010"
 Received: from unknown (HELO localhost) ([10.246.3.60])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2024 12:15:47 -0800
+ 23 Jan 2024 12:15:56 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v1 1/8] lib/igt_device_scan: Introduce filtering out
- non-PCI devices
-Date: Tue, 23 Jan 2024 21:15:28 +0100
-Message-ID: <20240123201535.108793-2-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v1 3/8] lib/drmtest: allow opening cards out of order
+Date: Tue, 23 Jan 2024 21:15:30 +0100
+Message-ID: <20240123201535.108793-4-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240123201535.108793-1-kamil.konieczny@linux.intel.com>
 References: <20240123201535.108793-1-kamil.konieczny@linux.intel.com>
@@ -60,68 +59,191 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+Current __drm_open_driver_another() implementation prevents
+opening cards out of order, for example card 0 and card 3. Relax
+that condition. While at this, add some more error checks and
+prints and also allow user to open already opened card if the
+index is the same.
 
-Introduced igt_device_filter_pci function that filters out non-PCI
-devices from IGT devices.
+While at this add also caching for names of opened cards.
 
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+Changes in __search_and_open() was suggested by Zbigniew.
+
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/igt_device_scan.c | 21 +++++++++++++++++++++
- lib/igt_device_scan.h |  2 ++
- 2 files changed, 23 insertions(+)
+ lib/drmtest.c | 100 +++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 83 insertions(+), 17 deletions(-)
 
-diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-index fbf3fa482..37ebe1964 100644
---- a/lib/igt_device_scan.c
-+++ b/lib/igt_device_scan.c
-@@ -1908,6 +1908,27 @@ const char *igt_device_filter_get(int num)
- 	return NULL;
- }
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 73d9159af..80809571b 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -315,42 +315,81 @@ err:
+ static struct {
+ 	int fd;
+ 	struct stat stat;
++	char *fname;
+ }_opened_fds[64];
  
-+/**
-+ * igt_device_filter_pci
-+ *
-+ * Filter devices to PCI only.
-+ *
-+ * Returns PCI devices count.
-+ */
-+int igt_device_filter_pci(void)
+ static int _opened_fds_count;
+ 
++static void _set_opened_fname(int idx, char *name)
 +{
-+	int count = 0;
-+	struct igt_device *dev, *tmp;
++	assert(idx < ARRAY_SIZE(_opened_fds));
++	assert(idx >= 0);
 +
-+	igt_list_for_each_entry_safe(dev, tmp, &igt_devs.filtered, link)
-+		if (strcmp(dev->subsystem, "pci") != 0)
-+			igt_list_del(&dev->link);
-+		else
-+			count++;
++	if (!name) {
++		if (_opened_fds[idx].fname)
++			free(_opened_fds[idx].fname);
 +
-+	return count;
++		_opened_fds[idx].fname = name;
++		return;
++	}
++
++	if (_opened_fds[idx].fname && !strcmp(name, _opened_fds[idx].fname))
++		return;
++
++	free(_opened_fds[idx].fname);
++	_opened_fds[idx].fname = strdup(name);
 +}
 +
- static bool igt_device_filter_apply(const char *fstr)
+ static void _set_opened_fd(int idx, int fd)
  {
- 	struct igt_device *dev, *tmp;
-diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
-index 48690e236..908733745 100644
---- a/lib/igt_device_scan.h
-+++ b/lib/igt_device_scan.h
-@@ -81,6 +81,8 @@ int igt_device_filter_add(const char *filter);
- void igt_device_filter_free_all(void);
- const char *igt_device_filter_get(int num);
+ 	assert(idx < ARRAY_SIZE(_opened_fds));
+-	assert(idx <= _opened_fds_count);
++	assert(idx >= 0);
  
-+int igt_device_filter_pci(void);
+ 	_opened_fds[idx].fd = fd;
+ 
+ 	assert(fstat(fd, &_opened_fds[idx].stat) == 0);
+ 
+-	_opened_fds_count = idx+1;
++	for (int n = _opened_fds_count; n < idx; n++)
++		_opened_fds[n].fd = -1;
 +
- /* Use filter to match the device and fill card structure */
- bool igt_device_card_match(const char *filter, struct igt_device_card *card);
- bool igt_device_card_match_pci(const char *filter,
++	if (idx >= _opened_fds_count)
++		_opened_fds_count = idx + 1;
+ }
+ 
+-static bool _is_already_opened(const char *path, int as_idx)
++/* in *err returns -errno or index to _opened_fds[] */
++static bool _is_already_opened(const char *path, int as_idx, int *err)
+ {
+ 	struct stat new;
+ 
+ 	assert(as_idx < ARRAY_SIZE(_opened_fds));
+-	assert(as_idx <= _opened_fds_count);
++	assert(as_idx >= 0);
+ 
+ 	/*
+ 	 * we cannot even stat the device, so it's of no use - let's claim it's
+ 	 * already opened
+ 	 */
+-	if (igt_debug_on(stat(path, &new) != 0))
++	if (igt_debug_on(stat(path, &new) != 0)) {
++		if (err)
++			*err = -errno;
++
+ 		return true;
++	}
++
++	if (err)
++		*err = 0;
++
++	for (int i = 0; i < _opened_fds_count && i < as_idx; ++i) {
++		if (_opened_fds[i].fd == -1)
++			continue;
+ 
+-	for (int i = 0; i < as_idx; ++i) {
+ 		/* did we cross filesystem boundary? */
+ 		assert(_opened_fds[i].stat.st_dev == new.st_dev);
+ 
+-		if (_opened_fds[i].stat.st_ino == new.st_ino)
++		if (_opened_fds[i].stat.st_ino == new.st_ino) {
++			*err = i;
++
+ 			return true;
++		}
+ 	}
+ 
+ 	return false;
+@@ -359,23 +398,40 @@ static bool _is_already_opened(const char *path, int as_idx)
+ static int __search_and_open(const char *base, int offset, unsigned int chipset, int as_idx)
+ {
+ 	const char *forced;
++	int err;
+ 
+ 	forced = forced_driver();
+ 	if (forced)
+ 		igt_debug("Force option used: Using driver %s\n", forced);
+ 
+-	for (int i = 0; i < 16; i++) {
++	for (int i = 0, idx = -1; i < 16 && idx < as_idx; i++) {
+ 		char name[80];
+-		int fd;
++		int fd = -1;
+ 
+ 		sprintf(name, "%s%u", base, i + offset);
+ 
+-		if (_is_already_opened(name, as_idx))
+-			continue;
++		if (_is_already_opened(name, as_idx, &err)) {
++			if (err < 0)
++				continue;
++
++			if (idx + 1 < as_idx) {
++				++idx;
++				continue;
++			}
++		}
+ 
+-		fd = __drm_open_device(name, chipset);
+-		if (fd != -1)
++		if (err >= 0)
++			fd = __drm_open_device(name, chipset);
++		if (fd != -1) {
++			++idx;
++			if (idx < as_idx) {
++				close(fd);
++				continue;
++			}
++
++			_set_opened_fname(as_idx, name);
+ 			return fd;
++		}
+ 	}
+ 
+ 	return -1;
+@@ -542,11 +598,21 @@ int __drm_open_driver_another(int idx, int chipset)
+ 		if (!found || !strlen(card.card))
+ 			igt_warn("No card matches the filter! [%s]\n",
+ 				 igt_device_filter_get(idx));
+-		else if (_is_already_opened(card.card, idx))
+-			igt_warn("card maching filter %d is already opened\n", idx);
+-		else
+-			fd = __open_driver_exact(card.card, chipset);
++		else {
++			int ret;
+ 
++			if (_is_already_opened(card.card, idx, &ret))
++				if (ret >= 0 && idx != ret)
++					igt_warn("card maching filter %d is already opened at idx %d\nfilenames: %s::%s",
++						 idx, ret, card.card, _opened_fds[ret].fname);
++				else
++					fd = __open_driver_exact(card.card, chipset);
++			else
++				fd = __open_driver_exact(card.card, chipset);
++
++			if (fd != -1)
++				_set_opened_fname(idx, card.card);
++		}
+ 	} else {
+ 		/* no filter for device idx, let's open whatever is available */
+ 		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
 -- 
 2.42.0
 
