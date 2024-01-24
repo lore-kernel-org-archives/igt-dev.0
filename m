@@ -4,47 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F2D9C46CD2
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Jan 2024 20:42:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B03CC46CD2
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Jan 2024 22:18:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 073E710F5F9;
-	Wed, 24 Jan 2024 20:42:18 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DAC610F5F9
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Jan 2024 20:42:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706128937; x=1737664937;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=TuDs+rVrX+qIaxncy8zs/V3++wXBqB+l61cRdv/iso4=;
- b=OmVGLKtgz4/YOYHfpPjiDQhKP5qPNiCfrrhN2COJVrAbhNoF4dz870DS
- ISgmzI+Z1txMCHbmMvB4cN/ysVyowj70fzxCEEY6FE163BTKfCtYSKQX+
- 2IOlSiLyW6+L+BnPjG/g4Y/zWThBRHniucYpv1joplGzxivU9/bfV6LXq
- LgKsWFSWlXYTZhHxAweAVFZIy3t6zCFnQMae0OiH0MctRBB8G5ix+ygRv
- I8a5npexjLyo6AEodpW4bXwTQR5HBrF8sP1HcZn07DS3n5SP32iC3F16o
- UHbWyD8zewzBxBINyWE3wSSDurMN2B8gkk8rGZBfE7s1UulH/p4LzRxhn w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="23431523"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="23431523"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 12:42:16 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2015528"
-Received: from unknown (HELO localhost) ([10.245.100.91])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 12:42:14 -0800
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 8/8] tests/intel/gem_mmap: add basic multi-GPU subtest
-Date: Wed, 24 Jan 2024 21:41:34 +0100
-Message-ID: <20240124204134.71451-9-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240124204134.71451-1-kamil.konieczny@linux.intel.com>
-References: <20240124204134.71451-1-kamil.konieczny@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8AF1710EA80;
+	Wed, 24 Jan 2024 22:18:03 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6100710E92F;
+ Wed, 24 Jan 2024 22:18:02 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5456671555600339007=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_introduce_Xe_multigpu_and_o?=
+ =?utf-8?q?ther_multi-GPU_helpers_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Date: Wed, 24 Jan 2024 22:18:02 -0000
+Message-ID: <170613468238.685200.10524897355719269925@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240124204134.71451-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20240124204134.71451-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,139 +36,456 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Test basic mmap for two or more GPU cards.
+--===============5456671555600339007==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/intel/gem_mmap.c | 77 +++++++++++++++++++++++++++---------------
- 1 file changed, 50 insertions(+), 27 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/gem_mmap.c b/tests/intel/gem_mmap.c
-index d4ca1eda7..90bcec7b0 100644
---- a/tests/intel/gem_mmap.c
-+++ b/tests/intel/gem_mmap.c
-@@ -38,6 +38,8 @@
- 
- #include "drm.h"
- #include "i915/gem_create.h"
-+#include "intel_multigpu.h"
-+
- /**
-  * TEST: gem mmap
-  * Description: Basic MMAP IOCTL tests for memory regions.
-@@ -61,6 +63,11 @@
-  *   mapping existence after gem_close and unmapping.
-  * Run type: BAT
-  *
-+ * SUBTEST: basic-multigpu
-+ * Description:
-+ *   Test basics of mmap on two or more GPUs.
-+ * Run type: BAT
-+ *
-  * SUBTEST: basic-small-bo
-  * Description:
-  *   Test the write read coherency and simultaneous access of different pages of a small buffer
-@@ -209,12 +216,40 @@ static int mmap_ioctl(int i915, struct drm_i915_gem_mmap *arg)
- 	return err;
- }
- 
--igt_main
-+static void test_basic(int i915, int pat)
- {
-+	struct drm_i915_gem_mmap arg = {
-+		.handle = gem_create(fd, OBJECT_SIZE),
-+		.size = OBJECT_SIZE,
-+	};
- 	uint8_t expected[OBJECT_SIZE];
- 	uint8_t buf[OBJECT_SIZE];
- 	uint8_t *addr;
- 
-+	igt_assert_eq(mmap_ioctl(fd, &arg), 0);
-+	addr = from_user_pointer(arg.addr_ptr);
-+
-+	igt_info("Testing contents of newly created object.\n");
-+	memset(expected, 0, sizeof(expected));
-+	igt_assert(memcmp(addr, expected, sizeof(expected)) == 0);
-+
-+	igt_info("Testing coherency of writes and mmap reads.\n");
-+	memset(buf, 0, sizeof(buf));
-+	memset(buf + 1024, pat, 1024);
-+	memset(expected + 1024, pat, 1024);
-+	gem_write(fd, arg.handle, 0, buf, OBJECT_SIZE);
-+	igt_assert(memcmp(buf, addr, sizeof(buf)) == 0);
-+
-+	igt_info("Testing that mapping stays after close\n");
-+	gem_close(fd, arg.handle);
-+	igt_assert(memcmp(buf, addr, sizeof(buf)) == 0);
-+
-+	igt_info("Testing unmapping\n");
-+	munmap(addr, OBJECT_SIZE);
-+}
-+
-+igt_main
-+{
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_INTEL);
- 		igt_require(gem_has_legacy_mmap(fd));
-@@ -306,36 +341,13 @@ igt_main
- 
- 	igt_describe("Test basics of newly mapped gem object like default content, write and read "
- 		     "coherency, mapping existence after gem_close and unmapping.");
--	igt_subtest("basic") {
--		struct drm_i915_gem_mmap arg = {
--			.handle = gem_create(fd, OBJECT_SIZE),
--			.size = OBJECT_SIZE,
--		};
--		igt_assert_eq(mmap_ioctl(fd, &arg), 0);
--		addr = from_user_pointer(arg.addr_ptr);
--
--		igt_info("Testing contents of newly created object.\n");
--		memset(expected, 0, sizeof(expected));
--		igt_assert(memcmp(addr, expected, sizeof(expected)) == 0);
--
--		igt_info("Testing coherency of writes and mmap reads.\n");
--		memset(buf, 0, sizeof(buf));
--		memset(buf + 1024, 0x01, 1024);
--		memset(expected + 1024, 0x01, 1024);
--		gem_write(fd, arg.handle, 0, buf, OBJECT_SIZE);
--		igt_assert(memcmp(buf, addr, sizeof(buf)) == 0);
--
--		igt_info("Testing that mapping stays after close\n");
--		gem_close(fd, arg.handle);
--		igt_assert(memcmp(buf, addr, sizeof(buf)) == 0);
--
--		igt_info("Testing unmapping\n");
--		munmap(addr, OBJECT_SIZE);
--	}
-+	igt_subtest("basic")
-+		test_basic(fd, 1);
- 
- 	igt_describe("Map small buffer object though direct CPU access, bypassing GPU.");
- 	igt_subtest("short-mmap") {
- 		uint32_t handle = gem_create(fd, OBJECT_SIZE);
-+		uint8_t *addr;
- 
- 		igt_assert(OBJECT_SIZE > 4096);
- 
-@@ -373,4 +385,15 @@ igt_main
- 
- 	igt_fixture
- 		drm_close_driver(fd);
-+
-+	igt_describe("Test basics of mapped on two or more GPUs.");
-+	igt_subtest("basic-multigpu") {
-+		igt_multi_fork_foreach_gpu(gpu, DRIVER_INTEL) {
-+			int pat = 1 + rand() % 128;
-+
-+			igt_info("Basic mmap test with pattern x%x\n", pat);
-+			test_basic(gpu, pat);
-+		}
-+		igt_waitchildren();
-+	}
- }
--- 
-2.42.0
+Series: introduce Xe multigpu and other multi-GPU helpers (rev2)
+URL   : https://patchwork.freedesktop.org/series/129101/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_14171 -> IGTPW_10585
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_10585 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_10585, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/index.html
+
+Participating hosts (37 -> 36)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_10585:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-adln-1:         [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14171/bat-adln-1/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adln-1/igt@i915_selftest@live@hangcheck.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10585 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - bat-rpls-2:         NOTRUN -> [SKIP][3] ([i915#9318])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@debugfs_test@basic-hwmon.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - bat-adlm-1:         NOTRUN -> [SKIP][4] ([i915#4613]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@gem_lmem_swapping@verify-random:
+    - bat-rpls-2:         NOTRUN -> [SKIP][5] ([i915#4613]) +3 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@gem_tiled_pread_basic:
+    - bat-rpls-2:         NOTRUN -> [SKIP][6] ([i915#3282])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-rpls-2:         NOTRUN -> [SKIP][7] ([i915#6621])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@i915_pm_rps@basic-api.html
+    - bat-adlm-1:         NOTRUN -> [SKIP][8] ([i915#6621])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@i915_pm_rps@basic-api.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - bat-rpls-2:         NOTRUN -> [SKIP][9] ([i915#4103]) +1 other test skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-rpls-2:         NOTRUN -> [SKIP][10] ([i915#3555] / [i915#3840] / [i915#9886])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-adlm-1:         NOTRUN -> [SKIP][11] ([fdo#109285])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@kms_force_connector_basic@force-load-detect.html
+    - bat-rpls-2:         NOTRUN -> [SKIP][12] ([fdo#109285])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlm-1:         NOTRUN -> [SKIP][13] ([i915#1849] / [i915#4342])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc:
+    - bat-adlm-1:         NOTRUN -> [SKIP][14] ([i915#9875] / [i915#9900]) +6 other tests skip
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@kms_pipe_crc_basic@hang-read-crc.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - bat-adlm-1:         NOTRUN -> [SKIP][15] ([i915#5354])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@kms_pm_backlight@basic-brightness.html
+    - bat-rpls-2:         NOTRUN -> [SKIP][16] ([i915#5354])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-adlm-1:         NOTRUN -> [SKIP][17] ([i915#3555])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@kms_setmode@basic-clone-single-crtc.html
+    - bat-rpls-2:         NOTRUN -> [SKIP][18] ([i915#3555])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - bat-adlm-1:         NOTRUN -> [SKIP][19] ([i915#3708] / [i915#9900])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@prime_vgem@basic-fence-flip.html
+
+  * igt@prime_vgem@basic-fence-read:
+    - bat-rpls-2:         NOTRUN -> [SKIP][20] ([fdo#109295] / [i915#3708]) +2 other tests skip
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@prime_vgem@basic-fence-read.html
+
+  * igt@prime_vgem@basic-write:
+    - bat-adlm-1:         NOTRUN -> [SKIP][21] ([i915#3708]) +2 other tests skip
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@prime_vgem@basic-write.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4342]: https://gitlab.freedesktop.org/drm/intel/issues/4342
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
+  [i915#9673]: https://gitlab.freedesktop.org/drm/intel/issues/9673
+  [i915#9732]: https://gitlab.freedesktop.org/drm/intel/issues/9732
+  [i915#9875]: https://gitlab.freedesktop.org/drm/intel/issues/9875
+  [i915#9886]: https://gitlab.freedesktop.org/drm/intel/issues/9886
+  [i915#9900]: https://gitlab.freedesktop.org/drm/intel/issues/9900
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7691 -> IGTPW_10585
+
+  CI-20190529: 20190529
+  CI_DRM_14171: 7ec08146b3938f825a1cbe49e36a5362b10204be @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10585: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/index.html
+  IGT_7691: 7691
+
+
+Testlist changes
+----------------
+
++igt@gem_mmap@basic-multigpu
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind
++igt@xe_exec_basic@multigpu-no-exec-basic
++igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind
++igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap
++igt@xe_exec_basic@multigpu-no-exec-bindexecqueue
++igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind
++igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr
++igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate
++igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race
++igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind
++igt@xe_exec_basic@multigpu-no-exec-null
++igt@xe_exec_basic@multigpu-no-exec-null-defer-bind
++igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap
++igt@xe_exec_basic@multigpu-no-exec-null-rebind
++igt@xe_exec_basic@multigpu-no-exec-rebind
++igt@xe_exec_basic@multigpu-no-exec-userptr
++igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate
++igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race
++igt@xe_exec_basic@multigpu-no-exec-userptr-rebind
++igt@xe_exec_basic@multigpu-once-basic
++igt@xe_exec_basic@multigpu-once-basic-defer-bind
++igt@xe_exec_basic@multigpu-once-basic-defer-mmap
++igt@xe_exec_basic@multigpu-once-bindexecqueue
++igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind
++igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr
++igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate
++igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race
++igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind
++igt@xe_exec_basic@multigpu-once-null
++igt@xe_exec_basic@multigpu-once-null-defer-bind
++igt@xe_exec_basic@multigpu-once-null-defer-mmap
++igt@xe_exec_basic@multigpu-once-null-rebind
++igt@xe_exec_basic@multigpu-once-rebind
++igt@xe_exec_basic@multigpu-once-userptr
++igt@xe_exec_basic@multigpu-once-userptr-invalidate
++igt@xe_exec_basic@multigpu-once-userptr-invalidate-race
++igt@xe_exec_basic@multigpu-once-userptr-rebind
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/index.html
+
+--===============5456671555600339007==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>introduce Xe multigpu and other multi-GPU helpers (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129101/">https://patchwork.freedesktop.org/series/129101/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_14171 -&gt; IGTPW_10585</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_10585 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_10585, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/index.html</p>
+<h2>Participating hosts (37 -&gt; 36)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_10585:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14171/bat-adln-1/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adln-1/igt@i915_selftest@live@hangcheck.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10585 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@basic-hwmon:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9318">i915#9318</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
+<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9886">i915#9886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4342">i915#4342</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc:</p>
+<ul>
+<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@kms_pipe_crc_basic@hang-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9875">i915#9875</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9900">i915#9900</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@basic-brightness:</p>
+<ul>
+<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-flip:</p>
+<ul>
+<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9900">i915#9900</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-read:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-rpls-2/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/bat-adlm-1/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7691 -&gt; IGTPW_10585</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14171: 7ec08146b3938f825a1cbe49e36a5362b10204be @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10585: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/index.html<br />
+  IGT_7691: 7691</p>
+<h2>Testlist changes</h2>
+<p>+igt@gem_mmap@basic-multigpu<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race<br />
++igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind<br />
++igt@xe_exec_basic@multigpu-no-exec-basic<br />
++igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind<br />
++igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap<br />
++igt@xe_exec_basic@multigpu-no-exec-bindexecqueue<br />
++igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind<br />
++igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr<br />
++igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate<br />
++igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race<br />
++igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind<br />
++igt@xe_exec_basic@multigpu-no-exec-null<br />
++igt@xe_exec_basic@multigpu-no-exec-null-defer-bind<br />
++igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap<br />
++igt@xe_exec_basic@multigpu-no-exec-null-rebind<br />
++igt@xe_exec_basic@multigpu-no-exec-rebind<br />
++igt@xe_exec_basic@multigpu-no-exec-userptr<br />
++igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate<br />
++igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race<br />
++igt@xe_exec_basic@multigpu-no-exec-userptr-rebind<br />
++igt@xe_exec_basic@multigpu-once-basic<br />
++igt@xe_exec_basic@multigpu-once-basic-defer-bind<br />
++igt@xe_exec_basic@multigpu-once-basic-defer-mmap<br />
++igt@xe_exec_basic@multigpu-once-bindexecqueue<br />
++igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind<br />
++igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr<br />
++igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate<br />
++igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race<br />
++igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind<br />
++igt@xe_exec_basic@multigpu-once-null<br />
++igt@xe_exec_basic@multigpu-once-null-defer-bind<br />
++igt@xe_exec_basic@multigpu-once-null-defer-mmap<br />
++igt@xe_exec_basic@multigpu-once-null-rebind<br />
++igt@xe_exec_basic@multigpu-once-rebind<br />
++igt@xe_exec_basic@multigpu-once-userptr<br />
++igt@xe_exec_basic@multigpu-once-userptr-invalidate<br />
++igt@xe_exec_basic@multigpu-once-userptr-invalidate-race<br />
++igt@xe_exec_basic@multigpu-once-userptr-rebind</p>
+
+</body>
+</html>
+
+--===============5456671555600339007==--
