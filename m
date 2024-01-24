@@ -4,151 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4B34C47DDF
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Jan 2024 09:04:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C37BFC46CD2
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Jan 2024 09:13:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5345510F6A5;
-	Wed, 24 Jan 2024 09:04:24 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 086E410F69C
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Jan 2024 09:04:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706087063; x=1737623063;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=U071o/K9CuuUwF37GnywheBSfOrc4D6DxlahnXTaIBo=;
- b=cQw3L42vO61lq3dkDa5K0WjWQrg26PJoNNd867lj8aw6uX+3433mdJt7
- fVFSnpZN3ePhQ6PopW7/Iev4mGMhRGD8Y9n6d+mDrAFsQGFKa16T91AKf
- hmytUwPOhEnL95LgIzp1XMFqKi15nbDkL0gpefznwKx4eS5jgQOkifkc9
- YC5/wn9xMNtngylEZapYPKkdy/ui/VmrRVXm+78BeOX0W18PdYPIbHkeI
- sCooZ5tuksLiRQY1fO6KfBV9FSxLvUYuyOSSl6TaQVyYpS+w37JyY1B8u
- goKEDByv6ol+bKSR5hdHsyVz5SlJxeYCZ58XLeOHbviYg05SBRXBCO6C1 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="15309059"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="15309059"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 01:04:23 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="1863597"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 24 Jan 2024 01:04:21 -0800
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 24 Jan 2024 01:04:21 -0800
-Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 24 Jan 2024 01:04:20 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Wed, 24 Jan 2024 01:04:20 -0800
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 24 Jan 2024 01:04:20 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Wvjat8mSiX7ykt/eaSrXmdGyW8LWJcEFxR295FPuX+RSVXsKxEgx+ncIEO0aXpIPlOEDliy8TAJXiYmRrClLZ0IHUPCXizvIqcdagGP7comxO5/1j9fsX4gB6jvWwNO9pU11nwSKndsliiafp/BWiuKFqmwAQwMGaX9WzzOP9qWl0hbCJ66Bh05vLS5mP2B/TrsFhKuTwIe+boEIjDXk1SmTM7foJaT9039Sd/WmCZN5Y0jOhKBy9maRvwRIwodWd3WIopqx9rCAwbl1VCUv/Ze8z5XCXHaNNdnOdr0jcuoRzo3CZ4YMdl1SMEJz76PrLkThT10Ul3XW6kXb3v8VAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B6cLLXSx+1bD+DYpC+/L2uJlqbZ09qmy0XqI9MCvG7I=;
- b=l6lEux8ptaFzoDdwC/cBWOZbwBLRyWY4tKYZ7qTsJUlqnnmqY66UrSHAo6uHHuLA3WxzYM3y1uwWrTmBSjF0SiZUoiMPX6yObd0z11obAXZCZE+2rPLYnWg5B3RnBdmWSQ2icZphotYY4qk641iUpTly3g13YpOmgkfTxGi+R3GT2W4AmKHbFSlB8vD60Ud7eBfu6KvI6Q2Jc5+hl63bLpYj2pYD4MTBJDHJagVz9rwuh6rXQ7cl1PcD0RZaRtEzTUGvMDaXQ23k7C0ovOaBdrY02Pb1a4U7gjrcSJmQW2E0xGnSs883WiaVabE1YioRY8MWfgJhlvQ8trK5VFU2Ug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM8PR11MB5719.namprd11.prod.outlook.com (2603:10b6:8:10::6) by
- CYXPR11MB8730.namprd11.prod.outlook.com (2603:10b6:930:e3::6) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7228.22; Wed, 24 Jan 2024 09:04:18 +0000
-Received: from DM8PR11MB5719.namprd11.prod.outlook.com
- ([fe80::ef1e:146:d198:adbb]) by DM8PR11MB5719.namprd11.prod.outlook.com
- ([fe80::ef1e:146:d198:adbb%3]) with mapi id 15.20.7202.035; Wed, 24 Jan 2024
- 09:04:18 +0000
-Message-ID: <bba9ee2f-4731-4908-8ab7-679c37785766@intel.com>
-Date: Wed, 24 Jan 2024 14:33:57 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 4/6] lib: Add support for solid_fill and
- pixel_source plane properties
-Content-Language: en-US
-To: Jessica Zhang <quic_jesszhan@quicinc.com>,
- <igt-dev@lists.freedesktop.org>, Petri Latvala <adrinael@adrinael.net>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 783AB10E84E;
+	Wed, 24 Jan 2024 09:13:30 +0000 (UTC)
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com
+ [46.235.227.194])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1CEEC10E84E
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Jan 2024 09:13:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+ s=mail; t=1706087607;
+ bh=4jhQ9Yqb8RQuDYHEbeD6NbqC7I9b7MqqmI/vWKvJ7z0=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=2LtUUuQ8DuqNqOPHvCyDX2xAcOlVHpSqp9/PLMgPEYh5gNvRXMIg2gwwk2mYXQfiw
+ OG+q604lm4HK1+A70tCMr4pJ7pIV5XE9cn4YWqdIy3K9uw3lrkAYp54QbSFAmzd9ND
+ DcpaeGORGki2rq6U6lDCZEFIqkWCied29gF1pBUyF5Fer+Kn9K05tYlh3KdjoxaBBB
+ wJe9tBqyn7uJwXUki/ZBeTY78YOHMB6azr8NPe2v7z/KXXczDc55vRY7Z/11YrSRHR
+ D9DVbGh2avXeKVUJcLZKyUvg4Uu2yvlkoMkbtWX9oE/6trkpNCkq05IurnAlJ6fqWR
+ pl5FZeunMlWFQ==
+Received: from eldfell (cola.collaboradmins.com [195.201.22.229])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits)
+ server-digest SHA256) (No client certificate requested)
+ (Authenticated sender: pq)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id 7482C37802F2;
+ Wed, 24 Jan 2024 09:13:26 +0000 (UTC)
+Date: Wed, 24 Jan 2024 11:13:25 +0200
+From: Pekka Paalanen <pekka.paalanen@collabora.com>
+To: Jessica Zhang <quic_jesszhan@quicinc.com>
+Subject: Re: [PATCH i-g-t v2 5/6] tests/kms_atomic: Add solid fill plane
+ subtest
+Message-ID: <20240124111325.179896e7.pekka.paalanen@collabora.com>
+In-Reply-To: <20240123-solid-fill-v2-5-4ecd2cf767fe@quicinc.com>
 References: <20240123-solid-fill-v2-0-4ecd2cf767fe@quicinc.com>
- <20240123-solid-fill-v2-4-4ecd2cf767fe@quicinc.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20240123-solid-fill-v2-4-4ecd2cf767fe@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN3PR01CA0109.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:96::22) To DM8PR11MB5719.namprd11.prod.outlook.com
- (2603:10b6:8:10::6)
+ <20240123-solid-fill-v2-5-4ecd2cf767fe@quicinc.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM8PR11MB5719:EE_|CYXPR11MB8730:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4230d107-f9a8-419a-f4ef-08dc1cbb7274
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Iw/2TFbxb547f6Cvzt64GOvXi14GO5iVnRVH0twICHQ5vZ9ZycHFTGQx7vFUh6xNwAndlTH10tJzjqcoy0qR153M51BZGUcyZOLfszTPrOtdI29CFfi6NNCyl1V4nx64aGlGN0aH6jbu1rf197WPjBX8tj09hIZVImbphrDajLLp3QCumi9cJTaHHsg/7u4wp66I2sC97KiQF9DandYEy8rC6jlTyHcLthF7ZUK4xqQoysqonsVCC3VYX0wSR7lbJ1etSrkx+TR/jvQDvi2e3G9TcLBkSs3fCSdWufYpYAzxUHck1irMJKQ2DQ0foDWu+FYuPn4m6nO1c0+0LHnlcfgUdjWlEB+vwZkw3+zR0tXZWIfdjGUneeo2+R8KisZpGPuaw+hsdbOddTiWmp1aim70y5uk7xEU7g5R311mflaMqcqHgoFb1b+VLKnoUz7j0JoabYTZcA2ZtdvDRgI4JzI/05VQceMC/iX+tZHWyJjhtBNP46ImYwC5S9sHRUKM21do4P45g2PPsKmvqYkSGYIWc8OuKJl3nUdkkfwWh1MhcFvz1TCYnplxfX2il6KNIDYmFN0sWwoDwvRhQ5I17bYetf4EOi+TdHf5+l8i1VitRYmHSnZTt0D+pYhwpvkn4oZAa+mbx9VR669BqK0TyA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM8PR11MB5719.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(396003)(366004)(39860400002)(376002)(346002)(136003)(230922051799003)(64100799003)(186009)(1800799012)(451199024)(82960400001)(38100700002)(478600001)(31696002)(86362001)(53546011)(6506007)(36756003)(41300700001)(6486002)(6666004)(4326008)(8936002)(8676002)(26005)(2616005)(110136005)(316002)(66946007)(66556008)(66476007)(54906003)(5660300002)(2906002)(83380400001)(6512007)(31686004)(43740500002)(45980500001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QmdUbi9XbXBudk9SUUc2SitGZXFHNlpDd1AxRlZmN1VjU3pDS05VUGJ2cXNq?=
- =?utf-8?B?eTcwa05OY0V6ZHJscS9oQXRDaHBPWk1tOUdvc21nS0tSeDhWZmNrWklqSm1C?=
- =?utf-8?B?bXZpNUI2T0VKSVlpZWUvc0xTZ1EzMnlFTUFFQXFLdUJmY1JhRE1ZKytUZGVZ?=
- =?utf-8?B?VEpDbWR3NVZFSFlTbHUxRTFxU2x4MXE5VGI4MGxrSzdjZDhONmYrUk5sSnhI?=
- =?utf-8?B?NVFvQmdFUDdnOHV5WFJacE5lckpVOG5ub2RYOTYyS0IxcmhrOEwrcnJsNGly?=
- =?utf-8?B?S2lETkNDa09ZVTV4QTZsTnNYa3pqb2F3Q1lmaWp2bDh2anZpR1N1Zk5ibGNy?=
- =?utf-8?B?MmQzT2JaZVB2NkNyY3VZNk5vbzlRanN0THhlajJpQVF3L1BsYno5angwcFB0?=
- =?utf-8?B?Q2dVV0tNK0xveDZrSzNodGV5RGNtR0JoZ2JpVFlRQjJka1F4THpoMnpoTjlU?=
- =?utf-8?B?T2Q4VVpYd1VhWTdRM2NPcGhGNVlGTWxwc29SclZlaUhUOUFDb0w2SXB6MHY3?=
- =?utf-8?B?VzM3SEdpcFpJbngvbStGdFdxOXRpdng1Y0ZSZ3lVc2kreHFIbnpNT0tZN3BM?=
- =?utf-8?B?Zm55SEZCbmo4ZnhWNUw3RkRiaTlSNU5FbXpqYXlUZ1hoL1JJa0grUWo2UzhX?=
- =?utf-8?B?eFA5NnhPODBRZlhueHBjN3daY3c4aGJZbXhVR2o3Umw3R1BZRVNFY1VDSm1P?=
- =?utf-8?B?bFlhc2pLRnRTdDhpUGJLVnpYT3UyNlp3Undqc0RYZVgrMm5taWx5ajVGMHZ6?=
- =?utf-8?B?VVZjN3JrK1NXNkh5TFJSNWtqR2xWRnRHVGppV3c5WUlCVmVSNDRibUE2SWNW?=
- =?utf-8?B?Szl0ZEJIUjFPWm1PdmYvSXpDcDVyZjdkSTNZV1QxUWhkSFlyZ3d6UCs2a1hj?=
- =?utf-8?B?MGlGYTZhcUpIZk9BMi83dlVMNFFCNm5jbUlLS3BNQ2xwUzRyVHZMT28vM1Jj?=
- =?utf-8?B?VmNLWWlPWVozbGxjSU9yN1FNdXduVUt6NTRqdWRtRVVtTGltdlFrU1BTaVd1?=
- =?utf-8?B?YWtEa2E2UDU1cCtnT0ZYMEcvZXQvQXFyUmJjK1d5WE0xSndiNHVMZmFUM3BD?=
- =?utf-8?B?ZEFDaVVPeTNraUpUWjVybzV4K0QzTXhkbGJYaTZlWFh2K3dKZEtldTAvcmZL?=
- =?utf-8?B?ajY1bDVxbjNwOHA3WktIbFNpM2lnR0dpT3FVQnRMTUVlUWY0WkJNUzh2M29p?=
- =?utf-8?B?bHRERXFxNmEzbm55bnR5b3lUREZzdXV4cjBGbUF0L3RZOFZrVVIwNnQyMk9S?=
- =?utf-8?B?L3gwNDJJN2VKdVZOcWVhRmowUzhlanB2Smh5WW5sRnF0cG5xZG1jeUQ0UGwv?=
- =?utf-8?B?aHg5VUZQckhNVnNlVW1CM0RCdjNyNHNqcWY4Q2hrYTh5K3FWKzhwdGF2b1ZB?=
- =?utf-8?B?RlFHWStJUFVEaVVGUXdUSENQbEtOOFVkZFJPTU1KT0JLOGdpTDhmNWw5d0tQ?=
- =?utf-8?B?N00wd2ZtZUwyVkhHaDllSUJwZzlVaENjMFhuOHI1Q3lWc09MT3JpT3gwazVs?=
- =?utf-8?B?Z3hkUW8vQ2FBZFNtSTRxR2xPOEJ4YlV2UmZaS1h1LzNLQTFkZlBiSDlyOW5G?=
- =?utf-8?B?NVo2VFlTWDU2UTIyd0JlSG9NeUlpaG80cFhxWXBpSkRyNUJoMk5zVDl3cTVJ?=
- =?utf-8?B?M21kenI3ZTA2MktOM1lqTW1lWUg0UXAxRUZVLzBKTkQrV0FrdlBma2FEQWJJ?=
- =?utf-8?B?NjVva3R0WktvWEV3MXhTZnhIV01ESVB4UlZCYUhIQ253UXRhVmFVWlZPRGtL?=
- =?utf-8?B?REJpVXluSFBSc0JUUHJ6eHN1S1NKeC9idXpIWG1BVC9QSG95UkpvTG1HOGdG?=
- =?utf-8?B?UlQrZTJzZTZVVXNDOG1WQk1qMzU0VUZpdGJaMHRxU2FLSlpBanQ4QTRTRW9K?=
- =?utf-8?B?NVRSWExlNkNjUzV5MWFqTUVLaExWOWJOd1p6dGN1ZFhnZmUyNFIrTHF4SE9X?=
- =?utf-8?B?ckRQM0h2UTZHZ1lHZDVvZFdEcnJLMHlhSFc1N2tURDVndG5ydUJod2xGdVZX?=
- =?utf-8?B?WnR0eStFNW1ra2ovQmNWQmx0UWVCMERMZXlxZ0ZpaVFsVXNsaTQwWkszQno0?=
- =?utf-8?B?TzZ3TlpydXpQOTZVM0RwNHhGVUN2NTVibnlOSkJUa3M2WWRueWJ3QTcyclpR?=
- =?utf-8?B?a3dZNDlXTUtQWDd2NzZ4TFNMNnVYR0hFekxOYmRvaTIvV0lIQmM1dm5oS3NL?=
- =?utf-8?B?cEE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4230d107-f9a8-419a-f4ef-08dc1cbb7274
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5719.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jan 2024 09:04:18.6139 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4EWse1PptZaHed7MoGjAulS1rWpQpDj7c7wK7AdFydnd10olfPJ5GAUkrfH9F442XVmKeJny/rRutQ4wp931oKqCS4SmDaZ4p0PrKUmqjt4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR11MB8730
-X-OriginatorOrg: intel.com
+Content-Type: multipart/signed; boundary="Sig_/CD0E1zvWnUMRiWo/jrEff.u";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -161,138 +55,362 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Dmitry
- Baryshkov <dmitry.baryshkov@linaro.org>, Simon Ser <contact@emersion.fr>,
- Rob Clark <robdclark@gmail.com>, Pekka Paalanen <pekka.paalanen@collabora.com>
+Cc: Simon Ser <contact@emersion.fr>, igt-dev@lists.freedesktop.org,
+ Rob Clark <robdclark@gmail.com>, Dmitry
+ Baryshkov <dmitry.baryshkov@linaro.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--Sig_/CD0E1zvWnUMRiWo/jrEff.u
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, 23 Jan 2024 15:28:58 -0800
+Jessica Zhang <quic_jesszhan@quicinc.com> wrote:
 
-On 24-01-2024 04:58 am, Jessica Zhang wrote:
-> Add corresponding IGT macros for solid_fill and pixel_source DRM
-> properties, and change IGT commit behavior to allow for NULL FB commits.
-> 
+> Add a basic test for solid fill planes.
+>=20
+> This test will first commit a single-color framebuffer plane then
+> a solid fill plane with the same contents. It then validates the solid
+> fill plane by comparing the resulting CRC with the CRC of the reference
+> framebuffer commit.
+>=20
 > Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
 > ---
->   lib/igt_kms.c | 46 +++++++++++++++++++++++++++++++++++++++++++---
->   lib/igt_kms.h |  4 ++++
->   2 files changed, 47 insertions(+), 3 deletions(-)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 1b4d0d7612a2..238b0a834adf 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -669,6 +669,8 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
->   	[IGT_PLANE_HOTSPOT_X] = "HOTSPOT_X",
->   	[IGT_PLANE_HOTSPOT_Y] = "HOTSPOT_Y",
->   	[IGT_PLANE_FB_ID] = "FB_ID",
-> +	[IGT_PLANE_SOLID_FILL] = "solid_fill",
-> +	[IGT_PLANE_PIXEL_SOURCE] = "pixel_source",
->   	[IGT_PLANE_CRTC_ID] = "CRTC_ID",
->   	[IGT_PLANE_IN_FENCE_FD] = "IN_FENCE_FD",
->   	[IGT_PLANE_TYPE] = "type",
-> @@ -3417,6 +3419,11 @@ static igt_output_t *igt_pipe_get_output(igt_pipe_t *pipe)
->   	return NULL;
->   }
->   
-> +static uint32_t igt_plane_get_solid_fill_id(igt_plane_t *plane)
-> +{
-> +	return plane->values[IGT_PLANE_SOLID_FILL];
-> +}
-> +
->   static uint32_t igt_plane_get_fb_id(igt_plane_t *plane)
->   {
->   	return plane->values[IGT_PLANE_FB_ID];
-> @@ -3648,7 +3655,7 @@ static int igt_primary_plane_commit_legacy(igt_plane_t *primary,
->   	struct igt_display *display = primary->pipe->display;
->   	igt_output_t *output = igt_pipe_get_output(pipe);
->   	drmModeModeInfo *mode;
-> -	uint32_t fb_id, crtc_id;
-> +	uint32_t fb_id, solid_fill_id, crtc_id;
->   	int ret;
->   
->   	/* Primary planes can't be windowed when using a legacy commit */
-> @@ -3665,12 +3672,14 @@ static int igt_primary_plane_commit_legacy(igt_plane_t *primary,
->   
->   	crtc_id = pipe->crtc_id;
->   	fb_id = output ? igt_plane_get_fb_id(primary) : 0;
-> -	if (fb_id)
-> +	solid_fill_id = output ? igt_plane_get_solid_fill_id(primary) : 0;
-> +
-> +	if (fb_id || solid_fill_id)
->   		mode = igt_output_get_mode(output);
->   	else
->   		mode = NULL;
->   
-> -	if (fb_id) {
-> +	if (fb_id || solid_fill_id) {
->   		uint32_t src_x = primary->values[IGT_PLANE_SRC_X] >> 16;
->   		uint32_t src_y = primary->values[IGT_PLANE_SRC_Y] >> 16;
->   
-> @@ -4935,6 +4944,37 @@ igt_plane_t *igt_output_get_plane_type_index(igt_output_t *output,
->   	return igt_pipe_get_plane_type_index(pipe, plane_type, index);
->   }
->   
+>  tests/kms_atomic.c | 179 +++++++++++++++++++++++++++++++++++++++++++++++=
+------
+>  1 file changed, 161 insertions(+), 18 deletions(-)
+>=20
+> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+> old mode 100644
+> new mode 100755
+> index 2b6e9a8f0383..35ac5f198524
+> --- a/tests/kms_atomic.c
+> +++ b/tests/kms_atomic.c
+> @@ -43,6 +43,7 @@
+>  #include <stdint.h>
+>  #include <string.h>
+>  #include <errno.h>
+> +#include <math.h>
+>  #include <xf86drmMode.h>
+>  #include <cairo.h>
+>  #include "drm.h"
+> @@ -101,6 +102,15 @@
+>   * @params-fence:     fence parameters
+>   */
+> =20
 > +/**
-> + * igt_plane_set_solid_fill:
-> + * @plane: Plane
-> + * @rect: Rect for size and position of @plane
-> + * @solid_fill_id: Solid fill property blob ID
+> + * SUBTEST: plane-%s-solid-fill
+> + * Description: Test atomic modesetting on %arg[1] using solid fill prop=
+erty.
 > + *
-> + * Pairs the solid_fill blob (identified by @solid_fill_id) to a @plane
+> + * arg[1]:
 > + *
-> + * The size and position of the solid fill plane will be specified by @rect
+> + * @primary:        Primary plane
 > + */
-> +void igt_plane_set_solid_fill(igt_plane_t *plane, struct drm_mode_rect *rect,
-> +		int solid_fill_id)
+> +
+>  #ifndef DRM_CAP_CURSOR_WIDTH
+>  #define DRM_CAP_CURSOR_WIDTH 0x8
+>  #endif
+> @@ -122,18 +132,45 @@ typedef struct {
+>  	igt_fb_t fb;
+>  } data_t;
+> =20
+> +static struct {
+> +	uint32_t r, g, b;
+> +} colors[8] =3D {
+> +	/* Basic Colors */
+> +	{ .r =3D 0x00000000, .g =3D 0x00000000, .b =3D 0x00000000 },
+> +	{ .r =3D 0xffffffff, .g =3D 0x00000000, .b =3D 0x00000000 },
+> +	{ .r =3D 0x00000000, .g =3D 0xffffffff, .b =3D 0x00000000 },
+> +	{ .r =3D 0x00000000, .g =3D 0x00000000, .b =3D 0xffffffff },
+> +	{ .r =3D 0xffffffff, .g =3D 0xffffffff, .b =3D 0xffffffff },
+> +
+> +	/* Mid-grays */
+> +	{ .r =3D 0x40000000, .g =3D 0x40000000, .b =3D 0x40000000 },
+> +	{ .r =3D 0x80000000, .g =3D 0x80000000, .b =3D 0x80000000 },
+> +	{ .r =3D 0xcccccccc, .g =3D 0xcccccccc, .b =3D 0xcccccccc },
+> +};
+
+Hi,
+
+the above looks good to me. More below.
+
+> +
+>  enum kms_atomic_check_relax {
+>  	ATOMIC_RELAX_NONE =3D 0,
+>  	CRTC_RELAX_MODE =3D (1 << 0),
+>  	PLANE_RELAX_FB =3D (1 << 1)
+>  };
+> =20
+> -static inline int damage_rect_width(struct drm_mode_rect *r)
+> +/*
+> + * Fixed point uint to floating point conversion based on
+> + * Vulkan's UNORM conversion:
+> + *
+> + * https://registry.khronos.org/vulkan/specs/1.3/html/chap3.html#fundame=
+ntals-fixedconv
+> + */
+> +static inline double unorm_to_float(uint32_t x)
 > +{
-> +	igt_pipe_t *pipe = plane->pipe;
-> +	igt_display_t *display = pipe->display;
-> +	int width = rect->x2 - rect->x1;
-> +	int height = rect->y2 - rect->y1;
-> +
-> +	igt_plane_set_prop_value(plane, IGT_PLANE_CRTC_ID,
-> +			solid_fill_id ? pipe->crtc_id : 0);
-> +	igt_plane_set_prop_value(plane, IGT_PLANE_SOLID_FILL, solid_fill_id);
-
-We should reset this property to default in igt_display_reset().
-
-- Bhanu
-
-> +
-> +	plane->gem_handle = 0;
-> +
-> +	LOG(display, "%s.%d: plane_set_solid_fill(%d)\n", kmstest_pipe_name(pipe->pipe),
-> +	    plane->index, solid_fill_id);
-> +
-> +	igt_plane_set_position(plane, rect->x1, rect->y1);
-> +	igt_plane_set_size(plane, width, height);
+> +	return x / (pow(2, 32) - 1);
 > +}
 > +
->   /**
->    * igt_plane_set_fb:
->    * @plane: Plane
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index b3882808b42f..9c05272abe1e 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -330,6 +330,8 @@ enum igt_atomic_plane_properties {
->   #define IGT_PLANE_COORD_CHANGED_MASK 0xff
->   
->          IGT_PLANE_FB_ID,
-> +       IGT_PLANE_SOLID_FILL,
-> +       IGT_PLANE_PIXEL_SOURCE,
->          IGT_PLANE_CRTC_ID,
->          IGT_PLANE_IN_FENCE_FD,
->          IGT_PLANE_TYPE,
-> @@ -537,6 +539,8 @@ igt_output_t *igt_get_single_output_for_pipe(igt_display_t *display, enum pipe p
->   
->   void igt_pipe_request_out_fence(igt_pipe_t *pipe);
->   
-> +void igt_plane_set_solid_fill(igt_plane_t *plane, struct drm_mode_rect *rect,
-> +		int solid_fill_id);
->   void igt_plane_set_fb(igt_plane_t *plane, struct igt_fb *fb);
->   void igt_plane_set_fence_fd(igt_plane_t *plane, int fence_fd);
->   void igt_plane_set_pipe(igt_plane_t *plane, igt_pipe_t *pipe);
-> 
+> +static inline int rect_width(struct drm_mode_rect *r)
+>  {
+>  	return r->x2 - r->x1;
+>  }
+> =20
+> -static inline int damage_rect_height(struct drm_mode_rect *r)
+> +static inline int rect_height(struct drm_mode_rect *r)
+>  {
+>  	return r->y2 - r->y1;
+>  }
+> @@ -1156,8 +1193,8 @@ static void atomic_plane_damage(data_t *data)
+> =20
+>  	cr_1 =3D igt_get_cairo_ctx(data->drm_fd, &fb_1);
+>  	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
+> -			damage_rect_width(&damage[0]),
+> -			damage_rect_height(&damage[0]), 1.0, 0, 0);
+> +			rect_width(&damage[0]),
+> +			rect_height(&damage[0]), 1.0, 0, 0);
+>  	igt_put_cairo_ctx(cr_1);
+> =20
+>  	igt_plane_set_fb(data->primary, &fb_1);
+> @@ -1183,8 +1220,8 @@ static void atomic_plane_damage(data_t *data)
+>  	cairo_set_source_surface(cr_2, fb_1.cairo_surface, 0, 0);
+>  	cairo_paint(cr_2);
+>  	igt_paint_color(cr_2, damage[0].x1, damage[0].y1,
+> -			damage_rect_width(&damage[0]),
+> -			damage_rect_height(&damage[0]), 0, 1.0, 0);
+> +			rect_width(&damage[0]),
+> +			rect_height(&damage[0]), 0, 1.0, 0);
+>  	igt_put_cairo_ctx(cr_1);
+>  	igt_put_cairo_ctx(cr_2);
+>  	igt_plane_set_fb(data->primary, &fb_2);
+> @@ -1213,8 +1250,8 @@ static void atomic_plane_damage(data_t *data)
+>  	cairo_set_source_surface(cr_1, fb_2.cairo_surface, 0, 0);
+>  	cairo_paint(cr_1);
+>  	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
+> -			damage_rect_width(&damage[0]),
+> -			damage_rect_height(&damage[0]), 0, 1.0, 0);
+> +			rect_width(&damage[0]),
+> +			rect_height(&damage[0]), 0, 1.0, 0);
+>  	igt_put_cairo_ctx(cr_2);
+>  	igt_put_cairo_ctx(cr_1);
+>  	igt_plane_set_fb(data->primary, &fb_1);
+> @@ -1238,8 +1275,8 @@ static void atomic_plane_damage(data_t *data)
+> =20
+>  	cr_1 =3D igt_get_cairo_ctx(data->drm_fd, &fb_1);
+>  	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
+> -			damage_rect_width(&damage[0]),
+> -			damage_rect_height(&damage[0]), 1.0, 1.0, 0);
+> +			rect_width(&damage[0]),
+> +			rect_height(&damage[0]), 1.0, 1.0, 0);
+>  	igt_put_cairo_ctx(cr_1);
+>  	igt_plane_set_fb(data->primary, &fb_1);
+>  	igt_plane_set_size(data->primary, data->fb.width, data->fb.height);
+> @@ -1266,11 +1303,11 @@ static void atomic_plane_damage(data_t *data)
+> =20
+>  	cr_1 =3D igt_get_cairo_ctx(data->drm_fd, &fb_1);
+>  	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
+> -			damage_rect_width(&damage[0]),
+> -			damage_rect_height(&damage[0]), 0, 1.0, 1.0);
+> +			rect_width(&damage[0]),
+> +			rect_height(&damage[0]), 0, 1.0, 1.0);
+>  	igt_paint_color(cr_1, damage[1].x1, damage[1].y1,
+> -			damage_rect_width(&damage[1]),
+> -			damage_rect_height(&damage[1]), 0, 1.0, 0);
+> +			rect_width(&damage[1]),
+> +			rect_height(&damage[1]), 0, 1.0, 0);
+>  	igt_put_cairo_ctx(cr_1);
+>  	igt_plane_set_fb(data->primary, &fb_1);
+>  	igt_plane_set_size(data->primary, data->fb.width, data->fb.height);
+> @@ -1299,11 +1336,11 @@ static void atomic_plane_damage(data_t *data)
+> =20
+>  	cr_1 =3D igt_get_cairo_ctx(data->drm_fd, &fb_1);
+>  	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
+> -			damage_rect_width(&damage[0]),
+> -			damage_rect_height(&damage[0]), 1.0, 0, 0);
+> +			rect_width(&damage[0]),
+> +			rect_height(&damage[0]), 1.0, 0, 0);
+>  	igt_paint_color(cr_1, damage[1].x1, damage[1].y1,
+> -			damage_rect_width(&damage[1]),
+> -			damage_rect_height(&damage[1]), 1.0, 1.0, 1.0);
+> +			rect_width(&damage[1]),
+> +			rect_height(&damage[1]), 1.0, 1.0, 1.0);
+>  	igt_put_cairo_ctx(cr_1);
+>  	igt_plane_set_fb(data->primary, &fb_1);
+>  	igt_plane_set_size(data->primary, data->fb.width, data->fb.height);
+> @@ -1322,6 +1359,98 @@ static void atomic_plane_damage(data_t *data)
+>  	igt_remove_fb(data->drm_fd, &fb_2);
+>  }
+> =20
+> +static void test_solid_fill_plane(data_t *data, igt_output_t *output, ig=
+t_plane_t *plane)
+> +{
+> +	drmModeModeInfo *mode =3D igt_output_get_mode(output);
+> +	struct drm_mode_rect rect =3D { 0 };
+> +	struct igt_fb ref_fb;
+> +	igt_pipe_crc_t *pipe_crc;
+> +	igt_crc_t ref_crc, new_crc;
+> +	enum pipe pipe =3D data->pipe->pipe;
+> +	int height, width, i;
+> +	int ret;
+> +
+> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_SOLID_FILL));
+> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_PIXEL_SOURCE));
+> +
+> +	rect.x1 =3D 0;
+> +	rect.x2 =3D mode->hdisplay;
+> +	rect.y1 =3D 0;
+> +	rect.y2 =3D mode->vdisplay;
+> +
+> +	width =3D rect_width(&rect);
+> +	height =3D rect_height(&rect);
+> +
+> +	igt_plane_set_position(plane, rect.x1, rect.y1);
+> +	pipe_crc =3D igt_pipe_crc_new(data->drm_fd, pipe,
+> +			    IGT_PIPE_CRC_SOURCE_AUTO);
+> +
+> +
+> +	for (i =3D 0; i < ARRAY_SIZE(colors); i++) {
+> +		uint32_t r =3D colors[i].r;
+> +		uint32_t g =3D colors[i].g;
+> +		uint32_t b =3D colors[i].b;
+> +
+> +		struct drm_mode_create_blob c;
+> +		struct drm_mode_destroy_blob d;
+> +		struct drm_mode_solid_fill blob_data =3D {
+> +			.r =3D r,
+> +			.g =3D g,
+> +			.b =3D b,
+> +			.pad =3D 0x0,
+> +		};
+> +
+> +		c.data =3D (uintptr_t) &blob_data;
+> +		c.length =3D sizeof(blob_data);
+> +
+> +		igt_debug("Testing color r: 0x%x (%f), g: 0x%x (%f), b: 0x%x (%f)\n",
+> +				r, unorm_to_float(r),
+> +				g, unorm_to_float(g),
+> +				b, unorm_to_float(b));
+> +
+> +		/* get reference CRC */
+> +		igt_create_color_fb(data->drm_fd, width, height,
+> +				    DRM_FORMAT_ABGR8888, DRM_FORMAT_MOD_LINEAR,
+> +				    unorm_to_float(r),
+> +				    unorm_to_float(g),
+> +				    unorm_to_float(b),
+
+I'm slightly wary of trusting a third party library (Cairo? Pixman?)
+with the float->u8 conversion. If both Cairo and the kernel do the same
+mistake in conversion, the test would pass. Therefore, this is actually
+testing that the kernel follows Cairo's conversion, and not the UAPI
+definition, should the unthinkable happen that they disagreed.
+
+Would it at least be possible to verify the FB value against what we
+expect here?
+
+> +				    &ref_fb);
+> +		igt_plane_set_fb(plane, &ref_fb);
+> +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +
+> +		igt_pipe_crc_start(pipe_crc);
+> +		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
+> +
+> +		ret =3D drmIoctl(data->display.drm_fd, DRM_IOCTL_MODE_CREATEPROPBLOB, =
+&c);
+> +		igt_assert(ret =3D=3D 0);
+> +
+> +		/* test solid fill plane */
+> +		igt_plane_set_solid_fill(plane, &rect, c.blob_id);
+> +		igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_SOURCE, "SOLID_FILL");
+> +
+> +		igt_display_commit_atomic(&data->display,
+> +					  DRM_MODE_ATOMIC_ALLOW_MODESET,
+> +					  NULL);
+> +
+> +		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &new_crc);
+> +
+> +		igt_assert_crc_equal(&ref_crc, &new_crc);
+
+Looking good.
+
+> +
+> +		/* Switch back to FB pixel source */
+> +		igt_plane_set_prop_value(plane, IGT_PLANE_SOLID_FILL, 0);
+> +		igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_SOURCE, "FB");
+> +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+
+Just wondering, why set this at the end and not when you are actually
+setting up the FB? Doesn't IGT sanitize KMS state before tests that
+don't explicitly test boot-up state?
+
+
+Thanks,
+pq
+
+> +
+> +		d.blob_id =3D c.blob_id;
+> +		ret =3D drmIoctl(data->drm_fd, DRM_IOCTL_MODE_DESTROYPROPBLOB, &d);
+> +		igt_assert(ret =3D=3D 0);
+> +	}
+> +
+> +	igt_pipe_crc_stop(pipe_crc);
+> +	igt_pipe_crc_free(pipe_crc);
+> +	igt_remove_fb(data->drm_fd, &ref_fb);
+> +}
+> +
+>  static void atomic_setup(data_t *data, enum pipe pipe, igt_output_t *out=
+put)
+>  {
+>  	drmModeModeInfo *mode;
+> @@ -1634,6 +1763,20 @@ igt_main_args("e", NULL, help_str, opt_handler, NU=
+LL)
+>  		}
+>  	}
+> =20
+> +	igt_describe("Test case for solid fill primary planes");
+> +	igt_subtest_with_dynamic("plane-primary-solid-fill") {
+> +		for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +			if (!pipe_output_combo_valid(&data.display, pipe, output))
+> +				continue;
+> +
+> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(=
+output)) {
+> +				atomic_setup(&data, pipe, output);
+> +				test_solid_fill_plane(&data, output, data.primary);
+> +				atomic_clear(&data, pipe, output);
+> +			}
+> +		}
+> +	}
+> +
+>  	igt_fixture {
+>  		igt_display_fini(&data.display);
+>  		drm_close_driver(data.drm_fd);
+>=20
+
+
+--Sig_/CD0E1zvWnUMRiWo/jrEff.u
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmWw1LUACgkQI1/ltBGq
+qqe7Yw/8CEOxI2R2+0+ACv3T8UHEDzNHHesquJ1r5iTHemk2A59i+LAJP+MiM1uG
++f0pKYSd8YYUY2cqusqXssIuOafFSenBdfFgCnTklt2XK1kcCK0RnPAvT5aETtED
+ZX5fXBjYmtCg9/RZthIclOi/EVcDpEKHWrRJXCCkliZVyDXJIMywDFTSYV0g65WJ
+qs/dATM6dKfjlQ1MO6Vb+f9MDzjk2VidJjJGvCjfYmSIlHlh5q4Km0WMstUz7sdo
+TcfQVCIE4kgwkU+L0zpw9XL+QXF56Sl4iB5saFRQDrx5dlLIkqXZ3qff1Q9Q8F3z
+UeOxcdKOb1JFQGbdy85VwZIsFzsajb64iDmaVyppPnGP0PRJ4Qq3M+nVxzRtsOO5
+I+hQSDK1vrhWoa2uAm8hwH1/4yrfF8aZP1Fx0b+CxM/A/YglsoZRrE0aGkb1Cvkb
+mhk4c3a6wh5dxMVB04URJHT7oSD33aLKlYg1uoxVGsUJnAkLaUsiMs4Z1UTkvZqI
+vNekoj7uLU/CwCCdPrUlD/HFaSAFqnVdzu6qRv5nndMbrhTfzsC0MIH/C2w5tUKI
+xLnmESk+BRG5sTBqt3oEiEop5qQCbJRQM0+vOuaO3u2J9IZW2UlUPLfNSZHNaUgX
+e41NrmvXl6LrdEkJ12dc0LgBKEtBogcmA4NbdXCC01EmuMq/Pzo=
+=0TDV
+-----END PGP SIGNATURE-----
+
+--Sig_/CD0E1zvWnUMRiWo/jrEff.u--
