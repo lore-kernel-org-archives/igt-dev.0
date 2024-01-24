@@ -4,50 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7598EC46CD2
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Jan 2024 08:42:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFC77C47DDC
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Jan 2024 08:47:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2169C10F652;
-	Wed, 24 Jan 2024 08:42:48 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53B6C10F652
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Jan 2024 08:42:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706085766; x=1737621766;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=Q4/MwwlexH/LOpax/OJVafJKuN9LyOs8Y+0cVsTyUz4=;
- b=g1ut+zSwLblBDkoh52Mv7CvDJL30v1SY6zSE23HeFZkgHuh6aReP5evv
- +QDBZpoL6PEAH038DdUDcFhmxrDY5+FAIvsCvVxTL20z1cxPSVYirruND
- wNiwjgOYdDy+miO7HJGk1mgCTNMg+aoXp8rUBNq70ECHGxBmu4FC9kYU+
- v4zgNe+VH4zXg8MnIBoSd/nLFEpgA99+u4ZsbVYGuA+vzZwC9OJS7USMJ
- 2cmWiYsOYrlYYGxIjpRgn8dnISSP152zV6EWHSK7nupHGXImWzwPwggGq
- VPElgiKAHc+Yl21B6gc6kwnPdNXfvO4Iozf3Y+e0Cc4Li98XUQIarFRHd A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="432934368"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="432934368"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 00:42:45 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="20658334"
-Received: from gmcfarla-mobl1.ger.corp.intel.com (HELO [10.252.15.165])
- ([10.252.15.165])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 00:42:46 -0800
-Message-ID: <9ea179cc-7a18-4bbb-b1a5-5569ee405809@intel.com>
-Date: Wed, 24 Jan 2024 08:42:44 +0000
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6931B10E1CD;
+	Wed, 24 Jan 2024 08:47:33 +0000 (UTC)
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com
+ [46.235.227.194])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F6FC10E1CD
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Jan 2024 08:47:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+ s=mail; t=1706086049;
+ bh=jQ9e5FGIW6Oxc+qwiSdL78oG6C/sMUiV1RaXlVwBz90=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=Tnd33Se/6PKfi2CCjYZhAu4CkGEdXl0tdAnmfm/4V/Jft4/+xtjL0VgyiCIF9hVAw
+ c3PPNDj5kTP9DpYgkz3HE0aoZ+glYgkF5bXSNrGtsBmuLxLlnD8UXolU3wn6SE1SF2
+ U2xTy8lsNvtAdust62isOxn9PwYJ3EUQlnxthVe8Cfic6xJVS5m5B3AQqDXK46Ddnv
+ t967mGj219hAl2sQRLvejlJpq9PO8Zlz7HkLl1dOK4YHg7SpagODHCRUKjXYCzTlXr
+ J1mTghoAMH5UvTSPiyPTtLBo8lFWc2nE7dBRvczza+a5QDo/1/QFwB+lHzL2KmpkTt
+ 1YTlzUsn/3mIQ==
+Received: from eldfell (cola.collaboradmins.com [195.201.22.229])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits)
+ server-digest SHA256) (No client certificate requested)
+ (Authenticated sender: pq)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id E14BE37820B7;
+ Wed, 24 Jan 2024 08:47:28 +0000 (UTC)
+Date: Wed, 24 Jan 2024 10:47:17 +0200
+From: Pekka Paalanen <pekka.paalanen@collabora.com>
+To: Jessica Zhang <quic_jesszhan@quicinc.com>
+Subject: Re: [PATCH i-g-t v2 3/6] drm-uapi: Add drm_mode_solid_fill
+Message-ID: <20240124104717.29f5ad49.pekka.paalanen@collabora.com>
+In-Reply-To: <20240123-solid-fill-v2-3-4ecd2cf767fe@quicinc.com>
+References: <20240123-solid-fill-v2-0-4ecd2cf767fe@quicinc.com>
+ <20240123-solid-fill-v2-3-4ecd2cf767fe@quicinc.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/2] tests/intel/xe_copy_basic: account for prefetch
-Content-Language: en-GB
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20240123183323.173424-1-matthew.auld@intel.com>
- <20240124044845.sm6tumjvtuorszj4@zkempczy-mobl2>
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20240124044845.sm6tumjvtuorszj4@zkempczy-mobl2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="Sig_/kUj4AVZbS13h/7s_jdjiIs0";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,85 +54,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Simon Ser <contact@emersion.fr>, igt-dev@lists.freedesktop.org,
+ Rob Clark <robdclark@gmail.com>, Dmitry
+ Baryshkov <dmitry.baryshkov@linaro.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 24/01/2024 04:48, Zbigniew Kempczyński wrote:
-> On Tue, Jan 23, 2024 at 06:33:22PM +0000, Matthew Auld wrote:
->> Xe2 expects an extra page after the batch to avoid prefetch hitting an
->> invalid page. Not doing so can result in CAT errors.
->>
->> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
->> ---
->>   tests/intel/xe_copy_basic.c | 8 ++++++--
->>   1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
->> index 1bde876cd..3ae5a7291 100644
->> --- a/tests/intel/xe_copy_basic.c
->> +++ b/tests/intel/xe_copy_basic.c
->> @@ -44,7 +44,7 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
->>   	 uint32_t size, uint32_t width, uint32_t height, uint32_t region)
->>   {
->>   	struct blt_mem_data mem = {};
->> -	uint64_t bb_size = xe_get_default_alignment(fd);
->> +	uint64_t bb_size;
->>   	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
->>   						  INTEL_ALLOCATOR_SIMPLE,
->>   						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
->> @@ -53,6 +53,8 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
->>   	uint32_t bb;
->>   	int result;
->>   
->> +	bb_size = ALIGN(SZ_4K + xe_cs_prefetch_size(fd),
->> +			xe_get_default_alignment(fd));
->>   	bb = xe_bo_create(fd, 0, bb_size, region, 0);
->>   
->>   	blt_mem_init(fd, &mem);
->> @@ -97,7 +99,7 @@ mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx, uint32_t size,
->>   	uint32_t width, uint32_t height, uint8_t fill_data, uint32_t region)
->>   {
->>   	struct blt_mem_data mem = {};
->> -	uint64_t bb_size = xe_get_default_alignment(fd);
->> +	uint64_t bb_size;
->>   	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
->>   						  INTEL_ALLOCATOR_SIMPLE,
->>   						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
->> @@ -105,6 +107,8 @@ mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx, uint32_t size,
->>   	uint32_t bb;
->>   	uint8_t *result;
->>   
->> +	bb_size = ALIGN(SZ_4K + xe_cs_prefetch_size(fd),
->> +			xe_get_default_alignment(fd));
->>   	bb = xe_bo_create(fd, 0, bb_size, region, 0);
->>   	blt_mem_init(fd, &mem);
->>   	blt_set_mem_object(&mem.dst, dst_handle, size, 0, width, height, region,
->> -- 
->> 2.43.0
->>
-> 
-> Maybe we should create helper like:
-> 
-> uint64_t xe_bb_size(int fd, uint64_t reqsize)
-> {
-> 	return ALIGN(reqsize + xe_cs_prefetch_size(fd),
-> 	             xe_get_default_alignment(fd));
-> }
-> 
-> as adding prefetch size will likely stay with us forever.
+--Sig_/kUj4AVZbS13h/7s_jdjiIs0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Yeah, I think adding a helper for this at some point makes a lot of 
-sense. Also probably need to do a full audit at the same time as rolling 
-that out in case we are still missing it in some places.
+On Tue, 23 Jan 2024 15:28:56 -0800
+Jessica Zhang <quic_jesszhan@quicinc.com> wrote:
 
-> 
-> Anyway, green light from me for the above change:
-> 
-> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Add the drm_mode_solid_fill struct to drm_mode.h
+>=20
+> This is required for https://patchwork.freedesktop.org/series/110283/
+>=20
+> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+> ---
+>  include/drm-uapi/drm_mode.h | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+>=20
+> diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
+> index 7040e7ea80c7..91b468348ba1 100644
+> --- a/include/drm-uapi/drm_mode.h
+> +++ b/include/drm-uapi/drm_mode.h
+> @@ -259,6 +259,30 @@ struct drm_mode_modeinfo {
+>  	char name[DRM_DISPLAY_MODE_LEN];
+>  };
+> =20
+> +/**
+> + * struct drm_mode_solid_fill - User info for solid fill planes
+> + *
+> + * This is the userspace API solid fill information structure.
+> + *
+> + * Userspace can enable solid fill planes by assigning the plane "solid_=
+fill"
+> + * property to a blob containing a single drm_mode_solid_fill struct pop=
+ulated with an RGB323232
+> + * color and setting the pixel source to "SOLID_FILL".
+> + *
+> + * For information on the plane property, see drm_plane_create_solid_fil=
+l_property()
+> + *
+> + * @r: Red color value of single pixel
+> + * @g: Green color value of single pixel
+> + * @b: Blue color value of single pixel
+> + * @pad: padding, must be zero
+> + */
+> +struct drm_mode_solid_fill {
+> +	__u32 r;
+> +	__u32 g;
+> +	__u32 b;
+> +	__u32 pad;
+> +};
+> +
+> +
+>  struct drm_mode_card_res {
+>  	__u64 fb_id_ptr;
+>  	__u64 crtc_id_ptr;
+>=20
 
-Thanks.
+Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
 
-> --
-> Zbigniew
+
+Thanks,
+pq
+
+--Sig_/kUj4AVZbS13h/7s_jdjiIs0
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIyBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmWwzpUACgkQI1/ltBGq
+qqenzQ/4p92lTY5s9yjgs1q/d/8gAjd+xHsFABgbCZWSSHb+ULvxhQeMd3gkb++5
+MRuwE8QFXk88zJEQoVyuh4wGisylX51L5+n43hDsgOpzcc52/u6RB1uKcFNJ8EJG
+vLZbca/txGsasTuMjLpqW8XUXrB+J0vthXsAvFZiiYSks3IgvIrCTPWyZZr/fd6k
+LgXfQeWQ/RKTgYUqVweqA3p07pI2XNdzcwOq1U0bStd//kPDxrf7QD7FvE3AoGZ/
+gCQweRnd+OEavU6Fm23R6AOfj+Ihzo2ckPl/LiPRdNLP4oSA/DZjdaJ0LfdPJeqz
+mUgPyTMbR5XjmmzHfcYcAtHQb4mDoljjnlrVNIFLA8n4AA5cOr/WsXLVZTvXsd6/
+AjXHd1EniomYZgpAvdTH5VoF4VAbUV+8+MeTt+CH+p8lD9/1vrHBQZnGhOma01PU
+s4ZEMJlXvExfKC5fcsWA3GuYOnu9CWseTY/mLmHLBZCazGEvNv8cyX9XN82kMD0J
+TxJC6/bgLU/9Jp3QchYp9SQIi4Y9jP2Y4S3xcVv/C+gUKzaznYnw3ecldFchiqef
+RC2tXEfpaIhRfbbOLCitYW7tPT+a6/e3WUMlded3RvFyXmJyar2Nbd84hc2/q5js
+r/h/vNYSv3BqmugcXkDSek8AwNAvQjJ6NT39wqUm6lK4MXBHRA==
+=NGJw
+-----END PGP SIGNATURE-----
+
+--Sig_/kUj4AVZbS13h/7s_jdjiIs0--
