@@ -4,55 +4,25 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C774C47DDF
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Jan 2024 12:26:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D76CFC46CD2
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Jan 2024 12:43:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C2F4E10F753;
-	Wed, 24 Jan 2024 12:26:01 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73B4110F75C
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Jan 2024 12:25:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706099161; x=1737635161;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=/LXZRospsr7qRaE+zbJLDKp4mbAeO68GXWVF0uEOagc=;
- b=GevncCLDTrfKN+I+YOSue9jympYSFWqJDEEHppy3dl7BBjGlqX4hre4d
- l8j+dEXKvTSqWzN+g8yabxBNUdS68KZiJu8yhnpXIKJlU0mA3YVDsLNDN
- 6Pz0EdZnhQ9sZtKVjFBlWW0Sux1RMx0NYV8XC+fy5rkyIlAYOSvDvQCeM
- OoQ9mLM4BM8cR4yM1DvCyHKw+6gnZsKax6TsJiMiZgAlbklzgxjTQKoun
- IU1cHejcqW/eKat6ZcOD/hRhCZ3F9amLT6wiT7b63KmCzzxzmiujIUN+M
- Ww/AxYwDlWKXkKTtFL8LmQLUKODyszJsjwUqJN/HWfFJR4ZurLCRBVI1J Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="1717458"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="1717458"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 04:25:59 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="1915160"
-Received: from wheelerj-mobl.ger.corp.intel.com (HELO [10.213.198.85])
- ([10.213.198.85])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 04:25:57 -0800
-Message-ID: <5925d203-328e-44f0-9371-4de6c837ddf9@linux.intel.com>
-Date: Wed, 24 Jan 2024 12:25:55 +0000
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7BA5B10E1A8;
+	Wed, 24 Jan 2024 12:43:36 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4411810E1A8;
+ Wed, 24 Jan 2024 12:43:35 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3351331129005328747=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 2/2] benchmarks/gem_wsim: Option to list physical
- engines
-Content-Language: en-US
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20240115154448.29263-1-marcin.bernatowicz@linux.intel.com>
- <20240115154448.29263-3-marcin.bernatowicz@linux.intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Organization: Intel Corporation UK Plc
-In-Reply-To: <20240115154448.29263-3-marcin.bernatowicz@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_d3_mmap_test_=28rev5=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Anshuman Gupta" <anshuman.gupta@intel.com>
+Date: Wed, 24 Jan 2024 12:43:35 -0000
+Message-ID: <170610021527.695948.2534386892260969938@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240124115019.2067089-1-anshuman.gupta@intel.com>
+In-Reply-To: <20240124115019.2067089-1-anshuman.gupta@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,105 +35,190 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============3351331129005328747==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 15/01/2024 15:44, Marcin Bernatowicz wrote:
-> Added command line option (-l) to list physical engines.
+== Series Details ==
 
-What is the use case and could you paste the example output please (both 
-drivers if possible)?
+Series: Add d3 mmap test (rev5)
+URL   : https://patchwork.freedesktop.org/series/124115/
+State : success
 
-Regards,
+== Summary ==
 
-Tvrtko
+CI Bug Log - changes from XEIGT_7690_BAT -> XEIGTPW_10582_BAT
+====================================================
 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> ---
->   benchmarks/gem_wsim.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 42 insertions(+), 1 deletion(-)
-> 
-> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-> index e79d26513..aa70b1770 100644
-> --- a/benchmarks/gem_wsim.c
-> +++ b/benchmarks/gem_wsim.c
-> @@ -2924,6 +2924,7 @@ static void print_help(void)
->   "  -f <scale>        Scale factor for batch durations.\n"
->   "  -F <scale>        Scale factor for delays.\n"
->   "  -L                List GPUs.\n"
-> +"  -l                List physical engines.\n"
->   "  -D <gpu>          One of the GPUs from -L.\n"
->   	);
->   }
-> @@ -2983,10 +2984,42 @@ add_workload_arg(struct w_arg *w_args, unsigned int nr_args, char *w_arg,
->   	return w_args;
->   }
->   
-> +static void list_engines(void)
-> +{
-> +	struct intel_engines *engines = query_engines();
-> +	int engine_class_count[NUM_ENGINE_CLASSES] = {};
-> +	unsigned int i;
-> +
-> +	for (i = 0; i < engines->nr_engines; ++i) {
-> +		igt_assert_lt(engines->engines[i].engine_class, NUM_ENGINE_CLASSES);
-> +		engine_class_count[engines->engines[i].engine_class]++;
-> +	}
-> +
-> +	for (i = 0; i < engines->nr_engines; ++i) {
-> +		if (engine_class_count[engines->engines[i].engine_class] > 1)
-> +			printf("%s%u",
-> +			       intel_engine_class_string(engines->engines[i].engine_class),
-> +			       engines->engines[i].engine_instance + 1);
-> +		else
-> +			printf("%s",
-> +			       intel_engine_class_string(engines->engines[i].engine_class));
-> +
-> +		if (is_xe && engines->engines[i].gt_id)
-> +			printf("-%u", engines->engines[i].gt_id);
-> +
-> +		if (verbose > 3)
-> +			printf(" [%d:%d:%d]", engines->engines[i].engine_class,
-> +			       engines->engines[i].engine_instance,
-> +			       engines->engines[i].gt_id);
-> +		printf("\n");
-> +	}
-> +}
-> +
->   int main(int argc, char **argv)
->   {
->   	struct igt_device_card card = { };
->   	bool list_devices_arg = false;
-> +	bool list_engines_arg = false;
->   	unsigned int repeat = 1;
->   	unsigned int clients = 1;
->   	unsigned int flags = 0;
-> @@ -3009,11 +3042,14 @@ int main(int argc, char **argv)
->   	master_prng = time(NULL);
->   
->   	while ((c = getopt(argc, argv,
-> -			   "LhqvsSdc:r:w:W:a:p:I:f:F:D:")) != -1) {
-> +			   "LlhqvsSdc:r:w:W:a:p:I:f:F:D:")) != -1) {
->   		switch (c) {
->   		case 'L':
->   			list_devices_arg = true;
->   			break;
-> +		case 'l':
-> +			list_engines_arg = true;
-> +			break;
->   		case 'D':
->   			device_arg = strdup(optarg);
->   			break;
-> @@ -3134,6 +3170,11 @@ int main(int argc, char **argv)
->   	if (is_xe)
->   		xe_device_get(fd);
->   
-> +	if (list_engines_arg) {
-> +		list_engines();
-> +		goto out;
-> +	}
-> +
->   	if (!nr_w_args) {
->   		wsim_err("No workload descriptor(s)!\n");
->   		goto err;
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_10582_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@xe_pm@d3-mmap-system} (NEW):
+    - bat-adlp-7:         NOTRUN -> [FAIL][1]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10582/bat-adlp-7/igt@xe_pm@d3-mmap-system.html
+    - bat-pvc-2:          NOTRUN -> [FAIL][2]
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10582/bat-pvc-2/igt@xe_pm@d3-mmap-system.html
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][3]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10582/bat-dg2-oem2/igt@xe_pm@d3-mmap-system.html
+    - bat-atsm-2:         NOTRUN -> [FAIL][4]
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10582/bat-atsm-2/igt@xe_pm@d3-mmap-system.html
+
+  * {igt@xe_pm@d3-mmap-vram} (NEW):
+    - bat-adlp-7:         NOTRUN -> [SKIP][5]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10582/bat-adlp-7/igt@xe_pm@d3-mmap-vram.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between XEIGT_7690_BAT and XEIGTPW_10582_BAT:
+
+### New IGT tests (2) ###
+
+  * igt@xe_pm@d3-mmap-system:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.14, 10.58] s
+
+  * igt@xe_pm@d3-mmap-vram:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.32, 3.92] s
+
+  
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7690 -> IGTPW_10582
+  * Linux: xe-669-741c439503ee0986a7b7c5b590cbd9813b8841f6 -> xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb
+
+  IGTPW_10582: 10582
+  IGT_7690: aa45298ff675abbe6bf8f04ae186e2388c35f03a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-669-741c439503ee0986a7b7c5b590cbd9813b8841f6: 741c439503ee0986a7b7c5b590cbd9813b8841f6
+  xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb: 0496fe20d8ed5e73ed186d293ef67e7bae4658eb
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10582/index.html
+
+--===============3351331129005328747==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add d3 mmap test (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124115/">https://patchwork.freedesktop.org/series/124115/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10582/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10582/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7690_BAT -&gt; XEIGTPW_10582_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_10582_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>{igt@xe_pm@d3-mmap-system} (NEW):</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10582/bat-adlp-7/igt@xe_pm@d3-mmap-system.html">FAIL</a></li>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10582/bat-pvc-2/igt@xe_pm@d3-mmap-system.html">FAIL</a></li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10582/bat-dg2-oem2/igt@xe_pm@d3-mmap-system.html">FAIL</a></li>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10582/bat-atsm-2/igt@xe_pm@d3-mmap-system.html">FAIL</a></li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_pm@d3-mmap-vram} (NEW):</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10582/bat-adlp-7/igt@xe_pm@d3-mmap-vram.html">SKIP</a></li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_7690_BAT and XEIGTPW_10582_BAT:</p>
+<h3>New IGT tests (2)</h3>
+<ul>
+<li>
+<p>igt@xe_pm@d3-mmap-system:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.14, 10.58] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm@d3-mmap-vram:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.32, 3.92] s</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7690 -&gt; IGTPW_10582</li>
+<li>Linux: xe-669-741c439503ee0986a7b7c5b590cbd9813b8841f6 -&gt; xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb</li>
+</ul>
+<p>IGTPW_10582: 10582<br />
+  IGT_7690: aa45298ff675abbe6bf8f04ae186e2388c35f03a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-669-741c439503ee0986a7b7c5b590cbd9813b8841f6: 741c439503ee0986a7b7c5b590cbd9813b8841f6<br />
+  xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb: 0496fe20d8ed5e73ed186d293ef67e7bae4658eb</p>
+
+</body>
+</html>
+
+--===============3351331129005328747==--
