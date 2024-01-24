@@ -4,26 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A869C46CD2
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Jan 2024 18:03:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19308C46CD2
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Jan 2024 18:08:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BC82110E9FE;
-	Wed, 24 Jan 2024 18:03:50 +0000 (UTC)
-Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6671810EA5E;
- Wed, 24 Jan 2024 18:03:49 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3128302209914505177=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9277410EA5E;
+	Wed, 24 Jan 2024 18:08:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E5E610EB3B
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Jan 2024 18:08:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1706119700; x=1737655700;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=0IEvon0HcsRd+hHbry6g5BVUfA/vMvTLbZOjG3VaTWc=;
+ b=NrqSVvemccpuLQIq1zIZgcUsLv8iS9n9Zjj+2N3A8NitOyITLo2ZagwU
+ JWrzn0ASl8/3M32uDe86xXUFNzw5vqFGyuPIzjEWKeG2WITR93mPm94Ac
+ MOF38YXoE1xZQmRb+EFFiXGPdunhhHK93/dFJWHvtzuvDaxMCo2BkFDU2
+ GJiP8pGcA6zBdZv/oxPLflB5J0uRVyW8NSnfmj2Ft0DWZvxqkflyv23XA
+ Stp6E6yVNyghq9POs6fhDy7V1mdI2b1HT4abGu8XPYUdDDXKd4NuDX0we
+ kz4gb9f4zCqoNpaL0p7/a9BdAWlHFk23dbLfzPfgMCBca9sDiTuMFvVFl A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="400785214"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="400785214"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jan 2024 10:08:18 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="909734537"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="909734537"
+Received: from gmcfarla-mobl1.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
+ ([10.252.15.165])
+ by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jan 2024 10:08:17 -0800
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t 1/5] lib/xe/ioctl: introduce xe_bb_size() helper
+Date: Wed, 24 Jan 2024 18:07:09 +0000
+Message-ID: <20240124180713.268843-1-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel=3A_Add_xe=5Fcoredu?=
- =?utf-8?q?mp_test=2C_v2=2E?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>
-Date: Wed, 24 Jan 2024 18:03:49 -0000
-Message-ID: <170611942941.685200.10241553332171165684@5338d5abeb45>
-X-Patchwork-Hint: ignore
-References: <20240124164747.2424-1-maarten.lankhorst@linux.intel.com>
-In-Reply-To: <20240124164747.2424-1-maarten.lankhorst@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,130 +57,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3128302209914505177==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+We have a number of tests open coding this, plus some tests lacking any
+handling for the prefetch size, leading to CAT errors due to overfetch
+hitting an invalid page. End goal is to fix all the tests that are
+missing the overfetch handling first, using the new helper, and then
+convert all the places that were open coding this.
 
-== Series Details ==
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/xe/xe_ioctl.c | 6 ++++++
+ lib/xe/xe_ioctl.h | 1 +
+ 2 files changed, 7 insertions(+)
 
-Series: tests/intel: Add xe_coredump test, v2.
-URL   : https://patchwork.freedesktop.org/series/129135/
-State : success
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index d3f9905ee..da2a7af51 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -51,6 +51,12 @@ uint32_t xe_cs_prefetch_size(int fd)
+ 	return 4096;
+ }
+ 
++uint64_t xe_bb_size(int fd, uint64_t reqsize)
++{
++	return ALIGN(reqsize + xe_cs_prefetch_size(fd),
++	             xe_get_default_alignment(fd));
++}
++
+ uint32_t xe_vm_create(int fd, uint32_t flags, uint64_t ext)
+ {
+ 	struct drm_xe_vm_create create = {
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index 03932561d..2b30f1d98 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -18,6 +18,7 @@
+ #define DRM_XE_UFENCE_WAIT_MASK_U64    0xffffffffffffffffu
+ 
+ uint32_t xe_cs_prefetch_size(int fd);
++uint64_t xe_bb_size(int fd, uint64_t reqsize);
+ uint32_t xe_vm_create(int fd, uint32_t flags, uint64_t ext);
+ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
+-- 
+2.43.0
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7691_BAT -> XEIGTPW_10583_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10583_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#1033])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7691/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10583/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
-
-
-Build changes
--------------
-
-  * IGT: IGT_7691 -> IGTPW_10583
-  * Linux: xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb -> xe-675-96b582d5ddfc0770491b81522c6c9bba7d0aef86
-
-  IGTPW_10583: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10583/index.html
-  IGT_7691: 7691
-  xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb: 0496fe20d8ed5e73ed186d293ef67e7bae4658eb
-  xe-675-96b582d5ddfc0770491b81522c6c9bba7d0aef86: 96b582d5ddfc0770491b81522c6c9bba7d0aef86
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10583/index.html
-
---===============3128302209914505177==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel: Add xe_coredump test, v2.</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129135/">https://patchwork.freedesktop.org/series/129135/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10583/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10583/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7691_BAT -&gt; XEIGTPW_10583_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10583_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7691/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10583/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7691 -&gt; IGTPW_10583</li>
-<li>Linux: xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb -&gt; xe-675-96b582d5ddfc0770491b81522c6c9bba7d0aef86</li>
-</ul>
-<p>IGTPW_10583: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10583/index.html<br />
-  IGT_7691: 7691<br />
-  xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb: 0496fe20d8ed5e73ed186d293ef67e7bae4658eb<br />
-  xe-675-96b582d5ddfc0770491b81522c6c9bba7d0aef86: 96b582d5ddfc0770491b81522c6c9bba7d0aef86</p>
-
-</body>
-</html>
-
---===============3128302209914505177==--
