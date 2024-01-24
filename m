@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C02EC48277
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Jan 2024 18:08:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08D45C46CD2
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Jan 2024 18:08:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ABDAE10EB3B;
-	Wed, 24 Jan 2024 18:08:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8BC4E10EF1B;
+	Wed, 24 Jan 2024 18:08:25 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B58CE10ED16
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Jan 2024 18:08:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ABB7210ED16
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Jan 2024 18:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706119700; x=1737655700;
+ t=1706119702; x=1737655702;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/2dbOcKo0VFBcG5hJQBIbPLdrZnvrob3bcwTidaBvaE=;
- b=N96pTcwaaBfOlQNe/PjI5q7xFp13igA6e4ZZxhp9H9bns+Y6hDmDWIhx
- 0D1baMyIUirMUy6SGMbrLQrjUDDkJW98G53q4lyHcThgiRZde90DuCjxr
- kP6ruR4N6pypCXVJ6ilLKvjggzRhOwgutuBMb5XR5GikhwDloxBnwgY8V
- v0/4QX6Jcz9EEV08wtE7zGxDQj/jgJJF6VEGh3Z+BPP4YxWS95axVuXxp
- +4yl7Fho4TgBr7grpuYRBwMezzUP1RoVlnLeqp9HkrfZzYNfVRD8cdJ6v
- D72+NEFONtfL31Xo+7o/Asyec0NCKwZVvvhSjdPwtXxz2PDqFXaqQCFq4 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="400785217"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="400785217"
+ bh=1sSXeVfvkkNZRzd3jPRcRKhne9GHMn/w6Sx/3qgHnSs=;
+ b=aCfcbXMA4q4Hrxy/9aANEaGPFVr1tssFXgllEJCxtG7mcxsfvKO4AaBr
+ cWvi2XNFJsuqYi/3RsZm3exna8WJ5iXpDk6qivrs5ey/MNL+oZh/q/+hb
+ Zon9RvWM15wnd93FBrhqsu+2dt0Vc1w9DWcdmulZDyCM69pv5TBHnZxD1
+ Ju0g65NLjhlqA0bJC2wMbVd/tE1Scvpu5kk/1/sLHgfD/1rXE3MpHV5v6
+ 3HxqQ5Yr39pzmdOtuDTSzaAi64LOKlWkESKYAFYPU7sqeW0SCuxKdRSL+
+ Qocvtx9MVAcO7vqiIx2HehB8mlR3q04AR2EkbFG/m+Iw3VsCU/hCzdTaH Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="400785225"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="400785225"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 10:08:19 -0800
+ 24 Jan 2024 10:08:22 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="909734551"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="909734551"
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="909734579"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="909734579"
 Received: from gmcfarla-mobl1.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
  ([10.252.15.165])
  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 10:08:18 -0800
+ 24 Jan 2024 10:08:20 -0800
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 2/5] tests/intel/xe: account for prefetch
-Date: Wed, 24 Jan 2024 18:07:10 +0000
-Message-ID: <20240124180713.268843-2-matthew.auld@intel.com>
+Subject: [PATCH i-g-t 4/5] lib/igt_fb: use xe_bb_size() helper
+Date: Wed, 24 Jan 2024 18:07:12 +0000
+Message-ID: <20240124180713.268843-4-matthew.auld@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240124180713.268843-1-matthew.auld@intel.com>
 References: <20240124180713.268843-1-matthew.auld@intel.com>
@@ -62,253 +62,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Xe2 expects an extra page after the batch to avoid prefetch hitting an
-invalid page. Not doing so can result in CAT errors. Do full audit of
-all xe_* tests where anything creating a batch should use the new
-bb helper.
+No need to open code this anymore.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/intel/xe_ccs.c          | 6 +++---
- tests/intel/xe_copy_basic.c   | 4 ++--
- tests/intel/xe_create.c       | 2 +-
- tests/intel/xe_evict_ccs.c    | 2 +-
- tests/intel/xe_exec_reset.c   | 2 +-
- tests/intel/xe_exercise_blt.c | 4 ++--
- tests/intel/xe_pat.c          | 2 +-
- tests/intel/xe_peer2peer.c    | 4 ++--
- tests/intel/xe_pm_residency.c | 2 +-
- tests/intel/xe_vm.c           | 6 ++++--
- tests/intel/xe_waitfence.c    | 8 +++++---
- 11 files changed, 23 insertions(+), 19 deletions(-)
+ lib/igt_fb.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index 55ae0e46c..7d0e8ed7a 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -119,7 +119,7 @@ static void surf_copy(int xe,
- 				 uc_mocs, comp_pat_index, BLT_INDIRECT_ACCESS);
- 	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs,
- 				 DEFAULT_PAT_INDEX, DIRECT_ACCESS);
--	bb_size = xe_get_default_alignment(xe);
-+	bb_size = xe_bb_size(xe, SZ_4K);
- 	bb1 = xe_bo_create(xe, 0, bb_size, sysmem, 0);
- 	blt_set_batch(&surf.bb, bb1, bb_size, sysmem);
- 	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
-@@ -295,7 +295,7 @@ static void block_copy(int xe,
- 	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
- 	struct blt_copy_object *src, *mid, *dst;
- 	const uint32_t bpp = 32;
--	uint64_t bb_size = xe_get_default_alignment(xe);
-+	uint64_t bb_size = xe_bb_size(xe, SZ_4K);
- 	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
- 	uint32_t run_id = mid_tiling;
- 	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &
-@@ -423,7 +423,7 @@ static void block_multicopy(int xe,
- 	struct blt_block_copy3_data_ext ext3 = {}, *pext3 = &ext3;
- 	struct blt_copy_object *src, *mid, *dst, *final;
- 	const uint32_t bpp = 32;
--	uint64_t bb_size = xe_get_default_alignment(xe);
-+	uint64_t bb_size = xe_bb_size(xe, SZ_4K);
- 	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
- 	uint32_t run_id = mid_tiling;
- 	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &
-diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
-index 1bde876cd..66c666eac 100644
---- a/tests/intel/xe_copy_basic.c
-+++ b/tests/intel/xe_copy_basic.c
-@@ -44,7 +44,7 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
- 	 uint32_t size, uint32_t width, uint32_t height, uint32_t region)
- {
- 	struct blt_mem_data mem = {};
--	uint64_t bb_size = xe_get_default_alignment(fd);
-+	uint64_t bb_size = xe_bb_size(fd, SZ_4K);
- 	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
- 						  INTEL_ALLOCATOR_SIMPLE,
- 						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-@@ -97,7 +97,7 @@ mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx, uint32_t size,
- 	uint32_t width, uint32_t height, uint8_t fill_data, uint32_t region)
- {
- 	struct blt_mem_data mem = {};
--	uint64_t bb_size = xe_get_default_alignment(fd);
-+	uint64_t bb_size = xe_bb_size(fd, SZ_4K);
- 	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
- 						  INTEL_ALLOCATOR_SIMPLE,
- 						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index 6d0670849..1d3918663 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -325,7 +325,7 @@ static void create_big_vram(int fd, int gt)
- static void create_contexts(int fd)
- {
- 	unsigned int i, n = params.quantity ? params.quantity : 4096;
--	uint64_t bo_size = xe_get_default_alignment(fd), bo_addr = 0x1a0000;
-+	uint64_t bo_size = xe_bb_size(fd, SZ_4K), bo_addr = 0x1a0000;
- 	uint32_t vm, bo, *batch, exec_queues[n];
- 	struct drm_xe_sync sync = {
- 		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
-index 5dd438cad..5d4720a71 100644
---- a/tests/intel/xe_evict_ccs.c
-+++ b/tests/intel/xe_evict_ccs.c
-@@ -75,7 +75,7 @@ static void copy_obj(struct blt_copy_data *blt,
- {
- 	struct blt_block_copy_data_ext ext = {};
- 	int fd = blt->fd;
--	uint64_t bb_size = xe_get_default_alignment(fd);
-+	uint64_t bb_size = xe_bb_size(blt->fd, SZ_4K);
- 	uint32_t bb;
- 	uint32_t w, h;
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 2cf94013e..71c220a08 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2906,8 +2906,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 						 INTEL_ALLOCATOR_SIMPLE,
+ 						 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
  
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index 168523c64..978b4d279 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -675,7 +675,7 @@ static void submit_jobs(struct gt_thread_data *t)
- 	int fd = t->fd;
- 	uint32_t vm = xe_vm_create(fd, 0, 0);
- 	uint64_t addr = 0x1a0000;
--	size_t bo_size = xe_get_default_alignment(fd);
-+	size_t bo_size = xe_bb_size(fd, SZ_4K);
- 	uint32_t bo;
- 	uint32_t *data;
- 
-diff --git a/tests/intel/xe_exercise_blt.c b/tests/intel/xe_exercise_blt.c
-index cc9060b1b..c908800cf 100644
---- a/tests/intel/xe_exercise_blt.c
-+++ b/tests/intel/xe_exercise_blt.c
-@@ -118,7 +118,7 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
- 	struct blt_fast_copy_data blt = {};
- 	struct blt_copy_object *src, *mid, *dst;
- 	const uint32_t bpp = 32;
--	uint64_t bb_size = xe_get_default_alignment(xe);
-+	uint64_t bb_size = xe_bb_size(xe, SZ_4K);
- 	uint64_t ahnd = intel_allocator_open_full(xe, ctx->vm, 0, 0,
- 						  INTEL_ALLOCATOR_SIMPLE,
- 						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-@@ -176,7 +176,7 @@ static void fast_copy(int xe, const intel_ctx_t *ctx,
- 	struct blt_copy_data blt = {};
- 	struct blt_copy_object *src, *mid, *dst;
- 	const uint32_t bpp = 32;
--	uint64_t bb_size = xe_get_default_alignment(xe);
-+	uint64_t bb_size = xe_bb_size(xe, SZ_4K);
- 	uint64_t ahnd = intel_allocator_open_full(xe, ctx->vm, 0, 0,
- 						  INTEL_ALLOCATOR_SIMPLE,
- 						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index c5187bb94..40256bada 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -262,7 +262,7 @@ static void pat_index_blt(struct xe_pat_param *p)
- 					 ALLOC_STRATEGY_LOW_TO_HIGH,
- 					 p->size->alignment);
- 
--	bb_size = xe_get_default_alignment(fd);
-+	bb_size = xe_bb_size(fd, SZ_4K);
- 	bb = xe_bo_create(fd, 0, bb_size, system_memory(fd), 0);
- 
- 	size = width * height * bpp / 8;
-diff --git a/tests/intel/xe_peer2peer.c b/tests/intel/xe_peer2peer.c
-index 44fea6eb1..c63f1e4c4 100644
---- a/tests/intel/xe_peer2peer.c
-+++ b/tests/intel/xe_peer2peer.c
-@@ -105,7 +105,7 @@ static void test_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
- 	struct blt_copy_object *im_src;
- 	struct blt_copy_object *src;
- 	const uint32_t bpp = 32;
--	uint64_t im_bb_size = xe_get_default_alignment(im_gpu->fd);
-+	uint64_t im_bb_size = xe_bb_size(im_gpu->fd, SZ_4K);
- 	uint64_t ahnd;
- 	uint32_t bb;
- 	uint32_t width = 1024, height = 1024;
-@@ -187,7 +187,7 @@ static void test_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
- 	struct blt_copy_object *im_dst;
- 	struct blt_copy_object *src;
- 	const uint32_t bpp = 32;
--	uint64_t im_bb_size = xe_get_default_alignment(im_gpu->fd);
-+	uint64_t im_bb_size = xe_bb_size(im_gpu->fd, SZ_4K);
- 	uint64_t ahnd;
- 	uint32_t bb;
- 	uint32_t width = 1024, height = 1024;
-diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-index 7db3cd162..3fa9abf25 100644
---- a/tests/intel/xe_pm_residency.c
-+++ b/tests/intel/xe_pm_residency.c
-@@ -98,7 +98,7 @@ static void exec_load(int fd, struct drm_xe_engine_class_instance *hwe, unsigned
- 
- 	vm = xe_vm_create(fd, 0, 0);
- 	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
--	bo_size = xe_get_default_alignment(fd);
-+	bo_size = xe_bb_size(fd, SZ_4K);
- 
- 	bo = xe_bo_create(fd, vm, bo_size,
- 			  vram_if_possible(fd, hwe->gt_id),
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 2200040ac..ebc1ca68f 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -979,6 +979,8 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
- 	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
- 	vm = xe_vm_create(fd, 0, 0);
- 
-+	bo_size = xe_bb_size(fd, bo_size);
-+
- 	if (flags & LARGE_BIND_FLAG_USERPTR) {
- 		map = aligned_alloc(xe_get_default_alignment(fd), bo_size);
- 		igt_assert(map);
-@@ -1273,7 +1275,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
+-		bb_size = ALIGN(bb_size + xe_cs_prefetch_size(dst_fb->fd),
+-				xe_get_default_alignment(dst_fb->fd));
++		bb_size = xe_bb_size(dst_fb->fd, bb_size);
+ 		xe_bb = xe_bo_create(dst_fb->fd, 0, bb_size, mem_region, 0);
  	}
  
- 	vm = xe_vm_create(fd, 0, 0);
--	bo_size = page_size * bo_n_pages;
-+	bo_size = xe_bb_size(fd, page_size * bo_n_pages);
- 
- 	if (flags & MAP_FLAG_USERPTR) {
- 		map = mmap(from_user_pointer(addr), bo_size, PROT_READ |
-@@ -1573,7 +1575,7 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
- 	}
- 
- 	vm = xe_vm_create(fd, 0, 0);
--	bo_size = page_size * bo_n_pages;
-+	bo_size = xe_bb_size(fd, page_size * bo_n_pages);
- 
- 	if (flags & MAP_FLAG_USERPTR) {
- 		map0 = mmap(from_user_pointer(addr), bo_size, PROT_READ |
-diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-index 5f7316f6e..f6f797d43 100644
---- a/tests/intel/xe_waitfence.c
-+++ b/tests/intel/xe_waitfence.c
-@@ -212,6 +212,7 @@ exec_queue_reset_wait(int fd)
- 	uint64_t sdi_offset;
- 	uint64_t sdi_addr;
- 	uint64_t addr = 0x1a0000;
-+	uint64_t bb_size;
- 
- 	struct {
- 		uint32_t batch[16];
-@@ -236,8 +237,9 @@ exec_queue_reset_wait(int fd)
- 		.exec_queue_id = exec_queue,
- 	};
- 
--	bo = xe_bo_create(fd, vm, 0x40000, vram_if_possible(fd, 0), 0);
--	data = xe_bo_map(fd, bo, 0x40000);
-+	bb_size = xe_bb_size(fd, 0x40000);
-+	bo = xe_bo_create(fd, vm, bb_size, vram_if_possible(fd, 0), 0);
-+	data = xe_bo_map(fd, bo, bb_size);
- 
- 	batch_offset = (char *)&data[0].batch - (char *)data;
- 	batch_addr = addr + batch_offset;
-@@ -267,7 +269,7 @@ exec_queue_reset_wait(int fd)
- 	xe_exec_queue_destroy(fd, exec_queue);
- 
- 	if (bo) {
--		munmap(data, 0x40000);
-+		munmap(data, bb_size);
- 		gem_close(fd, bo);
- 	}
- }
 -- 
 2.43.0
 
