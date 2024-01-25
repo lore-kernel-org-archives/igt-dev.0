@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9A28C47258
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 12:05:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B158C47258
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 13:41:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9863710EF29;
-	Thu, 25 Jan 2024 12:05:44 +0000 (UTC)
-Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C993610EF29;
- Thu, 25 Jan 2024 12:05:42 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8637362820129498988=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 60ABA10F8CC;
+	Thu, 25 Jan 2024 13:41:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3523D10F308
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Jan 2024 13:41:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1706190093; x=1737726093;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=We+oKGBud8oSzSw/a0GTgzvZdnfUBFCINKx5nTe60MI=;
+ b=XzmCfmKqFqBcGEj3/GzC1pTUA1dEcejHqpkUOstdurl918fwvwpnAmN2
+ U+xHK34zORUdSJ0VgCjEJbt5OpWANRj5vjfcCoGwQqPvhqjMVWpfovybw
+ yMXM5jIGfRzJE1HsGHtyVfijX5aqrob1wh1Vqea2nnpgzwaj6geRx3GY8
+ zYUbMWHGIbSuQ2ySTM/IR3vkk6V0wX6lpFvO2xAU8auRC0989cK6vDqeg
+ 8uEcRoi8luwUY5L6BSyrPzXONPzBu+wrs/FbDf65dTkkhYuNK6UUty+V+
+ UVp4nPjY+MKFx2lx+EGT/orL3o+rSEOsrdg1TqmnlH7a516kRC119KdJw g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="401014237"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="401014237"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jan 2024 05:41:30 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
+   d="scan'208";a="2249035"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2024 05:41:30 -0800
+Date: Thu, 25 Jan 2024 14:41:05 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t v6 4/4] HAX: Add d3-mmap to xe-fast-feedback
+Message-ID: <20240125134105.3utfigq6lquhajj2@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Gupta, Anshuman" <anshuman.gupta@intel.com>
+References: <20240124115019.2067089-1-anshuman.gupta@intel.com>
+ <20240124115019.2067089-5-anshuman.gupta@intel.com>
+ <20240124133936.uffdw655o6ggywhl@kamilkon-desk.igk.intel.com>
+ <CY5PR11MB62112F26089660F586DDC3CD957A2@CY5PR11MB6211.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
- =?utf-8?q?=2Cv2=2C1/7=5D_lib/xe/ioctl=3A_introduce_xe=5Fbb=5Fsize=28=29_hel?=
- =?utf-8?q?per?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matthew Auld" <matthew.auld@intel.com>
-Date: Thu, 25 Jan 2024 12:05:42 -0000
-Message-ID: <170618434282.709515.8385278679368154663@5338d5abeb45>
-X-Patchwork-Hint: ignore
-References: <20240125105646.313561-1-matthew.auld@intel.com>
-In-Reply-To: <20240125105646.313561-1-matthew.auld@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CY5PR11MB62112F26089660F586DDC3CD957A2@CY5PR11MB6211.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,107 +63,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8637362820129498988==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi iAnshuman,
 
-== Series Details ==
+On 2024-01-25 at 09:32:43 +0000, Gupta, Anshuman wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > Sent: Wednesday, January 24, 2024 7:10 PM
+> > To: igt-dev@lists.freedesktop.org
+> > Cc: Gupta, Anshuman <anshuman.gupta@intel.com>
+> > Subject: Re: [PATCH i-g-t v6 4/4] HAX: Add d3-mmap to xe-fast-feedback
+> > 
+> > Hi Anshuman,
+> > On 2024-01-24 at 17:20:19 +0530, Anshuman Gupta wrote:
+> > > Adding d3-mmap to xe-fast-feedback.
+> > 
+> > How long did this test last? If few seconds you can add it to fast-feedback (e.g.
+> > to BAT tests).
+> > 
+> > CI now no longer manages separate f-f lists, we can add them if needed so if
+> > tests takes < 10seconds, please change subject
+> > into:
+> > 
+> > [PATCH i-g-t v6 4/4] intel-ci/xe-fast-feedback: Add d3-mmap to BAT
+> > 
+> > >
+> > > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> > > ---
+> > >  tests/intel-ci/xe-fast-feedback.testlist | 2 ++
+> > >  1 file changed, 2 insertions(+)
+> > >
+> > > diff --git a/tests/intel-ci/xe-fast-feedback.testlist
+> > > b/tests/intel-ci/xe-fast-feedback.testlist
+> > > index f297fe965..1d5ecb19d 100644
+> > > --- a/tests/intel-ci/xe-fast-feedback.testlist
+> > > +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> > > @@ -115,6 +115,8 @@ igt@xe_mmap@system  igt@xe_mmap@vram
+> > > igt@xe_mmap@vram-system  igt@xe_pm_residency@gt-c6-on-idle
+> > > +igt@xe_pm@d3-mmap-system
+> > > +igt@xe_pm@d3-mmap-vram
+> > 
+> > This should be before
+> > 
+> > igt@xe_pm_residency@gt-c6-on-idle
+> > 
+> > with that fixed:
+> > Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Hi Kamil thanks for comment, this is the Hack patch, not for merge.
+> Currently not planning to have these test in BAT.
+> This patch is added to get the test coverage results from CI. 
+> 
+> Thanks,
+> Anshuman Gupta.
 
-Series: series starting with [i-g-t,v2,1/7] lib/xe/ioctl: introduce xe_bb_size() helper
-URL   : https://patchwork.freedesktop.org/series/129158/
-State : success
+I see, if that is the case it is better to add DO_NOT_MERGE like:
 
-== Summary ==
+[PATCH i-g-t v6 4/4] HAX/DO_NOT_MERGE: intel-ci/xe-f-f: test d3-mmap
 
-CI Bug Log - changes from XEIGT_7692_BAT -> XEIGTPW_10588_BAT
-====================================================
+Regards,
+Kamil
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7692 -> IGTPW_10588
-
-  IGTPW_10588: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/index.html
-  IGT_7692: 5d9c29c620701497323bf3721146da57efa50952 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-684-cad255f28ccca6529104b9497a8d7302ae7eb88a: cad255f28ccca6529104b9497a8d7302ae7eb88a
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10588/index.html
-
---===============8637362820129498988==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/7] lib/xe/ioctl: introduce xe_bb_size() helper</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129158/">https://patchwork.freedesktop.org/series/129158/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10588/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10588/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7692_BAT -&gt; XEIGTPW_10588_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7692 -&gt; IGTPW_10588</li>
-</ul>
-<p>IGTPW_10588: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/index.html<br />
-  IGT_7692: 5d9c29c620701497323bf3721146da57efa50952 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-684-cad255f28ccca6529104b9497a8d7302ae7eb88a: cad255f28ccca6529104b9497a8d7302ae7eb88a</p>
-
-</body>
-</html>
-
---===============8637362820129498988==--
+> > 
+> > >  igt@xe_prime_self_import@basic-with_one_bo
+> > >  igt@xe_prime_self_import@basic-with_fd_dup
+> > >  #igt@xe_prime_self_import@basic-llseek-size
+> > > --
+> > > 2.25.1
+> > >
