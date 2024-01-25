@@ -4,52 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37648C47258
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 17:29:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1338C47422
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 17:36:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D272E10F948;
-	Thu, 25 Jan 2024 17:29:35 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0279A10F95A
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jan 2024 17:29:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706203775; x=1737739775;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=QPoP4c6SShmgmIzGmBe7NJCBO3AzBTKI95sLHGJOhfs=;
- b=FNx9awAYmZ4vJGZAOIMZyfS6lahHhMzC46rzex6Bp8cSy0Lu7iWV24lR
- IzjE3sTRO8frFXkEtlk6jJrJQx7jY8/a00jmX3WHT32i2lDGZ6Rc35znp
- TnVVjrCxfnso2o0I0N219j0lkGL0YSAtj68flOfUcs/0wSV0DIvwJAITs
- 0ueuO/Wf4f/rMiS2vn2B/5kdIR3Q40wKv5KXY0f42qDySwXSRt2eJ9D4U
- YCi3oNQi++3RjP3tsArMZKZUPwlioFWB2gQJtcxQkFhRkorczwjYE+FwY
- 2LbcNo7SEk2kzjoN8i7HnAuUxgnKImjOv1LCMJ15iqWvWX/lksZICMvKF Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="1156221"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="1156221"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jan 2024 09:29:34 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="786827758"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="786827758"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orsmga002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2024 09:29:33 -0800
-Date: Thu, 25 Jan 2024 18:29:30 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH] tests/intel: Add xe_coredump test, v2.
-Message-ID: <20240125172930.ahygbofp3xlng5aq@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-References: <20240124164747.2424-1-maarten.lankhorst@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7306610F95E;
+	Thu, 25 Jan 2024 17:36:01 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EB3A10F95E;
+ Thu, 25 Jan 2024 17:36:00 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8862235984539529896=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240124164747.2424-1-maarten.lankhorst@linux.intel.com>
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_lib/kunit=3A_Support_writable_?=
+ =?utf-8?q?filter*_parameters_of_kunit_module?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Date: Thu, 25 Jan 2024 17:36:00 -0000
+Message-ID: <170620416018.727567.6805998957745464974@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240125165749.15599-5-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20240125165749.15599-5-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,342 +36,222 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Maarten,
-On 2024-01-24 at 17:47:46 +0100, Maarten Lankhorst wrote:
+--===============8862235984539529896==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-please add i-g-t after PATCH, also remove ", v2." from end
-so instead of:
-[PATCH] tests/intel: Add xe_coredump test, v2.
+== Series Details ==
 
-this should be:
-[PATCH i-g-t v2] tests/intel: Add xe_coredump test
+Series: lib/kunit: Support writable filter* parameters of kunit module
+URL   : https://patchwork.freedesktop.org/series/129174/
+State : failure
 
-Please also give here link to corresponding kmd series.
+== Summary ==
 
-> Add a simple test that forces a GPU hang and then reads the resulting
-> devcoredump file. Map a single userptr and BO, and dump the contents of
-> those.
-> 
-> Changes since v1:
-> - Almost completely rewrite test for readability, based on feedback.
-> 
+CI Bug Log - changes from XEIGT_7692_BAT -> XEIGTPW_10590_BAT
+====================================================
 
-Add here link to Gitlab report (it can stay also as comment in code).
+Summary
+-------
 
-> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> ---
->  tests/intel/xe_coredump.c | 256 ++++++++++++++++++++++++++++++++++++++
->  tests/meson.build         |   1 +
->  2 files changed, 257 insertions(+)
->  create mode 100644 tests/intel/xe_coredump.c
-> 
-> diff --git a/tests/intel/xe_coredump.c b/tests/intel/xe_coredump.c
-> new file mode 100644
-> index 000000000..add9508f5
-> --- /dev/null
-> +++ b/tests/intel/xe_coredump.c
-> @@ -0,0 +1,256 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2023 Intel Corporation
-------------------^^^^
-Year 2024
+  **FAILURE**
 
-> + */
-> +
-> +/**
-> + * TEST: Check devcoredump functionality
-> + * Category: Software building block
-> + * Sub-category: devcoredump
-> + * Run type: BAT
-> + * Functionality: Error dumping and readout.
-> + */
-> +
-> +#include <unistd.h>
-> +#include <fcntl.h>
-> +#include <glob.h>
-> +#include <string.h>
-> +#include <wchar.h>
-> +#include <sys/stat.h>
------------- ^^^
-imho this should be before wchar.h
+  Serious unknown changes coming with XEIGTPW_10590_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_10590_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-> +
-> +#include "igt.h"
-> +#include "igt_device.h"
-> +#include "igt_io.h"
-> +#include "igt_syncobj.h"
-> +#include "igt_sysfs.h"
-> +
-> +#include "intel_pat.h"
-> +
-> +#include "xe_drm.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
-> +
-> +#ifndef DRM_XE_VM_BIND_FLAG_DUMPABLE
-> +#define DRM_XE_VM_BIND_FLAG_DUMPABLE (1<<3)
+  
 
-imho add a comment like: FIXME: remove after sync in drm uAPI
+Participating hosts (4 -> 4)
+------------------------------
 
-> +#endif
-> +
-> +static struct xe_device *xe;
-> +static uint32_t batch_bo;
-> +static uint32_t *batch;
-> +static void *userptr;
-> +static uint32_t vm;
-> +static int sysfd;
-> +
-> +#define MAX_N_ENGINES 32
-> +
-> +static void tryclear_hang(void)
-> +{
-> +	int fd = openat(sysfd, "devcoredump/data", O_RDWR);
---------------------------- ^^^^^^^^^^^^^^^^
-You use it in other places, consider making it define
-or const char*
+  No changes in participating hosts
 
-> +	char buf[256];
-> +
-> +	if (fd < 0)
-> +		return;
-> +
-> +	while (read(fd, buf, sizeof(buf)) > 0)
-> +		{ }
+Possible new issues
+-------------------
 
-I was asking if that reading is really necessery for cleanig it?
-Btw if you need it make buffer bigger like below 0x1000 or consider
-alloc even bigger and make as few reads as possible.
+  Here are the unknown changes that may have been introduced in XEIGTPW_10590_BAT:
 
-> +	write(fd, "1", 1);
-> +	close(fd);
-> +}
-> +
-> +/*
-> + * Helper to read and clear devcore.  We want to read it completely to ensure
-> + * we catch any kernel side regressions like:
-> + * https://gitlab.freedesktop.org/drm/msm/-/issues/20
-> + */
-> +static void
-> +read_and_clear_hang(void)
-> +{
-> +	char buf[0x1000];
-> +	int try, fd;
-> +	for (try = 0; try < 5; try++) {
-> +		fd = openat(sysfd, "devcoredump/data", O_RDWR);
-> +		if (fd >= 0)
-> +			break;
-> +	}
-> +	igt_assert(fd >= 0);
-> +
-> +	/*
-> +	 * We want to read the entire file but we can throw away the
-> +	 * contents.. we just want to make sure that we exercise the
----------------^^
-Either "..." or ". We"
+### IGT changes ###
 
-> +	 * kernel side codepaths hit when reading the devcore from
-> +	 * sysfs
-> +	 */
-> +	igt_debug("---- begin coredump ----\n");
-> +	while (1) {
-> +		ssize_t ret;
-> +
-> +		ret = igt_readn(fd, buf, sizeof(buf) - 1);
-> +		igt_assert(ret >= 0);
-> +		if (ret == 0)
-> +			break;
-> +		buf[ret] = '\0';
-> +		igt_debug("%s", buf);
+#### Possible regressions ####
 
-Do you really want it all in debugfs? Our CI infra is limited...
+  * igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit:
+    - bat-pvc-2:          [PASS][1] -> [SKIP][2] +6 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-pvc-2/igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-pvc-2/igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit.html
 
-> +	}
-> +
-> +	igt_debug("---- end coredump ----\n");
-> +
-> +	/* Clear the devcore: */
-> +	igt_writen(fd, "1", 1);
-> +
-> +	close(fd);
-> +}
-> +
-> +static void free_execqueue(void)
-> +{
-> +	int fd = xe->fd;
-> +	xe_vm_destroy(fd, vm);
-> +	vm = 0;
-> +	gem_close(fd, batch_bo);
-> +	munmap(batch, xe->default_alignment);
-> +	munmap(userptr, xe->default_alignment);
-> +	batch = userptr = NULL;
-> +}
-> +
-> +static void recreate_execqueue(bool dumpable)
-> +{
-> +	struct drm_xe_sync sync = {
-> +		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-> +		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> +	};
-> +	struct drm_xe_vm_bind_op bind_ops[2] = { };
-> +	int fd = xe->fd;
-> +	uint32_t *ptr;
-> +	uint64_t offset = xe->default_alignment - 4;
-> +
-> +	tryclear_hang();
-> +
-> +	if (vm)
-> +		free_execqueue();
-> +
-> +	vm = xe_vm_create(fd, 0, 0);
-> +	batch_bo = xe_bo_create(fd, vm, xe->default_alignment, system_memory(fd), 0);
-> +	ptr = batch = xe_bo_map(xe->fd, batch_bo, xe->default_alignment);
-> +
-> +	memset(batch, 0, xe->default_alignment);
-> +	*(ptr++) = MI_SEMAPHORE_WAIT | MI_SEMAPHORE_POLL | MI_SEMAPHORE_SAD_GTE_SDD;
-> +	*(ptr++) = 1;
-> +	*(ptr++) = offset >> 32;
-> +	*(ptr++) = offset;
-> +	*(ptr++) = MI_BATCH_BUFFER_END;
-> +
-> +	userptr = mmap(0, xe->default_alignment, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> +	wmemset(userptr, 0xf1234567, xe->default_alignment / sizeof(wchar_t));
-> +
-> +	bind_ops[0].op = DRM_XE_VM_BIND_OP_MAP;
-> +	bind_ops[0].obj = batch_bo;
-> +	bind_ops[0].addr = 0;
-> +
-> +	bind_ops[1].op = DRM_XE_VM_BIND_OP_MAP_USERPTR;
-> +	bind_ops[1].userptr = (size_t)userptr;
-> +	bind_ops[1].addr = 1ULL << 40ULL;
-> +
-> +	if (dumpable)
-> +		bind_ops[0].flags = bind_ops[1].flags = DRM_XE_VM_BIND_FLAG_DUMPABLE;
-> +	bind_ops[0].range = bind_ops[1].range = xe->default_alignment;
-> +	bind_ops[0].pat_index = bind_ops[1].pat_index = intel_get_pat_idx_wb(fd);
-> +
-> +	sync.handle = syncobj_create(fd, 0);
-> +	xe_vm_bind_array(fd, vm, 0, bind_ops, ARRAY_SIZE(bind_ops), &sync, 1);
-> +	syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
-> +	syncobj_destroy(fd, sync.handle);
-> +}
-> +
-> +static uint32_t hang_engine(struct drm_xe_engine_class_instance *hwe)
-> +{
-> +	uint32_t engine;
-> +	struct drm_xe_sync sync = {
-> +		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-> +		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> +		.handle = syncobj_create(xe->fd, 0),
-> +	};
-> +
-> +	engine = xe_exec_queue_create(xe->fd, vm, hwe, 0);
-> +	xe_exec_sync(xe->fd, engine, 0, &sync, 1);
-> +
-> +	return sync.handle;
-> +}
-> +
-> +static void test_hang_one(void)
-> +{
-> +	uint32_t syncobj = hang_engine(&xe_engine(xe->fd, 0)->instance);
-> +
-> +	syncobj_wait(xe->fd, &syncobj, 1, INT64_MAX, 0, NULL);
-> +	syncobj_destroy(xe->fd, syncobj);
-> +
-> +	read_and_clear_hang();
-> +}
-> +
-> +/**
-> + * SUBTEST: basic
-> + * Description: Read out a full dumped VM.
-> + * Test category: functionality test
-> + */
-> +static void basic(void)
-> +{
-> +	recreate_execqueue(true);
-> +	test_hang_one();
-> +}
-> +
-> +/**
-> + * SUBTEST: empty-vm
-> + * Description: Create an error dump without anything in VM to dump.
-> + * Test category: functionality test
-> + */
-> +static void empty_vm(void)
-> +{
-> +	recreate_execqueue(false);
-> +	test_hang_one();
-> +}
-> +
-> +/**
-> + * SUBTEST: all-simultaneously
-> + * Description: Hang all engines at the same time, read out the dump.
-> + * Test category: robustness test
-> + */
-> +static void all_simultaneously(void)
-> +{
-> +	uint32_t syncobj[MAX_N_ENGINES], i = 0;
-> +	struct drm_xe_engine_class_instance *hwe;
-> +
-> +	recreate_execqueue(true);
-> +	xe_for_each_engine(xe->fd, hwe)
-> +		syncobj[i++] = hang_engine(hwe);
-> +
-> +	syncobj_wait(xe->fd, syncobj, i, INT64_MAX, 0, NULL);
-> +	while (i--)
-> +		syncobj_destroy(xe->fd, syncobj[i]);
-> +
-> +	read_and_clear_hang();
-> +}
-> +
-> +igt_main
-> +{
-> +	igt_fixture {
-> +		struct stat stat;
-> +		int fd = drm_open_driver_render(DRIVER_XE);
-> +		char str[256];
-> +		xe = xe_device_get(fd);
-> +
-> +		igt_assert_eq(fstat(fd, &stat), 0);
-> +		sprintf(str, "/sys/dev/char/%ld:%ld/device", stat.st_rdev >> 8, stat.st_rdev & 0xff);
-> +		sysfd = open(str, O_DIRECTORY);
-> +		igt_assert(sysfd >= 0);
-> +	}
-> +
-> +	igt_describe("Test that hw fault coredump readout works");
-> +	igt_subtest("basic")
-> +		basic();
-> +
-> +	igt_describe("Hang all engines simultaneously");
-> +	igt_subtest("all-simultaneously")
-> +		all_simultaneously();
-> +
-> +	igt_describe("Ensure that snapshot works without anything to capture");
-> +	igt_subtest("empty-vm")
-> +		empty_vm();
+  * igt@xe_live_ktest@bo@xe_bo-xe_ccs_migrate_kunit:
+    - bat-dg2-oem2:       [PASS][3] -> [SKIP][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-dg2-oem2/igt@xe_live_ktest@bo@xe_bo-xe_ccs_migrate_kunit.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-dg2-oem2/igt@xe_live_ktest@bo@xe_bo-xe_ccs_migrate_kunit.html
+    - bat-atsm-2:         [PASS][5] -> [SKIP][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-atsm-2/igt@xe_live_ktest@bo@xe_bo-xe_ccs_migrate_kunit.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-atsm-2/igt@xe_live_ktest@bo@xe_bo-xe_ccs_migrate_kunit.html
+    - bat-adlp-7:         [PASS][7] -> [SKIP][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-adlp-7/igt@xe_live_ktest@bo@xe_bo-xe_ccs_migrate_kunit.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-adlp-7/igt@xe_live_ktest@bo@xe_bo-xe_ccs_migrate_kunit.html
 
-Close here handles in fixture.
+  
+Known issues
+------------
 
-Regards,
-Kamil
+  Here are the changes found in XEIGTPW_10590_BAT that come from known issues:
 
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index d107d16fa..331d88c8e 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -280,6 +280,7 @@ intel_xe_progs = [
->  	'xe_compute',
->  	'xe_compute_preempt',
->  	'xe_copy_basic',
-> +	'xe_coredump',
->  	'xe_dma_buf_sync',
->  	'xe_debugfs',
->  	'xe_drm_fdinfo',
-> -- 
-> 2.43.0
-> 
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_live_ktest@bo:
+    - bat-adlp-7:         [PASS][9] -> [SKIP][10] ([Intel XE#455]) +5 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-adlp-7/igt@xe_live_ktest@bo.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-adlp-7/igt@xe_live_ktest@bo.html
+
+  * igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit:
+    - bat-dg2-oem2:       [PASS][11] -> [SKIP][12] ([Intel XE#455]) +5 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-dg2-oem2/igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit.html
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-dg2-oem2/igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit.html
+    - bat-atsm-2:         [PASS][13] -> [SKIP][14] ([Intel XE#455]) +5 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-atsm-2/igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-atsm-2/igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit.html
+
+  
+#### Warnings ####
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-dg2-oem2:       [SKIP][15] ([Intel XE#1201] / [Intel XE#455]) -> [SKIP][16] ([Intel XE#455])
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+    - bat-adlp-7:         [SKIP][17] ([Intel XE#1201] / [Intel XE#455]) -> [SKIP][18] ([Intel XE#455])
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+
+  
+  [Intel XE#1201]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1201
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7692 -> IGTPW_10590
+  * Linux: xe-684-cad255f28ccca6529104b9497a8d7302ae7eb88a -> xe-685-38a58d4231067e1b548c12ee521b73ffc0ebb73a
+
+  IGTPW_10590: 10590
+  IGT_7692: 5d9c29c620701497323bf3721146da57efa50952 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-684-cad255f28ccca6529104b9497a8d7302ae7eb88a: cad255f28ccca6529104b9497a8d7302ae7eb88a
+  xe-685-38a58d4231067e1b548c12ee521b73ffc0ebb73a: 38a58d4231067e1b548c12ee521b73ffc0ebb73a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/index.html
+
+--===============8862235984539529896==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/kunit: Support writable filter* parameters of kunit module</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129174/">https://patchwork.freedesktop.org/series/129174/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7692_BAT -&gt; XEIGTPW_10590_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_10590_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_10590_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_10590_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit:</p>
+<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-pvc-2/igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-pvc-2/igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit.html">SKIP</a> +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@bo@xe_bo-xe_ccs_migrate_kunit:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-dg2-oem2/igt@xe_live_ktest@bo@xe_bo-xe_ccs_migrate_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-dg2-oem2/igt@xe_live_ktest@bo@xe_bo-xe_ccs_migrate_kunit.html">SKIP</a></li>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-atsm-2/igt@xe_live_ktest@bo@xe_bo-xe_ccs_migrate_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-atsm-2/igt@xe_live_ktest@bo@xe_bo-xe_ccs_migrate_kunit.html">SKIP</a></li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-adlp-7/igt@xe_live_ktest@bo@xe_bo-xe_ccs_migrate_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-adlp-7/igt@xe_live_ktest@bo@xe_bo-xe_ccs_migrate_kunit.html">SKIP</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10590_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_live_ktest@bo:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-adlp-7/igt@xe_live_ktest@bo.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-adlp-7/igt@xe_live_ktest@bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-dg2-oem2/igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-dg2-oem2/igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +5 other tests skip</li>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-atsm-2/igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-atsm-2/igt@xe_live_ktest@bo@xe_bo-xe_bo_evict_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +5 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_dsc@dsc-basic:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1201">Intel XE#1201</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1201">Intel XE#1201</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10590/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7692 -&gt; IGTPW_10590</li>
+<li>Linux: xe-684-cad255f28ccca6529104b9497a8d7302ae7eb88a -&gt; xe-685-38a58d4231067e1b548c12ee521b73ffc0ebb73a</li>
+</ul>
+<p>IGTPW_10590: 10590<br />
+  IGT_7692: 5d9c29c620701497323bf3721146da57efa50952 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-684-cad255f28ccca6529104b9497a8d7302ae7eb88a: cad255f28ccca6529104b9497a8d7302ae7eb88a<br />
+  xe-685-38a58d4231067e1b548c12ee521b73ffc0ebb73a: 38a58d4231067e1b548c12ee521b73ffc0ebb73a</p>
+
+</body>
+</html>
+
+--===============8862235984539529896==--
