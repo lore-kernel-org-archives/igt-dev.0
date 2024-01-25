@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BDC5C48285
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B03DC48260
 	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 10:57:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1671610F2EB;
-	Thu, 25 Jan 2024 10:57:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A762310F89D;
+	Thu, 25 Jan 2024 10:57:16 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7740610F2EB
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jan 2024 10:57:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A322310F2EB
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Jan 2024 10:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706180236; x=1737716236;
+ t=1706180235; x=1737716235;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=VVUbvOggFFneD6hyMpVuYpzAhqk/TVr12iWqNtGe+M4=;
- b=AfIpmDIdb13iHrZ+Ypow66H35tiCBKZQuu/drEYa32bgPr/UOhrU/EeG
- /qdi1+ppif7dqYGm3DPREOb+mErQW6+ULRaIMQKWs7rid3z2ED8NdKJZ+
- VoTVPpGWFNrjEsOOfQ+SaOrnJHxzqlR2/i1U+n5343QF3W+JiW5GwqS5f
- B7uzXLYVTem+eDyZ82PgLOH7ua7KSrfNoBXFml/LVfKeirN/MMW6leZTl
- X7BPJFkaUDm048fnCydVPKbKwYA1JR86vLYrmyYj2xZQjcTHSwgyDhXgw
- CfUupTdKOo8sjE4bodEkNFh+Xec9Ql7NpafIxR9IwS/br0mtvjkbOPviN A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="433283725"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="433283725"
+ bh=yMzaxlIigcq+Tn6nNA91q10npMSYdY2/NDlf0T1JNLM=;
+ b=YPNJSajGUUX//wB9WClTCWk4cGQPFrB0BO8LyCL07KH81RcS53ThkPR4
+ EPYzhowA6wbV1ubLL0MD7prY604DXol6IqISBifBGDQ06csFB+y31RA8p
+ mdvvm+ieppWZXx0KJa2toZ+kvhlZf6Bi7yGvjn5vadzaF2WC/rJU+v2K8
+ Ut3PsQ/+Z3j0R9Xb6gv5m4N/By3b/hUpxJpKIWbipIXDe4LeSi/p2s06d
+ FG9sePvaYTcrQMwYW4sfKmbnDP27lB77hItdiRtMEjmajzLZ8ZMOzjbwi
+ Or6bMRoM5z24Jrrw61dPU9S+GpaR47OFa+4NrIiDcL7Vwt5zvKA5bEULT Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="433283716"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="433283716"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jan 2024 02:57:16 -0800
+ 25 Jan 2024 02:57:15 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2365586"
+   d="scan'208";a="2365575"
 Received: from cdeburca-mobl1.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
  ([10.252.15.173])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jan 2024 02:57:15 -0800
+ 25 Jan 2024 02:57:14 -0800
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 7/7] lib/intel_blt: use BYTE_COPY mode on xe2
-Date: Thu, 25 Jan 2024 10:56:45 +0000
-Message-ID: <20240125105646.313561-7-matthew.auld@intel.com>
+Subject: [PATCH i-g-t v2 6/7] tests/intel/xe: use xe_bb_size() helper
+Date: Thu, 25 Jan 2024 10:56:44 +0000
+Message-ID: <20240125105646.313561-6-matthew.auld@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240125105646.313561-1-matthew.auld@intel.com>
 References: <20240125105646.313561-1-matthew.auld@intel.com>
@@ -62,37 +62,344 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently we see various CAT errors and timeouts on xe2 when running
-xe_copy_basic. If selecting PAGE_COPY mode for MEM_COPY, the page size
-is defined as 256B block on xe2. Also the width should be defined in
-number of pages, and not bytes, which likely explains the CAT errors.
-However the caller in xe_copy_basic is not using a size that is aligned
-to 256B, so rather just select the more general BYTE_COPY mode instead,
-which should work for any reasonable number of bytes. Also bit 19
-doesn't look to be supported on PVC, where byte copy is all we seem to
-have. In addition the matrix copy also expects byte copy.
+No need to open code this anymore.
 
-BSpec: 57561
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/intel_blt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/intel/xe_dma_buf_sync.c      |  3 +--
+ tests/intel/xe_drm_fdinfo.c        |  3 +--
+ tests/intel/xe_exec_atomic.c       |  3 +--
+ tests/intel/xe_exec_balancer.c     |  7 +++----
+ tests/intel/xe_exec_basic.c        |  3 +--
+ tests/intel/xe_exec_compute_mode.c |  5 ++---
+ tests/intel/xe_exec_fault_mode.c   |  3 +--
+ tests/intel/xe_exec_reset.c        | 12 ++++--------
+ tests/intel/xe_exec_store.c        |  8 +++-----
+ tests/intel/xe_exec_threads.c      |  9 +++------
+ tests/intel/xe_pm.c                |  3 +--
+ tests/intel/xe_spin_batch.c        |  5 ++---
+ tests/intel/xe_vm.c                | 12 ++++--------
+ 13 files changed, 27 insertions(+), 49 deletions(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index e41e261ea..25d251c4f 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -1613,7 +1613,7 @@ static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *
- 	optype = mem->src.type == M_MATRIX ? 1 << 17 : 0;
+diff --git a/tests/intel/xe_dma_buf_sync.c b/tests/intel/xe_dma_buf_sync.c
+index eca3a5e95..b69283093 100644
+--- a/tests/intel/xe_dma_buf_sync.c
++++ b/tests/intel/xe_dma_buf_sync.c
+@@ -116,8 +116,7 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
+ 	}
  
- 	i = 0;
--	batch[i++] = MEM_COPY_CMD | (1 << 19) | optype;
-+	batch[i++] = MEM_COPY_CMD | optype;
- 	batch[i++] = mem->src.width - 1;
- 	batch[i++] = mem->src.height - 1;
- 	batch[i++] = mem->src.pitch - 1;
+ 	bo_size = sizeof(*data[0]) * N_FD;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd[0]),
+-			xe_get_default_alignment(fd[0]));
++	bo_size = xe_bb_size(fd[0], bo_size);
+ 	for (i = 0; i < n_bo; ++i) {
+ 		bo[i] = xe_bo_create(fd[0], 0, bo_size,
+ 				     vram_if_possible(fd[0], hwe0->gt_id),
+diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
+index 36bb39a31..a582703c1 100644
+--- a/tests/intel/xe_drm_fdinfo.c
++++ b/tests/intel/xe_drm_fdinfo.c
+@@ -73,8 +73,7 @@ static void test_active(int fd, struct drm_xe_engine *engine)
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	bo_size = sizeof(*data) * N_EXEC_QUEUES;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	xe_for_each_mem_region(fd, memreg, region) {
+ 		uint64_t pre_size;
+diff --git a/tests/intel/xe_exec_atomic.c b/tests/intel/xe_exec_atomic.c
+index fecd377ef..7ee80816c 100644
+--- a/tests/intel/xe_exec_atomic.c
++++ b/tests/intel/xe_exec_atomic.c
+@@ -78,8 +78,7 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	bo_size = sizeof(*data);
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	bo = xe_bo_create(fd, vm, bo_size, placement,
+ 			  I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS);
+diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
+index 664e6da59..02edd389d 100644
+--- a/tests/intel/xe_exec_balancer.c
++++ b/tests/intel/xe_exec_balancer.c
+@@ -68,7 +68,7 @@ static void test_all_active(int fd, int gt, int class)
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	bo_size = sizeof(*data) * num_placements;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, gt),
+ 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+@@ -210,7 +210,7 @@ test_exec(int fd, int gt, int class, int n_exec_queues, int n_execs,
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	bo_size = sizeof(*data) * n_execs;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	if (flags & USERPTR) {
+ #define	MAP_ADDRESS	0x00007fadeadbe000
+@@ -437,8 +437,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
+ 
+ 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+ 	bo_size = sizeof(*data) * n_execs;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	if (flags & USERPTR) {
+ #define	MAP_ADDRESS	0x00007fadeadbe000
+diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
+index 8994859fa..e6f8db5b0 100644
+--- a/tests/intel/xe_exec_basic.c
++++ b/tests/intel/xe_exec_basic.c
+@@ -111,8 +111,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 	for (i = 0; i < n_vm; ++i)
+ 		vm[i] = xe_vm_create(fd, 0, 0);
+ 	bo_size = sizeof(*data) * n_execs;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	addr[0] = 0x1a0000;
+ 	sparse_addr[0] = 0x301a0000;
+diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
+index 473b11ae9..7dad71509 100644
+--- a/tests/intel/xe_exec_compute_mode.c
++++ b/tests/intel/xe_exec_compute_mode.c
+@@ -118,8 +118,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 
+ 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+ 	bo_size = sizeof(*data) * n_execs;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	for (i = 0; (flags & EXEC_QUEUE_EARLY) && i < n_exec_queues; i++) {
+ 		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
+@@ -336,7 +335,7 @@ static void non_block(int fd, int expect)
+ 
+ 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+ 	bo_size = sizeof(*data) * DATA_COUNT;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	engine = xe_engine(fd, 1);
+ 	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, engine->instance.gt_id), 0);
+diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
+index f19e939e3..dae0e8ac3 100644
+--- a/tests/intel/xe_exec_fault_mode.c
++++ b/tests/intel/xe_exec_fault_mode.c
+@@ -134,8 +134,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
+ 			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
+ 	bo_size = sizeof(*data) * n_execs;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	if (flags & USERPTR) {
+ #define	MAP_ADDRESS	0x00007fadeadbe000
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 978b4d279..a9206d7d2 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -47,8 +47,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	bo_size = sizeof(*spin);
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	bo = xe_bo_create(fd, vm, bo_size,
+ 			  vram_if_possible(fd, eci->gt_id),
+@@ -179,8 +178,7 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	bo_size = sizeof(*data) * n_execs;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, gt),
+ 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+@@ -368,8 +366,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	bo_size = sizeof(*data) * n_execs;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	bo = xe_bo_create(fd, vm, bo_size,
+ 			  vram_if_possible(fd, eci->gt_id),
+@@ -537,8 +534,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 
+ 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+ 	bo_size = sizeof(*data) * n_execs;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	bo = xe_bo_create(fd, vm, bo_size,
+ 			  vram_if_possible(fd, eci->gt_id),
+diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
+index bed118688..55354e688 100644
+--- a/tests/intel/xe_exec_store.c
++++ b/tests/intel/xe_exec_store.c
+@@ -126,8 +126,7 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	bo_size = sizeof(*data);
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	bo = xe_bo_create(fd, vm, bo_size,
+ 			  vram_if_possible(fd, eci->gt_id),
+@@ -201,7 +200,7 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
+ 	uint32_t *batch_map;
+ 	size_t bo_size = 4096;
+ 
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_SIMPLE);
+ 	exec_queues = xe_exec_queue_create(fd, vm, eci, 0);
+@@ -291,8 +290,7 @@ static void persistent(int fd)
+ 	sync.handle = syncobj;
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+-	batch_size = ALIGN(batch_size + xe_cs_prefetch_size(fd),
+-					xe_get_default_alignment(fd));
++	batch_size = xe_bb_size(fd, batch_size);
+ 
+ 	engine = xe_engine(fd, 1);
+ 	sd_batch = xe_bo_create(fd, vm, batch_size,
+diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+index 17ee57a49..1b2623045 100644
+--- a/tests/intel/xe_exec_threads.c
++++ b/tests/intel/xe_exec_threads.c
+@@ -90,8 +90,7 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 	igt_assert(num_placements > 1);
+ 
+ 	bo_size = sizeof(*data) * n_execs;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	if (flags & USERPTR) {
+ 		if (flags & INVALIDATE) {
+@@ -291,8 +290,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 	}
+ 
+ 	bo_size = sizeof(*data) * n_execs;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	if (flags & USERPTR) {
+ 		if (flags & INVALIDATE) {
+@@ -496,8 +494,7 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 	}
+ 
+ 	bo_size = sizeof(*data) * n_execs;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	if (flags & USERPTR) {
+ 		if (flags & INVALIDATE) {
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index 4afe37d93..fac19f2ec 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -294,8 +294,7 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
+ 		igt_assert(out_of_d3(device, d_state));
+ 
+ 	bo_size = sizeof(*data) * n_execs;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(device.fd_xe),
+-			xe_get_default_alignment(device.fd_xe));
++	bo_size = xe_bb_size(device.fd_xe, bo_size);
+ 
+ 	if (check_rpm && runtime_usage_available(device.pci_xe))
+ 		rpm_usage = igt_pm_get_runtime_usage(device.pci_xe);
+diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
+index 3f3283829..c18306350 100644
+--- a/tests/intel/xe_spin_batch.c
++++ b/tests/intel/xe_spin_batch.c
+@@ -192,8 +192,7 @@ static void preempter(int fd, struct drm_xe_engine_class_instance *hwe)
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	bo_size = sizeof(*data);
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	bo = xe_bo_create(fd, vm, bo_size,
+ 			  vram_if_possible(fd, hwe->gt_id),
+@@ -278,7 +277,7 @@ static void xe_spin_fixed_duration(int fd, int gt, int class, int flags)
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	exec_queue = xe_exec_queue_create(fd, vm, hwe, ext);
+ 	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
+-	bo_size = ALIGN(sizeof(*spin) + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, sizeof(*spin));
+ 	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, 0), 0);
+ 	spin = xe_bo_map(fd, bo, bo_size);
+ 	spin_addr = intel_allocator_alloc_with_strategy(ahnd, bo, bo_size, 0,
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index ebc1ca68f..67276b220 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -50,8 +50,7 @@ write_dwords(int fd, uint32_t vm, int n_dwords, uint64_t *addrs)
+ 	int i, b = 0;
+ 
+ 	batch_size = (n_dwords * 4 + 1) * sizeof(uint32_t);
+-	batch_size = ALIGN(batch_size + xe_cs_prefetch_size(fd),
+-			   xe_get_default_alignment(fd));
++	batch_size = xe_bb_size(fd, batch_size);
+ 	batch_bo = xe_bo_create(fd, vm, batch_size,
+ 				vram_if_possible(fd, 0),
+ 				DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+@@ -418,8 +417,7 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	bo_size = sizeof(struct shared_pte_page_data);
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	if (addr_stride <= bo_size)
+ 		addr_stride = addr_stride + bo_size;
+@@ -603,8 +601,7 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	bo_size = sizeof(*data) * N_EXEC_QUEUES;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 	bo = xe_bo_create(fd, vm, bo_size,
+ 			  vram_if_possible(fd, eci->gt_id),
+ 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+@@ -784,8 +781,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	bo_size = sizeof(*data) * n_execs;
+-	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+-			xe_get_default_alignment(fd));
++	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	bo = xe_bo_create(fd, vm, bo_size,
+ 			  vram_if_possible(fd, eci->gt_id),
 -- 
 2.43.0
 
