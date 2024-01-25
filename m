@@ -4,47 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B255C47422
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 18:37:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95467C47258
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 18:51:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 15AF510EED3;
-	Thu, 25 Jan 2024 18:37:15 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 57A4210EED3
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jan 2024 18:37:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706207834; x=1737743834;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=2GIOupFLVHW0rQ8tUXFzk3SMTaaU3yRj2eBvuWDFWFg=;
- b=GnwfEQsVEQ052NEMZR4lfyECgLNF7ToYMoDHC7GiRUJoIvlbKb0rbA0x
- yMGWPTXmJ5QkkX3Xc5yCC7z1NyrRUGIZL7Su2umTlbU+Vp2pUHGvCovJn
- ohLzxXcsTVcrPNSVzurhNCRVLEfUfm+UKZsYkMvaCXlEMOatRAwx+FZOa
- 7gtpCCNqzC94fQSybMe73z0k/YrTk/ButrBrTRT89T3d2++O3Vqz7nJX7
- XRhDrZjIA9JDW3c7y3c8mna9M/xf7HpG/fOE4Wy7MaU6onXL9A1tw9x5x
- hYjjk/ec6BTP9nO02k2ABLUdhk8qD3xGVDxcOmRoyc/ndnYQEPIbXkH5z g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="15621340"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="15621340"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jan 2024 10:37:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="21141469"
-Received: from unknown (HELO localhost) ([10.245.100.131])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jan 2024 10:37:12 -0800
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v3 8/8] tests/intel/gem_mmap: add basic multi-GPU subtest
-Date: Thu, 25 Jan 2024 19:36:31 +0100
-Message-ID: <20240125183632.50422-9-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240125183632.50422-1-kamil.konieczny@linux.intel.com>
-References: <20240125183632.50422-1-kamil.konieczny@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3043810E327;
+	Thu, 25 Jan 2024 18:51:49 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0554510E327;
+ Thu, 25 Jan 2024 18:51:48 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_introduce_Xe_multigpu_and?=
+ =?utf-8?q?_other_multi-GPU_helpers_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Date: Thu, 25 Jan 2024 18:51:48 -0000
+Message-ID: <170620870802.727567.11815967454267685730@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240125183632.50422-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20240125183632.50422-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,140 +36,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Test basic mmap for two or more GPU cards.
+== Series Details ==
 
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
----
- tests/intel/gem_mmap.c | 77 +++++++++++++++++++++++++++---------------
- 1 file changed, 50 insertions(+), 27 deletions(-)
+Series: introduce Xe multigpu and other multi-GPU helpers (rev3)
+URL   : https://patchwork.freedesktop.org/series/129101/
+State : failure
 
-diff --git a/tests/intel/gem_mmap.c b/tests/intel/gem_mmap.c
-index d4ca1eda7..90bcec7b0 100644
---- a/tests/intel/gem_mmap.c
-+++ b/tests/intel/gem_mmap.c
-@@ -38,6 +38,8 @@
- 
- #include "drm.h"
- #include "i915/gem_create.h"
-+#include "intel_multigpu.h"
-+
- /**
-  * TEST: gem mmap
-  * Description: Basic MMAP IOCTL tests for memory regions.
-@@ -61,6 +63,11 @@
-  *   mapping existence after gem_close and unmapping.
-  * Run type: BAT
-  *
-+ * SUBTEST: basic-multigpu
-+ * Description:
-+ *   Test basics of mmap on two or more GPUs.
-+ * Run type: BAT
-+ *
-  * SUBTEST: basic-small-bo
-  * Description:
-  *   Test the write read coherency and simultaneous access of different pages of a small buffer
-@@ -209,12 +216,40 @@ static int mmap_ioctl(int i915, struct drm_i915_gem_mmap *arg)
- 	return err;
- }
- 
--igt_main
-+static void test_basic(int i915, int pat)
- {
-+	struct drm_i915_gem_mmap arg = {
-+		.handle = gem_create(fd, OBJECT_SIZE),
-+		.size = OBJECT_SIZE,
-+	};
- 	uint8_t expected[OBJECT_SIZE];
- 	uint8_t buf[OBJECT_SIZE];
- 	uint8_t *addr;
- 
-+	igt_assert_eq(mmap_ioctl(fd, &arg), 0);
-+	addr = from_user_pointer(arg.addr_ptr);
-+
-+	igt_info("Testing contents of newly created object.\n");
-+	memset(expected, 0, sizeof(expected));
-+	igt_assert(memcmp(addr, expected, sizeof(expected)) == 0);
-+
-+	igt_info("Testing coherency of writes and mmap reads.\n");
-+	memset(buf, 0, sizeof(buf));
-+	memset(buf + 1024, pat, 1024);
-+	memset(expected + 1024, pat, 1024);
-+	gem_write(fd, arg.handle, 0, buf, OBJECT_SIZE);
-+	igt_assert(memcmp(buf, addr, sizeof(buf)) == 0);
-+
-+	igt_info("Testing that mapping stays after close\n");
-+	gem_close(fd, arg.handle);
-+	igt_assert(memcmp(buf, addr, sizeof(buf)) == 0);
-+
-+	igt_info("Testing unmapping\n");
-+	munmap(addr, OBJECT_SIZE);
-+}
-+
-+igt_main
-+{
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_INTEL);
- 		igt_require(gem_has_legacy_mmap(fd));
-@@ -306,36 +341,13 @@ igt_main
- 
- 	igt_describe("Test basics of newly mapped gem object like default content, write and read "
- 		     "coherency, mapping existence after gem_close and unmapping.");
--	igt_subtest("basic") {
--		struct drm_i915_gem_mmap arg = {
--			.handle = gem_create(fd, OBJECT_SIZE),
--			.size = OBJECT_SIZE,
--		};
--		igt_assert_eq(mmap_ioctl(fd, &arg), 0);
--		addr = from_user_pointer(arg.addr_ptr);
--
--		igt_info("Testing contents of newly created object.\n");
--		memset(expected, 0, sizeof(expected));
--		igt_assert(memcmp(addr, expected, sizeof(expected)) == 0);
--
--		igt_info("Testing coherency of writes and mmap reads.\n");
--		memset(buf, 0, sizeof(buf));
--		memset(buf + 1024, 0x01, 1024);
--		memset(expected + 1024, 0x01, 1024);
--		gem_write(fd, arg.handle, 0, buf, OBJECT_SIZE);
--		igt_assert(memcmp(buf, addr, sizeof(buf)) == 0);
--
--		igt_info("Testing that mapping stays after close\n");
--		gem_close(fd, arg.handle);
--		igt_assert(memcmp(buf, addr, sizeof(buf)) == 0);
--
--		igt_info("Testing unmapping\n");
--		munmap(addr, OBJECT_SIZE);
--	}
-+	igt_subtest("basic")
-+		test_basic(fd, 1);
- 
- 	igt_describe("Map small buffer object though direct CPU access, bypassing GPU.");
- 	igt_subtest("short-mmap") {
- 		uint32_t handle = gem_create(fd, OBJECT_SIZE);
-+		uint8_t *addr;
- 
- 		igt_assert(OBJECT_SIZE > 4096);
- 
-@@ -373,4 +385,15 @@ igt_main
- 
- 	igt_fixture
- 		drm_close_driver(fd);
-+
-+	igt_describe("Test basics of mapped on two or more GPUs.");
-+	igt_subtest("basic-multigpu") {
-+		igt_multi_fork_foreach_gpu(gpu, DRIVER_INTEL) {
-+			int pat = 1 + rand() % 128;
-+
-+			igt_info("Basic mmap test with pattern x%x\n", pat);
-+			test_basic(gpu, pat);
-+		}
-+		igt_waitchildren();
-+	}
- }
--- 
-2.42.0
+== Summary ==
+
+IGT patchset build failed on latest successful build
+5d9c29c620701497323bf3721146da57efa50952 tests/kms_vrr: Reset to High refresh rate before begin drrs test
+
+Tail of build.log:
+[641/1669] Compiling C object 'tests/vc4/e4667e8@@vc4_lookup_fail@exe/vc4_lookup_fail.c.o'.
+[642/1669] Compiling C object 'tests/59830eb@@kms_chamelium_frames@exe/chamelium_kms_chamelium_helper.c.o'.
+[643/1669] Compiling C object 'tests/vc4/e4667e8@@vc4_dmabuf_poll@exe/vc4_dmabuf_poll.c.o'.
+[644/1669] Compiling C object 'tests/59830eb@@kms_chamelium_hpd@exe/chamelium_kms_chamelium_helper.c.o'.
+[645/1669] Compiling C object 'tests/vc4/e4667e8@@vc4_create_bo@exe/vc4_create_bo.c.o'.
+[646/1669] Compiling C object 'tests/vc4/e4667e8@@vc4_wait_seqno@exe/vc4_wait_seqno.c.o'.
+[647/1669] Compiling C object 'tests/vc4/e4667e8@@vc4_label_bo@exe/vc4_label_bo.c.o'.
+[648/1669] Compiling C object 'tests/vc4/e4667e8@@vc4_tiling@exe/vc4_tiling.c.o'.
+[649/1669] Compiling C object 'tests/vc4/e4667e8@@vc4_mmap@exe/vc4_mmap.c.o'.
+[650/1669] Compiling C object 'tests/vc4/e4667e8@@vc4_wait_bo@exe/vc4_wait_bo.c.o'.
+[651/1669] Compiling C object 'tests/v3d/cad21b8@@v3d_wait_bo@exe/v3d_wait_bo.c.o'.
+[652/1669] Compiling C object 'tests/vc4/e4667e8@@vc4_perfmon@exe/vc4_perfmon.c.o'.
+[653/1669] Compiling C object 'tests/v3d/cad21b8@@v3d_perfmon@exe/v3d_perfmon.c.o'.
+[654/1669] Compiling C object 'tests/v3d/cad21b8@@v3d_job_submission@exe/v3d_job_submission.c.o'.
+[655/1669] Compiling C object 'tests/vc4/e4667e8@@vc4_purgeable_bo@exe/vc4_purgeable_bo.c.o'.
+[656/1669] Compiling C object 'tests/59830eb@@xe_pm@exe/intel_xe_pm.c.o'.
+[657/1669] Compiling C object 'tests/59830eb@@xe_exec_reset@exe/intel_xe_exec_reset.c.o'.
+[658/1669] Compiling C object 'tests/vmwgfx/776e741@@vmw_mob_stress@exe/vmw_mob_stress.c.o'.
+[659/1669] Compiling C object 'tests/v3d/cad21b8@@v3d_submit_cl@exe/v3d_submit_cl.c.o'.
+[660/1669] Compiling C object 'tests/59830eb@@kms_chamelium_edid@exe/chamelium_kms_chamelium_edid.c.o'.
+[661/1669] Compiling C object 'tests/59830eb@@xe_evict@exe/intel_xe_evict.c.o'.
+[662/1669] Compiling C object 'tests/59830eb@@kms_chamelium_color@exe/chamelium_kms_chamelium_color.c.o'.
+[663/1669] Compiling C object 'tests/59830eb@@xe_pat@exe/intel_xe_pat.c.o'.
+[664/1669] Compiling C object 'tests/vmwgfx/776e741@@vmw_ref_count@exe/vmw_ref_count.c.o'.
+[665/1669] Compiling C object 'tests/59830eb@@xe_query@exe/intel_xe_query.c.o'.
+[666/1669] Compiling C object 'tests/vmwgfx/776e741@@vmw_surface_copy@exe/vmw_surface_copy.c.o'.
+[667/1669] Compiling C object 'tests/59830eb@@kms_chamelium_audio@exe/chamelium_kms_chamelium_audio.c.o'.
+[668/1669] Compiling C object 'tests/vmwgfx/776e741@@vmw_tri@exe/vmw_tri.c.o'.
+[669/1669] Compiling C object 'tests/59830eb@@gem_softpin@exe/intel_gem_softpin.c.o'.
+[670/1669] Compiling C object 'tests/59830eb@@kms_psr2_sf@exe/intel_kms_psr2_sf.c.o'.
+[671/1669] Compiling C object 'tests/59830eb@@kms_chamelium_hpd@exe/chamelium_kms_chamelium_hpd.c.o'.
+[672/1669] Compiling C object 'tests/v3d/cad21b8@@v3d_submit_csd@exe/v3d_submit_csd.c.o'.
+[673/1669] Compiling C object 'tests/vmwgfx/776e741@@vmw_execution_buffer@exe/vmw_execution_buffer.c.o'.
+[674/1669] Compiling C object 'tests/59830eb@@kms_pm_rpm@exe/intel_kms_pm_rpm.c.o'.
+[675/1669] Compiling C object 'tests/59830eb@@i915_query@exe/intel_i915_query.c.o'.
+[676/1669] Compiling C object 'benchmarks/cb1d2fd@@gem_blt@exe/gem_blt.c.o'.
+[677/1669] Compiling C object 'tests/59830eb@@xe_exec_threads@exe/intel_xe_exec_threads.c.o'.
+[678/1669] Compiling C object 'tests/59830eb@@xe_intel_bb@exe/intel_xe_intel_bb.c.o'.
+[679/1669] Compiling C object 'tests/59830eb@@gem_stress@exe/intel_gem_stress.c.o'.
+[680/1669] Compiling C object 'tests/59830eb@@gem_exec_balancer@exe/intel_gem_exec_balancer.c.o'.
+[681/1669] Compiling C object 'tests/59830eb@@kms_chamelium_frames@exe/chamelium_kms_chamelium_frames.c.o'.
+[682/1669] Compiling C object 'tests/59830eb@@xe_vm@exe/intel_xe_vm.c.o'.
+[683/1669] Compiling C object 'tests/59830eb@@gem_exec_fence@exe/intel_gem_exec_fence.c.o'.
+[684/1669] Compiling C object 'tests/59830eb@@gem_concurrent_all@exe/intel_gem_concurrent_all.c.o'.
+[685/1669] Generating i915-perf-equations with a custom command.
+[686/1669] Compiling C object 'tests/59830eb@@kms_frontbuffer_tracking@exe/intel_kms_frontbuffer_tracking.c.o'.
+[687/1669] Compiling C object 'tests/59830eb@@perf_pmu@exe/intel_perf_pmu.c.o'.
+[688/1669] Compiling C object 'tests/59830eb@@gem_exec_schedule@exe/intel_gem_exec_schedule.c.o'.
+[689/1669] Compiling C object 'tests/59830eb@@perf@exe/intel_perf.c.o'.
+ninja: build stopped: subcommand failed.
+
 
