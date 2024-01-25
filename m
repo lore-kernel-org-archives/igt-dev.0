@@ -4,26 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F4E4C46CD2
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Jan 2024 22:47:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C143CC46CD2
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 01:29:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ADCB410E56B;
-	Wed, 24 Jan 2024 22:47:13 +0000 (UTC)
-Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D79A10E56B;
- Wed, 24 Jan 2024 22:47:12 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5075977467655978428=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 52C6510F57D;
+	Thu, 25 Jan 2024 01:29:33 +0000 (UTC)
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
+ [205.220.168.131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 72AAC10F57D
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Jan 2024 01:29:31 +0000 (UTC)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
+ 40P1PZY2029719; Thu, 25 Jan 2024 01:29:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ message-id:date:mime-version:subject:to:cc:references:from
+ :in-reply-to:content-type:content-transfer-encoding; s=
+ qcppdkim1; bh=/2WRoA4OUb2HbAdadwyZ893UYvDGFvyi6ajP0m/R1zI=; b=UK
+ MM1cAEm6B1hrZincfpkV/nXPozVd+SWWSLm+c4VHIkrm+TTCtFpWvVnZSD9+0MLR
+ XIdKilr5Hvlymcr4LUjVeHBPeq3fWdHtVoXK8FXWU7X3cGuFN+KOiw6PBprBIwT+
+ 37clTW/38Lc/B9gYYWLwc+SMaNShGJsPXDZ8eizvvfmacneB66WvGB/7bp7FJ8FN
+ eNkChnMBO28UzBmrNet/S00cWZduNbqxP8JZAFbeEK44kOE/bLtQFByHfnZOYv3Q
+ Ws/+21FhCabfLXGP8gWAgsc4NAIb1J73KjaXdSx9J5NiNu/MwSw1qg+3PbAiU3gy
+ QrZZmTTPSggqsrs8j6qw==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com
+ [199.106.103.254])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vtmh0uamv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Jan 2024 01:29:17 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com
+ [10.46.141.250])
+ by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40P1TGZH007489
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Jan 2024 01:29:16 GMT
+Received: from [10.71.111.207] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 24 Jan
+ 2024 17:29:15 -0800
+Message-ID: <56ac3f53-c6f5-40fd-8d54-29540b6a2aa8@quicinc.com>
+Date: Wed, 24 Jan 2024 17:29:15 -0800
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_introduce_Xe_multigpu_and_othe?=
- =?utf-8?q?r_multi-GPU_helpers_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Date: Wed, 24 Jan 2024 22:47:12 -0000
-Message-ID: <170613643236.685200.2130979144955324767@5338d5abeb45>
-X-Patchwork-Hint: ignore
-References: <20240124204134.71451-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20240124204134.71451-1-kamil.konieczny@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2 4/6] lib: Add support for solid_fill and
+ pixel_source plane properties
+Content-Language: en-US
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>, Petri Latvala <adrinael@adrinael.net>
+References: <20240123-solid-fill-v2-0-4ecd2cf767fe@quicinc.com>
+ <20240123-solid-fill-v2-4-4ecd2cf767fe@quicinc.com>
+ <bba9ee2f-4731-4908-8ab7-679c37785766@intel.com>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
+In-Reply-To: <bba9ee2f-4731-4908-8ab7-679c37785766@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: Pf_ht0BlWGWQI9K26w2jSR2iS9reknl0
+X-Proofpoint-ORIG-GUID: Pf_ht0BlWGWQI9K26w2jSR2iS9reknl0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-24_12,2024-01-24_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=980 adultscore=0
+ mlxscore=0 clxscore=1015 bulkscore=0 malwarescore=0 impostorscore=0
+ suspectscore=0 phishscore=0 priorityscore=1501 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2401250009
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,130 +85,152 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Dmitry
+ Baryshkov <dmitry.baryshkov@linaro.org>, Simon Ser <contact@emersion.fr>,
+ Rob Clark <robdclark@gmail.com>, Pekka Paalanen <pekka.paalanen@collabora.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5075977467655978428==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: introduce Xe multigpu and other multi-GPU helpers (rev2)
-URL   : https://patchwork.freedesktop.org/series/129101/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7691_BAT -> XEIGTPW_10585_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10585_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#1033])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7691/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10585/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
 
 
-Build changes
--------------
+On 1/24/2024 1:03 AM, Modem, Bhanuprakash wrote:
+> 
+> 
+> On 24-01-2024 04:58 am, Jessica Zhang wrote:
+>> Add corresponding IGT macros for solid_fill and pixel_source DRM
+>> properties, and change IGT commit behavior to allow for NULL FB commits.
+>>
+>> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+>> ---
+>>   lib/igt_kms.c | 46 +++++++++++++++++++++++++++++++++++++++++++---
+>>   lib/igt_kms.h |  4 ++++
+>>   2 files changed, 47 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>> index 1b4d0d7612a2..238b0a834adf 100644
+>> --- a/lib/igt_kms.c
+>> +++ b/lib/igt_kms.c
+>> @@ -669,6 +669,8 @@ const char * const 
+>> igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
+>>       [IGT_PLANE_HOTSPOT_X] = "HOTSPOT_X",
+>>       [IGT_PLANE_HOTSPOT_Y] = "HOTSPOT_Y",
+>>       [IGT_PLANE_FB_ID] = "FB_ID",
+>> +    [IGT_PLANE_SOLID_FILL] = "solid_fill",
+>> +    [IGT_PLANE_PIXEL_SOURCE] = "pixel_source",
+>>       [IGT_PLANE_CRTC_ID] = "CRTC_ID",
+>>       [IGT_PLANE_IN_FENCE_FD] = "IN_FENCE_FD",
+>>       [IGT_PLANE_TYPE] = "type",
+>> @@ -3417,6 +3419,11 @@ static igt_output_t 
+>> *igt_pipe_get_output(igt_pipe_t *pipe)
+>>       return NULL;
+>>   }
+>> +static uint32_t igt_plane_get_solid_fill_id(igt_plane_t *plane)
+>> +{
+>> +    return plane->values[IGT_PLANE_SOLID_FILL];
+>> +}
+>> +
+>>   static uint32_t igt_plane_get_fb_id(igt_plane_t *plane)
+>>   {
+>>       return plane->values[IGT_PLANE_FB_ID];
+>> @@ -3648,7 +3655,7 @@ static int 
+>> igt_primary_plane_commit_legacy(igt_plane_t *primary,
+>>       struct igt_display *display = primary->pipe->display;
+>>       igt_output_t *output = igt_pipe_get_output(pipe);
+>>       drmModeModeInfo *mode;
+>> -    uint32_t fb_id, crtc_id;
+>> +    uint32_t fb_id, solid_fill_id, crtc_id;
+>>       int ret;
+>>       /* Primary planes can't be windowed when using a legacy commit */
+>> @@ -3665,12 +3672,14 @@ static int 
+>> igt_primary_plane_commit_legacy(igt_plane_t *primary,
+>>       crtc_id = pipe->crtc_id;
+>>       fb_id = output ? igt_plane_get_fb_id(primary) : 0;
+>> -    if (fb_id)
+>> +    solid_fill_id = output ? igt_plane_get_solid_fill_id(primary) : 0;
+>> +
+>> +    if (fb_id || solid_fill_id)
+>>           mode = igt_output_get_mode(output);
+>>       else
+>>           mode = NULL;
+>> -    if (fb_id) {
+>> +    if (fb_id || solid_fill_id) {
+>>           uint32_t src_x = primary->values[IGT_PLANE_SRC_X] >> 16;
+>>           uint32_t src_y = primary->values[IGT_PLANE_SRC_Y] >> 16;
+>> @@ -4935,6 +4944,37 @@ igt_plane_t 
+>> *igt_output_get_plane_type_index(igt_output_t *output,
+>>       return igt_pipe_get_plane_type_index(pipe, plane_type, index);
+>>   }
+>> +/**
+>> + * igt_plane_set_solid_fill:
+>> + * @plane: Plane
+>> + * @rect: Rect for size and position of @plane
+>> + * @solid_fill_id: Solid fill property blob ID
+>> + *
+>> + * Pairs the solid_fill blob (identified by @solid_fill_id) to a @plane
+>> + *
+>> + * The size and position of the solid fill plane will be specified by 
+>> @rect
+>> + */
+>> +void igt_plane_set_solid_fill(igt_plane_t *plane, struct 
+>> drm_mode_rect *rect,
+>> +        int solid_fill_id)
+>> +{
+>> +    igt_pipe_t *pipe = plane->pipe;
+>> +    igt_display_t *display = pipe->display;
+>> +    int width = rect->x2 - rect->x1;
+>> +    int height = rect->y2 - rect->y1;
+>> +
+>> +    igt_plane_set_prop_value(plane, IGT_PLANE_CRTC_ID,
+>> +            solid_fill_id ? pipe->crtc_id : 0);
+>> +    igt_plane_set_prop_value(plane, IGT_PLANE_SOLID_FILL, 
+>> solid_fill_id);
+> 
+> We should reset this property to default in igt_display_reset().
 
-  * IGT: IGT_7691 -> IGTPW_10585
-  * Linux: xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb -> xe-677-7ec08146b3938f825a1cbe49e36a5362b10204be
+Hi Bhanu,
 
-  IGTPW_10585: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/index.html
-  IGT_7691: 7691
-  xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb: 0496fe20d8ed5e73ed186d293ef67e7bae4658eb
-  xe-677-7ec08146b3938f825a1cbe49e36a5362b10204be: 7ec08146b3938f825a1cbe49e36a5362b10204be
+Got it -- will add that in v2.
 
-== Logs ==
+Thanks,
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10585/index.html
+Jessica Zhang
 
---===============5075977467655978428==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>introduce Xe multigpu and other multi-GPU helpers (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129101/">https://patchwork.freedesktop.org/series/129101/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10585/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10585/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7691_BAT -&gt; XEIGTPW_10585_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10585_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7691/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10585/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7691 -&gt; IGTPW_10585</li>
-<li>Linux: xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb -&gt; xe-677-7ec08146b3938f825a1cbe49e36a5362b10204be</li>
-</ul>
-<p>IGTPW_10585: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10585/index.html<br />
-  IGT_7691: 7691<br />
-  xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb: 0496fe20d8ed5e73ed186d293ef67e7bae4658eb<br />
-  xe-677-7ec08146b3938f825a1cbe49e36a5362b10204be: 7ec08146b3938f825a1cbe49e36a5362b10204be</p>
-
-</body>
-</html>
-
---===============5075977467655978428==--
+> 
+> - Bhanu
+> 
+>> +
+>> +    plane->gem_handle = 0;
+>> +
+>> +    LOG(display, "%s.%d: plane_set_solid_fill(%d)\n", 
+>> kmstest_pipe_name(pipe->pipe),
+>> +        plane->index, solid_fill_id);
+>> +
+>> +    igt_plane_set_position(plane, rect->x1, rect->y1);
+>> +    igt_plane_set_size(plane, width, height);
+>> +}
+>> +
+>>   /**
+>>    * igt_plane_set_fb:
+>>    * @plane: Plane
+>> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+>> index b3882808b42f..9c05272abe1e 100644
+>> --- a/lib/igt_kms.h
+>> +++ b/lib/igt_kms.h
+>> @@ -330,6 +330,8 @@ enum igt_atomic_plane_properties {
+>>   #define IGT_PLANE_COORD_CHANGED_MASK 0xff
+>>          IGT_PLANE_FB_ID,
+>> +       IGT_PLANE_SOLID_FILL,
+>> +       IGT_PLANE_PIXEL_SOURCE,
+>>          IGT_PLANE_CRTC_ID,
+>>          IGT_PLANE_IN_FENCE_FD,
+>>          IGT_PLANE_TYPE,
+>> @@ -537,6 +539,8 @@ igt_output_t 
+>> *igt_get_single_output_for_pipe(igt_display_t *display, enum pipe p
+>>   void igt_pipe_request_out_fence(igt_pipe_t *pipe);
+>> +void igt_plane_set_solid_fill(igt_plane_t *plane, struct 
+>> drm_mode_rect *rect,
+>> +        int solid_fill_id);
+>>   void igt_plane_set_fb(igt_plane_t *plane, struct igt_fb *fb);
+>>   void igt_plane_set_fence_fd(igt_plane_t *plane, int fence_fd);
+>>   void igt_plane_set_pipe(igt_plane_t *plane, igt_pipe_t *pipe);
+>>
