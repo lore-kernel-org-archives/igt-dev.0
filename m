@@ -4,49 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71C16C47258
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 06:15:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9187AC47258
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 06:44:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0088910F2DB;
-	Thu, 25 Jan 2024 06:15:20 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A193110F2DB
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jan 2024 06:15:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706163318; x=1737699318;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=DH63DxBOiKmsRdf78pezMYebGny6ZHAXhVVI4HDws+8=;
- b=Zwkh68jXvDh2vptqFeIvinSvKzMwinF06Wau0g18qjNsHUWHWH1Rfa5Z
- U++MXRseZaPb7Vec5PlJ5Fr3Wi9NWsp2Qgw+w7eCcKsTPsAeuyrCJwDx8
- MT7DDLqu78z1M7aLq/UelpuHyrk9cGnZ0QvB89kOwxIyNrrs8X6yRWsij
- BhGfxoZmgk+q+AQzNveQSfcT0aAebY+xGSj1Zl/NAEFaO8u8Z6SineBMD
- qwO04gTlid7+tu1c5C2FTQY4zkPDeT9/k/ODkLCGic5bRFYqs0uf2Tkzh
- oCujPhe5qCkR5l3O94c9t7IzrecF4YeTzPfE7o7K9KNfrWBiD6o4DmMWs A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="433224968"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="433224968"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 22:15:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="820696862"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="820696862"
-Received: from unknown (HELO localhost) ([10.246.28.142])
- by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 22:15:14 -0800
-Date: Thu, 25 Jan 2024 07:15:11 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Subject: Re: [PATCH i-g-t 5/5] tests/intel/xe: use xe_bb_size() helper
-Message-ID: <20240125061511.uej3x5p3zp6p6kkp@zkempczy-mobl2>
-References: <20240124180713.268843-1-matthew.auld@intel.com>
- <20240124180713.268843-5-matthew.auld@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1BE8810EE19;
+	Thu, 25 Jan 2024 06:44:26 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D048D10EB41;
+ Thu, 25 Jan 2024 06:44:24 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5976780851138621632=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240124180713.268843-5-matthew.auld@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Fvrr=3A_Reset_to_Hi?=
+ =?utf-8?q?gh_refresh_rate_before_begin_drrs_test_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Vidya Srinivas" <vidya.srinivas@intel.com>
+Date: Thu, 25 Jan 2024 06:44:24 -0000
+Message-ID: <170616506484.710554.15320819126567491845@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240123041403.31259-1-vidya.srinivas@intel.com>
+In-Reply-To: <20240123041403.31259-1-vidya.srinivas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,355 +36,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jan 24, 2024 at 06:07:13PM +0000, Matthew Auld wrote:
-> No need to open code this anymore.
-> 
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  tests/intel/xe_dma_buf_sync.c      |  3 +--
->  tests/intel/xe_drm_fdinfo.c        |  3 +--
->  tests/intel/xe_exec_atomic.c       |  3 +--
->  tests/intel/xe_exec_balancer.c     |  7 +++----
->  tests/intel/xe_exec_basic.c        |  3 +--
->  tests/intel/xe_exec_compute_mode.c |  5 ++---
->  tests/intel/xe_exec_fault_mode.c   |  3 +--
->  tests/intel/xe_exec_reset.c        | 12 ++++--------
->  tests/intel/xe_exec_store.c        |  8 +++-----
->  tests/intel/xe_exec_threads.c      |  9 +++------
->  tests/intel/xe_pm.c                |  3 +--
->  tests/intel/xe_spin_batch.c        |  5 ++---
->  tests/intel/xe_vm.c                | 12 ++++--------
->  13 files changed, 27 insertions(+), 49 deletions(-)
-> 
-> diff --git a/tests/intel/xe_dma_buf_sync.c b/tests/intel/xe_dma_buf_sync.c
-> index eca3a5e95..b69283093 100644
-> --- a/tests/intel/xe_dma_buf_sync.c
-> +++ b/tests/intel/xe_dma_buf_sync.c
-> @@ -116,8 +116,7 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
->  	}
->  
->  	bo_size = sizeof(*data[0]) * N_FD;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd[0]),
-> -			xe_get_default_alignment(fd[0]));
-> +	bo_size = xe_bb_size(fd[0], bo_size);
->  	for (i = 0; i < n_bo; ++i) {
->  		bo[i] = xe_bo_create(fd[0], 0, bo_size,
->  				     vram_if_possible(fd[0], hwe0->gt_id),
-> diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-> index 36bb39a31..a582703c1 100644
-> --- a/tests/intel/xe_drm_fdinfo.c
-> +++ b/tests/intel/xe_drm_fdinfo.c
-> @@ -73,8 +73,7 @@ static void test_active(int fd, struct drm_xe_engine *engine)
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	bo_size = sizeof(*data) * N_EXEC_QUEUES;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	xe_for_each_mem_region(fd, memreg, region) {
->  		uint64_t pre_size;
-> diff --git a/tests/intel/xe_exec_atomic.c b/tests/intel/xe_exec_atomic.c
-> index fecd377ef..7ee80816c 100644
-> --- a/tests/intel/xe_exec_atomic.c
-> +++ b/tests/intel/xe_exec_atomic.c
-> @@ -78,8 +78,7 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	bo_size = sizeof(*data);
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	bo = xe_bo_create(fd, vm, bo_size, placement,
->  			  I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS);
-> diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-> index 664e6da59..02edd389d 100644
-> --- a/tests/intel/xe_exec_balancer.c
-> +++ b/tests/intel/xe_exec_balancer.c
-> @@ -68,7 +68,7 @@ static void test_all_active(int fd, int gt, int class)
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	bo_size = sizeof(*data) * num_placements;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, gt),
->  			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> @@ -210,7 +210,7 @@ test_exec(int fd, int gt, int class, int n_exec_queues, int n_execs,
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	bo_size = sizeof(*data) * n_execs;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	if (flags & USERPTR) {
->  #define	MAP_ADDRESS	0x00007fadeadbe000
-> @@ -437,8 +437,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
->  
->  	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
->  	bo_size = sizeof(*data) * n_execs;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	if (flags & USERPTR) {
->  #define	MAP_ADDRESS	0x00007fadeadbe000
-> diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
-> index 8994859fa..e6f8db5b0 100644
-> --- a/tests/intel/xe_exec_basic.c
-> +++ b/tests/intel/xe_exec_basic.c
-> @@ -111,8 +111,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  	for (i = 0; i < n_vm; ++i)
->  		vm[i] = xe_vm_create(fd, 0, 0);
->  	bo_size = sizeof(*data) * n_execs;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	addr[0] = 0x1a0000;
->  	sparse_addr[0] = 0x301a0000;
-> diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-> index 473b11ae9..7dad71509 100644
-> --- a/tests/intel/xe_exec_compute_mode.c
-> +++ b/tests/intel/xe_exec_compute_mode.c
-> @@ -118,8 +118,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  
->  	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
->  	bo_size = sizeof(*data) * n_execs;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	for (i = 0; (flags & EXEC_QUEUE_EARLY) && i < n_exec_queues; i++) {
->  		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
-> @@ -336,7 +335,7 @@ static void non_block(int fd, int expect)
->  
->  	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
->  	bo_size = sizeof(*data) * DATA_COUNT;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	engine = xe_engine(fd, 1);
->  	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, engine->instance.gt_id), 0);
-> diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-> index f19e939e3..dae0e8ac3 100644
-> --- a/tests/intel/xe_exec_fault_mode.c
-> +++ b/tests/intel/xe_exec_fault_mode.c
-> @@ -134,8 +134,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
->  			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
->  	bo_size = sizeof(*data) * n_execs;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	if (flags & USERPTR) {
->  #define	MAP_ADDRESS	0x00007fadeadbe000
-> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-> index 978b4d279..a9206d7d2 100644
-> --- a/tests/intel/xe_exec_reset.c
-> +++ b/tests/intel/xe_exec_reset.c
-> @@ -47,8 +47,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	bo_size = sizeof(*spin);
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	bo = xe_bo_create(fd, vm, bo_size,
->  			  vram_if_possible(fd, eci->gt_id),
-> @@ -179,8 +178,7 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	bo_size = sizeof(*data) * n_execs;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, gt),
->  			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> @@ -368,8 +366,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	bo_size = sizeof(*data) * n_execs;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	bo = xe_bo_create(fd, vm, bo_size,
->  			  vram_if_possible(fd, eci->gt_id),
-> @@ -537,8 +534,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
->  
->  	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
->  	bo_size = sizeof(*data) * n_execs;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	bo = xe_bo_create(fd, vm, bo_size,
->  			  vram_if_possible(fd, eci->gt_id),
-> diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-> index bed118688..55354e688 100644
-> --- a/tests/intel/xe_exec_store.c
-> +++ b/tests/intel/xe_exec_store.c
-> @@ -126,8 +126,7 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	bo_size = sizeof(*data);
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	bo = xe_bo_create(fd, vm, bo_size,
->  			  vram_if_possible(fd, eci->gt_id),
-> @@ -201,7 +200,7 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
->  	uint32_t *batch_map;
->  	size_t bo_size = 4096;
->  
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  	vm = xe_vm_create(fd, 0, 0);
->  	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_SIMPLE);
->  	exec_queues = xe_exec_queue_create(fd, vm, eci, 0);
-> @@ -291,8 +290,7 @@ static void persistent(int fd)
->  	sync.handle = syncobj;
->  
->  	vm = xe_vm_create(fd, 0, 0);
-> -	batch_size = ALIGN(batch_size + xe_cs_prefetch_size(fd),
-> -					xe_get_default_alignment(fd));
-> +	batch_size = xe_bb_size(fd, batch_size);
->  
->  	engine = xe_engine(fd, 1);
->  	sd_batch = xe_bo_create(fd, vm, batch_size,
-> diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-> index 17ee57a49..1b2623045 100644
-> --- a/tests/intel/xe_exec_threads.c
-> +++ b/tests/intel/xe_exec_threads.c
-> @@ -90,8 +90,7 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
->  	igt_assert(num_placements > 1);
->  
->  	bo_size = sizeof(*data) * n_execs;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	if (flags & USERPTR) {
->  		if (flags & INVALIDATE) {
-> @@ -291,8 +290,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
->  	}
->  
->  	bo_size = sizeof(*data) * n_execs;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	if (flags & USERPTR) {
->  		if (flags & INVALIDATE) {
-> @@ -496,8 +494,7 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
->  	}
->  
->  	bo_size = sizeof(*data) * n_execs;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	if (flags & USERPTR) {
->  		if (flags & INVALIDATE) {
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index 4afe37d93..fac19f2ec 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -294,8 +294,7 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
->  		igt_assert(out_of_d3(device, d_state));
->  
->  	bo_size = sizeof(*data) * n_execs;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(device.fd_xe),
-> -			xe_get_default_alignment(device.fd_xe));
-> +	bo_size = xe_bb_size(device.fd_xe, bo_size);
->  
->  	if (check_rpm && runtime_usage_available(device.pci_xe))
->  		rpm_usage = igt_pm_get_runtime_usage(device.pci_xe);
-> diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
-> index 3f3283829..c18306350 100644
-> --- a/tests/intel/xe_spin_batch.c
-> +++ b/tests/intel/xe_spin_batch.c
-> @@ -192,8 +192,7 @@ static void preempter(int fd, struct drm_xe_engine_class_instance *hwe)
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	bo_size = sizeof(*data);
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	bo = xe_bo_create(fd, vm, bo_size,
->  			  vram_if_possible(fd, hwe->gt_id),
-> @@ -278,7 +277,7 @@ static void xe_spin_fixed_duration(int fd, int gt, int class, int flags)
->  	vm = xe_vm_create(fd, 0, 0);
->  	exec_queue = xe_exec_queue_create(fd, vm, hwe, ext);
->  	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-> -	bo_size = ALIGN(sizeof(*spin) + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, sizeof(*spin));
->  	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, 0), 0);
->  	spin = xe_bo_map(fd, bo, bo_size);
->  	spin_addr = intel_allocator_alloc_with_strategy(ahnd, bo, bo_size, 0,
-> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> index ebc1ca68f..67276b220 100644
-> --- a/tests/intel/xe_vm.c
-> +++ b/tests/intel/xe_vm.c
-> @@ -50,8 +50,7 @@ write_dwords(int fd, uint32_t vm, int n_dwords, uint64_t *addrs)
->  	int i, b = 0;
->  
->  	batch_size = (n_dwords * 4 + 1) * sizeof(uint32_t);
-> -	batch_size = ALIGN(batch_size + xe_cs_prefetch_size(fd),
-> -			   xe_get_default_alignment(fd));
-> +	batch_size = xe_bb_size(fd, batch_size);
->  	batch_bo = xe_bo_create(fd, vm, batch_size,
->  				vram_if_possible(fd, 0),
->  				DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> @@ -418,8 +417,7 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	bo_size = sizeof(struct shared_pte_page_data);
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	if (addr_stride <= bo_size)
->  		addr_stride = addr_stride + bo_size;
-> @@ -603,8 +601,7 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	bo_size = sizeof(*data) * N_EXEC_QUEUES;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  	bo = xe_bo_create(fd, vm, bo_size,
->  			  vram_if_possible(fd, eci->gt_id),
->  			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> @@ -784,8 +781,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
->  
->  	vm = xe_vm_create(fd, 0, 0);
->  	bo_size = sizeof(*data) * n_execs;
-> -	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> -			xe_get_default_alignment(fd));
-> +	bo_size = xe_bb_size(fd, bo_size);
->  
->  	bo = xe_bo_create(fd, vm, bo_size,
->  			  vram_if_possible(fd, eci->gt_id),
-> -- 
-> 2.43.0
-> 
+--===============5976780851138621632==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Nice, this is much readable now:
+== Series Details ==
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Series: tests/kms_vrr: Reset to High refresh rate before begin drrs test (rev2)
+URL   : https://patchwork.freedesktop.org/series/129064/
+State : success
 
---
-Zbigniew
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7691_BAT -> XEIGTPW_10587_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10587_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#1033])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7691/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10587/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7691 -> IGTPW_10587
+  * Linux: xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb -> xe-679-e7da820591c355e591fe880ff1e02b85a3f1a413
+
+  IGTPW_10587: 10587
+  IGT_7691: 7691
+  xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb: 0496fe20d8ed5e73ed186d293ef67e7bae4658eb
+  xe-679-e7da820591c355e591fe880ff1e02b85a3f1a413: e7da820591c355e591fe880ff1e02b85a3f1a413
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10587/index.html
+
+--===============5976780851138621632==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_vrr: Reset to High refresh rate before begin drrs test (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129064/">https://patchwork.freedesktop.org/series/129064/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10587/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10587/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7691_BAT -&gt; XEIGTPW_10587_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10587_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7691/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10587/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7691 -&gt; IGTPW_10587</li>
+<li>Linux: xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb -&gt; xe-679-e7da820591c355e591fe880ff1e02b85a3f1a413</li>
+</ul>
+<p>IGTPW_10587: 10587<br />
+  IGT_7691: 7691<br />
+  xe-674-0496fe20d8ed5e73ed186d293ef67e7bae4658eb: 0496fe20d8ed5e73ed186d293ef67e7bae4658eb<br />
+  xe-679-e7da820591c355e591fe880ff1e02b85a3f1a413: e7da820591c355e591fe880ff1e02b85a3f1a413</p>
+
+</body>
+</html>
+
+--===============5976780851138621632==--
