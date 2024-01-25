@@ -4,25 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F068BC47422
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 16:40:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DB26C47258
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 16:59:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 527BB10F43D;
-	Thu, 25 Jan 2024 16:40:28 +0000 (UTC)
-Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CCE0210F192;
- Thu, 25 Jan 2024 16:40:26 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8197773158003043801=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 04B3710F951;
+	Thu, 25 Jan 2024 16:59:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D629410F951;
+ Thu, 25 Jan 2024 16:59:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1706201950; x=1737737950;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=R91APdknSS5DlsR/+WgyJtBCXonuMZ4947/EIdzC3Fo=;
+ b=TzDCJGGIB1wCx6XLplzkrzV0cRivv1fLvG7yepDardug7LERdoLGxZAD
+ jkNb2eTAIy79pTFzaZAi1cTUn3fu/4fXmnS0SxQvQnv/n9tiXCDEvD6MH
+ mP+D0WbcclT8cfEZEPJT7XzIuRc+VKagBhVjoh1cSUoYijXOab9aYnQ0R
+ 7xoZryO13UXvYox3wUMDjfMvUfOtcMKIOo766McQPEEpTrLwXRrQK1Xra
+ l2rJpXEfENVoRdlTks8ViGhygcYbwNGGyjWnti+kv/j7TmtX7cB1vjpsT
+ Xvk4/WePBp4GaF0IcIo9GGEk/HQgmx+JlUW4KA6zQgQyuJwDgImOIzMo+ g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="23682470"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="23682470"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jan 2024 08:58:25 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="786819862"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="786819862"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO
+ jkrzyszt-mobl2.intranet) ([10.213.20.225])
+ by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jan 2024 08:58:21 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t 0/3] lib/kunit: Support writable filter* parameters of
+ kunit module
+Date: Thu, 25 Jan 2024 17:52:09 +0100
+Message-ID: <20240125165749.15599-5-janusz.krzysztofik@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_d3_mmap_test_=28rev6=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-Date: Thu, 25 Jan 2024 16:40:26 -0000
-Message-ID: <170620082683.709515.3728973846115565577@5338d5abeb45>
-X-Patchwork-Hint: ignore
-References: <20240125154114.2164080-1-anshuman.gupta@intel.com>
-In-Reply-To: <20240125154114.2164080-1-anshuman.gupta@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -35,215 +57,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8197773158003043801==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Instead of wasting resources on reloading the base Kunit module each time
+a different set of filter parameters is needed, try to write the required
+values to sysfs representation of those parameters.  If that fails (e.g.
+on older LTS kernels with read-only filter parameters), fall back to
+reloading the module.
 
-== Series Details ==
+This change also provides a workaround for the issue of impossibility to
+unload the base Kunit module on Xe platforms, available as soon as the
+module supports writable filter parameters.
 
-Series: Add d3 mmap test (rev6)
-URL   : https://patchwork.freedesktop.org/series/124115/
-State : success
+While being at it, fine tune processing of skips on errors during test
+case list collection phase.
 
-== Summary ==
+Janusz Krzysztofik (3):
+  lib/kunit: Support writable filter* parameters of kunit module
+  lib/kunit: Report early kernel taints explicitly
+  lib/kunit: Process module remove error after list errors
 
-CI Bug Log - changes from XEIGT_7692_BAT -> XEIGTPW_10589_BAT
-====================================================
+ lib/igt_kmod.c | 152 +++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 110 insertions(+), 42 deletions(-)
 
-Summary
--------
+-- 
+2.43.0
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_10589_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * {igt@xe_pm@d3-mmap-system} (NEW):
-    - bat-adlp-7:         NOTRUN -> [FAIL][1]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10589/bat-adlp-7/igt@xe_pm@d3-mmap-system.html
-    - bat-dg2-oem2:       NOTRUN -> [FAIL][2]
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10589/bat-dg2-oem2/igt@xe_pm@d3-mmap-system.html
-
-  * {igt@xe_pm@d3-mmap-vram} (NEW):
-    - bat-adlp-7:         NOTRUN -> [SKIP][3]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10589/bat-adlp-7/igt@xe_pm@d3-mmap-vram.html
-
-  
-New tests
----------
-
-  New tests have been introduced between XEIGT_7692_BAT and XEIGTPW_10589_BAT:
-
-### New IGT tests (2) ###
-
-  * igt@xe_pm@d3-mmap-system:
-    - Statuses : 2 fail(s) 2 pass(s)
-    - Exec time: [0.18, 10.58] s
-
-  * igt@xe_pm@d3-mmap-vram:
-    - Statuses : 3 pass(s) 1 skip(s)
-    - Exec time: [0.32, 3.96] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10589_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-dg2-oem2:       [SKIP][4] ([Intel XE#1201] / [Intel XE#455]) -> [SKIP][5] ([Intel XE#455])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10589/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
-    - bat-adlp-7:         [SKIP][6] ([Intel XE#1201] / [Intel XE#455]) -> [SKIP][7] ([Intel XE#455])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-adlp-7/igt@kms_dsc@dsc-basic.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10589/bat-adlp-7/igt@kms_dsc@dsc-basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#1201]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1201
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-
-
-Build changes
--------------
-
-  * IGT: IGT_7692 -> IGTPW_10589
-  * Linux: xe-684-cad255f28ccca6529104b9497a8d7302ae7eb88a -> xe-685-38a58d4231067e1b548c12ee521b73ffc0ebb73a
-
-  IGTPW_10589: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10589/index.html
-  IGT_7692: 5d9c29c620701497323bf3721146da57efa50952 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-684-cad255f28ccca6529104b9497a8d7302ae7eb88a: cad255f28ccca6529104b9497a8d7302ae7eb88a
-  xe-685-38a58d4231067e1b548c12ee521b73ffc0ebb73a: 38a58d4231067e1b548c12ee521b73ffc0ebb73a
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10589/index.html
-
---===============8197773158003043801==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add d3 mmap test (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124115/">https://patchwork.freedesktop.org/series/124115/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10589/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10589/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7692_BAT -&gt; XEIGTPW_10589_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_10589_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>{igt@xe_pm@d3-mmap-system} (NEW):</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10589/bat-adlp-7/igt@xe_pm@d3-mmap-system.html">FAIL</a></li>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10589/bat-dg2-oem2/igt@xe_pm@d3-mmap-system.html">FAIL</a></li>
-</ul>
-</li>
-<li>
-<p>{igt@xe_pm@d3-mmap-vram} (NEW):</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10589/bat-adlp-7/igt@xe_pm@d3-mmap-vram.html">SKIP</a></li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between XEIGT_7692_BAT and XEIGTPW_10589_BAT:</p>
-<h3>New IGT tests (2)</h3>
-<ul>
-<li>
-<p>igt@xe_pm@d3-mmap-system:</p>
-<ul>
-<li>Statuses : 2 fail(s) 2 pass(s)</li>
-<li>Exec time: [0.18, 10.58] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pm@d3-mmap-vram:</p>
-<ul>
-<li>Statuses : 3 pass(s) 1 skip(s)</li>
-<li>Exec time: [0.32, 3.96] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10589_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_dsc@dsc-basic:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1201">Intel XE#1201</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10589/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7692/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1201">Intel XE#1201</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10589/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7692 -&gt; IGTPW_10589</li>
-<li>Linux: xe-684-cad255f28ccca6529104b9497a8d7302ae7eb88a -&gt; xe-685-38a58d4231067e1b548c12ee521b73ffc0ebb73a</li>
-</ul>
-<p>IGTPW_10589: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10589/index.html<br />
-  IGT_7692: 5d9c29c620701497323bf3721146da57efa50952 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-684-cad255f28ccca6529104b9497a8d7302ae7eb88a: cad255f28ccca6529104b9497a8d7302ae7eb88a<br />
-  xe-685-38a58d4231067e1b548c12ee521b73ffc0ebb73a: 38a58d4231067e1b548c12ee521b73ffc0ebb73a</p>
-
-</body>
-</html>
-
---===============8197773158003043801==--
