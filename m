@@ -4,49 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70AAFC4828D
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 10:57:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FA47C47258
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 11:43:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4D8EF10F8A0;
-	Thu, 25 Jan 2024 10:57:19 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DAB5C10E231
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jan 2024 10:57:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706180231; x=1737716231;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Zqq58y13RzPyB2q9tpgSaY+YbXUUJb8u7A8fq6NS8uw=;
- b=SWF/5yhWtQRfKJUJ9M2KfjXwV1uQxd19yIkSI23QOWUAjbjJBwtjU4dB
- bIw8zEFxBA2gv5NqfqdlDs2iiZxgx6QuwHC3hpg/V4k3NeQmFC6VcbPx1
- XSffci4nyGw2LClY+8VfzzahtEVUddN7oXDhNNQtTtwseNwrO4biyJKHz
- rsuFYEA3bt39trxEEfnLsYsCZEDZ4eQnvqMD/XTaDDSMqtcr6I8ye77mw
- epddNZAyCOai0/AdnGS95y+GiToSfJlFotTQRPE69IDFoBA01wsmmrwsc
- wBwOgideyiGiUYynEfnhMBNYoebwbN+XsagzDLo2T6RVQPJr96qRmpw1w Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="433283691"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="433283691"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jan 2024 02:57:11 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2365554"
-Received: from cdeburca-mobl1.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
- ([10.252.15.173])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jan 2024 02:57:10 -0800
-From: Matthew Auld <matthew.auld@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 3/7] tests/intel/xe: account for prefetch
-Date: Thu, 25 Jan 2024 10:56:41 +0000
-Message-ID: <20240125105646.313561-3-matthew.auld@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240125105646.313561-1-matthew.auld@intel.com>
-References: <20240125105646.313561-1-matthew.auld@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id D613810E17B;
+	Thu, 25 Jan 2024 11:43:14 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB70210E17B;
+ Thu, 25 Jan 2024 11:43:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6715342272838695957=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2Cv2=2C1/7=5D_lib/xe/ioctl=3A_introduce_xe=5Fbb=5Fsize=28=29_h?=
+ =?utf-8?q?elper?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matthew Auld" <matthew.auld@intel.com>
+Date: Thu, 25 Jan 2024 11:43:13 -0000
+Message-ID: <170618299370.710554.6014321552285966973@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240125105646.313561-1-matthew.auld@intel.com>
+In-Reply-To: <20240125105646.313561-1-matthew.auld@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,257 +37,185 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Xe2 expects an extra page after the batch to avoid prefetch hitting an
-invalid page. Not doing so can result in CAT errors. Do full audit of
-all xe_* tests where anything creating a batch should use the new
-bb helper.
+--===============6715342272838695957==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/intel/xe_ccs.c          | 6 +++---
- tests/intel/xe_copy_basic.c   | 4 ++--
- tests/intel/xe_create.c       | 2 +-
- tests/intel/xe_evict_ccs.c    | 2 +-
- tests/intel/xe_exec_reset.c   | 2 +-
- tests/intel/xe_exercise_blt.c | 4 ++--
- tests/intel/xe_pat.c          | 2 +-
- tests/intel/xe_peer2peer.c    | 4 ++--
- tests/intel/xe_pm_residency.c | 2 +-
- tests/intel/xe_vm.c           | 6 ++++--
- tests/intel/xe_waitfence.c    | 8 +++++---
- 11 files changed, 23 insertions(+), 19 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index 55ae0e46c..7d0e8ed7a 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -119,7 +119,7 @@ static void surf_copy(int xe,
- 				 uc_mocs, comp_pat_index, BLT_INDIRECT_ACCESS);
- 	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs,
- 				 DEFAULT_PAT_INDEX, DIRECT_ACCESS);
--	bb_size = xe_get_default_alignment(xe);
-+	bb_size = xe_bb_size(xe, SZ_4K);
- 	bb1 = xe_bo_create(xe, 0, bb_size, sysmem, 0);
- 	blt_set_batch(&surf.bb, bb1, bb_size, sysmem);
- 	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
-@@ -295,7 +295,7 @@ static void block_copy(int xe,
- 	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
- 	struct blt_copy_object *src, *mid, *dst;
- 	const uint32_t bpp = 32;
--	uint64_t bb_size = xe_get_default_alignment(xe);
-+	uint64_t bb_size = xe_bb_size(xe, SZ_4K);
- 	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
- 	uint32_t run_id = mid_tiling;
- 	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &
-@@ -423,7 +423,7 @@ static void block_multicopy(int xe,
- 	struct blt_block_copy3_data_ext ext3 = {}, *pext3 = &ext3;
- 	struct blt_copy_object *src, *mid, *dst, *final;
- 	const uint32_t bpp = 32;
--	uint64_t bb_size = xe_get_default_alignment(xe);
-+	uint64_t bb_size = xe_bb_size(xe, SZ_4K);
- 	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
- 	uint32_t run_id = mid_tiling;
- 	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &
-diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
-index 1bde876cd..66c666eac 100644
---- a/tests/intel/xe_copy_basic.c
-+++ b/tests/intel/xe_copy_basic.c
-@@ -44,7 +44,7 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
- 	 uint32_t size, uint32_t width, uint32_t height, uint32_t region)
- {
- 	struct blt_mem_data mem = {};
--	uint64_t bb_size = xe_get_default_alignment(fd);
-+	uint64_t bb_size = xe_bb_size(fd, SZ_4K);
- 	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
- 						  INTEL_ALLOCATOR_SIMPLE,
- 						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-@@ -97,7 +97,7 @@ mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx, uint32_t size,
- 	uint32_t width, uint32_t height, uint8_t fill_data, uint32_t region)
- {
- 	struct blt_mem_data mem = {};
--	uint64_t bb_size = xe_get_default_alignment(fd);
-+	uint64_t bb_size = xe_bb_size(fd, SZ_4K);
- 	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
- 						  INTEL_ALLOCATOR_SIMPLE,
- 						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index 6d0670849..1d3918663 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -325,7 +325,7 @@ static void create_big_vram(int fd, int gt)
- static void create_contexts(int fd)
- {
- 	unsigned int i, n = params.quantity ? params.quantity : 4096;
--	uint64_t bo_size = xe_get_default_alignment(fd), bo_addr = 0x1a0000;
-+	uint64_t bo_size = xe_bb_size(fd, SZ_4K), bo_addr = 0x1a0000;
- 	uint32_t vm, bo, *batch, exec_queues[n];
- 	struct drm_xe_sync sync = {
- 		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
-index 5dd438cad..5d6c44a6b 100644
---- a/tests/intel/xe_evict_ccs.c
-+++ b/tests/intel/xe_evict_ccs.c
-@@ -75,7 +75,7 @@ static void copy_obj(struct blt_copy_data *blt,
- {
- 	struct blt_block_copy_data_ext ext = {};
- 	int fd = blt->fd;
--	uint64_t bb_size = xe_get_default_alignment(fd);
-+	uint64_t bb_size = xe_bb_size(fd, SZ_4K);
- 	uint32_t bb;
- 	uint32_t w, h;
- 
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index 168523c64..978b4d279 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -675,7 +675,7 @@ static void submit_jobs(struct gt_thread_data *t)
- 	int fd = t->fd;
- 	uint32_t vm = xe_vm_create(fd, 0, 0);
- 	uint64_t addr = 0x1a0000;
--	size_t bo_size = xe_get_default_alignment(fd);
-+	size_t bo_size = xe_bb_size(fd, SZ_4K);
- 	uint32_t bo;
- 	uint32_t *data;
- 
-diff --git a/tests/intel/xe_exercise_blt.c b/tests/intel/xe_exercise_blt.c
-index cc9060b1b..c908800cf 100644
---- a/tests/intel/xe_exercise_blt.c
-+++ b/tests/intel/xe_exercise_blt.c
-@@ -118,7 +118,7 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
- 	struct blt_fast_copy_data blt = {};
- 	struct blt_copy_object *src, *mid, *dst;
- 	const uint32_t bpp = 32;
--	uint64_t bb_size = xe_get_default_alignment(xe);
-+	uint64_t bb_size = xe_bb_size(xe, SZ_4K);
- 	uint64_t ahnd = intel_allocator_open_full(xe, ctx->vm, 0, 0,
- 						  INTEL_ALLOCATOR_SIMPLE,
- 						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-@@ -176,7 +176,7 @@ static void fast_copy(int xe, const intel_ctx_t *ctx,
- 	struct blt_copy_data blt = {};
- 	struct blt_copy_object *src, *mid, *dst;
- 	const uint32_t bpp = 32;
--	uint64_t bb_size = xe_get_default_alignment(xe);
-+	uint64_t bb_size = xe_bb_size(xe, SZ_4K);
- 	uint64_t ahnd = intel_allocator_open_full(xe, ctx->vm, 0, 0,
- 						  INTEL_ALLOCATOR_SIMPLE,
- 						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index c5187bb94..40256bada 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -262,7 +262,7 @@ static void pat_index_blt(struct xe_pat_param *p)
- 					 ALLOC_STRATEGY_LOW_TO_HIGH,
- 					 p->size->alignment);
- 
--	bb_size = xe_get_default_alignment(fd);
-+	bb_size = xe_bb_size(fd, SZ_4K);
- 	bb = xe_bo_create(fd, 0, bb_size, system_memory(fd), 0);
- 
- 	size = width * height * bpp / 8;
-diff --git a/tests/intel/xe_peer2peer.c b/tests/intel/xe_peer2peer.c
-index 44fea6eb1..c63f1e4c4 100644
---- a/tests/intel/xe_peer2peer.c
-+++ b/tests/intel/xe_peer2peer.c
-@@ -105,7 +105,7 @@ static void test_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
- 	struct blt_copy_object *im_src;
- 	struct blt_copy_object *src;
- 	const uint32_t bpp = 32;
--	uint64_t im_bb_size = xe_get_default_alignment(im_gpu->fd);
-+	uint64_t im_bb_size = xe_bb_size(im_gpu->fd, SZ_4K);
- 	uint64_t ahnd;
- 	uint32_t bb;
- 	uint32_t width = 1024, height = 1024;
-@@ -187,7 +187,7 @@ static void test_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
- 	struct blt_copy_object *im_dst;
- 	struct blt_copy_object *src;
- 	const uint32_t bpp = 32;
--	uint64_t im_bb_size = xe_get_default_alignment(im_gpu->fd);
-+	uint64_t im_bb_size = xe_bb_size(im_gpu->fd, SZ_4K);
- 	uint64_t ahnd;
- 	uint32_t bb;
- 	uint32_t width = 1024, height = 1024;
-diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-index 7db3cd162..3fa9abf25 100644
---- a/tests/intel/xe_pm_residency.c
-+++ b/tests/intel/xe_pm_residency.c
-@@ -98,7 +98,7 @@ static void exec_load(int fd, struct drm_xe_engine_class_instance *hwe, unsigned
- 
- 	vm = xe_vm_create(fd, 0, 0);
- 	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
--	bo_size = xe_get_default_alignment(fd);
-+	bo_size = xe_bb_size(fd, SZ_4K);
- 
- 	bo = xe_bo_create(fd, vm, bo_size,
- 			  vram_if_possible(fd, hwe->gt_id),
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 2200040ac..ebc1ca68f 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -979,6 +979,8 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
- 	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
- 	vm = xe_vm_create(fd, 0, 0);
- 
-+	bo_size = xe_bb_size(fd, bo_size);
-+
- 	if (flags & LARGE_BIND_FLAG_USERPTR) {
- 		map = aligned_alloc(xe_get_default_alignment(fd), bo_size);
- 		igt_assert(map);
-@@ -1273,7 +1275,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 	}
- 
- 	vm = xe_vm_create(fd, 0, 0);
--	bo_size = page_size * bo_n_pages;
-+	bo_size = xe_bb_size(fd, page_size * bo_n_pages);
- 
- 	if (flags & MAP_FLAG_USERPTR) {
- 		map = mmap(from_user_pointer(addr), bo_size, PROT_READ |
-@@ -1573,7 +1575,7 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
- 	}
- 
- 	vm = xe_vm_create(fd, 0, 0);
--	bo_size = page_size * bo_n_pages;
-+	bo_size = xe_bb_size(fd, page_size * bo_n_pages);
- 
- 	if (flags & MAP_FLAG_USERPTR) {
- 		map0 = mmap(from_user_pointer(addr), bo_size, PROT_READ |
-diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-index 5f7316f6e..f6f797d43 100644
---- a/tests/intel/xe_waitfence.c
-+++ b/tests/intel/xe_waitfence.c
-@@ -212,6 +212,7 @@ exec_queue_reset_wait(int fd)
- 	uint64_t sdi_offset;
- 	uint64_t sdi_addr;
- 	uint64_t addr = 0x1a0000;
-+	uint64_t bb_size;
- 
- 	struct {
- 		uint32_t batch[16];
-@@ -236,8 +237,9 @@ exec_queue_reset_wait(int fd)
- 		.exec_queue_id = exec_queue,
- 	};
- 
--	bo = xe_bo_create(fd, vm, 0x40000, vram_if_possible(fd, 0), 0);
--	data = xe_bo_map(fd, bo, 0x40000);
-+	bb_size = xe_bb_size(fd, 0x40000);
-+	bo = xe_bo_create(fd, vm, bb_size, vram_if_possible(fd, 0), 0);
-+	data = xe_bo_map(fd, bo, bb_size);
- 
- 	batch_offset = (char *)&data[0].batch - (char *)data;
- 	batch_addr = addr + batch_offset;
-@@ -267,7 +269,7 @@ exec_queue_reset_wait(int fd)
- 	xe_exec_queue_destroy(fd, exec_queue);
- 
- 	if (bo) {
--		munmap(data, 0x40000);
-+		munmap(data, bb_size);
- 		gem_close(fd, bo);
- 	}
- }
--- 
-2.43.0
+Series: series starting with [i-g-t,v2,1/7] lib/xe/ioctl: introduce xe_bb_size() helper
+URL   : https://patchwork.freedesktop.org/series/129158/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from IGT_7692 -> IGTPW_10588
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_10588 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_10588, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/index.html
+
+Participating hosts (37 -> 35)
+------------------------------
+
+  Missing    (2): bat-rpls-2 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_10588:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:
+    - bat-dg2-8:          [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7692/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10588 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-nick:        [PASS][3] -> [ABORT][4] ([i915#7911])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7692/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-skl-guc:         [PASS][5] -> [DMESG-FAIL][6] ([i915#10112])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7692/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10112]: https://gitlab.freedesktop.org/drm/intel/issues/10112
+  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7692 -> IGTPW_10588
+
+  CI-20190529: 20190529
+  CI_DRM_14178: cad255f28ccca6529104b9497a8d7302ae7eb88a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10588: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/index.html
+  IGT_7692: 5d9c29c620701497323bf3721146da57efa50952 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/index.html
+
+--===============6715342272838695957==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/7] lib/xe/ioctl: introduce xe_bb_size() helper</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129158/">https://patchwork.freedesktop.org/series/129158/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7692 -&gt; IGTPW_10588</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_10588 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_10588, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/index.html</p>
+<h2>Participating hosts (37 -&gt; 35)</h2>
+<p>Missing    (2): bat-rpls-2 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_10588:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7692/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10588 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7692/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/fi-bsw-nick/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7692/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10112">i915#10112</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7692 -&gt; IGTPW_10588</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14178: cad255f28ccca6529104b9497a8d7302ae7eb88a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10588: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/index.html<br />
+  IGT_7692: 5d9c29c620701497323bf3721146da57efa50952 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6715342272838695957==--
