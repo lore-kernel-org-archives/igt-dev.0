@@ -4,55 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCA2DC47258
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 17:09:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10D5EC47258
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jan 2024 17:26:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7B3EA10F948;
-	Thu, 25 Jan 2024 17:09:52 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 441DA10F948
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jan 2024 17:09:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 71F0410E0FA;
+	Thu, 25 Jan 2024 17:26:09 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D138C10EB71;
+ Thu, 25 Jan 2024 17:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706202591; x=1737738591;
+ t=1706203567; x=1737739567;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=hORRT8qKW/Aib+9gJiA6anbrRS4V6OW4B8ocTNQq/tc=;
- b=dRiNZWwqp6+uuVGu2+uQkv/9dZYTS34NezWOhCoKFQLLJrU+59xmVFoy
- zZs9tn4UhVtn2IpGQL6xUfTIYXYAPNjadX1K7PSCb3bwsX4zpsrd5fYab
- 7D/X08OgL+uUgvf0+e0Ut3i4wh5Bb8akETQAh/aUbOThkIhTv/WlJYYb/
- qzC1W04ss0d2FLrji1bHCGZKZjOrgnSbNy9TSmdiU4lx8Si9xmalkPcNr
- 2XPSesKSbOnSm052TnV3ZpQAZ5eTRmq7GMSSSjP76RBhMzipbuu3lSfuq
- rPjvUHCUPsMqTW4dvROIQOYboP0Gh9xUTJXdFh7vj1WRKkufpCN2Pxy5z w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="23687906"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="23687906"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jan 2024 09:08:44 -0800
+ in-reply-to:mime-version;
+ bh=Cg9XqrN1AnLUaaxBYPu8lK/CGEuLmu3y9kciKqHx44I=;
+ b=fVdw4m4UFw4XI3/Yc63qPBM/xsENYx5mVqOJB8fRvVGZb2aLycR8Zhqw
+ RZu6bOFzu5783TWVX45hmNIxIb+Br3DAoyznBat8oGileX1mq1rr4v4OH
+ f2JAptbpoamw67Yy8XJYMeWMu2eMYMD09Ulwe7+K6t4rhxPYYg6gismJJ
+ yRujIM76zP9yfO6uBtZBd7UU3Pg/VOEozer06y5BSFAzneh8OGcmU8BFF
+ K2LHA5WQn/tYzOFgUqHZ9UPRfLI+iRQOT/ETDSFEC1zk9kFFTt6t3BlAC
+ E7ZjRTYtnqHMUDYHk6Q5EO6sQdd7MuPikyfU1ayf6S0xkqRKkJl0jKyZZ w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="8886414"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
+   d="scan'208";a="8886414"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jan 2024 09:26:02 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="786822696"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="786822696"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orsmga002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2024 09:08:43 -0800
-Date: Thu, 25 Jan 2024 18:08:25 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t v2 6/8] lib/intel_multigpu: Add
- xe_multi_fork_foreach_gpu
-Message-ID: <20240125170825.rhq7cwh7hyhlry5l@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>
-References: <20240124204134.71451-1-kamil.konieczny@linux.intel.com>
- <20240124204134.71451-7-kamil.konieczny@linux.intel.com>
- <DS0PR11MB7264ABE771F3BB080E0A3595D97A2@DS0PR11MB7264.namprd11.prod.outlook.com>
- <20240125135449.kjqwdarmd6eumkx3@kamilkon-desk.igk.intel.com>
- <DS0PR11MB72645846B83C131F2C3D6C6AD97A2@DS0PR11MB7264.namprd11.prod.outlook.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="28834006"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 25 Jan 2024 09:26:01 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 25 Jan 2024 09:26:00 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Thu, 25 Jan 2024 09:26:00 -0800
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.101)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 25 Jan 2024 09:25:59 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=m+w3F8W8u8K/UYmtre3kGzoWSvPGXdprROJTR/Yu+8JMhFQ3LUOENL+zcn2Jz7frpgeGLfcxvZ6dfU76YQydq9VeP0P8t72iF7Wax5AozyXMS9uerhGQ7ypz0vmFD9VgSe+FxUCDFo1yyysKFRiz4GfE+C30Z/s5AavXHGcalne7adK4k/uHJRrC5bzo4XEMm8uHgStAwE4TLWPUUtgI1hIrfOLgfmVTYZdJ40k5y0ymbdyQfSr1QckaGQsjIVvJiu0xVoglsiA8h9Y6A6OBLj4xkvoI+VQvQw7VgHy+VN1H2CkZJP8NIDj5H/3R1wVNqXl3iLNoG3T/afOVwpYMBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=faHXOkTjmtbwbfp0rsgD0XH8sds9Rnv2x7NH4nLCgzY=;
+ b=YxZZFroq94UZjaCQOLPMed/4PAX/c09lxRQPYotr/D0mMLV2AvBKIURByT1sT2i/IvfvqfPAx9pDqnP71we5W9Cca8UVrrBLVsmIc9C/cEnt7l2qNtnn1UtH32olHvwCSlthJOsdlJEywoVyOc3K6M2Bqo/dD5Fs/2gwS5Tvn1Rk2JzwvaPzFeDAej/4Iu8L8e6X6idJuV3EmfQQonUqPhflkTEVd1SVeM6xdWvxgRmuVtdzgUhOAaEJHHXBezj1En5r3jb2i75l9Tkc5aXIvwe9r0Bs6GJwF1vqO3RJCpPNf0owSSOTnqZaqONrJisHk3c+nnWpUezufWA1hIFIxA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
+ by PH0PR11MB7521.namprd11.prod.outlook.com (2603:10b6:510:283::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.22; Thu, 25 Jan
+ 2024 17:25:57 +0000
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::9f32:ce50:1914:e954]) by CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::9f32:ce50:1914:e954%7]) with mapi id 15.20.7202.035; Thu, 25 Jan 2024
+ 17:25:57 +0000
+Date: Thu, 25 Jan 2024 11:25:55 -0600
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: Re: [PATCH i-g-t 0/3] lib/kunit: Support writable filter* parameters
+ of kunit module
+Message-ID: <o5um4wakpooxbxd5algtfpgqmwar5lb2dkahdrc5zkma3nvlul@j6jyzvai4aht>
+References: <20240125165749.15599-5-janusz.krzysztofik@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
 Content-Disposition: inline
-In-Reply-To: <DS0PR11MB72645846B83C131F2C3D6C6AD97A2@DS0PR11MB7264.namprd11.prod.outlook.com>
+In-Reply-To: <20240125165749.15599-5-janusz.krzysztofik@linux.intel.com>
+X-ClientProxiedBy: SJ0PR13CA0226.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c1::21) To CY5PR11MB6139.namprd11.prod.outlook.com
+ (2603:10b6:930:29::17)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|PH0PR11MB7521:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ad9a064-35e2-405b-1590-08dc1dcab11d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ObYuLxKFO6TSDCQzUgmQXIoSijaXsTnk9lQmNsr8hVT8b66hM0G9erjvlByEFbQ3fJ0JkSeLN/7Qml/TF1QYCXLptV8/IPU3mMYQIskV3/wtltFRfkkGGW451ry5iJX3VPJJCwvD/3yez9oBIINRK+pGcrMkkVITzYB/yLPJZ8I4HcTwZm/1FoMdCGfDMjXhj/Dors3B5EqHYsL5rNr9iO31VXRGk6iOrWbkKwepj8/JnC3AiK1s6kVKYpHSrd4+NJ4SkCsOsVloR7qvkD/br1GJufzqhfWLt4CCB9A0b2rstuA63MhwUFZ0Vjul4Q6u9aF129U6Iw+ZQ0WYKUn+N/SKWMjPTMGFxI5PnNgCyfpkfMGnz4PAxbNkAlk726kg6swtjRUio5vj7XfRNn0thpD2azGQeuLL/5eX36y/w8RsCnxTdLdssqFNCem1kFG6eyeD5EFMAWJpNBSixxQAp9vKAspftPJLfyOrEdpUs5VgGew44kZ0z6k2LcX3rpjjwviUv5ugYWyNXnsejs3in8CNpI7clJjfM7AxM6JrbrA7dXsNxIAknD+uw2H72oZH
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(7916004)(346002)(39860400002)(136003)(376002)(396003)(366004)(230922051799003)(1800799012)(64100799003)(451199024)(186009)(9686003)(6512007)(6506007)(6916009)(41300700001)(33716001)(8936002)(8676002)(4326008)(316002)(5660300002)(4744005)(2906002)(86362001)(66476007)(66556008)(26005)(6486002)(478600001)(38100700002)(66946007)(82960400001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9niIKY19TBmgWI+gSpauoPHegDv4MWCqzBWIIUYcKxYdBn8ewLky4zFBje4Y?=
+ =?us-ascii?Q?WwDz6M0QUkGWXJt2VTZRf6tErL5+YsxZRas3jhHTPs4NnmXzoXk/jN9MN7P0?=
+ =?us-ascii?Q?woydB+y5KYgexsHIoBBvSivqGKj+zgUKOeX4nQClf5yVeTs4LAHZXB8fYWdR?=
+ =?us-ascii?Q?VzXph+gK/6KlGYF+4Gn6JD2gQHMXoSbSdcZgG3GXdITJX48ylEBE8BMVUlNw?=
+ =?us-ascii?Q?EOp8Bl+qqpgGMEGKyfzpUIbIXjH2qGXLnM7JADwdVMtipUAuimaxFobqnxoJ?=
+ =?us-ascii?Q?LMuk50/byBvW22bpLMfTjceFg6PCm6WqG7LK7QSMiC3Z0xUrNAGE1t7Df1ld?=
+ =?us-ascii?Q?75jUGTzO/GAZEwDO+MODDHHjobs+lRct8yDiVtzT1bHFcon4KMZ7rY7o1f7s?=
+ =?us-ascii?Q?zO9r8NHxwgKRMid0VnOmV0a2ir189A96ESwuOVR9s5mm7lQQJaQNUq3rPOdI?=
+ =?us-ascii?Q?TOKsUMoIy9nNqprtjYIr38+JlkiZ/oKpVVx2d15N1O7oxj3hupr4jlPT3ml1?=
+ =?us-ascii?Q?nhYeypcI7qQP0bQrtaEkUlt4gUuw4pK36EHMbF9Bc319hxhVJCbhckUtuOP5?=
+ =?us-ascii?Q?TNCt7W6md0ig/Iu74TV08MRF/ddJ12ErfUqiL/Cs+PzZh/t9rdJHryFZ4xZ4?=
+ =?us-ascii?Q?021bHKptz20eOr/tjodvP12XjZqrtYrPhqWOrfIgg0HJsyQc8pXLgnE8ZtPv?=
+ =?us-ascii?Q?9+2aKKZadL4GR57EG5KaOnzfhU1LGd7giAYXBYCmz+J7l2oUJP/GlR/jrUkC?=
+ =?us-ascii?Q?XI68uq7rfXC1cRNWa16jwA4FL8N/cKZA336EoCdE/TpfeH6vQxNlgh2qg33f?=
+ =?us-ascii?Q?pMZSmsE/wldTiNHRepQ6yZ2ZJrkAChy3XelkU3f/v++DgrPfIM5u1xYO+0C5?=
+ =?us-ascii?Q?rUaIoNLXfKJFVLvL0XodFV9nCoVBnC+b/oWR9T2+f2lIAL2KbSLTr9gOO9TM?=
+ =?us-ascii?Q?SUGTqvd6QWZBASAHSgiwj8rAAywjLLcx1kNfqJZyU9sTZ5AeSlmWBejoEMn3?=
+ =?us-ascii?Q?AcdUZ4UUhDWYvyM9gOynziDgSAwIlD3LFhFnOx4abB8rNVgU8YKCICinvJNs?=
+ =?us-ascii?Q?nRSuNsDbAR3/Pe3YhzX45uAxtVLBLDSTwNjRkPLybTA4eAUTxR6wRBBx7+OG?=
+ =?us-ascii?Q?f1YTch2fLC+weFpo+pWLCJh8AjNKry0LemHCaWlck4TNkQ0ZGPIFulMUh7dn?=
+ =?us-ascii?Q?MiBe5wya9n1Xb+TVODYUInIOOYC589T30MOkCg9QrzI1zxblpkKZOUkPGiMe?=
+ =?us-ascii?Q?bSiFqsUf0zuHakx2s7lmGKHtz2argZCrPoOb1E3TfMD4sI/cLLLyMKym0OXM?=
+ =?us-ascii?Q?dqSU7aGCt6KPX4PjBu0ete5z1ZNUitEV/rCD5jxJIGK5U/Uo1RzXtZuk7ToW?=
+ =?us-ascii?Q?CYwRcp2+76ExTjaR+lx3B4RrwvKKuTQ5Wpar69KV44J0alyBr4wpEBAkxEat?=
+ =?us-ascii?Q?yvWaRUdZjqlbgwQIHkdb/LHUQntIZalsfc7YBYy1kuT0OU2SD2k+026L7JdB?=
+ =?us-ascii?Q?Q9c/RFSNXHxFqnyaQ4s0g/5Sdy6KOJ3p3bkLE+w53v2I/FmSDoQa3uv31qBF?=
+ =?us-ascii?Q?uDZJ4AEFVs0/a3K43jTzCE6FqjyTWfDN0Z0gbPb/Gx/qGgODyp/MMVmoibUl?=
+ =?us-ascii?Q?/g=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ad9a064-35e2-405b-1590-08dc1dcab11d
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jan 2024 17:25:57.3474 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ixomDKvRsYDqbHDip39/CLRsTo7adT7i+Gzl9EW8Nw5qubUiLaTFrWkIHtYrmshJKljui9mel8JlmxCeDmWtgmHep8F5Ji3soj7D1gagvro=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7521
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,267 +144,20 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Piatkowski,,
-On 2024-01-25 at 14:11:30 +0000, Piatkowski, Dominik Karol wrote:
-> Hi Kamil,
-> 
-> > -----Original Message-----
-> > From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > Sent: Thursday, January 25, 2024 2:55 PM
-> > To: igt-dev@lists.freedesktop.org
-> > Cc: Piatkowski, Dominik Karol <dominik.karol.piatkowski@intel.com>
-> > Subject: Re: [PATCH i-g-t v2 6/8] lib/intel_multigpu: Add
-> > xe_multi_fork_foreach_gpu
-> > 
-> > Hi Dominik,
-> > 
-> > On 2024-01-25 at 07:43:35 +0000, Piatkowski, Dominik Karol wrote:
-> > > Hi Kamil,
-> > >
-> > > > -----Original Message-----
-> > > > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> > > > Kamil Konieczny
-> > > > Sent: Wednesday, January 24, 2024 9:42 PM
-> > > > To: igt-dev@lists.freedesktop.org
-> > > > Subject: [PATCH i-g-t v2 6/8] lib/intel_multigpu: Add
-> > > > xe_multi_fork_foreach_gpu
-> > > >
-> > > > Create macro for testing Xe driver in multigpu scenarios with the
-> > > > help of few new multigpu functions. Also while at this, add
-> > > > documentation for public functions and use new helper in existing multi-
-> > gpu macro.
-> > > >
-> > > > v2: corrected description (Kamil), rebased on corrected patches
-> > > > after Dominik review
-> > > >
-> > > > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > > > ---
-> > > >  lib/intel_multigpu.c | 94
-> > > > ++++++++++++++++++++++++++++++++++++++++++--
-> > > >  lib/intel_multigpu.h | 12 +++++-
-> > > >  2 files changed, 101 insertions(+), 5 deletions(-)
-> > > >
-> > > > diff --git a/lib/intel_multigpu.c b/lib/intel_multigpu.c index
-> > > > 0e76d8aa3..e631ab0ed 100644
-> > > > --- a/lib/intel_multigpu.c
-> > > > +++ b/lib/intel_multigpu.c
-> > > > @@ -4,10 +4,18 @@
-> > > >   */
-> > > >
-> > > >  #include "drmtest.h"
-> > > > +#include "i915/gem.h"
-> > > >  #include "igt_core.h"
-> > > >  #include "igt_device_scan.h"
-> > > >  #include "intel_multigpu.h"
-> > > >
-> > > > +/**
-> > > > + * gem_multigpu_count_class:
-> > > > + * @class: chipset, e.g. DRIVER_XE or DRIVER_INTEL
-> > > > + *
-> > > > + * Function counts number of GPU cards with the help of opening all of
-> > them.
-> > > > + * Returns: number of GPUs cards found  */
-> > > >  int gem_multigpu_count_class(int class)  {
-> > > >  	int count = 0;
-> > > > @@ -18,7 +26,7 @@ int gem_multigpu_count_class(int class)
-> > > >  	return count;
-> > > >  }
-> > > >
-> > > > -void gem_require_multigpu(int count)
-> > > > +static void skip_on_sigle_gpu(int count)
-> > >
-> > > Nitpick: typo
-> > > I guess it should be named "skip_on_single_gpu".
-> > >
-> > 
-> > Good point, I missed that, will fix.
-> > 
-> > > >  {
-> > > >  	struct igt_devices_print_format fmt = {
-> > > >  		.type = IGT_PRINT_SIMPLE,
-> > > > @@ -26,9 +34,6 @@ void gem_require_multigpu(int count)
-> > > >  	};
-> > > >  	int devices;
-> > > >
-> > > > -	if (igt_device_filter_count() >= count)
-> > > > -		return;
-> > > > -
-> > >
-> > > As this conditional return was moved to gem_require_multigpu(), that
-> > > function will work correctly. Although, calling skip_on_single_gpu()
-> > > directly will always cause a skip due to always reachable igt_skip.
-> > > I suggest changing igt_skip to igt_skip_on to avoid unexpected
-> > > behavior in the future.
-> > 
-> > What about changing this into print-only function and moving skips directly in
-> > both functions?
-> 
-> Can you describe it further?
+On Thu, Jan 25, 2024 at 05:52:09PM +0100, Janusz Krzysztofik wrote:
+>Instead of wasting resources on reloading the base Kunit module each time
+>a different set of filter parameters is needed, try to write the required
+>values to sysfs representation of those parameters.  If that fails (e.g.
+>on older LTS kernels with read-only filter parameters), fall back to
 
-I will send new version soon, I hope it will be clear then.
+we can't really execute anything on LTS kernel. I don't think think it's
+worth keeping the multiple fallbacks we have now.
 
-Thanks for review,
-Kamil
+I think trying to maintain compat is good, but I'm not sure it makes
+sense for these tightly coupled tests with the kernel.
 
-> 
-> > 
-> > >
-> > > Additionally, skip_on_single_gpu can be refactored to not take any
-> > > arguments, as we already get the number of gpus present in the system,
-> > > and taking required count of gpus is not needed (it is always >1).
-> > > The idea is to use igt_skip_on when devices < 2.
-> > >
-> > 
-> > It was an optimization, I was thinking about other direction, adding one more
-> > parameter to it and printing:
-> > 
-> > number of GPUs wanted
-> > what number of GPUs program got
-> > number of GPUs after PCI bus scan
-> > 
-> > What do you think?
-> 
-> Ok, but then skip_on_single_gpu won't hold to its name, unless you mean the change in gem_require_multigpu. Please further describe your idea.
-> 
-> Dominik Karol
-> 
-> > 
-> > > >  	igt_info("PCI devices available in the system:\n");
-> > > >
-> > > >  	igt_devices_scan(true);
-> > > > @@ -37,3 +42,84 @@ void gem_require_multigpu(int count)
-> > > >
-> > > >  	igt_skip("Test requires at least %d GPUs, %d available.\n", count,
-> > > > devices);  }
-> > > > +
-> > > > +/**
-> > > > + * gem_require_multigpu:
-> > > > + * @count: minimum number of GPUs required
-> > > > + *
-> > > > + * Function checks number of filtered GPU cards.
-> > > > + * On error skips and prints available GPUs found on PCI bus.
-> > > > + */
-> > > > +void gem_require_multigpu(int count) {
-> > > > +	if (igt_device_filter_count() >= count)
-> > > > +		return;
-> > > > +
-> > > > +	skip_on_sigle_gpu(count);
-> > > > +}
-> > > > +
-> > > > +/**
-> > > > + * multigpu_aquire_view:
-> > > > + * @gpus_wanted: minimum number of GPUs required
-> > > > + * @chipset: chipset, e.g. DRIVER_XE or DRIVER_INTEL
-> > > > + *
-> > > > + * Function prepares filtered view for GPU cards with given chipset.
-> > > > + * On error skips and prints available GPUs found on PCI bus.
-> > > > + * Returns: number of GPUs found
-> > > > + */
-> > > > +int multigpu_aquire_view(int gpus_wanted, unsigned int chipset) {
-> > >
-> > > Nitpick: typo
-> > > I guess it should be named "multigpu_acquire_view" (in function name and
-> > documentation).
-> > >
-> > 
-> > I will fix this,
-> > 
-> > Regards,
-> > Kamil
-> > 
-> > > Dominik Karol
-> > >
-> > > > +	int gpu_count = drm_prepare_filtered_multigpu(chipset);
-> > > > +
-> > > > +	igt_assert(gpus_wanted > 1);
-> > > > +	if (gpu_count < gpus_wanted)
-> > > > +		skip_on_sigle_gpu(gpus_wanted);
-> > > > +
-> > > > +	return gpu_count;
-> > > > +}
-> > > > +
-> > > > +/**
-> > > > + * multigpu_open_another:
-> > > > + * @idx: index of GPU card, starting from 0
-> > > > + * @chipset: chipset, e.g. DRIVER_XE or DRIVER_INTEL
-> > > > + *
-> > > > + * Function opens GPU card with drm_open_driver_another(). For i915
-> > > > +it checks
-> > > > + * if opened card is functional. Skips on errors.
-> > > > + * Returns: opened fd for @idx card  */ int
-> > > > +multigpu_open_another(int idx, unsigned int chipset) {
-> > > > +	int fd;
-> > > > +
-> > > > +	igt_assert(idx >= 0);
-> > > > +	fd = drm_open_driver_another(idx, chipset);
-> > > > +
-> > > > +	igt_require(fd != -1);
-> > > > +	if (chipset == DRIVER_INTEL)
-> > > > +		igt_require_gem(fd);
-> > > > +
-> > > > +	return fd;
-> > > > +}
-> > > > +
-> > > > +/**
-> > > > + * multigpu_open_filtered_card:
-> > > > + * @idx: index of GPU card, starting from 0
-> > > > + * @chipset: chipset, e.g. DRIVER_XE or DRIVER_INTEL
-> > > > + *
-> > > > + * Function opens GPU card prepared with filtered view. It also
-> > > > +checks if
-> > > > + * opened card agrees with desired chipset or checks if opened card
-> > > > +is
-> > > > + * functional. Skips on errors.
-> > > > + * Returns: opened fd for @idx card  */ int
-> > > > +multigpu_open_filtered_card(int idx, unsigned int chipset) {
-> > > > +	int fd = drm_open_filtered_card(idx);
-> > > > +
-> > > > +	igt_require(fd != -1);
-> > > > +	if (chipset == DRIVER_XE)
-> > > > +		igt_require_xe(fd);
-> > > > +	else if (chipset == DRIVER_INTEL)
-> > > > +		igt_require_gem(fd);
-> > > > +
-> > > > +	return fd;
-> > > > +}
-> > > > diff --git a/lib/intel_multigpu.h b/lib/intel_multigpu.h index
-> > > > 0ebc73e4a..0032a619e 100644
-> > > > --- a/lib/intel_multigpu.h
-> > > > +++ b/lib/intel_multigpu.h
-> > > > @@ -12,6 +12,10 @@
-> > > >  void gem_require_multigpu(int count);  int
-> > > > gem_multigpu_count_class(int class);
-> > > >
-> > > > +int multigpu_aquire_view(int min_gpus_wanted, unsigned int
-> > > > +chipset); int multigpu_open_another(int idx, unsigned int chipset);
-> > > > +int multigpu_open_filtered_card(int idx, unsigned int chipset);
-> > > > +
-> > > >  #define igt_foreach_gpu(fd__, id__) \
-> > > >  	for (int igt_unique(i) = 0, fd__; \
-> > > >  		(fd__ = __drm_open_driver_another(igt_unique(i)++, id__)) >=
-> > 0; \
-> > > > @@ -19,8 +23,14 @@ int gem_multigpu_count_class(int class);
-> > > >
-> > > >  #define igt_multi_fork_foreach_gpu(__fd, __id) \
-> > > >  	igt_multi_fork(igt_unique(__i), gem_multigpu_count_class(__id)) \
-> > > > -		for (int __fd = drm_open_driver_another(igt_unique(__i),
-> > > > __id); \
-> > > > +		for (int __fd = multigpu_open_another(igt_unique(__i), __id);
-> > > > \
-> > > >  			__fd >= 0; \
-> > > >  			close(__fd), __fd = -1) \
-> > > >
-> > > > +#define xe_multi_fork_foreach_gpu(__fd, __gpu_index) \
-> > > > +	igt_multi_fork(__gpu_index, multigpu_aquire_view(2, DRIVER_XE)) \
-> > > > +		for (int __fd = multigpu_open_filtered_card(__gpu_index,
-> > > > DRIVER_XE); \
-> > > > +			__fd >= 0; \
-> > > > +			drm_close_driver(__fd), __fd = -1) \
-> > > > +
-> > > >  #endif /* __INTEL_MULTIGPU_H */
-> > > > --
-> > > > 2.42.0
-> > >
+Lucas De Marchi
