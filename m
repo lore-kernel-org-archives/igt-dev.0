@@ -4,55 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83B7EC47DDB
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Jan 2024 09:37:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67A7FC47422
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Jan 2024 10:06:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2E1F810EAE8;
-	Fri, 26 Jan 2024 09:37:34 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2985010EAE8;
- Fri, 26 Jan 2024 09:37:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1DE9310EF76;
+	Fri, 26 Jan 2024 10:06:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 23A0810EAE8;
+ Fri, 26 Jan 2024 10:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706261853; x=1737797853;
+ t=1706263609; x=1737799609;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=1r6kPmcETgo2x5TFLOKqZNkO6qE+QyZNW5aAOsH2ack=;
- b=WoCktYjyqoYv0QKP7g5JlWhI+Sa42ts7u2zthBVcAFz190fffMQx6Yes
- v3i+4Y0Jg3YNN5gw/2hYqxixzXTc8pZsZvPuJaBKoSh0XhP0T6cxB8afn
- 2WbbD2Xr9lXHh74Iw033Vc0Rk3C6PfDSKmO8/DSO7APHKJupskRUw5bzk
- BAzwXxaeUmV2V4/6U/tsh3Z05UPsUo9QLlinjju58qK5Ge0AYjKTcCmXw
- f+zrvOwq30DjU+9wtfdK9HAZK3h34Eu5M8J0oQDZjEpRQfdDo/dsF0VJo
- +2T0oXa0GmibKA6/XrPdIZpEsJpfpkobs85Ek/X4nBGpbroO/aB7EdA+M A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="15955199"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="15955199"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jan 2024 01:37:33 -0800
+ bh=P8JcpyoVVo1GVTTbcI7kIKoectS+ZFO31ZeEonSLLRQ=;
+ b=TdjJVtjuOPctv3x4JI/2EtRH8LhRkE2UkPJG44sxT0cuRMn4al2YsILl
+ m7RAoTHtOZo73ZEUghcU5BqcMXJM4kXx4OEyNes+lUvrkZKr2ceOtpD+2
+ 33j90hKf4+kvUOFILFp5z/OqeIOY5XtViIGBk7xJO/0XCoJMKmjvapT3I
+ sAYNROuZOQDFU5lEp4Pp6qHtLMubZ8QBFe0wo5ULfspkYjWqG9W8ITLwd
+ 8sqBT8wPoxhov6S4IZv8gQRuLqY3Lp+fI/XlJ5egHokHHue7F63uaYXl6
+ HerC2b+PpTPnHtnuwLinqfqF7twsp63rmUk/YVM9SzHZtNMUeEKEG0BN3 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="9094196"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
+   d="scan'208";a="9094196"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jan 2024 02:06:49 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2623179"
+   d="scan'208";a="2551208"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2024 01:37:31 -0800
-Date: Fri, 26 Jan 2024 10:37:28 +0100
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2024 02:06:47 -0800
+Date: Fri, 26 Jan 2024 11:06:44 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 1/3] lib/kunit: Support writable filter* parameters
- of kunit module
-Message-ID: <20240126093728.d6pylg47ea6tifgm@kamilkon-desk.igk.intel.com>
+Subject: Re: =?utf-8?Q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_series_start?=
+ =?utf-8?Q?ing_wit?= =?utf-8?Q?h?= [i-g-t,v2,1/7] lib/xe/ioctl: introduce
+ xe_bb_size() helper
+Message-ID: <20240126100644.s553ogfd6goj3ro4@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- intel-xe@lists.freedesktop.org,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-References: <20240125165749.15599-5-janusz.krzysztofik@linux.intel.com>
- <20240125165749.15599-6-janusz.krzysztofik@linux.intel.com>
+ Matthew Auld <matthew.auld@intel.com>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+References: <20240125105646.313561-1-matthew.auld@intel.com>
+ <170618299370.710554.6014321552285966973@5338d5abeb45>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240125165749.15599-6-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <170618299370.710554.6014321552285966973@5338d5abeb45>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,252 +66,102 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>, intel-xe@lists.freedesktop.org
+Cc: lgci.bug.filing@intel.com, I915-ci-infra@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Janusz,
-On 2024-01-25 at 17:52:10 +0100, Janusz Krzysztofik wrote:
-> Instead of wasting resources on reloading the base Kunit module each time
-> a different set of filter parameters is needed, try to write the required
-> values to sysfs representation of those parameters.  If that fails (e.g.
-> on older LTS kernels with read-only filter parameters), fall back to
-> reloading the module.
+Hi igt-dev,
+On 2024-01-25 at 11:43:13 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> This change also provides a workaround for the issue of impossibility to
-> unload the base Kunit module on Xe platforms, available as soon as the
-> module supports writable filter parameters.
+> Series: series starting with [i-g-t,v2,1/7] lib/xe/ioctl: introduce xe_bb_size() helper
+> URL   : https://patchwork.freedesktop.org/series/129158/
+> State : failure
 > 
-> Since the base Kunit module is now unloaded from kunit_set_params() when
-> needed, drop other attempts to unload it.
+> == Summary ==
 > 
-> To reuse an existing open_parameters() helper, moved it up in the source
-> file to avoid a forward declaration.
+> CI Bug Log - changes from IGT_7692 -> IGTPW_10588
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10588 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10588, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/index.html
+> 
+> Participating hosts (37 -> 35)
+> ------------------------------
+> 
+>   Missing    (2): bat-rpls-2 fi-snb-2520m 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10588:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:
+>     - bat-dg2-8:          [PASS][1] -> [FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7692/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+> 
 
-Could you split your patch into smaller parts? You described four
-actions you did, maybe four patches?
+Unrelated to change in Xe libs/tests
 
 Regards,
 Kamil
 
+>   
+> Known issues
+> ------------
 > 
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> ---
->  lib/igt_kmod.c | 147 +++++++++++++++++++++++++++++++++++--------------
->  1 file changed, 107 insertions(+), 40 deletions(-)
+>   Here are the changes found in IGTPW_10588 that come from known issues:
 > 
-> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index 250ab2107b..4f96dafe01 100644
-> --- a/lib/igt_kmod.c
-> +++ b/lib/igt_kmod.c
-> @@ -803,6 +803,78 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
->  	kmod_module_info_free_list(pre);
->  }
->  
-> +static int open_parameters(const char *module_name)
-> +{
-> +	char path[256];
-> +
-> +	snprintf(path, sizeof(path), "/sys/module/%s/parameters", module_name);
-> +	return open(path, O_RDONLY);
-> +}
-> +
-> +static bool kunit_set_params(const char **name, const char **value, int count)
-> +{
-> +	static bool writable = true;
-> +	int i, ret, params;
-> +	char *opts = NULL;
-> +
-> +	if (!writable) {
-> +		if (count)
-> +			if (igt_debug_on(asprintf(&opts, "%s=%s",
-> +						  name[0], value[0]) < 0)) {
-> +				free(opts);
-> +				return false;
-> +			}
-> +
-> +		for (i = 1; i < count; i++) {
-> +			char *head = opts;
-> +
-> +			opts = NULL;
-> +			ret = asprintf(&opts, "%s %s=%s", head, name[i], value[i]);
-> +			free(head);
-> +			if (igt_debug_on(ret < 0)) {
-> +				free(opts);
-> +				return false;
-> +			}
-> +		}
-> +
-> +		igt_ignore_warn(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
-> +	}
-> +
-> +	ret = igt_debug_on(igt_kmod_load("kunit", opts));
-> +	free(opts);
-> +
-> +	if (ret && !writable)
-> +		return false;
-> +
-> +	params = open_parameters("kunit");
-> +	ret = igt_debug_on(params < 0);
-> +
-> +	for (i = 0; !ret && i < count; i++) {
-> +		char *param = igt_sysfs_get(params, name[i]);
-> +
-> +		if (igt_debug_on_f(!param, "param: %s\n", name[i])) {
-> +			ret = -1;
-> +			continue;
-> +		}
-> +
-> +		ret = strcmp(param, value[i]);
-> +		free(param);
-> +		if (ret)
-> +			ret = !igt_sysfs_set(params, name[i], value[i]);
-> +	}
-> +
-> +	if (params >= 0)
-> +		close(params);
-> +
-> +	if (!ret)
-> +		return true;
-> +	if (!writable)
-> +		return false;
-> +
-> +	writable = false;
-> +	return kunit_set_params(name, value, count);
-> +}
-> +
->  struct modprobe_data {
->  	struct kmod_module *kmod;
->  	const char *opts;
-> @@ -814,11 +886,17 @@ struct modprobe_data {
->  
->  static void *modprobe_task(void *arg)
->  {
-> +	const char *param[3] = { "filter_glob", "filter", "filter_action", };
-> +	const char *value[3] = { "*", "", "", };
->  	struct modprobe_data *data = arg;
-> +	bool ret;
-> +
-> +	ret = kunit_set_params(param, value, ARRAY_SIZE(param));
->  
-> -	data->err = modprobe(data->kmod, data->opts);
-> +	if (ret)
-> +		data->err = modprobe(data->kmod, data->opts);
->  
-> -	if (igt_debug_on(data->err)) {
-> +	if (igt_debug_on(!ret || data->err)) {
->  		bool once = false;
->  		int err;
->  
-> @@ -1092,9 +1170,20 @@ static void kunit_get_tests(struct igt_list_head *tests,
->  			    const char *filter,
->  			    const char *opts)
->  {
-> +	/*
-> +	 * To get a list of test cases provided by a kunit test module, ask the
-> +	 * generic kunit module to respond with SKIP result for each test found.
-> +	 * We could also try to use action=list kunit parameter to get the
-> +	 * listing, however, parsing a KTAP report -- something that we already
-> +	 * can do perfectly -- seems to be more safe than extracting a test case
-> +	 * list of unknown length from /dev/kmsg.
-> +	 */
-> +	const char *param[3] = { "filter_glob", "filter", "filter_action", };
-> +	const char *value[3] = { "*", "module=none", "skip", };
->  	char *suite_name = NULL, *case_name = NULL;
->  	struct igt_ktap_result *r, *rn;
->  	struct igt_ktap_results *ktap;
-> +	unsigned long taints;
->  	int flags, err;
->  
->  	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
-> @@ -1105,26 +1194,23 @@ static void kunit_get_tests(struct igt_list_head *tests,
->  
->  	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
->  
-> -	/*
-> -	 * To get a list of test cases provided by a kunit test module, ask the
-> -	 * generic kunit module to respond with SKIP result for each test found.
-> -	 * We could also use action=list kunit parameter to get the listing,
-> -	 * however, parsing a KTAP report -- something that we already can do
-> -	 * perfectly -- seems to be more safe than extracting a test case list
-> -	 * of unknown length from /dev/kmsg.
-> -	 *
-> -	 * TODO: drop the following workaround, which is required by LTS kernel
-> -	 *       v6.1 not capable of listing test cases when built as a module.
-> -	 * If loading the kunit module with required parameters fails then
-> -	 * assume that we are running on a kernel with missing test case listing
-> -	 * capabilities.  Dont's skip but just return with empty list of test
-> -	 * cases, that should tell the caller to use a legacy method of
-> -	 * iterating over KTAP results collected from blind execution of all
-> -	 * Kunit test cases provided by a Kunit test module.
-> -	 */
-> -	if (igt_debug_on(igt_kmod_load("kunit",
-> -				       "filter=module=none filter_action=skip")))
-> +	if (igt_debug_on(!kunit_set_params(param, value, ARRAY_SIZE(param)))) {
-> +		/*
-> +		 * TODO: drop the following workaround, required by LTS kernel
-> +		 *       v6.1 not capable of listing test cases when built as as
-> +		 *       module, when no longer needed.
-> +		 * If updating writable filter parameters of the kunit base
-> +		 * module with required values or reloading that module with
-> +		 * those parameters specified fails then assume that we are
-> +		 * running on a kernel with missing test case listing
-> +		 * capabilities.  Dont skip but just return with empty list of
-> +		 * test cases, which should tell the caller to use a legacy
-> +		 * method of iterating over KTAP results collected from blind
-> +		 * execution of all Kunit test cases provided by a Kunit test
-> +		 * module.
-> +		 */
->  		return;
-> +	}
->  
->  	igt_skip_on(modprobe(tst->kmod, opts));
->  
-> @@ -1159,7 +1245,6 @@ static void kunit_get_tests(struct igt_list_head *tests,
->  	}
->  
->  	igt_skip_on(kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE));
-> -	igt_skip_on(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
->  
->  	igt_skip_on_f(err,
->  		      "KTAP parser failed while getting a list of test cases\n");
-> @@ -1355,15 +1440,6 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
->  		igt_skip_on(igt_ktest_init(&tst, module_name));
->  		igt_skip_on(igt_ktest_begin(&tst));
->  
-> -		/*
-> -		 * Since we need to load kunit base module with specific
-> -		 * options in order to get a list of test cases, make
-> -		 * sure that the module is not loaded.  However, since
-> -		 * unload may fail if kunit base module is not loaded,
-> -		 * ignore any failures, we'll fail later if still loaded.
-> -		 */
-> -		igt_ignore_warn(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
-> -
->  		igt_assert(igt_list_empty(&tests));
->  	}
->  
-> @@ -1395,20 +1471,11 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
->  		kunit_results_free(&tests, &suite_name, &case_name);
->  
->  		igt_ktest_end(&tst);
-> -		igt_debug_on(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
->  	}
->  
->  	igt_ktest_fini(&tst);
->  }
->  
-> -static int open_parameters(const char *module_name)
-> -{
-> -	char path[256];
-> -
-> -	snprintf(path, sizeof(path), "/sys/module/%s/parameters", module_name);
-> -	return open(path, O_RDONLY);
-> -}
-> -
->  int igt_ktest_init(struct igt_ktest *tst,
->  		   const char *module_name)
->  {
-> -- 
-> 2.43.0
+> ### IGT changes ###
 > 
+> #### Issues hit ####
+> 
+>   * igt@i915_selftest@live@execlists:
+>     - fi-bsw-nick:        [PASS][3] -> [ABORT][4] ([i915#7911])
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7692/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+> 
+>   * igt@i915_selftest@live@hangcheck:
+>     - fi-skl-guc:         [PASS][5] -> [DMESG-FAIL][6] ([i915#10112])
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7692/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+> 
+>   
+>   {name}: This element is suppressed. This means it is ignored when computing
+>           the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+>   [i915#10112]: https://gitlab.freedesktop.org/drm/intel/issues/10112
+>   [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
+>   [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7692 -> IGTPW_10588
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14178: cad255f28ccca6529104b9497a8d7302ae7eb88a @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10588: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/index.html
+>   IGT_7692: 5d9c29c620701497323bf3721146da57efa50952 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10588/index.html
