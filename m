@@ -4,35 +4,35 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF04CC47DDF
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Jan 2024 12:40:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FADCC47422
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Jan 2024 12:40:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4B78010F9EE;
+	by gabe.freedesktop.org (Postfix) with ESMTP id AC02310F9F9;
 	Fri, 26 Jan 2024 12:40:30 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01A9910F9E8
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Jan 2024 12:40:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E13710F9EE
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Jan 2024 12:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1706272828; x=1737808828;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding:sender;
- bh=Ode6t1I9//+Xho/UTZTXR/xjxlzeMgDzKNXTRzEp9x8=;
- b=Dpy/5emThHOkSyNakSckQqyFOfgJRGvhYqltjZxlcyTfIcF2MzLmFPHt
- KWu6e8bCoYQyz0M8GTFcGc2UOFbcee43WrFIa66sUF5yhOtxp+kAHhnwa
- b9kRlrdFNR92hjL1ueW1+CiUy/cB256PqkzT/5mp+UTrw80IPRaeHNWSm
- mJgGvYBpPu2A7pWDmKkwwiCrQ9QEO5rRwA5jRsvYLriRYJuo200RRsIVH
- 2KwziI2xnI7ByuDIJFv49AUsO8MJR1fZ+dfZAWwaycR31HJB/0C4WTxWq
- G9AM4gfe7fA91IeIiXZRMCyOorp1bCU6VQYaWR39ZgwulHfAlU2pfqn6v w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="2328908"
+ bh=BZD9v3Y4xl4btntGHYQCL6rYmomx6hDpR1XUB8Doxpw=;
+ b=Eo5tL79uBo77uCtmy4iOgsAlMsrQijRwsO2+tEWszXzRNsQx2In7wzPb
+ EPhx0C0uYKiaiiyzsTs7K2FUm6Xie2pR0evvzHX+3H8sFjL81Q7rjXSjy
+ BM9V7cBePeL9eue/vIeZHB2AeockgV9Aw+RcmfxU/T2+/YX4b5dp2DEYf
+ LthWVfsUJ6Tm0yURr/arLioaqzct2ANnLkJlj/4tFf0KHJ8F/8DCE85jC
+ GFDvS9twR5DJO6hsdMpEDNEGmGE1jn4RhJpEC8OY/swhBK5jFLlTA6UZI
+ LrNC4trQiAgq4+k/USCC1Pl/GGSE+x4rivrBAcZ2itchuiYehDoHen1f0 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="2328910"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2328908"
+   d="scan'208";a="2328910"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  26 Jan 2024 04:40:25 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="821121697"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="821121697"
+X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="821121699"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="821121699"
 Received: from linux.intel.com ([10.54.29.200])
  by orsmga001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  26 Jan 2024 04:40:25 -0800
@@ -40,18 +40,18 @@ Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.245.246.6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id E8237580C6E
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Jan 2024 04:40:24 -0800 (PST)
+ by linux.intel.com (Postfix) with ESMTPS id 0D179580E13
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Jan 2024 04:40:25 -0800 (PST)
 Received: from maurocar by linux.intel.com with local (Exim 4.97.1)
  (envelope-from <mauro.chehab@linux.intel.com>)
- id 1rTLVO-0000000BKa6-3TVo for igt-dev@lists.freedesktop.org;
+ id 1rTLVO-0000000BKaC-3cBZ for igt-dev@lists.freedesktop.org;
  Fri, 26 Jan 2024 13:40:22 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 1/3] scripts/igt_doc.py: allow using multiple config
- files at the same time
-Date: Fri, 26 Jan 2024 13:37:27 +0100
-Message-ID: <20240126124021.2700482-2-mauro.chehab@linux.intel.com>
+Subject: [PATCH i-g-t 3/3] scripts/igt_doc.py: don't be verbose when creating
+ testlists
+Date: Fri, 26 Jan 2024 13:37:29 +0100
+Message-ID: <20240126124021.2700482-4-mauro.chehab@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240126124021.2700482-1-mauro.chehab@linux.intel.com>
 References: <20240126124021.2700482-1-mauro.chehab@linux.intel.com>
@@ -74,179 +74,48 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-When generating testlists meant to test multiple testplan configs at
-the same time, we need to group tests from different testplans.
-
-Add support for it by letting the command be called with multiple
-config files.
-
-While this might be useful for other tool outputs, it may not be
-producing what the user expects, so, add warnings when needed and
-multiple configs are used at the same time.
+As this target is part of meson, suppress outputs, except when
+there are errors or warnings.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/igt_doc.py | 124 +++++++++++++++++++++++++++++++--------------
- 1 file changed, 86 insertions(+), 38 deletions(-)
+ scripts/igt_doc.py | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-index df3f72c8d69f..b66eefe799e9 100755
+index b66eefe799e9..6a1cfc2b5a56 100755
 --- a/scripts/igt_doc.py
 +++ b/scripts/igt_doc.py
-@@ -170,15 +170,35 @@ class IgtTestList(TestList):
- 
-         return (testlists, gpu_set)
- 
--    def write_intelci_testlist(self, directory):
-+class IntelciTestlist:
-+    def __init__(self):
-+        self.testlists = {}
-+        self.gpu_set = set()
-+
-+    def add(self, testlist, gpu_set):
-+        self.gpu_set.update(gpu_set)
-+
-+        for driver, gpus in testlist.items():
-+            if driver not in self.testlists:
-+                self.testlists[driver] = {}
-+
-+            for gpu in gpus:
-+                if gpu not in self.testlists[driver]:
-+                    self.testlists[driver][gpu] = {}
-+
-+                for run_type in testlist[driver][gpu]:
-+                    if run_type not in self.testlists[driver][gpu]:
-+                        self.testlists[driver][gpu][run_type] = set()
-+
-+                    self.testlists[driver][gpu][run_type].update(testlist[driver][gpu][run_type])
-+
-+    def write(self, directory):
-         '''Create testlist directory (if needed) and files'''
- 
+@@ -198,6 +198,8 @@ class IntelciTestlist:
          if not os.path.exists(directory):
              os.makedirs(directory)
  
--        testlists = self.gen_intelci_testlist()
--
--        for driver, gpus in testlists[0].items():
-+        for driver, gpus in self.testlists.items():
++        files_written = False
++
+         for driver, gpus in self.testlists.items():
              driver_path = os.path.join(directory, driver)
              try:
-                 os.makedirs(driver_path)
-@@ -224,7 +244,7 @@ def main():
-     parser = argparse.ArgumentParser(description = "Print formatted kernel documentation to stdout.",
-                                     formatter_class = argparse.ArgumentDefaultsHelpFormatter,
-                                     epilog = 'If no action specified, assume --rest.')
--    parser.add_argument("--config", required = True,
-+    parser.add_argument("--config", required = True, nargs='+',
-                         help="JSON file describing the test plan template")
-     parser.add_argument("--rest",
-                         help="Output documentation from the source files in REST file.")
-@@ -254,43 +274,71 @@ def main():
+@@ -225,14 +227,18 @@ class IntelciTestlist:
+                         testlist = re.sub(r"_+", "_", testlist)
  
-     parse_args = parser.parse_args()
+                     if not subtests:
+-                        print(f"Warning: empty testlist: {testlist}")
++                        sys.stderr.write(f"Warning: empty testlist: {testlist}\n")
+                         continue
  
--    tests = IgtTestList(config_fname = parse_args.config,
--                        include_plan = parse_args.include_plan,
--                        file_list = parse_args.files,
--                        igt_build_path = parse_args.igt_build_path)
--
--    if parse_args.filter_field:
--        for filter_expr in parse_args.filter_field:
--            tests.add_filter(filter_expr)
--
--    run = False
--    if parse_args.show_subtests:
--        run = True
--        tests.show_subtests(parse_args.sort_field)
--
--    if parse_args.check_testlist:
--        run = True
--        tests.check_tests()
--
--    if parse_args.gen_testlist:
--        run = True
--        if not parse_args.sort_field:
--            sys.exit("Need a field to split the testlists")
--        tests.gen_testlist(parse_args.gen_testlist, parse_args.sort_field)
-+    test_array = []
+                     fname = os.path.join(dname, testlist) + ".testlist"
+                     with open(fname, 'w', encoding='utf8') as handler:
+                         for sub in sorted(subtests):
+                             handler.write (f"{sub}\n")
+-                        print(f"{fname} created.")
++
++                    files_written = True
++
++        if not files_written:
++            sys.stderr.write("Warning: No Intel CI test files created!")
  
-+    # Except for intelci_testlist, all options are handled per config
-+    # file, as the typical usage is to pass just one config file.
-+
-+    for config in parse_args.config:
-+        tests = IgtTestList(config_fname = config,
-+                            include_plan = parse_args.include_plan,
-+                            file_list = parse_args.files,
-+                            igt_build_path = parse_args.igt_build_path)
-+
-+        if parse_args.filter_field:
-+            for filter_expr in parse_args.filter_field:
-+                tests.add_filter(filter_expr)
-+
-+        run = False
-+        if parse_args.show_subtests:
-+            run = True
-+            tests.show_subtests(parse_args.sort_field)
-+
-+        if parse_args.check_testlist:
-+            run = True
-+            tests.check_tests()
-+
-+        if parse_args.gen_testlist:
-+            run = True
-+            if not parse_args.sort_field:
-+                sys.exit("Need a field to split the testlists")
-+            if len(config) > 1:
-+                sys.exit("Only one config file is supported with --json option")
-+            tests.gen_testlist(parse_args.gen_testlist, parse_args.sort_field)
-+
-+        if parse_args.intelci_testlist:
-+            run = True
-+            test_array.append(tests)
-+
-+        if parse_args.to_json:
-+            run = True
-+            if len(parse_args.config) > 1:
-+                sys.exit(f"Only one config file is supported with --json option, but {len(parse_args.config)} specified")
-+
-+            tests.print_json(parse_args.to_json)
-+
-+        if not run or parse_args.rest:
-+            if len(parse_args.config) > 1:
-+                if parse_args.rest:
-+                    sys.exit(f"Only one config file is supported with --rest option, but {len(parse_args.config)} specified")
-+
-+            if parse_args.per_test:
-+                tests.print_rest_flat(parse_args.rest)
-+            else:
-+                tests.print_nested_rest(parse_args.rest)
-+
-+    if not run and len(parse_args.config) > 1:
-+        print("Warning: output was shown per-config file")
-+
-+    # Group testlists altogether when generating intel-ci output
-     if parse_args.intelci_testlist:
--        run = True
--        tests.write_intelci_testlist(parse_args.intelci_testlist)
-+        intel_testlists = IntelciTestlist()
- 
--    if parse_args.to_json:
--        run = True
--        tests.print_json(parse_args.to_json)
-+        for tests in test_array:
-+            (testlist, gpu_set) = tests.gen_intelci_testlist()
-+            intel_testlists.add(testlist, gpu_set)
- 
--    if not run or parse_args.rest:
--        if parse_args.per_test:
--            tests.print_rest_flat(parse_args.rest)
--        else:
--            tests.print_nested_rest(parse_args.rest)
-+        intel_testlists.write(parse_args.intelci_testlist)
- 
- if __name__ == '__main__':
-     main()
+ def main():
+     """
 -- 
 2.43.0
 
