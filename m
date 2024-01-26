@@ -4,43 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4084C47DDB
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Jan 2024 17:32:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB324C47422
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Jan 2024 17:32:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4B03910FC92;
-	Fri, 26 Jan 2024 17:32:17 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB82010FC92
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Jan 2024 17:32:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7138310FC96;
+	Fri, 26 Jan 2024 17:32:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6718710FC96
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Jan 2024 17:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706290335; x=1737826335;
+ t=1706290344; x=1737826344;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=wP+C2c92Jmfnl/sRU2pLfFuK/z2CKSJ2LIod/a8v1z8=;
- b=gwZjq59oAngy7ZclXZ4uyLFA0JBgJm82mgNiTkump+DFvfmryPkHyviY
- 7iPIPiIla5pMbmQGjYqLpxsaIEA99jjUIsrqECFifTpRUBPa1NUmuN1eK
- fnOTSy2C9RqXdSKhRahLTHyxV07U84WA9g1KODeeYDfkMj0yWBzeSEuB8
- TpYMU2+kD9aGPFNBPeMUm7d6ouSz15crmQpQujiU8lbMbivDyJX4FoKuW
- r50CkAyMd6haKDqQ3Fe6LPoF1lYj2P0TNJPiLRrub2ZbwHKzQQMa1ULov
- zUYKjftFEKhaH2k6YZuW++l2mhbCcPPSdoGj8UKlCQvRAXK5AW49Q1A9a A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="401386365"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="401386365"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jan 2024 09:32:15 -0800
+ bh=zwWJ9PF2h9xIB56kjAQiEPcTgkDf3Spi7zVBy/007YI=;
+ b=Bv1FV69C16juLaau6CRcFidR+igDPSNg92326XABJiMvJPou0+O/xXRB
+ PUatLUOH+c8A3hxkCOBc65wa13uh3tnrDiQkSmuhXg0ZcYjvVdLxaRSpZ
+ uskcGboo40NSRKZbDvje7Pe8YlXgipc98vjftBVwxBA6AqaP0WyLytgnB
+ hiTfLadKVMjHNg/Meh/1sNv5LJLQFWaiRff2lnZrEM1X1wMvdcFrUQNYr
+ FMl1RNjYuqkEMNTtR3PdSd1Lgc2yW2s6V1nqmovmdeM5k28yni0lPP+sk
+ rRIZ7Oxp9bwyFMuBtTiTW/GjxZX+7jXDRV/u1p//+rJ2a5SXAYcHTbITE w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="433681614"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="433681614"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jan 2024 09:32:23 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="906371934"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="906371934"
+X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="821199772"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="821199772"
 Received: from unknown (HELO localhost) ([10.246.28.205])
- by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jan 2024 09:32:14 -0800
+ by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jan 2024 09:32:22 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v4 5/8] lib/intel_multigpu: Introduced
- gem_multigpu_count_class and igt_multi_fork_foreach_gpu
-Date: Fri, 26 Jan 2024 18:31:45 +0100
-Message-ID: <20240126173148.63246-6-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v4 6/8] lib/intel_multigpu: Add xe_multi_fork_foreach_gpu
+Date: Fri, 26 Jan 2024 18:31:46 +0100
+Message-ID: <20240126173148.63246-7-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240126173148.63246-1-kamil.konieczny@linux.intel.com>
 References: <20240126173148.63246-1-kamil.konieczny@linux.intel.com>
@@ -59,84 +58,197 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+Create macro for testing Xe driver in multigpu scenarios with
+the help of few new multigpu functions. Also while at this,
+add documentation for public functions and use new helper in
+existing multi-gpu macro.
 
-Introduced gem_multigpu_count_class function that returns an actual
-number of GPUs present in system, which allows for writing multi-GPU
-test scenarios that does not require
---device pci:vendor=intel,device=discrete,card=all
-to run as intended. Based on patch by Chris Wilson.
+v2: corrected description (Kamil), rebased on corrected patches
+  after Dominik review
+v3: corrected descriptions, renamed function to print_gpus
+  and did small refactoring (Kamil)
+  fixed typo in function name (Dominik)
+v4: fixed typos (Dominik)
 
-Introduced igt_multi_fork_foreach_gpu macro that helps with
-writing multi-GPU test scenarios in idiomatic form:
-
-igt_multi_fork_foreach_gpu(i915, DRIVER_INTEL)
-	test_function(i915);
-igt_waitchildren();
-
-Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 ---
- lib/intel_multigpu.c | 11 +++++++++++
- lib/intel_multigpu.h | 15 +++++++++++++++
- 2 files changed, 26 insertions(+)
+ lib/intel_multigpu.c | 106 +++++++++++++++++++++++++++++++++++++++++--
+ lib/intel_multigpu.h |  12 ++++-
+ 2 files changed, 112 insertions(+), 6 deletions(-)
 
 diff --git a/lib/intel_multigpu.c b/lib/intel_multigpu.c
-index 34c9f936d..0e76d8aa3 100644
+index 0e76d8aa3..689c4f10c 100644
 --- a/lib/intel_multigpu.c
 +++ b/lib/intel_multigpu.c
-@@ -3,10 +3,21 @@
-  * Copyright © 2023 Intel Corporation
+@@ -4,10 +4,19 @@
   */
  
-+#include "drmtest.h"
+ #include "drmtest.h"
++#include "i915/gem.h"
  #include "igt_core.h"
  #include "igt_device_scan.h"
  #include "intel_multigpu.h"
  
-+int gem_multigpu_count_class(int class)
-+{
-+	int count = 0;
-+
-+	igt_foreach_gpu(fd, class)
-+		count++;
-+
-+	return count;
-+}
-+
- void gem_require_multigpu(int count)
++/**
++ * gem_multigpu_count_class:
++ * @class: chipset, e.g. DRIVER_XE or DRIVER_INTEL
++ *
++ * Function counts number of GPU cards with the help of opening all of them.
++ *
++ * Returns: number of GPUs cards found
++ */
+ int gem_multigpu_count_class(int class)
+ {
+ 	int count = 0;
+@@ -18,7 +27,7 @@ int gem_multigpu_count_class(int class)
+ 	return count;
+ }
+ 
+-void gem_require_multigpu(int count)
++static void print_gpus(int count, int gpu_num)
  {
  	struct igt_devices_print_format fmt = {
+ 		.type = IGT_PRINT_SIMPLE,
+@@ -26,14 +35,101 @@ void gem_require_multigpu(int count)
+ 	};
+ 	int devices;
+ 
+-	if (igt_device_filter_count() >= count)
+-		return;
+-
+ 	igt_info("PCI devices available in the system:\n");
+ 
+ 	igt_devices_scan(true);
+ 	devices = igt_device_filter_pci();
+ 	igt_devices_print(&fmt);
+ 
+-	igt_skip("Test requires at least %d GPUs, %d available.\n", count, devices);
++	igt_info("Test requires at least %d GPUs, got %d, available %d\n", count, gpu_num, devices);
++}
++
++/**
++ * gem_require_multigpu:
++ * @count: minimum number of GPUs required
++ *
++ * Function checks number of filtered GPU cards.
++ * On error skips and prints available GPUs found on PCI bus.
++ */
++void gem_require_multigpu(int count)
++{
++	int gpu_count = igt_device_filter_count();
++
++	if (gpu_count >= count)
++		return;
++
++	print_gpus(count, gpu_count);
++	igt_skip_on(gpu_count < count);
++}
++
++/**
++ * multigpu_acquire_view:
++ * @gpus_wanted: minimum number of GPUs required
++ * @chipset: chipset, e.g. DRIVER_XE or DRIVER_INTEL
++ *
++ * Function prepares filtered view for GPU cards with given chipset.
++ * On error skips and prints available GPUs found on PCI bus.
++ * Returns: number of GPUs found
++ */
++int multigpu_acquire_view(int gpus_wanted, unsigned int chipset)
++{
++	int gpu_count = drm_prepare_filtered_multigpu(chipset);
++
++	igt_assert(gpus_wanted > 1);
++	if (gpu_count >= gpus_wanted)
++		return gpu_count;
++
++	print_gpus(gpus_wanted, gpu_count);
++	igt_skip_on(gpu_count < gpus_wanted);
++
++	return gpu_count; /* non-reachable */
++}
++
++/**
++ * multigpu_open_another:
++ * @idx: index of GPU card, starting from 0
++ * @chipset: chipset, e.g. DRIVER_XE or DRIVER_INTEL
++ *
++ * Function opens GPU card with drm_open_driver_another(). For i915 it checks
++ * if opened card is functional. Skips on errors.
++ *
++ * Returns: opened fd for @idx card
++ */
++int multigpu_open_another(int idx, unsigned int chipset)
++{
++	int fd;
++
++	igt_assert(idx >= 0);
++	fd = drm_open_driver_another(idx, chipset);
++
++	if (chipset == DRIVER_INTEL)
++		igt_require_gem(fd);
++
++	return fd;
++}
++
++/**
++ * multigpu_open_filtered_card:
++ * @idx: index of GPU card, starting from 0
++ * @chipset: chipset, e.g. DRIVER_XE or DRIVER_INTEL
++ *
++ * Function opens GPU card prepared with filtered view. It also checks if
++ * opened card agrees with desired chipset or checks if opened card is
++ * functional. Skips on errors.
++ *
++ * Returns: opened fd for @idx card
++ */
++int multigpu_open_filtered_card(int idx, unsigned int chipset)
++{
++	int fd;
++
++	igt_assert(idx >= 0);
++	fd = drm_open_filtered_card(idx);
++	igt_require(fd != -1);
++	if (chipset == DRIVER_XE)
++		igt_require_xe(fd);
++	else if (chipset == DRIVER_INTEL)
++		igt_require_gem(fd);
++
++	return fd;
+ }
 diff --git a/lib/intel_multigpu.h b/lib/intel_multigpu.h
-index 98dc5a4ce..0ebc73e4a 100644
+index 0ebc73e4a..3fbf83e21 100644
 --- a/lib/intel_multigpu.h
 +++ b/lib/intel_multigpu.h
-@@ -6,6 +6,21 @@
- #ifndef __INTEL_MULTIGPU_H
- #define __INTEL_MULTIGPU_H
- 
-+#include "drmtest.h"
-+#include "igt_core.h"
-+
+@@ -12,6 +12,10 @@
  void gem_require_multigpu(int count);
-+int gem_multigpu_count_class(int class);
-+
-+#define igt_foreach_gpu(fd__, id__) \
-+	for (int igt_unique(i) = 0, fd__; \
-+		(fd__ = __drm_open_driver_another(igt_unique(i)++, id__)) >= 0; \
-+		close(fd__))
-+
-+#define igt_multi_fork_foreach_gpu(__fd, __id) \
-+	igt_multi_fork(igt_unique(__i), gem_multigpu_count_class(__id)) \
-+		for (int __fd = drm_open_driver_another(igt_unique(__i), __id); \
-+			__fd >= 0; \
-+			close(__fd), __fd = -1) \
+ int gem_multigpu_count_class(int class);
  
++int multigpu_acquire_view(int min_gpus_wanted, unsigned int chipset);
++int multigpu_open_another(int idx, unsigned int chipset);
++int multigpu_open_filtered_card(int idx, unsigned int chipset);
++
+ #define igt_foreach_gpu(fd__, id__) \
+ 	for (int igt_unique(i) = 0, fd__; \
+ 		(fd__ = __drm_open_driver_another(igt_unique(i)++, id__)) >= 0; \
+@@ -19,8 +23,14 @@ int gem_multigpu_count_class(int class);
+ 
+ #define igt_multi_fork_foreach_gpu(__fd, __id) \
+ 	igt_multi_fork(igt_unique(__i), gem_multigpu_count_class(__id)) \
+-		for (int __fd = drm_open_driver_another(igt_unique(__i), __id); \
++		for (int __fd = multigpu_open_another(igt_unique(__i), __id); \
+ 			__fd >= 0; \
+ 			close(__fd), __fd = -1) \
+ 
++#define xe_multi_fork_foreach_gpu(__fd, __gpu_index) \
++	igt_multi_fork(__gpu_index, multigpu_acquire_view(2, DRIVER_XE)) \
++		for (int __fd = multigpu_open_filtered_card(__gpu_index, DRIVER_XE); \
++			__fd >= 0; \
++			drm_close_driver(__fd), __fd = -1) \
++
  #endif /* __INTEL_MULTIGPU_H */
 -- 
 2.42.0
