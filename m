@@ -4,53 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06CCBC47422
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jan 2024 11:16:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2B8DC47DA9
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jan 2024 11:28:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B87CB1127FD;
-	Mon, 29 Jan 2024 11:16:23 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 794FF1127FD;
- Mon, 29 Jan 2024 11:16:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 978C610E567;
+	Mon, 29 Jan 2024 11:28:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CAD210E567
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jan 2024 11:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706526981; x=1738062981;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=aaKZpV21F6p4lYZmj3bGXRuiJukH2XZAuHlXHE60lpQ=;
- b=S5oUMNMrKH0RGOycSZT89382jVWIxxzdY1Lx4C6WrI0+YwpfNlNiv1cF
- /7f8P1kx4/uugnmXwiaIoF3OOidnZUX4MJQmcN/yKshXAlzF+q+k3ra4D
- mrKtRVoMXYwXU2N8CCn99TnYFAyj5DkoCS8Nunw9QYA+usIRPTHGtmhAN
- T+aHJ9nr6Nba6oswHmHfXQLNc3D5BXCLfGgZWFGcJo9LA3+VkJJ1OdMlw
- YUz98CUMVdebHN5qZlvxRvP5Ew8TYRqT5/3UguEJMvG89b9BjeZSza4CD
- FdElUQfBtDQRU+oHT2P4JBfAOrYw3vJo1iE23VklFKsGd+zdeDqBAbYfd w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="16448943"
-X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; d="scan'208";a="16448943"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2024 03:16:21 -0800
+ t=1706527709; x=1738063709;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=UQAbrt//snMMpRvUf9+FjpvKEDqaOeVNR1suIzU4+ls=;
+ b=mfVOXLvS7wgBCtHpmEerGT3/KL+Aq/mbHETXqw9Yg2xfQA3tPX/S9iLB
+ Qgcx/+rYwZ/zh7ELILb9yQIVcbpcLeOWRh/mOonVSxgmDfDcA/TA5MW4Z
+ IuiPfJi95nsWGlkNycvs7VtiNn9a1xiHIDYsT6f0mk6OsakzJEZqmo+YE
+ mxexe0sc1T8aptFpo+kmoiIUJDjEhDIkFkMtis8J2YQWZUy66T0uFx+bM
+ ce0aQlMlrRnBnvUs0KQ8XzPxEt8sVVqyGZppcipAM8+Nc/mLmFMv+oziH
+ STKmzmdaGAx7dAKJeJD00G3jW2Y9QuIFEwHJmlr4btBZ41zyVgvfy5OEa Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="9670621"
+X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
+   d="scan'208";a="9670621"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jan 2024 03:28:28 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="821822222"
-X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; d="scan'208";a="821822222"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orsmga001-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 03:16:19 -0800
-Date: Mon, 29 Jan 2024 12:16:16 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyX?= Fi.CI.IGT: failure for Add d3 mmap test (rev6)
-Message-ID: <20240129111616.na3mbpn23mf6unri@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- "Gupta, Anshuman" <anshuman.gupta@intel.com>,
- I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
- TejasreeX Illipilli <tejasreex.illipilli@intel.com>
-References: <20240125154114.2164080-1-anshuman.gupta@intel.com>
- <170620572173.727567.10936793679496857070@5338d5abeb45>
+X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; d="scan'208";a="29752312"
+Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.92.201.92])
+ ([10.92.201.92])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jan 2024 03:28:26 -0800
+Message-ID: <4d9a9241-57ea-4cc7-b902-a57bc5102c69@linux.intel.com>
+Date: Mon, 29 Jan 2024 16:58:22 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <170620572173.727567.10936793679496857070@5338d5abeb45>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2] tests/intel/xe_exec_atomic: Skip on unsupported
+ config
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>,
+ janga.rahul.kumar@intel.com
+References: <20240129080155.31648-1-nirmoy.das@intel.com>
+ <20240129084706.4abndzwylmz6z4pe@kamilkon-desk.igk.intel.com>
+ <266dbc80-7c5c-48e7-ac4e-4aed3bd9f5a6@intel.com>
+ <20240129105525.ytxcchtjvvr3lnig@kamilkon-desk.igk.intel.com>
+ <e045c8f6-c15e-48ce-81d7-ac688ebe208d@intel.com>
+ <20240129111243.figdlpqlph7uomxe@kamilkon-desk.igk.intel.com>
+From: Nirmoy Das <nirmoy.das@linux.intel.com>
+In-Reply-To: <20240129111243.figdlpqlph7uomxe@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,132 +68,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: lgci.bug.filing@intel.com, I915-ci-infra@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-01-25 at 18:02:01 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: Add d3 mmap test (rev6)
-> URL   : https://patchwork.freedesktop.org/series/124115/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_14179_full -> IGTPW_10589_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_10589_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_10589_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10589/index.html
-> 
-> Participating hosts (8 -> 8)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_10589_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@gem_exec_fence@parallel@vecs0:
->     - shard-mtlp:         [PASS][1] -> [INCOMPLETE][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14179/shard-mtlp-4/igt@gem_exec_fence@parallel@vecs0.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10589/shard-mtlp-4/igt@gem_exec_fence@parallel@vecs0.html
-> 
->   * igt@gem_exec_schedule@submit-early-slice:
->     - shard-mtlp:         NOTRUN -> [TIMEOUT][3] +1 other test timeout
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10589/shard-mtlp-6/igt@gem_exec_schedule@submit-early-slice.html
-> 
->   * igt@kms_cursor_legacy@torture-bo@pipe-a:
->     - shard-tglu:         [PASS][4] -> [DMESG-WARN][5]
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14179/shard-tglu-7/igt@kms_cursor_legacy@torture-bo@pipe-a.html
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10589/shard-tglu-4/igt@kms_cursor_legacy@torture-bo@pipe-a.html
-> 
->   * igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-mmap-wc:
->     - shard-mtlp:         [PASS][6] -> [TIMEOUT][7] +1 other test timeout
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14179/shard-mtlp-8/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-mmap-wc.html
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10589/shard-mtlp-6/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-mmap-wc.html
-> 
->   * igt@kms_vblank@ts-continuation-suspend@pipe-a-edp-1:
->     - shard-mtlp:         [PASS][8] -> [FAIL][9] +1 other test fail
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14179/shard-mtlp-5/igt@kms_vblank@ts-continuation-suspend@pipe-a-edp-1.html
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10589/shard-mtlp-7/igt@kms_vblank@ts-continuation-suspend@pipe-a-edp-1.html
-> 
->   
-> #### Warnings ####
-> 
->   * igt@kms_content_protection@atomic:
->     - shard-mtlp:         [SKIP][10] ([i915#6944]) -> [TIMEOUT][11]
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14179/shard-mtlp-7/igt@kms_content_protection@atomic.html
->    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10589/shard-mtlp-6/igt@kms_content_protection@atomic.html
-> 
->   
-> #### Suppressed ####
-> 
->   The following results come from untrusted machines, tests, or statuses.
->   They do not affect the overall result.
-> 
->   * {igt@kms_psr@pr-cursor-render}:
->     - shard-mtlp:         [SKIP][12] ([i915#9688]) -> [TIMEOUT][13]
->    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14179/shard-mtlp-3/igt@kms_psr@pr-cursor-render.html
->    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10589/shard-mtlp-6/igt@kms_psr@pr-cursor-render.html
-> 
+Hi Kamil,
 
-Unrelated to change in Xe lib and test, no need for respin.
+On 1/29/2024 4:42 PM, Kamil Konieczny wrote:
+> Hi Nirmoy,
+> On 2024-01-29 at 16:33:05 +0530, Nirmoy Das wrote:
+>> Hi Kamil,
+>>
+>> On 1/29/2024 4:25 PM, Kamil Konieczny wrote:
+>>> Hi Nirmoy,
+>>> On 2024-01-29 at 14:39:17 +0530, Nirmoy Das wrote:
+>>>> On 1/29/2024 2:17 PM, Kamil Konieczny wrote:
+>>>>> Hi Nirmoy,
+>>>>> On 2024-01-29 at 09:01:55 +0100, Nirmoy Das wrote:
+>>>>>> Atomics on system memory for dGPU is not functional
+>>>>>> at this moment hence skip on such configuration.
+>>>>>>
+>>>>>> v2: remove the skip_on.
+>>>>>>
+>>>>>> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+>>>>> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>>>> Thanks, Kamil. Please also help me  merge this one. Currently I don't have
+>>>> access to my devel machine.
+>>>>
+>>>>
+>>>> Nirmoy
+>>>>
+>>> I will wait for GitLab merge and xeBAT tests.
+>>> While at this I will also change subject, you removed skip so:
+>>>
+>>> [PATCH i-g-t v2] tests/intel/xe_exec_atomic: don't test system memory
+>> We do wan to test system memory but only on igfx so you can modify above
+>> accordingly.
+>>
+>> Thanks,
+>>
+>> Nirmoy
+>>
+> You are right, what about:
+>
+> tests/intel/xe_exec_atomic: don't test unsupported config
+>
+> Atomics on system memory for dGPU is not functional
+> at this moment hence don't test such configuration.
 
-Regards,
-Kamil
+Works for me!
 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_10589_full that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@api_intel_bb@blit-reloc-purge-cache:
->     - shard-dg1:          NOTRUN -> [SKIP][14] ([i915#8411])
->    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10589/shard-dg1-15/igt@api_intel_bb@blit-reloc-purge-cache.html
->     - shard-mtlp:         NOTRUN -> [SKIP][15] ([i915#8411])
->    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10589/shard-mtlp-5/igt@api_intel_bb@blit-reloc-purge-cache.html
->     - shard-dg2:          NOTRUN -> [SKIP][16] ([i915#8411])
->    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10589/shard-dg2-2/igt@api_intel_bb@blit-reloc-purge-cache.html
-> 
 
-...cut...
+Thanks,
 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7692 -> IGTPW_10589
-> 
->   CI-20190529: 20190529
->   CI_DRM_14179: 38a58d4231067e1b548c12ee521b73ffc0ebb73a @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_10589: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10589/index.html
->   IGT_7692: 5d9c29c620701497323bf3721146da57efa50952 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10589/index.html
+Nirmoy
+
+>
+> Regards,
+> Kamil
+>
+>>> Regards,
+>>> Kamil
+>>>
+>>>>>> ---
+>>>>>>     tests/intel/xe_exec_atomic.c | 9 ++++-----
+>>>>>>     1 file changed, 4 insertions(+), 5 deletions(-)
+>>>>>>
+>>>>>> diff --git a/tests/intel/xe_exec_atomic.c b/tests/intel/xe_exec_atomic.c
+>>>>>> index 7ee80816c..48c70ec72 100644
+>>>>>> --- a/tests/intel/xe_exec_atomic.c
+>>>>>> +++ b/tests/intel/xe_exec_atomic.c
+>>>>>> @@ -112,9 +112,8 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
+>>>>>>     static bool has_atomics(int fd, uint32_t region)
+>>>>>>     {
+>>>>>> -	/* System memory atomics on PVC doesn't work */
+>>>>>> -	if (region == system_memory(fd) &&
+>>>>>> -	    IS_PONTEVECCHIO(intel_get_drm_devid(fd)))
+>>>>>> +	/* System memory atomics on dGPU is not functional as of now */
+>>>>>> +	if (region == system_memory(fd) && xe_has_vram(fd))
+>>>>>>     		return false;
+>>>>>>     	return true;
+>>>>>> @@ -135,8 +134,8 @@ igt_main
+>>>>>>     			uint64_t memreg = all_memory_regions(fd), region;
+>>>>>>     			xe_for_each_mem_region(fd, memreg, region) {
+>>>>>> -
+>>>>>> -				igt_skip_on(!has_atomics(fd, region));
+>>>>>> +				if (!has_atomics(fd, region))
+>>>>>> +					continue;
+>>>>>>     				igt_dynamic_f("Engine-%s-Instance-%d-Tile-%d-%s-memory",
+>>>>>>     					      xe_engine_class_string(hwe->engine_class),
+>>>>>> -- 
+>>>>>> 2.42.0
+>>>>>>
