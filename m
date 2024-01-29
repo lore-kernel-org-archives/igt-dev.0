@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75C35C47DA9
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jan 2024 09:56:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8233C47422
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jan 2024 09:57:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 34A091126BD;
-	Mon, 29 Jan 2024 09:56:05 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9674E1127C7
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jan 2024 09:56:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8604C10F54C;
+	Mon, 29 Jan 2024 09:57:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ABE8210F334
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jan 2024 09:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706522164; x=1738058164;
+ t=1706522251; x=1738058251;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=wqg7+4efWfOZ3tlIzj7f6j7T6k17RPPH8lyvkuzW/Is=;
- b=QqyqiTlq8e/1oCGMmWjjURTAlkK6tziSq17psbtJnZJmEx2TzY/clKX0
- A5mHSSEyBm0VXaM8Joj9t2GNN4RtWQHHe2mesZIKH4Afwcp0FR/bsTJ7C
- apUQi1OxDPP4iKsXJm9NIynTS6/qbWOCfmRyGkO4Brn5PjEaaiEwpL8/b
- eJjqPRKL7GjOUaSKoYqcxIvgVBcsTqbz2K7z7a5+LVsTmAb/XsxnAixsh
- qRxjul4yKH9bDjp4TRLvFQyfjxb+FJVDiutHyjwDLRT7GCPllYvNTq9XE
- rO37jlOp0E7lnD/Ehombq7nmsFASRFUGNBAWl+I7OlzD5wcNKisYXiY8J w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="10293786"
-X-IronPort-AV: E=Sophos;i="6.05,226,1701158400"; d="scan'208";a="10293786"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2024 01:56:02 -0800
+ bh=DgH7LpfxhC3F8TBAN+YWg6AkS0KV3n5eQt0SM1U++Sc=;
+ b=fz9FvcL5Y3hTPgr0gX08L6yA/3ngCZ3pi3eK9BJqwpJF7u/8/ufskCJA
+ FKfWcuc1yOtb00y58Vjq4mSz+ha4HBpkjfilCuzW6euAH9v6KbHyzcISV
+ JDXzt/LKzCdqE/iaqtmVQZ2KNXcButDOjAzuY174rWm2WKy3ZBcGN8JmE
+ kdH9Ah+N37OrJuySCTguJlEVwxXI5dYt8VW8oIRt+aCmiMkc2bM+Y+086
+ gBwgnjHFA1Px5dfw4n1pusVa10ZkheRZ+Ebcr2r3qAXPfcxszoOJk4ZUM
+ C9P253rt9Ongmb1Khe97dE949AUEZim6yra8yT3yUKbRiQO45NzPi5DrR Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="1840941"
+X-IronPort-AV: E=Sophos;i="6.05,226,1701158400"; 
+   d="scan'208";a="1840941"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jan 2024 01:57:30 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="1118887157"
-X-IronPort-AV: E=Sophos;i="6.05,226,1701158400"; d="scan'208";a="1118887157"
+X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="960851386"
+X-IronPort-AV: E=Sophos;i="6.05,226,1701158400"; d="scan'208";a="960851386"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmsmga005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 01:56:00 -0800
-Date: Mon, 29 Jan 2024 10:55:58 +0100
+ by orsmga005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 01:57:28 -0800
+Date: Mon, 29 Jan 2024 10:57:26 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 2/3] testplan/meson.build: add a ninja PHONY target
- for Intel CI testlists
-Message-ID: <20240129095558.ctwnpstnthz37466@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH i-g-t 3/3] scripts/igt_doc.py: don't be verbose when
+ creating testlists
+Message-ID: <20240129095726.7avtbn6aon6afk7q@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>
 References: <20240126124021.2700482-1-mauro.chehab@linux.intel.com>
- <20240126124021.2700482-3-mauro.chehab@linux.intel.com>
+ <20240126124021.2700482-4-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240126124021.2700482-3-mauro.chehab@linux.intel.com>
+In-Reply-To: <20240126124021.2700482-4-mauro.chehab@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,67 +68,54 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Mauro,
-On 2024-01-26 at 13:37:28 +0100, Mauro Carvalho Chehab wrote:
+On 2024-01-26 at 13:37:29 +0100, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> Add custom phony targets to create testlists to be used by Intel-CI.
+> As this target is part of meson, suppress outputs, except when
+> there are errors or warnings.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  docs/testplan/meson.build | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
+>  scripts/igt_doc.py | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
 > 
-> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-> index 9e0c3aee06af..5560347f1337 100644
-> --- a/docs/testplan/meson.build
-> +++ b/docs/testplan/meson.build
-> @@ -1,5 +1,7 @@
->  testplan_title = 'IGT test plans'
+> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+> index b66eefe799e9..6a1cfc2b5a56 100755
+> --- a/scripts/igt_doc.py
+> +++ b/scripts/igt_doc.py
+> @@ -198,6 +198,8 @@ class IntelciTestlist:
+>          if not os.path.exists(directory):
+>              os.makedirs(directory)
 >  
-> +intel_testlist_dir = 'intel-ci-tests'
+> +        files_written = False
 > +
->  sphinx = find_program('sphinx-build', required: build_sphinx)
->  rst2html = find_program('rst2html-3', 'rst2html', required : false)
->  rst2pdf = find_program('rst2pdf', required: false)
-> @@ -44,6 +46,8 @@ else
->  	    }
->  endif
+>          for driver, gpus in self.testlists.items():
+>              driver_path = os.path.join(directory, driver)
+>              try:
+> @@ -225,14 +227,18 @@ class IntelciTestlist:
+>                          testlist = re.sub(r"_+", "_", testlist)
 >  
-> +testplans = []
-> +
->  foreach testplan, fields: test_dict
->  	rst = custom_target(testplan + '.rst',
->  			    build_by_default : true,
-> @@ -53,6 +57,8 @@ foreach testplan, fields: test_dict
->  			    output : testplan + '.rst'
->  			   )
+>                      if not subtests:
+> -                        print(f"Warning: empty testlist: {testlist}")
+> +                        sys.stderr.write(f"Warning: empty testlist: {testlist}\n")
+>                          continue
 >  
-> +	testplans += fields['input']
+>                      fname = os.path.join(dname, testlist) + ".testlist"
+>                      with open(fname, 'w', encoding='utf8') as handler:
+>                          for sub in sorted(subtests):
+>                              handler.write (f"{sub}\n")
+> -                        print(f"{fname} created.")
 > +
->  	if rst2html.found()
->  		custom_target(testplan + '.html',
->  			      build_by_default : true,
-> @@ -63,6 +69,17 @@ foreach testplan, fields: test_dict
->  	endif
->  endforeach
+> +                    files_written = True
+> +
+> +        if not files_written:
+> +            sys.stderr.write("Warning: No Intel CI test files created!")
 >  
-> +custom_target(intel_testlist_dir,
-> +	      build_by_default : true,
-> +	      build_always_stale : true,
-> +	      command : [ igt_doc_script, '--config', '@INPUT@', '--intelci-testlist', '@OUTPUT@' ],
-> +	      depends : doc_dependencies,
-> +	      input : testplans,
-> +	      output : intel_testlist_dir,
-> +	      install : true,
-> +	      install_dir : libexecdir
-> +	     )
-> +
->  if sphinx.found()
->  	if gen_rst_index.found()
->  		sphinx_out_dir = meson.current_build_dir()+ '/indexed_html'
+>  def main():
+>      """
 > -- 
 > 2.43.0
 > 
