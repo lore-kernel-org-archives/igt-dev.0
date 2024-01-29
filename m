@@ -4,55 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB64AC46CD2
-	for <igt-dev@archiver.kernel.org>; Sat, 27 Jan 2024 13:44:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4C1CC47422
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jan 2024 04:43:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4D37611241D;
-	Sat, 27 Jan 2024 13:44:48 +0000 (UTC)
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
- by gabe.freedesktop.org (Postfix) with ESMTP id 0EC6F11241D
- for <igt-dev@lists.freedesktop.org>; Sat, 27 Jan 2024 13:44:45 +0000 (UTC)
-Received: from loongson.cn (unknown [114.249.168.89])
- by gateway (Coremail) with SMTP id _____8AxuujKCLVlqgkHAA--.3500S3;
- Sat, 27 Jan 2024 21:44:42 +0800 (CST)
-Received: from [192.168.0.105] (unknown [114.249.168.89])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Cx_c7KCLVlozwfAA--.65206S3; 
- Sat, 27 Jan 2024 21:44:42 +0800 (CST)
-Subject: Re: [PATCH i-g-t] lib/intel_compute: Support testing multiple compute
- kernels
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20240118121218.1674694-1-zhoumin@loongson.cn>
- <20240126072642.d5axk62733lagzt5@zkempczy-mobl2>
-From: zhoumin <zhoumin@loongson.cn>
-Message-ID: <ea4dfd50-7452-129f-5560-5eaf131cd5aa@loongson.cn>
-Date: Sat, 27 Jan 2024 21:44:07 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0E77A1122F5;
+	Mon, 29 Jan 2024 04:43:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1210011229A
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jan 2024 04:43:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1706503425; x=1738039425;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=2v6EZt5dXK7yH6O8JSClrLUdJoBXRlwGhuSeA07ZOtI=;
+ b=P2iscaflX9OTrOjnONfhrhhs9EYXmDHX3wH0sIfszoEwiujbdQihc/SW
+ Rqx6gWBlOKT1vbNbGVI9H0YagdjNZ8Plj50HTjHhZ9k/YQO6PA0dVtw+e
+ cJmoLDq9kUmydesiB+BYsO5IeqgQ2OTfaSm09s6hZprNx617FrZ4kU6H7
+ GWK0CXJMZuxN+68Nac9dObtBRfJcLK9ndaKdP7G5Z1q0D2xYkVnKLVv1X
+ U2vNtaM0GRaxa0bThxSfgxjbw8l/JTp3fqEzA1L7HPCHLdP8OEHPJLXdN
+ zL+1bB8Zfgq5OGPQiC0DIogI3LkebLqUBYcNBNrHNBaqtnMFph/NGaCZq g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="401714591"
+X-IronPort-AV: E=Sophos;i="6.05,226,1701158400"; d="scan'208";a="401714591"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jan 2024 20:43:43 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="787713318"
+X-IronPort-AV: E=Sophos;i="6.05,226,1701158400"; d="scan'208";a="787713318"
+Received: from linux-2012-client-platform.iind.intel.com ([10.223.74.57])
+ by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jan 2024 20:43:41 -0800
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t v3] tests/kms_prime: Add XE support
+Date: Mon, 29 Jan 2024 10:24:39 +0530
+Message-Id: <20240129045439.17891-1-nidhi1.gupta@intel.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-In-Reply-To: <20240126072642.d5axk62733lagzt5@zkempczy-mobl2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8Cx_c7KCLVlozwfAA--.65206S3
-X-CM-SenderInfo: 52kr3ztlq6z05rqj20fqof0/1tbiAQAJAWW0vuEASAABsO
-X-Coremail-Antispam: 1Uk129KBj93XoW3Aw4UCry5CrWfGFW5JFyruFX_yoWktrWDpr
- 47Gay5uFWfXr13uwsrJFsF9FyFqa1rtan8KryDta1fuFnFqw17Jr42gry3uF98urWF934Y
- yF1UJF4I93W5ArgCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUU9Ib4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
- Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE
- 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
- AE67vIY487MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCj
- c4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4
- CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1x
- MIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF
- 4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnI
- WIevJa73UjIFyTuYvjxU2BT5DUUUU
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,335 +55,313 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, nirmoy.das@intel.com
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zbigniew,
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-Thanks for your reply and for providing a detailed explanation.
+Add XE driver support for kms tests.
 
-I have indeed found this change is insufficient and it's hard to support 
-testing multiple compute kernels with different number of arguments 
-within the current framework. The checking of testing results of compute 
-kernels is also hardcoded. I also think it may be unnecessary to test a 
-variety of compute kernels.
+V2: - Use rendercopy method for both i915 & xe
+    - Minor cleanup
+V3: - New patch for cleanup & rendercopy
+V4: - Fallback to blitter
+V5: - Rebase
+v7: - Rebase and patch cleanup
+v8: - D3hot subtest is not required for xe
 
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_prime.c | 193 ++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 153 insertions(+), 40 deletions(-)
 
-Best Regards,
-
-Min
-
-On Fri, Jan 26, 2024 at 3:26PM, Zbigniew Kempczyński wrote:
-> On Thu, Jan 18, 2024 at 08:12:18PM +0800, Min Zhou wrote:
->> It seems that we will add more and more compute kernels for testing.
->> The function name of `run_intel_compute_kernel` seems to be able to
->> test multiple compute kernels. However it's hard to test other
->> compute kernel in testcases because the compute kernel is hardcoded
->> in the lib/intel_compute.c. So if we want to test multiple compute
->> kernels in testcases in the future, it's better to support it in
->> lib/intel_compute.
-> I'm sorry for late answer.
->
-> For TL;DR jump to the bottom.
->
-> Regarding commit messagee - it's partially true.
-> run_intel_compute_kernel() is able to run only kernels which arguments
-> passed to the shader are same, I mean:
->
-> opencl/compute_square_kernel.cl:
->
-> __kernel void square(__global float* input, __global float* output, const unsigned int count) {
->    int i = get_global_id(0);
->    if(i < count)
->      output[i] = input[i] * input[i];
-> }
->
-> has direct reflection to binding table elements - see
-> xehp_create_surface_state(), binding table is at 0x00001080 and
-> contains
->
-> 	addr_bo_buffer_batch[b++] = 0x00001000;
-> 	addr_bo_buffer_batch[b++] = 0x00001040;
-> 	addr_bo_buffer_batch[b++] = 0x00000000;
->
-> what points to input and output data. To support different kernels
-> we should generate pipelines more generic. Current code is reversed
-> from compute-runtime (neo) what narrows it to use shaders with known
-> in advance number of arguments.
->
-> Additionally extracting shader from elf files (ocloc produces shader
-> which is packed to elf) varies - for different platforms you may notice
-> different sections and file arragement. If I recall correctly for some
-> shaders compiled there's some prologue omitted in shader hex form packed
-> to the code (I'm not sure what is for, but keeping it hangs the engine).
-> That prologue is also omitted by compute-runtime by shifting kernel
-> start address after this prologue.
->
-> TL;DR
-> -----
-> This refactor doesn't support shaders with different number of
-> arguments than current compute square. In IGT we just need to
-> run simple compute workflow to verify submission to compute
-> engine. Current code shape was made by folks in intention to
-> be extendible, but mimicing of compute-runtime is hard and
-> I'm not sure needed in IGT.
->
-> --
-> Zbigniew
->
->
->> Signed-off-by: Min Zhou <zhoumin@loongson.cn>
->> ---
->>   lib/intel_compute.c              | 66 +++++++++++++++++++++++++++-----
->>   lib/intel_compute.h              | 13 +++++--
->>   opencl/README                    |  6 +--
->>   tests/intel/gem_compute.c        |  3 +-
->>   tests/intel/xe_compute.c         |  9 +++--
->>   tests/intel/xe_compute_preempt.c |  3 +-
->>   6 files changed, 78 insertions(+), 22 deletions(-)
->>
->> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
->> index eab407a0d..9c21c10c5 100644
->> --- a/lib/intel_compute.c
->> +++ b/lib/intel_compute.c
->> @@ -64,6 +64,30 @@ struct bo_execenv {
->>   	struct drm_i915_gem_exec_object2 *obj;
->>   };
->>   
->> +/*
->> + * Supported compute kernels
->> + */
->> +struct {
->> +	const char *name;
->> +	const struct intel_compute_kernels *kernels;
->> +} intel_compute_kernels_set[] = {
->> +	{ .name = COMPUTE_SQUARE,
->> +	  .kernels = intel_compute_square_kernels },
->> +	{}
->> +};
->> +
->> +static const struct intel_compute_kernels *find_intel_compute_kernels(const char *name)
->> +{
->> +	int i = 0;
->> +
->> +	for (; intel_compute_kernels_set[i].name; ++i) {
->> +		if (strcmp(intel_compute_kernels_set[i].name, name) == 0)
->> +			return intel_compute_kernels_set[i].kernels;
->> +	}
->> +
->> +	return NULL;
->> +}
->> +
->>   static void bo_execenv_create(int fd, struct bo_execenv *execenv,
->>   			      struct drm_xe_engine_class_instance *eci)
->>   {
->> @@ -1435,11 +1459,11 @@ static const struct {
->>   };
->>   
->>   static bool __run_intel_compute_kernel(int fd,
->> -				       struct drm_xe_engine_class_instance *eci)
->> +				       struct drm_xe_engine_class_instance *eci,
->> +				       const struct intel_compute_kernels *kernels)
->>   {
->>   	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
->>   	unsigned int batch;
->> -	const struct intel_compute_kernels *kernels = intel_compute_square_kernels;
->>   	enum intel_driver driver = get_intel_driver(fd);
->>   
->>   	for (batch = 0; batch < ARRAY_SIZE(intel_compute_batches); batch++) {
->> @@ -1472,9 +1496,16 @@ static bool __run_intel_compute_kernel(int fd,
->>   	return true;
->>   }
->>   
->> -bool run_intel_compute_kernel(int fd)
->> +bool run_intel_compute_kernel(int fd, const char *kernel_name)
->>   {
->> -	return __run_intel_compute_kernel(fd, NULL);
->> +	const struct intel_compute_kernels *kernels;
->> +
->> +	if ((kernels = find_intel_compute_kernels(kernel_name)) == NULL) {
->> +		igt_debug("Compute kernels not found for \"%s\"\n", kernel_name);
->> +		return false;
->> +	}
->> +
->> +	return __run_intel_compute_kernel(fd, NULL, kernels);
->>   }
->>   
->>   /**
->> @@ -1487,8 +1518,11 @@ bool run_intel_compute_kernel(int fd)
->>    * Returns true on success, false otherwise.
->>    */
->>   bool xe_run_intel_compute_kernel_on_engine(int fd,
->> -					   struct drm_xe_engine_class_instance *eci)
->> +					   struct drm_xe_engine_class_instance *eci,
->> +					   const char *kernel_name)
->>   {
->> +	const struct intel_compute_kernels *kernels;
->> +
->>   	if (!is_xe_device(fd)) {
->>   		igt_debug("Xe device expected\n");
->>   		return false;
->> @@ -1506,7 +1540,12 @@ bool xe_run_intel_compute_kernel_on_engine(int fd,
->>   		return false;
->>   	}
->>   
->> -	return __run_intel_compute_kernel(fd, eci);
->> +	if ((kernels = find_intel_compute_kernels(kernel_name)) == NULL) {
->> +		igt_debug("Compute kernels not found for \"%s\"\n", kernel_name);
->> +		return false;
->> +	}
->> +
->> +	return __run_intel_compute_kernel(fd, eci, kernels);
->>   }
->>   
->>   /**
->> @@ -1683,11 +1722,11 @@ static const struct {
->>   	},
->>   };
->>   
->> -static bool __run_intel_compute_kernel_preempt(int fd)
->> +static bool __run_intel_compute_kernel_preempt(int fd,
->> +				const struct intel_compute_kernels *kernels)
->>   {
->>   	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
->>   	unsigned int batch;
->> -	const struct intel_compute_kernels *kernels = intel_compute_square_kernels;
->>   	enum intel_driver driver = get_intel_driver(fd);
->>   
->>   	for (batch = 0; batch < ARRAY_SIZE(intel_compute_preempt_batches); batch++)
->> @@ -1732,7 +1771,14 @@ static bool __run_intel_compute_kernel_preempt(int fd)
->>    *
->>    * Returns true on success, false otherwise.
->>    */
->> -bool run_intel_compute_kernel_preempt(int fd)
->> +bool run_intel_compute_kernel_preempt(int fd, const char *kernel_name)
->>   {
->> -	return __run_intel_compute_kernel_preempt(fd);
->> +	const struct intel_compute_kernels *kernels;
->> +
->> +	if ((kernels = find_intel_compute_kernels(kernel_name)) == NULL) {
->> +		igt_debug("Compute kernels not found for \"%s\"\n", kernel_name);
->> +		return false;
->> +	}
->> +
->> +	return __run_intel_compute_kernel_preempt(fd, kernels);
->>   }
->> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
->> index bba8bed94..9faf070b3 100644
->> --- a/lib/intel_compute.h
->> +++ b/lib/intel_compute.h
->> @@ -11,6 +11,11 @@
->>   
->>   #include "xe_drm.h"
->>   
->> +/*
->> + * Supported compute kernels name
->> + */
->> +#define COMPUTE_SQUARE	"compute-square"
->> +
->>   /*
->>    * OpenCL Kernels are generated using:
->>    *
->> @@ -33,7 +38,9 @@ struct intel_compute_kernels {
->>   
->>   extern const struct intel_compute_kernels intel_compute_square_kernels[];
->>   
->> -bool run_intel_compute_kernel(int fd);
->> -bool xe_run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_instance *eci);
->> -bool run_intel_compute_kernel_preempt(int fd);
->> +bool run_intel_compute_kernel(int fd, const char *kernel_name);
->> +bool xe_run_intel_compute_kernel_on_engine(int fd,
->> +					   struct drm_xe_engine_class_instance *eci,
->> +					   const char *kernel_name);
->> +bool run_intel_compute_kernel_preempt(int fd, const char *kernel_name);
->>   #endif	/* INTEL_COMPUTE_H */
->> diff --git a/opencl/README b/opencl/README
->> index 2fd0687a2..4dfbe2865 100644
->> --- a/opencl/README
->> +++ b/opencl/README
->> @@ -5,10 +5,10 @@ multiple platforms.
->>   For instance, to generate compute square Kernel binaries for TGL and ADL
->>   variants, use this:
->>   
->> -    opencl/gen_opencl_kernel xe_compute_square opencl/compute_square_kernel.cl \
->> -	   xe_compute_square_kernels.c build/opencl tgllp adl-s adl-p adl-n
->> +    opencl/gen_opencl_kernel intel_compute_square opencl/compute_square_kernel.cl \
->> +	   intel_compute_square_kernels.c build/opencl tgllp adl-s adl-p adl-n
->>   
->> -    cp build/opencl/xe_compute_square_kernels.c lib/xe/
->> +    cp build/opencl/intel_compute_square_kernels.c lib/
->>   
->>   The opencl/gen_opencl_kernel requires the Intel compute runtime[1].
->>   
->> diff --git a/tests/intel/gem_compute.c b/tests/intel/gem_compute.c
->> index 8d0214c4d..ce368d2c3 100644
->> --- a/tests/intel/gem_compute.c
->> +++ b/tests/intel/gem_compute.c
->> @@ -27,7 +27,8 @@
->>   static void
->>   test_compute_square(int fd)
->>   {
->> -	igt_require_f(run_intel_compute_kernel(fd), "GPU not supported\n");
->> +	igt_require_f(run_intel_compute_kernel(fd, COMPUTE_SQUARE),
->> +		      "GPU not supported\n");
->>   }
->>   
->>   igt_main
->> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
->> index 42f42ca0c..bc81dc04f 100644
->> --- a/tests/intel/xe_compute.c
->> +++ b/tests/intel/xe_compute.c
->> @@ -114,7 +114,7 @@ test_ccs_mode(int num_gt)
->>    * Functionality: CCS mode funtionality
->>    */
->>   static void
->> -test_compute_kernel_with_ccs_mode(int num_gt)
->> +test_compute_kernel_with_ccs_mode(int num_gt, const char *kernel_name)
->>   {
->>   	struct drm_xe_engine_class_instance *hwe;
->>   	u32 gt, m, num_slices;
->> @@ -139,7 +139,7 @@ test_compute_kernel_with_ccs_mode(int num_gt)
->>   
->>   				igt_info("GT-%d: Running compute kernel with ccs_mode %d on ccs engine %d\n",
->>   					 gt, m, hwe->engine_instance);
->> -				igt_assert_f(xe_run_intel_compute_kernel_on_engine(fd, hwe),
->> +				igt_assert_f(xe_run_intel_compute_kernel_on_engine(fd, hwe, kernel_name),
->>   					     "Unable to run compute kernel successfully\n");
->>   			}
->>   			drm_close_driver(fd);
->> @@ -163,7 +163,8 @@ test_compute_kernel_with_ccs_mode(int num_gt)
->>   static void
->>   test_compute_square(int fd)
->>   {
->> -	igt_require_f(run_intel_compute_kernel(fd), "GPU not supported\n");
->> +	igt_require_f(run_intel_compute_kernel(fd, COMPUTE_SQUARE),
->> +		      "GPU not supported\n");
->>   }
->>   
->>   igt_main
->> @@ -186,5 +187,5 @@ igt_main
->>   		test_ccs_mode(num_gt);
->>   
->>   	igt_subtest("ccs-mode-compute-kernel")
->> -		test_compute_kernel_with_ccs_mode(num_gt);
->> +		test_compute_kernel_with_ccs_mode(num_gt, COMPUTE_SQUARE);
->>   }
->> diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
->> index 31703638e..e4adefd2a 100644
->> --- a/tests/intel/xe_compute_preempt.c
->> +++ b/tests/intel/xe_compute_preempt.c
->> @@ -26,7 +26,8 @@
->>   static void
->>   test_compute_preempt(int fd)
->>   {
->> -	igt_require_f(run_intel_compute_kernel_preempt(fd), "GPU not supported\n");
->> +	igt_require_f(run_intel_compute_kernel_preempt(fd, COMPUTE_SQUARE),
->> +		      "GPU not supported\n");
->>   }
->>   
->>   igt_main
->> -- 
->> 2.39.3
->>
+diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+index 135c75168..e36145ac8 100644
+--- a/tests/kms_prime.c
++++ b/tests/kms_prime.c
+@@ -36,10 +36,16 @@
+ #include "igt_debugfs.h"
+ #include "igt_sysfs.h"
+ #include <fcntl.h>
++#include <limits.h>
+ 
+ #include <sys/ioctl.h>
+ #include <sys/poll.h>
+ #include <time.h>
++#include "lib/intel_blt.h"
++#include "lib/intel_mocs.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++
+ 
+ /**
+  * SUBTEST: D3hot
+@@ -120,10 +126,14 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
+ 		igt_display_reset(display);
+ 
+ 		igt_output_set_pipe(output, *pipe);
+-		if (intel_pipe_output_combo_valid(display)) {
+-			found = true;
+-			break;
++		if ((is_i915_device(importer_fd) && gem_has_lmem(importer_fd)) ||
++		   (is_xe_device(importer_fd) && xe_has_vram(importer_fd))) {
++			if (!intel_pipe_output_combo_valid(display))
++				continue;
+ 		}
++
++		found = true;
++		break;
+ 	}
+ 
+ 	igt_require_f(found, "No valid connector/pipe found\n");
+@@ -131,6 +141,25 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
+ 	return output;
+ }
+ 
++static igt_output_t *setup_hybrid_display(int importer_fd, igt_display_t *display,
++				   enum pipe *pipe)
++{
++	igt_output_t *output;
++	bool found = false;
++
++	for_each_pipe_with_valid_output(display, *pipe, output) {
++		igt_display_reset(display);
++
++		igt_output_set_pipe(output, *pipe);
++
++		found = true;
++		break; /*Validation on single pipe is enough*/
++	}
++
++	igt_require_f(found, "No valid connector/pipe found\n");
++
++	return output;
++}
+ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
+ 			    drmModeModeInfo *mode, uint32_t color)
+ {
+@@ -140,7 +169,29 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
+ 	scratch->height = mode->vdisplay;
+ 	scratch->bpp = 32;
+ 
+-	if (!is_i915_device(exporter_fd)) {
++	if (is_intel_device(exporter_fd)) {
++		igt_calc_fb_size(exporter_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
++				 DRM_FORMAT_MOD_LINEAR, &scratch->size, &scratch->pitch);
++
++		if (is_i915_device(exporter_fd)) {
++			if (gem_has_lmem(exporter_fd))
++				scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
++								       REGION_LMEM(0), REGION_SMEM);
++			else
++				scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
++								       REGION_SMEM);
++
++			ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0,
++							scratch->size, PROT_WRITE | PROT_READ);
++		} else {
++			scratch->handle = xe_bo_create(exporter_fd, 0,
++							     ALIGN(scratch->size, xe_get_default_alignment(exporter_fd)),
++							     vram_if_possible(exporter_fd, 0), 0);
++
++			ptr = xe_bo_mmap_ext(exporter_fd, scratch->handle,
++					     scratch->size, PROT_READ | PROT_WRITE);
++		}
++	} else {
+ 		scratch->handle = kmstest_dumb_create(exporter_fd,
+ 						      ALIGN(scratch->width, 256),
+ 						      scratch->height, scratch->bpp,
+@@ -148,18 +199,6 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
+ 
+ 		ptr = kmstest_dumb_map_buffer(exporter_fd, scratch->handle,
+ 					      scratch->size, PROT_WRITE);
+-	} else {
+-		igt_calc_fb_size(exporter_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
+-				 DRM_FORMAT_MOD_LINEAR, &scratch->size, &scratch->pitch);
+-		if (gem_has_lmem(exporter_fd))
+-			scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
+-								       REGION_LMEM(0), REGION_SMEM);
+-		else
+-			scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
+-								       REGION_SMEM);
+-
+-		ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0, scratch->size,
+-						PROT_WRITE | PROT_READ);
+ 	}
+ 
+ 	for (size_t idx = 0; idx < scratch->size / sizeof(*ptr); ++idx)
+@@ -178,23 +217,52 @@ static void prepare_fb(int importer_fd, struct dumb_bo *scratch, struct igt_fb *
+ 		    color_encoding, color_range);
+ }
+ 
++static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
++					   uint32_t memregion, uint32_t pitch)
++{
++	uint32_t name, handle;
++	struct blt_copy_object *blt;
++
++	blt = malloc(sizeof(*blt));
++	igt_assert(blt);
++
++	name = gem_flink(fb->fd, fb->gem_handle);
++	handle = gem_open(fb->fd, name);
++
++	blt_set_object(blt, handle, fb->size, memregion,
++		       intel_get_uc_mocs_index(fb->fd),
++		       0, 0, 0, 0);
++
++	blt_set_geom(blt, pitch, 0, 0, fb->width, fb->height, 0, 0);
++
++	blt->plane_offset = 0;
++
++	blt->ptr = xe_bo_mmap_ext(fb->fd, handle, fb->size,
++				  PROT_READ | PROT_WRITE);
++	return blt;
++}
++
+ static void import_fb(int importer_fd, struct igt_fb *fb,
+ 		      int dmabuf_fd, uint32_t pitch)
+ {
+ 	uint32_t offsets[4] = {}, pitches[4] = {}, handles[4] = {}, temp_buf_handle;
+ 	int ret;
++	struct igt_fb dst_fb;
++
++	if ((is_i915_device(importer_fd) && gem_has_lmem(importer_fd)) ||
++	    (is_xe_device(importer_fd) && xe_has_vram(importer_fd)))  {
++		uint64_t fb_size = 0;
++		uint64_t ahnd = 0;
+ 
+-	if (is_i915_device(importer_fd)) {
+-		if (gem_has_lmem(importer_fd)) {
+-			uint64_t ahnd = get_reloc_ahnd(importer_fd, 0);
+-			uint64_t fb_size = 0;
++		igt_info("Importer is dGPU\n");
++		temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
++		igt_assert(temp_buf_handle > 0);
++		fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width, fb->height,
++							       fb->drm_format, fb->modifier, pitch, &fb_size, NULL, NULL);
++		igt_assert(fb->gem_handle > 0);
+ 
+-			igt_info("Importer is dGPU\n");
+-			temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
+-			igt_assert(temp_buf_handle > 0);
+-			fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width, fb->height,
+-								       fb->drm_format, fb->modifier, pitch, &fb_size, NULL, NULL);
+-			igt_assert(fb->gem_handle > 0);
++		if (is_i915_device(importer_fd)) {
++			ahnd = get_reloc_ahnd(importer_fd, 0);
+ 
+ 			igt_blitter_src_copy(importer_fd, ahnd, 0, NULL, temp_buf_handle,
+ 					     0, pitch, fb->modifier, 0, 0, fb_size, fb->width,
+@@ -205,7 +273,62 @@ static void import_fb(int importer_fd, struct igt_fb *fb,
+ 			gem_close(importer_fd, temp_buf_handle);
+ 			put_ahnd(ahnd);
+ 		} else {
+-			fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
++			uint32_t xe_bb;
++			uint64_t bb_size = 4096;
++			struct blt_copy_data blt = {};
++			struct blt_copy_object *src, *dst;
++			struct blt_block_copy_data_ext ext = {};
++			uint32_t mem_region;
++			intel_ctx_t *xe_ctx;
++			uint32_t vm, xe_exec;
++
++			struct drm_xe_engine_class_instance inst = {
++				.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++			};
++			vm = xe_vm_create(importer_fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
++			xe_exec = xe_exec_queue_create(importer_fd, vm, &inst, 0);
++			xe_ctx = intel_ctx_xe(importer_fd, vm, xe_exec, 0, 0, 0);
++			mem_region = vram_if_possible(importer_fd, 0);
++
++			ahnd = intel_allocator_open_full(importer_fd, xe_ctx->vm, 0, 0,
++							 INTEL_ALLOCATOR_SIMPLE,
++							 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++
++			bb_size = ALIGN(bb_size + xe_cs_prefetch_size(importer_fd),
++					xe_get_default_alignment(importer_fd));
++			xe_bb = xe_bo_create(importer_fd, 0, bb_size, mem_region, 0);
++
++
++
++			igt_init_fb(&dst_fb, importer_fd, fb->width, fb->height,
++				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++				    IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE);
++			dst_fb.gem_handle = temp_buf_handle;
++
++			src = blt_fb_init(fb, mem_region, pitch);
++			dst = blt_fb_init(&dst_fb, mem_region, pitch);
++
++			blt_copy_init(importer_fd, &blt);
++			blt.color_depth = 32;
++			blt_set_copy_object(&blt.src, src);
++			blt_set_copy_object(&blt.dst, dst);
++
++			blt_set_object_ext(&ext.src, 0, fb->width, fb->height,
++					   SURFACE_TYPE_2D);
++			blt_set_object_ext(&ext.dst, 0, fb->width, fb->height,
++					   SURFACE_TYPE_2D);
++
++			blt_set_batch(&blt.bb, xe_bb, bb_size, mem_region);
++
++			blt_block_copy(importer_fd, xe_ctx, NULL, ahnd, &blt, &ext);
++
++			blt_destroy_object(importer_fd, dst);
++
++			put_ahnd(ahnd);
++			gem_close(importer_fd, xe_bb);
++			xe_exec_queue_destroy(importer_fd, xe_exec);
++			xe_vm_destroy(importer_fd, vm);
++			free(xe_ctx);
+ 		}
+ 	} else {
+ 		fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
+@@ -332,7 +455,7 @@ static void test_basic_modeset(int drm_fd)
+ 	igt_device_set_master(drm_fd);
+ 	igt_display_require(&display, drm_fd);
+ 
+-	output = setup_display(drm_fd, &display, &pipe);
++	output = setup_hybrid_display(drm_fd, &display, &pipe);
+ 	mode = igt_output_get_mode(output);
+ 	igt_assert(mode);
+ 
+@@ -358,12 +481,6 @@ static bool has_connected_output(int drm_fd)
+ 	return false;
+ }
+ 
+-static void validate_d3_hot(int drm_fd)
+-{
+-	igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "GPU idle: yes"));
+-	igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "PCI device power state: D3hot [3]"));
+-}
+-
+ static void kms_poll_state_restore(void)
+ {
+ 	int sysfs_fd;
+@@ -470,6 +587,8 @@ igt_main
+ 			igt_require(second_fd_vgem >= 0);
+ 			if (is_i915_device(first_fd))
+ 				igt_require(!gem_has_lmem(first_fd));
++			if (is_xe_device(first_fd))
++				igt_require(!xe_has_vram(first_fd));
+ 		}
+ 
+ 		igt_describe("Make a dumb color buffer, export to another device and"
+@@ -480,11 +599,5 @@ igt_main
+ 				igt_dynamic("second-to-first")
+ 					test_crc(second_fd_vgem, first_fd);
+ 		}
+-
+-		igt_fixture
+-			drm_close_driver(second_fd_vgem);
+ 	}
+-
+-	igt_fixture
+-		drm_close_driver(first_fd);
+ }
+-- 
+2.39.0
 
