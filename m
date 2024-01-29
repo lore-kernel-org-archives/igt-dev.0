@@ -4,45 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4C1CC47422
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jan 2024 04:43:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 594FAC47422
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jan 2024 04:46:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0E77A1122F5;
-	Mon, 29 Jan 2024 04:43:46 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1210011229A
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jan 2024 04:43:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706503425; x=1738039425;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=2v6EZt5dXK7yH6O8JSClrLUdJoBXRlwGhuSeA07ZOtI=;
- b=P2iscaflX9OTrOjnONfhrhhs9EYXmDHX3wH0sIfszoEwiujbdQihc/SW
- Rqx6gWBlOKT1vbNbGVI9H0YagdjNZ8Plj50HTjHhZ9k/YQO6PA0dVtw+e
- cJmoLDq9kUmydesiB+BYsO5IeqgQ2OTfaSm09s6hZprNx617FrZ4kU6H7
- GWK0CXJMZuxN+68Nac9dObtBRfJcLK9ndaKdP7G5Z1q0D2xYkVnKLVv1X
- U2vNtaM0GRaxa0bThxSfgxjbw8l/JTp3fqEzA1L7HPCHLdP8OEHPJLXdN
- zL+1bB8Zfgq5OGPQiC0DIogI3LkebLqUBYcNBNrHNBaqtnMFph/NGaCZq g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="401714591"
-X-IronPort-AV: E=Sophos;i="6.05,226,1701158400"; d="scan'208";a="401714591"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jan 2024 20:43:43 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="787713318"
-X-IronPort-AV: E=Sophos;i="6.05,226,1701158400"; d="scan'208";a="787713318"
-Received: from linux-2012-client-platform.iind.intel.com ([10.223.74.57])
- by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jan 2024 20:43:41 -0800
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v3] tests/kms_prime: Add XE support
-Date: Mon, 29 Jan 2024 10:24:39 +0530
-Message-Id: <20240129045439.17891-1-nidhi1.gupta@intel.com>
-X-Mailer: git-send-email 2.39.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 10E1910F32D;
+	Mon, 29 Jan 2024 04:46:34 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CED2C10F32D;
+ Mon, 29 Jan 2024 04:46:32 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_tests/kms=5Fprime=3A_Add_?=
+ =?utf-8?q?XE_support_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
+Date: Mon, 29 Jan 2024 04:46:32 -0000
+Message-ID: <170650359284.789298.15247081729333099010@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240129045439.17891-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20240129045439.17891-1-nidhi1.gupta@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,313 +36,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+== Series Details ==
 
-Add XE driver support for kms tests.
+Series: tests/kms_prime: Add XE support (rev3)
+URL   : https://patchwork.freedesktop.org/series/128045/
+State : failure
 
-V2: - Use rendercopy method for both i915 & xe
-    - Minor cleanup
-V3: - New patch for cleanup & rendercopy
-V4: - Fallback to blitter
-V5: - Rebase
-v7: - Rebase and patch cleanup
-v8: - D3hot subtest is not required for xe
+== Summary ==
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_prime.c | 193 ++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 153 insertions(+), 40 deletions(-)
+IGT patchset build failed on latest successful build
+814cd9883b94be1c61d830b2c1279dc2265476bf lib/igt_amd: add debugfs disallow edp enter psr
 
-diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-index 135c75168..e36145ac8 100644
---- a/tests/kms_prime.c
-+++ b/tests/kms_prime.c
-@@ -36,10 +36,16 @@
- #include "igt_debugfs.h"
- #include "igt_sysfs.h"
- #include <fcntl.h>
-+#include <limits.h>
- 
- #include <sys/ioctl.h>
- #include <sys/poll.h>
- #include <time.h>
-+#include "lib/intel_blt.h"
-+#include "lib/intel_mocs.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+
- 
- /**
-  * SUBTEST: D3hot
-@@ -120,10 +126,14 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
- 		igt_display_reset(display);
- 
- 		igt_output_set_pipe(output, *pipe);
--		if (intel_pipe_output_combo_valid(display)) {
--			found = true;
--			break;
-+		if ((is_i915_device(importer_fd) && gem_has_lmem(importer_fd)) ||
-+		   (is_xe_device(importer_fd) && xe_has_vram(importer_fd))) {
-+			if (!intel_pipe_output_combo_valid(display))
-+				continue;
- 		}
-+
-+		found = true;
-+		break;
- 	}
- 
- 	igt_require_f(found, "No valid connector/pipe found\n");
-@@ -131,6 +141,25 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
- 	return output;
- }
- 
-+static igt_output_t *setup_hybrid_display(int importer_fd, igt_display_t *display,
-+				   enum pipe *pipe)
-+{
-+	igt_output_t *output;
-+	bool found = false;
-+
-+	for_each_pipe_with_valid_output(display, *pipe, output) {
-+		igt_display_reset(display);
-+
-+		igt_output_set_pipe(output, *pipe);
-+
-+		found = true;
-+		break; /*Validation on single pipe is enough*/
-+	}
-+
-+	igt_require_f(found, "No valid connector/pipe found\n");
-+
-+	return output;
-+}
- static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
- 			    drmModeModeInfo *mode, uint32_t color)
- {
-@@ -140,7 +169,29 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
- 	scratch->height = mode->vdisplay;
- 	scratch->bpp = 32;
- 
--	if (!is_i915_device(exporter_fd)) {
-+	if (is_intel_device(exporter_fd)) {
-+		igt_calc_fb_size(exporter_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
-+				 DRM_FORMAT_MOD_LINEAR, &scratch->size, &scratch->pitch);
-+
-+		if (is_i915_device(exporter_fd)) {
-+			if (gem_has_lmem(exporter_fd))
-+				scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
-+								       REGION_LMEM(0), REGION_SMEM);
-+			else
-+				scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
-+								       REGION_SMEM);
-+
-+			ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0,
-+							scratch->size, PROT_WRITE | PROT_READ);
-+		} else {
-+			scratch->handle = xe_bo_create(exporter_fd, 0,
-+							     ALIGN(scratch->size, xe_get_default_alignment(exporter_fd)),
-+							     vram_if_possible(exporter_fd, 0), 0);
-+
-+			ptr = xe_bo_mmap_ext(exporter_fd, scratch->handle,
-+					     scratch->size, PROT_READ | PROT_WRITE);
-+		}
-+	} else {
- 		scratch->handle = kmstest_dumb_create(exporter_fd,
- 						      ALIGN(scratch->width, 256),
- 						      scratch->height, scratch->bpp,
-@@ -148,18 +199,6 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
- 
- 		ptr = kmstest_dumb_map_buffer(exporter_fd, scratch->handle,
- 					      scratch->size, PROT_WRITE);
--	} else {
--		igt_calc_fb_size(exporter_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
--				 DRM_FORMAT_MOD_LINEAR, &scratch->size, &scratch->pitch);
--		if (gem_has_lmem(exporter_fd))
--			scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
--								       REGION_LMEM(0), REGION_SMEM);
--		else
--			scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
--								       REGION_SMEM);
--
--		ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0, scratch->size,
--						PROT_WRITE | PROT_READ);
- 	}
- 
- 	for (size_t idx = 0; idx < scratch->size / sizeof(*ptr); ++idx)
-@@ -178,23 +217,52 @@ static void prepare_fb(int importer_fd, struct dumb_bo *scratch, struct igt_fb *
- 		    color_encoding, color_range);
- }
- 
-+static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
-+					   uint32_t memregion, uint32_t pitch)
-+{
-+	uint32_t name, handle;
-+	struct blt_copy_object *blt;
-+
-+	blt = malloc(sizeof(*blt));
-+	igt_assert(blt);
-+
-+	name = gem_flink(fb->fd, fb->gem_handle);
-+	handle = gem_open(fb->fd, name);
-+
-+	blt_set_object(blt, handle, fb->size, memregion,
-+		       intel_get_uc_mocs_index(fb->fd),
-+		       0, 0, 0, 0);
-+
-+	blt_set_geom(blt, pitch, 0, 0, fb->width, fb->height, 0, 0);
-+
-+	blt->plane_offset = 0;
-+
-+	blt->ptr = xe_bo_mmap_ext(fb->fd, handle, fb->size,
-+				  PROT_READ | PROT_WRITE);
-+	return blt;
-+}
-+
- static void import_fb(int importer_fd, struct igt_fb *fb,
- 		      int dmabuf_fd, uint32_t pitch)
- {
- 	uint32_t offsets[4] = {}, pitches[4] = {}, handles[4] = {}, temp_buf_handle;
- 	int ret;
-+	struct igt_fb dst_fb;
-+
-+	if ((is_i915_device(importer_fd) && gem_has_lmem(importer_fd)) ||
-+	    (is_xe_device(importer_fd) && xe_has_vram(importer_fd)))  {
-+		uint64_t fb_size = 0;
-+		uint64_t ahnd = 0;
- 
--	if (is_i915_device(importer_fd)) {
--		if (gem_has_lmem(importer_fd)) {
--			uint64_t ahnd = get_reloc_ahnd(importer_fd, 0);
--			uint64_t fb_size = 0;
-+		igt_info("Importer is dGPU\n");
-+		temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-+		igt_assert(temp_buf_handle > 0);
-+		fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width, fb->height,
-+							       fb->drm_format, fb->modifier, pitch, &fb_size, NULL, NULL);
-+		igt_assert(fb->gem_handle > 0);
- 
--			igt_info("Importer is dGPU\n");
--			temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
--			igt_assert(temp_buf_handle > 0);
--			fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width, fb->height,
--								       fb->drm_format, fb->modifier, pitch, &fb_size, NULL, NULL);
--			igt_assert(fb->gem_handle > 0);
-+		if (is_i915_device(importer_fd)) {
-+			ahnd = get_reloc_ahnd(importer_fd, 0);
- 
- 			igt_blitter_src_copy(importer_fd, ahnd, 0, NULL, temp_buf_handle,
- 					     0, pitch, fb->modifier, 0, 0, fb_size, fb->width,
-@@ -205,7 +273,62 @@ static void import_fb(int importer_fd, struct igt_fb *fb,
- 			gem_close(importer_fd, temp_buf_handle);
- 			put_ahnd(ahnd);
- 		} else {
--			fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-+			uint32_t xe_bb;
-+			uint64_t bb_size = 4096;
-+			struct blt_copy_data blt = {};
-+			struct blt_copy_object *src, *dst;
-+			struct blt_block_copy_data_ext ext = {};
-+			uint32_t mem_region;
-+			intel_ctx_t *xe_ctx;
-+			uint32_t vm, xe_exec;
-+
-+			struct drm_xe_engine_class_instance inst = {
-+				.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-+			};
-+			vm = xe_vm_create(importer_fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-+			xe_exec = xe_exec_queue_create(importer_fd, vm, &inst, 0);
-+			xe_ctx = intel_ctx_xe(importer_fd, vm, xe_exec, 0, 0, 0);
-+			mem_region = vram_if_possible(importer_fd, 0);
-+
-+			ahnd = intel_allocator_open_full(importer_fd, xe_ctx->vm, 0, 0,
-+							 INTEL_ALLOCATOR_SIMPLE,
-+							 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+
-+			bb_size = ALIGN(bb_size + xe_cs_prefetch_size(importer_fd),
-+					xe_get_default_alignment(importer_fd));
-+			xe_bb = xe_bo_create(importer_fd, 0, bb_size, mem_region, 0);
-+
-+
-+
-+			igt_init_fb(&dst_fb, importer_fd, fb->width, fb->height,
-+				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+				    IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE);
-+			dst_fb.gem_handle = temp_buf_handle;
-+
-+			src = blt_fb_init(fb, mem_region, pitch);
-+			dst = blt_fb_init(&dst_fb, mem_region, pitch);
-+
-+			blt_copy_init(importer_fd, &blt);
-+			blt.color_depth = 32;
-+			blt_set_copy_object(&blt.src, src);
-+			blt_set_copy_object(&blt.dst, dst);
-+
-+			blt_set_object_ext(&ext.src, 0, fb->width, fb->height,
-+					   SURFACE_TYPE_2D);
-+			blt_set_object_ext(&ext.dst, 0, fb->width, fb->height,
-+					   SURFACE_TYPE_2D);
-+
-+			blt_set_batch(&blt.bb, xe_bb, bb_size, mem_region);
-+
-+			blt_block_copy(importer_fd, xe_ctx, NULL, ahnd, &blt, &ext);
-+
-+			blt_destroy_object(importer_fd, dst);
-+
-+			put_ahnd(ahnd);
-+			gem_close(importer_fd, xe_bb);
-+			xe_exec_queue_destroy(importer_fd, xe_exec);
-+			xe_vm_destroy(importer_fd, vm);
-+			free(xe_ctx);
- 		}
- 	} else {
- 		fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-@@ -332,7 +455,7 @@ static void test_basic_modeset(int drm_fd)
- 	igt_device_set_master(drm_fd);
- 	igt_display_require(&display, drm_fd);
- 
--	output = setup_display(drm_fd, &display, &pipe);
-+	output = setup_hybrid_display(drm_fd, &display, &pipe);
- 	mode = igt_output_get_mode(output);
- 	igt_assert(mode);
- 
-@@ -358,12 +481,6 @@ static bool has_connected_output(int drm_fd)
- 	return false;
- }
- 
--static void validate_d3_hot(int drm_fd)
--{
--	igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "GPU idle: yes"));
--	igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "PCI device power state: D3hot [3]"));
--}
--
- static void kms_poll_state_restore(void)
- {
- 	int sysfs_fd;
-@@ -470,6 +587,8 @@ igt_main
- 			igt_require(second_fd_vgem >= 0);
- 			if (is_i915_device(first_fd))
- 				igt_require(!gem_has_lmem(first_fd));
-+			if (is_xe_device(first_fd))
-+				igt_require(!xe_has_vram(first_fd));
- 		}
- 
- 		igt_describe("Make a dumb color buffer, export to another device and"
-@@ -480,11 +599,5 @@ igt_main
- 				igt_dynamic("second-to-first")
- 					test_crc(second_fd_vgem, first_fd);
- 		}
--
--		igt_fixture
--			drm_close_driver(second_fd_vgem);
- 	}
--
--	igt_fixture
--		drm_close_driver(first_fd);
- }
--- 
-2.39.0
+Tail of build.log:
+[411/1667] Compiling C object 'tests/59830eb@@kms_setmode@exe/kms_setmode.c.o'.
+[412/1667] Compiling C object 'lib/76b5a35@@igt-igt_core_c@sta/igt_core.c.o'.
+[413/1667] Compiling C object 'tests/59830eb@@kms_rotation_crc@exe/kms_rotation_crc.c.o'.
+[414/1667] Compiling C object 'tests/59830eb@@gem_exec_basic@exe/intel_gem_exec_basic.c.o'.
+[415/1667] Compiling C object 'tests/59830eb@@vgem_basic@exe/vgem_basic.c.o'.
+[416/1667] Compiling C object 'tests/59830eb@@gem_caching@exe/intel_gem_caching.c.o'.
+[417/1667] Compiling C object 'tests/59830eb@@gem_ctx_freq@exe/intel_gem_ctx_freq.c.o'.
+[418/1667] Compiling C object 'tests/59830eb@@sw_sync@exe/sw_sync.c.o'.
+[419/1667] Compiling C object 'tests/59830eb@@gem_exec_await@exe/intel_gem_exec_await.c.o'.
+[420/1667] Compiling C object 'tests/59830eb@@testdisplay@exe/testdisplay.c.o'.
+[421/1667] Compiling C object 'tests/59830eb@@syncobj_wait@exe/syncobj_wait.c.o'.
+[422/1667] Compiling C object 'tests/59830eb@@kms_universal_plane@exe/kms_universal_plane.c.o'.
+[423/1667] Compiling C object 'lib/76b5a35@@igt-intel_batchbuffer_c@sta/intel_batchbuffer.c.o'.
+[424/1667] Compiling C object 'tests/59830eb@@gem_evict_alignment@exe/intel_gem_evict_alignment.c.o'.
+[425/1667] Compiling C object 'tests/59830eb@@gem_exec_async@exe/intel_gem_exec_async.c.o'.
+[426/1667] Compiling C object 'lib/76b5a35@@igt-igt_chamelium_c@sta/igt_chamelium.c.o'.
+[427/1667] Generating i915-perf-metrics-acmgt3 with a custom command.
+[428/1667] Compiling C object 'tests/59830eb@@gem_ctx_exec@exe/intel_gem_ctx_exec.c.o'.
+[429/1667] Compiling C object 'tests/59830eb@@gem_exec_create@exe/intel_gem_exec_create.c.o'.
+[430/1667] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
+[431/1667] Compiling C object 'tests/59830eb@@gem_create@exe/intel_gem_create.c.o'.
+[432/1667] Compiling C object 'tests/59830eb@@gem_ctx_switch@exe/intel_gem_ctx_switch.c.o'.
+[433/1667] Compiling C object 'tests/59830eb@@gem_ctx_param@exe/intel_gem_ctx_param.c.o'.
+[434/1667] Compiling C object 'tests/59830eb@@gem_exec_alignment@exe/intel_gem_exec_alignment.c.o'.
+[435/1667] Compiling C object 'tests/59830eb@@gem_evict_everything@exe/intel_gem_evict_everything.c.o'.
+[436/1667] Compiling C object 'tests/59830eb@@kms_atomic@exe/kms_atomic.c.o'.
+[437/1667] Compiling C object 'tests/59830eb@@api_intel_allocator@exe/intel_api_intel_allocator.c.o'.
+[438/1667] Compiling C object 'tests/59830eb@@gem_ctx_sseu@exe/intel_gem_ctx_sseu.c.o'.
+[439/1667] Compiling C object 'tests/59830eb@@gem_ctx_create@exe/intel_gem_ctx_create.c.o'.
+[440/1667] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen8_c@sta/rendercopy_gen8.c.o'.
+[441/1667] Compiling C object 'tests/59830eb@@gem_blits@exe/intel_gem_blits.c.o'.
+[442/1667] Compiling C object 'tests/59830eb@@prime_vgem@exe/prime_vgem.c.o'.
+[443/1667] Compiling C object 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o'.
+[444/1667] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen9_c@sta/rendercopy_gen9.c.o'.
+[445/1667] Compiling C object 'tests/59830eb@@gem_ctx_isolation@exe/intel_gem_ctx_isolation.c.o'.
+[446/1667] Compiling C object 'tests/59830eb@@gem_busy@exe/intel_gem_busy.c.o'.
+[447/1667] Compiling C object 'tests/59830eb@@drm_fdinfo@exe/intel_drm_fdinfo.c.o'.
+[448/1667] Compiling C object 'tests/59830eb@@gem_ctx_shared@exe/intel_gem_ctx_shared.c.o'.
+[449/1667] Compiling C object 'tests/59830eb@@gem_ctx_persistence@exe/intel_gem_ctx_persistence.c.o'.
+[450/1667] Compiling C object 'tests/59830eb@@gem_eio@exe/intel_gem_eio.c.o'.
+[451/1667] Compiling C object 'tests/59830eb@@syncobj_timeline@exe/syncobj_timeline.c.o'.
+[452/1667] Compiling C object 'tests/59830eb@@gem_userptr_blits@exe/intel_gem_userptr_blits.c.o'.
+[453/1667] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
+[454/1667] Compiling C object 'tests/59830eb@@api_intel_bb@exe/intel_api_intel_bb.c.o'.
+[455/1667] Compiling C object 'tests/59830eb@@gem_exec_capture@exe/intel_gem_exec_capture.c.o'.
+[456/1667] Compiling C object 'tests/59830eb@@gem_concurrent_blit@exe/intel_gem_concurrent_blit.c.o'.
+[457/1667] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
+[458/1667] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
+[459/1667] Generating i915-perf-equations with a custom command.
+ninja: build stopped: subcommand failed.
+
 
