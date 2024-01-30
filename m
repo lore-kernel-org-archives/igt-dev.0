@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92833C46CD2
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 08:58:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D19D5C46CD2
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 09:03:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 470C9112E21;
-	Tue, 30 Jan 2024 08:58:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7B99C10F869;
+	Tue, 30 Jan 2024 09:03:18 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67372112E43
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2024 08:57:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ABC5F10F869;
+ Tue, 30 Jan 2024 09:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706605078; x=1738141078;
+ t=1706605398; x=1738141398;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=S+Cznye575QlLYJ4p+dWHTR1kCHgFc9nd+eh8b0ZA3s=;
- b=FZLA7bi9QnZDNr0Le9HvFZaTBHUeoxnPE24UoEuKoRkV4L0u0E18Mgmf
- 2BgAi7hoanJlaS7M93D9OCq76PDqWRmcg+fP5nhmnP+xKH6JMGvGFytNr
- fYDFkq+mRkZsjVbHFps/uGYteQyLgqCks0R6o3rDHtV/sasjAAP9D9wCG
- 7Bzr1mb74ENpQxaA3Y0FhfWiXpOfrAb+8HzSmVy8tIOadde11ivFBNYy4
- HpxCKFKdAIQC3GhunHO0eHQ7K/0OYKjK191/b02cVcV9nkCQ990oPNQG/
- ZdOBuMdCeNBBEa8/2wM53dJWP9u0gkecxdcPlX1eRgFxaBubQ9GQowbKQ A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="3050329"
+ bh=/1B1i5kh6MiLhtzbe11v/JdsTz5AxHFbc8fi5DJMrAg=;
+ b=RFB1nGkdOwA3C21aVm+iPPxfaGJj06WCY7OImiKcYYAHTV38XGsObF33
+ io736HqyIj5ZijaBNQNfpUftjrNZKHn5vAOyH8RBFdx1sPF3Qes3Gd7zO
+ gsskBBtSxNP0oSMxPHq/lILJCBOWP7zgm/V2xLmAI8v7RfW839BTXuHHa
+ BRnPmpLnhmWUt74QWTSCGqSgvZFHl+QU2ccOdQW/mHLR+JAwEfHL3xhBm
+ XygWjq4kZQcrsSOR/mA4uUQD0Yp1Wwl1U3SZ5dpYSnGGqSsTIVC96frxy
+ ir3lSUbDJl3jEWSw8z4O+8OAX5HYvKk36e/BBD8+uXNlmw5gf4BZ3gzsD Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="3051931"
 X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
-   d="scan'208";a="3050329"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
+   d="scan'208";a="3051931"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2024 00:57:58 -0800
+ 30 Jan 2024 01:01:47 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="961192418"
-X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="961192418"
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="931373878"
+X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="931373878"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orsmga005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 00:57:56 -0800
-Date: Tue, 30 Jan 2024 09:57:38 +0100
+ by fmsmga001-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 01:01:37 -0800
+Date: Tue, 30 Jan 2024 10:01:35 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_atomic: fix basic-inc-all
-Message-ID: <20240130085738.madss3unpksy2oed@kamilkon-desk.igk.intel.com>
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVA==?= =?utf-8?Q?=3A?= failure for
+ tests/intel/xe_exec_atomic: fix basic-inc-all
+Message-ID: <20240130090135.m4wg7h53vgbtpbag@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org,
+ lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
 References: <20240129185412.114786-1-kamil.konieczny@linux.intel.com>
+ <170658173341.806672.5637046289530959242@5338d5abeb45>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240129185412.114786-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <170658173341.806672.5637046289530959242@5338d5abeb45>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,68 +64,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: lgci.bug.filing@intel.com, I915-ci-infra@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi,
-On 2024-01-29 at 19:54:12 +0100, Kamil Konieczny wrote:
-> Previous test removed skips on unsupported system memory on dGPU
-- ^^^^^^^^^^^^^
-This should be:
+Hi igt-dev,
+On 2024-01-30 at 02:28:53 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/intel/xe_exec_atomic: fix basic-inc-all
+> URL   : https://patchwork.freedesktop.org/series/129279/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_14192_full -> IGTPW_10600_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10600_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10600_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10600/index.html
+> 
+> Participating hosts (8 -> 8)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10600_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_exec_suspend@basic-s3-devices@smem:
+>     - shard-tglu:         [PASS][1] -> [ABORT][2] +1 other test abort
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14192/shard-tglu-5/igt@gem_exec_suspend@basic-s3-devices@smem.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10600/shard-tglu-9/igt@gem_exec_suspend@basic-s3-devices@smem.html
+> 
+>   * igt@kms_flip@blocking-absolute-wf_vblank@d-hdmi-a2:
+>     - shard-dg2:          NOTRUN -> [INCOMPLETE][3]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10600/shard-dg2-3/igt@kms_flip@blocking-absolute-wf_vblank@d-hdmi-a2.html
+> 
+>   * igt@kms_pm_rpm@cursor:
+>     - shard-tglu:         [PASS][4] -> [INCOMPLETE][5]
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14192/shard-tglu-7/igt@kms_pm_rpm@cursor.html
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10600/shard-tglu-8/igt@kms_pm_rpm@cursor.html
+> 
+>   * igt@sysfs_heartbeat_interval@nopreempt@vcs0:
+>     - shard-glk:          [PASS][6] -> [FAIL][7]
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14192/shard-glk3/igt@sysfs_heartbeat_interval@nopreempt@vcs0.html
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10600/shard-glk8/igt@sysfs_heartbeat_interval@nopreempt@vcs0.html
+> 
 
-Commit af750f5e7 ("tests/intel/xe_exec_atomic: don't test unsupported config")
-removed skip on unsupported system memory on dGPU but did it
-only for basic-dec-all. Fix it for second test basic-inc-all.
-Also while at this, use drm_open_driver and drm_close_driver
-which takes care of xe device get/put.
+Unrelated to Xe test, no need for respin,
 
-+cc Mauro
+Regards,
+Kamil
+
+...cut...
+
+>   [i915#9878]: https://gitlab.freedesktop.org/drm/intel/issues/9878
+>   [i915#9906]: https://gitlab.freedesktop.org/drm/intel/issues/9906
+>   [i915#9917]: https://gitlab.freedesktop.org/drm/intel/issues/9917
+>   [i915#9934]: https://gitlab.freedesktop.org/drm/intel/issues/9934
 > 
-> Cc: Nirmoy Das <nirmoy.das@intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  tests/intel/xe_exec_atomic.c | 14 +++++---------
->  1 file changed, 5 insertions(+), 9 deletions(-)
 > 
-> diff --git a/tests/intel/xe_exec_atomic.c b/tests/intel/xe_exec_atomic.c
-> index 48c70ec72..d9790da78 100644
-> --- a/tests/intel/xe_exec_atomic.c
-> +++ b/tests/intel/xe_exec_atomic.c
-> @@ -124,10 +124,8 @@ igt_main
->  	struct drm_xe_engine_class_instance *hwe;
->  	int fd;
->  
-> -	igt_fixture {
-> +	igt_fixture
->  		fd = drm_open_driver(DRIVER_XE);
-> -		xe_device_get(fd);
-> -	}
->  
->  	igt_subtest_with_dynamic("basic-dec-all") {
->  		xe_for_each_engine(fd, hwe) {
-> @@ -152,8 +150,8 @@ igt_main
->  			uint64_t memreg = all_memory_regions(fd), region;
->  
->  			xe_for_each_mem_region(fd, memreg, region) {
-> -
-> -				igt_skip_on(!has_atomics(fd, region));
-> +				if (!has_atomics(fd, region))
-> +					continue;
->  
->  				igt_dynamic_f("Engine-%s-Instance-%d-Tile-%d-%s-memory",
->  					      xe_engine_class_string(hwe->engine_class),
-> @@ -165,8 +163,6 @@ igt_main
->  		}
->  	}
->  
-> -	igt_fixture {
-> -		xe_device_put(fd);
-> -		close(fd);
-> -	}
-> +	igt_fixture
-> +		drm_close_driver(fd);
->  }
-> -- 
-> 2.42.0
+> Build changes
+> -------------
 > 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7698 -> IGTPW_10600
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14192: f4c0dac89bd3cd02a1afe5e7a91ed4bf8de4afc6 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10600: 10600
+>   IGT_7698: af750f5e7eaad98d40d8c924eb5f05e99d3c668b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10600/index.html
