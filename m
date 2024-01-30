@@ -4,23 +4,23 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44AE3C46CD2
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 12:14:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D7D8C47DDF
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 12:26:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5C03E11305A;
-	Tue, 30 Jan 2024 12:14:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 044E711280F;
+	Tue, 30 Jan 2024 12:26:03 +0000 (UTC)
 Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 775D611305A;
- Tue, 30 Jan 2024 12:14:02 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B67B113060;
+ Tue, 30 Jan 2024 12:26:01 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4287994831201481081=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_lib/igt=5Fdraw=3A_Fix_t?=
- =?utf-8?q?he_usage_of_FB_width_=26_height_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/igt=5Fdraw=3A_Fix_the_usag?=
+ =?utf-8?q?e_of_FB_width_=26_height_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Tue, 30 Jan 2024 12:14:02 -0000
-Message-ID: <170661684248.823563.1388778849867536191@5338d5abeb45>
+Date: Tue, 30 Jan 2024 12:26:01 -0000
+Message-ID: <170661756150.823577.14145076743839991572@5338d5abeb45>
 X-Patchwork-Hint: ignore
 References: <20240130113727.721365-1-bhanuprakash.modem@intel.com>
 In-Reply-To: <20240130113727.721365-1-bhanuprakash.modem@intel.com>
@@ -41,40 +41,102 @@ Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============4287994831201481081==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: lib/igt_draw: Fix the usage of FB width & height (rev2)
 URL   : https://patchwork.freedesktop.org/series/129294/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7699_BAT -> XEIGTPW_10604_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1090615 for the overview.
+Summary
+-------
 
-test:list-undocumented-tests has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/54381216):
-  Checking out 9a9353c4 as detached HEAD (ref is intel/IGTPW_10604)...
-  Removing build/
-  Removing lib/i915/perf-configs/__pycache__/
-  Removing scripts/__pycache__/
+  **SUCCESS**
+
+  No regressions found.
+
   
-  Skipping Git submodules setup
-  section_end:1706616531:get_sources
-  section_start:1706616531:download_artifacts
-  Downloading artifacts
-  Downloading artifacts for build:tests-fedora (54381203)...
-  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=54381203 responseStatus=200 OK token=64_HszzB
-  section_end:1706616542:download_artifacts
-  section_start:1706616542:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-9a9353c4c08fdfd8af2774b28204fda5919f956f with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
-  section_end:1706616544:step_script
-  section_start:1706616544:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1706616545:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f: image not known (docker.go:570:0s)
+
+Participating hosts (4 -> 3)
+------------------------------
+
+  Missing    (1): bat-dg2-oem2 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7699 -> IGTPW_10604
+
+  IGTPW_10604: 10604
+  IGT_7699: 7699
+  xe-699-c655e0fd28045dbaa581d04bf7cc266eec1c3457: c655e0fd28045dbaa581d04bf7cc266eec1c3457
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1090615
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10604/index.html
+
+--===============4287994831201481081==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_draw: Fix the usage of FB width &amp; height (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129294/">https://patchwork.freedesktop.org/series/129294/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10604/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10604/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7699_BAT -&gt; XEIGTPW_10604_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 3)</h2>
+<p>Missing    (1): bat-dg2-oem2 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7699 -&gt; IGTPW_10604</li>
+</ul>
+<p>IGTPW_10604: 10604<br />
+  IGT_7699: 7699<br />
+  xe-699-c655e0fd28045dbaa581d04bf7cc266eec1c3457: c655e0fd28045dbaa581d04bf7cc266eec1c3457</p>
+
+</body>
+</html>
+
+--===============4287994831201481081==--
