@@ -4,26 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37BEEC47DA9
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 08:46:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92833C46CD2
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 08:58:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D0E9B10E225;
-	Tue, 30 Jan 2024 08:46:11 +0000 (UTC)
-Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5033510E225;
- Tue, 30 Jan 2024 08:46:10 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4975817023981829156=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 470C9112E21;
+	Tue, 30 Jan 2024 08:58:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67372112E43
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2024 08:57:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1706605078; x=1738141078;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=S+Cznye575QlLYJ4p+dWHTR1kCHgFc9nd+eh8b0ZA3s=;
+ b=FZLA7bi9QnZDNr0Le9HvFZaTBHUeoxnPE24UoEuKoRkV4L0u0E18Mgmf
+ 2BgAi7hoanJlaS7M93D9OCq76PDqWRmcg+fP5nhmnP+xKH6JMGvGFytNr
+ fYDFkq+mRkZsjVbHFps/uGYteQyLgqCks0R6o3rDHtV/sasjAAP9D9wCG
+ 7Bzr1mb74ENpQxaA3Y0FhfWiXpOfrAb+8HzSmVy8tIOadde11ivFBNYy4
+ HpxCKFKdAIQC3GhunHO0eHQ7K/0OYKjK191/b02cVcV9nkCQ990oPNQG/
+ ZdOBuMdCeNBBEa8/2wM53dJWP9u0gkecxdcPlX1eRgFxaBubQ9GQowbKQ A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="3050329"
+X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
+   d="scan'208";a="3050329"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2024 00:57:58 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="961192418"
+X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="961192418"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orsmga005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 00:57:56 -0800
+Date: Tue, 30 Jan 2024 09:57:38 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_atomic: fix basic-inc-all
+Message-ID: <20240130085738.madss3unpksy2oed@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+References: <20240129185412.114786-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/igt=5Fdraw=3A_Fix_the_usag?=
- =?utf-8?q?e_of_FB_width_=26_height?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Tue, 30 Jan 2024 08:46:10 -0000
-Message-ID: <170660437032.823361.14889579110002205262@5338d5abeb45>
-X-Patchwork-Hint: ignore
-References: <20240130074718.584552-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20240130074718.584552-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240129185412.114786-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,139 +62,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4975817023981829156==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi,
+On 2024-01-29 at 19:54:12 +0100, Kamil Konieczny wrote:
+> Previous test removed skips on unsupported system memory on dGPU
+- ^^^^^^^^^^^^^
+This should be:
 
-== Series Details ==
+Commit af750f5e7 ("tests/intel/xe_exec_atomic: don't test unsupported config")
+removed skip on unsupported system memory on dGPU but did it
+only for basic-dec-all. Fix it for second test basic-inc-all.
+Also while at this, use drm_open_driver and drm_close_driver
+which takes care of xe device get/put.
 
-Series: lib/igt_draw: Fix the usage of FB width & height
-URL   : https://patchwork.freedesktop.org/series/129294/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7698_BAT -> XEIGTPW_10603_BAT
-====================================================
-
-Summary
--------
-
-  **WARNING**
-
-  Minor unknown changes coming with XEIGTPW_10603_BAT need to be verified
-  manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_10603_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_10603_BAT:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-dg2-oem2:       [FAIL][1] ([Intel XE#608]) -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7698/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10603/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
-
-
-Build changes
--------------
-
-  * IGT: IGT_7698 -> IGTPW_10603
-  * Linux: xe-696-a0325b172ae7077c52b074d9b531f4e3aa585d82 -> xe-699-c655e0fd28045dbaa581d04bf7cc266eec1c3457
-
-  IGTPW_10603: 10603
-  IGT_7698: af750f5e7eaad98d40d8c924eb5f05e99d3c668b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-696-a0325b172ae7077c52b074d9b531f4e3aa585d82: a0325b172ae7077c52b074d9b531f4e3aa585d82
-  xe-699-c655e0fd28045dbaa581d04bf7cc266eec1c3457: c655e0fd28045dbaa581d04bf7cc266eec1c3457
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10603/index.html
-
---===============4975817023981829156==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_draw: Fix the usage of FB width &amp; height</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129294/">https://patchwork.freedesktop.org/series/129294/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10603/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10603/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7698_BAT -&gt; XEIGTPW_10603_BAT</h1>
-<h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with XEIGTPW_10603_BAT need to be verified<br />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_10603_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_10603_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7698/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10603/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7698 -&gt; IGTPW_10603</li>
-<li>Linux: xe-696-a0325b172ae7077c52b074d9b531f4e3aa585d82 -&gt; xe-699-c655e0fd28045dbaa581d04bf7cc266eec1c3457</li>
-</ul>
-<p>IGTPW_10603: 10603<br />
-  IGT_7698: af750f5e7eaad98d40d8c924eb5f05e99d3c668b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-696-a0325b172ae7077c52b074d9b531f4e3aa585d82: a0325b172ae7077c52b074d9b531f4e3aa585d82<br />
-  xe-699-c655e0fd28045dbaa581d04bf7cc266eec1c3457: c655e0fd28045dbaa581d04bf7cc266eec1c3457</p>
-
-</body>
-</html>
-
---===============4975817023981829156==--
++cc Mauro
+> 
+> Cc: Nirmoy Das <nirmoy.das@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/intel/xe_exec_atomic.c | 14 +++++---------
+>  1 file changed, 5 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tests/intel/xe_exec_atomic.c b/tests/intel/xe_exec_atomic.c
+> index 48c70ec72..d9790da78 100644
+> --- a/tests/intel/xe_exec_atomic.c
+> +++ b/tests/intel/xe_exec_atomic.c
+> @@ -124,10 +124,8 @@ igt_main
+>  	struct drm_xe_engine_class_instance *hwe;
+>  	int fd;
+>  
+> -	igt_fixture {
+> +	igt_fixture
+>  		fd = drm_open_driver(DRIVER_XE);
+> -		xe_device_get(fd);
+> -	}
+>  
+>  	igt_subtest_with_dynamic("basic-dec-all") {
+>  		xe_for_each_engine(fd, hwe) {
+> @@ -152,8 +150,8 @@ igt_main
+>  			uint64_t memreg = all_memory_regions(fd), region;
+>  
+>  			xe_for_each_mem_region(fd, memreg, region) {
+> -
+> -				igt_skip_on(!has_atomics(fd, region));
+> +				if (!has_atomics(fd, region))
+> +					continue;
+>  
+>  				igt_dynamic_f("Engine-%s-Instance-%d-Tile-%d-%s-memory",
+>  					      xe_engine_class_string(hwe->engine_class),
+> @@ -165,8 +163,6 @@ igt_main
+>  		}
+>  	}
+>  
+> -	igt_fixture {
+> -		xe_device_put(fd);
+> -		close(fd);
+> -	}
+> +	igt_fixture
+> +		drm_close_driver(fd);
+>  }
+> -- 
+> 2.42.0
+> 
