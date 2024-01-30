@@ -4,43 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77FC1C47DA9
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCD6FC46CD2
 	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 05:49:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 10329112DB5;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5585F112DB8;
 	Tue, 30 Jan 2024 05:49:23 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 536DF112DB5
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2024 05:49:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 34F1D112DB5
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2024 05:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706593760; x=1738129760;
+ t=1706593762; x=1738129762;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=6/yTHUTFw6B5izbKf0Gm4idmBGJnbakGuC8WlWX9Qy8=;
- b=BOaG60Q4VNdPAcG0VRq5JauebD8RqXaDSh5lHZ+/i1/K9y2f8Lw71vp5
- 2Ea0oo4l45H2EQjOGodl8iwlLU7vV+dKE0+JKzWLN0spSCp4Gi2lz0AAd
- zZ/Ip735mv8HRE1/S0ZgMk2imxqWJA73eHTrpde6nPDTWkL/EQSa9z0nT
- u0ENEXBWvufA54CDwiUl+p7K4BcYk3y2ZuSkZXtJgFRpehxYIKjx1y9JQ
- iGOn1v0lwXa3/nrMLWerv7dCQwL+VOVLk1rcao1PnmEd2AYHrsJAt+KuI
- dvTxx4uOq3+JME34KDAPprep6ClaKmwCKLo/jvXiNdr6avahrLP/VlCWk g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="393609626"
-X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="393609626"
+ bh=paG5JXRlqKuIV78gRYaYB+5TT33tjmWX87B/JNBiBnQ=;
+ b=jlMURQPjGOwzTCAKdiWyGu9GQcB/YhUAUPsFDsuPcRblqElnIu0wMvOG
+ ix1pwr6Uw0DATdGmBxtMOUCZHZxQThqgIz8Ywb+6cVLdkbqw95eBcEgOE
+ sZdGGXktLs7KKeFoJj18eR9kNR98VO+PkB8OlO/tpey3DvW83hW+ALTqQ
+ XJjOqd8DC9OV8nlmdCXhPldYm7/PU4umrGtChnZVHQysHH89qxvgzdILI
+ ZdA22JRJEC96K1LV/9WiMKg8ZzNtDOoU0ctNCeuVwE54MKx/lsG2GO5S1
+ fD/SQEOpJV81BYryWWezW1pweAlbCKH5tEA4KFwQxO5TRUSFDzBdaRo+i Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="393609637"
+X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="393609637"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2024 21:49:19 -0800
+ 29 Jan 2024 21:49:21 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
-   d="scan'208";a="3603144"
+   d="scan'208";a="3603151"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2024 21:49:19 -0800
+ 29 Jan 2024 21:49:20 -0800
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [i-g-t v5 4/9] tests/kms_vrr: Allow test duration to be specified
- from the command line
-Date: Tue, 30 Jan 2024 11:12:30 +0530
-Message-ID: <20240130054235.533132-5-bhanuprakash.modem@intel.com>
+Subject: [i-g-t v5 5/9] tests/kms_vrr: Change the pattern displayed in the test
+Date: Tue, 30 Jan 2024 11:12:31 +0530
+Message-ID: <20240130054235.533132-6-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240130054235.533132-1-bhanuprakash.modem@intel.com>
 References: <20240130054235.533132-1-bhanuprakash.modem@intel.com>
@@ -64,137 +63,95 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Sean Paul <seanpaul@chromium.org>
 
-Using --duration argument, otherwise use default.
+Upgrade the tiny box in the top left corner to some vertical color
+bars with horizontal grey and white bars at the bottom.
 
 v2:
-- Add short opt to the main callsite (Bhanu)
+- Removed hardcoded bar heights
+- Made number of vertical bars configurable
+- Fill in the entire screen horizontally
 v3: (Bhanu)
 - Rebase
-- Nit: 's/d:r:/dr:/'
+- Drop static variable
 
 Cc: Mark Yacoub <markyacoub@chromium.org>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Sean Paul <seanpaul@chromium.org>
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vrr.c | 25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ tests/kms_vrr.c | 45 +++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 41 insertions(+), 4 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index a1ca7c967..86bc144ed 100644
+index 86bc144ed..cec263bb5 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -114,6 +114,7 @@ typedef struct data {
- 	range_t range;
- 	drmModeModeInfo switch_modes[RR_MODES_COUNT];
- 	vtest_ns_t vtest_ns;
-+	uint64_t duration_ns;
- } data_t;
- 
- typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, uint32_t);
-@@ -275,6 +276,9 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
- 						(range->min + range->max) / 2);
- 	}
- 
-+	if (data->duration_ns == 0)
-+		data->duration_ns = TEST_DURATION_NS;
-+
- 	/* Prepare resources */
- 	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
- 			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-@@ -469,7 +473,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	 */
- 	if (flags & TEST_FLIPLINE) {
- 		rate = rate_from_refresh(range.max + 5);
--		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
-+		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
- 		igt_assert_f(result > 75,
- 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
- 			     (range.max + 5), rate, result);
-@@ -477,7 +481,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 
- 	if (flags & ~TEST_NEGATIVE) {
- 		rate = vtest_ns.rate_ns;
--		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
-+		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
- 		igt_assert_f(result > 75,
- 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
- 			     ((range.max + range.min) / 2), rate, result);
-@@ -485,7 +489,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 
- 	if (flags & TEST_FLIPLINE) {
- 		rate = rate_from_refresh(range.min - 10);
--		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
-+		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
- 		igt_assert_f(result < 50,
- 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold exceeded, result was %u%%\n",
- 			     (range.min - 10), rate, result);
-@@ -498,7 +502,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	 */
- 	set_vrr_on_pipe(data, pipe, !(flags & TEST_FASTSET), (flags & TEST_NEGATIVE) ? true : false);
- 	rate = vtest_ns.rate_ns;
--	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
-+	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
- 	igt_assert_f(result < 10,
- 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold exceeded, result was %u%%\n",
- 		     ((range.max + range.min) / 2), rate, (flags & TEST_NEGATIVE)? "on" : "off", result);
-@@ -530,7 +534,7 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
- 	}
- 
- 	rate = vtest_ns.max;
--	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
-+	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
- 	igt_assert_f(result > 75,
- 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold not reached, result was %u%%\n",
- 		     data->range.max, rate, vrr ? "on" : "off", result);
-@@ -542,7 +546,7 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
- 	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
- 
- 	rate = vtest_ns.min;
--	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
-+	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
- 	igt_assert_f(result > 75,
- 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold not reached, result was %u%%\n",
- 		     data->range.min, rate, vrr ? "on" : "off", result);
-@@ -554,7 +558,7 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
- 	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
- 
- 	rate = vtest_ns.rate_ns;
--	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
-+	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
- 	igt_assert_f(vrr ? (result > 75) : (result < 10),
- 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold %s, result was %u%%\n",
- 		     ((data->range.max + data->range.min) / 2), rate,
-@@ -678,6 +682,9 @@ static int opt_handler(int opt, int opt_index, void *_data)
- 	data_t *data = _data;
- 
- 	switch (opt) {
-+	case 'd':
-+		data->duration_ns = atoi(optarg) * NSECS_PER_SEC;
-+		break;
- 	case 'r':
- 		data->vtest_ns.rate_ns = rate_from_refresh(atoi(optarg));
- 		break;
-@@ -686,16 +693,18 @@ static int opt_handler(int opt, int opt_index, void *_data)
+@@ -258,11 +258,31 @@ static void set_vrr_on_pipe(data_t *data, enum pipe pipe,
+ 						 NULL) == 0);
  }
  
- static const struct option long_opts[] = {
-+	{ .name = "duration", .has_arg = true, .val = 'd', },
- 	{ .name = "refresh-rate", .has_arg = true, .val = 'r', },
- 	{}
- };
- 
- static const char help_str[] =
-+	"  --duration <duration-seconds>\t\tHow long to run the test for\n"
- 	"  --refresh-rate <refresh-hz>\t\tThe refresh rate to flip at\n";
- 
- static data_t data;
- 
--igt_main_args("r:", long_opts, help_str, opt_handler, &data)
-+igt_main_args("dr:", long_opts, help_str, opt_handler, &data)
++static void paint_bar(cairo_t *cr, unsigned int x, unsigned int y,
++		      unsigned int w, unsigned int h,
++		      unsigned int bar, unsigned int num_bars,
++		      float start_r, float start_g, float start_b,
++		      float end_r, float end_g, float end_b)
++{
++	float progress = (float)bar / (float)num_bars;
++	float color[] = {
++		start_r + progress * (end_r - start_r),
++		start_g + progress * (end_g - start_g),
++		start_b + progress * (end_b - start_b)
++	};
++	igt_paint_color(cr, x, y, w, h,
++			color[0] > 0 ? color[0] : 0.0,
++			color[1] > 0 ? color[1] : 0.0,
++			color[2] > 0 ? color[2] : 0.0);
++}
++
+ /* Prepare the display for testing on the given pipe. */
+ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
  {
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
++	unsigned int num_bars = 256;
+ 	drmModeModeInfo mode;
+ 	cairo_t *cr;
++	int bar_width, bar_height, bar_remaining, horizontal_bar_height;
+ 
+ 	mode = *igt_output_get_mode(output);
+ 
+@@ -288,11 +308,28 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+ 			    0.50, 0.50, 0.50, &data->fb[1]);
+ 
++	bar_width = mode.hdisplay / num_bars;
++	horizontal_bar_height = mode.vdisplay / 8;
++	bar_height = mode.vdisplay - horizontal_bar_height * 2;
++	bar_remaining = mode.hdisplay % bar_width;
+ 	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[0]);
+-
+-	igt_paint_color(cr, 0, 0, mode.hdisplay / 10, mode.vdisplay / 10,
+-			1.00, 0.00, 0.00);
+-
++	for (int j = 0; j < num_bars; ++j) {
++		unsigned int width = bar_width;
++		if (j == num_bars - 1)
++			width += bar_remaining;
++
++		/* Red->Green->Blue gradient */
++		if (j < num_bars / 2)
++			paint_bar(cr, j * bar_width, 0, width, bar_height,
++				  j, num_bars / 2,
++				  1.0, 0.0, 0.0, 0.0, 1.0, 0.0);
++		else
++			paint_bar(cr, j * bar_width, 0, width, bar_height,
++				  j - num_bars / 2, num_bars / 2,
++				  0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
++	}
++	igt_paint_color(cr, 0, mode.vdisplay - horizontal_bar_height,
++			mode.hdisplay, horizontal_bar_height, 1.00, 1.00, 1.00);
+ 	igt_put_cairo_ctx(cr);
+ 
+ 	/* Take care of any required modesetting before the test begins. */
 -- 
 2.43.0
 
