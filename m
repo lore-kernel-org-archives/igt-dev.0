@@ -4,47 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81567C47DDB
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 05:49:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CC55C46CD2
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 06:12:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2E8F6112DBF;
-	Tue, 30 Jan 2024 05:49:30 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2849F112DBE
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2024 05:49:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706593769; x=1738129769;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=4KugiOVx5smRX24FXRXNpbvfPiUuVOt4OSVWWEwlfek=;
- b=TwpF53vp0jHQsAcbwP36vMzRiV46bE2BxCj+5j9XTOP9sU7w7hx9kjJJ
- UNKcZUHlUiOWLPl+eiBC0ZvetNQ6w0XtUJaOa/GUSaDORDH/5qpXCOdpC
- Tk9rJ9mE+FLYKaEXMvj2Q11O0SDkej7e3P4kMguX+WeFb8+fgIQQ6U8hC
- Szl4njmMXRwCCSUSvsmr7rQQAKqxjG5N0/N74k53/v1h5UIZ9HcQlnWrB
- +HNfxxIPd8/2RmsnENr2W4aUgk9fpATBKaEwsjx9zntBBmpuczrR3fD8f
- NPu5r+Glr9DLaqQvtp25aOLExZjOu9IUVKHvqMpFzLOhwkklgqSXj+QO9 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="393609686"
-X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="393609686"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2024 21:49:28 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
-   d="scan'208";a="3603194"
-Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2024 21:49:27 -0800
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [i-g-t v5 9/9] HAX/DO_NOT_MERGE: Test VRR in BAT
-Date: Tue, 30 Jan 2024 11:12:35 +0530
-Message-ID: <20240130054235.533132-10-bhanuprakash.modem@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240130054235.533132-1-bhanuprakash.modem@intel.com>
-References: <20240130054235.533132-1-bhanuprakash.modem@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 14FFC10EB96;
+	Tue, 30 Jan 2024 06:12:18 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 514AF10E14D;
+ Tue, 30 Jan 2024 06:12:17 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3465028311733908689=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_make_display_test_dynamic_=28r?=
+ =?utf-8?q?ev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Date: Tue, 30 Jan 2024 06:12:17 -0000
+Message-ID: <170659513733.808072.15340635666304439769@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240130053756.1478286-1-kunal1.joshi@intel.com>
+In-Reply-To: <20240130053756.1478286-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,51 +36,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/intel-ci/fast-feedback.testlist    | 7 +++++++
- tests/intel-ci/xe-fast-feedback.testlist | 7 +++++++
- 2 files changed, 14 insertions(+)
+--===============3465028311733908689==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 662e49cc3..aac1b39c9 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -128,6 +128,13 @@ igt@kms_psr@psr-cursor-plane-move
- igt@kms_psr@psr-sprite-plane-onoff
- igt@kms_psr@psr-primary-mmap-gtt
- igt@kms_setmode@basic-clone-single-crtc
-+igt@kms_vrr@flip-basic
-+igt@kms_vrr@flipline
-+igt@kms_vrr@negative-basic
-+igt@kms_vrr@max-min
-+igt@kms_vrr@seamless-rr-switch-vrr
-+igt@kms_vrr@seamless-rr-switch-drrs
-+igt@kms_vrr@flip-basic-fastset
- igt@i915_pm_rps@basic-api
- igt@prime_self_import@basic-llseek-bad
- igt@prime_self_import@basic-llseek-size
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index f297fe965..f28d6c82f 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -220,6 +220,13 @@ igt@kms_prop_blob@basic
- igt@kms_psr@psr-primary-page-flip
- igt@kms_psr@psr-cursor-plane-move
- igt@kms_psr@psr-sprite-plane-onoff
-+igt@kms_vrr@flip-basic
-+igt@kms_vrr@flipline
-+igt@kms_vrr@negative-basic
-+igt@kms_vrr@max-min
-+igt@kms_vrr@seamless-rr-switch-vrr
-+igt@kms_vrr@seamless-rr-switch-drrs
-+igt@kms_vrr@flip-basic-fastset
- 
- # All tests that do module unloading and reloading are executed last.
- # They will sometimes reveal issues of earlier tests leaving the
--- 
-2.43.0
+== Series Details ==
 
+Series: make display test dynamic (rev2)
+URL   : https://patchwork.freedesktop.org/series/129275/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7698_BAT -> XEIGTPW_10601_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7698 -> IGTPW_10601
+  * Linux: xe-696-a0325b172ae7077c52b074d9b531f4e3aa585d82 -> xe-699-c655e0fd28045dbaa581d04bf7cc266eec1c3457
+
+  IGTPW_10601: 10601
+  IGT_7698: af750f5e7eaad98d40d8c924eb5f05e99d3c668b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-696-a0325b172ae7077c52b074d9b531f4e3aa585d82: a0325b172ae7077c52b074d9b531f4e3aa585d82
+  xe-699-c655e0fd28045dbaa581d04bf7cc266eec1c3457: c655e0fd28045dbaa581d04bf7cc266eec1c3457
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10601/index.html
+
+--===============3465028311733908689==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>make display test dynamic (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129275/">https://patchwork.freedesktop.org/series/129275/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10601/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10601/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7698_BAT -&gt; XEIGTPW_10601_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7698 -&gt; IGTPW_10601</li>
+<li>Linux: xe-696-a0325b172ae7077c52b074d9b531f4e3aa585d82 -&gt; xe-699-c655e0fd28045dbaa581d04bf7cc266eec1c3457</li>
+</ul>
+<p>IGTPW_10601: 10601<br />
+  IGT_7698: af750f5e7eaad98d40d8c924eb5f05e99d3c668b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-696-a0325b172ae7077c52b074d9b531f4e3aa585d82: a0325b172ae7077c52b074d9b531f4e3aa585d82<br />
+  xe-699-c655e0fd28045dbaa581d04bf7cc266eec1c3457: c655e0fd28045dbaa581d04bf7cc266eec1c3457</p>
+
+</body>
+</html>
+
+--===============3465028311733908689==--
