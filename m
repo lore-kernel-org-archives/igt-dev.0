@@ -4,44 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61170C46CD2
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 05:49:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59F54C47DDB
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 05:49:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F1158112131;
-	Tue, 30 Jan 2024 05:49:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 05F7A11260D;
+	Tue, 30 Jan 2024 05:49:16 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5DBD4112131
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9782F112131
  for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2024 05:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1706593754; x=1738129754;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=3v6K0rYmOYOB/aBX3VTyF+1wrdACiPVq3pIv+eJoL00=;
- b=DknnWGM8DF7uiuGErcbPDeehGBec0iz8h4Cria6wqvQsckCjHYkFGxd/
- R6gRwP2bFQHdjZvtOxpAsVzPUIQM7IhigIt/zjOVf4pyceIROGIUVbnI8
- Ty6YCw9LOgQ0BRzYWpNB0uwP4r9LEVOyLzoLqdLh5ek+XTYtkZvYNJYHH
- IjAqb2YOgnR8H9E9iZNYOodc5A09t2SAUEmiM5F8ItgXrDdCgM1ZWiUOD
- NRAWxHQKJcJJV2KepfPQlu1HzA49V8iwWb0PQkftsqOJCW/d3tpLQuHsQ
- lTCyZjYBB6fL43fQfNe5KXB/UjtHEyWmKkrVLikdlL0uZw6BN/UImE/dX A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="393609591"
-X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="393609591"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=p5CkbOrsogK2F8A7CgB2r5otl3/nam1hIfXFIiLNZ3Y=;
+ b=mnWpvx6HpAqtfyuWY9DhH5HEue8Y6aDluyFa5oHsnP32FZItDMgwztgV
+ oO2guRYxQAyB0ZGY/+fIXIGSmYjvaa5+hVm2IZjUbJ1rZcSHV2KpZ+m9L
+ RVDpuz5CYeakFcepfH/6aXVIBVX5tGNqKKMlq+xPmTBR4LPxhCQWZ71oA
+ LCCTozHm0mkdlrFNvwlAitm1kaOY5bVDme5a9YL4XEYXWy1FLiBCbEo8Z
+ 1QpcjnzSeS82r3sHAFNj5czxo9EtxaqDLiO+yQZITCC8ZNC2Szlz4CfAO
+ ICQja5uRHhHRuNT/sj6cjgThjrP0cBarzmWsXMdnXb7G2G5uEHQJ+Fz9Z Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="393609599"
+X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="393609599"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2024 21:49:12 -0800
+ 29 Jan 2024 21:49:14 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
-   d="scan'208";a="3603115"
+   d="scan'208";a="3603122"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2024 21:49:11 -0800
+ 29 Jan 2024 21:49:13 -0800
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [i-g-t v5 0/9] tests/kms_vrr: Modify kms_vrr to allow flicker
- profiling
-Date: Tue, 30 Jan 2024 11:12:26 +0530
-Message-ID: <20240130054235.533132-1-bhanuprakash.modem@intel.com>
+Subject: [i-g-t v5 1/9] tests/kms_vrr: Move fb0 and fb1 to an array
+Date: Tue, 30 Jan 2024 11:12:27 +0530
+Message-ID: <20240130054235.533132-2-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240130054235.533132-1-bhanuprakash.modem@intel.com>
+References: <20240130054235.533132-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -56,45 +57,96 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Sean Paul <seanpaul@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Do some cleanup in the kms_vrr test and add some optional command line
-arguments to alter the target refresh rate for the test. This allows us
-to profile VRR flicker on panels at the low end of the refresh range.
-This series also adds a new 'maxmin' subtest which alternates the rate
-between max and min every frame.
+From: Sean Paul <seanpaul@chromium.org>
 
-V2:
-- Address the review comments from Bhanu
-- Add a new maxmin subtest which alternates the rate b/w max & min every frame.
+Consolidate the 2 fb variables into an array. No functional changes.
 
-V3: As communicated in IRC channel #igt, I am doing this revision on behalf of
-Sean Paul.
+v2:
+- Clarified commit msg (Bhanu)
+v3: (Bhanu)
 - Rebase
-- Add testplan documentaion for 'maxmin' subtest
-- Minor cleanups
-- Hax patch to test VRR in BAT
 
-Bhanuprakash Modem (1):
-  HAX/DO_NOT_MERGE: Test VRR in BAT
+Cc: Mark Yacoub <markyacoub@chromium.org>
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Sean Paul <seanpaul@chromium.org>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_vrr.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-Sean Paul (8):
-  tests/kms_vrr: Move fb0 and fb1 to an array
-  tests/kms_vrr: Move vtest_ns into data_t
-  tests/kms_vrr: Allow test rate to be altered from the command line
-  tests/kms_vrr: Allow test duration to be specified from the command
-    line
-  tests/kms_vrr: Change the pattern displayed in the test
-  tests/kms_vrr: Add ability to flip static image for flicker profiling
-  tests/kms_vrr: Allow for multiple rates in a test
-  tests/kms_vrr: Add a max/min test to oscillate between rates
-
- tests/intel-ci/fast-feedback.testlist    |   7 +
- tests/intel-ci/xe-fast-feedback.testlist |   7 +
- tests/kms_vrr.c                          | 272 ++++++++++++++++-------
- 3 files changed, 205 insertions(+), 81 deletions(-)
-
---
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 9de0ffc85..a9fcde821 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -104,8 +104,7 @@ typedef struct data {
+ 	igt_display_t display;
+ 	int drm_fd;
+ 	igt_plane_t *primary;
+-	igt_fb_t fb0;
+-	igt_fb_t fb1;
++	igt_fb_t fb[2];
+ 	range_t range;
+ 	drmModeModeInfo switch_modes[RR_MODES_COUNT];
+ } data_t;
+@@ -280,13 +279,13 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 	/* Prepare resources */
+ 	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
+ 			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+-			    0.50, 0.50, 0.50, &data->fb0);
++			    0.50, 0.50, 0.50, &data->fb[0]);
+ 
+ 	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
+ 			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+-			    0.50, 0.50, 0.50, &data->fb1);
++			    0.50, 0.50, 0.50, &data->fb[1]);
+ 
+-	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb0);
++	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[0]);
+ 
+ 	igt_paint_color(cr, 0, 0, mode.hdisplay / 10, mode.vdisplay / 10,
+ 			1.00, 0.00, 0.00);
+@@ -295,7 +294,7 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 
+ 	/* Take care of any required modesetting before the test begins. */
+ 	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+-	igt_plane_set_fb(data->primary, &data->fb0);
++	igt_plane_set_fb(data->primary, &data->fb[0]);
+ 
+ 	/* Clear vrr_enabled state before enabling it, because
+ 	 * it might be left enabled if the previous test fails.
+@@ -358,7 +357,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 			rate_ns, threshold_hi, threshold_lo);
+ 
+ 	/* Align with the flip completion event to speed up convergence. */
+-	do_flip(data, &data->fb0);
++	do_flip(data, &data->fb[0]);
+ 	start_ns = last_event_ns = target_ns = get_kernel_event_ns(data,
+ 							DRM_EVENT_FLIP_COMPLETE);
+ 
+@@ -367,7 +366,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 		int64_t diff_ns;
+ 
+ 		front = !front;
+-		do_flip(data, front ? &data->fb1 : &data->fb0);
++		do_flip(data, front ? &data->fb[1] : &data->fb[0]);
+ 
+ 		/* We need to cpture flip event instead of vblank event,
+ 		 * because vblank is triggered after each frame, but depending
+@@ -573,8 +572,8 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_output_override_mode(output, NULL);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+-	igt_remove_fb(data->drm_fd, &data->fb1);
+-	igt_remove_fb(data->drm_fd, &data->fb0);
++	igt_remove_fb(data->drm_fd, &data->fb[1]);
++	igt_remove_fb(data->drm_fd, &data->fb[0]);
+ }
+ 
+ static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags)
+-- 
 2.43.0
 
