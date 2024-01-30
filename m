@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD3FEC46CD2
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 17:10:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10173C48286
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 17:10:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 608BE113308;
+	by gabe.freedesktop.org (Postfix) with ESMTP id AF22C113314;
 	Tue, 30 Jan 2024 17:10:57 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD9F1113308
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2024 17:10:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E7C3113308
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2024 17:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706634655; x=1738170655;
+ t=1706634656; x=1738170656;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=zwWJ9PF2h9xIB56kjAQiEPcTgkDf3Spi7zVBy/007YI=;
- b=E9IZQmyqYmgPnCfEByM26JvIIchPA+kpu5V2J2nm9+RvUuOh5i2tSvmu
- FIPp8wZs/khq2daKoltnkRYTgb5sWQdNWGxfA3a96mppCQ0pCkhqetSPU
- TelER6LcoOkdvinQlFTvRtjaMipU1hocaC7ELwv5aO2UDpxfI0usDP8yo
- DfE26ydN2Jb7UeWmDL4k3L6upZ9KvfG2a5H/GP9q24ymg12gqPBnrQ22u
- IExZdGLbh2vMaKCfD+050d6fWH/eWPJbDiXJT69CWj0Idjcl3oRez6wDM
- 4FqiHut9zLbMaWVzISA569sXXRHhu8EjbirfTWDCTWoEijQul7Mp7sR54 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="400488072"
-X-IronPort-AV: E=Sophos;i="6.05,230,1701158400"; d="scan'208";a="400488072"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ bh=yeqKFdkolOC1hnx1zyJ7fgg+hnG3Wlm8tssjTAX0szY=;
+ b=carZNZx0P14nszUAtIL8KIgUBeuM+hTu57/TIuWgEeRfbYxOc/xTvcdJ
+ GONeKdeDFmGaA7FmhvaXqqJE4+c/9WycStMnbM/GZ7FQcbUsmeu1ue7DB
+ nU46xPEJRi2aIZR91y+fAhJbNOmXfvzXlEQn0Ntjh/W0nnoR+ALGL8oQn
+ 1KJfUjL8E9NK6KZPaCM0Vs+xeMotg5ox/VzFr5d+IcY/3HvOLn87lHC+N
+ NwwgCSaqeE21Ms9tV4xDERqfnHWIARAXmqMRK3NxurMptREWHCT6Z1HDR
+ Gpm30pALXKDj/qvpK26xnbbdA0JamaU/KaS/XANSN5+bGQjiz4TKp9obm Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="400488092"
+X-IronPort-AV: E=Sophos;i="6.05,230,1701158400"; d="scan'208";a="400488092"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2024 09:07:54 -0800
+ 30 Jan 2024 09:07:58 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,230,1701158400"; d="scan'208";a="36557825"
+X-IronPort-AV: E=Sophos;i="6.05,230,1701158400"; d="scan'208";a="29960538"
 Received: from unknown (HELO localhost) ([10.246.4.20])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2024 09:07:52 -0800
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2024 09:07:57 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v5 6/8] lib/intel_multigpu: Add xe_multi_fork_foreach_gpu
-Date: Tue, 30 Jan 2024 18:07:20 +0100
-Message-ID: <20240130170722.44828-7-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v5 7/8] tests/intel/xe_exec_basic: add multigpu subtests
+Date: Tue, 30 Jan 2024 18:07:21 +0100
+Message-ID: <20240130170722.44828-8-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240130170722.44828-1-kamil.konieczny@linux.intel.com>
 References: <20240130170722.44828-1-kamil.konieczny@linux.intel.com>
@@ -60,195 +60,80 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Create macro for testing Xe driver in multigpu scenarios with
-the help of few new multigpu functions. Also while at this,
-add documentation for public functions and use new helper in
-existing multi-gpu macro.
+Add a few multi-gpu subtests:
 
-v2: corrected description (Kamil), rebased on corrected patches
-  after Dominik review
-v3: corrected descriptions, renamed function to print_gpus
-  and did small refactoring (Kamil)
-  fixed typo in function name (Dominik)
-v4: fixed typos (Dominik)
+multigpu-once-*
+multigpu-many-execqueues-many-vm-*
+multigpu-no-exec-*
+
+run on two or more GPUs. Many variant was limited to take at most
+few seconds.
 
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 ---
- lib/intel_multigpu.c | 106 +++++++++++++++++++++++++++++++++++++++++--
- lib/intel_multigpu.h |  12 ++++-
- 2 files changed, 112 insertions(+), 6 deletions(-)
+ tests/intel/xe_exec_basic.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/lib/intel_multigpu.c b/lib/intel_multigpu.c
-index 0e76d8aa3..689c4f10c 100644
---- a/lib/intel_multigpu.c
-+++ b/lib/intel_multigpu.c
-@@ -4,10 +4,19 @@
+diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
+index e6f8db5b0..3defe1d87 100644
+--- a/tests/intel/xe_exec_basic.c
++++ b/tests/intel/xe_exec_basic.c
+@@ -11,6 +11,7 @@
   */
  
- #include "drmtest.h"
-+#include "i915/gem.h"
- #include "igt_core.h"
- #include "igt_device_scan.h"
- #include "intel_multigpu.h"
+ #include "igt.h"
++#include "intel_multigpu.h"
+ #include "lib/igt_syncobj.h"
+ #include "lib/intel_reg.h"
+ #include "xe_drm.h"
+@@ -54,6 +55,18 @@
+  * Description: Run no-exec %arg[1] test
+  * Test category: functionality test
+  *
++ * SUBTEST: multigpu-once-%s
++ * Description: Run %arg[1] test only once on multiGPU
++ * Test category: functionality test
++ *
++ * SUBTEST: multigpu-many-execqueues-many-vm-%s
++ * Description: Run %arg[1] test on many exec_queues and many VMs on multiGPU
++ * Test category: stress test
++ *
++ * SUBTEST: multigpu-no-exec-%s
++ * Description: Run no-exec %arg[1] test on multiGPU
++ * Test category: functionality test
++ *
+  * arg[1]:
+  *
+  * @basic:				basic
+@@ -368,4 +381,27 @@ igt_main
  
-+/**
-+ * gem_multigpu_count_class:
-+ * @class: chipset, e.g. DRIVER_XE or DRIVER_INTEL
-+ *
-+ * Function counts number of GPU cards with the help of opening all of them.
-+ *
-+ * Returns: number of GPUs cards found
-+ */
- int gem_multigpu_count_class(int class)
- {
- 	int count = 0;
-@@ -18,7 +27,7 @@ int gem_multigpu_count_class(int class)
- 	return count;
+ 	igt_fixture
+ 		drm_close_driver(fd);
++
++	for (const struct section *s = sections; s->name; s++) {
++		igt_subtest_f("multigpu-once-%s", s->name) {
++			xe_multi_fork_foreach_gpu(xe, gpu_idx)
++				xe_for_each_engine(xe, hwe)
++					test_exec(xe, hwe, 1, 1, 1, s->flags);
++			igt_waitchildren();
++		}
++
++		igt_subtest_f("multigpu-many-execqueues-many-vm-%s", s->name) {
++			xe_multi_fork_foreach_gpu(xe, gpu_idx)
++				xe_for_each_engine(fd, hwe)
++					test_exec(fd, hwe, 16, 32, 16, s->flags);
++			igt_waitchildren();
++		}
++
++		igt_subtest_f("multigpu-no-exec-%s", s->name) {
++			xe_multi_fork_foreach_gpu(xe, gpu_idx)
++				xe_for_each_engine(fd, hwe)
++					test_exec(fd, hwe, 1, 0, 1, s->flags);
++			igt_waitchildren();
++		}
++	}
  }
- 
--void gem_require_multigpu(int count)
-+static void print_gpus(int count, int gpu_num)
- {
- 	struct igt_devices_print_format fmt = {
- 		.type = IGT_PRINT_SIMPLE,
-@@ -26,14 +35,101 @@ void gem_require_multigpu(int count)
- 	};
- 	int devices;
- 
--	if (igt_device_filter_count() >= count)
--		return;
--
- 	igt_info("PCI devices available in the system:\n");
- 
- 	igt_devices_scan(true);
- 	devices = igt_device_filter_pci();
- 	igt_devices_print(&fmt);
- 
--	igt_skip("Test requires at least %d GPUs, %d available.\n", count, devices);
-+	igt_info("Test requires at least %d GPUs, got %d, available %d\n", count, gpu_num, devices);
-+}
-+
-+/**
-+ * gem_require_multigpu:
-+ * @count: minimum number of GPUs required
-+ *
-+ * Function checks number of filtered GPU cards.
-+ * On error skips and prints available GPUs found on PCI bus.
-+ */
-+void gem_require_multigpu(int count)
-+{
-+	int gpu_count = igt_device_filter_count();
-+
-+	if (gpu_count >= count)
-+		return;
-+
-+	print_gpus(count, gpu_count);
-+	igt_skip_on(gpu_count < count);
-+}
-+
-+/**
-+ * multigpu_acquire_view:
-+ * @gpus_wanted: minimum number of GPUs required
-+ * @chipset: chipset, e.g. DRIVER_XE or DRIVER_INTEL
-+ *
-+ * Function prepares filtered view for GPU cards with given chipset.
-+ * On error skips and prints available GPUs found on PCI bus.
-+ * Returns: number of GPUs found
-+ */
-+int multigpu_acquire_view(int gpus_wanted, unsigned int chipset)
-+{
-+	int gpu_count = drm_prepare_filtered_multigpu(chipset);
-+
-+	igt_assert(gpus_wanted > 1);
-+	if (gpu_count >= gpus_wanted)
-+		return gpu_count;
-+
-+	print_gpus(gpus_wanted, gpu_count);
-+	igt_skip_on(gpu_count < gpus_wanted);
-+
-+	return gpu_count; /* non-reachable */
-+}
-+
-+/**
-+ * multigpu_open_another:
-+ * @idx: index of GPU card, starting from 0
-+ * @chipset: chipset, e.g. DRIVER_XE or DRIVER_INTEL
-+ *
-+ * Function opens GPU card with drm_open_driver_another(). For i915 it checks
-+ * if opened card is functional. Skips on errors.
-+ *
-+ * Returns: opened fd for @idx card
-+ */
-+int multigpu_open_another(int idx, unsigned int chipset)
-+{
-+	int fd;
-+
-+	igt_assert(idx >= 0);
-+	fd = drm_open_driver_another(idx, chipset);
-+
-+	if (chipset == DRIVER_INTEL)
-+		igt_require_gem(fd);
-+
-+	return fd;
-+}
-+
-+/**
-+ * multigpu_open_filtered_card:
-+ * @idx: index of GPU card, starting from 0
-+ * @chipset: chipset, e.g. DRIVER_XE or DRIVER_INTEL
-+ *
-+ * Function opens GPU card prepared with filtered view. It also checks if
-+ * opened card agrees with desired chipset or checks if opened card is
-+ * functional. Skips on errors.
-+ *
-+ * Returns: opened fd for @idx card
-+ */
-+int multigpu_open_filtered_card(int idx, unsigned int chipset)
-+{
-+	int fd;
-+
-+	igt_assert(idx >= 0);
-+	fd = drm_open_filtered_card(idx);
-+	igt_require(fd != -1);
-+	if (chipset == DRIVER_XE)
-+		igt_require_xe(fd);
-+	else if (chipset == DRIVER_INTEL)
-+		igt_require_gem(fd);
-+
-+	return fd;
- }
-diff --git a/lib/intel_multigpu.h b/lib/intel_multigpu.h
-index 0ebc73e4a..3fbf83e21 100644
---- a/lib/intel_multigpu.h
-+++ b/lib/intel_multigpu.h
-@@ -12,6 +12,10 @@
- void gem_require_multigpu(int count);
- int gem_multigpu_count_class(int class);
- 
-+int multigpu_acquire_view(int min_gpus_wanted, unsigned int chipset);
-+int multigpu_open_another(int idx, unsigned int chipset);
-+int multigpu_open_filtered_card(int idx, unsigned int chipset);
-+
- #define igt_foreach_gpu(fd__, id__) \
- 	for (int igt_unique(i) = 0, fd__; \
- 		(fd__ = __drm_open_driver_another(igt_unique(i)++, id__)) >= 0; \
-@@ -19,8 +23,14 @@ int gem_multigpu_count_class(int class);
- 
- #define igt_multi_fork_foreach_gpu(__fd, __id) \
- 	igt_multi_fork(igt_unique(__i), gem_multigpu_count_class(__id)) \
--		for (int __fd = drm_open_driver_another(igt_unique(__i), __id); \
-+		for (int __fd = multigpu_open_another(igt_unique(__i), __id); \
- 			__fd >= 0; \
- 			close(__fd), __fd = -1) \
- 
-+#define xe_multi_fork_foreach_gpu(__fd, __gpu_index) \
-+	igt_multi_fork(__gpu_index, multigpu_acquire_view(2, DRIVER_XE)) \
-+		for (int __fd = multigpu_open_filtered_card(__gpu_index, DRIVER_XE); \
-+			__fd >= 0; \
-+			drm_close_driver(__fd), __fd = -1) \
-+
- #endif /* __INTEL_MULTIGPU_H */
 -- 
 2.42.0
 
