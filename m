@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D79A4C46CD2
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 05:28:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61170C46CD2
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 05:49:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A0AB112650;
-	Tue, 30 Jan 2024 05:28:29 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4AF66112650
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2024 05:28:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F1158112131;
+	Tue, 30 Jan 2024 05:49:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5DBD4112131
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2024 05:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706592506; x=1738128506;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=hAKZDLvh3JgWInH9zbze+LezSDbpNIwKds1sLpdM+w0=;
- b=m4McmWh9oBteTXF6Rhkc1ccmCg2Fg2sRFzutsoTDNVkvHwaqigMX9ZIp
- Sq2o4+V7udjQGhZ7VVBT2OQvtClGt2jPhosKNj64djvN13yNZlSjQJQVK
- kxcgxTT1Av7Pmvrfkpo6Ie20xXLFka9thwWSHiLMkMhlJfTsxTkWSTLsk
- Z2dFFGisu4klh6xZlCCzTnR5kHQic/86GL0HoAhS1mVEyKtfHgEwQF00N
- J0P98iwr8TMY3RCdhcYbkoTt0ikD2tDfvuxLvIkSVdaK9uXuaHo/2gTBG
- 0AjZVOSH8oFqCj4p8l7f+2YpdN381Y2ExbzC1fi3Nl/bC9VDMm/8M1HaV w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="434351195"
-X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="434351195"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2024 21:28:26 -0800
+ t=1706593754; x=1738129754;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=3v6K0rYmOYOB/aBX3VTyF+1wrdACiPVq3pIv+eJoL00=;
+ b=DknnWGM8DF7uiuGErcbPDeehGBec0iz8h4Cria6wqvQsckCjHYkFGxd/
+ R6gRwP2bFQHdjZvtOxpAsVzPUIQM7IhigIt/zjOVf4pyceIROGIUVbnI8
+ Ty6YCw9LOgQ0BRzYWpNB0uwP4r9LEVOyLzoLqdLh5ek+XTYtkZvYNJYHH
+ IjAqb2YOgnR8H9E9iZNYOodc5A09t2SAUEmiM5F8ItgXrDdCgM1ZWiUOD
+ NRAWxHQKJcJJV2KepfPQlu1HzA49V8iwWb0PQkftsqOJCW/d3tpLQuHsQ
+ lTCyZjYBB6fL43fQfNe5KXB/UjtHEyWmKkrVLikdlL0uZw6BN/UImE/dX A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="393609591"
+X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="393609591"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jan 2024 21:49:12 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="36382616"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2024 21:28:25 -0800
-From: Kunal Joshi <kunal1.joshi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
+   d="scan'208";a="3603115"
+Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jan 2024 21:49:11 -0800
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 2/2] HAX: please do not merge
-Date: Tue, 30 Jan 2024 11:07:56 +0530
-Message-Id: <20240130053756.1478286-3-kunal1.joshi@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240130053756.1478286-1-kunal1.joshi@intel.com>
-References: <20240130053756.1478286-1-kunal1.joshi@intel.com>
+Subject: [i-g-t v5 0/9] tests/kms_vrr: Modify kms_vrr to allow flicker
+ profiling
+Date: Tue, 30 Jan 2024 11:12:26 +0530
+Message-ID: <20240130054235.533132-1-bhanuprakash.modem@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -56,29 +56,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Only for testing please don't merge
+Do some cleanup in the kms_vrr test and add some optional command line
+arguments to alter the target refresh rate for the test. This allows us
+to profile VRR flicker on panels at the low end of the refresh range.
+This series also adds a new 'maxmin' subtest which alternates the rate
+between max and min every frame.
 
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+V2:
+- Address the review comments from Bhanu
+- Add a new maxmin subtest which alternates the rate b/w max & min every frame.
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 662e49cc3..d0a0a9df1 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -1,6 +1,6 @@
- # Try to load the driver if it's not available yet.
- igt@i915_module_load@load
--
-+igt@kms_feature_discovery@display
- # Keep alphabetically sorted by default
- igt@core_auth@basic-auth
- igt@debugfs_test@read_all_entries
--- 
-2.25.1
+V3: As communicated in IRC channel #igt, I am doing this revision on behalf of
+Sean Paul.
+- Rebase
+- Add testplan documentaion for 'maxmin' subtest
+- Minor cleanups
+- Hax patch to test VRR in BAT
+
+Bhanuprakash Modem (1):
+  HAX/DO_NOT_MERGE: Test VRR in BAT
+
+Sean Paul (8):
+  tests/kms_vrr: Move fb0 and fb1 to an array
+  tests/kms_vrr: Move vtest_ns into data_t
+  tests/kms_vrr: Allow test rate to be altered from the command line
+  tests/kms_vrr: Allow test duration to be specified from the command
+    line
+  tests/kms_vrr: Change the pattern displayed in the test
+  tests/kms_vrr: Add ability to flip static image for flicker profiling
+  tests/kms_vrr: Allow for multiple rates in a test
+  tests/kms_vrr: Add a max/min test to oscillate between rates
+
+ tests/intel-ci/fast-feedback.testlist    |   7 +
+ tests/intel-ci/xe-fast-feedback.testlist |   7 +
+ tests/kms_vrr.c                          | 272 ++++++++++++++++-------
+ 3 files changed, 205 insertions(+), 81 deletions(-)
+
+--
+2.43.0
 
