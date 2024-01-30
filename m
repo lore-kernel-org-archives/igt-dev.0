@@ -4,42 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4A5AC46CD2
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 05:28:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D0BDC47DDB
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 05:28:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 85B3D11238B;
-	Tue, 30 Jan 2024 05:28:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4C0E5112DA2;
+	Tue, 30 Jan 2024 05:28:26 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6552B11238B
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E192211238B
  for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2024 05:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1706592504; x=1738128504;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=A4zvRdSTIMhs5XIngKGWejw2dhyJlDGrMKX5aqYKYsM=;
- b=g0wZ04RgbUloH1u4F+r4tIEJ0oBPq3ovGGvYKJgSDHP7qdmyY/GzceeX
- MJuAtymt807noJd1SREh4/YuUq+D3feNlBEzwVrGRio3FAm8cVsCUOjwo
- +eBoF5qD0q2hZwj+fCt5+Z53UV7xN5N7QZfxdUttMpxzZHxKGyn6eojTc
- yz52K8FDt0xypL5HKY5sVEluUkIGPEbRRH1P//NOgsp4QnZogRBmYCKc0
- 64LFPh3w8aFOjNgrSznk2eyKj+8TTurDySxfCOpazvncAXxXOZ19H1OGp
- ZtbZ3kDAGqangMM0f0Q26hrP2zN1jkWevOQ0zf7YXX0KBDgwkbvycbHjA g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="434351193"
-X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="434351193"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=MCI42EPcCzfr25QsjIJAQXlJ3cAokxpfMumxjY0XhEI=;
+ b=WvexIquTfsxlbKT2eGROBqDNb4eW7a/9qPUyjZrgbwg+jLei5k5la9sI
+ wGqLdqeziN7Z0X/ZaIvL7iyQbhS4NVwZsP88Kv9uBYrChFk/1yBQZtwnr
+ Sr9B1LJMi5hI8/gerhnj/k4qT5KvvPl1tiMbOVAc9IQ5x906aTng+fTo+
+ renItweFV769SCHaM/uAvaCzR27r0kRFUbzMRFqwhHiro20YQRv898g4H
+ Y87OSqjv6NOlcoUJ19iCCuo84cBD32HKfPOlT74IjvcXUpJoQwLz5+dcA
+ PBD4egggLepnrU7QvxQWIKmIJKQM6o+Y2M8xeUZ3fRRIxBSgOv9DlHgZX g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="434351194"
+X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="434351194"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2024 21:28:23 -0800
+ 29 Jan 2024 21:28:24 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="36382589"
+X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="36382602"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2024 21:28:22 -0800
+ 29 Jan 2024 21:28:24 -0800
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 0/2] make display test dynamic
-Date: Tue, 30 Jan 2024 11:07:54 +0530
-Message-Id: <20240130053756.1478286-1-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 1/2] tests/kms_feature_discovery: make display test
+ dynamic
+Date: Tue, 30 Jan 2024 11:07:55 +0530
+Message-Id: <20240130053756.1478286-2-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240130053756.1478286-1-kunal1.joshi@intel.com>
+References: <20240130053756.1478286-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,14 +68,84 @@ also reducing unwanted skips.
 anyone who needs to check number of displays for a particular
 config can check kms_feature_discovery@display test result.
 
-Kunal Joshi (2):
-  tests/kms_feature_discovery: make display test dynamic
-  HAX: please do not merge
+v2: skip if 0 outputs
+    test name fix
 
- tests/intel-ci/fast-feedback.testlist |  2 +-
- tests/kms_feature_discovery.c         | 36 ++++++---------------------
- 2 files changed, 8 insertions(+), 30 deletions(-)
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/kms_feature_discovery.c | 36 +++++++----------------------------
+ 1 file changed, 7 insertions(+), 29 deletions(-)
 
+diff --git a/tests/kms_feature_discovery.c b/tests/kms_feature_discovery.c
+index 5bca9ad76..2dd4efea4 100644
+--- a/tests/kms_feature_discovery.c
++++ b/tests/kms_feature_discovery.c
+@@ -47,10 +47,6 @@
+  * SUBTEST: display
+  * Description: Make sure that we have display support.
+  *
+- * SUBTEST: display-%dx
+- * Description: Make sure that we have display support with %arg[1]
+- * 		outputs connected.
+- *
+  * SUBTEST: chamelium
+  * Description: Make sure that Chamelium is configured and reachable.
+  * Functionality: feature_discovery, chamelium
+@@ -69,8 +65,6 @@
+  * Description: Make sure that we have DP-MST configuration.
+  * Functionality: feature_discovery, mst
+  * Test category: functionality test
+- *
+- * arg[1].values: 1, 2, 3, 4
+  */
+ 
+ static igt_display_t display;
+@@ -92,11 +86,6 @@ igt_main {
+ 			igt_display_require(&display, fd);
+ 		}
+ 
+-		igt_describe("Make sure that we have display support.");
+-		igt_subtest("display") {
+-			/* will skip because of the fixture */
+-		}
+-
+ 		igt_subtest_group {
+ 			volatile int output_count = 0;
+ 			igt_output_t *output;
+@@ -117,26 +106,15 @@ igt_main {
+ 				for (int i = 0; i < display.n_outputs; i++) {
+ 					igt_output_set_pipe(&display.outputs[i], PIPE_NONE);
+ 				}
++				igt_require_f(output_count >= 0, "No display's connected\n");
+ 			}
+ 
+-			igt_describe("Make sure that we can use at least 1 output at the same time.");
+-			igt_subtest("display-1x") {
+-				igt_require(output_count >= 1);
+-			}
+-
+-			igt_describe("Make sure that we can use at least 2 outputs at the same time.");
+-			igt_subtest("display-2x") {
+-				igt_require(output_count >= 2);
+-			}
+-
+-			igt_describe("Make sure that we can use at least 3 outputs at the same time.");
+-			igt_subtest("display-3x") {
+-				igt_require(output_count >= 3);
+-			}
+-
+-			igt_describe("Make sure that we can use at least 4 outputs at the same time.");
+-			igt_subtest("display-4x") {
+-				igt_require(output_count >= 4);
++			igt_describe("Make sure that we can use at least n output at the same time.");
++			igt_subtest_with_dynamic("display") {
++				int i;
++				for(i = 1; i <= output_count; i++)
++					igt_dynamic_f("%dx", i)
++						igt_require(output_count >= i);
+ 			}
+ 		}
+ 
 -- 
 2.25.1
 
