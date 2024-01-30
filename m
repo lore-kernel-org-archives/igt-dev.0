@@ -4,42 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCD6FC46CD2
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 05:49:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92D5EC47DA9
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jan 2024 05:49:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5585F112DB8;
-	Tue, 30 Jan 2024 05:49:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 46DC0112DBA;
+	Tue, 30 Jan 2024 05:49:26 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 34F1D112DB5
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2024 05:49:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 281C7112DB9
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2024 05:49:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706593762; x=1738129762;
+ t=1706593764; x=1738129764;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=paG5JXRlqKuIV78gRYaYB+5TT33tjmWX87B/JNBiBnQ=;
- b=jlMURQPjGOwzTCAKdiWyGu9GQcB/YhUAUPsFDsuPcRblqElnIu0wMvOG
- ix1pwr6Uw0DATdGmBxtMOUCZHZxQThqgIz8Ywb+6cVLdkbqw95eBcEgOE
- sZdGGXktLs7KKeFoJj18eR9kNR98VO+PkB8OlO/tpey3DvW83hW+ALTqQ
- XJjOqd8DC9OV8nlmdCXhPldYm7/PU4umrGtChnZVHQysHH89qxvgzdILI
- ZdA22JRJEC96K1LV/9WiMKg8ZzNtDOoU0ctNCeuVwE54MKx/lsG2GO5S1
- fD/SQEOpJV81BYryWWezW1pweAlbCKH5tEA4KFwQxO5TRUSFDzBdaRo+i Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="393609637"
-X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="393609637"
+ bh=FsJP5Vz+u2iewkX/y9MRcXSDVZfPbDztcdrAnCaCLE0=;
+ b=hFE25wvynAUKCbiGQqAjX1F4MMwlxoxk9pZzsdQXRfS7M89TNMFAFfe4
+ zJjq/GCQmLAB4G4+Jc5t2o0DhKCeZYTlYYoYeR51PH593pIZh47x0nVGX
+ sE2CTRTcFShe3SNgDfj82vmhF0F7asiqDjLpt0t/slyKMIyT5RnpsRCn5
+ HM2VLEsF83JBG4F30TncPbpsFc4z7UIVzvrCRiLLZSTRzon8V/3X8SYni
+ 2yFhjGipTYYhZeukV3837wD1p8n9Pv9LfzikJ+X0ORaeYo680dI5xQhNN
+ oLNZbqktyi8pKr94YHKOFsBuJqKJtOPxr88bndV/LTiHYzVeyIB4R0QAe A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="393609649"
+X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; d="scan'208";a="393609649"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2024 21:49:21 -0800
+ 29 Jan 2024 21:49:23 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
-   d="scan'208";a="3603151"
+   d="scan'208";a="3603163"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2024 21:49:20 -0800
+ 29 Jan 2024 21:49:21 -0800
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [i-g-t v5 5/9] tests/kms_vrr: Change the pattern displayed in the test
-Date: Tue, 30 Jan 2024 11:12:31 +0530
-Message-ID: <20240130054235.533132-6-bhanuprakash.modem@intel.com>
+Subject: [i-g-t v5 6/9] tests/kms_vrr: Add ability to flip static image for
+ flicker profiling
+Date: Tue, 30 Jan 2024 11:12:32 +0530
+Message-ID: <20240130054235.533132-7-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240130054235.533132-1-bhanuprakash.modem@intel.com>
 References: <20240130054235.533132-1-bhanuprakash.modem@intel.com>
@@ -63,95 +64,124 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Sean Paul <seanpaul@chromium.org>
 
-Upgrade the tiny box in the top left corner to some vertical color
-bars with horizontal grey and white bars at the bottom.
+Add a --static-image argument which will paint both framebuffers
+identically. This allows us to profile VRR flicker on the panel.
 
 v2:
-- Removed hardcoded bar heights
-- Made number of vertical bars configurable
-- Fill in the entire screen horizontally
+- Add short opt to the main callsite (Bhanu)
 v3: (Bhanu)
 - Rebase
-- Drop static variable
+- Nit: 's/d:r:s:/drs:/'
 
 Cc: Mark Yacoub <markyacoub@chromium.org>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Sean Paul <seanpaul@chromium.org>
 Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vrr.c | 45 +++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 41 insertions(+), 4 deletions(-)
+ tests/kms_vrr.c | 53 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 33 insertions(+), 20 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 86bc144ed..cec263bb5 100644
+index cec263bb5..30a279c56 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -258,11 +258,31 @@ static void set_vrr_on_pipe(data_t *data, enum pipe pipe,
- 						 NULL) == 0);
- }
+@@ -115,6 +115,7 @@ typedef struct data {
+ 	drmModeModeInfo switch_modes[RR_MODES_COUNT];
+ 	vtest_ns_t vtest_ns;
+ 	uint64_t duration_ns;
++	bool static_image;
+ } data_t;
  
-+static void paint_bar(cairo_t *cr, unsigned int x, unsigned int y,
-+		      unsigned int w, unsigned int h,
-+		      unsigned int bar, unsigned int num_bars,
-+		      float start_r, float start_g, float start_b,
-+		      float end_r, float end_g, float end_b)
-+{
-+	float progress = (float)bar / (float)num_bars;
-+	float color[] = {
-+		start_r + progress * (end_r - start_r),
-+		start_g + progress * (end_g - start_g),
-+		start_b + progress * (end_b - start_b)
-+	};
-+	igt_paint_color(cr, x, y, w, h,
-+			color[0] > 0 ? color[0] : 0.0,
-+			color[1] > 0 ? color[1] : 0.0,
-+			color[2] > 0 ? color[2] : 0.0);
-+}
-+
- /* Prepare the display for testing on the given pipe. */
- static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
- {
-+	unsigned int num_bars = 256;
+ typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, uint32_t);
+@@ -283,6 +284,7 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
  	drmModeModeInfo mode;
  	cairo_t *cr;
-+	int bar_width, bar_height, bar_remaining, horizontal_bar_height;
+ 	int bar_width, bar_height, bar_remaining, horizontal_bar_height;
++	int num_painted_fbs;
  
  	mode = *igt_output_get_mode(output);
  
-@@ -288,11 +308,28 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
- 			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
- 			    0.50, 0.50, 0.50, &data->fb[1]);
- 
-+	bar_width = mode.hdisplay / num_bars;
-+	horizontal_bar_height = mode.vdisplay / 8;
-+	bar_height = mode.vdisplay - horizontal_bar_height * 2;
-+	bar_remaining = mode.hdisplay % bar_width;
- 	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[0]);
+@@ -312,25 +314,31 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 	horizontal_bar_height = mode.vdisplay / 8;
+ 	bar_height = mode.vdisplay - horizontal_bar_height * 2;
+ 	bar_remaining = mode.hdisplay % bar_width;
+-	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[0]);
+-	for (int j = 0; j < num_bars; ++j) {
+-		unsigned int width = bar_width;
+-		if (j == num_bars - 1)
+-			width += bar_remaining;
 -
--	igt_paint_color(cr, 0, 0, mode.hdisplay / 10, mode.vdisplay / 10,
--			1.00, 0.00, 0.00);
--
-+	for (int j = 0; j < num_bars; ++j) {
-+		unsigned int width = bar_width;
-+		if (j == num_bars - 1)
-+			width += bar_remaining;
+-		/* Red->Green->Blue gradient */
+-		if (j < num_bars / 2)
+-			paint_bar(cr, j * bar_width, 0, width, bar_height,
+-				  j, num_bars / 2,
+-				  1.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+-		else
+-			paint_bar(cr, j * bar_width, 0, width, bar_height,
+-				  j - num_bars / 2, num_bars / 2,
+-				  0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
++	num_painted_fbs = data->static_image ? 2 : 1;
++	for (int i = 0; i < num_painted_fbs; ++i) {
++		cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[i]);
++		for (int j = 0; j < num_bars; ++j) {
++			unsigned int width = bar_width;
++			if (j == num_bars - 1)
++				width += bar_remaining;
 +
-+		/* Red->Green->Blue gradient */
-+		if (j < num_bars / 2)
-+			paint_bar(cr, j * bar_width, 0, width, bar_height,
-+				  j, num_bars / 2,
-+				  1.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-+		else
-+			paint_bar(cr, j * bar_width, 0, width, bar_height,
-+				  j - num_bars / 2, num_bars / 2,
-+				  0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
-+	}
-+	igt_paint_color(cr, 0, mode.vdisplay - horizontal_bar_height,
-+			mode.hdisplay, horizontal_bar_height, 1.00, 1.00, 1.00);
- 	igt_put_cairo_ctx(cr);
++			/* Red->Green->Blue gradient */
++			if (j < num_bars / 2)
++				paint_bar(cr, j * bar_width, 0, width,
++					  bar_height,
++					  j, num_bars / 2,
++					  1.0, 0.0, 0.0, 0.0, 1.0, 0.0);
++			else
++				paint_bar(cr, j * bar_width, 0, width,
++					  bar_height,
++					  j - num_bars / 2, num_bars / 2,
++					  0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
++		}
++		igt_paint_color(cr, 0, mode.vdisplay - horizontal_bar_height,
++				mode.hdisplay, horizontal_bar_height,
++				1.00, 1.00, 1.00);
++		igt_put_cairo_ctx(cr);
+ 	}
+-	igt_paint_color(cr, 0, mode.vdisplay - horizontal_bar_height,
+-			mode.hdisplay, horizontal_bar_height, 1.00, 1.00, 1.00);
+-	igt_put_cairo_ctx(cr);
  
  	/* Take care of any required modesetting before the test begins. */
+ 	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+@@ -725,6 +733,9 @@ static int opt_handler(int opt, int opt_index, void *_data)
+ 	case 'r':
+ 		data->vtest_ns.rate_ns = rate_from_refresh(atoi(optarg));
+ 		break;
++	case 's':
++		data->static_image = true;
++		break;
+ 	}
+ 	return IGT_OPT_HANDLER_SUCCESS;
+ }
+@@ -732,16 +743,18 @@ static int opt_handler(int opt, int opt_index, void *_data)
+ static const struct option long_opts[] = {
+ 	{ .name = "duration", .has_arg = true, .val = 'd', },
+ 	{ .name = "refresh-rate", .has_arg = true, .val = 'r', },
++	{ .name = "static-image", .has_arg = false, .val = 's', },
+ 	{}
+ };
+ 
+ static const char help_str[] =
+ 	"  --duration <duration-seconds>\t\tHow long to run the test for\n"
+-	"  --refresh-rate <refresh-hz>\t\tThe refresh rate to flip at\n";
++	"  --refresh-rate <refresh-hz>\t\tThe refresh rate to flip at\n"
++	"  --static-image\t\tFlip a static image for flicker profiling\n";
+ 
+ static data_t data;
+ 
+-igt_main_args("dr:", long_opts, help_str, opt_handler, &data)
++igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
+ {
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
 -- 
 2.43.0
 
