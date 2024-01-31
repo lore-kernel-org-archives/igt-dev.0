@@ -4,44 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FCF3C47258
-	for <igt-dev@archiver.kernel.org>; Wed, 31 Jan 2024 10:51:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE197C47258
+	for <igt-dev@archiver.kernel.org>; Wed, 31 Jan 2024 10:52:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D8BD910F571;
-	Wed, 31 Jan 2024 10:51:55 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 46DF410F571
- for <igt-dev@lists.freedesktop.org>; Wed, 31 Jan 2024 10:51:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7F3FD113B17;
+	Wed, 31 Jan 2024 10:52:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8783F113B17
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 Jan 2024 10:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706698314; x=1738234314;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=jaHizhGi6hq3f/+THAWlC5EEZNN1oO1bBczIvl7+fOo=;
- b=bQdB0phzUWGy+dNVhNaoJ8rF8XoAiGO2wVrKCDhr9TSlo8v6LVgwrrJD
- VHAKfDybLE6YdPRrfNr2n3vIXgsnRiaxhfobaQPIJ0tjQX4hy8r11D4Tz
- X52dlhqUxLgIpFiamUzVDYjRQAaccBnxDE/oLDUKxnpzk3t0QtKmSeNNi
- NWPQZexWcPvFVVuQAGyWQ7jJdXlgkTSIg+WyADxkEyOX0RP7oSqcxKUIt
- 0oL5NbWvZbb0qC1JmWtPeYv0KODWbyopZd1Rup6Ce2dajQfSJx4ZKe7eK
- i6UTSXD4l1vh4ALTM7HuXMIPEMarS96MoQNGIV70wm3kgxcF/v3J4+O6s Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="10666429"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="10666429"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2024 02:51:54 -0800
+ t=1706698320; x=1738234320;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Wy1j2cvrrdChr8WI7l0RNsZXvXVUGjPxmcqmZT+gpi4=;
+ b=XsjzmF7oEMCX5y0IJrs6Ip8r+6Oztg++Kl5R5r2NJPelehqRLet2Yrm+
+ w5buP7MTu3xxtafO3zf0gvaN5KwHZhSz81Jgi4SOqOJBSsu8sHFnN/jx1
+ W6ZWg+jLUd9+scGJiezWUKn8pXQwKL04aIEAjS1vuQWLDV8BHArqnfW73
+ Zl3D7ApFliO+VYArNG6nIj6gwnNoKWxrzK32OB49Io6UD57sV1mILQ/Q1
+ puDByTFYaFbCWL7HRamIBx4NvbFBgbxweRrGkEPuyBrv501VSb0tzLv27
+ l9UaZYR2O82aUsubZW76hEQxgixTGeswWpbaWHk8WtSU+aEBfCU+viu3P g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="10200940"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="10200940"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jan 2024 02:51:58 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="911753068"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="911753068"
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="858776708"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="858776708"
 Received: from mmackowi-mobl.ger.corp.intel.com (HELO localhost)
  ([10.246.18.126])
- by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2024 02:51:52 -0800
+ by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jan 2024 02:51:56 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 0/4] Fill block-copy test gap for unaligned sizes
-Date: Wed, 31 Jan 2024 11:51:44 +0100
-Message-Id: <20240131105148.182261-1-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 1/4] lib/intel_blt: Use object pitch and aligned height
+ on png write
+Date: Wed, 31 Jan 2024 11:51:45 +0100
+Message-Id: <20240131105148.182261-2-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240131105148.182261-1-zbigniew.kempczynski@intel.com>
+References: <20240131105148.182261-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -57,26 +60,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Karolina Drobnik <karolina.drobnik@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Using 512x512 resolution for testing is too optimistic and hides intel_blt
-limitation for using different (smaller) resolutions which also might
-not be aligned to expected stride and height.
+Pitch and buffer height on tiled surfaces might be bigger than
+image width and height so dump memory to png using pitch size
+instead width and aligned height instead height.
 
-Address this by adding few helpers, change blt buffer creation size
-calculation and add "increment" version of the test in xe_ccs.
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Karolina Drobnik <karolina.drobnik@intel.com>
+---
+ lib/intel_blt.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Zbigniew Kempczyński (4):
-  lib/intel_blt: Use object pitch and aligned height on png write
-  lib/intel_blt: Add helpers for calculating stride and aligned height
-  lib/intel_blt: Change surface size calculation
-  tests/xe-ccs: Add tests which exercise small to large blit sizes
-
- lib/intel_blt.c      |  69 ++++++++++++++++++++-
- tests/intel/xe_ccs.c | 144 +++++++++++++++++++++++++++++++++----------
- 2 files changed, 179 insertions(+), 34 deletions(-)
-
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index 25d251c4f8..951c364d5f 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -2019,6 +2019,11 @@ void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
+ 	char filename[FILENAME_MAX];
+ 	bool is_xe = is_xe_device(fd);
+ 
++	if (obj->tiling) {
++		width = obj->pitch;
++		height = blt_get_aligned_height(height, obj->tiling);
++	}
++
+ 	snprintf(filename, FILENAME_MAX-1, "%d-%s-%s-%ux%u-%s.png",
+ 		 run_id, fileid, blt_tiling_name(obj->tiling), width, height,
+ 		 obj->compression ? "compressed" : "uncompressed");
 -- 
 2.34.1
 
