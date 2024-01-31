@@ -4,46 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 922C2C4828D
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8830AC47DB3
 	for <igt-dev@archiver.kernel.org>; Wed, 31 Jan 2024 18:12:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 80A8510FBD8;
-	Wed, 31 Jan 2024 18:12:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5AC2A10F5EE;
+	Wed, 31 Jan 2024 18:12:22 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C5FD910FBD8;
- Wed, 31 Jan 2024 18:12:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 134D410F5EE;
+ Wed, 31 Jan 2024 18:12:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706724743; x=1738260743;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=zPtf2Bzzpvw0AO/Kq3umMZB53HrdTvZ9DM7OLh0cB44=;
- b=KQI7WVboqv0maKzA8wn2pGDeK+PPgeanAP3K2mz7LU6vLXNJGImcgXgQ
- rspf1ad9Y1qwwZ8TqXsRpsBrho3xQa/k6TVDISrNGHg0Rm1IvOxqK6P6r
- iS09srZ6BG95uH4Z9DreYFTi67aINXU2Nx7IS7DQObY87oKP5XYsmJGNV
- b3Om58mhxvoiDTBPBfcRlK+1GesV6YwfrKFSPdJm3WvMNFN8HZV/+ohB8
- gBl8VgDoN0lVefg499LvrzjRubMHVgOPQ3723zQewej7h50/5neksZS6d
- DEr4yyL50isNiyS/HOzMkyz3VykqXj/0btEBzoKadc0qWvZsy1CSUwsJy w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="17067191"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="17067191"
+ t=1706724742; x=1738260742;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=qJrqIQ1suxBKctsI+S6dsFEyilVKQPEEUX9fOBEv/JE=;
+ b=AdGivXiJuNblxSrbQUAHexQUPUNa874VUSeeUwJ4eIbaZ0qfRNLX8miM
+ igk9l16Tqg9oh+yK6TkVYs1RmQW/xZSK8HRIVX1wsAhT/BwvHkSYoHZ9I
+ zq2VHhedKlogvDyo+FZoOvyHdmYzG9QYY6ZXQUT12FS7ugJ5eBdnuEfr1
+ LRpAmwdUyuVGoM2ZPkFreGhbEndCeP3cggGI6Ps5YwN3QChmyfXmfvO/H
+ oFcfMN7PKgOylhlUPGumH/qFTz6wMlmpTzV3aem014ER1fBSx/P2GNqRU
+ I62ruyPQM8mUgO4X93W00jkurNZaEMw//1Rx0M/LB+kRqf+4i5X4VyBeH A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="17067184"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="17067184"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2024 10:12:23 -0800
+ 31 Jan 2024 10:12:21 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="931930493"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="931930493"
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="931930475"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="931930475"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO
  jkrzyszt-mobl2.intranet) ([10.213.2.5])
  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2024 10:12:20 -0800
+ 31 Jan 2024 10:12:17 -0800
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 1/6] lib/kunit: Skip on empty list of test cases
-Date: Wed, 31 Jan 2024 19:03:48 +0100
-Message-ID: <20240131181156.80571-9-janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t v2 0/6] lib/kunit: Support writable filter* parameters
+ of kunit module
+Date: Wed, 31 Jan 2024 19:03:47 +0100
+Message-ID: <20240131181156.80571-8-janusz.krzysztofik@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240131181156.80571-8-janusz.krzysztofik@linux.intel.com>
-References: <20240131181156.80571-8-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -62,28 +61,43 @@ Cc: Lucas De Marchi <lucas.demarchi@intel.com>, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-If loading the base KUnit module in list mode succeeds but our KTAP
-parser or test suite filter returns an empty list of test cases then,
-instead of calling igt_skip, we now unintentionally fall back to legacy
-mode as if the module didn't support filter parameters.  Fix it.
+Instead of wasting resources on reloading the base Kunit module each time
+a different set of filter parameters is needed, try to write the required
+values to sysfs representation of those parameters.  If that fails (e.g.
+on older LTS kernels with read-only filter parameters), fall back to
+reloading the module.
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- lib/igt_kmod.c | 1 +
- 1 file changed, 1 insertion(+)
+This change also provides a workaround for the issue of impossibility to
+unload the base Kunit module on Xe platforms, available as soon as the
+module supports writable filter parameters.
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 250ab2107b..ad69173151 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -1163,6 +1163,7 @@ static void kunit_get_tests(struct igt_list_head *tests,
- 
- 	igt_skip_on_f(err,
- 		      "KTAP parser failed while getting a list of test cases\n");
-+	igt_skip_on(igt_list_empty(tests));
- }
- 
- static void __igt_kunit(struct igt_ktest *tst,
+While being at it, fine tune processing of skips on errors during test
+case list collection phase.
+
+v2: Work around ineffective writes of empty strings to sysfs module
+    parameter files (Lucas) by using human readable non-empty strings that
+    give the same results as default NULLs,
+  - drop fallback to reload of base Kunit module method if assigning new
+    values to module parameters via sysfs fails (Lucas), instead use the
+    existing fallback to blind execution like if getting a list of test
+    cases was not supported at all,
+  - split move of open_parameters() helper up in the source file as well
+    as cleanup of base KUnit module unloading to separate patches (Kamil),
+  - skip on empty list of test cases (new patch),
+  - address the issue of commit description suggesting two separate
+    changes combined in one patch (Kamil).
+
+Janusz Krzysztofik (6):
+  lib/kunit: Skip on empty list of test cases
+  lib/kmode: Prepare open_parameters() helper for reuse by kunit
+  lib/kunit: Unload base KUnit module only before reloading it
+  lib/kunit: Support writable filter* parameters of kunit module
+  lib/kunit: Report early kernel taints explicitly
+  lib/kunit: Process module remove error after list errors
+
+ lib/igt_kmod.c | 138 +++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 98 insertions(+), 40 deletions(-)
+
 -- 
 2.43.0
 
