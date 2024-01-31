@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A8A4C47258
-	for <igt-dev@archiver.kernel.org>; Wed, 31 Jan 2024 13:26:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22F80C47DB3
+	for <igt-dev@archiver.kernel.org>; Wed, 31 Jan 2024 13:26:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E7EE310E24D;
-	Wed, 31 Jan 2024 13:26:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C5CE210FA06;
+	Wed, 31 Jan 2024 13:26:20 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3BF5610E24D
- for <igt-dev@lists.freedesktop.org>; Wed, 31 Jan 2024 13:26:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C990810FA14
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 Jan 2024 13:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706707576; x=1738243576;
+ t=1706707580; x=1738243580;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=PJ9iZ9t3rkSY9fiiR6u3M7jwuhrEkQGJ8TwxZ7Oyfbg=;
- b=kEG6lQJbW9dv4ByQL7wqBgF370op/d8Mtan3FIJi0rPtHuUN0d+8QjRr
- Nj5vZfhtdXcVb7SdicDwLGjkZkHJcAFed5lvYU8tahRamUpNRWk8R67rP
- eJzmo/ouV6wV2kjNeizcixCPlo3Z7oOjK1Vqi1KQHptPP26mZfsFAPMEV
- ROP5JT2JXNIfuuuOyzCe7xa+pwXRlXTJUPxnYupk7dm2eLk9sHJvcpqlc
- wddVD/jVeY3YLXxHgfQf6e5kufVNAWBl4sNSVFgVskQ/W35Heiu1W6j25
- 1i2Cyq4w/AdX0Az/gbOxk3OrH//KX4Thoxi9yd7Xaae69X+g+PPdrJ3yy Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="25075087"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="25075087"
+ bh=6strL1AeIx+adSMEtejZ4b7/pqtr9qhF3pKs0iUYfSo=;
+ b=nZ/qBsfHJk7ckBXpNT/pKoQEigNJEDGeT4n8SYMcaRRvUqSFv3j/EwxX
+ uH1qsRIKBqVFQXya5bQZ/F/F1Z3iOVb1fp5TKp2bIpdd1BRIrHnl3dQUQ
+ GdL2YK9FwxxEJEVCiGJXhZugIfwsZdTl7nJjaTpb8GvtOmCex4iIk6KhH
+ 1hrFsBl3KRM4ubdnChvhQCba9+Ncf6V0Y44/8A4JWYk2REjqweh/zfae+
+ RWrf9JMfYh3u6/wQKcBg2GWWKMGgd5OiZhItQt9hlslbOWufHKFJ8zo7j
+ NRYkXHYwEVTqrFOTFGXrDmoysE14xFNPHxV/0+y5WSYWCl4GSiNhHj19K w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="25075096"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="25075096"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2024 05:26:16 -0800
+ 31 Jan 2024 05:26:20 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
-   d="scan'208";a="4093594"
+   d="scan'208";a="4093609"
 Received: from mmackowi-mobl.ger.corp.intel.com (HELO localhost)
  ([10.246.18.126])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2024 05:26:14 -0800
+ 31 Jan 2024 05:26:18 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 3/4] lib/intel_blt: Use object pitch and aligned
- height on png write
-Date: Wed, 31 Jan 2024 14:25:57 +0100
-Message-Id: <20240131132558.208971-4-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v2 4/4] tests/xe-ccs: Add tests which exercise small to
+ large blit sizes
+Date: Wed, 31 Jan 2024 14:25:58 +0100
+Message-Id: <20240131132558.208971-5-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240131132558.208971-1-zbigniew.kempczynski@intel.com>
 References: <20240131132558.208971-1-zbigniew.kempczynski@intel.com>
@@ -64,347 +64,272 @@ Cc: Karolina Drobnik <karolina.drobnik@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Pitch and buffer height on tiled surfaces might be bigger than
-image width and height so dump memory to png using pitch size
-instead width and aligned height instead height.
+Testing block-copy for 512 x 512 x 32bpp is not enough to verify
+blit is working for different (small) and not always aligned
+resolutions. Add 'increment' subtests which checks blits from
+small (1x1) to large (512x512) resolutions.
+
+To avoid too long execution resolution increment equals 15x15 pixels.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Karolina Drobnik <karolina.drobnik@intel.com>
 ---
- lib/intel_blt.c                |  8 +++++++-
- lib/intel_blt.h                |  2 +-
- tests/intel/gem_ccs.c          | 23 ++++++++++++-----------
- tests/intel/gem_exercise_blt.c | 16 ++++++++--------
- tests/intel/xe_ccs.c           | 23 ++++++++++++-----------
- tests/intel/xe_exercise_blt.c  | 16 ++++++++--------
- 6 files changed, 48 insertions(+), 40 deletions(-)
+ tests/intel/xe_ccs.c | 144 +++++++++++++++++++++++++++++++++----------
+ 1 file changed, 112 insertions(+), 32 deletions(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 2076cb56c4..5ed98293f9 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -2075,12 +2075,13 @@ void blt_surface_info(const char *info, const struct blt_copy_object *obj)
-  * @obj: blitter copy object (@blt_copy_object) to save to png
-  * @width: width
-  * @height: height
-+ * @bpp: bits per pixel
-  *
-  * Function save surface to png file. Assumes ARGB format where A == 0xff.
-  */
- void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
- 			const struct blt_copy_object *obj,
--			uint32_t width, uint32_t height)
-+			uint32_t width, uint32_t height, uint32_t bpp)
- {
- 	cairo_surface_t *surface;
- 	cairo_status_t ret;
-@@ -2090,6 +2091,11 @@ void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
- 	char filename[FILENAME_MAX];
- 	bool is_xe = is_xe_device(fd);
- 
-+	if (obj->tiling) {
-+		width = obj->pitch;
-+		height = blt_get_aligned_height(height, bpp, obj->tiling);
-+	}
-+
- 	snprintf(filename, FILENAME_MAX-1, "%d-%s-%s-%ux%u-%s.png",
- 		 run_id, fileid, blt_tiling_name(obj->tiling), width, height,
- 		 obj->compression ? "compressed" : "uncompressed");
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index d9be22fdf4..59382f8f71 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -311,7 +311,7 @@ void blt_surface_fill_rect(int fd, const struct blt_copy_object *obj,
- 			   uint32_t width, uint32_t height);
- void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
- 			const struct blt_copy_object *obj,
--			uint32_t width, uint32_t height);
-+			uint32_t width, uint32_t height, uint32_t bpp);
- void blt_dump_corruption_info_32b(const struct blt_copy_object *surf1,
- 				  const struct blt_copy_object *surf2);
- 
-diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
-index 80a29ecab7..e8f16d7d88 100644
---- a/tests/intel/gem_ccs.c
-+++ b/tests/intel/gem_ccs.c
-@@ -82,9 +82,9 @@ struct test_config {
- 	if (param.print_surface_info) \
- 		blt_surface_info((name), (obj)); } while (0)
- 
--#define WRITE_PNG(fd, id, name, obj, w, h) do { \
-+#define WRITE_PNG(fd, id, name, obj, w, h, bpp) do { \
- 	if (param.write_png) \
--		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
-+		blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
- 
- static void surf_copy(int i915,
- 		      const intel_ctx_t *ctx,
-@@ -98,6 +98,7 @@ static void surf_copy(int i915,
- 	struct blt_copy_data blt = {};
- 	struct blt_block_copy_data_ext ext = {};
- 	struct blt_ctrl_surf_copy_data surf = {};
-+	const uint32_t bpp = 32;
- 	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
- 	uint64_t bb_size, ccssize = mid->size / CCS_RATIO(i915);
- 	uint32_t *ccscopy;
-@@ -172,7 +173,7 @@ static void surf_copy(int i915,
- 	blt_set_batch(&blt.bb, bb2, bb_size, REGION_SMEM);
- 	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
- 	gem_sync(i915, blt.dst.handle);
--	WRITE_PNG(i915, run_id, "corrupted", &blt.dst, dst->x2, dst->y2);
-+	WRITE_PNG(i915, run_id, "corrupted", &blt.dst, dst->x2, dst->y2, bpp);
- 	result = memcmp(src->ptr, dst->ptr, src->size);
- 	igt_assert(result != 0);
- 
-@@ -182,7 +183,7 @@ static void surf_copy(int i915,
- 
- 	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
- 	gem_sync(i915, blt.dst.handle);
--	WRITE_PNG(i915, run_id, "corrected", &blt.dst, dst->x2, dst->y2);
-+	WRITE_PNG(i915, run_id, "corrected", &blt.dst, dst->x2, dst->y2, bpp);
- 	result = memcmp(src->ptr, dst->ptr, src->size);
- 	if (result)
- 		blt_dump_corruption_info_32b(src, dst);
-@@ -346,7 +347,7 @@ static void block_copy(int i915,
- 	PRINT_SURFACE_INFO("dst", dst);
- 
- 	blt_surface_fill_rect(i915, src, width, height);
--	WRITE_PNG(i915, run_id, "src", src, width, height);
-+	WRITE_PNG(i915, run_id, "src", src, width, height, bpp);
- 
- 	blt.color_depth = CD_32bit;
- 	blt.print_bb = param.print_bb;
-@@ -363,7 +364,7 @@ static void block_copy(int i915,
- 	if (mid->compression)
- 		igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
- 
--	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height);
-+	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height, bpp);
- 
- 	if (config->surfcopy && pext) {
- 		const intel_ctx_t *surf_ctx = ctx;
-@@ -408,7 +409,7 @@ static void block_copy(int i915,
- 	blt_set_batch(&blt.bb, bb, bb_size, region1);
- 	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
- 	gem_sync(i915, blt.dst.handle);
--	WRITE_PNG(i915, run_id, "dst", &blt.dst, width, height);
-+	WRITE_PNG(i915, run_id, "dst", &blt.dst, width, height, bpp);
- 
- 	result = memcmp(src->ptr, blt.dst.ptr, src->size);
- 
-@@ -491,11 +492,11 @@ static void block_multicopy(int i915,
- 	blt_block_copy3(i915, ctx, e, ahnd, &blt3, pext3);
- 	gem_sync(i915, blt3.final.handle);
- 
--	WRITE_PNG(i915, run_id, "src", &blt3.src, width, height);
-+	WRITE_PNG(i915, run_id, "src", &blt3.src, width, height, bpp);
- 	if (!config->inplace)
--		WRITE_PNG(i915, run_id, "mid", &blt3.mid, width, height);
--	WRITE_PNG(i915, run_id, "dst", &blt3.dst, width, height);
--	WRITE_PNG(i915, run_id, "final", &blt3.final, width, height);
-+		WRITE_PNG(i915, run_id, "mid", &blt3.mid, width, height, bpp);
-+	WRITE_PNG(i915, run_id, "dst", &blt3.dst, width, height, bpp);
-+	WRITE_PNG(i915, run_id, "final", &blt3.final, width, height, bpp);
- 
- 	result = memcmp(src->ptr, blt3.final.ptr, src->size);
- 
-diff --git a/tests/intel/gem_exercise_blt.c b/tests/intel/gem_exercise_blt.c
-index 7355eabbe9..4a9bc37298 100644
---- a/tests/intel/gem_exercise_blt.c
-+++ b/tests/intel/gem_exercise_blt.c
-@@ -50,9 +50,9 @@ static struct param {
- 	if (param.print_surface_info) \
- 		blt_surface_info((name), (obj)); } while (0)
- 
--#define WRITE_PNG(fd, id, name, obj, w, h) do { \
-+#define WRITE_PNG(fd, id, name, obj, w, h, bpp) do { \
- 	if (param.write_png) \
--		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
-+		blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
- 
- struct blt_fast_copy_data {
- 	int i915;
-@@ -167,7 +167,7 @@ static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
- 	PRINT_SURFACE_INFO("dst", dst);
- 
- 	blt_surface_fill_rect(i915, src, width, height);
--	WRITE_PNG(i915, mid_tiling, "src", src, width, height);
-+	WRITE_PNG(i915, mid_tiling, "src", src, width, height, bpp);
- 
- 	memset(&blt, 0, sizeof(blt));
- 	blt.color_depth = CD_32bit;
-@@ -180,8 +180,8 @@ static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
- 	fast_copy_one_bb(i915, ctx, e, ahnd, &blt);
- 	gem_sync(i915, blt.dst.handle);
- 
--	WRITE_PNG(i915, mid_tiling, "mid", &blt.mid, width, height);
--	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height);
-+	WRITE_PNG(i915, mid_tiling, "mid", &blt.mid, width, height, bpp);
-+	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height, bpp);
- 
- 	result = memcmp(src->ptr, blt.dst.ptr, src->size);
- 
-@@ -234,8 +234,8 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
- 	blt_fast_copy(i915, ctx, e, ahnd, &blt);
- 	gem_sync(i915, mid->handle);
- 
--	WRITE_PNG(i915, mid_tiling, "src", &blt.src, width, height);
--	WRITE_PNG(i915, mid_tiling, "mid", &blt.dst, width, height);
-+	WRITE_PNG(i915, mid_tiling, "src", &blt.src, width, height, bpp);
-+	WRITE_PNG(i915, mid_tiling, "mid", &blt.dst, width, height, bpp);
- 
- 	blt_copy_init(i915, &blt);
- 	blt.color_depth = CD_32bit;
-@@ -247,7 +247,7 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
- 	blt_fast_copy(i915, ctx, e, ahnd, &blt);
- 	gem_sync(i915, blt.dst.handle);
- 
--	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height);
-+	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height, bpp);
- 
- 	result = memcmp(src->ptr, blt.dst.ptr, src->size);
- 
 diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index 7d0e8ed7a5..a7785edcb1 100644
+index a7785edcb1..627976049c 100644
 --- a/tests/intel/xe_ccs.c
 +++ b/tests/intel/xe_ccs.c
-@@ -79,9 +79,9 @@ struct test_config {
- 	if (param.print_surface_info) \
- 		blt_surface_info((name), (obj)); } while (0)
+@@ -28,9 +28,15 @@
+  * SUBTEST: block-copy-compressed
+  * Description: Check block-copy flatccs compressed blit
+  *
++ * SUBTEST: block-copy-compressed-inc-dimension
++ * Description: Check block-copy compressed blit for different sizes
++ *
+  * SUBTEST: block-copy-uncompressed
+  * Description: Check block-copy uncompressed blit
+  *
++ * SUBTEST: block-copy-uncompressed-inc-dimension
++ * Description: Check block-copy uncompressed blit for different sizes
++ *
+  * SUBTEST: block-multicopy-compressed
+  * Description: Check block-multicopy flatccs compressed blit
+  *
+@@ -73,6 +79,8 @@ struct test_config {
+ 	bool surfcopy;
+ 	bool new_ctx;
+ 	bool suspend_resume;
++	int width_increment;
++	int width_steps;
+ };
  
--#define WRITE_PNG(fd, id, name, obj, w, h) do { \
-+#define WRITE_PNG(fd, id, name, obj, w, h, bpp) do { \
- 	if (param.write_png) \
--		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
-+		blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
+ #define PRINT_SURFACE_INFO(name, obj) do { \
+@@ -286,9 +294,17 @@ static int blt_block_copy3(int xe,
+ 	return ret;
+ }
  
- static void surf_copy(int xe,
- 		      intel_ctx_t *ctx,
-@@ -94,6 +94,7 @@ static void surf_copy(int xe,
- 	struct blt_copy_data blt = {};
- 	struct blt_block_copy_data_ext ext = {};
- 	struct blt_ctrl_surf_copy_data surf = {};
-+	const uint32_t bpp = 32;
- 	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
- 	uint64_t bb_size, ccssize = mid->size / CCS_RATIO(xe);
- 	uint64_t ccs_bo_size = xe_get_default_alignment(xe);
-@@ -179,7 +180,7 @@ static void surf_copy(int xe,
- 	blt_set_batch(&blt.bb, bb2, bb_size, sysmem);
- 	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
- 	intel_ctx_xe_sync(ctx, true);
--	WRITE_PNG(xe, run_id, "corrupted", &blt.dst, dst->x2, dst->y2);
-+	WRITE_PNG(xe, run_id, "corrupted", &blt.dst, dst->x2, dst->y2, bpp);
- 	result = memcmp(src->ptr, dst->ptr, src->size);
- 	igt_assert(result != 0);
- 
-@@ -189,7 +190,7 @@ static void surf_copy(int xe,
- 
- 	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
- 	intel_ctx_xe_sync(ctx, true);
--	WRITE_PNG(xe, run_id, "corrected", &blt.dst, dst->x2, dst->y2);
-+	WRITE_PNG(xe, run_id, "corrected", &blt.dst, dst->x2, dst->y2, bpp);
- 	result = memcmp(src->ptr, dst->ptr, src->size);
- 	if (result)
- 		blt_dump_corruption_info_32b(src, dst);
-@@ -326,7 +327,7 @@ static void block_copy(int xe,
- 	PRINT_SURFACE_INFO("dst", dst);
- 
- 	blt_surface_fill_rect(xe, src, width, height);
--	WRITE_PNG(xe, run_id, "src", src, width, height);
-+	WRITE_PNG(xe, run_id, "src", src, width, height, bpp);
- 
- 	blt.color_depth = CD_32bit;
- 	blt.print_bb = param.print_bb;
-@@ -342,7 +343,7 @@ static void block_copy(int xe,
- 	if (mid->compression)
- 		igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
- 
--	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height);
-+	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height, bpp);
- 
- 	if (config->surfcopy && pext) {
- 		struct drm_xe_engine_class_instance inst = {
-@@ -393,7 +394,7 @@ static void block_copy(int xe,
++#define CHECK_MIN_WIDTH 2
++#define CHECK_MIN_HEIGHT 2
++#define MIN_EXP_WH(w, h) ((w) >= CHECK_MIN_WIDTH && (h) >= CHECK_MIN_HEIGHT)
++#define CHECK_FROM_WIDTH 256
++#define CHECK_FROM_HEIGHT 256
++#define FROM_EXP_WH(w, h) ((w) >= CHECK_FROM_WIDTH && (h) >= CHECK_FROM_HEIGHT)
++
+ static void block_copy(int xe,
+ 		       intel_ctx_t *ctx,
+ 		       uint32_t region1, uint32_t region2,
++		       uint32_t width, uint32_t height,
+ 		       enum blt_tiling_type mid_tiling,
+ 		       const struct test_config *config)
+ {
+@@ -301,7 +317,7 @@ static void block_copy(int xe,
+ 	uint32_t run_id = mid_tiling;
+ 	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &
+ 							!xe_has_vram(xe)) ? region1 : region2;
+-	uint32_t width = param.width, height = param.height, bb;
++	uint32_t bb;
+ 	enum blt_compression mid_compression = config->compression;
+ 	int mid_compression_format = param.compression_format;
+ 	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+@@ -339,9 +355,16 @@ static void block_copy(int xe,
  	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
  	intel_ctx_xe_sync(ctx, true);
  
--	WRITE_PNG(xe, run_id, "dst", &blt.dst, width, height);
-+	WRITE_PNG(xe, run_id, "dst", &blt.dst, width, height, bpp);
+-	/* We expect mid != src if there's compression */
+-	if (mid->compression)
+-		igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
++	/*
++	 * We expect mid != src if there's compression. Ignore this for small
++	 * width x height for linear as compression for gradient occurs in the
++	 * middle for bigger sizes. We also ignore 1x1 as this looks same for
++	 * xmajor.
++	 */
++	if (mid->compression && MIN_EXP_WH(width, height)) {
++		if (mid_tiling != T_LINEAR || FROM_EXP_WH(width, height))
++			igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
++	}
  
- 	result = memcmp(src->ptr, blt.dst.ptr, src->size);
+ 	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height, bpp);
  
-@@ -486,11 +487,11 @@ static void block_multicopy(int xe,
- 	blt_block_copy3(xe, ctx, ahnd, &blt3, pext3);
- 	intel_ctx_xe_sync(ctx, true);
+@@ -416,6 +439,7 @@ static void block_copy(int xe,
+ static void block_multicopy(int xe,
+ 			    intel_ctx_t *ctx,
+ 			    uint32_t region1, uint32_t region2,
++			    uint32_t width, uint32_t height,
+ 			    enum blt_tiling_type mid_tiling,
+ 			    const struct test_config *config)
+ {
+@@ -429,7 +453,7 @@ static void block_multicopy(int xe,
+ 	uint32_t run_id = mid_tiling;
+ 	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &
+ 							!xe_has_vram(xe)) ? region1 : region2;
+-	uint32_t width = param.width, height = param.height, bb;
++	uint32_t bb;
+ 	enum blt_compression mid_compression = config->compression;
+ 	int mid_compression_format = param.compression_format;
+ 	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+@@ -521,6 +545,7 @@ static const struct {
+ 	void (*copyfn)(int fd,
+ 		       intel_ctx_t *ctx,
+ 		       uint32_t region1, uint32_t region2,
++		       uint32_t width, uint32_t height,
+ 		       enum blt_tiling_type btype,
+ 		       const struct test_config *config);
+ } copyfns[] = {
+@@ -528,17 +553,44 @@ static const struct {
+ 	[BLOCK_MULTICOPY] = { "-multicopy", block_multicopy },
+ };
  
--	WRITE_PNG(xe, run_id, "src", &blt3.src, width, height);
-+	WRITE_PNG(xe, run_id, "src", &blt3.src, width, height, bpp);
- 	if (!config->inplace)
--		WRITE_PNG(xe, run_id, "mid", &blt3.mid, width, height);
--	WRITE_PNG(xe, run_id, "dst", &blt3.dst, width, height);
--	WRITE_PNG(xe, run_id, "final", &blt3.final, width, height);
-+		WRITE_PNG(xe, run_id, "mid", &blt3.mid, width, height, bpp);
-+	WRITE_PNG(xe, run_id, "dst", &blt3.dst, width, height, bpp);
-+	WRITE_PNG(xe, run_id, "final", &blt3.final, width, height, bpp);
+-static void block_copy_test(int xe,
+-			    const struct test_config *config,
+-			    struct igt_collection *set,
+-			    enum copy_func copy_function)
++static void single_copy(int xe, const struct test_config *config,
++			int32_t region1, uint32_t region2,
++			uint32_t width, uint32_t height,
++			int tiling, enum copy_func copy_function)
+ {
+ 	struct drm_xe_engine_class_instance inst = {
+ 		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+ 	};
++	uint32_t vm, exec_queue;
++	uint32_t sync_bind, sync_out;
+ 	intel_ctx_t *ctx;
++
++	vm = xe_vm_create(xe, 0, 0);
++	exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++	sync_bind = syncobj_create(xe, 0);
++	sync_out = syncobj_create(xe, 0);
++	ctx = intel_ctx_xe(xe, vm, exec_queue,
++			   0, sync_bind, sync_out);
++
++	copyfns[copy_function].copyfn(xe, ctx,
++				      region1, region2,
++				      width, height,
++				      tiling, config);
++
++	xe_exec_queue_destroy(xe, exec_queue);
++	xe_vm_destroy(xe, vm);
++	syncobj_destroy(xe, sync_bind);
++	syncobj_destroy(xe, sync_out);
++	free(ctx);
++}
++
++static void block_copy_test(int xe,
++			    const struct test_config *config,
++			    struct igt_collection *set,
++			    enum copy_func copy_function)
++{
++
+ 	struct igt_collection *regions;
+-	uint32_t vm, exec_queue;
+ 	int tiling;
  
- 	result = memcmp(src->ptr, blt3.final.ptr, src->size);
+ 	if (config->compression && !blt_block_copy_supports_compression(xe))
+@@ -555,6 +607,7 @@ static void block_copy_test(int xe,
+ 		for_each_variation_r(regions, 2, set) {
+ 			uint32_t region1, region2;
+ 			char *regtxt;
++			char testname[256];
  
-diff --git a/tests/intel/xe_exercise_blt.c b/tests/intel/xe_exercise_blt.c
-index c908800cf4..ddf9d188a7 100644
---- a/tests/intel/xe_exercise_blt.c
-+++ b/tests/intel/xe_exercise_blt.c
-@@ -53,9 +53,9 @@ static struct param {
- 	if (param.print_surface_info) \
- 		blt_surface_info((name), (obj)); } while (0)
+ 			region1 = igt_collection_get_value(regions, 0);
+ 			region2 = igt_collection_get_value(regions, 1);
+@@ -566,30 +619,36 @@ static void block_copy_test(int xe,
  
--#define WRITE_PNG(fd, id, name, obj, w, h) do { \
-+#define WRITE_PNG(fd, id, name, obj, w, h, bpp) do { \
- 	if (param.write_png) \
--		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
-+		blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
+ 			regtxt = xe_memregion_dynamic_subtest_name(xe, regions);
  
- struct blt_fast_copy_data {
- 	int xe;
-@@ -141,7 +141,7 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
- 	PRINT_SURFACE_INFO("dst", dst);
+-			igt_dynamic_f("%s-%s-compfmt%d-%s%s",
+-				      blt_tiling_name(tiling),
+-				      config->compression ?
+-					      "compressed" : "uncompressed",
+-				      param.compression_format, regtxt,
+-				      copyfns[copy_function].suffix) {
+-				uint32_t sync_bind, sync_out;
++			snprintf(testname, sizeof(testname),
++				 "%s-%s-compfmt%d-%s%s",
++				 blt_tiling_name(tiling),
++				 config->compression ?
++					 "compressed" : "uncompressed",
++				 param.compression_format, regtxt,
++				 copyfns[copy_function].suffix);
  
- 	blt_surface_fill_rect(xe, src, width, height);
--	WRITE_PNG(xe, mid_tiling, "src", src, width, height);
-+	WRITE_PNG(xe, mid_tiling, "src", src, width, height, bpp);
+-				vm = xe_vm_create(xe, 0, 0);
+-				exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
+-				sync_bind = syncobj_create(xe, 0);
+-				sync_out = syncobj_create(xe, 0);
+-				ctx = intel_ctx_xe(xe, vm, exec_queue,
+-						   0, sync_bind, sync_out);
++			if (!config->width_increment) {
++				igt_dynamic(testname)
++					single_copy(xe, config, region1, region2,
++						    param.width, param.height,
++						    tiling, copy_function);
++			} else {
++				for (int w = param.width;
++				     w < param.width + config->width_steps;
++				     w += config->width_increment) {
++					snprintf(testname, sizeof(testname),
++						 "%s-%s-compfmt%d-%s%s-%dx%d",
++						 blt_tiling_name(tiling),
++						 config->compression ?
++							 "compressed" : "uncompressed",
++						 param.compression_format, regtxt,
++						 copyfns[copy_function].suffix,
++						 w, w);
++					igt_dynamic(testname)
++						single_copy(xe, config, region1, region2,
++							    w, w, tiling, copy_function);
++				}
  
- 	memset(&blt, 0, sizeof(blt));
- 	blt.color_depth = CD_32bit;
-@@ -153,8 +153,8 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
+-				copyfns[copy_function].copyfn(xe, ctx,
+-							      region1, region2,
+-							      tiling, config);
+-
+-				xe_exec_queue_destroy(xe, exec_queue);
+-				xe_vm_destroy(xe, vm);
+-				syncobj_destroy(xe, sync_bind);
+-				syncobj_destroy(xe, sync_out);
+-				free(ctx);
+ 			}
  
- 	fast_copy_one_bb(xe, ctx, ahnd, &blt);
+ 			free(regtxt);
+@@ -669,6 +728,16 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+ 		block_copy_test(xe, &config, set, BLOCK_COPY);
+ 	}
  
--	WRITE_PNG(xe, mid_tiling, "mid", &blt.mid, width, height);
--	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height);
-+	WRITE_PNG(xe, mid_tiling, "mid", &blt.mid, width, height, bpp);
-+	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height, bpp);
++	igt_describe("Check block-copy uncompressed blit with increment width/height");
++	igt_subtest_with_dynamic("block-copy-uncompressed-inc-dimension") {
++		struct test_config config = { .width_increment = 15,
++					      .width_steps = 512 };
++		param.width = 1;
++		param.height = 1;
++
++		block_copy_test(xe, &config, set, BLOCK_COPY);
++	}
++
+ 	igt_describe("Check block-copy flatccs compressed blit");
+ 	igt_subtest_with_dynamic("block-copy-compressed") {
+ 		struct test_config config = { .compression = true };
+@@ -676,6 +745,17 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+ 		block_copy_test(xe, &config, set, BLOCK_COPY);
+ 	}
  
- 	result = memcmp(src->ptr, blt.dst.ptr, src->size);
- 
-@@ -205,8 +205,8 @@ static void fast_copy(int xe, const intel_ctx_t *ctx,
- 
- 	blt_fast_copy(xe, ctx, NULL, ahnd, &blt);
- 
--	WRITE_PNG(xe, mid_tiling, "src", &blt.src, width, height);
--	WRITE_PNG(xe, mid_tiling, "mid", &blt.dst, width, height);
-+	WRITE_PNG(xe, mid_tiling, "src", &blt.src, width, height, bpp);
-+	WRITE_PNG(xe, mid_tiling, "mid", &blt.dst, width, height, bpp);
- 
- 	blt_copy_init(xe, &blt);
- 	blt.color_depth = CD_32bit;
-@@ -217,7 +217,7 @@ static void fast_copy(int xe, const intel_ctx_t *ctx,
- 
- 	blt_fast_copy(xe, ctx, NULL, ahnd, &blt);
- 
--	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height);
-+	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height, bpp);
- 
- 	result = memcmp(src->ptr, blt.dst.ptr, src->size);
- 
++	igt_describe("Check block-copy compressed blit with increment width/height");
++	igt_subtest_with_dynamic("block-copy-compressed-inc-dimension") {
++		struct test_config config = { .compression = true,
++					      .width_increment = 15,
++					      .width_steps = 512 };
++		param.width = 1;
++		param.height = 1;
++
++		block_copy_test(xe, &config, set, BLOCK_COPY);
++	}
++
+ 	igt_describe("Check block-multicopy flatccs compressed blit");
+ 	igt_subtest_with_dynamic("block-multicopy-compressed") {
+ 		struct test_config config = { .compression = true };
 -- 
 2.34.1
 
