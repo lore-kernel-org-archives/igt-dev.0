@@ -4,44 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19164C47DB3
-	for <igt-dev@archiver.kernel.org>; Wed, 31 Jan 2024 13:26:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F7A7C47258
+	for <igt-dev@archiver.kernel.org>; Wed, 31 Jan 2024 13:26:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9EA2D10FA1D;
-	Wed, 31 Jan 2024 13:26:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F229A10FA1C;
+	Wed, 31 Jan 2024 13:26:08 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D8FAB10FA09
- for <igt-dev@lists.freedesktop.org>; Wed, 31 Jan 2024 13:26:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3776510F9C7
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 Jan 2024 13:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706707564; x=1738243564;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=GQgKJhk12UnKUOVDQmYKMggxdF/HIq31VUr9gx1rGYo=;
- b=K97KX/aIrl3yF2GPq6DmbXS/PmntRseuSr02Vn36V7Sq/mFpLuJBtkiJ
- 345gFQjw/szfViINdrqfOzwlH+pRVEkloJnTXvrapzyx8Wb59Ul/GP/UN
- BVvq/mmYKmuD+yvD88oN3lMNx+Mw7npN5iVqUfbjKmsOV+Hn5zXACMByg
- Q51gBtRPX+yq6b/4CFYSDfaG1l/LBkElTnf4JhnzgGElan708alPI6NBU
- VQpGCR4HshTUR7CLQfoe+VWEhvuXd8CUqV7Om/41TRbwDlXMnkvrACGpx
- AWa1U0bfBb7iJC2kfExv8k8b83eyIXVb/bF80xsBA/4vN9QXOGpu6qdPF A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="25075075"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="25075075"
+ t=1706707567; x=1738243567;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=jqbKSNgY7HdHsXhGPH8mdRqVEJ2F/6xjK1/coXtPCRc=;
+ b=CnQmVlrLgBcCO5PBQ5dSe7/eZEec7epRU7yZNpY/CoDzwkLgOX4AWJfG
+ YLhh1VZmdPsGhOB+zTOZ7l52hepQ29x+2Tq8S9xNLr8p361iFBdErL0EK
+ Qj9Haiy6o9nHOSx1/ja8XtsPDotU2KVmny8psrpIKrJAHbKmpfMlUfz+I
+ IrJPcVPCSW1/ArLhryXnAAyYHwR1aKlIUVRS7wAYtzhuAube6k/uXhrH4
+ vjhPvMQGzZhCe7I9P+Gcm1iV3DDK802YFf4euTtqkiqLDZxU9UcRi/FKz
+ +dKq+fUABwfoPVNXmfyq6AwMJ7BPt0Ka9Aatpp463vWc2w2NSffStPrvE Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="25075081"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="25075081"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2024 05:26:03 -0800
+ 31 Jan 2024 05:26:07 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
-   d="scan'208";a="4093567"
+   d="scan'208";a="4093582"
 Received: from mmackowi-mobl.ger.corp.intel.com (HELO localhost)
  ([10.246.18.126])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2024 05:26:02 -0800
+ 31 Jan 2024 05:26:05 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 0/4] Fill block-copy test gap for unaligned sizes
-Date: Wed, 31 Jan 2024 14:25:54 +0100
-Message-Id: <20240131132558.208971-1-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v2 1/4] lib/intel_blt: Add helpers for calculating
+ stride and aligned height
+Date: Wed, 31 Jan 2024 14:25:55 +0100
+Message-Id: <20240131132558.208971-2-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240131132558.208971-1-zbigniew.kempczynski@intel.com>
+References: <20240131132558.208971-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -57,33 +60,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Karolina Drobnik <karolina.drobnik@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Using 512x512 resolution for testing is too optimistic and hides intel_blt
-limitation for using different (smaller) resolutions which also might
-not be aligned to expected stride and height.
+Tiled surfaces have stride / aligned height constraints. Currently
+blt library has limitation and doesn't work properly when surface
+stride is not valid for specific tiling.
 
-Address this by adding few helpers, change blt buffer creation size
-calculation and add "increment" version of the test in xe_ccs.
+As an example lets say we want to copy from linear to xmajor
+33 x 33 x 32bpp surface. Xmajor surface expects stride aligned to
+512 bytes and height to 8 rows so this surface will occupy 512B x 40
+(128 x 40 x 32 bpp).
 
-v2: fix handling Tile64 what also requires bpp in dumping to
-    png as helper for aligned height depend on it (Zbigniew)
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Karolina Drobnik <karolina.drobnik@intel.com>
+---
+v2: Fix stride/aligned height calculation for Tile64
+---
+ lib/intel_blt.c | 63 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 63 insertions(+)
 
-Zbigniew Kempczyński (4):
-  lib/intel_blt: Add helpers for calculating stride and aligned height
-  lib/intel_blt: Change surface size calculation
-  lib/intel_blt: Use object pitch and aligned height on png write
-  tests/xe-ccs: Add tests which exercise small to large blit sizes
-
- lib/intel_blt.c                |  83 +++++++++++++++-
- lib/intel_blt.h                |   2 +-
- tests/intel/gem_ccs.c          |  23 ++---
- tests/intel/gem_exercise_blt.c |  16 ++--
- tests/intel/xe_ccs.c           | 167 ++++++++++++++++++++++++---------
- tests/intel/xe_exercise_blt.c  |  16 ++--
- 6 files changed, 233 insertions(+), 74 deletions(-)
-
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index 25d251c4f8..6d1aa0608f 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -521,6 +521,69 @@ static int __block_tiling(enum blt_tiling_type tiling)
+ 	return 0;
+ }
+ 
++/**
++ * blt_get_min_stride
++ * @width: width in pixels
++ * @bpp: bits per pixel
++ * @tiling: tiling
++ *
++ * Function returns minimum posibble stride in bytes for width, bpp and tiling.
++ *
++ * Returns:
++ * minimum possible stride in bytes.
++ */
++static uint32_t blt_get_min_stride(uint32_t width, uint32_t bpp,
++				   enum blt_tiling_type tiling)
++{
++	switch (tiling) {
++	case T_LINEAR:
++		return width * bpp / 8;
++	case T_XMAJOR:
++	case T_TILE64:
++		if (bpp == 8)
++			return ALIGN(width, 256);
++		else if (bpp == 16 || bpp == 32)
++			return ALIGN(width * bpp / 8, 512);
++		return ALIGN(width * bpp / 8, 1024);
++
++	default:
++		return ALIGN(width * bpp / 8, 128);
++	}
++}
++
++/**
++ * blt_get_aligned_height
++ * @height: height in pixels
++ * @bpp: bits per pixel (used for Tile64 due to different tile organization
++ * in pixels)
++ * @tiling: tiling
++ *
++ * Function returns aligned height for specific tiling. Height returned is
++ * important from memory allocation perspective, because each tiling has
++ * specific memory constraints.
++ *
++ * Returns:
++ * height (rows) expected for specific tiling
++ */
++static uint32_t blt_get_aligned_height(uint32_t height, uint32_t bpp,
++				       enum blt_tiling_type tiling)
++{
++	switch (tiling) {
++	case T_LINEAR:
++		return height;
++	case T_XMAJOR:
++		return ALIGN(height, 8);
++	case T_TILE64:
++		if (bpp == 8)
++			return ALIGN(height, 256);
++		else if (bpp == 16 || bpp == 32)
++			return ALIGN(height, 128);
++		return ALIGN(height, 64);
++	default:
++		return ALIGN(height, 32);
++	}
++}
++
+ static int __special_mode(const struct blt_copy_data *blt)
+ {
+ 	if (blt->src.handle == blt->dst.handle &&
 -- 
 2.34.1
 
