@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1771C4828E
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1800C48291
 	for <igt-dev@archiver.kernel.org>; Wed, 31 Jan 2024 18:12:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7219610FBE9;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 802F310FBEA;
 	Wed, 31 Jan 2024 18:12:28 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5EEFD10FBD9;
- Wed, 31 Jan 2024 18:12:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 66C0610FBE9;
+ Wed, 31 Jan 2024 18:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706724746; x=1738260746;
+ t=1706724748; x=1738260748;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DiqUE8xI4znDRXjYhB5LTEGynr5ye7YiVqeGGvfUW1Q=;
- b=fkIkYqDVgwGQvMTR4H1pmMkVmzKQnO4UecZmef0CZDiW5SBy8g8p8hu4
- Jzcki2KEpnc2NkZGM5sMqscKZeZJdJCjDHxsvjCi2l7l6MVgFS8rvIN5J
- Xs39ePnZDCqpXrYlxAYKqJZ1uwVmnNhfjkAU2/xavyaD+VydP4cgQBpv4
- aGa3G6c0QjBcF8MD5IYxBdeBJ5bCLfCz42iVIbI6A/phuju8oDBQnQ/+e
- O4w6BmLpt3Uq/+WJLiLZaEQn9sBulegwMmR97sE6wxTCPZkCAzNw9okK2
- Mh1yPVSXHmnwuva/5Mae6cWuKD4my9mFdXDXXdDO/r/em/okV4CUTpyVo Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="17067200"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="17067200"
+ bh=r6790tI8DotVHhF7HB88J7DHoz4FOznIXDKbnu95v1s=;
+ b=NU/+jSPMg3B/xD0gl6rUVMGi6grMHBigQUWRa59Fdi4RFyvj4CO55eCl
+ u+rQF/RllOXmW1dLSymOpzlC/68q3Pg2r7UE8DxvA3sHxqpZskMl6EPsC
+ YADM55EmO3b07E5cvSDO9rhwt+NlJT4uNhh/G+bWkZI4ZnfOI2TU//tjs
+ c8ATekhlD+NZ8bwB47FRX819DhsuOO+it+NfU01a4GIy62pywuH9R+4Ug
+ fsHuxnA9pwBDFYQDHwPA3QFhGyRdfJSgmc0Fe30iGeOzTali6NCN9v2zu
+ GM12HRyqi+dqcSBv6CtpmzLmbXJRaiRoETiuNI1uwOQ7LLiv54B/8cXxi A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="17067212"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="17067212"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2024 10:12:26 -0800
+ 31 Jan 2024 10:12:28 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="931930516"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="931930516"
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="931930531"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="931930531"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO
  jkrzyszt-mobl2.intranet) ([10.213.2.5])
  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2024 10:12:22 -0800
+ 31 Jan 2024 10:12:25 -0800
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 2/6] lib/kmode: Prepare open_parameters() helper for
- reuse by kunit
-Date: Wed, 31 Jan 2024 19:03:49 +0100
-Message-ID: <20240131181156.80571-10-janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t v2 3/6] lib/kunit: Unload base KUnit module only before
+ reloading it
+Date: Wed, 31 Jan 2024 19:03:50 +0100
+Message-ID: <20240131181156.80571-11-janusz.krzysztofik@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240131181156.80571-8-janusz.krzysztofik@linux.intel.com>
 References: <20240131181156.80571-8-janusz.krzysztofik@linux.intel.com>
@@ -63,49 +63,80 @@ Cc: Lucas De Marchi <lucas.demarchi@intel.com>, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Move the open_parameters() helper code up in the source file, above the
-kunit related functions, so it is available to follow-up changes of the
-kunit code.
+In preparation for replacement of the current method of reloading base
+KUnit module when a new set of module parameters is needed with updating
+those parameters via sysfs, unload the module right before it is now
+reloaded with new parameters, and stop unloading it in other places.
+Follow-up patches will remove some of the code added here, but even then
+they will be shorter and more clean with that adjustment already in place.
 
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- lib/igt_kmod.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ lib/igt_kmod.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
 diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index ad69173151..d1091bdc79 100644
+index d1091bdc79..d2c28d0a64 100644
 --- a/lib/igt_kmod.c
 +++ b/lib/igt_kmod.c
-@@ -803,6 +803,14 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
- 	kmod_module_info_free_list(pre);
- }
+@@ -1130,6 +1130,7 @@ static void kunit_get_tests(struct igt_list_head *tests,
+ 	 * iterating over KTAP results collected from blind execution of all
+ 	 * Kunit test cases provided by a Kunit test module.
+ 	 */
++	igt_ignore_warn(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
+ 	if (igt_debug_on(igt_kmod_load("kunit",
+ 				       "filter=module=none filter_action=skip")))
+ 		return;
+@@ -1167,7 +1168,6 @@ static void kunit_get_tests(struct igt_list_head *tests,
+ 	}
  
-+static int open_parameters(const char *module_name)
-+{
-+	char path[256];
+ 	igt_skip_on(kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE));
+-	igt_skip_on(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
+ 
+ 	igt_skip_on_f(err,
+ 		      "KTAP parser failed while getting a list of test cases\n");
+@@ -1200,6 +1200,17 @@ static void __igt_kunit(struct igt_ktest *tst,
+ 			      t->case_name) {
+ 
+ 			if (!modprobe.thread) {
++				/*
++				 * Since we have successfully loaded the kunit
++				 * base module with non-default parameters in
++				 * order to get a list of test cases, now we
++				 * have to unload it so it is then automatically
++				 * reloaded with default parameter values when
++				 * we load the test module again for execution.
++				 */
++				igt_skip_on(igt_kmod_unload("kunit",
++							    KMOD_REMOVE_FORCE));
 +
-+	snprintf(path, sizeof(path), "/sys/module/%s/parameters", module_name);
-+	return open(path, O_RDONLY);
-+}
-+
- struct modprobe_data {
- 	struct kmod_module *kmod;
- 	const char *opts;
-@@ -1402,14 +1410,6 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
+ 				igt_assert_eq(pthread_mutexattr_init(&attr), 0);
+ 				igt_assert_eq(pthread_mutexattr_setrobust(&attr,
+ 							  PTHREAD_MUTEX_ROBUST),
+@@ -1364,15 +1375,6 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
+ 		igt_skip_on(igt_ktest_init(&tst, module_name));
+ 		igt_skip_on(igt_ktest_begin(&tst));
+ 
+-		/*
+-		 * Since we need to load kunit base module with specific
+-		 * options in order to get a list of test cases, make
+-		 * sure that the module is not loaded.  However, since
+-		 * unload may fail if kunit base module is not loaded,
+-		 * ignore any failures, we'll fail later if still loaded.
+-		 */
+-		igt_ignore_warn(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
+-
+ 		igt_assert(igt_list_empty(&tests));
+ 	}
+ 
+@@ -1404,7 +1406,6 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
+ 		kunit_results_free(&tests, &suite_name, &case_name);
+ 
+ 		igt_ktest_end(&tst);
+-		igt_debug_on(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
+ 	}
+ 
  	igt_ktest_fini(&tst);
- }
- 
--static int open_parameters(const char *module_name)
--{
--	char path[256];
--
--	snprintf(path, sizeof(path), "/sys/module/%s/parameters", module_name);
--	return open(path, O_RDONLY);
--}
--
- int igt_ktest_init(struct igt_ktest *tst,
- 		   const char *module_name)
- {
 -- 
 2.43.0
 
