@@ -4,43 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF8D3C47DDF
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 10:30:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A034EC4828C
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 10:30:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AB8D310EB66;
-	Thu,  1 Feb 2024 10:30:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 413B410EB63;
+	Thu,  1 Feb 2024 10:30:36 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 44C8710EB4E
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 10:30:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8406710EB63
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 10:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706783434; x=1738319434;
+ t=1706783435; x=1738319435;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=EqJ37XBJXV25oYgmOJIBukVxf3QAhh3AvreArfvBwW8=;
- b=lUcw880Ztgu7G2OBg3U9aTzFTbqnB2tYbhSXs8OabFDg9qvsZMwXvIgT
- 3gK7QiZEmpHgaoSVz67ud5qvsvA4EdRmfbcLOArWygMnOOY4PIfouKgZo
- 5+X0KCyqB2abUnSKDLAT04M7BYTe0hY4brn8n1cAYaqmtsIjRL39mqPIz
- +sf5fOJxFBwTw2m8b0JMZCDbejpQ9TZDQGgg7s0YbWmrv6nYxScbd0MQ2
- V1Ky7NR8jGkgLoKKjC13RglcnslrLalWJTDWuvdRMegHepvWBm11kRA/f
- pAfOiNx353SlYDLCPlRzmx6foy2Ns+8pPpulBMOkSjWCkt63tvIdIX4gb Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="2798473"
+ bh=DbcKelA92leERUpwvPMVKWs5rR72bZ/kFWa9yST22YY=;
+ b=gTa2a78nLesFPwj/5KTyKt6iygbcGMwvnJNvKQCRIbot7biwBdYz8PSy
+ zxKMYcdJjRN8RXFGbEd8uZWSXbx2g/T8HoPqwanjeS5xSPvMwZBdHAuEJ
+ uqpI+5I9025u8EQU7Z8nmk/BPQd1fz/vhEod0XVQIC+Jl0qh9S3/ZjVmi
+ Igts/+yQKxF3/h4Y1c+y0bqFnmiiVL86BU1NJ+Mcww77OhQfqYat7mbrP
+ Sk0XCyT88M25bhh87Ezoxs5tXRSggRdOb86xqrAZcFZJDVViVK+iTEF00
+ mlX2HAV5h+VQmy3a0OdzFvONJYJae/7IzHnVyAE2ox+vOKJPraCA3uqTm A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="2798478"
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="2798473"
+   d="scan'208";a="2798478"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 02:30:34 -0800
+ 01 Feb 2024 02:30:35 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="30834680"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="30834691"
 Received: from abojovix-mobl.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
  ([10.252.0.176])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 02:30:33 -0800
+ 01 Feb 2024 02:30:34 -0800
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 2/3] tests/intel/xe_ccs: require flat CCS on xe2
-Date: Thu,  1 Feb 2024 10:30:16 +0000
-Message-ID: <20240201103017.321466-2-matthew.auld@intel.com>
+Subject: [PATCH i-g-t v2 3/3] tests/intel/xe_pat: assert flat CSS support for
+ xe2
+Date: Thu,  1 Feb 2024 10:30:17 +0000
+Message-ID: <20240201103017.321466-3-matthew.auld@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240201103017.321466-1-matthew.auld@intel.com>
 References: <20240201103017.321466-1-matthew.auld@intel.com>
@@ -63,43 +64,30 @@ Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Xe2 compression is handled via PAT indexes and flat CCS, even on
-igpu. Ensure the device has flat CCS support on such hardware, to
-determine if these tests are valid.
-
-v2: (Zbigniew)
- - There is at least one uncompressed test also, which is valid
-   regardless of CCS. Move the skip deeper.
+Xe2+ should support flat CCS compression, and here we are using
+compressed PAT index modes. Assert the platform indeed has flat CCS
+here, otherwise something is likely wrong.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/intel/xe_ccs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/intel/xe_pat.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index 7d0e8ed7a..3430db2d2 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -532,6 +532,7 @@ static void block_copy_test(int xe,
- 			    struct igt_collection *set,
- 			    enum copy_func copy_function)
- {
-+	uint16_t dev_id = intel_get_drm_devid(xe);
- 	struct drm_xe_engine_class_instance inst = {
- 		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
- 	};
-@@ -540,6 +541,9 @@ static void block_copy_test(int xe,
- 	uint32_t vm, exec_queue;
- 	int tiling;
+diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+index 40256bada..3d7d7400c 100644
+--- a/tests/intel/xe_pat.c
++++ b/tests/intel/xe_pat.c
+@@ -1049,6 +1049,7 @@ igt_main_args("V", NULL, help_str, opt_handler, NULL)
  
-+	if (AT_LEAST_GEN(dev_id, 20) && config->compression)
-+		igt_require(HAS_FLATCCS(xe));
-+
- 	if (config->compression && !blt_block_copy_supports_compression(xe))
- 		return;
- 
+ 	igt_subtest_with_dynamic("pat-index-xe2") {
+ 		igt_require(intel_get_device_info(dev_id)->graphics_ver >= 20);
++		igt_assert(HAS_FLATCCS(dev_id));
+ 		subtest_pat_index_modes_with_regions(fd, xe2_pat_index_modes,
+ 						     ARRAY_SIZE(xe2_pat_index_modes));
+ 	}
 -- 
 2.43.0
 
