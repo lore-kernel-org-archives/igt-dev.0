@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C079C47DDF
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 10:07:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEB0FC47DDB
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 10:07:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E6B3810EAD2;
-	Thu,  1 Feb 2024 10:07:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6FE4A10E64F;
+	Thu,  1 Feb 2024 10:07:55 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3B9110EAED
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 10:07:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD9C210E64F
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 10:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706782069; x=1738318069;
+ t=1706782074; x=1738318074;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=6strL1AeIx+adSMEtejZ4b7/pqtr9qhF3pKs0iUYfSo=;
- b=HSUIEMiDPxanwTgm5p9jJLZPMTUiKNp445x9rhG9mTfbKdU4gey5anKR
- 1bTWeuUTALhbKegpcCyv9+hsPG1DhBab0EpXMAT4UHFHHOxW2PvW1OSsD
- faZFAUN6JZ1ie9sOXNlR4iSnYO6Jfil6bHgxnfM+erPfoNJQRAQzZI3Bo
- Lonlwuhii7p/aFjCIwmy8aUa8uMgg7Dkdx/RoGrFyJrl16eVYTgRq2z+z
- 25oX0lfb+CL9GoFP0l1Q76selWSivA49z7OvtmS6OXbUO92onSR8VqWBb
- YmzEJlqj6MzDetiAO74wQzZR18cX2QGbmCBDjIgUEBqAMcIRlJmzGkhNv A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="407578749"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="407578749"
+ bh=XchvK/Ldgrf2sp7Ry+rau/AfyIF5T/MvDqj0HngnhsY=;
+ b=Ad1RK1A9T5a5fKBwA9hebMISFs9ymjB6ZZU30iPLctsCP67OtJ26OaGT
+ SJOnk2CkknGciYm64Jzs8yjaMlp+DXJO/mPTW9ZJVpqx5F4iFvl0YxZbb
+ w5qfihsrJ29hDI0I0RXjVLnBF04exQvUHSf6Bk7pS7cLqW4Z2l2l0SwLa
+ pMRrI+YaYfkSTbWPjDHww8ZFV8+qWdVSnmcikCVlDtUG2+iCKQe8LZY3X
+ nEEKT0dABNq8w9b5ywLvCPq2sehYnm9lZT9AQPyIFNq2ZXEDaTmh/aIgy
+ CWJ9Wixv405WVptCKbMFvM1yviotObQ4BpiLiuZX9sCe54KWeDEvH3zt3 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="407578751"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="407578751"
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 02:07:49 -0800
+ 01 Feb 2024 02:07:53 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="859110849"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="859110849"
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="859110870"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="859110870"
 Received: from kniesyn-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.112.105])
  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 02:07:47 -0800
+ 01 Feb 2024 02:07:51 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v4 4/5] tests/xe-ccs: Add tests which exercise small to
- large blit sizes
-Date: Thu,  1 Feb 2024 11:07:23 +0100
-Message-Id: <20240201100724.257845-5-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v4 5/5] tests/xe_exercise_blt: Exercise small to large
+ fast-copy blits
+Date: Thu,  1 Feb 2024 11:07:24 +0100
+Message-Id: <20240201100724.257845-6-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240201100724.257845-1-zbigniew.kempczynski@intel.com>
 References: <20240201100724.257845-1-zbigniew.kempczynski@intel.com>
@@ -64,272 +64,162 @@ Cc: Karolina Drobnik <karolina.drobnik@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Testing block-copy for 512 x 512 x 32bpp is not enough to verify
-blit is working for different (small) and not always aligned
-resolutions. Add 'increment' subtests which checks blits from
-small (1x1) to large (512x512) resolutions.
-
-To avoid too long execution resolution increment equals 15x15 pixels.
+Testing blitter with large size like 512x512 may be not enough
+to verify small or unaligned blits works properly. Add subtest
+which spread fast-copy blits from small to large.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Karolina Drobnik <karolina.drobnik@intel.com>
 ---
- tests/intel/xe_ccs.c | 144 +++++++++++++++++++++++++++++++++----------
- 1 file changed, 112 insertions(+), 32 deletions(-)
+ tests/intel/xe_exercise_blt.c | 63 +++++++++++++++++++++++++++++------
+ 1 file changed, 52 insertions(+), 11 deletions(-)
 
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index a7785edcb1..627976049c 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -28,9 +28,15 @@
-  * SUBTEST: block-copy-compressed
-  * Description: Check block-copy flatccs compressed blit
+diff --git a/tests/intel/xe_exercise_blt.c b/tests/intel/xe_exercise_blt.c
+index ddf9d188a7..8b4bae282b 100644
+--- a/tests/intel/xe_exercise_blt.c
++++ b/tests/intel/xe_exercise_blt.c
+@@ -25,6 +25,10 @@
+  *   Check fast-copy blit
+  *   blitter
   *
-+ * SUBTEST: block-copy-compressed-inc-dimension
-+ * Description: Check block-copy compressed blit for different sizes
++ * SUBTEST: fast-copy-inc-dimension
++ * Description:
++ *   Check fast-copy blit with sizes from small to large
 + *
-  * SUBTEST: block-copy-uncompressed
-  * Description: Check block-copy uncompressed blit
-  *
-+ * SUBTEST: block-copy-uncompressed-inc-dimension
-+ * Description: Check block-copy uncompressed blit for different sizes
-+ *
-  * SUBTEST: block-multicopy-compressed
-  * Description: Check block-multicopy flatccs compressed blit
-  *
-@@ -73,6 +79,8 @@ struct test_config {
- 	bool surfcopy;
- 	bool new_ctx;
- 	bool suspend_resume;
+  * SUBTEST: fast-copy-emit
+  * Description:
+  *   Check multiple fast-copy in one batch
+@@ -40,6 +44,8 @@ static struct param {
+ 	bool print_surface_info;
+ 	int width;
+ 	int height;
 +	int width_increment;
 +	int width_steps;
- };
- 
- #define PRINT_SURFACE_INFO(name, obj) do { \
-@@ -286,9 +294,17 @@ static int blt_block_copy3(int xe,
- 	return ret;
+ } param = {
+ 	.tiling = -1,
+ 	.write_png = false,
+@@ -111,6 +117,7 @@ static int fast_copy_one_bb(int xe,
  }
  
-+#define CHECK_MIN_WIDTH 2
-+#define CHECK_MIN_HEIGHT 2
-+#define MIN_EXP_WH(w, h) ((w) >= CHECK_MIN_WIDTH && (h) >= CHECK_MIN_HEIGHT)
-+#define CHECK_FROM_WIDTH 256
-+#define CHECK_FROM_HEIGHT 256
-+#define FROM_EXP_WH(w, h) ((w) >= CHECK_FROM_WIDTH && (h) >= CHECK_FROM_HEIGHT)
-+
- static void block_copy(int xe,
- 		       intel_ctx_t *ctx,
- 		       uint32_t region1, uint32_t region2,
-+		       uint32_t width, uint32_t height,
- 		       enum blt_tiling_type mid_tiling,
- 		       const struct test_config *config)
+ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
++			   uint32_t width, uint32_t height,
+ 			   uint32_t region1, uint32_t region2,
+ 			   enum blt_tiling_type mid_tiling)
  {
-@@ -301,7 +317,7 @@ static void block_copy(int xe,
- 	uint32_t run_id = mid_tiling;
- 	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &
- 							!xe_has_vram(xe)) ? region1 : region2;
--	uint32_t width = param.width, height = param.height, bb;
+@@ -122,7 +129,7 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
+ 	uint64_t ahnd = intel_allocator_open_full(xe, ctx->vm, 0, 0,
+ 						  INTEL_ALLOCATOR_SIMPLE,
+ 						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+-	uint32_t bb, width = param.width, height = param.height;
 +	uint32_t bb;
- 	enum blt_compression mid_compression = config->compression;
- 	int mid_compression_format = param.compression_format;
- 	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
-@@ -339,9 +355,16 @@ static void block_copy(int xe,
- 	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
- 	intel_ctx_xe_sync(ctx, true);
+ 	int result;
  
--	/* We expect mid != src if there's compression */
--	if (mid->compression)
--		igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
-+	/*
-+	 * We expect mid != src if there's compression. Ignore this for small
-+	 * width x height for linear as compression for gradient occurs in the
-+	 * middle for bigger sizes. We also ignore 1x1 as this looks same for
-+	 * xmajor.
-+	 */
-+	if (mid->compression && MIN_EXP_WH(width, height)) {
-+		if (mid_tiling != T_LINEAR || FROM_EXP_WH(width, height))
-+			igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
-+	}
+ 	bb = xe_bo_create(xe, 0, bb_size, region1, 0);
+@@ -170,6 +177,7 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
+ }
  
- 	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height, bpp);
- 
-@@ -416,6 +439,7 @@ static void block_copy(int xe,
- static void block_multicopy(int xe,
- 			    intel_ctx_t *ctx,
- 			    uint32_t region1, uint32_t region2,
-+			    uint32_t width, uint32_t height,
- 			    enum blt_tiling_type mid_tiling,
- 			    const struct test_config *config)
+ static void fast_copy(int xe, const intel_ctx_t *ctx,
++		      uint32_t width, uint32_t height,
+ 		      uint32_t region1, uint32_t region2,
+ 		      enum blt_tiling_type mid_tiling)
  {
-@@ -429,7 +453,7 @@ static void block_multicopy(int xe,
- 	uint32_t run_id = mid_tiling;
- 	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &
- 							!xe_has_vram(xe)) ? region1 : region2;
--	uint32_t width = param.width, height = param.height, bb;
-+	uint32_t bb;
- 	enum blt_compression mid_compression = config->compression;
- 	int mid_compression_format = param.compression_format;
- 	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
-@@ -521,6 +545,7 @@ static const struct {
- 	void (*copyfn)(int fd,
- 		       intel_ctx_t *ctx,
- 		       uint32_t region1, uint32_t region2,
-+		       uint32_t width, uint32_t height,
- 		       enum blt_tiling_type btype,
- 		       const struct test_config *config);
- } copyfns[] = {
-@@ -528,17 +553,44 @@ static const struct {
- 	[BLOCK_MULTICOPY] = { "-multicopy", block_multicopy },
+@@ -181,7 +189,6 @@ static void fast_copy(int xe, const intel_ctx_t *ctx,
+ 						  INTEL_ALLOCATOR_SIMPLE,
+ 						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+ 	uint32_t bb;
+-	uint32_t width = param.width, height = param.height;
+ 	int result;
+ 
+ 	bb = xe_bo_create(xe, 0, bb_size, region1, 0);
+@@ -241,14 +248,20 @@ enum fast_copy_func {
  };
  
--static void block_copy_test(int xe,
--			    const struct test_config *config,
--			    struct igt_collection *set,
--			    enum copy_func copy_function)
-+static void single_copy(int xe, const struct test_config *config,
-+			int32_t region1, uint32_t region2,
-+			uint32_t width, uint32_t height,
-+			int tiling, enum copy_func copy_function)
+ static char
+-	*full_subtest_str(char *regtxt, enum blt_tiling_type tiling,
++	*full_subtest_str(char *regtxt, uint32_t width, uint32_t height,
++			  enum blt_tiling_type tiling,
+ 			  enum fast_copy_func func)
  {
- 	struct drm_xe_engine_class_instance inst = {
- 		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+ 	char *name;
+ 	uint32_t len;
+ 
+-	len = asprintf(&name, "%s-%s%s", blt_tiling_name(tiling), regtxt,
+-		       func == FAST_COPY_EMIT ? "-emit" : "");
++	if (!width || !height)
++		len = asprintf(&name, "%s-%s%s", blt_tiling_name(tiling), regtxt,
++			       func == FAST_COPY_EMIT ? "-emit" : "");
++	else
++		len = asprintf(&name, "%s-%s%s-%ux%u", blt_tiling_name(tiling), regtxt,
++			       func == FAST_COPY_EMIT ? "-emit" : "",
++			       width, height);
+ 
+ 	igt_assert_f(len >= 0, "asprintf failed!\n");
+ 
+@@ -264,6 +277,7 @@ static void fast_copy_test(int xe,
  	};
-+	uint32_t vm, exec_queue;
-+	uint32_t sync_bind, sync_out;
- 	intel_ctx_t *ctx;
-+
-+	vm = xe_vm_create(xe, 0, 0);
-+	exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
-+	sync_bind = syncobj_create(xe, 0);
-+	sync_out = syncobj_create(xe, 0);
-+	ctx = intel_ctx_xe(xe, vm, exec_queue,
-+			   0, sync_bind, sync_out);
-+
-+	copyfns[copy_function].copyfn(xe, ctx,
-+				      region1, region2,
-+				      width, height,
-+				      tiling, config);
-+
-+	xe_exec_queue_destroy(xe, exec_queue);
-+	xe_vm_destroy(xe, vm);
-+	syncobj_destroy(xe, sync_bind);
-+	syncobj_destroy(xe, sync_out);
-+	free(ctx);
-+}
-+
-+static void block_copy_test(int xe,
-+			    const struct test_config *config,
-+			    struct igt_collection *set,
-+			    enum copy_func copy_function)
-+{
-+
  	struct igt_collection *regions;
--	uint32_t vm, exec_queue;
+ 	void (*copy_func)(int xe, const intel_ctx_t *ctx,
++			  uint32_t width, uint32_t height,
+ 			  uint32_t r1, uint32_t r2, enum blt_tiling_type tiling);
+ 	intel_ctx_t *ctx;
  	int tiling;
+@@ -286,16 +300,32 @@ static void fast_copy_test(int xe,
  
- 	if (config->compression && !blt_block_copy_supports_compression(xe))
-@@ -555,6 +607,7 @@ static void block_copy_test(int xe,
- 		for_each_variation_r(regions, 2, set) {
- 			uint32_t region1, region2;
- 			char *regtxt;
-+			char testname[256];
- 
- 			region1 = igt_collection_get_value(regions, 0);
- 			region2 = igt_collection_get_value(regions, 1);
-@@ -566,30 +619,36 @@ static void block_copy_test(int xe,
- 
+ 			copy_func = (func == FAST_COPY) ? fast_copy : fast_copy_emit;
  			regtxt = xe_memregion_dynamic_subtest_name(xe, regions);
+-			test_name = full_subtest_str(regtxt, tiling, func);
  
--			igt_dynamic_f("%s-%s-compfmt%d-%s%s",
--				      blt_tiling_name(tiling),
--				      config->compression ?
--					      "compressed" : "uncompressed",
--				      param.compression_format, regtxt,
--				      copyfns[copy_function].suffix) {
--				uint32_t sync_bind, sync_out;
-+			snprintf(testname, sizeof(testname),
-+				 "%s-%s-compfmt%d-%s%s",
-+				 blt_tiling_name(tiling),
-+				 config->compression ?
-+					 "compressed" : "uncompressed",
-+				 param.compression_format, regtxt,
-+				 copyfns[copy_function].suffix);
- 
--				vm = xe_vm_create(xe, 0, 0);
--				exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
--				sync_bind = syncobj_create(xe, 0);
--				sync_out = syncobj_create(xe, 0);
--				ctx = intel_ctx_xe(xe, vm, exec_queue,
--						   0, sync_bind, sync_out);
-+			if (!config->width_increment) {
-+				igt_dynamic(testname)
-+					single_copy(xe, config, region1, region2,
-+						    param.width, param.height,
-+						    tiling, copy_function);
+-			igt_dynamic_f("%s", test_name) {
+-				copy_func(xe, ctx,
+-					  region1, region2,
+-					  tiling);
++			if (!param.width_increment) {
++				test_name = full_subtest_str(regtxt, 0, 0, tiling, func);
++				igt_dynamic_f("%s", test_name) {
++					copy_func(xe, ctx,
++						  param.width, param.height,
++						  region1, region2,
++						  tiling);
++				}
++				free(test_name);
 +			} else {
 +				for (int w = param.width;
-+				     w < param.width + config->width_steps;
-+				     w += config->width_increment) {
-+					snprintf(testname, sizeof(testname),
-+						 "%s-%s-compfmt%d-%s%s-%dx%d",
-+						 blt_tiling_name(tiling),
-+						 config->compression ?
-+							 "compressed" : "uncompressed",
-+						 param.compression_format, regtxt,
-+						 copyfns[copy_function].suffix,
-+						 w, w);
-+					igt_dynamic(testname)
-+						single_copy(xe, config, region1, region2,
-+							    w, w, tiling, copy_function);
++				     w < param.width + param.width_steps;
++				     w += param.width_increment) {
++					test_name = full_subtest_str(regtxt, w, w, tiling, func);
++					igt_dynamic_f("%s", test_name) {
++						copy_func(xe, ctx,
++							  w, w,
++							  region1, region2,
++							  tiling);
++					}
++					free(test_name);
 +				}
- 
--				copyfns[copy_function].copyfn(xe, ctx,
--							      region1, region2,
--							      tiling, config);
--
--				xe_exec_queue_destroy(xe, exec_queue);
--				xe_vm_destroy(xe, vm);
--				syncobj_destroy(xe, sync_bind);
--				syncobj_destroy(xe, sync_out);
--				free(ctx);
  			}
  
  			free(regtxt);
-@@ -669,6 +728,16 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 		block_copy_test(xe, &config, set, BLOCK_COPY);
+-			free(test_name);
+ 			xe_exec_queue_destroy(xe, exec_queue);
+ 			xe_vm_destroy(xe, vm);
+ 			free(ctx);
+@@ -367,6 +397,17 @@ igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
+ 		fast_copy_test(xe, set, FAST_COPY);
  	}
  
-+	igt_describe("Check block-copy uncompressed blit with increment width/height");
-+	igt_subtest_with_dynamic("block-copy-uncompressed-inc-dimension") {
-+		struct test_config config = { .width_increment = 15,
-+					      .width_steps = 512 };
++	igt_describe("Check fast-copy with increment width/height");
++	igt_subtest_with_dynamic("fast-copy-inc-dimension") {
 +		param.width = 1;
 +		param.height = 1;
++		param.width_increment = 15;
++		param.width_steps = 512;
 +
-+		block_copy_test(xe, &config, set, BLOCK_COPY);
++		fast_copy_test(xe, set, FAST_COPY);
 +	}
 +
- 	igt_describe("Check block-copy flatccs compressed blit");
- 	igt_subtest_with_dynamic("block-copy-compressed") {
- 		struct test_config config = { .compression = true };
-@@ -676,6 +745,17 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 		block_copy_test(xe, &config, set, BLOCK_COPY);
- 	}
- 
-+	igt_describe("Check block-copy compressed blit with increment width/height");
-+	igt_subtest_with_dynamic("block-copy-compressed-inc-dimension") {
-+		struct test_config config = { .compression = true,
-+					      .width_increment = 15,
-+					      .width_steps = 512 };
-+		param.width = 1;
-+		param.height = 1;
 +
-+		block_copy_test(xe, &config, set, BLOCK_COPY);
-+	}
-+
- 	igt_describe("Check block-multicopy flatccs compressed blit");
- 	igt_subtest_with_dynamic("block-multicopy-compressed") {
- 		struct test_config config = { .compression = true };
+ 	igt_describe("Check multiple fast-copy in one batch");
+ 	igt_subtest_with_dynamic("fast-copy-emit") {
+ 		fast_copy_test(xe, set, FAST_COPY_EMIT);
 -- 
 2.34.1
 
