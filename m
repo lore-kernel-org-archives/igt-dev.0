@@ -4,56 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82D9FC4828F
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 15:51:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46DDBC4828F
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 16:02:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1D42B10EF4F;
-	Thu,  1 Feb 2024 15:51:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D8AAA10EF3C;
+	Thu,  1 Feb 2024 16:02:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QRiL60W9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EQXmKjRW";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 94D2410EF4F
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 15:51:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 86A2A10EF47;
+ Thu,  1 Feb 2024 16:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706802684; x=1738338684;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=J0Pzk3EiFeqklJF/wB5NorG/bjnLtLBWDeN/nWAkjmg=;
- b=QRiL60W9d2h+3g3HHpJ85PwxufMW+5jUnUXt+zy394GGRfTqk1tu8ZAK
- Zk/Qlmjf+ibuFpSnYM1ByHbbDAy/5rEndbPvh12I5sOaL5Mn3bn5U0I9K
- iAYptzzu4+QLqO9ZpBz+q195ArVySjLdt2kandmOWrokXMsF5RKwXzwPw
- 3KbMTAZ/L6UKZXXCicEJ/ZYIG1oTWU8uS0SX7VyDP0ZJIk0c7ajRRou64
- 3TOzPhkcXEfAxYA7ZRWzfDQmZLa39rH+IeuJoDABJW1RrYb+ioQ87u9Ya
- N6FQ+PCsmwywsuD0VNlUCPVMU+TYrxc/fqdoYGlmdivZMWZevWoo5U9TR Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="102155"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="102155"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 07:51:24 -0800
+ t=1706803333; x=1738339333;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=aA59Muj752d8idO5uDhyyIccmBKQZgA6qwoKM/FXbYM=;
+ b=EQXmKjRWvw8I8l0TTwHQr8kImYpoWEhwQA+HlzWz1pPoz4ffI8zPJFpY
+ /dMJIv4LC8rOSQTsCsVWVHDuUh9XPPgt7tK20Voo4Axltch+p4VRH0hd6
+ m6ZlNqnEyqZ3QOcZPF5nY+FAiu4ZYUy8Ovk5HvDQEjbK0h8Q/J7lDWG+6
+ hSF1SNLNF5+DqmJULlmwxRmvsDmndhBMH/ZwKb0izO4i+4bYJaSY4aMky
+ YfhTU2BfPz9E/RgD3s1NKMFuhCvQK7+IDKoIewSGLFUBr5+zSZzxxa9ZO
+ SY910LI0UDQiIy0GxrZH7kCHP1zGkBPf9KX8ijvKo6MtmVEiSZhZ0l6qi A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="402771044"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="402771044"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 08:02:09 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="114037"
-Received: from msterni-mobl.ger.corp.intel.com (HELO localhost)
- ([10.245.112.128])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 07:51:23 -0800
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
-Subject: [PATCH i-g-t v6 8/8] tests/intel/gem_mmap: add basic multi-GPU subtest
-Date: Thu,  1 Feb 2024 16:50:47 +0100
-Message-ID: <20240201155047.48608-9-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240201155047.48608-1-kamil.konieczny@linux.intel.com>
-References: <20240201155047.48608-1-kamil.konieczny@linux.intel.com>
+   d="scan'208";a="4424695"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.1.219])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 08:02:08 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ intel-xe@lists.freedesktop.org, Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: Re: [PATCH i-g-t v2 6/6] lib/kunit: Process module remove error after
+ list errors
+Date: Thu, 01 Feb 2024 17:02:05 +0100
+Message-ID: <2550119.vzjCzTo3RI@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20240201145501.5ga7vvpkc6urpwy2@kamilkon-desk.igk.intel.com>
+References: <20240131181156.80571-8-janusz.krzysztofik@linux.intel.com>
+ <20240131181156.80571-14-janusz.krzysztofik@linux.intel.com>
+ <20240201145501.5ga7vvpkc6urpwy2@kamilkon-desk.igk.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,139 +72,76 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Test basic mmap for two or more GPU cards.
+Hi Kamil,
 
-v2: renamed subtest to multigpu-basic (Kamil)
+On Thursday, 1 February 2024 15:55:01 CET Kamil Konieczny wrote:
+> Hi Janusz,
+> On 2024-01-31 at 19:03:53 +0100, Janusz Krzysztofik wrote:
+> > Skip on any error from test case list gathering first, then, in
+> > preparation for executing those test cases, on an error from unloading the
+> > test module loaded in list only mode, so it is more clear if listing the
+> > test cases was successful or not.
+> > 
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > ---
+> >  lib/igt_kmod.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> > index 53c54b1a0d..741c7fd055 100644
+> > --- a/lib/igt_kmod.c
+> > +++ b/lib/igt_kmod.c
+> > @@ -1225,11 +1225,11 @@ static void kunit_get_tests(struct igt_list_head 
+*tests,
+> >  		free(case_name);
+> >  	}
+> >  
+> > -	igt_skip_on(kmod_module_remove_module(tst->kmod, 
+KMOD_REMOVE_FORCE));
+> > -
+> >  	igt_skip_on_f(err,
+> >  		      "KTAP parser failed while getting a list of test 
+cases\n");
+> >  	igt_skip_on(igt_list_empty(tests));
+> 
+> This skip_on will prevent module unload below... What about
+> remembering both and skipping on list_empty() only after module unload?
+> For example:
+>     testslist_is_empty = igt_list_empty(tests);
+>     unload_failed = kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE);
+> 
+>     igt_skip_on(testslist_is_empty);
+>     igt_skip_on_f(unload_failed, "kmod %s unload failed\n", tst->kmod);
 
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
----
- tests/intel/gem_mmap.c | 77 +++++++++++++++++++++++++++---------------
- 1 file changed, 50 insertions(+), 27 deletions(-)
+As I tried to express in my commit description, test module is unloaded here, 
+after the list of test cases is collected, "in preparation for executing those 
+test cases", and not as a final cleanup.
 
-diff --git a/tests/intel/gem_mmap.c b/tests/intel/gem_mmap.c
-index d4ca1eda7..64ec25e87 100644
---- a/tests/intel/gem_mmap.c
-+++ b/tests/intel/gem_mmap.c
-@@ -38,6 +38,8 @@
- 
- #include "drm.h"
- #include "i915/gem_create.h"
-+#include "intel_multigpu.h"
-+
- /**
-  * TEST: gem mmap
-  * Description: Basic MMAP IOCTL tests for memory regions.
-@@ -79,6 +81,11 @@
-  *   object.
-  * Run type: FULL
-  *
-+ * SUBTEST: multigpu-basic
-+ * Description:
-+ *   Test basics of mmap on two or more GPUs.
-+ * Run type: BAT
-+ *
-  * SUBTEST: pf-nonblock
-  * Description:
-  *   Verify that GTT page faults are asynchronous to GPU rendering and completes within a
-@@ -209,12 +216,40 @@ static int mmap_ioctl(int i915, struct drm_i915_gem_mmap *arg)
- 	return err;
- }
- 
--igt_main
-+static void test_basic(int i915, int pat)
- {
-+	struct drm_i915_gem_mmap arg = {
-+		.handle = gem_create(fd, OBJECT_SIZE),
-+		.size = OBJECT_SIZE,
-+	};
- 	uint8_t expected[OBJECT_SIZE];
- 	uint8_t buf[OBJECT_SIZE];
- 	uint8_t *addr;
- 
-+	igt_assert_eq(mmap_ioctl(fd, &arg), 0);
-+	addr = from_user_pointer(arg.addr_ptr);
-+
-+	igt_info("Testing contents of newly created object.\n");
-+	memset(expected, 0, sizeof(expected));
-+	igt_assert(memcmp(addr, expected, sizeof(expected)) == 0);
-+
-+	igt_info("Testing coherency of writes and mmap reads.\n");
-+	memset(buf, 0, sizeof(buf));
-+	memset(buf + 1024, pat, 1024);
-+	memset(expected + 1024, pat, 1024);
-+	gem_write(fd, arg.handle, 0, buf, OBJECT_SIZE);
-+	igt_assert(memcmp(buf, addr, sizeof(buf)) == 0);
-+
-+	igt_info("Testing that mapping stays after close\n");
-+	gem_close(fd, arg.handle);
-+	igt_assert(memcmp(buf, addr, sizeof(buf)) == 0);
-+
-+	igt_info("Testing unmapping\n");
-+	munmap(addr, OBJECT_SIZE);
-+}
-+
-+igt_main
-+{
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_INTEL);
- 		igt_require(gem_has_legacy_mmap(fd));
-@@ -306,36 +341,13 @@ igt_main
- 
- 	igt_describe("Test basics of newly mapped gem object like default content, write and read "
- 		     "coherency, mapping existence after gem_close and unmapping.");
--	igt_subtest("basic") {
--		struct drm_i915_gem_mmap arg = {
--			.handle = gem_create(fd, OBJECT_SIZE),
--			.size = OBJECT_SIZE,
--		};
--		igt_assert_eq(mmap_ioctl(fd, &arg), 0);
--		addr = from_user_pointer(arg.addr_ptr);
--
--		igt_info("Testing contents of newly created object.\n");
--		memset(expected, 0, sizeof(expected));
--		igt_assert(memcmp(addr, expected, sizeof(expected)) == 0);
--
--		igt_info("Testing coherency of writes and mmap reads.\n");
--		memset(buf, 0, sizeof(buf));
--		memset(buf + 1024, 0x01, 1024);
--		memset(expected + 1024, 0x01, 1024);
--		gem_write(fd, arg.handle, 0, buf, OBJECT_SIZE);
--		igt_assert(memcmp(buf, addr, sizeof(buf)) == 0);
--
--		igt_info("Testing that mapping stays after close\n");
--		gem_close(fd, arg.handle);
--		igt_assert(memcmp(buf, addr, sizeof(buf)) == 0);
--
--		igt_info("Testing unmapping\n");
--		munmap(addr, OBJECT_SIZE);
--	}
-+	igt_subtest("basic")
-+		test_basic(fd, 1);
- 
- 	igt_describe("Map small buffer object though direct CPU access, bypassing GPU.");
- 	igt_subtest("short-mmap") {
- 		uint32_t handle = gem_create(fd, OBJECT_SIZE);
-+		uint8_t *addr;
- 
- 		igt_assert(OBJECT_SIZE > 4096);
- 
-@@ -373,4 +385,15 @@ igt_main
- 
- 	igt_fixture
- 		drm_close_driver(fd);
-+
-+	igt_describe("Test basics of mapped on two or more GPUs.");
-+	igt_subtest("multigpu-basic") {
-+		igt_multi_fork_foreach_gpu(gpu, DRIVER_INTEL) {
-+			int pat = 1 + rand() % 128;
-+
-+			igt_info("Basic mmap test with pattern x%x\n", pat);
-+			test_basic(gpu, pat);
-+		}
-+		igt_waitchildren();
-+	}
- }
--- 
-2.42.0
+kunit_get_tests() is called from inside igt_subtest_with_dynamic() before any 
+calls to igt_dynamic() from where test cases are executed.  If 
+kunit_get_tests() skips for any reason then no test cases provided by that 
+module will be executed, then unloading the module is not required.  An 
+attempt to unload it if still loaded will be take from the trailing 
+igt_fixture section of igt_kunit() via a call to igt_ktest_end().
+
+Is the above clarification sufficient for you?  
+
+Thanks,
+Janusz
+
+> 
+> 
+> Regards,
+> Kamil
+> 
+> > +
+> > +	igt_skip_on(kmod_module_remove_module(tst->kmod, 
+KMOD_REMOVE_FORCE));
+> >  }
+> >  
+> >  static void __igt_kunit(struct igt_ktest *tst,
+> 
+
+
+
 
