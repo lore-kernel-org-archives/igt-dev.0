@@ -4,42 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 534ADC47258
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 00:45:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 050BBC4828C
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 00:47:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A3A710F8F0;
-	Thu,  1 Feb 2024 00:45:04 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A8FC510F8F0
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 00:45:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7CE4910FE03;
+	Thu,  1 Feb 2024 00:47:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A86010FDFF
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 00:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706748303; x=1738284303;
+ t=1706748464; x=1738284464;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=JqnQCaHc47BaaUhXpE5SIBHT/cR+lrruT/yGImAzjLs=;
- b=BdgYrhKhBmnyhdwOEtVJ4LSHFwCWn0DMJQnkCozUGvRdL2HLrwjf6s01
- 6KAMcuNu3H+6d/EwtCyAan0tjXxKbKufDi3mL3EZ36T80Z9sW6QJADyr9
- NQsLmi6J9Tp4+dZ0irfr3sGJ0J6AsiRmejtUlvyi6LGeaHXlbyVFmKGl+
- tuEP/YjfL9M+vJeUn48jno6dSbPTRw6P/Gf+Y3tfV3FZ168GHurTu6EJM
- RgaDkOMk5Z1LsZi3v7elpoDwIYszOc0BgzqwpZ6TmL00ruxKSJWzMBCkW
- h9DofxfXdiLq/YoYNuPhN931HMZb0ieXFTOZOGhbX82npZ3DckZ9O/Vxm g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="10406402"
-X-IronPort-AV: E=Sophos;i="6.05,233,1701158400"; d="scan'208";a="10406402"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2024 16:44:46 -0800
-X-ExtLoop1: 1
+ bh=z7Wxpnu5wUViAty1lbUKgMwg8JC0hmbPsOJxdiVYfQs=;
+ b=GOKtoqoLAphyo+DfXZzPDU7z2/POtMdEktQ6C1S7rVycH3hqupOmOtQ2
+ Bp+HgS4XeTHs3b/8TS46hKlvxCvmPHisZ2ZXN2jVF4lQsSmHKOwuHE2ha
+ HIlqc8FuatZ7Dp3zXaH2PnRSxrKxO4fRComxpQmtNkjf+GTKt/zMXWs1T
+ tjX9tchz8ikBwaz5LoRZstRaJGcldhGiHg6et2dX66d6+QsBsQJBV2vCT
+ MMwvAP8ER6fCS1aZmtSBOY7mT1h5xl0eHVh4Y4b3t0JMlZjk+DfyZpFNH
+ oy1jKgwP1K5p4HoHWZ1dP+I18/t8x0EEtBw8pqKmFjEG9CGFmFbQFoScR Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="3635847"
 X-IronPort-AV: E=Sophos;i="6.05,233,1701158400"; 
-   d="scan'208";a="4254943"
+   d="scan'208";a="3635847"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jan 2024 16:47:38 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="1119789340"
+X-IronPort-AV: E=Sophos;i="6.05,233,1701158400"; d="scan'208";a="1119789340"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2024 16:44:45 -0800
+ by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jan 2024 16:47:37 -0800
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2] tests/kms_rmfb: Fix subtest description
-Date: Wed, 31 Jan 2024 16:44:48 -0800
-Message-ID: <20240201004448.351926-1-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 0/2] fdinfo: drive-by changes
+Date: Wed, 31 Jan 2024 16:46:23 -0800
+Message-ID: <20240201004744.352041-1-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -59,74 +60,16 @@ Cc: Lucas De Marchi <lucas.demarchi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Kernel driver is responsible to do those actions. kms_rmfb is then
-checking if that was true in 2 cases: a) DRM_IOCTL_MODE_RMFB was called
-or b) the file descriptor was closed.
+While understanding the interface, I thought of a few changes to make it
+easier to understand. Shouldn't change anything.
 
-v2: Fix swapped description (Swati)
+Lucas De Marchi (2):
+  lib/igt_drm_fdinfo: Use longest match first
+  lib/igt_drm_fdinfo: Mandatory drm-fields first
 
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- tests/kms_rmfb.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ lib/igt_drm_fdinfo.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
-index 39e8bbd55..0ea689d60 100644
---- a/tests/kms_rmfb.c
-+++ b/tests/kms_rmfb.c
-@@ -24,7 +24,7 @@
- /**
-  * TEST: kms rmfb
-  * Category: Display
-- * Description: This tests rmfb and close-fd behavior. In these casesthe
-+ * Description: This tests rmfb and close-fd behavior. In these cases the
-  *              framebuffers should be removed from the crtc.
-  * Driver requirement: i915, xe
-  * Functionality: kms_gem_interop
-@@ -42,12 +42,13 @@
- 
- /**
-  * SUBTEST: close-fd
-- * Description: RMFB is supposed to free the framebuffers from any and all planes
-- *              so test this and make sure it works with fd close and reopen.
-+ * Description: Kernel driver is supposed to free the framebuffers from any and all planes
-+ *		when the fd is closed. Ensure that is the case by closing and re-opening
-+ *		it.
-  *
-  * SUBTEST: rmfb-ioctl
-- * Description: RMFB is supposed to free the framebuffers from any and all planes
-- *              so test this and make sure it works.
-+ * Description: Kernel driver is supposed to free the framebuffers from any and all planes
-+ *              when DRM_IOCTL_MODE_RMFB ioctl is called. Ensure that is the case.
-  */
- 
- #ifndef DRM_CAP_CURSOR_WIDTH
-@@ -57,7 +58,7 @@
- #define DRM_CAP_CURSOR_HEIGHT 0x9
- #endif
- 
--IGT_TEST_DESCRIPTION("This tests rmfb and close-fd behavior. In these cases"
-+IGT_TEST_DESCRIPTION("This tests rmfb and close-fd behavior. In these cases "
- 		     "the framebuffers should be removed from the crtc.");
- 
- struct rmfb_data {
-@@ -198,11 +199,11 @@ igt_main
- 		const char *name;
- 		const char *description;
- 	} tests[] = {
--		{ false, "rmfb-ioctl", "RMFB is supposed to free the framebuffers from any and all "
--				       "planes so test this and make sure it works."},
--		{ true, "close-fd", "RMFB is supposed to free the framebuffers from any and all "
--				    "planes so test this and make sure it works with fd close "
--				    "and reopen."},
-+		{ false, "rmfb-ioctl", "Kernel driver is supposed to free the framebuffers from any and all planes "
-+				       "when DRM_IOCTL_MODE_RMFB ioctl is called. Ensure that is the case." },
-+		{ true, "close-fd", "Kernel driver is supposed to free the framebuffers from any and all planes "
-+				    "when the fd is closed. Ensure that is the case by closing and re-opening "
-+				    "it" },
- 	};
- 	struct rmfb_data data = {};
- 	int i;
 -- 
 2.43.0
 
