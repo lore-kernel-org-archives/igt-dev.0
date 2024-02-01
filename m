@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8804C4828D
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 22:02:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8F15C48286
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 22:16:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7F16210E7D7;
-	Thu,  1 Feb 2024 22:02:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 396A610EBE8;
+	Thu,  1 Feb 2024 22:16:49 +0000 (UTC)
 Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDC2810E801;
- Thu,  1 Feb 2024 22:02:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9611C10EBE8;
+ Thu,  1 Feb 2024 22:16:48 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============5444022752063546691=="
+ boundary="===============5170381384429363762=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_lib/kunit=3A_Support_writable_?=
- =?utf-8?q?filter*_parameters_of_kunit_module_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_lib/kunit=3A_Support_writab?=
+ =?utf-8?q?le_filter*_parameters_of_kunit_module_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 01 Feb 2024 22:02:25 -0000
-Message-ID: <170682494597.897306.10257394377953150617@5338d5abeb45>
+Date: Thu, 01 Feb 2024 22:16:48 -0000
+Message-ID: <170682580861.897305.18164682753155415689@5338d5abeb45>
 X-Patchwork-Hint: ignore
 References: <20240201190237.150754-8-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20240201190237.150754-8-janusz.krzysztofik@linux.intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5444022752063546691==
+--===============5170381384429363762==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,91 +50,99 @@ Content-Transfer-Encoding: 7bit
 
 Series: lib/kunit: Support writable filter* parameters of kunit module (rev3)
 URL   : https://patchwork.freedesktop.org/series/129174/
-State : failure
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7701_BAT -> XEIGTPW_10629_BAT
+CI Bug Log - changes from IGT_7701 -> IGTPW_10629
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with XEIGTPW_10629_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_10629_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/index.html
 
-Participating hosts (4 -> 4)
+Participating hosts (38 -> 36)
 ------------------------------
 
-  No changes in participating hosts
+  Additional (1): fi-pnv-d510 
+  Missing    (3): fi-tgl-1115g4 bat-jsl-1 fi-snb-2520m 
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_10629_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_live_ktest@bo:
-    - bat-adlp-7:         [PASS][1] -> [SKIP][2] +2 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-adlp-7/igt@xe_live_ktest@bo.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-adlp-7/igt@xe_live_ktest@bo.html
-
-  * igt@xe_live_ktest@migrate:
-    - bat-pvc-2:          [PASS][3] -> [SKIP][4] +2 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-pvc-2/igt@xe_live_ktest@migrate.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-pvc-2/igt@xe_live_ktest@migrate.html
-    - bat-dg2-oem2:       [PASS][5] -> [SKIP][6] +2 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-dg2-oem2/igt@xe_live_ktest@migrate.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-dg2-oem2/igt@xe_live_ktest@migrate.html
-    - bat-atsm-2:         [PASS][7] -> [SKIP][8] +2 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-atsm-2/igt@xe_live_ktest@migrate.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-atsm-2/igt@xe_live_ktest@migrate.html
-
-  
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_10629_BAT that come from known issues:
+  Here are the changes found in IGTPW_10629 that come from known issues:
 
 ### IGT changes ###
 
-#### Warnings ####
+#### Issues hit ####
 
-  * igt@xe_exec_fault_mode@twice-basic:
-    - bat-atsm-2:         [SKIP][9] ([Intel XE#1130]) -> [SKIP][10] ([Intel XE#288])
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html
+  * igt@gem_lmem_swapping@basic:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][1] ([fdo#109271]) +31 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/fi-pnv-d510/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_lmem_swapping@verify-random:
+    - fi-kbl-guc:         NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/fi-kbl-guc/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - bat-adln-1:         [PASS][3] -> [DMESG-FAIL][4] ([i915#10010])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7701/bat-adln-1/igt@i915_selftest@live@gt_pm.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/bat-adln-1/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_pipe_crc_basic@read-crc:
+    - fi-kbl-guc:         NOTRUN -> [SKIP][5] ([fdo#109271]) +11 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/fi-kbl-guc/igt@kms_pipe_crc_basic@read-crc.html
 
   
-  [Intel XE#1130]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-nick:        [ABORT][6] ([i915#7911]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7701/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - fi-kbl-guc:         [ABORT][8] ([i915#9991]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7701/fi-kbl-guc/igt@kms_force_connector_basic@force-connector-state.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/fi-kbl-guc/igt@kms_force_connector_basic@force-connector-state.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-1:
+    - bat-dg2-8:          [FAIL][10] -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7701/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-1.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#10010]: https://gitlab.freedesktop.org/drm/intel/issues/10010
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#9991]: https://gitlab.freedesktop.org/drm/intel/issues/9991
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_7701 -> IGTPW_10629
 
+  CI-20190529: 20190529
+  CI_DRM_14209: 3e58a4940c44430f20cad20ead5e1b77ed209cde @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_10629: 10629
   IGT_7701: 7701
-  xe-715-3e58a4940c44430f20cad20ead5e1b77ed209cde: 3e58a4940c44430f20cad20ead5e1b77ed209cde
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/index.html
 
---===============5444022752063546691==
+--===============5170381384429363762==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -156,62 +164,85 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>lib/kunit: Support writable filter* parameters of kunit module (rev3)</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129174/">https://patchwork.freedesktop.org/series/129174/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7701_BAT -&gt; XEIGTPW_10629_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_7701 -&gt; IGTPW_10629</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_10629_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_10629_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_10629_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@xe_live_ktest@bo:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-adlp-7/igt@xe_live_ktest@bo.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-adlp-7/igt@xe_live_ktest@bo.html">SKIP</a> +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@migrate:</p>
-<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-pvc-2/igt@xe_live_ktest@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-pvc-2/igt@xe_live_ktest@migrate.html">SKIP</a> +2 other tests skip</li>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-dg2-oem2/igt@xe_live_ktest@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-dg2-oem2/igt@xe_live_ktest@migrate.html">SKIP</a> +2 other tests skip</li>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-atsm-2/igt@xe_live_ktest@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-atsm-2/igt@xe_live_ktest@migrate.html">SKIP</a> +2 other tests skip</li>
-</ul>
-</li>
-</ul>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/index.html</p>
+<h2>Participating hosts (38 -&gt; 36)</h2>
+<p>Additional (1): fi-pnv-d510 <br />
+  Missing    (3): fi-tgl-1115g4 bat-jsl-1 fi-snb-2520m </p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10629_BAT that come from known issues:</p>
+<p>Here are the changes found in IGTPW_10629 that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Warnings</h4>
+<h4>Issues hit</h4>
 <ul>
-<li>igt@xe_exec_fault_mode@twice-basic:<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>)</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/fi-pnv-d510/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +31 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/fi-kbl-guc/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7701/bat-adln-1/igt@i915_selftest@live@gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/bat-adln-1/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10010">i915#10010</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc:</p>
+<ul>
+<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/fi-kbl-guc/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +11 other tests skip</li>
 </ul>
 </li>
 </ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7701/fi-bsw-nick/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7701/fi-kbl-guc/igt@kms_force_connector_basic@force-connector-state.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9991">i915#9991</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/fi-kbl-guc/igt@kms_force_connector_basic@force-connector-state.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7701/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-1.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10629/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7701 -&gt; IGTPW_10629</li>
 </ul>
-<p>IGTPW_10629: 10629<br />
-  IGT_7701: 7701<br />
-  xe-715-3e58a4940c44430f20cad20ead5e1b77ed209cde: 3e58a4940c44430f20cad20ead5e1b77ed209cde</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14209: 3e58a4940c44430f20cad20ead5e1b77ed209cde @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10629: 10629<br />
+  IGT_7701: 7701</p>
 
 </body>
 </html>
 
---===============5444022752063546691==--
+--===============5170381384429363762==--
