@@ -4,57 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB939C4828F
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 15:38:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADD4FC4828F
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 15:50:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6091510F6A9;
-	Thu,  1 Feb 2024 15:38:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 44EAC10E704;
+	Thu,  1 Feb 2024 15:50:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aJGfewGs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EwI/8Yl4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A11DC10F6A9
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 15:38:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 31F1B10EF50
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 15:50:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706801896; x=1738337896;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=XYvjp2MyV5Laqb+fLkWsnkrxo4saB18rpmOes5Msc3Q=;
- b=aJGfewGsBmwzmrTEZiWtBUgHI8XDsjhokD3Ni2vEWQXlRT+xfk2oHG1D
- De+tT11iYaCXCkk1FDO67ZZ0e5vCktwVNaiu72B3okuWqtCxR6uXK0sJr
- RCKU3iXIjExKGGAcH/phrz4nKM6PBpWZfUSLREFkz9Z7r+EJKO3/ZBeQt
- E2XWBk5zHFO/QmJi3tmoRbWfwjeB+RFMfo1KUag+u4ZnG910Vx+nQ0bmC
- PQw2ovtQTkkME62qOiIUQTkR2SV4BiIVHEeCI345nVvMOwLSvsteRuXZO
- R04iRzTczrgm0F759CO7c7keIN6FhmnHW2pJF+EatvgWETa5AcFjA0QWC Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="118229"
+ t=1706802656; x=1738338656;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=DXaj2B0igSZXEc9pbqUJHH/3mhS5A/diESH3W0rFbYc=;
+ b=EwI/8Yl4ZFxoD2bhTEvNvCPHv8awsh7x5oU4nRmFzUICLtkH97JAuI4A
+ NUBo5uWNNS8vssuOape3MP5ppktnp62mG6oKOYikFesIyEAbujUaPJ4OL
+ kGH34dwcRZtlmZ/Jxdqb/PqBB5BeoMi+YNbLbP7D98WIXPvgbI2J2wrLb
+ MEf6mfRs4B3OItGdOOLJNjaSIaNYOTvWMt+pmXWG71pUKZ1z3Eq2EIN1O
+ RCFI1S3KjR858WDoIqIVsCdZ4+Pic/j28xl80L+nF9kw6QTUjvOw4138P
+ bzpSs1SLZ4X1sI/dU0HnTYhX5rWte8fiFgIcnIVkc5f62cM4WS4PFiFoU A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="108362"
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="118229"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 07:38:11 -0800
+   d="scan'208";a="108362"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 07:50:53 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="932205815"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="932205815"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.1.219])
- by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 07:38:08 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
-Subject: Re: =?UTF-8?B?4pyX?= CI.xeBAT: failure for lib/kunit: Support writable
- filter* parameters of kunit module (rev2)
-Date: Thu, 01 Feb 2024 16:38:06 +0100
-Message-ID: <3066928.kC03pvyZki@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <dmwvmczxregptoifkjgyje2cramo5ztnzkkrcasz4mpnjhel6p@qwcz6rlu6gwi>
-References: <20240131181156.80571-8-janusz.krzysztofik@linux.intel.com>
- <2945385.o0KrE1Onz3@jkrzyszt-mobl2.ger.corp.intel.com>
- <dmwvmczxregptoifkjgyje2cramo5ztnzkkrcasz4mpnjhel6p@qwcz6rlu6gwi>
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="822950294"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="822950294"
+Received: from msterni-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.245.112.128])
+ by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 07:50:51 -0800
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t v6 0/8] introduce Xe multigpu and other multi-GPU helpers
+Date: Thu,  1 Feb 2024 16:50:39 +0100
+Message-ID: <20240201155047.48608-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,110 +66,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thursday, 1 February 2024 15:13:31 CET Lucas De Marchi wrote:
-> On Thu, Feb 01, 2024 at 12:06:35PM +0100, Janusz Krzysztofik wrote:
-> >On Wednesday, 31 January 2024 21:51:15 CET Lucas De Marchi wrote:
-> >> On Wed, Jan 31, 2024 at 08:22:35PM +0100, Janusz Krzysztofik wrote:
-> >> >On Wednesday, 31 January 2024 19:36:57 CET Patchwork wrote:
-> >> >> == Series Details ==
-> >> >>
-> >> >> Series: lib/kunit: Support writable filter* parameters of kunit module
-> >> >(rev2)
-> >> >> URL   : https://patchwork.freedesktop.org/series/129174/
-> >> >> State : failure
-> >> >>
-> >> >> == Summary ==
-> >> >>
-> >> >> CI Bug Log - changes from XEIGT_7699_BAT -> XEIGTPW_10613_BAT
-> >> >> ====================================================
-> >> >>
-> >> >> Summary
-> >> >> -------
-> >> >>
-> >> >>   **FAILURE**
-> >> >>
-> >> >>   Serious unknown changes coming with XEIGTPW_10613_BAT absolutely need to
-> >> >be
-> >> >>   verified manually.
-> >> >>
-> >> >>   If you think the reported changes have nothing to do with the changes
-> >> >>   introduced in XEIGTPW_10613_BAT, please notify your bug team (I915-ci-
-> >> >infra@lists.freedesktop.org) to allow them
-> >> >>   to document this new failure mode, which will reduce false positives in
-> >> >CI.
-> >> >>
-> >> >>
-> >> >>
-> >> >> Participating hosts (4 -> 4)
-> >> >> ------------------------------
-> >> >>
-> >> >>   No changes in participating hosts
-> >> >>
-> >> >> Possible new issues
-> >> >> -------------------
-> >> >>
-> >> >>   Here are the unknown changes that may have been introduced in
-> >> >XEIGTPW_10613_BAT:
-> >> >>
-> >> >> ### IGT changes ###
-> >> >>
-> >> >> #### Possible regressions ####
-> >> >>
-> >> >>   * igt@xe_live_ktest@bo:
-> >> >>     - bat-adlp-7:         [PASS][1] -> [SKIP][2] +2 other tests skip
-> >> >>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7699/bat-adlp-7/
-> >> >igt@xe_live_ktest@bo.html
-> >> >>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10613/bat-adlp-7/
-> >> >igt@xe_live_ktest@bo.html
-> >> >
-> >> >Hi Lucas,
-> >> >
-> >> >We've got an empty list of test cases because the current algorithm of IGT
-> >> >KUnit implementation expects subtest name provided via struct kunit_tests
-> >> >to be the same as name of a test suite provided by the KUnit test module.  As
-> >> >a special case, if the module provides only one test suite (most do) and the
-> >> >name of it is the same as the module name with the _test or _kunit suffix
-> >> >truncated (also the most common case) then subtest name may be omitted (i.e.,
-> >> >.name field may be NULL).
-> >> >
-> >> >I have to document the above, but we also have to use the same names on both
-> >> >sides (KUnit test module and its corresponding IGT test).  Now we don't, e.g.
-> >> >test suite named "xe_bo" is provided by xe_bo_test module while subtest name
-> >> >"bo" is specified for that module in IGT xe_live_ktest.
-> >>
-> >> in the end we want to have only one module: xe_live_test.ko and then
-> >> filter out by the testunit. From what I've seen previously in igt, it
-> >> would be a matter of always reloading the same module, but passing a
-> >> different name.
-> >
-> >As long as the module will provide several test suites, each of those test
-> >suites can be mapped to a separate subtest with the same name as the test
-> >suite, and with its test cases discovered and executed automatically by IGT as
-> >dynamic sub-subtests, still selectable individually via IGT --dynamic command
-> >line option.  For that to work this way, populating .name fields of the struct
-> >kunit_tests table with subtest names that are the same as test suite names is
-> >mandatory, otherwise IGT will expose one subtest, named after the module name,
-> >with dynamic sub-subtests named <suite_name>-<case_name>.
-> 
-> that's what I did when I submitted the module rename:
-> https://lore.kernel.org/igt-dev/20231205224926.2188996-1-lucas.demarchi@intel.com/
-> 
-> This one is to be applied on top of these fixes to kunit handling.
+Introduce some multi-gpu function helpers and macros. Change in drmtest
+base opening function allows it to use __drm_open_driver_another(N, ...)
+out of order, for example on board with three discrete GPUs:
+__drm_open_driver_another(2, DRIVER_INTEL);
+__drm_open_driver_another(0, DRIVER_INTEL);
 
-Do your subtest names match test suite names used in xe_live_test.ko?  AFAICS, 
-https://patchwork.freedesktop.org/series/126786/ referred in the IGT patch 
-you've pointed out didn't touch test suite names while combining source files 
-of several now separate modules into that one module, and test suite names 
-still reported by those separate modules don't match -- they start with xe_ 
-prefix.  We need to have those mismatches fixed on one side or another.
+Second solution for Xe is based on filtered views. Both allows to
+quickly write tests. There is still drawback of not printing in
+children logs <g:gpu-number> for first opened device. I renamed
+lib from lib/i915/igt_multigpu.* to lib/intel_multigu.* as I do not
+know of any non Intel developer using igt for such tests.
 
-Thanks,
-Janusz
+v2: corrected two patches which introduced multigpu lib (Dominik)
+  rebased patch intoducing Xe multigpu macro, corrected description
+v3: corrected include in first multigpu patch (Dominik)
+  fixed typo (Dominik), refactoring code with Xe and gem macro (Kamil)
+v4: corrected typo in macro (Dominik)
+v5: removed cached names and relaxing checks for filtered devices
+  in 3/8 patch, added Janusz to cc in 1/8...5/8 (Kamil)
+v6: extended description of patches 1 and 2, fixed bug in 3/8 (Janusz)
+  improved usage of _is_already_opened() (Kamil)
 
-> 
-> Lucas De Marchi
-> 
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
+Dominik Karol Piątkowski (4):
+  lib/igt_device_scan: Introduce filtering out non-PCI devices
+  lib/drmtest: Introduced drm_open_driver_another
+  lib/intel_multigpu: Introduce library for multi-GPU scenarios
+  lib/intel_multigpu: Introduced gem_multigpu_count_class and
+    igt_multi_fork_foreach_gpu
 
+Kamil Konieczny (4):
+  lib/drmtest: allow opening cards out of order
+  lib/intel_multigpu: Add xe_multi_fork_foreach_gpu
+  tests/intel/xe_exec_basic: add multigpu subtests
+  tests/intel/gem_mmap: add basic multi-GPU subtest
 
+ lib/drmtest.c               |  85 ++++++++++++++++++-----
+ lib/drmtest.h               |   1 +
+ lib/igt_device_scan.c       |  21 ++++++
+ lib/igt_device_scan.h       |   2 +
+ lib/intel_multigpu.c        | 135 ++++++++++++++++++++++++++++++++++++
+ lib/intel_multigpu.h        |  36 ++++++++++
+ lib/meson.build             |   1 +
+ tests/intel/gem_mmap.c      |  77 ++++++++++++--------
+ tests/intel/xe_exec_basic.c |  36 ++++++++++
+ 9 files changed, 350 insertions(+), 44 deletions(-)
+ create mode 100644 lib/intel_multigpu.c
+ create mode 100644 lib/intel_multigpu.h
+
+-- 
+2.42.0
 
