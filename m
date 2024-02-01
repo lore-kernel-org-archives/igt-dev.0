@@ -4,157 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CF15C4828F
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 14:11:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0C33C4828F
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 14:13:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3AB5410EE11;
-	Thu,  1 Feb 2024 14:11:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5527610EE3D;
+	Thu,  1 Feb 2024 14:13:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TCm1Q611";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VaA5TWSY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2CB6410EE11
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 14:10:59 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B2E4E10EE39;
+ Thu,  1 Feb 2024 14:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706796659; x=1738332659;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=Rx++ShAcvFpPSvd/rSN2P9hjg8qtwmcTXQ92iRDK1nI=;
- b=TCm1Q611aVJPbY/1EjWlExO6h0LKfNdQONhGCowLTUtMCOs8XDfLjnOF
- erCAYEtBWvcO0y20+PrpevzqedHVALIkKSN+PpcRrv4XTjc6Dg/8T1Ndh
- elJnH0i2S3vMVEcx7tP4+amUiIsgu+QkCKrhZCya/vjUG4lPZJV+xbCDg
- gmS1/2FD9ANsQ3ddY8JZabtu21czcbeZP0GxbIOtALem1rdNLXOAh9zvH
- 6q60um9MeI8NmIzjpb5B3z6XxJvL0y+gb7JfvtCNQ3f3n8G+WE4yveCEy
- MNqtK331lOFpTrQnjIaEimwPzd4kokkQQxE12vyZ6YM4/xgHE9x9E6MrU Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="122526"
+ t=1706796818; x=1738332818;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=u8UZmcKC9HeF1VNZFnJWebPlHsOsoQVyOXEuxoXK3mY=;
+ b=VaA5TWSYEolkc6THLBZiGm75JjQHfd0Z/KNWEtqCuBsU99kwcPtc0KZW
+ tLQWZRWYoydq7C+F4aUDmgesyD+xMrZoVW72xKqJEkTMfgDi45q+6T43t
+ UYut+8rs6ysPheeJfkyKDnZJkwjwnmI+q84owKGqlVo6EdQ6Ez7dvyqKq
+ KTsXLxtrT/gdqM97UaHch3BWpyKqclgn9ZSffJmYuKyO9sx1yDFCz7+Ne
+ Gs8S1557gLwbHXW8GEZtCatGaCYAfAULEDwXdWS8jRSuBK8Mq7+C8MAN5
+ 3iwBETC3pr85qYVlAem1GX3luKDA7uJGYKzEFIsQVgV+LjQq82ROCl1vd A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="3769327"
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="122526"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 06:10:59 -0800
+   d="scan'208";a="3769327"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 06:13:38 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="822930976"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="822930976"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
+   d="scan'208";a="4392720"
 Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by orsmga001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 01 Feb 2024 06:10:58 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ by fmviesa005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 01 Feb 2024 06:13:37 -0800
+Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
  ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 1 Feb 2024 06:10:57 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 1 Feb 2024 06:10:57 -0800
+ 15.1.2507.35; Thu, 1 Feb 2024 06:13:36 -0800
 Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 1 Feb 2024 06:10:57 -0800
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.100)
+ 15.1.2507.35 via Frontend Transport; Thu, 1 Feb 2024 06:13:36 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.168)
  by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 1 Feb 2024 06:10:57 -0800
+ 15.1.2507.35; Thu, 1 Feb 2024 06:13:35 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FxkWgDAzU+4dxIbPS4g1ojg2w8REcKvMZH/CA1/Z1itsi9SGbuvE+MidSEJf0zpEfdH1ZnnHHErink0ys/UW0Qe4I+g63tIevgNA5sUNlQsk6vgFYV3a6U9m9VgSOJmwJGathZNYxXMBwpkAcVUzewLTMCO2mIp1Yl5liT4uzNM3nyA6K/M3mKcVqFAxzhgCy25bNkLaLMYSI4KPbzL5CckS8mp1Bi+f1XacG/nJjG+T8HD6EjRRdtrOgLxwKqdc1rn8xNMKRFWjOOY2ATdVHqbswONleLMoSAdun+BwsagbC54HrxjS3o7EZ7t5Vhv7EvTulK0qWTM8OlpDuhIGzw==
+ b=mV4TsxLSeVQefTtCQEY08NJPVtleE2CHFoYUEoIW7IWJt+SYMTspQYtfu69WjjGm+f3q7wu0cLc0Jb+WYWcZq9OUwCXISroIH4gT79rYntPMJfxxpSPlo1kPM54hA0Ivgt9fWrmRbLpLYYE7fkDlVnPhWNvdhcvUCZ6iwIuKAv7GwIxsl0R93gKPAAynA6Vy5wjTqGEa9lR+M22pErCgG1AFu+1903+0p6bh1ZEpuIE4w9iDPQhoaAtx0I5Une15fhKYbSUWq+tVetcvXtZayFg/Y6p8sNOFWmZUCb8fimOflS2/WRal5SIFlt9l3Os+ChZIA/pNDHYB0Pd0qne6NA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eKkf9hm3px2Pe5kS+tLue2KDtzCqz77n8vpuNp3DziY=;
- b=agDz/UpE90RsdvsjNfCHUQViaWxIhJhaxq8dm5cWEh6VhXdmVBpLNejkznpmjq0DLJGKhvpc/tyOsk3BvPK0D11BvZsOZoof7HfadbLxaxZ+BZWAmHSGw/Y8js3XStNFuIGHuJFEEs7dvqH5IlF8ynb9vcG/v2BwJsMlH4Qzhu7PEJvOLjMJnKaAnDkt5wePMSJtGZs1RWbQsrVqYnoC+HCqV7zWV7PruMU07Cy3bAdkh3TwB7108A/jI5ncVHfrgYrDGHvemW8YMEQKCGxlEjiGpN3BTKwRdMjbNzjUmbkcTknq+lKJoOvfULSX7I54pgizvho1mqsbHCggwRNS5w==
+ bh=lJPZojKj1W0gt5af71ty6oFwRG29ECR33mNUftP1n6Y=;
+ b=Yy4I/Qli8fbQkDoY3cxvygMlKY5d1SOZ9Vk7w6oTYMiNljq6m+/6EhvcvNMkipqBRMVeJAo1s94qJj1JuWHXQXObbd4J79MAoQodJIPKRRmyfIB5ovnT2e2duYGCyZwZ1HVgdp8kpQ5JfXRT4gMT08B9tTluSl8479Irc3DCVOV3XrcSt1Tew3LwjwtOVL7l+PHWKN/7G7Lvb82PyfgF7jG+FWeA9jJxtGZjkKDwwnv5VDeIdwzZ4hk5odVQDBp3DSf5XyUO6cu3T4P6eLMM0xRISRAvWazTL1u+0GkIDGjoVsAlCIJgs/cwX4VlmoJVwGgcXFBxRN9AiEp3xwiGmw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA1PR11MB7388.namprd11.prod.outlook.com (2603:10b6:208:420::8)
- by CY5PR11MB6282.namprd11.prod.outlook.com (2603:10b6:930:22::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.34; Thu, 1 Feb
- 2024 14:10:53 +0000
-Received: from IA1PR11MB7388.namprd11.prod.outlook.com
- ([fe80::c6da:e343:1799:4566]) by IA1PR11MB7388.namprd11.prod.outlook.com
- ([fe80::c6da:e343:1799:4566%4]) with mapi id 15.20.7249.017; Thu, 1 Feb 2024
- 14:10:52 +0000
-Message-ID: <8efd56a2-6a59-4743-89f3-6db615071c1c@intel.com>
-Date: Thu, 1 Feb 2024 15:10:51 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4 4/5] tests/xe-ccs: Add tests which exercise small
- to large blit sizes
-Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- <igt-dev@lists.freedesktop.org>
-CC: Karolina Drobnik <karolina.drobnik@intel.com>
-References: <20240201100724.257845-1-zbigniew.kempczynski@intel.com>
- <20240201100724.257845-5-zbigniew.kempczynski@intel.com>
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20240201100724.257845-5-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: VI1PR06CA0149.eurprd06.prod.outlook.com
- (2603:10a6:803:a0::42) To IA1PR11MB7388.namprd11.prod.outlook.com
- (2603:10b6:208:420::8)
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
+ by PH7PR11MB6931.namprd11.prod.outlook.com (2603:10b6:510:206::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.22; Thu, 1 Feb
+ 2024 14:13:33 +0000
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::9f32:ce50:1914:e954]) by CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::9f32:ce50:1914:e954%7]) with mapi id 15.20.7249.025; Thu, 1 Feb 2024
+ 14:13:33 +0000
+Date: Thu, 1 Feb 2024 08:13:31 -0600
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+CC: <igt-dev@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>
+Subject: Re: Re: =?utf-8?Q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_lib=2Fkunit?=
+ =?utf-8?Q?=3A?= Support writable filter* parameters of kunit module (rev2)
+Message-ID: <dmwvmczxregptoifkjgyje2cramo5ztnzkkrcasz4mpnjhel6p@qwcz6rlu6gwi>
+References: <20240131181156.80571-8-janusz.krzysztofik@linux.intel.com>
+ <13441462.dW097sEU6C@jkrzyszt-mobl2.ger.corp.intel.com>
+ <nxhntylt3u3lngtbcesailraw4xz2xosm54gu26fteycahj7tx@k67e2ylvjqwa>
+ <2945385.o0KrE1Onz3@jkrzyszt-mobl2.ger.corp.intel.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <2945385.o0KrE1Onz3@jkrzyszt-mobl2.ger.corp.intel.com>
+X-ClientProxiedBy: BYAPR05CA0024.namprd05.prod.outlook.com
+ (2603:10b6:a03:c0::37) To CY5PR11MB6139.namprd11.prod.outlook.com
+ (2603:10b6:930:29::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB7388:EE_|CY5PR11MB6282:EE_
-X-MS-Office365-Filtering-Correlation-Id: c711205f-aff0-4e08-db7d-08dc232f998c
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|PH7PR11MB6931:EE_
+X-MS-Office365-Filtering-Correlation-Id: 978b4be0-dc7b-43e1-c2ca-08dc232ff956
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: UjRwR5ZaCdJZj9SXP9z8EtP5an7bvvo5UKrkSQyffHmoSrMFXARNK2yLxcegZAZH64rfd9BKOstq7r1rOqUZEVjs+VON/ZKfsCr+vX5c4ZYKXaueeLRfgJj1hk0w3z6zc3H5xKu71E+RWzXvNFR11JL4JcTePwxmbTUoy7F9ilSYA8XaFN+rW4RRIyq8PkBwtzuN01pqb5tTJCE4MA4mEe1bVBSICrSDaTfa7RK2jM4iHNFp6hjMIc1E1t/Nmb+PiKwJKU2LoMcw4w7ZjHnv1wQHhbVpD4bgT0EdPjz87KTS1/QL/xflHdD6WE4fJk83F/KXKtSdQxT/HKYPb26mBfIdmI/A4yU/OvEbZ811oK+cQ9DpoSWIf8CqTNlAl4PdFbeoSf1Kq5nzk4klPGVoHxVm9IZUm7NoL/aJmdBh6XLrAfX8FsF39T+HHQ6j7lGiACbCDgJSVXWB60IdP18l0Q1DrSCqjxap6gWSbcs0K97QbStKJLkke+rV6eQRje3KLP1Z/PfrOhEqkUdzxwTQmQQbST5UdXIUSN4EnzIkuewNhUayT7mJXp1d1OF2NC8ay3BAnznKFAGo4HlteMVQw6aYiu8XuklVLz/EAv3heXumAagE6+lxRVzQ4lnhF2QmZhcb8Pzx13/9LIrXp7YJqg==
+X-Microsoft-Antispam-Message-Info: X+hfB59JrtjDHYC6f/vgWFmRV4eSCMA9v7jZEwLw9hlZWpi5p5oIDQgYUog+zHUGpU5RqnzY1AVKqFaxhanTAunC8xzuEC8rD56hvt8QZAl5QcPPnHc469+05UKxkW54ahH48cwNCoHXi2qo70L0YNHgwmhuNbdFdO8LIbKfAZaFeo2a/ZgMdzNBlbPuBXvPtXdnzPFjSk8YIFq24IeT05l3UyReTa2DSvG5K1Qq5lF42f4VqMCQLZ6DtLwsOfuo3HVrJhZ4ur0DmBn9g03k1nX335yq0y7pa/n5sZCGCid8SLAX+UTtYr697evYm90ysJmV1KbTnjDyQKTllpaymmC7l3rx8zSaXahJ89KEVbccgfGqFTFOyOI3rI+US7V35BuBB9RYsV+wHbEkclbEkiOP2QE9BMn1VhpLlMVv2aJ+y2OPAV/Hk2VlrVC9+UsbkXYow6MQnjpJOIxzuQA8yGRMhmz6NVOo+812k+y96Yg7tXFghDWKgw7izAqjQUtM5pKPCFJLdClkadlXK2lPNnVvlgQgTHKOKuuTaqCJc/2BlSF9Dr1FKmhv0K2aq2p1pe8HtgatSZQtGr1SH88o7Q==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR11MB7388.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(376002)(39860400002)(366004)(396003)(136003)(230922051799003)(64100799003)(451199024)(186009)(1800799012)(36756003)(41300700001)(44832011)(4326008)(8676002)(8936002)(6512007)(107886003)(2906002)(478600001)(66946007)(316002)(86362001)(38100700002)(6486002)(5660300002)(31686004)(36916002)(2616005)(31696002)(53546011)(6506007)(66476007)(66556008)(26005)(83380400001)(82960400001)(66574015)(45980500001)(43740500002);
+ IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(7916004)(396003)(39860400002)(376002)(136003)(366004)(346002)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(8936002)(6506007)(4326008)(26005)(9686003)(6512007)(33716001)(38100700002)(6486002)(316002)(6916009)(66476007)(66556008)(66946007)(83380400001)(5660300002)(82960400001)(2906002)(966005)(478600001)(86362001)(41300700001);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OS9EK1pJbVNCd2tjL241NXgvUzZlT1J6RjM3Rm9KUFljcmlYUHhnUDFIektk?=
- =?utf-8?B?all1UStNakdxNVJoR0hWdS9paUdueG51V2I3bFRWQmNIU1NDN1ZZSnhFTDY5?=
- =?utf-8?B?TjhWazZaZ00rb0J4MlBZbzl0Sm0xbHhrOW5uNTV5VHUvRThlMFNGNDA1UTli?=
- =?utf-8?B?VmY1TnR6VGlIczNJdmgvRzdRZUtlWjh4amRENWNtZE9EYVU4dDhnM1BPaHhV?=
- =?utf-8?B?bUVsa0pvblZDSUdBQkRrQ3lieElsaXRJNnlwYVRTeFVPdW5aeE9jUzRhbjZa?=
- =?utf-8?B?NHNVRlpFTkQ5QXZhSFhTNkxWZXdGSCtYdHg1WEdTOXRRa25HVm9TVEI3aGhI?=
- =?utf-8?B?bEdsa05ueC9lVGZyQkwxT0NvOGNCV2RkZGo1OVZYZGd5UzhFQjdzSlpERE5k?=
- =?utf-8?B?N1FhRXFtV3RuTjBaaXhBOXZTa0E3RVhaVzk3N0NOeENLU1h5cUNHd1drSlRz?=
- =?utf-8?B?T2w0ZlhaTzRHZk5RVzdFaVlNeUFmdlFBNnhWUUdvOXVQdmdKZHp4L2NOdW43?=
- =?utf-8?B?aGt2ejVyZHlUMXRzU0dKTHZrTEJNci9XK05uNE5FV0xzaVdYUTA2cnRiZVU2?=
- =?utf-8?B?ZXRqUk15d0t1QlNYT0VvVDNwYmF1MHNvMVVrZU5nWUFOVlBraTdNUUwxNkNk?=
- =?utf-8?B?Tm5sSWd3bTdReEMvemladlIya0N0OXREZnJOTEVWL016OWNiQjB2NFdjbkY4?=
- =?utf-8?B?cThuK1NqeWJYMW94aWk1bUErVjlxOFI3cmliNzJycDA2S0JsM0ZDWER2cXFs?=
- =?utf-8?B?RGhMZEtFVVBMMFpmRWhsUVZoczZDU2xoZlUyeXlXYWpjamNtbkRRTDdZdWUr?=
- =?utf-8?B?SFNvUTVaZnZsekZ5YUYxTXAveUlVdEQyTnNYYW54ZnBVQTBERDhLa3JndUo0?=
- =?utf-8?B?bUhad0R0WERBSm16bmNYWEJSRFI2Q2F3V0pVeEo3UmRpVXJpaElnajVxeEQr?=
- =?utf-8?B?d1MzbjNWZGFpNXRTeVR5Z3hlSEQ1cHg4SVVIZkdkSXM3M01jcThVNkQ0UUp3?=
- =?utf-8?B?NDVUYitqaDBudU9SaXduM3BDTFhYVFZkNFpSVlliMkt3QTNyRmtSc0l2ZHds?=
- =?utf-8?B?Qk5xOUFyMWFlbU9kak5xNUNqWnNMbmkyOEtIaVIvVHpaUE05M2FwSVJWNGxi?=
- =?utf-8?B?SjIwNm8rQ2ZPTWsvZ01KYnhnRW1NQ0pyN1Z4RjFmMnBycDd3RzRlajFjWjY2?=
- =?utf-8?B?TEFXazZ6SFBhT1RrZHB4aGU1RmFNRUphbFQwWXl3RTNkU3F0YXBxVzgxcnpD?=
- =?utf-8?B?T0hhNjd4K0FiTDVGR2V0RkdRazBUQzJpdFREVFVVSnFGSklmVGlrd21VS3hP?=
- =?utf-8?B?TnRVTVYzWTlPLzNveDkvUjd6dEMwWDk3Q2dHL0pTRmZubm1pZitIZDl5S3pT?=
- =?utf-8?B?dGJOUVRjQTNZRWRmT1VjOXNnWnJreGpaK09tRXBUbWtJdnlKWTY0ZTQzREpT?=
- =?utf-8?B?ZVhJQ0ZmTDBmclRvT1BTR05JdEYyOGd4ZHM0MHpkWUdhQ0RYcFRreTNTclNu?=
- =?utf-8?B?VEFjTFo4ZTJPdVlCeHFYWHRMelJiMUxPN1ZiZmJCNms5RWl5RTAxNm5ZSlVv?=
- =?utf-8?B?bDdSRll6VWRzQ3kyVGVEVCtqeW5mb3lURGNzUitNU1JZMEtvUEtJeFhiN3lo?=
- =?utf-8?B?aU9XWUUvQVhjNTBTbDl4RXVtTCs3ZUFiSTZ6TlpyaTlpK0xIUForWmdxaUdM?=
- =?utf-8?B?eExHZ3djQlVSbkVCc3ZKQktGRFZnVENMb2h0ekxSUitjWmp4MS9HQUxGQ1px?=
- =?utf-8?B?U2pKV3NJN0dLM3RZN1ZpdkcwbStFdk5WSTFBbXVZTi8vZzVOWkJCL0c2Wk1J?=
- =?utf-8?B?RDdsZTNwRGdxdGdaWnJjRktscXIrM1JXaWtITi9YYjZ3K0FkZVRlSzZVUzdD?=
- =?utf-8?B?NjU0SnMvY3NiSitqREtyanc1YlljM2l4VFd2ZTZoT3ZNSUhGK3dUL2hEOS9I?=
- =?utf-8?B?TExsSU02U256R2xacFJDVlQ1QUlTSU55eVBJc3RpVWdtVjQ2SVpSZEVKV1Bk?=
- =?utf-8?B?QW80elg5VC9NQmJyTVErblEyeXVVdDJFWVErbHRqT1d4VTVtd2RJakNuM1Rn?=
- =?utf-8?B?YW1jdURtMU1JTFQrR0grWXhYMFhhZk1DUmJDTVlRZ092aFY1UXIvRms5dHBz?=
- =?utf-8?B?d014UFpxcXlHcytoNjBsK3o5R2VGTFovVFh2aDM1dmg0N3haL2x0SGpJaHNW?=
- =?utf-8?B?S3c9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: c711205f-aff0-4e08-db7d-08dc232f998c
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7388.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?v8kn4PR3d7JvKC9XnQkzmzJfqlus1gP/WykbTIoO0qUBGqvTvXD/A9JPLm4M?=
+ =?us-ascii?Q?mGSBArXHR2CnjNL3kT7UqzjeXFxGUVTD5vBuI03OflwDEuz0dsp4frq+mj4H?=
+ =?us-ascii?Q?x+khecpZvSbY4cYaVtN1WM6r2T6Zhwc7/4ev+8jSQgNv16FpDmsSCr2NpncC?=
+ =?us-ascii?Q?5p6R7hxxAm9gsrRuSZIP3EfLVHMsd15sSkC3qkdLBA6uu0smBJ9t6nfJ3Puu?=
+ =?us-ascii?Q?B7KaClgDiIoLl3X+iC6BODU0aIrLpBJ4ZJCUJrfQlbHz1rdOv65+Yf9E/x1b?=
+ =?us-ascii?Q?WEuMlci2Xii0ZjU7PjTSuAH69sdqoPzvLLLSf8XMbiVsSONgm54mCVTyEfs2?=
+ =?us-ascii?Q?Zwo41XgcEt2UuU9kPlrkLBj4yAVx0fDLYZveZpAgDI2Qp/T44ZxhkPlfUECL?=
+ =?us-ascii?Q?BdOXWYW0G8VY1mUdpg9AOKxRnvYDR1HFW0rzewEaMvpqgk1SxYeG3dUvOdqR?=
+ =?us-ascii?Q?utAmCavRKw1RpgA4KVPD5x1aWA7KZNBGW1LFfo8QnhLOfQv1ZSQZNUDXCM96?=
+ =?us-ascii?Q?iRsrGCs2KUeLaigM/ZX8KzwPjeaW4ihqpoGH5hTBNuj1HbjFmLhUJy9WfgCe?=
+ =?us-ascii?Q?aoV+pMrcm6CJi6vXZBXVkYxnObac7XgEn8aDCfEke40aJy0WnHYgUlGqMQe2?=
+ =?us-ascii?Q?V3fm8w3jLgKQ41dPTy1Mn3VajvOu7vxVpZ1wM/78X7hh7FoPtjJOjiKBVrpx?=
+ =?us-ascii?Q?9h4MifHN9N2aBMU49ltCZI4sueGaM7+Y3fFXNGZBgY0KBvvBwJzFsj/U8JkZ?=
+ =?us-ascii?Q?MGlrtrX8S6PVvehwbw63Wao3WRHQVQHCrWMRZzMolrcZcMuUwpBPxCnc0rfj?=
+ =?us-ascii?Q?fPP2wtVYAQQUVNnby6MKTQ0LzOIfHpjE2CL1D7U/0lIjvL8Vzy+04id2hI5V?=
+ =?us-ascii?Q?S1eypm3qL50W1hkM7OJhGu5UpR+Sa3G2mJs6q5wCUrCmkvFCRVJ+vuq/Fvyh?=
+ =?us-ascii?Q?evvKJBPAOW/EbC65OkoS4gOnkXILMQnuCkNdxVrDEPMdsxlRPgFCBysqyHhQ?=
+ =?us-ascii?Q?J/zN6FM0EHRFfKsMdYJOFi2vJhdu+OyS7Ub8I1scW1hDmDaETOJ2iUOLifO/?=
+ =?us-ascii?Q?PUilxaNhT/a++kc8pgLMfG97PibTHLYIsridGrK7mLnVEQfpELPO46eMoxVj?=
+ =?us-ascii?Q?sl32PzkCnh93CYI2t2Wu+9qqpwstYn70mZ3b6F3iTyCeH7gXvOOOrZao7TDN?=
+ =?us-ascii?Q?9ihmjQydlcPoB43ZvHL3xZV0iWsR6weLGtCP/7jb1IVi2QUtUxy9pwChi4kF?=
+ =?us-ascii?Q?ckETRGSB1shxC66L7J3aRDbvQRrgW3QxW2ACdinq+i9jM0nAq3dDNeFVuBH/?=
+ =?us-ascii?Q?cLEK3tIoqS3IqzQdLQ4iZxtY/lLr9Pe8/bq2iOu118Bu72RxCnZGT+9gDF/S?=
+ =?us-ascii?Q?uBgiqZQD/LAXUPo0kcQ52q+TAoj1R3Skqm+k4bT+sskQBumAST574TkldMO2?=
+ =?us-ascii?Q?TeMGER4dV376N9VKOe5hygl0Qj5nAgqdKy7bpc5AR3QzjQz4jGPrVkriyQjI?=
+ =?us-ascii?Q?Ser0d4zf1DZvsTNzUKwlgS5PWBtZ60OhOUT16cboGZnBdqbqnKeHis5y8DQg?=
+ =?us-ascii?Q?mOeEMmuYOsH9hIg3R/Tqq5ii8nxNoz938vZJOcD/10kRm3lTaw3vluuyb1ge?=
+ =?us-ascii?Q?nA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 978b4be0-dc7b-43e1-c2ca-08dc232ff956
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2024 14:10:52.8754 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2024 14:13:33.5262 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: W2kBDtPnFO53/8TIM8u5zXLaQunoMu3qDjOOXrvwSSKQtUKY+/oLXvZNJErQEc7oSY/P6//uAzlzp7wKoUObFhjkdeG8LjRp+T7TQRovWAs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6282
+X-MS-Exchange-CrossTenant-UserPrincipalName: svfBzDnVPKzrOBv3GwqWJ0jcI4BrNWjcGvNjHAlVdJ5XTxPQakArmYcNXKeqae0QAyGwF07JrvePvYrtGY+umj8GQz+PIb4+PtNksP0zAi0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6931
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -171,278 +155,93 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 1.02.2024 11:07, Zbigniew Kempczyński wrote:
-> Testing block-copy for 512 x 512 x 32bpp is not enough to verify
-> blit is working for different (small) and not always aligned
-> resolutions. Add 'increment' subtests which checks blits from
-> small (1x1) to large (512x512) resolutions.
-> 
-> To avoid too long execution resolution increment equals 15x15 pixels.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Karolina Drobnik <karolina.drobnik@intel.com>
-> ---
->   tests/intel/xe_ccs.c | 144 +++++++++++++++++++++++++++++++++----------
->   1 file changed, 112 insertions(+), 32 deletions(-)
+On Thu, Feb 01, 2024 at 12:06:35PM +0100, Janusz Krzysztofik wrote:
+>On Wednesday, 31 January 2024 21:51:15 CET Lucas De Marchi wrote:
+>> On Wed, Jan 31, 2024 at 08:22:35PM +0100, Janusz Krzysztofik wrote:
+>> >On Wednesday, 31 January 2024 19:36:57 CET Patchwork wrote:
+>> >> == Series Details ==
+>> >>
+>> >> Series: lib/kunit: Support writable filter* parameters of kunit module
+>> >(rev2)
+>> >> URL   : https://patchwork.freedesktop.org/series/129174/
+>> >> State : failure
+>> >>
+>> >> == Summary ==
+>> >>
+>> >> CI Bug Log - changes from XEIGT_7699_BAT -> XEIGTPW_10613_BAT
+>> >> ====================================================
+>> >>
+>> >> Summary
+>> >> -------
+>> >>
+>> >>   **FAILURE**
+>> >>
+>> >>   Serious unknown changes coming with XEIGTPW_10613_BAT absolutely need to
+>> >be
+>> >>   verified manually.
+>> >>
+>> >>   If you think the reported changes have nothing to do with the changes
+>> >>   introduced in XEIGTPW_10613_BAT, please notify your bug team (I915-ci-
+>> >infra@lists.freedesktop.org) to allow them
+>> >>   to document this new failure mode, which will reduce false positives in
+>> >CI.
+>> >>
+>> >>
+>> >>
+>> >> Participating hosts (4 -> 4)
+>> >> ------------------------------
+>> >>
+>> >>   No changes in participating hosts
+>> >>
+>> >> Possible new issues
+>> >> -------------------
+>> >>
+>> >>   Here are the unknown changes that may have been introduced in
+>> >XEIGTPW_10613_BAT:
+>> >>
+>> >> ### IGT changes ###
+>> >>
+>> >> #### Possible regressions ####
+>> >>
+>> >>   * igt@xe_live_ktest@bo:
+>> >>     - bat-adlp-7:         [PASS][1] -> [SKIP][2] +2 other tests skip
+>> >>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7699/bat-adlp-7/
+>> >igt@xe_live_ktest@bo.html
+>> >>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10613/bat-adlp-7/
+>> >igt@xe_live_ktest@bo.html
+>> >
+>> >Hi Lucas,
+>> >
+>> >We've got an empty list of test cases because the current algorithm of IGT
+>> >KUnit implementation expects subtest name provided via struct kunit_tests
+>> >to be the same as name of a test suite provided by the KUnit test module.  As
+>> >a special case, if the module provides only one test suite (most do) and the
+>> >name of it is the same as the module name with the _test or _kunit suffix
+>> >truncated (also the most common case) then subtest name may be omitted (i.e.,
+>> >.name field may be NULL).
+>> >
+>> >I have to document the above, but we also have to use the same names on both
+>> >sides (KUnit test module and its corresponding IGT test).  Now we don't, e.g.
+>> >test suite named "xe_bo" is provided by xe_bo_test module while subtest name
+>> >"bo" is specified for that module in IGT xe_live_ktest.
+>>
+>> in the end we want to have only one module: xe_live_test.ko and then
+>> filter out by the testunit. From what I've seen previously in igt, it
+>> would be a matter of always reloading the same module, but passing a
+>> different name.
+>
+>As long as the module will provide several test suites, each of those test
+>suites can be mapped to a separate subtest with the same name as the test
+>suite, and with its test cases discovered and executed automatically by IGT as
+>dynamic sub-subtests, still selectable individually via IGT --dynamic command
+>line option.  For that to work this way, populating .name fields of the struct
+>kunit_tests table with subtest names that are the same as test suite names is
+>mandatory, otherwise IGT will expose one subtest, named after the module name,
+>with dynamic sub-subtests named <suite_name>-<case_name>.
 
-Ah, one question actually. We use width == height, and I wonder if we 
-want to test rectangular surfaces. I think that caused problems in the 
-past, but maybe I'm misremembering something.
+that's what I did when I submitted the module rename:
+https://lore.kernel.org/igt-dev/20231205224926.2188996-1-lucas.demarchi@intel.com/
 
-All the best,
-Karolina
+This one is to be applied on top of these fixes to kunit handling.
 
-> 
-> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-> index a7785edcb1..627976049c 100644
-> --- a/tests/intel/xe_ccs.c
-> +++ b/tests/intel/xe_ccs.c
-> @@ -28,9 +28,15 @@
->    * SUBTEST: block-copy-compressed
->    * Description: Check block-copy flatccs compressed blit
->    *
-> + * SUBTEST: block-copy-compressed-inc-dimension
-> + * Description: Check block-copy compressed blit for different sizes
-> + *
->    * SUBTEST: block-copy-uncompressed
->    * Description: Check block-copy uncompressed blit
->    *
-> + * SUBTEST: block-copy-uncompressed-inc-dimension
-> + * Description: Check block-copy uncompressed blit for different sizes
-> + *
->    * SUBTEST: block-multicopy-compressed
->    * Description: Check block-multicopy flatccs compressed blit
->    *
-> @@ -73,6 +79,8 @@ struct test_config {
->   	bool surfcopy;
->   	bool new_ctx;
->   	bool suspend_resume;
-> +	int width_increment;
-> +	int width_steps;
->   };
->   
->   #define PRINT_SURFACE_INFO(name, obj) do { \
-> @@ -286,9 +294,17 @@ static int blt_block_copy3(int xe,
->   	return ret;
->   }
->   
-> +#define CHECK_MIN_WIDTH 2
-> +#define CHECK_MIN_HEIGHT 2
-> +#define MIN_EXP_WH(w, h) ((w) >= CHECK_MIN_WIDTH && (h) >= CHECK_MIN_HEIGHT)
-> +#define CHECK_FROM_WIDTH 256
-> +#define CHECK_FROM_HEIGHT 256
-> +#define FROM_EXP_WH(w, h) ((w) >= CHECK_FROM_WIDTH && (h) >= CHECK_FROM_HEIGHT)
-> +
->   static void block_copy(int xe,
->   		       intel_ctx_t *ctx,
->   		       uint32_t region1, uint32_t region2,
-> +		       uint32_t width, uint32_t height,
->   		       enum blt_tiling_type mid_tiling,
->   		       const struct test_config *config)
->   {
-> @@ -301,7 +317,7 @@ static void block_copy(int xe,
->   	uint32_t run_id = mid_tiling;
->   	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &
->   							!xe_has_vram(xe)) ? region1 : region2;
-> -	uint32_t width = param.width, height = param.height, bb;
-> +	uint32_t bb;
->   	enum blt_compression mid_compression = config->compression;
->   	int mid_compression_format = param.compression_format;
->   	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
-> @@ -339,9 +355,16 @@ static void block_copy(int xe,
->   	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
->   	intel_ctx_xe_sync(ctx, true);
->   
-> -	/* We expect mid != src if there's compression */
-> -	if (mid->compression)
-> -		igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
-> +	/*
-> +	 * We expect mid != src if there's compression. Ignore this for small
-> +	 * width x height for linear as compression for gradient occurs in the
-> +	 * middle for bigger sizes. We also ignore 1x1 as this looks same for
-> +	 * xmajor.
-> +	 */
-> +	if (mid->compression && MIN_EXP_WH(width, height)) {
-> +		if (mid_tiling != T_LINEAR || FROM_EXP_WH(width, height))
-> +			igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
-> +	}
->   
->   	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height, bpp);
->   
-> @@ -416,6 +439,7 @@ static void block_copy(int xe,
->   static void block_multicopy(int xe,
->   			    intel_ctx_t *ctx,
->   			    uint32_t region1, uint32_t region2,
-> +			    uint32_t width, uint32_t height,
->   			    enum blt_tiling_type mid_tiling,
->   			    const struct test_config *config)
->   {
-> @@ -429,7 +453,7 @@ static void block_multicopy(int xe,
->   	uint32_t run_id = mid_tiling;
->   	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &
->   							!xe_has_vram(xe)) ? region1 : region2;
-> -	uint32_t width = param.width, height = param.height, bb;
-> +	uint32_t bb;
->   	enum blt_compression mid_compression = config->compression;
->   	int mid_compression_format = param.compression_format;
->   	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
-> @@ -521,6 +545,7 @@ static const struct {
->   	void (*copyfn)(int fd,
->   		       intel_ctx_t *ctx,
->   		       uint32_t region1, uint32_t region2,
-> +		       uint32_t width, uint32_t height,
->   		       enum blt_tiling_type btype,
->   		       const struct test_config *config);
->   } copyfns[] = {
-> @@ -528,17 +553,44 @@ static const struct {
->   	[BLOCK_MULTICOPY] = { "-multicopy", block_multicopy },
->   };
->   
-> -static void block_copy_test(int xe,
-> -			    const struct test_config *config,
-> -			    struct igt_collection *set,
-> -			    enum copy_func copy_function)
-> +static void single_copy(int xe, const struct test_config *config,
-> +			int32_t region1, uint32_t region2,
-> +			uint32_t width, uint32_t height,
-> +			int tiling, enum copy_func copy_function)
->   {
->   	struct drm_xe_engine_class_instance inst = {
->   		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
->   	};
-> +	uint32_t vm, exec_queue;
-> +	uint32_t sync_bind, sync_out;
->   	intel_ctx_t *ctx;
-> +
-> +	vm = xe_vm_create(xe, 0, 0);
-> +	exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
-> +	sync_bind = syncobj_create(xe, 0);
-> +	sync_out = syncobj_create(xe, 0);
-> +	ctx = intel_ctx_xe(xe, vm, exec_queue,
-> +			   0, sync_bind, sync_out);
-> +
-> +	copyfns[copy_function].copyfn(xe, ctx,
-> +				      region1, region2,
-> +				      width, height,
-> +				      tiling, config);
-> +
-> +	xe_exec_queue_destroy(xe, exec_queue);
-> +	xe_vm_destroy(xe, vm);
-> +	syncobj_destroy(xe, sync_bind);
-> +	syncobj_destroy(xe, sync_out);
-> +	free(ctx);
-> +}
-> +
-> +static void block_copy_test(int xe,
-> +			    const struct test_config *config,
-> +			    struct igt_collection *set,
-> +			    enum copy_func copy_function)
-> +{
-> +
->   	struct igt_collection *regions;
-> -	uint32_t vm, exec_queue;
->   	int tiling;
->   
->   	if (config->compression && !blt_block_copy_supports_compression(xe))
-> @@ -555,6 +607,7 @@ static void block_copy_test(int xe,
->   		for_each_variation_r(regions, 2, set) {
->   			uint32_t region1, region2;
->   			char *regtxt;
-> +			char testname[256];
->   
->   			region1 = igt_collection_get_value(regions, 0);
->   			region2 = igt_collection_get_value(regions, 1);
-> @@ -566,30 +619,36 @@ static void block_copy_test(int xe,
->   
->   			regtxt = xe_memregion_dynamic_subtest_name(xe, regions);
->   
-> -			igt_dynamic_f("%s-%s-compfmt%d-%s%s",
-> -				      blt_tiling_name(tiling),
-> -				      config->compression ?
-> -					      "compressed" : "uncompressed",
-> -				      param.compression_format, regtxt,
-> -				      copyfns[copy_function].suffix) {
-> -				uint32_t sync_bind, sync_out;
-> +			snprintf(testname, sizeof(testname),
-> +				 "%s-%s-compfmt%d-%s%s",
-> +				 blt_tiling_name(tiling),
-> +				 config->compression ?
-> +					 "compressed" : "uncompressed",
-> +				 param.compression_format, regtxt,
-> +				 copyfns[copy_function].suffix);
->   
-> -				vm = xe_vm_create(xe, 0, 0);
-> -				exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
-> -				sync_bind = syncobj_create(xe, 0);
-> -				sync_out = syncobj_create(xe, 0);
-> -				ctx = intel_ctx_xe(xe, vm, exec_queue,
-> -						   0, sync_bind, sync_out);
-> +			if (!config->width_increment) {
-> +				igt_dynamic(testname)
-> +					single_copy(xe, config, region1, region2,
-> +						    param.width, param.height,
-> +						    tiling, copy_function);
-> +			} else {
-> +				for (int w = param.width;
-> +				     w < param.width + config->width_steps;
-> +				     w += config->width_increment) {
-> +					snprintf(testname, sizeof(testname),
-> +						 "%s-%s-compfmt%d-%s%s-%dx%d",
-> +						 blt_tiling_name(tiling),
-> +						 config->compression ?
-> +							 "compressed" : "uncompressed",
-> +						 param.compression_format, regtxt,
-> +						 copyfns[copy_function].suffix,
-> +						 w, w);
-> +					igt_dynamic(testname)
-> +						single_copy(xe, config, region1, region2,
-> +							    w, w, tiling, copy_function);
-> +				}
->   
-> -				copyfns[copy_function].copyfn(xe, ctx,
-> -							      region1, region2,
-> -							      tiling, config);
-> -
-> -				xe_exec_queue_destroy(xe, exec_queue);
-> -				xe_vm_destroy(xe, vm);
-> -				syncobj_destroy(xe, sync_bind);
-> -				syncobj_destroy(xe, sync_out);
-> -				free(ctx);
->   			}
->   
->   			free(regtxt);
-> @@ -669,6 +728,16 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->   		block_copy_test(xe, &config, set, BLOCK_COPY);
->   	}
->   
-> +	igt_describe("Check block-copy uncompressed blit with increment width/height");
-> +	igt_subtest_with_dynamic("block-copy-uncompressed-inc-dimension") {
-> +		struct test_config config = { .width_increment = 15,
-> +					      .width_steps = 512 };
-> +		param.width = 1;
-> +		param.height = 1;
-> +
-> +		block_copy_test(xe, &config, set, BLOCK_COPY);
-> +	}
-> +
->   	igt_describe("Check block-copy flatccs compressed blit");
->   	igt_subtest_with_dynamic("block-copy-compressed") {
->   		struct test_config config = { .compression = true };
-> @@ -676,6 +745,17 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->   		block_copy_test(xe, &config, set, BLOCK_COPY);
->   	}
->   
-> +	igt_describe("Check block-copy compressed blit with increment width/height");
-> +	igt_subtest_with_dynamic("block-copy-compressed-inc-dimension") {
-> +		struct test_config config = { .compression = true,
-> +					      .width_increment = 15,
-> +					      .width_steps = 512 };
-> +		param.width = 1;
-> +		param.height = 1;
-> +
-> +		block_copy_test(xe, &config, set, BLOCK_COPY);
-> +	}
-> +
->   	igt_describe("Check block-multicopy flatccs compressed blit");
->   	igt_subtest_with_dynamic("block-multicopy-compressed") {
->   		struct test_config config = { .compression = true };
+Lucas De Marchi
