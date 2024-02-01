@@ -4,153 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51DB5C4828C
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 13:52:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04271C4828C
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 13:59:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DECBE10EDEE;
-	Thu,  1 Feb 2024 13:52:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 94C3610EC35;
+	Thu,  1 Feb 2024 13:59:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VsufmktQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RkZzNSXI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D38C10EDEE
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 13:52:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DC3A10EC35
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 13:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706795539; x=1738331539;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=NyGNJt4gn3kyouWbI4/FsAJToo+EoRs5OlYZmEh+Sm8=;
- b=VsufmktQ47DcT8JauE4gOYGWW0gFfJZg0og7Mw7Ssw8jzh01T1UfvrWH
- Uc69mT5QYw+6LCK8xJElvamoNZtCQY7K1n127DnuA/yqcenDzo4VM+JH4
- +w2dCB9hOCGXxsUYsskxrbSQ+1wlXBe70KLOgIArT9dGgar9aWPS0/dYZ
- Mmw2U7+UPZ57gWn426xNkoMBY3HLhxp32FeZqH5VrS8Q5L0o+TKBMnhmU
- 9ua+73qotG53J/YJBoDHFD08kE1JHnQKfA5IH64p5banV7obaJZJkCVRa
- 1J80/anWoreaTDh7ofS6EbXtOvq+g7XgNUwk8kpaq/5LEp+7FN2aH98qI Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="114678"
+ t=1706795979; x=1738331979;
+ h=date:from:to:subject:message-id:references:in-reply-to:
+ mime-version; bh=+/MZ+ztLXQ8paJevECEs4xQRQr7wsQJCMuTazEl4DDY=;
+ b=RkZzNSXIT92z8GCj4FFCCLLyVCwnZt4Zdch+8F+RjKmg0pBDN2z3FJe+
+ 1FtGFpxMcotDP/BN+uSB5j0WZbUEA36Xh52DWXwntUVDeD5urUcrMKpdi
+ 0rV4jbf6Sjjr3Kg7nxfi90a0HVo2UvSgtrMD1XPMcSCetImyYcdPVZeef
+ ADTJwUjn9GtWSFnlMgsTQ5snU7tylair++9aswPzlCL0cBrYZa0ai8V8p
+ oDeeoOgkAzUWmNIylF7U0aROzKl3ca8YdvQFB/YE8f7ycGDWactnAdkTj
+ PGDeNjlfYTMc7IE+igxycIMVMgsBjVnFffAaMAkdPKUupN9huikE4Jrsm g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="2833855"
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="114678"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 05:45:03 -0800
+   d="scan'208";a="2833855"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 05:59:38 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="4387988"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 01 Feb 2024 05:45:03 -0800
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="879110894"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="879110894"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by FMSMGA003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 01 Feb 2024 05:59:37 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 1 Feb 2024 05:45:02 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ 15.1.2507.35; Thu, 1 Feb 2024 05:59:37 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 1 Feb 2024 05:45:02 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.100)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.1.2507.35 via Frontend Transport; Thu, 1 Feb 2024 05:59:37 -0800
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 1 Feb 2024 05:45:01 -0800
+ 15.1.2507.35; Thu, 1 Feb 2024 05:59:37 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=i/9EE3W5VWdnY+eYqz9vmckz4f1b02rqpUTZYs9tPmT/HgXwbvoyFZ3ZIRw4PNHqcyManSlIvt8DupPQ7zDDbezJKKQSbRZA1ipddz1ve8r0ByGsB7CgKEURrsAAoJoNoC408IXATo98xapEC2hFTw5ns7kkDtx4EAqbGCakC7BiiBgN3/54jSThoFyMjvUXVtc2VVk9TWTZ4PVSupTUaPiGdTJo5jfZ7xWsMkiZaipUgelwzI7jKYGXeLcQbjOijR4sOAJh8dyLkuzQts3w46DLjcw4VbB4HrMEG7xBynTbffkMY/nNuIYXFc3DDsyS5tvpR/QzRfBSz1z/ll89wA==
+ b=VhpPQVauZEL5mkcoghvsFce95rwNOjViGFFbncsXSqKAjrHxo+HRJKy7dBPPLiFjguM6bMAjJp5kIpapix5DEZ3BBcEuzQrt6Ue2KDZ9IqQlumvzgnMZrlGdp+UyP3pJDIe+gD6SNwZaYSBPfRrIWQJeq4BGAzlTKYK6xXCBuo+EjrE8e2XiTZefk+SdaEsL7OLsAuFA2jhHOZQQApFWrDpPTZYXWagTyp5TBqI1AfyAc8nwQAl0blN5mN2btu9P71BLOGb091Ajjxz3qPc2VLpkUbi5hJRvsKOwxi8Qya8bqRtZYyOS8uDHW/UfwOfSwQeyKKB7l/clqLT4i21lFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fgcWJFnuhixcjcpPoldf5pE6/I2lMVstikVXvJ7lfTY=;
- b=jGikXLyjL7fC2zZ63jg9hk7EuZX9IU0sr6zioXiESjaHigFEYdZyFEZuljhbweWbz87eZ2ii6zQje+jZoe3tZIi1ED+6v5o4dJQzb7rk/6/uG6JArIg17ltjQI9pYmfOgBng5eJw/ZNQySLSQXI6BQ5hT3+U4WDKLJHDAef6kqDBwnEgMi+HHI+z8s1tAEMWKg4/jBMC4cZ6lRUH8fF6jcF6ymdS4GBzhoJwV4q30Ir3B00Blz6Ht5usb3+XG18RDuTEqjlO5cGZXh5fXutCUmYkyXn2kKhUIpQsy0fGYgpiPssFyfLWSeDbBuET74MxPpZkJDfVVUfatH44Q1wE5Q==
+ bh=lTRgYdmx2PJu7qzLpB9Ubsxk76skYh8+Rt75nrSDubo=;
+ b=ZxCT9tq3kIFKxhUT6q0+lc1rbVtK+GUroldj4oT8PV98EaZA2bQYLrgk0eSP0pfgvE69+vbfoZxE/+WpBAjtPmvYEx9n9v6lZ8E4FoKJS6vEIt6Uh2xGLBUhCfI5p+l0genGJOPbApYf2qnFvIvcZe1XImai2kOxqIsiFDwFh5kqfSYKjrtugidRi5eJUDUlL4eXtraL/rETBy3Etjx2xFGFxjeybmlqi2ahXRT2QAo4f0k5LhBuZL968sCbDWUMnhMqoe7NOzcjAX/WQPyqsThMYRReWZNBnHX9+wv11cIlFtbxAsQknxXG1EinGTEezMabdLJlIjM/xXhuID3XeQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA1PR11MB7388.namprd11.prod.outlook.com (2603:10b6:208:420::8)
- by SA0PR11MB4542.namprd11.prod.outlook.com (2603:10b6:806:9f::20)
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
+ by SA1PR11MB5876.namprd11.prod.outlook.com (2603:10b6:806:22a::20)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.29; Thu, 1 Feb
- 2024 13:45:00 +0000
-Received: from IA1PR11MB7388.namprd11.prod.outlook.com
- ([fe80::c6da:e343:1799:4566]) by IA1PR11MB7388.namprd11.prod.outlook.com
- ([fe80::c6da:e343:1799:4566%4]) with mapi id 15.20.7249.017; Thu, 1 Feb 2024
- 13:45:00 +0000
-Message-ID: <4fcf8c7a-5e30-4274-9565-2973b30f154b@intel.com>
-Date: Thu, 1 Feb 2024 14:44:56 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4 2/5] lib/intel_blt: Change surface size
- calculation
-Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- <igt-dev@lists.freedesktop.org>
-CC: Karolina Drobnik <karolina.drobnik@intel.com>
-References: <20240201100724.257845-1-zbigniew.kempczynski@intel.com>
- <20240201100724.257845-3-zbigniew.kempczynski@intel.com>
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20240201100724.257845-3-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0226.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e9::14) To IA1PR11MB7388.namprd11.prod.outlook.com
- (2603:10b6:208:420::8)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.23; Thu, 1 Feb
+ 2024 13:59:34 +0000
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::9f32:ce50:1914:e954]) by CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::9f32:ce50:1914:e954%7]) with mapi id 15.20.7249.025; Thu, 1 Feb 2024
+ 13:59:34 +0000
+Date: Thu, 1 Feb 2024 07:59:31 -0600
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>, Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: Re: Re: [PATCH i-g-t v2] lib/igt_sysfs: make sure to write empty
+ strings
+Message-ID: <l4pirkkutxred4zsodvfscd6qhd7b7jc47yjoqszqsulu6sj7q@l765os7sur55>
+References: <20240201005115.352192-3-lucas.demarchi@intel.com>
+ <20240201031156.352973-1-lucas.demarchi@intel.com>
+ <20240201131204.7dlfp2ny46stzc2y@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20240201131204.7dlfp2ny46stzc2y@kamilkon-desk.igk.intel.com>
+X-ClientProxiedBy: SJ0PR03CA0028.namprd03.prod.outlook.com
+ (2603:10b6:a03:33a::33) To CY5PR11MB6139.namprd11.prod.outlook.com
+ (2603:10b6:930:29::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB7388:EE_|SA0PR11MB4542:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7920be06-178f-4739-474f-08dc232bfc36
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|SA1PR11MB5876:EE_
+X-MS-Office365-Filtering-Correlation-Id: 66862f50-6fca-48d7-57f7-08dc232e055d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ZEFJbQB5FqdwJY2RvHvCTgW2Vjpxr/TiYvjBvrkjjemSWV/HoYzR8neFMrepWPp61cHawOQYzyGnpttTdYhY45NjuXfnVKQy+E02SOru+fGYPVBUtLqFdlsuG1IYi1L6DZNAslBNcwW/OnBYzutoslfjidyA6SmFUz9+ThdhYEqYPf5xnhXdrJBrae9EKgTvkNL1RW3m9fNryrijboCKAH5VywXWNiRmdoiL5kdNUIqNjRL1TZztDSPoifq9g9xoQPKPm7laUTfgeXYRfhM2rGfVToNQZBXhkAJa0kDZJFI67T9jhpYEpPchk+OELS8c9lIQwd4NQnVL8EnCtUVGgFJBZeFS1CY5Y+cmz88mceP+YQHjaVqAVHpArGWwkzEqcoXx61cRAaz+z9LowLrFavvBbY5m5GdDp4V050QCjcXM1lYcNbeFlMpTCdr4KO8aIe/ucV8Q8ntt03ACpMuTPfdQFrdItm6CVKzvnI2sXwUNFdLN8ZbzpJVNWiRVM9kIMTs17m0dQq+V5C04cIV7RcXaWxFgsQ9Tz+Dp7YcPLJq3k0+m+UjakAVg0tmXy50bj8D1XxhWF6EuJ6eTdqSm7Vp+lqKkKEEFHAY7fcIlDfaZpP4k7pFryVUu+DSaqohFthrxGr4DTWolyGAhcv2ReA==
+X-Microsoft-Antispam-Message-Info: JETtUMituXaU4j81cfwgxMYqY41DiG2j0YCtEWh2M0BisTa2PgMvduBFR0k4PkcS92YIn1Lk19/5M6iViu5bj+SohZN7zq4DBVZfLJV354mtbeoL3ZljmSQFfthAUgVlTrAKcDsW+D4ZkV1waq7Aonf2nrY8CxXZqUXKqh2XeuqbCRMsqRzTEfutBLluNNuduKMGlwkQgCEx1taNRJy8qYXsvRLxfhyEBHHhHReXPzU5Rdv0i0h3VO2z2Q/33oQr5/yMpIXjJvnbbyfBh2sBBrn512vLNhIMrXep9sFQgDtslffLlKyhch5yqJGu2YpCyoKBUBL+EDcEWRsT4l++yd70MdIwluzNvpnITu+JgeBSQ/nTnLyXbJRxrnwobKfS2LIsgT6XDXx0sPlykhfoI96+xgaOv59KBZJ/rUX4hOu94vfM8SfHwS3znihqU3rotfmEMDQMeV/yWC4kh1b1mL6BebbAWbDKRzI/oMjAJ26/O7NcKvqADmVDmGJkvReh3+ZMj9SyKNzXzsTkPnuJbSAGiQWWmhvSMALliD8FyBy+Nlo1Yqxt1lln4KaBwSSO
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR11MB7388.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(376002)(396003)(346002)(136003)(366004)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(31686004)(36916002)(6512007)(53546011)(6486002)(86362001)(31696002)(478600001)(36756003)(2616005)(41300700001)(82960400001)(107886003)(26005)(83380400001)(5660300002)(2906002)(66556008)(4326008)(316002)(66476007)(6666004)(6506007)(44832011)(8936002)(38100700002)(8676002)(66946007)(45980500001)(43740500002);
+ IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(7916004)(396003)(136003)(346002)(39860400002)(376002)(366004)(230922051799003)(451199024)(64100799003)(1800799012)(186009)(316002)(66946007)(66476007)(66556008)(82960400001)(2906002)(9686003)(6512007)(8676002)(8936002)(5660300002)(86362001)(38100700002)(110136005)(83380400001)(26005)(6666004)(41300700001)(33716001)(6486002)(6506007)(478600001);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VGFNM2NsRzg2aDNPZ1BBVFRtbTVrTkM2RWh3d1FiWUp5L1lGVXhjWDdEMEE4?=
- =?utf-8?B?ZDdFSzhCWnVPZmlTeVpRRjRhTVU3RU5MM2tvMk5NTkNnTjA5Umo4Nmg2cHBh?=
- =?utf-8?B?SVhMWFBUakFPZnk3SGhDR2lMTE42ZUVkejN5T0lEcER3RnhCbG9YbzN5NVcy?=
- =?utf-8?B?L050czZFNlRESDZjQlIvL2xEWTVCUVg5NVd0YzNMMjNEaG5GcFZnT05Bc0hv?=
- =?utf-8?B?dWwwbVE2bnpJRHdOTzVWcWR4cHhyQWNvMEVzRTV5TVJIL1ppQUFiNUl5UElV?=
- =?utf-8?B?eWdyMkR6YlZ6VDJKeTEwMndWS3M0YjlEM211WjZqU2x3L0lWSjdHS0pYdmNp?=
- =?utf-8?B?WDhNWXRVQWRTYldGblpVVGRPNGhEaFBvV0UvRmZuYjJBOEZJQW93eTVuRjJI?=
- =?utf-8?B?dWRudGtGbE1aZGl0NzZhT1kwbUJMbmtzQ1NPZkJRV0hudDZjTVJoR3ZSSGZi?=
- =?utf-8?B?em5wNnRZWVUyVTRCczBZVTkrTEcyeEFNWUtVdEgxSlhQUndYemhwNU8zSUN3?=
- =?utf-8?B?MVJLRnF0dnROZ1VtRk40SzZ1MWUrVkljU0dURnczNzRCMEEvWGZPS0NSSDJt?=
- =?utf-8?B?V2ZzT3haLzMwRFhiYVFSUVIrYUZsL3dZNktPRDRLZmNqKzh6N3ExT2lZV2dO?=
- =?utf-8?B?SlcvNjBtZjhOZzM4TmxJeGk1RERXQkNHbVBDTWp6c0tWUkltVVB6UG1KbVhF?=
- =?utf-8?B?ZDZzSDNwWEhyeWk4c2hvNk5PQkIrWmxJempGdklmTjBFMXExcWdWMFJaYklk?=
- =?utf-8?B?enFFSGpXUUtRMGhpTm9FK0x2Y0hKOXYxTW9VYm9jWmkzLzdPUFRFV3BsL3pH?=
- =?utf-8?B?NU0wbHpIcnVOY0h3b3lld2orWDF4cUNQbHdKdWdwcGV4bk9PejRuWTBITnN6?=
- =?utf-8?B?dzFDZm43TUR3bzlQeGhhZlRmZW03MzlpeE5VK2xlL3U4V3cyd1lkQXlicXpz?=
- =?utf-8?B?RnErTlVjN0VaL1Z5Ri9NbGg5RC9YOEpoN2ZBemU2U3RCckR1SjduR1Bab3Rp?=
- =?utf-8?B?c2N0cVRIeUtvb1N0NjkzSnRDMVJ3YUF4NTBkdXk0dVY2N1U1RDhORGhOcjdV?=
- =?utf-8?B?emJSOHRBUXY3OFRsZllmeEdwbEVUOVo0Nmx4ajBhOWdWU2tZckQyMjh5NUhr?=
- =?utf-8?B?T3RmMVJ1V25VVmM5L1plbk9ISWdGV2N2NGUvSlllcmhUYlNuSnpGUExSaGlI?=
- =?utf-8?B?WkpRNk9RUE1IcmVlWVovMTk5RTRrMStQb2RQamE1RmxUNTRMZlBySE5qK3M0?=
- =?utf-8?B?TmVyTGtMdDVrTGZHMmFuTnFUQkFhdEtpRE15bURHclBkcW1WWjBsTEw5SUli?=
- =?utf-8?B?ZkppSEV6U2hvelArT3VyaW56LzFIOCtJSHd0cTJYNjROSEZhWDJHeVNPYVNP?=
- =?utf-8?B?MjNaSlFFMnA1OUwvRHdtbE5UUXBvL0xMTnpnL29nbW9OMHlmd3BYRXRwRzM5?=
- =?utf-8?B?NHg5S0hDbVFJejJmaS9xL3haRlkweEVudTJZMjcxM0ZMZ0FQSjNxbmRVNGhz?=
- =?utf-8?B?eHJqcHNlRmNRZnZra0dXekxUeTdnSmdHMEJYbUhJQVNmTmVqY3ZpNHdJRW1T?=
- =?utf-8?B?aHhZRGV0NkFLNTRCcGxoWlBHL21HNkxqOEdyVFVFTmFTcXZmUEIwdW9leDl1?=
- =?utf-8?B?Q1FiRUdyTC9xc05FM2ZocVZqa0JWTURpSlcvTE81b2RxbnI4K3dqckdMM3Ba?=
- =?utf-8?B?ZUplSFppNDhyakovUmZnOHlhUjJwQXFUeTlMRFFMcG5CUWVqRGczWGxlZ00w?=
- =?utf-8?B?RmZtRFVMenp4NUVIQUViVWxZN2o5cklhcVRzWnBnWXJ0NGViVVh2d2dUQTRS?=
- =?utf-8?B?czhYYktTbGRRRks0b2xYaTFDekpWN3VleURrZHZBVmlSYkdsQ1l5SUlMMUVQ?=
- =?utf-8?B?VmlRczYwTnlUYWtxS3lCdnMrcFY3K0k2VnovWTkwbE1UOVprSXltYzNNQlBa?=
- =?utf-8?B?eVhUS3lDOXBpZlMvamJvcUNudEZDSXZtNFhjTU45eVhuYWllMFcyK09iSUVa?=
- =?utf-8?B?SDB1TkN6UkJEU1VIcjM4NFltRXY0cC9aL0ZpN2srcWNjTFhVQ1ZBWjdPbkNS?=
- =?utf-8?B?bUVmam40MGE1UWt3UjJZbkNQaFpjMmM3Q1dvREJmZFFSWTN5NS9Tck85RnMx?=
- =?utf-8?B?eHVDQlZyM1BLdmVPVWU0WFdjSzM1UnNObFhqRDRmamJuSHpuTStDU3dwaTF1?=
- =?utf-8?B?T2c9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7920be06-178f-4739-474f-08dc232bfc36
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7388.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?7qGEOds/SMoUGZYadnF4Pfa1n4fXExKd3SPnz2/gBket56iRImCySMZ0IaUs?=
+ =?us-ascii?Q?BHalfHacFMb64gEl9mRjptwT4C+3UE+TiLsD4FvWUUTGiJ1ySiy/ZlGKlRM2?=
+ =?us-ascii?Q?QVH+oEXVPpYhYhl1gECaFqKkejDFZO+7t//GOK3TVtEoCc9ew7KGep0HsrQn?=
+ =?us-ascii?Q?tpoQ1HKzoQA2IYFGNvKokgMtNY46GFfRbEDZ507KkHYPphy5PV9xbItOTgt4?=
+ =?us-ascii?Q?89+gFlVdKMQBc6ojpX/1rFfDfeHK2D3HJrzVJrCfhWSHR5u8lfMQSRZI07IY?=
+ =?us-ascii?Q?Prd3/pR0n54Gf8j+RilARy0yg355kTdfIp3hHh/hQuJ6BkGMcNn1a2QQRAFg?=
+ =?us-ascii?Q?QIxmKsHnHuzvxtFLR1wRIcM79YekgBGEbHL5FAExQ8i4jbzfk9Rf8+viTKyS?=
+ =?us-ascii?Q?sK1qv5vCeP159AopMML1ozjxNEBY2g6OjTKF6GlLvK3tgIqdXBsWiC+Bl2K1?=
+ =?us-ascii?Q?SFBcRnUBh7Be7qA6rtmeXdyPwLnWq7GHHSlhI7BLRw9syhcB72HmB3RE0wV3?=
+ =?us-ascii?Q?rUFo8+iRaslFqU4ID1mS/JzHzuDO7bz8peLCptucvnV/P87cUPp1NWHK3ca+?=
+ =?us-ascii?Q?rGaLvI0Zf9HTNdLV3Lxn7vt27zN63eXp8cEzsg0OL0Sf37JjecJ6VAlG5VbT?=
+ =?us-ascii?Q?sG6hTh0UN99cKUeWAhylWzi2lZO+mjHoNC5vClxRK4RVpsaPejJANVR7869s?=
+ =?us-ascii?Q?fk+xMUB4GolDEDJvlmqs9YCXcoQHORN7b238tZ3k7PHDB8NApn/2z885PrLa?=
+ =?us-ascii?Q?Yt7U4x9h95lgfWtv+OtUc6UPItKi4g+3LqUutIPuI6406e8dVNUT5tjJjPQh?=
+ =?us-ascii?Q?L6EcftlwEYmaWGju2hS5XxKYwgRWd3MKCfnHsU5wiCgUd/ol36FH/52pdcIh?=
+ =?us-ascii?Q?ds4AONu+fWq7wOlcO1hecmBtrCAWhPTFs5K81lgMJ4d58cAJw6SKMy5rxdY/?=
+ =?us-ascii?Q?2WRE5T60TKmt0BKUbyY3E35LlIjTF15tIdvVS9NgLx1ES32h4weu4yTizn6T?=
+ =?us-ascii?Q?eHcimqD9yacFInONGOvu2anl3hYMLBzWPf7lwGsWz0bqWMx2wUJy7ZbDbGrT?=
+ =?us-ascii?Q?4eP2MYq1E8pU0SqC1vBGqiFJZ10LPcujAJ9BqQzH4//HJcGTdryYjyovbMVT?=
+ =?us-ascii?Q?N9q6Ujzyz/S5Yn1UKApBiOWXTmZWUXBA5CRjtLMt1dl0Lcnm2r1w09d0qvrp?=
+ =?us-ascii?Q?9ten1vUniuHuxjATUG465hh7R0TjmVO8SOzKG+9wAvWdaLEL2aVsz2Hks5pD?=
+ =?us-ascii?Q?XAvjkplXVYtd7rbTumol08loG29B6iGkNCxm22RCRDjQTFKy6ZNDiW8ln5NA?=
+ =?us-ascii?Q?RZLYIGBmoFrgomTxu7Wc4pl6adrGVYKVwAeh2PPIZ58Vxah4iSxzgEaPJQ19?=
+ =?us-ascii?Q?w3G5n/IZbAAP7bS2LVUOX1HGbGNSfNhzzqMBArwemyncwI1QTnEB7btL/W2F?=
+ =?us-ascii?Q?BN/T30Fusga8hZFO0u3c9RZIUiU1snoEy2gIfh+cKoCmmwHP4a0eS0hakUJL?=
+ =?us-ascii?Q?1AQpnzexliM3wNulkj0+Doq97BdZKzPnebr3xO/MiWoWOXytmZQ/kHaF/seh?=
+ =?us-ascii?Q?y/hNCrXPEAOle2PHXRtcF4I8AzrjVvAK4kk1HcmRNsIH7DXVVTfVHPv3PWMk?=
+ =?us-ascii?Q?WQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66862f50-6fca-48d7-57f7-08dc232e055d
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2024 13:45:00.3202 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2024 13:59:34.7490 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fVt5miWHxc7yfFzQjAXALwiQ8snSsG4Vg4rannaY574rITN1JwXJ1+yyGGYAqslZnvVMriIUb//ALc1RJwrjYjjShvsqfMaxMvyjcuqC/yc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4542
+X-MS-Exchange-CrossTenant-UserPrincipalName: mgAV69s9qUr64umhTsC+Qvjlcf6rrGZ1i6b7vb9iHPhXA9gx5R72KDiZS3cnsb4xdkTtzaCtmlcSLq5rkqpPAvRHyVzlaZQ3J6G5pOULDzE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB5876
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -167,53 +153,112 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+On Thu, Feb 01, 2024 at 02:12:04PM +0100, Kamil Konieczny wrote:
+>Hi Lucas,
+>On 2024-01-31 at 19:11:56 -0800, Lucas De Marchi wrote:
+>> 	echo -n "" > /sys/module/<modulename>/parameters/<param>
+>>
+>> doesn't really work as it will just create a open() + close() expecting
+>> the file to be truncated. The same issue happens with igt as it will
+>> stop writing when there are 0 chars to write. Special case the empty
+>> string so it always write a '\0' and make sure igt_sysfs_set() accounts
+>> for the extra null char.
+>>
+>> Shell example:
+>> 	# echo -n "/foo" > /sys/module/firmware_class/parameters/path
+>> 	# cat /sys/module/firmware_class/parameters/path
+>> 	/foo
+>> 	# echo -n "" > /sys/module/firmware_class/parameters/path
+>> 	/foo
+>> 	# # make sure to actually write a \0:
+>> 	echo -ne "\0" > /sys/module/firmware_class/parameters/path
+>> 	# cat /sys/module/firmware_class/parameters/path
+>> 	/foo
+>>
+>> Same thing happens when testing igt_sysfs_set():
+>>        int dirfd = open("/sys/module/firmware_class/parameters", O_RDONLY);
+>>        igt_sysfs_set(dirfd, "path", "");
+>>
+>> Previously it was not really setting the param.
+>>
+>> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>> ---
+>>  lib/igt_sysfs.c | 12 ++++++++++--
+>>  1 file changed, 10 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+>> index 567b4f6d5..64c2aaabb 100644
+>> --- a/lib/igt_sysfs.c
+>> +++ b/lib/igt_sysfs.c
+>> @@ -406,7 +406,7 @@ int igt_sysfs_read(int dir, const char *attr, void *data, int len)
+>>   */
+>>  bool igt_sysfs_set(int dir, const char *attr, const char *value)
+>>  {
+>> -	int len = strlen(value);
+>> +	int len = strlen(value) + 1;
+>>  	return igt_sysfs_write(dir, attr, value, len) == len;
+>
+>Why not adding write "\n" at end?
 
-On 1.02.2024 11:07, Zbigniew Kempczyński wrote:
-> For tiled surfaces we need to ensure stride and height are valid
-> from the blit operation perspective. Calculate required surface
-> size according to tiling constraints.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Karolina Drobnik <karolina.drobnik@intel.com>
+because it's not what we want. On the kernel side it will have different
+effect depending what sysfs file you are writing to. "foo\n" != "foo"
+and sysfs won't strip '\n' (while it always guarantee a \0 at the end).
 
-I'm looking at blt_set_geom() function. We still pass normal height and
-width to it. Is this correct? Or should we change height to
-aligned_height? Because if we should, this patch should be updated to
-reflect that.
+Try this and see the extra newline at the end as part of the value:
 
-If that's not a problem, then:
+	# echo -ne "/foo\n" > /sys/module/firmware_class/parameters/path
+	# hexdump /sys/module/firmware_class/parameters/path
+	0000000 662f 6f6f 0a0a                         
+	0000006
+	# echo -ne "/foo" > /sys/module/firmware_class/parameters/path
+	# hexdump /sys/module/firmware_class/parameters/path
+	0000000 662f 6f6f 000a                         
+	0000005
+	# echo -ne "\n" > /sys/module/firmware_class/parameters/path
+	# hexdump /sys/module/firmware_class/parameters/path
+	0000000 0a0a                                   
+	0000002
+	# echo -ne "\0" > /sys/module/firmware_class/parameters/path
+	# hexdump /sys/module/firmware_class/parameters/path
+	0000000 000a                                   
+	0000001
 
-Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
 
-> ---
->   lib/intel_blt.c | 12 ++++++++++--
->   1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index 13b1dbba4f..00208fc243 100644
-> --- a/lib/intel_blt.c
-> +++ b/lib/intel_blt.c
-> @@ -1858,13 +1858,21 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
->   		  bool create_mapping)
->   {
->   	struct blt_copy_object *obj;
-> -	uint64_t size = width * height * bpp / 8;
-> -	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
-> +	uint32_t stride, aligned_height;
-> +	uint64_t size;
->   	uint32_t handle;
->   	uint8_t pat_index = DEFAULT_PAT_INDEX;
->   
->   	igt_assert_f(blt->driver, "Driver isn't set, have you called blt_copy_init()?\n");
->   
-> +	stride = blt_get_min_stride(width, bpp, tiling);
-> +	aligned_height = blt_get_aligned_height(height, bpp, tiling);
-> +	size = stride * aligned_height;
-> +
-> +	/* blitter command expects stride in dwords on tiled surfaces */
-> +	if (tiling)
-> +		stride /= 4;
-> +
->   	obj = calloc(1, sizeof(*obj));
->   
->   	obj->size = size;
+
+>
+>>  }
+>>
+>> @@ -513,8 +513,16 @@ int igt_sysfs_vprintf(int dir, const char *attr, const char *fmt, va_list ap)
+>>  		return -errno;
+>>
+>>  	va_copy(tmp, ap);
+>> -	ret = vsnprintf(buf, sizeof(stack), fmt, tmp);
+>> +	ret = vsnprintf(stack, sizeof(stack), fmt, tmp);
+>------------------- ^^^^^
+>Nice catch and looks like a separate bug fix, please send
+>as separate patch.
+
+it's not really a bug as at this point in the code they point to the
+same thing. However it is a bug waiting to appear.
+
+Lucas De Marchi
+
+>
+>Regards,
+>Kamil
+>
+>>  	va_end(tmp);
+>> +
+>> +	/*
+>> +	 * make sure to always issue a write() syscall, even if writing an empty string,
+>> +	 * otherwise values in sysfs like module parameters don't really get overwritten
+>> +	 */
+>> +	if (igt_debug_on(ret == 0))
+>> +		return igt_writen(fd, "", 1);
+>> +
+>>  	if (igt_debug_on(ret < 0))
+>>  		return -EINVAL;
+>>
+>> --
+>> 2.43.0
+>>
