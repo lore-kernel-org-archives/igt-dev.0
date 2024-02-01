@@ -4,27 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E801C4828C
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 13:23:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D02D2C4828D
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 13:46:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D4A8510EDBA;
-	Thu,  1 Feb 2024 13:23:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 77CE410ED7D;
+	Thu,  1 Feb 2024 13:46:22 +0000 (UTC)
 Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B5DD10EDB3;
- Thu,  1 Feb 2024 13:23:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3470710ED7D;
+ Thu,  1 Feb 2024 13:46:21 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============1514206062598244428=="
+ boundary="===============2623200081329545695=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fvm=3A_fix_xe?=
- =?utf-8?q?=5Fbb=5Fsize=28=29_conversion?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
+ =?utf-8?q?=2Cv2=2C1/3=5D_lib/intel=5Fdevice=5Finfo=3A_set_has=5Fflatccs_on_?=
+ =?utf-8?q?LNL?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Matthew Auld" <matthew.auld@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 01 Feb 2024 13:23:09 -0000
-Message-ID: <170679378916.895526.13641899309593218723@5338d5abeb45>
+Date: Thu, 01 Feb 2024 13:46:21 -0000
+Message-ID: <170679518120.895526.2283976310837374073@5338d5abeb45>
 X-Patchwork-Hint: ignore
-References: <20240201100637.315023-1-matthew.auld@intel.com>
-In-Reply-To: <20240201100637.315023-1-matthew.auld@intel.com>
+References: <20240201103017.321466-1-matthew.auld@intel.com>
+In-Reply-To: <20240201103017.321466-1-matthew.auld@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +42,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1514206062598244428==
+--===============2623200081329545695==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_vm: fix xe_bb_size() conversion
-URL   : https://patchwork.freedesktop.org/series/129411/
+Series: series starting with [i-g-t,v2,1/3] lib/intel_device_info: set has_flatccs on LNL
+URL   : https://patchwork.freedesktop.org/series/129412/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7700_BAT -> XEIGTPW_10622_BAT
+CI Bug Log - changes from XEIGT_7700_BAT -> XEIGTPW_10623_BAT
 ====================================================
 
 Summary
@@ -81,19 +82,19 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_7700 -> IGTPW_10622
+  * IGT: IGT_7700 -> IGTPW_10623
   * Linux: xe-712-cba66c6a2af4df1b9b420fbad0a9ac1e68f14030 -> xe-715-3e58a4940c44430f20cad20ead5e1b77ed209cde
 
-  IGTPW_10622: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10622/index.html
+  IGTPW_10623: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10623/index.html
   IGT_7700: 7700
   xe-712-cba66c6a2af4df1b9b420fbad0a9ac1e68f14030: cba66c6a2af4df1b9b420fbad0a9ac1e68f14030
   xe-715-3e58a4940c44430f20cad20ead5e1b77ed209cde: 3e58a4940c44430f20cad20ead5e1b77ed209cde
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10622/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10623/index.html
 
---===============1514206062598244428==
+--===============2623200081329545695==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,16 +114,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: fix xe_bb_size() conversion</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129411/">https://patchwork.freedesktop.org/series/129411/</a></td></tr>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/3] lib/intel_device_info: set has_flatccs on LNL</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129412/">https://patchwork.freedesktop.org/series/129412/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10622/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10622/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10623/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10623/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7700_BAT -&gt; XEIGTPW_10622_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_7700_BAT -&gt; XEIGTPW_10623_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
@@ -132,10 +133,10 @@ Content-Transfer-Encoding: 7bit
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_7700 -&gt; IGTPW_10622</li>
+<li>IGT: IGT_7700 -&gt; IGTPW_10623</li>
 <li>Linux: xe-712-cba66c6a2af4df1b9b420fbad0a9ac1e68f14030 -&gt; xe-715-3e58a4940c44430f20cad20ead5e1b77ed209cde</li>
 </ul>
-<p>IGTPW_10622: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10622/index.html<br />
+<p>IGTPW_10623: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10623/index.html<br />
   IGT_7700: 7700<br />
   xe-712-cba66c6a2af4df1b9b420fbad0a9ac1e68f14030: cba66c6a2af4df1b9b420fbad0a9ac1e68f14030<br />
   xe-715-3e58a4940c44430f20cad20ead5e1b77ed209cde: 3e58a4940c44430f20cad20ead5e1b77ed209cde</p>
@@ -143,4 +144,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============1514206062598244428==--
+--===============2623200081329545695==--
