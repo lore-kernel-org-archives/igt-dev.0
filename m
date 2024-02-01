@@ -4,45 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C64DAC47DDF
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 09:22:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34167C47DDB
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 09:29:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7609E10EA4E;
-	Thu,  1 Feb 2024 09:22:51 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4982610EA4E
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 09:22:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CD19610EAD1;
+	Thu,  1 Feb 2024 09:29:54 +0000 (UTC)
+X-Greylist: delayed 428 seconds by postgrey-1.36 at gabe;
+ Thu, 01 Feb 2024 09:29:53 UTC
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 493FE10EAD1
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 09:29:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706779370; x=1738315370;
+ t=1706779793; x=1738315793;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=gA2LIPJXgr3+88uesK+o8ZOtClRLdDFai8Ba64Y5lJ8=;
- b=EuljJpDBGD205ESTknsfBEbJNmjY9H3kiTFs2/TxMsyqF4axZh+wqnKz
- NN4RjDocowWzcmZVBUBdzH4w/TDxMXztIggeb4e3kjPUJi1d1B2ZtMS0q
- QKQMdfuCjlKi5DINXCNEaTzxIjCEbIiw2Vn70bAFIg3Um2RIRWLyPinKc
- wgMw06hyF0rPwi6wzrY99Mi+PJDMvN8kl7LWtC+QX1pM7r2RIyjai6bSj
- LYvEG/9iJcZ8pdIw/9AtoBspaHaAf15uEnhy2yNFrr6PxHMd5izFJOJI6
- JTQWUgU+y8TlmRXQxqPqIso2EBuJnj5kDGgOy5Sh51oC1M741fx5byaP6 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="2787665"
+ bh=Cu1912CqaNE+ZxMpjKC9eieVh1JEvGWuYoh0utEXjVI=;
+ b=LbQ/N7Eb8mLSmlFv+1wvCSHCJUMQUVxE+14bFmEIrbf0ciNYWNXE75eZ
+ P70OpmmTPPrqxiGYyyxzDh0z8lTepjSkc78Rk/OzZ68SCLHiGig0U0Nla
+ 9M5E2sOlyq1hSlay/EAaZUbYUuEZ0ZJZAgpwllxW0voX/EaVfhZ0j2MXP
+ XpH1DiU1Vw9t9mQQAAAUnQZ1SBuQnu0nTWyIF3uJmHZi45s49NIjCDmu1
+ 0HVBXFC+Vp6NbUrCNlcjOLuG73X8OkLQcAMcI9HUqqveYTiK7ZbdtjBjQ
+ vU5zeaXnPhHxIWBf3sQH7165a/PPWTdNemKLXPlVcz+x0dxi9JOmh9enO A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="38161"
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="2787665"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 01:22:49 -0800
+   d="scan'208";a="38161"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 01:22:44 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="4324679"
+   d="scan'208";a="36326"
 Received: from kniesyn-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.112.105])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 01:22:48 -0800
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 01:22:43 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v3 3/4] lib/intel_blt: Use object pitch and aligned
- height on png write
-Date: Thu,  1 Feb 2024 10:22:26 +0100
-Message-Id: <20240201092227.252502-4-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v3 2/4] lib/intel_blt: Change surface size calculation
+Date: Thu,  1 Feb 2024 10:22:25 +0100
+Message-Id: <20240201092227.252502-3-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240201092227.252502-1-zbigniew.kempczynski@intel.com>
 References: <20240201092227.252502-1-zbigniew.kempczynski@intel.com>
@@ -65,347 +66,44 @@ Cc: Karolina Drobnik <karolina.drobnik@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Pitch and buffer height on tiled surfaces might be bigger than
-image width and height so dump memory to png using pitch size
-instead width and aligned height instead height.
+For tiled surfaces we need to ensure stride and height are valid
+from the blit operation perspective. Calculate required surface
+size according to tiling constraints.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Karolina Drobnik <karolina.drobnik@intel.com>
 ---
- lib/intel_blt.c                |  8 +++++++-
- lib/intel_blt.h                |  2 +-
- tests/intel/gem_ccs.c          | 23 ++++++++++++-----------
- tests/intel/gem_exercise_blt.c | 16 ++++++++--------
- tests/intel/xe_ccs.c           | 23 ++++++++++++-----------
- tests/intel/xe_exercise_blt.c  | 16 ++++++++--------
- 6 files changed, 48 insertions(+), 40 deletions(-)
+ lib/intel_blt.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 00208fc243..6a1d7457c1 100644
+index 13b1dbba4f..00208fc243 100644
 --- a/lib/intel_blt.c
 +++ b/lib/intel_blt.c
-@@ -2076,12 +2076,13 @@ void blt_surface_info(const char *info, const struct blt_copy_object *obj)
-  * @obj: blitter copy object (@blt_copy_object) to save to png
-  * @width: width
-  * @height: height
-+ * @bpp: bits per pixel
-  *
-  * Function save surface to png file. Assumes ARGB format where A == 0xff.
-  */
- void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
- 			const struct blt_copy_object *obj,
--			uint32_t width, uint32_t height)
-+			uint32_t width, uint32_t height, uint32_t bpp)
+@@ -1858,13 +1858,21 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+ 		  bool create_mapping)
  {
- 	cairo_surface_t *surface;
- 	cairo_status_t ret;
-@@ -2091,6 +2092,11 @@ void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
- 	char filename[FILENAME_MAX];
- 	bool is_xe = is_xe_device(fd);
+ 	struct blt_copy_object *obj;
+-	uint64_t size = width * height * bpp / 8;
+-	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
++	uint32_t stride, aligned_height;
++	uint64_t size;
+ 	uint32_t handle;
+ 	uint8_t pat_index = DEFAULT_PAT_INDEX;
  
-+	if (obj->tiling) {
-+		width = obj->pitch;
-+		height = blt_get_aligned_height(height, bpp, obj->tiling);
-+	}
+ 	igt_assert_f(blt->driver, "Driver isn't set, have you called blt_copy_init()?\n");
+ 
++	stride = blt_get_min_stride(width, bpp, tiling);
++	aligned_height = blt_get_aligned_height(height, bpp, tiling);
++	size = stride * aligned_height;
 +
- 	snprintf(filename, FILENAME_MAX-1, "%d-%s-%s-%ux%u-%s.png",
- 		 run_id, fileid, blt_tiling_name(obj->tiling), width, height,
- 		 obj->compression ? "compressed" : "uncompressed");
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index e3084dc0cd..077283a088 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -315,7 +315,7 @@ void blt_surface_fill_rect(int fd, const struct blt_copy_object *obj,
- 			   uint32_t width, uint32_t height);
- void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
- 			const struct blt_copy_object *obj,
--			uint32_t width, uint32_t height);
-+			uint32_t width, uint32_t height, uint32_t bpp);
- void blt_dump_corruption_info_32b(const struct blt_copy_object *surf1,
- 				  const struct blt_copy_object *surf2);
++	/* blitter command expects stride in dwords on tiled surfaces */
++	if (tiling)
++		stride /= 4;
++
+ 	obj = calloc(1, sizeof(*obj));
  
-diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
-index 80a29ecab7..e8f16d7d88 100644
---- a/tests/intel/gem_ccs.c
-+++ b/tests/intel/gem_ccs.c
-@@ -82,9 +82,9 @@ struct test_config {
- 	if (param.print_surface_info) \
- 		blt_surface_info((name), (obj)); } while (0)
- 
--#define WRITE_PNG(fd, id, name, obj, w, h) do { \
-+#define WRITE_PNG(fd, id, name, obj, w, h, bpp) do { \
- 	if (param.write_png) \
--		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
-+		blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
- 
- static void surf_copy(int i915,
- 		      const intel_ctx_t *ctx,
-@@ -98,6 +98,7 @@ static void surf_copy(int i915,
- 	struct blt_copy_data blt = {};
- 	struct blt_block_copy_data_ext ext = {};
- 	struct blt_ctrl_surf_copy_data surf = {};
-+	const uint32_t bpp = 32;
- 	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
- 	uint64_t bb_size, ccssize = mid->size / CCS_RATIO(i915);
- 	uint32_t *ccscopy;
-@@ -172,7 +173,7 @@ static void surf_copy(int i915,
- 	blt_set_batch(&blt.bb, bb2, bb_size, REGION_SMEM);
- 	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
- 	gem_sync(i915, blt.dst.handle);
--	WRITE_PNG(i915, run_id, "corrupted", &blt.dst, dst->x2, dst->y2);
-+	WRITE_PNG(i915, run_id, "corrupted", &blt.dst, dst->x2, dst->y2, bpp);
- 	result = memcmp(src->ptr, dst->ptr, src->size);
- 	igt_assert(result != 0);
- 
-@@ -182,7 +183,7 @@ static void surf_copy(int i915,
- 
- 	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
- 	gem_sync(i915, blt.dst.handle);
--	WRITE_PNG(i915, run_id, "corrected", &blt.dst, dst->x2, dst->y2);
-+	WRITE_PNG(i915, run_id, "corrected", &blt.dst, dst->x2, dst->y2, bpp);
- 	result = memcmp(src->ptr, dst->ptr, src->size);
- 	if (result)
- 		blt_dump_corruption_info_32b(src, dst);
-@@ -346,7 +347,7 @@ static void block_copy(int i915,
- 	PRINT_SURFACE_INFO("dst", dst);
- 
- 	blt_surface_fill_rect(i915, src, width, height);
--	WRITE_PNG(i915, run_id, "src", src, width, height);
-+	WRITE_PNG(i915, run_id, "src", src, width, height, bpp);
- 
- 	blt.color_depth = CD_32bit;
- 	blt.print_bb = param.print_bb;
-@@ -363,7 +364,7 @@ static void block_copy(int i915,
- 	if (mid->compression)
- 		igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
- 
--	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height);
-+	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height, bpp);
- 
- 	if (config->surfcopy && pext) {
- 		const intel_ctx_t *surf_ctx = ctx;
-@@ -408,7 +409,7 @@ static void block_copy(int i915,
- 	blt_set_batch(&blt.bb, bb, bb_size, region1);
- 	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
- 	gem_sync(i915, blt.dst.handle);
--	WRITE_PNG(i915, run_id, "dst", &blt.dst, width, height);
-+	WRITE_PNG(i915, run_id, "dst", &blt.dst, width, height, bpp);
- 
- 	result = memcmp(src->ptr, blt.dst.ptr, src->size);
- 
-@@ -491,11 +492,11 @@ static void block_multicopy(int i915,
- 	blt_block_copy3(i915, ctx, e, ahnd, &blt3, pext3);
- 	gem_sync(i915, blt3.final.handle);
- 
--	WRITE_PNG(i915, run_id, "src", &blt3.src, width, height);
-+	WRITE_PNG(i915, run_id, "src", &blt3.src, width, height, bpp);
- 	if (!config->inplace)
--		WRITE_PNG(i915, run_id, "mid", &blt3.mid, width, height);
--	WRITE_PNG(i915, run_id, "dst", &blt3.dst, width, height);
--	WRITE_PNG(i915, run_id, "final", &blt3.final, width, height);
-+		WRITE_PNG(i915, run_id, "mid", &blt3.mid, width, height, bpp);
-+	WRITE_PNG(i915, run_id, "dst", &blt3.dst, width, height, bpp);
-+	WRITE_PNG(i915, run_id, "final", &blt3.final, width, height, bpp);
- 
- 	result = memcmp(src->ptr, blt3.final.ptr, src->size);
- 
-diff --git a/tests/intel/gem_exercise_blt.c b/tests/intel/gem_exercise_blt.c
-index 7355eabbe9..4a9bc37298 100644
---- a/tests/intel/gem_exercise_blt.c
-+++ b/tests/intel/gem_exercise_blt.c
-@@ -50,9 +50,9 @@ static struct param {
- 	if (param.print_surface_info) \
- 		blt_surface_info((name), (obj)); } while (0)
- 
--#define WRITE_PNG(fd, id, name, obj, w, h) do { \
-+#define WRITE_PNG(fd, id, name, obj, w, h, bpp) do { \
- 	if (param.write_png) \
--		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
-+		blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
- 
- struct blt_fast_copy_data {
- 	int i915;
-@@ -167,7 +167,7 @@ static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
- 	PRINT_SURFACE_INFO("dst", dst);
- 
- 	blt_surface_fill_rect(i915, src, width, height);
--	WRITE_PNG(i915, mid_tiling, "src", src, width, height);
-+	WRITE_PNG(i915, mid_tiling, "src", src, width, height, bpp);
- 
- 	memset(&blt, 0, sizeof(blt));
- 	blt.color_depth = CD_32bit;
-@@ -180,8 +180,8 @@ static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
- 	fast_copy_one_bb(i915, ctx, e, ahnd, &blt);
- 	gem_sync(i915, blt.dst.handle);
- 
--	WRITE_PNG(i915, mid_tiling, "mid", &blt.mid, width, height);
--	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height);
-+	WRITE_PNG(i915, mid_tiling, "mid", &blt.mid, width, height, bpp);
-+	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height, bpp);
- 
- 	result = memcmp(src->ptr, blt.dst.ptr, src->size);
- 
-@@ -234,8 +234,8 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
- 	blt_fast_copy(i915, ctx, e, ahnd, &blt);
- 	gem_sync(i915, mid->handle);
- 
--	WRITE_PNG(i915, mid_tiling, "src", &blt.src, width, height);
--	WRITE_PNG(i915, mid_tiling, "mid", &blt.dst, width, height);
-+	WRITE_PNG(i915, mid_tiling, "src", &blt.src, width, height, bpp);
-+	WRITE_PNG(i915, mid_tiling, "mid", &blt.dst, width, height, bpp);
- 
- 	blt_copy_init(i915, &blt);
- 	blt.color_depth = CD_32bit;
-@@ -247,7 +247,7 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
- 	blt_fast_copy(i915, ctx, e, ahnd, &blt);
- 	gem_sync(i915, blt.dst.handle);
- 
--	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height);
-+	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height, bpp);
- 
- 	result = memcmp(src->ptr, blt.dst.ptr, src->size);
- 
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index 7d0e8ed7a5..a7785edcb1 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -79,9 +79,9 @@ struct test_config {
- 	if (param.print_surface_info) \
- 		blt_surface_info((name), (obj)); } while (0)
- 
--#define WRITE_PNG(fd, id, name, obj, w, h) do { \
-+#define WRITE_PNG(fd, id, name, obj, w, h, bpp) do { \
- 	if (param.write_png) \
--		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
-+		blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
- 
- static void surf_copy(int xe,
- 		      intel_ctx_t *ctx,
-@@ -94,6 +94,7 @@ static void surf_copy(int xe,
- 	struct blt_copy_data blt = {};
- 	struct blt_block_copy_data_ext ext = {};
- 	struct blt_ctrl_surf_copy_data surf = {};
-+	const uint32_t bpp = 32;
- 	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
- 	uint64_t bb_size, ccssize = mid->size / CCS_RATIO(xe);
- 	uint64_t ccs_bo_size = xe_get_default_alignment(xe);
-@@ -179,7 +180,7 @@ static void surf_copy(int xe,
- 	blt_set_batch(&blt.bb, bb2, bb_size, sysmem);
- 	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
- 	intel_ctx_xe_sync(ctx, true);
--	WRITE_PNG(xe, run_id, "corrupted", &blt.dst, dst->x2, dst->y2);
-+	WRITE_PNG(xe, run_id, "corrupted", &blt.dst, dst->x2, dst->y2, bpp);
- 	result = memcmp(src->ptr, dst->ptr, src->size);
- 	igt_assert(result != 0);
- 
-@@ -189,7 +190,7 @@ static void surf_copy(int xe,
- 
- 	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
- 	intel_ctx_xe_sync(ctx, true);
--	WRITE_PNG(xe, run_id, "corrected", &blt.dst, dst->x2, dst->y2);
-+	WRITE_PNG(xe, run_id, "corrected", &blt.dst, dst->x2, dst->y2, bpp);
- 	result = memcmp(src->ptr, dst->ptr, src->size);
- 	if (result)
- 		blt_dump_corruption_info_32b(src, dst);
-@@ -326,7 +327,7 @@ static void block_copy(int xe,
- 	PRINT_SURFACE_INFO("dst", dst);
- 
- 	blt_surface_fill_rect(xe, src, width, height);
--	WRITE_PNG(xe, run_id, "src", src, width, height);
-+	WRITE_PNG(xe, run_id, "src", src, width, height, bpp);
- 
- 	blt.color_depth = CD_32bit;
- 	blt.print_bb = param.print_bb;
-@@ -342,7 +343,7 @@ static void block_copy(int xe,
- 	if (mid->compression)
- 		igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
- 
--	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height);
-+	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height, bpp);
- 
- 	if (config->surfcopy && pext) {
- 		struct drm_xe_engine_class_instance inst = {
-@@ -393,7 +394,7 @@ static void block_copy(int xe,
- 	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
- 	intel_ctx_xe_sync(ctx, true);
- 
--	WRITE_PNG(xe, run_id, "dst", &blt.dst, width, height);
-+	WRITE_PNG(xe, run_id, "dst", &blt.dst, width, height, bpp);
- 
- 	result = memcmp(src->ptr, blt.dst.ptr, src->size);
- 
-@@ -486,11 +487,11 @@ static void block_multicopy(int xe,
- 	blt_block_copy3(xe, ctx, ahnd, &blt3, pext3);
- 	intel_ctx_xe_sync(ctx, true);
- 
--	WRITE_PNG(xe, run_id, "src", &blt3.src, width, height);
-+	WRITE_PNG(xe, run_id, "src", &blt3.src, width, height, bpp);
- 	if (!config->inplace)
--		WRITE_PNG(xe, run_id, "mid", &blt3.mid, width, height);
--	WRITE_PNG(xe, run_id, "dst", &blt3.dst, width, height);
--	WRITE_PNG(xe, run_id, "final", &blt3.final, width, height);
-+		WRITE_PNG(xe, run_id, "mid", &blt3.mid, width, height, bpp);
-+	WRITE_PNG(xe, run_id, "dst", &blt3.dst, width, height, bpp);
-+	WRITE_PNG(xe, run_id, "final", &blt3.final, width, height, bpp);
- 
- 	result = memcmp(src->ptr, blt3.final.ptr, src->size);
- 
-diff --git a/tests/intel/xe_exercise_blt.c b/tests/intel/xe_exercise_blt.c
-index c908800cf4..ddf9d188a7 100644
---- a/tests/intel/xe_exercise_blt.c
-+++ b/tests/intel/xe_exercise_blt.c
-@@ -53,9 +53,9 @@ static struct param {
- 	if (param.print_surface_info) \
- 		blt_surface_info((name), (obj)); } while (0)
- 
--#define WRITE_PNG(fd, id, name, obj, w, h) do { \
-+#define WRITE_PNG(fd, id, name, obj, w, h, bpp) do { \
- 	if (param.write_png) \
--		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
-+		blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
- 
- struct blt_fast_copy_data {
- 	int xe;
-@@ -141,7 +141,7 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
- 	PRINT_SURFACE_INFO("dst", dst);
- 
- 	blt_surface_fill_rect(xe, src, width, height);
--	WRITE_PNG(xe, mid_tiling, "src", src, width, height);
-+	WRITE_PNG(xe, mid_tiling, "src", src, width, height, bpp);
- 
- 	memset(&blt, 0, sizeof(blt));
- 	blt.color_depth = CD_32bit;
-@@ -153,8 +153,8 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
- 
- 	fast_copy_one_bb(xe, ctx, ahnd, &blt);
- 
--	WRITE_PNG(xe, mid_tiling, "mid", &blt.mid, width, height);
--	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height);
-+	WRITE_PNG(xe, mid_tiling, "mid", &blt.mid, width, height, bpp);
-+	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height, bpp);
- 
- 	result = memcmp(src->ptr, blt.dst.ptr, src->size);
- 
-@@ -205,8 +205,8 @@ static void fast_copy(int xe, const intel_ctx_t *ctx,
- 
- 	blt_fast_copy(xe, ctx, NULL, ahnd, &blt);
- 
--	WRITE_PNG(xe, mid_tiling, "src", &blt.src, width, height);
--	WRITE_PNG(xe, mid_tiling, "mid", &blt.dst, width, height);
-+	WRITE_PNG(xe, mid_tiling, "src", &blt.src, width, height, bpp);
-+	WRITE_PNG(xe, mid_tiling, "mid", &blt.dst, width, height, bpp);
- 
- 	blt_copy_init(xe, &blt);
- 	blt.color_depth = CD_32bit;
-@@ -217,7 +217,7 @@ static void fast_copy(int xe, const intel_ctx_t *ctx,
- 
- 	blt_fast_copy(xe, ctx, NULL, ahnd, &blt);
- 
--	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height);
-+	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height, bpp);
- 
- 	result = memcmp(src->ptr, blt.dst.ptr, src->size);
- 
+ 	obj->size = size;
 -- 
 2.34.1
 
