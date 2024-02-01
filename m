@@ -4,47 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEB0FC47DDB
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 10:07:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CCF2C47DDF
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 10:13:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6FE4A10E64F;
-	Thu,  1 Feb 2024 10:07:55 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD9C210E64F
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 10:07:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EF11510E9B5;
+	Thu,  1 Feb 2024 10:13:52 +0000 (UTC)
+X-Greylist: delayed 426 seconds by postgrey-1.36 at gabe;
+ Thu, 01 Feb 2024 10:13:51 UTC
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F95310E9B5
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 10:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706782074; x=1738318074;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=XchvK/Ldgrf2sp7Ry+rau/AfyIF5T/MvDqj0HngnhsY=;
- b=Ad1RK1A9T5a5fKBwA9hebMISFs9ymjB6ZZU30iPLctsCP67OtJ26OaGT
- SJOnk2CkknGciYm64Jzs8yjaMlp+DXJO/mPTW9ZJVpqx5F4iFvl0YxZbb
- w5qfihsrJ29hDI0I0RXjVLnBF04exQvUHSf6Bk7pS7cLqW4Z2l2l0SwLa
- pMRrI+YaYfkSTbWPjDHww8ZFV8+qWdVSnmcikCVlDtUG2+iCKQe8LZY3X
- nEEKT0dABNq8w9b5ywLvCPq2sehYnm9lZT9AQPyIFNq2ZXEDaTmh/aIgy
- CWJ9Wixv405WVptCKbMFvM1yviotObQ4BpiLiuZX9sCe54KWeDEvH3zt3 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="407578751"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="407578751"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 02:07:53 -0800
+ t=1706782431; x=1738318431;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=uO3WLa2BdEGZknU9yGCR8AWuF94XR5UOVDESogDkjbc=;
+ b=K7R3TnlVEPul55dkOLnxl20hvt+IKF2k4pawmVvUAl7mGfFNhqjFoqqu
+ ++SEAUg3UAKyg8zGgfoCsGwByWRmx1oA8aVFDZMvQrQNZcusmg6nJ9RLo
+ 3cxsYbOcbkYkZYTxz/3cMbZPaRrHRmL9uuxNm1qTLgFF235EM1V3pooo0
+ mMIN+WtDrSaapLm10aYWwyk8SBq4dgxMCZrN2e7PYKlG9dGqJa9n3dr8t
+ l72TqJRrjj9XlOXqmzWQdToNtUaI1Qmf9yMV5y7NPNyLFZPHK7sr0cC+z
+ g7de2s+Epbsf2os8cS8PglfHdvLQL3wmxTEQlm1lg+Z0D7MoG20yXvua6 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="42272"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
+   d="scan'208";a="42272"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 02:06:45 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="859110870"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="859110870"
-Received: from kniesyn-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.112.105])
- by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 02:07:51 -0800
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
+   d="scan'208";a="39686"
+Received: from abojovix-mobl.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
+ ([10.252.0.176])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 02:06:44 -0800
+From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v4 5/5] tests/xe_exercise_blt: Exercise small to large
- fast-copy blits
-Date: Thu,  1 Feb 2024 11:07:24 +0100
-Message-Id: <20240201100724.257845-6-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240201100724.257845-1-zbigniew.kempczynski@intel.com>
-References: <20240201100724.257845-1-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_vm: fix xe_bb_size() conversion
+Date: Thu,  1 Feb 2024 10:06:37 +0000
+Message-ID: <20240201100637.315023-1-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -60,166 +60,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Karolina Drobnik <karolina.drobnik@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Testing blitter with large size like 512x512 may be not enough
-to verify small or unaligned blits works properly. Add subtest
-which spread fast-copy blits from small to large.
+The large* tests need to be able to partition the bo_size without
+breaking any alignment restrictions, and adding on the pre-fetch size
+breaks that.  Rather keep the passed in bo_size as-is and add the
+prefetch size as hidden padding at the end.
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Karolina Drobnik <karolina.drobnik@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/intel/xe_exercise_blt.c | 63 +++++++++++++++++++++++++++++------
- 1 file changed, 52 insertions(+), 11 deletions(-)
+ tests/intel/xe_vm.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/tests/intel/xe_exercise_blt.c b/tests/intel/xe_exercise_blt.c
-index ddf9d188a7..8b4bae282b 100644
---- a/tests/intel/xe_exercise_blt.c
-+++ b/tests/intel/xe_exercise_blt.c
-@@ -25,6 +25,10 @@
-  *   Check fast-copy blit
-  *   blitter
-  *
-+ * SUBTEST: fast-copy-inc-dimension
-+ * Description:
-+ *   Check fast-copy blit with sizes from small to large
-+ *
-  * SUBTEST: fast-copy-emit
-  * Description:
-  *   Check multiple fast-copy in one batch
-@@ -40,6 +44,8 @@ static struct param {
- 	bool print_surface_info;
- 	int width;
- 	int height;
-+	int width_increment;
-+	int width_steps;
- } param = {
- 	.tiling = -1,
- 	.write_png = false,
-@@ -111,6 +117,7 @@ static int fast_copy_one_bb(int xe,
- }
- 
- static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
-+			   uint32_t width, uint32_t height,
- 			   uint32_t region1, uint32_t region2,
- 			   enum blt_tiling_type mid_tiling)
- {
-@@ -122,7 +129,7 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
- 	uint64_t ahnd = intel_allocator_open_full(xe, ctx->vm, 0, 0,
- 						  INTEL_ALLOCATOR_SIMPLE,
- 						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
--	uint32_t bb, width = param.width, height = param.height;
-+	uint32_t bb;
- 	int result;
- 
- 	bb = xe_bo_create(xe, 0, bb_size, region1, 0);
-@@ -170,6 +177,7 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
- }
- 
- static void fast_copy(int xe, const intel_ctx_t *ctx,
-+		      uint32_t width, uint32_t height,
- 		      uint32_t region1, uint32_t region2,
- 		      enum blt_tiling_type mid_tiling)
- {
-@@ -181,7 +189,6 @@ static void fast_copy(int xe, const intel_ctx_t *ctx,
- 						  INTEL_ALLOCATOR_SIMPLE,
- 						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
- 	uint32_t bb;
--	uint32_t width = param.width, height = param.height;
- 	int result;
- 
- 	bb = xe_bo_create(xe, 0, bb_size, region1, 0);
-@@ -241,14 +248,20 @@ enum fast_copy_func {
- };
- 
- static char
--	*full_subtest_str(char *regtxt, enum blt_tiling_type tiling,
-+	*full_subtest_str(char *regtxt, uint32_t width, uint32_t height,
-+			  enum blt_tiling_type tiling,
- 			  enum fast_copy_func func)
- {
- 	char *name;
- 	uint32_t len;
- 
--	len = asprintf(&name, "%s-%s%s", blt_tiling_name(tiling), regtxt,
--		       func == FAST_COPY_EMIT ? "-emit" : "");
-+	if (!width || !height)
-+		len = asprintf(&name, "%s-%s%s", blt_tiling_name(tiling), regtxt,
-+			       func == FAST_COPY_EMIT ? "-emit" : "");
-+	else
-+		len = asprintf(&name, "%s-%s%s-%ux%u", blt_tiling_name(tiling), regtxt,
-+			       func == FAST_COPY_EMIT ? "-emit" : "",
-+			       width, height);
- 
- 	igt_assert_f(len >= 0, "asprintf failed!\n");
- 
-@@ -264,6 +277,7 @@ static void fast_copy_test(int xe,
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 67276b220..fe667e64d 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -954,6 +954,7 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
+ 		.num_syncs = 2,
+ 		.syncs = to_user_pointer(sync),
  	};
- 	struct igt_collection *regions;
- 	void (*copy_func)(int xe, const intel_ctx_t *ctx,
-+			  uint32_t width, uint32_t height,
- 			  uint32_t r1, uint32_t r2, enum blt_tiling_type tiling);
- 	intel_ctx_t *ctx;
- 	int tiling;
-@@ -286,16 +300,32 @@ static void fast_copy_test(int xe,
++	size_t bo_size_prefetch, padding;
+ 	uint64_t addr = 0x1ull << 30, base_addr = 0x1ull << 30;
+ 	uint32_t vm;
+ 	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
+@@ -975,20 +976,21 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
+ 	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
+ 	vm = xe_vm_create(fd, 0, 0);
  
- 			copy_func = (func == FAST_COPY) ? fast_copy : fast_copy_emit;
- 			regtxt = xe_memregion_dynamic_subtest_name(xe, regions);
--			test_name = full_subtest_str(regtxt, tiling, func);
+-	bo_size = xe_bb_size(fd, bo_size);
+-
+ 	if (flags & LARGE_BIND_FLAG_USERPTR) {
+-		map = aligned_alloc(xe_get_default_alignment(fd), bo_size);
++		bo_size_prefetch = xe_bb_size(fd, bo_size);
++		map = aligned_alloc(xe_get_default_alignment(fd), bo_size_prefetch);
+ 		igt_assert(map);
+ 	} else {
+ 		igt_skip_on(xe_visible_vram_size(fd, 0) && bo_size >
+ 			    xe_visible_vram_size(fd, 0));
  
--			igt_dynamic_f("%s", test_name) {
--				copy_func(xe, ctx,
--					  region1, region2,
--					  tiling);
-+			if (!param.width_increment) {
-+				test_name = full_subtest_str(regtxt, 0, 0, tiling, func);
-+				igt_dynamic_f("%s", test_name) {
-+					copy_func(xe, ctx,
-+						  param.width, param.height,
-+						  region1, region2,
-+						  tiling);
-+				}
-+				free(test_name);
-+			} else {
-+				for (int w = param.width;
-+				     w < param.width + param.width_steps;
-+				     w += param.width_increment) {
-+					test_name = full_subtest_str(regtxt, w, w, tiling, func);
-+					igt_dynamic_f("%s", test_name) {
-+						copy_func(xe, ctx,
-+							  w, w,
-+							  region1, region2,
-+							  tiling);
-+					}
-+					free(test_name);
-+				}
- 			}
+-		bo = xe_bo_create(fd, vm, bo_size,
++		bo_size_prefetch = xe_bb_size(fd, bo_size);
++		bo = xe_bo_create(fd, vm, bo_size_prefetch,
+ 				  vram_if_possible(fd, eci->gt_id),
+ 				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+ 		map = xe_bo_map(fd, bo, bo_size);
+ 	}
++	padding = bo_size_prefetch - bo_size;
  
- 			free(regtxt);
--			free(test_name);
- 			xe_exec_queue_destroy(xe, exec_queue);
- 			xe_vm_destroy(xe, vm);
- 			free(ctx);
-@@ -367,6 +397,17 @@ igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 		fast_copy_test(xe, set, FAST_COPY);
+ 	for (i = 0; i < n_exec_queues; i++) {
+ 		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
+@@ -1001,19 +1003,19 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
+ 			xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(map),
+ 						 addr, bo_size / 2, NULL, 0);
+ 			xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(map) + bo_size / 2,
+-						 addr + bo_size / 2, bo_size / 2,
++						 addr + bo_size / 2, bo_size / 2 + padding,
+ 						 sync, 1);
+ 		} else {
+ 			xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(map),
+-						 addr, bo_size, sync, 1);
++						 addr, bo_size + padding, sync, 1);
+ 		}
+ 	} else {
+ 		if (flags & LARGE_BIND_FLAG_SPLIT) {
+ 			xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size / 2, NULL, 0);
+ 			xe_vm_bind_async(fd, vm, 0, bo, bo_size / 2, addr + bo_size / 2,
+-					 bo_size / 2, sync, 1);
++					 bo_size / 2 + padding, sync, 1);
+ 		} else {
+-			xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
++			xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size + padding, sync, 1);
+ 		}
  	}
  
-+	igt_describe("Check fast-copy with increment width/height");
-+	igt_subtest_with_dynamic("fast-copy-inc-dimension") {
-+		param.width = 1;
-+		param.height = 1;
-+		param.width_increment = 15;
-+		param.width_steps = 512;
-+
-+		fast_copy_test(xe, set, FAST_COPY);
-+	}
-+
-+
- 	igt_describe("Check multiple fast-copy in one batch");
- 	igt_subtest_with_dynamic("fast-copy-emit") {
- 		fast_copy_test(xe, set, FAST_COPY_EMIT);
+@@ -1061,9 +1063,9 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
+ 		xe_vm_unbind_async(fd, vm, 0, 0, base_addr,
+ 				   bo_size / 2, NULL, 0);
+ 		xe_vm_unbind_async(fd, vm, 0, 0, base_addr + bo_size / 2,
+-				   bo_size / 2, sync, 1);
++				   bo_size / 2 + padding, sync, 1);
+ 	} else {
+-		xe_vm_unbind_async(fd, vm, 0, 0, base_addr, bo_size,
++		xe_vm_unbind_async(fd, vm, 0, 0, base_addr, bo_size + padding,
+ 				   sync, 1);
+ 	}
+ 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
 -- 
-2.34.1
+2.43.0
 
