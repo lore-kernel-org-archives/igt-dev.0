@@ -4,53 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03BFEC48286
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 18:48:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11864C4828D
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 19:03:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A5DBE10EF7E;
-	Thu,  1 Feb 2024 18:48:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B6CDC10F2C2;
+	Thu,  1 Feb 2024 19:03:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S8/o2SKL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k+r9EKzp";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0BEA10EF80
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 18:48:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 827F610EAD6;
+ Thu,  1 Feb 2024 19:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706813336; x=1738349336;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=lnnHiiQryq0lSg+APLObl+hnmly/TTgFsGSHHtYDLF0=;
- b=S8/o2SKLrnqioRMzRFyARIgcx283m2BWpYIiS7KACRfdfHkfcZXgP+e0
- qFZRRswBmqBRulB1LpW5YcB097veApwwelP96JbBre6OPwpcsLpx8OCgz
- Rb5MS9qPy3N9Uj8CPYI+roDm/CO9qgxKdSp/Wjqjft47X4K3RK5mREKYL
- eSnExIL88A4u+FGuwPTWk4dxr/NvHZ+qDVtjmlprSBcUz3x5WpvGTqT+S
- +/9dahDGwHsAz/EBF/tkoJUtd4i5r/ZtJ94GLGmdtLs0zyP3GxZDwGmNI
- sKb0pxd7SwyaNcw+NkOlK8pllX5L/+tnLeJgJVOHLwd3l/fv4azheBLw2 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="160268"
-X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; 
-   d="scan'208";a="160268"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 10:48:51 -0800
+ t=1706814182; x=1738350182;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=B4JMJ5phljrnHqFEnDgd235bD6Outh2bPsomC4ldoR4=;
+ b=k+r9EKzpIVUmdwLSjU3alQcUGP4Q0db/guhA35NB8RHQT2wLOXhTj3yY
+ 6TL4IRFS3z53xnSDQXrpAlU8lFbIIKO80HNlohYhCXcq3Z+GhOIwUHWV8
+ 5uqeEcSls7W4eN92FPIIM+MIj9sFeO/V1Kz0ZD2K93WJzlrTJWx86itJG
+ 7pJWn2ZqAqmFoEOd0JHdOiP8CHIShzoExjrERE9+L6lE4kuwrweW/mZc4
+ cLqkmubSi93cKimPL3EACZy1rUcbulHLIxn09IGn22fY0J1YqWwB1xZls
+ z9Kcw9BowuIgsAAsv726rN6T7xQ1WvTuT9EhTfZID0eU2lwN8DYVLng/r Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="407694469"
+X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; d="scan'208";a="407694469"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 11:03:01 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; 
-   d="scan'208";a="85984"
-Received: from unknown (HELO localhost) ([10.245.85.128])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 10:48:50 -0800
-Date: Thu, 1 Feb 2024 19:48:47 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] tests/intel/xe_vm: fix xe_bb_size() conversion
-Message-ID: <20240201184847.zql56l4pfdzoz4sk@zkempczy-mobl2>
-References: <20240201100637.315023-1-matthew.auld@intel.com>
+X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="912219403"
+X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; d="scan'208";a="912219403"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO
+ jkrzyszt-mobl2.intranet) ([10.213.1.219])
+ by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 11:02:59 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-xe@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t v3 0/6] lib/kunit: Support writable filter* parameters
+ of kunit module
+Date: Thu,  1 Feb 2024 19:59:16 +0100
+Message-ID: <20240201190237.150754-8-janusz.krzysztofik@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240201100637.315023-1-matthew.auld@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,99 +68,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Feb 01, 2024 at 10:06:37AM +0000, Matthew Auld wrote:
-> The large* tests need to be able to partition the bo_size without
-> breaking any alignment restrictions, and adding on the pre-fetch size
-> breaks that.  Rather keep the passed in bo_size as-is and add the
-> prefetch size as hidden padding at the end.
-> 
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  tests/intel/xe_vm.c | 22 ++++++++++++----------
->  1 file changed, 12 insertions(+), 10 deletions(-)
-> 
-> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> index 67276b220..fe667e64d 100644
-> --- a/tests/intel/xe_vm.c
-> +++ b/tests/intel/xe_vm.c
-> @@ -954,6 +954,7 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
->  		.num_syncs = 2,
->  		.syncs = to_user_pointer(sync),
->  	};
-> +	size_t bo_size_prefetch, padding;
->  	uint64_t addr = 0x1ull << 30, base_addr = 0x1ull << 30;
->  	uint32_t vm;
->  	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
-> @@ -975,20 +976,21 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
->  	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
->  	vm = xe_vm_create(fd, 0, 0);
->  
-> -	bo_size = xe_bb_size(fd, bo_size);
-> -
->  	if (flags & LARGE_BIND_FLAG_USERPTR) {
-> -		map = aligned_alloc(xe_get_default_alignment(fd), bo_size);
-> +		bo_size_prefetch = xe_bb_size(fd, bo_size);
-> +		map = aligned_alloc(xe_get_default_alignment(fd), bo_size_prefetch);
->  		igt_assert(map);
->  	} else {
->  		igt_skip_on(xe_visible_vram_size(fd, 0) && bo_size >
->  			    xe_visible_vram_size(fd, 0));
->  
-> -		bo = xe_bo_create(fd, vm, bo_size,
-> +		bo_size_prefetch = xe_bb_size(fd, bo_size);
-> +		bo = xe_bo_create(fd, vm, bo_size_prefetch,
->  				  vram_if_possible(fd, eci->gt_id),
->  				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->  		map = xe_bo_map(fd, bo, bo_size);
->  	}
-> +	padding = bo_size_prefetch - bo_size;
->  
->  	for (i = 0; i < n_exec_queues; i++) {
->  		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
-> @@ -1001,19 +1003,19 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
->  			xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(map),
->  						 addr, bo_size / 2, NULL, 0);
->  			xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(map) + bo_size / 2,
-> -						 addr + bo_size / 2, bo_size / 2,
-> +						 addr + bo_size / 2, bo_size / 2 + padding,
->  						 sync, 1);
->  		} else {
->  			xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(map),
-> -						 addr, bo_size, sync, 1);
-> +						 addr, bo_size + padding, sync, 1);
->  		}
->  	} else {
->  		if (flags & LARGE_BIND_FLAG_SPLIT) {
->  			xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size / 2, NULL, 0);
->  			xe_vm_bind_async(fd, vm, 0, bo, bo_size / 2, addr + bo_size / 2,
-> -					 bo_size / 2, sync, 1);
-> +					 bo_size / 2 + padding, sync, 1);
->  		} else {
-> -			xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
-> +			xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size + padding, sync, 1);
->  		}
->  	}
->  
-> @@ -1061,9 +1063,9 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
->  		xe_vm_unbind_async(fd, vm, 0, 0, base_addr,
->  				   bo_size / 2, NULL, 0);
->  		xe_vm_unbind_async(fd, vm, 0, 0, base_addr + bo_size / 2,
-> -				   bo_size / 2, sync, 1);
-> +				   bo_size / 2 + padding, sync, 1);
->  	} else {
-> -		xe_vm_unbind_async(fd, vm, 0, 0, base_addr, bo_size,
-> +		xe_vm_unbind_async(fd, vm, 0, 0, base_addr, bo_size + padding,
->  				   sync, 1);
->  	}
->  	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-> -- 
-> 2.43.0
-> 
+Instead of wasting resources on reloading the base Kunit module each time
+a different set of filter parameters is needed, try to write the required
+values to sysfs representation of those parameters.  If that fails (e.g.
+on older LTS kernels with read-only filter parameters), fall back to
+reloading the module.
 
-LGTM:
+This change also provides a workaround for the issue of impossibility to
+unload the base Kunit module on Xe platforms, available as soon as the
+module supports writable filter parameters.
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+While being at it, fine tune processing of skips on errors during test
+case list collection phase.
 
---
-Zbigniew
+v3: Don't read-compare-write, just write the values (Lucas),
+  - skip calling igt_sysfs_set() when the string to be written to
+    filter_action is empty (Lucas),
+  - warn if we leave the filter_action set to "skip" while setting a non-
+    default value of the filter parameter,
+  - transform generic kunit_set_params() to kunit_set_filtering().
+v2: Work around ineffective writes of empty strings to sysfs module
+    parameter files (Lucas) by using human readable non-empty strings that
+    give the same results as default NULLs,
+  - drop fallback to reload of base Kunit module method if assigning new
+    values to module parameters via sysfs fails (Lucas), instead use the
+    existing fallback to blind execution like if getting a list of test
+    cases was not supported at all,
+  - split move of open_parameters() helper up in the source file as well
+    as cleanup of base KUnit module unloading to separate patches (Kamil),
+  - skip on empty list of test cases (new patch),
+  - address the issue of commit description suggesting two separate
+    changes combined in one patch (Kamil).
+
+Janusz Krzysztofik (6):
+  lib/kunit: Skip on empty list of test cases
+  lib/kmode: Prepare open_parameters() helper for reuse by kunit
+  lib/kunit: Unload base KUnit module only before reloading it
+  lib/kunit: Support writable filter* parameters of kunit module
+  lib/kunit: Report early kernel taints explicitly
+  lib/kunit: Process module remove error after list errors
+
+ lib/igt_kmod.c | 115 +++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 79 insertions(+), 36 deletions(-)
+
+-- 
+2.43.0
+
