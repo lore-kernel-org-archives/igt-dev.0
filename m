@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F21C7C4828D
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 21:14:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8804C4828D
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 22:02:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7FE5210E481;
-	Thu,  1 Feb 2024 21:14:49 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dgtN2nuU";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E9E1310E6C5
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 21:14:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706822087; x=1738358087;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=dEAI3fMZvsF8s03i1aC27AqzL/dy0PvACSR8OwHD7Rs=;
- b=dgtN2nuUjGaZZjcjgzFYDej0c8uYxeecwkqEn/81lErR4IHGMM5I3/ME
- XE0f9zXb1u1och3Sp3xpIsJ8ApdI9K3IPTXafswSzRckuhf7VbybeSxum
- AGfu6HbUp+z3BC1UnxK9/V/es3ZvD1w6IB/oI+3WbGf8ZS3m3U1qMQzMp
- WniM97edoziIE1+9wlbK/1qWX6Tc69QC5WQzuuUKX2Zx3SyADmCaRu+Y1
- rjD1wknYLPNp4nzygiE3kbfGA3MR5x/5Nsb4X/8AexQyrXJgeaG6JxITH
- 7pymGNf4Mtqh6GGYNpMCUhPsZ6X7NDBB1PS1EbtG38JxdPjtUANT030SS w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="401133306"
-X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; d="scan'208";a="401133306"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 13:14:47 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="789050579"
-X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; d="scan'208";a="789050579"
-Received: from unknown (HELO localhost) ([10.245.85.128])
- by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 13:14:44 -0800
-Date: Thu, 1 Feb 2024 22:14:41 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Subject: Re: [PATCH i-g-t v2 2/3] tests/intel/xe_ccs: require flat CCS on xe2
-Message-ID: <20240201211441.b5yncl7w2pn6dwk4@zkempczy-mobl2>
-References: <20240201103017.321466-1-matthew.auld@intel.com>
- <20240201103017.321466-2-matthew.auld@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7F16210E7D7;
+	Thu,  1 Feb 2024 22:02:27 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EDC2810E801;
+ Thu,  1 Feb 2024 22:02:25 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5444022752063546691=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240201103017.321466-2-matthew.auld@intel.com>
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_lib/kunit=3A_Support_writable_?=
+ =?utf-8?q?filter*_parameters_of_kunit_module_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 01 Feb 2024 22:02:25 -0000
+Message-ID: <170682494597.897306.10257394377953150617@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240201190237.150754-8-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20240201190237.150754-8-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,61 +37,181 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Feb 01, 2024 at 10:30:16AM +0000, Matthew Auld wrote:
-> On Xe2 compression is handled via PAT indexes and flat CCS, even on
-> igpu. Ensure the device has flat CCS support on such hardware, to
-> determine if these tests are valid.
-> 
-> v2: (Zbigniew)
->  - There is at least one uncompressed test also, which is valid
->    regardless of CCS. Move the skip deeper.
-> 
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  tests/intel/xe_ccs.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-> index 7d0e8ed7a..3430db2d2 100644
-> --- a/tests/intel/xe_ccs.c
-> +++ b/tests/intel/xe_ccs.c
-> @@ -532,6 +532,7 @@ static void block_copy_test(int xe,
->  			    struct igt_collection *set,
->  			    enum copy_func copy_function)
->  {
-> +	uint16_t dev_id = intel_get_drm_devid(xe);
->  	struct drm_xe_engine_class_instance inst = {
->  		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
->  	};
-> @@ -540,6 +541,9 @@ static void block_copy_test(int xe,
->  	uint32_t vm, exec_queue;
->  	int tiling;
->  
-> +	if (AT_LEAST_GEN(dev_id, 20) && config->compression)
-> +		igt_require(HAS_FLATCCS(xe));
+--===============5444022752063546691==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Just to make sure - above will lead to skip on xe2 if there's
-no flatccs.
+== Series Details ==
 
-> +
->  	if (config->compression && !blt_block_copy_supports_compression(xe))
->  		return;
+Series: lib/kunit: Support writable filter* parameters of kunit module (rev3)
+URL   : https://patchwork.freedesktop.org/series/129174/
+State : failure
 
-This will check compression either, but indirectly via .cmds_info
-set to xe2_cmds_info in which we use BLT_CMD_SUPPORTS_COMPRESSION
-flag for block-copy command.
+== Summary ==
 
-Do we have any Xe2 without compression on block-copy?
+CI Bug Log - changes from XEIGT_7701_BAT -> XEIGTPW_10629_BAT
+====================================================
 
---
-Zbigniew
+Summary
+-------
 
->  
-> -- 
-> 2.43.0
-> 
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_10629_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_10629_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_10629_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_live_ktest@bo:
+    - bat-adlp-7:         [PASS][1] -> [SKIP][2] +2 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-adlp-7/igt@xe_live_ktest@bo.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-adlp-7/igt@xe_live_ktest@bo.html
+
+  * igt@xe_live_ktest@migrate:
+    - bat-pvc-2:          [PASS][3] -> [SKIP][4] +2 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-pvc-2/igt@xe_live_ktest@migrate.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-pvc-2/igt@xe_live_ktest@migrate.html
+    - bat-dg2-oem2:       [PASS][5] -> [SKIP][6] +2 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-dg2-oem2/igt@xe_live_ktest@migrate.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-dg2-oem2/igt@xe_live_ktest@migrate.html
+    - bat-atsm-2:         [PASS][7] -> [SKIP][8] +2 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-atsm-2/igt@xe_live_ktest@migrate.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-atsm-2/igt@xe_live_ktest@migrate.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10629_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@xe_exec_fault_mode@twice-basic:
+    - bat-atsm-2:         [SKIP][9] ([Intel XE#1130]) -> [SKIP][10] ([Intel XE#288])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html
+
+  
+  [Intel XE#1130]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7701 -> IGTPW_10629
+
+  IGTPW_10629: 10629
+  IGT_7701: 7701
+  xe-715-3e58a4940c44430f20cad20ead5e1b77ed209cde: 3e58a4940c44430f20cad20ead5e1b77ed209cde
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/index.html
+
+--===============5444022752063546691==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/kunit: Support writable filter* parameters of kunit module (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129174/">https://patchwork.freedesktop.org/series/129174/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7701_BAT -&gt; XEIGTPW_10629_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_10629_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_10629_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_10629_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@xe_live_ktest@bo:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-adlp-7/igt@xe_live_ktest@bo.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-adlp-7/igt@xe_live_ktest@bo.html">SKIP</a> +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@migrate:</p>
+<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-pvc-2/igt@xe_live_ktest@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-pvc-2/igt@xe_live_ktest@migrate.html">SKIP</a> +2 other tests skip</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-dg2-oem2/igt@xe_live_ktest@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-dg2-oem2/igt@xe_live_ktest@migrate.html">SKIP</a> +2 other tests skip</li>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-atsm-2/igt@xe_live_ktest@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-atsm-2/igt@xe_live_ktest@migrate.html">SKIP</a> +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10629_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@xe_exec_fault_mode@twice-basic:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7701/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10629/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7701 -&gt; IGTPW_10629</li>
+</ul>
+<p>IGTPW_10629: 10629<br />
+  IGT_7701: 7701<br />
+  xe-715-3e58a4940c44430f20cad20ead5e1b77ed209cde: 3e58a4940c44430f20cad20ead5e1b77ed209cde</p>
+
+</body>
+</html>
+
+--===============5444022752063546691==--
