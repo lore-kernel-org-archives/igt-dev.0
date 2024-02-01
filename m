@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AF68C4828F
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 14:30:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECF06C4828F
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 14:37:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E7EC210EE8A;
-	Thu,  1 Feb 2024 14:30:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9E75F10E3BC;
+	Thu,  1 Feb 2024 14:37:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YJJpZfWQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IcFAN5Uf";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 968A810EE8A;
- Thu,  1 Feb 2024 14:30:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83F9710E6EB;
+ Thu,  1 Feb 2024 14:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706797852; x=1738333852;
+ t=1706798238; x=1738334238;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=ei9nGRLm4P2vNaSCEWPlJl2ZAeD1VrgwWmbYTKxO4Pc=;
- b=YJJpZfWQhtUdQEcitxdt2MMLz+l3wkAfrAKkTTiIrk7+xx7Pxb0T5UCg
- M4UOUMZQ+cBp/5bgcCvXxJry2qDWL1UN6FnAK9H/SpFK7aFm/Jzvom6Jz
- Kh+B3vXxwj6NHID9yZsSsG2iwxCEAhCLm/V1AOPTfmNFRc0Fu1X5OH6m/
- IurSW6upl6gawJxGk5z1sfsb4J2lGLhpJ3o16j312GDffX+4eE/n66HH7
- 28xHUX5/5DJ9/cbAzn4mFAoHRnCcHt59Xie5D/5fLF4IgieS0DskJRP+C
- fQQk3lo5zX6e5YC22n0eKw9C5blCW+AFL11v5NOZdKQe9yjisRYKXLV9R A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="401036212"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="401036212"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ bh=7QE1oSdEYs34fvweOABTlDXl5+mrZIe4v3w06g3MNDA=;
+ b=IcFAN5Ufo6FAT//gAF+f6eaLLTOoMflAQMkmJurijvz88H3iLMHsxcc5
+ 4sgo588BxcFVJDGJpSle9Q5T2MgAsVyM0IGjHkPkTV3psVjYhNQXbfpwg
+ jQ+X7qdIggK1AHFsZT7FFYy7U0MlogFTv39+cafkncGlH7u+v2k/CWN9E
+ nA6BA33w62WWOoORzfzl3OFyHe/X+c56j9I5MVZfI4BwRy0y6yGhB9Rxe
+ kEQJaaRAo5WDXBVPdgvlxcXCxjZW2H37rk0lWacyrCdg9TimoxGeJ7jPp
+ OJhLXjYmQ0jS7UHCHcogNIgfEevDiUH3GajdubooPByK0AfwRnNYiLX70 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="401037700"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="401037700"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 06:30:52 -0800
+ 01 Feb 2024 06:37:17 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="4425193"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="30611349"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 06:30:51 -0800
-Date: Thu, 1 Feb 2024 15:30:31 +0100
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 06:37:16 -0800
+Date: Thu, 1 Feb 2024 15:37:13 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
  intel-xe@lists.freedesktop.org, Mauro Carvalho Chehab <mchehab@kernel.org>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: Re: [PATCH i-g-t v2 1/6] lib/kunit: Skip on empty list of test cases
-Message-ID: <20240201143031.zxwkycbnjtagioyg@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH i-g-t v2 2/6] lib/kmode: Prepare open_parameters() helper
+ for reuse by kunit
+Message-ID: <20240201143713.2xea7wnwx352p2uu@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
@@ -53,11 +53,11 @@ Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>,
  Lucas De Marchi <lucas.demarchi@intel.com>
 References: <20240131181156.80571-8-janusz.krzysztofik@linux.intel.com>
- <20240131181156.80571-9-janusz.krzysztofik@linux.intel.com>
+ <20240131181156.80571-10-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240131181156.80571-9-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20240131181156.80571-10-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,32 +74,53 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Janusz,
-On 2024-01-31 at 19:03:48 +0100, Janusz Krzysztofik wrote:
-> If loading the base KUnit module in list mode succeeds but our KTAP
-> parser or test suite filter returns an empty list of test cases then,
-> instead of calling igt_skip, we now unintentionally fall back to legacy
-> mode as if the module didn't support filter parameters.  Fix it.
+On 2024-01-31 at 19:03:49 +0100, Janusz Krzysztofik wrote:
+> Move the open_parameters() helper code up in the source file, above the
+> kunit related functions, so it is available to follow-up changes of the
+> kunit code.
 > 
 > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  lib/igt_kmod.c | 1 +
->  1 file changed, 1 insertion(+)
+>  lib/igt_kmod.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
 > 
 > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index 250ab2107b..ad69173151 100644
+> index ad69173151..d1091bdc79 100644
 > --- a/lib/igt_kmod.c
 > +++ b/lib/igt_kmod.c
-> @@ -1163,6 +1163,7 @@ static void kunit_get_tests(struct igt_list_head *tests,
->  
->  	igt_skip_on_f(err,
->  		      "KTAP parser failed while getting a list of test cases\n");
-> +	igt_skip_on(igt_list_empty(tests));
+> @@ -803,6 +803,14 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
+>  	kmod_module_info_free_list(pre);
 >  }
 >  
->  static void __igt_kunit(struct igt_ktest *tst,
+> +static int open_parameters(const char *module_name)
+> +{
+> +	char path[256];
+> +
+> +	snprintf(path, sizeof(path), "/sys/module/%s/parameters", module_name);
+> +	return open(path, O_RDONLY);
+> +}
+> +
+>  struct modprobe_data {
+>  	struct kmod_module *kmod;
+>  	const char *opts;
+> @@ -1402,14 +1410,6 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
+>  	igt_ktest_fini(&tst);
+>  }
+>  
+> -static int open_parameters(const char *module_name)
+> -{
+> -	char path[256];
+> -
+> -	snprintf(path, sizeof(path), "/sys/module/%s/parameters", module_name);
+> -	return open(path, O_RDONLY);
+> -}
+> -
+>  int igt_ktest_init(struct igt_ktest *tst,
+>  		   const char *module_name)
+>  {
 > -- 
 > 2.43.0
 > 
