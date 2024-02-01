@@ -4,28 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44460C4828F
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 15:33:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB939C4828F
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 15:38:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DD0C010F2F5;
-	Thu,  1 Feb 2024 15:33:06 +0000 (UTC)
-Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09B4E10F3D4;
- Thu,  1 Feb 2024 15:33:05 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1812451509353527482=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6091510F6A9;
+	Thu,  1 Feb 2024 15:38:17 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aJGfewGs";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A11DC10F6A9
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 15:38:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1706801896; x=1738337896;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=XYvjp2MyV5Laqb+fLkWsnkrxo4saB18rpmOes5Msc3Q=;
+ b=aJGfewGsBmwzmrTEZiWtBUgHI8XDsjhokD3Ni2vEWQXlRT+xfk2oHG1D
+ De+tT11iYaCXCkk1FDO67ZZ0e5vCktwVNaiu72B3okuWqtCxR6uXK0sJr
+ RCKU3iXIjExKGGAcH/phrz4nKM6PBpWZfUSLREFkz9Z7r+EJKO3/ZBeQt
+ E2XWBk5zHFO/QmJi3tmoRbWfwjeB+RFMfo1KUag+u4ZnG910Vx+nQ0bmC
+ PQw2ovtQTkkME62qOiIUQTkR2SV4BiIVHEeCI345nVvMOwLSvsteRuXZO
+ R04iRzTczrgm0F759CO7c7keIN6FhmnHW2pJF+EatvgWETa5AcFjA0QWC Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="118229"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
+   d="scan'208";a="118229"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 07:38:11 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="932205815"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="932205815"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.1.219])
+ by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 07:38:08 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
+Subject: Re: =?UTF-8?B?4pyX?= CI.xeBAT: failure for lib/kunit: Support writable
+ filter* parameters of kunit module (rev2)
+Date: Thu, 01 Feb 2024 16:38:06 +0100
+Message-ID: <3066928.kC03pvyZki@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <dmwvmczxregptoifkjgyje2cramo5ztnzkkrcasz4mpnjhel6p@qwcz6rlu6gwi>
+References: <20240131181156.80571-8-janusz.krzysztofik@linux.intel.com>
+ <2945385.o0KrE1Onz3@jkrzyszt-mobl2.ger.corp.intel.com>
+ <dmwvmczxregptoifkjgyje2cramo5ztnzkkrcasz4mpnjhel6p@qwcz6rlu6gwi>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
- =?utf-8?q?=2Cv3=2C1/3=5D_lib/intel=5Fdevice=5Finfo=3A_set_has=5Fflatccs_on_?=
- =?utf-8?q?LNL?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matthew Auld" <matthew.auld@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 01 Feb 2024 15:33:05 -0000
-Message-ID: <170680158503.895526.1748986025857675114@5338d5abeb45>
-X-Patchwork-Hint: ignore
-References: <20240201140315.334388-1-matthew.auld@intel.com>
-In-Reply-To: <20240201140315.334388-1-matthew.auld@intel.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,110 +67,113 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1812451509353527482==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thursday, 1 February 2024 15:13:31 CET Lucas De Marchi wrote:
+> On Thu, Feb 01, 2024 at 12:06:35PM +0100, Janusz Krzysztofik wrote:
+> >On Wednesday, 31 January 2024 21:51:15 CET Lucas De Marchi wrote:
+> >> On Wed, Jan 31, 2024 at 08:22:35PM +0100, Janusz Krzysztofik wrote:
+> >> >On Wednesday, 31 January 2024 19:36:57 CET Patchwork wrote:
+> >> >> == Series Details ==
+> >> >>
+> >> >> Series: lib/kunit: Support writable filter* parameters of kunit module
+> >> >(rev2)
+> >> >> URL   : https://patchwork.freedesktop.org/series/129174/
+> >> >> State : failure
+> >> >>
+> >> >> == Summary ==
+> >> >>
+> >> >> CI Bug Log - changes from XEIGT_7699_BAT -> XEIGTPW_10613_BAT
+> >> >> ====================================================
+> >> >>
+> >> >> Summary
+> >> >> -------
+> >> >>
+> >> >>   **FAILURE**
+> >> >>
+> >> >>   Serious unknown changes coming with XEIGTPW_10613_BAT absolutely need to
+> >> >be
+> >> >>   verified manually.
+> >> >>
+> >> >>   If you think the reported changes have nothing to do with the changes
+> >> >>   introduced in XEIGTPW_10613_BAT, please notify your bug team (I915-ci-
+> >> >infra@lists.freedesktop.org) to allow them
+> >> >>   to document this new failure mode, which will reduce false positives in
+> >> >CI.
+> >> >>
+> >> >>
+> >> >>
+> >> >> Participating hosts (4 -> 4)
+> >> >> ------------------------------
+> >> >>
+> >> >>   No changes in participating hosts
+> >> >>
+> >> >> Possible new issues
+> >> >> -------------------
+> >> >>
+> >> >>   Here are the unknown changes that may have been introduced in
+> >> >XEIGTPW_10613_BAT:
+> >> >>
+> >> >> ### IGT changes ###
+> >> >>
+> >> >> #### Possible regressions ####
+> >> >>
+> >> >>   * igt@xe_live_ktest@bo:
+> >> >>     - bat-adlp-7:         [PASS][1] -> [SKIP][2] +2 other tests skip
+> >> >>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7699/bat-adlp-7/
+> >> >igt@xe_live_ktest@bo.html
+> >> >>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10613/bat-adlp-7/
+> >> >igt@xe_live_ktest@bo.html
+> >> >
+> >> >Hi Lucas,
+> >> >
+> >> >We've got an empty list of test cases because the current algorithm of IGT
+> >> >KUnit implementation expects subtest name provided via struct kunit_tests
+> >> >to be the same as name of a test suite provided by the KUnit test module.  As
+> >> >a special case, if the module provides only one test suite (most do) and the
+> >> >name of it is the same as the module name with the _test or _kunit suffix
+> >> >truncated (also the most common case) then subtest name may be omitted (i.e.,
+> >> >.name field may be NULL).
+> >> >
+> >> >I have to document the above, but we also have to use the same names on both
+> >> >sides (KUnit test module and its corresponding IGT test).  Now we don't, e.g.
+> >> >test suite named "xe_bo" is provided by xe_bo_test module while subtest name
+> >> >"bo" is specified for that module in IGT xe_live_ktest.
+> >>
+> >> in the end we want to have only one module: xe_live_test.ko and then
+> >> filter out by the testunit. From what I've seen previously in igt, it
+> >> would be a matter of always reloading the same module, but passing a
+> >> different name.
+> >
+> >As long as the module will provide several test suites, each of those test
+> >suites can be mapped to a separate subtest with the same name as the test
+> >suite, and with its test cases discovered and executed automatically by IGT as
+> >dynamic sub-subtests, still selectable individually via IGT --dynamic command
+> >line option.  For that to work this way, populating .name fields of the struct
+> >kunit_tests table with subtest names that are the same as test suite names is
+> >mandatory, otherwise IGT will expose one subtest, named after the module name,
+> >with dynamic sub-subtests named <suite_name>-<case_name>.
+> 
+> that's what I did when I submitted the module rename:
+> https://lore.kernel.org/igt-dev/20231205224926.2188996-1-lucas.demarchi@intel.com/
+> 
+> This one is to be applied on top of these fixes to kunit handling.
 
-== Series Details ==
+Do your subtest names match test suite names used in xe_live_test.ko?  AFAICS, 
+https://patchwork.freedesktop.org/series/126786/ referred in the IGT patch 
+you've pointed out didn't touch test suite names while combining source files 
+of several now separate modules into that one module, and test suite names 
+still reported by those separate modules don't match -- they start with xe_ 
+prefix.  We need to have those mismatches fixed on one side or another.
 
-Series: series starting with [i-g-t,v3,1/3] lib/intel_device_info: set has_flatccs on LNL
-URL   : https://patchwork.freedesktop.org/series/129418/
-State : success
+Thanks,
+Janusz
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7700_BAT -> XEIGTPW_10625_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
+> 
+> Lucas De Marchi
+> 
 
 
-Changes
--------
-
-  No changes found
 
 
-Build changes
--------------
-
-  * IGT: IGT_7700 -> IGTPW_10625
-  * Linux: xe-712-cba66c6a2af4df1b9b420fbad0a9ac1e68f14030 -> xe-715-3e58a4940c44430f20cad20ead5e1b77ed209cde
-
-  IGTPW_10625: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10625/index.html
-  IGT_7700: 7700
-  xe-712-cba66c6a2af4df1b9b420fbad0a9ac1e68f14030: cba66c6a2af4df1b9b420fbad0a9ac1e68f14030
-  xe-715-3e58a4940c44430f20cad20ead5e1b77ed209cde: 3e58a4940c44430f20cad20ead5e1b77ed209cde
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10625/index.html
-
---===============1812451509353527482==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v3,1/3] lib/intel_device_info: set has_flatccs on LNL</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129418/">https://patchwork.freedesktop.org/series/129418/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10625/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10625/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7700_BAT -&gt; XEIGTPW_10625_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7700 -&gt; IGTPW_10625</li>
-<li>Linux: xe-712-cba66c6a2af4df1b9b420fbad0a9ac1e68f14030 -&gt; xe-715-3e58a4940c44430f20cad20ead5e1b77ed209cde</li>
-</ul>
-<p>IGTPW_10625: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10625/index.html<br />
-  IGT_7700: 7700<br />
-  xe-712-cba66c6a2af4df1b9b420fbad0a9ac1e68f14030: cba66c6a2af4df1b9b420fbad0a9ac1e68f14030<br />
-  xe-715-3e58a4940c44430f20cad20ead5e1b77ed209cde: 3e58a4940c44430f20cad20ead5e1b77ed209cde</p>
-
-</body>
-</html>
-
---===============1812451509353527482==--
