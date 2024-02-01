@@ -4,143 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81E8FC4828C
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 13:51:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC212C4828C
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 13:51:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 152D110EDF1;
-	Thu,  1 Feb 2024 13:51:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7B6F010EDF9;
+	Thu,  1 Feb 2024 13:51:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XOWptXs0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U7LvKCur";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6CC4C10EDF1
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 13:51:37 +0000 (UTC)
+X-Greylist: delayed 386 seconds by postgrey-1.36 at gabe;
+ Thu, 01 Feb 2024 13:51:39 UTC
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BAEA610EDF9
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 13:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706795498; x=1738331498;
- h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=L0OupjayAMjqJcyF7A8KR2O/1ZM5iYMB3RCYBmBjVjc=;
- b=XOWptXs0iOWZye8Ze5iyyFtYF8ewfI2cuJa938M5hlHCgzBfZ6usTHJX
- LAfecZRTbZklAA4vM9Nj3Og9lExC26KLsBrgRzxeWk0wZSyn8ofKTxBmy
- KovrWVZOk4RM2SyaBphBOvNyzcjqbMlz1aYO3Lj1J0R02MQXDeDfqv37O
- vtWYCtC5LaZ8cLZvHCZEMmOGxM5wVB121ZQ6pRBU8wAPhfdrLL2dVPuy9
- eF3gViFlgY2IyIF6njeSsobJKwuCXUAklJG+31mSR83jRLw3bJVxbFkAf
- RNsW2ttOchg87O6LsOKfVUABuqjd7dvs0njBfCC0Fc0PbI2tVSOYeAbHk Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="22395818"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="22395818"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 05:51:37 -0800
+ t=1706795500; x=1738331500;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=MGICJ1lZzg/Vb7m+Oms/HMNwFnZLx6q2sqfq7YVftmk=;
+ b=U7LvKCurpcU1uaOaTPVRKnd9ZKyMhW6oZeqHPaDEro8D2Y6u5ykbXuOd
+ j9HOnL4vRClVGDm6SnyFqPdy5B4oMO+eX9Yi0g09gHVNtK2FqZVvrFxF+
+ IuVg1zlWNlvhHRbA/lwIB/2GP+zLu0UDoJfIOkfMhVaed1r3o4iZD/dHE
+ rOsxoH9CQxKRodpzc8EV5MqiLK+INGjxDFYRVVEnmMDeuQtCCenhuzo8C
+ 68FCSMD4ixIvH3kNSHGThPXwDZsqXzcTJy1N7kNdcrn89WdMEDoZmdhkZ
+ Gu3W/B70uBsYMcN6PQl6GtTFJYn2hQlXVyCALPQ/1GaQmsqw2EJEIYjno Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="116392"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
+   d="scan'208";a="116392"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 05:51:39 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="4509268"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 01 Feb 2024 05:51:37 -0800
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+   d="scan'208";a="76490"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 01 Feb 2024 05:51:39 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 1 Feb 2024 05:51:35 -0800
-Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.1.2507.35; Thu, 1 Feb 2024 05:51:38 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 1 Feb 2024 05:51:35 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 1 Feb 2024 05:51:35 -0800
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ 15.1.2507.35 via Frontend Transport; Thu, 1 Feb 2024 05:51:38 -0800
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.100)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 1 Feb 2024 05:51:35 -0800
+ 15.1.2507.35; Thu, 1 Feb 2024 05:51:38 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Gb8d3RI/NVjcaPBXWbzpaktYD+/IXrMMiELPk5IAjD19ycbwXAuBM+1biv6tlDPEv9DajuKEW7y80gY73fLw6l2oBZuXnfAH/8oqAq1IjKqFCpv0itLvqpvPXbPJT16lJh34AMZSa5vEkSO4ppiiF3MGrZIxydxRAgOsdOOqSPgIVH14A22Pp21zNsUnQaB8qbeYKcOZXbe7u2LJwJlrZ/cIGKkRgYX0KJMqdbzTnx1auuYqTUWy1LUrIWERqMcjTirg8nQrCTQmEonXPQZkHkn66z3L5aMpixpFf1r/l5WNOcAil8GxHmqdLwBEMcm6W6akuKUWl3AB2zaOEi3bZQ==
+ b=cLCjh9j93xQ9T6qzcTI9Wwp5zIbEHXyBpdtT8LSdYyAUHltN1AFvw/6mPSDQhZEEP2Snp7uf2PbMPcpqKJTNwKPEH2KUqJf8g0szQz58y96Ld33akaOZa9N3SgmiDCrGdchqvFyK5StFOgrXud566z6rWLBt/xsjrdaGdCcSBoBUYRqxSKBPfoTnjRJvncA/i+4dx93OTOmNeGo0jQ7iJMseGK5smmvSRcLSYgq8h7w6p9M6CunwE1Mz07Zw5rP6Ym+QVAzAGKFT9S9bqa3JkWHe3DTxy/urc72MQTU3Mh2jDYNjHSKM/xsag2QFtTJDOn5f6mk9hbf6hJVIKxdOsw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TbqRukBPRbXUMXdTu6bcjl97b8KjvtFasgLxFKROrgQ=;
- b=MDRc2yxC54nbSkipPV4l7fGYL9R3hvpXd5y68WV/HsSLfubUGNymhqaFKDS79sqqN3CslDezEBaA0Oc8qw283BSGjOFtuof9kMbxVr+blXvt5Ov0BaJo30QwsRLqbp+BFY5gc52vs9zxndwmb0ASvp55K2euTQQfc76gaWa5lcO9Dgy45Z1RsNalcLPTt/k7s+Q6k4X0eGaEjTNN0NSdCeqLUfGv0kUxVEtlfBYcvXAFPKvC0AJcQ/RpuYkMs8xGKkqz7Yfaq+sg7PY0NC31DKS0f8tSU4obxXeu2WkuoOaHsUOas7ui9cOySxefAjMD4o3ZkXtdh0nYA95p4L07iA==
+ bh=wqvy9fLMtXmOkKau02nwhxdxoD576YdxoFLhoOFO08k=;
+ b=CrZ668yvMIfzNuTCGxSLCgrZIvzS0sWgnEXJ23AVnZhbEn0lZ6x3m4wrizDiYXePYfzLL0Xs+9T68xAOgce1m7eWg7F3asRiE2EmtgMz3MkD0dIgGgtnC7cvuDHu8GKBcBzR9td/elvKfjs+/8bE5nul1SR5xZoERvNWvHC05GReU+Dvvz7ZctYi+BY0gXf4esQLuZZZMnmUWpXBCUoErUDQLQ4WaXzKaDExbBXGIlATVcm35QkP0YsjZvALWGzUtH6U+KiOO3k/shLAqZ7BP0hFk9TKAdVpAjGVlpHxu4P7wBa33G6xAD+8uvlsjjoDQU60xpaqZyILG44SgMUilg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
- by DS0PR11MB8230.namprd11.prod.outlook.com (2603:10b6:8:158::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.29; Thu, 1 Feb
- 2024 13:51:28 +0000
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::9f32:ce50:1914:e954]) by CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::9f32:ce50:1914:e954%7]) with mapi id 15.20.7249.025; Thu, 1 Feb 2024
- 13:51:28 +0000
-Date: Thu, 1 Feb 2024 07:51:26 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-CC: <igt-dev@lists.freedesktop.org>
-Subject: Re: Re: [PATCH i-g-t 2/3] lib/igt_sysfs: make sure to write empty
- strings
-Message-ID: <kb62dcczkzw4jg7prn3gx4dk2hzuvcd2gc4uk7ml33j7u5ec26@bd5zugzastmi>
-References: <20240201005115.352192-1-lucas.demarchi@intel.com>
- <20240201005115.352192-3-lucas.demarchi@intel.com>
- <7831979.gsGJI6kyIV@jkrzyszt-mobl2.ger.corp.intel.com>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <7831979.gsGJI6kyIV@jkrzyszt-mobl2.ger.corp.intel.com>
-X-ClientProxiedBy: SJ0PR05CA0076.namprd05.prod.outlook.com
- (2603:10b6:a03:332::21) To CY5PR11MB6139.namprd11.prod.outlook.com
- (2603:10b6:930:29::17)
+Received: from IA1PR11MB7388.namprd11.prod.outlook.com (2603:10b6:208:420::8)
+ by SA1PR11MB8320.namprd11.prod.outlook.com (2603:10b6:806:37c::8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.24; Thu, 1 Feb
+ 2024 13:51:35 +0000
+Received: from IA1PR11MB7388.namprd11.prod.outlook.com
+ ([fe80::c6da:e343:1799:4566]) by IA1PR11MB7388.namprd11.prod.outlook.com
+ ([fe80::c6da:e343:1799:4566%4]) with mapi id 15.20.7249.017; Thu, 1 Feb 2024
+ 13:51:35 +0000
+Message-ID: <2fae2b34-03e0-4ea6-8023-af943b9dcf8e@intel.com>
+Date: Thu, 1 Feb 2024 14:51:32 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v4 3/5] lib/intel_blt: Use object pitch and aligned
+ height on png write
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+CC: Karolina Drobnik <karolina.drobnik@intel.com>
+References: <20240201100724.257845-1-zbigniew.kempczynski@intel.com>
+ <20240201100724.257845-4-zbigniew.kempczynski@intel.com>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20240201100724.257845-4-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR0P281CA0038.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:48::21) To IA1PR11MB7388.namprd11.prod.outlook.com
+ (2603:10b6:208:420::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|DS0PR11MB8230:EE_
-X-MS-Office365-Filtering-Correlation-Id: eb94539d-6d1c-4066-e9e8-08dc232ce368
+X-MS-TrafficTypeDiagnostic: IA1PR11MB7388:EE_|SA1PR11MB8320:EE_
+X-MS-Office365-Filtering-Correlation-Id: 16693625-711c-4615-5799-08dc232ce7ba
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: KMRa+9Wawt3KDsIdb6qXBpk/omh451/7fdnL4/HSSlhjoAvKoXrthH1okBsAxeaPsiX/QsbYvIEs1J7Vpg1AEsdTIRRO9dFCp+OS0GnOz+xw/vbDfg8PCquWa+2MAfidZk51eY2RhPN/O58vRuLCTqu6APwA30MOL3nVSZUR9KJnY+jM5MmTtx4lq785rqpNBfvpVEIk5ew172v4B6OAMHUXPmFHRE2Y254rMU2pI38OcxVBsWRB+cr1H4lC6Zlg220ZTZ/MU4e7LIZHWLmzzlgG/OnlJcidxvf3gLZdW1ffpdRfZGdI2VXm4e5XVHmnijGkrhsVEQBXw9FRLmlzPu3R2VSf4bHCGN6viNrC9JIOhPiTXK9EFFrmSTCgtpcTYdPLVjjEaDTYBTJ+5jHv8shI0M33C5exBC3cDquLgUgR4pgv9wObJkV92zTOJk2rXA1GUTfwoMPZjrd2MrDZ6AfpuclerwAV2aIK6zMM/usnwpLi4+1F+1xNxH1hA7XYdJ7GJ63RLmmV8huQBlkbVe7Fka8SEzWIJeXp8WwJZZKgUzuZXtpECnb/+RAHMbzi
+X-Microsoft-Antispam-Message-Info: KDbMHKXJgjWTUl8pFZcKLxx4oUAC7g2rjZVW8Bzi3bm3y/ch4N9PjWcLx4H2Z+2jzpnrBqehW3NctOl8X2CSBmNwKFNk7RjDuFZFasNjc7+x4Nz1QkGobJMyQB2LmhRk0XqLGCBFE4wGk4qcoAkP7cdDGAaDG5mXxnASx81maAedul0a+5ZUCjTGhL87QoJZePEQvaGzMpQ/ogRysOt3WCXBk+HSVBTdHDTIu1rXbusjRNgdslitAIfKU/q28khgdzMtiNSd38G10em+m08jgSe+N9cutoa7puH1k0q54CgpUMdlpbnx/15+tzmHdvdFSO4aIdewkGx54XJ9MhnWyqqzTw3b/rAQjMzeXT0jHK0OdJWaB1ixKQOLY+KddsNrObQ8ccYVooZvdub1LeOoo0xBBGEvfAd/w5T+Q62BVzk9bU/19t7IxjpjCejr+Po+IyI0S8jtJaHjSoGgMOzHAj3HNWi6w2QJYUJ/WhSE1E1kqJmqfAKxYLWhDtdb8GxrOYp7aR08CLl454f+0CKudFHh/JslPWZsuwVvbuOypY5vUjdQKDprbmNFxaJOloY8u5Hd/Ol+KukUJwJm2sycq65n/wAotgiaeaXFfYiC9AFaW+t5mHcTTze68Pi4N6Fz3VUqWiJfuqOrGhavWEpVtA==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(7916004)(396003)(39860400002)(376002)(346002)(366004)(136003)(230922051799003)(1800799012)(451199024)(186009)(64100799003)(66899024)(83380400001)(86362001)(82960400001)(41300700001)(26005)(38100700002)(33716001)(9686003)(6512007)(6486002)(6506007)(2906002)(478600001)(6916009)(66946007)(66556008)(316002)(66476007)(4326008)(5660300002)(8936002)(8676002);
+ IPV:NLI; SFV:NSPM; H:IA1PR11MB7388.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(396003)(366004)(39860400002)(376002)(346002)(136003)(230922051799003)(1800799012)(186009)(451199024)(64100799003)(478600001)(6486002)(66476007)(66946007)(66556008)(82960400001)(44832011)(86362001)(5660300002)(30864003)(2906002)(316002)(4326008)(8676002)(8936002)(36756003)(31696002)(38100700002)(41300700001)(107886003)(53546011)(83380400001)(26005)(2616005)(6506007)(36916002)(6512007)(31686004)(6666004)(45980500001)(43740500002);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TwNhbWLtQzLREKpI2VLt0CT8r5q+IVA9Iucu/XTfogmi6b243212OfkTcmbn?=
- =?us-ascii?Q?RgLy+JM6sAiS+IzPq7dywBXS+gHla/jnfnBxO3Nc5axeJ0qzgbdFAzvhfm0l?=
- =?us-ascii?Q?E1a4KP7R51C/xeKcE0YGDP+eoyrxzNrXN6hnEh/pjCGFrC3yTnhoRdTtbctI?=
- =?us-ascii?Q?GHCpz4+83V2r0efr/cKVTMmMUSqwECScQydYV+sLUlJCmQ0fLU9BLP9fsfCQ?=
- =?us-ascii?Q?e/zzlf7wsxNQterNZD90bAtQj/aQRoZuAlP9ujiofIszarQdfKXSTr8WnW/C?=
- =?us-ascii?Q?NNEjtQ3eJaWBm4qXe3evz+CpkRS1hk+WMqbgGyWM2kK+B88BhIr+wQK7sCdG?=
- =?us-ascii?Q?kyIZWWzw7iYIH26Ldj1lYkOqaGALDcC2k8WDJ8H7UIhyzdal40cPzlMvsgcr?=
- =?us-ascii?Q?DVShwe/x8y96aSFNjeK2RLobV7F24qeEXdQJIM8OB5n9+H64NfHur4PAHnNk?=
- =?us-ascii?Q?fgLbxEufmTE4Ak0uQFA9SejiyAv1T13U183xb4K+0bXPZJQli87MxbY5mqOQ?=
- =?us-ascii?Q?HzRadEkS7T8w2yBUK4gxO5zOEI/NOQiTkd67GGEf+TkJ8nWDP1+JTMHRCuX5?=
- =?us-ascii?Q?CLMT+pwTRbI/2xXX3tXMTG9h9nGm6tluYb2CH7Paa+5dPnfYzBzR+nsT54Yg?=
- =?us-ascii?Q?k4YeyiSO23krxGqaMqgktFwn1RSJIkgkM53djZha8fzqdDkE0yebGMMIWMAc?=
- =?us-ascii?Q?Gs0AfwlioteHMBQ9PjgM7mGx9nb34NbuXp3RuVZ5Th+DzIMtOGL9ygLYYy5+?=
- =?us-ascii?Q?BiF+6XTK7xCgAdxYqH5F6YUxDSsRM/3fx4lfQvx93gvtu/wqCd0Oz55Uwxjv?=
- =?us-ascii?Q?F99nWnvjs/PMtOlHnH+k5Fc/9TMpLaJ5abx80YjD30JAHWsc5z5+VEaFWSTn?=
- =?us-ascii?Q?CiNXpWd+AIkN406KpnwdyTeY9MHtPmWPjHrDNkFl5bowDd4pHN4sPcaVJdqi?=
- =?us-ascii?Q?E3Yv+BKgAmwYYNbwoa2rp6QyJQxLgX5oNwq7oZfkYSJ+LWYJnCSlQCmV8eex?=
- =?us-ascii?Q?OCjWmEWkCLzays+dStIThsyE0GptBAL9MABy7eQkg9pPQ0Zl343jicD40Mwu?=
- =?us-ascii?Q?KAzKzFT6Lgug3TB6xwDU50emSNb6a1J3NoGGPRRy46glTt8GPv+u2qjegk3U?=
- =?us-ascii?Q?H+MtZm72+j0Q8T6zrCTFgYYbuCmw+THFU00ahO+NRMGeZZ2f9G+mDiNB3uXL?=
- =?us-ascii?Q?Sj6ATNnDakqiEcHrCKxAOEPnP200mU2hIuev3iEIb/krLN/5wPToUzV+Awt9?=
- =?us-ascii?Q?u4h6cmkrlxmkswmQkBbtA6tDiOYiHg8CYv07igGa12VigiBhLpYT6v9b3H/I?=
- =?us-ascii?Q?UClf/HU+GZ+SHSu/18Gplj7ZfQMqFKzyG+XuvBXVoxoqE4z3eF1DZbs4q7yF?=
- =?us-ascii?Q?PaFFGorekipJfI3sBFq5xSa25cBCwnc1KSLKYZwH6MO84dL+6Onprnaw/CkL?=
- =?us-ascii?Q?8wvMv5iAQj6N9JTLCJiHXuujG01W1jYVaEfTlC2k/jjs9S6yN3xAOJcF1FWM?=
- =?us-ascii?Q?PzqhKd2ouXLFHJSZpzOPW1xlpvKIKwChChhQx7fjSRQVAz6WzoSK3o0tIW//?=
- =?us-ascii?Q?6x8Kw0KWSJiJpM26Zpv1+6v8c29Ql0JMamXZeO+k4ram4ro1jq9h7H4M+bwM?=
- =?us-ascii?Q?gg=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb94539d-6d1c-4066-e9e8-08dc232ce368
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OWZ1aGNEbVFmeTJrZ0ZIWTNlN0FIUGVCYWVuUjJpOS9IUDMvdlpqSXNwdzk3?=
+ =?utf-8?B?QUtXMlRFZ0ZlZloxTHhnUGNyanJmUElHdWlldG40YktoazhRMW0ycnlvNmdV?=
+ =?utf-8?B?ZDdYWjN4K3F5SGRHZDB3MkdnenlZVllNZVU5WGQxY0V0QXZPOXNSZHYxTjJi?=
+ =?utf-8?B?K2JwSGs2bzZGQlI0WlBNWnlqYTZ5ZTdpRUtYY2FvekVKaVhQRDhvdEhaNkdH?=
+ =?utf-8?B?WXZmZnpUM2pBMVRtd1o0Mkp6eVkwZkNXQVhFNXd0RE1nbEdmZkROYUtzaFlO?=
+ =?utf-8?B?a1JqaUljbGREUjJXTTJQUlpUakJpOCs2VVZjbENTNmpHRnkyLzcrUndvQzdH?=
+ =?utf-8?B?UFNReENIMk83NGFqZ1VoSGtaT0VHb1ZjbjNCQklmTnhReUZyWHVydHJ1YTVF?=
+ =?utf-8?B?b3g2blVzQWZTYnp4SmNwS2YyWFZheEVrZW9BNGwxeDFGZkdUd0RRRTdXL09n?=
+ =?utf-8?B?Qm9iUzVYZnYzVFFHanBBSm1qMVU1dkNmNlRwd1NjMUZZK0RjWDFRNmVJZE5X?=
+ =?utf-8?B?MXhpNFdsaEtSb3N1d3dNU3RJWkl2dVhnYlJJMm9jcVBJYkRiZWpVdDRHY1pm?=
+ =?utf-8?B?VXBDaGowaldJZEJsVE1CQ25vbVMrUzNPNGdQZGhjT0xjanR5eWtYOXMyKzhi?=
+ =?utf-8?B?cHhOTkYvc3lXbkloTG1lb0Z6dXAzYVQ4N3Q3RTE0Qk5OMFlxNitQUCtwZWRC?=
+ =?utf-8?B?dko0cWhJMFlMYW1IZnprRWJTdTM0Nk9Zdy9yN2ZRNkE2aSsxRnJBd3JPYk5v?=
+ =?utf-8?B?RzZIK3RPajBMaXRhMEwwUW9BenJVOURFbHVhQzJNNG52OXNobC9ybHhCVnRS?=
+ =?utf-8?B?WnRabmY4bHdYWUQzb3JUek85WFJGTUp5WlZWM2pCWjNqZktRTGJHOEd5cTJH?=
+ =?utf-8?B?WW1sYkd4NHV5NmtMRzdaS0ZWajhRLzFPZkVsM1NJeDc3UitjQzVraStzdnhJ?=
+ =?utf-8?B?N2Q5YUd6WktMUUk1dWFTditkbXJXVXIxWTY0MGRacGJFODRvQ0pkR3hiUzdS?=
+ =?utf-8?B?WkpWWEVVdEtZMkNBSjI4emU2L0lHclppTEJ0OGRKK2lEUU1SQjZIS1dVd0JI?=
+ =?utf-8?B?T2pQeitybWpCbTJIMFNuUDMyaGY5em1XMkZFTHo3UW1ZbDBhbVYrUE5SVXFI?=
+ =?utf-8?B?Zm82QjY3aHdNYnBvUkZWM2hGN01HMWNPdHJ1OFdidTltQU9QTUhoTVRreXUx?=
+ =?utf-8?B?LzJSdTJlOVA1dlludlNCbWtBK2xUM1NiWFh1WEEzTE5PZkJwTDhub3dSVzI5?=
+ =?utf-8?B?a2tWaDNKUExPMkhQVURlS1hQT2t0TUM0Y0ovaXZYNlVMeEdCaG1xczdXSW82?=
+ =?utf-8?B?OTNHR2V0RnU1OGhLLzVtRTl3V3hLdjVHVXo3R1V6QmtRLzZNckZQSC9wUUYr?=
+ =?utf-8?B?MHlSWTNVOVhOaFlQdzV4WGhPRWpCMTIwbUNXTVF1cERsRHhUUlZxeGQ3eFVn?=
+ =?utf-8?B?cFV5QklYK2d4eU1hM1FtRXhIYm1QaVZqU2hXYXl3RVEzamNsakFFeEhCRThN?=
+ =?utf-8?B?VzdQaHZJL3AwbXlPVVNVaXFHNXB4UnI1RXprbUZXbkphZTVHbFVGdTZQQjAz?=
+ =?utf-8?B?RTVKb2YzcVN5S1NJckNuK2QwKzAxWGNQUGlvdjNZbzE5VEdvOVBHZFZGSVN6?=
+ =?utf-8?B?NTNucWhDNG1LdnN3QWg3RjNkMVgwQnVQTzRUQW9kNUpFU21vQm9DRzZOVUpy?=
+ =?utf-8?B?cSsxSFJEZFlac1pCWmh3OVVzeGIya1hxVVZxUjhHODJvazk2b1FIMFNsV0Zz?=
+ =?utf-8?B?aXZGTEU5Q3JUMURjVm5KTmsydnJtQXdBY1FVVlhhbnRFLy9TR2poTEdhTzZl?=
+ =?utf-8?B?MHgzSmc0QVdYSE5pUFI4cWE2K1J1ZWtEY1BSN01rclhBR1JQUFFIY2ZwV2E0?=
+ =?utf-8?B?dFFLM2RRLzYzNktZMWxNOHZrVGxLSS9KSjA0WS8yZVFyQS9HVzVZMjNRRG5a?=
+ =?utf-8?B?ZGc1MWVzNS92YTk0cWJGWlN3VlVBU1oxWitpVUdRZjR5anpxem1rTlFva0My?=
+ =?utf-8?B?ZVVIWWQ0cFZnbExTQmpPSVF6aHVkTWtvaHVwMHdwZjJpQ2dQZ2UvQmdJOU1B?=
+ =?utf-8?B?RmNqTWFKV29PQ0haaDY4VFlXTy9jeUZ3Vk1tN0JYcVh4REErZEFwNElRM3Nx?=
+ =?utf-8?B?a254THVrL3VtM2VxMFZQd3lLejVsQ1ZpRjNBR2hmQ2RzNStPRHkxQlVsKzUy?=
+ =?utf-8?B?R0E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 16693625-711c-4615-5799-08dc232ce7ba
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7388.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2024 13:51:28.2049 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2024 13:51:35.4641 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5IsZrD+rJFp0ocMAx60m9mbxKSTIW+PXzhKBAzkr2xFMxvYxH4G8pWkUSvEhYbLPgvxBA+ouseKepkbX7PbErv6xHXFhOr4An9c96l3rMR4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8230
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1CPCqKktMye2oWPfr36VxaGC5Bhmpu1a7VU6enRBWGt544xkFW/GSUv3N5i0SYmQ4xR4ZFJtMe5oe2GOqxnW+Q0gVQvly2l8Hww/7l2QksU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8320
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -157,130 +169,365 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Feb 01, 2024 at 02:15:53PM +0100, Janusz Krzysztofik wrote:
->On Thursday, 1 February 2024 01:50:29 CET Lucas De Marchi wrote:
->> 	echo -n "" > /sys/module/<modulename>/parameters/<param>
->>
->> doesn't really work as it will just create a open() + close() expecting
->> the file to be truncated. The same issue happens with igt as it will
->> stop writing when there are 0 chars to write. Special case the empty
->> string so it always write a '\0' and make sure igt_sysfs_set() accounts
->> for the extra null char.
->>
->> Shell example:
->> 	# echo -n "/foo" > /sys/module/firmware_class/parameters/path
->> 	# cat /sys/module/firmware_class/parameters/path
->> 	/foo
->> 	# echo -n "" > /sys/module/firmware_class/parameters/path
->> 	/foo
->> 	# # make sure to actually write a \0:
->> 	echo -ne "\0" > /sys/module/firmware_class/parameters/path
->> 	# cat /sys/module/firmware_class/parameters/path
->> 	/foo
->
->Still not overwritten?  Isn't that a mistake?
+On 1.02.2024 11:07, Zbigniew Kempczyński wrote:
+> Pitch and buffer height on tiled surfaces might be bigger than
+> image width and height so dump memory to png using pitch size
+> instead width and aligned height instead height.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Karolina Drobnik <karolina.drobnik@intel.com>
+> ---
+> v4: Use original width/height in filename instead stride/aligned
+>      height to avoid png overwriting (Zbigniew)
 
-in the commit message. Yes. It was supposed to be show the real effect
-of that, i.e. we do write  "".
+Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
 
-
->
->>
->> Same thing happens when testing igt_sysfs_set():
->>        int dirfd = open("/sys/module/firmware_class/parameters", O_RDONLY);
->>        igt_sysfs_set(dirfd, "path", "");
->>
->> Previously it was not really setting the param.
->>
->> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->> ---
->>  lib/igt_sysfs.c | 12 ++++++++++--
->>  1 file changed, 10 insertions(+), 2 deletions(-)
->>
->> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
->> index 567b4f6d5..814220ddb 100644
->> --- a/lib/igt_sysfs.c
->> +++ b/lib/igt_sysfs.c
->> @@ -406,7 +406,7 @@ int igt_sysfs_read(int dir, const char *attr, void
->*data, int len)
->>   */
->>  bool igt_sysfs_set(int dir, const char *attr, const char *value)
->>  {
->> -	int len = strlen(value);
->> +	int len = strlen(value) + 1;
->>  	return igt_sysfs_write(dir, attr, value, len) == len;
->>  }
->>
->> @@ -513,8 +513,16 @@ int igt_sysfs_vprintf(int dir, const char *attr, const
->char *fmt, va_list ap)
->>  		return -errno;
->>
->>  	va_copy(tmp, ap);
->> -	ret = vsnprintf(buf, sizeof(stack), fmt, tmp);
->> +	ret = vsnprintf(stack, sizeof(stack), fmt, tmp);
->
->Looks not related.
-
-I will add a line in the commit message for this sneaking in.
-
->
->>  	va_end(tmp);
->> +
->> +	/*
->> +	 * make sure to always issue a write() syscall, even if writing an
->empty string,
->> +	 * otherwise values in sysfs like module parameters don't really get
->overwritten
->> +	 */
->> +	if (igt_debug_on(ret = 0))
->> +		return igt_writen(fd, "", 1);
->
->I think users may know that an empty string is going to be written, then may
->expect return value of 0, not 1.  Also, what value should we return to the
->user if (unlikely) we got 0 from igt_writen()?  write(2) says: "If count is
->zero and fd refers to a file other than a regular file, the results are not
->specified."
-
-we are passing 1 so we don't fall in the case of passing 0 that write(2)
-refers to. If the return value is 0, then we return whatever write()
-returned and the user deals with it like it had done before.
-
->
->While resolving two instances of one and the same issue, you use two different
->approaches:
->1) always increase the number of characters to be written by 1 when writing
->   strings, so at least the terminating null byte is always written,
->2) divert to a separate call to igt_writen() that writes just the terminating
->   null byte when the string to be written is empty.
-
-if you look with a different angle, both are actually passing len + 1.
-One goes directly to igt_written() vs igt_sysfs_write() because of the
-arguments it has at hand and is consistent with the layer the specific
-function is operating on.
-
-	if (igt_debug_on(ret == 0))
-		return igt_writen(fd, stack, ret + 1);
-
-to be similar would equally work, but slightly harder to understand
-what's going on.
-
-Lucas De Marchi
-
->While both methods can work correctly, I think it would be more clear if you
->selected one of them and stuck to it, or provide a justification if not.
-
-
->
->Thanks,
->Janusz
->
->
->> +
->>  	if (igt_debug_on(ret < 0))
->>  		return -EINVAL;
->>
->>
->
->
->
->
+> ---
+>   lib/intel_blt.c                | 13 ++++++++++---
+>   lib/intel_blt.h                |  2 +-
+>   tests/intel/gem_ccs.c          | 23 ++++++++++++-----------
+>   tests/intel/gem_exercise_blt.c | 16 ++++++++--------
+>   tests/intel/xe_ccs.c           | 23 ++++++++++++-----------
+>   tests/intel/xe_exercise_blt.c  | 16 ++++++++--------
+>   6 files changed, 51 insertions(+), 42 deletions(-)
+> 
+> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+> index 00208fc243..1cb5e68763 100644
+> --- a/lib/intel_blt.c
+> +++ b/lib/intel_blt.c
+> @@ -2076,21 +2076,28 @@ void blt_surface_info(const char *info, const struct blt_copy_object *obj)
+>    * @obj: blitter copy object (@blt_copy_object) to save to png
+>    * @width: width
+>    * @height: height
+> + * @bpp: bits per pixel
+>    *
+>    * Function save surface to png file. Assumes ARGB format where A == 0xff.
+>    */
+>   void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
+>   			const struct blt_copy_object *obj,
+> -			uint32_t width, uint32_t height)
+> +			uint32_t width, uint32_t height, uint32_t bpp)
+>   {
+>   	cairo_surface_t *surface;
+>   	cairo_status_t ret;
+> +	uint32_t dump_width = width, dump_height = height;
+>   	uint8_t *map = (uint8_t *) obj->ptr;
+>   	int format;
+>   	int stride = obj->tiling ? obj->pitch * 4 : obj->pitch;
+>   	char filename[FILENAME_MAX];
+>   	bool is_xe = is_xe_device(fd);
+>   
+> +	if (obj->tiling) {
+> +		dump_width = obj->pitch;
+> +		dump_height = blt_get_aligned_height(height, bpp, obj->tiling);
+> +	}
+> +
+>   	snprintf(filename, FILENAME_MAX-1, "%d-%s-%s-%ux%u-%s.png",
+>   		 run_id, fileid, blt_tiling_name(obj->tiling), width, height,
+>   		 obj->compression ? "compressed" : "uncompressed");
+> @@ -2103,8 +2110,8 @@ void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
+>   							obj->size, PROT_READ);
+>   	}
+>   	format = CAIRO_FORMAT_RGB24;
+> -	surface = cairo_image_surface_create_for_data(map,
+> -						      format, width, height,
+> +	surface = cairo_image_surface_create_for_data(map, format,
+> +						      dump_width, dump_height,
+>   						      stride);
+>   	ret = cairo_surface_write_to_png(surface, filename);
+>   	if (ret)
+> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+> index e3084dc0cd..077283a088 100644
+> --- a/lib/intel_blt.h
+> +++ b/lib/intel_blt.h
+> @@ -315,7 +315,7 @@ void blt_surface_fill_rect(int fd, const struct blt_copy_object *obj,
+>   			   uint32_t width, uint32_t height);
+>   void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
+>   			const struct blt_copy_object *obj,
+> -			uint32_t width, uint32_t height);
+> +			uint32_t width, uint32_t height, uint32_t bpp);
+>   void blt_dump_corruption_info_32b(const struct blt_copy_object *surf1,
+>   				  const struct blt_copy_object *surf2);
+>   
+> diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
+> index 80a29ecab7..e8f16d7d88 100644
+> --- a/tests/intel/gem_ccs.c
+> +++ b/tests/intel/gem_ccs.c
+> @@ -82,9 +82,9 @@ struct test_config {
+>   	if (param.print_surface_info) \
+>   		blt_surface_info((name), (obj)); } while (0)
+>   
+> -#define WRITE_PNG(fd, id, name, obj, w, h) do { \
+> +#define WRITE_PNG(fd, id, name, obj, w, h, bpp) do { \
+>   	if (param.write_png) \
+> -		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
+> +		blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
+>   
+>   static void surf_copy(int i915,
+>   		      const intel_ctx_t *ctx,
+> @@ -98,6 +98,7 @@ static void surf_copy(int i915,
+>   	struct blt_copy_data blt = {};
+>   	struct blt_block_copy_data_ext ext = {};
+>   	struct blt_ctrl_surf_copy_data surf = {};
+> +	const uint32_t bpp = 32;
+>   	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
+>   	uint64_t bb_size, ccssize = mid->size / CCS_RATIO(i915);
+>   	uint32_t *ccscopy;
+> @@ -172,7 +173,7 @@ static void surf_copy(int i915,
+>   	blt_set_batch(&blt.bb, bb2, bb_size, REGION_SMEM);
+>   	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
+>   	gem_sync(i915, blt.dst.handle);
+> -	WRITE_PNG(i915, run_id, "corrupted", &blt.dst, dst->x2, dst->y2);
+> +	WRITE_PNG(i915, run_id, "corrupted", &blt.dst, dst->x2, dst->y2, bpp);
+>   	result = memcmp(src->ptr, dst->ptr, src->size);
+>   	igt_assert(result != 0);
+>   
+> @@ -182,7 +183,7 @@ static void surf_copy(int i915,
+>   
+>   	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
+>   	gem_sync(i915, blt.dst.handle);
+> -	WRITE_PNG(i915, run_id, "corrected", &blt.dst, dst->x2, dst->y2);
+> +	WRITE_PNG(i915, run_id, "corrected", &blt.dst, dst->x2, dst->y2, bpp);
+>   	result = memcmp(src->ptr, dst->ptr, src->size);
+>   	if (result)
+>   		blt_dump_corruption_info_32b(src, dst);
+> @@ -346,7 +347,7 @@ static void block_copy(int i915,
+>   	PRINT_SURFACE_INFO("dst", dst);
+>   
+>   	blt_surface_fill_rect(i915, src, width, height);
+> -	WRITE_PNG(i915, run_id, "src", src, width, height);
+> +	WRITE_PNG(i915, run_id, "src", src, width, height, bpp);
+>   
+>   	blt.color_depth = CD_32bit;
+>   	blt.print_bb = param.print_bb;
+> @@ -363,7 +364,7 @@ static void block_copy(int i915,
+>   	if (mid->compression)
+>   		igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
+>   
+> -	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height);
+> +	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height, bpp);
+>   
+>   	if (config->surfcopy && pext) {
+>   		const intel_ctx_t *surf_ctx = ctx;
+> @@ -408,7 +409,7 @@ static void block_copy(int i915,
+>   	blt_set_batch(&blt.bb, bb, bb_size, region1);
+>   	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
+>   	gem_sync(i915, blt.dst.handle);
+> -	WRITE_PNG(i915, run_id, "dst", &blt.dst, width, height);
+> +	WRITE_PNG(i915, run_id, "dst", &blt.dst, width, height, bpp);
+>   
+>   	result = memcmp(src->ptr, blt.dst.ptr, src->size);
+>   
+> @@ -491,11 +492,11 @@ static void block_multicopy(int i915,
+>   	blt_block_copy3(i915, ctx, e, ahnd, &blt3, pext3);
+>   	gem_sync(i915, blt3.final.handle);
+>   
+> -	WRITE_PNG(i915, run_id, "src", &blt3.src, width, height);
+> +	WRITE_PNG(i915, run_id, "src", &blt3.src, width, height, bpp);
+>   	if (!config->inplace)
+> -		WRITE_PNG(i915, run_id, "mid", &blt3.mid, width, height);
+> -	WRITE_PNG(i915, run_id, "dst", &blt3.dst, width, height);
+> -	WRITE_PNG(i915, run_id, "final", &blt3.final, width, height);
+> +		WRITE_PNG(i915, run_id, "mid", &blt3.mid, width, height, bpp);
+> +	WRITE_PNG(i915, run_id, "dst", &blt3.dst, width, height, bpp);
+> +	WRITE_PNG(i915, run_id, "final", &blt3.final, width, height, bpp);
+>   
+>   	result = memcmp(src->ptr, blt3.final.ptr, src->size);
+>   
+> diff --git a/tests/intel/gem_exercise_blt.c b/tests/intel/gem_exercise_blt.c
+> index 7355eabbe9..4a9bc37298 100644
+> --- a/tests/intel/gem_exercise_blt.c
+> +++ b/tests/intel/gem_exercise_blt.c
+> @@ -50,9 +50,9 @@ static struct param {
+>   	if (param.print_surface_info) \
+>   		blt_surface_info((name), (obj)); } while (0)
+>   
+> -#define WRITE_PNG(fd, id, name, obj, w, h) do { \
+> +#define WRITE_PNG(fd, id, name, obj, w, h, bpp) do { \
+>   	if (param.write_png) \
+> -		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
+> +		blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
+>   
+>   struct blt_fast_copy_data {
+>   	int i915;
+> @@ -167,7 +167,7 @@ static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
+>   	PRINT_SURFACE_INFO("dst", dst);
+>   
+>   	blt_surface_fill_rect(i915, src, width, height);
+> -	WRITE_PNG(i915, mid_tiling, "src", src, width, height);
+> +	WRITE_PNG(i915, mid_tiling, "src", src, width, height, bpp);
+>   
+>   	memset(&blt, 0, sizeof(blt));
+>   	blt.color_depth = CD_32bit;
+> @@ -180,8 +180,8 @@ static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
+>   	fast_copy_one_bb(i915, ctx, e, ahnd, &blt);
+>   	gem_sync(i915, blt.dst.handle);
+>   
+> -	WRITE_PNG(i915, mid_tiling, "mid", &blt.mid, width, height);
+> -	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height);
+> +	WRITE_PNG(i915, mid_tiling, "mid", &blt.mid, width, height, bpp);
+> +	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height, bpp);
+>   
+>   	result = memcmp(src->ptr, blt.dst.ptr, src->size);
+>   
+> @@ -234,8 +234,8 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
+>   	blt_fast_copy(i915, ctx, e, ahnd, &blt);
+>   	gem_sync(i915, mid->handle);
+>   
+> -	WRITE_PNG(i915, mid_tiling, "src", &blt.src, width, height);
+> -	WRITE_PNG(i915, mid_tiling, "mid", &blt.dst, width, height);
+> +	WRITE_PNG(i915, mid_tiling, "src", &blt.src, width, height, bpp);
+> +	WRITE_PNG(i915, mid_tiling, "mid", &blt.dst, width, height, bpp);
+>   
+>   	blt_copy_init(i915, &blt);
+>   	blt.color_depth = CD_32bit;
+> @@ -247,7 +247,7 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
+>   	blt_fast_copy(i915, ctx, e, ahnd, &blt);
+>   	gem_sync(i915, blt.dst.handle);
+>   
+> -	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height);
+> +	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height, bpp);
+>   
+>   	result = memcmp(src->ptr, blt.dst.ptr, src->size);
+>   
+> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+> index 7d0e8ed7a5..a7785edcb1 100644
+> --- a/tests/intel/xe_ccs.c
+> +++ b/tests/intel/xe_ccs.c
+> @@ -79,9 +79,9 @@ struct test_config {
+>   	if (param.print_surface_info) \
+>   		blt_surface_info((name), (obj)); } while (0)
+>   
+> -#define WRITE_PNG(fd, id, name, obj, w, h) do { \
+> +#define WRITE_PNG(fd, id, name, obj, w, h, bpp) do { \
+>   	if (param.write_png) \
+> -		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
+> +		blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
+>   
+>   static void surf_copy(int xe,
+>   		      intel_ctx_t *ctx,
+> @@ -94,6 +94,7 @@ static void surf_copy(int xe,
+>   	struct blt_copy_data blt = {};
+>   	struct blt_block_copy_data_ext ext = {};
+>   	struct blt_ctrl_surf_copy_data surf = {};
+> +	const uint32_t bpp = 32;
+>   	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
+>   	uint64_t bb_size, ccssize = mid->size / CCS_RATIO(xe);
+>   	uint64_t ccs_bo_size = xe_get_default_alignment(xe);
+> @@ -179,7 +180,7 @@ static void surf_copy(int xe,
+>   	blt_set_batch(&blt.bb, bb2, bb_size, sysmem);
+>   	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
+>   	intel_ctx_xe_sync(ctx, true);
+> -	WRITE_PNG(xe, run_id, "corrupted", &blt.dst, dst->x2, dst->y2);
+> +	WRITE_PNG(xe, run_id, "corrupted", &blt.dst, dst->x2, dst->y2, bpp);
+>   	result = memcmp(src->ptr, dst->ptr, src->size);
+>   	igt_assert(result != 0);
+>   
+> @@ -189,7 +190,7 @@ static void surf_copy(int xe,
+>   
+>   	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
+>   	intel_ctx_xe_sync(ctx, true);
+> -	WRITE_PNG(xe, run_id, "corrected", &blt.dst, dst->x2, dst->y2);
+> +	WRITE_PNG(xe, run_id, "corrected", &blt.dst, dst->x2, dst->y2, bpp);
+>   	result = memcmp(src->ptr, dst->ptr, src->size);
+>   	if (result)
+>   		blt_dump_corruption_info_32b(src, dst);
+> @@ -326,7 +327,7 @@ static void block_copy(int xe,
+>   	PRINT_SURFACE_INFO("dst", dst);
+>   
+>   	blt_surface_fill_rect(xe, src, width, height);
+> -	WRITE_PNG(xe, run_id, "src", src, width, height);
+> +	WRITE_PNG(xe, run_id, "src", src, width, height, bpp);
+>   
+>   	blt.color_depth = CD_32bit;
+>   	blt.print_bb = param.print_bb;
+> @@ -342,7 +343,7 @@ static void block_copy(int xe,
+>   	if (mid->compression)
+>   		igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
+>   
+> -	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height);
+> +	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height, bpp);
+>   
+>   	if (config->surfcopy && pext) {
+>   		struct drm_xe_engine_class_instance inst = {
+> @@ -393,7 +394,7 @@ static void block_copy(int xe,
+>   	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
+>   	intel_ctx_xe_sync(ctx, true);
+>   
+> -	WRITE_PNG(xe, run_id, "dst", &blt.dst, width, height);
+> +	WRITE_PNG(xe, run_id, "dst", &blt.dst, width, height, bpp);
+>   
+>   	result = memcmp(src->ptr, blt.dst.ptr, src->size);
+>   
+> @@ -486,11 +487,11 @@ static void block_multicopy(int xe,
+>   	blt_block_copy3(xe, ctx, ahnd, &blt3, pext3);
+>   	intel_ctx_xe_sync(ctx, true);
+>   
+> -	WRITE_PNG(xe, run_id, "src", &blt3.src, width, height);
+> +	WRITE_PNG(xe, run_id, "src", &blt3.src, width, height, bpp);
+>   	if (!config->inplace)
+> -		WRITE_PNG(xe, run_id, "mid", &blt3.mid, width, height);
+> -	WRITE_PNG(xe, run_id, "dst", &blt3.dst, width, height);
+> -	WRITE_PNG(xe, run_id, "final", &blt3.final, width, height);
+> +		WRITE_PNG(xe, run_id, "mid", &blt3.mid, width, height, bpp);
+> +	WRITE_PNG(xe, run_id, "dst", &blt3.dst, width, height, bpp);
+> +	WRITE_PNG(xe, run_id, "final", &blt3.final, width, height, bpp);
+>   
+>   	result = memcmp(src->ptr, blt3.final.ptr, src->size);
+>   
+> diff --git a/tests/intel/xe_exercise_blt.c b/tests/intel/xe_exercise_blt.c
+> index c908800cf4..ddf9d188a7 100644
+> --- a/tests/intel/xe_exercise_blt.c
+> +++ b/tests/intel/xe_exercise_blt.c
+> @@ -53,9 +53,9 @@ static struct param {
+>   	if (param.print_surface_info) \
+>   		blt_surface_info((name), (obj)); } while (0)
+>   
+> -#define WRITE_PNG(fd, id, name, obj, w, h) do { \
+> +#define WRITE_PNG(fd, id, name, obj, w, h, bpp) do { \
+>   	if (param.write_png) \
+> -		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
+> +		blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
+>   
+>   struct blt_fast_copy_data {
+>   	int xe;
+> @@ -141,7 +141,7 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
+>   	PRINT_SURFACE_INFO("dst", dst);
+>   
+>   	blt_surface_fill_rect(xe, src, width, height);
+> -	WRITE_PNG(xe, mid_tiling, "src", src, width, height);
+> +	WRITE_PNG(xe, mid_tiling, "src", src, width, height, bpp);
+>   
+>   	memset(&blt, 0, sizeof(blt));
+>   	blt.color_depth = CD_32bit;
+> @@ -153,8 +153,8 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
+>   
+>   	fast_copy_one_bb(xe, ctx, ahnd, &blt);
+>   
+> -	WRITE_PNG(xe, mid_tiling, "mid", &blt.mid, width, height);
+> -	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height);
+> +	WRITE_PNG(xe, mid_tiling, "mid", &blt.mid, width, height, bpp);
+> +	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height, bpp);
+>   
+>   	result = memcmp(src->ptr, blt.dst.ptr, src->size);
+>   
+> @@ -205,8 +205,8 @@ static void fast_copy(int xe, const intel_ctx_t *ctx,
+>   
+>   	blt_fast_copy(xe, ctx, NULL, ahnd, &blt);
+>   
+> -	WRITE_PNG(xe, mid_tiling, "src", &blt.src, width, height);
+> -	WRITE_PNG(xe, mid_tiling, "mid", &blt.dst, width, height);
+> +	WRITE_PNG(xe, mid_tiling, "src", &blt.src, width, height, bpp);
+> +	WRITE_PNG(xe, mid_tiling, "mid", &blt.dst, width, height, bpp);
+>   
+>   	blt_copy_init(xe, &blt);
+>   	blt.color_depth = CD_32bit;
+> @@ -217,7 +217,7 @@ static void fast_copy(int xe, const intel_ctx_t *ctx,
+>   
+>   	blt_fast_copy(xe, ctx, NULL, ahnd, &blt);
+>   
+> -	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height);
+> +	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height, bpp);
+>   
+>   	result = memcmp(src->ptr, blt.dst.ptr, src->size);
+>   
