@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 790DFC4828D
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 18:22:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03BFEC48286
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 18:48:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 25D8C10E641;
-	Thu,  1 Feb 2024 18:22:44 +0000 (UTC)
-Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D438110E65A;
- Thu,  1 Feb 2024 18:22:42 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1761489484897637173=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_Add_tests_for_kms=5Fplane_a?=
- =?utf-8?q?nd_kms=5Frotation?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Louis Chauvet" <louis.chauvet@bootlin.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A5DBE10EF7E;
+	Thu,  1 Feb 2024 18:48:58 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S8/o2SKL";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B0BEA10EF80
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 18:48:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1706813336; x=1738349336;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=lnnHiiQryq0lSg+APLObl+hnmly/TTgFsGSHHtYDLF0=;
+ b=S8/o2SKLrnqioRMzRFyARIgcx283m2BWpYIiS7KACRfdfHkfcZXgP+e0
+ qFZRRswBmqBRulB1LpW5YcB097veApwwelP96JbBre6OPwpcsLpx8OCgz
+ Rb5MS9qPy3N9Uj8CPYI+roDm/CO9qgxKdSp/Wjqjft47X4K3RK5mREKYL
+ eSnExIL88A4u+FGuwPTWk4dxr/NvHZ+qDVtjmlprSBcUz3x5WpvGTqT+S
+ +/9dahDGwHsAz/EBF/tkoJUtd4i5r/ZtJ94GLGmdtLs0zyP3GxZDwGmNI
+ sKb0pxd7SwyaNcw+NkOlK8pllX5L/+tnLeJgJVOHLwd3l/fv4azheBLw2 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="160268"
+X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; 
+   d="scan'208";a="160268"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 10:48:51 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; 
+   d="scan'208";a="85984"
+Received: from unknown (HELO localhost) ([10.245.85.128])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 10:48:50 -0800
+Date: Thu, 1 Feb 2024 19:48:47 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 01 Feb 2024 18:22:42 -0000
-Message-ID: <170681176286.895526.9459584603099637786@5338d5abeb45>
-X-Patchwork-Hint: ignore
-References: <20240201-kms_tests-v1-0-bc34c5d28b3f@bootlin.com>
-In-Reply-To: <20240201-kms_tests-v1-0-bc34c5d28b3f@bootlin.com>
+Subject: Re: [PATCH i-g-t] tests/intel/xe_vm: fix xe_bb_size() conversion
+Message-ID: <20240201184847.zql56l4pfdzoz4sk@zkempczy-mobl2>
+References: <20240201100637.315023-1-matthew.auld@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240201100637.315023-1-matthew.auld@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,383 +63,102 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1761489484897637173==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, Feb 01, 2024 at 10:06:37AM +0000, Matthew Auld wrote:
+> The large* tests need to be able to partition the bo_size without
+> breaking any alignment restrictions, and adding on the pre-fetch size
+> breaks that.  Rather keep the passed in bo_size as-is and add the
+> prefetch size as hidden padding at the end.
+> 
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>  tests/intel/xe_vm.c | 22 ++++++++++++----------
+>  1 file changed, 12 insertions(+), 10 deletions(-)
+> 
+> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+> index 67276b220..fe667e64d 100644
+> --- a/tests/intel/xe_vm.c
+> +++ b/tests/intel/xe_vm.c
+> @@ -954,6 +954,7 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
+>  		.num_syncs = 2,
+>  		.syncs = to_user_pointer(sync),
+>  	};
+> +	size_t bo_size_prefetch, padding;
+>  	uint64_t addr = 0x1ull << 30, base_addr = 0x1ull << 30;
+>  	uint32_t vm;
+>  	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
+> @@ -975,20 +976,21 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
+>  	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
+>  	vm = xe_vm_create(fd, 0, 0);
+>  
+> -	bo_size = xe_bb_size(fd, bo_size);
+> -
+>  	if (flags & LARGE_BIND_FLAG_USERPTR) {
+> -		map = aligned_alloc(xe_get_default_alignment(fd), bo_size);
+> +		bo_size_prefetch = xe_bb_size(fd, bo_size);
+> +		map = aligned_alloc(xe_get_default_alignment(fd), bo_size_prefetch);
+>  		igt_assert(map);
+>  	} else {
+>  		igt_skip_on(xe_visible_vram_size(fd, 0) && bo_size >
+>  			    xe_visible_vram_size(fd, 0));
+>  
+> -		bo = xe_bo_create(fd, vm, bo_size,
+> +		bo_size_prefetch = xe_bb_size(fd, bo_size);
+> +		bo = xe_bo_create(fd, vm, bo_size_prefetch,
+>  				  vram_if_possible(fd, eci->gt_id),
+>  				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+>  		map = xe_bo_map(fd, bo, bo_size);
+>  	}
+> +	padding = bo_size_prefetch - bo_size;
+>  
+>  	for (i = 0; i < n_exec_queues; i++) {
+>  		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
+> @@ -1001,19 +1003,19 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
+>  			xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(map),
+>  						 addr, bo_size / 2, NULL, 0);
+>  			xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(map) + bo_size / 2,
+> -						 addr + bo_size / 2, bo_size / 2,
+> +						 addr + bo_size / 2, bo_size / 2 + padding,
+>  						 sync, 1);
+>  		} else {
+>  			xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(map),
+> -						 addr, bo_size, sync, 1);
+> +						 addr, bo_size + padding, sync, 1);
+>  		}
+>  	} else {
+>  		if (flags & LARGE_BIND_FLAG_SPLIT) {
+>  			xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size / 2, NULL, 0);
+>  			xe_vm_bind_async(fd, vm, 0, bo, bo_size / 2, addr + bo_size / 2,
+> -					 bo_size / 2, sync, 1);
+> +					 bo_size / 2 + padding, sync, 1);
+>  		} else {
+> -			xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
+> +			xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size + padding, sync, 1);
+>  		}
+>  	}
+>  
+> @@ -1061,9 +1063,9 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
+>  		xe_vm_unbind_async(fd, vm, 0, 0, base_addr,
+>  				   bo_size / 2, NULL, 0);
+>  		xe_vm_unbind_async(fd, vm, 0, 0, base_addr + bo_size / 2,
+> -				   bo_size / 2, sync, 1);
+> +				   bo_size / 2 + padding, sync, 1);
+>  	} else {
+> -		xe_vm_unbind_async(fd, vm, 0, 0, base_addr, bo_size,
+> +		xe_vm_unbind_async(fd, vm, 0, 0, base_addr, bo_size + padding,
+>  				   sync, 1);
+>  	}
+>  	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+> -- 
+> 2.43.0
+> 
 
-== Series Details ==
+LGTM:
 
-Series: Add tests for kms_plane and kms_rotation
-URL   : https://patchwork.freedesktop.org/series/129426/
-State : success
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_14209 -> IGTPW_10627
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/index.html
-
-Participating hosts (39 -> 38)
-------------------------------
-
-  Additional (1): fi-pnv-d510 
-  Missing    (2): bat-mtlp-8 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10627 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][1] ([fdo#109271]) +31 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-pnv-d510/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-adlp-9:         [PASS][2] -> [INCOMPLETE][3] ([i915#10137] / [i915#9413])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/bat-adlp-9/igt@i915_selftest@live@workarounds.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/bat-adlp-9/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a2:
-    - fi-bsw-nick:        [PASS][4] -> [DMESG-WARN][5] ([i915#1982])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-bsw-nick/igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a2.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-bsw-nick/igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a2.html
-
-  * igt@kms_force_connector_basic@force-connector-state:
-    - fi-kbl-guc:         [PASS][6] -> [ABORT][7] ([i915#9991])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-kbl-guc/igt@kms_force_connector_basic@force-connector-state.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-kbl-guc/igt@kms_force_connector_basic@force-connector-state.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         NOTRUN -> [SKIP][8] ([i915#9197]) +1 other test skip
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_module_load@reload:
-    - fi-apl-guc:         [DMESG-WARN][9] ([i915#180] / [i915#1982] / [i915#8585]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-apl-guc/igt@i915_module_load@reload.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-apl-guc/igt@i915_module_load@reload.html
-
-  * igt@i915_selftest@live@reset:
-    - fi-apl-guc:         [DMESG-WARN][11] ([i915#9730]) -> [PASS][12] +36 other tests pass
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-apl-guc/igt@i915_selftest@live@reset.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-apl-guc/igt@i915_selftest@live@reset.html
-
-  * igt@kms_addfb_basic@addfb25-4-tiled:
-    - fi-apl-guc:         [DMESG-WARN][13] -> [PASS][14] +40 other tests pass
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-apl-guc/igt@kms_addfb_basic@addfb25-4-tiled.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-apl-guc/igt@kms_addfb_basic@addfb25-4-tiled.html
-
-  * igt@kms_flip@basic-flip-vs-dpms@c-dp1:
-    - fi-apl-guc:         [DMESG-WARN][15] ([i915#180]) -> [PASS][16] +27 other tests pass
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-apl-guc/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-apl-guc/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1:
-    - fi-apl-guc:         [DMESG-WARN][17] ([i915#180] / [i915#1982]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-apl-guc/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-apl-guc/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:
-    - fi-apl-guc:         [DMESG-WARN][19] ([i915#180] / [i915#8585]) -> [PASS][20] +8 other tests pass
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-apl-guc/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-apl-guc/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#10137]: https://gitlab.freedesktop.org/drm/intel/issues/10137
-  [i915#10197]: https://gitlab.freedesktop.org/drm/intel/issues/10197
-  [i915#10211]: https://gitlab.freedesktop.org/drm/intel/issues/10211
-  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#8585]: https://gitlab.freedesktop.org/drm/intel/issues/8585
-  [i915#9197]: https://gitlab.freedesktop.org/drm/intel/issues/9197
-  [i915#9413]: https://gitlab.freedesktop.org/drm/intel/issues/9413
-  [i915#9730]: https://gitlab.freedesktop.org/drm/intel/issues/9730
-  [i915#9991]: https://gitlab.freedesktop.org/drm/intel/issues/9991
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7700 -> IGTPW_10627
-
-  CI-20190529: 20190529
-  CI_DRM_14209: 3e58a4940c44430f20cad20ead5e1b77ed209cde @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10627: 10627
-  IGT_7700: 7700
-
-
-Testlist changes
-----------------
-
-+igt@kms_plane@test-odd-size-with-yuv
--igt@gem_mmap@multigpu-basic
--igt@kms_plane@planar-pixel-format-settings
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind
--igt@xe_exec_basic@multigpu-no-exec-basic
--igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind
--igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap
--igt@xe_exec_basic@multigpu-no-exec-bindexecqueue
--igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind
--igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr
--igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate
--igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race
--igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind
--igt@xe_exec_basic@multigpu-no-exec-null
--igt@xe_exec_basic@multigpu-no-exec-null-defer-bind
--igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap
--igt@xe_exec_basic@multigpu-no-exec-null-rebind
--igt@xe_exec_basic@multigpu-no-exec-rebind
--igt@xe_exec_basic@multigpu-no-exec-userptr
--igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate
--igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race
--igt@xe_exec_basic@multigpu-no-exec-userptr-rebind
--igt@xe_exec_basic@multigpu-once-basic
--igt@xe_exec_basic@multigpu-once-basic-defer-bind
--igt@xe_exec_basic@multigpu-once-basic-defer-mmap
--igt@xe_exec_basic@multigpu-once-bindexecqueue
--igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind
--igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr
--igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate
--igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race
--igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind
--igt@xe_exec_basic@multigpu-once-null
--igt@xe_exec_basic@multigpu-once-null-defer-bind
--igt@xe_exec_basic@multigpu-once-null-defer-mmap
--igt@xe_exec_basic@multigpu-once-null-rebind
--igt@xe_exec_basic@multigpu-once-rebind
--igt@xe_exec_basic@multigpu-once-userptr
--igt@xe_exec_basic@multigpu-once-userptr-invalidate
--igt@xe_exec_basic@multigpu-once-userptr-invalidate-race
--igt@xe_exec_basic@multigpu-once-userptr-rebind
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/index.html
-
---===============1761489484897637173==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add tests for kms_plane and kms_rotation</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129426/">https://patchwork.freedesktop.org/series/129426/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14209 -&gt; IGTPW_10627</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/index.html</p>
-<h2>Participating hosts (39 -&gt; 38)</h2>
-<p>Additional (1): fi-pnv-d510 <br />
-  Missing    (2): bat-mtlp-8 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10627 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-pnv-d510/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +31 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/bat-adlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/bat-adlp-9/igt@i915_selftest@live@workarounds.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10137">i915#10137</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9413">i915#9413</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a2:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-bsw-nick/igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-bsw-nick/igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a2.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-connector-state:</p>
-<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-kbl-guc/igt@kms_force_connector_basic@force-connector-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-kbl-guc/igt@kms_force_connector_basic@force-connector-state.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9991">i915#9991</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
-<ul>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9197">i915#9197</a>) +1 other test skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-apl-guc/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8585">i915#8585</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-apl-guc/igt@i915_module_load@reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-apl-guc/igt@i915_selftest@live@reset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9730">i915#9730</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-apl-guc/igt@i915_selftest@live@reset.html">PASS</a> +36 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@addfb25-4-tiled:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-apl-guc/igt@kms_addfb_basic@addfb25-4-tiled.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-apl-guc/igt@kms_addfb_basic@addfb25-4-tiled.html">PASS</a> +40 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@c-dp1:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-apl-guc/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-apl-guc/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html">PASS</a> +27 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-apl-guc/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-apl-guc/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14209/fi-apl-guc/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8585">i915#8585</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10627/fi-apl-guc/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">PASS</a> +8 other tests pass</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7700 -&gt; IGTPW_10627</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14209: 3e58a4940c44430f20cad20ead5e1b77ed209cde @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10627: 10627<br />
-  IGT_7700: 7700</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_plane@test-odd-size-with-yuv<br />
--igt@gem_mmap@multigpu-basic<br />
--igt@kms_plane@planar-pixel-format-settings<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race<br />
--igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind<br />
--igt@xe_exec_basic@multigpu-no-exec-basic<br />
--igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind<br />
--igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap<br />
--igt@xe_exec_basic@multigpu-no-exec-bindexecqueue<br />
--igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind<br />
--igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr<br />
--igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate<br />
--igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race<br />
--igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind<br />
--igt@xe_exec_basic@multigpu-no-exec-null<br />
--igt@xe_exec_basic@multigpu-no-exec-null-defer-bind<br />
--igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap<br />
--igt@xe_exec_basic@multigpu-no-exec-null-rebind<br />
--igt@xe_exec_basic@multigpu-no-exec-rebind<br />
--igt@xe_exec_basic@multigpu-no-exec-userptr<br />
--igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate<br />
--igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race<br />
--igt@xe_exec_basic@multigpu-no-exec-userptr-rebind<br />
--igt@xe_exec_basic@multigpu-once-basic<br />
--igt@xe_exec_basic@multigpu-once-basic-defer-bind<br />
--igt@xe_exec_basic@multigpu-once-basic-defer-mmap<br />
--igt@xe_exec_basic@multigpu-once-bindexecqueue<br />
--igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind<br />
--igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr<br />
--igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate<br />
--igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race<br />
--igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind<br />
--igt@xe_exec_basic@multigpu-once-null<br />
--igt@xe_exec_basic@multigpu-once-null-defer-bind<br />
--igt@xe_exec_basic@multigpu-once-null-defer-mmap<br />
--igt@xe_exec_basic@multigpu-once-null-rebind<br />
--igt@xe_exec_basic@multigpu-once-rebind<br />
--igt@xe_exec_basic@multigpu-once-userptr<br />
--igt@xe_exec_basic@multigpu-once-userptr-invalidate<br />
--igt@xe_exec_basic@multigpu-once-userptr-invalidate-race<br />
--igt@xe_exec_basic@multigpu-once-userptr-rebind</p>
-
-</body>
-</html>
-
---===============1761489484897637173==--
+--
+Zbigniew
