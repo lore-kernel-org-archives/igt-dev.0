@@ -4,52 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F50BC47DDF
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 10:25:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D1C7C47DDB
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 10:30:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ABE3210EB2D;
-	Thu,  1 Feb 2024 10:25:02 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E102110EB1B;
- Thu,  1 Feb 2024 10:25:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A307210EB4E;
+	Thu,  1 Feb 2024 10:30:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 995F410EB4E
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 10:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706783102; x=1738319102;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=K2KgtLpieQ6eeKqcs+Rwz35iMUs+sD0Yq9jn1JL4FCc=;
- b=SAaXB4k+jOUw5cxpwpTunHtwW71gVU3DP2IM0F8OdKVlJWrIBytvZZ4I
- K7cytwh42NASqV/3GBulTJOP98wfUlznZHilg01VyP/WNylVIE8R5UNVr
- VZh2OTneY1mHM+P45GTtDNviYu3QgSmz+nR9MOFGPpuTMCnXj4KAIjLjw
- uZTShHi6KALOjoqFzh3uZf/YU8KsaVHvIzsfwNIwP1ZuCB8SpOwx4hmC0
- Oecgu5hXJZj3LvDYaNgqeP0vW815CEBy85nWhDCQCRZsC4YW+kVCG1koD
- /krymRxZlo9wW0v0CC7rsgXc6ALRAU270GSuyhKVQAKBYXkotZg4YW/G+ A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="407581544"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="407581544"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 02:25:01 -0800
-X-ExtLoop1: 1
+ t=1706783433; x=1738319433;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=78uUGdPZP3RXhk0BkzZOi+1cZhLfuI3fEUh6GrgrdZ8=;
+ b=SfDsSeOYEbKWcbSz5MnFvL6YDAJhDvknrdYpwe12atVkS3Uh5Fj9HbFB
+ 8h+rbbjmP54xDuboUrovYjqS3tTleilmlKNU6qpic80Dg9yXeloMtmkQg
+ Uyb1UvHSYaenRkZOHjaUuPK3ZeZqRG53llx1lx3F/T2hXnUabrpkGiYUG
+ rpsbZxDVZ8z+ANl8wmRPQQEUCHE2u/MM4gBdTDY3Z4zFb5twGzHsarZ90
+ 3wXIv4OxOXwo0t6FpeCSJ+J+ej89wLLKpM8xzvcD5v2dAZ/4nyjDyw/YW
+ fSmpXJx4TAqxF4pIDayxIU2vPh/Z7HRvP9HwiuG1xZQNx39kkbeTwZQiq A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="2798466"
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="4338885"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.1.219])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 02:25:00 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: Re: [PATCH i-g-t v2 3/6] lib/kunit: Unload base KUnit module only
- before reloading it
-Date: Thu, 01 Feb 2024 11:24:56 +0100
-Message-ID: <3216932.vfdyTQepKt@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <m3j2mworpv2l3d7vtqcm3qjkrhqbnqn5jjqhbcpmlcu6nzx7ew@uu4k74ef2p3g>
-References: <20240131181156.80571-8-janusz.krzysztofik@linux.intel.com>
- <20240131181156.80571-11-janusz.krzysztofik@linux.intel.com>
- <m3j2mworpv2l3d7vtqcm3qjkrhqbnqn5jjqhbcpmlcu6nzx7ew@uu4k74ef2p3g>
+   d="scan'208";a="2798466"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 02:30:33 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="30834664"
+Received: from abojovix-mobl.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
+ ([10.252.0.176])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 02:30:31 -0800
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t v2 1/3] lib/intel_device_info: set has_flatccs on LNL
+Date: Thu,  1 Feb 2024 10:30:15 +0000
+Message-ID: <20240201103017.321466-1-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,58 +57,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
+Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Lucas,
+Xe2 supports flat CCS based compression, including igpu. Currently
+HAS_FLATCCS() is incorrectly returning false on LNL.
 
-On Wednesday, 31 January 2024 23:46:59 CET Lucas De Marchi wrote:
-> On Wed, Jan 31, 2024 at 07:03:50PM +0100, Janusz Krzysztofik wrote:
-> >In preparation for replacement of the current method of reloading base
-> >KUnit module when a new set of module parameters is needed with updating
-> >those parameters via sysfs, unload the module right before it is now
-> >reloaded with new parameters, and stop unloading it in other places.
-> >Follow-up patches will remove some of the code added here, but even then
-> >they will be shorter and more clean with that adjustment already in place.
-> >
-> >Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> >---
-> > lib/igt_kmod.c | 23 ++++++++++++-----------
-> > 1 file changed, 12 insertions(+), 11 deletions(-)
-> >
-> >diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> >index d1091bdc79..d2c28d0a64 100644
-> >--- a/lib/igt_kmod.c
-> >+++ b/lib/igt_kmod.c
-> >@@ -1130,6 +1130,7 @@ static void kunit_get_tests(struct igt_list_head *tests,
-> > 	 * iterating over KTAP results collected from blind execution of all
-> > 	 * Kunit test cases provided by a Kunit test module.
-> > 	 */
-> >+	igt_ignore_warn(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
-> 
-> with the rw params, we should be able to run with a built-in kunit. Will
-> we be able to with this call here?
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/intel_device_info.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Please note that next patch drops module unloading completely from the code.  
-
-This patch has been added to the series on request from Kamil (IGT maintainer) 
-for splitting the initially single patch into four.  I partially objected that 
-requirement, but since there was no response from Kamil, I found the way to do 
-it.
-
-The idea is to place calls to igt_kmod_unload("kunit", ...) only in front of 
-igt_kmod_load("kunit", ...) or a block of code that results in the module 
-being loaded automatically, so next patch can replace those operations with 
-kunit_set_parameters() more clearly, not touching other code chunks.
-
-Thanks,
-Janusz
-
-> 
-> Lucas De Marchi
-> 
-
-
-
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index a669797c3..64b5246b7 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -509,6 +509,7 @@ static const struct intel_device_info intel_lunarlake_info = {
+ 	.graphics_rel = 4,
+ 	.display_ver = 20,
+ 	.has_4tile = true,
++	.has_flatccs = true,
+ 	.is_lunarlake = true,
+ 	.codename = "lunarlake",
+ 	.cmds_info = &xe2_cmds_info,
+-- 
+2.43.0
 
