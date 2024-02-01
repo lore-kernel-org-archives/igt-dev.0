@@ -4,57 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E6C8C48286
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 19:32:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7552C48286
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 19:54:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0DD3E10E635;
-	Thu,  1 Feb 2024 19:32:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6068C10E7AA;
+	Thu,  1 Feb 2024 19:54:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nBpsc++a";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MrHidg62";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CAED910E635
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 19:32:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 233AA10E7A1
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 19:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706815941; x=1738351941;
+ t=1706817288; x=1738353288;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=EgRBfWhaM9mOXe//ChC3pwMUbEMhgy9IN6h3smwWUjU=;
- b=nBpsc++a5NfjsjqekhgYQGKn8UsqWf6lwCDaDCc6kQ6Rl7H6aZ57m4+8
- mHiy91czCuMoNQo4vCNHrCnq5oP2r85gkRkcGypd7ap8C7ifPG3vhNU5s
- lz4GIyRJYn8nNFE+pSyS0eOOMQOdtv4lNJx/3lB6C4XNq42ePDE+FIwxG
- ywAK+oe2nOialn/XWuxbucgjApT1aH4r1ncDi/dCrLFoDiCLFwJoluqLX
- kdPGuO16na+huNONBVVrBJ8qhowLW9E8C7H41hoaAWWfIdBaypBFiABxK
- do9iYyEMztbnarthV6pE8SrMy2MLk0S3C6SBqGTSzKbforscRgikg0TjB w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="181921"
-X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; 
-   d="scan'208";a="181921"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 11:32:21 -0800
+ bh=R0AZhpdMm39bSrcZlBFZqvhYLVoWJ4j+eSxyUJZPg4g=;
+ b=MrHidg62TKuMqSqngRsHsICng69oE+d526eTTKm54TNoXQE1MvrhBlQL
+ Ap8MVcM+nkyAXxdcCwhwRr16soQeGTvbirXQEkbbqDSU9sT1fqGQeWtUR
+ /n/3J+pGBJDvNNpJeGZwKllDRKE3+HvNXfFbaTBCRGO8fqu32mNZtR43K
+ t/Mf0vo4r186FBAHOBKSHscJ/sfyZyxXY1D7/de52ekDZUiwTsiNnVc59
+ uwHsyQAf5O4rr2dwzbxwyGMX7zQN4vUuamYPQTy02oUvFyWyUUiY2xR47
+ QNm776f/IGq82NIAJN2v5yBggz3c3obOCeYzNzT1DhuuWGuXZU3GfqlPN A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="407705948"
+X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; d="scan'208";a="407705948"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 11:54:24 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="912227187"
-X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; d="scan'208";a="912227187"
+X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="738537930"
+X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; d="scan'208";a="738537930"
 Received: from unknown (HELO localhost) ([10.245.85.128])
- by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 11:32:18 -0800
-Date: Thu, 1 Feb 2024 20:32:15 +0100
+ by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 11:54:23 -0800
+Date: Thu, 1 Feb 2024 20:54:19 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Karolina Stolarek <karolina.stolarek@intel.com>
 Cc: igt-dev@lists.freedesktop.org,
  Karolina Drobnik <karolina.drobnik@intel.com>
 Subject: Re: [PATCH i-g-t v4 4/5] tests/xe-ccs: Add tests which exercise
  small to large blit sizes
-Message-ID: <20240201193215.t7xkktttcj2mrqz2@zkempczy-mobl2>
+Message-ID: <20240201195419.ykmpqkgpkr2sw5f7@zkempczy-mobl2>
 References: <20240201100724.257845-1-zbigniew.kempczynski@intel.com>
  <20240201100724.257845-5-zbigniew.kempczynski@intel.com>
- <f23fc1d6-1bf6-4059-8366-44ec238a78e6@intel.com>
+ <8efd56a2-6a59-4743-89f3-6db615071c1c@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <f23fc1d6-1bf6-4059-8366-44ec238a78e6@intel.com>
+In-Reply-To: <8efd56a2-6a59-4743-89f3-6db615071c1c@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,7 +69,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Feb 01, 2024 at 03:09:30PM +0100, Karolina Stolarek wrote:
+On Thu, Feb 01, 2024 at 03:10:51PM +0100, Karolina Stolarek wrote:
 > On 1.02.2024 11:07, Zbigniew Kempczyński wrote:
 > > Testing block-copy for 512 x 512 x 32bpp is not enough to verify
 > > blit is working for different (small) and not always aligned
@@ -82,21 +81,26 @@ On Thu, Feb 01, 2024 at 03:09:30PM +0100, Karolina Stolarek wrote:
 > > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > > Cc: Karolina Drobnik <karolina.drobnik@intel.com>
 > > ---
-> 
-> Thanks for the comment on why the step is 15 px wide.
-> 
-> I wonder if we could just start testing the compressed case from bigger
-> widths and heights, instead of adding that if on the mid surface. But
-> probably we'd limit the coverage, so let's leave it as it is.
-
-Both - small and large may lead to fail, depending on situation.
-Especially in Tile64. 15x15 is picked intentionally to step by step
-increase size which at some point will be modulo 16.
-> 
-> A small nit below.
-> 
 > >   tests/intel/xe_ccs.c | 144 +++++++++++++++++++++++++++++++++----------
 > >   1 file changed, 112 insertions(+), 32 deletions(-)
+> 
+> Ah, one question actually. We use width == height, and I wonder if we want
+> to test rectangular surfaces. I think that caused problems in the past, but
+> maybe I'm misremembering something.
+
+Good question. I also thought to increment w/h depending on tile size
+but due to unnecessary code complication I dropped this idea. Going
+toward 512x512 in square shape imo is good enough to catch out of
+boundary accesses (try decreasing stride/aligned height by half in helpers
+and see how tests are failing).
+
+--
+Zbigniew
+
+> 
+> All the best,
+> Karolina
+> 
 > > 
 > > diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
 > > index a7785edcb1..627976049c 100644
@@ -238,23 +242,6 @@ increase size which at some point will be modulo 16.
 > > +			    enum copy_func copy_function)
 > > +{
 > > +
-> 
-> ^-- there's an empty line (I almost missed that!)
-
-Thanks for spotting this.
-
-> 
-> But apart from that, the patch is looking good, I think. Just fix that line,
-> and:
-> 
-> Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
-
-Ok, thanks for the review.
-
---
-Zbigniew
-
-> 
 > >   	struct igt_collection *regions;
 > > -	uint32_t vm, exec_queue;
 > >   	int tiling;
