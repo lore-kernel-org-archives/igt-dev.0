@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41593C48292
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 16:42:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AFF7C4828F
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 16:59:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C14B610F24F;
-	Thu,  1 Feb 2024 16:42:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1CD9C10E16F;
+	Thu,  1 Feb 2024 16:59:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="RBHuiq7t";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Gu386XRV";
 	dkim-atps=neutral
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A99F10F261
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 16:42:11 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (unknown [217.70.183.196])
- by mslow1.mail.gandi.net (Postfix) with ESMTP id 9BF8FC32A2
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 16:36:15 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8D3DDE000C;
- Thu,  1 Feb 2024 16:36:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1706805365;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=koIp+m72UisHv+XRLBvuZ5tbEbEpBXiL16PtYFy+I40=;
- b=RBHuiq7tDW+Pl5bSSsuKqRpM3sivp6KsobNw3fWyOS9OGmFF4B0+PKUzZ2j92MGb8At61J
- zXAEts12b0vJKoM+8PoWvbb6Cx6DmowW/2eYMhLf4iq/tiGWZNOzXF1q91b11yTm0BAY8H
- fScdevouBHnQ1nnT0Uzo+6jLPHPWStFL5QqCPrr4/KgEEncAJ79uEHzIv5jB1CCAsX2UQC
- jI4NEOECfLkJzzJv3wCN9ItmPu4Jm6eQsJY/WEEVdWLMeXVa/cVnHyAO7m1qmja/auVnqF
- zmNr1ZRue4yKec+kd5tIsRYIkhoJ3hoELS+94nbRFZGpCzJw7MypW5DimBsN+g==
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Thu, 01 Feb 2024 17:35:55 +0100
-Subject: [PATCH i-g-t 3/3] tests/kms_rotation_crc: Remove intel guards
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240201-kms_tests-v1-3-bc34c5d28b3f@bootlin.com>
-References: <20240201-kms_tests-v1-0-bc34c5d28b3f@bootlin.com>
-In-Reply-To: <20240201-kms_tests-v1-0-bc34c5d28b3f@bootlin.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1227C10E0BC;
+ Thu,  1 Feb 2024 16:59:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1706806767; x=1738342767;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=X4fuwgQjKBiTZwGs2CEYi9JjJFh8+MtyxjMB+YrGMRE=;
+ b=Gu386XRVDXtsOQK004fRfEznlaX9koITaZeqKkwYfJ3q8TwjyIUufQ+E
+ ZofKU2I601Su0SU3ljdeF/lqBz9HSfXHWarkBuYdLDqAUq/R6xRvgAorE
+ M8nKYayPkOBEEL0ilzQ5QXkfy2v6kRdhWcZMvvvdS4uQ6usqwQvHhKic+
+ U+aKgYs/mZnN2FDH7NLFOPEvVqz+ozV8SPoAWJXePYxpH8mM+XfePTHhq
+ 1k70GM7Bo+lMgq8Xx2ZqfWkIFe7nVuTvaGamnrsrryuAqD/s9vnQI5MPm
+ fvA0XxuhD6Mh3eRkZ5MsCh67INi1IAe4f1rzWll2BgJjw59zUya+4obJK A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="3775653"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
+   d="scan'208";a="3775653"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 08:59:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
+   d="scan'208";a="137960"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 08:59:25 -0800
+Date: Thu, 1 Feb 2024 17:59:07 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Louis Chauvet <louis.chauvet@bootlin.com>, thomas.petazzoni@bootlin.com, 
- miquel.raynal@bootlin.com
-X-Mailer: b4 0.12.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3975;
- i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=sZstu8vtufIWvvucEV45Ub5nJ0gvu2HLj86Ms/4JuTU=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBlu8h02UT45Vm8dJvBywAMpvidqB7RGcSiJ++KxbgU
- U2qyGdCJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZbvIdAAKCRAgrS7GWxAs4smjEA
- CIbzDYaLT+mBiZgAn8AUbtr1lA53I/tSnf1TUvg4uiBms3Cb2fqIsEKLGdWHJ9VfzR8DleWt33wLOl
- COdqjj7rICnD88akdyNeQCmyWE+OfrJO2IFINYZ1oY07UNsXH3/1Vh7Uv2klk8i9yuzQAf+PeXAspn
- n96aXHuyr/4IZTAuHTourVPt9vSjrYcFbCCrP2Jhfz2lTiE3si5v3ovSFsY1bpLtsu2SV2MBTlh2Z3
- 6Nw+L+bPkiEpQoHanR7EdVQL6xXZtv67rsgb6mJ0yMiiXA+W1yxuL1aUW6adGeA2XgOpTa6KRgLW1c
- 9o3UyFqIoXTKp8hMbQeGRj77dP7cuTlBNO6qgJl2PAS3bznvcOifAOZXwDPo7MAlh6q5diEct+Vok7
- jiQe7iuurlYuv7MLLIfmiaEiY5bD2jVOtjXy5SnS/s5AptTAFEclo9p+Mqss4Li54f7LPL25Lz0Str
- mMzn7JVK0j584AALg8XKr6zQ5r4S9rr6Z7/evcm2mhsvvUH1gwt+CvT3ocCaoV2uu6XHhKDE0PowUC
- b6MGo7QloVKgM/NfFAgFJazJBv0mCMFiZ2WzkpP9bP6HFmmI0M+PZ1n2KBpoSS2w1Fc929p/kD46kQ
- fUN4bBox5LY5eO+B+CrgpG0LokGP3k4bWKlb2NeqC0uZkBv1/0mMco7zGGMQ==
-X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
- fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
-X-GND-Sasl: louis.chauvet@bootlin.com
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ intel-xe@lists.freedesktop.org, Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: Re: [PATCH i-g-t v2 6/6] lib/kunit: Process module remove error
+ after list errors
+Message-ID: <20240201165907.muristpypot2h7um@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ intel-xe@lists.freedesktop.org,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+References: <20240131181156.80571-8-janusz.krzysztofik@linux.intel.com>
+ <20240131181156.80571-14-janusz.krzysztofik@linux.intel.com>
+ <20240201145501.5ga7vvpkc6urpwy2@kamilkon-desk.igk.intel.com>
+ <2550119.vzjCzTo3RI@jkrzyszt-mobl2.ger.corp.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2550119.vzjCzTo3RI@jkrzyszt-mobl2.ger.corp.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,91 +77,83 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Remove a lot of intel guards on multiple tests.
-The only guard keep is bad-pixel-format because it seems very
-intel-specific.
+Hi Janusz,
+On 2024-02-01 at 17:02:05 +0100, Janusz Krzysztofik wrote:
+> Hi Kamil,
+> 
+> On Thursday, 1 February 2024 15:55:01 CET Kamil Konieczny wrote:
+> > Hi Janusz,
+> > On 2024-01-31 at 19:03:53 +0100, Janusz Krzysztofik wrote:
+> > > Skip on any error from test case list gathering first, then, in
+> > > preparation for executing those test cases, on an error from unloading the
+> > > test module loaded in list only mode, so it is more clear if listing the
+> > > test cases was successful or not.
+> > > 
+> > > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > > ---
+> > >  lib/igt_kmod.c | 4 ++--
+> > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> > > index 53c54b1a0d..741c7fd055 100644
+> > > --- a/lib/igt_kmod.c
+> > > +++ b/lib/igt_kmod.c
+> > > @@ -1225,11 +1225,11 @@ static void kunit_get_tests(struct igt_list_head 
+> *tests,
+> > >  		free(case_name);
+> > >  	}
+> > >  
+> > > -	igt_skip_on(kmod_module_remove_module(tst->kmod, 
+> KMOD_REMOVE_FORCE));
+> > > -
+> > >  	igt_skip_on_f(err,
+> > >  		      "KTAP parser failed while getting a list of test 
+> cases\n");
+> > >  	igt_skip_on(igt_list_empty(tests));
+> > 
+> > This skip_on will prevent module unload below... What about
+> > remembering both and skipping on list_empty() only after module unload?
+> > For example:
+> >     testslist_is_empty = igt_list_empty(tests);
+> >     unload_failed = kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE);
+> > 
+> >     igt_skip_on(testslist_is_empty);
+> >     igt_skip_on_f(unload_failed, "kmod %s unload failed\n", tst->kmod);
+> 
+> As I tried to express in my commit description, test module is unloaded here, 
+> after the list of test cases is collected, "in preparation for executing those 
+> test cases", and not as a final cleanup.
+> 
+> kunit_get_tests() is called from inside igt_subtest_with_dynamic() before any 
+> calls to igt_dynamic() from where test cases are executed.  If 
+> kunit_get_tests() skips for any reason then no test cases provided by that 
+> module will be executed, then unloading the module is not required.  An 
+> attempt to unload it if still loaded will be take from the trailing 
+> igt_fixture section of igt_kunit() via a call to igt_ktest_end().
+> 
+> Is the above clarification sufficient for you?  
+> 
+> Thanks,
+> Janusz
 
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
----
- tests/kms_rotation_crc.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ok, thank you for explaining this,
 
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 8d8c53b5ff84..1ab2dc68663b 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -634,7 +634,8 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 		plane = igt_output_get_plane_type(output, plane_type);
- 		igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
- 		igt_require(igt_plane_has_rotation(plane, data->rotation));
--		/* CHV can't rotate and reflect simultaneously */
-+		/* When using CHERRYVIEW intel device, simultaneous rotation and reflection are not supported at the
-+		 * same time, so skip this test */
- 		igt_require(!is_intel_device(data->gfx_fd) ||
- 			    !IS_CHERRYVIEW(data->devid) ||
- 			    data->rotation != (IGT_ROTATION_180 | IGT_REFLECT_X));
-@@ -1250,12 +1251,13 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	data.pos_x = 0,
- 	data.pos_y = 0;
- 
--	igt_describe("Checking unsupported pixel format for gen9+ with 90 degree of rotation");
-+	igt_describe("Checking unsupported pixel format for Intel gen9+ with 90 degree of rotation");
- 	igt_subtest_f("bad-pixel-format") {
- 		 /* gen11 enables RGB565 rotation for 90/270 degrees.
- 		  * so apart from this, any other gen11+ pixel format
- 		  * can be used which doesn't support 90/270 degree
- 		  * rotation */
-+		igt_require(is_intel_device(data.gfx_fd));
- 		data.rotation = IGT_ROTATION_90;
- 		data.override_fmt = gen < 11 ? DRM_FORMAT_RGB565 : DRM_FORMAT_Y212;
- 		test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, true);
-@@ -1270,11 +1272,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	}
- 	data.override_modifier = 0;
- 
--	igt_describe("Tiling and Rotation test for gen 10+ for primary plane");
-+	igt_describe("Tiling and Rotation test for primary plane");
- 	for (reflect_x = reflect_x_subtests; reflect_x->modifier; reflect_x++) {
--		igt_fixture
--			igt_require_intel(data.gfx_fd);
--
- 		igt_subtest_f("primary-%s-tiled-reflect-x-%s",
- 			      igt_fb_modifier_name(reflect_x->modifier),
- 			      igt_plane_rotation_name(reflect_x->rot)) {
-@@ -1286,7 +1285,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 
- 	igt_describe("Rotation test on both planes by making them fully visible");
- 	igt_subtest_f("multiplane-rotation") {
--		igt_require(gen >= 9);
-+		/* This feature is only supported for Intel device >= 9 */
-+		if (is_intel_device(data.gfx_fd))
-+			igt_require(gen > 9);
- 		cleanup_crtc(&data);
- 		data.planepos[0].origo = p_top | p_left;
- 		data.planepos[0].x = .2f;
-@@ -1300,7 +1301,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	igt_describe("Rotation test on both planes by cropping left/top corner of primary plane and"
- 			"right/top corner of sprite plane");
- 	igt_subtest_f("multiplane-rotation-cropping-top") {
--		igt_require(gen >= 9);
-+/* This feature is only supported for Intel device >= 9 */
-+		if (is_intel_device(data.gfx_fd))
-+			igt_require(gen > 9);
- 		cleanup_crtc(&data);
- 		data.planepos[0].origo = p_top | p_left;
- 		data.planepos[0].x = -.05f;
-@@ -1314,7 +1317,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	igt_describe("Rotation test on both planes by cropping left/bottom corner of primary plane"
- 			"and right/bottom corner of sprite plane");
- 	igt_subtest_f("multiplane-rotation-cropping-bottom") {
--		igt_require(gen >= 9);
-+/* This feature is only supported for Intel device >= 9 */
-+		if (is_intel_device(data.gfx_fd))
-+			igt_require(gen > 9);
- 		cleanup_crtc(&data);
- 		data.planepos[0].origo = p_bottom | p_left;
- 		data.planepos[0].x = -.05f;
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
--- 
-2.43.0
-
+> 
+> > 
+> > 
+> > Regards,
+> > Kamil
+> > 
+> > > +
+> > > +	igt_skip_on(kmod_module_remove_module(tst->kmod, 
+> KMOD_REMOVE_FORCE));
+> > >  }
+> > >  
+> > >  static void __igt_kunit(struct igt_ktest *tst,
+> > 
+> 
+> 
+> 
+> 
