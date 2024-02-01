@@ -4,50 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A034EC4828C
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 10:30:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13B84C47DDF
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 10:39:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 413B410EB63;
-	Thu,  1 Feb 2024 10:30:36 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8406710EB63
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 10:30:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706783435; x=1738319435;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=DbcKelA92leERUpwvPMVKWs5rR72bZ/kFWa9yST22YY=;
- b=gTa2a78nLesFPwj/5KTyKt6iygbcGMwvnJNvKQCRIbot7biwBdYz8PSy
- zxKMYcdJjRN8RXFGbEd8uZWSXbx2g/T8HoPqwanjeS5xSPvMwZBdHAuEJ
- uqpI+5I9025u8EQU7Z8nmk/BPQd1fz/vhEod0XVQIC+Jl0qh9S3/ZjVmi
- Igts/+yQKxF3/h4Y1c+y0bqFnmiiVL86BU1NJ+Mcww77OhQfqYat7mbrP
- Sk0XCyT88M25bhh87Ezoxs5tXRSggRdOb86xqrAZcFZJDVViVK+iTEF00
- mlX2HAV5h+VQmy3a0OdzFvONJYJae/7IzHnVyAE2ox+vOKJPraCA3uqTm A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="2798478"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="2798478"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 02:30:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="30834691"
-Received: from abojovix-mobl.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
- ([10.252.0.176])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 02:30:34 -0800
-From: Matthew Auld <matthew.auld@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 3/3] tests/intel/xe_pat: assert flat CSS support for
- xe2
-Date: Thu,  1 Feb 2024 10:30:17 +0000
-Message-ID: <20240201103017.321466-3-matthew.auld@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240201103017.321466-1-matthew.auld@intel.com>
-References: <20240201103017.321466-1-matthew.auld@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A31CB10EB99;
+	Thu,  1 Feb 2024 10:39:13 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6CE1A10EB8B;
+ Thu,  1 Feb 2024 10:39:12 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6068452939827670824=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Fill_block-copy_test_gap_for_u?=
+ =?utf-8?q?naligned_sizes_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Thu, 01 Feb 2024 10:39:12 -0000
+Message-ID: <170678395245.894913.2158398798250300525@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240201092227.252502-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20240201092227.252502-1-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,34 +36,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Xe2+ should support flat CCS compression, and here we are using
-compressed PAT index modes. Assert the platform indeed has flat CCS
-here, otherwise something is likely wrong.
+--===============6068452939827670824==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/intel/xe_pat.c | 1 +
- 1 file changed, 1 insertion(+)
+== Series Details ==
 
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index 40256bada..3d7d7400c 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -1049,6 +1049,7 @@ igt_main_args("V", NULL, help_str, opt_handler, NULL)
- 
- 	igt_subtest_with_dynamic("pat-index-xe2") {
- 		igt_require(intel_get_device_info(dev_id)->graphics_ver >= 20);
-+		igt_assert(HAS_FLATCCS(dev_id));
- 		subtest_pat_index_modes_with_regions(fd, xe2_pat_index_modes,
- 						     ARRAY_SIZE(xe2_pat_index_modes));
- 	}
--- 
-2.43.0
+Series: Fill block-copy test gap for unaligned sizes (rev3)
+URL   : https://patchwork.freedesktop.org/series/129362/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7700_BAT -> XEIGTPW_10620_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7700 -> IGTPW_10620
+  * Linux: xe-712-cba66c6a2af4df1b9b420fbad0a9ac1e68f14030 -> xe-713-bbce0395a5bb76fedf0f9dbdfe1da90db253f4ee
+
+  IGTPW_10620: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10620/index.html
+  IGT_7700: 7700
+  xe-712-cba66c6a2af4df1b9b420fbad0a9ac1e68f14030: cba66c6a2af4df1b9b420fbad0a9ac1e68f14030
+  xe-713-bbce0395a5bb76fedf0f9dbdfe1da90db253f4ee: bbce0395a5bb76fedf0f9dbdfe1da90db253f4ee
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10620/index.html
+
+--===============6068452939827670824==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Fill block-copy test gap for unaligned sizes (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129362/">https://patchwork.freedesktop.org/series/129362/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10620/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10620/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7700_BAT -&gt; XEIGTPW_10620_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7700 -&gt; IGTPW_10620</li>
+<li>Linux: xe-712-cba66c6a2af4df1b9b420fbad0a9ac1e68f14030 -&gt; xe-713-bbce0395a5bb76fedf0f9dbdfe1da90db253f4ee</li>
+</ul>
+<p>IGTPW_10620: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10620/index.html<br />
+  IGT_7700: 7700<br />
+  xe-712-cba66c6a2af4df1b9b420fbad0a9ac1e68f14030: cba66c6a2af4df1b9b420fbad0a9ac1e68f14030<br />
+  xe-713-bbce0395a5bb76fedf0f9dbdfe1da90db253f4ee: bbce0395a5bb76fedf0f9dbdfe1da90db253f4ee</p>
+
+</body>
+</html>
+
+--===============6068452939827670824==--
