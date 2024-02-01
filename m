@@ -4,62 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27E7EC4828F
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 16:42:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41593C48292
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 16:42:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 45BD910F23B;
-	Thu,  1 Feb 2024 16:42:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C14B610F24F;
+	Thu,  1 Feb 2024 16:42:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="K+tOOQ5t";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="RBHuiq7t";
 	dkim-atps=neutral
 Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53EF810F26A
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A99F10F261
  for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 16:42:11 +0000 (UTC)
 Received: from relay4-d.mail.gandi.net (unknown [217.70.183.196])
- by mslow1.mail.gandi.net (Postfix) with ESMTP id 992AFC321C
+ by mslow1.mail.gandi.net (Postfix) with ESMTP id 9BF8FC32A2
  for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 16:36:15 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id F39C3E000D;
- Thu,  1 Feb 2024 16:36:04 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8D3DDE000C;
+ Thu,  1 Feb 2024 16:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
  t=1706805365;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yLrinQZStj2oyVCfETut45FqBn+XiO/mGlOOiZkArNc=;
- b=K+tOOQ5t8f4dMXXtOwkqbbsT0e0nBAfZaEv/aJ/fHZ19YQx7aqYh1J+j5aOfpUOia2a+NH
- opY3aHukYK7dGqs4scuzgO9btA8wdd6Em9o0vgPzzERc+qTOyPvNdfdYWWhsIoQbbctOCg
- 4TAQu0+npMss++CxK8CNd8dbr1AS9osXyGT7oCsatZtn77n9Awne3Rp0B0ziSQ9Un57vfJ
- jvI2shA339GTC/AnCp8wG/kZDWG8up5D9tQLvkE2TaDlSGUf3CysHMq+h+LtppqMffZ9GD
- DZYvygFMaD3NLUB3foKFiQYoCpsMl2Mwj4HQdITA7nQVKhYOJIdTcLhThXfqQg==
+ bh=koIp+m72UisHv+XRLBvuZ5tbEbEpBXiL16PtYFy+I40=;
+ b=RBHuiq7tDW+Pl5bSSsuKqRpM3sivp6KsobNw3fWyOS9OGmFF4B0+PKUzZ2j92MGb8At61J
+ zXAEts12b0vJKoM+8PoWvbb6Cx6DmowW/2eYMhLf4iq/tiGWZNOzXF1q91b11yTm0BAY8H
+ fScdevouBHnQ1nnT0Uzo+6jLPHPWStFL5QqCPrr4/KgEEncAJ79uEHzIv5jB1CCAsX2UQC
+ jI4NEOECfLkJzzJv3wCN9ItmPu4Jm6eQsJY/WEEVdWLMeXVa/cVnHyAO7m1qmja/auVnqF
+ zmNr1ZRue4yKec+kd5tIsRYIkhoJ3hoELS+94nbRFZGpCzJw7MypW5DimBsN+g==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Thu, 01 Feb 2024 17:35:53 +0100
-Subject: [PATCH i-g-t 1/3] tests/kms/plane: Rename test_planar_settings to
- test_odd_size_with_yuv
+Date: Thu, 01 Feb 2024 17:35:55 +0100
+Subject: [PATCH i-g-t 3/3] tests/kms_rotation_crc: Remove intel guards
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240201-kms_tests-v1-1-bc34c5d28b3f@bootlin.com>
+Message-Id: <20240201-kms_tests-v1-3-bc34c5d28b3f@bootlin.com>
 References: <20240201-kms_tests-v1-0-bc34c5d28b3f@bootlin.com>
 In-Reply-To: <20240201-kms_tests-v1-0-bc34c5d28b3f@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Louis Chauvet <louis.chauvet@bootlin.com>, thomas.petazzoni@bootlin.com, 
  miquel.raynal@bootlin.com
 X-Mailer: b4 0.12.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5114;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3975;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=cBdSvIWfA9enZT0PzoJRdcP0tjD820ZpU426h4x4Hic=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBlu8hzanDf4Fbxjwfi3cEsDb9PvYajKSvcpg1676b+
- m+oVR7mJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZbvIcwAKCRAgrS7GWxAs4llcEA
- DPDsrULkhm1DZlG/RDdo36d5QUwvBDQCv1DXz6dEOMrJHTeDIFFOGJBpbI2I+TKOUuqyQwxwIbPB38
- cTuEbbAdMa9YurvHdUkGGj5eK//0O4nOss37H9mu9KNDoAuYEgSK9og6kzyU5wQWt5GPPOkB9/JsHl
- 7mi0Jp1b42DZiEvRdqL8P8CWj5YF1+RdVp+6HpIKrMxri3SXKuLUwr/iD/wlylbVm3CzKyqKM3lvjS
- Ahue4Y91JC+AbYowvhdl4rI7D9krYVtR8omjwbKkXrac7fobBxfBq/gU/U1GiYL7Ly99N1sphqjx4B
- F5EdlrVSgaOatmXAtf6Nw0BgP0Fm09iNRnxLJQ1kpFPPQtbp5Gr28/tkMv4UYw227uxHd0O0rqFKvr
- d3s24FOS3ZkyZyCr7dJqMs3prtrBVFA7CYzNIRJXQVdaof3ZclxeDa5a/frgbTnEx1I7GFJt3ytee6
- KeCnBDf0o5zMPnuanGoehTpnScEYjUWs2yDe6tiw7ZHshKY3zlkEW63EX2vJMVpQDWVHwA/xGhaN1y
- CKUr/rwT82pZ9qSutx/9JV+X8OAxHZOqxwKCVro6uLK4mGYLgHOz0vplbs6AUtpGa2s1fTSXg04zmP
- T71bJscrjBVByG9cS3o6Yl9+NdPMicjEL/T96QwKJN1yqFR1GVublW5cuEag==
+ bh=sZstu8vtufIWvvucEV45Ub5nJ0gvu2HLj86Ms/4JuTU=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBlu8h02UT45Vm8dJvBywAMpvidqB7RGcSiJ++KxbgU
+ U2qyGdCJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZbvIdAAKCRAgrS7GWxAs4smjEA
+ CIbzDYaLT+mBiZgAn8AUbtr1lA53I/tSnf1TUvg4uiBms3Cb2fqIsEKLGdWHJ9VfzR8DleWt33wLOl
+ COdqjj7rICnD88akdyNeQCmyWE+OfrJO2IFINYZ1oY07UNsXH3/1Vh7Uv2klk8i9yuzQAf+PeXAspn
+ n96aXHuyr/4IZTAuHTourVPt9vSjrYcFbCCrP2Jhfz2lTiE3si5v3ovSFsY1bpLtsu2SV2MBTlh2Z3
+ 6Nw+L+bPkiEpQoHanR7EdVQL6xXZtv67rsgb6mJ0yMiiXA+W1yxuL1aUW6adGeA2XgOpTa6KRgLW1c
+ 9o3UyFqIoXTKp8hMbQeGRj77dP7cuTlBNO6qgJl2PAS3bznvcOifAOZXwDPo7MAlh6q5diEct+Vok7
+ jiQe7iuurlYuv7MLLIfmiaEiY5bD2jVOtjXy5SnS/s5AptTAFEclo9p+Mqss4Li54f7LPL25Lz0Str
+ mMzn7JVK0j584AALg8XKr6zQ5r4S9rr6Z7/evcm2mhsvvUH1gwt+CvT3ocCaoV2uu6XHhKDE0PowUC
+ b6MGo7QloVKgM/NfFAgFJazJBv0mCMFiZ2WzkpP9bP6HFmmI0M+PZ1n2KBpoSS2w1Fc929p/kD46kQ
+ fUN4bBox5LY5eO+B+CrgpG0LokGP3k4bWKlb2NeqC0uZkBv1/0mMco7zGGMQ==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -78,149 +77,90 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Rename the test test_planar_settings to test_odd_size_with_yuv, remove the
-intel guard on this test.
+Remove a lot of intel guards on multiple tests.
+The only guard keep is bad-pixel-format because it seems very
+intel-specific.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- tests/kms_plane.c | 91 ++++++++++++++++++++++++++-----------------------------
- 1 file changed, 43 insertions(+), 48 deletions(-)
+ tests/kms_rotation_crc.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 406aecc04297..0bca96692b14 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -42,8 +42,8 @@
- #include "xe/xe_query.h"
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index 8d8c53b5ff84..1ab2dc68663b 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -634,7 +634,8 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 		plane = igt_output_get_plane_type(output, plane_type);
+ 		igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
+ 		igt_require(igt_plane_has_rotation(plane, data->rotation));
+-		/* CHV can't rotate and reflect simultaneously */
++		/* When using CHERRYVIEW intel device, simultaneous rotation and reflection are not supported at the
++		 * same time, so skip this test */
+ 		igt_require(!is_intel_device(data->gfx_fd) ||
+ 			    !IS_CHERRYVIEW(data->devid) ||
+ 			    data->rotation != (IGT_ROTATION_180 | IGT_REFLECT_X));
+@@ -1250,12 +1251,13 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	data.pos_x = 0,
+ 	data.pos_y = 0;
  
- /**
-- * SUBTEST: planar-pixel-format-settings
-- * Description: verify planar settings for pixel format are handled correctly
-+ * SUBTEST: test-odd-size-with-yuv
-+ * Description: verify that yuv odd size are handled correctly by the driver
-  * Functionality: pixel_formats, plane
-  *
-  * SUBTEST: plane-position-%s
-@@ -1226,8 +1226,7 @@ test_pixel_formats(data_t *data, enum pipe pipe)
- 
- 	igt_assert_f(result, "At least one CRC mismatch happened\n");
- }
--
--static void test_planar_settings(data_t *data)
-+static void test_odd_size_with_yuv(data_t *data)
- {
- 	enum pipe pipe = PIPE_A;
- 	igt_output_t *output;
-@@ -1236,14 +1235,18 @@ static void test_planar_settings(data_t *data)
- 	int devid;
- 	int rval;
- 
--	/*
--	 * If here is added non-intel tests below require will need to be
--	 * changed to if(..)
--	 */
-+	bool should_fail = false;
- 	igt_require(data->display.is_atomic);
--	igt_require_intel(data->drm_fd);
--	devid = intel_get_drm_devid(data->drm_fd);
--	igt_require(intel_display_ver(devid) >= 9);
-+
-+	/* Add more devices here if they are expected to fail */
-+	if(is_intel_device(data->drm_fd)) {
-+		/* This was required in the original test */
-+		igt_require(intel_display_ver(devid) >= 9);
-+		/* Intel display version below 20 are expected to fail */
-+		if (intel_display_ver(devid) < 20) {
-+			should_fail = true;
-+		}
-+	}
- 
- 	output = igt_get_single_output_for_pipe(&data->display, pipe);
- 	igt_require(output);
-@@ -1255,44 +1258,37 @@ static void test_planar_settings(data_t *data)
- 				  DRM_MODE_ATOMIC_ALLOW_MODESET,
- 				  NULL);
- 
--	/* test against intel_plane_check_src_coordinates() in i915 */
--	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
--				     DRM_FORMAT_MOD_LINEAR)) {
--		int expected_rval = -EINVAL;
--
--		if (intel_display_ver(devid) >= 20)
--			expected_rval = 0;
--
--		igt_create_fb(data->drm_fd, 257, 256,
--			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
--		igt_plane_set_fb(primary, &fb);
--		rval = igt_display_try_commit_atomic(&data->display,
--						     DRM_MODE_ATOMIC_ALLOW_MODESET,
--						     NULL);
--		igt_remove_fb(data->drm_fd, &fb);
--		igt_assert_f(rval == expected_rval, "Odd width NV12 framebuffer\n");
-+	igt_require(igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
-+					     DRM_FORMAT_MOD_LINEAR));
-+
-+
-+	igt_create_fb(data->drm_fd, 257, 256,
-+		      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
-+	igt_plane_set_fb(primary, &fb);
-+	rval = igt_display_try_commit_atomic(&data->display,
-+					     DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					     NULL);
-+	igt_remove_fb(data->drm_fd, &fb);
-+
-+	if(should_fail) {
-+		igt_assert_f(rval == -EINVAL, "Odd width NV12 framebuffer correctly failed\n");
- 	} else {
--		igt_debug("Odd width NV12 framebuffer test skipped\n");
-+		igt_assert_f(rval == 0, "Odd width NV12 framebuffer correctly succeed\n");
+-	igt_describe("Checking unsupported pixel format for gen9+ with 90 degree of rotation");
++	igt_describe("Checking unsupported pixel format for Intel gen9+ with 90 degree of rotation");
+ 	igt_subtest_f("bad-pixel-format") {
+ 		 /* gen11 enables RGB565 rotation for 90/270 degrees.
+ 		  * so apart from this, any other gen11+ pixel format
+ 		  * can be used which doesn't support 90/270 degree
+ 		  * rotation */
++		igt_require(is_intel_device(data.gfx_fd));
+ 		data.rotation = IGT_ROTATION_90;
+ 		data.override_fmt = gen < 11 ? DRM_FORMAT_RGB565 : DRM_FORMAT_Y212;
+ 		test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, true);
+@@ -1270,11 +1272,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
  	}
+ 	data.override_modifier = 0;
  
--	/* test against intel_plane_check_src_coordinates() in i915 */
--	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
--				     DRM_FORMAT_MOD_LINEAR)) {
--		int expected_rval = -EINVAL;
+-	igt_describe("Tiling and Rotation test for gen 10+ for primary plane");
++	igt_describe("Tiling and Rotation test for primary plane");
+ 	for (reflect_x = reflect_x_subtests; reflect_x->modifier; reflect_x++) {
+-		igt_fixture
+-			igt_require_intel(data.gfx_fd);
 -
--		if (intel_display_ver(devid) >= 20)
--			expected_rval = 0;
--
--		igt_create_fb(data->drm_fd, 256, 257,
--			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
--		igt_plane_set_fb(primary, &fb);
--		rval = igt_display_try_commit_atomic(&data->display,
--						     DRM_MODE_ATOMIC_ALLOW_MODESET,
--						     NULL);
--		igt_remove_fb(data->drm_fd, &fb);
--		igt_assert_f(rval == expected_rval, "Odd height NV12 framebuffer\n");
-+
-+	igt_create_fb(data->drm_fd, 256, 257,
-+		      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
-+	igt_plane_set_fb(primary, &fb);
-+	rval = igt_display_try_commit_atomic(&data->display,
-+					     DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					     NULL);
-+	igt_remove_fb(data->drm_fd, &fb);
-+
-+	if(should_fail) {
-+		igt_assert_f(rval == -EINVAL, "Odd height NV12 framebuffer correctly failed\n");
- 	} else {
--		igt_debug("Odd height NV12 framebuffer test skipped\n");
-+		igt_assert_f(rval == 0, "Odd height NV12 framebuffer correctly succeed\n");
- 	}
- }
+ 		igt_subtest_f("primary-%s-tiled-reflect-x-%s",
+ 			      igt_fb_modifier_name(reflect_x->modifier),
+ 			      igt_plane_rotation_name(reflect_x->rot)) {
+@@ -1286,7 +1285,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
  
-@@ -1377,9 +1373,8 @@ run_tests_for_pipe_plane(data_t *data)
- 		run_test(data, test_plane_panning);
- 	}
- 
--	igt_describe("verify planar settings for pixel format are accepted or rejected correctly");
--	igt_subtest_f("planar-pixel-format-settings")
--		test_planar_settings(data);
-+	igt_describe("verify that odd sizes for yuv format are accepted or rejected correctly");
-+	igt_subtest_f("test-odd-size-with-yuv") test_odd_size_with_yuv(data);
- }
- 
- static int opt_handler(int opt, int opt_index, void *_data)
+ 	igt_describe("Rotation test on both planes by making them fully visible");
+ 	igt_subtest_f("multiplane-rotation") {
+-		igt_require(gen >= 9);
++		/* This feature is only supported for Intel device >= 9 */
++		if (is_intel_device(data.gfx_fd))
++			igt_require(gen > 9);
+ 		cleanup_crtc(&data);
+ 		data.planepos[0].origo = p_top | p_left;
+ 		data.planepos[0].x = .2f;
+@@ -1300,7 +1301,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	igt_describe("Rotation test on both planes by cropping left/top corner of primary plane and"
+ 			"right/top corner of sprite plane");
+ 	igt_subtest_f("multiplane-rotation-cropping-top") {
+-		igt_require(gen >= 9);
++/* This feature is only supported for Intel device >= 9 */
++		if (is_intel_device(data.gfx_fd))
++			igt_require(gen > 9);
+ 		cleanup_crtc(&data);
+ 		data.planepos[0].origo = p_top | p_left;
+ 		data.planepos[0].x = -.05f;
+@@ -1314,7 +1317,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	igt_describe("Rotation test on both planes by cropping left/bottom corner of primary plane"
+ 			"and right/bottom corner of sprite plane");
+ 	igt_subtest_f("multiplane-rotation-cropping-bottom") {
+-		igt_require(gen >= 9);
++/* This feature is only supported for Intel device >= 9 */
++		if (is_intel_device(data.gfx_fd))
++			igt_require(gen > 9);
+ 		cleanup_crtc(&data);
+ 		data.planepos[0].origo = p_bottom | p_left;
+ 		data.planepos[0].x = -.05f;
 
 -- 
 2.43.0
