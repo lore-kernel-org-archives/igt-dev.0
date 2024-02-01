@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CF3CC48286
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB06EC47DDB
 	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 04:53:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E24F010E3A5;
-	Thu,  1 Feb 2024 04:53:55 +0000 (UTC)
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2043.outbound.protection.outlook.com [40.107.92.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0FBE10E3A5
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 04:53:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4274A10E40D;
+	Thu,  1 Feb 2024 04:53:56 +0000 (UTC)
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2048.outbound.protection.outlook.com [40.107.237.48])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E47A110E3A5
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Feb 2024 04:53:54 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YitAOkECdQOnTXy5A8NEgd0xEclN+IMWQPIKm60yb4tbipeUCDYt2RbzJWucIXSEKLDYDt0UZKv+M8wW4sPBI6CVl04MRN2X4pRjsDN0QU4W/hsgOkaGTe5Sr3NcbTDCl1E8AFoR9SlrmIx5B+pa0UannQmpU9WmnNvJB4ZmiHTUQNF8ULZkW3MGo2VLD5gUi3cEF7CarIuzEELu0TNUg6M8YIY6lDNFU12UYBppcBKjCKoEO8dQ/j2Z8ymiiLerYjnkwUwrSSkvmC0XhWStqONgN9B354yOlwkZ7IQMadYqtH+sTt0fHi1Mf7k5i/auiuDqYBb13Ca2dpaLBarAvQ==
+ b=Y0RCDYcI5j+GWioXriqsWmovUL8RTxdrVR9pZ7NsJR6dwPYT2bT0gGAt9u2MchvS4nnYHuCLYfk9R45wkr4s6Sb+EtWntZdnWwnQQJLiGx98yjE5gJ1yaPnOyWe9UYI16gxd2P7J1J7lXbw14jaV6tf9OZ1fxaIkL9AaaQif+hK5gup2T5VXD5YqZ6dOn2f9IB6TMHveqdW/FZEi2WI+1eI5McaUlsG6yEOQ8Bbfb9IZNeVQHvXqlodrmWEN+owaQwNnmCUWca21pvkE6KysTMnhwPbVhhASV1a+KYgNAs1uNw1kezZ0uNo0z3TVtU3MZHGRmiR2OZVPUnKpG7TwBg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d5RcesryyQBQtI3eKm+wKHsIYzrbncWq8vzMnGSfz7s=;
- b=A5pGhhFDu27cJS64njNS6dZ+mVu4XlU0ppcVXGVZXgMsa03HnoNjMO07G2Tsaj//LFhQi0W+jf3qZLryVprlhAaAihyueCVmL20+JQUvGVXY+Eq7CeZbv0HDVIP2zoZ7hnmu+Y/y6LLurenpsj8ZOcGrE/JUyxSdLVpR3VJVkZ4Ol7C+poOkPX1ynBZoShNgjVeazsCUP4dEnXdwTzibENhh0JsMgvR/S/7ZqjjY6h2eHc8zoDNVldJTIQ+iRNDaNCrbB5VpgSaC0iLG0YHybK1UPTjav8ZSpco5W4rue6rXCCDU2zSRjKWfrNMtlBXPUrKLYDtIRGlfiFw8MfnbPw==
+ bh=x0tvXp9yBxp7j6EjxwMMiZibLbrL9wiXsoiOkbyo8hk=;
+ b=Nd4Sb9tIvIDmQOn5mLyLNy/8fGXPToH/vokKU8wpXsYnFfB+0OVcyfM5reeqbbD3CXmcXwVmlIYi/Bb+rRyKrh9DwwTq68lZ41jmyvScO3gIT1EvZnLfVMwcVDZYNwjP8ny8a0hBsv8vHpfUzcCefHLS3zU/lzVYIJmZ061AsZxxkK38+QTP+srgqR22sx9ypMr6vukiPBignDywoO4Bo5xJJ8Mf8xZ0gdOB7e3AjbEinpkna5OSrYYznF1yOQq8WXOJAXUusIdJBw+v/NspJjUfmZCXp9sZsEXXCaqODFUGNXBNfmlGFdotfuTJ9XgczY2BCQBawalCbzSS5gm9lA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d5RcesryyQBQtI3eKm+wKHsIYzrbncWq8vzMnGSfz7s=;
- b=Pf2u7jtaN4bRAJIKdKu2ph411AtKvV+us520W/AwHh7Uj8YplYzEwgGKYoRs0dAn06LWMKwvXb7IWeRkl2EVt7ZigX3nWOUAxYzZmiP+xaEOXFhSRm/2VweOs0SPXmiN4TtE9FYpVU8nqgeXukQ4Wu4B+ZXUh7WSG3GvuUMnkZ8=
-Received: from SJ0PR05CA0147.namprd05.prod.outlook.com (2603:10b6:a03:33d::32)
- by SJ2PR12MB8134.namprd12.prod.outlook.com (2603:10b6:a03:4fa::21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.34; Thu, 1 Feb
- 2024 04:53:49 +0000
+ bh=x0tvXp9yBxp7j6EjxwMMiZibLbrL9wiXsoiOkbyo8hk=;
+ b=5VkO3cy/NY2EY6NGtPm0qe1+FRcbRuIFb4GdOcvasajMzAv0z/+8mNbw0znJd//Bz/jAjbxhgDSFWl4EHvqcnAOeLMReeQFUBlz6Bj/PwtmC4NegNlmLmIRbmt5RoYBYTK2gK1ojsNQcfemVjXjUciXYUDTdxE4lhjEvADbvJ08=
+Received: from SJ0PR05CA0139.namprd05.prod.outlook.com (2603:10b6:a03:33d::24)
+ by DM6PR12MB4204.namprd12.prod.outlook.com (2603:10b6:5:212::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.24; Thu, 1 Feb
+ 2024 04:53:50 +0000
 Received: from SJ1PEPF00001CE7.namprd03.prod.outlook.com
- (2603:10b6:a03:33d:cafe::40) by SJ0PR05CA0147.outlook.office365.com
- (2603:10b6:a03:33d::32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.23 via Frontend
- Transport; Thu, 1 Feb 2024 04:53:49 +0000
+ (2603:10b6:a03:33d:cafe::50) by SJ0PR05CA0139.outlook.office365.com
+ (2603:10b6:a03:33d::24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.22 via Frontend
+ Transport; Thu, 1 Feb 2024 04:53:50 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -47,51 +47,49 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB03.amd.com (165.204.84.17) by
  SJ1PEPF00001CE7.mail.protection.outlook.com (10.167.242.23) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7228.16 via Frontend Transport; Thu, 1 Feb 2024 04:53:49 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
+ 15.20.7228.16 via Frontend Transport; Thu, 1 Feb 2024 04:53:50 +0000
+Received: from SATLEXMB08.amd.com (10.181.40.132) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Wed, 31 Jan
  2024 22:53:46 -0600
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Wed, 31 Jan
- 2024 22:53:34 -0600
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB08.amd.com
+ (10.181.40.132) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Wed, 31 Jan
+ 2024 20:53:34 -0800
 Received: from desktop-host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.34 via Frontend
- Transport; Wed, 31 Jan 2024 22:53:34 -0600
+ Transport; Wed, 31 Jan 2024 22:53:33 -0600
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Subject: [PATCH 2/3] lib/amdgpu: add a CS helper function
-Date: Wed, 31 Jan 2024 23:53:29 -0500
-Message-ID: <20240201045330.610006-2-vitaly.prosyak@amd.com>
+Subject: [PATCH 1/3] lib/amdgpu: add support for gang cs
+Date: Wed, 31 Jan 2024 23:53:28 -0500
+Message-ID: <20240201045330.610006-1-vitaly.prosyak@amd.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240201045330.610006-1-vitaly.prosyak@amd.com>
-References: <20240201045330.610006-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE7:EE_|SJ2PR12MB8134:EE_
-X-MS-Office365-Filtering-Correlation-Id: 690380d7-aa74-471a-9e02-08dc22e1c7ed
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE7:EE_|DM6PR12MB4204:EE_
+X-MS-Office365-Filtering-Correlation-Id: 22309b70-9309-4136-ae4f-08dc22e1c83e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: gI0ZKXV8KaXyK5TQljSMRZo0qXMdMb30PuDIfXcmmggFmsBp0l9ekbnXfNTJOhKZdLc4/ISNiDRCs4D15Nt0qmfSgpQTc5lcbbXEUK1/NlmRbicQIYKjTdlMgxBGYNWZp+E+9Q1EKFA+yOAGOX3wvope9ihtAjJo5mld66KV76NqEdiYZwBfgMQ2x9q1wX2tpOSS7kIlVbPTRYgWKL8r149hnFhvE9H5D5V9Bs+oZ6ZU1ErOPJK0lrgRP+AXmHD2zlTMpOVyrwMMusocKvWPo6UhfTYSp3elVkjRNufX9WfxFD1dLlrneC38kfJx1tX9IMFjbf4DoblArlfBxMToZvDIifSfq0B4eAwIHR+RRmDvRNe5E2QjHiq+7etqNpri91KwgRpx35abjcu7nuwz76lWMTmIJFl4OrPSRxTY/qlYrVX1Pw1Q68IfnQTQeePCV9QODQ4UJ7cWWwUzg6Bxbm3b/1tuvvbAB8Xl8ga64pXUE+oIbcZxdf9d+3di/SO64i/wOu47zzWqWN8YOQJ5fcokKy6K0YNnIA8wI/MNe9nh3b8KKuO9ncfYmxFL28T7yTGRxDn7Opg8v8kGFG4mIan8EP3hjiJKeaFVKW33+hU0jB42wHfkWmMAXMI0yWdUm0lyhjKsebnbcqBhgCV/GGL4jYbSKC/WWm2/Qs+PiMzFjNKpkL4ED3BlZuLBgfZCzVvwPwmdauA0Qv5twlwdwTIn0mSD67TxnDMOawLV42lJjcWVlCq50Uu69oNWP2w3ekvDyzoLZXXT/pBAb/i5Xw==
+X-Microsoft-Antispam-Message-Info: PTvJrydvPQ1ulomYUyWiYxjJXgoIexsUzCF/X2O2ez5h0F5ywgIgGwrcbFsCcfjgbp0IwVK3EL40WexvtOQi6GRbPy5X+MVSp8wo8+mnwe6Hdb4ZnDRUPEJSB/tk4LeAQhzaBLj3gdulSdcGUL81TEauwd8pxZ5MDX/byOAirqSKlZNI1IM2L+5qtJTKrY3ykcyBV6GfNEv7iJUFZlN3KOSKnH2q6fg69renrlFRrnsrxIyjRsffbu6AM2xt+NkHkX2g21INHCjRSzxhxW3gslSMZVXC5w6vRHc/6OfTSdHsRPhaULZN4UNHwK3mw4skXD56m1KV81hhGuZTrPfumCFxssPFWL6Gq2XyVa+rYNfeH4UL30/RtMaYZ2mT4R/aTK2PyRpXZwjlfKYH30va1KSjIiKH+xx5f8mWJUX1GnGAx19lab4XXb1Na/0oRsyv1kdmFiFPHdCwKuFcD4cHh028W02ECErEfZ5z79ZlTl9e73mJX9bGJuLEJh2+yUAoRYBR+EIRfLHXvjDF+c7iD/MWx7X/ZWNQhoJPvMa5yLMrg21NFCT1kzSaHT1rLJQF42HbsRzG8pPJBQnMjwl9sqzTcHmnqXGO5pnp1o9HQIyn+1sLzbbLEZ1oFwx83gsKCKji7RnG/7BkYcHlJS5eWBQBRC5Fri53ntuIz9lmSwj2F6/d2xk7ULI1j8SLsR5EBYBFwzyPBW8nqUw1/qwHRvQVvtJoruGxICCWtelwE6fhSCkw47wV0MwIQhPlBLDUByx7d2KioGybWArFj+79Kw==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(136003)(396003)(346002)(39860400002)(376002)(230922051799003)(451199024)(186009)(82310400011)(1800799012)(64100799003)(46966006)(40470700004)(36840700001)(316002)(4326008)(54906003)(6916009)(70586007)(8936002)(70206006)(8676002)(36756003)(478600001)(86362001)(5660300002)(2906002)(41300700001)(2876002)(30864003)(40460700003)(336012)(83380400001)(40480700001)(47076005)(1076003)(2616005)(426003)(82740400003)(81166007)(356005)(36860700001)(26005)(7696005)(6666004)(36900700001);
+ SFS:(13230031)(4636009)(396003)(136003)(39860400002)(376002)(346002)(230922051799003)(64100799003)(451199024)(1800799012)(82310400011)(186009)(36840700001)(46966006)(40470700004)(316002)(6916009)(356005)(2906002)(40480700001)(54906003)(40460700003)(8936002)(8676002)(36756003)(4326008)(36860700001)(47076005)(86362001)(70206006)(5660300002)(2876002)(70586007)(81166007)(82740400003)(83380400001)(26005)(336012)(426003)(1076003)(2616005)(6666004)(7696005)(41300700001)(478600001)(36900700001);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2024 04:53:49.5586 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 690380d7-aa74-471a-9e02-08dc22e1c7ed
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2024 04:53:50.0898 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 22309b70-9309-4136-ae4f-08dc22e1c83e
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB03.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00001CE7.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8134
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4204
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,436 +102,148 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Pierre-eric Pelloux <pierre-eric.pelloux-prayer@amd.com>, Christian
- Koenig <christian.koenig@amd.com>, Alex Deucher <alexander.deucher@amd.com>,
- Marek Olsak <marek.olsak@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+ Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>, Christian
+ Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Add a cs helper function.
-CS helper function works as RADV
-radv_amdgpu_cs_submit. We want to validate
-and ensure the integrity of the following
-functionalities when  the following method
-is called 'amdgpu_cs_submit_raw2':
+When gang command submission is used we need to add fields
+for the second buf and second pm4 packet.
 
-1. Gang submission when several different IPs are into
-   a single command, but those IPs are shared the
-   instance and ring numbers(ip_instance, ring).
-2. Use 'AMDGPU_CHUNK_ID_BO_HANDLES' vs explicit parameter into 'amdgpu_cs_submit_raw2'.
-3. Not use  'AMDGPU_CHUNK_ID_DEPENDENCIES'.
-4. User fence always present except for multimedia ring commands.
-
-RADV uses those scenarios.
+Add ASIC-dependent implementation of WAIT_REG_MEM used to poll on
+location in the register or memory space until a reference value
+is satisfied.
 
 Cc: Jesse Zhang <jesse.zhang@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Marek Olsak <marek.olsak@amd.com>
-Cc: Pierre-eric Pelloux <pierre-eric.pelloux-prayer@amd.com>
+Signed-off-by: Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_cs_radv.c   | 241 +++++++++++++++++++++++++++++++++++++
- lib/amdgpu/amd_cs_radv.h   | 112 +++++++++++++++++
- lib/amdgpu/amd_ip_blocks.h |   2 +
- lib/meson.build            |   1 +
- 4 files changed, 356 insertions(+)
- create mode 100644 lib/amdgpu/amd_cs_radv.c
- create mode 100644 lib/amdgpu/amd_cs_radv.h
+ lib/amdgpu/amd_ip_blocks.c | 35 +++++++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_ip_blocks.h | 20 ++++++++++++++++----
+ 2 files changed, 51 insertions(+), 4 deletions(-)
 
-diff --git a/lib/amdgpu/amd_cs_radv.c b/lib/amdgpu/amd_cs_radv.c
-new file mode 100644
-index 000000000..97fda195a
---- /dev/null
-+++ b/lib/amdgpu/amd_cs_radv.c
-@@ -0,0 +1,241 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright 2024 Advanced Micro Devices, Inc.
-+ */
-+#include <time.h>
-+#include <sys/time.h>
-+#include <amdgpu_drm.h>
-+
-+#include "lib/amdgpu/amd_memory.h"
-+#include "lib/amdgpu/amd_sdma.h"
-+#include "lib/amdgpu/amd_PM4.h"
-+#include "lib/amdgpu/amd_cs_radv.h"
-+
-+#define TIME_MONOTONIC 2
-+#define OS_TIMEOUT_INFINITE 0xffffffffffffffffull
-+
-+static bool
-+amdgpu_cs_has_user_fence(struct amdgpu_cs_request_radv *request)
+diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+index a7ccfa38b..79ce7b5a8 100644
+--- a/lib/amdgpu/amd_ip_blocks.c
++++ b/lib/amdgpu/amd_ip_blocks.c
+@@ -288,6 +288,39 @@ gfx_ring_copy_linear(const struct amdgpu_ip_funcs *func,
+ 	return 0;
+ }
+ 
++static int
++gfx_ring_wait_reg_mem(const struct amdgpu_ip_funcs *func,
++			const struct amdgpu_ring_context *ring_context,
++			uint32_t *pm4_dw)
 +{
-+	return request->ip_type != AMDGPU_HW_IP_UVD && request->ip_type != AMDGPU_HW_IP_VCE &&
-+			request->ip_type != AMDGPU_HW_IP_UVD_ENC && request->ip_type != AMDGPU_HW_IP_VCN_DEC &&
-+			request->ip_type != AMDGPU_HW_IP_VCN_ENC && request->ip_type != AMDGPU_HW_IP_VCN_JPEG;
++	uint32_t i;
++
++	i = *pm4_dw;
++	ring_context->pm4[i++] = PACKET3(PACKET3_WAIT_REG_MEM, 5);
++	ring_context->pm4[i++] = (WAIT_REG_MEM_MEM_SPACE(1) | /* memory */
++							WAIT_REG_MEM_FUNCTION(3) | /* == */
++							WAIT_REG_MEM_ENGINE(0));  /* me */
++	ring_context->pm4[i++] = lower_32_bits(ring_context->bo_mc);
++	ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
++	ring_context->pm4[i++] = func->deadbeaf; /* reference value */
++	ring_context->pm4[i++] = 0xffffffff; /* and mask */
++	ring_context->pm4[i++] = 0x00000004; /* poll interval */
++	*pm4_dw = i;
++
++	return 0;
 +}
 +
-+static int64_t
-+os_time_get_nano(void)
++static int
++sdma_ring_wait_reg_mem(const struct amdgpu_ip_funcs *func,
++			const struct amdgpu_ring_context *ring_context,
++			uint32_t *pm4_dw)
 +{
-+	struct timespec ts;
-+
-+	timespec_get(&ts, TIME_MONOTONIC);
-+	return ts.tv_nsec + ts.tv_sec*INT64_C(1000000000);
-+}
-+
-+static int64_t
-+os_time_get_absolute_timeout(uint64_t timeout)
-+{
-+	int64_t time, abs_timeout;
-+
-+	/* Also check for the type upper bound. */
-+	if (timeout == OS_TIMEOUT_INFINITE || timeout > INT64_MAX)
-+		return OS_TIMEOUT_INFINITE;
-+
-+	time = os_time_get_nano();
-+	abs_timeout = time + (int64_t)timeout;
-+
-+	/* Check for overflow. */
-+	if (abs_timeout < time)
-+		return OS_TIMEOUT_INFINITE;
-+
-+	return abs_timeout;
-+}
-+
-+static void
-+os_time_sleep(int64_t usecs)
-+{
-+	struct timespec time;
-+
-+	time.tv_sec = usecs / 1000000;
-+	time.tv_nsec = (usecs % 1000000) * 1000;
-+	while (clock_nanosleep(CLOCK_MONOTONIC, 0, &time, &time) == EINTR)
-+		;
-+}
-+
-+uint32_t
-+amdgpu_get_bo_handle(struct amdgpu_bo *bo)
-+{
-+	uint32_t handle;
 +	int r;
 +
-+	r = amdgpu_bo_export(bo, amdgpu_bo_handle_type_kms, &handle);
-+	igt_assert_eq(r, 0);
-+	return handle;
-+}
-+
-+static uint32_t
-+radv_to_amdgpu_priority(enum amdgpu_ctx_priority_radv radv_priority)
-+{
-+	switch (radv_priority) {
-+	case AMDGPU_IGT_CTX_PRIORITY_REALTIME:
-+		return AMDGPU_CTX_PRIORITY_VERY_HIGH;
-+	case AMDGPU_IGT_CTX_PRIORITY_HIGH:
-+		return AMDGPU_CTX_PRIORITY_HIGH;
-+	case AMDGPU_IGT_CTX_PRIORITY_MEDIUM:
-+		return AMDGPU_CTX_PRIORITY_NORMAL;
-+	case AMDGPU_IGT_CTX_PRIORITY_LOW:
-+		return AMDGPU_CTX_PRIORITY_LOW;
-+	default:
-+		return AMDGPU_CTX_PRIORITY_NORMAL;
-+	}
-+}
-+
-+uint32_t
-+amdgpu_ctx_radv_create(amdgpu_device_handle device,
-+		enum amdgpu_ctx_priority_radv priority, struct amdgpu_ctx_radv **rctx)
-+{
-+	struct amdgpu_ctx_radv *ctx;
-+	uint32_t amdgpu_priority, r;
-+
-+	ctx = calloc(1, sizeof(*ctx));
-+	igt_assert(ctx);
-+	ctx->fence_bo = calloc(1, sizeof(*ctx->fence_bo));
-+	igt_assert(ctx->fence_bo);
-+
-+	amdgpu_priority = radv_to_amdgpu_priority(priority);
-+	r = amdgpu_cs_ctx_create2(device, amdgpu_priority, &ctx->ctx);
-+
-+	assert(AMDGPU_HW_IP_NUM * MAX_RINGS_PER_TYPE * 4 * sizeof(uint64_t) <= 4096);
-+	ctx->fence_bo->size = 4096;
-+
-+	ctx->fence_bo->bo = gpu_mem_alloc(device, ctx->fence_bo->size, 8, AMDGPU_GEM_DOMAIN_GTT,
-+			AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED, &ctx->fence_bo->vmc_addr,
-+			&ctx->fence_bo->va_handle);
-+
-+	*rctx = ctx;
++	r = gfx_ring_wait_reg_mem(func, ring_context, pm4_dw);
 +	return r;
-+
 +}
 +
-+void
-+amdgpu_ctx_radv_destroy(amdgpu_device_handle device, struct amdgpu_ctx_radv *rwctx)
-+{
-+	unsigned int ip, ring;
-+
-+	for (ip = 0; ip <= AMDGPU_HW_IP_NUM; ++ip) {
-+		for (ring = 0; ring < MAX_RINGS_PER_TYPE; ++ring) {
-+			if (rwctx->queue_syncobj[ip][ring])
-+				amdgpu_cs_destroy_syncobj(device, rwctx->queue_syncobj[ip][ring]);
-+		}
-+	}
-+	gpu_mem_free(rwctx->fence_bo->bo,
-+				rwctx->fence_bo->va_handle,
-+				rwctx->fence_bo->vmc_addr,
-+				rwctx->fence_bo->size);
-+	free(rwctx->fence_bo);
-+	amdgpu_cs_ctx_free(rwctx->ctx);
-+	free(rwctx);
-+}
-+
-+uint32_t
-+amdgpu_cs_submit_radv(amdgpu_device_handle dev, struct amdgpu_ring_context *ring_context,
-+		struct amdgpu_cs_request_radv *request, struct amdgpu_ctx_radv *ctx)
-+{
-+	int r, num_chunks,  size, i;
-+	struct drm_amdgpu_cs_chunk *chunks;
-+	struct drm_amdgpu_cs_chunk_data *chunk_data;
-+	struct drm_amdgpu_bo_list_in bo_list_in;
-+	struct amdgpu_cs_fence_info fence_info;
-+	uint32_t result = 0;
-+	uint64_t abs_timeout_ns;
-+	bool has_user_fence;
-+
-+	has_user_fence = amdgpu_cs_has_user_fence(request);
-+	size = request->number_of_ibs + 1 + (has_user_fence ? 1 : 0) + 1 /* bo list */ + 3;
-+	chunks = malloc(sizeof(chunks[0]) * size);
-+	size = request->number_of_ibs + (has_user_fence ? 1 : 0);
-+	chunk_data = malloc(sizeof(chunk_data[0]) * size);
-+
-+	num_chunks = request->number_of_ibs;
-+	for (i = 0; i < request->number_of_ibs; i++) {
-+
-+		struct amdgpu_cs_ib_info_radv *ib;
-+
-+		chunks[i].chunk_id = AMDGPU_CHUNK_ID_IB;
-+		chunks[i].length_dw = sizeof(struct drm_amdgpu_cs_chunk_ib) / 4;
-+		chunks[i].chunk_data = (uint64_t)(uintptr_t)&chunk_data[i];
-+
-+		ib = &request->ibs[i];
-+		assert(ib->size);
-+
-+		chunk_data[i].ib_data._pad = 0;
-+		chunk_data[i].ib_data.va_start = ib->ib_mc_address;
-+		chunk_data[i].ib_data.ib_bytes = ib->size * 4;
-+		chunk_data[i].ib_data.ip_type = ib->ip_type;
-+		chunk_data[i].ib_data.flags = ib->flags;
-+
-+		chunk_data[i].ib_data.ip_instance = request->ip_instance;
-+		chunk_data[i].ib_data.ring = request->ring;
-+	}
-+
-+	assert(chunk_data[request->number_of_ibs - 1].ib_data.ip_type == request->ip_type);
-+
-+	if (has_user_fence) {
-+		i = num_chunks++;
-+		chunks[i].chunk_id = AMDGPU_CHUNK_ID_FENCE;
-+		chunks[i].length_dw = sizeof(struct drm_amdgpu_cs_chunk_fence) / 4;
-+		chunks[i].chunk_data = (uint64_t)(uintptr_t)&chunk_data[i];
-+
-+		fence_info.handle = ctx->fence_bo->bo;
-+		/* Need to reserve 4 QWORD for user fence:
-+		 * QWORD[0]: completed fence
-+		 * QWORD[1]: preempted fence
-+		 * QWORD[2]: reset fence
-+		 * QWORD[3]: preempted then reset
-+		 */
-+		fence_info.offset = (request->ip_type * MAX_RINGS_PER_TYPE + request->ring) * 4;
-+		amdgpu_cs_chunk_fence_info_to_data(&fence_info, &chunk_data[i]);
-+	}
-+
-+	bo_list_in.operation = ~0;
-+	bo_list_in.list_handle = ~0;
-+	bo_list_in.bo_number = request->num_handles;
-+	bo_list_in.bo_info_size = sizeof(struct drm_amdgpu_bo_list_entry);
-+	bo_list_in.bo_info_ptr = (uint64_t)(uintptr_t)request->handles;
-+
-+	chunks[num_chunks].chunk_id = AMDGPU_CHUNK_ID_BO_HANDLES;
-+	chunks[num_chunks].length_dw = sizeof(struct drm_amdgpu_bo_list_in) / 4;
-+	chunks[num_chunks].chunk_data = (uintptr_t)&bo_list_in;
-+	num_chunks++;
-+
-+	/* The kernel returns -ENOMEM with many parallel processes using GDS such as test suites quite
-+	 * often, but it eventually succeeds after enough attempts. This happens frequently with dEQP
-+	 * using NGG streamout.
-+	 */
-+	 abs_timeout_ns = os_time_get_absolute_timeout(1000000000ull); /* 1s */
-+
-+	r = 0;
-+	do {
-+		/* Wait 1 ms and try again. */
-+		if (r == -ENOMEM)
-+			os_time_sleep(1000);
-+
-+		r = amdgpu_cs_submit_raw2(dev, ctx->ctx, 0,
-+				num_chunks, chunks, &request->seq_no);
-+	} while (r == -ENOMEM && os_time_get_nano() < abs_timeout_ns);
-+
-+	if (r) {
-+		if (r == -ENOMEM) {
-+			igt_info("igt/amdgpu: Not enough memory for command submission.\n");
-+			result = ENOMEM;
-+		} else if (r == -ECANCELED) {
-+			igt_info("igt/amdgpu: The CS has been cancelled because the context is lost.\n");
-+			result = ECANCELED;
-+		} else {
-+			igt_info("igt/amdgpu: The CS has been rejected, see dmesg for more information (%i).\n", r);
-+			result = EINVAL;
-+		}
-+	}
-+	free(chunks);
-+	free(chunk_data);
-+	return result;
-+}
-diff --git a/lib/amdgpu/amd_cs_radv.h b/lib/amdgpu/amd_cs_radv.h
-new file mode 100644
-index 000000000..044f49f7b
---- /dev/null
-+++ b/lib/amdgpu/amd_cs_radv.h
-@@ -0,0 +1,112 @@
-+/* SPDX-License-Identifier: MIT
-+ * Copyright 2024 Advanced Micro Devices, Inc.
-+ */
-+
-+#ifndef AMD_CS_RADV
-+#define AMD_CS_RADV
-+
-+#include "amd_ip_blocks.h"
-+#define AMDGPU_CS_GANG_SIZE	4
-+
-+enum amdgpu_ctx_priority_radv {
-+	AMDGPU_IGT_CTX_PRIORITY_LOW = 0,
-+	AMDGPU_IGT_CTX_PRIORITY_MEDIUM,
-+	AMDGPU_IGT_CTX_PRIORITY_HIGH,
-+	AMDGPU_IGT_CTX_PRIORITY_REALTIME,
-+};
-+
-+struct amdgpu_cs_ib_info_radv {
-+	int64_t flags;
-+	uint64_t ib_mc_address;
-+	uint32_t size;
-+	enum amd_ip_block_type ip_type;
-+};
-+
-+enum { MAX_RINGS_PER_TYPE = 8 };
-+
-+struct amdgpu_fence_radv {
-+	struct amdgpu_cs_fence fence;
-+};
-+
-+struct amdgpu_winsys_bo_radv {
-+	amdgpu_va_handle va_handle;
-+	uint64_t vmc_addr;
-+	uint64_t size;
-+	bool is_virtual;
-+	uint8_t priority;
-+
-+	union {
-+		/* physical bo */
-+		struct {
-+			amdgpu_bo_handle bo;
-+			uint32_t bo_handle;
-+		};
-+		/* virtual bo */
-+		struct {
-+			uint32_t range_count;
-+			uint32_t range_capacity;
-+			struct amdgpu_winsys_bo_radv **bos;
-+			uint32_t bo_count;
-+			uint32_t bo_capacity;
-+		};
-+	};
-+};
-+
-+
-+struct amdgpu_ctx_radv {
-+	amdgpu_context_handle ctx;
-+	struct amdgpu_fence_radv last_submission[AMDGPU_HW_IP_NUM + 1][MAX_RINGS_PER_TYPE];
-+	struct amdgpu_winsys_bo_radv *fence_bo;
-+
-+	uint32_t queue_syncobj[AMDGPU_HW_IP_NUM + 1][MAX_RINGS_PER_TYPE];
-+	bool queue_syncobj_wait[AMDGPU_HW_IP_NUM + 1][MAX_RINGS_PER_TYPE];
-+};
-+
-+
-+
-+struct amdgpu_cs_request_radv {
-+	/** Specify HW IP block type to which to send the IB. */
-+	uint32_t ip_type;
-+
-+	/** IP instance index if there are several IPs of the same type. */
-+	uint32_t ip_instance;
-+
-+	/**
-+	 * Specify ring index of the IP. We could have several rings
-+	 * in the same IP. E.g. 0 for SDMA0 and 1 for SDMA1.
-+	 */
-+	uint32_t ring;
-+
-+	/**
-+	 * BO list handles used by this request.
-+	 */
-+	struct drm_amdgpu_bo_list_entry *handles;
-+	uint32_t num_handles;
-+
-+	/** Number of IBs to submit in the field ibs. */
-+	uint32_t number_of_ibs;
-+
-+	/**
-+	 * IBs to submit. Those IBs will be submitted together as single entity
-+	 */
-+	struct amdgpu_cs_ib_info_radv ibs[AMDGPU_CS_GANG_SIZE];
-+	/**
-+	 * The returned sequence number for the command submission
-+	 */
-+	uint64_t seq_no;
-+};
-+
-+uint32_t
-+amdgpu_get_bo_handle(struct amdgpu_bo *bo);
-+
-+uint32_t
-+amdgpu_ctx_radv_create(amdgpu_device_handle device,
-+		enum amdgpu_ctx_priority_radv priority, struct amdgpu_ctx_radv **rctx);
-+void
-+amdgpu_ctx_radv_destroy(amdgpu_device_handle device, struct amdgpu_ctx_radv *rwctx);
-+
-+uint32_t
-+amdgpu_cs_submit_radv(amdgpu_device_handle device, struct amdgpu_ring_context *ring_context,
-+		struct amdgpu_cs_request_radv *request,  struct amdgpu_ctx_radv *ctx);
-+
-+#endif
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index 4cad30d1e..97a9ad489 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -20,7 +20,9 @@ enum amd_ip_block_type {
- 	AMD_IP_UVD_ENC,
- 	AMD_IP_VCN_DEC,
- 	AMD_IP_VCN_ENC,
-+	AMD_IP_VCN_UNIFIED = AMD_IP_VCN_ENC,
- 	AMD_IP_VCN_JPEG,
-+	AMD_IP_VPE,
- 	AMD_IP_MAX,
+ /* we may cobine these two functions later */
+ static int
+ x_compare(const struct amdgpu_ip_funcs *func,
+@@ -336,6 +369,7 @@ static struct amdgpu_ip_funcs gfx_v8_x_ip_funcs = {
+ 	.compare = x_compare,
+ 	.compare_pattern = x_compare_pattern,
+ 	.get_reg_offset = gfx_v8_0_get_reg_offset,
++	.wait_reg_mem = gfx_ring_wait_reg_mem,
  };
  
-diff --git a/lib/meson.build b/lib/meson.build
-index 0fc11b26c..6122861d8 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -144,6 +144,7 @@ if libdrm_amdgpu.found()
- 		'amdgpu/amd_memory.c',
- 		'amdgpu/amd_command_submission.c',
- 		'amdgpu/amd_compute.c',
-+		'amdgpu/amd_cs_radv.c',
- 		'amdgpu/amd_gfx.c',
- 		'amdgpu/amd_ip_blocks.c',
- 		'amdgpu/amd_shaders.c',
+ static struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
+@@ -351,6 +385,7 @@ static struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
+ 	.compare = x_compare,
+ 	.compare_pattern = x_compare_pattern,
+ 	.get_reg_offset = gfx_v8_0_get_reg_offset,
++	.wait_reg_mem = sdma_ring_wait_reg_mem,
+ };
+ 
+ struct amdgpu_ip_block_version gfx_v8_x_ip_block = {
+diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+index aef433e7f..4cad30d1e 100644
+--- a/lib/amdgpu/amd_ip_blocks.h
++++ b/lib/amdgpu/amd_ip_blocks.h
+@@ -31,22 +31,31 @@ struct amdgpu_ring_context {
+ 	int res_cnt; /* num of bo in amdgpu_bo_handle resources[2] */
+ 
+ 	uint32_t write_length;  /* length of data */
++	uint32_t write_length2; /* length of data for second packet */
+ 	uint32_t *pm4;		/* data of the packet */
+ 	uint32_t pm4_size;	/* max allocated packet size */
+ 	bool secure;		/* secure or not */
+ 
+-	uint64_t bo_mc;		/* result from amdgpu_bo_alloc_and_map */
+-	uint64_t bo_mc2;	/* result from amdgpu_bo_alloc_and_map */
++	uint64_t bo_mc;		/* GPU address of first buffer */
++	uint64_t bo_mc2;	/* GPU address for p4 packet */
++	uint64_t bo_mc3;	/* GPU address of second buffer */
++	uint64_t bo_mc4;	/* GPU address of second p4 packet */
+ 
+ 	uint32_t pm4_dw;	/* actual size of pm4 */
++	uint32_t pm4_dw2;	/* actual size of second pm4 */
+ 
+-	volatile uint32_t *bo_cpu;
+-	volatile uint32_t *bo2_cpu;
++	volatile uint32_t *bo_cpu;	/* cpu adddress of mapped GPU buf */
++	volatile uint32_t *bo2_cpu;	/* cpu adddress of mapped pm4 */
++	volatile uint32_t *bo3_cpu;	/* cpu adddress of mapped GPU second buf */
++	volatile uint32_t *bo4_cpu;	/* cpu adddress of mapped second pm4 */
+ 
+ 	uint32_t bo_cpu_origin;
+ 
+ 	amdgpu_bo_handle bo;
+ 	amdgpu_bo_handle bo2;
++	amdgpu_bo_handle bo3;
++	amdgpu_bo_handle bo4;
++
+ 	amdgpu_bo_handle boa_vram[2];
+ 	amdgpu_bo_handle boa_gtt[2];
+ 
+@@ -56,6 +65,8 @@ struct amdgpu_ring_context {
+ 	amdgpu_bo_handle resources[4]; /* amdgpu_bo_alloc_and_map */
+ 	amdgpu_va_handle va_handle;    /* amdgpu_bo_alloc_and_map */
+ 	amdgpu_va_handle va_handle2;   /* amdgpu_bo_alloc_and_map */
++	amdgpu_va_handle va_handle3;   /* amdgpu_bo_alloc_and_map */
++	amdgpu_va_handle va_handle4;   /* amdgpu_bo_alloc_and_map */
+ 
+ 	struct amdgpu_cs_ib_info ib_info;     /* amdgpu_bo_list_create */
+ 	struct amdgpu_cs_request ibs_request; /* amdgpu_cs_query_fence_status */
+@@ -76,6 +87,7 @@ struct amdgpu_ip_funcs {
+ 	int (*compare)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, int div);
+ 	int (*compare_pattern)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, int div);
+ 	int (*get_reg_offset)(enum general_reg reg);
++	int (*wait_reg_mem)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, uint32_t *pm4_dw);
+ 
+ };
+ 
 -- 
 2.25.1
 
