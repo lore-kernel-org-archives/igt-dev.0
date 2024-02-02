@@ -4,146 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D572C4828F
-	for <igt-dev@archiver.kernel.org>; Fri,  2 Feb 2024 16:05:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3E35C48291
+	for <igt-dev@archiver.kernel.org>; Fri,  2 Feb 2024 17:17:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C9EA010F0B4;
-	Fri,  2 Feb 2024 16:05:04 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BSJxmbtl";
-	dkim-atps=neutral
-X-Greylist: delayed 427 seconds by postgrey-1.36 at gabe;
- Fri, 02 Feb 2024 16:05:03 UTC
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33CC610F0B4
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Feb 2024 16:05:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706889903; x=1738425903;
- h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=54QiplHi/BpFd3cYSkmtZisvQ7nAftMx9d6+bM5oEJs=;
- b=BSJxmbtlug7KXCtGLBxLidpLQvNkULusb0lS/3JPUZ6yqp1UqT27VkjH
- W73iWUomaVtm3gaJsK7KMQAL//tN7iW5Jf2aHOKJpHeBkumtgq6Wjyty0
- 7cUWn4PxOy2+G3dOQdg08yIzzD0F6WMk50Ks5x1jMnF/gQi68HcB4+ZG9
- X7tMPSr2hvWAC+U4UEs/W4oT8Z0V/JtSrE2Z/fnkeNguwIIQVY+cki78J
- 9qYABdQuVQmuTV6Tt17HicQYQgOoOvad3M1uSHt5at8EHvNW6zEi9eaAN
- Ir7ec79kCeGQ9ti0hHu2+Y5IKxYxG4heH7tioodJPfY+mwyl9b0rAVkqJ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="355213"
-X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; 
-   d="scan'208";a="355213"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Feb 2024 07:57:53 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; 
-   d="scan'208";a="408647"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
- by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 02 Feb 2024 07:57:54 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 2 Feb 2024 07:57:52 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Fri, 2 Feb 2024 07:57:52 -0800
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.41) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 2 Feb 2024 07:57:52 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FYJkl0QdJnUdde4uQ/LA+3cp4qnW0ZtZJZwW/AzmmPyo66jwuTtsg58o4HO8tNWmaH/0zzqEwZLXcXav78C8KcnZ9mfb6PT0JCX/K+vACTa5cOWDPx6nBX7IxH+UvU7WJGYwGQIB/T5+ZRmx34437zhCUXUj9NPzBJwFoijvr1Fxdfh9onaXhEBcj3sM/MJMBvegYHoG4JdoSRub0P7K6TeJkWyz/WuXAzZz+Yt/kdsOkk13I3je3mVqkcYu9ZUMkLTb9YM/xUTFb8KzS9brVKo2MPfn0GRJ1b2I2mrvMZAIE1ZGgje//NGC7Ir+vjlDxvVIUdFU3x8HFtMXwz+n5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=y9KypUP/19zcb6TISagZMVRtHRQMfbziSpAVgKw20nk=;
- b=V+U3MZ6VtiNO7XoXGy7V/HTIfu3O+0Cu0LOJixqGnkwCAslm1SqNURDph9zSpHcCpma/Kc1J7M6pSAOFPdKRvZPIYBS9tuj9VR4GKQj1cu4ZIQsIlWnZYpwHF9jaAROdcqLyxxMHFD6J0Z3uM7ljZv1T0mDo9UZnkntQocn+21KwUl3S0usaGGwGOGUazxEY4OA3ox9lqLa901i7+dswhVNoueHHqHMsve6vtwTrUlnD0jo8H1AkK9q5IAF+c0tACeFnzT7UGiBuMQQp5PwtAP9N8wU8CqnZAuKrLPNiqoCci8oL5brQq6hAGMH5g3gin5dFS6Pr4BqT8TrpXP3Hvw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
- by PH7PR11MB5958.namprd11.prod.outlook.com (2603:10b6:510:1e1::22)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.30; Fri, 2 Feb
- 2024 15:57:49 +0000
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::9f32:ce50:1914:e954]) by CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::9f32:ce50:1914:e954%7]) with mapi id 15.20.7249.025; Fri, 2 Feb 2024
- 15:57:48 +0000
-Date: Fri, 2 Feb 2024 09:57:46 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-CC: <igt-dev@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>, "Kamil
- Konieczny" <kamil.konieczny@linux.intel.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>
-Subject: Re: Re: [PATCH i-g-t v3 4/6] lib/kunit: Support writable filter*
- parameters of kunit module
-Message-ID: <lqfhao6zl6hynfgumjjztky3bqsuxte4nekzrhsilkf2tmyikv@5bb3t3fksddx>
-References: <20240201190237.150754-8-janusz.krzysztofik@linux.intel.com>
- <20240201190237.150754-12-janusz.krzysztofik@linux.intel.com>
- <3ehhnx6ijqdzahhkemcf5x4avps4e6inrrgd6p4dqgvu7ydo32@zs7hpimyjhy4>
- <3705187.TKLx3GfHUD@jkrzyszt-mobl2.ger.corp.intel.com>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <3705187.TKLx3GfHUD@jkrzyszt-mobl2.ger.corp.intel.com>
-X-ClientProxiedBy: BY5PR03CA0016.namprd03.prod.outlook.com
- (2603:10b6:a03:1e0::26) To CY5PR11MB6139.namprd11.prod.outlook.com
- (2603:10b6:930:29::17)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8F18110EFE0;
+	Fri,  2 Feb 2024 17:17:20 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 32EB010EFE0;
+ Fri,  2 Feb 2024 17:17:19 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1720992852945824694=="
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|PH7PR11MB5958:EE_
-X-MS-Office365-Filtering-Correlation-Id: c7e6ae12-070f-44c6-dd56-08dc2407b442
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vAT4Sq+BGfgPBYPhUH80W96FlJ0Q1aOjwUbIkCOPCsgfXpfaTpOcEdVjt1YeNWufLWZF5LI0YyZHAlR6rIN4TnXFCgS8u5Kqy8vHOCyondJuqPDKZBL8T+9t2tqnQHW/L4GmeblSTlsjWbf1rDkIztPH9/Et7L34eg68x+HayHzz7ISDU14Q5vI16lHX3Q1mIAMKLq+Is0tPx4tvuvP/zp1ybvQoEUcexJhBNyY1DMDmxRFVVzpKHCO15+Z4QLTaj5E1cKSbJ2dEnyheF1+ctcAanFJN1raa2yxO4ZvQgGaeqPsRbeLIl/quSpDykJBC+lohMfQ/eo4p7mhSYomhVmt6lWqRzT0PRvSwRJPxI6SWm3BG4gyV3WBHaDwiyDR4qZthpAX4KHEzxwkHaPXwGj+3DpcXPDtr56VFKBi+TWhzbxO3extoUnzSXaMLtKKNAGhAjbrGJOnD52ON4lpz7TVn31q5YxV/xTL2nOTWM0aqvgeoADaGtDb3cwGHVPkhMO8YXFKHxvWM3QPNTtfWRONCN5OBlwfZDF1HBGkQ2hSav1uBNmWZ1gTeXugYM9q4
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(7916004)(346002)(396003)(39860400002)(136003)(376002)(366004)(230922051799003)(1800799012)(451199024)(64100799003)(186009)(9686003)(6512007)(6506007)(26005)(4326008)(8676002)(8936002)(54906003)(316002)(5660300002)(2906002)(30864003)(6916009)(66476007)(33716001)(66946007)(86362001)(66556008)(41300700001)(6486002)(478600001)(82960400001)(83380400001)(38100700002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?6XmQhT+uQeXzfhDvnCxX8+Z/lmqivstPTnPqJXipBJIal6KN9BbH0hfTysOA?=
- =?us-ascii?Q?jmZP/J6Mzpbox/CP/zx9v2j0bJauRS6vpju9DemuBQ3uPB5tV/XWCniMRo9d?=
- =?us-ascii?Q?aK7+RKZc5lCgR8L9vs8pnB9E1yLe0jBPmMY8RDMneANwba1sxc0iAkg63OTT?=
- =?us-ascii?Q?5lDA7CVD6CE+Axtois1hk7e47OgIiodx1UBpoIrl1W870PCcF7nkAyuA8Zwr?=
- =?us-ascii?Q?tThEO2V8ABcZEjgwl+2l+qlbjLiceXV5jS4hejtf9mWp7w54Iyx3FvMZNIC9?=
- =?us-ascii?Q?eid57bOOQMkLjAjW4tciEPLZmSV4m+uBTUFNNksf+U0NE0rGaKoh8Bk1wGGT?=
- =?us-ascii?Q?iAQcyVdwRqafD43vn+StvzLCUnXJc9E1uDbc9rUIMAoS1qgrwkVXsPeH5kBc?=
- =?us-ascii?Q?Fkv0aZucup1aUmTKxCR5sMptpIwbhi6CtnvQP5WCeB/uuilb+ps3C9s3wtmR?=
- =?us-ascii?Q?EX3p9jJlVfhASSWlWvgpQNYPVQnmOjXoqXymLz1WzgyHKAanbugU+en1BmFX?=
- =?us-ascii?Q?qpJtZ/Dan0ID41Ik9SXyJEMuCJGd5LrRswPo7gAWuivyUsDITZwFThBa+J08?=
- =?us-ascii?Q?KJEXkU+fwWq0S62uf17wyS32bWe+VO/JD3WNV+1HRH0tg8KU1SY8G2y4/JMQ?=
- =?us-ascii?Q?tt674bozZrEWBM7av3D8TQxsGKLPhB3iD1aU1HYjnAlT22u1NKwEweoVdgpM?=
- =?us-ascii?Q?Dy31ubzhYBeTpxNutnIlLkNiiE7SxfjPPpiiPP57kLxwoirbi6eKEd1Zcj/I?=
- =?us-ascii?Q?4zDTS84U0mF/+jLa/8DCf9nz+DWvE5bvbwgLPgOfWaXijJBzQsSXf70d8d5j?=
- =?us-ascii?Q?za8jbvigc0Op1dyKeUXxHY8JSxFvpCTvnH4y0JnkOG4sb5+QvZ6f7386yHxa?=
- =?us-ascii?Q?N4j0CRxA+lYAItdhTz7jvfEkgL+up7p/a0S33FRWRJNAXT5dSspwViB5J2e/?=
- =?us-ascii?Q?biZN022i1B9JqcVR8+Vr0XQkweQUFu9PHwHMwXqnB4GRYP/6OS8iu5xK946K?=
- =?us-ascii?Q?c2xkdo/CdzbpHXUb6ASH9SR0SR+lZYlnWTxjoFSEJvL9I7+KXvc7iX3btmj9?=
- =?us-ascii?Q?gUkFx62VLpf5CsL8LX9sDnGcACZAh8w0NWZj75WvOaMmQ5FRC1ZaYJCtd/ie?=
- =?us-ascii?Q?rmiq3fzzM/Wp1TGe2ZPJWgc00tmy4Ot3h7pOrk0pBM023OK0IMX5egne1qPK?=
- =?us-ascii?Q?96782X8e7Z8c7jqYynRclo64FfQgufc/aJ+xk3xi5RqSmVhkMSbUXJ2CWS6e?=
- =?us-ascii?Q?YC04at8CQTRZ67I0wbOGkghklYk7QTSGqWrou7J4Vm/ooMTegRQmyfipUpqh?=
- =?us-ascii?Q?UaMqF587tzQ/tXAuByBjp78YNIJzyNem1+4WdIc6wGr6J07eqQHomUz/PikU?=
- =?us-ascii?Q?C9UOWnlBvJYc782rnG0ZU85gaa2gVORHW5NjBgsZApinQo84QIBWzhZKEikT?=
- =?us-ascii?Q?Wt17mi21U/DQuHJeYseYoRWj9m/l+Omu8gS7OE1EcY5raHRswf4ZBjkvP9Dc?=
- =?us-ascii?Q?ohAjKh2Rzlck9Gr6oqCh7MflrZBYDH1VG9nYNxCfF/zIfGiEe4P4BewkABfY?=
- =?us-ascii?Q?yqnh79WKDVA9yKXViZpwZtHnQEN7yUlSrfMSKAr1IgBzOrE7zSBKs7DqKCV9?=
- =?us-ascii?Q?aQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: c7e6ae12-070f-44c6-dd56-08dc2407b442
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2024 15:57:48.8936 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dwpjzURMvbGeKpK+ECd9JfybELKa2THhAmknukJUZxjcABALVGYFDnc4g9TCmU1+wkamTaHH8ZoaKONgbB7Z1hFqD1Y/juhBj53UVV8Jpsk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5958
-X-OriginatorOrg: intel.com
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/amdgpu/amd=5Fbypass?=
+ =?utf-8?q?=3A_Fix_psr_edp_rx_crc_read_timeout?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Hersen Wu" <hersenxs.wu@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 02 Feb 2024 17:17:19 -0000
+Message-ID: <170689423921.952961.5676373713381194165@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240202151026.52210-1-hersenxs.wu@amd.com>
+In-Reply-To: <20240202151026.52210-1-hersenxs.wu@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -156,259 +37,201 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Feb 02, 2024 at 11:14:49AM +0100, Janusz Krzysztofik wrote:
->On Thursday, 1 February 2024 21:26:35 CET Lucas De Marchi wrote:
->> On Thu, Feb 01, 2024 at 07:59:20PM +0100, Janusz Krzysztofik wrote:
->> >Instead of wasting resources on reloading the base Kunit module each time
->> >a different set of filter parameters is needed, try to write the required
->> >values to sysfs representation of those parameters.  If that fails (e.g.
->> >on older LTS kernels with read-only filter parameters), fall back to
->> >legacy "no list of test cases available" mode as we do on kernels with
->> >those module parameters not supported at all.
->> >
->> >This modification will also serve as a workaround for the issue of
->> >impossibility to unload the base Kunit module on Xe platforms, available
->> >to IGT as soon as the module supports writable filter parameters.
->> >
->> >v3: Don't read-compare-write, just write the values (Lucas),
->> >  - skip calling igt_sysfs_set() when the string to be written to
->> >    filter_action is empty (Lucas),
->> >  - warn if we leave the filter_action set to "skip" while setting a non-
->> >    default value of the filter parameter,
->> >  - transform generic kunit_set_params() to kunit_set_filtering().
->> >v2: Work around ineffective writes of empty strings to sysfs module
->> >    parameter files (Lucas) by using human readable non-empty strings that
->> >    give the same results as default NULLs,
->> >  - drop fallback to reload of base Kunit module method if assigning new
->> >    values to module parameters via sysfs fails (Lucas), instead use the
->> >    existing fallback to blind execution like if getting a list of test
->> >    cases was not supported at all,
->> >  - split move of open_parameters() helper up in the source file as well
->> >    as cleanup of base KUnit module unloading to separate patches (Kamil),
->> >  - address the issue of the second paragraph of commit description
->> >    suggesting two separate changes combined in one patch (Kamil) by
->> >    rewording the description.
->> >
->> >Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
->> >Cc: Lucas De Marchi <lucas.demarchi@intel.com>
->> >Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->> >---
->> > lib/igt_kmod.c | 91 +++++++++++++++++++++++++++++++++++---------------
->> > 1 file changed, 65 insertions(+), 26 deletions(-)
->> >
->> >diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
->> >index d2c28d0a64..83416d2aa4 100644
->> >--- a/lib/igt_kmod.c
->> >+++ b/lib/igt_kmod.c
->> >@@ -811,6 +811,49 @@ static int open_parameters(const char *module_name)
->> > 	return open(path, O_RDONLY);
->> > }
->> >
->> >+static bool kunit_set_filtering(const char *filter_glob, const char *filter,
->> >+				const char *filter_action)
->> >+{
->> >+	int params;
->> >+	bool ret;
->> >+
->> >+	params = open_parameters("kunit");
->> >+	ret = !igt_debug_on(params < 0);
->>
->> why proceed? just return early when it fails pre-conditions
->
->Right.
->
->> >+
->> >+	/*
->> >+	 * Default values of the KUnit base module filtering parameters
->> >+	 * are all NULLs.  Reapplying those NULLs over sysfs once
->> >+	 * overwritten with non-NULL strings seems not possible.
->> >+	 * As a workaround, we use human-readable strings that exhibit
->> >+	 * the same behaviour as if default NULLs were in place.
->> >+	 */
->> >+	if (ret)
->> >+		ret = !igt_debug_on(!igt_sysfs_set(params, "filter_glob",
->> >+						   filter_glob ?: "*"));
->> >+	if (ret)
->> >+		ret = !igt_debug_on(!igt_sysfs_set(params, "filter",
->> >+						   filter ?: "module!=none"));
->> >+	/*
->> >+	 * In case of filter_action parameter there is no obvious human-
->> >+	 * readable string that behaves like default NULL.  However, if NULL
->>
->> that is not true.. it's just igt_sysfs not doing the right thing to
->
->That depends on how we feel about empty strings, whether they are human-
->readable or not.  For me they're not quite, e.g. when simply reading them back
->from sysfs it's not possible to distinguished them from potential white space,
->unless some graphical representation of non-printing characters is used.
->Maybe it would be more clear if kernel was using a convention to display empty
->strings as e.g. "(empty)", like it displays NULL as "(null)".
+--===============1720992852945824694==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-you can't print NULL. You can print empty like it's done now. That's not
-going to change ever, as it would break perfectly usable and sane
-userspace.
+== Series Details ==
+
+Series: tests/amdgpu/amd_bypass: Fix psr edp rx crc read timeout
+URL   : https://patchwork.freedesktop.org/series/129472/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_14212 -> IGTPW_10632
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_10632 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_10632, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/index.html
+
+Participating hosts (38 -> 36)
+------------------------------
+
+  Missing    (2): fi-snb-2520m bat-adlp-6 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_10632:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@gt_timelines:
+    - bat-jsl-3:          [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-jsl-3/igt@i915_selftest@live@gt_timelines.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-jsl-3/igt@i915_selftest@live@gt_timelines.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10632 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_hangman@error-state-basic:
+    - bat-mtlp-6:         [PASS][3] -> [ABORT][4] ([i915#9414])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-mtlp-6/igt@i915_hangman@error-state-basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-mtlp-6/igt@i915_hangman@error-state-basic.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg2-9:          [PASS][5] -> [ABORT][6] ([i915#10118] / [i915#9840])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-dg2-9/igt@i915_selftest@live@hangcheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-dg2-9/igt@i915_selftest@live@hangcheck.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_pm:
+    - bat-adln-1:         [DMESG-FAIL][7] ([i915#10010]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-adln-1/igt@i915_selftest@live@gt_pm.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-adln-1/igt@i915_selftest@live@gt_pm.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10010]: https://gitlab.freedesktop.org/drm/intel/issues/10010
+  [i915#10026]: https://gitlab.freedesktop.org/drm/intel/issues/10026
+  [i915#10118]: https://gitlab.freedesktop.org/drm/intel/issues/10118
+  [i915#9414]: https://gitlab.freedesktop.org/drm/intel/issues/9414
+  [i915#9840]: https://gitlab.freedesktop.org/drm/intel/issues/9840
 
 
->
->> write an empty string, that does behave like NULL on the kernel side.
->
->Then maybe let's better send the empty string to igt_sysfs_set() instead of
->skipping that, and replace my "human-readable" with "non-NULL" in the
+Build changes
+-------------
 
-as long as the "human-readable" comment is removed, fine. Because empty
-is empty, it's not a non-printing char. Let me try to make it clearer:
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7702 -> IGTPW_10632
 
-	# echo -ne a > /sys/module/firmware_class/parameters/path
-	# hexdump -C /sys/module/firmware_class/parameters/path
-	00000000  61 0a                                             |a.|
-	00000002
+  CI-20190529: 20190529
+  CI_DRM_14212: 1dd92467500a5ead3e44bbdfe15e064dd79b65ef @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10632: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/index.html
+  IGT_7702: bf075a74ece1956fc0e554291591b9da3eab54cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
-There are 2 chars: 'a' and '\n', with the latter always inserted by the
-kernel.
+== Logs ==
 
-	# echo -ne "\0" > /sys/module/firmware_class/parameters/path
-	# hexdump -C /sys/module/firmware_class/parameters/path
-	00000000  0a                                                |.|
-	00000001
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/index.html
 
-there is 1 char, just the \n inserted by the kernel. Nobody would ever
-ask for the kernel to start printing "(newline)" instead of \n.
-
-Yes, the kernel side could behave differently depending if it's NULL
-vs empty. kunit doesn't and shouldn't.
+--===============1720992852945824694==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
-Lucas De Marchi
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
->comments.  Thanks to "module!=none" we are still on the safe side, even before
->igt_sysfs_set() is fixed.
->
->> I'd drop these lines and just justify with the lines below why we are
->> not setting it here.
->>
->> with a small change below we can also move these to use igt_require()
->>
->> >+	 * is requested for both filter and filter_action then that's not a
->> >+	 * problem for us since even if filter_action was previously set to
->> >+	 * "skip" we can leave it as is because our "module!=none" default
->> >+	 * filter guarantees that no test cases are filtered out to be skipped.
->> >+	 */
->> >+	if (ret)
->> >+		ret = !igt_warn_on_f(!filter_action && filter,
->> >+				     "test error: filter_action=NULL requires filter=NULL\n");
->> >+	if (ret && filter_action)
->> >+		ret = !igt_debug_on(!igt_sysfs_set(params, "filter_action",
->> >+						   filter_action));
->> >+
->> >+	if (params >= 0)
->> >+		close(params);
->> >+
->> >+	return ret;
->> >+}
->> >+
->> > struct modprobe_data {
->> > 	struct kmod_module *kmod;
->> > 	const char *opts;
->> >@@ -1116,24 +1159,26 @@ static void kunit_get_tests(struct igt_list_head *tests,
->> > 	/*
->> > 	 * To get a list of test cases provided by a kunit test module, ask the
->> > 	 * generic kunit module to respond with SKIP result for each test found.
->> >-	 * We could also use action=list kunit parameter to get the listing,
->> >-	 * however, parsing a KTAP report -- something that we already can do
->> >-	 * perfectly -- seems to be more safe than extracting a test case list
->> >-	 * of unknown length from /dev/kmsg.
->> >-	 *
->> >-	 * TODO: drop the following workaround, which is required by LTS kernel
->> >-	 *       v6.1 not capable of listing test cases when built as a module.
->> >-	 * If loading the kunit module with required parameters fails then
->> >-	 * assume that we are running on a kernel with missing test case listing
->> >-	 * capabilities.  Dont's skip but just return with empty list of test
->> >-	 * cases, that should tell the caller to use a legacy method of
->> >-	 * iterating over KTAP results collected from blind execution of all
->> >-	 * Kunit test cases provided by a Kunit test module.
->> >+	 * We could also try to use action=list kunit parameter to get the
->> >+	 * listing, however, parsing a structured KTAP report -- something that
->> >+	 * we already can do perfectly -- seems to be more safe than extracting
->> >+	 * a free text list of unknown length from /dev/kmsg.
->> > 	 */
->> >-	igt_ignore_warn(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
->> >-	if (igt_debug_on(igt_kmod_load("kunit",
->> >-				       "filter=module=none filter_action=skip")))
->> >+	if (igt_debug_on(!kunit_set_filtering(NULL, "module=none", "skip"))) {
->>
->> probably in the caller or very early:
->>
->> 	if (!igt_syfs_has_rw_attr())
->> 		return fallback_kunit_execution();
->>
->> I think it's too different this approach from the previous one, that
->> results in the long comments trying to explain each different
->> step.
->
->OK.
->
->>
->> Humn... I guess we can do that on top, so if this works, seems ok for
->> now.
->
->OK.
->
->Thanks,
->Janusz
->
->>
->> Lucas De Marchi
->>
->> >+		/*
->> >+		 * TODO: drop the following workaround, required by LTS kernel
->> >+		 *       v6.1 not capable of listing test cases when built as as
->> >+		 *       module, when no longer needed.
->> >+		 * If updating writable filter parameters of the kunit base
->> >+		 * module with required values fails then assume we are running
->> >+		 * on a kernel with missing test case listing capabilities.
->> >+		 * Don't skip but just return with empty list of test cases,
->> >+		 * which should tell the caller to use a legacy method of
->> >+		 * iterating over KTAP results collected from blind execution
->> >+		 * of all Kunit test cases provided by a Kunit test module.
->> >+		 */
->> > 		return;
->> >+	}
->> >
->> > 	igt_skip_on(modprobe(tst->kmod, opts));
->> >
->> >@@ -1200,16 +1245,7 @@ static void __igt_kunit(struct igt_ktest *tst,
->> > 			      t->case_name) {
->> >
->> > 			if (!modprobe.thread) {
->> >-				/*
->> >-				 * Since we have successfully loaded the kunit
->> >-				 * base module with non-default parameters in
->> >-				 * order to get a list of test cases, now we
->> >-				 * have to unload it so it is then automatically
->> >-				 * reloaded with default parameter values when
->> >-				 * we load the test module again for execution.
->> >-				 */
->> >-				igt_skip_on(igt_kmod_unload("kunit",
->> >-							    KMOD_REMOVE_FORCE));
->> >+				igt_require(kunit_set_filtering(NULL, NULL, NULL));
->> >
->> > 				igt_assert_eq(pthread_mutexattr_init(&attr), 0);
->> > 				igt_assert_eq(pthread_mutexattr_setrobust(&attr,
->> >@@ -1378,6 +1414,9 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
->> > 		igt_assert(igt_list_empty(&tests));
->> > 	}
->> >
->> >+	/* We need the base KUnit module loaded if not built-in */
->> >+	igt_ignore_warn(igt_kmod_load("kunit", NULL));
->> >+
->> > 	/*
->> > 	 * We need to use igt_subtest here, as otherwise it may crash with:
->> > 	 *  skipping is allowed only in fixtures, subtests or igt_simple_main
->>
->
->
->
->
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_bypass: Fix psr edp rx crc read timeout</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129472/">https://patchwork.freedesktop.org/series/129472/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_14212 -&gt; IGTPW_10632</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_10632 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_10632, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/index.html</p>
+<h2>Participating hosts (38 -&gt; 36)</h2>
+<p>Missing    (2): fi-snb-2520m bat-adlp-6 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_10632:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_timelines:<ul>
+<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-jsl-3/igt@i915_selftest@live@gt_timelines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-jsl-3/igt@i915_selftest@live@gt_timelines.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10632 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_hangman@error-state-basic:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-mtlp-6/igt@i915_hangman@error-state-basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-mtlp-6/igt@i915_hangman@error-state-basic.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9414">i915#9414</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-dg2-9/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-dg2-9/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10118">i915#10118</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9840">i915#9840</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_pm:<ul>
+<li>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-adln-1/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10010">i915#10010</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-adln-1/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7702 -&gt; IGTPW_10632</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14212: 1dd92467500a5ead3e44bbdfe15e064dd79b65ef @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10632: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/index.html<br />
+  IGT_7702: bf075a74ece1956fc0e554291591b9da3eab54cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1720992852945824694==--
