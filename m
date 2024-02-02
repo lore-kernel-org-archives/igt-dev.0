@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3E35C48291
-	for <igt-dev@archiver.kernel.org>; Fri,  2 Feb 2024 17:17:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 011FFC48291
+	for <igt-dev@archiver.kernel.org>; Fri,  2 Feb 2024 17:26:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8F18110EFE0;
-	Fri,  2 Feb 2024 17:17:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9A85910E3EC;
+	Fri,  2 Feb 2024 17:26:27 +0000 (UTC)
 Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 32EB010EFE0;
- Fri,  2 Feb 2024 17:17:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 87D9A10E197;
+ Fri,  2 Feb 2024 17:26:26 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============1720992852945824694=="
+ boundary="===============3802170970038771797=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/amdgpu/amd=5Fbypass?=
- =?utf-8?q?=3A_Fix_psr_edp_rx_crc_read_timeout?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/amdgpu/amd=5Fbypass=3A_F?=
+ =?utf-8?q?ix_psr_edp_rx_crc_read_timeout?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Hersen Wu" <hersenxs.wu@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 02 Feb 2024 17:17:19 -0000
-Message-ID: <170689423921.952961.5676373713381194165@5338d5abeb45>
+Date: Fri, 02 Feb 2024 17:26:26 -0000
+Message-ID: <170689478655.953176.15875445709367962592@5338d5abeb45>
 X-Patchwork-Hint: ignore
 References: <20240202151026.52210-1-hersenxs.wu@amd.com>
 In-Reply-To: <20240202151026.52210-1-hersenxs.wu@amd.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1720992852945824694==
+--===============3802170970038771797==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,101 +50,62 @@ Content-Transfer-Encoding: 7bit
 
 Series: tests/amdgpu/amd_bypass: Fix psr edp rx crc read timeout
 URL   : https://patchwork.freedesktop.org/series/129472/
-State : failure
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_14212 -> IGTPW_10632
+CI Bug Log - changes from XEIGT_7702_BAT -> XEIGTPW_10632_BAT
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_10632 absolutely need to be
-  verified manually.
+  No regressions found.
+
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_10632, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/index.html
-
-Participating hosts (38 -> 36)
+Participating hosts (4 -> 4)
 ------------------------------
 
-  Missing    (2): fi-snb-2520m bat-adlp-6 
+  No changes in participating hosts
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_10632:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@gt_timelines:
-    - bat-jsl-3:          [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-jsl-3/igt@i915_selftest@live@gt_timelines.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-jsl-3/igt@i915_selftest@live@gt_timelines.html
-
-  
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_10632 that come from known issues:
+  Here are the changes found in XEIGTPW_10632_BAT that come from known issues:
 
 ### IGT changes ###
 
-#### Issues hit ####
+#### Warnings ####
 
-  * igt@i915_hangman@error-state-basic:
-    - bat-mtlp-6:         [PASS][3] -> [ABORT][4] ([i915#9414])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-mtlp-6/igt@i915_hangman@error-state-basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-mtlp-6/igt@i915_hangman@error-state-basic.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg2-9:          [PASS][5] -> [ABORT][6] ([i915#10118] / [i915#9840])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-dg2-9/igt@i915_selftest@live@hangcheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-dg2-9/igt@i915_selftest@live@hangcheck.html
+  * igt@xe_exec_fault_mode@twice-basic:
+    - bat-atsm-2:         [SKIP][1] ([Intel XE#288]) -> [SKIP][2] ([Intel XE#1130])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7702/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10632/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html
 
   
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_pm:
-    - bat-adln-1:         [DMESG-FAIL][7] ([i915#10010]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-adln-1/igt@i915_selftest@live@gt_pm.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-adln-1/igt@i915_selftest@live@gt_pm.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10010]: https://gitlab.freedesktop.org/drm/intel/issues/10010
-  [i915#10026]: https://gitlab.freedesktop.org/drm/intel/issues/10026
-  [i915#10118]: https://gitlab.freedesktop.org/drm/intel/issues/10118
-  [i915#9414]: https://gitlab.freedesktop.org/drm/intel/issues/9414
-  [i915#9840]: https://gitlab.freedesktop.org/drm/intel/issues/9840
+  [Intel XE#1130]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
   * IGT: IGT_7702 -> IGTPW_10632
+  * Linux: xe-717-a7ad037447de4ca22722972270493b23be436187 -> xe-718-1dd92467500a5ead3e44bbdfe15e064dd79b65ef
 
-  CI-20190529: 20190529
-  CI_DRM_14212: 1dd92467500a5ead3e44bbdfe15e064dd79b65ef @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_10632: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/index.html
   IGT_7702: bf075a74ece1956fc0e554291591b9da3eab54cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-717-a7ad037447de4ca22722972270493b23be436187: a7ad037447de4ca22722972270493b23be436187
+  xe-718-1dd92467500a5ead3e44bbdfe15e064dd79b65ef: 1dd92467500a5ead3e44bbdfe15e064dd79b65ef
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10632/index.html
 
---===============1720992852945824694==
+--===============3802170970038771797==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -166,72 +127,40 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>tests/amdgpu/amd_bypass: Fix psr edp rx crc read timeout</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129472/">https://patchwork.freedesktop.org/series/129472/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10632/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10632/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_14212 -&gt; IGTPW_10632</h1>
+    <h1>CI Bug Log - changes from XEIGT_7702_BAT -&gt; XEIGTPW_10632_BAT</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_10632 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_10632, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/index.html</p>
-<h2>Participating hosts (38 -&gt; 36)</h2>
-<p>Missing    (2): fi-snb-2520m bat-adlp-6 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_10632:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@gt_timelines:<ul>
-<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-jsl-3/igt@i915_selftest@live@gt_timelines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-jsl-3/igt@i915_selftest@live@gt_timelines.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10632 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_10632_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Issues hit</h4>
+<h4>Warnings</h4>
 <ul>
-<li>
-<p>igt@i915_hangman@error-state-basic:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-mtlp-6/igt@i915_hangman@error-state-basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-mtlp-6/igt@i915_hangman@error-state-basic.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9414">i915#9414</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-dg2-9/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-dg2-9/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10118">i915#10118</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9840">i915#9840</a>)</li>
+<li>igt@xe_exec_fault_mode@twice-basic:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7702/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10632/bat-atsm-2/igt@xe_exec_fault_mode@twice-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>)</li>
 </ul>
 </li>
 </ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@gt_pm:<ul>
-<li>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14212/bat-adln-1/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10010">i915#10010</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/bat-adln-1/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7702 -&gt; IGTPW_10632</li>
+<li>Linux: xe-717-a7ad037447de4ca22722972270493b23be436187 -&gt; xe-718-1dd92467500a5ead3e44bbdfe15e064dd79b65ef</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14212: 1dd92467500a5ead3e44bbdfe15e064dd79b65ef @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10632: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/index.html<br />
-  IGT_7702: bf075a74ece1956fc0e554291591b9da3eab54cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_10632: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10632/index.html<br />
+  IGT_7702: bf075a74ece1956fc0e554291591b9da3eab54cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-717-a7ad037447de4ca22722972270493b23be436187: a7ad037447de4ca22722972270493b23be436187<br />
+  xe-718-1dd92467500a5ead3e44bbdfe15e064dd79b65ef: 1dd92467500a5ead3e44bbdfe15e064dd79b65ef</p>
 
 </body>
 </html>
 
---===============1720992852945824694==--
+--===============3802170970038771797==--
