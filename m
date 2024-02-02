@@ -4,38 +4,38 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 606D9C48286
-	for <igt-dev@archiver.kernel.org>; Fri,  2 Feb 2024 00:45:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D49AC4828D
+	for <igt-dev@archiver.kernel.org>; Fri,  2 Feb 2024 00:45:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C913B10EDA7;
-	Fri,  2 Feb 2024 00:45:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1A3E310EDAD;
+	Fri,  2 Feb 2024 00:45:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lOnwSjv/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Oa3btPMs";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F35F210EDAD
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C888D10ED9A
  for <igt-dev@lists.freedesktop.org>; Fri,  2 Feb 2024 00:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706834741; x=1738370741;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=EpcJ+H1NYT47fPwoXzGGGeO3KAt9X583sDdB84TVuxY=;
- b=lOnwSjv//D9yCnVJ5iGf6zdpEwMvTNqjoRV9HEhLo3ZE/Debok2FaArR
- qQwz7aSQiG0iuGfrlIfr1gVhMfiMcYPaNHzraKJY3gBYzM3gDnZQRhPRN
- L/9+TPp64xdcDGCCChhx7mZlQDzbzEZCra8BwumvM+RddlUGa7VObCExB
- dg8A9HBLLk2wIkuriWQK0AS5ifnAnQdzh8CwUMTjKA3hDcIwiG9TdU1Ax
- U+u5JKcMaTUCCkj0Jgf/QNgTtQ/wYC2A5kFeDv6qMRZmaNJBSIBuTzDTI
- UrGWz9gp759uuzm9hIo3Alrucpmg0UU9d734qivCtGkLTnWOg50glLQ25 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="227724"
+ t=1706834740; x=1738370740;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=GiKiz+VTfZb25AsXOzzsCdy5CaNkVfC2mnqdtB/DW7g=;
+ b=Oa3btPMsAOhO9BBU4YLQ3l9kZFizuNbJdsdjdoNJ4NFl++od/sa0n657
+ kOhFUtJO1fhOnXtq4dIPyToRUawnRcXRZTS3gWsH1FxE4fNg6AK097Qro
+ UgslI49Q/KP8e1JX+f9Cb7drVvCL88DVeiNvR6RjK65e/Vh2TvELKd8ke
+ OROIy1O/plCK6+uAn+ktCQIxu2Dob/kA9Pt+gNrRNLujBgdS8uf0yXxBQ
+ 2JyYjU6WDvQHz6QBkI71IrZIQqLir/T0wzKX7srwa6uvIEGhjz6s6oumY
+ 0QeYWf0knLMUUtwxsP1MD+ACd92BnAw2Y95+KlbXoU7paXX5L3OI3vdQF g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="227722"
 X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; 
-   d="scan'208";a="227724"
+   d="scan'208";a="227722"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  01 Feb 2024 16:45:40 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; 
-   d="scan'208";a="4519398"
+   d="scan'208";a="4519395"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  01 Feb 2024 16:45:40 -0800
@@ -43,13 +43,10 @@ From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 1/2] squashed
- 20240201190237.150754-8-janusz.krzysztofik@linux.intel.com
-Date: Thu,  1 Feb 2024 16:45:28 -0800
-Message-ID: <20240202004529.552806-2-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 0/2] live test renames
+Date: Thu,  1 Feb 2024 16:45:27 -0800
+Message-ID: <20240202004529.552806-1-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240202004529.552806-1-lucas.demarchi@intel.com>
-References: <20240202004529.552806-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,197 +64,68 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+First patch ca be ignored, it's the entire series being reviewed
+at https://lore.kernel.org/igt-dev/20240201190237.150754-8-janusz.krzysztofik@linux.intel.com/
+It's brought in here as a dependency.
 
-DO NOT MERGE
+This also has a kernel dependency:
+https://lore.kernel.org/intel-xe/20231122203147.988021-3-lucas.demarchi@intel.com/
+I will send that again as it doesn't apply anymore.
 
-Not-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- lib/igt_kmod.c | 115 +++++++++++++++++++++++++++++++++----------------
- 1 file changed, 79 insertions(+), 36 deletions(-)
+Tested in LNL with the corresponding change in the kernel:
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 250ab2107..3163434aa 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -803,6 +803,57 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
- 	kmod_module_info_free_list(pre);
- }
- 
-+static int open_parameters(const char *module_name)
-+{
-+	char path[256];
-+
-+	snprintf(path, sizeof(path), "/sys/module/%s/parameters", module_name);
-+	return open(path, O_RDONLY);
-+}
-+
-+static bool kunit_set_filtering(const char *filter_glob, const char *filter,
-+				const char *filter_action)
-+{
-+	int params;
-+	bool ret;
-+
-+	params = open_parameters("kunit");
-+	ret = !igt_debug_on(params < 0);
-+
-+	/*
-+	 * Default values of the KUnit base module filtering parameters
-+	 * are all NULLs.  Reapplying those NULLs over sysfs once
-+	 * overwritten with non-NULL strings seems not possible.
-+	 * As a workaround, we use human-readable strings that exhibit
-+	 * the same behaviour as if default NULLs were in place.
-+	 */
-+	if (ret)
-+		ret = !igt_debug_on(!igt_sysfs_set(params, "filter_glob",
-+						   filter_glob ?: "*"));
-+	if (ret)
-+		ret = !igt_debug_on(!igt_sysfs_set(params, "filter",
-+						   filter ?: "module!=none"));
-+	/*
-+	 * In case of filter_action parameter there is no obvious human-
-+	 * readable string that behaves like default NULL.  However, if NULL
-+	 * is requested for both filter and filter_action then that's not a
-+	 * problem for us since even if filter_action was previously set to
-+	 * "skip" we can leave it as is because our "module!=none" default
-+	 * filter guarantees that no test cases are filtered out to be skipped.
-+	 */
-+	if (ret)
-+		ret = !igt_warn_on_f(!filter_action && filter,
-+				     "test error: filter_action=NULL requires filter=NULL\n");
-+	if (ret && filter_action)
-+		ret = !igt_debug_on(!igt_sysfs_set(params, "filter_action",
-+						   filter_action));
-+
-+	if (params >= 0)
-+		close(params);
-+
-+	return ret;
-+}
-+
- struct modprobe_data {
- 	struct kmod_module *kmod;
- 	const char *opts;
-@@ -1095,6 +1146,7 @@ static void kunit_get_tests(struct igt_list_head *tests,
- 	char *suite_name = NULL, *case_name = NULL;
- 	struct igt_ktap_result *r, *rn;
- 	struct igt_ktap_results *ktap;
-+	unsigned long taints;
- 	int flags, err;
- 
- 	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
-@@ -1108,25 +1160,29 @@ static void kunit_get_tests(struct igt_list_head *tests,
- 	/*
- 	 * To get a list of test cases provided by a kunit test module, ask the
- 	 * generic kunit module to respond with SKIP result for each test found.
--	 * We could also use action=list kunit parameter to get the listing,
--	 * however, parsing a KTAP report -- something that we already can do
--	 * perfectly -- seems to be more safe than extracting a test case list
--	 * of unknown length from /dev/kmsg.
--	 *
--	 * TODO: drop the following workaround, which is required by LTS kernel
--	 *       v6.1 not capable of listing test cases when built as a module.
--	 * If loading the kunit module with required parameters fails then
--	 * assume that we are running on a kernel with missing test case listing
--	 * capabilities.  Dont's skip but just return with empty list of test
--	 * cases, that should tell the caller to use a legacy method of
--	 * iterating over KTAP results collected from blind execution of all
--	 * Kunit test cases provided by a Kunit test module.
-+	 * We could also try to use action=list kunit parameter to get the
-+	 * listing, however, parsing a structured KTAP report -- something that
-+	 * we already can do perfectly -- seems to be more safe than extracting
-+	 * a free text list of unknown length from /dev/kmsg.
- 	 */
--	if (igt_debug_on(igt_kmod_load("kunit",
--				       "filter=module=none filter_action=skip")))
-+	if (igt_debug_on(!kunit_set_filtering(NULL, "module=none", "skip"))) {
-+		/*
-+		 * TODO: drop the following workaround, required by LTS kernel
-+		 *       v6.1 not capable of listing test cases when built as as
-+		 *       module, when no longer needed.
-+		 * If updating writable filter parameters of the kunit base
-+		 * module with required values fails then assume we are running
-+		 * on a kernel with missing test case listing capabilities.
-+		 * Don't skip but just return with empty list of test cases,
-+		 * which should tell the caller to use a legacy method of
-+		 * iterating over KTAP results collected from blind execution
-+		 * of all Kunit test cases provided by a Kunit test module.
-+		 */
- 		return;
-+	}
- 
- 	igt_skip_on(modprobe(tst->kmod, opts));
-+	igt_skip_on(igt_kernel_tainted(&taints));
- 
- 	ktap = igt_ktap_alloc(tests);
- 	igt_require(ktap);
-@@ -1158,11 +1214,11 @@ static void kunit_get_tests(struct igt_list_head *tests,
- 		free(case_name);
- 	}
- 
--	igt_skip_on(kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE));
--	igt_skip_on(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
--
- 	igt_skip_on_f(err,
- 		      "KTAP parser failed while getting a list of test cases\n");
-+	igt_skip_on(igt_list_empty(tests));
-+
-+	igt_skip_on(kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE));
- }
- 
- static void __igt_kunit(struct igt_ktest *tst,
-@@ -1191,6 +1247,8 @@ static void __igt_kunit(struct igt_ktest *tst,
- 			      t->case_name) {
- 
- 			if (!modprobe.thread) {
-+				igt_require(kunit_set_filtering(NULL, NULL, NULL));
-+
- 				igt_assert_eq(pthread_mutexattr_init(&attr), 0);
- 				igt_assert_eq(pthread_mutexattr_setrobust(&attr,
- 							  PTHREAD_MUTEX_ROBUST),
-@@ -1355,18 +1413,12 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
- 		igt_skip_on(igt_ktest_init(&tst, module_name));
- 		igt_skip_on(igt_ktest_begin(&tst));
- 
--		/*
--		 * Since we need to load kunit base module with specific
--		 * options in order to get a list of test cases, make
--		 * sure that the module is not loaded.  However, since
--		 * unload may fail if kunit base module is not loaded,
--		 * ignore any failures, we'll fail later if still loaded.
--		 */
--		igt_ignore_warn(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
--
- 		igt_assert(igt_list_empty(&tests));
- 	}
- 
-+	/* We need the base KUnit module loaded if not built-in */
-+	igt_ignore_warn(igt_kmod_load("kunit", NULL));
-+
- 	/*
- 	 * We need to use igt_subtest here, as otherwise it may crash with:
- 	 *  skipping is allowed only in fixtures, subtests or igt_simple_main
-@@ -1395,20 +1447,11 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
- 		kunit_results_free(&tests, &suite_name, &case_name);
- 
- 		igt_ktest_end(&tst);
--		igt_debug_on(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
- 	}
- 
- 	igt_ktest_fini(&tst);
- }
- 
--static int open_parameters(const char *module_name)
--{
--	char path[256];
--
--	snprintf(path, sizeof(path), "/sys/module/%s/parameters", module_name);
--	return open(path, O_RDONLY);
--}
--
- int igt_ktest_init(struct igt_ktest *tst,
- 		   const char *module_name)
- {
+	$ sudo ./build/tests/xe_live_ktest --r xe_mocs
+	IGT-Version: 1.28-g3f8041700 (x86_64) (Linux: 6.8.0-rc1-xe+ x86_64)
+	Using IGT_SRANDOM=1706833679 for randomisation
+	Starting subtest: xe_mocs
+	Starting dynamic subtest: xe_live_mocs_kernel_kunit
+	Dynamic subtest xe_live_mocs_kernel_kunit: SUCCESS (3.304s)
+	Starting dynamic subtest: xe_live_mocs_reset_kunit
+	Dynamic subtest xe_live_mocs_reset_kunit: SUCCESS (0.102s)
+	Subtest xe_mocs: SUCCESS (3.484s)
+
+For me it runs much slower than my manual execution (just modprobe'ing
+xe_live_test... about 4x). I thought it was because it was still
+loading/removing kunit or something like that, but it's not:
+
+# cat /sys/kernel/tracing/trace
+# tracer: nop
+#
+# entries-in-buffer/entries-written: 4/4   #P:8
+#
+#                                _-----=> irqs-off/BH-disabled
+#                               / _----=> need-resched
+#                              | / _---=> hardirq/softirq
+#                              || / _--=> preempt-depth
+#                              ||| / _-=> migrate-disable
+#                              |||| /     delay
+#           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
+#              | |         |   |||||     |         |
+   xe_live_ktest-9987    [002] .....  7410.386983: module_load: xe_live_test 
+   xe_live_ktest-9987    [002] .....  7410.387378: module_free: xe_live_test
+   xe_live_ktest-9990    [003] .....  7413.865052: module_load: xe_live_test 
+   xe_live_ktest-9987    [000] .....  7413.866504: module_free: xe_live_test
+
+
+Yes, it loads xe_live_test twice (one for list, one for execution).
+Looking at dmesg, at least on my machine it's triggering timeouts in the
+GPU scheduler, what doesn't happen with the manual execution.
+
+Janusz: do we really need to list subtests? Why not simply pass the
+subtest as filter_glob? Most of the time I believe we are not really
+filtering by a regex. At least the testlists are not.
+
+Janusz Krzysztofik (1):
+  squashed 20240201190237.150754-8-janusz.krzysztofik@linux.intel.com
+
+Lucas De Marchi (1):
+  xe_live_ktest: Use xe_live_test kernel module
+
+ lib/igt_kmod.c                           | 115 ++++++++++++++++-------
+ tests/intel-ci/xe-fast-feedback.testlist |   6 +-
+ tests/intel/xe_live_ktest.c              |  25 ++---
+ 3 files changed, 92 insertions(+), 54 deletions(-)
+
 -- 
 2.43.0
 
