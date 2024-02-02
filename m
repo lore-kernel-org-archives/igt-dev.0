@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8266CC48286
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Feb 2024 23:23:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05682C4828D
+	for <igt-dev@archiver.kernel.org>; Fri,  2 Feb 2024 00:45:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8D28210ECDB;
-	Thu,  1 Feb 2024 23:22:59 +0000 (UTC)
-Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0CEF910ECD8;
- Thu,  1 Feb 2024 23:22:58 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6898074469402415810=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8F7F310ED9A;
+	Fri,  2 Feb 2024 00:45:40 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JKJjjMWp";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E246F10EDA7
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Feb 2024 00:45:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1706834741; x=1738370741;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=8f31svj0Es3WqKZFF/CyfVMj+1eKBQD6ZnbePBCYTD4=;
+ b=JKJjjMWp4nCYVMdV3IUW3FyyIkRAcRebOrV/0Xk1o+T+W9R8g2kmQY8H
+ o3ORDTlN98vdXpSTdvkEd4dYkhyOrEzBVFpEst4MaJZmh4UTWAEd1RkLF
+ wJZXQrmgn5Ns8x/GY4AKzKHhXZCdMzJvIgFm1o4J5zO50falCM9gxG34N
+ 6H1IweqMVQA8WEHFyCWuFAEBpryRIU0uHAj0ZYQ0J1IQzqqJlbWOPS7w/
+ b3rkYwMALTjhOi49c3pgV2R0Dz9gLOp5kqLNF2rABYkZNT9V3RxYls3MK
+ tzb8uoMEMD6seR3OvEb+u1SsadoaohvTXG86zb9gN/rQ0s4dL+cHbqg/0 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="227723"
+X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; 
+   d="scan'208";a="227723"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 16:45:40 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; 
+   d="scan'208";a="4519401"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 16:45:40 -0800
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 2/2] xe_live_ktest: Use xe_live_test kernel module
+Date: Thu,  1 Feb 2024 16:45:29 -0800
+Message-ID: <20240202004529.552806-3-lucas.demarchi@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240202004529.552806-1-lucas.demarchi@intel.com>
+References: <20240202004529.552806-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_Fill_block-copy_test_gap_fo?=
- =?utf-8?q?r_unaligned_sizes_=28rev5=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 01 Feb 2024 23:22:58 -0000
-Message-ID: <170682977805.935547.7996452205858303743@5338d5abeb45>
-X-Patchwork-Hint: ignore
-References: <20240201200312.428474-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20240201200312.428474-1-zbigniew.kempczynski@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,146 +63,98 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6898074469402415810==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+https://patchwork.freedesktop.org/series/126786/ groups all the live
+tests into a single kernel module. Use that module to run any of the
+tests triggered by igt.
 
-== Series Details ==
+To make the live kunit tests work, rename the subtests so they match
+what the kernel uses.
 
-Series: Fill block-copy test gap for unaligned sizes (rev5)
-URL   : https://patchwork.freedesktop.org/series/129362/
-State : success
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+ tests/intel-ci/xe-fast-feedback.testlist |  6 +++---
+ tests/intel/xe_live_ktest.c              | 25 ++++++++++--------------
+ 2 files changed, 13 insertions(+), 18 deletions(-)
 
-== Summary ==
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index f297fe965..797a78563 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -227,9 +227,9 @@ igt@kms_psr@psr-sprite-plane-onoff
+ igt@core_hotunplug@unbind-rebind
+ 
+ # Run KUnit tests at the end
+-igt@xe_live_ktest@bo
+-igt@xe_live_ktest@dmabuf
+-igt@xe_live_ktest@migrate
++igt@xe_live_ktest@xe_bo
++igt@xe_live_ktest@xe_dmabuf
++igt@xe_live_ktest@xe_migrate
+ 
+ # Move fault_mode tests at the end to unblock execution
+ igt@xe_exec_fault_mode@twice-basic
+diff --git a/tests/intel/xe_live_ktest.c b/tests/intel/xe_live_ktest.c
+index 5f5f1dff7..d65378858 100644
+--- a/tests/intel/xe_live_ktest.c
++++ b/tests/intel/xe_live_ktest.c
+@@ -9,38 +9,33 @@
+  * Functionality: kunit
+  * Test category: functionality test
+  *
+- * SUBTEST: bo
++ * SUBTEST: xe_bo
+  * Description:
+  *	Kernel dynamic selftests to check if GPU buffer objects are
+  *	being handled properly.
+  * Functionality: bo
+  *
+- * SUBTEST: dmabuf
++ * SUBTEST: xe_dmabuf
+  * Description: Kernel dynamic selftests for dmabuf functionality.
+  * Functionality: dmabuf
+  *
+- * SUBTEST: migrate
++ * SUBTEST: xe_migrate
+  * Description:
+  *	Kernel dynamic selftests to check if page table migrations
+  *	are working properly.
+  * Functionality: migrate
+  *
+- * SUBTEST: mocs
++ * SUBTEST: xe_mocs
+  * Description:
+  *	Kernel dynamic selftests to check mocs configuration.
+  * Functionality: mocs
+  */
+ 
+-struct kunit_tests {
+-	const char *kunit;
+-	const char *name;
+-};
+-
+-static const struct kunit_tests live_tests[] = {
+-	{ "xe_bo_test",		"bo" },
+-	{ "xe_dma_buf_test",	"dmabuf" },
+-	{ "xe_migrate_test",	"migrate" },
+-	{ "xe_mocs_test",	"mocs" },
++static const char *live_tests[] = {
++	"xe_bo",
++	"xe_dmabuf",
++	"xe_migrate",
++	"xe_mocs"
+ };
+ 
+ igt_main
+@@ -48,5 +43,5 @@ igt_main
+ 	int i;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(live_tests); i++)
+-		igt_kunit(live_tests[i].kunit, live_tests[i].name, NULL);
++		igt_kunit("xe_live_test", live_tests[i], NULL);
+ }
+-- 
+2.43.0
 
-CI Bug Log - changes from CI_DRM_14210 -> IGTPW_10630
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10630/index.html
-
-Participating hosts (39 -> 37)
-------------------------------
-
-  Missing    (2): fi-snb-2520m fi-bsw-n3050 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10630 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-mtlp-6:         [DMESG-WARN][1] -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14210/bat-mtlp-6/igt@i915_selftest@live@hangcheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10630/bat-mtlp-6/igt@i915_selftest@live@hangcheck.html
-    - bat-adlp-9:         [ABORT][3] ([i915#10021]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14210/bat-adlp-9/igt@i915_selftest@live@hangcheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10630/bat-adlp-9/igt@i915_selftest@live@hangcheck.html
-
-  
-  [i915#10021]: https://gitlab.freedesktop.org/drm/intel/issues/10021
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7701 -> IGTPW_10630
-
-  CI-20190529: 20190529
-  CI_DRM_14210: 18a9fefd9e05291cbe792d358bbdc04dc6d21adb @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10630: 10630
-  IGT_7701: 7701
-
-
-Testlist changes
-----------------
-
-+igt@xe_ccs@block-copy-compressed-inc-dimension
-+igt@xe_ccs@block-copy-uncompressed-inc-dimension
-+igt@xe_exercise_blt@fast-copy-inc-dimension
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10630/index.html
-
---===============6898074469402415810==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Fill block-copy test gap for unaligned sizes (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129362/">https://patchwork.freedesktop.org/series/129362/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10630/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10630/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14210 -&gt; IGTPW_10630</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10630/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Missing    (2): fi-snb-2520m fi-bsw-n3050 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10630 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14210/bat-mtlp-6/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10630/bat-mtlp-6/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14210/bat-adlp-9/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10021">i915#10021</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10630/bat-adlp-9/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7701 -&gt; IGTPW_10630</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14210: 18a9fefd9e05291cbe792d358bbdc04dc6d21adb @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10630: 10630<br />
-  IGT_7701: 7701</p>
-<h2>Testlist changes</h2>
-<p>+igt@xe_ccs@block-copy-compressed-inc-dimension<br />
-+igt@xe_ccs@block-copy-uncompressed-inc-dimension<br />
-+igt@xe_exercise_blt@fast-copy-inc-dimension</p>
-
-</body>
-</html>
-
---===============6898074469402415810==--
