@@ -4,62 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B58CC48291
-	for <igt-dev@archiver.kernel.org>; Fri,  2 Feb 2024 10:22:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D44DC4828E
+	for <igt-dev@archiver.kernel.org>; Fri,  2 Feb 2024 10:27:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C2A2110EEE5;
-	Fri,  2 Feb 2024 10:22:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0970110E162;
+	Fri,  2 Feb 2024 10:27:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CHx8j3Ki";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d5TgCv1E";
 	dkim-atps=neutral
-X-Greylist: delayed 427 seconds by postgrey-1.36 at gabe;
- Fri, 02 Feb 2024 10:22:04 UTC
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 77DDD10EEE5;
- Fri,  2 Feb 2024 10:22:04 +0000 (UTC)
+X-Greylist: delayed 441 seconds by postgrey-1.36 at gabe;
+ Fri, 02 Feb 2024 05:56:38 UTC
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9AD1110E2B1
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Feb 2024 05:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706869324; x=1738405324;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=iyJwkflSKcN99/L6B8ptfohtYXioyUrxYuOAXQisO7U=;
- b=CHx8j3Kih/91kU4rPsdkiCUtKr+sK2mugWtYmTEuEOX1DUE9s+Rk5sZB
- X/a3lFrAQSVGRRj0Lguvx/Td5HKysWrv73fkDSDosSDNmz18y/io9cIzv
- I5vIxePi9j+3zpMZJyqveXBkLx7b4tEYsSXwqfWWQRCP6jeoq5h/rfXns
- CFai487Zpp7kisminfELW/32XbEQ3FLSW7G2wF/R67p6OkWz0WM/eOgfn
- p0bsg5KlJgeDBXYgrGxLTlg8oQ2E7OOkZ+makjYd5IraXGDx16lmNXIKc
- N0FvHAPb8bqlJ/jGeZbPN1sVa3cWxziRYLBoLptWeNGep8u3DUFtZmG3J A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="34469"
+ t=1706853398; x=1738389398;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=JQ+gkEC1BqByTUZcDs3vqMk92eMug4fV9AwzpxgFbIU=;
+ b=d5TgCv1ELRFz60qAMbXohbzti6eTBXE7qMHroCj0miMjCL7EzFB6zynD
+ A1kg8narVCMA2WQSNETPRTepoxRwDjT8i19DH6c/ntTwaW6p+TYLhzrH0
+ lBsFyRFnI7O+m98WWO3/UyfirCxcz0zZs/SwZwCJn7ktYeQjKYPjFePfj
+ 99jVMIlxMcfMgKmQcSpA459Y9q1GaqTh55ks2Hn13jPdDfzg+RwAVarUl
+ QpV8obvennJM35Q47eu8rVNPZIi3S+2ZXQ7HuJJKwQiB2bIha7DW7tVKS
+ lrnaaxZZ7RwYuoc3SF3d5JxFgl3s6LWN+ctqA5QXwe/cTmIHI0z+DYS/R w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="270468"
 X-IronPort-AV: E=Sophos;i="6.05,237,1701158400"; 
-   d="scan'208";a="34469"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Feb 2024 02:14:56 -0800
+   d="scan'208";a="270468"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2024 21:49:13 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,237,1701158400"; 
-   d="scan'208";a="44913"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.2.73])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Feb 2024 02:14:53 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: Re: [PATCH i-g-t v3 4/6] lib/kunit: Support writable filter*
- parameters of kunit module
-Date: Fri, 02 Feb 2024 11:14:49 +0100
-Message-ID: <3705187.TKLx3GfHUD@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <3ehhnx6ijqdzahhkemcf5x4avps4e6inrrgd6p4dqgvu7ydo32@zs7hpimyjhy4>
-References: <20240201190237.150754-8-janusz.krzysztofik@linux.intel.com>
- <20240201190237.150754-12-janusz.krzysztofik@linux.intel.com>
- <3ehhnx6ijqdzahhkemcf5x4avps4e6inrrgd6p4dqgvu7ydo32@zs7hpimyjhy4>
+X-IronPort-AV: E=Sophos;i="6.05,237,1701158400"; d="scan'208";a="31074209"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+ by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 01 Feb 2024 21:49:13 -0800
+Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 1 Feb 2024 21:49:12 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Thu, 1 Feb 2024 21:49:12 -0800
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 1 Feb 2024 21:49:12 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hvh9OgsCvqtKge8nkSxisvhvL1Sg8RcqC+UMqHnUk9uRAjnjEo1SnfhdMph0JO0/QY6hJOTR5P0yHSKLvAzsiREOPZuKo02Im7rLN/teEkWt29qGtuAy7a9xIFHYjHG4WqsFh8MzEQ3LYLrjCZmvhf/ZQDOmhzV32LRWuSFomyntVBOdijaos1jiox0AsmuKoxq6HXKJq0BNb8pDlNLsc0svxUAA+s7tUj4u88GeJY7TlmKbRR1qw90oyyZMcfMSg7t/5J44TwaTOOqj1VEhNxEAal6810hPofany42S1cl2NgszWBqoSy9YV+z/zhVPn3kobub+wtBtGVOxP9lZRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tbBQ0SSgUHTQf3i9jMg13+uwSFwWOMJpUfrXsujM8+w=;
+ b=Vjy5Nq9qOK8uBRfa54Z31rwucOG43n5aAXojCHZj0Iubi5YEQfjArqVJjFCO6jhuMXkEdqBxWLpIaWpIoR0UAMhlR9p2aucUvQM4NhlKFXe1GR+/sVFkESlsLAxJDDqKNKmTmY18U6SUuCbqqIJP7sNb6/pdV89rVhqqusE6NEpL0wTdOxBykECXGN4+xKbnz5ZzA2TspNRyGd81eRg8bCMYKmcL698GwufUA58R1gvouCqqP63XMWASQqA74UK9QGhnPcuUOJ98xfrIYeH3yHGuPPPz03aLj3zwd+6vOqpxMWLYoOlahaLCxR9v4RoybLbNVZoLaP7KJl9dP6FBcg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO1PR11MB4977.namprd11.prod.outlook.com (2603:10b6:303:6d::14)
+ by SA0PR11MB4736.namprd11.prod.outlook.com (2603:10b6:806:9f::14)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.27; Fri, 2 Feb
+ 2024 05:49:05 +0000
+Received: from CO1PR11MB4977.namprd11.prod.outlook.com
+ ([fe80::57c7:cb8d:3964:5f91]) by CO1PR11MB4977.namprd11.prod.outlook.com
+ ([fe80::57c7:cb8d:3964:5f91%7]) with mapi id 15.20.7249.027; Fri, 2 Feb 2024
+ 05:49:05 +0000
+Message-ID: <3d031f71-19f6-4769-8ec8-755e2d95329d@intel.com>
+Date: Thu, 1 Feb 2024 21:49:03 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2 3/3] tests/intel/xe_pat: assert flat CSS support
+ for xe2
+Content-Language: en-US
+To: Matthew Auld <matthew.auld@intel.com>, <igt-dev@lists.freedesktop.org>
+CC: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20240201103017.321466-1-matthew.auld@intel.com>
+ <20240201103017.321466-3-matthew.auld@intel.com>
+From: "Jahagirdar, Akshata" <akshata.jahagirdar@intel.com>
+In-Reply-To: <20240201103017.321466-3-matthew.auld@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MW4PR03CA0070.namprd03.prod.outlook.com
+ (2603:10b6:303:b6::15) To CO1PR11MB4977.namprd11.prod.outlook.com
+ (2603:10b6:303:6d::14)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PR11MB4977:EE_|SA0PR11MB4736:EE_
+X-MS-Office365-Filtering-Correlation-Id: ddfb6250-3cfc-4c14-373a-08dc23b2aa78
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 4i5WsrnkiYcANI+WqfK3Cuoc7eMyToSdD/qXLGdadXX/LdDsCyQY1W6jP9MUM2VPIs12/piGatuIFzkS8E0tz03f4N4XnGEFOanFkNaF9VrnrHgioaEo7ykoW0BgAUOiR/tB/0tvNvT/KcFFOFgd3RnDcpr5JOcYzU+k+8MhiptsUKg0puLhe7hb378BnsIdYk1SYvLRxetT1k5TmvqXYK8St/pJL8wA+RxJS+tzA6rAzMXrCK2eIT6WGnDAfVbfUTgNwca/U+eFl9ELIO+IWNMtlw7Jh4j/WOgCXfKCPM066M/cjui653DVsCQAgPy6WlF1yFrdrXwhzZ1ZIJwTmFFeWOZHW7yE6ZKP/UC1aPoDAUSfuKtI6Ic6YzCtSpPzMN+ngPKOVWbkTIHeq877KTaZFr5aRdgB7yXPZd8PShdpsxfA6AC33qXePafTR7kHIluYfE9FfOOsfjZSt/Edqy5YLMU84/8/9RwMrT5i6ayyX5hO280v9MSmqrh59Rd4qt/atyvA4Uuxc8pWiMxg+b9oQAvKl1g8ieJL6fNqFEydEtVOgB/lwQ0WfeCjT+Gx9le6i1oY1Sm6TqajKcHR9G764Z7wSm+dK/LcgmYixFvL8qFEJ21DKt1Z95dY6fzXTD53c8bsihRHlw4fD7UJwg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CO1PR11MB4977.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(39860400002)(376002)(136003)(366004)(346002)(396003)(230922051799003)(1800799012)(451199024)(186009)(64100799003)(5660300002)(478600001)(6512007)(6506007)(66946007)(53546011)(31696002)(86362001)(316002)(8676002)(8936002)(66476007)(4326008)(41300700001)(66556008)(36756003)(26005)(107886003)(2616005)(38100700002)(82960400001)(6486002)(31686004)(2906002)(45980500001)(43740500002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MEtudXJmQ1VjVGxFYW1PbFNSOEd1N3dYemN3MEhwWU1zcEhUWnY4SGxYNHJU?=
+ =?utf-8?B?SDNBdnVOcHQwbVpxS0JheHlYU2UycVQvYVBxeExlZ1hWOVlwNEliZjZ5NlE2?=
+ =?utf-8?B?TDRtVFpuRXNzaDRlU2VYZnVwWjRodlJ6aWhISFJZZ1RITkZLVkh3R0VXbUM2?=
+ =?utf-8?B?MmtndHVZeEFwYjRRSGMxbVVsZDVCaWZMTWl4N2JwS29RbmhXemx5VU5yTlJq?=
+ =?utf-8?B?UHk1Tit4ajJxMTljM1dCTm1iNzRtN1pqKy9xSGh4cCtVSVNGdzhZcS9BRlVT?=
+ =?utf-8?B?N3lPMVREbGZiWU92cktLaDUzaWZRWmVoZnN6Tm5aV0FTaGZVY3RYbEtlb2Vz?=
+ =?utf-8?B?OWc5WGlpUW9KcUFmNHF1dHNEbGk5WWpwQml6ZENvQk1kTnR6ZTZJNTZHNEdz?=
+ =?utf-8?B?SzNORno5dHJxRVdUakxPMFRCYnh0N0dJTU5ocXpLWDBzQlpIT1BTSUZicSs2?=
+ =?utf-8?B?YUpqL0pnNGppRVEyVm9CQTZac0JOdm5QckMyRmJ4QkxhaEl0ZE9hd0h3c0VN?=
+ =?utf-8?B?Z1liMmhEWVFvZEZiVC9ubFkybHllVkxQYUFlaXhWOEJtOTB2VWNKOFY3ZnMv?=
+ =?utf-8?B?UGRiZUNieUYyNFRiZzR1eU9wWVhNaHdjNEFkdGtCdVRwblN1cERkaEhQenRs?=
+ =?utf-8?B?c09wc2QwS0dpekt0b21sU0hBOVN4K2lTYzh2aU5mZlpuMjJudEoxMGUyUUVr?=
+ =?utf-8?B?K2xqbW81b0pXZExydU1KTk1WdXBaV09YaWxPSnRaMWJNV3U3ZHBFQ3U0QXpZ?=
+ =?utf-8?B?djVRRDRKZ0V2WmFyVm41aG0vcFdIVmFFWVIyaTBWRW13S3RZd3VCNFN2eGxF?=
+ =?utf-8?B?Tkw3VXhFUnZEUkhMU0xOQ01mUVl5aWZUanErYmdrTnkxNklzVjEzNWxLQlB5?=
+ =?utf-8?B?OTJ6djNPczJYbTBaeG5xV3hFQ3phdlVHQXUwdVhwcyszWWhCNk1Sb2hUY2NG?=
+ =?utf-8?B?ZW9NUW9ZTGtKRGxkektITDQ3QVU5cmNPcCtZZ0p2R0FZcFQxcldxZHZ2U2lt?=
+ =?utf-8?B?REdPeUZyKzV5U2lDcE0xQ1pBZmY3bjdkR1RXOFp1cHhyN1NoSVVkYjFJNnlk?=
+ =?utf-8?B?ZDJvUmV6aVlIclY5alZheTJKdTNQY3lIZVI5elhBaFRCeEF6ajRlV0V6aUpn?=
+ =?utf-8?B?WWJzUUJ0Ry8wUUVWVFpuK0Z2VFdFOTdWbDlDY0RXaFNWa2Q4YzJCdXJadUhO?=
+ =?utf-8?B?cFB5SmFYKzlkVW9JVGx3VTV2OEZydGhZU29PQTdzZXB6am1ZZFJnemQ3RVpr?=
+ =?utf-8?B?dlJPdnl2RkZVSEVLZkt4RldSNEhITlhQWEt0OWkxc3FvMjdjQ2owMkxHbXor?=
+ =?utf-8?B?YUNLS0xWT24vb0RsOFVFVHFMSmdJekdicm1Fd2tvVlFGNHlOMkttS0E5NCth?=
+ =?utf-8?B?ZWxkaTlEQWwrQXYrOWNZV2wvdWpmMWkzWWF4Y0dwMXRuUERQdzVMd0ErcFNr?=
+ =?utf-8?B?QTc2QjBjZXdmWHdlbkxGaE1CUXp3eXpvMmR2Wm1BTDVOUitUL3VkajQxZWZV?=
+ =?utf-8?B?bXo4NFU5RGZ1T2FaSGFsQUVVS2pjL1VDTmpFdE1SNmIvR2tIVGNBNEZpUHBu?=
+ =?utf-8?B?MW8wbXBNbWl5YnhVaG9tTHhoQlpzTUlXU3hZZ20wME5JYUpVYzlBbUF0Qkxj?=
+ =?utf-8?B?ZWFUODZCajFCUW90cWJQYzl6eVZwQ21TZFh3K3k5SG9Fc1l2U0lTSkJnemdD?=
+ =?utf-8?B?TGUyaHd2dUs0MVlGbW93cm84RGFlT1MrWWVkYWlWaEgyNWJJT21nYWhQdmph?=
+ =?utf-8?B?VkxhL3VqQmZQTVkxeG41VGplWHBhb3J3a2w4MS9OVERCUVVUL255R2o5WTBC?=
+ =?utf-8?B?NjJkSEZZaDBGOHk5OE51MlFnRjBEVDBaTFVhTC9OUXJHNitxbzE0Z3ltdWYz?=
+ =?utf-8?B?M0hzRUt3ZGc4djVsYkJXS25YZnVpNVNSV0NGYzY1enpJcFI2NHpMNEFSZllN?=
+ =?utf-8?B?M2x4OXFLRjdZL2drQm91a0UvVDJKMks2WVZQcnF1WWlvUW9IN3QxVnZFbXhj?=
+ =?utf-8?B?THErK2J2aXQ1dlRtU2RMeml0MVE0dTQ3b1ZXbjRMeVBJZWxGeVM3VlZSamp2?=
+ =?utf-8?B?clRVL0tYcjhNL3ZnVkwwdWF6UW9IWGppMWtrejVWelM3aXo3R2hqZE5NUlZW?=
+ =?utf-8?B?NTlHNkVJaWhObldXaUxpYm84cnlmbGt0LzVJTHZFY0Y1d1Awb2JZSHg5MnZS?=
+ =?utf-8?B?S1E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ddfb6250-3cfc-4c14-373a-08dc23b2aa78
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4977.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2024 05:49:05.1867 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: E4vrV4850lJexhTCfpW+J89XbrjscTTgCBe3LAK8I4+m6R5iHb59QtuIF2ZxPyzfk9Y62rrtNEA6eYjDti6T2sj4S9xi1+xFuxMlVxD4SDc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4736
+X-OriginatorOrg: intel.com
+X-Mailman-Approved-At: Fri, 02 Feb 2024 10:27:22 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,223 +166,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thursday, 1 February 2024 21:26:35 CET Lucas De Marchi wrote:
-> On Thu, Feb 01, 2024 at 07:59:20PM +0100, Janusz Krzysztofik wrote:
-> >Instead of wasting resources on reloading the base Kunit module each time
-> >a different set of filter parameters is needed, try to write the required
-> >values to sysfs representation of those parameters.  If that fails (e.g.
-> >on older LTS kernels with read-only filter parameters), fall back to
-> >legacy "no list of test cases available" mode as we do on kernels with
-> >those module parameters not supported at all.
-> >
-> >This modification will also serve as a workaround for the issue of
-> >impossibility to unload the base Kunit module on Xe platforms, available
-> >to IGT as soon as the module supports writable filter parameters.
-> >
-> >v3: Don't read-compare-write, just write the values (Lucas),
-> >  - skip calling igt_sysfs_set() when the string to be written to
-> >    filter_action is empty (Lucas),
-> >  - warn if we leave the filter_action set to "skip" while setting a non-
-> >    default value of the filter parameter,
-> >  - transform generic kunit_set_params() to kunit_set_filtering().
-> >v2: Work around ineffective writes of empty strings to sysfs module
-> >    parameter files (Lucas) by using human readable non-empty strings that
-> >    give the same results as default NULLs,
-> >  - drop fallback to reload of base Kunit module method if assigning new
-> >    values to module parameters via sysfs fails (Lucas), instead use the
-> >    existing fallback to blind execution like if getting a list of test
-> >    cases was not supported at all,
-> >  - split move of open_parameters() helper up in the source file as well
-> >    as cleanup of base KUnit module unloading to separate patches (Kamil),
-> >  - address the issue of the second paragraph of commit description
-> >    suggesting two separate changes combined in one patch (Kamil) by
-> >    rewording the description.
-> >
-> >Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> >Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> >Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> >---
-> > lib/igt_kmod.c | 91 +++++++++++++++++++++++++++++++++++---------------
-> > 1 file changed, 65 insertions(+), 26 deletions(-)
-> >
-> >diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> >index d2c28d0a64..83416d2aa4 100644
-> >--- a/lib/igt_kmod.c
-> >+++ b/lib/igt_kmod.c
-> >@@ -811,6 +811,49 @@ static int open_parameters(const char *module_name)
-> > 	return open(path, O_RDONLY);
-> > }
-> >
-> >+static bool kunit_set_filtering(const char *filter_glob, const char *filter,
-> >+				const char *filter_action)
-> >+{
-> >+	int params;
-> >+	bool ret;
-> >+
-> >+	params = open_parameters("kunit");
-> >+	ret = !igt_debug_on(params < 0);
-> 
-> why proceed? just return early when it fails pre-conditions
 
-Right.
+On 2/1/2024 2:30 AM, Matthew Auld wrote:
+> Xe2+ should support flat CCS compression, and here we are using
+> compressed PAT index modes. Assert the platform indeed has flat CCS
+> here, otherwise something is likely wrong.
+>
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>   tests/intel/xe_pat.c | 1 +
+>   1 file changed, 1 insertion(+)
+>
+> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+> index 40256bada..3d7d7400c 100644
+> --- a/tests/intel/xe_pat.c
+> +++ b/tests/intel/xe_pat.c
+> @@ -1049,6 +1049,7 @@ igt_main_args("V", NULL, help_str, opt_handler, NULL)
+>   
+>   	igt_subtest_with_dynamic("pat-index-xe2") {
+>   		igt_require(intel_get_device_info(dev_id)->graphics_ver >= 20);
+> +		igt_assert(HAS_FLATCCS(dev_id));
+>   		subtest_pat_index_modes_with_regions(fd, xe2_pat_index_modes,
+>   						     ARRAY_SIZE(xe2_pat_index_modes));
+>   	}
 
-> >+
-> >+	/*
-> >+	 * Default values of the KUnit base module filtering parameters
-> >+	 * are all NULLs.  Reapplying those NULLs over sysfs once
-> >+	 * overwritten with non-NULL strings seems not possible.
-> >+	 * As a workaround, we use human-readable strings that exhibit
-> >+	 * the same behaviour as if default NULLs were in place.
-> >+	 */
-> >+	if (ret)
-> >+		ret = !igt_debug_on(!igt_sysfs_set(params, "filter_glob",
-> >+						   filter_glob ?: "*"));
-> >+	if (ret)
-> >+		ret = !igt_debug_on(!igt_sysfs_set(params, "filter",
-> >+						   filter ?: "module!=none"));
-> >+	/*
-> >+	 * In case of filter_action parameter there is no obvious human-
-> >+	 * readable string that behaves like default NULL.  However, if NULL
-> 
-> that is not true.. it's just igt_sysfs not doing the right thing to
+Reviewed-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 
-That depends on how we feel about empty strings, whether they are human-
-readable or not.  For me they're not quite, e.g. when simply reading them back 
-from sysfs it's not possible to distinguished them from potential white space, 
-unless some graphical representation of non-printing characters is used.  
-Maybe it would be more clear if kernel was using a convention to display empty 
-strings as e.g. "(empty)", like it displays NULL as "(null)".
-
-> write an empty string, that does behave like NULL on the kernel side.
-
-Then maybe let's better send the empty string to igt_sysfs_set() instead of 
-skipping that, and replace my "human-readable" with "non-NULL" in the 
-comments.  Thanks to "module!=none" we are still on the safe side, even before 
-igt_sysfs_set() is fixed.
-
-> I'd drop these lines and just justify with the lines below why we are
-> not setting it here.
-> 
-> with a small change below we can also move these to use igt_require()
-> 
-> >+	 * is requested for both filter and filter_action then that's not a
-> >+	 * problem for us since even if filter_action was previously set to
-> >+	 * "skip" we can leave it as is because our "module!=none" default
-> >+	 * filter guarantees that no test cases are filtered out to be skipped.
-> >+	 */
-> >+	if (ret)
-> >+		ret = !igt_warn_on_f(!filter_action && filter,
-> >+				     "test error: filter_action=NULL requires filter=NULL\n");
-> >+	if (ret && filter_action)
-> >+		ret = !igt_debug_on(!igt_sysfs_set(params, "filter_action",
-> >+						   filter_action));
-> >+
-> >+	if (params >= 0)
-> >+		close(params);
-> >+
-> >+	return ret;
-> >+}
-> >+
-> > struct modprobe_data {
-> > 	struct kmod_module *kmod;
-> > 	const char *opts;
-> >@@ -1116,24 +1159,26 @@ static void kunit_get_tests(struct igt_list_head *tests,
-> > 	/*
-> > 	 * To get a list of test cases provided by a kunit test module, ask the
-> > 	 * generic kunit module to respond with SKIP result for each test found.
-> >-	 * We could also use action=list kunit parameter to get the listing,
-> >-	 * however, parsing a KTAP report -- something that we already can do
-> >-	 * perfectly -- seems to be more safe than extracting a test case list
-> >-	 * of unknown length from /dev/kmsg.
-> >-	 *
-> >-	 * TODO: drop the following workaround, which is required by LTS kernel
-> >-	 *       v6.1 not capable of listing test cases when built as a module.
-> >-	 * If loading the kunit module with required parameters fails then
-> >-	 * assume that we are running on a kernel with missing test case listing
-> >-	 * capabilities.  Dont's skip but just return with empty list of test
-> >-	 * cases, that should tell the caller to use a legacy method of
-> >-	 * iterating over KTAP results collected from blind execution of all
-> >-	 * Kunit test cases provided by a Kunit test module.
-> >+	 * We could also try to use action=list kunit parameter to get the
-> >+	 * listing, however, parsing a structured KTAP report -- something that
-> >+	 * we already can do perfectly -- seems to be more safe than extracting
-> >+	 * a free text list of unknown length from /dev/kmsg.
-> > 	 */
-> >-	igt_ignore_warn(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
-> >-	if (igt_debug_on(igt_kmod_load("kunit",
-> >-				       "filter=module=none filter_action=skip")))
-> >+	if (igt_debug_on(!kunit_set_filtering(NULL, "module=none", "skip"))) {
-> 
-> probably in the caller or very early:
-> 
-> 	if (!igt_syfs_has_rw_attr())
-> 		return fallback_kunit_execution();
-> 
-> I think it's too different this approach from the previous one, that
-> results in the long comments trying to explain each different
-> step.
-
-OK.
-
-> 
-> Humn... I guess we can do that on top, so if this works, seems ok for
-> now.
-
-OK.
-
-Thanks,
-Janusz
-
-> 
-> Lucas De Marchi
-> 
-> >+		/*
-> >+		 * TODO: drop the following workaround, required by LTS kernel
-> >+		 *       v6.1 not capable of listing test cases when built as as
-> >+		 *       module, when no longer needed.
-> >+		 * If updating writable filter parameters of the kunit base
-> >+		 * module with required values fails then assume we are running
-> >+		 * on a kernel with missing test case listing capabilities.
-> >+		 * Don't skip but just return with empty list of test cases,
-> >+		 * which should tell the caller to use a legacy method of
-> >+		 * iterating over KTAP results collected from blind execution
-> >+		 * of all Kunit test cases provided by a Kunit test module.
-> >+		 */
-> > 		return;
-> >+	}
-> >
-> > 	igt_skip_on(modprobe(tst->kmod, opts));
-> >
-> >@@ -1200,16 +1245,7 @@ static void __igt_kunit(struct igt_ktest *tst,
-> > 			      t->case_name) {
-> >
-> > 			if (!modprobe.thread) {
-> >-				/*
-> >-				 * Since we have successfully loaded the kunit
-> >-				 * base module with non-default parameters in
-> >-				 * order to get a list of test cases, now we
-> >-				 * have to unload it so it is then automatically
-> >-				 * reloaded with default parameter values when
-> >-				 * we load the test module again for execution.
-> >-				 */
-> >-				igt_skip_on(igt_kmod_unload("kunit",
-> >-							    KMOD_REMOVE_FORCE));
-> >+				igt_require(kunit_set_filtering(NULL, NULL, NULL));
-> >
-> > 				igt_assert_eq(pthread_mutexattr_init(&attr), 0);
-> > 				igt_assert_eq(pthread_mutexattr_setrobust(&attr,
-> >@@ -1378,6 +1414,9 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
-> > 		igt_assert(igt_list_empty(&tests));
-> > 	}
-> >
-> >+	/* We need the base KUnit module loaded if not built-in */
-> >+	igt_ignore_warn(igt_kmod_load("kunit", NULL));
-> >+
-> > 	/*
-> > 	 * We need to use igt_subtest here, as otherwise it may crash with:
-> > 	 *  skipping is allowed only in fixtures, subtests or igt_simple_main
-> 
-
-
-
+- Akshata
 
