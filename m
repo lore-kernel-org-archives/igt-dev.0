@@ -4,59 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 304EDC4828F
-	for <igt-dev@archiver.kernel.org>; Fri,  2 Feb 2024 15:32:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F2DDC4828F
+	for <igt-dev@archiver.kernel.org>; Fri,  2 Feb 2024 15:35:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CEE7210E7ED;
-	Fri,  2 Feb 2024 15:32:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C28C510E7ED;
+	Fri,  2 Feb 2024 15:35:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bKJQOsRc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y0qLbOkn";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6AF0110E7ED
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Feb 2024 15:32:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9C6610E7ED
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Feb 2024 15:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706887971; x=1738423971;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=kZ+DrkDWk3XOrdVLngQaVkFHhotKXPZi2dIW9OeQhLc=;
- b=bKJQOsRcUY2pE4QMylx39Wl1YqGDowV0KRGru6p85gzTWllUAMZ9NAv+
- 8BxDWL+ddJUzBSpEKfG9gwGpmXmmxyRb3flGBSTW8AKKss6UEjOwdx6ms
- fBUMnjTfpAXsxs6ItaVaBi4s1wYoBcxkfM1f0DtH9I0Z8Il4qTJMeczkY
- JS8FH0F4U9oUViBa9FmjooiQr86PgE2xTgw81FND/xFSsPrl8KEldRK6q
- /d3Ku1Nj7sqjCYSlN9gtYffdc6MwQuvKdUTXFogxIueivcOEqgqawvCMc
- rQ0J0og1wsP8HFws0udD+nZ6b/3gUQvbz4QgtL80G2I3gsb3in70UuEzo w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="17593850"
-X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; d="scan'208";a="17593850"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Feb 2024 07:32:51 -0800
+ t=1706888124; x=1738424124;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=YnYAzgPZLf0hnuNtcoC/9oZOuwUsI34U+Rh1CegIDDA=;
+ b=Y0qLbOknVwtdYKheqangDNVdpvtJ8x0FhSXMFRUiMqZbLOsvJh57hsow
+ NNU6uHnlgz+hw1YMdrfJsTbH9Z5wVmsm8g53h11DLUzu6TvpkYil1ecYI
+ hEO2MnzKfmfkCZb8rxJMbxdgG7X8BZTQ1nFIhfHzUqqYXJdM6KbT2Xyi1
+ spglwLie4bOcup42B5SvjsQMrGotRmTmFbWvKAAi3czgdmdg7CArt+QA5
+ EWSxfW+fXIcECDKlDV45D5pEP2ZoE9YKFnCu5s2wIOTK6445hm42VlivS
+ hvpRPQL4K6OcGdvCP7hWLOYBYm+VgLCdJdq9mdMOpZdp6GQDL60SaevDx Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="10783690"
+X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; d="scan'208";a="10783690"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Feb 2024 07:35:23 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; 
-   d="scan'208";a="109856"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2024 07:32:50 -0800
-Date: Fri, 2 Feb 2024 16:32:32 +0100
+   d="scan'208";a="4846296"
+Received: from unknown (HELO localhost) ([10.246.4.105])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Feb 2024 07:35:23 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t v6 3/8] lib/drmtest: allow opening cards out of order
-Message-ID: <20240202153232.ajdwvrylsbuk5jtk@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20240201155047.48608-1-kamil.konieczny@linux.intel.com>
- <20240201155047.48608-4-kamil.konieczny@linux.intel.com>
- <3205042.NnENhoQgcM@jkrzyszt-mobl2.ger.corp.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t v7 0/8] introduce Xe multigpu and other multi-GPU helpers
+Date: Fri,  2 Feb 2024 16:35:09 +0100
+Message-ID: <20240202153517.58281-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <3205042.NnENhoQgcM@jkrzyszt-mobl2.ger.corp.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,202 +64,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi,
+Introduce some multi-gpu function helpers and macros. Change in drmtest
+base opening function allows it to use __drm_open_driver_another(N, ...)
+out of order, for example on board with three discrete GPUs:
+__drm_open_driver_another(2, DRIVER_INTEL);
+__drm_open_driver_another(0, DRIVER_INTEL);
 
-On 2024-02-02 at 12:38:21 +0100, Janusz Krzysztofik wrote:
-> On Thursday, 1 February 2024 16:50:42 CET Kamil Konieczny wrote:
-> > Current __drm_open_driver_another() implementation prevents
-> > opening cards out of order, for example card 3 without previous
-> > opens of 0..2. This can be seen with three GPU cards system and
-> > gem_open_basic test:
-> > 
-> > sudo IGT_DEVICE=pci:vendor=Intel,card=all build/tests/gem_basic --r multigpu-create-close
-> > 
-> > IGT-Version: 1.28-g2548a539e (x86_64) (Linux: 6.7.0-rc5 x86_64)
-> > Using IGT_SRANDOM=1706630533 for randomisation
-> > Opened device: /dev/dri/card0
-> > Starting subtest: multigpu-create-close
-> > <g:0> Testing creating and closing an object.
-> > <g:1> Opened device: /dev/dri/card1
-> > <g:1> Testing creating and closing an object.
-> > gem_basic: ../lib/drmtest.c:341: _is_already_opened: Assertion `as_idx <= _opened_fds_count' failed.
-> > Received signal SIGABRT.
-> > 
-> > Relax that condition. Also relax condition for filtered devices and
-> 
-> Can we have those two parts split into two patches, please?  If not then could 
-> you please explain why (how they depend on each other)?
+Second solution for Xe is based on filtered views. Both allows to
+quickly write tests. There is still drawback of not printing in
+children logs <g:gpu-number> for first opened device. I renamed
+lib from lib/i915/igt_multigpu.* to lib/intel_multigu.* as I do not
+know of any non Intel developer using igt for such tests.
 
-I will remove this and you can see how it looks with old
-conditions checked, e.g. when n-th card should be different
-from m-th card, for n != m. I can reintroduce that second
-behaviour later.
+v2: corrected two patches which introduced multigpu lib (Dominik)
+  rebased patch intoducing Xe multigpu macro, corrected description
+v3: corrected include in first multigpu patch (Dominik)
+  fixed typo (Dominik), refactoring code with Xe and gem macro (Kamil)
+v4: corrected typo in macro (Dominik)
+v5: removed cached names and relaxing checks for filtered devices
+  in 3/8 patch, added Janusz to cc in 1/8...5/8 (Kamil)
+v6: extended description of patches 1 and 2, fixed bug in 3/8 (Janusz)
+  improved usage of _is_already_opened() (Kamil)
+v7: restored prohibition of opening the same card at other index (Janusz)
 
-Regards,
-Kamil
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-> 
-> Thanks,
-> Janusz
-> 
-> 
-> > allow them to open already opened ones, basically it will allow
-> > running multi-GPU scenarios on single-GPU system with filter:
-> > 
-> > IGT_DEVICE=pci:vendor=Intel,card=0\;pci:vendor=Intel,card=0
-> > 
-> > Changes in __search_and_open() was suggested by Zbigniew.
-> > 
-> > v5:
-> >  removed caching for names of opened cards
-> >  relaxed opening of filtered devices
-> > v6:
-> >  fixed assingment in _is_already_open() (Janusz)
-> >  simplify use of this function
-> > 
-> > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > ---
-> >  lib/drmtest.c | 66 ++++++++++++++++++++++++++++++++++++++-------------
-> >  1 file changed, 49 insertions(+), 17 deletions(-)
-> > 
-> > diff --git a/lib/drmtest.c b/lib/drmtest.c
-> > index 73d9159af..5bb084508 100644
-> > --- a/lib/drmtest.c
-> > +++ b/lib/drmtest.c
-> > @@ -322,35 +322,54 @@ static int _opened_fds_count;
-> >  static void _set_opened_fd(int idx, int fd)
-> >  {
-> >  	assert(idx < ARRAY_SIZE(_opened_fds));
-> > -	assert(idx <= _opened_fds_count);
-> > +	assert(idx >= 0);
-> >  
-> >  	_opened_fds[idx].fd = fd;
-> >  
-> >  	assert(fstat(fd, &_opened_fds[idx].stat) == 0);
-> >  
-> > -	_opened_fds_count = idx+1;
-> > +	for (int n = _opened_fds_count; n < idx; n++)
-> > +		_opened_fds[n].fd = -1;
-> > +
-> > +	if (idx >= _opened_fds_count)
-> > +		_opened_fds_count = idx + 1;
-> >  }
-> >  
-> > -static bool _is_already_opened(const char *path, int as_idx)
-> > +/* in *err returns -errno or index to _opened_fds[] */
-> > +static bool _is_already_opened(const char *path, int as_idx, int *err)
-> >  {
-> >  	struct stat new;
-> >  
-> >  	assert(as_idx < ARRAY_SIZE(_opened_fds));
-> > -	assert(as_idx <= _opened_fds_count);
-> > +	assert(as_idx >= 0);
-> >  
-> >  	/*
-> >  	 * we cannot even stat the device, so it's of no use - let's claim it's
-> >  	 * already opened
-> >  	 */
-> > -	if (igt_debug_on(stat(path, &new) != 0))
-> > +	if (igt_debug_on(stat(path, &new) != 0)) {
-> > +		if (err)
-> > +			*err = -errno;
-> > +
-> >  		return true;
-> > +	}
-> > +
-> > +	if (err)
-> > +		*err = 0;
-> > +
-> > +	for (int i = 0, end = min(_opened_fds_count, as_idx); i < end; ++i) {
-> > +		if (_opened_fds[i].fd == -1)
-> > +			continue;
-> >  
-> > -	for (int i = 0; i < as_idx; ++i) {
-> >  		/* did we cross filesystem boundary? */
-> >  		assert(_opened_fds[i].stat.st_dev == new.st_dev);
-> >  
-> > -		if (_opened_fds[i].stat.st_ino == new.st_ino)
-> > +		if (_opened_fds[i].stat.st_ino == new.st_ino) {
-> > +			if (err)
-> > +				*err = i;
-> > +
-> >  			return true;
-> > +		}
-> >  	}
-> >  
-> >  	return false;
-> > @@ -359,23 +378,38 @@ static bool _is_already_opened(const char *path, int as_idx)
-> >  static int __search_and_open(const char *base, int offset, unsigned int chipset, int as_idx)
-> >  {
-> >  	const char *forced;
-> > +	int err;
-> >  
-> >  	forced = forced_driver();
-> >  	if (forced)
-> >  		igt_debug("Force option used: Using driver %s\n", forced);
-> >  
-> > -	for (int i = 0; i < 16; i++) {
-> > +	for (int i = 0, idx = -1; i < 16 && idx < as_idx; i++) {
-> >  		char name[80];
-> >  		int fd;
-> >  
-> >  		sprintf(name, "%s%u", base, i + offset);
-> >  
-> > -		if (_is_already_opened(name, as_idx))
-> > -			continue;
-> > +		if (_is_already_opened(name, as_idx, &err)) {
-> > +			if (err < 0)
-> > +				continue;
-> > +
-> > +			if (idx + 1 < as_idx) {
-> > +				++idx;
-> > +				continue;
-> > +			}
-> > +		}
-> >  
-> >  		fd = __drm_open_device(name, chipset);
-> > -		if (fd != -1)
-> > +		if (fd != -1) {
-> > +			++idx;
-> > +			if (idx < as_idx) {
-> > +				close(fd);
-> > +				continue;
-> > +			}
-> > +
-> >  			return fd;
-> > +		}
-> >  	}
-> >  
-> >  	return -1;
-> > @@ -486,8 +520,7 @@ static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card)
-> >   *   * idx-th filter (starting with 0, filters are semicolon separated) is used
-> >   *   * if there is no idx-th filter, goto 2
-> >   *   * first device maching the filter is selected
-> > - *   * if it's already opened (for indexes = 0..idx-1) we fail with -1
-> > - *   * otherwise open the device and return the fd
-> > + *   * open the device and return the fd
-> >   *
-> >   * 2. compatibility mode - open the first DRM device we can find that is not
-> >   *    already opened for indexes 0..idx-1, searching up to 16 device nodes
-> > @@ -542,11 +575,10 @@ int __drm_open_driver_another(int idx, int chipset)
-> >  		if (!found || !strlen(card.card))
-> >  			igt_warn("No card matches the filter! [%s]\n",
-> >  				 igt_device_filter_get(idx));
-> > -		else if (_is_already_opened(card.card, idx))
-> > -			igt_warn("card maching filter %d is already opened\n", idx);
-> > -		else
-> > +		else {
-> > +			_is_already_opened(card.card, idx, NULL); /* check only filesystem boundary */
-> >  			fd = __open_driver_exact(card.card, chipset);
-> > -
-> > +		}
-> >  	} else {
-> >  		/* no filter for device idx, let's open whatever is available */
-> >  		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
-> > 
-> 
-> 
-> 
-> 
+Dominik Karol Piątkowski (4):
+  lib/igt_device_scan: Introduce filtering out non-PCI devices
+  lib/drmtest: Introduced drm_open_driver_another
+  lib/intel_multigpu: Introduce library for multi-GPU scenarios
+  lib/intel_multigpu: Introduced gem_multigpu_count_class and
+    igt_multi_fork_foreach_gpu
+
+Kamil Konieczny (4):
+  lib/drmtest: allow opening cards out of order
+  lib/intel_multigpu: Add xe_multi_fork_foreach_gpu
+  tests/intel/xe_exec_basic: add multigpu subtests
+  tests/intel/gem_mmap: add basic multi-GPU subtest
+
+ lib/drmtest.c               | 100 +++++++++++++++++++++-----
+ lib/drmtest.h               |   1 +
+ lib/igt_device_scan.c       |  21 ++++++
+ lib/igt_device_scan.h       |   2 +
+ lib/intel_multigpu.c        | 135 ++++++++++++++++++++++++++++++++++++
+ lib/intel_multigpu.h        |  36 ++++++++++
+ lib/meson.build             |   1 +
+ tests/intel/gem_mmap.c      |  77 ++++++++++++--------
+ tests/intel/xe_exec_basic.c |  36 ++++++++++
+ 9 files changed, 363 insertions(+), 46 deletions(-)
+ create mode 100644 lib/intel_multigpu.c
+ create mode 100644 lib/intel_multigpu.h
+
+-- 
+2.42.0
+
