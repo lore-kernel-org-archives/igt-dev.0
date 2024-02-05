@@ -4,48 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAA87C4828D
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Feb 2024 06:08:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53926C4828D
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Feb 2024 06:42:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 93E3D10E4B2;
-	Mon,  5 Feb 2024 06:08:26 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RC/siqhZ";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 270E910E4B2
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Feb 2024 06:08:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707113305; x=1738649305;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=bU6qhc2jySXhVcKNxT+YA7+3EK1aC7xB4fXXJUfaj8I=;
- b=RC/siqhZCDcVD1wNb2NAvzt7koYZcPSCpKHLP34oLQrWPcDS1gYkb+4l
- UZngmI/fTH9TEHeZUrTiWxK/8yjBjmWuf2b8mUz40x/0z8vNUkJy0l0Xi
- l2eEV7mKDdMrn8o/bAhWO1fWEr7BvukVEMzGO+KDsPPdmkV2l7/D5D4f3
- VFzxZd/iIqXI4YhZ2z8XyhlBdhuG1UnmD+Q+ksfc97aaO0I72vMLPoGqf
- wcTS609lJymWuKgv+yv+byMbBjhGmDRHmPBWzdj/RApo1/jss7AEYpSwU
- UWCrH9XvHZyEop2MAFhbF+4pgDXXENwg7hTFFy5DHczF1DzbtkOorh1J4 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="394879722"
-X-IronPort-AV: E=Sophos;i="6.05,242,1701158400"; d="scan'208";a="394879722"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Feb 2024 22:08:24 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,242,1701158400"; 
-   d="scan'208";a="953715"
-Received: from dut-2a59.iind.intel.com ([10.190.239.113])
- by orviesa008.jf.intel.com with ESMTP; 04 Feb 2024 22:08:24 -0800
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: chaitanya.kumar.borah@intel.com
-Subject: [PATCH i-g-t] lib: Add ARL-S PCI ID for perf tests
-Date: Mon,  5 Feb 2024 11:31:39 +0530
-Message-Id: <20240205060139.3643855-1-chaitanya.kumar.borah@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id B2D401123CA;
+	Mon,  5 Feb 2024 06:42:24 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3248A1123CA;
+ Mon,  5 Feb 2024 06:42:24 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5288429494975259844=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fexec=5Fqueue?=
+ =?utf-8?q?=5Fproperty=3A_Remove_persistence_queue_property_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tejas Upadhyay" <tejas.upadhyay@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 05 Feb 2024 06:42:24 -0000
+Message-ID: <170711534420.1023984.9207317425593970946@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240205061808.44032-1-tejas.upadhyay@intel.com>
+In-Reply-To: <20240205061808.44032-1-tejas.upadhyay@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,30 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Enable perf tests on ARL-S
+--===============5288429494975259844==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
----
- lib/i915_pciids_local.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/lib/i915_pciids_local.h b/lib/i915_pciids_local.h
-index a0ca29ee7..0043b0cd9 100644
---- a/lib/i915_pciids_local.h
-+++ b/lib/i915_pciids_local.h
-@@ -10,7 +10,8 @@
- /* MTL perf */
- #ifndef INTEL_MTL_M_IDS
- #define INTEL_MTL_M_IDS(info) \
--	INTEL_VGA_DEVICE(0x7D60, info)
-+	INTEL_VGA_DEVICE(0x7D60, info), \
-+	INTEL_VGA_DEVICE(0x7D67, info)
- #endif
- 
- #ifndef INTEL_MTL_P_GT2_IDS
--- 
-2.25.1
+Series: tests/intel/xe_exec_queue_property: Remove persistence queue property (rev2)
+URL   : https://patchwork.freedesktop.org/series/129521/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7702_BAT -> XEIGTPW_10634_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7702 -> IGTPW_10634
+  * Linux: xe-717-a7ad037447de4ca22722972270493b23be436187 -> xe-723-c0cd32d2c1404e5c1218a158e47e6a580e098b61
+
+  IGTPW_10634: 10634
+  IGT_7702: bf075a74ece1956fc0e554291591b9da3eab54cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-717-a7ad037447de4ca22722972270493b23be436187: a7ad037447de4ca22722972270493b23be436187
+  xe-723-c0cd32d2c1404e5c1218a158e47e6a580e098b61: c0cd32d2c1404e5c1218a158e47e6a580e098b61
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10634/index.html
+
+--===============5288429494975259844==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_queue_property: Remove persistence queue property (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129521/">https://patchwork.freedesktop.org/series/129521/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10634/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10634/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7702_BAT -&gt; XEIGTPW_10634_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7702 -&gt; IGTPW_10634</li>
+<li>Linux: xe-717-a7ad037447de4ca22722972270493b23be436187 -&gt; xe-723-c0cd32d2c1404e5c1218a158e47e6a580e098b61</li>
+</ul>
+<p>IGTPW_10634: 10634<br />
+  IGT_7702: bf075a74ece1956fc0e554291591b9da3eab54cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-717-a7ad037447de4ca22722972270493b23be436187: a7ad037447de4ca22722972270493b23be436187<br />
+  xe-723-c0cd32d2c1404e5c1218a158e47e6a580e098b61: c0cd32d2c1404e5c1218a158e47e6a580e098b61</p>
+
+</body>
+</html>
+
+--===============5288429494975259844==--
