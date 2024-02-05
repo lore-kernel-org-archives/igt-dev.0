@@ -4,56 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02B8FC48291
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Feb 2024 09:29:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E77DC48291
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Feb 2024 10:35:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A1A7A11247F;
-	Mon,  5 Feb 2024 09:29:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F3DE51124B4;
+	Mon,  5 Feb 2024 10:35:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LtM9fIEB";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="OfD+WdjP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33EEA11247F
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Feb 2024 09:28:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707125339; x=1738661339;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=PnOWpVHUVPIM4aTxtKLGRToQHi8Vyh0E+uqulUwB0ws=;
- b=LtM9fIEBaog+t02wQQqw7Wn3G3TBtMq1owzg3CBbrxTQNkUqOLitcxOD
- Aolm1733Ztpd97yz6mxng3n7i8rkoKJPzrwMeVDhdIMZ88al9JfIpoT8j
- 1mIaRr/blJcA+HQrrNxfvKdDuBuRsOn8Z4DCPOZMPoVHPo4w7ur/3lmfW
- 5Sfo5NeiZLBwcVRDDj8hPjs4ExqLsnOnDxIbCUHWm0I+oPTswlCxkyDGI
- vGErJ3TfduAXJffZ6fLJOtZA56Cy4dP+gmTbVGaL1+bhKrL6q0JYIJeu3
- e5uNdJfGIMCe8uwljBndUOWoS5/w5wL8QPxu2+XdlwyP/+jbxEY2Y6Ssz g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="25929930"
-X-IronPort-AV: E=Sophos;i="6.05,242,1701158400"; d="scan'208";a="25929930"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Feb 2024 01:28:50 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,242,1701158400"; 
-   d="scan'208";a="673859"
-Received: from mkuraz-mobl2.ger.corp.intel.com (HELO
- jkrzyszt-mobl2.ger.corp.intel.com) ([10.213.2.183])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Feb 2024 01:28:49 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 2/2] xe_live_ktest: Use xe_live_test kernel module
-Date: Mon, 05 Feb 2024 10:28:45 +0100
-Message-ID: <2920874.e9J7NaK4W3@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <ifumqs743htqmhkxsns6zievakgadvjcbaqb7bva2cievhfu3x@igaj5s2kke66>
-References: <20240202004529.552806-1-lucas.demarchi@intel.com>
- <3493194.som1txNFv6@jkrzyszt-mobl2.ger.corp.intel.com>
- <ifumqs743htqmhkxsns6zievakgadvjcbaqb7bva2cievhfu3x@igaj5s2kke66>
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com
+ [46.235.227.194])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A64DA1124B4
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Feb 2024 10:35:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+ s=mail; t=1707129325;
+ bh=5TawAyJ89K+q2Xc56xM7IVlmJqfjKR+j2JHoJJ3Wj6U=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=OfD+WdjPTicPFRDqgeEzRp4Qh/FWpQ06LtH3AEGaH2nna+VtygEJAKQAshAGPCFY7
+ MC+06N36WHV/SUg0EA+k3CJ1pnTg++aeMp8LqkbL9kMW0A1lBMhOOOnQV6baWbNiyf
+ G0jJdDZ/Ai4JWO63C9hfT3WwJ9XI1dP9CruPK/0gXDJ36rk/DrittFUHbQZZAg7iiX
+ ifiYXhqz71pjIrAM9ibhcGpO5ljWVzm3Ibm3Caaqp3nwuiMGpOn0z3J1s5nKeCfCAq
+ bJI/+7Ep+gIbTSeQXwHEIZcp1RZRC2pgNy8hepdbLSC/nb7oBF2Gl7Ly67J3O1aVJN
+ VVF1H5JzO4FNw==
+Received: from eldfell (cola.collaboradmins.com [195.201.22.229])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits)
+ server-digest SHA256) (No client certificate requested)
+ (Authenticated sender: pq)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id C1C2E3781FEF;
+ Mon,  5 Feb 2024 10:35:24 +0000 (UTC)
+Date: Mon, 5 Feb 2024 12:35:23 +0200
+From: Pekka Paalanen <pekka.paalanen@collabora.com>
+To: Jessica Zhang <quic_jesszhan@quicinc.com>
+Cc: <igt-dev@lists.freedesktop.org>, Petri Latvala <adrinael@adrinael.net>,
+ Simon Ser <contact@emersion.fr>, <quic_abhinavk@quicinc.com>, "Dmitry
+ Baryshkov" <dmitry.baryshkov@linaro.org>, Rob Clark <robdclark@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: Re: [PATCH i-g-t v2 5/6] tests/kms_atomic: Add solid fill plane
+ subtest
+Message-ID: <20240205123523.24bfd139.pekka.paalanen@collabora.com>
+In-Reply-To: <700ec113-b897-428c-926a-dc2cfd3525f1@quicinc.com>
+References: <20240123-solid-fill-v2-0-4ecd2cf767fe@quicinc.com>
+ <20240123-solid-fill-v2-5-4ecd2cf767fe@quicinc.com>
+ <20240124111325.179896e7.pekka.paalanen@collabora.com>
+ <700ec113-b897-428c-926a-dc2cfd3525f1@quicinc.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: multipart/signed; boundary="Sig_/91r9Y6qCb4M1MgbUfduX/s7";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,49 +67,131 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Friday, 2 February 2024 16:25:56 CET Lucas De Marchi wrote:
-> On Fri, Feb 02, 2024 at 01:00:14PM +0100, Janusz Krzysztofik wrote:
-> >On Friday, 2 February 2024 01:45:29 CET Lucas De Marchi wrote:
-> >> https://patchwork.freedesktop.org/series/126786/ groups all the live
-> >> tests into a single kernel module. Use that module to run any of the
-> >> tests triggered by igt.
+--Sig_/91r9Y6qCb4M1MgbUfduX/s7
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, 2 Feb 2024 10:14:18 -0800
+Jessica Zhang <quic_jesszhan@quicinc.com> wrote:
+
+> On 1/24/2024 1:13 AM, Pekka Paalanen wrote:
+> > On Tue, 23 Jan 2024 15:28:58 -0800
+> > Jessica Zhang <quic_jesszhan@quicinc.com> wrote:
+> >  =20
+> >> Add a basic test for solid fill planes.
 > >>
-> >> To make the live kunit tests work, rename the subtests so they match
-> >> what the kernel uses.
-> >
-> >Both the KUnit module name and the IGT test name clearly indicate they a=
-re
->=20
-> kunit is usable without igt and I'd like to continue it like that, so
+> >> This test will first commit a single-color framebuffer plane then
+> >> a solid fill plane with the same contents. It then validates the solid
+> >> fill plane by comparing the resulting CRC with the CRC of the reference
+> >> framebuffer commit.
+> >>
+> >> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+> >> ---
+> >>   tests/kms_atomic.c | 179 +++++++++++++++++++++++++++++++++++++++++++=
+++++------
+> >>   1 file changed, 161 insertions(+), 18 deletions(-)
 
-I didn't say there was something wrong with that.
+...
 
-> what remains is the kunit module name. But then that would imply using
-> both filter and filter_glob rather than simply using just filter_glob.
+> >> +static void test_solid_fill_plane(data_t *data, igt_output_t *output,=
+ igt_plane_t *plane)
+> >> +{
+> >> +	drmModeModeInfo *mode =3D igt_output_get_mode(output);
+> >> +	struct drm_mode_rect rect =3D { 0 };
+> >> +	struct igt_fb ref_fb;
+> >> +	igt_pipe_crc_t *pipe_crc;
+> >> +	igt_crc_t ref_crc, new_crc;
+> >> +	enum pipe pipe =3D data->pipe->pipe;
+> >> +	int height, width, i;
+> >> +	int ret;
+> >> +
+> >> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_SOLID_FILL));
+> >> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_PIXEL_SOURCE));
+> >> +
+> >> +	rect.x1 =3D 0;
+> >> +	rect.x2 =3D mode->hdisplay;
+> >> +	rect.y1 =3D 0;
+> >> +	rect.y2 =3D mode->vdisplay;
+> >> +
+> >> +	width =3D rect_width(&rect);
+> >> +	height =3D rect_height(&rect);
+> >> +
+> >> +	igt_plane_set_position(plane, rect.x1, rect.y1);
+> >> +	pipe_crc =3D igt_pipe_crc_new(data->drm_fd, pipe,
+> >> +			    IGT_PIPE_CRC_SOURCE_AUTO);
+> >> +
+> >> +
+> >> +	for (i =3D 0; i < ARRAY_SIZE(colors); i++) {
+> >> +		uint32_t r =3D colors[i].r;
+> >> +		uint32_t g =3D colors[i].g;
+> >> +		uint32_t b =3D colors[i].b;
+> >> +
+> >> +		struct drm_mode_create_blob c;
+> >> +		struct drm_mode_destroy_blob d;
+> >> +		struct drm_mode_solid_fill blob_data =3D {
+> >> +			.r =3D r,
+> >> +			.g =3D g,
+> >> +			.b =3D b,
+> >> +			.pad =3D 0x0,
+> >> +		};
+> >> +
+> >> +		c.data =3D (uintptr_t) &blob_data;
+> >> +		c.length =3D sizeof(blob_data);
+> >> +
+> >> +		igt_debug("Testing color r: 0x%x (%f), g: 0x%x (%f), b: 0x%x (%f)\n=
+",
+> >> +				r, unorm_to_float(r),
+> >> +				g, unorm_to_float(g),
+> >> +				b, unorm_to_float(b));
+> >> +
+> >> +		/* get reference CRC */
+> >> +		igt_create_color_fb(data->drm_fd, width, height,
+> >> +				    DRM_FORMAT_ABGR8888, DRM_FORMAT_MOD_LINEAR,
+> >> +				    unorm_to_float(r),
+> >> +				    unorm_to_float(g),
+> >> +				    unorm_to_float(b), =20
+> >=20
+> > I'm slightly wary of trusting a third party library (Cairo? Pixman?)
+> > with the float->u8 conversion. If both Cairo and the kernel do the same
+> > mistake in conversion, the test would pass. Therefore, this is actually
+> > testing that the kernel follows Cairo's conversion, and not the UAPI
+> > definition, should the unthinkable happen that they disagreed.
+> >=20
+> > Would it at least be possible to verify the FB value against what we
+> > expect here? =20
 >=20
-> >strictly related to Xe.  Then, I think that shorter subtest names, witho=
-ut the
-> >xe_ prefix, are better in that narrow name space.  Couldn't we then rena=
-me
-> >test suits on the kernel side instead of adding that redundant prefix al=
-so to
-> >IGT subtest names?
+> Hi Pekka,
 >=20
-> I don't think it's a good alternative because the test suite names are
-> global, regardless what module it comes from. For all the live tests,
+> Unfortunately, I don't think there's a way that will let us to do that=20
+> without writeback.
 
-You're right, our xe test suites names are in line with KUnit style=20
-recommendations.
+I would be surprised if IGT used anything other than Cairo's image
+backend. Can't you simply read bytes back from where Cairo wrote them?
+Checking just one pixel would suffice.
+
 
 Thanks,
-Janusz
+pq
 
-> they were always prefixed with xe_. We do have some normal kunit without
-> prefix, but I=B4d rather add the prefix there than remove here.
->=20
-> Lucas De Marchi
->=20
+--Sig_/91r9Y6qCb4M1MgbUfduX/s7
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmXAuesACgkQI1/ltBGq
+qqcC/Q//cNZ1FF65CayKALQydiws9OcslZRY3y2V2nAH7PfyyaglurM+VxKvCJz1
+JtITj5Kp8l71wAklDTQM91hOmkN+MKKgB6i/YVwzUzwg4Cq4a3SH4lWe5xa6NIgh
+U0KRxdO+8CBf4loxBM8rS9mEbgmF+2J+Mul+JK6ZfaGV0tp9oyoHLjhxlTHPOIG0
+Am+Yiw5QDqZvwOkH7UYN3G01AqY/inihvMw5dWWtiQ6qjaSfap9P5LM0fqg28ZtU
+3EEAfv1+A74RX7MlInH4zaFfCsD47dmSM9BaFyRpfrVgDhvY5/0cXc34rqZhNy1H
+bkHC8kJOWFUWXHrLr5lpDqLI430K/wZzwcPiGq0N1YXKgAwzvbC7DBDtr8r1FiZr
++AUftUaqZbYo3X2jJsyw7KzU0mixrC43ifdHEvQZd95tysDMipPHQ7niUT01w2Mu
+1iGePulY1uBa1iluTONdhcRQ9U4bKi79MW3xsbr2YMPPEpgofMYEtfv5iusDtL7f
+iYr6i5ByOR08gjtPx4g3mxd2V64vzTIfM6E6D56g8j8oCrFrFUYn9jS814dJytHa
+vmGxpbHiy55td8499cvWCNZ4EXAc0wXaHIXCuUen4Sn8hPiUOo0N4fOCYZvxlCV9
+KYwkaHh6goncBiDiW+2PLU5TToS+wgLt2Dvu1VYihAtx2htfcPc=
+=Zd0i
+-----END PGP SIGNATURE-----
 
-
+--Sig_/91r9Y6qCb4M1MgbUfduX/s7--
