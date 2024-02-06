@@ -4,62 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2660C48297
-	for <igt-dev@archiver.kernel.org>; Tue,  6 Feb 2024 17:22:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52FB7C4829C
+	for <igt-dev@archiver.kernel.org>; Tue,  6 Feb 2024 17:27:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5F458112CF9;
-	Tue,  6 Feb 2024 17:22:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B4453112CFA;
+	Tue,  6 Feb 2024 17:27:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kCy206my";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Nj3PwLSo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F269112CF7
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Feb 2024 17:22:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 597F8112CFD
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Feb 2024 17:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707240176; x=1738776176;
+ t=1707240428; x=1738776428;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=LdGUJYzo4IfnCpqgntcolIXsGD+raZTOzGxTJAyIwNw=;
- b=kCy206my9MCDo1ZSTrQSv5SmLZPhoiAB4sUddxOXoYUIRT7EekQ2LaXL
- iCJVM7ysYRPZ+9mmEdGSaF1+AWkLE5dWoGnSmzKyT7FArajelRWrQmPgn
- JmoNlcvBczoaiH+dwCQQ8dTCbnEbEblkrkMDWDj53bScFgtto5w5vpXzn
- /1VY2u5DxY2fB3ONr9OgDcbXnclSFCGPgI8WezfIQpjtgMDzyDza4Os8b
- w6o0FZ0mBndqsvrrHsgNEK2Zu/zvz+QfGSI+wyBDSzaVfRln1SNb7uBaF
- m9UPCHAWU/B3vPi3ytbRkoqWdmGF99PnURgX/VKJXL5aVrjnl7yisFXx0 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="684190"
+ bh=xKhlf2hUzrU3lYdVVbGBcThs1qNGqdeNS222MW+Lx74=;
+ b=Nj3PwLSoZeTDCyz3E9wQxQ7pTSEhpuio3XaU0/OMayuEQ/Jyxqz3lBE1
+ YgVetgj4kqa37IoMWr+TdULz2loOBEsEZlCDWQKVFQDVeUwQa7YF9tzmy
+ Z/GW2ga266tC5wUGhxaigSTv5Vl8sSBCsxxC/s/zWaILfQ5q61G6aqPzZ
+ T2hN8P4iKBQAOcQEoS2h8/4Nf6lQBerrA3ll4JjILk8P8E+yDeepV79DY
+ qPOZHOQH9D6Ww4GyoTh62VZK6DGGsd2FYkxt5c5ivxaQU9YJa7x459zRy
+ miWx5av/Pb55lIipnDB8GLQIqb/Z+UZ8Wmaaq+yUME7EWdbu9N+eNHAvV w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="956649"
 X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="684190"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2024 09:22:56 -0800
+   d="scan'208";a="956649"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2024 09:27:08 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="5695152"
+X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; d="scan'208";a="32165317"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 09:22:55 -0800
-Date: Tue, 6 Feb 2024 18:22:52 +0100
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2024 09:27:07 -0800
+Date: Tue, 6 Feb 2024 18:27:04 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- intel-xe@lists.freedesktop.org, Mauro Carvalho Chehab <mchehab@kernel.org>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: Re: [PATCH i-g-t v4 1/8] lib/kunit: Enter legacy path only if
- applying filters fails
-Message-ID: <20240206172252.rb6tdxkbwbkgjwf5@kamilkon-desk.igk.intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: Re: [PATCH i-g-t 1/3] lib/igt_kmod: stop using KMOD_REMOVE_FORCE
+Message-ID: <20240206172704.4txwvk3gwrm7vh2u@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- intel-xe@lists.freedesktop.org,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-References: <20240206101514.6897-10-janusz.krzysztofik@linux.intel.com>
- <20240206101514.6897-11-janusz.krzysztofik@linux.intel.com>
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+References: <20240201005115.352192-1-lucas.demarchi@intel.com>
+ <20240201005115.352192-2-lucas.demarchi@intel.com>
+ <20240201130510.gxxpk6olc6a75bpi@kamilkon-desk.igk.intel.com>
+ <sdyud72vjztxh32ao3vl3sq2jecb75luovqgmhw35ucb7yiqda@sqoixrpxnm4k>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240206101514.6897-11-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <sdyud72vjztxh32ao3vl3sq2jecb75luovqgmhw35ucb7yiqda@sqoixrpxnm4k>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,93 +72,274 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Janusz,
-On 2024-02-06 at 11:00:25 +0100, Janusz Krzysztofik wrote:
-> If loading the base KUnit module in list mode succeeds but our KTAP
-> parser or test suite filtering returns an empty list of test cases then,
-> instead of calling igt_skip, we now unintentionally fall back to legacy
-> mode as if the module didn't support filter parameters.
+Hi Lucas,
+On 2024-02-01 at 08:03:15 -0600, Lucas De Marchi wrote:
+> On Thu, Feb 01, 2024 at 02:05:10PM +0100, Kamil Konieczny wrote:
+> > Hi Lucas,
+> > On 2024-01-31 at 16:50:28 -0800, Lucas De Marchi wrote:
+> > 
+> > Missing commit description - please add one.
+> > 
+> > Do we really need this remove?
 > 
-> Fall back to legacy path only when kunit_get_tests() fails to load the
-> base KUnit module with non-default filters, and not when it returns an
-> empty list of test cases.
+> oops, I was supposed to add the explanation why that I used in a
+> patch review and forgot to paste.
 > 
-> As an additional benefit from this approach, we now have a single TODO
-> place in the code to be fixed when the fallback is no longer needed.
+> I'd swap the question:  do we really need the flag? No, we never need
+> the flag. If the kernel ever resorts to honoring the flag we will
+> have a tainted kernel, potential leaks and memory corruption. It's
+> better to just handle the error returned by libkmod and fix the root
+> cause.
 > 
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> Lucas De Marchi
+> 
+
+If it is ignored on kernel side it can be ignored also in igt,
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-> ---
->  lib/igt_kmod.c | 28 ++++++++++------------------
->  1 file changed, 10 insertions(+), 18 deletions(-)
-> 
-> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index 250ab2107b..ec9f77ba11 100644
-> --- a/lib/igt_kmod.c
-> +++ b/lib/igt_kmod.c
-> @@ -1087,7 +1087,7 @@ static void __igt_kunit_legacy(struct igt_ktest *tst,
->  	igt_skip_on_f(ret, "KTAP parser failed\n");
->  }
->  
-> -static void kunit_get_tests(struct igt_list_head *tests,
-> +static bool kunit_get_tests(struct igt_list_head *tests,
->  			    struct igt_ktest *tst,
->  			    const char *filter,
->  			    const char *opts)
-> @@ -1112,19 +1112,10 @@ static void kunit_get_tests(struct igt_list_head *tests,
->  	 * however, parsing a KTAP report -- something that we already can do
->  	 * perfectly -- seems to be more safe than extracting a test case list
->  	 * of unknown length from /dev/kmsg.
-> -	 *
-> -	 * TODO: drop the following workaround, which is required by LTS kernel
-> -	 *       v6.1 not capable of listing test cases when built as a module.
-> -	 * If loading the kunit module with required parameters fails then
-> -	 * assume that we are running on a kernel with missing test case listing
-> -	 * capabilities.  Dont's skip but just return with empty list of test
-> -	 * cases, that should tell the caller to use a legacy method of
-> -	 * iterating over KTAP results collected from blind execution of all
-> -	 * Kunit test cases provided by a Kunit test module.
->  	 */
->  	if (igt_debug_on(igt_kmod_load("kunit",
->  				       "filter=module=none filter_action=skip")))
-> -		return;
-> +		return false;
->  
->  	igt_skip_on(modprobe(tst->kmod, opts));
->  
-> @@ -1163,6 +1154,8 @@ static void kunit_get_tests(struct igt_list_head *tests,
->  
->  	igt_skip_on_f(err,
->  		      "KTAP parser failed while getting a list of test cases\n");
-> +
-> +	return true;
->  }
->  
->  static void __igt_kunit(struct igt_ktest *tst,
-> @@ -1375,15 +1368,14 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
->  	 * and for documentation.
->  	 */
->  	igt_subtest_with_dynamic(name) {
-> -		kunit_get_tests(&tests, &tst, filter, opts);
->  		/*
-> -		 * TODO: drop the __igt_kunit() legacy processing path, required
-> -		 *	 by kernels v6.1-v6.5 with DRM Kunit support but not
-> -		 *	 capable of listing test cases when built as a module,
-> -		 *	 as soon as no longer required by major Linux
-> -		 *	 distributions, now usually based on LTS kernel v6.1.
-> +		 * TODO: As soon as no longer needed by major Linux
-> +		 *	 distributions, replace the fallback to
-> +		 *	 __igt_kunit_legacy() processing path, required by
-> +		 *	 LTS kernels not capable of using KUnit filters for
-> +		 *	 listing test cases in KTAP format, with igt_require.
->  		 */
-> -		if (igt_debug_on(igt_list_empty(&tests)))
-> +		if (!kunit_get_tests(&tests, &tst, filter, opts))
->  			__igt_kunit_legacy(&tst, name, opts);
->  		else
->  			__igt_kunit(&tst, name, opts, &tests);
-> -- 
-> 2.43.0
-> 
+> > 
+> > Regards,
+> > Kamil
+> > 
+> > +cc Janusz Krzysztofik
+> > 
+> > > Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> > > ---
+> > >  lib/igt_kmod.c                 | 42 ++++++++++++++++------------------
+> > >  lib/igt_kmod.h                 |  2 +-
+> > >  tests/intel/i915_module_load.c |  4 ++--
+> > >  tests/kms_content_protection.c |  2 +-
+> > >  tests/vgem_basic.c             |  2 +-
+> > >  5 files changed, 25 insertions(+), 27 deletions(-)
+> > > 
+> > > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> > > index 5709138c0..2fed6ed54 100644
+> > > --- a/lib/igt_kmod.c
+> > > +++ b/lib/igt_kmod.c
+> > > @@ -258,7 +258,7 @@ out:
+> > >  	return err < 0 ? err : 0;
+> > >  }
+> > > 
+> > > -static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
+> > > +static int igt_kmod_unload_r(struct kmod_module *kmod)
+> > >  {
+> > >  #define MAX_TRIES	20
+> > >  #define SLEEP_DURATION	500000
+> > > @@ -272,7 +272,7 @@ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
+> > >  	holders = kmod_module_get_holders(kmod);
+> > >  	kmod_list_foreach(pos, holders) {
+> > >  		struct kmod_module *it = kmod_module_get_module(pos);
+> > > -		err = igt_kmod_unload_r(it, flags);
+> > > +		err = igt_kmod_unload_r(it);
+> > >  		kmod_module_unref(it);
+> > >  		if (err < 0)
+> > >  			break;
+> > > @@ -292,7 +292,7 @@ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
+> > >  	}
+> > > 
+> > >  	for (tries = 0; tries < MAX_TRIES; tries++) {
+> > > -		err = kmod_module_remove_module(kmod, flags);
+> > > +		err = kmod_module_remove_module(kmod, 0);
+> > > 
+> > >  		/* Only loop in the following cases */
+> > >  		if (err != -EBUSY && err != -EAGAIN)
+> > > @@ -326,8 +326,6 @@ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
+> > >  /**
+> > >   * igt_kmod_unload:
+> > >   * @mod_name: Module name.
+> > > - * @flags: flags are passed directly to libkmod and can be:
+> > > - * KMOD_REMOVE_FORCE or KMOD_REMOVE_NOWAIT.
+> > >   *
+> > >   * Returns: 0 in case of success or -errno otherwise.
+> > >   *
+> > > @@ -335,7 +333,7 @@ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
+> > >   *
+> > >   */
+> > >  int
+> > > -igt_kmod_unload(const char *mod_name, unsigned int flags)
+> > > +igt_kmod_unload(const char *mod_name)
+> > >  {
+> > >  	struct kmod_ctx *ctx = kmod_ctx();
+> > >  	struct kmod_module *kmod;
+> > > @@ -348,7 +346,7 @@ igt_kmod_unload(const char *mod_name, unsigned int flags)
+> > >  		goto out;
+> > >  	}
+> > > 
+> > > -	err = igt_kmod_unload_r(kmod, flags);
+> > > +	err = igt_kmod_unload_r(kmod);
+> > >  	if (err < 0) {
+> > >  		igt_debug("Could not remove module %s (%s)\n", mod_name,
+> > >  			  strerror(-err));
+> > > @@ -525,7 +523,7 @@ static int igt_always_unload_audio_driver(char **who)
+> > >  			if (ret)
+> > >  				igt_warn("Failed to notify pipewire_pulse\n");
+> > >  			kick_snd_hda_intel();
+> > > -			ret = igt_kmod_unload(*m, 0);
+> > > +			ret = igt_kmod_unload(*m);
+> > >  			pipewire_pulse_stop_reserve();
+> > >  			if (ret) {
+> > >  				igt_warn("Could not unload audio driver %s\n", *m);
+> > > @@ -583,7 +581,7 @@ int __igt_intel_driver_unload(char **who, const char *driver)
+> > >  		if (!igt_kmod_is_loaded(*m))
+> > >  			continue;
+> > > 
+> > > -		ret = igt_kmod_unload(*m, 0);
+> > > +		ret = igt_kmod_unload(*m);
+> > >  		if (ret) {
+> > >  			if (who)
+> > >  				*who = strdup_realloc(*who, *m);
+> > > @@ -593,7 +591,7 @@ int __igt_intel_driver_unload(char **who, const char *driver)
+> > >  	}
+> > > 
+> > >  	if (igt_kmod_is_loaded(driver)) {
+> > > -		ret = igt_kmod_unload(driver, 0);
+> > > +		ret = igt_kmod_unload(driver);
+> > >  		if (ret) {
+> > >  			if (who)
+> > >  				*who = strdup_realloc(*who, driver);
+> > > @@ -629,10 +627,10 @@ igt_intel_driver_unload(const char *driver)
+> > >  	free(who);
+> > > 
+> > >  	if (igt_kmod_is_loaded("intel-gtt"))
+> > > -		igt_kmod_unload("intel-gtt", 0);
+> > > +		igt_kmod_unload("intel-gtt");
+> > > 
+> > > -	igt_kmod_unload("drm_kms_helper", 0);
+> > > -	igt_kmod_unload("drm", 0);
+> > > +	igt_kmod_unload("drm_kms_helper");
+> > > +	igt_kmod_unload("drm");
+> > > 
+> > >  	if (igt_kmod_is_loaded("driver")) {
+> > >  		igt_warn("%s.ko still loaded!\n", driver);
+> > > @@ -682,7 +680,7 @@ igt_amdgpu_driver_unload(void)
+> > >  	bind_fbcon(false);
+> > > 
+> > >  	if (igt_kmod_is_loaded("amdgpu")) {
+> > > -		if (igt_kmod_unload("amdgpu", 0)) {
+> > > +		if (igt_kmod_unload("amdgpu")) {
+> > >  			igt_warn("Could not unload amdgpu\n");
+> > >  			igt_kmod_list_loaded();
+> > >  			igt_lsof("/dev/dri");
+> > > @@ -690,8 +688,8 @@ igt_amdgpu_driver_unload(void)
+> > >  		}
+> > >  	}
+> > > 
+> > > -	igt_kmod_unload("drm_kms_helper", 0);
+> > > -	igt_kmod_unload("drm", 0);
+> > > +	igt_kmod_unload("drm_kms_helper");
+> > > +	igt_kmod_unload("drm");
+> > > 
+> > >  	if (igt_kmod_is_loaded("amdgpu")) {
+> > >  		igt_warn("amdgpu.ko still loaded!\n");
+> > > @@ -1158,8 +1156,8 @@ static void kunit_get_tests(struct igt_list_head *tests,
+> > >  		free(case_name);
+> > >  	}
+> > > 
+> > > -	igt_skip_on(kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE));
+> > > -	igt_skip_on(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
+> > > +	igt_skip_on(kmod_module_remove_module(tst->kmod, 0));
+> > > +	igt_skip_on(igt_kmod_unload("kunit"));
+> > > 
+> > >  	igt_skip_on_f(err,
+> > >  		      "KTAP parser failed while getting a list of test cases\n");
+> > > @@ -1362,7 +1360,7 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
+> > >  		 * unload may fail if kunit base module is not loaded,
+> > >  		 * ignore any failures, we'll fail later if still loaded.
+> > >  		 */
+> > > -		igt_ignore_warn(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
+> > > +		igt_ignore_warn(igt_kmod_unload("kunit"));
+> > > 
+> > >  		igt_assert(igt_list_empty(&tests));
+> > >  	}
+> > > @@ -1395,7 +1393,7 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
+> > >  		kunit_results_free(&tests, &suite_name, &case_name);
+> > > 
+> > >  		igt_ktest_end(&tst);
+> > > -		igt_debug_on(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
+> > > +		igt_debug_on(igt_kmod_unload("kunit"));
+> > >  	}
+> > > 
+> > >  	igt_ktest_fini(&tst);
+> > > @@ -1438,7 +1436,7 @@ int igt_ktest_begin(struct igt_ktest *tst)
+> > >  	if (strcmp(tst->module_name, "i915") == 0)
+> > >  		igt_i915_driver_unload();
+> > > 
+> > > -	err = kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE);
+> > > +	err = kmod_module_remove_module(tst->kmod, 0);
+> > >  	igt_require(err == 0 || err == -ENOENT);
+> > > 
+> > >  	tst->kmsg = open("/dev/kmsg", O_RDONLY | O_NONBLOCK);
+> > > @@ -1486,7 +1484,7 @@ int igt_kselftest_execute(struct igt_ktest *tst,
+> > > 
+> > >  void igt_ktest_end(struct igt_ktest *tst)
+> > >  {
+> > > -	kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE);
+> > > +	kmod_module_remove_module(tst->kmod, 0);
+> > >  	close(tst->kmsg);
+> > >  }
+> > > 
+> > > diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+> > > index 990e5309d..efb46da12 100644
+> > > --- a/lib/igt_kmod.h
+> > > +++ b/lib/igt_kmod.h
+> > > @@ -34,7 +34,7 @@ void igt_kmod_list_loaded(void);
+> > >  bool igt_kmod_has_param(const char *mod_name, const char *param);
+> > > 
+> > >  int igt_kmod_load(const char *mod_name, const char *opts);
+> > > -int igt_kmod_unload(const char *mod_name, unsigned int flags);
+> > > +int igt_kmod_unload(const char *mod_name);
+> > > 
+> > >  int igt_audio_driver_unload(char **whom);
+> > > 
+> > > diff --git a/tests/intel/i915_module_load.c b/tests/intel/i915_module_load.c
+> > > index 9fffe93d9..b72f3252a 100644
+> > > --- a/tests/intel/i915_module_load.c
+> > > +++ b/tests/intel/i915_module_load.c
+> > > @@ -216,7 +216,7 @@ static void unload_or_die(const char *module_name)
+> > > 
+> > >  	/* should be unloaded, so expect a no-op */
+> > >  	for (loop = 0;; loop++) {
+> > > -		err = igt_kmod_unload(module_name, 0);
+> > > +		err = igt_kmod_unload(module_name);
+> > >  		if (err == -ENOENT) /* -ENOENT == unloaded already */
+> > >  			err = 0;
+> > >  		if (!err || loop >= 10)
+> > > @@ -259,7 +259,7 @@ inject_fault(const char *module_name, const char *opt, int fault)
+> > >  	igt_debug("Loaded '%s %s', result=%d\n", module_name, buf, fault);
+> > > 
+> > >  	if (strcmp(module_name, "i915")) /* XXX better ideas! */
+> > > -		igt_kmod_unload(module_name, 0);
+> > > +		igt_kmod_unload(module_name);
+> > >  	else
+> > >  		igt_i915_driver_unload();
+> > > 
+> > > diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+> > > index 3fc575634..6858b22e2 100644
+> > > --- a/tests/kms_content_protection.c
+> > > +++ b/tests/kms_content_protection.c
+> > > @@ -396,7 +396,7 @@ static void test_content_protection_on_output(igt_output_t *output,
+> > >  	}
+> > > 
+> > >  	if (data.cp_tests & CP_MEI_RELOAD) {
+> > > -		igt_assert_f(!igt_kmod_unload("mei_hdcp", 0),
+> > > +		igt_assert_f(!igt_kmod_unload("mei_hdcp"),
+> > >  			     "mei_hdcp unload failed");
+> > > 
+> > >  		/* Expected to fail */
+> > > diff --git a/tests/vgem_basic.c b/tests/vgem_basic.c
+> > > index 63c5c0971..cfda908bc 100644
+> > > --- a/tests/vgem_basic.c
+> > > +++ b/tests/vgem_basic.c
+> > > @@ -438,7 +438,7 @@ static void test_debugfs_read(int fd)
+> > > 
+> > >  static int module_unload(void)
+> > >  {
+> > > -	return igt_kmod_unload("vgem", 0);
+> > > +	return igt_kmod_unload("vgem");
+> > >  }
+> > > 
+> > >  static void test_unload(void)
+> > > --
+> > > 2.43.0
+> > > 
