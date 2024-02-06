@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90E9AC4828D
-	for <igt-dev@archiver.kernel.org>; Tue,  6 Feb 2024 10:16:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3C34C48297
+	for <igt-dev@archiver.kernel.org>; Tue,  6 Feb 2024 11:08:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 430E810FD69;
-	Tue,  6 Feb 2024 10:16:10 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N8eL/dXa";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 30A1910FB98;
- Tue,  6 Feb 2024 10:16:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707214570; x=1738750570;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=M7VH2WrjKlrDOJ2VfQuXVxcP9Ki2b+b/xax4vldhL5M=;
- b=N8eL/dXaD8XnaZJcanTjvQeb2QwLfRgcPiCY+8GxuZyUb1jaVRpll8gS
- IsE+jyjGgRsPrd/QdKK1OFYVQaXZ01oaDb3ARb1p8tk/CedX9wLAuby6/
- qKCjn6d8GbJRNMzD8FB2z2APOuBOX+owzozaIf0bU3hWCwqlNw9Idw0af
- wCiXtxAUgWTDxOkSh7VKzrBdBKeCrahRbz63zTDgp/dkwbiQYvBTegsyw
- gWkQnjKxUnSozWcyqTjUpwISSvmjq/Eg1F/eFTYHYWy/j7RV/hZUpEtjR
- yAdUPIyyc/EaxgRmGfm3KkVKvujbHurrDsh4SCwAEpe0NT0qStMH7xdeu w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="4525613"
-X-IronPort-AV: E=Sophos;i="6.05,246,1701158400"; 
-   d="scan'208";a="4525613"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2024 02:16:10 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,246,1701158400"; d="scan'208";a="38405750"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.2.162])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2024 02:16:06 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-xe@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t v4 8/8] lib/kunit: Perform test suite filtering on the
- kernel side
-Date: Tue,  6 Feb 2024 11:00:32 +0100
-Message-ID: <20240206101514.6897-18-janusz.krzysztofik@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240206101514.6897-10-janusz.krzysztofik@linux.intel.com>
-References: <20240206101514.6897-10-janusz.krzysztofik@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A38DF10FC28;
+	Tue,  6 Feb 2024 11:08:22 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1BF4810F469;
+ Tue,  6 Feb 2024 11:08:22 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0049468998748441463=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_lib/kunit=3A_Support_writable_?=
+ =?utf-8?q?filter*_parameters_of_kunit_module_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 06 Feb 2024 11:08:22 -0000
+Message-ID: <170721770211.1055288.15188107011819615537@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240206101514.6897-10-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20240206101514.6897-10-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,113 +37,158 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When getting a list of test cases provided by a KUnit test module, we now
-set KUnit filters in a way that results in all test cases from all test
-suites of that module being reported as skipped, then we delete test cases
-that don't belong to a requested test suite from the list.  Moreover,
-before executing test cases from that list, we modify KUnit filters in a
-way that all test cases from all test suites of the test module are
-executed, but we report only those from the requested test suite.  Since
-KUnit base module has a capability of filtering test cases by test suite
-name, which we don't use, our approach to filtering is not optimal.
+--===============0049468998748441463==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Limit kernel side processing to test cases that belong to the requested
-test suite by setting KUnit filter_glob parameter to that test suite name,
-and drop user side test suite filtering.  With user side post-processing
-of test case lists limited to SKIP verification, defer cleanup of memory
-occupied by the list entries to a first igt_fixture section that follows.
+== Series Details ==
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- lib/igt_kmod.c | 34 +++++++++-------------------------
- 1 file changed, 9 insertions(+), 25 deletions(-)
+Series: lib/kunit: Support writable filter* parameters of kunit module (rev4)
+URL   : https://patchwork.freedesktop.org/series/129174/
+State : failure
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 506093c954..9b92696f1f 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -1157,7 +1157,6 @@ static bool kunit_get_tests(struct igt_list_head *tests,
- 			    const char *suite,
- 			    const char *opts)
- {
--	char *suite_name = NULL, *case_name = NULL;
- 	struct igt_ktap_result *r, *rn;
- 	struct igt_ktap_results *ktap;
- 	unsigned long taints;
-@@ -1179,7 +1178,7 @@ static bool kunit_get_tests(struct igt_list_head *tests,
- 	 * perfectly -- seems to be more safe than extracting a test case list
- 	 * of unknown length from /dev/kmsg.
- 	 */
--	if (igt_debug_on(!kunit_set_filtering(NULL, "module=none", "skip")))
-+	if (igt_debug_on(!kunit_set_filtering(suite, "module=none", "skip")))
- 		return false;
- 
- 	igt_skip_on(modprobe(tst->kmod, opts));
-@@ -1194,30 +1193,13 @@ static bool kunit_get_tests(struct igt_list_head *tests,
- 
- 	igt_ktap_free(ktap);
- 
--	if (!err)
--		igt_list_for_each_entry_safe(r, rn, tests, link) {
--			if (igt_debug_on(r->code != IGT_EXIT_SKIP)) {
--				err = r->code ?: -EPROTO;
--				break;
--			}
--
--			if (!suite)
--				continue;
--
--			if (strcmp(r->suite_name, suite))
--				kunit_result_free(&r, &case_name, &suite_name);
--		}
--
--	if (err) {
--		kunit_results_free(tests, &case_name, &suite_name);
--	} else {
--		free(suite_name);
--		free(case_name);
--	}
--
- 	igt_skip_on_f(err,
- 		      "KTAP parser failed while getting a list of test cases\n");
- 
-+	igt_list_for_each_entry_safe(r, rn, tests, link)
-+		igt_require_f(r->code == IGT_EXIT_SKIP,
-+			      "Unexpected non-SKIP result while listing test cases\n");
-+
- 	igt_skip_on(kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE));
- 
- 	return true;
-@@ -1225,6 +1207,7 @@ static bool kunit_get_tests(struct igt_list_head *tests,
- 
- static void __igt_kunit(struct igt_ktest *tst,
- 			const char *subtest,
-+			const char *suite,
- 			const char *opts,
- 			struct igt_list_head *tests)
- {
-@@ -1249,7 +1232,8 @@ static void __igt_kunit(struct igt_ktest *tst,
- 			      t->case_name) {
- 
- 			if (!modprobe.thread) {
--				igt_require(kunit_set_filtering(NULL, NULL, NULL));
-+				igt_require(kunit_set_filtering(suite,
-+								NULL, NULL));
- 
- 				igt_assert_eq(pthread_mutexattr_init(&attr), 0);
- 				igt_assert_eq(pthread_mutexattr_setrobust(&attr,
-@@ -1443,7 +1427,7 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
- 		if (!kunit_get_tests(&tests, &tst, suite, opts))
- 			__igt_kunit_legacy(&tst, subtest, opts);
- 		else
--			__igt_kunit(&tst, subtest, opts, &tests);
-+			__igt_kunit(&tst, subtest, suite, opts, &tests);
- 	}
- 
- 	igt_fixture {
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_7704_BAT -> XEIGTPW_10636_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_10636_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_10636_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_10636_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_live_ktest@bo:
+    - bat-adlp-7:         [PASS][1] -> [TIMEOUT][2] +2 other tests timeout
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7704/bat-adlp-7/igt@xe_live_ktest@bo.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10636/bat-adlp-7/igt@xe_live_ktest@bo.html
+
+  * igt@xe_live_ktest@migrate:
+    - bat-pvc-2:          [PASS][3] -> [TIMEOUT][4] +2 other tests timeout
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7704/bat-pvc-2/igt@xe_live_ktest@migrate.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10636/bat-pvc-2/igt@xe_live_ktest@migrate.html
+    - bat-dg2-oem2:       [PASS][5] -> [TIMEOUT][6] +2 other tests timeout
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7704/bat-dg2-oem2/igt@xe_live_ktest@migrate.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10636/bat-dg2-oem2/igt@xe_live_ktest@migrate.html
+    - bat-atsm-2:         [PASS][7] -> [TIMEOUT][8] +2 other tests timeout
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7704/bat-atsm-2/igt@xe_live_ktest@migrate.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10636/bat-atsm-2/igt@xe_live_ktest@migrate.html
+
+  
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7704 -> IGTPW_10636
+  * Linux: xe-734-3df53f864df3b874612fba223cfd30915009784f -> xe-736-b1651bcc3e78d3eca42061e8cf6bf1fea6843026
+
+  IGTPW_10636: 10636
+  IGT_7704: 7704
+  xe-734-3df53f864df3b874612fba223cfd30915009784f: 3df53f864df3b874612fba223cfd30915009784f
+  xe-736-b1651bcc3e78d3eca42061e8cf6bf1fea6843026: b1651bcc3e78d3eca42061e8cf6bf1fea6843026
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10636/index.html
+
+--===============0049468998748441463==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/kunit: Support writable filter* parameters of kunit module (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129174/">https://patchwork.freedesktop.org/series/129174/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10636/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10636/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7704_BAT -&gt; XEIGTPW_10636_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_10636_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_10636_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_10636_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@xe_live_ktest@bo:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7704/bat-adlp-7/igt@xe_live_ktest@bo.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10636/bat-adlp-7/igt@xe_live_ktest@bo.html">TIMEOUT</a> +2 other tests timeout</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@migrate:</p>
+<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7704/bat-pvc-2/igt@xe_live_ktest@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10636/bat-pvc-2/igt@xe_live_ktest@migrate.html">TIMEOUT</a> +2 other tests timeout</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7704/bat-dg2-oem2/igt@xe_live_ktest@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10636/bat-dg2-oem2/igt@xe_live_ktest@migrate.html">TIMEOUT</a> +2 other tests timeout</li>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7704/bat-atsm-2/igt@xe_live_ktest@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10636/bat-atsm-2/igt@xe_live_ktest@migrate.html">TIMEOUT</a> +2 other tests timeout</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7704 -&gt; IGTPW_10636</li>
+<li>Linux: xe-734-3df53f864df3b874612fba223cfd30915009784f -&gt; xe-736-b1651bcc3e78d3eca42061e8cf6bf1fea6843026</li>
+</ul>
+<p>IGTPW_10636: 10636<br />
+  IGT_7704: 7704<br />
+  xe-734-3df53f864df3b874612fba223cfd30915009784f: 3df53f864df3b874612fba223cfd30915009784f<br />
+  xe-736-b1651bcc3e78d3eca42061e8cf6bf1fea6843026: b1651bcc3e78d3eca42061e8cf6bf1fea6843026</p>
+
+</body>
+</html>
+
+--===============0049468998748441463==--
