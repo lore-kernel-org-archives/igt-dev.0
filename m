@@ -4,146 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5263CC48286
-	for <igt-dev@archiver.kernel.org>; Tue,  6 Feb 2024 07:25:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 928CBC4828D
+	for <igt-dev@archiver.kernel.org>; Tue,  6 Feb 2024 08:28:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E351C112A2E;
-	Tue,  6 Feb 2024 07:25:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 406C810F85C;
+	Tue,  6 Feb 2024 08:28:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a3oNRUHQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DNXU168L";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3228112A2E
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Feb 2024 07:25:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 74EF410FC0A
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Feb 2024 08:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707204354; x=1738740354;
+ t=1707208112; x=1738744112;
  h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=oIE8K1rkuBjn3t9nmXPbYkjHQQ/0lchAzQpgb9QvVMk=;
- b=a3oNRUHQbU80soyl/NGHJ4aSGbM9vENCRrXEPgrwAenAzFuktj+STiTZ
- v2rLz06xm8zQuvxnB1loLFsQFcYgEXwFCSadaELLMO4giZqFq5+bBVhaj
- aiTyJkhL/SG+XvFr2/gF2yPNA01dfXxSq85McU/Lt/JA41VV5O0BZbj1t
- zOhmpvT6ddk5EP63W3JRPd3XTzqg2ptslLZ9JpT8uAtEARLfrjhE9kQdl
- KsP6EMyNC3ld0OEp8AEZDZMGd5qOXC5M1wiaeyQq7OHCanLybovI4r9Cg
- Pf49mBfrOPHvZ+S4L0P4kTItaiOvzLqSGHnlvpkuI/akM5NPupMDvt9On w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="11773065"
-X-IronPort-AV: E=Sophos;i="6.05,246,1701158400"; d="scan'208";a="11773065"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Feb 2024 23:25:53 -0800
+ mime-version:in-reply-to;
+ bh=ajYth4DLxxk6z4o4h7yTR9Xb0mZ2z/aZCbVSbucsIqQ=;
+ b=DNXU168L6pLO+sNWYLgjJbyNATA60vJ5dPtXkSIiC7y7/QWkbzPlguv1
+ uTLJyjSLOyXz19DoVxEMGr2OmLA0SNheeBy62MyyIovmhb0p5iSQKxeaJ
+ gdjjLFDW0Ek41jv7SmX4+ucYm8462STvJFkyWmBGv0Z/8KJB+MDdUt6gT
+ NwvBRqVTt4vpA1u4JvEBlTLL5ac4qQQ7kzsDwa/ElJ4xdkmISgETqOLpD
+ jdql7cq7qKPEANe3J/PEZwplqjXmCzA3fach/98FnZJhlvaX9zX44FFgj
+ AJLi/N87F77NvhykBOn/fhM4R7jJI4VqIM2HhzQ9eKyPGBV8Tr7c8yOwp w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="862082"
+X-IronPort-AV: E=Sophos;i="6.05,246,1701158400"; 
+   d="scan'208";a="862082"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2024 00:28:28 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,246,1701158400"; 
-   d="scan'208";a="5551776"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 05 Feb 2024 23:25:52 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 5 Feb 2024 23:25:51 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 5 Feb 2024 23:25:50 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Mon, 5 Feb 2024 23:25:50 -0800
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.41) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 5 Feb 2024 23:25:50 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ERy7TE4qTndTWRoc3W52a+PL0SUSNJFdyY1IHiy3u9XGhFux/mJJkjRghG1jl+lDZ1wIWoYOAS0Iz4F4W4SC4wvoRETvLuiXKC3IBclE/mALEnXIwuxSTUC4KQ6J+P8Gdpe4o0OI0xi7SuePDdTVcvMuikpFPhR5dM5RCyH2H8D//E7n7qBTzSAMQsh7V/98r20pANC3Ug/nVeg1cG87KLxyyQFWwxopLHMANx4hWQlmLcvqs6MFLiQjAkVEkyLDQrnUoAjn+psd1C6HgtWs96rBQ/5CANGrxom9MY01ep1/exu5QQNHMzhP52XY+Y/GLr6LdlX7VP1ONOcQ5tdu1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ynvEsRe7YLHw/9JE9mofCvv4YXX75+12BJa9n9ZRSCY=;
- b=RvDKkD5VCqWc13XWPmgzZzOhbko8v/Ta+QEvuH55+sED3ymaI05IF4bADrwh5Vm4naNsjUikvbF2NM6FjtEC5lHVFJq798sOkWKvyQyAg60bROXwqg4NSt5O05pcpYWX4GMBKXpZvkoxOrv9eT/e4kxXmgQXkV6C3p7Stq58ddJOnFVsTlQuxrYLOxYPRvV5JUrRPSvKYMYNPBb2TTq3wWJ96g4ujZ2JcXjLozK79eLnnud1JeHmCwZu2qFDuA62Vm7T6rm23RLSnKZ0HCy+NgVeQH54I3JeR4SV56sGpcmACfRzddZvms4RaosB/iGJ1VNzO86JRSnnmOyOFYPfeQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
- by CO1PR11MB4883.namprd11.prod.outlook.com (2603:10b6:303:9b::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.36; Tue, 6 Feb
- 2024 07:25:48 +0000
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::9f32:ce50:1914:e954]) by CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::9f32:ce50:1914:e954%7]) with mapi id 15.20.7249.035; Tue, 6 Feb 2024
- 07:25:48 +0000
-Date: Tue, 6 Feb 2024 01:25:46 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
-CC: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: Re: RE: RE: [i-g-t] tests/intel/xe_exec_queue_property: Remove
- persistence queue property
-Message-ID: <7ukemoqwgresmju3x75oqjmoi3yimfgpz5r2557dhkxn4fv66k@agty363agfeo>
-References: <20240205060225.35672-1-tejas.upadhyay@intel.com>
- <SA1PR11MB8428E53B7F5248D735C845868D472@SA1PR11MB8428.namprd11.prod.outlook.com>
- <qq7osstwzjkbz6h34kwwyb7ma3wxgzeqp5qr3gac6torzl2a2q@2i64awq4ltd7>
- <SJ1PR11MB6204C6F3B61024F92E0DD37C81462@SJ1PR11MB6204.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <SJ1PR11MB6204C6F3B61024F92E0DD37C81462@SJ1PR11MB6204.namprd11.prod.outlook.com>
-X-ClientProxiedBy: SJ0PR03CA0358.namprd03.prod.outlook.com
- (2603:10b6:a03:39c::33) To CY5PR11MB6139.namprd11.prod.outlook.com
- (2603:10b6:930:29::17)
+   d="scan'208";a="5717323"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 00:28:27 -0800
+Date: Tue, 6 Feb 2024 09:28:05 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: vitaly.prosyak@amd.com, Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
+Subject: Re: [PATCH 2/3] lib/amdgpu: add a CS helper function
+Message-ID: <20240206082805.6fuq5ph6cn4glfev@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, vitaly.prosyak@amd.com,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
+References: <20240125034413.232349-1-vitaly.prosyak@amd.com>
+ <20240125034413.232349-2-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|CO1PR11MB4883:EE_
-X-MS-Office365-Filtering-Correlation-Id: 41fe23f3-7ba1-4586-fa82-08dc26e4d711
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Hx7Ov0Ju35CrLx4WO31XMHcNtL6NwTOM/jxldXoYJMEZxJLohaOMwRwmfs+BB1Skl9RRjzTgeyix8Moc5B0flxXBGjaoIUGBIwF+a5o+5DisZPuUHLqp8ripRrxFsPwdED35LbhNrJZseewq1L24rY24GKhGRZ1zkzWjBofac/xSpk1B8pbrrn6+YWzauCjbFCJZLWYUcywKMY9HfKwP9LaKzr+UgyhJLLmHkOlvDT/NEWLLYk3zZS3uNuQNC2F9hXBohRt7onpD3kTHQPT/0q/6KDWP4yeXGpS52/O3xyLobQARawfJ7f8w6fTm1nTy26jUoaC5+9PBnWBAn22WRTtavy64wnpsDKm14thst1QNAAOonUszHcvs5MIDwqAuDlKTe/l1SgrxMQd0jj2aAKSSJceAtwjLf9yWE3LOK+pCKRHpLISqZ23jSnm2tmQoJ6gx+n2aEJhWN+BhvT42JrbfBYi7zfEshrw/GnJsKWAcjx5JU+IZfOP+8gmFxaSMdLIaZasNvZvIpX5acGejByJ3f2RTZg+ajcG8o4MxiA4SiM/+lmzMrByTXjHkvPKrh18hhEwHxRPkRHX0WFfKpw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(7916004)(396003)(346002)(376002)(136003)(366004)(39860400002)(230922051799003)(451199024)(186009)(64100799003)(1800799012)(33716001)(41300700001)(6862004)(86362001)(4326008)(8936002)(8676002)(966005)(478600001)(5660300002)(6486002)(9686003)(53546011)(6512007)(6506007)(26005)(54906003)(316002)(6636002)(66476007)(66556008)(66946007)(2906002)(83380400001)(38100700002)(82960400001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?WX8QnZy4K591bPoZ8zU0howctUpkSbcol3f297Mrm7CjM8nCILowljZsoFo2?=
- =?us-ascii?Q?8TJhzIpUwRM8aLmQA4O4Z8B9sI3TVwxLISXltgT3NFsmEaRRks+LgPdhNv8D?=
- =?us-ascii?Q?9pbXzmpmSeSYnp2HHLuIQ+Co1fW4W5ho99bxsj55OpV01w1mdcWDaKlvscKM?=
- =?us-ascii?Q?zBIJ+og4tDYezp8zmnV4M5K1qN/glsbfRAfIa3IDSZ65Pymq56PM+DxMp3Le?=
- =?us-ascii?Q?0+Bqk9nP/o3pBi5ZXqd+6uBHjehCFdwZF5bQYD6t+SIl/xg7mnnTyS15DTUl?=
- =?us-ascii?Q?DigdfMjuRkX9kpPYOKyKUcpiI4FdnRW+NkfDFj0FvLTcoAWvY2VytthzAHZH?=
- =?us-ascii?Q?W739H4dwzFfm4j1YEP0Rx6q538QX3JcYgABCYThXHPWzxYVeLlK2T5Cm7dUa?=
- =?us-ascii?Q?AmyLNxZvbbqabqDFZW3h18U6zFT9vGYC3BrlEhyzO9reW4G0zLPIV5nNfjQ5?=
- =?us-ascii?Q?7dfdOD1FoW+PoMWblgTBD9uqZc6JlGkdv8ItdpS4Tzd4t0B+X1EIdtqMVu/H?=
- =?us-ascii?Q?i6Um/UI8jpQi4RsbhahVqEC5xMJNVrsS22ZNvKojKXaU0NZf0KEsmsd+6SLq?=
- =?us-ascii?Q?y7wxH0E3gVYNG98YfErwTf4mBv/WJ3xjlUNZLJESJXkGPZuMbKfzKsQ/gRDp?=
- =?us-ascii?Q?/BTDM9EIBYz1LmoI4g22FBE1TXYY87Bn8TyUK/6wWd6sUXJS98CVPwztirXF?=
- =?us-ascii?Q?25oX7/6/Y1CKP/8tuvCQ8lKWsw8Sjw6hEP7hPzL0Biaf/OX0U6yGnHOfrkOr?=
- =?us-ascii?Q?Y3dlTNgCphTxrAe/2+p/rFAnK1BFPUQpc38/vxmqB5AQUD37WWdmUhsdB6Yo?=
- =?us-ascii?Q?fIgqdwgvMJ1IQA8uupv6WlBzx6tW87RbP5OOQ4b2prCxKMR3vu48uo+ZJhl6?=
- =?us-ascii?Q?cMFuAn3w3QJfG3duFoM7BHH+2jpjZaksk5nl6b+StMnb1yzWAj5fJEK4Vpfu?=
- =?us-ascii?Q?YiYgnPHa/jY9bUTfMWM7BQUsAEo/+IXS4MHUCrqnfoVubNfstsJg7dDhQ3Wu?=
- =?us-ascii?Q?aufVuxpn4Voy8fDIct7jXUXgZP5049ccJYxOccQjnnV4o8YqcjPsRQawKrrP?=
- =?us-ascii?Q?edvEONrXsa0gfUHA3OxAIHikF019aJxKnIyEu3XS9OUJumiVhstf3X66WQMX?=
- =?us-ascii?Q?AnP6rgVoDjaSPCgqICuH9+R7G+OmjNbQY5ycGpxwn3/EEQYpAGszBE/ZY07C?=
- =?us-ascii?Q?Bo9bbcN+fs2Iblj/i6z3k0tutMLlaV3ys/lVWBm7AX7Oy/8g3NBsSLgBxTRB?=
- =?us-ascii?Q?pWOFBiYn84p6hd/sjlUu7/NqsWzYXANrFtlXS25TULnKJAbNnjnPC0hWzD1u?=
- =?us-ascii?Q?rTPEWwRU3+XS1TYSUmcI2kdt5eD56MU6C90IXJXiQ7J4E37h/axfqlXOcfXM?=
- =?us-ascii?Q?tNfT7YzzCtHGIm03VEMRRWHQ31rNcxvK87yFoa+Nf2Fb+CMwwn+77Z6qfKOq?=
- =?us-ascii?Q?Um9LFQWn9EVGSScEY0TlXep+eet+MNuh0jf6EOnbk30+wGO9G7hGWktLZCVV?=
- =?us-ascii?Q?OGj1VIe214OPRiL53MR2gaKCyd1jmeEKkq0J3Npcoqd9+CbKYfH1MaYcfvDf?=
- =?us-ascii?Q?pUaA0aIbK9Fi4YPnmNrmuzGH2d/BUzEj9aBQUSyhLFZu9PxYIt5CrzCNgLdW?=
- =?us-ascii?Q?2A=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41fe23f3-7ba1-4586-fa82-08dc26e4d711
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2024 07:25:48.4187 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uLP6S+vpz92u7RXQTGmAWyhUSrl4y7VAsl55I7GMhTwkpFYRVNhmWWrqFYeo/17QAKJUjmoJi7y+52J0nA0ggzEmyEbbNIOB0fpZ3N7vBRI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4883
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240125034413.232349-2-vitaly.prosyak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -159,90 +71,318 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Feb 06, 2024 at 06:27:10AM +0000, Upadhyay, Tejas wrote:
->
->
->> -----Original Message-----
->> From: De Marchi, Lucas <lucas.demarchi@intel.com>
->> Sent: Tuesday, February 6, 2024 12:01 AM
->> To: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
->> Cc: Upadhyay, Tejas <tejas.upadhyay@intel.com>; igt-
->> dev@lists.freedesktop.org
->> Subject: Re: RE: [i-g-t] tests/intel/xe_exec_queue_property: Remove
->> persistence queue property
->>
->> On Mon, Feb 05, 2024 at 05:56:46AM +0000, Dandamudi, Priyanka wrote:
->> >> -----Original Message-----
->> >> From: Upadhyay, Tejas <tejas.upadhyay@intel.com>
->> >> Sent: Monday, February 5, 2024 11:32 AM
->> >> To: igt-dev@lists.freedesktop.org
->> >> Cc: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>; Upadhyay,
->> >> Tejas <tejas.upadhyay@intel.com>
->> >> Subject: [i-g-t] tests/intel/xe_exec_queue_property: Remove
->> >> persistence queue property
->> >>
->> >> KMD has removed support setting persistence queue property here
->> >> https://patchwork.freedesktop.org/series/129311/, to have parity
->> >> remove test
->>
->> wrong link, should reference the patch by Thomas. Either
->> 20240130125220.5517-1-thomas.hellstrom@linux.intel.com or the new
->> version
->
->The link I shared is from Thomas only. By the way I am not able to open the link you shared. Please help me to understand what exactly is needed here. I see there is only one version of patch from Thomas here https://patchwork.freedesktop.org/series/129311/
+Hi Vitaly,
 
-my bad, I think I removed the  "," after resolving the 404 but ended up
-removing more than I should. The link you shared works.
+On 2024-01-24 at 22:44:12 -0500, vitaly.prosyak@amd.com wrote:
+> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> 
+> Add a cs helper function.
+> CS helper function works as RADV
+> radv_amdgpu_cs_submit. We want to validate
+> and ensure the integrity of the following
+> functionalities when  the following method
+> is called 'amdgpu_cs_submit_raw2':
+> 
+> 1. Gang submission when several different IPs are into
+>    a single command, but those IPs are shared the
+>    instance and ring numbers(ip_instance, ring).
+> 2. Use 'AMDGPU_CHUNK_ID_BO_HANDLES' vs explicit parameter into 'amdgpu_cs_submit_raw2'.
+> 3. Not use  'AMDGPU_CHUNK_ID_DEPENDENCIES'.
+> 4. User fence always present except for multimedia ring commands.
+> 
+> RADV uses those scenarios.
+> 
+> Cc: Jesse Zhang <jesse.zhang@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Christian Koenig <christian.koenig@amd.com>
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-the one I mentioned is the email msgid and can be looked up either by
-lore or patchwork:
+You forgot about a-b from Christian here, before push to gitlab
+_check_ with 'git log' if _all_ you patches have acked-by or reviewed-by.
 
-https://lore.kernel.org/r/${msgid} -> https://lore.kernel.org/all/20240130125220.5517-1-thomas.hellstrom@linux.intel.com/
-https://patchwork.freedesktop.org/patch/msgid/${msgid} -> https://patchwork.freedesktop.org/patch/msgid/20240130125220.5517-1-thomas.hellstrom@linux.intel.com
+Regards,
+Kamil
 
-
-recently I also noticed there is a new/shorter one provided by kernel.org:
-https://msgid.link/20240130125220.5517-1-thomas.hellstrom@linux.intel.com
-
-but your patchwork link with the series number should be fine. Sorry for
-the noise.
-
-Lucas De Marchi
-
->
->Thanks,
->Tejas
->>
->> >> support as well
->> >>
->> >> Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
->> >> ---
->> >>  include/drm-uapi/xe_drm.h            | 9 ++++-----
->> >>  tests/intel/xe_exec_queue_property.c | 8 --------
->> >>  2 files changed, 4 insertions(+), 13 deletions(-)
->> >>
->> >> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
->> >> index
->> >> bacdca787..1917e4c50 100644
->> >> --- a/include/drm-uapi/xe_drm.h
->> >> +++ b/include/drm-uapi/xe_drm.h
->> >> @@ -1046,11 +1046,10 @@ struct drm_xe_exec_queue_create {
->> >>  #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY		0
->> >>  #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE
->> 	1
->> >>  #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT
->> >> 	2
->> >> -#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PERSISTENCE
->> >> 	3
->> >I see from the KMD patch they are renaming.
->> >DRM_XE_EXEC_QUEUE_SET_PROPERTY_PERSISTENCE to
->> >DRM_XE_EXEC_QUEUE_SET_PROPERTY_UNUSED_1
->> >Can you please check this?
->>
->> The file include/drm-uapi/xe_drm.h shouldn't really be modified by igt as it's
->> a pain to keep it in sync this way. Instead, it should be a straight copy from the
->> kernel source when it changes.... so whatever is in the v2 of the patch by
->> Thomas should be the one here. Or just leave the header alone and let it be
->> sync'ed next time it's needed.
->>
->> Lucas De Marchi
+> ---
+>  lib/amdgpu/amd_cs_radv.c   | 172 +++++++++++++++++++++++++++++++++++++
+>  lib/amdgpu/amd_cs_radv.h   |  61 +++++++++++++
+>  lib/amdgpu/amd_ip_blocks.h |   2 +
+>  lib/meson.build            |   1 +
+>  4 files changed, 236 insertions(+)
+>  create mode 100644 lib/amdgpu/amd_cs_radv.c
+>  create mode 100644 lib/amdgpu/amd_cs_radv.h
+> 
+> diff --git a/lib/amdgpu/amd_cs_radv.c b/lib/amdgpu/amd_cs_radv.c
+> new file mode 100644
+> index 000000000..3c51ff7ef
+> --- /dev/null
+> +++ b/lib/amdgpu/amd_cs_radv.c
+> @@ -0,0 +1,172 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright 2024 Advanced Micro Devices, Inc.
+> + */
+> +#include <time.h>
+> +#include <sys/time.h>
+> +
+> +#include "lib/amdgpu/amd_memory.h"
+> +#include "lib/amdgpu/amd_sdma.h"
+> +#include "lib/amdgpu/amd_PM4.h"
+> +#include "lib/amdgpu/amd_cs_radv.h"
+> +
+> +#define TIME_MONOTONIC 2
+> +#define OS_TIMEOUT_INFINITE 0xffffffffffffffffull
+> +
+> +enum { MAX_RINGS_PER_TYPE = 8 };
+> +
+> +static bool
+> +amdgpu_cs_has_user_fence(struct amdgpu_cs_request_radv *request)
+> +{
+> +	/* TODO */
+> +	return false;
+> +}
+> +
+> +static int64_t
+> +os_time_get_nano(void)
+> +{
+> +	struct timespec ts;
+> +
+> +	timespec_get(&ts, TIME_MONOTONIC);
+> +	return ts.tv_nsec + ts.tv_sec*INT64_C(1000000000);
+> +}
+> +
+> +static int64_t
+> +os_time_get_absolute_timeout(uint64_t timeout)
+> +{
+> +	int64_t time, abs_timeout;
+> +
+> +	/* Also check for the type upper bound. */
+> +	if (timeout == OS_TIMEOUT_INFINITE || timeout > INT64_MAX)
+> +		return OS_TIMEOUT_INFINITE;
+> +
+> +	time = os_time_get_nano();
+> +	abs_timeout = time + (int64_t)timeout;
+> +
+> +	/* Check for overflow. */
+> +	if (abs_timeout < time)
+> +		return OS_TIMEOUT_INFINITE;
+> +
+> +	return abs_timeout;
+> +}
+> +
+> +static void
+> +os_time_sleep(int64_t usecs)
+> +{
+> +	struct timespec time;
+> +
+> +	time.tv_sec = usecs / 1000000;
+> +	time.tv_nsec = (usecs % 1000000) * 1000;
+> +	while (clock_nanosleep(CLOCK_MONOTONIC, 0, &time, &time) == EINTR)
+> +		;
+> +}
+> +
+> +uint32_t
+> +amdgpu_get_bo_handle(struct amdgpu_bo *bo)
+> +{
+> +	uint32_t handle;
+> +	int r;
+> +
+> +	r = amdgpu_bo_export(bo, amdgpu_bo_handle_type_kms, &handle);
+> +	igt_assert_eq(r, 0);
+> +	return handle;
+> +}
+> +
+> +uint32_t
+> +amdgpu_cs_submit_radv(amdgpu_device_handle dev, struct amdgpu_ring_context *ring_context,
+> +		struct amdgpu_cs_request_radv *request)
+> +{
+> +	int r, num_chunks,  size, i;
+> +	struct drm_amdgpu_cs_chunk *chunks;
+> +	struct drm_amdgpu_cs_chunk_data *chunk_data;
+> +	struct drm_amdgpu_bo_list_in bo_list_in;
+> +	uint32_t result = 0;
+> +	uint64_t abs_timeout_ns;
+> +	bool has_user_fence;
+> +
+> +	has_user_fence = amdgpu_cs_has_user_fence(request);
+> +	size = request->number_of_ibs + 1 + (has_user_fence ? 1 : 0) + 1 /* bo list */ + 3;
+> +	chunks = malloc(sizeof(chunks[0]) * size);
+> +	size = request->number_of_ibs + (has_user_fence ? 1 : 0);
+> +	chunk_data = malloc(sizeof(chunk_data[0]) * size);
+> +
+> +	num_chunks = request->number_of_ibs;
+> +	for (i = 0; i < request->number_of_ibs; i++) {
+> +
+> +		struct amdgpu_cs_ib_info_radv *ib;
+> +
+> +		chunks[i].chunk_id = AMDGPU_CHUNK_ID_IB;
+> +		chunks[i].length_dw = sizeof(struct drm_amdgpu_cs_chunk_ib) / 4;
+> +		chunks[i].chunk_data = (uint64_t)(uintptr_t)&chunk_data[i];
+> +
+> +		ib = &request->ibs[i];
+> +		assert(ib->size);
+> +
+> +		chunk_data[i].ib_data._pad = 0;
+> +		chunk_data[i].ib_data.va_start = ib->ib_mc_address;
+> +		chunk_data[i].ib_data.ib_bytes = ib->size * 4;
+> +		chunk_data[i].ib_data.ip_type = ib->ip_type;
+> +		chunk_data[i].ib_data.flags = ib->flags;
+> +
+> +		chunk_data[i].ib_data.ip_instance = request->ip_instance;
+> +		chunk_data[i].ib_data.ring = request->ring;
+> +	}
+> +
+> +	assert(chunk_data[request->number_of_ibs - 1].ib_data.ip_type == request->ip_type);
+> +
+> +	if (has_user_fence) {
+> +		i = num_chunks++;
+> +		chunks[i].chunk_id = AMDGPU_CHUNK_ID_FENCE;
+> +		chunks[i].length_dw = sizeof(struct drm_amdgpu_cs_chunk_fence) / 4;
+> +		chunks[i].chunk_data = (uint64_t)(uintptr_t)&chunk_data[i];
+> +
+> +			/* fence bo handle */
+> +		chunk_data[i].fence_data.handle = amdgpu_get_bo_handle(request->fence_info.handle);
+> +			/* offset */
+> +		chunk_data[i].fence_data.offset =
+> +					request->fence_info.offset * sizeof(uint64_t);
+> +	}
+> +
+> +	bo_list_in.operation = ~0;
+> +	bo_list_in.list_handle = ~0;
+> +	bo_list_in.bo_number = request->num_handles;
+> +	bo_list_in.bo_info_size = sizeof(struct drm_amdgpu_bo_list_entry);
+> +	bo_list_in.bo_info_ptr = (uint64_t)(uintptr_t)request->handles;
+> +
+> +	chunks[num_chunks].chunk_id = AMDGPU_CHUNK_ID_BO_HANDLES;
+> +	chunks[num_chunks].length_dw = sizeof(struct drm_amdgpu_bo_list_in) / 4;
+> +	chunks[num_chunks].chunk_data = (uintptr_t)&bo_list_in;
+> +	num_chunks++;
+> +
+> +	/* The kernel returns -ENOMEM with many parallel processes using GDS such as test suites quite
+> +	 * often, but it eventually succeeds after enough attempts. This happens frequently with dEQP
+> +	 * using NGG streamout.
+> +	 */
+> +	 abs_timeout_ns = os_time_get_absolute_timeout(1000000000ull); /* 1s */
+> +
+> +	r = 0;
+> +	do {
+> +		/* Wait 1 ms and try again. */
+> +		if (r == -ENOMEM)
+> +			os_time_sleep(1000);
+> +
+> +		r = amdgpu_cs_submit_raw2(dev, ring_context->context_handle, 0,
+> +				num_chunks, chunks, &request->seq_no);
+> +	} while (r == -ENOMEM && os_time_get_nano() < abs_timeout_ns);
+> +
+> +	if (r) {
+> +		if (r == -ENOMEM) {
+> +			igt_info("igt/amdgpu: Not enough memory for command submission.\n");
+> +			result = ENOMEM;
+> +		} else if (r == -ECANCELED) {
+> +			igt_info("igt/amdgpu: The CS has been cancelled because the context is lost.\n");
+> +			result = ECANCELED;
+> +		} else {
+> +			igt_info("igt/amdgpu: The CS has been rejected, see dmesg for more information (%i).\n", r);
+> +			result = EINVAL;
+> +		}
+> +	}
+> +	free(chunks);
+> +	free(chunk_data);
+> +	return result;
+> +}
+> diff --git a/lib/amdgpu/amd_cs_radv.h b/lib/amdgpu/amd_cs_radv.h
+> new file mode 100644
+> index 000000000..8b6dcaaa2
+> --- /dev/null
+> +++ b/lib/amdgpu/amd_cs_radv.h
+> @@ -0,0 +1,61 @@
+> +/* SPDX-License-Identifier: MIT
+> + * Copyright 2024 Advanced Micro Devices, Inc.
+> + */
+> +
+> +#ifndef AMD_CS_RADV
+> +#define AMD_CS_RADV
+> +
+> +#include "amd_ip_blocks.h"
+> +#define AMDGPU_CS_GANG_SIZE	4
+> +
+> +struct amdgpu_cs_ib_info_radv {
+> +	int64_t flags;
+> +	uint64_t ib_mc_address;
+> +	uint32_t size;
+> +	enum amd_ip_block_type ip_type;
+> +};
+> +
+> +struct amdgpu_cs_request_radv {
+> +	/** Specify HW IP block type to which to send the IB. */
+> +	uint32_t ip_type;
+> +
+> +	/** IP instance index if there are several IPs of the same type. */
+> +	uint32_t ip_instance;
+> +
+> +	/**
+> +	 * Specify ring index of the IP. We could have several rings
+> +	 * in the same IP. E.g. 0 for SDMA0 and 1 for SDMA1.
+> +	 */
+> +	uint32_t ring;
+> +
+> +	/**
+> +	 * BO list handles used by this request.
+> +	 */
+> +	struct drm_amdgpu_bo_list_entry *handles;
+> +	uint32_t num_handles;
+> +
+> +	/** Number of IBs to submit in the field ibs. */
+> +	uint32_t number_of_ibs;
+> +
+> +	/**
+> +	 * IBs to submit. Those IBs will be submitted together as single entity
+> +	 */
+> +	struct amdgpu_cs_ib_info_radv ibs[AMDGPU_CS_GANG_SIZE];
+> +	/**
+> +	 * The returned sequence number for the command submission
+> +	 */
+> +	uint64_t seq_no;
+> +	/**
+> +	 * The fence information
+> +	 */
+> +	struct amdgpu_cs_fence_info fence_info;
+> +};
+> +
+> +uint32_t
+> +amdgpu_get_bo_handle(struct amdgpu_bo *bo);
+> +
+> +uint32_t
+> +amdgpu_cs_submit_radv(amdgpu_device_handle device, struct amdgpu_ring_context *ring_context,
+> +		struct amdgpu_cs_request_radv *request);
+> +
+> +#endif
+> diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+> index 4cad30d1e..97a9ad489 100644
+> --- a/lib/amdgpu/amd_ip_blocks.h
+> +++ b/lib/amdgpu/amd_ip_blocks.h
+> @@ -20,7 +20,9 @@ enum amd_ip_block_type {
+>  	AMD_IP_UVD_ENC,
+>  	AMD_IP_VCN_DEC,
+>  	AMD_IP_VCN_ENC,
+> +	AMD_IP_VCN_UNIFIED = AMD_IP_VCN_ENC,
+>  	AMD_IP_VCN_JPEG,
+> +	AMD_IP_VPE,
+>  	AMD_IP_MAX,
+>  };
+>  
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 0fc11b26c..6122861d8 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -144,6 +144,7 @@ if libdrm_amdgpu.found()
+>  		'amdgpu/amd_memory.c',
+>  		'amdgpu/amd_command_submission.c',
+>  		'amdgpu/amd_compute.c',
+> +		'amdgpu/amd_cs_radv.c',
+>  		'amdgpu/amd_gfx.c',
+>  		'amdgpu/amd_ip_blocks.c',
+>  		'amdgpu/amd_shaders.c',
+> -- 
+> 2.25.1
+> 
