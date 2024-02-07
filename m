@@ -4,73 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 542E0C4828F
-	for <igt-dev@archiver.kernel.org>; Wed,  7 Feb 2024 14:52:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8BEBC4828D
+	for <igt-dev@archiver.kernel.org>; Wed,  7 Feb 2024 15:01:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0D41110EA4F;
-	Wed,  7 Feb 2024 14:52:19 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="X828FqeR";
-	dkim-atps=neutral
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com
- [209.85.160.44])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4A9010EA4F
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Feb 2024 14:52:14 +0000 (UTC)
-Received: by mail-oa1-f44.google.com with SMTP id
- 586e51a60fabf-2046b2cd2d3so582306fac.0
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Feb 2024 06:52:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1707317533; x=1707922333;
- darn=lists.freedesktop.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=vH7Ylh1wCScl0FYa8GQjrljDO0FwB6XDYmmNQ+de/lw=;
- b=X828FqeRYkbyl8xqWGJXuT/wyZtdmCaMQJuYPFozRaJ0DFpSO2y1Suthn6uY/aOUKd
- hfmo8xjWhBIA90uaFPugVBRuteSAJnEeW3WaGn1VadacQ6FLkvQ4vOzbxjCVg19hlb9c
- fWNWjdiALg+L1taEjUk+FB2NGW7gdKsb1AoMg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707317533; x=1707922333;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vH7Ylh1wCScl0FYa8GQjrljDO0FwB6XDYmmNQ+de/lw=;
- b=mXi+733lTFnFERvM3qtkqEngtZQmFPePncNq1BzH/5SqcQb9XXwEF4jc2W6q5WP9Xe
- e+jDlRFK10u4mbfR2VvZ4p0r6XSfy/z4Zhfh4zXDqTvgh7/7U44umZ5d/KVVLDIrcqFF
- PmXoLpgIZYkqwKKXEquoBNhGwcNd+Y7bps6dbTSbWWAC7042bge/cNoW3/eaWVDVWnbt
- 7vlBNK5dK1Zc9Va+DGTzKPTzzL3comMeKVLxoMltg/gjOe9Y7AwA70a3tPpJ46IiSncE
- p1t1NImonpi1bMgHNm82EbrVhU60iVvmcWCpZxjhOJCe3NpRK051PhMNxBFdOn8144jo
- NVqw==
-X-Gm-Message-State: AOJu0YyF8AdKpvVnyJrhyQEYBZjCaU/qS5bE6cQU2AA9npgk6SFRnIeV
- UrryoEJiLrIhmv7xA74O71PDHfOwVL5CmA0VOYn/BcZkfNVplb6W4zTQ/XWvOlHFMZCt03xsDRI
- =
-X-Google-Smtp-Source: AGHT+IHksMBofUnqo35sLZHO8dbuOYEcmjlodfoD7xV3pV5i5sW960S2VfNdQR83gNnzYV3gVmQLqg==
-X-Received: by 2002:a05:6870:1588:b0:214:82c6:ee14 with SMTP id
- j8-20020a056870158800b0021482c6ee14mr6764580oab.58.1707317532949; 
- Wed, 07 Feb 2024 06:52:12 -0800 (PST)
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com.
- [209.85.161.44]) by smtp.gmail.com with ESMTPSA id
- m6-20020a9d6ac6000000b006ddd0bb5a56sm210970otq.52.2024.02.07.06.52.11
- for <igt-dev@lists.freedesktop.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Feb 2024 06:52:11 -0800 (PST)
-Received: by mail-oo1-f44.google.com with SMTP id
- 006d021491bc7-599fc25071bso433471eaf.3
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Feb 2024 06:52:11 -0800 (PST)
-X-Received: by 2002:a4a:8111:0:b0:59a:b1f:3fd3 with SMTP id
- b17-20020a4a8111000000b0059a0b1f3fd3mr5612964oog.8.1707317530811; Wed, 07 Feb
- 2024 06:52:10 -0800 (PST)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C277210EF4E;
+	Wed,  7 Feb 2024 15:01:40 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A95010EF4E;
+ Wed,  7 Feb 2024 15:01:39 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2801122188680191502=="
 MIME-Version: 1.0
-References: <20240130054235.533132-1-bhanuprakash.modem@intel.com>
- <20240130054235.533132-2-bhanuprakash.modem@intel.com>
-In-Reply-To: <20240130054235.533132-2-bhanuprakash.modem@intel.com>
-From: Sean Paul <seanpaul@chromium.org>
-Date: Wed, 7 Feb 2024 09:51:34 -0500
-X-Gmail-Original-Message-ID: <CAOw6vbLRbDDZTrPKuW7S=pDA8DK_GWM0FDonF83BxsPz1yLvCA@mail.gmail.com>
-Message-ID: <CAOw6vbLRbDDZTrPKuW7S=pDA8DK_GWM0FDonF83BxsPz1yLvCA@mail.gmail.com>
-Subject: Re: [i-g-t v5 1/9] tests/kms_vrr: Move fb0 and fb1 to an array
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Mark Yacoub <markyacoub@chromium.org>
-Content-Type: multipart/alternative; boundary="000000000000f21ad90610cbd6eb"
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_extend_psr2=5Fsf_test_for_p?=
+ =?utf-8?q?r=5Fsf_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 07 Feb 2024 15:01:39 -0000
+Message-ID: <170731809956.1072289.6770965355642418815@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240207135319.1880229-1-kunal1.joshi@intel.com>
+In-Reply-To: <20240207135319.1880229-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,274 +37,223 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---000000000000f21ad90610cbd6eb
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+--===============2801122188680191502==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thanks for revising these. The changes look good to me.
+== Series Details ==
 
-FWIW,
+Series: extend psr2_sf test for pr_sf (rev3)
+URL   : https://patchwork.freedesktop.org/series/129004/
+State : success
 
-Reviewed-by: Sean Paul <seanpaul@chromium.org>
+== Summary ==
 
-On Tue, Jan 30, 2024 at 12:49=E2=80=AFAM Bhanuprakash Modem <
-bhanuprakash.modem@intel.com> wrote:
+CI Bug Log - changes from CI_DRM_14239 -> IGTPW_10644
+====================================================
 
-> From: Sean Paul <seanpaul@chromium.org>
->
-> Consolidate the 2 fb variables into an array. No functional changes.
->
-> v2:
-> - Clarified commit msg (Bhanu)
-> v3: (Bhanu)
-> - Rebase
->
-> Cc: Mark Yacoub <markyacoub@chromium.org>
-> Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Sean Paul <seanpaul@chromium.org>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  tests/kms_vrr.c | 19 +++++++++----------
->  1 file changed, 9 insertions(+), 10 deletions(-)
->
-> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-> index 9de0ffc85..a9fcde821 100644
-> --- a/tests/kms_vrr.c
-> +++ b/tests/kms_vrr.c
-> @@ -104,8 +104,7 @@ typedef struct data {
->         igt_display_t display;
->         int drm_fd;
->         igt_plane_t *primary;
-> -       igt_fb_t fb0;
-> -       igt_fb_t fb1;
-> +       igt_fb_t fb[2];
->         range_t range;
->         drmModeModeInfo switch_modes[RR_MODES_COUNT];
->  } data_t;
-> @@ -280,13 +279,13 @@ static void prepare_test(data_t *data, igt_output_t
-> *output, enum pipe pipe)
->         /* Prepare resources */
->         igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
->                             DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> -                           0.50, 0.50, 0.50, &data->fb0);
-> +                           0.50, 0.50, 0.50, &data->fb[0]);
->
->         igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
->                             DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> -                           0.50, 0.50, 0.50, &data->fb1);
-> +                           0.50, 0.50, 0.50, &data->fb[1]);
->
-> -       cr =3D igt_get_cairo_ctx(data->drm_fd, &data->fb0);
-> +       cr =3D igt_get_cairo_ctx(data->drm_fd, &data->fb[0]);
->
->         igt_paint_color(cr, 0, 0, mode.hdisplay / 10, mode.vdisplay / 10,
->                         1.00, 0.00, 0.00);
-> @@ -295,7 +294,7 @@ static void prepare_test(data_t *data, igt_output_t
-> *output, enum pipe pipe)
->
->         /* Take care of any required modesetting before the test begins. =
-*/
->         data->primary =3D igt_output_get_plane_type(output,
-> DRM_PLANE_TYPE_PRIMARY);
-> -       igt_plane_set_fb(data->primary, &data->fb0);
-> +       igt_plane_set_fb(data->primary, &data->fb[0]);
->
->         /* Clear vrr_enabled state before enabling it, because
->          * it might be left enabled if the previous test fails.
-> @@ -358,7 +357,7 @@ flip_and_measure(data_t *data, igt_output_t *output,
-> enum pipe pipe,
->                         rate_ns, threshold_hi, threshold_lo);
->
->         /* Align with the flip completion event to speed up convergence. =
-*/
-> -       do_flip(data, &data->fb0);
-> +       do_flip(data, &data->fb[0]);
->         start_ns =3D last_event_ns =3D target_ns =3D get_kernel_event_ns(=
-data,
->
-> DRM_EVENT_FLIP_COMPLETE);
->
-> @@ -367,7 +366,7 @@ flip_and_measure(data_t *data, igt_output_t *output,
-> enum pipe pipe,
->                 int64_t diff_ns;
->
->                 front =3D !front;
-> -               do_flip(data, front ? &data->fb1 : &data->fb0);
-> +               do_flip(data, front ? &data->fb[1] : &data->fb[0]);
->
->                 /* We need to cpture flip event instead of vblank event,
->                  * because vblank is triggered after each frame, but
-> depending
-> @@ -573,8 +572,8 @@ static void test_cleanup(data_t *data, enum pipe pipe=
-,
-> igt_output_t *output)
->         igt_output_override_mode(output, NULL);
->         igt_display_commit2(&data->display, COMMIT_ATOMIC);
->
-> -       igt_remove_fb(data->drm_fd, &data->fb1);
-> -       igt_remove_fb(data->drm_fd, &data->fb0);
-> +       igt_remove_fb(data->drm_fd, &data->fb[1]);
-> +       igt_remove_fb(data->drm_fd, &data->fb[0]);
->  }
->
->  static bool output_constraint(data_t *data, igt_output_t *output,
-> uint32_t flags)
-> --
-> 2.43.0
->
->
+Summary
+-------
 
---000000000000f21ad90610cbd6eb
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+  **SUCCESS**
 
-<div dir=3D"ltr">Thanks for revising these. The changes look good to me.<di=
-v><br></div><div>FWIW,</div><div><br></div><div>Reviewed-by: Sean Paul &lt;=
-<a href=3D"mailto:seanpaul@chromium.org">seanpaul@chromium.org</a>&gt;</div=
-></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr"=
->On Tue, Jan 30, 2024 at 12:49=E2=80=AFAM Bhanuprakash Modem &lt;<a href=3D=
-"mailto:bhanuprakash.modem@intel.com">bhanuprakash.modem@intel.com</a>&gt; =
-wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
-px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">From: Sea=
-n Paul &lt;<a href=3D"mailto:seanpaul@chromium.org" target=3D"_blank">seanp=
-aul@chromium.org</a>&gt;<br>
-<br>
-Consolidate the 2 fb variables into an array. No functional changes.<br>
-<br>
-v2:<br>
-- Clarified commit msg (Bhanu)<br>
-v3: (Bhanu)<br>
-- Rebase<br>
-<br>
-Cc: Mark Yacoub &lt;<a href=3D"mailto:markyacoub@chromium.org" target=3D"_b=
-lank">markyacoub@chromium.org</a>&gt;<br>
-Reviewed-by: Bhanuprakash Modem &lt;<a href=3D"mailto:bhanuprakash.modem@in=
-tel.com" target=3D"_blank">bhanuprakash.modem@intel.com</a>&gt;<br>
-Signed-off-by: Sean Paul &lt;<a href=3D"mailto:seanpaul@chromium.org" targe=
-t=3D"_blank">seanpaul@chromium.org</a>&gt;<br>
-Signed-off-by: Bhanuprakash Modem &lt;<a href=3D"mailto:bhanuprakash.modem@=
-intel.com" target=3D"_blank">bhanuprakash.modem@intel.com</a>&gt;<br>
----<br>
-=C2=A0tests/kms_vrr.c | 19 +++++++++----------<br>
-=C2=A01 file changed, 9 insertions(+), 10 deletions(-)<br>
-<br>
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c<br>
-index 9de0ffc85..a9fcde821 100644<br>
---- a/tests/kms_vrr.c<br>
-+++ b/tests/kms_vrr.c<br>
-@@ -104,8 +104,7 @@ typedef struct data {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 igt_display_t display;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 int drm_fd;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 igt_plane_t *primary;<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_fb_t fb0;<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_fb_t fb1;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_fb_t fb[2];<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 range_t range;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 drmModeModeInfo switch_modes[RR_MODES_COUNT];<b=
-r>
-=C2=A0} data_t;<br>
-@@ -280,13 +279,13 @@ static void prepare_test(data_t *data, igt_output_t *=
-output, enum pipe pipe)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Prepare resources */<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 igt_create_color_fb(data-&gt;drm_fd, mode.hdisp=
-lay, mode.vdisplay,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A00.50, 0.50, 0.50, &amp;data-&gt;fb0);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A00.50, 0.50, 0.50, &amp;data-&gt;fb[0]);<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 igt_create_color_fb(data-&gt;drm_fd, mode.hdisp=
-lay, mode.vdisplay,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A00.50, 0.50, 0.50, &amp;data-&gt;fb1);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A00.50, 0.50, 0.50, &amp;data-&gt;fb[1]);<br>
-<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0cr =3D igt_get_cairo_ctx(data-&gt;drm_fd, &amp;=
-data-&gt;fb0);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0cr =3D igt_get_cairo_ctx(data-&gt;drm_fd, &amp;=
-data-&gt;fb[0]);<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 igt_paint_color(cr, 0, 0, mode.hdisplay / 10, m=
-ode.vdisplay / 10,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 1.00, 0.00, 0.00);<br>
-@@ -295,7 +294,7 @@ static void prepare_test(data_t *data, igt_output_t *ou=
-tput, enum pipe pipe)<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Take care of any required modesetting before=
- the test begins. */<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 data-&gt;primary =3D igt_output_get_plane_type(=
-output, DRM_PLANE_TYPE_PRIMARY);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_plane_set_fb(data-&gt;primary, &amp;data-&g=
-t;fb0);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_plane_set_fb(data-&gt;primary, &amp;data-&g=
-t;fb[0]);<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Clear vrr_enabled state before enabling it, =
-because<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* it might be left enabled if the previou=
-s test fails.<br>
-@@ -358,7 +357,7 @@ flip_and_measure(data_t *data, igt_output_t *output, en=
-um pipe pipe,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 rate_ns, threshold_hi, threshold_lo);<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Align with the flip completion event to spee=
-d up convergence. */<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0do_flip(data, &amp;data-&gt;fb0);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0do_flip(data, &amp;data-&gt;fb[0]);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 start_ns =3D last_event_ns =3D target_ns =3D ge=
-t_kernel_event_ns(data,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 DRM_EVENT_FLIP_COMPLETE);<=
-br>
-<br>
-@@ -367,7 +366,7 @@ flip_and_measure(data_t *data, igt_output_t *output, en=
-um pipe pipe,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 int64_t diff_ns;<br=
->
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 front =3D !front;<b=
-r>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0do_flip(data, front=
- ? &amp;data-&gt;fb1 : &amp;data-&gt;fb0);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0do_flip(data, front=
- ? &amp;data-&gt;fb[1] : &amp;data-&gt;fb[0]);<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* We need to cptur=
-e flip event instead of vblank event,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* because vbl=
-ank is triggered after each frame, but depending<br>
-@@ -573,8 +572,8 @@ static void test_cleanup(data_t *data, enum pipe pipe, =
-igt_output_t *output)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 igt_output_override_mode(output, NULL);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 igt_display_commit2(&amp;data-&gt;display, COMM=
-IT_ATOMIC);<br>
-<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_remove_fb(data-&gt;drm_fd, &amp;data-&gt;fb=
-1);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_remove_fb(data-&gt;drm_fd, &amp;data-&gt;fb=
-0);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_remove_fb(data-&gt;drm_fd, &amp;data-&gt;fb=
-[1]);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_remove_fb(data-&gt;drm_fd, &amp;data-&gt;fb=
-[0]);<br>
-=C2=A0}<br>
-<br>
-=C2=A0static bool output_constraint(data_t *data, igt_output_t *output, uin=
-t32_t flags)<br>
--- <br>
-2.43.0<br>
-<br>
-</blockquote></div>
+  No regressions found.
 
---000000000000f21ad90610cbd6eb--
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/index.html
+
+Participating hosts (37 -> 37)
+------------------------------
+
+  Additional (1): fi-pnv-d510 
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_10644:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@gem_ctx_create@basic-files:
+    - {bat-arls-2}:       [PASS][1] -> [DMESG-WARN][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14239/bat-arls-2/igt@gem_ctx_create@basic-files.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/bat-arls-2/igt@gem_ctx_create@basic-files.html
+
+  * igt@gem_exec_fence@nb-await:
+    - {bat-arls-2}:       NOTRUN -> [TIMEOUT][3] +6 other tests timeout
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/bat-arls-2/igt@gem_exec_fence@nb-await.html
+
+  * igt@gem_exec_gttfill@basic:
+    - {bat-arls-2}:       [PASS][4] -> [TIMEOUT][5] +2 other tests timeout
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14239/bat-arls-2/igt@gem_exec_gttfill@basic.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/bat-arls-2/igt@gem_exec_gttfill@basic.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10644 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-apl-guc:         NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/fi-apl-guc/igt@gem_lmem_swapping@basic.html
+    - fi-pnv-d510:        NOTRUN -> [SKIP][7] ([fdo#109271]) +28 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/fi-pnv-d510/igt@gem_lmem_swapping@basic.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-apl-guc:         NOTRUN -> [SKIP][8] ([fdo#109271]) +13 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/fi-apl-guc/igt@kms_hdmi_inject@inject-audio.html
+
+  
+#### Warnings ####
+
+  * igt@i915_module_load@load:
+    - fi-kbl-7567u:       [DMESG-WARN][9] ([i915#180] / [i915#8585]) -> [DMESG-WARN][10] ([i915#180] / [i915#1982] / [i915#8585])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14239/fi-kbl-7567u/igt@i915_module_load@load.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/fi-kbl-7567u/igt@i915_module_load@load.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#8585]: https://gitlab.freedesktop.org/drm/intel/issues/8585
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7705 -> IGTPW_10644
+
+  CI-20190529: 20190529
+  CI_DRM_14239: 473fff9e18e4e77aa4c1f1ae5484a6fb809a89e6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10644: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/index.html
+  IGT_7705: 45aef708b65772e54ee9a68b1f3885fa25140fdf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/index.html
+
+--===============2801122188680191502==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>extend psr2_sf test for pr_sf (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129004/">https://patchwork.freedesktop.org/series/129004/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_14239 -&gt; IGTPW_10644</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/index.html</p>
+<h2>Participating hosts (37 -&gt; 37)</h2>
+<p>Additional (1): fi-pnv-d510 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_10644:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@gem_ctx_create@basic-files:</p>
+<ul>
+<li>{bat-arls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14239/bat-arls-2/igt@gem_ctx_create@basic-files.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/bat-arls-2/igt@gem_ctx_create@basic-files.html">DMESG-WARN</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@nb-await:</p>
+<ul>
+<li>{bat-arls-2}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/bat-arls-2/igt@gem_exec_fence@nb-await.html">TIMEOUT</a> +6 other tests timeout</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>{bat-arls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14239/bat-arls-2/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/bat-arls-2/igt@gem_exec_gttfill@basic.html">TIMEOUT</a> +2 other tests timeout</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10644 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/fi-apl-guc/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/fi-pnv-d510/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +28 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/fi-apl-guc/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +13 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_module_load@load:<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14239/fi-kbl-7567u/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8585">i915#8585</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/fi-kbl-7567u/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8585">i915#8585</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7705 -&gt; IGTPW_10644</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14239: 473fff9e18e4e77aa4c1f1ae5484a6fb809a89e6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10644: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10644/index.html<br />
+  IGT_7705: 45aef708b65772e54ee9a68b1f3885fa25140fdf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2801122188680191502==--
