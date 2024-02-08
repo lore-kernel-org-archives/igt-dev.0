@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA4F5C4828F
-	for <igt-dev@archiver.kernel.org>; Thu,  8 Feb 2024 20:52:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EA6AC48260
+	for <igt-dev@archiver.kernel.org>; Thu,  8 Feb 2024 21:10:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7BEB410EA3D;
-	Thu,  8 Feb 2024 20:52:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0370510EDAB;
+	Thu,  8 Feb 2024 21:10:34 +0000 (UTC)
 Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 37F5F10EA2E;
- Thu,  8 Feb 2024 20:52:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C4CA10EDAB;
+ Thu,  8 Feb 2024 21:10:32 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6070928592618036025=="
+ boundary="===============0442042689677901736=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_benchmarks=3A_Add_VKMS_benc?=
- =?utf-8?q?hmark_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_extend_psr2=5Fsf_test_for_pr?=
+ =?utf-8?q?=5Fsf_=28rev4=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Arthur Grillo" <arthurgrillo@riseup.net>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 08 Feb 2024 20:52:40 -0000
-Message-ID: <170742556022.1109598.12967913736559574253@5338d5abeb45>
+Date: Thu, 08 Feb 2024 21:10:32 -0000
+Message-ID: <170742663244.1109598.8078333422074506681@5338d5abeb45>
 X-Patchwork-Hint: ignore
-References: <20240208-bench-v2-1-1eccee1055ad@riseup.net>
-In-Reply-To: <20240208-bench-v2-1-1eccee1055ad@riseup.net>
+References: <20240208145425.1940941-1-kunal1.joshi@intel.com>
+In-Reply-To: <20240208145425.1940941-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6070928592618036025==
+--===============0442042689677901736==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: benchmarks: Add VKMS benchmark (rev2)
-URL   : https://patchwork.freedesktop.org/series/129644/
+Series: extend psr2_sf test for pr_sf (rev4)
+URL   : https://patchwork.freedesktop.org/series/129004/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_7707 -> IGTPW_10653
+CI Bug Log - changes from XEIGT_7707_BAT -> XEIGTPW_10652_BAT
 ====================================================
 
 Summary
@@ -64,12 +64,12 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10653/index.html
+  
 
-Participating hosts (39 -> 36)
+Participating hosts (2 -> 2)
 ------------------------------
 
-  Missing    (3): fi-apl-guc fi-snb-2520m fi-pnv-d510 
+  No changes in participating hosts
 
 
 Changes
@@ -81,19 +81,17 @@ Changes
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7707 -> IGTPW_10653
+  * IGT: IGT_7707 -> IGTPW_10652
 
-  CI-20190529: 20190529
-  CI_DRM_14244: 22d626404cb81d7818ab55e5b14885e31a998dfd @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10653: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10653/index.html
+  IGTPW_10652: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10652/index.html
   IGT_7707: 5303b43f485f7ba015adabc15b029532b1158aef @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-750-22d626404cb81d7818ab55e5b14885e31a998dfd: 22d626404cb81d7818ab55e5b14885e31a998dfd
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10653/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10652/index.html
 
---===============6070928592618036025==
+--===============0442042689677901736==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,35 +111,32 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>benchmarks: Add VKMS benchmark (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129644/">https://patchwork.freedesktop.org/series/129644/</a></td></tr>
+<tr><td><b>Series:</b></td><td>extend psr2_sf test for pr_sf (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129004/">https://patchwork.freedesktop.org/series/129004/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10653/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10653/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10652/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10652/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_7707 -&gt; IGTPW_10653</h1>
+    <h1>CI Bug Log - changes from XEIGT_7707_BAT -&gt; XEIGTPW_10652_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10653/index.html</p>
-<h2>Participating hosts (39 -&gt; 36)</h2>
-<p>Missing    (3): fi-apl-guc fi-snb-2520m fi-pnv-d510 </p>
+<h2>Participating hosts (2 -&gt; 2)</h2>
+<p>No changes in participating hosts</p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7707 -&gt; IGTPW_10653</li>
+<li>IGT: IGT_7707 -&gt; IGTPW_10652</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14244: 22d626404cb81d7818ab55e5b14885e31a998dfd @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10653: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10653/index.html<br />
-  IGT_7707: 5303b43f485f7ba015adabc15b029532b1158aef @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_10652: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10652/index.html<br />
+  IGT_7707: 5303b43f485f7ba015adabc15b029532b1158aef @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-750-22d626404cb81d7818ab55e5b14885e31a998dfd: 22d626404cb81d7818ab55e5b14885e31a998dfd</p>
 
 </body>
 </html>
 
---===============6070928592618036025==--
+--===============0442042689677901736==--
