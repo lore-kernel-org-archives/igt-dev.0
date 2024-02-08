@@ -4,59 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4947C48260
-	for <igt-dev@archiver.kernel.org>; Thu,  8 Feb 2024 11:27:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEFF7C4828F
+	for <igt-dev@archiver.kernel.org>; Thu,  8 Feb 2024 12:10:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 693FF10E663;
-	Thu,  8 Feb 2024 11:27:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8F3A710E375;
+	Thu,  8 Feb 2024 12:10:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aDDW0c9H";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ax3B8Y2k";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D97510E663
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Feb 2024 11:27:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4EDC710E375
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Feb 2024 12:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707391642; x=1738927642;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=5sXVdgMBomsCzMQSG5qTPvQF+FcrfeJU4Ameoxrt7VU=;
- b=aDDW0c9HLLWHQkVk+kDRnrSbBgp0t735goobkHgVwjEJvwz7cPk7J/EQ
- OTos5UdcfhxrfZAANbVR2EpGnnp+Z+EgDqELNs8P68MqYMRHcDse5Hkxf
- FeX0iFrbYIjIAKf7u3YVouu9BLmXZI+RpxUxsbb4XT0B7+dgQE/Nou9U8
- KHkwqf295ctUDs2iPwAxNEUiF9YZr8gke+AYTYeyMPxBVXfvRKCJrmC0q
- ciQ+/ucXUf+fN3mKr6Jwnih2v6T3L05srcXQD13fKtIYUkGtLy0IqNA8H
- TMH0As1yrYdHqAn+Wde7gNkNDP4Qsh/m/xjjS08LqtYWbReAx6623y+os A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10977"; a="5061419"
+ t=1707394256; x=1738930256;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=DzQFkqJIRLhr6gBOa8Dajab1AYWnov0qCOV9e2N3jd8=;
+ b=ax3B8Y2k5DFp6ej2UB6M6MhXioH736ESarfP1vbmgAWkouyJBj3da4WO
+ 4BcBUvSiRUhGoUmOTK5EYBrrXnJKiRL03vohIXAYsIzIu1UYQHQhPpzSd
+ J0d7aahuQswfdAYBzOF7IUa0vSQre2gV43ULpraNdCfWhmT4+z1lUhyrQ
+ llTbVfHXn9azIf9a0ksYz3B7GIWyqjzGSC03jDvWrCRTIiTiUtK0TVvQr
+ f4NqmDe+ar6C9YfTEJrrgYoDps8ghkyDiouBPrlrMkYtLPELr9H+NmJeE
+ B122zmv8hLqXFB4+OmI3c5JZVBvT35aHhnHa5FCpEG3fizWzgM6UbTo80 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10977"; a="1501759"
 X-IronPort-AV: E=Sophos;i="6.05,253,1701158400"; 
-   d="scan'208";a="5061419"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2024 03:27:22 -0800
+   d="scan'208";a="1501759"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2024 04:10:45 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,253,1701158400"; 
-   d="scan'208";a="1624547"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 03:27:20 -0800
-Date: Thu, 8 Feb 2024 12:27:18 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+   d="scan'208";a="1872902"
+Received: from unknown (HELO localhost.localdomain) ([10.190.238.8])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2024 04:10:42 -0800
+From: Vandita Kulkarni <vandita.kulkarni@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>, mchehab@kernel.org,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: Re: [PATCH i-g-t 2/2] tests/intel-ci/xe-fast-feedback: Add xe_mocs
- to kunit tests
-Message-ID: <20240208112718.2cmozhey37acrxna@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Lucas De Marchi <lucas.demarchi@intel.com>, mchehab@kernel.org,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-References: <20240207224643.250958-1-lucas.demarchi@intel.com>
- <20240207224643.250958-2-lucas.demarchi@intel.com>
+Cc: ville.syrjala@linux.intel.com, karthik.b.s@intel.com,
+ juha-pekka.heikkila@intel.com,
+ Vandita Kulkarni <vandita.kulkarni@intel.com>
+Subject: [PATCH i-g-t] tests/kms_async_flip: Reduce the clobbering area used
+ for CRC test
+Date: Thu,  8 Feb 2024 17:40:38 +0530
+Message-ID: <20240208121039.13701-1-vandita.kulkarni@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240207224643.250958-2-lucas.demarchi@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,31 +66,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Lucas,
-On 2024-02-07 at 14:45:01 -0800, Lucas De Marchi wrote:
-> xe_live_ktest@xe_mocs was added, but never included in the BAT tests. We
-> should really be checking mocs as BAT.
-> 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+On some platforms wc_mmap write takes longer to paint the fb,
+which we are using to clobber the already scanned buffer for
+CRC. Hence reducing the clobbered area.
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Vandita Kulkarni <vandita.kulkarni@intel.com>
+---
+ tests/kms_async_flips.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> ---
->  tests/intel-ci/xe-fast-feedback.testlist | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> index 6c01374c1..82e02e3bd 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -231,6 +231,7 @@ igt@core_hotunplug@unbind-rebind
->  igt@xe_live_ktest@xe_bo
->  igt@xe_live_ktest@xe_dma_buf
->  igt@xe_live_ktest@xe_migrate
-> +igt@xe_live_ktest@xe_mocs
->  
->  # Move fault_mode tests at the end to unblock execution
->  igt@xe_exec_fault_mode@twice-basic
-> -- 
-> 2.43.0
-> 
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index a0349fa03..2e5960943 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -589,7 +589,7 @@ static void test_crc(data_t *data)
+ 
+ 	while (clock_ms() - start < 2000) {
+ 		/* fill the next fb with the expected color */
+-		paint_fb(data, &data->bufs[frame], 1, height, 0xff0000ff);
++		paint_fb(data, &data->bufs[frame], 10, 10, 0xff0000ff);
+ 
+ 		data->flip_pending = true;
+ 		ret = drmModePageFlip(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id,
+@@ -600,7 +600,7 @@ static void test_crc(data_t *data)
+ 
+ 		/* clobber the previous fb which should no longer be scanned out */
+ 		frame = !frame;
+-		paint_fb(data, &data->bufs[frame], 1, height, rand());
++		paint_fb(data, &data->bufs[frame], 10, 10, rand());
+ 	}
+ 
+ 	igt_pipe_crc_stop(data->pipe_crc);
+-- 
+2.43.0
+
