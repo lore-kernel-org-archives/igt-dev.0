@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ED08C4828F
-	for <igt-dev@archiver.kernel.org>; Thu,  8 Feb 2024 13:52:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7E9CC4828F
+	for <igt-dev@archiver.kernel.org>; Thu,  8 Feb 2024 13:53:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EFFB010E77D;
-	Thu,  8 Feb 2024 13:52:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8E6EE10E770;
+	Thu,  8 Feb 2024 13:53:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CiubN4Lx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VcNk7vwt";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 87DF210E77D
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Feb 2024 13:52:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C4DE10E770
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Feb 2024 13:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707400377; x=1738936377;
+ t=1707400384; x=1738936384;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0Po3XV3SNi0ASBQ0lXWhgL+CA2JymjRYPyUpCQ2e/dM=;
- b=CiubN4LxUIFQ+aYGY/ctoXJEgchHkpUX2Qp/qHLqNUI2ccCVayLIq4/x
- p/eEyuBDZG9O9fPfDGlNcff04zErR0xT5q6bKgk3TCNukSvbLFO8iOmod
- 7sgtOtyDkXSrRmG8MA9iWpAg98Qm05euAiHbaYlmdCew3gD/Iyrle9Uhy
- n6EFhG2OviM9jw9FNgUZN8zSREc357NEr8MlPMTNMhrgZngTY6wP0fP0G
- 6a/+O3juM4CKQEy+aLO7gUIyYh2VC9WwJHoiXN0czGkMaaPbiPe9EvbZk
- RtdQOku8XeUR7rg5PKopNAIbFyXm1c1tb8AEMaZpMvxkumrxJWdj2SwN7 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10977"; a="1106934"
+ bh=hacTijmAspvNLtP3zWpGEqJ1TqTkZ+mXgRoJH50UWVM=;
+ b=VcNk7vwtPPOJgY2Sp3++47DURzLCC61GK5KOD68v55RU7Mpin63qdkhI
+ kv8EGj17txobCTkLqOMLBv5UFkEYiDpCYi+uI4YkeSTNd0aJL1xvSfHVM
+ GaRke4GHiRy+K2faSgLRQ7faPQbkrgB5C0FmMOPTgEISjFFIk//1TPjm4
+ ps/XsIpF5o1hcMIV46pyEZG9ysjVPNRARvjSUgGWWtiWXH9E6IQ2PyyIV
+ dW42396UKHzjYfxNAU1zQorQ+jdpnZjUS4vcrD1zG3XtUJfACJ59Z9dmT
+ tSXb2Sc/eBPQGS5ntD7A2cTeVViWx6xCsIeYMTyryUZMC44HulSf60Ib3 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10977"; a="1517269"
 X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
-   d="scan'208";a="1106934"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2024 05:52:57 -0800
+   d="scan'208";a="1517269"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2024 05:53:02 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
-   d="scan'208";a="2023567"
+X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; d="scan'208";a="39089981"
 Received: from unknown (HELO localhost) ([10.245.101.174])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2024 05:52:56 -0800
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2024 05:53:00 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>, 
  Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v8 4/8] lib/intel_multigpu: Introduce library for
- multi-GPU scenarios
-Date: Thu,  8 Feb 2024 14:52:28 +0100
-Message-ID: <20240208135232.54382-5-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v8 5/8] lib/intel_multigpu: Introduced
+ gem_multigpu_count_class and igt_multi_fork_foreach_gpu
+Date: Thu,  8 Feb 2024 14:52:29 +0100
+Message-ID: <20240208135232.54382-6-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240208135232.54382-1-kamil.konieczny@linux.intel.com>
 References: <20240208135232.54382-1-kamil.konieczny@linux.intel.com>
@@ -72,85 +72,80 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 
-Implemented gem_require_multigpu in order to replace
-igt_require(gpu_count > 1), as well as printing available
-PCI devices if requirement fails.
+Introduced gem_multigpu_count_class function that returns an actual
+number of GPUs present in system, which allows for writing multi-GPU
+test scenarios that does not require
+--device pci:vendor=intel,device=discrete,card=all
+to run as intended. Based on patch by Chris Wilson.
+
+Introduced igt_multi_fork_foreach_gpu macro that helps with
+writing multi-GPU test scenarios in idiomatic form:
+
+igt_multi_fork_foreach_gpu(i915, DRIVER_INTEL)
+	test_function(i915);
+igt_waitchildren();
 
 Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-[Kamil: fixed whitespace and tabs, moved to lib/intel_multigpu.*]
+Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/intel_multigpu.c | 28 ++++++++++++++++++++++++++++
- lib/intel_multigpu.h | 11 +++++++++++
- lib/meson.build      |  1 +
- 3 files changed, 40 insertions(+)
- create mode 100644 lib/intel_multigpu.c
- create mode 100644 lib/intel_multigpu.h
+ lib/intel_multigpu.c | 11 +++++++++++
+ lib/intel_multigpu.h | 15 +++++++++++++++
+ 2 files changed, 26 insertions(+)
 
 diff --git a/lib/intel_multigpu.c b/lib/intel_multigpu.c
-new file mode 100644
-index 000000000..34c9f936d
---- /dev/null
+index 34c9f936d..0e76d8aa3 100644
+--- a/lib/intel_multigpu.c
 +++ b/lib/intel_multigpu.c
-@@ -0,0 +1,28 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+#include "igt_core.h"
-+#include "igt_device_scan.h"
-+#include "intel_multigpu.h"
-+
-+void gem_require_multigpu(int count)
+@@ -3,10 +3,21 @@
+  * Copyright © 2023 Intel Corporation
+  */
+ 
++#include "drmtest.h"
+ #include "igt_core.h"
+ #include "igt_device_scan.h"
+ #include "intel_multigpu.h"
+ 
++int gem_multigpu_count_class(int class)
 +{
-+	struct igt_devices_print_format fmt = {
-+		.type = IGT_PRINT_SIMPLE,
-+		.option = IGT_PRINT_PCI,
-+	};
-+	int devices;
++	int count = 0;
 +
-+	if (igt_device_filter_count() >= count)
-+		return;
++	igt_foreach_gpu(fd, class)
++		count++;
 +
-+	igt_info("PCI devices available in the system:\n");
-+
-+	igt_devices_scan(true);
-+	devices = igt_device_filter_pci();
-+	igt_devices_print(&fmt);
-+
-+	igt_skip("Test requires at least %d GPUs, %d available.\n", count, devices);
++	return count;
 +}
++
+ void gem_require_multigpu(int count)
+ {
+ 	struct igt_devices_print_format fmt = {
 diff --git a/lib/intel_multigpu.h b/lib/intel_multigpu.h
-new file mode 100644
-index 000000000..98dc5a4ce
---- /dev/null
+index 98dc5a4ce..0ebc73e4a 100644
+--- a/lib/intel_multigpu.h
 +++ b/lib/intel_multigpu.h
-@@ -0,0 +1,11 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
+@@ -6,6 +6,21 @@
+ #ifndef __INTEL_MULTIGPU_H
+ #define __INTEL_MULTIGPU_H
+ 
++#include "drmtest.h"
++#include "igt_core.h"
 +
-+#ifndef __INTEL_MULTIGPU_H
-+#define __INTEL_MULTIGPU_H
+ void gem_require_multigpu(int count);
++int gem_multigpu_count_class(int class);
 +
-+void gem_require_multigpu(int count);
++#define igt_foreach_gpu(fd__, id__) \
++	for (int igt_unique(i) = 0, fd__; \
++		(fd__ = __drm_open_driver_another(igt_unique(i)++, id__)) >= 0; \
++		close(fd__))
 +
-+#endif /* __INTEL_MULTIGPU_H */
-diff --git a/lib/meson.build b/lib/meson.build
-index 6122861d8..8251695e1 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -65,6 +65,7 @@ lib_sources = [
- 	'intel_device_info.c',
- 	'intel_mmio.c',
- 	'intel_mocs.c',
-+	'intel_multigpu.c',
- 	'intel_pat.c',
- 	'ioctl_wrappers.c',
- 	'media_spin.c',
++#define igt_multi_fork_foreach_gpu(__fd, __id) \
++	igt_multi_fork(igt_unique(__i), gem_multigpu_count_class(__id)) \
++		for (int __fd = drm_open_driver_another(igt_unique(__i), __id); \
++			__fd >= 0; \
++			close(__fd), __fd = -1) \
+ 
+ #endif /* __INTEL_MULTIGPU_H */
 -- 
 2.42.0
 
