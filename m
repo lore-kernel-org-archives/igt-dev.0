@@ -4,52 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEFF7C4828F
-	for <igt-dev@archiver.kernel.org>; Thu,  8 Feb 2024 12:10:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3B38C4828F
+	for <igt-dev@archiver.kernel.org>; Thu,  8 Feb 2024 12:51:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8F3A710E375;
-	Thu,  8 Feb 2024 12:10:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DDF6D10E500;
+	Thu,  8 Feb 2024 12:51:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ax3B8Y2k";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="eh4f0EpJ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4EDC710E375
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Feb 2024 12:10:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707394256; x=1738930256;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=DzQFkqJIRLhr6gBOa8Dajab1AYWnov0qCOV9e2N3jd8=;
- b=ax3B8Y2k5DFp6ej2UB6M6MhXioH736ESarfP1vbmgAWkouyJBj3da4WO
- 4BcBUvSiRUhGoUmOTK5EYBrrXnJKiRL03vohIXAYsIzIu1UYQHQhPpzSd
- J0d7aahuQswfdAYBzOF7IUa0vSQre2gV43ULpraNdCfWhmT4+z1lUhyrQ
- llTbVfHXn9azIf9a0ksYz3B7GIWyqjzGSC03jDvWrCRTIiTiUtK0TVvQr
- f4NqmDe+ar6C9YfTEJrrgYoDps8ghkyDiouBPrlrMkYtLPELr9H+NmJeE
- B122zmv8hLqXFB4+OmI3c5JZVBvT35aHhnHa5FCpEG3fizWzgM6UbTo80 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10977"; a="1501759"
-X-IronPort-AV: E=Sophos;i="6.05,253,1701158400"; 
-   d="scan'208";a="1501759"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2024 04:10:45 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,253,1701158400"; 
-   d="scan'208";a="1872902"
-Received: from unknown (HELO localhost.localdomain) ([10.190.238.8])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2024 04:10:42 -0800
-From: Vandita Kulkarni <vandita.kulkarni@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ville.syrjala@linux.intel.com, karthik.b.s@intel.com,
- juha-pekka.heikkila@intel.com,
- Vandita Kulkarni <vandita.kulkarni@intel.com>
-Subject: [PATCH i-g-t] tests/kms_async_flip: Reduce the clobbering area used
- for CRC test
-Date: Thu,  8 Feb 2024 17:40:38 +0530
-Message-ID: <20240208121039.13701-1-vandita.kulkarni@intel.com>
-X-Mailer: git-send-email 2.43.0
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com
+ [209.85.221.50])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B85810E4EC;
+ Thu,  8 Feb 2024 12:51:50 +0000 (UTC)
+Received: by mail-wr1-f50.google.com with SMTP id
+ ffacd0b85a97d-33b5b6236afso274043f8f.1; 
+ Thu, 08 Feb 2024 04:51:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1707396709; x=1708001509; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=IyM3LRHojfXtpDdlO3n3nHot/P0axBrsZHPVL+xl5Gc=;
+ b=eh4f0EpJ5UrfgfXf3l/QePu543kNB2xNEud0orpV83AY6m3/p2dSfGGg5+ZMKyMe4k
+ 8mrk9RBXkii3PQ4z/J8X2wA4oniSQs8kxDJUH/N4fHgJm7A2Y/uRSGeUFcpeuZ8NZpod
+ LBsFF/X82ddcPlKCMXvZGcdU7qCcIiSS7KXEBDs/OQ9CqodgUR2ALzMpakKPHpEvDp9q
+ dWB/fSCJqboITiekMOcmXXuitpygocXkAtWO2yACCNwoFrCa3WcRnBNYq054ueXyuMSf
+ 4EKXeT1QmWjshPSn4SigOnO3uILWOaEWyGeld8hysomhvmr47vuADxzpHJ7ctV+c6ixU
+ qc0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707396709; x=1708001509;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IyM3LRHojfXtpDdlO3n3nHot/P0axBrsZHPVL+xl5Gc=;
+ b=mSBdmyCopHN5VJhilSl87WsTDv+xboEygPM3vQx5Tr+JGQT9Yf52VOqaMuzoPrx55C
+ uuoMNDQitZ9HqPY6qxM7RCYNv2xrWrtte70s7ZyhRqxxCndNF9dG+peqdiEQADkuRiWN
+ ZBJXlYbv1BE2IjY3YvSyKQ8s6aWYFRy3/LvYh5ilFb4SvODjQVBEKtweEFRiIAER8h1c
+ GkEY72Rf55Is3vpk2YVy7HsgmI/m0aRiUQ2RrAN9J5+exC/DWKOJkuBfLwzxfKPwS2gS
+ 6cfMDoJnAE974B8mhdhB1YXde6TWCtZyTX+oS+9iEcpr+2Rs57+jey3845ZA0p37Zrx0
+ oyBg==
+X-Gm-Message-State: AOJu0Yx3oOiufAMqCF/sHJk+KdeRVOi+OLKK7moczCzbKqJzCVaheauq
+ DsDMarD609c2x6vfgqCtYgkulZ34hs5FXSlx5Y/Xi6wVg+CVW6dL
+X-Google-Smtp-Source: AGHT+IH7AJ+5KhWIcXepVdxUXMe39AGxaALbDf9ere3lqvz3skqmY2fbmUzLZhDxtQCN/lm7LenOJQ==
+X-Received: by 2002:adf:e683:0:b0:33b:2ee3:ba93 with SMTP id
+ r3-20020adfe683000000b0033b2ee3ba93mr5290706wrm.9.1707396708194; 
+ Thu, 08 Feb 2024 04:51:48 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVUsO6E+Q3ScM79VuR8fwyLETYQ+VN0u0hWsEeMrApYA2oVpeh+FqVZKMoAkDQKsai9NDDErQztf6PTfrKHZzWzw5Oxn7QevTtWvyqEtb+sqrETkLUoYQxwV19itg3FcK9KzscxBK47QzAnDJJLckP8HLZwb2LgGdckm7AABhH2CvdVJInH0FY0ystNerntxYTmsxEUrwwkeFGjjlwj5jwtcYN48FJFWeCFIiYbYbA/2ZcQZ8f1Z4pUitcq1bmBG4nrKdBDJ56w+ojbWXqrpgK1nnOUgnQCWT8tyGEpoK+9Cl4LoYIT9XMJ0KsPGirLzUwhoo0VPV6Mxzw84OodEi1ibN2pDQ2ZbdBsmnnblybAPsOQ48Eac11maRXPh8Q41wc4fSaD92vIYaNTbhdk0E6E9lauxTShvM6BhD06rPhoqtCh8ObicazqkqtXO14sYWlF6+mb8I5Bi6UviJ6n1/8S+OrlrElCUUnZRqTELxrkepYkVUkViEkPM4Y2b1iAAmeaLxd7CBE=
+Received: from [0.0.0.0] ([134.134.139.70])
+ by smtp.googlemail.com with ESMTPSA id
+ i16-20020a05600c355000b004103ffb8cfdsm1230714wmq.10.2024.02.08.04.51.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 08 Feb 2024 04:51:47 -0800 (PST)
+Message-ID: <b2be2839-bd27-4ce5-baeb-683700b35207@gmail.com>
+Date: Thu, 8 Feb 2024 14:51:34 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] benchmarks: Add VKMS benchmark
+Content-Language: en-US
+To: Arthur Grillo <arthurgrillo@riseup.net>, dri-devel@lists.freedesktop.org, 
+ igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Pekka Paalanen <pekka.paalanen@haloniitty.fi>,
+ Louis Chauvet <louis.chauvet@bootlin.com>,
+ Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>,
+ Melissa Wen <melissa.srw@gmail.com>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
+ <mairacanal@riseup.net>, Haneen Mohammed <hamohammed.sa@gmail.com>,
+ Daniel Vetter <daniel@ffwll.ch>
+References: <20240207-bench-v1-1-7135ad426860@riseup.net>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20240207-bench-v1-1-7135ad426860@riseup.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -63,40 +92,283 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On some platforms wc_mmap write takes longer to paint the fb,
-which we are using to clobber the already scanned buffer for
-CRC. Hence reducing the clobbered area.
+Hi Arthur,
 
-Signed-off-by: Vandita Kulkarni <vandita.kulkarni@intel.com>
----
- tests/kms_async_flips.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I was taking brief look. Generally things look ok. Few comments below.
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index a0349fa03..2e5960943 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -589,7 +589,7 @@ static void test_crc(data_t *data)
- 
- 	while (clock_ms() - start < 2000) {
- 		/* fill the next fb with the expected color */
--		paint_fb(data, &data->bufs[frame], 1, height, 0xff0000ff);
-+		paint_fb(data, &data->bufs[frame], 10, 10, 0xff0000ff);
- 
- 		data->flip_pending = true;
- 		ret = drmModePageFlip(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id,
-@@ -600,7 +600,7 @@ static void test_crc(data_t *data)
- 
- 		/* clobber the previous fb which should no longer be scanned out */
- 		frame = !frame;
--		paint_fb(data, &data->bufs[frame], 1, height, rand());
-+		paint_fb(data, &data->bufs[frame], 10, 10, rand());
- 	}
- 
- 	igt_pipe_crc_stop(data->pipe_crc);
--- 
-2.43.0
+On 7.2.2024 22.17, Arthur Grillo wrote:
+> Create a benchmark for the VKMS driver. Use a KMS layout with deliberate
+> odd sizes to try to avoid alignment accidents and run it for FRAME_COUNT
+> frames flipping framebuffers in each plane.
+> 
+> Link: https://lore.kernel.org/all/20240202214527.1d97c881@ferris.localdomain/
+> Suggested-by: Pekka Paalanen <pekka.paalanen@haloniitty.fi>
+> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
+> ---
+> This benchmark was suggested by Pekka Paalanen on [1] to better analyse
+> possible performance regression on the Virtual Kernel Modesetting(VKMS)
+> driver.
+> 
+> With this benchmark I was able to determine two performance regression:
+> 
+> - 322d716a3e8a ("drm/vkms: isolate pixel conversion functionality")
+> - cc4fd2934d41 ("drm/vkms: Isolate writeback pixel conversion functions")
+> 
+> [1]: https://lore.kernel.org/all/20240202214527.1d97c881@ferris.localdomain/
+> ---
+>   benchmarks/meson.build   |   1 +
+>   benchmarks/vkms_stress.c | 203 +++++++++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 204 insertions(+)
+> 
+> diff --git a/benchmarks/meson.build b/benchmarks/meson.build
+> index c451268bc44f..3aa66d6dffe2 100644
+> --- a/benchmarks/meson.build
+> +++ b/benchmarks/meson.build
+> @@ -20,6 +20,7 @@ benchmark_progs = [
+>   	'kms_vblank',
+>   	'prime_lookup',
+>   	'vgem_mmap',
+> +	'vkms_stress',
+>   ]
+>   
+>   benchmarksdir = join_paths(libexecdir, 'benchmarks')
+> diff --git a/benchmarks/vkms_stress.c b/benchmarks/vkms_stress.c
+> new file mode 100644
+> index 000000000000..b9128c208861
+> --- /dev/null
+> +++ b/benchmarks/vkms_stress.c
+> @@ -0,0 +1,203 @@
+> +/*
+> + * Copyright © 2024 Arthur Grillo
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the next
+> + * paragraph) shall be included in all copies or substantial portions of the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> + * IN THE SOFTWARE.
+> + *
+> + * Authors:
+> + *    Arthur Grillo <arthurgrillo@riseup.net>
+> + *
+> + */
+> +
+> +#include "igt.h"
+> +
+> +#define FRAME_COUNT 100
+> +
+> +struct rect_t {
+> +	int x, y;
+> +	int width, height;
+> +};
+> +
+> +struct plane_t {
+> +	igt_plane_t *base;
+> +	struct rect_t rect;
+> +	uint32_t format;
+> +	struct igt_fb fbs[2];
+> +};
+> +
+> +struct kms_t {
+> +	struct plane_t primary;
+> +	struct plane_t overlay_a;
+> +	struct plane_t overlay_b;
+> +	struct plane_t writeback;
+> +};
+> +
+> +struct data_t {
+> +	int fd;
+> +	igt_display_t display;
+> +	igt_output_t *wb_output;
+> +	drmModeModeInfo *mode;
+> +	struct kms_t kms;
+> +};
+> +
+> +static void plane_create_fb(struct plane_t *plane, int fd, size_t index)
+> +{
+> +	igt_create_fb(fd, plane->rect.width, plane->rect.height,
+> +			plane->format, DRM_FORMAT_MOD_LINEAR,
+> +			&plane->fbs[index]);
+> +}
+> +
+> +static void plane_create_color_fb(struct plane_t *plane, int fd, size_t index, double r, double g,
+> +				   double b)
+> +{
+> +	igt_create_color_fb(fd, plane->rect.width, plane->rect.height,
+> +			plane->format, DRM_FORMAT_MOD_LINEAR,
+> +			r, g, b,
+> +			&plane->fbs[index]);
+> +}
+
+These two above functions, why not just use the igt_create_* function 
+instead of wrapping them with different name?
+
+> +
+> +static void plane_setup(struct plane_t *plane, int index)
+> +{
+> +	igt_plane_set_size(plane->base, plane->rect.width, plane->rect.height);
+> +	igt_plane_set_position(plane->base, plane->rect.x, plane->rect.y);
+> +	igt_plane_set_fb(plane->base, &plane->fbs[index]);
+> +}
+> +
+> +static void gen_fbs(struct data_t *data)
+> +{
+> +	struct kms_t *kms = &data->kms;
+> +	drmModeModeInfo *mode = igt_output_get_mode(data->wb_output);
+> +
+> +	for (int i = 0; i < 2; i++) {
+
+Maybe something along the lines of ARRAY_SIZE(kms->primary.fbs) instead 
+of '2' ?
+
+> +		plane_create_color_fb(&kms->primary, data->fd, i, !i, i, i);
+> +
+> +		plane_create_color_fb(&kms->overlay_a, data->fd, i, i, !i, i);
+> +
+> +		plane_create_color_fb(&kms->overlay_b, data->fd, i, i, i, !i);
+> +
+> +		kms->writeback.rect.width = mode->hdisplay;
+> +		kms->writeback.rect.height = mode->vdisplay;
+> +		plane_create_fb(&kms->writeback, data->fd, i);
+> +	}
+> +}
+> +
+> +static igt_output_t *find_wb_output(struct data_t *data)
+> +{
+> +	for (int i = 0; i < data->display.n_outputs; i++) {
+> +		igt_output_t *output = &data->display.outputs[i];
+> +
+> +		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_WRITEBACK)
+> +			continue;
+> +
+> +		return output;
+> +
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +static struct kms_t default_kms = {
+> +	.primary = {
+> +		.rect = {
+> +			.x = 101, .y = 0,
+> +			.width = 3639, .height = 2161,
+> +		},
+> +		.format = DRM_FORMAT_XRGB8888,
+> +	},
+> +	.overlay_a = {
+> +		.rect = {
+> +			.x = 201, .y = 199,
+> +			.width = 3033, .height = 1777,
+> +		},
+> +		.format = DRM_FORMAT_XRGB16161616,
+> +	},
+> +	.overlay_b = {
+> +		.rect = {
+> +			.x = 1800, .y = 250,
+> +			.width = 1507, .height = 1400,
+> +		},
+> +		.format = DRM_FORMAT_ARGB8888,
+> +	},
+> +	.writeback = {
+> +		.rect = {
+> +			.x = 0, .y = 0,
+> +			// Size is to be determined at runtime
+> +		},
+> +		.format = DRM_FORMAT_XRGB8888,
+> +	},
+> +};
+> +
+> +
+> +igt_simple_main
+> +{
+> +	struct data_t data;
+> +	enum pipe pipe = PIPE_NONE;
+> +
+> +	data.kms = default_kms;
+> +
+> +	data.fd = drm_open_driver_master(DRIVER_ANY);
+> +
+> +	igt_display_require(&data.display, data.fd);
+> +
+> +	kmstest_set_vt_graphics_mode();
+> +
+> +	igt_display_require(&data.display, data.fd);
+> +	igt_require(data.display.is_atomic);
+> +
+> +	igt_display_require_output(&data.display);
+> +
+> +	igt_require(data.wb_output);
+> +	igt_display_reset(&data.display);
+> +
+> +	data.wb_output = find_wb_output(&data);
+
+igt_require(data.wb_output)
+
+
+I noticed Pekka had already commented on this and those couple of things 
+below.
+
+
+> +
+> +	for_each_pipe(&data.display, pipe) {
+> +		igt_debug("Selecting pipe %s to %s\n",
+> +			  kmstest_pipe_name(pipe),
+> +			  igt_output_name(data.wb_output));
+> +		igt_output_set_pipe(data.wb_output, pipe);
+> +	}
+> +
+> +	igt_display_commit_atomic(&data.display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +
+> +	gen_fbs(&data);
+> +
+> +	data.kms.primary.base = igt_output_get_plane_type(data.wb_output, DRM_PLANE_TYPE_PRIMARY);
+> +	data.kms.overlay_a.base = igt_output_get_plane_type_index(data.wb_output,
+> +								  DRM_PLANE_TYPE_OVERLAY, 0);
+> +	data.kms.overlay_b.base = igt_output_get_plane_type_index(data.wb_output,
+> +								  DRM_PLANE_TYPE_OVERLAY, 1);
+> +
+> +	for (int i = 0; i < FRAME_COUNT; i++) {
+> +		int fb_index = i % 2;
+
+I think this 2 could a be defined in the beginning giving it a name and 
+used everywhere
+
+> +
+> +		plane_setup(&data.kms.primary, fb_index);
+> +
+> +		plane_setup(&data.kms.overlay_a, fb_index);
+> +
+> +		plane_setup(&data.kms.overlay_b, fb_index);
+> +
+> +		igt_output_set_writeback_fb(data.wb_output, &data.kms.writeback.fbs[fb_index]);
+> +
+> +		igt_display_commit2(&data.display, COMMIT_ATOMIC);
+> +	}
+> +
+> +	igt_display_fini(&data.display);
+> +	drm_close_driver(data.fd);
+> +}
+> 
+> ---
+> base-commit: c58c5fb6aa1cb7d3627a15e364816a7a2add9edc
+> change-id: 20240207-bench-393789eaba47
+> 
+> Best regards,
 
