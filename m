@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEE75C4828F
-	for <igt-dev@archiver.kernel.org>; Thu,  8 Feb 2024 18:23:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67EF7C48260
+	for <igt-dev@archiver.kernel.org>; Thu,  8 Feb 2024 18:34:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6B68310E2DF;
-	Thu,  8 Feb 2024 18:23:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1DA9410E403;
+	Thu,  8 Feb 2024 18:34:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RpF+GL91";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mP1mLVds";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D99E510E2DF
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Feb 2024 18:23:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99D0110E403
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Feb 2024 18:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707416630; x=1738952630;
+ t=1707417265; x=1738953265;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=BLUCY83WtaPxaYnPrdY8gLEhCylWCAolAdS0qghpPN8=;
- b=RpF+GL91qNaC+z1TI35t0guYZSpD0/nL+AbyszohVqIGpOiBhpvWtqAT
- AuUmusjvIbfrWVWvg4b0XMvQuiP+D5yWrrnsWMuN8mj06CuVftuQyuA/d
- lrQ2C5aaKhXqOf6/C1AGnS5Vg6ZyDABkzVW2PsFVx9iBMCkJsEUMRKkNI
- ZgTOx1Kh5wmcHxCGRLEvlRoWvZZS2Bgke/yvfH7k3+P0cnY0vIL9VuLwZ
- sc/ICsnvBNYCU/NLnjTR/tiaRBwjq7xQ2MymmDf8y0ZVPpjZnuULCd2Qn
- kAZ2YcwoweAdjlDsyXxBzMuy7QTYQDRqV653ibUVV7vsklSGcKFlukNX5 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="1170488"
+ mime-version:in-reply-to;
+ bh=jdghrXjGCT5L/AE8Qj+bqlv1UmoCh7cOfPpejoamXNY=;
+ b=mP1mLVdsiyOCCQETxYiB9DOJIssDdsO4y9rODvZ78EcGXIVYvcbfWMxA
+ 3W81Sd8Ub028YvkGTlLejcDcr8yo0aI5u0lO0H7VCT6Ed5oAXlhIr0lO+
+ Uv45t5Wn8Q4mCljR4XOswwXSsX8hjiTLq+y8CpGFU7dfioPoVaZpx3YkI
+ AcZvVDSlY4Kl7K5at1PipfNC0FqL003JuUk+TkL+zMtSuCwxPu589IMhx
+ Hte9PL/QenVXHtQ1eCHiJqljPytl/VBPEer8ZIlrieOrIsAgIZiwevc5D
+ IchXdGgDRAKqhj7Bwl0U+SANkDiE33YJ1Jgg1ORFEeRJt1Sp2kwRVAsPW w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="1183483"
 X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
-   d="scan'208";a="1170488"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2024 10:23:46 -0800
+   d="scan'208";a="1183483"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2024 10:34:24 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
-   d="scan'208";a="2073993"
+   d="scan'208";a="1759443"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 10:23:45 -0800
-Date: Thu, 8 Feb 2024 19:23:23 +0100
+ by orviesa010-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 10:34:22 -0800
+Date: Thu, 8 Feb 2024 19:34:18 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Karolina Drobnik <karolina.drobnik@intel.com>
-Subject: Re: [PATCH i-g-t v5 5/5] tests/xe_exercise_blt: Exercise small to
- large fast-copy blits
-Message-ID: <20240208182323.esmujjhti4p636rc@kamilkon-desk.igk.intel.com>
+Cc: Hersen Wu <hersenxs.wu@amd.com>, rodrigo.siqueira@amd.com,
+ aurabindo.pillai@amd.com, alex.hung@amd.com, hamza.mahfooz@amd.com,
+ wayne.lin@amd.com, markyacoub@google.com
+Subject: Re: [PATCH] [i-g-t] tests/amdgpu/amd_bypass: Fix psr edp rx crc read
+ timeout
+Message-ID: <20240208183418.u65kg72v4npwnq7e@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Karolina Drobnik <karolina.drobnik@intel.com>
-References: <20240201200312.428474-1-zbigniew.kempczynski@intel.com>
- <20240201200312.428474-6-zbigniew.kempczynski@intel.com>
+ igt-dev@lists.freedesktop.org, Hersen Wu <hersenxs.wu@amd.com>,
+ rodrigo.siqueira@amd.com, aurabindo.pillai@amd.com,
+ alex.hung@amd.com, hamza.mahfooz@amd.com, wayne.lin@amd.com,
+ markyacoub@google.com
+References: <20240202151026.52210-1-hersenxs.wu@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240201200312.428474-6-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20240202151026.52210-1-hersenxs.wu@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,184 +73,78 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zbigniew,
-On 2024-02-01 at 21:03:12 +0100, Zbigniew Kempczyński wrote:
-> Testing blitter with large size like 512x512 may be not enough
-> to verify small or unaligned blits works properly. Add subtest
-> which spread fast-copy blits from small to large.
-
-This is now working for only squares which may be a little limited.
-Consider adding new subtest with randomized rectangles for testing
-and a limit for max few seconds for run.
-
-Second concern is whole test could take over 20 seconds but that
-could be addressed later, for example splitting these into four tests:
-linear-
-xmajor-
-tile4-
-tile64-
-
+Hi Hersen,
+On 2024-02-02 at 10:10:25 -0500, Hersen Wu wrote:
+> With debugfs disallow_edp_enter_psr = true, disable edp psr
+> before tx reading rx crc.
 > 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Karolina Drobnik <karolina.drobnik@intel.com>
+> DPMS off, tx writes dpcd 0x600=2. eDP rx will reset dpcd 0x170=0.
+> Rx psr and crc check for rx internal logic are disabled.
+> With disallow_edp_enter_psr = true, when DPMS on, kernel driver
+> will turn on edp. eDP Rx keep dpcd 0x170=0 (default value).
+> Then tx reads eDP rx crc successfully.
 
-LGTM,
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+These looks like a comment from lib/igt_amd.c at function
+igt_amd_disallow_edp_enter_psr
 
---
+Imho no need for coping this here or you should extend
+comment in lib.
+
+Regards,
 Kamil
 
-> ---
-> v5: Remove double whitespace line (Karolina)
-> ---
->  tests/intel/xe_exercise_blt.c | 62 ++++++++++++++++++++++++++++-------
->  1 file changed, 51 insertions(+), 11 deletions(-)
 > 
-> diff --git a/tests/intel/xe_exercise_blt.c b/tests/intel/xe_exercise_blt.c
-> index ddf9d188a7..253edec7fa 100644
-> --- a/tests/intel/xe_exercise_blt.c
-> +++ b/tests/intel/xe_exercise_blt.c
-> @@ -25,6 +25,10 @@
->   *   Check fast-copy blit
->   *   blitter
->   *
-> + * SUBTEST: fast-copy-inc-dimension
-> + * Description:
-> + *   Check fast-copy blit with sizes from small to large
-> + *
->   * SUBTEST: fast-copy-emit
->   * Description:
->   *   Check multiple fast-copy in one batch
-> @@ -40,6 +44,8 @@ static struct param {
->  	bool print_surface_info;
->  	int width;
->  	int height;
-> +	int width_increment;
-> +	int width_steps;
->  } param = {
->  	.tiling = -1,
->  	.write_png = false,
-> @@ -111,6 +117,7 @@ static int fast_copy_one_bb(int xe,
->  }
+> Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+> ---
+>  tests/amdgpu/amd_bypass.c | 25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
+> 
+> diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
+> index d192a30ea..01946de24 100644
+> --- a/tests/amdgpu/amd_bypass.c
+> +++ b/tests/amdgpu/amd_bypass.c
+> @@ -72,6 +72,17 @@ static void test_init(data_t *data)
+>  	data->output = igt_get_single_output_for_pipe(display, data->pipe_id);
+>  	igt_assert(data->output);
 >  
->  static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
-> +			   uint32_t width, uint32_t height,
->  			   uint32_t region1, uint32_t region2,
->  			   enum blt_tiling_type mid_tiling)
->  {
-> @@ -122,7 +129,7 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
->  	uint64_t ahnd = intel_allocator_open_full(xe, ctx->vm, 0, 0,
->  						  INTEL_ALLOCATOR_SIMPLE,
->  						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-> -	uint32_t bb, width = param.width, height = param.height;
-> +	uint32_t bb;
->  	int result;
->  
->  	bb = xe_bo_create(xe, 0, bb_size, region1, 0);
-> @@ -170,6 +177,7 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
->  }
->  
->  static void fast_copy(int xe, const intel_ctx_t *ctx,
-> +		      uint32_t width, uint32_t height,
->  		      uint32_t region1, uint32_t region2,
->  		      enum blt_tiling_type mid_tiling)
->  {
-> @@ -181,7 +189,6 @@ static void fast_copy(int xe, const intel_ctx_t *ctx,
->  						  INTEL_ALLOCATOR_SIMPLE,
->  						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
->  	uint32_t bb;
-> -	uint32_t width = param.width, height = param.height;
->  	int result;
->  
->  	bb = xe_bo_create(xe, 0, bb_size, region1, 0);
-> @@ -241,14 +248,20 @@ enum fast_copy_func {
->  };
->  
->  static char
-> -	*full_subtest_str(char *regtxt, enum blt_tiling_type tiling,
-> +	*full_subtest_str(char *regtxt, uint32_t width, uint32_t height,
-> +			  enum blt_tiling_type tiling,
->  			  enum fast_copy_func func)
->  {
->  	char *name;
->  	uint32_t len;
->  
-> -	len = asprintf(&name, "%s-%s%s", blt_tiling_name(tiling), regtxt,
-> -		       func == FAST_COPY_EMIT ? "-emit" : "");
-> +	if (!width || !height)
-> +		len = asprintf(&name, "%s-%s%s", blt_tiling_name(tiling), regtxt,
-> +			       func == FAST_COPY_EMIT ? "-emit" : "");
-> +	else
-> +		len = asprintf(&name, "%s-%s%s-%ux%u", blt_tiling_name(tiling), regtxt,
-> +			       func == FAST_COPY_EMIT ? "-emit" : "",
-> +			       width, height);
->  
->  	igt_assert_f(len >= 0, "asprintf failed!\n");
->  
-> @@ -264,6 +277,7 @@ static void fast_copy_test(int xe,
->  	};
->  	struct igt_collection *regions;
->  	void (*copy_func)(int xe, const intel_ctx_t *ctx,
-> +			  uint32_t width, uint32_t height,
->  			  uint32_t r1, uint32_t r2, enum blt_tiling_type tiling);
->  	intel_ctx_t *ctx;
->  	int tiling;
-> @@ -286,16 +300,32 @@ static void fast_copy_test(int xe,
->  
->  			copy_func = (func == FAST_COPY) ? fast_copy : fast_copy_emit;
->  			regtxt = xe_memregion_dynamic_subtest_name(xe, regions);
-> -			test_name = full_subtest_str(regtxt, tiling, func);
->  
-> -			igt_dynamic_f("%s", test_name) {
-> -				copy_func(xe, ctx,
-> -					  region1, region2,
-> -					  tiling);
-> +			if (!param.width_increment) {
-> +				test_name = full_subtest_str(regtxt, 0, 0, tiling, func);
-> +				igt_dynamic_f("%s", test_name) {
-> +					copy_func(xe, ctx,
-> +						  param.width, param.height,
-> +						  region1, region2,
-> +						  tiling);
-> +				}
-> +				free(test_name);
-> +			} else {
-> +				for (int w = param.width;
-> +				     w < param.width + param.width_steps;
-> +				     w += param.width_increment) {
-> +					test_name = full_subtest_str(regtxt, w, w, tiling, func);
-> +					igt_dynamic_f("%s", test_name) {
-> +						copy_func(xe, ctx,
-> +							  w, w,
-> +							  region1, region2,
-> +							  tiling);
-> +					}
-> +					free(test_name);
-> +				}
->  			}
->  
->  			free(regtxt);
-> -			free(test_name);
->  			xe_exec_queue_destroy(xe, exec_queue);
->  			xe_vm_destroy(xe, vm);
->  			free(ctx);
-> @@ -367,6 +397,16 @@ igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
->  		fast_copy_test(xe, set, FAST_COPY);
->  	}
->  
-> +	igt_describe("Check fast-copy with increment width/height");
-> +	igt_subtest_with_dynamic("fast-copy-inc-dimension") {
-> +		param.width = 1;
-> +		param.height = 1;
-> +		param.width_increment = 15;
-> +		param.width_steps = 512;
+> +	if (data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
+> +		kmstest_set_connector_dpms(data->output->display->drm_fd,
+> +			data->output->config.connector, DRM_MODE_DPMS_OFF);
 > +
-> +		fast_copy_test(xe, set, FAST_COPY);
+> +		/* Disable PSR before reading eDP Rx CRC to avoid timeout */
+> +		igt_amd_disallow_edp_enter_psr(data->drm_fd, data->output->name, true);
+> +
+> +		kmstest_set_connector_dpms(data->output->display->drm_fd,
+> +			data->output->config.connector, DRM_MODE_DPMS_ON);
 > +	}
 > +
->  	igt_describe("Check multiple fast-copy in one batch");
->  	igt_subtest_with_dynamic("fast-copy-emit") {
->  		fast_copy_test(xe, set, FAST_COPY_EMIT);
+>  	data->mode = igt_output_get_mode(data->output);
+>  	igt_assert(data->mode);
+>  
+> @@ -367,9 +378,23 @@ static void bypass_8bpc_test(data_t *data)
+>  		igt_assert_crc_equal(&data->crc_fb, &data->crc_dprx);
+>  	}
+>  
+> +	/* igt_pipe_crc_stop is called within igt_pipe_crc_collect_crc,
+> +	 * but kernel drm_dp_aux_crc_work is not flushed out. Create
+> +	 * and commit of new fb let kernel stop dp aux crc work.
+> +	 */
+> +	igt_create_pattern_fb(data->drm_fd, data->width, data->height,
+> +			DRM_FORMAT_XRGB8888, 0, &fb);
+> +	igt_plane_set_fb(data->primary, &fb);
+> +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +
+>  	igt_plane_set_fb(data->primary, NULL);
+>  	test_fini(data);
+>  	igt_remove_fb(data->drm_fd, &fb);
+> +
+> +	if (data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
+> +		/* Enable eDP PSR within kernel driver */
+> +		igt_amd_disallow_edp_enter_psr(data->drm_fd, data->output->name, false);
+> +	}
+>  }
+>  
+>  igt_main
 > -- 
-> 2.34.1
+> 2.25.1
 > 
