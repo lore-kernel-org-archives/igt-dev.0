@@ -4,52 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FAE9C48260
-	for <igt-dev@archiver.kernel.org>; Thu,  8 Feb 2024 13:52:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD3D1C4828F
+	for <igt-dev@archiver.kernel.org>; Thu,  8 Feb 2024 13:52:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0132010E778;
-	Thu,  8 Feb 2024 13:52:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3D99510E77A;
+	Thu,  8 Feb 2024 13:52:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JmZK0EJC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ewwZ1Q79";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 543B110E770
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Feb 2024 13:52:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A878D10E77A
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Feb 2024 13:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707400363; x=1738936363;
+ t=1707400369; x=1738936369;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=f46CR5uj2IqYo20x186XOCFldHZiGq7goV32KdXVLCo=;
- b=JmZK0EJC5JA8w+ldP1GlnTq5LV7LnEUjB+5vRkwyBeKsL7CgRTsVTFNJ
- Kh6VvTRmWnH8jAGgjXwyxq4skyTRjy/uNmLH/ZMae+zUMet0x2O+jyhFU
- 6xHcokf5gAeGjo/pWrCtQRXtIbecINPuAbwQMqYYxCaTZg5THv2Uyx/5e
- T+TO9IzR7S58GibU7LafZ//qfoLF1sQQSrrB9zJjccuj35CrqhphhO8h6
- SDFoVzK8TGyd5IWqsgzXPqWgi4rwgEHvhUHVOpX9P5/cT5q5qCUJxPdgC
- 5Vhg1s0S0vbLWJbkpA2yunQOKYZ6k6kDnFsQXb1ovaqeD0irU5YmKJBML A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10977"; a="1106908"
+ bh=JbLO08Bm3BySp7ZkxSQ5Jqhle2J86BlZ+q/jV3YNtEY=;
+ b=ewwZ1Q79nbvqrKtWciR/zu80U29BgSlICVLNzd9sHQmLUCOQdk24lLBR
+ 50Y26Euz/nfk//mXUW+dCAgSdL9jo+NGNYoIL6BzKxeu1W21E4yVkCSMd
+ MAPA1wFiIsxiMu++i+I6OGAutyRJqdFy/QMQ0ptujeGhFGL/OrofiLg6m
+ EftmtuqzOlS+jVcAxpPTffOydul80Wzes0U1cKEag3eSPl0fn2eEyfMaJ
+ vE4sL0YDXVE4OVG1yhVRsT93Zi6kaS01MpQrwqwGKHJyBPRU32HyFqjhL
+ tVMg/XRki5OR0efrI9Kj1Vw0nGtlSPeYoZ6z2Zg5kxVlUmhgxfgYQXitW g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10977"; a="1517227"
 X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
-   d="scan'208";a="1106908"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2024 05:52:43 -0800
+   d="scan'208";a="1517227"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2024 05:52:48 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
-   d="scan'208";a="2023550"
+X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; d="scan'208";a="39089919"
 Received: from unknown (HELO localhost) ([10.245.101.174])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2024 05:52:42 -0800
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2024 05:52:47 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>, 
- Chris Wilson <chris.p.wilson@linux.intel.com>,
  Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v8 1/8] lib/igt_device_scan: Introduce filtering out
- non-PCI devices
-Date: Thu,  8 Feb 2024 14:52:25 +0100
-Message-ID: <20240208135232.54382-2-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v8 2/8] lib/drmtest: Introduced drm_open_driver_another
+Date: Thu,  8 Feb 2024 14:52:26 +0100
+Message-ID: <20240208135232.54382-3-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240208135232.54382-1-kamil.konieczny@linux.intel.com>
 References: <20240208135232.54382-1-kamil.konieczny@linux.intel.com>
@@ -73,68 +70,63 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 
-Introduced igt_device_filter_pci function that filters out non-PCI
-devices from IGT devices. This will help with checking multi-GPU
-tests after they skip due to detected only one GPU, in that case
-one can verify it after printing what GPUs are really on PCI bus.
-Such errors can happen when using wrong env IGT_DEVICE filter.
+For user convenience, introduce drm_open_driver_another as
+a wrapper for __drm_open_driver_another with successful open
+assert.
 
-v6: extending description
+v2: rebased (Kamil)
+v6: reword description (Janusz)
 
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
 Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/igt_device_scan.c | 21 +++++++++++++++++++++
- lib/igt_device_scan.h |  2 ++
- 2 files changed, 23 insertions(+)
+ lib/drmtest.c | 19 +++++++++++++++++++
+ lib/drmtest.h |  1 +
+ 2 files changed, 20 insertions(+)
 
-diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-index fbf3fa482..37ebe1964 100644
---- a/lib/igt_device_scan.c
-+++ b/lib/igt_device_scan.c
-@@ -1908,6 +1908,27 @@ const char *igt_device_filter_get(int num)
- 	return NULL;
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 52b5a2020..73d9159af 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -563,6 +563,25 @@ int __drm_open_driver_another(int idx, int chipset)
+ 	return fd;
  }
  
-+/**
-+ * igt_device_filter_pci
++/*
++ * drm_open_driver_another
++ * @idx: index of the device you are opening
++ * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
 + *
-+ * Filter devices to PCI only.
++ * A wrapper for __drm_open_driver with successful open assert.
 + *
-+ * Returns PCI devices count.
++ * Returns:
++ * An open DRM fd
 + */
-+int igt_device_filter_pci(void)
++int drm_open_driver_another(int idx, int chipset)
 +{
-+	int count = 0;
-+	struct igt_device *dev, *tmp;
++	int fd = __drm_open_driver_another(idx, chipset);
 +
-+	igt_list_for_each_entry_safe(dev, tmp, &igt_devs.filtered, link)
-+		if (strcmp(dev->subsystem, "pci") != 0)
-+			igt_list_del(&dev->link);
-+		else
-+			count++;
++	igt_assert_fd(fd);
 +
-+	return count;
++	return fd;
 +}
 +
- static bool igt_device_filter_apply(const char *fstr)
- {
- 	struct igt_device *dev, *tmp;
-diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
-index 48690e236..908733745 100644
---- a/lib/igt_device_scan.h
-+++ b/lib/igt_device_scan.h
-@@ -81,6 +81,8 @@ int igt_device_filter_add(const char *filter);
- void igt_device_filter_free_all(void);
- const char *igt_device_filter_get(int num);
+ /**
+  * __drm_open_driver:
+  * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index 6bc819734..856208c48 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -101,6 +101,7 @@ void __set_forced_driver(const char *name);
  
-+int igt_device_filter_pci(void);
-+
- /* Use filter to match the device and fill card structure */
- bool igt_device_card_match(const char *filter, struct igt_device_card *card);
- bool igt_device_card_match_pci(const char *filter,
+ int __drm_open_device(const char *name, unsigned int chipset);
+ void drm_load_module(unsigned int chipset);
++int drm_open_driver_another(int idx, int chipset);
+ int drm_open_driver(int chipset);
+ int drm_open_driver_master(int chipset);
+ int drm_open_driver_render(int chipset);
 -- 
 2.42.0
 
