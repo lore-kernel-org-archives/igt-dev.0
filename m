@@ -4,53 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28667C4828F
-	for <igt-dev@archiver.kernel.org>; Fri,  9 Feb 2024 18:35:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45B7EC48297
+	for <igt-dev@archiver.kernel.org>; Fri,  9 Feb 2024 19:30:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B143E10F9A8;
-	Fri,  9 Feb 2024 18:35:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2837110FB43;
+	Fri,  9 Feb 2024 19:30:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CHT/9P1n";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aeh3bJlq";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1DE1A10F990
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Feb 2024 18:35:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3423E10FB43
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Feb 2024 19:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707503725; x=1739039725;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Qm5tWSwneEp4tLCFLJV0ySIbZapBWNP6rVfqcNco4TU=;
- b=CHT/9P1ni7ePPZp+FeNQTn3Ue2KZtCFyrAmF8hEdse5v7jwrh1KI8KlM
- pSvYN2zufF+UmkgXuERYAExM9lS8dudahxXPF41qcZgq1g74EmTyvNby3
- sjkDulnVXEIf+OBb3FQDouUCsO8sel0hzt5CBdOe6W5uPrTDwq0HCZgkO
- dsLLIoFYtIyqOEuqGfmZT+bR2SsCRg8IsqJjwGAv9H99T1WFOlpu6iBbS
- b2w7pclGLguGTnVnvAM5lWKifRRaHZttpsqUG1EQIJ3Qp5qviPhky8L7X
- ++sBRxEImW/Rj9rzkMAURN4nVx6NYfc+9vhMcqHTgwadHN9FwJuz00Oir A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="12049336"
-X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; d="scan'208";a="12049336"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2024 10:35:25 -0800
-X-ExtLoop1: 1
+ t=1707507002; x=1739043002;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=RkBPGLqL0ynCpVnfXtn0DJLMFMhv8gv4/PU1oRlO8hc=;
+ b=aeh3bJlqDBfO4632ocl4N5F9LDzriS8atcd1y0/cShLcfzULNZ0OLaLh
+ CH+IMVNJMHYT+9QgftHWOADbclcw+zmqmhuao0jpDPVibfsmfXMMEg7Sp
+ WjALapGbf4tVsEIeaXoHCWbSXkWRbXUmOmbBRskL+rJsd+wQblUnLXlKW
+ sEycSy/pFxKlppcVZfok8iQMVJRHWTnwgQPeIW8DWyhLFl0BkoixKId2E
+ 0ee7fhALW8F/uEL6K3hZWXiikcU9yjfYxfxXYEYcYbztS3nQWsOr9S9qv
+ M7ISfR9/EiocButSggNuGehe5xvygH/kR2jBaKeiWo5naWJQIfgRHskzX A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="1396329"
 X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
-   d="scan'208";a="6647808"
-Received: from vdegtyar-mobl1.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
- ([10.252.20.246])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2024 10:35:24 -0800
-From: Matthew Auld <matthew.auld@intel.com>
+   d="scan'208";a="1396329"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Feb 2024 11:30:02 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; d="scan'208";a="39453839"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Feb 2024 11:30:01 -0800
+Date: Fri, 9 Feb 2024 20:29:17 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t 8/8] lib/igt_fb: assert fb->size blt_fb_init()
-Date: Fri,  9 Feb 2024 18:34:33 +0000
-Message-ID: <20240209183433.375099-8-matthew.auld@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240209183433.375099-1-matthew.auld@intel.com>
-References: <20240209183433.375099-1-matthew.auld@intel.com>
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: Re: [PATCH i-g-t v8 3/8] lib/drmtest: allow opening cards out of order
+Message-ID: <20240209192917.sep2cjzogi7ggibe@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20240208135232.54382-1-kamil.konieczny@linux.intel.com>
+ <20240208135232.54382-4-kamil.konieczny@linux.intel.com>
+ <1889393.1xdlsreqCQ@jkrzyszt-mobl2.ger.corp.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <1889393.1xdlsreqCQ@jkrzyszt-mobl2.ger.corp.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,28 +72,267 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-If fb->size is zero here, the mmap failure is pretty obscure from the
-logs. Make it more obvious if we hit this.
+Hi Janusz,
+On 2024-02-09 at 18:02:37 +0100, Janusz Krzysztofik wrote:
+> Hi Kamil,
+> 
+> On Thursday, 8 February 2024 14:52:27 CET Kamil Konieczny wrote:
+> > Current __drm_open_driver_another() implementation prevents
+> > opening cards out of order, for example card 3 without previous
+> > opens of 0..2. This can be seen with three GPU cards system and
+> > gem_open_basic test:
+> > 
+> > sudo IGT_DEVICE=pci:vendor=Intel,card=all build/tests/gem_basic --r multigpu-create-close
+> > 
+> > IGT-Version: 1.28-g2548a539e (x86_64) (Linux: 6.7.0-rc5 x86_64)
+> > Using IGT_SRANDOM=1706630533 for randomisation
+> > Opened device: /dev/dri/card0
+> > Starting subtest: multigpu-create-close
+> > <g:0> Testing creating and closing an object.
+> > <g:1> Opened device: /dev/dri/card1
+> > <g:1> Testing creating and closing an object.
+> > gem_basic: ../lib/drmtest.c:341: _is_already_opened: Assertion `as_idx <= _opened_fds_count' failed.
+> > Received signal SIGABRT.
+> > 
+> > Relax that condition and add some more debug prints.
+> > 
+> > Changes in __search_and_open() was suggested by Zbigniew.
+> > 
+> > v5: removed caching for names of opened cards
+> >  relaxed opening of filtered devices
+> > v6: fixed assingment in _is_already_open() (Janusz)
+> >  simplify use of this function
+> > v7: restore check for already opened filtered card (Janusz)
+> > v8: limit checks for N-th card to 0...N-1 range (Janusz)
+> 
+> As we discussed, that was not my intention.
+> 
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- lib/igt_fb.c | 2 ++
- 1 file changed, 2 insertions(+)
+It may be reverted, see my proposition below.
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 71c220a08..65e0638c2 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2780,6 +2780,8 @@ static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
- 
- 	blt->plane_offset = fb->offsets[plane];
- 
-+	igt_assert(fb->size);
-+
- 	if (is_xe_device(fb->fd))
- 		blt->ptr = xe_bo_mmap_ext(fb->fd, handle, fb->size,
- 					  PROT_READ | PROT_WRITE);
--- 
-2.43.0
+> >  simplify if-else in __search_and_open() (Kamil)
+> > 
+> > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > ---
+> >  lib/drmtest.c | 73 +++++++++++++++++++++++++++++++++++++++------------
+> >  1 file changed, 56 insertions(+), 17 deletions(-)
+> > 
+> > diff --git a/lib/drmtest.c b/lib/drmtest.c
+> > index 73d9159af..62d31b000 100644
+> > --- a/lib/drmtest.c
+> > +++ b/lib/drmtest.c
+> > @@ -322,35 +322,54 @@ static int _opened_fds_count;
+> >  static void _set_opened_fd(int idx, int fd)
+> >  {
+> >  	assert(idx < ARRAY_SIZE(_opened_fds));
+> > -	assert(idx <= _opened_fds_count);
+> > +	assert(idx >= 0);
+> >  
+> >  	_opened_fds[idx].fd = fd;
+> >  
+> >  	assert(fstat(fd, &_opened_fds[idx].stat) == 0);
+> >  
+> > -	_opened_fds_count = idx+1;
+> > +	for (int n = _opened_fds_count; n < idx; n++)
+> > +		_opened_fds[n].fd = -1;
+> > +
+> > +	if (idx >= _opened_fds_count)
+> > +		_opened_fds_count = idx + 1;
+> >  }
+> >  
+> > -static bool _is_already_opened(const char *path, int as_idx)
+> > +/* in *err returns -errno or index to _opened_fds[] */
+> > +static bool _is_already_opened(const char *path, int as_idx, int *err)
+> >  {
+> >  	struct stat new;
+> >  
+> >  	assert(as_idx < ARRAY_SIZE(_opened_fds));
+> > -	assert(as_idx <= _opened_fds_count);
+> > +	assert(as_idx >= 0);
+> >  
+> >  	/*
+> >  	 * we cannot even stat the device, so it's of no use - let's claim it's
+> >  	 * already opened
+> >  	 */
+> > -	if (igt_debug_on(stat(path, &new) != 0))
+> > +	if (igt_debug_on(stat(path, &new) != 0)) {
+> > +		if (err)
+> > +			*err = -errno;
+> > +
+> >  		return true;
+> > +	}
+> > +
+> > +	if (err)
+> > +		*err = 0;
+> > +
+> > +	for (int i = 0, end = min(as_idx, _opened_fds_count); i < end; ++i) {
+> 
+> AFAICU from our talk, by limiting the scope to min(as_idx, _opened_fds_count) 
+> you tried to address a different issue -- the as_idx-th card potentially 
+> having been already opened before and added to the _opened_fds table, then 
+> closed.
+> 
 
+Old code here was:
+> > -	for (int i = 0; i < as_idx; ++i) {
+
+It can be changed to
+
+	for (int i = 0; i < _opened_fds_count; ++i) {
+
+with additional code here:
+
+        if (i == as_idx) continue;
+
+as we want to keep compatibility with previous behaviour which allows
+
+fd = drm_open_driver(DRIVER_XE);
+fd2 = drm_open_driver(DRIVER_XE);
+
+Also note that old code was actually limiting checks here,
+after opening 0...3rd card, call to open card(1) will
+actually only check _opened_fds[0].
+
+> > +		if (_opened_fds[i].fd == -1)
+> > +			continue;
+> >  
+> > -	for (int i = 0; i < as_idx; ++i) {
+> >  		/* did we cross filesystem boundary? */
+> >  		assert(_opened_fds[i].stat.st_dev == new.st_dev);
+> >  
+> > -		if (_opened_fds[i].stat.st_ino == new.st_ino)
+> > +		if (_opened_fds[i].stat.st_ino == new.st_ino) {
+> > +			if (err)
+> > +				*err = i;
+> > +
+> >  			return true;
+> > +		}
+> >  	}
+> >  
+> >  	return false;
+> > @@ -359,23 +378,37 @@ static bool _is_already_opened(const char *path, int as_idx)
+> >  static int __search_and_open(const char *base, int offset, unsigned int chipset, int as_idx)
+> >  {
+> >  	const char *forced;
+> > +	int err;
+> >  
+> >  	forced = forced_driver();
+> >  	if (forced)
+> >  		igt_debug("Force option used: Using driver %s\n", forced);
+> >  
+> > -	for (int i = 0; i < 16; i++) {
+> > +	for (int i = 0, idx = -1; i < 16 && idx < as_idx; i++) {
+> >  		char name[80];
+> >  		int fd;
+> >  
+> >  		sprintf(name, "%s%u", base, i + offset);
+> >  
+> > -		if (_is_already_opened(name, as_idx))
+> > -			continue;
+> > +		if (_is_already_opened(name, as_idx, &err)) {
+> > +			if (err < 0)
+> > +				continue;
+> > +
+> > +			if (idx + 1 < as_idx) {
+> > +				++idx;
+> > +				continue;
+> > +			}
+> > +		}
+> >  
+> >  		fd = __drm_open_device(name, chipset);
+> > -		if (fd != -1)
+> > +		if (fd == -1)
+> > +			continue;
+> > +
+> > +		++idx;
+> > +		if (idx == as_idx)
+> >  			return fd;
+> > +
+> > +		close(fd);
+> >  	}
+> >  
+> >  	return -1;
+> > @@ -486,7 +519,7 @@ static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card)
+> >   *   * idx-th filter (starting with 0, filters are semicolon separated) is used
+> >   *   * if there is no idx-th filter, goto 2
+> >   *   * first device maching the filter is selected
+> > - *   * if it's already opened (for indexes = 0..idx-1) we fail with -1
+> > + *   * if it's already opened (for indexes != idx) we fail with -1
+> >   *   * otherwise open the device and return the fd
+> >   *
+> >   * 2. compatibility mode - open the first DRM device we can find that is not
+> > @@ -531,6 +564,7 @@ int __drm_open_driver_another(int idx, int chipset)
+> >  	if (chipset != DRIVER_VGEM && igt_device_filter_count() > idx) {
+> >  		struct igt_device_card card;
+> >  		bool found;
+> > +		int err;
+> >  
+> >  		found = __get_card_for_nth_filter(idx, &card);
+> >  
+> > @@ -539,14 +573,19 @@ int __drm_open_driver_another(int idx, int chipset)
+> >  			found = __get_card_for_nth_filter(idx, &card);
+> >  		}
+> >  
+> > -		if (!found || !strlen(card.card))
+> > +		if (!found || !strlen(card.card)) {
+> >  			igt_warn("No card matches the filter! [%s]\n",
+> >  				 igt_device_filter_get(idx));
+> > -		else if (_is_already_opened(card.card, idx))
+> > -			igt_warn("card maching filter %d is already opened\n", idx);
+> > -		else
+> > +		} else if (_is_already_opened(card.card, idx, &err)) {
+> > +			if (err < 0)
+> > +				igt_warn("cannot stat card maching filter %d errno=%d card=%s\n", idx, err, card.card);
+> > +			else if (idx != err)
+> > +				igt_warn("card maching filter %d is already opened as %d, card=%s\n", idx, err, card.card);
+> > +			else
+> 
+> Please note that if the aforementioned loop inside _is_already_opened() is 
+> limited to min(as_idx, _opened_fds_count) then the above else case is never 
+> true since err can never reach idx, then the below assignment is dead code.
+> 
+
+You are right, I would remove it. I was thinking about change
+here to drop idx != err check, see below.
+
+> The issue with before opened and closed cards should be addressed in a 
+> different way and with a separate patch, I believe, maybe by removing 
+> cards from _opened_fds on close.
+> 
+> Thanks,
+> Janusz
+> 
+
+That was never done maybe because tests were run only once and
+mostly on one-card system. Also there are cases when dev wants to call
+close() directly, not with drm_close_driver(). After return from this
+function all _fds data is stale, especially after driver reload but
+this is a seperate problem.
+Imho use case for this was to open all cards in one go and test them.
+
+Seperate issue would be to decide it we allow use of repeated card=0
+like:
+
+sudo IGT_DEVICE=pci:vendor=Intel,card=0\;pci:vendor=Intel,card=0 \
+    build/tests/gem_basic --r multigpu-create-close
+
+as now this will fail in igt_warn("card matching ... is already opened as ...")
+
+Regards,
+Kamil
+
+> > +				fd = __open_driver_exact(card.card, chipset);
+> > +		} else {
+> >  			fd = __open_driver_exact(card.card, chipset);
+> > -
+> > +		}
+> >  	} else {
+> >  		/* no filter for device idx, let's open whatever is available */
+> >  		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
+> > 
+> 
+> 
+> 
+> 
