@@ -4,58 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9602C4828F
-	for <igt-dev@archiver.kernel.org>; Fri,  9 Feb 2024 17:29:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA477C4828F
+	for <igt-dev@archiver.kernel.org>; Fri,  9 Feb 2024 17:38:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A6A310F842;
-	Fri,  9 Feb 2024 17:29:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2865A10F86E;
+	Fri,  9 Feb 2024 17:38:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="fXW13YKu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Pnh3JR1l";
 	dkim-atps=neutral
-Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 57AAE10F842;
- Fri,  9 Feb 2024 17:29:44 +0000 (UTC)
-Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx0.riseup.net (Postfix) with ESMTPS id 4TWgpH4LXCz9xHK;
- Fri,  9 Feb 2024 17:29:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
- t=1707499784; bh=GNXFfuIo6etfr26GOWDyGr43d3FBCEn4aPSI6Qk+tBs=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=fXW13YKue7UZMYnuicnacdD4SC4je+Z9rwGssa2IrVHVHPqseVS+Aj8+1RJVfasZR
- o/x5bf6utXBB5Q6gr+WZCDyPnG8Aqq6I1DhBKOUgLfGEr+0TdiA9tK/TsPsy7SKnWA
- JzubbACKdikG5RKdBCErgC+O6Hu6M5BE6KPELVEE=
-X-Riseup-User-ID: 9F949E80DAAF4F28D678485BB84FA833BD33B75557B5B2839561E80087299B44
-Received: from [127.0.0.1] (localhost [127.0.0.1])
- by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4TWgp71Tj9zJpbL;
- Fri,  9 Feb 2024 17:29:34 +0000 (UTC)
-Message-ID: <6b033c46-284d-41df-ac80-cc96d2f05032@riseup.net>
-Date: Fri, 9 Feb 2024 14:29:30 -0300
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B55D110F86E
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Feb 2024 17:38:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1707500290; x=1739036290;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=NgpqJ3DLeCV1gnMYpoov11ZXrZN2l3S8OXA/aaYXX/g=;
+ b=Pnh3JR1l0UeIsWe7aWyWjEaz9ot+eXeoepYi1AMH3s6pjO4/qgGDuaQv
+ T7lo1L1Si0Cup8wcwKw7VBlwQ5iuPJR5kzMs4yWMU9zKaNnV7qoEy+uPy
+ x9hiWb9mHqGk1dT5+mPQLbg8YWFQLDsfNBdUb1m0nGvcQ5/N6/p9LwZ6M
+ kmnGSYgq8d8XXgZzaaDSROIS8dGKsbDHEA/CGtT2lWYCVR2gfiNsDboyO
+ bi/BcLNyMx/92aHjiY5ySuA6AsWY1dfXLrXgTtiMF+9+DkfL2l9NPOmC6
+ hLeVXcuZ+fjZLTCNqnw0jnysQb9qVwCY74U0Z53szaE2+WzQNoTVaF12X w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="436610060"
+X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; d="scan'208";a="436610060"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Feb 2024 09:38:10 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
+   d="scan'208";a="2286776"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 09:38:09 -0800
+Date: Fri, 9 Feb 2024 18:38:05 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: Re: [PATCH i-g-t v8 3/8] lib/drmtest: allow opening cards out of order
+Message-ID: <20240209173805.766rzgin7tn2bjse@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+References: <20240208135232.54382-1-kamil.konieczny@linux.intel.com>
+ <20240208135232.54382-4-kamil.konieczny@linux.intel.com>
+ <20240209123820.gfm6ty7e6wha4olm@zkempczy-mobl2>
 MIME-Version: 1.0
-Subject: Re: [PATCH i-g-t] benchmarks: Add VKMS benchmark
-Content-Language: en-US
-To: Pekka Paalanen <pekka.paalanen@haloniitty.fi>
-Cc: dri-devel@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
- Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Louis Chauvet <louis.chauvet@bootlin.com>,
- Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>,
- Melissa Wen <melissa.srw@gmail.com>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
- <mairacanal@riseup.net>, Haneen Mohammed <hamohammed.sa@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>
-References: <20240207-bench-v1-1-7135ad426860@riseup.net>
- <20240208115050.73d04796@eldfell>
- <738490ac-56a9-4408-8de7-63de059d0a54@riseup.net>
- <20240209103211.4f7e9fc6@eldfell>
-From: Arthur Grillo <arthurgrillo@riseup.net>
-In-Reply-To: <20240209103211.4f7e9fc6@eldfell>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240209123820.gfm6ty7e6wha4olm@zkempczy-mobl2>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,159 +72,218 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Hi Zbigniew,
+On 2024-02-09 at 13:38:20 +0100, Zbigniew Kempczyński wrote:
+> On Thu, Feb 08, 2024 at 02:52:27PM +0100, Kamil Konieczny wrote:
+> > Current __drm_open_driver_another() implementation prevents
+> > opening cards out of order, for example card 3 without previous
+> > opens of 0..2. This can be seen with three GPU cards system and
+> > gem_open_basic test:
+> > 
+> > sudo IGT_DEVICE=pci:vendor=Intel,card=all build/tests/gem_basic --r multigpu-create-close
+> > 
+> > IGT-Version: 1.28-g2548a539e (x86_64) (Linux: 6.7.0-rc5 x86_64)
+> > Using IGT_SRANDOM=1706630533 for randomisation
+> > Opened device: /dev/dri/card0
+> > Starting subtest: multigpu-create-close
+> > <g:0> Testing creating and closing an object.
+> > <g:1> Opened device: /dev/dri/card1
+> > <g:1> Testing creating and closing an object.
+> > gem_basic: ../lib/drmtest.c:341: _is_already_opened: Assertion `as_idx <= _opened_fds_count' failed.
+> > Received signal SIGABRT.
+> > 
+> > Relax that condition and add some more debug prints.
+> > 
+> > Changes in __search_and_open() was suggested by Zbigniew.
+> > 
+> > v5: removed caching for names of opened cards
+> >  relaxed opening of filtered devices
+> > v6: fixed assingment in _is_already_open() (Janusz)
+> >  simplify use of this function
+> > v7: restore check for already opened filtered card (Janusz)
+> > v8: limit checks for N-th card to 0...N-1 range (Janusz)
+> >  simplify if-else in __search_and_open() (Kamil)
+> > 
+> > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > ---
+> >  lib/drmtest.c | 73 +++++++++++++++++++++++++++++++++++++++------------
+> >  1 file changed, 56 insertions(+), 17 deletions(-)
+> > 
+> > diff --git a/lib/drmtest.c b/lib/drmtest.c
+> > index 73d9159af..62d31b000 100644
+> > --- a/lib/drmtest.c
+> > +++ b/lib/drmtest.c
+> > @@ -322,35 +322,54 @@ static int _opened_fds_count;
+> >  static void _set_opened_fd(int idx, int fd)
+> >  {
+> >  	assert(idx < ARRAY_SIZE(_opened_fds));
+> > -	assert(idx <= _opened_fds_count);
+> > +	assert(idx >= 0);
+> >  
+> >  	_opened_fds[idx].fd = fd;
+> >  
+> >  	assert(fstat(fd, &_opened_fds[idx].stat) == 0);
+> >  
+> > -	_opened_fds_count = idx+1;
+> > +	for (int n = _opened_fds_count; n < idx; n++)
+> > +		_opened_fds[n].fd = -1;
+> > +
+> > +	if (idx >= _opened_fds_count)
+> > +		_opened_fds_count = idx + 1;
+> 
+> Looks _opened_fds_count is monotonic over test runtime. I mean if you're
+> running single test which is multigpu which just exists it doesn't
+> matter, but what will happen if you'll run multigpu subtest after which
+> you have test with single fd usage? I mean _opened_fd[] has stale data.
 
+It was alwayes stale, there were no attempt to keep it up to date
+especially that users could just call close(), not drm_close_driver().
 
-On 09/02/24 05:32, Pekka Paalanen wrote:
-> On Thu, 8 Feb 2024 16:38:31 -0300
-> Arthur Grillo <arthurgrillo@riseup.net> wrote:
+> >  }
+> >  
+> > -static bool _is_already_opened(const char *path, int as_idx)
+> > +/* in *err returns -errno or index to _opened_fds[] */
+> > +static bool _is_already_opened(const char *path, int as_idx, int *err)
+> >  {
+> >  	struct stat new;
+> >  
+> >  	assert(as_idx < ARRAY_SIZE(_opened_fds));
+> > -	assert(as_idx <= _opened_fds_count);
+> > +	assert(as_idx >= 0);
+> >  
+> >  	/*
+> >  	 * we cannot even stat the device, so it's of no use - let's claim it's
+> >  	 * already opened
+> >  	 */
+> > -	if (igt_debug_on(stat(path, &new) != 0))
+> > +	if (igt_debug_on(stat(path, &new) != 0)) {
+> > +		if (err)
+> > +			*err = -errno;
+> > +
+> >  		return true;
+> > +	}
+> > +
+> > +	if (err)
+> > +		*err = 0;
+> > +
+> > +	for (int i = 0, end = min(as_idx, _opened_fds_count); i < end; ++i) {
+> > +		if (_opened_fds[i].fd == -1)
+> > +			continue;
+> >  
+> > -	for (int i = 0; i < as_idx; ++i) {
+> >  		/* did we cross filesystem boundary? */
+> >  		assert(_opened_fds[i].stat.st_dev == new.st_dev);
+> >  
+> > -		if (_opened_fds[i].stat.st_ino == new.st_ino)
+> > +		if (_opened_fds[i].stat.st_ino == new.st_ino) {
+> > +			if (err)
+> > +				*err = i;
+> > +
+> >  			return true;
+> > +		}
+> >  	}
+> >  
+> >  	return false;
+> > @@ -359,23 +378,37 @@ static bool _is_already_opened(const char *path, int as_idx)
+> >  static int __search_and_open(const char *base, int offset, unsigned int chipset, int as_idx)
+> >  {
+> >  	const char *forced;
+> > +	int err;
+> >  
+> >  	forced = forced_driver();
+> >  	if (forced)
+> >  		igt_debug("Force option used: Using driver %s\n", forced);
+> >  
+> > -	for (int i = 0; i < 16; i++) {
+> > +	for (int i = 0, idx = -1; i < 16 && idx < as_idx; i++) {
+> >  		char name[80];
+> >  		int fd;
+> >  
+> >  		sprintf(name, "%s%u", base, i + offset);
+> >  
+> > -		if (_is_already_opened(name, as_idx))
+> > -			continue;
+> > +		if (_is_already_opened(name, as_idx, &err)) {
+> > +			if (err < 0)
+> > +				continue;
+> > +
+> > +			if (idx + 1 < as_idx) {
+> > +				++idx;
+> > +				continue;
+> > +			}
+> > +		}
+> >  
+> >  		fd = __drm_open_device(name, chipset);
+> > -		if (fd != -1)
+> > +		if (fd == -1)
+> > +			continue;
+> > +
+> > +		++idx;
+> > +		if (idx == as_idx)
+> >  			return fd;
 > 
->> On 08/02/24 06:50, Pekka Paalanen wrote:
->>> On Wed, 07 Feb 2024 17:17:15 -0300
->>> Arthur Grillo <arthurgrillo@riseup.net> wrote:
->>>   
->>>> Create a benchmark for the VKMS driver. Use a KMS layout with deliberate
->>>> odd sizes to try to avoid alignment accidents and run it for FRAME_COUNT
->>>> frames flipping framebuffers in each plane.
->>>>
->>>> Link: https://lore.kernel.org/all/20240202214527.1d97c881@ferris.localdomain/
->>>> Suggested-by: Pekka Paalanen <pekka.paalanen@haloniitty.fi>
->>>> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
->>>> ---
->>>> This benchmark was suggested by Pekka Paalanen on [1] to better analyse
->>>> possible performance regression on the Virtual Kernel Modesetting(VKMS)
->>>> driver.
->>>>
->>>> With this benchmark I was able to determine two performance regression:
->>>>
->>>> - 322d716a3e8a ("drm/vkms: isolate pixel conversion functionality")
->>>> - cc4fd2934d41 ("drm/vkms: Isolate writeback pixel conversion functions")
->>>>
->>>> [1]: https://lore.kernel.org/all/20240202214527.1d97c881@ferris.localdomain/
->>>> ---
->>>>  benchmarks/meson.build   |   1 +
->>>>  benchmarks/vkms_stress.c | 203 +++++++++++++++++++++++++++++++++++++++++++++++
->>>>  2 files changed, 204 insertions(+)
->>>>
->>>> diff --git a/benchmarks/meson.build b/benchmarks/meson.build
->>>> index c451268bc44f..3aa66d6dffe2 100644
->>>> --- a/benchmarks/meson.build
->>>> +++ b/benchmarks/meson.build
->>>> @@ -20,6 +20,7 @@ benchmark_progs = [
->>>>  	'kms_vblank',
->>>>  	'prime_lookup',
->>>>  	'vgem_mmap',
->>>> +	'vkms_stress',
->>>>  ]
->>>>  
->>>>  benchmarksdir = join_paths(libexecdir, 'benchmarks')
->>>> diff --git a/benchmarks/vkms_stress.c b/benchmarks/vkms_stress.c
->>>> new file mode 100644
->>>> index 000000000000..b9128c208861
->>>> --- /dev/null
->>>> +++ b/benchmarks/vkms_stress.c
-> 
-> ...
-> 
->>>> +
->>>> +igt_simple_main
->>>> +{
->>>> +	struct data_t data;
->>>> +	enum pipe pipe = PIPE_NONE;
->>>> +
->>>> +	data.kms = default_kms;
->>>> +  
->>>
->>> Hi Arthur,
->>>
->>> all the above looks really good!
->>>
->>> Some things below look strange to me, but I don't know the igt API.
->>>   
->>>> +	data.fd = drm_open_driver_master(DRIVER_ANY);
->>>> +
->>>> +	igt_display_require(&data.display, data.fd);
->>>> +
->>>> +	kmstest_set_vt_graphics_mode();
->>>> +
->>>> +	igt_display_require(&data.display, data.fd);  
->>>
->>> Are you supposed to call igt_display_require twice?
->>>   
->>
->> Only this way the writeback connector appears. I took this from
->> `tests/kms_writeback.c`.
->>
->> I now did a bit of lore.kernel.org archaeology and found why this is
->> necessary:
->>
->> Rodrigo Siqueira sent this patch:
->> https://lore.kernel.org/all/20190306213005.7hvbnwl7dohr3vuv@smtp.gmail.com/
->>
->> It places drmSetClientCap() before drmModeGetResources(). (The patch
->> description is wrong, as noted by [1])
->>
->> Without this, you don't need to call igt_display_require() twice. I
->> don't know if this patch is wrong, but it is good to bring it up for
->> discussion.
-> 
-> Hi Arthur,
-> 
-> did you mean "*With* this, you don't need to call igt_display_require()
-> twice."?
+> Shouldn't we mark this fd is already opened in _opened_fds[]?
 
-No, I really meant _without_. The patch has already been applied, it was
-added inside commit 3642acbb74f5 ("lib/igt_kms: Add writeback support")
-(it says on the commit message).
+This is left for __drm_open_driver_another() as there are two
+paths which openes card, one for filter and other for legacy.
+See also my respond to Janusz on v7 patch 3/8.
 
-If you remove this change you don't need to call igt_display_require()
-twice. But, based on you explanation, I don't think it's right to remove
-it. Although, for some reason, you need call igt_display_require() twice
-with this fix.
-
-Best Regards,
-~Arthur Grillo
+Regards,
+Kamil
 
 > 
-> All DRM client caps do need to be set before any call to GetResources
-> or anything else, exactly because the client caps change the kernel
-> side behaviour. Client caps may also hide things, not only expose
-> things, at least in the future if not already (color pipelines will
-> replace legacy color properties).
+> --
+> Zbigniew
 > 
-> If you need to check DRM (kernel) caps, that should be done immediately
-> after setting DRM client caps. I think that's the most logical and
-> safest order.
-> 
-> 
-> Thanks,
-> pq
-> 
->>
->> [1]: https://lore.kernel.org/all/20190318104128.GH26454@e110455-lin.cambridge.arm.com/
->>
->>>> +	igt_require(data.display.is_atomic);
->>>> +
->>>> +	igt_display_require_output(&data.display);
->>>> +
->>>> +	igt_require(data.wb_output);
->>>> +	igt_display_reset(&data.display);
->>>> +
->>>> +	data.wb_output = find_wb_output(&data);  
->>>
->>> Should igt_require(data.wb_output) be after find_wb_output?
->>>   
->>>> +
->>>> +	for_each_pipe(&data.display, pipe) {
->>>> +		igt_debug("Selecting pipe %s to %s\n",
->>>> +			  kmstest_pipe_name(pipe),
->>>> +			  igt_output_name(data.wb_output));
->>>> +		igt_output_set_pipe(data.wb_output, pipe);  
->>>
->>> Isn't this strange if there are multiple pipes?  
->>
->> Yeah, I forgot to place a `break;` there.
->>
->> All the others comments will be addressed on v2.
->>
->> Best Regards,
->> ~Arthur Grillo
+> > +
+> > +		close(fd);
+> >  	}
+> >  
+> >  	return -1;
+> > @@ -486,7 +519,7 @@ static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card)
+> >   *   * idx-th filter (starting with 0, filters are semicolon separated) is used
+> >   *   * if there is no idx-th filter, goto 2
+> >   *   * first device maching the filter is selected
+> > - *   * if it's already opened (for indexes = 0..idx-1) we fail with -1
+> > + *   * if it's already opened (for indexes != idx) we fail with -1
+> >   *   * otherwise open the device and return the fd
+> >   *
+> >   * 2. compatibility mode - open the first DRM device we can find that is not
+> > @@ -531,6 +564,7 @@ int __drm_open_driver_another(int idx, int chipset)
+> >  	if (chipset != DRIVER_VGEM && igt_device_filter_count() > idx) {
+> >  		struct igt_device_card card;
+> >  		bool found;
+> > +		int err;
+> >  
+> >  		found = __get_card_for_nth_filter(idx, &card);
+> >  
+> > @@ -539,14 +573,19 @@ int __drm_open_driver_another(int idx, int chipset)
+> >  			found = __get_card_for_nth_filter(idx, &card);
+> >  		}
+> >  
+> > -		if (!found || !strlen(card.card))
+> > +		if (!found || !strlen(card.card)) {
+> >  			igt_warn("No card matches the filter! [%s]\n",
+> >  				 igt_device_filter_get(idx));
+> > -		else if (_is_already_opened(card.card, idx))
+> > -			igt_warn("card maching filter %d is already opened\n", idx);
+> > -		else
+> > +		} else if (_is_already_opened(card.card, idx, &err)) {
+> > +			if (err < 0)
+> > +				igt_warn("cannot stat card maching filter %d errno=%d card=%s\n", idx, err, card.card);
+> > +			else if (idx != err)
+> > +				igt_warn("card maching filter %d is already opened as %d, card=%s\n", idx, err, card.card);
+> > +			else
+> > +				fd = __open_driver_exact(card.card, chipset);
+> > +		} else {
+> >  			fd = __open_driver_exact(card.card, chipset);
+> > -
+> > +		}
+> >  	} else {
+> >  		/* no filter for device idx, let's open whatever is available */
+> >  		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
+> > -- 
+> > 2.42.0
+> > 
