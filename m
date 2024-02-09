@@ -4,79 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E300C4829C
-	for <igt-dev@archiver.kernel.org>; Fri,  9 Feb 2024 08:54:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30E40C4828F
+	for <igt-dev@archiver.kernel.org>; Fri,  9 Feb 2024 08:55:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2431710F261;
-	Fri,  9 Feb 2024 08:54:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 91C0910F261;
+	Fri,  9 Feb 2024 08:55:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F1vY/Hd4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ymc+JJKH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0649B10F25B;
- Fri,  9 Feb 2024 08:54:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5551010F261
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Feb 2024 08:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707468886; x=1739004886;
+ t=1707468905; x=1739004905;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=rdsRj+SKzaTNzp2uNmwq57wMHjqfz9uyyW2dCqZpMgg=;
- b=F1vY/Hd4omu5aagQHxC89NZoGeZ5I2cO1I9sRkjRHcfvBqTInhG33QZn
- 7Wze1cx4wtD4LJWFhVqzCIM70zVh9/ABnliHYvObPesITrXJ12m0E2lIE
- v/j8x76HbRNFDvZnJF5Aufy8OO8xXX+6PPz9MA/b8daQwMpTr0bCA29jA
- ock5DoXdjMIqjUQN5y+N019WbhnpAPoV30WGHZn3v93TXquq77udUsBpg
- /o9moF6b7M8GufUY9LWBq36ZeWN2TBHc5SNMSxFwXTHMmqBT0+xnhMRSX
- fWgDdGcHiBNmSTSuDJniUo5DXjxlkAneuGVpfDPgO/qOtkwmILY7UWC8a A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="12766195"
-X-IronPort-AV: E=Sophos;i="6.05,256,1701158400"; d="scan'208";a="12766195"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2024 00:54:46 -0800
+ bh=cL4rVim/gZLhUn9zVsCK8BMcw7GT8or54gA+noVVPx8=;
+ b=Ymc+JJKH9t6CDR1/j+jKErKJaBFArI2PGz6jFU3pQN4VZhC4ey/uW4tm
+ rL6kMi6jF4N7nhSJVWO+V51oHwq+wPsQj+SRLvr5RrZWH06vcvSp5M7uB
+ vJoXnNTQlRo7aa9ZnduPZavhZ1Mhji4R1d49cUE3oD5koR1ZRtAx0TuVg
+ vbjg7LpYkSQI5I+vWStlQyhAeOElPurZfl+5k31+fnqtrAgbf6V8pBAYw
+ 4B6TjDSpZ9VgTikEvsChz3g+MXSD+uDi6I7faYklqPbHPlPPTjgcDTTW1
+ oegEe2PQoPLA/gNJBHH6dCc7zZS2wz837Xnp8GoscIuRkPrPvmoOBKoN6 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="12473061"
+X-IronPort-AV: E=Sophos;i="6.05,256,1701158400"; d="scan'208";a="12473061"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Feb 2024 00:55:05 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,256,1701158400"; d="scan'208";a="32682565"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 00:54:42 -0800
-Date: Fri, 9 Feb 2024 09:54:20 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Arthur Grillo <arthurgrillo@riseup.net>, dri-devel@lists.freedesktop.org,
- Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Pekka Paalanen <pekka.paalanen@haloniitty.fi>,
- Louis Chauvet <louis.chauvet@bootlin.com>,
- Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>,
- Melissa Wen <melissa.srw@gmail.com>,
- =?utf-8?B?TWHDrXJh?= Canal <mairacanal@riseup.net>,
- Haneen Mohammed <hamohammed.sa@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Pekka Paalanen <pekka.paalanen@collabora.com>
-Subject: Re: [PATCH i-g-t v2] benchmarks: Add VKMS benchmark
-Message-ID: <20240209085420.6f7el7uxn7sharb3@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Arthur Grillo <arthurgrillo@riseup.net>,
- dri-devel@lists.freedesktop.org,
- Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Pekka Paalanen <pekka.paalanen@haloniitty.fi>,
- Louis Chauvet <louis.chauvet@bootlin.com>,
- Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>,
- Melissa Wen <melissa.srw@gmail.com>,
- =?utf-8?B?TWHDrXJh?= Canal <mairacanal@riseup.net>,
- Haneen Mohammed <hamohammed.sa@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>,
- Pekka Paalanen <pekka.paalanen@collabora.com>
-References: <20240208-bench-v2-1-1eccee1055ad@riseup.net>
+X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="825086858"
+X-IronPort-AV: E=Sophos;i="6.05,256,1701158400"; d="scan'208";a="825086858"
+Received: from unknown (HELO localhost) ([10.245.101.183])
+ by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Feb 2024 00:55:02 -0800
+Date: Fri, 9 Feb 2024 09:54:59 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: Re: [PATCH i-g-t v8 1/8] lib/igt_device_scan: Introduce filtering
+ out non-PCI devices
+Message-ID: <20240209085407.lb2pz3d377luvdpw@zkempczy-mobl2>
+References: <20240208135232.54382-1-kamil.konieczny@linux.intel.com>
+ <20240208135232.54382-2-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240208-bench-v2-1-1eccee1055ad@riseup.net>
+In-Reply-To: <20240208135232.54382-2-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,249 +70,91 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Arthur,
-On 2024-02-08 at 17:04:52 -0300, Arthur Grillo wrote:
-> Create a benchmark for the VKMS driver. Use a KMS layout with deliberate
-> odd sizes to try to avoid alignment accidents and run it for FRAME_COUNT
-> frames flipping framebuffers in each plane.
+On Thu, Feb 08, 2024 at 02:52:25PM +0100, Kamil Konieczny wrote:
+> From: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 > 
-> This benchmark was suggested by Pekka Paalanen to better analyse
-> possible performance regression on the Virtual Kernel Modesetting(VKMS)
-> driver.
+> Introduced igt_device_filter_pci function that filters out non-PCI
+> devices from IGT devices. This will help with checking multi-GPU
+> tests after they skip due to detected only one GPU, in that case
+> one can verify it after printing what GPUs are really on PCI bus.
+> Such errors can happen when using wrong env IGT_DEVICE filter.
 > 
-> With this benchmark I was able to determine two performance regression:
+> v6: extending description
 > 
-> - 322d716a3e8a ("drm/vkms: isolate pixel conversion functionality")
-> - cc4fd2934d41 ("drm/vkms: Isolate writeback pixel conversion functions")
-> 
-> Link: https://lore.kernel.org/all/20240202214527.1d97c881@ferris.localdomain/
-> Suggested-by: Pekka Paalanen <pekka.paalanen@haloniitty.fi>
-> Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
-> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
+> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
-> Changes in v2:
-> - Zero initialize data
-> - Don't wrap igt_create_* functions (Juha-Pekka Heikkila)
-> - Add a `break;` when a pipe is found (Pekka Paalanen)
-> - Rename file to kms_fb_stress.c (Kamil Konieczny)
-> - Replace 2 by NUM_FBS (Juha-Pekka Heikkila)
-> - Replace license text by SPDX License (Kamil Konieczny)
-> - Move explanations to commit description (Kamil Konieczny)
-> - Require output after find_wb_output() (Pekka Paalanen & Juha-Pekka
->   Heikkila)
-> - Remove unnecessary commit (Pekka Paalanen)
-> - Link to v1: https://lore.kernel.org/r/20240207-bench-v1-1-7135ad426860@riseup.net
-> ---
->  benchmarks/kms_fb_stress.c | 176 +++++++++++++++++++++++++++++++++++++++++++++
->  benchmarks/meson.build     |   1 +
->  2 files changed, 177 insertions(+)
+>  lib/igt_device_scan.c | 21 +++++++++++++++++++++
+>  lib/igt_device_scan.h |  2 ++
+>  2 files changed, 23 insertions(+)
 > 
-> diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
-> new file mode 100644
-> index 000000000000..af0014bed672
-> --- /dev/null
-> +++ b/benchmarks/kms_fb_stress.c
-> @@ -0,0 +1,176 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2024 Arthur Grillo
-> + */
-> +
-> +#include "igt.h"
-> +
-> +#define FRAME_COUNT 100
-> +#define NUM_FBS 2
-> +
-> +struct rect_t {
-> +	int x, y;
-> +	int width, height;
-> +};
-> +
-> +struct plane_t {
-> +	igt_plane_t *base;
-> +	struct rect_t rect;
-> +	uint32_t format;
-> +	struct igt_fb fbs[NUM_FBS];
-> +};
-> +
-> +struct kms_t {
-> +	struct plane_t primary;
-> +	struct plane_t overlay_a;
-> +	struct plane_t overlay_b;
-> +	struct plane_t writeback;
-> +};
-> +
-> +struct data_t {
-> +	int fd;
-> +	igt_display_t display;
-> +	igt_output_t *wb_output;
-> +	drmModeModeInfo *mode;
-> +	struct kms_t kms;
-> +};
-> +
-> +static void plane_setup(struct plane_t *plane, int index)
-> +{
-> +	igt_plane_set_size(plane->base, plane->rect.width, plane->rect.height);
-> +	igt_plane_set_position(plane->base, plane->rect.x, plane->rect.y);
-> +	igt_plane_set_fb(plane->base, &plane->fbs[index]);
-> +}
-> +
-> +static void gen_fbs(struct data_t *data)
-> +{
-> +	struct kms_t *kms = &data->kms;
-> +	drmModeModeInfo *mode = igt_output_get_mode(data->wb_output);
-> +
-> +	for (int i = 0; i < NUM_FBS; i++) {
-> +		igt_create_color_fb(data->fd, kms->primary.rect.width, kms->primary.rect.height,
-> +				    kms->primary.format, DRM_FORMAT_MOD_LINEAR,
-> +				    !i, i, i,
-> +				    &kms->primary.fbs[i]);
-> +
-> +		igt_create_color_fb(data->fd, kms->overlay_a.rect.width, kms->overlay_a.rect.height,
-> +				    kms->overlay_a.format, DRM_FORMAT_MOD_LINEAR,
-> +				    i, !i, i,
-> +				    &kms->overlay_a.fbs[i]);
-> +
-> +		igt_create_color_fb(data->fd, kms->overlay_b.rect.width, kms->overlay_b.rect.height,
-> +				    kms->overlay_b.format, DRM_FORMAT_MOD_LINEAR,
-> +				    i, i, !i,
-> +				    &kms->overlay_b.fbs[i]);
-> +
-> +		kms->writeback.rect.width = mode->hdisplay;
-> +		kms->writeback.rect.height = mode->vdisplay;
-> +		igt_create_fb(data->fd, kms->writeback.rect.width, kms->writeback.rect.height,
-> +			      kms->writeback.format, DRM_FORMAT_MOD_LINEAR,
-> +			      &kms->writeback.fbs[i]);
-> +	}
-> +}
-> +
-> +static igt_output_t *find_wb_output(struct data_t *data)
-> +{
-> +	for (int i = 0; i < data->display.n_outputs; i++) {
-> +		igt_output_t *output = &data->display.outputs[i];
-> +
-> +		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_WRITEBACK)
-> +			continue;
-> +
-> +		return output;
-> +
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +static struct kms_t default_kms = {
-> +	.primary = {
-> +		.rect = {
-> +			.x = 101, .y = 0,
-> +			.width = 3639, .height = 2161,
-> +		},
-> +		.format = DRM_FORMAT_XRGB8888,
-> +	},
-> +	.overlay_a = {
-> +		.rect = {
-> +			.x = 201, .y = 199,
-> +			.width = 3033, .height = 1777,
-> +		},
-> +		.format = DRM_FORMAT_XRGB16161616,
-> +	},
-> +	.overlay_b = {
-> +		.rect = {
-> +			.x = 1800, .y = 250,
-> +			.width = 1507, .height = 1400,
-> +		},
-> +		.format = DRM_FORMAT_ARGB8888,
-> +	},
-> +	.writeback = {
-> +		.rect = {
-> +			.x = 0, .y = 0,
-> +			// Size is to be determined at runtime
-> +		},
-> +		.format = DRM_FORMAT_XRGB8888,
-> +	},
-> +};
-> +
-> +
-> +igt_simple_main
-> +{
-> +	struct data_t data = {0};
-> +	enum pipe pipe = PIPE_NONE;
-> +
-> +	data.kms = default_kms;
-> +
-> +	data.fd = drm_open_driver_master(DRIVER_ANY);
-> +
-> +	igt_display_require(&data.display, data.fd);
-> +
-> +	kmstest_set_vt_graphics_mode();
-> +
-> +	igt_display_require(&data.display, data.fd);
-> +	igt_require(data.display.is_atomic);
-> +
-> +	igt_display_require_output(&data.display);
-> +
-> +	igt_display_reset(&data.display);
-> +
-> +	data.wb_output = find_wb_output(&data);
-> +	igt_require(data.wb_output);
-> +
-> +	for_each_pipe(&data.display, pipe) {
-> +		igt_debug("Selecting pipe %s to %s\n",
-> +			  kmstest_pipe_name(pipe),
-> +			  igt_output_name(data.wb_output));
-> +		igt_output_set_pipe(data.wb_output, pipe);
-> +		break;
-> +	}
-> +
-> +	gen_fbs(&data);
-> +
-> +	data.kms.primary.base = igt_output_get_plane_type(data.wb_output, DRM_PLANE_TYPE_PRIMARY);
-> +	data.kms.overlay_a.base = igt_output_get_plane_type_index(data.wb_output,
-> +								  DRM_PLANE_TYPE_OVERLAY, 0);
-> +	data.kms.overlay_b.base = igt_output_get_plane_type_index(data.wb_output,
-> +								  DRM_PLANE_TYPE_OVERLAY, 1);
-> +
-> +	for (int i = 0; i < FRAME_COUNT; i++) {
-> +		int fb_index = i % NUM_FBS;
-> +
-> +		plane_setup(&data.kms.primary, fb_index);
-> +
-> +		plane_setup(&data.kms.overlay_a, fb_index);
-> +
-> +		plane_setup(&data.kms.overlay_b, fb_index);
-> +
-> +		igt_output_set_writeback_fb(data.wb_output, &data.kms.writeback.fbs[fb_index]);
-> +
-> +		igt_display_commit2(&data.display, COMMIT_ATOMIC);
-> +	}
-> +
-> +	igt_display_fini(&data.display);
-> +	drm_close_driver(data.fd);
-> +}
-> diff --git a/benchmarks/meson.build b/benchmarks/meson.build
-> index c451268bc44f..e949e6073719 100644
-> --- a/benchmarks/meson.build
-> +++ b/benchmarks/meson.build
-> @@ -20,6 +20,7 @@ benchmark_progs = [
->  	'kms_vblank',
->  	'prime_lookup',
->  	'vgem_mmap',
-> +	'kms_fb_stress',
-
-Put this in alphabetical order before kms_vblank,
-with this fixed:
-
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
->  ]
+> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> index fbf3fa482..37ebe1964 100644
+> --- a/lib/igt_device_scan.c
+> +++ b/lib/igt_device_scan.c
+> @@ -1908,6 +1908,27 @@ const char *igt_device_filter_get(int num)
+>  	return NULL;
+>  }
 >  
->  benchmarksdir = join_paths(libexecdir, 'benchmarks')
-> 
-> ---
-> base-commit: c58c5fb6aa1cb7d3627a15e364816a7a2add9edc
-> change-id: 20240207-bench-393789eaba47
-> 
-> Best regards,
+> +/**
+> + * igt_device_filter_pci
+> + *
+> + * Filter devices to PCI only.
+> + *
+> + * Returns PCI devices count.
+> + */
+> +int igt_device_filter_pci(void)
+> +{
+> +	int count = 0;
+> +	struct igt_device *dev, *tmp;
+> +
+> +	igt_list_for_each_entry_safe(dev, tmp, &igt_devs.filtered, link)
+> +		if (strcmp(dev->subsystem, "pci") != 0)
+> +			igt_list_del(&dev->link);
+
+Device scan starts with lists 'all' and 'filtered' filled with
+all cards. If you want to eliminate non-pci cards here you should
+also free memory for dev. See igt_device_filter_apply() where
+there's comment 'Clean the filtered list'.
+
+> +		else
+> +			count++;
+> +
+> +	return count;
+> +}
+> +
+
+I also wondered to fix filter_pci() and fill filtered list
+with all pci devices when filter 'pci:' (without vendor/device/card)
+is passed. Currently filter picks single matching device instead
+of filling filtered list with all matching devices.
+
+Anyway, at the moment I see no blocker for your code. Just
+fix this minor free() nit and:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
+
+>  static bool igt_device_filter_apply(const char *fstr)
+>  {
+>  	struct igt_device *dev, *tmp;
+> diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
+> index 48690e236..908733745 100644
+> --- a/lib/igt_device_scan.h
+> +++ b/lib/igt_device_scan.h
+> @@ -81,6 +81,8 @@ int igt_device_filter_add(const char *filter);
+>  void igt_device_filter_free_all(void);
+>  const char *igt_device_filter_get(int num);
+>  
+> +int igt_device_filter_pci(void);
+> +
+>  /* Use filter to match the device and fill card structure */
+>  bool igt_device_card_match(const char *filter, struct igt_device_card *card);
+>  bool igt_device_card_match_pci(const char *filter,
 > -- 
-> Arthur Grillo <arthurgrillo@riseup.net>
+> 2.42.0
 > 
