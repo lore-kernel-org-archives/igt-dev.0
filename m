@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BEE3C48297
-	for <igt-dev@archiver.kernel.org>; Fri,  9 Feb 2024 13:21:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB898C4828F
+	for <igt-dev@archiver.kernel.org>; Fri,  9 Feb 2024 13:22:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8868A10F3E0;
-	Fri,  9 Feb 2024 13:21:24 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SbI+uxON";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B2C710F3E0
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Feb 2024 13:21:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707484883; x=1739020883;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=xdhh6lwojOiJYGAL/gJWa8/F/pEvSXJZFJpa6eZxMvg=;
- b=SbI+uxONjbJ+cROwX7LviXEcy50VtWL3IGgN3holx353rMuIorQJTcsR
- nLCwgobvC+oFnygdq46GiewdOrbDXFdSzoooKxWLldofw6BgkeK3oV2RL
- oPje2D5+/FMK3KhpaiVsrUrweZUfD3HHlOwZI7ZXwpNPBJ9s6FEvtjGSX
- b52GFEzdlK3NtME9ZBLhMYkt8wZR0qOP7yVa9wERE8KXt/MPsY4+I0SSa
- aCHl/tb/esZtHBPQm7c3UhTFaFfjTEz5q6nPU3H/FKMuSNC16xVcJk8NJ
- 7MQzni8l+iaqHTHzY1AOn28hkKYt1EGp6E7L0S427cHrsczx+T2ROHmOS A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="1318506"
-X-IronPort-AV: E=Sophos;i="6.05,256,1701158400"; 
-   d="scan'208";a="1318506"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2024 05:21:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="825140040"
-X-IronPort-AV: E=Sophos;i="6.05,256,1701158400"; d="scan'208";a="825140040"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orsmga001-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 05:21:18 -0800
-Date: Fri, 9 Feb 2024 14:21:15 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: Re: [PATCH i-g-t v3 8/8] scripts/igt_doc.py: use an ancillary
- function to simplify the code
-Message-ID: <20240209132115.hxk2lt6mnetercrf@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-References: <20240209123543.289204-1-mauro.chehab@linux.intel.com>
- <20240209123543.289204-9-mauro.chehab@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 61B3810F3E0;
+	Fri,  9 Feb 2024 13:22:18 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C34110F3E9;
+ Fri,  9 Feb 2024 13:22:17 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1376028096044435271=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240209123543.289204-9-mauro.chehab@linux.intel.com>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Fix_several_issues_when_produc?=
+ =?utf-8?q?ing_Intel_CI_testlists_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mauro Carvalho Chehab" <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 09 Feb 2024 13:22:17 -0000
+Message-ID: <170748493737.1129552.11755260041709155483@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240209123543.289204-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20240209123543.289204-1-mauro.chehab@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,143 +37,224 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Mauro,
-On 2024-02-09 at 13:34:47 +0100, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> The code inside gen_intelci_testlist() is too complex, and currently
-> buggy.
-> 
-> Basically, if we have two testlists with driver name + name, like
-> "Xe BAT" and "i915 BAT", the current logic picks just one
-> (randomly), which produce different results on each run.
-> 
-> Simplify the logic by moving the routine which fills the run_type
-> set to a separate function, fixing the bug.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+--===============1376028096044435271==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Series Details ==
 
-> ---
->  scripts/igt_doc.py | 72 ++++++++++++++++++++++++++++------------------
->  1 file changed, 44 insertions(+), 28 deletions(-)
-> 
-> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-> index 1b4f7eafd135..3a45371a27e7 100755
-> --- a/scripts/igt_doc.py
-> +++ b/scripts/igt_doc.py
-> @@ -18,6 +18,40 @@ import sys
->  from test_list import TestList
->  
->  class IgtTestList(TestList):
-> +    def __init__(self, *args, **kwargs):
-> +        self.split_regex = re.compile(r",\s*")
-> +
-> +        super().__init__(*args, **kwargs)
-> +
-> +    def _get_run_type_drivers(self, run_types):
-> +        """
-> +            Ancillary routine to return drivers and run type set from
-> +            a run type string.
-> +        """
-> +
-> +        run_type_dict = {}
-> +        for run_type in set(self.split_regex.split(run_types)):
-> +            driver_set = set()
-> +            if not run_type:
-> +                run_type = "other"
-> +            else:
-> +                for driver in self.drivers:
-> +                    result = re.sub(r"^" + driver + r"[\W_]*", "", run_type, re.IGNORECASE)
-> +                    if result != run_type:
-> +                        driver_set = set([driver])
-> +                        run_type = result
-> +                        break
-> +
-> +            if not driver_set:
-> +                driver_set = set(self.drivers)
-> +
-> +            if run_type in run_type_dict:
-> +                run_type_dict[run_type].update(driver_set)
-> +            else:
-> +                run_type_dict[run_type] = driver_set
-> +
-> +        return run_type_dict
-> +
->      """
->          This class implements testlist generation as expected by Intel CI.
->          It does that by handling test lists split by "Run type" and
-> @@ -50,7 +84,7 @@ class IgtTestList(TestList):
->          - if "GPU excluded platform" exists, for each GPU listed on
->            the list, it will block the test.
->      """
-> -    def gen_intelci_testlist(self): #pylint: disable=R0912
-> +    def gen_intelci_testlist(self):
->          """Return a list of gpu configs and testlists."""
->  
->          subtest_dict = self.expand_dictionary(True)
-> @@ -58,48 +92,30 @@ class IgtTestList(TestList):
->          # Create a tests_per_list dict
->          gpu_set = set()
->          tests_per_list = {}
-> -        split_regex = re.compile(r",\s*")
-> +
-> +        for driver in set(self.drivers):
-> +            tests_per_list[driver] = {}
->  
->          for subname, subtest in subtest_dict.items():
->              run_types = subtest.get("Run type", "other").lower()
-> -            drivers = set()
-> -            run_type_set = set()
-> -            for run_type in set(split_regex.split(run_types)):
->  
-> -                for driver in self.drivers:
-> -                    if run_type.startswith(driver):
-> -                        run_type = re.sub(r"^" + driver + r"[\W_]*", "", run_type)
-> -                        drivers = set([driver])
-> -                        break
-> +            run_type_dict = self._get_run_type_drivers(run_types)
->  
-> -                if not drivers:
-> -                    drivers.update(self.drivers)
-> -
-> -                if not run_type:
-> -                    run_type = "other"
-> -
-> -                run_type_set.add(run_type)
-> -
-> -            if not drivers:
-> -                drivers = set(self.drivers)
-> -
-> -            for driver in drivers:
-> -                if driver not in tests_per_list:
-> -                    tests_per_list[driver] = {}
-> -
-> -                for run_type in run_type_set:
-> +            for run_type, drivers in run_type_dict.items():
-> +                for driver in drivers:
->                      if run_type not in tests_per_list[driver]:
->                          tests_per_list[driver][run_type] = {}
-> +
->                      if subname not in tests_per_list[driver][run_type]:
->                          tests_per_list[driver][run_type][subname] = {}
->  
->                      if "GPU" in subtest:
-> -                        for gpu in split_regex.split(subtest["GPU"]):
-> +                        for gpu in self.split_regex.split(subtest["GPU"]):
->                              gpu_set.add(gpu)
->                              tests_per_list[driver][run_type][subname][gpu] = True
->  
->                      if "GPU excluded platform" in subtest:
-> -                        for gpu in split_regex.split(subtest["GPU excluded platform"]):
-> +                        for gpu in self.split_regex.split(subtest["GPU excluded platform"]):
->                              gpu_set.add(gpu)
->                              tests_per_list[driver][run_type][subname][gpu] = False
->  
-> -- 
-> 2.43.0
-> 
+Series: Fix several issues when producing Intel CI testlists (rev3)
+URL   : https://patchwork.freedesktop.org/series/129708/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7708_BAT -> XEIGTPW_10657_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (2 -> 3)
+------------------------------
+
+  Additional (1): bat-adlp-7 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10657_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-adlp-7:         NOTRUN -> [SKIP][1] ([Intel XE#455])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         NOTRUN -> [FAIL][2] ([Intel XE#616])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - bat-adlp-7:         NOTRUN -> [SKIP][3] ([Intel XE#417])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@xe_evict@evict-beng-small-external:
+    - bat-adlp-7:         NOTRUN -> [SKIP][4] ([Intel XE#261] / [Intel XE#688]) +15 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@xe_evict@evict-beng-small-external.html
+
+  * igt@xe_evict_ccs@evict-overcommit-simple:
+    - bat-adlp-7:         NOTRUN -> [SKIP][5] ([Intel XE#688]) +1 other test skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@xe_evict_ccs@evict-overcommit-simple.html
+
+  * igt@xe_exec_fault_mode@twice-userptr:
+    - bat-adlp-7:         NOTRUN -> [SKIP][6] ([Intel XE#288]) +32 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr.html
+
+  * igt@xe_mmap@vram:
+    - bat-adlp-7:         NOTRUN -> [SKIP][7] ([Intel XE#1008])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@xe_mmap@vram.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-adlp-7:         NOTRUN -> [SKIP][8] ([Intel XE#977])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-adlp-7:         NOTRUN -> [SKIP][9] ([Intel XE#979]) +1 other test skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@xe_pat@pat-index-xehpc.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1008]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008
+  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#417]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/417
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/850
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7708 -> IGTPW_10657
+  * Linux: xe-750-22d626404cb81d7818ab55e5b14885e31a998dfd -> xe-753-6a21fc66f5c81c19baa24407cd7e8d2720edd2eb
+
+  IGTPW_10657: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10657/index.html
+  IGT_7708: c2ecf4ba307d3342682745de6f608d307a06782c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-750-22d626404cb81d7818ab55e5b14885e31a998dfd: 22d626404cb81d7818ab55e5b14885e31a998dfd
+  xe-753-6a21fc66f5c81c19baa24407cd7e8d2720edd2eb: 6a21fc66f5c81c19baa24407cd7e8d2720edd2eb
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/index.html
+
+--===============1376028096044435271==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Fix several issues when producing Intel CI testlists (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129708/">https://patchwork.freedesktop.org/series/129708/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7708_BAT -&gt; XEIGTPW_10657_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (2 -&gt; 3)</h2>
+<p>Additional (1): bat-adlp-7 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10657_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/417">Intel XE#417</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-small-external:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@xe_evict@evict-beng-small-external.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict_ccs@evict-overcommit-simple:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@xe_evict_ccs@evict-overcommit-simple.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-userptr:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_mmap@vram:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008">Intel XE#1008</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10657/bat-adlp-7/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7708 -&gt; IGTPW_10657</li>
+<li>Linux: xe-750-22d626404cb81d7818ab55e5b14885e31a998dfd -&gt; xe-753-6a21fc66f5c81c19baa24407cd7e8d2720edd2eb</li>
+</ul>
+<p>IGTPW_10657: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10657/index.html<br />
+  IGT_7708: c2ecf4ba307d3342682745de6f608d307a06782c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-750-22d626404cb81d7818ab55e5b14885e31a998dfd: 22d626404cb81d7818ab55e5b14885e31a998dfd<br />
+  xe-753-6a21fc66f5c81c19baa24407cd7e8d2720edd2eb: 6a21fc66f5c81c19baa24407cd7e8d2720edd2eb</p>
+
+</body>
+</html>
+
+--===============1376028096044435271==--
