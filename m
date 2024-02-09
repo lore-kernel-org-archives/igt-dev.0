@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A11FBC4829C
-	for <igt-dev@archiver.kernel.org>; Fri,  9 Feb 2024 11:19:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3CB4C4828F
+	for <igt-dev@archiver.kernel.org>; Fri,  9 Feb 2024 11:37:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2619310F343;
-	Fri,  9 Feb 2024 11:19:41 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZxfTSMtj";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E8ADF10EB3D
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Feb 2024 11:19:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707477575; x=1739013575;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding:sender;
- bh=hNoNRAePRBBWbqN3CFYzj5dqYh+YaaKOIYsfEro+NTk=;
- b=ZxfTSMtj2sjnTQZ4qHr7QKNZbegkUKjCvjeGMOF15qj1nrG+XrdikJ9H
- G5bJYucEBLh9mkSP+YvUgfqkkQfC9wk/xxIYsxQT77CJwp5xi4hwnnuG1
- BQnmgZkU2WCZY6S1/l0bx99V/JY67N6xeL0qwrI2insYFg1kYqTfbveDY
- iqCAYPuDTisYOeNqO0GoNw5zwBzUkWyuA5RJ5FiYAesKuECKn7ZvbJh5A
- m/3J1uirC+ZdYVTnTT034hp2+qf9tBgaBAu3ik/pe0QdPEJqLQvQqncUV
- QkJusIOSxQXgwBQfJEtXY4GJLoJRac0j7vlRqGuwWc+yASb+ged9SZRgg Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="12785732"
-X-IronPort-AV: E=Sophos;i="6.05,256,1701158400"; d="scan'208";a="12785732"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2024 03:19:32 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,256,1701158400"; 
-   d="scan'208";a="6534179"
-Received: from linux.intel.com ([10.54.29.200])
- by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2024 03:19:31 -0800
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.245.246.44])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 6D41E580D94
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Feb 2024 03:19:30 -0800 (PST)
-Received: from maurocar by linux.intel.com with local (Exim 4.97.1)
- (envelope-from <mauro.chehab@linux.intel.com>)
- id 1rYOum-000000018io-11Lg for igt-dev@lists.freedesktop.org;
- Fri, 09 Feb 2024 12:19:28 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 0/8] Fix several issues when producing Intel CI testlists
-Date: Fri,  9 Feb 2024 12:16:58 +0100
-Message-ID: <20240209111925.271717-1-mauro.chehab@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 56F6910EDE1;
+	Fri,  9 Feb 2024 11:37:39 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 90A3D10EDE1;
+ Fri,  9 Feb 2024 11:37:38 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_Fix_several_issues_when_p?=
+ =?utf-8?q?roducing_Intel_CI_testlists?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mauro Carvalho Chehab" <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 09 Feb 2024 11:37:38 -0000
+Message-ID: <170747865859.1129210.17136394928218843668@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240209111925.271717-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20240209111925.271717-1-mauro.chehab@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,33 +37,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+== Series Details ==
 
-Handling test lists and block lists is not trivial: it requires a
-complex logic to handle all nuances.
+Series: Fix several issues when producing Intel CI testlists
+URL   : https://patchwork.freedesktop.org/series/129708/
+State : failure
 
-This series fix a series of bugs that were making such lists
-unreliable.
+== Summary ==
 
-While here, also fix a small typo at scripts/test_list.py.
+Applying: scripts/test_list.py: fix a typo on default-if-not-excluded
+Applying: scripts/igt_doc.py: better handle issues with empty testlists
+Applying: scripts/igt_doc.py: handle empty run_type
+Applying: scripts/igt_doc.py: only create dict if subtest will be added
+Applying: scripts/igt_doc.py: better handle default gpu
+Applying: scripts/igt_doc.py: remove some unused logic
+Applying: scripts/igt_doc.py: use an ancillary function to simplify the code
+Patch failed at 0007 scripts/igt_doc.py: use an ancillary function to simplify the code
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
-Mauro Carvalho Chehab (8):
-  scripts/test_list.py: fix a typo on default-if-not-excluded
-  scripts/igt_doc.py: better handle issues with empty testlists
-  scripts/igt_doc.py: handle empty run_type
-  scripts/igt_doc.py: only create dict if subtest will be added
-  scripts/igt_doc.py: better handle default gpu
-  scripts/igt_doc.py: remove some unused logic
-  scripts/igt_doc.py: use an ancillary function to simplify the code
-  scripts/igt_doc.py: simplify and cleanup tests_per_list logic
-
- scripts/igt_doc.py   | 80 ++++++++++++++++++++++++--------------------
- scripts/test_list.py |  2 +-
- 2 files changed, 45 insertions(+), 37 deletions(-)
-
--- 
-2.43.0
 
