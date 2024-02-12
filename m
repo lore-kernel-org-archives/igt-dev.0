@@ -4,59 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA9CAC4829B
-	for <igt-dev@archiver.kernel.org>; Mon, 12 Feb 2024 08:13:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E03A4C4829C
+	for <igt-dev@archiver.kernel.org>; Mon, 12 Feb 2024 08:43:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 498FD10E8AD;
-	Mon, 12 Feb 2024 08:13:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3258F10EADA;
+	Mon, 12 Feb 2024 08:43:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KRw1V2QP";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=haloniitty.fi header.i=@haloniitty.fi header.b="gp00H0pu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C6BEF10E8AD
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Feb 2024 08:13:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707725598; x=1739261598;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=E3zW1RMWJOMoPkWy9J8Wl8F+ouoRsiBn3FAuKekJ9xI=;
- b=KRw1V2QP5i5fFHVRRw+3eLGKQDc/GWFtHNB9mSgvh2YiX7X7ky1ENREw
- GMx6DbNyZS2H0xlx50oCik2Axi7lFARfQkeMykGVKtIjzDrBFUM/M6OgQ
- Z4xKSOZmh1HBKW7gd9BWmDrIH2a6nsRw8dvKcYJXSvi76dgd+rAEDUQ65
- 31Gc3XWdUK11ezW1A/YJes7gDgITahTzY3rj9ZdO6I3vE0b/fnCZLSbVp
- kTu/U+jSZaoLSNlS16r9FAFH+i0sqMT9OCOnypVnBInRJy88lbqo1vbcZ
- vvj7HApBdlGr3YQ2XeDm1/xDb7O9VC9AvKZc3uvEzQHv+9zFTWuMw3RfV Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10981"; a="1572506"
-X-IronPort-AV: E=Sophos;i="6.05,262,1701158400"; 
-   d="scan'208";a="1572506"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2024 00:13:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,262,1701158400"; 
-   d="scan'208";a="2827542"
-Received: from mwasile-mobl1.ger.corp.intel.com (HELO
- jkrzyszt-mobl2.ger.corp.intel.com) ([10.213.3.56])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2024 00:13:15 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Zbigniew =?utf-8?B?S2VtcGN6ecWEc2tp?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t v8 3/8] lib/drmtest: allow opening cards out of order
-Date: Mon, 12 Feb 2024 09:13:14 +0100
-Message-ID: <3101975.U7HbjWM52l@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20240209192917.sep2cjzogi7ggibe@kamilkon-desk.igk.intel.com>
-References: <20240208135232.54382-1-kamil.konieczny@linux.intel.com>
- <1889393.1xdlsreqCQ@jkrzyszt-mobl2.ger.corp.intel.com>
- <20240209192917.sep2cjzogi7ggibe@kamilkon-desk.igk.intel.com>
+Received: from whm50.louhi.net (whm50.louhi.net [77.240.19.51])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EAC7510EADA;
+ Mon, 12 Feb 2024 08:43:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=haloniitty.fi; s=default; h=Content-Type:MIME-Version:References:
+ In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=7c3q2sIKHEf9zj9In7EzhXZmgLfdkuguIhI/jEwgCr8=; b=gp00H0puuaSBvveqqhImrB254S
+ 32Zaguu/0Db5JZTYEDr9ZGOmaOdTgFKeoREVh74IfvT8Hl/atIlhLPhnmXXKZ9KqJ+tk/Uc2+g/e/
+ 5ttxpKnU2fJlHhv/OZM/kE7IDo6wNv0f3ytYjpvaKW6Q4pcTZBRyA1QS5Hd/LL+Bv508glntTT/Yr
+ UWzAgRl7Q78qLlHTIz+DDRL+1lH2RlbtRFB/ERxxwRuaa4ti66PFElLf5LH74NxsZRn9cDFWgccD8
+ 5RgsE5HmLs6DJkgpYmrP4hDX7UAN3jKzPvmtTYBUzXQPtfyp6FM1kNGl3sR+anEzrWJq31+1kEMsQ
+ bB3TxSVw==;
+Received: from [194.136.85.206] (port=49688 helo=eldfell)
+ by whm50.louhi.net with esmtpsa (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.96.2)
+ (envelope-from <pekka.paalanen@haloniitty.fi>) id 1rZRui-0002oY-2g;
+ Mon, 12 Feb 2024 10:43:44 +0200
+Date: Mon, 12 Feb 2024 10:43:30 +0200
+From: Pekka Paalanen <pekka.paalanen@haloniitty.fi>
+To: Arthur Grillo <arthurgrillo@riseup.net>
+Cc: dri-devel@lists.freedesktop.org, igt-dev@lists.freedesktop.org, Petri
+ Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>, Kamil
+ Konieczny <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
+ <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
+ <bhanuprakash.modem@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>, Rodrigo Siqueira
+ <rodrigosiqueiramelo@gmail.com>, Melissa Wen <melissa.srw@gmail.com>,
+ =?UTF-8?B?TWHDrXJh?= Canal <mairacanal@riseup.net>, Haneen Mohammed
+ <hamohammed.sa@gmail.com>, Daniel Vetter <daniel@ffwll.ch>
+Subject: Re: [PATCH i-g-t] benchmarks: Add VKMS benchmark
+Message-ID: <20240212104330.7de30010@eldfell>
+In-Reply-To: <6b033c46-284d-41df-ac80-cc96d2f05032@riseup.net>
+References: <20240207-bench-v1-1-7135ad426860@riseup.net>
+ <20240208115050.73d04796@eldfell>
+ <738490ac-56a9-4408-8de7-63de059d0a54@riseup.net>
+ <20240209103211.4f7e9fc6@eldfell>
+ <6b033c46-284d-41df-ac80-cc96d2f05032@riseup.net>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="Sig_/vigNP9OE2EpShjXpd6+w1wS";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-AntiAbuse: This header was added to track abuse,
+ please include it with any abuse report
+X-AntiAbuse: Primary Hostname - whm50.louhi.net
+X-AntiAbuse: Original Domain - lists.freedesktop.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - haloniitty.fi
+X-Get-Message-Sender-Via: whm50.louhi.net: authenticated_id:
+ pekka.paalanen@haloniitty.fi
+X-Authenticated-Sender: whm50.louhi.net: pekka.paalanen@haloniitty.fi
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,323 +83,213 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kamil,
+--Sig_/vigNP9OE2EpShjXpd6+w1wS
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-On Friday, 9 February 2024 20:29:17 CET Kamil Konieczny wrote:
-> Hi Janusz,
-> On 2024-02-09 at 18:02:37 +0100, Janusz Krzysztofik wrote:
-> > Hi Kamil,
-> >=20
-> > On Thursday, 8 February 2024 14:52:27 CET Kamil Konieczny wrote:
-> > > Current __drm_open_driver_another() implementation prevents
-> > > opening cards out of order, for example card 3 without previous
-> > > opens of 0..2. This can be seen with three GPU cards system and
-> > > gem_open_basic test:
-> > >=20
-> > > sudo IGT_DEVICE=3Dpci:vendor=3DIntel,card=3Dall build/tests/gem_basic=
- --r multigpu-create-close
-> > >=20
-> > > IGT-Version: 1.28-g2548a539e (x86_64) (Linux: 6.7.0-rc5 x86_64)
-> > > Using IGT_SRANDOM=3D1706630533 for randomisation
-> > > Opened device: /dev/dri/card0
-> > > Starting subtest: multigpu-create-close
-> > > <g:0> Testing creating and closing an object.
-> > > <g:1> Opened device: /dev/dri/card1
-> > > <g:1> Testing creating and closing an object.
-> > > gem_basic: ../lib/drmtest.c:341: _is_already_opened: Assertion `as_id=
-x <=3D _opened_fds_count' failed.
-> > > Received signal SIGABRT.
-> > >=20
-> > > Relax that condition and add some more debug prints.
-> > >=20
-> > > Changes in __search_and_open() was suggested by Zbigniew.
-> > >=20
-> > > v5: removed caching for names of opened cards
-> > >  relaxed opening of filtered devices
-> > > v6: fixed assingment in _is_already_open() (Janusz)
-> > >  simplify use of this function
-> > > v7: restore check for already opened filtered card (Janusz)
-> > > v8: limit checks for N-th card to 0...N-1 range (Janusz)
-> >=20
-> > As we discussed, that was not my intention.
-> >=20
->=20
-> It may be reverted, see my proposition below.
->=20
-> > >  simplify if-else in __search_and_open() (Kamil)
-> > >=20
-> > > Cc: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
-> > > Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > > ---
-> > >  lib/drmtest.c | 73 +++++++++++++++++++++++++++++++++++++++----------=
-=2D-
-> > >  1 file changed, 56 insertions(+), 17 deletions(-)
-> > >=20
-> > > diff --git a/lib/drmtest.c b/lib/drmtest.c
-> > > index 73d9159af..62d31b000 100644
-> > > --- a/lib/drmtest.c
-> > > +++ b/lib/drmtest.c
-> > > @@ -322,35 +322,54 @@ static int _opened_fds_count;
-> > >  static void _set_opened_fd(int idx, int fd)
-> > >  {
-> > >  	assert(idx < ARRAY_SIZE(_opened_fds));
-> > > -	assert(idx <=3D _opened_fds_count);
-> > > +	assert(idx >=3D 0);
-> > > =20
-> > >  	_opened_fds[idx].fd =3D fd;
-> > > =20
-> > >  	assert(fstat(fd, &_opened_fds[idx].stat) =3D=3D 0);
-> > > =20
-> > > -	_opened_fds_count =3D idx+1;
-> > > +	for (int n =3D _opened_fds_count; n < idx; n++)
-> > > +		_opened_fds[n].fd =3D -1;
-> > > +
-> > > +	if (idx >=3D _opened_fds_count)
-> > > +		_opened_fds_count =3D idx + 1;
-> > >  }
-> > > =20
-> > > -static bool _is_already_opened(const char *path, int as_idx)
-> > > +/* in *err returns -errno or index to _opened_fds[] */
-> > > +static bool _is_already_opened(const char *path, int as_idx, int *er=
-r)
-> > >  {
-> > >  	struct stat new;
-> > > =20
-> > >  	assert(as_idx < ARRAY_SIZE(_opened_fds));
-> > > -	assert(as_idx <=3D _opened_fds_count);
-> > > +	assert(as_idx >=3D 0);
-> > > =20
-> > >  	/*
-> > >  	 * we cannot even stat the device, so it's of no use - let's claim =
-it's
-> > >  	 * already opened
-> > >  	 */
-> > > -	if (igt_debug_on(stat(path, &new) !=3D 0))
-> > > +	if (igt_debug_on(stat(path, &new) !=3D 0)) {
-> > > +		if (err)
-> > > +			*err =3D -errno;
-> > > +
-> > >  		return true;
-> > > +	}
-> > > +
-> > > +	if (err)
-> > > +		*err =3D 0;
-> > > +
-> > > +	for (int i =3D 0, end =3D min(as_idx, _opened_fds_count); i < end; =
-++i) {
-> >=20
-> > AFAICU from our talk, by limiting the scope to min(as_idx, _opened_fds_=
-count)=20
-> > you tried to address a different issue -- the as_idx-th card potentiall=
-y=20
-> > having been already opened before and added to the _opened_fds table, t=
-hen=20
-> > closed.
-> >=20
->=20
-> Old code here was:
-> > > -	for (int i =3D 0; i < as_idx; ++i) {
->=20
-> It can be changed to
->=20
-> 	for (int i =3D 0; i < _opened_fds_count; ++i) {
->=20
-> with additional code here:
->=20
->         if (i =3D=3D as_idx) continue;
->=20
-> as we want to keep compatibility with previous behaviour which allows
->=20
-> fd =3D drm_open_driver(DRIVER_XE);
-> fd2 =3D drm_open_driver(DRIVER_XE);
+On Fri, 9 Feb 2024 14:29:30 -0300
+Arthur Grillo <arthurgrillo@riseup.net> wrote:
 
-OK, but then let's add a comment that explains that special case we need to=
-=20
-address for backward compatibility.
-
->=20
-> Also note that old code was actually limiting checks here,
-> after opening 0...3rd card, call to open card(1) will
-> actually only check _opened_fds[0].
-
-The old code could perform those checks within that limited scope only if i=
-t=20
-was able to open cards in random order, but it wasn't, then it was never=20
-taking that path, was it?
-
->=20
-> > > +		if (_opened_fds[i].fd =3D=3D -1)
-> > > +			continue;
-> > > =20
-> > > -	for (int i =3D 0; i < as_idx; ++i) {
-> > >  		/* did we cross filesystem boundary? */
-> > >  		assert(_opened_fds[i].stat.st_dev =3D=3D new.st_dev);
-> > > =20
-> > > -		if (_opened_fds[i].stat.st_ino =3D=3D new.st_ino)
-> > > +		if (_opened_fds[i].stat.st_ino =3D=3D new.st_ino) {
-> > > +			if (err)
-> > > +				*err =3D i;
-> > > +
-> > >  			return true;
-> > > +		}
-> > >  	}
-> > > =20
-> > >  	return false;
-> > > @@ -359,23 +378,37 @@ static bool _is_already_opened(const char *path=
-, int as_idx)
-> > >  static int __search_and_open(const char *base, int offset, unsigned =
-int chipset, int as_idx)
-> > >  {
-> > >  	const char *forced;
-> > > +	int err;
-> > > =20
-> > >  	forced =3D forced_driver();
-> > >  	if (forced)
-> > >  		igt_debug("Force option used: Using driver %s\n", forced);
-> > > =20
-> > > -	for (int i =3D 0; i < 16; i++) {
-> > > +	for (int i =3D 0, idx =3D -1; i < 16 && idx < as_idx; i++) {
-> > >  		char name[80];
-> > >  		int fd;
-> > > =20
-> > >  		sprintf(name, "%s%u", base, i + offset);
-> > > =20
-> > > -		if (_is_already_opened(name, as_idx))
-> > > -			continue;
-> > > +		if (_is_already_opened(name, as_idx, &err)) {
-> > > +			if (err < 0)
-> > > +				continue;
-> > > +
-> > > +			if (idx + 1 < as_idx) {
-> > > +				++idx;
-> > > +				continue;
-> > > +			}
-> > > +		}
-> > > =20
-> > >  		fd =3D __drm_open_device(name, chipset);
-> > > -		if (fd !=3D -1)
-> > > +		if (fd =3D=3D -1)
-> > > +			continue;
-> > > +
-> > > +		++idx;
-> > > +		if (idx =3D=3D as_idx)
-> > >  			return fd;
-> > > +
-> > > +		close(fd);
-> > >  	}
-> > > =20
-> > >  	return -1;
-> > > @@ -486,7 +519,7 @@ static bool __get_card_for_nth_filter(int idx, st=
-ruct igt_device_card *card)
-> > >   *   * idx-th filter (starting with 0, filters are semicolon separat=
-ed) is used
-> > >   *   * if there is no idx-th filter, goto 2
-> > >   *   * first device maching the filter is selected
-> > > - *   * if it's already opened (for indexes =3D 0..idx-1) we fail wit=
-h -1
-> > > + *   * if it's already opened (for indexes !=3D idx) we fail with -1
-> > >   *   * otherwise open the device and return the fd
-> > >   *
-> > >   * 2. compatibility mode - open the first DRM device we can find tha=
-t is not
-> > > @@ -531,6 +564,7 @@ int __drm_open_driver_another(int idx, int chipse=
-t)
-> > >  	if (chipset !=3D DRIVER_VGEM && igt_device_filter_count() > idx) {
-> > >  		struct igt_device_card card;
-> > >  		bool found;
-> > > +		int err;
-> > > =20
-> > >  		found =3D __get_card_for_nth_filter(idx, &card);
-> > > =20
-> > > @@ -539,14 +573,19 @@ int __drm_open_driver_another(int idx, int chip=
-set)
-> > >  			found =3D __get_card_for_nth_filter(idx, &card);
-> > >  		}
-> > > =20
-> > > -		if (!found || !strlen(card.card))
-> > > +		if (!found || !strlen(card.card)) {
-> > >  			igt_warn("No card matches the filter! [%s]\n",
-> > >  				 igt_device_filter_get(idx));
-> > > -		else if (_is_already_opened(card.card, idx))
-> > > -			igt_warn("card maching filter %d is already opened\n", idx);
-> > > -		else
-> > > +		} else if (_is_already_opened(card.card, idx, &err)) {
-> > > +			if (err < 0)
-> > > +				igt_warn("cannot stat card maching filter %d errno=3D%d card=3D%=
-s\n", idx, err, card.card);
-> > > +			else if (idx !=3D err)
-> > > +				igt_warn("card maching filter %d is already opened as %d, card=
-=3D%s\n", idx, err, card.card);
-> > > +			else
+> On 09/02/24 05:32, Pekka Paalanen wrote:
+> > On Thu, 8 Feb 2024 16:38:31 -0300
+> > Arthur Grillo <arthurgrillo@riseup.net> wrote:
+> >  =20
+> >> On 08/02/24 06:50, Pekka Paalanen wrote: =20
+> >>> On Wed, 07 Feb 2024 17:17:15 -0300
+> >>> Arthur Grillo <arthurgrillo@riseup.net> wrote:
+> >>>    =20
+> >>>> Create a benchmark for the VKMS driver. Use a KMS layout with delibe=
+rate
+> >>>> odd sizes to try to avoid alignment accidents and run it for FRAME_C=
+OUNT
+> >>>> frames flipping framebuffers in each plane.
+> >>>>
+> >>>> Link: https://lore.kernel.org/all/20240202214527.1d97c881@ferris.loc=
+aldomain/
+> >>>> Suggested-by: Pekka Paalanen <pekka.paalanen@haloniitty.fi>
+> >>>> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
+> >>>> ---
+> >>>> This benchmark was suggested by Pekka Paalanen on [1] to better anal=
+yse
+> >>>> possible performance regression on the Virtual Kernel Modesetting(VK=
+MS)
+> >>>> driver.
+> >>>>
+> >>>> With this benchmark I was able to determine two performance regressi=
+on:
+> >>>>
+> >>>> - 322d716a3e8a ("drm/vkms: isolate pixel conversion functionality")
+> >>>> - cc4fd2934d41 ("drm/vkms: Isolate writeback pixel conversion functi=
+ons")
+> >>>>
+> >>>> [1]: https://lore.kernel.org/all/20240202214527.1d97c881@ferris.loca=
+ldomain/
+> >>>> ---
+> >>>>  benchmarks/meson.build   |   1 +
+> >>>>  benchmarks/vkms_stress.c | 203 ++++++++++++++++++++++++++++++++++++=
++++++++++++
+> >>>>  2 files changed, 204 insertions(+)
+> >>>>
+> >>>> diff --git a/benchmarks/meson.build b/benchmarks/meson.build
+> >>>> index c451268bc44f..3aa66d6dffe2 100644
+> >>>> --- a/benchmarks/meson.build
+> >>>> +++ b/benchmarks/meson.build
+> >>>> @@ -20,6 +20,7 @@ benchmark_progs =3D [
+> >>>>  	'kms_vblank',
+> >>>>  	'prime_lookup',
+> >>>>  	'vgem_mmap',
+> >>>> +	'vkms_stress',
+> >>>>  ]
+> >>>> =20
+> >>>>  benchmarksdir =3D join_paths(libexecdir, 'benchmarks')
+> >>>> diff --git a/benchmarks/vkms_stress.c b/benchmarks/vkms_stress.c
+> >>>> new file mode 100644
+> >>>> index 000000000000..b9128c208861
+> >>>> --- /dev/null
+> >>>> +++ b/benchmarks/vkms_stress.c =20
 > >=20
-> > Please note that if the aforementioned loop inside _is_already_opened()=
- is=20
-> > limited to min(as_idx, _opened_fds_count) then the above else case is n=
-ever=20
-> > true since err can never reach idx, then the below assignment is dead c=
-ode.
+> > ...
+> >  =20
+> >>>> +
+> >>>> +igt_simple_main
+> >>>> +{
+> >>>> +	struct data_t data;
+> >>>> +	enum pipe pipe =3D PIPE_NONE;
+> >>>> +
+> >>>> +	data.kms =3D default_kms;
+> >>>> +   =20
+> >>>
+> >>> Hi Arthur,
+> >>>
+> >>> all the above looks really good!
+> >>>
+> >>> Some things below look strange to me, but I don't know the igt API.
+> >>>    =20
+> >>>> +	data.fd =3D drm_open_driver_master(DRIVER_ANY);
+> >>>> +
+> >>>> +	igt_display_require(&data.display, data.fd);
+> >>>> +
+> >>>> +	kmstest_set_vt_graphics_mode();
+> >>>> +
+> >>>> +	igt_display_require(&data.display, data.fd);   =20
+> >>>
+> >>> Are you supposed to call igt_display_require twice?
+> >>>    =20
+> >>
+> >> Only this way the writeback connector appears. I took this from
+> >> `tests/kms_writeback.c`.
+> >>
+> >> I now did a bit of lore.kernel.org archaeology and found why this is
+> >> necessary:
+> >>
+> >> Rodrigo Siqueira sent this patch:
+> >> https://lore.kernel.org/all/20190306213005.7hvbnwl7dohr3vuv@smtp.gmail=
+.com/
+> >>
+> >> It places drmSetClientCap() before drmModeGetResources(). (The patch
+> >> description is wrong, as noted by [1])
+> >>
+> >> Without this, you don't need to call igt_display_require() twice. I
+> >> don't know if this patch is wrong, but it is good to bring it up for
+> >> discussion. =20
 > >=20
->=20
-> You are right, I would remove it. I was thinking about change
-> here to drop idx !=3D err check, see below.
->=20
-> > The issue with before opened and closed cards should be addressed in a=
-=20
-> > different way and with a separate patch, I believe, maybe by removing=20
-> > cards from _opened_fds on close.
+> > Hi Arthur,
 > >=20
-> > Thanks,
-> > Janusz
-> >=20
+> > did you mean "*With* this, you don't need to call igt_display_require()
+> > twice."? =20
 >=20
-> That was never done maybe because tests were run only once and
-> mostly on one-card system. Also there are cases when dev wants to call
-> close() directly, not with drm_close_driver(). After return from this
-> function all _fds data is stale, especially after driver reload but
-> this is a seperate problem.
+> No, I really meant _without_. The patch has already been applied, it was
+> added inside commit 3642acbb74f5 ("lib/igt_kms: Add writeback support")
+> (it says on the commit message).
+>=20
+> If you remove this change you don't need to call igt_display_require()
+> twice. But, based on you explanation, I don't think it's right to remove
+> it. Although, for some reason, you need call igt_display_require() twice
+> with this fix.
 
-Maybe we could provide a function that just cleans up _opened_fds(), to be=
-=20
-called after a user makes sure all cards have been closed and before next=20
-attempt to reopen them.  Then your method for probing the number of cards b=
-y=20
-opening them and closing we were talking about could call that cleanup=20
-function before return.
+If you set client caps before GetResources, there should not be any
+need to call igt_display_require() twice, unless there is yet another
+problem. Sounds like something to fix.
+
+However, I cannot understand how reverting the change could *not*
+require calling igt_display_require() twice. The call to GetResources
+before setting client caps will not expose writeback connectors.
+
 
 Thanks,
-Janusz
+pq
 
-> Imho use case for this was to open all cards in one go and test them.
+
 >=20
-> Seperate issue would be to decide it we allow use of repeated card=3D0
-> like:
+> Best Regards,
+> ~Arthur Grillo
 >=20
-> sudo IGT_DEVICE=3Dpci:vendor=3DIntel,card=3D0\;pci:vendor=3DIntel,card=3D=
-0 \
->     build/tests/gem_basic --r multigpu-create-close
->=20
-> as now this will fail in igt_warn("card matching ... is already opened as=
- ...")
->=20
-> Regards,
-> Kamil
->=20
-> > > +				fd =3D __open_driver_exact(card.card, chipset);
-> > > +		} else {
-> > >  			fd =3D __open_driver_exact(card.card, chipset);
-> > > -
-> > > +		}
-> > >  	} else {
-> > >  		/* no filter for device idx, let's open whatever is available */
-> > >  		fd =3D __open_driver("/dev/dri/card", 0, chipset, idx);
-> > >=20
+> >=20
+> > All DRM client caps do need to be set before any call to GetResources
+> > or anything else, exactly because the client caps change the kernel
+> > side behaviour. Client caps may also hide things, not only expose
+> > things, at least in the future if not already (color pipelines will
+> > replace legacy color properties).
+> >=20
+> > If you need to check DRM (kernel) caps, that should be done immediately
+> > after setting DRM client caps. I think that's the most logical and
+> > safest order.
 > >=20
 > >=20
-> >=20
-> >=20
->=20
+> > Thanks,
+> > pq
+> >  =20
+> >>
+> >> [1]: https://lore.kernel.org/all/20190318104128.GH26454@e110455-lin.ca=
+mbridge.arm.com/
+> >> =20
+> >>>> +	igt_require(data.display.is_atomic);
+> >>>> +
+> >>>> +	igt_display_require_output(&data.display);
+> >>>> +
+> >>>> +	igt_require(data.wb_output);
+> >>>> +	igt_display_reset(&data.display);
+> >>>> +
+> >>>> +	data.wb_output =3D find_wb_output(&data);   =20
+> >>>
+> >>> Should igt_require(data.wb_output) be after find_wb_output?
+> >>>    =20
+> >>>> +
+> >>>> +	for_each_pipe(&data.display, pipe) {
+> >>>> +		igt_debug("Selecting pipe %s to %s\n",
+> >>>> +			  kmstest_pipe_name(pipe),
+> >>>> +			  igt_output_name(data.wb_output));
+> >>>> +		igt_output_set_pipe(data.wb_output, pipe);   =20
+> >>>
+> >>> Isn't this strange if there are multiple pipes?   =20
+> >>
+> >> Yeah, I forgot to place a `break;` there.
+> >>
+> >> All the others comments will be addressed on v2.
+> >>
+> >> Best Regards,
+> >> ~Arthur Grillo =20
 
 
+--Sig_/vigNP9OE2EpShjXpd6+w1wS
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmXJ2jIACgkQI1/ltBGq
+qqd8fw//f40jWSRopFxHYX7o5WUyvw6aQOIiFEg+auWSkk4BdeCqRWYQ504r/kib
+9VcRklwFZ/+AkFz8oadwtGBvKltQsdu9Vi69G7kUbIVPOlVtJTgP5denGfKKxCwc
+/D0nyfDJxmRPFN1L2Hhg/ISYbhrY0QcDMZdYlvGLw4CBe0Lold5YeYCzhv440mcS
+iNNj6m1n5miWyVuYxCzx583oSzpqUM9asqoNIx0P4yOqhyXCSDwdKC93Kv7ua++g
+2kU1XCgRKXXVWKaUGMvZMnAN7raTtEDU8z6l2ME1Queei+w4aphtC+YTzCrPKbmS
+z88cC3XUbjRk2AdB4GKYQA0QR9W8B57mgghJrpUbXyYsgx2QAbm473dyjstcQVBT
+LWGdG0L9Rykq0EUXzsne8Vf+nJ/YktP47/4tTXehvsvcaMjRwXniLKwJhX8nvjGi
+976tHOqNcumjeT+dXq14T3Pmm5L1Js8sXQiEIH6kN3wLSU3OYp6cl/8sTgbOg1N4
+0KAYuTJytZvdcUsRlm0dhEVVm8wd2FdanzRusAZGTLNdTCWrUjZuYYk725c3ybe3
+jbC9xW+IfXtLVOU2m9XxHhLxiKBvZLdF0ahXBiKfJjFYwB7kMNuL6Bf3TGTo3TMx
+z3f21aGs8Kl6Bkt7guirH2Rj5s13vR1a/oT9kDH+ksKBcAhmWtg=
+=Xsgp
+-----END PGP SIGNATURE-----
+
+--Sig_/vigNP9OE2EpShjXpd6+w1wS--
