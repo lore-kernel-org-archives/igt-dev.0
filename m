@@ -4,53 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C65D8C48297
-	for <igt-dev@archiver.kernel.org>; Mon, 12 Feb 2024 15:06:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5011C48297
+	for <igt-dev@archiver.kernel.org>; Mon, 12 Feb 2024 15:06:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6177310E7D6;
-	Mon, 12 Feb 2024 15:06:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4392A10E7D6;
+	Mon, 12 Feb 2024 15:06:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B0B3tSoI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GsHcGxma";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7ECAD10E7E4
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Feb 2024 15:06:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F3AFC10E7E4
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Feb 2024 15:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707750389; x=1739286389;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=SrIVH4Hp3WdY7s/hSVOsRXL06TmajuIwA/SnRrjjp2A=;
- b=B0B3tSoIMbVgOJJmeAbCU8JdPz/MfzDYwze3thYgNpPWaepklWmSfFzV
- Mg1BCCuehfTWA3VcWZBoiIpRlL4Sg9KVxmwwwn6enWSJ5If6eeOY5TNIs
- Co/ERMTWJ6dlH46JRCqribWPaEOzE3C6O28DGkXskCMNstR4yu2i1sTyo
- W+Gs68wyGX7cxFiGttlFR9OZ/6kLEKoT4klOQAHma/iEAiR7rIwBT3JL0
- kuJR1DR8GNhuKXijZl9QQKV3AodsQ/oK8AGrLJkel3cWNfPjOHUZzYzRk
- NRZLG3E81lgdpiiZyU5f1O2QBoAI9D5ADNkja/a9hQLtTugOOkVL7CWYb Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="24198205"
-X-IronPort-AV: E=Sophos;i="6.06,264,1705392000"; d="scan'208";a="24198205"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2024 07:06:29 -0800
-X-ExtLoop1: 1
+ t=1707750411; x=1739286411;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=+TRPTd/OtrlIiqRD2VMlG9IF3li1L/Z97aMbqCiOvNo=;
+ b=GsHcGxma+I4JELL0DvtP38AKgWjIUxCaQa1bkOkf17s4SONh8nwtkbVv
+ W4gtVh+WFkJ6jnbOSErrtfzPV5ZlaoGAMRx60uMFGoMGlEiktPJrdBs6u
+ h+T+qOdJto5bDXgeUvfvD0aKfU5dNGlpHWF5G1SgHqVaIQ7d68XSFx2G0
+ NhyBy6x+ii/nGnqAIUcexzYTV+U0JvCac3fQrPK5/A4jV/+QM2Yzc/mI6
+ /RQrAraSo0SCDvG90xYipaj0kuBsIR0lW3xxr+9PmU3UjSx69qwS5vlM5
+ LMJZyJki0ye/nZX4R7cHlBggN26ahodFcp1K718t/RgDasbLNF040ALAI Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="1611876"
 X-IronPort-AV: E=Sophos;i="6.06,264,1705392000"; 
-   d="scan'208";a="2907684"
-Received: from unknown (HELO localhost) ([10.245.86.45])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2024 07:06:26 -0800
-Date: Mon, 12 Feb 2024 16:06:23 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 7/8] lib/intel_bufops: keep bo_size separate
-Message-ID: <20240212150623.dcm73ozlidz5ndjw@zkempczy-mobl2>
-References: <20240209183433.375099-1-matthew.auld@intel.com>
- <20240209183433.375099-7-matthew.auld@intel.com>
+   d="scan'208";a="1611876"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa113.fm.intel.com with ESMTP; 12 Feb 2024 07:06:51 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,264,1705392000"; d="scan'208";a="33684665"
+Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Feb 2024 07:06:49 -0800
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [i-g-t] benchmarks/kms_vblank: Add XE support
+Date: Mon, 12 Feb 2024 20:31:13 +0530
+Message-ID: <20240212150113.736295-1-bhanuprakash.modem@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240209183433.375099-7-matthew.auld@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,75 +61,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Feb 09, 2024 at 06:34:32PM +0000, Matthew Auld wrote:
-> If the caller provides some bo_size, like for an existing object handle,
-> then we currently trample the buf->size here, which seems quite
-> inconsistent. Rather treat bo_size and size separate, just ensuring that
-> bo_size is large enough.
-> 
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  lib/intel_bufops.c | 20 ++++++++++----------
->  1 file changed, 10 insertions(+), 10 deletions(-)
-> 
-> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-> index 7f72f4762..2ef2c1c70 100644
-> --- a/lib/intel_bufops.c
-> +++ b/lib/intel_bufops.c
-> @@ -903,11 +903,6 @@ static void __intel_buf_init(struct buf_ops *bops,
->  		size = buf->surface[0].stride * ALIGN(height, align_h);
->  	}
->  
-> -	if (bo_size > 0) {
-> -		igt_assert(bo_size >= size);
-> -		size = bo_size;
-> -	}
-> -
->  	/* Store buffer size to avoid mistakes in calculating it again */
->  	buf->size = size;
->  	buf->handle = handle;
-> @@ -918,17 +913,22 @@ static void __intel_buf_init(struct buf_ops *bops,
->  	buf->region = region;
->  
->  	if (!handle) {
-> +		if (!bo_size)
-> +			bo_size = size;
-> +
->  		if (bops->driver == INTEL_DRIVER_I915) {
-> -			if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
-> -				igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
-> +			if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &bo_size, region))
-> +				igt_assert_eq(__gem_create(bops->fd, &bo_size, &buf->handle), 0);
->  		} else {
-> -			size = ALIGN(size, xe_get_default_alignment(bops->fd));
-> -			buf->handle = xe_bo_create(bops->fd, 0, size, region, 0);
-> +			bo_size = ALIGN(bo_size, xe_get_default_alignment(bops->fd));
-> +			buf->handle = xe_bo_create(bops->fd, 0, bo_size, region, 0);
->  		}
-> +	} else {
-> +		igt_assert(bo_size >= size);
+Add support for XE driver.
 
-I think this assertion should be outside and cover all cases.
-If user will pass handle and due to bug some positive bo_size
-we still can catch situation where according to size calculation
-it will be bigger than bo_size what's wrong.
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ benchmarks/kms_vblank.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-With this minor nits above:
+diff --git a/benchmarks/kms_vblank.c b/benchmarks/kms_vblank.c
+index f32cc9e32..8668bacab 100644
+--- a/benchmarks/kms_vblank.c
++++ b/benchmarks/kms_vblank.c
+@@ -161,7 +161,7 @@ int main(int argc, char **argv)
+ 		}
+ 	}
+ 
+-	fd = drm_open_driver(DRIVER_INTEL);
++	fd = drm_open_driver(DRIVER_INTEL | DRIVER_XE);
+ 	if (!crtc0_active(fd)) {
+ 		fprintf(stderr, "CRTC/pipe 0 not active\n");
+ 		return 77;
+-- 
+2.43.0
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
-
->  	}
->  
->  	/* Store gem bo size */
-> -	buf->bo_size = size;
-> +	buf->bo_size = bo_size;
->  
->  	if (bops->driver == INTEL_DRIVER_I915)
->  		set_hw_tiled(bops, buf);
-> -- 
-> 2.43.0
-> 
