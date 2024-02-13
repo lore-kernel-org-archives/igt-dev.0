@@ -4,56 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4E5CC48260
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Feb 2024 09:34:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD7FFC4829F
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Feb 2024 10:01:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BA60E10E1E4;
-	Tue, 13 Feb 2024 09:34:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B66610E312;
+	Tue, 13 Feb 2024 10:01:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="brh5OqK5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gdDijtxe";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB41B10E1E4
- for <IGT-Dev@lists.freedesktop.org>; Tue, 13 Feb 2024 09:34:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A01F810E2CD
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Feb 2024 10:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707816863; x=1739352863;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=6IAyaJjtAR8fvtsTodNxEfRPhGLoTiAngMTKII/ySgA=;
- b=brh5OqK5sRhd1dQ8qPrx8SsXmqa/MxtqotCLdTuZn9ju1iXqIW2Yohhl
- 92+BUftW967APT9sHjk/+4/iitpqLO2Bxk82cZS3l2+mT0wzr6vuPxtjJ
- yiIL+8cOtc9F9CgGz+mQ7/njiahoehFCVRdE0465GlBh1gj/Zvp3BGiBp
- jCCRPLa8ANyqyBhyNZNgV5sW3hgomG3eZApxiEDYvouHoMYC+YmHs9fTq
- i9cw5GKlcBlQCBcBhIxSTPISlDZklg7fhGPImpnZULmW0ywNWS8Ic5B29
- XgzlaIl7WpDAk/D/RAPuKigjbIxulWRD5q9opLWwAFbVCUEQOpLbRiylN w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="1959583"
-X-IronPort-AV: E=Sophos;i="6.06,156,1705392000"; 
-   d="scan'208";a="1959583"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2024 01:34:22 -0800
+ t=1707818497; x=1739354497;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=tBNPyjJOfQCJVR42CRY2hT6e04Z1FgoqG4Bzj4IeMpE=;
+ b=gdDijtxeJyvYYZ9r+D1ae1JLyDVy3hMFaHfPbkELOMH4Sp3TurL72gHO
+ 4VyodtapKRJyDQV7Wyh7uxvQ+bIUiAr1Pl+xXx5Ev3+ZYttjrRNFy1HaQ
+ 2BsLv4d2B2xFmSyvQQlM7KDZ7Uk/d/h4GaUBYANn7xXi4b4Jxh5w9ldlV
+ uGIIaPL/QvAOEJofFw1JJb+6q4Ifes+qy4LW/6MWSrneVwrQMLXemQUUK
+ 5MKocWV6Qv93RYjxaQXnfONHmdxG0qriMnGpQpaJh2cIuG9kqX+d3yuc0
+ IXYLfbwPkCBqX6S7rHPS6nRYgalOf+bM0dnvxz6ctfKSUBtlfhbhK1+XA A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="19232349"
+X-IronPort-AV: E=Sophos;i="6.06,156,1705392000"; d="scan'208";a="19232349"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Feb 2024 02:01:36 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="935309421"
-X-IronPort-AV: E=Sophos;i="6.06,156,1705392000"; d="scan'208";a="935309421"
-Received: from lmcoquer-mobl.ger.corp.intel.com (HELO [10.213.230.64])
- ([10.213.230.64])
- by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2024 01:34:21 -0800
-Message-ID: <fc965672-a30a-4f5a-98af-2cdab1f53153@linux.intel.com>
-Date: Tue, 13 Feb 2024 09:34:20 +0000
+X-IronPort-AV: E=Sophos;i="6.06,156,1705392000"; 
+   d="scan'208";a="2815497"
+Received: from gfmckenx-mobl.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
+ ([10.252.21.42])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Feb 2024 02:01:35 -0800
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v2 1/8] tests/prime_nv_test: switch over to
+ intel_buf_init()
+Date: Tue, 13 Feb 2024 10:01:18 +0000
+Message-ID: <20240213100125.90085-1-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel/gem_watchdog: Reduced timeouts for
- worst case scenario
-Content-Language: en-US
-To: John.C.Harrison@Intel.com, IGT-Dev@Lists.FreeDesktop.Org
-References: <20240212212328.3794573-1-John.C.Harrison@Intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Organization: Intel Corporation UK Plc
-In-Reply-To: <20240212212328.3794573-1-John.C.Harrison@Intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,56 +65,91 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+We want to get rid of intel_buf_init_using_handle(), in favour of always
+passing in the real bo size, otherwise it is quite tricky to figure out
+what exactly to set for buf->bo_size (which eventually get plugged into
+vm_bind) when the caller is the one who created the bo. Trying to guess
+the page alignment is unsafe without knowing more about the actual
+object.  In this case it seems simplest to switch over to
+intel_buf_init. Should be no functional change here.
 
-On 12/02/2024 21:23, John.C.Harrison@Intel.com wrote:
-> From: John Harrison <John.C.Harrison@Intel.com>
-> 
-> The watchdog test reduces the watchdog timer from 20s to 1s and then
-> uses a 5s timeout waiting for the watchdog to do its stuff. This works
-> fine in general, but if an engine reset is required by a context that
-> is actually dead for real then a pre-emption timeout must be factored
-> in. For RCS/CCS engines, that timeout is 7.5 seconds by default. Thus,
-> the test timeout expires first and the test fails.
-> 
-> Normally, the system is not so dead when running this test as to
-> require an engine reset. A simple pre-emption works fine for the
-> spinner contexts that is uses. However, there is a hardware workaround
-> coming which prevents context switches when both RCS and CCS are busy.
-> 
-> So add an explicit override of the pre-emption timeout as well as the
-> watchdog timeout. That will allow the test to keep working after the
-> new w/a lands.
-> 
-> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-> ---
->   tests/intel/gem_watchdog.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
-> 
-> diff --git a/tests/intel/gem_watchdog.c b/tests/intel/gem_watchdog.c
-> index 1e4c350214c0..c9dd0deb51aa 100644
-> --- a/tests/intel/gem_watchdog.c
-> +++ b/tests/intel/gem_watchdog.c
-> @@ -577,6 +577,16 @@ igt_main
->   
->   		i915 = drm_reopen_driver(i915); /* Apply modparam. */
->   		ctx = intel_ctx_create_all_physical(i915);
-> +
-> +		for_each_ctx_engine(i915, ctx, e) {
-> +			/*
-> +			 * Context termination by watchdog may require an engine reset. That only
-> +			 * occurs after a pre-emption attempt has expired. For RCS/CCS engines,
-> +			 * the pre-emption timeout is longer than this test is wanting to wait.
-> +			 * So reduce that timeout in addition to the watchdog timeout itself.
-> +			 */
-> +			gem_engine_property_printf(i915, e->name, "preempt_timeout_ms", "%d", 640);
-> +		}
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ tests/prime_nv_test.c | 23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
 
-Restore at test exit for subsequent tests to be in a known environment?
+diff --git a/tests/prime_nv_test.c b/tests/prime_nv_test.c
+index bc2579604..eb5e2d8ea 100644
+--- a/tests/prime_nv_test.c
++++ b/tests/prime_nv_test.c
+@@ -273,13 +273,11 @@ static void test_i915_import_pread_pwrite(void)
+ 	gem_close(intel_fd, intel_handle);
+ }
+ 
+-static uint32_t create_bo(uint32_t val, int width, int height)
++static void fill_bo(uint32_t intel_handle, uint32_t val, int width, int height)
+ {
+-	uint32_t intel_handle;
+ 	int size = width * height;
+ 	uint32_t *ptr, *currptr;
+ 
+-	intel_handle = gem_create(intel_fd, 4*width*height);
+ 	igt_assert(intel_handle);
+ 
+         /* gtt map doesn't have a write parameter, so just keep the mapping
+@@ -293,15 +291,12 @@ static uint32_t create_bo(uint32_t val, int width, int height)
+ 		*currptr++ = val;
+ 
+ 	gem_munmap(ptr, size);
+-
+-	return intel_handle;
+ }
+ 
+ /* use intel hw to fill the BO with a blit from another BO,
+    then readback from the nouveau bo, check value is correct */
+ static void test_i915_blt_fill_nv_read(void)
+ {
+-	uint32_t dst_handle, src_handle;
+ 	int prime_fd;
+ 	struct nouveau_bo *nvbo = NULL;
+ 	uint32_t *ptr;
+@@ -312,18 +307,18 @@ static void test_i915_blt_fill_nv_read(void)
+ 
+ 	ibb = intel_bb_create(intel_fd, 4096);
+ 
+-	src_handle = create_bo(0xaa55aa55, w, h);
+-	dst_handle = gem_create(intel_fd, BO_SIZE);
++	intel_buf_init(bops, &src, w, h, 32, 0,
++		       I915_TILING_NONE, I915_COMPRESSION_NONE);
++	intel_buf_init(bops, &dst, w, 256, 32, 0,
++		       I915_TILING_NONE, I915_COMPRESSION_NONE);
+ 
+-	prime_fd = prime_handle_to_fd(intel_fd, dst_handle);
++	fill_bo(src.handle, 0xaa55aa55, w, h);
++
++	prime_fd = prime_handle_to_fd(intel_fd, dst.handle);
+ 
+ 	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd, &nvbo) == 0);
+ 	close(prime_fd);
+ 
+-	intel_buf_init_using_handle(bops, src_handle, &src, w, h, 32, 0,
+-				    I915_TILING_NONE, I915_COMPRESSION_NONE);
+-	intel_buf_init_using_handle(bops, dst_handle, &dst, w, 256, 32, 0,
+-				    I915_TILING_NONE, I915_COMPRESSION_NONE);
+ 	intel_bb_copy_intel_buf(ibb, &dst, &src, w * h * 4);
+ 
+ 	igt_assert(nouveau_bo_map(nvbo, NOUVEAU_BO_RDWR, nclient) == 0);
+@@ -335,8 +330,6 @@ static void test_i915_blt_fill_nv_read(void)
+ 	intel_buf_destroy(&src);
+ 	intel_buf_destroy(&dst);
+ 	intel_bb_destroy(ibb);
+-	gem_close(intel_fd, dst_handle);
+-	gem_close(intel_fd, src_handle);
+ }
+ 
+ /* test 8 use nouveau to do blit */
+-- 
+2.43.0
 
-Regards,
-
-Tvrtko
-
->   	}
->   
->   	igt_subtest_group {
