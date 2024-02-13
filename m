@@ -4,53 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25140C4829F
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Feb 2024 10:01:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E343C4829A
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Feb 2024 11:37:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AB9D110E43F;
-	Tue, 13 Feb 2024 10:01:45 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OH2CNXmc";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A0A010E347
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Feb 2024 10:01:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707818504; x=1739354504;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=hK+uIrAEu2isfxisgGSp60Z2jjrWRd+1bweVgwcId9o=;
- b=OH2CNXmc0/hjZHTks/4xuYVwoY6uchtBlp6zbuP7/12a5iLjoWowSnUy
- G+VN9PviVpl1bAhhaKocE+5ShrQ7sjE/Utp8bdhxKD+2DeQipq8S89Dj/
- /+y2GvBuf+l8zUQJfWP6ab9Tlh2JrL3G1jamPgETeuD8ldVrJrARARXeY
- YzorXErtgxbWlqRl5Lfquol/0kZFcnORXYgOBnBv9DWb0nVHohzcELCjl
- JoFjzbgGlsR1TpOylSFUNq0u1ALS7RFohWMy4R7TCJtd7Pj1XU0AcI0XL
- QdRKV8BhzSGX/QsbH03M/po05PKS8H2XCP/0pcSam9a/9DhH8kabvxbjr w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="19232364"
-X-IronPort-AV: E=Sophos;i="6.06,156,1705392000"; d="scan'208";a="19232364"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2024 02:01:44 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,156,1705392000"; 
-   d="scan'208";a="2815524"
-Received: from gfmckenx-mobl.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
- ([10.252.21.42])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2024 02:01:42 -0800
-From: Matthew Auld <matthew.auld@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v2 8/8] lib/igt_fb: assert fb->size blt_fb_init()
-Date: Tue, 13 Feb 2024 10:01:25 +0000
-Message-ID: <20240213100125.90085-8-matthew.auld@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240213100125.90085-1-matthew.auld@intel.com>
-References: <20240213100125.90085-1-matthew.auld@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id C2F5210E520;
+	Tue, 13 Feb 2024 11:37:26 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5018910E520;
+ Tue, 13 Feb 2024 11:37:26 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0903904374444264759=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2Cv2=2C1/8=5D_tests/prime=5Fnv=5Ftest=3A_switch_over_to_intel?=
+ =?utf-8?q?=5Fbuf=5Finit=28=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matthew Auld" <matthew.auld@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 13 Feb 2024 11:37:26 -0000
+Message-ID: <170782424632.1202360.1716467550787908090@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240213100125.90085-1-matthew.auld@intel.com>
+In-Reply-To: <20240213100125.90085-1-matthew.auld@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,32 +38,171 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-If fb->size is zero here, the mmap failure is pretty obscure from the
-logs. Make it more obvious if we hit this.
+--===============0903904374444264759==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- lib/igt_fb.c | 2 ++
- 1 file changed, 2 insertions(+)
+== Series Details ==
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 71c220a08..65e0638c2 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2780,6 +2780,8 @@ static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
- 
- 	blt->plane_offset = fb->offsets[plane];
- 
-+	igt_assert(fb->size);
-+
- 	if (is_xe_device(fb->fd))
- 		blt->ptr = xe_bo_mmap_ext(fb->fd, handle, fb->size,
- 					  PROT_READ | PROT_WRITE);
--- 
-2.43.0
+Series: series starting with [i-g-t,v2,1/8] tests/prime_nv_test: switch over to intel_buf_init()
+URL   : https://patchwork.freedesktop.org/series/129826/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_14260 -> IGTPW_10665
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10665/index.html
+
+Participating hosts (38 -> 36)
+------------------------------
+
+  Missing    (2): fi-snb-2520m fi-bsw-n3050 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10665 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-adlp-9:         [PASS][1] -> [INCOMPLETE][2] ([i915#9413])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14260/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10665/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_create@basic@smem:
+    - {bat-arls-1}:       [DMESG-WARN][3] ([i915#10194]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14260/bat-arls-1/igt@gem_exec_create@basic@smem.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10665/bat-arls-1/igt@gem_exec_create@basic@smem.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10194]: https://gitlab.freedesktop.org/drm/intel/issues/10194
+  [i915#9413]: https://gitlab.freedesktop.org/drm/intel/issues/9413
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7710 -> IGTPW_10665
+
+  CI-20190529: 20190529
+  CI_DRM_14260: d395a4fdb0e78537f06bb401a9501b8467c774a3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10665: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10665/index.html
+  IGT_7710: d87a5d85a60fba1283821d5212c3aece64cb36ba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
+-igt@perf_pmu@flr-npd
+-igt@perf_pmu@flr-npd-close-after-unbind
+-igt@perf_pmu@flr-npd-event-group
+-igt@perf_pmu@flr-npd-separate-events
+-igt@perf_pmu@forked-flr-npd
+-igt@perf_pmu@forked-flr-npd-event-group
+-igt@perf_pmu@forked-flr-npd-separate-events
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10665/index.html
+
+--===============0903904374444264759==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/8] tests/prime_nv_test: switch over to intel_buf_init()</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129826/">https://patchwork.freedesktop.org/series/129826/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10665/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10665/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_14260 -&gt; IGTPW_10665</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10665/index.html</p>
+<h2>Participating hosts (38 -&gt; 36)</h2>
+<p>Missing    (2): fi-snb-2520m fi-bsw-n3050 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10665 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_lrc:<ul>
+<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14260/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10665/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9413">i915#9413</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_exec_create@basic@smem:<ul>
+<li>{bat-arls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14260/bat-arls-1/igt@gem_exec_create@basic@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10194">i915#10194</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10665/bat-arls-1/igt@gem_exec_create@basic@smem.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7710 -&gt; IGTPW_10665</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14260: d395a4fdb0e78537f06bb401a9501b8467c774a3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10665: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10665/index.html<br />
+  IGT_7710: d87a5d85a60fba1283821d5212c3aece64cb36ba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@perf_pmu@flr-npd<br />
+-igt@perf_pmu@flr-npd-close-after-unbind<br />
+-igt@perf_pmu@flr-npd-event-group<br />
+-igt@perf_pmu@flr-npd-separate-events<br />
+-igt@perf_pmu@forked-flr-npd<br />
+-igt@perf_pmu@forked-flr-npd-event-group<br />
+-igt@perf_pmu@forked-flr-npd-separate-events</p>
+
+</body>
+</html>
+
+--===============0903904374444264759==--
