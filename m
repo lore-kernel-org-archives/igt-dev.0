@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A52D4C4829A
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Feb 2024 18:08:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A296DC4829A
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Feb 2024 18:09:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5096510E8CC;
-	Tue, 13 Feb 2024 18:08:35 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A0rEPILS";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7289C10E888;
- Tue, 13 Feb 2024 18:08:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707847713; x=1739383713;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=NHBIcoXW8cubGs8VX67HaML7BgzTIZYvpmRQRZ3mdww=;
- b=A0rEPILS6YHCQOwlBKhEO6PL6J2pN93PUh0oC1w2SovQF1VBsVahQOOw
- HEh9zAbnpOkjf+bTgKSseDxi8kqZf61LFM6+qfaxMXj0qxoMxW3uyMOCJ
- Y5vWfAVt7damYjknm9Fv42i1tQQjKHq90n3cE1nxJf4/FZbjBs91x+VyQ
- oa6S+6cEU5q66JIdO2ZO7jpsLH6Z2eH6+NaSY8aWpGmkTLXRb96Nfyoo1
- 2+eMVwT0ZNm7xmE5inhMiPk+Ev8pWKeeQITs5u8LZFesMU5pGxa4yCDFh
- +6qXA4QpkPZaAzUwLS45tVpo6evK4z26JujAtSQlSOPikKK9p3GkndH3S g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="12591530"
-X-IronPort-AV: E=Sophos;i="6.06,157,1705392000"; d="scan'208";a="12591530"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2024 10:08:33 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,157,1705392000"; 
-   d="scan'208";a="2915894"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2024 10:08:31 -0800
-Date: Tue, 13 Feb 2024 19:08:29 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Arthur Grillo <arthurgrillo@riseup.net>,
- I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
- TejasreeX Illipilli <tejasreex.illipilli@intel.com>
-Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVA==?= =?utf-8?Q?=3A?= failure for
- benchmarks: Add VKMS benchmark (rev3)
-Message-ID: <20240213180829.g64qntiwfsocgr36@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Arthur Grillo <arthurgrillo@riseup.net>,
- I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
- TejasreeX Illipilli <tejasreex.illipilli@intel.com>
-References: <20240209-bench-v3-1-24a01f366d3b@riseup.net>
- <170754544126.1129906.8222139670718035516@5338d5abeb45>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 41FEF10E8CC;
+	Tue, 13 Feb 2024 18:09:48 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFCE210E888;
+ Tue, 13 Feb 2024 18:09:46 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3206436924290968430=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <170754544126.1129906.8222139670718035516@5338d5abeb45>
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/amdgpu/amd=5Fmultipip?=
+ =?utf-8?q?e=5Fmodeset=3A_Run_modeset_and_display_enable_for_multidisplays?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Hersen Wu" <hersenxs.wu@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 13 Feb 2024 18:09:46 -0000
+Message-ID: <170784778699.1218563.15822201362439169530@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240213165145.49514-1-hersenxs.wu@amd.com>
+In-Reply-To: <20240213165145.49514-1-hersenxs.wu@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,127 +37,167 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-02-10 at 06:10:41 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: benchmarks: Add VKMS benchmark (rev3)
-> URL   : https://patchwork.freedesktop.org/series/129644/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from IGT_7709_full -> IGTPW_10660_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_10660_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_10660_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10660/index.html
-> 
-> Participating hosts (8 -> 8)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_10660_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_flip@absolute-wf_vblank-interruptible@b-hdmi-a2:
->     - shard-rkl:          NOTRUN -> [INCOMPLETE][1]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10660/shard-rkl-3/igt@kms_flip@absolute-wf_vblank-interruptible@b-hdmi-a2.html
-> 
->   
-> New tests
-> ---------
-> 
->   New tests have been introduced between IGT_7709_full and IGTPW_10660_full:
-> 
-> ### New IGT tests (7) ###
-> 
->   * igt@kms_plane_scaling@invalid-num-scalers@pipe-d-hdmi-a-1-invalid-num-scalers:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.03] s
-> 
->   * igt@kms_setmode@basic@pipe-a-hdmi-a-1-pipe-b-hdmi-a-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.26] s
-> 
->   * igt@kms_setmode@basic@pipe-b-hdmi-a-1-pipe-a-hdmi-a-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.27] s
-> 
->   * igt@kms_setmode@invalid-clone-single-crtc-stealing@pipe-a-hdmi-a-1-hdmi-a-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.33] s
-> 
->   * igt@kms_setmode@invalid-clone-single-crtc-stealing@pipe-b-hdmi-a-1-hdmi-a-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.32] s
-> 
->   * igt@kms_setmode@invalid-clone-single-crtc@pipe-a-hdmi-a-1-hdmi-a-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.04] s
-> 
->   * igt@kms_setmode@invalid-clone-single-crtc@pipe-b-hdmi-a-1-hdmi-a-2:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.04] s
-> 
->   
+--===============3206436924290968430==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-These are unrelated to new benchmark adedd, no need for respin.
+== Series Details ==
 
-Regards,
-Kamil
+Series: tests/amdgpu/amd_multipipe_modeset: Run modeset and display enable for multidisplays
+URL   : https://patchwork.freedesktop.org/series/129841/
+State : success
 
-> 
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_10660_full that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@api_intel_bb@object-reloc-keep-cache:
->     - shard-dg2:          NOTRUN -> [SKIP][2] ([i915#8411])
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10660/shard-dg2-6/igt@api_intel_bb@object-reloc-keep-cache.html
-> 
-> 
+== Summary ==
 
-...cut...
+CI Bug Log - changes from CI_DRM_14264 -> IGTPW_10667
+====================================================
 
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7709 -> IGTPW_10660
-> 
->   CI-20190529: 20190529
->   CI_DRM_14248: c7d234dd2d329f223f56699636248a609dbe2267 @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_10660: 10660
->   IGT_7709: 17a41dcf1ed551e7a5f2ca88cad055b3f6d67e7e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10660/index.html
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10667/index.html
+
+Participating hosts (39 -> 37)
+------------------------------
+
+  Missing    (2): bat-mtlp-8 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10667 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-adln-1:         [PASS][1] -> [INCOMPLETE][2] ([i915#10241] / [i915#9413])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14264/bat-adln-1/igt@i915_selftest@live@gt_lrc.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10667/bat-adln-1/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-11:         [PASS][3] -> [DMESG-FAIL][4] ([i915#9500])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14264/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10667/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_fence@basic-busy@vecs0:
+    - {bat-arls-1}:       [DMESG-WARN][5] -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14264/bat-arls-1/igt@gem_exec_fence@basic-busy@vecs0.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10667/bat-arls-1/igt@gem_exec_fence@basic-busy@vecs0.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10194]: https://gitlab.freedesktop.org/drm/intel/issues/10194
+  [i915#10241]: https://gitlab.freedesktop.org/drm/intel/issues/10241
+  [i915#10258]: https://gitlab.freedesktop.org/drm/intel/issues/10258
+  [i915#9413]: https://gitlab.freedesktop.org/drm/intel/issues/9413
+  [i915#9500]: https://gitlab.freedesktop.org/drm/intel/issues/9500
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7711 -> IGTPW_10667
+
+  CI-20190529: 20190529
+  CI_DRM_14264: 65a621d44bec5a1ee7af20427215105e4c17e67f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10667: 10667
+  IGT_7711: 7711
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10667/index.html
+
+--===============3206436924290968430==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_multipipe_modeset: Run modeset and display enable for multidisplays</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129841/">https://patchwork.freedesktop.org/series/129841/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10667/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10667/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_14264 -&gt; IGTPW_10667</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10667/index.html</p>
+<h2>Participating hosts (39 -&gt; 37)</h2>
+<p>Missing    (2): bat-mtlp-8 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10667 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14264/bat-adln-1/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10667/bat-adln-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10241">i915#10241</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9413">i915#9413</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14264/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10667/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9500">i915#9500</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_exec_fence@basic-busy@vecs0:<ul>
+<li>{bat-arls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14264/bat-arls-1/igt@gem_exec_fence@basic-busy@vecs0.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10667/bat-arls-1/igt@gem_exec_fence@basic-busy@vecs0.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7711 -&gt; IGTPW_10667</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14264: 65a621d44bec5a1ee7af20427215105e4c17e67f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10667: 10667<br />
+  IGT_7711: 7711</p>
+
+</body>
+</html>
+
+--===============3206436924290968430==--
