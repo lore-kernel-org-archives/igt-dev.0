@@ -4,28 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD9E0C48260
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Feb 2024 17:33:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 177BEC48260
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Feb 2024 17:57:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4B14F10E760;
-	Tue, 13 Feb 2024 17:33:04 +0000 (UTC)
-Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 26F8B10E166;
- Tue, 13 Feb 2024 17:33:03 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8201628985824128035=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id B09EC10E39F;
+	Tue, 13 Feb 2024 17:57:32 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TcBb8lE0";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D571010E39F
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Feb 2024 17:57:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1707847050; x=1739383050;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Li5cP8l3soHPGThYUa9/S7UXQtc27fuSQuXezpB+Jj8=;
+ b=TcBb8lE0+Iq74pHGCnx6P4qHfqOuRmH+/zGD2XoeERnGmoL3BE/kzSU5
+ 3/rrrOarOdOfkb+A8XfprYmm0IR9372N3BeAp5kFLWcGwgCXdzin8EFEX
+ FmYm7v3vpo33S7tmrKDu3CubWznlAIaYlqv3NZauJExNUXbh01NN4U9Sd
+ 9E1PQ3hM0CkYPy3Q/MnTT0ideSX5FznAkGgBXM4Y0m9nNgzSx+QZ+NGYA
+ u168fja4sURClNcIDqB3V7ryZtnXD8/y+FcrOs6Grm+kbcx0c1kdDS7eK
+ Wqdu/FMeKVVKEI86JvJjGEOfF3/4HDd9OVc/zdwgEh0VaH1LuywuhQ+t3 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="396303235"
+X-IronPort-AV: E=Sophos;i="6.06,157,1705392000"; d="scan'208";a="396303235"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Feb 2024 09:57:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,157,1705392000"; 
+   d="scan'208";a="2919784"
+Received: from unknown (HELO localhost) ([10.246.5.61])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Feb 2024 09:57:27 -0800
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Arkadiusz Hiler <arek@hiler.eu>, Chris Wilson <chris@chris-wilson.co.uk>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Petri Latvala <adrinael@adrinael.net>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v1] drmtest: drop legacy path from filtered opens
+Date: Tue, 13 Feb 2024 18:57:22 +0100
+Message-ID: <20240213175722.40003-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bv3?=
- =?utf-8?q?=2C1/7=5D_build=3A_check_that_outb_is_present_in_io=2Eh_=28rev2?=
- =?utf-8?q?=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bernd Kuhls" <bernd@kuhls.net>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 13 Feb 2024 17:33:03 -0000
-Message-ID: <170784558316.1218562.7943199679100653824@5338d5abeb45>
-X-Patchwork-Hint: ignore
-References: <20231030195809.3527410-1-bernd@kuhls.net>
-In-Reply-To: <20231030195809.3527410-1-bernd@kuhls.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,135 +65,96 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8201628985824128035==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Function __drm_open_driver_another() has two paths, first being
+for filtered devices, second for non-filtered ones. Separate
+them and do not fallback into legacy path when index for card
+exceeds number of filtered devices. Use local opened fds table
+only for legacy calls as this table can become stale after
+driver reload. In filtered one do not use opened fds guards as
+this is pointless, we already have info about card wanted by user
+and we do not need to check if we ancounter already opened one.
+Also allow opening the same device if user wants it, for example
+with repeating same card number in --device or IGT_DEVICE:
 
-== Series Details ==
+sudo IGT_DEVICE=pci:vendor=Intel,card=0\;pci:vendor=Intel,card=0 \
+	build/tests/gem_basic --r multigpu-create-close
 
-Series: series starting with [v3,1/7] build: check that outb is present in io.h (rev2)
-URL   : https://patchwork.freedesktop.org/series/125776/
-State : success
+Cc: Arkadiusz Hiler <arek@hiler.eu>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Petri Latvala <adrinael@adrinael.net>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ lib/drmtest.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-== Summary ==
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 52b5a2020..307c44ef6 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -481,13 +481,12 @@ static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card)
+  *
+  * This function opens device in the following order:
+  *
+- * 1. when --device arguments are present:
++ * 1. when --device arguments are present or IGT_DEVICE env var is used:
+  *   * device scanning is executed,
+  *   * idx-th filter (starting with 0, filters are semicolon separated) is used
+- *   * if there is no idx-th filter, goto 2
++ *   * if there is no idx-th filter fail with -1
+  *   * first device maching the filter is selected
+- *   * if it's already opened (for indexes = 0..idx-1) we fail with -1
+- *   * otherwise open the device and return the fd
++ *   * open the device and return the fd
+  *
+  * 2. compatibility mode - open the first DRM device we can find that is not
+  *    already opened for indexes 0..idx-1, searching up to 16 device nodes
+@@ -528,10 +527,17 @@ int __drm_open_driver_another(int idx, int chipset)
+ {
+ 	int fd = -1;
+ 
+-	if (chipset != DRIVER_VGEM && igt_device_filter_count() > idx) {
++	if (chipset != DRIVER_VGEM && igt_device_filter_count()) {
++		int count = igt_device_filter_count();
+ 		struct igt_device_card card;
+ 		bool found;
+ 
++		if (idx < 0 || idx >= count) {
++			igt_warn("Cannot open, index into filter out of bounds: %d, count=%d\n",
++				 idx, count);
++			return -1;
++		}
++
+ 		found = __get_card_for_nth_filter(idx, &card);
+ 
+ 		if (!found) {
+@@ -542,19 +548,17 @@ int __drm_open_driver_another(int idx, int chipset)
+ 		if (!found || !strlen(card.card))
+ 			igt_warn("No card matches the filter! [%s]\n",
+ 				 igt_device_filter_get(idx));
+-		else if (_is_already_opened(card.card, idx))
+-			igt_warn("card maching filter %d is already opened\n", idx);
+ 		else
+ 			fd = __open_driver_exact(card.card, chipset);
+ 
+ 	} else {
+ 		/* no filter for device idx, let's open whatever is available */
+ 		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
++		if (fd >= 0)
++			_set_opened_fd(idx, fd);
+ 	}
+ 
+ 	if (fd >= 0) {
+-		_set_opened_fd(idx, fd);
+-
+ 		/* Cache xe_device struct. */
+ 		if (is_xe_device(fd))
+ 			xe_device_get(fd);
+-- 
+2.42.0
 
-CI Bug Log - changes from CI_DRM_14264 -> IGTPW_10666
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10666/index.html
-
-Participating hosts (39 -> 38)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10666 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@gem_exec_fence@basic-busy@vecs0:
-    - {bat-arls-1}:       [DMESG-WARN][1] -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14264/bat-arls-1/igt@gem_exec_fence@basic-busy@vecs0.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10666/bat-arls-1/igt@gem_exec_fence@basic-busy@vecs0.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10194]: https://gitlab.freedesktop.org/drm/intel/issues/10194
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7711 -> IGTPW_10666
-
-  CI-20190529: 20190529
-  CI_DRM_14264: 65a621d44bec5a1ee7af20427215105e4c17e67f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10666: 10666
-  IGT_7711: 7711
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10666/index.html
-
---===============8201628985824128035==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [v3,1/7] build: check that outb is present in io.h (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125776/">https://patchwork.freedesktop.org/series/125776/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10666/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10666/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14264 -&gt; IGTPW_10666</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10666/index.html</p>
-<h2>Participating hosts (39 -&gt; 38)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10666 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@gem_exec_fence@basic-busy@vecs0:<ul>
-<li>{bat-arls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14264/bat-arls-1/igt@gem_exec_fence@basic-busy@vecs0.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10666/bat-arls-1/igt@gem_exec_fence@basic-busy@vecs0.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7711 -&gt; IGTPW_10666</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14264: 65a621d44bec5a1ee7af20427215105e4c17e67f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10666: 10666<br />
-  IGT_7711: 7711</p>
-
-</body>
-</html>
-
---===============8201628985824128035==--
