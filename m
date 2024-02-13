@@ -4,82 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 792E0C4829A
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Feb 2024 18:06:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A52D4C4829A
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Feb 2024 18:08:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0602B10E8CC;
-	Tue, 13 Feb 2024 18:06:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5096510E8CC;
+	Tue, 13 Feb 2024 18:08:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BhaQnRxr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A0rEPILS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 507AC10E888;
- Tue, 13 Feb 2024 18:06:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7289C10E888;
+ Tue, 13 Feb 2024 18:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707847616; x=1739383616;
+ t=1707847713; x=1739383713;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=/bgv/UTpGfW1XoQ6fGEhdzBNK68k3MAhKXcnPUn4rhE=;
- b=BhaQnRxrMNcg/N/53f+jk+eQYvm7vnKJcb6dZuho9RtSBIcWbcQOudcz
- GynHq1DgfY2t8Kg3ZkamkKOMhEF2xONM8aSEfzeZtuK0MO58GH5P7gYP5
- pGeJkjcnrDepWDskMJpKy94KnOPjtAsxlG1kL7cOHgHBQ3KAvps1FcL3F
- ae4OBQ6eOFaOQvWyJs4MRpqx0n4J7Yv8usEiaxeXKv9IE6rHerHuVp64O
- jG9EgqNC7TkXY1YnHo8yEoJDyZ/VQHnpINV6G7LXLYpYEzyaDnAXK0rTJ
- AqkhrS6+oX5Syf0jHmnaOqW96RPi/4ZJPPqWD085LAkz7ONBmUmTrKUCV A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="13265065"
-X-IronPort-AV: E=Sophos;i="6.06,157,1705392000"; d="scan'208";a="13265065"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2024 10:06:55 -0800
+ mime-version:in-reply-to;
+ bh=NHBIcoXW8cubGs8VX67HaML7BgzTIZYvpmRQRZ3mdww=;
+ b=A0rEPILS6YHCQOwlBKhEO6PL6J2pN93PUh0oC1w2SovQF1VBsVahQOOw
+ HEh9zAbnpOkjf+bTgKSseDxi8kqZf61LFM6+qfaxMXj0qxoMxW3uyMOCJ
+ Y5vWfAVt7damYjknm9Fv42i1tQQjKHq90n3cE1nxJf4/FZbjBs91x+VyQ
+ oa6S+6cEU5q66JIdO2ZO7jpsLH6Z2eH6+NaSY8aWpGmkTLXRb96Nfyoo1
+ 2+eMVwT0ZNm7xmE5inhMiPk+Ev8pWKeeQITs5u8LZFesMU5pGxa4yCDFh
+ +6qXA4QpkPZaAzUwLS45tVpo6evK4z26JujAtSQlSOPikKK9p3GkndH3S g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="12591530"
+X-IronPort-AV: E=Sophos;i="6.06,157,1705392000"; d="scan'208";a="12591530"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Feb 2024 10:08:33 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,157,1705392000"; 
-   d="scan'208";a="3330391"
+   d="scan'208";a="2915894"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2024 10:06:51 -0800
-Date: Tue, 13 Feb 2024 19:06:27 +0100
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2024 10:08:31 -0800
+Date: Tue, 13 Feb 2024 19:08:29 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Arthur Grillo <arthurgrillo@riseup.net>, dri-devel@lists.freedesktop.org,
- Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Pekka Paalanen <pekka.paalanen@haloniitty.fi>,
- Louis Chauvet <louis.chauvet@bootlin.com>,
- Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>,
- Melissa Wen <melissa.srw@gmail.com>,
- =?utf-8?B?TWHDrXJh?= Canal <mairacanal@riseup.net>,
- Haneen Mohammed <hamohammed.sa@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Pekka Paalanen <pekka.paalanen@collabora.com>,
- =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
-Subject: Re: [PATCH i-g-t v3] benchmarks: Add VKMS benchmark
-Message-ID: <20240213180627.6czpykflxpfpms7j@kamilkon-desk.igk.intel.com>
+Cc: Arthur Grillo <arthurgrillo@riseup.net>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVA==?= =?utf-8?Q?=3A?= failure for
+ benchmarks: Add VKMS benchmark (rev3)
+Message-ID: <20240213180829.g64qntiwfsocgr36@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Arthur Grillo <arthurgrillo@riseup.net>,
- dri-devel@lists.freedesktop.org,
- Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Pekka Paalanen <pekka.paalanen@haloniitty.fi>,
- Louis Chauvet <louis.chauvet@bootlin.com>,
- Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>,
- Melissa Wen <melissa.srw@gmail.com>,
- =?utf-8?B?TWHDrXJh?= Canal <mairacanal@riseup.net>,
- Haneen Mohammed <hamohammed.sa@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>,
- Pekka Paalanen <pekka.paalanen@collabora.com>,
- =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
 References: <20240209-bench-v3-1-24a01f366d3b@riseup.net>
+ <170754544126.1129906.8222139670718035516@5338d5abeb45>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240209-bench-v3-1-24a01f366d3b@riseup.net>
+In-Reply-To: <170754544126.1129906.8222139670718035516@5338d5abeb45>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,294 +73,124 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Arthur,
-On 2024-02-09 at 16:39:09 -0300, Arthur Grillo wrote:
+Hi igt-dev,
+On 2024-02-10 at 06:10:41 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: benchmarks: Add VKMS benchmark (rev3)
+> URL   : https://patchwork.freedesktop.org/series/129644/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from IGT_7709_full -> IGTPW_10660_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10660_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10660_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10660/index.html
+> 
+> Participating hosts (8 -> 8)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10660_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_flip@absolute-wf_vblank-interruptible@b-hdmi-a2:
+>     - shard-rkl:          NOTRUN -> [INCOMPLETE][1]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10660/shard-rkl-3/igt@kms_flip@absolute-wf_vblank-interruptible@b-hdmi-a2.html
+> 
+>   
+> New tests
+> ---------
+> 
+>   New tests have been introduced between IGT_7709_full and IGTPW_10660_full:
+> 
+> ### New IGT tests (7) ###
+> 
+>   * igt@kms_plane_scaling@invalid-num-scalers@pipe-d-hdmi-a-1-invalid-num-scalers:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.03] s
+> 
+>   * igt@kms_setmode@basic@pipe-a-hdmi-a-1-pipe-b-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [2.26] s
+> 
+>   * igt@kms_setmode@basic@pipe-b-hdmi-a-1-pipe-a-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [2.27] s
+> 
+>   * igt@kms_setmode@invalid-clone-single-crtc-stealing@pipe-a-hdmi-a-1-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.33] s
+> 
+>   * igt@kms_setmode@invalid-clone-single-crtc-stealing@pipe-b-hdmi-a-1-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.32] s
+> 
+>   * igt@kms_setmode@invalid-clone-single-crtc@pipe-a-hdmi-a-1-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.04] s
+> 
+>   * igt@kms_setmode@invalid-clone-single-crtc@pipe-b-hdmi-a-1-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.04] s
+> 
+>   
 
-I will merge this with different description:
-
-[PATCH i-g-t v3] benchmarks: Add KMS frambuffer stress benchmark
-
-Is this ok?
+These are unrelated to new benchmark adedd, no need for respin.
 
 Regards,
 Kamil
 
-> Create a benchmark for the VKMS driver. Use a KMS layout with deliberate
-> odd sizes to try to avoid alignment accidents and run it for FRAME_COUNT
-> frames flipping framebuffers in each plane.
 > 
-> This benchmark was suggested by Pekka Paalanen to better analyse
-> possible performance regression on the Virtual Kernel Modesetting(VKMS)
-> driver.
+> Known issues
+> ------------
 > 
-> With this benchmark I was able to determine two performance regression:
+>   Here are the changes found in IGTPW_10660_full that come from known issues:
 > 
-> - 322d716a3e8a ("drm/vkms: isolate pixel conversion functionality")
-> - cc4fd2934d41 ("drm/vkms: Isolate writeback pixel conversion functions")
+> ### IGT changes ###
 > 
-> Link: https://lore.kernel.org/all/20240202214527.1d97c881@ferris.localdomain/
-> Suggested-by: Pekka Paalanen <pekka.paalanen@haloniitty.fi>
-> Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
-> Acked-by: Maíra Canal <mcanal@igalia.com>
-> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
-> ---
-> Changes in v3:
-> - Change primary plane width to not extend outside the CRTC size
-> - Explicitly set a big CRTC size (Peeka Paalanen)
-> - Report time spent in the loop (Peeka Paalanen)
-> - Put file name in alphabetical order on meson script (Kamil Konieczny)
-> - Link to v2: https://lore.kernel.org/r/20240208-bench-v2-1-1eccee1055ad@riseup.net
+> #### Issues hit ####
 > 
-> Changes in v2:
-> - Zero initialize data
-> - Don't wrap igt_create_* functions (Juha-Pekka Heikkila)
-> - Add a `break;` when a pipe is found (Pekka Paalanen)
-> - Rename file to kms_fb_stress.c (Kamil Konieczny)
-> - Replace 2 by NUM_FBS (Juha-Pekka Heikkila)
-> - Replace license text by SPDX License (Kamil Konieczny)
-> - Move explanations to commit description (Kamil Konieczny)
-> - Require output after find_wb_output() (Pekka Paalanen & Juha-Pekka
->   Heikkila)
-> - Remove unnecessary commit (Pekka Paalanen)
-> - Link to v1: https://lore.kernel.org/r/20240207-bench-v1-1-7135ad426860@riseup.net
-> ---
->  benchmarks/kms_fb_stress.c | 208 +++++++++++++++++++++++++++++++++++++++++++++
->  benchmarks/meson.build     |   1 +
->  2 files changed, 209 insertions(+)
+>   * igt@api_intel_bb@object-reloc-keep-cache:
+>     - shard-dg2:          NOTRUN -> [SKIP][2] ([i915#8411])
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10660/shard-dg2-6/igt@api_intel_bb@object-reloc-keep-cache.html
 > 
-> diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
-> new file mode 100644
-> index 000000000000..9a0e98bed8ad
-> --- /dev/null
-> +++ b/benchmarks/kms_fb_stress.c
-> @@ -0,0 +1,208 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2024 Arthur Grillo
-> + */
-> +
-> +#include "igt.h"
-> +
-> +#define FRAME_COUNT 100
-> +#define NUM_FBS 2
-> +
-> +struct rect_t {
-> +	int x, y;
-> +	int width, height;
-> +};
-> +
-> +struct plane_t {
-> +	igt_plane_t *base;
-> +	struct rect_t rect;
-> +	uint32_t format;
-> +	struct igt_fb fbs[NUM_FBS];
-> +};
-> +
-> +struct kms_t {
-> +	struct rect_t crtc;
-> +	struct plane_t primary;
-> +	struct plane_t overlay_a;
-> +	struct plane_t overlay_b;
-> +	struct plane_t writeback;
-> +};
-> +
-> +struct data_t {
-> +	int fd;
-> +	igt_display_t display;
-> +	igt_output_t *wb_output;
-> +	drmModeModeInfo *mode;
-> +	struct kms_t kms;
-> +};
-> +
-> +static void plane_setup(struct plane_t *plane, int index)
-> +{
-> +	igt_plane_set_size(plane->base, plane->rect.width, plane->rect.height);
-> +	igt_plane_set_position(plane->base, plane->rect.x, plane->rect.y);
-> +	igt_plane_set_fb(plane->base, &plane->fbs[index]);
-> +}
-> +
-> +static void gen_fbs(struct data_t *data)
-> +{
-> +	struct kms_t *kms = &data->kms;
-> +	drmModeModeInfo *mode = igt_output_get_mode(data->wb_output);
-> +
-> +	for (int i = 0; i < NUM_FBS; i++) {
-> +		igt_create_color_fb(data->fd, kms->primary.rect.width, kms->primary.rect.height,
-> +				    kms->primary.format, DRM_FORMAT_MOD_LINEAR,
-> +				    !i, i, i,
-> +				    &kms->primary.fbs[i]);
-> +
-> +		igt_create_color_fb(data->fd, kms->overlay_a.rect.width, kms->overlay_a.rect.height,
-> +				    kms->overlay_a.format, DRM_FORMAT_MOD_LINEAR,
-> +				    i, !i, i,
-> +				    &kms->overlay_a.fbs[i]);
-> +
-> +		igt_create_color_fb(data->fd, kms->overlay_b.rect.width, kms->overlay_b.rect.height,
-> +				    kms->overlay_b.format, DRM_FORMAT_MOD_LINEAR,
-> +				    i, i, !i,
-> +				    &kms->overlay_b.fbs[i]);
-> +
-> +		kms->writeback.rect.width = mode->hdisplay;
-> +		kms->writeback.rect.height = mode->vdisplay;
-> +		igt_create_fb(data->fd, kms->writeback.rect.width, kms->writeback.rect.height,
-> +			      kms->writeback.format, DRM_FORMAT_MOD_LINEAR,
-> +			      &kms->writeback.fbs[i]);
-> +	}
-> +}
-> +
-> +static igt_output_t *find_wb_output(struct data_t *data)
-> +{
-> +	for (int i = 0; i < data->display.n_outputs; i++) {
-> +		igt_output_t *output = &data->display.outputs[i];
-> +
-> +		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_WRITEBACK)
-> +			continue;
-> +
-> +		return output;
-> +
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +static void set_crtc_size(struct data_t *data)
-> +{
-> +	drmModeModeInfo *mode;
-> +	struct rect_t *crtc = &data->kms.crtc;
-> +
-> +	for_each_connector_mode(data->wb_output) {
-> +		mode = &data->wb_output->config.connector->modes[j__];
-> +		if (mode->hdisplay == crtc->width && mode->vdisplay == crtc->height) {
-> +			igt_output_override_mode(data->wb_output, mode);
-> +			return;
-> +		}
-> +	}
-> +
-> +
-> +	igt_assert_f(0, "CRTC size %dx%d not supported\n", crtc->width, crtc->height);
-> +}
-> +
-> +static struct kms_t default_kms = {
-> +	.crtc = {
-> +		.width = 4096, .height = 2160,
-> +	},
-> +	.primary = {
-> +		.rect = {
-> +			.x = 101, .y = 0,
-> +			.width = 3639, .height = 2160,
-> +		},
-> +		.format = DRM_FORMAT_XRGB8888,
-> +	},
-> +	.overlay_a = {
-> +		.rect = {
-> +			.x = 201, .y = 199,
-> +			.width = 3033, .height = 1777,
-> +		},
-> +		.format = DRM_FORMAT_XRGB16161616,
-> +	},
-> +	.overlay_b = {
-> +		.rect = {
-> +			.x = 1800, .y = 250,
-> +			.width = 1507, .height = 1400,
-> +		},
-> +		.format = DRM_FORMAT_ARGB8888,
-> +	},
-> +	.writeback = {
-> +		.rect = {
-> +			.x = 0, .y = 0,
-> +			// Size is to be determined at runtime
-> +		},
-> +		.format = DRM_FORMAT_XRGB8888,
-> +	},
-> +};
-> +
-> +
-> +igt_simple_main
-> +{
-> +	struct data_t data = {0};
-> +	enum pipe pipe = PIPE_NONE;
-> +	struct timespec then, now;
-> +	double elapsed;
-> +
-> +	data.kms = default_kms;
-> +
-> +	data.fd = drm_open_driver_master(DRIVER_ANY);
-> +
-> +	igt_display_require(&data.display, data.fd);
-> +
-> +	kmstest_set_vt_graphics_mode();
-> +
-> +	igt_display_require(&data.display, data.fd);
-> +	igt_require(data.display.is_atomic);
-> +
-> +	igt_display_require_output(&data.display);
-> +
-> +	igt_display_reset(&data.display);
-> +
-> +	data.wb_output = find_wb_output(&data);
-> +	igt_require(data.wb_output);
-> +
-> +	for_each_pipe(&data.display, pipe) {
-> +		igt_debug("Selecting pipe %s to %s\n",
-> +			  kmstest_pipe_name(pipe),
-> +			  igt_output_name(data.wb_output));
-> +		igt_output_set_pipe(data.wb_output, pipe);
-> +		break;
-> +	}
-> +
-> +	set_crtc_size(&data);
-> +
-> +	gen_fbs(&data);
-> +
-> +	data.kms.primary.base = igt_output_get_plane_type(data.wb_output, DRM_PLANE_TYPE_PRIMARY);
-> +	data.kms.overlay_a.base = igt_output_get_plane_type_index(data.wb_output,
-> +								  DRM_PLANE_TYPE_OVERLAY, 0);
-> +	data.kms.overlay_b.base = igt_output_get_plane_type_index(data.wb_output,
-> +								  DRM_PLANE_TYPE_OVERLAY, 1);
-> +
-> +	igt_assert_eq(igt_gettime(&then), 0);
-> +
-> +	for (int i = 0; i < FRAME_COUNT; i++) {
-> +		int fb_index = i % NUM_FBS;
-> +
-> +		plane_setup(&data.kms.primary, fb_index);
-> +
-> +		plane_setup(&data.kms.overlay_a, fb_index);
-> +
-> +		plane_setup(&data.kms.overlay_b, fb_index);
-> +
-> +		igt_output_set_writeback_fb(data.wb_output, &data.kms.writeback.fbs[fb_index]);
-> +
-> +		igt_display_commit2(&data.display, COMMIT_ATOMIC);
-> +	}
-> +
-> +	igt_assert_eq(igt_gettime(&now), 0);
-> +	elapsed = igt_time_elapsed(&then, &now);
-> +
-> +	igt_info("Time spent in the loop with %d frames: %lfs.\n", FRAME_COUNT, elapsed);
-> +
-> +	igt_display_fini(&data.display);
-> +	drm_close_driver(data.fd);
-> +}
-> diff --git a/benchmarks/meson.build b/benchmarks/meson.build
-> index c451268bc44f..2c9a88fd3b00 100644
-> --- a/benchmarks/meson.build
-> +++ b/benchmarks/meson.build
-> @@ -17,6 +17,7 @@ benchmark_progs = [
->  	'intel_upload_blit_large_gtt',
->  	'intel_upload_blit_large_map',
->  	'intel_upload_blit_small',
-> +	'kms_fb_stress',
->  	'kms_vblank',
->  	'prime_lookup',
->  	'vgem_mmap',
 > 
-> ---
-> base-commit: c58c5fb6aa1cb7d3627a15e364816a7a2add9edc
-> change-id: 20240207-bench-393789eaba47
+
+...cut...
+
 > 
-> Best regards,
-> -- 
-> Arthur Grillo <arthurgrillo@riseup.net>
+> Build changes
+> -------------
 > 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7709 -> IGTPW_10660
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14248: c7d234dd2d329f223f56699636248a609dbe2267 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10660: 10660
+>   IGT_7709: 17a41dcf1ed551e7a5f2ca88cad055b3f6d67e7e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10660/index.html
