@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD7FFC4829F
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B63C9C4829A
 	for <igt-dev@archiver.kernel.org>; Tue, 13 Feb 2024 10:01:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B66610E312;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 492F810E2CD;
 	Tue, 13 Feb 2024 10:01:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gdDijtxe";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hKPudMUC";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A01F810E2CD
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Feb 2024 10:01:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B667D10E2E4
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Feb 2024 10:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707818497; x=1739354497;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=tBNPyjJOfQCJVR42CRY2hT6e04Z1FgoqG4Bzj4IeMpE=;
- b=gdDijtxeJyvYYZ9r+D1ae1JLyDVy3hMFaHfPbkELOMH4Sp3TurL72gHO
- 4VyodtapKRJyDQV7Wyh7uxvQ+bIUiAr1Pl+xXx5Ev3+ZYttjrRNFy1HaQ
- 2BsLv4d2B2xFmSyvQQlM7KDZ7Uk/d/h4GaUBYANn7xXi4b4Jxh5w9ldlV
- uGIIaPL/QvAOEJofFw1JJb+6q4Ifes+qy4LW/6MWSrneVwrQMLXemQUUK
- 5MKocWV6Qv93RYjxaQXnfONHmdxG0qriMnGpQpaJh2cIuG9kqX+d3yuc0
- IXYLfbwPkCBqX6S7rHPS6nRYgalOf+bM0dnvxz6ctfKSUBtlfhbhK1+XA A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="19232349"
-X-IronPort-AV: E=Sophos;i="6.06,156,1705392000"; d="scan'208";a="19232349"
+ t=1707818498; x=1739354498;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=5h39FvDH0qqf3m3HdKBBefuUIIHzdb20Ua4Y6xFN6LM=;
+ b=hKPudMUC8PUnnXpgLKZv5FXQXTaROeAsS++mxwEuqIHpyXpv8Ju4cggP
+ bxGVfb/VC4m3pnh9dMDzmE6t1wnZms3wPsrL/YBmM1cd7oUSdNxfM1A/k
+ 3wXqgVjtPvySs6IDuQWVI1UxNmDrzTni4HcJl+ZGxkf+t+s3uj4fhG470
+ C7jbMEOazedWxD4hhiU3XWnN07CdCtTA8t4H6DYGdG9kpjZqlE+A0F6ZT
+ D3jpAQ9ujfkjy3Nia8YVQb0Zl7tz8ZpF4egmCLuDWrruPQYwtToCJbKxD
+ yz7cnA8/DjsnS/7QxDCQFnZn7rc0hqW2VSPeZh4Ig3xd6Fq/DRpwPEgZk w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="19232351"
+X-IronPort-AV: E=Sophos;i="6.06,156,1705392000"; d="scan'208";a="19232351"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2024 02:01:36 -0800
+ 13 Feb 2024 02:01:37 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,156,1705392000"; 
-   d="scan'208";a="2815497"
+   d="scan'208";a="2815502"
 Received: from gfmckenx-mobl.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
  ([10.252.21.42])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2024 02:01:35 -0800
+ 13 Feb 2024 02:01:36 -0800
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v2 1/8] tests/prime_nv_test: switch over to
- intel_buf_init()
-Date: Tue, 13 Feb 2024 10:01:18 +0000
-Message-ID: <20240213100125.90085-1-matthew.auld@intel.com>
+Subject: [PATCH i-g-t v2 2/8] tests/intel: prefer intel_buf_init_in_region()
+Date: Tue, 13 Feb 2024 10:01:19 +0000
+Message-ID: <20240213100125.90085-2-matthew.auld@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240213100125.90085-1-matthew.auld@intel.com>
+References: <20240213100125.90085-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -65,91 +66,125 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-We want to get rid of intel_buf_init_using_handle(), in favour of always
-passing in the real bo size, otherwise it is quite tricky to figure out
-what exactly to set for buf->bo_size (which eventually get plugged into
-vm_bind) when the caller is the one who created the bo. Trying to guess
-the page alignment is unsafe without knowing more about the actual
-object.  In this case it seems simplest to switch over to
-intel_buf_init. Should be no functional change here.
+We want to get rid of intel_buf_init_using_handle(), in favour of
+something where bo_size is always passed in. It looks like we can
+instead just use intel_buf_init_in_region() here.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/prime_nv_test.c | 23 ++++++++---------------
- 1 file changed, 8 insertions(+), 15 deletions(-)
+ tests/intel/gem_gpgpu_fill.c   | 7 ++-----
+ tests/intel/gem_media_fill.c   | 7 ++-----
+ tests/intel/i915_pipe_stress.c | 8 +++-----
+ tests/intel/i915_pm_rpm.c      | 8 +++-----
+ 4 files changed, 10 insertions(+), 20 deletions(-)
 
-diff --git a/tests/prime_nv_test.c b/tests/prime_nv_test.c
-index bc2579604..eb5e2d8ea 100644
---- a/tests/prime_nv_test.c
-+++ b/tests/prime_nv_test.c
-@@ -273,13 +273,11 @@ static void test_i915_import_pread_pwrite(void)
- 	gem_close(intel_fd, intel_handle);
- }
- 
--static uint32_t create_bo(uint32_t val, int width, int height)
-+static void fill_bo(uint32_t intel_handle, uint32_t val, int width, int height)
+diff --git a/tests/intel/gem_gpgpu_fill.c b/tests/intel/gem_gpgpu_fill.c
+index 25f2a96c1..ac283620e 100644
+--- a/tests/intel/gem_gpgpu_fill.c
++++ b/tests/intel/gem_gpgpu_fill.c
+@@ -78,7 +78,6 @@ create_buf(data_t *data, int width, int height, uint8_t color, uint32_t region)
  {
--	uint32_t intel_handle;
- 	int size = width * height;
- 	uint32_t *ptr, *currptr;
+ 	struct intel_buf *buf;
+ 	uint8_t *ptr;
+-	uint32_t handle;
+ 	int i;
  
--	intel_handle = gem_create(intel_fd, 4*width*height);
- 	igt_assert(intel_handle);
+ 	buf = calloc(1, sizeof(*buf));
+@@ -88,10 +87,8 @@ create_buf(data_t *data, int width, int height, uint8_t color, uint32_t region)
+ 	 * Legacy code uses 32 bpp after buffer creation.
+ 	 * Let's do the same due to keep shader intact.
+ 	 */
+-	handle = gem_create_in_memory_regions(data->drm_fd, SIZE, region);
+-	intel_buf_init_using_handle(data->bops, handle, buf,
+-				    width/4, height, 32, 0,
+-				    I915_TILING_NONE, 0);
++	intel_buf_init_in_region(data->bops, buf, width/4, height, 32, 0,
++				 I915_TILING_NONE, 0, region);
  
-         /* gtt map doesn't have a write parameter, so just keep the mapping
-@@ -293,15 +291,12 @@ static uint32_t create_bo(uint32_t val, int width, int height)
- 		*currptr++ = val;
+ 	ptr = gem_mmap__cpu_coherent(data->drm_fd, buf->handle, 0,
+ 				     buf->surface[0].size, PROT_WRITE);
+diff --git a/tests/intel/gem_media_fill.c b/tests/intel/gem_media_fill.c
+index a678d2f99..79a06f7b8 100644
+--- a/tests/intel/gem_media_fill.c
++++ b/tests/intel/gem_media_fill.c
+@@ -75,21 +75,18 @@ static struct intel_buf *
+ create_buf(data_t *data, int width, int height, uint8_t color, uint32_t region)
+ {
+ 	struct intel_buf *buf;
+-	uint32_t handle;
+ 	uint8_t *ptr;
+ 	int i;
  
- 	gem_munmap(ptr, size);
+ 	buf = calloc(1, sizeof(*buf));
+ 	igt_assert(buf);
+ 
+-	handle = gem_create_in_memory_regions(data->drm_fd, SIZE, region);
 -
--	return intel_handle;
- }
+ 	/*
+ 	 * Legacy code uses 32 bpp after buffer creation.
+ 	 * Let's do the same due to keep shader intact.
+ 	 */
+-	intel_buf_init_using_handle(data->bops, handle, buf, width/4,
+-				    height, 32, 0, I915_TILING_NONE, 0);
++	intel_buf_init_in_region(data->bops, buf, width/4, height, 32, 0,
++				 I915_TILING_NONE, 0, region);
  
- /* use intel hw to fill the BO with a blit from another BO,
-    then readback from the nouveau bo, check value is correct */
- static void test_i915_blt_fill_nv_read(void)
+ 	ptr = gem_mmap__cpu_coherent(data->drm_fd, buf->handle, 0,
+ 				     buf->surface[0].size, PROT_WRITE);
+diff --git a/tests/intel/i915_pipe_stress.c b/tests/intel/i915_pipe_stress.c
+index f9da5f023..79f83d266 100644
+--- a/tests/intel/i915_pipe_stress.c
++++ b/tests/intel/i915_pipe_stress.c
+@@ -192,7 +192,6 @@ static struct intel_buf *
+ create_buf(struct data *data, int width, int height, uint32_t region)
  {
--	uint32_t dst_handle, src_handle;
- 	int prime_fd;
- 	struct nouveau_bo *nvbo = NULL;
- 	uint32_t *ptr;
-@@ -312,18 +307,18 @@ static void test_i915_blt_fill_nv_read(void)
+ 	struct intel_buf *buf;
+-	uint32_t handle;
  
- 	ibb = intel_bb_create(intel_fd, 4096);
+ 	buf = calloc(1, sizeof(*buf));
+ 	igt_assert(buf);
+@@ -201,10 +200,9 @@ create_buf(struct data *data, int width, int height, uint32_t region)
+ 	 * Legacy code uses 32 bpp after buffer creation.
+ 	 * Let's do the same due to keep shader intact.
+ 	 */
+-	handle = gem_create_in_memory_regions(data->drm_fd, width * height, region);
+-	intel_buf_init_using_handle(data->bops, handle, buf,
+-				    width/4, height, 32, 0,
+-				    I915_TILING_NONE, 0);
++	intel_buf_init_in_region(data->bops, buf,
++				 width/4, height, 32, 0,
++				 I915_TILING_NONE, 0, region);
  
--	src_handle = create_bo(0xaa55aa55, w, h);
--	dst_handle = gem_create(intel_fd, BO_SIZE);
-+	intel_buf_init(bops, &src, w, h, 32, 0,
-+		       I915_TILING_NONE, I915_COMPRESSION_NONE);
-+	intel_buf_init(bops, &dst, w, 256, 32, 0,
-+		       I915_TILING_NONE, I915_COMPRESSION_NONE);
- 
--	prime_fd = prime_handle_to_fd(intel_fd, dst_handle);
-+	fill_bo(src.handle, 0xaa55aa55, w, h);
-+
-+	prime_fd = prime_handle_to_fd(intel_fd, dst.handle);
- 
- 	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd, &nvbo) == 0);
- 	close(prime_fd);
- 
--	intel_buf_init_using_handle(bops, src_handle, &src, w, h, 32, 0,
--				    I915_TILING_NONE, I915_COMPRESSION_NONE);
--	intel_buf_init_using_handle(bops, dst_handle, &dst, w, 256, 32, 0,
--				    I915_TILING_NONE, I915_COMPRESSION_NONE);
- 	intel_bb_copy_intel_buf(ibb, &dst, &src, w * h * 4);
- 
- 	igt_assert(nouveau_bo_map(nvbo, NOUVEAU_BO_RDWR, nclient) == 0);
-@@ -335,8 +330,6 @@ static void test_i915_blt_fill_nv_read(void)
- 	intel_buf_destroy(&src);
- 	intel_buf_destroy(&dst);
- 	intel_bb_destroy(ibb);
--	gem_close(intel_fd, dst_handle);
--	gem_close(intel_fd, src_handle);
+ 	return buf;
  }
+diff --git a/tests/intel/i915_pm_rpm.c b/tests/intel/i915_pm_rpm.c
+index 2b0a63bde..7f64d1069 100644
+--- a/tests/intel/i915_pm_rpm.c
++++ b/tests/intel/i915_pm_rpm.c
+@@ -218,7 +218,6 @@ create_buf(struct data_t *data, uint32_t color)
+ {
+ 	struct intel_buf *buf;
+ 	uint8_t *ptr;
+-	uint32_t handle;
+ 	struct buf_ops *bops;
+ 	int i;
  
- /* test 8 use nouveau to do blit */
+@@ -226,10 +225,9 @@ create_buf(struct data_t *data, uint32_t color)
+ 	igt_assert(buf);
+ 	bops = buf_ops_create(drm_fd);
+ 
+-	handle = gem_create_in_memory_regions(drm_fd, SIZE, data->region);
+-	intel_buf_init_using_handle(bops, handle, buf,
+-				    data->width / 4, data->height, 32, 0,
+-				    I915_TILING_NONE, 0);
++	intel_buf_init_in_region(bops, buf,
++				 data->width / 4, data->height, 32, 0,
++				 I915_TILING_NONE, 0, data->region);
+ 
+ 	ptr = gem_mmap__cpu_coherent(drm_fd, buf->handle, 0,
+ 				     buf->surface[0].size, PROT_WRITE);
 -- 
 2.43.0
 
