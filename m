@@ -4,24 +4,25 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C5C3C4829A
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Feb 2024 17:23:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD9E0C48260
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Feb 2024 17:33:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3AD0C10E029;
-	Tue, 13 Feb 2024 17:23:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4B14F10E760;
+	Tue, 13 Feb 2024 17:33:04 +0000 (UTC)
 Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73B5210E052;
- Tue, 13 Feb 2024 17:23:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 26F8B10E166;
+ Tue, 13 Feb 2024 17:33:03 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2143150184429094002=="
+ boundary="===============8201628985824128035=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bv3=2C1?=
- =?utf-8?q?/7=5D_build=3A_check_that_outb_is_present_in_io=2Eh_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bv3?=
+ =?utf-8?q?=2C1/7=5D_build=3A_check_that_outb_is_present_in_io=2Eh_=28rev2?=
+ =?utf-8?q?=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Bernd Kuhls" <bernd@kuhls.net>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 13 Feb 2024 17:23:31 -0000
-Message-ID: <170784501148.1218563.2154696098014639457@5338d5abeb45>
+Date: Tue, 13 Feb 2024 17:33:03 -0000
+Message-ID: <170784558316.1218562.7943199679100653824@5338d5abeb45>
 X-Patchwork-Hint: ignore
 References: <20231030195809.3527410-1-bernd@kuhls.net>
 In-Reply-To: <20231030195809.3527410-1-bernd@kuhls.net>
@@ -41,7 +42,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2143150184429094002==
+--===============8201628985824128035==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +55,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7711_BAT -> XEIGTPW_10666_BAT
+CI Bug Log - changes from CI_DRM_14264 -> IGTPW_10666
 ====================================================
 
 Summary
@@ -64,46 +65,50 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10666/index.html
 
-Participating hosts (4 -> 4)
+Participating hosts (39 -> 38)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (1): fi-snb-2520m 
 
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_10666_BAT that come from known issues:
+  Here are the changes found in IGTPW_10666 that come from known issues:
 
 ### IGT changes ###
 
 #### Possible fixes ####
 
-  * igt@xe_exec_threads@threads-mixed-shared-vm-basic:
-    - bat-pvc-2:          [DMESG-WARN][1] -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7711/bat-pvc-2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10666/bat-pvc-2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html
+  * igt@gem_exec_fence@basic-busy@vecs0:
+    - {bat-arls-1}:       [DMESG-WARN][1] -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14264/bat-arls-1/igt@gem_exec_fence@basic-busy@vecs0.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10666/bat-arls-1/igt@gem_exec_fence@basic-busy@vecs0.html
 
   
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10194]: https://gitlab.freedesktop.org/drm/intel/issues/10194
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_7711 -> IGTPW_10666
-  * Linux: xe-769-7c8e9135509f2e438e11a4af17387a204ab59884 -> xe-771-65a621d44bec5a1ee7af20427215105e4c17e67f
 
+  CI-20190529: 20190529
+  CI_DRM_14264: 65a621d44bec5a1ee7af20427215105e4c17e67f @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_10666: 10666
   IGT_7711: 7711
-  xe-769-7c8e9135509f2e438e11a4af17387a204ab59884: 7c8e9135509f2e438e11a4af17387a204ab59884
-  xe-771-65a621d44bec5a1ee7af20427215105e4c17e67f: 65a621d44bec5a1ee7af20427215105e4c17e67f
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10666/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10666/index.html
 
---===============2143150184429094002==
+--===============8201628985824128035==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -127,38 +132,41 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125776/">https://patchwork.freedesktop.org/series/125776/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10666/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10666/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10666/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10666/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7711_BAT -&gt; XEIGTPW_10666_BAT</h1>
+    <h1>CI Bug Log - changes from CI_DRM_14264 -&gt; IGTPW_10666</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10666/index.html</p>
+<h2>Participating hosts (39 -&gt; 38)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10666_BAT that come from known issues:</p>
+<p>Here are the changes found in IGTPW_10666 that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Possible fixes</h4>
 <ul>
-<li>igt@xe_exec_threads@threads-mixed-shared-vm-basic:<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7711/bat-pvc-2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10666/bat-pvc-2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html">PASS</a></li>
+<li>igt@gem_exec_fence@basic-busy@vecs0:<ul>
+<li>{bat-arls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14264/bat-arls-1/igt@gem_exec_fence@basic-busy@vecs0.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10666/bat-arls-1/igt@gem_exec_fence@basic-busy@vecs0.html">PASS</a></li>
 </ul>
 </li>
 </ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7711 -&gt; IGTPW_10666</li>
-<li>Linux: xe-769-7c8e9135509f2e438e11a4af17387a204ab59884 -&gt; xe-771-65a621d44bec5a1ee7af20427215105e4c17e67f</li>
 </ul>
-<p>IGTPW_10666: 10666<br />
-  IGT_7711: 7711<br />
-  xe-769-7c8e9135509f2e438e11a4af17387a204ab59884: 7c8e9135509f2e438e11a4af17387a204ab59884<br />
-  xe-771-65a621d44bec5a1ee7af20427215105e4c17e67f: 65a621d44bec5a1ee7af20427215105e4c17e67f</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14264: 65a621d44bec5a1ee7af20427215105e4c17e67f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10666: 10666<br />
+  IGT_7711: 7711</p>
 
 </body>
 </html>
 
---===============2143150184429094002==--
+--===============8201628985824128035==--
