@@ -4,49 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DA3FC4829A
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Feb 2024 06:30:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5658BC48260
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Feb 2024 07:17:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B170710E177;
-	Tue, 13 Feb 2024 06:29:59 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TwA0zTXm";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 977BD10E177
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Feb 2024 06:29:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707805796; x=1739341796;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=fSq1TXEtMblixJiQzHZpqhKrltfJXbKkj7hgtLpSK+s=;
- b=TwA0zTXm31GCmaJ7alU1xeymp9FlJcsho6jL0ARtdknhv0UhsmSf+Hxk
- z0Mr7Efd0oYhQWJScYr2eNktvs9d5ad43Byn5JHvenLTWOHkCv9alXMij
- j2YBU/bO64Hp8Tey1LIxe61t1flun7Uo/9ipqUhqHeZ1WL0IPDQSasXXl
- WIoI/nM+PwFzf9f3GILJ+87GxFk0Qv4qUimHaHFptrty7i8mP+RfnL1lR
- xk8cyWZ+tmLF3j1QfuEwap8fv5zFQKZIiBuqxWYDH2+HG5ttgrXawHOQ1
- vipCqJWKAr2XpcNioVzxxsJY4sjp0ADTykAYmNmXogqOBQnY0MKRLyeSl Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="13195866"
-X-IronPort-AV: E=Sophos;i="6.06,156,1705392000"; d="scan'208";a="13195866"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2024 22:29:56 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,156,1705392000"; 
-   d="scan'208";a="2977934"
-Received: from dut7231atsm.jf.intel.com ([10.98.51.28])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2024 22:29:56 -0800
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Subject: [PATCH i-g-t] i915/pmu: Add pmu tests to catch unbind cleanup issues
-Date: Mon, 12 Feb 2024 22:29:48 -0800
-Message-Id: <20240213062948.32735-1-umesh.nerlige.ramappa@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6963B10E161;
+	Tue, 13 Feb 2024 07:17:36 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F84B10E161;
+ Tue, 13 Feb 2024 07:17:35 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1800096111564157766=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_i915/pmu=3A_Add_pmu_tests_t?=
+ =?utf-8?q?o_catch_unbind_cleanup_issues?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Umesh Nerlige Ramappa" <umesh.nerlige.ramappa@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 13 Feb 2024 07:17:35 -0000
+Message-ID: <170780865525.1183349.9003381530678573378@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240213062948.32735-1-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20240213062948.32735-1-umesh.nerlige.ramappa@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,243 +37,227 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Doing an flr (unbind followed by bind) on i915 device while a user holds
-a reference to the PMU events results in null-pointer-dereferences
-(npd). Add some tests to validate the fix for this issue.
+--===============1800096111564157766==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
----
- tests/intel/perf_pmu.c | 202 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 202 insertions(+)
+== Series Details ==
 
-diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
-index 4ae2b60ae..4d60c8bd3 100644
---- a/tests/intel/perf_pmu.c
-+++ b/tests/intel/perf_pmu.c
-@@ -249,6 +249,41 @@
-  * Description: Test the i915 pmu perf interface
-  * Feature: i915 pmu perf interface, pmu
-  * Test category: Perf
-+ *
-+ * SUBTEST: flr-npd
-+ * Description: Test null pointer dereference case
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-+ *
-+ * SUBTEST: flr-npd-close-after-unbind
-+ * Description: Test null pointer dereference close perf after unbind
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-+ *
-+ * SUBTEST: flr-npd-event-group
-+ * Description: Test null pointer dereference case with event groups
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-+ *
-+ * SUBTEST: flr-npd-separate-events
-+ * Description: Test null pointer dereference case with separate events
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-+ *
-+ * SUBTEST: forked-flr-npd
-+ * Description: Test null pointer dereference case with forked FLR
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-+ *
-+ * SUBTEST: forked-flr-npd-event-group
-+ * Description: Test null pointer dereference case with forked FLR and event groups
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-+ *
-+ * SUBTEST: forked-flr-npd-separate-events
-+ * Description: Test null pointer dereference case with forked FLR and separate events
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  */
- 
- IGT_TEST_DESCRIPTION("Test the i915 pmu perf interface");
-@@ -2417,6 +2452,151 @@ static void test_unload(unsigned int num_engines)
- 	igt_assert_eq(__igt_i915_driver_unload(NULL), 0);
- }
- 
-+static int sysfs_driver(int i915)
-+{
-+	int dir, drv;
-+
-+	dir = igt_sysfs_open(i915);
-+	igt_assert(dir != -1);
-+
-+	drv = openat(dir, "device/driver", O_DIRECTORY);
-+	close(dir);
-+
-+	igt_assert(drv != -1);
-+	return drv;
-+}
-+
-+#define CLOSE_FD_AFTER_UNBIND	0x00000001
-+#define GROUP_FDS		0x00000002
-+#define SEPARATE_FDS		0x00000004
-+
-+#define NPD_MAX_FDS 4
-+static void test_flr_npd(uint32_t flags)
-+{
-+	struct pci_device *pdev;
-+	int fd[NPD_MAX_FDS], i915, drv;
-+	uint64_t buf[NPD_MAX_FDS];
-+	int count = 0, i;
-+	char *snd = NULL;
-+	char addr[80];
-+
-+	i915 = __drm_open_driver(DRIVER_INTEL);
-+	pdev = igt_device_get_pci_device(i915);
-+
-+	snprintf(addr, sizeof(addr), "%04x:%02x:%02x.%d",
-+		 pdev->domain, pdev->bus, pdev->dev, pdev->func);
-+	igt_debug("Opened %s\n", addr);
-+
-+	if (flags & GROUP_FDS) {
-+		fd[count++] = open_group(i915, I915_PMU_REQUESTED_FREQUENCY, -1);
-+		fd[count++] = open_group(i915, I915_PMU_ACTUAL_FREQUENCY, fd[0]);
-+		fd[count++] = open_group(i915, I915_PMU_RC6_RESIDENCY, fd[0]);
-+		fd[count++] = open_group(i915, I915_PMU_SOFTWARE_GT_AWAKE_TIME, fd[0]);
-+		pmu_read_multi(fd[0], count, buf);
-+	} else if (flags & SEPARATE_FDS) {
-+		fd[count++] = open_pmu(i915, I915_PMU_REQUESTED_FREQUENCY);
-+		fd[count++] = open_pmu(i915, I915_PMU_ACTUAL_FREQUENCY);
-+		fd[count++] = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
-+		fd[count++] = open_pmu(i915, I915_PMU_SOFTWARE_GT_AWAKE_TIME);
-+		pmu_read_single(fd[0]);
-+		pmu_read_single(fd[1]);
-+		pmu_read_single(fd[2]);
-+		pmu_read_single(fd[3]);
-+	} else {
-+		fd[0] = open_pmu(i915, I915_PMU_ACTUAL_FREQUENCY);
-+		pmu_read_single(fd[0]);
-+	}
-+
-+	drv = sysfs_driver(i915);
-+	close(i915);
-+	igt_audio_driver_unload(&snd);
-+
-+	igt_set_timeout(30, "Driver unbind timeout!");
-+	igt_assert_f(igt_sysfs_set(drv, "unbind", addr),
-+		     "Driver unbind failure (%s)!\n", addr);
-+	igt_reset_timeout();
-+
-+	if (flags & CLOSE_FD_AFTER_UNBIND)
-+		for (i = 0; i < count; i++)
-+			close(fd[i]);
-+
-+	igt_set_timeout(30, "Driver bind timeout!");
-+	igt_assert_f(igt_sysfs_set(drv, "bind", addr),
-+		     "Driver bind failure (%s)!\n", addr);
-+	igt_reset_timeout();
-+
-+	close(drv);
-+
-+	if (!(flags & CLOSE_FD_AFTER_UNBIND))
-+		for (i = 0; i < count; i++)
-+			close(fd[i]);
-+}
-+
-+static void test_forked_flr_npd(uint32_t flags)
-+{
-+	struct pci_device *pdev;
-+	int fd[NPD_MAX_FDS], i915, drv;
-+	uint64_t buf[NPD_MAX_FDS];
-+	int count = 0, i;
-+	char *snd = NULL;
-+	char addr[80];
-+
-+	/* not supported for the forked version */
-+	igt_assert(!(flags & CLOSE_FD_AFTER_UNBIND));
-+
-+	i915 = __drm_open_driver(DRIVER_INTEL);
-+	pdev = igt_device_get_pci_device(i915);
-+
-+	snprintf(addr, sizeof(addr), "%04x:%02x:%02x.%d",
-+		 pdev->domain, pdev->bus, pdev->dev, pdev->func);
-+	igt_debug("Opened %s\n", addr);
-+
-+	if (flags & GROUP_FDS) {
-+		fd[count++] = open_group(i915, I915_PMU_REQUESTED_FREQUENCY, -1);
-+		fd[count++] = open_group(i915, I915_PMU_ACTUAL_FREQUENCY, fd[0]);
-+		fd[count++] = open_group(i915, I915_PMU_RC6_RESIDENCY, fd[0]);
-+		fd[count++] = open_group(i915, I915_PMU_SOFTWARE_GT_AWAKE_TIME, fd[0]);
-+		pmu_read_multi(fd[0], count, buf);
-+	} else if (flags & SEPARATE_FDS) {
-+		fd[count] = open_pmu(i915, I915_PMU_REQUESTED_FREQUENCY);
-+		pmu_read_single(fd[count++]);
-+		fd[count] = open_pmu(i915, I915_PMU_ACTUAL_FREQUENCY);
-+		pmu_read_single(fd[count++]);
-+		fd[count] = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
-+		pmu_read_single(fd[count++]);
-+		fd[count] = open_pmu(i915, I915_PMU_SOFTWARE_GT_AWAKE_TIME);
-+		pmu_read_single(fd[count++]);
-+	} else {
-+		fd[count] = open_pmu(i915, I915_PMU_ACTUAL_FREQUENCY);
-+		pmu_read_single(fd[count++]);
-+	}
-+
-+	drv = sysfs_driver(i915);
-+	close(i915);
-+	igt_audio_driver_unload(&snd);
-+
-+	igt_fork(child, 1) {
-+		igt_set_timeout(30, "Driver unbind timeout!");
-+		igt_assert_f(igt_sysfs_set(drv, "unbind", addr),
-+				"Driver unbind failure (%s)!\n", addr);
-+		igt_reset_timeout();
-+	}
-+	igt_waitchildren();
-+
-+
-+	igt_fork(child, 1) {
-+		igt_set_timeout(30, "Driver bind timeout!");
-+		igt_assert_f(igt_sysfs_set(drv, "bind", addr),
-+				"Driver bind failure (%s)!\n", addr);
-+		igt_reset_timeout();
-+	}
-+	igt_waitchildren();
-+
-+	close(drv);
-+	for (i = 0; i < count; i++)
-+		close(fd[i]);
-+}
-+
- static void pmu_read(int i915)
- {
- 	char val[128];
-@@ -2810,4 +2990,26 @@ igt_main
- 		for (int pass = 0; pass < 3; pass++)
- 			test_unload(num_engines);
- 	}
-+
-+	igt_subtest("flr-npd")
-+		test_flr_npd(0);
-+
-+	igt_subtest("flr-npd-close-after-unbind")
-+		test_flr_npd(CLOSE_FD_AFTER_UNBIND);
-+
-+	igt_subtest("flr-npd-event-group")
-+		test_flr_npd(GROUP_FDS);
-+
-+	igt_subtest("flr-npd-separate-events")
-+		test_flr_npd(SEPARATE_FDS);
-+
-+	igt_subtest("forked-flr-npd")
-+		test_forked_flr_npd(0);
-+
-+	igt_subtest("forked-flr-npd-event-group")
-+		test_forked_flr_npd(GROUP_FDS);
-+
-+	igt_subtest("forked-flr-npd-separate-events")
-+		test_forked_flr_npd(SEPARATE_FDS);
-+
- }
--- 
-2.34.1
+Series: i915/pmu: Add pmu tests to catch unbind cleanup issues
+URL   : https://patchwork.freedesktop.org/series/129809/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_14259 -> IGTPW_10664
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/index.html
+
+Participating hosts (37 -> 35)
+------------------------------
+
+  Additional (1): bat-kbl-2 
+  Missing    (3): bat-adlm-1 bat-atsm-1 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_10664:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@execlists:
+    - {bat-arls-1}:       [DMESG-WARN][1] ([i915#10194]) -> [DMESG-FAIL][2] +7 other tests dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14259/bat-arls-1/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/bat-arls-1/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@guc_multi_lrc:
+    - {bat-arls-1}:       NOTRUN -> [DMESG-FAIL][3] +6 other tests dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/bat-arls-1/igt@i915_selftest@live@guc_multi_lrc.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10664 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@info:
+    - bat-kbl-2:          NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#1849])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/bat-kbl-2/igt@fbdev@info.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - bat-kbl-2:          NOTRUN -> [SKIP][5] ([fdo#109271]) +35 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_fence@basic-busy@ccs0:
+    - {bat-arls-1}:       [DMESG-WARN][6] ([i915#10194]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14259/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#10194]: https://gitlab.freedesktop.org/drm/intel/issues/10194
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7710 -> IGTPW_10664
+
+  CI-20190529: 20190529
+  CI_DRM_14259: e370df7a4fb4125cb8eee1b00ff1592808ed9786 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10664: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/index.html
+  IGT_7710: d87a5d85a60fba1283821d5212c3aece64cb36ba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@perf_pmu@flr-npd
++igt@perf_pmu@flr-npd-close-after-unbind
++igt@perf_pmu@flr-npd-event-group
++igt@perf_pmu@flr-npd-separate-events
++igt@perf_pmu@forked-flr-npd
++igt@perf_pmu@forked-flr-npd-event-group
++igt@perf_pmu@forked-flr-npd-separate-events
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/index.html
+
+--===============1800096111564157766==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915/pmu: Add pmu tests to catch unbind cleanup issues</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129809/">https://patchwork.freedesktop.org/series/129809/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_14259 -&gt; IGTPW_10664</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/index.html</p>
+<h2>Participating hosts (37 -&gt; 35)</h2>
+<p>Additional (1): bat-kbl-2 <br />
+  Missing    (3): bat-adlm-1 bat-atsm-1 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_10664:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>{bat-arls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14259/bat-arls-1/igt@i915_selftest@live@execlists.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10194">i915#10194</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/bat-arls-1/igt@i915_selftest@live@execlists.html">DMESG-FAIL</a> +7 other tests dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@guc_multi_lrc:</p>
+<ul>
+<li>{bat-arls-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/bat-arls-1/igt@i915_selftest@live@guc_multi_lrc.html">DMESG-FAIL</a> +6 other tests dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10664 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@info:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/bat-kbl-2/igt@fbdev@info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +35 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_exec_fence@basic-busy@ccs0:<ul>
+<li>{bat-arls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14259/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10194">i915#10194</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7710 -&gt; IGTPW_10664</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14259: e370df7a4fb4125cb8eee1b00ff1592808ed9786 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10664: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10664/index.html<br />
+  IGT_7710: d87a5d85a60fba1283821d5212c3aece64cb36ba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@perf_pmu@flr-npd<br />
++igt@perf_pmu@flr-npd-close-after-unbind<br />
++igt@perf_pmu@flr-npd-event-group<br />
++igt@perf_pmu@flr-npd-separate-events<br />
++igt@perf_pmu@forked-flr-npd<br />
++igt@perf_pmu@forked-flr-npd-event-group<br />
++igt@perf_pmu@forked-flr-npd-separate-events</p>
+
+</body>
+</html>
+
+--===============1800096111564157766==--
