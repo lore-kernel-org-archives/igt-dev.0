@@ -4,59 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E74DFC48BC3
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 13:07:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E70F9C48BC3
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 13:16:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C2BF910E126;
-	Wed, 14 Feb 2024 13:07:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 82EEC10E0BC;
+	Wed, 14 Feb 2024 13:16:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KsX+1YBC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d9t3PFOI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 75F6210E126
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Feb 2024 13:07:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6710110E0BC
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Feb 2024 13:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707916060; x=1739452060;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=4pjlJBsZCgTr5FquAYfqZOc9QNI1RIUEO5lH79a+0c8=;
- b=KsX+1YBC42S4uU+UXl00jD8R6cB3rxQ66RzpmCcoyXD6B9Va7AznnAO+
- vT9IFXNrHMPQyQOHNnqhcywPEJpBUEa2d5rA0McGYE+Km5x7jEeJ52v6e
- Qg+XeW/frhDLKDzTV1Juqqv4GjOhDtcpHPYhkK7u8P+qIKDTTc/tyCE25
- efltOgIdSUUO/R9Nqixz4n2d+kHrTL/e8r3bp2zU/7u2isr4aE+IPGCXK
- NpOWA/SqdhFW74hquW4iXrLWdd8qg5gsZgZcD/1fukuBu3wfBEdLu+K1F
- N7wCZgGN0EtNiqs5WtIItX+CjE1+gKnMxCbh2Q1TCBoW3XsONqYpC/hkQ Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="1866619"
+ t=1707916578; x=1739452578;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=/swiLXCuq0uRDtQnNUeHXbPdFknqm4Au85cJ0KJfv+k=;
+ b=d9t3PFOI1QmWS1olRC1heKQJ3QenTXA1/8vlIUYJzEevhoS3zH/oWLMk
+ 8CAN+EbJKA5i2WUjUoUchszSK8+PUM+1JjQct3+dLKAWGQNFAvxOQruVT
+ JdmLAL2d4BXQP1fcdmnQYnNIhtGiW60O7EkenbtcDWEkwPbsBcJGn1FuO
+ D/95PV9KS+ne13ywXaTpBzzK0PhS7ktFTeXEZ0iklBlISJgFtTGCd+uzb
+ ziGGfYh81xq5TddOZhC8+owy4prQWrjfaKJfD3ExI6exHbbk/QJ/uN29e
+ qYJxhl446hPfdojNEvN5JuZsn24ZMiOrdgkai6HRf2NMviRVBtH83Pqfc g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="5779169"
 X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
-   d="scan'208";a="1866619"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2024 05:07:39 -0800
+   d="scan'208";a="5779169"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Feb 2024 05:16:18 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
-   d="scan'208";a="7854834"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2024 05:07:37 -0800
-Date: Wed, 14 Feb 2024 14:07:18 +0100
+   d="scan'208";a="3504789"
+Received: from tstelmac-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.113.196])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Feb 2024 05:16:14 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: "Samala, Pranay" <pranay.samala@intel.com>, karthik.b.s@intel.com,
- jeevan.b@intel.com, Samala@freedesktop.org
-Subject: Re: [PATCH v2 1/1] tests/kms_plane: Restricting number of pixel
- formats for simulation
-Message-ID: <20240214130718.tbdg3ssc5eovij7a@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- "Samala, Pranay" <pranay.samala@intel.com>, karthik.b.s@intel.com,
- jeevan.b@intel.com, Samala@freedesktop.org
-References: <20240214085328.2024-1-pranay.samala@intel.com>
- <20240214085328.2024-2-pranay.samala@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Petri Latvala <adrinael@adrinael.net>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v2] lib/drmtest: drop legacy path from filtered opens
+Date: Wed, 14 Feb 2024 14:16:10 +0100
+Message-ID: <20240214131610.41709-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240214085328.2024-2-pranay.samala@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,51 +71,109 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Samala,,
-On 2024-02-14 at 14:23:28 +0530, Samala, Pranay wrote:
-> The pixel-format subtest runs on all pixel formats, reducing it to single
-> format to reduce execution time on simulation.
-> 
-> Cc: B S, Karthik <karthik.b.s@intel.com>
------ ^^^^
-Should be:
-Cc: Karthik B S <karthik.b.s@intel.com>
+For some multi-GPU tests user can check them on single-GPU board
+with the help of repeating same card in --device option or
+environment var IGT_DEVICE:
 
-> Cc: B, Jeevan <jeevan.b@intel.com>
------ ^^^^
-Same here:
-Cc: Jeevan B <jeevan.b@intel.com>
+sudo IGT_DEVICE=pci:vendor=Intel,card=0\;pci:vendor=Intel,card=0 \
+	build/tests/gem_basic --r multigpu-create-close
 
-> 
-> Signed-off-by: Samala, Pranay <pranay.samala@intel.com>
+but is unable to use it due to current implementation of device
+opening in function __drm_open_driver_another(). It will also
+prevent restricting multiGPU test to only two cards on three or
+four card board.
 
-Please correct this in your git config, this should be:
+To allow this separate legacy opening path from filtered one and
+do not fallback into legacy path when index for card exceeds
+number of filtered devices. Use local opened fds table only for
+legacy opens so that path is not affected.
+When filters are used for multi-GPU tests user should provide all
+of them needed for testing, this could be done with the help of
+incrementing filters or with "card=all":
 
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+sudo IGT_DEVICE=pci:vendor=Intel,card=all \
+	build/tests/gem_basic --r multigpu-create-close
 
-This can be corrected at merge,
+v2: improving description, using filtered_count var (Janusz)
+  changing drmtest: to lib/drmtest: (Kamil)
+  adding Lukasz Laguna to Cc: (Kamil)
 
-Regards,
-Kamil
+Cc: Arkadiusz Hiler <arek@hiler.eu>
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Petri Latvala <adrinael@adrinael.net>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/drmtest.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-> ---
->  tests/kms_plane.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 406aecc04..fbffc3cb0 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -1081,6 +1081,9 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
->  		    f.modifier == ref.modifier)
->  			continue;
->  
-> +		if (f.format != DRM_FORMAT_XRGB8888 && igt_run_in_simulation())
-> +			continue;
-> +
->  		/* test each format "class" only once in non-extended tests */
->  		if (!data->extended && f.modifier != DRM_FORMAT_MOD_LINEAR) {
->  			struct format_mod rf = {
-> -- 
-> 2.34.1
-> 
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 52b5a2020..e718d6291 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -481,13 +481,12 @@ static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card)
+  *
+  * This function opens device in the following order:
+  *
+- * 1. when --device arguments are present:
++ * 1. when --device arguments are present or IGT_DEVICE env var is used:
+  *   * device scanning is executed,
+  *   * idx-th filter (starting with 0, filters are semicolon separated) is used
+- *   * if there is no idx-th filter, goto 2
++ *   * if there is no idx-th filter fail with -1
+  *   * first device maching the filter is selected
+- *   * if it's already opened (for indexes = 0..idx-1) we fail with -1
+- *   * otherwise open the device and return the fd
++ *   * open the device and return the fd
+  *
+  * 2. compatibility mode - open the first DRM device we can find that is not
+  *    already opened for indexes 0..idx-1, searching up to 16 device nodes
+@@ -526,12 +525,19 @@ static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card)
+  */
+ int __drm_open_driver_another(int idx, int chipset)
+ {
++	int filter_count = igt_device_filter_count();
+ 	int fd = -1;
+ 
+-	if (chipset != DRIVER_VGEM && igt_device_filter_count() > idx) {
++	if (chipset != DRIVER_VGEM && filter_count) {
+ 		struct igt_device_card card;
+ 		bool found;
+ 
++		if (idx < 0 || idx >= filter_count) {
++			igt_warn("Cannot open, index out of bounds: %d, filter_count=%d\n",
++				 idx, filter_count);
++			return -1;
++		}
++
+ 		found = __get_card_for_nth_filter(idx, &card);
+ 
+ 		if (!found) {
+@@ -542,19 +548,17 @@ int __drm_open_driver_another(int idx, int chipset)
+ 		if (!found || !strlen(card.card))
+ 			igt_warn("No card matches the filter! [%s]\n",
+ 				 igt_device_filter_get(idx));
+-		else if (_is_already_opened(card.card, idx))
+-			igt_warn("card maching filter %d is already opened\n", idx);
+ 		else
+ 			fd = __open_driver_exact(card.card, chipset);
+ 
+ 	} else {
+ 		/* no filter for device idx, let's open whatever is available */
+ 		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
++		if (fd >= 0)
++			_set_opened_fd(idx, fd);
+ 	}
+ 
+ 	if (fd >= 0) {
+-		_set_opened_fd(idx, fd);
+-
+ 		/* Cache xe_device struct. */
+ 		if (is_xe_device(fd))
+ 			xe_device_get(fd);
+-- 
+2.42.0
+
