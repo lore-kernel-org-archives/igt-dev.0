@@ -4,51 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B95D8C4829F
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C15CCC48BC4
 	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 06:45:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1F4F510E203;
-	Wed, 14 Feb 2024 06:45:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C631310E12C;
+	Wed, 14 Feb 2024 06:45:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S56CnFhS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UuCmE1mm";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0254510E1BF
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Feb 2024 06:45:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DBAF910E085
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Feb 2024 06:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707893143; x=1739429143;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=2m6lYF1In0GDUJPiFKT8060D3oa1GAJNcje6ijNlY5c=;
- b=S56CnFhSca86GVaLVfBnExJZfxnbMUqrsqiYnoCE0G75JXNdpzFaIjEm
- uMKHNlEsBvLOrN1hCJdRU7iHDsHC4AptSBu9smZbzhUyJcKUPD09O9kLj
- 422en85f4M2lzp+OEJIlxINFGl+PUtoWwWDKzPBwy5YwMFGA9q4UCdIkr
- 3KxlGCnvBtsHorkAzTJMET6LXHDyJNgyKR8RgW3dGuWKTf2TOgkwXNGch
- TJIOfjza5abjcdUgfwQGjIb56H+LH+Ipr6xig1+cYSU0JkclmEwrbp+3A
- d2reFwslPcgWpFgPhYz2LOfjr4YIofIvK+LYqrQ95unh8vf21h8Q0wEC6 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="12645420"
-X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; d="scan'208";a="12645420"
+ t=1707893142; x=1739429142;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=o1f7YEdRKqKYCN1tPi0Q8wcMyXjwYgc1oqFTGRAvEjc=;
+ b=UuCmE1mmoSAb1ybN6prsRzp5JMbV+AHBxy4UiLPsfWWJpRqZ04DKo/Gk
+ MBtuU444oTA4jxR+XehHp5mElJuP95Y3l1aubqLK/koPQoNlvSBt5Rm7G
+ mvRnhMXpbgPSVoHDjw1F76JPUQuzJU5vbOmUMtM7xGzvWvVbeuoNgapE/
+ kJaMGsanKkFFV1t9dZZf9z2nPag0/0zRGhcVlxe8MG0/5ZIz4ZophhTHg
+ 28QkLLiIv5Qmxnw8f57bPPHL4WGmTrRJIPDgEenmETb5EOSa06aNNwlFz
+ tVvanFyWxFl0NmJP9qpedeL4UZtVL9VJf4KtayeMQQKe/LcNKwq5Xoh/X w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="12645405"
+X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; d="scan'208";a="12645405"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2024 22:45:42 -0800
+ 13 Feb 2024 22:45:39 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
-   d="scan'208";a="3427551"
+   d="scan'208";a="3427543"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2024 22:45:41 -0800
+ 13 Feb 2024 22:45:32 -0800
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Harry Wentland <harry.wentland@amd.com>
-Subject: [RFC v4 02/22] lib/igt_kms: Introduce
- DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE
-Date: Wed, 14 Feb 2024 12:09:33 +0530
-Message-ID: <20240214063953.1285495-3-bhanuprakash.modem@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ville Syrjala <ville.syrjala@linux.intel.com>,
+ Pekka Paalanen <pekka.paalanen@collabora.com>,
+ Simon Ser <contact@emersion.fr>, Harry Wentland <harry.wentland@amd.com>,
+ Melissa Wen <mwen@igalia.com>,
+ =?UTF-8?q?Jonas=20=C3=85dahl?= <jadahl@redhat.com>,
+ Sebastian Wick <sebastian.wick@redhat.com>,
+ Shashank Sharma <shashank.sharma@amd.com>,
+ Alexander Goins <agoins@nvidia.com>, Joshua Ashton <joshua@froggi.es>,
+ =?UTF-8?q?Michel=20D=C3=A4nzer?= <mdaenzer@redhat.com>,
+ Aleix Pol <aleixpol@kde.org>, Xaver Hugl <xaver.hugl@gmail.com>,
+ Victoria Brekenfeld <victoria@system76.com>, Sima <daniel@ffwll.ch>,
+ Uma Shankar <uma.shankar@intel.com>,
+ Naseer Ahmed <quic_naseer@quicinc.com>,
+ Christopher Braga <quic_cbraga@quicinc.com>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Arthur Grillo <arthurgrillo@riseup.net>, Hector Martin <marcan@marcan.st>,
+ Liviu Dudau <Liviu.Dudau@arm.com>,
+ Sasha McIntosh <sashamcintosh@google.com>
+Subject: [RFC v4 00/22] IGT tests for the KMS Color Pipeline API
+Date: Wed, 14 Feb 2024 12:09:31 +0530
+Message-ID: <20240214063953.1285495-1-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240214063953.1285495-1-bhanuprakash.modem@intel.com>
-References: <20240214063953.1285495-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -65,71 +81,120 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Harry Wentland <harry.wentland@amd.com>
+This series introduces support for
+* drm_colorop DRM objects
+* COLOR_PIPELINE plane property
 
-We don't want to set this by default since existing tests
-might require COLOR_RANGE and COLOR_ENCODING plane properties.
+Kernel changes:
+https://gitlab.freedesktop.org/hwentland/linux/-/merge_requests/5
 
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
----
- include/drm-uapi/drm.h | 15 +++++++++++++++
- lib/igt_kms.c          |  4 ++++
- lib/igt_kms.h          |  1 +
- 3 files changed, 20 insertions(+)
+It also adds a new kms_colorop test case that tests the color pipeline
+API. The tests are designed to be easily extensible with a "transform"
+and "compare" function pointer for each test. The "transform" function
+performs the transformations under test via SW routines. The "compare"
+function compares the DRM/KMS result (via a writeback connector) with
+the result derived via the SW "transform".
 
-diff --git a/include/drm-uapi/drm.h b/include/drm-uapi/drm.h
-index 02540248d..002337cc9 100644
---- a/include/drm-uapi/drm.h
-+++ b/include/drm-uapi/drm.h
-@@ -836,6 +836,21 @@ struct drm_get_cap {
-  */
- #define DRM_CLIENT_CAP_WRITEBACK_CONNECTORS	5
- 
-+/**
-+ * DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE
-+ *
-+ * If set to 1, the DRM core will
-+ * - expose plane COLOR_PIPELINE properties for pre-blending color management.
-+ * - reject setting of these plane properties:
-+ *   - COLOR_ENCODING
-+ *   - COLOR_RANGE
-+ *
-+ * The client must enable &DRM_CLIENT_CAP_ATOMIC first.
-+ *
-+ * This capability is currently in development.
-+ */
-+#define DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE	7
-+
- /* DRM_IOCTL_SET_CLIENT_CAP ioctl argument type */
- struct drm_set_client_cap {
- 	__u64 capability;
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 1b4d0d761..ef1f611ec 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -2801,6 +2801,10 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	if (drmSetClientCap(drm_fd, LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 1) == 0)
- 		display->has_virt_cursor_plane = 1;
- 
-+	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
-+		display->has_plane_color_pipeline = 1;
-+
-+
- 	plane_resources = drmModeGetPlaneResources(display->drm_fd);
- 	igt_assert(plane_resources);
- 
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index b3882808b..2e9484413 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -482,6 +482,7 @@ struct igt_display {
- 	bool has_cursor_plane;
- 	bool is_atomic;
- 	bool has_virt_cursor_plane;
-+	bool has_plane_color_pipeline;
- 	bool first_commit;
- 
- 	uint64_t *modifiers;
--- 
+There are three tests for LUTs:
+ - plane-srgb_eotf: pre-blending sRGB EOTF
+ - plane-srgb_inv_eotf: pre-blending sRGB Inverse EOTF
+ - plane-srgb_eotf-srgb_inv_eotf: pre-blending sRGB EOTF,
+   followed by its inverse
+
+And a number of tests for matrices.
+
+v3:
+ - Remove need for IOCTLs and libdrm changes
+ - Test colorop properties with both atomic and legacy code paths
+ - move enum drm_colorop_type to drm_mode.h
+ - Add descriptions for public functions in lib (Kamil)
+ - Use SPDX style license identifier (Kamil)
+ - Replace Skia license comment with copyright note in file header
+ - Fix kms_colorop subtests if applicable color pipeline not found
+
+v4: (Bhanu)
+ - Though v3 required some cleanup, I am not touching it, instead fix any issue
+   as new patch (we may need to squash those patches)
+ - Rebase v3
+ - Move few helpers to common place (kms_color_helper) to reuse by multiple tests
+ - New helpers to cleanup the colorop props.
+ - Helpers to support custom 1D LUT & CTM 3x3
+ - New subtests to validate Intel plane color pipeline, please find the
+   KMD changes: https://patchwork.freedesktop.org/series/129812/
+
+Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
+Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
+Cc: Simon Ser <contact@emersion.fr>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Melissa Wen <mwen@igalia.com>
+Cc: Jonas Ådahl <jadahl@redhat.com>
+Cc: Sebastian Wick <sebastian.wick@redhat.com>
+Cc: Shashank Sharma <shashank.sharma@amd.com>
+Cc: Alexander Goins <agoins@nvidia.com>
+Cc: Joshua Ashton <joshua@froggi.es>
+Cc: Michel Dänzer <mdaenzer@redhat.com>
+Cc: Aleix Pol <aleixpol@kde.org>
+Cc: Xaver Hugl <xaver.hugl@gmail.com>
+Cc: Victoria Brekenfeld <victoria@system76.com>
+Cc: Sima <daniel@ffwll.ch>
+Cc: Uma Shankar <uma.shankar@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: Naseer Ahmed <quic_naseer@quicinc.com>
+Cc: Christopher Braga <quic_cbraga@quicinc.com>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Arthur Grillo <arthurgrillo@riseup.net>
+Cc: Hector Martin <marcan@marcan.st>
+Cc: Liviu Dudau <Liviu.Dudau@arm.com>
+Cc: Sasha McIntosh <sashamcintosh@google.com>
+
+Bhanuprakash Modem (10):
+  tests/kms_properties: Fix compilation errors
+  lib/igt_kms: Destroy colorops on exit
+  lib/colorops: Move few helpers to common place to reuse
+  drm-uapi: Add 3x3 CTM
+  drm-uapi: Add custom 1D LUT
+  lib/igt_color: Add support for 3x3 matrices
+  lib/colorops: Add support for Custom 1D LUT
+  lib/igt_kms: Increase the colorops count
+  tests/kms_color_helper: Add helpers to clear colorops data
+  tests/kms_color: Add plane color pipeline tests for Intel hardware
+
+Harry Wentland (12):
+  lib/drmtest: Add is_vkms_device()
+  lib/igt_kms: Introduce DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE
+  include/drm-uapi: Add COLOROP object
+  lib/igt_kms: Introduce drm_colorop and COLOR_PIPELINE
+  tests/kms_properties: Add colorop properties test
+  igt/color: Add SW color transform functionality
+  lib/igt_fb: Add copy_fb function
+  tests/kms_colorop: Add kms_colorop tests
+  drm-uapi: Add 3x4 CTM
+  lib/igt_kms: Add support for DATA colorop property
+  lib/igt_color: Add support for 3x4 matrices
+  tests/kms_colorop: Add 3x4 CTM tests
+
+ include/drm-uapi/drm.h      |  15 ++
+ include/drm-uapi/drm_mode.h |  52 +++++
+ lib/drmtest.c               |   5 +
+ lib/drmtest.h               |   1 +
+ lib/igt_color.c             | 361 +++++++++++++++++++++++++++++
+ lib/igt_color.h             |  81 +++++++
+ lib/igt_fb.c                |  40 +++-
+ lib/igt_fb.h                |   3 +
+ lib/igt_kms.c               | 312 ++++++++++++++++++++++++-
+ lib/igt_kms.h               |  97 +++++++-
+ lib/meson.build             |   1 +
+ tests/kms_color.c           | 273 +++++++++++++++++++++-
+ tests/kms_color_helper.c    | 313 ++++++++++++++++++++++++++
+ tests/kms_color_helper.h    |  91 ++++++++
+ tests/kms_colorop.c         | 438 ++++++++++++++++++++++++++++++++++++
+ tests/kms_properties.c      |  72 ++++++
+ tests/meson.build           |   2 +
+ 17 files changed, 2140 insertions(+), 17 deletions(-)
+ create mode 100644 lib/igt_color.c
+ create mode 100644 lib/igt_color.h
+ create mode 100644 tests/kms_colorop.c
+
+--
 2.43.0
 
