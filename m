@@ -4,59 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B406AC48BC3
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 13:32:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A39AC48BC1
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 13:38:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 60B5410E268;
-	Wed, 14 Feb 2024 13:32:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3FFB010E0C7;
+	Wed, 14 Feb 2024 13:38:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lwGFRnNe";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E/ECMuLW";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0BEB10E260
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Feb 2024 13:32:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF9B710E0C7
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Feb 2024 13:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707917532; x=1739453532;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=j91xW7pnFv/ZO7D60X+4m9zGKU2AueIXHafLzMQomJs=;
- b=lwGFRnNe0O+lLcMbQRcVJ8YWOIhYVFUzqkXNVK5ipKMZsCvUvCKuhspH
- CIYewZorAOkz/539Jgszb3C/2P254UQQWMfTZfll4In0f+bv/zeuQMtf2
- Mahu1tkhBDMcCBrLKLpgUOhbGlSx0GDmZpvOJt9msv6GoRgqCNonn7doA
- GaNME3MlzeY2U3X/Xupl8E5mruLNfuWCQFBxGGzwIk0bQ888hBvdeCcW9
- xUuRzefI+e+bkEQWpeHx9q5Bl8035f0jS1gB5yECOgVhn7Tl0IcDVfh8O
- XwEKITMY9dMNMz1odumxj6AfUd+BybhfpmaPD54kkCGayqR34atJbRD0p Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="13350352"
-X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; d="scan'208";a="13350352"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ t=1707917910; x=1739453910;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=L4Z+uzw9Sj6+IWkbJT3/04ANv6kdLdNa5JORb7rg51U=;
+ b=E/ECMuLWWUzLgt64iubayqr8MHARBtzLOs0crsehyh9LppevIic7T0WM
+ TL08Tmfncyf2pmQDcHV3rICBnW7vS1BjHjlZwjfnjApbSkOdc6MCnkSTY
+ 8+j9x6gE++HuvjNHM2UKUejfTW8k+dcnt4uzlnxVXD+xE+N4Bq1cbvx8O
+ rc4YXbWkWjkk+dvbNarXWVcrSiQO2zscIQaJ1Ckd2t4SCPJBg4MxGddKP
+ 47QCS1DN86Du/ycjca6o5nwnbpZcKT3KauKAQLp2s2qmpVlLvj7GZ5o10
+ XYEpuIVx3TMAGPjZLEEDuOALUhbNvWGaaE0+LYlDb453xGdlMUjcGIor/ w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="13350948"
+X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; d="scan'208";a="13350948"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2024 05:32:11 -0800
+ 14 Feb 2024 05:38:29 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
-   d="scan'208";a="3258173"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.3.135])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2024 05:32:08 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Arkadiusz Hiler <arek@hiler.eu>,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Petri Latvala <adrinael@adrinael.net>,
- Zbigniew =?utf-8?B?S2VtcGN6ecWEc2tp?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t v2] lib/drmtest: drop legacy path from filtered opens
-Date: Wed, 14 Feb 2024 14:32:05 +0100
-Message-ID: <2295161.IFkqi6BYcA@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20240214131610.41709-1-kamil.konieczny@linux.intel.com>
-References: <20240214131610.41709-1-kamil.konieczny@linux.intel.com>
+   d="scan'208";a="7823552"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2024 05:38:28 -0800
+Date: Wed, 14 Feb 2024 14:38:25 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Bernd Kuhls <bernd@kuhls.net>
+Cc: igt-dev@lists.freedesktop.org, Stefano Ragni <st3r4g@protonmail.com>
+Subject: Re: [igt-dev] [PATCH v3 4/7] lib/igt_halffloat.c: Fix musl/uclibc
+ build
+Message-ID: <20240214133825.gxcb7sbqgrztpj4e@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Bernd Kuhls <bernd@kuhls.net>, igt-dev@lists.freedesktop.org,
+ Stefano Ragni <st3r4g@protonmail.com>
+References: <20231030195809.3527410-1-bernd@kuhls.net>
+ <20231030195809.3527410-4-bernd@kuhls.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231030195809.3527410-4-bernd@kuhls.net>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,121 +70,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wednesday, 14 February 2024 14:16:10 CET Kamil Konieczny wrote:
-> For some multi-GPU tests user can check them on single-GPU board
-> with the help of repeating same card in --device option or
-> environment var IGT_DEVICE:
->=20
-> sudo IGT_DEVICE=3Dpci:vendor=3DIntel,card=3D0\;pci:vendor=3DIntel,card=3D=
-0 \
-> 	build/tests/gem_basic --r multigpu-create-close
->=20
-> but is unable to use it due to current implementation of device
-> opening in function __drm_open_driver_another(). It will also
-> prevent restricting multiGPU test to only two cards on three or
-> four card board.
->=20
-> To allow this separate legacy opening path from filtered one and
-> do not fallback into legacy path when index for card exceeds
-> number of filtered devices. Use local opened fds table only for
-> legacy opens so that path is not affected.
-> When filters are used for multi-GPU tests user should provide all
-> of them needed for testing, this could be done with the help of
-> incrementing filters or with "card=3Dall":
->=20
-> sudo IGT_DEVICE=3Dpci:vendor=3DIntel,card=3Dall \
-> 	build/tests/gem_basic --r multigpu-create-close
->=20
-> v2: improving description, using filtered_count var (Janusz)
->   changing drmtest: to lib/drmtest: (Kamil)
->   adding Lukasz Laguna to Cc: (Kamil)
->=20
-> Cc: Arkadiusz Hiler <arek@hiler.eu>
-> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Petri Latvala <adrinael@adrinael.net>
-> Cc: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Reviewed-by: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
+Hi Bernd,
+On 2023-10-30 at 20:58:06 +0100, Bernd Kuhls wrote:
+> From: Stefano Ragni <st3r4g@protonmail.com>
+> 
+> Original patch was added to void-linux:
+> https://github.com/void-linux/void-packages/commit/ddfc1f66a0c571b420303c33aed29fd38ace4fc7
+> 
+> Fixes build error:
+> ../lib/igt_halffloat.c:205:6: error: ‘ifunc’ is not supported on this target
+>   205 | void igt_float_to_half(const float *f, uint16_t *h, unsigned int num)
+> 
+> ../lib/igt_halffloat.c:216:6: error: ‘ifunc’ is not supported on this target
+>   216 | void igt_half_to_float(const uint16_t *h, float *f, unsigned int num)
+> 
+> Bug report with request to split the original patch into some
+> functional changes:
+> Link: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/138
+> 
+> Signed-off-by: Stefano Ragni <st3r4g@protonmail.com>
+> Signed-off-by: Bernd Kuhls <bernd@kuhls.net>
 
-Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  lib/drmtest.c | 22 +++++++++++++---------
->  1 file changed, 13 insertions(+), 9 deletions(-)
->=20
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 52b5a2020..e718d6291 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -481,13 +481,12 @@ static bool __get_card_for_nth_filter(int idx, stru=
-ct igt_device_card *card)
->   *
->   * This function opens device in the following order:
->   *
-> - * 1. when --device arguments are present:
-> + * 1. when --device arguments are present or IGT_DEVICE env var is used:
->   *   * device scanning is executed,
->   *   * idx-th filter (starting with 0, filters are semicolon separated) =
-is used
-> - *   * if there is no idx-th filter, goto 2
-> + *   * if there is no idx-th filter fail with -1
->   *   * first device maching the filter is selected
-> - *   * if it's already opened (for indexes =3D 0..idx-1) we fail with -1
-> - *   * otherwise open the device and return the fd
-> + *   * open the device and return the fd
->   *
->   * 2. compatibility mode - open the first DRM device we can find that is=
- not
->   *    already opened for indexes 0..idx-1, searching up to 16 device nod=
-es
-> @@ -526,12 +525,19 @@ static bool __get_card_for_nth_filter(int idx, stru=
-ct igt_device_card *card)
->   */
->  int __drm_open_driver_another(int idx, int chipset)
->  {
-> +	int filter_count =3D igt_device_filter_count();
->  	int fd =3D -1;
-> =20
-> -	if (chipset !=3D DRIVER_VGEM && igt_device_filter_count() > idx) {
-> +	if (chipset !=3D DRIVER_VGEM && filter_count) {
->  		struct igt_device_card card;
->  		bool found;
-> =20
-> +		if (idx < 0 || idx >=3D filter_count) {
-> +			igt_warn("Cannot open, index out of bounds: %d, filter_count=3D%d\n",
-> +				 idx, filter_count);
-> +			return -1;
-> +		}
-> +
->  		found =3D __get_card_for_nth_filter(idx, &card);
-> =20
->  		if (!found) {
-> @@ -542,19 +548,17 @@ int __drm_open_driver_another(int idx, int chipset)
->  		if (!found || !strlen(card.card))
->  			igt_warn("No card matches the filter! [%s]\n",
->  				 igt_device_filter_get(idx));
-> -		else if (_is_already_opened(card.card, idx))
-> -			igt_warn("card maching filter %d is already opened\n", idx);
->  		else
->  			fd =3D __open_driver_exact(card.card, chipset);
-> =20
->  	} else {
->  		/* no filter for device idx, let's open whatever is available */
->  		fd =3D __open_driver("/dev/dri/card", 0, chipset, idx);
-> +		if (fd >=3D 0)
-> +			_set_opened_fd(idx, fd);
->  	}
-> =20
->  	if (fd >=3D 0) {
-> -		_set_opened_fd(idx, fd);
-> -
->  		/* Cache xe_device struct. */
->  		if (is_xe_device(fd))
->  			xe_device_get(fd);
->=20
-
-
-
-
+> v3: no changes
+> 
+>  lib/igt_halffloat.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/igt_halffloat.c b/lib/igt_halffloat.c
+> index 08ab05fce..5dbe08e01 100644
+> --- a/lib/igt_halffloat.c
+> +++ b/lib/igt_halffloat.c
+> @@ -162,7 +162,7 @@ static inline float _half_to_float(uint16_t val)
+>  	return fi.f;
+>  }
+>  
+> -#if defined(__x86_64__) && !defined(__clang__)
+> +#if defined(__x86_64__) && !defined(__clang__) && defined(__GLIBC__) && !defined(__UCLIBC__)
+>  #pragma GCC push_options
+>  #pragma GCC target("f16c")
+>  
+> -- 
+> 2.39.2
+> 
