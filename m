@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B56DC48BEB
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 10:39:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1807AC48BC4
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 11:16:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2672010E581;
-	Wed, 14 Feb 2024 10:39:31 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ulf/0xXV";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F255510E581
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Feb 2024 10:39:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707907167; x=1739443167;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=KNkCq8ntEM4kgqVou5gFtohHvT75ODZqKjn9tJ1KacA=;
- b=Ulf/0xXVp41D5GvCeZ91upoOLZou9Oo5osf/fsCvn0AgAREl6Tg9Sa6E
- GmH6R+uP1Ew4qIoI3eKvCrm7qWzZuImOXLnGriES2p1vxXCk6O7/x9Iz3
- ukRKvelq1pbo0EUI44RRLRb1l0/SsZ0vvWe6T9ZhOY+IckcdOFG+Am0IM
- WXUb5qqUse+45dXCIq4ETRhWbsGxALwJA5m4qx9EXKEP/WDxElnev3iL/
- BwsMAqnax4KmLzIcNbfTagysK8njAcUBLxRzXFwoP27ZnsYu9Fv+Pg6nX
- hA11bN6k2SdYLwVZbOq9f9iuejAMm8eyMzz+o+9xP1TsvFAvqLERsBb2e A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="1796108"
-X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
-   d="scan'208";a="1796108"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2024 02:39:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; d="scan'208";a="34215389"
-Received: from unknown (HELO localhost) ([10.246.30.76])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2024 02:39:23 -0800
-Date: Wed, 14 Feb 2024 11:39:20 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Arkadiusz Hiler <arek@hiler.eu>,
- Chris Wilson <chris@chris-wilson.co.uk>,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Petri Latvala <adrinael@adrinael.net>
-Subject: Re: [PATCH i-g-t v1] drmtest: drop legacy path from filtered opens
-Message-ID: <20240214103920.bjuxcdihgz6e4hv3@zkempczy-mobl2>
-References: <20240213175722.40003-1-kamil.konieczny@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id ED62910E226;
+	Wed, 14 Feb 2024 11:16:29 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E480510E226;
+ Wed, 14 Feb 2024 11:16:27 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8270009417533801108=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240213175722.40003-1-kamil.konieczny@linux.intel.com>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_tests_to_query_firmware_ve?=
+ =?utf-8?q?rsion_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Francois Dugast" <francois.dugast@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 14 Feb 2024 11:16:27 -0000
+Message-ID: <170790938793.1238464.11728877006735881583@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240214102435.7-1-francois.dugast@intel.com>
+In-Reply-To: <20240214102435.7-1-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,110 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Feb 13, 2024 at 06:57:22PM +0100, Kamil Konieczny wrote:
-> Function __drm_open_driver_another() has two paths, first being
-> for filtered devices, second for non-filtered ones. Separate
-> them and do not fallback into legacy path when index for card
-> exceeds number of filtered devices. Use local opened fds table
-> only for legacy calls as this table can become stale after
-> driver reload. In filtered one do not use opened fds guards as
-> this is pointless, we already have info about card wanted by user
-> and we do not need to check if we ancounter already opened one.
-> Also allow opening the same device if user wants it, for example
-> with repeating same card number in --device or IGT_DEVICE:
-> 
-> sudo IGT_DEVICE=pci:vendor=Intel,card=0\;pci:vendor=Intel,card=0 \
-> 	build/tests/gem_basic --r multigpu-create-close
-> 
-> Cc: Arkadiusz Hiler <arek@hiler.eu>
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Cc: Petri Latvala <adrinael@adrinael.net>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  lib/drmtest.c | 22 +++++++++++++---------
->  1 file changed, 13 insertions(+), 9 deletions(-)
-> 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 52b5a2020..307c44ef6 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -481,13 +481,12 @@ static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card)
->   *
->   * This function opens device in the following order:
->   *
-> - * 1. when --device arguments are present:
-> + * 1. when --device arguments are present or IGT_DEVICE env var is used:
->   *   * device scanning is executed,
->   *   * idx-th filter (starting with 0, filters are semicolon separated) is used
-> - *   * if there is no idx-th filter, goto 2
-> + *   * if there is no idx-th filter fail with -1
->   *   * first device maching the filter is selected
-> - *   * if it's already opened (for indexes = 0..idx-1) we fail with -1
-> - *   * otherwise open the device and return the fd
-> + *   * open the device and return the fd
->   *
->   * 2. compatibility mode - open the first DRM device we can find that is not
->   *    already opened for indexes 0..idx-1, searching up to 16 device nodes
-> @@ -528,10 +527,17 @@ int __drm_open_driver_another(int idx, int chipset)
->  {
->  	int fd = -1;
->  
-> -	if (chipset != DRIVER_VGEM && igt_device_filter_count() > idx) {
-> +	if (chipset != DRIVER_VGEM && igt_device_filter_count()) {
-> +		int count = igt_device_filter_count();
->  		struct igt_device_card card;
->  		bool found;
->  
-> +		if (idx < 0 || idx >= count) {
-> +			igt_warn("Cannot open, index into filter out of bounds: %d, count=%d\n",
-> +				 idx, count);
-> +			return -1;
-> +		}
-> +
->  		found = __get_card_for_nth_filter(idx, &card);
->  
->  		if (!found) {
-> @@ -542,19 +548,17 @@ int __drm_open_driver_another(int idx, int chipset)
->  		if (!found || !strlen(card.card))
->  			igt_warn("No card matches the filter! [%s]\n",
->  				 igt_device_filter_get(idx));
-> -		else if (_is_already_opened(card.card, idx))
-> -			igt_warn("card maching filter %d is already opened\n", idx);
->  		else
->  			fd = __open_driver_exact(card.card, chipset);
+--===============8270009417533801108==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Great! You've relaxed this condition. It will make multigpu testing
-on single gpu easier.
+== Series Details ==
 
-From me:
+Series: Add tests to query firmware version (rev2)
+URL   : https://patchwork.freedesktop.org/series/129647/
+State : success
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+== Summary ==
 
-If noone will protest in few days then go ahead and merge.
+CI Bug Log - changes from XEIGT_7711_BAT -> XEIGTPW_10672_BAT
+====================================================
 
---
-Zbigniew
+Summary
+-------
 
->  
->  	} else {
->  		/* no filter for device idx, let's open whatever is available */
->  		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
-> +		if (fd >= 0)
-> +			_set_opened_fd(idx, fd);
->  	}
->  
->  	if (fd >= 0) {
-> -		_set_opened_fd(idx, fd);
-> -
->  		/* Cache xe_device struct. */
->  		if (is_xe_device(fd))
->  			xe_device_get(fd);
-> -- 
-> 2.42.0
-> 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10672_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_exec_threads@threads-mixed-shared-vm-basic:
+    - bat-pvc-2:          [DMESG-WARN][1] ([Intel XE#1238]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7711/bat-pvc-2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10672/bat-pvc-2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html
+
+  
+  [Intel XE#1238]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1238
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7711 -> IGTPW_10672
+  * Linux: xe-769-7c8e9135509f2e438e11a4af17387a204ab59884 -> xe-776-403e424a8684b55d90b90f293a992e54f37892b3
+
+  IGTPW_10672: 10672
+  IGT_7711: 7711
+  xe-769-7c8e9135509f2e438e11a4af17387a204ab59884: 7c8e9135509f2e438e11a4af17387a204ab59884
+  xe-776-403e424a8684b55d90b90f293a992e54f37892b3: 403e424a8684b55d90b90f293a992e54f37892b3
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10672/index.html
+
+--===============8270009417533801108==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add tests to query firmware version (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129647/">https://patchwork.freedesktop.org/series/129647/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10672/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10672/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7711_BAT -&gt; XEIGTPW_10672_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10672_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_threads@threads-mixed-shared-vm-basic:<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7711/bat-pvc-2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1238">Intel XE#1238</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10672/bat-pvc-2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7711 -&gt; IGTPW_10672</li>
+<li>Linux: xe-769-7c8e9135509f2e438e11a4af17387a204ab59884 -&gt; xe-776-403e424a8684b55d90b90f293a992e54f37892b3</li>
+</ul>
+<p>IGTPW_10672: 10672<br />
+  IGT_7711: 7711<br />
+  xe-769-7c8e9135509f2e438e11a4af17387a204ab59884: 7c8e9135509f2e438e11a4af17387a204ab59884<br />
+  xe-776-403e424a8684b55d90b90f293a992e54f37892b3: 403e424a8684b55d90b90f293a992e54f37892b3</p>
+
+</body>
+</html>
+
+--===============8270009417533801108==--
