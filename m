@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC896C48BC4
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD1E0C4829A
 	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 06:46:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 56D0F10E5A5;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7391210E5D3;
 	Wed, 14 Feb 2024 06:46:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W4YgyaPO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Kz2j9ZXg";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B7FD10E203
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Feb 2024 06:46:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 960C510E203
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Feb 2024 06:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707893166; x=1739429166;
+ t=1707893164; x=1739429164;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=WckOe84fU7R7nBgvsxVzUAGgG1DJC1WlqThWxInIaoQ=;
- b=W4YgyaPOMTBNn8vxd5wZXHfyWkr04WkaPr5XGAiK12ijpksWuo4p81N8
- 2aKLjpHUH4SEtG7HKxVgU+gnPkFlxTejkCfLCCAi3RhWIpTAqRRP2+vrm
- 8ghM2hZcbKACLLuvqrGVcgT2fN5zO1qxHuojaCX/xaY4rxAYMOu8KTCch
- RSjfJ2uZfDjjntdTTHCuoNiP5ysGqLRqKpcoPf4k+ZebJvXF01Ci7KpBK
- W56Hy9B0ftA6cbD0X7/9MwH/3hieS0nNKaPY73r5LuDiNIi/gM3xNQ25H
- 7As/nEhMgJJhC4zhnvnnRGGjtnXvmrbD+vRSkyzpK/VSQ+++qe5nxUs1r A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="12645501"
-X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; d="scan'208";a="12645501"
+ bh=1pObZ9KJfZqSBpDLuzj5pqqBE2B+eXrN5bDACYSk2gM=;
+ b=Kz2j9ZXgZWrOYwZHH1ois/ZQyD+VKonoSF06jYPamYr9QiVHowmpeMkP
+ 42S8WUNujVEhGZwpF/kr54dVQoN/m22ylQ6FXP/tJYQnfyk2XEqnZJK+K
+ hDFHLEzMmlLb+3fv6DQLsFrsERHIFnILZ3FBq8l38zixk0Fy0xu3dqkeO
+ u47gRKEh3i+Xo+ifICqMZc3hI6SUNUsT1KMVqVeXFNnR9UH3VUULw6Y7e
+ FcpGKAlZ9QJq10XJ+E2zEIGbUB4koTYh5a4J24opFy+HbNqYMXJW0axK7
+ gw64k496Z4pOPej60ACrtq47VJyEye2eFcoVPsu3GiLAuKNQhkg2c1a6s Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="12645495"
+X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; d="scan'208";a="12645495"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2024 22:46:06 -0800
+ 13 Feb 2024 22:46:04 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
-   d="scan'208";a="3427670"
+   d="scan'208";a="3427662"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2024 22:46:05 -0800
+ 13 Feb 2024 22:46:03 -0800
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [RFC v4 17/22] drm-uapi: Add custom 1D LUT
-Date: Wed, 14 Feb 2024 12:09:48 +0530
-Message-ID: <20240214063953.1285495-18-bhanuprakash.modem@intel.com>
+Subject: [RFC v4 16/22] drm-uapi: Add 3x3 CTM
+Date: Wed, 14 Feb 2024 12:09:47 +0530
+Message-ID: <20240214063953.1285495-17-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240214063953.1285495-1-bhanuprakash.modem@intel.com>
 References: <20240214063953.1285495-1-bhanuprakash.modem@intel.com>
@@ -66,51 +66,21 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- include/drm-uapi/drm_mode.h | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ include/drm-uapi/drm_mode.h | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-index 476c1a7be..7def05fe8 100644
+index 358c5c313..476c1a7be 100644
 --- a/include/drm-uapi/drm_mode.h
 +++ b/include/drm-uapi/drm_mode.h
-@@ -874,8 +874,37 @@ struct drm_color_lut {
- 	__u16 reserved;
- };
+@@ -876,6 +876,7 @@ struct drm_color_lut {
  
-+/*
-+ * Creating 64 bit palette entries for better data
-+ * precision. This will be required for HDR and
-+ * similar color processing usecases.
-+ */
-+struct drm_color_lut_ext {
-+	/*
-+	 * Data is U32.32 fixed point format.
-+	 */
-+	__u64 red;
-+	__u64 green;
-+	__u64 blue;
-+	__u64 reserved;
-+};
-+
-+struct drm_color_lut_range {
-+	/* DRM_MODE_LUT_* */
-+	__u32 flags;
-+	/* number of points on the curve */
-+	__u16 count;
-+	/* input/output bits per component */
-+	__u8 input_bpc, output_bpc;
-+	/* input start/end values */
-+	__s32 start, end;
-+	/* output min/max values */
-+	__s32 min, max;
-+};
-+
  enum drm_colorop_type {
  	DRM_COLOROP_1D_CURVE,
-+	DRM_COLOROP_1D_LUT,
- 	DRM_COLOROP_CTM_3X3,
++	DRM_COLOROP_CTM_3X3,
  	DRM_COLOROP_CTM_3X4,
  };
+ 
 -- 
 2.43.0
 
