@@ -4,59 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E26A5C48BC3
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 15:10:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D052CC48BC1
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 15:26:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 809C610E37E;
-	Wed, 14 Feb 2024 15:10:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EDF0B10E3A3;
+	Wed, 14 Feb 2024 15:26:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gzeCCwjF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GlDv0HmF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D12610E1F4;
- Wed, 14 Feb 2024 15:10:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5187B10E3A3
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Feb 2024 15:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707923441; x=1739459441;
+ t=1707924388; x=1739460388;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=wu0JI0h4/9i153JmEzErhJwA2HcWR/zDoRHMdXaaiHc=;
- b=gzeCCwjFg2wV4wiDZv/K+C0WmCgF3Y6VKGWBBiQPCAJAiEkxs+ZlOCQU
- /W4KY8+HGVSnVamQhpPIr43GDlbgWoyMy4PqSKSuKZYYDWDxR0n4tFSmH
- yIZLOH+wPH1MRNa/lxdvj7mKfacIn4tJ4uch6UDRgI1D3NeBlPPpTCOTt
- 5sl9MB66rJaL2ZFh71lQmJVWbXesOTO/aR4BD4epAcL6nApk1b/+bL9PJ
- ssOry/FBT2L3P7U/gCWRZaXKIHZ1fE3Ho3RGtEpZcjITirffBsU5j31lj
- Jryxs4aHZIUA0z/9k+JQlgBsmA2HipjihWYx09PKEORuJJIGbX/rFeLjl Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="12604208"
-X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; d="scan'208";a="12604208"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2024 07:10:40 -0800
+ bh=U4Ho3yxIaKsyB2jG8B5t9VDzB9j2EA85o/kTYp+I6Jo=;
+ b=GlDv0HmF+cia/8tMuJP7uNOfgfIdLicaRohcDEISCpJdzfHV5tcIJuE1
+ yELfZiRx4kD1lFyjIksSARuRK66VzNewX5CUpWlUZyQX5FlbpzSDRwXnd
+ nYCqyKCjzx5HHqcKG10EmUBiDB4VOxnPHtYDybUq/DzGtTCLW4yoYKC1X
+ YZnMh/KRbZNIYspY/JnEgmf4yxKzWPuOjtyypjhR8laMqps45uJ8mtOyR
+ TTT5dF+sI8vkRZV0/DZpyNX8xjJRQRm0q1fy9nMiTYPeFp9Wygojpy/FB
+ xXDQUPxvPXfR52UXK33dXZ0OTgys7U2Jn7EOeFPOfILng5pOhv3qzoe4q Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="1847198"
+X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
+   d="scan'208";a="1847198"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Feb 2024 07:26:28 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; d="scan'208";a="40702980"
+X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
+   d="scan'208";a="7817011"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2024 07:10:38 -0800
-Date: Wed, 14 Feb 2024 16:10:35 +0100
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2024 07:26:26 -0800
+Date: Wed, 14 Feb 2024 16:26:23 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
- TejasreeX Illipilli <tejasreex.illipilli@intel.com>
-Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVA==?= =?utf-8?Q?=3A?= failure for
- benchmarks/kms_vblank: Add XE support
-Message-ID: <20240214151035.r62m7rtva7t47nzo@kamilkon-desk.igk.intel.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>, saurabhg.gupta@intel.com,
+ janga.rahul.kumar@intel.com, priyanka.dandamudi@intel.com,
+ john.c.harrison@intel.com, matthew.d.roper@intel.com,
+ ashutosh.dixit@intel.com
+Subject: Re: [PATCH i-g-t v5 2/2] tests/i915_query: Add query-l3-bank-count
+ subtest
+Message-ID: <20240214152623.w2ifkkgh7hl4lb4e@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
- TejasreeX Illipilli <tejasreex.illipilli@intel.com>
-References: <20240212150113.736295-1-bhanuprakash.modem@intel.com>
- <170776664734.1182955.973861211145205994@5338d5abeb45>
+ Jonathan Cavitt <jonathan.cavitt@intel.com>,
+ saurabhg.gupta@intel.com, janga.rahul.kumar@intel.com,
+ priyanka.dandamudi@intel.com, john.c.harrison@intel.com,
+ matthew.d.roper@intel.com, ashutosh.dixit@intel.com
+References: <20231130160253.3787505-1-jonathan.cavitt@intel.com>
+ <20231130160253.3787505-3-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <170776664734.1182955.973861211145205994@5338d5abeb45>
+In-Reply-To: <20231130160253.3787505-3-jonathan.cavitt@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,89 +76,193 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-02-12 at 19:37:27 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Jonathan,
+On 2023-11-30 at 08:02:53 -0800, Jonathan Cavitt wrote:
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 > 
-> Series: benchmarks/kms_vblank: Add XE support
-> URL   : https://patchwork.freedesktop.org/series/129779/
-> State : failure
+> Add a subtest to query L3 Bank count for each engine.
 > 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_14255_full -> IGTPW_10662_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_10662_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_10662_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10662/index.html
-> 
-> Participating hosts (8 -> 9)
-> ------------------------------
-> 
->   Additional (1): shard-snb-0 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_10662_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_frontbuffer_tracking@fbc-suspend:
->     - shard-dg2:          [PASS][1] -> [ABORT][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14255/shard-dg2-6/igt@kms_frontbuffer_tracking@fbc-suspend.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10662/shard-dg2-1/igt@kms_frontbuffer_tracking@fbc-suspend.html
-> 
->   
-> #### Suppressed ####
-> 
->   The following results come from untrusted machines, tests, or statuses.
->   They do not affect the overall result.
-> 
->   * {igt@kms_psr@psr2-sprite-plane-onoff@edp-1}:
->     - shard-mtlp:         [PASS][3] -> [FAIL][4]
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14255/shard-mtlp-7/igt@kms_psr@psr2-sprite-plane-onoff@edp-1.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10662/shard-mtlp-6/igt@kms_psr@psr2-sprite-plane-onoff@edp-1.html
-> 
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> ---
 
-Unrelated to change in benchmark, no need for respin.
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Regards,
-Kamil
-
->   
-> New tests
-> ---------
+>  tests/intel/i915_query.c | 140 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 140 insertions(+)
 > 
->   New tests have been introduced between CI_DRM_14255_full and IGTPW_10662_full:
+> diff --git a/tests/intel/i915_query.c b/tests/intel/i915_query.c
+> index e9cc495973..5d61e15041 100644
+> --- a/tests/intel/i915_query.c
+> +++ b/tests/intel/i915_query.c
+> @@ -25,6 +25,7 @@
+>  #include "intel_hwconfig_types.h"
+>  #include "i915/gem.h"
+>  #include "i915/gem_create.h"
+> +#include "igt_sysfs.h"
+>  
+>  #include <limits.h>
+>  /**
+> @@ -121,6 +122,18 @@
+>   * SUBTEST: test-query-geometry-subslices
+>   * Description: Test DRM_I915_QUERY_GEOMETRY_SUBSLICES query
+>   * Feature: gem_core
+> + *
+> + * SUBTEST: query-l3-bank-count
+> + * Description: Test DRM_I915_QUERY_L3BANK_COUNT query
+> + * Feature: gem_core
+> + *
+> + * SUBTEST: query-l3-bank-count-invalid
+> + * Description: Test DRM_I915_QUERY_L3BANK_COUNT query fails when an invalid engine is passed
+> + * Feature: gem_core
+> + *
+> + * SUBTEST: query-l3-bank-count-support
+> + * Description: Test DRM_I915_QUERY_L3BANK_COUNT query fails when it is not supported
+> + * Feature: gem_core
+>   */
+>  
+>  IGT_TEST_DESCRIPTION("Testing the i915 query uAPI.");
+> @@ -1473,6 +1486,111 @@ static void query_parse_and_validate_hwconfig_table(int i915)
+>  	free(data);
+>  }
+>  
+> +static int __get_l3_count(int i915, const struct i915_engine_class_instance engine, uint64_t *out)
+> +{
+> +	struct drm_i915_query_item item;
+> +
+> +	memset(&item, 0, sizeof(item));
+> +	item.query_id = DRM_I915_QUERY_L3BANK_COUNT;
+> +	item.flags = ((engine.engine_instance << 8) | engine.engine_class);
+> +	item.data_ptr = to_user_pointer(out);
+> +
+> +	i915_query_items(i915, &item, 1);
+> +
+> +	return item.length < 0 ? item.length : 0;
+> +}
+> +
+> +static bool query_l3_count_supported(int i915)
+> +{
+> +	struct i915_engine_class_instance *engines;
+> +	unsigned int engines_count;
+> +	uint32_t class;
+> +	uint64_t val;
+> +	int ret;
+> +
+> +	class = 0xFF;
+> +	engines = gem_list_engines(i915, 1u << 0, class, &engines_count);
+> +	if (!engines) {
+> +		igt_warn("Failed to get the engines list per tile\n");
+> +		return false;
+> +	}
+> +
+> +	ret = __get_l3_count(i915, engines[0], &val);
+> +	free(engines);
+> +
+> +	return ret == 0;
+> +}
+> +
+> +static void test_l3_count_support(int i915)
+> +{
+> +	int devid = intel_get_drm_devid(i915);
+> +	bool supported = intel_graphics_ver(devid) >= IP_VER(12, 0);
+> +
+> +	igt_assert(supported == query_l3_count_supported(i915));
+> +}
+> +
+> +static void test_l3_count_invalid(int i915)
+> +{
+> +	struct i915_engine_class_instance engine = {
+> +		.engine_class = 0xDEAD,
+> +		.engine_instance = 0xBEEF
+> +	};
+> +	uint64_t val;
+> +
+> +	igt_assert_eq(__get_l3_count(i915, engine, &val), -EINVAL);
+> +}
+> +
+> +static void test_l3_count(int i915)
+> +{
+> +	struct i915_engine_class_instance *engines;
+> +	uint32_t class;
+> +	unsigned int engines_count;
+> +	uint64_t expected_bank_count;
+> +	int num_gts;
+> +	bool unchecked = false;
+> +
+> +	class = 0xFF; // checking for all 8 classes
+> +	expected_bank_count = 0;
+> +
+> +	num_gts = igt_sysfs_get_num_gt(i915);
+> +
+> +	for (int gt = 0; gt < num_gts; gt++) {
+> +		engines = gem_list_engines(i915, 1u << gt, class, &engines_count);
+> +
+> +		igt_fail_on_f(!engines, "Failed to get the engines list per tile");
+> +
+> +		for (int i = 0 ; i < engines_count ; i++) {
+> +			uint64_t l3_count;
+> +
+> +			igt_assert_eq(__get_l3_count(i915, engines[i], &l3_count), 0);
+> +			igt_debug("class=%u instance=%u l3 bank count=%lu\n",
+> +					engines[i].engine_class,
+> +					engines[i].engine_instance,
+> +					l3_count);
+> +
+> +			if (IS_METEORLAKE(i915)) // ARROWLAKE (ARL) to be added
+> +				igt_assert((l3_count%2) == 0);
+> +			else if (IS_PONTEVECCHIO(i915))
+> +				igt_assert((l3_count%4) == 0);
+> +			else if (IS_DG2(i915))
+> +				igt_assert((l3_count%8) == 0);
+> +			else
+> +				unchecked = true;
+> +
+> +			if (i == 0) {
+> +				expected_bank_count = l3_count;
+> +				continue;
+> +			}
+> +
+> +			igt_assert_eq(l3_count, expected_bank_count);
+> +
+> +		}
+> +
+> +		free(engines);
+> +	}
+> +	igt_warn_on(unchecked);
+> +}
+> +
+>  igt_main
+>  {
+>  	int fd = -1;
+> @@ -1570,6 +1688,28 @@ igt_main
+>  	igt_subtest("hwconfig_table")
+>  		query_parse_and_validate_hwconfig_table(fd);
+>  
+> +	igt_describe("Test to check DRM_I915_QUERY_L3BANK_COUNT support.");
+> +	igt_subtest("query-l3-bank-count-support") {
+> +		/*
+> +		 * This test can be run on all platforms as this test
+> +		 * simply verifies query_l3_count_supported reports
+> +		 * correctly on all platforms.
+> +		 */
+> +		test_l3_count_support(fd);
+> +	}
+> +
+> +	igt_describe("Basic test to query l3 bank count");
+> +	igt_subtest("query-l3-bank-count") {
+> +		igt_require(query_l3_count_supported(fd));
+> +		test_l3_count(fd);
+> +	}
+> +
+> +	igt_describe("Negative test for DRM_I915_QUERY_L3BANK_COUNT");
+> +	igt_subtest("query-l3-bank-count-invalid") {
+> +		igt_require(query_l3_count_supported(fd));
+> +		test_l3_count_invalid(fd);
+> +	}
+> +
+>  	igt_fixture {
+>  		drm_close_driver(fd);
+>  	}
+> -- 
+> 2.25.1
 > 
-> ### New IGT tests (4) ###
-
-...cut...
-
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7710 -> IGTPW_10662
-> 
->   CI-20190529: 20190529
->   CI_DRM_14255: 46cf1a7da57fc4fd2306d52aea58a02c7eb06cce @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_10662: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10662/index.html
->   IGT_7710: d87a5d85a60fba1283821d5212c3aece64cb36ba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10662/index.html
