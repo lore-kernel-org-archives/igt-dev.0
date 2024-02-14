@@ -4,63 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D052CC48BC1
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 15:26:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32742C48BC1
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 15:30:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EDF0B10E3A3;
-	Wed, 14 Feb 2024 15:26:29 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GlDv0HmF";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5187B10E3A3
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Feb 2024 15:26:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707924388; x=1739460388;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=U4Ho3yxIaKsyB2jG8B5t9VDzB9j2EA85o/kTYp+I6Jo=;
- b=GlDv0HmF+cia/8tMuJP7uNOfgfIdLicaRohcDEISCpJdzfHV5tcIJuE1
- yELfZiRx4kD1lFyjIksSARuRK66VzNewX5CUpWlUZyQX5FlbpzSDRwXnd
- nYCqyKCjzx5HHqcKG10EmUBiDB4VOxnPHtYDybUq/DzGtTCLW4yoYKC1X
- YZnMh/KRbZNIYspY/JnEgmf4yxKzWPuOjtyypjhR8laMqps45uJ8mtOyR
- TTT5dF+sI8vkRZV0/DZpyNX8xjJRQRm0q1fy9nMiTYPeFp9Wygojpy/FB
- xXDQUPxvPXfR52UXK33dXZ0OTgys7U2Jn7EOeFPOfILng5pOhv3qzoe4q Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="1847198"
-X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
-   d="scan'208";a="1847198"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2024 07:26:28 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
-   d="scan'208";a="7817011"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2024 07:26:26 -0800
-Date: Wed, 14 Feb 2024 16:26:23 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>, saurabhg.gupta@intel.com,
- janga.rahul.kumar@intel.com, priyanka.dandamudi@intel.com,
- john.c.harrison@intel.com, matthew.d.roper@intel.com,
- ashutosh.dixit@intel.com
-Subject: Re: [PATCH i-g-t v5 2/2] tests/i915_query: Add query-l3-bank-count
- subtest
-Message-ID: <20240214152623.w2ifkkgh7hl4lb4e@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Jonathan Cavitt <jonathan.cavitt@intel.com>,
- saurabhg.gupta@intel.com, janga.rahul.kumar@intel.com,
- priyanka.dandamudi@intel.com, john.c.harrison@intel.com,
- matthew.d.roper@intel.com, ashutosh.dixit@intel.com
-References: <20231130160253.3787505-1-jonathan.cavitt@intel.com>
- <20231130160253.3787505-3-jonathan.cavitt@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9829610E3A3;
+	Wed, 14 Feb 2024 15:30:07 +0000 (UTC)
+Received: from 5338d5abeb45 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E2D9C10E3A3;
+ Wed, 14 Feb 2024 15:30:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231130160253.3787505-3-jonathan.cavitt@intel.com>
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/amdgpu/amd=5Fmult?=
+ =?utf-8?q?ipipe=5Fmodeset=3A_Run_mode_set_and_display_enable_for_multidispl?=
+ =?utf-8?q?ays?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Hersen Wu" <hersenxs.wu@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 14 Feb 2024 15:30:05 -0000
+Message-ID: <170792460592.1238604.14941515920039059172@5338d5abeb45>
+X-Patchwork-Hint: ignore
+References: <20240214134441.27951-1-hersenxs.wu@amd.com>
+In-Reply-To: <20240214134441.27951-1-hersenxs.wu@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,196 +38,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jonathan,
-On 2023-11-30 at 08:02:53 -0800, Jonathan Cavitt wrote:
-> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> 
-> Add a subtest to query L3 Bank count for each engine.
-> 
-> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> ---
+== Series Details ==
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: tests/amdgpu/amd_multipipe_modeset: Run mode set and display enable for multidisplays
+URL   : https://patchwork.freedesktop.org/series/129899/
+State : warning
 
->  tests/intel/i915_query.c | 140 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 140 insertions(+)
-> 
-> diff --git a/tests/intel/i915_query.c b/tests/intel/i915_query.c
-> index e9cc495973..5d61e15041 100644
-> --- a/tests/intel/i915_query.c
-> +++ b/tests/intel/i915_query.c
-> @@ -25,6 +25,7 @@
->  #include "intel_hwconfig_types.h"
->  #include "i915/gem.h"
->  #include "i915/gem_create.h"
-> +#include "igt_sysfs.h"
->  
->  #include <limits.h>
->  /**
-> @@ -121,6 +122,18 @@
->   * SUBTEST: test-query-geometry-subslices
->   * Description: Test DRM_I915_QUERY_GEOMETRY_SUBSLICES query
->   * Feature: gem_core
-> + *
-> + * SUBTEST: query-l3-bank-count
-> + * Description: Test DRM_I915_QUERY_L3BANK_COUNT query
-> + * Feature: gem_core
-> + *
-> + * SUBTEST: query-l3-bank-count-invalid
-> + * Description: Test DRM_I915_QUERY_L3BANK_COUNT query fails when an invalid engine is passed
-> + * Feature: gem_core
-> + *
-> + * SUBTEST: query-l3-bank-count-support
-> + * Description: Test DRM_I915_QUERY_L3BANK_COUNT query fails when it is not supported
-> + * Feature: gem_core
->   */
->  
->  IGT_TEST_DESCRIPTION("Testing the i915 query uAPI.");
-> @@ -1473,6 +1486,111 @@ static void query_parse_and_validate_hwconfig_table(int i915)
->  	free(data);
->  }
->  
-> +static int __get_l3_count(int i915, const struct i915_engine_class_instance engine, uint64_t *out)
-> +{
-> +	struct drm_i915_query_item item;
-> +
-> +	memset(&item, 0, sizeof(item));
-> +	item.query_id = DRM_I915_QUERY_L3BANK_COUNT;
-> +	item.flags = ((engine.engine_instance << 8) | engine.engine_class);
-> +	item.data_ptr = to_user_pointer(out);
-> +
-> +	i915_query_items(i915, &item, 1);
-> +
-> +	return item.length < 0 ? item.length : 0;
-> +}
-> +
-> +static bool query_l3_count_supported(int i915)
-> +{
-> +	struct i915_engine_class_instance *engines;
-> +	unsigned int engines_count;
-> +	uint32_t class;
-> +	uint64_t val;
-> +	int ret;
-> +
-> +	class = 0xFF;
-> +	engines = gem_list_engines(i915, 1u << 0, class, &engines_count);
-> +	if (!engines) {
-> +		igt_warn("Failed to get the engines list per tile\n");
-> +		return false;
-> +	}
-> +
-> +	ret = __get_l3_count(i915, engines[0], &val);
-> +	free(engines);
-> +
-> +	return ret == 0;
-> +}
-> +
-> +static void test_l3_count_support(int i915)
-> +{
-> +	int devid = intel_get_drm_devid(i915);
-> +	bool supported = intel_graphics_ver(devid) >= IP_VER(12, 0);
-> +
-> +	igt_assert(supported == query_l3_count_supported(i915));
-> +}
-> +
-> +static void test_l3_count_invalid(int i915)
-> +{
-> +	struct i915_engine_class_instance engine = {
-> +		.engine_class = 0xDEAD,
-> +		.engine_instance = 0xBEEF
-> +	};
-> +	uint64_t val;
-> +
-> +	igt_assert_eq(__get_l3_count(i915, engine, &val), -EINVAL);
-> +}
-> +
-> +static void test_l3_count(int i915)
-> +{
-> +	struct i915_engine_class_instance *engines;
-> +	uint32_t class;
-> +	unsigned int engines_count;
-> +	uint64_t expected_bank_count;
-> +	int num_gts;
-> +	bool unchecked = false;
-> +
-> +	class = 0xFF; // checking for all 8 classes
-> +	expected_bank_count = 0;
-> +
-> +	num_gts = igt_sysfs_get_num_gt(i915);
-> +
-> +	for (int gt = 0; gt < num_gts; gt++) {
-> +		engines = gem_list_engines(i915, 1u << gt, class, &engines_count);
-> +
-> +		igt_fail_on_f(!engines, "Failed to get the engines list per tile");
-> +
-> +		for (int i = 0 ; i < engines_count ; i++) {
-> +			uint64_t l3_count;
-> +
-> +			igt_assert_eq(__get_l3_count(i915, engines[i], &l3_count), 0);
-> +			igt_debug("class=%u instance=%u l3 bank count=%lu\n",
-> +					engines[i].engine_class,
-> +					engines[i].engine_instance,
-> +					l3_count);
-> +
-> +			if (IS_METEORLAKE(i915)) // ARROWLAKE (ARL) to be added
-> +				igt_assert((l3_count%2) == 0);
-> +			else if (IS_PONTEVECCHIO(i915))
-> +				igt_assert((l3_count%4) == 0);
-> +			else if (IS_DG2(i915))
-> +				igt_assert((l3_count%8) == 0);
-> +			else
-> +				unchecked = true;
-> +
-> +			if (i == 0) {
-> +				expected_bank_count = l3_count;
-> +				continue;
-> +			}
-> +
-> +			igt_assert_eq(l3_count, expected_bank_count);
-> +
-> +		}
-> +
-> +		free(engines);
-> +	}
-> +	igt_warn_on(unchecked);
-> +}
-> +
->  igt_main
->  {
->  	int fd = -1;
-> @@ -1570,6 +1688,28 @@ igt_main
->  	igt_subtest("hwconfig_table")
->  		query_parse_and_validate_hwconfig_table(fd);
->  
-> +	igt_describe("Test to check DRM_I915_QUERY_L3BANK_COUNT support.");
-> +	igt_subtest("query-l3-bank-count-support") {
-> +		/*
-> +		 * This test can be run on all platforms as this test
-> +		 * simply verifies query_l3_count_supported reports
-> +		 * correctly on all platforms.
-> +		 */
-> +		test_l3_count_support(fd);
-> +	}
-> +
-> +	igt_describe("Basic test to query l3 bank count");
-> +	igt_subtest("query-l3-bank-count") {
-> +		igt_require(query_l3_count_supported(fd));
-> +		test_l3_count(fd);
-> +	}
-> +
-> +	igt_describe("Negative test for DRM_I915_QUERY_L3BANK_COUNT");
-> +	igt_subtest("query-l3-bank-count-invalid") {
-> +		igt_require(query_l3_count_supported(fd));
-> +		test_l3_count_invalid(fd);
-> +	}
-> +
->  	igt_fixture {
->  		drm_close_driver(fd);
->  	}
-> -- 
-> 2.25.1
-> 
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1103156 for the overview.
+
+containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55039139):
+  Removing build/
+  Removing installdir/
+  Removing lib/i915/perf-configs/__pycache__/
+  Removing scripts/__pycache__/
+  
+  Skipping Git submodules setup
+  section_end:1707924521:get_sources
+  section_start:1707924521:download_artifacts
+  Downloading artifacts
+  Downloading artifacts for build:tests-fedora (55039124)...
+  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=55039124 responseStatus=200 OK token=64_cDGug
+  section_end:1707924528:download_artifacts
+  section_start:1707924528:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
+  section_end:1707924538:step_script
+  section_start:1707924538:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1707924539:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: container create: creating container storage: parsing named reference "594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176": invalid repository name (594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176), cannot specify 64-byte hexadecimal strings (docker.go:570:0s)
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1103156
