@@ -4,58 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB742C48BC1
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 15:08:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E26A5C48BC3
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 15:10:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ABD3610E1F4;
-	Wed, 14 Feb 2024 15:08:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 809C610E37E;
+	Wed, 14 Feb 2024 15:10:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XFvyzbxQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gzeCCwjF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A61AD10E37E
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Feb 2024 15:08:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D12610E1F4;
+ Wed, 14 Feb 2024 15:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707923307; x=1739459307;
+ t=1707923441; x=1739459441;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=3OXTpH5epuHZu25bSgQifFi95hbiNCVQlDH9rxulgOc=;
- b=XFvyzbxQak1Pvv8Wh08z+OccP/zBM5p9YBz+1vooE7ZqD9tGTcNoXilh
- rGzWjxpyl4MMpKoO4+9oxmGHvWTOp9nXIHMy6T7vFh2a2gnIYdXFfLuww
- arfe++4CAxcKIaLq2hHmqMbHw/WKTSOoRKQxYMO3Pbr/91Gz9aEu4cdmK
- EbUfWer2B3YxtRlSoeIAPQofFFk/cOARc475V2daIbfl8XMm5kI8ckcdr
- dfVDFKKVPp0mr5zrDLmn8Boe6b3MAfTmiwUWRb2+zH5FHCA9/K/6FsqxR
- F84dScOuMSFCgbkxFiQOdHlZ8FijmuDJb2355JPrumgfLHLApomUVpen3 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="2350751"
-X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
-   d="scan'208";a="2350751"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Feb 2024 07:08:26 -0800
+ bh=wu0JI0h4/9i153JmEzErhJwA2HcWR/zDoRHMdXaaiHc=;
+ b=gzeCCwjFg2wV4wiDZv/K+C0WmCgF3Y6VKGWBBiQPCAJAiEkxs+ZlOCQU
+ /W4KY8+HGVSnVamQhpPIr43GDlbgWoyMy4PqSKSuKZYYDWDxR0n4tFSmH
+ yIZLOH+wPH1MRNa/lxdvj7mKfacIn4tJ4uch6UDRgI1D3NeBlPPpTCOTt
+ 5sl9MB66rJaL2ZFh71lQmJVWbXesOTO/aR4BD4epAcL6nApk1b/+bL9PJ
+ ssOry/FBT2L3P7U/gCWRZaXKIHZ1fE3Ho3RGtEpZcjITirffBsU5j31lj
+ Jryxs4aHZIUA0z/9k+JQlgBsmA2HipjihWYx09PKEORuJJIGbX/rFeLjl Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="12604208"
+X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; d="scan'208";a="12604208"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Feb 2024 07:10:40 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
-   d="scan'208";a="3205663"
+X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; d="scan'208";a="40702980"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2024 07:08:24 -0800
-Date: Wed, 14 Feb 2024 16:08:03 +0100
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Feb 2024 07:10:38 -0800
+Date: Wed, 14 Feb 2024 16:10:35 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Subject: Re: [PATCH i-g-t] i915/pmu: Add pmu tests to catch unbind cleanup
- issues
-Message-ID: <20240214150803.pxmnzxltdpazdzak@kamilkon-desk.igk.intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVA==?= =?utf-8?Q?=3A?= failure for
+ benchmarks/kms_vblank: Add XE support
+Message-ID: <20240214151035.r62m7rtva7t47nzo@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-References: <20240213062948.32735-1-umesh.nerlige.ramappa@intel.com>
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+References: <20240212150113.736295-1-bhanuprakash.modem@intel.com>
+ <170776664734.1182955.973861211145205994@5338d5abeb45>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240213062948.32735-1-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <170776664734.1182955.973861211145205994@5338d5abeb45>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,313 +72,89 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Umesh,
-On 2024-02-12 at 22:29:48 -0800, Umesh Nerlige Ramappa wrote:
-> Doing an flr (unbind followed by bind) on i915 device while a user holds
-> a reference to the PMU events results in null-pointer-dereferences
-> (npd). Add some tests to validate the fix for this issue.
+Hi igt-dev,
+On 2024-02-12 at 19:37:27 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: benchmarks/kms_vblank: Add XE support
+> URL   : https://patchwork.freedesktop.org/series/129779/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_14255_full -> IGTPW_10662_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10662_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10662_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10662/index.html
+> 
+> Participating hosts (8 -> 9)
+> ------------------------------
+> 
+>   Additional (1): shard-snb-0 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10662_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_frontbuffer_tracking@fbc-suspend:
+>     - shard-dg2:          [PASS][1] -> [ABORT][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14255/shard-dg2-6/igt@kms_frontbuffer_tracking@fbc-suspend.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10662/shard-dg2-1/igt@kms_frontbuffer_tracking@fbc-suspend.html
+> 
+>   
+> #### Suppressed ####
+> 
+>   The following results come from untrusted machines, tests, or statuses.
+>   They do not affect the overall result.
+> 
+>   * {igt@kms_psr@psr2-sprite-plane-onoff@edp-1}:
+>     - shard-mtlp:         [PASS][3] -> [FAIL][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14255/shard-mtlp-7/igt@kms_psr@psr2-sprite-plane-onoff@edp-1.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10662/shard-mtlp-6/igt@kms_psr@psr2-sprite-plane-onoff@edp-1.html
 > 
 
-Could you rename tests? Here you are testing functionality of
-unbind-bind with a user holding ref to PMU events, so what about
-naming it explicitly as such? NPD is only one of bugs you
-encountered.
-
-> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> ---
->  tests/intel/perf_pmu.c | 202 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 202 insertions(+)
-> 
-> diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
-> index 4ae2b60ae..4d60c8bd3 100644
-> --- a/tests/intel/perf_pmu.c
-> +++ b/tests/intel/perf_pmu.c
-> @@ -249,6 +249,41 @@
->   * Description: Test the i915 pmu perf interface
->   * Feature: i915 pmu perf interface, pmu
->   * Test category: Perf
-> + *
-> + * SUBTEST: flr-npd
--------------- ^^^^^^^
-imho better name would be: rebind or unbind-bind
-I do not know of good short name for 'ref to PMU event', what
-about 'pmu-event-ref-rebind' ?
-ref-event-unbind-bind ?
-
-rebind-with-pmu-event-ref ?
-
-> + * Description: Test null pointer dereference case
------------------- ^^^^
-Write here same description you wrote in commit description:
-
-Verify unbind-bind with holding reference to PMU event
-
-Correct also descriptions below.
-
-> + * Feature: i915 pmu perf interface, pmu
-> + * Test category: Perf
-> + *
-> + * SUBTEST: flr-npd-close-after-unbind
-> + * Description: Test null pointer dereference close perf after unbind
------------------------ ^^^^^^^^^^^^^^^
-Same here and below, drop NPD from descriptons and write a sequence of
-user actions you are validating (here and below).
-
-> + * Feature: i915 pmu perf interface, pmu
-> + * Test category: Perf
-> + *
-> + * SUBTEST: flr-npd-event-group
-> + * Description: Test null pointer dereference case with event groups
-> + * Feature: i915 pmu perf interface, pmu
-> + * Test category: Perf
-> + *
-> + * SUBTEST: flr-npd-separate-events
-> + * Description: Test null pointer dereference case with separate events
-> + * Feature: i915 pmu perf interface, pmu
-> + * Test category: Perf
-> + *
-> + * SUBTEST: forked-flr-npd
-> + * Description: Test null pointer dereference case with forked FLR
-> + * Feature: i915 pmu perf interface, pmu
-> + * Test category: Perf
-> + *
-> + * SUBTEST: forked-flr-npd-event-group
-> + * Description: Test null pointer dereference case with forked FLR and event groups
-> + * Feature: i915 pmu perf interface, pmu
-> + * Test category: Perf
-> + *
-> + * SUBTEST: forked-flr-npd-separate-events
-> + * Description: Test null pointer dereference case with forked FLR and separate events
-> + * Feature: i915 pmu perf interface, pmu
-> + * Test category: Perf
->   */
->  
->  IGT_TEST_DESCRIPTION("Test the i915 pmu perf interface");
-> @@ -2417,6 +2452,151 @@ static void test_unload(unsigned int num_engines)
->  	igt_assert_eq(__igt_i915_driver_unload(NULL), 0);
->  }
->  
-> +static int sysfs_driver(int i915)
-> +{
-> +	int dir, drv;
-> +
-> +	dir = igt_sysfs_open(i915);
-> +	igt_assert(dir != -1);
-> +
-> +	drv = openat(dir, "device/driver", O_DIRECTORY);
-> +	close(dir);
-> +
-> +	igt_assert(drv != -1);
-> +	return drv;
-> +}
-> +
-> +#define CLOSE_FD_AFTER_UNBIND	0x00000001
-> +#define GROUP_FDS		0x00000002
-> +#define SEPARATE_FDS		0x00000004
-> +
-> +#define NPD_MAX_FDS 4
-> +static void test_flr_npd(uint32_t flags)
------------------------ ^^^
-This should be unbind_bind or rebind:
-
-static void test_flr_unbind_bind(uint32_t flags)
-or
-static void test_flr_rebind(uint32_t flags)
-
-> +{
-> +	struct pci_device *pdev;
-> +	int fd[NPD_MAX_FDS], i915, drv;
-> +	uint64_t buf[NPD_MAX_FDS];
-> +	int count = 0, i;
-> +	char *snd = NULL;
-> +	char addr[80];
-> +
-> +	i915 = __drm_open_driver(DRIVER_INTEL);
-> +	pdev = igt_device_get_pci_device(i915);
-> +
-> +	snprintf(addr, sizeof(addr), "%04x:%02x:%02x.%d",
-> +		 pdev->domain, pdev->bus, pdev->dev, pdev->func);
-> +	igt_debug("Opened %s\n", addr);
-> +
-> +	if (flags & GROUP_FDS) {
-> +		fd[count++] = open_group(i915, I915_PMU_REQUESTED_FREQUENCY, -1);
-> +		fd[count++] = open_group(i915, I915_PMU_ACTUAL_FREQUENCY, fd[0]);
-> +		fd[count++] = open_group(i915, I915_PMU_RC6_RESIDENCY, fd[0]);
-> +		fd[count++] = open_group(i915, I915_PMU_SOFTWARE_GT_AWAKE_TIME, fd[0]);
-> +		pmu_read_multi(fd[0], count, buf);
-> +	} else if (flags & SEPARATE_FDS) {
-> +		fd[count++] = open_pmu(i915, I915_PMU_REQUESTED_FREQUENCY);
-> +		fd[count++] = open_pmu(i915, I915_PMU_ACTUAL_FREQUENCY);
-> +		fd[count++] = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
-> +		fd[count++] = open_pmu(i915, I915_PMU_SOFTWARE_GT_AWAKE_TIME);
-> +		pmu_read_single(fd[0]);
-> +		pmu_read_single(fd[1]);
-> +		pmu_read_single(fd[2]);
-> +		pmu_read_single(fd[3]);
-> +	} else {
-> +		fd[0] = open_pmu(i915, I915_PMU_ACTUAL_FREQUENCY);
-> +		pmu_read_single(fd[0]);
-> +	}
-> +
-> +	drv = sysfs_driver(i915);
-> +	close(i915);
-> +	igt_audio_driver_unload(&snd);
-> +
-> +	igt_set_timeout(30, "Driver unbind timeout!");
-------------------- ^^
-Why that long? Isn't 5 seconds enough?
-
-> +	igt_assert_f(igt_sysfs_set(drv, "unbind", addr),
-> +		     "Driver unbind failure (%s)!\n", addr);
-> +	igt_reset_timeout();
-> +
-> +	if (flags & CLOSE_FD_AFTER_UNBIND)
-> +		for (i = 0; i < count; i++)
-> +			close(fd[i]);
-> +
-> +	igt_set_timeout(30, "Driver bind timeout!");
-------------------- ^^
-Same repeated value, consider making it define or const.
-
-> +	igt_assert_f(igt_sysfs_set(drv, "bind", addr),
-> +		     "Driver bind failure (%s)!\n", addr);
-> +	igt_reset_timeout();
-> +
-> +	close(drv);
-> +
-> +	if (!(flags & CLOSE_FD_AFTER_UNBIND))
-> +		for (i = 0; i < count; i++)
-> +			close(fd[i]);
-> +}
-> +
-> +static void test_forked_flr_npd(uint32_t flags)
------------------------------- ^^^
-Same here, don't use npd in function name, use
-unbind_bind or rebind.
-
-> +{
-> +	struct pci_device *pdev;
-> +	int fd[NPD_MAX_FDS], i915, drv;
-> +	uint64_t buf[NPD_MAX_FDS];
-> +	int count = 0, i;
-> +	char *snd = NULL;
-> +	char addr[80];
-> +
-> +	/* not supported for the forked version */
-> +	igt_assert(!(flags & CLOSE_FD_AFTER_UNBIND));
-> +
-> +	i915 = __drm_open_driver(DRIVER_INTEL);
-> +	pdev = igt_device_get_pci_device(i915);
-> +
-> +	snprintf(addr, sizeof(addr), "%04x:%02x:%02x.%d",
-> +		 pdev->domain, pdev->bus, pdev->dev, pdev->func);
-> +	igt_debug("Opened %s\n", addr);
-> +
-> +	if (flags & GROUP_FDS) {
-> +		fd[count++] = open_group(i915, I915_PMU_REQUESTED_FREQUENCY, -1);
-> +		fd[count++] = open_group(i915, I915_PMU_ACTUAL_FREQUENCY, fd[0]);
-> +		fd[count++] = open_group(i915, I915_PMU_RC6_RESIDENCY, fd[0]);
-> +		fd[count++] = open_group(i915, I915_PMU_SOFTWARE_GT_AWAKE_TIME, fd[0]);
-> +		pmu_read_multi(fd[0], count, buf);
-> +	} else if (flags & SEPARATE_FDS) {
-> +		fd[count] = open_pmu(i915, I915_PMU_REQUESTED_FREQUENCY);
-> +		pmu_read_single(fd[count++]);
-> +		fd[count] = open_pmu(i915, I915_PMU_ACTUAL_FREQUENCY);
-> +		pmu_read_single(fd[count++]);
-> +		fd[count] = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
-> +		pmu_read_single(fd[count++]);
-> +		fd[count] = open_pmu(i915, I915_PMU_SOFTWARE_GT_AWAKE_TIME);
-> +		pmu_read_single(fd[count++]);
-> +	} else {
-> +		fd[count] = open_pmu(i915, I915_PMU_ACTUAL_FREQUENCY);
-> +		pmu_read_single(fd[count++]);
-> +	}
-> +
-> +	drv = sysfs_driver(i915);
-> +	close(i915);
-> +	igt_audio_driver_unload(&snd);
-> +
-> +	igt_fork(child, 1) {
-> +		igt_set_timeout(30, "Driver unbind timeout!");
-------------------------^^
-Same here.
-
-> +		igt_assert_f(igt_sysfs_set(drv, "unbind", addr),
-> +				"Driver unbind failure (%s)!\n", addr);
-> +		igt_reset_timeout();
-> +	}
-> +	igt_waitchildren();
-> +
-> +
-> +	igt_fork(child, 1) {
-> +		igt_set_timeout(30, "Driver bind timeout!");
-------------------------^^
-Same here.
-
-> +		igt_assert_f(igt_sysfs_set(drv, "bind", addr),
-> +				"Driver bind failure (%s)!\n", addr);
-> +		igt_reset_timeout();
-> +	}
-> +	igt_waitchildren();
-> +
-> +	close(drv);
-> +	for (i = 0; i < count; i++)
-> +		close(fd[i]);
-> +}
-> +
->  static void pmu_read(int i915)
->  {
->  	char val[128];
-> @@ -2810,4 +2990,26 @@ igt_main
->  		for (int pass = 0; pass < 3; pass++)
->  			test_unload(num_engines);
->  	}
-> +
-> +	igt_subtest("flr-npd")
--------------------- ^^^
-Please change 'npd' error you see from subtest name, use a name
-describing sequence you are testing, here and below, for example:
-
-s/npd/rebind-with-pmu-event-ref/
-
-> +		test_flr_npd(0);
-> +
-> +	igt_subtest("flr-npd-close-after-unbind")
-imho better:
-rebind-with-event-close-after-unbind
-
-> +		test_flr_npd(CLOSE_FD_AFTER_UNBIND);
-> +
-> +	igt_subtest("flr-npd-event-group")
-Same here, change test name.
-
-> +		test_flr_npd(GROUP_FDS);
-> +
-> +	igt_subtest("flr-npd-separate-events")
-Same here, change test name.
-
-> +		test_flr_npd(SEPARATE_FDS);
-> +
-> +	igt_subtest("forked-flr-npd")
-Same here, change test name.
-
-> +		test_forked_flr_npd(0);
-> +
-> +	igt_subtest("forked-flr-npd-event-group")
-Same here, change test name.
-
-> +		test_forked_flr_npd(GROUP_FDS);
-> +
-> +	igt_subtest("forked-flr-npd-separate-events")
-Same here, change test name.
-
-> +		test_forked_flr_npd(SEPARATE_FDS);
-> +
+Unrelated to change in benchmark, no need for respin.
 
 Regards,
 Kamil
 
->  }
-> -- 
-> 2.34.1
+>   
+> New tests
+> ---------
 > 
+>   New tests have been introduced between CI_DRM_14255_full and IGTPW_10662_full:
+> 
+> ### New IGT tests (4) ###
+
+...cut...
+
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7710 -> IGTPW_10662
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14255: 46cf1a7da57fc4fd2306d52aea58a02c7eb06cce @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10662: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10662/index.html
+>   IGT_7710: d87a5d85a60fba1283821d5212c3aece64cb36ba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10662/index.html
