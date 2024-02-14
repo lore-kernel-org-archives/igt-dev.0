@@ -4,47 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9D48C4829A
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 06:45:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73780C48BF0
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Feb 2024 06:45:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D269C10E085;
-	Wed, 14 Feb 2024 06:45:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E86F710E45C;
+	Wed, 14 Feb 2024 06:45:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EElC+IUE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iXI9i1SH";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0FCE810E35D
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Feb 2024 06:45:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13E5D10E41D
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Feb 2024 06:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707893146; x=1739429146;
+ t=1707893149; x=1739429149;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MPQvW/PbO+udiI+u36mDrsAzQLeL3pmGLnS3yIcF2So=;
- b=EElC+IUERTiXQ2cpVtSwm30cXnN+eM8MiAZw0nZEBOrGhrgvFzkIhWHf
- WBTJJU/e2Cp97sp9LZ+jJ+KDRu1yGZ8eqILF5xW8694ExrMr8LnQ9IsNC
- 1v5n2rLFxzOFHyKEintAQKB4eaAcYLCoQOpbhvGKZeLCCFj4j8mTuvXgl
- /WOkDsSyTqS7ISWlFqhvdLLnNeTzmQO80UXkhJm05zlu5RssC9tB9njuP
- vfdXhH5ya8E1RS6q4A5YJ4Zwbhd5FLhQOemXcg4SCNAwGo0HQvvGfSwTx
- DSdnP8Nch7lJqBWkjZrUwVfRHXi0lzLKmB5mSTNyd90AMW35dhyLGGrt9 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="12645433"
-X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; d="scan'208";a="12645433"
+ bh=h5pgrjDqYKfbuAXtMB2Of1m966phk7GzGq0ol9+aK7o=;
+ b=iXI9i1SHvNxCvlOm5gSKRC+TiVkKRRQT+rrK1NrvaRhxN82lz5+4NOpT
+ DN/JHb7h6m+BdE4veOdh5nhB4oAYCgNVCVQOuNUULSGtFil4jDqVUF1ZK
+ IBb9UZK8OCbwOueauzC9M87ximq0ikU6GdsbmGgEu6EbvL/WcMEVwGzlG
+ 1vxnoL/AsVmfRh3QJ+20+Ics13BYEeGEAm6SBWLYGZ+/2NhpOtYLC1BvD
+ 9OTP0X0FdjFSPQ+gNKyV4TxSo4H5dQjkiISvbR3POLB4tS+YFwku5kJpt
+ eDMVdk9xE/8U8RmO3jL19JwCXfir1pXhQfYyG4XBdGD/kVTH49UxlOU9a A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="12645444"
+X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; d="scan'208";a="12645444"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2024 22:45:45 -0800
+ 13 Feb 2024 22:45:48 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
-   d="scan'208";a="3427578"
+   d="scan'208";a="3427583"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2024 22:45:44 -0800
+ 13 Feb 2024 22:45:48 -0800
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Harry Wentland <harry.wentland@amd.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [RFC v4 04/22] lib/igt_kms: Introduce drm_colorop and COLOR_PIPELINE
-Date: Wed, 14 Feb 2024 12:09:35 +0530
-Message-ID: <20240214063953.1285495-5-bhanuprakash.modem@intel.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Subject: [RFC v4 06/22] igt/color: Add SW color transform functionality
+Date: Wed, 14 Feb 2024 12:09:37 +0530
+Message-ID: <20240214063953.1285495-7-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240214063953.1285495-1-bhanuprakash.modem@intel.com>
 References: <20240214063953.1285495-1-bhanuprakash.modem@intel.com>
@@ -67,531 +66,404 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Harry Wentland <harry.wentland@amd.com>
 
-We've introduced a new drm_colorop object in DRM. These are
-used to make up a color pipeline. Introduce the concept of
-this new DRM core object to IGT, including:
- - discovery of drm_colorop objects during init
- - various helper functions for deaing with drm_colorops
- - handling drm_colorops in atomic commit
-
-Along with this we're also introducing a new COLOR_PIPELINE
-plane property to track and be able to retrieve the colorops.
-
-v2:
- - Iterate through all next drm_colorop objects
+In order to test color we want to compare a HW (KMS) transform
+with a SW transform. This introduces color transform for an
+sRGB EOTF but this can be extended to other transforms. Code is
+borrowed from Skia.
 
 v3:
- - Add commit description (Kamil)
- - Add description for public functions (Kamil)
- - Squash with COLOR_PIPELINE patch
- - Remove need for IOCTLs
- - Change colorop discovery to work without IOCTLs
- - move enum drm_colorop_type to drm_mode.h
- - Drop display from colorop prop_enum functions
+ - Use SPDX style license identifier (Kamil)
+ - Replace large copy-paste of Skia license with copyright note
+   in file header. Skia is BSD licensed, which is compatible with
+   MIT.
 
-v4: (Bhanu)
- - Rebase
+v2:
+ - Add inverse sRGB TF
+ - Make TF functions available to tests
+ - Modify tranform_pixels function to take multple transforms
 
 Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/igt_kms.c | 268 ++++++++++++++++++++++++++++++++++++++++++++++++--
- lib/igt_kms.h |  86 ++++++++++++++++
- 2 files changed, 348 insertions(+), 6 deletions(-)
+ lib/igt_color.c | 258 ++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_color.h |  43 ++++++++
+ lib/igt_fb.c    |   6 +-
+ lib/igt_fb.h    |   2 +
+ lib/meson.build |   1 +
+ 5 files changed, 307 insertions(+), 3 deletions(-)
+ create mode 100644 lib/igt_color.c
+ create mode 100644 lib/igt_color.h
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index ef1f611ec..dc498a9cd 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -90,6 +90,7 @@
- #define MAX_CONNECTORS 32
- #define MAX_EDID 2
- #define DISPLAY_TILE_BLOCK 0x12
-+#define MAX_NUM_COLOROPS 32
- 
- static struct {
- 	uint32_t connector_type;
-@@ -681,6 +682,14 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
- 	[IGT_PLANE_ZPOS] = "zpos",
- 	[IGT_PLANE_FB_DAMAGE_CLIPS] = "FB_DAMAGE_CLIPS",
- 	[IGT_PLANE_SCALING_FILTER] = "SCALING_FILTER",
-+	[IGT_PLANE_COLOR_PIPELINE] = "COLOR_PIPELINE",
-+};
-+
-+const char * const igt_colorop_prop_names[IGT_NUM_COLOROP_PROPS] = {
-+	[IGT_COLOROP_TYPE] = "TYPE",
-+	[IGT_COLOROP_BYPASS] = "BYPASS",
-+	[IGT_COLOROP_CURVE_1D_TYPE] = "CURVE_1D_TYPE",
-+	[IGT_COLOROP_NEXT] = "NEXT",
- };
- 
- const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
-@@ -748,6 +757,107 @@ igt_plane_rotations(igt_display_t *display, igt_plane_t *plane,
- 	return rotations;
- }
- 
-+/**
-+ * igt_find_colorop:
-+ * @display: display on which to look for colorop.
-+ * @id: DRM object id of the colorop.
+diff --git a/lib/igt_color.c b/lib/igt_color.c
+new file mode 100644
+index 000000000..b8e6a86b0
+--- /dev/null
++++ b/lib/igt_color.c
+@@ -0,0 +1,258 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright 2023 Advanced Micro Devices, Inc.
 + *
-+ * Returns: An igt_colorop_t if found, or NULL otherwise.
++ * This file contains code adapted from Skia, which is
++ * Copyright (c) 2011 Google Inc. All rights reserved.
 + */
-+igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id)
++
++#include <errno.h>
++#include <math.h>
++
++#include "igt_color.h"
++#include "igt_core.h"
++#include "igt_x86.h"
++
++
++static float clamp(float val, float min, float max)
 +{
-+	int i;
-+
-+	/* find corresponding igt_colorop */
-+	for (i = 0; i < display->n_colorops; ++i) {
-+		igt_colorop_t *colorop = &display->colorops[i];
-+
-+		if (colorop->id == id)
-+			return colorop;
-+	}
-+
-+	return NULL;
++	return ((val < min) ? min : ((val > max) ? max : val));
 +}
 +
-+/*
-+ * Retrieve all the properies specified in props_name and store them into
-+ * colorop->props.
-+ */
-+static void
-+igt_fill_colorop_props(igt_display_t *display, igt_colorop_t *colorop,
-+		       int num_props, const char * const prop_names[])
++static float igt_color_tf_eval_unclamped(const struct igt_color_tf *fn, float x)
 +{
-+	drmModeObjectPropertiesPtr props;
-+	int i, j, fd;
++	if (x < fn->d)
++		return fn->c * x + fn->f;
++	return pow(fn->a * x + fn->b, fn->g) + fn->e;
++}
 +
-+	fd = display->drm_fd;
++static float igt_color_tf_eval(const struct igt_color_tf *fn, float x)
++{
++	float fn_at_x_unclamped = igt_color_tf_eval_unclamped(fn, x);
++	return clamp(fn_at_x_unclamped, 0.0f, 1.0f);
++}
 +
-+	props = drmModeObjectGetProperties(fd, colorop->id, DRM_MODE_OBJECT_COLOROP);
-+	igt_assert(props);
++static void tf_inverse(const struct igt_color_tf *fn, struct igt_color_tf *inv) {
++	memset(inv, 0, sizeof(struct igt_color_tf));
 +
-+	for (i = 0; i < props->count_props; i++) {
-+		drmModePropertyPtr prop =
-+			drmModeGetProperty(fd, props->props[i]);
++	if (fn->a > 0 && fn->g > 0) {
++		double a_to_the_g = pow(fn->a, fn->g);
++		inv->a = 1.f / a_to_the_g;
++		inv->b = -fn->e / a_to_the_g;
++		inv->g = 1.f / fn->g;
++	}
 +
-+		for (j = 0; j < num_props; j++) {
-+			if (strcmp(prop->name, prop_names[j]) != 0)
-+				continue;
++	inv->d = fn->c * fn->d + fn->f;
++	inv->e = -fn->b / fn->a;
++	if (fn->c != 0) {
++		inv->c = 1.f / fn->c;
++		inv->f = -fn->f / fn->c;
++	}
++}
 +
-+			colorop->props[j] = props->props[i];
-+			break;
++void igt_color_srgb_inv_eotf(igt_pixel_t *pixel)
++{
++	struct igt_color_tf inv;
++
++	tf_inverse(&srgb_tf, &inv);
++
++	pixel->r = igt_color_tf_eval(&inv, pixel->r);
++	pixel->g = igt_color_tf_eval(&inv, pixel->g);
++	pixel->b = igt_color_tf_eval(&inv, pixel->b);
++}
++
++
++
++void igt_color_srgb_eotf(igt_pixel_t *pixel)
++{
++	pixel->r = igt_color_tf_eval(&srgb_tf, pixel->r);
++	pixel->g = igt_color_tf_eval(&srgb_tf, pixel->g);
++	pixel->b = igt_color_tf_eval(&srgb_tf, pixel->b);
++}
++
++int igt_color_transform_pixels(igt_fb_t *fb, igt_pixel_transform transforms[], int num_transforms)
++{
++	uint32_t *line = NULL;
++	void *map;
++	char *ptr;
++	int x, y, cpp = igt_drm_format_to_bpp(fb->drm_format) / 8;
++	uint32_t stride = igt_fb_calc_plane_stride(fb, 0);
++
++	if (fb->num_planes != 1)
++		return -EINVAL;
++
++	/* TODO expand for other formats */
++	if (fb->drm_format != DRM_FORMAT_XRGB8888)
++		return -EINVAL;
++
++	ptr = igt_fb_map_buffer(fb->fd, fb);
++	igt_assert(ptr);
++	map = ptr;
++
++	/*
++	 * Framebuffers are often uncached, which can make byte-wise accesses
++	 * very slow. We copy each line of the FB into a local buffer to speed
++	 * up the hashing.
++	 */
++	line = malloc(stride);
++	if (!line) {
++		munmap(map, fb->size);
++		return -ENOMEM;
++	}
++
++	for (y = 0; y < fb->height; y++, ptr += stride) {
++
++		/* get line from buffer */
++		igt_memcpy_from_wc(line, ptr, fb->width * cpp);
++
++		for (x = 0; x < fb->width; x++) {
++			uint32_t raw_pixel = le32_to_cpu(line[x]);
++			igt_pixel_t pixel;
++			int i;
++
++			raw_pixel &= 0x00ffffff;
++
++			/*
++			 * unpack pixel into igt_pixel_t
++			 *
++			 * only for XRGB8888 for now
++			 *
++			 * TODO add "generic" mechanism for unpacking
++			 * other FB formats
++			 */
++			pixel.r = (raw_pixel & 0x00ff0000) >> 16;
++			pixel.g = (raw_pixel & 0x0000ff00) >> 8;
++			pixel.b = (raw_pixel & 0x000000ff);
++
++			/* normalize for 8-bit */
++			pixel.r /= (0xff);
++			pixel.g /= (0xff);
++			pixel.b /= (0xff);
++
++			/* TODO use read_rgb from igt_fb? */
++
++			/* run transform on pixel */
++
++			for (i = 0; i < num_transforms; i++)
++				transforms[i](&pixel);
++
++			/* de-normalize back to 8-bit */
++			pixel.r *= (0xff);
++			pixel.g *= (0xff);
++			pixel.b *= (0xff);
++
++			/* re-pack pixel into FB*/
++			raw_pixel = 0x0;
++			raw_pixel |= ((uint8_t) (lround(pixel.r) & 0xff)) << 16;
++			raw_pixel |= ((uint8_t) (lround(pixel.g) & 0xff)) << 8;
++			raw_pixel |= ((uint8_t) (lround(pixel.b) & 0xff));
++			/* TODO use write_rgb from igt_fb? */
++
++			/* write back to line */
++			line[x] = cpu_to_le32(raw_pixel);
 +		}
 +
-+		drmModeFreeProperty(prop);
++		/* copy line back to fb buffer */
++		igt_memcpy_from_wc(ptr, line, fb->width * cpp);
 +	}
-+	drmModeFreeObjectProperties(props);
++
++	free(line);
++	igt_fb_unmap_buffer(fb, map);
++
++	return 0;
++
++	/* for each pixel */
++
++	/* convert to float and create igt_pixel */
++
++	/* call transform */
++
++	/* convert back to fb format from igt_pixel */
++
++
 +}
 +
-+static void igt_fill_colorop(igt_display_t *display, igt_plane_t *plane,
-+			     igt_colorop_t *colorop, uint32_t id,
-+			     char *name)
++bool igt_cmp_fb_component(uint16_t comp1, uint16_t comp2, uint8_t up, uint8_t down)
 +{
-+	colorop->id = id;
-+	colorop->plane = plane;
++	int16_t diff = comp2 - comp1;
 +
-+	if (name)
-+		memcpy(colorop->name, name, sizeof(colorop->name));
++	if ((diff < -down) || (diff > up)) {
++		printf("comp1 %x comp2 %x diff %d down %d, up %d\n", comp1, comp2, diff, -down, up);
++		return false;
++	}
 +
-+	igt_fill_colorop_props(display, colorop, IGT_NUM_COLOROP_PROPS, igt_colorop_prop_names);
++	return true;
 +}
 +
-+static void
-+igt_fill_plane_color_pipelines(igt_display_t *display, igt_plane_t *plane,
-+			       drmModePropertyPtr prop)
++bool igt_cmp_fb_pixels(igt_fb_t *fb1, igt_fb_t *fb2, uint8_t up, uint8_t down)
 +{
-+	int i;
-+	uint32_t colorop_id;
++	uint32_t *ptr1, *ptr2;
++	uint32_t pixel1, pixel2, i, j;
++	bool matched = true;
 +
-+	plane->num_color_pipelines = 0;
 +
-+	for (i = 0; i < prop->count_enums; i++) {
-+		if (prop->enums[i].value) {
-+			igt_colorop_t *colorop = &display->colorops[display->n_colorops++];
++	ptr1 = igt_fb_map_buffer(fb1->fd, fb1);
++	ptr2 = igt_fb_map_buffer(fb2->fd, fb2);
 +
-+			igt_assert(display->n_colorops < MAX_NUM_COLOROPS);
++	igt_assert(fb1->drm_format == fb2->drm_format);
++	igt_assert(fb1->size == fb2->size);
 +
-+			igt_fill_colorop(display, plane, colorop, prop->enums[i].value, prop->enums[i].name);
-+			plane->color_pipelines[plane->num_color_pipelines++] = colorop;
++	for (i = 0; i < fb1->size / sizeof(uint32_t); i++) {
++		uint16_t mask = 0xff;
++		uint16_t shift = 8;
 +
-+			/* get all NEXT colorops */
-+			colorop_id = igt_colorop_get_prop(display, colorop,
-+							IGT_COLOROP_NEXT);
-+			while (colorop_id) {
-+				colorop = &display->colorops[display->n_colorops++];
-+				igt_fill_colorop(display, plane, colorop, colorop_id, NULL);
-+				colorop_id = igt_colorop_get_prop(display, colorop,
-+								IGT_COLOROP_NEXT);
++		if (fb1->drm_format == DRM_FORMAT_XRGB2101010) {
++			/* ignore alpha */
++			pixel1 = ptr1[i] & ~0xc0000000;
++			pixel2 = ptr2[i] & ~0xc0000000;
++
++			mask = 0x3ff;
++			shift = 10;
++
++
++		} else if (fb1->drm_format == DRM_FORMAT_XRGB8888) {
++			/* ignore alpha */
++			pixel1 = ptr1[i] & ~0xff000000;
++			pixel2 = ptr2[i] & ~0xff000000;
++
++			mask = 0xff;
++			shift = 8;
++
++		} else {
++			pixel1 = ptr1[i];
++			pixel2 = ptr2[i];
++		}
++
++		for (j = 0; j < 3; j++) {
++			uint16_t comp1 = (pixel1 >> (shift*j)) & mask;
++			uint16_t comp2 = (pixel2 >> (shift*j)) & mask;
++
++			if (!igt_cmp_fb_component(comp1, comp2, up, down)) {
++				/* TODO use proper log*/
++				printf("i %d j %d shift %d mask %x comp1 %x comp2 %x, pixel1 %x pixel2 %x\n",
++				       i, j, shift, mask, comp1, comp2, pixel1, pixel2);
++				return false;
 +			}
 +		}
 +	}
 +
-+	igt_assert(plane->num_color_pipelines < IGT_NUM_PLANE_COLOR_PIPELINES);
++	igt_fb_unmap_buffer(fb1, ptr1);
++	igt_fb_unmap_buffer(fb2, ptr2);
++
++	return matched;
 +}
 +
- /*
-  * Retrieve all the properties specified in props_name and store them into
-  * plane->props.
-@@ -779,6 +889,9 @@ igt_fill_plane_props(igt_display_t *display, igt_plane_t *plane,
- 		if (strcmp(prop->name, "rotation") == 0)
- 			plane->rotations = igt_plane_rotations(display, plane, prop);
- 
-+		if (strcmp(prop->name, "COLOR_PIPELINE") == 0)
-+			igt_fill_plane_color_pipelines(display, plane, prop);
 +
- 		drmModeFreeProperty(prop);
- 	}
- 
-@@ -2820,16 +2933,14 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 		igt_assert(plane->drm_plane);
- 
- 		plane->type = get_drm_plane_type(display->drm_fd, id);
--
--		/*
--		 * TODO: Fill in the rest of the plane properties here and
--		 * move away from the plane per pipe model to align closer
--		 * to the DRM KMS model.
--		 */
- 	}
- 
- 	drmModeFreePlaneResources(plane_resources);
- 
-+	/* init colorops */
-+	display->colorops = calloc(sizeof(igt_colorop_t), MAX_NUM_COLOROPS);
-+	display->n_colorops = 0;
++void igt_dump_fb(igt_display_t *display, igt_fb_t *fb,
++		 const char *path_name, const char *file_name)
++{
++	char filepath_out[PATH_MAX];
++	cairo_surface_t *fb_surface_out;
++	cairo_status_t status;
 +
- 	for_each_pipe(display, i) {
- 		igt_pipe_t *pipe = &display->pipes[i];
- 		igt_plane_t *plane;
-@@ -3467,6 +3578,45 @@ igt_atomic_prepare_plane_commit(igt_plane_t *plane, igt_pipe_t *pipe,
- 	}
- }
- 
++	snprintf(filepath_out, PATH_MAX, "%s/%s.png", path_name, file_name);
++	fb_surface_out = igt_get_cairo_surface(display->drm_fd, fb);
++	status = cairo_surface_write_to_png(fb_surface_out, filepath_out);
++	igt_assert_eq(status, CAIRO_STATUS_SUCCESS);
++	cairo_surface_destroy(fb_surface_out);
++}
+\ No newline at end of file
+diff --git a/lib/igt_color.h b/lib/igt_color.h
+new file mode 100644
+index 000000000..ce72a025a
+--- /dev/null
++++ b/lib/igt_color.h
+@@ -0,0 +1,43 @@
++// SPDX-License-Identifier: MIT
 +/*
-+ * Add colorop properties
-+ */
-+static void
-+igt_atomic_prepare_colorop_commit(igt_colorop_t *colorop, igt_pipe_t *pipe,
-+	drmModeAtomicReq *req)
-+{
-+	igt_display_t *display = pipe->display;
-+	int i, next_val;
-+
-+	while (colorop) {
-+		LOG(display,
-+		    "populating colorop data: %s.%d\n",
-+		    kmstest_pipe_name(pipe->pipe),
-+		    colorop->id);
-+
-+		for (i = 0; i < IGT_NUM_COLOROP_PROPS; i++) {
-+			if (!igt_colorop_is_prop_changed(colorop, i))
-+				continue;
-+
-+			/* it's an error to try an unsupported feature */
-+			igt_assert(colorop->props[i]);
-+
-+			igt_debug("colorop %s.%d: Setting property \"%s\" to 0x%"PRIx64"/%"PRIi64"\n",
-+				kmstest_pipe_name(pipe->pipe), colorop->id, igt_colorop_prop_names[i],
-+				colorop->values[i], colorop->values[i]);
-+
-+			igt_assert_lt(0, drmModeAtomicAddProperty(req, colorop->id,
-+							colorop->props[i],
-+							colorop->values[i]));
-+		}
-+
-+		/* get next colorop */
-+		next_val = igt_colorop_get_prop(display, colorop,
-+						IGT_COLOROP_NEXT);
-+		colorop = igt_find_colorop(display, next_val);
-+	}
-+}
-+
- /*
-  * Properties that can be changed through legacy SetProperty:
-  * - Obviously not the XYWH SRC/CRTC coordinates.
-@@ -3914,6 +4064,25 @@ uint64_t igt_plane_get_prop(igt_plane_t *plane, enum igt_atomic_plane_properties
- 					plane->drm_plane->plane_id, plane->props[prop]);
- }
- 
-+/**
-+ * igt_colorop_get_prop:
-+ * @colorop: Target colorop.
-+ * @prop: Property to check.
++ * Copyright 2023 Advanced Micro Devices, Inc.
 + *
-+ * Return current value on a colorop for a given property.
-+ *
-+ * Returns: The value the property is set to, if this
-+ * is a blob, the blob id is returned. This can be passed
-+ * to drmModeGetPropertyBlob() to get the contents of the blob.
++ * This file contains code adapted from Skia, which is
++ * Copyright (c) 2011 Google Inc. All rights reserved.
 + */
-+uint64_t igt_colorop_get_prop(igt_display_t *display, igt_colorop_t *colorop, enum igt_atomic_colorop_properties prop)
-+{
-+	igt_assert(igt_colorop_has_prop(colorop, prop));
 +
-+	return igt_mode_object_get_prop(display, DRM_MODE_OBJECT_COLOROP,
-+					colorop->id, colorop->props[prop]);
-+}
 +
- static bool igt_mode_object_get_prop_enum_value(int drm_fd, uint32_t id, const char *str, uint64_t *val)
- {
- 	drmModePropertyPtr prop = drmModeGetProperty(drm_fd, id);
-@@ -3974,6 +4143,44 @@ void igt_plane_set_prop_enum(igt_plane_t *plane,
- 	igt_assert(igt_plane_try_prop_enum(plane, prop, val));
- }
- 
-+/**
-+ * igt_plane_is_valid_colorop:
-+ * @plane: Target plane.
-+ * @colorop: Colorop to check.
-+ *
-+ * Returns: True if the given @colorop is a valid color pipeline on
-+ * the given @plane
-+ */
-+bool igt_plane_is_valid_colorop(igt_plane_t *plane, igt_colorop_t *colorop)
-+{
-+	int i;
-+	bool found = false;
++#ifndef __IGT_COLOR_H__
++#define __IGT_COLOR_H__
 +
-+	for (i = 0; i < plane->num_color_pipelines; i++) {
-+		if (plane->color_pipelines[i] == colorop) {
-+			found = true;
-+			break;
-+		}
-+	}
++#include <limits.h>
 +
-+	return found;
-+}
-+/**
-+ * igt_plane_set_color_pipeline:
-+ * @plane: Target plane.
-+ * @colorop: Colorop to set as color pipeline.
-+ *
-+ * This function sets the given @colorop as color pipeline on @plane, or fails
-+ * the test if it's an invalid color pipeline for the plane.
-+ */
-+void igt_plane_set_color_pipeline(igt_plane_t *plane, igt_colorop_t *colorop)
-+{
-+	igt_assert(igt_plane_is_valid_colorop(plane, colorop));
++#include "igt_fb.h"
++#include "igt_kms.h"
 +
-+	plane->assigned_color_pipeline = colorop;
-+	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, colorop->name);
-+}
-+
- /**
-  * igt_plane_check_prop_is_mutable:
-  * @plane: Target plane.
-@@ -4034,6 +4241,50 @@ igt_plane_replace_prop_blob(igt_plane_t *plane, enum igt_atomic_plane_properties
- 	igt_plane_set_prop_changed(plane, prop);
- }
- 
-+/**
-+ * igt_colorop_try_prop_enum:
-+ * @colorop: Target colorop.
-+ * @prop: Property to check.
-+ * @val: Value to set.
-+ *
-+ * Returns: False if the given @colorop doesn't have the enum @prop or
-+ * failed to set the enum property @val else True.
-+ */
-+bool igt_colorop_try_prop_enum(igt_colorop_t *colorop,
-+			       enum igt_atomic_colorop_properties prop,
-+			       const char *val)
-+{
-+	igt_display_t *display = colorop->plane->pipe->display;
-+	uint64_t uval;
-+
-+	igt_assert(colorop->props[prop]);
-+
-+	if (!igt_mode_object_get_prop_enum_value(display->drm_fd,
-+						 colorop->props[prop], val, &uval))
-+		return false;
-+
-+	igt_colorop_set_prop_value(colorop, prop, uval);
-+	return true;
-+}
-+
-+/**
-+ * igt_colorop_set_prop_enum:
-+ * @plane: Target plane.
-+ * @prop: Property to check.
-+ * @val: Value to set.
-+ *
-+ * This function tries to set given enum property @prop value @val to
-+ * the given @colorop, and terminate the execution if its failed.
-+ */
-+void igt_colorop_set_prop_enum(igt_colorop_t *colorop,
-+			       enum igt_atomic_colorop_properties prop,
-+			       const char *val)
-+{
-+	bool result = false;
-+	result = igt_colorop_try_prop_enum(colorop, prop, val);
-+	igt_assert(result);
-+}
-+
- /**
-  * igt_output_get_prop:
-  * @output: Target output.
-@@ -4306,6 +4557,11 @@ static int igt_atomic_commit(igt_display_t *display, uint32_t flags, void *user_
- 
- 			if (plane->changed)
- 				igt_atomic_prepare_plane_commit(plane, pipe_obj, req);
-+
-+			/* TODO iterate over assigned color pipeline and prepare colorop commit */
-+			if (plane->assigned_color_pipeline)
-+				igt_atomic_prepare_colorop_commit(plane->assigned_color_pipeline,
-+								  pipe_obj, req);
- 		}
- 
- 	}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 2e9484413..eefe4fdcc 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -344,9 +344,18 @@ enum igt_atomic_plane_properties {
-        IGT_PLANE_SCALING_FILTER,
-        IGT_PLANE_HOTSPOT_X,
-        IGT_PLANE_HOTSPOT_Y,
-+       IGT_PLANE_COLOR_PIPELINE,
-        IGT_NUM_PLANE_PROPS
- };
- 
-+enum igt_atomic_colorop_properties {
-+	IGT_COLOROP_TYPE,
-+	IGT_COLOROP_BYPASS,
-+	IGT_COLOROP_CURVE_1D_TYPE,
-+	IGT_COLOROP_NEXT,
-+	IGT_NUM_COLOROP_PROPS
++struct igt_color_tf {
++    float g, a,b,c,d,e,f;
 +};
 +
- /**
-  * igt_plane_prop_names
-  *
-@@ -355,10 +364,20 @@ enum igt_atomic_plane_properties {
-  */
- extern const char * const igt_plane_prop_names[];
- 
-+/**
-+ * igt_colorop_prop_names
-+ *
-+ * igt_colorop_prop_names contains a list of colorop property names,
-+ * as indexed by the igt_atomic_colorop_properties enum.
-+ */
-+extern const char * const igt_colorop_prop_names[];
++const struct igt_color_tf srgb_tf = {2.4f, (float)(1/1.055), (float)(0.055/1.055), (float)(1/12.92), 0.04045f, 0, 0};
 +
- typedef struct igt_display igt_display_t;
- typedef struct igt_pipe igt_pipe_t;
- typedef uint32_t igt_fixed_t;			/* 16.16 fixed point */
- 
-+#define IGT_NUM_PLANE_COLOR_PIPELINES 4
++typedef struct igt_pixel {
++	float r;
++	float g;
++	float b;
++} igt_pixel_t;
 +
- typedef enum {
- 	/* this maps to the kernel API */
- 	IGT_ROTATION_0   = 1 << 0,
-@@ -384,6 +403,19 @@ static inline bool igt_rotation_90_or_270(igt_rotation_t rotation)
- 	return rotation & (IGT_ROTATION_90 | IGT_ROTATION_270);
++bool igt_cmp_fb_component(uint16_t comp1, uint16_t comp2, uint8_t up, uint8_t down);
++bool igt_cmp_fb_pixels(igt_fb_t *fb1, igt_fb_t *fb2, uint8_t up, uint8_t down);
++
++void igt_dump_fb(igt_display_t *display, igt_fb_t *fb, const char *path_name, const char *file_name);
++
++/* TODO also allow 64-bit pixels, or other weird sizes */
++typedef void (*igt_pixel_transform)(igt_pixel_t *pixel);
++
++int igt_color_transform_pixels(igt_fb_t *fb, igt_pixel_transform transforms[], int num_transforms);
++
++void igt_color_srgb_inv_eotf(igt_pixel_t *pixel);
++void igt_color_srgb_eotf(igt_pixel_t *pixel);
++
++#endif
+\ No newline at end of file
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 71c220a08..ee9cd1f35 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -762,7 +762,7 @@ void igt_init_fb(struct igt_fb *fb, int fd, int width, int height,
+ 	}
  }
  
-+typedef struct igt_plane igt_plane_t;
-+
-+typedef struct igt_colorop {
-+	uint32_t id;
-+	igt_plane_t *plane;
-+
-+	char name[DRM_PROP_NAME_LEN];
-+
-+	uint64_t changed;
-+	uint32_t props[IGT_NUM_COLOROP_PROPS];
-+	uint64_t values[IGT_NUM_COLOROP_PROPS];
-+} igt_colorop_t;
-+
- typedef struct igt_plane {
- 	/*< private >*/
- 	igt_pipe_t *pipe;
-@@ -417,6 +449,11 @@ typedef struct igt_plane {
- 	uint64_t *modifiers;
- 	uint32_t *formats;
- 	int format_mod_count;
-+
-+	igt_colorop_t *color_pipelines[IGT_NUM_PLANE_COLOR_PIPELINES];
-+	int num_color_pipelines;
-+
-+	igt_colorop_t *assigned_color_pipeline;
- } igt_plane_t;
+-static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
++uint32_t igt_fb_calc_plane_stride(struct igt_fb *fb, int plane)
+ {
+ 	uint32_t min_stride = fb->plane_width[plane] *
+ 		(fb->plane_bpp[plane] / 8);
+@@ -944,7 +944,7 @@ static uint64_t calc_fb_size(struct igt_fb *fb)
  
- /*
-@@ -475,9 +512,11 @@ struct igt_display {
- 	int log_shift;
- 	int n_pipes;
- 	int n_planes;
-+	int n_colorops;
- 	int n_outputs;
- 	igt_output_t *outputs;
- 	igt_plane_t *planes;
-+	igt_colorop_t *colorops;
- 	igt_pipe_t *pipes;
- 	bool has_cursor_plane;
- 	bool is_atomic;
-@@ -809,6 +848,51 @@ extern void igt_plane_set_prop_enum(igt_plane_t *plane,
- 				    enum igt_atomic_plane_properties prop,
- 				    const char *val);
+ 		/* respect the stride requested by the caller */
+ 		if (!fb->strides[plane])
+-			fb->strides[plane] = calc_plane_stride(fb, plane);
++			fb->strides[plane] = igt_fb_calc_plane_stride(fb, plane);
  
-+extern bool igt_plane_is_valid_colorop(igt_plane_t *plane, igt_colorop_t *colorop);
-+
-+extern void igt_plane_set_color_pipeline(igt_plane_t *plane, igt_colorop_t *colorop);
-+
-+/**
-+ * igt_colorop_has_prop:
-+ * @colorop: colorop to check.
-+ * @prop: Property to check.
-+ *
-+ * Check whether colorop supports a given property.
-+ *
-+ * Returns: True if the property is supported, otherwise false.
-+ */
-+static inline bool
-+igt_colorop_has_prop(igt_colorop_t *colorop, enum igt_atomic_colorop_properties prop)
-+{
-+	return colorop->props[prop];
-+}
-+
-+uint64_t igt_colorop_get_prop(igt_display_t *display, igt_colorop_t *colorop, enum igt_atomic_colorop_properties prop);
-+
-+#define igt_colorop_is_prop_changed(colorop, prop) \
-+	(!!((colorop)->changed & (1 << (prop))))
-+
-+#define igt_colorop_set_prop_changed(colorop, prop) \
-+	(colorop)->changed |= 1 << (prop)
-+
-+#define igt_colorop_clear_prop_changed(colorop, prop) \
-+	(colorop)->changed &= ~(1 << (prop))
-+
-+#define igt_colorop_set_prop_value(colorop, prop, value) \
-+	do { \
-+		colorop->values[prop] = value; \
-+		igt_colorop_set_prop_changed(colorop, prop); \
-+	} while (0)
-+
-+
-+extern bool igt_colorop_try_prop_enum(igt_colorop_t *colorop,
-+				      enum igt_atomic_colorop_properties prop,
-+				      const char *val);
-+
-+extern void igt_colorop_set_prop_enum(igt_colorop_t *colorop,
-+				      enum igt_atomic_colorop_properties prop,
-+				      const char *val);
-+
- extern void igt_plane_replace_prop_blob(igt_plane_t *plane,
- 					enum igt_atomic_plane_properties prop,
- 					const void *ptr, size_t length);
-@@ -1220,4 +1304,6 @@ bool igt_check_output_is_dp_mst(igt_output_t *output);
- int igt_get_dp_mst_connector_id(igt_output_t *output);
- int get_num_scalers(int drm_fd, enum pipe pipe);
+ 		align = get_plane_alignment(fb, plane);
+ 		if (align)
+@@ -4756,7 +4756,7 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
+ 	void *map;
+ 	char *ptr;
+ 	int x, y, cpp = igt_drm_format_to_bpp(fb->drm_format) / 8;
+-	uint32_t stride = calc_plane_stride(fb, 0);
++	uint32_t stride = igt_fb_calc_plane_stride(fb, 0);
  
-+igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
+ 	if (fb->num_planes != 1)
+ 		return -EINVAL;
+diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+index 834aaef54..d2751c0bb 100644
+--- a/lib/igt_fb.h
++++ b/lib/igt_fb.h
+@@ -170,6 +170,8 @@ int igt_dirty_fb(int fd, struct igt_fb *fb);
+ void *igt_fb_map_buffer(int fd, struct igt_fb *fb);
+ void igt_fb_unmap_buffer(struct igt_fb *fb, void *buffer);
+ 
++uint32_t igt_fb_calc_plane_stride(struct igt_fb *fb, int plane);
 +
- #endif /* __IGT_KMS_H__ */
+ void igt_create_bo_for_fb(int fd, int width, int height,
+ 			  uint32_t format, uint64_t modifier,
+ 			  struct igt_fb *fb);
+diff --git a/lib/meson.build b/lib/meson.build
+index 6122861d8..0c0e45522 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -104,6 +104,7 @@ lib_sources = [
+ 	'igt_edid.c',
+ 	'igt_eld.c',
+ 	'igt_infoframe.c',
++	'igt_color.c',
+ 	'veboxcopy_gen12.c',
+ 	'igt_msm.c',
+ 	'igt_dsc.c',
 -- 
 2.43.0
 
