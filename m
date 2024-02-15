@@ -4,50 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96470C48BC4
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 16:10:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C68FDC4829E
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 16:10:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 239DD10E9B9;
-	Thu, 15 Feb 2024 16:10:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5DBD510E9BC;
+	Thu, 15 Feb 2024 16:10:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VN6bhHAv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CQzcjOIT";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B16A10E9AE
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 16:10:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7409410E9A6
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 16:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708013427; x=1739549427;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=+dLCn3CWdVpyn8BYO6vxAP9YfVO67s61ULHZUHl6/9U=;
- b=VN6bhHAvsiES0IsQjmB4SBmJRWAOTBV9BaoE3KkswToReFj5lBUpRjDx
- 0Uv5CfGrIfgdDGl3P3CCAXKJyZ99VHELL3cG0zB6waSwPHSuF7TqExVY0
- I5IVVJVKYQsiUiYKUaouYmP9lGPoBSzPl35k05skiRcPRg5e7unnL57NW
- M0n3siz+0xtit0tfoOnpk+LIED1OxJeQDu8Vd0bDbZ6JZ68bvjH7P7PmY
- GJfHHerSvKaMzc6HeKIubwxtSW4AO8lIceJNaVga8JOubJK9Ich43aWMO
- uDFrYxw2FM9coF+CQN0DVqt3kmhvOzCHpaT6AuWLQU51VwxueVJ9rD8Aa g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="1982318"
+ t=1708013432; x=1739549432;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Gg7eNxcPCsUKVpi466mdEAf3/oATvGp6Z0kpuuaILvk=;
+ b=CQzcjOITCghw+ksWsCKOpaf0cBTbNu8MzipKVvJqCQdB1PVYfELmIVum
+ LJddvXUlN6HY+X0tJUA06tTBpYQiftamlUfU2Jx4p3Yshtbq4GrkDj7YR
+ kSgo/GGRXk30WR26UVg8tWIV5/rDZQGozVBmmbpF7v3r8x65NH1m0vwJ/
+ z8qxOTUbwg9zv+rjOPl3e/ubkRVcEXIF+svMggfd1QfP2v0Qr63UlkKXY
+ CLMq8F2pxcoYtyFqIFGW66fon7eD6ufkUCP1VT4ZGAOe4hs606W/UGzxA
+ YgQQ1H1/XVeZMknPGXpea2p2CfqiopARCLjDVI22uS7Mo8WZB1tX3Qal0 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="1982352"
 X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; 
-   d="scan'208";a="1982318"
+   d="scan'208";a="1982352"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Feb 2024 08:10:22 -0800
+ 15 Feb 2024 08:10:32 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; 
-   d="scan'208";a="3930240"
+   d="scan'208";a="3930344"
 Received: from unknown (HELO localhost) ([10.246.30.107])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Feb 2024 08:10:20 -0800
+ 15 Feb 2024 08:10:30 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t v9 0/7] introduce Xe multigpu and other multi-GPU helpers
-Date: Thu, 15 Feb 2024 17:10:07 +0100
-Message-ID: <20240215161014.60304-1-kamil.konieczny@linux.intel.com>
+Cc: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>, 
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v9 2/7] lib/drmtest: Introduced drm_open_driver_another
+Date: Thu, 15 Feb 2024 17:10:09 +0100
+Message-ID: <20240215161014.60304-3-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20240215161014.60304-1-kamil.konieczny@linux.intel.com>
+References: <20240215161014.60304-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -66,59 +70,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce some multi-gpu function helpers and macros. This allows
-writing new multiGPU tests for i915 without requiring filters.
-Solution for Xe is based on filtered views. Both allows to
-quickly write tests. There is still drawback of not printing in
-children logs <g:gpu-number> for first (for Xe) opened device or for
-all opened ones (for i915). I renamed lib from lib/i915/igt_multigpu.*
-to lib/intel_multigu.* as I do not know of any non Intel developer
-using igt for such tests.
+From: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 
-v2: corrected two patches which introduced multigpu lib (Dominik)
-  rebased patch intoducing Xe multigpu macro, corrected description
-v3: corrected include in first multigpu patch (Dominik)
-  fixed typo (Dominik), refactoring code with Xe and gem macro (Kamil)
-v4: corrected typo in macro (Dominik)
-v5: removed cached names and relaxing checks for filtered devices
-  in 3/8 patch, added Janusz to cc in 1/8...5/8 (Kamil)
-v6: extended description of patches 1 and 2, fixed bug in 3/8 (Janusz)
-  improved usage of _is_already_opened() (Kamil)
-v7: restored prohibition of opening the same card at other index (Janusz)
-v8: limit checks for N-th card to 0...N-1 range (Janusz)
- simplify if-else in __search_and_open() (Kamil)
-v9: dropped patch 3/8 ("lib/drmtest: allow opening cards in random order")
- as it can be added later, replaced 8/8 ("tests/intel/gem_mmap: add basic
- multi-GPU") with refactor in gem_exec_gttfill (Kamil)
+For user convenience, introduce drm_open_driver_another as
+a wrapper for __drm_open_driver_another with successful open
+assert.
 
-Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+v2: rebased (Kamil)
+v6: reword description (Janusz)
+
 Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/drmtest.c | 19 +++++++++++++++++++
+ lib/drmtest.h |  1 +
+ 2 files changed, 20 insertions(+)
 
-Dominik Karol Piątkowski (4):
-  lib/igt_device_scan: Introduce filtering out non-PCI devices
-  lib/drmtest: Introduced drm_open_driver_another
-  lib/intel_multigpu: Introduce library for multi-GPU scenarios
-  lib/intel_multigpu: Introduced gem_multigpu_count_class and
-    igt_multi_fork_foreach_gpu
-
-Kamil Konieczny (3):
-  lib/intel_multigpu: Add xe_multi_fork_foreach_gpu
-  tests/intel/xe_exec_basic: add multigpu subtests
-  tests/intel/gem_exec_gttfill: simplify multiGPU subtest
-
- lib/drmtest.c                  |  19 +++++
- lib/drmtest.h                  |   1 +
- lib/igt_device_scan.c          |  23 ++++++
- lib/igt_device_scan.h          |   2 +
- lib/intel_multigpu.c           | 135 +++++++++++++++++++++++++++++++++
- lib/intel_multigpu.h           |  36 +++++++++
- lib/meson.build                |   1 +
- tests/intel/gem_exec_gttfill.c |  14 +---
- tests/intel/xe_exec_basic.c    |  36 +++++++++
- 9 files changed, 257 insertions(+), 10 deletions(-)
- create mode 100644 lib/intel_multigpu.c
- create mode 100644 lib/intel_multigpu.h
-
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 52b5a2020..73d9159af 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -563,6 +563,25 @@ int __drm_open_driver_another(int idx, int chipset)
+ 	return fd;
+ }
+ 
++/*
++ * drm_open_driver_another
++ * @idx: index of the device you are opening
++ * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
++ *
++ * A wrapper for __drm_open_driver with successful open assert.
++ *
++ * Returns:
++ * An open DRM fd
++ */
++int drm_open_driver_another(int idx, int chipset)
++{
++	int fd = __drm_open_driver_another(idx, chipset);
++
++	igt_assert_fd(fd);
++
++	return fd;
++}
++
+ /**
+  * __drm_open_driver:
+  * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index 6bc819734..856208c48 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -101,6 +101,7 @@ void __set_forced_driver(const char *name);
+ 
+ int __drm_open_device(const char *name, unsigned int chipset);
+ void drm_load_module(unsigned int chipset);
++int drm_open_driver_another(int idx, int chipset);
+ int drm_open_driver(int chipset);
+ int drm_open_driver_master(int chipset);
+ int drm_open_driver_render(int chipset);
 -- 
 2.42.0
 
