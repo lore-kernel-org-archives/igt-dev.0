@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6161FC4829E
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 16:41:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CB41C4829E
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 16:56:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DDD0210E9D6;
-	Thu, 15 Feb 2024 16:41:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D854810E9FD;
+	Thu, 15 Feb 2024 16:56:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m7Jbbe3m";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cuwNz5I/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F4ED10E9D5
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 16:41:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6DC910E9F9
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 16:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708015278; x=1739551278;
+ t=1708016160; x=1739552160;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=EOCxhRjGejasA/7QrnKLCHOnhoh3NJJ/YT+UAz/MSD8=;
- b=m7Jbbe3mePutrvocF7lHBc7oID2p6FflYksvm+Ai1pm1YcochSAAgMPg
- e7borLxF+a6sOaYADdfcG15tqK9WRRzQKkusl77PI/2Xb2YmOrqDrcCxu
- frcu+AefVCT6NcZ2Nw7EdHCgrhYMp1hceFTJSg53PbDjPtsTEdnBHVl1I
- TJLztcuxTL1sQx+tJsts70L5vSn3n9CH6uEttwp5yb5pI13jG0gUOywSd
- briopmbGt72F3OXuKM/STJg/2+7cTy9vl06wLe9vT/BS5NrzXcqGwHbvD
- 4Ww3ymhw2vbjBrVTTlly0dq7aXSenjY+jvXczYLy7/WcCRRbsEmu9dzh+ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="13511514"
-X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; d="scan'208";a="13511514"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Feb 2024 08:41:17 -0800
+ bh=V2RIPNSgKnEdhLZIMnyfUFYkTyBnYeo3eBjXPNFBp+U=;
+ b=cuwNz5I/ebF1lqipB1obuqd7U1HCvXF1zWUOVMUNa8BEj+FR/UyHU5tI
+ InsitxIJ5XZcWKhbyQ6pHofoyoGEfDwra1a++4tG/O1DTLsq/qyQwPHCX
+ gjCQvkyJoKl9x+0vx5/blZ4fbUNmrHQizKsUJEPUbjVhPJ4ELumM/gpPO
+ ZKftKQf04YHXG7cHHd+qWmWssl6U6pMhdTqVrJG8yG5IjcZQm61aVpcO5
+ JC0xFbkPDTCWfGChvbOdCMDp6862B+OO4+LBWNK1MNh4+W3O1qZHUwBl2
+ w7O+QIp2doDEGtVZHr8Bv1x3Lir7fzNMYGVTZkK2jZaOQAGjhHKelIecZ w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="12833775"
+X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; d="scan'208";a="12833775"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Feb 2024 08:55:59 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; 
-   d="scan'208";a="3968380"
+   d="scan'208";a="3910799"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2024 08:41:17 -0800
-Date: Thu, 15 Feb 2024 17:41:13 +0100
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2024 08:55:58 -0800
+Date: Thu, 15 Feb 2024 17:55:54 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org, Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: Re: [PATCH 06/17] scripts/code_cov_parse_info: prepare $all_branch
- to get function data
-Message-ID: <20240215164113.txdt7bpvazbnfcl5@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH 07/17] scripts/code_cov_parse_info: use numberic sort for
+ line numbers
+Message-ID: <20240215165554.6dvpxysw6xdup3ny@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Mauro Carvalho Chehab <mchehab@kernel.org>
 References: <cover.1707992666.git.mchehab@kernel.org>
- <f36c320f1be10d56a076464ed68fd4172c9e13aa.1707992666.git.mchehab@kernel.org>
+ <4316061856b4316ccaac868c0b72f7a2b07266ca.1707992666.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <f36c320f1be10d56a076464ed68fd4172c9e13aa.1707992666.git.mchehab@kernel.org>
+In-Reply-To: <4316061856b4316ccaac868c0b72f7a2b07266ca.1707992666.git.mchehab@kernel.org>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,61 +71,68 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Mauro,
-On 2024-02-15 at 11:27:15 +0100, Mauro Carvalho Chehab wrote:
+On 2024-02-15 at 11:27:16 +0100, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Right now, we store only the branch counts. We also need to store
-> the functions that each branch belongs. So, add a new hash in
-> order to allow adding function data later on.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Small nit:
+
+[PATCH 07/17] scripts/code_cov_parse_info: use numberic sort for
+
+s/numberic/numeric/
+
+with that:
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+> 
+> The DA and BRDA information is originally numerically sorted.
+> 
+> Sort it the same way at the output data.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 > ---
->  scripts/code_cov_parse_info | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  scripts/code_cov_parse_info | 19 +++++++++++++++++--
+>  1 file changed, 17 insertions(+), 2 deletions(-)
 > 
 > diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-> index 1be7fddf3f3e..d28217cc196d 100755
+> index d28217cc196d..56b27faee812 100755
 > --- a/scripts/code_cov_parse_info
 > +++ b/scripts/code_cov_parse_info
-> @@ -233,7 +233,7 @@ sub parse_info_data($)
->  			$was_used = 1 if ($taken > 0);
+> @@ -291,6 +291,21 @@ sub parse_info_data($)
+>  	close IN or die;
+>  }
 >  
->  			$record{$source}{$func}{brda}{$where} += $taken;
-> -			$all_branch{$source}{"$where"} += $taken;
-> +			$all_branch{$source}{"$where"}{count} += $taken;
->  			next;
->  		}
->  
-> @@ -448,7 +448,7 @@ sub gen_stats()
->  
->  		foreach my $where (keys(%{$all_branch{$source}})) {
->  			$stats{"branch_count"}++;
-> -			$stats{"branch_reached"}++ if ($all_branch{$source}{$where} != 0);
-> +			$stats{"branch_reached"}++ if ($all_branch{$source}{$where}{count} != 0);
->  		}
->  	}
->  
-> @@ -607,7 +607,7 @@ sub generate_report($)
->  		}
->  		foreach my $source (keys(%{$report{$f}{"all_branch"}})) {
->  			foreach my $where (keys(%{$report{$f}{"all_branch"}{$source}})) {
-> -				$all_branch{$source}{"$where"} += $report{$f}{"all_branch"}{$source}{$where};
-> +				$all_branch{$source}{"$where"}{count} += $report{$f}{"all_branch"}{$source}{$where}{count};
+> +sub sort_where($$)
+> +{
+> +	my @a = split ",", shift;
+> +	my @b = split ",", shift;
+> +	my $ret;
+> +
+> +	$ret = $a[0] <=> $b[0];
+> +	return $ret if ($ret);
+> +
+> +	$ret = $a[1] <=> $b[1];
+> +	return $ret if ($ret);
+> +
+> +	return $a[2] <=> $b[2];
+> +}
+> +
+>  sub write_filtered_file($)
+>  {
+>  	my $filter = shift;
+> @@ -332,10 +347,10 @@ sub write_filtered_file($)
+>  				}
 >  			}
->  		}
->  		for my $source(keys(%{$report{$f}{"files"}})) {
-> @@ -887,7 +887,7 @@ sub check_source_branches()
 >  
->  		my @lines;
->  		foreach my $where (sort keys %{$all_branch{$source}}) {
-> -			my $taken = $all_branch{$source}{$where};
-> +			my $taken = $all_branch{$source}{$where}{count};
->  			next if ($taken > 0);
->  
->  			next if !($where =~ m/^(-?\d+),(-?\d+),(-?\d+)/);
+> -			foreach my $ln(sort keys %{ $record{$source}{$func}{da} }) {
+> +			foreach my $ln(sort { $a <=> $b } keys %{ $record{$source}{$func}{da} }) {
+>  				$filtered .= "DA:$ln," . $record{$source}{$func}{da}{$ln} . "\n";
+>  			}
+> -			foreach my $where(sort keys %{ $record{$source}{$func}{brda} }) {
+> +			foreach my $where(sort sort_where keys %{ $record{$source}{$func}{brda} }) {
+>  				my $taken = $record{$source}{$func}{brda}{$where};
+>  				$taken = "-" if (!$taken);
+>  				$filtered .= "BRDA:$where,$taken\n";
 > -- 
 > 2.43.0
 > 
