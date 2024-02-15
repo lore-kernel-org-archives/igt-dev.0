@@ -4,58 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E4ABC4829E
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 18:41:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA6E4C4829E
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 19:21:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 539DB10E98C;
-	Thu, 15 Feb 2024 18:41:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6DA2710E22C;
+	Thu, 15 Feb 2024 19:21:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="geqEcpB4";
+	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="tZKFhbTI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7564C10E92D
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 18:41:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708022497; x=1739558497;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=OOPT3qJZA+cDjU4AEenYtV8je2ViQ183yooa7lr4p/M=;
- b=geqEcpB4RvZJvwXOJ3urrPwK4YuguxXlxJhUXFx38UPQLOPQAD1R3a2s
- dqCcPmEXE2Opdcqnd5l05F6tRBeGpesqlA91at0J3mkepj06gzTIASwbi
- WRpJDYppDK7rsyWPVUdhYok7sao6dbQURfj+dAa/RKvbQ0CdBujRIe2XX
- Qam9HFpq+qB6lst9N1RQOidZotbDQQCmydKkbnOIBzV0MryhPtKQEX2aq
- 7onCBsuVcAqLtynajvBRjmp/zxxOXGrcv9hFxERtq9nFb1zBi8rwh4smO
- /+d4t4ICpLVP0vnLthra9/mBDuDQMjbpU3spIDxs8cyFk/LzO3+RzUzPG w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="2263604"
-X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; 
-   d="scan'208";a="2263604"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Feb 2024 10:41:37 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; d="scan'208";a="26771201"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2024 10:41:35 -0800
-Date: Thu, 15 Feb 2024 19:41:18 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: Re: [PATCH 15/17] scripts/code_cov_parse_info: add support for
- filtering branches
-Message-ID: <20240215184118.57cz4vyxakshdo7i@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-References: <cover.1707992666.git.mchehab@kernel.org>
- <93faec6442d392a2266fabf6d72dc36a7c6b0ba0.1707992666.git.mchehab@kernel.org>
+Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41D1E10E22C
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 19:21:15 +0000 (UTC)
+Received: from fews02-sea.riseup.net (fews02-sea-pn.riseup.net [10.0.1.112])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx1.riseup.net (Postfix) with ESMTPS id 4TbQ0B5nBYzDqQw;
+ Thu, 15 Feb 2024 19:21:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
+ t=1708024875; bh=w3zSHadg1dS/yKRcYT60ydqkQ30AOeadLWci8M4hl9g=;
+ h=From:Subject:Date:To:Cc:From;
+ b=tZKFhbTI0jaBcnGVJ+3S5DEhGGmeTclxJEVzz+SLZ5Ed8sqFJeQTBkUDPmg+m71il
+ rlgyq0C6t184OVcJNDmILRBeFmjhMi1v0EarX7hbegZcOF9ElxQX/6B87uHnhx403u
+ sV21s+TwXBXPUbnYU0iYdsaLeuFUmenzZe/wawX0=
+X-Riseup-User-ID: 2C826A7CA33DB34015738D363809C55474413E8A9131973D5A92276D02C1A1A0
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+ by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4TbQ0712NCzFskl;
+ Thu, 15 Feb 2024 19:21:10 +0000 (UTC)
+From: Arthur Grillo <arthurgrillo@riseup.net>
+Subject: [PATCH i-g-t 0/2] Fix needing to call igt_display_require() twice
+ to enable writeback output
+Date: Thu, 15 Feb 2024 16:21:03 -0300
+Message-Id: <20240215-duplicate-calls-v1-0-512afbe1bda7@riseup.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <93faec6442d392a2266fabf6d72dc36a7c6b0ba0.1707992666.git.mchehab@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACBkzmUC/x3MTQqAIBBA4avErBP8SYiuEi0GnWpATLQikO6et
+ PwW71UolJkKTF2FTDcXPmKD6jtwO8aNBPtm0FIPUisr/JUCOzxJOAyhCCRjnMbRWvLQqpRp5ec
+ /zsv7ftoNHJFhAAAA
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>, 
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, 
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>, 
+ Ashutosh Dixit <ashutosh.dixit@intel.com>, 
+ Pekka Paalanen <pekka.paalanen@haloniitty.fi>, 
+ Arthur Grillo <arthurgrillo@riseup.net>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,394 +65,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-02-15 at 11:27:24 +0100, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Add support for passing regexes to be used to filter branches.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  scripts/code_cov_parse_info | 208 +++++++++++++++++++++++++++++++++---
->  1 file changed, 192 insertions(+), 16 deletions(-)
-> 
-> diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-> index 57bc4c2f0b4b..3ce26e545aee 100755
-> --- a/scripts/code_cov_parse_info
-> +++ b/scripts/code_cov_parse_info
-> @@ -22,11 +22,16 @@ my %record;
->  my %files;
->  my @func_include_regexes;
->  my @func_exclude_regexes;
-> +my @branch_include_regexes;
-> +my @branch_exclude_regexes;
->  my %test_names;
->  my @src_include_regexes;
->  my @src_exclude_regexes;
-> +my $source_dir = ".";
->  my $can_filter_lines = 1;
->  my $ignore_lines_without_functions = 1;
-> +my $ignore_branches_on_headers = 1;
-> +my $has_branch_filter;
->  
->  my $verbose = 0;
->  my $ignore_unused = 0;
-> @@ -87,6 +92,32 @@ sub is_file_excluded($)
->  	return 1;
->  }
->  
-> +sub is_branch_excluded($)
-> +{
-> +	return 0 if (!@branch_include_regexes && !@branch_exclude_regexes);
-> +
-> +	my $branch = shift;
-> +
-> +	# Handle includes first, as, when there are both include and exclude
-> +	# includes should take preference, as they can be overriding exclude
-> +	# rules
-> +	foreach my $r (@branch_include_regexes) {
-> +	    return 0 if ($branch =~ m/$r/);
-> +	}
-> +
-> +	foreach my $r (@branch_exclude_regexes) {
-> +		return 1 if ($branch =~ m/$r/);
-> +	}
-> +
-> +	# If there are no exclude regexes, only include branches that are
-> +	# explicitly included.
-> +	if ($#branch_exclude_regexes == 0) {
-> +		return 1;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  # Use something that comes before any real function
->  my $before_sf = "!!!!";
->  
-> @@ -115,6 +146,7 @@ sub parse_json_gcov_v1($$)
->  	# Store test name at the record
->  	$record{tests}{$cur_test} = 1;
->  
-> +	my %cached;
->  	for my $file_ref (@{$json->{'files'}}) {
->  		my $source = $file_ref->{'file'};
->  
-> @@ -182,16 +214,40 @@ sub parse_json_gcov_v1($$)
->  			}
->  			$all_line{$source}{$ln} += $line_ref->{'count'};
->  
-> +			if ($ignore_branches_on_headers) {
-> +				next if ($source =~ m/.h$/);
---------------------------------------^
-imho you should escape dot here
+After discussing with Pekka Paalanen about needing to call
+igt_display_require() twice[1], I found the issue.
 
-> +			}
-> +
->  			my $i = 0;
->  			for my $branch_ref (@{$line_ref->{'branches'}}) {
->  				my $where = sprintf "%d,%d,%d", $ln, 0, $i;
->  
-> +				# Filter out branches
-> +				if ($has_branch_filter) {
-> +					if (!$cached{$source}) {
-> +						open IN, "$source_dir/$source" || die "File $source_dir/$source not found. Can't filter branches\n";
-> +						push @{$cached{$source}}, <IN>;
-> +						close IN;
-> +					}
-> +					my $nlines = scalar(@{$cached{$source}});
-> +					if ($ln > $nlines) {
-> +						die "$source:$ln line is bigger than the number of lines at the file ($nlines lines)\n";
-> +						return;
-> +					}
-> +					next if (is_branch_excluded($cached{$source}[$ln - 1]));
-> +				}
-> +
->  				if ($func eq $before_sf) {
->  					# Ignore DA/BRDA that aren't associated with
->  					# functions. Those are present on header files
->  					# (maybe defines?)
->  					next if ($ignore_lines_without_functions);
-> +
-> +					# Otherwise place them in separate
-> +					$func = $before_sf;
->  				} else {
-> +					next if is_function_excluded($func);
-> +
->  					$all_branch{$source}{$where}{func} = $func;
->  				}
->  
-> @@ -232,6 +288,7 @@ sub parse_json_internal_format_v1($$)
->  	my $was_used = 0;
->  	my $has_func = 0;
->  	my $ignore = 0;
-> +	my %cached;
->  
->  	# Store the common JSON data into the record
->  	for my $key (keys %$json) {
-> @@ -308,17 +365,30 @@ sub parse_json_internal_format_v1($$)
->  			}
->  			$all_line{$source}{$ln} += $line_ref->{'count'};
->  
-> +			if ($ignore_branches_on_headers) {
-> +				next if ($source =~ m/.h$/);
---------------------------------------^
-Same here, escape dot.
+As stated on the docs[2]. To enable DRM_CLIENT_CAP_WRITEBACK_CONNECTORS,
+we first need to set DRM_CLIENT_CAP_ATOMIC.
 
-> +			}
-> +
->  			my $i = 0;
->  			for my $branch_ref (@{$line_ref->{'branches'}}) {
->  				my $taken = $branch_ref->{'count'};
->  				my $where = sprintf "%d,%d,%d", $ln, 0, $i;
->  
-> -				# Negative gcov results are possible, as
-> -				# reported at:
-> -				# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67937
-> -				# Lcov ignores those. So, let's do the same
-> -				# here.
-> -				$branch_ref->{'count'} = 0 if ($branch_ref->{'count'} < 0);
-> +
-> +				# Filter out branches
-> +				if ($has_branch_filter) {
-> +					if (!$cached{$source}) {
-> +						open IN, "$source_dir/$source" || die "File $source_dir/$source not found. Can't filter branches\n";
-> +						push @{$cached{$source}}, <IN>;
-> +						close IN;
-> +					}
-> +					my $nlines = scalar(@{$cached{$source}});
-> +					if ($ln > $nlines) {
-> +						die "$source:$ln line is bigger than the number of lines at the file ($nlines lines)\n";
-> +						return;
-> +					}
-> +					next if (is_branch_excluded($cached{$source}[$ln - 1]));
-> +				}
->  
->  				for my $key (keys %$branch_ref) {
->  					next if (!$record{files}{$source}{line}{$ln}{branches});
-> @@ -387,6 +457,7 @@ sub read_info($)
->  	my $source = $before_sf;
->  	my $func = $before_sf;
->  	my $cur_test = "";
-> +	my %cached;
->  
->  	# Info files don't contain functions for lines. So, they can't
->  	# be used to filter lines and branches used inside functions.
-> @@ -528,6 +599,25 @@ sub read_info($)
->  			my $branch = $3;
->  			my $taken = $4;
->  
-> +			if ($ignore_branches_on_headers) {
-> +				next if ($source =~ m/.h$/);
---------------------------------------^
-Same here, escape dot.
+Patch #1 solves the bug and #2 uses the fix where the duplicate call is
+done. I couldn't run kms_writeback (VKMS already fails on this test and
+my GPU doesn't have writeback outputs), so please test it.
 
-With this fixed,
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+[1]; https://lore.kernel.org/dri-devel/20240212104330.7de30010@eldfell/
+[2]: https://docs.kernel.org/gpu/drm-uapi.html?highlight=writeback#c.DRM_CLIENT_CAP_WRITEBACK_CONNECTORS
 
-> +			}
-> +
-> +			# Filter out branches
-> +			if ($has_branch_filter) {
-> +				if (!$cached{$source}) {
-> +					open IN, "$source_dir/$source" || die "File $source_dir/$source not found. Can't filter branches\n";
-> +					push @{$cached{$source}}, <IN>;
-> +					close IN;
-> +				}
-> +				my $nlines = scalar(@{$cached{$source}});
-> +				if ($ln > $nlines) {
-> +					die "$source:$ln line is bigger than the number of lines at the file ($nlines lines)\n";
-> +					return;
-> +				}
-> +				next if (is_branch_excluded($cached{$source}[$ln - 1]));
-> +			}
-> +
->  			if ($block != 0) {
->  				print "Warning: unexpected block $block at line $.\n";
->  			}
-> @@ -1217,7 +1307,10 @@ sub check_source_branches()
->  		next if (!$used_source{$source});
->  		next if (is_file_excluded($source));
->  
-> -		my @lines;
-> +		open IN, "$source_dir/$source" || die "File $source_dir/$source not found. Can't check branches\n";
-> +		my @lines = <IN>;
-> +		close IN;
-> +
->  		foreach my $where (sort keys %{$all_branch{$source}}) {
->  			my $taken = $all_branch{$source}{$where}{count};
->  			next if ($taken > 0);
-> @@ -1229,13 +1322,7 @@ sub check_source_branches()
->  			$block = $2;
->  			$branch = $3;
->  
-> -			if (!@lines) {
-> -				open IN, "$source" || die "File $source not found. Can't check branches\n";
-> -				@lines = <IN>;
-> -				close IN;
-> -			}
-> -
-> -			if ($ln >= $#lines) {
-> +			if ($ln > $#lines) {
->  				die "$source:$ln line is bigger than the number of lines at the file ($#lines lines)\n";
->  				return;
->  			}
-> @@ -1292,6 +1379,7 @@ my $help;
->  my $man;
->  my $func_filters;
->  my $src_filters;
-> +my $branch_filters;
->  my $show_files;
->  my $show_lines;
->  my $only_i915;
-> @@ -1304,6 +1392,7 @@ GetOptions(
->  	"print-unused|u" => \$print_unused,
->  	"stat|statistics" => \$stat,
->  	"output|o=s" => \$output_file,
-> +	"source-dir|source_dir=s" => \$source_dir,
->  	"verbose|v" => \$verbose,
->  	"ignore-unused|ignore_unused" => \$ignore_unused,
->  	"only-i915|only_i915" => \$only_i915,
-> @@ -1312,14 +1401,18 @@ GetOptions(
->  	"func-filters|f=s" => \$func_filters,
->  	"include-func=s" => \@func_include_regexes,
->  	"exclude-func=s" => \@func_exclude_regexes,
-> +	"branch-filters|f=s" => \$branch_filters,
-> +	"include-branch=s" => \@branch_include_regexes,
-> +	"exclude-branch=s" => \@branch_exclude_regexes,
->  	"source-filters|S=s" => \$src_filters,
->  	"include-source=s" => \@src_include_regexes,
->  	"exclude-source=s" => \@src_exclude_regexes,
->  	"ignore-lines-without-functions!" => \$ignore_lines_without_functions,
-> +	"ignore-branches-on-headers!" => \$ignore_branches_on_headers,
->  	"show-files|show_files" => \$show_files,
->  	"show-lines|show_lines" => \$show_lines,
->  	"report|r=s" => \$gen_report,
-> -	"check-branches" => \$check_branches,
-> +	"check-branches|check_branches" => \$check_branches,
->  	"css-file|css|c=s" => \$css_file,
->  	"title|t=s" => \$title,
->  	"html-prolog|prolog=s" => \$html_prolog,
-> @@ -1381,6 +1474,14 @@ if ($str) {
->  	$has_filter = 1;
->  }
->  
-> +$str = open_filter_file($branch_filters, \@branch_include_regexes, \@branch_exclude_regexes);
-> +if ($str) {
-> +	$filter_str .= "," if ($filter_str ne "");
-> +	$filter_str .= " branch regex ($str)";
-> +	$has_filter = 1;
-> +	$has_branch_filter = 1;
-> +}
-> +
->  $ignore_unused = 1 if (@func_include_regexes || @func_exclude_regexes);
->  
->  if ($ignore_unused) {
-> @@ -1567,6 +1668,12 @@ Produce an output file merging all input files.
->  
->  The generated output file is affected by the applied filters.
->  
-> +=item B<--source-dir> or B<--source_dir>
-> +
-> +Sets the source directory baseline. This is used together with other
-> +options that require to parse the source files (currently, only
-> +B<--check-branches).
-> +
->  =item B<--only-drm> or B<--only_drm>
->  
->  Filters out includes outside the DRM subsystem, plus trace files.
-> @@ -1656,6 +1763,51 @@ Include B<regex> to the function filter. Can be used multiple times.
->  Please notice that, when this filter is used, B<--ignore-unused> will be
->  automaticaly enabled, as the final goal is to report per-function usage.
->  
-> +=item B<--branch-filters>  B<[filter's file]> or B<-f>  B<[filter's file]>
-> +
-> +Use a file containing regular expressions (regex) to filter branches.
-> +
-> +Each line at B<[filter's file]> may contain a new regex:
-> +
-> +=over 4
-> +
-> +- Blank lines and lines starting with B<#> will be ignored;
-> +
-> +- Each line of the file will be handled as a new regex;
-> +
-> +- If B<+regex> is used, the filter will include B<regex> to the matches;
-> +
-> +- If B<-regex> is used, the filter will exclude B<regex> from the matches;
-> +
-> +- If the line doesn't start with neither B<+> nor B<->, containing just
-> +  B<regex>, the filter will include B<regex> to the matches.
-> +
-> +- Any whitespace/tab before or after B<regex> will be ignored.
-> +
-> +=back
-> +
-> +Include regexes are handled first, as they can override an exclude regex.
-> +
-> +When just include regexes are used, any branches that don't match the
-> +include regular expressions from the B<[filter's file]> will be ignored.
-> +
-> +=item B<--include-branch> B<regex>
-> +
-> +Include B<regex> to the branch filter. Can be used multiple times.
-> +
-> +When used together with B<--branch-filters> or B<--exclude-branch>, regexes
-> +here are handled first.
-> +
-> +Please notice that, when this filter is used, B<--ignore-unused> will be
-> +automaticaly enabled, as the final goal is to report per-branch usage.
-> +
-> +=item B<--exclude-branch> B<regex>
-> +
-> +Include B<regex> to the branchtion filter. Can be used multiple times.
-> +
-> +Please notice that, when this filter is used, B<--ignore-unused> will be
-> +automaticaly enabled, as the final goal is to report per-branch usage.
-> +
->  =item B<--source-filters>  B<[filter's file]> or B<-S>  B<[filter's file]>
->  
->  Use a file containing regular expressions to filter source files.
-> @@ -1727,6 +1879,30 @@ Use B<--no-ignore-lines-without-functions> to disable it.
->  Disables filtering out branches that are not associated with any functions
->  inside the source file, but were imported via includes.
->  
-> +See B<--ignore-lines-without-functions> for more details.
-> +
-> +=item B<--ignore-branches-on-headers>
-> +
-> +Branches on header files are really tricky to parse, as they depend
-> +on how gcc optimizes the output code. That's specially hard to use on
-> +Linux Kernel, as there are lots of complex macros that can be optimized
-> +on different ways. There are even some cases where the same macro sometimes
-> +have zero branches, while on other cases it can contain dozen ones.
-> +
-> +When this option is selected, all branches inside header files will be
-> +ignored.
-> +
-> +Please notice that this is enabled by default.
-> +
-> +Use B<--no-ignore-branches-on-headers> to disable this filter, preserving
-> +data from all branches.
-> +
-> +=item B<--no-ignore-branches-on-headers>
-> +
-> +Disables filtering out branches that are inside header files.
-> +
-> +See B<--ignore-branches-on-headers> for more details.
-> +
->  =back
->  
->  =item B<--show-files> or B<--show_files>
-> @@ -1734,7 +1910,7 @@ inside the source file, but were imported via includes.
->  Shows the list of files that were used to produce the code coverage
->  results.
->  
-> -=item B<--check-branches>
-> +=item B<--check-branches> or B<--check_branches>
->  
->  Checks at the Linux Kernel source files what's the contents of the
->  branches that weren't taken. The directory should match what's
-> -- 
-> 2.43.0
-> 
+Cc: Petri Latvala <adrinael@adrinael.net>
+Cc: Arkadiusz Hiler <arek@hiler.eu>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Pekka Paalanen <pekka.paalanen@haloniitty.fi>
+To: igt-dev@lists.freedesktop.org
+
+Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
+---
+Arthur Grillo (2):
+      lib/igt_kms: Enable DRM_CLIENT_CAP_ATOMIC before enabling DRM_CLIENT_CAP_WRITEBACK_CONNECTORS
+      igt: Remove duplicate igt_display_require() calls
+
+ benchmarks/kms_fb_stress.c | 2 --
+ lib/igt_kms.c              | 5 +++--
+ tests/kms_writeback.c      | 1 -
+ 3 files changed, 3 insertions(+), 5 deletions(-)
+---
+base-commit: 9ee96f431b2baf552e95c9d839cdfbcdae2c8b41
+change-id: 20240215-duplicate-calls-ae33c2a855ed
+
+Best regards,
+-- 
+Arthur Grillo <arthurgrillo@riseup.net>
+
