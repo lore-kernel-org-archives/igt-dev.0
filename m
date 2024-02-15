@@ -4,54 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48CB5C48BC4
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 16:11:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F9F3C48BC4
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 16:24:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F40D710E9AE;
-	Thu, 15 Feb 2024 16:11:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0100C10E9A6;
+	Thu, 15 Feb 2024 16:24:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fbllQsWl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dUMU+x04";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B792410E9AE
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 16:11:09 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7382A10E9A6
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 16:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708013470; x=1739549470;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=yeqKFdkolOC1hnx1zyJ7fgg+hnG3Wlm8tssjTAX0szY=;
- b=fbllQsWly+sn1ZIVyJ39mbMZxvcTvNgN1QW6QEEJVcIh9LvqRh5BbOSO
- KDar3jvB5MrcpY2k3jtyGmx8Hi/80pMVfpDwq/Y8zPpP3uUc6GCG5RuyW
- CHSCez260kNTcXHk4ZdwT4+d/GzcxDyfC9ew9OAAGVC3Ga/9IIM6IVuug
- PToUJtLwvQr3kKLR/136U/vKo+PCBq5NeEbf3q54xet+nxOc/RobB8mO0
- K2KgxzDZlABNpvx2y/4o74k4Xq4lGlQPXnwJ1HWx2EL0bgV8NQrO7POCP
- 2b0nzn31ILVOTwvHKY5R49XujYd3MEF6MGIB77zZdkDVNohER9BbLf55S Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="13506795"
-X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; d="scan'208";a="13506795"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Feb 2024 08:10:51 -0800
+ t=1708014269; x=1739550269;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=4IcHViHnvRumGzObMkQbATdPJy/9iIPpSSHpWwl34cI=;
+ b=dUMU+x04WLMAdjcRWth4asCIloaW7G55C5krbKaVYy89zGfpYe3u9sSN
+ 8Zq9KC7vB6j0ddRg0lM5XTs9sO8eF+07UlP3j3bJjeFd8tDyyXnFaYfCb
+ BqaUbjuGBGx83Rt/3jimWPknA/QIptdPXZZnIwXEwJ/G3SzO2Fzrapvbp
+ boLWRdxiEblbbfaohfn48oBXr5GWfsLBBYu+2KqPRciEvEu+T8CNMYRwe
+ hjRyQYq5T0uz7+LWi++IXLoxK4rVbzsW8yoR949i2G/Hssn1MjBaALwtQ
+ ErCrpmLvXrfWhP9cDp6ndxmHyecbykuOHsrWokcpYdHNjh8RqTUELNWE9 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="27565832"
+X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; d="scan'208";a="27565832"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Feb 2024 08:24:28 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; 
-   d="scan'208";a="8221737"
-Received: from unknown (HELO localhost) ([10.246.30.107])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Feb 2024 08:10:49 -0800
+   d="scan'208";a="8184127"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2024 08:24:27 -0800
+Date: Thu, 15 Feb 2024 17:24:10 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
-Subject: [PATCH i-g-t v9 6/7] tests/intel/xe_exec_basic: add multigpu subtests
-Date: Thu, 15 Feb 2024 17:10:13 +0100
-Message-ID: <20240215161014.60304-7-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240215161014.60304-1-kamil.konieczny@linux.intel.com>
-References: <20240215161014.60304-1-kamil.konieczny@linux.intel.com>
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: Re: [PATCH 01/17] scripts/code_cov_parse_info: Silent some messages
+ by default
+Message-ID: <20240215162410.gg6ultvr3ohamrkg@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+References: <cover.1707992666.git.mchehab@kernel.org>
+ <e6fde2df69389d12b511081291843f941816d8f1.1707992666.git.mchehab@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <e6fde2df69389d12b511081291843f941816d8f1.1707992666.git.mchehab@kernel.org>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,80 +70,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a few multi-gpu subtests:
+Hi Mauro,
+On 2024-02-15 at 11:27:10 +0100, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Those aren't really needed on normal output.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-multigpu-once-*
-multigpu-many-execqueues-many-vm-*
-multigpu-no-exec-*
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-run on two or more GPUs. Many variant was limited to take at most
-few seconds.
-
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
----
- tests/intel/xe_exec_basic.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
-
-diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
-index e6f8db5b0..3defe1d87 100644
---- a/tests/intel/xe_exec_basic.c
-+++ b/tests/intel/xe_exec_basic.c
-@@ -11,6 +11,7 @@
-  */
- 
- #include "igt.h"
-+#include "intel_multigpu.h"
- #include "lib/igt_syncobj.h"
- #include "lib/intel_reg.h"
- #include "xe_drm.h"
-@@ -54,6 +55,18 @@
-  * Description: Run no-exec %arg[1] test
-  * Test category: functionality test
-  *
-+ * SUBTEST: multigpu-once-%s
-+ * Description: Run %arg[1] test only once on multiGPU
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: multigpu-many-execqueues-many-vm-%s
-+ * Description: Run %arg[1] test on many exec_queues and many VMs on multiGPU
-+ * Test category: stress test
-+ *
-+ * SUBTEST: multigpu-no-exec-%s
-+ * Description: Run no-exec %arg[1] test on multiGPU
-+ * Test category: functionality test
-+ *
-  * arg[1]:
-  *
-  * @basic:				basic
-@@ -368,4 +381,27 @@ igt_main
- 
- 	igt_fixture
- 		drm_close_driver(fd);
-+
-+	for (const struct section *s = sections; s->name; s++) {
-+		igt_subtest_f("multigpu-once-%s", s->name) {
-+			xe_multi_fork_foreach_gpu(xe, gpu_idx)
-+				xe_for_each_engine(xe, hwe)
-+					test_exec(xe, hwe, 1, 1, 1, s->flags);
-+			igt_waitchildren();
-+		}
-+
-+		igt_subtest_f("multigpu-many-execqueues-many-vm-%s", s->name) {
-+			xe_multi_fork_foreach_gpu(xe, gpu_idx)
-+				xe_for_each_engine(fd, hwe)
-+					test_exec(fd, hwe, 16, 32, 16, s->flags);
-+			igt_waitchildren();
-+		}
-+
-+		igt_subtest_f("multigpu-no-exec-%s", s->name) {
-+			xe_multi_fork_foreach_gpu(xe, gpu_idx)
-+				xe_for_each_engine(fd, hwe)
-+					test_exec(fd, hwe, 1, 0, 1, s->flags);
-+			igt_waitchildren();
-+		}
-+	}
- }
--- 
-2.42.0
-
+> ---
+>  scripts/code_cov_parse_info | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
+> index 72a1e8c2b0ad..1498bd09cdba 100755
+> --- a/scripts/code_cov_parse_info
+> +++ b/scripts/code_cov_parse_info
+> @@ -1030,7 +1030,7 @@ if ($has_filter) {
+>  }
+>  
+>  my $ntests=scalar(%test_names);
+> -printf "Number of tests: %d\n", $ntests if ($ntests > 1);
+> +printf "Number of tests: %d\n", $ntests if ($stat && $ntests > 1);
+>  
+>  if ($show_files) {
+>  	for my $f(sort keys %used_source) {
+> -- 
+> 2.43.0
+> 
