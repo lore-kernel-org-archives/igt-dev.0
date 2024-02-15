@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 044C7C48BC4
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 22:20:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A50FDC4829E
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 22:21:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 853E010E3C1;
-	Thu, 15 Feb 2024 22:20:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 48A7510E38F;
+	Thu, 15 Feb 2024 22:21:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="lCipxz/s";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="j927397i";
 	dkim-atps=neutral
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com
- [209.85.210.47])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A5ADA10E38F
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 22:20:41 +0000 (UTC)
-Received: by mail-ot1-f47.google.com with SMTP id
- 46e09a7af769-6e2e42fb159so632801a34.2
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 14:20:41 -0800 (PST)
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com
+ [209.85.214.174])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B47BB10E38F
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 22:21:11 +0000 (UTC)
+Received: by mail-pl1-f174.google.com with SMTP id
+ d9443c01a7336-1d71cb97937so14168795ad.3
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 14:21:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708035640; x=1708640440; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1708035670; x=1708640470; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=zx7Th+0oqAGfWwCG3rp02WtbgMKRd1pKboasZUJ6Ja8=;
- b=lCipxz/sPYsPY6mycSdbbCJ0ibkaLRfWniNtqZv5aLyQROQofhh84Qtgu34cSq05a/
- sv63WoFWkWLQhOe2ZDtMkCETUqxbD5w3fna7MlBsy53lwFTtWuXELN+lNta8GefUUrto
- CG+iICUS4ACULKt7Qh1LJr+XLJFG95MC3JLxJY2WUphaZDACwz4LCFtceZuqjhORCucM
- OvIJVafDXPq0UnArMifhiKJcqPwZM+LDAqiAjeQt7HdiF0k4mTrde0+vBD6AlvDeRjd7
- bf7GVmnaV+hgviXHGeHbghMnt5XDtWqgnuTWth26UTFrlj4xB0yllnZGyYQALpH5znaA
- HkFQ==
+ bh=RDhBfgR7uXbOqhEDXnaOaiqF5CxZCeS16N6ezCCRTwk=;
+ b=j927397imdT9hvwze8VKjKbV1lgyDG+IYRjr9xZ3aA7YGkfWiwGADwNHeCBpIKHgGn
+ HXFoU3rZc+4PbG8GMxpygrLqtDkB2rM5OxfI7BTy/91vj1diTQdOkUp6kXpGVZAcMq/S
+ J176qd/+DOwqw7uNMZ0EO1wj4J1v1CTNoAFgcylbqDANRPzgZQkNnxJUzlM0qCN5XRby
+ 67q2WBo/YMbe7C0VgmsuTDPgyGmARQXFgg2XrGDxBMEDa5kVSIRWJpO45WFCm0jkBc0n
+ sd5b6ivFS8ZjcOtXYL1oeVVeiSiCjnFwwgCXNibNZwKftWl2vRmzYD3hexujOXvgt+uu
+ A3rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708035640; x=1708640440;
+ d=1e100.net; s=20230601; t=1708035670; x=1708640470;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=zx7Th+0oqAGfWwCG3rp02WtbgMKRd1pKboasZUJ6Ja8=;
- b=mw98d9GUJI16rnC+43fBh68LlpiyZFF0SXSbelM1cGLMDp57OMzATHIFpvkbCqS10/
- itkxuuZAbWDOe7iuGLjc/J7B6BtctMYBl4or6Cz+4w11QiqF45kQdo9GgdJiMbiO/IqJ
- wkdHYsqh85G2N1edNvp8nHLHBJLe3gRzrHpPt9soiY/OGq8tW/hovfBZ+Q0Wzfoh1c5H
- jgJwIWNfS7TjwS+RIV0aYbvmbe68GKZOZfrJU/SLk5wpLsodTEwwnPeXspH3P1aWweai
- a7Jlj0gXxSvsQmxlN2DNW8Z8eNyWe+QW5V9KitUZGrshHUhh6prNmndGM5PZR9Q8PGWQ
- WsOw==
-X-Gm-Message-State: AOJu0Yy4tXxB8ipihPBZxZnZDg5nTUrBZzfC6XzE2+ewqTSVpWGEFrZT
- gN+kGUagEcQfWZJhBhSlsvDCWgJ3rfXco6Ty9S4y0M93zU7w8yRrx1NEweox
-X-Google-Smtp-Source: AGHT+IFH1kZhkqF7y/T7xyI2U+i1xx8V7PaGPWgCereXWj+1vgqP78zXrDAfNRZDIRPBl6KisI2H6Q==
-X-Received: by 2002:a9d:4d95:0:b0:6e1:4d:d283 with SMTP id
- u21-20020a9d4d95000000b006e1004dd283mr2570138otk.22.1708035639736; 
- Thu, 15 Feb 2024 14:20:39 -0800 (PST)
+ bh=RDhBfgR7uXbOqhEDXnaOaiqF5CxZCeS16N6ezCCRTwk=;
+ b=apLVpDW9j5bG0CxjkmmSEFsUj4OsAeL/iEoe+JM1f0WpaVrnPUf3927h5D/ewJXtcF
+ W9Nl6qwVengmZH9YSbwNuLmIUhetKL2Tyx4vZRHUo2ipukSpAb0u6663CJGavfkGzZQ0
+ Lj31M5/dcYYS0pqB5hnNP/pCtEH+DYrTs8jiw832ML1xVjK7LcwDwHCgx2yM70k/h2Eb
+ MYK4zOA7pcYrNBRfTJnNLyba7tFNiLa0NM2ocCknCJGBnKoAVhY2G9Gn4dHgD7Rq9htb
+ hnPUCvCGLwF8tVQAHWpwmKVu+mlOEdT/TAzd/szWJrJC3JrTdNxVxw63m0ZB7YGdGh4H
+ O8Wg==
+X-Gm-Message-State: AOJu0YyLdiYwXjUIgrOHqfDAl+3ZKBsMEzCz7sOoFflewj8swSfM+OkC
+ +fkcZ2Y/zFLA92ME4IjqaoUI1LxPTCSR6IbG7vaapicx2ylygHgsgXa7fK4U
+X-Google-Smtp-Source: AGHT+IHYoarmpzgX3o0D0TfX6xHe9RlFJG5veQ1lBBIgMeXZSyL5UFUPyQ0WGuehZLjKr+9AftHQNw==
+X-Received: by 2002:a17:903:246:b0:1da:2c01:fef5 with SMTP id
+ j6-20020a170903024600b001da2c01fef5mr3575421plh.56.1708035670363; 
+ Thu, 15 Feb 2024 14:21:10 -0800 (PST)
 Received: from localhost ([2a00:79e1:2e00:1301:e1c5:6354:b45d:8ffc])
  by smtp.gmail.com with ESMTPSA id
- c28-20020a63725c000000b005d7b18bb7e2sm1903203pgn.45.2024.02.15.14.20.38
+ p9-20020a1709027ec900b001d9b092bcd9sm1780929plb.148.2024.02.15.14.21.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Feb 2024 14:20:39 -0800 (PST)
+ Thu, 15 Feb 2024 14:21:09 -0800 (PST)
 From: Rob Clark <robdclark@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Rob Clark <robdclark@chromium.org>
-Subject: [PATCH i-g-t v2] tests/kms_universal_plane: Re-work expectations for
- non-intel hw
-Date: Thu, 15 Feb 2024 14:20:34 -0800
-Message-ID: <20240215222034.327548-1-robdclark@gmail.com>
+Subject: [PATCH i-g-t 1/2] tests/kms_plane_scaling: Pass display to
+ get_num_scalars()
+Date: Thu, 15 Feb 2024 14:21:04 -0800
+Message-ID: <20240215222105.327820-1-robdclark@gmail.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -80,92 +80,157 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Rob Clark <robdclark@chromium.org>
 
-The expectation assumptions do not fit for non-intel hw.  So re-work the
-expectations and add msm support.
+Prep for next patch.
 
 Signed-off-by: Rob Clark <robdclark@chromium.org>
 ---
- tests/kms_universal_plane.c | 58 +++++++++++++++++++++++--------------
- 1 file changed, 36 insertions(+), 22 deletions(-)
+ lib/igt_kms.c             |  5 +++--
+ lib/igt_kms.h             |  2 +-
+ tests/kms_plane_scaling.c | 24 ++++++++++++------------
+ 3 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 6a39f93cc5aa..a6e11777d04e 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -402,7 +402,7 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	sanity_test_t test = { .data = data };
- 	igt_plane_t *primary;
- 	drmModeModeInfo *mode;
--	int i;
-+	int i, ret;
- 	int expect = 0;
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 1b4d0d7612a2..899b3a5001c4 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6333,17 +6333,18 @@ int igt_get_dp_mst_connector_id(igt_output_t *output)
  
- 	igt_output_set_pipe(output, pipe);
-@@ -432,29 +432,43 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ /**
+  * get_num_scalers:
+- * @drm_fd: drm file descriptor
++ * @display: the display
+  * @pipe: display pipe
+  *
+  * Returns: Number of scalers supported per pipe.
+  */
+-int get_num_scalers(int drm_fd, enum pipe pipe)
++int get_num_scalers(igt_display_t *display, enum pipe pipe)
+ {
+ 	char buf[8120];
+ 	char *start_loc1, *start_loc2;
+ 	int dir, res;
+ 	int num_scalers = 0;
++	int drm_fd = display->drm_fd;
+ 	char dest[20] = ":pipe ";
  
- 	igt_plane_set_position(primary, 0, 0);
+ 	strcat(dest, kmstest_pipe_name(pipe));
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index b3882808b42f..7cbaf180a63b 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1217,6 +1217,6 @@ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
+ bool intel_pipe_output_combo_valid(igt_display_t *display);
+ bool igt_check_output_is_dp_mst(igt_output_t *output);
+ int igt_get_dp_mst_connector_id(igt_output_t *output);
+-int get_num_scalers(int drm_fd, enum pipe pipe);
++int get_num_scalers(igt_display_t *display, enum pipe pipe);
  
--	/* Try to use universal plane API to scale down (should fail on pre-gen9) */
-+	/* Try to use universal plane API to scale down */
- 	if (is_intel_device(data->drm_fd))
- 		expect = (data->display_ver < 9) ? -ERANGE : 0;
--	igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
--				   output->config.crtc->crtc_id,
--				   test.oversized_fb.fb_id, 0,
--				   0, 0,
--				   mode->hdisplay + 100,
--				   mode->vdisplay + 100,
--				   IGT_FIXED(0,0), IGT_FIXED(0,0),
--				   IGT_FIXED(mode->hdisplay,0),
--				   IGT_FIXED(mode->vdisplay,0)) == expect);
--
--	/* Try to use universal plane API to scale up (should fail on pre-gen9) */
--	igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
--				   output->config.crtc->crtc_id,
--				   test.oversized_fb.fb_id, 0,
--				   0, 0,
--				   mode->hdisplay,
--				   mode->vdisplay,
--				   IGT_FIXED(0,0), IGT_FIXED(0,0),
--				   IGT_FIXED(mode->hdisplay - 100,0),
--				   IGT_FIXED(mode->vdisplay - 100,0)) == expect);
-+	ret = drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
-+			      output->config.crtc->crtc_id,
-+			      test.oversized_fb.fb_id, 0,
-+			      0, 0,
-+			      mode->hdisplay + 100,
-+			      mode->vdisplay + 100,
-+			      IGT_FIXED(0,0), IGT_FIXED(0,0),
-+			      IGT_FIXED(mode->hdisplay,0),
-+			      IGT_FIXED(mode->vdisplay,0));
-+	if (is_intel_device(data->drm_fd)) {
-+		/* should fail on pre-gen9 */
-+		igt_assert_eq(ret, (data->display_ver < 9) ? -ERANGE : 0);
-+	} else {
-+		/* Could succeed or fail with -ERANGE depending on hw limits: */
-+		igt_assert((ret == 0) || (ret == -ERANGE));
-+	}
-+
-+	/* Try to use universal plane API to scale up */
-+	ret = drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
-+			      output->config.crtc->crtc_id,
-+			      test.oversized_fb.fb_id, 0,
-+			      0, 0,
-+			      mode->hdisplay,
-+			      mode->vdisplay,
-+			      IGT_FIXED(0,0), IGT_FIXED(0,0),
-+			      IGT_FIXED(mode->hdisplay - 100,0),
-+			      IGT_FIXED(mode->vdisplay - 100,0));
-+	if (is_intel_device(data->drm_fd)) {
-+		/* should fail on pre-gen9 */
-+		igt_assert_eq(ret, (data->display_ver < 9) ? -ERANGE : 0);
-+	} else {
-+		/* Could succeed or fail with -ERANGE depending on hw limits: */
-+		igt_assert((ret == 0) || (ret == -ERANGE));
-+	}
+ #endif /* __IGT_KMS_H__ */
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index acb4a1da1ecf..d2dd3fd843e8 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -1038,8 +1038,8 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
+ 	igt_output_set_pipe(output1, pipe1);
+ 	igt_output_set_pipe(output2, pipe2);
  
- 	/* Find other crtcs and try to program our primary plane on them */
- 	for (i = 0; i < test.moderes->count_crtcs; i++)
+-	igt_require(get_num_scalers(d->drm_fd, pipe1) >= 2);
+-	igt_require(get_num_scalers(d->drm_fd, pipe2) >= 2);
++	igt_require(get_num_scalers(display, pipe1) >= 2);
++	igt_require(get_num_scalers(display, pipe2) >= 2);
+ 
+ 	plane[0] = igt_output_get_plane(output1, 0);
+ 	igt_require(plane[0]);
+@@ -1131,7 +1131,7 @@ static void invalid_parameter_tests(data_t *d)
+ 		igt_output_set_pipe(output, pipe);
+ 		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
+-		igt_require(get_num_scalers(d->drm_fd, pipe) >= 1);
++		igt_require(get_num_scalers(&d->display, pipe) >= 1);
+ 
+ 		igt_create_fb(d->drm_fd, 256, 256,
+ 			      DRM_FORMAT_XRGB8888,
+@@ -1308,7 +1308,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 						if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 							continue;
+-						if (get_num_scalers(data.drm_fd, pipe) < 1)
++						if (get_num_scalers(&data.display, pipe) < 1)
+ 							continue;
+ 
+ 						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+@@ -1333,7 +1333,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 						if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 							continue;
+-						if (get_num_scalers(data.drm_fd, pipe) < 1)
++						if (get_num_scalers(&data.display, pipe) < 1)
+ 							continue;
+ 
+ 						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+@@ -1358,7 +1358,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 						if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 							continue;
+-						if (get_num_scalers(data.drm_fd, pipe) < 1)
++						if (get_num_scalers(&data.display, pipe) < 1)
+ 							continue;
+ 
+ 						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+@@ -1382,7 +1382,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 					if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 						continue;
+-					if (get_num_scalers(data.drm_fd, pipe) < 1)
++					if (get_num_scalers(&data.display, pipe) < 1)
+ 						continue;
+ 
+ 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+@@ -1402,7 +1402,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 					if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 						continue;
+-					if (get_num_scalers(data.drm_fd, pipe) < 1)
++					if (get_num_scalers(&data.display, pipe) < 1)
+ 						continue;
+ 
+ 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+@@ -1422,7 +1422,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 					if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 						continue;
+-					if (get_num_scalers(data.drm_fd, pipe) < 1)
++					if (get_num_scalers(&data.display, pipe) < 1)
+ 						continue;
+ 
+ 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+@@ -1442,7 +1442,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 					if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 						continue;
+-					if (get_num_scalers(data.drm_fd, pipe) < 2)
++					if (get_num_scalers(&data.display, pipe) < 2)
+ 						continue;
+ 
+ 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+@@ -1469,7 +1469,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 						drmModeModeInfo *mode = NULL;
+ 
+-						if (get_num_scalers(data.drm_fd, pipe) < 1)
++						if (get_num_scalers(&data.display, pipe) < 1)
+ 							continue;
+ 						/*
+ 						 * Need to find mode with lowest vrefresh else
+@@ -1494,7 +1494,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 			for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 				if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 					continue;
+-				if (get_num_scalers(data.drm_fd, pipe) < 1)
++				if (get_num_scalers(&data.display, pipe) < 1)
+ 						continue;
+ 
+ 				igt_dynamic_f("pipe-%s-%s-invalid-num-scalers",
 -- 
 2.43.0
 
