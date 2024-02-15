@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAA53C48BEB
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B58CEC4829E
 	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 10:27:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 472D910E5FD;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4E84310E600;
 	Thu, 15 Feb 2024 10:27:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ab/jT+I/";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FPcpwF0f";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D13A10E43D
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EC6510E5A9
  for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 10:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1707992852; x=1739528852;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding:sender;
- bh=NC66Y2jfTeNvLDrHvTiNXkgZdKgSVhHMoT4vPqLeyD4=;
- b=ab/jT+I/eC8Mk1GGBFfHo56QaCDCuP0KyQkKozj8ZYeHKmYu74brj0BR
- vgY/xh0InQ9v7hJm+nO9ipjP23HikyDUZpXFtO2f2Ht7K0WtCV2y5Aw3d
- 8fben8psUrIk6n3ZBjdnyFmSLsCtYpKN1Sjs4n+D1tI9cA/ErZ8zfXgLp
- ZpVlSz9hkzYjkGHJ2jZToiNsmAut8aEaLrqfNHG9LQq+hbo9nvTrSIUst
- sgHAtWExmmAlFT5oRTZcWZKnI9BuH3Su4RD8yq15jfcNetijgsdvQrs/l
- +h5rNdq013i2OpF3wSOZkZmbRd29u1R2KbhEYfP47F/i0hJKjfLIte4EN w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="2199367"
+ bh=EL7ylhLPb+xKttOZIY25nrPlyu+nMU5f9gTOYliVWxg=;
+ b=FPcpwF0fsj30f4DAs/J5Jk1SkIj1iqAPP8ZfE6HlU3R6+tn43oTLwJft
+ VrAZcGQK4LZXnZmNOp91D5x0o3pkUpYH6NVlHvU3kK9feahvdXNJw7m5j
+ L9uyc/kt73ZrvHNEWjEqc1y1jCf5CQPqVOpbnzxvFHud4avWCW7iJfedg
+ sWxQMDF3xpmJZZgdyJp5uLIYSouNLayL048qfdtVbLysYr18fxNwImpfM
+ ZCyAMZxWJmfq2JnivFwsJBJWo+W8RR0OO2egrNfuB3D7jYm794B8GLq2F
+ nVCpcYb7QwP3aHR5aKAd/rA2M7PeJ1Fs/r0zsHSE56FL2P0ZnZoBPLeWa w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="5038595"
 X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; 
-   d="scan'208";a="2199367"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Feb 2024 02:27:32 -0800
+   d="scan'208";a="5038595"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Feb 2024 02:27:31 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; d="scan'208";a="40981604"
+X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; 
+   d="scan'208";a="3480345"
 Received: from linux.intel.com ([10.54.29.200])
- by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  15 Feb 2024 02:27:31 -0800
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.245.246.60])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id EAF60580E8F
+ by linux.intel.com (Postfix) with ESMTPS id E7EFC580E4B
  for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 02:27:30 -0800 (PST)
 Received: from maurocar by linux.intel.com with local (Exim 4.97.1)
  (envelope-from <mauro.chehab@linux.intel.com>)
- id 1raYxk-00000003JBi-3mTj for igt-dev@lists.freedesktop.org;
+ id 1raYxk-00000003JB1-33yQ for igt-dev@lists.freedesktop.org;
  Thu, 15 Feb 2024 11:27:28 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH 13/17] scripts/code_cov_parse_info: warn if branch block is
- not zero
-Date: Thu, 15 Feb 2024 11:27:22 +0100
-Message-ID: <35ce25939b496dc55998c0a2f40e518fdb33a215.1707992666.git.mchehab@kernel.org>
+Subject: [PATCH 01/17] scripts/code_cov_parse_info: Silent some messages by
+ default
+Date: Thu, 15 Feb 2024 11:27:10 +0100
+Message-ID: <e6fde2df69389d12b511081291843f941816d8f1.1707992666.git.mchehab@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1707992666.git.mchehab@kernel.org>
 References: <cover.1707992666.git.mchehab@kernel.org>
@@ -76,31 +77,26 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-The lcov's info format has a field to be used for report branch
-block. This is unused on json format (newer gcc), being always
-zero. JSON doesn't contain it, so the parser doesn't support
-it to be non-zero anymore. Print a warning if this happens.
+Those aren't really needed on normal output.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/code_cov_parse_info | 4 ++++
- 1 file changed, 4 insertions(+)
+ scripts/code_cov_parse_info | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-index 50d10a30d7f9..ea4f64b34d2f 100755
+index 72a1e8c2b0ad..1498bd09cdba 100755
 --- a/scripts/code_cov_parse_info
 +++ b/scripts/code_cov_parse_info
-@@ -519,6 +519,10 @@ sub read_info($)
- 			my $branch = $3;
- 			my $taken = $4;
+@@ -1030,7 +1030,7 @@ if ($has_filter) {
+ }
  
-+			if ($block != 0) {
-+				print "Warning: unexpected block $block at line $.\n";
-+			}
-+
- 			my $where = "$ln,$block,$branch";
+ my $ntests=scalar(%test_names);
+-printf "Number of tests: %d\n", $ntests if ($ntests > 1);
++printf "Number of tests: %d\n", $ntests if ($stat && $ntests > 1);
  
- 			$taken = 0 if ($taken eq '-');
+ if ($show_files) {
+ 	for my $f(sort keys %used_source) {
 -- 
 2.43.0
 
