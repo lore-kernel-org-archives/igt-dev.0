@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EB11C48BF2
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 10:27:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42303C48BF0
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 10:27:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1CEA210E5F8;
-	Thu, 15 Feb 2024 10:27:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C1D9A10E5EA;
+	Thu, 15 Feb 2024 10:27:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n35aLgqp";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Bob5sonE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B373510E43D
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 10:27:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CBF9810E5C2
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 10:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707992852; x=1739528852;
+ t=1707992853; x=1739528853;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding:sender;
- bh=C/+DpOyYGXs19/XAxzeBzk03h43UIjpfWaf13XQAAIA=;
- b=n35aLgqpjBmcoer/eBgRVUg1ZdQZDC9IwhwuS+mKo/+zzX1+LmdQ3wNF
- 7FVC71HOWO3PjPNZgaC9iE1NMWhERYhv2XR6mthlpMffNyvwEeBuLl9Zk
- rG7juq18ohGfvT4vCbwGEwA9nss02cFY4N+k/Q/7j0I8xLdgF8K4Uysek
- 0u4oRfeKbHM+oITHnejmFhw0TUIzeFMO6SZvUyetJNvY3vnHSXvZwAXBn
- 9aawIlhA1UbvVoO+CPAIY54cVDZEpu/jLTnLsKAAeMe7lkHCpVGfvQBNw
- 83EG9LCfwkQTl3/lPtf8+0UZxl5RGsO3HACTHBVf8lk9y1ILinltQscmA w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="2199365"
+ bh=2IKYZiINn7n+OrP9uGs3zMa+6sCPoOD+FER/MTfB7nA=;
+ b=Bob5sonEfgVruML1sOvoigiyY30HkDdHvCG4IaDxBTQFpep9P9+E+9f0
+ yS/wmkPKPPtvHF8ODx9ceQHPK2AggW72qoveeBUpAJAkhDUQtuR2ZZ1Ml
+ 5erBUZU7luCg2oYqddaXapAvhRwONE8oI9AVagTPRIwA6dEGw050QeeVA
+ n3BD7KNQOiJ/wx4qUpfqNvNTZ0dSpFNau3TKcc9v5+ICBGBsflN9ux1gU
+ pxQROVlKpXfR73FYhQ2SsBxNQdkl2+Jstsv77JY1o8XxhqidcejVcRJyn
+ vwzhocXlQFTxbw1Vl+yIochAeR2RBWLA/Zr4r8wDtptx7inaEBM1nj8qZ w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="5038599"
 X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; 
-   d="scan'208";a="2199365"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+   d="scan'208";a="5038599"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  15 Feb 2024 02:27:31 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; d="scan'208";a="40981602"
+X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; 
+   d="scan'208";a="3480349"
 Received: from linux.intel.com ([10.54.29.200])
- by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  15 Feb 2024 02:27:31 -0800
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.245.246.60])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id CF1FD580E0C
+ by linux.intel.com (Postfix) with ESMTPS id ECB0C580E92
  for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 02:27:30 -0800 (PST)
 Received: from maurocar by linux.intel.com with local (Exim 4.97.1)
  (envelope-from <mauro.chehab@linux.intel.com>)
- id 1raYxk-00000003JBG-3MOG for igt-dev@lists.freedesktop.org;
+ id 1raYxk-00000003JB7-3BVD for igt-dev@lists.freedesktop.org;
  Thu, 15 Feb 2024 11:27:28 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH 06/17] scripts/code_cov_parse_info: prepare $all_branch to get
- function data
-Date: Thu, 15 Feb 2024 11:27:15 +0100
-Message-ID: <f36c320f1be10d56a076464ed68fd4172c9e13aa.1707992666.git.mchehab@kernel.org>
+Subject: [PATCH 03/17] scripts/code_cov_parse_info: better handle include
+ regexes
+Date: Thu, 15 Feb 2024 11:27:12 +0100
+Message-ID: <384e42d3f04aee9b3b489f29cee0d64c7e13150d.1707992666.git.mchehab@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1707992666.git.mchehab@kernel.org>
 References: <cover.1707992666.git.mchehab@kernel.org>
@@ -76,55 +77,108 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Right now, we store only the branch counts. We also need to store
-the functions that each branch belongs. So, add a new hash in
-order to allow adding function data later on.
+When there are both exclude and include regexes, the include ones
+may be overriding the more generic excluded ones. So, handle them
+first.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/code_cov_parse_info | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ scripts/code_cov_parse_info | 38 ++++++++++++++++++++-----------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
 
 diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-index 1be7fddf3f3e..d28217cc196d 100755
+index d3739211b68a..ceea67a13d5a 100755
 --- a/scripts/code_cov_parse_info
 +++ b/scripts/code_cov_parse_info
-@@ -233,7 +233,7 @@ sub parse_info_data($)
- 			$was_used = 1 if ($taken > 0);
+@@ -34,17 +34,24 @@ sub is_function_excluded($)
  
- 			$record{$source}{$func}{brda}{$where} += $taken;
--			$all_branch{$source}{"$where"} += $taken;
-+			$all_branch{$source}{"$where"}{count} += $taken;
- 			next;
- 		}
+ 	my $func = shift;
  
-@@ -448,7 +448,7 @@ sub gen_stats()
- 
- 		foreach my $where (keys(%{$all_branch{$source}})) {
- 			$stats{"branch_count"}++;
--			$stats{"branch_reached"}++ if ($all_branch{$source}{$where} != 0);
-+			$stats{"branch_reached"}++ if ($all_branch{$source}{$where}{count} != 0);
- 		}
++	# Handle includes first, as, when there are both include and exclude
++	# includes should take preference, as they can be overriding exclude
++	# rules
++	foreach my $r (@func_include_regexes) {
++	    return 0 if ($func =~ m/$r/);
++	}
++
+ 	foreach my $r (@func_exclude_regexes) {
+ 		return 1 if ($func =~ m/$r/);
  	}
  
-@@ -607,7 +607,7 @@ sub generate_report($)
- 		}
- 		foreach my $source (keys(%{$report{$f}{"all_branch"}})) {
- 			foreach my $where (keys(%{$report{$f}{"all_branch"}{$source}})) {
--				$all_branch{$source}{"$where"} += $report{$f}{"all_branch"}{$source}{$where};
-+				$all_branch{$source}{"$where"}{count} += $report{$f}{"all_branch"}{$source}{$where}{count};
- 			}
- 		}
- 		for my $source(keys(%{$report{$f}{"files"}})) {
-@@ -887,7 +887,7 @@ sub check_source_branches()
+-	return 0 if (!@func_include_regexes);
+-
+-	foreach my $r (@func_include_regexes) {
+-		return 0 if ($func =~ m/$r/);
++	# If there are no exclude regexes, only include functions that are
++	# explicitly included.
++	if ($#func_exclude_regexes == 0) {
++		return 1;
+ 	}
  
- 		my @lines;
- 		foreach my $where (sort keys %{$all_branch{$source}}) {
--			my $taken = $all_branch{$source}{$where};
-+			my $taken = $all_branch{$source}{$where}{count};
- 			next if ($taken > 0);
+-	return 1;
++	return 0;
+ }
  
- 			next if !($where =~ m/^(-?\d+),(-?\d+),(-?\d+)/);
+ sub is_file_excluded($)
+@@ -1178,9 +1185,10 @@ Each line at B<[filter's file]> may contain a new regex:
+ 
+ =back
+ 
+-When both include and exclude regexes are found, exclude regexes are
+-applied first and any functions that don't match the include regular
+-expressions from the B<[filter's file]> will be ignored.
++Include regexes are handled first, as they can override an exclude regex.
++
++When just include regexes are used, any functions that don't match the
++include regular expressions from the B<[filter's file]> will be ignored.
+ 
+ Please notice that, when this filter is used, B<--ignore-unused> will be
+ automaticaly enabled, as the final goal is to report per-function usage.
+@@ -1189,7 +1197,8 @@ automaticaly enabled, as the final goal is to report per-function usage.
+ 
+ Include B<regex> to the function filter. Can be used multiple times.
+ 
+-When used together with B<--func-filters>, regexes here are handled first.
++When used together with B<--func-filters> or B<--exclude-func>, regexes
++here are handled first.
+ 
+ Please notice that, when this filter is used, B<--ignore-unused> will be
+ automaticaly enabled, as the final goal is to report per-function usage.
+@@ -1198,8 +1207,6 @@ automaticaly enabled, as the final goal is to report per-function usage.
+ 
+ Include B<regex> to the function filter. Can be used multiple times.
+ 
+-When used together with B<--func-filters>, regexes here are handled first.
+-
+ Please notice that, when this filter is used, B<--ignore-unused> will be
+ automaticaly enabled, as the final goal is to report per-function usage.
+ 
+@@ -1229,22 +1236,19 @@ Each line at B<[filter's file]> may contain a new regex:
+ 
+ =back
+ 
+-When both include and exclude regexes are found, exclude regexes are
+-applied first and any functions that don't match the include regular
+-expressions from the B<[filter's file]> will be ignored.
++Include regexes are handled first, as they can override an exclude regex.
+ 
+ =item B<--include-src> B<regex>
+ 
+ Include B<regex> to the sources filter. Can be used multiple times.
+ 
+-When used together with B<--src-filters>, regexes here are handled first.
++When used together with B<--src-filters> and B<--exclude-src>, regexes
++here are handled first.
+ 
+ =item B<--exclude-src> B<regex>
+ 
+ Include B<regex> to the sources filter. Can be used multiple times.
+ 
+-When used together with B<--src-filters>, regexes here are handled first.
+-
+ =item B<--ignore-unused> or B<--ignore_unused>
+ 
+ Filters out unused C files and headers from the code coverage results.
 -- 
 2.43.0
 
