@@ -4,51 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48350C4829E
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 19:21:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AF22C4829E
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 19:55:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F01EE10EA26;
-	Thu, 15 Feb 2024 19:21:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0509C10E409;
+	Thu, 15 Feb 2024 19:55:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="Kg5wCmLG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AGffzaZT";
 	dkim-atps=neutral
-Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 190B210EA25
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 19:21:24 +0000 (UTC)
-Received: from fews02-sea.riseup.net (fews02-sea-pn.riseup.net [10.0.1.112])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F25B410E409
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 19:55:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708026907; x=1739562907;
+ h=date:from:to:cc:subject:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=KgU2hCl7zmTpX0CyKKeYuVvIS4GX8w1uP4PpIUm5R50=;
+ b=AGffzaZTMR5R6cqbOlKps+zioUvKo663yHvK7IlEbX6uN+bG/fvvkR9E
+ wbOcd3pASmcuZ1K4azyrT7TUXENDF4xDsmjRoZyP0YoUkpyoBEyLpjY3C
+ us+/JkUXzTCFMOy+H4dPNwnDpn4Q+9/BpIaePsSZXmaOx8in0hXVoQ28N
+ +lv+5meU3aFBrmFJLU7E8HOWALp81QOvXCtgyy81vMXe17S4oZsxG6xp7
+ 4+RPAfjqOClF+3jx3B3+seShuSFkiCBTJtmlpn7ddkwGVRTeqe5EAuf1O
+ 4En2xMFO9Ey0UCKyAcVGP4cPWqaEBcHAu0uEElFea2/86kob7njbwzPFQ Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="12690637"
+X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; d="scan'208";a="12690637"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Feb 2024 11:55:06 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; 
+   d="scan'208";a="8289823"
+Received: from linux.intel.com ([10.54.29.200])
+ by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Feb 2024 11:55:05 -0800
+Received: from maurocar-mobl2 (maurocar-mobl2.ger.corp.intel.com
+ [10.245.246.60])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mx1.riseup.net (Postfix) with ESMTPS id 4TbQ0M4gfSzDrD6;
- Thu, 15 Feb 2024 19:21:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
- t=1708024883; bh=9iAqPq87X4nDXSkWxi6VhUy1TsbINuXqxUoL6nFqBSE=;
- h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=Kg5wCmLG7P1ivx/kefArA4H4jRzoIs48flu2rK2Gmll9xEZ3iBu3W+W7j00Ehf1vC
- OIze6AgbPN6Q+KQynu6pX1ZKNq9AVqkV2k2zqoO67w7QA+6P2pEIrgVVfA/PO8nYDs
- P1L/5aq4oPAONVF9PffUOZr6y+nA9fX6b4lWVQS4=
-X-Riseup-User-ID: 6C39F9EF385E9CFCD9585A075A8B1A0AAE38410655480C7CC05987312E26C013
-Received: from [127.0.0.1] (localhost [127.0.0.1])
- by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4TbQ0J2BGYzFs0B;
- Thu, 15 Feb 2024 19:21:19 +0000 (UTC)
-From: Arthur Grillo <arthurgrillo@riseup.net>
-Date: Thu, 15 Feb 2024 16:21:05 -0300
-Subject: [PATCH i-g-t 2/2] igt: Remove duplicate igt_display_require()
- calls
+ by linux.intel.com (Postfix) with ESMTPS id 9F551580BE1;
+ Thu, 15 Feb 2024 11:55:03 -0800 (PST)
+Date: Thu, 15 Feb 2024 20:55:00 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: Re: [PATCH 09/17] scripts/code_cov_parse_info: stop
+ recording/writing too old fields
+Message-ID: <20240215205500.4de8dbce@maurocar-mobl2>
+In-Reply-To: <20240215170946.isatjeyc7kuv2iig@kamilkon-desk.igk.intel.com>
+References: <cover.1707992666.git.mchehab@kernel.org>
+ <ee96b3366066e1e00ae7b55466f822b3bd98ca13.1707992666.git.mchehab@kernel.org>
+ <20240215170946.isatjeyc7kuv2iig@kamilkon-desk.igk.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240215-duplicate-calls-v1-2-512afbe1bda7@riseup.net>
-References: <20240215-duplicate-calls-v1-0-512afbe1bda7@riseup.net>
-In-Reply-To: <20240215-duplicate-calls-v1-0-512afbe1bda7@riseup.net>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, 
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>, 
- Ashutosh Dixit <ashutosh.dixit@intel.com>, 
- Pekka Paalanen <pekka.paalanen@haloniitty.fi>, 
- Arthur Grillo <arthurgrillo@riseup.net>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,41 +73,126 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Now that we don't need call igt_display_require() twice, remove the
-duplicate calls, previously needed to expose the writeback output.
+On Thu, 15 Feb 2024 18:09:46 +0100
+Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 
-Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
----
- benchmarks/kms_fb_stress.c | 2 --
- tests/kms_writeback.c      | 1 -
- 2 files changed, 3 deletions(-)
+> Hi Mauro,
+> On 2024-02-15 at 11:27:18 +0100, Mauro Carvalho Chehab wrote:
+> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > 
+> > As we'll be using json as basis, drop support for the fields that:
+> > 
+> > - aren't used at the reports;
+> > - aren't even present when lcov parses gcc json format.
+> > 
+> > Such fields are only handled on lcov for very old gcc versions.
+> > 
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > ---
+> >  scripts/code_cov_parse_info | 33 ---------------------------------
+> >  1 file changed, 33 deletions(-)
+> > 
+> > diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
+> > index 92091215d224..038440a9c3e3 100644
+> > --- a/scripts/code_cov_parse_info
+> > +++ b/scripts/code_cov_parse_info
+> > @@ -201,15 +201,10 @@ sub parse_info_data($)
+> >  
+> >  		# FNF:<number of functions found>
+> >  		if (m/^FNF:(-?\d+)/) {
+> > -			$record{$source}{func}{$func}{fnf} = $1;
+> >  			next;
+> >  		}
+> >  		# FNH:<number of function hit>
+> >  		if (m/^FNH:(-?\d+)/) {
+> > -			my $hits = $1;
+> > -			if (!defined($record{$source}{func}{$func}{fnh}) || $record{$source}{func}{$func}{fnh} < $hits) {
+> > -				$record{$source}{func}{$func}{fnh} = $hits;
+> > -			}
+> >  			next;
+> >  		}
+> >  
+> > @@ -240,15 +235,10 @@ sub parse_info_data($)
+> >  
+> >  		# BRF:<number of branches found>
+> >  		if (m/^BRF:(-?\d+)/) {
+> > -			$record{$source}{func}{$func}{brf} = $1;
+> >  			next;
+> >  		}
+> >  		# BRH:<number of branches hit>
+> >  		if (m/^BRH:(-?\d+)/) {
+> > -			my $hits = $1;
+> > -			if (!defined($record{$source}{func}{$func}{brh}) || $record{$source}{func}{$func}{brh} < $hits) {
+> > -				$record{$source}{func}{$func}{brh} = $hits;
+> > -			}  
+> 
+> Above is self-explanatory.
+> 
+> >  			next;
+> >  		}
+> >  
+> > @@ -340,34 +330,11 @@ sub write_filtered_file($)
+> >  				if (defined($record{$source}{func}{$func}{fnda})) {
+> >  					$filtered .= "FNDA:" . $record{$source}{func}{$func}{fnda} . ",$func\n";
+> >  				}
+> > -				if ($record{$source}{fnf}) {
+> > -					$filtered .= "FNF:". $record{$source}{func}{$func}{fnf} ."\n";
+> > -				}
+> > -				if ($record{$source}{fnh}) {
+> > -					$filtered .= "FNH:". $record{$source}{func}{$func}{fnh} ."\n";
+> > -				}
+> > -			}
+> >  
+> > -			foreach my $ln(sort { $a <=> $b } keys %{ $record{$source}{func}{$func}{da} }) {
+> > -				$filtered .= "DA:$ln," . $record{$source}{func}{$func}{da}{$ln} . "\n";  
+> 
+> Why are you removing DA here? It is used elswhere.
+> 
+> >  			}
+> > -			foreach my $where(sort sort_where keys %{ $record{$source}{func}{$func}{brda} }) {
+> > -				my $taken = $record{$source}{func}{$func}{brda}{$where};  
+> 
+> Same here, BRDA.
+> 
+> >  				$taken = "-" if (!$taken);
+> >  				$filtered .= "BRDA:$where,$taken\n";
+> >  			}
+> > -			if ($record{$source}{func}{$func}{brf}) {
+> > -				$filtered .= "BRF:". $record{$source}{func}{$func}{brf} ."\n";
+> > -			}
+> > -			if ($record{$source}{func}{$func}{brh}) {
+> > -				$filtered .= "BRH:". $record{$source}{func}{$func}{brh} ."\n";
+> > -			}
+> > -			if ($record{$source}{func}{$func}{lf}) {
+> > -				$filtered .= "LF:". $record{$source}{func}{$func}{lf} ."\n";
+> > -			}
+> > -			if ($record{$source}{func}{$func}{lh}) {
+> > -				$filtered .= "LH:". $record{$source}{func}{$func}{lh} ."\n";  
+> 
+> LF and LH?
+> 
+> If above is correct you can add my a-b
+> 
+> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
-index 9a0e98bed8ad..00eaa0a4931a 100644
---- a/benchmarks/kms_fb_stress.c
-+++ b/benchmarks/kms_fb_stress.c
-@@ -150,8 +150,6 @@ igt_simple_main
- 
- 	data.fd = drm_open_driver_master(DRIVER_ANY);
- 
--	igt_display_require(&data.display, data.fd);
--
- 	kmstest_set_vt_graphics_mode();
- 
- 	igt_display_require(&data.display, data.fd);
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index cda13b850dfb..6cd685b37af2 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -563,7 +563,6 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
- 
- 	igt_fixture {
- 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
--		igt_display_require(&display, display.drm_fd);
- 
- 		kmstest_set_vt_graphics_mode();
- 
+Basically, lcov has support for different versions of gcov and has
+some sort of backward compatibility with older versions of lcov
+tool. In practice, those fields aren't either be filled anymore for
+a long time or just provide duplicated (incomplete) information.
 
--- 
-2.43.0
+The rationale behind this patch is to remove those duplicated info
+from old versions that are either duplicated or not filled anymore
+by gcov/lcov versions on Ubuntu 18.04 and above[1]. 
 
+[1] btw, this script was never tested with versions older than
+what's there on Ubuntu 18.04, so what has been removed is something
+that it was not really used in practice.
+
+> 
+> > -			}
+> >  		}
+> >  
+> >  		$filtered .= "end_of_record\n";
+> > -- 
+> > 2.43.0
+> >   
