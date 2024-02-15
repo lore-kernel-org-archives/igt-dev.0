@@ -4,60 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AF22C4829E
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 19:55:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4498BC4829E
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 22:19:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0509C10E409;
-	Thu, 15 Feb 2024 19:55:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A29FC10E38F;
+	Thu, 15 Feb 2024 22:19:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AGffzaZT";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="V+gKDqO4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F25B410E409
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 19:55:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708026907; x=1739562907;
- h=date:from:to:cc:subject:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=KgU2hCl7zmTpX0CyKKeYuVvIS4GX8w1uP4PpIUm5R50=;
- b=AGffzaZTMR5R6cqbOlKps+zioUvKo663yHvK7IlEbX6uN+bG/fvvkR9E
- wbOcd3pASmcuZ1K4azyrT7TUXENDF4xDsmjRoZyP0YoUkpyoBEyLpjY3C
- us+/JkUXzTCFMOy+H4dPNwnDpn4Q+9/BpIaePsSZXmaOx8in0hXVoQ28N
- +lv+5meU3aFBrmFJLU7E8HOWALp81QOvXCtgyy81vMXe17S4oZsxG6xp7
- 4+RPAfjqOClF+3jx3B3+seShuSFkiCBTJtmlpn7ddkwGVRTeqe5EAuf1O
- 4En2xMFO9Ey0UCKyAcVGP4cPWqaEBcHAu0uEElFea2/86kob7njbwzPFQ Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="12690637"
-X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; d="scan'208";a="12690637"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Feb 2024 11:55:06 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; 
-   d="scan'208";a="8289823"
-Received: from linux.intel.com ([10.54.29.200])
- by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Feb 2024 11:55:05 -0800
-Received: from maurocar-mobl2 (maurocar-mobl2.ger.corp.intel.com
- [10.245.246.60])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 9F551580BE1;
- Thu, 15 Feb 2024 11:55:03 -0800 (PST)
-Date: Thu, 15 Feb 2024 20:55:00 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: Re: [PATCH 09/17] scripts/code_cov_parse_info: stop
- recording/writing too old fields
-Message-ID: <20240215205500.4de8dbce@maurocar-mobl2>
-In-Reply-To: <20240215170946.isatjeyc7kuv2iig@kamilkon-desk.igk.intel.com>
-References: <cover.1707992666.git.mchehab@kernel.org>
- <ee96b3366066e1e00ae7b55466f822b3bd98ca13.1707992666.git.mchehab@kernel.org>
- <20240215170946.isatjeyc7kuv2iig@kamilkon-desk.igk.intel.com>
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com
+ [209.85.214.179])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 040B810E38F
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 22:19:12 +0000 (UTC)
+Received: by mail-pl1-f179.google.com with SMTP id
+ d9443c01a7336-1d70b0e521eso11504525ad.1
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 14:19:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1708035551; x=1708640351; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0dikFntM4ZYeH5GLnssfSqzujLjWyAwZ2Y0+y6OQCkI=;
+ b=V+gKDqO4whZWbvAQMz93iStVRaBkjlaDsNK+77jp4+K4YdfgUhPqWLPd51vKSIKooD
+ 0CXNknXkHuZFcuNvlWhjpR2SyzcAsc49GUx0IJFRtqg1QC5rRQkeZvh7oEPVlD+neS5Q
+ DoFq8BEOd3nh3ukLi5099UNLOxVpOIAo/go1+BdBY1+snLT1B/TW7N9wDPOFxMvf9nJ/
+ nVW8xNwga5CeEi2d3VPLSGyKS3hcRG8nRbhRhJKytSjEhjjrKDkcTO/L4M4/NoZCHCHS
+ 34lGS/bj8oi743HDe0BfgUkGzkLpsTX1viO7iDCxquc9o5Pwqz4tNeiwS1oBTcFB3+QU
+ YlgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708035551; x=1708640351;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0dikFntM4ZYeH5GLnssfSqzujLjWyAwZ2Y0+y6OQCkI=;
+ b=ScOgTHC3gFyQ89xPYtRpC7RYxdwK6Y5lfnWWjDTzgYSU00HFrAowp7tCC8nYB1SKXU
+ 2sany3r0cK8m82YKErCWa6SSM19rF6QGylrIid4GfcmUwwmnKgXiKO6tBJmdKjqY4Ko7
+ nByJxgK0mulCnteyhH4zZDIE5lNjWx+xD5Wb5vCq9cYAIVobZ8bnYh2aqw5qwfG6GmQd
+ EYN8kFc+t+kzUn1b3yawZT5+i6J7+XOK9stq5WyHMa8++cULgvGrQ63mJO+UYundetAR
+ SxpYFtDoj6hxIQYQsiDhjgoGt0tyxAXaXHEMhYUwKk1s7R+E9U3O8wfS5VFSlKXGt9Q7
+ emNQ==
+X-Gm-Message-State: AOJu0Yxe0pmP24gwzMGtSmwPPW4C3oB0hYaqNZeUtlIBhzS/2jvx8Ht5
+ oq49fi9FBrj+IZANGasX0SXkjdhVJaAzfDaiLoGvj2ZTHMmu54/+ktBHUqmB
+X-Google-Smtp-Source: AGHT+IHePaXcvhWdZLtkA80PSpqWuGh+uo2yHcka71+I2CrxEx4mjAlU3jsxHWnXuM7ED8c8MAF3aw==
+X-Received: by 2002:a17:902:7597:b0:1d9:bf6a:cffa with SMTP id
+ j23-20020a170902759700b001d9bf6acffamr2749703pll.45.1708035551463; 
+ Thu, 15 Feb 2024 14:19:11 -0800 (PST)
+Received: from localhost ([2a00:79e1:2e00:1301:e1c5:6354:b45d:8ffc])
+ by smtp.gmail.com with ESMTPSA id
+ w24-20020a1709027b9800b001db3099d6fasm1739010pll.119.2024.02.15.14.19.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 15 Feb 2024 14:19:10 -0800 (PST)
+From: Rob Clark <robdclark@gmail.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Rob Clark <robdclark@chromium.org>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>
+Subject: [PATCH i-g-t v2 2/2] tests/kms_bw: Add 2160x1440p mode
+Date: Thu, 15 Feb 2024 14:19:00 -0800
+Message-ID: <20240215221900.327042-2-robdclark@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240215221900.327042-1-robdclark@gmail.com>
+References: <20240215221900.327042-1-robdclark@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,126 +81,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 15 Feb 2024 18:09:46 +0100
-Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
+From: Rob Clark <robdclark@chromium.org>
 
-> Hi Mauro,
-> On 2024-02-15 at 11:27:18 +0100, Mauro Carvalho Chehab wrote:
-> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> > 
-> > As we'll be using json as basis, drop support for the fields that:
-> > 
-> > - aren't used at the reports;
-> > - aren't even present when lcov parses gcc json format.
-> > 
-> > Such fields are only handled on lcov for very old gcc versions.
-> > 
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> > ---
-> >  scripts/code_cov_parse_info | 33 ---------------------------------
-> >  1 file changed, 33 deletions(-)
-> > 
-> > diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-> > index 92091215d224..038440a9c3e3 100644
-> > --- a/scripts/code_cov_parse_info
-> > +++ b/scripts/code_cov_parse_info
-> > @@ -201,15 +201,10 @@ sub parse_info_data($)
-> >  
-> >  		# FNF:<number of functions found>
-> >  		if (m/^FNF:(-?\d+)/) {
-> > -			$record{$source}{func}{$func}{fnf} = $1;
-> >  			next;
-> >  		}
-> >  		# FNH:<number of function hit>
-> >  		if (m/^FNH:(-?\d+)/) {
-> > -			my $hits = $1;
-> > -			if (!defined($record{$source}{func}{$func}{fnh}) || $record{$source}{func}{$func}{fnh} < $hits) {
-> > -				$record{$source}{func}{$func}{fnh} = $hits;
-> > -			}
-> >  			next;
-> >  		}
-> >  
-> > @@ -240,15 +235,10 @@ sub parse_info_data($)
-> >  
-> >  		# BRF:<number of branches found>
-> >  		if (m/^BRF:(-?\d+)/) {
-> > -			$record{$source}{func}{$func}{brf} = $1;
-> >  			next;
-> >  		}
-> >  		# BRH:<number of branches hit>
-> >  		if (m/^BRH:(-?\d+)/) {
-> > -			my $hits = $1;
-> > -			if (!defined($record{$source}{func}{$func}{brh}) || $record{$source}{func}{$func}{brh} < $hits) {
-> > -				$record{$source}{func}{$func}{brh} = $hits;
-> > -			}  
-> 
-> Above is self-explanatory.
-> 
-> >  			next;
-> >  		}
-> >  
-> > @@ -340,34 +330,11 @@ sub write_filtered_file($)
-> >  				if (defined($record{$source}{func}{$func}{fnda})) {
-> >  					$filtered .= "FNDA:" . $record{$source}{func}{$func}{fnda} . ",$func\n";
-> >  				}
-> > -				if ($record{$source}{fnf}) {
-> > -					$filtered .= "FNF:". $record{$source}{func}{$func}{fnf} ."\n";
-> > -				}
-> > -				if ($record{$source}{fnh}) {
-> > -					$filtered .= "FNH:". $record{$source}{func}{$func}{fnh} ."\n";
-> > -				}
-> > -			}
-> >  
-> > -			foreach my $ln(sort { $a <=> $b } keys %{ $record{$source}{func}{$func}{da} }) {
-> > -				$filtered .= "DA:$ln," . $record{$source}{func}{$func}{da}{$ln} . "\n";  
-> 
-> Why are you removing DA here? It is used elswhere.
-> 
-> >  			}
-> > -			foreach my $where(sort sort_where keys %{ $record{$source}{func}{$func}{brda} }) {
-> > -				my $taken = $record{$source}{func}{$func}{brda}{$where};  
-> 
-> Same here, BRDA.
-> 
-> >  				$taken = "-" if (!$taken);
-> >  				$filtered .= "BRDA:$where,$taken\n";
-> >  			}
-> > -			if ($record{$source}{func}{$func}{brf}) {
-> > -				$filtered .= "BRF:". $record{$source}{func}{$func}{brf} ."\n";
-> > -			}
-> > -			if ($record{$source}{func}{$func}{brh}) {
-> > -				$filtered .= "BRH:". $record{$source}{func}{$func}{brh} ."\n";
-> > -			}
-> > -			if ($record{$source}{func}{$func}{lf}) {
-> > -				$filtered .= "LF:". $record{$source}{func}{$func}{lf} ."\n";
-> > -			}
-> > -			if ($record{$source}{func}{$func}{lh}) {
-> > -				$filtered .= "LH:". $record{$source}{func}{$func}{lh} ."\n";  
-> 
-> LF and LH?
-> 
-> If above is correct you can add my a-b
-> 
-> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Add an additional mode so that we can get more kms_bw coverage on
+sc7180.
 
-Basically, lcov has support for different versions of gcov and has
-some sort of backward compatibility with older versions of lcov
-tool. In practice, those fields aren't either be filled anymore for
-a long time or just provide duplicated (incomplete) information.
+v2: Add missing comment listing subtest name
 
-The rationale behind this patch is to remove those duplicated info
-from old versions that are either duplicated or not filled anymore
-by gcov/lcov versions on Ubuntu 18.04 and above[1]. 
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+---
+ tests/kms_bw.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-[1] btw, this script was never tested with versions older than
-what's there on Ubuntu 18.04, so what has been removed is something
-that it was not really used in practice.
+diff --git a/tests/kms_bw.c b/tests/kms_bw.c
+index f1d2a1b64577..96b19199d4d6 100644
+--- a/tests/kms_bw.c
++++ b/tests/kms_bw.c
+@@ -47,6 +47,7 @@
+  * @1920x1080p:       1920x1080 resolution
+  * @2560x1440p:       2560x1440 resolution
+  * @3840x2160p:       3840x2160 resolution
++ * @2160x1440p:       2160x1440 resolution
+  */
+ 
+ /* Common test data. */
+@@ -91,6 +92,15 @@ static drmModeModeInfo test_mode[] = {
+ 	"3840x2160p\0",
+ 	}, /* test_mode_3 */
+ 
++	{ 207800,
++	2160, 2208, 2240, 2340, 0,
++	1440, 1443, 1449, 1480, 0,
++	60,
++	DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_PHSYNC,
++	0x48,
++	"2160x1440p\0",
++	}, /* test_mode_4 */
++
+ };
+ 
+ static void test_init(data_t *data)
+-- 
+2.43.0
 
-> 
-> > -			}
-> >  		}
-> >  
-> >  		$filtered .= "end_of_record\n";
-> > -- 
-> > 2.43.0
-> >   
