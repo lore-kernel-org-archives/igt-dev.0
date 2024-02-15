@@ -4,38 +4,38 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42303C48BF0
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 10:27:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7687BC48BF4
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 10:27:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C1D9A10E5EA;
-	Thu, 15 Feb 2024 10:27:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 84F2C10E5FA;
+	Thu, 15 Feb 2024 10:27:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Bob5sonE";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gPwHXzCj";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBF9810E5C2
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5194C10E57F
  for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 10:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707992853; x=1739528853;
+ t=1707992852; x=1739528852;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding:sender;
- bh=2IKYZiINn7n+OrP9uGs3zMa+6sCPoOD+FER/MTfB7nA=;
- b=Bob5sonEfgVruML1sOvoigiyY30HkDdHvCG4IaDxBTQFpep9P9+E+9f0
- yS/wmkPKPPtvHF8ODx9ceQHPK2AggW72qoveeBUpAJAkhDUQtuR2ZZ1Ml
- 5erBUZU7luCg2oYqddaXapAvhRwONE8oI9AVagTPRIwA6dEGw050QeeVA
- n3BD7KNQOiJ/wx4qUpfqNvNTZ0dSpFNau3TKcc9v5+ICBGBsflN9ux1gU
- pxQROVlKpXfR73FYhQ2SsBxNQdkl2+Jstsv77JY1o8XxhqidcejVcRJyn
- vwzhocXlQFTxbw1Vl+yIochAeR2RBWLA/Zr4r8wDtptx7inaEBM1nj8qZ w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="5038599"
+ bh=/R56gUV1exYc6P6v9EgDADO08+HzCfl93unccT1Gss8=;
+ b=gPwHXzCjIeHDUrrGpbpWH8hZjebWgeig8qYL/j8yF6u24E458bHkS7+n
+ nvfpwWpHUme4WlPoaHJILvm9pSiCJohhG1cYFAknkShZ9fm3McJTsW8Oz
+ mvsE/obG55Vgbgp9IW0heraGLg620ePYqd9kva7iV8ci2la9ZGeNguLO9
+ myS1anrjGgh/fou1m085HB8aSJsCPfrWn/AIf9qfNCmm+hjrEBv58hBeI
+ Dsf1nHQ8YQCe6TOya9bbrzo6FQN2/35dvFdr47yC3vkcDfmgQU9BZWCMz
+ iW3gHH887j1XHhRcLGmxBWICW1NBsmNL9vx5M9pi340b2zrjCTf31R6Ar w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="5038594"
 X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; 
-   d="scan'208";a="5038599"
+   d="scan'208";a="5038594"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  15 Feb 2024 02:27:31 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; 
-   d="scan'208";a="3480349"
+   d="scan'208";a="3480344"
 Received: from linux.intel.com ([10.54.29.200])
  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  15 Feb 2024 02:27:31 -0800
@@ -43,18 +43,18 @@ Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.245.246.60])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id ECB0C580E92
+ by linux.intel.com (Postfix) with ESMTPS id C5A7F580DEF
  for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 02:27:30 -0800 (PST)
 Received: from maurocar by linux.intel.com with local (Exim 4.97.1)
  (envelope-from <mauro.chehab@linux.intel.com>)
- id 1raYxk-00000003JB7-3BVD for igt-dev@lists.freedesktop.org;
+ id 1raYxk-00000003JBD-3IfW for igt-dev@lists.freedesktop.org;
  Thu, 15 Feb 2024 11:27:28 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH 03/17] scripts/code_cov_parse_info: better handle include
- regexes
-Date: Thu, 15 Feb 2024 11:27:12 +0100
-Message-ID: <384e42d3f04aee9b3b489f29cee0d64c7e13150d.1707992666.git.mchehab@kernel.org>
+Subject: [PATCH 05/17] scripts/code_cov_parse_info: add a tool to analyze
+ branch coverage
+Date: Thu, 15 Feb 2024 11:27:14 +0100
+Message-ID: <01e104b16ff508affa4a018cecd034806f5030e1.1707992666.git.mchehab@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1707992666.git.mchehab@kernel.org>
 References: <cover.1707992666.git.mchehab@kernel.org>
@@ -77,108 +77,147 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-When there are both exclude and include regexes, the include ones
-may be overriding the more generic excluded ones. So, handle them
-first.
+Branch coverage is trickier than functions. Add a tool that displays
+the starting line that it is not being covered, together with up
+to 10 context lines before.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/code_cov_parse_info | 38 ++++++++++++++++++++-----------------
- 1 file changed, 21 insertions(+), 17 deletions(-)
+ scripts/code_cov_parse_info | 86 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 85 insertions(+), 1 deletion(-)
 
 diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-index d3739211b68a..ceea67a13d5a 100755
+index f0fb5716a6ca..1be7fddf3f3e 100755
 --- a/scripts/code_cov_parse_info
 +++ b/scripts/code_cov_parse_info
-@@ -34,17 +34,24 @@ sub is_function_excluded($)
- 
- 	my $func = shift;
- 
-+	# Handle includes first, as, when there are both include and exclude
-+	# includes should take preference, as they can be overriding exclude
-+	# rules
-+	foreach my $r (@func_include_regexes) {
-+	    return 0 if ($func =~ m/$r/);
-+	}
-+
- 	foreach my $r (@func_exclude_regexes) {
- 		return 1 if ($func =~ m/$r/);
- 	}
- 
--	return 0 if (!@func_include_regexes);
--
--	foreach my $r (@func_include_regexes) {
--		return 0 if ($func =~ m/$r/);
-+	# If there are no exclude regexes, only include functions that are
-+	# explicitly included.
-+	if ($#func_exclude_regexes == 0) {
-+		return 1;
- 	}
- 
--	return 1;
-+	return 0;
+@@ -879,6 +879,77 @@ sub generate_report($)
+ 	close OUT;
  }
  
- sub is_file_excluded($)
-@@ -1178,9 +1185,10 @@ Each line at B<[filter's file]> may contain a new regex:
- 
- =back
- 
--When both include and exclude regexes are found, exclude regexes are
--applied first and any functions that don't match the include regular
--expressions from the B<[filter's file]> will be ignored.
-+Include regexes are handled first, as they can override an exclude regex.
++sub check_source_branches()
++{
++	foreach my $source (sort keys(%all_branch)) {
++		next if (!$used_source{$source});
++		next if (is_file_excluded($source));
 +
-+When just include regexes are used, any functions that don't match the
-+include regular expressions from the B<[filter's file]> will be ignored.
++		my @lines;
++		foreach my $where (sort keys %{$all_branch{$source}}) {
++			my $taken = $all_branch{$source}{$where};
++			next if ($taken > 0);
++
++			next if !($where =~ m/^(-?\d+),(-?\d+),(-?\d+)/);
++
++			my ($ln, $block, $branch, $ctx_lines);
++			$ln = $1;
++			$block = $2;
++			$branch = $3;
++
++			if (!@lines) {
++				open IN, "$source" || die "File $source not found. Can't check branches\n";
++				@lines = <IN>;
++				close IN;
++			}
++
++			if ($ln >= $#lines) {
++				die "$source:$ln line is bigger than the number of lines at the file ($#lines lines)\n";
++				return;
++			}
++
++			my $func = $all_branch{$source}{$where}{func};
++			my $func_ln = $all_branch{$source}{$where}{func_ln};
++
++			print "Branch $source:$ln, ";
++			if ($func) {
++				if ($func_ln) {
++					print "func: $func, ";
++				} else {
++					print "func: $func:$func_ln, ";
++				}
++			}
++			print "block $block, branch $branch not taken:\n";
++
++			if ($func_ln) {
++				$ctx_lines = $ln - $func_ln;
++			} else {
++				$ctx_lines = 10;
++			}
++
++
++			# Search for up to $ctx_lines before the occurrence
++			my $context = "";
++			my $has_if;
++			$ln-- if ($ln > 0);
++			my $delim = "->";
++			for (my $if_ln = $ln; $if_ln >= 0 && (($ln - $if_ln) < $ctx_lines); $if_ln--) {
++				$context = "$if_ln$delim\t$lines[$if_ln]" . $context;
++				$delim = "";
++				if ($lines[$if_ln] =~ m/(\bif\b|#if)/) {
++					$has_if = 1;
++					last;
++				}
++			}
++			if ($has_if) {
++				print $context;
++			} else {
++				print "$ln->\t$lines[$ln]";
++			}
++		}
++	}
++}
++
+ #
+ # Argument handling
+ #
+@@ -896,6 +967,7 @@ my $show_lines;
+ my $only_i915;
+ my $only_xe;
+ my $only_drm;
++my $check_branches;
  
- Please notice that, when this filter is used, B<--ignore-unused> will be
- automaticaly enabled, as the final goal is to report per-function usage.
-@@ -1189,7 +1197,8 @@ automaticaly enabled, as the final goal is to report per-function usage.
+ GetOptions(
+ 	"print-coverage|print_coverage|print|p" => \$print_used,
+@@ -916,6 +988,7 @@ GetOptions(
+ 	"show-files|show_files" => \$show_files,
+ 	"show-lines|show_lines" => \$show_lines,
+ 	"report|r=s" => \$gen_report,
++	"check-branches" => \$check_branches,
+ 	"css-file|css|c=s" => \$css_file,
+ 	"title|t=s" => \$title,
+ 	"html-prolog|prolog=s" => \$html_prolog,
+@@ -933,7 +1006,7 @@ if ($#ARGV < 0) {
+ }
  
- Include B<regex> to the function filter. Can be used multiple times.
+ # At least one action should be specified
+-pod2usage(1) if (!$print_used && !$filter && !$stat && !$print_unused && !$gen_report);
++pod2usage(1) if (!$print_used && !$filter && !$stat && !$print_unused && !$gen_report && !$check_branches);
  
--When used together with B<--func-filters>, regexes here are handled first.
-+When used together with B<--func-filters> or B<--exclude-func>, regexes
-+here are handled first.
+ pod2usage(1) if ($gen_report && ($print_used || $filter || $stat || $print_unused));
  
- Please notice that, when this filter is used, B<--ignore-unused> will be
- automaticaly enabled, as the final goal is to report per-function usage.
-@@ -1198,8 +1207,6 @@ automaticaly enabled, as the final goal is to report per-function usage.
+@@ -1024,6 +1097,11 @@ if ($gen_report) {
  
- Include B<regex> to the function filter. Can be used multiple times.
+ gen_stats();
  
--When used together with B<--func-filters>, regexes here are handled first.
--
- Please notice that, when this filter is used, B<--ignore-unused> will be
- automaticaly enabled, as the final goal is to report per-function usage.
++
++if ($check_branches) {
++	check_source_branches();
++}
++
+ die "Nothing counted. Wrong input files?" if (!$stats{"all_files"});
  
-@@ -1229,22 +1236,19 @@ Each line at B<[filter's file]> may contain a new regex:
+ print_code_coverage($print_used, $print_unused, $show_lines);
+@@ -1294,6 +1372,12 @@ This option is automaticaly enabled when B<--func-filters> is used.
+ Shows the list of files that were used to produce the code coverage
+ results.
  
- =back
++=item B<--check-branches>
++
++Checks at the Linux Kernel source files what's the contents of the
++branches that weren't taken. The directory should match what's
++stored inside the info files.
++
+ =item B<--verbose> or B<-v>
  
--When both include and exclude regexes are found, exclude regexes are
--applied first and any functions that don't match the include regular
--expressions from the B<[filter's file]> will be ignored.
-+Include regexes are handled first, as they can override an exclude regex.
- 
- =item B<--include-src> B<regex>
- 
- Include B<regex> to the sources filter. Can be used multiple times.
- 
--When used together with B<--src-filters>, regexes here are handled first.
-+When used together with B<--src-filters> and B<--exclude-src>, regexes
-+here are handled first.
- 
- =item B<--exclude-src> B<regex>
- 
- Include B<regex> to the sources filter. Can be used multiple times.
- 
--When used together with B<--src-filters>, regexes here are handled first.
--
- =item B<--ignore-unused> or B<--ignore_unused>
- 
- Filters out unused C files and headers from the code coverage results.
+ Prints the name of each parsed file.
 -- 
 2.43.0
 
