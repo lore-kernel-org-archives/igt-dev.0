@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B9D6C4829E
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 18:20:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E4ABC4829E
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 18:41:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E63E010E750;
-	Thu, 15 Feb 2024 18:20:49 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9247510E750;
- Thu, 15 Feb 2024 18:20:48 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8032352875599777320=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 539DB10E98C;
+	Thu, 15 Feb 2024 18:41:38 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="geqEcpB4";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7564C10E92D
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 18:41:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708022497; x=1739558497;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=OOPT3qJZA+cDjU4AEenYtV8je2ViQ183yooa7lr4p/M=;
+ b=geqEcpB4RvZJvwXOJ3urrPwK4YuguxXlxJhUXFx38UPQLOPQAD1R3a2s
+ dqCcPmEXE2Opdcqnd5l05F6tRBeGpesqlA91at0J3mkepj06gzTIASwbi
+ WRpJDYppDK7rsyWPVUdhYok7sao6dbQURfj+dAa/RKvbQ0CdBujRIe2XX
+ Qam9HFpq+qB6lst9N1RQOidZotbDQQCmydKkbnOIBzV0MryhPtKQEX2aq
+ 7onCBsuVcAqLtynajvBRjmp/zxxOXGrcv9hFxERtq9nFb1zBi8rwh4smO
+ /+d4t4ICpLVP0vnLthra9/mBDuDQMjbpU3spIDxs8cyFk/LzO3+RzUzPG w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="2263604"
+X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; 
+   d="scan'208";a="2263604"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Feb 2024 10:41:37 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; d="scan'208";a="26771201"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2024 10:41:35 -0800
+Date: Thu, 15 Feb 2024 19:41:18 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: Re: [PATCH 15/17] scripts/code_cov_parse_info: add support for
+ filtering branches
+Message-ID: <20240215184118.57cz4vyxakshdo7i@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+References: <cover.1707992666.git.mchehab@kernel.org>
+ <93faec6442d392a2266fabf6d72dc36a7c6b0ba0.1707992666.git.mchehab@kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_introduce_Xe_multigpu_and_o?=
- =?utf-8?q?ther_multi-GPU_helpers_=28rev9=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 15 Feb 2024 18:20:48 -0000
-Message-ID: <170802124859.925.17442599072037052252@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240215161014.60304-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20240215161014.60304-1-kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <93faec6442d392a2266fabf6d72dc36a7c6b0ba0.1707992666.git.mchehab@kernel.org>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,292 +68,397 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8032352875599777320==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi igt-dev,
+On 2024-02-15 at 11:27:24 +0100, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Add support for passing regexes to be used to filter branches.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  scripts/code_cov_parse_info | 208 +++++++++++++++++++++++++++++++++---
+>  1 file changed, 192 insertions(+), 16 deletions(-)
+> 
+> diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
+> index 57bc4c2f0b4b..3ce26e545aee 100755
+> --- a/scripts/code_cov_parse_info
+> +++ b/scripts/code_cov_parse_info
+> @@ -22,11 +22,16 @@ my %record;
+>  my %files;
+>  my @func_include_regexes;
+>  my @func_exclude_regexes;
+> +my @branch_include_regexes;
+> +my @branch_exclude_regexes;
+>  my %test_names;
+>  my @src_include_regexes;
+>  my @src_exclude_regexes;
+> +my $source_dir = ".";
+>  my $can_filter_lines = 1;
+>  my $ignore_lines_without_functions = 1;
+> +my $ignore_branches_on_headers = 1;
+> +my $has_branch_filter;
+>  
+>  my $verbose = 0;
+>  my $ignore_unused = 0;
+> @@ -87,6 +92,32 @@ sub is_file_excluded($)
+>  	return 1;
+>  }
+>  
+> +sub is_branch_excluded($)
+> +{
+> +	return 0 if (!@branch_include_regexes && !@branch_exclude_regexes);
+> +
+> +	my $branch = shift;
+> +
+> +	# Handle includes first, as, when there are both include and exclude
+> +	# includes should take preference, as they can be overriding exclude
+> +	# rules
+> +	foreach my $r (@branch_include_regexes) {
+> +	    return 0 if ($branch =~ m/$r/);
+> +	}
+> +
+> +	foreach my $r (@branch_exclude_regexes) {
+> +		return 1 if ($branch =~ m/$r/);
+> +	}
+> +
+> +	# If there are no exclude regexes, only include branches that are
+> +	# explicitly included.
+> +	if ($#branch_exclude_regexes == 0) {
+> +		return 1;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  # Use something that comes before any real function
+>  my $before_sf = "!!!!";
+>  
+> @@ -115,6 +146,7 @@ sub parse_json_gcov_v1($$)
+>  	# Store test name at the record
+>  	$record{tests}{$cur_test} = 1;
+>  
+> +	my %cached;
+>  	for my $file_ref (@{$json->{'files'}}) {
+>  		my $source = $file_ref->{'file'};
+>  
+> @@ -182,16 +214,40 @@ sub parse_json_gcov_v1($$)
+>  			}
+>  			$all_line{$source}{$ln} += $line_ref->{'count'};
+>  
+> +			if ($ignore_branches_on_headers) {
+> +				next if ($source =~ m/.h$/);
+--------------------------------------^
+imho you should escape dot here
 
-== Series Details ==
+> +			}
+> +
+>  			my $i = 0;
+>  			for my $branch_ref (@{$line_ref->{'branches'}}) {
+>  				my $where = sprintf "%d,%d,%d", $ln, 0, $i;
+>  
+> +				# Filter out branches
+> +				if ($has_branch_filter) {
+> +					if (!$cached{$source}) {
+> +						open IN, "$source_dir/$source" || die "File $source_dir/$source not found. Can't filter branches\n";
+> +						push @{$cached{$source}}, <IN>;
+> +						close IN;
+> +					}
+> +					my $nlines = scalar(@{$cached{$source}});
+> +					if ($ln > $nlines) {
+> +						die "$source:$ln line is bigger than the number of lines at the file ($nlines lines)\n";
+> +						return;
+> +					}
+> +					next if (is_branch_excluded($cached{$source}[$ln - 1]));
+> +				}
+> +
+>  				if ($func eq $before_sf) {
+>  					# Ignore DA/BRDA that aren't associated with
+>  					# functions. Those are present on header files
+>  					# (maybe defines?)
+>  					next if ($ignore_lines_without_functions);
+> +
+> +					# Otherwise place them in separate
+> +					$func = $before_sf;
+>  				} else {
+> +					next if is_function_excluded($func);
+> +
+>  					$all_branch{$source}{$where}{func} = $func;
+>  				}
+>  
+> @@ -232,6 +288,7 @@ sub parse_json_internal_format_v1($$)
+>  	my $was_used = 0;
+>  	my $has_func = 0;
+>  	my $ignore = 0;
+> +	my %cached;
+>  
+>  	# Store the common JSON data into the record
+>  	for my $key (keys %$json) {
+> @@ -308,17 +365,30 @@ sub parse_json_internal_format_v1($$)
+>  			}
+>  			$all_line{$source}{$ln} += $line_ref->{'count'};
+>  
+> +			if ($ignore_branches_on_headers) {
+> +				next if ($source =~ m/.h$/);
+--------------------------------------^
+Same here, escape dot.
 
-Series: introduce Xe multigpu and other multi-GPU helpers (rev9)
-URL   : https://patchwork.freedesktop.org/series/129101/
-State : success
+> +			}
+> +
+>  			my $i = 0;
+>  			for my $branch_ref (@{$line_ref->{'branches'}}) {
+>  				my $taken = $branch_ref->{'count'};
+>  				my $where = sprintf "%d,%d,%d", $ln, 0, $i;
+>  
+> -				# Negative gcov results are possible, as
+> -				# reported at:
+> -				# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67937
+> -				# Lcov ignores those. So, let's do the same
+> -				# here.
+> -				$branch_ref->{'count'} = 0 if ($branch_ref->{'count'} < 0);
+> +
+> +				# Filter out branches
+> +				if ($has_branch_filter) {
+> +					if (!$cached{$source}) {
+> +						open IN, "$source_dir/$source" || die "File $source_dir/$source not found. Can't filter branches\n";
+> +						push @{$cached{$source}}, <IN>;
+> +						close IN;
+> +					}
+> +					my $nlines = scalar(@{$cached{$source}});
+> +					if ($ln > $nlines) {
+> +						die "$source:$ln line is bigger than the number of lines at the file ($nlines lines)\n";
+> +						return;
+> +					}
+> +					next if (is_branch_excluded($cached{$source}[$ln - 1]));
+> +				}
+>  
+>  				for my $key (keys %$branch_ref) {
+>  					next if (!$record{files}{$source}{line}{$ln}{branches});
+> @@ -387,6 +457,7 @@ sub read_info($)
+>  	my $source = $before_sf;
+>  	my $func = $before_sf;
+>  	my $cur_test = "";
+> +	my %cached;
+>  
+>  	# Info files don't contain functions for lines. So, they can't
+>  	# be used to filter lines and branches used inside functions.
+> @@ -528,6 +599,25 @@ sub read_info($)
+>  			my $branch = $3;
+>  			my $taken = $4;
+>  
+> +			if ($ignore_branches_on_headers) {
+> +				next if ($source =~ m/.h$/);
+--------------------------------------^
+Same here, escape dot.
 
-== Summary ==
+With this fixed,
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-CI Bug Log - changes from CI_DRM_14280 -> IGTPW_10679
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10679/index.html
-
-Participating hosts (37 -> 30)
-------------------------------
-
-  Additional (1): bat-arls-3 
-  Missing    (8): fi-snb-2520m bat-atsm-1 fi-cfl-8109u fi-pnv-d510 bat-rplp-1 fi-blb-e6850 fi-bsw-nick bat-jsl-1 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_10679:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_selftest@live@ring_submission:
-    - {bat-arls-1}:       NOTRUN -> [INCOMPLETE][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10679/bat-arls-1/igt@i915_selftest@live@ring_submission.html
-    - {bat-arls-3}:       NOTRUN -> [INCOMPLETE][2]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10679/bat-arls-3/igt@i915_selftest@live@ring_submission.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10679 that come from known issues:
-
-### IGT changes ###
-
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10194]: https://gitlab.freedesktop.org/drm/intel/issues/10194
-  [i915#10196]: https://gitlab.freedesktop.org/drm/intel/issues/10196
-  [i915#10197]: https://gitlab.freedesktop.org/drm/intel/issues/10197
-  [i915#10200]: https://gitlab.freedesktop.org/drm/intel/issues/10200
-  [i915#10202]: https://gitlab.freedesktop.org/drm/intel/issues/10202
-  [i915#10206]: https://gitlab.freedesktop.org/drm/intel/issues/10206
-  [i915#10207]: https://gitlab.freedesktop.org/drm/intel/issues/10207
-  [i915#10208]: https://gitlab.freedesktop.org/drm/intel/issues/10208
-  [i915#10209]: https://gitlab.freedesktop.org/drm/intel/issues/10209
-  [i915#10211]: https://gitlab.freedesktop.org/drm/intel/issues/10211
-  [i915#10212]: https://gitlab.freedesktop.org/drm/intel/issues/10212
-  [i915#10213]: https://gitlab.freedesktop.org/drm/intel/issues/10213
-  [i915#10214]: https://gitlab.freedesktop.org/drm/intel/issues/10214
-  [i915#10215]: https://gitlab.freedesktop.org/drm/intel/issues/10215
-  [i915#10216]: https://gitlab.freedesktop.org/drm/intel/issues/10216
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#8809]: https://gitlab.freedesktop.org/drm/intel/issues/8809
-  [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
-  [i915#9500]: https://gitlab.freedesktop.org/drm/intel/issues/9500
-  [i915#9732]: https://gitlab.freedesktop.org/drm/intel/issues/9732
-  [i915#9812]: https://gitlab.freedesktop.org/drm/intel/issues/9812
-  [i915#9886]: https://gitlab.freedesktop.org/drm/intel/issues/9886
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7714 -> IGTPW_10679
-
-  CI-20190529: 20190529
-  CI_DRM_14280: 6d3abf8f7f55420cf53e9ed344872c459ecfd0ed @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10679: 10679
-  IGT_7714: 7714
-
-
-Testlist changes
-----------------
-
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind
-+igt@xe_exec_basic@multigpu-no-exec-basic
-+igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind
-+igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind
-+igt@xe_exec_basic@multigpu-no-exec-null
-+igt@xe_exec_basic@multigpu-no-exec-null-defer-bind
-+igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap
-+igt@xe_exec_basic@multigpu-no-exec-null-rebind
-+igt@xe_exec_basic@multigpu-no-exec-rebind
-+igt@xe_exec_basic@multigpu-no-exec-userptr
-+igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate
-+igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race
-+igt@xe_exec_basic@multigpu-no-exec-userptr-rebind
-+igt@xe_exec_basic@multigpu-once-basic
-+igt@xe_exec_basic@multigpu-once-basic-defer-bind
-+igt@xe_exec_basic@multigpu-once-basic-defer-mmap
-+igt@xe_exec_basic@multigpu-once-bindexecqueue
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind
-+igt@xe_exec_basic@multigpu-once-null
-+igt@xe_exec_basic@multigpu-once-null-defer-bind
-+igt@xe_exec_basic@multigpu-once-null-defer-mmap
-+igt@xe_exec_basic@multigpu-once-null-rebind
-+igt@xe_exec_basic@multigpu-once-rebind
-+igt@xe_exec_basic@multigpu-once-userptr
-+igt@xe_exec_basic@multigpu-once-userptr-invalidate
-+igt@xe_exec_basic@multigpu-once-userptr-invalidate-race
-+igt@xe_exec_basic@multigpu-once-userptr-rebind
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10679/index.html
-
---===============8032352875599777320==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>introduce Xe multigpu and other multi-GPU helpers (rev9)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129101/">https://patchwork.freedesktop.org/series/129101/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10679/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10679/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14280 -&gt; IGTPW_10679</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10679/index.html</p>
-<h2>Participating hosts (37 -&gt; 30)</h2>
-<p>Additional (1): bat-arls-3 <br />
-  Missing    (8): fi-snb-2520m bat-atsm-1 fi-cfl-8109u fi-pnv-d510 bat-rplp-1 fi-blb-e6850 fi-bsw-nick bat-jsl-1 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_10679:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@i915_selftest@live@ring_submission:<ul>
-<li>{bat-arls-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10679/bat-arls-1/igt@i915_selftest@live@ring_submission.html">INCOMPLETE</a></li>
-<li>{bat-arls-3}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10679/bat-arls-3/igt@i915_selftest@live@ring_submission.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10679 that come from known issues:</p>
-<h3>IGT changes</h3>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7714 -&gt; IGTPW_10679</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14280: 6d3abf8f7f55420cf53e9ed344872c459ecfd0ed @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10679: 10679<br />
-  IGT_7714: 7714</p>
-<h2>Testlist changes</h2>
-<p>+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race<br />
-+igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind<br />
-+igt@xe_exec_basic@multigpu-no-exec-basic<br />
-+igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind<br />
-+igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap<br />
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue<br />
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind<br />
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr<br />
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate<br />
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race<br />
-+igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind<br />
-+igt@xe_exec_basic@multigpu-no-exec-null<br />
-+igt@xe_exec_basic@multigpu-no-exec-null-defer-bind<br />
-+igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap<br />
-+igt@xe_exec_basic@multigpu-no-exec-null-rebind<br />
-+igt@xe_exec_basic@multigpu-no-exec-rebind<br />
-+igt@xe_exec_basic@multigpu-no-exec-userptr<br />
-+igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate<br />
-+igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race<br />
-+igt@xe_exec_basic@multigpu-no-exec-userptr-rebind<br />
-+igt@xe_exec_basic@multigpu-once-basic<br />
-+igt@xe_exec_basic@multigpu-once-basic-defer-bind<br />
-+igt@xe_exec_basic@multigpu-once-basic-defer-mmap<br />
-+igt@xe_exec_basic@multigpu-once-bindexecqueue<br />
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind<br />
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr<br />
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate<br />
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race<br />
-+igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind<br />
-+igt@xe_exec_basic@multigpu-once-null<br />
-+igt@xe_exec_basic@multigpu-once-null-defer-bind<br />
-+igt@xe_exec_basic@multigpu-once-null-defer-mmap<br />
-+igt@xe_exec_basic@multigpu-once-null-rebind<br />
-+igt@xe_exec_basic@multigpu-once-rebind<br />
-+igt@xe_exec_basic@multigpu-once-userptr<br />
-+igt@xe_exec_basic@multigpu-once-userptr-invalidate<br />
-+igt@xe_exec_basic@multigpu-once-userptr-invalidate-race<br />
-+igt@xe_exec_basic@multigpu-once-userptr-rebind</p>
-
-</body>
-</html>
-
---===============8032352875599777320==--
+> +			}
+> +
+> +			# Filter out branches
+> +			if ($has_branch_filter) {
+> +				if (!$cached{$source}) {
+> +					open IN, "$source_dir/$source" || die "File $source_dir/$source not found. Can't filter branches\n";
+> +					push @{$cached{$source}}, <IN>;
+> +					close IN;
+> +				}
+> +				my $nlines = scalar(@{$cached{$source}});
+> +				if ($ln > $nlines) {
+> +					die "$source:$ln line is bigger than the number of lines at the file ($nlines lines)\n";
+> +					return;
+> +				}
+> +				next if (is_branch_excluded($cached{$source}[$ln - 1]));
+> +			}
+> +
+>  			if ($block != 0) {
+>  				print "Warning: unexpected block $block at line $.\n";
+>  			}
+> @@ -1217,7 +1307,10 @@ sub check_source_branches()
+>  		next if (!$used_source{$source});
+>  		next if (is_file_excluded($source));
+>  
+> -		my @lines;
+> +		open IN, "$source_dir/$source" || die "File $source_dir/$source not found. Can't check branches\n";
+> +		my @lines = <IN>;
+> +		close IN;
+> +
+>  		foreach my $where (sort keys %{$all_branch{$source}}) {
+>  			my $taken = $all_branch{$source}{$where}{count};
+>  			next if ($taken > 0);
+> @@ -1229,13 +1322,7 @@ sub check_source_branches()
+>  			$block = $2;
+>  			$branch = $3;
+>  
+> -			if (!@lines) {
+> -				open IN, "$source" || die "File $source not found. Can't check branches\n";
+> -				@lines = <IN>;
+> -				close IN;
+> -			}
+> -
+> -			if ($ln >= $#lines) {
+> +			if ($ln > $#lines) {
+>  				die "$source:$ln line is bigger than the number of lines at the file ($#lines lines)\n";
+>  				return;
+>  			}
+> @@ -1292,6 +1379,7 @@ my $help;
+>  my $man;
+>  my $func_filters;
+>  my $src_filters;
+> +my $branch_filters;
+>  my $show_files;
+>  my $show_lines;
+>  my $only_i915;
+> @@ -1304,6 +1392,7 @@ GetOptions(
+>  	"print-unused|u" => \$print_unused,
+>  	"stat|statistics" => \$stat,
+>  	"output|o=s" => \$output_file,
+> +	"source-dir|source_dir=s" => \$source_dir,
+>  	"verbose|v" => \$verbose,
+>  	"ignore-unused|ignore_unused" => \$ignore_unused,
+>  	"only-i915|only_i915" => \$only_i915,
+> @@ -1312,14 +1401,18 @@ GetOptions(
+>  	"func-filters|f=s" => \$func_filters,
+>  	"include-func=s" => \@func_include_regexes,
+>  	"exclude-func=s" => \@func_exclude_regexes,
+> +	"branch-filters|f=s" => \$branch_filters,
+> +	"include-branch=s" => \@branch_include_regexes,
+> +	"exclude-branch=s" => \@branch_exclude_regexes,
+>  	"source-filters|S=s" => \$src_filters,
+>  	"include-source=s" => \@src_include_regexes,
+>  	"exclude-source=s" => \@src_exclude_regexes,
+>  	"ignore-lines-without-functions!" => \$ignore_lines_without_functions,
+> +	"ignore-branches-on-headers!" => \$ignore_branches_on_headers,
+>  	"show-files|show_files" => \$show_files,
+>  	"show-lines|show_lines" => \$show_lines,
+>  	"report|r=s" => \$gen_report,
+> -	"check-branches" => \$check_branches,
+> +	"check-branches|check_branches" => \$check_branches,
+>  	"css-file|css|c=s" => \$css_file,
+>  	"title|t=s" => \$title,
+>  	"html-prolog|prolog=s" => \$html_prolog,
+> @@ -1381,6 +1474,14 @@ if ($str) {
+>  	$has_filter = 1;
+>  }
+>  
+> +$str = open_filter_file($branch_filters, \@branch_include_regexes, \@branch_exclude_regexes);
+> +if ($str) {
+> +	$filter_str .= "," if ($filter_str ne "");
+> +	$filter_str .= " branch regex ($str)";
+> +	$has_filter = 1;
+> +	$has_branch_filter = 1;
+> +}
+> +
+>  $ignore_unused = 1 if (@func_include_regexes || @func_exclude_regexes);
+>  
+>  if ($ignore_unused) {
+> @@ -1567,6 +1668,12 @@ Produce an output file merging all input files.
+>  
+>  The generated output file is affected by the applied filters.
+>  
+> +=item B<--source-dir> or B<--source_dir>
+> +
+> +Sets the source directory baseline. This is used together with other
+> +options that require to parse the source files (currently, only
+> +B<--check-branches).
+> +
+>  =item B<--only-drm> or B<--only_drm>
+>  
+>  Filters out includes outside the DRM subsystem, plus trace files.
+> @@ -1656,6 +1763,51 @@ Include B<regex> to the function filter. Can be used multiple times.
+>  Please notice that, when this filter is used, B<--ignore-unused> will be
+>  automaticaly enabled, as the final goal is to report per-function usage.
+>  
+> +=item B<--branch-filters>  B<[filter's file]> or B<-f>  B<[filter's file]>
+> +
+> +Use a file containing regular expressions (regex) to filter branches.
+> +
+> +Each line at B<[filter's file]> may contain a new regex:
+> +
+> +=over 4
+> +
+> +- Blank lines and lines starting with B<#> will be ignored;
+> +
+> +- Each line of the file will be handled as a new regex;
+> +
+> +- If B<+regex> is used, the filter will include B<regex> to the matches;
+> +
+> +- If B<-regex> is used, the filter will exclude B<regex> from the matches;
+> +
+> +- If the line doesn't start with neither B<+> nor B<->, containing just
+> +  B<regex>, the filter will include B<regex> to the matches.
+> +
+> +- Any whitespace/tab before or after B<regex> will be ignored.
+> +
+> +=back
+> +
+> +Include regexes are handled first, as they can override an exclude regex.
+> +
+> +When just include regexes are used, any branches that don't match the
+> +include regular expressions from the B<[filter's file]> will be ignored.
+> +
+> +=item B<--include-branch> B<regex>
+> +
+> +Include B<regex> to the branch filter. Can be used multiple times.
+> +
+> +When used together with B<--branch-filters> or B<--exclude-branch>, regexes
+> +here are handled first.
+> +
+> +Please notice that, when this filter is used, B<--ignore-unused> will be
+> +automaticaly enabled, as the final goal is to report per-branch usage.
+> +
+> +=item B<--exclude-branch> B<regex>
+> +
+> +Include B<regex> to the branchtion filter. Can be used multiple times.
+> +
+> +Please notice that, when this filter is used, B<--ignore-unused> will be
+> +automaticaly enabled, as the final goal is to report per-branch usage.
+> +
+>  =item B<--source-filters>  B<[filter's file]> or B<-S>  B<[filter's file]>
+>  
+>  Use a file containing regular expressions to filter source files.
+> @@ -1727,6 +1879,30 @@ Use B<--no-ignore-lines-without-functions> to disable it.
+>  Disables filtering out branches that are not associated with any functions
+>  inside the source file, but were imported via includes.
+>  
+> +See B<--ignore-lines-without-functions> for more details.
+> +
+> +=item B<--ignore-branches-on-headers>
+> +
+> +Branches on header files are really tricky to parse, as they depend
+> +on how gcc optimizes the output code. That's specially hard to use on
+> +Linux Kernel, as there are lots of complex macros that can be optimized
+> +on different ways. There are even some cases where the same macro sometimes
+> +have zero branches, while on other cases it can contain dozen ones.
+> +
+> +When this option is selected, all branches inside header files will be
+> +ignored.
+> +
+> +Please notice that this is enabled by default.
+> +
+> +Use B<--no-ignore-branches-on-headers> to disable this filter, preserving
+> +data from all branches.
+> +
+> +=item B<--no-ignore-branches-on-headers>
+> +
+> +Disables filtering out branches that are inside header files.
+> +
+> +See B<--ignore-branches-on-headers> for more details.
+> +
+>  =back
+>  
+>  =item B<--show-files> or B<--show_files>
+> @@ -1734,7 +1910,7 @@ inside the source file, but were imported via includes.
+>  Shows the list of files that were used to produce the code coverage
+>  results.
+>  
+> -=item B<--check-branches>
+> +=item B<--check-branches> or B<--check_branches>
+>  
+>  Checks at the Linux Kernel source files what's the contents of the
+>  branches that weren't taken. The directory should match what's
+> -- 
+> 2.43.0
+> 
