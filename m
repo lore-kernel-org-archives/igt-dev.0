@@ -4,55 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40BF5C48BEB
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CB70C48BF0
 	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 10:27:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A8A5710E57F;
+	by gabe.freedesktop.org (Postfix) with ESMTP id B170410E5A9;
 	Thu, 15 Feb 2024 10:27:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jb8eo1sA";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jYYdcqOX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 89C5B10E43D
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4DACE10E43D
  for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 10:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707992853; x=1739528853;
+ t=1707992852; x=1739528852;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding:sender;
- bh=OVlakCY/tfRkA+pkq4hy4594lZzKD8eUZjQ5GqdXAv4=;
- b=Jb8eo1sAb/ft7ObuQ60FmdPV1A3EUxcPrg2ug1DOh7YVgne2aUTzUuH6
- ZbhOmMwixvrGfBdEV49SqLflmEXj/i1+tDbpohcEPoDme2oxFyDojdqHa
- IR5nQODQA3Q9mHaMzcGUpYqGbppKuYQ1A50nMdPb4npyRc8UnhKDpPrPw
- CmndWxPBU62EYSfEZS3c43d7wGhFK8ve8Inz7nKumoK7BJ5IGeN4ukpU3
- f3ll2v5p6jIq7JF2kLq6Kj1cymwzQ9J4uN/e2e4I7/XKpTj0bOnup9P6h
- 80XBJ1EJqK2WT3lv4fwduJTQ+iT5mjlcq5g1sL1fU3rQ2xg/TAY7vy0q5 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="2199371"
+ bh=p1NZ0cx/wZ+XVDc3qtuanDHkl5KdyPnfjlxfslv4V9E=;
+ b=jYYdcqOXstbTqleNGU56GD46CfjS7PFRV+0bfsqZ/ovuLuu00XJVCAYL
+ gntddIQlKnKUdJbnFiYm+Hje42B8bS3Wrc+fxzZxx23PZzP+egIDl11nW
+ lchylkD74+BiT+iVeRe7maQ9ZOJbQjG4F/gh6UWl47O2Q3MceXq46YuvH
+ 17JPiDHRO/42hSRMHBnbCcmJ+1xFwZ82zR0uPRVMVAa9+A3SSCDP6V3bC
+ 0ltCo/T3oKNObtgL8cxh9AEPVqGwdouBYyZST1VuSVrP6VmHSBzikhjrY
+ ralYrXL4luCGwEA0toI0/7qr5CbOTFQBkHf/D2HQlCinq55wP7NZe9o0H w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="2199369"
 X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; 
-   d="scan'208";a="2199371"
+   d="scan'208";a="2199369"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  15 Feb 2024 02:27:32 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; d="scan'208";a="40981608"
+X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; d="scan'208";a="40981606"
 Received: from linux.intel.com ([10.54.29.200])
  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Feb 2024 02:27:32 -0800
+ 15 Feb 2024 02:27:31 -0800
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.245.246.60])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 256A2580F28
+ by linux.intel.com (Postfix) with ESMTPS id 07BFA580F25
  for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 02:27:31 -0800 (PST)
 Received: from maurocar by linux.intel.com with local (Exim 4.97.1)
  (envelope-from <mauro.chehab@linux.intel.com>)
- id 1raYxk-00000003JBu-3xlZ for igt-dev@lists.freedesktop.org;
+ id 1raYxk-00000003JBS-3Xg4 for igt-dev@lists.freedesktop.org;
  Thu, 15 Feb 2024 11:27:28 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH 16/17] scripts/code_cov_parse_info: fix files statistics
-Date: Thu, 15 Feb 2024 11:27:25 +0100
-Message-ID: <d1311547b770751f807709e2c41fea23584b87d6.1707992666.git.mchehab@kernel.org>
+Subject: [PATCH 09/17] scripts/code_cov_parse_info: stop recording/writing too
+ old fields
+Date: Thu, 15 Feb 2024 11:27:18 +0100
+Message-ID: <ee96b3366066e1e00ae7b55466f822b3bd98ca13.1707992666.git.mchehab@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1707992666.git.mchehab@kernel.org>
 References: <cover.1707992666.git.mchehab@kernel.org>
@@ -75,115 +76,89 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-With fields rename at %record, the number of filtered files
-is not reflecting what it was actually there. Also, the was_used
-logic for json format was not parsing the same way as it used to
-be with info format.
+As we'll be using json as basis, drop support for the fields that:
 
-Fix those.
+- aren't used at the reports;
+- aren't even present when lcov parses gcc json format.
+
+Such fields are only handled on lcov for very old gcc versions.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/code_cov_parse_info | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ scripts/code_cov_parse_info | 33 ---------------------------------
+ 1 file changed, 33 deletions(-)
 
 diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-index 3ce26e545aee..9d043a987f44 100755
+index 92091215d224..038440a9c3e3 100644
 --- a/scripts/code_cov_parse_info
 +++ b/scripts/code_cov_parse_info
-@@ -126,7 +126,6 @@ sub parse_json_gcov_v1($$)
- 	my $file = shift;
- 	my $json = shift;
+@@ -201,15 +201,10 @@ sub parse_info_data($)
  
--	my $was_used = 0;
- 	my $has_func = 0;
- 	my $ignore = 0;
- 
-@@ -149,6 +148,7 @@ sub parse_json_gcov_v1($$)
- 	my %cached;
- 	for my $file_ref (@{$json->{'files'}}) {
- 		my $source = $file_ref->{'file'};
-+		my $was_used = 0;
- 
- 		$files{$source} = 1;
- 		next if is_file_excluded($source);
-@@ -181,8 +181,6 @@ sub parse_json_gcov_v1($$)
- 				$was_used = 1;
- 			}
+ 		# FNF:<number of functions found>
+ 		if (m/^FNF:(-?\d+)/) {
+-			$record{$source}{func}{$func}{fnf} = $1;
+ 			next;
  		}
--		next if ($ignore_unused && !$was_used);
--		$used_source{$source} = 1;
+ 		# FNH:<number of function hit>
+ 		if (m/^FNH:(-?\d+)/) {
+-			my $hits = $1;
+-			if (!defined($record{$source}{func}{$func}{fnh}) || $record{$source}{func}{$func}{fnh} < $hits) {
+-				$record{$source}{func}{$func}{fnh} = $hits;
+-			}
+ 			next;
+ 		}
  
- 		# Parse lines and branches
- 		for my $line_ref (@{$file_ref->{'lines'}}) {
-@@ -267,6 +265,7 @@ sub parse_json_gcov_v1($$)
+@@ -240,15 +235,10 @@ sub parse_info_data($)
+ 
+ 		# BRF:<number of branches found>
+ 		if (m/^BRF:(-?\d+)/) {
+-			$record{$source}{func}{$func}{brf} = $1;
+ 			next;
+ 		}
+ 		# BRH:<number of branches hit>
+ 		if (m/^BRH:(-?\d+)/) {
+-			my $hits = $1;
+-			if (!defined($record{$source}{func}{$func}{brh}) || $record{$source}{func}{$func}{brh} < $hits) {
+-				$record{$source}{func}{$func}{brh} = $hits;
+-			}
+ 			next;
+ 		}
+ 
+@@ -340,34 +330,11 @@ sub write_filtered_file($)
+ 				if (defined($record{$source}{func}{$func}{fnda})) {
+ 					$filtered .= "FNDA:" . $record{$source}{func}{$func}{fnda} . ",$func\n";
  				}
+-				if ($record{$source}{fnf}) {
+-					$filtered .= "FNF:". $record{$source}{func}{$func}{fnf} ."\n";
+-				}
+-				if ($record{$source}{fnh}) {
+-					$filtered .= "FNH:". $record{$source}{func}{$func}{fnh} ."\n";
+-				}
+-			}
  
- 				$all_branch{$source}{$where}{count} += $branch_ref->{'count'};
-+				$was_used = 1 if ($branch_ref->{'count'} > 0);
- 
- 				$i++;
+-			foreach my $ln(sort { $a <=> $b } keys %{ $record{$source}{func}{$func}{da} }) {
+-				$filtered .= "DA:$ln," . $record{$source}{func}{$func}{da}{$ln} . "\n";
  			}
-@@ -274,6 +273,8 @@ sub parse_json_gcov_v1($$)
- 				@{$record{files}{$source}{line}{$ln}{branches}} = ();
+-			foreach my $where(sort sort_where keys %{ $record{$source}{func}{$func}{brda} }) {
+-				my $taken = $record{$source}{func}{$func}{brda}{$where};
+ 				$taken = "-" if (!$taken);
+ 				$filtered .= "BRDA:$where,$taken\n";
  			}
+-			if ($record{$source}{func}{$func}{brf}) {
+-				$filtered .= "BRF:". $record{$source}{func}{$func}{brf} ."\n";
+-			}
+-			if ($record{$source}{func}{$func}{brh}) {
+-				$filtered .= "BRH:". $record{$source}{func}{$func}{brh} ."\n";
+-			}
+-			if ($record{$source}{func}{$func}{lf}) {
+-				$filtered .= "LF:". $record{$source}{func}{$func}{lf} ."\n";
+-			}
+-			if ($record{$source}{func}{$func}{lh}) {
+-				$filtered .= "LH:". $record{$source}{func}{$func}{lh} ."\n";
+-			}
  		}
-+		next if ($ignore_unused && !$was_used);
-+		$used_source{$source} = 1;
- 	}
  
- 	# As the record was changed, we need to use a different format name
-@@ -285,7 +286,6 @@ sub parse_json_internal_format_v1($$)
- 	my $file = shift;
- 	my $json = shift;
- 
--	my $was_used = 0;
- 	my $has_func = 0;
- 	my $ignore = 0;
- 	my %cached;
-@@ -305,6 +305,8 @@ sub parse_json_internal_format_v1($$)
- 
- 	for my $source (keys %{$json->{'files'}}) {
- 		$files{$source} = 1;
-+		my $was_used = 0;
-+
- 		next if is_file_excluded($source);
- 
- 		my $file_ref = \%{$json->{'files'}{$source}};
-@@ -332,8 +334,6 @@ sub parse_json_internal_format_v1($$)
- 				$was_used = 1;
- 			}
- 		}
--		next if ($ignore_unused && !$was_used);
--		$used_source{$source} = 1;
- 
- 		# Parse lines and branches
- 		for my $ln (keys %{$file_ref->{line}}) {
-@@ -400,12 +400,15 @@ sub parse_json_internal_format_v1($$)
- 				}
- 
- 				$all_branch{$source}{$where}{count} += $taken;
-+				$was_used = 1 if ($taken > 0);
- 				$i++;
- 			}
- 			if (!defined($record{files}{$source}{line}{$ln}{branches})) {
- 				@{$record{files}{$source}{line}{$ln}{branches}} = ();
- 			}
- 		}
-+		next if ($ignore_unused && !$was_used);
-+		$used_source{$source} = 1;
- 	}
- }
- 
-@@ -876,7 +879,7 @@ sub gen_stats()
- 
- 	# per-file coverage stats
- 	$stats{"all_files"} = scalar keys(%files);
--	$stats{"filtered_files"} = scalar keys(%record);
-+	$stats{"filtered_files"} = scalar keys(%{$record{files}});
- 	$stats{"used_files"} = scalar keys(%used_source);
- }
- 
+ 		$filtered .= "end_of_record\n";
 -- 
 2.43.0
 
