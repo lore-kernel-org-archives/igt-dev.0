@@ -4,57 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21C50C48BEF
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 10:27:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EB11C48BF2
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 10:27:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 86DD210E5DF;
-	Thu, 15 Feb 2024 10:27:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1CEA210E5F8;
+	Thu, 15 Feb 2024 10:27:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A+T41ZCf";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n35aLgqp";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC24110E5A9
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 10:27:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B373510E43D
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 10:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707992853; x=1739528853;
+ t=1707992852; x=1739528852;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding:sender;
- bh=vKRhMFa1nHJxW4Zi0mbbhmYzhGCo5OnTbf/0I6WK4Y8=;
- b=A+T41ZCfkxxG//r1dTgGEGgW0Ous58s5bdfRn0YMapq2ytslGDkbiIUZ
- JhivPBnjFQCvR8Ylro/jfMKqEL+0NqvBB+Hj2NgiLBozVVqJKkpUAj6ug
- fogSsjRFB2Dji44GKFYe0MN0RlNk6drzIgg6fpwjL/qQJNWDStviLmcbu
- SjPFPIg4Hca72beiZp6ssHuHw13U334C9s4SwmmuMJyda61dAygYBmOP2
- i4aMYBgpSFrQtGt1Jhq6LM85oA1hv/gW2JDaLlqkwAcyvYSz1aAtpjwJW
- JI8w/JQ0NLuVDtwJL4U7XavM5pqszB7cWIN/qQvCHImmCj580sIepft40 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="5038600"
+ bh=C/+DpOyYGXs19/XAxzeBzk03h43UIjpfWaf13XQAAIA=;
+ b=n35aLgqpjBmcoer/eBgRVUg1ZdQZDC9IwhwuS+mKo/+zzX1+LmdQ3wNF
+ 7FVC71HOWO3PjPNZgaC9iE1NMWhERYhv2XR6mthlpMffNyvwEeBuLl9Zk
+ rG7juq18ohGfvT4vCbwGEwA9nss02cFY4N+k/Q/7j0I8xLdgF8K4Uysek
+ 0u4oRfeKbHM+oITHnejmFhw0TUIzeFMO6SZvUyetJNvY3vnHSXvZwAXBn
+ 9aawIlhA1UbvVoO+CPAIY54cVDZEpu/jLTnLsKAAeMe7lkHCpVGfvQBNw
+ 83EG9LCfwkQTl3/lPtf8+0UZxl5RGsO3HACTHBVf8lk9y1ILinltQscmA w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="2199365"
 X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; 
-   d="scan'208";a="5038600"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Feb 2024 02:27:32 -0800
+   d="scan'208";a="2199365"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Feb 2024 02:27:31 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; 
-   d="scan'208";a="3480351"
+X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; d="scan'208";a="40981602"
 Received: from linux.intel.com ([10.54.29.200])
- by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  15 Feb 2024 02:27:31 -0800
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.245.246.60])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 1A406580EA5
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 02:27:31 -0800 (PST)
+ by linux.intel.com (Postfix) with ESMTPS id CF1FD580E0C
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 02:27:30 -0800 (PST)
 Received: from maurocar by linux.intel.com with local (Exim 4.97.1)
  (envelope-from <mauro.chehab@linux.intel.com>)
- id 1raYxk-00000003JBl-3q7k for igt-dev@lists.freedesktop.org;
+ id 1raYxk-00000003JBG-3MOG for igt-dev@lists.freedesktop.org;
  Thu, 15 Feb 2024 11:27:28 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH 14/17] scripts/code_cov_parse_info: better handle branch
- filtering
-Date: Thu, 15 Feb 2024 11:27:23 +0100
-Message-ID: <c631ab5862020e74b2b9ddfd3f9e74d41e39f298.1707992666.git.mchehab@kernel.org>
+Subject: [PATCH 06/17] scripts/code_cov_parse_info: prepare $all_branch to get
+ function data
+Date: Thu, 15 Feb 2024 11:27:15 +0100
+Message-ID: <f36c320f1be10d56a076464ed68fd4172c9e13aa.1707992666.git.mchehab@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1707992666.git.mchehab@kernel.org>
 References: <cover.1707992666.git.mchehab@kernel.org>
@@ -77,180 +76,55 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Add an option to filter out branches that aren't associated with
-any functions inside the file (e. g. they came from #inline
-directives).
-
-While here, also address some issues at the branch report.
+Right now, we store only the branch counts. We also need to store
+the functions that each branch belongs. So, add a new hash in
+order to allow adding function data later on.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/code_cov_parse_info | 71 ++++++++++++++++++++++++++-----------
- 1 file changed, 51 insertions(+), 20 deletions(-)
+ scripts/code_cov_parse_info | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-index ea4f64b34d2f..57bc4c2f0b4b 100755
+index 1be7fddf3f3e..d28217cc196d 100755
 --- a/scripts/code_cov_parse_info
 +++ b/scripts/code_cov_parse_info
-@@ -25,6 +25,8 @@ my @func_exclude_regexes;
- my %test_names;
- my @src_include_regexes;
- my @src_exclude_regexes;
-+my $can_filter_lines = 1;
-+my $ignore_lines_without_functions = 1;
+@@ -233,7 +233,7 @@ sub parse_info_data($)
+ 			$was_used = 1 if ($taken > 0);
  
- my $verbose = 0;
- my $ignore_unused = 0;
-@@ -161,12 +163,6 @@ sub parse_json_gcov_v1($$)
+ 			$record{$source}{$func}{brda}{$where} += $taken;
+-			$all_branch{$source}{"$where"} += $taken;
++			$all_branch{$source}{"$where"}{count} += $taken;
+ 			next;
+ 		}
  
- 			my $func = $line_ref->{'function_name'};
- 			if (!$func) {
--				# Ignore DA/BRDA that aren't associated with
--				# functions. Those are present on header files
--				# (maybe defines?)
--				next if (@func_include_regexes);
--
--				# Otherwise place them in separate
- 				$func = $before_sf;
- 			} else {
- 				next if is_function_excluded($func);
-@@ -188,9 +184,17 @@ sub parse_json_gcov_v1($$)
+@@ -448,7 +448,7 @@ sub gen_stats()
  
- 			my $i = 0;
- 			for my $branch_ref (@{$line_ref->{'branches'}}) {
--				my $taken = $branch_ref->{'count'};
- 				my $where = sprintf "%d,%d,%d", $ln, 0, $i;
- 
-+				if ($func eq $before_sf) {
-+					# Ignore DA/BRDA that aren't associated with
-+					# functions. Those are present on header files
-+					# (maybe defines?)
-+					next if ($ignore_lines_without_functions);
-+				} else {
-+					$all_branch{$source}{$where}{func} = $func;
-+				}
-+
- 				# Negative gcov results are possible, as
- 				# reported at:
- 				# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67937
-@@ -206,7 +210,8 @@ sub parse_json_gcov_v1($$)
- 					}
- 				}
- 
--				$all_branch{$source}{$where}{count} += $taken;
-+				$all_branch{$source}{$where}{count} += $branch_ref->{'count'};
-+
- 				$i++;
- 			}
- 			if (!defined($record{files}{$source}{line}{$ln}{branches})) {
-@@ -383,6 +388,10 @@ sub read_info($)
- 	my $func = $before_sf;
- 	my $cur_test = "";
- 
-+	# Info files don't contain functions for lines. So, they can't
-+	# be used to filter lines and branches used inside functions.
-+	$can_filter_lines = 0;
-+
- 	# First step: parse data
- 
- 	# For details on .info file format, see "man geninfo"
-@@ -1231,18 +1240,15 @@ sub check_source_branches()
- 				return;
- 			}
- 
-+			my $func_ln;
- 			my $func = $all_branch{$source}{$where}{func};
--			my $func_ln = $all_branch{$source}{$where}{func_ln};
--
--			print "Branch $source:$ln, ";
- 			if ($func) {
--				if ($func_ln) {
--					print "func: $func, ";
--				} else {
--					print "func: $func:$func_ln, ";
--				}
-+				$func_ln = $all_func{$func}{$source}->{ln};
- 			}
--			print "block $block, branch $branch not taken:\n";
-+
-+			print "Branch $branch on $source:$ln";
-+			print ", function: $func" if ($func);
-+			print " not taken:\n";
- 
- 			if ($func_ln) {
- 				$ctx_lines = $ln - $func_ln;
-@@ -1250,14 +1256,14 @@ sub check_source_branches()
- 				$ctx_lines = 10;
- 			}
- 
--
- 			# Search for up to $ctx_lines before the occurrence
- 			my $context = "";
- 			my $has_if;
- 			$ln-- if ($ln > 0);
- 			my $delim = "->";
- 			for (my $if_ln = $ln; $if_ln >= 0 && (($ln - $if_ln) < $ctx_lines); $if_ln--) {
--				$context = "$if_ln$delim\t$lines[$if_ln]" . $context;
-+				my $cur_ln = $if_ln + 1;
-+				$context = "$cur_ln$delim\t$lines[$if_ln]" . $context;
- 				$delim = "";
- 				if ($lines[$if_ln] =~ m/(\bif\b|#if)/) {
- 					$has_if = 1;
-@@ -1267,7 +1273,8 @@ sub check_source_branches()
- 			if ($has_if) {
- 				print $context;
- 			} else {
--				print "$ln->\t$lines[$ln]";
-+				my $cur_ln = $ln + 1;
-+				print "$cur_ln->\t$lines[$ln]";
- 			}
+ 		foreach my $where (keys(%{$all_branch{$source}})) {
+ 			$stats{"branch_count"}++;
+-			$stats{"branch_reached"}++ if ($all_branch{$source}{$where} != 0);
++			$stats{"branch_reached"}++ if ($all_branch{$source}{$where}{count} != 0);
  		}
  	}
-@@ -1308,6 +1315,7 @@ GetOptions(
- 	"source-filters|S=s" => \$src_filters,
- 	"include-source=s" => \@src_include_regexes,
- 	"exclude-source=s" => \@src_exclude_regexes,
-+	"ignore-lines-without-functions!" => \$ignore_lines_without_functions,
- 	"show-files|show_files" => \$show_files,
- 	"show-lines|show_lines" => \$show_lines,
- 	"report|r=s" => \$gen_report,
-@@ -1438,6 +1446,10 @@ print_summary() if ($stat);
- if ($has_filter) {
- 	my $percent = 100. * $stats{"used_files"} / $stats{"all_files"};
  
-+	if (!$can_filter_lines) {
-+		printf "Warning......: Function filters won't work with lines/branches\n";
-+	}
-+
- 	printf "Filters......:%s.\n", $filter_str;
- 	printf "Source files.: %.2f%% (%d of %d total)",
- 		$percent, $stats{"used_files"}, $stats{"all_files"};
-@@ -1696,6 +1708,25 @@ report and decrease the code coverage statistics.
+@@ -607,7 +607,7 @@ sub generate_report($)
+ 		}
+ 		foreach my $source (keys(%{$report{$f}{"all_branch"}})) {
+ 			foreach my $where (keys(%{$report{$f}{"all_branch"}{$source}})) {
+-				$all_branch{$source}{"$where"} += $report{$f}{"all_branch"}{$source}{$where};
++				$all_branch{$source}{"$where"}{count} += $report{$f}{"all_branch"}{$source}{$where}{count};
+ 			}
+ 		}
+ 		for my $source(keys(%{$report{$f}{"files"}})) {
+@@ -887,7 +887,7 @@ sub check_source_branches()
  
- This option is automaticaly enabled when B<--func-filters> is used.
+ 		my @lines;
+ 		foreach my $where (sort keys %{$all_branch{$source}}) {
+-			my $taken = $all_branch{$source}{$where};
++			my $taken = $all_branch{$source}{$where}{count};
+ 			next if ($taken > 0);
  
-+=item B<--ignore-lines-without-functions>
-+
-+This option works only when the input file is in JSON format.
-+
-+Basically, include files may contain several lines of codes that aren't
-+assigned to any functions inside a source file. This is a common behavior
-+for macros and inlined functions inside headers.
-+
-+When this option is selected, the branches stat won't contain any such code.
-+
-+Please notice that this is enabled by default.
-+
-+Use B<--no-ignore-lines-without-functions> to disable it.
-+
-+=item B<--no-ignore-lines-without-functions>
-+
-+Disables filtering out branches that are not associated with any functions
-+inside the source file, but were imported via includes.
-+
- =back
- 
- =item B<--show-files> or B<--show_files>
+ 			next if !($where =~ m/^(-?\d+),(-?\d+),(-?\d+)/);
 -- 
 2.43.0
 
