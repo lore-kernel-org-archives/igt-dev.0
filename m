@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06CFBC48BC4
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 19:21:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48350C4829E
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Feb 2024 19:21:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B533310EA23;
-	Thu, 15 Feb 2024 19:21:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F01EE10EA26;
+	Thu, 15 Feb 2024 19:21:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="Efy4b1Nd";
+	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="Kg5wCmLG";
 	dkim-atps=neutral
 Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09D8310EA23
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 19:21:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 190B210EA25
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2024 19:21:24 +0000 (UTC)
 Received: from fews02-sea.riseup.net (fews02-sea-pn.riseup.net [10.0.1.112])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx1.riseup.net (Postfix) with ESMTPS id 4TbQ0H47VJzDqxs;
- Thu, 15 Feb 2024 19:21:19 +0000 (UTC)
+ by mx1.riseup.net (Postfix) with ESMTPS id 4TbQ0M4gfSzDrD6;
+ Thu, 15 Feb 2024 19:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
- t=1708024879; bh=Lzi17FEmtl+I6SyMh2d6qjaBCeOW3+L0xwIhcXfZDKo=;
+ t=1708024883; bh=9iAqPq87X4nDXSkWxi6VhUy1TsbINuXqxUoL6nFqBSE=;
  h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=Efy4b1NdWDOlY3H1ca1h223Vo37elSHGpL7IEmUpfNYw3QF9n9jMA23UQdB3MgXPk
- 5kGxvlOjhaK44dzRQhsRXTyWxiQRB4h5GuUxALiVU9B34NLGcze6P9e+KfKII0kdIK
- oJFEjf0X173aP5lUHn3of1wU/b1qI53g1K6lBv/U=
-X-Riseup-User-ID: 90A2B64C73F547AA473CC68B88EE7F9003CF4ACD56D073CB47CA553744B21F45
+ b=Kg5wCmLG7P1ivx/kefArA4H4jRzoIs48flu2rK2Gmll9xEZ3iBu3W+W7j00Ehf1vC
+ OIze6AgbPN6Q+KQynu6pX1ZKNq9AVqkV2k2zqoO67w7QA+6P2pEIrgVVfA/PO8nYDs
+ P1L/5aq4oPAONVF9PffUOZr6y+nA9fX6b4lWVQS4=
+X-Riseup-User-ID: 6C39F9EF385E9CFCD9585A075A8B1A0AAE38410655480C7CC05987312E26C013
 Received: from [127.0.0.1] (localhost [127.0.0.1])
- by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4TbQ0C36FZzFskl;
- Thu, 15 Feb 2024 19:21:15 +0000 (UTC)
+ by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4TbQ0J2BGYzFs0B;
+ Thu, 15 Feb 2024 19:21:19 +0000 (UTC)
 From: Arthur Grillo <arthurgrillo@riseup.net>
-Date: Thu, 15 Feb 2024 16:21:04 -0300
-Subject: [PATCH i-g-t 1/2] lib/igt_kms: Enable DRM_CLIENT_CAP_ATOMIC before
- enabling DRM_CLIENT_CAP_WRITEBACK_CONNECTORS
+Date: Thu, 15 Feb 2024 16:21:05 -0300
+Subject: [PATCH i-g-t 2/2] igt: Remove duplicate igt_display_require()
+ calls
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240215-duplicate-calls-v1-1-512afbe1bda7@riseup.net>
+Message-Id: <20240215-duplicate-calls-v1-2-512afbe1bda7@riseup.net>
 References: <20240215-duplicate-calls-v1-0-512afbe1bda7@riseup.net>
 In-Reply-To: <20240215-duplicate-calls-v1-0-512afbe1bda7@riseup.net>
 To: igt-dev@lists.freedesktop.org
@@ -64,40 +64,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As stated at [1], we first need to set DRM_CLIENT_CAP_ATOMIC before
-setting DRM_CLIENT_CAP_WRITEBACK_CONNECTORS. Fix that.
+Now that we don't need call igt_display_require() twice, remove the
+duplicate calls, previously needed to expose the writeback output.
 
-[1]: https://docs.kernel.org/gpu/drm-uapi.html?highlight=writeback#c.DRM_CLIENT_CAP_WRITEBACK_CONNECTORS
-
-Fixes: 3642acbb74f5 ("lib/igt_kms: Add writeback support")
 Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
 ---
- lib/igt_kms.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ benchmarks/kms_fb_stress.c | 2 --
+ tests/kms_writeback.c      | 1 -
+ 2 files changed, 3 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 1b4d0d7612a2..e18f6fe59882 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -2747,6 +2747,9 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	display->drm_fd = drm_fd;
- 	is_intel_dev = is_intel_device(drm_fd);
+diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
+index 9a0e98bed8ad..00eaa0a4931a 100644
+--- a/benchmarks/kms_fb_stress.c
++++ b/benchmarks/kms_fb_stress.c
+@@ -150,8 +150,6 @@ igt_simple_main
  
-+	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
-+		display->is_atomic = 1;
-+
- 	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
+ 	data.fd = drm_open_driver_master(DRIVER_ANY);
  
- 	resources = drmModeGetResources(display->drm_fd);
-@@ -2795,8 +2798,6 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	}
+-	igt_display_require(&data.display, data.fd);
+-
+ 	kmstest_set_vt_graphics_mode();
  
- 	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
--	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
--		display->is_atomic = 1;
+ 	igt_display_require(&data.display, data.fd);
+diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+index cda13b850dfb..6cd685b37af2 100644
+--- a/tests/kms_writeback.c
++++ b/tests/kms_writeback.c
+@@ -563,7 +563,6 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
  
- 	if (drmSetClientCap(drm_fd, LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 1) == 0)
- 		display->has_virt_cursor_plane = 1;
+ 	igt_fixture {
+ 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
+-		igt_display_require(&display, display.drm_fd);
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 
 
 -- 
 2.43.0
