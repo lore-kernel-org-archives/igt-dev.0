@@ -4,37 +4,37 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8009C48260
-	for <igt-dev@archiver.kernel.org>; Fri, 16 Feb 2024 23:17:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2841BC48BF6
+	for <igt-dev@archiver.kernel.org>; Fri, 16 Feb 2024 23:17:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8886F10ED2A;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9E4A610ED2B;
 	Fri, 16 Feb 2024 23:17:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y0a0JoyI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xv0hNkbg";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B30610ECFF
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7662310ED0B
  for <igt-dev@lists.freedesktop.org>; Fri, 16 Feb 2024 23:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1708125433; x=1739661433;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=2/67Ws/V3Zwf8c3M2Wk6a8Qj+2lKNZc/Kmikc1tKXQk=;
- b=Y0a0JoyIDsRjkc5XY6rsHtPONQUBM6HQrxYx9Q9Kfx8j3Cuh+Qnm47C6
- b9D8vMBFy30IYtmzxbJXquIguabxT6mxSqgUlKoanGio1kVB3k0pyD/IS
- GSJi3EdvJ0cSsGm+VJSq2kDSih7KCDSAmlJbT+2PchpP/NZAjB+oZG//m
- A9Pj10Nj/3Tn9YtVBZROLdxTWBtSAwuOMemtcuVmQFHpOl5L5yWdrBttJ
- lXUFIb5wGGSZf1zQdtXafm+HqW4kiWjaDezWGcxYdGYh+3xBWEbxiLmUq
- YMedxUBRjujxx9qOqaRyjFLwpV4o1GCG7wghmbqgECCf/0LNCmQavQMh9 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10986"; a="27724294"
-X-IronPort-AV: E=Sophos;i="6.06,165,1705392000"; d="scan'208";a="27724294"
+ bh=E46FRwIASHLI5YDhItt2BZ8ikid3IlEp0VnZRDpe2M8=;
+ b=Xv0hNkbgQynUg+agjV+7+9DyUD1B4oYDAthIq44SrdbpPAVICuleUl9j
+ Sz7t1CqXJ/icN3Gjdg9QphmMZ2LFaWX62x2VnAvbuGlmB8a7aGRojeib8
+ qJ/JHljeogykg9dZ7+hCYs0TtyoKRCLuaY4Sjtt+JMtT3q1+FYTpRaFW2
+ S3TkRD2x+qnJIzNstqBCBHBsHEUGHTJYVsauIpZ86N5BIK5bRNgMxCf1A
+ YMNs2WefbbzyQX55rrNQ/jPZhx1kVKq/bfPO+GUqbBNaskVWcv4Ro7USk
+ oVH7KBiScxBkDuhbdlqur0NuP99Afxrhi5zeMtb6+wPjHD9XmngIYSsp+ g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10986"; a="27724293"
+X-IronPort-AV: E=Sophos;i="6.06,165,1705392000"; d="scan'208";a="27724293"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  16 Feb 2024 15:17:10 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,165,1705392000"; 
-   d="scan'208";a="8626907"
+   d="scan'208";a="8626904"
 Received: from orsosgc001.jf.intel.com (HELO unerlige-ril.jf.intel.com)
  ([10.165.21.138])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
@@ -42,10 +42,9 @@ Received: from orsosgc001.jf.intel.com (HELO unerlige-ril.jf.intel.com)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: [PATCH i-g-t 18/18] tests/intel/xe_oa: Register whitelisting and MMIO
- trigger tests
-Date: Fri, 16 Feb 2024 15:17:03 -0800
-Message-ID: <20240216231703.845644-19-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 17/18] tests/intel/xe_oa: OA buffer mmap tests
+Date: Fri, 16 Feb 2024 15:17:02 -0800
+Message-ID: <20240216231703.845644-18-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240216231703.845644-1-ashutosh.dixit@intel.com>
 References: <20240216231703.845644-1-ashutosh.dixit@intel.com>
@@ -67,154 +66,228 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Add the following tests:
-* "oa-regs-whitelisted"
-* "mmio-triggered-reports"
+* "map-oa-buffer"
+* "invalid-map-oa-buffer"
+* "non-privileged-map-oa-buffer"
+* "non-privileged-access-vaddr"
+* "privileged-forked-access-vaddr"
+* "closed-fd-and-unmapped-access"
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/intel/xe_oa.c | 326 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 326 insertions(+)
+ tests/intel/xe_oa.c | 251 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 251 insertions(+)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index d78adeaed6ef..880ee405dced 100644
+index 2270a91b3b18..d78adeaed6ef 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -3920,6 +3920,316 @@ test_whitelisted_registers_userspace_config(void)
- 	xe_oa_remove_config(drm_fd, config_id);
+@@ -4137,6 +4137,231 @@ test_oa_unit_concurrent_oa_buffer_read(void)
+ 	igt_waitchildren();
  }
  
-+#define OAG_OASTATUS (0xdafc)
-+#define OAG_MMIOTRIGGER (0xdb1c)
-+
-+static const uint32_t oa_wl[] = {
-+	OAG_MMIOTRIGGER,
-+	OAG_OASTATUS,
-+};
-+
-+static const uint32_t nonpriv_slot_offsets[] = {
-+	0x4d0, 0x4d4, 0x4d8, 0x4dc, 0x4e0, 0x4e4, 0x4e8, 0x4ec,
-+	0x4f0, 0x4f4, 0x4f8, 0x4fc, 0x010, 0x014, 0x018, 0x01c,
-+	0x1e0, 0x1e4, 0x1e8, 0x1ec,
-+};
-+
-+struct test_perf {
-+	const uint32_t *slots;
-+	uint32_t num_slots;
-+	const uint32_t *wl;
-+	uint32_t num_wl;
-+} perf;
-+
-+#define HAS_OA_MMIO_TRIGGER(__d) \
-+	(IS_DG2(__d) || IS_PONTEVECCHIO(__d) || IS_METEORLAKE(__d) || IS_LUNARLAKE(__d))
-+
-+static void perf_init_whitelist(void)
++static void *map_oa_buffer(u32 *size)
 +{
-+	perf.slots = nonpriv_slot_offsets;
-+	perf.num_slots = 20;
-+	perf.wl = oa_wl;
-+	perf.num_wl = ARRAY_SIZE(oa_wl);
++	void *vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
++
++	igt_assert(vaddr != NULL);
++	*size = OA_BUFFER_SIZE;
++	return vaddr;
 +}
 +
-+static void
-+emit_oa_reg_read(struct intel_bb *ibb, struct intel_buf *dst, uint32_t offset,
-+		 uint32_t reg)
++static void invalid_param_map_oa_buffer(const struct drm_xe_engine_class_instance *hwe)
 +{
-+	intel_bb_add_intel_buf(ibb, dst, true);
++	void *oa_vaddr = NULL;
 +
-+	intel_bb_out(ibb, MI_STORE_REGISTER_MEM | 2);
-+	intel_bb_out(ibb, reg);
-+	intel_bb_emit_reloc(ibb, dst->handle,
-+			    I915_GEM_DOMAIN_INSTRUCTION,
-+			    I915_GEM_DOMAIN_INSTRUCTION,
-+			    offset, dst->addr.offset);
-+	intel_bb_out(ibb, lower_32_bits(offset));
-+	intel_bb_out(ibb, upper_32_bits(offset));
++	/* try a couple invalid mmaps */
++	/* bad prots */
++	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_WRITE, MAP_PRIVATE, stream_fd, 0);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_EXEC, MAP_PRIVATE, stream_fd, 0);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	/* bad MAPs */
++	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_SHARED, stream_fd, 0);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	/* bad size */
++	oa_vaddr = mmap(0, OA_BUFFER_SIZE + 1, PROT_READ, MAP_PRIVATE, stream_fd, 0);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	/* do the right thing */
++	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
++	igt_assert(oa_vaddr != MAP_FAILED && oa_vaddr != NULL);
++
++	munmap(oa_vaddr, OA_BUFFER_SIZE);
 +}
 +
-+static void
-+emit_mmio_triggered_report(struct intel_bb *ibb, uint32_t value)
++static void unprivileged_try_to_map_oa_buffer(void)
 +{
-+	intel_bb_out(ibb, MI_LOAD_REGISTER_IMM(1));
-+	intel_bb_out(ibb, OAG_MMIOTRIGGER);
-+	intel_bb_out(ibb, value);
++	void *oa_vaddr;
++
++	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
++	igt_assert(oa_vaddr == MAP_FAILED);
++	igt_assert_eq(errno, EACCES);
 +}
 +
-+static void dump_whitelist(uint32_t mmio_base, const char *msg)
++static void unprivileged_map_oa_buffer(const struct drm_xe_engine_class_instance *hwe)
 +{
-+	int i;
-+
-+	igt_debug("%s\n", msg);
-+
-+	for (i = 0; i < perf.num_slots; i++)
-+		igt_debug("FORCE_TO_NON_PRIV_%02d = %08x\n",
-+			  i, intel_register_read(&mmio_data,
-+						 mmio_base + perf.slots[i]));
-+}
-+
-+static bool in_whitelist(uint32_t mmio_base, uint32_t reg)
-+{
-+	int i;
-+
-+	if (reg & MMIO_BASE_OFFSET)
-+		reg = (reg & ~MMIO_BASE_OFFSET) + mmio_base;
-+
-+	for (i = 0; i < perf.num_slots; i++) {
-+		uint32_t fpriv = intel_register_read(&mmio_data,
-+						     mmio_base + perf.slots[i]);
-+
-+		if ((fpriv & RING_FORCE_TO_NONPRIV_ADDRESS_MASK) == reg)
-+			return true;
++	igt_fork(child, 1) {
++		igt_drop_root();
++		unprivileged_try_to_map_oa_buffer();
 +	}
-+
-+	return false;
++	igt_waitchildren();
 +}
 +
-+static void oa_regs_in_whitelist(uint32_t mmio_base, bool are_present)
++static jmp_buf jmp;
++static void __attribute__((noreturn)) sigtrap(int sig)
 +{
-+	int i;
-+
-+	if (are_present) {
-+		for (i = 0; i < perf.num_wl; i++)
-+			igt_assert(in_whitelist(mmio_base, perf.wl[i]));
-+	} else {
-+		for (i = 0; i < perf.num_wl; i++)
-+			igt_assert(!in_whitelist(mmio_base, perf.wl[i]));
-+	}
++	siglongjmp(jmp, sig);
 +}
 +
-+static u32 oa_get_mmio_base(const struct drm_xe_engine_class_instance *hwe)
++static void try_invalid_access(void *vaddr)
 +{
-+	u32 mmio_base = 0x2000;
++	sighandler_t old_sigsegv;
++	uint32_t dummy;
 +
-+	switch (hwe->engine_class) {
-+	case DRM_XE_ENGINE_CLASS_RENDER:
-+		mmio_base = 0x2000;
++	old_sigsegv = signal(SIGSEGV, sigtrap);
++	switch (sigsetjmp(jmp, SIGSEGV)) {
++	case SIGSEGV:
 +		break;
-+	case DRM_XE_ENGINE_CLASS_COMPUTE:
-+		switch (hwe->engine_instance) {
-+		case 0:
-+			mmio_base = 0x1a000;
-+			break;
-+		case 1:
-+			mmio_base = 0x1c000;
-+			break;
-+		case 2:
-+			mmio_base = 0x1e000;
-+			break;
-+		case 3:
-+			mmio_base = 0x26000;
-+			break;
-+		}
++	case 0:
++		dummy = READ_ONCE(*((uint32_t *)vaddr + 1));
++		(void) dummy;
++	default:
++		igt_assert(!"reached");
++		break;
++	}
++	signal(SIGSEGV, old_sigsegv);
++}
++
++static void map_oa_buffer_unprivilege_access(const struct drm_xe_engine_class_instance *hwe)
++{
++	void *vaddr;
++	uint32_t size;
++
++	vaddr = map_oa_buffer(&size);
++
++	igt_fork(child, 1) {
++		igt_drop_root();
++		try_invalid_access(vaddr);
++	}
++	igt_waitchildren();
++
++	munmap(vaddr, size);
++}
++
++static void map_oa_buffer_forked_access(const struct drm_xe_engine_class_instance *hwe)
++{
++	void *vaddr;
++	uint32_t size;
++
++	vaddr = map_oa_buffer(&size);
++
++	igt_fork(child, 1) {
++		try_invalid_access(vaddr);
++	}
++	igt_waitchildren();
++
++	munmap(vaddr, size);
++}
++
++static void check_reports(void *oa_vaddr, uint32_t oa_size,
++			  const struct drm_xe_engine_class_instance *hwe)
++{
++	struct intel_perf_metric_set *test_set = metric_set(hwe);
++	uint64_t fmt = test_set->perf_oa_format;
++	struct oa_format format = get_oa_format(fmt);
++	size_t report_words = format.size >> 2;
++	uint32_t *reports;
++	uint32_t timer_reports = 0;
++
++	for (reports = (uint32_t *)oa_vaddr;
++	     timer_reports < 20 && reports[0] && oa_timestamp(reports, fmt);
++	     reports += report_words) {
++		if (!oa_report_is_periodic(oa_exp_1_millisec, reports))
++			continue;
++
++		timer_reports++;
++		if (timer_reports >= 3)
++			sanity_check_reports(reports - 2 * report_words,
++					     reports - report_words, fmt);
 +	}
 +
-+	return mmio_base;
++	igt_assert(timer_reports >= 3);
++}
++
++static void check_reports_from_mapped_buffer(const struct drm_xe_engine_class_instance *hwe)
++{
++	void *vaddr;
++	uint32_t size;
++	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
++
++	vaddr = map_oa_buffer(&size);
++
++	/* wait for approx 100 reports */
++	usleep(100 * period_us);
++	check_reports(vaddr, size, hwe);
++
++	munmap(vaddr, size);
 +}
 +
 +/**
-+ * SUBTEST: oa-regs-whitelisted
-+ * Description: Verify that OA registers are whitelisted
++ * SUBTEST: closed-fd-and-unmapped-access
++ * Description: Unmap buffer, close fd and try to access
 + */
-+static void test_oa_regs_whitelist(const struct drm_xe_engine_class_instance *hwe)
++static void closed_fd_and_unmapped_access(const struct drm_xe_engine_class_instance *hwe)
++{
++	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
++		DRM_XE_OA_PROPERTY_OA_EXPONENT, oa_exp_1_millisec,
++	};
++	struct drm_xe_oa_open_prop param = {
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	void *vaddr;
++	uint32_t size;
++	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
++
++	stream_fd = __perf_open(drm_fd, &param, false);
++	vaddr = map_oa_buffer(&size);
++
++	usleep(100 * period_us);
++	check_reports(vaddr, size, hwe);
++
++	munmap(vaddr, size);
++	__perf_close(stream_fd);
++
++	try_invalid_access(vaddr);
++}
++
++/**
++ * SUBTEST: map-oa-buffer
++ * Description: Verify mapping of oa buffer
++ *
++ * SUBTEST: invalid-map-oa-buffer
++ * Description: Verify invalid mappings of oa buffer
++ *
++ * SUBTEST: non-privileged-map-oa-buffer
++ * Description: Verify if non-privileged user can map oa buffer
++ *
++ * SUBTEST: non-privileged-access-vaddr
++ * Description: Verify if non-privileged user can map oa buffer
++ *
++ * SUBTEST: privileged-forked-access-vaddr
++ * Description: Verify that forked access to mapped buffer fails
++ */
++typedef void (*map_oa_buffer_test_t)(const struct drm_xe_engine_class_instance *hwe);
++static void test_mapped_oa_buffer(map_oa_buffer_test_t test_with_fd_open,
++				  const struct drm_xe_engine_class_instance *hwe)
 +{
 +	struct intel_perf_metric_set *test_set = metric_set(hwe);
 +	uint64_t properties[] = {
@@ -223,197 +296,52 @@ index d78adeaed6ef..880ee405dced 100644
 +		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
 +		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
 +		DRM_XE_OA_PROPERTY_OA_EXPONENT, oa_exp_1_millisec,
-+	};
-+	struct drm_xe_oa_open_prop param = {
-+		.num_properties = sizeof(properties) / 16,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	// uint32_t mmio_base = gem_engine_mmio_base(drm_fd, e->name);
-+	u32 mmio_base;
-+
-+	/* FIXME: Add support for OAM whitelist testing */
-+	if (hwe->engine_class != DRM_XE_ENGINE_CLASS_RENDER &&
-+	    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-+		return;
-+
-+	mmio_base = oa_get_mmio_base(hwe);
-+
-+	intel_register_access_init(&mmio_data,
-+				   igt_device_get_pci_device(drm_fd),
-+				   0, drm_fd);
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+
-+	dump_whitelist(mmio_base, "oa whitelisted");
-+
-+	oa_regs_in_whitelist(mmio_base, true);
-+
-+	__perf_close(stream_fd);
-+
-+	dump_whitelist(mmio_base, "oa remove whitelist");
-+
-+	/*
-+	 * after perf close, check that registers are removed from the nonpriv
-+	 * slots
-+	 * FIXME if needed: currently regs remain added forever
-+	 */
-+	// oa_regs_in_whitelist(mmio_base, false);
-+
-+	intel_register_access_fini(&mmio_data);
-+}
-+
-+static void
-+__test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
-+{
-+	struct intel_perf_metric_set *test_set = default_test_set;
-+	int oa_exponent = max_oa_exponent_for_period_lte(2 * NSEC_PER_SEC);
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_EXPONENT, oa_exponent,
 +		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
 +	};
 +	struct drm_xe_oa_open_prop param = {
-+		.num_properties = sizeof(properties) / 16,
++		.num_properties = ARRAY_SIZE(properties) / 2,
 +		.properties_ptr = to_user_pointer(properties),
 +	};
-+	size_t format_size = get_oa_format(test_set->perf_oa_format).size;
-+	uint32_t oa_buffer, offset_tail1, offset_tail2;
-+	struct intel_buf src, dst, *dst_buf;
-+	uint32_t mmio_triggered_reports = 0;
-+	uint32_t *start, *end;
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
-+	uint32_t context, vm;
-+	int height = 600;
-+	int width = 800;
-+	uint8_t *buf;
-+
-+	bops = buf_ops_create(drm_fd);
-+
-+	dst_buf = intel_buf_create(bops, 4096, 1, 8, 64,
-+				   I915_TILING_NONE,
-+				   I915_COMPRESSION_NONE);
-+	buf_map(drm_fd, dst_buf, true);
-+	memset(dst_buf->ptr, 0, 4096);
-+	intel_buf_unmap(dst_buf);
-+
-+	scratch_buf_init(bops, &src, width, height, 0xff0000ff);
-+	scratch_buf_init(bops, &dst, width, height, 0x00ff00ff);
-+
-+	vm = xe_vm_create(drm_fd, 0, 0);
-+	context = xe_exec_queue_create(drm_fd, vm, hwe, 0);
-+	igt_assert(context);
-+	ibb = intel_bb_create_with_context(drm_fd, context, vm, NULL, BATCH_SZ);
 +
 +	stream_fd = __perf_open(drm_fd, &param, false);
-+        set_fd_flags(stream_fd, O_CLOEXEC);
 +
-+	buf = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
-+	igt_assert(buf != NULL);
++	igt_assert(test_with_fd_open);
++	test_with_fd_open(hwe);
 +
-+	emit_oa_reg_read(ibb, dst_buf, 0, OAG_OABUFFER);
-+	emit_oa_reg_read(ibb, dst_buf, 4, OAG_OATAILPTR);
-+	emit_mmio_triggered_report(ibb, 0xc0ffee11);
-+
-+	if (render_copy)
-+		render_copy(ibb,
-+			    &src, 0, 0, width, height,
-+			    &dst, 0, 0);
-+
-+	emit_mmio_triggered_report(ibb, 0xc0ffee22);
-+
-+	emit_oa_reg_read(ibb, dst_buf, 8, OAG_OATAILPTR);
-+
-+	intel_bb_flush_render(ibb);
-+	intel_bb_sync(ibb);
-+
-+	buf_map(drm_fd, dst_buf, false);
-+
-+	oa_buffer = dst_buf->ptr[0] & OAG_OATAILPTR_MASK;
-+	offset_tail1 = (dst_buf->ptr[1] & OAG_OATAILPTR_MASK) - oa_buffer;
-+	offset_tail2 = (dst_buf->ptr[2] & OAG_OATAILPTR_MASK) - oa_buffer;
-+
-+	igt_debug("oa_buffer = %08x, tail1 = %08x, tail2 = %08x\n",
-+		  oa_buffer, offset_tail1, offset_tail2);
-+
-+	start = (uint32_t *)(buf + offset_tail1);
-+	end = (uint32_t *)(buf + offset_tail2);
-+	while (start < end) {
-+		if (!report_reason(start))
-+			mmio_triggered_reports++;
-+
-+		if (get_oa_format(test_set->perf_oa_format).report_hdr_64bit) {
-+			u64 *start64 = (u64 *)start;
-+
-+			igt_debug("hdr: %016lx %016lx %016lx %016lx\n",
-+				  start64[0], start64[1], start64[2], start64[3]);
-+		} else {
-+			igt_debug("hdr: %08x %08x %08x %08x\n",
-+				  start[0], start[1], start[2], start[3]);
-+		}
-+
-+		start += format_size / 4;
-+	}
-+
-+	igt_assert_eq(mmio_triggered_reports, 2);
-+
-+	munmap(buf, OA_BUFFER_SIZE);
-+	intel_buf_close(bops, &src);
-+	intel_buf_close(bops, &dst);
-+	intel_buf_unmap(dst_buf);
-+	intel_buf_destroy(dst_buf);
-+	intel_bb_destroy(ibb);
-+	xe_exec_queue_destroy(drm_fd, context);
-+	xe_vm_destroy(drm_fd, vm);
-+	buf_ops_destroy(bops);
 +	__perf_close(stream_fd);
 +}
 +
-+/**
-+ * SUBTEST: mmio-triggered-reports
-+ * Description: Test MMIO trigger functionality
-+ */
-+static void
-+test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
-+{
-+	struct igt_helper_process child = {};
-+	int ret;
-+
-+	write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 0);
-+	igt_fork_helper(&child) {
-+		igt_drop_root();
-+
-+		__test_mmio_triggered_reports(hwe);
-+	}
-+	ret = igt_wait_helper(&child);
-+	write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
-+
-+	igt_assert(WEXITSTATUS(ret) == EAGAIN ||
-+		   WEXITSTATUS(ret) == 0);
-+}
-+
- /**
-  * SUBTEST: xe-ref-count
-  * Description: Check that an open oa stream holds a reference on the xe module
-@@ -4586,6 +4896,22 @@ igt_main
- 				closed_fd_and_unmapped_access(hwe);
- 	}
+ static const char *xe_engine_class_name(uint32_t engine_class)
+ {
+ 	switch (engine_class) {
+@@ -4335,6 +4560,32 @@ igt_main
+ 	igt_subtest("whitelisted-registers-userspace-config")
+ 		test_whitelisted_registers_userspace_config();
  
 +	igt_subtest_group {
-+		igt_fixture {
-+			perf_init_whitelist();
-+		}
-+
-+		igt_subtest_with_dynamic("oa-regs-whitelisted")
++		igt_subtest_with_dynamic("map-oa-buffer")
 +			__for_one_hwe_in_oag(hwe)
-+				test_oa_regs_whitelist(hwe);
++				test_mapped_oa_buffer(check_reports_from_mapped_buffer, hwe);
 +
-+		igt_subtest_with_dynamic("mmio-triggered-reports") {
-+			igt_require(HAS_OA_MMIO_TRIGGER(devid));
++		igt_subtest_with_dynamic("invalid-map-oa-buffer")
 +			__for_one_hwe_in_oag(hwe)
-+				test_mmio_triggered_reports(hwe);
-+		}
++				test_mapped_oa_buffer(invalid_param_map_oa_buffer, hwe);
++
++		igt_subtest_with_dynamic("non-privileged-map-oa-buffer")
++			__for_one_hwe_in_oag(hwe)
++				test_mapped_oa_buffer(unprivileged_map_oa_buffer, hwe);
++
++		igt_subtest_with_dynamic("non-privileged-access-vaddr")
++			__for_one_hwe_in_oag(hwe)
++				test_mapped_oa_buffer(map_oa_buffer_unprivilege_access, hwe);
++
++		igt_subtest_with_dynamic("privileged-forked-access-vaddr")
++			__for_one_hwe_in_oag(hwe)
++				test_mapped_oa_buffer(map_oa_buffer_forked_access, hwe);
++
++		igt_subtest_with_dynamic("closed-fd-and-unmapped-access")
++			__for_one_hwe_in_oag(hwe)
++				closed_fd_and_unmapped_access(hwe);
 +	}
 +
  	igt_fixture {
