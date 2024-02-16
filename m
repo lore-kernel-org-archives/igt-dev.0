@@ -4,27 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A091DC48260
-	for <igt-dev@archiver.kernel.org>; Fri, 16 Feb 2024 10:10:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CF73C48BEB
+	for <igt-dev@archiver.kernel.org>; Fri, 16 Feb 2024 10:24:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4538410E536;
-	Fri, 16 Feb 2024 10:10:45 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 94A2910E536;
- Fri, 16 Feb 2024 10:10:43 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4870749308522744605=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id A192510E54B;
+	Fri, 16 Feb 2024 10:24:07 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Uzv8LyiZ";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC6FD10E54B
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Feb 2024 10:24:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708079045; x=1739615045;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=3EHer1QqcoWvC1Jt2JXlBjGdz6YqrKMrZtn/EexoUMQ=;
+ b=Uzv8LyiZCSZKtgqtFMnGCvxHHCPVnUFhYxTkJETXW3VfUhw9pN5oXyGs
+ cIx1GqZq9XgZlOAXXVpkJewhtwWgev87lFenPCcmMEft7+fPKS1GE+Mk7
+ 4Xdojb31ezNZu93v1AjSZ0Gj9nD/bsUr3TjzjUZ3/nDhcWwX3iTsAHOuY
+ FRQzBrCA45QN05CI2fNvSmCNiXGviMDjREvtT41Y0mJNs/0ATvnuqjzUY
+ +ikQnfcLrS4WXru74auxrsZBMB9SDBKGR5aOrfpMPe76MJVmqfSJmxGvM
+ BMsXcgM3xi+o4G3EM/9iDJ4QuEm8sDu3M4ni/wmjS8u9UsuZ9HGZMsurf A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="2109748"
+X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
+   d="scan'208";a="2109748"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Feb 2024 02:24:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; d="scan'208";a="34848537"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.3.245])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Feb 2024 02:24:01 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Dominik Karol =?utf-8?B?UGnEhXRrb3dza2k=?=
+ <dominik.karol.piatkowski@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Zbigniew =?utf-8?B?S2VtcGN6ecWEc2tp?= <zbigniew.kempczynski@intel.com>
+Subject: Re: [PATCH i-g-t v9 2/7] lib/drmtest: Introduced
+ drm_open_driver_another
+Date: Fri, 16 Feb 2024 11:23:58 +0100
+Message-ID: <2552026.vzjCzTo3RI@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20240215161014.60304-3-kamil.konieczny@linux.intel.com>
+References: <20240215161014.60304-1-kamil.konieczny@linux.intel.com>
+ <20240215161014.60304-3-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Fplane=5Fcursor=3A_?=
- =?utf-8?q?Skip_unneeded_overlay_requirement_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Rob Clark" <robdclark@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 16 Feb 2024 10:10:43 -0000
-Message-ID: <170807824360.925.2759358332320438173@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240215221957.327322-1-robdclark@gmail.com>
-In-Reply-To: <20240215221957.327322-1-robdclark@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,129 +69,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4870749308522744605==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Kamil, Dominik,
 
-== Series Details ==
+On Thursday, 15 February 2024 17:10:09 CET Kamil Konieczny wrote:
+> From: Dominik Karol Pi=C4=85tkowski <dominik.karol.piatkowski@intel.com>
+>=20
+> For user convenience, introduce drm_open_driver_another as
+> a wrapper for __drm_open_driver_another with successful open
+> assert.
 
-Series: tests/kms_plane_cursor: Skip unneeded overlay requirement (rev2)
-URL   : https://patchwork.freedesktop.org/series/128460/
-State : success
+Out of several existing variants of *drm_open_driver* functions, those whic=
+h=20
+names start with "drm_", wrapped around their counterparts which names star=
+t=20
+with double underscores, used to set up an exit handler that performs=20
+necessary cleanups before exit, freeing users from taking care of that.  Do=
+n't=20
+we want to keep that convention also for drm_open_driver_another() and set =
+up=20
+the exit handler from inside that wrapper on success?
 
-== Summary ==
+Thanks,
+Janusz
 
-CI Bug Log - changes from XEIGT_7715_BAT -> XEIGTPW_10682_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10682_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_exec_threads@threads-mixed-fd-basic:
-    - bat-dg2-oem2:       [TIMEOUT][1] ([Intel XE#1167]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7715/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10682/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
-
-  
-  [Intel XE#1167]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1167
-
-
-Build changes
--------------
-
-  * IGT: IGT_7715 -> IGTPW_10682
-  * Linux: xe-787-6d3abf8f7f55420cf53e9ed344872c459ecfd0ed -> xe-788-f9855a4be31b723fe67e9b6f6cfb0df7760cd6d8
-
-  IGTPW_10682: 10682
-  IGT_7715: 7715
-  xe-787-6d3abf8f7f55420cf53e9ed344872c459ecfd0ed: 6d3abf8f7f55420cf53e9ed344872c459ecfd0ed
-  xe-788-f9855a4be31b723fe67e9b6f6cfb0df7760cd6d8: f9855a4be31b723fe67e9b6f6cfb0df7760cd6d8
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10682/index.html
-
---===============4870749308522744605==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane_cursor: Skip unneeded overlay requirement (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128460/">https://patchwork.freedesktop.org/series/128460/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10682/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10682/index.html</a></td></tr>
-
-</table>
+>=20
+> v2: rebased (Kamil)
+> v6: reword description (Janusz)
+>=20
+> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> Signed-off-by: Dominik Karol Pi=C4=85tkowski <dominik.karol.piatkowski@in=
+tel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Reviewed-by: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
+> ---
+>  lib/drmtest.c | 19 +++++++++++++++++++
+>  lib/drmtest.h |  1 +
+>  2 files changed, 20 insertions(+)
+>=20
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index 52b5a2020..73d9159af 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -563,6 +563,25 @@ int __drm_open_driver_another(int idx, int chipset)
+>  	return fd;
+>  }
+> =20
+> +/*
+> + * drm_open_driver_another
+> + * @idx: index of the device you are opening
+> + * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
+> + *
+> + * A wrapper for __drm_open_driver with successful open assert.
+> + *
+> + * Returns:
+> + * An open DRM fd
+> + */
+> +int drm_open_driver_another(int idx, int chipset)
+> +{
+> +	int fd =3D __drm_open_driver_another(idx, chipset);
+> +
+> +	igt_assert_fd(fd);
+> +
+> +	return fd;
+> +}
+> +
+>  /**
+>   * __drm_open_driver:
+>   * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
+> diff --git a/lib/drmtest.h b/lib/drmtest.h
+> index 6bc819734..856208c48 100644
+> --- a/lib/drmtest.h
+> +++ b/lib/drmtest.h
+> @@ -101,6 +101,7 @@ void __set_forced_driver(const char *name);
+> =20
+>  int __drm_open_device(const char *name, unsigned int chipset);
+>  void drm_load_module(unsigned int chipset);
+> +int drm_open_driver_another(int idx, int chipset);
+>  int drm_open_driver(int chipset);
+>  int drm_open_driver_master(int chipset);
+>  int drm_open_driver_render(int chipset);
+>=20
 
 
-    <h1>CI Bug Log - changes from XEIGT_7715_BAT -&gt; XEIGTPW_10682_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10682_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_exec_threads@threads-mixed-fd-basic:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7715/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1167">Intel XE#1167</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10682/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7715 -&gt; IGTPW_10682</li>
-<li>Linux: xe-787-6d3abf8f7f55420cf53e9ed344872c459ecfd0ed -&gt; xe-788-f9855a4be31b723fe67e9b6f6cfb0df7760cd6d8</li>
-</ul>
-<p>IGTPW_10682: 10682<br />
-  IGT_7715: 7715<br />
-  xe-787-6d3abf8f7f55420cf53e9ed344872c459ecfd0ed: 6d3abf8f7f55420cf53e9ed344872c459ecfd0ed<br />
-  xe-788-f9855a4be31b723fe67e9b6f6cfb0df7760cd6d8: f9855a4be31b723fe67e9b6f6cfb0df7760cd6d8</p>
 
-</body>
-</html>
 
---===============4870749308522744605==--
