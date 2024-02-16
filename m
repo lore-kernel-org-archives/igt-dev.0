@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7525C48260
-	for <igt-dev@archiver.kernel.org>; Fri, 16 Feb 2024 08:46:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 496E3C48BEB
+	for <igt-dev@archiver.kernel.org>; Fri, 16 Feb 2024 08:57:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 61C9110E494;
-	Fri, 16 Feb 2024 08:46:57 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="rGQODclN";
-	dkim-atps=neutral
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com
- [46.235.227.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4D3010E494
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Feb 2024 08:46:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1708073209;
- bh=9nqQX0ufxT+fisMOZyOnUMYwRRdg7gjEeHKLPGbjYP8=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=rGQODclNJ17XwJvSRx0nzfh1HLTglwnMddG7PLt5H9BQ6BBm5930UPAV/hLlqZQdU
- 5K6xkmP4m7Th8sAWdrVUGGQIurGMa6NsNTLwSgUtvTET1zrCA5QjC6KyCdWazW8WJe
- 0jV4E3Jxjc4b8UlJ7angD7nmMTxFTRNq8JqmUj4+6aXS00QWCeMQSvUA57iCqnXA70
- 44QAZ0yxfIKAu+bM1G19TRkAuYeCigXu0iM3W76ZXp9qp2aszeBb6W9RJKetQmJJ25
- YcLfzmCG7ES9B09s0OIgDsO7cTLYbFHoJImdPe0Q7M9y8NfMxoPewjB8ajHQ9IXc8O
- 0Td55wdSN/d2A==
-Received: from eldfell (cola.collaboradmins.com [195.201.22.229])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits)
- server-digest SHA256) (No client certificate requested)
- (Authenticated sender: pq)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id 1D6E5378000B;
- Fri, 16 Feb 2024 08:46:49 +0000 (UTC)
-Date: Fri, 16 Feb 2024 10:46:47 +0200
-From: Pekka Paalanen <pekka.paalanen@collabora.com>
-To: Arthur Grillo <arthurgrillo@riseup.net>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
- <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
- <bhanuprakash.modem@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: Re: [PATCH i-g-t 1/2] lib/igt_kms: Enable DRM_CLIENT_CAP_ATOMIC
- before enabling DRM_CLIENT_CAP_WRITEBACK_CONNECTORS
-Message-ID: <20240216104647.1c6cfef1.pekka.paalanen@collabora.com>
-In-Reply-To: <20240215-duplicate-calls-v1-1-512afbe1bda7@riseup.net>
-References: <20240215-duplicate-calls-v1-0-512afbe1bda7@riseup.net>
- <20240215-duplicate-calls-v1-1-512afbe1bda7@riseup.net>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A7AA410E507;
+	Fri, 16 Feb 2024 08:57:30 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D1E7510E5CC;
+ Fri, 16 Feb 2024 08:57:28 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1134463701094259540=="
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/IOmWsHwSoUJ0NLd5pMo4Pjb";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Fix_needing_to_call_igt=5Fdisp?=
+ =?utf-8?q?lay=5Frequire=28=29_twice_to_enable_writeback_output?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Arthur Grillo" <arthurgrillo@riseup.net>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 16 Feb 2024 08:57:28 -0000
+Message-ID: <170807384885.19651.7977421971707068960@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240215-duplicate-calls-v1-0-512afbe1bda7@riseup.net>
+In-Reply-To: <20240215-duplicate-calls-v1-0-512afbe1bda7@riseup.net>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,94 +37,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---Sig_/IOmWsHwSoUJ0NLd5pMo4Pjb
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+--===============1134463701094259540==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Thu, 15 Feb 2024 16:21:04 -0300
-Arthur Grillo <arthurgrillo@riseup.net> wrote:
+== Series Details ==
 
-> As stated at [1], we first need to set DRM_CLIENT_CAP_ATOMIC before
-> setting DRM_CLIENT_CAP_WRITEBACK_CONNECTORS. Fix that.
->=20
-> [1]: https://docs.kernel.org/gpu/drm-uapi.html?highlight=3Dwriteback#c.DR=
-M_CLIENT_CAP_WRITEBACK_CONNECTORS
->=20
-> Fixes: 3642acbb74f5 ("lib/igt_kms: Add writeback support")
-> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
-> ---
->  lib/igt_kms.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->=20
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 1b4d0d7612a2..e18f6fe59882 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -2747,6 +2747,9 @@ void igt_display_require(igt_display_t *display, in=
-t drm_fd)
->  	display->drm_fd =3D drm_fd;
->  	is_intel_dev =3D is_intel_device(drm_fd);
-> =20
-> +	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) =3D=3D 0)
-> +		display->is_atomic =3D 1;
-> +
->  	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
-> =20
->  	resources =3D drmModeGetResources(display->drm_fd);
-> @@ -2795,8 +2798,6 @@ void igt_display_require(igt_display_t *display, in=
-t drm_fd)
->  	}
-> =20
->  	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+Series: Fix needing to call igt_display_require() twice to enable writeback output
+URL   : https://patchwork.freedesktop.org/series/129969/
+State : success
 
-The docs also say that enabling DRM_CLIENT_CAP_ATOMIC implicitly
-enables DRM_CLIENT_CAP_UNIVERSAL_PLANES. But since enabling atomic can
-fail, setting universal planes explicitly should not be dropped.
+== Summary ==
 
-IOW, this code works as far as I can see, but perhaps the client cap
-ordering is slightly less logical now. I think it's a purely cosmetic
-thing.
+CI Bug Log - changes from XEIGT_7715_BAT -> XEIGTPW_10680_BAT
+====================================================
 
-> -	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) =3D=3D 0)
-> -		display->is_atomic =3D 1;
-> =20
->  	if (drmSetClientCap(drm_fd, LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, =
-1) =3D=3D 0)
->  		display->has_virt_cursor_plane =3D 1;
->=20
+Summary
+-------
 
-Anyway, this looks ok to me, so
+  **SUCCESS**
 
-Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
+  No regressions found.
 
-and the patch 2/2 acked-by me too.
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10680_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_exec_threads@threads-mixed-fd-basic:
+    - bat-dg2-oem2:       [TIMEOUT][1] ([Intel XE#1167]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7715/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10680/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
+
+  
+  [Intel XE#1167]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1167
 
 
-Thanks,
-pq
+Build changes
+-------------
 
---Sig_/IOmWsHwSoUJ0NLd5pMo4Pjb
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+  * IGT: IGT_7715 -> IGTPW_10680
 
------BEGIN PGP SIGNATURE-----
+  IGTPW_10680: 10680
+  IGT_7715: 7715
+  xe-787-6d3abf8f7f55420cf53e9ed344872c459ecfd0ed: 6d3abf8f7f55420cf53e9ed344872c459ecfd0ed
 
-iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmXPIPcACgkQI1/ltBGq
-qqcYKw//foNT1vsBJqDi1K0slsgAfHWBWyOUGOk4puPGtdDqZvOzJqjTvt33uUEJ
-91ux45iJJ34fTOrK2KIY09FuqJ+d1nSzoHrUt1RizFpJs9v+pcAga+lCXWEc1xPi
-5T7Mw8ZgyxmvCk5TA7xKbrnKDdz7ZXH3KXybi3av6p9uNYmcM1m0a6rcU7+0GOWB
-RB91wImo63nzB+ASI/85KPOCxVl4Fallpr1MH8LUjk20/alm5Vc4BPv3BtgCctOR
-9knyy7JPuKOfsRQlMIJf+6YgYYOh4GJNNqkCjHn6Iqyn3HTaL5RiG6x9+2BXtDey
-PDo781gCXjCg/Y/X8yCOZC0hQXl+yL1QvB9e7jxOaGIUNiEV0tm7+BRcjx4xZiC8
-8Dj61WkIe6/TrRnl9Qh/u4DtoztB129bpSLmaLaLxiDM8N0N/1qNCtEkpHNmQe5A
-+xoS1iuF29rZftdAGLFuEAtPWOQnp97cBzco8vWfNR8yxQDfTdN/1YBvXgXo3tHb
-ZyuYzkkghA6OIty/94Ok6Gybl1M1Ben0KjUcV8cnY4/HUD1uIo+HW6qUtWfGTKrQ
-vAdDnBbvqGCci4oXgOfJKY0dEo+/J+c1ZM5HwGo2RwfFrmytWkPjluerVNBiX7Y1
-8MFyrouKO7aUgsRDaftYeVqjgKPdE00IzeSsWdApNbrjAAXEG2A=
-=zy2X
------END PGP SIGNATURE-----
+== Logs ==
 
---Sig_/IOmWsHwSoUJ0NLd5pMo4Pjb--
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10680/index.html
+
+--===============1134463701094259540==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Fix needing to call igt_display_require() twice to enable writeback output</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129969/">https://patchwork.freedesktop.org/series/129969/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10680/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10680/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7715_BAT -&gt; XEIGTPW_10680_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10680_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_threads@threads-mixed-fd-basic:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7715/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1167">Intel XE#1167</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10680/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7715 -&gt; IGTPW_10680</li>
+</ul>
+<p>IGTPW_10680: 10680<br />
+  IGT_7715: 7715<br />
+  xe-787-6d3abf8f7f55420cf53e9ed344872c459ecfd0ed: 6d3abf8f7f55420cf53e9ed344872c459ecfd0ed</p>
+
+</body>
+</html>
+
+--===============1134463701094259540==--
