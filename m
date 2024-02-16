@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6A3AC48260
-	for <igt-dev@archiver.kernel.org>; Fri, 16 Feb 2024 15:39:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 928E3C48260
+	for <igt-dev@archiver.kernel.org>; Fri, 16 Feb 2024 15:52:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 467FF10E6AB;
-	Fri, 16 Feb 2024 15:39:55 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E30910E139;
- Fri, 16 Feb 2024 15:39:53 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5496370687852277362=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2C30910E279;
+	Fri, 16 Feb 2024 15:52:24 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fnjwaG2B";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 990B110E279
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Feb 2024 15:52:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708098741; x=1739634741;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=HF7UDu8RQH+nCI3lJPGus/zDWAeYkhKoOq8Z3JWfZh8=;
+ b=fnjwaG2B0p9H/ZPQ55KhbnymIGCg2NfKBTgp9Vni6K6XokJZKSigEbDd
+ ejHK0miLBqtGaCP4mUDJGWqILPpPGQYOV9D3Hiq33Yh2nmYF3vcBHvhcn
+ XZiRqSJ3dzKcncL7RE3zVIC91mPxS+kCT/pnms+tOm6cKHZLFeukJe5Lq
+ Xmi+3pMcxUAA/zxlTv/j3ZpUOCeuUg67LdBCnP0jtARCJTcfYa/h4n9Rd
+ kIftRwg/X3JfiZeoo0Py3HrkFQExDrgzTQA5rva4Mov/uNbC2MtPcnHDm
+ vWoYJLpQNlCkrEywZAVyLuT3pRMAEIxG/sKzlk0T2Tyt3VFzry5lWbrmJ w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10986"; a="2342846"
+X-IronPort-AV: E=Sophos;i="6.06,165,1705392000"; 
+   d="scan'208";a="2342846"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Feb 2024 07:52:19 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,165,1705392000"; 
+   d="scan'208";a="3838301"
+Received: from unknown (HELO localhost) ([10.246.20.26])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Feb 2024 07:52:17 -0800
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jari Tahvanainen <jari.tahvanainen@intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v1] tests/intel/i915_test_config: align JSON
+ documentation with xe
+Date: Fri, 16 Feb 2024 16:52:07 +0100
+Message-ID: <20240216155207.67429-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/amdgpu/amd=5Filr=3A_Fix_?=
- =?utf-8?q?psr_eDP_crc_read_timeout_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Hersen Wu" <hersenxs.wu@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 16 Feb 2024 15:39:53 -0000
-Message-ID: <170809799351.37759.3882116198677027177@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240131194342.182455-1-hersenxs.wu@amd.com>
-In-Reply-To: <20240131194342.182455-1-hersenxs.wu@amd.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +64,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5496370687852277362==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Jari Tahvanainen <jari.tahvanainen@intel.com>
 
-== Series Details ==
+Restructure i915 JSON to align with Xe.
 
-Series: tests/amdgpu/amd_ilr: Fix psr eDP crc read timeout (rev3)
-URL   : https://patchwork.freedesktop.org/series/129382/
-State : success
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Jari Tahvanainen <jari.tahvanainen@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/intel/i915_test_config.json | 45 ++++++++++++++++++++++---------
+ 1 file changed, 32 insertions(+), 13 deletions(-)
 
-== Summary ==
+diff --git a/tests/intel/i915_test_config.json b/tests/intel/i915_test_config.json
+index ad59677f8..b09f4244e 100644
+--- a/tests/intel/i915_test_config.json
++++ b/tests/intel/i915_test_config.json
+@@ -16,33 +16,52 @@
+     "exclude_files": [ "kms_*", "gem_concurrent_all.c", "gem_concurrent_blit.c",
+                        "xe_*" ],
+     "fields": {
+-	"Mega feature": {
++        "Category": {
++            "_properties_": {
++                "mandatory": true,
++                "description": "Contains the major group for the tested functionality, being hardware, software or firmware"
++            },
++            "Mega feature": {
+                 "_properties_": {
+                     "description": "Contains the mega feature for end to end use case, e. g. the 'sellable' feature."
+                 },
+-                "Category": {
+-                "_properties_": {
+-                    "description": "Contains the major group for the tested functionality"
+-                },
+-
+                 "Sub-category": {
+                     "_properties_": {
+-                        "description": "Contains the minor group of the functionality"
++                        "mandatory": true,
++                        "description": "Contains the technical feature/functionality"
+                     },
+                     "Functionality": {
+                         "_properties_": {
+-                            "description": "Describes the functionality to be tested"
++                            "mandatory": true,
++                            "description": "Groups page table tests on buckets containg more detailed functionality"
+                         },
+                         "Feature": {
+                             "_properties_": {
+                                 "description": "Describes the lowest level feature bucket"
+-                            },
+-                            "Run type": {
+-                                "_properties_": {
+-                                    "description": "Defines what category of testlist it belongs"
+-                                }
+                             }
+                         }
++                    },
++                    "Run type": {
++                        "_properties_": {
++                            "mandatory": true,
++                            "description": "Defines what category of testlist it belongs",
++                            "default-testlist": "FULL",
++                            "update-from-file": {
++                                "exclude-type": "regex-ignorecase",
++                                "append-value-if-not-excluded": "i915 FULL",
++                                "include": [
++                                    { "i915 BAT": "../intel-ci/fast-feedback.testlist" }
++                                ],
++                                "exclude": [
++                                    { "i915 BAT, 915 FULL": "../intel-ci/blacklist.txt" }
++                                ]
++                            },
++                            "order": [
++                                "boot",
++                                "__all__",
++                                "kunit"
++                            ]
++                        }
+                     }
+                 }
+             }
+-- 
+2.42.0
 
-CI Bug Log - changes from XEIGT_7716_BAT -> XEIGTPW_10687_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7716 -> IGTPW_10687
-  * Linux: xe-789-55724f2a1075fcace79fd49ea0c2b7b5600d7ba8 -> xe-791-2b0582c5f6c84859252ce7da41fc8829c88e17a7
-
-  IGTPW_10687: 10687
-  IGT_7716: 7716
-  xe-789-55724f2a1075fcace79fd49ea0c2b7b5600d7ba8: 55724f2a1075fcace79fd49ea0c2b7b5600d7ba8
-  xe-791-2b0582c5f6c84859252ce7da41fc8829c88e17a7: 2b0582c5f6c84859252ce7da41fc8829c88e17a7
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10687/index.html
-
---===============5496370687852277362==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_ilr: Fix psr eDP crc read timeout (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129382/">https://patchwork.freedesktop.org/series/129382/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10687/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10687/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7716_BAT -&gt; XEIGTPW_10687_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7716 -&gt; IGTPW_10687</li>
-<li>Linux: xe-789-55724f2a1075fcace79fd49ea0c2b7b5600d7ba8 -&gt; xe-791-2b0582c5f6c84859252ce7da41fc8829c88e17a7</li>
-</ul>
-<p>IGTPW_10687: 10687<br />
-  IGT_7716: 7716<br />
-  xe-789-55724f2a1075fcace79fd49ea0c2b7b5600d7ba8: 55724f2a1075fcace79fd49ea0c2b7b5600d7ba8<br />
-  xe-791-2b0582c5f6c84859252ce7da41fc8829c88e17a7: 2b0582c5f6c84859252ce7da41fc8829c88e17a7</p>
-
-</body>
-</html>
-
---===============5496370687852277362==--
