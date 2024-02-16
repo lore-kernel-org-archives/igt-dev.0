@@ -4,25 +4,25 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8CBCC48260
-	for <igt-dev@archiver.kernel.org>; Fri, 16 Feb 2024 09:25:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00CF3C48260
+	for <igt-dev@archiver.kernel.org>; Fri, 16 Feb 2024 09:36:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7C00510E4FE;
-	Fri, 16 Feb 2024 09:25:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B15B310EACA;
+	Fri, 16 Feb 2024 09:36:40 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8338A10E4FE;
- Fri, 16 Feb 2024 09:25:34 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E9C010EACA;
+ Fri, 16 Feb 2024 09:36:40 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7592106256524188471=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_series_starting_with_?=
- =?utf-8?q?=5Bi-g-t=2Cv2=2C1/2=5D_tests/kms=5Fbw=3A_Use_reduced_blanking_mod?=
- =?utf-8?q?e_1920x1080p_timings?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
+ =?utf-8?q?=2Cv2=2C1/2=5D_tests/kms=5Fbw=3A_Use_reduced_blanking_mode_1920x1?=
+ =?utf-8?q?080p_timings?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Rob Clark" <robdclark@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 16 Feb 2024 09:25:34 -0000
-Message-ID: <170807553453.925.16642266133697414422@8e613ede5ea5>
+Date: Fri, 16 Feb 2024 09:36:40 -0000
+Message-ID: <170807620012.19651.5249505825849265156@8e613ede5ea5>
 X-Patchwork-Hint: ignore
 References: <20240215221900.327042-1-robdclark@gmail.com>
 In-Reply-To: <20240215221900.327042-1-robdclark@gmail.com>
@@ -42,40 +42,125 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============7592106256524188471==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: series starting with [i-g-t,v2,1/2] tests/kms_bw: Use reduced blanking mode 1920x1080p timings
 URL   : https://patchwork.freedesktop.org/series/129976/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7715_BAT -> XEIGTPW_10681_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1104831 for the overview.
+Summary
+-------
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55121211):
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out 3985ad70 as detached HEAD (ref is intel/IGTPW_10681)...
-  Removing build/
-  Removing installdir/
+  **SUCCESS**
+
+  No regressions found.
+
   
-  Skipping Git submodules setup
-  section_end:1708075061:get_sources
-  section_start:1708075061:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-3985ad70ab6531d99a534f4af8cede8b51540081 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips@sha256:c829c44880da4782b7a72626c259ac6904b4bd5f08601e66b3be889ca1c0cf79 ...
-  section_end:1708075063:step_script
-  section_start:1708075063:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1708075065:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448: image not known (docker.go:570:0s)
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10681_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_exec_threads@threads-mixed-fd-basic:
+    - bat-dg2-oem2:       [TIMEOUT][1] ([Intel XE#1167]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7715/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10681/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
+
+  
+  [Intel XE#1167]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1167
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7715 -> IGTPW_10681
+  * Linux: xe-787-6d3abf8f7f55420cf53e9ed344872c459ecfd0ed -> xe-788-f9855a4be31b723fe67e9b6f6cfb0df7760cd6d8
+
+  IGTPW_10681: 10681
+  IGT_7715: 7715
+  xe-787-6d3abf8f7f55420cf53e9ed344872c459ecfd0ed: 6d3abf8f7f55420cf53e9ed344872c459ecfd0ed
+  xe-788-f9855a4be31b723fe67e9b6f6cfb0df7760cd6d8: f9855a4be31b723fe67e9b6f6cfb0df7760cd6d8
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1104831
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10681/index.html
+
+--===============7592106256524188471==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/2] tests/kms_bw: Use reduced blanking mode 1920x1080p timings</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129976/">https://patchwork.freedesktop.org/series/129976/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10681/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10681/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7715_BAT -&gt; XEIGTPW_10681_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10681_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_threads@threads-mixed-fd-basic:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7715/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1167">Intel XE#1167</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10681/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7715 -&gt; IGTPW_10681</li>
+<li>Linux: xe-787-6d3abf8f7f55420cf53e9ed344872c459ecfd0ed -&gt; xe-788-f9855a4be31b723fe67e9b6f6cfb0df7760cd6d8</li>
+</ul>
+<p>IGTPW_10681: 10681<br />
+  IGT_7715: 7715<br />
+  xe-787-6d3abf8f7f55420cf53e9ed344872c459ecfd0ed: 6d3abf8f7f55420cf53e9ed344872c459ecfd0ed<br />
+  xe-788-f9855a4be31b723fe67e9b6f6cfb0df7760cd6d8: f9855a4be31b723fe67e9b6f6cfb0df7760cd6d8</p>
+
+</body>
+</html>
+
+--===============7592106256524188471==--
