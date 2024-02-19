@@ -4,153 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 997DCC48260
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Feb 2024 08:00:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A258C48260
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Feb 2024 08:07:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0EC9710E0C9;
-	Mon, 19 Feb 2024 08:00:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D9DEC10E183;
+	Mon, 19 Feb 2024 08:07:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g7ukqNYl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k23e+PR3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7FBF110E076
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Feb 2024 08:00:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F5BF10E1A1
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Feb 2024 08:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708329629; x=1739865629;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-id:content-transfer-encoding: mime-version;
- bh=cA7EoBEQtAPX/fz9d6Wzo0hOE643agpQk1EkBHM3Vdk=;
- b=g7ukqNYlTN1z97GayU+AAFv1hlfdAYJbPOZF0HUC5lWralTtQHlxNCw6
- 1vAtJnfJecdp14SGeJsIhYE5xI2/4hsihkN7d2c/JHoP792+wsnH3yh+H
- Dh6/4qHhtq9Oz3LIPVrHd+Y7ez3mqi7VjB3ejEFeaU8+frTLjBtr+pf86
- iK/hv/d7p0C56acS1gmNPUNqrhhmUiATAW7Utnhs11Dw+VjuHYWwj0lJZ
- kyg2jLWnYFF1NpOq9cCyyaKaba3k2rkqX9Tu9Itjrphd/YVa73kFIvcBV
- tiFQlYGycdet+952ki+/yU1rpWbUMuOosyNI6Sx+EaRCxtDhU59hX1YET Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="13793135"
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; d="scan'208";a="13793135"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2024 00:00:23 -0800
+ t=1708330043; x=1739866043;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=BYUvXG4bXcXSm+0LZuhv2NjVLVeAdzdDcDVegCtnvQM=;
+ b=k23e+PR3bsfc+18+xQiBJ6apq83AhHmn7+603eMY1D25QICiBjBT6+DB
+ AzJR9HzXmfAZgHSET1Lcp0tIaAwg+sHwCaYCCVS2LljfcZHpRfEMswkrw
+ /6o/kEr2CTzu+A5qULgRJSa+KchFBQCG9iNsZ5xr9Y01Tr2wMQ4cqSTse
+ p59NE6kH73SCOj9WSfwzjdp0P2oxhUqoy8e9FGloee6ieWSmlC4frIZHP
+ Q92RU0iYQ5dn4tfGHvyGNHPfc7crwWIUmvN9USMRDLq1aPeeFmnBnKdDq
+ B2A/18GZqZlMK0qxtVp3cZvu+m0Gru24/DtR9Sb5GStkT5q7FuGievR55 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="2525167"
+X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
+   d="scan'208";a="2525167"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Feb 2024 00:07:22 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="4800449"
+   d="scan'208";a="9087140"
 Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 19 Feb 2024 00:00:21 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 19 Feb 2024 00:07:21 -0800
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
  fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 19 Feb 2024 00:00:20 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ 15.1.2507.35; Mon, 19 Feb 2024 00:07:21 -0800
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Mon, 19 Feb 2024 00:00:20 -0800
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.40) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ 15.1.2507.35; Mon, 19 Feb 2024 00:07:20 -0800
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Mon, 19 Feb 2024 00:07:20 -0800
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.101)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 19 Feb 2024 00:00:19 -0800
+ 15.1.2507.35; Mon, 19 Feb 2024 00:07:19 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Fhw52oJxqcYWNkl7gY3mOsAljB03ubPja1np2Kf1W43oxF4iJXRZETMjihSqhv8h8f+W3Oqu1GzyysYKK6xJz4/FPoWZgIz+Kqc/94EXYWkrxyNJaByV8DIacD6JQeB+FTxjP3hnPylsYKFXhPq7cyirtwcVOL8upc4p1izVvQXmLzg0dazt3JOG9n9erq78oL/VavwZhBOtVl7QU8bU/TG2WJHibTVBxpzZhef/nXEeIVHQOHwev8DOzYaRqskDlKlxjDgXawC0I4FKwxOM2gwsFSLFqQfolTfnNRjG3rjP0MCP7//du6KZfB7armD9O2ehoLgfJ1lXAa1+aEYe8w==
+ b=VXWne8z6GgiT1NsCJ4tKgJGDB1l6W8iUV5oVM84PXz2l66ouVSb+iVyeWDteLkXNmw1t1bsQXfSKy3ZAv+8VTvfD/L2bjShdlTwxwhp8/MCrRqy+ddewcWme1yzoRO4asvLud20XU3jIiXNA/tmSW1xeZAZVvI8Ch6aISHdWJje3YLDfchHFtJ0ruigssMqb5/uLRIkFoZ8h7HYzpWqCLwDtJ/MnRvFNtTUMA1EvV9yR3r0ksyfU2V6AN3HierA4TSG35ugKWE1iaZf0kyZeWwlpT0eXyV30V7eE3/18WMpHxxwkcBiLUr5iLFKbgQ7Zb+d0Djb7VBgvHm7OFGR1Ow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cA7EoBEQtAPX/fz9d6Wzo0hOE643agpQk1EkBHM3Vdk=;
- b=fvRmJBww9m2KzrJ2vi7RtW3r5sze71LIkPM4Cq3GbIMMI6JK7XnRAtzQKSI4xBin6LYYX0ICqRjW6/lZWowIGYRBJPuzEqe+oRpQkjDWR53Cjm/FUE+z9Z6wbLwaNeVCY2xH8euZmuv351DD1XWSs2NztBUMrQVyKSmyzxe2PYOj9M9XDtaCSs/Htwl/zO7gdFBWfA3Savmb8zs0w4/vW2t5SCopTyhIzBH2Nv431xuJD2hbDyAPsNiaJHjODwQvxj21OO+MZ/PNiqpXnRHBI0byELUp5O5wBRs2xe0BzSPlO6jn2GTME+iombb4muCat6v69AUxjPSFB9hXR1E2Ag==
+ bh=3Pn9par1iaKSelKZIwuRzqmD2wr8xey+/t4DIoTg1NU=;
+ b=OMTD5gyNmp3GNaiNSOtuAshR4YMTv/Tl9+sKVy8Q+XNtfKdmQoB4en2Jm33iqy6+ZtpJEvh2+XMVLW0RLNBI0Z5vBb9vw3Sgj/x98JQfLhg+uZ5iqi4XIQeMJmxD1OaJKFCbzDkibpSEanm5lMyJKKPqgEDxmDd3xTREFo1amOkOdJZrEYzKOm7NK3hUlwz7qSWqSzIAlDRI9h7s5A5ACjvXaBINT3gdKXGib8GFezjPjhM7dikgwjZYwQugEIX+fEWqSAuFC9mX0eP+NYHt7T16+hrZUtFtjVGeeoWnYyaKdHSkYfqr80a57h78pE/0DHRRvTMfbNNhyuzrOMih9w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from DM4PR11MB6019.namprd11.prod.outlook.com (2603:10b6:8:60::5) by
- SN7PR11MB8067.namprd11.prod.outlook.com (2603:10b6:806:2e8::15) with
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY8PR11MB6889.namprd11.prod.outlook.com (2603:10b6:930:5e::9)
+ by MW5PR11MB5883.namprd11.prod.outlook.com (2603:10b6:303:19f::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.37; Mon, 19 Feb
- 2024 08:00:18 +0000
-Received: from DM4PR11MB6019.namprd11.prod.outlook.com
- ([fe80::dde1:91ce:98c6:d737]) by DM4PR11MB6019.namprd11.prod.outlook.com
- ([fe80::dde1:91ce:98c6:d737%7]) with mapi id 15.20.7292.036; Mon, 19 Feb 2024
- 08:00:18 +0000
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.34; Mon, 19 Feb
+ 2024 08:07:18 +0000
+Received: from CY8PR11MB6889.namprd11.prod.outlook.com
+ ([fe80::bf71:4b0e:6d66:e035]) by CY8PR11MB6889.namprd11.prod.outlook.com
+ ([fe80::bf71:4b0e:6d66:e035%3]) with mapi id 15.20.7292.036; Mon, 19 Feb 2024
+ 08:07:17 +0000
+Message-ID: <6f058d0c-0cef-479e-ba87-2e263c4220ea@intel.com>
+Date: Mon, 19 Feb 2024 13:37:10 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/3] lib/igt_psr: modify library to support multiple
+ PSR/PR outputs
+Content-Language: en-US
+To: "Hogander, Jouni" <jouni.hogander@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 CC: "Murthy, Arun R" <arun.r.murthy@intel.com>, "Manna, Animesh"
  <animesh.manna@intel.com>
-Subject: Re: [PATCH i-g-t 2/3] lib/igt_psr: add support for PR selective update
-Thread-Topic: [PATCH i-g-t 2/3] lib/igt_psr: add support for PR selective
- update
-Thread-Index: AQHaYknw2DmtfvXaqESbS1nHBAtGZLERTsaA
-Date: Mon, 19 Feb 2024 08:00:17 +0000
-Message-ID: <18efe76c653963719a02755b432e754c9daad723.camel@intel.com>
 References: <20240218091704.2259937-1-kunal1.joshi@intel.com>
- <20240218091704.2259937-3-kunal1.joshi@intel.com>
-In-Reply-To: <20240218091704.2259937-3-kunal1.joshi@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR11MB6019:EE_|SN7PR11MB8067:EE_
-x-ms-office365-filtering-correlation-id: 190224fb-875c-40cf-e019-08dc3120d021
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: w1zJwhOXncnNAPbfOSzrrI6Aj2rfDwZe3MCxHb/hih40yp0w5xrBeVHzDytx42ChfiJecb/qP9W3Z2R8oarAmSew6xh+hP7d+ePjxQi3IGVP30uGarJM2uEPiwfWGA+O9FApzkrCK5tTnj8ilRHZDDoCQDLawFIjlJ2qmdQcM6up/m5zuUDiT90mPp6FCrUMO69Bebx3Ici2ec53AD/b4JD9Eh3a3Q98kKtdHnrmxVCmrG4kyZvSBtudwVmpRO6+q8MfFwDou/0F79J+1/SE4lMyz7fpSv9KlCZU+MZG7CG5UmQX5xr9p4D3CNKn6pMrNTWcQhX7qC39UpD7py7umyxx192ba/aX89GvXmYJX9gBOByvq4w7z/dutspwnapwyXbB0pu0Z9943v8GubgTnpsbgRgGGPPgWZIh5tyH3RPhu1iO0e/uGQCHDEVt0ALzZUuot26okMn3EXEPJhHXFkyNxA4GBTBVKuCALz8rfS2bUmr94mH/RxsTKWW8f36nTsrmnB8G1tUQ0NSh+5QV6RnnF3O7GLPwkjjqstT8AKtfPnQ0pFhE/3ObX4Ionn0pXF1iLqT9CMdUsxe0z4F/oRTY2OtGnQ+xhRR0VD+1N4iVoegNxnEk7e3JAY1JY/gr
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB6019.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(396003)(346002)(376002)(136003)(366004)(39860400002)(230922051799003)(64100799003)(451199024)(186009)(1800799012)(6512007)(6506007)(316002)(6486002)(54906003)(478600001)(71200400001)(110136005)(4326008)(2906002)(66476007)(66556008)(8676002)(66446008)(64756008)(76116006)(66946007)(8936002)(15650500001)(5660300002)(41300700001)(86362001)(38100700002)(82960400001)(38070700009)(36756003)(107886003)(122000001)(2616005)(26005)(66574015)(83380400001);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cm12YmtoQ2RsbFhDSTJuTnBGVkN0eWE2Qi9WdkRiKzhVUit2dG96Rms0U2JH?=
- =?utf-8?B?NzZmR3hzS0sxR1NOa0FoSDZXTHdrSkw3ai9xTFhGUDlmOHNiTkJUaHZhOXN1?=
- =?utf-8?B?bDNFb3V6bTBGT1J6aW1KbUNlWklWVnBLeStyU2M3Q09BVGFWVkVxVU0rb1dw?=
- =?utf-8?B?Z2pQdHdJZ3BvRFBEK1BqdGxGbEhOblhKSUtxdU9uSGo1VmNZTDREaElTVVlH?=
- =?utf-8?B?bExCTzVZbjlIajlYSlZWRzBLa0NnalJxTnZJZUZvL2ZTWWtQdENMOWl2RU1H?=
- =?utf-8?B?MVZwOEVNNS94Wmp2ZVZDSXVNTDhoL0o3NXRkWDl0SkIzTyt6cjlPQVg5aHRR?=
- =?utf-8?B?dGRROHYzKzRZYzBWUllkdm84ZzlxTUh4d1ZtNHRCZmpkL3llS1B1dzk3b3o5?=
- =?utf-8?B?S2tkbk5maUd6YVc2U1pEbzRnZldyUG5xSzI5aGNXM2NVNmFPckY4K0xoT1NT?=
- =?utf-8?B?SHhkVXNVUG5rVVQwK0lpOFdOS2gvNGF6OWEvQ0l6dFBCZWM0RUVmVXJFTUF5?=
- =?utf-8?B?U1F6Y1NaWTZSbnZ0QmJodjFsME1ySjBBVGd5REdKckpKbGZUeUFkdFN5L3B4?=
- =?utf-8?B?OXZEam5Nc1hVVjI5MmhxK0o2Qnk3OTZJOWxlSGFMSFZqT1Iwam1kTFpGUE4x?=
- =?utf-8?B?OWlncVJGTUNiTXNmN0FjOTd5MEhJT2NLUmRXait4YUo5NlVaaVdiclRMeGdD?=
- =?utf-8?B?U0dSaml5b1VxRi9UemliNDZNMzZ4SUd3WXZUYlRwTjZ3YWZXWVZTZXIyTTNM?=
- =?utf-8?B?NGZIeFRtWHhpcVI0cHdQMDVzV25uQU90MEl6L0VseG03Tjcya1RaS2ZKc1Zo?=
- =?utf-8?B?S1NpUHFMZDJadEdPQW9qQnE5bFNwOEtVRzVkWFRnNHBqaEd0Rm5weGdzNjFH?=
- =?utf-8?B?cU50eWJCL0VnN29TK3ZBdHliNjQvd0NENjFGUURyTGxWSm9IRmdxYVNhQlpT?=
- =?utf-8?B?K0ZIRnhmdXBDbk5RS29EY0c2ZWtielRCWnhFc0l1UUhhSW8zTUVOTHhJRk0v?=
- =?utf-8?B?NXJHVzlhWExrSGphY2xvWVFIbWJWakUvTGcxRWhwd3gwOStCV0xCSURaNzFH?=
- =?utf-8?B?bFRYV094elBvT3JTL1lUS1B5eTlqSjdmemxTVC9VTWZ3TjRTakYraEV6YWJ1?=
- =?utf-8?B?bk8vR1B5TTJ5cjZkNjNsZ2tYRFk1OTVpVGhLdFVhUDVsRjBPbThMalVTY1ht?=
- =?utf-8?B?bmZQcnRkTmkyaE4vZmdXV0RTNVpad01RQlV3ZExad0YrK0w3bkdFNzJ5cDVr?=
- =?utf-8?B?cjliN29hWkxmZUNmQnlaWmtDcnlqZkwyMUdMbmdFSUZlSXVBeHg4bEJoREZP?=
- =?utf-8?B?Kyt4eng1d0FBSVBOeGlXQ1lEMVRWZ25XTUhwbWxvL094NTg2b1orUVVYMGlp?=
- =?utf-8?B?UGcyUENoOVc2VHByTFRFSTViVEg0aVNqUnlrdWNVNnV5WHVpcDF6U2Nqd0N0?=
- =?utf-8?B?b3lZR0JzYjNDZDg5OStjSnpqbHYvdUFmcFVTMXFGdnhCN1BNNytEWjZLOUhh?=
- =?utf-8?B?cVFlc3VjTjgwWDdXdVVZOFhvMTV4S2JFVXlvYkp6dTI0UENRMWpOL25TaWta?=
- =?utf-8?B?dHFZc3FsMmExSHdUeVYxTHJIR043R2JMV2FRdUh1RFZ3YmF5UXcva01rUWNh?=
- =?utf-8?B?L2Q3QWVtWi9jNVllL3RhSGc2TEovVDRYOFJ0eWZIRDQ0b0YxbHFvRHNENXgw?=
- =?utf-8?B?VzQvSUJaaGM0ZUZJSlc4WjViQk9UQXNFR0RIRW9vU01iQlo4WXVPcDZMWE4z?=
- =?utf-8?B?OGRTcUZwWndBeG81UW85WkhmcW5xbDlsUmpoaGlMT281VCtzUUpxdVdqVEVp?=
- =?utf-8?B?bW95TlllVURtRDFab3lackdCN3J5UlYyMjdDS0xHK0ovUEdmUTRheHV5SzhE?=
- =?utf-8?B?U3Bacmk2cVlNM3JuSXNMNVBwWVJoZFBFM1JoOEZpTitCMDdoaVZHUGdDVzlC?=
- =?utf-8?B?bHJiY0hXeGJJdjRXZjg3MitIQ0pvci9zVVVxc0R0TGZJU3MrbE81MU8vV0Z4?=
- =?utf-8?B?Nll3Q2UxejNZZGZJZm40YzhBVmtWMjBHSU5QaDBMeDNVcWFVWS85dFBqVkVI?=
- =?utf-8?B?UC9KTy9WeWpBV0Nod3pRc1dLY2ZSNWVPQSswZkVyZTNuclZLRXRPQmxMbkNR?=
- =?utf-8?B?SGVHZmVyTUhBN1NOMzR5NjB2QXF0YmxSMVVwWUtLSmVkSDcrazk5VmZCd3Bv?=
- =?utf-8?B?Umc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A6E3A8A373A27A45B1D9BF267EB4CB8A@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ <20240218091704.2259937-2-kunal1.joshi@intel.com>
+ <23724dffbc7d0224ea26541fa34a17ad77cc6f36.camel@intel.com>
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <23724dffbc7d0224ea26541fa34a17ad77cc6f36.camel@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN3PR01CA0126.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:96::16) To CY8PR11MB6889.namprd11.prod.outlook.com
+ (2603:10b6:930:5e::9)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY8PR11MB6889:EE_|MW5PR11MB5883:EE_
+X-MS-Office365-Filtering-Correlation-Id: ed1ff7eb-e93b-4d00-9607-08dc3121ca24
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: yGFeG1avAWD1AK1GQbX8d3ddf011ui+X5cXzfxLFPQNpPB7JSjpWEdsUk8nL9Jy01ClHu0Rqb28TkkrX3njQILOhODrODPFLTsUEI8/Lp6p7bAxgFJ+3do/QLwAiObBDxRViy8ajwObdsyheedSwXfSNM7Y2s22o1NWV+R9o4vXwBtVm4PImyGT8tFuse3k8c5tOozD6Kt4e3GhS2KQVNvjN0lKDl0q37JzCi7EFO6tW/yWWGzAD/RGbR0HVKGxAmc2npL+9VzFe8bWCpupPqdlIyCc7XldBRo9iaf31lp/XWBGQoVxp4Ikui9HqQdTWe9uK3f4XLjGrq7zrehz/YXemBtqiaSQn2Pj4O/M9qeNipovYVBV+23aBbtLfOt9lgaNeaS/78NS1xme+BsWzC3IqOXbGW3QIad1s02Pyd3XIDMAyPtWPf0myGf229cKZoqdrxiOtepAdxxI5nY+DmY14H3y7B1BbnKHUcPmmScUq9fECWwg9mr5LwGPQhSfe5qhWRl6Okv7x2bgpen74MjF3Rcnf9jvI8hCwXhFe15+zxNHdPkAHR683jBvqJC7b
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY8PR11MB6889.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(39860400002)(396003)(346002)(366004)(136003)(376002)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(5660300002)(30864003)(2906002)(26005)(6512007)(2616005)(36756003)(107886003)(478600001)(6506007)(6486002)(53546011)(38100700002)(82960400001)(66574015)(83380400001)(31696002)(86362001)(8936002)(4326008)(8676002)(66946007)(66556008)(66476007)(41300700001)(110136005)(54906003)(6666004)(316002)(31686004);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OXhzM0J5bDJGVW9JMGFpdmhDcDZrdFVYSzFiUlhReThkOFZ4SWl1TVdEdVJL?=
+ =?utf-8?B?djRHQ3J2QXNrNU9FUmZwd3cyakdWNVE4OHJONXNFeVRCSkY1RjlSZXpVSVda?=
+ =?utf-8?B?RjVOQmxyQjhCRXlOS3Z1OU5QZDlvVlpMbEQxTVEzN1FYd3VCWVkzR3Y1dVBC?=
+ =?utf-8?B?dzZPN3pzRFlNVzVKazArMkJ6ZUhpUHJXRk1vK1FzbGhNcVQyZlVhOUpUN21U?=
+ =?utf-8?B?K3R5WElYc2ZkRlFyT2s4ZXFCekpNdnRIeXBydFBaZGlNMndyUWJIUm5yRW4z?=
+ =?utf-8?B?NS9qaVVBeis1STdRYWJTY2VUdXpFaFVEQVFIVmlVRm81bG02M0R2R2tBME54?=
+ =?utf-8?B?K1ZRblUydWoxRFIwQjVILy9EQlNKODRCbXJMWWpZbmdsaEwzQW9nZmJXNmJz?=
+ =?utf-8?B?enRacGNTYUlrZmgrQWhWbFBUb1U0di9URkJlbUtVMEZ4OFpKblUzN0hSQXUv?=
+ =?utf-8?B?Y3ZRVFNoMlVzRXlJcXZBd0ZjR2xlakt5NHdPeDVUUytCeFNESnE0WUdIcExR?=
+ =?utf-8?B?dTU3ZlczdGVJTnA3VWxNbWcvdTdRN2tGY3UvWm5EMDBxREhGTDhNZW94MjVZ?=
+ =?utf-8?B?Y1V2RzlyeHM5UGx3a2U5R3UzWktUbUtZWjBVdGNrZ3IxK0tTbWlaOG91RlNZ?=
+ =?utf-8?B?NTVtaWdqdGd5SW80aG5aT2pIRDBIMGlSanpsaWdTRjlBS21yb25YUkhrUExs?=
+ =?utf-8?B?TDhPUGR4cTFSdm9qZjFLTVZIYWZud3B4Wll4NEhJVk9yUmRuMEE3eElUbEpW?=
+ =?utf-8?B?K3JDL0Q3R3BabGhaNDQzMSs0UUVZVHhlTUI4NmtrQzlGOHFibzF6REhXNk9E?=
+ =?utf-8?B?SDFVTHZQMDdYTzNiMjZLNUFTNmxRUE1MOUV2YkxUN0t6Y3JJVHl1eUVJM0VM?=
+ =?utf-8?B?a3JTelpaZW5yTE1LeWR0VThUUS9CVnoxSkVCMDJnbHIzMEJCREJKeFRMK05w?=
+ =?utf-8?B?YlFOUUhTR1IxelJLbkcwd0t2TGJoOFQxd3pFTGxXSzQvS2xONzY4MkovUW04?=
+ =?utf-8?B?WUZRVXhZcFdSY0VkQ2p1SUlkQTFrZkNrMFNqTFA3bjNOYVlLQk1WelI3aG5B?=
+ =?utf-8?B?SlcrQ1NGVHFLY2NLZS8rdHYzeHNvWjNsRzJsYnVTUzk5cFhXREZOanBCMW1a?=
+ =?utf-8?B?SHVSZVdFVklsUHhnK2JDOHowUW14QVFpV0t6cGpZU0NLeTlYNVduZitNells?=
+ =?utf-8?B?QjVnTDlJS2NCZmhXYXlWK0NNaTJML25ZMyt5aXJTa2hSVm5yK0Y5RGhkYXcy?=
+ =?utf-8?B?WStrTEF0LzgwakdXZWFISWR1ZlFpYWVpdlh3ZHBoZVZuSFpXYmpwTW5tR2th?=
+ =?utf-8?B?eDliNlZmNjdyMXp0SmVSM1BxZEZRTXB0ZDVVL2pUNHV2NFg5cTJmL29NMjZm?=
+ =?utf-8?B?QWRmdS9JUU5ORVdQNk9kZ1dTWWtxYWVMNml4NW1sWFkzSVNMdFkvYkpxNEhr?=
+ =?utf-8?B?a1RKNG9oVFM3bkFwMVFiZlM3Qm0vUFM2WUZkNjBTRmUvc3licG9pVnJFL0F3?=
+ =?utf-8?B?NW1JNjVtbXczUy9MTU81NTBwVGJQU0ZXT1lKTFp5bjNNdmRkanNVT3JtVkt6?=
+ =?utf-8?B?MDNTWnJ5SWttcWhGaWttSEFNZnNqUGYrRWdZV2FzOHVKZVlPbHdnVkNMQ2Q4?=
+ =?utf-8?B?UkNIZHdzbVU0U1JFU2JFczJNeWx3Q0NGbXAxT2VkUlo5REVlVjNHV2dlbUtF?=
+ =?utf-8?B?OGZMS09UQVhwYTJUZFJ3OGRFNTRwbXZUOTBUTGVmRmRyaWxXZjExSERwbElY?=
+ =?utf-8?B?VmVnRVVzSndEa2hxbVpKUFljMjNVTTM4djBpeDV2L29kZlBqS01ndlBNTEJR?=
+ =?utf-8?B?aGJnQTdSbmZaZWU4cXBkSUQ1YjJOT2E2Sk9Ba3hqNjZWSDlLOGdOZkxoUmxr?=
+ =?utf-8?B?TWxyaHZLU25yMjUweC9vQkxFVUtwclpGY09ybGpVOUxsZHczOVRCYm9paFpR?=
+ =?utf-8?B?RHA1dnN1bFNCNGlVVEpGT2tLeVlla3Z1bHhZSkRUZVFicFljQXJObzh5SFp6?=
+ =?utf-8?B?ZzE0b0ZqV0pUNUF3ZDVVS2hLSUcyOStaVWVxKzUzckdmMWdQSi8zdG1ack5D?=
+ =?utf-8?B?SUZlR3U3OXZYL3dBSnJrbW13dUV2TkZ5MnUzL0dQQmpYM3B1YmxaV1c5Z0NH?=
+ =?utf-8?Q?KTpW+JIUHXPj4lU50XSqjkX3F?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed1ff7eb-e93b-4d00-9607-08dc3121ca24
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB6889.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6019.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 190224fb-875c-40cf-e019-08dc3120d021
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Feb 2024 08:00:17.9893 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: CIgJoLAfkh/Ufxey2NOYG9crYzTEkI5sE6bfcF2pd5U919/OKu9YO7EzPzdMFl05mNAQOn1luNmTvrxklJ8/czB3N4NqBkJYSIvS2JpkfDo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB8067
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2024 08:07:17.8202 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YYaGb/xLRxvqbxKb6XEPaH9O/qnnE2tk1eRZ89QNUqw9BVbk7hsLGH//GqyJtc5OXbWD4grQ62r1xnloMB3UxA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5883
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -167,152 +170,617 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-T24gU3VuLCAyMDI0LTAyLTE4IGF0IDE0OjQ3ICswNTMwLCBLdW5hbCBKb3NoaSB3cm90ZToKPiBF
-eHRlbmQgdGhlIHRlc3RzIHRvIGNvdmVyIHBhbmVsIHJlcGxheSBzZWxlY3RpdmUgZmV0Y2ggZmVh
-dHVyZS4KPiAKPiBGcm9tIGttc19wc3IyX3NmIHRlc3QgcG9pbnQgb2YgdmlldyB3ZSBoYXZlCj4g
-Y2hlY2tfcHJfcHNyMl9zZWxfZmV0Y2hfc3VwcG9ydAo+IGZ1bmN0aW9uIHRvIGNoZWNrIGlmIFBS
-L1BTUjIgc2VsZWN0aXZlIGZldGNoIGlzIHN1cHBvcnRlZCBmb3IgYW4KPiBvdXRwdXQKPiBpZiBv
-dXRwdXQgc3VwcG9ydHMgc2VsZWN0aXZlIGZldGNoIHRoZW4gd2UgY2hlY2sgd2UgZW50ZXIgREVF
-UF9TTEVFUAo+IG1vZGUKPiBpbiBydW4gZnVuY3Rpb24KPiAKPiB2MjogZml4ZWQgZHluYW1pYyB0
-ZXN0IG5hbWUKPiB2MzogdXNlIGNoZWNrX3BzcjJfc3VwcG9ydCAoSm91bmkpCj4gdjQ6IHNwbGl0
-IHBhdGNoZXMgKEpvdW5pKQo+IAo+IENjOiBKb3VuaSBIw7ZnYW5kZXIgPGpvdW5pLmhvZ2FuZGVy
-QGludGVsLmNvbT4KPiBDYzogQW5pbWVzaCBNYW5uYSA8YW5pbWVzaC5tYW5uYUBpbnRlbC5jb20+
-Cj4gQ2M6IEFydW4gUiBNdXJ0aHkgPGFydW4uci5tdXJ0aHlAaW50ZWwuY29tPgo+IFNpZ25lZC1v
-ZmYtYnk6IEt1bmFsIEpvc2hpIDxrdW5hbDEuam9zaGlAaW50ZWwuY29tPgo+IC0tLQo+IMKgbGli
-L2lndF9wc3IuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8IDM2ICsrKysrKysrKysrKysrKysr
-KysrKysrKysrLS0tLS0tLS0tLQo+IMKgbGliL2lndF9wc3IuaMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoCB8wqAgNiArKystLS0KPiDCoHRlc3RzL2ttc19jdXJzb3JfbGVnYWN5LmMgfMKgIDQgKyst
-LQo+IMKgMyBmaWxlcyBjaGFuZ2VkLCAzMSBpbnNlcnRpb25zKCspLCAxNSBkZWxldGlvbnMoLSkK
-PiAKPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9wc3IuYyBiL2xpYi9pZ3RfcHNyLmMKPiBpbmRleCBj
-YWQ4Y2NlMDUuLjlhY2NkMjA0NyAxMDA2NDQKPiAtLS0gYS9saWIvaWd0X3Bzci5jCj4gKysrIGIv
-bGliL2lndF9wc3IuYwo+IEBAIC00MSw3ICs0MSw3IEBAIGJvb2wgcHNyX2Rpc2FibGVkX2NoZWNr
-KGludCBkZWJ1Z2ZzX2ZkKQo+IMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gc3Ryc3RyKGJ1ZiwgIlBT
-UiBtb2RlOiBkaXNhYmxlZFxuIik7Cj4gwqB9Cj4gwqAKPiAtYm9vbCBwc3IyX3NlbGVjdGl2ZV9m
-ZXRjaF9jaGVjayhpbnQgZGVidWdmc19mZCwgaWd0X291dHB1dF90Cj4gKm91dHB1dCkKPiArYm9v
-bCBzZWxlY3RpdmVfZmV0Y2hfY2hlY2soaW50IGRlYnVnZnNfZmQsIGlndF9vdXRwdXRfdCAqb3V0
-cHV0KQo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqBjaGFyIGJ1ZltQU1JfU1RBVFVTX01BWF9MRU5d
-Owo+IMKgwqDCoMKgwqDCoMKgwqBjaGFyIGRlYnVnZnNfZmlsZVsxMjhdID0gezB9Owo+IEBAIC0y
-NDgsNyArMjQ4LDkgQEAgYm9vbCBwc3Jfc2lua19zdXBwb3J0KGludCBkZXZpY2UsIGludCBkZWJ1
-Z2ZzX2ZkLAo+IGVudW0gcHNyX21vZGUgbW9kZSwgaWd0X291dHB1dAo+IMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIChzdHJzdHIobGluZSwgIlBTUiA9IHllcyIp
-ICYmCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKHN0cnN0
-cihsaW5lLCAiWzB4MDNdIikgfHwgc3Ryc3RyKGxpbmUsCj4gIlsweDA0XSIpKSk7Cj4gwqDCoMKg
-wqDCoMKgwqDCoGNhc2UgUFJfTU9ERToKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-cmV0dXJuIHN0cnN0cihsaW5lLCAiUGFuZWwgUmVwbGF5ID0geWVzIik7Cj4gK8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiBzdHJzdHIobGluZSwgIlBhbmVsIFJlcGxheSA9IHll
-cywgUGFuZWwgUmVwbGF5Cj4gU2VsZWN0aXZlIFVwZGF0ZSA9IG5vIik7Cj4gK8KgwqDCoMKgwqDC
-oMKgY2FzZSBQUl9NT0RFX1NFTF9GRVRDSDoKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgcmV0dXJuIHN0cnN0cihsaW5lLCAiUGFuZWwgUmVwbGF5ID0geWVzLCBQYW5lbCBSZXBsYXkK
-PiBTZWxlY3RpdmUgVXBkYXRlID0geWVzIik7Cj4gwqDCoMKgwqDCoMKgwqDCoGRlZmF1bHQ6Cj4g
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2YoZmFsc2UsICJJbnZh
-bGlkIHBzciBtb2RlXG4iKTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVy
-biBmYWxzZTsKPiBAQCAtMzE3LDcgKzMxOSw3IEBAIGJvb2wgaTkxNV9wc3IyX3NlbGVjdGl2ZV9m
-ZXRjaF9jaGVjayhpbnQgZHJtX2ZkLAo+IGlndF9vdXRwdXRfdCAqb3V0cHV0KQo+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIGZhbHNlOwo+IMKgCj4gwqDCoMKgwqDCoMKg
-wqDCoGRlYnVnZnNfZmQgPSBpZ3RfZGVidWdmc19kaXIoZHJtX2ZkKTsKPiAtwqDCoMKgwqDCoMKg
-wqByZXQgPSBwc3IyX3NlbGVjdGl2ZV9mZXRjaF9jaGVjayhkZWJ1Z2ZzX2ZkLCBvdXRwdXQpOwo+
-ICvCoMKgwqDCoMKgwqDCoHJldCA9IHNlbGVjdGl2ZV9mZXRjaF9jaGVjayhkZWJ1Z2ZzX2ZkLCBv
-dXRwdXQpOwo+IMKgwqDCoMKgwqDCoMKgwqBjbG9zZShkZWJ1Z2ZzX2ZkKTsKPiDCoAo+IMKgwqDC
-oMKgwqDCoMKgwqByZXR1cm4gcmV0Owo+IEBAIC0zMzQsMTcgKzMzNiwyNCBAQCBib29sIGk5MTVf
-cHNyMl9zZWxlY3RpdmVfZmV0Y2hfY2hlY2soaW50Cj4gZHJtX2ZkLCBpZ3Rfb3V0cHV0X3QgKm91
-dHB1dCkKPiDCoCAqIFJldHVybnM6Cj4gwqAgKiBUcnVlIGlmIFBTUiBtb2RlIGNoYW5nZWQgdG8g
-UFNSMSwgZmFsc2Ugb3RoZXJ3aXNlLgo+IMKgICovCj4gLWJvb2wgaTkxNV9wc3IyX3NlbF9mZXRj
-aF90b19wc3IxKGludCBkcm1fZmQsIGlndF9vdXRwdXRfdCAqb3V0cHV0KQo+ICtib29sIGk5MTVf
-cHJfcHNyMl9zZWxfZmV0Y2hfdG9fcHJfcHNyMShpbnQgZHJtX2ZkLCBpZ3Rfb3V0cHV0X3QKPiAq
-b3V0cHV0KQo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqBpbnQgZGVidWdmc19mZDsKPiDCoMKgwqDC
-oMKgwqDCoMKgYm9vbCByZXQgPSBmYWxzZTsKPiArwqDCoMKgwqDCoMKgwqBlbnVtIHBzcl9tb2Rl
-IG1vZGU7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgaWYgKCFpc19pbnRlbF9kZXZpY2UoZHJtX2Zk
-KSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiByZXQ7Cj4gwqAKPiDC
-oMKgwqDCoMKgwqDCoMKgZGVidWdmc19mZCA9IGlndF9kZWJ1Z2ZzX2Rpcihkcm1fZmQpOwo+IC3C
-oMKgwqDCoMKgwqDCoGlmIChwc3IyX3NlbGVjdGl2ZV9mZXRjaF9jaGVjayhkZWJ1Z2ZzX2ZkLCBv
-dXRwdXQpKSB7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBzcl9zZXQoZHJtX2Zk
-LCBkZWJ1Z2ZzX2ZkLCBQU1JfTU9ERV8xLCBvdXRwdXQpOwo+ICvCoMKgwqDCoMKgwqDCoGlmIChz
-ZWxlY3RpdmVfZmV0Y2hfY2hlY2soZGVidWdmc19mZCwgb3V0cHV0KSkgewo+ICvCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqBtb2RlID0gcHNyX2dldF9tb2RlKGRlYnVnZnNfZmQsIG91dHB1
-dCk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChtb2RlID09IFBSX01PREVf
-U0VMX0ZFVENIKQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgcHNyX3NldChkcm1fZmQsIGRlYnVnZnNfZmQsIFBSX01PREUsIG91dHB1dCk7Cj4gK8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGVsc2UgaWYgKG1vZGUgPT0gUFNSX01PREVfMl9TRUxf
-RkVUQ0gpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBw
-c3Jfc2V0KGRybV9mZCwgZGVidWdmc19mZCwgUFNSX01PREVfMSwKPiBvdXRwdXQpOwo+ICvCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBlbHNlCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0KCJzd2l0Y2ggbm90IHBvc3NpYmxlIGZy
-b20gY3VycmVudAo+IHBzciBtb2RlXG4iKTsKClRoZXJlIGlzIG5vIG5lZWQgdG8gY2hhbmdlIHRo
-aXMgZnVuY3Rpb24uIHBzcjJfc2VsZWN0aXZlX2ZldGNoX2NoZWNrCihub3cgc2VsZWN0aXZlX2Zl
-dGNoX2NoZWNrKSB3b3JrcyBmb3IgUFIgYW5kIFBTUi4KCkJSLAoKSm91bmkgSMO2Z2FuZGVyCgo+
-IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0ID0gdHJ1ZTsKPiDCoMKgwqDCoMKg
-wqDCoMKgfQo+IMKgCj4gQEAgLTM1OCwxMiArMzY3LDE3IEBAIGJvb2wgaTkxNV9wc3IyX3NlbF9m
-ZXRjaF90b19wc3IxKGludCBkcm1fZmQsCj4gaWd0X291dHB1dF90ICpvdXRwdXQpCj4gwqAgKiBS
-ZXN0b3JlIFBTUjIgc2VsZWN0aXZlIGZldGNoIGFmdGVyIHRlc3RzIHdlcmUgZXhlY3V0ZWQsIHRo
-aXMKPiBmdW5jdGlvbiBzaG91bGQKPiDCoCAqIG9ubHkgYmUgY2FsbGVkIGlmIGk5MTVfcHNyMl9z
-ZWxfZmV0Y2hfdG9fcHNyMSgpIHJldHVybmVkIHRydWUuCj4gwqAgKi8KPiAtdm9pZCBpOTE1X3Bz
-cjJfc2VsX2ZldGNoX3Jlc3RvcmUoaW50IGRybV9mZCwgaWd0X291dHB1dF90ICpvdXRwdXQpCj4g
-K3ZvaWQgaTkxNV9wcl9wc3IyX3NlbF9mZXRjaF9yZXN0b3JlKGludCBkcm1fZmQsIGlndF9vdXRw
-dXRfdAo+ICpvdXRwdXQpCj4gwqB7Cj4gwqDCoMKgwqDCoMKgwqDCoGludCBkZWJ1Z2ZzX2ZkOwo+
-ICvCoMKgwqDCoMKgwqDCoGVudW0gcHNyX21vZGUgbW9kZTsKPiDCoAo+IMKgwqDCoMKgwqDCoMKg
-wqBkZWJ1Z2ZzX2ZkID0gaWd0X2RlYnVnZnNfZGlyKGRybV9mZCk7Cj4gLcKgwqDCoMKgwqDCoMKg
-cHNyX3NldChkcm1fZmQsIGRlYnVnZnNfZmQsIFBTUl9NT0RFXzJfU0VMX0ZFVENILCBvdXRwdXQp
-Owo+ICvCoMKgwqDCoMKgwqDCoG1vZGUgPSBwc3JfZ2V0X21vZGUoZGVidWdmc19mZCwgb3V0cHV0
-KTsKPiArwqDCoMKgwqDCoMKgwqBpZiAobW9kZSA9PSBQUl9NT0RFKQo+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqBwc3Jfc2V0KGRybV9mZCwgZGVidWdmc19mZCwgUFJfTU9ERV9TRUxf
-RkVUQ0gsCj4gb3V0cHV0KTsKPiArwqDCoMKgwqDCoMKgwqBlbHNlCj4gK8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoHBzcl9zZXQoZHJtX2ZkLCBkZWJ1Z2ZzX2ZkLCBQU1JfTU9ERV8yX1NF
-TF9GRVRDSCwKPiBvdXRwdXQpOwo+IMKgwqDCoMKgwqDCoMKgwqBjbG9zZShkZWJ1Z2ZzX2ZkKTsK
-PiDCoH0KPiDCoAo+IEBAIC0zODksMTEgKzQwMywxMyBAQCBlbnVtIHBzcl9tb2RlIHBzcl9nZXRf
-bW9kZShpbnQgZGVidWdmc19mZCwKPiBpZ3Rfb3V0cHV0X3QgKm91dHB1dCkKPiDCoAo+IMKgwqDC
-oMKgwqDCoMKgwqBpZiAoc3Ryc3RyKGJ1ZiwgIlBhbmVsIFJlcGxheSBFbmFibGVkIikpCj4gwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gUFJfTU9ERTsKPiArwqDCoMKgwqDC
-oMKgwqBlbHNlIGlmIChzdHJzdHIoYnVmLCAiUGFuZWwgUmVwbGF5IFNlbGVjdGl2ZSBVcGRhdGUK
-PiBFbmFibGVkIikpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiBQUl9N
-T0RFX1NFTF9GRVRDSDsKPiDCoMKgwqDCoMKgwqDCoMKgZWxzZSBpZiAoc3Ryc3RyKGJ1ZiwgIlBT
-UjIgc2VsZWN0aXZlIGZldGNoOiBlbmFibGVkIikpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqByZXR1cm4gUFNSX01PREVfMl9TRUxfRkVUQ0g7Cj4gLcKgwqDCoMKgwqDCoMKgZWxz
-ZSBpZiAoc3Ryc3RyKGJ1ZiwgIlBTUjIgZW5hYmxlZCIpKQo+ICvCoMKgwqDCoMKgwqDCoGVsc2Ug
-aWYgKHN0cnN0cihidWYsICJQU1IyIikpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqByZXR1cm4gUFNSX01PREVfMjsKPiAtwqDCoMKgwqDCoMKgwqBlbHNlIGlmIChzdHJzdHIoYnVm
-LCAiUFNSMSBlbmFibGVkIikpCj4gK8KgwqDCoMKgwqDCoMKgZWxzZSBpZiAoc3Ryc3RyKGJ1Ziwg
-IlBTUjEiKSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiBQU1JfTU9E
-RV8xOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoHJldHVybiBQU1JfRElTQUJMRUQ7Cj4gZGlmZiAt
-LWdpdCBhL2xpYi9pZ3RfcHNyLmggYi9saWIvaWd0X3Bzci5oCj4gaW5kZXggMzcyYmVmMmIyLi4z
-NmJhN2YwNjggMTAwNjQ0Cj4gLS0tIGEvbGliL2lndF9wc3IuaAo+ICsrKyBiL2xpYi9pZ3RfcHNy
-LmgKPiBAQCAtNDYsNyArNDYsNyBAQCBlbnVtIGZiY19tb2RlIHsKPiDCoH07Cj4gwqAKPiDCoGJv
-b2wgcHNyX2Rpc2FibGVkX2NoZWNrKGludCBkZWJ1Z2ZzX2ZkKTsKPiAtYm9vbCBwc3IyX3NlbGVj
-dGl2ZV9mZXRjaF9jaGVjayhpbnQgZGVidWdmc19mZCwgaWd0X291dHB1dF90Cj4gKm91dHB1dCk7
-Cj4gK2Jvb2wgc2VsZWN0aXZlX2ZldGNoX2NoZWNrKGludCBkZWJ1Z2ZzX2ZkLCBpZ3Rfb3V0cHV0
-X3QgKm91dHB1dCk7Cj4gwqBib29sIHBzcl93YWl0X2VudHJ5KGludCBkZWJ1Z2ZzX2ZkLCBlbnVt
-IHBzcl9tb2RlIG1vZGUsIGlndF9vdXRwdXRfdAo+ICpvdXRwdXQpOwo+IMKgYm9vbCBwc3Jfd2Fp
-dF91cGRhdGUoaW50IGRlYnVnZnNfZmQsIGVudW0gcHNyX21vZGUgbW9kZSwKPiBpZ3Rfb3V0cHV0
-X3QgKm91dHB1dCk7Cj4gwqBib29sIHBzcl9sb25nX3dhaXRfdXBkYXRlKGludCBkZWJ1Z2ZzX2Zk
-LCBlbnVtIHBzcl9tb2RlIG1vZGUsCj4gaWd0X291dHB1dF90ICpvdXRwdXQpOwo+IEBAIC01OSw4
-ICs1OSw4IEBAIGVudW0gcHNyX21vZGUgcHNyX2dldF9tb2RlKGludCBkZWJ1Z2ZzX2ZkLAo+IGln
-dF9vdXRwdXRfdCAqb3V0cHV0KTsKPiDCoAo+IMKgYm9vbCBpOTE1X3BzcjJfc2VsZWN0aXZlX2Zl
-dGNoX2NoZWNrKGludCBkcm1fZmQsIGlndF9vdXRwdXRfdAo+ICpvdXRwdXQpOwo+IMKgCj4gLWJv
-b2wgaTkxNV9wc3IyX3NlbF9mZXRjaF90b19wc3IxKGludCBkcm1fZmQsIGlndF9vdXRwdXRfdCAq
-b3V0cHV0KTsKPiAtdm9pZCBpOTE1X3BzcjJfc2VsX2ZldGNoX3Jlc3RvcmUoaW50IGRybV9mZCwg
-aWd0X291dHB1dF90ICpvdXRwdXQpOwo+ICtib29sIGk5MTVfcHJfcHNyMl9zZWxfZmV0Y2hfdG9f
-cHJfcHNyMShpbnQgZHJtX2ZkLCBpZ3Rfb3V0cHV0X3QKPiAqb3V0cHV0KTsKPiArdm9pZCBpOTE1
-X3ByX3BzcjJfc2VsX2ZldGNoX3Jlc3RvcmUoaW50IGRybV9mZCwgaWd0X291dHB1dF90Cj4gKm91
-dHB1dCk7Cj4gwqBib29sIGlzX3Bzcl9lbmFibGVfcG9zc2libGUoaW50IGRybV9mZCwgZW51bSBw
-c3JfbW9kZSBtb2RlKTsKPiDCoAo+IMKgI2VuZGlmCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19j
-dXJzb3JfbGVnYWN5LmMgYi90ZXN0cy9rbXNfY3Vyc29yX2xlZ2FjeS5jCj4gaW5kZXggYTQzMGY3
-MzVhLi45MWU1ZTliMDcgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMva21zX2N1cnNvcl9sZWdhY3kuYwo+
-ICsrKyBiL3Rlc3RzL2ttc19jdXJzb3JfbGVnYWN5LmMKPiBAQCAtMTg0OSw3ICsxODQ5LDcgQEAg
-aWd0X21haW4KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIHBhZ2UgZmxpcCB3
-aXRoIGN1cnNvciBsZWdhY3kgQVBJUyB3aGVuIEludGVsJ3MKPiBQU1IyIHNlbGVjdGl2ZQo+IMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogZmV0Y2ggaXMgZW5hYmxlZCwgc28gc3dp
-dGNoaW5nIFBTUjEgZm9yIHRoaXMgd2hvbGUKPiB0ZXN0Lgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgICovCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGludGVsX3Bz
-cjJfcmVzdG9yZSA9Cj4gaTkxNV9wc3IyX3NlbF9mZXRjaF90b19wc3IxKGRpc3BsYXkuZHJtX2Zk
-LCBOVUxMKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaW50ZWxfcHNyMl9yZXN0
-b3JlID0KPiBpOTE1X3ByX3BzcjJfc2VsX2ZldGNoX3RvX3ByX3BzcjEoZGlzcGxheS5kcm1fZmQs
-IE5VTEwpOwo+IMKgwqDCoMKgwqDCoMKgwqB9Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rl
-c2NyaWJlKCJUZXN0IGNoZWNrcyBob3cgbWFueSBjdXJzb3IgdXBkYXRlcyB3ZSBjYW4gZml0Cj4g
-YmV0d2VlbiB2YmxhbmtzICIKPiBAQCAtMjA3NCw3ICsyMDc0LDcgQEAgaWd0X21haW4KPiDCoAo+
-IMKgwqDCoMKgwqDCoMKgwqBpZ3RfZml4dHVyZSB7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqBpZiAoaW50ZWxfcHNyMl9yZXN0b3JlKQo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaTkxNV9wc3IyX3NlbF9mZXRjaF9yZXN0b3JlKGRpc3Bs
-YXkuZHJtX2ZkLAo+IE5VTEwpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgaTkxNV9wcl9wc3IyX3NlbF9mZXRjaF9yZXN0b3JlKGRpc3BsYXkuZHJtX2Zk
-Cj4gLCBOVUxMKTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9kaXNwbGF5
-X2ZpbmkoJmRpc3BsYXkpOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZHJtX2Ns
-b3NlX2RyaXZlcihkaXNwbGF5LmRybV9mZCk7Cj4gwqDCoMKgwqDCoMKgwqDCoH0KCg==
+Hello Jouni,
+
+On 2/19/2024 1:15 PM, Hogander, Jouni wrote:
+> On Sun, 2024-02-18 at 14:47 +0530, Kunal Joshi wrote:
+>> We can have multiple panels connected to the system so PSR
+>> information
+>> should be exposed per output. changes provide support for multiple
+>> PSR/PR to be tested simultaneously.
+>>
+>> Cc: Jouni Högander <jouni.hogander@intel.com>
+>> Cc: Animesh Manna <animesh.manna@intel.com>
+>> Cc: Arun R Murthy <arun.r.murthy@intel.com>
+>> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+>> ---
+>>   lib/igt_psr.c                          | 76 ++++++++++++++----------
+>> --
+>>   lib/igt_psr.h                          | 14 ++---
+>>   tests/intel/kms_dirtyfb.c              |  4 +-
+>>   tests/intel/kms_fbcon_fbt.c            |  4 +-
+>>   tests/intel/kms_frontbuffer_tracking.c |  4 +-
+>>   tests/intel/kms_pm_dc.c                |  6 +-
+>>   tests/intel/kms_psr.c                  |  4 +-
+>>   tests/intel/kms_psr2_sf.c              |  8 ---
+>>   tests/intel/kms_psr2_su.c              |  2 +-
+>>   tests/intel/kms_psr_stress_test.c      |  4 +-
+>>   tests/kms_async_flips.c                |  4 +-
+>>   tests/kms_cursor_legacy.c              |  4 +-
+>>   12 files changed, 65 insertions(+), 69 deletions(-)
+>>
+>> diff --git a/lib/igt_psr.c b/lib/igt_psr.c
+>> index ac214fcfc..cad8cce05 100644
+>> --- a/lib/igt_psr.c
+>> +++ b/lib/igt_psr.c
+>> @@ -27,6 +27,10 @@
+>>   #include "igt_sysfs.h"
+>>   #include <errno.h>
+>>   
+>> +#define SET_DEBUGFS_PATH(output, path) \
+>> +       sprintf(path, "%s%s%s", output ? output->name : "", output ?
+>> "/" : "", \
+>> +                       output ? "i915_psr_status" :
+>> "i915_edp_psr_status")
+>> +
+>>   bool psr_disabled_check(int debugfs_fd)
+>>   {
+>>          char buf[PSR_STATUS_MAX_LEN];
+>> @@ -37,11 +41,13 @@ bool psr_disabled_check(int debugfs_fd)
+>>          return strstr(buf, "PSR mode: disabled\n");
+>>   }
+>>   
+>> -bool psr2_selective_fetch_check(int debugfs_fd)
+>> +bool psr2_selective_fetch_check(int debugfs_fd, igt_output_t
+>> *output)
+>>   {
+>>          char buf[PSR_STATUS_MAX_LEN];
+>> +       char debugfs_file[128] = {0};
+>>   
+>> -       igt_debugfs_simple_read(debugfs_fd, "i915_edp_psr_status",
+>> buf,
+>> +       SET_DEBUGFS_PATH(output, debugfs_file);
+>> +       igt_debugfs_simple_read(debugfs_fd, debugfs_file, buf,
+>>                                  sizeof(buf));
+>>   
+>>          return strstr(buf, "PSR2 selective fetch: enabled");
+>> @@ -54,11 +60,7 @@ static bool psr_active_check(int debugfs_fd, enum
+>> psr_mode mode, igt_output_t *o
+>>          const char *state = (mode == PSR_MODE_1 || mode == PR_MODE) ?
+>> "SRDENT" : "DEEP_SLEEP";
+>>          int ret;
+>>   
+>> -       if (output)
+>> -               sprintf(debugfs_file, "%s/i915_psr_status", output-
+>>> name);
+>> -       else
+>> -               sprintf(debugfs_file, "%s", "i915_edp_psr_status");
+>> -
+>> +       SET_DEBUGFS_PATH(output, debugfs_file);
+>>          ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file,
+>>                                       buf, sizeof(buf));
+>>          if (ret < 0) {
+>> @@ -90,13 +92,18 @@ bool psr_long_wait_update(int debugfs_fd, enum
+>> psr_mode mode, igt_output_t *outp
+>>          return igt_wait(!psr_active_check(debugfs_fd, mode, output),
+>> 500, 10);
+>>   }
+>>   
+>> -static ssize_t psr_write(int debugfs_fd, const char *buf)
+>> +static ssize_t psr_write(int debugfs_fd, const char *buf,
+>> igt_output_t *output)
+>>   {
+>> +       /*
+>> +        * FIXME: Currently we don't have separate psr_debug file for
+>> each output.
+>> +        * so, we are using i915_edp_psr_debug file for all outputs.
+>> +        * Later we need to add support for separate psr_debug file
+>> for each output.
+>> +        */
+>>          return igt_sysfs_write(debugfs_fd, "i915_edp_psr_debug", buf,
+>> -                              strlen(buf));
+>> +                                                  strlen(buf));
+>>   }
+>>   
+>> -static int has_psr_debugfs(int debugfs_fd)
+>> +static int has_psr_debugfs(int debugfs_fd, igt_output_t *output)
+>>   {
+>>          int ret;
+>>   
+>> @@ -105,7 +112,7 @@ static int has_psr_debugfs(int debugfs_fd)
+>>           * Legacy mode will return OK here, debugfs api will return -
+>> EINVAL.
+>>           * -ENODEV is returned when PSR is unavailable.
+>>           */
+>> -       ret = psr_write(debugfs_fd, "0xf");
+>> +       ret = psr_write(debugfs_fd, "0xf", output);
+>>          if (ret == -EINVAL) {
+>>                  errno = 0;
+>>                  return 0;
+>> @@ -113,7 +120,7 @@ static int has_psr_debugfs(int debugfs_fd)
+>>                  return ret;
+>>   
+>>          /* legacy debugfs api, we enabled irqs by writing, disable
+>> them. */
+>> -       psr_write(debugfs_fd, "0");
+>> +       psr_write(debugfs_fd, "0", output);
+>>          return -EINVAL;
+>>   }
+>>   
+>> @@ -134,14 +141,14 @@ static int psr_restore_debugfs_fd = -1;
+>>   
+>>   static void restore_psr_debugfs(int sig)
+>>   {
+>> -       psr_write(psr_restore_debugfs_fd, "0");
+>> +       psr_write(psr_restore_debugfs_fd, "0", NULL);
+>>   }
+>>   
+>> -static bool psr_set(int device, int debugfs_fd, int mode)
+>> +static bool psr_set(int device, int debugfs_fd, int mode,
+>> igt_output_t *output)
+>>   {
+>>          int ret;
+>>   
+>> -       ret = has_psr_debugfs(debugfs_fd);
+>> +       ret = has_psr_debugfs(debugfs_fd, output);
+>>          if (ret == -ENODEV) {
+>>                  igt_skip("PSR not available\n");
+>>                  return false;
+>> @@ -179,7 +186,7 @@ static bool psr_set(int device, int debugfs_fd,
+>> int mode)
+>>                          debug_val = "0x1";
+>>                  }
+>>   
+>> -               ret = psr_write(debugfs_fd, debug_val);
+>> +               ret = psr_write(debugfs_fd, debug_val, output);
+>>                  igt_require_f(ret > 0, "PSR2 SF feature not
+>> available\n");
+>>          }
+>>   
+>> @@ -193,15 +200,15 @@ static bool psr_set(int device, int debugfs_fd,
+>> int mode)
+>>          return ret;
+>>   }
+>>   
+>> -bool psr_enable(int device, int debugfs_fd, enum psr_mode mode)
+>> +bool psr_enable(int device, int debugfs_fd, enum psr_mode mode,
+>> igt_output_t *output)
+>>   {
+>> -       return psr_set(device, debugfs_fd, mode);
+>> +       return psr_set(device, debugfs_fd, mode, output);
+>>   }
+>>   
+>> -bool psr_disable(int device, int debugfs_fd)
+>> +bool psr_disable(int device, int debugfs_fd, igt_output_t *output)
+>>   {
+>>          /* Any mode different than PSR_MODE_1/2 will disable PSR */
+>> -       return psr_set(device, debugfs_fd, -1);
+>> +       return psr_set(device, debugfs_fd, -1, output);
+>>   }
+>>   
+>>   bool psr_sink_support(int device, int debugfs_fd, enum psr_mode
+>> mode, igt_output_t *output)
+>> @@ -211,11 +218,7 @@ bool psr_sink_support(int device, int
+>> debugfs_fd, enum psr_mode mode, igt_output
+>>          char buf[PSR_STATUS_MAX_LEN];
+>>          int ret;
+>>   
+>> -       if (output)
+>> -               sprintf(debugfs_file, "%s/i915_psr_status", output-
+>>> name);
+>> -       else
+>> -               sprintf(debugfs_file, "%s", "i915_edp_psr_status");
+>> -
+>> +       SET_DEBUGFS_PATH(output, debugfs_file);
+>>          ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file, buf,
+>>                                        sizeof(buf));
+>>          if (ret < 1)
+>> @@ -305,7 +308,7 @@ void psr_print_debugfs(int debugfs_fd)
+>>          igt_info("%s", buf);
+>>   }
+>>   
+>> -bool i915_psr2_selective_fetch_check(int drm_fd)
+>> +bool i915_psr2_selective_fetch_check(int drm_fd, igt_output_t
+>> *output)
+>>   {
+>>          int debugfs_fd;
+>>          bool ret;
+>> @@ -314,7 +317,7 @@ bool i915_psr2_selective_fetch_check(int drm_fd)
+>>                  return false;
+>>   
+>>          debugfs_fd = igt_debugfs_dir(drm_fd);
+>> -       ret = psr2_selective_fetch_check(debugfs_fd);
+>> +       ret = psr2_selective_fetch_check(debugfs_fd, output);
+>>          close(debugfs_fd);
+>>   
+>>          return ret;
+>> @@ -331,7 +334,7 @@ bool i915_psr2_selective_fetch_check(int drm_fd)
+>>    * Returns:
+>>    * True if PSR mode changed to PSR1, false otherwise.
+>>    */
+>> -bool i915_psr2_sel_fetch_to_psr1(int drm_fd)
+>> +bool i915_psr2_sel_fetch_to_psr1(int drm_fd, igt_output_t *output)
+>>   {
+>>          int debugfs_fd;
+>>          bool ret = false;
+>> @@ -340,8 +343,8 @@ bool i915_psr2_sel_fetch_to_psr1(int drm_fd)
+>>                  return ret;
+>>   
+>>          debugfs_fd = igt_debugfs_dir(drm_fd);
+>> -       if (psr2_selective_fetch_check(debugfs_fd)) {
+>> -               psr_set(drm_fd, debugfs_fd, PSR_MODE_1);
+>> +       if (psr2_selective_fetch_check(debugfs_fd, output)) {
+>> +               psr_set(drm_fd, debugfs_fd, PSR_MODE_1, output);
+>>                  ret = true;
+>>          }
+>>   
+>> @@ -355,12 +358,12 @@ bool i915_psr2_sel_fetch_to_psr1(int drm_fd)
+>>    * Restore PSR2 selective fetch after tests were executed, this
+>> function should
+>>    * only be called if i915_psr2_sel_fetch_to_psr1() returned true.
+>>    */
+>> -void i915_psr2_sel_fetch_restore(int drm_fd)
+>> +void i915_psr2_sel_fetch_restore(int drm_fd, igt_output_t *output)
+>>   {
+>>          int debugfs_fd;
+>>   
+>>          debugfs_fd = igt_debugfs_dir(drm_fd);
+>> -       psr_set(drm_fd, debugfs_fd, PSR_MODE_2_SEL_FETCH);
+>> +       psr_set(drm_fd, debugfs_fd, PSR_MODE_2_SEL_FETCH, output);
+>>          close(debugfs_fd);
+>>   }
+>>   
+>> @@ -369,16 +372,17 @@ void i915_psr2_sel_fetch_restore(int drm_fd)
+>>    *
+>>    * Return the current PSR mode.
+>>    */
+>> -enum psr_mode psr_get_mode(int debugfs_fd)
+>> +enum psr_mode psr_get_mode(int debugfs_fd, igt_output_t *output)
+>>   {
+>>          char buf[PSR_STATUS_MAX_LEN];
+>> +       char debugfs_file[128] = {0};
+>>          int ret;
+>>   
+>> -
+>> -       ret = igt_debugfs_simple_read(debugfs_fd,
+>> "i915_edp_psr_status", buf,
+>> +       SET_DEBUGFS_PATH(output, debugfs_file);
+>> +       ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file, buf,
+>>                                        sizeof(buf));
+>>          if (ret < 0) {
+>> -               igt_info("Could not read i915_edp_psr_status: %s\n",
+>> +               igt_info("Could not read psr status: %s\n",
+>>                           strerror(-ret));
+>>                  return PSR_DISABLED;
+>>          }
+>> diff --git a/lib/igt_psr.h b/lib/igt_psr.h
+>> index 82a4e8c5e..372bef2b2 100644
+>> --- a/lib/igt_psr.h
+>> +++ b/lib/igt_psr.h
+>> @@ -46,21 +46,21 @@ enum fbc_mode {
+>>   };
+>>   
+>>   bool psr_disabled_check(int debugfs_fd);
+>> -bool psr2_selective_fetch_check(int debugfs_fd);
+>> +bool psr2_selective_fetch_check(int debugfs_fd, igt_output_t
+>> *output);
+>>   bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t
+>> *output);
+>>   bool psr_wait_update(int debugfs_fd, enum psr_mode mode,
+>> igt_output_t *output);
+>>   bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode,
+>> igt_output_t *output);
+>> -bool psr_enable(int device, int debugfs_fd, enum psr_mode);
+>> -bool psr_disable(int device, int debugfs_fd);
+>> +bool psr_enable(int device, int debugfs_fd, enum psr_mode,
+>> igt_output_t *output);
+>> +bool psr_disable(int device, int debugfs_fd, igt_output_t *output);
+>>   bool psr_sink_support(int device, int debugfs_fd, enum psr_mode
+>> mode, igt_output_t *output);
+>>   bool psr2_wait_su(int debugfs_fd, uint16_t *num_su_blocks);
+>>   void psr_print_debugfs(int debugfs_fd);
+>> -enum psr_mode psr_get_mode(int debugfs_fd);
+>> +enum psr_mode psr_get_mode(int debugfs_fd, igt_output_t *output);
+>>   
+>> -bool i915_psr2_selective_fetch_check(int drm_fd);
+>> +bool i915_psr2_selective_fetch_check(int drm_fd, igt_output_t
+>> *output);
+>>   
+>> -bool i915_psr2_sel_fetch_to_psr1(int drm_fd);
+>> -void i915_psr2_sel_fetch_restore(int drm_fd);
+>> +bool i915_psr2_sel_fetch_to_psr1(int drm_fd, igt_output_t *output);
+>> +void i915_psr2_sel_fetch_restore(int drm_fd, igt_output_t *output);
+>>   bool is_psr_enable_possible(int drm_fd, enum psr_mode mode);
+>>   
+>>   #endif
+>> diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+>> index 26b82e50a..c2411c824 100644
+>> --- a/tests/intel/kms_dirtyfb.c
+>> +++ b/tests/intel/kms_dirtyfb.c
+>> @@ -127,7 +127,7 @@ static void enable_feature(data_t *data)
+>>                  intel_fbc_enable(data->drm_fd);
+>>                  break;
+>>          case FEATURE_PSR:
+>> -               psr_enable(data->drm_fd, data->debugfs_fd,
+>> PSR_MODE_1);
+>> +               psr_enable(data->drm_fd, data->debugfs_fd,
+>> PSR_MODE_1, NULL);
+>>                  break;
+>>          case FEATURE_DRRS:
+>>                  intel_drrs_enable(data->drm_fd, data->pipe);
+>> @@ -167,7 +167,7 @@ static void check_feature(data_t *data)
+>>   static void disable_features(data_t *data)
+>>   {
+>>          intel_fbc_disable(data->drm_fd);
+>> -       psr_disable(data->drm_fd, data->debugfs_fd);
+>> +       psr_disable(data->drm_fd, data->debugfs_fd, NULL);
+>>          intel_drrs_disable(data->drm_fd, data->pipe);
+>>   }
+>>   
+>> diff --git a/tests/intel/kms_fbcon_fbt.c
+>> b/tests/intel/kms_fbcon_fbt.c
+>> index 90484dccf..71e42f19c 100644
+>> --- a/tests/intel/kms_fbcon_fbt.c
+>> +++ b/tests/intel/kms_fbcon_fbt.c
+>> @@ -277,7 +277,7 @@ static void disable_features(int device, int
+>> debugfs_fd)
+>>   {
+>>          igt_set_module_param_int(device, "enable_fbc", 0);
+>>          if (psr_sink_support(device, debugfs_fd, PSR_MODE_1, NULL))
+>> -               psr_disable(device, debugfs_fd);
+>> +               psr_disable(device, debugfs_fd, NULL);
+>>   }
+>>   
+>>   static inline void fbc_modparam_enable(int device, int debugfs_fd)
+>> @@ -287,7 +287,7 @@ static inline void fbc_modparam_enable(int
+>> device, int debugfs_fd)
+>>   
+>>   static inline void psr_debugfs_enable(int device, int debugfs_fd)
+>>   {
+>> -       psr_enable(device, debugfs_fd, PSR_MODE_1);
+>> +       psr_enable(device, debugfs_fd, PSR_MODE_1, NULL);
+>>   }
+>>   
+>>   static void fbc_skips_on_fbcon(int debugfs_fd)
+>> diff --git a/tests/intel/kms_frontbuffer_tracking.c
+>> b/tests/intel/kms_frontbuffer_tracking.c
+>> index 912cca3f8..023843161 100644
+>> --- a/tests/intel/kms_frontbuffer_tracking.c
+>> +++ b/tests/intel/kms_frontbuffer_tracking.c
+>> @@ -2234,7 +2234,7 @@ static bool disable_features(const struct
+>> test_mode *t)
+>>          intel_fbc_disable(drm.fd);
+>>          intel_drrs_disable(drm.fd, prim_mode_params.pipe);
+>>   
+>> -       return psr.can_test ? psr_disable(drm.fd, drm.debugfs) :
+>> false;
+>> +       return psr.can_test ? psr_disable(drm.fd, drm.debugfs, NULL)
+>> : false;
+>>   }
+>>   
+>>   static void *busy_thread_func(void *data)
+>> @@ -2867,7 +2867,7 @@ static bool enable_features_for_test(const
+>> struct test_mode *t)
+>>          if (t->feature & FEATURE_FBC)
+>>                  intel_fbc_enable(drm.fd);
+>>          if (t->feature & FEATURE_PSR)
+>> -               ret = psr_enable(drm.fd, drm.debugfs, PSR_MODE_1);
+>> +               ret = psr_enable(drm.fd, drm.debugfs, PSR_MODE_1,
+>> NULL);
+>>          if (t->feature & FEATURE_DRRS)
+>>                  intel_drrs_enable(drm.fd, prim_mode_params.pipe);
+>>   
+>> diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+>> index 0d5824e67..7deebf83d 100644
+>> --- a/tests/intel/kms_pm_dc.c
+>> +++ b/tests/intel/kms_pm_dc.c
+>> @@ -362,7 +362,7 @@ static void require_dc_counter(int debugfs_fd,
+>> int dc_flag)
+>>   static void setup_dc3co(data_t *data)
+>>   {
+>>          data->op_psr_mode = PSR_MODE_2;
+>> -       psr_enable(data->drm_fd, data->debugfs_fd, data-
+>>> op_psr_mode);
+>> +       psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode,
+>> NULL);
+>>          igt_require_f(psr_wait_entry(data->debugfs_fd, data-
+>>> op_psr_mode, NULL),
+>>                        "PSR2 is not enabled\n");
+>>   }
+>> @@ -665,7 +665,7 @@ igt_main
+>>                  igt_require(psr_sink_support(data.drm_fd,
+>> data.debugfs_fd,
+>>                                               PSR_MODE_1, NULL));
+>>                  data.op_psr_mode = PSR_MODE_1;
+>> -               psr_enable(data.drm_fd, data.debugfs_fd,
+>> data.op_psr_mode);
+>> +               psr_enable(data.drm_fd, data.debugfs_fd,
+>> data.op_psr_mode, NULL);
+>>                  test_dc_state_psr(&data, CHECK_DC5);
+>>          }
+>>   
+>> @@ -675,7 +675,7 @@ igt_main
+>>                  igt_require(psr_sink_support(data.drm_fd,
+>> data.debugfs_fd,
+>>                                               PSR_MODE_1, NULL));
+>>                  data.op_psr_mode = PSR_MODE_1;
+>> -               psr_enable(data.drm_fd, data.debugfs_fd,
+>> data.op_psr_mode);
+>> +               psr_enable(data.drm_fd, data.debugfs_fd,
+>> data.op_psr_mode, NULL);
+>>                  igt_require_f(igt_pm_pc8_plus_residencies_enabled(dat
+>> a.msr_fd),
+>>                                "PC8+ residencies not supported\n");
+>>                  if (intel_display_ver(data.devid) >= 14)
+>> diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
+>> index 521d4c708..3822b3081 100644
+>> --- a/tests/intel/kms_psr.c
+>> +++ b/tests/intel/kms_psr.c
+>> @@ -519,7 +519,7 @@ static bool psr_enable_if_enabled(data_t *data)
+>>                  igt_skip("enable_psr modparam doesn't allow psr mode
+>> %d\n",
+>>                           data->op_psr_mode);
+>>   
+>> -       return psr_enable(data->drm_fd, data->debugfs_fd, data-
+>>> op_psr_mode);
+>> +       return psr_enable(data->drm_fd, data->debugfs_fd, data-
+>>> op_psr_mode, data->output);
+>>   }
+>>   
+>>   static inline void manual(const char *expected)
+>> @@ -658,6 +658,7 @@ static void test_cleanup(data_t *data)
+>>   
+>>          igt_remove_fb(data->drm_fd, &data->fb_green);
+>>          igt_remove_fb(data->drm_fd, &data->fb_white);
+>> +       psr_disable(data->drm_fd, data->debugfs_fd, data->output);
+>>   }
+>>   
+>>   static void setup_test_plane(data_t *data, int test_plane)
+>> @@ -976,7 +977,6 @@ igt_main
+>>          }
+>>   
+>>          igt_fixture {
+>> -               psr_disable(data.drm_fd, data.debugfs_fd);
+>>                  close(data.debugfs_fd);
+>>                  buf_ops_destroy(data.bops);
+>> diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
+>> index ecf9ad77f..8e6a9e02c 100644
+>> --- a/tests/intel/kms_psr2_sf.c
+>> +++ b/tests/intel/kms_psr2_sf.c
+>> @@ -1012,11 +1012,6 @@ igt_main
+>>                          data.fbc_flag = true;
+>>                  }
+>>   
+>> -               /* Test if PSR2 can be enabled */
+>> -               igt_require_f(psr_enable(data.drm_fd,
+>> -                                        data.debugfs_fd,
+>> PSR_MODE_2_SEL_FETCH),
+>> -                             "Error enabling PSR2\n");
+>> -
+> I started to think it might actually not make sense to remove this.
+> Currently kms_psr2_sf is skipped if psr debugfs interface doesn't
+> exist. I.e. PSR is not supported by the platform. This is with
+> reasonable info "PSR not available". After your change it will assert
+> below as debugfs entry can't be opened.
+>
+> BR,
+>
+> Jouni Högander
+
+
+Thanks for catching this,
+How about having a check before looping on all output to check if we 
+have psr_debug interface present?
+
+Thanks and Regards
+Kunal Joshi
+
+>>                  data.damage_area_count = MAX_DAMAGE_AREAS;
+>>                  data.primary_format = DRM_FORMAT_XRGB8888;
+>>   
+>> @@ -1026,9 +1021,6 @@ igt_main
+>>                  igt_info("Big framebuffer size %dx%d\n",
+>>                           data.big_fb_width, data.big_fb_height);
+>>   
+>> -
+>>                 igt_require_f(psr2_selective_fetch_check(data.debugfs_f
+>> d),
+>> -                             "PSR2 selective fetch not enabled\n");
+>> -
+>>                  for_each_pipe_with_valid_output(&data.display,
+>> data.pipe, data.output) {
+>>                          coexist_features[n_pipes] = 0;
+>>                          if (check_psr2_support(&data)) {
+>> diff --git a/tests/intel/kms_psr2_su.c b/tests/intel/kms_psr2_su.c
+>> index 936b5beb3..437ee36f6 100644
+>> --- a/tests/intel/kms_psr2_su.c
+>> +++ b/tests/intel/kms_psr2_su.c
+>> @@ -338,7 +338,7 @@ igt_main
+>>   
+>>                  /* Test if PSR2 can be enabled */
+>>                  igt_require_f(psr_enable(data.drm_fd,
+>> -                                        data.debugfs_fd,
+>> PSR_MODE_2),
+>> +                                        data.debugfs_fd, PSR_MODE_2,
+>> NULL),
+>>                                "Error enabling PSR2\n");
+>>                  data.op = FRONTBUFFER;
+>>                  data.format = DRM_FORMAT_XRGB8888;
+>> diff --git a/tests/intel/kms_psr_stress_test.c
+>> b/tests/intel/kms_psr_stress_test.c
+>> index 7aea8e8a5..bca3bd513 100644
+>> --- a/tests/intel/kms_psr_stress_test.c
+>> +++ b/tests/intel/kms_psr_stress_test.c
+>> @@ -230,7 +230,7 @@ static void prepare(data_t *data)
+>>          r = timerfd_settime(data->completed_timerfd, 0, &interval,
+>> NULL);
+>>          igt_require_f(r != -1, "Error setting completed_timerfd\n");
+>>   
+>> -       data->initial_state = psr_get_mode(data->debugfs_fd);
+>> +       data->initial_state = psr_get_mode(data->debugfs_fd, NULL);
+>>          igt_require(data->initial_state != PSR_DISABLED);
+>>          igt_require(psr_wait_entry(data->debugfs_fd, data-
+>>> initial_state, NULL));
+>>   }
+>> @@ -343,7 +343,7 @@ static void run(data_t *data)
+>>          }
+>>   
+>>          /* Check if after all this stress the PSR is still in the
+>> same state */
+>> -       igt_assert(psr_get_mode(data->debugfs_fd) == data-
+>>> initial_state);
+>> +       igt_assert(psr_get_mode(data->debugfs_fd, NULL) == data-
+>>> initial_state);
+>>   }
+>>   
+>>   igt_main
+>> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+>> index a0349fa03..2895168f7 100644
+>> --- a/tests/kms_async_flips.c
+>> +++ b/tests/kms_async_flips.c
+>> @@ -391,7 +391,7 @@ static void test_cursor(data_t *data)
+>>           * necessary, causing the async flip to fail because async
+>> flip is not
+>>           * supported in cursor plane.
+>>           */
+>> -       igt_skip_on_f(i915_psr2_selective_fetch_check(data->drm_fd),
+>> +       igt_skip_on_f(i915_psr2_selective_fetch_check(data->drm_fd,
+>> NULL),
+>>                        "PSR2 sel fetch causes cursor to be added to
+>> primary plane " \
+>>                        "pages flips and async flip is not supported in
+>> cursor\n");
+>>   
+>> @@ -704,7 +704,7 @@ igt_main
+>>                   * necessary, causing the async flip to fail because
+>> async flip is not
+>>                   * supported in cursor plane.
+>>                   */
+>> -
+>>                 igt_skip_on_f(i915_psr2_selective_fetch_check(data.drm_
+>> fd),
+>> +               igt_skip_on_f(i915_psr2_selective_fetch_check(data.dr
+>> m_fd, NULL),
+>>                                "PSR2 sel fetch causes cursor to be
+>> added to primary plane " \
+>>                                "pages flips and async flip is not
+>> supported in cursor\n");
+>>   
+>> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+>> index 0017659d4..a430f735a 100644
+>> --- a/tests/kms_cursor_legacy.c
+>> +++ b/tests/kms_cursor_legacy.c
+>> @@ -1849,7 +1849,7 @@ igt_main
+>>                   * page flip with cursor legacy APIS when Intel's
+>> PSR2 selective
+>>                   * fetch is enabled, so switching PSR1 for this whole
+>> test.
+>>                   */
+>> -               intel_psr2_restore =
+>> i915_psr2_sel_fetch_to_psr1(display.drm_fd);
+>> +               intel_psr2_restore =
+>> i915_psr2_sel_fetch_to_psr1(display.drm_fd, NULL);
+>>          }
+>>   
+>>          igt_describe("Test checks how many cursor updates we can fit
+>> between vblanks "
+>> @@ -2074,7 +2074,7 @@ igt_main
+>>   
+>>          igt_fixture {
+>>                  if (intel_psr2_restore)
+>> -                       i915_psr2_sel_fetch_restore(display.drm_fd);
+>> +                       i915_psr2_sel_fetch_restore(display.drm_fd,
+>> NULL);
+>>                  igt_display_fini(&display);
+>>                  drm_close_driver(display.drm_fd);
+>>          }
