@@ -4,49 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2664C48BC3
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Feb 2024 11:22:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57D39C48BF8
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Feb 2024 11:27:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7925010E31A;
-	Mon, 19 Feb 2024 11:22:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0E02910E328;
+	Mon, 19 Feb 2024 11:27:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E7hrKB2J";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PNlIZYhq";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D5AC10E31A
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Feb 2024 11:22:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A2BD10E328
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Feb 2024 11:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708341745; x=1739877745;
+ t=1708342023; x=1739878023;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=4+q+haveq58t+nSwlu3A6Ve4Oc9anI4nbXJ8oyGP3pk=;
- b=E7hrKB2J/5KDxdLsXel7BLeQ64dtkS8KwALVVLFhrefLPns0mrigJkxe
- ZegIfn70fXY9N/Bx0VIpl0Y+3zWyvTesAQtXgdnNVe0nfZFYoKGCMaD7c
- K9i69ncNGrnfFLzjB28AaPmtowWgmhEPXviOEy6okh8yTsAmZ50HfKnUT
- AY34FJIv9griHCBMZRx1ZjD3f5NNQt2Yn8BrYg3m6/C3HpOMER99pjeUm
- kZWtckU5meC6o9IkT+g3H6Nn9YZNebAjcx19mPohUTC6fUdAnn5NC4ObG
- OUUdBbT2xt29SANepLpFPkwwCaZbw4X4U4Ov8Srcryow8jmLi7R4XbBvu Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="2539027"
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="2539027"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2024 03:22:24 -0800
+ bh=VkepVvkwOQoKheHlEXgY0ntlD0SqMP0c0K2zPIK82Ps=;
+ b=PNlIZYhq73DNkDasVxYjsonOcwuSRzHBkpnynLXVt0d7tszBqvOED4r+
+ 0zugXQw4ja4YAyHwSSQVRnBIeHo5I4F/1qxVy0eAqwmrhpPFD4dwtx5Dh
+ V3/Wt5yky4w7qLSxHMIsV0VnpnisT7wrxVPumIm4kWIJdj+nvO15snaU3
+ vqLDf/e31S7rOTXvkNcvR89/iorPb2tpC6RXCXro4cVJQCgqaWo+EHOwv
+ ZYOl7HTOOVZs5qwuJyu6RMpJjkyklrkwRVT4pit+BT2Jo56NaPPaDQHXN
+ IZ7UQVei3wFwiWgCYTMSDbRxyu81WRaLT8b1yhFjNdh7fUsv7iYNONTcw w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="24874600"
+X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; d="scan'208";a="24874600"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Feb 2024 03:27:02 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="4467172"
+   d="scan'208";a="9136890"
 Received: from unknown (HELO localhost) ([10.246.5.157])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2024 03:22:22 -0800
-Date: Mon, 19 Feb 2024 12:22:19 +0100
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Feb 2024 03:27:01 -0800
+Date: Mon, 19 Feb 2024 12:26:58 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org,
  Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>
 Subject: Re: [PATCH i-g-t v9 5/7] lib/intel_multigpu: Add
  xe_multi_fork_foreach_gpu
-Message-ID: <20240219112219.qrlnun3322hvhglq@zkempczy-mobl2>
+Message-ID: <20240219112658.kfw4e34w3tvcrtc3@zkempczy-mobl2>
 References: <20240215161014.60304-1-kamil.konieczny@linux.intel.com>
  <20240215161014.60304-6-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
@@ -152,16 +151,14 @@ On Thu, Feb 15, 2024 at 05:10:12PM +0100, Kamil Konieczny wrote:
 > +
 > +	if (gpu_count >= count)
 > +		return;
+
+This variable is confusing, this means number of filters, not
+gpu count.
+
 > +
 > +	print_gpus(count, gpu_count);
 > +	igt_skip_on(gpu_count < count);
 > +}
-
-I don't get, what for is previous change in gem_require_multigpu()?
-
---
-Zbigniew
-
 > +
 > +/**
 > + * multigpu_acquire_view:
@@ -264,6 +261,14 @@ Zbigniew
 > +			__fd >= 0; \
 > +			drm_close_driver(__fd), __fd = -1) \
 > +
+
+What for we need new helper for opening xe devices?
+Isn't igt_multi_for_foreach_gpu() enough?
+
+--
+Zbigniew
+
+
 >  #endif /* __INTEL_MULTIGPU_H */
 > -- 
 > 2.42.0
