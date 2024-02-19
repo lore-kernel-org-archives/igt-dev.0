@@ -4,61 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 321D6C48260
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Feb 2024 09:23:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7467BC54764
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Feb 2024 09:54:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BC96810E1E3;
-	Mon, 19 Feb 2024 09:23:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0CAEC10E28A;
+	Mon, 19 Feb 2024 09:54:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X07aq7bO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="my3hJ1wk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E124110E1ED
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Feb 2024 09:23:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41BE810E29C
+ for <IGT-Dev@lists.freedesktop.org>; Mon, 19 Feb 2024 09:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708334589; x=1739870589;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=dn5hM8QRGpT3GAxwsGnfZIDAiovMafw8CcF3Mu2hhv8=;
- b=X07aq7bOf+rliczH0cNmMb7W9smUDrJHvekVXdzw9FffnloX2DIM47Af
- vZJ1d+K1YXq+KRSNTMWLJTuAMepCkXRiwc45cVM7cY/I5koKy3zSrnpPn
- ok/1irmEY8nLehaQRUh8fMyx/BhTrtQBYN1BBGryORdqY4uTflcRbU2O2
- tQeNB5ZuPEk3lNlBzkxirprzgr9VlMu1BNaUOQ9gW5XIfFGuJLvMsaXaL
- rs7aZB9KS9STOIfabgsHL5e3fdCGz+iZN0V1aHbI9UQ14krgMDJXl0GfO
- h53LqgDWpxH+K8pdmn2yiRcanwSdOMbIY484qLe661t4uDJrII39+xk6B Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="13113340"
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; d="scan'208";a="13113340"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2024 01:22:33 -0800
+ t=1708336440; x=1739872440;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=KMXXGE3DsNFOSzAOJ0hH4TChIw1HaRqKoxVUqjqcPjw=;
+ b=my3hJ1wkm8e8W0GMJx3psFOw3xS+gRm9npNacAH7pi4Za2FwesYUW7I0
+ 37pwAEwt52C5b0h83TeMHZgDzPkWVh3v2RdfKgbFDJaSDxCEIrMJ/Kwyw
+ aqUom2zNDhn4MkP057fL5FujR8bC9YTql27TwewDbAbmH2ME/0VOC4Neo
+ kJCj6QSGP7pF4o4sSDtCwd2owq8faUe3QAJDd3eOrChxaY9/nHSGhOy1u
+ nIa6KS2xWnQMq6okZDsjl/zzRy1wq4zqxJHXLb5Y8vy74LVnx6Jk9x64v
+ UfpS0qut14p7XY82g+eSnsmPtcWB0nTVnu3tyXwQBRc/Q8Rq3s8E5NoQ5 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="19835057"
+X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; d="scan'208";a="19835057"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Feb 2024 01:54:00 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="9111340"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.22.234])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2024 01:22:29 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Arkadiusz Hiler <arek@hiler.eu>,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Petri Latvala <adrinael@adrinael.net>,
- Zbigniew =?utf-8?B?S2VtcGN6ecWEc2tp?= <zbigniew.kempczynski@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: Re: [PATCH i-g-t v4] lib/drmtest: drop legacy check from filtered
- opens
-Date: Mon, 19 Feb 2024 10:22:25 +0100
-Message-ID: <18984149.jiFIW2sfyF@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20240216190534.79086-1-kamil.konieczny@linux.intel.com>
-References: <20240216190534.79086-1-kamil.konieczny@linux.intel.com>
+   d="scan'208";a="4396487"
+Received: from coldacre-mobl1.ger.corp.intel.com (HELO [10.213.215.68])
+ ([10.213.215.68])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Feb 2024 01:53:59 -0800
+Message-ID: <b838e58a-37a7-4de9-a774-c2a1df6a3cdb@linux.intel.com>
+Date: Mon, 19 Feb 2024 09:53:57 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/intel/gem_watchdog: Reduced timeouts for
+ worst case scenario
+Content-Language: en-US
+To: John Harrison <john.c.harrison@intel.com>, IGT-Dev@Lists.FreeDesktop.Org
+References: <20240212212328.3794573-1-John.C.Harrison@Intel.com>
+ <fc965672-a30a-4f5a-98af-2cdab1f53153@linux.intel.com>
+ <addb89bd-2c2a-43a9-8492-ca541b48de33@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Organization: Intel Corporation UK Plc
+In-Reply-To: <addb89bd-2c2a-43a9-8492-ca541b48de33@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,121 +70,78 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kamil,
 
-On Friday, 16 February 2024 20:05:34 CET Kamil Konieczny wrote:
-> For some multi-GPU tests user can check them on single-GPU board
-> with the help of repeating same card in --device option or
-> environment var IGT_DEVICE:
->=20
-> sudo IGT_DEVICE=3Dpci:vendor=3DIntel,card=3D0\;pci:vendor=3DIntel,card=3D=
-0 \
-> 	build/tests/gem_basic --r multigpu-create-close
->=20
-> but is unable to use it due to current implementation of device
-> opening in function __drm_open_driver_another().
->=20
-> To allow this drop legacy check for already opened device when
-> using filters.
->=20
-> v2: improving description, using filtered_count var (Janusz)
->   changing drmtest: to lib/drmtest: (Kamil)
->   adding Lukasz Laguna to Cc: (Kamil)
-> v3: for out-of-bound index print debug, not a warning (Kamil)
-> v4: restored using filters number for filtered path and restored
->   setting opened fds for legacy tests, changed description (Kamil)
->=20
-> Cc: Arkadiusz Hiler <arek@hiler.eu>
-> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Petri Latvala <adrinael@adrinael.net>
-> Cc: "Zbigniew Kempczy=C5=84ski" <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Reviewed-by: "Zbigniew Kempczy=C5=84ski" <zbigniew.kempczynski@intel.com>
-> ---
->  lib/drmtest.c | 16 ++++++++++------
->  1 file changed, 10 insertions(+), 6 deletions(-)
->=20
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 52b5a2020..43e6c0158 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -481,13 +481,12 @@ static bool __get_card_for_nth_filter(int idx, stru=
-ct igt_device_card *card)
->   *
->   * This function opens device in the following order:
->   *
-> - * 1. when --device arguments are present:
-> + * 1. when --device arguments are present or IGT_DEVICE env var is used:
->   *   * device scanning is executed,
->   *   * idx-th filter (starting with 0, filters are semicolon separated) =
-is used
->   *   * if there is no idx-th filter, goto 2
->   *   * first device maching the filter is selected
-> - *   * if it's already opened (for indexes =3D 0..idx-1) we fail with -1
-> - *   * otherwise open the device and return the fd
-> + *   * open the device and return the fd
->   *
->   * 2. compatibility mode - open the first DRM device we can find that is=
- not
->   *    already opened for indexes 0..idx-1, searching up to 16 device nod=
-es
-> @@ -526,12 +525,19 @@ static bool __get_card_for_nth_filter(int idx, stru=
-ct igt_device_card *card)
->   */
->  int __drm_open_driver_another(int idx, int chipset)
->  {
-> +	int filter_count =3D igt_device_filter_count();
->  	int fd =3D -1;
-> =20
-> -	if (chipset !=3D DRIVER_VGEM && igt_device_filter_count() > idx) {
-> +	if (chipset !=3D DRIVER_VGEM && idx < filter_count) {
->  		struct igt_device_card card;
->  		bool found;
-> =20
-> +		if (idx < 0) {
-> +			igt_debug("Cannot open, index out of bounds: %d, filter_count=3D%d\n",
-> +				 idx, filter_count);
-> +			return -1;
-> +		}
+On 16/02/2024 01:33, John Harrison wrote:
+> On 2/13/2024 01:34, Tvrtko Ursulin wrote:
+>> On 12/02/2024 21:23, John.C.Harrison@Intel.com wrote:
+>>> From: John Harrison <John.C.Harrison@Intel.com>
+>>>
+>>> The watchdog test reduces the watchdog timer from 20s to 1s and then
+>>> uses a 5s timeout waiting for the watchdog to do its stuff. This works
+>>> fine in general, but if an engine reset is required by a context that
+>>> is actually dead for real then a pre-emption timeout must be factored
+>>> in. For RCS/CCS engines, that timeout is 7.5 seconds by default. Thus,
+>>> the test timeout expires first and the test fails.
+>>>
+>>> Normally, the system is not so dead when running this test as to
+>>> require an engine reset. A simple pre-emption works fine for the
+>>> spinner contexts that is uses. However, there is a hardware workaround
+>>> coming which prevents context switches when both RCS and CCS are busy.
+>>>
+>>> So add an explicit override of the pre-emption timeout as well as the
+>>> watchdog timeout. That will allow the test to keep working after the
+>>> new w/a lands.
+>>>
+>>> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+>>> ---
+>>>   tests/intel/gem_watchdog.c | 10 ++++++++++
+>>>   1 file changed, 10 insertions(+)
+>>>
+>>> diff --git a/tests/intel/gem_watchdog.c b/tests/intel/gem_watchdog.c
+>>> index 1e4c350214c0..c9dd0deb51aa 100644
+>>> --- a/tests/intel/gem_watchdog.c
+>>> +++ b/tests/intel/gem_watchdog.c
+>>> @@ -577,6 +577,16 @@ igt_main
+>>>             i915 = drm_reopen_driver(i915); /* Apply modparam. */
+>>>           ctx = intel_ctx_create_all_physical(i915);
+>>> +
+>>> +        for_each_ctx_engine(i915, ctx, e) {
+>>> +            /*
+>>> +             * Context termination by watchdog may require an engine 
+>>> reset. That only
+>>> +             * occurs after a pre-emption attempt has expired. For 
+>>> RCS/CCS engines,
+>>> +             * the pre-emption timeout is longer than this test is 
+>>> wanting to wait.
+>>> +             * So reduce that timeout in addition to the watchdog 
+>>> timeout itself.
+>>> +             */
+>>> +            gem_engine_property_printf(i915, e->name, 
+>>> "preempt_timeout_ms", "%d", 640);
+>>> +        }
+>>
+>> Restore at test exit for subsequent tests to be in a known environment?
+> IGT actually does the reverse. Part of the framework initialisation is 
+> to forcibly reset all the sysfs parameters to the official defaults (as 
+> exposed via the .default sysfs files). So in general, the tests don't 
+> bother trying to preserve such values.
 
-I'm wondering why we need this check now while it was not here before.  Is=
-=20
-that really related to dropping the call to _is_already_opened() below?  If=
-=20
-idx < 0 then in any case that seems to be a bug on the caller side.
+True, looks like I forgot about that.
 
-I think the most clean approach would be to declare the idx argument as=20
-unsigned int.  If not then I would place this check at the top of the funct=
-ion=20
-body, above the if block, and use something more strong than igt_debug()=20
-(igt_fail() if we may expect users to be prepared for long jumps, igt_warn(=
-)=20
-otherwise).
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-How about moving that to a separate patch?  If not than maybe a "while bein=
-g=20
-at it" note in commit description would be sufficient.
+Regards,
 
-Thanks,
-Janusz
+Tvrtko
 
-> +
->  		found =3D __get_card_for_nth_filter(idx, &card);
-> =20
->  		if (!found) {
-> @@ -542,8 +548,6 @@ int __drm_open_driver_another(int idx, int chipset)
->  		if (!found || !strlen(card.card))
->  			igt_warn("No card matches the filter! [%s]\n",
->  				 igt_device_filter_get(idx));
-> -		else if (_is_already_opened(card.card, idx))
-> -			igt_warn("card maching filter %d is already opened\n", idx);
->  		else
->  			fd =3D __open_driver_exact(card.card, chipset);
-> =20
->=20
-
-
-
-
+> 
+> John.
+> 
+>>
+>> Regards,
+>>
+>> Tvrtko
+>>
+>>>       }
+>>>         igt_subtest_group {
+> 
