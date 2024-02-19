@@ -4,65 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98B6DC48BC3
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Feb 2024 17:45:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3EE7C48BF8
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Feb 2024 17:50:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3A0BB10E135;
-	Mon, 19 Feb 2024 17:45:15 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JFxGWHh/";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8958010E35F
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Feb 2024 17:45:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708364713; x=1739900713;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=Mbfb0bSrc/hrPAQezhp57xBL/W7Zbxhirrw1TWu4vGs=;
- b=JFxGWHh/JBtdPoblqRrtpBJic6m/7wpR+zCbkEn0AJB1K3iCX9amYWSz
- 7AT8sGYUd8SnfTGLXuw+jgFul8d/4Bm3cQiP5b17VZCPIdLpCc5ftgiuE
- Zcu7IPhkZWeNXEQdMZik2oKjHGwHRU+7yotoBJYfXVdx2OSrqF0ZoMrOh
- LsfqGVoV+PFH2jlqjRYTIf0fWwARbGnQ+Dce06T9206U2UO9pf1e3hynE
- BW8ShR5kZS6ZOmfWtodGHcY0EQ+zIaBnmPJtXZqJNDfUy4+LNPrJd7Btx
- I4z4bujtzSdffh6swHSQGDP9ugzavCcNeypqjz0fx0JOjJAUpjypIFOKk Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="2904513"
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="2904513"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2024 09:45:13 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="936319390"
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; d="scan'208";a="936319390"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmsmga001-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 09:45:11 -0800
-Date: Mon, 19 Feb 2024 18:45:08 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Chris Wilson <chris.p.wilson@linux.intel.com>
-Subject: Re: [PATCH i-g-t v9 4/7] lib/intel_multigpu: Introduced
- gem_multigpu_count_class and igt_multi_fork_foreach_gpu
-Message-ID: <20240219174508.hv5bksvxbycazsh7@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org,
- Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Chris Wilson <chris.p.wilson@linux.intel.com>
-References: <20240215161014.60304-1-kamil.konieczny@linux.intel.com>
- <20240215161014.60304-5-kamil.konieczny@linux.intel.com>
- <20240219112030.3vcwjr35m6kcqxkt@zkempczy-mobl2>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4CE8C10E37F;
+	Mon, 19 Feb 2024 17:50:43 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C9BD10E302;
+ Mon, 19 Feb 2024 17:50:41 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5811901223600496679=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240219112030.3vcwjr35m6kcqxkt@zkempczy-mobl2>
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_extend_psr2=5Fsf_test_for_p?=
+ =?utf-8?q?r=5Fsf_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 19 Feb 2024 17:50:41 -0000
+Message-ID: <170836504157.107368.17484446053338381394@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240219163333.2339647-1-kunal1.joshi@intel.com>
+In-Reply-To: <20240219163333.2339647-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,104 +37,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zbigniew,
-On 2024-02-19 at 12:20:30 +0100, Zbigniew Kempczyński wrote:
-> On Thu, Feb 15, 2024 at 05:10:11PM +0100, Kamil Konieczny wrote:
-> > From: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-> > 
-> > Introduced gem_multigpu_count_class function that returns an actual
-> > number of GPUs present in system, which allows for writing multi-GPU
-> > test scenarios that does not require
-> > --device pci:vendor=intel,device=discrete,card=all
-> > to run as intended. Based on patch by Chris Wilson.
-> > 
-> > Introduced igt_multi_fork_foreach_gpu macro that helps with
-> > writing multi-GPU test scenarios in idiomatic form:
-> > 
-> > igt_multi_fork_foreach_gpu(i915, DRIVER_INTEL)
-> > 	test_function(i915);
-> > igt_waitchildren();
-> > 
-> > Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
-> > Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > Signed-off-by: "Dominik Karol Piątkowski" <dominik.karol.piatkowski@intel.com>
-> > Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > ---
-> >  lib/intel_multigpu.c | 11 +++++++++++
-> >  lib/intel_multigpu.h | 15 +++++++++++++++
-> >  2 files changed, 26 insertions(+)
-> > 
-> > diff --git a/lib/intel_multigpu.c b/lib/intel_multigpu.c
-> > index 34c9f936d..0e76d8aa3 100644
-> > --- a/lib/intel_multigpu.c
-> > +++ b/lib/intel_multigpu.c
-> > @@ -3,10 +3,21 @@
-> >   * Copyright © 2023 Intel Corporation
-> >   */
-> >  
-> > +#include "drmtest.h"
-> >  #include "igt_core.h"
-> >  #include "igt_device_scan.h"
-> >  #include "intel_multigpu.h"
-> >  
-> > +int gem_multigpu_count_class(int class)
-> > +{
-> > +	int count = 0;
-> > +
-> > +	igt_foreach_gpu(fd, class)
-> > +		count++;
-> > +
-> > +	return count;
-> > +}
-> > +
-> >  void gem_require_multigpu(int count)
-> >  {
-> >  	struct igt_devices_print_format fmt = {
-> > diff --git a/lib/intel_multigpu.h b/lib/intel_multigpu.h
-> > index 98dc5a4ce..0ebc73e4a 100644
-> > --- a/lib/intel_multigpu.h
-> > +++ b/lib/intel_multigpu.h
-> > @@ -6,6 +6,21 @@
-> >  #ifndef __INTEL_MULTIGPU_H
-> >  #define __INTEL_MULTIGPU_H
-> >  
-> > +#include "drmtest.h"
-> > +#include "igt_core.h"
-> > +
-> >  void gem_require_multigpu(int count);
-> > +int gem_multigpu_count_class(int class);
-> > +
-> > +#define igt_foreach_gpu(fd__, id__) \
-> > +	for (int igt_unique(i) = 0, fd__; \
-> > +		(fd__ = __drm_open_driver_another(igt_unique(i)++, id__)) >= 0; \
-> > +		close(fd__))
-> > +
-> > +#define igt_multi_fork_foreach_gpu(__fd, __id) \
-> > +	igt_multi_fork(igt_unique(__i), gem_multigpu_count_class(__id)) \
-> > +		for (int __fd = drm_open_driver_another(igt_unique(__i), __id); \
-> > +			__fd >= 0; \
-> > +			close(__fd), __fd = -1) \
+--===============5811901223600496679==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-One more thing I spotted recently, instead of close() it would be
-better to use drm_close_driver(__fd), also using __chipset would
-make clear what a second parameter should be.
+== Series Details ==
 
-Regards,
-Kamil
+Series: extend psr2_sf test for pr_sf (rev6)
+URL   : https://patchwork.freedesktop.org/series/129004/
+State : success
 
-> >  
-> >  #endif /* __INTEL_MULTIGPU_H */
-> > -- 
-> > 2.42.0
-> > 
-> 
-> For me those helpers looks correct, so:
-> 
-> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> 
-> --
-> Zbigniew
+== Summary ==
+
+CI Bug Log - changes from IGT_7717 -> IGTPW_10696
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10696/index.html
+
+Participating hosts (37 -> 34)
+------------------------------
+
+  Missing    (3): bat-mtlp-8 fi-cfl-8109u fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10696 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-nick:        [PASS][1] -> [ABORT][2] ([i915#7911])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7717/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10696/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-7567u:       [CRASH][3] ([i915#9947]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7717/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10696/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
+
+  
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#9947]: https://gitlab.freedesktop.org/drm/intel/issues/9947
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7717 -> IGTPW_10696
+
+  CI-20190529: 20190529
+  CI_DRM_14296: f12bce6493b6443870b55f36b1462d65e450d29d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10696: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10696/index.html
+  IGT_7717: 7717
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10696/index.html
+
+--===============5811901223600496679==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>extend psr2_sf test for pr_sf (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129004/">https://patchwork.freedesktop.org/series/129004/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10696/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10696/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7717 -&gt; IGTPW_10696</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10696/index.html</p>
+<h2>Participating hosts (37 -&gt; 34)</h2>
+<p>Missing    (3): bat-mtlp-8 fi-cfl-8109u fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10696 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@execlists:<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7717/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10696/fi-bsw-nick/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7717/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html">CRASH</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9947">i915#9947</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10696/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7717 -&gt; IGTPW_10696</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14296: f12bce6493b6443870b55f36b1462d65e450d29d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10696: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10696/index.html<br />
+  IGT_7717: 7717</p>
+
+</body>
+</html>
+
+--===============5811901223600496679==--
