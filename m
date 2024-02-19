@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AC56C54764
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Feb 2024 14:35:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C985AC48BC3
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Feb 2024 15:22:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BFF5210E2EB;
-	Mon, 19 Feb 2024 14:35:17 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N+f4W/Hc";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEBDC10E29B
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Feb 2024 14:35:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708353315; x=1739889315;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=iBrEBVCK9+GBCV098GRrAfye+kw+RgdCt6jXB6rL5DM=;
- b=N+f4W/HcDD8HwwKJG8VryDCQjA7HBRWDuBdSyVRn/e6yBQw4GWuCbK3E
- PL7Oes+mtGcCfo8dSnwmYWScmJU4Dd9CZwTVHLeNCHMirhdEJrHbvtEmh
- VzcCqC8rO6DGqQ0K7TfoDSJME6Aco9sdWIKnPL+Yn6IPanl0pL3FWjbZM
- TqeA3LhH/LUaZEGSRZfbIRHD2bcx++yP2Aw9cGTVB3U3YSh3yh2KgnZIS
- ExqmAljyfQlT1/0LzzRK1iQiowzVJw59xlWQsWxEvuAvL94D6cyDYoC8s
- AvjJwTRxxE7ZfPldkwE8mU8LuxvW5f6bheWKDyiShvFuQ/77U5ZsOkJNo w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="12983834"
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; d="scan'208";a="12983834"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2024 06:35:15 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="4545807"
-Received: from laileona-mobl.ger.corp.intel.com (HELO localhost.localdomain)
- ([10.252.48.20])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2024 06:35:14 -0800
-From: Francois Dugast <francois.dugast@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Francois Dugast <francois.dugast@intel.com>,
- John Harrison <John.C.Harrison@Intel.com>,
- =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t,
- v3 2/2] drm-uapi/xe: Add test to query HuC firmware version
-Date: Mon, 19 Feb 2024 14:35:01 +0000
-Message-Id: <20240219143501.7-3-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240219143501.7-1-francois.dugast@intel.com>
-References: <20240219143501.7-1-francois.dugast@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7444310E1D9;
+	Mon, 19 Feb 2024 15:22:47 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCB3D10E190;
+ Mon, 19 Feb 2024 15:22:45 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1742889844466756692=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_tests_to_query_firmware_ve?=
+ =?utf-8?q?rsion_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Francois Dugast" <francois.dugast@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 19 Feb 2024 15:22:45 -0000
+Message-ID: <170835616590.89494.13602302294498387135@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240219143501.7-1-francois.dugast@intel.com>
+In-Reply-To: <20240219143501.7-1-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,176 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This aligns with kernel commit ("drm/xe: Extend uAPI to query HuC
-micro-controler firmware version").
+--===============1742889844466756692==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2:
-- Fix printing branch (Francois Dugast)
-- Make ENODEV the only accepted error (José Roberto de Souza)
+== Series Details ==
 
-v3:
-- Share code between guc and huc tests (John Harrison)
+Series: Add tests to query firmware version (rev3)
+URL   : https://patchwork.freedesktop.org/series/129647/
+State : success
 
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: José Roberto de Souza <jose.souza@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
----
- include/drm-uapi/xe_drm.h |  1 +
- tests/intel/xe_query.c    | 89 ++++++++++++++++++++++++++++++---------
- 2 files changed, 71 insertions(+), 19 deletions(-)
+== Summary ==
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 3bd795f27..ce4acf9d4 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -583,6 +583,7 @@ struct drm_xe_query_engine_cycles {
- struct drm_xe_query_uc_fw_version {
- 	/** @uc: The micro-controller type to query firmware version */
- #define XE_QUERY_UC_TYPE_GUC_SUBMISSION 0
-+#define XE_QUERY_UC_TYPE_HUC 1
- 	__u16 uc_type;
- 
- 	/** @pad: MBZ */
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index bbe5955eb..b21c3820a 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -730,18 +730,8 @@ static void test_engine_cycles_invalid(int fd)
- 	query_engine_cycles(fd, &ts);
- }
- 
--/**
-- * SUBTEST: query-uc-fw-version-guc
-- * Test category: functionality test
-- * Description: Display the GuC firmware submission version
-- *
-- * SUBTEST: multigpu-query-uc-fw-version-guc
-- * Test category: functionality test
-- * Sub-category: MultiGPU
-- * Description: Display GuC firmware submission version for all Xe devices.
-- */
- static void
--test_query_uc_fw_version_guc(int fd)
-+test_query_uc_fw_version(int fd, uint32_t uc_type)
- {
- 	struct drm_xe_query_uc_fw_version *uc_fw_version;
- 	struct drm_xe_device_query query = {
-@@ -750,6 +740,7 @@ test_query_uc_fw_version_guc(int fd)
- 		.size = 0,
- 		.data = 0,
- 	};
-+	int ret;
- 
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
- 
-@@ -757,20 +748,63 @@ test_query_uc_fw_version_guc(int fd)
- 	igt_assert(uc_fw_version);
- 
- 	memset(uc_fw_version, 0, sizeof(*uc_fw_version));
--	uc_fw_version->uc_type = XE_QUERY_UC_TYPE_GUC_SUBMISSION;
-+	uc_fw_version->uc_type = uc_type;
- 	query.data = to_user_pointer(uc_fw_version);
- 
--	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
--	igt_info("XE_QUERY_UC_TYPE_GUC_SUBMISSION %u.%u.%u.%u\n",
--		 uc_fw_version->branch_ver,
--		 uc_fw_version->major_ver,
--		 uc_fw_version->minor_ver,
--		 uc_fw_version->patch_ver);
--	igt_assert(uc_fw_version->major_ver > 0 || uc_fw_version->minor_ver > 0);
-+	ret = igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
-+
-+	switch (uc_type) {
-+	case XE_QUERY_UC_TYPE_GUC_SUBMISSION:
-+		igt_assert(ret == 0);
-+		igt_assert(uc_fw_version->major_ver > 0 ||
-+			   uc_fw_version->minor_ver > 0);
-+		igt_info("XE_QUERY_UC_TYPE_GUC_SUBMISSION %u.%u.%u.%u\n",
-+			 uc_fw_version->branch_ver,
-+			 uc_fw_version->major_ver,
-+			 uc_fw_version->minor_ver,
-+			 uc_fw_version->patch_ver);
-+		break;
-+	case XE_QUERY_UC_TYPE_HUC:
-+		if (ret == 0) {
-+			igt_assert(uc_fw_version->major_ver > 0);
-+			igt_info("XE_QUERY_UC_TYPE_HUC %u.%u.%u.%u\n",
-+				 uc_fw_version->branch_ver,
-+				 uc_fw_version->major_ver,
-+				 uc_fw_version->minor_ver,
-+				 uc_fw_version->patch_ver);
-+		} else if (errno == ENODEV) {
-+			/*
-+			 * No HuC was found, either because it is not running
-+			 * yet or there is no media IP.
-+			 */
-+			igt_info("XE_QUERY_UC_TYPE_HUC No HuC is running\n");
-+		} else {
-+			igt_assert(false);
-+		}
-+		break;
-+	default:
-+		igt_assert(false);
-+	}
- 
- 	free(uc_fw_version);
- }
- 
-+/**
-+ * SUBTEST: query-uc-fw-version-guc
-+ * Test category: functionality test
-+ * Description: Display the GuC firmware submission version
-+ *
-+ * SUBTEST: multigpu-query-uc-fw-version-guc
-+ * Test category: functionality test
-+ * Sub-category: MultiGPU
-+ * Description: Display GuC firmware submission version for all Xe devices.
-+ */
-+static void
-+test_query_uc_fw_version_guc(int fd)
-+{
-+	test_query_uc_fw_version(fd, XE_QUERY_UC_TYPE_GUC_SUBMISSION);
-+}
-+
- /**
-  * SUBTEST: query-invalid-uc-fw-version-mbz
-  * Test category: functionality test
-@@ -820,6 +854,22 @@ test_query_uc_fw_version_invalid_mbz(int fd)
- 	free(uc_fw_version);
- }
- 
-+/**
-+ * SUBTEST: query-uc-fw-version-huc
-+ * Test category: functionality test
-+ * Description: Display the HuC firmware version
-+ *
-+ * SUBTEST: multigpu-query-uc-fw-version-huc
-+ * Test category: functionality test
-+ * Sub-category: MultiGPU
-+ * Description: Display HuC firmware version for all Xe devices.
-+ */
-+static void
-+test_query_uc_fw_version_huc(int fd)
-+{
-+	test_query_uc_fw_version(fd, XE_QUERY_UC_TYPE_HUC);
-+}
-+
- igt_main
- {
- 	const struct {
-@@ -834,6 +884,7 @@ igt_main
- 		{ "query-topology", test_query_gt_topology },
- 		{ "query-cs-cycles", test_query_engine_cycles },
- 		{ "query-uc-fw-version-guc", test_query_uc_fw_version_guc },
-+		{ "query-uc-fw-version-huc", test_query_uc_fw_version_huc },
- 		{ "query-invalid-cs-cycles", test_engine_cycles_invalid },
- 		{ "query-invalid-query", test_query_invalid_query },
- 		{ "query-invalid-size", test_query_invalid_size },
--- 
-2.34.1
+CI Bug Log - changes from XEIGT_7716_BAT -> XEIGTPW_10695_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7716 -> IGTPW_10695
+  * Linux: xe-789-55724f2a1075fcace79fd49ea0c2b7b5600d7ba8 -> xe-803-f12bce6493b6443870b55f36b1462d65e450d29d
+
+  IGTPW_10695: 10695
+  IGT_7716: 7716
+  xe-789-55724f2a1075fcace79fd49ea0c2b7b5600d7ba8: 55724f2a1075fcace79fd49ea0c2b7b5600d7ba8
+  xe-803-f12bce6493b6443870b55f36b1462d65e450d29d: f12bce6493b6443870b55f36b1462d65e450d29d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10695/index.html
+
+--===============1742889844466756692==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add tests to query firmware version (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129647/">https://patchwork.freedesktop.org/series/129647/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10695/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10695/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7716_BAT -&gt; XEIGTPW_10695_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7716 -&gt; IGTPW_10695</li>
+<li>Linux: xe-789-55724f2a1075fcace79fd49ea0c2b7b5600d7ba8 -&gt; xe-803-f12bce6493b6443870b55f36b1462d65e450d29d</li>
+</ul>
+<p>IGTPW_10695: 10695<br />
+  IGT_7716: 7716<br />
+  xe-789-55724f2a1075fcace79fd49ea0c2b7b5600d7ba8: 55724f2a1075fcace79fd49ea0c2b7b5600d7ba8<br />
+  xe-803-f12bce6493b6443870b55f36b1462d65e450d29d: f12bce6493b6443870b55f36b1462d65e450d29d</p>
+
+</body>
+</html>
+
+--===============1742889844466756692==--
