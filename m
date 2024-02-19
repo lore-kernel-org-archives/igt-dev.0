@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33646C48BC3
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Feb 2024 14:08:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2748BC48BC3
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Feb 2024 14:27:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0583488784;
-	Mon, 19 Feb 2024 14:08:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BA4F110E260;
+	Mon, 19 Feb 2024 14:27:04 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A04810E294;
- Mon, 19 Feb 2024 14:08:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6131D10E260;
+ Mon, 19 Feb 2024 14:27:03 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============5364828863308198409=="
+ boundary="===============5507260282971124835=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Fccs=3A_Convert_sub?=
- =?utf-8?q?tests_to_dynamic_subtests_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/kms=5Fccs=3A_Convert_?=
+ =?utf-8?q?subtests_to_dynamic_subtests_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Karthik B S" <karthik.b.s@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 19 Feb 2024 14:08:26 -0000
-Message-ID: <170835170603.89494.13356594916670442295@8e613ede5ea5>
+Date: Mon, 19 Feb 2024 14:27:03 -0000
+Message-ID: <170835282339.89216.3868198440389896791@8e613ede5ea5>
 X-Patchwork-Hint: ignore
 References: <20240219101319.20569-1-karthik.b.s@intel.com>
 In-Reply-To: <20240219101319.20569-1-karthik.b.s@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5364828863308198409==
+--===============5507260282971124835==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7716_BAT -> XEIGTPW_10694_BAT
+CI Bug Log - changes from CI_DRM_14296 -> IGTPW_10694
 ====================================================
 
 Summary
@@ -64,36 +64,86 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/index.html
 
-Participating hosts (4 -> 4)
+Participating hosts (35 -> 35)
 ------------------------------
 
-  No changes in participating hosts
+  Additional (2): fi-glk-j4005 bat-kbl-2 
+  Missing    (2): fi-snb-2520m fi-skl-6600u 
 
+Known issues
+------------
 
-Changes
--------
+  Here are the changes found in IGTPW_10694 that come from known issues:
 
-  No changes found
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@info:
+    - bat-kbl-2:          NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#1849])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/bat-kbl-2/igt@fbdev@info.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-glk-j4005:       NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#2190])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-glk-j4005:       NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/fi-glk-j4005/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - bat-kbl-2:          NOTRUN -> [SKIP][4] ([fdo#109271]) +35 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-glk-j4005:       NOTRUN -> [SKIP][5] ([fdo#109271]) +6 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/fi-glk-j4005/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_engines:
+    - {bat-adls-6}:       [TIMEOUT][6] ([i915#10026]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14296/bat-adls-6/igt@i915_selftest@live@gt_engines.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/bat-adls-6/igt@i915_selftest@live@gt_engines.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#10026]: https://gitlab.freedesktop.org/drm/intel/issues/10026
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_7716 -> IGTPW_10694
-  * Linux: xe-789-55724f2a1075fcace79fd49ea0c2b7b5600d7ba8 -> xe-803-f12bce6493b6443870b55f36b1462d65e450d29d
 
+  CI-20190529: 20190529
+  CI_DRM_14296: f12bce6493b6443870b55f36b1462d65e450d29d @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_10694: 10694
   IGT_7716: 7716
-  xe-789-55724f2a1075fcace79fd49ea0c2b7b5600d7ba8: 55724f2a1075fcace79fd49ea0c2b7b5600d7ba8
-  xe-803-f12bce6493b6443870b55f36b1462d65e450d29d: f12bce6493b6443870b55f36b1462d65e450d29d
+
+
+Testlist changes
+----------------
+
++++ 95 lines
+--- 1521 lines
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10694/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/index.html
 
---===============5364828863308198409==
+--===============5507260282971124835==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -117,30 +167,78 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129982/">https://patchwork.freedesktop.org/series/129982/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10694/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10694/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7716_BAT -&gt; XEIGTPW_10694_BAT</h1>
+    <h1>CI Bug Log - changes from CI_DRM_14296 -&gt; IGTPW_10694</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/index.html</p>
+<h2>Participating hosts (35 -&gt; 35)</h2>
+<p>Additional (2): fi-glk-j4005 bat-kbl-2 <br />
+  Missing    (2): fi-snb-2520m fi-skl-6600u </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10694 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@info:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/bat-kbl-2/igt@fbdev@info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/fi-glk-j4005/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +35 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/fi-glk-j4005/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_engines:<ul>
+<li>{bat-adls-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14296/bat-adls-6/igt@i915_selftest@live@gt_engines.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10026">i915#10026</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10694/bat-adls-6/igt@i915_selftest@live@gt_engines.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7716 -&gt; IGTPW_10694</li>
-<li>Linux: xe-789-55724f2a1075fcace79fd49ea0c2b7b5600d7ba8 -&gt; xe-803-f12bce6493b6443870b55f36b1462d65e450d29d</li>
 </ul>
-<p>IGTPW_10694: 10694<br />
-  IGT_7716: 7716<br />
-  xe-789-55724f2a1075fcace79fd49ea0c2b7b5600d7ba8: 55724f2a1075fcace79fd49ea0c2b7b5600d7ba8<br />
-  xe-803-f12bce6493b6443870b55f36b1462d65e450d29d: f12bce6493b6443870b55f36b1462d65e450d29d</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14296: f12bce6493b6443870b55f36b1462d65e450d29d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10694: 10694<br />
+  IGT_7716: 7716</p>
+<h2>Testlist changes</h2>
+<p>+++ 95 lines<br />
+--- 1521 lines</p>
 
 </body>
 </html>
 
---===============5364828863308198409==--
+--===============5507260282971124835==--
