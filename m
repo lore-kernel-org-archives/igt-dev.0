@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0ECFC48BC4
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Feb 2024 10:20:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31234C48BC4
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Feb 2024 11:14:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8745F10E2D2;
-	Tue, 20 Feb 2024 10:20:11 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KswzDBC/";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E40310E2D2
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Feb 2024 10:20:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708424410; x=1739960410;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=MIJa+PVXi5UxnrLpz4e+2nZ4LNGAlpZpfDM8o3uQ/C4=;
- b=KswzDBC/qGtLhu3VtIAFaag/0LdADnbvnr3dhD5ZSIwXNBmxYb+sbt33
- SI4qzS8bSZtutQGMCIODcxJj3rH6XjkOnaKCyTgfH8ml6576seTH86L2S
- C4NHQrcLb0TpeFXBwbCRxzi92XaVBw9U5Qr0L9NxMFk1JaC5Mp4JYd22F
- AoLUjt4ScJD0a/rsOryqHi4Cfj/RLL+iVZJA6DfjbcGnT7+lBrrDc2urg
- vzs7kSL/OyK+mkntHTlAN8X8RuO/BIiPN2PF48RRvbxeb3Bk6VJ7ulav9
- uYZznKYm8tO79QiUnfpmYsIOijAfP7g8XwD5eMplfFDUwVZ8C5xynn+K1 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="2392758"
-X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="2392758"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2024 02:20:10 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; d="scan'208";a="27901778"
-Received: from pwlazlyn-mobl.ger.corp.intel.com (HELO localhost)
- ([10.245.80.134])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2024 02:20:08 -0800
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v1 3/3] tests/core_getversion: test all drm devices
-Date: Tue, 20 Feb 2024 11:19:53 +0100
-Message-ID: <20240220101953.64371-4-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240220101953.64371-1-kamil.konieczny@linux.intel.com>
-References: <20240220101953.64371-1-kamil.konieczny@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B6D0A10E32D;
+	Tue, 20 Feb 2024 11:14:45 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 05EFF10E32D;
+ Tue, 20 Feb 2024 11:14:45 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3508976516679342571=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_print_info_in_core=5Fgetversio?=
+ =?utf-8?q?n?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 20 Feb 2024 11:14:45 -0000
+Message-ID: <170842768502.125001.3130783035017503564@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240220101953.64371-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20240220101953.64371-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,52 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Create multigpu subtest and check all drm devices.
+--===============3508976516679342571==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/core_getversion.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+== Series Details ==
 
-diff --git a/tests/core_getversion.c b/tests/core_getversion.c
-index 8b95e2ce4..797a2baed 100644
---- a/tests/core_getversion.c
-+++ b/tests/core_getversion.c
-@@ -40,6 +40,9 @@
-  *
-  * SUBTEST: basic
-  * Description: Tests GET_VERSION ioctl of the first device.
-+ *
-+ * SUBTEST: multigpu
-+ * Description: Tests GET_VERSION ioctl for all drm devices.
-  */
- 
- IGT_TEST_DESCRIPTION("Tests the DRM_IOCTL_GET_VERSION ioctl and libdrm's "
-@@ -78,6 +81,21 @@ igt_main
- 		igt_info("0: %s\n", info);
- 	}
- 
-+	igt_describe("Check GET_VERSION ioctl for all drm devices.");
-+	igt_subtest("multigpu") {
-+		int fd2;
-+
-+		for (int i = 0; i < 16; ++i) {
-+			fd2 = __drm_open_driver_another(i, DRIVER_ANY);
-+			if (fd2 == -1)
-+				break;
-+
-+			check(fd2, info, sizeof(info));
-+			igt_info("%d: %s\n", i, info);
-+			drm_close_driver(fd2);
-+		}
-+	}
-+
- 	igt_fixture
- 		drm_close_driver(fd);
- }
--- 
-2.42.0
+Series: print info in core_getversion
+URL   : https://patchwork.freedesktop.org/series/130111/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7718_BAT -> XEIGTPW_10700_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7718 -> IGTPW_10700
+  * Linux: xe-803-f12bce6493b6443870b55f36b1462d65e450d29d -> xe-807-e2b02e89746d8eff8c244f938eecd0f1db8eb805
+
+  IGTPW_10700: 10700
+  IGT_7718: 40e8b9122853f455c84afcfa56469a6bc9a0d564 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-803-f12bce6493b6443870b55f36b1462d65e450d29d: f12bce6493b6443870b55f36b1462d65e450d29d
+  xe-807-e2b02e89746d8eff8c244f938eecd0f1db8eb805: e2b02e89746d8eff8c244f938eecd0f1db8eb805
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10700/index.html
+
+--===============3508976516679342571==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>print info in core_getversion</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130111/">https://patchwork.freedesktop.org/series/130111/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10700/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10700/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7718_BAT -&gt; XEIGTPW_10700_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7718 -&gt; IGTPW_10700</li>
+<li>Linux: xe-803-f12bce6493b6443870b55f36b1462d65e450d29d -&gt; xe-807-e2b02e89746d8eff8c244f938eecd0f1db8eb805</li>
+</ul>
+<p>IGTPW_10700: 10700<br />
+  IGT_7718: 40e8b9122853f455c84afcfa56469a6bc9a0d564 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-803-f12bce6493b6443870b55f36b1462d65e450d29d: f12bce6493b6443870b55f36b1462d65e450d29d<br />
+  xe-807-e2b02e89746d8eff8c244f938eecd0f1db8eb805: e2b02e89746d8eff8c244f938eecd0f1db8eb805</p>
+
+</body>
+</html>
+
+--===============3508976516679342571==--
