@@ -4,131 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE3C5C48BC3
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Feb 2024 18:37:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C42E7C5475B
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Feb 2024 18:46:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8C58B10E214;
-	Tue, 20 Feb 2024 18:37:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 48EE910E073;
+	Tue, 20 Feb 2024 18:46:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="wcDYFtNb";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JiV+O/YL";
 	dkim-atps=neutral
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB29E10E214
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Feb 2024 18:37:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2903210E073
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Feb 2024 18:46:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708454797; x=1739990797;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=1ffZbeEF3Ng6r87A1qdcEj3Xqwft/C81GXZjh95yYNE=;
+ b=JiV+O/YLC8TOXTd43qXtCSNxZZn+ZpSH7oyV8NN68Lrv+dnOVkqoQG9s
+ QhFNg4lzUHPVZl/wmMueDRL8RIzQWLdw/jGGazCPDHODJsBLxEtmKBW8z
+ pQJKHzFlVrkvrCK3O7+oONS0+/iULG+rHP0W23g6d0Al63ue09BY01h4d
+ eHAj7SHIIabfcumLyfoJnugPq5Cjjovi/L9CXwH9GvI0bIXmRXIbAj8Oz
+ 21K9olFuK5VDAbCZLkrT9aTv4rgFaE/uLkm806wgYAHFWyjVJOPx+q0il
+ E6iGlHCMAUwXIfPYDRdjGfRZYJQ5c5ChjcWCQSv176CLOuC3yCmnbI7AJ A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="6404691"
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="6404691"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2024 10:46:37 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="9476463"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by fmviesa005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 20 Feb 2024 10:46:36 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 20 Feb 2024 10:46:35 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 20 Feb 2024 10:46:35 -0800
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 20 Feb 2024 10:46:35 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Oc9s8mJQy9OyMlYP03sA5VEkUFeOhJUkXVxhNK1ci8UkcvXSKGXeicxrl2t3ful6EHDnDJpmmUeaTqwVin+mr1eOLn2sBbILSU86o8VyP63IFt96CQCAk1RzVL2DmBX232ofiWZ+/8yxPdsvbggCP3FWQ57BJURgmtOp7PLfquQ9zND8rPGkIGph4KF0dVwMtQxH2rDy9YJaT0Ygv+3OwRUdbockQ4nsj8WBxInu4c3IlJ3dtgw5cC8aXTLfqa+IivxfMPMj5PSsCBzGsZ8XlaxKJ2vF1x59/PsKY3P5PWazKUkmPty5CLxrWUPT1WKZgQ+ql3hxmeDn6tGtUQ5MNw==
+ b=mUE6EZt13mlhwRE1+W73ffVOEpM2sjuZfVUmR9hhRAeyxelUqbpc0UtoXkp+We6pNeQaNtCznfppq/UzxBwuEr9h7S7Gjm6L/s9N2QDyToRLSxcyo2lLYWGnEr5NZpVsPkk14ldU53fNz8ZTH64slITXoj06nvnlQeT8mYzmDn9EC1E/qFp6uG2qXpGWJR/4KADQwLBXKWJDREV/5E1y2h7zmyn4jdbqvu8ck4JqG7UCxyZKTG1SCgUxsqS5mpKMiIrhxvvBnQqciUF/PCYsLu/7kM4S2zrzpgLsrWp1ruUtHnnsJ4mka8js8ECCmGgiIHRBNihGj9LaKJTziqm39Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=N1+GA4+cbnpF1ey+rpVGXzZ4AobpkuS7wxS4iannfH4=;
- b=dQfxkWmCJWGVO8TjmNqyc30drdwF8L6Bfkd3QJGijmCUVHp1PnvofijyjEkmKR6djxWCV7Z0YKjmtoobN5MgyD/696tqvbOyhaWdv5hxMrYLyQhNcGWGk1hLRIjlcTq3HyhMY3v7s43Y6xp12z8uOoxaA6xGFZEP/A4bo66LBfbx7wvCF7SUZ4Qq5WLza3tZB78b0rmgnxHD4OYOx6utH/CiXjo6iVqdSSiUKrRoUJEPxSTBOIP86p8oOdt4KExMzhl37apW2KjVHmM9dsF9CiofFsiMmoBGqb40KoOQFVAl8XUuK1mhz1449XCkvJEUwcg2mlmQREScyVuZqZh7Dg==
+ bh=MnFEPgfc1VchDsksPkzPcgzS2Zz1tUGkr4iC7SCnPS8=;
+ b=QMLOiIRZ0KQPoVwAGYifTcKruoWn0ysGSLqcx0S0/Tx2ApvlGxmY412NMSz4bS48M9jR8z4Hb/sO2eOfpBzwNdDzPBb3YCic3o64VTDFfe9B9tZPIcNM+Dc+4SKaKjsA/INyv0ikk774VCdAl3AH6mm/yKso7k+sdIXnHiE8Vk18jk3jA3JpxG2Is+SpkKJYVt9LPygpoeA5w18ykUYhHq2k9s1D7RBzENSBTazBTDFUZRl5/OoMQnFtiCjEwuoyWFY+c5S6UEZe867IomXdctlmyedeg3g4/9z6/OeBR7fYSX1wi93GPfODMiUwILC6k/RXwKHL/9uRqIHt9zIvEw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=N1+GA4+cbnpF1ey+rpVGXzZ4AobpkuS7wxS4iannfH4=;
- b=wcDYFtNbtFBMMpO4eM5i0rewIlBsTmKVjtmEy1vNADzb9BJ4iJIqmKp+LqsPbk8fiLeMxMHuiqRZdRC/9Z6uGLy2XSxi/g50nHf5ZuDNy/xqBqUaWjVjDXWaaSkVt5p6pJNl1qw2c7/E1xmaQZtTs2FrClV93HTG3SJjU87L/Wc=
-Received: from PH8PR12MB6962.namprd12.prod.outlook.com (2603:10b6:510:1bd::18)
- by BL1PR12MB5078.namprd12.prod.outlook.com (2603:10b6:208:313::11)
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8441.namprd11.prod.outlook.com (2603:10b6:610:1bc::12)
+ by MN6PR11MB8147.namprd11.prod.outlook.com (2603:10b6:208:46f::12)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.20; Tue, 20 Feb
- 2024 18:37:13 +0000
-Received: from PH8PR12MB6962.namprd12.prod.outlook.com
- ([fe80::a587:bdb5:e5df:84d4]) by PH8PR12MB6962.namprd12.prod.outlook.com
- ([fe80::a587:bdb5:e5df:84d4%3]) with mapi id 15.20.7316.018; Tue, 20 Feb 2024
- 18:37:13 +0000
-From: "Wu, Hersen" <hersenxs.wu@amd.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Hung, Alex" <Alex.Hung@amd.com>, "Pillai, Aurabindo"
- <Aurabindo.Pillai@amd.com>, "Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>,
- "Mahfooz, Hamza" <Hamza.Mahfooz@amd.com>
-Subject: tests/amdgpu/amd_ilr: Fix psr eDP crc read timeout IGT CI test
- failure need hep
-Thread-Topic: tests/amdgpu/amd_ilr: Fix psr eDP crc read timeout IGT CI test
- failure need hep
-Thread-Index: AQHaZCvSkpLmpuJ2nkKf0wcIfYSIPg==
-Date: Tue, 20 Feb 2024 18:37:13 +0000
-Message-ID: <PH8PR12MB69628159E1CE801CA868386DFD502@PH8PR12MB6962.namprd12.prod.outlook.com>
-References: <PH8PR12MB696282278F678780346276A0FD502@PH8PR12MB6962.namprd12.prod.outlook.com>
-In-Reply-To: <PH8PR12MB696282278F678780346276A0FD502@PH8PR12MB6962.namprd12.prod.outlook.com>
-Accept-Language: en-CA, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=c797dc45-8772-4298-adbd-43b39d8466c0;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=0;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2024-02-20T14:58:36Z;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH8PR12MB6962:EE_|BL1PR12MB5078:EE_
-x-ms-office365-filtering-correlation-id: 23f6483e-a5b3-4e7e-8269-08dc3242f4f1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: e4ksbVLSWgTzij9unpFyOVCNnTn+5Ot9goyB4ldXTQ44KClGiy7jbB36an7ofm32tgxbxmwJenYjxHtYcVHnn43ARV4gNr2QMyh/6ebLDc82h1bR9AUcLxBcp+2sM9DPdvouQC2iTwW6W/V0VCMz+X4v/sf2D/BsuM3c+DM+7kMnoO5xGNQpVZgR3yflY0S/3U3kkQY60aBjYvr/zfcakRNvYMxigP2nCWu4r34tO4e4yaYHLGiu/rEHa0jU+Mzy6n5D52tFAnXLP/4Mjt+utPvl3qiPi420ndTKwve8Yk3/MdD+CV12w4hi41vf1LoDaQn8/F/q7690OHp3Wh5BZ9Lw2QbdBOTzHlt3esZp+CV4mzzUT9epNl9B7/zQh6BQ7laMXmdtw//TURhmV4o30jTxfMq8nWIaU95oQ4pzsOitdJF2Ga6UzDRwso0elXFwQlYyR6a1A6okBgk2oAVmdELvn69HVBH0Yfb++ifxptwFk/IT8ZfHi85RoBQfaB7Jga7xzEAWvqmjdxDuns2zVfYJZHudR8X0NYGfWaUax00H/9aFeS5X453Z45CWYx8SXcJjEM/6587hrIbk2DQE/e639SyYANkj4Gkcjx8uLHE=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:ja; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH8PR12MB6962.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(230273577357003)(38070700009); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-2022-jp?B?OHFwTW03ODNFNFUxZGRmcnpEQ3lidFBxNFgrc1hvZFZDTFA1R2JkczhG?=
- =?iso-2022-jp?B?ZlNERG45VXhkMDAxRmV1bkVkUVN4L3dWandZUE5qNlRZTkRqVEJRVk53?=
- =?iso-2022-jp?B?N05pL29PbzVJekVORFVkYndONlVKTkhySk8xdVRRZ0FpZFJCS1NVYzAr?=
- =?iso-2022-jp?B?Ukw3ZXFUZDEwSy9IWEFONVF3VkVNeHBmT241ZlArR1NxUkxULzZlUUcv?=
- =?iso-2022-jp?B?cmZ3d2h2amJVK1BNRUdLSVkxM2s5WGc3UnkrMjZSbWcrSjdHMWF0TGQz?=
- =?iso-2022-jp?B?a2FQUlRLNTdYQVNBeHVZd1RzNks5N3IwSzd2dkI0N2RjbFBya2g5aDZn?=
- =?iso-2022-jp?B?SnRLbHJuRC9uWkVvMkpxQldDRC95QW40dlVadkZQQXFTMVpBM21zRE8v?=
- =?iso-2022-jp?B?dEVuaUxkelNaSlpjK3I0MStWeFF0OHpJQlF5cXptY1JidU9PZGZrOHRp?=
- =?iso-2022-jp?B?Qlc0aFBoRzhTUHFnSFQxSG1Cc29iNDU1dk5GczdMQmdvNnhJcEltc25o?=
- =?iso-2022-jp?B?a3ltN1FZYmdhcVNuQks3MVJja2VsaHc4QTQxUkorS0JuNGxMTTdZcVd3?=
- =?iso-2022-jp?B?OEZOdkRJR05xVUdReGZnWmh5MmY2ZHNaVkkyWFpjeWo3THNnTlFzUDBy?=
- =?iso-2022-jp?B?dzJvZ0JRdFB0N0RxQmE4Rkc2ZVNyOUlJY2YyM1BWb0NERTNlUGhsVVVy?=
- =?iso-2022-jp?B?Lzl1S0lZKzlLSVZDOGozRDBWV0ovN25JcWNONWVvaTYvbzg2Wk5nbmJp?=
- =?iso-2022-jp?B?ZFZ1dHZFcjUvV0ZacEVIbXZSa1liRlRMSEIwazhYOWcvL01wM3lwTUV0?=
- =?iso-2022-jp?B?bHB3NWQ5ZEIwM0ZCUlI5MXpRQ1ZsN2N1L0NxYWVFNzBPM3UybmFFa25W?=
- =?iso-2022-jp?B?NW5WNzB2NjR6Y1Rtb203V3RkelR2aUNBcHNNUXZHMFFrSHRjb0hRbjk1?=
- =?iso-2022-jp?B?Ukw0NXlxalpRaWRGSjVrTGlzWnJjYWFZcGl5S1M4ejB4UUd1NFZGSDRL?=
- =?iso-2022-jp?B?Wi9DcXdhcWM0d0FkVnltUFBoVlNvMVlmbzdsRDBjNHJQZzdaQkVqNkVB?=
- =?iso-2022-jp?B?cERTQUNCVE9lZmJUeDlmaHEzcnpPVFUwOXpjTW1Cc0prQXNvYjhvV1hu?=
- =?iso-2022-jp?B?aDd0Y296eERTNDhPTGd1dFJhMUhRSGZ0VTVXNWVtazdNYjdoRmR3WVFH?=
- =?iso-2022-jp?B?UnpwMzYvSU5zM2lBL3ZFOU81SjNYSlg1eFdzQ05KR1BDRnlzNHo1Zncv?=
- =?iso-2022-jp?B?V3FVNWxxSnA1aFhueVBIUVFXckhFV3BSWXVXaW81NnlWZWh6bUJ0UmpF?=
- =?iso-2022-jp?B?L0ZhVmlPc2ZSUHJDRGYwMzArUjZpY0MrZWRuWWNqdmFhbGdlSGhiWUF3?=
- =?iso-2022-jp?B?cEx2SnFoWTlYTFRTeGdVU253QUlPb0E2eWN3dnNmTGpzekxqZnR4cG0x?=
- =?iso-2022-jp?B?R3BsMFZJZHlueWJVMXpCdUxGTnAyTUJZK3JCQXorV3FmY3NDYjR6YXQv?=
- =?iso-2022-jp?B?dEZOa2dhamcvVzF5RDVldGlXSVo4U1NSdGlKWjZ4bmljQ2JIVHJOSFN6?=
- =?iso-2022-jp?B?UjBEUEhhc29NQmdoQjAxdldVbFUwem9xWm9Qd2NqNno0RWJzOThWOWE1?=
- =?iso-2022-jp?B?MzZhdVBXVlJzNGZTSXpTWnZOZC8wVFlUV2tLZ3JnQmxvVVVyWDVDZEVn?=
- =?iso-2022-jp?B?dHByUUNzOTE3WEVuV05sZVJxaDJCb3A5QkphNVFKM2pQcXV5TFF1YWRT?=
- =?iso-2022-jp?B?cnl4aU5hTTBhQ1J1RUV5NjFLNlJtelJnakhEQVFxelUyczJMM01JL2hr?=
- =?iso-2022-jp?B?dlI4NE5NS1daQy9oYnh6VDFTaXNvMkd5R1ZMcmhFajFhV0FUbkM3cVly?=
- =?iso-2022-jp?B?VlpKMFc0VnczSzhjamJtZG5zZkd4ZkVyS01pcXJVbEVlRUJCZDl5UUZC?=
- =?iso-2022-jp?B?bk5DS3ZySXN2bUVRRktBM251QUJLYmdhbEVqMHVHSTYvOENtMG5OcEIr?=
- =?iso-2022-jp?B?MkRwd2JrMmZZeXA3K3VzRnRuN1M0ZFF1TnMzcmNZWGg5MnVpVUxJUWlo?=
- =?iso-2022-jp?B?b3pHekZuMTlBTFhnYWF5dmtlYjB2WWVOYVd6eWc3bHM4MEVCY00zbjdl?=
- =?iso-2022-jp?B?NEhqaUhheXhpVTN6ay9sd2pkN29hTHNzUjZqaFJKR1I3NVQ0K1AzSVZU?=
- =?iso-2022-jp?B?U0JNaHZEd3BzOGpXSXI3dlVZUUNOcnFwRmZHWHdiNXozaEJtc05GS0h5?=
- =?iso-2022-jp?B?WGYyQ2Jla1ROdmJ3RVE1WXFteFFKTkI3TT0=?=
-Content-Type: multipart/alternative;
- boundary="_000_PH8PR12MB69628159E1CE801CA868386DFD502PH8PR12MB6962namp_"
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.32; Tue, 20 Feb
+ 2024 18:46:33 +0000
+Received: from CH3PR11MB8441.namprd11.prod.outlook.com
+ ([fe80::c590:37b4:ad48:cd0f]) by CH3PR11MB8441.namprd11.prod.outlook.com
+ ([fe80::c590:37b4:ad48:cd0f%3]) with mapi id 15.20.7316.018; Tue, 20 Feb 2024
+ 18:46:33 +0000
+Message-ID: <c49c01a4-ca4d-42f5-9167-9afe8b566b64@intel.com>
+Date: Tue, 20 Feb 2024 10:46:30 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t, v3 1/2] drm-uapi/xe: Add test to query GuC firmware
+ submission version
+Content-Language: en-GB
+To: Francois Dugast <francois.dugast@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+CC: =?UTF-8?Q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>, "Lucas De
+ Marchi" <lucas.demarchi@intel.com>
+References: <20240219143501.7-1-francois.dugast@intel.com>
+ <20240219143501.7-2-francois.dugast@intel.com>
+From: John Harrison <john.c.harrison@intel.com>
+In-Reply-To: <20240219143501.7-2-francois.dugast@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR01CA0037.prod.exchangelabs.com (2603:10b6:a03:94::14)
+ To CH3PR11MB8441.namprd11.prod.outlook.com
+ (2603:10b6:610:1bc::12)
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8441:EE_|MN6PR11MB8147:EE_
+X-MS-Office365-Filtering-Correlation-Id: ca5c9fa8-1d1b-4962-4251-08dc3244424e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: A2AREq5UzUYaOrRvdHU9KzCzmZhwa0LV5PEekcWSiboVWBLSxTkyzkexYgaVZR1M7zcJDlE+Xlz2nw/kCwObL9uJlXrJ2PiqvR37iVPGkv99H5LgIhdlTKHfrSrLSMd/QNCWaz/XNFxBqRjEr5VXlQvtK5qGYLk+P6npiaR0G4kbP4VNOs4ss1D2dt/xXfSAWDP2oSJqM79+1+Dm4FBUnQee7w9WGYR6YuJM2qBfqLGItl2ArZwwzGIr1aJsI5G4/fhnNecqt/7vZ18GghqP+sAx6YxLnR4vP3/zIJ5672x7Wa5yNdiMQNJyaTUAZg43M6OkG0tyQ1KCQlzhQP4cU26wuftg7OjfPtZApk6XWW2YDoHPKoba3Z5hM9B+4IZ/ClZf++wb6YKSXvW65P77TUXMDmRvQPr+Xri+8/KxCfCeMMzmbNwNZ5We1bOm2hzu+62AcSsIClb5mFOW7ZYg4JA5zH6p2OOt3C+pFSiyC7+erkf9SrNUtMQBWp14PKeoLkvZ8O9g40kINtAXFCkF3wuLQDhoPN4km7RlL25H2Pc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH3PR11MB8441.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TGNiL3k3WEcrV0wzVEZNOCs4MHJMRXZpUlRDTVd0RTVIR1JBM0trTUhnSVo0?=
+ =?utf-8?B?Qkp2L0xQL3VEZGdlVGpyVU9OVzlVRlM5bS9ZMS9xc3kvY2NEY2ZjOGUwRWNZ?=
+ =?utf-8?B?UWw1YXhmTnBlR2pnbmluR1IrZ002dnBIQ3huTkl2U1FKc1VySFFkV3dOR3Ex?=
+ =?utf-8?B?cEE3cVRraUVsUzBWT3FlVWxreVVESGpSZk5mMzZ3UWR2WXNRc0JCcFJQS2pD?=
+ =?utf-8?B?K3ZEdmtEQkI2aHhHWitQbWl5NllEeGxzcEo4TWJaM245YmtSRzdqcUZxS0hV?=
+ =?utf-8?B?aFRaNklmM0FqQVlrZkhwMlJoSU1tdmFIT0hINGVXL0ZkUDY2T2QyajRXY0xV?=
+ =?utf-8?B?WXRhL3BOY3E4bU14NC8zdG1DbnhjMzYvV29mZ3R1TkVMQUhVaVQwblhXdlA5?=
+ =?utf-8?B?UGt5RGRZU2haakNxamp6TVNCcllxQUZzUDlLanBmak9JTGlGQ1Z5SHJWQ042?=
+ =?utf-8?B?b3dhekg1QWhjb2dXTUxDeFJrL1pOOEo3N0M0c3JhaTQ5OTRjQVJNOFEzTGVu?=
+ =?utf-8?B?UEowZk94MVdXNlhSU1U1VjY5eEtieEVld0xQeGkwb01OdTI4NzhRS3ZuTnBD?=
+ =?utf-8?B?UXFZU0w2OG95eWRpaUZwNkJ6UStnQ1dyT3QwWTBIWU9RVW9RaHlpWUFzdzNB?=
+ =?utf-8?B?Qldkb0JUWnJmV0czWitYZ1NmQkRBU0Fad1F1V01rM3VBVUVQTThyU3VIT3BU?=
+ =?utf-8?B?SlBkVzdSTFB5cmlCWksweUFMQmVsRi83a3B2enVhdDlUOFU3MXFSNDh0R3NB?=
+ =?utf-8?B?dG81UDEwZXBrNEZmTFRTcnRwSks0T04vRnBYVzJ0akUzckh1YlJFNFkyNFJh?=
+ =?utf-8?B?NytZS0N1d0xLc0hsWE5TVjl3MTF5QkFZVFBucjlhbXFycnMrajVaYlZPUisz?=
+ =?utf-8?B?OE1TdnhmNnNCVStrWE9rTmM1Zk5odDRSWURTM01sNWpVR2lsQjNuU1JGT2tr?=
+ =?utf-8?B?c3FDSDhWaTV5S1VkREpNOTZ4ZmJSSTNMRDV3dWo5bkpwVFNCYWd3V1l3Q2Rx?=
+ =?utf-8?B?dDR5MTkwb1dDY0hYU1JMdy91RW9xUmhiVEl0U0NxUUduVGplUzJSRG5qNTZv?=
+ =?utf-8?B?TWtYSUNWa01TVTY4MkYvTzNGVU96dVk0eDJBNTNQbVJMMnNDZGxMQS9Sdm14?=
+ =?utf-8?B?TVIvZEtPaUNFRlhvT3JramxvZ0FvMS9HUG81UUEwejdOTUxtVnJObXNsdUNU?=
+ =?utf-8?B?ZmsxeHBmaU1paXpObHNISTNUd1ZHelZiY280Vk1jTUtndFg4N0sxQy84UGor?=
+ =?utf-8?B?dGJOVXRySVN0TCtwSER3b0pucVBHOXE3cmFGQVBpV0dsclk3Sm4rYzgwT3dv?=
+ =?utf-8?B?SG02ZVlxTW01YmU1cFZ6SGYxT1Bscjhxc2U3Kys1UHRCUEZucWUwY1ZqWmhG?=
+ =?utf-8?B?R3NrYnlUUjVpdHBOUHJpQ3p6dHBvYzJaL012c2xKS3YrQnB1dlJLczV0TGNB?=
+ =?utf-8?B?V3FCam5vc1FPQVRZQTlFV0ZFSkk1OTZxS1hIRW5XalBsTm1IZDNrT1gyNSt1?=
+ =?utf-8?B?d3BvdkRiL0Y1aUNibW1pTUZNeFR5ZnpFak9oTDJtM1dXVGVRckxmelVjNjJi?=
+ =?utf-8?B?Zit4dnNKLzZjMGJhNzQ1VWJLSk15N2E1R3VvcTFSOE4ya0w4MjZpMHp6YWNT?=
+ =?utf-8?B?b05iTjdNZ29xbFVPTDhrNHdLNlBnL096UmZ6dWtJZUdWbHlSd0FPejdoeVQz?=
+ =?utf-8?B?OUtDb3FXRmJnczRXQm96R0tzNGlZWmQ1SmF5UHpBZkVDRVJ0OU5QZVl2dnEx?=
+ =?utf-8?B?WCtSZVV0SVdzTU5mdUI3cXpMSW9TbFVyWnNzWitNSlZLb0FKdndFSU8vSHdz?=
+ =?utf-8?B?Q05MSlN0NU5mUXJSYUpBOUgzUm5kdjVtTkhFWWxueS91RnRZZWE1dTBjcE05?=
+ =?utf-8?B?NzFBSlNJWkZ1TnZSTmNVWmdZcHF3dURYN3A0SmpvWFJiYWZZZzRZMHFqNTc3?=
+ =?utf-8?B?MUtFdGpES3ErYi8yV0N2amlvZkFOOVVmY3dzUkp6TUN2c2w2bm9LczJ1OE9q?=
+ =?utf-8?B?SkhoQVJhSkV4Z3FBKzJ0TkxrY3FiOFl2MktuaFVSNGtjYVFER2pNODNPRUhy?=
+ =?utf-8?B?bFlmR3hQSDJxaEJhWWROY0k1RXhnelJkcENpUGR4T2VnTzh2VUpkMGtYU280?=
+ =?utf-8?B?UVBkd0EyQlBIc3hHd3poOVNEWVhaMDVoaE5QSFNBbzYvVG15clo1Yk52ZVNa?=
+ =?utf-8?B?MHc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca5c9fa8-1d1b-4962-4251-08dc3244424e
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8441.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB6962.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23f6483e-a5b3-4e7e-8269-08dc3242f4f1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Feb 2024 18:37:13.8058 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: g0BwXtkr9tpQmMNwCN2Ceq+f/Gugi6jRU2Tes8fNFoSFKwozO9IBafywEXXwDTaFx52dn08bxK5aZduHNjbYKQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5078
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2024 18:46:33.3023 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: X2XlQKcPRh8D51w2yqxzGxhAQEw2k4hHrEHpvzzdRczEXW9LrABCRvGFNx2W9zwKchiXUe265Pkz47ZSET1pqfgQBLfKBJahWD0CW5+K1v8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8147
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -144,139 +165,187 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---_000_PH8PR12MB69628159E1CE801CA868386DFD502PH8PR12MB6962namp_
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-Transfer-Encoding: quoted-printable
+On 2/19/2024 06:35, Francois Dugast wrote:
+> This aligns with kernel commit ("drm/xe: Add uAPI to query GuC firmware
+> submission version").
+>
+> v2: Print branch first, use memset to zero the query (John Harrison)
+>
+> Cc: John Harrison <John.C.Harrison@Intel.com>
+> Cc: José Roberto de Souza <jose.souza@intel.com>
+> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
+> ---
+>   include/drm-uapi/xe_drm.h | 31 +++++++++++++
+>   tests/intel/xe_query.c    | 92 +++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 123 insertions(+)
+>
+> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> index bacdca787..3bd795f27 100644
+> --- a/include/drm-uapi/xe_drm.h
+> +++ b/include/drm-uapi/xe_drm.h
+> @@ -574,6 +574,36 @@ struct drm_xe_query_engine_cycles {
+>   	__u64 cpu_delta;
+>   };
+>   
+> +/**
+> + * struct drm_xe_query_uc_fw_version - query a micro-controller firmware version
+> + *
+> + * Given a uc_type this will return the major, minor, patch and branch version
+> + * of the micro-controller firmware.
+> + */
+> +struct drm_xe_query_uc_fw_version {
+> +	/** @uc: The micro-controller type to query firmware version */
+> +#define XE_QUERY_UC_TYPE_GUC_SUBMISSION 0
+> +	__u16 uc_type;
+> +
+> +	/** @pad: MBZ */
+> +	__u16 pad;
+> +
+> +	/* @major_ver: major uc fw version */
+> +	__u32 major_ver;
+> +	/* @minor_ver: minor uc fw version */
+> +	__u32 minor_ver;
+> +	/* @patch_ver: patch uc fw version */
+> +	__u32 patch_ver;
+> +	/* @branch_ver: branch uc fw version */
+> +	__u32 branch_ver;
+This does not match the KMD version. Branch should be first.
 
-[AMD Official Use Only - General]
+John.
 
-Hi Kamil,
+> +
+> +	/** @pad2: MBZ */
+> +	__u32 pad2;
+> +
+> +	/** @reserved: Reserved */
+> +	__u64 reserved;
+> +};
+> +
+>   /**
+>    * struct drm_xe_device_query - Input of &DRM_IOCTL_XE_DEVICE_QUERY - main
+>    * structure to query device information
+> @@ -643,6 +673,7 @@ struct drm_xe_device_query {
+>   #define DRM_XE_DEVICE_QUERY_HWCONFIG		4
+>   #define DRM_XE_DEVICE_QUERY_GT_TOPOLOGY		5
+>   #define DRM_XE_DEVICE_QUERY_ENGINE_CYCLES	6
+> +#define DRM_XE_DEVICE_QUERY_UC_FW_VERSION	7
+>   	/** @query: The type of data to query */
+>   	__u32 query;
+>   
+> diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+> index 9a6799c84..bbe5955eb 100644
+> --- a/tests/intel/xe_query.c
+> +++ b/tests/intel/xe_query.c
+> @@ -730,6 +730,96 @@ static void test_engine_cycles_invalid(int fd)
+>   	query_engine_cycles(fd, &ts);
+>   }
+>   
+> +/**
+> + * SUBTEST: query-uc-fw-version-guc
+> + * Test category: functionality test
+> + * Description: Display the GuC firmware submission version
+> + *
+> + * SUBTEST: multigpu-query-uc-fw-version-guc
+> + * Test category: functionality test
+> + * Sub-category: MultiGPU
+> + * Description: Display GuC firmware submission version for all Xe devices.
+> + */
+> +static void
+> +test_query_uc_fw_version_guc(int fd)
+> +{
+> +	struct drm_xe_query_uc_fw_version *uc_fw_version;
+> +	struct drm_xe_device_query query = {
+> +		.extensions = 0,
+> +		.query = DRM_XE_DEVICE_QUERY_UC_FW_VERSION,
+> +		.size = 0,
+> +		.data = 0,
+> +	};
+> +
+> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> +
+> +	uc_fw_version = malloc(query.size);
+> +	igt_assert(uc_fw_version);
+> +
+> +	memset(uc_fw_version, 0, sizeof(*uc_fw_version));
+> +	uc_fw_version->uc_type = XE_QUERY_UC_TYPE_GUC_SUBMISSION;
+> +	query.data = to_user_pointer(uc_fw_version);
+> +
+> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> +	igt_info("XE_QUERY_UC_TYPE_GUC_SUBMISSION %u.%u.%u.%u\n",
+> +		 uc_fw_version->branch_ver,
+> +		 uc_fw_version->major_ver,
+> +		 uc_fw_version->minor_ver,
+> +		 uc_fw_version->patch_ver);
+> +	igt_assert(uc_fw_version->major_ver > 0 || uc_fw_version->minor_ver > 0);
+> +
+> +	free(uc_fw_version);
+> +}
+> +
+> +/**
+> + * SUBTEST: query-invalid-uc-fw-version-mbz
+> + * Test category: functionality test
+> + * Description: Check query with invalid arguments returns expected error code.
+> + *
+> + * SUBTEST: multigpu-query-invalid-uc-fw-version-mbz
+> + * Test category: functionality test
+> + * Sub-category: MultiGPU
+> + * Description: Check query with invalid arguments for all Xe devices.
+> + */
+> +static void
+> +test_query_uc_fw_version_invalid_mbz(int fd)
+> +{
+> +	struct drm_xe_query_uc_fw_version *uc_fw_version;
+> +	struct drm_xe_device_query query = {
+> +		.extensions = 0,
+> +		.query = DRM_XE_DEVICE_QUERY_UC_FW_VERSION,
+> +		.size = 0,
+> +		.data = 0,
+> +	};
+> +
+> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> +
+> +	uc_fw_version = malloc(query.size);
+> +	igt_assert(uc_fw_version);
+> +
+> +	memset(uc_fw_version, 0, sizeof(*uc_fw_version));
+> +	uc_fw_version->uc_type = XE_QUERY_UC_TYPE_GUC_SUBMISSION;
+> +	query.data = to_user_pointer(uc_fw_version);
+> +
+> +	/* Make sure the baseline passes */
+> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> +
+> +	/* Make sure KMD rejects non-zero padding/reserved fields */
+> +	uc_fw_version->pad = -1;
+> +	do_ioctl_err(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query, EINVAL);
+> +	uc_fw_version->pad = 0;
+> +
+> +	uc_fw_version->pad2 = -1;
+> +	do_ioctl_err(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query, EINVAL);
+> +	uc_fw_version->pad2 = 0;
+> +
+> +	uc_fw_version->reserved = -1;
+> +	do_ioctl_err(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query, EINVAL);
+> +	uc_fw_version->reserved = 0;
+> +
+> +	free(uc_fw_version);
+> +}
+> +
+>   igt_main
+>   {
+>   	const struct {
+> @@ -743,10 +833,12 @@ igt_main
+>   		{ "query-hwconfig", test_query_hwconfig },
+>   		{ "query-topology", test_query_gt_topology },
+>   		{ "query-cs-cycles", test_query_engine_cycles },
+> +		{ "query-uc-fw-version-guc", test_query_uc_fw_version_guc },
+>   		{ "query-invalid-cs-cycles", test_engine_cycles_invalid },
+>   		{ "query-invalid-query", test_query_invalid_query },
+>   		{ "query-invalid-size", test_query_invalid_size },
+>   		{ "query-invalid-extension", test_query_invalid_extension },
+> +		{ "query-invalid-uc-fw-version-mbz", test_query_uc_fw_version_invalid_mbz },
+>   		{ }
+>   	}, *f;
+>   	int xe, gpu_count;
 
-Amd_ilr test (https://patchwork.freedesktop.org/series/129382/) is for AMD =
-GPU only.
-There are test failures or warnings on Intel GPU. Such as,
-=1B$B"'=1B(B Fi.CI.IGT failure (See full logs)<https://intel-gfx-ci.01.org/=
-tree/drm-tip/IGTPW_10687/index.html>
-
-I check log of test and confirm failures are not related to amd_ilr.
-I=1B$B!G=1B(Bd like to know if I should do for this IGT CI test failure.
-
-Thanks!
-Hesen
-
-
-
-
-
-
-
---_000_PH8PR12MB69628159E1CE801CA868386DFD502PH8PR12MB6962namp_
-Content-Type: text/html; charset="iso-2022-jp"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
-osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
-//www.w3.org/TR/REC-html40">
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-2022-=
-jp">
-<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
-<style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-@font-face
-	{font-family:"MS PGothic";
-	panose-1:2 11 6 0 7 2 5 8 2 4;}
-@font-face
-	{font-family:"\@MS PGothic";}
-@font-face
-	{font-family:"Helvetica Neue";}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0in;
-	font-size:11.0pt;
-	font-family:"Calibri",sans-serif;
-	mso-ligatures:standardcontextual;
-	mso-fareast-language:JA;}
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:#0563C1;
-	text-decoration:underline;}
-span.show-triangle
-	{mso-style-name:show-triangle;}
-span.label
-	{mso-style-name:label;}
-span.EmailStyle21
-	{mso-style-type:personal-reply;
-	font-family:"Calibri",sans-serif;
-	color:windowtext;}
-.MsoChpDefault
-	{mso-style-type:export-only;
-	font-size:10.0pt;
-	mso-ligatures:none;}
-@page WordSection1
-	{size:8.5in 11.0in;
-	margin:1.0in 1.0in 1.0in 1.0in;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]-->
-</head>
-<body lang=3D"EN-US" link=3D"#0563C1" vlink=3D"#954F72" style=3D"word-wrap:=
-break-word">
-<p style=3D"font-family:Arial;font-size:10pt;color:#0000FF;margin:5pt;font-=
-style:normal;font-weight:normal;text-decoration:none;" align=3D"Left">
-[AMD Official Use Only - General]<br>
-</p>
-<br>
-<div>
-<div class=3D"WordSection1">
-<p class=3D"MsoNormal">Hi Kamil,<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">Amd_ilr test (<a href=3D"https://patchwork.freedeskt=
-op.org/series/129382/">https://patchwork.freedesktop.org/series/129382/</a>=
-) is for AMD GPU only.<o:p></o:p></p>
-<p class=3D"MsoNormal">There are test failures or warnings on Intel GPU. Su=
-ch as,<o:p></o:p></p>
-<p class=3D"MsoNormal"><span class=3D"show-triangle"><span style=3D"font-si=
-ze:10.5pt;font-family:&quot;Helvetica Neue&quot;;color:#333333">=1B$B"'=1B(=
-B</span></span><span style=3D"font-size:10.5pt;font-family:&quot;Helvetica =
-Neue&quot;;color:#333333;background:whitesmoke">&nbsp;</span><span style=3D=
-"font-size:10.5pt;font-family:&quot;Helvetica Neue&quot;;color:#333333">Fi.=
-CI.IGT<span style=3D"background:whitesmoke">&nbsp;</span></span><span class=
-=3D"label"><b><span style=3D"font-size:8.0pt;font-family:&quot;Helvetica Ne=
-ue&quot;;color:white;background:#D9534F">failure&nbsp;</span></b></span><sp=
-an style=3D"font-size:10.5pt;font-family:&quot;Helvetica Neue&quot;;color:#=
-333333"><a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10687/ind=
-ex.html"><span style=3D"color:#2A6496">(See
- full logs)</span></a></span><o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">I check log of test and confirm failures are not rel=
-ated to amd_ilr.<o:p></o:p></p>
-<p class=3D"MsoNormal">I=1B$B!G=1B(Bd like to know if I should do for this =
-IGT CI test failure.<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">Thanks!<o:p></o:p></p>
-<p class=3D"MsoNormal">Hesen<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-</div>
-</div>
-</body>
-</html>
-
---_000_PH8PR12MB69628159E1CE801CA868386DFD502PH8PR12MB6962namp_--
