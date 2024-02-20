@@ -4,64 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A35EDC5475B
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Feb 2024 18:33:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1985DC48BC3
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Feb 2024 18:36:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4F37D10E201;
-	Tue, 20 Feb 2024 18:33:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A3D7510E2B4;
+	Tue, 20 Feb 2024 18:36:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WJHX2Uk3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bhzq8b3D";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBD5C10E201
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Feb 2024 18:33:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C8FC10E2EE;
+ Tue, 20 Feb 2024 18:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708454029; x=1739990029;
+ t=1708454170; x=1739990170;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=Mbz4AcFMyqR6LhdrU2YdURLlF+eyZ891fimal+zL5Ow=;
- b=WJHX2Uk3KGzUt4s3eFP+DWzUQfeqadAvld5goH0JI13Qw+OqSZECJom6
- t0tjrhCoGJHclBitrEUx/szpoh9PgGnEZSnpKvs5yQjo1POGyF68GWSDl
- /MOoqHlU2cO/reSYz4o2j2EexeSEsZSybSyOmmTxcHpb8JpkBZ75dDHb6
- 3DNEpVWotrmGKuGpBBa4JUOf19HGKKIZqKRcbXRM/YKDHNdeWMI+rumz0
- 2i9Eck08MqVyJkx9FWbs6E2sNRVBrQA96eNIgXZqZzdOKV/wgAuYPERqB
- 55HykjT2H2D2GBh8euyUwWCulyUjDJpYK89yIKtTsHegcS0I2lJJHfDZq g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="6403232"
+ mime-version:in-reply-to;
+ bh=GlQkOL/SFAzMkNtGXPRl7MnMz3BjkkQJDk4g35hDGFw=;
+ b=bhzq8b3D1rai35F8d5gv6e4B0TbAFAyVqbQxgI5/bRhWqVYODf+ZumPf
+ QmeTTVzmZn2wVnQIyLFkZukU/yAFXU68BhDpxOcZmqN7rCfwYfLBDII4+
+ 6Vx0EAYTCfLy7QAw2VpUqSlqyY0FYZz0yCR16H77iBD2VFm3UNfab9N1X
+ sTEjtj9ikVl2SStxFTiN6igXjt/tKxBqxC5uuROs9nYtQcl6uqoL/vfsC
+ MY+gtXBwiKOQSUwAcx/jearp090Er2hmCrOKzwiDysoIL2mFLfVKqpB++
+ 371PXSwkk9gwqcCicheOtxlVeHQCcv8Aul9fVCxkvnEXa2dUUNatsY4dS w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="2700896"
 X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
-   d="scan'208";a="6403232"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2024 10:33:48 -0800
+   d="scan'208";a="2700896"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2024 10:36:09 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
-   d="scan'208";a="4750143"
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="936490869"
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; d="scan'208";a="936490869"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 10:33:47 -0800
-Date: Tue, 20 Feb 2024 19:33:44 +0100
+ by fmsmga001-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 10:36:07 -0800
+Date: Tue, 20 Feb 2024 19:36:04 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t v9 2/7] lib/drmtest: Introduced
- drm_open_driver_another
-Message-ID: <20240220183344.x4lkuflz5ackohcc@kamilkon-desk.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jesse Zhang <jesse.zhang@amd.com>, I915-ci-infra@lists.freedesktop.org,
+ lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVA==?= =?utf-8?Q?=3A?= failure for
+ lib/amdgpu: add GC 11.5.1 to GC 11.5.0 family
+Message-ID: <20240220183604.qiirytlqszld4yvm@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20240215161014.60304-1-kamil.konieczny@linux.intel.com>
- <2552026.vzjCzTo3RI@jkrzyszt-mobl2.ger.corp.intel.com>
- <20240219174232.63q3nuu4mc5o566q@kamilkon-desk.igk.intel.com>
- <10419859.qUNvkh4Gvn@jkrzyszt-mobl2.ger.corp.intel.com>
+ igt-dev@lists.freedesktop.org, Jesse Zhang <jesse.zhang@amd.com>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+References: <20240218051955.2280087-1-jesse.zhang@amd.com>
+ <170824102621.54115.4668701176842063795@8e613ede5ea5>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <10419859.qUNvkh4Gvn@jkrzyszt-mobl2.ger.corp.intel.com>
+In-Reply-To: <170824102621.54115.4668701176842063795@8e613ede5ea5>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,141 +73,112 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Janusz,
-On 2024-02-20 at 10:32:58 +0100, Janusz Krzysztofik wrote:
-> Hi Kamil,
+Hi igt-dev,
+On 2024-02-18 at 07:23:46 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> On Monday, 19 February 2024 18:42:32 CET Kamil Konieczny wrote:
-> > Hi Janusz,
-> > On 2024-02-16 at 11:23:58 +0100, Janusz Krzysztofik wrote:
-> > > Hi Kamil, Dominik,
-> > > 
-> > > On Thursday, 15 February 2024 17:10:09 CET Kamil Konieczny wrote:
-> > > > From: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-> > > > 
-> > > > For user convenience, introduce drm_open_driver_another as
-> > > > a wrapper for __drm_open_driver_another with successful open
-> > > > assert.
-> > > 
-> > > Out of several existing variants of *drm_open_driver* functions, those which 
-> > > names start with "drm_", wrapped around their counterparts which names start 
-> > > with double underscores, used to set up an exit handler that performs 
-> > > necessary cleanups before exit, freeing users from taking care of that.  Don't 
-> > > we want to keep that convention also for drm_open_driver_another() and set up 
-> > > the exit handler from inside that wrapper on success?
-> > > 
-> > > Thanks,
-> > > Janusz
-> > > 
-> > 
-> > How and what should we unwind here? There is only fd, I do not see
-> > any other var or state to unwind? Am I missing something?
+> Series: lib/amdgpu: add GC 11.5.1 to GC 11.5.0 family
+> URL   : https://patchwork.freedesktop.org/series/130044/
+> State : failure
 > 
-> Have you had a look at drm_open()?
+> == Summary ==
 > 
->         /* For i915, at least, we ensure that the driver is idle before
->          * starting a test and we install an exit handler to wait until
->          * idle before quitting.
->          */
->         if (is_i915_device(fd)) {
->                 if (__sync_fetch_and_add(&open_count, 1) == 0) {
->                         __cancel_work_at_exit(fd);
->                         at_exit_drm_fd = drm_reopen_driver(fd);
->                         igt_install_exit_handler(cancel_work_at_exit);
->                 }
->         }
+> CI Bug Log - changes from CI_DRM_14287_full -> IGTPW_10691_full
+> ====================================================
 > 
-> From that point of view, how does multi-gpu testing differ from single-gpu?
+> Summary
+> -------
 > 
-> And yes, that can be not trivial to extend the existing exit handlers solution 
-> over multiple device file descriptor handling.
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10691_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10691_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10691/index.html
+> 
+> Participating hosts (7 -> 7)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10691_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@api_intel_bb@render-ccs:
+>     - shard-dg2:          NOTRUN -> [FAIL][1]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10691/shard-dg2-1/igt@api_intel_bb@render-ccs.html
+> 
+>   * igt@gem_exec_schedule@manyslice@vcs0:
+>     - shard-dg2:          [PASS][2] -> [FAIL][3] +3 other tests fail
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14287/shard-dg2-10/igt@gem_exec_schedule@manyslice@vcs0.html
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10691/shard-dg2-10/igt@gem_exec_schedule@manyslice@vcs0.html
+> 
+>   * igt@kms_plane_alpha_blend@constant-alpha-min:
+>     - shard-dg2:          NOTRUN -> [INCOMPLETE][4]
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10691/shard-dg2-5/igt@kms_plane_alpha_blend@constant-alpha-min.html
 > 
 
-This is another problem, I try to solve one, not all at once.
-I could add a helper to stop resets from children as it can be
-helpfull not only in multi-gpu scenarios.
-
-> Also ...
-> 
-> > 
-> > Regards,
-> > Kamil
-> > 
-> > > > 
-> > > > v2: rebased (Kamil)
-> > > > v6: reword description (Janusz)
-> > > > 
-> > > > Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > > > Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-> > > > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > > > Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > > > ---
-> > > >  lib/drmtest.c | 19 +++++++++++++++++++
-> > > >  lib/drmtest.h |  1 +
-> > > >  2 files changed, 20 insertions(+)
-> > > > 
-> > > > diff --git a/lib/drmtest.c b/lib/drmtest.c
-> > > > index 52b5a2020..73d9159af 100644
-> > > > --- a/lib/drmtest.c
-> > > > +++ b/lib/drmtest.c
-> > > > @@ -563,6 +563,25 @@ int __drm_open_driver_another(int idx, int chipset)
-> > > >  	return fd;
-> > > >  }
-> > > >  
-> > > > +/*
-> > > > + * drm_open_driver_another
-> > > > + * @idx: index of the device you are opening
-> > > > + * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
-> > > > + *
-> > > > + * A wrapper for __drm_open_driver with successful open assert.
-> > > > + *
-> > > > + * Returns:
-> > > > + * An open DRM fd
-> > > > + */
-> > > > +int drm_open_driver_another(int idx, int chipset)
-> > > > +{
-> > > > +	int fd = __drm_open_driver_another(idx, chipset);
-> > > > +
-> > > > +	igt_assert_fd(fd);
-> 
-> drm_open_driver() skips in that case.  Shouldn't drm_open_driver_another() 
-> also skip for consistency?
-
-Good point, I will re-read this,
+Not related to amdgpu, no need for respin.
 
 Regards,
 Kamil
 
+>   
+> #### Suppressed ####
 > 
-> Thanks,
-> Janusz
+>   The following results come from untrusted machines, tests, or statuses.
+>   They do not affect the overall result.
 > 
-> > > > +
-> > > > +	return fd;
-> > > > +}
-> > > > +
-> > > >  /**
-> > > >   * __drm_open_driver:
-> > > >   * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
-> > > > diff --git a/lib/drmtest.h b/lib/drmtest.h
-> > > > index 6bc819734..856208c48 100644
-> > > > --- a/lib/drmtest.h
-> > > > +++ b/lib/drmtest.h
-> > > > @@ -101,6 +101,7 @@ void __set_forced_driver(const char *name);
-> > > >  
-> > > >  int __drm_open_device(const char *name, unsigned int chipset);
-> > > >  void drm_load_module(unsigned int chipset);
-> > > > +int drm_open_driver_another(int idx, int chipset);
-> > > >  int drm_open_driver(int chipset);
-> > > >  int drm_open_driver_master(int chipset);
-> > > >  int drm_open_driver_render(int chipset);
-> > > > 
-> > > 
-> > > 
-> > > 
-> > > 
-> > 
+>   * {igt@kms_ccs@pipe-d-crc-sprite-planes-basic-4-tiled-xe2-ccs}:
+>     - shard-rkl:          NOTRUN -> [SKIP][5]
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10691/shard-rkl-2/igt@kms_ccs@pipe-d-crc-sprite-planes-basic-4-tiled-xe2-ccs.html
 > 
+>   
+> New tests
+> ---------
 > 
+>   New tests have been introduced between CI_DRM_14287_full and IGTPW_10691_full:
+> 
+> ### New IGT tests (59) ###
+> 
+>   * igt@gem_barrier_race@remote-request@rcs0:
+>     - Statuses : 6 pass(s) 1 skip(s)
+>     - Exec time: [0.00, 5.27] s
+> 
+>   * igt@kms_flip@basic-flip-vs-wf_vblank@d-hdmi-a3:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.94] s
+> 
+>   * igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling:
+
+...cut...
+
+>   [i915#9934]: https://gitlab.freedesktop.org/drm/intel/issues/9934
 > 
 > 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7716 -> IGTPW_10691
+>   * Piglit: piglit_4509 -> None
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14287: b09fd1bd9f8b4a8e5cd8c1de8dbba4d4eb15b4e9 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10691: 10691
+>   IGT_7716: 7716
+>   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10691/index.html
