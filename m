@@ -4,56 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 356CAC48BC3
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Feb 2024 20:28:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE290C48BC4
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Feb 2024 20:29:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A0E1510E22C;
-	Tue, 20 Feb 2024 20:28:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5800710E0FF;
+	Tue, 20 Feb 2024 20:29:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TSWQy37e";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="cQYCl/8d";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B43010E41A
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Feb 2024 20:28:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708460885; x=1739996885;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=JIEM/E3b4MI75XCRFquphw1PZ8qdN73yhKEzA+GT8hU=;
- b=TSWQy37eTwUXk+g4O4cXANBzoPD8gx7XemdGH7kfgwYIewjMcFKFZlK6
- hF5r+VzzBU50ainBiA4EikRp/LIcYh8j4ZK764o16afSAUM3J8HuJNZxb
- zkQ+FdN2GjZIzuvzi8xy3XHCApZkb/2BrMXf4n+TZr4Y069S4rYbxYt7r
- W0NNy7byd+O84CAmeouzdM/2hrLFITR6sh5G75XeR59J2wM+gvEyR7vlQ
- XUn9Vf8Y7b+ouIIKreSO/YmINkL0NccWQ/WUGjDjzjvWWOecggahN8A9w
- ZCO+KpWqPFkNa9HHDmI6FWtZuluEp9lKgd3VjvEmZs2yAEkxrN6mCqbAT A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="13294282"
-X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; d="scan'208";a="13294282"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2024 12:28:04 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
-   d="scan'208";a="9604503"
-Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.246.50.249])
- ([10.246.50.249])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2024 12:28:02 -0800
-Message-ID: <c7c54c6e-810d-425d-991f-8069d540bde7@linux.intel.com>
-Date: Tue, 20 Feb 2024 21:27:57 +0100
-MIME-Version: 1.0
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2089.outbound.protection.outlook.com [40.107.237.89])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A7FBD10E0FF
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Feb 2024 20:29:02 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nKMg2/jXLSYGh3a4b24xjfLVZBZaNc13uPpTlXBSxZO1RjDL60lhDyT69ji0krt77Q5l4hyXiiVg688p7Td6ASfVnvAokI8cLMM3CXUUhUKk5nbhYN4zA4bNnPp+DeN680P49hT/YBgFyzhfteIFZ55QGWZ6Qj0bwrA/PSCV5yQRVOGmrlWkbfnvuu49B8SNq4WH9BcuAZ2EFFYoeJ3VGKumvVKH9rqKZAIYwm2CcSYxQPkV93QH2uPVRkWD2876VcQrEtp5WItNd9RuAZ7yqb9gbD17JpQHkpU/1fNahmxP8piS1dE2wvynHn50bKv1EO/32LAO7pwyNRqxDNtuxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EOjyeF0r8vC5WUEhp05yMwznWlbbrJqC5wYhQI8R/Jg=;
+ b=eLewF82awV08rRMMfDpztwL0qbGagJ+gEW3c/d28KfnApX1uGEmBwWaUThxqTvjuVQ1EJSpe0eE7+4DeOwV993ypnrOIFJxmQmAU6JqY2iMLVhWXx4NRw5UnBxhDOXUfD4kjniQYetcvOZxMNNoDPfHQwiwHyCHbu2BwXhvvqKQP4ULk25++T0PKjczg74XQ/BRxngm0IGA7yOa1UanXeG7o8wwt3+CVKyEUPpyBkmD5lh/O1DpXb+EPRNvf1tGdZneQe0+0I/fkyJl5HGMWWJ3Ee4jyyUQwrdtDADG3bn6CHaGmCdWpzRayWc1Un1Zw6gE3lJyOxDVq91omyMk2Ng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EOjyeF0r8vC5WUEhp05yMwznWlbbrJqC5wYhQI8R/Jg=;
+ b=cQYCl/8dsyHqxlmaJucZasrDKoh7EF1RoASprK+TFeQ77ei13GUpXTcHjacoTm2seInq1ePioBFPeBQ+Fu9IwhAJsf84K8/GqB7A1Keu6I3tCksdTBWIcXhqlVWpfKoFRgAIDsPZiUqA9uO4fEPKeL81kvNLRcxV4kflDQsuS2Y=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CO6PR12MB5427.namprd12.prod.outlook.com (2603:10b6:5:358::13)
+ by BY5PR12MB4918.namprd12.prod.outlook.com (2603:10b6:a03:1df::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.19; Tue, 20 Feb
+ 2024 20:28:59 +0000
+Received: from CO6PR12MB5427.namprd12.prod.outlook.com
+ ([fe80::6c3b:75a3:6af2:8bf4]) by CO6PR12MB5427.namprd12.prod.outlook.com
+ ([fe80::6c3b:75a3:6af2:8bf4%5]) with mapi id 15.20.7316.018; Tue, 20 Feb 2024
+ 20:28:59 +0000
+Message-ID: <0877b15b-733a-4f3d-b5c5-2eec991006ff@amd.com>
+Date: Tue, 20 Feb 2024 15:28:54 -0500
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel/xe_compute_preempt: Add mtp disabled
- preempt test
-To: janga.rahul.kumar@intel.com, igt-dev@lists.freedesktop.org,
- ramadevi.gandi@intel.com
-Cc: nirmoy.das@intel.com
-References: <20240218131847.836161-1-janga.rahul.kumar@intel.com>
+Subject: Re: [RFC v4 00/22] IGT tests for the KMS Color Pipeline API
 Content-Language: en-US
-From: Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <20240218131847.836161-1-janga.rahul.kumar@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ Pekka Paalanen <pekka.paalanen@collabora.com>,
+ Simon Ser <contact@emersion.fr>, Melissa Wen <mwen@igalia.com>,
+ =?UTF-8?Q?Jonas_=C3=85dahl?= <jadahl@redhat.com>,
+ Sebastian Wick <sebastian.wick@redhat.com>,
+ Shashank Sharma <shashank.sharma@amd.com>,
+ Alexander Goins <agoins@nvidia.com>, Joshua Ashton <joshua@froggi.es>,
+ =?UTF-8?Q?Michel_D=C3=A4nzer?= <mdaenzer@redhat.com>,
+ Aleix Pol <aleixpol@kde.org>, Xaver Hugl <xaver.hugl@gmail.com>,
+ Victoria Brekenfeld <victoria@system76.com>, Sima <daniel@ffwll.ch>,
+ Uma Shankar <uma.shankar@intel.com>, Naseer Ahmed <quic_naseer@quicinc.com>,
+ Christopher Braga <quic_cbraga@quicinc.com>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Arthur Grillo <arthurgrillo@riseup.net>, Hector Martin <marcan@marcan.st>,
+ Liviu Dudau <Liviu.Dudau@arm.com>, Sasha McIntosh <sashamcintosh@google.com>
+References: <20240214063953.1285495-1-bhanuprakash.modem@intel.com>
+From: Harry Wentland <harry.wentland@amd.com>
+In-Reply-To: <20240214063953.1285495-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YT4PR01CA0301.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10e::10) To CO6PR12MB5427.namprd12.prod.outlook.com
+ (2603:10b6:5:358::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO6PR12MB5427:EE_|BY5PR12MB4918:EE_
+X-MS-Office365-Filtering-Correlation-Id: afd953a0-08a9-42e2-bced-08dc32529182
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Fl5lyLTN8+G86DnBaCTGNAhR4/sG0oerYLVVL/tL4iEXGj/XW48E5iJDtLUpR0UzKCqZIdUmRjp+J+q2O48CRzvxabwSJr4UtUqUgqKDyiSfIbL6Y9rN5h5Tj0YVMdV5/KUnHo8GUQqtTSjrDxMWrCb5olgJUm5/5sMVxTZ7jHyI6IdiLNJDv8VuQyPB75RICbLuWtVSr91UzmBCrGOerK/cGeydgtZ0qDRDM6ZmZgOwGwjR+YuPjJaVVKvdKW75cmDQ5qQ+9HotjwkXabycLRxascWqIYKrFp3p0vRnlf50h2OQVBkeAvEks0hcoUeGbuE35m0Xd07mP5rIJ9ZHj0ynVGlfFUE3RY2R1ynJ6oK1osKEqk//sOg3kPYK1S0HBd5/tMs67GUaMXCd7HvRSeuAULLLpCPHdwLAfJO6N5aHRSqZMjvY4kOzms8niDcc9/23LJM+JhCjVKCG9U1HnjAEUC+5VxVUMHlLrIDNAPcVX1FmUegvu7tvpWJJKRJdQQJtMiuaDkVIpaZu1M8qFw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CO6PR12MB5427.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q21MRjJjbTlBQ0F1ZkhrV3NBTnBrd25Fd1B0QjNrS29RNjBxSXlURVJZR3da?=
+ =?utf-8?B?OU5vNVc5V2gxNDhjWHpQVyt2clN5QWU2MExMVWRCVGcrdkVNQUIzUU43U1g2?=
+ =?utf-8?B?dEhtNFNVS3hweTdodmpmZCtiZWhCUzJZNDBhckthdncyeWxmVnEyWlMvV1c3?=
+ =?utf-8?B?TGxaNVdJNzI5Slc1ZjBtSVFwQU9KZ1NYZGJ3VzdkOUpuWjd5TWIvaVhNdjFD?=
+ =?utf-8?B?c3R0Ukd3QVhaSHNRYS9SYmg5SHFpcUxIa3VuWmRUYXh6b2hCeFpqMFlJT3Yy?=
+ =?utf-8?B?WTZIOVVvcnJESmh6S29wSVZQRlp1Rnl1eXFDcVdKdEhKU1ZZaTJnT2oyd0tx?=
+ =?utf-8?B?VjNYRXptK1ZCSnNDUkZiZERWWHl1NUhudS95WG9tV0E1cjRjbWZ6MjlNTEZU?=
+ =?utf-8?B?SGJpWnJxMEtqYk1aQ1pFT2g2ckpaWktSSi9wcG8ydWdCVWFDZW5VZWh6dC8z?=
+ =?utf-8?B?cHUrY1YxOHdsTklnVHNtZU5hdlFlZ1FUWkREbW04RXdMdDF5dDkxc1MyeWlr?=
+ =?utf-8?B?M1RSN1BQVXJQSk1kSWl4TytJV1lpSjBBOWJxNjVvVFRUdHdmajRwczNTNklK?=
+ =?utf-8?B?cDdsWkk3Y2U5MXdadzIwY2pPWkFseDA1NDNBOGUwMzZCSFVvYVd2bmdKUFY0?=
+ =?utf-8?B?d0c3QVN5ZHh2bUxncUJUMlI2SlVxby9ndVVRamM4SmpjS1MvRmZZaDBYT2hK?=
+ =?utf-8?B?YlpjTGNwaHh1OWhxRlUrOEpOV2tFT1FhSnJXQVB0QVJ1RDNsU01tRzRxdHo5?=
+ =?utf-8?B?ek9qNWtHQlJSTWxpVUN0ZVBBeGlUQ2txUXV2blBBbC9FU25VME5KYm9DcVpr?=
+ =?utf-8?B?SU8xdlZld0VIbU5kS1lzMjFTRURlTkpLY2dGWE1hVXhBei93Ri9Mb3dVNk1C?=
+ =?utf-8?B?aHdiY21qZ211Q2Z5aXRrclFkZ0Nyc29memVYZFcwb0xrNFRrMjNjMXNLUEhL?=
+ =?utf-8?B?a1hmYjh0RVNSbEdWVmViWnQ2RHBIWjJ3NUl1L1hFUjQwWk9KUVF3WUlTSDZu?=
+ =?utf-8?B?eHA2Q1VQTHNiRzVKYjZIYmE4VUJQdkwrVVoraGxnWkZHVnYwZmJXd2FyMEpv?=
+ =?utf-8?B?bzdNMHZrZ2ZMU1JTVE5sWHEzampQdHZPL2Y3NWVoVncxV09TYjdLK1k4RE94?=
+ =?utf-8?B?d21RZ21hS285SzBhMUV4L2I3elZQWUVaVEh3QUJRdmJWUEZ2Q2xZZXRnbks3?=
+ =?utf-8?B?bHU2RVpXSytoOTZiODFVREh2a1pJNTl5S2JFbFVmQStVM2hWSVM3WG1rYXNl?=
+ =?utf-8?B?amY4OUF0bnFLeTdONEsvN1hJZXY2bXlseE5WMXcwdnpjK0pQUjcrc3k2SjlD?=
+ =?utf-8?B?YlFwSDcwNTIwa2grRkM5WHIvbDhvQ0RhUHA2WDFUOVFrNHU1Tktqb3pwTy94?=
+ =?utf-8?B?SHFQd2FyUDV6U1ZtZk82VWU1VWJ6YnRXUjJWSW5aZ2FLWDgvUXV5RjdwNCtt?=
+ =?utf-8?B?ZzFUSTF3RTA5eGJXQnhVekJ4SW0yWGxOZXVDSVhkUURVKzlnQU5lZWtENmJm?=
+ =?utf-8?B?TzJYemNtc2F1MzJQMDB4ajdVanc4M2NzSEg2d0lxWkxsWlM2a0JIbzN2dE5k?=
+ =?utf-8?B?UG1RZGlNZnFINnh2Y1JzUGFEM2NNQ21vVHZERTZjcFE4SFloM1d3REkrTG9C?=
+ =?utf-8?B?dkwwUEVjZmlTd3UxZXAwcHJHdU4vL2IzakhiQkgvSUNEc0w3WHZ0OWlZcHVa?=
+ =?utf-8?B?MEZFd0MxLy9jZUhBMzEwdi9adVRvYlJSUWQwODdQUTI0T1ZtbGZQMzJyN0lJ?=
+ =?utf-8?B?TXpYbm15Y3VqMGVwemlTd2ZoWGhTYnJ4N2s1eEhxNkZKUDV4anJlVEYrQjVL?=
+ =?utf-8?B?aThrR2drWWlpQUNNMWIrSitVSld0WTlOV0tYdCtCM1lndzg5RWdHalpZcUQz?=
+ =?utf-8?B?ZjROMit0UmNpZjNEbUpRT3pRUlRFU3NNb3d1djUvR2MraUgrOHV2cXNZZ2Ux?=
+ =?utf-8?B?ZU1ETmc3YzluYVVlVlFHQWJnWVdFa2NZbFFHNHlvM1pGWElOWmdoblJQMUZu?=
+ =?utf-8?B?bGJ4SWxqWmNaZ0REQlBWWDVjSTN3SHZwYUJ0SmZOakErdmlsOGRoNmdJblg4?=
+ =?utf-8?B?eWRIeW9CUEoweHZlK1ZCbUVhd0xKTVFiaG9rcFVSSmhIRi9uWE04ZXJNQXdo?=
+ =?utf-8?Q?tKoO1O/BJY2K0LMVjlqVoQ4RG?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: afd953a0-08a9-42e2-bced-08dc32529182
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5427.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2024 20:28:59.3930 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dBA1GnT85HVsRaWB9aQxhB7r8Ht2bxH31oRDPzgGPwg2MwQ8cDi3Eo/mCE7OhYZtGfA3jtMYvbUK9u1mjiAJ7A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4918
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,362 +145,135 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 2/18/2024 2:18 PM, janga.rahul.kumar@intel.com wrote:
-> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
->
-> Check preemption scenario with Mid thread preemption disabled.
 
-The compute square will only preempt until all the running threads are 
-finished. With current kernel
+On 2024-02-14 01:39, Bhanuprakash Modem wrote:
+> This series introduces support for
+> * drm_colorop DRM objects
+> * COLOR_PIPELINE plane property
+> 
+> Kernel changes:
+> https://gitlab.freedesktop.org/hwentland/linux/-/merge_requests/5
+> 
+> It also adds a new kms_colorop test case that tests the color pipeline
+> API. The tests are designed to be easily extensible with a "transform"
+> and "compare" function pointer for each test. The "transform" function
+> performs the transformations under test via SW routines. The "compare"
+> function compares the DRM/KMS result (via a writeback connector) with
+> the result derived via the SW "transform".
+> 
+> There are three tests for LUTs:
+>  - plane-srgb_eotf: pre-blending sRGB EOTF
+>  - plane-srgb_inv_eotf: pre-blending sRGB Inverse EOTF
+>  - plane-srgb_eotf-srgb_inv_eotf: pre-blending sRGB EOTF,
+>    followed by its inverse
+> 
+> And a number of tests for matrices.
+> 
+> v3:
+>  - Remove need for IOCTLs and libdrm changes
+>  - Test colorop properties with both atomic and legacy code paths
+>  - move enum drm_colorop_type to drm_mode.h
+>  - Add descriptions for public functions in lib (Kamil)
+>  - Use SPDX style license identifier (Kamil)
+>  - Replace Skia license comment with copyright note in file header
+>  - Fix kms_colorop subtests if applicable color pipeline not found
+> 
+> v4: (Bhanu)
+>  - Though v3 required some cleanup, I am not touching it, instead fix any issue
+>    as new patch (we may need to squash those patches)
+>  - Rebase v3
+>  - Move few helpers to common place (kms_color_helper) to reuse by multiple tests
+>  - New helpers to cleanup the colorop props.
+>  - Helpers to support custom 1D LUT & CTM 3x3
+>  - New subtests to validate Intel plane color pipeline, please find the
+>    KMD changes: https://patchwork.freedesktop.org/series/129812/
+> 
 
-this test won't work, will timeout. Need a better strategy to handle 
-this case.
+Hmm, looks like we went in slightly different directions. We'll need
+to figure out how we'll deal with the 1D_LUT type. For us it looks like
+a copy of the current drm_crtc LUTs. We might want two different LUT
+types, a generic one, and a PWL_LUT for what you and Uma are defining.
 
+I'll send out my v5 as-is, without attempting to rebase on top of your
+patches, since that will be a larger challenge than I though. Will look
+at how to merge them afterwards.
 
-Regards,
+Harry
 
-Nirmoy
+> Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
+> Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
+> Cc: Simon Ser <contact@emersion.fr>
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Melissa Wen <mwen@igalia.com>
+> Cc: Jonas Ådahl <jadahl@redhat.com>
+> Cc: Sebastian Wick <sebastian.wick@redhat.com>
+> Cc: Shashank Sharma <shashank.sharma@amd.com>
+> Cc: Alexander Goins <agoins@nvidia.com>
+> Cc: Joshua Ashton <joshua@froggi.es>
+> Cc: Michel Dänzer <mdaenzer@redhat.com>
+> Cc: Aleix Pol <aleixpol@kde.org>
+> Cc: Xaver Hugl <xaver.hugl@gmail.com>
+> Cc: Victoria Brekenfeld <victoria@system76.com>
+> Cc: Sima <daniel@ffwll.ch>
+> Cc: Uma Shankar <uma.shankar@intel.com>
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Cc: Naseer Ahmed <quic_naseer@quicinc.com>
+> Cc: Christopher Braga <quic_cbraga@quicinc.com>
+> Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+> Cc: Arthur Grillo <arthurgrillo@riseup.net>
+> Cc: Hector Martin <marcan@marcan.st>
+> Cc: Liviu Dudau <Liviu.Dudau@arm.com>
+> Cc: Sasha McIntosh <sashamcintosh@google.com>
+> 
+> Bhanuprakash Modem (10):
+>   tests/kms_properties: Fix compilation errors
+>   lib/igt_kms: Destroy colorops on exit
+>   lib/colorops: Move few helpers to common place to reuse
+>   drm-uapi: Add 3x3 CTM
+>   drm-uapi: Add custom 1D LUT
+>   lib/igt_color: Add support for 3x3 matrices
+>   lib/colorops: Add support for Custom 1D LUT
+>   lib/igt_kms: Increase the colorops count
+>   tests/kms_color_helper: Add helpers to clear colorops data
+>   tests/kms_color: Add plane color pipeline tests for Intel hardware
+> 
+> Harry Wentland (12):
+>   lib/drmtest: Add is_vkms_device()
+>   lib/igt_kms: Introduce DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE
+>   include/drm-uapi: Add COLOROP object
+>   lib/igt_kms: Introduce drm_colorop and COLOR_PIPELINE
+>   tests/kms_properties: Add colorop properties test
+>   igt/color: Add SW color transform functionality
+>   lib/igt_fb: Add copy_fb function
+>   tests/kms_colorop: Add kms_colorop tests
+>   drm-uapi: Add 3x4 CTM
+>   lib/igt_kms: Add support for DATA colorop property
+>   lib/igt_color: Add support for 3x4 matrices
+>   tests/kms_colorop: Add 3x4 CTM tests
+> 
+>  include/drm-uapi/drm.h      |  15 ++
+>  include/drm-uapi/drm_mode.h |  52 +++++
+>  lib/drmtest.c               |   5 +
+>  lib/drmtest.h               |   1 +
+>  lib/igt_color.c             | 361 +++++++++++++++++++++++++++++
+>  lib/igt_color.h             |  81 +++++++
+>  lib/igt_fb.c                |  40 +++-
+>  lib/igt_fb.h                |   3 +
+>  lib/igt_kms.c               | 312 ++++++++++++++++++++++++-
+>  lib/igt_kms.h               |  97 +++++++-
+>  lib/meson.build             |   1 +
+>  tests/kms_color.c           | 273 +++++++++++++++++++++-
+>  tests/kms_color_helper.c    | 313 ++++++++++++++++++++++++++
+>  tests/kms_color_helper.h    |  91 ++++++++
+>  tests/kms_colorop.c         | 438 ++++++++++++++++++++++++++++++++++++
+>  tests/kms_properties.c      |  72 ++++++
+>  tests/meson.build           |   2 +
+>  17 files changed, 2140 insertions(+), 17 deletions(-)
+>  create mode 100644 lib/igt_color.c
+>  create mode 100644 lib/igt_color.h
+>  create mode 100644 tests/kms_colorop.c
+> 
+> --
+> 2.43.0
+> 
 
->
-> Cc: Nirmoy Das <nirmoy.das@intel.com>
-> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> ---
->   lib/intel_compute.c              | 148 ++++++++++++++++++++-----------
->   lib/intel_compute.h              |   2 +-
->   tests/intel/xe_compute_preempt.c |  16 +++-
->   3 files changed, 111 insertions(+), 55 deletions(-)
->
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index eab407a0d..753add674 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -1162,7 +1162,8 @@ static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
->   					uint64_t addr_state_contect_data_base,
->   					uint64_t offset_indirect_data_start,
->   					uint64_t kernel_start_pointer,
-> -					uint64_t sip_start_pointer)
-> +					uint64_t sip_start_pointer,
-> +					bool	 thread_preemption)
->   {
->   	int b = 0;
->   
-> @@ -1195,6 +1196,13 @@ static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
->   	addr_bo_buffer_batch[b++] = 0x03808800;
->   	addr_bo_buffer_batch[b++] = 0x00000000;
->   	addr_bo_buffer_batch[b++] = 0x00000000;
-> +
-> +	if (!thread_preemption) {
-> +		addr_bo_buffer_batch[b++] = MI_LOAD_REGISTER_IMM(1);
-> +		addr_bo_buffer_batch[b++] = 0x0001a580;
-> +		addr_bo_buffer_batch[b++] = 0x0000d401;
-> +	}
-> +
->   	addr_bo_buffer_batch[b++] = STATE_BASE_ADDRESS | 0x14;
->   	addr_bo_buffer_batch[b++] = (addr_general_state_base & 0xffffffff) | 0x21;
->   	addr_bo_buffer_batch[b++] = addr_general_state_base >> 32;
-> @@ -1251,7 +1259,12 @@ static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
->   
->   	addr_bo_buffer_batch[b++] = kernel_start_pointer;
->   	addr_bo_buffer_batch[b++] = 0x00000000;
-> -	addr_bo_buffer_batch[b++] = 0x00100000; // Enable Thread Preemption BitField:20
-> +
-> +	if (thread_preemption)
-> +		addr_bo_buffer_batch[b++] = 0x00100000; // Enable Thread Preemption BitField:20
-> +	else
-> +		addr_bo_buffer_batch[b++] = 0x00000000; // Disable Thread Preemption BitField:20
-> +
->   	addr_bo_buffer_batch[b++] = 0x00000000;
->   	addr_bo_buffer_batch[b++] = 0x00000000;
->   	addr_bo_buffer_batch[b++] = 0x0c000020;
-> @@ -1369,7 +1382,9 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
->   				  ADDR_INSTRUCTION_STATE_BASE,
->   				  XE2_ADDR_STATE_CONTEXT_DATA_BASE,
->   				  OFFSET_INDIRECT_DATA_START,
-> -				  OFFSET_KERNEL, 0);
-> +				  OFFSET_KERNEL,
-> +				  0,
-> +				  false);
->   
->   	bo_execenv_exec(&execenv, ADDR_BATCH);
->   
-> @@ -1520,13 +1535,17 @@ bool xe_run_intel_compute_kernel_on_engine(int fd,
->    * @short_kernel_size: size of @short_kernel
->    * @sip_kernel: WMTP sip kernel which does save restore during preemption
->    * @sip_kernel_size: size of @sip_kernel
-> + * @thread_preemption: flag to enable/disable thread level preemption
-> + * @multi_short: submit multiple short kernels
->    */
->   static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel,
->   					unsigned int long_kernel_size,
->   					const unsigned char *short_kernel,
->   					unsigned int short_kernel_size,
->   					const unsigned char *sip_kernel,
-> -					unsigned int sip_kernel_size)
-> +					unsigned int sip_kernel_size,
-> +					bool thread_preemption,
-> +					bool multi_short)
->   {
->   #define XE2_BO_PREEMPT_DICT_ENTRIES 11
->   	struct bo_dict_entry bo_dict_long[XE2_BO_PREEMPT_DICT_ENTRIES] = {
-> @@ -1560,41 +1579,67 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
->   		  .name = "sip kernel"},
->   	};
->   
-> -	struct bo_dict_entry bo_dict_short[XE2_BO_PREEMPT_DICT_ENTRIES];
-> -	struct bo_execenv execenv_short, execenv_long;
-> +	int n_short = (multi_short) ? 3 : 1;
-> +	struct bo_dict_entry bo_dict_short[n_short][XE2_BO_PREEMPT_DICT_ENTRIES];
-> +	struct bo_execenv execenv_short[n_short], execenv_long;
-> +	struct drm_xe_sync sync_short[n_short];
->   	float *dinput;
-> +	memset(sync_short, 0, sizeof(sync_short));
-> +
->   	struct drm_xe_sync sync_long = {
->   		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
->   		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
->   		.handle = syncobj_create(fd, 0),
->   	};
-> -	struct drm_xe_sync sync_short = {
-> -		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-> -		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> -		.handle = syncobj_create(fd, 0),
-> -	};
-> +
->   	unsigned int long_kernel_loop_count = 1000000;
->   
-> -	for (int i = 0; i < XE2_BO_PREEMPT_DICT_ENTRIES; ++i)
-> -		bo_dict_short[i] = bo_dict_long[i];
-> +	for (int j = 0; j < n_short; j++) {
-> +		for (int i = 0; i < XE2_BO_PREEMPT_DICT_ENTRIES; ++i)
-> +			bo_dict_short[j][i] = bo_dict_long[i];
-> +
-> +		bo_execenv_create(fd, &execenv_short[j], NULL);
-> +
-> +		bo_dict_short[j][0].size = ALIGN(short_kernel_size, 0x1000);
-> +		bo_dict_short[j][10].size = ALIGN(sip_kernel_size, 0x1000);
-> +
-> +		bo_execenv_bind(&execenv_short[j], bo_dict_short[j], XE2_BO_PREEMPT_DICT_ENTRIES);
-> +
-> +		memcpy(bo_dict_short[j][0].data, short_kernel, short_kernel_size);
-> +		memcpy(bo_dict_short[j][10].data, sip_kernel, sip_kernel_size);
-> +
-> +		create_dynamic_state(bo_dict_short[j][1].data, OFFSET_KERNEL);
-> +		xehp_create_surface_state(bo_dict_short[j][2].data, ADDR_INPUT, ADDR_OUTPUT);
-> +		xehp_create_indirect_data(bo_dict_short[j][3].data, ADDR_INPUT, ADDR_OUTPUT);
-> +		xehp_create_surface_state(bo_dict_short[j][7].data, ADDR_INPUT, ADDR_OUTPUT);
-> +
-> +		dinput = (float *)bo_dict_short[j][4].data;
-> +
-> +		for (int i = 0; i < SIZE_DATA; i++)
-> +			((float *)dinput)[i] = rand() / (float)RAND_MAX;
-> +
-> +		xe2lpg_compute_exec_compute(bo_dict_short[j][8].data, ADDR_GENERAL_STATE_BASE,
-> +						ADDR_SURFACE_STATE_BASE, ADDR_DYNAMIC_STATE_BASE,
-> +						ADDR_INSTRUCTION_STATE_BASE, XE2_ADDR_STATE_CONTEXT_DATA_BASE,
-> +						OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP,
-> +						thread_preemption);
-> +
-> +		sync_short[j].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-> +		sync_short[j].flags = DRM_XE_SYNC_FLAG_SIGNAL;
-> +		sync_short[j].handle = syncobj_create(fd, 0);
-> +	}
->   
-> -	bo_execenv_create(fd, &execenv_short, NULL);
->   	bo_execenv_create(fd, &execenv_long, NULL);
->   
->   	bo_dict_long[0].size = ALIGN(long_kernel_size, 0x1000);
-> -	bo_dict_short[0].size = ALIGN(short_kernel_size, 0x1000);
->   
->   	bo_dict_long[10].size = ALIGN(sip_kernel_size, 0x1000);
-> -	bo_dict_short[10].size = ALIGN(sip_kernel_size, 0x1000);
->   
->   	bo_execenv_bind(&execenv_long, bo_dict_long, XE2_BO_PREEMPT_DICT_ENTRIES);
-> -	bo_execenv_bind(&execenv_short, bo_dict_short, XE2_BO_PREEMPT_DICT_ENTRIES);
->   
->   	memcpy(bo_dict_long[0].data, long_kernel, long_kernel_size);
-> -	memcpy(bo_dict_short[0].data, short_kernel, short_kernel_size);
->   
->   	memcpy(bo_dict_long[10].data, sip_kernel, sip_kernel_size);
-> -	memcpy(bo_dict_short[10].data, sip_kernel, sip_kernel_size);
->   
->   	create_dynamic_state(bo_dict_long[1].data, OFFSET_KERNEL);
->   	xehp_create_surface_state(bo_dict_long[2].data, ADDR_INPUT, ADDR_OUTPUT);
-> @@ -1602,10 +1647,6 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
->   					    long_kernel_loop_count);
->   	xehp_create_surface_state(bo_dict_long[7].data, ADDR_INPUT, ADDR_OUTPUT);
->   
-> -	create_dynamic_state(bo_dict_short[1].data, OFFSET_KERNEL);
-> -	xehp_create_surface_state(bo_dict_short[2].data, ADDR_INPUT, ADDR_OUTPUT);
-> -	xehp_create_indirect_data(bo_dict_short[3].data, ADDR_INPUT, ADDR_OUTPUT);
-> -	xehp_create_surface_state(bo_dict_short[7].data, ADDR_INPUT, ADDR_OUTPUT);
->   
->   	dinput = (float *)bo_dict_long[4].data;
->   	srand(time(NULL));
-> @@ -1613,40 +1654,37 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
->   	for (int i = 0; i < SIZE_DATA; i++)
->   		((float *)dinput)[i] = rand() / (float)RAND_MAX;
->   
-> -	dinput = (float *)bo_dict_short[4].data;
-> -
-> -	for (int i = 0; i < SIZE_DATA; i++)
-> -		((float *)dinput)[i] = rand() / (float)RAND_MAX;
->   
->   	xe2lpg_compute_exec_compute(bo_dict_long[8].data, ADDR_GENERAL_STATE_BASE,
->   				    ADDR_SURFACE_STATE_BASE, ADDR_DYNAMIC_STATE_BASE,
->   				    ADDR_INSTRUCTION_STATE_BASE, XE2_ADDR_STATE_CONTEXT_DATA_BASE,
-> -				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP);
-> -
-> -	xe2lpg_compute_exec_compute(bo_dict_short[8].data, ADDR_GENERAL_STATE_BASE,
-> -				    ADDR_SURFACE_STATE_BASE, ADDR_DYNAMIC_STATE_BASE,
-> -				    ADDR_INSTRUCTION_STATE_BASE, XE2_ADDR_STATE_CONTEXT_DATA_BASE,
-> -				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP);
-> +				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP,
-> +				    thread_preemption);
->   
->   	xe_exec_sync(fd, execenv_long.exec_queue, ADDR_BATCH, &sync_long, 1);
->   
-> -	xe_exec_sync(fd, execenv_short.exec_queue, ADDR_BATCH, &sync_short, 1);
-> +	for (int j = 0; j < n_short; j++) {
-> +		xe_exec_sync(fd, execenv_short[j].exec_queue, ADDR_BATCH, &sync_short[j], 1);
-> +
-> +		igt_assert(syncobj_wait(fd, &sync_short[j].handle, 1, INT64_MAX, 0, NULL));
-> +		syncobj_destroy(fd, sync_short[j].handle);
-> +	}
->   
-> -	igt_assert(syncobj_wait(fd, &sync_short.handle, 1, INT64_MAX, 0, NULL));
-> -	syncobj_destroy(fd, sync_short.handle);
->   
->   	igt_assert(syncobj_wait(fd, &sync_long.handle, 1, INT64_MAX, 0, NULL));
->   	syncobj_destroy(fd, sync_long.handle);
->   
-> -	for (int i = 0; i < SIZE_DATA; i++) {
-> -		float f1, f2;
-> +	for (int j = 0; j < n_short; j++) {
-> +		for (int i = 0; i < SIZE_DATA; i++) {
-> +			float f1, f2;
->   
-> -		f1 = ((float *) bo_dict_short[5].data)[i];
-> -		f2 = ((float *) bo_dict_short[4].data)[i];
-> +			f1 = ((float *) bo_dict_short[j][5].data)[i];
-> +			f2 = ((float *) bo_dict_short[j][4].data)[i];
->   
-> -		if (f1 != f2 * f2)
-> -			igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
-> -		igt_assert(f1 == f2 * f2);
-> +			if (f1 != f2 * f2)
-> +				igt_debug("[%4d] f1: %f != %f\n", i, f1, f2 * f2);
-> +			igt_assert(f1 == f2 * f2);
-> +		}
->   	}
->   
->   	for (int i = 0; i < SIZE_DATA; i++) {
-> @@ -1659,10 +1697,12 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
->   		igt_assert(f1 == long_kernel_loop_count);
->   	}
->   
-> -	bo_execenv_unbind(&execenv_short, bo_dict_short, XE2_BO_PREEMPT_DICT_ENTRIES);
-> -	bo_execenv_unbind(&execenv_long, bo_dict_long, XE2_BO_PREEMPT_DICT_ENTRIES);
-> +	for (int j = 0; j < n_short; j++) {
-> +		bo_execenv_unbind(&execenv_short[j], bo_dict_short[j], XE2_BO_PREEMPT_DICT_ENTRIES);
-> +		bo_execenv_destroy(&execenv_short[j]);
-> +	}
->   
-> -	bo_execenv_destroy(&execenv_short);
-> +	bo_execenv_unbind(&execenv_long, bo_dict_long, XE2_BO_PREEMPT_DICT_ENTRIES);
->   	bo_execenv_destroy(&execenv_long);
->   }
->   
-> @@ -1673,7 +1713,9 @@ static const struct {
->   			     const unsigned char *short_kernel,
->   			     unsigned int short_kernel_size,
->   			     const unsigned char *sip_kernel,
-> -			     unsigned int sip_kernel_size);
-> +			     unsigned int sip_kernel_size,
-> +			     bool thread_preemption,
-> +			     bool multi_short);
->   	uint32_t compat;
->   } intel_compute_preempt_batches[] = {
->   	{
-> @@ -1683,7 +1725,7 @@ static const struct {
->   	},
->   };
->   
-> -static bool __run_intel_compute_kernel_preempt(int fd)
-> +static bool __run_intel_compute_kernel_preempt(int fd, bool thread_preemption, bool multi_short)
->   {
->   	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
->   	unsigned int batch;
-> @@ -1720,7 +1762,9 @@ static bool __run_intel_compute_kernel_preempt(int fd)
->   							  kernels->long_kernel_size,
->   							  kernels->kernel, kernels->size,
->   							  kernels->sip_kernel,
-> -							  kernels->sip_kernel_size);
-> +							  kernels->sip_kernel_size,
-> +							  thread_preemption,
-> +							  multi_short);
->   
->   	return true;
->   }
-> @@ -1729,10 +1773,12 @@ static bool __run_intel_compute_kernel_preempt(int fd)
->    * exercise preemption scenario.
->    *
->    * @fd: file descriptor of the opened DRM Xe device
-> + * @thread_preemption: flag to enable/disable thread level preemption
-> + * @multi_short: submit multiple short kernels
->    *
->    * Returns true on success, false otherwise.
->    */
-> -bool run_intel_compute_kernel_preempt(int fd)
-> +bool run_intel_compute_kernel_preempt(int fd, bool thread_preemption, bool multi_short)
->   {
-> -	return __run_intel_compute_kernel_preempt(fd);
-> +	return __run_intel_compute_kernel_preempt(fd, thread_preemption, multi_short);
->   }
-> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-> index a02688ad4..b5932ac2b 100644
-> --- a/lib/intel_compute.h
-> +++ b/lib/intel_compute.h
-> @@ -37,5 +37,5 @@ extern const struct intel_compute_kernels intel_compute_square_kernels[];
->   
->   bool run_intel_compute_kernel(int fd);
->   bool xe_run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_instance *eci);
-> -bool run_intel_compute_kernel_preempt(int fd);
-> +bool run_intel_compute_kernel_preempt(int fd, bool thread_preemption, bool multi_short);
->   #endif	/* INTEL_COMPUTE_H */
-> diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
-> index 31703638e..4d0feb22b 100644
-> --- a/tests/intel/xe_compute_preempt.c
-> +++ b/tests/intel/xe_compute_preempt.c
-> @@ -22,11 +22,18 @@
->    * Description:
->    *      Exercise compute walker mid thread preemption scenario
->    * Functionality: compute openCL kernel
-> + *
-> + * SUBTEST: compute-preempt-mtp-disabled
-> + * GPU requirement: LNL
-> + * Description:
-> + *      Exercise compute preemption with Mid thread preemption disabled
-> + * Functionality: compute openCL kernel
->    */
-> +
->   static void
-> -test_compute_preempt(int fd)
-> +test_compute_preempt(int fd, bool thread_preemption, bool multi_short)
->   {
-> -	igt_require_f(run_intel_compute_kernel_preempt(fd), "GPU not supported\n");
-> +	igt_require_f(run_intel_compute_kernel_preempt(fd, thread_preemption, multi_short), "GPU not supported\n");
->   }
->   
->   igt_main
-> @@ -37,7 +44,10 @@ igt_main
->   		xe = drm_open_driver(DRIVER_XE);
->   
->   	igt_subtest("compute-preempt")
-> -		test_compute_preempt(xe);
-> +		test_compute_preempt(xe, true, 0);
-> +
-> +	igt_subtest("compute-preempt-mtp-disabled")
-> +		test_compute_preempt(xe, false, 1);
->   
->   	igt_fixture
->   		drm_close_driver(xe);
