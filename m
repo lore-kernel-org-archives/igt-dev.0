@@ -4,94 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5565FC48BC3
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Feb 2024 17:56:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BF8EC48BC3
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Feb 2024 18:02:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 04A5B10E509;
-	Tue, 20 Feb 2024 17:56:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D056110E515;
+	Tue, 20 Feb 2024 18:02:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="GZcm+eAV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K/9LudE1";
 	dkim-atps=neutral
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com
- (mail-dm3nam02on2059.outbound.protection.outlook.com [40.107.95.59])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90E7810E509
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Feb 2024 17:56:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6163D10E516
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Feb 2024 18:02:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708452122; x=1739988122;
+ h=content-transfer-encoding:in-reply-to:references:subject:
+ from:to:cc:date:message-id:mime-version;
+ bh=S7fMPjC2YRoZwOZZrc35qfqa2NqgSzsafM/tFZ9RUBg=;
+ b=K/9LudE1ff1QCn1GNEjYC2VpxD2sRey/d/kch8QLs4+mJgACzxz8ITYE
+ 5xkRcFKCmukMXTLb1Yhj1A5ALZXMX0koaDgn9eVnj+nPdd+dTfp3BtP2i
+ HEKgoE1BhW7EM25LpvcxsaRbD7TzTbzNXGlo7y2foyc1x9oh19Ma0AjtO
+ t4pJglvtAOFWK1Y3XO0STs46WIZMfjwb/ByD0SR50Xg6bE/8L1X7KE6dj
+ WLTaliIK9WcKN264D+EPRv5/wFkrFFSMbxXOcHS7O2Vs8abfmTGn9XuAd
+ EsyBKp1Q6HUJTGG/VGZhcQV6QdAW3HUPEJyQmKnRAJvuN8YPb2rAomzXi A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="2434631"
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="2434631"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2024 10:02:02 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="9524348"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 20 Feb 2024 10:02:02 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 20 Feb 2024 10:02:01 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 20 Feb 2024 10:02:01 -0800
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.100)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 20 Feb 2024 10:02:01 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HIPuUuLNjJb9wC8WL9E8+KhSWKDzUurGJ0MFhA+GWMW0WB6BDP12lb26W8Q13cGxvxa3RSpXtOSP+PlU3WN2E5zm/JjMdonkjhMwcX2UqGzKl3IJm8bNXKdHFfzHH0p/kkPAlQ43KkTvoe3vlCcjmAX+vKqFN06XDEiJfYE5MZJCPYctBiZ0q0Uj5KjKcNHnPiriAMoLnv/36IotbqtmqCVQOc8S1UC3O7pGtAYupFLEqGM4lc/4bIEopIZwQu0v+VNvgelB7Hx09bM6QsnGR8olwlWc4B1sUooeZHTjI0mhSr24hzCXao+qMraSQE7yYp3ukT9EPpv+Otohz7IK0A==
+ b=ZBoC8J789C4U4nFjloyFtO8XSXPjUlp9MxUE9/XQ8bNcL92zquPO60CWcgGFjelUNWhO/L9Wo5xvj8s4q5HtN76IvLPE9OGkqn+r5TkRCPODI0v+oKdx1erq7DfHCIeFC1Xz0vot2rtKYbwCEr0jNNF2t2cA8dSKcwLJHAXB2EjJqRQbCh9r8leHD/IEcqNAAbccXbOEN5v55/CwS/Sq2h/ztSG14LZtHpt0lySq9P6tRu/Cra8WsIQMqhKnsmB7nSdchSo5p5cNe9phnz0GejZJUAlWmnAcmjlK/XMrkZ36UFZMPCIlez5kJbjtAk/umDdRZYnunKK2y83iDjHRhw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PyGpil/VK7wSu9BgyUIjilOyp+dJMo5mHg7msBI3aDY=;
- b=FinKyWCFQuLf41JgKTVY8nL1P70VH3v6rM0X/8bVg4Imq1xoIzKveCMiBjrv3zoHXqPbENOsEkyAC4n/nWH0ISlKkfSwzknAaNHHbFIZgrADyXp0fL7r93wLP/PK0rArR0yJccsCP8hn6Cy0OkKt2StUMZxixrSctcGpFbnonkUSDEejB7ipCeIGl8Gyn1qtWSZmcy0U91jh+KWMNEyKw1its7eCXM3aN7HT4Cu3Dj30KFSJxnxyRsC6qjji7od+S+MScfYdw0VFUX/C/50pcus62+EMpPO6bkwzyjf0jSAd7TqoGwCqyUURnUwskJT8eqCBRmHjTjm5qd1o76WaEQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PyGpil/VK7wSu9BgyUIjilOyp+dJMo5mHg7msBI3aDY=;
- b=GZcm+eAVddOFoK8T9+rsbP4GXurg7jzLfnZ0ZE8NvCERdmwQQLvOfIpfL74rqJjWmi4hdjqMN7PCMbRQ7P0oUHkA6URQlfIQ3sPgm9Z5RHCZdWc3SmJ6Ac3EI33iUHqW9THbxzkoUSQrEtUI2MIlEsL3UvJDgviDqbiD8m9lXj0=
-Received: from SA1PR04CA0004.namprd04.prod.outlook.com (2603:10b6:806:2ce::9)
- by MW6PR12MB9019.namprd12.prod.outlook.com (2603:10b6:303:23f::12)
+ bh=RfT5DTVdyYX8HsSAZDsMPCn/BLD4r1uBoOAjjUU1bSA=;
+ b=Z2hyfDTCvSdPlO55BuFdVCHT8421ZHGrhN768TSGJy1NDkyDO8EHI1XeOK6uayQ8yvpOLgucwAkq8aiTxgNSdCBk1i0WdHgfroaxfY3RyQoEBtcZbpG3E2/rICfygd0Sv9oIDpVbq/jjUiL0fedSF/DwstsTxhRzBjEBKouIl9oriV47shwJlNofq8ZDPREQpwRKwbCdYGs0oMEfs0b2DpXjMh7aCA86wQQPbt/SgI9pcfoTUQE85EBIe+Aw3iz529I6zxaxy3Bc7+uMEmjDt/H0Ci/B19SJiwhbwie+lleNSq4giHFIPtLAguQRxMzcAQUQOXI3DZAQrlyzUKdL1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8287.namprd11.prod.outlook.com (2603:10b6:510:1c7::14)
+ by SA0PR11MB4749.namprd11.prod.outlook.com (2603:10b6:806:9a::23)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.19; Tue, 20 Feb
- 2024 17:56:21 +0000
-Received: from SN1PEPF00026369.namprd02.prod.outlook.com
- (2603:10b6:806:2ce:cafe::3f) by SA1PR04CA0004.outlook.office365.com
- (2603:10b6:806:2ce::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.40 via Frontend
- Transport; Tue, 20 Feb 2024 17:56:21 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF00026369.mail.protection.outlook.com (10.167.241.134) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Tue, 20 Feb 2024 17:56:21 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 20 Feb
- 2024 11:56:20 -0600
-Received: from hersenwu-Majolica-CZN.amd.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.35
- via Frontend Transport; Tue, 20 Feb 2024 11:56:19 -0600
-From: Hersen Wu <hersenxs.wu@amd.com>
-To: <igt-dev@lists.freedesktop.org>, <rodrigo.siqueira@amd.com>,
- <aurabindo.pillai@amd.com>, <alex.hung@amd.com>, <hamza.mahfooz@amd.com>,
- <wayne.lin@amd.com>
-CC: <markyacoub@google.com>, Hersen Wu <hersenxs.wu@amd.com>
-Subject: [PATCH] [i-g-t] tests/amdgpu/amd_multidisplay_modeset: Run mode set
- and display enable for multidisplays
-Date: Tue, 20 Feb 2024 12:56:12 -0500
-Message-ID: <20240220175612.80849-1-hersenxs.wu@amd.com>
-X-Mailer: git-send-email 2.25.1
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39; Tue, 20 Feb
+ 2024 18:01:59 +0000
+Received: from PH8PR11MB8287.namprd11.prod.outlook.com
+ ([fe80::64e6:ee24:79f8:efa]) by PH8PR11MB8287.namprd11.prod.outlook.com
+ ([fe80::64e6:ee24:79f8:efa%4]) with mapi id 15.20.7292.036; Tue, 20 Feb 2024
+ 18:01:57 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240209135526.135380-2-gustavo.sousa@intel.com>
+References: <20240209135526.135380-2-gustavo.sousa@intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/kms_frontbuffer_tracking: Invalidate
+ cached stuff
+From: Gustavo Sousa <gustavo.sousa@intel.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Ravi Kumar Vodapalli <ravi.kumar.vodapalli@intel.com>
+Date: Tue, 20 Feb 2024 15:01:50 -0300
+Message-ID: <170845211015.44184.10125779397878338003@gjsousa-mobl2>
+User-Agent: alot/0.10
+X-ClientProxiedBy: MW4PR04CA0319.namprd04.prod.outlook.com
+ (2603:10b6:303:82::24) To PH8PR11MB8287.namprd11.prod.outlook.com
+ (2603:10b6:510:1c7::14)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00026369:EE_|MW6PR12MB9019:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1b3e146d-aa26-4527-2f04-08dc323d3f0e
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8287:EE_|SA0PR11MB4749:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2827fa44-1950-46b1-2112-08dc323e070b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ZrjnV+ntxduUBtsAO5QX9b/go1hLvqqBpAtgEJmBm/LUDKWobRGQpT8SWDgTgBf7s67oU6YBwd09zGxaBpbLWFpOX+/hHcbodNx2xDnaE6v8bb3R0HQfQlrGdvPDJGAHuLSEzJ4ahXNTHyan2u/JBmGUXRIGhcFQdz374W3Y9ofxmSG7w5wPIEbwVUzQC5QhQ2z+xHJTUXA3Pvr5urdAFdj6HVjuegJ7HBRhzVH8d5+rfGAO8vjS9C3jkSLmEKweBe/wX176YE69tv6xTP3ot1DLnrUt/QOYvUGij8WzQvGhWpoGEnSywSCa8kAqwx0N59u92H3G43BvdqzhiWYWfVs3oS/mswrA3fGrWjBZJJUIFIWe/ctLVGbv71wbR6c92fyG7negEVMwuiGEWqhCfsasZN0zdCTmSeCXnDCwvlJYh5pgjTg2GF36tY5BXBc8Fv9Dex5VLcJAHUT10+LwvrF84M7afvaXzi5xa1CkO7wpkiDEgdykEB9bPZFDdsesltos7dq4+JQ+D9yLdujnV/KL6K8zJo+tGYQgDhCi0WDwe8S5IwHiD2DFbK3E5gRpIvBkkFlDywnh184nuk4rvhpOJF5wy+UCG+iZMtJgewhGVXzaxJuxqbYS2KxA/lS76H8/bI0dwoOiGUegBTGVda6oHM984ijJHpIcOYP7bq8=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(36860700004)(46966006)(40470700004); DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2024 17:56:21.1430 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1b3e146d-aa26-4527-2f04-08dc323d3f0e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF00026369.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB9019
+X-Microsoft-Antispam-Message-Info: L8JM13+Yp7kmGRtH9aaqUIIpapUPjfUgqhtVnwphhtiDk2QP5wahE4dk0v9i3lppuVNR/Pyvz+iOu+XKX0yoCQDWKeoyaJ+LMdmQXBhs4kC+YKgUhjZ4VEu50KOBg0dL6tkP61g8dEa7VmFhJChzaXjkQAS5PZNgYn8CIYYcAFjzo054WTypw9vDWY3PfHRKBohBM/apO5ig8A6O9S61Kocql966ayIv7lo2t3DgKUtqEgSSNzv8NSGwMOSUbXAcBkenunleCjytOjGEkSDcKBSI9VXjiVT98I8IDP0QtvSiV3OU5d8dcZBBNhTUp+PqohHm/1kzQ41v/Tsk8lUMKc/3ujCBUxo/+XbGxpEv7DUeXKcRBYvnyQl/7XilWbzOo2y854Iu3U+n98okhMmH4PvZIaQLDvyYBhFn8weXTgiOz8k5/3BMa5xg0EWRs5t/V36d6tNcI1z0l93P0xVz/CEDqSrOKmPBFUSQQQW4bLHqrkNYYf0vdP9IAQJOnNVFnTs9ed9UVZWS0vjP8g1wdjlT35qH4JrZvnYWDABfGog=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH8PR11MB8287.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cFZFbDc2aVZoUmJ6UW1PakJ1WEdrVmw0RXRnejZuNEtmdWJIMGNFei9iVHQ2?=
+ =?utf-8?B?OWlMenJCYjRYK04wWENxUUgyNldDVDg5UldzQnpGalpGRFIxRVlhOWJDUTdF?=
+ =?utf-8?B?ZTB1SWM5Vy95dG1Nb2pvQXJtNXN5S1BiM3J1c1dyQ0NwYXlmYi8vb0dhVkFl?=
+ =?utf-8?B?ZWZSelUrZ1JTWno0NzJXam03WVo2b0xRN1ZxUXpNdW1VdjlvemZNVEg0cHJX?=
+ =?utf-8?B?TURnSmtRQzFvZmVEZFBZays3RUc0RVVTSjBtSGgwRWdMNmpacDV3RExPZTNv?=
+ =?utf-8?B?eFJ6Mk5CNUpIS1F6WGdZTnlvTEVjLzBRRlhVTDNrTUo0cGVxbU5CR2F6UmJU?=
+ =?utf-8?B?OEVmNVdXUDZ5UzBrQVI1Y3JzaGFDUFowVCtSeGJxaTJpd3VNT01SMWJXWS9l?=
+ =?utf-8?B?RnZaK0N3b2RmT1BtZ3hqM0hCNkVyVlo2T2Y0SDk2c2VsMDRRcEtuVHBJVnBx?=
+ =?utf-8?B?Z1JFbVBPSEV4Y3djNEFTK1BLK09RZUVyU28rcFdOOWxRUEl3N0dMT1NRdE9G?=
+ =?utf-8?B?K3RVNldKWHBsNnkwRGdRUHA4YzNCbXN3bjh0RXhEZWI4c1g2T2M1bUZ3Q2pF?=
+ =?utf-8?B?YndWcVVlaGpLZFZQY2NwcEwrdCtvNm43c3d0V2pOZDNpTzVGSXFhTmQxQmRV?=
+ =?utf-8?B?NTkyeHpDeTlrZVBpKzQ1aG5JckJYR3JCTWErTU1DSnJIa0piZ3dzK05BUUlt?=
+ =?utf-8?B?NUFYS2ZlN3NINWRyZHBNVDhjNTRyNk1yZkpKWjdZamxnYzdXZGJkQWJacnRG?=
+ =?utf-8?B?eFdvSWE2WWI1dFJEVmJNaS9iN0hmcFZDY0Zzd3VhMk9WbmhRMUFmNERXdG9m?=
+ =?utf-8?B?S3F5UmVOb3NyVHNYenQrd1dyYisveTBnc3YzV0VIYkRaWmR4Q3pVOEJEY2xl?=
+ =?utf-8?B?WThiTjFVVmpyWGVhakw2aHhpMCs3OTBhdm9OL1h6Uk5OKzFIajk2U2xHUURQ?=
+ =?utf-8?B?VVptcnVzMVlDNVl3UVlBK2g1TzdHQzFMYzQvbXVkdEltRVlVU3g3ODhoOWdQ?=
+ =?utf-8?B?UFBtbXRTVmZqUkQwS1U5OVdJWWFwb0pWNldoT2FQSlNEZEJhc3hnUG5WV05S?=
+ =?utf-8?B?b3l3dHhWNHdVU1BIZjRuWld5QjlVejd4bHJXSG5SdytMZXZMZHF5ZzdRQjBu?=
+ =?utf-8?B?bTVDL21tWjg5VzRuRzhIRnN5WW9FVGV4ZERET1hZUm5WR3Z4NkJIcVFJZk1Q?=
+ =?utf-8?B?aFNSMVVUNU9UemM0VFcrcllXWkgxNFdBVU14ZVpDUjMrUjhUWCtVM0t1am14?=
+ =?utf-8?B?a1JiTE8yZUNBdU1aU1RseHdwQXB4Ly9tTWNMMTRXemxCZmxaY3NJcXBoRUk2?=
+ =?utf-8?B?U2JaWnBkQkNGK2MzS0l5Z3VZY3cwY2J3TU01a2c0M3ZNOWNNYUVUalB4bWJU?=
+ =?utf-8?B?UTNBMDRJMmc3RGVVK2hzaWlmMHY4WHIzSXVkbTMrZnEwcVUzTXJGblFRZ1Jn?=
+ =?utf-8?B?eWZRdDFCcnU0TVZBV01IOUhOd2FVc1d5bm91QXVWbXZFc0wyZGpBbzBXZVZy?=
+ =?utf-8?B?V1pyb2NzVWJDTEFZKzRYdVJxOENvLzZwUFRlTjdoZXlOU2EvUHh5bE1RV3Vh?=
+ =?utf-8?B?a1hqdlZPQ05BWm1DY2cvamtmOVllcW94OEdYMXRlTGExcXphUjFSa3pra0dw?=
+ =?utf-8?B?QkZwTEVHRWVYSzBKaFIzS29OUWtGRUdROHE1SlVOc1ZsRHB3ZjVKdXQ4b0di?=
+ =?utf-8?B?WThRVlR4c242QnBtREh0MUcxazlsSklIbXZwaEtBaHI5VTZadGF2TVZhZmwz?=
+ =?utf-8?B?TTJ3MUdyL0hRYno5N0g5dWhBeHdheGdOK3hWeFdXMHE4NVJPTy96SHFrRjVY?=
+ =?utf-8?B?Tmc0bXNzL0IxTERKR2swZVhBNWFielNJVlNEQXp6Z2VIUS9XVFJNMmsxWXhp?=
+ =?utf-8?B?WGFqNktZdHVUbGJMY21pU25Sb280bUtkNEdJSWtNQkJNaWZ0Y0lRZk5XZUU3?=
+ =?utf-8?B?cFJYTlRYMGcwTXFPcDFzdDc5MllhejhnSFo0bWI0MFp6UEtGamd1ZGRvaVpT?=
+ =?utf-8?B?T3NqakxGaFBMd3lhYUJQMTVTTlExUG9YYWZmazJUSmtnU2REZEd3a01XM0E4?=
+ =?utf-8?B?U3pmZm1kdmdKYXEvQ3FTOWFQZUUxR09BazRkRzBwZVY1c0tPUEZEWWhLUEJH?=
+ =?utf-8?B?M3V0VVhHZXhUd25OSWxHYVZpaFZ2SHQxTEt5b2RRaEZJN0JnQllSL1orK2ox?=
+ =?utf-8?B?Q2c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2827fa44-1950-46b1-2112-08dc323e070b
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8287.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2024 18:01:57.0486 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ww/IeoyN4UIZypo8wM9RnnwX01LXZMM+zCOlhZOjqKpz5UtfEG2tr1oV4JFqxFwk1M3EE+HZ9oiWbROpu7Rfag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4749
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,521 +161,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Run mode set, display enable and disable for multiple
-displays.
++cc Ravi.
 
-Loop all display modes. Loop all display combinations.
-For DP display(eDP, SST DP, displays connected to
-outputs of MST hub), if it supports DP rx crc test, IGT
-will read DP rx crc and compare with pipe crc. If DSC
-is not enabled for display, DP rx crc should equal to
-pipe crc.
-
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
----
- tests/amdgpu/amd_multidisplay_modeset.c | 449 ++++++++++++++++++++++++
- tests/amdgpu/meson.build                |  11 +-
- 2 files changed, 455 insertions(+), 5 deletions(-)
- create mode 100644 tests/amdgpu/amd_multidisplay_modeset.c
-
-diff --git a/tests/amdgpu/amd_multidisplay_modeset.c b/tests/amdgpu/amd_multidisplay_modeset.c
-new file mode 100644
-index 000000000..30c78c5e2
---- /dev/null
-+++ b/tests/amdgpu/amd_multidisplay_modeset.c
-@@ -0,0 +1,449 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright 2024 Advanced Micro Devices, Inc.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ */
-+
-+#include <dirent.h>
-+#include <fcntl.h>
-+#include "igt.h"
-+#include "igt_amd.h"
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+
-+#define MAX_PIPES 6
-+
-+/* Common test data. */
-+struct data_t {
-+	igt_display_t display;
-+	igt_plane_t *primary[MAX_PIPES];
-+	igt_output_t *output[MAX_PIPES];
-+	int fd;
-+	igt_pipe_crc_t *pipe_crc_dprx[MAX_PIPES];
-+	igt_crc_t crc_fb[MAX_PIPES];
-+	igt_crc_t crc_dprx[MAX_PIPES];
-+	igt_pipe_crc_t *pipe_crc_otg[MAX_PIPES];
-+	igt_crc_t crc_otg[MAX_PIPES];
-+};
-+
-+enum sub_test {
-+	MODE_SET,
-+	DISPLAY_ENABLE_DISABLE
-+};
-+
-+/* DP DPCD offset */
-+#define DPCD_TEST_SINK_MISC 0x246
-+
-+static bool is_mst_connector(int drm_fd, uint32_t connector_id)
-+{
-+	return kmstest_get_property(drm_fd, connector_id,
-+				    DRM_MODE_OBJECT_CONNECTOR,
-+				    "PATH", NULL,
-+				    NULL, NULL);
-+}
-+
-+static bool sink_detect_error(int drm_fd, uint32_t connector_id, int error_code)
-+{
-+	switch (error_code) {
-+	case ETIMEDOUT:
-+	case ENXIO:
-+		return true;
-+	case EIO:
-+		return is_mst_connector(drm_fd, connector_id);
-+	default:
-+		return false;
-+	};
-+}
-+
-+/* Read from /dev/drm_dp_aux
-+ * addr: DPCD offset
-+ * val:  Read value of DPCD register
-+ */
-+static bool dpcd_read_byte(int drm_fd,
-+	drmModeConnector *connector, uint32_t addr, uint8_t *val)
-+{
-+	DIR *dir;
-+	int dir_fd;
-+	uint8_t buf[16] = {0};
-+	*val = 0;
-+
-+	dir_fd = igt_connector_sysfs_open(drm_fd, connector);
-+	igt_assert(dir_fd >= 0);
-+
-+	if (connector->connection != DRM_MODE_CONNECTED &&
-+	    is_mst_connector(drm_fd, connector->connector_id)) {
-+		close(dir_fd);
-+		return false;
-+	}
-+
-+	dir = fdopendir(dir_fd);
-+	igt_assert(dir);
-+
-+	for (;;) {
-+		struct dirent *ent;
-+		char path[5 + sizeof(ent->d_name)];
-+		int fd, ret, i, j, k;
-+
-+		ent = readdir(dir);
-+		if (!ent)
-+			break;
-+
-+		if (strncmp(ent->d_name, "drm_dp_aux", 10))
-+			continue;
-+
-+		snprintf(path, sizeof(path), "/dev/%s", ent->d_name);
-+
-+		fd = open(path, O_RDONLY);
-+		igt_assert(fd >= 0);
-+
-+		k = (addr / 16) + 1;
-+		j = addr % 16;
-+
-+		/* read 16 bytes each loop */
-+		for (i = 0; i < k; i++) {
-+			ret = read(fd, buf, sizeof(buf));
-+			if (ret < 0)
-+				break;
-+			if (ret != sizeof(buf))
-+				break;
-+		}
-+
-+		igt_info("%s: %s\n", path,
-+			 ret > 0 ? "success" : strerror(errno));
-+
-+		igt_assert(ret == sizeof(buf) ||
-+			   sink_detect_error(drm_fd, connector->connector_id, errno));
-+
-+		close(fd);
-+
-+		closedir(dir);
-+		close(dir_fd);
-+
-+		if (ret > 0)
-+			*val = buf[j];
-+
-+		return (ret > 0);
-+	}
-+
-+	closedir(dir);
-+	close(dir_fd);
-+	return false;
-+}
-+
-+static void set_all_output_pipe_to_none(struct data_t *data)
-+{
-+	igt_output_t *output;
-+
-+	for_each_connected_output(&data->display, output) {
-+		igt_output_set_pipe(output, PIPE_NONE);
-+	}
-+
-+	igt_display_commit_atomic(&data->display,
-+		DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+}
-+
-+static void test_init(struct data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	int i;
-+	bool ret = false;
-+	uint8_t dpcd_246h = 0;
-+
-+	for (i = 0; i < MAX_PIPES; i++)
-+		data->pipe_crc_dprx[i] = NULL;
-+
-+	for_each_pipe(display, i) {
-+		igt_output_t *output;
-+		igt_pipe_t *pipes;
-+
-+		/* For each valid pipe, get one connected display.
-+		 * This will let displays connected to MST hub be
-+		 * tested
-+		 */
-+		output = igt_get_single_output_for_pipe(display, i);
-+		pipes = &display->pipes[i];
-+		data->primary[i] = igt_pipe_get_plane_type(
-+			&data->display.pipes[i], DRM_PLANE_TYPE_PRIMARY);
-+		data->output[i] = output;
-+
-+		/* dp rx crc only available for eDP, SST DP, MST DP */
-+		if ((output->config.connector->connector_type ==
-+			DRM_MODE_CONNECTOR_eDP ||
-+			output->config.connector->connector_type ==
-+				DRM_MODE_CONNECTOR_DisplayPort)) {
-+			/* DPCD 0x246 bit5: 1 -- sink device support CRC test */
-+			ret = dpcd_read_byte(data->fd, output->config.connector,
-+				DPCD_TEST_SINK_MISC, &dpcd_246h);
-+			if (ret && ((dpcd_246h & 0x20) != 0x0))
-+				data->pipe_crc_dprx[i] = igt_pipe_crc_new(
-+					data->fd, pipes->pipe,
-+					AMDGPU_PIPE_CRC_SOURCE_DPRX);
-+		}
-+
-+		data->pipe_crc_otg[i] = igt_pipe_crc_new(data->fd, pipes->pipe,
-+						IGT_PIPE_CRC_SOURCE_AUTO);
-+		/* disable eDP PSR */
-+		if (data->output[i]->config.connector->connector_type ==
-+				DRM_MODE_CONNECTOR_eDP) {
-+			kmstest_set_connector_dpms(display->drm_fd,
-+				data->output[i]->config.connector,
-+				DRM_MODE_DPMS_OFF);
-+
-+			igt_amd_disallow_edp_enter_psr(data->fd,
-+				data->output[i]->name, true);
-+
-+			kmstest_set_connector_dpms(display->drm_fd,
-+				data->output[i]->config.connector,
-+				DRM_MODE_DPMS_ON);
-+		}
-+	}
-+
-+	igt_require(data->output[0]);
-+	igt_display_reset(display);
-+}
-+
-+static void test_fini(struct data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	int i = 0;
-+
-+	for_each_pipe(display, i) {
-+		if (data->pipe_crc_dprx[i])
-+			igt_pipe_crc_free(data->pipe_crc_dprx[i]);
-+		igt_pipe_crc_free(data->pipe_crc_otg[i]);
-+	}
-+
-+	igt_display_reset(display);
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-+}
-+
-+static void multiple_display_test(struct data_t *data, enum sub_test test_mode)
-+{
-+	igt_output_t *output;
-+	struct igt_fb *buf;
-+	drmModeConnectorPtr conn;
-+	drmModeModeInfoPtr kmode;
-+	igt_display_t *display = &data->display;
-+	int i, j, ret, num_disps, count_modes_disp_config, bitmap_disps;
-+	char *crc_str, *crc_str_1, *crc_str_2;
-+	bool any_mst = false;
-+
-+	test_init(data);
-+
-+	num_disps = 0;
-+	for_each_connected_output(display, output)
-+		num_disps++;
-+
-+	igt_info("Connected num_disps:%d\n", num_disps);
-+
-+	igt_skip_on_f(num_disps > igt_display_get_n_pipes(&data->display) ||
-+			      num_disps > data->display.n_outputs,
-+		      "ASIC does not have %d outputs/pipes\n", num_disps);
-+
-+	buf = calloc(sizeof(struct igt_fb), num_disps);
-+	igt_assert_f(buf, "Failed to allocate memory\n");
-+
-+	/* For mode test, it is max number of modes for
-+	 * all connected displays. For enable/disable test,
-+	 * it is number of connected display combinations
-+	 */
-+	count_modes_disp_config = 0;
-+	for_each_connected_output(display, output) {
-+		conn = output->config.connector;
-+		if (count_modes_disp_config < conn->count_modes)
-+			count_modes_disp_config = conn->count_modes;
-+		if  (is_mst_connector(data->fd, conn->connector_id))
-+			any_mst = true;
-+	}
-+
-+	if (test_mode == DISPLAY_ENABLE_DISABLE)
-+		count_modes_disp_config = (1 << num_disps) - 1;
-+
-+	/* display combination bitmap for mode set or enable display
-+	 * bit 0: display 0
-+	 * bit 1: display 1
-+	 * bit 2: display 2, etc.
-+	 *
-+	 * bitmap_disps:0x5 means display 0,2 light up
-+	 */
-+	bitmap_disps = (1 << num_disps) - 1;
-+	igt_info("count_modes_disp_config:%d bitmap_disps:%x\n\n\n",
-+		count_modes_disp_config, bitmap_disps);
-+
-+	for (i = 0; i < count_modes_disp_config; i++) {
-+		if (test_mode == DISPLAY_ENABLE_DISABLE) {
-+			bitmap_disps = i + 1;
-+			igt_info("\n\ndispconfig loop:%d disp bitmap:%x -----\n",
-+				i, bitmap_disps);
-+
-+			/* disable all displays */
-+			set_all_output_pipe_to_none(data);
-+		} else
-+			igt_info("\n\nnmode loop:%d -----\n", i);
-+		j = 0;
-+		for_each_connected_output(display, output) {
-+			if (test_mode == DISPLAY_ENABLE_DISABLE) {
-+				/* only enable display mapping to
-+				 * bitmap_disps with value 1
-+				 */
-+				if (!(bitmap_disps & (1 << j))) {
-+					j++;
-+					continue;
-+				}
-+				kmode = igt_output_get_mode(output);
-+				igt_assert(kmode);
-+				igt_info("pipe:%d %s mode:%s\n",
-+					j, output->name, kmode->name);
-+				igt_info("clk:%d ht:%d vt:%d hz:%d\n",
-+					kmode->clock, kmode->htotal,
-+					kmode->vtotal, kmode->vrefresh);
-+			} else {
-+				conn = output->config.connector;
-+
-+				if (i < conn->count_modes)
-+					kmode = &conn->modes[i];
-+				else
-+					kmode = &conn->modes[0];
-+
-+				igt_info("pipe:%d %s mode:%s\n", j, output->name, kmode->name);
-+				igt_info("clk:%d ht:%d vt:%d hz:%d\n", kmode->clock,
-+					kmode->htotal, kmode->vtotal, kmode->vrefresh);
-+
-+				if  (is_mst_connector(data->fd, conn->connector_id)) {
-+					/* mst hub may not support mode with high clk
-+					 * more than 4k@60hz or high refresh rate
-+					 */
-+					if (kmode->clock > 596000 || kmode->vrefresh > 120) {
-+						kmode = &conn->modes[0];
-+						igt_info("Mode may not be supported by mst hub.	Use default mode from monitor!\n");
-+						igt_info("clk:%d ht:%d vt:%d hz:%d\n",
-+							kmode->clock, kmode->htotal,
-+							kmode->vtotal, kmode->vrefresh);
-+					}
-+				}
-+
-+				/* memory for output->config.connector will be re-alloacted */
-+				igt_output_override_mode(output, kmode);
-+			}
-+
-+			igt_create_pattern_fb(data->fd, kmode->hdisplay,
-+					kmode->vdisplay, DRM_FORMAT_XRGB8888,
-+					0, (buf + j));
-+
-+			igt_output_set_pipe(output, j);
-+			igt_plane_set_fb(data->primary[j], (buf + j));
-+			j++;
-+		}
-+
-+		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+
-+		/* MST hub may take longer time for mode change or display
-+		 * enable/disable. Wait for MST stable before CRC check.
-+		 * TODO: check if there is a better way to check MST stable
-+		 */
-+		if (any_mst)
-+			sleep(20);
-+
-+		j = 0;
-+		for_each_connected_output(display, output) {
-+			bool dsc_on = false;
-+
-+			/* For test_mode:MODE_SET, bitmap_disps =
-+			 * (1 << num_disps) - 1. All connected
-+			 * displays will be checked.
-+			 */
-+			if (!(bitmap_disps & (1 << j))) {
-+				j++;
-+				continue;
-+			}
-+
-+			if (data->pipe_crc_dprx[j]) {
-+				igt_pipe_crc_collect_crc(data->pipe_crc_dprx[j],
-+					&data->crc_dprx[j]);
-+				crc_str = igt_crc_to_string(&data->crc_dprx[j]);
-+				igt_info("pipe:%d %s dprx crc:%s\n",
-+					j, output->name, crc_str);
-+			} else
-+				igt_info("pipe:%d %s monitor dprx not available\n",
-+					j, output->name);
-+
-+			igt_pipe_crc_collect_crc(data->pipe_crc_otg[j],
-+				&data->crc_otg[j]);
-+			igt_fb_calc_crc((buf + j), &data->crc_fb[j]);
-+
-+			crc_str_1 = igt_crc_to_string(&data->crc_otg[j]);
-+			igt_info("pipe:%d %s otg crc:%s\n",
-+				j, output->name, crc_str_1);
-+
-+			crc_str_2 = igt_crc_to_string(&data->crc_fb[j]);
-+			igt_info("pipe:%d %s fb crc:%s\n",
-+				j, output->name, crc_str_2);
-+
-+			if (data->pipe_crc_dprx[j]) {
-+				ret = strcmp(crc_str, crc_str_1);
-+				dsc_on = igt_amd_read_dsc_clock_status(
-+						data->fd, output->name);
-+				if (ret != 0 && dsc_on)
-+					igt_info("pipe:%d %s otg crc != dprx crc due to dsc on\n",
-+					j, output->name);
-+
-+				igt_assert_f(((ret == 0) || (dsc_on)),
-+					"ERROR! OTG CRC != DPRX and DSC off\n");
-+			}
-+			j++;
-+		}
-+
-+		j = 0;
-+		for_each_connected_output(display, output) {
-+			igt_remove_fb(data->fd, (buf + j));
-+			j++;
-+		}
-+
-+		set_all_output_pipe_to_none(data);
-+	}
-+
-+	test_fini(data);
-+	free(buf);
-+}
-+
-+IGT_TEST_DESCRIPTION("Test multi-display mode set, display enable and disable");
-+igt_main
-+{
-+	struct data_t data;
-+
-+	igt_skip_on_simulation();
-+
-+	memset(&data, 0, sizeof(data));
-+
-+	igt_fixture
-+	{
-+		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
-+
-+		kmstest_set_vt_graphics_mode();
-+
-+		igt_display_require(&data.display, data.fd);
-+		igt_require(&data.display.is_atomic);
-+		igt_display_require_output(&data.display);
-+	}
-+
-+	igt_describe("Loop through all supported modes and check DP RX CRC and Pipe CRC");
-+	igt_subtest("multiple-display-mode-switch")
-+		multiple_display_test(&data, MODE_SET);
-+	igt_describe("Enable and Disable displays and check DP RX CRC and Pipe CRC");
-+	igt_subtest("multiple-display-enable-disable")
-+		multiple_display_test(&data, DISPLAY_ENABLE_DISABLE);
-+
-+
-+	igt_fixture
-+	{
-+		igt_display_fini(&data.display);
-+		drm_close_driver(data.fd);
-+	}
-+}
-diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-index 5bd502496..af1d80b6b 100644
---- a/tests/amdgpu/meson.build
-+++ b/tests/amdgpu/meson.build
-@@ -13,32 +13,33 @@ if libdrm_amdgpu.found()
- 			  'amd_deadlock',
- 			  'amd_dp_dsc',
- 			  'amd_freesync_video_mode',
--			  'amd_hotplug',
- 			  'amd_gang_cs' ,
-+			  'amd_hotplug',
- 			  'amd_ilr',
- 			  'amd_info',
- 			  'amd_jpeg_dec',
- 			  'amd_link_settings',
-+			  'amd_mall',
- 			  'amd_max_bpc',
- 			  'amd_mem_leak',
- 			  'amd_mode_switch',
- 			  'amd_module_load',
-+			  'amd_multidisplay_modeset',
-+			  'amd_odm',
- 			  'amd_pci_unplug',
- 			  'amd_plane',
- 			  'amd_prime',
- 			  'amd_psr',
- 			  'amd_ras',
- 			  'amd_security',
-+			  'amd_subvp',
- 			  'amd_uvd_dec',
- 			  'amd_uvd_enc',
- 			  'amd_vce_dec',
- 			  'amd_vcn',
- 			  'amd_vm',
--			  'amd_vrr_range',
--			  'amd_mall',
--			  'amd_odm',
--			  'amd_subvp',
- 			  'amd_vpe',
-+			  'amd_vrr_range',
- 			]
- 	if libdrm_amdgpu.version().version_compare('> 2.4.97')
- 		amdgpu_progs +=[ 'amd_syncobj', ]
--- 
-2.25.1
-
+Quoting Gustavo Sousa (2024-02-09 10:55:27-03:00)
+>The test pipe-fbc-rte updates the primary mode parameters for each valid
+>dynamic test case. Because of that, we might endup with invalid cached
+>data due to differences between the initial state of prim_mode_params
+>defined from the beginning of the test program and the possibly changed
+>state after pipe-fbc-rte.
+>
+>As an example, in a specific environment, the command
+>
+>  ./build/tests/kms_frontbuffer_tracking \
+>      --run-subtest pipe-fbc-rte,fbc-1p-primscrn-pri-indfb-draw-mmap-wc
+>
+>would result in fbc-1p-primscrn-pri-indfb-draw-mmap-wc failing because
+>it would try to read CRC from pipe B while the test was being actually
+>done in pipe A.
+>
+>Another potential issue worth noting is that even pipe-fbc-rte could
+>similarly fail if the set of dynamic subtests spanned across multiple
+>pipes.
+>
+>Let's fix that by making sure that cached stuff that would depend on the
+>primary mode parameters gets properly invalidated when prim_mode_params
+>is the target of init_mode_params(). This should fix the issues
+>mentioned above and also future-proof the code for any future test that
+>would need to modify the prim_mode_params.
+>
+>Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+>---
+> tests/intel/kms_frontbuffer_tracking.c | 13 +++++++++++++
+> 1 file changed, 13 insertions(+)
+>
+>diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_fron=
+tbuffer_tracking.c
+>index 912cca3f8d45..17f74990979e 100644
+>--- a/tests/intel/kms_frontbuffer_tracking.c
+>+++ b/tests/intel/kms_frontbuffer_tracking.c
+>@@ -1484,6 +1484,7 @@ static drmModeModeInfo *connector_get_mode(igt_outpu=
+t_t *output)
+> static void init_mode_params(struct modeset_params *params,
+>                              igt_output_t *output, enum pipe pipe)
+> {
+>+        int i;
+>         drmModeModeInfo *mode;
+>=20
+>         igt_output_override_mode(output, NULL);
+>@@ -1515,6 +1516,18 @@ static void init_mode_params(struct modeset_params =
+*params,
+>         params->sprite.w =3D 64;
+>         params->sprite.h =3D 64;
+>=20
+>+        /* If we endup changing the primary mode parameters, we need to
+>+         * invalidate any existing cached stuff from a previous configura=
+tion. */
+>+        if (params =3D=3D &prim_mode_params) {
+>+                if (pipe_crc) {
+>+                        igt_pipe_crc_free(pipe_crc);
+>+                        pipe_crc =3D NULL;
+>+                }
+>+
+>+                for (i =3D 0; i < FORMAT_COUNT; i++)
+>+                        blue_crcs[i].initialized =3D false;
+>+        }
+>+
+>         free(mode);
+> }
+>=20
+>--=20
+>2.43.0
+>
