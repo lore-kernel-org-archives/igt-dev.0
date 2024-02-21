@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B308FC5478A
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Feb 2024 16:47:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 400EDC48BEB
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Feb 2024 16:47:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 558F310E19D;
-	Wed, 21 Feb 2024 16:47:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DA05810E10C;
+	Wed, 21 Feb 2024 16:47:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="llN631Np";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hc2WHr2u";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7A6B10E10C
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Feb 2024 16:47:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 577BA10E10C
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Feb 2024 16:47:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708534035; x=1740070035;
+ t=1708534060; x=1740070060;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=4Ij8oKtHxZJKzsLa0eQaZdDSAGCL6nMWdPDzTrL8onQ=;
- b=llN631Np3sFlXaZQfban02c5V+y1fqAFxV+ofzW0AyGJtcbnRH8VCPYS
- gbQAfjZlzES7p3TURpIY9vSXUQigARs8YeJrGSR1remrPkoaw6XhR4zvD
- yODO7PtDCqEQPWI8nkVqtEKLFxHiGwGhO9Ra5x6+6UgTpA8pX9PXH4guF
- FzKYS49yzuZAj4fmv4QODwP+kCzE/TBrY/Z9XFNqDMuNsh7ajjttdtCVG
- h7Ee9si7HZAS6ptuoJCHu7Tiv1qgQAZjdL06QM+gp6ngFmmEWCYhWlwK5
- LPQ4IMAcvUpk/OOMbXF6MDy4JriGtq3CxgAG2SgsYa8/9ZUthqluqAoH9 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="2568700"
+ bh=lLEjMKXMSyES2+AlygKTBnpeqg5JJ2B8vr8A3SBtEME=;
+ b=hc2WHr2uKvog/LxCKnCoBU+WttO89SUwaAwauZdfKpb8JDHdYkh3BBwk
+ YK5KEn0U6PVwZ9VNowP/pbfRcoNfVALcC/mmNr653hljwMKgRb73OUZ35
+ XqRJyECXvtHvRdycBh4JoMj2gQfFssCWuoqWDOrZY/vKVxvsliR/KcOE7
+ d+r2xrcNkoAMJMCiFZu3BUCJXrivxWfBnU6ulnRmBb175rYhqT4+U70fG
+ MScLK3L2lWowhCV4Okz6u3CeQk9eEm0SC/MJFn4Y46HAdAM0FCRSZH0E9
+ 7AGIJhwY+KOpuxm8i3OJAxkDiUV62oJETBE7oTazT0UOVr7NJMVtBZ7dN g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="2568744"
 X-IronPort-AV: E=Sophos;i="6.06,176,1705392000"; 
-   d="scan'208";a="2568700"
+   d="scan'208";a="2568744"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2024 08:47:02 -0800
+ 21 Feb 2024 08:47:09 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,176,1705392000"; 
-   d="scan'208";a="9886199"
+   d="scan'208";a="9886353"
 Received: from unknown (HELO localhost) ([10.246.5.230])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2024 08:46:52 -0800
+ 21 Feb 2024 08:47:06 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>, 
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v10 2/6] lib/drmtest: Introduced drm_open_driver_another
-Date: Wed, 21 Feb 2024 17:46:33 +0100
-Message-ID: <20240221164637.116048-3-kamil.konieczny@linux.intel.com>
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v10 5/6] tests/intel/xe_exec_basic: add multigpu subtests
+Date: Wed, 21 Feb 2024 17:46:36 +0100
+Message-ID: <20240221164637.116048-6-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240221164637.116048-1-kamil.konieczny@linux.intel.com>
 References: <20240221164637.116048-1-kamil.konieczny@linux.intel.com>
@@ -70,199 +69,83 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+Add a few multi-gpu subtests:
 
-For user convenience, introduce drm_open_driver_another as
-a wrapper for __drm_open_driver_another with skip on fail.
-Also add counterpart to open: __drm_close_driver() with
-no warning for non-opened fd.
+multigpu-once-*
+multigpu-many-execqueues-many-vm-*
+multigpu-no-exec-*
 
-v2: rebased (Kamil)
-v6: reword description (Janusz)
-v10: change assert into skip, add TODO note about atomic reset
-  before tests starts for i915 and on exit path (Janusz)
-  add __drm_close_driver() (Kamil)
+run on two or more GPUs. Many variant was limited to take at most
+few seconds.
 
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+v10: use new renamed macro multi_fork_foreach_gpu_chip (Zbigniew)
+
+Cc: "Dominik Karol Piątkowski" <dominik.karol.piatkowski@intel.com>
 Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
-Signed-off-by: "Dominik Karol Piątkowski" <dominik.karol.piatkowski@intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/drmtest.c | 109 ++++++++++++++++++++++++++++++++++----------------
- lib/drmtest.h |   2 +
- 2 files changed, 76 insertions(+), 35 deletions(-)
+ tests/intel/xe_exec_basic.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 52b5a2020..1e986463d 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -241,6 +241,35 @@ static void modulename_to_chipset(const char *name, unsigned int *chip)
- 	}
- }
- 
-+static const char *chipset_to_str(int chipset)
-+{
-+	switch (chipset) {
-+	case DRIVER_INTEL:
-+		return "intel";
-+	case DRIVER_V3D:
-+		return "v3d";
-+	case DRIVER_VC4:
-+		return "vc4";
-+	case DRIVER_VGEM:
-+		return "vgem";
-+	case DRIVER_AMDGPU:
-+		return "amdgpu";
-+	case DRIVER_PANFROST:
-+		return "panfrost";
-+	case DRIVER_MSM:
-+		return "msm";
-+	case DRIVER_XE:
-+		return "xe";
-+	case DRIVER_VMWGFX:
-+		return "vmwgfx";
-+	case DRIVER_ANY:
-+		return "any";
-+	default:
-+		return "other";
-+	}
-+}
-+
-+
- /*
-  * Logs path of opened device. Device path opened for the first time is logged at info level,
-  * subsequent opens (if any) are logged at debug level.
-@@ -563,6 +592,27 @@ int __drm_open_driver_another(int idx, int chipset)
- 	return fd;
- }
- 
-+/**
-+ * drm_open_driver_another:
-+ * @idx: index of the device you are opening
-+ * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
-+ *
-+ * A wrapper for __drm_open_driver with skip on fail.
-+ *
-+ * Returns:
-+ * An open DRM fd or skips
-+ */
-+int drm_open_driver_another(int idx, int chipset)
-+{
-+	int fd = __drm_open_driver_another(idx, chipset);
-+
-+	igt_skip_on_f(fd < 0, "No known gpu found for chipset flags 0x%u (%s)\n",
-+		      chipset, chipset_to_str(chipset));
-+
-+	/* TODO: for i915 and idx > 0 add atomic reset before test */
-+	return fd;
-+}
-+
- /**
-  * __drm_open_driver:
-  * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
-@@ -643,34 +693,6 @@ static void cancel_work_at_exit_render(int sig)
- 	at_exit_drm_render_fd = -1;
- }
- 
--static const char *chipset_to_str(int chipset)
--{
--	switch (chipset) {
--	case DRIVER_INTEL:
--		return "intel";
--	case DRIVER_V3D:
--		return "v3d";
--	case DRIVER_VC4:
--		return "vc4";
--	case DRIVER_VGEM:
--		return "vgem";
--	case DRIVER_AMDGPU:
--		return "amdgpu";
--	case DRIVER_PANFROST:
--		return "panfrost";
--	case DRIVER_MSM:
--		return "msm";
--	case DRIVER_XE:
--		return "xe";
--	case DRIVER_VMWGFX:
--		return "vmwgfx";
--	case DRIVER_ANY:
--		return "any";
--	default:
--		return "other";
--	}
--}
--
- static const char *chipset_to_vendor_str(int chipset)
- {
- 	return chipset == DRIVER_XE ? chipset_to_str(DRIVER_INTEL) : chipset_to_str(chipset);
-@@ -733,12 +755,33 @@ static bool is_valid_fd(int fd)
- 	return false;
- }
- 
-+/**
-+ * __drm_close_driver:
-+ * @fd: a drm file descriptor
-+ *
-+ * Check the given drm file descriptor @fd is valid and if not,
-+ * return -1. For valid fd close it and make cleanups.
-+ *
-+ * Returns: 0 on success or -1 on error.
-+ */
-+int __drm_close_driver(int fd)
-+{
-+	if (!is_valid_fd(fd))
-+		return -1;
-+
-+	/* Remove xe_device from cache. */
-+	if (is_xe_device(fd))
-+		xe_device_put(fd);
-+
-+	return close(fd);
-+}
-+
- /**
-  * drm_close_driver:
-  * @fd: a drm file descriptor
-  *
-- * Check the given drm file descriptor @fd is valid & Close if it is
-- * an valid drm fd.
-+ * Check the given drm file descriptor @fd is valid and if not issue warning.
-+ * For valid fd close it and make cleanups.
-  *
-  * Returns: 0 on success or -1 on error.
+diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
+index e6f8db5b0..f7cbbbf42 100644
+--- a/tests/intel/xe_exec_basic.c
++++ b/tests/intel/xe_exec_basic.c
+@@ -11,6 +11,7 @@
   */
-@@ -750,11 +793,7 @@ int drm_close_driver(int fd)
- 		return -1;
- 	}
  
--	/* Remove xe_device from cache. */
--	if (is_xe_device(fd))
--		xe_device_put(fd);
--
--	return close(fd);
-+	return __drm_close_driver(fd);
+ #include "igt.h"
++#include "intel_multigpu.h"
+ #include "lib/igt_syncobj.h"
+ #include "lib/intel_reg.h"
+ #include "xe_drm.h"
+@@ -54,6 +55,18 @@
+  * Description: Run no-exec %arg[1] test
+  * Test category: functionality test
+  *
++ * SUBTEST: multigpu-once-%s
++ * Description: Run %arg[1] test only once on multiGPU
++ * Test category: functionality test
++ *
++ * SUBTEST: multigpu-many-execqueues-many-vm-%s
++ * Description: Run %arg[1] test on many exec_queues and many VMs on multiGPU
++ * Test category: stress test
++ *
++ * SUBTEST: multigpu-no-exec-%s
++ * Description: Run no-exec %arg[1] test on multiGPU
++ * Test category: functionality test
++ *
+  * arg[1]:
+  *
+  * @basic:				basic
+@@ -368,4 +381,27 @@ igt_main
+ 
+ 	igt_fixture
+ 		drm_close_driver(fd);
++
++	for (const struct section *s = sections; s->name; s++) {
++		igt_subtest_f("multigpu-once-%s", s->name) {
++			multi_fork_foreach_gpu_chip(xe, gpu_idx, DRIVER_XE)
++				xe_for_each_engine(xe, hwe)
++					test_exec(xe, hwe, 1, 1, 1, s->flags);
++			igt_waitchildren();
++		}
++
++		igt_subtest_f("multigpu-many-execqueues-many-vm-%s", s->name) {
++			multi_fork_foreach_gpu_chip(xe, gpu_idx, DRIVER_XE)
++				xe_for_each_engine(fd, hwe)
++					test_exec(fd, hwe, 16, 32, 16, s->flags);
++			igt_waitchildren();
++		}
++
++		igt_subtest_f("multigpu-no-exec-%s", s->name) {
++			multi_fork_foreach_gpu_chip(xe, gpu_idx, DRIVER_XE)
++				xe_for_each_engine(fd, hwe)
++					test_exec(fd, hwe, 1, 0, 1, s->flags);
++			igt_waitchildren();
++		}
++	}
  }
- 
- /**
-diff --git a/lib/drmtest.h b/lib/drmtest.h
-index 6bc819734..670c8d3ea 100644
---- a/lib/drmtest.h
-+++ b/lib/drmtest.h
-@@ -101,12 +101,14 @@ void __set_forced_driver(const char *name);
- 
- int __drm_open_device(const char *name, unsigned int chipset);
- void drm_load_module(unsigned int chipset);
-+int drm_open_driver_another(int idx, int chipset);
- int drm_open_driver(int chipset);
- int drm_open_driver_master(int chipset);
- int drm_open_driver_render(int chipset);
- int __drm_open_driver_another(int idx, int chipset);
- int __drm_open_driver(int chipset);
- int __drm_open_driver_render(int chipset);
-+int __drm_close_driver(int fd);
- int drm_close_driver(int fd);
- 
- int drm_reopen_driver(int fd);
 -- 
 2.42.0
 
