@@ -4,48 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3661C48BC3
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Feb 2024 08:52:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD89FC48BF6
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Feb 2024 08:52:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5E9BC10E0D9;
-	Wed, 21 Feb 2024 08:52:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5484F10E2E1;
+	Wed, 21 Feb 2024 08:52:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gcb4VqtI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MU2HHTqt";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A86D10E0D9
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Feb 2024 08:52:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 25AF210E2E1
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Feb 2024 08:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708505540; x=1740041540;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=1bZx45r1VOl6hxN1ymGjdZgn26rxL/srJQSkfs6wtBs=;
- b=gcb4VqtIkMJOx5PRBOnz/ZxmpUKLTXUWj84NEvT5euaRPL52YaTludup
- XqugBkesXOSdbVwVMeTINFx/lBYp58MlTPhgYK9gRwPeYwvrWjW2+ZBEG
- ZZxZ86aJKdDcQizhyrNQz7e8xeWayvpbrixx+Lm48P6ewx5Cur0sU41cZ
- BBtK0OXAy9KlvcVrEXdgLBQcINAEGgAt7ahitb3BnnfuOvt+Bl26J+ozg
- goJ7zu+im6KvJerPnWanQbC0QXBK+m3n5URpPG6R2+fzz2MiqRLdl0LbT
- AxC2PpCSt9bjoo8GNNNKnoVYrA5NNPmTCIB64iapcgdimhmd2A/1QtV7E A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="5607569"
+ t=1708505544; x=1740041544;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=uQIIabMn6ET2GyCQFr/ta8DNtR2TuBPbofYSkbwhwZk=;
+ b=MU2HHTqtBkRpaymJyRPR+dmgS989U9XI33UX0du5BEv9unUrF1CNSd6m
+ QLb30Me2savG2AvX5w3WUTZZLzyNX42pg+XmZjSWXy0GbpFL8xKNYzDC+
+ sy1/l8cP5dMre1PZfN5lNyijU/CAP8d4O7vbGd7QazxKYCt3iNgchZp+i
+ YNDK74yGFNIsczA4QnJTNX+I3xC6oO6tJ4SHV3N2FmBraRwzQbNK8lXO+
+ j06HMoeb1GrAoUTs+rFv+l28tiqQpvMb4rkIz+kU10v37O25pv2/Qg8xy
+ bTbUklGyHUu9PdALq2uS1i+QQr32lbCiU6j2ap5NYKHX7ByZJLp/6AtL1 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="5607573"
 X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="5607569"
+   d="scan'208";a="5607573"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2024 00:52:20 -0800
+ 21 Feb 2024 00:52:24 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="5041084"
+   d="scan'208";a="5041099"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 00:52:19 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 00:52:22 -0800
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 0/3] extend psr2_sf test for pr_sf
-Date: Wed, 21 Feb 2024 14:31:45 +0530
-Message-Id: <20240221090148.2447585-1-kunal1.joshi@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>,
+ =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+ Animesh Manna <animesh.manna@intel.com>,
+ Arun R Murthy <arun.r.murthy@intel.com>
+Subject: [PATCH i-g-t 2/3] lib/igt_psr: add support for PR selective update
+Date: Wed, 21 Feb 2024 14:31:47 +0530
+Message-Id: <20240221090148.2447585-3-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240221090148.2447585-1-kunal1.joshi@intel.com>
+References: <20240221090148.2447585-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -64,31 +69,99 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-kmd series [1] adds supports for panel replay selective fetch,
-modify lib and kms_psr2_sf to extend kms_psr2_sf tests to validate
-panel replay selective fetch as well.
+adapt to kmd changes to support PR selective update
+https://patchwork.freedesktop.org/patch/575163/?series=128193&rev=3
 
-[1] https://patchwork.freedesktop.org/patch/575163/?series=128193&rev=3
+v2: "PSR2 selective fetch: enable" valid for both cases (Jouni)
+v3: use check_psr2_support (Jouni)
+v4: split patches (Jouni)
+v5: drop changes on psr2_sel_fetch_to_psr1 and *_restore (Jouni)
 
-Kunal Joshi (3):
-  lib/igt_psr: modify library to support multiple PSR/PR outputs
-  lib/igt_psr: add support for PR selective update
-  tests/intel/kms_psr2_sf: extend tests for panel replay sf
+Cc: Jouni Högander <jouni.hogander@intel.com>
+Cc: Animesh Manna <animesh.manna@intel.com>
+Cc: Arun R Murthy <arun.r.murthy@intel.com>
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
+---
+ lib/igt_psr.c | 20 ++++++++++++++------
+ lib/igt_psr.h |  2 +-
+ 2 files changed, 15 insertions(+), 7 deletions(-)
 
- lib/igt_psr.c                          |  90 ++++++-----
- lib/igt_psr.h                          |  14 +-
- tests/intel/kms_dirtyfb.c              |   4 +-
- tests/intel/kms_fbcon_fbt.c            |   4 +-
- tests/intel/kms_frontbuffer_tracking.c |   4 +-
- tests/intel/kms_pm_dc.c                |   6 +-
- tests/intel/kms_psr.c                  |   4 +-
- tests/intel/kms_psr2_sf.c              | 200 ++++++++++++++++++-------
- tests/intel/kms_psr2_su.c              |   2 +-
- tests/intel/kms_psr_stress_test.c      |   4 +-
- tests/kms_async_flips.c                |   4 +-
- tests/kms_cursor_legacy.c              |   4 +-
- 12 files changed, 219 insertions(+), 121 deletions(-)
-
+diff --git a/lib/igt_psr.c b/lib/igt_psr.c
+index cad8cce05..6008b73a6 100644
+--- a/lib/igt_psr.c
++++ b/lib/igt_psr.c
+@@ -41,7 +41,7 @@ bool psr_disabled_check(int debugfs_fd)
+ 	return strstr(buf, "PSR mode: disabled\n");
+ }
+ 
+-bool psr2_selective_fetch_check(int debugfs_fd, igt_output_t *output)
++bool selective_fetch_check(int debugfs_fd, igt_output_t *output)
+ {
+ 	char buf[PSR_STATUS_MAX_LEN];
+ 	char debugfs_file[128] = {0};
+@@ -248,7 +248,9 @@ bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output
+ 		       (strstr(line, "PSR = yes") &&
+ 		       (strstr(line, "[0x03]") || strstr(line, "[0x04]")));
+ 	case PR_MODE:
+-		return strstr(line, "Panel Replay = yes");
++		return strstr(line, "Panel Replay = yes, Panel Replay Selective Update = no");
++	case PR_MODE_SEL_FETCH:
++		return strstr(line, "Panel Replay = yes, Panel Replay Selective Update = yes");
+ 	default:
+ 		igt_assert_f(false, "Invalid psr mode\n");
+ 		return false;
+@@ -317,7 +319,7 @@ bool i915_psr2_selective_fetch_check(int drm_fd, igt_output_t *output)
+ 		return false;
+ 
+ 	debugfs_fd = igt_debugfs_dir(drm_fd);
+-	ret = psr2_selective_fetch_check(debugfs_fd, output);
++	ret = selective_fetch_check(debugfs_fd, output);
+ 	close(debugfs_fd);
+ 
+ 	return ret;
+@@ -343,7 +345,11 @@ bool i915_psr2_sel_fetch_to_psr1(int drm_fd, igt_output_t *output)
+ 		return ret;
+ 
+ 	debugfs_fd = igt_debugfs_dir(drm_fd);
+-	if (psr2_selective_fetch_check(debugfs_fd, output)) {
++	if (selective_fetch_check(debugfs_fd, output)) {
++		/*
++		 * With below we switch to PSR1 incase of PSR and
++		 * Panel Replay Full Frame update in case of Panel Replay.
++		 */
+ 		psr_set(drm_fd, debugfs_fd, PSR_MODE_1, output);
+ 		ret = true;
+ 	}
+@@ -389,11 +395,13 @@ enum psr_mode psr_get_mode(int debugfs_fd, igt_output_t *output)
+ 
+ 	if (strstr(buf, "Panel Replay Enabled"))
+ 		return PR_MODE;
++	else if (strstr(buf, "Panel Replay Selective Update Enabled"))
++		return PR_MODE_SEL_FETCH;
+ 	else if (strstr(buf, "PSR2 selective fetch: enabled"))
+ 		return PSR_MODE_2_SEL_FETCH;
+-	else if (strstr(buf, "PSR2 enabled"))
++	else if (strstr(buf, "PSR2"))
+ 		return PSR_MODE_2;
+-	else if (strstr(buf, "PSR1 enabled"))
++	else if (strstr(buf, "PSR1"))
+ 		return PSR_MODE_1;
+ 
+ 	return PSR_DISABLED;
+diff --git a/lib/igt_psr.h b/lib/igt_psr.h
+index 372bef2b2..e8595fd8c 100644
+--- a/lib/igt_psr.h
++++ b/lib/igt_psr.h
+@@ -46,7 +46,7 @@ enum fbc_mode {
+ };
+ 
+ bool psr_disabled_check(int debugfs_fd);
+-bool psr2_selective_fetch_check(int debugfs_fd, igt_output_t *output);
++bool selective_fetch_check(int debugfs_fd, igt_output_t *output);
+ bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
+ bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
+ bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
 -- 
 2.25.1
 
