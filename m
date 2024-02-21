@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ED0DC48BC3
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Feb 2024 08:52:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF117C48BF6
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Feb 2024 08:52:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BD62410E674;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5F57F10E659;
 	Wed, 21 Feb 2024 08:52:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gnOIEL4Z";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e4gdCDDr";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FEC110E30D
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Feb 2024 08:52:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3297310E2E1
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Feb 2024 08:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708505546; x=1740041546;
+ t=1708505542; x=1740041542;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=GefF9pkZff+gEk/hCW64b6Bj6EFNmkAn/RdInkD9QKg=;
- b=gnOIEL4ZXPouFLKvdhbClBrk9bicExHF1IhMiR99JQma7nSXmgpEdtuy
- PuwtZs14VXyRJBLY+EL+7aZouXhLyJNvOvcEWMQG29giLmvLJuOG+VSqu
- ad2oAZvmATwSA11PBONxKKmS1Cq+L7TjlzK4EV30IgeRq+1Ugixk55QKn
- iwaHNSxhw8ow9OE1ivICZ9/27cl/D2qBIDoTpnS+GsynsBpKyOHkNnUYV
- bKwqyP0eaQqoAud9s7u34NnFBJKAWjB/9NjqTnFsCXvrdmXLAonrcAPeX
- 9WoJ36S5QWsw0uaw9q25QhBPQ5l7+4Izty1zFQoTK2tWZutmumzA7Ah74 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="5607577"
+ bh=qpQGUFMgM1gIiXHmO+V21LqH8foxT6FNb7la3UY3nA4=;
+ b=e4gdCDDrGibd6HNAss1NbZ0xKt9V7b6ZJ1SStgHd7suar77zyhiUZ4cH
+ NX65TEDAsGQIsWlHq+EuO08CGvWG0SmV15MdFa3xHAvIKrPBl/0Wz6zKf
+ gMlTXPa8KhsjcFZ59uOvt+CCsqaCEOsonoTOmpI7wveZDAoAH32jVCf2n
+ 4y8opZEGLQx/WGbAJn3TWyK/o7TetMDPbJdZX1HHo0kp8hMLqWxIMLbTM
+ lKPpDHf2TOMc/XlVVvnPD1CsMAZ6CWE5fe7Ec/AqfRBQ/5d2R50i2lAtm
+ eYgD4xx3s70/9kv6AuI9JSFtL4yK8+rlzBQBJ3f54jI9SIBc7MBHodPWK A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="5607572"
 X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="5607577"
+   d="scan'208";a="5607572"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2024 00:52:26 -0800
+ 21 Feb 2024 00:52:22 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="5041106"
+   d="scan'208";a="5041092"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 00:52:24 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 00:52:20 -0800
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>,
  =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
  Animesh Manna <animesh.manna@intel.com>,
  Arun R Murthy <arun.r.murthy@intel.com>
-Subject: [PATCH i-g-t 3/3] tests/intel/kms_psr2_sf: extend tests for panel
- replay sf
-Date: Wed, 21 Feb 2024 14:31:48 +0530
-Message-Id: <20240221090148.2447585-4-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 1/3] lib/igt_psr: modify library to support multiple
+ PSR/PR outputs
+Date: Wed, 21 Feb 2024 14:31:46 +0530
+Message-Id: <20240221090148.2447585-2-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240221090148.2447585-1-kunal1.joshi@intel.com>
 References: <20240221090148.2447585-1-kunal1.joshi@intel.com>
@@ -70,489 +70,513 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend the tests to cover panel replay selective fetch feature.
+We can have multiple panels connected to the system so PSR information
+should be exposed per output. changes provide support for multiple
+PSR/PR to be tested simultaneously.
 
-From kms_psr2_sf test point of view we have check_pr_psr2_sel_fetch_support
-function to check if PR/PSR2 selective fetch is supported for an output
-if output supports selective fetch then we check we if enter DEEP_SLEEP mode
-in run function
-
-v2: fixed dynamic test name
-v3: use check_psr2_support (Jouni)
-v4: correct order of checks in check_pr_psr2_sel_fetch_support (Jouni)
-    use appropriate psr mode in psr_wait_entry (Jouni)
-v5: modify get_sel_fetch_mode_for_output to use member data (Jouni)
-v6: modify get_sel_fetch_mode_for_output -> set_sel_fetch_mode_for_output (Jouni)
+v2: Use macro instead of function (Jouni)
+v3: keep psr_enable in igt_fixture (Jouni)
 
 Cc: Jouni Högander <jouni.hogander@intel.com>
 Cc: Animesh Manna <animesh.manna@intel.com>
 Cc: Arun R Murthy <arun.r.murthy@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
 ---
- tests/intel/kms_psr2_sf.c | 195 +++++++++++++++++++++++++++-----------
- 1 file changed, 142 insertions(+), 53 deletions(-)
+ lib/igt_psr.c                          | 76 ++++++++++++++------------
+ lib/igt_psr.h                          | 14 ++---
+ tests/intel/kms_dirtyfb.c              |  4 +-
+ tests/intel/kms_fbcon_fbt.c            |  4 +-
+ tests/intel/kms_frontbuffer_tracking.c |  4 +-
+ tests/intel/kms_pm_dc.c                |  6 +-
+ tests/intel/kms_psr.c                  |  4 +-
+ tests/intel/kms_psr2_sf.c              |  5 +-
+ tests/intel/kms_psr2_su.c              |  2 +-
+ tests/intel/kms_psr_stress_test.c      |  4 +-
+ tests/kms_async_flips.c                |  4 +-
+ tests/kms_cursor_legacy.c              |  4 +-
+ 12 files changed, 66 insertions(+), 65 deletions(-)
 
-diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-index 0fb300161..4c3e34aa0 100644
---- a/tests/intel/kms_psr2_sf.c
-+++ b/tests/intel/kms_psr2_sf.c
-@@ -172,6 +172,7 @@ typedef struct {
- 	uint32_t screen_changes;
- 	int cur_x, cur_y;
- 	enum pipe pipe;
-+	enum psr_mode psr_mode;
- 	enum {
- 		FEATURE_NONE  = 0,
- 		FEATURE_DSC   = 1,
-@@ -179,6 +180,41 @@ typedef struct {
- 	} coexist_feature;
- } data_t;
+diff --git a/lib/igt_psr.c b/lib/igt_psr.c
+index ac214fcfc..cad8cce05 100644
+--- a/lib/igt_psr.c
++++ b/lib/igt_psr.c
+@@ -27,6 +27,10 @@
+ #include "igt_sysfs.h"
+ #include <errno.h>
  
-+static bool set_sel_fetch_mode_for_output(data_t *data)
-+{
-+	bool supported = false;
++#define SET_DEBUGFS_PATH(output, path) \
++	sprintf(path, "%s%s%s", output ? output->name : "", output ? "/" : "", \
++			output ? "i915_psr_status" : "i915_edp_psr_status")
 +
-+	if (psr_sink_support(data->drm_fd, data->debugfs_fd,
-+						 PR_MODE_SEL_FETCH, data->output)) {
-+		supported = true;
-+		data->psr_mode = PR_MODE_SEL_FETCH;
-+	} else if (psr_sink_support(data->drm_fd, data->debugfs_fd,
-+							  PSR_MODE_2, data->output)) {
-+		supported = true;
-+		data->psr_mode = PSR_MODE_2;
-+	} else
-+		igt_info("selective fetch not supported on output %s\n", data->output->name);
-+
-+	return supported;
-+}
-+
-+static const char *get_psr_mode_str_for_output(data_t *data)
-+{
-+	static const char *psr_mode;
-+
-+	switch (data->psr_mode) {
-+	case PSR_MODE_2:
-+		psr_mode = "psr2";
-+		break;
-+	case PR_MODE_SEL_FETCH:
-+		psr_mode = "pr";
-+		break;
-+	default:
-+		psr_mode = "";
-+	}
-+	return psr_mode;
-+}
-+
- static const char *op_str(enum operations op)
+ bool psr_disabled_check(int debugfs_fd)
  {
- 	static const char * const name[] = {
-@@ -688,7 +724,7 @@ static void damaged_plane_move(data_t *data)
- 
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, data->psr_mode, data->output));
- 
- 	expected_output(data);
- }
-@@ -788,7 +824,7 @@ static void plane_move_continuous(data_t *data)
- {
- 	int target_x, target_y;
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, data->psr_mode, data->output));
- 
- 	get_target_coords(data, &target_x, &target_y);
- 
-@@ -865,7 +901,7 @@ static void damaged_plane_update(data_t *data)
- 	igt_plane_set_position(data->test_plane, 0, 0);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, data->psr_mode, data->output));
- 
- 	expected_output(data);
- }
-@@ -874,7 +910,7 @@ static void run(data_t *data)
- {
- 	int i;
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, data->psr_mode, data->output));
- 
- 	if (data->fbc_flag == true && data->op_fbc_mode == FBC_ENABLED)
- 		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
-@@ -952,14 +988,22 @@ static void cleanup(data_t *data)
- 	igt_remove_fb(data->drm_fd, &data->fb_test);
+ 	char buf[PSR_STATUS_MAX_LEN];
+@@ -37,11 +41,13 @@ bool psr_disabled_check(int debugfs_fd)
+ 	return strstr(buf, "PSR mode: disabled\n");
  }
  
--static int check_psr2_support(data_t *data)
-+static bool check_pr_psr2_sel_fetch_support(data_t *data)
+-bool psr2_selective_fetch_check(int debugfs_fd)
++bool psr2_selective_fetch_check(int debugfs_fd, igt_output_t *output)
  {
--	int status;
-+	bool status = false;
-+
-+	/* Check sink supports PR/PSR2 selective fetch */
-+	if (!set_sel_fetch_mode_for_output(data))
-+		return false;
-+
-+	/* Check if selective fetch can be enabled */
-+	if (!selective_fetch_check(data->debugfs_fd, data->output))
-+		igt_assert("Selective fetch is not enabled even though panel should support it\n");
+ 	char buf[PSR_STATUS_MAX_LEN];
++	char debugfs_file[128] = {0};
  
- 	prepare(data);
--	status = psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL);
-+	/* We enter into DEEP_SLEEP for both PSR2 and PR sel fetch */
-+	status = psr_wait_entry(data->debugfs_fd, data->psr_mode, data->output);
- 	cleanup(data);
+-	igt_debugfs_simple_read(debugfs_fd, "i915_edp_psr_status", buf,
++	SET_DEBUGFS_PATH(output, debugfs_file);
++	igt_debugfs_simple_read(debugfs_fd, debugfs_file, buf,
+ 				sizeof(buf));
+ 
+ 	return strstr(buf, "PSR2 selective fetch: enabled");
+@@ -54,11 +60,7 @@ static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *o
+ 	const char *state = (mode == PSR_MODE_1 || mode == PR_MODE) ? "SRDENT" : "DEEP_SLEEP";
+ 	int ret;
+ 
+-	if (output)
+-		sprintf(debugfs_file, "%s/i915_psr_status", output->name);
+-	else
+-		sprintf(debugfs_file, "%s", "i915_edp_psr_status");
 -
- 	return status;
++	SET_DEBUGFS_PATH(output, debugfs_file);
+ 	ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file,
+ 				     buf, sizeof(buf));
+ 	if (ret < 0) {
+@@ -90,13 +92,18 @@ bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *outp
+ 	return igt_wait(!psr_active_check(debugfs_fd, mode, output), 500, 10);
  }
  
-@@ -981,6 +1025,8 @@ pipe_output_combo_valid(igt_display_t *display,
- 
- igt_main
+-static ssize_t psr_write(int debugfs_fd, const char *buf)
++static ssize_t psr_write(int debugfs_fd, const char *buf, igt_output_t *output)
  {
-+	bool output_supports_pr_psr2_sel_fetch = false;
-+	bool pr_psr2_sel_fetch_supported = false;
- 	data_t data = {};
- 	igt_output_t *outputs[IGT_MAX_PIPES * IGT_MAX_PIPES];
- 	int i, j, k, y;
-@@ -1000,11 +1046,6 @@ igt_main
- 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
- 		kmstest_set_vt_graphics_mode();
++	/*
++	 * FIXME: Currently we don't have separate psr_debug file for each output.
++	 * so, we are using i915_edp_psr_debug file for all outputs.
++	 * Later we need to add support for separate psr_debug file for each output.
++	 */
+ 	return igt_sysfs_write(debugfs_fd, "i915_edp_psr_debug", buf,
+-			       strlen(buf));
++						   strlen(buf));
+ }
  
--		igt_require_f(psr_sink_support(data.drm_fd,
--					       data.debugfs_fd, PSR_MODE_2,
--					       NULL),
--			      "Sink does not support PSR2\n");
--
- 		display_init(&data);
+-static int has_psr_debugfs(int debugfs_fd)
++static int has_psr_debugfs(int debugfs_fd, igt_output_t *output)
+ {
+ 	int ret;
  
- 		if ((intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 20) &&
-@@ -1028,7 +1069,8 @@ igt_main
+@@ -105,7 +112,7 @@ static int has_psr_debugfs(int debugfs_fd)
+ 	 * Legacy mode will return OK here, debugfs api will return -EINVAL.
+ 	 * -ENODEV is returned when PSR is unavailable.
+ 	 */
+-	ret = psr_write(debugfs_fd, "0xf");
++	ret = psr_write(debugfs_fd, "0xf", output);
+ 	if (ret == -EINVAL) {
+ 		errno = 0;
+ 		return 0;
+@@ -113,7 +120,7 @@ static int has_psr_debugfs(int debugfs_fd)
+ 		return ret;
  
- 		for_each_pipe_with_valid_output(&data.display, data.pipe, data.output) {
- 			coexist_features[n_pipes] = 0;
--			if (check_psr2_support(&data)) {
-+			output_supports_pr_psr2_sel_fetch = check_pr_psr2_sel_fetch_support(&data);
-+			if (output_supports_pr_psr2_sel_fetch) {
- 				pipes[n_pipes] = data.pipe;
- 				outputs[n_pipes] = data.output;
+ 	/* legacy debugfs api, we enabled irqs by writing, disable them. */
+-	psr_write(debugfs_fd, "0");
++	psr_write(debugfs_fd, "0", output);
+ 	return -EINVAL;
+ }
  
-@@ -1037,7 +1079,10 @@ igt_main
+@@ -134,14 +141,14 @@ static int psr_restore_debugfs_fd = -1;
  
- 				n_pipes++;
- 			}
-+			pr_psr2_sel_fetch_supported |= output_supports_pr_psr2_sel_fetch;
+ static void restore_psr_debugfs(int sig)
+ {
+-	psr_write(psr_restore_debugfs_fd, "0");
++	psr_write(psr_restore_debugfs_fd, "0", NULL);
+ }
+ 
+-static bool psr_set(int device, int debugfs_fd, int mode)
++static bool psr_set(int device, int debugfs_fd, int mode, igt_output_t *output)
+ {
+ 	int ret;
+ 
+-	ret = has_psr_debugfs(debugfs_fd);
++	ret = has_psr_debugfs(debugfs_fd, output);
+ 	if (ret == -ENODEV) {
+ 		igt_skip("PSR not available\n");
+ 		return false;
+@@ -179,7 +186,7 @@ static bool psr_set(int device, int debugfs_fd, int mode)
+ 			debug_val = "0x1";
  		}
-+		igt_require_f(pr_psr2_sel_fetch_supported,
-+					  "No output supports selective fetch\n");
+ 
+-		ret = psr_write(debugfs_fd, debug_val);
++		ret = psr_write(debugfs_fd, debug_val, output);
+ 		igt_require_f(ret > 0, "PSR2 SF feature not available\n");
  	}
  
- 	for (y = 0; y < ARRAY_SIZE(fbc_status); y++) {
-@@ -1054,15 +1099,18 @@ igt_main
- 			for (i = 0; i < n_pipes; i++) {
- 				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
- 					continue;
-+				data.pipe = pipes[i];
-+				data.output = outputs[i];
-+				igt_assert_f(set_sel_fetch_mode_for_output(&data),
-+							 "Selective fetch is not supported\n");
+@@ -193,15 +200,15 @@ static bool psr_set(int device, int debugfs_fd, int mode)
+ 	return ret;
+ }
  
- 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 						continue;
--					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-+					igt_dynamic_f("%s-pipe-%s-%s%s", get_psr_mode_str_for_output(&data),
-+							  kmstest_pipe_name(pipes[i]),
- 						      igt_output_name(outputs[i]),
- 						      coexist_feature_str(j)) {
--						data.pipe = pipes[i];
--						data.output = outputs[i];
- 						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
- 						data.coexist_feature = j;
- 						for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
-@@ -1087,18 +1135,22 @@ igt_main
- 					if (!pipe_output_combo_valid(&data.display, pipes[i],
- 								     outputs[i]))
- 						continue;
-+					data.pipe = pipes[i];
-+					data.output = outputs[i];
-+					igt_assert_f(set_sel_fetch_mode_for_output(&data),
-+								 "Selective fetch is not supported\n");
+-bool psr_enable(int device, int debugfs_fd, enum psr_mode mode)
++bool psr_enable(int device, int debugfs_fd, enum psr_mode mode, igt_output_t *output)
+ {
+-	return psr_set(device, debugfs_fd, mode);
++	return psr_set(device, debugfs_fd, mode, output);
+ }
  
- 					for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 						if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 							continue;
--						igt_dynamic_f("pipe-%s-%s%s",
-+						igt_dynamic_f("%s-pipe-%s-%s%s",
-+								  get_psr_mode_str_for_output(&data),
- 							      kmstest_pipe_name(pipes[i]),
- 							      igt_output_name(outputs[i]),
- 							      coexist_feature_str(j)) {
--							data.pipe = pipes[i];
--							data.output = outputs[i];
- 							data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
- 							data.coexist_feature = j;
-+
- 							for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
- 								data.damage_area_count = k;
- 								prepare(&data);
-@@ -1119,17 +1171,21 @@ igt_main
- 			for (i = 0; i < n_pipes; i++) {
- 				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
- 					continue;
-+				data.pipe = pipes[i];
-+				data.output = outputs[i];
-+				igt_assert_f(set_sel_fetch_mode_for_output(&data),
-+							 "Selective fetch is not supported\n");
+-bool psr_disable(int device, int debugfs_fd)
++bool psr_disable(int device, int debugfs_fd, igt_output_t *output)
+ {
+ 	/* Any mode different than PSR_MODE_1/2 will disable PSR */
+-	return psr_set(device, debugfs_fd, -1);
++	return psr_set(device, debugfs_fd, -1, output);
+ }
  
- 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 						continue;
--					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-+					igt_dynamic_f("%s-pipe-%s-%s%s", get_psr_mode_str_for_output(&data),
-+							  kmstest_pipe_name(pipes[i]),
- 						      igt_output_name(outputs[i]),
- 						      coexist_feature_str(j)) {
--						data.pipe = pipes[i];
--						data.output = outputs[i];
- 						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
- 						data.coexist_feature = j;
-+
- 						for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
- 							data.damage_area_count = k;
- 							prepare(&data);
-@@ -1149,15 +1205,18 @@ igt_main
- 			for (i = 0; i < n_pipes; i++) {
- 				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
- 					continue;
-+				data.pipe = pipes[i];
-+				data.output = outputs[i];
-+				igt_assert_f(set_sel_fetch_mode_for_output(&data),
-+							 "Selective fetch is not supported\n");
+ bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output_t *output)
+@@ -211,11 +218,7 @@ bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output
+ 	char buf[PSR_STATUS_MAX_LEN];
+ 	int ret;
  
- 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 						continue;
--					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-+					igt_dynamic_f("%s-pipe-%s-%s%s", get_psr_mode_str_for_output(&data),
-+							  kmstest_pipe_name(pipes[i]),
- 						      igt_output_name(outputs[i]),
- 						      coexist_feature_str(j)) {
--						data.pipe = pipes[i];
--						data.output = outputs[i];
- 						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
- 						data.coexist_feature = j;
- 						prepare(&data);
-@@ -1175,17 +1234,21 @@ igt_main
- 			for (i = 0; i < n_pipes; i++) {
- 				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
- 					continue;
-+				data.pipe = pipes[i];
-+				data.output = outputs[i];
-+				igt_assert_f(set_sel_fetch_mode_for_output(&data),
-+							 "Selective fetch is not supported\n");
+-	if (output)
+-		sprintf(debugfs_file, "%s/i915_psr_status", output->name);
+-	else
+-		sprintf(debugfs_file, "%s", "i915_edp_psr_status");
+-
++	SET_DEBUGFS_PATH(output, debugfs_file);
+ 	ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file, buf,
+ 				      sizeof(buf));
+ 	if (ret < 1)
+@@ -305,7 +308,7 @@ void psr_print_debugfs(int debugfs_fd)
+ 	igt_info("%s", buf);
+ }
  
- 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 						continue;
--					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-+					igt_dynamic_f("%s-pipe-%s-%s%s", get_psr_mode_str_for_output(&data),
-+							  kmstest_pipe_name(pipes[i]),
- 						      igt_output_name(outputs[i]),
- 						      coexist_feature_str(j)) {
--						data.pipe = pipes[i];
--						data.output = outputs[i];
- 						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
- 						data.coexist_feature = j;
-+
- 						prepare(&data);
- 						run(&data);
- 						cleanup(&data);
-@@ -1202,15 +1265,18 @@ igt_main
- 			for (i = 0; i < n_pipes; i++) {
- 				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
- 					continue;
-+				data.pipe = pipes[i];
-+				data.output = outputs[i];
-+				igt_assert_f(set_sel_fetch_mode_for_output(&data),
-+							 "Selective fetch is not supported\n");
+-bool i915_psr2_selective_fetch_check(int drm_fd)
++bool i915_psr2_selective_fetch_check(int drm_fd, igt_output_t *output)
+ {
+ 	int debugfs_fd;
+ 	bool ret;
+@@ -314,7 +317,7 @@ bool i915_psr2_selective_fetch_check(int drm_fd)
+ 		return false;
  
- 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 						continue;
--					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-+					igt_dynamic_f("%s-pipe-%s-%s%s", get_psr_mode_str_for_output(&data),
-+							  kmstest_pipe_name(pipes[i]),
- 						      igt_output_name(outputs[i]),
- 						      coexist_feature_str(j)) {
--						data.pipe = pipes[i];
--						data.output = outputs[i];
- 						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
- 						data.coexist_feature = j;
- 						prepare(&data);
-@@ -1229,15 +1295,18 @@ igt_main
- 			for (i = 0; i < n_pipes; i++) {
- 				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
- 					continue;
-+				data.pipe = pipes[i];
-+				data.output = outputs[i];
-+				igt_assert_f(set_sel_fetch_mode_for_output(&data),
-+							 "Selective fetch is not supported\n");
+ 	debugfs_fd = igt_debugfs_dir(drm_fd);
+-	ret = psr2_selective_fetch_check(debugfs_fd);
++	ret = psr2_selective_fetch_check(debugfs_fd, output);
+ 	close(debugfs_fd);
  
- 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 						continue;
--					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-+					igt_dynamic_f("%s-pipe-%s-%s%s", get_psr_mode_str_for_output(&data),
-+							  kmstest_pipe_name(pipes[i]),
- 						      igt_output_name(outputs[i]),
- 						      coexist_feature_str(j)) {
--						data.pipe = pipes[i];
--						data.output = outputs[i];
- 						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
- 						data.coexist_feature = j;
- 						prepare(&data);
-@@ -1257,15 +1326,19 @@ igt_main
- 			for (i = 0; i < n_pipes; i++) {
- 				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
- 					continue;
-+				data.pipe = pipes[i];
-+				data.output = outputs[i];
-+				igt_assert_f(set_sel_fetch_mode_for_output(&data),
-+							 "Selective fetch is not supported\n");
+ 	return ret;
+@@ -331,7 +334,7 @@ bool i915_psr2_selective_fetch_check(int drm_fd)
+  * Returns:
+  * True if PSR mode changed to PSR1, false otherwise.
+  */
+-bool i915_psr2_sel_fetch_to_psr1(int drm_fd)
++bool i915_psr2_sel_fetch_to_psr1(int drm_fd, igt_output_t *output)
+ {
+ 	int debugfs_fd;
+ 	bool ret = false;
+@@ -340,8 +343,8 @@ bool i915_psr2_sel_fetch_to_psr1(int drm_fd)
+ 		return ret;
  
- 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 						continue;
--					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-+					igt_dynamic_f("%s-pipe-%s-%s%s",
-+							  get_psr_mode_str_for_output(&data),
-+							  kmstest_pipe_name(pipes[i]),
- 						      igt_output_name(outputs[i]),
- 						      coexist_feature_str(j)) {
--						data.pipe = pipes[i];
--						data.output = outputs[i];
- 						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
- 						data.coexist_feature = j;
- 						for (k = POS_TOP_LEFT; k <= POS_BOTTOM_RIGHT ; k++) {
-@@ -1286,15 +1359,18 @@ igt_main
- 			for (i = 0; i < n_pipes; i++) {
- 				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
- 					continue;
-+				data.pipe = pipes[i];
-+				data.output = outputs[i];
-+				igt_assert_f(set_sel_fetch_mode_for_output(&data),
-+							 "Selective fetch is not supported\n");
+ 	debugfs_fd = igt_debugfs_dir(drm_fd);
+-	if (psr2_selective_fetch_check(debugfs_fd)) {
+-		psr_set(drm_fd, debugfs_fd, PSR_MODE_1);
++	if (psr2_selective_fetch_check(debugfs_fd, output)) {
++		psr_set(drm_fd, debugfs_fd, PSR_MODE_1, output);
+ 		ret = true;
+ 	}
  
- 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 						continue;
--					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-+					igt_dynamic_f("%s-pipe-%s-%s%s", get_psr_mode_str_for_output(&data),
-+							  kmstest_pipe_name(pipes[i]),
- 						      igt_output_name(outputs[i]),
- 						      coexist_feature_str(j)) {
--					data.pipe = pipes[i];
--					data.output = outputs[i];
- 					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
- 					data.coexist_feature = j;
- 					prepare(&data);
-@@ -1313,15 +1389,18 @@ igt_main
- 			for (i = 0; i < n_pipes; i++) {
- 				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
- 					continue;
-+				data.pipe = pipes[i];
-+				data.output = outputs[i];
-+				igt_assert_f(set_sel_fetch_mode_for_output(&data),
-+							 "Selective fetch is not supported\n");
+@@ -355,12 +358,12 @@ bool i915_psr2_sel_fetch_to_psr1(int drm_fd)
+  * Restore PSR2 selective fetch after tests were executed, this function should
+  * only be called if i915_psr2_sel_fetch_to_psr1() returned true.
+  */
+-void i915_psr2_sel_fetch_restore(int drm_fd)
++void i915_psr2_sel_fetch_restore(int drm_fd, igt_output_t *output)
+ {
+ 	int debugfs_fd;
  
- 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 						continue;
--					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-+					igt_dynamic_f("%s-pipe-%s-%s%s", get_psr_mode_str_for_output(&data),
-+							  kmstest_pipe_name(pipes[i]),
- 						      igt_output_name(outputs[i]),
- 						      coexist_feature_str(j)) {
--						data.pipe = pipes[i];
--						data.output = outputs[i];
- 						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
- 						data.coexist_feature = j;
- 						prepare(&data);
-@@ -1340,15 +1419,18 @@ igt_main
- 			for (i = 0; i < n_pipes; i++) {
- 				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
- 					continue;
-+				data.pipe = pipes[i];
-+				data.output = outputs[i];
-+				igt_assert_f(set_sel_fetch_mode_for_output(&data),
-+							 "Selective fetch is not supported\n");
+ 	debugfs_fd = igt_debugfs_dir(drm_fd);
+-	psr_set(drm_fd, debugfs_fd, PSR_MODE_2_SEL_FETCH);
++	psr_set(drm_fd, debugfs_fd, PSR_MODE_2_SEL_FETCH, output);
+ 	close(debugfs_fd);
+ }
  
- 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 						continue;
--					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-+					igt_dynamic_f("%s-pipe-%s-%s%s", get_psr_mode_str_for_output(&data),
-+							  kmstest_pipe_name(pipes[i]),
- 						      igt_output_name(outputs[i]),
- 						      coexist_feature_str(j)) {
--						data.pipe = pipes[i];
--						data.output = outputs[i];
- 						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
- 						data.coexist_feature = j;
- 						prepare(&data);
-@@ -1368,19 +1450,23 @@ igt_main
- 			for (i = 0; i < n_pipes; i++) {
- 				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
- 					continue;
-+				data.pipe = pipes[i];
-+				data.output = outputs[i];
-+				igt_assert_f(set_sel_fetch_mode_for_output(&data),
-+							 "Selective fetch is not supported\n");
+@@ -369,16 +372,17 @@ void i915_psr2_sel_fetch_restore(int drm_fd)
+  *
+  * Return the current PSR mode.
+  */
+-enum psr_mode psr_get_mode(int debugfs_fd)
++enum psr_mode psr_get_mode(int debugfs_fd, igt_output_t *output)
+ {
+ 	char buf[PSR_STATUS_MAX_LEN];
++	char debugfs_file[128] = {0};
+ 	int ret;
  
- 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 						continue;
--					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-+					igt_dynamic_f("%s-pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-+							  get_psr_mode_str_for_output(&data),
- 						      igt_output_name(outputs[i]),
- 						      coexist_feature_str(j)) {
--						data.pipe = pipes[i];
--						data.output = outputs[i];
- 						for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
- 							data.damage_area_count = k;
- 							data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
- 							data.coexist_feature = j;
-+
- 							prepare(&data);
- 							run(&data);
- 							cleanup(&data);
-@@ -1401,15 +1487,18 @@ igt_main
- 			for (i = 0; i < n_pipes; i++) {
- 				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
- 					continue;
-+				data.pipe = pipes[i];
-+				data.output = outputs[i];
-+				igt_assert_f(set_sel_fetch_mode_for_output(&data),
-+							 "Selective fetch is not supported\n");
+-
+-	ret = igt_debugfs_simple_read(debugfs_fd, "i915_edp_psr_status", buf,
++	SET_DEBUGFS_PATH(output, debugfs_file);
++	ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file, buf,
+ 				      sizeof(buf));
+ 	if (ret < 0) {
+-		igt_info("Could not read i915_edp_psr_status: %s\n",
++		igt_info("Could not read psr status: %s\n",
+ 			 strerror(-ret));
+ 		return PSR_DISABLED;
+ 	}
+diff --git a/lib/igt_psr.h b/lib/igt_psr.h
+index 82a4e8c5e..372bef2b2 100644
+--- a/lib/igt_psr.h
++++ b/lib/igt_psr.h
+@@ -46,21 +46,21 @@ enum fbc_mode {
+ };
  
- 				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 					if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 						continue;
--					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-+					igt_dynamic_f("%s-pipe-%s-%s%s", get_psr_mode_str_for_output(&data),
-+							  kmstest_pipe_name(pipes[i]),
- 						      igt_output_name(outputs[i]),
- 						      coexist_feature_str(j)) {
--						data.pipe = pipes[i];
--						data.output = outputs[i];
- 						data.damage_area_count = 1;
- 						if (data.op_fbc_mode == FBC_ENABLED)
- 							data.primary_format = DRM_FORMAT_XRGB8888;
+ bool psr_disabled_check(int debugfs_fd);
+-bool psr2_selective_fetch_check(int debugfs_fd);
++bool psr2_selective_fetch_check(int debugfs_fd, igt_output_t *output);
+ bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
+ bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
+ bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
+-bool psr_enable(int device, int debugfs_fd, enum psr_mode);
+-bool psr_disable(int device, int debugfs_fd);
++bool psr_enable(int device, int debugfs_fd, enum psr_mode, igt_output_t *output);
++bool psr_disable(int device, int debugfs_fd, igt_output_t *output);
+ bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output_t *output);
+ bool psr2_wait_su(int debugfs_fd, uint16_t *num_su_blocks);
+ void psr_print_debugfs(int debugfs_fd);
+-enum psr_mode psr_get_mode(int debugfs_fd);
++enum psr_mode psr_get_mode(int debugfs_fd, igt_output_t *output);
+ 
+-bool i915_psr2_selective_fetch_check(int drm_fd);
++bool i915_psr2_selective_fetch_check(int drm_fd, igt_output_t *output);
+ 
+-bool i915_psr2_sel_fetch_to_psr1(int drm_fd);
+-void i915_psr2_sel_fetch_restore(int drm_fd);
++bool i915_psr2_sel_fetch_to_psr1(int drm_fd, igt_output_t *output);
++void i915_psr2_sel_fetch_restore(int drm_fd, igt_output_t *output);
+ bool is_psr_enable_possible(int drm_fd, enum psr_mode mode);
+ 
+ #endif
+diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+index 26b82e50a..c2411c824 100644
+--- a/tests/intel/kms_dirtyfb.c
++++ b/tests/intel/kms_dirtyfb.c
+@@ -127,7 +127,7 @@ static void enable_feature(data_t *data)
+ 		intel_fbc_enable(data->drm_fd);
+ 		break;
+ 	case FEATURE_PSR:
+-		psr_enable(data->drm_fd, data->debugfs_fd, PSR_MODE_1);
++		psr_enable(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL);
+ 		break;
+ 	case FEATURE_DRRS:
+ 		intel_drrs_enable(data->drm_fd, data->pipe);
+@@ -167,7 +167,7 @@ static void check_feature(data_t *data)
+ static void disable_features(data_t *data)
+ {
+ 	intel_fbc_disable(data->drm_fd);
+-	psr_disable(data->drm_fd, data->debugfs_fd);
++	psr_disable(data->drm_fd, data->debugfs_fd, NULL);
+ 	intel_drrs_disable(data->drm_fd, data->pipe);
+ }
+ 
+diff --git a/tests/intel/kms_fbcon_fbt.c b/tests/intel/kms_fbcon_fbt.c
+index 90484dccf..71e42f19c 100644
+--- a/tests/intel/kms_fbcon_fbt.c
++++ b/tests/intel/kms_fbcon_fbt.c
+@@ -277,7 +277,7 @@ static void disable_features(int device, int debugfs_fd)
+ {
+ 	igt_set_module_param_int(device, "enable_fbc", 0);
+ 	if (psr_sink_support(device, debugfs_fd, PSR_MODE_1, NULL))
+-		psr_disable(device, debugfs_fd);
++		psr_disable(device, debugfs_fd, NULL);
+ }
+ 
+ static inline void fbc_modparam_enable(int device, int debugfs_fd)
+@@ -287,7 +287,7 @@ static inline void fbc_modparam_enable(int device, int debugfs_fd)
+ 
+ static inline void psr_debugfs_enable(int device, int debugfs_fd)
+ {
+-	psr_enable(device, debugfs_fd, PSR_MODE_1);
++	psr_enable(device, debugfs_fd, PSR_MODE_1, NULL);
+ }
+ 
+ static void fbc_skips_on_fbcon(int debugfs_fd)
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index 912cca3f8..023843161 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -2234,7 +2234,7 @@ static bool disable_features(const struct test_mode *t)
+ 	intel_fbc_disable(drm.fd);
+ 	intel_drrs_disable(drm.fd, prim_mode_params.pipe);
+ 
+-	return psr.can_test ? psr_disable(drm.fd, drm.debugfs) : false;
++	return psr.can_test ? psr_disable(drm.fd, drm.debugfs, NULL) : false;
+ }
+ 
+ static void *busy_thread_func(void *data)
+@@ -2867,7 +2867,7 @@ static bool enable_features_for_test(const struct test_mode *t)
+ 	if (t->feature & FEATURE_FBC)
+ 		intel_fbc_enable(drm.fd);
+ 	if (t->feature & FEATURE_PSR)
+-		ret = psr_enable(drm.fd, drm.debugfs, PSR_MODE_1);
++		ret = psr_enable(drm.fd, drm.debugfs, PSR_MODE_1, NULL);
+ 	if (t->feature & FEATURE_DRRS)
+ 		intel_drrs_enable(drm.fd, prim_mode_params.pipe);
+ 
+diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+index 0d5824e67..7deebf83d 100644
+--- a/tests/intel/kms_pm_dc.c
++++ b/tests/intel/kms_pm_dc.c
+@@ -362,7 +362,7 @@ static void require_dc_counter(int debugfs_fd, int dc_flag)
+ static void setup_dc3co(data_t *data)
+ {
+ 	data->op_psr_mode = PSR_MODE_2;
+-	psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode);
++	psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode, NULL);
+ 	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL),
+ 		      "PSR2 is not enabled\n");
+ }
+@@ -665,7 +665,7 @@ igt_main
+ 		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
+ 					     PSR_MODE_1, NULL));
+ 		data.op_psr_mode = PSR_MODE_1;
+-		psr_enable(data.drm_fd, data.debugfs_fd, data.op_psr_mode);
++		psr_enable(data.drm_fd, data.debugfs_fd, data.op_psr_mode, NULL);
+ 		test_dc_state_psr(&data, CHECK_DC5);
+ 	}
+ 
+@@ -675,7 +675,7 @@ igt_main
+ 		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
+ 					     PSR_MODE_1, NULL));
+ 		data.op_psr_mode = PSR_MODE_1;
+-		psr_enable(data.drm_fd, data.debugfs_fd, data.op_psr_mode);
++		psr_enable(data.drm_fd, data.debugfs_fd, data.op_psr_mode, NULL);
+ 		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
+ 			      "PC8+ residencies not supported\n");
+ 		if (intel_display_ver(data.devid) >= 14)
+diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
+index 521d4c708..3822b3081 100644
+--- a/tests/intel/kms_psr.c
++++ b/tests/intel/kms_psr.c
+@@ -519,7 +519,7 @@ static bool psr_enable_if_enabled(data_t *data)
+ 		igt_skip("enable_psr modparam doesn't allow psr mode %d\n",
+ 			 data->op_psr_mode);
+ 
+-	return psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode);
++	return psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode, data->output);
+ }
+ 
+ static inline void manual(const char *expected)
+@@ -658,6 +658,7 @@ static void test_cleanup(data_t *data)
+ 
+ 	igt_remove_fb(data->drm_fd, &data->fb_green);
+ 	igt_remove_fb(data->drm_fd, &data->fb_white);
++	psr_disable(data->drm_fd, data->debugfs_fd, data->output);
+ }
+ 
+ static void setup_test_plane(data_t *data, int test_plane)
+@@ -976,7 +977,6 @@ igt_main
+ 	}
+ 
+ 	igt_fixture {
+-		psr_disable(data.drm_fd, data.debugfs_fd);
+ 
+ 		close(data.debugfs_fd);
+ 		buf_ops_destroy(data.bops);
+diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
+index ecf9ad77f..0fb300161 100644
+--- a/tests/intel/kms_psr2_sf.c
++++ b/tests/intel/kms_psr2_sf.c
+@@ -1014,7 +1014,7 @@ igt_main
+ 
+ 		/* Test if PSR2 can be enabled */
+ 		igt_require_f(psr_enable(data.drm_fd,
+-					 data.debugfs_fd, PSR_MODE_2_SEL_FETCH),
++					 data.debugfs_fd, PSR_MODE_2_SEL_FETCH, NULL),
+ 			      "Error enabling PSR2\n");
+ 
+ 		data.damage_area_count = MAX_DAMAGE_AREAS;
+@@ -1026,9 +1026,6 @@ igt_main
+ 		igt_info("Big framebuffer size %dx%d\n",
+ 			 data.big_fb_width, data.big_fb_height);
+ 
+-		igt_require_f(psr2_selective_fetch_check(data.debugfs_fd),
+-			      "PSR2 selective fetch not enabled\n");
+-
+ 		for_each_pipe_with_valid_output(&data.display, data.pipe, data.output) {
+ 			coexist_features[n_pipes] = 0;
+ 			if (check_psr2_support(&data)) {
+diff --git a/tests/intel/kms_psr2_su.c b/tests/intel/kms_psr2_su.c
+index 936b5beb3..437ee36f6 100644
+--- a/tests/intel/kms_psr2_su.c
++++ b/tests/intel/kms_psr2_su.c
+@@ -338,7 +338,7 @@ igt_main
+ 
+ 		/* Test if PSR2 can be enabled */
+ 		igt_require_f(psr_enable(data.drm_fd,
+-					 data.debugfs_fd, PSR_MODE_2),
++					 data.debugfs_fd, PSR_MODE_2, NULL),
+ 			      "Error enabling PSR2\n");
+ 		data.op = FRONTBUFFER;
+ 		data.format = DRM_FORMAT_XRGB8888;
+diff --git a/tests/intel/kms_psr_stress_test.c b/tests/intel/kms_psr_stress_test.c
+index 7aea8e8a5..bca3bd513 100644
+--- a/tests/intel/kms_psr_stress_test.c
++++ b/tests/intel/kms_psr_stress_test.c
+@@ -230,7 +230,7 @@ static void prepare(data_t *data)
+ 	r = timerfd_settime(data->completed_timerfd, 0, &interval, NULL);
+ 	igt_require_f(r != -1, "Error setting completed_timerfd\n");
+ 
+-	data->initial_state = psr_get_mode(data->debugfs_fd);
++	data->initial_state = psr_get_mode(data->debugfs_fd, NULL);
+ 	igt_require(data->initial_state != PSR_DISABLED);
+ 	igt_require(psr_wait_entry(data->debugfs_fd, data->initial_state, NULL));
+ }
+@@ -343,7 +343,7 @@ static void run(data_t *data)
+ 	}
+ 
+ 	/* Check if after all this stress the PSR is still in the same state */
+-	igt_assert(psr_get_mode(data->debugfs_fd) == data->initial_state);
++	igt_assert(psr_get_mode(data->debugfs_fd, NULL) == data->initial_state);
+ }
+ 
+ igt_main
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index a0349fa03..2895168f7 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -391,7 +391,7 @@ static void test_cursor(data_t *data)
+ 	 * necessary, causing the async flip to fail because async flip is not
+ 	 * supported in cursor plane.
+ 	 */
+-	igt_skip_on_f(i915_psr2_selective_fetch_check(data->drm_fd),
++	igt_skip_on_f(i915_psr2_selective_fetch_check(data->drm_fd, NULL),
+ 		      "PSR2 sel fetch causes cursor to be added to primary plane " \
+ 		      "pages flips and async flip is not supported in cursor\n");
+ 
+@@ -704,7 +704,7 @@ igt_main
+ 		 * necessary, causing the async flip to fail because async flip is not
+ 		 * supported in cursor plane.
+ 		 */
+-		igt_skip_on_f(i915_psr2_selective_fetch_check(data.drm_fd),
++		igt_skip_on_f(i915_psr2_selective_fetch_check(data.drm_fd, NULL),
+ 			      "PSR2 sel fetch causes cursor to be added to primary plane " \
+ 			      "pages flips and async flip is not supported in cursor\n");
+ 
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index 0017659d4..a430f735a 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -1849,7 +1849,7 @@ igt_main
+ 		 * page flip with cursor legacy APIS when Intel's PSR2 selective
+ 		 * fetch is enabled, so switching PSR1 for this whole test.
+ 		 */
+-		intel_psr2_restore = i915_psr2_sel_fetch_to_psr1(display.drm_fd);
++		intel_psr2_restore = i915_psr2_sel_fetch_to_psr1(display.drm_fd, NULL);
+ 	}
+ 
+ 	igt_describe("Test checks how many cursor updates we can fit between vblanks "
+@@ -2074,7 +2074,7 @@ igt_main
+ 
+ 	igt_fixture {
+ 		if (intel_psr2_restore)
+-			i915_psr2_sel_fetch_restore(display.drm_fd);
++			i915_psr2_sel_fetch_restore(display.drm_fd, NULL);
+ 		igt_display_fini(&display);
+ 		drm_close_driver(display.drm_fd);
+ 	}
 -- 
 2.25.1
 
