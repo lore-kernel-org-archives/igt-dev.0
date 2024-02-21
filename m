@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B45C1C48BC4
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Feb 2024 03:05:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFBDCC48BC3
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Feb 2024 03:30:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 370BC10E5EE;
-	Wed, 21 Feb 2024 03:05:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 60BF010E5F2;
+	Wed, 21 Feb 2024 03:30:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l54MWQx5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JDYs7ycY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E705410E5EE
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Feb 2024 03:05:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B662410E5F6
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Feb 2024 03:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708484753; x=1740020753;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=gi5Sw1eOWgBPgdpEd5m14w2zdY4CkvnIJdoSks8eF/s=;
- b=l54MWQx5f56ZHoxBx//7VdSkqkEFuibgyhgTqyX7n+aQs+B2rU7f8Aop
- nsKFoErIW53RssgSkkY6lZzKad/rFn/xENZBJeA9dI8qEGKpqwmRjiOQQ
- tr88tgXhLfxCplHHNnIBiAoqYPs5y0nyP422+q79ZZLQfMNrJ44FOXEfF
- jFrKanUIX7/S31OcTjMkZf3zf5Ps2tv+G1n8huQ3z4WmG4alGRg3C2fPb
- kpY/YLx9zONhHs9I3qG90k2TjU0skNukvTfG/WvwgljdEtkt/KqS/x/Iv
- kEu/Dl6LV4nnRqpQk8BSGsNOifCbA7Jk9b9633Q2a68UvnfmuZzx9N6EK g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="2749876"
-X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
-   d="scan'208";a="2749876"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2024 19:05:52 -0800
+ t=1708486224; x=1740022224;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=+iSU2RsNYjdle8F3GwAYVtb4WKy9dq7FdQrKpyEE9ak=;
+ b=JDYs7ycYB3pH7hxwzdJlscvPmdMhUth6S7pkxbiWc3xNRR1TzJ5f2TZ8
+ 6DabKMHsuDBif5hioVkK+5YBHTQ3XynRw9iQIFm+jk0aCs7bmUV4ITrHN
+ syzlIPKMElG4LNsjh+JIJn6DGPC/9QTpArXvHvcKSHO1NL/eC1nd796nh
+ AJy5dvaBjSEgbRGt7QdGHiE/F9taorS8HeOl838zfod4TdZUv54e27Dsr
+ Cv61psuN+oRATcRYSfWHfTbl/eBBNsBoygF4oy1IZCWLAHRY1yswWTIeT
+ 0rkZ6OEOlcL01H1G8ErAdf9E/wb1Sx4cDuvCmhHzAbkDQ7p7GDgtvzaPD A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="13745935"
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; d="scan'208";a="13745935"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2024 19:30:24 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
-   d="scan'208";a="5338744"
-Received: from srr4-3-linux-124-kbs1.iind.intel.com ([10.190.238.68])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2024 19:05:49 -0800
-From: Karthik B S <karthik.b.s@intel.com>
+   d="scan'208";a="9639431"
+Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2024 19:30:24 -0800
+From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: juha-pekka.heikkila@intel.com,
-	Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t v4] tests/kms_ccs: Convert subtests to dynamic subtests
-Date: Wed, 21 Feb 2024 08:35:42 +0530
-Message-Id: <20240221030542.17634-1-karthik.b.s@intel.com>
-X-Mailer: git-send-email 2.39.1
+Cc: Matthew Brost <matthew.brost@intel.com>
+Subject: [PATCH 1/1] tests/intel/xe_vm: Add test for 64k page corners
+Date: Tue, 20 Feb 2024 19:31:07 -0800
+Message-Id: <20240221033107.3731001-2-matthew.brost@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240221033107.3731001-1-matthew.brost@intel.com>
+References: <20240221033107.3731001-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -64,306 +64,162 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/intel/kms_ccs.c | 193 +++++++++++-------------------------------
- 1 file changed, 50 insertions(+), 143 deletions(-)
+64k pages - either compact or 64k hint set in PTE have corner cases
+around partial unbinds / rebinds. Add a section which tests these
+corners.
 
-diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
-index 82714af93..4f8e30791 100644
---- a/tests/intel/kms_ccs.c
-+++ b/tests/intel/kms_ccs.c
-@@ -44,35 +44,16 @@
- #include "xe/xe_query.h"
- 
- /**
-- * SUBTEST: %s-%s-%s
-- * Description: Test %arg[2] with given %arg[3] modifier
-+ * SUBTEST: %s-%s
-+ * Description: Test %arg[1] with given %arg[2] modifier
-  *
-  * arg[1]:
-  *
-- * @pipe-A:                    Pipe A
-- * @pipe-B:                    Pipe B
-- * @pipe-C:                    Pipe C
-- * @pipe-D:                    Pipe D
-- * @pipe-E:                    Pipe E
-- * @pipe-F:                    Pipe F
-- * @pipe-G:                    Pipe G
-- * @pipe-H:                    Pipe H
-- * @pipe-I:                    Pipe I
-- * @pipe-J:                    Pipe J
-- * @pipe-K:                    Pipe K
-- * @pipe-L:                    Pipe L
-- * @pipe-M:                    Pipe M
-- * @pipe-N:                    Pipe N
-- * @pipe-O:                    Pipe O
-- * @pipe-P:                    Pipe P
-- *
-- * arg[2]:
-- *
-  * @bad-aux-stride:            Bad AUX stride
-  * @ccs-on-another-bo:         CCS with different BO
-  * @missing-ccs-buffer:        Missing CCS buffer
-  *
-- * arg[3]:
-+ * arg[2]:
-  *
-  * @y-tiled-ccs:               Y tiled ccs
-  * @y-tiled-gen12-mc-ccs:      Y tiled gen12 mc ccs
-@@ -85,33 +66,14 @@
-  */
- 
- /**
-- * SUBTEST: %s-%s-%s
-- * Description: Test %arg[2] with %arg[3] modifier
-+ * SUBTEST: %s-%s
-+ * Description: Test %arg[1] with %arg[2] modifier
-  *
-  * arg[1]:
-  *
-- * @pipe-A:                      Pipe A
-- * @pipe-B:                      Pipe B
-- * @pipe-C:                      Pipe C
-- * @pipe-D:                      Pipe D
-- * @pipe-E:                      Pipe E
-- * @pipe-F:                      Pipe F
-- * @pipe-G:                      Pipe G
-- * @pipe-H:                      Pipe H
-- * @pipe-I:                      Pipe I
-- * @pipe-J:                      Pipe J
-- * @pipe-K:                      Pipe K
-- * @pipe-L:                      Pipe L
-- * @pipe-M:                      Pipe M
-- * @pipe-N:                      Pipe N
-- * @pipe-O:                      Pipe O
-- * @pipe-P:                      Pipe P
-- *
-- * arg[2]:
-- *
-  * @bad-pixel-format:            Bad pixel format
-  *
-- * arg[3]:
-+ * arg[2]:
-  *
-  * @4-tiled-dg2-mc-ccs:        4 tiled mc ccs
-  * @4-tiled-dg2-rc-ccs:        4 tiled dg2 rc ccs
-@@ -127,35 +89,16 @@
-  */
- 
- /**
-- * SUBTEST: %s-%s-%s
-- * Description: Test %arg[2] with %arg[3] modifier
-+ * SUBTEST: %s-%s
-+ * Description: Test %arg[1] with %arg[2] modifier
-  *
-  * arg[1]:
-  *
-- * @pipe-A:                      Pipe A
-- * @pipe-B:                      Pipe B
-- * @pipe-C:                      Pipe C
-- * @pipe-D:                      Pipe D
-- * @pipe-E:                      Pipe E
-- * @pipe-F:                      Pipe F
-- * @pipe-G:                      Pipe G
-- * @pipe-H:                      Pipe H
-- * @pipe-I:                      Pipe I
-- * @pipe-J:                      Pipe J
-- * @pipe-K:                      Pipe K
-- * @pipe-L:                      Pipe L
-- * @pipe-M:                      Pipe M
-- * @pipe-N:                      Pipe N
-- * @pipe-O:                      Pipe O
-- * @pipe-P:                      Pipe P
-- *
-- * arg[2]:
-- *
-  * @crc-primary-basic:           Primary plane CRC compatibility
-  * @crc-sprite-planes-basic:     Sprite plane CRC compatability
-  * @random-ccs-data:             Random CCS data
-  *
-- * arg[3]:
-+ * arg[2]:
-  *
-  * @4-tiled-xe2-ccs:           4 tiled xe2 pat controlled ccs
-  * @4-tiled-dg2-mc-ccs:        4 tiled mc ccs
-@@ -172,35 +115,16 @@
-  */
- 
- /**
-- * SUBTEST: %s-%s-%s
-- * Description: Test %arg[2] with %arg[3] modifier
-+ * SUBTEST: %s-%s
-+ * Description: Test %arg[1] with %arg[2] modifier
-  * Functionality: ccs, rotation, tiling
-  *
-  * arg[1]:
-  *
-- * @pipe-A:                      Pipe A
-- * @pipe-B:                      Pipe B
-- * @pipe-C:                      Pipe C
-- * @pipe-D:                      Pipe D
-- * @pipe-E:                      Pipe E
-- * @pipe-F:                      Pipe F
-- * @pipe-G:                      Pipe G
-- * @pipe-H:                      Pipe H
-- * @pipe-I:                      Pipe I
-- * @pipe-J:                      Pipe J
-- * @pipe-K:                      Pipe K
-- * @pipe-L:                      Pipe L
-- * @pipe-M:                      Pipe M
-- * @pipe-N:                      Pipe N
-- * @pipe-O:                      Pipe O
-- * @pipe-P:                      Pipe P
-- *
-- * arg[2]:
-- *
-  * @bad-rotation-90:             90 degree rotation
-  * @crc-primary-rotation-180:    180 degree rotation
-  *
-- * arg[3]:
-+ * arg[2]:
-  *
-  * @4-tiled-xe2-ccs:           4 tiled xe2 pat controlled ccs
-  * @4-tiled-dg2-mc-ccs:        4 tiled mc ccs
-@@ -956,24 +880,10 @@ static void test_output(data_t *data, const int testnum)
- {
- 	uint16_t dev_id;
- 
--	igt_fixture {
--		bool found = false;
-+	igt_fixture
- 		dev_id = intel_get_drm_devid(data->drm_fd);
- 
--		data->flags = tests[testnum].flags;
--
--		for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
--			igt_display_reset(&data->display);
--
--			igt_output_set_pipe(data->output, data->pipe);
--			if (intel_pipe_output_combo_valid(&data->display)) {
--				found = true;
--				break;
--			}
--
--		}
--		igt_require_f(found, "No valid pipe/output combo found.\n");
--	}
-+	data->flags = tests[testnum].flags;
- 
- 	for (int i = 0; i < ARRAY_SIZE(ccs_modifiers); i++) {
- 		if (((ccs_modifiers[i].modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS ||
-@@ -987,10 +897,7 @@ static void test_output(data_t *data, const int testnum)
- 		data->ccs_modifier = ccs_modifiers[i].modifier;
- 
- 		igt_describe(tests[testnum].description);
--		igt_subtest_f("pipe-%s-%s-%s", kmstest_pipe_name(data->pipe),
--			      tests[testnum].testname, ccs_modifiers[i].str) {
--			int valid_tests = 0;
--
-+		igt_subtest_with_dynamic_f("%s-%s", tests[testnum].testname, ccs_modifiers[i].str) {
- 			if (ccs_modifiers[i].modifier == I915_FORMAT_MOD_4_TILED) {
- 				igt_require_f(AT_LEAST_GEN(dev_id, 20),
- 					      "Xe2 platform needed.\n");
-@@ -999,37 +906,46 @@ static void test_output(data_t *data, const int testnum)
- 					      "Older than Xe2 platform needed.\n");
- 			}
- 
--			if (data->flags == TEST_RANDOM)
--				igt_info("Testing with seed %d\n", data->seed);
--
--			if (data->flags & TEST_ALL_PLANES) {
--				igt_display_require_output_on_pipe(&data->display, data->pipe);
--
--				for_each_plane_on_pipe(&data->display, data->pipe, data->plane) {
--					for (int j = 0; j < ARRAY_SIZE(formats); j++) {
--						data->format = formats[j];
--						valid_tests += test_ccs(data);
-+			for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
-+				igt_display_reset(&data->display);
-+
-+				igt_output_set_pipe(data->output, data->pipe);
-+				if (!intel_pipe_output_combo_valid(&data->display))
-+					continue;
-+
-+				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe),
-+							    data->output->name) {
-+					int valid_tests = 0;
-+
-+					if (data->flags == TEST_RANDOM)
-+						igt_info("Testing with seed %d\n", data->seed);
-+
-+					if (data->flags & TEST_ALL_PLANES) {
-+						igt_display_require_output_on_pipe(&data->display, data->pipe);
-+
-+						for_each_plane_on_pipe(&data->display, data->pipe, data->plane) {
-+							for (int j = 0; j < ARRAY_SIZE(formats); j++) {
-+								data->format = formats[j];
-+								valid_tests += test_ccs(data);
-+							}
-+						}
-+					} else {
-+						for (int j = 0; j < ARRAY_SIZE(formats); j++) {
-+							data->format = formats[j];
-+							valid_tests += test_ccs(data);
-+						}
- 					}
--				}
--			} else {
--				for (int j = 0; j < ARRAY_SIZE(formats); j++) {
--					data->format = formats[j];
--					valid_tests += test_ccs(data);
-+					igt_require_f(valid_tests > 0,
-+						      "no valid tests for %s on pipe %s\n",
-+						      ccs_modifiers[i].str,
-+						      kmstest_pipe_name(data->pipe));
- 				}
- 			}
--			igt_require_f(valid_tests > 0,
--				      "no valid tests for %s on pipe %s\n",
--				      ccs_modifiers[i].str,
--				      kmstest_pipe_name(data->pipe));
- 		}
- 	}
- 
--	igt_fixture {
--		igt_output_set_pipe(data->output, PIPE_NONE);
--		igt_display_commit2(&data->display, data->display.is_atomic ?
--				    COMMIT_ATOMIC : COMMIT_LEGACY);
-+	igt_fixture
- 		data->plane = NULL;
--	}
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+---
+ tests/intel/xe_vm.c | 129 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 129 insertions(+)
+
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 79fd007023..2e08ab2057 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -365,6 +365,129 @@ static void userptr_invalid(int fd)
+ 	xe_vm_destroy(fd, vm);
  }
  
- static int opt_handler(int opt, int opt_index, void *opt_data)
-@@ -1060,8 +976,6 @@ static const char *help_str =
++/**
++ * SUBTEST: compact-64k-pages
++ * Description:
++ *	Take corner cases related to compact and 64k pages
++ * Functionality: bind
++ * Test category: functionality test
++ */
++static void compact_64k_pages(int fd, struct drm_xe_engine_class_instance *eci)
++{
++	size_t page_size = xe_get_default_alignment(fd);
++	uint64_t addr0 = 0x10000000ull, addr1;
++	uint32_t vm;
++	uint32_t bo0, bo1;
++	uint32_t exec_queue;
++	void *ptr0, *ptr1;
++	struct drm_xe_sync sync[2] = {
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++			.flags = DRM_XE_SYNC_FLAG_SIGNAL, },
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++			.flags = DRM_XE_SYNC_FLAG_SIGNAL, },
++	};
++	struct {
++		uint32_t batch[16];
++		uint64_t pad;
++		uint32_t data;
++	} *data = NULL;
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 2,
++		.syncs = to_user_pointer(sync),
++	};
++	int i, b;
++
++#define EIGHT_MB	0x800000
++#define SIXTY_FOUR_KB	0x10000
++
++	vm = xe_vm_create(fd, 0, 0);
++	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
++
++	bo0 = xe_bo_create(fd, vm, EIGHT_MB,
++			   vram_if_possible(fd, eci->gt_id),
++			   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	ptr0 = xe_bo_map(fd, bo0, EIGHT_MB);
++
++	bo1 = xe_bo_create(fd, vm, EIGHT_MB / 2,
++			   vram_if_possible(fd, eci->gt_id),
++			   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	ptr1 = xe_bo_map(fd, bo1, EIGHT_MB / 2);
++
++	sync[0].handle = syncobj_create(fd, 0);
++	if (page_size == 0x1000) {
++		/* Setup mapping to split a 64k PTE in cache */
++		xe_vm_bind_async(fd, vm, 0, bo0, 0, addr0, SIXTY_FOUR_KB, 0, 0);
++
++		addr1 = addr0 + (SIXTY_FOUR_KB / 2);
++		xe_vm_bind_async(fd, vm, 0, bo1, 0, addr1, SIXTY_FOUR_KB / 2,
++				 sync, 1);
++	} else if (page_size == SIXTY_FOUR_KB) {
++		addr0 += page_size;
++
++		/* Setup mapping to split compact 64k pages */
++		xe_vm_bind_async(fd, vm, 0, bo0, 0, addr0, EIGHT_MB, 0, 0);
++
++		addr1 = addr0 + (EIGHT_MB / 4);
++		xe_vm_bind_async(fd, vm, 0, bo1, 0, addr1, EIGHT_MB / 2,
++				 sync, 1);
++	}
++	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
++
++	i = 0;
++	{
++		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
++		uint64_t batch_addr = addr0 + batch_offset;
++		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
++		uint64_t sdi_addr = addr0 + sdi_offset;
++		data = ptr0;
++
++		b = 0;
++		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++		data[i].batch[b++] = sdi_addr;
++		data[i].batch[b++] = sdi_addr >> 32;
++		data[i].batch[b++] = 0xc0ffee;
++
++		sdi_addr = addr1 + sdi_offset;
++		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++		data[i].batch[b++] = sdi_addr;
++		data[i].batch[b++] = sdi_addr >> 32;
++		data[i].batch[b++] = 0xc0ffee;
++
++		data[i].batch[b++] = MI_BATCH_BUFFER_END;
++		igt_assert(b <= ARRAY_SIZE(data[i].batch));
++
++		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
++		sync[1].handle = syncobj_create(fd, 0);
++		exec.exec_queue_id = exec_queue;
++		exec.address = batch_addr;
++		xe_exec(fd, &exec);
++
++		igt_assert(syncobj_wait(fd, &sync[1].handle, 1, INT64_MAX, 0,
++					NULL));
++
++		igt_assert_eq(data[i].data, 0xc0ffee);
++
++		data = ptr1;
++		igt_assert_eq(data[i].data, 0xc0ffee);
++	}
++
++	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++	syncobj_reset(fd, &sync[0].handle, 1);
++	xe_vm_unbind_all_async(fd, vm, 0, bo0, 0, 0);
++	xe_vm_unbind_all_async(fd, vm, 0, bo1, sync, 1);
++	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
++
++	xe_exec_queue_destroy(fd, exec_queue);
++	syncobj_destroy(fd, sync[0].handle);
++	syncobj_destroy(fd, sync[1].handle);
++	munmap(ptr0, EIGHT_MB);
++	munmap(ptr1, EIGHT_MB / 2);
++	gem_close(fd, bo0);
++	gem_close(fd, bo1);
++	xe_vm_destroy(fd, vm);
++}
++
+ /**
+  * SUBTEST: shared-%s-page
+  * Description: Test shared arg[1] page
+@@ -2143,6 +2266,12 @@ igt_main
+ 	igt_subtest("userptr-invalid")
+ 		userptr_invalid(fd);
  
- igt_main_args("cs:", NULL, help_str, opt_handler, &data)
- {
--	enum pipe pipe;
--
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 
-@@ -1076,15 +990,8 @@ igt_main_args("cs:", NULL, help_str, opt_handler, &data)
- 			data.seed = time(NULL);
- 	}
- 
--	for_each_pipe_static(pipe) {
--		data.pipe = pipe;
--
--		igt_subtest_group {
--			for (int c = 0; c < ARRAY_SIZE(tests); c++) {
--				test_output(&data, c);
--			}
--		}
--	}
-+	for (int c = 0; c < ARRAY_SIZE(tests); c++)
-+		test_output(&data, c);
- 
- 	igt_fixture {
- 		igt_display_fini(&data.display);
++	igt_subtest("compact-64k-pages")
++		xe_for_each_engine(fd, hwe) {
++			compact_64k_pages(fd, hwe);
++			break;
++		}
++
+ 	igt_subtest("shared-pte-page")
+ 		xe_for_each_engine(fd, hwe)
+ 			shared_pte_page(fd, hwe, 4,
 -- 
-2.39.1
+2.34.1
 
