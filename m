@@ -4,50 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04B5DC5478B
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Feb 2024 16:46:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76DFBC5478A
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Feb 2024 16:46:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1FE2310E10C;
-	Wed, 21 Feb 2024 16:46:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0FC1010E19D;
+	Wed, 21 Feb 2024 16:46:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GCtwRU7J";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A3y7C1sE";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD72010E002
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Feb 2024 16:46:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E0A310E19D
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Feb 2024 16:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708534004; x=1740070004;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=LOpnxYrbd7mwrrwwr1fJWrjKCjOwjKnrghG7UF4g4Pw=;
- b=GCtwRU7Jei2GmNLzFNSMhKs4KanF8ArExmN4VxSWzPyp5jGQdG6RhOPr
- 1h5AJD1dZHRszROqaF/TirjWhICwZIJ1IVPCDvVyGQDbV6SFZP3UkCw9i
- 4xTb0JP2j6sayumyW7UC8aEzlMRM+RTSr46e3UVjY290ZirM0+TwxY6iY
- EbCWniKDom+05Uur8wWMwFrPycWENj8PChhENVUkgOWieX27ENgEnK2sG
- ypQw2qm/yLC5sV5Sl6NEb8hcTRDenFsSV2KGczBr0Lbl/ozZ7Ar4sUY7l
- Uftj9UCOdI+GppeVZzIkIhYYwI6ZH0m93BWS8CP9dbsQ3rWRtT5XurFdY w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="2851404"
+ t=1708534008; x=1740070008;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=z7tTrLwLj95zjOmYmiRX70Gc/SFmejC4iDkraYGr+tI=;
+ b=A3y7C1sEYkxKPDCJmZ3aQj7qno1X0HywclBl59cxOGXYdbZLXhjbdjwG
+ wSya+TFooRS5Chg26/3b0kaQn268wBNVdavXx25gAewWrlyvPRT4+PMhh
+ NrUOmQ3OvwgHCd3zYBI1kSDCqAYevjIBKIMCuM2ZHDAyDNyK4pBVenoqw
+ ujf0UL1UU/Nb2SYEnBlmiY7Taip9cC8/1N8i7AkC4gplNGfbkSm9lPWKk
+ lbm0kg50XG6fgYGnSFmdojITQmmwnyuDw/vpU63zDMn3MFqGs9RqxzDXk
+ OpUvOXHUexIAJ9jX1GaCBTviw31XAUJpuZ5G3RjYAq3gqt2EHtg7Sy6Fe Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="2851440"
 X-IronPort-AV: E=Sophos;i="6.06,176,1705392000"; 
-   d="scan'208";a="2851404"
+   d="scan'208";a="2851440"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2024 08:46:43 -0800
+ 21 Feb 2024 08:46:48 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,176,1705392000"; d="scan'208";a="42663202"
+X-IronPort-AV: E=Sophos;i="6.06,176,1705392000"; d="scan'208";a="42663208"
 Received: from unknown (HELO localhost) ([10.246.5.230])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2024 08:46:42 -0800
+ 21 Feb 2024 08:46:46 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t v10 0/6] introduce Xe multigpu and other multi-GPU
- helpers
-Date: Wed, 21 Feb 2024 17:46:31 +0100
-Message-ID: <20240221164637.116048-1-kamil.konieczny@linux.intel.com>
+Cc: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>, 
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v10 1/6] lib/igt_device_scan: Introduce filtering out
+ non-PCI devices
+Date: Wed, 21 Feb 2024 17:46:32 +0100
+Message-ID: <20240221164637.116048-2-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20240221164637.116048-1-kamil.konieczny@linux.intel.com>
+References: <20240221164637.116048-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -66,61 +71,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-      Introduce some multi-gpu function helpers and macros. This allows
-writing new multiGPU tests for i915 without requiring filters.
-Solution for Xe is based on filtered views. Both allows to
-quickly write tests. There is still drawback of not printing in
-children logs <g:gpu-number> for first (for Xe) opened device or for
-all opened ones (for i915). I renamed lib from lib/i915/igt_multigpu.*
-to lib/intel_multigu.* as I do not know of any non Intel developer
-using igt for such tests.
+From: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 
-v2: corrected two patches which introduced multigpu lib (Dominik)
-  rebased patch intoducing Xe multigpu macro, corrected description
-v3: corrected include in first multigpu patch (Dominik)
-  fixed typo (Dominik), refactoring code with Xe and gem macro (Kamil)
-v4: corrected typo in macro (Dominik)
-v5: removed cached names and relaxing checks for filtered devices
-  in 3/8 patch, added Janusz to cc in 1/8...5/8 (Kamil)
-v6: extended description of patches 1 and 2, fixed bug in 3/8 (Janusz)
-  improved usage of _is_already_opened() (Kamil)
-v7: restored prohibition of opening the same card at other index (Janusz)
-v8: limit checks for N-th card to 0...N-1 range (Janusz)
- simplify if-else in __search_and_open() (Kamil)
-v9: dropped patch 3/8 ("lib/drmtest: allow opening cards in random order")
- as it can be added later, replaced 8/8 ("tests/intel/gem_mmap: add basic
- multi-GPU") with refactor in gem_exec_gttfill (Kamil)
-v10: added new helper close function into drmtest.c (Kamil)
- use skip in drm_open_driver() in drmtest.c (Janusz)
- renamed macro from xe_ to generic and also adding chipset parameter to it,
- so it is more flexible now (Zbigniew) fix xe test to use new macro (Kamil)
+Introduced igt_device_filter_pci function that filters out non-PCI
+devices from IGT devices. This will help with checking multi-GPU
+tests after they skip due to detected only one GPU, in that case
+one can verify it after printing what GPUs are really on PCI bus.
+Such errors can happen when using wrong env IGT_DEVICE filter.
 
-Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+v6: extending description
+v9: fix memory leak in loop (Zbigniew)
+
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
 Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/igt_device_scan.c | 23 +++++++++++++++++++++++
+ lib/igt_device_scan.h |  2 ++
+ 2 files changed, 25 insertions(+)
 
-Dominik Karol Piątkowski (3):
-  lib/igt_device_scan: Introduce filtering out non-PCI devices
-  lib/drmtest: Introduced drm_open_driver_another
-  lib/intel_multigpu: Introduce library for multi-GPU scenarios
-
-Kamil Konieczny (3):
-  lib/intel_multigpu: Add multi_fork_foreach_gpu_chip
-  tests/intel/xe_exec_basic: add multigpu subtests
-  tests/intel/gem_exec_gttfill: simplify multiGPU subtest
-
- lib/drmtest.c                  | 109 ++++++++++++++++++---------
- lib/drmtest.h                  |   2 +
- lib/igt_device_scan.c          |  23 ++++++
- lib/igt_device_scan.h          |   2 +
- lib/intel_multigpu.c           | 134 +++++++++++++++++++++++++++++++++
- lib/intel_multigpu.h           |  36 +++++++++
- lib/meson.build                |   1 +
- tests/intel/gem_exec_gttfill.c |  13 +---
- tests/intel/xe_exec_basic.c    |  36 +++++++++
- 9 files changed, 311 insertions(+), 45 deletions(-)
- create mode 100644 lib/intel_multigpu.c
- create mode 100644 lib/intel_multigpu.h
-
+diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+index fbf3fa482..9a2da3d62 100644
+--- a/lib/igt_device_scan.c
++++ b/lib/igt_device_scan.c
+@@ -1908,6 +1908,29 @@ const char *igt_device_filter_get(int num)
+ 	return NULL;
+ }
+ 
++/**
++ * igt_device_filter_pci
++ *
++ * Filter devices to PCI only.
++ *
++ * Returns PCI devices count.
++ */
++int igt_device_filter_pci(void)
++{
++	int count = 0;
++	struct igt_device *dev, *tmp;
++
++	igt_list_for_each_entry_safe(dev, tmp, &igt_devs.filtered, link)
++		if (strcmp(dev->subsystem, "pci") != 0) {
++			igt_list_del(&dev->link);
++			free(dev);
++		} else {
++			count++;
++		}
++
++	return count;
++}
++
+ static bool igt_device_filter_apply(const char *fstr)
+ {
+ 	struct igt_device *dev, *tmp;
+diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
+index 48690e236..908733745 100644
+--- a/lib/igt_device_scan.h
++++ b/lib/igt_device_scan.h
+@@ -81,6 +81,8 @@ int igt_device_filter_add(const char *filter);
+ void igt_device_filter_free_all(void);
+ const char *igt_device_filter_get(int num);
+ 
++int igt_device_filter_pci(void);
++
+ /* Use filter to match the device and fill card structure */
+ bool igt_device_card_match(const char *filter, struct igt_device_card *card);
+ bool igt_device_card_match_pci(const char *filter,
 -- 
 2.42.0
 
