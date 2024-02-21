@@ -4,153 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C508C48BF6
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Feb 2024 08:55:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48755C48BF6
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Feb 2024 08:56:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B675010E21D;
-	Wed, 21 Feb 2024 08:55:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CAB9510E21D;
+	Wed, 21 Feb 2024 08:56:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Gi+gZr1i";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aADY46Il";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BE7E10E0D9
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Feb 2024 08:55:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D38B310E675
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Feb 2024 08:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708505705; x=1740041705;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=aPnRSQsml+0L11iZnOeDOVTupgaMR/T4cPF+cZoYM/Y=;
- b=Gi+gZr1iyaNdyHbfRJDiylx/pdkXCXKWgndqTbO6kjE6S2yroOf1JYJ5
- p9LuXLmMblO3kgW+o4D8fYQGmPM0H2ul9ZXGAWS5lDearRFo5NMNzVDrt
- ZfQLDyYWPd20sLea1taWVU2mSurhldLAizF1vFG1kWSbBCaFycm2fX4ZA
- Kn4YvrAI9V8fGr4E2At031egq6DiozdE+JaiQGMfqcQOxAMtZm9Y7Amb0
- LC7krd2ASd23SPAkc+UkVj30/2FU9KMTnlzE6j4+Ts7R+ZRCWolguv9wi
- q6qxeN5P8YkUujkgSJNQ/t26QTKD1pd5qv2VYWpqvuc+vGpqwklUdPp2a w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="13355784"
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; d="scan'208";a="13355784"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Feb 2024 00:55:04 -0800
+ t=1708505796; x=1740041796;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-id:content-transfer-encoding: mime-version;
+ bh=f9weCFn3eEJ9d3EnR/UGfWaPWXPjgsvWZNWs2m+xnAc=;
+ b=aADY46IlfGj7PY11MGavy05bD06g5wcXgVbFD0bviw8gzsMb1/E8OUM9
+ NmawCRZ54jl8vC/7E8rAH6Ixq/y9jZDSgNFJBS8rnJCGU9101tczw8AF8
+ rxo5nFyOdfLQ9h7W0riX2HSKDYZkFkD5AanG+RC8q+M8BP1eJrJd8bS+F
+ /bgzPirWy0HbXJM9fFOPcwcNQ2xdO1JX9eIWHiRP2BRlq5oeelCvdHBW0
+ VrFsynIyUWMa25F0e+ZpRPCRCETPI3hZv1V//0FnxuVCMs2JoWDBMFJAv
+ NVeZHoTER0dJjgWTsXKCDkGHK6YtjeoD3EE4kJ2KM3dBHjkaajizv+nyd g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="20195443"
+X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; d="scan'208";a="20195443"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Feb 2024 00:56:36 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; d="scan'208";a="35830542"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
- by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 21 Feb 2024 00:55:04 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="913262864"
+X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; d="scan'208";a="913262864"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by fmsmga002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 21 Feb 2024 00:56:35 -0800
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 21 Feb 2024 00:55:03 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.1.2507.35; Wed, 21 Feb 2024 00:56:34 -0800
+Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
+ ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 21 Feb 2024 00:55:03 -0800
+ 15.1.2507.35; Wed, 21 Feb 2024 00:56:34 -0800
 Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Wed, 21 Feb 2024 00:55:03 -0800
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.168)
+ 15.1.2507.35 via Frontend Transport; Wed, 21 Feb 2024 00:56:34 -0800
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.101)
  by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 21 Feb 2024 00:55:02 -0800
+ 15.1.2507.35; Wed, 21 Feb 2024 00:56:34 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VFZj3boNpDHxxiFBALnJ3HOu/1PNyVdI7Bdu/AeTCPqzeiODn1nPLBA5GKfdElG/O+WV98CltO2GTT7koE5LEJ4P8WmzieKNcv17H/utzuA+lgnj98ZjiaHqTWcYpzMEFoYWdbPh2AfuDHiq7/7kD5QhMYD1+dG45H31/e5gxI39Ah1VlR+UOwGkcUcciq3Vwp/a6sdt+v2pzVzDkEtpHUhdfq3AzHZmC2YzrphLH/u+Sw3gmkHFy7rUuVHZX/bILTRT/XJqGOsoNmVWDaf2rAy8ksqPYoy17LERQldi6077GvksNH3Usmwjz/Xb7AULkgalqlHPmMxcM4krKsZQ6A==
+ b=gy4iYEtGoLQenmBlzwQDOQDNz+MVNffcCuW4tBThoEem54zhVEV8mFaCOhTi08ZUffaEEccMfYUI/yPbM6//CLjiJqZyK8NiOTMvATGWkylgRySz88aYC1A6qtgK1Jhk0HAKEOAWiLNq3Dq4gc3JxyUaC3BC5LyeQ7WLyWVyfyhz3g45PRPS92OOedcsybuZF2plWNLjf09wNTGcsAq/kZkXndZAGRhe2fGwkTp2RW31EDDsLb6HbhQ8o8PFi24rqMYgdIJnCpYN9b5UZkDgf7o5AJ41pVnU8YeEWuxomW9fDq6Ps/CRr5hDDgqQCg+b4jNCvbuXbgxLB+CWAoTBlg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OXDZcC25P7J0f2H4QFqur5Q0TTEwnKSnHKQMuH9fDQw=;
- b=IR8zdZDjl1zTlQw69Pl+f/ChSZ05uD/KhA1OS/R3DtAeZPzVtxjU18iKqDUaTNdLNbAqHvOmDvibHFpCxUkOlvLgbNGvGQQMRUiynJ+GWZMM/yJI7s31ZxTgyELCHhFprBaWmcRdwPeAVBMlzalFpK4HqBxJxkr5xoek5vBJyahtK0YANfrY9HbIjTSc+8ugSnFsXBHGhHTLITiFbvP7YLvTkYPgFKuDH2IKt+gd4V3gEoRhDt7TQRL5H9Cka+5TNqbQK22zKVVHI3vvcBOsGMmnDvGKgeWwRtHXN63NwPGdjqGfuONf0j26BSlhk/ltKD4UgDtkGyEbXvs7xBmUAA==
+ bh=f9weCFn3eEJ9d3EnR/UGfWaPWXPjgsvWZNWs2m+xnAc=;
+ b=Xz6diP3/nzsAS5qiXySiEJTNgRfGq2oj1KMZcbgPAFSNG2HDS4Bip5q7M4povTZCBcf2hGLoGHMmQ0nw6L+8k7TbK26OWhsZS8VYXMsVz/51SqZiFjt4cOznIG2m91yOgI2lg1ysaZ9ALML1PaiswvmVwfAkHLZDuc121JCr2rCXkEEKF0JydbOcfSs+QnP5clsNlsF1XmPDOjzQJbzOSguVwy1WjDESZ6Mh0lzXQoccdjg+lY6XpnR16x13ipM1BxgpEUmuDQF4B9bme5+AAf/f3YwTEsX5LqircC0Y/H5JCSX0WKw6Xnkda9iJRMDxGZ/yqY5+Mafe2GVUo+4Gyw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY8PR11MB6889.namprd11.prod.outlook.com (2603:10b6:930:5e::9)
- by CH3PR11MB7938.namprd11.prod.outlook.com (2603:10b6:610:12f::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39; Wed, 21 Feb
- 2024 08:54:55 +0000
-Received: from CY8PR11MB6889.namprd11.prod.outlook.com
- ([fe80::bf71:4b0e:6d66:e035]) by CY8PR11MB6889.namprd11.prod.outlook.com
- ([fe80::bf71:4b0e:6d66:e035%3]) with mapi id 15.20.7292.036; Wed, 21 Feb 2024
- 08:54:55 +0000
-Message-ID: <c96dd3cc-a62e-4a75-b251-4a84d20ad8c4@intel.com>
-Date: Wed, 21 Feb 2024 14:24:48 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 3/3] tests/intel/kms_psr2_sf: extend tests for panel
- replay sf
-Content-Language: en-US
-To: "Hogander, Jouni" <jouni.hogander@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Received: from LV2PR11MB6024.namprd11.prod.outlook.com (2603:10b6:408:17a::16)
+ by MW5PR11MB5930.namprd11.prod.outlook.com (2603:10b6:303:1a1::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.37; Wed, 21 Feb
+ 2024 08:56:32 +0000
+Received: from LV2PR11MB6024.namprd11.prod.outlook.com
+ ([fe80::b0d5:882c:a701:7a9a]) by LV2PR11MB6024.namprd11.prod.outlook.com
+ ([fe80::b0d5:882c:a701:7a9a%7]) with mapi id 15.20.7316.018; Wed, 21 Feb 2024
+ 08:56:32 +0000
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
 CC: "Murthy, Arun R" <arun.r.murthy@intel.com>, "Manna, Animesh"
  <animesh.manna@intel.com>
-References: <20240219163333.2339647-1-kunal1.joshi@intel.com>
- <20240219163333.2339647-4-kunal1.joshi@intel.com>
- <1d0592fafbc95232000a77cba80524a2843d42ff.camel@intel.com>
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <1d0592fafbc95232000a77cba80524a2843d42ff.camel@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PN3PR01CA0067.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:99::7) To CY8PR11MB6889.namprd11.prod.outlook.com
- (2603:10b6:930:5e::9)
+Subject: Re: [PATCH i-g-t 3/3] tests/intel/kms_psr2_sf: extend tests for panel
+ replay sf
+Thread-Topic: [PATCH i-g-t 3/3] tests/intel/kms_psr2_sf: extend tests for
+ panel replay sf
+Thread-Index: AQHaZKNQqkzS00VFI0a0EsBZdEkNH7EUfnOA
+Date: Wed, 21 Feb 2024 08:56:32 +0000
+Message-ID: <340dd184dc856bd1ad0ff1e44019767f0fdaa94e.camel@intel.com>
+References: <20240221090148.2447585-1-kunal1.joshi@intel.com>
+ <20240221090148.2447585-4-kunal1.joshi@intel.com>
+In-Reply-To: <20240221090148.2447585-4-kunal1.joshi@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: LV2PR11MB6024:EE_|MW5PR11MB5930:EE_
+x-ms-office365-filtering-correlation-id: 256f0870-7f6a-4634-c789-08dc32bb0056
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 2KB88XsumyMlTWOJKNFgvO75GB5ao8eNcLWBA+WQ6JmmwnFQ8ZUTiprMgpbNDlwbkyq4/UQoA+qZyFe8OYmYsiBeBagPoknMSlUyHhU4StQhnWBiAvO6sd0qIlPTiYcSmVh8E4PH1N0voYlOUynYlkCgy6AnIWJXiigrRYlx24aCfpvpt71jdO0nVa7VhHAKHQuP87xaXHVGLtpCWMlJY0Gcg2hQn++ON1bWFp3+FL+nntJdtUgs/E9vZ1HqTOj9PdS8FOgb2lKysyXVtNMH/z/RqxUlVYmrKUwS2rYCFQumHrw/ej09o/Urw1R2OrvvDxHatWUXjHS/2H4jMSxhgUEYb8y8taLlQ01fVCqL+640OET3LXOKuFQHjKtGKFKms2i12kFcaOM0sUSLVFns0E7PS1x63B6Nq2rjh5xxE5jH/dRoPz+9n/8DoRQwChmEW8SJ1S4i2OlyN5PdAnkyP588wYFHEFGgcRZtsSX90gh42hiMsgrFPBn04ys+wC48SxXBbgNOxKooF9etN1j25StR+cICDypM++kbHszw8T9RaAPbik9KbOpQkDunqkw7kCQONcKpv3Zag/+VkcqKOkrmTqWf8IHZthomS0MmnC4fokK1DRHD1NFb1bTgC6KM
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:LV2PR11MB6024.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(38070700009); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WDFvZ2xPNE84ODEycUhnSDI0bEo2dmVBWm5GOUpveVpjL3pKeW5qKzZwZHdJ?=
+ =?utf-8?B?QS9pVS95cEl6UlQrV3dKejBzQXhXSnNDQVhGTXg0NWlQVVU0M1U0Y2hYbVN6?=
+ =?utf-8?B?cC9aWElhT3ZJcmhtV1lIakZsQWY0OUFQbklOeFgrbndHbzV1cFhtTlFta3o5?=
+ =?utf-8?B?WXlLV0ozZzMzQncvSXdUZjVZeUNZSHR1Ykd3RFA4UTBybmJzUmtwL2tBbTd2?=
+ =?utf-8?B?UEQvY1hFc05HV3grMzJDZmRLOEZoYzFCc1R2cEJaN0UvWkhrZzI4VWNmVnIr?=
+ =?utf-8?B?bFBBTktFNVFJOFVkNmplWVJOem5UcjdVcTRZQTBhRHlPc2RYRm1EWXJpZlIy?=
+ =?utf-8?B?OEZWVkp0NnFxZmZYL0NHZnBFNmtsalM1RmtldWcyVVpDUHJNR0pUT3pZSm1T?=
+ =?utf-8?B?WGd5U0RVNVRNTjd0Y1VsbEVJSUJnKzhwRG91L3o3ZEJTZzFRWUpsRjZCTWlD?=
+ =?utf-8?B?K1ZkTVZKS0srYTNDelMxaWZUc2ZxKzhhTGFnQTRJN0psa1pKU05kNEk4Nlg0?=
+ =?utf-8?B?RnAwSHpzRGp6OGE4MEFTUmZkdlhzYjhUbHRhUVl2K3Nvcm1Uak5Td2R5T2NE?=
+ =?utf-8?B?SUdSYXhIbHl2ZzZBdC93QUE0Q285eFowczE3eVpBa3lCRGxCQVYxcEFDSzNv?=
+ =?utf-8?B?TnFuVDlUbzJncFJPc1E4RVNCeGVJRTBjYzVpNFowQlE1ZnlVWGRKVGNRMjNS?=
+ =?utf-8?B?cFdCZmo4RzU0VUV2alNkamFqc3h5RU93OHRHejlYcGREc2kxMUNpNC90NlBC?=
+ =?utf-8?B?Z0VIYXNoMUYwK2NvcHdUVGRuV2d5c0MzdythQmhIR3N2TndLa1FSeDYwRXR1?=
+ =?utf-8?B?UlN4VHpSZmNwRFl2MUczc0tmbGMwVENvZ0pVdnRtaGV5S2xKdUQwanE5cUtz?=
+ =?utf-8?B?L2ZFT1RJZVNJVVpYMzhuSGJCaUJLRWduRXJZQkNTamxzK1pCYmlqVkhsQldm?=
+ =?utf-8?B?RU9lM1d3TE1USnZBVkE1K2J5M0UydmNwVm5sWHU5Z3RqaTcvZ3U0aFlvUlpo?=
+ =?utf-8?B?TWgxZG9yNjB6dEtnbXU5eFpHVTJrK2N2WGYwWEZsdUFBTENOb3FpQkFyRW9i?=
+ =?utf-8?B?NW41RngvZ0RhNUE0UlYrTU1Ca2RNc3lTb21pY1prN0JSOWJzVUZKNUd4V3A3?=
+ =?utf-8?B?TGNrRWdubkFGVVkrcmVsWG15SHpXZTl6Y3I4b3dnT2xON0pSU0tWZHlLU2VY?=
+ =?utf-8?B?SzFEQUJVMVI5RTdxOERhY0cvMzNvcWszT2V3SG9pekFZOE9uekpoWkM1V3k4?=
+ =?utf-8?B?eVQwajN0cE1KaG0zbjJWM0lVelI2eWVObzlVQUhTSHlNdHhDN3NRekVVSnF3?=
+ =?utf-8?B?b1YvV1FxT0VEazM1cGNBS3I0MW0xZGN3czBVdjJjY0hLOHJ3dzVKZUR4WlNJ?=
+ =?utf-8?B?UlFKRjRkYU9BbEczTDlsT3lpU0tXckswbkFxV0w2Mml4WHpiS1NualZnTlFC?=
+ =?utf-8?B?R21TN3pCbHBUNk0yQjJoamh5ZlkzQnl3RzdaMWxNUTJrdU9SWVhNa1pRcGFt?=
+ =?utf-8?B?TEZTWVZvV2hIdFJsU08wN2lXNldOSmVDYjhkbXUyRTlvOWV0MS9kWWxSUllm?=
+ =?utf-8?B?YW52b1pyOXhPVnFxaS9UbC9ReVdFYXlmVmNidkdLcTQ2c3dZaVJlbVRjYVdy?=
+ =?utf-8?B?UFQ3aS9QYVQ4WVdiL1EzeTNMRzY4KzI3RHpWaFpvMEJYaVFObi9yc0FxYXZ6?=
+ =?utf-8?B?RU1kLzF4ajVCWHhjeTh0VFFtS3JLSHRZZ3VWYVprb1NWanNHcmVlNUJzajB6?=
+ =?utf-8?B?a3VBSlVlTFhZN1UzUkszZzUvdGp2bWJVV0xDT0xGaDltMGt6Nmh2dnp1Wk5h?=
+ =?utf-8?B?b2M4Y2ErSTNZYWVkRzU5RWJZRktBMXhZMGtDY0x4Vmo1Mk0zWG1lTHJZRjBI?=
+ =?utf-8?B?Q2FrcFRTODArbGh2SGM5OUdydXJVTmRTaExFVGlvc1J5dTJFVmVPSlRHaUlJ?=
+ =?utf-8?B?SnV5UkRqeE9hZ2YxQUQvaUtWblRreHlzSFdOMDRFREtUYklGZDBycDdZUXZJ?=
+ =?utf-8?B?UXFVRVNrODNEYWJqNGcwQncxU2R3OWo4RTRwdHZzVTdwb2Jtd0hTUXYzbS9y?=
+ =?utf-8?B?Ym90WTJIZEhoS0dySXVkNnBYaFlBaC9vR3EvdExFNXV1bUR0VFNIdGVablo0?=
+ =?utf-8?B?Y0ZHZU82SDRoTWc1bGZYQlg3SDBPS0V3NURCVXRia3A5ZnRLaWE1am1IMW5h?=
+ =?utf-8?B?bnc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E60754CFF9604C4A9488400F24FF09C5@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR11MB6889:EE_|CH3PR11MB7938:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0602e3ab-f7d1-491e-00c5-08dc32bac659
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +rxjgGmmYbdBWdEPb/3yShV8BSsLVj5elnd8oxaOyKacBUpr0yxbvhZaANMM/Y8lrywaIMQJn0Mh/Le+nlj7dpQ5DUJ9I7h5OvZZr8vEfwWtRYaDLwtT3AXe52xBv6V3Y8AZW7oDfp31tbfE80Ol68SpRpArZltDcv7pc8gUoAU1UyS8Y4T055c8qTFp1Ex+Qp62FJM294x2s4V+3Cm0WnZEfzgsyAl1KbaZuqur54AI3cnu771yo+20sxkNjXo20nq6vgMshhIPbu18s3z1wbqdZg2FITA3CTQcLFcwumZBLtp/OkvWfJ/8fH2yOmyB797Gep7p9f5bi1FlBnP6Deuadf480Y0KtkZXanOKNHxLu2PReVcgMaGbhD0AbB1Ru6qgUL/mGruo9NZkjQMx+0pQYFoOKb78111bfgxpsSNTFxpJEhAyiHWbbWbT700+ndfK8kP7rpbUoeuJrjETeZyQHnDPSVCxBa+qXVA1UpfvnQ5V1jMXqVWsuBiy6R7JKKU9Mi77knqVOnMmJyrXJbv3B3N+H+0S6k2HGmieeJ0=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY8PR11MB6889.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Zlh2ZVl1bnNXNVFETnBPcDB2Y2pWMWtsS0drQzB0Q2hEbW5QMlArbnU5cHJj?=
- =?utf-8?B?RnRsVDRiTjRZUThxVFV0VEM4bGJIOG9wL3kzZjBJdENtUTFxa2NWWlp6OEFZ?=
- =?utf-8?B?YWlCYmVwR2t3MGVkV3RQTWdTQWtPcVQ3d3Z4cWhHdlJTaS9ZVzNRckhWdmJG?=
- =?utf-8?B?YjdsWUl4QlFKTUp0cUZBbXlYLy9mRlRtT3FoSjNzd0tsd1VXVUtjVlRWQTZ6?=
- =?utf-8?B?UnR3blBBODFwajFCTy9yMkU2NjRxSU84YXBadnNxa0FNOWtjMENMbEp3bWph?=
- =?utf-8?B?eUIvUjFac0lIMGV3SDRJYkZKNiswVkNockJoVnlDTm5MZWcwcFJ6ckV3cFNK?=
- =?utf-8?B?Rys5bEh4UGFTUGMySXlNVVFIMW91UHQ4OTk1U1dSTFhBcmNOVjg5S0NWWjhw?=
- =?utf-8?B?VTdsUnhBUG1IWUtMeXFHK096VElIc25peTFRaTJvVGxnOWhYT2Q2ODNsMWNX?=
- =?utf-8?B?WkRnSkVpT3FvT1MzTlZ1NW1OeHFaMER1TVYrK3NKbGVsbldVMzBneVQrUjFx?=
- =?utf-8?B?WG5UWUZGTW1EejI1UlIwR0J1NVZFYzVHblRXWFpaUE95VzF1OURiN05WN2Z3?=
- =?utf-8?B?cGEzTUF0aWN1ajNqaVNVczJiUk92aENjQ2xVWTFWU09sV3lncjMzVUdXMVg1?=
- =?utf-8?B?VE5JelFrOGtnTHJpU1hSR3lIUU1ZTVVDWkpZZzNCUUcyblVhQngwczB2cGc2?=
- =?utf-8?B?NkNQd3dTNFliZzBDWVBGVW43K1dBeTI5cWFCQzh5WW45Z1FGZ29CQTExTDlM?=
- =?utf-8?B?UUx6REtSTWdOMGFlRzlDOG1QbUVSMDl5anJDemxObERQSFZERXRHdTJVQjA0?=
- =?utf-8?B?c1cvbC9Db3lHcGw1aXVjSHhHeFpLazdXY1VScnoyOVJaRUdpaXJVeEd1MTJ4?=
- =?utf-8?B?Tm8xaGk2czJSTC8raExpRFlyNFB5YTlkU2JkeGQ2TThUM0VNVkhWMUtOTmc3?=
- =?utf-8?B?TXB3T2V5QlVZaUtXRERlMWU3SUFTRzJSTmV1cFdVMFNRUU1rL2Q5WEk1dkY1?=
- =?utf-8?B?Q0JOeHpIbFl0QTZEY29SbnVaVkVOSVJLR2ZkYk9DakNrNkNuanB1OEZ4TXA0?=
- =?utf-8?B?Qm16QmUrNXgvZmRzbGNEckViNzIrQWdiOWZPNmlGTlNlbmViOFVZaXFnMUJO?=
- =?utf-8?B?SEE3MUpvM3ZJRTBndnJpWVc5TlkxU01PdWhXSDVJUUppcTdZUllJbW9sUlpV?=
- =?utf-8?B?eS9JYUI5UmxLQkZ0ejc2SzBDem9QUWNEZjFJUEtjcEltV1dvQW83WUYxREpS?=
- =?utf-8?B?UkRLdlIzd1k5ZzdhMmRyQytrOHFGa1hDZ0gvS1BlWHZaOWg4bDBGUGN1ZGow?=
- =?utf-8?B?ZTVZOEJBb3VDOUpvZ0pIUzNvdHUvaDU0Njk2RnNvR1AraVNEZXo3OTRDMGdQ?=
- =?utf-8?B?Ukx5bjRMSmFpV1l4b3V0RGk1SG55M1RxcjB4Nk5oMnhydEx0NWdrbFZ2elRh?=
- =?utf-8?B?ZWl2V0NVOGxCbWdaMFd3OWN6aUdrZHpuMzVUYWg0OXk3dDVNWDNLQllVbk9L?=
- =?utf-8?B?VHAweUhmeGFOV0NFdHNVaWpPS3RjYTJLNUVHNVhVMndOMFhYeEpNaEErNENJ?=
- =?utf-8?B?Q1oxMk9KSjJMd2paSHQ4WFdKeXppNkVFQlpuRFk4YzRFNHJRdmNkL3hub3NE?=
- =?utf-8?B?S3lrd1hHYWpiUkwxT0hVbXZLQnByUUJMV0E3UVVlVGxYVmdXMjlQMmMxK1dk?=
- =?utf-8?B?eTNCVDM2bWJUdXdMSGRPRm9ENUhhM2RHUEYzUFE2TmU5d3JHaERmb3lHaHhT?=
- =?utf-8?B?d3V0cGlqRExUeGYyUVRxUGhmKzZZbkxuTlJ6MEx3T1grZkpwbGZVNk53QlR6?=
- =?utf-8?B?d0M1Wk9kSGJyUU9ybXppL2JYK015NUtiQnJKNDNpbXdka0VJZld3YlZyMmtB?=
- =?utf-8?B?bmpGbnVJRkM1akhUbEtkSDQ0dnZIN1RTUHNma2dCZVZWdGlQTlphdWEvM0dS?=
- =?utf-8?B?bjdWTzVBZnNvOEN6VFZkbFpvaFFHajg3TnNocU1weGtlZjNGcjEwcEk0M3Jl?=
- =?utf-8?B?VmRHUitCUnYwMWh1VldBVlN5WUlyNEtVTGN1cVUxdkFLNXB2czJqY1hTYldt?=
- =?utf-8?B?T2lGVzA5R3BTTVp0WlF2VVBhNzhPNjQ1anBCZU9TTnN3TklVRTlDZGZXemg0?=
- =?utf-8?Q?4xjYsdF5m2xYEvj4E9NXi9GgK?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0602e3ab-f7d1-491e-00c5-08dc32bac659
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB6889.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2024 08:54:55.6226 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8Cxpn7Jt82k7TtewMVeVPmC9Ye+QM3bi1ptF2rTUQytrgtm98tjXMobMYnSM7/artJdskqPU1RKrIxGem75XVw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7938
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR11MB6024.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 256f0870-7f6a-4634-c789-08dc32bb0056
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2024 08:56:32.5633 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: msweZYGd0paYP0JyWvdEI/GpKzhGSXkmGLwqBxJWSTGYxKIAJ/adoApKM0jzxBYl/j1YABV7qIPqQhyWLn54YMURqYmMmdDK7jdsQ2vdJvE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5930
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -167,745 +171,763 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hello Jouni,
-
-On 2/20/2024 2:36 PM, Hogander, Jouni wrote:
-> On Mon, 2024-02-19 at 22:03 +0530, Kunal Joshi wrote:
->> Extend the tests to cover panel replay selective fetch feature.
->>
->>  From kms_psr2_sf test point of view we have
->> check_pr_psr2_sel_fetch_support
->> function to check if PR/PSR2 selective fetch is supported for an
->> output
->> if output supports selective fetch then we check we if enter
->> DEEP_SLEEP mode
->> in run function
->>
->> v2: fixed dynamic test name
->> v3: use check_psr2_support (Jouni)
->> v4: correct order of checks in check_pr_psr2_sel_fetch_support
->> (Jouni)
->>      use appropriate psr mode in psr_wait_entry (Jouni)
->> v5: modify get_sel_fetch_mode_for_output to use member data (Jouni)
->>
->> Cc: Jouni Högander <jouni.hogander@intel.com>
->> Cc: Animesh Manna <animesh.manna@intel.com>
->> Cc: Arun R Murthy <arun.r.murthy@intel.com>
->> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
->> ---
->>   tests/intel/kms_psr2_sf.c | 191 +++++++++++++++++++++++++++---------
->> --
->>   1 file changed, 138 insertions(+), 53 deletions(-)
->>
->> diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
->> index 0fb300161..15046fd67 100644
->> --- a/tests/intel/kms_psr2_sf.c
->> +++ b/tests/intel/kms_psr2_sf.c
->> @@ -172,6 +172,7 @@ typedef struct {
->>          uint32_t screen_changes;
->>          int cur_x, cur_y;
->>          enum pipe pipe;
->> +       enum psr_mode psr_mode;
->>          enum {
->>                  FEATURE_NONE  = 0,
->>                  FEATURE_DSC   = 1,
->> @@ -179,6 +171,39 @@ typedef struct {
->>          } coexist_feature;
->>   } data_t;
->>   
->> +static bool get_sel_fetch_mode_for_output(data_t *data)
->> +{
->> +       bool supported = false;
->> +
->> +       if (psr_sink_support(data->drm_fd, data->debugfs_fd,
->> +                                                PR_MODE_SEL_FETCH,
->> data->output)) {
->> +               supported = true;
->> +               data->psr_mode = PR_MODE_SEL_FETCH;
->> +       } else if (psr_sink_support(data->drm_fd, data->debugfs_fd,
->> +                                                         PSR_MODE_2,
->> data->output)) {
->> +               supported = true;
->> +               data->psr_mode = PSR_MODE_2;
->> +       } else
->> +               igt_info("selective fetch not supported on output
->> %s\n", data->output->name);
->> +
->> +       return supported;
->> +}
->> +
->> +static const char *get_psr_mode_str_for_output(data_t *data)
->> +{
->> +       static const char *psr_mode;
-> If get_sel_fetch_mode_for_output returns false for some reason you will
-> have something in psr_mode pointer.
->
-> If you want to call get_sel_fetch_mode_for_output here I think you
-> should use assert. Another option is to leave it to caller. I think
-> that would be more clear solution. Currently code below works because
-> it is called here.
->
->> +
->> +       if (get_sel_fetch_mode_for_output(data)) {
->> +               if (data->psr_mode == PSR_MODE_2)
->> +                       psr_mode = "psr2";
->> +               else if (data->psr_mode == PR_MODE_SEL_FETCH)
->> +                       psr_mode = "pr";
->> +               else
->> +                       igt_assert_f(false, "Invalid psr mode\n");
->> +       }
->> +       return psr_mode;
->> +}
->> +
->>   static const char *op_str(enum operations op)
->>   {
->>          static const char * const name[] = {
->> @@ -688,7 +722,7 @@ static void damaged_plane_move(data_t *data)
->>   
->>          igt_display_commit2(&data->display, COMMIT_ATOMIC);
->>   
->> -       igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2,
->> NULL));
->> +       igt_assert(psr_wait_entry(data->debugfs_fd, data->psr_mode,
->> data->output));
->>   
->>          expected_output(data);
->>   }
->> @@ -788,7 +822,7 @@ static void plane_move_continuous(data_t *data)
->>   {
->>          int target_x, target_y;
->>   
->> -       igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2,
->> NULL));
->> +       igt_assert(psr_wait_entry(data->debugfs_fd, data->psr_mode,
->> data->output));
->>   
->>          get_target_coords(data, &target_x, &target_y);
->>   
->> @@ -865,7 +899,7 @@ static void damaged_plane_update(data_t *data)
->>          igt_plane_set_position(data->test_plane, 0, 0);
->>          igt_display_commit2(&data->display, COMMIT_ATOMIC);
->>   
->> -       igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2,
->> NULL));
->> +       igt_assert(psr_wait_entry(data->debugfs_fd, data->psr_mode,
->> data->output));
->>   
->>          expected_output(data);
->>   }
->> @@ -874,7 +908,7 @@ static void run(data_t *data)
->>   {
->>          int i;
->>   
->> -       igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2,
->> NULL));
->> +       igt_assert(psr_wait_entry(data->debugfs_fd, data->psr_mode,
->> data->output));
->>   
->>          if (data->fbc_flag == true && data->op_fbc_mode ==
->> FBC_ENABLED)
->>                  igt_assert_f(intel_fbc_wait_until_enabled(data-
->>> drm_fd,
->> @@ -952,14 +986,22 @@ static void cleanup(data_t *data)
->>          igt_remove_fb(data->drm_fd, &data->fb_test);
->>   }
->>   
->> -static int check_psr2_support(data_t *data)
->> +static bool check_pr_psr2_sel_fetch_support(data_t *data)
->>   {
->> -       int status;
->> +       bool status = false;
->> +
->> +       /* Check sink supports PR/PSR2 selective fetch */
->> +       if (!get_sel_fetch_mode_for_output(data))
->> +               return false;
->> +
->> +       /* Check if selective fetch can be enabled */
->> +       if (!selective_fetch_check(data->debugfs_fd, data->output))
->> +               igt_assert("Selective fetch is not enabled even
->> though panel should support it\n");
->>   
->>          prepare(data);
->> -       status = psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL);
->> +       /* We enter into DEEP_SLEEP for both PSR2 and PR sel fetch */
->> +       status = psr_wait_entry(data->debugfs_fd, data->psr_mode,
->> data->output);
->>          cleanup(data);
->> -
->>          return status;
->>   }
->>   
->> @@ -981,6 +1023,8 @@ pipe_output_combo_valid(igt_display_t *display,
->>   
->>   igt_main
->>   {
->> +       bool output_supports_pr_psr2_sel_fetch = false;
->> +       bool pr_psr2_sel_fetch_supported = false;
->>          data_t data = {};
->>          igt_output_t *outputs[IGT_MAX_PIPES * IGT_MAX_PIPES];
->>          int i, j, k, y;
->> @@ -1000,11 +1044,6 @@ igt_main
->>                  data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
->>                  kmstest_set_vt_graphics_mode();
->>   
->> -               igt_require_f(psr_sink_support(data.drm_fd,
->> -                                              data.debugfs_fd,
->> PSR_MODE_2,
->> -                                              NULL),
->> -                             "Sink does not support PSR2\n");
->> -
->>                  display_init(&data);
->>   
->>                  if
->> ((intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 20) &&
->> @@ -1028,7 +1067,8 @@ igt_main
->>   
->>                  for_each_pipe_with_valid_output(&data.display,
->> data.pipe, data.output) {
->>                          coexist_features[n_pipes] = 0;
->> -                       if (check_psr2_support(&data)) {
->> +                       output_supports_pr_psr2_sel_fetch =
->> check_pr_psr2_sel_fetch_support(&data);
->> +                       if (output_supports_pr_psr2_sel_fetch) {
->>                                  pipes[n_pipes] = data.pipe;
->>                                  outputs[n_pipes] = data.output;
->>   
->> @@ -1037,7 +1077,10 @@ igt_main
->>   
->>                                  n_pipes++;
->>                          }
->> +                       pr_psr2_sel_fetch_supported |=
->> output_supports_pr_psr2_sel_fetch;
->>                  }
->> +               igt_require_f(pr_psr2_sel_fetch_supported,
->> +                                         "No output supports
->> selective fetch\n");
->>          }
->>   
->>          for (y = 0; y < ARRAY_SIZE(fbc_status); y++) {
->> @@ -1054,17 +1097,20 @@ igt_main
->>                          for (i = 0; i < n_pipes; i++) {
->>                                  if
->> (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
->>                                          continue;
->> +                               data.pipe = pipes[i];
->> +                               data.output = outputs[i];
->>   
->>                                  for (j = FEATURE_NONE; j <
->> FEATURE_COUNT; j++) {
->>                                          if (j != FEATURE_NONE &&
->> !(coexist_features[i] & j))
->>                                                  continue;
->> -                                       igt_dynamic_f("pipe-%s-%s%s",
->> kmstest_pipe_name(pipes[i]),
->> +                                       igt_dynamic_f("%s-pipe-%s-
->> %s%s", get_psr_mode_str_for_output(&data),
-> Here it is not clear that data->psr_mode is actually initialized by
-> get_psr_mode_str_for_output(&data). On first glance it looks like just
-> getter for some string.
->
-> BR,
->
-> Jouni Högander
-
-Thanks for reviewing this series :)
-Have sent new revision address comments.
-
-Regards
-Kunal Joshi
-
->
->> +
->> kmstest_pipe_name(pipes[i]),
->>                                                       
->> igt_output_name(outputs[i]),
->>                                                       
->> coexist_feature_str(j)) {
->> -                                               data.pipe = pipes[i];
->> -                                               data.output =
->> outputs[i];
->>                                                  data.test_plane_id =
->> DRM_PLANE_TYPE_PRIMARY;
->>                                                  data.coexist_feature
->> = j;
->> +                                               igt_assert_f(get_sel_
->> fetch_mode_for_output(&data),
->> +
->>      "Invalid psr mode\n");
->>                                                  for (k = 1; k <=
->> MAX_DAMAGE_AREAS; k++) {
->>                                                          data.damage_a
->> rea_count = k;
->>                                                          prepare(&data
->> );
->> @@ -1087,18 +1133,21 @@ igt_main
->>                                          if
->> (!pipe_output_combo_valid(&data.display, pipes[i],
->>                                                                      
->> outputs[i]))
->>                                                  continue;
->> +                                       data.pipe = pipes[i];
->> +                                       data.output = outputs[i];
->>   
->>                                          for (j = FEATURE_NONE; j <
->> FEATURE_COUNT; j++) {
->>                                                  if (j != FEATURE_NONE
->> && !(coexist_features[i] & j))
->>                                                          continue;
->> -                                               igt_dynamic_f("pipe-
->> %s-%s%s",
->> +                                               igt_dynamic_f("%s-
->> pipe-%s-%s%s",
->> +
->> get_psr_mode_str_for_output(&data),
->>                                                               
->> kmstest_pipe_name(pipes[i]),
->>                                                               
->> igt_output_name(outputs[i]),
->>                                                               
->> coexist_feature_str(j)) {
->> -                                                       data.pipe =
->> pipes[i];
->> -                                                       data.output =
->> outputs[i];
->>                                                          data.test_pla
->> ne_id = DRM_PLANE_TYPE_PRIMARY;
->>                                                          data.coexist_
->> feature = j;
->> +                                                       igt_assert_f(
->> get_sel_fetch_mode_for_output(&data),
->> +
->>              "Invalid psr mode\n");
->>                                                          for (k = 1; k
->> <= MAX_DAMAGE_AREAS; k++) {
->>                                                                  data.
->> damage_area_count = k;
->>                                                                  prepa
->> re(&data);
->> @@ -1119,17 +1168,20 @@ igt_main
->>                          for (i = 0; i < n_pipes; i++) {
->>                                  if
->> (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
->>                                          continue;
->> +                               data.pipe = pipes[i];
->> +                               data.output = outputs[i];
->>   
->>                                  for (j = FEATURE_NONE; j <
->> FEATURE_COUNT; j++) {
->>                                          if (j != FEATURE_NONE &&
->> !(coexist_features[i] & j))
->>                                                  continue;
->> -                                       igt_dynamic_f("pipe-%s-%s%s",
->> kmstest_pipe_name(pipes[i]),
->> +                                       igt_dynamic_f("%s-pipe-%s-
->> %s%s", get_psr_mode_str_for_output(&data),
->> +
->> kmstest_pipe_name(pipes[i]),
->>                                                       
->> igt_output_name(outputs[i]),
->>                                                       
->> coexist_feature_str(j)) {
->> -                                               data.pipe = pipes[i];
->> -                                               data.output =
->> outputs[i];
->>                                                  data.test_plane_id =
->> DRM_PLANE_TYPE_OVERLAY;
->>                                                  data.coexist_feature
->> = j;
->> +                                               igt_assert_f(get_sel_
->> fetch_mode_for_output(&data),
->> +
->>      "Invalid psr mode\n");
->>                                                  for (k = 1; k <=
->> MAX_DAMAGE_AREAS; k++) {
->>                                                          data.damage_a
->> rea_count = k;
->>                                                          prepare(&data
->> );
->> @@ -1149,17 +1201,20 @@ igt_main
->>                          for (i = 0; i < n_pipes; i++) {
->>                                  if
->> (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
->>                                          continue;
->> +                               data.pipe = pipes[i];
->> +                               data.output = outputs[i];
->>   
->>                                  for (j = FEATURE_NONE; j <
->> FEATURE_COUNT; j++) {
->>                                          if (j != FEATURE_NONE &&
->> !(coexist_features[i] & j))
->>                                                  continue;
->> -                                       igt_dynamic_f("pipe-%s-%s%s",
->> kmstest_pipe_name(pipes[i]),
->> +                                       igt_dynamic_f("%s-pipe-%s-
->> %s%s", get_psr_mode_str_for_output(&data),
->> +
->> kmstest_pipe_name(pipes[i]),
->>                                                       
->> igt_output_name(outputs[i]),
->>                                                       
->> coexist_feature_str(j)) {
->> -                                               data.pipe = pipes[i];
->> -                                               data.output =
->> outputs[i];
->>                                                  data.test_plane_id =
->> DRM_PLANE_TYPE_CURSOR;
->>                                                  data.coexist_feature
->> = j;
->> +                                               igt_assert_f(get_sel_
->> fetch_mode_for_output(&data),
->> +
->>      "Invalid psr mode\n");
->>                                                  prepare(&data);
->>                                                  run(&data);
->>                                                  cleanup(&data);
->> @@ -1175,17 +1230,20 @@ igt_main
->>                          for (i = 0; i < n_pipes; i++) {
->>                                  if
->> (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
->>                                          continue;
->> +                               data.pipe = pipes[i];
->> +                               data.output = outputs[i];
->>   
->>                                  for (j = FEATURE_NONE; j <
->> FEATURE_COUNT; j++) {
->>                                          if (j != FEATURE_NONE &&
->> !(coexist_features[i] & j))
->>                                                  continue;
->> -                                       igt_dynamic_f("pipe-%s-%s%s",
->> kmstest_pipe_name(pipes[i]),
->> +                                       igt_dynamic_f("%s-pipe-%s-
->> %s%s", get_psr_mode_str_for_output(&data),
->> +
->> kmstest_pipe_name(pipes[i]),
->>                                                       
->> igt_output_name(outputs[i]),
->>                                                       
->> coexist_feature_str(j)) {
->> -                                               data.pipe = pipes[i];
->> -                                               data.output =
->> outputs[i];
->>                                                  data.test_plane_id =
->> DRM_PLANE_TYPE_CURSOR;
->>                                                  data.coexist_feature
->> = j;
->> +                                               igt_assert_f(get_sel_
->> fetch_mode_for_output(&data),
->> +
->>      "Invalid psr mode\n");
->>                                                  prepare(&data);
->>                                                  run(&data);
->>                                                  cleanup(&data);
->> @@ -1202,17 +1260,20 @@ igt_main
->>                          for (i = 0; i < n_pipes; i++) {
->>                                  if
->> (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
->>                                          continue;
->> +                               data.pipe = pipes[i];
->> +                               data.output = outputs[i];
->>   
->>                                  for (j = FEATURE_NONE; j <
->> FEATURE_COUNT; j++) {
->>                                          if (j != FEATURE_NONE &&
->> !(coexist_features[i] & j))
->>                                                  continue;
->> -                                       igt_dynamic_f("pipe-%s-%s%s",
->> kmstest_pipe_name(pipes[i]),
->> +                                       igt_dynamic_f("%s-pipe-%s-
->> %s%s", get_psr_mode_str_for_output(&data),
->> +
->> kmstest_pipe_name(pipes[i]),
->>                                                       
->> igt_output_name(outputs[i]),
->>                                                       
->> coexist_feature_str(j)) {
->> -                                               data.pipe = pipes[i];
->> -                                               data.output =
->> outputs[i];
->>                                                  data.test_plane_id =
->> DRM_PLANE_TYPE_CURSOR;
->>                                                  data.coexist_feature
->> = j;
->> +                                               igt_assert_f(get_sel_
->> fetch_mode_for_output(&data),
->> +
->>      "Invalid psr mode\n");
->>                                                  prepare(&data);
->>                                                  run(&data);
->>                                                  cleanup(&data);
->> @@ -1229,17 +1290,20 @@ igt_main
->>                          for (i = 0; i < n_pipes; i++) {
->>                                  if
->> (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
->>                                          continue;
->> +                               data.pipe = pipes[i];
->> +                               data.output = outputs[i];
->>   
->>                                  for (j = FEATURE_NONE; j <
->> FEATURE_COUNT; j++) {
->>                                          if (j != FEATURE_NONE &&
->> !(coexist_features[i] & j))
->>                                                  continue;
->> -                                       igt_dynamic_f("pipe-%s-%s%s",
->> kmstest_pipe_name(pipes[i]),
->> +                                       igt_dynamic_f("%s-pipe-%s-
->> %s%s", get_psr_mode_str_for_output(&data),
->> +
->> kmstest_pipe_name(pipes[i]),
->>                                                       
->> igt_output_name(outputs[i]),
->>                                                       
->> coexist_feature_str(j)) {
->> -                                               data.pipe = pipes[i];
->> -                                               data.output =
->> outputs[i];
->>                                                  data.test_plane_id =
->> DRM_PLANE_TYPE_CURSOR;
->>                                                  data.coexist_feature
->> = j;
->> +                                               igt_assert_f(get_sel_
->> fetch_mode_for_output(&data),
->> +
->>      "Invalid psr mode\n");
->>                                                  prepare(&data);
->>                                                  run(&data);
->>                                                  cleanup(&data);
->> @@ -1257,17 +1321,21 @@ igt_main
->>                          for (i = 0; i < n_pipes; i++) {
->>                                  if
->> (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
->>                                          continue;
->> +                               data.pipe = pipes[i];
->> +                               data.output = outputs[i];
->>   
->>                                  for (j = FEATURE_NONE; j <
->> FEATURE_COUNT; j++) {
->>                                          if (j != FEATURE_NONE &&
->> !(coexist_features[i] & j))
->>                                                  continue;
->> -                                       igt_dynamic_f("pipe-%s-%s%s",
->> kmstest_pipe_name(pipes[i]),
->> +                                       igt_dynamic_f("%s-pipe-%s-
->> %s%s",
->> +
->> get_psr_mode_str_for_output(&data),
->> +
->> kmstest_pipe_name(pipes[i]),
->>                                                       
->> igt_output_name(outputs[i]),
->>                                                       
->> coexist_feature_str(j)) {
->> -                                               data.pipe = pipes[i];
->> -                                               data.output =
->> outputs[i];
->>                                                  data.test_plane_id =
->> DRM_PLANE_TYPE_OVERLAY;
->>                                                  data.coexist_feature
->> = j;
->> +                                               igt_assert_f(get_sel_
->> fetch_mode_for_output(&data),
->> +
->>      "Invalid psr mode\n");
->>                                                  for (k =
->> POS_TOP_LEFT; k <= POS_BOTTOM_RIGHT ; k++) {
->>                                                          data.pos = k;
->>                                                          prepare(&data
->> );
->> @@ -1286,17 +1354,20 @@ igt_main
->>                  ��       for (i = 0; i < n_pipes; i++) {
->>                                  if
->> (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
->>                                          continue;
->> +                               data.pipe = pipes[i];
->> +                               data.output = outputs[i];
->>   
->>                                  for (j = FEATURE_NONE; j <
->> FEATURE_COUNT; j++) {
->>                                          if (j != FEATURE_NONE &&
->> !(coexist_features[i] & j))
->>                                                  continue;
->> -                                       igt_dynamic_f("pipe-%s-%s%s",
->> kmstest_pipe_name(pipes[i]),
->> +                                       igt_dynamic_f("%s-pipe-%s-
->> %s%s", get_psr_mode_str_for_output(&data),
->> +
->> kmstest_pipe_name(pipes[i]),
->>                                                       
->> igt_output_name(outputs[i]),
->>                                                       
->> coexist_feature_str(j)) {
->> -                                       data.pipe = pipes[i];
->> -                                       data.output = outputs[i];
->>                                          data.test_plane_id =
->> DRM_PLANE_TYPE_OVERLAY;
->>                                          data.coexist_feature = j;
->> +                                       igt_assert_f(get_sel_fetch_mo
->> de_for_output(&data),
->> +                                                               "Inva
->> lid psr mode\n");
->>                                          prepare(&data);
->>                                          run(&data);
->>                                          cleanup(&data);
->> @@ -1313,17 +1384,20 @@ igt_main
->>                          for (i = 0; i < n_pipes; i++) {
->>                                  if
->> (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
->>                                          continue;
->> +                               data.pipe = pipes[i];
->> +                               data.output = outputs[i];
->>   
->>                                  for (j = FEATURE_NONE; j <
->> FEATURE_COUNT; j++) {
->>                                          if (j != FEATURE_NONE &&
->> !(coexist_features[i] & j))
->>                                                  continue;
->> -                                       igt_dynamic_f("pipe-%s-%s%s",
->> kmstest_pipe_name(pipes[i]),
->> +                                       igt_dynamic_f("%s-pipe-%s-
->> %s%s", get_psr_mode_str_for_output(&data),
->> +
->> kmstest_pipe_name(pipes[i]),
->>                                                       
->> igt_output_name(outputs[i]),
->>                                                       
->> coexist_feature_str(j)) {
->> -                                               data.pipe = pipes[i];
->> -                                               data.output =
->> outputs[i];
->>                                                  data.test_plane_id =
->> DRM_PLANE_TYPE_OVERLAY;
->>                                                  data.coexist_feature
->> = j;
->> +                                               igt_assert_f(get_sel_
->> fetch_mode_for_output(&data),
->> +
->>      "Invalid psr mode\n");
->>                                                  prepare(&data);
->>                                                  run(&data);
->>                                                  cleanup(&data);
->> @@ -1340,17 +1414,20 @@ igt_main
->>                          for (i = 0; i < n_pipes; i++) {
->>                                  if
->> (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
->>                                          continue;
->> +                               data.pipe = pipes[i];
->> +                               data.output = outputs[i];
->>   
->>                                  for (j = FEATURE_NONE; j <
->> FEATURE_COUNT; j++) {
->>                                          if (j != FEATURE_NONE &&
->> !(coexist_features[i] & j))
->>                                                  continue;
->> -                                       igt_dynamic_f("pipe-%s-%s%s",
->> kmstest_pipe_name(pipes[i]),
->> +                                       igt_dynamic_f("%s-pipe-%s-
->> %s%s", get_psr_mode_str_for_output(&data),
->> +
->> kmstest_pipe_name(pipes[i]),
->>                                                       
->> igt_output_name(outputs[i]),
->>                                                       
->> coexist_feature_str(j)) {
->> -                                               data.pipe = pipes[i];
->> -                                               data.output =
->> outputs[i];
->>                                                  data.test_plane_id =
->> DRM_PLANE_TYPE_OVERLAY;
->>                                                  data.coexist_feature
->> = j;
->> +                                               igt_assert_f(get_sel_
->> fetch_mode_for_output(&data),
->> +
->>      "Invalid psr mode\n");
->>                                                  prepare(&data);
->>                                                  run(&data);
->>                                                  cleanup(&data);
->> @@ -1368,19 +1445,22 @@ igt_main
->>                          for (i = 0; i < n_pipes; i++) {
->>                                  if
->> (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
->>                                          continue;
->> +                               data.pipe = pipes[i];
->> +                               data.output = outputs[i];
->>   
->>                                  for (j = FEATURE_NONE; j <
->> FEATURE_COUNT; j++) {
->>                                          if (j != FEATURE_NONE &&
->> !(coexist_features[i] & j))
->>                                                  continue;
->> -                                       igt_dynamic_f("pipe-%s-%s%s",
->> kmstest_pipe_name(pipes[i]),
->> +                                       igt_dynamic_f("%s-pipe-%s-
->> %s%s", kmstest_pipe_name(pipes[i]),
->> +
->> get_psr_mode_str_for_output(&data),
->>                                                       
->> igt_output_name(outputs[i]),
->>                                                       
->> coexist_feature_str(j)) {
->> -                                               data.pipe = pipes[i];
->> -                                               data.output =
->> outputs[i];
->>                                                  for (k = 1; k <=
->> MAX_DAMAGE_AREAS; k++) {
->>                                                          data.damage_a
->> rea_count = k;
->>                                                          data.test_pla
->> ne_id = DRM_PLANE_TYPE_PRIMARY;
->>                                                          data.coexist_
->> feature = j;
->> +                                                       igt_assert_f(
->> get_sel_fetch_mode_for_output(&data),
->> +
->>              "Invalid psr mode\n");
->>                                                          prepare(&data
->> );
->>                                                          run(&data);
->>                                                          cleanup(&data
->> );
->> @@ -1401,15 +1481,16 @@ igt_main
->>                          for (i = 0; i < n_pipes; i++) {
->>                                  if
->> (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
->>                                          continue;
->> +                               data.pipe = pipes[i];
->> +                               data.output = outputs[i];
->>   
->>                                  for (j = FEATURE_NONE; j <
->> FEATURE_COUNT; j++) {
->>                                          if (j != FEATURE_NONE &&
->> !(coexist_features[i] & j))
->>                                                  continue;
->> -                                       igt_dynamic_f("pipe-%s-%s%s",
->> kmstest_pipe_name(pipes[i]),
->> +                                       igt_dynamic_f("%s-pipe-%s-
->> %s%s", get_psr_mode_str_for_output(&data),
->> +
->> kmstest_pipe_name(pipes[i]),
->>                                                       
->> igt_output_name(outputs[i]),
->>                                                       
->> coexist_feature_str(j)) {
->> -                                               data.pipe = pipes[i];
->> -                                               data.output =
->> outputs[i];
->>                                                  data.damage_area_coun
->> t = 1;
->>                                                  if (data.op_fbc_mode
->> == FBC_ENABLED)
->>                                                          data.primary_
->> format = DRM_FORMAT_XRGB8888;
->> @@ -1417,6 +1498,8 @@ igt_main
->>                                                          data.primary_
->> format = DRM_FORMAT_NV12;
->>                                                  data.test_plane_id =
->> DRM_PLANE_TYPE_OVERLAY;
->>                                                  data.coexist_feature
->> = j;
->> +                                               igt_assert_f(get_sel_
->> fetch_mode_for_output(&data),
->> +
->>      "Invalid psr mode\n");
->>                                                  prepare(&data);
->>                                                  run(&data);
->>                                                  cleanup(&data);
+T24gV2VkLCAyMDI0LTAyLTIxIGF0IDE0OjMxICswNTMwLCBLdW5hbCBKb3NoaSB3cm90ZToKPiBF
+eHRlbmQgdGhlIHRlc3RzIHRvIGNvdmVyIHBhbmVsIHJlcGxheSBzZWxlY3RpdmUgZmV0Y2ggZmVh
+dHVyZS4KPiAKPiBGcm9tIGttc19wc3IyX3NmIHRlc3QgcG9pbnQgb2YgdmlldyB3ZSBoYXZlCj4g
+Y2hlY2tfcHJfcHNyMl9zZWxfZmV0Y2hfc3VwcG9ydAo+IGZ1bmN0aW9uIHRvIGNoZWNrIGlmIFBS
+L1BTUjIgc2VsZWN0aXZlIGZldGNoIGlzIHN1cHBvcnRlZCBmb3IgYW4KPiBvdXRwdXQKPiBpZiBv
+dXRwdXQgc3VwcG9ydHMgc2VsZWN0aXZlIGZldGNoIHRoZW4gd2UgY2hlY2sgd2UgaWYgZW50ZXIK
+PiBERUVQX1NMRUVQIG1vZGUKPiBpbiBydW4gZnVuY3Rpb24KPiAKPiB2MjogZml4ZWQgZHluYW1p
+YyB0ZXN0IG5hbWUKPiB2MzogdXNlIGNoZWNrX3BzcjJfc3VwcG9ydCAoSm91bmkpCj4gdjQ6IGNv
+cnJlY3Qgb3JkZXIgb2YgY2hlY2tzIGluIGNoZWNrX3ByX3BzcjJfc2VsX2ZldGNoX3N1cHBvcnQK
+PiAoSm91bmkpCj4gwqDCoMKgIHVzZSBhcHByb3ByaWF0ZSBwc3IgbW9kZSBpbiBwc3Jfd2FpdF9l
+bnRyeSAoSm91bmkpCj4gdjU6IG1vZGlmeSBnZXRfc2VsX2ZldGNoX21vZGVfZm9yX291dHB1dCB0
+byB1c2UgbWVtYmVyIGRhdGEgKEpvdW5pKQo+IHY2OiBtb2RpZnkgZ2V0X3NlbF9mZXRjaF9tb2Rl
+X2Zvcl9vdXRwdXQgLT4KPiBzZXRfc2VsX2ZldGNoX21vZGVfZm9yX291dHB1dCAoSm91bmkpCj4g
+Cj4gQ2M6IEpvdW5pIEjDtmdhbmRlciA8am91bmkuaG9nYW5kZXJAaW50ZWwuY29tPgo+IENjOiBB
+bmltZXNoIE1hbm5hIDxhbmltZXNoLm1hbm5hQGludGVsLmNvbT4KPiBDYzogQXJ1biBSIE11cnRo
+eSA8YXJ1bi5yLm11cnRoeUBpbnRlbC5jb20+Cj4gU2lnbmVkLW9mZi1ieTogS3VuYWwgSm9zaGkg
+PGt1bmFsMS5qb3NoaUBpbnRlbC5jb20+CgpSZXZpZXdlZC1ieTogSm91bmkgSMO2Z2FuZGVyIDxq
+b3VuaS5ob2dhbmRlckBpbnRlbC5jb20+Cgo+IC0tLQo+IMKgdGVzdHMvaW50ZWwva21zX3BzcjJf
+c2YuYyB8IDE5NSArKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0KPiAtLQo+IMKg
+MSBmaWxlIGNoYW5nZWQsIDE0MiBpbnNlcnRpb25zKCspLCA1MyBkZWxldGlvbnMoLSkKPiAKPiBk
+aWZmIC0tZ2l0IGEvdGVzdHMvaW50ZWwva21zX3BzcjJfc2YuYyBiL3Rlc3RzL2ludGVsL2ttc19w
+c3IyX3NmLmMKPiBpbmRleCAwZmIzMDAxNjEuLjRjM2UzNGFhMCAxMDA2NDQKPiAtLS0gYS90ZXN0
+cy9pbnRlbC9rbXNfcHNyMl9zZi5jCj4gKysrIGIvdGVzdHMvaW50ZWwva21zX3BzcjJfc2YuYwo+
+IEBAIC0xNzIsNiArMTcyLDcgQEAgdHlwZWRlZiBzdHJ1Y3Qgewo+IMKgwqDCoMKgwqDCoMKgwqB1
+aW50MzJfdCBzY3JlZW5fY2hhbmdlczsKPiDCoMKgwqDCoMKgwqDCoMKgaW50IGN1cl94LCBjdXJf
+eTsKPiDCoMKgwqDCoMKgwqDCoMKgZW51bSBwaXBlIHBpcGU7Cj4gK8KgwqDCoMKgwqDCoMKgZW51
+bSBwc3JfbW9kZSBwc3JfbW9kZTsKPiDCoMKgwqDCoMKgwqDCoMKgZW51bSB7Cj4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBGRUFUVVJFX05PTkXCoCA9IDAsCj4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBGRUFUVVJFX0RTQ8KgwqAgPSAxLAo+IEBAIC0xNzksNiArMTgw
+LDQxIEBAIHR5cGVkZWYgc3RydWN0IHsKPiDCoMKgwqDCoMKgwqDCoMKgfSBjb2V4aXN0X2ZlYXR1
+cmU7Cj4gwqB9IGRhdGFfdDsKPiDCoAo+ICtzdGF0aWMgYm9vbCBzZXRfc2VsX2ZldGNoX21vZGVf
+Zm9yX291dHB1dChkYXRhX3QgKmRhdGEpCj4gK3sKPiArwqDCoMKgwqDCoMKgwqBib29sIHN1cHBv
+cnRlZCA9IGZhbHNlOwo+ICsKPiArwqDCoMKgwqDCoMKgwqBpZiAocHNyX3Npbmtfc3VwcG9ydChk
+YXRhLT5kcm1fZmQsIGRhdGEtPmRlYnVnZnNfZmQsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgUFJfTU9ERV9TRUxfRkVUQ0gsCj4gZGF0YS0+b3V0cHV0KSkgewo+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBzdXBwb3J0ZWQgPSB0cnVlOwo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLT5wc3JfbW9kZSA9IFBSX01PREVfU0VMX0ZFVENI
+Owo+ICvCoMKgwqDCoMKgwqDCoH0gZWxzZSBpZiAocHNyX3Npbmtfc3VwcG9ydChkYXRhLT5kcm1f
+ZmQsIGRhdGEtPmRlYnVnZnNfZmQsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgUFNSX01PREVfMiwKPiBkYXRhLT5vdXRwdXQpKSB7Cj4g
+K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHN1cHBvcnRlZCA9IHRydWU7Cj4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEtPnBzcl9tb2RlID0gUFNSX01PREVfMjsKPiAr
+wqDCoMKgwqDCoMKgwqB9IGVsc2UKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0
+X2luZm8oInNlbGVjdGl2ZSBmZXRjaCBub3Qgc3VwcG9ydGVkIG9uIG91dHB1dAo+ICVzXG4iLCBk
+YXRhLT5vdXRwdXQtPm5hbWUpOwo+ICsKPiArwqDCoMKgwqDCoMKgwqByZXR1cm4gc3VwcG9ydGVk
+Owo+ICt9Cj4gKwo+ICtzdGF0aWMgY29uc3QgY2hhciAqZ2V0X3Bzcl9tb2RlX3N0cl9mb3Jfb3V0
+cHV0KGRhdGFfdCAqZGF0YSkKPiArewo+ICvCoMKgwqDCoMKgwqDCoHN0YXRpYyBjb25zdCBjaGFy
+ICpwc3JfbW9kZTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgc3dpdGNoIChkYXRhLT5wc3JfbW9kZSkg
+ewo+ICvCoMKgwqDCoMKgwqDCoGNhc2UgUFNSX01PREVfMjoKPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgcHNyX21vZGUgPSAicHNyMiI7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoGJyZWFrOwo+ICvCoMKgwqDCoMKgwqDCoGNhc2UgUFJfTU9ERV9TRUxfRkVUQ0g6Cj4g
+K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBzcl9tb2RlID0gInByIjsKPiArwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYnJlYWs7Cj4gK8KgwqDCoMKgwqDCoMKgZGVmYXVsdDoK
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHNyX21vZGUgPSAiIjsKPiArwqDCoMKg
+wqDCoMKgwqB9Cj4gK8KgwqDCoMKgwqDCoMKgcmV0dXJuIHBzcl9tb2RlOwo+ICt9Cj4gKwo+IMKg
+c3RhdGljIGNvbnN0IGNoYXIgKm9wX3N0cihlbnVtIG9wZXJhdGlvbnMgb3ApCj4gwqB7Cj4gwqDC
+oMKgwqDCoMKgwqDCoHN0YXRpYyBjb25zdCBjaGFyICogY29uc3QgbmFtZVtdID0gewo+IEBAIC02
+ODgsNyArNzI0LDcgQEAgc3RhdGljIHZvaWQgZGFtYWdlZF9wbGFuZV9tb3ZlKGRhdGFfdCAqZGF0
+YSkKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGlzcGxheV9jb21taXQyKCZkYXRhLT5kaXNw
+bGF5LCBDT01NSVRfQVRPTUlDKTsKPiDCoAo+IC3CoMKgwqDCoMKgwqDCoGlndF9hc3NlcnQocHNy
+X3dhaXRfZW50cnkoZGF0YS0+ZGVidWdmc19mZCwgUFNSX01PREVfMiwKPiBOVUxMKSk7Cj4gK8Kg
+wqDCoMKgwqDCoMKgaWd0X2Fzc2VydChwc3Jfd2FpdF9lbnRyeShkYXRhLT5kZWJ1Z2ZzX2ZkLCBk
+YXRhLT5wc3JfbW9kZSwKPiBkYXRhLT5vdXRwdXQpKTsKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqBl
+eHBlY3RlZF9vdXRwdXQoZGF0YSk7Cj4gwqB9Cj4gQEAgLTc4OCw3ICs4MjQsNyBAQCBzdGF0aWMg
+dm9pZCBwbGFuZV9tb3ZlX2NvbnRpbnVvdXMoZGF0YV90ICpkYXRhKQo+IMKgewo+IMKgwqDCoMKg
+wqDCoMKgwqBpbnQgdGFyZ2V0X3gsIHRhcmdldF95Owo+IMKgCj4gLcKgwqDCoMKgwqDCoMKgaWd0
+X2Fzc2VydChwc3Jfd2FpdF9lbnRyeShkYXRhLT5kZWJ1Z2ZzX2ZkLCBQU1JfTU9ERV8yLAo+IE5V
+TEwpKTsKPiArwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0KHBzcl93YWl0X2VudHJ5KGRhdGEtPmRl
+YnVnZnNfZmQsIGRhdGEtPnBzcl9tb2RlLAo+IGRhdGEtPm91dHB1dCkpOwo+IMKgCj4gwqDCoMKg
+wqDCoMKgwqDCoGdldF90YXJnZXRfY29vcmRzKGRhdGEsICZ0YXJnZXRfeCwgJnRhcmdldF95KTsK
+PiDCoAo+IEBAIC04NjUsNyArOTAxLDcgQEAgc3RhdGljIHZvaWQgZGFtYWdlZF9wbGFuZV91cGRh
+dGUoZGF0YV90ICpkYXRhKQo+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfcGxhbmVfc2V0X3Bvc2l0aW9u
+KGRhdGEtPnRlc3RfcGxhbmUsIDAsIDApOwo+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGlzcGxheV9j
+b21taXQyKCZkYXRhLT5kaXNwbGF5LCBDT01NSVRfQVRPTUlDKTsKPiDCoAo+IC3CoMKgwqDCoMKg
+wqDCoGlndF9hc3NlcnQocHNyX3dhaXRfZW50cnkoZGF0YS0+ZGVidWdmc19mZCwgUFNSX01PREVf
+MiwKPiBOVUxMKSk7Cj4gK8KgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydChwc3Jfd2FpdF9lbnRyeShk
+YXRhLT5kZWJ1Z2ZzX2ZkLCBkYXRhLT5wc3JfbW9kZSwKPiBkYXRhLT5vdXRwdXQpKTsKPiDCoAo+
+IMKgwqDCoMKgwqDCoMKgwqBleHBlY3RlZF9vdXRwdXQoZGF0YSk7Cj4gwqB9Cj4gQEAgLTg3NCw3
+ICs5MTAsNyBAQCBzdGF0aWMgdm9pZCBydW4oZGF0YV90ICpkYXRhKQo+IMKgewo+IMKgwqDCoMKg
+wqDCoMKgwqBpbnQgaTsKPiDCoAo+IC3CoMKgwqDCoMKgwqDCoGlndF9hc3NlcnQocHNyX3dhaXRf
+ZW50cnkoZGF0YS0+ZGVidWdmc19mZCwgUFNSX01PREVfMiwKPiBOVUxMKSk7Cj4gK8KgwqDCoMKg
+wqDCoMKgaWd0X2Fzc2VydChwc3Jfd2FpdF9lbnRyeShkYXRhLT5kZWJ1Z2ZzX2ZkLCBkYXRhLT5w
+c3JfbW9kZSwKPiBkYXRhLT5vdXRwdXQpKTsKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqBpZiAoZGF0
+YS0+ZmJjX2ZsYWcgPT0gdHJ1ZSAmJiBkYXRhLT5vcF9mYmNfbW9kZSA9PQo+IEZCQ19FTkFCTEVE
+KQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9mKGludGVsX2Zi
+Y193YWl0X3VudGlsX2VuYWJsZWQoZGF0YS0KPiA+ZHJtX2ZkLAo+IEBAIC05NTIsMTQgKzk4OCwy
+MiBAQCBzdGF0aWMgdm9pZCBjbGVhbnVwKGRhdGFfdCAqZGF0YSkKPiDCoMKgwqDCoMKgwqDCoMKg
+aWd0X3JlbW92ZV9mYihkYXRhLT5kcm1fZmQsICZkYXRhLT5mYl90ZXN0KTsKPiDCoH0KPiDCoAo+
+IC1zdGF0aWMgaW50IGNoZWNrX3BzcjJfc3VwcG9ydChkYXRhX3QgKmRhdGEpCj4gK3N0YXRpYyBi
+b29sIGNoZWNrX3ByX3BzcjJfc2VsX2ZldGNoX3N1cHBvcnQoZGF0YV90ICpkYXRhKQo+IMKgewo+
+IC3CoMKgwqDCoMKgwqDCoGludCBzdGF0dXM7Cj4gK8KgwqDCoMKgwqDCoMKgYm9vbCBzdGF0dXMg
+PSBmYWxzZTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgLyogQ2hlY2sgc2luayBzdXBwb3J0cyBQUi9Q
+U1IyIHNlbGVjdGl2ZSBmZXRjaCAqLwo+ICvCoMKgwqDCoMKgwqDCoGlmICghc2V0X3NlbF9mZXRj
+aF9tb2RlX2Zvcl9vdXRwdXQoZGF0YSkpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oHJldHVybiBmYWxzZTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgLyogQ2hlY2sgaWYgc2VsZWN0aXZl
+IGZldGNoIGNhbiBiZSBlbmFibGVkICovCj4gK8KgwqDCoMKgwqDCoMKgaWYgKCFzZWxlY3RpdmVf
+ZmV0Y2hfY2hlY2soZGF0YS0+ZGVidWdmc19mZCwgZGF0YS0+b3V0cHV0KSkKPiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydCgiU2VsZWN0aXZlIGZldGNoIGlzIG5vdCBl
+bmFibGVkIGV2ZW4KPiB0aG91Z2ggcGFuZWwgc2hvdWxkIHN1cHBvcnQgaXRcbiIpOwo+IMKgCj4g
+wqDCoMKgwqDCoMKgwqDCoHByZXBhcmUoZGF0YSk7Cj4gLcKgwqDCoMKgwqDCoMKgc3RhdHVzID0g
+cHNyX3dhaXRfZW50cnkoZGF0YS0+ZGVidWdmc19mZCwgUFNSX01PREVfMiwgTlVMTCk7Cj4gK8Kg
+wqDCoMKgwqDCoMKgLyogV2UgZW50ZXIgaW50byBERUVQX1NMRUVQIGZvciBib3RoIFBTUjIgYW5k
+IFBSIHNlbCBmZXRjaCAqLwo+ICvCoMKgwqDCoMKgwqDCoHN0YXR1cyA9IHBzcl93YWl0X2VudHJ5
+KGRhdGEtPmRlYnVnZnNfZmQsIGRhdGEtPnBzcl9tb2RlLAo+IGRhdGEtPm91dHB1dCk7Cj4gwqDC
+oMKgwqDCoMKgwqDCoGNsZWFudXAoZGF0YSk7Cj4gLQo+IMKgwqDCoMKgwqDCoMKgwqByZXR1cm4g
+c3RhdHVzOwo+IMKgfQo+IMKgCj4gQEAgLTk4MSw2ICsxMDI1LDggQEAgcGlwZV9vdXRwdXRfY29t
+Ym9fdmFsaWQoaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSwKPiDCoAo+IMKgaWd0X21haW4KPiDCoHsK
+PiArwqDCoMKgwqDCoMKgwqBib29sIG91dHB1dF9zdXBwb3J0c19wcl9wc3IyX3NlbF9mZXRjaCA9
+IGZhbHNlOwo+ICvCoMKgwqDCoMKgwqDCoGJvb2wgcHJfcHNyMl9zZWxfZmV0Y2hfc3VwcG9ydGVk
+ID0gZmFsc2U7Cj4gwqDCoMKgwqDCoMKgwqDCoGRhdGFfdCBkYXRhID0ge307Cj4gwqDCoMKgwqDC
+oMKgwqDCoGlndF9vdXRwdXRfdCAqb3V0cHV0c1tJR1RfTUFYX1BJUEVTICogSUdUX01BWF9QSVBF
+U107Cj4gwqDCoMKgwqDCoMKgwqDCoGludCBpLCBqLCBrLCB5Owo+IEBAIC0xMDAwLDExICsxMDQ2
+LDYgQEAgaWd0X21haW4KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEuZGVi
+dWdmc19mZCA9IGlndF9kZWJ1Z2ZzX2RpcihkYXRhLmRybV9mZCk7Cj4gwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBrbXN0ZXN0X3NldF92dF9ncmFwaGljc19tb2RlKCk7Cj4gwqAKPiAt
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmVfZihwc3Jfc2lua19zdXBw
+b3J0KGRhdGEuZHJtX2ZkLAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZGF0
+YS5kZWJ1Z2ZzX2ZkLAo+IFBTUl9NT0RFXzIsCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCBOVUxMKSwKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgIlNpbmsgZG9lcyBub3Qgc3VwcG9ydCBQU1IyXG4iKTsKPiAtCj4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkaXNwbGF5X2luaXQoJmRhdGEpOwo+IMKg
+Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZgo+ICgoaW50ZWxfZGlzcGxheV92
+ZXIoaW50ZWxfZ2V0X2RybV9kZXZpZChkYXRhLmRybV9mZCkpID49IDIwKSAmJgo+IEBAIC0xMDI4
+LDcgKzEwNjksOCBAQCBpZ3RfbWFpbgo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBmb3JfZWFjaF9waXBlX3dpdGhfdmFsaWRfb3V0cHV0KCZkYXRhLmRpc3BsYXksCj4gZGF0
+YS5waXBlLCBkYXRhLm91dHB1dCkgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoGNvZXhpc3RfZmVhdHVyZXNbbl9waXBlc10gPSAwOwo+IC3CoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKGNoZWNrX3BzcjJfc3Vw
+cG9ydCgmZGF0YSkpIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoG91dHB1dF9zdXBwb3J0c19wcl9wc3IyX3NlbF9mZXRjaCA9Cj4gY2hlY2tfcHJfcHNy
+Ml9zZWxfZmV0Y2hfc3VwcG9ydCgmZGF0YSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAob3V0cHV0X3N1cHBvcnRzX3ByX3BzcjJfc2VsX2ZldGNo
+KSB7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoHBpcGVzW25fcGlwZXNdID0gZGF0YS5waXBlOwo+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBvdXRwdXRz
+W25fcGlwZXNdID0gZGF0YS5vdXRwdXQ7Cj4gwqAKPiBAQCAtMTAzNyw3ICsxMDc5LDEwIEBAIGln
+dF9tYWluCj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgbl9waXBlcysrOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoHByX3BzcjJfc2VsX2ZldGNoX3N1cHBvcnRlZCB8PQo+IG91dHB1
+dF9zdXBwb3J0c19wcl9wc3IyX3NlbF9mZXRjaDsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoH0KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmVfZihw
+cl9wc3IyX3NlbF9mZXRjaF9zdXBwb3J0ZWQsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJO
+byBvdXRwdXQgc3VwcG9ydHMKPiBzZWxlY3RpdmUgZmV0Y2hcbiIpOwo+IMKgwqDCoMKgwqDCoMKg
+wqB9Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgZm9yICh5ID0gMDsgeSA8IEFSUkFZX1NJWkUoZmJj
+X3N0YXR1cyk7IHkrKykgewo+IEBAIC0xMDU0LDE1ICsxMDk5LDE4IEBAIGlndF9tYWluCj4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZm9yIChpID0gMDsg
+aSA8IG5fcGlwZXM7IGkrKykgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZgo+ICghcGlwZV9vdXRwdXRfY29tYm9fdmFs
+aWQoJmRhdGEuZGlzcGxheSwgcGlwZXNbaV0sIG91dHB1dHNbaV0pKQo+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgY29udGludWU7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5waXBlID0gcGlwZXNbaV07Cj4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+ZGF0YS5vdXRwdXQgPSBvdXRwdXRzW2ldOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9hc3NlcnRfZihzZXRfc2VsX2Zl
+dGNoX21vZGVfZm9yX28KPiB1dHB1dCgmZGF0YSksCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJTZWxlY3RpdmUKPiBmZXRjaCBpcyBub3Qg
+c3VwcG9ydGVkXG4iKTsKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmb3IgKGogPSBGRUFUVVJFX05PTkU7IGogPAo+
+IEZFQVRVUkVfQ09VTlQ7IGorKykgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKGogIT0g
+RkVBVFVSRV9OT05FICYmCj4gIShjb2V4aXN0X2ZlYXR1cmVzW2ldICYgaikpCj4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29udGludWU7Cj4gLcKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoGlndF9keW5hbWljX2YoInBpcGUtJXMtJXMlcyIsCj4ga21zdGVzdF9waXBlX25hbWUo
+cGlwZXNbaV0pLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZHluYW1pY19mKCIlcy1waXBl
+LSVzLQo+ICVzJXMiLCBnZXRfcHNyX21vZGVfc3RyX2Zvcl9vdXRwdXQoJmRhdGEpLAo+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4ga21z
+dGVzdF9waXBlX25hbWUocGlwZXNbaV0pLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBpZ3Rfb3V0cHV0X25hbWUob3V0cHV0c1tpXSksCj4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IGNvZXhpc3Rf
+ZmVhdHVyZV9zdHIoaikpIHsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oGRhdGEucGlwZSA9IHBpcGVzW2ldOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgZGF0YS5vdXRwdXQgPQo+IG91dHB1dHNbaV07Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgZGF0YS50ZXN0X3BsYW5lX2lkID0KPiBEUk1fUExBTkVfVFlQRV9Q
+UklNQVJZOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEuY29l
+eGlzdF9mZWF0dXJlCj4gPSBqOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGZvciAoayA9IDE7IGsgPD0KPiBNQVhfREFNQUdFX0FSRUFTOyBrKyspIHsKPiBAQCAtMTA4
+NywxOCArMTEzNSwyMiBAQCBpZ3RfbWFpbgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYKPiAo
+IXBpcGVfb3V0cHV0X2NvbWJvX3ZhbGlkKCZkYXRhLmRpc3BsYXksIHBpcGVzW2ldLAo+IMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAKPiBvdXRwdXRzW2ldKSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBjb250aW51ZTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5w
+aXBlID0gcGlwZXNbaV07Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEub3V0cHV0ID0gb3V0
+cHV0c1tpXTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9mKHNldF9zZWxfZmV0
+Y2hfbW8KPiBkZV9mb3Jfb3V0cHV0KCZkYXRhKSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gIlNlbGVjdGl2
+ZSBmZXRjaCBpcyBub3Qgc3VwcG9ydGVkXG4iKTsKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgZm9yIChqID0gRkVBVFVSRV9OT05FOyBqIDwKPiBGRUFUVVJFX0NPVU5UOyBqKyspIHsKPiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAoaiAhPSBGRUFUVVJFX05P
+TkUKPiAmJiAhKGNvZXhpc3RfZmVhdHVyZXNbaV0gJiBqKSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29udGludWU7Cj4gLcKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZHluYW1pY19mKCJwaXBlLQo+ICVzLSVz
+JXMiLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2R5bmFtaWNf
+ZigiJXMtCj4gcGlwZS0lcy0lcyVzIiwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBnZXRfcHNyX21vZGVf
+c3RyX2Zvcl9vdXRwdXQoJmRhdGEpLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4ga21zdGVzdF9waXBlX25hbWUocGlw
+ZXNbaV0pLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgCj4gaWd0X291dHB1dF9uYW1lKG91dHB1dHNbaV0pLAo+IMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgCj4gY29leGlzdF9mZWF0dXJlX3N0cihqKSkgewo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEucGlwZSA9Cj4gcGlwZXNbaV07Cj4g
+LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0
+YS5vdXRwdXQgPQo+IG91dHB1dHNbaV07Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEudGVzdF9wbGEKPiBuZV9pZCA9IERSTV9QTEFO
+RV9UWVBFX1BSSU1BUlk7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoGRhdGEuY29leGlzdF8KPiBmZWF0dXJlID0gajsKPiArCj4gwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvciAoayA9
+IDE7IGsKPiA8PSBNQVhfREFNQUdFX0FSRUFTOyBrKyspIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEu
+Cj4gZGFtYWdlX2FyZWFfY291bnQgPSBrOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJlcGEKPiByZSgmZGF0
+YSk7Cj4gQEAgLTExMTksMTcgKzExNzEsMjEgQEAgaWd0X21haW4KPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmb3IgKGkgPSAwOyBpIDwgbl9waXBlczsg
+aSsrKSB7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoGlmCj4gKCFwaXBlX291dHB1dF9jb21ib192YWxpZCgmZGF0YS5kaXNw
+bGF5LCBwaXBlc1tpXSwgb3V0cHV0c1tpXSkpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjb250
+aW51ZTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqBkYXRhLnBpcGUgPSBwaXBlc1tpXTsKPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLm91dHB1dCA9
+IG91dHB1dHNbaV07Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9mKHNldF9zZWxfZmV0Y2hfbW9kZV9mb3Jf
+bwo+IHV0cHV0KCZkYXRhKSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgIlNlbGVjdGl2ZQo+IGZldGNoIGlzIG5vdCBzdXBwb3J0ZWRcbiIp
+Owo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoGZvciAoaiA9IEZFQVRVUkVfTk9ORTsgaiA8Cj4gRkVBVFVSRV9DT1VO
+VDsgaisrKSB7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAoaiAhPSBGRUFUVVJFX05PTkUg
+JiYKPiAhKGNvZXhpc3RfZmVhdHVyZXNbaV0gJiBqKSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBjb250aW51ZTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2R5
+bmFtaWNfZigicGlwZS0lcy0lcyVzIiwKPiBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlc1tpXSksCj4g
+K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9keW5hbWljX2YoIiVzLXBpcGUtJXMtCj4gJXMlcyIs
+IGdldF9wc3JfbW9kZV9zdHJfZm9yX291dHB1dCgmZGF0YSksCj4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBrbXN0ZXN0X3BpcGVfbmFt
+ZShwaXBlc1tpXSksCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoAo+IGlndF9vdXRwdXRfbmFtZShvdXRwdXRzW2ldKSwKPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gY29leGlzdF9mZWF0dXJlX3N0cihq
+KSkgewo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5waXBlID0g
+cGlwZXNbaV07Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLm91
+dHB1dCA9Cj4gb3V0cHV0c1tpXTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBkYXRhLnRlc3RfcGxhbmVfaWQgPQo+IERSTV9QTEFORV9UWVBFX09WRVJMQVk7Cj4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5jb2V4aXN0X2ZlYXR1cmUK
+PiA9IGo7Cj4gKwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvciAo
+ayA9IDE7IGsgPD0KPiBNQVhfREFNQUdFX0FSRUFTOyBrKyspIHsKPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5kYW1hZ2VfYQo+IHJl
+YV9jb3VudCA9IGs7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoHByZXBhcmUoJmRhdGEKPiApOwo+IEBAIC0xMTQ5LDE1ICsxMjA1LDE4IEBA
+IGlndF9tYWluCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgZm9yIChpID0gMDsgaSA8IG5fcGlwZXM7IGkrKykgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZgo+ICghcGlwZV9v
+dXRwdXRfY29tYm9fdmFsaWQoJmRhdGEuZGlzcGxheSwgcGlwZXNbaV0sIG91dHB1dHNbaV0pKQo+
+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29udGludWU7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5waXBlID0gcGlw
+ZXNbaV07Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgZGF0YS5vdXRwdXQgPSBvdXRwdXRzW2ldOwo+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9hc3Nl
+cnRfZihzZXRfc2VsX2ZldGNoX21vZGVfZm9yX28KPiB1dHB1dCgmZGF0YSksCj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJTZWxlY3RpdmUK
+PiBmZXRjaCBpcyBub3Qgc3VwcG9ydGVkXG4iKTsKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmb3IgKGogPSBGRUFU
+VVJFX05PTkU7IGogPAo+IEZFQVRVUkVfQ09VTlQ7IGorKykgewo+IMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgaWYgKGogIT0gRkVBVFVSRV9OT05FICYmCj4gIShjb2V4aXN0X2ZlYXR1cmVzW2ldICYg
+aikpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29udGludWU7Cj4g
+LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9keW5hbWljX2YoInBpcGUtJXMtJXMlcyIsCj4ga21z
+dGVzdF9waXBlX25hbWUocGlwZXNbaV0pLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZHlu
+YW1pY19mKCIlcy1waXBlLSVzLQo+ICVzJXMiLCBnZXRfcHNyX21vZGVfc3RyX2Zvcl9vdXRwdXQo
+JmRhdGEpLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgCj4ga21zdGVzdF9waXBlX25hbWUocGlwZXNbaV0pLAo+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBpZ3Rfb3V0cHV0X25hbWUob3V0
+cHV0c1tpXSksCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoAo+IGNvZXhpc3RfZmVhdHVyZV9zdHIoaikpIHsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoGRhdGEucGlwZSA9IHBpcGVzW2ldOwo+IC3CoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5vdXRwdXQgPQo+IG91dHB1dHNbaV07Cj4gwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS50ZXN0X3BsYW5lX2lkID0KPiBE
+Uk1fUExBTkVfVFlQRV9DVVJTT1I7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgZGF0YS5jb2V4aXN0X2ZlYXR1cmUKPiA9IGo7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgcHJlcGFyZSgmZGF0YSk7Cj4gQEAgLTExNzUsMTcgKzEyMzQsMjEg
+QEAgaWd0X21haW4KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBmb3IgKGkgPSAwOyBpIDwgbl9waXBlczsgaSsrKSB7Cj4gwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmCj4gKCFwaXBl
+X291dHB1dF9jb21ib192YWxpZCgmZGF0YS5kaXNwbGF5LCBwaXBlc1tpXSwgb3V0cHV0c1tpXSkp
+Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjb250aW51ZTsKPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnBpcGUgPSBw
+aXBlc1tpXTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBkYXRhLm91dHB1dCA9IG91dHB1dHNbaV07Cj4gK8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Fz
+c2VydF9mKHNldF9zZWxfZmV0Y2hfbW9kZV9mb3Jfbwo+IHV0cHV0KCZkYXRhKSwKPiArwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIlNlbGVjdGl2
+ZQo+IGZldGNoIGlzIG5vdCBzdXBwb3J0ZWRcbiIpOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvciAoaiA9IEZF
+QVRVUkVfTk9ORTsgaiA8Cj4gRkVBVFVSRV9DT1VOVDsgaisrKSB7Cj4gwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqBpZiAoaiAhPSBGRUFUVVJFX05PTkUgJiYKPiAhKGNvZXhpc3RfZmVhdHVyZXNbaV0g
+JiBqKSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjb250aW51ZTsK
+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2R5bmFtaWNfZigicGlwZS0lcy0lcyVzIiwKPiBr
+bXN0ZXN0X3BpcGVfbmFtZShwaXBlc1tpXSksCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9k
+eW5hbWljX2YoIiVzLXBpcGUtJXMtCj4gJXMlcyIsIGdldF9wc3JfbW9kZV9zdHJfZm9yX291dHB1
+dCgmZGF0YSksCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqAKPiBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlc1tpXSksCj4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IGlndF9vdXRwdXRfbmFtZShv
+dXRwdXRzW2ldKSwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgCj4gY29leGlzdF9mZWF0dXJlX3N0cihqKSkgewo+IC3CoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5waXBlID0gcGlwZXNbaV07Cj4gLcKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLm91dHB1dCA9Cj4gb3V0cHV0c1tpXTsKPiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnRlc3RfcGxhbmVfaWQgPQo+
+IERSTV9QTEFORV9UWVBFX0NVUlNPUjsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqBkYXRhLmNvZXhpc3RfZmVhdHVyZQo+ID0gajsKPiArCj4gwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJlcGFyZSgmZGF0YSk7Cj4gwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcnVuKCZkYXRhKTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBjbGVhbnVwKCZkYXRhKTsKPiBAQCAtMTIwMiwxNSArMTI2NSwx
+OCBAQCBpZ3RfbWFpbgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoGZvciAoaSA9IDA7IGkgPCBuX3BpcGVzOyBpKyspIHsKPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYKPiAoIXBp
+cGVfb3V0cHV0X2NvbWJvX3ZhbGlkKCZkYXRhLmRpc3BsYXksIHBpcGVzW2ldLCBvdXRwdXRzW2ld
+KSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNvbnRpbnVlOwo+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEucGlwZSA9
+IHBpcGVzW2ldOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEub3V0cHV0ID0gb3V0cHV0c1tpXTsKPiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rf
+YXNzZXJ0X2Yoc2V0X3NlbF9mZXRjaF9tb2RlX2Zvcl9vCj4gdXRwdXQoJmRhdGEpLAo+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiU2VsZWN0
+aXZlCj4gZmV0Y2ggaXMgbm90IHN1cHBvcnRlZFxuIik7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZm9yIChqID0g
+RkVBVFVSRV9OT05FOyBqIDwKPiBGRUFUVVJFX0NPVU5UOyBqKyspIHsKPiDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoGlmIChqICE9IEZFQVRVUkVfTk9ORSAmJgo+ICEoY29leGlzdF9mZWF0dXJlc1tp
+XSAmIGopKQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNvbnRpbnVl
+Owo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZHluYW1pY19mKCJwaXBlLSVzLSVzJXMiLAo+
+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGVzW2ldKSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0
+X2R5bmFtaWNfZigiJXMtcGlwZS0lcy0KPiAlcyVzIiwgZ2V0X3Bzcl9tb2RlX3N0cl9mb3Jfb3V0
+cHV0KCZkYXRhKSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoAo+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGVzW2ldKSwKPiDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gaWd0X291dHB1dF9uYW1l
+KG91dHB1dHNbaV0pLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAKPiBjb2V4aXN0X2ZlYXR1cmVfc3RyKGopKSB7Cj4gLcKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnBpcGUgPSBwaXBlc1tpXTsKPiAtwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEub3V0cHV0ID0KPiBvdXRwdXRzW2ldOwo+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEudGVzdF9wbGFuZV9pZCA9
+Cj4gRFJNX1BMQU5FX1RZUEVfQ1VSU09SOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoGRhdGEuY29leGlzdF9mZWF0dXJlCj4gPSBqOwo+IMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByZXBhcmUoJmRhdGEpOwo+IEBAIC0xMjI5LDE1ICsxMjk1
+LDE4IEBAIGlndF9tYWluCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgZm9yIChpID0gMDsgaSA8IG5fcGlwZXM7IGkrKykgewo+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZgo+ICgh
+cGlwZV9vdXRwdXRfY29tYm9fdmFsaWQoJmRhdGEuZGlzcGxheSwgcGlwZXNbaV0sIG91dHB1dHNb
+aV0pKQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29udGludWU7Cj4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5waXBl
+ID0gcGlwZXNbaV07Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5vdXRwdXQgPSBvdXRwdXRzW2ldOwo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGln
+dF9hc3NlcnRfZihzZXRfc2VsX2ZldGNoX21vZGVfZm9yX28KPiB1dHB1dCgmZGF0YSksCj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJTZWxl
+Y3RpdmUKPiBmZXRjaCBpcyBub3Qgc3VwcG9ydGVkXG4iKTsKPiDCoAo+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmb3IgKGog
+PSBGRUFUVVJFX05PTkU7IGogPAo+IEZFQVRVUkVfQ09VTlQ7IGorKykgewo+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgaWYgKGogIT0gRkVBVFVSRV9OT05FICYmCj4gIShjb2V4aXN0X2ZlYXR1cmVz
+W2ldICYgaikpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29udGlu
+dWU7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9keW5hbWljX2YoInBpcGUtJXMtJXMlcyIs
+Cj4ga21zdGVzdF9waXBlX25hbWUocGlwZXNbaV0pLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBp
+Z3RfZHluYW1pY19mKCIlcy1waXBlLSVzLQo+ICVzJXMiLCBnZXRfcHNyX21vZGVfc3RyX2Zvcl9v
+dXRwdXQoJmRhdGEpLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgCj4ga21zdGVzdF9waXBlX25hbWUocGlwZXNbaV0pLAo+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBpZ3Rfb3V0cHV0X25h
+bWUob3V0cHV0c1tpXSksCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoAo+IGNvZXhpc3RfZmVhdHVyZV9zdHIoaikpIHsKPiAtwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEucGlwZSA9IHBpcGVzW2ldOwo+IC3CoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5vdXRwdXQgPQo+IG91dHB1dHNbaV07Cj4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS50ZXN0X3BsYW5lX2lk
+ID0KPiBEUk1fUExBTkVfVFlQRV9DVVJTT1I7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgZGF0YS5jb2V4aXN0X2ZlYXR1cmUKPiA9IGo7Cj4gwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJlcGFyZSgmZGF0YSk7Cj4gQEAgLTEyNTcsMTUgKzEz
+MjYsMTkgQEAgaWd0X21haW4KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBmb3IgKGkgPSAwOyBpIDwgbl9waXBlczsgaSsrKSB7Cj4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmCj4g
+KCFwaXBlX291dHB1dF9jb21ib192YWxpZCgmZGF0YS5kaXNwbGF5LCBwaXBlc1tpXSwgb3V0cHV0
+c1tpXSkpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjb250aW51ZTsKPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnBp
+cGUgPSBwaXBlc1tpXTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLm91dHB1dCA9IG91dHB1dHNbaV07Cj4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+aWd0X2Fzc2VydF9mKHNldF9zZWxfZmV0Y2hfbW9kZV9mb3Jfbwo+IHV0cHV0KCZkYXRhKSwKPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIlNl
+bGVjdGl2ZQo+IGZldGNoIGlzIG5vdCBzdXBwb3J0ZWRcbiIpOwo+IMKgCj4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvciAo
+aiA9IEZFQVRVUkVfTk9ORTsgaiA8Cj4gRkVBVFVSRV9DT1VOVDsgaisrKSB7Cj4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqBpZiAoaiAhPSBGRUFUVVJFX05PTkUgJiYKPiAhKGNvZXhpc3RfZmVhdHVy
+ZXNbaV0gJiBqKSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjb250
+aW51ZTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2R5bmFtaWNfZigicGlwZS0lcy0lcyVz
+IiwKPiBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlc1tpXSksCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oGlndF9keW5hbWljX2YoIiVzLXBpcGUtJXMtCj4gJXMlcyIsCj4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBnZXRfcHNyX21vZGVfc3Ry
+X2Zvcl9vdXRwdXQoJmRhdGEpLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4ga21zdGVzdF9waXBlX25hbWUocGlwZXNbaV0pLAo+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBpZ3Rfb3V0
+cHV0X25hbWUob3V0cHV0c1tpXSksCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoAo+IGNvZXhpc3RfZmVhdHVyZV9zdHIoaikpIHsKPiAtwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEucGlwZSA9IHBpcGVzW2ldOwo+IC3CoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5vdXRwdXQgPQo+IG91dHB1dHNb
+aV07Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS50ZXN0X3Bs
+YW5lX2lkID0KPiBEUk1fUExBTkVfVFlQRV9PVkVSTEFZOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEuY29leGlzdF9mZWF0dXJlCj4gPSBqOwo+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvciAoayA9Cj4gUE9TX1RPUF9MRUZUOyBr
+IDw9IFBPU19CT1RUT01fUklHSFQgOyBrKyspIHsKPiBAQCAtMTI4NiwxNSArMTM1OSwxOCBAQCBp
+Z3RfbWFpbgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oGZvciAoaSA9IDA7IGkgPCBuX3BpcGVzOyBpKyspIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYKPiAoIXBpcGVfb3V0
+cHV0X2NvbWJvX3ZhbGlkKCZkYXRhLmRpc3BsYXksIHBpcGVzW2ldLCBvdXRwdXRzW2ldKSkKPiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNvbnRpbnVlOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEucGlwZSA9IHBpcGVz
+W2ldOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoGRhdGEub3V0cHV0ID0gb3V0cHV0c1tpXTsKPiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0
+X2Yoc2V0X3NlbF9mZXRjaF9tb2RlX2Zvcl9vCj4gdXRwdXQoJmRhdGEpLAo+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiU2VsZWN0aXZlCj4g
+ZmV0Y2ggaXMgbm90IHN1cHBvcnRlZFxuIik7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZm9yIChqID0gRkVBVFVS
+RV9OT05FOyBqIDwKPiBGRUFUVVJFX0NPVU5UOyBqKyspIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGlmIChqICE9IEZFQVRVUkVfTk9ORSAmJgo+ICEoY29leGlzdF9mZWF0dXJlc1tpXSAmIGop
+KQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNvbnRpbnVlOwo+IC3C
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZHluYW1pY19mKCJwaXBlLSVzLSVzJXMiLAo+IGttc3Rl
+c3RfcGlwZV9uYW1lKHBpcGVzW2ldKSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2R5bmFt
+aWNfZigiJXMtcGlwZS0lcy0KPiAlcyVzIiwgZ2V0X3Bzcl9tb2RlX3N0cl9mb3Jfb3V0cHV0KCZk
+YXRhKSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoAo+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGVzW2ldKSwKPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gaWd0X291dHB1dF9uYW1lKG91dHB1
+dHNbaV0pLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAKPiBjb2V4aXN0X2ZlYXR1cmVfc3RyKGopKSB7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRh
+dGEucGlwZSA9IHBpcGVzW2ldOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLm91dHB1dCA9
+IG91dHB1dHNbaV07Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnRlc3RfcGxhbmVfaWQg
+PQo+IERSTV9QTEFORV9UWVBFX09WRVJMQVk7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRh
+LmNvZXhpc3RfZmVhdHVyZSA9IGo7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwcmVwYXJlKCZk
+YXRhKTsKPiBAQCAtMTMxMywxNSArMTM4OSwxOCBAQCBpZ3RfbWFpbgo+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvciAoaSA9IDA7IGkgPCBuX3BpcGVz
+OyBpKyspIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgaWYKPiAoIXBpcGVfb3V0cHV0X2NvbWJvX3ZhbGlkKCZkYXRhLmRp
+c3BsYXksIHBpcGVzW2ldLCBvdXRwdXRzW2ldKSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNv
+bnRpbnVlOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoGRhdGEucGlwZSA9IHBpcGVzW2ldOwo+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEub3V0cHV0
+ID0gb3V0cHV0c1tpXTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2Yoc2V0X3NlbF9mZXRjaF9tb2RlX2Zv
+cl9vCj4gdXRwdXQoJmRhdGEpLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCAiU2VsZWN0aXZlCj4gZmV0Y2ggaXMgbm90IHN1cHBvcnRlZFxu
+Iik7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgZm9yIChqID0gRkVBVFVSRV9OT05FOyBqIDwKPiBGRUFUVVJFX0NP
+VU5UOyBqKyspIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChqICE9IEZFQVRVUkVfTk9O
+RSAmJgo+ICEoY29leGlzdF9mZWF0dXJlc1tpXSAmIGopKQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoGNvbnRpbnVlOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rf
+ZHluYW1pY19mKCJwaXBlLSVzLSVzJXMiLAo+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGVzW2ldKSwK
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2R5bmFtaWNfZigiJXMtcGlwZS0lcy0KPiAlcyVz
+IiwgZ2V0X3Bzcl9tb2RlX3N0cl9mb3Jfb3V0cHV0KCZkYXRhKSwKPiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IGttc3Rlc3RfcGlwZV9u
+YW1lKHBpcGVzW2ldKSwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgCj4gaWd0X291dHB1dF9uYW1lKG91dHB1dHNbaV0pLAo+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBjb2V4aXN0X2ZlYXR1cmVfc3Ry
+KGopKSB7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnBpcGUg
+PSBwaXBlc1tpXTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEu
+b3V0cHV0ID0KPiBvdXRwdXRzW2ldOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoGRhdGEudGVzdF9wbGFuZV9pZCA9Cj4gRFJNX1BMQU5FX1RZUEVfT1ZFUkxBWTsKPiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLmNvZXhpc3RfZmVhdHVy
+ZQo+ID0gajsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwcmVwYXJl
+KCZkYXRhKTsKPiBAQCAtMTM0MCwxNSArMTQxOSwxOCBAQCBpZ3RfbWFpbgo+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvciAoaSA9IDA7IGkgPCBuX3Bp
+cGVzOyBpKyspIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYKPiAoIXBpcGVfb3V0cHV0X2NvbWJvX3ZhbGlkKCZkYXRh
+LmRpc3BsYXksIHBpcGVzW2ldLCBvdXRwdXRzW2ldKSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oGNvbnRpbnVlOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEucGlwZSA9IHBpcGVzW2ldOwo+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEub3V0
+cHV0ID0gb3V0cHV0c1tpXTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2Yoc2V0X3NlbF9mZXRjaF9tb2Rl
+X2Zvcl9vCj4gdXRwdXQoJmRhdGEpLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiU2VsZWN0aXZlCj4gZmV0Y2ggaXMgbm90IHN1cHBvcnRl
+ZFxuIik7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgZm9yIChqID0gRkVBVFVSRV9OT05FOyBqIDwKPiBGRUFUVVJF
+X0NPVU5UOyBqKyspIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChqICE9IEZFQVRVUkVf
+Tk9ORSAmJgo+ICEoY29leGlzdF9mZWF0dXJlc1tpXSAmIGopKQo+IMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNvbnRpbnVlOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBp
+Z3RfZHluYW1pY19mKCJwaXBlLSVzLSVzJXMiLAo+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGVzW2ld
+KSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2R5bmFtaWNfZigiJXMtcGlwZS0lcy0KPiAl
+cyVzIiwgZ2V0X3Bzcl9tb2RlX3N0cl9mb3Jfb3V0cHV0KCZkYXRhKSwKPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IGttc3Rlc3RfcGlw
+ZV9uYW1lKHBpcGVzW2ldKSwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgCj4gaWd0X291dHB1dF9uYW1lKG91dHB1dHNbaV0pLAo+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBjb2V4aXN0X2ZlYXR1cmVf
+c3RyKGopKSB7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnBp
+cGUgPSBwaXBlc1tpXTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRh
+dGEub3V0cHV0ID0KPiBvdXRwdXRzW2ldOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoGRhdGEudGVzdF9wbGFuZV9pZCA9Cj4gRFJNX1BMQU5FX1RZUEVfT1ZFUkxBWTsK
+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLmNvZXhpc3RfZmVh
+dHVyZQo+ID0gajsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwcmVw
+YXJlKCZkYXRhKTsKPiBAQCAtMTM2OCwxOSArMTQ1MCwyMyBAQCBpZ3RfbWFpbgo+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvciAoaSA9IDA7IGkgPCBu
+X3BpcGVzOyBpKyspIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYKPiAoIXBpcGVfb3V0cHV0X2NvbWJvX3ZhbGlkKCZk
+YXRhLmRpc3BsYXksIHBpcGVzW2ldLCBvdXRwdXRzW2ldKSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGNvbnRpbnVlOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEucGlwZSA9IHBpcGVzW2ldOwo+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEu
+b3V0cHV0ID0gb3V0cHV0c1tpXTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2Yoc2V0X3NlbF9mZXRjaF9t
+b2RlX2Zvcl9vCj4gdXRwdXQoJmRhdGEpLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiU2VsZWN0aXZlCj4gZmV0Y2ggaXMgbm90IHN1cHBv
+cnRlZFxuIik7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZm9yIChqID0gRkVBVFVSRV9OT05FOyBqIDwKPiBGRUFU
+VVJFX0NPVU5UOyBqKyspIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChqICE9IEZFQVRV
+UkVfTk9ORSAmJgo+ICEoY29leGlzdF9mZWF0dXJlc1tpXSAmIGopKQo+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNvbnRpbnVlOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqBpZ3RfZHluYW1pY19mKCJwaXBlLSVzLSVzJXMiLAo+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGVz
+W2ldKSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2R5bmFtaWNfZigiJXMtcGlwZS0lcy0K
+PiAlcyVzIiwga21zdGVzdF9waXBlX25hbWUocGlwZXNbaV0pLAo+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gZ2V0X3Bzcl9tb2RlX3N0
+cl9mb3Jfb3V0cHV0KCZkYXRhKSwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgCj4gaWd0X291dHB1dF9uYW1lKG91dHB1dHNbaV0pLAo+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBjb2V4aXN0X2ZlYXR1
+cmVfc3RyKGopKSB7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRh
+LnBpcGUgPSBwaXBlc1tpXTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oGRhdGEub3V0cHV0ID0KPiBvdXRwdXRzW2ldOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoGZvciAoayA9IDE7IGsgPD0KPiBNQVhfREFNQUdFX0FSRUFTOyBrKyspIHsK
+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+ZGF0YS5kYW1hZ2VfYQo+IHJlYV9jb3VudCA9IGs7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEudGVzdF9wbGEKPiBuZV9pZCA9IERS
+TV9QTEFORV9UWVBFX1BSSU1BUlk7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEuY29leGlzdF8KPiBmZWF0dXJlID0gajsKPiArCj4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBy
+ZXBhcmUoJmRhdGEKPiApOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBydW4oJmRhdGEpOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjbGVhbnVwKCZkYXRhCj4gKTsKPiBAQCAtMTQw
+MSwxNSArMTQ4NywxOCBAQCBpZ3RfbWFpbgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoGZvciAoaSA9IDA7IGkgPCBuX3BpcGVzOyBpKyspIHsKPiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgaWYKPiAoIXBpcGVfb3V0cHV0X2NvbWJvX3ZhbGlkKCZkYXRhLmRpc3BsYXksIHBpcGVzW2ld
+LCBvdXRwdXRzW2ldKSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNvbnRpbnVlOwo+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oGRhdGEucGlwZSA9IHBpcGVzW2ldOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEub3V0cHV0ID0gb3V0cHV0c1tpXTsK
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqBpZ3RfYXNzZXJ0X2Yoc2V0X3NlbF9mZXRjaF9tb2RlX2Zvcl9vCj4gdXRwdXQoJmRh
+dGEpLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCAiU2VsZWN0aXZlCj4gZmV0Y2ggaXMgbm90IHN1cHBvcnRlZFxuIik7Cj4gwqAKPiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgZm9yIChqID0gRkVBVFVSRV9OT05FOyBqIDwKPiBGRUFUVVJFX0NPVU5UOyBqKyspIHsKPiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChqICE9IEZFQVRVUkVfTk9ORSAmJgo+ICEoY29leGlz
+dF9mZWF0dXJlc1tpXSAmIGopKQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGNvbnRpbnVlOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZHluYW1pY19mKCJwaXBl
+LSVzLSVzJXMiLAo+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGVzW2ldKSwKPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgaWd0X2R5bmFtaWNfZigiJXMtcGlwZS0lcy0KPiAlcyVzIiwgZ2V0X3Bzcl9tb2Rl
+X3N0cl9mb3Jfb3V0cHV0KCZkYXRhKSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGVzW2ldKSwK
+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gaWd0
+X291dHB1dF9uYW1lKG91dHB1dHNbaV0pLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBjb2V4aXN0X2ZlYXR1cmVfc3RyKGopKSB7Cj4gLcKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnBpcGUgPSBwaXBlc1tpXTsKPiAt
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEub3V0cHV0ID0KPiBvdXRw
+dXRzW2ldOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEuZGFt
+YWdlX2FyZWFfY291bgo+IHQgPSAxOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoGlmIChkYXRhLm9wX2ZiY19tb2RlCj4gPT0gRkJDX0VOQUJMRUQpCj4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEucHJpbWFy
+eV8KPiBmb3JtYXQgPSBEUk1fRk9STUFUX1hSR0I4ODg4OwoK
