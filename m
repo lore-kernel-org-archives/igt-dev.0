@@ -4,27 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A214C48BC3
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Feb 2024 15:00:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DFB8C48BEB
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Feb 2024 15:25:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BDAA110E47D;
-	Wed, 21 Feb 2024 15:00:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A4CC510E78C;
+	Wed, 21 Feb 2024 15:25:11 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0FBEC10E52F;
- Wed, 21 Feb 2024 15:00:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6328A10E1F6;
+ Wed, 21 Feb 2024 15:25:10 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8573639318278161708=="
+ boundary="===============3167987050950436821=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_Add_tests_to_query_firmware?=
- =?utf-8?q?_version_=28rev4=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/amdgpu/amd=5Fmultidispla?=
+ =?utf-8?q?y=5Fmodeset=3A_Run_mode_set_and_display_enable_for_multidisplays_?=
+ =?utf-8?q?=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Francois Dugast" <francois.dugast@intel.com>
+To: "Hersen Wu" <hersenxs.wu@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 21 Feb 2024 15:00:18 -0000
-Message-ID: <170852761806.178729.3687144801003400549@8e613ede5ea5>
+Date: Wed, 21 Feb 2024 15:25:10 -0000
+Message-ID: <170852911040.179839.3068665425394346603@8e613ede5ea5>
 X-Patchwork-Hint: ignore
-References: <20240221135033.7-1-francois.dugast@intel.com>
-In-Reply-To: <20240221135033.7-1-francois.dugast@intel.com>
+References: <20240221144400.258131-1-hersenxs.wu@amd.com>
+In-Reply-To: <20240221144400.258131-1-hersenxs.wu@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +42,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8573639318278161708==
+--===============3167987050950436821==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Add tests to query firmware version (rev4)
-URL   : https://patchwork.freedesktop.org/series/129647/
+Series: tests/amdgpu/amd_multidisplay_modeset: Run mode set and display enable for multidisplays (rev3)
+URL   : https://patchwork.freedesktop.org/series/130136/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_14308 -> IGTPW_10711
+CI Bug Log - changes from XEIGT_7719_BAT -> XEIGTPW_10712_BAT
 ====================================================
 
 Summary
@@ -64,70 +65,47 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10711/index.html
+  
 
-Participating hosts (38 -> 36)
+Participating hosts (4 -> 4)
 ------------------------------
 
-  Missing    (2): bat-mtlp-8 fi-snb-2520m 
+  No changes in participating hosts
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_10711 that come from known issues:
+  Here are the changes found in XEIGTPW_10712_BAT that come from known issues:
 
 ### IGT changes ###
 
-#### Issues hit ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-8:          [PASS][1] -> [DMESG-FAIL][2] ([i915#9500])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14308/bat-dg2-8/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10711/bat-dg2-8/igt@i915_selftest@live@workarounds.html
-
-  
 #### Possible fixes ####
 
-  * igt@gem_exec_fence@basic-busy@ccs0:
-    - {bat-arls-1}:       [DMESG-WARN][3] ([i915#10194]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14308/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10711/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html
+  * igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd:
+    - bat-pvc-2:          [INCOMPLETE][1] ([Intel XE#392]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7719/bat-pvc-2/igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10712/bat-pvc-2/igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd.html
 
   
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10194]: https://gitlab.freedesktop.org/drm/intel/issues/10194
-  [i915#9500]: https://gitlab.freedesktop.org/drm/intel/issues/9500
+  [Intel XE#392]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/392
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7719 -> IGTPW_10711
+  * IGT: IGT_7719 -> IGTPW_10712
+  * Linux: xe-807-e2b02e89746d8eff8c244f938eecd0f1db8eb805 -> xe-816-e520d7c9e8738c2d1f6602cf43d6e761e5a93668
 
-  CI-20190529: 20190529
-  CI_DRM_14308: e520d7c9e8738c2d1f6602cf43d6e761e5a93668 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10711: 10711
+  IGTPW_10712: 10712
   IGT_7719: 7719
-
-
-Testlist changes
-----------------
-
-+igt@xe_query@multigpu-query-invalid-uc-fw-version-mbz
-+igt@xe_query@multigpu-query-uc-fw-version-guc
-+igt@xe_query@multigpu-query-uc-fw-version-huc
-+igt@xe_query@query-invalid-uc-fw-version-mbz
-+igt@xe_query@query-uc-fw-version-guc
-+igt@xe_query@query-uc-fw-version-huc
+  xe-807-e2b02e89746d8eff8c244f938eecd0f1db8eb805: e2b02e89746d8eff8c244f938eecd0f1db8eb805
+  xe-816-e520d7c9e8738c2d1f6602cf43d6e761e5a93668: e520d7c9e8738c2d1f6602cf43d6e761e5a93668
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10711/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10712/index.html
 
---===============8573639318278161708==
+--===============3167987050950436821==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -147,59 +125,42 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Add tests to query firmware version (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129647/">https://patchwork.freedesktop.org/series/129647/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_multidisplay_modeset: Run mode set and display enable for multidisplays (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130136/">https://patchwork.freedesktop.org/series/130136/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10711/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10711/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10712/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10712/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_14308 -&gt; IGTPW_10711</h1>
+    <h1>CI Bug Log - changes from XEIGT_7719_BAT -&gt; XEIGTPW_10712_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10711/index.html</p>
-<h2>Participating hosts (38 -&gt; 36)</h2>
-<p>Missing    (2): bat-mtlp-8 fi-snb-2520m </p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10711 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_10712_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14308/bat-dg2-8/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10711/bat-dg2-8/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9500">i915#9500</a>)</li>
-</ul>
-</li>
-</ul>
 <h4>Possible fixes</h4>
 <ul>
-<li>igt@gem_exec_fence@basic-busy@ccs0:<ul>
-<li>{bat-arls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14308/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10194">i915#10194</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10711/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html">PASS</a></li>
+<li>igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd:<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7719/bat-pvc-2/igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/392">Intel XE#392</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10712/bat-pvc-2/igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd.html">PASS</a></li>
 </ul>
 </li>
 </ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7719 -&gt; IGTPW_10711</li>
+<li>IGT: IGT_7719 -&gt; IGTPW_10712</li>
+<li>Linux: xe-807-e2b02e89746d8eff8c244f938eecd0f1db8eb805 -&gt; xe-816-e520d7c9e8738c2d1f6602cf43d6e761e5a93668</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14308: e520d7c9e8738c2d1f6602cf43d6e761e5a93668 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10711: 10711<br />
-  IGT_7719: 7719</p>
-<h2>Testlist changes</h2>
-<p>+igt@xe_query@multigpu-query-invalid-uc-fw-version-mbz<br />
-+igt@xe_query@multigpu-query-uc-fw-version-guc<br />
-+igt@xe_query@multigpu-query-uc-fw-version-huc<br />
-+igt@xe_query@query-invalid-uc-fw-version-mbz<br />
-+igt@xe_query@query-uc-fw-version-guc<br />
-+igt@xe_query@query-uc-fw-version-huc</p>
+<p>IGTPW_10712: 10712<br />
+  IGT_7719: 7719<br />
+  xe-807-e2b02e89746d8eff8c244f938eecd0f1db8eb805: e2b02e89746d8eff8c244f938eecd0f1db8eb805<br />
+  xe-816-e520d7c9e8738c2d1f6602cf43d6e761e5a93668: e520d7c9e8738c2d1f6602cf43d6e761e5a93668</p>
 
 </body>
 </html>
 
---===============8573639318278161708==--
+--===============3167987050950436821==--
