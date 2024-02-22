@@ -4,37 +4,37 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D00BC54788
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Feb 2024 11:47:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26AF8C48BEB
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Feb 2024 11:47:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0E34510E8ED;
-	Thu, 22 Feb 2024 11:47:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C818E10E8FF;
+	Thu, 22 Feb 2024 11:47:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LrM1EIkN";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lUDI+Y94";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A475D10E6BE
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA02510E545
  for <igt-dev@lists.freedesktop.org>; Thu, 22 Feb 2024 11:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1708602469; x=1740138469;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding:sender;
- bh=qnJHPqq+3XpJH7JGtp1vz/6u301fkfChvxlzbegLOeA=;
- b=LrM1EIkNDGTngmkkH/0toDQHyH03cYp1YxKyYqlIPr1/STaWuxJaTvT1
- bCFO/xADPHYqRcNTinEZN0ykdsFaXBYV51gLNbXphCYYbpU3iWdRnQnqg
- QWH71Nv9wMkNCYFeuglZZ5XAELODGrT5DZi8YQmCAsmKO+nrP5aEatY0m
- lneuwYXZmeS3WBZ1Exxr+QzkIpSO20KEwzQZo/S4ovxgwWJpQUC8hVe1J
- l1HgMEu/eGQ7PrANg9u+4Bge4hSpa8Op49rst57jnnBL/QxCge5kUIeXf
- bCcRIdNh8OKAas+G21ApfvsNLrxnPTv9urIAi2ysgBi/6MznMdLDo+KKQ A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="2706323"
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding:sender;
+ bh=9R7PRgtybGBSNFg9WObmdZ04u3dbP1DWDTZTyqvCWQ4=;
+ b=lUDI+Y94lraoIer3PpmVpRQP4WkbNQKZLpATkst16canxYPavMv58vTq
+ ka9KPPtwbUz/pz6x4asiHo6sbh0YLl/h+Z3bLnCdJNki/bypTvicTE9sY
+ WTDZsAcyh21ZXneHUbmScU05mI4JhaO+vD7E0h8Klrv9bF3wFrs1W6X/f
+ ac7RS3KETRY0ijtBM3bttbAe0Q9jhnEYOHosJ18+5KATMSDk2cU/sPaF2
+ cCL3V8q9uMUlCFGJaFXQBPSWhuXppcUd8RHZNJZSh0DEm8wbfQUzvEwEQ
+ 45OaQg9WFNmJhUbsh8BvvIQ6TnQ1xkIHwRMeUVNPAgfMqRMM3rYCV4QMX Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="2706324"
 X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="2706323"
+   d="scan'208";a="2706324"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  22 Feb 2024 03:47:48 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; d="scan'208";a="36304241"
+X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; d="scan'208";a="36304242"
 Received: from linux.intel.com ([10.54.29.200])
  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  22 Feb 2024 03:47:48 -0800
@@ -42,18 +42,20 @@ Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.245.244.41])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 40F40580DF2
+ by linux.intel.com (Postfix) with ESMTPS id 6B898580E4B
  for <igt-dev@lists.freedesktop.org>; Thu, 22 Feb 2024 03:47:47 -0800 (PST)
 Received: from maurocar by linux.intel.com with local (Exim 4.97.1)
  (envelope-from <mauro.chehab@linux.intel.com>)
- id 1rd7YH-00000000p2j-0vJ4 for igt-dev@lists.freedesktop.org;
+ id 1rd7YH-00000000p2v-18Uy for igt-dev@lists.freedesktop.org;
  Thu, 22 Feb 2024 12:47:45 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 0/4] Additional fixes for IntelCI testlist generation
-Date: Thu, 22 Feb 2024 12:45:24 +0100
-Message-ID: <20240222114741.196042-1-mauro.chehab@linux.intel.com>
+Subject: [PATCH i-g-t v2 3/4] scripts/igt_doc.py: fix trivial case handling
+Date: Thu, 22 Feb 2024 12:45:27 +0100
+Message-ID: <20240222114741.196042-4-mauro.chehab@linux.intel.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240222114741.196042-1-mauro.chehab@linux.intel.com>
+References: <20240222114741.196042-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -73,23 +75,97 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Address 4 issues at testlist generation:
-- trivial case of not naving gpus is not handled properly;
-- the fixes for the most complex case were incomplete;
-- don't consider "all" value (used for blocklists only) to be
-  a gpu type;
-- joining testlists from multiple json filesis not doing right, as it
-  doesn't cover the case properly when GPU sets are different.
+The check is done too late, causing it to not do what it was
+expected: instead of checking for the gpu_set, it shall instead
+check if the subnames dict is empty.
 
-Mauro Carvalho Chehab (4):
-  scripts/igt_doc.py: fix intelci testlist generation for complex cases
-  scripts/igt_doc.py: ignore "all" when producing testlists
-  scripts/igt_doc.py: fix trivial case handling
-  scripts/igt_doc.py: fix intelci testlist join logic
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ scripts/igt_doc.py | 37 +++++++++++++++++--------------------
+ 1 file changed, 17 insertions(+), 20 deletions(-)
 
- scripts/igt_doc.py | 85 ++++++++++++++++++++++++++--------------------
- 1 file changed, 48 insertions(+), 37 deletions(-)
-
+diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+index 7985cdd5ac5e..2417081b80be 100755
+--- a/scripts/igt_doc.py
++++ b/scripts/igt_doc.py
+@@ -20,6 +20,7 @@ from test_list import TestList
+ class IgtTestList(TestList):
+     def __init__(self, *args, **kwargs):
+         self.split_regex = re.compile(r",\s*")
++        self.default_gpu = "default"
+ 
+         super().__init__(*args, **kwargs)
+ 
+@@ -122,30 +123,33 @@ class IgtTestList(TestList):
+         # Create a testlist dictionary
+ 
+         testlists = {}
+-        default_gpu = "default"
+ 
+         for driver, run_types in tests_per_list.items():
+             testlists[driver] = {}
++            testlists[driver][self.default_gpu] = {}
++
+             for run_type, subnames in run_types.items():
+-
+                 if not run_type:
+                     run_type = "other"
+ 
++                if run_type not in testlists[driver][self.default_gpu]:
++                    testlists[driver][self.default_gpu][run_type] = set()
++
+                 for subname, gpus in subnames.items():
+                     # Globally blocklisted values: ignore subtest
+                     if "all" in tests_per_list[driver][run_type][subname]:
+                         continue
+ 
+-                    # Trivial case: fields not defined: add subtest
+-                    if not gpu_set:
+-                        if default_gpu not in testlists[driver]:
+-                            testlists[driver][default_gpu] = {}
++                    # If GPU field is used, default is to block list
++                    default_gpu_value = True
++                    for gpu, value in gpus.items():
++                        if value:
++                            default_gpu_value = False
++                            break
+ 
+-                        if run_type not in testlists[driver][default_gpu]:
+-                            testlists[driver][default_gpu][run_type] = set()
+-
+-                        testlists[driver][default_gpu][run_type].add(subname)
+-                        continue
++                    # Fill default values
++                    if default_gpu_value:
++                        testlists[driver][self.default_gpu][run_type].add(subname)
+ 
+                     if not gpus:
+                         for gpu in gpu_set:
+@@ -163,13 +167,6 @@ class IgtTestList(TestList):
+                             testlists[driver][gpu][run_type].add(subname)
+                         continue
+ 
+-                    # If GPU field is used, default is to block list
+-                    default_gpu_value = True
+-                    for gpu, value in gpus.items():
+-                        if value:
+-                            default_gpu_value = False
+-                            break
+-
+                     for gpu in gpu_set:
+                         value = tests_per_list[driver][run_type][subname].get(gpu, default_gpu_value)
+ 
+@@ -184,8 +181,8 @@ class IgtTestList(TestList):
+ 
+                         testlists[driver][gpu][run_type].add(subname)
+ 
+-        if len(gpu_set) == 0:
+-            gpu_set.add(default_gpu)
++        # Always create a default GPU
++        gpu_set.add(self.default_gpu)
+ 
+         return (testlists, gpu_set)
+ 
 -- 
 2.43.2
 
