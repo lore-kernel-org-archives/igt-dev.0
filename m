@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67B72C48BF8
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Feb 2024 19:49:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D7A7C48BF8
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Feb 2024 20:15:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D86A910E16C;
-	Thu, 22 Feb 2024 19:49:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E116E10EA66;
+	Thu, 22 Feb 2024 20:15:14 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0B5010E16C;
- Thu, 22 Feb 2024 19:49:51 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C8F410EA66;
+ Thu, 22 Feb 2024 20:15:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1852005294260729763=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_lib/igt=5Fkmod=3A_Allow?=
- =?utf-8?q?_to_load_kunit_from_alias?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
+ =?utf-8?q?=2Cv2=2C1/2=5D_lib/igt=5Fsysfs=3A_Use_same_var_for_sizeof=28=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Lucas De Marchi" <lucas.demarchi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Feb 2024 19:49:51 -0000
-Message-ID: <170863139192.217031.12073361436627309618@8e613ede5ea5>
+Date: Thu, 22 Feb 2024 20:15:13 -0000
+Message-ID: <170863291331.217031.9489677611921950738@8e613ede5ea5>
 X-Patchwork-Hint: ignore
-References: <20240222193044.3004471-1-lucas.demarchi@intel.com>
-In-Reply-To: <20240222193044.3004471-1-lucas.demarchi@intel.com>
+References: <20240222193326.3004623-1-lucas.demarchi@intel.com>
+In-Reply-To: <20240222193326.3004623-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,30 +41,106 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============1852005294260729763==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: lib/igt_kmod: Allow to load kunit from alias
-URL   : https://patchwork.freedesktop.org/series/130282/
-State : warning
+Series: series starting with [i-g-t,v2,1/2] lib/igt_sysfs: Use same var for sizeof()
+URL   : https://patchwork.freedesktop.org/series/130283/
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7724_BAT -> XEIGTPW_10725_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1110482 for the overview.
+Summary
+-------
 
-build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55393643):
-  Running with gitlab-runner 16.3.0 (8ec04662)
-    on fdo-equinix-m3l-28 _cvnfVvT, system ID: s_d7b83ec7ddf0
-  section_start:1708631123:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
-  Authenticating with credentials from job payload (GitLab Registry)
-  Pulling docker image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
-  WARNING: Failed to pull image with policy "if-not-present": Error response from daemon: Get "https://registry.freedesktop.org/v2/": read tcp [2604:1380:45f2:6900::3]:54852->[2604:1380:45f2:6901::2]:443: read: connection reset by peer (manager.go:237:0s)
-  section_end:1708631124:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0" with specified policies [if-not-present]: Error response from daemon: Get "https://registry.freedesktop.org/v2/": read tcp [2604:1380:45f2:6900::3]:54852->[2604:1380:45f2:6901::2]:443: read: connection reset by peer (manager.go:237:0s)
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7724 -> IGTPW_10725
+  * Linux: xe-827-ae1e283133b83b0de46f00b0ac0bca913e159216 -> xe-829-5dfa3c2da4803652582408bfb3c529970735f594
+
+  IGTPW_10725: 10725
+  IGT_7724: a7c03f7521f88f74fdf17c744fd847a775f9951f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-827-ae1e283133b83b0de46f00b0ac0bca913e159216: ae1e283133b83b0de46f00b0ac0bca913e159216
+  xe-829-5dfa3c2da4803652582408bfb3c529970735f594: 5dfa3c2da4803652582408bfb3c529970735f594
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1110482
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10725/index.html
+
+--===============1852005294260729763==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/2] lib/igt_sysfs: Use same var for sizeof()</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130283/">https://patchwork.freedesktop.org/series/130283/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10725/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10725/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7724_BAT -&gt; XEIGTPW_10725_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7724 -&gt; IGTPW_10725</li>
+<li>Linux: xe-827-ae1e283133b83b0de46f00b0ac0bca913e159216 -&gt; xe-829-5dfa3c2da4803652582408bfb3c529970735f594</li>
+</ul>
+<p>IGTPW_10725: 10725<br />
+  IGT_7724: a7c03f7521f88f74fdf17c744fd847a775f9951f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-827-ae1e283133b83b0de46f00b0ac0bca913e159216: ae1e283133b83b0de46f00b0ac0bca913e159216<br />
+  xe-829-5dfa3c2da4803652582408bfb3c529970735f594: 5dfa3c2da4803652582408bfb3c529970735f594</p>
+
+</body>
+</html>
+
+--===============1852005294260729763==--
