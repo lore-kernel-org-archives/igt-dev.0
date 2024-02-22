@@ -4,27 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB802C48BF8
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Feb 2024 15:51:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBBA8C48BF8
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Feb 2024 16:23:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 78D7C10E994;
-	Thu, 22 Feb 2024 15:51:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4744F10E9A8;
+	Thu, 22 Feb 2024 16:23:22 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0016110E994;
- Thu, 22 Feb 2024 15:51:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DACE10E9A8;
+ Thu, 22 Feb 2024 16:23:20 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4268754451941036208=="
+ boundary="===============7112905846917704671=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_lib/igt=5Fdraw=3A_Don=27t_call?=
- =?utf-8?q?_i915_specific_ioctls_on_xe_in_draw_rectangle?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/amdgpu/amd=5Fmultidispla?=
+ =?utf-8?q?y=5Fmodeset=3A_Run_mode_set_and_display_enable_for_multidisplays_?=
+ =?utf-8?q?=28rev4=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Hersen Wu" <hersenxs.wu@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Feb 2024 15:51:54 -0000
-Message-ID: <170861711400.217031.16359350262435292511@8e613ede5ea5>
+Date: Thu, 22 Feb 2024 16:23:20 -0000
+Message-ID: <170861900044.216122.16661379301547277321@8e613ede5ea5>
 X-Patchwork-Hint: ignore
-References: <20240222131803.61066-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20240222131803.61066-1-zbigniew.kempczynski@intel.com>
+References: <20240221144400.258131-1-hersenxs.wu@amd.com>
+In-Reply-To: <20240221144400.258131-1-hersenxs.wu@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,33 +42,28 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4268754451941036208==
+--===============7112905846917704671==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/igt_draw: Don't call i915 specific ioctls on xe in draw rectangle
-URL   : https://patchwork.freedesktop.org/series/130256/
-State : failure
+Series: tests/amdgpu/amd_multidisplay_modeset: Run mode set and display enable for multidisplays (rev4)
+URL   : https://patchwork.freedesktop.org/series/130136/
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7723_BAT -> XEIGTPW_10721_BAT
+CI Bug Log - changes from XEIGT_7723_BAT -> XEIGTPW_10722_BAT
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with XEIGTPW_10721_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_10721_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
   
 
@@ -76,39 +72,29 @@ Participating hosts (4 -> 4)
 
   No changes in participating hosts
 
-Possible new issues
--------------------
 
-  Here are the unknown changes that may have been introduced in XEIGTPW_10721_BAT:
+Changes
+-------
 
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_exec_balancer@twice-cm-virtual-userptr-rebind:
-    - bat-atsm-2:         [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7723/bat-atsm-2/igt@xe_exec_balancer@twice-cm-virtual-userptr-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10721/bat-atsm-2/igt@xe_exec_balancer@twice-cm-virtual-userptr-rebind.html
-
-  
+  No changes found
 
 
 Build changes
 -------------
 
-  * IGT: IGT_7723 -> IGTPW_10721
-  * Linux: xe-823-661a9b14c215bc3ba24badcac80ce4eb3f57d3ff -> xe-824-ae1e283133b83b0de46f00b0ac0bca913e159216
+  * IGT: IGT_7723 -> IGTPW_10722
+  * Linux: xe-823-661a9b14c215bc3ba24badcac80ce4eb3f57d3ff -> xe-827-ae1e283133b83b0de46f00b0ac0bca913e159216
 
-  IGTPW_10721: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10721/index.html
+  IGTPW_10722: 10722
   IGT_7723: 7723
   xe-823-661a9b14c215bc3ba24badcac80ce4eb3f57d3ff: 661a9b14c215bc3ba24badcac80ce4eb3f57d3ff
-  xe-824-ae1e283133b83b0de46f00b0ac0bca913e159216: ae1e283133b83b0de46f00b0ac0bca913e159216
+  xe-827-ae1e283133b83b0de46f00b0ac0bca913e159216: ae1e283133b83b0de46f00b0ac0bca913e159216
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10721/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10722/index.html
 
---===============4268754451941036208==
+--===============7112905846917704671==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -128,46 +114,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/igt_draw: Don&#x27;t call i915 specific ioctls on xe in draw rectangle</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130256/">https://patchwork.freedesktop.org/series/130256/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_multidisplay_modeset: Run mode set and display enable for multidisplays (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130136/">https://patchwork.freedesktop.org/series/130136/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10721/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10721/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10722/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10722/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7723_BAT -&gt; XEIGTPW_10721_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_7723_BAT -&gt; XEIGTPW_10722_BAT</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_10721_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_10721_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
 <h2>Participating hosts (4 -&gt; 4)</h2>
 <p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_10721_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@xe_exec_balancer@twice-cm-virtual-userptr-rebind:<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7723/bat-atsm-2/igt@xe_exec_balancer@twice-cm-virtual-userptr-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10721/bat-atsm-2/igt@xe_exec_balancer@twice-cm-virtual-userptr-rebind.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_7723 -&gt; IGTPW_10721</li>
-<li>Linux: xe-823-661a9b14c215bc3ba24badcac80ce4eb3f57d3ff -&gt; xe-824-ae1e283133b83b0de46f00b0ac0bca913e159216</li>
+<li>IGT: IGT_7723 -&gt; IGTPW_10722</li>
+<li>Linux: xe-823-661a9b14c215bc3ba24badcac80ce4eb3f57d3ff -&gt; xe-827-ae1e283133b83b0de46f00b0ac0bca913e159216</li>
 </ul>
-<p>IGTPW_10721: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10721/index.html<br />
+<p>IGTPW_10722: 10722<br />
   IGT_7723: 7723<br />
   xe-823-661a9b14c215bc3ba24badcac80ce4eb3f57d3ff: 661a9b14c215bc3ba24badcac80ce4eb3f57d3ff<br />
-  xe-824-ae1e283133b83b0de46f00b0ac0bca913e159216: ae1e283133b83b0de46f00b0ac0bca913e159216</p>
+  xe-827-ae1e283133b83b0de46f00b0ac0bca913e159216: ae1e283133b83b0de46f00b0ac0bca913e159216</p>
 
 </body>
 </html>
 
---===============4268754451941036208==--
+--===============7112905846917704671==--
