@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26AF8C48BEB
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Feb 2024 11:47:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CF9FC54788
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Feb 2024 12:52:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C818E10E8FF;
-	Thu, 22 Feb 2024 11:47:54 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lUDI+Y94";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA02510E545
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Feb 2024 11:47:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708602469; x=1740138469;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding:sender;
- bh=9R7PRgtybGBSNFg9WObmdZ04u3dbP1DWDTZTyqvCWQ4=;
- b=lUDI+Y94lraoIer3PpmVpRQP4WkbNQKZLpATkst16canxYPavMv58vTq
- ka9KPPtwbUz/pz6x4asiHo6sbh0YLl/h+Z3bLnCdJNki/bypTvicTE9sY
- WTDZsAcyh21ZXneHUbmScU05mI4JhaO+vD7E0h8Klrv9bF3wFrs1W6X/f
- ac7RS3KETRY0ijtBM3bttbAe0Q9jhnEYOHosJ18+5KATMSDk2cU/sPaF2
- cCL3V8q9uMUlCFGJaFXQBPSWhuXppcUd8RHZNJZSh0DEm8wbfQUzvEwEQ
- 45OaQg9WFNmJhUbsh8BvvIQ6TnQ1xkIHwRMeUVNPAgfMqRMM3rYCV4QMX Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="2706324"
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="2706324"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Feb 2024 03:47:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; d="scan'208";a="36304242"
-Received: from linux.intel.com ([10.54.29.200])
- by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Feb 2024 03:47:48 -0800
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.245.244.41])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 6B898580E4B
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Feb 2024 03:47:47 -0800 (PST)
-Received: from maurocar by linux.intel.com with local (Exim 4.97.1)
- (envelope-from <mauro.chehab@linux.intel.com>)
- id 1rd7YH-00000000p2v-18Uy for igt-dev@lists.freedesktop.org;
- Thu, 22 Feb 2024 12:47:45 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 3/4] scripts/igt_doc.py: fix trivial case handling
-Date: Thu, 22 Feb 2024 12:45:27 +0100
-Message-ID: <20240222114741.196042-4-mauro.chehab@linux.intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240222114741.196042-1-mauro.chehab@linux.intel.com>
-References: <20240222114741.196042-1-mauro.chehab@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id AFBE710E909;
+	Thu, 22 Feb 2024 12:52:06 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9D0010E911;
+ Thu, 22 Feb 2024 12:52:05 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5839598015634648354=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Additional_fixes_for_IntelCI_t?=
+ =?utf-8?q?estlist_generation_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mauro Carvalho Chehab" <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 22 Feb 2024 12:52:05 -0000
+Message-ID: <170860632595.216122.957710621591247620@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240222114741.196042-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20240222114741.196042-1-mauro.chehab@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,102 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+--===============5839598015634648354==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The check is done too late, causing it to not do what it was
-expected: instead of checking for the gpu_set, it shall instead
-check if the subnames dict is empty.
+== Series Details ==
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- scripts/igt_doc.py | 37 +++++++++++++++++--------------------
- 1 file changed, 17 insertions(+), 20 deletions(-)
+Series: Additional fixes for IntelCI testlist generation (rev2)
+URL   : https://patchwork.freedesktop.org/series/130240/
+State : success
 
-diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-index 7985cdd5ac5e..2417081b80be 100755
---- a/scripts/igt_doc.py
-+++ b/scripts/igt_doc.py
-@@ -20,6 +20,7 @@ from test_list import TestList
- class IgtTestList(TestList):
-     def __init__(self, *args, **kwargs):
-         self.split_regex = re.compile(r",\s*")
-+        self.default_gpu = "default"
- 
-         super().__init__(*args, **kwargs)
- 
-@@ -122,30 +123,33 @@ class IgtTestList(TestList):
-         # Create a testlist dictionary
- 
-         testlists = {}
--        default_gpu = "default"
- 
-         for driver, run_types in tests_per_list.items():
-             testlists[driver] = {}
-+            testlists[driver][self.default_gpu] = {}
-+
-             for run_type, subnames in run_types.items():
--
-                 if not run_type:
-                     run_type = "other"
- 
-+                if run_type not in testlists[driver][self.default_gpu]:
-+                    testlists[driver][self.default_gpu][run_type] = set()
-+
-                 for subname, gpus in subnames.items():
-                     # Globally blocklisted values: ignore subtest
-                     if "all" in tests_per_list[driver][run_type][subname]:
-                         continue
- 
--                    # Trivial case: fields not defined: add subtest
--                    if not gpu_set:
--                        if default_gpu not in testlists[driver]:
--                            testlists[driver][default_gpu] = {}
-+                    # If GPU field is used, default is to block list
-+                    default_gpu_value = True
-+                    for gpu, value in gpus.items():
-+                        if value:
-+                            default_gpu_value = False
-+                            break
- 
--                        if run_type not in testlists[driver][default_gpu]:
--                            testlists[driver][default_gpu][run_type] = set()
--
--                        testlists[driver][default_gpu][run_type].add(subname)
--                        continue
-+                    # Fill default values
-+                    if default_gpu_value:
-+                        testlists[driver][self.default_gpu][run_type].add(subname)
- 
-                     if not gpus:
-                         for gpu in gpu_set:
-@@ -163,13 +167,6 @@ class IgtTestList(TestList):
-                             testlists[driver][gpu][run_type].add(subname)
-                         continue
- 
--                    # If GPU field is used, default is to block list
--                    default_gpu_value = True
--                    for gpu, value in gpus.items():
--                        if value:
--                            default_gpu_value = False
--                            break
--
-                     for gpu in gpu_set:
-                         value = tests_per_list[driver][run_type][subname].get(gpu, default_gpu_value)
- 
-@@ -184,8 +181,8 @@ class IgtTestList(TestList):
- 
-                         testlists[driver][gpu][run_type].add(subname)
- 
--        if len(gpu_set) == 0:
--            gpu_set.add(default_gpu)
-+        # Always create a default GPU
-+        gpu_set.add(self.default_gpu)
- 
-         return (testlists, gpu_set)
- 
--- 
-2.43.2
+== Summary ==
 
+CI Bug Log - changes from XEIGT_7722_BAT -> XEIGTPW_10719_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7722 -> IGTPW_10719
+  * Linux: xe-820-697ccb3f98ba621b7de9f67b0a4352da767963aa -> xe-823-661a9b14c215bc3ba24badcac80ce4eb3f57d3ff
+
+  IGTPW_10719: 10719
+  IGT_7722: 48196ef379a77675ea6af82a82da62b2ad2d9ded @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-820-697ccb3f98ba621b7de9f67b0a4352da767963aa: 697ccb3f98ba621b7de9f67b0a4352da767963aa
+  xe-823-661a9b14c215bc3ba24badcac80ce4eb3f57d3ff: 661a9b14c215bc3ba24badcac80ce4eb3f57d3ff
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10719/index.html
+
+--===============5839598015634648354==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Additional fixes for IntelCI testlist generation (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130240/">https://patchwork.freedesktop.org/series/130240/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10719/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10719/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7722_BAT -&gt; XEIGTPW_10719_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7722 -&gt; IGTPW_10719</li>
+<li>Linux: xe-820-697ccb3f98ba621b7de9f67b0a4352da767963aa -&gt; xe-823-661a9b14c215bc3ba24badcac80ce4eb3f57d3ff</li>
+</ul>
+<p>IGTPW_10719: 10719<br />
+  IGT_7722: 48196ef379a77675ea6af82a82da62b2ad2d9ded @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-820-697ccb3f98ba621b7de9f67b0a4352da767963aa: 697ccb3f98ba621b7de9f67b0a4352da767963aa<br />
+  xe-823-661a9b14c215bc3ba24badcac80ce4eb3f57d3ff: 661a9b14c215bc3ba24badcac80ce4eb3f57d3ff</p>
+
+</body>
+</html>
+
+--===============5839598015634648354==--
