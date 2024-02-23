@@ -4,27 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6B35C5478C
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Feb 2024 06:25:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA42CC5478C
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Feb 2024 06:34:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3E12610EB05;
-	Fri, 23 Feb 2024 06:25:18 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6BC1510EB05;
- Fri, 23 Feb 2024 06:25:16 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4517057904652300969=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6AC0B10EAED;
+	Fri, 23 Feb 2024 06:34:56 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BBXRVm2N";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3774610EAED
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Feb 2024 06:34:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708670095; x=1740206095;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=/QN3ZJkYA7kiqo0pGd0RmukzzzQyzxYpHA5Ve9chtmE=;
+ b=BBXRVm2NVFVBea/Z+1KegXK1j6FGMUeuZSyiiMbEUZcX7hG4yJ+uqC2z
+ Vo8mXXX1DkMCUEwkPu/TQsirnDqupe9vEQcPd6f+gWTWfzeN9RFBg+Dm5
+ Y3JffESUzE609TtcPeJvLg4IYD8EzN7VMKBjm6mEMSW2c665hDhs9PNtc
+ zQUD61voS8hsPnft1oktO8gxD+Eq9Qwkxm0XF562Y3HGfxrzGjBiMD6vi
+ 4wC5TuU9zAcYzBLgXNVIdOYntmLYMN5GT8qpHk8wAGtFhISEXzeATmmLQ
+ dtfhKrXaALtYMlrxaBY0WvfAupuEBTuBK0aSv7M8PXKCMJN8n8+NDbfwv w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="13611453"
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; d="scan'208";a="13611453"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Feb 2024 22:34:54 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="827764125"
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; d="scan'208";a="827764125"
+Received: from gfx2.iind.intel.com ([10.145.169.154])
+ by orsmga001.jf.intel.com with ESMTP; 22 Feb 2024 22:34:51 -0800
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ janga.rahul.kumar@intel.com, sai.gowtham.ch@intel.com
+Subject: [PATCH i-g-t] tests/intel/xe_exec_compute_mode: Stress test to
+ validate long running workload on compute mode
+Date: Fri, 23 Feb 2024 12:04:30 +0530
+Message-Id: <20240223063430.10135-1-sai.gowtham.ch@intel.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_new_test_to_validate_adapt?=
- =?utf-8?q?ive_sharpness_filter_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 23 Feb 2024 06:25:16 -0000
-Message-ID: <170866951644.235433.13625995090006450436@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240223045013.398654-1-swati2.sharma@intel.com>
-In-Reply-To: <20240223045013.398654-1-swati2.sharma@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +60,112 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4517057904652300969==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-== Series Details ==
+Test validates long running compute mode by submitting a spinner for 30s
+long.
 
-Series: Add new test to validate adaptive sharpness filter (rev2)
-URL   : https://patchwork.freedesktop.org/series/130218/
-State : success
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+---
+ tests/intel/xe_exec_compute_mode.c | 73 ++++++++++++++++++++++++++++++
+ 1 file changed, 73 insertions(+)
 
-== Summary ==
+diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
+index 7dad71509..0a71bfdc5 100644
+--- a/tests/intel/xe_exec_compute_mode.c
++++ b/tests/intel/xe_exec_compute_mode.c
+@@ -400,6 +400,76 @@ static void non_block(int fd, int expect)
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
++/**
++ * SUBTEST: lr-stress
++ * Description: Stress LR mode workload for 30s.
++ * Test category: functionality test
++ */
++static void lr_stress(int fd)
++{
++	uint64_t addr = 0x1a0000;
++	struct drm_xe_sync sync[1] = {
++		{.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++		 .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		 .timeline_value = USER_FENCE_VALUE},
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++	struct  {
++		struct xe_spin spin;
++		uint64_t vm_sync;
++		uint32_t data;
++		uint64_t exec_sync;
++	} *data;
++	struct xe_spin_opts spin_opts = { .preempt = false };
++	struct drm_xe_engine *engine;
++	size_t bo_size;
++	uint32_t vm;
++	uint32_t exec_queue;
++	uint32_t bo;
++
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
++	bo_size = sizeof(*data);
++	bo_size = xe_bb_size(fd, bo_size);
++
++	engine = xe_engine(fd, 1);
++	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, engine->instance.gt_id), 0);
++
++	data = xe_bo_map(fd, bo, bo_size);
++	memset(data, 0, bo_size);
++	exec_queue = xe_exec_queue_create(fd, vm, &engine->instance, 0);
++
++	sync[0].addr = to_user_pointer(&data[0].vm_sync);
++	xe_vm_bind_async(fd, vm, engine->instance.gt_id, bo, 0,
++				addr, bo_size, sync, 1);
++	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, ONE_SEC);
++	data[0].vm_sync = 0;
++
++	spin_opts.addr = addr + (char *)&data[0].spin - (char *)data;
++	xe_spin_init(&data[0].spin, &spin_opts);
++	sync[0].addr = addr + (char *)&data[0].exec_sync - (char *)data;
++	exec.exec_queue_id = exec_queue;
++	exec.address = spin_opts.addr;
++	xe_exec(fd, &exec);
++	xe_spin_wait_started(&data[0].spin);
++	sleep(30);
++
++	xe_spin_end(&data[0].spin);
++	xe_wait_ufence(fd, &data[0].exec_sync, USER_FENCE_VALUE, 0, ONE_SEC);
++
++	sync[0].addr = to_user_pointer(&data[0].vm_sync);
++	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
++	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, ONE_SEC);
++	munmap(data, bo_size);
++	gem_close(fd, bo);
++
++	xe_exec_queue_destroy(fd, exec_queue);
++	xe_vm_destroy(fd, vm);
++}
++
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -460,6 +530,9 @@ igt_main
+ 	igt_subtest("non-blocking")
+ 		non_block(fd, EWOULDBLOCK);
+ 
++	igt_subtest("lr-stress")
++		lr_stress(fd);
++
+ 
+ 	igt_fixture
+ 		drm_close_driver(fd);
+-- 
+2.39.1
 
-CI Bug Log - changes from XEIGT_7727_BAT -> XEIGTPW_10726_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7727 -> IGTPW_10726
-  * Linux: xe-831-5e139b8dd8049fee9f42fe76c603b5cfc286af7f -> xe-833-5737231c5e191303950cd00d83cc2d04caf17be0
-
-  IGTPW_10726: 10726
-  IGT_7727: 7727
-  xe-831-5e139b8dd8049fee9f42fe76c603b5cfc286af7f: 5e139b8dd8049fee9f42fe76c603b5cfc286af7f
-  xe-833-5737231c5e191303950cd00d83cc2d04caf17be0: 5737231c5e191303950cd00d83cc2d04caf17be0
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10726/index.html
-
---===============4517057904652300969==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add new test to validate adaptive sharpness filter (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130218/">https://patchwork.freedesktop.org/series/130218/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10726/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10726/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7727_BAT -&gt; XEIGTPW_10726_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7727 -&gt; IGTPW_10726</li>
-<li>Linux: xe-831-5e139b8dd8049fee9f42fe76c603b5cfc286af7f -&gt; xe-833-5737231c5e191303950cd00d83cc2d04caf17be0</li>
-</ul>
-<p>IGTPW_10726: 10726<br />
-  IGT_7727: 7727<br />
-  xe-831-5e139b8dd8049fee9f42fe76c603b5cfc286af7f: 5e139b8dd8049fee9f42fe76c603b5cfc286af7f<br />
-  xe-833-5737231c5e191303950cd00d83cc2d04caf17be0: 5737231c5e191303950cd00d83cc2d04caf17be0</p>
-
-</body>
-</html>
-
---===============4517057904652300969==--
