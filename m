@@ -4,48 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAD18C48BF6
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 07:26:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3791BC54E49
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 07:26:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4EC4D10EEDD;
-	Mon, 26 Feb 2024 07:26:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CFD9E10EEE2;
+	Mon, 26 Feb 2024 07:26:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K8v0uiFG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AmnR1uT1";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 16AEC10EEDD
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 07:26:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C3C510EEE1
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 07:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708932395; x=1740468395;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=/+OsAQvAH5khjrc3MIoqGYvC+Jlax6C9KM798ODpX34=;
- b=K8v0uiFGedEttpEHgz8Oej998F0pDLFo+Vsi+aJMp92HrvtzDgFgInSE
- y59VtAd2sp7ah7Rw5qkXFWr1i7pe0wrE8swrSqMc2D9VkW+Ef/FIJMa4a
- ibQAbe3BUBeGy6mnq2vqxjEU5GSa0l81SqFbSBd561W0KT+EeEsMxrjl6
- S03Ffa6+6CYdBl0OIqujbOWS0bTAA/dirCjfVW/SAVg3d9kjGTw4Lhsdm
- 3JAz6JdFtYJ1tPDqaZDkb6VyP6ktInadVhTsPVkStrRNaZQ7YE0YkQqAQ
- zYWzTNad321ADbPBBaiyqSeJMOLSIJd3Ipk5t1cvH+pWJYQxwmTlbU25I w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="6147554"
+ t=1708932396; x=1740468396;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=ZeCAB8K3goROLlxDRMs5PUObF5liu8nxst8x/KdEkgQ=;
+ b=AmnR1uT1leDftoRLzE6DicEN7U6otVw5EcvIdnqjo83aO92Le+K0L5Q9
+ TinuKb0bxohMoEllXpcXoyTSKhHfjoEj89jec5jji2V3wUEq4CTMb/oyD
+ owokvzQLxFBri7/TxKnJxHEDE1hFLey4vXYwm43mAxSh8rqaP9aN7WSK4
+ NLViuFlUdnRSZMFRg45Yq+I5kQQQCZD9a4EMDs4UzLEfEI3EDZ50lV2xm
+ sB0Ezsr/uNDAP5SmEfBzLAY0GyuPws729kNcp3xDNufPWVFXCbInhoPv5
+ gonwa/H6rkKfhrNBcJygo8/wNcbZAiKIzc8Nk+Rh3u63yLq8izwXnevxA g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="6147559"
 X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="6147554"
+   d="scan'208";a="6147559"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2024 23:26:34 -0800
+ 25 Feb 2024 23:26:36 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="6923228"
+   d="scan'208";a="6923236"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2024 23:26:32 -0800
+ 25 Feb 2024 23:26:35 -0800
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [i-g-t v6 0/9] tests/kms_vrr: Modify kms_vrr to allow flicker
- profiling
-Date: Mon, 26 Feb 2024 12:50:26 +0530
-Message-ID: <20240226072035.2620383-1-bhanuprakash.modem@intel.com>
+Subject: [i-g-t v6 2/9] tests/kms_vrr: Move vtest_ns into data_t
+Date: Mon, 26 Feb 2024 12:50:28 +0530
+Message-ID: <20240226072035.2620383-3-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240226072035.2620383-1-bhanuprakash.modem@intel.com>
+References: <20240226072035.2620383-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -63,46 +64,113 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Do some cleanup in the kms_vrr test and add some optional command line
-arguments to alter the target refresh rate for the test. This allows us
-to profile VRR flicker on panels at the low end of the refresh range.
-This series also adds a new 'maxmin' subtest which alternates the rate
-between max and min every frame.
+From: Sean Paul <seanpaul@chromium.org>
 
-V2:
-- Address the review comments from Bhanu
-- Add a new maxmin subtest which alternates the rate b/w max & min every frame.
+vtest_ns is derived from data->range which is fixed. Move it into data_t
+and generate it once in prepare_test().
 
-V3: As communicated in IRC channel #igt, I am doing this revision on behalf of
-Sean Paul.
+v2: (Bhanu)
 - Rebase
-- Add testplan documentaion for 'maxmin' subtest
-- Minor cleanups
-- Hax patch to test VRR in BAT
 
-V4:
-- Rebase
-- Minor cleanups
+Cc: Mark Yacoub <markyacoub@chromium.org>
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Sean Paul <seanpaul@chromium.org>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_vrr.c | 36 +++++++++++++++---------------------
+ 1 file changed, 15 insertions(+), 21 deletions(-)
 
-Bhanuprakash Modem (1):
-  HAX/DO_NOT_MERGE: Test VRR in BAT
-
-Sean Paul (8):
-  tests/kms_vrr: Move fb0 and fb1 to an array
-  tests/kms_vrr: Move vtest_ns into data_t
-  tests/kms_vrr: Allow test rate to be altered from the command line
-  tests/kms_vrr: Allow test duration to be specified from the command
-    line
-  tests/kms_vrr: Change the pattern displayed in the test
-  tests/kms_vrr: Add ability to flip static image for flicker profiling
-  tests/kms_vrr: Allow for multiple rates in a test
-  tests/kms_vrr: Add a max/min test to oscillate between rates
-
- tests/intel-ci/fast-feedback.testlist    |   7 +
- tests/intel-ci/xe-fast-feedback.testlist |   7 +
- tests/kms_vrr.c                          | 275 ++++++++++++++++-------
- 3 files changed, 208 insertions(+), 81 deletions(-)
-
---
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index a9fcde821..26e3f257b 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -100,6 +100,12 @@ typedef struct range {
+ 	unsigned int max;
+ } range_t;
+ 
++typedef struct vtest_ns {
++	uint64_t min;
++	uint64_t mid;
++	uint64_t max;
++} vtest_ns_t;
++
+ typedef struct data {
+ 	igt_display_t display;
+ 	int drm_fd;
+@@ -107,14 +113,9 @@ typedef struct data {
+ 	igt_fb_t fb[2];
+ 	range_t range;
+ 	drmModeModeInfo switch_modes[RR_MODES_COUNT];
++	vtest_ns_t vtest_ns;
+ } data_t;
+ 
+-typedef struct vtest_ns {
+-	uint64_t min;
+-	uint64_t mid;
+-	uint64_t max;
+-} vtest_ns_t;
+-
+ typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, uint32_t);
+ 
+ /* Converts a timespec structure to nanoseconds. */
+@@ -232,18 +233,6 @@ get_vrr_range(data_t *data, igt_output_t *output)
+ 	return range;
+ }
+ 
+-/* Returns vrr test frequency for min, mid & max range. */
+-static vtest_ns_t get_test_rate_ns(range_t range)
+-{
+-	vtest_ns_t vtest_ns;
+-
+-	vtest_ns.min = rate_from_refresh(range.min);
+-	vtest_ns.mid = rate_from_refresh(((range.max + range.min) / 2));
+-	vtest_ns.max = rate_from_refresh(range.max);
+-
+-	return vtest_ns;
+-}
+-
+ /* Returns true if driver supports VRR. */
+ static bool has_vrr(igt_output_t *output)
+ {
+@@ -276,6 +265,11 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 
+ 	mode = *igt_output_get_mode(output);
+ 
++	data->vtest_ns.min = rate_from_refresh(data->range.min);
++	data->vtest_ns.mid = rate_from_refresh(
++				(data->range.min + data->range.max) / 2);
++	data->vtest_ns.max = rate_from_refresh(data->range.max);
++
+ 	/* Prepare resources */
+ 	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
+ 			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+@@ -341,7 +335,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 	uint64_t start_ns, last_event_ns, target_ns, exp_rate_ns;
+ 	uint32_t total_flip = 0, total_pass = 0;
+ 	bool front = false;
+-	vtest_ns_t vtest_ns = get_test_rate_ns(data->range);
++	vtest_ns_t vtest_ns = data->vtest_ns;
+ 	uint64_t threshold_hi, threshold_lo;
+ 
+ 	if ((rate_ns <= vtest_ns.min) && (rate_ns >= vtest_ns.max))
+@@ -423,7 +417,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 
+ 	prepare_test(data, output, pipe);
+ 	range = data->range;
+-	vtest_ns = get_test_rate_ns(range);
++	vtest_ns = data->vtest_ns;
+ 	rate = vtest_ns.mid;
+ 
+ 	igt_info("VRR Test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\n",
+@@ -517,7 +511,7 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
+ 	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
+ 
+ 	prepare_test(data, output, pipe);
+-	vtest_ns = get_test_rate_ns(data->range);
++	vtest_ns = data->vtest_ns;
+ 
+ 	if (vrr)
+ 		set_vrr_on_pipe(data, pipe, false, true);
+-- 
 2.43.0
 
