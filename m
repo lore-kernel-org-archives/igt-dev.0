@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45854C5478C
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 18:07:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED62FC5478C
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 18:37:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B85FE10ED39;
-	Mon, 26 Feb 2024 18:07:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2ADDF10EDC5;
+	Mon, 26 Feb 2024 18:37:22 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88A7810E821;
- Mon, 26 Feb 2024 18:07:26 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 02D4E10EDC5;
+ Mon, 26 Feb 2024 18:37:19 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0068910886164657700=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/kms=5Fvrr=3A_Modi?=
- =?utf-8?q?fy_kms=5Fvrr_to_allow_flicker_profiling_=28rev8=29?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/kms=5Fvrr=3A_Modify_k?=
+ =?utf-8?q?ms=5Fvrr_to_allow_flicker_profiling_=28rev8=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 26 Feb 2024 18:07:26 -0000
-Message-ID: <170897084656.299440.7633947396856420549@8e613ede5ea5>
+Date: Mon, 26 Feb 2024 18:37:19 -0000
+Message-ID: <170897263900.299440.2496329497105565544@8e613ede5ea5>
 X-Patchwork-Hint: ignore
 References: <20240226072035.2620383-1-bhanuprakash.modem@intel.com>
 In-Reply-To: <20240226072035.2620383-1-bhanuprakash.modem@intel.com>
@@ -41,194 +41,508 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============0068910886164657700==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: tests/kms_vrr: Modify kms_vrr to allow flicker profiling (rev8)
 URL   : https://patchwork.freedesktop.org/series/125479/
-State : warning
+State : failure
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from IGT_7731 -> IGTPW_10734
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1113333 for the overview.
+Summary
+-------
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55520143):
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out b32b1e8f as detached HEAD (ref is intel/IGTPW_10734)...
-  Removing build/
-  Removing lib/i915/perf-configs/__pycache__/
-  Removing scripts/__pycache__/
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_10734 absolutely need to be
+  verified manually.
   
-  Skipping Git submodules setup
-  section_end:1708970544:get_sources
-  section_start:1708970544:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-b32b1e8f003714c2af382b0cc19c7de5d90e8bd4 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64@sha256:df8438cd0e218646c3bdc2eb6abccb43c4e884bfd40a1a4dd0365f1f8031d21f ...
-  section_end:1708970547:step_script
-  section_start:1708970547:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1708970549:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c: image not known (docker.go:570:0s)
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_10734, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55520142):
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out b32b1e8f as detached HEAD (ref is intel/IGTPW_10734)...
-  Removing build/
-  Removing lib/i915/perf-configs/__pycache__/
-  Removing scripts/__pycache__/
-  
-  Skipping Git submodules setup
-  section_end:1708970543:get_sources
-  section_start:1708970543:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:4a4103f1a476d355d866b481ff96ac05a32a3a715cefcc1cbc1356a8959fb5f8 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf:commit-b32b1e8f003714c2af382b0cc19c7de5d90e8bd4 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf@sha256:3a0ffeb305cdc6ef081dde81d86afee76102e74f76c0f7bd5685fc2457ec707b ...
-  section_end:1708970547:step_script
-  section_start:1708970547:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1708970547:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4a4103f1a476d355d866b481ff96ac05a32a3a715cefcc1cbc1356a8959fb5f8: image not known (docker.go:570:0s)
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/index.html
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55520144):
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out b32b1e8f as detached HEAD (ref is intel/IGTPW_10734)...
-  Removing build/
-  Removing lib/i915/perf-configs/__pycache__/
-  Removing scripts/__pycache__/
-  
-  Skipping Git submodules setup
-  section_end:1708970543:get_sources
-  section_start:1708970543:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-b32b1e8f003714c2af382b0cc19c7de5d90e8bd4 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips@sha256:c829c44880da4782b7a72626c259ac6904b4bd5f08601e66b3be889ca1c0cf79 ...
-  section_end:1708970547:step_script
-  section_start:1708970547:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1708970548:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448: image not known (docker.go:570:0s)
+Participating hosts (40 -> 39)
+------------------------------
 
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55520141):
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out b32b1e8f as detached HEAD (ref is intel/IGTPW_10734)...
-  Removing build/
-  Removing installdir/
-  
-  Skipping Git submodules setup
-  section_end:1708970543:get_sources
-  section_start:1708970543:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:08904a47f4efcc161569a9b7f88c458fc6e3e85a2225132246af9cf5cc6c4e5b for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal:commit-b32b1e8f003714c2af382b0cc19c7de5d90e8bd4 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal@sha256:8b51a86fd81e64c501c9521c37fc8ad6f2550976931c510eb0ff4f6a328d477a ...
-  section_end:1708970547:step_script
-  section_start:1708970547:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1708970548:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:08904a47f4efcc161569a9b7f88c458fc6e3e85a2225132246af9cf5cc6c4e5b: image not known (docker.go:570:0s)
+  Missing    (1): fi-snb-2520m 
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55520135):
-  section_start:1708970532:get_sources
-  Getting source from Git repository
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out b32b1e8f as detached HEAD (ref is intel/IGTPW_10734)...
-  
-  Skipping Git submodules setup
-  section_end:1708970543:get_sources
-  section_start:1708970543:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-b32b1e8f003714c2af382b0cc19c7de5d90e8bd4 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
-  section_end:1708970547:step_script
-  section_start:1708970547:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1708970548:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f: image not known (docker.go:570:0s)
+Possible new issues
+-------------------
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55520139):
-  section_start:1708970531:get_sources
-  Getting source from Git repository
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out b32b1e8f as detached HEAD (ref is intel/IGTPW_10734)...
-  
-  Skipping Git submodules setup
-  section_end:1708970543:get_sources
-  section_start:1708970543:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-b32b1e8f003714c2af382b0cc19c7de5d90e8bd4 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
-  section_end:1708970547:step_script
-  section_start:1708970547:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1708970547:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f: image not known (docker.go:570:0s)
+  Here are the unknown changes that may have been introduced in IGTPW_10734:
 
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55520138):
-  section_start:1708970530:get_sources
-  Getting source from Git repository
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out b32b1e8f as detached HEAD (ref is intel/IGTPW_10734)...
-  
-  Skipping Git submodules setup
-  section_end:1708970543:get_sources
-  section_start:1708970543:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-b32b1e8f003714c2af382b0cc19c7de5d90e8bd4 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
-  section_end:1708970547:step_script
-  section_start:1708970547:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1708970548:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f: image not known (docker.go:570:0s)
+### IGT changes ###
 
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55520136):
-  section_start:1708970531:get_sources
-  Getting source from Git repository
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out b32b1e8f as detached HEAD (ref is intel/IGTPW_10734)...
+#### Possible regressions ####
+
+  * igt@kms_vrr@max-min (NEW):
+    - bat-rplp-1:         NOTRUN -> [SKIP][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-rplp-1/igt@kms_vrr@max-min.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][2]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-tgl-1115g4/igt@kms_vrr@max-min.html
+    - bat-arls-1:         NOTRUN -> [SKIP][3]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-arls-1/igt@kms_vrr@max-min.html
+    - bat-dg2-9:          NOTRUN -> [SKIP][4]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-9/igt@kms_vrr@max-min.html
+    - bat-mtlp-8:         NOTRUN -> [SKIP][5]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-mtlp-8/igt@kms_vrr@max-min.html
+    - bat-jsl-1:          NOTRUN -> [SKIP][6]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-jsl-1/igt@kms_vrr@max-min.html
+    - bat-adlp-6:         NOTRUN -> [SKIP][7]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adlp-6/igt@kms_vrr@max-min.html
+    - fi-rkl-11600:       NOTRUN -> [SKIP][8]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-rkl-11600/igt@kms_vrr@max-min.html
+    - bat-dg1-7:          NOTRUN -> [SKIP][9]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg1-7/igt@kms_vrr@max-min.html
+    - bat-jsl-3:          NOTRUN -> [SKIP][10]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-jsl-3/igt@kms_vrr@max-min.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][11]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-11/igt@kms_vrr@max-min.html
+    - bat-adln-1:         NOTRUN -> [SKIP][12]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adln-1/igt@kms_vrr@max-min.html
+    - bat-dg2-14:         NOTRUN -> [SKIP][13]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-14/igt@kms_vrr@max-min.html
+    - bat-dg2-8:          NOTRUN -> [SKIP][14]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-8/igt@kms_vrr@max-min.html
+
   
-  Skipping Git submodules setup
-  section_end:1708970543:get_sources
-  section_start:1708970543:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-b32b1e8f003714c2af382b0cc19c7de5d90e8bd4 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
-  section_end:1708970547:step_script
-  section_start:1708970547:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1708970549:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f: image not known (docker.go:570:0s)
+New tests
+---------
+
+  New tests have been introduced between IGT_7731 and IGTPW_10734:
+
+### New IGT tests (4) ###
+
+  * igt@kms_vrr@max-min:
+    - Statuses : 34 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_vrr@max-min@pipe-a-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [5.34, 5.55] s
+
+  * igt@kms_vrr@max-min@pipe-a-dp-2:
+    - Statuses : 1 pass(s)
+    - Exec time: [5.35] s
+
+  * igt@kms_vrr@max-min@pipe-a-edp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [5.46] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10734 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_create@basic@smem:
+    - bat-arls-1:         [PASS][15] -> [DMESG-WARN][16] ([i915#10194])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7731/bat-arls-1/igt@gem_exec_create@basic@smem.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-arls-1/igt@gem_exec_create@basic@smem.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-skl-guc:         [PASS][17] -> [DMESG-FAIL][18] ([i915#10112])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7731/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_vrr@flip-basic:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][19] ([i915#3555]) +2 other tests skip
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-rkl-11600/igt@kms_vrr@flip-basic.html
+    - bat-atsm-1:         NOTRUN -> [SKIP][20] ([i915#6078]) +6 other tests skip
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-atsm-1/igt@kms_vrr@flip-basic.html
+    - fi-cfl-guc:         NOTRUN -> [SKIP][21] ([fdo#109271]) +6 other tests skip
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-cfl-guc/igt@kms_vrr@flip-basic.html
+    - bat-jsl-3:          NOTRUN -> [SKIP][22] ([i915#3555]) +1 other test skip
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-jsl-3/igt@kms_vrr@flip-basic.html
+    - bat-dg2-9:          NOTRUN -> [SKIP][23] ([i915#3555]) +1 other test skip
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-9/igt@kms_vrr@flip-basic.html
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][24] ([fdo#109271]) +6 other tests skip
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-kbl-x1275/igt@kms_vrr@flip-basic.html
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][25] ([fdo#109271]) +6 other tests skip
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-cfl-8109u/igt@kms_vrr@flip-basic.html
+    - bat-adln-1:         NOTRUN -> [SKIP][26] ([i915#3555]) +1 other test skip
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adln-1/igt@kms_vrr@flip-basic.html
+    - bat-mtlp-8:         NOTRUN -> [SKIP][27] ([i915#3555] / [i915#8808]) +1 other test skip
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-mtlp-8/igt@kms_vrr@flip-basic.html
+    - bat-dg2-8:          NOTRUN -> [SKIP][28] ([i915#3555]) +1 other test skip
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-8/igt@kms_vrr@flip-basic.html
+    - fi-kbl-guc:         NOTRUN -> [SKIP][29] ([fdo#109271]) +6 other tests skip
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-kbl-guc/igt@kms_vrr@flip-basic.html
+    - bat-jsl-1:          NOTRUN -> [SKIP][30] ([i915#3555]) +1 other test skip
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-jsl-1/igt@kms_vrr@flip-basic.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][31] ([i915#3555]) +2 other tests skip
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-tgl-1115g4/igt@kms_vrr@flip-basic.html
+
+  * igt@kms_vrr@flip-basic-fastset:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][32] ([fdo#109271]) +6 other tests skip
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-pnv-d510/igt@kms_vrr@flip-basic-fastset.html
+    - bat-dg1-7:          NOTRUN -> [SKIP][33] ([i915#9906]) +2 other tests skip
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg1-7/igt@kms_vrr@flip-basic-fastset.html
+    - bat-jsl-3:          NOTRUN -> [SKIP][34] ([i915#9906]) +2 other tests skip
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-jsl-3/igt@kms_vrr@flip-basic-fastset.html
+    - fi-glk-j4005:       NOTRUN -> [SKIP][35] ([fdo#109271]) +6 other tests skip
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-glk-j4005/igt@kms_vrr@flip-basic-fastset.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][36] ([i915#9906]) +2 other tests skip
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-11/igt@kms_vrr@flip-basic-fastset.html
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][37] ([fdo#109271]) +6 other tests skip
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-kbl-7567u/igt@kms_vrr@flip-basic-fastset.html
+    - bat-adln-1:         NOTRUN -> [SKIP][38] ([i915#9906]) +1 other test skip
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adln-1/igt@kms_vrr@flip-basic-fastset.html
+    - fi-ivb-3770:        NOTRUN -> [SKIP][39] ([fdo#109271]) +6 other tests skip
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-ivb-3770/igt@kms_vrr@flip-basic-fastset.html
+    - fi-elk-e7500:       NOTRUN -> [SKIP][40] ([fdo#109271]) +6 other tests skip
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-elk-e7500/igt@kms_vrr@flip-basic-fastset.html
+    - bat-rplp-1:         NOTRUN -> [SKIP][41] ([i915#9906]) +1 other test skip
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-rplp-1/igt@kms_vrr@flip-basic-fastset.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][42] ([i915#9906]) +2 other tests skip
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-tgl-1115g4/igt@kms_vrr@flip-basic-fastset.html
+    - bat-arls-1:         NOTRUN -> [SKIP][43] ([i915#8808]) +5 other tests skip
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-arls-1/igt@kms_vrr@flip-basic-fastset.html
+    - bat-mtlp-6:         NOTRUN -> [SKIP][44] ([i915#10295] / [i915#9792]) +5 other tests skip
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-mtlp-6/igt@kms_vrr@flip-basic-fastset.html
+
+  * igt@kms_vrr@flipline:
+    - fi-skl-guc:         NOTRUN -> [SKIP][45] ([fdo#109271]) +6 other tests skip
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-skl-guc/igt@kms_vrr@flipline.html
+    - bat-dg2-14:         NOTRUN -> [SKIP][46] ([i915#3555]) +2 other tests skip
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-14/igt@kms_vrr@flipline.html
+    - bat-adlp-6:         NOTRUN -> [SKIP][47] ([i915#3555]) +1 other test skip
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adlp-6/igt@kms_vrr@flipline.html
+    - bat-rplp-1:         NOTRUN -> [SKIP][48] ([i915#3555]) +1 other test skip
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-rplp-1/igt@kms_vrr@flipline.html
+
+  * igt@kms_vrr@max-min (NEW):
+    - fi-ilk-650:         NOTRUN -> [SKIP][49] ([fdo#109271]) +6 other tests skip
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-ilk-650/igt@kms_vrr@max-min.html
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][50] ([fdo#109271]) +6 other tests skip
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-bsw-n3050/igt@kms_vrr@max-min.html
+    - bat-mtlp-6:         NOTRUN -> [SKIP][51] ([i915#9792])
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-mtlp-6/igt@kms_vrr@max-min.html
+
+  * igt@kms_vrr@negative-basic:
+    - bat-kbl-2:          NOTRUN -> [SKIP][52] ([fdo#109271]) +6 other tests skip
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-kbl-2/igt@kms_vrr@negative-basic.html
+    - fi-skl-6600u:       NOTRUN -> [SKIP][53] ([fdo#109271]) +6 other tests skip
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-skl-6600u/igt@kms_vrr@negative-basic.html
+    - fi-apl-guc:         NOTRUN -> [SKIP][54] ([fdo#109271]) +6 other tests skip
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-apl-guc/igt@kms_vrr@negative-basic.html
+    - bat-dg1-7:          NOTRUN -> [SKIP][55] ([i915#3555]) +2 other tests skip
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg1-7/igt@kms_vrr@negative-basic.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][56] ([i915#3555]) +2 other tests skip
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-11/igt@kms_vrr@negative-basic.html
+    - bat-adlp-9:         NOTRUN -> [SKIP][57] ([i915#3555])
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adlp-9/igt@kms_vrr@negative-basic.html
+
+  * igt@kms_vrr@seamless-rr-switch-drrs:
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][58] ([fdo#109271]) +6 other tests skip
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-cfl-8700k/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - fi-blb-e6850:       NOTRUN -> [SKIP][59] ([fdo#109271]) +6 other tests skip
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-blb-e6850/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - bat-dg2-14:         NOTRUN -> [SKIP][60] ([i915#9906]) +2 other tests skip
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-14/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - fi-bsw-nick:        NOTRUN -> [SKIP][61] ([fdo#109271]) +6 other tests skip
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-bsw-nick/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - fi-rkl-11600:       NOTRUN -> [SKIP][62] ([i915#9906]) +2 other tests skip
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-rkl-11600/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - bat-dg2-9:          NOTRUN -> [SKIP][63] ([i915#9906]) +2 other tests skip
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-9/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - bat-arls-2:         NOTRUN -> [SKIP][64] ([i915#8808]) +2 other tests skip
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-arls-2/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - bat-mtlp-8:         NOTRUN -> [SKIP][65] ([i915#8808] / [i915#9906]) +2 other tests skip
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-mtlp-8/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - bat-dg2-8:          NOTRUN -> [SKIP][66] ([i915#9906]) +2 other tests skip
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-8/igt@kms_vrr@seamless-rr-switch-drrs.html
+
+  * igt@kms_vrr@seamless-rr-switch-vrr:
+    - bat-adlp-9:         NOTRUN -> [SKIP][67] ([i915#9906]) +1 other test skip
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adlp-9/igt@kms_vrr@seamless-rr-switch-vrr.html
+    - bat-jsl-1:          NOTRUN -> [SKIP][68] ([i915#9906]) +2 other tests skip
+   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-jsl-1/igt@kms_vrr@seamless-rr-switch-vrr.html
+    - bat-adlp-6:         NOTRUN -> [SKIP][69] ([i915#9906]) +1 other test skip
+   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adlp-6/igt@kms_vrr@seamless-rr-switch-vrr.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_fence@basic-busy@ccs0:
+    - bat-arls-1:         [DMESG-WARN][70] ([i915#10194]) -> [PASS][71]
+   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7731/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html
+   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#10112]: https://gitlab.freedesktop.org/drm/intel/issues/10112
+  [i915#10194]: https://gitlab.freedesktop.org/drm/intel/issues/10194
+  [i915#10295]: https://gitlab.freedesktop.org/drm/intel/issues/10295
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
+  [i915#6078]: https://gitlab.freedesktop.org/drm/intel/issues/6078
+  [i915#8808]: https://gitlab.freedesktop.org/drm/intel/issues/8808
+  [i915#9792]: https://gitlab.freedesktop.org/drm/intel/issues/9792
+  [i915#9906]: https://gitlab.freedesktop.org/drm/intel/issues/9906
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7731 -> IGTPW_10734
+
+  CI-20190529: 20190529
+  CI_DRM_14344: c815c7fa9257eb8ff4433c43058dd292b16347eb @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10734: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/index.html
+  IGT_7731: 17f897a81868fb35c6a7033a8b07256659742248 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_vrr@max-min
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1113333
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/index.html
+
+--===============0068910886164657700==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_vrr: Modify kms_vrr to allow flicker profiling (rev8)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125479/">https://patchwork.freedesktop.org/series/125479/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7731 -&gt; IGTPW_10734</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_10734 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_10734, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/index.html</p>
+<h2>Participating hosts (40 -&gt; 39)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_10734:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_vrr@max-min (NEW):<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-rplp-1/igt@kms_vrr@max-min.html">SKIP</a></li>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-tgl-1115g4/igt@kms_vrr@max-min.html">SKIP</a></li>
+<li>bat-arls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-arls-1/igt@kms_vrr@max-min.html">SKIP</a></li>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-9/igt@kms_vrr@max-min.html">SKIP</a></li>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-mtlp-8/igt@kms_vrr@max-min.html">SKIP</a></li>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-jsl-1/igt@kms_vrr@max-min.html">SKIP</a></li>
+<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adlp-6/igt@kms_vrr@max-min.html">SKIP</a></li>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-rkl-11600/igt@kms_vrr@max-min.html">SKIP</a></li>
+<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg1-7/igt@kms_vrr@max-min.html">SKIP</a></li>
+<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-jsl-3/igt@kms_vrr@max-min.html">SKIP</a></li>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-11/igt@kms_vrr@max-min.html">SKIP</a></li>
+<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adln-1/igt@kms_vrr@max-min.html">SKIP</a></li>
+<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-14/igt@kms_vrr@max-min.html">SKIP</a></li>
+<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-8/igt@kms_vrr@max-min.html">SKIP</a></li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between IGT_7731 and IGTPW_10734:</p>
+<h3>New IGT tests (4)</h3>
+<ul>
+<li>
+<p>igt@kms_vrr@max-min:</p>
+<ul>
+<li>Statuses : 34 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@max-min@pipe-a-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [5.34, 5.55] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@max-min@pipe-a-dp-2:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [5.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@max-min@pipe-a-edp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [5.46] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10734 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_create@basic@smem:</p>
+<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7731/bat-arls-1/igt@gem_exec_create@basic@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-arls-1/igt@gem_exec_create@basic@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10194">i915#10194</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7731/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10112">i915#10112</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flip-basic:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-rkl-11600/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +2 other tests skip</li>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-atsm-1/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6078">i915#6078</a>) +6 other tests skip</li>
+<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-cfl-guc/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-jsl-3/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-9/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-kbl-x1275/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-cfl-8109u/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adln-1/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-mtlp-8/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8808">i915#8808</a>) +1 other test skip</li>
+<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-8/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-kbl-guc/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-jsl-1/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-tgl-1115g4/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flip-basic-fastset:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-pnv-d510/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg1-7/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9906">i915#9906</a>) +2 other tests skip</li>
+<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-jsl-3/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9906">i915#9906</a>) +2 other tests skip</li>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-glk-j4005/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-11/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9906">i915#9906</a>) +2 other tests skip</li>
+<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-kbl-7567u/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adln-1/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9906">i915#9906</a>) +1 other test skip</li>
+<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-ivb-3770/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-elk-e7500/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-rplp-1/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9906">i915#9906</a>) +1 other test skip</li>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-tgl-1115g4/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9906">i915#9906</a>) +2 other tests skip</li>
+<li>bat-arls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-arls-1/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8808">i915#8808</a>) +5 other tests skip</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-mtlp-6/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10295">i915#10295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flipline:</p>
+<ul>
+<li>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-skl-guc/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-14/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +2 other tests skip</li>
+<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adlp-6/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +1 other test skip</li>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-rplp-1/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@max-min (NEW):</p>
+<ul>
+<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-ilk-650/igt@kms_vrr@max-min.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-bsw-n3050/igt@kms_vrr@max-min.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-mtlp-6/igt@kms_vrr@max-min.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@negative-basic:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-kbl-2/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-skl-6600u/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-apl-guc/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg1-7/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +2 other tests skip</li>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-11/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +2 other tests skip</li>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adlp-9/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@seamless-rr-switch-drrs:</p>
+<ul>
+<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-cfl-8700k/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-blb-e6850/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-14/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9906">i915#9906</a>) +2 other tests skip</li>
+<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-bsw-nick/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 other tests skip</li>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/fi-rkl-11600/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9906">i915#9906</a>) +2 other tests skip</li>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-9/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9906">i915#9906</a>) +2 other tests skip</li>
+<li>bat-arls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-arls-2/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8808">i915#8808</a>) +2 other tests skip</li>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-mtlp-8/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8808">i915#8808</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9906">i915#9906</a>) +2 other tests skip</li>
+<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-dg2-8/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9906">i915#9906</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@seamless-rr-switch-vrr:</p>
+<ul>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adlp-9/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9906">i915#9906</a>) +1 other test skip</li>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-jsl-1/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9906">i915#9906</a>) +2 other tests skip</li>
+<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-adlp-6/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9906">i915#9906</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_exec_fence@basic-busy@ccs0:<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7731/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10194">i915#10194</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7731 -&gt; IGTPW_10734</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14344: c815c7fa9257eb8ff4433c43058dd292b16347eb @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10734: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10734/index.html<br />
+  IGT_7731: 17f897a81868fb35c6a7033a8b07256659742248 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_vrr@max-min</p>
+
+</body>
+</html>
+
+--===============0068910886164657700==--
