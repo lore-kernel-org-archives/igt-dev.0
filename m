@@ -4,71 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B730C54E56
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 21:14:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8F3DC54E49
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 21:14:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7184910F2A2;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1A04010F2A3;
 	Mon, 26 Feb 2024 21:14:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="M484LeDE";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="CBDDH6cr";
 	dkim-atps=neutral
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2081.outbound.protection.outlook.com [40.107.243.81])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E87F410F297
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2063.outbound.protection.outlook.com [40.107.237.63])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7713710F2A0
  for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 21:14:47 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HRXlpziEmmuR2BpnXeLrQOBI8clY914N8cuKvor+D3VehYX4cZEfdjhmk4S59Uc+S5sHD4xBBeND1msCPxNFTOnDdWNmQGOyMe2eZQMuVu/1D9SxIx96f1PIDq+87t9MvS3gcvRAoya+G8u5ggcadHXslLyZnv3Te7nYc+mJcVMau+iv9eQfWJpX4/fH5e4XYYlqcHAOkaTyjX6aMvoufDdAR8bBd8wvcMjmlnxJlbVilOxbVdvk7dYIl8VDJJjMX0n/EcHersa6ZYnnhGeIEvMWJma3+HiClUqoFar/1fOFRepO8EpOIHej/obysxGYws9rnePz5woj0Btd0d+HIg==
+ b=WYbB4EP/o+QfFXmOPjPXygLipJCWxknJY3s4kg1PldtFHP6xb29X1YwDmTnTfUnJ95XEg4XuuH66FCuWoBEmt1oA2TZTP9g53Q5uFLDaJGSFQC4wi5SwQ301lm4ZE/F4ua94HLJdP92bVk/UY4BioculOETAaJhWpnWXg9W00rVieRD7Kc6Z3s7ZhRc0qC1xDOp3aVxf6lrq1aEG0yuFztI5G/K3BsQsmC7qXQnm+HVkqwF+GVPFplqou8tXco3Ht+QCZNLD7QQy8rf/h+W26QCo40hc9fbgWu1jsxd1lPEEWI2U8IFbwGPV2jlPzjwJZE1IvtEs27ZZYOhHC0dxzw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j5MxeCISiEPivBgSJVoTzFH5abMihWTPRUGQLkwO0No=;
- b=QbJCbydiCQynbH21HXXXfzxIhMGGZeSqhrEDaghtCJfJN/sR8NT7Jjo7KF9VhuCnMvujSxFv7++uNft7IHunDJ/76RK+DRPEjtmPkP8CQLyR2hkGXxQ+jkjY6pe2Gx2M1F+s5/MA5wBmLnsyDI6dr3ABzDVpDVpCB6aTqeGapslt03nhRFUVzdP+A+uc22NA3j017hlIHiRsg2FKHtGoaqf26qnJHgYuQWtvGb16OC9xn7PzH5QjXjg4xEe5hO8K06soMldmXlYgYsOvVhH4xqIXzTMp8TSa2/qC6ckWk22IxAG/JXURU2UpPzRpNhQvDccaoKyjo2Sw/rCixftJJA==
+ bh=1/nPkB1PhoG0slyZGqFeih28qtt600ZhN3JNpv1UbKg=;
+ b=P8lCH4z01XCTOAnbhRxO8YJT94JNwJTOoRUL+UVeW3nyzpkFgTaSmrTUrSXOuYLD+ru3eXPNcLkR3lhWVRbZkAczYtZc6kyQOZJllEl/bQTYEE3UqvsKMJUI+q3by0Jt566iIaIp2So/J6Nfp9TdTIZgIe/jCiDdWxQXapfPeMkGKyNd7S4UvgB027kMymBxlM4ZGNYM79Ef6LrpKmE9/9YNWXpg+OziXVNXO3FEWNEXP+H//UQDoKw6+R8iMXtZ4yVTjeqPPjiDQHtkNq5FQ07Kj3xnh740aTYf0YhrO5QsP5g5s4RMQzB7DDMIMgmtU/o6gIsCaVmuoO7tHQcZag==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j5MxeCISiEPivBgSJVoTzFH5abMihWTPRUGQLkwO0No=;
- b=M484LeDESSTVJQS9KAxO8ZupgV+ipc6PrE4mS6RQZgO9RqQyjjNeAHPes+JZbch1b+LCreT9myCWsotJdOSRHBjKJEraBGMoLruMozvww8aOUqS19B7R9uJR0ZGSqP3w0/q2nKiB2CVF1U383m2f4a81+JYKSDKEKaBwtYPohG8=
-Received: from MN2PR16CA0003.namprd16.prod.outlook.com (2603:10b6:208:134::16)
- by DM6PR12MB4530.namprd12.prod.outlook.com (2603:10b6:5:2aa::19) with
+ bh=1/nPkB1PhoG0slyZGqFeih28qtt600ZhN3JNpv1UbKg=;
+ b=CBDDH6crhzjO7Ir91yD8aqgk1yuMBJAeLlJBBsmerrr6B7Ji3PH5CKC1ywF2qhYPcL7e7KsZVdGKbmSvTNmxkKhN3KqaqJ/Qf0vIt1emREqWCy5vFdhtdrKTnBIL2qGAXP6i2KnXA9U6DAf+6tN0QzMch/LVyQByBSIto3AKorw=
+Received: from SJ0PR03CA0257.namprd03.prod.outlook.com (2603:10b6:a03:3a0::22)
+ by DS0PR12MB9348.namprd12.prod.outlook.com (2603:10b6:8:1a0::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.34; Mon, 26 Feb
- 2024 21:14:46 +0000
-Received: from BL02EPF0001A105.namprd05.prod.outlook.com
- (2603:10b6:208:134:cafe::f1) by MN2PR16CA0003.outlook.office365.com
- (2603:10b6:208:134::16) with Microsoft SMTP Server (version=TLS1_2,
+ 2024 21:14:44 +0000
+Received: from DS2PEPF0000343A.namprd02.prod.outlook.com
+ (2603:10b6:a03:3a0:cafe::7b) by SJ0PR03CA0257.outlook.office365.com
+ (2603:10b6:a03:3a0::22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.49 via Frontend
- Transport; Mon, 26 Feb 2024 21:14:45 +0000
+ Transport; Mon, 26 Feb 2024 21:14:44 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL02EPF0001A105.mail.protection.outlook.com (10.167.241.137) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ DS2PEPF0000343A.mail.protection.outlook.com (10.167.18.37) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Mon, 26 Feb 2024 21:14:45 +0000
-Received: from SATLEXMB08.amd.com (10.181.40.132) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.7292.25 via Frontend Transport; Mon, 26 Feb 2024 21:14:44 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 26 Feb
- 2024 15:14:45 -0600
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB08.amd.com
- (10.181.40.132) with Microsoft SMTP Server (version=TLS1_2,
+ 2024 15:14:42 -0600
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 26 Feb
- 2024 13:14:44 -0800
+ 2024 15:14:41 -0600
 Received: from localhost.localdomain (10.180.168.240) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Mon, 26 Feb 2024 15:14:44 -0600
+ Transport; Mon, 26 Feb 2024 15:14:41 -0600
 From: Harry Wentland <harry.wentland@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-CC: Alex Hung <alex.hung@amd.com>, Harry Wentland <harry.wentland@amd.com>
-Subject: [RFC PATCH v5 31/32] test/kms_colorop: Add tests that exercise the 1D
- LUT colorops
-Date: Mon, 26 Feb 2024 16:14:15 -0500
-Message-ID: <20240226211416.100660-32-harry.wentland@amd.com>
+CC: Harry Wentland <harry.wentland@amd.com>
+Subject: [RFC PATCH v5 25/32] tests/kms_colorop: Add tests for PQ variants
+Date: Mon, 26 Feb 2024 16:14:09 -0500
+Message-ID: <20240226211416.100660-26-harry.wentland@amd.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240226211416.100660-1-harry.wentland@amd.com>
 References: <20240226211416.100660-1-harry.wentland@amd.com>
@@ -77,25 +76,25 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A105:EE_|DM6PR12MB4530:EE_
-X-MS-Office365-Filtering-Correlation-Id: efcc64fa-2476-42cd-c7bd-08dc370ff54e
+X-MS-TrafficTypeDiagnostic: DS2PEPF0000343A:EE_|DS0PR12MB9348:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4bbd418c-80c0-4255-2a2e-08dc370ff461
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: RzTWITq9Pemti/loVqIHEbArLr512a3n32ZTyNJ3uDR0NpqQVA1VxLe9MBzI2tGqF2zCdSJADutnjZnb2D9GIwlRBid6SuPy94zmAtg8neRO5Snf3YCR4y2Lq/yZpKZOLk0wkZwyAlYX/HgffKHtVtwpRQKO1CNcMNg/VnCpJiizh7OVo7QiMDLAAb8PmRFgLTl5s+YrEs81uGdI76m/ULCyXSfbrUq3q1DbsRMHxFcPMYdQAFeUmhuuqs+6KfH52G5+1+y9wHhGXkbImeIppKxcwe6coHQc9Clnwzp02jOeGYPKETMHqx4/WeFDGGA78awUIj/ltbqWIhopIG4jAag7A8E9hRG4/JGuAigS1inQqODR0WKOhUQBEEg2CUkMKpZSey/Vov9UO18R8EuQny+HsaXTE/ej3oGZ6agyMArB21P/IFljN0DYXNCaLpk3vrMCKnSyBJBjE8wpxxccte4uBl8SHNu4la92Dbaay0iylpWjMDAx/BG0WnUOLpQ/vLBUf6izWdxj5zyw4Gx9s1EJwYRSo+XQGfiZsIxj2Dozv630iENW8V6JMsXvIe4y6Mrbb5V8ch8m+9H5t7fCb8Xw5CwLR5ypwZIASunpUd2vs7pTN7VOoWCU+AnCIGPxvdv6aqz7gXbjzFlNdT3WCBf0bRfjoFXdn3FOJGWoTk9fz3IZcvvzYSCAtqMwvOYLMhwKiQd6HRoJGHv1nYqcakrPfjpimFRjIxseLtcaH4I+FAoXEso+iAtQl/g/dDyI
+X-Microsoft-Antispam-Message-Info: i/Q8ge4quYmmLj4FF4ANn5X/P5yqfzTz2mFmvsRHNubXeGOS10CotYkAneNA0IsnlqFDG9KBiNL0tFGYvoe/Mhoptv1ttwWA5+Q6U9yhF1A17bERke8mR3B9DTUBu7LPuqOhy7jepDkVzUbJ3njkxh9wmlzNF3hNj7XLRjm4grG7LTm+k2lkI6/yjrIDtfOolC4L2OgEUUF1nFVARiQeM7dbAk0kG7mNsBBS/vHNjEDgvR4P1NAzV3CKLNjDa1gJWB/QAAG3DIZA4duvJig42rHlT41QPI8qz+MRQyuop7HiWKGOm2tOkGPbhlAWiuZmNNPEAfr95jkGXJt9CrxggasTQksgcX1rUthucT6KCINsGBQLiNOQa+QSRzj2GhPP7wByTY/GGj6LqCCF/BF5Xp/r5B7BRK6e2J7y6M3iEZ8e1YkaS4leitVal1eTMJg89BMWnTZk3aK5WZmBPMWXbkAlBeGaE2m96OihRLITN0N+ZLc+IPd16d6QABfw75ESmc2Md/GOhZVCCHHWEyRBGajlho1rQmNY7e0LSW3o3lyVLJVNUaZ7BSZzFAlbTBqQoj4gIxdzOtum2Hy3CFuEUMAhG5+2zboICX1UnBKXifMkWGxOhVTRbWqVbZDG0Mu/l2znOmOZH9Tk8HOVjU+XEL5F97Mk65fv9OYsGnawACwQOUAsYc+Icvj2ODIaFpPaPT4HunRN1MSBSpjgd53nhPPqAo0LOy4C0CtvwFhIN4ARjSSH9iPzUWrXJmqeuLo9
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
  SFS:(13230031)(36860700004); DIR:OUT; SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 21:14:45.8917 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: efcc64fa-2476-42cd-c7bd-08dc370ff54e
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 21:14:44.3032 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4bbd418c-80c0-4255-2a2e-08dc370ff461
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A105.namprd05.prod.outlook.com
+ Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF0000343A.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4530
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9348
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,127 +110,157 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Alex Hung <alex.hung@amd.com>
+Add tests exercising the PQ EOTF and its inverse, both
+for the [0.0, 1.0] variant as well as the [0.0, 125.0]
+scaled variant.
 
-We'll use the sRGB EOTF and its inverse for convenience.
-
-Signed-off-by: Alex Hung <alex.hung@amd.com>
 Signed-off-by: Harry Wentland <harry.wentland@amd.com>
 ---
- tests/kms_colorop.c | 35 +++++++++++++++++++++++++++++++++++
- tests/kms_colorop.h | 15 +++++++++++++++
- 2 files changed, 50 insertions(+)
+ tests/kms_colorop.c | 32 ++++++++++++++-----------
+ tests/kms_colorop.h | 57 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 76 insertions(+), 13 deletions(-)
 
 diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
-index 83614fc08d31..8ce5a87f0f3f 100644
+index b7247983a4cf..dccc1772bfe3 100644
 --- a/tests/kms_colorop.c
 +++ b/tests/kms_colorop.c
-@@ -50,6 +50,8 @@
-  * @srgb_inv_eotf:              	sRGB Inverse EOTF
-  * @srgb_eotf-srgb_inv_eotf:    	sRGB EOTF -> sRGB Inverse EOTF
-  * @srgb_eotf-srgb_inv_eotf-srgb_eotf:  sRGB EOTF -> sRGB Inverse EOTF -> sRGB EOTF
-+ * @srgb_inv_eotf_lut:              	sRGB Inverse EOTF Custom LUT
-+ * @srgb_inv_eotf_lut-srgb_eotf_lut:	sRGB Inverse EOTF Custom LUT -> sRGB EOTF Custom LUT
-  * @bt2020_inv_oetf:			BT.2020 Inverse OETF
-  * @bt2020_oetf:			BT.2020 OETF
-  * @bt2020_inv_oetf-bt2020_oetf:	BT.2020 Inverse OETF > BT.2020 OETF
-@@ -231,6 +233,9 @@ static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_
+@@ -49,6 +49,13 @@
+  * @srgb_eotf:                  sRGB EOTF
+  * @srgb_inv_eotf:              sRGB Inverse EOTF
+  * @srgb_eotf-srgb_inv_eotf:    sRGB EOTF -> sRGB Inverse EOTF
++ * @pq_eotf:                    PQ EOTF
++ * @pq_inv_eotf:                PQ Inverse EOTF
++ * @pq_eotf-pq_inv_eotf:        PQ EOTF -> PQ Inverse EOTF
++ * @pq_125_eotf:                PQ EOTF for [0.0, 125.0] optical range
++ * @pq_125_inv_eotf:            PQ Inverse EOTF for [0.0, 125.0] optical range
++ * @pq_125_eotf-pq_125_inv_eotf: PQ EOTF -> PQ Inverse EOTF with [0.0, 125.0] optical range
++ * @pq_125_eotf-pq_125_inv_eotf-pq_125_eotf: PQ EOTF -> PQ Inverse EOTF -> PQ EOTF with [0.0, 125.0] optical range
+  * @ctm_3x4_50_desat:		3x4 matrix doing a 50% desaturation
+  * @ctm_3x4_overdrive:		3x4 matrix overdring all values by 50%
+  * @ctm_3x4_oversaturate:	3x4 matrix oversaturating values
+@@ -213,7 +220,10 @@ static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_
+ {
+ 	switch (desired->type) {
+ 	case KMS_COLOROP_ENUMERATED_LUT1D:
+-		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_CURVE);
++		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_CURVE &&
++		    igt_colorop_try_prop_enum(colorop, IGT_COLOROP_CURVE_1D_TYPE, kms_colorop_lut1d_tf_names[desired->enumerated_lut1d_info.tf]))
++			return true;
++		return false;
  	case KMS_COLOROP_CTM_3X4:
  		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_CTM_3X4);
  	case KMS_COLOROP_CUSTOM_LUT1D:
-+		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_LUT)
-+			return true;
-+		return false;
- 	case KMS_COLOROP_LUT3D:
- 	default:
- 		return false;
-@@ -298,9 +303,33 @@ static igt_colorop_t *get_color_pipeline(igt_display_t *display,
- 	return colorop;
- }
- 
-+static void fill_custom_1dlut(igt_display_t *display, kms_colorop_t *colorop)
-+{
-+	uint64_t lut_size = igt_colorop_get_prop(display, colorop->colorop, IGT_COLOROP_SIZE);
-+	igt_pixel_t pixel;
-+	float index;
-+	int i;
-+
-+	for (i = 0; i < lut_size; i++) {
-+		index = i / (float) lut_size;
-+
-+		pixel.r = index;
-+		pixel.g = index;
-+		pixel.b = index;
-+
-+		colorop->transform(&pixel);
-+
-+		colorop->lut1d->lut[i].red = pixel.r * 0xffff;
-+		colorop->lut1d->lut[i].green = pixel.g * 0xffff;
-+		colorop->lut1d->lut[i].blue = pixel.b * 0xffff;
-+	}
-+}
-+
- static void set_colorop(igt_display_t *display,
- 			kms_colorop_t *colorop)
- {
-+	uint64_t lut_size = 0;
-+
- 	igt_assert(colorop->colorop);
- 	igt_colorop_set_prop_value(colorop->colorop, IGT_COLOROP_BYPASS, 0);
- 
-@@ -313,6 +342,10 @@ static void set_colorop(igt_display_t *display,
- 		igt_colorop_set_ctm_3x4(display, colorop->colorop, colorop->matrix_3x4);
+@@ -293,18 +303,7 @@ static void set_colorop(igt_display_t *display,
+ 	/* TODO set to desired value from kms_colorop_t */
+ 	switch (colorop->type) {
+ 	case KMS_COLOROP_ENUMERATED_LUT1D:
+-		switch (colorop->enumerated_lut1d_info.tf) {
+-		case KMS_COLOROP_LUT1D_SRGB_EOTF:
+-			igt_colorop_set_prop_enum(colorop->colorop, IGT_COLOROP_CURVE_1D_TYPE, "sRGB EOTF");
+-			break;
+-		case KMS_COLOROP_LUT1D_SRGB_INV_EOTF:
+-			igt_colorop_set_prop_enum(colorop->colorop, IGT_COLOROP_CURVE_1D_TYPE, "sRGB Inverse EOTF");
+-			break;
+-		case KMS_COLOROP_LUT1D_PQ_EOTF:
+-		case KMS_COLOROP_LUT1D_PQ_INV_EOTF:
+-		default:
+-			igt_fail(IGT_EXIT_FAILURE);
+-		}
++		igt_colorop_set_prop_enum(colorop->colorop, IGT_COLOROP_CURVE_1D_TYPE, kms_colorop_lut1d_tf_names[colorop->enumerated_lut1d_info.tf]);
  		break;
- 	case KMS_COLOROP_CUSTOM_LUT1D:
-+		fill_custom_1dlut(display, colorop);
-+		lut_size = igt_colorop_get_prop(display, colorop->colorop, IGT_COLOROP_SIZE);
-+		igt_colorop_set_custom_1dlut(display, colorop->colorop, colorop->lut1d, lut_size * sizeof(struct drm_color_lut));
-+		break;
- 	case KMS_COLOROP_LUT3D:
- 	default:
- 		igt_fail(IGT_EXIT_FAILURE);
-@@ -494,6 +527,8 @@ igt_main
+ 	case KMS_COLOROP_CTM_3X4:
+ 		igt_colorop_set_ctm_3x4(display, colorop->colorop, colorop->matrix_3x4);
+@@ -490,6 +489,13 @@ igt_main
+ 		{ { &kms_colorop_srgb_eotf, NULL }, "srgb_eotf" },
  		{ { &kms_colorop_srgb_inv_eotf, NULL }, "srgb_inv_eotf" },
  		{ { &kms_colorop_srgb_eotf, &kms_colorop_srgb_inv_eotf, NULL }, "srgb_eotf-srgb_inv_eotf" },
- 		{ { &kms_colorop_srgb_eotf, &kms_colorop_srgb_inv_eotf, &kms_colorop_srgb_eotf_2, NULL }, "srgb_eotf-srgb_inv_eotf-srgb_eotf" },
-+		{ { &kms_colorop_srgb_inv_eotf_lut, NULL }, "srgb_inv_eotf_lut" },
-+		{ { &kms_colorop_srgb_inv_eotf_lut, &kms_colorop_srgb_eotf_lut, NULL }, "srgb_inv_eotf_lut-srgb_eotf_lut" },
- 		{ { &kms_colorop_bt2020_inv_oetf, NULL }, "bt2020_inv_oetf" },
- 		{ { &kms_colorop_bt2020_oetf, NULL }, "bt2020_oetf" },
- 		{ { &kms_colorop_bt2020_inv_oetf, &kms_colorop_bt2020_oetf, NULL }, "bt2020_inv_oetf-bt2020_oetf" },
++		{ { &kms_colorop_pq_eotf, NULL }, "pq_eotf" },
++		{ { &kms_colorop_pq_inv_eotf, NULL }, "pq_inv_eotf" },
++		{ { &kms_colorop_pq_eotf, &kms_colorop_pq_inv_eotf, NULL }, "pq_eotf-pq_inv_eotf" },
++		{ { &kms_colorop_pq_125_eotf, NULL }, "pq_125_eotf" },
++		{ { &kms_colorop_pq_125_inv_eotf, NULL }, "pq_125_inv_eotf" },
++		{ { &kms_colorop_pq_125_eotf, &kms_colorop_pq_125_inv_eotf, NULL }, "pq_125_eotf-pq_125_inv_eotf" },
++		{ { &kms_colorop_pq_125_eotf, &kms_colorop_pq_125_inv_eotf, &kms_colorop_pq_125_eotf_2, NULL }, "pq_125_eotf-pq_125_inv_eotf-pq_125_eotf" },
+ 		{ { &kms_colorop_ctm_3x4_50_desat, NULL }, "ctm_3x4_50_desat" },
+ 		{ { &kms_colorop_ctm_3x4_overdrive, NULL }, "ctm_3x4_overdrive" },
+ 		{ { &kms_colorop_ctm_3x4_oversaturate, NULL }, "ctm_3x4_oversaturate" },
 diff --git a/tests/kms_colorop.h b/tests/kms_colorop.h
-index 7b98198f6430..13d15ea6637d 100644
+index 30278ca4edbd..3188e6db4300 100644
 --- a/tests/kms_colorop.h
 +++ b/tests/kms_colorop.h
-@@ -71,6 +71,7 @@ typedef struct kms_colorop {
+@@ -44,8 +44,20 @@ typedef enum kms_colorop_lut1d_tf {
+ 	KMS_COLOROP_LUT1D_SRGB_INV_EOTF,
+ 	KMS_COLOROP_LUT1D_PQ_EOTF,
+ 	KMS_COLOROP_LUT1D_PQ_INV_EOTF,
++	KMS_COLOROP_LUT1D_PQ_125_EOTF,
++	KMS_COLOROP_LUT1D_PQ_125_INV_EOTF,
++	KMS_COLOROP_LUT1D_NUM_ENUMS
+ } kms_colorop_lut1d_tf_t;
  
- 	union {
- 		kms_colorop_enumerated_lut1d_info_t enumerated_lut1d_info;
-+		igt_1dlut_t *lut1d;
- 		const igt_matrix_3x4_t *matrix_3x4;
- 	};
- 
-@@ -110,6 +111,20 @@ kms_colorop_t kms_colorop_srgb_inv_eotf = {
++const char * const kms_colorop_lut1d_tf_names[KMS_COLOROP_LUT1D_NUM_ENUMS] = {
++	[KMS_COLOROP_LUT1D_SRGB_EOTF] = "sRGB EOTF",
++	[KMS_COLOROP_LUT1D_SRGB_INV_EOTF] = "sRGB Inverse EOTF",
++	[KMS_COLOROP_LUT1D_PQ_EOTF] = "PQ EOTF",
++	[KMS_COLOROP_LUT1D_PQ_INV_EOTF] = "PQ Inverse EOTF",
++	[KMS_COLOROP_LUT1D_PQ_125_EOTF] = "PQ 125 EOTF",
++	[KMS_COLOROP_LUT1D_PQ_125_INV_EOTF] = "PQ 125 Inverse EOTF",
++};
++
+ typedef struct kms_colorop_enumerated_lut1d_info {
+ 	kms_colorop_lut1d_tf_t tf;
+ } kms_colorop_enumerated_lut1d_info_t;
+@@ -85,6 +97,51 @@ kms_colorop_t kms_colorop_srgb_inv_eotf = {
  	.transform = &igt_color_srgb_inv_eotf
  };
  
-+kms_colorop_t kms_colorop_srgb_inv_eotf_lut = {
-+	.type = KMS_COLOROP_CUSTOM_LUT1D,
-+	.lut1d = &igt_1dlut_srgb_inv_eotf,
-+	.name = "srgb_inv_eotf_lut",
-+	.transform = &igt_color_srgb_inv_eotf
++kms_colorop_t kms_colorop_pq_eotf = {
++	.type = KMS_COLOROP_ENUMERATED_LUT1D,
++	.enumerated_lut1d_info = {
++		.tf = KMS_COLOROP_LUT1D_PQ_EOTF
++	},
++	.name = "pq_eotf",
++	.transform = &igt_color_pq_eotf
 +};
 +
-+kms_colorop_t kms_colorop_srgb_eotf_lut = {
-+	.type = KMS_COLOROP_CUSTOM_LUT1D,
-+	.lut1d = &igt_1dlut_srgb_eotf,
-+	.name = "srgb_eotf_lut",
-+	.transform = &igt_color_srgb_eotf
++kms_colorop_t kms_colorop_pq_inv_eotf = {
++	.type = KMS_COLOROP_ENUMERATED_LUT1D,
++	.enumerated_lut1d_info = {
++		.tf = KMS_COLOROP_LUT1D_PQ_INV_EOTF
++	},
++	.name = "pq_inv_eotf",
++	.transform = &igt_color_pq_inv_eotf
 +};
 +
- kms_colorop_t kms_colorop_bt2020_inv_oetf = {
- 	.type = KMS_COLOROP_ENUMERATED_LUT1D,
- 	.enumerated_lut1d_info = {
++kms_colorop_t kms_colorop_pq_125_eotf = {
++	.type = KMS_COLOROP_ENUMERATED_LUT1D,
++	.enumerated_lut1d_info = {
++		.tf = KMS_COLOROP_LUT1D_PQ_125_EOTF
++	},
++	.name = "pq_125_eotf",
++	.transform = &igt_color_pq_125_eotf
++};
++
++kms_colorop_t kms_colorop_pq_125_eotf_2 = {
++	.type = KMS_COLOROP_ENUMERATED_LUT1D,
++	.enumerated_lut1d_info = {
++		.tf = KMS_COLOROP_LUT1D_PQ_125_EOTF
++	},
++	.name = "pq_125_eotf",
++	.transform = &igt_color_pq_125_eotf
++};
++
++kms_colorop_t kms_colorop_pq_125_inv_eotf = {
++	.type = KMS_COLOROP_ENUMERATED_LUT1D,
++	.enumerated_lut1d_info = {
++		.tf = KMS_COLOROP_LUT1D_PQ_125_INV_EOTF
++	},
++	.name = "pq_125_inv_eotf",
++	.transform = &igt_color_pq_125_inv_eotf
++};
++
+ kms_colorop_t kms_colorop_ctm_3x4_50_desat = {
+ 	.type = KMS_COLOROP_CTM_3X4,
+ 	.matrix_3x4 = &igt_matrix_3x4_50_desat,
 -- 
 2.44.0
 
