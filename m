@@ -4,27 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99434C5478C
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 19:42:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA51AC5478C
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 20:22:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 00AF810E7C2;
-	Mon, 26 Feb 2024 19:42:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3D31210ED21;
+	Mon, 26 Feb 2024 20:22:32 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1CBD810E7C9;
- Mon, 26 Feb 2024 19:42:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8991810ED1C;
+ Mon, 26 Feb 2024 20:22:30 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3506302179785511859=="
+ boundary="===============8556125923450309981=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/rendercopy=3A_Fix_Xe2_pixe?=
- =?utf-8?q?l_shader_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_benchmarks/kms=5Ffb=5Fstress?=
+ =?utf-8?q?=3A_Add_command-line_options_to_change_the_planes_and_writeback_f?=
+ =?utf-8?q?ormats?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Arthur Grillo" <arthurgrillo@riseup.net>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 26 Feb 2024 19:42:51 -0000
-Message-ID: <170897657111.299097.6470280152815659540@8e613ede5ea5>
+Date: Mon, 26 Feb 2024 20:22:30 -0000
+Message-ID: <170897895056.318338.18204653523625137876@8e613ede5ea5>
 X-Patchwork-Hint: ignore
-References: <20240226114511.51753-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20240226114511.51753-1-zbigniew.kempczynski@intel.com>
+References: <20240226-kms_fb_stress-dev-v1-0-1c14942b1244@riseup.net>
+In-Reply-To: <20240226-kms_fb_stress-dev-v1-0-1c14942b1244@riseup.net>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,82 +42,66 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3506302179785511859==
+--===============8556125923450309981==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/rendercopy: Fix Xe2 pixel shader (rev2)
-URL   : https://patchwork.freedesktop.org/series/130379/
-State : success
+Series: benchmarks/kms_fb_stress: Add command-line options to change the planes and writeback formats
+URL   : https://patchwork.freedesktop.org/series/130399/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7731_BAT -> XEIGTPW_10735_BAT
+CI Bug Log - changes from XEIGT_7731_BAT -> XEIGTPW_10737_BAT
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with XEIGTPW_10737_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_10737_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
   
 
-Participating hosts (4 -> 4)
+Participating hosts (4 -> 0)
 ------------------------------
 
-  No changes in participating hosts
+  ERROR: It appears as if the changes made in XEIGTPW_10737_BAT prevented too many machines from booting.
 
-Known issues
-------------
+  Missing    (4): bat-pvc-2 bat-dg2-oem2 bat-atsm-2 bat-adlp-7 
 
-  Here are the changes found in XEIGTPW_10735_BAT that come from known issues:
 
-### IGT changes ###
+Changes
+-------
 
-#### Possible fixes ####
-
-  * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
-    - bat-dg2-oem2:       [DMESG-WARN][1] ([Intel XE#1009]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10735/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
-
-  * igt@xe_exec_threads@threads-basic:
-    - bat-dg2-oem2:       [DMESG-WARN][3] ([Intel XE#1232]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10735/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html
-
-  * igt@xe_live_ktest@xe_migrate:
-    - bat-dg2-oem2:       [SKIP][5] ([Intel XE#1192]) -> [PASS][6] +2 other tests pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10735/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html
-
-  
-  [Intel XE#1009]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009
-  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
-  [Intel XE#1232]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1232
+  No changes found
 
 
 Build changes
 -------------
 
-  * IGT: IGT_7731 -> IGTPW_10735
-  * Linux: xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5 -> xe-853-f1086cb1e2afe822e402ae390bedfdc734a9eea6
+  * IGT: IGT_7731 -> IGTPW_10737
+  * Linux: xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5 -> xe-854-c815c7fa9257eb8ff4433c43058dd292b16347eb
 
-  IGTPW_10735: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10735/index.html
+  IGTPW_10737: 10737
   IGT_7731: 17f897a81868fb35c6a7033a8b07256659742248 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5: 3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5
-  xe-853-f1086cb1e2afe822e402ae390bedfdc734a9eea6: f1086cb1e2afe822e402ae390bedfdc734a9eea6
+  xe-854-c815c7fa9257eb8ff4433c43058dd292b16347eb: c815c7fa9257eb8ff4433c43058dd292b16347eb
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10735/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10737/index.html
 
---===============3506302179785511859==
+--===============8556125923450309981==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -136,56 +121,39 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/rendercopy: Fix Xe2 pixel shader (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130379/">https://patchwork.freedesktop.org/series/130379/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>benchmarks/kms_fb_stress: Add command-line options to change the planes and writeback formats</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130399/">https://patchwork.freedesktop.org/series/130399/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10735/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10735/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10737/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10737/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7731_BAT -&gt; XEIGTPW_10735_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_7731_BAT -&gt; XEIGTPW_10737_BAT</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10735_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009">Intel XE#1009</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10735/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_threads@threads-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1232">Intel XE#1232</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10735/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10735/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-</ul>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_10737_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_10737_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (4 -&gt; 0)</h2>
+<p>ERROR: It appears as if the changes made in XEIGTPW_10737_BAT prevented too many machines from booting.</p>
+<p>Missing    (4): bat-pvc-2 bat-dg2-oem2 bat-atsm-2 bat-adlp-7 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_7731 -&gt; IGTPW_10735</li>
-<li>Linux: xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5 -&gt; xe-853-f1086cb1e2afe822e402ae390bedfdc734a9eea6</li>
+<li>IGT: IGT_7731 -&gt; IGTPW_10737</li>
+<li>Linux: xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5 -&gt; xe-854-c815c7fa9257eb8ff4433c43058dd292b16347eb</li>
 </ul>
-<p>IGTPW_10735: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10735/index.html<br />
+<p>IGTPW_10737: 10737<br />
   IGT_7731: 17f897a81868fb35c6a7033a8b07256659742248 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5: 3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5<br />
-  xe-853-f1086cb1e2afe822e402ae390bedfdc734a9eea6: f1086cb1e2afe822e402ae390bedfdc734a9eea6</p>
+  xe-854-c815c7fa9257eb8ff4433c43058dd292b16347eb: c815c7fa9257eb8ff4433c43058dd292b16347eb</p>
 
 </body>
 </html>
 
---===============3506302179785511859==--
+--===============8556125923450309981==--
