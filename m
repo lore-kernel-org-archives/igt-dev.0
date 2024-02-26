@@ -4,57 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 129A8C48BF6
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 10:59:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10253C54E49
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 11:04:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 97E9510F068;
-	Mon, 26 Feb 2024 10:58:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 98C8810EE9A;
+	Mon, 26 Feb 2024 11:04:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Mbs/pLlH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B89V4Rm2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A14F10F04C
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 10:58:58 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 17BAB10EE9A
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 11:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708945138; x=1740481138;
+ t=1708945494; x=1740481494;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=cQKSOumV7avDo/32D3UThuwTHTgkJ2i1nc0PZmItebg=;
- b=Mbs/pLlHd5yQnwngcUeOzVOLcImcNg81mVP0bD6tGnOovikg5XmpnYba
- K8+s9YSDqgfjtS/2dbwtdlKT7E5cm4/Z6saiJbc3+WPsHrJfcD+SoBUR9
- qmnIBtVBDeGT8To0DhulX/2WFa37ytpawW6r9l3qsfPm1oT1IrkmD+jch
- NVIWAggcXtY//gHgyiCaSkIVW3IAGgsqh6qyeYDNIKx1hMIFOAY8dtlJu
- ZJZhf6IWsipmlU1pZOiIv6E+eQOpKvmH2GSjEdA/Zm4AEM8dIZtvuc6or
- wNd0ZweMobYDt6xGQl5jAEm/UWHbLUAW9As9AWUxWsjq+IWE+HbraMeMq g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="3092765"
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="3092765"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 02:58:58 -0800
+ bh=qBoJHmzr5hHQpgARID9KCc7qsod5fyD2CCaxDGVW1SE=;
+ b=B89V4Rm2HVI6hXTh6n+NfuZAmgZyE8UuBMXLE2MsUhacTBV0gxK1RWPp
+ WpGeehCauC6wRyvd1bnVqLrH91YvUFMi84Qk8V4oDltigJvgexaFU/Dn8
+ Q9kwkJqdr2AtU493ifIlrhWAHt8ixzFQyZBgtEH3LT++S2WjON5fWiOWB
+ ccy16tPxV5AT5OJ9mKDDL8u/qExrBWrjVwM/Pn5xJdwanr2OBRaJlQOW7
+ y3aDvmUkwCcNPp7hNBIMGIMgpIomCrIECaAEs8loiZo0t+Vs8oFN9eB+7
+ yynA4PswhZ4wkClWXDpEaHGD8jrRGMkCCNOErkowI6sfEA3PAFbdNTfGy Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="14657064"
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="14657064"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 03:04:54 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="6662897"
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="29812620"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2024 02:58:56 -0800
-Date: Mon, 26 Feb 2024 11:58:52 +0100
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2024 03:04:52 -0800
+Date: Mon, 26 Feb 2024 12:04:49 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v2 2/4] scripts/igt_doc.py: ignore "all" when
- producing testlists
-Message-ID: <20240226105852.s5cp2quk3fxyrfx4@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH i-g-t v2 3/4] scripts/igt_doc.py: fix trivial case handling
+Message-ID: <20240226110449.hfznb3eeoh56a2ap@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20240222114741.196042-1-mauro.chehab@linux.intel.com>
- <20240222114741.196042-3-mauro.chehab@linux.intel.com>
+ <20240222114741.196042-4-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240222114741.196042-3-mauro.chehab@linux.intel.com>
+In-Reply-To: <20240222114741.196042-4-mauro.chehab@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,47 +68,109 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Mauro,
-On 2024-02-22 at 12:45:26 +0100, Mauro Carvalho Chehab wrote:
+On 2024-02-22 at 12:45:27 +0100, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> The meaning of "all" is an special case for blocklists, meant to be
-------------------------- ^^
-s/an/a/
+> The check is done too late, causing it to not do what it was
+> expected: instead of checking for the gpu_set, it shall instead
+----------- ^^^^^^ -------------------------------------- ^^^^^^^
 
-> used only when some block lists are to be applied everywhere. It is
-> not a testlist itself.
-> 
-> So, exclude it as a different kind of GPU, as the default case is
-> already covered.
+imho better to drop second "instead" word:
+
+... expected: instead of checking for the gpu_set, it shall check ...
+
+> check if the subnames dict is empty.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  scripts/igt_doc.py | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-> index 7404e3d0934c..7985cdd5ac5e 100755
-> --- a/scripts/igt_doc.py
-> +++ b/scripts/igt_doc.py
-> @@ -229,6 +229,10 @@ class IntelciTestlist:
->              for gpu, names in gpus.items():
->                  gpu = re.sub(r"[\W_]+", "-", gpu).lower()
->  
-> +                # "all" is used used only as a default value for unlisted GPUs
------------------------------ ^^^^ ^^^^
-Repeated word "used",
-s/used used/used/
-
-With that fixed:
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-> +                if gpu == "all":
-> +                    continue
+> ---
+>  scripts/igt_doc.py | 37 +++++++++++++++++--------------------
+>  1 file changed, 17 insertions(+), 20 deletions(-)
+> 
+> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+> index 7985cdd5ac5e..2417081b80be 100755
+> --- a/scripts/igt_doc.py
+> +++ b/scripts/igt_doc.py
+> @@ -20,6 +20,7 @@ from test_list import TestList
+>  class IgtTestList(TestList):
+>      def __init__(self, *args, **kwargs):
+>          self.split_regex = re.compile(r",\s*")
+> +        self.default_gpu = "default"
+>  
+>          super().__init__(*args, **kwargs)
+>  
+> @@ -122,30 +123,33 @@ class IgtTestList(TestList):
+>          # Create a testlist dictionary
+>  
+>          testlists = {}
+> -        default_gpu = "default"
+>  
+>          for driver, run_types in tests_per_list.items():
+>              testlists[driver] = {}
+> +            testlists[driver][self.default_gpu] = {}
 > +
->                  dname = os.path.join(driver_path, gpu)
->                  try:
->                      os.makedirs(dname)
+>              for run_type, subnames in run_types.items():
+> -
+>                  if not run_type:
+>                      run_type = "other"
+>  
+> +                if run_type not in testlists[driver][self.default_gpu]:
+> +                    testlists[driver][self.default_gpu][run_type] = set()
+> +
+>                  for subname, gpus in subnames.items():
+>                      # Globally blocklisted values: ignore subtest
+>                      if "all" in tests_per_list[driver][run_type][subname]:
+>                          continue
+>  
+> -                    # Trivial case: fields not defined: add subtest
+> -                    if not gpu_set:
+> -                        if default_gpu not in testlists[driver]:
+> -                            testlists[driver][default_gpu] = {}
+> +                    # If GPU field is used, default is to block list
+> +                    default_gpu_value = True
+> +                    for gpu, value in gpus.items():
+> +                        if value:
+> +                            default_gpu_value = False
+> +                            break
+>  
+> -                        if run_type not in testlists[driver][default_gpu]:
+> -                            testlists[driver][default_gpu][run_type] = set()
+> -
+> -                        testlists[driver][default_gpu][run_type].add(subname)
+> -                        continue
+> +                    # Fill default values
+> +                    if default_gpu_value:
+> +                        testlists[driver][self.default_gpu][run_type].add(subname)
+>  
+>                      if not gpus:
+>                          for gpu in gpu_set:
+> @@ -163,13 +167,6 @@ class IgtTestList(TestList):
+>                              testlists[driver][gpu][run_type].add(subname)
+>                          continue
+>  
+> -                    # If GPU field is used, default is to block list
+> -                    default_gpu_value = True
+> -                    for gpu, value in gpus.items():
+> -                        if value:
+> -                            default_gpu_value = False
+> -                            break
+> -
+>                      for gpu in gpu_set:
+>                          value = tests_per_list[driver][run_type][subname].get(gpu, default_gpu_value)
+>  
+> @@ -184,8 +181,8 @@ class IgtTestList(TestList):
+>  
+>                          testlists[driver][gpu][run_type].add(subname)
+>  
+> -        if len(gpu_set) == 0:
+> -            gpu_set.add(default_gpu)
+> +        # Always create a default GPU
+> +        gpu_set.add(self.default_gpu)
+>  
+>          return (testlists, gpu_set)
+>  
 > -- 
 > 2.43.2
 > 
