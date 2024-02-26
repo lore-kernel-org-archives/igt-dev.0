@@ -4,46 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3791BC54E49
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 07:26:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADE22C5478C
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 07:26:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CFD9E10EEE2;
-	Mon, 26 Feb 2024 07:26:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4DCF710EEE3;
+	Mon, 26 Feb 2024 07:26:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AmnR1uT1";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a3IvlyVZ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C3C510EEE1
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 07:26:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC7C410EEE1
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 07:26:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708932396; x=1740468396;
+ t=1708932399; x=1740468399;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=ZeCAB8K3goROLlxDRMs5PUObF5liu8nxst8x/KdEkgQ=;
- b=AmnR1uT1leDftoRLzE6DicEN7U6otVw5EcvIdnqjo83aO92Le+K0L5Q9
- TinuKb0bxohMoEllXpcXoyTSKhHfjoEj89jec5jji2V3wUEq4CTMb/oyD
- owokvzQLxFBri7/TxKnJxHEDE1hFLey4vXYwm43mAxSh8rqaP9aN7WSK4
- NLViuFlUdnRSZMFRg45Yq+I5kQQQCZD9a4EMDs4UzLEfEI3EDZ50lV2xm
- sB0Ezsr/uNDAP5SmEfBzLAY0GyuPws729kNcp3xDNufPWVFXCbInhoPv5
- gonwa/H6rkKfhrNBcJygo8/wNcbZAiKIzc8Nk+Rh3u63yLq8izwXnevxA g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="6147559"
+ bh=6/yTHUTFw6B5izbKf0Gm4idmBGJnbakGuC8WlWX9Qy8=;
+ b=a3IvlyVZ3XmWYpXvmvhvYVwVZ9ayvrepXhppwbQoIkgSUxUTJuPUFw0H
+ Nhh73KXlAGqGgm1uNHPP9goNPuaWig9e8fG9gtI7ZRSox2PoGlIguUaAN
+ 9AgtvPS9y0GMilhazLQiVsqFLND3y+CHqGmw6iegoqfZIzhUcwkJB+J0I
+ iq1aNKmbPK0+2YJzY4EntK8ppsXCRHekf6+KU1sgrCP5DmvNY+3zfjMEf
+ 6R68xO2gkR7oAQBGg3NKpyB0OnPnEx5AIGSI1p3nh6zmPm8jtAGLWT/FI
+ VjfgQl5MeXG9nq42jtEnrqwNhQjQtrq16KCQWOCLUWMUAwRQUSS08w3TJ w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="6147566"
 X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="6147559"
+   d="scan'208";a="6147566"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2024 23:26:36 -0800
+ 25 Feb 2024 23:26:38 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="6923236"
+   d="scan'208";a="6923241"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2024 23:26:35 -0800
+ 25 Feb 2024 23:26:38 -0800
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [i-g-t v6 2/9] tests/kms_vrr: Move vtest_ns into data_t
-Date: Mon, 26 Feb 2024 12:50:28 +0530
-Message-ID: <20240226072035.2620383-3-bhanuprakash.modem@intel.com>
+Subject: [i-g-t v6 4/9] tests/kms_vrr: Allow test duration to be specified
+ from the command line
+Date: Mon, 26 Feb 2024 12:50:30 +0530
+Message-ID: <20240226072035.2620383-5-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240226072035.2620383-1-bhanuprakash.modem@intel.com>
 References: <20240226072035.2620383-1-bhanuprakash.modem@intel.com>
@@ -66,111 +67,137 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Sean Paul <seanpaul@chromium.org>
 
-vtest_ns is derived from data->range which is fixed. Move it into data_t
-and generate it once in prepare_test().
+Using --duration argument, otherwise use default.
 
-v2: (Bhanu)
+v2:
+- Add short opt to the main callsite (Bhanu)
+v3: (Bhanu)
 - Rebase
+- Nit: 's/d:r:/dr:/'
 
 Cc: Mark Yacoub <markyacoub@chromium.org>
 Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Sean Paul <seanpaul@chromium.org>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vrr.c | 36 +++++++++++++++---------------------
- 1 file changed, 15 insertions(+), 21 deletions(-)
+ tests/kms_vrr.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index a9fcde821..26e3f257b 100644
+index a1ca7c967..86bc144ed 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -100,6 +100,12 @@ typedef struct range {
- 	unsigned int max;
- } range_t;
- 
-+typedef struct vtest_ns {
-+	uint64_t min;
-+	uint64_t mid;
-+	uint64_t max;
-+} vtest_ns_t;
-+
- typedef struct data {
- 	igt_display_t display;
- 	int drm_fd;
-@@ -107,14 +113,9 @@ typedef struct data {
- 	igt_fb_t fb[2];
+@@ -114,6 +114,7 @@ typedef struct data {
  	range_t range;
  	drmModeModeInfo switch_modes[RR_MODES_COUNT];
-+	vtest_ns_t vtest_ns;
+ 	vtest_ns_t vtest_ns;
++	uint64_t duration_ns;
  } data_t;
  
--typedef struct vtest_ns {
--	uint64_t min;
--	uint64_t mid;
--	uint64_t max;
--} vtest_ns_t;
--
  typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, uint32_t);
+@@ -275,6 +276,9 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 						(range->min + range->max) / 2);
+ 	}
  
- /* Converts a timespec structure to nanoseconds. */
-@@ -232,18 +233,6 @@ get_vrr_range(data_t *data, igt_output_t *output)
- 	return range;
- }
- 
--/* Returns vrr test frequency for min, mid & max range. */
--static vtest_ns_t get_test_rate_ns(range_t range)
--{
--	vtest_ns_t vtest_ns;
--
--	vtest_ns.min = rate_from_refresh(range.min);
--	vtest_ns.mid = rate_from_refresh(((range.max + range.min) / 2));
--	vtest_ns.max = rate_from_refresh(range.max);
--
--	return vtest_ns;
--}
--
- /* Returns true if driver supports VRR. */
- static bool has_vrr(igt_output_t *output)
- {
-@@ -276,6 +265,11 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
- 
- 	mode = *igt_output_get_mode(output);
- 
-+	data->vtest_ns.min = rate_from_refresh(data->range.min);
-+	data->vtest_ns.mid = rate_from_refresh(
-+				(data->range.min + data->range.max) / 2);
-+	data->vtest_ns.max = rate_from_refresh(data->range.max);
++	if (data->duration_ns == 0)
++		data->duration_ns = TEST_DURATION_NS;
 +
  	/* Prepare resources */
  	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
  			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-@@ -341,7 +335,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
- 	uint64_t start_ns, last_event_ns, target_ns, exp_rate_ns;
- 	uint32_t total_flip = 0, total_pass = 0;
- 	bool front = false;
--	vtest_ns_t vtest_ns = get_test_rate_ns(data->range);
-+	vtest_ns_t vtest_ns = data->vtest_ns;
- 	uint64_t threshold_hi, threshold_lo;
+@@ -469,7 +473,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	 */
+ 	if (flags & TEST_FLIPLINE) {
+ 		rate = rate_from_refresh(range.max + 5);
+-		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+ 		igt_assert_f(result > 75,
+ 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
+ 			     (range.max + 5), rate, result);
+@@ -477,7 +481,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
  
- 	if ((rate_ns <= vtest_ns.min) && (rate_ns >= vtest_ns.max))
-@@ -423,7 +417,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	if (flags & ~TEST_NEGATIVE) {
+ 		rate = vtest_ns.rate_ns;
+-		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+ 		igt_assert_f(result > 75,
+ 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
+ 			     ((range.max + range.min) / 2), rate, result);
+@@ -485,7 +489,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
  
- 	prepare_test(data, output, pipe);
- 	range = data->range;
--	vtest_ns = get_test_rate_ns(range);
-+	vtest_ns = data->vtest_ns;
- 	rate = vtest_ns.mid;
+ 	if (flags & TEST_FLIPLINE) {
+ 		rate = rate_from_refresh(range.min - 10);
+-		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+ 		igt_assert_f(result < 50,
+ 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold exceeded, result was %u%%\n",
+ 			     (range.min - 10), rate, result);
+@@ -498,7 +502,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	 */
+ 	set_vrr_on_pipe(data, pipe, !(flags & TEST_FASTSET), (flags & TEST_NEGATIVE) ? true : false);
+ 	rate = vtest_ns.rate_ns;
+-	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+ 	igt_assert_f(result < 10,
+ 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold exceeded, result was %u%%\n",
+ 		     ((range.max + range.min) / 2), rate, (flags & TEST_NEGATIVE)? "on" : "off", result);
+@@ -530,7 +534,7 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
+ 	}
  
- 	igt_info("VRR Test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\n",
-@@ -517,7 +511,7 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
- 	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
+ 	rate = vtest_ns.max;
+-	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+ 	igt_assert_f(result > 75,
+ 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold not reached, result was %u%%\n",
+ 		     data->range.max, rate, vrr ? "on" : "off", result);
+@@ -542,7 +546,7 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
+ 	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
  
- 	prepare_test(data, output, pipe);
--	vtest_ns = get_test_rate_ns(data->range);
-+	vtest_ns = data->vtest_ns;
+ 	rate = vtest_ns.min;
+-	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+ 	igt_assert_f(result > 75,
+ 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold not reached, result was %u%%\n",
+ 		     data->range.min, rate, vrr ? "on" : "off", result);
+@@ -554,7 +558,7 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
+ 	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
  
- 	if (vrr)
- 		set_vrr_on_pipe(data, pipe, false, true);
+ 	rate = vtest_ns.rate_ns;
+-	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+ 	igt_assert_f(vrr ? (result > 75) : (result < 10),
+ 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold %s, result was %u%%\n",
+ 		     ((data->range.max + data->range.min) / 2), rate,
+@@ -678,6 +682,9 @@ static int opt_handler(int opt, int opt_index, void *_data)
+ 	data_t *data = _data;
+ 
+ 	switch (opt) {
++	case 'd':
++		data->duration_ns = atoi(optarg) * NSECS_PER_SEC;
++		break;
+ 	case 'r':
+ 		data->vtest_ns.rate_ns = rate_from_refresh(atoi(optarg));
+ 		break;
+@@ -686,16 +693,18 @@ static int opt_handler(int opt, int opt_index, void *_data)
+ }
+ 
+ static const struct option long_opts[] = {
++	{ .name = "duration", .has_arg = true, .val = 'd', },
+ 	{ .name = "refresh-rate", .has_arg = true, .val = 'r', },
+ 	{}
+ };
+ 
+ static const char help_str[] =
++	"  --duration <duration-seconds>\t\tHow long to run the test for\n"
+ 	"  --refresh-rate <refresh-hz>\t\tThe refresh rate to flip at\n";
+ 
+ static data_t data;
+ 
+-igt_main_args("r:", long_opts, help_str, opt_handler, &data)
++igt_main_args("dr:", long_opts, help_str, opt_handler, &data)
+ {
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
 -- 
 2.43.0
 
