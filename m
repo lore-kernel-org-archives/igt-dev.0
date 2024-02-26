@@ -4,100 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4D17C54E55
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 173D1C54E51
 	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 21:14:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DAD9310F290;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7F3DD10F29A;
 	Mon, 26 Feb 2024 21:14:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="t7rqVhAH";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="NFCMjWiW";
 	dkim-atps=neutral
 Received: from NAM04-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam04on2058.outbound.protection.outlook.com [40.107.102.58])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C2E310F290
+ (mail-dm6nam04on2057.outbound.protection.outlook.com [40.107.102.57])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 14A3910F290
  for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 21:14:43 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IA5u5o6IHdeLkwMohVHsEkU01wYdlQNAydi14qZB6ZPnBYTzscY5WxkOPzqyxbnwW2s78DeAzBox4Wckdzw6dXYsNc24hPlF1sb6fi1NPSU1lbLCERhX7XFcetbRifpus8GRL7B1biBRZD94NlsfPKNL6ZIoqA+7u+8wmuopX5E2uCPg9HhMz/8fWKrr0c5lf2c0XQ49RaWn8+dbVH4B6COzhJ0BeBrDoTi3PkeUn+v9sENluxvXd1g8yHENNaHrLobjzTV//ux55Ut93DkkM/a5PnXl4n2k1CjnCbRJbAJqlGAZEw7/dKXVqvy83nf25Wsc+Up1t7U2pIqYvl/kGg==
+ b=BcsobDaIGxKGM4qfSTt6x2G4VjCjCsgD3CMDAWluLc4/R9mzfcR/iaeAn1Rfm6NkG6/YIKCQ2KPPQPjHSSLKCF1t50npCvYvcmHwXVwxHgD5JscBPCgFQITy+RtSS+SiOEvj71bvexdNPTDAiA+M0tE1TI5yR8mTrktL5d0RRdhw26Ldch+6i4TwwDKwsDYlaxJGMWKWg7Lej+twgUKRYAnEtuAy0csyZ29+wHosSjucM8zNl0WmlKDK7BelF5RZS8dSF8ERQyFTAfGUCSbyDw08Z5GkpZPxqQRdPr9Ac3/Slle5QWHiIyjzoofap7+cij9ZNd/WtSTujz4CwWaxdw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E1FKEaaK0dVUequiVJ7ee+q8B+9Of1/YtT039jKJNsY=;
- b=CbUfwM+9b9unCZ4FDySo9aZYZbO09H7kDECunKaI1HTJr6WtEfoEJk6U5oxIzM9NtysuY5VSeS2iZQHmDTO1s7all1sekCGXU6qVGsfKQ8PUjoGa8UIm6zH1SmT+iS9nr9D8FpPda4wWgDURMN6QsLP7uxv5NlQOVp99OMJzy2AylzM0A6lKOD9KGLsw9WJ8PkeJjznazAWZ/0U1CqWTIZusixQ5a2YnXISbdc3ukIhELfi7WBJaNluM4jV+RIsDtFFmAnoEbKe0GnytsVNJcCUMJ6674fTYnf0Gxj22nA1AvJY+rzZ66ckYWaaG0D6p11q+QZYsJ5Eq8A74g1jb8A==
+ bh=K0tfNEi9vCLEf8i4P4pqK4RQm1OofOBFGl7Dd54TdOA=;
+ b=g40SKuIC3Zg68HdAdJBKBMec+b0SdmffTXe6/Y/71qGi+4ZovD8ZbUHy481wIVCwqDKVpCM7/kPJ8jyNc+f8zlKQzbN9EpcEQacRof3he9r7EguMpPVkb+WFFIePj9+3/M9FENkr35Gk5aiJ7hlnHViOs2A5Ez6HfVu5E9rWOQb8H6zGrUjY9OaEyKuxfz6UgEbUpVOgoo4MExyY8Q6ffyfDYTOVOuuR6w9vwaqiBaKZi5eEjQh3b6vCa46sDQmPGMAppTYIfPF9HrgeImShk1FI5fU5FWMzaD4ZpCgKHLrWsYOiObvZig18cIy5vrpaiulcIyYzYxwemhNKYHHQEw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E1FKEaaK0dVUequiVJ7ee+q8B+9Of1/YtT039jKJNsY=;
- b=t7rqVhAHT19uGSayhPeRgTJIxLO4zBX6ebfhtFyorRa5DXP9of/UDXPnjAFVo6BeIskmH3M4mtb++5E5c+Lg++d/HICzVADNtdF7Z0YpUeeqJdr2o85sTA2rYrnYsnZVJZO8q9LaEicPxHgQzVeHlcNkXOgO77GZG8GqmvZf200=
-Received: from SJ0PR03CA0270.namprd03.prod.outlook.com (2603:10b6:a03:3a0::35)
- by SJ2PR12MB8740.namprd12.prod.outlook.com (2603:10b6:a03:53f::16)
+ bh=K0tfNEi9vCLEf8i4P4pqK4RQm1OofOBFGl7Dd54TdOA=;
+ b=NFCMjWiWow1qcdvb0Q/gJrUMscNa6hcn3lnrgvkZwiKlwQ+HGsth1y12UekmjJBU0v8falZeu5uI8zn8oQAuub1iw+a6/ojsUTCZYZ0XSGIrjGse7Q/Bx6HwB7aLUXsGV1xUZEEssr5jwb2EQZHVU3B4UDDOthrSvIzIn/L3jHE=
+Received: from MN2PR15CA0003.namprd15.prod.outlook.com (2603:10b6:208:1b4::16)
+ by SA0PR12MB4590.namprd12.prod.outlook.com (2603:10b6:806:93::11)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.34; Mon, 26 Feb
- 2024 21:14:41 +0000
-Received: from DS2PEPF0000343A.namprd02.prod.outlook.com
- (2603:10b6:a03:3a0:cafe::c6) by SJ0PR03CA0270.outlook.office365.com
- (2603:10b6:a03:3a0::35) with Microsoft SMTP Server (version=TLS1_2,
+ 2024 21:14:37 +0000
+Received: from BL02EPF0001A101.namprd05.prod.outlook.com
+ (2603:10b6:208:1b4:cafe::d0) by MN2PR15CA0003.outlook.office365.com
+ (2603:10b6:208:1b4::16) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.49 via Frontend
- Transport; Mon, 26 Feb 2024 21:14:41 +0000
+ Transport; Mon, 26 Feb 2024 21:14:37 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- DS2PEPF0000343A.mail.protection.outlook.com (10.167.18.37) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL02EPF0001A101.mail.protection.outlook.com (10.167.241.132) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Mon, 26 Feb 2024 21:14:41 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.7292.25 via Frontend Transport; Mon, 26 Feb 2024 21:14:36 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 26 Feb
- 2024 15:14:39 -0600
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
- (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 26 Feb
- 2024 15:14:39 -0600
+ 2024 15:14:35 -0600
 Received: from localhost.localdomain (10.180.168.240) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Mon, 26 Feb 2024 15:14:38 -0600
+ Transport; Mon, 26 Feb 2024 15:14:34 -0600
 From: Harry Wentland <harry.wentland@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Harry Wentland <harry.wentland@amd.com>
-Subject: [RFC PATCH v5 20/32] lib/igt_fb: Allow any non-planar format for
- igt_copy_fb
-Date: Mon, 26 Feb 2024 16:14:04 -0500
-Message-ID: <20240226211416.100660-21-harry.wentland@amd.com>
+Subject: [RFC PATCH v5 12/32] tests/kms_colorop: Add kms_colorop tests
+Date: Mon, 26 Feb 2024 16:13:56 -0500
+Message-ID: <20240226211416.100660-13-harry.wentland@amd.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240226211416.100660-1-harry.wentland@amd.com>
 References: <20240226211416.100660-1-harry.wentland@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: None (SATLEXMB05.amd.com: harry.wentland@amd.com does not
+Received-SPF: None (SATLEXMB04.amd.com: harry.wentland@amd.com does not
  designate permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF0000343A:EE_|SJ2PR12MB8740:EE_
-X-MS-Office365-Filtering-Correlation-Id: 539bf41e-c379-468b-a2f7-08dc370ff273
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A101:EE_|SA0PR12MB4590:EE_
+X-MS-Office365-Filtering-Correlation-Id: b4937cf4-13c2-48f8-7734-08dc370feffd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: zZBc4fkvOH/iVrUBF2MsTL2QbMAim5aml2jBQj0IX8Aw5sAM43nym+ofiqOl9mTLyw1GQkXDXCuIlmgE7tVlP31HxL7nO4mpdzQqwbc4/8IhveOkoOC/uCkykC9LlyLM6AqFxGkhKAGIuzFSg+deKFdgzWBczVsvGDqzyuF6thrGlT5QR1kDZ58D4MsQvQiMqzK4It4pmAgHykAc+b4DDoZrX9qFXm94OaBHxhKpjvh412PMukEjn6diB0Ce4vjTKxh1kTT6vq+Acr/YaaHuXNuBPq9UyCUf2Ym/2oi081YlFXjf/iWl1Jd+TOc8vMExGfALPrQFGJ9BEZdkV+hJCNSMQcoxzNyqNpI1gMwSiNsLc/D3FGgthk/dTTrd0fyo+jjtkEdu/cw9ERNB5QCBP8DF0QBuOXuJ3FECFnIJwAu6o9xtoipbXtjNy1gtHsb6CXE7M3LH9MmDYj413Eb7xWuVBId0mZ9ogFT2bgmfLGObEmVGQEMv1a1+aPEtARI3g2iHmC7tZRXjUQHBiJ6oZJuQvYr1N5d5hfxFb0sb57C1xyRYJFn9+Mio051h1E/GvNj01LE9MKYdPY6bTWjrQ3uFRbHBIWUoU+MfvzuDbEyVthz8DpG3IkqH58GwKWS6DaSd22VIDmep1Kh1VSkykfcouiHXU0/Gk5rszbDFjuh2YdzBx/jH6CHBUyyD/5qZ6aXAInnqeiws5Mu441Vz7+vD3HMeJirgHsZ6zJYy8Jl+28U0AbPXL4eiMZ62/owB
+X-Microsoft-Antispam-Message-Info: I2p+1yKzutFH67NnjaN0EghGPZliTiBYQZ5wzdWHHXP7f6dwomuGGguYB++07t0twj8A+Wh7R+U+M6eU5gezXOPpQicjcKgrRtbywdyYq2rkHZvW1Soiedj0Xx52neCLc8LOfZVtslxKN5sDhZBC23wIhvLYAXIHbm845rDo7a54G2dqRJqUCUehLqWVZfkJzZDmIGyMjHZUOFUelP9c+ghTHz2OOjFEXaxbRU1taQiJHR9BB3u5EuRQWSHgQsuyyOTGn65eGyp87JxxNSYItHk9IytHj9oYv9+IOu0Kvq08IaFjF3YuWRtRBOTTPg2vMJPWHhAfzzvFJomZtCngyfapRJEW6jc/gGq2lloUHRTBfhD5JliOFkN4hz/Rlr1+oZRUSS6G+roYIzbCbci8TArws+Ag9RayKXKpNn0NZVame4zris7KoFHw5rJ8H1fEhIQUYcjZ1lFGFIPts1hK8CcpNgextMiTjFePT9BUdYHXWIXhIW2BnM1jA1JqSQXbjibK32dA1tM6tEufI62tsZ7i6srgbDlFEcl2CrsAksEd22RXrMN1VZsISHxYBEW5wiRVe0u1IwWG1GRAMmH0CuMhYhAc3en/jFTOAyw1YqS7YY3LY2PPnlQPC+Gt95FzZL8Yrjcpg6gzlwIsxsOYfH6/wynkpRY9Rgp46mty24qr3RVMbWprvohpOipDdRy7v63jHh3kgpD0avuk8UZUTJAN+GpFg4IDOzrjz477cjF9/bdwf2PMsbbFB3ZDU8ob
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
  SFS:(13230031)(36860700004); DIR:OUT; SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 21:14:41.0688 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 539bf41e-c379-468b-a2f7-08dc370ff273
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 21:14:36.9701 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b4937cf4-13c2-48f8-7734-08dc370feffd
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF0000343A.namprd02.prod.outlook.com
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A101.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8740
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4590
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,30 +108,696 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The function is able to handle any non-planar format. It's been
-tested for XRGB8888 and XRGB2101010 so far but should work
-for a wider range of formats.
+This tests the color pipeline API, exposed via the
+COLOR PIPELINE plane property and drm_colorop objects.
+
+We introduce tests for:
+ - sRGB EOTF
+ - sRGB Inverse EOTF
+ - sRGB EOTF + sRGB Inverse EOTF
+
+The last one is the holy grail of LUT testing. It tests that
+after applying an EOTF, followed by its inverse EOTF we arrive
+back at the original value. We can use this to test for
+precision loss in the pipeline.
+
+All tests are tested via writeback. All transforms are done in
+SW (in floating point) and at the end the SW transformed buffer
+is compared with the KMS writeback output buffer. The two should
+match within a bracket of acceptable deviations. Since these
+deviations might look different for different KMS drivers we'll
+do this check on a driver-specific basis.
+
+v3:
+ - skip tests if color pipeline not found
+ - Rename colorop to color_pipeline in places where it refers
+   to the entire pipeline (Sebastian)
+
+v2:
+ - Make tests dynamic, allowing definition of tests with an
+   arbitrary number of transforms
+ - Add test for sRGB Inverse EOTF
+ - Add test for sRGB EOTF, followed by sRGB Inverse EOTF
 
 Signed-off-by: Harry Wentland <harry.wentland@amd.com>
 ---
- lib/igt_fb.c | 4 ----
- 1 file changed, 4 deletions(-)
+ tests/kms_colorop.c    | 522 +++++++++++++++++++++++++++++++++++++++++
+ tests/kms_colorop.h    |  87 +++++++
+ tests/kms_properties.c |   5 +
+ tests/meson.build      |   1 +
+ 4 files changed, 615 insertions(+)
+ create mode 100644 tests/kms_colorop.c
+ create mode 100644 tests/kms_colorop.h
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 13e9c29b1f3f..3c1a166ca2e9 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2166,10 +2166,6 @@ unsigned int igt_copy_fb(int fd, struct igt_fb *src, struct igt_fb *fb)
- 	if (src->num_planes != 1)
- 		return -EINVAL;
+diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
+new file mode 100644
+index 000000000000..2a14294a2b20
+--- /dev/null
++++ b/tests/kms_colorop.c
+@@ -0,0 +1,522 @@
++/*
++ * Copyright 2023 Advanced Micro Devices, Inc.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++#include "igt.h"
++#include "igt_color.h"
++#include "sw_sync.h"
++
++#include "kms_colorop.h"
++
++/**
++ * TEST: kms colorop
++ * Category: Display
++ * Description: Test to validate the retrieving and setting of DRM colorops
++ *
++ * SUBTEST: plane-%s
++ * Description: Tests DRM colorop properties on a plane
++ * Driver requirement: amdgpu
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @srgb_eotf:                   sRGB EOTF
++ * @srgb_inv_eotf:               sRGB Inverse EOTF
++ * @srgb_eotf-srgb_inv_eotf:     sRGB EOTF -> sRGB Inverse EOTF
++ *
++ */
++
++/* TODO move to lib for kms_writeback and kms_colorop (and other future) use */
++static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
++				    drmModeModeInfo override_mode)
++{
++	igt_fb_t input_fb, output_fb;
++	igt_plane_t *plane;
++	uint32_t writeback_format = DRM_FORMAT_XRGB8888;
++	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
++	int width, height, ret;
++
++	igt_output_override_mode(output, &override_mode);
++
++	width = override_mode.hdisplay;
++	height = override_mode.vdisplay;
++
++	ret = igt_create_fb(display->drm_fd, width, height,
++			    DRM_FORMAT_XRGB8888, modifier, &input_fb);
++	igt_assert(ret >= 0);
++
++	ret = igt_create_fb(display->drm_fd, width, height,
++			    writeback_format, modifier, &output_fb);
++	igt_assert(ret >= 0);
++
++	plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++	igt_plane_set_fb(plane, &input_fb);
++	igt_output_set_writeback_fb(output, &output_fb);
++
++	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY |
++					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	igt_plane_set_fb(plane, NULL);
++	igt_remove_fb(display->drm_fd, &input_fb);
++	igt_remove_fb(display->drm_fd, &output_fb);
++
++	return !ret;
++}
++
++/* TODO move to lib for kms_writeback and kms_colorop (and other future) use */
++typedef struct {
++	bool builtin_mode;
++	bool custom_mode;
++	bool list_modes;
++	bool dump_check;
++	int mode_index;
++	drmModeModeInfo user_mode;
++} data_t;
++
++static data_t data;
++
++/* TODO move to lib for kms_writeback and kms_colorop (and other future) use */
++static igt_output_t *kms_writeback_get_output(igt_display_t *display)
++{
++	int i;
++	enum pipe pipe;
++
++	drmModeModeInfo override_mode = {
++		.clock = 25175,
++		.hdisplay = 640,
++		.hsync_start = 656,
++		.hsync_end = 752,
++		.htotal = 800,
++		.hskew = 0,
++		.vdisplay = 480,
++		.vsync_start = 490,
++		.vsync_end = 492,
++		.vtotal = 525,
++		.vscan = 0,
++		.vrefresh = 60,
++		.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
++		.name = {"640x480-60"},
++	};
++
++	for (i = 0; i < display->n_outputs; i++) {
++		igt_output_t *output = &display->outputs[i];
++
++		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_WRITEBACK)
++			continue;
++
++		for_each_pipe(display, pipe) {
++			igt_output_set_pipe(output, pipe);
++
++			if (data.custom_mode)
++				override_mode = data.user_mode;
++			if (data.builtin_mode)
++				override_mode = output->config.connector->modes[data.mode_index];
++
++			if (check_writeback_config(display, output, override_mode)) {
++				igt_debug("Using connector %u:%s on pipe %d\n",
++					  output->config.connector->connector_id,
++					  output->name, pipe);
++				return output;
++			}
++		}
++
++		igt_debug("We found %u:%s, but this test will not be able to use it.\n",
++			  output->config.connector->connector_id, output->name);
++
++		/* Restore any connectors we don't use, so we don't trip on them later */
++		kmstest_force_connector(display->drm_fd, output->config.connector, FORCE_CONNECTOR_UNSPECIFIED);
++	}
++
++	return NULL;
++}
++
++/* TODO move to lib for kms_writeback and kms_colorop (and other future) use */
++static uint64_t get_writeback_fb_id(igt_output_t *output)
++{
++	return igt_output_get_prop(output, IGT_CONNECTOR_WRITEBACK_FB_ID);
++}
++
++/* TODO move to lib for kms_writeback and kms_colorop (and other future) use */
++static void detach_crtc(igt_display_t *display, igt_output_t *output)
++{
++	if (get_writeback_fb_id(output) == 0)
++		return;
++
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++}
++
++static void get_and_wait_out_fence(igt_output_t *output)
++{
++	int ret;
++
++	igt_assert(output->writeback_out_fence_fd >= 0);
++
++	ret = sync_fence_wait(output->writeback_out_fence_fd, 1000);
++	igt_assert_f(ret == 0, "sync_fence_wait failed: %s\n", strerror(-ret));
++	close(output->writeback_out_fence_fd);
++	output->writeback_out_fence_fd = -1;
++}
++
++static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_colorop_t *desired)
++{
++	switch (desired->type) {
++	case KMS_COLOROP_ENUMERATED_LUT1D:
++		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_CURVE) {
++			return true;
++		}
++	case KMS_COLOROP_CUSTOM_LUT1D:
++	case KMS_COLOROP_CTM:
++	case KMS_COLOROP_LUT3D:
++	default:
++		return false;
++	}
++}
++
++/**
++ * Iterate color pipeline that begins with colorop and try to map
++ * colorops[] to it.
++ */
++static bool map_to_pipeline(igt_display_t *display,
++			    igt_colorop_t *colorop,
++			    kms_colorop_t *colorops[])
++{
++	igt_colorop_t *next = colorop;
++	kms_colorop_t *current_op;
++	int i = 0;
++	int prop_val = 0;
++
++	current_op = colorops[i++];
++	igt_require(current_op);
++
++	while (next) {
++		if (can_use_colorop(display, next, current_op)) {
++			current_op->colorop = next;
++			current_op = colorops[i++];
++			if (!current_op)
++				break;
++		}
++		prop_val = igt_colorop_get_prop(display, next,
++						IGT_COLOROP_NEXT);
++		next = igt_find_colorop(display, prop_val);
++	}
++
++	if (current_op) {
++		/* we failed to map the pipeline */
++
++		/* clean up colorops[i].colorop mappings */
++		for(i = 0, current_op = colorops[0]; current_op; current_op = colorops[i++])
++			current_op->colorop = NULL;
++
++		return false;
++	}
++
++	return true;
++}
++
++static igt_colorop_t *get_color_pipeline(igt_display_t *display,
++					 igt_plane_t *plane,
++					 kms_colorop_t *colorops[])
++{
++	igt_colorop_t *colorop = NULL;
++	int i;
++
++	/* go through all color pipelines */
++	for (i = 0; i < plane->num_color_pipelines; ++i) {
++		if (map_to_pipeline(display, plane->color_pipelines[i], colorops)) {
++			colorop = plane->color_pipelines[i];
++			break;
++		}
++	}
++
++	return colorop;
++}
++
++static void set_colorop(igt_display_t *display,
++			kms_colorop_t *colorop)
++{
++	igt_assert(colorop->colorop);
++	igt_colorop_set_prop_value(colorop->colorop, IGT_COLOROP_BYPASS, 0);
++
++	/* TODO set to desired value from kms_colorop_t */
++	switch (colorop->type) {
++	case KMS_COLOROP_ENUMERATED_LUT1D:
++		switch (colorop->enumerated_lut1d_info.tf) {
++		case KMS_COLOROP_LUT1D_SRGB_EOTF:
++			igt_colorop_set_prop_enum(colorop->colorop, IGT_COLOROP_CURVE_1D_TYPE, "sRGB EOTF");
++			break;
++		case KMS_COLOROP_LUT1D_SRGB_INV_EOTF:
++			igt_colorop_set_prop_enum(colorop->colorop, IGT_COLOROP_CURVE_1D_TYPE, "sRGB Inverse EOTF");
++			break;
++		case KMS_COLOROP_LUT1D_PQ_EOTF:
++		case KMS_COLOROP_LUT1D_PQ_INV_EOTF:
++		default:
++			igt_fail(IGT_EXIT_FAILURE);
++		}
++		break;
++	case KMS_COLOROP_CUSTOM_LUT1D:
++	case KMS_COLOROP_CTM:
++	case KMS_COLOROP_LUT3D:
++	default:
++		igt_fail(IGT_EXIT_FAILURE);
++	}
++}
++
++static void set_color_pipeline(igt_display_t *display,
++			       igt_plane_t *plane,
++			       kms_colorop_t *colorops[],
++			       igt_colorop_t *color_pipeline)
++{
++	igt_colorop_t *next;
++	int prop_val = 0;
++	int i;
++
++	igt_plane_set_color_pipeline(plane, color_pipeline);
++
++	for(i = 0; colorops[i]; i++)
++		set_colorop(display, colorops[i]);
++
++	/* set unused ops in pipeline to bypass */
++	next = color_pipeline;
++	i = 0;
++	while (next) {
++		if (!colorops[i] || colorops[i]->colorop != next)
++			igt_colorop_set_prop_value(next, IGT_COLOROP_BYPASS, 1);
++		else
++			i++;
++
++		prop_val = igt_colorop_get_prop(display, next,
++						IGT_COLOROP_NEXT);
++		next = igt_find_colorop(display, prop_val);
++	}
++}
++
++static void set_color_pipeline_bypass(igt_plane_t *plane)
++{
++	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
++}
++
++static bool compare_with_bracket(igt_fb_t *in, igt_fb_t *out)
++{
++	if (is_vkms_device(in->fd))
++		return igt_cmp_fb_pixels(in, out, 1, 1);
++	else
++		/*
++		 * By default we'll look for a [0, 0] bracket. We can then
++		 * define it for each driver that implements support for this
++		 * test. That way we can understand the precision of each
++		 * driver better.
++		 */
++		return igt_cmp_fb_pixels(in, out, 0, 0);
++}
++
++#define DUMP_FBS 1
++
++#define MAX_COLOROPS 3
++#define NUM_COLOROP_TESTS 3
++#define MAX_NAME_SIZE 256
++
++static void apply_transforms(kms_colorop_t *colorops[], igt_fb_t *sw_transform_fb)
++{
++	int i;
++	igt_pixel_transform transforms[MAX_COLOROPS];
++
++	/*
++	 * TODO
++	 *
++	 * This is wrong and loses precision since it always goes back
++	 * to an 8-bpc framebuffer.
++	 *
++	 * Instead we need to stay as UNORM or float 16-bpc value throughout
++	 * all transforms.
++	 */
++
++	for (i = 0; colorops[i]; i++)
++		transforms[i] = colorops[i]->transform;
++
++	igt_color_transform_pixels(sw_transform_fb, transforms, i);
++}
++
++static void colorop_plane_test(igt_display_t *display,
++			       kms_colorop_t *colorops[])
++{
++	igt_colorop_t *color_pipeline = NULL;
++	igt_output_t *output;
++	igt_plane_t *plane;
++	igt_fb_t input_fb;
++	igt_fb_t sw_transform_fb;
++	igt_fb_t output_fb;
++	drmModeModeInfo mode;
++	unsigned int fb_id;
++	igt_crc_t input_crc, output_crc;
++
++	output = kms_writeback_get_output(display);
++	igt_require(output);
++
++	if (output->use_override_mode)
++		memcpy(&mode, &output->override_mode, sizeof(mode));
++	else
++		memcpy(&mode, &output->config.default_mode, sizeof(mode));
++
++	/* create input fb */
++	plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++	igt_assert(plane);
++
++	fb_id = igt_create_color_pattern_fb(display->drm_fd,
++					mode.hdisplay, mode.vdisplay,
++					DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++					0.2, 0.2, 0.2, &input_fb);
++	igt_assert(fb_id >= 0);
++	igt_plane_set_fb(plane, &input_fb);
++#if DUMP_FBS
++	igt_dump_fb(display, &input_fb, ".", "input");
++#endif
++
++	/* create output fb */
++	fb_id = igt_create_fb(display->drm_fd, mode.hdisplay, mode.vdisplay,
++				DRM_FORMAT_XRGB8888,
++				igt_fb_mod_to_tiling(0),
++				&output_fb);
++	igt_require(fb_id > 0);
++
++	igt_fb_get_fnv1a_crc(&input_fb, &input_crc);
++
++	igt_require(igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE));
++
++	/* reset color pipeline*/
++
++	/* TODO do we need this? might be good sanity anyways */
++	set_color_pipeline_bypass(plane);
++
++	/* Commit */
++	igt_plane_set_fb(plane, &input_fb);
++	igt_output_set_writeback_fb(output, &output_fb);
++
++	igt_display_commit_atomic(output->display,
++				DRM_MODE_ATOMIC_ALLOW_MODESET,
++				NULL);
++	get_and_wait_out_fence(output);
++
++	/* Compare input and output buffers. They should be equal here. */
++	igt_fb_get_fnv1a_crc(&output_fb, &output_crc);
++
++	igt_assert_crc_equal(&input_crc, &output_crc);
++
++	/* create sw transformed buffer */
++
++	igt_copy_fb(display->drm_fd, &input_fb, &sw_transform_fb);
++	igt_assert(igt_cmp_fb_pixels(&input_fb, &sw_transform_fb, 0, 0));
++
++	apply_transforms(colorops, &sw_transform_fb);
++#if DUMP_FBS
++	igt_dump_fb(display, &sw_transform_fb, ".", "sw_transform");
++#endif
++	/* discover and set COLOR PIPELINE */
++
++	/* get COLOR_PIPELINE enum */
++	color_pipeline = get_color_pipeline(display, plane, colorops);
++
++	/* skip test if we can't find applicable pipeline */
++	igt_skip_on(!color_pipeline);
++
++	set_color_pipeline(display, plane, colorops, color_pipeline);
++
++	igt_output_set_writeback_fb(output, &output_fb);
++
++	/* commit COLOR_PIPELINE */
++	igt_display_commit_atomic(display,
++				DRM_MODE_ATOMIC_ALLOW_MODESET,
++				NULL);
++	get_and_wait_out_fence(output);
++#if DUMP_FBS
++	igt_dump_fb(display, &output_fb, ".", "output");
++#endif
++
++	/* compare sw transformed and KMS transformed FBs */
++	igt_assert(compare_with_bracket(&sw_transform_fb, &output_fb));
++
++	/* reset color pipeline*/
++	set_color_pipeline_bypass(plane);
++
++	/* Commit */
++	igt_plane_set_fb(plane, &input_fb);
++	igt_output_set_writeback_fb(output, &output_fb);
++
++	igt_display_commit_atomic(output->display,
++				DRM_MODE_ATOMIC_ALLOW_MODESET,
++				NULL);
++	get_and_wait_out_fence(output);
++
++	/* cleanup */
++	detach_crtc(display, output);
++	igt_remove_fb(display->drm_fd, &input_fb);
++	igt_remove_fb(display->drm_fd, &output_fb);
++}
++
++igt_main
++{
++
++	struct {
++		kms_colorop_t *colorops[MAX_COLOROPS];
++		const char *name;
++	} tests[] = {
++		{ { &kms_colorop_srgb_eotf, NULL }, "srgb_eotf" },
++		{ { &kms_colorop_srgb_inv_eotf, NULL }, "srgb_inv_eotf" },
++		{ { &kms_colorop_srgb_eotf, &kms_colorop_srgb_inv_eotf, NULL }, "srgb_eotf-srgb_inv_eotf" }
++	};
++
++	igt_display_t display;
++	int i;
++
++	igt_fixture {
++		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
++		igt_display_require(&display, display.drm_fd);
++
++		kmstest_set_vt_graphics_mode();
++
++		igt_display_require(&display, display.drm_fd);
++
++		igt_require(display.is_atomic);
++
++	}
++
++	for (i = 0; i < sizeof(tests) / sizeof (tests[0]); i++) {
++		igt_describe("Bla bla bla");
++		igt_subtest_f("plane-%s", tests[i].name)
++			colorop_plane_test(&display, tests[i].colorops);
++	}
++
++	igt_describe("Tests getting and setting COLOR_PIPELINE property on plane");
++#if 0
++	igt_subtest("plane-srgb") {
++		colorop_plane_test(&display, colorops_srgb);
++	}
++	igt_subtest("plane-inv_srgb") {
++		colorop_plane_test(&display, colorops_srgb_inv);
++	}
++#endif
++	igt_fixture {
++
++		igt_display_fini(&display);
++	}
++}
++
+diff --git a/tests/kms_colorop.h b/tests/kms_colorop.h
+new file mode 100644
+index 000000000000..8102d25b13be
+--- /dev/null
++++ b/tests/kms_colorop.h
+@@ -0,0 +1,87 @@
++/*
++ * Copyright 2023 Advanced Micro Devices, Inc.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++#ifndef __KMS_COLOROP_H__
++#define __KMS_COLOROP_H__
++
++#include "igt_color.h"
++
++typedef bool (*compare_fb_t)(igt_fb_t *in, igt_fb_t *out);
++
++typedef int (*transform_fb)(igt_fb_t *in);
++
++typedef int (*transform_pixel)(igt_pixel_t *pixel);
++
++/* Test version definitions */
++typedef enum kms_colorop_type {
++	KMS_COLOROP_ENUMERATED_LUT1D,
++	KMS_COLOROP_CUSTOM_LUT1D,
++	KMS_COLOROP_CTM,
++	KMS_COLOROP_LUT3D
++} kms_colorop_type_t;
++
++typedef enum kms_colorop_lut1d_tf {
++	KMS_COLOROP_LUT1D_SRGB_EOTF,
++	KMS_COLOROP_LUT1D_SRGB_INV_EOTF,
++	KMS_COLOROP_LUT1D_PQ_EOTF,
++	KMS_COLOROP_LUT1D_PQ_INV_EOTF,
++} kms_colorop_lut1d_tf_t;
++
++typedef struct kms_colorop_enumerated_lut1d_info {
++	kms_colorop_lut1d_tf_t tf;
++} kms_colorop_enumerated_lut1d_info_t;
++
++typedef struct kms_colorop {
++	kms_colorop_type_t type;
++
++	union {
++		kms_colorop_enumerated_lut1d_info_t enumerated_lut1d_info;
++	};
++
++	const char *name;
++
++	igt_pixel_transform transform;
++
++	/* Mapped colorop */
++	igt_colorop_t *colorop;
++
++} kms_colorop_t;
++
++kms_colorop_t kms_colorop_srgb_eotf = {
++	.type = KMS_COLOROP_ENUMERATED_LUT1D,
++	.enumerated_lut1d_info = {
++		.tf = KMS_COLOROP_LUT1D_SRGB_EOTF
++	},
++	.name = "srgb_eotf",
++	.transform = &igt_color_srgb_eotf
++};
++
++kms_colorop_t kms_colorop_srgb_inv_eotf = {
++	.type = KMS_COLOROP_ENUMERATED_LUT1D,
++	.enumerated_lut1d_info = {
++		.tf = KMS_COLOROP_LUT1D_SRGB_INV_EOTF
++	},
++	.name = "srgb_inv_eotf",
++	.transform = &igt_color_srgb_inv_eotf
++};
++
++#endif /* __KMS_COLOROP_H__ */
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index 7104a7a9d55c..4cc9eb7b1d12 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -870,6 +870,11 @@ igt_main
+ 	igt_subtest("colorop-properties-legacy")
+ 		colorop_properties(&display, false);
  
--	/* TODO expand for other formats */
--	if (src->drm_format != DRM_FORMAT_XRGB8888)
--		return -EINVAL;
--
- 	fb_id = igt_create_fb(fd, src->width, src->height, src->drm_format,
- 			    src->modifier, fb);
- 
++	igt_describe("Tests colorop properties with legacy commit");
++	igt_subtest("colorop-properties-legacy")
++		/* TODO is this true? */
++		igt_skip("No colorops with legacy commits\n");
++
+ 	igt_describe("Tests crtc properties with legacy commit");
+ 	igt_subtest("crtc-properties-legacy")
+ 		crtc_properties(&display, false);
+diff --git a/tests/meson.build b/tests/meson.build
+index d107d16fa423..b37e5b6d31b5 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -23,6 +23,7 @@ test_progs = [
+ 	'kms_bw',
+ 	'kms_color',
+ 	'kms_concurrent',
++	'kms_colorop',
+ 	'kms_content_protection',
+ 	'kms_cursor_crc',
+ 	'kms_cursor_edge_walk',
 -- 
 2.44.0
 
