@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC7ABC48BF6
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 11:45:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED131C48BF6
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 12:36:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 59B3C10F0CC;
-	Mon, 26 Feb 2024 11:45:23 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mQMr5LHj";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C24210F0CD
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 11:45:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708947921; x=1740483921;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=nZk9YVH12/nEOxDlFGDW6U4CWEE9/6gGjAyMFSA0G64=;
- b=mQMr5LHjgQE77hoPSz5HocG1Ukyjp52+Gvu0pwzjzflocR1dhKjOaLZa
- lkNBNBx++JD9+S5n8yCz74RJpysyL293WEplvd+KgCM9f+TwXINeOe2nB
- Kr8WQz2FzfB7sOlQQvJgkwLpomvlCkgx6B5IgzdLB4g0Ka+i3MzV+6Nza
- dGwkTNW0cjR0shNMA+vAvleJJ+d/PQ02aOpmgAie7w2NRwXX5NlOto9q4
- D1yhsExxAls3vbPQY+D1OjX++2Ac02571wImJNcag0jAccGZp37tySRZt
- 6isoaMrRARInfhg6TBhhpuT6+WSurh5y0wK3k+/HhVsYGEg+R/BtnSE74 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="13869549"
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; d="scan'208";a="13869549"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 03:45:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="6534353"
-Received: from unknown (HELO localhost) ([10.246.6.22])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 03:45:17 -0800
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t] lib/rendercopy: Fix Xe2 pixel shader
-Date: Mon, 26 Feb 2024 12:45:11 +0100
-Message-Id: <20240226114511.51753-1-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 46FEC10F14E;
+	Mon, 26 Feb 2024 12:36:27 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8BC4B10F155;
+ Mon, 26 Feb 2024 12:36:25 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5931434342087691278=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/rendercopy=3A_Fix_Xe2_pixe?=
+ =?utf-8?q?l_shader?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 26 Feb 2024 12:36:25 -0000
+Message-ID: <170895098557.299440.10786673454519925@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240226114511.51753-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20240226114511.51753-1-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,54 +37,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Xe2 start and coefficient for barycentric positions are passed
-in different location of grf register (r6). I wasn't able to find
-this information explicitly in the documentation so I've dumped
-all registers involved in the operation and deduce r6 values
-meaning. This means I may be wrong but tests which are previously
-failing on render-copy now are working fine.
+--===============5931434342087691278==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
----
- lib/i915/shaders/ps/gen20_render_copy.asm | 4 ++--
- lib/rendercopy_gen9.c                     | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+== Series Details ==
 
-diff --git a/lib/i915/shaders/ps/gen20_render_copy.asm b/lib/i915/shaders/ps/gen20_render_copy.asm
-index 330417966d..48057f441e 100644
---- a/lib/i915/shaders/ps/gen20_render_copy.asm
-+++ b/lib/i915/shaders/ps/gen20_render_copy.asm
-@@ -1,7 +1,7 @@
- L0:
--(W)     mad (16|M0)              acc0.0<1>:f   r6.3<0;0>:f      r1.0<1;1>:f       r6.0<0>:f
-+(W)     mad (16|M0)              acc0.0<1>:f   r6.0<0;0>:f      r1.0<1;1>:f       r6.6<0>:f
- (W)     mad (16|M0)              r113.0<1>:f   acc0.0<1;1>:f    r1.0<1;1>:f       r6.1<0>:f
--(W)     mad (16|M0)              acc0.0<1>:f   r6.7<0;0>:f      r1.0<1;1>:f       r6.4<0>:f
-+(W)     mad (16|M0)              acc0.0<1>:f   r6.3<0;0>:f      r1.0<1;1>:f       r6.4<0>:f
- (W)     mad (16|M0)              r114.0<1>:f   acc0.0<1;1>:f    r2.0<1;1>:f       r6.5<0>:f
- (W)     send.smpl (16|M0)        r12      r113  null:0  0x0            0x04420001           {F@1,$0} // wr:2+0, rd:4; simd16 sample:u+v+r+ai+mlod using sampler index 0
- (W)     send.rc (16|M0)          null     r12   null:0  0x0            0x08031400           {EOT,$0} // wr:4+0, rd:0; full-precision render target write SIMD16; last render target to surface 0
-diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-index a4220d78da..dd5f1dd448 100644
---- a/lib/rendercopy_gen9.c
-+++ b/lib/rendercopy_gen9.c
-@@ -138,9 +138,9 @@ static const uint32_t gen12p71_render_copy[][4] = {
- };
- 
- static const uint32_t xe2_render_copy[][4] = {
--	{ 0x8010005b, 0x200002a0, 0x020a0634, 0x06040105 },
-+	{ 0x8010005b, 0x200002a0, 0x020a0604, 0x06640105 },
- 	{ 0x8010005b, 0x710402a8, 0x020a2001, 0x06140105 },
--	{ 0x8010005b, 0x200002a0, 0x020a0674, 0x06440105 },
-+	{ 0x8010005b, 0x200002a0, 0x020a0634, 0x06440105 },
- 	{ 0x8010005b, 0x720402a8, 0x020a2001, 0x06540205 },
- 	{ 0x80122031, 0x0c240000, 0x20027114, 0x00800000 },
- 	{ 0x8010c031, 0x00000004, 0x58000c24, 0x00c40000 },
--- 
-2.34.1
+Series: lib/rendercopy: Fix Xe2 pixel shader
+URL   : https://patchwork.freedesktop.org/series/130379/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7729_BAT -> XEIGTPW_10733_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10733_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * {igt@xe_exec_queue_property@invalid-property}:
+    - bat-pvc-2:          [FAIL][1] ([Intel XE#1276]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7729/bat-pvc-2/igt@xe_exec_queue_property@invalid-property.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10733/bat-pvc-2/igt@xe_exec_queue_property@invalid-property.html
+    - bat-dg2-oem2:       [FAIL][3] ([Intel XE#1276]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7729/bat-dg2-oem2/igt@xe_exec_queue_property@invalid-property.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10733/bat-dg2-oem2/igt@xe_exec_queue_property@invalid-property.html
+    - bat-atsm-2:         [FAIL][5] ([Intel XE#1276]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7729/bat-atsm-2/igt@xe_exec_queue_property@invalid-property.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10733/bat-atsm-2/igt@xe_exec_queue_property@invalid-property.html
+    - bat-adlp-7:         [FAIL][7] ([Intel XE#1276]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7729/bat-adlp-7/igt@xe_exec_queue_property@invalid-property.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10733/bat-adlp-7/igt@xe_exec_queue_property@invalid-property.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1276]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1276
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7729 -> IGTPW_10733
+  * Linux: xe-835-115d0ed85f58e87d2d7a057426350fec5b217cc9 -> xe-846-da89ab10a9af68bc5bf2da94f0958929042a789d
+
+  IGTPW_10733: 10733
+  IGT_7729: 7729
+  xe-835-115d0ed85f58e87d2d7a057426350fec5b217cc9: 115d0ed85f58e87d2d7a057426350fec5b217cc9
+  xe-846-da89ab10a9af68bc5bf2da94f0958929042a789d: da89ab10a9af68bc5bf2da94f0958929042a789d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10733/index.html
+
+--===============5931434342087691278==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/rendercopy: Fix Xe2 pixel shader</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130379/">https://patchwork.freedesktop.org/series/130379/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10733/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10733/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7729_BAT -&gt; XEIGTPW_10733_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10733_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>{igt@xe_exec_queue_property@invalid-property}:<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7729/bat-pvc-2/igt@xe_exec_queue_property@invalid-property.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1276">Intel XE#1276</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10733/bat-pvc-2/igt@xe_exec_queue_property@invalid-property.html">PASS</a></li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7729/bat-dg2-oem2/igt@xe_exec_queue_property@invalid-property.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1276">Intel XE#1276</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10733/bat-dg2-oem2/igt@xe_exec_queue_property@invalid-property.html">PASS</a></li>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7729/bat-atsm-2/igt@xe_exec_queue_property@invalid-property.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1276">Intel XE#1276</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10733/bat-atsm-2/igt@xe_exec_queue_property@invalid-property.html">PASS</a></li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7729/bat-adlp-7/igt@xe_exec_queue_property@invalid-property.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1276">Intel XE#1276</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10733/bat-adlp-7/igt@xe_exec_queue_property@invalid-property.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7729 -&gt; IGTPW_10733</li>
+<li>Linux: xe-835-115d0ed85f58e87d2d7a057426350fec5b217cc9 -&gt; xe-846-da89ab10a9af68bc5bf2da94f0958929042a789d</li>
+</ul>
+<p>IGTPW_10733: 10733<br />
+  IGT_7729: 7729<br />
+  xe-835-115d0ed85f58e87d2d7a057426350fec5b217cc9: 115d0ed85f58e87d2d7a057426350fec5b217cc9<br />
+  xe-846-da89ab10a9af68bc5bf2da94f0958929042a789d: da89ab10a9af68bc5bf2da94f0958929042a789d</p>
+
+</body>
+</html>
+
+--===============5931434342087691278==--
