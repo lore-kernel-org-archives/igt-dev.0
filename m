@@ -4,71 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25C8AC48BF6
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 21:14:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E5EDC5478C
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 21:14:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7698910E6DC;
-	Mon, 26 Feb 2024 21:14:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7A5B210F29D;
+	Mon, 26 Feb 2024 21:14:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="RafDAGsL";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="TFs9cYAz";
 	dkim-atps=neutral
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2058.outbound.protection.outlook.com [40.107.243.58])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 643E610F299
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2047.outbound.protection.outlook.com [40.107.244.47])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 512EC10F290
  for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 21:14:44 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=C7O9HgbUysKJX7wHxyqH4suaRdL2lNCQRenZ9/SQJ0h6EXdrLpGsfD3Tth7a4bCvf4XVh0MLVJjcu++NRBKAX/btpECvmpbAhXZICFGOL7PXOxQ9onDnnX516+Q1NFp7xfiILpxbm+bl6aNNijwG8fKNW/W2ROp7uFD3vhJI5q8e7nWQsEoFHdvxUCPYvM8l6Vib1kEAwDZys1tnJCsRP7ctLi+rvCLmMlu4xkr0SUOu4shJLbM7KI4flP9/M496C8xC3q5BN3lNbPr9qZDQX9kCkic48pL98WZY04IceVzRqMngbzbeH/ImxSvXxvQpdYL/CF1iSAhSyB4nuUlVVg==
+ b=TfbJDuR04+S1Lpe/G3m7/w1xw0/AjqwkJ0SL8RfLHkgovZ7J4FNng0Z5HEpUyhU9Zlc0yE4krGorQAmn4x2jtK61OMTt5V6OVjN4EIat/lLxhj1gxUZ8JXFNboMiwNDeEuFQwUzGJMhZIc5TgxCVYdtZm0GKyPE0zFoOS38YpucSIgXCvcJJ7XYuYX3tcJ32xxFUy/HPhnDewaEN8uVwSjeek7ikXu2c2MfLMp/C+NOefGMDdFtLJumJ1za+NsYSuZuN7fvL1Iu/N4uewtpWS3hUhDFruvVpntWEApUHIGk0tS0NggQub7YEMMX3eSp40f94bW5u+owxnnbe9CqgsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nMTQyI2jQqh9H/xyGbeo8oWU7wKdDJZgwfXPIvN4DYU=;
- b=L9Hmu8cCQ8rz0h6UbRkcpqdeCGv8pK+DZRaLR9Y+B5KUzkd2CQLY86vXpdF3Gx8xeS/B3XULtx87lIT1OC7qzHaOYuRroM2YeAR50IjzTKJq0UTNuptxO8ONOIcOPLDbM3DFBD+ZRPRfQkwVq27QRXwHycQZL1uik6qHAp2dSF+bYOLyJR6c0XwMHNLPw5Gopso/Zf07DWZYgRgdk0hh3ximvenIGOVSiIu3mt6Ha2DgVyQS4uzZpfP+XzfarErhtAbpjD4HmIrPiiF5IA4YBNe5TNNPsDDTBQsr5O+5zIonKh9I15nZGr9ZSQexL1jR7C73qTdhbXTv07kdFzwAcw==
+ bh=ofUUmBxv3t5uAZMr7UGC49CZrk8ywqYmcWB2gYznGhw=;
+ b=F7LHi8dxPRzZR/poHNUI/NI95zE7EPY8qusCVapqDWeb5H3IOGba7DnHy7hn/2F5Gl1nTPMRG1cvI6w4HimkCMd+/Nx5TZEKkYvOZ30NNDwYB+leG7qzUxtv/tCHS7wf+AXmdaTBTNUz3ZzI6EoEBwk8F1i9hRi1lwSbgjTnjvQNr8ZEFTuSBIYb/giihPd01QyJao61dp09qyJ6+qVOTH//FFHA/jeu2gSDN2TUixtV7I363fJglkRV6tnhEXZncou/HuZqcdgxI8N/l0BOrdRmb/sW9FdlrDc3fbfrlhmRhWk00w/0L0Db/aCc5fEmsfq9omRkXyx89hauGpY/7w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nMTQyI2jQqh9H/xyGbeo8oWU7wKdDJZgwfXPIvN4DYU=;
- b=RafDAGsL/SU1O1Br6x/i+OrZNi/v1JqdMoUXjgycQvXy2Ih7EG2kOOjTMPOUQFLcURl738nbtmbC+yeosuGG+CIdkj5O1HTHwgHkpOjv2g7Bh6RQw59fMcbNNHc6eWQ4dcsZbfGJC6PZG9tf3UpNwys0HXnvAmt5yPIBq6Tq/jQ=
-Received: from MN2PR15CA0026.namprd15.prod.outlook.com (2603:10b6:208:1b4::39)
- by CY5PR12MB6226.namprd12.prod.outlook.com (2603:10b6:930:22::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.33; Mon, 26 Feb
- 2024 21:14:42 +0000
-Received: from BL02EPF0001A101.namprd05.prod.outlook.com
- (2603:10b6:208:1b4::4) by MN2PR15CA0026.outlook.office365.com
- (2603:10b6:208:1b4::39) with Microsoft SMTP Server (version=TLS1_2,
+ bh=ofUUmBxv3t5uAZMr7UGC49CZrk8ywqYmcWB2gYznGhw=;
+ b=TFs9cYAzy9kQOt78OmlbQBbc+HXzdxr13P1hGcEZzMzUWNyuPLD8N3hUWbJYU3RTn2+tevGpzFYKQtA3qyLjODCXiMec5V9wH0X1X57i5hlkBhWmte6saFa4t/j0nftURKr+srvyRKNfLDWm12h/XB0OqFSEl60n4Om2mFIffow=
+Received: from SJ0PR03CA0261.namprd03.prod.outlook.com (2603:10b6:a03:3a0::26)
+ by CO6PR12MB5490.namprd12.prod.outlook.com (2603:10b6:303:13d::9)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.34; Mon, 26 Feb
+ 2024 21:14:39 +0000
+Received: from DS2PEPF0000343A.namprd02.prod.outlook.com
+ (2603:10b6:a03:3a0:cafe::a4) by SJ0PR03CA0261.outlook.office365.com
+ (2603:10b6:a03:3a0::26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.49 via Frontend
- Transport; Mon, 26 Feb 2024 21:14:42 +0000
+ Transport; Mon, 26 Feb 2024 21:14:38 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL02EPF0001A101.mail.protection.outlook.com (10.167.241.132) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ DS2PEPF0000343A.mail.protection.outlook.com (10.167.18.37) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Mon, 26 Feb 2024 21:14:42 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.7292.25 via Frontend Transport; Mon, 26 Feb 2024 21:14:38 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 26 Feb
- 2024 15:14:41 -0600
+ 2024 15:14:38 -0600
 Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
  (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 26 Feb
- 2024 15:14:41 -0600
+ 2024 15:14:37 -0600
 Received: from localhost.localdomain (10.180.168.240) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Mon, 26 Feb 2024 15:14:41 -0600
+ Transport; Mon, 26 Feb 2024 15:14:37 -0600
 From: Harry Wentland <harry.wentland@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Harry Wentland <harry.wentland@amd.com>
-Subject: [RFC PATCH v5 24/32] lib/igt_color: Add PQ variants for 0-1 and 0-125
- range
-Date: Mon, 26 Feb 2024 16:14:08 -0500
-Message-ID: <20240226211416.100660-25-harry.wentland@amd.com>
+Subject: [RFC PATCH v5 17/32] tests/kms_colorop: Parametrize the buffer format
+Date: Mon, 26 Feb 2024 16:14:01 -0500
+Message-ID: <20240226211416.100660-18-harry.wentland@amd.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240226211416.100660-1-harry.wentland@amd.com>
 References: <20240226211416.100660-1-harry.wentland@amd.com>
@@ -79,25 +78,25 @@ Received-SPF: None (SATLEXMB05.amd.com: harry.wentland@amd.com does not
  designate permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A101:EE_|CY5PR12MB6226:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0affbb9a-4846-4c2d-b84a-08dc370ff325
+X-MS-TrafficTypeDiagnostic: DS2PEPF0000343A:EE_|CO6PR12MB5490:EE_
+X-MS-Office365-Filtering-Correlation-Id: dcef83af-4db2-4e6e-1622-08dc370ff102
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: KTdzwgxrJpbnPUZSdBdfadJINUMgxXWN6bXlaCp7YuN3xjWuIzJFVpcr96+ovTf/1QVbwU5uj54LSnUWSkxHumhpIkJ+HYFlE0XaVosIpgafkiq9Zopl9/UumXx/O84iE7zNKKhk50RQ0WJVVfMKwtbHjPoHvvFBK6rjjOC51c8d/u39haUWefLW4qwLP1+WWKzQf6FDolQOvSbDey4cIFB0OCL9xhtBnyPXXIa0qKBtohdcgfjj1ZV9JogwgLi9hn0+2VoLtgwUUtZ4672Wvw1S+IzfnpLbKQV8R4dgC68O1aEWTYKZo/6m9LkGKtGYqkJcZmPXEBBgfRdt+2k+2BOLN/98ns0pFBf/ZKchTW/dEyZ/+OzXg9cKNYGWaL8qMi5a4U2CcII1Cn+7sT4fpoJURXCZYEo0OW2qPUsL5eDY+yf6Ui+xG8J0KV/FdTdrtYpEcs7J9b/8Mi1iay/42ddyiGGyopiqHMY/7QWszHHJctQRTNgyWffPRgkvrOZj/FkqqzO9vMSeoi7cDcUIYAu/tVmTuzxgchtBrTjuoqy6WoZLJvUL++j6mYFxK+fohwcd89WYyDJLY52stKFVNt4DtdKKYI/GOtgydr8QY/XAzaZ1s2BZYFi8gcWkzcPFV14McZ0UpAiQdmRnfOtCGKdARUJ9hVrX87FWpn/uuhbunL3jUEJA+De8QNUZc2am9h64En1GwZAqNApVmTVedxq9b7DIS7DwDFxYlEeMg+ICRDo4BgO1zQ1DLCM9enUF
+X-Microsoft-Antispam-Message-Info: Y+fhU1693tmqp6DMqeKoOQXmIQ6zR6ww64ebBBYVAX3U4a5kPfNZ7ZdeBnUEOpRYpT28cuFmgmat2C3acfHa0EBRv5JKh+8xQERV08hPR8xEB7UbKI8woycmsuhc/hg+kWYvAS+WWxduBv6QBtZkG07Fwr7T+2Hwuy/fiCNIigDibJxm6/AQnGHfAkuSZtKVi+WyYO2d4mVfINd117mCGZQ+juizrBbt6ghFogarRgghgNnxqu2zvw2hQuj8pxWbpIMMhmXZotR3RrTUb8G1bCzLSYx08dVc7yhPtHxpherqetA7Xz0E2wRrAMiZXh1pAeBuLfm7SgVpdaljWnzQFgxQVIjY4XW17/Rqq9PGLGYzvjs+GOK/8IYJ4tLH5T8XLT63W0ei3y59uHPjOVf621OjQRYe3BvOES6rET4qrtqzp3kaAdXh3UfaZJ86x3mU6azdskAuODEmf6LkOSRptwZJXIXuD/xja9cfDjKi2V4V9iU2L7vgr1/pVyXmaocIUQIn/6SrBtCtNa+s5lJASzqU5lcpEN03bE396JcXFo/Lp0Ob+aMNm34OJX9PgswJoTLWoj1nsMyl+qRRGaTnEWPKSOD4Jqh1FMMxBG8UnoZ++x/i+/rOR2gwiMPXB2ZKi97My8NvBH/99vCinvAeSHaDIez7dUuQbAlhisKoHLPxbxlS5D3/0LrzNMxy9nOz6ZV0ZVfaP5/udjG3Ghw6peise3gulea618ngT9NqC9tYDiDVMQ1nAL0TLS90S/id
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
  SFS:(13230031)(36860700004); DIR:OUT; SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 21:14:42.2515 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0affbb9a-4846-4c2d-b84a-08dc370ff325
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 21:14:38.6469 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: dcef83af-4db2-4e6e-1622-08dc370ff102
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A101.namprd05.prod.outlook.com
+ Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF0000343A.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6226
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR12MB5490
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,164 +112,157 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add PQ SW transforms. The most obvious to do the PQ EOTF
-is to transform [0.0, 1.0] non-linear values to [0.0, 1.0]
-linear values, and same in the inverse. So we add transforms
-that do this.
-
-Some HW (like AMD's) has scaling baked into the PQ EOTF
-and will scale [0.0, 1.0] non-linear values to [0.0, 125.0]
-linear values when applying the PQ EOTF. The inverse will
-take [0.0, 125.0] linear values and output [0.0, 1.0]
-linear values. We're adding a transform that can handle
-this variant as well.
+We'll eventually want to run this test for 10 bpc buffers,
+or even other formats. Parametrize the buffer format for
+both input and writeback buffers using fourcc.
 
 Signed-off-by: Harry Wentland <harry.wentland@amd.com>
 ---
- lib/igt_color.c | 81 +++++++++++++++++++++++++++++++++++++++++++------
- lib/igt_color.h | 13 ++++++++
- 2 files changed, 84 insertions(+), 10 deletions(-)
+ tests/kms_colorop.c | 49 +++++++++++++++++++++++++++++++--------------
+ 1 file changed, 34 insertions(+), 15 deletions(-)
 
-diff --git a/lib/igt_color.c b/lib/igt_color.c
-index 43179a17e41b..0926385f4d82 100644
---- a/lib/igt_color.c
-+++ b/lib/igt_color.c
-@@ -20,6 +20,13 @@ static float clamp(float val, float min, float max)
- 	return ((val < min) ? min : ((val > max) ? max : val));
+diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
+index 5b7f81c83af5..0013d311d878 100644
+--- a/tests/kms_colorop.c
++++ b/tests/kms_colorop.c
+@@ -31,7 +31,7 @@
+  * Category: Display
+  * Description: Test to validate the retrieving and setting of DRM colorops
+  *
+- * SUBTEST: plane-%s
++ * SUBTEST: plane-%s-%s
+  * Description: Tests DRM colorop properties on a plane
+  * Driver requirement: amdgpu
+  * Functionality: kms_core
+@@ -40,6 +40,10 @@
+  *
+  * arg[1]:
+  *
++ * @XR24-XR24:			XRGB8888 framebuffer and writeback buffer
++ *
++ * arg[2]:
++ *
+  * @bypass:			Bypass Color Pipeline
+  * @srgb_eotf:                  sRGB EOTF
+  * @srgb_inv_eotf:              sRGB Inverse EOTF
+@@ -56,11 +60,12 @@
+ 
+ /* TODO move to lib for kms_writeback and kms_colorop (and other future) use */
+ static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
+-				    drmModeModeInfo override_mode)
++				    drmModeModeInfo override_mode, __u32 fourcc_in,
++				    __u32 fourcc_out)
+ {
+ 	igt_fb_t input_fb, output_fb;
+ 	igt_plane_t *plane;
+-	uint32_t writeback_format = DRM_FORMAT_XRGB8888;
++	uint32_t writeback_format = fourcc_out;
+ 	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
+ 	int width, height, ret;
+ 
+@@ -70,7 +75,7 @@ static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
+ 	height = override_mode.vdisplay;
+ 
+ 	ret = igt_create_fb(display->drm_fd, width, height,
+-			    DRM_FORMAT_XRGB8888, modifier, &input_fb);
++			    fourcc_in, modifier, &input_fb);
+ 	igt_assert(ret >= 0);
+ 
+ 	ret = igt_create_fb(display->drm_fd, width, height,
+@@ -103,7 +108,7 @@ typedef struct {
+ static data_t data;
+ 
+ /* TODO move to lib for kms_writeback and kms_colorop (and other future) use */
+-static igt_output_t *kms_writeback_get_output(igt_display_t *display)
++static igt_output_t *kms_writeback_get_output(igt_display_t *display, __u32 fourcc_in, __u32 fourcc_out)
+ {
+ 	int i;
+ 	enum pipe pipe;
+@@ -139,7 +144,7 @@ static igt_output_t *kms_writeback_get_output(igt_display_t *display)
+ 			if (data.builtin_mode)
+ 				override_mode = output->config.connector->modes[data.mode_index];
+ 
+-			if (check_writeback_config(display, output, override_mode)) {
++			if (check_writeback_config(display, output, override_mode, fourcc_in, fourcc_out)) {
+ 				igt_debug("Using connector %u:%s on pipe %d\n",
+ 					  output->config.connector->connector_id,
+ 					  output->name, pipe);
+@@ -366,6 +371,8 @@ static void apply_transforms(kms_colorop_t *colorops[], igt_fb_t *sw_transform_f
  }
  
-+static void igt_color_multiply(igt_pixel_t *pixel, float multiplier)
-+{
-+	pixel->r *= multiplier;
-+	pixel->g *= multiplier;
-+	pixel->b *= multiplier;
-+}
-+
- static float igt_color_tf_eval_unclamped(const struct igt_color_tf *fn, float x)
+ static void colorop_plane_test(igt_display_t *display,
++			       __u32 fourcc_in,
++			       __u32 fourcc_out,
+ 			       kms_colorop_t *colorops[])
  {
- 	if (x < fn->d)
-@@ -51,24 +58,78 @@ static void tf_inverse(const struct igt_color_tf *fn, struct igt_color_tf *inv)
+ 	igt_colorop_t *color_pipeline = NULL;
+@@ -378,7 +385,7 @@ static void colorop_plane_test(igt_display_t *display,
+ 	unsigned int fb_id;
+ 	igt_crc_t input_crc, output_crc;
+ 
+-	output = kms_writeback_get_output(display);
++	output = kms_writeback_get_output(display, fourcc_in, fourcc_out);
+ 	igt_require(output);
+ 
+ 	if (output->use_override_mode)
+@@ -392,7 +399,7 @@ static void colorop_plane_test(igt_display_t *display,
+ 
+ 	fb_id = igt_create_color_pattern_fb(display->drm_fd,
+ 					mode.hdisplay, mode.vdisplay,
+-					DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++					fourcc_in, DRM_FORMAT_MOD_LINEAR,
+ 					0.2, 0.2, 0.2, &input_fb);
+ 	igt_assert(fb_id >= 0);
+ 	igt_plane_set_fb(plane, &input_fb);
+@@ -402,7 +409,7 @@ static void colorop_plane_test(igt_display_t *display,
+ 
+ 	/* create output fb */
+ 	fb_id = igt_create_fb(display->drm_fd, mode.hdisplay, mode.vdisplay,
+-				DRM_FORMAT_XRGB8888,
++				fourcc_in,
+ 				igt_fb_mod_to_tiling(0),
+ 				&output_fb);
+ 	igt_require(fb_id > 0);
+@@ -506,8 +513,16 @@ igt_main
+ 		{ { &kms_colorop_ctm_3x4_bt709_dec, &kms_colorop_ctm_3x4_bt709_enc, NULL }, "ctm_3x4_bt709_dec_enc" },
+ 	};
+ 
++	struct {
++		__u32 fourcc_in;
++		__u32 fourcc_out;
++		const char *name;
++	} formats[] = {
++		{ DRM_FORMAT_XRGB8888, DRM_FORMAT_XRGB8888, "XR24-XR24" },
++	};
++
+ 	igt_display_t display;
+-	int i;
++	int i, j;
+ 
+ 	igt_fixture {
+ 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
+@@ -521,12 +536,16 @@ igt_main
+ 
  	}
- }
  
--void igt_color_srgb_inv_eotf(igt_pixel_t *pixel)
-+static float pq_eval(const struct igt_color_tf_pq *pq, float x)
-+{
-+	return powf(fmaxf(pq->A + pq->B * powf(x, pq->C), 0)
-+		       / (pq->D + pq->E * powf(x, pq->C)),
-+			    pq->F);
-+}
-+
-+static void pq_inv(struct igt_color_tf_pq *inv)
-+{
-+	inv->A = -pq_eotf.A;
-+	inv->B = pq_eotf.D;
-+	inv->C = 1.0f / pq_eotf.F;
-+	inv->D = pq_eotf.B;
-+	inv->E = -pq_eotf.E;
-+	inv->F = 1.0f / pq_eotf.C;
-+}
-+
-+static void igt_color_tf(igt_pixel_t *pixel, const struct igt_color_tf *tf)
-+{
-+	pixel->r = igt_color_tf_eval(tf, pixel->r);
-+	pixel->g = igt_color_tf_eval(tf, pixel->g);
-+	pixel->b = igt_color_tf_eval(tf, pixel->b);
-+}
-+
-+static void igt_color_inv_tf(igt_pixel_t *pixel, const struct igt_color_tf *tf)
- {
- 	struct igt_color_tf inv;
- 
--	tf_inverse(&srgb_eotf, &inv);
+-	for (i = 0; i < sizeof(tests) / sizeof (tests[0]); i++) {
+-		igt_describe("Bla bla bla");
+-		igt_subtest_f("plane-%s", tests[i].name)
+-			colorop_plane_test(&display, tests[i].colorops);
++	for (j = 0; j < sizeof(formats) / sizeof (formats[0]); j++) {
++		for (i = 0; i < sizeof(tests) / sizeof (tests[0]); i++) {
++			igt_describe("Bla bla bla");
++			igt_subtest_f("plane-%s-%s", formats[j].name, tests[i].name)
++				colorop_plane_test(&display,
++						   formats[j].fourcc_in,
++						   formats[j].fourcc_out,
++						   tests[i].colorops);
++		}
+ 	}
 -
--	pixel->r = igt_color_tf_eval(&inv, pixel->r);
--	pixel->g = igt_color_tf_eval(&inv, pixel->g);
--	pixel->b = igt_color_tf_eval(&inv, pixel->b);
-+	tf_inverse(tf, &inv);
-+	igt_color_tf(pixel, &inv);
- }
- 
--
-+static void tf_pq(igt_pixel_t *pixel, const struct igt_color_tf_pq *pq)
-+{
-+	pixel->r = pq_eval(pq, pixel->r);
-+	pixel->g = pq_eval(pq, pixel->g);
-+	pixel->b = pq_eval(pq, pixel->b);
-+}
- 
- void igt_color_srgb_eotf(igt_pixel_t *pixel)
- {
--	pixel->r = igt_color_tf_eval(&srgb_eotf, pixel->r);
--	pixel->g = igt_color_tf_eval(&srgb_eotf, pixel->g);
--	pixel->b = igt_color_tf_eval(&srgb_eotf, pixel->b);
-+	igt_color_tf(pixel, &srgb_eotf);
-+}
-+
-+void igt_color_srgb_inv_eotf(igt_pixel_t *pixel)
-+{
-+	igt_color_inv_tf(pixel, &srgb_eotf);
-+}
-+
-+void igt_color_pq_eotf(igt_pixel_t *pixel)
-+{
-+	tf_pq(pixel, &pq_eotf);
-+}
-+
-+void igt_color_pq_inv_eotf(igt_pixel_t *pixel)
-+{
-+	struct igt_color_tf_pq inv;
-+
-+	pq_inv(&inv);
-+	tf_pq(pixel, &inv);
-+}
-+
-+void igt_color_pq_125_eotf(igt_pixel_t *pixel)
-+{
-+	igt_color_pq_eotf(pixel);
-+	igt_color_multiply(pixel, 125.0f);
-+}
-+
-+void igt_color_pq_125_inv_eotf(igt_pixel_t *pixel)
-+{
-+	igt_color_multiply(pixel, 1/125.0f);
-+	igt_color_pq_inv_eotf(pixel);
- }
- 
- static void igt_color_apply_3x4_ctm(igt_pixel_t *pixel, const igt_matrix_3x4_t *matrix)
-diff --git a/lib/igt_color.h b/lib/igt_color.h
-index d218550f6dd0..a97383fabaf3 100644
---- a/lib/igt_color.h
-+++ b/lib/igt_color.h
-@@ -19,8 +19,15 @@ struct igt_color_tf {
-     float g, a,b,c,d,e,f;
- };
- 
-+struct igt_color_tf_pq {
-+	float A, B, C, D, E, F, G;
-+};
-+
-+
- const struct igt_color_tf srgb_eotf = {2.4f, (float)(1/1.055), (float)(0.055/1.055), (float)(1/12.92), 0.04045f, 0, 0};
- 
-+const struct igt_color_tf_pq pq_eotf = {-107/128.0f, 1.0f, 32/2523.0f, 2413/128.0f, -2392/128.0f, 8192/1305.0f };
-+
- typedef struct igt_pixel {
- 	float r;
- 	float g;
-@@ -104,6 +111,12 @@ void igt_colorop_set_ctm_3x4(igt_display_t *display,
- void igt_color_srgb_inv_eotf(igt_pixel_t *pixel);
- void igt_color_srgb_eotf(igt_pixel_t *pixel);
- 
-+void igt_color_pq_inv_eotf(igt_pixel_t *pixel);
-+void igt_color_pq_eotf(igt_pixel_t *pixel);
-+
-+void igt_color_pq_125_inv_eotf(igt_pixel_t *pixel);
-+void igt_color_pq_125_eotf(igt_pixel_t *pixel);
-+
- void igt_color_ctm_3x4_50_desat(igt_pixel_t *pixel);
- void igt_color_ctm_3x4_overdrive(igt_pixel_t *pixel);
- void igt_color_ctm_3x4_oversaturate(igt_pixel_t *pixel);
+ 	igt_describe("Tests getting and setting COLOR_PIPELINE property on plane");
+ #if 0
+ 	igt_subtest("plane-srgb") {
 -- 
 2.44.0
 
