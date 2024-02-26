@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F682C48BF6
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D687C54E55
 	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 21:14:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9E64C10F297;
+	by gabe.freedesktop.org (Postfix) with ESMTP id ADFE810F2A1;
 	Mon, 26 Feb 2024 21:14:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="MfeG5uKK";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="h4lo1Igz";
 	dkim-atps=neutral
-Received: from outbound.mail.protection.outlook.com
- (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A271710F29F
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 21:14:46 +0000 (UTC)
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2059.outbound.protection.outlook.com [40.107.93.59])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B50610F29F
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 21:14:47 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RqFy5j+zKMyJu5U2uW2v18Jr6YCbrDMvewaAXeZMI89uQjjbyg8Q5W9zBeI5yHBXfOSyvnEGEIKXV1khn4q0FpL7h0Ymz4n2/uPWebv1jre2WzjSAWs5EPLC7O2oEBiPwpVNLGKM71rUBwWm9VtwWtDX/hV5/xnT5FLODHCIZwkCMjU5QLL4gYed1LbbclDSAcWqEqIISYeDMNf+M4ouIQMFp38OEy3tjEutSLd25epfg/zPxD/SwBbVjdhAU/ecr/AtPyYLAgZthaAXK87ufNMlOrNr48mXW7EhS8UHELHDibY5cGx9FP6OAz2VlC8bsnoxVyDRkXbxv5GdOZKCAQ==
+ b=lkREz6uX4b/I4pj3XAwJ3rqEwqzTQ8j3geLxQJtqwz56aZPCCEwR4UDjNq4rjVk78ZwDG60Qrv3KqSGAwnHdTrEVBNPt6ETZZ02qua8u2HO4sTrhDnoCPr4dTUHpTkOj7TN7LYOwnEgDm0DriIKcIY9ijeY8EKyeT1psqlac6NDg5ls5C6RfIA8PI82baYNcsxKmW0tuEweeTMXHOCSKAWwBjB5mj2VJzOTJy/SjwRvaB48JKyQTcPpy02LmSs94Tj/N8WPcjMXD/+4l0p4IRqb/YdrHGcKFKXHQ08FszaTQ9hq/aS+WX7FIAHh7qf4epbZx8J7lih/QL5H8hWVhvg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S9pB4paLQCVnofugxByAgtwiIW3APgBJ6L8XcRJpiPk=;
- b=P1kYNE1oM9uS1E8AvUZWZ/Km6HGaaJf/zZuC3WkTgnUDEFEohCWQVDThiND8wys718TNIB8d41Qbzbbjce5vj/8tGAVjpejztBe5MgqJidRI7MJKhaQIcxmsTkBlx1SRvcG37esVP3HQy4FeuunSGbikvO3zNYaiOUgfmfZDlysPhBcaDFgh11mi0M08ZDCPYkvIAi4RTvRc/qAfkRoxPDQWOuo7xLkUJEzfm/uodL75xVGPMOUoTDMwvDGRQCWWl/4fZx7sO20T99YidpX6V58TAtoM1J19TEg716z8ZRn0LAvwnpAz6qGZub1DXFrWSYTj1CmAJ3Obdw2T+3MD5w==
+ bh=UBJCe+b0hSeYJs9BZTakfWWx3AIdOfYQxczrVwq0aiw=;
+ b=H35+/w2VoDOUdwAvFRAkHMIoiMCOyZO3z7LxHFfekQyCez7aXOF/ZOkSVQEI53ifBENIwSx8Bzsxk1VsA1XADJ+a+3w/m95de7RdHc24yQv0GJcNdm7f0tN+fQVrNw8feWMuu1DP4yxo1nimVPqFW6gOwSTSSAj5HXfXOO+23pby5Q0gMd5YBVL56VV2x5TzpE2qx3oTxfClQ9xAWf0KvB2qkuCOFNrc6fnN/lvmaG0G17Ln3S4Bipq1hsbSPps6A4w/LXgVClsJumd61YvkxjHW56J9WPUnHmG4i40iVRLJ74PnGswDCRivNscbqfQcRT10RlOVhrs6LaYnpw+9YA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S9pB4paLQCVnofugxByAgtwiIW3APgBJ6L8XcRJpiPk=;
- b=MfeG5uKKPfUWhQncW+G06PTspTrCN6n8LbBmlasA8km4OOeeWFFHswYI4rCxndk/L9OFFIY0VTGfjKcA04D9Qgc/mLI3HMqS8LvltddMys7MZDFT4Hb2az6pxWmGzNMFEIaCtKPFDeba6wfN5nSKayoEdHNA/mRrrln5jiTB3yw=
-Received: from MN2PR16CA0008.namprd16.prod.outlook.com (2603:10b6:208:134::21)
- by MW3PR12MB4556.namprd12.prod.outlook.com (2603:10b6:303:52::20)
+ bh=UBJCe+b0hSeYJs9BZTakfWWx3AIdOfYQxczrVwq0aiw=;
+ b=h4lo1IgzJoIlcqW/jzq+0as168R/aYl7RYL+jAqW1JTFOSoJZwQwrSncGPq6KE2l7L482B82PKVp66azhPSDJGa6IU5l/A7TFIdUOPXU3URXvs8OaNpK1+C0SVaoSO3xVUFNUtwQkOFydWOxEZ3XjggFQWZ5E+nblUW1NPejzyg=
+Received: from MN2PR16CA0034.namprd16.prod.outlook.com (2603:10b6:208:134::47)
+ by CY8PR12MB7339.namprd12.prod.outlook.com (2603:10b6:930:51::22)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.34; Mon, 26 Feb
- 2024 21:14:44 +0000
+ 2024 21:14:45 +0000
 Received: from BL02EPF0001A105.namprd05.prod.outlook.com
- (2603:10b6:208:134:cafe::f0) by MN2PR16CA0008.outlook.office365.com
- (2603:10b6:208:134::21) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10b6:208:134:cafe::4d) by MN2PR16CA0034.outlook.office365.com
+ (2603:10b6:208:134::47) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.49 via Frontend
- Transport; Mon, 26 Feb 2024 21:14:43 +0000
+ Transport; Mon, 26 Feb 2024 21:14:45 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -50,50 +50,52 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
  BL02EPF0001A105.mail.protection.outlook.com (10.167.241.137) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Mon, 26 Feb 2024 21:14:43 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
+ 15.20.7292.25 via Frontend Transport; Mon, 26 Feb 2024 21:14:45 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 26 Feb
- 2024 15:14:42 -0600
+ 2024 15:14:44 -0600
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 26 Feb
+ 2024 15:14:44 -0600
 Received: from localhost.localdomain (10.180.168.240) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Mon, 26 Feb 2024 15:14:42 -0600
+ Transport; Mon, 26 Feb 2024 15:14:44 -0600
 From: Harry Wentland <harry.wentland@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-CC: Alex Hung <alex.hung@amd.com>
-Subject: [RFC PATCH v5 27/32] tests/kms_colorop: Add a sRGB test for EOTF ->
- Inverse EOTF -> EOTF
-Date: Mon, 26 Feb 2024 16:14:11 -0500
-Message-ID: <20240226211416.100660-28-harry.wentland@amd.com>
+CC: Alex Hung <alex.hung@amd.com>, Harry Wentland <harry.wentland@amd.com>
+Subject: [RFC PATCH v5 30/32] lib/igt_color: Add 1D LUT color transformation
+ support
+Date: Mon, 26 Feb 2024 16:14:14 -0500
+Message-ID: <20240226211416.100660-31-harry.wentland@amd.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240226211416.100660-1-harry.wentland@amd.com>
 References: <20240226211416.100660-1-harry.wentland@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: None (SATLEXMB04.amd.com: harry.wentland@amd.com does not
- designate permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A105:EE_|MW3PR12MB4556:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6d98dcc9-95c8-4e4f-9e3c-08dc370ff3df
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A105:EE_|CY8PR12MB7339:EE_
+X-MS-Office365-Filtering-Correlation-Id: 033b6f3e-ce14-483f-cc37-08dc370ff4f1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: rW8hjPCM/ej+HQr8Rjklb/PS0Lp3K/W5gQB2acb9+mnOvNT/kH+rT8KniUwwg1lewIAaLIwitOiISjCkzdVwXDWcolvGU5+P+UGcLFQNBx+C/NA7ZyOnuDIVM+ISig5XosRRyVVS/17LyP9FrZIpYfDPMExsiwNqhECfAwXo5B1KdXlIsYefA38UCQ/z9U5itcAR0Lohg1cGFgofx8B+9TYsAd9tpr24KC8PrEwYbbQoDCX+IWBd8bnv8tzFVLNcqYtZNWj+D1YeKQdWECLWxJ8T0bAcKDV7zGaNtZmgDeiYC/kNHEkSh5slqUI4+Vg1G2djxx1+KUnmUqddAyoxZjeWTv+CXTvwH+x21ZKApaowag5zf6mO6eLx2w/YGaYyQlxElMaveSfCJbv0mGKrJobc2QyZsPMwQNqjBgB36ikpmeZU5BE0oH/DaIQSwYC48ajKQRiGuejrZNe9BGULtzUPDuQXgED24GIOAAG882DPDxLsoiu3aw/DkYCsWXs2svssC+RCwyR4wOItQOgtAHLvEWgOJmjjYe2F8FYvOtXl9OoQ2WqNyCwpJ0GPJ5HuWhDT23vWayG+iIZaDcJJD8lZX+rITESA+LTSmzrU+vAmqeRZoYc07QsfyxsbfEilHx42FDT+05yyUGszhG8RXaJNLK6tSXI7EBlEUJQ5VF2/Lw75zdlIMtl6cbkpSpgN7oB83Rm/YJGNkHhzzFRhjRJFj759umXJUb62V0xyYZZLto8A1VjrqIfNsItq4xuO
+X-Microsoft-Antispam-Message-Info: w6FIXoHJSWphsxhwRy6EbBbRv0gWasrRkf27PVkk1O8B0PMty6oDM6f2sJkIN+pNjeJz59x+OzUKLJ3VdOUZ/LGEpOvRV00OIHCBezDwbyc51GU5jCXT/iCYQ9zkeFvf4m3+aDGBRT7tziheIqXCIPhxiJSW+e1ameIFwSyDXsT5AtvQDV9pKo+r7Wyi/Lxb4CqlPzwVSq4CDAvMYL76oOmdNZCwetC7vgqJOr6mXeBeAvT5vETFa6B/wB9uO/6wDicqocVC+TVZ8TbSvgHxBg6uNjGrY6PR7lfOX7AD6KQqcseTfE8BquapfEzW1rJWvQfrVyOmYbfsnL+EL60z11VrA6gAOltSJmY3FflvQu+B1kEllyPdDQcuA2GfXv3d6Mn9CE/qp3ggHGi8BcG/RJFwYonCzFTZ2Ag6e4HcXBVQE9MI85eH3F+1Z2gFkXkMuF86te8oqu4lv/iXvknAsf1eIub3u92sZLKWm7oHsJjrOLufsOLAhUQmTn/jWsf+XmNJ2I3O68xqBusltd6mEYGX3GYphz6uxfOZWuxmdzWEARB56863Yi6kivSZyyCyOxM8pTc9MplGTCtJfqn6hp8SG+F4fvZK0AMw2kupUeuBqmTFCFoIAK/1EaQ131rClChB4wargUE0eDk4NZTcOiprxfAODZhSv0f9yAWBR2E0GmzuNft2sojzjMaC/IUoMazgZUH2p64F/DLjuYYDq+9A6o8FyjddCeMObWY60cjyI+ClrQ2gVTD8uXqopsPy
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
  SFS:(13230031)(36860700004); DIR:OUT; SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 21:14:43.4854 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d98dcc9-95c8-4e4f-9e3c-08dc370ff3df
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 21:14:45.2198 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 033b6f3e-ce14-483f-cc37-08dc370ff4f1
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A105.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4556
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7339
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,94 +113,114 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Alex Hung <alex.hung@amd.com>
 
-Signed-off-by: Alex Hung <alex.hung@amd.com>
----
- tests/kms_colorop.c | 40 +++++++++++++++++++++-------------------
- tests/kms_colorop.h |  9 +++++++++
- 2 files changed, 30 insertions(+), 19 deletions(-)
+Add definitions and functions for setting 1D LUT on a
+drm_colorop.
 
-diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
-index dccc1772bfe3..ed4cb2652f9e 100644
---- a/tests/kms_colorop.c
-+++ b/tests/kms_colorop.c
-@@ -40,29 +40,30 @@
-  *
-  * arg[1]:
-  *
-- * @XR24-XR24:			XRGB8888 framebuffer and writeback buffer
-- * @XR30-XR30:			XRGB8888 framebuffer and writeback buffer
-+ * @XR24-XR24:				XRGB8888 framebuffer and writeback buffer
-+ * @XR30-XR30:				XRGB8888 framebuffer and writeback buffer
-  *
-  * arg[2]:
-  *
-- * @bypass:			Bypass Color Pipeline
-- * @srgb_eotf:                  sRGB EOTF
-- * @srgb_inv_eotf:              sRGB Inverse EOTF
-- * @srgb_eotf-srgb_inv_eotf:    sRGB EOTF -> sRGB Inverse EOTF
-- * @pq_eotf:                    PQ EOTF
-- * @pq_inv_eotf:                PQ Inverse EOTF
-- * @pq_eotf-pq_inv_eotf:        PQ EOTF -> PQ Inverse EOTF
-- * @pq_125_eotf:                PQ EOTF for [0.0, 125.0] optical range
-- * @pq_125_inv_eotf:            PQ Inverse EOTF for [0.0, 125.0] optical range
-- * @pq_125_eotf-pq_125_inv_eotf: PQ EOTF -> PQ Inverse EOTF with [0.0, 125.0] optical range
-+ * @bypass:				Bypass Color Pipeline
-+ * @srgb_eotf:                  	sRGB EOTF
-+ * @srgb_inv_eotf:              	sRGB Inverse EOTF
-+ * @srgb_eotf-srgb_inv_eotf:    	sRGB EOTF -> sRGB Inverse EOTF
-+ * @srgb_eotf-srgb_inv_eotf-srgb_eotf:  sRGB EOTF -> sRGB Inverse EOTF -> sRGB EOTF
-+ * @pq_eotf:                    	PQ EOTF
-+ * @pq_inv_eotf:                	PQ Inverse EOTF
-+ * @pq_eotf-pq_inv_eotf:        	PQ EOTF -> PQ Inverse EOTF
-+ * @pq_125_eotf:                	PQ EOTF for [0.0, 125.0] optical range
-+ * @pq_125_inv_eotf:            	PQ Inverse EOTF for [0.0, 125.0] optical range
-+ * @pq_125_eotf-pq_125_inv_eotf:	PQ EOTF -> PQ Inverse EOTF with [0.0, 125.0] optical range
-  * @pq_125_eotf-pq_125_inv_eotf-pq_125_eotf: PQ EOTF -> PQ Inverse EOTF -> PQ EOTF with [0.0, 125.0] optical range
-- * @ctm_3x4_50_desat:		3x4 matrix doing a 50% desaturation
-- * @ctm_3x4_overdrive:		3x4 matrix overdring all values by 50%
-- * @ctm_3x4_oversaturate:	3x4 matrix oversaturating values
-- * @ctm_3x4_bt709_enc:		BT709 encoding matrix
-- * @ctm_3x4_bt709_dec:		BT709 decoding matrix
-- * @ctm_3x4_bt709_enc_dec:	BT709 encoding matrix, followed by decoding matrix
-- * @ctm_3x4_bt709_dec_enc:	BT709 decoding matrix, followed by encoding matrix
-+ * @ctm_3x4_50_desat:			3x4 matrix doing a 50% desaturation
-+ * @ctm_3x4_overdrive:			3x4 matrix overdring all values by 50%
-+ * @ctm_3x4_oversaturate:		3x4 matrix oversaturating values
-+ * @ctm_3x4_bt709_enc:			BT709 encoding matrix
-+ * @ctm_3x4_bt709_dec:			BT709 decoding matrix
-+ * @ctm_3x4_bt709_enc_dec:		BT709 encoding matrix, followed by decoding matrix
-+ * @ctm_3x4_bt709_dec_enc:		BT709 decoding matrix, followed by encoding matrix
-  *
-  */
- 
-@@ -489,6 +490,7 @@ igt_main
- 		{ { &kms_colorop_srgb_eotf, NULL }, "srgb_eotf" },
- 		{ { &kms_colorop_srgb_inv_eotf, NULL }, "srgb_inv_eotf" },
- 		{ { &kms_colorop_srgb_eotf, &kms_colorop_srgb_inv_eotf, NULL }, "srgb_eotf-srgb_inv_eotf" },
-+		{ { &kms_colorop_srgb_eotf, &kms_colorop_srgb_inv_eotf, &kms_colorop_srgb_eotf_2, NULL }, "srgb_eotf-srgb_inv_eotf-srgb_eotf" },
- 		{ { &kms_colorop_pq_eotf, NULL }, "pq_eotf" },
- 		{ { &kms_colorop_pq_inv_eotf, NULL }, "pq_inv_eotf" },
- 		{ { &kms_colorop_pq_eotf, &kms_colorop_pq_inv_eotf, NULL }, "pq_eotf-pq_inv_eotf" },
-diff --git a/tests/kms_colorop.h b/tests/kms_colorop.h
-index 3188e6db4300..7d5cb4bd1669 100644
---- a/tests/kms_colorop.h
-+++ b/tests/kms_colorop.h
-@@ -88,6 +88,15 @@ kms_colorop_t kms_colorop_srgb_eotf = {
- 	.transform = &igt_color_srgb_eotf
- };
- 
-+kms_colorop_t kms_colorop_srgb_eotf_2 = {
-+	.type = KMS_COLOROP_ENUMERATED_LUT1D,
-+	.enumerated_lut1d_info = {
-+		.tf = KMS_COLOROP_LUT1D_SRGB_EOTF
-+	},
-+	.name = "srgb_eotf",
-+	.transform = &igt_color_srgb_eotf
-+};
+Add support for the SIZE prop of a colorop, as that's
+required for understanding the size of the LUT to
+construct.
+
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Co-developed-by: Harry Wentland <harry.wentland@amd.com>
+---
+ lib/igt_color.c |  8 ++++++++
+ lib/igt_color.h | 20 ++++++++++++++++++++
+ lib/igt_kms.c   |  1 +
+ lib/igt_kms.h   |  1 +
+ 4 files changed, 30 insertions(+)
+
+diff --git a/lib/igt_color.c b/lib/igt_color.c
+index ec8b27d1ef6f..cc5ee3b0ba50 100644
+--- a/lib/igt_color.c
++++ b/lib/igt_color.c
+@@ -440,3 +440,11 @@ void igt_colorop_set_ctm_3x4(igt_display_t *display,
+ 	/* set blob property */
+ 	igt_colorop_replace_prop_blob(colorop, IGT_COLOROP_DATA, &ctm, sizeof(ctm));
+ }
 +
- kms_colorop_t kms_colorop_srgb_inv_eotf = {
- 	.type = KMS_COLOROP_ENUMERATED_LUT1D,
- 	.enumerated_lut1d_info = {
++void igt_colorop_set_custom_1dlut(igt_display_t *display,
++				  igt_colorop_t *colorop,
++				  const igt_1dlut_t *lut1d,
++				  const size_t lut_size)
++{
++	igt_colorop_replace_prop_blob(colorop, IGT_COLOROP_DATA, lut1d, lut_size);
++}
+\ No newline at end of file
+diff --git a/lib/igt_color.h b/lib/igt_color.h
+index 813bd19ba439..4a9f9b7a3958 100644
+--- a/lib/igt_color.h
++++ b/lib/igt_color.h
+@@ -15,6 +15,8 @@
+ #include "igt_fb.h"
+ #include "igt_kms.h"
+ 
++#define MAX_COLOR_LUT_ENTRIES 4096
++
+ struct igt_color_tf {
+     float g, a,b,c,d,e,f;
+ };
+@@ -35,6 +37,17 @@ typedef struct igt_pixel {
+ 	float b;
+ } igt_pixel_t;
+ 
++typedef struct igt_1dlut {
++	struct drm_color_lut lut[MAX_COLOR_LUT_ENTRIES];
++} igt_1dlut_t;
++
++igt_1dlut_t igt_1dlut_srgb_inv_eotf = { {
++} };
++
++
++igt_1dlut_t igt_1dlut_srgb_eotf = { {
++} };
++
+ typedef struct igt_matrix_3x4 {
+ 	/*
+ 	 * out   matrix          in
+@@ -107,11 +120,18 @@ void igt_colorop_set_ctm_3x4(igt_display_t *display,
+ 			     igt_colorop_t *colorop,
+ 			     const igt_matrix_3x4_t *matrix);
+ 
++void igt_colorop_set_custom_1dlut(igt_display_t *display,
++				  igt_colorop_t *colorop,
++				  const igt_1dlut_t *lut1d,
++				  const size_t lut_size);
++
+ /* transformations */
+ 
+ void igt_color_srgb_inv_eotf(igt_pixel_t *pixel);
+ void igt_color_srgb_eotf(igt_pixel_t *pixel);
+ 
++void igt_color_srgb_inv_eotf_custom_lut(igt_pixel_t *pixel);
++
+ void igt_color_pq_inv_eotf(igt_pixel_t *pixel);
+ void igt_color_pq_eotf(igt_pixel_t *pixel);
+ 
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index d9a27a442427..8550a3d4dc71 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -689,6 +689,7 @@ const char * const igt_colorop_prop_names[IGT_NUM_COLOROP_PROPS] = {
+ 	[IGT_COLOROP_TYPE] = "TYPE",
+ 	[IGT_COLOROP_BYPASS] = "BYPASS",
+ 	[IGT_COLOROP_CURVE_1D_TYPE] = "CURVE_1D_TYPE",
++	[IGT_COLOROP_SIZE] = "SIZE",
+ 	[IGT_COLOROP_DATA] = "DATA",
+ 	[IGT_COLOROP_NEXT] = "NEXT",
+ };
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index d392ecfad852..ed71a249ddb0 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -352,6 +352,7 @@ enum igt_atomic_colorop_properties {
+ 	IGT_COLOROP_TYPE,
+ 	IGT_COLOROP_BYPASS,
+ 	IGT_COLOROP_CURVE_1D_TYPE,
++	IGT_COLOROP_SIZE,
+ 	IGT_COLOROP_DATA,
+ 	IGT_COLOROP_NEXT,
+ 	IGT_NUM_COLOROP_PROPS
 -- 
 2.44.0
 
