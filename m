@@ -4,50 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC0ACC48BF6
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 23:59:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90102C54E51
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 23:59:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8350210E817;
-	Mon, 26 Feb 2024 23:59:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2D3C010E833;
+	Mon, 26 Feb 2024 23:59:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ynq+u5ko";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gB564Nlv";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4314010E833
- for <IGT-Dev@lists.freedesktop.org>; Mon, 26 Feb 2024 23:59:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9AC0610E577
+ for <IGT-Dev@lists.freedesktop.org>; Mon, 26 Feb 2024 23:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708991982; x=1740527982;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=HrZNXKVIC6U0MbGD+E6NxARQlU7FIq11++pLwmdUueA=;
- b=Ynq+u5kon5tl54H/91xb5BxmzllWAxLPBvdJamVWteZfLx8ciEEnfGxc
- 8Wfu2MJ2WS48z6o+VrbqkKzNhAxTOeP2D6adNKNVr5SNXRvFx2KWWkBaC
- oB5YaCql3qFG5/k4TuSX4vaOHeoQmWMCOEEu7HCn+G8vCHLrcCimuHxuR
- 4DZId6RS3+gJ0kFlDPXt7c4/paj42u77DsRGifFETjXkIwmP2zi8D6Q9/
- lDtPSyicN/TOAWwEfO0nwrTYaX1E4QwftVqUCPHfEl5BbX/Ntkzdi2l7v
- lAVo1710/89uAY2OAG2U5W7YFYVb+YN1mS1rqgx5BgCNAc6pM5fUfYw14 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3471587"
+ t=1708991981; x=1740527981;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=B/CuxzFfXHiZp5RgSQFJPf8DeRird7wgKROxqL1imjE=;
+ b=gB564NlvS7tlcLYdQK+XhenXz7LHpNk6QFbFSjxrm3tNArT/rNoQoGMC
+ HaTQmYF8wVgjXQw97Bmsf7jN7jcHeLzIrAo00c1xelgian82ZqeEZgjgl
+ pj5Th61CXFum/RSJY/pUwri92Muz+5jqSZPscdINDpdmHJvOZMqRnOD17
+ bZK0fxbVsh2IMd7EHj3K9AXBuvc3dXwjilFWRSL7poHDBretacXDCm9ob
+ MkuLM8tcjI0CZxDH/pm+yfmKN1afkaXWD21GhT7WIBeyfYnxrNpho5z8h
+ GjKnwC/6Rn9+kkFk8zKcQH2IkR1NtNOk1QPrY5lkwNDmR4cqzL4fwIxLm Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3471585"
 X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
-   d="scan'208";a="3471587"
+   d="scan'208";a="3471585"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 15:59:41 -0800
+ 26 Feb 2024 15:59:40 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
-   d="scan'208";a="7050620"
+   d="scan'208";a="7050614"
 Received: from relo-linux-5.jf.intel.com ([10.165.21.152])
  by fmviesa006.fm.intel.com with ESMTP; 26 Feb 2024 15:59:40 -0800
 From: John.C.Harrison@Intel.com
 To: IGT-Dev@Lists.FreeDesktop.Org
 Cc: John Harrison <John.C.Harrison@Intel.com>
-Subject: [PATCH i-g-t 2/2] tests/intel/gem_exec_schedule: Add w/a tag to prior
- update for MTL RCS/CCS w/a
-Date: Mon, 26 Feb 2024 15:57:36 -0800
-Message-ID: <20240226235737.2150915-3-John.C.Harrison@Intel.com>
+Subject: [PATCH i-g-t 0/2] More updates for MTL workarounds
+Date: Mon, 26 Feb 2024 15:57:34 -0800
+Message-ID: <20240226235737.2150915-1-John.C.Harrison@Intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240226235737.2150915-1-John.C.Harrison@Intel.com>
-References: <20240226235737.2150915-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Organization: Intel Corporation (UK) Ltd. - Co. Reg. #1134945 - Pipers Way,
  Swindon SN3 1RJ
@@ -69,27 +66,23 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-This test was recently updated to not fall foul of a particular
-workaround. The w/a tag itself was missed, however. So, add that in to
-make it easier to find in the future.
+Upate another test to not fail when a MTL workaround is enabled. Also
+go back and add the w/a number to a previous one.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
----
- tests/intel/gem_exec_schedule.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/tests/intel/gem_exec_schedule.c b/tests/intel/gem_exec_schedule.c
-index 3fd91b2fae80..8612929cc403 100644
---- a/tests/intel/gem_exec_schedule.c
-+++ b/tests/intel/gem_exec_schedule.c
-@@ -444,6 +444,7 @@
- IGT_TEST_DESCRIPTION("Check that we can control the order of execution");
- 
- /*
-+ * Wa_16019325821
-  * The RCS/CCS workaround on MTL means that if spinners are sent to both RCS
-  * and CCS engines concurrently then the system is effectively dead and will
-  * require a reset of both engines to recover. Even pre-emptible spinners
+
+John Harrison (1):
+  tests/intel/gem_exec_schedule: Add w/a tag to prior update for MTL
+    RCS/CCS w/a
+
+johnharr (1):
+  tests/intel/gem_spin_batch: Skip compute engines on MTL due to w/a
+
+ tests/intel/gem_exec_schedule.c |  1 +
+ tests/intel/gem_spin_batch.c    | 16 ++++++++++++++++
+ 2 files changed, 17 insertions(+)
+
 -- 
 2.43.0
 
