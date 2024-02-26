@@ -4,56 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58584C5478C
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 21:11:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61394C5478C
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 21:14:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 255AE10EE83;
-	Mon, 26 Feb 2024 21:11:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D335B10E40C;
+	Mon, 26 Feb 2024 21:14:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JCuwvNFk";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="uNFt/KI6";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6004910E7D0
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 21:11:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708981873; x=1740517873;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=XjHnR7kGJ62GOYQxdm8G11Ja/D+o6/D0+6JL3KKYGEY=;
- b=JCuwvNFkecSq2FEu3sx9tB/XtBCS0VUHk3/8yNgXuRNQ5GVkjIPkI+4c
- 2tLS0AU1We+eP9rLlvRCDeTmoxWyQrcYfRGLD/F4iLUsAHjaILvycaZrs
- cU+AiWCQb+8tU+4H+44J1IalT/5T2jwsjl9ZO+l9bVu1wdhiDV02WinLT
- 9ooRoer2dY0OB2rSBY+Y95IDoZPTYBgUBiBgUQZq1BJyAFfvjTejuC/4t
- 3RrRBv3yc+MH71I2wQuhxnY48iqJ/fypCJyxDzYHoqULS8nOQNrcVgmey
- 2yHvC6PcCMoj844pDxpG9pefiEZD08esflO/RaAKzRmMTBS9Q+3uRlrS/ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="7112347"
-X-IronPort-AV: E=Sophos;i="6.06,186,1705392000"; 
-   d="scan'208";a="7112347"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 13:11:10 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,186,1705392000"; 
-   d="scan'208";a="7217564"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.4.252])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 13:11:08 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org, Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: Re: [PATCH i-g-t v2 2/2] lib/igt_sysfs: make sure to write empty
- strings
-Date: Mon, 26 Feb 2024 22:11:05 +0100
-Message-ID: <1878663.tdWV9SEqCh@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20240222193326.3004623-2-lucas.demarchi@intel.com>
-References: <20240222193326.3004623-1-lucas.demarchi@intel.com>
- <20240222193326.3004623-2-lucas.demarchi@intel.com>
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on2072.outbound.protection.outlook.com [40.107.220.72])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A262710E35B
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 21:14:32 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bAF/nZ7bh3UsbC96BPrnJ9pvW5nkWnoOA4xAp3l3a8pialv8TBwhY4xWwtSz06nSj/tDfJ9grCVkZRl1oWvnlE+ff6uqQEQysjih/Uk13U4V+ZNK5nm89q0IyvkgZYZiggoXoSw/dsxYx/KqeZU6NVKh55RvzO7DM5pLR4emnDCy9OqNJNXDVUuUZzZX4dXZCD61CLJ4rVd8wcTAJ/EK52Lk37Oe2GMkS2s5eJJguGiknToY1YosTMar7OYbEt+hEbcLZjEKd9E8oDMCUsHnbso7VtYP+KS6uV6r/7mjcKlSOrCQcgkR6g/9twcENs7by2gH5vcpHxVAebntm+dglA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EEvU/gfuCDAITdLIOiISvxkaa2gtkMXOQYKFdxBWKJE=;
+ b=KlfMUD49YD4VLkx3ebfMaI9DNngajW+bsOyBaDkPsI6VCx9fpZFhyKeIOJNSruZ4qSKQCYz5fPmaSif+zSWOWcdwPvEq7bYmezXXSit3sHe7LD1RcER+RLGcZRz5pYjwJ1pxHPjlwUGQuxv2D51qnh0TAIbiZCza/KMk+4pHQ8r7Ni85CMUrEkjI91e4p0wh4xSdUCkKr+zsbBCk/X0UJg2Jg3fw1edt+2bot2RN7LzAcjJ3cUqpNqy7ej539uYBVgnMilN32VklXoh92dmwZJmWSRnLHpPG1FwzrpWRNIEL+7dL9NV7ai0K1kFRNheGKbYjl+crKFIvhUIZC6BC9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EEvU/gfuCDAITdLIOiISvxkaa2gtkMXOQYKFdxBWKJE=;
+ b=uNFt/KI6mSeaZq1NSmJSXyf69MOz+JVT9Hy+dV0sFrTTKTAEqUoRDVgosc1+QLW2bykdZ+QvD8oFkvTWyp6N1mpFh2Gzej2vJPlR7rlh51e+n/2QBzlEWFukkLzTX4p+TCtsiBBl7deY0GvT3TlVmm+z4p298Gpalr0we4xoCLQ=
+Received: from MN2PR15CA0022.namprd15.prod.outlook.com (2603:10b6:208:1b4::35)
+ by DM4PR12MB7597.namprd12.prod.outlook.com (2603:10b6:8:10b::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.33; Mon, 26 Feb
+ 2024 21:14:30 +0000
+Received: from BL02EPF0001A101.namprd05.prod.outlook.com
+ (2603:10b6:208:1b4:cafe::36) by MN2PR15CA0022.outlook.office365.com
+ (2603:10b6:208:1b4::35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.49 via Frontend
+ Transport; Mon, 26 Feb 2024 21:14:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL02EPF0001A101.mail.protection.outlook.com (10.167.241.132) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7292.25 via Frontend Transport; Mon, 26 Feb 2024 21:14:30 +0000
+Received: from SATLEXMB08.amd.com (10.181.40.132) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 26 Feb
+ 2024 15:14:30 -0600
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB08.amd.com
+ (10.181.40.132) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 26 Feb
+ 2024 13:14:29 -0800
+Received: from localhost.localdomain (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Mon, 26 Feb 2024 15:14:29 -0600
+From: Harry Wentland <harry.wentland@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Harry Wentland <harry.wentland@amd.com>
+Subject: [RFC PATCH v5 01/32] lib/drmtest: Add is_vkms_device()
+Date: Mon, 26 Feb 2024 16:13:45 -0500
+Message-ID: <20240226211416.100660-2-harry.wentland@amd.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240226211416.100660-1-harry.wentland@amd.com>
+References: <20240226211416.100660-1-harry.wentland@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A101:EE_|DM4PR12MB7597:EE_
+X-MS-Office365-Filtering-Correlation-Id: 352cc776-2d2a-45ac-2b50-08dc370fec08
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 7cGb1YlQ1sGyC4zmFGrFoPbdmTrRYr7LkMvCE8GThrFx8Md6fAMGGFNmXhKeWX5Be3+gtJtoAi2L/9ixVIhC6vx6LtuSTJnKHn3TLUz7Xjiep1ZZPZW8f0vUk/s6v6T2gNcMYWO4a8chms+/FoaGS3b7EDwFTZpo2xMtOqAnC5xSwvC21Ayoid4N3hAGxVZZVy3q6PbXeallXlA3zZHcd/M8XpIkCnuubZfFKFBJOTWISxBia93RdGOy0ROjlVOLLYaK3031Acz3OHkR6dNufc7NS3rz2xKLwMMDgMb+vc+ax/6U+8BE3yWhouP/akPLEG6IWt8K5ndleJ+rhLtaqK9Hz6cShw+wd+/0bBB7smTeHwLEQLFQxRCDwOuxLL2NLlXMKivyy+0RlGJ/33DdWQpjOmCUdHT3zjngi56c0UHU2BaGGBN5W9KYh7Gs2Wu6m2m+usp/T2yCxf+FCdBm3z85RNVlWNzzOCOdvyuXglYaioS/QWd70CeyWqpUpXGOW52o9hQzD+ks6BoDO6sLa349xDbT0pgYnmG42q4VicQdXrf1rhV75HCpmAawBMu/N4jPHRCJwLIWUdMs5PDeyDmWGioRrgdJqPw2OujAxN+D/OcnDso1kbZQfwCkj7L4zcph77I+UoCzIyqpc9qk4KgS7qdpZUbH53qZ1IKKK0SQccYbNZUPKQW39nXjLQ/B+BN3MwFCRzDKJ6GePbCFMbirm0+ZgcZxHP+jboEPofSO5Ztt2Gu6NUAQ+Mxw3Fud
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(36860700004); DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 21:14:30.3294 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 352cc776-2d2a-45ac-2b50-08dc370fec08
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A101.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7597
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,136 +110,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Lucas,
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+---
+ lib/drmtest.c | 5 +++++
+ lib/drmtest.h | 1 +
+ 2 files changed, 6 insertions(+)
 
-On Thursday, 22 February 2024 20:33:26 CET Lucas De Marchi wrote:
-> 	echo -n "" > /sys/module/<modulename>/parameters/<param>
-> 
-> doesn't really work as it will just create a open() + close() expecting
-> the file to be truncated. The same issue happens with igt as it will
-> stop writing when there are 0 chars to write. Special case the empty
-> string so it always write a '\0' and make sure igt_sysfs_set() accounts
-> for the extra null char.
-> 
-> Shell example:
-> 	# echo -n "/foo" > /sys/module/firmware_class/parameters/path
-> 	# cat /sys/module/firmware_class/parameters/path
-> 	/foo
-> 	# echo -n "" > /sys/module/firmware_class/parameters/path
-> 	/foo
-> 	# # make sure to actually write a \0:
-> 	echo -ne "\0" > /sys/module/firmware_class/parameters/path
-> 	# cat /sys/module/firmware_class/parameters/path
-> 
-> Same thing happens when testing igt_sysfs_set():
->        int dirfd = open("/sys/module/firmware_class/parameters", O_RDONLY);
->        igt_sysfs_set(dirfd, "path", "");
-> 
-> Previously it was not really setting the param.
-> 
-> v2:
->   - Fix return code from igt_sysfs_vprintf() to differentiate between
->     writing 1 or 0 chars (Janusz)
->   - Document the behavior of igt_sysfs_set() as being a higher-level
->     than igt_sysfs_write().
-> 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->  lib/igt_sysfs.c | 28 +++++++++++++++++++++++-----
->  1 file changed, 23 insertions(+), 5 deletions(-)
-> 
-> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-> index 2b0225138..d5d5b249f 100644
-> --- a/lib/igt_sysfs.c
-> +++ b/lib/igt_sysfs.c
-> @@ -349,6 +349,9 @@ int igt_sysfs_get_num_gt(int device)
->   * @len: the length to write
->   *
->   * This writes @len bytes from @data to the sysfs file.
-> + * Contrary to igt_sysfs_set(), this does not automatically add a
-> + * null char to terminate the data. It's caller responsibility to pass
-> + * the right len according to the data being written.
->   *
->   * Returns:
->   * The number of bytes written, or -errno on error.
-> @@ -406,7 +409,12 @@ int igt_sysfs_read(int dir, const char *attr, void *data, int len)
->   */
->  bool igt_sysfs_set(int dir, const char *attr, const char *value)
->  {
-> -	int len = strlen(value);
-> +	/*
-> +	 * Always write the null char at the end, to guarantee the write goes
-> +	 * through, even for an empty string.
-> +	 */
-> +	int len = strlen(value) + 1;
-
-Since pre-merge results indicate some sysfs entries don't like that extra null 
-char, I'm assuming you are going to submit a fixed version.
-
-> +
->  	return igt_sysfs_write(dir, attr, value, len) == len;
->  }
->  
-> @@ -506,7 +514,7 @@ int igt_sysfs_vprintf(int dir, const char *attr, const char *fmt, va_list ap)
->  {
->  	char stack[128], *buf = stack;
->  	va_list tmp;
-> -	int ret, fd;
-> +	int ret, fd, len;
->  
->  	fd = openat(dir, attr, O_WRONLY);
->  	if (igt_debug_on(fd < 0))
-> @@ -515,11 +523,12 @@ int igt_sysfs_vprintf(int dir, const char *attr, const char *fmt, va_list ap)
->  	va_copy(tmp, ap);
->  	ret = vsnprintf(stack, sizeof(stack), fmt, tmp);
->  	va_end(tmp);
-> +
-
-NIT: Not related.
-
->  	if (igt_debug_on(ret < 0))
->  		return -EINVAL;
->  
->  	if (ret > sizeof(stack)) {
-> -		unsigned int len = ret + 1;
-> +		len = ret + 1;
->  
->  		buf = malloc(len);
->  		if (igt_debug_on(!buf))
-> @@ -532,13 +541,22 @@ int igt_sysfs_vprintf(int dir, const char *attr, const char *fmt, va_list ap)
->  		}
->  	}
->  
-> -	ret = igt_writen(fd, buf, ret);
-> +	/*
-> +	 * Make sure to always issue a write() syscall, even if writing an
-> +	 * empty string, otherwise values in sysfs like module parameters don't
-> +	 * really get overwritten.  vsnprintf() guarantees to return a \0
-> +	 * terminated string, so just add that char. The return code is still
-> +	 * the same as before, to abstract that from caller.
-> +	 */
-> +	len = ret + 1;
-
-Potentially the same issue with some sysfs entries, I believe.
-
-Thanks,
-Janusz
-
-
-> +
-> +	ret = igt_writen(fd, buf, len);
->  
->  	close(fd);
->  	if (buf != stack)
->  		free(buf);
->  
-> -	return ret;
-> +	return ret == len ? len - 1 : ret;
->  }
->  
->  /**
-> 
-
-
-
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 52b5a2020e09..7df9bd0b7cbe 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -106,6 +106,11 @@ static bool __is_device(int fd, const char *expect)
+ 	return strcmp(expect, name) == 0;
+ }
+ 
++bool is_vkms_device(int fd)
++{
++	return __is_device(fd, "vkms");
++}
++
+ bool is_amdgpu_device(int fd)
+ {
+ 	return __is_device(fd, "amdgpu");
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index 6bc81973499c..ddf8ae083b04 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -121,6 +121,7 @@ void igt_require_nouveau(int fd);
+ void igt_require_vc4(int fd);
+ void igt_require_xe(int fd);
+ 
++bool is_vkms_device(int fd);
+ bool is_amdgpu_device(int fd);
+ bool is_i915_device(int fd);
+ bool is_mtk_device(int fd);
+-- 
+2.44.0
 
