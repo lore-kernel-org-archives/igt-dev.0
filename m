@@ -4,28 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E20DC48BF6
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 20:54:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58584C5478C
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 21:11:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DE36410E1C2;
-	Mon, 26 Feb 2024 20:53:59 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECA3810E1C2;
- Mon, 26 Feb 2024 20:53:57 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id 255AE10EE83;
+	Mon, 26 Feb 2024 21:11:15 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JCuwvNFk";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6004910E7D0
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 21:11:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708981873; x=1740517873;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=XjHnR7kGJ62GOYQxdm8G11Ja/D+o6/D0+6JL3KKYGEY=;
+ b=JCuwvNFkecSq2FEu3sx9tB/XtBCS0VUHk3/8yNgXuRNQ5GVkjIPkI+4c
+ 2tLS0AU1We+eP9rLlvRCDeTmoxWyQrcYfRGLD/F4iLUsAHjaILvycaZrs
+ cU+AiWCQb+8tU+4H+44J1IalT/5T2jwsjl9ZO+l9bVu1wdhiDV02WinLT
+ 9ooRoer2dY0OB2rSBY+Y95IDoZPTYBgUBiBgUQZq1BJyAFfvjTejuC/4t
+ 3RrRBv3yc+MH71I2wQuhxnY48iqJ/fypCJyxDzYHoqULS8nOQNrcVgmey
+ 2yHvC6PcCMoj844pDxpG9pefiEZD08esflO/RaAKzRmMTBS9Q+3uRlrS/ g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="7112347"
+X-IronPort-AV: E=Sophos;i="6.06,186,1705392000"; 
+   d="scan'208";a="7112347"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 13:11:10 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,186,1705392000"; 
+   d="scan'208";a="7217564"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.4.252])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 13:11:08 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org, Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: Re: [PATCH i-g-t v2 2/2] lib/igt_sysfs: make sure to write empty
+ strings
+Date: Mon, 26 Feb 2024 22:11:05 +0100
+Message-ID: <1878663.tdWV9SEqCh@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20240222193326.3004623-2-lucas.demarchi@intel.com>
+References: <20240222193326.3004623-1-lucas.demarchi@intel.com>
+ <20240222193326.3004623-2-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_benchmarks/kms=5Ffb=5Fs?=
- =?utf-8?q?tress=3A_Add_command-line_options_to_change_the_planes_and_writeb?=
- =?utf-8?q?ack_formats?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Arthur Grillo" <arthurgrillo@riseup.net>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 26 Feb 2024 20:53:57 -0000
-Message-ID: <170898083796.318338.1124473186815883330@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240226-kms_fb_stress-dev-v1-0-1c14942b1244@riseup.net>
-In-Reply-To: <20240226-kms_fb_stress-dev-v1-0-1c14942b1244@riseup.net>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,69 +66,139 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+Hi Lucas,
 
-Series: benchmarks/kms_fb_stress: Add command-line options to change the pl=
-anes and writeback formats
-URL   : https://patchwork.freedesktop.org/series/130399/
-State : warning
+On Thursday, 22 February 2024 20:33:26 CET Lucas De Marchi wrote:
+> 	echo -n "" > /sys/module/<modulename>/parameters/<param>
+> 
+> doesn't really work as it will just create a open() + close() expecting
+> the file to be truncated. The same issue happens with igt as it will
+> stop writing when there are 0 chars to write. Special case the empty
+> string so it always write a '\0' and make sure igt_sysfs_set() accounts
+> for the extra null char.
+> 
+> Shell example:
+> 	# echo -n "/foo" > /sys/module/firmware_class/parameters/path
+> 	# cat /sys/module/firmware_class/parameters/path
+> 	/foo
+> 	# echo -n "" > /sys/module/firmware_class/parameters/path
+> 	/foo
+> 	# # make sure to actually write a \0:
+> 	echo -ne "\0" > /sys/module/firmware_class/parameters/path
+> 	# cat /sys/module/firmware_class/parameters/path
+> 
+> Same thing happens when testing igt_sysfs_set():
+>        int dirfd = open("/sys/module/firmware_class/parameters", O_RDONLY);
+>        igt_sysfs_set(dirfd, "path", "");
+> 
+> Previously it was not really setting the param.
+> 
+> v2:
+>   - Fix return code from igt_sysfs_vprintf() to differentiate between
+>     writing 1 or 0 chars (Janusz)
+>   - Document the behavior of igt_sysfs_set() as being a higher-level
+>     than igt_sysfs_write().
+> 
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> ---
+>  lib/igt_sysfs.c | 28 +++++++++++++++++++++++-----
+>  1 file changed, 23 insertions(+), 5 deletions(-)
+> 
+> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+> index 2b0225138..d5d5b249f 100644
+> --- a/lib/igt_sysfs.c
+> +++ b/lib/igt_sysfs.c
+> @@ -349,6 +349,9 @@ int igt_sysfs_get_num_gt(int device)
+>   * @len: the length to write
+>   *
+>   * This writes @len bytes from @data to the sysfs file.
+> + * Contrary to igt_sysfs_set(), this does not automatically add a
+> + * null char to terminate the data. It's caller responsibility to pass
+> + * the right len according to the data being written.
+>   *
+>   * Returns:
+>   * The number of bytes written, or -errno on error.
+> @@ -406,7 +409,12 @@ int igt_sysfs_read(int dir, const char *attr, void *data, int len)
+>   */
+>  bool igt_sysfs_set(int dir, const char *attr, const char *value)
+>  {
+> -	int len = strlen(value);
+> +	/*
+> +	 * Always write the null char at the end, to guarantee the write goes
+> +	 * through, even for an empty string.
+> +	 */
+> +	int len = strlen(value) + 1;
 
-=3D=3D Summary =3D=3D
+Since pre-merge results indicate some sysfs entries don't like that extra null 
+char, I'm assuming you are going to submit a fixed version.
 
-Pipeline status: FAILED.
+> +
+>  	return igt_sysfs_write(dir, attr, value, len) == len;
+>  }
+>  
+> @@ -506,7 +514,7 @@ int igt_sysfs_vprintf(int dir, const char *attr, const char *fmt, va_list ap)
+>  {
+>  	char stack[128], *buf = stack;
+>  	va_list tmp;
+> -	int ret, fd;
+> +	int ret, fd, len;
+>  
+>  	fd = openat(dir, attr, O_WRONLY);
+>  	if (igt_debug_on(fd < 0))
+> @@ -515,11 +523,12 @@ int igt_sysfs_vprintf(int dir, const char *attr, const char *fmt, va_list ap)
+>  	va_copy(tmp, ap);
+>  	ret = vsnprintf(stack, sizeof(stack), fmt, tmp);
+>  	va_end(tmp);
+> +
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1113455 f=
-or the overview.
+NIT: Not related.
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/55524519):
-                         =3D 0
-  2 warnings generated.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/959] Generating version.h with a custom command.
-  [2/213] Linking target benchmarks/gem_wsim.
-  [3/213] Compiling C object 'benchmarks/cb1d2fd@@kms_fb_stress@exe/kms_fb_=
-stress.c.o'.
-  FAILED: benchmarks/cb1d2fd@@kms_fb_stress@exe/kms_fb_stress.c.o=20
-  clang -Ibenchmarks/cb1d2fd@@kms_fb_stress@exe -Ibenchmarks -I../benchmark=
-s -I../include -I../include/drm-uapi -I../include/linux-uapi -Ilib -I../lib=
- -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib=
--2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/f=
-reetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdr=
-m/nouveau -I/usr/include/valgrind -Xclang -fcolor-diagnostics -pipe -D_FILE=
-_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SO=
-URCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclarat=
-ion-after-statement -Wformat=3D2 -Wmissing-declarations -Wmissing-format-at=
-tribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-styl=
-e-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes=
- -Wuninitialized -Wunused -Wno-missing-field-initializers -Wno-pointer-arit=
-h -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno-unu=
-sed-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -=
-Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=
-=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int=
--cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -W=
-error=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthread -MD =
--MQ 'benchmarks/cb1d2fd@@kms_fb_stress@exe/kms_fb_stress.c.o' -MF 'benchmar=
-ks/cb1d2fd@@kms_fb_stress@exe/kms_fb_stress.c.o.d' -o 'benchmarks/cb1d2fd@@=
-kms_fb_stress@exe/kms_fb_stress.c.o' -c ../benchmarks/kms_fb_stress.c
-  ../benchmarks/kms_fb_stress.c:207:9: error: initializer element is not a =
-compile-time constant
-          .kms =3D default_kms,
-                 ^~~~~~~~~~~
-  1 error generated.
-  ninja: build stopped: subcommand failed.
-  section_end:1708980416:step_script
-  section_start:1708980416:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1708980418:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+>  	if (igt_debug_on(ret < 0))
+>  		return -EINVAL;
+>  
+>  	if (ret > sizeof(stack)) {
+> -		unsigned int len = ret + 1;
+> +		len = ret + 1;
+>  
+>  		buf = malloc(len);
+>  		if (igt_debug_on(!buf))
+> @@ -532,13 +541,22 @@ int igt_sysfs_vprintf(int dir, const char *attr, const char *fmt, va_list ap)
+>  		}
+>  	}
+>  
+> -	ret = igt_writen(fd, buf, ret);
+> +	/*
+> +	 * Make sure to always issue a write() syscall, even if writing an
+> +	 * empty string, otherwise values in sysfs like module parameters don't
+> +	 * really get overwritten.  vsnprintf() guarantees to return a \0
+> +	 * terminated string, so just add that char. The return code is still
+> +	 * the same as before, to abstract that from caller.
+> +	 */
+> +	len = ret + 1;
 
-=3D=3D Logs =3D=3D
+Potentially the same issue with some sysfs entries, I believe.
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/1113455
+Thanks,
+Janusz
+
+
+> +
+> +	ret = igt_writen(fd, buf, len);
+>  
+>  	close(fd);
+>  	if (buf != stack)
+>  		free(buf);
+>  
+> -	return ret;
+> +	return ret == len ? len - 1 : ret;
+>  }
+>  
+>  /**
+> 
+
+
+
+
