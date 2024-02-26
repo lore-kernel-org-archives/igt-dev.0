@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 909F8C5478C
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 19:42:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1044BC5478C
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 19:42:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2699910E7BA;
-	Mon, 26 Feb 2024 19:42:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9141510E7BE;
+	Mon, 26 Feb 2024 19:42:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="b61NPK26";
+	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="F7i3lrz+";
 	dkim-atps=neutral
 Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 93EB410E7B2
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 19:42:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3AB7210E7BE
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Feb 2024 19:42:44 +0000 (UTC)
 Received: from fews02-sea.riseup.net (fews02-sea-pn.riseup.net [10.0.1.112])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx0.riseup.net (Postfix) with ESMTPS id 4Tk9xr01qcz9tdb;
- Mon, 26 Feb 2024 19:42:39 +0000 (UTC)
+ by mx0.riseup.net (Postfix) with ESMTPS id 4Tk9xv6Jcvz9s6r;
+ Mon, 26 Feb 2024 19:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
- t=1708976560; bh=+OOO77HS/VEtai+q+k+XSBu94X1OtXG3DJkl+fpINKc=;
+ t=1708976564; bh=5QVTFGxc6r8dPOgLQq8IvYN3JuQISFhGvIk/srVluNM=;
  h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=b61NPK26D5q9uVOHaOwfV+1cj3CkDjhCY+c8Ml4LMqcjEvidXIZuExhoa45AXaHhb
- AJqBmtf79zQkNPthWjV3mHKQiv+RcwXT1Zn0PGbkU+w/MeQZ35ZVNKURcmI4hcPVFs
- Tw41ufxR2peaQsmpo00vgQhC6plAsKz3xy1ATBck=
-X-Riseup-User-ID: 9FC659888962502853235C9C20557366A19DDC4FFA3BD3664609982BB5237643
+ b=F7i3lrz+TS2k0DkDSi6GD8Tp+2gUVJO0viU3VPWmFeNF4Fl9p5NvGNIrzZwCRs8Te
+ iirPyzuMCRM+V6ojesLPT51fR+5Pd/PsLKEdFE0AF8fBRGdCxM6kLjH1C0Ubb9XWbO
+ CjvDJAlZ0i280eGy42M1KNp87d9JmSnjH1Dmquzc=
+X-Riseup-User-ID: 9CD4CD522C1ABDA0ED2165B25BCEC70C16F2CDCBCEAE79C0D79778BFDE2566E2
 Received: from [127.0.0.1] (localhost [127.0.0.1])
- by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4Tk9xn3xt2zFtBt;
- Mon, 26 Feb 2024 19:42:37 +0000 (UTC)
+ by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4Tk9xr5FCgzFt7B;
+ Mon, 26 Feb 2024 19:42:40 +0000 (UTC)
 From: Arthur Grillo <arthurgrillo@riseup.net>
-Date: Mon, 26 Feb 2024 16:42:17 -0300
-Subject: [PATCH i-g-t 1/3] benchmarks/kms_fb_stress: Assert that we have an
- supported pipe
+Date: Mon, 26 Feb 2024 16:42:18 -0300
+Subject: [PATCH i-g-t 2/3] benchmarks/kms_fb_stress: Add command line
+ options to change the planes and writeback formats
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240226-kms_fb_stress-dev-v1-1-1c14942b1244@riseup.net>
+Message-Id: <20240226-kms_fb_stress-dev-v1-2-1c14942b1244@riseup.net>
 References: <20240226-kms_fb_stress-dev-v1-0-1c14942b1244@riseup.net>
 In-Reply-To: <20240226-kms_fb_stress-dev-v1-0-1c14942b1244@riseup.net>
 To: igt-dev@lists.freedesktop.org
@@ -64,83 +64,87 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some driver may not support overlay planes. Add a check for that.
+Currently, the plane formats are hard-coded, with no possibility of
+changing them when running the benchmark. Change that by adding command
+line options to change the planes and writeback formats.
 
 Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
 ---
- benchmarks/kms_fb_stress.c | 36 +++++++++++++++++++++++++++---------
- 1 file changed, 27 insertions(+), 9 deletions(-)
+ benchmarks/kms_fb_stress.c | 50 ++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 46 insertions(+), 4 deletions(-)
 
 diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
-index 9a0e98bed8ad..8fea10ef069f 100644
+index 8fea10ef069f..073104b8e4f8 100644
 --- a/benchmarks/kms_fb_stress.c
 +++ b/benchmarks/kms_fb_stress.c
-@@ -87,6 +87,27 @@ static igt_output_t *find_wb_output(struct data_t *data)
- 	return NULL;
+@@ -125,7 +125,7 @@ static void set_crtc_size(struct data_t *data)
+ 	igt_assert_f(0, "CRTC size %dx%d not supported\n", crtc->width, crtc->height);
  }
  
-+static void set_wb_pipe(struct data_t *data)
+-static struct kms_t default_kms = {
++static const struct kms_t default_kms = {
+ 	.crtc = {
+ 		.width = 4096, .height = 2160,
+ 	},
+@@ -159,14 +159,56 @@ static struct kms_t default_kms = {
+ 	},
+ };
+ 
++static int opt_handler(int opt, int opt_index, void *_data)
 +{
-+	enum pipe pipe = PIPE_NONE;
++	struct data_t *data = _data;
++	struct kms_t *kms =  &data->kms;
 +
-+	for_each_pipe(&data->display, pipe) {
-+		igt_pipe_t *pipe_obj = &data->display.pipes[pipe];
++	*kms = default_kms;
 +
-+		if (igt_pipe_count_plane_type(pipe_obj, DRM_PLANE_TYPE_OVERLAY) < 2)
-+			continue;
-+
-+		igt_debug("Selecting pipe %s to %s\n",
-+			  kmstest_pipe_name(pipe),
-+			  igt_output_name(data->wb_output));
-+		igt_output_set_pipe(data->wb_output, pipe);
-+
-+		return;
++	switch (opt) {
++	case 'p':
++		kms->primary.format = igt_drm_format_str_to_format(optarg);
++		break;
++	case 'a':
++		kms->overlay_a.format = igt_drm_format_str_to_format(optarg);
++		break;
++	case 'b':
++		kms->overlay_b.format = igt_drm_format_str_to_format(optarg);
++		break;
++	case 'w':
++		kms->writeback.format = igt_drm_format_str_to_format(optarg);
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
 +	}
 +
-+	igt_assert_f(0, "No pipe supports this benchmark\n");
++	return IGT_OPT_HANDLER_SUCCESS;
 +}
 +
- static void set_crtc_size(struct data_t *data)
++static const char *help_str =
++	"  --primary-format\t\tSelect the primary plane format (default: XRGB8888)\n"
++	"  --overlay-a-format\t\tSelect the overlay A plane format (default: XRGB16161616)\n"
++	"  --overlay-b-format\t\tSelect the overlay B plane format (default: ARGB8888)\n"
++	"  --writeback-format\t\tSelect the writeback format (default: XRGB8888)\n";
++
++static const struct option long_options[] = {
++	{ .name = "primary-format", .has_arg = true, .val = 'p'},
++	{ .name = "overlay-a-format", .has_arg = true, .val = 'a'},
++	{ .name = "overlay-b-format", .has_arg = true, .val = 'b'},
++	{ .name = "writeback-format", .has_arg = true, .val = 'w'},
++	{}
++};
++
++static struct data_t data = {
++	.kms = default_kms,
++};
+ 
+-igt_simple_main
++igt_simple_main_args(NULL, long_options, help_str, opt_handler, &data)
  {
- 	drmModeModeInfo *mode;
-@@ -142,7 +163,6 @@ static struct kms_t default_kms = {
- igt_simple_main
- {
- 	struct data_t data = {0};
--	enum pipe pipe = PIPE_NONE;
+-	struct data_t data = {0};
  	struct timespec then, now;
  	double elapsed;
  
-@@ -163,24 +183,22 @@ igt_simple_main
+-	data.kms = default_kms;
  
- 	data.wb_output = find_wb_output(&data);
- 	igt_require(data.wb_output);
--
--	for_each_pipe(&data.display, pipe) {
--		igt_debug("Selecting pipe %s to %s\n",
--			  kmstest_pipe_name(pipe),
--			  igt_output_name(data.wb_output));
--		igt_output_set_pipe(data.wb_output, pipe);
--		break;
--	}
-+	set_wb_pipe(&data);
- 
- 	set_crtc_size(&data);
- 
- 	gen_fbs(&data);
- 
- 	data.kms.primary.base = igt_output_get_plane_type(data.wb_output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_assert(data.kms.primary.base != NULL);
-+
- 	data.kms.overlay_a.base = igt_output_get_plane_type_index(data.wb_output,
- 								  DRM_PLANE_TYPE_OVERLAY, 0);
-+	igt_assert(data.kms.overlay_a.base != NULL);
-+
- 	data.kms.overlay_b.base = igt_output_get_plane_type_index(data.wb_output,
- 								  DRM_PLANE_TYPE_OVERLAY, 1);
-+	igt_assert(data.kms.overlay_b.base != NULL);
- 
- 	igt_assert_eq(igt_gettime(&then), 0);
+ 	data.fd = drm_open_driver_master(DRIVER_ANY);
  
 
 -- 
