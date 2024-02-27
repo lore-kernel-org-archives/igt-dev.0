@@ -4,76 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B163CC48BF6
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 01:04:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01DD0C48BF6
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 02:39:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4D2BE10E070;
-	Tue, 27 Feb 2024 01:04:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8AB8510E5E4;
+	Tue, 27 Feb 2024 02:39:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.b="OxFcMUgA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xg075vxX";
 	dkim-atps=neutral
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
- [205.220.180.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4B7C10E070
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Feb 2024 01:04:53 +0000 (UTC)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 41R0eZkH020146; Tue, 27 Feb 2024 01:04:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
- message-id:date:mime-version:subject:to:cc:references:from
- :in-reply-to:content-type:content-transfer-encoding; s=
- qcppdkim1; bh=nF278DFeduv6hGu/YrZMI9BXOKABokJNfXhsCoKH54k=; b=Ox
- FcMUgAmuV6TmUDe7kBO27BMp1BalrBg+kQF+ioloSxohE+lkIM1j8SbJ0goqaeu8
- F8p9+pb5juuvWx2nRsicf5gDGEMbaTyfSpb1A4QTncOIwLLumODgPQIWXqSCOLlg
- Y9+FAvLxdwmqt8IOtzhj/d8IFjcd/RTJnhE6zLiIEFX+XxyGvD1BUb7cms9jxqDk
- ERH+h+5sJdrKiDrNkHOyGJKN0Pi4cuyJ9X7kVRCM/J3ws0jwV94HU/Yx6WWynldf
- XnAIwC9ThfGzN4MB95y9D7/eKqNNbtEWgnA0Z8wPnXWI5VeI4/RwhK/irJMh/IxH
- jNuHWj/TDV6JPXdzGd/Q==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com
- [199.106.103.254])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wgkxnah7n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Feb 2024 01:04:51 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com
- [10.46.141.250])
- by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41R14oit023798
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Feb 2024 01:04:50 GMT
-Received: from [10.71.111.207] (10.80.80.8) by nasanex01b.na.qualcomm.com
- (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 26 Feb
- 2024 17:04:50 -0800
-Message-ID: <5586ea0b-d9f7-43a3-aac8-493aa9e22b2d@quicinc.com>
-Date: Mon, 26 Feb 2024 17:04:49 -0800
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C866D10E5E4
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Feb 2024 02:39:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709001597; x=1740537597;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=7B9b4HOCJEtiQLXEMnivPNH3+qDD0jmihz7L2Tyu/nc=;
+ b=Xg075vxXb+JHxonK+W1Wa9h+J+rlb4l1Q3MfqMe8mhJGmbRCuRPSMc1R
+ /qHMsbKsse9rbGVzJQ83zeocU0PuMkHd7f8sejXifPegwknrzW/E2Xciy
+ kH4tej+Ktq7y+9eLfKtDr2wGXxajVP+gjEo6nr9IT3BOBhe0Do0AJkum7
+ N/ECJZl23wRiYafU4IWf4ZgR7iUAjq45ROlZoPt8av/xqHzs2uqQyHbMd
+ YJnstjJ3W2ap0Cg1kmQq7vWYFJkprXDASRBkJLeptVqfN1SBs2vqoL+a2
+ pC893LqkYItpub06aDp4dAy+lBKiMIpLECT6E4EtStN5PNsEchmdAgioB Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="14748211"
+X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="14748211"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 18:39:56 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="11661140"
+Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 18:39:56 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>
+Subject: [PATCH] xe_exec_compute_mode: Add malloc-ufence test
+Date: Mon, 26 Feb 2024 18:39:56 -0800
+Message-Id: <20240227023956.141475-1-matthew.brost@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 1/2] tests/kms_bw: Use reduced blanking mode
- 1920x1080p timings
-Content-Language: en-US
-To: Rob Clark <robdclark@gmail.com>, <igt-dev@lists.freedesktop.org>
-CC: Rob Clark <robdclark@chromium.org>
-References: <20240215221900.327042-1-robdclark@gmail.com>
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
-In-Reply-To: <20240215221900.327042-1-robdclark@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: qZwA9zcuK6poyVA4O57hSu9HOu1b2zP1
-X-Proofpoint-GUID: qZwA9zcuK6poyVA4O57hSu9HOu1b2zP1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-26_11,2024-02-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 bulkscore=0
- adultscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
- mlxscore=0 impostorscore=0 clxscore=1015 malwarescore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2402270006
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,52 +61,127 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+The get user page ufence path is not triggered by the test as ufence
+memory is a mapped BO. To trigger this path use a malloc'd address.
 
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+---
+ tests/intel/xe_exec_compute_mode.c | 28 ++++++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
-On 2/15/2024 2:18 PM, Rob Clark wrote:
-> From: Rob Clark <robdclark@chromium.org>
-> 
-> The previous timings don't work with the ti-sn65dsi86 bridge that is
-> used with some of the sc7180 qcom devices in drm/ci.  Let's switch the
-> timings so that we can get some kms_bw test coverage.
-> 
-> Signed-off-by: Rob Clark <robdclark@chromium.org>
+diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
+index 7dad715093..c0cddbc02b 100644
+--- a/tests/intel/xe_exec_compute_mode.c
++++ b/tests/intel/xe_exec_compute_mode.c
+@@ -31,6 +31,7 @@
+ #define BIND_EXECQUEUE		(0x1 << 4)
+ #define VM_FOR_BO			(0x1 << 5)
+ #define EXEC_QUEUE_EARLY	(0x1 << 6)
++#define MALLOC_USER_FENCE		(0x1 <<7)
+ 
+ /**
+  * SUBTEST: twice-%s
+@@ -48,6 +49,7 @@
+  * arg[1]:
+  *
+  * @basic:				basic
++ * @malloc-ufence:			malloc user fence
+  * @preempt-fence-early:		preempt fence early
+  * @userptr:				userptr
+  * @rebind:				rebind
+@@ -110,6 +112,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 		uint64_t exec_sync;
+ 		uint32_t data;
+ 	} *data;
++	uint64_t *vm_sync;
+ 	int i, j, b;
+ 	int map_fd = -1;
+ 	int64_t fence_timeout;
+@@ -149,6 +152,12 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 	}
+ 	memset(data, 0, bo_size);
+ 
++	if (flags & MALLOC_USER_FENCE)
++		vm_sync = malloc(sizeof(*vm_sync));
++	else
++		vm_sync = &data[0].vm_sync;
++	igt_assert(vm_sync);
++
+ 	for (i = 0; !(flags & EXEC_QUEUE_EARLY) && i < n_exec_queues; i++) {
+ 		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
+ 		if (flags & BIND_EXECQUEUE)
+@@ -158,7 +167,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 			bind_exec_queues[i] = 0;
+ 	};
+ 
+-	sync[0].addr = to_user_pointer(&data[0].vm_sync);
++	sync[0].addr = to_user_pointer(vm_sync);
+ 	if (bo)
+ 		xe_vm_bind_async(fd, vm, bind_exec_queues[0], bo, 0, addr,
+ 				 bo_size, sync, 1);
+@@ -171,9 +180,9 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 
+ 	fence_timeout = igt_run_in_simulation() ? HUNDRED_SEC : ONE_SEC;
+ 
+-	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
++	xe_wait_ufence(fd, vm_sync, USER_FENCE_VALUE,
+ 		       bind_exec_queues[0], fence_timeout);
+-	data[0].vm_sync = 0;
++	*vm_sync = 0;
+ 
+ 	for (i = 0; i < n_execs; i++) {
+ 		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+@@ -202,7 +211,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 			xe_vm_unbind_async(fd, vm, bind_exec_queues[e], 0,
+ 					   addr, bo_size, NULL, 0);
+ 
+-			sync[0].addr = to_user_pointer(&data[0].vm_sync);
++			sync[0].addr = to_user_pointer(vm_sync);
+ 			addr += bo_size;
+ 			if (bo)
+ 				xe_vm_bind_async(fd, vm, bind_exec_queues[e], bo,
+@@ -213,9 +222,9 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 							 to_user_pointer(data),
+ 							 addr, bo_size, sync,
+ 							 1);
+-			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
++			xe_wait_ufence(fd, vm_sync, USER_FENCE_VALUE,
+ 				       bind_exec_queues[e], fence_timeout);
+-			data[0].vm_sync = 0;
++			*vm_sync = 0;
+ 		}
+ 
+ 		if (flags & INVALIDATE && i + 1 != n_execs) {
+@@ -264,10 +273,10 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 	if (flags & INVALIDATE)
+ 		usleep(250000);
+ 
+-	sync[0].addr = to_user_pointer(&data[0].vm_sync);
++	sync[0].addr = to_user_pointer(vm_sync);
+ 	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr, bo_size,
+ 			   sync, 1);
+-	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
++	xe_wait_ufence(fd, vm_sync, USER_FENCE_VALUE,
+ 		       bind_exec_queues[0], fence_timeout);
+ 
+ 	for (i = j; i < n_execs; i++)
+@@ -288,6 +297,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 	xe_vm_destroy(fd, vm);
+ 	if (map_fd != -1)
+ 		close(map_fd);
++	if (flags & MALLOC_USER_FENCE)
++		free(vm_sync);
+ }
+ 
+ /**
+@@ -408,6 +419,7 @@ igt_main
+ 		unsigned int flags;
+ 	} sections[] = {
+ 		{ "basic", 0 },
++		{ "malloc-ufence", MALLOC_USER_FENCE },
+ 		{ "preempt-fence-early", VM_FOR_BO | EXEC_QUEUE_EARLY },
+ 		{ "userptr", USERPTR },
+ 		{ "rebind", REBIND },
+-- 
+2.34.1
 
-Hi Rob,
-
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Tested-by: Jessica Zhang <quic_jesszhan@quicinc.com> # Trogdor (sc7180)
-
-Thanks,
-
-Jessica Zhang
-
-> ---
->   tests/kms_bw.c | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-> index dd10d640dc13..f1d2a1b64577 100644
-> --- a/tests/kms_bw.c
-> +++ b/tests/kms_bw.c
-> @@ -64,12 +64,12 @@ typedef struct data {
->   } data_t;
->   
->   static drmModeModeInfo test_mode[] = {
-> -	{ 173000,
-> -	1920, 2048, 2248, 2576, 0,
-> -	1080, 1083, 1088, 1120, 0,
-> +	{ 147840,
-> +	1920, 1968, 2000, 2200, 0,
-> +	1080, 1083, 1089, 1120, 0,
->   	60,
-> -	DRM_MODE_FLAG_NHSYNC,
-> -	0x40,
-> +	DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_PHSYNC,
-> +	0x48,
->   	"1920x1080p\0",
->   	}, /* test_mode_1 */
->   
-> -- 
-> 2.43.0
-> 
