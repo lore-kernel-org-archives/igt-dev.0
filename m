@@ -4,53 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80705C5478C
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 07:24:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73E9AC54798
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 07:32:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2205A10E885;
-	Tue, 27 Feb 2024 07:24:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EF60C10E261;
+	Tue, 27 Feb 2024 07:32:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="O0oX7VO5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IJgBlJIF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C948910E885
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Feb 2024 07:24:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A23D10E261
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Feb 2024 07:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709018668; x=1740554668;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=qbGVJ5oFmhwPbov8DSeaarfW11cxd43Zlota/d2ZAS4=;
- b=O0oX7VO5ihHKnip+PGXnFqvfwOs7WoOKD9GS9wyMPEMvHfSu2KIaZWhe
- 7v5CwZerXUkrHh4BDPiJ/ycD8UkE4g61c4hjucNu4o7kUI/gdt6ZEjrEO
- NgBLx8uWLaqFZaj4RsVDevumYuM+DN2JmTgBBKpmHdZ+OxvBSOCHJm81x
- gVwi8NFRY59/quezY5syJZCAxNejHt4JC7lv+y37PFxS2Fc8oSvAkv2le
- oeCBQic7nWceSQzNQYZn/rj9ATJoBBnlkPJsn7ZMaAQb0H98KvLW09GIr
- m3D3UPpih9KNRekUzMWbQyVa6B/+1eUgwSUl99S2eItHIsWehFHrgFz4/ w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="13896932"
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="13896932"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 23:24:28 -0800
+ t=1709019120; x=1740555120;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=VsOBGszS41J5i6DzpD5XjFJ0JHoHRcy7mYzqVK6+C7Y=;
+ b=IJgBlJIF2O+LdQe6Yn/rMsgKTlaDemrcaYlVVbSa4iKePmTH0sJ4umAF
+ 8XQKZdsPgGWMpKEB/HtiXE/DvTlMO/92yzSUrShiGexJ5S3QTPb/dCyzF
+ lZqa1YsApTLRBwazEc9FbqBeQAFYKt+OFmZ789Osg38/2/WqhUmx8feic
+ FtkpBeEvPEeijeVFY3HOo+bnK2VTB/u9ZJJk6vY+vastt3JWu+pbEzMZ4
+ /+NyhChPPqiNfYCH5+j7UxCLYjVcUtkvZUohWMR/7BuBUpMEp+vgnnJ+q
+ A6fIKAk7jpECL/KD3Q2tqkeHXz13vkgTanMW0C8kLmO02HKq6zkJQvBms w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="6294690"
+X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
+   d="scan'208";a="6294690"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 23:31:59 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="11544181"
-Received: from stemerk-mobl.ger.corp.intel.com (HELO localhost)
- ([10.245.114.228])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 23:24:27 -0800
-Date: Tue, 27 Feb 2024 08:24:24 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: sai.gowtham.ch@intel.com
-Cc: igt-dev@lists.freedesktop.org, janga.rahul.kumar@intel.com
-Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_compute_mode: Stress test to
- validate long running workload on compute mode
-Message-ID: <20240227072424.6vnvpdz3qccqnat4@zkempczy-mobl2>
-References: <20240223063430.10135-1-sai.gowtham.ch@intel.com>
+X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="44444664"
+Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.94.250.221])
+ ([10.94.250.221])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 23:31:58 -0800
+Message-ID: <fdbd6fa5-fe2d-48e3-acf9-7edc443ae916@linux.intel.com>
+Date: Tue, 27 Feb 2024 08:31:54 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240223063430.10135-1-sai.gowtham.ch@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/intel/xe_compute_preempt: Add
+ compute-preempt-many
+To: Nirmoy Das <nirmoy.das@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+References: <20240223193919.31331-1-nirmoy.das@intel.com>
+Content-Language: en-US
+From: Nirmoy Das <nirmoy.das@linux.intel.com>
+In-Reply-To: <20240223193919.31331-1-nirmoy.das@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,117 +69,126 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Feb 23, 2024 at 12:04:30PM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> 
-> Test validates long running compute mode by submitting a spinner for 30s
-> long.
-> 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+ping
+
+On 2/23/2024 8:39 PM, Nirmoy Das wrote:
+> Add compute-preempt-many which should exercise multiple
+> mid-thread preemption at a time for multiple contexts.
+>
 > Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
 > ---
->  tests/intel/xe_exec_compute_mode.c | 73 ++++++++++++++++++++++++++++++
->  1 file changed, 73 insertions(+)
-> 
-> diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-> index 7dad71509..0a71bfdc5 100644
-> --- a/tests/intel/xe_exec_compute_mode.c
-> +++ b/tests/intel/xe_exec_compute_mode.c
-> @@ -400,6 +400,76 @@ static void non_block(int fd, int expect)
->  	xe_vm_destroy(fd, vm);
->  }
->  
-> +/**
-> + * SUBTEST: lr-stress
-> + * Description: Stress LR mode workload for 30s.
-> + * Test category: functionality test
-> + */
-> +static void lr_stress(int fd)
-> +{
-> +	uint64_t addr = 0x1a0000;
-> +	struct drm_xe_sync sync[1] = {
-> +		{.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-> +		 .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> +		 .timeline_value = USER_FENCE_VALUE},
-> +	};
-> +	struct drm_xe_exec exec = {
-> +		.num_batch_buffer = 1,
-> +		.num_syncs = 1,
-> +		.syncs = to_user_pointer(&sync),
-> +	};
-> +	struct  {
-> +		struct xe_spin spin;
-> +		uint64_t vm_sync;
-> +		uint32_t data;
-> +		uint64_t exec_sync;
-> +	} *data;
-> +	struct xe_spin_opts spin_opts = { .preempt = false };
-> +	struct drm_xe_engine *engine;
-> +	size_t bo_size;
-> +	uint32_t vm;
-> +	uint32_t exec_queue;
-> +	uint32_t bo;
+>   lib/intel_compute.c              | 24 +++++++++++++++---------
+>   lib/intel_compute.h              |  4 +++-
+>   tests/intel/xe_compute_preempt.c | 27 ++++++++++++++++++++++++---
+>   3 files changed, 42 insertions(+), 13 deletions(-)
+>
+> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+> index c5d253ebc..8853b5cd3 100644
+> --- a/lib/intel_compute.c
+> +++ b/lib/intel_compute.c
+> @@ -1686,7 +1686,8 @@ static const struct {
+>   };
+>   
+>   static bool __run_intel_compute_kernel_preempt(int fd,
+> -		struct drm_xe_engine_class_instance *eci)
+> +		struct drm_xe_engine_class_instance *eci,
+> +		unsigned int count)
+>   {
+>   	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+>   	unsigned int batch;
+> @@ -1719,12 +1720,16 @@ static bool __run_intel_compute_kernel_preempt(int fd,
+>   	if (!kernels->kernel || !kernels->sip_kernel || !kernels->long_kernel)
+>   		return 0;
+>   
+> -	intel_compute_preempt_batches[batch].compute_exec(fd, kernels->long_kernel,
+> -							  kernels->long_kernel_size,
+> -							  kernels->kernel, kernels->size,
+> -							  kernels->sip_kernel,
+> -							  kernels->sip_kernel_size,
+> -							  eci);
+> +	igt_fork(child, count) {
+> +		intel_compute_preempt_batches[batch].compute_exec(fd, kernels->long_kernel,
+> +								  kernels->long_kernel_size,
+> +								  kernels->kernel, kernels->size,
+> +								  kernels->sip_kernel,
+> +								  kernels->sip_kernel_size,
+> +								  eci);
+> +	}
 > +
-> +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-> +	bo_size = sizeof(*data);
-> +	bo_size = xe_bb_size(fd, bo_size);
+> +	igt_waitchildren();
+>   
+>   	return true;
+>   }
+> @@ -1737,7 +1742,8 @@ static bool __run_intel_compute_kernel_preempt(int fd,
+>    * Returns true on success, false otherwise.
+>    */
+>   bool run_intel_compute_kernel_preempt(int fd,
+> -		struct drm_xe_engine_class_instance *eci)
+> +		struct drm_xe_engine_class_instance *eci,
+> +		unsigned int count)
+>   {
+> -	return __run_intel_compute_kernel_preempt(fd, eci);
+> +	return __run_intel_compute_kernel_preempt(fd, eci, count);
+>   }
+> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
+> index fe9637b91..430bae562 100644
+> --- a/lib/intel_compute.h
+> +++ b/lib/intel_compute.h
+> @@ -37,5 +37,7 @@ extern const struct intel_compute_kernels intel_compute_square_kernels[];
+>   
+>   bool run_intel_compute_kernel(int fd);
+>   bool xe_run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_instance *eci);
+> -bool run_intel_compute_kernel_preempt(int fd, struct drm_xe_engine_class_instance *eci);
+> +bool run_intel_compute_kernel_preempt(int fd,
+> +				      struct drm_xe_engine_class_instance *eci,
+> +				      unsigned int count);
+>   #endif	/* INTEL_COMPUTE_H */
+> diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
+> index a4e0e1454..fd245b655 100644
+> --- a/tests/intel/xe_compute_preempt.c
+> +++ b/tests/intel/xe_compute_preempt.c
+> @@ -22,11 +22,18 @@
+>    * Description:
+>    *      Exercise compute walker mid thread preemption scenario
+>    * Functionality: compute openCL kernel
+> + *
+> + * SUBTEST: compute-preempt-many
+> + * GPU requirement: LNL
+> + * Description:
+> + *      Exercise parallel compute walker mid thread preemption scenario
+> + * Functionality: compute openCL kernel
+>    */
+>   static void
+> -test_compute_preempt(int fd, struct drm_xe_engine_class_instance *hwe)
+> +test_compute_preempt(int fd, struct drm_xe_engine_class_instance *hwe,
+> +		     unsigned int count)
+>   {
+> -	igt_require_f(run_intel_compute_kernel_preempt(fd, hwe), "GPU not supported\n");
+> +	igt_require_f(run_intel_compute_kernel_preempt(fd, hwe, count), "GPU not supported\n");
+>   }
+>   
+>   igt_main
+> @@ -44,7 +51,21 @@ igt_main
+>   				continue;
+>   
+>   			igt_dynamic_f("engine-%s", xe_engine_class_string(hwe->engine_class))
+> -				test_compute_preempt(xe, hwe);
+> +				test_compute_preempt(xe, hwe, 1);
+> +		}
+> +	}
 > +
-> +	engine = xe_engine(fd, 1);
-> +	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, engine->instance.gt_id), 0);
+> +	igt_subtest_with_dynamic("compute-preempt-many") {
+> +		xe_for_each_engine(xe, hwe) {
+> +			/*
+> +			 * TODO: Render engine is getting timed out when count is high,
+> +			 * so for now only test with compute engine
+> +			 */
+> +			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
+> +				continue;
 > +
-> +	data = xe_bo_map(fd, bo, bo_size);
-> +	memset(data, 0, bo_size);
-> +	exec_queue = xe_exec_queue_create(fd, vm, &engine->instance, 0);
-> +
-> +	sync[0].addr = to_user_pointer(&data[0].vm_sync);
-> +	xe_vm_bind_async(fd, vm, engine->instance.gt_id, bo, 0,
-> +				addr, bo_size, sync, 1);
-> +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, ONE_SEC);
-> +	data[0].vm_sync = 0;
-> +
-> +	spin_opts.addr = addr + (char *)&data[0].spin - (char *)data;
-> +	xe_spin_init(&data[0].spin, &spin_opts);
-> +	sync[0].addr = addr + (char *)&data[0].exec_sync - (char *)data;
-> +	exec.exec_queue_id = exec_queue;
-> +	exec.address = spin_opts.addr;
-> +	xe_exec(fd, &exec);
-> +	xe_spin_wait_started(&data[0].spin);
-> +	sleep(30);
-
-May you prove spinner is still spinning at this point and job is not
-killed?
-
---
-Zbigniew
-
-> +
-> +	xe_spin_end(&data[0].spin);
-> +	xe_wait_ufence(fd, &data[0].exec_sync, USER_FENCE_VALUE, 0, ONE_SEC);
-> +
-> +	sync[0].addr = to_user_pointer(&data[0].vm_sync);
-> +	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
-> +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, ONE_SEC);
-> +	munmap(data, bo_size);
-> +	gem_close(fd, bo);
-> +
-> +	xe_exec_queue_destroy(fd, exec_queue);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
->  igt_main
->  {
->  	struct drm_xe_engine_class_instance *hwe;
-> @@ -460,6 +530,9 @@ igt_main
->  	igt_subtest("non-blocking")
->  		non_block(fd, EWOULDBLOCK);
->  
-> +	igt_subtest("lr-stress")
-> +		lr_stress(fd);
-> +
->  
->  	igt_fixture
->  		drm_close_driver(fd);
-> -- 
-> 2.39.1
-> 
+> +			igt_dynamic_f("engine-%s", xe_engine_class_string(hwe->engine_class))
+> +				test_compute_preempt(xe, hwe, 100);
+>   		}
+>   	}
+>   
