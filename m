@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EA03C5478C
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 07:14:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80705C5478C
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 07:24:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0DE4510E0FE;
-	Tue, 27 Feb 2024 07:14:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2205A10E885;
+	Tue, 27 Feb 2024 07:24:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m1ihqeTv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="O0oX7VO5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C8B5410E0FE
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Feb 2024 07:14:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C948910E885
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Feb 2024 07:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709018075; x=1740554075;
+ t=1709018668; x=1740554668;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=3XbHQCXpLIiAS5RbexQ+bFdK3UfBTzWUJG5vsI4UdRc=;
- b=m1ihqeTvAqwtOALr0NLuN6m1Zi+EBVhDhXEUIQk2flQl1Uph7FlRv6ui
- Fa+PFc2BLT00CKhXYrvbg4liV/s9LuMqhDT7KSo1yX+HJ8VUKRTBDewZV
- 341URBFtVvvoX8s1XxvVZwSKR6ATMR53vQTwqk/sEx/fJQ2pXxE+0m512
- Ka7Frt8KgjWm2i9XGAAY5OAy/0ZCtBjy1NowVu7K2EDSt7ilZtdruDXYD
- SeWkYe7Z1hCOvBvJRY0TbwN+QVughHo0u+5MhSWnZ6i53McW4mjKSa7E4
- JfoUjNJ60rrQ2X5x4uBjlCKm0wiDUTqFe3BD0KUAgR+Qc+y1U0n3Huq6X Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="14769063"
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="14769063"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 23:14:35 -0800
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=qbGVJ5oFmhwPbov8DSeaarfW11cxd43Zlota/d2ZAS4=;
+ b=O0oX7VO5ihHKnip+PGXnFqvfwOs7WoOKD9GS9wyMPEMvHfSu2KIaZWhe
+ 7v5CwZerXUkrHh4BDPiJ/ycD8UkE4g61c4hjucNu4o7kUI/gdt6ZEjrEO
+ NgBLx8uWLaqFZaj4RsVDevumYuM+DN2JmTgBBKpmHdZ+OxvBSOCHJm81x
+ gVwi8NFRY59/quezY5syJZCAxNejHt4JC7lv+y37PFxS2Fc8oSvAkv2le
+ oeCBQic7nWceSQzNQYZn/rj9ATJoBBnlkPJsn7ZMaAQb0H98KvLW09GIr
+ m3D3UPpih9KNRekUzMWbQyVa6B/+1eUgwSUl99S2eItHIsWehFHrgFz4/ w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="13896932"
+X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="13896932"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 23:24:28 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
-   d="scan'208";a="7359549"
+X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; d="scan'208";a="11544181"
 Received: from stemerk-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.114.228])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 23:14:33 -0800
-Date: Tue, 27 Feb 2024 08:14:30 +0100
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2024 23:24:27 -0800
+Date: Tue, 27 Feb 2024 08:24:24 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: SaiX Nandan Yedireswarapu <saix.nandan.yedireswarapu@intel.com>
-Subject: Re: =?utf-8?B?4pyXIEZpLkNJLkJBVA==?= =?utf-8?Q?=3A?= failure for
- lib/rendercopy: Fix Xe2 pixel shader (rev2)
-Message-ID: <20240227071430.62jnhvyrn7xa5auy@zkempczy-mobl2>
-References: <20240226114511.51753-1-zbigniew.kempczynski@intel.com>
- <170897547958.299097.12168422682141271065@8e613ede5ea5>
+To: sai.gowtham.ch@intel.com
+Cc: igt-dev@lists.freedesktop.org, janga.rahul.kumar@intel.com
+Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_compute_mode: Stress test to
+ validate long running workload on compute mode
+Message-ID: <20240227072424.6vnvpdz3qccqnat4@zkempczy-mobl2>
+References: <20240223063430.10135-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <170897547958.299097.12168422682141271065@8e613ede5ea5>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240223063430.10135-1-sai.gowtham.ch@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,95 +66,117 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Feb 26, 2024 at 07:24:39PM +0000, Patchwork wrote:
->    Patch Details
+On Fri, Feb 23, 2024 at 12:04:30PM +0530, sai.gowtham.ch@intel.com wrote:
+> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 > 
->    Series:  lib/rendercopy: Fix Xe2 pixel shader (rev2)                     
->    URL:     https://patchwork.freedesktop.org/series/130379/                
->    State:   failure                                                         
->    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10735/index.html 
+> Test validates long running compute mode by submitting a spinner for 30s
+> long.
 > 
->                CI Bug Log - changes from IGT_7731 -> IGTPW_10735
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> ---
+>  tests/intel/xe_exec_compute_mode.c | 73 ++++++++++++++++++++++++++++++
+>  1 file changed, 73 insertions(+)
 > 
-> Summary
-> 
->    FAILURE
-> 
->    Serious unknown changes coming with IGTPW_10735 absolutely need to be
->    verified manually.
-> 
->    If you think the reported changes have nothing to do with the changes
->    introduced in IGTPW_10735, please notify your bug team
->    (I915-ci-infra@lists.freedesktop.org) to allow them
->    to document this new failure mode, which will reduce false positives in
->    CI.
-> 
->    External URL:
->    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10735/index.html
-> 
-> Participating hosts (40 -> 38)
-> 
->    Missing (2): bat-mtlp-8 fi-snb-2520m
-> 
-> Possible new issues
-> 
->    Here are the unknown changes that may have been introduced in IGTPW_10735:
-> 
->   IGT changes
-> 
->     Possible regressions
-> 
->      * igt@i915_selftest@live@hangcheck:
-> 
->           * bat-adln-1: PASS -> ABORT
->      * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:
-> 
->           * bat-dg2-8: PASS -> FAIL
+> diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
+> index 7dad71509..0a71bfdc5 100644
+> --- a/tests/intel/xe_exec_compute_mode.c
+> +++ b/tests/intel/xe_exec_compute_mode.c
+> @@ -400,6 +400,76 @@ static void non_block(int fd, int expect)
+>  	xe_vm_destroy(fd, vm);
+>  }
+>  
+> +/**
+> + * SUBTEST: lr-stress
+> + * Description: Stress LR mode workload for 30s.
+> + * Test category: functionality test
+> + */
+> +static void lr_stress(int fd)
+> +{
+> +	uint64_t addr = 0x1a0000;
+> +	struct drm_xe_sync sync[1] = {
+> +		{.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+> +		 .flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> +		 .timeline_value = USER_FENCE_VALUE},
+> +	};
+> +	struct drm_xe_exec exec = {
+> +		.num_batch_buffer = 1,
+> +		.num_syncs = 1,
+> +		.syncs = to_user_pointer(&sync),
+> +	};
+> +	struct  {
+> +		struct xe_spin spin;
+> +		uint64_t vm_sync;
+> +		uint32_t data;
+> +		uint64_t exec_sync;
+> +	} *data;
+> +	struct xe_spin_opts spin_opts = { .preempt = false };
+> +	struct drm_xe_engine *engine;
+> +	size_t bo_size;
+> +	uint32_t vm;
+> +	uint32_t exec_queue;
+> +	uint32_t bo;
+> +
+> +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> +	bo_size = sizeof(*data);
+> +	bo_size = xe_bb_size(fd, bo_size);
+> +
+> +	engine = xe_engine(fd, 1);
+> +	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, engine->instance.gt_id), 0);
+> +
+> +	data = xe_bo_map(fd, bo, bo_size);
+> +	memset(data, 0, bo_size);
+> +	exec_queue = xe_exec_queue_create(fd, vm, &engine->instance, 0);
+> +
+> +	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+> +	xe_vm_bind_async(fd, vm, engine->instance.gt_id, bo, 0,
+> +				addr, bo_size, sync, 1);
+> +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, ONE_SEC);
+> +	data[0].vm_sync = 0;
+> +
+> +	spin_opts.addr = addr + (char *)&data[0].spin - (char *)data;
+> +	xe_spin_init(&data[0].spin, &spin_opts);
+> +	sync[0].addr = addr + (char *)&data[0].exec_sync - (char *)data;
+> +	exec.exec_queue_id = exec_queue;
+> +	exec.address = spin_opts.addr;
+> +	xe_exec(fd, &exec);
+> +	xe_spin_wait_started(&data[0].spin);
+> +	sleep(30);
 
-Unrelated to the change, it touches LNL shader only.
+May you prove spinner is still spinning at this point and job is not
+killed?
 
 --
 Zbigniew
 
+> +
+> +	xe_spin_end(&data[0].spin);
+> +	xe_wait_ufence(fd, &data[0].exec_sync, USER_FENCE_VALUE, 0, ONE_SEC);
+> +
+> +	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+> +	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+> +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, ONE_SEC);
+> +	munmap(data, bo_size);
+> +	gem_close(fd, bo);
+> +
+> +	xe_exec_queue_destroy(fd, exec_queue);
+> +	xe_vm_destroy(fd, vm);
+> +}
+> +
+>  igt_main
+>  {
+>  	struct drm_xe_engine_class_instance *hwe;
+> @@ -460,6 +530,9 @@ igt_main
+>  	igt_subtest("non-blocking")
+>  		non_block(fd, EWOULDBLOCK);
+>  
+> +	igt_subtest("lr-stress")
+> +		lr_stress(fd);
+> +
+>  
+>  	igt_fixture
+>  		drm_close_driver(fd);
+> -- 
+> 2.39.1
 > 
-> Known issues
-> 
->    Here are the changes found in IGTPW_10735 that come from known issues:
-> 
->   IGT changes
-> 
->     Issues hit
-> 
->      * igt@gem_exec_create@basic@smem:
->           * bat-arls-1: PASS -> DMESG-WARN (i915#10194)
-> 
->     Possible fixes
-> 
->      * igt@gem_exec_fence@basic-busy@ccs0:
->           * bat-arls-1: DMESG-WARN (i915#10194) -> PASS
-> 
->     Warnings
-> 
->      * igt@i915_selftest@live@requests:
->           * bat-arls-2: DMESG-WARN (i915#10194) -> ABORT (i915#10194)
-> 
->    {name}: This element is suppressed. This means it is ignored when
->    computing
->    the status of the difference (SUCCESS, WARNING, or FAILURE).
-> 
-> Build changes
-> 
->      * CI: CI-20190529 -> None
->      * IGT: IGT_7731 -> IGTPW_10735
-> 
->    CI-20190529: 20190529
->    CI_DRM_14344: c815c7fa9257eb8ff4433c43058dd292b16347eb @
->    git://anongit.freedesktop.org/gfx-ci/linux
->    IGTPW_10735:
->    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10735/index.html
->    IGT_7731: 17f897a81868fb35c6a7033a8b07256659742248 @
->    https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
-> Testlist changes
-> 
->    -igt@kms_vrr@max-min
