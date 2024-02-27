@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA487C54E4A
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 14:24:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27FD1C54798
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 14:32:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4421610E3E4;
-	Tue, 27 Feb 2024 14:24:44 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3BA8B10E5C1;
- Tue, 27 Feb 2024 14:24:43 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6714541589840629099=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Fvrr=3A_Modify_kms?=
- =?utf-8?q?=5Fvrr_to_allow_flicker_profiling_=28rev9=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id C4B9210E6CD;
+	Tue, 27 Feb 2024 14:32:44 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kiXnAUPq";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D6C1110E6CD
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Feb 2024 14:32:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709044364; x=1740580364;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Yyx5y6PyVpBmH3Q7aRk8RysHzz2aiCPTlD50YVQDW/s=;
+ b=kiXnAUPqLgV7NF0b5dn02knNXVcvtOpuhptuTm3qgNoIbljlSL7w9jNs
+ fCq3ScsiStyz2MKciWmeVNo0ey7Y/njcLdfnD7Np1D/Rae9S9ppH9Q5ql
+ INJH+L9xZi7HxtoFTsw7TMRGDJMEnsqWJa0AKkwFBqgaRDbWo36Yod5X2
+ 5RvAES+52aM1YxKKUraXYaYp2M4zeAcNdjWr5XEScRdJViZJxUPjfDS3W
+ Jy/QCjdUlqQdcjaDkoqwuPr3GYzzx1kGeUJ8eDdS2MP4JOc+PyP4lU7h/
+ IuytGwSkIKPWN8Zz/kcb44a6m6h0GBmoyofJZh2hp7FrvAaythATpBilK A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="13936371"
+X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; d="scan'208";a="13936371"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2024 06:32:43 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
+   d="scan'208";a="7266081"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 06:32:39 -0800
+Date: Tue, 27 Feb 2024 15:32:19 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 27 Feb 2024 14:24:43 -0000
-Message-ID: <170904388323.337279.11944409978985128920@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240226072035.2620383-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20240226072035.2620383-1-bhanuprakash.modem@intel.com>
+Subject: Re: [PATCH i-g-t] drm-uapi: sync with drm-next f112b68f273f
+Message-ID: <20240227143219.2xdkr3do3ztgzxf7@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20240227052740.1811860-1-ashutosh.dixit@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240227052740.1811860-1-ashutosh.dixit@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,232 +64,317 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6714541589840629099==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Ashutosh,
+On 2024-02-26 at 21:27:40 -0800, Ashutosh Dixit wrote:
+> Sync with drm-next commit 'f112b68f273f ("Merge v6.8-rc6 into drm-next")'.
+> 
+> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> ---
+>  include/drm-uapi/i915_drm.h    | 24 +++++++++---
+>  include/drm-uapi/nouveau_drm.h | 70 ++++++++++++++++++++--------------
+>  include/drm-uapi/xe_drm.h      | 51 +++++++++++++++++++++++++
 
-== Series Details ==
+It seems that later on there are more changes to xe_drm.h header?
+I am not sure if you want to keep this xe_drm.h from f112b6?
+If yes,
 
-Series: tests/kms_vrr: Modify kms_vrr to allow flicker profiling (rev9)
-URL   : https://patchwork.freedesktop.org/series/125479/
-State : success
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Summary ==
+Regards,
+Kamil
 
-CI Bug Log - changes from XEIGT_7731_BAT -> XEIGTPW_10743_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-New tests
----------
-
-  New tests have been introduced between XEIGT_7731_BAT and XEIGTPW_10743_BAT:
-
-### New IGT tests (2) ###
-
-  * igt@kms_vrr@max-min:
-    - Statuses : 1 pass(s) 3 skip(s)
-    - Exec time: [0.0, 5.49] s
-
-  * igt@kms_vrr@max-min@pipe-a-dp-3:
-    - Statuses : 1 pass(s)
-    - Exec time: [5.39] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10743_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_vrr@flip-basic-fastset:
-    - bat-pvc-2:          NOTRUN -> [SKIP][1] ([Intel XE#1024]) +6 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/bat-pvc-2/igt@kms_vrr@flip-basic-fastset.html
-
-  * igt@kms_vrr@negative-basic:
-    - bat-atsm-2:         NOTRUN -> [SKIP][2] ([Intel XE#1024]) +6 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/bat-atsm-2/igt@kms_vrr@negative-basic.html
-
-  * igt@kms_vrr@seamless-rr-switch-vrr:
-    - bat-adlp-7:         NOTRUN -> [SKIP][3] ([Intel XE#455]) +5 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/bat-adlp-7/igt@kms_vrr@seamless-rr-switch-vrr.html
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][4] ([Intel XE#455]) +2 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/bat-dg2-oem2/igt@kms_vrr@seamless-rr-switch-vrr.html
-
-  
-#### Possible fixes ####
-
-  * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
-    - bat-dg2-oem2:       [DMESG-WARN][5] ([Intel XE#1009]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
-
-  * igt@xe_exec_threads@threads-basic:
-    - bat-dg2-oem2:       [DMESG-WARN][7] ([Intel XE#1232]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html
-
-  * igt@xe_live_ktest@xe_migrate:
-    - bat-dg2-oem2:       [SKIP][9] ([Intel XE#1192]) -> [PASS][10] +2 other tests pass
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html
-
-  
-  [Intel XE#1009]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009
-  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
-  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
-  [Intel XE#1232]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1232
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-
-
-Build changes
--------------
-
-  * IGT: IGT_7731 -> IGTPW_10743
-  * Linux: xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5 -> xe-858-ed7aa4acb76bb65356169f2261a95c201a77f38a
-
-  IGTPW_10743: 10743
-  IGT_7731: 17f897a81868fb35c6a7033a8b07256659742248 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5: 3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5
-  xe-858-ed7aa4acb76bb65356169f2261a95c201a77f38a: ed7aa4acb76bb65356169f2261a95c201a77f38a
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/index.html
-
---===============6714541589840629099==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_vrr: Modify kms_vrr to allow flicker profiling (rev9)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125479/">https://patchwork.freedesktop.org/series/125479/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7731_BAT -&gt; XEIGTPW_10743_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>New tests</h2>
-<p>New tests have been introduced between XEIGT_7731_BAT and XEIGTPW_10743_BAT:</p>
-<h3>New IGT tests (2)</h3>
-<ul>
-<li>
-<p>igt@kms_vrr@max-min:</p>
-<ul>
-<li>Statuses : 1 pass(s) 3 skip(s)</li>
-<li>Exec time: [0.0, 5.49] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_vrr@max-min@pipe-a-dp-3:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [5.39] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10743_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_vrr@flip-basic-fastset:</p>
-<ul>
-<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/bat-pvc-2/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +6 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_vrr@negative-basic:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/bat-atsm-2/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +6 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_vrr@seamless-rr-switch-vrr:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/bat-adlp-7/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +5 other tests skip</li>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/bat-dg2-oem2/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009">Intel XE#1009</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_threads@threads-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1232">Intel XE#1232</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10743/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7731 -&gt; IGTPW_10743</li>
-<li>Linux: xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5 -&gt; xe-858-ed7aa4acb76bb65356169f2261a95c201a77f38a</li>
-</ul>
-<p>IGTPW_10743: 10743<br />
-  IGT_7731: 17f897a81868fb35c6a7033a8b07256659742248 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5: 3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5<br />
-  xe-858-ed7aa4acb76bb65356169f2261a95c201a77f38a: ed7aa4acb76bb65356169f2261a95c201a77f38a</p>
-
-</body>
-</html>
-
---===============6714541589840629099==--
+>  3 files changed, 110 insertions(+), 35 deletions(-)
+> 
+> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+> index ce9fa2812e..fe3cf9bca5 100644
+> --- a/include/drm-uapi/i915_drm.h
+> +++ b/include/drm-uapi/i915_drm.h
+> @@ -693,7 +693,7 @@ typedef struct drm_i915_irq_wait {
+>  #define I915_PARAM_HAS_EXEC_FENCE	 44
+>  
+>  /* Query whether DRM_I915_GEM_EXECBUFFER2 supports the ability to capture
+> - * user specified bufffers for post-mortem debugging of GPU hangs. See
+> + * user-specified buffers for post-mortem debugging of GPU hangs. See
+>   * EXEC_OBJECT_CAPTURE.
+>   */
+>  #define I915_PARAM_HAS_EXEC_CAPTURE	 45
+> @@ -1606,7 +1606,7 @@ struct drm_i915_gem_busy {
+>  	 * is accurate.
+>  	 *
+>  	 * The returned dword is split into two fields to indicate both
+> -	 * the engine classess on which the object is being read, and the
+> +	 * the engine classes on which the object is being read, and the
+>  	 * engine class on which it is currently being written (if any).
+>  	 *
+>  	 * The low word (bits 0:15) indicate if the object is being written
+> @@ -1815,7 +1815,7 @@ struct drm_i915_gem_madvise {
+>  	__u32 handle;
+>  
+>  	/* Advice: either the buffer will be needed again in the near future,
+> -	 *         or wont be and could be discarded under memory pressure.
+> +	 *         or won't be and could be discarded under memory pressure.
+>  	 */
+>  	__u32 madv;
+>  
+> @@ -3013,6 +3013,7 @@ struct drm_i915_query_item {
+>  	 *  - %DRM_I915_QUERY_MEMORY_REGIONS (see struct drm_i915_query_memory_regions)
+>  	 *  - %DRM_I915_QUERY_HWCONFIG_BLOB (see `GuC HWCONFIG blob uAPI`)
+>  	 *  - %DRM_I915_QUERY_GEOMETRY_SUBSLICES (see struct drm_i915_query_topology_info)
+> +	 *  - %DRM_I915_QUERY_GUC_SUBMISSION_VERSION (see struct drm_i915_query_guc_submission_version)
+>  	 */
+>  	__u64 query_id;
+>  #define DRM_I915_QUERY_TOPOLOGY_INFO		1
+> @@ -3021,6 +3022,7 @@ struct drm_i915_query_item {
+>  #define DRM_I915_QUERY_MEMORY_REGIONS		4
+>  #define DRM_I915_QUERY_HWCONFIG_BLOB		5
+>  #define DRM_I915_QUERY_GEOMETRY_SUBSLICES	6
+> +#define DRM_I915_QUERY_GUC_SUBMISSION_VERSION	7
+>  /* Must be kept compact -- no holes and well documented */
+>  
+>  	/**
+> @@ -3246,7 +3248,7 @@ struct drm_i915_query_topology_info {
+>   * 	// enough to hold our array of engines. The kernel will fill out the
+>   * 	// item.length for us, which is the number of bytes we need.
+>   * 	//
+> - * 	// Alternatively a large buffer can be allocated straight away enabling
+> + *	// Alternatively a large buffer can be allocated straightaway enabling
+>   * 	// querying in one pass, in which case item.length should contain the
+>   * 	// length of the provided buffer.
+>   * 	err = ioctl(fd, DRM_IOCTL_I915_QUERY, &query);
+> @@ -3256,7 +3258,7 @@ struct drm_i915_query_topology_info {
+>   * 	// Now that we allocated the required number of bytes, we call the ioctl
+>   * 	// again, this time with the data_ptr pointing to our newly allocated
+>   * 	// blob, which the kernel can then populate with info on all engines.
+> - * 	item.data_ptr = (uintptr_t)&info,
+> + *	item.data_ptr = (uintptr_t)&info;
+>   *
+>   * 	err = ioctl(fd, DRM_IOCTL_I915_QUERY, &query);
+>   * 	if (err) ...
+> @@ -3286,7 +3288,7 @@ struct drm_i915_query_topology_info {
+>  /**
+>   * struct drm_i915_engine_info
+>   *
+> - * Describes one engine and it's capabilities as known to the driver.
+> + * Describes one engine and its capabilities as known to the driver.
+>   */
+>  struct drm_i915_engine_info {
+>  	/** @engine: Engine class and instance. */
+> @@ -3566,6 +3568,16 @@ struct drm_i915_query_memory_regions {
+>  	struct drm_i915_memory_region_info regions[];
+>  };
+>  
+> +/**
+> + * struct drm_i915_query_guc_submission_version - query GuC submission interface version
+> + */
+> +struct drm_i915_query_guc_submission_version {
+> +	__u32 branch;
+> +	__u32 major;
+> +	__u32 minor;
+> +	__u32 patch;
+> +};
+> +
+>  /**
+>   * DOC: GuC HWCONFIG blob uAPI
+>   *
+> diff --git a/include/drm-uapi/nouveau_drm.h b/include/drm-uapi/nouveau_drm.h
+> index 0bade1592f..cd84227f1b 100644
+> --- a/include/drm-uapi/nouveau_drm.h
+> +++ b/include/drm-uapi/nouveau_drm.h
+> @@ -54,6 +54,20 @@ extern "C" {
+>   */
+>  #define NOUVEAU_GETPARAM_EXEC_PUSH_MAX   17
+>  
+> +/*
+> + * NOUVEAU_GETPARAM_VRAM_BAR_SIZE - query bar size
+> + *
+> + * Query the VRAM BAR size.
+> + */
+> +#define NOUVEAU_GETPARAM_VRAM_BAR_SIZE 18
+> +
+> +/*
+> + * NOUVEAU_GETPARAM_VRAM_USED
+> + *
+> + * Get remaining VRAM size.
+> + */
+> +#define NOUVEAU_GETPARAM_VRAM_USED 19
+> +
+>  struct drm_nouveau_getparam {
+>  	__u64 param;
+>  	__u64 value;
+> @@ -238,34 +252,32 @@ struct drm_nouveau_vm_init {
+>  struct drm_nouveau_vm_bind_op {
+>  	/**
+>  	 * @op: the operation type
+> +	 *
+> +	 * Supported values:
+> +	 *
+> +	 * %DRM_NOUVEAU_VM_BIND_OP_MAP - Map a GEM object to the GPU's VA
+> +	 * space. Optionally, the &DRM_NOUVEAU_VM_BIND_SPARSE flag can be
+> +	 * passed to instruct the kernel to create sparse mappings for the
+> +	 * given range.
+> +	 *
+> +	 * %DRM_NOUVEAU_VM_BIND_OP_UNMAP - Unmap an existing mapping in the
+> +	 * GPU's VA space. If the region the mapping is located in is a
+> +	 * sparse region, new sparse mappings are created where the unmapped
+> +	 * (memory backed) mapping was mapped previously. To remove a sparse
+> +	 * region the &DRM_NOUVEAU_VM_BIND_SPARSE must be set.
+>  	 */
+>  	__u32 op;
+> -/**
+> - * @DRM_NOUVEAU_VM_BIND_OP_MAP:
+> - *
+> - * Map a GEM object to the GPU's VA space. Optionally, the
+> - * &DRM_NOUVEAU_VM_BIND_SPARSE flag can be passed to instruct the kernel to
+> - * create sparse mappings for the given range.
+> - */
+>  #define DRM_NOUVEAU_VM_BIND_OP_MAP 0x0
+> -/**
+> - * @DRM_NOUVEAU_VM_BIND_OP_UNMAP:
+> - *
+> - * Unmap an existing mapping in the GPU's VA space. If the region the mapping
+> - * is located in is a sparse region, new sparse mappings are created where the
+> - * unmapped (memory backed) mapping was mapped previously. To remove a sparse
+> - * region the &DRM_NOUVEAU_VM_BIND_SPARSE must be set.
+> - */
+>  #define DRM_NOUVEAU_VM_BIND_OP_UNMAP 0x1
+>  	/**
+>  	 * @flags: the flags for a &drm_nouveau_vm_bind_op
+> +	 *
+> +	 * Supported values:
+> +	 *
+> +	 * %DRM_NOUVEAU_VM_BIND_SPARSE - Indicates that an allocated VA
+> +	 * space region should be sparse.
+>  	 */
+>  	__u32 flags;
+> -/**
+> - * @DRM_NOUVEAU_VM_BIND_SPARSE:
+> - *
+> - * Indicates that an allocated VA space region should be sparse.
+> - */
+>  #define DRM_NOUVEAU_VM_BIND_SPARSE (1 << 8)
+>  	/**
+>  	 * @handle: the handle of the DRM GEM object to map
+> @@ -301,17 +313,17 @@ struct drm_nouveau_vm_bind {
+>  	__u32 op_count;
+>  	/**
+>  	 * @flags: the flags for a &drm_nouveau_vm_bind ioctl
+> +	 *
+> +	 * Supported values:
+> +	 *
+> +	 * %DRM_NOUVEAU_VM_BIND_RUN_ASYNC - Indicates that the given VM_BIND
+> +	 * operation should be executed asynchronously by the kernel.
+> +	 *
+> +	 * If this flag is not supplied the kernel executes the associated
+> +	 * operations synchronously and doesn't accept any &drm_nouveau_sync
+> +	 * objects.
+>  	 */
+>  	__u32 flags;
+> -/**
+> - * @DRM_NOUVEAU_VM_BIND_RUN_ASYNC:
+> - *
+> - * Indicates that the given VM_BIND operation should be executed asynchronously
+> - * by the kernel.
+> - *
+> - * If this flag is not supplied the kernel executes the associated operations
+> - * synchronously and doesn't accept any &drm_nouveau_sync objects.
+> - */
+>  #define DRM_NOUVEAU_VM_BIND_RUN_ASYNC 0x1
+>  	/**
+>  	 * @wait_count: the number of wait &drm_nouveau_syncs
+> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> index 2417a9654d..0d2ff6efd1 100644
+> --- a/include/drm-uapi/xe_drm.h
+> +++ b/include/drm-uapi/xe_drm.h
+> @@ -574,6 +574,36 @@ struct drm_xe_query_engine_cycles {
+>  	__u64 cpu_delta;
+>  };
+>  
+> +/**
+> + * struct drm_xe_query_uc_fw_version - query a micro-controller firmware version
+> + *
+> + * Given a uc_type this will return the branch, major, minor and patch version
+> + * of the micro-controller firmware.
+> + */
+> +struct drm_xe_query_uc_fw_version {
+> +	/** @uc_type: The micro-controller type to query firmware version */
+> +#define XE_QUERY_UC_TYPE_GUC_SUBMISSION 0
+> +	__u16 uc_type;
+> +
+> +	/** @pad: MBZ */
+> +	__u16 pad;
+> +
+> +	/** @branch_ver: branch uc fw version */
+> +	__u32 branch_ver;
+> +	/** @major_ver: major uc fw version */
+> +	__u32 major_ver;
+> +	/** @minor_ver: minor uc fw version */
+> +	__u32 minor_ver;
+> +	/** @patch_ver: patch uc fw version */
+> +	__u32 patch_ver;
+> +
+> +	/** @pad2: MBZ */
+> +	__u32 pad2;
+> +
+> +	/** @reserved: Reserved */
+> +	__u64 reserved;
+> +};
+> +
+>  /**
+>   * struct drm_xe_device_query - Input of &DRM_IOCTL_XE_DEVICE_QUERY - main
+>   * structure to query device information
+> @@ -643,6 +673,7 @@ struct drm_xe_device_query {
+>  #define DRM_XE_DEVICE_QUERY_HWCONFIG		4
+>  #define DRM_XE_DEVICE_QUERY_GT_TOPOLOGY		5
+>  #define DRM_XE_DEVICE_QUERY_ENGINE_CYCLES	6
+> +#define DRM_XE_DEVICE_QUERY_UC_FW_VERSION	7
+>  	/** @query: The type of data to query */
+>  	__u32 query;
+>  
+> @@ -831,6 +862,10 @@ struct drm_xe_vm_destroy {
+>   *  - %DRM_XE_VM_BIND_OP_PREFETCH
+>   *
+>   * and the @flags can be:
+> + *  - %DRM_XE_VM_BIND_FLAG_READONLY
+> + *  - %DRM_XE_VM_BIND_FLAG_IMMEDIATE - Valid on a faulting VM only, do the
+> + *    MAP operation immediately rather than deferring the MAP to the page
+> + *    fault handler.
+>   *  - %DRM_XE_VM_BIND_FLAG_NULL - When the NULL flag is set, the page
+>   *    tables are setup with a special bit which indicates writes are
+>   *    dropped and all reads return zero. In the future, the NULL flags
+> @@ -923,7 +958,10 @@ struct drm_xe_vm_bind_op {
+>  	/** @op: Bind operation to perform */
+>  	__u32 op;
+>  
+> +#define DRM_XE_VM_BIND_FLAG_READONLY	(1 << 0)
+> +#define DRM_XE_VM_BIND_FLAG_IMMEDIATE	(1 << 1)
+>  #define DRM_XE_VM_BIND_FLAG_NULL	(1 << 2)
+> +#define DRM_XE_VM_BIND_FLAG_DUMPABLE	(1 << 3)
+>  	/** @flags: Bind flags */
+>  	__u32 flags;
+>  
+> @@ -1038,6 +1076,19 @@ struct drm_xe_exec_queue_create {
+>  #define DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY		0
+>  #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY		0
+>  #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE		1
+> +#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT	2
+> +#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT		4
+> +#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_TRIGGER		5
+> +#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_NOTIFY		6
+> +#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY	7
+> +/* Monitor 128KB contiguous region with 4K sub-granularity */
+> +#define     DRM_XE_ACC_GRANULARITY_128K				0
+> +/* Monitor 2MB contiguous region with 64KB sub-granularity */
+> +#define     DRM_XE_ACC_GRANULARITY_2M				1
+> +/* Monitor 16MB contiguous region with 512KB sub-granularity */
+> +#define     DRM_XE_ACC_GRANULARITY_16M				2
+> +/* Monitor 64MB contiguous region with 2M sub-granularity */
+> +#define     DRM_XE_ACC_GRANULARITY_64M				3
+>  
+>  	/** @extensions: Pointer to the first extension struct, if any */
+>  	__u64 extensions;
+> -- 
+> 2.41.0
+> 
