@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6173DC54E51
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 15:11:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15AD6C5478C
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 15:38:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F17CE10E91D;
-	Tue, 27 Feb 2024 15:11:49 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e7rvoyna";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF35910E919;
- Tue, 27 Feb 2024 15:11:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709046709; x=1740582709;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=nCvQviZXwkpKHWIUwJ+GASrK/UlFJb6DKneCUm32LAc=;
- b=e7rvoynaV/Xlu1SIZUEkj2qEP6Zqu16oUZw+Bo4s1ZCZU+FTRz8vK2mh
- cWt7tQvQsmBcQrQbMvi0pWOjsM4KoTRKGPhdaqDJr9mCOLnR1MjtjR7P3
- kJ6OzCkbaKSAjBEK0Emglf3DY73WDSBhxMwWLIzlaoKbajQC46WvtvPNi
- +PmW5rvbjp3Vrln4xT6Uzgi5spldOffmbCtIJmo0C6nLKKnHGKUN7z+OL
- fDsA7E7OD4dC0v6b/MvZDAVn8k6zQv/iheszzkth2jOVEByct/R6PpoYi
- b/VyW9YAqFgvTMj0X8nVe1cUXSvN2FjK+OMq1vci0cNFtiG26ptwduqC5 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3260413"
-X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="3260413"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2024 07:11:49 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="7635369"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.4.234])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2024 07:11:48 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v2 2/2] lib/kunit: Minimize code duplication
-Date: Tue, 27 Feb 2024 16:10:42 +0100
-Message-ID: <20240227151128.16802-6-janusz.krzysztofik@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240227151128.16802-4-janusz.krzysztofik@linux.intel.com>
-References: <20240227151128.16802-4-janusz.krzysztofik@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 84A3710E93F;
+	Tue, 27 Feb 2024 15:38:04 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F0E0010E934;
+ Tue, 27 Feb 2024 15:38:03 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7884378896501958247=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/kunit=3A_Execute_test_case?=
+ =?utf-8?q?s_synchronously_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 27 Feb 2024 15:38:03 -0000
+Message-ID: <170904828398.337360.10018329393152206533@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240227151128.16802-4-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20240227151128.16802-4-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,57 +37,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-A new helper has been introduced recently, used for fetching KTAP results
-of a single test case.  Since that helper is called for that purpose
-only after the test module is loaded with all other test cases filtered
-out, its actual implementation is as simple as collecting all results from
-a single KTAP report, no matter how many test suites and test cases it
-covers.  Then, it's a good candidate for reuse in other scenarios when a
-single KTAP report is handled, e.g., when we collect a list of test cases
-from a single test suite or test module.  Go for it.
+--===============7884378896501958247==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- lib/igt_kmod.c | 15 ++-------------
- 1 file changed, 2 insertions(+), 13 deletions(-)
+== Series Details ==
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index e9e00ac5b2..86cf50d5b7 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -1177,9 +1177,8 @@ static bool kunit_get_tests(struct igt_list_head *tests,
- 			    const char *opts)
- {
- 	struct igt_ktap_result *r, *rn;
--	struct igt_ktap_results *ktap;
- 	unsigned long taints;
--	int flags, err;
-+	int flags;
- 
- 	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
- 
-@@ -1203,17 +1202,7 @@ static bool kunit_get_tests(struct igt_list_head *tests,
- 	igt_skip_on(modprobe(tst->kmod, opts));
- 	igt_skip_on(igt_kernel_tainted(&taints));
- 
--	ktap = igt_ktap_alloc(tests);
--	igt_require(ktap);
--
--	do
--		err = kunit_kmsg_result_get(tests, NULL, tst->kmsg, ktap);
--	while (err == -EINPROGRESS);
--
--	igt_ktap_free(ktap);
--
--	igt_skip_on_f(err,
--		      "KTAP parser failed while getting a list of test cases\n");
-+	igt_skip_on(kunit_get_results(tests, tst->kmsg));
- 
- 	igt_list_for_each_entry_safe(r, rn, tests, link)
- 		igt_require_f(r->code == IGT_EXIT_SKIP,
--- 
-2.43.0
+Series: lib/kunit: Execute test cases synchronously (rev2)
+URL   : https://patchwork.freedesktop.org/series/126017/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7731_BAT -> XEIGTPW_10744_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10744_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
+    - bat-dg2-oem2:       [DMESG-WARN][1] ([Intel XE#1009]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10744/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+
+  * igt@xe_exec_threads@threads-basic:
+    - bat-dg2-oem2:       [DMESG-WARN][3] ([Intel XE#1232]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10744/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-dg2-oem2:       [SKIP][5] ([Intel XE#1192]) -> [PASS][6] +2 other tests pass
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10744/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html
+
+  
+  [Intel XE#1009]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#1232]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1232
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7731 -> IGTPW_10744
+  * Linux: xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5 -> xe-858-ed7aa4acb76bb65356169f2261a95c201a77f38a
+
+  IGTPW_10744: 10744
+  IGT_7731: 17f897a81868fb35c6a7033a8b07256659742248 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5: 3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5
+  xe-858-ed7aa4acb76bb65356169f2261a95c201a77f38a: ed7aa4acb76bb65356169f2261a95c201a77f38a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10744/index.html
+
+--===============7884378896501958247==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/kunit: Execute test cases synchronously (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126017/">https://patchwork.freedesktop.org/series/126017/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10744/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10744/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7731_BAT -&gt; XEIGTPW_10744_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10744_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009">Intel XE#1009</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10744/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_threads@threads-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1232">Intel XE#1232</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10744/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10744/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html">PASS</a> +2 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7731 -&gt; IGTPW_10744</li>
+<li>Linux: xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5 -&gt; xe-858-ed7aa4acb76bb65356169f2261a95c201a77f38a</li>
+</ul>
+<p>IGTPW_10744: 10744<br />
+  IGT_7731: 17f897a81868fb35c6a7033a8b07256659742248 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5: 3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5<br />
+  xe-858-ed7aa4acb76bb65356169f2261a95c201a77f38a: ed7aa4acb76bb65356169f2261a95c201a77f38a</p>
+
+</body>
+</html>
+
+--===============7884378896501958247==--
