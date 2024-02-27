@@ -4,56 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0402C5478C
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 16:08:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50E09C54798
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 16:16:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 49F1210E928;
-	Tue, 27 Feb 2024 16:08:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DAC1610E74A;
+	Tue, 27 Feb 2024 16:16:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MqCOZSnI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dQkY+1i0";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0C7C10E5D2
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Feb 2024 16:08:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 25C6A10E5D2
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Feb 2024 16:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709050136; x=1740586136;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=x6ZvK72+Pu3yAlldtycA7YLNfnM9kYei6FjYjfIscSI=;
- b=MqCOZSnIVNQF/PhhQxO6d+wV8/2NS01HwGxNOkAttkXbYgbK53GhhAQr
- D7KIbEEIMdg1Jd7RarOXQrMDg5G+cJSYFEXCYzCgStnUGlJt63Nz9K3xK
- foABbawDC1iJghJ1zvUXV3JNuN3eTUcAnQ+IYBlJqPQXtwevITVo78f76
- lEhoZALEbIkMOI4vuCY2nANYwMcvcKK0Y6bbsgt7rQRH8IeDABk1OH2br
- gXx9bkdHlESWhveU5W2hIcBZdk45+bu9pn+KLegeHv+KmDw43wHKMyeH/
- 3Nerx2w+zcg7vhtNbnPkABxJ8ql+X9WXCK6DNeqK3xmnGqUVUDILMvAs1 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3558489"
-X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="3558489"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2024 08:08:55 -0800
+ t=1709050585; x=1740586585;
+ h=date:message-id:from:to:subject:in-reply-to:references:
+ mime-version; bh=oDkNRvW7Xowj730yrVRJjpGARa3YS0pi6d6me3kQcoA=;
+ b=dQkY+1i0RFHbPvBngyv4s+DKovgGM2D96IdJDSHFhhDDjaHAYYTScXvu
+ Gm2mE4AjWSBYcVLzEuhWXbGyPO2s3lnsUJptIzjhreRXSwDhs81OyoMul
+ ttvkc0vJG/y99RaJmF3nRQrb2eSlmlKjUI5rBcPbeGfNRKIaPewFLh7tX
+ EjnWZmfdkck0G9EogS8U4i3d/iF75JQTJ5ZhzmAWCqvZXMX3/Vysoz3/C
+ hKp3RU9vqRuRm+5Dj+WnZPtblwhVspkRhdq2pWDhzw9btcfhN1xM0kXmK
+ pozXKpWpYk7X1Uy3ZnIdL4jKxOpmgTRexStF///H0j+V06qd9xGkNnkA4 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="14548985"
+X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; d="scan'208";a="14548985"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2024 08:16:24 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; d="scan'208";a="38124082"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.4.234])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2024 08:08:53 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Zbigniew =?utf-8?B?S2VtcGN6ecWEc2tp?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t v10 0/6] introduce Xe multigpu and other multi-GPU
- helpers
-Date: Tue, 27 Feb 2024 17:08:50 +0100
-Message-ID: <4555521.LvFx2qVVIh@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20240221164637.116048-1-kamil.konieczny@linux.intel.com>
-References: <20240221164637.116048-1-kamil.konieczny@linux.intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; d="scan'208";a="11821381"
+Received: from orsosgc001.jf.intel.com (HELO unerlige-ril.intel.com)
+ ([10.165.21.138])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2024 08:16:23 -0800
+Date: Tue, 27 Feb 2024 08:16:23 -0800
+Message-ID: <85cysh7ui0.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>, igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] drm-uapi: sync with drm-next f112b68f273f
+In-Reply-To: <20240227143219.2xdkr3do3ztgzxf7@kamilkon-desk.igk.intel.com>
+References: <20240227052740.1811860-1-ashutosh.dixit@intel.com>
+ <20240227143219.2xdkr3do3ztgzxf7@kamilkon-desk.igk.intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,82 +66,324 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kamil,
+On Tue, 27 Feb 2024 06:32:19 -0800, Kamil Konieczny wrote:
+>
+> Hi Ashutosh,
+> On 2024-02-26 at 21:27:40 -0800, Ashutosh Dixit wrote:
+> > Sync with drm-next commit 'f112b68f273f ("Merge v6.8-rc6 into drm-next")'.
+> >
+> > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > ---
+> >  include/drm-uapi/i915_drm.h    | 24 +++++++++---
+> >  include/drm-uapi/nouveau_drm.h | 70 ++++++++++++++++++++--------------
+> >  include/drm-uapi/xe_drm.h      | 51 +++++++++++++++++++++++++
+>
+> It seems that later on there are more changes to xe_drm.h header?
+> I am not sure if you want to keep this xe_drm.h from f112b6?
 
-On Wednesday, 21 February 2024 17:46:31 CET Kamil Konieczny wrote:
->       Introduce some multi-gpu function helpers and macros. This allows
-> writing new multiGPU tests for i915 without requiring filters.
-> Solution for Xe is based on filtered views. Both allows to
-> quickly write tests. There is still drawback of not printing in
-> children logs <g:gpu-number> for first (for Xe) opened device or for
-> all opened ones (for i915). I renamed lib from lib/i915/igt_multigpu.*
-> to lib/intel_multigu.* as I do not know of any non Intel developer
-> using igt for such tests.
->=20
-> v2: corrected two patches which introduced multigpu lib (Dominik)
->   rebased patch intoducing Xe multigpu macro, corrected description
-> v3: corrected include in first multigpu patch (Dominik)
->   fixed typo (Dominik), refactoring code with Xe and gem macro (Kamil)
-> v4: corrected typo in macro (Dominik)
-> v5: removed cached names and relaxing checks for filtered devices
->   in 3/8 patch, added Janusz to cc in 1/8...5/8 (Kamil)
-> v6: extended description of patches 1 and 2, fixed bug in 3/8 (Janusz)
->   improved usage of _is_already_opened() (Kamil)
-> v7: restored prohibition of opening the same card at other index (Janusz)
-> v8: limit checks for N-th card to 0...N-1 range (Janusz)
->  simplify if-else in __search_and_open() (Kamil)
-> v9: dropped patch 3/8 ("lib/drmtest: allow opening cards in random order")
->  as it can be added later, replaced 8/8 ("tests/intel/gem_mmap: add basic
->  multi-GPU") with refactor in gem_exec_gttfill (Kamil)
-> v10: added new helper close function into drmtest.c (Kamil)
->  use skip in drm_open_driver() in drmtest.c (Janusz)
->  renamed macro from xe_ to generic and also adding chipset parameter to i=
-t,
->  so it is more flexible now (Zbigniew) fix xe test to use new macro (Kami=
-l)
->=20
-> Cc: "Zbigniew Kempczy=C5=84ski" <zbigniew.kempczynski@intel.com>
-> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
->=20
-> Dominik Karol Pi=C4=85tkowski (3):
->   lib/igt_device_scan: Introduce filtering out non-PCI devices
->   lib/drmtest: Introduced drm_open_driver_another
->   lib/intel_multigpu: Introduce library for multi-GPU scenarios
+Possibly, but afaik we need to sync headers from drm-next and this is the
+latest drm-next. Other headers go into *_local.h etc. So I think this is
+fine for now.
 
-Since the above patches, those three that you expect me to provide my revie=
-w=20
-for, introduce new functions and no users of them, I decided to look into=20
-other patches of the series for some use cases, and I found that those=20
-functions, just introduced, are further modified and/or extended, be that o=
-nly=20
-with a documentation.  I propose to move those updates to patches that=20
-introduce those functions, or to separate patches that follow, before the=20
-functions are used.
+> If yes,
+>
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Thanks,
-Janusz
+Thanks, I'll take a look and likely merge this today.
 
->=20
-> Kamil Konieczny (3):
->   lib/intel_multigpu: Add multi_fork_foreach_gpu_chip
->   tests/intel/xe_exec_basic: add multigpu subtests
->   tests/intel/gem_exec_gttfill: simplify multiGPU subtest
->=20
->  lib/drmtest.c                  | 109 ++++++++++++++++++---------
->  lib/drmtest.h                  |   2 +
->  lib/igt_device_scan.c          |  23 ++++++
->  lib/igt_device_scan.h          |   2 +
->  lib/intel_multigpu.c           | 134 +++++++++++++++++++++++++++++++++
->  lib/intel_multigpu.h           |  36 +++++++++
->  lib/meson.build                |   1 +
->  tests/intel/gem_exec_gttfill.c |  13 +---
->  tests/intel/xe_exec_basic.c    |  36 +++++++++
->  9 files changed, 311 insertions(+), 45 deletions(-)
->  create mode 100644 lib/intel_multigpu.c
->  create mode 100644 lib/intel_multigpu.h
->=20
->=20
-
-
-
-
+>
+> Regards,
+> Kamil
+>
+> >  3 files changed, 110 insertions(+), 35 deletions(-)
+> >
+> > diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+> > index ce9fa2812e..fe3cf9bca5 100644
+> > --- a/include/drm-uapi/i915_drm.h
+> > +++ b/include/drm-uapi/i915_drm.h
+> > @@ -693,7 +693,7 @@ typedef struct drm_i915_irq_wait {
+> >  #define I915_PARAM_HAS_EXEC_FENCE	 44
+> >
+> >  /* Query whether DRM_I915_GEM_EXECBUFFER2 supports the ability to capture
+> > - * user specified bufffers for post-mortem debugging of GPU hangs. See
+> > + * user-specified buffers for post-mortem debugging of GPU hangs. See
+> >   * EXEC_OBJECT_CAPTURE.
+> >   */
+> >  #define I915_PARAM_HAS_EXEC_CAPTURE	 45
+> > @@ -1606,7 +1606,7 @@ struct drm_i915_gem_busy {
+> >	 * is accurate.
+> >	 *
+> >	 * The returned dword is split into two fields to indicate both
+> > -	 * the engine classess on which the object is being read, and the
+> > +	 * the engine classes on which the object is being read, and the
+> >	 * engine class on which it is currently being written (if any).
+> >	 *
+> >	 * The low word (bits 0:15) indicate if the object is being written
+> > @@ -1815,7 +1815,7 @@ struct drm_i915_gem_madvise {
+> >	__u32 handle;
+> >
+> >	/* Advice: either the buffer will be needed again in the near future,
+> > -	 *         or wont be and could be discarded under memory pressure.
+> > +	 *         or won't be and could be discarded under memory pressure.
+> >	 */
+> >	__u32 madv;
+> >
+> > @@ -3013,6 +3013,7 @@ struct drm_i915_query_item {
+> >	 *  - %DRM_I915_QUERY_MEMORY_REGIONS (see struct drm_i915_query_memory_regions)
+> >	 *  - %DRM_I915_QUERY_HWCONFIG_BLOB (see `GuC HWCONFIG blob uAPI`)
+> >	 *  - %DRM_I915_QUERY_GEOMETRY_SUBSLICES (see struct drm_i915_query_topology_info)
+> > +	 *  - %DRM_I915_QUERY_GUC_SUBMISSION_VERSION (see struct drm_i915_query_guc_submission_version)
+> >	 */
+> >	__u64 query_id;
+> >  #define DRM_I915_QUERY_TOPOLOGY_INFO		1
+> > @@ -3021,6 +3022,7 @@ struct drm_i915_query_item {
+> >  #define DRM_I915_QUERY_MEMORY_REGIONS		4
+> >  #define DRM_I915_QUERY_HWCONFIG_BLOB		5
+> >  #define DRM_I915_QUERY_GEOMETRY_SUBSLICES	6
+> > +#define DRM_I915_QUERY_GUC_SUBMISSION_VERSION	7
+> >  /* Must be kept compact -- no holes and well documented */
+> >
+> >	/**
+> > @@ -3246,7 +3248,7 @@ struct drm_i915_query_topology_info {
+> >   *		// enough to hold our array of engines. The kernel will fill out the
+> >   *		// item.length for us, which is the number of bytes we need.
+> >   *		//
+> > - *		// Alternatively a large buffer can be allocated straight away enabling
+> > + *	// Alternatively a large buffer can be allocated straightaway enabling
+> >   *		// querying in one pass, in which case item.length should contain the
+> >   *		// length of the provided buffer.
+> >   *		err = ioctl(fd, DRM_IOCTL_I915_QUERY, &query);
+> > @@ -3256,7 +3258,7 @@ struct drm_i915_query_topology_info {
+> >   *		// Now that we allocated the required number of bytes, we call the ioctl
+> >   *		// again, this time with the data_ptr pointing to our newly allocated
+> >   *		// blob, which the kernel can then populate with info on all engines.
+> > - *		item.data_ptr = (uintptr_t)&info,
+> > + *	item.data_ptr = (uintptr_t)&info;
+> >   *
+> >   *		err = ioctl(fd, DRM_IOCTL_I915_QUERY, &query);
+> >   *		if (err) ...
+> > @@ -3286,7 +3288,7 @@ struct drm_i915_query_topology_info {
+> >  /**
+> >   * struct drm_i915_engine_info
+> >   *
+> > - * Describes one engine and it's capabilities as known to the driver.
+> > + * Describes one engine and its capabilities as known to the driver.
+> >   */
+> >  struct drm_i915_engine_info {
+> >	/** @engine: Engine class and instance. */
+> > @@ -3566,6 +3568,16 @@ struct drm_i915_query_memory_regions {
+> >	struct drm_i915_memory_region_info regions[];
+> >  };
+> >
+> > +/**
+> > + * struct drm_i915_query_guc_submission_version - query GuC submission interface version
+> > + */
+> > +struct drm_i915_query_guc_submission_version {
+> > +	__u32 branch;
+> > +	__u32 major;
+> > +	__u32 minor;
+> > +	__u32 patch;
+> > +};
+> > +
+> >  /**
+> >   * DOC: GuC HWCONFIG blob uAPI
+> >   *
+> > diff --git a/include/drm-uapi/nouveau_drm.h b/include/drm-uapi/nouveau_drm.h
+> > index 0bade1592f..cd84227f1b 100644
+> > --- a/include/drm-uapi/nouveau_drm.h
+> > +++ b/include/drm-uapi/nouveau_drm.h
+> > @@ -54,6 +54,20 @@ extern "C" {
+> >   */
+> >  #define NOUVEAU_GETPARAM_EXEC_PUSH_MAX   17
+> >
+> > +/*
+> > + * NOUVEAU_GETPARAM_VRAM_BAR_SIZE - query bar size
+> > + *
+> > + * Query the VRAM BAR size.
+> > + */
+> > +#define NOUVEAU_GETPARAM_VRAM_BAR_SIZE 18
+> > +
+> > +/*
+> > + * NOUVEAU_GETPARAM_VRAM_USED
+> > + *
+> > + * Get remaining VRAM size.
+> > + */
+> > +#define NOUVEAU_GETPARAM_VRAM_USED 19
+> > +
+> >  struct drm_nouveau_getparam {
+> >	__u64 param;
+> >	__u64 value;
+> > @@ -238,34 +252,32 @@ struct drm_nouveau_vm_init {
+> >  struct drm_nouveau_vm_bind_op {
+> >	/**
+> >	 * @op: the operation type
+> > +	 *
+> > +	 * Supported values:
+> > +	 *
+> > +	 * %DRM_NOUVEAU_VM_BIND_OP_MAP - Map a GEM object to the GPU's VA
+> > +	 * space. Optionally, the &DRM_NOUVEAU_VM_BIND_SPARSE flag can be
+> > +	 * passed to instruct the kernel to create sparse mappings for the
+> > +	 * given range.
+> > +	 *
+> > +	 * %DRM_NOUVEAU_VM_BIND_OP_UNMAP - Unmap an existing mapping in the
+> > +	 * GPU's VA space. If the region the mapping is located in is a
+> > +	 * sparse region, new sparse mappings are created where the unmapped
+> > +	 * (memory backed) mapping was mapped previously. To remove a sparse
+> > +	 * region the &DRM_NOUVEAU_VM_BIND_SPARSE must be set.
+> >	 */
+> >	__u32 op;
+> > -/**
+> > - * @DRM_NOUVEAU_VM_BIND_OP_MAP:
+> > - *
+> > - * Map a GEM object to the GPU's VA space. Optionally, the
+> > - * &DRM_NOUVEAU_VM_BIND_SPARSE flag can be passed to instruct the kernel to
+> > - * create sparse mappings for the given range.
+> > - */
+> >  #define DRM_NOUVEAU_VM_BIND_OP_MAP 0x0
+> > -/**
+> > - * @DRM_NOUVEAU_VM_BIND_OP_UNMAP:
+> > - *
+> > - * Unmap an existing mapping in the GPU's VA space. If the region the mapping
+> > - * is located in is a sparse region, new sparse mappings are created where the
+> > - * unmapped (memory backed) mapping was mapped previously. To remove a sparse
+> > - * region the &DRM_NOUVEAU_VM_BIND_SPARSE must be set.
+> > - */
+> >  #define DRM_NOUVEAU_VM_BIND_OP_UNMAP 0x1
+> >	/**
+> >	 * @flags: the flags for a &drm_nouveau_vm_bind_op
+> > +	 *
+> > +	 * Supported values:
+> > +	 *
+> > +	 * %DRM_NOUVEAU_VM_BIND_SPARSE - Indicates that an allocated VA
+> > +	 * space region should be sparse.
+> >	 */
+> >	__u32 flags;
+> > -/**
+> > - * @DRM_NOUVEAU_VM_BIND_SPARSE:
+> > - *
+> > - * Indicates that an allocated VA space region should be sparse.
+> > - */
+> >  #define DRM_NOUVEAU_VM_BIND_SPARSE (1 << 8)
+> >	/**
+> >	 * @handle: the handle of the DRM GEM object to map
+> > @@ -301,17 +313,17 @@ struct drm_nouveau_vm_bind {
+> >	__u32 op_count;
+> >	/**
+> >	 * @flags: the flags for a &drm_nouveau_vm_bind ioctl
+> > +	 *
+> > +	 * Supported values:
+> > +	 *
+> > +	 * %DRM_NOUVEAU_VM_BIND_RUN_ASYNC - Indicates that the given VM_BIND
+> > +	 * operation should be executed asynchronously by the kernel.
+> > +	 *
+> > +	 * If this flag is not supplied the kernel executes the associated
+> > +	 * operations synchronously and doesn't accept any &drm_nouveau_sync
+> > +	 * objects.
+> >	 */
+> >	__u32 flags;
+> > -/**
+> > - * @DRM_NOUVEAU_VM_BIND_RUN_ASYNC:
+> > - *
+> > - * Indicates that the given VM_BIND operation should be executed asynchronously
+> > - * by the kernel.
+> > - *
+> > - * If this flag is not supplied the kernel executes the associated operations
+> > - * synchronously and doesn't accept any &drm_nouveau_sync objects.
+> > - */
+> >  #define DRM_NOUVEAU_VM_BIND_RUN_ASYNC 0x1
+> >	/**
+> >	 * @wait_count: the number of wait &drm_nouveau_syncs
+> > diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> > index 2417a9654d..0d2ff6efd1 100644
+> > --- a/include/drm-uapi/xe_drm.h
+> > +++ b/include/drm-uapi/xe_drm.h
+> > @@ -574,6 +574,36 @@ struct drm_xe_query_engine_cycles {
+> >	__u64 cpu_delta;
+> >  };
+> >
+> > +/**
+> > + * struct drm_xe_query_uc_fw_version - query a micro-controller firmware version
+> > + *
+> > + * Given a uc_type this will return the branch, major, minor and patch version
+> > + * of the micro-controller firmware.
+> > + */
+> > +struct drm_xe_query_uc_fw_version {
+> > +	/** @uc_type: The micro-controller type to query firmware version */
+> > +#define XE_QUERY_UC_TYPE_GUC_SUBMISSION 0
+> > +	__u16 uc_type;
+> > +
+> > +	/** @pad: MBZ */
+> > +	__u16 pad;
+> > +
+> > +	/** @branch_ver: branch uc fw version */
+> > +	__u32 branch_ver;
+> > +	/** @major_ver: major uc fw version */
+> > +	__u32 major_ver;
+> > +	/** @minor_ver: minor uc fw version */
+> > +	__u32 minor_ver;
+> > +	/** @patch_ver: patch uc fw version */
+> > +	__u32 patch_ver;
+> > +
+> > +	/** @pad2: MBZ */
+> > +	__u32 pad2;
+> > +
+> > +	/** @reserved: Reserved */
+> > +	__u64 reserved;
+> > +};
+> > +
+> >  /**
+> >   * struct drm_xe_device_query - Input of &DRM_IOCTL_XE_DEVICE_QUERY - main
+> >   * structure to query device information
+> > @@ -643,6 +673,7 @@ struct drm_xe_device_query {
+> >  #define DRM_XE_DEVICE_QUERY_HWCONFIG		4
+> >  #define DRM_XE_DEVICE_QUERY_GT_TOPOLOGY		5
+> >  #define DRM_XE_DEVICE_QUERY_ENGINE_CYCLES	6
+> > +#define DRM_XE_DEVICE_QUERY_UC_FW_VERSION	7
+> >	/** @query: The type of data to query */
+> >	__u32 query;
+> >
+> > @@ -831,6 +862,10 @@ struct drm_xe_vm_destroy {
+> >   *  - %DRM_XE_VM_BIND_OP_PREFETCH
+> >   *
+> >   * and the @flags can be:
+> > + *  - %DRM_XE_VM_BIND_FLAG_READONLY
+> > + *  - %DRM_XE_VM_BIND_FLAG_IMMEDIATE - Valid on a faulting VM only, do the
+> > + *    MAP operation immediately rather than deferring the MAP to the page
+> > + *    fault handler.
+> >   *  - %DRM_XE_VM_BIND_FLAG_NULL - When the NULL flag is set, the page
+> >   *    tables are setup with a special bit which indicates writes are
+> >   *    dropped and all reads return zero. In the future, the NULL flags
+> > @@ -923,7 +958,10 @@ struct drm_xe_vm_bind_op {
+> >	/** @op: Bind operation to perform */
+> >	__u32 op;
+> >
+> > +#define DRM_XE_VM_BIND_FLAG_READONLY	(1 << 0)
+> > +#define DRM_XE_VM_BIND_FLAG_IMMEDIATE	(1 << 1)
+> >  #define DRM_XE_VM_BIND_FLAG_NULL	(1 << 2)
+> > +#define DRM_XE_VM_BIND_FLAG_DUMPABLE	(1 << 3)
+> >	/** @flags: Bind flags */
+> >	__u32 flags;
+> >
+> > @@ -1038,6 +1076,19 @@ struct drm_xe_exec_queue_create {
+> >  #define DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY		0
+> >  #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY		0
+> >  #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE		1
+> > +#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT	2
+> > +#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT		4
+> > +#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_TRIGGER		5
+> > +#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_NOTIFY		6
+> > +#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY	7
+> > +/* Monitor 128KB contiguous region with 4K sub-granularity */
+> > +#define     DRM_XE_ACC_GRANULARITY_128K				0
+> > +/* Monitor 2MB contiguous region with 64KB sub-granularity */
+> > +#define     DRM_XE_ACC_GRANULARITY_2M				1
+> > +/* Monitor 16MB contiguous region with 512KB sub-granularity */
+> > +#define     DRM_XE_ACC_GRANULARITY_16M				2
+> > +/* Monitor 64MB contiguous region with 2M sub-granularity */
+> > +#define     DRM_XE_ACC_GRANULARITY_64M				3
+> >
+> >	/** @extensions: Pointer to the first extension struct, if any */
+> >	__u64 extensions;
+> > --
+> > 2.41.0
+> >
