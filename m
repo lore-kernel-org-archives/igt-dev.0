@@ -4,51 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90102C54E51
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Feb 2024 23:59:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB277C48BF6
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 00:25:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2D3C010E833;
-	Mon, 26 Feb 2024 23:59:44 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gB564Nlv";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9AC0610E577
- for <IGT-Dev@lists.freedesktop.org>; Mon, 26 Feb 2024 23:59:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708991981; x=1740527981;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=B/CuxzFfXHiZp5RgSQFJPf8DeRird7wgKROxqL1imjE=;
- b=gB564NlvS7tlcLYdQK+XhenXz7LHpNk6QFbFSjxrm3tNArT/rNoQoGMC
- HaTQmYF8wVgjXQw97Bmsf7jN7jcHeLzIrAo00c1xelgian82ZqeEZgjgl
- pj5Th61CXFum/RSJY/pUwri92Muz+5jqSZPscdINDpdmHJvOZMqRnOD17
- bZK0fxbVsh2IMd7EHj3K9AXBuvc3dXwjilFWRSL7poHDBretacXDCm9ob
- MkuLM8tcjI0CZxDH/pm+yfmKN1afkaXWD21GhT7WIBeyfYnxrNpho5z8h
- GjKnwC/6Rn9+kkFk8zKcQH2IkR1NtNOk1QPrY5lkwNDmR4cqzL4fwIxLm Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3471585"
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
-   d="scan'208";a="3471585"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2024 15:59:40 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
-   d="scan'208";a="7050614"
-Received: from relo-linux-5.jf.intel.com ([10.165.21.152])
- by fmviesa006.fm.intel.com with ESMTP; 26 Feb 2024 15:59:40 -0800
-From: John.C.Harrison@Intel.com
-To: IGT-Dev@Lists.FreeDesktop.Org
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Subject: [PATCH i-g-t 0/2] More updates for MTL workarounds
-Date: Mon, 26 Feb 2024 15:57:34 -0800
-Message-ID: <20240226235737.2150915-1-John.C.Harrison@Intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 50BFE10E5BC;
+	Tue, 27 Feb 2024 00:25:04 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 57DE610E5BC;
+ Tue, 27 Feb 2024 00:25:02 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2113055065344416261=="
 MIME-Version: 1.0
-Organization: Intel Corporation (UK) Ltd. - Co. Reg. #1134945 - Pipers Way,
- Swindon SN3 1RJ
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_More_updates_for_MTL_workaroun?=
+ =?utf-8?q?ds?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "John Harrison" <john.c.harrison@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 27 Feb 2024 00:25:02 -0000
+Message-ID: <170899350235.299097.10756719479120165173@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240226235737.2150915-1-John.C.Harrison@Intel.com>
+In-Reply-To: <20240226235737.2150915-1-John.C.Harrison@Intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,28 +37,144 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: John Harrison <John.C.Harrison@Intel.com>
+--===============2113055065344416261==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Upate another test to not fail when a MTL workaround is enabled. Also
-go back and add the w/a number to a previous one.
+== Series Details ==
 
-Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Series: More updates for MTL workarounds
+URL   : https://patchwork.freedesktop.org/series/130416/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7731_BAT -> XEIGTPW_10739_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10739_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_evict@evict-mixed-threads-small:
+    - bat-dg2-oem2:       [PASS][1] -> [DMESG-WARN][2] ([Intel XE#1009])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10739/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
+    - bat-dg2-oem2:       [DMESG-WARN][3] ([Intel XE#1009]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10739/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+
+  
+  [Intel XE#1009]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009
 
 
-John Harrison (1):
-  tests/intel/gem_exec_schedule: Add w/a tag to prior update for MTL
-    RCS/CCS w/a
+Build changes
+-------------
 
-johnharr (1):
-  tests/intel/gem_spin_batch: Skip compute engines on MTL due to w/a
+  * IGT: IGT_7731 -> IGTPW_10739
+  * Linux: xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5 -> xe-855-b3552bf1e79de200a6ca49c518ead46a1256618c
 
- tests/intel/gem_exec_schedule.c |  1 +
- tests/intel/gem_spin_batch.c    | 16 ++++++++++++++++
- 2 files changed, 17 insertions(+)
+  IGTPW_10739: 10739
+  IGT_7731: 17f897a81868fb35c6a7033a8b07256659742248 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5: 3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5
+  xe-855-b3552bf1e79de200a6ca49c518ead46a1256618c: b3552bf1e79de200a6ca49c518ead46a1256618c
 
--- 
-2.43.0
+== Logs ==
 
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10739/index.html
+
+--===============2113055065344416261==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>More updates for MTL workarounds</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130416/">https://patchwork.freedesktop.org/series/130416/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10739/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10739/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7731_BAT -&gt; XEIGTPW_10739_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10739_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_evict@evict-mixed-threads-small:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10739/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009">Intel XE#1009</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009">Intel XE#1009</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10739/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7731 -&gt; IGTPW_10739</li>
+<li>Linux: xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5 -&gt; xe-855-b3552bf1e79de200a6ca49c518ead46a1256618c</li>
+</ul>
+<p>IGTPW_10739: 10739<br />
+  IGT_7731: 17f897a81868fb35c6a7033a8b07256659742248 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5: 3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5<br />
+  xe-855-b3552bf1e79de200a6ca49c518ead46a1256618c: b3552bf1e79de200a6ca49c518ead46a1256618c</p>
+
+</body>
+</html>
+
+--===============2113055065344416261==--
