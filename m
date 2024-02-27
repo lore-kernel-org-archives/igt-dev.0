@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23F2CC5478C
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 18:22:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46B14C54798
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 18:31:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C081010E968;
-	Tue, 27 Feb 2024 18:22:26 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nIH9+0xe";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E80410E968
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Feb 2024 18:22:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709058145; x=1740594145;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=0TR6ooXeT5wu0OWw8BbxTWr2ZMdU2Ju60iUa1Z7tP4o=;
- b=nIH9+0xema92Y646uOU1GUNGeYYXFeaAIWna71cSyO2prh2SvSAO/oZx
- b5ptZTL6eSwyEBwXE69OW/UqnHF80Owqv4oVATzSbjdb4a3xaFEnpwb9b
- qie+epQEvqGLwfMutskiebjaKX8skPC8UfBr3xho3JhQXArv1R+tkkKvO
- RQTNUw9+E48i90LmHvdCvxdGZpxf99ysv/fvJt4CBKJeY1WOtwaWDYeA4
- pnfKyPDpEEqWuAfkNa2R54hoHqG0yHtketWp7o2O89cuLtMflgkpjuTH5
- nqcxh5oQhgNzauhlrGi/DmE/fj/NIqqn5S36SvDzJFqfwzfKwZxC5xThj w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3291829"
-X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="3291829"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2024 10:22:25 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; d="scan'208";a="38175373"
-Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.246.48.109])
- ([10.246.48.109])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2024 10:22:24 -0800
-Message-ID: <e8ef4bc7-0de7-4d8b-acc8-cc1b7da7e730@linux.intel.com>
-Date: Tue, 27 Feb 2024 19:22:22 +0100
+	by gabe.freedesktop.org (Postfix) with ESMTP id D2EF610E36B;
+	Tue, 27 Feb 2024 18:31:12 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8127F10E336;
+ Tue, 27 Feb 2024 18:31:11 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2655283934863110481=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel/xe_compute_preempt: Add
- compute-preempt-many
-Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Nirmoy Das <nirmoy.das@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-References: <20240223193919.31331-1-nirmoy.das@intel.com>
- <20240227163905.pgyzgvancxjsyaey@zkempczy-mobl2>
-From: Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <20240227163905.pgyzgvancxjsyaey@zkempczy-mobl2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_drm-uapi=3A_sync_with_drm-next?=
+ =?utf-8?q?_f112b68f273f_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 27 Feb 2024 18:31:11 -0000
+Message-ID: <170905867153.338998.113797747236552660@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240227052740.1811860-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20240227052740.1811860-1-ashutosh.dixit@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,146 +37,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============2655283934863110481==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 2/27/2024 5:39 PM, Zbigniew Kempczyński wrote:
-> On Fri, Feb 23, 2024 at 08:39:19PM +0100, Nirmoy Das wrote:
->> Add compute-preempt-many which should exercise multiple
->> mid-thread preemption at a time for multiple contexts.
->>
->> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
->> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
->> ---
->>   lib/intel_compute.c              | 24 +++++++++++++++---------
->>   lib/intel_compute.h              |  4 +++-
->>   tests/intel/xe_compute_preempt.c | 27 ++++++++++++++++++++++++---
->>   3 files changed, 42 insertions(+), 13 deletions(-)
->>
->> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
->> index c5d253ebc..8853b5cd3 100644
->> --- a/lib/intel_compute.c
->> +++ b/lib/intel_compute.c
->> @@ -1686,7 +1686,8 @@ static const struct {
->>   };
->>   
->>   static bool __run_intel_compute_kernel_preempt(int fd,
->> -		struct drm_xe_engine_class_instance *eci)
->> +		struct drm_xe_engine_class_instance *eci,
->> +		unsigned int count)
->>   {
->>   	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
->>   	unsigned int batch;
->> @@ -1719,12 +1720,16 @@ static bool __run_intel_compute_kernel_preempt(int fd,
->>   	if (!kernels->kernel || !kernels->sip_kernel || !kernels->long_kernel)
->>   		return 0;
->>   
->> -	intel_compute_preempt_batches[batch].compute_exec(fd, kernels->long_kernel,
->> -							  kernels->long_kernel_size,
->> -							  kernels->kernel, kernels->size,
->> -							  kernels->sip_kernel,
->> -							  kernels->sip_kernel_size,
->> -							  eci);
->> +	igt_fork(child, count) {
->> +		intel_compute_preempt_batches[batch].compute_exec(fd, kernels->long_kernel,
->> +								  kernels->long_kernel_size,
->> +								  kernels->kernel, kernels->size,
->> +								  kernels->sip_kernel,
->> +								  kernels->sip_kernel_size,
->> +								  eci);
->> +	}
->> +
->> +	igt_waitchildren();
-> Generally it will work, but my personal preferences is to not forking
-> inside library part. I mean I would fork in the test itself, keeping
-> run_intel_compute_kernel_preempt() intact.
+== Series Details ==
 
-Yes, that makes sense.  I will resend.
+Series: drm-uapi: sync with drm-next f112b68f273f (rev2)
+URL   : https://patchwork.freedesktop.org/series/130421/
+State : success
 
-Thanks,
+== Summary ==
 
-Nirmoy
+CI Bug Log - changes from XEIGT_7731_BAT -> XEIGTPW_10745_BAT
+====================================================
 
->
-> --
-> Zbigniew
->
->>   
->>   	return true;
->>   }
->> @@ -1737,7 +1742,8 @@ static bool __run_intel_compute_kernel_preempt(int fd,
->>    * Returns true on success, false otherwise.
->>    */
->>   bool run_intel_compute_kernel_preempt(int fd,
->> -		struct drm_xe_engine_class_instance *eci)
->> +		struct drm_xe_engine_class_instance *eci,
->> +		unsigned int count)
->>   {
->> -	return __run_intel_compute_kernel_preempt(fd, eci);
->> +	return __run_intel_compute_kernel_preempt(fd, eci, count);
->>   }
->> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
->> index fe9637b91..430bae562 100644
->> --- a/lib/intel_compute.h
->> +++ b/lib/intel_compute.h
->> @@ -37,5 +37,7 @@ extern const struct intel_compute_kernels intel_compute_square_kernels[];
->>   
->>   bool run_intel_compute_kernel(int fd);
->>   bool xe_run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_instance *eci);
->> -bool run_intel_compute_kernel_preempt(int fd, struct drm_xe_engine_class_instance *eci);
->> +bool run_intel_compute_kernel_preempt(int fd,
->> +				      struct drm_xe_engine_class_instance *eci,
->> +				      unsigned int count);
->>   #endif	/* INTEL_COMPUTE_H */
->> diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
->> index a4e0e1454..fd245b655 100644
->> --- a/tests/intel/xe_compute_preempt.c
->> +++ b/tests/intel/xe_compute_preempt.c
->> @@ -22,11 +22,18 @@
->>    * Description:
->>    *      Exercise compute walker mid thread preemption scenario
->>    * Functionality: compute openCL kernel
->> + *
->> + * SUBTEST: compute-preempt-many
->> + * GPU requirement: LNL
->> + * Description:
->> + *      Exercise parallel compute walker mid thread preemption scenario
->> + * Functionality: compute openCL kernel
->>    */
->>   static void
->> -test_compute_preempt(int fd, struct drm_xe_engine_class_instance *hwe)
->> +test_compute_preempt(int fd, struct drm_xe_engine_class_instance *hwe,
->> +		     unsigned int count)
->>   {
->> -	igt_require_f(run_intel_compute_kernel_preempt(fd, hwe), "GPU not supported\n");
->> +	igt_require_f(run_intel_compute_kernel_preempt(fd, hwe, count), "GPU not supported\n");
->>   }
->>   
->>   igt_main
->> @@ -44,7 +51,21 @@ igt_main
->>   				continue;
->>   
->>   			igt_dynamic_f("engine-%s", xe_engine_class_string(hwe->engine_class))
->> -				test_compute_preempt(xe, hwe);
->> +				test_compute_preempt(xe, hwe, 1);
->> +		}
->> +	}
->> +
->> +	igt_subtest_with_dynamic("compute-preempt-many") {
->> +		xe_for_each_engine(xe, hwe) {
->> +			/*
->> +			 * TODO: Render engine is getting timed out when count is high,
->> +			 * so for now only test with compute engine
->> +			 */
->> +			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->> +				continue;
->> +
->> +			igt_dynamic_f("engine-%s", xe_engine_class_string(hwe->engine_class))
->> +				test_compute_preempt(xe, hwe, 100);
->>   		}
->>   	}
->>   
->> -- 
->> 2.42.0
->>
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10745_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
+    - bat-dg2-oem2:       [DMESG-WARN][1] ([Intel XE#1009]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10745/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+
+  * igt@xe_exec_threads@threads-basic:
+    - bat-dg2-oem2:       [DMESG-WARN][3] ([Intel XE#1232]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10745/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-dg2-oem2:       [SKIP][5] ([Intel XE#1192]) -> [PASS][6] +2 other tests pass
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10745/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html
+
+  
+  [Intel XE#1009]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#1232]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1232
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7731 -> IGTPW_10745
+  * Linux: xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5 -> xe-860-32331a55601f4043838fc9d559a587459d02e5b4
+
+  IGTPW_10745: 10745
+  IGT_7731: 17f897a81868fb35c6a7033a8b07256659742248 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5: 3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5
+  xe-860-32331a55601f4043838fc9d559a587459d02e5b4: 32331a55601f4043838fc9d559a587459d02e5b4
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10745/index.html
+
+--===============2655283934863110481==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>drm-uapi: sync with drm-next f112b68f273f (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130421/">https://patchwork.freedesktop.org/series/130421/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10745/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10745/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7731_BAT -&gt; XEIGTPW_10745_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10745_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009">Intel XE#1009</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10745/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_threads@threads-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1232">Intel XE#1232</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10745/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7731/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10745/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html">PASS</a> +2 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7731 -&gt; IGTPW_10745</li>
+<li>Linux: xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5 -&gt; xe-860-32331a55601f4043838fc9d559a587459d02e5b4</li>
+</ul>
+<p>IGTPW_10745: 10745<br />
+  IGT_7731: 17f897a81868fb35c6a7033a8b07256659742248 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-851-3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5: 3ffcc68ae900bd09bba64d4c9e0a9290ff4452b5<br />
+  xe-860-32331a55601f4043838fc9d559a587459d02e5b4: 32331a55601f4043838fc9d559a587459d02e5b4</p>
+
+</body>
+</html>
+
+--===============2655283934863110481==--
