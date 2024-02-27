@@ -4,27 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBE20C48BF6
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 00:45:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3FE1C5478C
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Feb 2024 00:58:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4B5A510F07F;
-	Tue, 27 Feb 2024 00:45:33 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0FE6E10E834;
- Tue, 27 Feb 2024 00:45:31 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3573298517094710340=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7DFA810EDAC;
+	Tue, 27 Feb 2024 00:58:54 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.b="UJUZ5Wv4";
+	dkim-atps=neutral
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
+ [205.220.180.131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD24010EDAC
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Feb 2024 00:58:52 +0000 (UTC)
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
+ 41R0eYSf015846; Tue, 27 Feb 2024 00:58:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ message-id:date:mime-version:subject:to:cc:references:from
+ :in-reply-to:content-type:content-transfer-encoding; s=
+ qcppdkim1; bh=Z8tqk0yLMNdRk6O/34HJUy5oc0Zvq2j076k1M8RWM64=; b=UJ
+ UZ5Wv4TZv3oCFPTyMfcOZfka9Ph1QyaEMM6+3PLgV0EdouCbrIeOUAjRH49D/XfY
+ Geu47AhYOVsYCcd5iFuwM/WkvsDDf/L5eoj1cIPPRbfXhBe3EZUt/Omij2jMmhea
+ QrN4HeTOLggvhl5M+yvvRXjzuG8Yt/jShUjZy3FMnhuSBL+xV3L2jo0KwDNuyowQ
+ 0u4e74rA+Z+3tEFxjIYQHciDHF+DgfKRJjuJYZBpdMrzxhYFVOTbGC4LqNkD1hg7
+ 2dUoD4V23F8W1oSwU1Gmt1DdP/NL/zHBeilL6S1c8lF3q1XPa+wEJQb9gJz/Omc3
+ rSRmaSD/QZqDae8ed8EA==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com
+ [199.106.103.254])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wgkxpth6n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Feb 2024 00:58:50 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com
+ [10.46.141.250])
+ by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41R0wnUJ016562
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Feb 2024 00:58:49 GMT
+Received: from [10.71.111.207] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 26 Feb
+ 2024 16:58:48 -0800
+Message-ID: <58103921-5de5-49bd-b3c0-007126eb458b@quicinc.com>
+Date: Mon, 26 Feb 2024 16:58:48 -0800
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_More_updates_for_MTL_workar?=
- =?utf-8?q?ounds?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "John Harrison" <john.c.harrison@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 27 Feb 2024 00:45:31 -0000
-Message-ID: <170899473106.299097.11954731905985931753@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240226235737.2150915-1-John.C.Harrison@Intel.com>
-In-Reply-To: <20240226235737.2150915-1-John.C.Harrison@Intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2 1/2] tests/kms_bw: Use reduced blanking mode
+ 1920x1080p timings
+Content-Language: en-US
+To: Rob Clark <robdclark@gmail.com>, <igt-dev@lists.freedesktop.org>
+CC: Rob Clark <robdclark@chromium.org>
+References: <20240215221900.327042-1-robdclark@gmail.com>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
+In-Reply-To: <20240215221900.327042-1-robdclark@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: KRhoa8OZEejDtWrrsJPOHVcDkmiFMM3O
+X-Proofpoint-ORIG-GUID: KRhoa8OZEejDtWrrsJPOHVcDkmiFMM3O
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-26_11,2024-02-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ impostorscore=0 lowpriorityscore=0 phishscore=0 malwarescore=0
+ adultscore=0 priorityscore=1501 bulkscore=0 mlxscore=0 spamscore=0
+ suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2402120000 definitions=main-2402270006
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,348 +86,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3573298517094710340==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: More updates for MTL workarounds
-URL   : https://patchwork.freedesktop.org/series/130416/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_14345 -> IGTPW_10739
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_10739 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_10739, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/index.html
-
-Participating hosts (39 -> 38)
-------------------------------
-
-  Additional (1): bat-kbl-2 
-  Missing    (2): fi-apl-guc fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_10739:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@requests:
-    - bat-mtlp-8:         [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14345/bat-mtlp-8/igt@i915_selftest@live@requests.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/bat-mtlp-8/igt@i915_selftest@live@requests.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10739 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@fbdev@info:
-    - bat-kbl-2:          NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#1849])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/bat-kbl-2/igt@fbdev@info.html
-
-  * igt@gem_exec_fence@basic-busy@ccs0:
-    - bat-arls-1:         [PASS][4] -> [DMESG-WARN][5] ([i915#10194])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14345/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - bat-kbl-2:          NOTRUN -> [SKIP][6] ([fdo#109271]) +39 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@i915_selftest@live@gt_lrc:
-    - bat-adlp-9:         [PASS][7] -> [INCOMPLETE][8] ([i915#9413])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14345/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_create@basic@smem:
-    - bat-arls-1:         [DMESG-WARN][9] ([i915#10194]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14345/bat-arls-1/igt@gem_exec_create@basic@smem.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/bat-arls-1/igt@gem_exec_create@basic@smem.html
-
-  * igt@i915_selftest@live@gem_contexts:
-    - bat-atsm-1:         [INCOMPLETE][11] ([i915#10094] / [i915#10137]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14345/bat-atsm-1/igt@i915_selftest@live@gem_contexts.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/bat-atsm-1/igt@i915_selftest@live@gem_contexts.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#10094]: https://gitlab.freedesktop.org/drm/intel/issues/10094
-  [i915#10137]: https://gitlab.freedesktop.org/drm/intel/issues/10137
-  [i915#10194]: https://gitlab.freedesktop.org/drm/intel/issues/10194
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#9413]: https://gitlab.freedesktop.org/drm/intel/issues/9413
 
 
-Build changes
--------------
+On 2/15/2024 2:18 PM, Rob Clark wrote:
+> From: Rob Clark <robdclark@chromium.org>
+> 
+> The previous timings don't work with the ti-sn65dsi86 bridge that is
+> used with some of the sc7180 qcom devices in drm/ci.  Let's switch the
+> timings so that we can get some kms_bw test coverage.
+> 
+> Signed-off-by: Rob Clark <robdclark@chromium.org>
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7731 -> IGTPW_10739
+Hi Rob,
 
-  CI-20190529: 20190529
-  CI_DRM_14345: b3552bf1e79de200a6ca49c518ead46a1256618c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10739: 10739
-  IGT_7731: 17f897a81868fb35c6a7033a8b07256659742248 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+LGTM
 
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Tested-by: Jessica Zhang <quic_jesszhan@quicinc.com> # Trogdor (sc7180)
 
-Testlist changes
-----------------
+Thanks,
 
--igt@kms_colorop@plane-xr24-xr24-bt2020_inv_oetf
--igt@kms_colorop@plane-xr24-xr24-bt2020_inv_oetf-bt2020_oetf
--igt@kms_colorop@plane-xr24-xr24-bt2020_oetf
--igt@kms_colorop@plane-xr24-xr24-bypass
--igt@kms_colorop@plane-xr24-xr24-ctm_3x4_50_desat
--igt@kms_colorop@plane-xr24-xr24-ctm_3x4_bt709_dec
--igt@kms_colorop@plane-xr24-xr24-ctm_3x4_bt709_dec_enc
--igt@kms_colorop@plane-xr24-xr24-ctm_3x4_bt709_enc
--igt@kms_colorop@plane-xr24-xr24-ctm_3x4_bt709_enc_dec
--igt@kms_colorop@plane-xr24-xr24-ctm_3x4_overdrive
--igt@kms_colorop@plane-xr24-xr24-ctm_3x4_oversaturate
--igt@kms_colorop@plane-xr24-xr24-multiply_125
--igt@kms_colorop@plane-xr24-xr24-multiply_inv_125
--igt@kms_colorop@plane-xr24-xr24-pq_125_eotf
--igt@kms_colorop@plane-xr24-xr24-pq_125_eotf-pq_125_inv_eotf
--igt@kms_colorop@plane-xr24-xr24-pq_125_eotf-pq_125_inv_eotf-pq_125_eotf
--igt@kms_colorop@plane-xr24-xr24-pq_125_inv_eotf
--igt@kms_colorop@plane-xr24-xr24-pq_eotf
--igt@kms_colorop@plane-xr24-xr24-pq_eotf-pq_inv_eotf
--igt@kms_colorop@plane-xr24-xr24-pq_inv_eotf
--igt@kms_colorop@plane-xr24-xr24-srgb_eotf
--igt@kms_colorop@plane-xr24-xr24-srgb_eotf-srgb_inv_eotf
--igt@kms_colorop@plane-xr24-xr24-srgb_eotf-srgb_inv_eotf-srgb_eotf
--igt@kms_colorop@plane-xr24-xr24-srgb_inv_eotf
--igt@kms_colorop@plane-xr24-xr24-srgb_inv_eotf_lut
--igt@kms_colorop@plane-xr24-xr24-srgb_inv_eotf_lut-srgb_eotf_lut
--igt@kms_colorop@plane-xr30-xr30-bt2020_inv_oetf
--igt@kms_colorop@plane-xr30-xr30-bt2020_inv_oetf-bt2020_oetf
--igt@kms_colorop@plane-xr30-xr30-bt2020_oetf
--igt@kms_colorop@plane-xr30-xr30-bypass
--igt@kms_colorop@plane-xr30-xr30-ctm_3x4_50_desat
--igt@kms_colorop@plane-xr30-xr30-ctm_3x4_bt709_dec
--igt@kms_colorop@plane-xr30-xr30-ctm_3x4_bt709_dec_enc
--igt@kms_colorop@plane-xr30-xr30-ctm_3x4_bt709_enc
--igt@kms_colorop@plane-xr30-xr30-ctm_3x4_bt709_enc_dec
--igt@kms_colorop@plane-xr30-xr30-ctm_3x4_overdrive
--igt@kms_colorop@plane-xr30-xr30-ctm_3x4_oversaturate
--igt@kms_colorop@plane-xr30-xr30-multiply_125
--igt@kms_colorop@plane-xr30-xr30-multiply_inv_125
--igt@kms_colorop@plane-xr30-xr30-pq_125_eotf
--igt@kms_colorop@plane-xr30-xr30-pq_125_eotf-pq_125_inv_eotf
--igt@kms_colorop@plane-xr30-xr30-pq_125_eotf-pq_125_inv_eotf-pq_125_eotf
--igt@kms_colorop@plane-xr30-xr30-pq_125_inv_eotf
--igt@kms_colorop@plane-xr30-xr30-pq_eotf
--igt@kms_colorop@plane-xr30-xr30-pq_eotf-pq_inv_eotf
--igt@kms_colorop@plane-xr30-xr30-pq_inv_eotf
--igt@kms_colorop@plane-xr30-xr30-srgb_eotf
--igt@kms_colorop@plane-xr30-xr30-srgb_eotf-srgb_inv_eotf
--igt@kms_colorop@plane-xr30-xr30-srgb_eotf-srgb_inv_eotf-srgb_eotf
--igt@kms_colorop@plane-xr30-xr30-srgb_inv_eotf
--igt@kms_colorop@plane-xr30-xr30-srgb_inv_eotf_lut
--igt@kms_colorop@plane-xr30-xr30-srgb_inv_eotf_lut-srgb_eotf_lut
--igt@kms_properties@colorop-properties-atomic
--igt@kms_properties@colorop-properties-legacy
--igt@kms_properties@colorop-properties-legacy
+Jessica Zhang
 
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/index.html
-
---===============3573298517094710340==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>More updates for MTL workarounds</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130416/">https://patchwork.freedesktop.org/series/130416/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14345 -&gt; IGTPW_10739</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_10739 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_10739, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/index.html</p>
-<h2>Participating hosts (39 -&gt; 38)</h2>
-<p>Additional (1): bat-kbl-2 <br />
-  Missing    (2): fi-apl-guc fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_10739:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@requests:<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14345/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10739 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@fbdev@info:</p>
-<ul>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/bat-kbl-2/igt@fbdev@info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fence@basic-busy@ccs0:</p>
-<ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14345/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/bat-arls-1/igt@gem_exec_fence@basic-busy@ccs0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10194">i915#10194</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +39 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
-<ul>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14345/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9413">i915#9413</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_create@basic@smem:</p>
-<ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14345/bat-arls-1/igt@gem_exec_create@basic@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10194">i915#10194</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/bat-arls-1/igt@gem_exec_create@basic@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gem_contexts:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14345/bat-atsm-1/igt@i915_selftest@live@gem_contexts.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10094">i915#10094</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/10137">i915#10137</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10739/bat-atsm-1/igt@i915_selftest@live@gem_contexts.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7731 -&gt; IGTPW_10739</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14345: b3552bf1e79de200a6ca49c518ead46a1256618c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10739: 10739<br />
-  IGT_7731: 17f897a81868fb35c6a7033a8b07256659742248 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>-igt@kms_colorop@plane-xr24-xr24-bt2020_inv_oetf<br />
--igt@kms_colorop@plane-xr24-xr24-bt2020_inv_oetf-bt2020_oetf<br />
--igt@kms_colorop@plane-xr24-xr24-bt2020_oetf<br />
--igt@kms_colorop@plane-xr24-xr24-bypass<br />
--igt@kms_colorop@plane-xr24-xr24-ctm_3x4_50_desat<br />
--igt@kms_colorop@plane-xr24-xr24-ctm_3x4_bt709_dec<br />
--igt@kms_colorop@plane-xr24-xr24-ctm_3x4_bt709_dec_enc<br />
--igt@kms_colorop@plane-xr24-xr24-ctm_3x4_bt709_enc<br />
--igt@kms_colorop@plane-xr24-xr24-ctm_3x4_bt709_enc_dec<br />
--igt@kms_colorop@plane-xr24-xr24-ctm_3x4_overdrive<br />
--igt@kms_colorop@plane-xr24-xr24-ctm_3x4_oversaturate<br />
--igt@kms_colorop@plane-xr24-xr24-multiply_125<br />
--igt@kms_colorop@plane-xr24-xr24-multiply_inv_125<br />
--igt@kms_colorop@plane-xr24-xr24-pq_125_eotf<br />
--igt@kms_colorop@plane-xr24-xr24-pq_125_eotf-pq_125_inv_eotf<br />
--igt@kms_colorop@plane-xr24-xr24-pq_125_eotf-pq_125_inv_eotf-pq_125_eotf<br />
--igt@kms_colorop@plane-xr24-xr24-pq_125_inv_eotf<br />
--igt@kms_colorop@plane-xr24-xr24-pq_eotf<br />
--igt@kms_colorop@plane-xr24-xr24-pq_eotf-pq_inv_eotf<br />
--igt@kms_colorop@plane-xr24-xr24-pq_inv_eotf<br />
--igt@kms_colorop@plane-xr24-xr24-srgb_eotf<br />
--igt@kms_colorop@plane-xr24-xr24-srgb_eotf-srgb_inv_eotf<br />
--igt@kms_colorop@plane-xr24-xr24-srgb_eotf-srgb_inv_eotf-srgb_eotf<br />
--igt@kms_colorop@plane-xr24-xr24-srgb_inv_eotf<br />
--igt@kms_colorop@plane-xr24-xr24-srgb_inv_eotf_lut<br />
--igt@kms_colorop@plane-xr24-xr24-srgb_inv_eotf_lut-srgb_eotf_lut<br />
--igt@kms_colorop@plane-xr30-xr30-bt2020_inv_oetf<br />
--igt@kms_colorop@plane-xr30-xr30-bt2020_inv_oetf-bt2020_oetf<br />
--igt@kms_colorop@plane-xr30-xr30-bt2020_oetf<br />
--igt@kms_colorop@plane-xr30-xr30-bypass<br />
--igt@kms_colorop@plane-xr30-xr30-ctm_3x4_50_desat<br />
--igt@kms_colorop@plane-xr30-xr30-ctm_3x4_bt709_dec<br />
--igt@kms_colorop@plane-xr30-xr30-ctm_3x4_bt709_dec_enc<br />
--igt@kms_colorop@plane-xr30-xr30-ctm_3x4_bt709_enc<br />
--igt@kms_colorop@plane-xr30-xr30-ctm_3x4_bt709_enc_dec<br />
--igt@kms_colorop@plane-xr30-xr30-ctm_3x4_overdrive<br />
--igt@kms_colorop@plane-xr30-xr30-ctm_3x4_oversaturate<br />
--igt@kms_colorop@plane-xr30-xr30-multiply_125<br />
--igt@kms_colorop@plane-xr30-xr30-multiply_inv_125<br />
--igt@kms_colorop@plane-xr30-xr30-pq_125_eotf<br />
--igt@kms_colorop@plane-xr30-xr30-pq_125_eotf-pq_125_inv_eotf<br />
--igt@kms_colorop@plane-xr30-xr30-pq_125_eotf-pq_125_inv_eotf-pq_125_eotf<br />
--igt@kms_colorop@plane-xr30-xr30-pq_125_inv_eotf<br />
--igt@kms_colorop@plane-xr30-xr30-pq_eotf<br />
--igt@kms_colorop@plane-xr30-xr30-pq_eotf-pq_inv_eotf<br />
--igt@kms_colorop@plane-xr30-xr30-pq_inv_eotf<br />
--igt@kms_colorop@plane-xr30-xr30-srgb_eotf<br />
--igt@kms_colorop@plane-xr30-xr30-srgb_eotf-srgb_inv_eotf<br />
--igt@kms_colorop@plane-xr30-xr30-srgb_eotf-srgb_inv_eotf-srgb_eotf<br />
--igt@kms_colorop@plane-xr30-xr30-srgb_inv_eotf<br />
--igt@kms_colorop@plane-xr30-xr30-srgb_inv_eotf_lut<br />
--igt@kms_colorop@plane-xr30-xr30-srgb_inv_eotf_lut-srgb_eotf_lut<br />
--igt@kms_properties@colorop-properties-atomic<br />
--igt@kms_properties@colorop-properties-legacy<br />
--igt@kms_properties@colorop-properties-legacy</p>
-
-</body>
-</html>
-
---===============3573298517094710340==--
+> ---
+>   tests/kms_bw.c | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tests/kms_bw.c b/tests/kms_bw.c
+> index dd10d640dc13..f1d2a1b64577 100644
+> --- a/tests/kms_bw.c
+> +++ b/tests/kms_bw.c
+> @@ -64,12 +64,12 @@ typedef struct data {
+>   } data_t;
+>   
+>   static drmModeModeInfo test_mode[] = {
+> -	{ 173000,
+> -	1920, 2048, 2248, 2576, 0,
+> -	1080, 1083, 1088, 1120, 0,
+> +	{ 147840,
+> +	1920, 1968, 2000, 2200, 0,
+> +	1080, 1083, 1089, 1120, 0,
+>   	60,
+> -	DRM_MODE_FLAG_NHSYNC,
+> -	0x40,
+> +	DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_PHSYNC,
+> +	0x48,
+>   	"1920x1080p\0",
+>   	}, /* test_mode_1 */
+>   
+> -- 
+> 2.43.0
+> 
