@@ -4,64 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E152AC47DD9
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Feb 2024 14:39:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE04CC47DD9
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Feb 2024 14:54:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6CF8010E2BE;
-	Wed, 28 Feb 2024 14:39:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5D03E10E096;
+	Wed, 28 Feb 2024 14:54:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="OhuT6FeN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Sh79QaZP";
 	dkim-atps=neutral
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com
- [209.85.167.51])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A97A410E2BE
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Feb 2024 14:39:12 +0000 (UTC)
-Received: by mail-lf1-f51.google.com with SMTP id
- 2adb3069b0e04-512bde3d197so5193703e87.0
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Feb 2024 06:39:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709131150; x=1709735950; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Q2VJz9sTTVg5ARwte2L7ARJZilhv43kLsUzNL0wQGdA=;
- b=OhuT6FeNILYOwXUoFK+5T4SMWE01kxYfgCB63HTEfyZQe5IWdhzVZan/YItqaDklIJ
- 0OYRpdFN3UJlUSFF1/nd+CPDsv/1lgB+ji0ypjC4ihxR49zg1sHcsxvZmBEvIRhzgJyS
- l0ZTNXQ6HKwnd/wrCx+pZEISpxQ9RunGBz7OGJoiLrzUq6D0kNy9gXmhrVdUc2REcIGh
- pKk1rk2kn/MapgkLjzED2oJZb2nc2uKItFxpSvbC/K79UYnG9727LMz3FHRrI6RbDuJA
- Lflxy0ngkEhO93Zus8NLu1++eZVW7T+IPjy6VaRbuNf0YoilPuo/tBbvmP4XbaoFaJaF
- 90jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709131150; x=1709735950;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Q2VJz9sTTVg5ARwte2L7ARJZilhv43kLsUzNL0wQGdA=;
- b=pFwrLOFDdOzdtwuTwtxCtimpBPTRbhetOuulzEMffxFdXTOB+m6T5nPnw4kyBwgudZ
- cEvrHA176QPbFIZuZDyU4AbwjhCfavxOwlkUgUk4DWHZ6kCRsM+7iyXlU4cUQFYn3kUc
- FV2xjHOIKR9LIcLWa6t3IH4f7RKkYMQTV2v0tyULEsaFNqWBNZaBKWCAmB4pzib7gqUI
- 5CWV20/OZaRD/TwRE181GPG0Yj5zrYpgYkG3XdqjE1f08wvozI1cwTHRY/E9AwUxeJv7
- JOLjq7MD+QvO9EzwG030dwVEM0kVNWdpyphwVQFjRfp1JPsAQh22UgDFn7M8hQpmaciW
- oX/g==
-X-Gm-Message-State: AOJu0YxNGPUm+GiTkE7lxQ/K+FKIFUV8DqpB7vxSmrAQWYZXqIvFXZUW
- qEUksgbLBxmhVZA0sx35GjSYbec4lW7sEQEzPN2mUm3oflTr99IqZisOU20bGxpaQw==
-X-Google-Smtp-Source: AGHT+IG+I0VaRKQ7HDAit2gw3lcY3ikoaZcxNyBInhiCsdStWKrGr1ggaN8/pfTZLw/EkbQ80519yw==
-X-Received: by 2002:ac2:4c2b:0:b0:512:b437:4b06 with SMTP id
- u11-20020ac24c2b000000b00512b4374b06mr7553148lfq.67.1709131149657; 
- Wed, 28 Feb 2024 06:39:09 -0800 (PST)
-Received: from jheikkil-mobl1.. ([2001:998:22:0:f002:e367:ff56:e1bd])
- by smtp.gmail.com with ESMTPSA id
- o14-20020a056512052e00b00512e3b51bffsm1558320lfc.35.2024.02.28.06.39.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Feb 2024 06:39:09 -0800 (PST)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 04E9810E9FD
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Feb 2024 14:54:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709132055; x=1740668055;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=fua4ooAj6yvAoUZ6bwr0f0h8Y9I0ThH0gctsCqKRmA0=;
+ b=Sh79QaZP6NRfS6fwAyVB4fa7LYjEUt03JDHxJnqYJ9vb1xYlPi54wxum
+ F6c0nTy+Bs/o/Wp88iAMDSpHS5X9P+DaDaVnek6U3goUK6qkdXJeCMkoR
+ e64orJTJdurwXqkkMLiGDGHeqTwjU3GU0OUQqy0oZtbVby1hGSbwpitNE
+ x5mppFN7x4hEGenhwS8warZHjJ5JzI480JUNz6BIwFKZBeLcuFsqc8FNi
+ dAWNWKxBPCPik0VicHguHjR5XVAMP+XxLhskF4RtiYqoZNwYe1hk2CrWz
+ gMPkRFI5wcjePCs4QUFYwComF0WAyiLNifHLy8vA7kHiUdsrWHjOveyl5 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="7314179"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
+   d="scan'208";a="7314179"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Feb 2024 06:54:14 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
+   d="scan'208";a="8022463"
+Received: from wbosek-mobl.ger.corp.intel.com (HELO localhost) ([10.245.80.56])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Feb 2024 06:54:13 -0800
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t] lib/igt_fb: on Xe device don't apply legacy blitter
- rules
-Date: Wed, 28 Feb 2024 16:39:04 +0200
-Message-Id: <20240228143904.859714-1-juhapekka.heikkila@gmail.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH i-g-t 0/7] intel-buf changes for xe render-copy tests
+Date: Wed, 28 Feb 2024 15:54:00 +0100
+Message-Id: <20240228145407.370325-1-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -78,27 +65,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Xe device legacy blitter size rules don't need to be applied
+We're missing xe render-copy tests. I learned this hard way on
+kms-big-fb in which blits which are not started on (0, 0) are
+wrong (see https://patchwork.freedesktop.org/series/130379/ for
+reference).
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- lib/igt_fb.c | 3 +++
- 1 file changed, 3 insertions(+)
+I'm working on xe_render_copy tests (which will vary than
+gem_render_copy counterpart) but before sending them I want
+to separate library part changes - those are also used in i915
+so I need to ensure no regression will be introduced due to
+width/height separation and simplification of stride/height
+calculation.
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 65e0638c2..0ac2a76b0 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2513,6 +2513,9 @@ static bool blitter_ok(const struct igt_fb *fb)
- 	     is_gen12_mc_ccs_modifier(fb->modifier))
- 		return false;
- 
-+	if (is_xe_device(fb->fd))
-+		return true;
-+
- 	for (int i = 0; i < fb->num_planes; i++) {
- 		int width = fb->plane_width[i];
- 
+Cc: Matthew Auld <matthew.auld@intel.com>
+
+Zbigniew Kempczyński (7):
+  lib/intel_batchbuffer: Add I915_TILING_64 definition
+  lib/intel_batchbuffer: Fix intel_bb_dump for Xe
+  lib/intel_bufops: Add width and height to intel_buf
+  lib/intel_bufops: Simplify buffer dimension calculations
+  lib/intel_bufops: Use common helper to fill buffer with pattern
+  lib/intel_bufops: Add png dump helper without detiling
+  tests/xe_intel_bb: Dump do png without detiling
+
+ lib/intel_batchbuffer.c       |  29 ++++-
+ lib/intel_batchbuffer.h       |   5 +-
+ lib/intel_bufops.c            | 204 +++++++++++++++++++++++++---------
+ lib/intel_bufops.h            |  11 +-
+ lib/rendercopy_gen7.c         |   2 +-
+ lib/rendercopy_gen8.c         |   2 +-
+ lib/rendercopy_gen9.c         |   2 +-
+ tests/intel/api_intel_bb.c    |  84 ++------------
+ tests/intel/gem_render_copy.c |  68 +-----------
+ tests/intel/xe_intel_bb.c     |  84 ++------------
+ 10 files changed, 216 insertions(+), 275 deletions(-)
+
 -- 
-2.25.1
+2.34.1
 
