@@ -4,49 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F4A9C5478C
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Feb 2024 14:54:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EAA9C5478C
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Feb 2024 14:54:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B01DA10E9FE;
-	Wed, 28 Feb 2024 14:54:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 07E8B10E9FD;
+	Wed, 28 Feb 2024 14:54:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B4o8Uyds";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d9uhTGQc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B3FC10E9F7
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Feb 2024 14:54:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3116510E9FD
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Feb 2024 14:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709132083; x=1740668083;
+ t=1709132089; x=1740668089;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DH4D81xgR5PolPVKtmfuvmgJPuYJBYBWF8rem9gBlOI=;
- b=B4o8Uydsi5UT25ctob4S1cli3NjnXMJkuHk2XqQBPQbPfCpOG+cLekMH
- CX29k4AwvDmGdQtwEMIJokbkAb1ZbYKYNOYqGb3o4uXmLX11jYcId3aCm
- 3n8daSC/QuiynbQHAQ9S3BNMiTMe5zO0Odfte3wxgiDd6txlbwLrugBrq
- GFn4nSmMNnPPCsxeU9AsX5Hxgl50a126C/5Jx/SpkB7DeK+sLcedg+VRO
- NivGs6zqn4pxUJOdOHahB1YR9wItCgqu+/2W480Gayr1oy+mIeTy+mX2Z
- YEB9fvNlm/+5pgV+bg70vycYNf2+lTs0m0oXkR1W6Zk9VRvCowK6O/l6n Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="7314227"
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
-   d="scan'208";a="7314227"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 06:54:43 -0800
+ bh=s9UwN7OnFaD87jn5B0mg4jKtvrZIo36YpOru2otF41A=;
+ b=d9uhTGQck5hSqIo9kr8hMbd3Wl3S2RplO8lpHgcR5kJYUhC3rxQjK4pS
+ 47J1BcXIZMeqeQdbAgv7yRJIzNGwCLB7OshH047T6mtw5B7v7Ey3SJUXP
+ BF/n5L55ctHryBdyRY1kqGqZ05L7ST8ACJnCoQ3mCpPTe3oLOZ6RI4rJw
+ gUjC9bp6giw07w+n+iauJCsNnJyTqlVzqv9gvN0nVYiyqAjFzjx8GkaAE
+ egAkapOBXVdTw68cHZab810uxlBm78ALBAkNCVGjksiXUYNkngk9N26Gz
+ fJ6jUvF2COxE1dZzKS70YoGPrb/WLfExNtlgXEAF5cipDANEfCMOrmBQH w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="21080659"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="21080659"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Feb 2024 06:54:48 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
-   d="scan'208";a="8022510"
+   d="scan'208";a="7493070"
 Received: from wbosek-mobl.ger.corp.intel.com (HELO localhost) ([10.245.80.56])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 06:54:42 -0800
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Feb 2024 06:54:46 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- "Cc : Matthew Auld" <matthew.auld@intel.com>
-Subject: [PATCH i-g-t 6/7] lib/intel_bufops: Add png dump helper without
- detiling
-Date: Wed, 28 Feb 2024 15:54:06 +0100
-Message-Id: <20240228145407.370325-7-zbigniew.kempczynski@intel.com>
+ Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH i-g-t 7/7] tests/xe_intel_bb: Dump do png without detiling
+Date: Wed, 28 Feb 2024 15:54:07 +0100
+Message-Id: <20240228145407.370325-8-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228145407.370325-1-zbigniew.kempczynski@intel.com>
 References: <20240228145407.370325-1-zbigniew.kempczynski@intel.com>
@@ -68,73 +66,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Sometimes we need to visualy inspect tiled surface. Add appropriate
-function which doesn't detile surface before writing to png.
+On my work on Lunarlake I often needed to inspect surface without
+detiling. Replace dumping surface exactly how it looks in the memory.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
 ---
- lib/intel_bufops.c | 34 ++++++++++++++++++++++++++++++++++
- lib/intel_bufops.h |  1 +
- 2 files changed, 35 insertions(+)
+ tests/intel/xe_intel_bb.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 67254ec107..5e2701a7dc 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -1337,6 +1337,40 @@ void intel_buf_write_aux_to_png(struct intel_buf *buf, const char *filename)
+diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
+index ef12715dea..c3a4b5450e 100644
+--- a/tests/intel/xe_intel_bb.c
++++ b/tests/intel/xe_intel_bb.c
+@@ -913,9 +913,9 @@ static int render(struct buf_ops *bops, uint32_t tiling,
+ 	if (write_png) {
+ 		snprintf(name, sizeof(name) - 1,
+ 			 "render_dst_tiling_%d.png", tiling);
+-		intel_buf_write_to_png(&src, "render_src_tiling_none.png");
+-		intel_buf_write_to_png(&dst, name);
+-		intel_buf_write_to_png(&final, "render_final_tiling_none.png");
++		intel_buf_raw_write_to_png(&src, "render_src_tiling_none.png");
++		intel_buf_raw_write_to_png(&dst, name);
++		intel_buf_raw_write_to_png(&final, "render_final_tiling_none.png");
+ 	}
  
- 	__intel_buf_write_to_png(buf->bops, buf, filename, true);
- }
-+static void __intel_buf_raw_write_to_png(struct buf_ops *bops,
-+					 struct intel_buf *buf,
-+					 const char *filename)
-+{
-+	cairo_surface_t *surface;
-+	cairo_status_t ret;
-+	uint8_t *linear;
-+	int format, width, height, stride;
-+
-+	format = CAIRO_FORMAT_RGB24;
-+	width = buf->surface[0].stride / 4;
-+	height = __get_aligned_height(intel_buf_height(buf),
-+				      buf->bpp, buf->tiling);
-+	stride = buf->surface[0].stride;
-+
-+	if (is_xe_device(bops->fd))
-+		linear = xe_bo_map(bops->fd, buf->handle, buf->bo_size);
-+	else
-+		linear = gem_mmap__device_coherent(bops->fd, buf->handle,
-+						   0, buf->bo_size, PROT_READ);
-+	surface = cairo_image_surface_create_for_data(linear,
-+						      format, width, height,
-+						      stride);
-+	ret = cairo_surface_write_to_png(surface, filename);
-+	igt_assert(ret == CAIRO_STATUS_SUCCESS);
-+	cairo_surface_destroy(surface);
-+
-+	munmap(linear, buf->bo_size);
-+}
-+
-+void intel_buf_raw_write_to_png(struct intel_buf *buf, const char *filename)
-+{
-+	__intel_buf_raw_write_to_png(buf->bops, buf, filename);
-+}
- 
- static void *alloc_aligned(uint64_t size)
- {
-diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-index 75e0ec2c44..363f7abaad 100644
---- a/lib/intel_bufops.h
-+++ b/lib/intel_bufops.h
-@@ -221,6 +221,7 @@ const char *intel_buf_set_name(struct intel_buf *buf, const char *name);
- 
- void intel_buf_write_to_png(struct intel_buf *buf, const char *filename);
- void intel_buf_write_aux_to_png(struct intel_buf *buf, const char *filename);
-+void intel_buf_raw_write_to_png(struct intel_buf *buf, const char *filename);
- void intel_buf_draw_pattern(struct buf_ops *bops, struct intel_buf *buf,
- 			    int x, int y, int w, int h,
- 			    int cx, int cy, int cw, int ch,
+ 	/* We'll fail on src <-> final compare so just warn */
 -- 
 2.34.1
 
