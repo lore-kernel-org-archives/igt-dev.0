@@ -4,46 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E862DC5478C
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Feb 2024 14:54:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D428C5478C
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Feb 2024 14:54:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9047210E9F2;
-	Wed, 28 Feb 2024 14:54:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B9B3B10E9F4;
+	Wed, 28 Feb 2024 14:54:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jJFA/wvS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S4bqtRxB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76BA210E9F2
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Feb 2024 14:54:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 608BD10E9F4
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Feb 2024 14:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709132066; x=1740668066;
+ t=1709132069; x=1740668069;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=gaA5CY45TujzfpUAVeMhCDmNhGKEsDW5vSJL2ZZtYx8=;
- b=jJFA/wvS23/Vt+TUZ5NlyigchlM1JgjYAxjra3j6mJQOHeeYlcuixymD
- SysZ6FLFl7Vv0qgWfHSM3J4aE1UIYTS5AWZFo9+0RyxvIxGSlL3u9QbOt
- AiqqR2BTuqEHC4dFhmHTiavfPERJfev6qFEeMJabcPJMrCpvsPgIt7KKY
- 5Zy4sVv9uxV1fFo7fEbAsnhNZ7iqEjbWyauCawh0g03jseNHSvNAXMB1Z
- hxEr2UPNjBdwtKr/0x7JrmFMRhEvavdaeaNyjnMmjDHAeqCN1jwWk3dal
- 0VFI0vYPumrURZnuX/AoGDt+rmFKEmxz1zu6lx+MPX3InLSe11eTrsnyF w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14952544"
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="14952544"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 06:54:25 -0800
+ bh=inyQI/VnWYlm+h/bWNcbhqJxK8JbOe9Wrc5QT3kfKk0=;
+ b=S4bqtRxBykqaDjhwjhtzVqAt4QN0OTcVLZAMEwgKYmy2Oxwz2iDiCQYf
+ I7jSlxY7vXlLn6YSQuqlTu9M7KkD0336RzaNr+FnNO24qiuDEBoVrdSP0
+ 43ayQi3hm1nmc2rkBL5txuFpOcgnYFBBEoycBrvTeCwxeVZ1QsJD8JJ/n
+ eths1XTnjdKjjGQ3estaJhoNddx1GaXDZQeL5U00aZkc6rj5J3EGa7dJy
+ Lmewk5UUrGCvyGS0oGbdWmekk87RLZ2FYt3M9oOWkj+quNuteRjtMT8yn
+ NXofh3CZKWC5MGmlVtNb9Xt716S25a6Z9NHV0iGA7NXq9DXaDUQsz1c/2 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="7314199"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
+   d="scan'208";a="7314199"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Feb 2024 06:54:29 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; d="scan'208";a="12121165"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
+   d="scan'208";a="8022483"
 Received: from wbosek-mobl.ger.corp.intel.com (HELO localhost) ([10.245.80.56])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2024 06:54:23 -0800
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Feb 2024 06:54:28 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH i-g-t 2/7] lib/intel_batchbuffer: Fix intel_bb_dump for Xe
-Date: Wed, 28 Feb 2024 15:54:02 +0100
-Message-Id: <20240228145407.370325-3-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 3/7] lib/intel_bufops: Add width and height to intel_buf
+Date: Wed, 28 Feb 2024 15:54:03 +0100
+Message-Id: <20240228145407.370325-4-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228145407.370325-1-zbigniew.kempczynski@intel.com>
 References: <20240228145407.370325-1-zbigniew.kempczynski@intel.com>
@@ -65,124 +67,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Dumping bb is compiled conditionally so I haven't noticed it won't
-work properly on Xe until I just needed to use it.
+While width calculated as division of stride and bpp/8 is correct
+it limits its use to linear buffers (tiled requires stride is
+tile width multiplied).
 
-Fix dumping batch allowing to dump in binary and hex form for
-external processing.
+From now on width and height are independent so partial blit (render)
+should be now possible.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Matthew Auld <matthew.auld@intel.com>
 ---
- lib/intel_batchbuffer.c | 29 ++++++++++++++++++++++++-----
- lib/intel_batchbuffer.h |  2 +-
- lib/rendercopy_gen7.c   |  2 +-
- lib/rendercopy_gen8.c   |  2 +-
- lib/rendercopy_gen9.c   |  2 +-
- 5 files changed, 28 insertions(+), 9 deletions(-)
+ lib/intel_bufops.c | 2 ++
+ lib/intel_bufops.h | 6 ++++--
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 61ab42df72..c8c6e9a193 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -1499,21 +1499,40 @@ void intel_bb_print(struct intel_bb *ibb)
-  * intel_bb_dump:
-  * @ibb: pointer to intel_bb
-  * @filename: name to which write bb
-+ * @in_hex: dump bb in hex form
-  *
-  * Dump batch bo to file.
-  */
--void intel_bb_dump(struct intel_bb *ibb, const char *filename)
-+void intel_bb_dump(struct intel_bb *ibb, const char *filename, bool in_hex)
- {
- 	FILE *out;
- 	void *ptr;
+diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+index c8f91aef82..9d3d17def9 100644
+--- a/lib/intel_bufops.c
++++ b/lib/intel_bufops.c
+@@ -836,6 +836,8 @@ static void __intel_buf_init(struct buf_ops *bops,
+ 	memset(buf, 0, sizeof(*buf));
  
--	ptr = gem_mmap__device_coherent(ibb->fd, ibb->handle, 0, ibb->size,
--					PROT_READ);
-+	/*
-+	 * Note - for i915/relocations offsets inside batch are not resolved
-+	 * until intel_bb_exec() will write collected instructions to bb
-+	 * object. For i915/xe with allocator offsets are already acquired
-+	 * and bb is complete so there's no need to map.
-+	 */
-+	if (ibb->driver == INTEL_DRIVER_I915 && ibb->enforce_relocs)
-+		ptr = gem_mmap__device_coherent(ibb->fd, ibb->handle, 0,
-+						ibb->size, PROT_READ);
-+	else
-+		ptr = ibb->batch;
-+
- 	out = fopen(filename, "wb");
- 	igt_assert(out);
--	fwrite(ptr, ibb->size, 1, out);
-+
-+	if (in_hex) {
-+		for (int i = 0; i < ibb->size / sizeof(uint32_t); i++)
-+			fprintf(out, "%08x\n", ((uint32_t *)ptr)[i]);
-+	} else {
-+		fwrite(ptr, ibb->size, 1, out);
-+	}
- 	fclose(out);
--	munmap(ptr, ibb->size);
-+
-+	if (ptr != ibb->batch)
-+		munmap(ptr, ibb->size);
+ 	buf->bops = bops;
++	buf->width = width;
++	buf->height = height;
+ 	buf->addr.offset = INTEL_BUF_INVALID_ADDRESS;
+ 	IGT_INIT_LIST_HEAD(&buf->link);
+ 	buf->mocs = INTEL_BUF_MOCS_DEFAULT;
+diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
+index 0b68482b25..cd0aebdab1 100644
+--- a/lib/intel_bufops.h
++++ b/lib/intel_bufops.h
+@@ -24,6 +24,8 @@ struct intel_buf {
+ 	bool is_owner;
+ 	uint32_t handle;
+ 	uint64_t size;
++	uint32_t width;
++	uint32_t height;
+ 	uint32_t tiling;
+ 	uint32_t bpp;
+ 	uint32_t compression;
+@@ -77,12 +79,12 @@ static inline bool intel_buf_compressed(const struct intel_buf *buf)
+ 
+ static inline unsigned int intel_buf_width(const struct intel_buf *buf)
+ {
+-	return buf->surface[0].stride / (buf->bpp / 8);
++	return buf->width;
  }
  
- /**
-diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-index 8041377382..cb32206e5d 100644
---- a/lib/intel_batchbuffer.h
-+++ b/lib/intel_batchbuffer.h
-@@ -344,7 +344,7 @@ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache);
- int intel_bb_sync(struct intel_bb *ibb);
+ static inline unsigned int intel_buf_height(const struct intel_buf *buf)
+ {
+-	return buf->surface[0].size / buf->surface[0].stride;
++	return buf->height;
+ }
  
- void intel_bb_print(struct intel_bb *ibb);
--void intel_bb_dump(struct intel_bb *ibb, const char *filename);
-+void intel_bb_dump(struct intel_bb *ibb, const char *filename, bool in_hex);
- void intel_bb_set_debug(struct intel_bb *ibb, bool debug);
- void intel_bb_set_dump_base64(struct intel_bb *ibb, bool dump);
- 
-diff --git a/lib/rendercopy_gen7.c b/lib/rendercopy_gen7.c
-index 267f6f8038..9fadb0772e 100644
---- a/lib/rendercopy_gen7.c
-+++ b/lib/rendercopy_gen7.c
-@@ -23,7 +23,7 @@
- #if DEBUG_RENDERCPY
- static void dump_batch(struct intel_bb *ibb)
- {
--	intel_bb_dump(ibb, "/tmp/gen7-batchbuffers.dump");
-+	intel_bb_dump(ibb, "/tmp/gen7-batchbuffers.dump", true);
- }
- #else
- #define dump_batch(x) do { } while (0)
-diff --git a/lib/rendercopy_gen8.c b/lib/rendercopy_gen8.c
-index ba7897fb47..bbfa6d28f5 100644
---- a/lib/rendercopy_gen8.c
-+++ b/lib/rendercopy_gen8.c
-@@ -28,7 +28,7 @@
- #if DEBUG_RENDERCPY
- static void dump_batch(struct intel_bb *ibb)
- {
--	intel_bb_dump(ibb, "/tmp/gen8-batchbuffers.dump");
-+	intel_bb_dump(ibb, "/tmp/gen8-batchbuffers.dump", true);
- }
- #else
- #define dump_batch(x) do { } while(0)
-diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-index a4220d78da..3d66dfb7fd 100644
---- a/lib/rendercopy_gen9.c
-+++ b/lib/rendercopy_gen9.c
-@@ -32,7 +32,7 @@
- #if DEBUG_RENDERCPY
- static void dump_batch(struct intel_bb *ibb)
- {
--	intel_bb_dump(ibb, "/tmp/gen9-batchbuffers.dump");
-+	intel_bb_dump(ibb, "/tmp/gen9-batchbuffers.dump", true);
- }
- #else
- #define dump_batch(x) do { } while(0)
+ static inline unsigned int
 -- 
 2.34.1
 
