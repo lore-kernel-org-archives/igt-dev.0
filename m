@@ -4,47 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43B0DC5475B
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Feb 2024 02:10:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4C48C5475B
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Feb 2024 03:04:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CBE9C10E28D;
-	Thu, 29 Feb 2024 02:10:13 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="IvdYETBh";
-	dkim-atps=neutral
-Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 407D510E28D
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Feb 2024 02:10:12 +0000 (UTC)
-Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx0.riseup.net (Postfix) with ESMTPS id 4TlZS33b0gz9v83;
- Thu, 29 Feb 2024 02:10:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
- t=1709172611; bh=ZXi4MQqCheKW/7RdjWm7HKr1z5KUqnMqL+La0qxxIxg=;
- h=From:Date:Subject:To:Cc:From;
- b=IvdYETBhRSo2Tbc0l1543GTVr6yKqZFUpZWfnpWwQmqZUKUX6mK57I22XHIH/0hM3
- JGA48KIN6B7K/jgU/oLSThPINVy0Y9p5tsvHGHmiNZq0WWTLNDSwGOImKJvab5PbBH
- 6HTW+QBUg6wfuDHM/JI9OcYSmEb9DvSDC5SshibM=
-X-Riseup-User-ID: E5D11F629A7423EC46A2D1A8871B92A8C86931AC0A02B26741195D8E8B005987
-Received: from [127.0.0.1] (localhost [127.0.0.1])
- by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4TlZS05jgjzJr73;
- Thu, 29 Feb 2024 02:10:08 +0000 (UTC)
-From: Arthur Grillo <arthurgrillo@riseup.net>
-Date: Wed, 28 Feb 2024 23:09:45 -0300
-Subject: [PATCH i-g-t RESEND v2] lib: Add non-subsampled YUV formats
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3B15A10E2D0;
+	Thu, 29 Feb 2024 03:04:07 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C51A110E102;
+ Thu, 29 Feb 2024 03:04:05 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1739973384666758973=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240228-non-ssampled-yuv-v2-1-aa1f948e2aa0@riseup.net>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, 
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>, 
- Ashutosh Dixit <ashutosh.dixit@intel.com>, 
- Arthur Grillo <arthurgrillo@riseup.net>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib=3A_Add_non-subsampled_YUV_?=
+ =?utf-8?q?formats_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Arthur Grillo" <arthurgrillo@riseup.net>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 29 Feb 2024 03:04:05 -0000
+Message-ID: <170917584580.375728.4347655619814278389@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240228-non-ssampled-yuv-v2-1-aa1f948e2aa0@riseup.net>
+In-Reply-To: <20240228-non-ssampled-yuv-v2-1-aa1f948e2aa0@riseup.net>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,213 +37,321 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add support to NV24, NV42, YUV444 and YVU444 non-subsampled YUV formats.
+--===============1739973384666758973==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
----
-Changes in v2:
-- Place DRM_FORMAT_NV24 below DRM_FORMAT_NV16 (Kamil)
-- Link to v1: https://lore.kernel.org/r/20231228-non-ssampled-yuv-v1-1-06f8e877b566@riseup.net
----
- lib/igt_color_encoding.c |  4 ++++
- lib/igt_fb.c             | 44 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 48 insertions(+)
+== Series Details ==
 
-diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
-index a7bd2b22f73b..286784f10bbf 100644
---- a/lib/igt_color_encoding.c
-+++ b/lib/igt_color_encoding.c
-@@ -139,11 +139,15 @@ static const struct color_encoding_format {
- 	{ DRM_FORMAT_NV12, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_NV16, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_NV21, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_NV24, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_NV42, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_NV61, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YUV420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YUV422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YUV444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YVU420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YVU422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YVU444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YUYV, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YVYU, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_UYVY, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 683eb176b7a4..b860308b1c0c 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -257,6 +257,16 @@ static const struct format_desc_struct {
- 	  .num_planes = 2, .plane_bpp = { 8, 16, },
- 	  .hsub = 2, .vsub = 2,
- 	},
-+	{ .name = "NV24", .depth = -1, .drm_id = DRM_FORMAT_NV24,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 2, .plane_bpp = { 8, 16, },
-+	  .hsub = 1, .vsub = 1,
-+	},
-+	{ .name = "NV42", .depth = -1, .drm_id = DRM_FORMAT_NV42,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 2, .plane_bpp = { 8, 16, },
-+	  .hsub = 1, .vsub = 1,
-+	},
- 	{ .name = "NV61", .depth = -1, .drm_id = DRM_FORMAT_NV61,
- 	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
- 	  .num_planes = 2, .plane_bpp = { 8, 16, },
-@@ -292,6 +302,11 @@ static const struct format_desc_struct {
- 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
- 	  .hsub = 2, .vsub = 1,
- 	},
-+	{ .name = "YU24", .depth = -1, .drm_id = DRM_FORMAT_YUV444,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 1, .vsub = 1,
-+	},
- 	{ .name = "YV12", .depth = -1, .drm_id = DRM_FORMAT_YVU420,
- 	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
- 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-@@ -302,6 +317,11 @@ static const struct format_desc_struct {
- 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
- 	  .hsub = 2, .vsub = 1,
- 	},
-+	{ .name = "YV24", .depth = -1, .drm_id = DRM_FORMAT_YVU444,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 1, .vsub = 1,
-+	},
- 	{ .name = "Y410", .depth = -1, .drm_id = DRM_FORMAT_Y410,
- 	  .cairo_id = CAIRO_FORMAT_RGBA128F, .convert = true,
- 	  .num_planes = 1, .plane_bpp = { 32, },
-@@ -3395,6 +3415,8 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 	case DRM_FORMAT_NV12:
- 	case DRM_FORMAT_NV16:
- 	case DRM_FORMAT_NV21:
-+	case DRM_FORMAT_NV24:
-+	case DRM_FORMAT_NV42:
- 	case DRM_FORMAT_NV61:
- 	case DRM_FORMAT_P010:
- 	case DRM_FORMAT_P012:
-@@ -3405,8 +3427,10 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 		params->ay_inc = 1;
- 		params->uv_inc = 1;
- 		break;
-@@ -3436,11 +3460,15 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 	case DRM_FORMAT_NV12:
- 	case DRM_FORMAT_NV16:
- 	case DRM_FORMAT_NV21:
-+	case DRM_FORMAT_NV24:
-+	case DRM_FORMAT_NV42:
- 	case DRM_FORMAT_NV61:
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 	case DRM_FORMAT_P010:
- 	case DRM_FORMAT_P012:
- 	case DRM_FORMAT_P016:
-@@ -3468,12 +3496,14 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 	switch (fb->drm_format) {
- 	case DRM_FORMAT_NV12:
- 	case DRM_FORMAT_NV16:
-+	case DRM_FORMAT_NV24:
- 		params->y_offset = fb->offsets[0];
- 		params->u_offset = fb->offsets[1];
- 		params->v_offset = fb->offsets[1] + 1;
- 		break;
- 
- 	case DRM_FORMAT_NV21:
-+	case DRM_FORMAT_NV42:
- 	case DRM_FORMAT_NV61:
- 		params->y_offset = fb->offsets[0];
- 		params->u_offset = fb->offsets[1] + 1;
-@@ -3482,6 +3512,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
- 		params->y_offset = fb->offsets[0];
- 		params->u_offset = fb->offsets[1];
- 		params->v_offset = fb->offsets[2];
-@@ -3489,6 +3520,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 		params->y_offset = fb->offsets[0];
- 		params->u_offset = fb->offsets[2];
- 		params->v_offset = fb->offsets[1];
-@@ -4222,14 +4254,18 @@ static void fb_convert(struct fb_convert *cvt)
- 		case DRM_FORMAT_NV12:
- 		case DRM_FORMAT_NV16:
- 		case DRM_FORMAT_NV21:
-+		case DRM_FORMAT_NV24:
-+		case DRM_FORMAT_NV42:
- 		case DRM_FORMAT_NV61:
- 		case DRM_FORMAT_UYVY:
- 		case DRM_FORMAT_VYUY:
- 		case DRM_FORMAT_YUV420:
- 		case DRM_FORMAT_YUV422:
-+		case DRM_FORMAT_YUV444:
- 		case DRM_FORMAT_YUYV:
- 		case DRM_FORMAT_YVU420:
- 		case DRM_FORMAT_YVU422:
-+		case DRM_FORMAT_YVU444:
- 		case DRM_FORMAT_YVYU:
- 			convert_yuv_to_rgb24(cvt);
- 			return;
-@@ -4240,14 +4276,18 @@ static void fb_convert(struct fb_convert *cvt)
- 		case DRM_FORMAT_NV12:
- 		case DRM_FORMAT_NV16:
- 		case DRM_FORMAT_NV21:
-+		case DRM_FORMAT_NV24:
-+		case DRM_FORMAT_NV42:
- 		case DRM_FORMAT_NV61:
- 		case DRM_FORMAT_UYVY:
- 		case DRM_FORMAT_VYUY:
- 		case DRM_FORMAT_YUV420:
- 		case DRM_FORMAT_YUV422:
-+		case DRM_FORMAT_YUV444:
- 		case DRM_FORMAT_YUYV:
- 		case DRM_FORMAT_YVU420:
- 		case DRM_FORMAT_YVU422:
-+		case DRM_FORMAT_YVU444:
- 		case DRM_FORMAT_YVYU:
- 			convert_rgb24_to_yuv(cvt);
- 			return;
-@@ -4820,11 +4860,15 @@ bool igt_format_is_yuv(uint32_t drm_format)
- 	case DRM_FORMAT_NV12:
- 	case DRM_FORMAT_NV16:
- 	case DRM_FORMAT_NV21:
-+	case DRM_FORMAT_NV24:
-+	case DRM_FORMAT_NV42:
- 	case DRM_FORMAT_NV61:
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 	case DRM_FORMAT_P010:
- 	case DRM_FORMAT_P012:
- 	case DRM_FORMAT_P016:
+Series: lib: Add non-subsampled YUV formats (rev3)
+URL   : https://patchwork.freedesktop.org/series/128057/
+State : success
 
----
-base-commit: 0340f23b38ce0fdab61fd0fbe5bc94cd91bcaa0d
-change-id: 20231228-non-ssampled-yuv-e50c1269e225
+== Summary ==
 
-Best regards,
--- 
-Arthur Grillo <arthurgrillo@riseup.net>
+CI Bug Log - changes from XEIGT_7734_BAT -> XEIGTPW_10754_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10754_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-dg2-oem2:       [SKIP][1] ([Intel XE#1136]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@kms_addfb_basic@bad-pitch-128:
+    - bat-dg2-oem2:       [SKIP][3] ([i915#2575]) -> [PASS][4] +49 other tests pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@kms_addfb_basic@bad-pitch-128.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@kms_addfb_basic@bad-pitch-128.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-dg2-oem2:       [SKIP][5] ([Intel XE#1134]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@xe_intel_bb@create-in-region:
+    - bat-dg2-oem2:       [SKIP][7] ([Intel XE#1130]) -> [PASS][8] +155 other tests pass
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_intel_bb@create-in-region.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_intel_bb@create-in-region.html
+
+  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
+    - bat-dg2-oem2:       [SKIP][9] ([Intel XE#1245]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-dg2-oem2:       [SKIP][11] ([Intel XE#455]) -> [PASS][12] +5 other tests pass
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html
+
+  * igt@xe_module_load@load:
+    - bat-dg2-oem2:       [FAIL][13] ([Intel XE#1244]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_module_load@load.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_module_load@load.html
+
+  
+#### Warnings ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-dg2-oem2:       [SKIP][15] ([i915#2575]) -> [SKIP][16] ([Intel XE#623])
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-dg2-oem2:       [SKIP][17] ([Intel XE#1134]) -> [SKIP][18] ([Intel XE#455])
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-dg2-oem2:       [SKIP][19] ([i915#2575]) -> [SKIP][20] ([i915#5274])
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - bat-dg2-oem2:       [SKIP][21] ([i915#2575]) -> [SKIP][22] ([Intel XE#417])
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@kms_hdmi_inject@inject-audio.html
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_psr@psr-cursor-plane-move:
+    - bat-dg2-oem2:       [SKIP][23] ([Intel XE#1134]) -> [SKIP][24] ([Intel XE#929]) +2 other tests skip
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@kms_psr@psr-cursor-plane-move.html
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@kms_psr@psr-cursor-plane-move.html
+
+  * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate:
+    - bat-dg2-oem2:       [SKIP][25] ([Intel XE#1130]) -> [SKIP][26] ([Intel XE#288]) +22 other tests skip
+   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html
+   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-dg2-oem2:       [SKIP][27] ([Intel XE#1130]) -> [SKIP][28] ([Intel XE#255])
+   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-dg2-oem2:       [SKIP][29] ([Intel XE#1130]) -> [SKIP][30] ([Intel XE#977])
+   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html
+   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-dg2-oem2:       [SKIP][31] ([Intel XE#1130]) -> [SKIP][32] ([Intel XE#979]) +1 other test skip
+   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html
+   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1130]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130
+  [Intel XE#1134]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1134
+  [Intel XE#1136]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1136
+  [Intel XE#1244]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1244
+  [Intel XE#1245]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1245
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#417]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/417
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
+  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7734 -> IGTPW_10754
+  * Linux: xe-870-3bdccc6629ee909a167daedd6a8b75f6967ab726 -> xe-872-eec7a135b960c7b83b13a7c821e30f956074e439
+
+  IGTPW_10754: 10754
+  IGT_7734: 7734
+  xe-870-3bdccc6629ee909a167daedd6a8b75f6967ab726: 3bdccc6629ee909a167daedd6a8b75f6967ab726
+  xe-872-eec7a135b960c7b83b13a7c821e30f956074e439: eec7a135b960c7b83b13a7c821e30f956074e439
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/index.html
+
+--===============1739973384666758973==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib: Add non-subsampled YUV formats (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128057/">https://patchwork.freedesktop.org/series/128057/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7734_BAT -&gt; XEIGTPW_10754_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10754_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1136">Intel XE#1136</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@bad-pitch-128:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@kms_addfb_basic@bad-pitch-128.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@kms_addfb_basic@bad-pitch-128.html">PASS</a> +49 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1134">Intel XE#1134</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@create-in-region:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_intel_bb@create-in-region.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_intel_bb@create-in-region.html">PASS</a> +155 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1245">Intel XE#1245</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html">PASS</a> +5 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_module_load@load:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_module_load@load.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1244">Intel XE#1244</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_module_load@load.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1134">Intel XE#1134</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/417">Intel XE#417</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-cursor-plane-move:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1134">Intel XE#1134</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/929">Intel XE#929</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +22 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7734/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10754/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7734 -&gt; IGTPW_10754</li>
+<li>Linux: xe-870-3bdccc6629ee909a167daedd6a8b75f6967ab726 -&gt; xe-872-eec7a135b960c7b83b13a7c821e30f956074e439</li>
+</ul>
+<p>IGTPW_10754: 10754<br />
+  IGT_7734: 7734<br />
+  xe-870-3bdccc6629ee909a167daedd6a8b75f6967ab726: 3bdccc6629ee909a167daedd6a8b75f6967ab726<br />
+  xe-872-eec7a135b960c7b83b13a7c821e30f956074e439: eec7a135b960c7b83b13a7c821e30f956074e439</p>
+
+</body>
+</html>
+
+--===============1739973384666758973==--
