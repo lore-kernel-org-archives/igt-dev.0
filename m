@@ -4,58 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F201C48BF6
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57AC6C54E41
 	for <igt-dev@archiver.kernel.org>; Thu, 29 Feb 2024 07:00:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 929BF10E078;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9D82810E0AE;
 	Thu, 29 Feb 2024 06:59:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hOTfPBmD";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W5kPLJgK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5129A10E0AE
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99C8410E0F0
  for <igt-dev@lists.freedesktop.org>; Thu, 29 Feb 2024 06:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1709189998; x=1740725998;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding:sender;
- bh=ImarCmG9llSEAyb4tkhpnLlolZkXSVGNKC19zV0gDYU=;
- b=hOTfPBmDQUzhdpFTpso05PnWmlRVlQqQiw2R2yEmU/nDL+b5LYJgknx7
- vsgeebclyd9xf8MvTSuDokBnxzTYBsiKLid7zkJt323amN7622us1+rBN
- lH9JurOfYdLMf+wrtWqgCuYwYmBUP+rSX+xzQ+GGkWDl0TPasYq+Y+Uzt
- VcfQM0oFoqB7xVOptgvbmi6QC+8hSEUe1+B0AIBawU563H8n8v0NX96Mw
- /HdFPC7gJgHLAJB8pIVa4cQ1trSlTKmOQ75pE1p31MTes0CRCXrV5hOXv
- 5FIXDzVjaRXOtwqZFXUoTv6odYKuWmYZngDS/Ha9GODplhPALY/Vjv299 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14789755"
-X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; d="scan'208";a="14789755"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding:sender;
+ bh=O3UoDvdM165bmxMMKwEv80Wf9IBOIbl6vVEsBYesjRk=;
+ b=W5kPLJgKysXj3fbRXn3avDdM7y5vHL/RjfDmfFD1VA63tIAb09+2qzhy
+ ID1cGEJzdM9RuH+Tq3UPmk4IcOoYB7w/EIv2zroO6dFXpw5/f8pFyQ0Bv
+ vLNpvoFSXX7oqlGhyNMOfcM0UQVVj1Y0FjMUjfCgb5C3QjB/gPHCTnqJk
+ LHgb77g86Pm0pDn6cyE27LxWEK9rf/7wNZn65dVff7AZNj3fa8GxSgwPx
+ zptZKRQ85sK3eAJtkwIS8kzWZw0SvXlhvCBWJJL8HY8HFZQXyN2Dv5gzA
+ fM2wnvRJNyBsGJtBDnUrW1eKgIPAPtp5SpP/Hi0CKKeguqqnXVpWXy2j0 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3755978"
+X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
+   d="scan'208";a="3755978"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  28 Feb 2024 22:59:58 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; d="scan'208";a="45232554"
+X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
+   d="scan'208";a="7640487"
 Received: from linux.intel.com ([10.54.29.200])
- by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  28 Feb 2024 22:59:57 -0800
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.245.244.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 46C6D580DEF;
+ by linux.intel.com (Postfix) with ESMTPS id 5AD25580E4B;
  Wed, 28 Feb 2024 22:59:57 -0800 (PST)
 Received: from maurocar by linux.intel.com with local (Exim 4.97.1)
  (envelope-from <mauro.chehab@linux.intel.com>)
- id 1rfaOY-00000002GEm-3jgc; Thu, 29 Feb 2024 07:59:54 +0100
+ id 1rfaOY-00000002GEg-3Zn0; Thu, 29 Feb 2024 07:59:54 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Subject: [PATCH i-g-t 2/4] tests: use Infrastructure category for all sysman
- tests
-Date: Thu, 29 Feb 2024 07:56:17 +0100
-Message-ID: <20240229065953.538861-3-mauro.chehab@linux.intel.com>
+Subject: [PATCH i-g-t 0/4] uniquelly identify a feature at documentation
+Date: Thu, 29 Feb 2024 07:56:15 +0100
+Message-ID: <20240229065953.538861-1-mauro.chehab@linux.intel.com>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240229065953.538861-1-mauro.chehab@linux.intel.com>
-References: <20240229065953.538861-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -75,57 +74,34 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Currently, they're defined on different places under different
-categories. Unify them under Infrastrucuture one.
+Right now, some documentation groups use the same name on different
+categories:
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/device_reset.c             | 7 ++++---
- tests/intel/xe_sysfs_scheduler.c | 2 +-
- 2 files changed, 5 insertions(+), 4 deletions(-)
+	WARNING: feature MultiGPU has multiple parents: Hardware building block and Software building block
+	WARNING: feature sysman has multiple parents: Infrastructure and Software building block
+	WARNING: feature compute has multiple parents: Hardware building block and Software building block
 
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index ef08164aad41..13bd5ab5fdb1 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -16,6 +16,7 @@
- #include "igt_kmod.h"
- /**
-  * TEST: device reset
-+ * Category: Hardware building block
-  * Description: Examine behavior of a driver on device sysfs reset
-  * Run type: FULL
-  *
-@@ -32,13 +33,13 @@
-  * Feature: reset
-  *
-  * SUBTEST: unbind-reset-rebind
-- * Category: Server
-  * Description:
-  *   Unbinds driver from device, initiates reset then rebinds driver to device
-  *   validating device resets
-- * Feature: reset, sriov-reset
-- * Functionality: reset
-+ * Category: Infrastructure
-  * Sub-category: sysman
-+ * Functionality: reset
-+ * Feature: reset, sriov-reset
-  * Test category: GEM_Legacy
-  */
- 
-diff --git a/tests/intel/xe_sysfs_scheduler.c b/tests/intel/xe_sysfs_scheduler.c
-index 954dad1305f1..5a22abbf14bb 100644
---- a/tests/intel/xe_sysfs_scheduler.c
-+++ b/tests/intel/xe_sysfs_scheduler.c
-@@ -5,7 +5,7 @@
- 
- /**
-  * TEST: xe sysfs scheduler
-- * Category: Software building block
-+ * Category: Infrastructure
-  * Sub-category: sysman
-  * Functionality: scheduler control interface
-  *
+The same happens for evict feature, which has different sub-categories:
+
+	WARNING: feature evict has multiple parents: VMA and Flat-CCS
+
+As we want tests to be properly accounted for and having an unique name for
+each bucket, address such namespace clashes.
+
+Mauro Carvalho Chehab (4):
+  tests/intel/xe_query: use Hardware building block for MultiGPU
+  tests: use Infrastructure category for all sysman tests
+  tests/intel/xe_noexec_ping_pong: change category to hardware building
+    block
+  tests/intel/xe_evict_ccs: use a different name for evict on Flat-CCS
+
+ tests/device_reset.c              |  7 ++++---
+ tests/intel/xe_evict_ccs.c        |  2 +-
+ tests/intel/xe_noexec_ping_pong.c |  2 +-
+ tests/intel/xe_query.c            | 11 +++++++++++
+ tests/intel/xe_sysfs_scheduler.c  |  2 +-
+ 5 files changed, 18 insertions(+), 6 deletions(-)
+
 -- 
 2.43.2
 
