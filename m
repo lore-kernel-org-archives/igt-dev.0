@@ -4,63 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF167C48BF6
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Feb 2024 12:45:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0026EC54E41
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Feb 2024 12:47:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5957710E0C5;
-	Thu, 29 Feb 2024 12:45:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8E76610E08F;
+	Thu, 29 Feb 2024 12:47:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DfSsEEt6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JpGS0Ei2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C0C410E0C5
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Feb 2024 12:45:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E150610E0C5
+ for <IGT-Dev@lists.freedesktop.org>; Thu, 29 Feb 2024 12:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709210729; x=1740746729;
+ t=1709210856; x=1740746856;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=yXJCal+Tp1hJMEFJFTQTY8X0RrhH5roX6RrEvscL4kE=;
- b=DfSsEEt6TDocH7VzvzpEZFk/3EvYkUyj0RVh81b7DJyS3aDYm5sYR/8a
- ecBPhv5mftB3KFojOmP10yEx8hSGry4ABGgUhqUqyTO7/MhLQjiP5Z2pH
- I/DDzasY5+WiE7gnuCi8fvPS8oG3IHT0svysG7ZFiB/fEPePbNPNfJyEw
- rlUStzJAWj19neHS3jDlyBO/4u+4mc0M26QnmKHhIMIFWcGUrXKPsEg12
- Dygp1iQR8l9d0IBszBW7TTcKDbNh5b3CqZgIcYSq9Gd1oQQ40FcareRLb
- GZD9OJJxo+iin8GmFG3Xj4NCAzDKN+8MI7XDtMaFWxAfI8oWxNFnP3RIn A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="6623316"
+ bh=VDtPwn5pXnYQq/mwqn8cTFVv+LhKdBgf3dv0O7Ptin4=;
+ b=JpGS0Ei275u+dluyOAkAUYwQC/Jv/iU3UzyRSGAY5H/8yPrf/r6PRvdg
+ cdqMKEVciuQdxNw7jCKdNK2NQTEZZCeBFpQlds178JpK7Fs4Jpo9S/jmu
+ yF6vBEy35Kr6xg2zzhGsRBb5ujiFphvPzoUK3/UyoUqGzTV6igPwkI/Jm
+ GIvQpDJNDGfUitxo6tOlpV9HhJCxZR0gCzkYTbB1FNhSiWFBKQep/1JTY
+ FoxHnVLv/jquR26aGZB26tSV4sfnkC4Jt/+DcQvCeGUJT8wJanRUepiAq
+ G7M9+kD2j9psG5rC9HuP2dyNp/btDdQGLwi8wM3Y3PShSfeX3aBRUVfLS Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3533478"
 X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="6623316"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Feb 2024 04:45:29 -0800
+   d="scan'208";a="3533478"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Feb 2024 04:47:35 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="12377392"
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
+   d="scan'208";a="7770332"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 04:45:27 -0800
-Date: Thu, 29 Feb 2024 13:45:24 +0100
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 04:47:35 -0800
+Date: Thu, 29 Feb 2024 13:47:31 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Arthur Grillo <arthurgrillo@riseup.net>,
- Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: Re: [PATCH i-g-t RESEND v2] lib: Add non-subsampled YUV formats
-Message-ID: <20240229124524.3fmoqqmqibbix4ou@kamilkon-desk.igk.intel.com>
+To: IGT-Dev@Lists.FreeDesktop.Org
+Cc: John.C.Harrison@Intel.com
+Subject: Re: [PATCH i-g-t] tests/intel/gem_exec_capture: Check for partial
+ register captures
+Message-ID: <20240229124731.c57w64y3vbjnhixz@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Arthur Grillo <arthurgrillo@riseup.net>,
- Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-References: <20240228-non-ssampled-yuv-v2-1-aa1f948e2aa0@riseup.net>
+ IGT-Dev@Lists.FreeDesktop.Org, John.C.Harrison@Intel.com
+References: <20240223203824.1537904-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240228-non-ssampled-yuv-v2-1-aa1f948e2aa0@riseup.net>
+In-Reply-To: <20240223203824.1537904-1-John.C.Harrison@Intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,215 +68,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Arthur,
-On 2024-02-28 at 23:09:45 -0300, Arthur Grillo wrote:
-> Add support to NV24, NV42, YUV444 and YVU444 non-subsampled YUV formats.
-> 
-> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
-> ---
-> Changes in v2:
-> - Place DRM_FORMAT_NV24 below DRM_FORMAT_NV16 (Kamil)
+Hi John,
 
+On 2024-02-23 at 12:38:24 -0800, John.C.Harrison@Intel.com wrote:
+> From: John Harrison <John.C.Harrison@Intel.com>
+> 
+> If there is an error in the register list provided to GuC by the KMD
+> then GuC will refuse to capture the invalid entries. This is reported
+> as a 'partial-capture' when decoding the register state. Check for
+> this and flag it as an error.
+> 
+> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+> ---
+>  tests/intel/gem_exec_capture.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/tests/intel/gem_exec_capture.c b/tests/intel/gem_exec_capture.c
+> index d231c53b98e1..1671f6774f64 100644
+> --- a/tests/intel/gem_exec_capture.c
+> +++ b/tests/intel/gem_exec_capture.c
+> @@ -24,6 +24,7 @@
+>  #include <sys/poll.h>
+>  #include <zlib.h>
+>  #include <sched.h>
+> +#include <ctype.h>
+------------ ^^^^
+Move it up to begin (try to keep it in alphabeticall order).
+
+With this,
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-> - Link to v1: https://lore.kernel.org/r/20231228-non-ssampled-yuv-v1-1-06f8e877b566@riseup.net
-> ---
->  lib/igt_color_encoding.c |  4 ++++
->  lib/igt_fb.c             | 44 ++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 48 insertions(+)
-> 
-> diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
-> index a7bd2b22f73b..286784f10bbf 100644
-> --- a/lib/igt_color_encoding.c
-> +++ b/lib/igt_color_encoding.c
-> @@ -139,11 +139,15 @@ static const struct color_encoding_format {
->  	{ DRM_FORMAT_NV12, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
->  	{ DRM_FORMAT_NV16, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
->  	{ DRM_FORMAT_NV21, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-> +	{ DRM_FORMAT_NV24, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-> +	{ DRM_FORMAT_NV42, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
->  	{ DRM_FORMAT_NV61, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
->  	{ DRM_FORMAT_YUV420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
->  	{ DRM_FORMAT_YUV422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-> +	{ DRM_FORMAT_YUV444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
->  	{ DRM_FORMAT_YVU420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
->  	{ DRM_FORMAT_YVU422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-> +	{ DRM_FORMAT_YVU444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
->  	{ DRM_FORMAT_YUYV, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
->  	{ DRM_FORMAT_YVYU, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
->  	{ DRM_FORMAT_UYVY, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 683eb176b7a4..b860308b1c0c 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -257,6 +257,16 @@ static const struct format_desc_struct {
->  	  .num_planes = 2, .plane_bpp = { 8, 16, },
->  	  .hsub = 2, .vsub = 2,
->  	},
-> +	{ .name = "NV24", .depth = -1, .drm_id = DRM_FORMAT_NV24,
-> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-> +	  .num_planes = 2, .plane_bpp = { 8, 16, },
-> +	  .hsub = 1, .vsub = 1,
-> +	},
-> +	{ .name = "NV42", .depth = -1, .drm_id = DRM_FORMAT_NV42,
-> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-> +	  .num_planes = 2, .plane_bpp = { 8, 16, },
-> +	  .hsub = 1, .vsub = 1,
-> +	},
->  	{ .name = "NV61", .depth = -1, .drm_id = DRM_FORMAT_NV61,
->  	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
->  	  .num_planes = 2, .plane_bpp = { 8, 16, },
-> @@ -292,6 +302,11 @@ static const struct format_desc_struct {
->  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
->  	  .hsub = 2, .vsub = 1,
->  	},
-> +	{ .name = "YU24", .depth = -1, .drm_id = DRM_FORMAT_YUV444,
-> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-> +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-> +	  .hsub = 1, .vsub = 1,
-> +	},
->  	{ .name = "YV12", .depth = -1, .drm_id = DRM_FORMAT_YVU420,
->  	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
->  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-> @@ -302,6 +317,11 @@ static const struct format_desc_struct {
->  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
->  	  .hsub = 2, .vsub = 1,
->  	},
-> +	{ .name = "YV24", .depth = -1, .drm_id = DRM_FORMAT_YVU444,
-> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-> +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-> +	  .hsub = 1, .vsub = 1,
-> +	},
->  	{ .name = "Y410", .depth = -1, .drm_id = DRM_FORMAT_Y410,
->  	  .cairo_id = CAIRO_FORMAT_RGBA128F, .convert = true,
->  	  .num_planes = 1, .plane_bpp = { 32, },
-> @@ -3395,6 +3415,8 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
->  	case DRM_FORMAT_NV12:
->  	case DRM_FORMAT_NV16:
->  	case DRM_FORMAT_NV21:
-> +	case DRM_FORMAT_NV24:
-> +	case DRM_FORMAT_NV42:
->  	case DRM_FORMAT_NV61:
->  	case DRM_FORMAT_P010:
->  	case DRM_FORMAT_P012:
-> @@ -3405,8 +3427,10 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
 >  
->  	case DRM_FORMAT_YUV420:
->  	case DRM_FORMAT_YUV422:
-> +	case DRM_FORMAT_YUV444:
->  	case DRM_FORMAT_YVU420:
->  	case DRM_FORMAT_YVU422:
-> +	case DRM_FORMAT_YVU444:
->  		params->ay_inc = 1;
->  		params->uv_inc = 1;
->  		break;
-> @@ -3436,11 +3460,15 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
->  	case DRM_FORMAT_NV12:
->  	case DRM_FORMAT_NV16:
->  	case DRM_FORMAT_NV21:
-> +	case DRM_FORMAT_NV24:
-> +	case DRM_FORMAT_NV42:
->  	case DRM_FORMAT_NV61:
->  	case DRM_FORMAT_YUV420:
->  	case DRM_FORMAT_YUV422:
-> +	case DRM_FORMAT_YUV444:
->  	case DRM_FORMAT_YVU420:
->  	case DRM_FORMAT_YVU422:
-> +	case DRM_FORMAT_YVU444:
->  	case DRM_FORMAT_P010:
->  	case DRM_FORMAT_P012:
->  	case DRM_FORMAT_P016:
-> @@ -3468,12 +3496,14 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
->  	switch (fb->drm_format) {
->  	case DRM_FORMAT_NV12:
->  	case DRM_FORMAT_NV16:
-> +	case DRM_FORMAT_NV24:
->  		params->y_offset = fb->offsets[0];
->  		params->u_offset = fb->offsets[1];
->  		params->v_offset = fb->offsets[1] + 1;
->  		break;
+>  #include "i915/gem.h"
+>  #include "i915/gem_create.h"
+> @@ -184,6 +185,19 @@ static int check_error_state(int dir, struct offset *obj_offsets, int obj_count,
+>  	igt_assert(errno != ENOMEM);
+>  	igt_debug("%.*s\n", error_dump_limit, error);
 >  
->  	case DRM_FORMAT_NV21:
-> +	case DRM_FORMAT_NV42:
->  	case DRM_FORMAT_NV61:
->  		params->y_offset = fb->offsets[0];
->  		params->u_offset = fb->offsets[1] + 1;
-> @@ -3482,6 +3512,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
->  
->  	case DRM_FORMAT_YUV420:
->  	case DRM_FORMAT_YUV422:
-> +	case DRM_FORMAT_YUV444:
->  		params->y_offset = fb->offsets[0];
->  		params->u_offset = fb->offsets[1];
->  		params->v_offset = fb->offsets[2];
-> @@ -3489,6 +3520,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
->  
->  	case DRM_FORMAT_YVU420:
->  	case DRM_FORMAT_YVU422:
-> +	case DRM_FORMAT_YVU444:
->  		params->y_offset = fb->offsets[0];
->  		params->u_offset = fb->offsets[2];
->  		params->v_offset = fb->offsets[1];
-> @@ -4222,14 +4254,18 @@ static void fb_convert(struct fb_convert *cvt)
->  		case DRM_FORMAT_NV12:
->  		case DRM_FORMAT_NV16:
->  		case DRM_FORMAT_NV21:
-> +		case DRM_FORMAT_NV24:
-> +		case DRM_FORMAT_NV42:
->  		case DRM_FORMAT_NV61:
->  		case DRM_FORMAT_UYVY:
->  		case DRM_FORMAT_VYUY:
->  		case DRM_FORMAT_YUV420:
->  		case DRM_FORMAT_YUV422:
-> +		case DRM_FORMAT_YUV444:
->  		case DRM_FORMAT_YUYV:
->  		case DRM_FORMAT_YVU420:
->  		case DRM_FORMAT_YVU422:
-> +		case DRM_FORMAT_YVU444:
->  		case DRM_FORMAT_YVYU:
->  			convert_yuv_to_rgb24(cvt);
->  			return;
-> @@ -4240,14 +4276,18 @@ static void fb_convert(struct fb_convert *cvt)
->  		case DRM_FORMAT_NV12:
->  		case DRM_FORMAT_NV16:
->  		case DRM_FORMAT_NV21:
-> +		case DRM_FORMAT_NV24:
-> +		case DRM_FORMAT_NV42:
->  		case DRM_FORMAT_NV61:
->  		case DRM_FORMAT_UYVY:
->  		case DRM_FORMAT_VYUY:
->  		case DRM_FORMAT_YUV420:
->  		case DRM_FORMAT_YUV422:
-> +		case DRM_FORMAT_YUV444:
->  		case DRM_FORMAT_YUYV:
->  		case DRM_FORMAT_YVU420:
->  		case DRM_FORMAT_YVU422:
-> +		case DRM_FORMAT_YVU444:
->  		case DRM_FORMAT_YVYU:
->  			convert_rgb24_to_yuv(cvt);
->  			return;
-> @@ -4820,11 +4860,15 @@ bool igt_format_is_yuv(uint32_t drm_format)
->  	case DRM_FORMAT_NV12:
->  	case DRM_FORMAT_NV16:
->  	case DRM_FORMAT_NV21:
-> +	case DRM_FORMAT_NV24:
-> +	case DRM_FORMAT_NV42:
->  	case DRM_FORMAT_NV61:
->  	case DRM_FORMAT_YUV420:
->  	case DRM_FORMAT_YUV422:
-> +	case DRM_FORMAT_YUV444:
->  	case DRM_FORMAT_YVU420:
->  	case DRM_FORMAT_YVU422:
-> +	case DRM_FORMAT_YVU444:
->  	case DRM_FORMAT_P010:
->  	case DRM_FORMAT_P012:
->  	case DRM_FORMAT_P016:
-> 
-> ---
-> base-commit: 0340f23b38ce0fdab61fd0fbe5bc94cd91bcaa0d
-> change-id: 20231228-non-ssampled-yuv-e50c1269e225
-> 
-> Best regards,
+> +	/*
+> +	 * global --- GuC Error Capture on rcs0 command stream:
+> +	 * Coverage:  partial-capture
+> +	 * Coverage:  full-capture
+> +	 */
+> +	for (str = error; (str = strstr(str, "Coverage: ")); ) {
+> +		str += 10;
+> +		while (isspace(*str))
+> +			str++;
+> +
+> +		igt_assert(strncmp(str, "full-capture", 12) == 0);
+> +	}
+> +
+>  	/* render ring --- user = 0x00000000 ffffd000 */
+>  	for (str = error; (str = strstr(str, "--- user = ")); ) {
+>  		uint32_t *data = NULL;
 > -- 
-> Arthur Grillo <arthurgrillo@riseup.net>
+> 2.43.0
 > 
