@@ -4,60 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FAEEC48BF6
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Feb 2024 12:43:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF167C48BF6
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Feb 2024 12:45:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E20A210E05E;
-	Thu, 29 Feb 2024 12:43:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5957710E0C5;
+	Thu, 29 Feb 2024 12:45:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Og5BgHFR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DfSsEEt6";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F2BC10E05E
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Feb 2024 12:43:13 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C0C410E0C5
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Feb 2024 12:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709210593; x=1740746593;
+ t=1709210729; x=1740746729;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=DirhsqdFQcQXREf5DymiPMveYR9XbRrX8xjYoH8syiM=;
- b=Og5BgHFRVdoSGQykJf4jcpQnMY4meEQiL72rilz4GFCHRrCLMZ/21foS
- fECDwFh03pGD4RBN44nozpe2OaSsjr0DuxpGvuPRha7COL1uFxbYfeOgS
- AlOjyA9eLuHAFr62TSx0IlUTDQlDtQtDido5ESzsd3tznWG9VfBsmJ6k3
- uvEv4nnccu6n5U1YhRyupItC+6WoQvAMPBkk+uJMpyVTE685ilEjPUtmd
- AC+MKt0sAb0NpHDJz29qxLAcW2fSIStq+hW/gdED7NR+EAHV/fQFBro3i
- 77hBeBiCPm5bGULSEKWRAYlBLyHFeCWhRqE9heF8mU0SXL6Q33tl9neL1 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14313049"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="14313049"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Feb 2024 04:43:12 -0800
-X-ExtLoop1: 1
+ bh=yXJCal+Tp1hJMEFJFTQTY8X0RrhH5roX6RrEvscL4kE=;
+ b=DfSsEEt6TDocH7VzvzpEZFk/3EvYkUyj0RVh81b7DJyS3aDYm5sYR/8a
+ ecBPhv5mftB3KFojOmP10yEx8hSGry4ABGgUhqUqyTO7/MhLQjiP5Z2pH
+ I/DDzasY5+WiE7gnuCi8fvPS8oG3IHT0svysG7ZFiB/fEPePbNPNfJyEw
+ rlUStzJAWj19neHS3jDlyBO/4u+4mc0M26QnmKHhIMIFWcGUrXKPsEg12
+ Dygp1iQR8l9d0IBszBW7TTcKDbNh5b3CqZgIcYSq9Gd1oQQ40FcareRLb
+ GZD9OJJxo+iin8GmFG3Xj4NCAzDKN+8MI7XDtMaFWxAfI8oWxNFnP3RIn A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="6623316"
 X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="8377668"
+   d="scan'208";a="6623316"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Feb 2024 04:45:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="12377392"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 04:43:11 -0800
-Date: Thu, 29 Feb 2024 13:42:51 +0100
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 04:45:27 -0800
+Date: Thu, 29 Feb 2024 13:45:24 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: vitaly.prosyak@amd.com, Christian Koenig <christian.koenig@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Michael Strawbridge <michael.strawbridge@amd.com>,
- Petri Latvala <adrinael@adrinael.net>
-Subject: Re: [PATCH] amdgpu/tests: Fix uvd encoder test failure
-Message-ID: <20240229124251.n7qemjfc5mp7itfo@kamilkon-desk.igk.intel.com>
+Cc: Arthur Grillo <arthurgrillo@riseup.net>,
+ Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>
+Subject: Re: [PATCH i-g-t RESEND v2] lib: Add non-subsampled YUV formats
+Message-ID: <20240229124524.3fmoqqmqibbix4ou@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, vitaly.prosyak@amd.com,
- Christian Koenig <christian.koenig@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Michael Strawbridge <michael.strawbridge@amd.com>,
- Petri Latvala <adrinael@adrinael.net>
-References: <20240228234929.358061-1-vitaly.prosyak@amd.com>
+ igt-dev@lists.freedesktop.org,
+ Arthur Grillo <arthurgrillo@riseup.net>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>
+References: <20240228-non-ssampled-yuv-v2-1-aa1f948e2aa0@riseup.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240228234929.358061-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20240228-non-ssampled-yuv-v2-1-aa1f948e2aa0@riseup.net>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,102 +76,215 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi vitaly.prosyak,
-On 2024-02-28 at 18:49:29 -0500, vitaly.prosyak@amd.com wrote:
-> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Hi Arthur,
+On 2024-02-28 at 23:09:45 -0300, Arthur Grillo wrote:
+> Add support to NV24, NV42, YUV444 and YVU444 non-subsampled YUV formats.
 > 
-> Combine the following sub-tests: creation, encoding
-> session initialization, and destroy as a single sub-test. After
-> the following change (1aa0ed3e02945fbbfe54183b60d0add06b1669d9
-> Revert runner: Normalize test list entries that don't list subtests),
-> and since we are using a custom job list list (job_list_from_test_list),
-> and as a result every sub-test is launched as a separate program
-> (i.e. 'execute_next_entry' is done 4 times), and even the launch is
-> sequential after 'monitor_output', we had a failure due to resource
-> sharing(amdgpu_bo_list_create) issues plus it is not expected behavior
-> for the test. Before the indicated change all the sub-tests were launched
-> as a single program.
-> 
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Michael Strawbridge <michael.strawbridge@amd.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Petri Latvala <adrinael@adrinael.net>
-> 
-
-Don't put newline between Cc and s-o-b.
-
-> Signed-off-by: Michael Strawbridge <michael.strawbridge@amd.com>
-> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> 
+> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
 > ---
->  tests/amdgpu/amd_uvd_enc.c | 28 +++++++++++++---------------
->  1 file changed, 13 insertions(+), 15 deletions(-)
-> 
-> diff --git a/tests/amdgpu/amd_uvd_enc.c b/tests/amdgpu/amd_uvd_enc.c
-> index e3e85522f..430a636f4 100644
-> --- a/tests/amdgpu/amd_uvd_enc.c
-> +++ b/tests/amdgpu/amd_uvd_enc.c
-> @@ -292,6 +292,15 @@ amdgpu_uvd_enc_destroy(amdgpu_device_handle device_handle,
->  	free_resource(&context->enc.session);
->  }
->  
-> +static void
-> +amdgpu_uvd_enc_test(amdgpu_device_handle device, struct uvd_enc_context *context)
-> +{
-> +	amdgpu_uvd_enc_create(device, context);
-> +	amdgpu_uvd_enc_session_init(device, context);
-> +	amdgpu_uvd_enc_encode(device, context);
-> +	amdgpu_uvd_enc_destroy(device, context);
-> +}
-> +
->  igt_main
->  {
->  	amdgpu_device_handle device;
-> @@ -307,27 +316,16 @@ igt_main
->  		igt_require(err == 0);
->  		igt_info("Initialized amdgpu, driver version %d.%d\n",
->  			 major, minor);
-> +		memset(&context, 0, sizeof(context));
->  		err = mmd_context_init(device, &context.uvd);
->  		igt_require(err == 0);
->  
->  		igt_skip_on(!is_uvd_enc_enable(device));
->  	}
->  
-> -	igt_describe("Test whether uvd enc is created");
-> -	igt_subtest("uvd_enc_create")
-> -	amdgpu_uvd_enc_create(device, &context);
-> -
-> -	igt_describe("Test whether uvd enc session init");
-> -	igt_subtest("amdgpu_uvd_enc_session_init")
-> -	amdgpu_uvd_enc_session_init(device, &context);
-> -
-> -	igt_describe("Test whether uvd enc encode");
-> -	igt_subtest("amdgpu_uvd_enc_encode")
-> -	amdgpu_uvd_enc_encode(device, &context);
-> -
-> -	igt_describe("Test whether uvd enc is destroyed");
-> -	igt_subtest("uvd_enc_destroy")
-> -	amdgpu_uvd_enc_destroy(device, &context);
-> +	igt_describe("Test uvd session, encode, destroy");
-> +	igt_subtest("uvd_encoder")
-> +	amdgpu_uvd_enc_test(device, &context);
--- ^
-It is better to add tab here:
+> Changes in v2:
+> - Place DRM_FORMAT_NV24 below DRM_FORMAT_NV16 (Kamil)
 
-	igt_subtest("uvd_encoder")
-	    amdgpu_uvd_enc_test(device, &context);
-
-With this,
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Regards,
-Kamil
-
+> - Link to v1: https://lore.kernel.org/r/20231228-non-ssampled-yuv-v1-1-06f8e877b566@riseup.net
+> ---
+>  lib/igt_color_encoding.c |  4 ++++
+>  lib/igt_fb.c             | 44 ++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 48 insertions(+)
+> 
+> diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
+> index a7bd2b22f73b..286784f10bbf 100644
+> --- a/lib/igt_color_encoding.c
+> +++ b/lib/igt_color_encoding.c
+> @@ -139,11 +139,15 @@ static const struct color_encoding_format {
+>  	{ DRM_FORMAT_NV12, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_NV16, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_NV21, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> +	{ DRM_FORMAT_NV24, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> +	{ DRM_FORMAT_NV42, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_NV61, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_YUV420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_YUV422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> +	{ DRM_FORMAT_YUV444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_YVU420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_YVU422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> +	{ DRM_FORMAT_YVU444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_YUYV, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_YVYU, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>  	{ DRM_FORMAT_UYVY, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 683eb176b7a4..b860308b1c0c 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -257,6 +257,16 @@ static const struct format_desc_struct {
+>  	  .num_planes = 2, .plane_bpp = { 8, 16, },
+>  	  .hsub = 2, .vsub = 2,
+>  	},
+> +	{ .name = "NV24", .depth = -1, .drm_id = DRM_FORMAT_NV24,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 2, .plane_bpp = { 8, 16, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+> +	{ .name = "NV42", .depth = -1, .drm_id = DRM_FORMAT_NV42,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 2, .plane_bpp = { 8, 16, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+>  	{ .name = "NV61", .depth = -1, .drm_id = DRM_FORMAT_NV61,
+>  	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+>  	  .num_planes = 2, .plane_bpp = { 8, 16, },
+> @@ -292,6 +302,11 @@ static const struct format_desc_struct {
+>  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+>  	  .hsub = 2, .vsub = 1,
+>  	},
+> +	{ .name = "YU24", .depth = -1, .drm_id = DRM_FORMAT_YUV444,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+>  	{ .name = "YV12", .depth = -1, .drm_id = DRM_FORMAT_YVU420,
+>  	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+>  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> @@ -302,6 +317,11 @@ static const struct format_desc_struct {
+>  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+>  	  .hsub = 2, .vsub = 1,
+>  	},
+> +	{ .name = "YV24", .depth = -1, .drm_id = DRM_FORMAT_YVU444,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+>  	{ .name = "Y410", .depth = -1, .drm_id = DRM_FORMAT_Y410,
+>  	  .cairo_id = CAIRO_FORMAT_RGBA128F, .convert = true,
+>  	  .num_planes = 1, .plane_bpp = { 32, },
+> @@ -3395,6 +3415,8 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  	case DRM_FORMAT_NV12:
+>  	case DRM_FORMAT_NV16:
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV24:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  	case DRM_FORMAT_P010:
+>  	case DRM_FORMAT_P012:
+> @@ -3405,8 +3427,10 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
 >  
->  	igt_fixture {
->  		mmd_context_clean(device, &context.uvd);
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  		params->ay_inc = 1;
+>  		params->uv_inc = 1;
+>  		break;
+> @@ -3436,11 +3460,15 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  	case DRM_FORMAT_NV12:
+>  	case DRM_FORMAT_NV16:
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV24:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  	case DRM_FORMAT_P010:
+>  	case DRM_FORMAT_P012:
+>  	case DRM_FORMAT_P016:
+> @@ -3468,12 +3496,14 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  	switch (fb->drm_format) {
+>  	case DRM_FORMAT_NV12:
+>  	case DRM_FORMAT_NV16:
+> +	case DRM_FORMAT_NV24:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[1];
+>  		params->v_offset = fb->offsets[1] + 1;
+>  		break;
+>  
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[1] + 1;
+> @@ -3482,6 +3512,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[1];
+>  		params->v_offset = fb->offsets[2];
+> @@ -3489,6 +3520,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[2];
+>  		params->v_offset = fb->offsets[1];
+> @@ -4222,14 +4254,18 @@ static void fb_convert(struct fb_convert *cvt)
+>  		case DRM_FORMAT_NV12:
+>  		case DRM_FORMAT_NV16:
+>  		case DRM_FORMAT_NV21:
+> +		case DRM_FORMAT_NV24:
+> +		case DRM_FORMAT_NV42:
+>  		case DRM_FORMAT_NV61:
+>  		case DRM_FORMAT_UYVY:
+>  		case DRM_FORMAT_VYUY:
+>  		case DRM_FORMAT_YUV420:
+>  		case DRM_FORMAT_YUV422:
+> +		case DRM_FORMAT_YUV444:
+>  		case DRM_FORMAT_YUYV:
+>  		case DRM_FORMAT_YVU420:
+>  		case DRM_FORMAT_YVU422:
+> +		case DRM_FORMAT_YVU444:
+>  		case DRM_FORMAT_YVYU:
+>  			convert_yuv_to_rgb24(cvt);
+>  			return;
+> @@ -4240,14 +4276,18 @@ static void fb_convert(struct fb_convert *cvt)
+>  		case DRM_FORMAT_NV12:
+>  		case DRM_FORMAT_NV16:
+>  		case DRM_FORMAT_NV21:
+> +		case DRM_FORMAT_NV24:
+> +		case DRM_FORMAT_NV42:
+>  		case DRM_FORMAT_NV61:
+>  		case DRM_FORMAT_UYVY:
+>  		case DRM_FORMAT_VYUY:
+>  		case DRM_FORMAT_YUV420:
+>  		case DRM_FORMAT_YUV422:
+> +		case DRM_FORMAT_YUV444:
+>  		case DRM_FORMAT_YUYV:
+>  		case DRM_FORMAT_YVU420:
+>  		case DRM_FORMAT_YVU422:
+> +		case DRM_FORMAT_YVU444:
+>  		case DRM_FORMAT_YVYU:
+>  			convert_rgb24_to_yuv(cvt);
+>  			return;
+> @@ -4820,11 +4860,15 @@ bool igt_format_is_yuv(uint32_t drm_format)
+>  	case DRM_FORMAT_NV12:
+>  	case DRM_FORMAT_NV16:
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV24:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  	case DRM_FORMAT_P010:
+>  	case DRM_FORMAT_P012:
+>  	case DRM_FORMAT_P016:
+> 
+> ---
+> base-commit: 0340f23b38ce0fdab61fd0fbe5bc94cd91bcaa0d
+> change-id: 20231228-non-ssampled-yuv-e50c1269e225
+> 
+> Best regards,
 > -- 
-> 2.25.1
+> Arthur Grillo <arthurgrillo@riseup.net>
 > 
