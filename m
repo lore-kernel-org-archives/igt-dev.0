@@ -4,48 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4715EC48BF6
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A74BDC54E4A
 	for <igt-dev@archiver.kernel.org>; Thu, 29 Feb 2024 17:59:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C215A10E201;
-	Thu, 29 Feb 2024 17:59:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2B8B810E3C2;
+	Thu, 29 Feb 2024 17:59:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YZwH7lbI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CN0qvH2b";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4911A10E025
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Feb 2024 17:59:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9F7C10E3C2
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Feb 2024 17:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1709229593; x=1740765593;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=5l/+Hhu0q+dR0qQWbpodPV6PRsvYt47Cr+RTFrG/6Xs=;
- b=YZwH7lbIHjlD7h/1RRvWUVBO7XjCmrviAO+VaPE6jYb/Iy7DE1S38vqn
- v3GWcIxW+jmAdos0yrhJw4/MUKJbk2/NeP3IJTAJLGOvc4M2F0PKwrkyq
- D1ADmdbPQKzUjfhUMAtFUX3lbcngFwZVh7d6knvwiNY8zA2F+GSaaiVoP
- 6mkTWY6E6Kui6RTWmlNMvCIX/vvvuXltJ24Eq1pigD7JYD27oVMQHwrFE
- Sojpe2XbxchxEvw0F9yolmaUKBWq6qQY7vwv9jJBssGqgEF0qv/WhrZ3r
- /Ook2sjFqhKE6Zt9j209sjM/sRrignRYUACPEBCtZ5bfMNx5kHcYvUyfE Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10999"; a="21264856"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="21264856"
+ bh=JArgRf8I1dJWwrRdeiW90znOMA7P1ho9SIPKByFMTxU=;
+ b=CN0qvH2bmKh12qx4GUokdwI+F2WlkNXdBhjVRmeMH8yEoc+AEhKkIeIm
+ Y0w+aBpnbHvcnMM14ljMqBNybg0m47qeY34y0gJ09ofBdfWhft6m1QZLi
+ 2TFISC1rmEXLWhRvUnb5E3UFgg2uYVgZgIKdi+YefExv7XQ72dBlYqfNk
+ dFOYRIIRbDd4lsV2SfcjJtUkxEfWq9uNrKpIoCmXBL8d17koCHhyqaoFL
+ oR0hGXoeZ0rSq9MbI07PvRsXgcQJ4v9kjfkkwMgRF3O77p9G37yPX1GFZ
+ ako9t3mcESxPlIXPXKNsThH24he8z1lbWiiyRyuupEsBVVmGqlgMfiVvO g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10999"; a="21264853"
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="21264853"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Feb 2024 09:59:53 -0800
+ 29 Feb 2024 09:59:52 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="8337996"
+   d="scan'208";a="8337989"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 09:59:51 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 09:59:49 -0800
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>, Karthik B S <karthik.b.s@intel.com>,
  Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t 2/4] lib/igt_kms: add helpers to enable/disable force
- joiner
-Date: Thu, 29 Feb 2024 23:40:19 +0530
-Message-Id: <20240229181021.130314-3-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 1/4] lib/igt_kms: move bigjoiner_mode_found to lib
+Date: Thu, 29 Feb 2024 23:40:18 +0530
+Message-Id: <20240229181021.130314-2-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240229181021.130314-1-kunal1.joshi@intel.com>
 References: <20240229181021.130314-1-kunal1.joshi@intel.com>
@@ -66,89 +65,98 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-add helped to enable/disable force joiner and for
-checking current state enabled/disabled
+move bigjoiner_mode_found to lib
 
 Cc: Karthik B S <karthik.b.s@intel.com>
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_kms.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  2 ++
- 2 files changed, 50 insertions(+)
+ lib/igt_kms.c                | 25 +++++++++++++++++++++++++
+ lib/igt_kms.h                |  2 ++
+ tests/intel/kms_big_joiner.c | 14 +-------------
+ 3 files changed, 28 insertions(+), 13 deletions(-)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 89956b9d5..e6952f56a 100644
+index 1b4d0d761..89956b9d5 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -6242,6 +6242,54 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
- 	return true;
+@@ -6142,6 +6142,31 @@ bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock)
+ 		mode->clock > max_dotclock);
  }
  
 +/**
-+ * Checks if the force big joiner is enabled for a specific connector.
++ * bigjoiner_mode_found:
++ * @connector: libdrm connector
++ * @sort_method: comparator method
++ * @mode: libdrm mode
 + *
-+ * @param drmfd The file descriptor of the DRM device.
-+ * @param connector_name The name of the connector.
-+ * Returns:
-+ *  1 if the force big joiner is enabled, 0 if disabled, and -1 on error.
++ * Bigjoiner will come in to the picture when the
++ * resolution > 5K or clock > max-dot-clock.
++ *
++ * Returns: True if big joiner found in connector modes
 + */
-+int igt_check_force_bigjoiner_status(int drmfd, char *connector_name)
++bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
++			  int max_dotclock)
 +{
-+	char buf[512];
-+	int debugfs_fd, ret;
++	bool found = false;
 +
-+	debugfs_fd = igt_debugfs_connector_dir(drmfd, connector_name, O_RDONLY);
-+	ret = igt_debugfs_simple_read(debugfs_fd, "i915_bigjoiner_force_enable",
-+								  buf, sizeof(buf));
-+	if (ret < 0) {
-+		igt_info("Could not read debugfs %s\n",
-+				 strerror(-ret));
-+		return -1;
++	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
++	found = igt_bigjoiner_possible(&connector->modes[0], max_dotclock);
++	if (!found) {
++		igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
++		found = igt_bigjoiner_possible(&connector->modes[0], max_dotclock);
 +	}
-+	if (strstr(buf, "Bigjoiner enable: 1"))
-+		return 1;
-+	else if (strstr(buf, "Bigjoiner enable: 0"))
-+		return 0;
-+	else
-+		return -1;
-+}
-+
-+/**
-+ * Forces the enable/disable state of big joiner for a specific connector.
-+ *
-+ * @param drmfd The file descriptor of the DRM device.
-+ * @param connector_name The name of the connector.
-+ * @param enable The desired state of big joiner (true for enable, false for disable).
-+ * Returns:
-+ *  >=0 on success, otherwise an error code.
-+ */
-+int igt_force_bigjoiner_enable(int drmfd, char *connector_name, bool enable)
-+{
-+	int debugfs_fd, ret;
-+
-+	debugfs_fd = igt_debugfs_connector_dir(drmfd, connector_name, O_DIRECTORY);
-+	ret = igt_sysfs_write(debugfs_fd, "i915_bigjoiner_force_enable", enable ? "1" : "0", 1);
-+	close(debugfs_fd);
-+	return ret;
++	return found;
 +}
 +
  /**
-  * igt_parse_mode_string:
-  * @mode_string: modeline string
+  * igt_check_bigjoiner_support:
+  * @display: a pointer to an #igt_display_t structure
 diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index bab8487d3..b28022db4 100644
+index b3882808b..bab8487d3 100644
 --- a/lib/igt_kms.h
 +++ b/lib/igt_kms.h
-@@ -1215,6 +1215,8 @@ bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
- bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
- 			  int max_dotclock);
+@@ -1212,6 +1212,8 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
+ 		igt_output_t *output, int bpc);
+ int igt_get_max_dotclock(int fd);
+ bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
++bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
++			  int max_dotclock);
  bool igt_check_bigjoiner_support(igt_display_t *display);
-+int igt_check_force_bigjoiner_status(int drmfd, char *connector_name);
-+int igt_force_bigjoiner_enable(int drmfd, char *connector_name, bool enable);
  bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
  bool intel_pipe_output_combo_valid(igt_display_t *display);
- bool igt_check_output_is_dp_mst(igt_output_t *output);
+diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
+index aba2adfbe..28678b958 100644
+--- a/tests/intel/kms_big_joiner.c
++++ b/tests/intel/kms_big_joiner.c
+@@ -199,16 +199,6 @@ static void test_dual_display(data_t *data)
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ }
+ 
+-static bool bigjoiner_mode_found(drmModeConnector *connector,
+-				 int (*sort_method)(const void *, const void*),
+-				 drmModeModeInfo *mode)
+-{
+-	igt_sort_connector_modes(connector, sort_method);
+-	*mode = connector->modes[0];
+-
+-	return igt_bigjoiner_possible(mode, max_dotclock);
+-}
+-
+ igt_main
+ {
+ 	data_t data;
+@@ -235,9 +225,7 @@ igt_main
+ 			 * Bigjoiner will come in to the picture when the
+ 			 * resolution > 5K or clock > max-dot-clock.
+ 			 */
+-			found = (bigjoiner_mode_found(connector, sort_drm_modes_by_res_dsc, &mode) ||
+-				 bigjoiner_mode_found(connector, sort_drm_modes_by_clk_dsc, &mode)) ?
+-					true : false;
++			found = bigjoiner_mode_found(data.drm_fd, connector, max_dotclock);
+ 
+ 			if (found) {
+ 				data.output[count].output_id = output->id;
 -- 
 2.25.1
 
