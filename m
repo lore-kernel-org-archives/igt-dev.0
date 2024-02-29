@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05B17C48BF6
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Feb 2024 12:55:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 504A9C48BF6
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Feb 2024 12:56:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8935E10E048;
-	Thu, 29 Feb 2024 12:55:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DD6BB10E05E;
+	Thu, 29 Feb 2024 12:56:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JIBuaq5h";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e+o2c4j9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C376210E048
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Feb 2024 12:55:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4AE8210E08F
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Feb 2024 12:56:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709211301; x=1740747301;
+ t=1709211374; x=1740747374;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=Ql8QmB/VSPfpVk/idCtPj5B85EL1OL8tbo0XsW2Lfrs=;
- b=JIBuaq5hGMd8XPcq1zscvlc+9gZ6MBlMXJFDh23ZjYmPjmBBRi2iBjBD
- u2uuOQMOFRUinEpa4MxvWe8k2DNyIuzlUpxFeuzcxPN9/UZIXAv01iaUx
- kWxckYWpWKhMcoCN8xZ/KNvEr3Ub5r6twmWeB6DYIO8AK/J36Xkg9/23q
- lhH+KJBF1B3r/+OnbPjyzxcbhqn9xak73FjT84AO+Dku00pJEuhVq9cqG
- DIhxtflcEvsN8PwWjD4370bNUHbNN55pOBnGZRR5f1WRjOpfz5rmL8Bkk
- oTOe2tfogHjBClC5sJPdzSFPvfkXbVlI3mF9SYNB6Z8DPmNUSOmFWSv0V Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="26139403"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="26139403"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Feb 2024 04:55:00 -0800
+ bh=ekvjBdeWuQTK3gBCyP8xAdbZ+MhToex8xKXvTvvM/dk=;
+ b=e+o2c4j9410TVQQ6/kqM1xjJNfW8lqDxKQouRT1sAiLOW9JfwdenLv9/
+ YGs/86KgghugnIB3Oucy9lqNrPJVAAqBT8PmkTL8fMIul/3vuuzwJX+Ib
+ X5cWA3Byq00KQ43KKOz89wks12tS/Pcsjb6XKB+3umPBh6vAOB0u190WG
+ yxltyHkYYNE5HkWLJBlaD9dgprStE/FRXthjT/MMb+prcouPKCv+xYmjs
+ 6d43MMgsyYU8VLgvuOX/GQHOz+6B1sVn0CVZ1A9zDW04ePfS/TkigGLG0
+ 19h2G3+92iRmKo2ZIfkFqbTecUGITtpxlRRpNCG0IlZfs+Tgkhst+3bDq g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14245081"
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="14245081"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Feb 2024 04:56:14 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="8176358"
+   d="scan'208";a="7928298"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 04:54:58 -0800
-Date: Thu, 29 Feb 2024 13:54:54 +0100
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 04:56:11 -0800
+Date: Thu, 29 Feb 2024 13:56:09 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Arthur Grillo <arthurgrillo@riseup.net>,
@@ -49,7 +49,7 @@ Cc: Arthur Grillo <arthurgrillo@riseup.net>,
  Pekka Paalanen <pekka.paalanen@collabora.com>
 Subject: Re: [PATCH i-g-t 1/3] benchmarks/kms_fb_stress: Assert that we have
  an supported pipe
-Message-ID: <20240229125454.c5hazy6lbgvttjwi@kamilkon-desk.igk.intel.com>
+Message-ID: <20240229125609.jt3ejlzbb2xglv5v@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Arthur Grillo <arthurgrillo@riseup.net>,
@@ -86,7 +86,13 @@ On 2024-02-26 at 16:42:17 -0300, Arthur Grillo wrote:
 > 
 > Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+One small nit for subject:
+benchmarks/kms_fb_stress: Assert that we have an supported pipe
+
+s/an supported/a supported/
+
+Regards,
+Kamil
 
 > ---
 >  benchmarks/kms_fb_stress.c | 36 +++++++++++++++++++++++++++---------
