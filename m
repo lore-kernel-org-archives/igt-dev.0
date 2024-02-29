@@ -4,26 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C0D5C48BF6
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Feb 2024 18:40:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19504C48BF6
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Feb 2024 19:19:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DF4DD10E123;
-	Thu, 29 Feb 2024 18:40:03 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6114A10E123;
- Thu, 29 Feb 2024 18:40:02 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1115403548954526012=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 831B010E1F8;
+	Thu, 29 Feb 2024 19:19:21 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W7O2Meuv";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C673410E1F8
+ for <IGT-Dev@lists.freedesktop.org>; Thu, 29 Feb 2024 19:19:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709234359; x=1740770359;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=fo2rLDLiXjo8TAkX8GqBS/euZDqEE21kUYBDzNRSQyQ=;
+ b=W7O2MeuvfDnSj1eD1jbETkCKWAnYoMgUkINfUEud2Hi3xnqDxttIBFh9
+ 3PFPP+1okpw8tMhgLeZQcVPm9u19+IKY+6p0HRJZsvbvTqS6cLRvmhoPM
+ 9V+SNnMT6cD3qjtVKErYMVSoGxk3Eec68YaOrT6JBJlRf9koHqPGH2ufV
+ 4WqhG9BSDB8GjLrzBQmUfLzNHGxDj6ft+SXMFg6l7bJg1MYUO4OnBBQnQ
+ +GVIIZUh0lfq5t23B3822800i7ceDWa9XpYy2pn61LV3uQi1/19zvcLWr
+ l2fPn4sp6NUXJn6ufIq8MKWd8qRo+1lFiaHQhZU0dirbuIarAeF3X+y8y g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10999"; a="3601150"
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
+   d="scan'208";a="3601150"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Feb 2024 11:19:18 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; d="scan'208";a="31122118"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 29 Feb 2024 11:19:18 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 29 Feb 2024 11:19:18 -0800
+Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 29 Feb 2024 11:19:17 -0800
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Thu, 29 Feb 2024 11:19:17 -0800
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 29 Feb 2024 11:19:16 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=oOf75pMFUSKU4/8gb8DU3alu8cdfTUz7BausZLQW4e2YvCXFzfORs+MD8zjPJUJoTjHRzbZe0W6PlfZQgzowasMmyiXk3POpBAeawvlxBSh6CAoCwgNfsbzfrHp78PimCFo7e8ySsF86d3/2yfvgkbj0gPQhf2mgrHBwK7Ff/AGk5MZBu1MFH64U0eaFY+BS8aJO4LHzUFE4Uom3IOsqm4oQ/lt/Kr26ZxFT08R3JkN8SPgH+pnHP14TrYE+dbRUutZO37W38qPiVYhM4PC803v62ZEI6Gc+MO2mGOcZvH0oJrnebzL+3+S3UHKZsuLI/tVcUZMhUf+86oSbAnzKRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BP2O47VEm6fWf2S1ue6WPA+Sy4IdjtESQDc84svcWpM=;
+ b=RBKdhDrEn/weF3HZEh4Hh6ULxFMJUCzNEzAoUTtuoRqbIoFVSwHmD+D49pWfyKRiKtrgboYttzGs4GFF9xJ2Ow/u1lQFl3RHRNROsBmjFsLYjI0kdviH5KzXuJ9DNaH7einn8LxF2UsMuDq1hFc8XzM4i8gymOIxN65zzK0kVY6zmHPILj6G7xDY7lZIMZFTb+vF95akgXm2DMlxts8Z8a9DTdc06yzIpDeEpNfigpTHAogddbfHAkQU34u65g42+vJ/giE0GppVrtuLclfll+JUAAjh2qzmYLWRYOzDesflNimKd9Vg29NhsLeXpa5SYsDE6jsU28BJkNahKu6E9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8441.namprd11.prod.outlook.com (2603:10b6:610:1bc::12)
+ by DS0PR11MB7261.namprd11.prod.outlook.com (2603:10b6:8:13d::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.25; Thu, 29 Feb
+ 2024 19:19:14 +0000
+Received: from CH3PR11MB8441.namprd11.prod.outlook.com
+ ([fe80::71ea:e0ea:808d:793b]) by CH3PR11MB8441.namprd11.prod.outlook.com
+ ([fe80::71ea:e0ea:808d:793b%4]) with mapi id 15.20.7339.023; Thu, 29 Feb 2024
+ 19:19:14 +0000
+Message-ID: <50a27309-3492-4ca1-8d64-71dd50175cab@intel.com>
+Date: Thu, 29 Feb 2024 11:19:11 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/2] tests/intel/gem_spin_batch: Skip compute
+ engines on MTL due to w/a
+Content-Language: en-GB
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <IGT-Dev@Lists.FreeDesktop.Org>
+References: <20240226235737.2150915-1-John.C.Harrison@Intel.com>
+ <20240226235737.2150915-2-John.C.Harrison@Intel.com>
+ <20240229134216.4ut26aezfbrtunyi@kamilkon-desk.igk.intel.com>
+From: John Harrison <john.c.harrison@intel.com>
+In-Reply-To: <20240229134216.4ut26aezfbrtunyi@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0294.namprd03.prod.outlook.com
+ (2603:10b6:a03:39e::29) To CH3PR11MB8441.namprd11.prod.outlook.com
+ (2603:10b6:610:1bc::12)
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_revamp_big_joiner_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kunal Joshi" <kunal1.joshi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Feb 2024 18:40:02 -0000
-Message-ID: <170923200239.397863.6726963106825731621@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240229181021.130314-1-kunal1.joshi@intel.com>
-In-Reply-To: <20240229181021.130314-1-kunal1.joshi@intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8441:EE_|DS0PR11MB7261:EE_
+X-MS-Office365-Filtering-Correlation-Id: ba7aaf1e-a376-43e9-447a-08dc395b50a0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: eHdAFaxq6OI+r5ANqhDXfrv3oPlYf52SsTNs2mj8Ew8EFkNqM4oIkCkUdTGk2KC2Ufy6ksDMXfYCWSp111lLxdta401OVBEAZ1rt73yJPAEkFruQWkGhjwW6S/+/vAaLCzocnUgbw8LHNpWYAEwzZR3CSygGIubylFu6uieDDD9Q3QmkN0s2c4PQG8g5KDZ3V759YBse7xnxaczZvkJNDNLknKlSbE5hgP53MCAXizFCnIMWqoTzo0qvdfQayTH0QbHBwypXrjid9G7X8aMxRFnf2VGTghEjkLdZNd8+d6z4uUs0YsTex6BnMCiQcFPtUsY7+hPSNCpK+gzsTk1burMDGfiy7tWCXcWaXiG57uocxvpPx/7o8HrvTWnvQkLYr/zeClTJXO5tvlCLSWxeiBberrO1/bEitNn650JkJ4KXRpOUlmfQ15NjQU+f6qNiKKAuHte+YZ4RM8tc/49PsMCCOaSnvDF6WCbvGPqCfCTqosQXSKczlC6HJaAR8UYy3RAzksR8a4ftX0tS4dKxOhBqsXx8HOjBqYUaMfAfn9ukUh9U5IOURiWnACYTQ6cRMzC08AcVRI2aUgeOjNrw5U1P+NALGnYmT7+3kEd5j3ooJ5bFpwcVjNUp1S28Njrfpvs1DmuIppXeP5dmPJUpBg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH3PR11MB8441.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZzlUWnU0L25Ka2U1YVlqYVRIcHNMM0ZmdzlyYUduS2IyMUpSMSs1RTlXY21j?=
+ =?utf-8?B?ayt4RFphRXpVWFRsWThsblRGS0NTRDNKaFFZRDhUeWRyaVlaYUJLb1VZeStk?=
+ =?utf-8?B?MDlzS2tXUlI1K0grbitvVzgrL2pCRXlTOGZPRDlaUlJUc0NwNHZEYVgyMXFZ?=
+ =?utf-8?B?dTlEbCsycTM5WGh4TVZkb2lJR0dFbDE2dDdmTnY3eWovQUlVeXdlQzI5cDk4?=
+ =?utf-8?B?MGdqU0RvU3hkR0o1SHREdXJzSlg1UHgyYWc5T1ZhRFBlTjlEVjJWbSt4MWp5?=
+ =?utf-8?B?clJlQ1lESGxJMEdLd0ZMeExUNHBSdDhQTy9nM2FjMVRNdC96RVRJU09xamc0?=
+ =?utf-8?B?T3hqUHNTTThDUTU3UWU4NWx1RG1rdlRSN3VNU3dtYWdLaTRpM1M5OU8yMDNO?=
+ =?utf-8?B?YzBWZUoycXQrczgyOStQaE1meGhrM016N3phaXFXdDd2M3lrcG8waXpLRW1y?=
+ =?utf-8?B?bUZlYUlZbUgvUXF2MHdBbmVIcG00S2RSU2hOd3pYY2dralZSRitDZU4rQk56?=
+ =?utf-8?B?YUNJampNYzZzSlh0RFF0bTJvTXJ5WXR4aGJGcXBlQ2U3MjNsMGdiamFqMnd4?=
+ =?utf-8?B?eWMzb2pYSWZSL2tSMGRnNVA1Q1U4N3BuaHBTVFpJKzUvSE9GbFdjd2dTclhu?=
+ =?utf-8?B?UjVRb1FkTUhncFhYZDBrek9YM3BnWG14aGtlSGdtV1M5bzlTOUhOZ0V6dnpw?=
+ =?utf-8?B?MUFMcXI3ZlpRRFRJdFhGc0ZXUlM5RFNtcENYRkJFcmdwOWs1MC9weURXZHBv?=
+ =?utf-8?B?eDFmMVhaSlpoeFR5TjF2aHF2VmNtWnhpcjRHTkdzWXNWTzlkMlR4ZFA2QnRU?=
+ =?utf-8?B?am1CMUUzbjFTUGRqR1N1VUZuanl5NHNEMm1yRnlUUlJYclJ4K2FqRnZYM0RN?=
+ =?utf-8?B?ejM1WjBjUTdpRjlGbmFXWFA2akpkWks4UG4vdUNzM25oL2FaVUZxZmVOK0pP?=
+ =?utf-8?B?b3NUbC85UEM2Zlp5WkZkVStTUEdLWDRaNWVQVUhWM1JTNndQWnZnblNCcE1M?=
+ =?utf-8?B?Q1IvYXhpdDRIcDJVYi9rci9iN3YxWVhzVUl2UUFYV3J4aDRoQzcxZ0VBRFA0?=
+ =?utf-8?B?Y2dPdE1uRmR1SEl5aEs5ZnZEMnNYd0dRN1BZMkZZZXFWM0M5bFlhTHFnRmhj?=
+ =?utf-8?B?bXQzc0lQQTVIN2QzcWpDV2VTRlZmOHZWcDV0dXpNZVNkbjBXZWk3WHNwLzB6?=
+ =?utf-8?B?UkhoRlk5UVNyWExEaU9ta0piSTROZnhTY3ZOSXRaVVBuSWtRUm15V3k4WGVt?=
+ =?utf-8?B?dGdaSnVBT0lmSDVoTDJqRjdXNC9kTkx6Yk9ydFpKOUlPWU5IdTJoLzNmdlhY?=
+ =?utf-8?B?RlUrZFJrczJQZ3Z2akhESWdYRXB6ZlFoQkYwNDQ4c1Z0cWxJTFFIQmc1SUdU?=
+ =?utf-8?B?T0dtYkQzdzVxclR2RkkvY2xWWFRZcm9EbTRqSnNYUVVDTXZsNlk1UmdremlM?=
+ =?utf-8?B?dzlySkhGNVlmSEZ3TVhiQ20wUjljZDM3V1M3YW1uanpGWUkvUDIyVnZhTFpo?=
+ =?utf-8?B?VGMrbkZna21xVXdYa0JHOTRMMW1EVXcwNTgwZ3NGQXV1VnN2M29oSVFMdUNs?=
+ =?utf-8?B?Ym9IM01FSDZBcWpmbnMwaGZ3Q3l2a0JnVzh0bStKQzhIenhkRkNSR3g2ZWdS?=
+ =?utf-8?B?QzExa1hQS3BYOVowZ21BSm0ySldma2JENjhBOS9RZ0huMjkyMFdidk5Vdnp3?=
+ =?utf-8?B?d3ZYd012MW40SmRBRGlxUzVxdVQxNDlkRVRwNEhZcXM4WlhldkNYNzZ2SEtE?=
+ =?utf-8?B?cjNTU2w1ZUdDL21FbDU1QkxoNlFiSjhwNlNzQnNmRklDcS8rT1k4OE1QaGsy?=
+ =?utf-8?B?bnFqRHFYTGxtVnNzTFEwSmN1cWNsZHEwNW43clVJSEV0Ym1jOStMeTM3NEFr?=
+ =?utf-8?B?Um9ZUkVZVVlleG1WdFhaQS9Ib202TFRGQy94Y3NxWXdFcUxtcUEreXBpQ0FB?=
+ =?utf-8?B?MS91WDI0SnFJcS96STdiU0I5VE5ia2xQeDU4OUt4bkFqaXpMc1ZMMDZzcWxp?=
+ =?utf-8?B?MWo5YTZjVkFXK1NrUGhERXhMeUJrK1kxRmtRRTJBRTdiSkQ0a1VkVE1rREp0?=
+ =?utf-8?B?MHl2VG95TVJOMHN5OGZrV3IxQll1RDF3cGNkSjc4K0NVQUJPVUVZbEU0ZDdV?=
+ =?utf-8?B?a3p5Z08xcFp2Rjhuai91ZXlDZzROS0hUbWpnMEk2TkRPTW51cXA1N1N4bkxJ?=
+ =?utf-8?B?MWc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ba7aaf1e-a376-43e9-447a-08dc395b50a0
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8441.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Feb 2024 19:19:14.1720 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BoqjS+CF5L77Ej+nQUlKqyGgNrp35cZVewByhutxbOtWV7LcISb0XjWUMGZdsB7MsA5QVpbm15HbibHlPWp9faQatmBmYX+coBJshZDDrDY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7261
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,598 +164,73 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1115403548954526012==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 2/29/2024 05:42, Kamil Konieczny wrote:
+> Hi John.C.Harrison,
+> On 2024-02-26 at 15:57:35 -0800, John.C.Harrison@Intel.com wrote:
+>> From: johnharr <johnharr@invalid-email.com>
+> ------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> This do not match your s-o-b:
+> John Harrison <John.C.Harrison@Intel.com>
+>
+> Please correct and resend, rest looks ok.
+Hmm. Not sure where this keeps coming from!? It has happened a couple of 
+times but mostly it all works fine.
+
+John.
+
+>
+> Regards,
+> Kamil
+>
+>> There is a w/a on MTL that prevents concurrent execution of multiple
+>> processes on RCS and CCS. The 'spin-all-new' test is explicitly
+>> testing such execution across all engines. So either the entire test
+>> must be skipped on MTL or just the compute engine must be skipped. Do
+>> the latter as that at least leaves some test coverage in place.
+>>
+>> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+>> ---
+>>   tests/intel/gem_spin_batch.c | 16 ++++++++++++++++
+>>   1 file changed, 16 insertions(+)
+>>
+>> diff --git a/tests/intel/gem_spin_batch.c b/tests/intel/gem_spin_batch.c
+>> index ec1458e35197..a0f35b23c718 100644
+>> --- a/tests/intel/gem_spin_batch.c
+>> +++ b/tests/intel/gem_spin_batch.c
+>> @@ -214,6 +214,19 @@ spin_on_all_engines(int fd, const intel_ctx_t *ctx,
+>>   	igt_waitchildren();
+>>   }
+>>   
+>> +/*
+>> + * Wa_14019159160:
+>> + * An RCS/CCS workaround on MTL means that contexts from different address spaces
+>> + * cannot run in parallel, they must be timesliced. However, a non-preemptible
+>> + * spinner cannot be timesliced. Thus the PARALLEL_SPIN_NEW_CTX test cannot be run
+>> + * across both RCS and CCS engines, one or other must be skipped for the test to
+>> + * not hit a heartbeat timeout and be killed.
+>> + */
+>> +static bool skip_bad_engine(int fd, const struct intel_execution_engine2 *e)
+>> +{
+>> +	return IS_METEORLAKE(intel_get_drm_devid(fd)) && (e->class == I915_ENGINE_CLASS_COMPUTE);
+>> +}
+>> +
+>>   static void spin_all(int i915, const intel_ctx_t *ctx, unsigned int flags)
+>>   #define PARALLEL_SPIN_NEW_CTX BIT(0)
+>>   {
+>> @@ -230,6 +243,9 @@ static void spin_all(int i915, const intel_ctx_t *ctx, unsigned int flags)
+>>   		if (gem_engine_can_block_ggtt_binder(i915, e))
+>>   			continue;
+>>   
+>> +		if (skip_bad_engine(i915, e))
+>> +			continue;
+>> +
+>>   		if (flags & PARALLEL_SPIN_NEW_CTX)
+>>   			ctx = intel_ctx_create(i915, &cfg);
+>>   		ahnd = get_reloc_ahnd(i915, ctx->id);
+>> -- 
+>> 2.43.0
+>>
 
-== Series Details ==
-
-Series: revamp big joiner test
-URL   : https://patchwork.freedesktop.org/series/130572/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_14368 -> IGTPW_10758
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_10758 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_10758, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/index.html
-
-Participating hosts (43 -> 41)
-------------------------------
-
-  Missing    (2): bat-arls-2 fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_10758:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_big_joiner@basic:
-    - bat-dg1-7:          NOTRUN -> [SKIP][1] +3 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg1-7/igt@kms_big_joiner@basic.html
-    - bat-adlp-9:         NOTRUN -> [SKIP][2] +1 other test skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adlp-9/igt@kms_big_joiner@basic.html
-    - bat-rplp-1:         NOTRUN -> [SKIP][3] +1 other test skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rplp-1/igt@kms_big_joiner@basic.html
-    - bat-dg2-9:          NOTRUN -> [SKIP][4] +1 other test skip
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-9/igt@kms_big_joiner@basic.html
-    - bat-adln-1:         NOTRUN -> [SKIP][5] +1 other test skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adln-1/igt@kms_big_joiner@basic.html
-    - bat-adlp-6:         NOTRUN -> [SKIP][6] +1 other test skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adlp-6/igt@kms_big_joiner@basic.html
-    - bat-dg2-11:         NOTRUN -> [SKIP][7] +3 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-11/igt@kms_big_joiner@basic.html
-    - bat-dg2-14:         NOTRUN -> [SKIP][8] +3 other tests skip
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-14/igt@kms_big_joiner@basic.html
-
-  * {igt@kms_big_joiner@force-joiner-basic@1x-joiner} (NEW):
-    - bat-dg2-9:          NOTRUN -> [FAIL][9]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-9/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html
-    - {bat-arls-4}:       NOTRUN -> [FAIL][10]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-arls-4/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html
-    - bat-adlp-6:         NOTRUN -> [FAIL][11]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adlp-6/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html
-    - fi-skl-6600u:       NOTRUN -> [FAIL][12] +1 other test fail
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-skl-6600u/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html
-    - {bat-rpls-3}:       NOTRUN -> [FAIL][13]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rpls-3/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html
-    - fi-apl-guc:         NOTRUN -> [FAIL][14] +1 other test fail
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-apl-guc/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html
-    - bat-dg2-8:          NOTRUN -> [FAIL][15]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-8/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html
-    - bat-arls-3:         NOTRUN -> [FAIL][16]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-arls-3/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html
-    - bat-mtlp-8:         NOTRUN -> [FAIL][17]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-mtlp-8/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html
-    - {bat-adls-6}:       NOTRUN -> [FAIL][18]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adls-6/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html
-    - bat-adlp-9:         NOTRUN -> [FAIL][19]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adlp-9/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html
-    - bat-adln-1:         NOTRUN -> [DMESG-FAIL][20]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adln-1/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html
-    - bat-rplp-1:         NOTRUN -> [FAIL][21]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rplp-1/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html
-
-  * {igt@kms_big_joiner@force-joiner-invalid-modeset} (NEW):
-    - fi-rkl-11600:       NOTRUN -> [SKIP][22] +3 other tests skip
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-rkl-11600/igt@kms_big_joiner@force-joiner-invalid-modeset.html
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][23] +3 other tests skip
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-tgl-1115g4/igt@kms_big_joiner@force-joiner-invalid-modeset.html
-    - bat-mtlp-6:         NOTRUN -> [SKIP][24] +1 other test skip
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-mtlp-6/igt@kms_big_joiner@force-joiner-invalid-modeset.html
-    - {bat-rpls-3}:       NOTRUN -> [SKIP][25]
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rpls-3/igt@kms_big_joiner@force-joiner-invalid-modeset.html
-    - {bat-adls-6}:       NOTRUN -> [SKIP][26]
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adls-6/igt@kms_big_joiner@force-joiner-invalid-modeset.html
-
-  * {igt@kms_big_joiner@force-joiner-invalid-modeset@big_joiner_on_last_pipe} (NEW):
-    - fi-skl-guc:         NOTRUN -> [FAIL][27] +1 other test fail
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-skl-guc/igt@kms_big_joiner@force-joiner-invalid-modeset@big_joiner_on_last_pipe.html
-    - bat-jsl-3:          NOTRUN -> [FAIL][28] +1 other test fail
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-jsl-3/igt@kms_big_joiner@force-joiner-invalid-modeset@big_joiner_on_last_pipe.html
-    - bat-jsl-1:          NOTRUN -> [FAIL][29] +1 other test fail
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-jsl-1/igt@kms_big_joiner@force-joiner-invalid-modeset@big_joiner_on_last_pipe.html
-    - fi-kbl-7567u:       NOTRUN -> [FAIL][30] +1 other test fail
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-kbl-7567u/igt@kms_big_joiner@force-joiner-invalid-modeset@big_joiner_on_last_pipe.html
-
-  * {igt@kms_big_joiner@force-joiner-invalid-modeset@invalid_combinations} (NEW):
-    - fi-cfl-8109u:       NOTRUN -> [FAIL][31] +2 other tests fail
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-cfl-8109u/igt@kms_big_joiner@force-joiner-invalid-modeset@invalid_combinations.html
-
-  * igt@kms_big_joiner@invalid-modeset:
-    - bat-jsl-3:          NOTRUN -> [SKIP][32] +1 other test skip
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-jsl-3/igt@kms_big_joiner@invalid-modeset.html
-    - bat-mtlp-8:         NOTRUN -> [SKIP][33] +1 other test skip
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-mtlp-8/igt@kms_big_joiner@invalid-modeset.html
-    - bat-dg2-8:          NOTRUN -> [SKIP][34] +1 other test skip
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-8/igt@kms_big_joiner@invalid-modeset.html
-    - bat-adlm-1:         NOTRUN -> [SKIP][35] +3 other tests skip
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adlm-1/igt@kms_big_joiner@invalid-modeset.html
-    - bat-jsl-1:          NOTRUN -> [SKIP][36] +1 other test skip
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-jsl-1/igt@kms_big_joiner@invalid-modeset.html
-    - bat-arls-1:         NOTRUN -> [SKIP][37] +3 other tests skip
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-arls-1/igt@kms_big_joiner@invalid-modeset.html
-    - bat-arls-3:         NOTRUN -> [SKIP][38] +1 other test skip
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-arls-3/igt@kms_big_joiner@invalid-modeset.html
-
-  
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@kms_big_joiner@basic:
-    - {bat-arls-4}:       NOTRUN -> [SKIP][39] +1 other test skip
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-arls-4/igt@kms_big_joiner@basic.html
-
-  * igt@kms_big_joiner@invalid-modeset:
-    - {bat-adls-6}:       NOTRUN -> [SKIP][40] +1 other test skip
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adls-6/igt@kms_big_joiner@invalid-modeset.html
-
-  * igt@kms_busy@basic:
-    - {bat-rpls-3}:       NOTRUN -> [SKIP][41] +2 other tests skip
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rpls-3/igt@kms_busy@basic.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-    - {bat-rpls-3}:       [SKIP][42] ([i915#4103]) -> [SKIP][43] +1 other test skip
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14368/bat-rpls-3/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rpls-3/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
-    - {bat-rpls-3}:       [PASS][44] -> [SKIP][45] +5 other tests skip
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14368/bat-rpls-3/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rpls-3/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
-
-  * igt@kms_dsc@dsc-basic:
-    - {bat-rpls-3}:       [SKIP][46] ([i915#3555] / [i915#3840] / [i915#9886]) -> [SKIP][47]
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14368/bat-rpls-3/igt@kms_dsc@dsc-basic.html
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rpls-3/igt@kms_dsc@dsc-basic.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_14368 and IGTPW_10758:
-
-### New IGT tests (5) ###
-
-  * igt@kms_big_joiner@force-joiner-basic:
-    - Statuses : 22 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_big_joiner@force-joiner-basic@1x-joiner:
-    - Statuses : 1 dmesg-fail(s) 17 fail(s)
-    - Exec time: [0.01, 2.81] s
-
-  * igt@kms_big_joiner@force-joiner-invalid-modeset:
-    - Statuses : 24 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_big_joiner@force-joiner-invalid-modeset@big_joiner_on_last_pipe:
-    - Statuses : 7 fail(s) 9 pass(s)
-    - Exec time: [0.01, 1.33] s
-
-  * igt@kms_big_joiner@force-joiner-invalid-modeset@invalid_combinations:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10758 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-apl-guc:         NOTRUN -> [SKIP][48] ([fdo#109271] / [i915#4613]) +3 other tests skip
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-apl-guc/igt@gem_lmem_swapping@basic.html
-
-  * igt@kms_big_joiner@basic:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][49] ([fdo#109271]) +3 other tests skip
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-pnv-d510/igt@kms_big_joiner@basic.html
-    - fi-glk-j4005:       NOTRUN -> [SKIP][50] ([fdo#109271]) +3 other tests skip
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-glk-j4005/igt@kms_big_joiner@basic.html
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][51] ([fdo#109271]) +1 other test skip
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-kbl-7567u/igt@kms_big_joiner@basic.html
-    - fi-cfl-guc:         NOTRUN -> [SKIP][52] ([fdo#109271]) +3 other tests skip
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-cfl-guc/igt@kms_big_joiner@basic.html
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][53] ([fdo#109271]) +3 other tests skip
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-kbl-x1275/igt@kms_big_joiner@basic.html
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][54] ([fdo#109271]) +1 other test skip
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-cfl-8109u/igt@kms_big_joiner@basic.html
-    - fi-ilk-650:         NOTRUN -> [SKIP][55] ([fdo#109271]) +3 other tests skip
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-ilk-650/igt@kms_big_joiner@basic.html
-    - fi-blb-e6850:       NOTRUN -> [SKIP][56] ([fdo#109271]) +3 other tests skip
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-blb-e6850/igt@kms_big_joiner@basic.html
-    - bat-mtlp-6:         NOTRUN -> [SKIP][57] ([i915#9792]) +1 other test skip
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-mtlp-6/igt@kms_big_joiner@basic.html
-    - fi-skl-6600u:       NOTRUN -> [SKIP][58] ([fdo#109271]) +1 other test skip
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-skl-6600u/igt@kms_big_joiner@basic.html
-    - fi-skl-guc:         NOTRUN -> [SKIP][59] ([fdo#109271]) +1 other test skip
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-skl-guc/igt@kms_big_joiner@basic.html
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][60] ([fdo#109271]) +3 other tests skip
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-cfl-8700k/igt@kms_big_joiner@basic.html
-    - fi-bsw-nick:        NOTRUN -> [SKIP][61] ([fdo#109271]) +3 other tests skip
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-bsw-nick/igt@kms_big_joiner@basic.html
-    - bat-kbl-2:          NOTRUN -> [SKIP][62] ([fdo#109271]) +3 other tests skip
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-kbl-2/igt@kms_big_joiner@basic.html
-
-  * igt@kms_big_joiner@invalid-modeset:
-    - bat-atsm-1:         NOTRUN -> [SKIP][63] ([i915#6078]) +3 other tests skip
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-atsm-1/igt@kms_big_joiner@invalid-modeset.html
-    - fi-ivb-3770:        NOTRUN -> [SKIP][64] ([fdo#109271]) +3 other tests skip
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-ivb-3770/igt@kms_big_joiner@invalid-modeset.html
-    - fi-elk-e7500:       NOTRUN -> [SKIP][65] ([fdo#109271]) +3 other tests skip
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-elk-e7500/igt@kms_big_joiner@invalid-modeset.html
-    - fi-kbl-guc:         NOTRUN -> [SKIP][66] ([fdo#109271]) +3 other tests skip
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-kbl-guc/igt@kms_big_joiner@invalid-modeset.html
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][67] ([fdo#109271]) +3 other tests skip
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-bsw-n3050/igt@kms_big_joiner@invalid-modeset.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-apl-guc:         NOTRUN -> [SKIP][68] ([fdo#109271]) +19 other tests skip
-   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-apl-guc/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc:
-    - bat-dg2-11:         NOTRUN -> [SKIP][69] ([i915#9197])
-   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - {bat-rpls-3}:       [DMESG-WARN][70] ([i915#5591]) -> [PASS][71]
-   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14368/bat-rpls-3/igt@i915_selftest@live@hangcheck.html
-   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rpls-3/igt@i915_selftest@live@hangcheck.html
-    - bat-dg2-14:         [INCOMPLETE][72] ([i915#10137]) -> [PASS][73]
-   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14368/bat-dg2-14/igt@i915_selftest@live@hangcheck.html
-   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-14/igt@i915_selftest@live@hangcheck.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [i915#10137]: https://gitlab.freedesktop.org/drm/intel/issues/10137
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
-  [i915#6078]: https://gitlab.freedesktop.org/drm/intel/issues/6078
-  [i915#9197]: https://gitlab.freedesktop.org/drm/intel/issues/9197
-  [i915#9792]: https://gitlab.freedesktop.org/drm/intel/issues/9792
-  [i915#9886]: https://gitlab.freedesktop.org/drm/intel/issues/9886
-  [i915#9920]: https://gitlab.freedesktop.org/drm/intel/issues/9920
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7738 -> IGTPW_10758
-
-  CI-20190529: 20190529
-  CI_DRM_14368: 68e66ae04f6f2718699716285e8ddb09a469af35 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10758: 10758
-  IGT_7738: 7738
-
-
-Testlist changes
-----------------
-
-+igt@kms_big_joiner@force-joiner-basic
-+igt@kms_big_joiner@force-joiner-invalid-modeset
--igt@kms_big_joiner@2x-modeset
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/index.html
-
---===============1115403548954526012==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>revamp big joiner test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130572/">https://patchwork.freedesktop.org/series/130572/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14368 -&gt; IGTPW_10758</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_10758 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_10758, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/index.html</p>
-<h2>Participating hosts (43 -&gt; 41)</h2>
-<p>Missing    (2): bat-arls-2 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_10758:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@kms_big_joiner@basic:</p>
-<ul>
-<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg1-7/igt@kms_big_joiner@basic.html">SKIP</a> +3 other tests skip</li>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adlp-9/igt@kms_big_joiner@basic.html">SKIP</a> +1 other test skip</li>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rplp-1/igt@kms_big_joiner@basic.html">SKIP</a> +1 other test skip</li>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-9/igt@kms_big_joiner@basic.html">SKIP</a> +1 other test skip</li>
-<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adln-1/igt@kms_big_joiner@basic.html">SKIP</a> +1 other test skip</li>
-<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adlp-6/igt@kms_big_joiner@basic.html">SKIP</a> +1 other test skip</li>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-11/igt@kms_big_joiner@basic.html">SKIP</a> +3 other tests skip</li>
-<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-14/igt@kms_big_joiner@basic.html">SKIP</a> +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_big_joiner@force-joiner-basic@1x-joiner} (NEW):</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-9/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html">FAIL</a></li>
-<li>{bat-arls-4}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-arls-4/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html">FAIL</a></li>
-<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adlp-6/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html">FAIL</a></li>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-skl-6600u/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html">FAIL</a> +1 other test fail</li>
-<li>{bat-rpls-3}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rpls-3/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html">FAIL</a></li>
-<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-apl-guc/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html">FAIL</a> +1 other test fail</li>
-<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-8/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html">FAIL</a></li>
-<li>bat-arls-3:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-arls-3/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html">FAIL</a></li>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-mtlp-8/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html">FAIL</a></li>
-<li>{bat-adls-6}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adls-6/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html">FAIL</a></li>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adlp-9/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html">FAIL</a></li>
-<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adln-1/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html">DMESG-FAIL</a></li>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rplp-1/igt@kms_big_joiner@force-joiner-basic@1x-joiner.html">FAIL</a></li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_big_joiner@force-joiner-invalid-modeset} (NEW):</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-rkl-11600/igt@kms_big_joiner@force-joiner-invalid-modeset.html">SKIP</a> +3 other tests skip</li>
-<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-tgl-1115g4/igt@kms_big_joiner@force-joiner-invalid-modeset.html">SKIP</a> +3 other tests skip</li>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-mtlp-6/igt@kms_big_joiner@force-joiner-invalid-modeset.html">SKIP</a> +1 other test skip</li>
-<li>{bat-rpls-3}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rpls-3/igt@kms_big_joiner@force-joiner-invalid-modeset.html">SKIP</a></li>
-<li>{bat-adls-6}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adls-6/igt@kms_big_joiner@force-joiner-invalid-modeset.html">SKIP</a></li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_big_joiner@force-joiner-invalid-modeset@big_joiner_on_last_pipe} (NEW):</p>
-<ul>
-<li>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-skl-guc/igt@kms_big_joiner@force-joiner-invalid-modeset@big_joiner_on_last_pipe.html">FAIL</a> +1 other test fail</li>
-<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-jsl-3/igt@kms_big_joiner@force-joiner-invalid-modeset@big_joiner_on_last_pipe.html">FAIL</a> +1 other test fail</li>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-jsl-1/igt@kms_big_joiner@force-joiner-invalid-modeset@big_joiner_on_last_pipe.html">FAIL</a> +1 other test fail</li>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-kbl-7567u/igt@kms_big_joiner@force-joiner-invalid-modeset@big_joiner_on_last_pipe.html">FAIL</a> +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_big_joiner@force-joiner-invalid-modeset@invalid_combinations} (NEW):</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-cfl-8109u/igt@kms_big_joiner@force-joiner-invalid-modeset@invalid_combinations.html">FAIL</a> +2 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_joiner@invalid-modeset:</p>
-<ul>
-<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-jsl-3/igt@kms_big_joiner@invalid-modeset.html">SKIP</a> +1 other test skip</li>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-mtlp-8/igt@kms_big_joiner@invalid-modeset.html">SKIP</a> +1 other test skip</li>
-<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-8/igt@kms_big_joiner@invalid-modeset.html">SKIP</a> +1 other test skip</li>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adlm-1/igt@kms_big_joiner@invalid-modeset.html">SKIP</a> +3 other tests skip</li>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-jsl-1/igt@kms_big_joiner@invalid-modeset.html">SKIP</a> +1 other test skip</li>
-<li>bat-arls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-arls-1/igt@kms_big_joiner@invalid-modeset.html">SKIP</a> +3 other tests skip</li>
-<li>bat-arls-3:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-arls-3/igt@kms_big_joiner@invalid-modeset.html">SKIP</a> +1 other test skip</li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>
-<p>igt@kms_big_joiner@basic:</p>
-<ul>
-<li>{bat-arls-4}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-arls-4/igt@kms_big_joiner@basic.html">SKIP</a> +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_joiner@invalid-modeset:</p>
-<ul>
-<li>{bat-adls-6}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-adls-6/igt@kms_big_joiner@invalid-modeset.html">SKIP</a> +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic:</p>
-<ul>
-<li>{bat-rpls-3}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rpls-3/igt@kms_busy@basic.html">SKIP</a> +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
-<ul>
-<li>{bat-rpls-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14368/bat-rpls-3/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rpls-3/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
-<ul>
-<li>{bat-rpls-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14368/bat-rpls-3/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rpls-3/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">SKIP</a> +5 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>{bat-rpls-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14368/bat-rpls-3/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9886">i915#9886</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rpls-3/igt@kms_dsc@dsc-basic.html">SKIP</a></li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_14368 and IGTPW_10758:</p>
-<h3>New IGT tests (5)</h3>
-<ul>
-<li>
-<p>igt@kms_big_joiner@force-joiner-basic:</p>
-<ul>
-<li>Statuses : 22 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_joiner@force-joiner-basic@1x-joiner:</p>
-<ul>
-<li>Statuses : 1 dmesg-fail(s) 17 fail(s)</li>
-<li>Exec time: [0.01, 2.81] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_joiner@force-joiner-invalid-modeset:</p>
-<ul>
-<li>Statuses : 24 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_joiner@force-joiner-invalid-modeset@big_joiner_on_last_pipe:</p>
-<ul>
-<li>Statuses : 7 fail(s) 9 pass(s)</li>
-<li>Exec time: [0.01, 1.33] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_joiner@force-joiner-invalid-modeset@invalid_combinations:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10758 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-apl-guc/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_joiner@basic:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-pnv-d510/igt@kms_big_joiner@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</li>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-glk-j4005/igt@kms_big_joiner@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</li>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-kbl-7567u/igt@kms_big_joiner@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 other test skip</li>
-<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-cfl-guc/igt@kms_big_joiner@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</li>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-kbl-x1275/igt@kms_big_joiner@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</li>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-cfl-8109u/igt@kms_big_joiner@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 other test skip</li>
-<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-ilk-650/igt@kms_big_joiner@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</li>
-<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-blb-e6850/igt@kms_big_joiner@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</li>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-mtlp-6/igt@kms_big_joiner@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9792">i915#9792</a>) +1 other test skip</li>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-skl-6600u/igt@kms_big_joiner@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 other test skip</li>
-<li>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-skl-guc/igt@kms_big_joiner@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 other test skip</li>
-<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-cfl-8700k/igt@kms_big_joiner@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</li>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-bsw-nick/igt@kms_big_joiner@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</li>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-kbl-2/igt@kms_big_joiner@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_joiner@invalid-modeset:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-atsm-1/igt@kms_big_joiner@invalid-modeset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6078">i915#6078</a>) +3 other tests skip</li>
-<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-ivb-3770/igt@kms_big_joiner@invalid-modeset.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</li>
-<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-elk-e7500/igt@kms_big_joiner@invalid-modeset.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</li>
-<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-kbl-guc/igt@kms_big_joiner@invalid-modeset.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</li>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-bsw-n3050/igt@kms_big_joiner@invalid-modeset.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/fi-apl-guc/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +19 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
-<ul>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9197">i915#9197</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>{bat-rpls-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14368/bat-rpls-3/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5591">i915#5591</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-rpls-3/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14368/bat-dg2-14/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10137">i915#10137</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10758/bat-dg2-14/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7738 -&gt; IGTPW_10758</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14368: 68e66ae04f6f2718699716285e8ddb09a469af35 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10758: 10758<br />
-  IGT_7738: 7738</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_big_joiner@force-joiner-basic<br />
-+igt@kms_big_joiner@force-joiner-invalid-modeset<br />
--igt@kms_big_joiner@2x-modeset</p>
-
-</body>
-</html>
-
---===============1115403548954526012==--
