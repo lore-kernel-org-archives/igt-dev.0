@@ -4,27 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4619EC5475B
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Feb 2024 03:09:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10103C54798
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Feb 2024 05:18:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AC69F10E27E;
-	Thu, 29 Feb 2024 03:09:28 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53CA110E27E;
- Thu, 29 Feb 2024 03:09:27 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============9111590384513926529=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 727B410E336;
+	Thu, 29 Feb 2024 05:18:54 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E9eh4vmy";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 82CC610E276
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Feb 2024 05:18:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709183934; x=1740719934;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=aayB+q6oakVoYK2nJqtQIv3qTQx/p59v2ReMYwn0Wx8=;
+ b=E9eh4vmy2qH4ZE1Xqi2kJRGTjHTXkX/TZG+ePw2JMhXPo5agVn+0KED3
+ SZz5h71C66ZpPNxOJSJ/7JO8XUcMxncBIKIFgd7FJJOX0K5ZT4oleTYsX
+ nA8g8J8ZYogHNrStwP3cZZbj/SviC/IP5URT0ZuLuQVbmc/FQMQM9HzfO
+ HQq37mo4cVOGKHSx6JcxwB36hC4/y+a3eERKNGEdwzOWt1aycWsil1Gzw
+ epxGEdFMBvSui/IqgxM7QdysJW3YYuG3q7GoIHYxZlfej2R4s7lq8gIFN
+ r7YVsnPhBJrBuNMl+cSPdiSo3MeoOGPQzWiRX8M6C6fBisOHVEOt2W0oI Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14780742"
+X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; d="scan'208";a="14780742"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Feb 2024 21:18:54 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; d="scan'208";a="12250002"
+Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Feb 2024 21:18:52 -0800
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [i-g-t v7 0/8] tests/kms_vrr: Modify kms_vrr to allow flicker
+ profiling
+Date: Thu, 29 Feb 2024 10:42:42 +0530
+Message-ID: <20240229051250.2939774-1-bhanuprakash.modem@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_lib=3A_Add_non-subsampled_Y?=
- =?utf-8?q?UV_formats_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Arthur Grillo" <arthurgrillo@riseup.net>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Feb 2024 03:09:27 -0000
-Message-ID: <170917616734.375728.7251525868291568338@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240228-non-ssampled-yuv-v2-1-aa1f948e2aa0@riseup.net>
-In-Reply-To: <20240228-non-ssampled-yuv-v2-1-aa1f948e2aa0@riseup.net>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,129 +58,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============9111590384513926529==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Do some cleanup in the kms_vrr test and add some optional command line
+arguments to alter the target refresh rate for the test. This allows us
+to profile VRR flicker on panels at the low end of the refresh range.
+This series also adds a new 'maxmin' subtest which alternates the rate
+between max and min every frame.
 
-== Series Details ==
+V2:
+- Address the review comments from Bhanu
+- Add a new maxmin subtest which alternates the rate b/w max & min every frame.
 
-Series: lib: Add non-subsampled YUV formats (rev3)
-URL   : https://patchwork.freedesktop.org/series/128057/
-State : success
+V3: As communicated in IRC channel #igt, I am doing this revision on behalf of
+Sean Paul.
+- Rebase
+- Add testplan documentaion for 'maxmin' subtest
+- Minor cleanups
+- Hax patch to test VRR in BAT
 
-== Summary ==
+V4:
+- Rebase
+- Minor cleanups
 
-CI Bug Log - changes from CI_DRM_14362 -> IGTPW_10754
-====================================================
+V5:
+- Drop HAX patches to pass the CI
 
-Summary
--------
+Sean Paul (8):
+  tests/kms_vrr: Move fb0 and fb1 to an array
+  tests/kms_vrr: Move vtest_ns into data_t
+  tests/kms_vrr: Allow test rate to be altered from the command line
+  tests/kms_vrr: Allow test duration to be specified from the command
+    line
+  tests/kms_vrr: Change the pattern displayed in the test
+  tests/kms_vrr: Add ability to flip static image for flicker profiling
+  tests/kms_vrr: Allow for multiple rates in a test
+  tests/kms_vrr: Add a max/min test to oscillate between rates
 
-  **SUCCESS**
+ tests/kms_vrr.c | 275 ++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 194 insertions(+), 81 deletions(-)
 
-  No regressions found.
+--
+2.43.0
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10754/index.html
-
-Participating hosts (41 -> 40)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10754 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-jsl-3:          [INCOMPLETE][1] -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14362/bat-jsl-3/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10754/bat-jsl-3/igt@i915_pm_rpm@module-reload.html
-
-  
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7734 -> IGTPW_10754
-
-  CI-20190529: 20190529
-  CI_DRM_14362: eec7a135b960c7b83b13a7c821e30f956074e439 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10754: 10754
-  IGT_7734: 7734
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10754/index.html
-
---===============9111590384513926529==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib: Add non-subsampled YUV formats (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/128057/">https://patchwork.freedesktop.org/series/128057/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10754/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10754/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14362 -&gt; IGTPW_10754</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10754/index.html</p>
-<h2>Participating hosts (41 -&gt; 40)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10754 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_pm_rpm@module-reload:<ul>
-<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14362/bat-jsl-3/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10754/bat-jsl-3/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7734 -&gt; IGTPW_10754</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14362: eec7a135b960c7b83b13a7c821e30f956074e439 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10754: 10754<br />
-  IGT_7734: 7734</p>
-
-</body>
-</html>
-
---===============9111590384513926529==--
