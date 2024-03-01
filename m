@@ -4,50 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6C9AC54E55
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 555B7C54E49
 	for <igt-dev@archiver.kernel.org>; Fri,  1 Mar 2024 17:16:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 11ED810E104;
-	Fri,  1 Mar 2024 17:16:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D2D3310E0E1;
+	Fri,  1 Mar 2024 17:16:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XH6bBujg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZRvxtdgP";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2649A10E0E1
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Mar 2024 17:16:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1053510E0C3
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Mar 2024 17:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709313401; x=1740849401;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=uwYLHPibPm3sGeBJbzXuVjohRkaLkAkSiOZL84eBrIM=;
- b=XH6bBujgEjLHSyEIu/3rgapzQzZJ9oPD9l2WD4Cc8VkkjMi/uc+VMed/
- FWrM0deIno7k3IzJTlByp8zrfRcA9kcoOjkTi381enxGcIssPsTx+7xPK
- ulOyP0lKSgI6N5lgcpaMWuL6eq+GEwJZg8ofwKgBQlz6pPalN6pQWnzdR
- R9NETZGgXnBkN2glGfrrNjFCfqgBJSfVrfLFEq1ka4lPobYGmDSzDJpWp
- /T+5B71M1AWehmiH/mXoZ371TWCoPBTROESfKLuGnjar29/woxlWK5i+Z
- RvNDylNOzZiKYKHlLayIsFRYm4cYU91GWB2+Fuex+oOPhfVatp6QLbWb0 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11000"; a="26323423"
-X-IronPort-AV: E=Sophos;i="6.06,196,1705392000"; d="scan'208";a="26323423"
+ t=1709313398; x=1740849398;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=QgU+vXpkXWxQ4MWBZXYd2WBgiS2YP14DsUxo/MBUnRQ=;
+ b=ZRvxtdgPDeBdtLEBqzgM1rPrewyP8mzu1qi0vYUkF1y6AberXmJwZLuG
+ u0+7pnfusWONwcwK4LtY6UF8baxz/uF8Fbs4Y1UsaiOzmZ36wanzNVBHJ
+ L8hJeTItJ+psMlt1XvCQo8gEy/FhmhGKhCVOaWFNZ/1phorTP1qhcLhxG
+ BniOMf5EwCQta7GHWgqGv2aYlgXBKr86XI54vTHDGZ4wpcOV1A4QnM0hL
+ QucXmGvYK5Np0KYzHKIPQNRpscc/2jcluZsz/R5Ror3t1f5MZvaylTXHf
+ s1lyy3I7Zgj8T3nFRAiNpYqV100Yez52fifNpH81uq5uDimm+nya32Ud6 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11000"; a="26323415"
+X-IronPort-AV: E=Sophos;i="6.06,196,1705392000"; d="scan'208";a="26323415"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Mar 2024 09:16:41 -0800
+ 01 Mar 2024 09:16:37 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,196,1705392000"; 
-   d="scan'208";a="8681328"
+   d="scan'208";a="8681286"
 Received: from knomani-mobl.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
  ([10.252.3.163])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Mar 2024 09:16:39 -0800
+ 01 Mar 2024 09:16:35 -0800
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t 4/5] lib/intel_mocs: add defer-to-pat-index
-Date: Fri,  1 Mar 2024 17:16:17 +0000
-Message-ID: <20240301171618.395851-4-matthew.auld@intel.com>
+Subject: [PATCH i-g-t 1/5] lib/rendercopy_gen9: use MOCS index helper
+Date: Fri,  1 Mar 2024 17:16:14 +0000
+Message-ID: <20240301171618.395851-1-matthew.auld@intel.com>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240301171618.395851-1-matthew.auld@intel.com>
-References: <20240301171618.395851-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -66,64 +64,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-At least on Xe2 it looks like we can just use MOCS index zero to defer
-the selected caching mode to that of the PAT index. This will be useful
-in an upcoming patch.
+UC looks to be the sensible default here, since it will work with
+display engine if rendering onto scanout surface. Use the matching
+helper.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/intel_mocs.c | 14 ++++++++++++++
- lib/intel_mocs.h |  1 +
- 2 files changed, 15 insertions(+)
+ lib/rendercopy_gen9.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/lib/intel_mocs.c b/lib/intel_mocs.c
-index 4a9c305dc..bf6ee1958 100644
---- a/lib/intel_mocs.c
-+++ b/lib/intel_mocs.c
-@@ -9,6 +9,7 @@
- struct drm_intel_mocs_index {
- 	uint8_t uc_index;
- 	uint8_t wb_index;
-+	uint8_t deferred_index;
- };
+diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+index efd7cb37c..404406e5f 100644
+--- a/lib/rendercopy_gen9.c
++++ b/lib/rendercopy_gen9.c
+@@ -180,10 +180,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+ 	ss->ss0.horizontal_alignment = 1; /* align 4 or HALIGN_32 on display ver >= 13*/
  
- static void get_mocs_index(int fd, struct drm_intel_mocs_index *mocs)
-@@ -25,6 +26,7 @@ static void get_mocs_index(int fd, struct drm_intel_mocs_index *mocs)
- 	if (intel_graphics_ver(devid) >= IP_VER(20, 0)) {
- 		mocs->uc_index = 3;
- 		mocs->wb_index = 4;
-+		mocs->deferred_index = 0;
- 	} else if (IS_METEORLAKE(devid)) {
- 		mocs->uc_index = 5;
- 		mocs->wb_index = 10;
-@@ -60,3 +62,15 @@ uint8_t intel_get_uc_mocs_index(int fd)
- 
- 	return mocs.uc_index;
- }
-+
-+uint8_t intel_get_deferred_mocs_index(int fd)
-+{
-+	struct drm_intel_mocs_index mocs;
-+	uint16_t dev_id = intel_get_drm_devid(fd);
-+
-+	igt_assert(AT_LEAST_GEN(dev_id, 20));
-+
-+	get_mocs_index(fd, &mocs);
-+
-+	return mocs.deferred_index;
-+}
-diff --git a/lib/intel_mocs.h b/lib/intel_mocs.h
-index b5c79b0e1..bfdc23210 100644
---- a/lib/intel_mocs.h
-+++ b/lib/intel_mocs.h
-@@ -12,5 +12,6 @@
- 
- uint8_t intel_get_wb_mocs_index(int fd);
- uint8_t intel_get_uc_mocs_index(int fd);
-+uint8_t intel_get_deferred_mocs_index(int fd);
- 
- #endif /* _INTEL_MOCS_H */
+ 	if (HAS_4TILE(ibb->devid)) {
+-		/*
+-		 * mocs table version 1 index 3 groub wb use l3
+-		 */
+-		ss->ss1.mocs_index = 3;
++		ss->ss1.mocs_index = intel_get_uc_mocs_index(i915);
+ 		ss->ss5.mip_tail_start_lod = 0;
+ 	} else {
+ 		ss->ss0.render_cache_read_write = 1;
 -- 
 2.43.2
 
