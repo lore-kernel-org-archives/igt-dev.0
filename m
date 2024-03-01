@@ -4,47 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6970C5478C
-	for <igt-dev@archiver.kernel.org>; Fri,  1 Mar 2024 09:09:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DEA5C5478C
+	for <igt-dev@archiver.kernel.org>; Fri,  1 Mar 2024 09:09:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3ECB710E04F;
-	Fri,  1 Mar 2024 09:09:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AB50610E1D0;
+	Fri,  1 Mar 2024 09:09:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xj5Tdcns";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X7MwrmsQ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09AD210E04F
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Mar 2024 09:09:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3874F10E1F5
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Mar 2024 09:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709284146; x=1740820146;
+ t=1709284155; x=1740820155;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=aJkRQ4XbGZs9ToHtjExF6dtXP7MGEpfIqsnlG8wupZ4=;
- b=Xj5TdcnsUmCJ70u5BoMj0MCj2f9eD8I1WajNkLdHy5bg2sne7fgvYP4L
- mwrsStnkTjOCL9U2BnRLZvsYOfeta2VxmIfHFu/TuCdUfJNBq65Et2xlK
- RgNVB463G6f+f31Ao/++l7QWPuT9COrgWwOwIutYXaRNdA+AN62hJi6BK
- PJgmQTfJcCl5iy8nbVtGcEUpEzcLhju/henAjG5l8Xy3wWZHUAzUr1eVw
- TRRogPXO/c3+IHPiKcz7JPi+iN6ca6B1dwoKLjCOM+J491+IDzNc1xkgN
- fYYM9hQgzGNHC/5zwSOH9G/eFzagrEjdTv+z5TGvuvzvI8X4vmkEfrng4 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10999"; a="3985812"
+ bh=UuZkFcE4K3Gsl2RSxue2DNhgHqbpJsNLPGP19nadoUg=;
+ b=X7MwrmsQy1w37r8Wq3Feh6y1c95UNQBf7Yzy3QgxPfbcBa/GR8Owhhwa
+ 2ONiAN4+JW1eiIuFbf4sDpKIfbJhoEwlCHbEuPNeTIm0PGzckxnG18SoJ
+ tWhcyZHWATYfo0ng9Ibk2b7Jzx06KO9ynDrlg7fWl6XN1uwsk+AITLBu3
+ W92BgxEjJjkxC3NUWdgTV8Ukl5p8E0Edxo1tL9jb2F2Mga5rn1MmUsofQ
+ H6vZIxoyvEqzoGj7vVwTLxD7gaF72p/tSa5oXdiKIGRKIjyuUzXcf6uZ9
+ bIzzouCSLd0f+Rta/oPFgcaRXg8Zq2NJTIvtQneU6rLshis87NiGJW6mM w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10999"; a="3985818"
 X-IronPort-AV: E=Sophos;i="6.06,195,1705392000"; 
-   d="scan'208";a="3985812"
+   d="scan'208";a="3985818"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Mar 2024 01:09:05 -0800
+ 01 Mar 2024 01:09:14 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,195,1705392000"; 
-   d="scan'208";a="8542341"
+   d="scan'208";a="8542386"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Mar 2024 01:09:03 -0800
+ 01 Mar 2024 01:09:13 -0800
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Subject: [PATCH i-g-t v2 1/5] tests: Documentation refactoring part 1
-Date: Fri,  1 Mar 2024 09:08:40 +0000
-Message-Id: <20240301090844.671493-2-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v2 2/5] tests/intel: Documentation refactoring part 2
+Date: Fri,  1 Mar 2024 09:08:41 +0000
+Message-Id: <20240301090844.671493-3-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240301090844.671493-1-katarzyna.piecielska@intel.com>
 References: <20240301090844.671493-1-katarzyna.piecielska@intel.com>
@@ -68,1068 +68,1209 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 Unify documentation for Intel i915 tests that we have by moving
 common parts to be available for all tests.
 
-v2: rebase on master, add 3 more files with refactoring
-(tests/intel/api_intel_allocator.c, tests/intel/api_intel_bb.c,
-tests/intel/gem_busy.c)
+v2: fix checkpatch warnings
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 ---
- tests/core_hotunplug.c            |  57 ++++-------
- tests/device_reset.c              |  11 ++-
- tests/dmabuf.c                    |  13 +--
- tests/drm_mm.c                    |  84 +----------------
- tests/intel/api_intel_allocator.c |  46 ++-------
- tests/intel/api_intel_bb.c        | 152 ++----------------------------
- tests/intel/debugfs_test.c        |  32 ++-----
- tests/intel/gem_basic.c           |  22 +----
- tests/intel/gem_blits.c           |   2 +-
- tests/intel/gem_busy.c            |  42 +++------
- tests/intel/gem_ccs.c             |   9 +-
- tests/intel/gem_close_race.c      |  39 +++-----
- tests/intel/gem_create.c          |  87 +++++------------
- 13 files changed, 115 insertions(+), 481 deletions(-)
+ tests/intel/gem_ctx_create.c      |  77 ++++++----------
+ tests/intel/gem_ctx_exec.c        |  51 +++--------
+ tests/intel/gem_ctx_isolation.c   |  43 ++-------
+ tests/intel/gem_ctx_param.c       | 144 ++++++------------------------
+ tests/intel/gem_ctx_persistence.c | 117 ++----------------------
+ tests/intel/gem_ctx_shared.c      |  42 ++-------
+ tests/intel/gem_eio.c             | 133 ++-------------------------
+ tests/intel/gem_exec_balancer.c   | 139 ++--------------------------
+ 8 files changed, 99 insertions(+), 647 deletions(-)
 
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index be80d479f..f578afa4a 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -44,64 +44,43 @@
-  * Description: Examine behavior of a driver on device hot unplug
-  * Feature: SMI, core
-  * Test category: functionality test
+diff --git a/tests/intel/gem_ctx_create.c b/tests/intel/gem_ctx_create.c
+index 6d0877954..5fb0f9a1f 100644
+--- a/tests/intel/gem_ctx_create.c
++++ b/tests/intel/gem_ctx_create.c
+@@ -38,91 +38,64 @@
+ /**
+  * TEST: gem ctx create
+  * Description: Test the context create ioctls
 - *
-- * SUBTEST: hotrebind
-  * Category: Software building block
-  * Sub-category: driver
-  * Functionality: device hotplug
+- * SUBTEST: active
 - * Description:
-- *   Check if the driver can be cleanly rebound to a device with a still open hot unbound driver
-- *   instance
-  * Run type: FULL
-  *
-+ * SUBTEST: hotrebind
-+ * Description: Check if the driver can be cleanly rebound to a device with a
-+ *		still open hot unbound driver instance
-+ *
-  * SUBTEST: hotrebind-lateclose
-- * Category: Software building block
-- * Sub-category: driver
-- * Functionality: device hotplug
-- * Description: Check if a hot unbound driver instance still open after hot rebind can be cleanly released
-- * Run type: FULL
-+ * Description: Check if a hot unbound driver instance still open after hot
-+ *		rebind can be cleanly released
-  *
-  * SUBTEST: hotreplug
-- * Category: Software building block
-- * Sub-category: driver
-- * Functionality: device hotplug
-- * Description: Check if a hot unplugged and still open device can be cleanly restored
-- * Run type: FULL
-+ * Description: Check if a hot unplugged and still open device can be cleanly
-+ *		restored
-  *
-  * SUBTEST: hotreplug-lateclose
-- * Category: Software building block
-- * Sub-category: driver
-- * Functionality: device hotplug
-- * Description: Check if an instance of a still open while hot replugged device can be cleanly released
-- * Run type: FULL
-+ * Description: Check if an instance of a still open while hot replugged device
-+ *		can be cleanly released
-  *
-  * SUBTEST: hotunbind-rebind
-- * Category: Software building block
-- * Sub-category: driver
-- * Functionality: device hotplug
-- * Description: Check if the driver can be cleanly unbound from an open device, then released and rebound
-- * Run type: FULL
-+ * Description: Check if the driver can be cleanly unbound from an open device,
-+ *		then released and rebound
-  *
-  * SUBTEST: hotunplug-rescan
-- * Category: Software building block
-- * Sub-category: driver
-- * Functionality: device hotplug
-- * Description: Check if an open device can be cleanly unplugged, then released and restored
-- * Run type: FULL
-+ * Description: Check if an open device can be cleanly unplugged, then released
-+ *		and restored
-  *
-  * SUBTEST: unbind-rebind
-- * Category: Software building block
-- * Sub-category: driver
-- * Functionality: device hotplug
-- * Description: Check if the driver can be cleanly unbound from a device believed to be closed, then rebound
-+ * Description: Check if the driver can be cleanly unbound from a device
-+ *		believed to be closed, then rebound
-  * Run type: BAT
-  *
-  * SUBTEST: unplug-rescan
-- * Category: Software building block
-- * Sub-category: driver
-- * Functionality: device hotplug
-- * Description: Check if a device believed to be closed can be cleanly unplugged, then restored
-- * Run type: FULL
-+ * Description: Check if a device believed to be closed can be cleanly
-+ *		unplugged, then restored
-  */
- 
- IGT_TEST_DESCRIPTION("Examine behavior of a driver on device hot unplug");
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index 13bd5ab5f..817cbc285 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -18,29 +18,30 @@
-  * TEST: device reset
-  * Category: Hardware building block
-  * Description: Examine behavior of a driver on device sysfs reset
-+ * Category: Server
-+ * Feature: reset
-+ * Functionality: reset
-+ * Sub-category: Reset
+- *   For each engine calculate the average performance of context creation execution and
+- *   exercise context reclaim
++ * Category: Infrastructure
+  * Feature: context
++ * Functionality: context
++ * Sub-category: Context
 + * Test category: GEM_Legacy
   * Run type: FULL
   *
-  * SUBTEST: cold-reset-bound
-  * Description: Cold Resets device with bound driver
-- * Feature: reset
-  *
-  * SUBTEST: reset-bound
-  * Description: Resets device with bound driver
-- * Feature: reset
-  *
-  * SUBTEST: unbind-cold-reset-rebind
-  * Description: Unbinds driver from device, initiates cold reset then rebinds driver to device
-- * Feature: reset
-  *
-  * SUBTEST: unbind-reset-rebind
-  * Description:
-  *   Unbinds driver from device, initiates reset then rebinds driver to device
-  *   validating device resets
-  * Category: Infrastructure
-- * Sub-category: sysman
-+ * Sub-category: SysMan
-  * Functionality: reset
-  * Feature: reset, sriov-reset
-- * Test category: GEM_Legacy
-  */
- 
- IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
-diff --git a/tests/dmabuf.c b/tests/dmabuf.c
-index 2ac105423..977b04043 100644
---- a/tests/dmabuf.c
-+++ b/tests/dmabuf.c
-@@ -27,21 +27,18 @@
-  * TEST: dmabuf
-  * Description: Kernel selftests for the dmabuf API
-  * Feature: mapping, prime
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM
-+ * Sub-category: Memory management
-+ * Test category: GEM_Legacy
-  * Run type: BAT
-  *
-  * SUBTEST: all-tests
-  *
-  * SUBTEST: all-tests@dma_fence
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: all-tests@sanitycheck
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  */
- 
- IGT_TEST_DESCRIPTION("Kernel selftests for the dmabuf API");
-diff --git a/tests/drm_mm.c b/tests/drm_mm.c
-index e6ba22474..f2e6c6cd1 100644
---- a/tests/drm_mm.c
-+++ b/tests/drm_mm.c
-@@ -27,129 +27,53 @@
-  * TEST: drm mm
-  * Description: Basic sanity check of DRM's range manager (struct drm_mm)
-  * Feature: mapping
-+ * Category: Infrastructure
-+ * Functionality: DRM memory mangemnt
-+ * Sub-category: Memory management
-+ * Test category: GEM_Legacy
-  * Run type: FULL
-  *
-  * SUBTEST: drm_mm
-  *
-  * SUBTEST: drm_mm@align
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@align32
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@align64
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@bottomup
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@color
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@color_evict
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@color_evict_range
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@debug
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@evict
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@evict_range
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@frag
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@highest
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@init
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@insert
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@insert_range
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@lowest
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@replace
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@reserve
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@sanitycheck
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: drm_mm@topdown
-- * Category: Infrastructure
-- * Description: drm_mm range manager SW validation
-- * Functionality: DRM memory mangemnt
-- * Test category: GEM_Legacy
-  */
- 
- IGT_TEST_DESCRIPTION("Basic sanity check of DRM's range manager (struct drm_mm)");
-diff --git a/tests/intel/api_intel_allocator.c b/tests/intel/api_intel_allocator.c
-index b2e6770fe..f260250d4 100644
---- a/tests/intel/api_intel_allocator.c
-+++ b/tests/intel/api_intel_allocator.c
-@@ -16,79 +16,49 @@
- /**
-  * TEST: api intel allocator
-  * Category: Infrastructure
-- * Functionality: virtual address ranges
-+ * Functionality: virtual address
-+ * Description: checking the virtual address ranges
-  * Run type: FULL
-  * Sub-category: IGT Lib
-  * Test category: GEM_Legacy
-+ * Feature: igt_core
-  *
-  * SUBTEST: alloc-simple
-- * Description: checking the virtual address ranges
-- * Feature: igt_core
-  *
-  * SUBTEST: default-alignment
-- * Description:
-- *   For simple allocator check does default alignment is properly handled in open and alloc
-- *   functions
-- *   checking the virtual address ranges
-- * Feature: igt_core
-+ * Description: For simple allocator check does default alignment is properly
-+ *		handled in open and alloc functions checking the virtual
-+ *		address ranges
-  *
-  * SUBTEST: execbuf-with-allocator
-- * Description: checking the virtual address ranges
-- * Feature: igt_core
-  *
-  * SUBTEST: fork-simple-once
-- * Description: checking the virtual address ranges
-- * Feature: igt_core
-  *
-  * SUBTEST: fork-simple-stress
-- * Description: checking the virtual address ranges
-- * Feature: igt_core
-  *
-  * SUBTEST: fork-simple-stress-signal
-- * Description: checking the virtual address ranges
-- * Feature: igt_core
-  *
-  * SUBTEST: gem-pool
-- * Description:
-- *   Verifies creating and executing bb from gem pool
-- *   checking the virtual address ranges
-- * Feature: igt_core
-+ * Description: Verifies creating and executing bb from gem pool checking
-+ *		the virtual address ranges
-  *
-  * SUBTEST: open-vm
-- * Description: checking the virtual address ranges
-- * Feature: igt_core
-  *
-  * SUBTEST: reloc-allocator
-- * Description: checking the virtual address ranges
-- * Feature: igt_core
-  *
-  * SUBTEST: reopen
-- * Description: checking the virtual address ranges
-- * Feature: igt_core
-  *
-  * SUBTEST: reopen-fork
-- * Description: checking the virtual address ranges
-- * Feature: igt_core
-  *
-  * SUBTEST: reserve-simple
-- * Description: checking the virtual address ranges
-- * Feature: igt_core
-  *
-  * SUBTEST: simple-allocator
-- * Description: checking the virtual address ranges
-- * Feature: igt_core
-  *
-  * SUBTEST: standalone
-- * Description: checking the virtual address ranges
-- * Feature: igt_core
-  *
-  * SUBTEST: two-level-inception
-- * Description: checking the virtual address ranges
-- * Feature: igt_core
-  *
-  * SUBTEST: two-level-inception-interruptible
-- * Description: checking the virtual address ranges
-- * Feature: igt_core
-  */
- 
- #define OBJ_SIZE 1024
-diff --git a/tests/intel/api_intel_bb.c b/tests/intel/api_intel_bb.c
-index 8a210f2ab..74e334581 100644
---- a/tests/intel/api_intel_bb.c
-+++ b/tests/intel/api_intel_bb.c
-@@ -43,210 +43,72 @@
- #include "intel_blt.h"
- /**
-  * TEST: api intel bb
-- * Description: intel_bb API check.
-- * Run type: FULL
-- *
-- * SUBTEST: add-remove-objects
-  * Category: Infrastructure
-  * Description: checking dummy buffer creation & submission
-  * Feature: igt_core
-  * Functionality: dummy buffer creation & submission
-  * Sub-category: IGT Lib
-  * Test category: GEM_Legacy
-+ * Run type: FULL
++ * SUBTEST: active
++ * Description: For each engine calculate the average performance of context
++ *		creation execution and exercise context reclaim
 + *
-+ * SUBTEST: add-remove-objects
-  *
-  * SUBTEST: bb-with-allocator
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: blit-noreloc-keep-cache
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: blit-noreloc-purge-cache
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: blit-reloc-keep-cache
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: blit-reloc-purge-cache
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: crc32
-  * Description: Compare cpu and gpu crc32 sums on input object
-- * Feature: igt_core
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: delta-check
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: destroy-bb
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: full-batch
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: intel-bb-blit-none
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: intel-bb-blit-x
-- * Feature: igt_core
-  *
-  * SUBTEST: intel-bb-blit-y
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: lot-of-buffers
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: misplaced-blitter
-- * Category: Infrastructure
-- * Description:
-- *   Execute intel_bb with set of engines provided by userspace
-- *   checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-+ * Description: Execute intel_bb with set of engines provided by userspace
-+ *		checking dummy buffer creation & submission
-  *
-  * SUBTEST: object-noreloc-keep-cache-simple
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: object-noreloc-purge-cache-simple
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: object-reloc-keep-cache
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: object-reloc-purge-cache
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: offset-control
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: purge-bb
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: render
-- * Feature: igt_core
-  *
-  * SUBTEST: render-ccs
-- * Feature: igt_core
-  *
-  * SUBTEST: reset-bb
-- * Category: Infrastructure
-- * Description:
-- *   Ensure reset is possible on fresh bb
-- *   checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-+ * Description: Ensure reset is possible on fresh bb checking dummy buffer
-+ *		creation & submission
-  *
-  * SUBTEST: reset-flags
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: simple-bb
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: simple-bb-ctx
-- * Category: Infrastructure
-- * Description: checking dummy buffer creation & submission
-- * Feature: igt_core
-- * Functionality: dummy buffer creation & submission
-- * Sub-category: IGT Lib
-- * Test category: GEM_Legacy
-  */
- 
- #define PAGE_SIZE 4096
-diff --git a/tests/intel/debugfs_test.c b/tests/intel/debugfs_test.c
-index b67bfabac..9706b81e1 100644
---- a/tests/intel/debugfs_test.c
-+++ b/tests/intel/debugfs_test.c
-@@ -33,43 +33,29 @@
-  * TEST: debugfs test
-  * Description: Read entries from debugfs, hwmon and sysfs paths.
-  * Feature: core
-+ * Category: Infrastructure
-+ * Functionality: debugfs
-+ * Sub-category: uapi
-+ * Test category: uapi
-+ * Run type: FULL
-  *
-  * SUBTEST: basic-hwmon
-- * Category: Infrastructure
-- * Description:
-- *   Read all entries from hwmon path
-- *   validating debugfs entries
-- * Functionality: debugfs entries
-+ * Description: Read all entries from hwmon path validating debugfs entries
-  * Run type: BAT
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: read_all_entries
-- * Category: Infrastructure
-- * Description:
-- *   Read all entries from debugfs path.
-- *   validating debugfs entries
-- * Functionality: debugfs entries
-+ * Description: Read all entries from debugfs path validating debugfs entries
-  * Run type: BAT
-- * Sub-category: i915
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: read_all_entries_display_off
-  * Description: Read all debugfs entries with display on/off.
+  * SUBTEST: active-all
+- * Description: Calculate the average performance of context creation and it's execution using all engines
+- * Feature: context
 - * Run type: FULL
-  *
-  * SUBTEST: read_all_entries_display_on
-  * Description: Read all debugfs entries with display on/off.
-- * Run type: FULL
-  *
-  * SUBTEST: sysfs
-- * Category: Infrastructure
-- * Description:
-- *   Read all entries from sysfs path.
-- *   validating debugfs entries
-- * Functionality: debugfs entries
-- * Run type: FULL
-- * Sub-category: i915
-- * Test category: GEM_Legacy
-+ * Description: Read all entries from sysfs path validating debugfs entries
-+ *
-  */
- 
- IGT_TEST_DESCRIPTION("Read entries from debugfs, hwmon and sysfs paths.");
-diff --git a/tests/intel/gem_basic.c b/tests/intel/gem_basic.c
-index 3485f92c8..513113cd1 100644
---- a/tests/intel/gem_basic.c
-+++ b/tests/intel/gem_basic.c
-@@ -44,33 +44,21 @@
- /**
-  * TEST: gem basic
-  * Description: Tests basic gem_create and gem_close IOCTLs
-- *
-- * SUBTEST: bad-close
-  * Category: Infrastructure
-- * Description: Verify that gem_close fails with bad params.
-  * Feature: gem_core
-  * Functionality: driver handler
-- * Run type: BAT
-- * Sub-category: i915
-+ * Sub-category: uapi
-  * Test category: GEM_Legacy
-+ * Run type: BAT
-+ *
-+ * SUBTEST: bad-close
-+ * Description: Verify that gem_close fails with bad params.
-  *
-  * SUBTEST: create-close
-- * Category: Infrastructure
-  * Description: Verify basic functionality of gem_create and gem_close.
-- * Feature: gem_core
-- * Functionality: driver handler
-- * Run type: BAT
-- * Sub-category: i915
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: create-fd-close
-- * Category: Infrastructure
-  * Description: Verify that closing drm driver is possible with opened gem object.
-- * Feature: gem_core
-- * Functionality: driver handler
-- * Run type: BAT
-- * Sub-category: i915
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: multigpu-create-close
-  * Description: Verify basic functionality of gem_create and gem_close on multi-GPU.
-diff --git a/tests/intel/gem_blits.c b/tests/intel/gem_blits.c
-index e567cdf33..b9d0b5f87 100644
---- a/tests/intel/gem_blits.c
-+++ b/tests/intel/gem_blits.c
-@@ -34,7 +34,7 @@
-  * Feature: blitter
-  * Functionality: command streamer
-  * Run type: FULL
-- * Sub-category: HW
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
++ * Description: Calculate the average performance of context creation and it's
++ *		execution using all engines
   *
   * SUBTEST: basic
-diff --git a/tests/intel/gem_busy.c b/tests/intel/gem_busy.c
-index c60654b1e..7baaac41f 100644
---- a/tests/intel/gem_busy.c
-+++ b/tests/intel/gem_busy.c
-@@ -33,57 +33,43 @@
+- * Category: Infrastructure
+  * Description: Test random context creation
+- * Feature: context
+- * Functionality: context management
+  * Run type: BAT
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-files
+- * Category: Infrastructure
+  * Description: Exercise implicit per-fd context creation
+- * Feature: context
+- * Functionality: context management
+  * Run type: BAT
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: ext-param
+  * Description: Verify valid and invalid context extensions
+- * Feature: context
+- * Run type: FULL
+  *
+  * SUBTEST: files
+  * Description: Exercise implicit per-fd context creation on 1 CPU for long duration
+- * Feature: context
+- * Run type: FULL
+  *
+  * SUBTEST: forked-active
+- * Description:
+- *   For each engine calculate the average performance of context creation and execution on
+- *   multiple parallel processes
+- * Feature: context
+- * Run type: FULL
++ * Description: For each engine calculate the average performance of context
++ *		creation and execution on multiple parallel processes
+  *
+  * SUBTEST: forked-active-all
+- * Description:
+- *   Calculate the average performance of context creation and it's execution using all engines
+- *   on multiple parallel processes
+- * Feature: context
+- * Run type: FULL
++ * Description: Calculate the average performance of context creation and it's
++ *		execution using all engines on multiple parallel processes
+  *
+  * SUBTEST: forked-files
+- * Description: Exercise implicit per-fd context creation on all CPUs for long duration
+- * Feature: context
+- * Run type: FULL
++ * Description: Exercise implicit per-fd context creation on all CPUs for long
++ *		duration
+  *
+  * SUBTEST: hog
+- * Description:
+- *   For each engine calculate the average performance of context creation and execution while
+- *   all other engines are hogging the resources
+- * Feature: context
+- * Run type: FULL
++ * Description: For each engine calculate the average performance of context
++ *		creation and execution while all other engines are hogging the
++ *		resources
+  *
+  * SUBTEST: iris-pipeline
+  * Description: Set, validate and execute particular context params
+- * Feature: context
+- * Run type: FULL
+  *
+  * SUBTEST: maximum-mem
+- * Description:
+- *   Create contexts upto available RAM size, calculate the average performance of their
+- *   execution on multiple parallel processes
+- * Feature: context
+- * Run type: FULL
++ * Description: Create contexts up to available RAM size, calculate the average
++ *		performance of their execution on multiple parallel processes
+  *
+  * SUBTEST: maximum-swap
+- * Description:
+- *   Create contexts upto available RAM+SWAP size, calculate the average performance of their
+- *   execution on multiple parallel processes
+- * Feature: context
+- * Run type: FULL
++ * Description: Create contexts up to available RAM+SWAP size, calculate the
++ *		average performance of their execution on multiple parallel
++ *		processes
++ *
+  */
+ 
+ IGT_TEST_DESCRIPTION("Test the context create ioctls");
+diff --git a/tests/intel/gem_ctx_exec.c b/tests/intel/gem_ctx_exec.c
+index 4376397a2..20d42d5b0 100644
+--- a/tests/intel/gem_ctx_exec.c
++++ b/tests/intel/gem_ctx_exec.c
+@@ -50,61 +50,38 @@
  /**
-  * TEST: gem busy
-  * Description: Basic check of busy-ioctl ABI.
-+ * Category: Desktop client
-+ * Functionality: semaphore
+  * TEST: gem ctx exec
+  * Description: Test context batch buffer execution.
++ * Category: Infrastructure
++ * Feature: context
++ * Functionality: execbuf
++ * Sub-category: Context
++ * Test category: GEM_Legacy
++ * Run type: FULL
+  *
+  * SUBTEST: basic
+- * Category: Infrastructure
+  * Description: Check the basic context batch buffer execution.
+- * Feature: context
+- * Functionality: command submission
+  * Run type: BAT
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-close-race
+- * Category: Infrastructure
+- * Description: Race the execution and interrupt handlers along a context, while closing it at a random time.
+- * Feature: context
+- * Functionality: command submission
+- * Run type: FULL
+- * Sub-category: i915
+- * Test category: GEM_Legacy
++ * Description: Race the execution and interrupt handlers along a context,
++ *		while closing it at a random time.
+  *
+  * SUBTEST: basic-invalid-context
+- * Category: Infrastructure
+  * Description: Verify that execbuf with invalid context fails.
+- * Feature: context
+- * Functionality: command submission
+- * Run type: FULL
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-nohangcheck
+- * Category: Server
+- * Description: Verify that contexts are automatically shotdown on close, if hangchecking is disabled.
+- * Feature: context
+- * Functionality: command submission
+- * Run type: FULL
+- * Sub-category: i915
+- * Test category: GEM_Legacy
++ * Description: Verify that contexts are automatically shutdown on close,
++ *		if hangchecking is disabled.
+  *
+  * SUBTEST: basic-norecovery
+- * Category: Server
+- * Description: Check the status of context after a hang by setting and unsetting the RECOVERABLE.
+- * Feature: context
+- * Functionality: command submission
+- * Run type: FULL
+- * Sub-category: i915
+- * Test category: GEM_Legacy
++ * Description: Check the status of context after a hang by setting and
++ *		unsetting the RECOVERABLE.
+  *
+  * SUBTEST: eviction
+  * Description: Check maximum number of buffers it can evict for a context.
+- * Feature: context
+- * Run type: FULL
+  *
+  * SUBTEST: reset-pin-leak
+- * Description: Check if the kernel doesn't leak the vma pin_count for the last context on reset.
+- * Feature: context
+- * Run type: FULL
++ * Description: Check if the kernel doesn't leak the vma pin_count for the last
++ *		context on reset.
+  */
+ 
+ IGT_TEST_DESCRIPTION("Test context batch buffer execution.");
+diff --git a/tests/intel/gem_ctx_isolation.c b/tests/intel/gem_ctx_isolation.c
+index d50a90597..89c023e09 100644
+--- a/tests/intel/gem_ctx_isolation.c
++++ b/tests/intel/gem_ctx_isolation.c
+@@ -28,62 +28,31 @@
+ #include "igt_types.h"
+ /**
+  * TEST: gem ctx isolation
+- * Run type: FULL
+- *
+- * SUBTEST: clean
+  * Category: Infrastructure
+  * Feature: context
+- * Functionality: security
+- * Sub-category: HW
++ * Functionality: priv/non-priv registers
++ * Sub-category: Security
+  * Test category: GEM_Legacy
++ * Run type: FULL
++ *
++ * SUBTEST: clean
+  *
+  * SUBTEST: dirty-create
+- * Category: Infrastructure
+- * Feature: context
+- * Functionality: security
+- * Sub-category: HW
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: dirty-switch
+- * Category: Infrastructure
+- * Feature: context
+- * Functionality: security
+- * Sub-category: HW
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: nonpriv
+- * Category: Infrastructure
+- * Feature: context
+- * Functionality: security
+- * Sub-category: HW
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: nonpriv-switch
+- * Category: Infrastructure
+- * Feature: context
+- * Functionality: security
+- * Sub-category: HW
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: preservation
+- * Category: Infrastructure
+- * Feature: context
+- * Functionality: security
+- * Sub-category: HW
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: preservation-S3
+- * Feature: context
+  *
+  * SUBTEST: preservation-S4
+- * Feature: context
+  *
+  * SUBTEST: preservation-reset
+- * Category: Infrastructure
+- * Feature: context
+- * Functionality: security
+- * Sub-category: HW
+- * Test category: GEM_Legacy
++ *
+  */
+ 
+ /* MAX_REG must be greater than the maximum register address. */
+diff --git a/tests/intel/gem_ctx_param.c b/tests/intel/gem_ctx_param.c
+index 9b44c86a0..c6fa31875 100644
+--- a/tests/intel/gem_ctx_param.c
++++ b/tests/intel/gem_ctx_param.c
+@@ -33,166 +33,80 @@
+ /**
+  * TEST: gem ctx param
+  * Description: Basic test for context set/get param input validation.
++ * Category: Infrastructure
++ * Feature: context
++ * Functionality: context
 + * Sub-category: uapi
 + * Test category: GEM_Legacy
-  * Feature: cmd_submission
   * Run type: FULL
   *
-  * SUBTEST: busy
-- * Category: Desktop client
-  * Description: Basic test to check busyness of each engine.
-- * Functionality: semaphore
+  * SUBTEST: basic
+- * Category: Infrastructure
+  * Description: Basic test for context get/set param ioctls using valid context
+- * Feature: context
+- * Functionality: context management
 - * Sub-category: i915
 - * Test category: GEM_Legacy
   *
-  * SUBTEST: busy@all
-- * Functionality: Semaphore
-  *
-  * SUBTEST: busy@all-engines
-  * Run type: BAT
-  *
-  * SUBTEST: close-race
-- * Category: Desktop client
-- * Description: Test to check race condition by randomly closing the handle using gem_close.
-- * Functionality: semaphore
+  * SUBTEST: basic-default
+- * Category: Infrastructure
+  * Description: Basic test for context get/set param ioctls using default context
+- * Feature: context
+- * Functionality: context management
 - * Sub-category: i915
 - * Test category: GEM_Legacy
-+ * Description: Test to check race condition by randomly closing the handle
-+ *		using gem_close.
   *
-  * SUBTEST: extended
-- * Category: Desktop client
-  * Description: Extended test to check busyness of dwstore-capable engines.
-- * Functionality: semaphore
+  * SUBTEST: get-priority-new-ctx
+- * Category: Infrastructure
+- * Description:
+- *   Test performed with context param set to priority.
+- *   Verify that priority is default for newly created context
+- * Feature: context
+- * Functionality: context management
 - * Sub-category: i915
+- * Test category: GEM_Legacy
++ * Description: Test performed with context param set to priority. Verify that
++ *		priority is default for newly created context
+  *
+  * SUBTEST: invalid-ctx-get
+- * Category: Infrastructure
+- * Description: Verify that context get param ioctl using invalid context returns relevant error
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
++ * Description: Verify that context get param ioctl using invalid context
++ *		returns relevant error
+  *
+  * SUBTEST: invalid-ctx-set
+- * Category: Infrastructure
+- * Description: Verify that context set param ioctl using invalid context returns relevant error
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
++ * Description: Verify that context set param ioctl using invalid context
++ *		returns relevant error
+  *
+  * SUBTEST: invalid-get-engines
+- * Category: Infrastructure
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-get-no-zeromap
+- * Category: Infrastructure
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-get-ringsize
+- * Category: Infrastructure
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-param-get
+- * Category: Infrastructure
+- * Description: Checks that fetching context parameters using an unused param value is erroneous
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
++ * Description: Checks that fetching context parameters using an unused param
++ *		value is erroneous
+  *
+  * SUBTEST: invalid-param-set
+- * Category: Infrastructure
+- * Description: Checks that setting context parameters using an unused param value is erroneous
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
++ * Description: Checks that setting context parameters using an unused param
++ *		value is erroneous
+  *
+  * SUBTEST: invalid-set-no-zeromap
+- * Category: Infrastructure
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-set-ringsize
+- * Category: Infrastructure
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-size-get
+- * Category: Infrastructure
+- * Description: Verify that context get param ioctl returns valid size for valid context
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
++ * Description: Verify that context get param ioctl returns valid size for
++ *		valid context
+  *
+  * SUBTEST: invalid-size-set
+- * Category: Infrastructure
+- * Description: Verify that context set param ioctl using invalid size returns relevant error
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
++ * Description: Verify that context set param ioctl using invalid size returns
++ *		relevant error
+  *
+  * SUBTEST: non-root-set
+- * Category: Infrastructure
+- * Description: Verify that context set param ioctl returns relevant error in non root mode
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
++ * Description: Verify that context set param ioctl returns relevant error in
++ *		non root mode
+  *
+  * SUBTEST: root-set
+- * Category: Infrastructure
+  * Description: Verify that context set param ioctl works fine in root mode
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: set-priority-invalid-size
+- * Category: Infrastructure
+- * Description:
+- *   Test performed with context param set to priority.
+- *   Verify that relevant error is returned on setting invalid ctx size with default priority
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
++ * Description: Test performed with context param set to priority. Verify that
++ *		relevant error is returned on setting invalid ctx size with
++ *		default priority
+  *
+  * SUBTEST: set-priority-not-supported
+- * Description:
+- *   Verify that context set param ioctl returns relevant error if driver doesn't supports
+- *   assigning custom priorities from userspace
+- * Feature: context, no-set-priority
++ * Description: Verify that context set param ioctl returns relevant error if
++ *		driver doesn't supports assigning custom priorities from
++ *		userspace
+  *
+  * SUBTEST: set-priority-range
+- * Category: Infrastructure
+- * Description:
+- *   Test performed with context param set to priority.
+- *   Change priority range to test value overflow
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
++ * Description: Test performed with context param set to priority. Change
++ *		priority range to test value overflow
+  *
+  * SUBTEST: vm
+- * Category: Infrastructure
+  * Description: Tests that multiple contexts can share the same VMA
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  */
+ 
+ IGT_TEST_DESCRIPTION("Basic test for context set/get param input validation.");
+diff --git a/tests/intel/gem_ctx_persistence.c b/tests/intel/gem_ctx_persistence.c
+index c6e2c5d77..3f10c0fa3 100644
+--- a/tests/intel/gem_ctx_persistence.c
++++ b/tests/intel/gem_ctx_persistence.c
+@@ -48,183 +48,76 @@
+ /**
+  * TEST: gem ctx persistence
+  * Feature: context
+- * Run type: FULL
+- *
+- * SUBTEST: engines-cleanup
+  * Category: Server
+- * Functionality: security
++ * Functionality: context
+  * Sub-category: Compute
+  * Test category: GEM_Legacy
++ * Run type: FULL
++ *
++ * SUBTEST: engines-cleanup
+  *
+  * SUBTEST: engines-hang
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines-hostile
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines-hostile-preempt
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines-mixed
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines-mixed-process
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines-persistence
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines-queued
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: file
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
 - * Test category: GEM_Legacy
   *
   * SUBTEST: hang
-- * Description: Basic test to check hang state behaviour of engines with increased timeout.
-+ * Description: Basic test to check hang state behaviour of engines with
-+ *		increased timeout.
-  *
-  * SUBTEST: hang-extended
-- * Description:
-- *   Extended test to check hang state behaviour of dwstore-capable engines with increased
-- *   timeout.
-+ * Description: Extended test to check hang state behaviour of dwstore-capable
-+ *		engines with increased timeout.
-  *
-  * SUBTEST: parallel
-- * Category: Desktop client
-- * Description:
-- *   Extended test to check busyness of dwstore-capable engines while doing parallel
-- *   execution.
-- * Functionality: semaphore
-- * Sub-category: i915
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
 - * Test category: GEM_Legacy
-+ * Description: Extended test to check busyness of dwstore-capable engines
-+ *		while doing parallel execution.
   *
-  * SUBTEST: semaphore
-- * Description:
-- *   Test to check busyness of engine on submitting a new batch while engine is busy in executing
-- *   previous batch.
-+ * Description: Test to check busyness of engine on submitting a new batch
-+ *		while engine is busy in executing previous batch.
+  * SUBTEST: heartbeat-close
+  *
+  * SUBTEST: heartbeat-hang
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: heartbeat-hostile
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: heartbeat-many
+  *
+  * SUBTEST: heartbeat-stop
+  *
+  * SUBTEST: hostile
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: idempotent
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-cleanup
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-hang
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-hostile
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-hostile-preempt
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-mixed
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-mixed-process
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-persistence
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-queued
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: many-contexts
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: process
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: processes
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: saturated-hostile
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: saturated-hostile-nopreempt
+  *
+  * SUBTEST: smoketest
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: userptr
+- * Category: Server
+- * Functionality: security
+- * Sub-category: Compute
+- * Test category: GEM_Legacy
++ *
   */
  
- #define PAGE_ALIGN(x) ALIGN(x, 4096)
-diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
-index e8f16d7d8..3442ecfd3 100644
---- a/tests/intel/gem_ccs.c
-+++ b/tests/intel/gem_ccs.c
-@@ -19,11 +19,11 @@
+ #define RESET_TIMEOUT_MS 2 * MSEC_PER_SEC; /* default: 640ms */
+diff --git a/tests/intel/gem_ctx_shared.c b/tests/intel/gem_ctx_shared.c
+index fd429306e..8b045e20a 100644
+--- a/tests/intel/gem_ctx_shared.c
++++ b/tests/intel/gem_ctx_shared.c
+@@ -50,71 +50,41 @@
  /**
-  * TEST: gem ccs
-  * Description: Exercise gen12 blitter with and without flatccs compression
-+ * Feature: flat_ccs_mapping
+  * TEST: gem ctx shared
+  * Description: Test shared contexts.
++ * Category: Desktop client
++ * Feature: context
++ * Functionality: shared contex
++ * Sub-category: Context
++ * Test category: GEM_Legacy
   * Run type: FULL
   *
-  * SUBTEST: block-copy-compressed
-  * Description: Check block-copy flatccs compressed blit
-- * Feature: flat_ccs_mapping
+  * SUBTEST: Q-in-order
+- * Feature: context
   *
-  * SUBTEST: block-copy-uncompressed
-  * Description: Check block-copy uncompressed blit
-@@ -31,19 +31,16 @@
+  * SUBTEST: Q-independent
+- * Feature: context
   *
-  * SUBTEST: block-multicopy-compressed
-  * Description: Check block-multicopy flatccs compressed blit
-- * Feature: flat_ccs_mapping
+  * SUBTEST: Q-out-order
+- * Feature: context
   *
-  * SUBTEST: block-multicopy-inplace
-  * Description: Check block-multicopy flatccs inplace decompression blit
-- * Feature: flat_ccs_mapping
+  * SUBTEST: Q-promotion
+- * Feature: context
   *
-  * SUBTEST: ctrl-surf-copy
-  * Description: Check flatccs data can be copied from/to surface
-- * Feature: flat_ccs_mapping
+  * SUBTEST: Q-smoketest
+- * Feature: context
   *
-  * SUBTEST: ctrl-surf-copy-new-ctx
-- * Description: Check flatccs data are physically tagged and visible in different contexts
-- * Feature: flat_ccs_mapping
-+ * Description: Check flatccs data are physically tagged and visible i
-+ *		different contexts
+  * SUBTEST: Q-smoketest-all
+- * Feature: context
   *
-  * SUBTEST: suspend-resume
-  * Description: Check flatccs data persists after suspend / resume (S0)
-diff --git a/tests/intel/gem_close_race.c b/tests/intel/gem_close_race.c
-index cef0ff025..9c2034ad3 100644
---- a/tests/intel/gem_close_race.c
-+++ b/tests/intel/gem_close_race.c
-@@ -51,57 +51,42 @@
- /**
-  * TEST: gem close race
-  * Description: Test try to race gem_close against workload submission.
-- *
-- * SUBTEST: basic-process
-  * Category: Infrastructure
-- * Description: Basic workload submission.
-  * Feature: synchronization
-  * Functionality: driver handler
-- * Run type: BAT
-- * Sub-category: i915
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-+ * Run type: FULL
-+ *
-+ * SUBTEST: basic-process
-+ * Description: Basic workload submission.
-+ * Run type: BAT
-  *
-  * SUBTEST: basic-threads
-- * Category: Infrastructure
-- * Description:
-- *   Share buffer handle across different drm fd's and trying to race gem_close against
-- *   continuous workload with minimum timeout.
-- * Feature: synchronization
-- * Functionality: driver handler
-+ * Description: Share buffer handle across different drm fd's and trying to
-+ *		race gem_close against continuous workload with minimum timeout.
-  * Run type: BAT
-- * Sub-category: i915
+  * SUBTEST: create-shared-gtt
+- * Category: Desktop client
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: Media
 - * Test category: GEM_Legacy
   *
-  * SUBTEST: contexts
-- * Description:
-- *   Share buffer handle across different drm fd's and trying to race gem_close against
-- *   continuous workload in other contexts.
-- * Feature: synchronization
-- * Run type: FULL
-+ * Description: Share buffer handle across different drm fd's and trying to
-+ *		race gem_close against continuous workload in other contexts.
+  * SUBTEST: detached-shared-gtt
+- * Category: Desktop client
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: Media
+- * Test category: GEM_Legacy
   *
-  * SUBTEST: gem-close-race
-- * Description:
-- *   Share buffer handle across different drm fd's and trying to race of gem_close against
-- *   continuous workload.
-- * Feature: synchronization
-- * Run type: FULL
-+ * Description: Share buffer handle across different drm fd's and trying to
-+ *		race of gem_close against continuous workload.
+  * SUBTEST: disjoint-timelines
+- * Category: Desktop client
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: Media
+- * Test category: GEM_Legacy
   *
-  * SUBTEST: multigpu-basic-process
-  * Description: Basic workload submission on multi-GPU machine.
-  * Feature: multigpu, synchronization
-- * Run type: FULL
-  * Test category: MultiGPU
+  * SUBTEST: exec-shared-gtt
+- * Category: Desktop client
+- * Feature: context
+- * Functionality: context management
+- * Sub-category: Media
+- * Test category: GEM_Legacy
   *
-  * SUBTEST: multigpu-basic-threads
-  * Description: Run basic-threads race on multi-GPU machine.
-  * Feature: multigpu, synchronization
-- * Run type: FULL
-  * Test category: MultiGPU
+  * SUBTEST: exec-single-timeline
+- * Category: Desktop client
+- * Feature: context
+- * Functionality: context management
+- * Test category: GEM_Legacy
   *
-  * SUBTEST: process-exit
-  * Description: Test try to race gem_close against submission of continuous workload.
-- * Feature: synchronization
-- * Run type: FULL
+  * SUBTEST: exhaust-shared-gtt
+- * Feature: context
+  *
+  * SUBTEST: exhaust-shared-gtt-lrc
+- * Feature: context
+  *
+  * SUBTEST: single-timeline
+- * Category: Desktop client
+- * Feature: context
+- * Functionality: context management
+- * Test category: GEM_Legacy
++ *
   */
  
- #define OBJECT_SIZE (256 * 1024)
-diff --git a/tests/intel/gem_create.c b/tests/intel/gem_create.c
-index 87fde2963..77ffceda4 100644
---- a/tests/intel/gem_create.c
-+++ b/tests/intel/gem_create.c
-@@ -64,101 +64,60 @@
- #include "i915_drm.h"
+ #define LO 0
+diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
+index 99891ad15..d6d12bd08 100644
+--- a/tests/intel/gem_eio.c
++++ b/tests/intel/gem_eio.c
+@@ -56,197 +56,78 @@
  /**
-  * TEST: gem create
-- * Description:
-- *   Ensure that basic gem_create and gem_create_ext works and that invalid input combinations
-- *   are rejected.
+  * TEST: gem eio
+  * Description: Test that specific ioctls report a wedged GPU (EIO).
 - * Run type: FULL
 - *
-- * SUBTEST: busy-create
-+ * Description: Ensure that basic gem_create and gem_create_ext works and that
-+ *		invalid input combinations are rejected.
+- * SUBTEST: banned
   * Category: Infrastructure
-- * Description: Create buffer objects while GPU is busy.
-  * Feature: mapping
-  * Functionality: buffer management
+  * Feature: reset
+  * Functionality: reset
 - * Sub-category: i915
 + * Sub-category: uapi
   * Test category: GEM_Legacy
 + * Run type: FULL
 + *
-+ * SUBTEST: busy-create
-+ * Description: Create buffer objects while GPU is busy.
++ * SUBTEST: banned
   *
-  * SUBTEST: create-clear
+  * SUBTEST: context-create
 - * Category: Infrastructure
-  * Description: Verify that all new objects are clear.
-- * Feature: mapping
-- * Functionality: buffer management
+- * Feature: reset
+- * Functionality: reset
 - * Sub-category: i915
 - * Test category: GEM_Legacy
   *
-  * SUBTEST: create-ext-cpu-access-big
-- * Description:
-- *   Verify the extreme cases with very large objects and.
-- *   I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS
-- * Feature: mapping
-+ * Description: Verify the extreme cases with very large objects and
-+ *		I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS
-  *
-  * SUBTEST: create-ext-cpu-access-sanity-check
-- * Description:
-- *   Verify the basic functionally and expected ABI contract around.
-- *   I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS
-- * Feature: mapping
-+ * Description: Verify the basic functionally and expected ABI contract around
-+ *		I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS
-  *
-  * SUBTEST: create-ext-placement-all
-  * Category: Infrastructure
-  * Description: Create objects in every memory region using create_ext.
-- * Feature: mapping
-- * Functionality: buffer management
-- * Sub-category: i915
-- * Test category: GEM_Legacy
-  *
-  * SUBTEST: create-ext-placement-each
+  * SUBTEST: create
 - * Category: Infrastructure
-- * Description: Create one object with memory pieces in each memory region using create_ext.
-- * Feature: mapping
-- * Functionality: buffer management
-- * Sub-category: i915
-- * Test category: GEM_Legacy
-+ * Description: Create one object with memory pieces in each memory region
-+ *		using create_ext.
-  *
-  * SUBTEST: create-ext-placement-sanity-check
-- * Category: Infrastructure
-  * Description: Exercise create_ext placements extension.
-- * Feature: mapping
-- * Functionality: buffer management
+  * Description: Validate i915_gem_create_ioctl, while gpu is wedged for fb scanout.
+- * Feature: reset
+- * Functionality: reset
 - * Sub-category: i915
 - * Test category: GEM_Legacy
   *
-  * SUBTEST: create-invalid-size
-- * Category: Infrastructure
-- * Description: Try to create a gem object of invalid size 0 and check if ioctl returns error.
-- * Feature: mapping
-- * Functionality: buffer management
-- * Sub-category: i915
-- * Test category: GEM_Legacy
-+ * Description: Try to create a gem object of invalid size 0 and check if
-+ *		ioctl returns error.
-  *
-  * SUBTEST: create-massive
-- * Category: Infrastructure
-- * Description: Exercise creation of buffer object with impossible size and check for the expected error.
-- * Feature: mapping
-- * Functionality: buffer management
-- * Sub-category: i915
-- * Test category: GEM_Legacy
-+ * Description: Exercise creation of buffer object with impossible size and
-+ *		check for the expected error.
-  *
-  * SUBTEST: create-size-update
-- * Category: Infrastructure
-- * Description: Try to create a gem object with size 15 and check actual created size.
-- * Feature: mapping
-- * Functionality: buffer management
-- * Sub-category: i915
-- * Test category: GEM_Legacy
-+ * Description: Try to create a gem object with size 15 and check actual
-+ *		created size.
-  *
-  * SUBTEST: create-valid-nonaligned
+  * SUBTEST: create-ext
 - * Category: Infrastructure
 - * Description:
-- *   Try to create an object with non-aligned size, check we got one with size aligned up to page
-- *   size and test we can write into the padded extra memory.
-- * Feature: mapping
-- * Functionality: buffer management
+- *   Validate i915_gem_create_ext_ioctl and checks if returns clear backing store while gpu is
+- *   wedged for fb scanout.
+- * Feature: reset
+- * Functionality: reset
 - * Sub-category: i915
 - * Test category: GEM_Legacy
-+ * Description: Try to create an object with non-aligned size, check we got one
-+ *		with size aligned up to page size and test we can write into
-+ *		the padded extra memory.
++ * Description: Validate i915_gem_create_ext_ioctl and checks if returns clear
++ *		backing store while gpu is wedged for fb scanout.
   *
-  * SUBTEST: hog-create
-  * Description: Create buffer objects while GPU is busy.
-- * Feature: mapping
+  * SUBTEST: execbuf
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: hibernate
+  * Description: Test that specific ioctls report a wedged GPU (EIO) during suspend
+- * Feature: hibernate, reset, suspend
+- * Test category: suspend
+  *
+  * SUBTEST: in-flight-10ms
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: in-flight-1us
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: in-flight-contexts-10ms
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: in-flight-contexts-1us
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: in-flight-contexts-immediate
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: in-flight-external
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: in-flight-immediate
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: in-flight-internal-10ms
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: in-flight-internal-1us
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: in-flight-internal-immediate
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: in-flight-suspend
+  * Description: Test that specific ioctls report a wedged GPU (EIO) during suspend
+  * Feature: reset, suspend
+- * Test category: suspend
+  *
+  * SUBTEST: kms
+  * Feature: kms_gem_interop, reset
+  *
+  * SUBTEST: reset-stress
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: suspend
+  * Description: Test that specific ioctls report a wedged GPU (EIO) during suspend
+  * Feature: reset, suspend
+- * Test category: suspend
+  *
+  * SUBTEST: throttle
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: unwedge-stress
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: wait-10ms
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: wait-1us
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: wait-immediate
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: wait-wedge-10ms
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: wait-wedge-1us
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: wait-wedge-immediate
+- * Category: Infrastructure
+- * Feature: reset
+- * Functionality: reset
+- * Sub-category: i915
 - * Test category: GEM_Legacy
 + *
   */
  
- IGT_TEST_DESCRIPTION("Ensure that basic gem_create and gem_create_ext works"
+ IGT_TEST_DESCRIPTION("Test that specific ioctls report a wedged GPU (EIO).");
+diff --git a/tests/intel/gem_exec_balancer.c b/tests/intel/gem_exec_balancer.c
+index 9190fc238..efa875889 100644
+--- a/tests/intel/gem_exec_balancer.c
++++ b/tests/intel/gem_exec_balancer.c
+@@ -41,219 +41,94 @@
+ /**
+  * TEST: gem exec balancer
+  * Description: Exercise in-kernel load-balancing
++ * Category: Desktop \ Server
++ * Feature: cmd_submission, media_scalability
++ * Functionality: load balancing
++ * Sub-category: CMD submission
++ * Test category: Media & Compute
+  * Run type: FULL
+  *
+  * SUBTEST: bonded-chain
+- * Feature: cmd_submission, media_scalability
+  *
+  * SUBTEST: bonded-dual
+- * Feature: cmd_submission, media_scalability
+  *
+  * SUBTEST: bonded-false-hang
+- * Feature: cmd_submission, media_scalability
+  *
+  * SUBTEST: bonded-pair
+- * Feature: cmd_submission, media_scalability
+  *
+  * SUBTEST: bonded-semaphore
+  * Feature: cmd_submission, media_scalability, multictx
+  *
+  * SUBTEST: bonded-sync
+- * Feature: cmd_submission, media_scalability
+  *
+  * SUBTEST: bonded-true-hang
+- * Feature: cmd_submission, media_scalability
+  *
+  * SUBTEST: busy
+- * Category: Desktop \ Server
+- * Feature: cmd_submission, media_scalability
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: fairslice
+- * Feature: cmd_submission, media_scalability
+  *
+  * SUBTEST: full
+- * Category: Desktop \ Server
+- * Feature: cmd_submission, media_scalability, multictx
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: full-late
+- * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability, multictx
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: full-late-pulse
+- * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability, multictx
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: full-pulse
+- * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability, multictx
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: hang
+- * Category: Desktop \ Server
+- * Feature: cmd_submission, media_scalability
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: hog
+- * Feature: cmd_submission, media_scalability
+  *
+  * SUBTEST: indices
+- * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability, multictx
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: individual
+- * Category: Desktop \ Server
+- * Feature: cmd_submission, media_scalability
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-balancer
+- * Category: Desktop \ Server
+- * Feature: cmd_submission, media_scalability
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-bonds
+- * Feature: cmd_submission, media_scalability
+  *
+  * SUBTEST: nohangcheck
+- * Category: Desktop \ Server
+- * Feature: cmd_submission, media_scalability
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: noheartbeat
+- * Category: Desktop \ Server
+- * Feature: cmd_submission, media_scalability
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: nop
+- * Category: Desktop \ Server
+- * Feature: cmd_submission, media_scalability
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: parallel
+- * Category: Desktop client
+- * Feature: cmd_submission, media_scalability
+- * Functionality: command submission
+- * Sub-category: Media
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: parallel-balancer
+- * Category: Desktop client
+- * Feature: cmd_submission, media_scalability
+- * Functionality: command submission
+- * Sub-category: Media
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: parallel-bb-first
+- * Category: Desktop client
+- * Feature: cmd_submission, media_scalability
+- * Functionality: command submission
+- * Sub-category: Media
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: parallel-contexts
+- * Category: Desktop client
+- * Feature: cmd_submission, media_scalability
+- * Functionality: command submission
+- * Sub-category: Media
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: parallel-dmabuf-import-out-fence
+- * Description: Regression test to check that dmabuf imported sync file can handle fence array
+- * Feature: cmd_submission, media_scalability
++ * Description: Regression test to check that dmabuf imported sync file can
++ *		handle fence array
+  *
+  * SUBTEST: parallel-keep-in-fence
+- * Category: Desktop client
+- * Feature: cmd_submission, media_scalability
+- * Functionality: command submission
+- * Sub-category: Media
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: parallel-keep-submit-fence
+- * Category: Desktop client
+- * Feature: cmd_submission, media_scalability
+- * Functionality: command submission
+- * Sub-category: Media
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: parallel-ordering
+- * Category: Desktop client
+- * Feature: cmd_submission, media_scalability
+- * Functionality: command submission
+- * Sub-category: Media
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: parallel-out-fence
+- * Category: Desktop client
+- * Feature: cmd_submission, media_scalability
+- * Functionality: command submission
+- * Sub-category: Media
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: persistence
+- * Category: Desktop \ Server
+- * Feature: cmd_submission, media_scalability
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: semaphore
+- * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability, multictx
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: sequential
+- * Category: Desktop \ Server
+- * Feature: cmd_submission, media_scalability
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: sliced
+- * Feature: cmd_submission, media_scalability
+  *
+  * SUBTEST: smoke
+- * Category: Desktop \ Server
+- * Feature: cmd_submission, media_scalability
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  *
+  * SUBTEST: waits
+- * Category: Desktop \ Server
+- * Feature: cmd_submission, media_scalability
+- * Functionality: load balancing
+- * Sub-category: Media & Compute
+- * Test category: GEM_Legacy
+  */
+ 
+ IGT_TEST_DESCRIPTION("Exercise in-kernel load-balancing");
 -- 
 2.34.1
 
