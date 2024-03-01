@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C85ACC5475B
-	for <igt-dev@archiver.kernel.org>; Fri,  1 Mar 2024 14:24:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C398C5475B
+	for <igt-dev@archiver.kernel.org>; Fri,  1 Mar 2024 14:34:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6940410F01C;
-	Fri,  1 Mar 2024 14:24:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B654B10F078;
+	Fri,  1 Mar 2024 14:34:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S/kRPdfQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="krfBZjZe";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FC6910F01E
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Mar 2024 14:24:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3152B10F074
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Mar 2024 14:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709303097; x=1740839097;
+ t=1709303640; x=1740839640;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=jAhLKoCmid16GclJ4KVyd0UodtoNu+FsiN5AjDxnhHg=;
- b=S/kRPdfQr/myjm565C57IKMNgW+oxHzQur6bfWUh/w0l5yg/Rf0mj2uo
- oZq1tYUoghJALVmK8PTi71AQjWXBJAi74kL1/r1JQOZB/yURCrgXL/K5C
- ZT2EZoThw/FcPY/yEvvd8ZOobBc3gJWwWik/nBQVpH1fRb9+fEClIsID4
- 1xqBWaG/9p9phZetPADzXa/yYcXSqvkK/T0WJOPwSS9gt+VG0Zkc5hXa2
- 9Y049krLKSIK0DoqvobS8BH49lW/U1OVVs/wBgn74OsV1gRuaF/9FEOig
- vjl8lBkqqK1VuH6VHTnTfF5lMNVRSAP2tgkd5r6J6ki3gNTssE9iPBnU9 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11000"; a="14545524"
-X-IronPort-AV: E=Sophos;i="6.06,196,1705392000"; d="scan'208";a="14545524"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Mar 2024 06:24:56 -0800
+ bh=Gv1lUs1zvW5hmTVuZfv6kzzwbzNMHuM1OQ2z5uehRAE=;
+ b=krfBZjZehs/wgPn1KMockNvARg6VwSSstk0O3AA8xI97WWglAfeFeuKh
+ mEXAM7hUyqoEu48jM8vbBf4kDZD34vN1T4V0vrhd50hrd0jLxe/9NZr5g
+ mFQK9XWXue6E3SkSQkksjWadQujzIjZApIuy0BHOvi8pXtBV2m50k9pfo
+ YtVZnGthR4WgL8YivRRhsF22fZK1ED9jiEV8HePzEZnIoulUTKtIKIRWs
+ dM3ceqR3sQn6xDXqfZ5XApfrCAm+4wClZ/gVDQlFcJph9QKMGaqIiYp9T
+ zpFnL2ZaVbdsUaHPJrPEv3zpLutTBb9jxdV5B+DQXURtmUHnj62NlhjjH A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11000"; a="26306121"
+X-IronPort-AV: E=Sophos;i="6.06,196,1705392000"; d="scan'208";a="26306121"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Mar 2024 06:33:59 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,196,1705392000"; d="scan'208";a="12779726"
+X-IronPort-AV: E=Sophos;i="6.06,196,1705392000"; d="scan'208";a="12807965"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2024 06:24:55 -0800
-Date: Fri, 1 Mar 2024 15:24:52 +0100
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2024 06:33:58 -0800
+Date: Fri, 1 Mar 2024 15:33:55 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Subject: Re: [PATCH i-g-t v2 2/5] tests/intel: Documentation refactoring part 2
-Message-ID: <20240301142452.ueld3yjjbqlly3op@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH i-g-t v2 4/5] tests/intel: Documentation refactoring part 4
+Message-ID: <20240301143355.g3qwxppdlg6j6dqp@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 References: <20240301090844.671493-1-katarzyna.piecielska@intel.com>
- <20240301090844.671493-3-katarzyna.piecielska@intel.com>
+ <20240301090844.671493-5-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240301090844.671493-3-katarzyna.piecielska@intel.com>
+In-Reply-To: <20240301090844.671493-5-katarzyna.piecielska@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,1216 +68,1918 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Katarzyna,
-On 2024-03-01 at 09:08:41 +0000, Katarzyna Piecielska wrote:
+On 2024-03-01 at 09:08:43 +0000, Katarzyna Piecielska wrote:
 > Unify documentation for Intel i915 tests that we have by moving
 > common parts to be available for all tests.
 > 
-> v2: fix checkpatch warnings
+> v2: fix checkpatch warning
 > 
 > Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  tests/intel/gem_ctx_create.c      |  77 ++++++----------
->  tests/intel/gem_ctx_exec.c        |  51 +++--------
->  tests/intel/gem_ctx_isolation.c   |  43 ++-------
->  tests/intel/gem_ctx_param.c       | 144 ++++++------------------------
->  tests/intel/gem_ctx_persistence.c | 117 ++----------------------
->  tests/intel/gem_ctx_shared.c      |  42 ++-------
->  tests/intel/gem_eio.c             | 133 ++-------------------------
->  tests/intel/gem_exec_balancer.c   | 139 ++--------------------------
->  8 files changed, 99 insertions(+), 647 deletions(-)
+>  tests/intel/gem_flink_basic.c   |  35 ++-----
+>  tests/intel/gem_linear_blits.c  |  23 ++---
+>  tests/intel/gem_lmem_swapping.c | 101 +-----------------
+>  tests/intel/gem_madvise.c       |  29 +++---
+>  tests/intel/gem_mmap_gtt.c      | 175 ++------------------------------
+>  tests/intel/gem_mmap_offset.c   |  75 ++------------
+>  tests/intel/gem_mmap_wc.c       |  43 +-------
+>  tests/intel/gem_ppgtt.c         |  16 +--
+>  tests/intel/gem_pxp.c           |  24 +----
+>  tests/intel/gem_ringfill.c      |  30 ++----
+>  tests/intel/gem_shrink.c        |   8 +-
+>  tests/intel/gem_softpin.c       | 134 ++----------------------
+>  tests/intel/gem_spin_batch.c    |  60 +----------
+>  tests/intel/gem_sync.c          |  86 ++--------------
+>  14 files changed, 79 insertions(+), 760 deletions(-)
 > 
-> diff --git a/tests/intel/gem_ctx_create.c b/tests/intel/gem_ctx_create.c
-> index 6d0877954..5fb0f9a1f 100644
-> --- a/tests/intel/gem_ctx_create.c
-> +++ b/tests/intel/gem_ctx_create.c
-> @@ -38,91 +38,64 @@
->  /**
->   * TEST: gem ctx create
->   * Description: Test the context create ioctls
-> - *
-> - * SUBTEST: active
-> - * Description:
-> - *   For each engine calculate the average performance of context creation execution and
-> - *   exercise context reclaim
-> + * Category: Infrastructure
->   * Feature: context
-> + * Functionality: context
-> + * Sub-category: Context
-> + * Test category: GEM_Legacy
->   * Run type: FULL
->   *
-> + * SUBTEST: active
-> + * Description: For each engine calculate the average performance of context
-> + *		creation execution and exercise context reclaim
-> + *
->   * SUBTEST: active-all
-> - * Description: Calculate the average performance of context creation and it's execution using all engines
-> - * Feature: context
-> - * Run type: FULL
-> + * Description: Calculate the average performance of context creation and it's
-> + *		execution using all engines
->   *
->   * SUBTEST: basic
-> - * Category: Infrastructure
->   * Description: Test random context creation
-> - * Feature: context
-> - * Functionality: context management
->   * Run type: BAT
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic-files
-> - * Category: Infrastructure
->   * Description: Exercise implicit per-fd context creation
-> - * Feature: context
-> - * Functionality: context management
->   * Run type: BAT
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: ext-param
->   * Description: Verify valid and invalid context extensions
-> - * Feature: context
-> - * Run type: FULL
->   *
->   * SUBTEST: files
->   * Description: Exercise implicit per-fd context creation on 1 CPU for long duration
-> - * Feature: context
-> - * Run type: FULL
->   *
->   * SUBTEST: forked-active
-> - * Description:
-> - *   For each engine calculate the average performance of context creation and execution on
-> - *   multiple parallel processes
-> - * Feature: context
-> - * Run type: FULL
-> + * Description: For each engine calculate the average performance of context
-> + *		creation and execution on multiple parallel processes
->   *
->   * SUBTEST: forked-active-all
-> - * Description:
-> - *   Calculate the average performance of context creation and it's execution using all engines
-> - *   on multiple parallel processes
-> - * Feature: context
-> - * Run type: FULL
-> + * Description: Calculate the average performance of context creation and it's
-> + *		execution using all engines on multiple parallel processes
->   *
->   * SUBTEST: forked-files
-> - * Description: Exercise implicit per-fd context creation on all CPUs for long duration
-> - * Feature: context
-> - * Run type: FULL
-> + * Description: Exercise implicit per-fd context creation on all CPUs for long
-> + *		duration
->   *
->   * SUBTEST: hog
-> - * Description:
-> - *   For each engine calculate the average performance of context creation and execution while
-> - *   all other engines are hogging the resources
-> - * Feature: context
-> - * Run type: FULL
-> + * Description: For each engine calculate the average performance of context
-> + *		creation and execution while all other engines are hogging the
-> + *		resources
->   *
->   * SUBTEST: iris-pipeline
->   * Description: Set, validate and execute particular context params
-> - * Feature: context
-> - * Run type: FULL
->   *
->   * SUBTEST: maximum-mem
-> - * Description:
-> - *   Create contexts upto available RAM size, calculate the average performance of their
-> - *   execution on multiple parallel processes
-> - * Feature: context
-> - * Run type: FULL
-> + * Description: Create contexts up to available RAM size, calculate the average
-> + *		performance of their execution on multiple parallel processes
->   *
->   * SUBTEST: maximum-swap
-> - * Description:
-> - *   Create contexts upto available RAM+SWAP size, calculate the average performance of their
-> - *   execution on multiple parallel processes
-> - * Feature: context
-> - * Run type: FULL
-> + * Description: Create contexts up to available RAM+SWAP size, calculate the
-> + *		average performance of their execution on multiple parallel
-> + *		processes
-> + *
->   */
->  
->  IGT_TEST_DESCRIPTION("Test the context create ioctls");
-> diff --git a/tests/intel/gem_ctx_exec.c b/tests/intel/gem_ctx_exec.c
-> index 4376397a2..20d42d5b0 100644
-> --- a/tests/intel/gem_ctx_exec.c
-> +++ b/tests/intel/gem_ctx_exec.c
-> @@ -50,61 +50,38 @@
->  /**
->   * TEST: gem ctx exec
->   * Description: Test context batch buffer execution.
-> + * Category: Infrastructure
-> + * Feature: context
-> + * Functionality: execbuf
-> + * Sub-category: Context
-> + * Test category: GEM_Legacy
-> + * Run type: FULL
->   *
->   * SUBTEST: basic
-> - * Category: Infrastructure
->   * Description: Check the basic context batch buffer execution.
-> - * Feature: context
-> - * Functionality: command submission
->   * Run type: BAT
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic-close-race
-> - * Category: Infrastructure
-> - * Description: Race the execution and interrupt handlers along a context, while closing it at a random time.
-> - * Feature: context
-> - * Functionality: command submission
-> - * Run type: FULL
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
-> + * Description: Race the execution and interrupt handlers along a context,
-> + *		while closing it at a random time.
->   *
->   * SUBTEST: basic-invalid-context
-> - * Category: Infrastructure
->   * Description: Verify that execbuf with invalid context fails.
-> - * Feature: context
-> - * Functionality: command submission
-> - * Run type: FULL
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic-nohangcheck
-> - * Category: Server
-> - * Description: Verify that contexts are automatically shotdown on close, if hangchecking is disabled.
-> - * Feature: context
-> - * Functionality: command submission
-> - * Run type: FULL
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
-> + * Description: Verify that contexts are automatically shutdown on close,
-> + *		if hangchecking is disabled.
->   *
->   * SUBTEST: basic-norecovery
-> - * Category: Server
-> - * Description: Check the status of context after a hang by setting and unsetting the RECOVERABLE.
-> - * Feature: context
-> - * Functionality: command submission
-> - * Run type: FULL
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
-> + * Description: Check the status of context after a hang by setting and
-> + *		unsetting the RECOVERABLE.
->   *
->   * SUBTEST: eviction
->   * Description: Check maximum number of buffers it can evict for a context.
-> - * Feature: context
-> - * Run type: FULL
->   *
->   * SUBTEST: reset-pin-leak
-> - * Description: Check if the kernel doesn't leak the vma pin_count for the last context on reset.
-> - * Feature: context
-> - * Run type: FULL
-> + * Description: Check if the kernel doesn't leak the vma pin_count for the last
-> + *		context on reset.
->   */
->  
->  IGT_TEST_DESCRIPTION("Test context batch buffer execution.");
-> diff --git a/tests/intel/gem_ctx_isolation.c b/tests/intel/gem_ctx_isolation.c
-> index d50a90597..89c023e09 100644
-> --- a/tests/intel/gem_ctx_isolation.c
-> +++ b/tests/intel/gem_ctx_isolation.c
-> @@ -28,62 +28,31 @@
+> diff --git a/tests/intel/gem_flink_basic.c b/tests/intel/gem_flink_basic.c
+> index e70cab4d1..85cd78a46 100644
+> --- a/tests/intel/gem_flink_basic.c
+> +++ b/tests/intel/gem_flink_basic.c
+> @@ -40,52 +40,29 @@
 >  #include "igt_types.h"
 >  /**
->   * TEST: gem ctx isolation
-> - * Run type: FULL
+>   * TEST: gem flink basic
+> - * Description: Tests for flink - a way to export a gem object by name
 > - *
-> - * SUBTEST: clean
->   * Category: Infrastructure
->   * Feature: context
-> - * Functionality: security
-> - * Sub-category: HW
-> + * Functionality: priv/non-priv registers
-> + * Sub-category: Security
+> - * SUBTEST: bad-flink
+>   * Category: Desktop client
+> - * Description: Verify that GEM_FLINK ioctl with invalid gem object fails.
+> + * Description: Tests for flink - a way to export a gem object by name
+>   * Feature: xorg_dri2
+>   * Functionality: buffer management
+> - * Run type: BAT
+>   * Sub-category: DRM
 >   * Test category: GEM_Legacy
-> + * Run type: FULL
+> + * Run type: BAT
 > + *
-> + * SUBTEST: clean
+> + * SUBTEST: bad-flink
+> + * Description: Verify that GEM_FLINK ioctl with invalid gem object fails.
 >   *
->   * SUBTEST: dirty-create
-> - * Category: Infrastructure
-> - * Feature: context
-> - * Functionality: security
-> - * Sub-category: HW
+>   * SUBTEST: bad-open
+> - * Category: Desktop client
+>   * Description: Verify that GEM_OPEN ioctl with invalid flink name fails.
+> - * Feature: xorg_dri2
+> - * Functionality: buffer management
+> - * Run type: BAT
+> - * Sub-category: DRM
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: dirty-switch
-> - * Category: Infrastructure
-> - * Feature: context
-> - * Functionality: security
-> - * Sub-category: HW
+>   * SUBTEST: basic
+> - * Category: Desktop client
+>   * Description: Check if gem object can be exported to global namespace and then opened.
+> - * Feature: xorg_dri2
+> - * Functionality: buffer management
+> - * Run type: BAT
+> - * Sub-category: DRM
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: nonpriv
-> - * Category: Infrastructure
-> - * Feature: context
-> - * Functionality: security
-> - * Sub-category: HW
+>   * SUBTEST: double-flink
+> - * Category: Desktop client
+>   * Description: Tests that multiple flinks for the same gem object share the same name.
+> - * Feature: xorg_dri2
+> - * Functionality: buffer management
+> - * Run type: BAT
+> - * Sub-category: DRM
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: nonpriv-switch
-> - * Category: Infrastructure
-> - * Feature: context
-> - * Functionality: security
-> - * Sub-category: HW
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: preservation
-> - * Category: Infrastructure
-> - * Feature: context
-> - * Functionality: security
-> - * Sub-category: HW
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: preservation-S3
-> - * Feature: context
->   *
->   * SUBTEST: preservation-S4
-> - * Feature: context
->   *
->   * SUBTEST: preservation-reset
-> - * Category: Infrastructure
-> - * Feature: context
-> - * Functionality: security
-> - * Sub-category: HW
+>   * SUBTEST: flink-lifetime
+> - * Category: Desktop client
+>   * Description: Tests flink lifetime by referencing from multiple descriptors.
+> - * Feature: xorg_dri2
+> - * Functionality: buffer management
+> - * Run type: BAT
+> - * Sub-category: DRM
 > - * Test category: GEM_Legacy
 > + *
 >   */
 >  
->  /* MAX_REG must be greater than the maximum register address. */
-> diff --git a/tests/intel/gem_ctx_param.c b/tests/intel/gem_ctx_param.c
-> index 9b44c86a0..c6fa31875 100644
-> --- a/tests/intel/gem_ctx_param.c
-> +++ b/tests/intel/gem_ctx_param.c
-> @@ -33,166 +33,80 @@
+>  IGT_TEST_DESCRIPTION("Tests for flink - a way to export a gem object by name");
+> diff --git a/tests/intel/gem_linear_blits.c b/tests/intel/gem_linear_blits.c
+> index cc28e43fe..64f220cb3 100644
+> --- a/tests/intel/gem_linear_blits.c
+> +++ b/tests/intel/gem_linear_blits.c
+> @@ -51,34 +51,23 @@
+>  #include "intel_blt.h"
 >  /**
->   * TEST: gem ctx param
->   * Description: Basic test for context set/get param input validation.
+>   * TEST: gem linear blits
 > + * Category: Infrastructure
-> + * Feature: context
-> + * Functionality: context
-> + * Sub-category: uapi
+>   * Description: Test doing many blits with a working set larger than the aperture size.
+> + * Feature: blitter
+> + * Functionality: blitter
+> + * Sub-category: CMD submission
 > + * Test category: GEM_Legacy
->   * Run type: FULL
+> + * Run type: FULL
 >   *
 >   * SUBTEST: basic
 > - * Category: Infrastructure
->   * Description: Basic test for context get/set param ioctls using valid context
-> - * Feature: context
-> - * Functionality: context management
+>   * Description: Basic blitter functionality check with 2 buffers
+> - * Feature: blitter
+> - * Functionality: command submission
+>   * Run type: BAT
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: basic-default
+>   * SUBTEST: interruptible
 > - * Category: Infrastructure
->   * Description: Basic test for context get/set param ioctls using default context
-> - * Feature: context
-> - * Functionality: context management
+>   * Description: Test with interrupts in between the parent process
+> - * Feature: blitter
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: get-priority-new-ctx
+>   * SUBTEST: normal
 > - * Category: Infrastructure
-> - * Description:
-> - *   Test performed with context param set to priority.
-> - *   Verify that priority is default for newly created context
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
-> + * Description: Test performed with context param set to priority. Verify that
-> + *		priority is default for newly created context
->   *
->   * SUBTEST: invalid-ctx-get
-> - * Category: Infrastructure
-> - * Description: Verify that context get param ioctl using invalid context returns relevant error
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
-> + * Description: Verify that context get param ioctl using invalid context
-> + *		returns relevant error
->   *
->   * SUBTEST: invalid-ctx-set
-> - * Category: Infrastructure
-> - * Description: Verify that context set param ioctl using invalid context returns relevant error
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
-> + * Description: Verify that context set param ioctl using invalid context
-> + *		returns relevant error
->   *
->   * SUBTEST: invalid-get-engines
-> - * Category: Infrastructure
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: invalid-get-no-zeromap
-> - * Category: Infrastructure
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: invalid-get-ringsize
-> - * Category: Infrastructure
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: invalid-param-get
-> - * Category: Infrastructure
-> - * Description: Checks that fetching context parameters using an unused param value is erroneous
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
-> + * Description: Checks that fetching context parameters using an unused param
-> + *		value is erroneous
->   *
->   * SUBTEST: invalid-param-set
-> - * Category: Infrastructure
-> - * Description: Checks that setting context parameters using an unused param value is erroneous
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
-> + * Description: Checks that setting context parameters using an unused param
-> + *		value is erroneous
->   *
->   * SUBTEST: invalid-set-no-zeromap
-> - * Category: Infrastructure
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: invalid-set-ringsize
-> - * Category: Infrastructure
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: invalid-size-get
-> - * Category: Infrastructure
-> - * Description: Verify that context get param ioctl returns valid size for valid context
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
-> + * Description: Verify that context get param ioctl returns valid size for
-> + *		valid context
->   *
->   * SUBTEST: invalid-size-set
-> - * Category: Infrastructure
-> - * Description: Verify that context set param ioctl using invalid size returns relevant error
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
-> + * Description: Verify that context set param ioctl using invalid size returns
-> + *		relevant error
->   *
->   * SUBTEST: non-root-set
-> - * Category: Infrastructure
-> - * Description: Verify that context set param ioctl returns relevant error in non root mode
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
-> + * Description: Verify that context set param ioctl returns relevant error in
-> + *		non root mode
->   *
->   * SUBTEST: root-set
-> - * Category: Infrastructure
->   * Description: Verify that context set param ioctl works fine in root mode
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: set-priority-invalid-size
-> - * Category: Infrastructure
-> - * Description:
-> - *   Test performed with context param set to priority.
-> - *   Verify that relevant error is returned on setting invalid ctx size with default priority
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
-> + * Description: Test performed with context param set to priority. Verify that
-> + *		relevant error is returned on setting invalid ctx size with
-> + *		default priority
->   *
->   * SUBTEST: set-priority-not-supported
-> - * Description:
-> - *   Verify that context set param ioctl returns relevant error if driver doesn't supports
-> - *   assigning custom priorities from userspace
-> - * Feature: context, no-set-priority
-> + * Description: Verify that context set param ioctl returns relevant error if
-> + *		driver doesn't supports assigning custom priorities from
-> + *		userspace
->   *
->   * SUBTEST: set-priority-range
-> - * Category: Infrastructure
-> - * Description:
-> - *   Test performed with context param set to priority.
-> - *   Change priority range to test value overflow
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
-> + * Description: Test performed with context param set to priority. Change
-> + *		priority range to test value overflow
->   *
->   * SUBTEST: vm
-> - * Category: Infrastructure
->   * Description: Tests that multiple contexts can share the same VMA
-> - * Feature: context
-> - * Functionality: context management
+>   * Description: The intent is to push beyond the working GTT size to force the driver to rebind the buffers
+> - * Feature: blitter
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   */
 >  
->  IGT_TEST_DESCRIPTION("Basic test for context set/get param input validation.");
-> diff --git a/tests/intel/gem_ctx_persistence.c b/tests/intel/gem_ctx_persistence.c
-> index c6e2c5d77..3f10c0fa3 100644
-> --- a/tests/intel/gem_ctx_persistence.c
-> +++ b/tests/intel/gem_ctx_persistence.c
-> @@ -48,183 +48,76 @@
+>  IGT_TEST_DESCRIPTION("Test doing many blits with a working set larger than the"
+> diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+> index 381510f1a..451d55423 100644
+> --- a/tests/intel/gem_lmem_swapping.c
+> +++ b/tests/intel/gem_lmem_swapping.c
+> @@ -26,170 +26,79 @@
+>  #include "intel_mocs.h"
 >  /**
->   * TEST: gem ctx persistence
->   * Feature: context
+>   * TEST: gem lmem swapping
+> - * Description: Exercise local memory swapping.
+> - *
+> - * SUBTEST: basic
+>   * Category: Server
+> - * Description: Exercise local memory swapping to system memory
+> + * Description: Exercise local memory swapping.
+>   * Feature: local_memory
+>   * Functionality: buffer management
+> - * Run type: BAT
+>   * Sub-category: i915
+>   * Test category: GEM_Legacy
+>   *
+> + * SUBTEST: basic
+> + * Description: Exercise local memory swapping to system memory
+> + * Run type: BAT
+> + *
+>   * SUBTEST: heavy-multi
+> - * Category: Server
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Functionality: buffer management
+> - * Run type: FULL
+> - * Sub-category: i915
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: heavy-random
+> - * Category: Server
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Functionality: buffer management
+> - * Run type: FULL
+> - * Sub-category: i915
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: heavy-verify-multi
+> - * Category: Server
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Functionality: buffer management
+> - * Run type: FULL
+> - * Sub-category: i915
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: heavy-verify-multi-ccs
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Run type: FULL
+>   *
+>   * SUBTEST: heavy-verify-random
+> - * Category: Server
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Functionality: buffer management
+> - * Run type: FULL
+> - * Sub-category: i915
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: heavy-verify-random-ccs
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Run type: FULL
+>   *
+>   * SUBTEST: massive
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Run type: FULL
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: massive-random
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Run type: FULL
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: parallel-multi
+> - * Category: Server
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Functionality: buffer management
+> - * Run type: FULL
+> - * Sub-category: i915
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: parallel-random
+> - * Category: Server
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Functionality: buffer management
+> - * Run type: FULL
+> - * Sub-category: i915
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: parallel-random-engines
+> - * Category: Server
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Functionality: buffer management
+>   * Run type: BAT
+> - * Sub-category: i915
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: parallel-random-verify
+> - * Category: Server
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Functionality: buffer management
+> - * Run type: FULL
+> - * Sub-category: i915
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: parallel-random-verify-ccs
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Run type: FULL
+>   *
+>   * SUBTEST: random
+> - * Category: Server
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Functionality: buffer management
+> - * Run type: FULL
+> - * Sub-category: i915
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: random-engines
+> - * Category: Server
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Functionality: buffer management
+>   * Run type: BAT
+> - * Sub-category: i915
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: smem-oom
+> - * Category: Server
+>   * Description: Exercise local memory swapping during exhausting system memory
+> - * Feature: local_memory
+> - * Functionality: buffer management
+> - * Run type: FULL
+> - * Sub-category: i915
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: verify
+> - * Category: Server
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Functionality: buffer management
+> - * Run type: FULL
+> - * Sub-category: i915
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: verify-ccs
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Run type: FULL
+>   *
+>   * SUBTEST: verify-random
+> - * Category: Server
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Functionality: buffer management
+>   * Run type: BAT
+> - * Sub-category: i915
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: verify-random-ccs
+>   * Description: Exercise local memory swapping to system memory
+> - * Feature: local_memory
+> - * Run type: FULL
+>   */
+>  
+>  IGT_TEST_DESCRIPTION("Exercise local memory swapping.");
+> diff --git a/tests/intel/gem_madvise.c b/tests/intel/gem_madvise.c
+> index 06b3ddf32..b443d16ae 100644
+> --- a/tests/intel/gem_madvise.c
+> +++ b/tests/intel/gem_madvise.c
+> @@ -40,35 +40,30 @@
+>  #include "i915/gem_create.h"
+>  /**
+>   * TEST: gem madvise
+> - * Description: Checks that the kernel reports EFAULT when trying to use purged bo.
 > - * Run type: FULL
 > - *
-> - * SUBTEST: engines-cleanup
->   * Category: Server
-> - * Functionality: security
-> + * Functionality: context
->   * Sub-category: Compute
+> - * SUBTEST: dontneed-after-mmap
+>   * Category: Desktop client
+> - * Description:
+> - *   Check signal for Segmentation Fault and bus error after obtaining a purgeable object and
+> - *   calling for sighandler.
+> + * Description: Checks that the kernel reports EFAULT when trying to use purged bo.
+>   * Feature: caching, mapping
+>   * Functionality: buffer management
+>   * Sub-category: i915
 >   * Test category: GEM_Legacy
 > + * Run type: FULL
 > + *
-> + * SUBTEST: engines-cleanup
+> + * SUBTEST: dontneed-after-mmap
+> + * Description: Check signal for Segmentation Fault and bus error after
+> + *		obtaining a purgeable object and calling for sighandler.
 >   *
->   * SUBTEST: engines-hang
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: dontneed-before-exec
+> - * Description: Check if EXECBUFFER2 reports EFAULT when trying to submit purged bo for GPU.
+> + * Description: Check if EXECBUFFER2 reports EFAULT when trying to submit
+> + *		purged bo for GPU.
+>   * Feature: caching, gtt, mapping
 >   *
->   * SUBTEST: engines-hostile
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
+>   * SUBTEST: dontneed-before-mmap
+> - * Category: Desktop client
+> - * Description:
+> - *   Check signal for Segmentation Fault and bus error before obtaining a purgeable object and
+> - *   calling for sighandler.
+> - * Feature: caching, mapping
+> - * Functionality: buffer management
+> - * Sub-category: i915
 > - * Test category: GEM_Legacy
+> + * Description: Check signal for Segmentation Fault and bus error before
+> + *		obtaining a purgeable object and calling for sighandler.
 >   *
->   * SUBTEST: engines-hostile-preempt
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: dontneed-before-pwrite
+> - * Description: Check if PWRITE reports EFAULT when trying to use purged bo for write operation.
+> + * Description: Check if PWRITE reports EFAULT when trying to use purged bo
+> + *		for write operation.
+>   * Feature: caching, gtt, mapping
+>   */
+>  
+> diff --git a/tests/intel/gem_mmap_gtt.c b/tests/intel/gem_mmap_gtt.c
+> index 9c06785d2..9aecd08ce 100644
+> --- a/tests/intel/gem_mmap_gtt.c
+> +++ b/tests/intel/gem_mmap_gtt.c
+> @@ -49,490 +49,331 @@
+>  /**
+>   * TEST: gem mmap gtt
+>   * Description: Ensure that all operations around MMAP_GTT ioctl works.
+> + * Feature: gtt
+> + * Run type: FULL
 >   *
->   * SUBTEST: engines-mixed
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: bad-object
+>   * Description: Verify mapping to invalid gem objects fails.
+> - * Feature: gtt
+> - * Run type: FULL
 >   *
->   * SUBTEST: engines-mixed-process
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: basic
+>   * Description: Basic checks of GEM_MMAP_GTT ioctl.
+> - * Feature: gtt
+> - * Run type: BAT
 >   *
->   * SUBTEST: engines-persistence
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: basic-copy
+>   * Description: Test copy between two GTT mmappings.
+> - * Feature: gtt
+> - * Run type: FULL
 >   *
->   * SUBTEST: engines-queued
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: basic-read
+>   * Description: Test to read content from GTT mmapped object.
+> - * Feature: gtt
+> - * Run type: FULL
 >   *
->   * SUBTEST: file
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: basic-read-write
+>   * Description: Check basic read->write order of a GTT mmapped bo.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: basic-read-write-distinct
+>   * Description: Check distinct read->write order of a GTT mmapped bo.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: basic-short
+>   * Description: Test mmaping less than the full object.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: basic-small-bo
+> - * Description: Check mmap access to a small buffer object by CPU directly and through GTT in sequence.
+> - * Feature: gtt
+> - * Run type: FULL
+> + * Description: Check mmap access to a small buffer object by CPU directly and
+> + *		through GTT in sequence.
+>   *
+>   * SUBTEST: basic-small-bo-tiledX
+> - * Description:
+> - *   Check mmap access to a small X-tiled buffer object by CPU directly and through GTT in
+> - *   sequence.
+> - * Feature: gtt
+> - * Run type: FULL
+> + * Description: Check mmap access to a small X-tiled buffer object by CPU
+> + *		directly and through GTT in sequence.
+>   *
+>   * SUBTEST: basic-small-bo-tiledY
+> - * Description:
+> - *   Check mmap access to a small Y-tiled buffer object by CPU directly and through GTT in
+> + * Description: Check mmap access to a small Y-tiled buffer object by CPU
+> + *		directly and through GTT in
+>   *   sequence.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: basic-small-copy
+>   * Description: Check page by page copying between two GTT mmapped normal-small bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: basic-small-copy-XY
+>   * Description: Check page by page copying between two GTT mmapped tiled-small bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: basic-small-copy-odd
+>   * Description: Check page by page copying between two GTT mmapped odd tiled-small bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: basic-wc
+>   * Description:
+>   *   Check the performance of WC writes with WC reads of GTT and WC writes of GTT with WB writes of.
+>   *   CPU.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: basic-write
+>   * Description: Test to write content to GTT mmapped object.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: basic-write-cpu-read-gtt
+>   * Description: Check coherency between GTT and CPU mmappings with LLC.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: basic-write-gtt
+>   * Description: Test creates a prefault object into GTT and writes into it from another GTT mmapped.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: basic-write-read
+>   * Description: Check basic write->read order of a GTT mmapped bo.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: basic-write-read-distinct
+>   * Description: Check distinct write->read order of a GTT mmapped bo.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: big-bo
+>   * Description: Check mmap access to a big buffer object by CPU directly and through GTT in sequence.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: big-bo-tiledX
+>   * Description: Check mmap access to a big X-tiled buffer object by CPU directly and through GTT in sequence.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: big-bo-tiledY
+>   * Description: Check mmap access to a big Y-tiled buffer object by CPU directly and through GTT in sequence.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: big-copy
+>   * Description: Check page by page copying between two GTT mmapped normal-big bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: big-copy-XY
+>   * Description: Check page by page copying between two GTT mmapped tiled-big bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: big-copy-odd
+>   * Description: Check page by page copying between two GTT mmapped odd tiled-big bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: clflush
+>   * Description: Check the userspace clflushing of the GTT mmap.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: close-race
+>   * Description:
+>   *   Test to check that a few threads opening and closing handles cause explosion in other threads
+>   *   in the process of mmaping that handle.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: coherency
+>   * Description: Check whether a write through the GTT is immediately visible to the CPU.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: cpuset-basic-small-copy
+>   * Description:
+>   *   Add forked contention with lighter variant (single cpu) and check page by page copying
+>   *   between two GTT mmapped normal-small bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: cpuset-basic-small-copy-XY
+>   * Description:
+>   *   Add forked contention with lighter variant (single cpu) and check page by page copying
+>   *   between two GTT mmapped tiled-small bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: cpuset-basic-small-copy-odd
+>   * Description:
+>   *   Add forked contention with lighter variant (single cpu) and check page by page copying
+>   *   between two GTT mmapped odd tiled-small bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: cpuset-big-copy
+>   * Description:
+>   *   Add forked contention with lighter variant (single cpu) and check page by page copying
+>   *   between two GTT mmapped normal-big bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: cpuset-big-copy-XY
+>   * Description:
+>   *   Add forked contention with lighter variant (single cpu) and check page by page copying
+>   *   between two GTT mmapped tiled-big bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: cpuset-big-copy-odd
+>   * Description:
+>   *   Add forked contention with lighter variant (single cpu) and check page by page copying
+>   *   between two GTT mmapped odd tiled-big bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: cpuset-huge-copy
+>   * Description:
+>   *   Add forked contention with lighter variant (single cpu) and check page by page copying
+>   *   between two GTT mmapped normal-huge bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: cpuset-huge-copy-XY
+>   * Description:
+>   *   Add forked contention with lighter variant (single cpu) and check page by page copying
+>   *   between two GTT mmapped tiled-huge bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: cpuset-huge-copy-odd
+>   * Description:
+>   *   Add forked contention with lighter variant (single cpu) and check page by page copying
+>   *   between two GTT mmapped odd tiled-huge bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: cpuset-medium-copy
+>   * Description:
+>   *   Add forked contention with lighter variant (single cpu) and check page by page copying
+>   *   between two GTT mmapped normal-medium bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: cpuset-medium-copy-XY
+>   * Description:
+>   *   Add forked contention with lighter variant (single cpu) and check page by page copying
+>   *   between two GTT mmapped tiled-medium bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: cpuset-medium-copy-odd
+>   * Description:
+>   *   Add forked contention with lighter variant (single cpu) and check page by page copying
+>   *   between two GTT mmapped odd tiled-medium bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: cpuset-swap-copy
+>   * Description:
+>   *   Add forked contention with lighter variant (single cpu) and check page by page copying
+>   *   between two GTT mmapped normal-huge bo's larger than physical memory and resulting in
+>   *   thrashing of swap space.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: cpuset-swap-copy-XY
+>   * Description:
+>   *   Add forked contention with lighter variant (single cpu) and check page by page copying
+>   *   between two GTT mmapped tiled-huge bo's larger than physical memory and resulting in
+>   *   thrashing of swap space.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: cpuset-swap-copy-odd
+>   * Description:
+>   *   Add forked contention with lighter variant (single cpu) and check page by page copying
+>   *   between two GTT mmapped odd tiled-huge bo's larger than physical memory and resulting in
+>   *   thrashing of swap space.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: fault-concurrent
+>   * Description: Excercise concurrent pagefaulting of a GTT mmaped bo.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: fault-concurrent-X
+>   * Description: Excercise concurrent pagefaulting of a X-tiled GTT mmaped bo.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: fault-concurrent-Y
+>   * Description: Excercise concurrent pagefaulting of a Y-tiled GTT mmaped bo.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: flink-race
+>   * Description:
+>   *   Test to check that a few threads opening and closing flink handles cause explosion in other
+>   *   threads in the process of mmaping that handle.
+>   * Feature: gtt, xorg_dri2
+> - * Run type: FULL
+>   *
+>   * SUBTEST: forked-basic-small-copy
+>   * Description:
+>   *   Add forked contention and check page by page copying between two GTT mmapped normal-small
+>   *   bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: forked-basic-small-copy-XY
+>   * Description:
+>   *   Add forked contention and check page by page copying between two GTT mmapped tiled-small
+>   *   bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: forked-basic-small-copy-odd
+>   * Description:
+>   *   Add forked contention and check page by page copying between two GTT mmapped odd tiled-small
+>   *   bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: forked-big-copy
+>   * Description:
+>   *   Add forked contention and check page by page copying between two GTT mmapped normal-big
+>   *   bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: forked-big-copy-XY
+>   * Description: Add forked contention and check page by page copying between two GTT mmapped tiled-big bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: forked-big-copy-odd
+>   * Description:
+>   *   Add forked contention and check page by page copying between two GTT mmapped odd tiled-big
+>   *   bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: forked-huge-copy
+>   * Description:
+>   *   Add forked contention and check page by page copying between two GTT mmapped normal-huge
+>   *   bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: forked-huge-copy-XY
+>   * Description:
+>   *   Add forked contention and check page by page copying between two GTT mmapped tiled-huge
+>   *   bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: forked-huge-copy-odd
+>   * Description:
+>   *   Add forked contention and check page by page copying between two GTT mmapped odd tiled-huge
+>   *   bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: forked-medium-copy
+>   * Description:
+>   *   Add forked contention and check page by page copying between two GTT mmapped normal-medium
+>   *   bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: forked-medium-copy-XY
+>   * Description:
+>   *   Add forked contention and check page by page copying between two GTT mmapped tiled-medium
+>   *   bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: forked-medium-copy-odd
+>   * Description:
+>   *   Add forked contention and check page by page copying between two GTT mmapped odd
+>   *   tiled-medium bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: forked-swap-copy
+>   * Description:
+>   *   Add forked contention and check page by page copying between two GTT mmapped normal-huge
+>   *   bo's larger than physical memory and resulting in thrashing of swap space.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: forked-swap-copy-XY
+>   * Description:
+>   *   Add forked contention and check page by page copying between two GTT mmapped tiled-huge bo's
+>   *   larger than physical memory and resulting in thrashing of swap space.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: forked-swap-copy-odd
+>   * Description:
+>   *   Add forked contention and check page by page copying between two GTT mmapped odd tiled-huge
+>   *   bo's larger than physical memory and resulting in thrashing of swap space.
+> - * Feature: gtt
+> - * Run type: FULL
 >   *
 >   * SUBTEST: hang
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
+>   * Description: Check read/writes across a GPU reset.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: hang-busy
+>   * Description: Exercise the GTT mmap revocation for a reset on a busy object.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: hang-user
+>   * Description: Mix a busy hang with GTT and userptr.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: huge-bo
+>   * Description: Check mmap access to a huge buffer object by CPU directly and through GTT in sequence.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: huge-bo-tiledX
+>   * Description: Check mmap access to a huge X-tiled buffer object by CPU directly and through GTT in sequence.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: huge-bo-tiledY
+>   * Description: Check mmap access to a huge Y-tiled buffer object by CPU directly and through GTT in sequence.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: huge-copy
+>   * Description: Check page by page copying between two GTT mmapped normal-huge bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: huge-copy-XY
+>   * Description: Check page by page copying between two GTT mmapped tiled-huge bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: huge-copy-odd
+>   * Description: Check page by page copying between two GTT mmapped odd tiled-huge bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: isolation
+>   * Description:
+>   *   Test mmap_offset lifetime, closing the object on another file should not affect the local
+>   *   mmap_offset.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: medium-copy
+>   * Description: Check page by page copying between two GTT mmapped normal-medium bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: medium-copy-XY
+>   * Description: Check page by page copying between two GTT mmapped tiled-medium bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: medium-copy-odd
+>   * Description: Check page by page copying between two GTT mmapped odd tiled-medium bo's.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: pf-nonblock
+>   * Description: Check that the initial pagefault is non-blocking.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: ptrace
+>   * Description: Inspect a GTT mmap using ptrace().
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: swap-copy
+>   * Description:
+>   *   Check page by page copying between two GTT mmapped normal-huge bo's larger than physical
+>   *   memory and resulting in thrashing of swap space.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: swap-copy-XY
+>   * Description:
+>   *   Check page by page copying between two GTT mmapped tiled-huge bo's larger than physical
+>   *   memory and resulting in thrashing of swap space.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: swap-copy-odd
+>   * Description:
+>   *   Check page by page copying between two GTT mmapped odd tiled-huge bo's larger than physical
+>   *   memory and resulting in thrashing of swap space.
+> - * Feature: gtt
+> - * Run type: FULL
+>   *
+>   * SUBTEST: zero-extend
+>   * Description: Test MMAP_GTT extension validity.
+> - * Feature: gtt
+> - * Run type: FULL
+>   */
+>  
+>  #ifndef PAGE_SIZE
+> diff --git a/tests/intel/gem_mmap_offset.c b/tests/intel/gem_mmap_offset.c
+> index bc801cd04..b069b80f6 100644
+> --- a/tests/intel/gem_mmap_offset.c
+> +++ b/tests/intel/gem_mmap_offset.c
+> @@ -40,90 +40,27 @@
+>  /**
+>   * TEST: gem mmap offset
+>   * Description: Basic MMAP_OFFSET IOCTL tests for mem regions
+> - * Run type: FULL
 > - * Test category: GEM_Legacy
+> - *
+> - * SUBTEST: bad-extensions
+>   * Category: Infrastructure
+>   * Feature: mapping
+> - * Functionality: memory management
+> - * Sub-category: i915
+> + * Functionality: mapping
+> + * Sub-category: Memory management
+> + * Test category: GEM_Legacy
+> + * Run type: FULL
 >   *
->   * SUBTEST: heartbeat-close
->   *
->   * SUBTEST: heartbeat-hang
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: heartbeat-hostile
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: heartbeat-many
->   *
->   * SUBTEST: heartbeat-stop
->   *
->   * SUBTEST: hostile
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: idempotent
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: legacy-engines-cleanup
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: legacy-engines-hang
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: legacy-engines-hostile
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: legacy-engines-hostile-preempt
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: legacy-engines-mixed
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: legacy-engines-mixed-process
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: legacy-engines-persistence
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: legacy-engines-queued
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: many-contexts
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: process
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: processes
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: saturated-hostile
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: saturated-hostile-nopreempt
->   *
->   * SUBTEST: smoketest
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: userptr
-> - * Category: Server
-> - * Functionality: security
-> - * Sub-category: Compute
-> - * Test category: GEM_Legacy
+> + * SUBTEST: bad-extensions
+>   * SUBTEST: bad-flags
+> - * Category: Infrastructure
+> - * Feature: mapping
+> - * Functionality: memory management
+> - * Sub-category: i915
+> - *
+>   * SUBTEST: bad-object
+> - * Category: Infrastructure
+> - * Description: Verify mapping to invalid gem objects won't be created
+> - * Feature: mapping
+> - * Functionality: memory management
+> - * Sub-category: i915
+> - *
+>   * SUBTEST: basic-uaf
+> - * Category: Infrastructure
+> - * Description: Check buffer object mapping persists after gem_close
+> - * Feature: mapping
+> - * Functionality: memory management
+> - * Sub-category: i915
+> - *
+>   * SUBTEST: blt-coherency
+> - * Category: Infrastructure
+> - * Feature: mapping
+> - * Functionality: memory management
+> - * Sub-category: i915
+> - *
+>   * SUBTEST: clear
+> - * Category: Infrastructure
+> - * Feature: mapping
+> - * Functionality: memory management
+> - * Sub-category: i915
+> - *
+>   * SUBTEST: close-race
+> - * Category: Infrastructure
+> - * Description: Check race between close and mmap offset between threads
+> - * Feature: mapping
+> - * Functionality: memory management
+> - * Sub-category: i915
+> - *
+>   * SUBTEST: isolation
+> - * Category: Infrastructure
+> - * Feature: mapping
+> - * Functionality: memory management
+> - * Sub-category: i915
+> - *
+>   * SUBTEST: oob-read
+> - * Category: Infrastructure
+> - * Description: Check for out-of-bound access in vm_access
+> - * Feature: mapping
+> - * Functionality: memory management
+> - * Sub-category: i915
+> - *
+>   * SUBTEST: open-flood
+> - * Category: Infrastructure
+> - * Feature: mapping
+> - * Functionality: memory management
+> - * Sub-category: i915
+> - *
+>   * SUBTEST: perf
+> - * Category: Infrastructure
+> - * Feature: mapping
+> - * Functionality: memory management
+> - * Sub-category: i915
+> - *
+>   * SUBTEST: pf-nonblock
+> - * Category: Infrastructure
+> - * Feature: mapping
+> - * Functionality: memory management
+> - * Sub-category: i915
+> - *
+>   * SUBTEST: ptrace
+> - * Category: Infrastructure
+> - * Feature: mapping
+> - * Functionality: memory management
+> - * Sub-category: i915
 > + *
 >   */
 >  
->  #define RESET_TIMEOUT_MS 2 * MSEC_PER_SEC; /* default: 640ms */
-> diff --git a/tests/intel/gem_ctx_shared.c b/tests/intel/gem_ctx_shared.c
-> index fd429306e..8b045e20a 100644
-> --- a/tests/intel/gem_ctx_shared.c
-> +++ b/tests/intel/gem_ctx_shared.c
-> @@ -50,71 +50,41 @@
+>  IGT_TEST_DESCRIPTION("Basic MMAP_OFFSET IOCTL tests for mem regions\n");
+> diff --git a/tests/intel/gem_mmap_wc.c b/tests/intel/gem_mmap_wc.c
+> index c56e8c353..a82d779f9 100644
+> --- a/tests/intel/gem_mmap_wc.c
+> +++ b/tests/intel/gem_mmap_wc.c
+> @@ -41,70 +41,31 @@
+>  #include "i915/gem_create.h"
 >  /**
->   * TEST: gem ctx shared
->   * Description: Test shared contexts.
+>   * TEST: gem mmap wc
+> + * Feature: caching, mapping
+>   * Run type: FULL
+>   *
+>   * SUBTEST: bad-object
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: bad-offset
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: bad-size
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: close
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: coherency
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: copy
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: fault-concurrent
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: invalid-flags
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: pf-nonblock
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: read
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: read-write
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: read-write-distinct
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: set-cache-level
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: write
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: write-cpu-read-wc
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: write-cpu-read-wc-unflushed
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: write-gtt-read-wc
+> - * Feature: caching, gtt, mapping
+> - *
+>   * SUBTEST: write-prefaulted
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: write-read
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: write-read-distinct
+> - * Feature: caching, mapping
+> - *
+>   * SUBTEST: write-wc-read-gtt
+> - * Feature: caching, gtt, mapping
+> + *
+>   */
+>  
+>  static int OBJECT_SIZE = 16*1024*1024;
+> diff --git a/tests/intel/gem_ppgtt.c b/tests/intel/gem_ppgtt.c
+> index b6081b1e9..c25bf5f88 100644
+> --- a/tests/intel/gem_ppgtt.c
+> +++ b/tests/intel/gem_ppgtt.c
+> @@ -41,30 +41,24 @@
+>  #include "igt_debugfs.h"
+>  /**
+>   * TEST: gem ppgtt
 > + * Category: Desktop client
-> + * Feature: context
-> + * Functionality: shared contex
-> + * Sub-category: Context
+> + * Feature: mapping, xorg_dri2
+> + * Functionality: buffer management
+> + * Sub-category: Memory management
 > + * Test category: GEM_Legacy
 >   * Run type: FULL
 >   *
->   * SUBTEST: Q-in-order
-> - * Feature: context
+>   * SUBTEST: blt-vs-render-ctx0
+> - * Feature: mapping
 >   *
->   * SUBTEST: Q-independent
-> - * Feature: context
+>   * SUBTEST: blt-vs-render-ctxN
+> - * Feature: mapping
 >   *
->   * SUBTEST: Q-out-order
-> - * Feature: context
->   *
->   * SUBTEST: Q-promotion
-> - * Feature: context
->   *
->   * SUBTEST: Q-smoketest
-> - * Feature: context
->   *
->   * SUBTEST: Q-smoketest-all
-> - * Feature: context
->   *
->   * SUBTEST: create-shared-gtt
+>   * SUBTEST: flink-and-close-vma-leak
 > - * Category: Desktop client
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: Media
+> - * Feature: mapping, xorg_dri2
+> - * Functionality: buffer management
+> - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: detached-shared-gtt
-> - * Category: Desktop client
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: Media
+>   * SUBTEST: shrink-vs-evict-any
+>   * Description: Regression test to verify GTT eviction can't randomly fail due to object lock contention
+> - * Feature: mapping
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: disjoint-timelines
-> - * Category: Desktop client
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: Media
+>   * SUBTEST: shrink-vs-evict-pinned
+>   * Description: Regression test to verify GTT eviction can't randomly fail due to object lock contention
+> - * Feature: mapping
 > - * Test category: GEM_Legacy
->   *
->   * SUBTEST: exec-shared-gtt
-> - * Category: Desktop client
-> - * Feature: context
-> - * Functionality: context management
-> - * Sub-category: Media
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: exec-single-timeline
-> - * Category: Desktop client
-> - * Feature: context
-> - * Functionality: context management
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: exhaust-shared-gtt
-> - * Feature: context
->   *
->   * SUBTEST: exhaust-shared-gtt-lrc
-> - * Feature: context
->   *
->   * SUBTEST: single-timeline
-> - * Category: Desktop client
-> - * Feature: context
-> - * Functionality: context management
-> - * Test category: GEM_Legacy
-> + *
 >   */
 >  
->  #define LO 0
-> diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
-> index 99891ad15..d6d12bd08 100644
-> --- a/tests/intel/gem_eio.c
-> +++ b/tests/intel/gem_eio.c
-> @@ -56,197 +56,78 @@
+>  #define WIDTH 512
+> diff --git a/tests/intel/gem_pxp.c b/tests/intel/gem_pxp.c
+> index 9cc6b9c2f..6a7f8e487 100644
+> --- a/tests/intel/gem_pxp.c
+> +++ b/tests/intel/gem_pxp.c
+> @@ -10,81 +10,63 @@
 >  /**
->   * TEST: gem eio
->   * Description: Test that specific ioctls report a wedged GPU (EIO).
-> - * Run type: FULL
+>   * TEST: gem pxp
+>   * Description: Test PXP that manages protected content through arbitrated HW-PXP-session
+> + * Feature: PXP
+> + * Functionality: pxp
+> + * Sub-category: Power management
+>   * Run type: FULL
+>   *
+>   * SUBTEST: create-protected-buffer
+> - * Feature: PXP
+>   *
+>   * SUBTEST: create-regular-buffer
+>   * Description: Verify protected buffer on supported hw:
+> - * Feature: PXP
+>   *
+>   * SUBTEST: create-regular-context-1
+>   * Description: Verify protected context on supported hw:
+> - * Feature: PXP
+>   *
+>   * SUBTEST: create-regular-context-2
+> - * Feature: PXP
+>   *
+>   * SUBTEST: create-valid-protected-context
+> - * Feature: PXP
+>   *
+>   * SUBTEST: display-protected-crc
+>   * Description: Test the display CRC
+> - * Feature: PXP
+>   *
+>   * SUBTEST: dmabuf-shared-protected-dst-is-context-refcounted
+>   * Feature: PXP, prime
+>   *
+>   * SUBTEST: fail-invalid-protected-context
+> - * Feature: PXP
+>   *
+>   * SUBTEST: hw-rejects-pxp-buffer
+>   * Description: Verify protected buffer on unsupported hw:
+> - * Feature: PXP
+>   *
+>   * SUBTEST: hw-rejects-pxp-context
+>   * Description: Verify protected context on unsupported hw:
+> - * Feature: PXP
+>   *
+>   * SUBTEST: protected-encrypted-src-copy-not-readible
+> - * Feature: PXP
+>   *
+>   * SUBTEST: protected-raw-src-copy-not-readible
+> - * Feature: PXP
+>   *
+>   * SUBTEST: regular-baseline-src-copy-readible
+>   * Description: Verify protected render operations:
+> - * Feature: PXP
+>   *
+>   * SUBTEST: reject-modify-context-protection-off-1
+> - * Feature: PXP
+>   *
+>   * SUBTEST: reject-modify-context-protection-off-2
+> - * Feature: PXP
+>   *
+>   * SUBTEST: reject-modify-context-protection-off-3
+> - * Feature: PXP
+>   *
+>   * SUBTEST: reject-modify-context-protection-on
+>   * Description: Verify protected context integrity:
+> - * Feature: PXP
+>   *
+>   * SUBTEST: verify-pxp-execution-after-suspend-resume
+> - * Feature: PXP
+>   *
+>   * SUBTEST: verify-pxp-key-change-after-suspend-resume
+>   * Description: Verify suspend-resume teardown management:
+> - * Feature: PXP
+>   *
+>   * SUBTEST: verify-pxp-stale-buf-execution
+> - * Feature: PXP
+>   *
+>   * SUBTEST: verify-pxp-stale-buf-optout-execution
+> - * Feature: PXP
+>   *
+>   * SUBTEST: verify-pxp-stale-ctx-execution
+> - * Feature: PXP
+>   */
+>  
+>  IGT_TEST_DESCRIPTION("Test PXP that manages protected content through arbitrated HW-PXP-session");
+> diff --git a/tests/intel/gem_ringfill.c b/tests/intel/gem_ringfill.c
+> index 66fbd27fa..0704ac1be 100644
+> --- a/tests/intel/gem_ringfill.c
+> +++ b/tests/intel/gem_ringfill.c
+> @@ -43,35 +43,34 @@
+>  #include <sys/ioctl.h>
+>  /**
+>   * TEST: gem ringfill
+> + * Category: Infrastructure
+>   * Description:
+>   *   Exercise many tiny batchbuffer operations, in the hope of catching failure to manage the ring
+>   *   properly near full.
 > - *
-> - * SUBTEST: banned
->   * Category: Infrastructure
->   * Feature: reset
->   * Functionality: reset
-> - * Sub-category: i915
-> + * Sub-category: uapi
+> - * SUBTEST: basic-all
+> - * Category: Infrastructure
+> - * Description: Basic check to fill the ring upto maximum on all engines simultaneously.
+>   * Feature: cmd_submission
+>   * Functionality: command submission
+> - * Run type: BAT
+>   * Sub-category: i915
 >   * Test category: GEM_Legacy
 > + * Run type: FULL
 > + *
-> + * SUBTEST: banned
+> + * SUBTEST: basic-all
+> + * Run type: BAT
+> + * Description: Basic check to fill the ring up to maximum on all engines
+> + *		simultaneously.
 >   *
->   * SUBTEST: context-create
+>   * SUBTEST: engines-S3
+>   * Description: Handle a full ring across suspend cycle.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   *
+>   * SUBTEST: engines-S4
+>   * Description: Handle a full ring across hibernate cycle.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   *
+>   * SUBTEST: engines-basic
+>   * Description:
+>   *   Basic check how the driver handles a full ring.
+>   *   Test spamming ring with contexts
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   * Test category: MultiTile
+>   *
+>   * SUBTEST: engines-bomb
+> @@ -79,51 +78,42 @@
+>   *   Fills the ring upto maximim parallely using fork with different fd's along with
+>   *   interruptions.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   *
+>   * SUBTEST: engines-child
+>   * Description: Check to fill the ring parallely using fork.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   *
+>   * SUBTEST: engines-fd
+>   * Description: Fills the ring upto maximim parallely using fork with different fd's.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   *
+>   * SUBTEST: engines-forked
+>   * Description: Check to fill the ring parallely using fork.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   *
+>   * SUBTEST: engines-hang
+>   * Description: Exercise many batchbuffer operations along with a hang batch until ring is full.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   *
+>   * SUBTEST: engines-interruptible
+>   * Description:
+>   *   Exercise all potential injection sites by using igt_sigiter interface to repeat the
+>   *   ringfill testing.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   *
+>   * SUBTEST: legacy-S3
+>   * Description: Handle a full ring across suspend cycle - on legacy ring.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   *
+>   * SUBTEST: legacy-S4
+>   * Description: Handle a full ring across hibernate cycle - on legacy ring.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   *
+>   * SUBTEST: legacy-basic
+>   * Description:
+>   *   Basic check how the driver handles a full ring - on legacy ring.
+>   *   Test spamming ring with contexts - legacy path
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   * Test category: MultiTile
+>   *
+>   * SUBTEST: legacy-bomb
+> @@ -131,36 +121,30 @@
+>   *   Fills the ring upto maximim parallely using fork with different fd's along with
+>   *   interruptions - on legacy ring.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   *
+>   * SUBTEST: legacy-child
+>   * Description: Check to fill the ring parallely using fork - on legacy ring.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   *
+>   * SUBTEST: legacy-fd
+>   * Description: Fills the ring upto maximim parallely using fork with different fd's - on legacy ring.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   *
+>   * SUBTEST: legacy-forked
+>   * Description: Check to fill the ring parallely using fork - on legacy ring.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   *
+>   * SUBTEST: legacy-hang
+>   * Description:
+>   *   Exercise many batchbuffer operations along with a hang batch until ring is full - on legacy
+>   *   ring.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   *
+>   * SUBTEST: legacy-interruptible
+>   * Description:
+>   *   Exercise all potential injection sites by using igt_sigiter interface to repeat the
+>   *   ringfill testing - on legacy ring.
+>   * Feature: cmd_submission, multitile
+> - * Run type: FULL
+>   */
+>  
+>  #define INTERRUPTIBLE 0x1
+> diff --git a/tests/intel/gem_shrink.c b/tests/intel/gem_shrink.c
+> index 1f16f8a78..094881a15 100644
+> --- a/tests/intel/gem_shrink.c
+> +++ b/tests/intel/gem_shrink.c
+> @@ -36,6 +36,10 @@
+>  /**
+>   * TEST: gem shrink
+>   * Feature: mapping
+> + * Category: Desktop client
+> + * Functionality: buffer management
+> + * Sub-category: CMD submission
+> + * Test category: GEM_Legacy
+>   * Run type: FULL
+>   *
+>   * SUBTEST: execbuf1
+> @@ -139,10 +143,6 @@
+>   * SUBTEST: pwrite-userptr-dirty
+>   *
+>   * SUBTEST: reclaim
+> - * Category: Desktop client
+> - * Functionality: buffer management
+> - * Sub-category: i915
+> - * Test category: GEM_Legacy
+>   */
+>  
+>  #ifndef MADV_FREE
+> diff --git a/tests/intel/gem_softpin.c b/tests/intel/gem_softpin.c
+> index f5f0ba257..f06e58be9 100644
+> --- a/tests/intel/gem_softpin.c
+> +++ b/tests/intel/gem_softpin.c
+> @@ -33,219 +33,97 @@
+>  #include "intel_allocator.h"
+>  /**
+>   * TEST: gem softpin
+> + * Category: Infrastructure
+>   * Description:
+>   *   Tests softpin feature with normal usage, invalid inputs scenarios and couple of eviction
+>   *   tests which copy buffers between CPU and GPU.
+> + * Feature: mapping
+> + * Functionality: softpin
+> + * Sub-category: CMD submission
+> + * Test category: GEM_Legacy
+> + * Run type: FULL
+>   *
+>   * SUBTEST: 32b-excludes-last-page
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check the last 32b page is excluded.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: create
+>   * SUBTEST: allocator-basic
 > - * Category: Infrastructure
->   * Description: Validate i915_gem_create_ioctl, while gpu is wedged for fb scanout.
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check that we can place objects at start/end of the GTT using the allocator.
+> - * Feature: mapping
+> - * Functionality: command submission
+>   * Run type: BAT
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: create-ext
+>   * SUBTEST: allocator-basic-reserve
 > - * Category: Infrastructure
-> - * Description:
-> - *   Validate i915_gem_create_ext_ioctl and checks if returns clear backing store while gpu is
-> - *   wedged for fb scanout.
-> - * Feature: reset
-> - * Functionality: reset
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
-> + * Description: Validate i915_gem_create_ext_ioctl and checks if returns clear
-> + *		backing store while gpu is wedged for fb scanout.
->   *
->   * SUBTEST: execbuf
-> - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check that if we can reserve a space for an object starting from a given offset.
+> - * Feature: mapping
+> - * Functionality: command submission
+>   * Run type: BAT
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: hibernate
->   * Description: Test that specific ioctls report a wedged GPU (EIO) during suspend
-> - * Feature: hibernate, reset, suspend
-> - * Test category: suspend
->   *
->   * SUBTEST: in-flight-10ms
+>   * SUBTEST: allocator-evict
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Exercise eviction with softpinning.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: in-flight-1us
+>   * SUBTEST: allocator-fork
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check if multiple processes can use allocator.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: in-flight-contexts-10ms
+>   * SUBTEST: allocator-nopin
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check that we can combine manual placement with automatic GTT placement.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: in-flight-contexts-1us
+>   * SUBTEST: allocator-nopin-reserve
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description:
+>   *   Check that we can combine manual placement with automatic GTT placement and
+>   *   reserves/unreserves space for objects.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: in-flight-contexts-immediate
+>   * SUBTEST: evict-active
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check eviction with active bo.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: in-flight-external
+>   * SUBTEST: evict-active-interruptible
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check eviction with active bo with interrupts.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: in-flight-immediate
+>   * SUBTEST: evict-hang
+>   * Description: Check eviction of softpinned bo with hung batch.
+> - * Feature: mapping
+> - * Run type: FULL
+>   *
+>   * SUBTEST: evict-prime
+>   * Description: Check eviction of vma on importing prime fd in reopened drm fds
+> - * Feature: mapping
+> - * Run type: FULL
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: evict-prime-sanity-check
+>   * Description: Check eviction of vma on importing prime fd in reopened drm fd in single thread
+> - * Feature: mapping
+> - * Run type: FULL
+> - * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: evict-single-offset
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Use same offset for all engines and for different handles.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: in-flight-internal-10ms
+>   * SUBTEST: evict-snoop
+>   * Description: Check eviction against snooping.
+> - * Feature: mapping
+> - * Run type: FULL
+>   *
+>   * SUBTEST: evict-snoop-interruptible
+>   * Description: Check eviction against snooping with interrupts.
+> - * Feature: mapping
+> - * Run type: FULL
+>   *
+>   * SUBTEST: full
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check the total occupancy by using pad-to-size to fill the entire GTT.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: in-flight-internal-1us
+>   * SUBTEST: invalid
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check that invalid inputs are handled correctly.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: in-flight-internal-immediate
+>   * SUBTEST: noreloc
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check that noreloc support works.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: in-flight-suspend
->   * Description: Test that specific ioctls report a wedged GPU (EIO) during suspend
->   * Feature: reset, suspend
-> - * Test category: suspend
+>   * SUBTEST: noreloc-S3
+>   * Description: Check noreloc survives after suspend to RAM/resume cycle.
+> - * Feature: mapping
+> - * Run type: FULL
 >   *
->   * SUBTEST: kms
->   * Feature: kms_gem_interop, reset
+>   * SUBTEST: noreloc-S4
+>   * Description: Check noreloc survives after suspend to disk/resume cycle.
+> - * Feature: mapping
+> - * Run type: FULL
 >   *
->   * SUBTEST: reset-stress
+>   * SUBTEST: noreloc-interruptible
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check noreloc support with interruptible.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: suspend
->   * Description: Test that specific ioctls report a wedged GPU (EIO) during suspend
->   * Feature: reset, suspend
-> - * Test category: suspend
->   *
->   * SUBTEST: throttle
+>   * SUBTEST: overlap
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check all the possible pages aligned overlaps.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: unwedge-stress
+>   * SUBTEST: reverse
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check that if the user demands the vma will be swapped.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: wait-10ms
+>   * SUBTEST: safe-alignment
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check start offset and alignment detection.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: BAT
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: wait-1us
+>   * SUBTEST: softpin
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check softpinning of a gem buffer object.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: wait-immediate
+>   * SUBTEST: zero
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
+>   * Description: Check full placement control under full-ppGTT.
+> - * Feature: mapping
+> - * Functionality: command submission
+> - * Run type: FULL
 > - * Sub-category: i915
 > - * Test category: GEM_Legacy
+>   */
+>  
+>  IGT_TEST_DESCRIPTION("Tests softpin feature with normal usage, invalid inputs"
+> diff --git a/tests/intel/gem_spin_batch.c b/tests/intel/gem_spin_batch.c
+> index ec1458e35..2e617289c 100644
+> --- a/tests/intel/gem_spin_batch.c
+> +++ b/tests/intel/gem_spin_batch.c
+> @@ -27,80 +27,26 @@
+>  #include "igt.h"
+>  /**
+>   * TEST: gem spin batch
+> - * Run type: FULL
+>   * Test category: GEM_Legacy
+> - *
+> - * SUBTEST: engines
+>   * Category: Infrastructure
+>   * Feature: context, igt_core
+>   * Functionality: dummy workload
+>   * Sub-category: IGT Lib
+> + * Run type: FULL
 >   *
->   * SUBTEST: wait-wedge-10ms
+> + * SUBTEST: engines
+>   * SUBTEST: legacy
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: wait-wedge-1us
+> - * Feature: context, igt_core
+> - * Functionality: dummy workload
+> - * Sub-category: IGT Lib
+> - *
+>   * SUBTEST: legacy-resubmit
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
->   *
->   * SUBTEST: wait-wedge-immediate
+> - * Feature: context, igt_core
+> - * Functionality: dummy workload
+> - * Sub-category: IGT Lib
+> - *
+>   * SUBTEST: legacy-resubmit-new
 > - * Category: Infrastructure
-> - * Feature: reset
-> - * Functionality: reset
-> - * Sub-category: i915
-> - * Test category: GEM_Legacy
+> - * Feature: context, igt_core, multictx
+> - * Functionality: dummy workload
+> - * Sub-category: IGT Lib
+> - *
+>   * SUBTEST: resubmit
+> - * Category: Infrastructure
+> - * Feature: context, igt_core
+> - * Functionality: dummy workload
+> - * Sub-category: IGT Lib
+> - *
+>   * SUBTEST: resubmit-all
+> - * Category: Infrastructure
+> - * Feature: context, igt_core, multictx
+> - * Functionality: dummy workload
+> - * Sub-category: IGT Lib
+> - *
+>   * SUBTEST: resubmit-new
+> - * Category: Infrastructure
+> - * Feature: context, igt_core, multictx
+> - * Functionality: dummy workload
+> - * Sub-category: IGT Lib
+> - *
+>   * SUBTEST: resubmit-new-all
+> - * Category: Infrastructure
+> - * Feature: context, igt_core, multictx
+> - * Functionality: dummy workload
+> - * Sub-category: IGT Lib
+> - *
+>   * SUBTEST: spin-all
+> - * Category: Infrastructure
+> - * Feature: igt_core, multictx
+> - * Functionality: dummy workload
+> - * Sub-category: IGT Lib
+> - *
+>   * SUBTEST: spin-all-new
+> - * Category: Infrastructure
+> - * Feature: igt_core, multictx
+> - * Functionality: dummy workload
+> - * Sub-category: IGT Lib
+> - *
+>   * SUBTEST: spin-each
+> - * Category: Infrastructure
+> - * Feature: igt_core, multictx
+> - * Functionality: dummy workload
+> - * Sub-category: IGT Lib
+> - *
+>   * SUBTEST: user-each
+> - * Category: Infrastructure
+> - * Feature: igt_core, multictx
+> - * Functionality: dummy workload
+> - * Sub-category: IGT Lib
 > + *
 >   */
 >  
->  IGT_TEST_DESCRIPTION("Test that specific ioctls report a wedged GPU (EIO).");
-> diff --git a/tests/intel/gem_exec_balancer.c b/tests/intel/gem_exec_balancer.c
-> index 9190fc238..efa875889 100644
-> --- a/tests/intel/gem_exec_balancer.c
-> +++ b/tests/intel/gem_exec_balancer.c
-> @@ -41,219 +41,94 @@
+>  #define MAX_ERROR 5 /* % */
+> diff --git a/tests/intel/gem_sync.c b/tests/intel/gem_sync.c
+> index f98d4364c..d3de2e77e 100644
+> --- a/tests/intel/gem_sync.c
+> +++ b/tests/intel/gem_sync.c
+> @@ -34,43 +34,37 @@
+>  #include "igt_sysfs.h"
 >  /**
->   * TEST: gem exec balancer
->   * Description: Exercise in-kernel load-balancing
-> + * Category: Desktop \ Server
-> + * Feature: cmd_submission, media_scalability
-> + * Functionality: load balancing
-> + * Sub-category: CMD submission
-> + * Test category: Media & Compute
->   * Run type: FULL
+>   * TEST: gem sync
+> + * Category: Infrastructure
+>   * Description: Basic check of ring<->ring write synchronisation.
+> + * Feature: synchronization
+> + * Functionality: semaphore
+> + * Sub-category: i915
+> + * Test category: GEM_Legacy
+> + * Run type: FULL
 >   *
->   * SUBTEST: bonded-chain
-> - * Feature: cmd_submission, media_scalability
+>   * SUBTEST: active
+>   * Description: Exercise waiting while keeping the GPU busy on each engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: bonded-dual
-> - * Feature: cmd_submission, media_scalability
+>   * SUBTEST: active-each
+>   * Description: Exercise waiting while keeping the GPU busy.
+>   * Feature: multitile, synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: bonded-false-hang
-> - * Feature: cmd_submission, media_scalability
+>   * SUBTEST: active-wakeup
+>   * Description: Measure wakeup latency while also scheduling the next batch on each engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: bonded-pair
-> - * Feature: cmd_submission, media_scalability
+>   * SUBTEST: active-wakeup-each
+>   * Description: Measure wakeup latency while also scheduling the next batch.
+>   * Feature: multitile, synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: bonded-semaphore
->   * Feature: cmd_submission, media_scalability, multictx
->   *
->   * SUBTEST: bonded-sync
-> - * Feature: cmd_submission, media_scalability
->   *
->   * SUBTEST: bonded-true-hang
-> - * Feature: cmd_submission, media_scalability
->   *
->   * SUBTEST: busy
-> - * Category: Desktop \ Server
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
+>   * SUBTEST: basic-all
+> - * Category: Infrastructure
+>   * Description: Basic test to wait upon a batch on all rings.
+> - * Feature: synchronization
+> - * Functionality: semaphore
+>   * Run type: BAT
+> - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: fairslice
-> - * Feature: cmd_submission, media_scalability
+>   * SUBTEST: basic-each
+>   * Description:
+>   *   Check synchronisation of ring.
+>   *   Exercise all physical engine selection and legacy rings
+>   * Feature: multitile, synchronization
+> - * Functionality: semaphore
+>   * Run type: BAT
+>   * Test category: MultiTile
 >   *
->   * SUBTEST: full
-> - * Category: Desktop \ Server
-> - * Feature: cmd_submission, media_scalability, multictx
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
+> @@ -79,139 +73,91 @@
+>   *   Create race condition and see if we can catch interrupts.
+>   *   Basic check of ring to ring write synchronisation
+>   * Feature: multitile, synchronization
+> - * Run type: FULL
+>   * Test category: MultiTile
+>   *
+>   * SUBTEST: basic-store-all
+> - * Category: Infrastructure
+>   * Description: Basic version of store synchronisation test.
+> - * Feature: synchronization
+> - * Functionality: semaphore
+> - * Run type: FULL
+> - * Sub-category: i915
 > - * Test category: GEM_Legacy
 >   *
->   * SUBTEST: full-late
-> - * Category: Desktop \ Server
->   * Feature: cmd_submission, media_scalability, multictx
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: basic-store-each
+>   * Description:
+>   *   Check that store synchronisation works.
+>   *   Basic check of ring to ring write, store synchronisation
+>   * Feature: multitile, synchronization
+> - * Run type: FULL
+>   * Test category: MultiTile
 >   *
->   * SUBTEST: full-late-pulse
-> - * Category: Desktop \ Server
->   * Feature: cmd_submission, media_scalability, multictx
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: default
+>   * Description: Check synchronisation of rings on each engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: full-pulse
-> - * Category: Desktop \ Server
->   * Feature: cmd_submission, media_scalability, multictx
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: double-wakeup
+>   * Description: Double stress test for nop + sync on each engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: hang
-> - * Category: Desktop \ Server
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: double-wakeup-each
+>   * Description: Double stress test for nop + sync.
+>   * Feature: multitile, synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: hog
-> - * Feature: cmd_submission, media_scalability
+>   * SUBTEST: forked
+>   * Description: Check synchronisation of ring with parallel executions on each engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: indices
-> - * Category: Desktop \ Server
->   * Feature: cmd_submission, media_scalability, multictx
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: forked-all
+>   * Description: Parallel execution of batch on all rings and then wait.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: individual
-> - * Category: Desktop \ Server
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: forked-each
+>   * Description:
+>   *   Forked variant of sync_ring, which checks synchronisation of ring with parallel
+>   *   executions.
+>   * Feature: multitile, synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: invalid-balancer
-> - * Category: Desktop \ Server
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: forked-store
+>   * Description: Check store synchronisation works with parallel multiple executions on each engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: invalid-bonds
-> - * Feature: cmd_submission, media_scalability
+>   * SUBTEST: forked-store-all
+>   * Description: Parallel execution of store synchronisation.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: nohangcheck
-> - * Category: Desktop \ Server
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: forked-store-each
+>   * Description: Forked variant of store_ring, check if parallel store synchronisation works.
+>   * Feature: multitile, synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: noheartbeat
-> - * Category: Desktop \ Server
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: forked-switch
+>   * Description: Check sync after context switch parallelly on each engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: nop
-> - * Category: Desktop \ Server
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: forked-switch-each
+>   * Description: Check sync after context switch parallelly.
+>   * Feature: multitile, synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: parallel
-> - * Category: Desktop client
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: command submission
-> - * Sub-category: Media
-> - * Test category: GEM_Legacy
+>   * SUBTEST: idle
+>   * Description: Exercise and measure idle requests on each engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: parallel-balancer
-> - * Category: Desktop client
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: command submission
-> - * Sub-category: Media
-> - * Test category: GEM_Legacy
+>   * SUBTEST: legacy-active
+>   * Description: Exercise waiting while keeping the GPU busy for each legacy engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: parallel-bb-first
-> - * Category: Desktop client
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: command submission
-> - * Sub-category: Media
-> - * Test category: GEM_Legacy
+>   * SUBTEST: legacy-active-wakeup
+>   * Description: Measure wakeup latency while also scheduling the next batch for each legacy engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: parallel-contexts
-> - * Category: Desktop client
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: command submission
-> - * Sub-category: Media
-> - * Test category: GEM_Legacy
+>   * SUBTEST: legacy-default
+>   * Description: Check synchronisation of rings for each legacy engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: parallel-dmabuf-import-out-fence
-> - * Description: Regression test to check that dmabuf imported sync file can handle fence array
-> - * Feature: cmd_submission, media_scalability
-> + * Description: Regression test to check that dmabuf imported sync file can
-> + *		handle fence array
+>   * SUBTEST: legacy-double-wakeup
+>   * Description: Double stress test for nop + sync for each legacy engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: parallel-keep-in-fence
-> - * Category: Desktop client
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: command submission
-> - * Sub-category: Media
-> - * Test category: GEM_Legacy
+>   * SUBTEST: legacy-forked
+>   * Description: Check synchronisation of ring with parallel executions for each legacy engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: parallel-keep-submit-fence
-> - * Category: Desktop client
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: command submission
-> - * Sub-category: Media
-> - * Test category: GEM_Legacy
+>   * SUBTEST: legacy-forked-store
+>   * Description:
+>   *   Check store synchronisation works with parallel multiple executions for each legacy
+>   *   engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: parallel-ordering
-> - * Category: Desktop client
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: command submission
-> - * Sub-category: Media
-> - * Test category: GEM_Legacy
+>   * SUBTEST: legacy-forked-switch
+>   * Description: Check sync after context switch parallelly for each legacy engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: parallel-out-fence
-> - * Category: Desktop client
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: command submission
-> - * Sub-category: Media
-> - * Test category: GEM_Legacy
+>   * SUBTEST: legacy-idle
+>   * Description: Exercise and measure idle requests for each legacy engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: persistence
-> - * Category: Desktop \ Server
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: legacy-many
+>   * Description: Create race condition and see if we can catch interrupts for each legacy engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: semaphore
-> - * Category: Desktop \ Server
->   * Feature: cmd_submission, media_scalability, multictx
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: legacy-store
+>   * Description: Check that store synchronisation works for each legacy engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: sequential
-> - * Category: Desktop \ Server
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: legacy-switch
+>   * Description: Check sync after context switch for each legacy engine.
+> @@ -220,60 +166,40 @@
 >   *
->   * SUBTEST: sliced
-> - * Feature: cmd_submission, media_scalability
+>   * SUBTEST: legacy-wakeup
+>   * Description: Stress for nop + sync for each legacy engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: smoke
-> - * Category: Desktop \ Server
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: many
+>   * Description: Create race condition and see if we can catch interrupts on each engine.
+> - * Feature: synchronization
+> - * Run type: FULL
 >   *
->   * SUBTEST: waits
-> - * Category: Desktop \ Server
-> - * Feature: cmd_submission, media_scalability
-> - * Functionality: load balancing
-> - * Sub-category: Media & Compute
-> - * Test category: GEM_Legacy
+>   * SUBTEST: preempt
+>   * Description: For each context engine check how priority of task are submitted when engine is already busy.
+> - * Feature: synchronization
+> - * Run type: FULL
+>   *
+>   * SUBTEST: preempt-all
+>   * Description:
+>   *   Check and measure how well we can submit a second high priority task when the engine is already
+>   *   busy with a low priority task on all engines.
+> - * Feature: synchronization
+> - * Run type: FULL
+>   *
+>   * SUBTEST: store
+>   * Description: Check that store synchronisation works on each engine.
+> - * Feature: synchronization
+> - * Run type: FULL
+>   *
+>   * SUBTEST: store-all
+>   * Description: Extended version of existing basic-store-all test.
+> - * Feature: synchronization
+> - * Run type: FULL
+>   *
+>   * SUBTEST: switch
+>   * Description: Check sync after context switch on each engine.
+> - * Feature: synchronization
+> - * Run type: FULL
+>   *
+>   * SUBTEST: switch-each
+>   * Description: Check sync after context switch.
+>   * Feature: multitile, synchronization
+> - * Run type: FULL
+>   *
+>   * SUBTEST: wait-all
+>   * Description: Extended version of existing basic-all test.
+> - * Feature: synchronization
+> - * Run type: FULL
+>   *
+>   * SUBTEST: wakeup
+>   * Description: Stress for nop + sync on each engine.
+> - * Feature: synchronization
+> - * Run type: FULL
+>   *
+>   * SUBTEST: wakeup-each
+>   * Description: Stress test for nop + sync.
+>   * Feature: multitile, synchronization
+> - * Run type: FULL
 >   */
 >  
->  IGT_TEST_DESCRIPTION("Exercise in-kernel load-balancing");
+>  #define MAX_PRIO I915_CONTEXT_MAX_USER_PRIORITY
 > -- 
 > 2.34.1
 > 
