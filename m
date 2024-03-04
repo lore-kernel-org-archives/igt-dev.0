@@ -4,61 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ED11C48BF6
-	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 16:02:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 053B8C48BF6
+	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 16:05:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BDC931122CD;
-	Mon,  4 Mar 2024 16:02:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A129F1122DF;
+	Mon,  4 Mar 2024 16:05:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Vv5Li7eW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GOOxn9ic";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 475DB1122CE
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 16:02:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 55BF91122E1
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 16:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709568158; x=1741104158;
+ t=1709568352; x=1741104352;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=f3hVscE3izBcIyWFyZclpJL35MNlq4vx6mUtTQ5yTIQ=;
- b=Vv5Li7eWJBe92LWDvUZxi3s2Y7AMhtAYZW/hsa4BwZ95gtrF0DhVX1rC
- Akn4flYRdpjWJhHLu/Za3gPCE4Ptg0pOVJ8+KPsdZPezYCWMpBT1FokTS
- LYURE2f8o/nef5CTWZlI8aBYcs2+eUqlcv+HKlA6mebH0jeZ0EXrSpDws
- ZLiOEXAGPGd82fxVLIm8QDUHLsFjhnCPhDRT4X+0ZDkdHHqe2EgdckRyE
- FFL+my7si2A8LdkGmSHgoBRkT/qb39MVzxOKJqCnmrdEuIUXILK+CXVcq
- QJKaE+9MVqcVSJ5Fc4J+8UkwFgIamTpvnIGheXbeyigtyhBy7Me9xc++x g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="7836268"
+ mime-version:in-reply-to;
+ bh=X8RxpAA6cL2cxRfbinS4brW1c6yAsoUX05FpRD/wd5g=;
+ b=GOOxn9icbqWgn9QH8F4Gj3UFTQdqQBQ9qDBZDetWZU+zxw4Ai5ML6OaF
+ x1J6TwrfmuGgtA+KEhGcNiyT+HuaFJlpoiu9oozyDXnLyIC7QQw4a7zFS
+ dSxH60+zuKuLUc2qjA0Qv2gQlK5ZB/nGd1F/d7wE0uGtQN9Wid87ENFIu
+ lI3PwJkrTAN5kUtkls8tTFaQ9DF2OFAFcwPbjxf53WQyMcqdD3i2yRKSy
+ ctuzg8MaQnlUS6/es7LjgP6rTwBnstrxQOLGfEDsGR9+DkiAl6Zsj9/0j
+ cZwG/vfi4gMMlNhoS0J1/YlF4wss8VLmbAi9HbJf2cSW64rQLLMizNKFI w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="4234267"
 X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="7836268"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 08:02:37 -0800
+   d="scan'208";a="4234267"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 08:05:34 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="9429505"
+   d="scan'208";a="8983120"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 08:02:34 -0800
-Date: Mon, 4 Mar 2024 17:02:30 +0100
+ by orviesa010-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 08:05:33 -0800
+Date: Mon, 4 Mar 2024 17:05:29 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Subject: Re: [PATCH i-g-t 07/24] tests/intel: Introduce GPGPU subcategory
-Message-ID: <20240304160230.5hcvtxjif2kmcshd@kamilkon-desk.igk.intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: Re: [PATCH i-g-t] lib/igt_kmod: Allow to load kunit from alias
+Message-ID: <20240304160529.rr2z4dmzbkeyih4o@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-References: <20240304111617.849785-1-katarzyna.piecielska@intel.com>
- <20240304111617.849785-8-katarzyna.piecielska@intel.com>
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+References: <20240222193044.3004471-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240304111617.849785-8-katarzyna.piecielska@intel.com>
+In-Reply-To: <20240222193044.3004471-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,46 +70,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Katarzyna,
-On 2024-03-04 at 11:16:00 +0000, Katarzyna Piecielska wrote:
-> Let's introduce GPGPU subcategory.
+Hi Lucas,
+On 2024-02-22 at 11:30:44 -0800, Lucas De Marchi wrote:
+> Instead of only allowing to load the from the module name, also allow it
+> from alias by using kmod_module_new_from_lookup(). With that a user can
+> have their on aliases and the kernel can also export a compat alias for
+> future module renames.
 > 
-> Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-> ---
->  tests/intel/gem_gpgpu_fill.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tests/intel/gem_gpgpu_fill.c b/tests/intel/gem_gpgpu_fill.c
-> index ac283620e..535ac0cc8 100644
-> --- a/tests/intel/gem_gpgpu_fill.c
-> +++ b/tests/intel/gem_gpgpu_fill.c
-> @@ -51,13 +51,13 @@
->  /**
->   * TEST: gem gpgpu fill
->   * Category: Server
-> - * Functionality: command submission
-> - * Run type: FULL
-> - * Sub-category: Compute
-> + * Functionality: gpgpu
----------------------^^^^^
-What about decipher it here into: General Purpose GPU
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+
+It is somehow test listing failing: ./dmabuf --list
+
+tests/dmabuf:
+Checking invalid option handling...
+Checking valid option handling...
+Checking subtest enumeration...
+test does seem to be using igt_main() (should have subtests) and yet --list-subtests is empty!
+FAIL: tests/dmabuf
 
 Regards,
 Kamil
 
-> + * Sub-category: GPGPU
->   * Test category: GEM_Legacy
-> + * Feature: compute
-> + * Run type: FULL
->   *
->   * SUBTEST: basic
-> - * Feature: compute
->   */
+>  lib/igt_kmod.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index cc242838f..43c52eaab 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -1443,6 +1443,7 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
+>  int igt_ktest_init(struct igt_ktest *tst,
+>  		   const char *module_name)
+>  {
+> +	struct kmod_list *l = NULL;
+>  	int err;
 >  
->  #define WIDTH 64
+>  	memset(tst, 0, sizeof(*tst));
+> @@ -1453,9 +1454,14 @@ int igt_ktest_init(struct igt_ktest *tst,
+>  
+>  	tst->kmsg = -1;
+>  
+> -	err = kmod_module_new_from_name(kmod_ctx(), module_name, &tst->kmod);
+> -	if (err)
+> +	err = kmod_module_new_from_lookup(kmod_ctx(), module_name, &l);
+> +	if (err < 0)
+>  		return err;
+> +	if (!l)
+> +		return -ENOENT;
+> +
+> +	tst->kmod = kmod_module_get_module(l);
+> +	kmod_module_unref_list(l);
+>  
+>  	return 0;
+>  }
 > -- 
-> 2.34.1
+> 2.43.0
 > 
