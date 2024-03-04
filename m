@@ -4,67 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FF33C48BF6
-	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 16:23:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86341C48BF6
+	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 16:44:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3A733112301;
-	Mon,  4 Mar 2024 16:23:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0FC0210EA13;
+	Mon,  4 Mar 2024 16:44:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mGfjAElN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OQXlX1NY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3ADEB112301
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 16:23:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 50D8510EA13
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 16:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709569396; x=1741105396;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Zvlkr+uIj8BvapIRJqVUTh299TuG3/b4jtp/ASjc26w=;
- b=mGfjAElNI9G/f4aKseIEpwTFxNy8SC70HpsikX+aAodmQ0pV1vZGZvvo
- X+Kad6MHIPNE0m7snZpOXRInxd8c3RRDe17aixQAYZz9ntYZ4wYTKXZzR
- DLfR6WMAfR7IFxMUpFqbTA3Ev0VFb3oWmoUbC94qvXHKSzsAhzRRVhB2t
- 8rsW2D8kVXHZwvnZnz/HFCt/Sqh2Mkj/e/+RZDx5hrzDxByInWVN/I8cj
- 6SSPWHUPGnB5zcE/DFOA6PK9tFnjl9/mrXtpIg+Bd+stjLVxbvgZ4sf01
- Qq9wLSc/DQNEw05YNz6zdZ11PzvqRi3o03Uiju0xjbM1C7hEPYYlntWxe w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="7884189"
+ t=1709570641; x=1741106641;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Sk4ZPiHomKMbsaWxXxfgjHn91oP2bGYyJgwSEj8OYuQ=;
+ b=OQXlX1NYoirhwiNEPvbgFaVBMoZ0cIx6OwCz1Q9VAF0jq5fiPQ2bhu4+
+ 2lL90ECd8cfRUoFbXuLY/zodmMdLhGLjqmcC7OpP+PEStVODY/PdIeIyz
+ 6YfaT/NCEVDeYmfe/Qhk2xFLiXVhcL2wNA3S18bWllQivu3ezSzztfCmD
+ xw2IOB43TRzQGn7f2Bbet8HGzhd/Sha/Vif2mrt7zvQd/SRUsOVKLcrUs
+ 8aANtsFWyHazq2gYA5WlGtcRnzPXsBGW3PyA5J4TD6BOHP1f8MDVh3NXn
+ bMOKfUbYHGtoxsIV3sKECsogiFU56bamIZJTv22KMNj4DmW2QhYD6MeUh A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="3957515"
 X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="7884189"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 08:23:15 -0800
+   d="scan'208";a="3957515"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 08:44:00 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="39900232"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 08:23:13 -0800
-Date: Mon, 4 Mar 2024 17:23:09 +0100
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
+   d="scan'208";a="9223273"
+Received: from unknown (HELO localhost) ([10.245.244.105])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 08:43:58 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Arthur Grillo <arthurgrillo@riseup.net>,
- Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Pekka Paalanen <pekka.paalanen@haloniitty.fi>
-Subject: Re: [PATCH i-g-t 2/2] igt: Remove duplicate igt_display_require()
- calls
-Message-ID: <20240304162309.4sa4u4cawkuuhzwl@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Arthur Grillo <arthurgrillo@riseup.net>,
- Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Pekka Paalanen <pekka.paalanen@haloniitty.fi>
-References: <20240215-duplicate-calls-v1-0-512afbe1bda7@riseup.net>
- <20240215-duplicate-calls-v1-2-512afbe1bda7@riseup.net>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t] tests/kms_atomic: fix musl compilation
+Date: Mon,  4 Mar 2024 17:43:54 +0100
+Message-ID: <20240304164354.112440-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240215-duplicate-calls-v1-2-512afbe1bda7@riseup.net>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,46 +63,69 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Arthur,
-On 2024-02-15 at 16:21:05 -0300, Arthur Grillo wrote:
-> Now that we don't need call igt_display_require() twice, remove the
-> duplicate calls, previously needed to expose the writeback output.
-> 
-> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
+On musl there is already defined PAGE_SIZE and it is casing
+compilation error:
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+../tests/kms_atomic.c: In function 'crtc_invalid_params_fence'
+../tests/kms_atomic.c:893:25: error: expected identifier or '(' before numeric constant
+  893 |         const ptrdiff_t PAGE_SIZE = sysconf(_SC_PAGE_SIZE);
 
-> ---
->  benchmarks/kms_fb_stress.c | 2 --
->  tests/kms_writeback.c      | 1 -
->  2 files changed, 3 deletions(-)
-> 
-> diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
-> index 9a0e98bed8ad..00eaa0a4931a 100644
-> --- a/benchmarks/kms_fb_stress.c
-> +++ b/benchmarks/kms_fb_stress.c
-> @@ -150,8 +150,6 @@ igt_simple_main
->  
->  	data.fd = drm_open_driver_master(DRIVER_ANY);
->  
-> -	igt_display_require(&data.display, data.fd);
-> -
->  	kmstest_set_vt_graphics_mode();
->  
->  	igt_display_require(&data.display, data.fd);
-> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-> index cda13b850dfb..6cd685b37af2 100644
-> --- a/tests/kms_writeback.c
-> +++ b/tests/kms_writeback.c
-> @@ -563,7 +563,6 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
->  
->  	igt_fixture {
->  		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> -		igt_display_require(&display, display.drm_fd);
->  
->  		kmstest_set_vt_graphics_mode();
->  
-> 
-> -- 
-> 2.43.0
-> 
+Change this variable name in order to fix it.
+
+Link: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/138
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/kms_atomic.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+index 96cd58571..489b0d709 100644
+--- a/tests/kms_atomic.c
++++ b/tests/kms_atomic.c
+@@ -890,7 +890,7 @@ static void crtc_invalid_params_fence(data_t *data, igt_output_t *output)
+ {
+ 	int timeline, fence_fd;
+ 	void *map;
+-	const ptrdiff_t PAGE_SIZE = sysconf(_SC_PAGE_SIZE);
++	const ptrdiff_t page_size = sysconf(_SC_PAGE_SIZE);
+ 	uint64_t old_mode_id = data->pipe->values[IGT_CRTC_MODE_ID];
+ 
+ 	igt_require_sw_sync();
+@@ -898,28 +898,28 @@ static void crtc_invalid_params_fence(data_t *data, igt_output_t *output)
+ 	timeline = sw_sync_timeline_create();
+ 
+ 	/* invalid out_fence_ptr */
+-	map = mmap(NULL, PAGE_SIZE, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	map = mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+ 	igt_assert(map != MAP_FAILED);
+ 
+ 	igt_pipe_obj_set_prop_value(data->pipe, IGT_CRTC_OUT_FENCE_PTR, (ptrdiff_t)map);
+ 	crtc_commit_atomic_err(data->pipe, data->primary, ATOMIC_RELAX_NONE, EFAULT);
+-	munmap(map, PAGE_SIZE);
++	munmap(map, page_size);
+ 
+ 	/* invalid out_fence_ptr */
+-	map = mmap(NULL, PAGE_SIZE, PROT_EXEC, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	map = mmap(NULL, page_size, PROT_EXEC, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+ 	igt_assert(map != MAP_FAILED);
+ 
+ 	igt_pipe_obj_set_prop_value(data->pipe, IGT_CRTC_OUT_FENCE_PTR, (ptrdiff_t)map);
+ 	crtc_commit_atomic_err(data->pipe, data->primary, ATOMIC_RELAX_NONE, EFAULT);
+-	munmap(map, PAGE_SIZE);
++	munmap(map, page_size);
+ 
+ 	/* invalid out_fence_ptr */
+-	map = mmap(NULL, PAGE_SIZE, PROT_NONE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	map = mmap(NULL, page_size, PROT_NONE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+ 	igt_assert(map != MAP_FAILED);
+ 
+ 	igt_pipe_obj_set_prop_value(data->pipe, IGT_CRTC_OUT_FENCE_PTR, (ptrdiff_t)map);
+ 	crtc_commit_atomic_err(data->pipe, data->primary, ATOMIC_RELAX_NONE, EFAULT);
+-	munmap(map, PAGE_SIZE);
++	munmap(map, page_size);
+ 
+ 	/* valid in fence but not allowed prop on crtc */
+ 	fence_fd = sw_sync_timeline_create_fence(timeline, 1);
+-- 
+2.42.0
+
