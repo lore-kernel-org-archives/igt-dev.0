@@ -4,63 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC41AC48BF6
-	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 22:18:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1370FC48BF6
+	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 22:31:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6BC5F112666;
-	Mon,  4 Mar 2024 22:18:06 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="fSys+RrZ";
-	dkim-atps=neutral
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com
- [209.85.128.182])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21B0D112666
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 22:18:05 +0000 (UTC)
-Received: by mail-yw1-f182.google.com with SMTP id
- 00721157ae682-6098a20ab22so28601697b3.2
- for <igt-dev@lists.freedesktop.org>; Mon, 04 Mar 2024 14:18:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1709590683; x=1710195483; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=4vLe4I/9TmLLrVixFUNNfGRmJStweVQGKryzjRGPIEk=;
- b=fSys+RrZPhjb1zvz/6hPCUU4lCZSqj1gg2yngx0axHY40fC2K7YWJBkXLrzoXFKF9d
- yjxqH1zPMh22+ESwr2BiJ3suiM9kciLMLrO5U2Sw+D16ry3GRSrRMgcd4QTLJbg3NgBt
- x6KqWr9f7ei1K8BBO64tLiQ7U9v58YE5e7TypAn4bXo1PpYKqFoAC8MYBi6Pfj7kKlo4
- 4uuos1L1290R+hJhteoY1X38NDdrkyuZo6aaPrY2H4AmLaqg8SiBebazJ1BWYf39LpsV
- LaXVLLxl6myPwORaKQLfwPg1WOp5JiApCCvTvdf6FjWrm7CGeaOVHeIq7OpJKEaVFdrf
- zMiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1709590683; x=1710195483;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4vLe4I/9TmLLrVixFUNNfGRmJStweVQGKryzjRGPIEk=;
- b=mHMh6ocbT5Vd1crHKD6E1bblfAnFzlEvvpBYzWyHjZgEZNWMcv0JrK/DMcv2nqQ5K+
- sQnEC5hAp+DfawMh719+CMN+OB/LSpZxy7LMkkf0UtuyRu7/W+RYyTieQ6xDy6C2HKNO
- 36Zw68bOnij7V6Ee4LqKjMtmUW0dl1hukIzJtjlsk5LYrl6JiXu8+n6hHPksopevJ4DH
- XnHvLz4ceUfTwwK8ylDw9AQaMvHhWmjJVUm6EJsjc9wo8eSxt47DFeQf+SDfWg4UyBAW
- SJeA97QKymjNhYCdhRNymZ0uCL9jj6SSe3ciY+j18l4YDD3KMTcPg1N3QjKx4fNKRrvy
- l04Q==
-X-Gm-Message-State: AOJu0YzfqRCeVsNzKv8e02otFWWIGh8uRO0J4LH+qweGWccj/S3nqCN3
- oFtOUM930Pp5Vzu5I/VjfW+FnlglPhlhL/iTgo/34yMt/NWCWs3HTkVGJt+/
-X-Google-Smtp-Source: AGHT+IHMDhrFlmACOjXxI9fuGUeRZoLUW3Z4dyla/L/YatkIlhBtNfjNgHUd8+GaRWoX2YrQeDM6BA==
-X-Received: by 2002:a0d:df11:0:b0:609:69b6:e753 with SMTP id
- i17-20020a0ddf11000000b0060969b6e753mr9125062ywe.23.1709590682863; 
- Mon, 04 Mar 2024 14:18:02 -0800 (PST)
-Received: from localhost ([162.208.5.36]) by smtp.gmail.com with ESMTPSA id
- ce11-20020a05690c098b00b006097165a70csm2733119ywb.19.2024.03.04.14.18.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Mar 2024 14:18:01 -0800 (PST)
-From: Matt Turner <mattst88@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Matt Turner <mattst88@gmail.com>
-Subject: [PATCH i-g-t] lib: Inline igt_x86_features() into ifunc resolvers
-Date: Mon,  4 Mar 2024 17:16:40 -0500
-Message-ID: <20240304221800.1161896-1-mattst88@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 87258112682;
+	Mon,  4 Mar 2024 22:31:41 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A893E112681;
+ Mon,  4 Mar 2024 22:31:40 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2403152559481862074=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_amdgpu/tests=3A_Fix_vce_enc?=
+ =?utf-8?q?_test_failure?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: vitaly.prosyak@amd.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 04 Mar 2024 22:31:40 -0000
+Message-ID: <170959150068.503981.12867655979269711715@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240304211632.184249-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20240304211632.184249-1-vitaly.prosyak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,336 +37,282 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Quoting https://sourceware.org/glibc/wiki/GNU_IFUNC
+--===============2403152559481862074==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> When LD_BIND_NOW=1 or -Wl,z,now is in effect symbols must be
-> immediately resolved at startup. In cases where an external function
-> call depends needs to be made that may fail if such a call has not
-> been initialized yet (PLT-based relocation which is processed later).
-> For example calling strlen in an IFUNC resolver built with -Wl,z,now
-> may lead to a segfault because the PLT is not yet resolved.
+== Series Details ==
 
-We cannot rely on function calls through the PLT in ifunc resolvers as
-the PLT may not have been initialized yet.
+Series: amdgpu/tests: Fix vce enc test failure
+URL   : https://patchwork.freedesktop.org/series/130694/
+State : failure
 
-In practice, this causes crashes when igt is linked with -Wl,-z,now or
-when linked with the mold linker.
+== Summary ==
 
-To avoid this problem, we do two things:
-    1. move igt_x86_features() to igt_x86.h so its definition is
-       available to compilation units that call the function.
-    2. mark the ifunc resolvers with __attribute__((flatten)) to ensure
-       igt_x86_features() is inlined.
+CI Bug Log - changes from CI_DRM_14382 -> IGTPW_10774
+====================================================
 
-Bug: https://bugs.gentoo.org/788625
-Bug: https://bugs.gentoo.org/925348
-Signed-off-by: Matt Turner <mattst88@gmail.com>
----
- lib/igt_halffloat.c |   2 +
- lib/igt_x86.c       | 116 +------------------------------------------
- lib/igt_x86.h       | 117 +++++++++++++++++++++++++++++++++++++++++++-
- 3 files changed, 119 insertions(+), 116 deletions(-)
+Summary
+-------
 
-diff --git a/lib/igt_halffloat.c b/lib/igt_halffloat.c
-index 5dbe08e01..67d26c225 100644
---- a/lib/igt_halffloat.c
-+++ b/lib/igt_halffloat.c
-@@ -194,6 +194,7 @@ static void half_to_float(const uint16_t *h, float *f, unsigned int num)
- 		f[i] = _half_to_float(h[i]);
- }
- 
-+__attribute__((flatten))
- static void (*resolve_float_to_half(void))(const float *f, uint16_t *h, unsigned int num)
- {
- 	if (igt_x86_features() & F16C)
-@@ -205,6 +206,7 @@ static void (*resolve_float_to_half(void))(const float *f, uint16_t *h, unsigned
- void igt_float_to_half(const float *f, uint16_t *h, unsigned int num)
- 	__attribute__((ifunc("resolve_float_to_half")));
- 
-+__attribute__((flatten))
- static void (*resolve_half_to_float(void))(const uint16_t *h, float *f, unsigned int num)
- {
- 	if (igt_x86_features() & F16C)
-diff --git a/lib/igt_x86.c b/lib/igt_x86.c
-index 8c102fd13..f103b9820 100644
---- a/lib/igt_x86.c
-+++ b/lib/igt_x86.c
-@@ -27,14 +27,6 @@
- 
- #include "config.h"
- 
--#ifdef HAVE_CPUID_H
--#include <cpuid.h>
--#else
--#define __get_cpuid_max(x, y) 0
--#define __cpuid(level, a, b, c, d) a = b = c = d = 0
--#define __cpuid_count(level, count, a, b, c, d) a = b = c = d = 0
--#endif
--
- #include "igt_x86.h"
- #include "igt_aux.h"
- 
-@@ -49,114 +41,7 @@
-  * @include: igt_x86.h
-  */
- 
--#define BASIC_CPUID 0x0
--#define EXTENDED_CPUID 0x80000000
--
--#ifndef bit_MMX
--#define bit_MMX		(1 << 23)
--#endif
--
--#ifndef bit_SSE
--#define bit_SSE		(1 << 25)
--#endif
--
--#ifndef bit_SSE2
--#define bit_SSE2	(1 << 26)
--#endif
--
--#ifndef bit_SSE3
--#define bit_SSE3	(1 << 0)
--#endif
--
--#ifndef bit_SSSE3
--#define bit_SSSE3	(1 << 9)
--#endif
--
--#ifndef bit_SSE4_1
--#define bit_SSE4_1	(1 << 19)
--#endif
--
--#ifndef bit_SSE4_2
--#define bit_SSE4_2	(1 << 20)
--#endif
--
--#ifndef bit_OSXSAVE
--#define bit_OSXSAVE	(1 << 27)
--#endif
--
--#ifndef bit_AVX
--#define bit_AVX		(1 << 28)
--#endif
--
--#ifndef bit_F16C
--#define bit_F16C	(1 << 29)
--#endif
--
--#ifndef bit_AVX2
--#define bit_AVX2	(1<<5)
--#endif
--
--#define xgetbv(index,eax,edx) \
--	__asm__ ("xgetbv" : "=a"(eax), "=d"(edx) : "c" (index))
--
--#define has_YMM 0x1
--
- #if defined(__x86_64__) || defined(__i386__)
--unsigned igt_x86_features(void)
--{
--	unsigned max = __get_cpuid_max(BASIC_CPUID, 0);
--	unsigned eax, ebx, ecx, edx;
--	unsigned features = 0;
--	unsigned extra = 0;
--
--	if (max >= 1) {
--		__cpuid(1, eax, ebx, ecx, edx);
--
--		if (ecx & bit_SSE3)
--			features |= SSE3;
--
--		if (ecx & bit_SSSE3)
--			features |= SSSE3;
--
--		if (ecx & bit_SSE4_1)
--			features |= SSE4_1;
--
--		if (ecx & bit_SSE4_2)
--			features |= SSE4_2;
--
--		if (ecx & bit_OSXSAVE) {
--			unsigned int bv_eax, bv_ecx;
--			xgetbv(0, bv_eax, bv_ecx);
--			if ((bv_eax & 6) == 6)
--				extra |= has_YMM;
--		}
--
--		if ((extra & has_YMM) && (ecx & bit_AVX))
--			features |= AVX;
--
--		if (edx & bit_MMX)
--			features |= MMX;
--
--		if (edx & bit_SSE)
--			features |= SSE;
--
--		if (edx & bit_SSE2)
--			features |= SSE2;
--
--		if (ecx & bit_F16C)
--			features |= F16C;
--	}
--
--	if (max >= 7) {
--		__cpuid_count(7, 0, eax, ebx, ecx, edx);
--
--		if ((extra & has_YMM) && (ebx & bit_AVX2))
--			features |= AVX2;
--	}
--
--	return features;
--}
--
- char *igt_x86_features_to_string(unsigned features, char *line)
- {
- 	char *ret = line;
-@@ -284,6 +169,7 @@ static void memcpy_from_wc(void *dst, const void *src, unsigned long len)
- 	memcpy(dst, src, len);
- }
- 
-+__attribute__((flatten))
- static void (*resolve_memcpy_from_wc(void))(void *, const void *, unsigned long)
- {
- 	if (igt_x86_features() & SSE4_1)
-diff --git a/lib/igt_x86.h b/lib/igt_x86.h
-index c7b84dec2..1e0195c4b 100644
---- a/lib/igt_x86.h
-+++ b/lib/igt_x86.h
-@@ -30,6 +30,14 @@
- #ifndef IGT_X86_H
- #define IGT_X86_H
- 
-+#ifdef HAVE_CPUID_H
-+#include <cpuid.h>
-+#else
-+#define __get_cpuid_max(x, y) 0
-+#define __cpuid(level, a, b, c, d) a = b = c = d = 0
-+#define __cpuid_count(level, count, a, b, c, d) a = b = c = d = 0
-+#endif
-+
- #define MMX	0x1
- #define SSE	0x2
- #define SSE2	0x4
-@@ -42,7 +50,114 @@
- #define F16C	0x200
- 
- #if defined(__x86_64__) || defined(__i386__)
--unsigned igt_x86_features(void);
-+
-+#define BASIC_CPUID 0x0
-+#define EXTENDED_CPUID 0x80000000
-+
-+#ifndef bit_MMX
-+#define bit_MMX		(1 << 23)
-+#endif
-+
-+#ifndef bit_SSE
-+#define bit_SSE		(1 << 25)
-+#endif
-+
-+#ifndef bit_SSE2
-+#define bit_SSE2	(1 << 26)
-+#endif
-+
-+#ifndef bit_SSE3
-+#define bit_SSE3	(1 << 0)
-+#endif
-+
-+#ifndef bit_SSSE3
-+#define bit_SSSE3	(1 << 9)
-+#endif
-+
-+#ifndef bit_SSE4_1
-+#define bit_SSE4_1	(1 << 19)
-+#endif
-+
-+#ifndef bit_SSE4_2
-+#define bit_SSE4_2	(1 << 20)
-+#endif
-+
-+#ifndef bit_OSXSAVE
-+#define bit_OSXSAVE	(1 << 27)
-+#endif
-+
-+#ifndef bit_AVX
-+#define bit_AVX		(1 << 28)
-+#endif
-+
-+#ifndef bit_F16C
-+#define bit_F16C	(1 << 29)
-+#endif
-+
-+#ifndef bit_AVX2
-+#define bit_AVX2	(1<<5)
-+#endif
-+
-+#define xgetbv(index,eax,edx) \
-+	__asm__ ("xgetbv" : "=a"(eax), "=d"(edx) : "c" (index))
-+
-+#define has_YMM 0x1
-+
-+static inline unsigned igt_x86_features(void)
-+{
-+	unsigned max = __get_cpuid_max(BASIC_CPUID, 0);
-+	unsigned eax, ebx, ecx, edx;
-+	unsigned features = 0;
-+	unsigned extra = 0;
-+
-+	if (max >= 1) {
-+		__cpuid(1, eax, ebx, ecx, edx);
-+
-+		if (ecx & bit_SSE3)
-+			features |= SSE3;
-+
-+		if (ecx & bit_SSSE3)
-+			features |= SSSE3;
-+
-+		if (ecx & bit_SSE4_1)
-+			features |= SSE4_1;
-+
-+		if (ecx & bit_SSE4_2)
-+			features |= SSE4_2;
-+
-+		if (ecx & bit_OSXSAVE) {
-+			unsigned int bv_eax, bv_ecx;
-+			xgetbv(0, bv_eax, bv_ecx);
-+			if ((bv_eax & 6) == 6)
-+				extra |= has_YMM;
-+		}
-+
-+		if ((extra & has_YMM) && (ecx & bit_AVX))
-+			features |= AVX;
-+
-+		if (edx & bit_MMX)
-+			features |= MMX;
-+
-+		if (edx & bit_SSE)
-+			features |= SSE;
-+
-+		if (edx & bit_SSE2)
-+			features |= SSE2;
-+
-+		if (ecx & bit_F16C)
-+			features |= F16C;
-+	}
-+
-+	if (max >= 7) {
-+		__cpuid_count(7, 0, eax, ebx, ecx, edx);
-+
-+		if ((extra & has_YMM) && (ebx & bit_AVX2))
-+			features |= AVX2;
-+	}
-+
-+	return features;
-+}
-+
- char *igt_x86_features_to_string(unsigned features, char *line);
- #else
- static inline unsigned igt_x86_features(void)
--- 
-2.43.0
+  **FAILURE**
 
+  Serious unknown changes coming with IGTPW_10774 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_10774, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/index.html
+
+Participating hosts (41 -> 39)
+------------------------------
+
+  Additional (1): bat-kbl-2 
+  Missing    (3): fi-cfl-8109u fi-snb-2520m bat-arls-3 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_10774:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-8:          [PASS][1] -> [DMESG-WARN][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14382/bat-dg2-8/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/bat-dg2-8/igt@i915_selftest@live@workarounds.html
+
+  * igt@runner@aborted:
+    - bat-arls-2:         NOTRUN -> [FAIL][3]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/bat-arls-2/igt@runner@aborted.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10774 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][4] ([i915#9318])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@debugfs_test@basic-hwmon.html
+
+  * igt@fbdev@info:
+    - bat-kbl-2:          NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#1849])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/bat-kbl-2/igt@fbdev@info.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][6] ([i915#2190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - bat-kbl-2:          NOTRUN -> [SKIP][7] ([fdo#109271]) +39 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][8] ([i915#4613]) +3 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][9] ([i915#4103]) +1 other test skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_dsc@dsc-basic:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][10] ([i915#3555] / [i915#3840])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][11] ([fdo#109285])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][12] ([i915#9812])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_psr@psr-sprite-plane-onoff:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][13] ([i915#9732]) +3 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@kms_psr@psr-sprite-plane-onoff.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][14] ([i915#3555])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
+  [i915#9732]: https://gitlab.freedesktop.org/drm/intel/issues/9732
+  [i915#9812]: https://gitlab.freedesktop.org/drm/intel/issues/9812
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7745 -> IGTPW_10774
+
+  CI-20190529: 20190529
+  CI_DRM_14382: e8bc216572501440efb20e112bb5aa60599f1863 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10774: 10774
+  IGT_7745: 838ad56bf511c1caf56851c661fb5828c0440e3b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/index.html
+
+--===============2403152559481862074==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>amdgpu/tests: Fix vce enc test failure</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130694/">https://patchwork.freedesktop.org/series/130694/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_14382 -&gt; IGTPW_10774</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_10774 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_10774, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/index.html</p>
+<h2>Participating hosts (41 -&gt; 39)</h2>
+<p>Additional (1): bat-kbl-2 <br />
+  Missing    (3): fi-cfl-8109u fi-snb-2520m bat-arls-3 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_10774:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14382/bat-dg2-8/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/bat-dg2-8/igt@i915_selftest@live@workarounds.html">DMESG-WARN</a></li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>bat-arls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/bat-arls-2/igt@runner@aborted.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10774 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@basic-hwmon:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9318">i915#9318</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@fbdev@info:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/bat-kbl-2/igt@fbdev@info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +39 other tests skip</li>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@basic-brightness:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9812">i915#9812</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9732">i915#9732</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10774/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7745 -&gt; IGTPW_10774</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14382: e8bc216572501440efb20e112bb5aa60599f1863 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10774: 10774<br />
+  IGT_7745: 838ad56bf511c1caf56851c661fb5828c0440e3b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2403152559481862074==--
