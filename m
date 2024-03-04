@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BD02C48BF6
-	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 15:06:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1B17C5478C
+	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 15:07:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4A04B10E756;
-	Mon,  4 Mar 2024 15:06:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6CC2C10E9E9;
+	Mon,  4 Mar 2024 15:07:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YlMuAtqe";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ThruHtO2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C970B10E756
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 15:06:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 66DE710E9E9
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 15:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709564801; x=1741100801;
+ t=1709564857; x=1741100857;
  h=date:from:to:cc:subject:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=idAN6ta5DJx5yIt4Lq4uBNKqowf8lmvJyxR0+a9jIdo=;
- b=YlMuAtqe6aqXPM3L8XY6BRx6dvegOlKSTqDIGmUjT8L3v/gSnIWbUmKI
- nRSs49KPC5Zao1yhABD8XwgNVUep1xUFMq9dkvF0kxwyHBtF5cyJzl+i+
- SPbp4bcMtg+257aTzsq3AS9I0y1uEL1S3D/B5Nc9Hs7+MswYYdaX86FW1
- AgGaiXE+AjvuZ6aqhRb061b3dMDd2kR/+7vBoOViNzzkwgTwlBtVliV9L
- JgLVr1f5LVKMyx6JjhsMajoWAsxDf03zDahOeOGJFrV8RaPLgq6G6l8nP
- mnmt8g8T9xpf8Ezd2D8lLjlfOzXam1+6HkDwQGe3K3ZQkel3tl80qTCao A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="3919924"
+ bh=CloTruWa2YMXYyK162CZ1Zt4nvv0VavQoNfUxrmVJ5s=;
+ b=ThruHtO2LhEHM+tNhwmSj4sUNh00387bUHrttpqUMPjoZEpf+mB5pVPt
+ CfH0VpYm173rPn3hHjui+weu+UiGAw5LMeldZtDJPW3yljzPoapxLW43F
+ O6FSwcXfi/mwp9nLh7PgIJDKT0QblwajXnBfUUMAvYPKEZIMoNaN1jbnw
+ t9K+tbG6r1Gv/VyqbWeL5O5ebW99FvaDkEamBsLk8BymUXSkMsKfk7Srw
+ Q7QI6p2S/Zkmj3NP3K82fcHzbsOmm1rj1+SXA0a8RheG7LSKTOh+bVIwh
+ ZEsYBz8y+R5NjEMBxQ3CcFt4t1M3vEMIB9cUpmU1GDoWidkQZbOia8uk5 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="3923540"
 X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="3919924"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 07:06:40 -0800
+   d="scan'208";a="3923540"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 07:07:36 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="13683021"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
+   d="scan'208";a="9451168"
 Received: from linux.intel.com ([10.54.29.200])
- by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 07:06:39 -0800
+ by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 07:07:35 -0800
 Received: from maurocar-mobl2 (maurocar-mobl2.ger.corp.intel.com
  [10.245.244.104])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 4E68A580960;
- Mon,  4 Mar 2024 07:06:37 -0800 (PST)
-Date: Mon, 4 Mar 2024 16:06:34 +0100
+ by linux.intel.com (Postfix) with ESMTPS id CE5B15807E7;
+ Mon,  4 Mar 2024 07:07:33 -0800 (PST)
+Date: Mon, 4 Mar 2024 16:07:30 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, Priyanka Dandamudi
- <priyanka.dandamudi@intel.com>, Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Subject: Re: [PATCH i-g-t 06/24] tests/intel: Introduce Context subcategory
-Message-ID: <20240304160634.0327dc48@maurocar-mobl2>
-In-Reply-To: <20240304111617.849785-7-katarzyna.piecielska@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Zbigniew =?UTF-8?B?S2VtcGN6ecWEc2tp?=
+ <zbigniew.kempczynski@intel.com>
+Subject: Re: [PATCH i-g-t 07/24] tests/intel: Introduce GPGPU subcategory
+Message-ID: <20240304160730.748fca13@maurocar-mobl2>
+In-Reply-To: <20240304111617.849785-8-katarzyna.piecielska@intel.com>
 References: <20240304111617.849785-1-katarzyna.piecielska@intel.com>
- <20240304111617.849785-7-katarzyna.piecielska@intel.com>
+ <20240304111617.849785-8-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,58 +74,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon,  4 Mar 2024 11:15:59 +0000
+On Mon,  4 Mar 2024 11:16:00 +0000
 Katarzyna Piecielska <katarzyna.piecielska@intel.com> wrote:
 
-> Let's introduce Context subcategory.
-
-
-
-> 
+> Let's introduce GPGPU subcategory.
+>=20
 > Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> Cc: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
 > Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-> Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 > ---
->  tests/intel/gem_ctx_bad_destroy.c | 4 ++--
->  tests/intel/gem_ctx_engines.c     | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tests/intel/gem_ctx_bad_destroy.c b/tests/intel/gem_ctx_bad_destroy.c
-> index 65f6b5583..b6575e2d8 100644
-> --- a/tests/intel/gem_ctx_bad_destroy.c
-> +++ b/tests/intel/gem_ctx_bad_destroy.c
-> @@ -39,9 +39,9 @@
->   * Category: Infrastructure
->   * Description: Negative test cases for destroy contexts.
->   * Feature: context
-> - * Functionality: context management
-> + * Functionality: context
->   * Run type: FULL
-> - * Sub-category: i915
-> + * Sub-category: Context
+>  tests/intel/gem_gpgpu_fill.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/tests/intel/gem_gpgpu_fill.c b/tests/intel/gem_gpgpu_fill.c
+> index ac283620e..535ac0cc8 100644
+> --- a/tests/intel/gem_gpgpu_fill.c
+> +++ b/tests/intel/gem_gpgpu_fill.c
+> @@ -51,13 +51,13 @@
+>  /**
+>   * TEST: gem gpgpu fill
+>   * Category: Server
+> - * Functionality: command submission
+> - * Run type: FULL
+> - * Sub-category: Compute
+> + * Functionality: gpgpu
+> + * Sub-category: GPGPU
 
-As explained on patch 3, having two buckets with the same name is
-confusing.
+See my previous comments: gpgpu and GPGPU are named the same. This cause
+troubles for some tools used internally, which are case-insensitive.
 
 >   * Test category: GEM_Legacy
+> + * Feature: compute
+> + * Run type: FULL
 >   *
->   * SUBTEST: double-destroy
-> diff --git a/tests/intel/gem_ctx_engines.c b/tests/intel/gem_ctx_engines.c
-> index 61718494e..75770e1f1 100644
-> --- a/tests/intel/gem_ctx_engines.c
-> +++ b/tests/intel/gem_ctx_engines.c
-> @@ -47,9 +47,9 @@
->   * TEST: gem ctx engines
->   * Category: Infrastructure
->   * Feature: context
-> - * Functionality: context management
-> + * Functionality: context
->   * Run type: FULL
-> - * Sub-category: i915
-> + * Sub-category: Context
->   * Test category: GEM_Legacy
->   *
->   * SUBTEST: execute-allforone
+>   * SUBTEST: basic
+> - * Feature: compute
+>   */
+> =20
+>  #define WIDTH 64
