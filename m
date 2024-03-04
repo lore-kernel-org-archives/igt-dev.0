@@ -4,49 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8B2BC5478C
-	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 11:19:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7BE6C48BF6
+	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 11:19:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6BC9A10E4D7;
-	Mon,  4 Mar 2024 11:19:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4B2EE10F119;
+	Mon,  4 Mar 2024 11:19:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FOtUwk61";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EM7/IMAc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 59EE510E4D7
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 11:19:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4DE4E10F119
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 11:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709551159; x=1741087159;
+ t=1709551167; x=1741087167;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=C1+xxJsXfx6jzqaR3tdVWQTmiH4CULG4ldxT4vbRMhE=;
- b=FOtUwk61aWjrO7KOfyaLScKzHQ86BdFVQk9mVu+rV+JJYNKTYnEgMEc/
- cIA0rKTbjzQbcQJ7YvEmdKglEJ1VfyaQOcZmSwEgjhs3O6Ee7EBtHopEg
- z0I03ELJmYTTgPWYLg4ioGAMeooO2oqnnneb/V0PzxOQ6kaiS+ynE2Nup
- ITLN/zW11BcktEOhmw7Dabi6Zb8RCLXCJA0SzBtrEyJtYFq/7x3b9my71
- QnHA1XYdBS+NZU/+jx1x1VsryHC9SMjbk1ZMBOjgkzUSqVv2i3WgN/the
- DC05p5oOoOC/Y5pZbTVbFffRgKqMK6khpHq0zM4tzXckONNrq5FmY4jw1 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="29461607"
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="29461607"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 03:19:19 -0800
+ bh=uiuEEAQ8FTDy+GCJAlXCHg1xTqBP9mAfe4eIp3xy98Q=;
+ b=EM7/IMAcQ0o8Kdr8CFOAIp+RtqNrQ8i1A9tC4tFDAxkyHWFBKaH/m2BM
+ /5t791VuJuO5OrtdLZ7xb4YSc9SGieOyAYRCVb48xI/xYMUKPntQ31iAu
+ XmOeR9kJy64mL6PVruKmHeJGCfy/FI8VokfbM3OxkMp0nm8vbRWePCzpy
+ HuX4KoXOocF5zNcPusS3hR5HFtKsjGmF41uTeo/dGYiHHXkoeKN7aORho
+ PSTvW7P013iJQaQgO9D0cyb2StOKODoqHjYchpS4A8da4+ay+CrgSH8w4
+ 4tUeGBw53BnIBdKrB2vnBfZbm/fim916Aqvaaay4Ct1/Yd39xb5pSyUWR w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="4199178"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
+   d="scan'208";a="4199178"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 03:19:27 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="39818233"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="32125268"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 03:19:16 -0800
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 03:19:25 -0800
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Chris Wilson <chris@chris-wilson.co.uk>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Subject: [PATCH i-g-t 16/24] tests/intel: Introduce SysMan subcategory
-Date: Mon,  4 Mar 2024 11:16:09 +0000
-Message-Id: <20240304111617.849785-17-katarzyna.piecielska@intel.com>
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Subject: [PATCH i-g-t 17/24] tests: Introduce Core subcategory
+Date: Mon,  4 Mar 2024 11:16:10 +0000
+Message-Id: <20240304111617.849785-18-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240304111617.849785-1-katarzyna.piecielska@intel.com>
 References: <20240304111617.849785-1-katarzyna.piecielska@intel.com>
@@ -67,62 +66,71 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's put e.g. sysfs heartbeat, sysfs preempt timeout, timeslise sysfs
-under SysMan subcategory.
+Let's have Core subcategory instead of 'i915' or 'drm'.
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 ---
- tests/intel/sysfs_heartbeat_interval.c | 3 +++
- tests/intel/sysfs_preempt_timeout.c    | 3 +++
- tests/intel/sysfs_timeslice_duration.c | 3 +++
- 3 files changed, 9 insertions(+)
+ tests/dmabuf_sync_file.c | 18 ++++++++++++++++++
+ tests/intel/i915_pciid.c |  2 +-
+ tests/vgem_basic.c       |  1 +
+ 3 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel/sysfs_heartbeat_interval.c b/tests/intel/sysfs_heartbeat_interval.c
-index 09dbc4129..8c6c448fa 100644
---- a/tests/intel/sysfs_heartbeat_interval.c
-+++ b/tests/intel/sysfs_heartbeat_interval.c
-@@ -45,6 +45,9 @@
-  * TEST: sysfs heartbeat interval
-  * Feature: SMI, cmd_submission
-  * Test category: SysMan
-+ * Sub-category: SysMan
-+ * Category: Desktop \ Server
-+ * Functionality: sysfs heartbeat
-  * Run type: FULL
+diff --git a/tests/dmabuf_sync_file.c b/tests/dmabuf_sync_file.c
+index cfa73117b..57f1ce2bc 100644
+--- a/tests/dmabuf_sync_file.c
++++ b/tests/dmabuf_sync_file.c
+@@ -10,6 +10,24 @@
+ 
+ IGT_TEST_DESCRIPTION("Tests for sync_file support in dma-buf");
+ 
++/**
++ * TEST: dmabuf_sync_file
++ * Category: Infrastructure
++ * Description: Tests for sync_file support in dma-buf
++ * Functionality: dmabuf
++ * Sub-category: Core
++ * Run type: FULL
++ *
++ * SUBTEST: export-basic
++ * SUBTEST: export-before-signal
++ * SUBTEST: export-multiwait
++ * SUBTEST: export-wait-after-attach
++ * SUBTEST: import-basic
++ * SUBTEST: import-multiple-read-only
++ * SUBTEST: import-multiple-read-write
++ *
++ */
++
+ static void test_export_basic(int fd)
+ {
+ 	struct vgem_bo bo;
+diff --git a/tests/intel/i915_pciid.c b/tests/intel/i915_pciid.c
+index 8322bd564..436acdaeb 100644
+--- a/tests/intel/i915_pciid.c
++++ b/tests/intel/i915_pciid.c
+@@ -35,7 +35,7 @@
+  * Feature: core
+  * Functionality: device management
+  * Run type: BAT
+- * Sub-category: i915
++ * Sub-category: Core
+  * Test category: GEM_Legacy
   *
-  * SUBTEST: idempotent
-diff --git a/tests/intel/sysfs_preempt_timeout.c b/tests/intel/sysfs_preempt_timeout.c
-index 606491c34..0663c347a 100644
---- a/tests/intel/sysfs_preempt_timeout.c
-+++ b/tests/intel/sysfs_preempt_timeout.c
-@@ -44,6 +44,9 @@
-  * TEST: sysfs preempt timeout
-  * Feature: SMI, context
-  * Test category: SysMan
-+ * Sub-category: SysMan
-+ * Category: Desktop \ Server
-+ * Functionality: sysfs preempt timeout
+  * SUBTEST:
+diff --git a/tests/vgem_basic.c b/tests/vgem_basic.c
+index 6cfb02e82..fe201908c 100644
+--- a/tests/vgem_basic.c
++++ b/tests/vgem_basic.c
+@@ -36,6 +36,7 @@
+  * Category: Infrastructure
+  * Description: Basic sanity check of Virtual GEM module (vGEM).
+  * Functionality: mock device
++ * Sub-category: Core
+  * Test category: GEM_Legacy
+  * Feature: vgem
   * Run type: FULL
-  *
-  * SUBTEST: idempotent
-diff --git a/tests/intel/sysfs_timeslice_duration.c b/tests/intel/sysfs_timeslice_duration.c
-index cceac94f2..e8dd2677e 100644
---- a/tests/intel/sysfs_timeslice_duration.c
-+++ b/tests/intel/sysfs_timeslice_duration.c
-@@ -47,6 +47,9 @@
-  * TEST: sysfs timeslice duration
-  * Feature: SMI, cmd_submission
-  * Test category: SysMan
-+ * Functionality: timeslise sysfs
-+ * Sub-category: SysMan
-+ * Category: Desktop \ Server
-  * Run type: FULL
-  *
-  * SUBTEST: duration
 -- 
 2.34.1
 
