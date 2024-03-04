@@ -4,58 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54AA1C5478C
-	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 16:08:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C715CC48BF6
+	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 16:22:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CE26410E9FE;
-	Mon,  4 Mar 2024 16:08:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 48806112301;
+	Mon,  4 Mar 2024 16:22:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UHfcFHGS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KfW+00Uj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9330C10E9FE
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 16:08:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C34C3112300
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 16:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709568530; x=1741104530;
+ t=1709569354; x=1741105354;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=e6HY/y0cgQN1HKmlWYqleSHVpVJi9yYYs9qOz/CfjVw=;
- b=UHfcFHGSDnpA4khZ2jOylSvqUmEfsUX7+SJR6p03QITakrSbOPN2/RV7
- ZrKZr+kzcC9tU/DqptvoLWRpn21l42mNI4Rk8OAN6WtJuxptOJ1y/kWVN
- R6/Gdt9W9Pz9cDQAEYOLZaI0mUUF1x3RGen4KOdtiSnGDJRO42Wvey5kP
- RWUYERqRz8HA9lBTX7bTwCa6DlqIotWsnchwqPXQJTiKWjqer8jAzHXo0
- BfPbDBKbW3fR7Ob6C8ZRW1ekvZyR10naYEZgksLTP2uLl4bEWgrA2Ubt5
- E9NBDqd1URkxtTwZrk7fS1kUor7OaS1vYYgaJuCkE8JMCDGvkRFhlXqRj A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="14645912"
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="14645912"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 08:08:49 -0800
+ bh=UxZAG2/ZEGR7wwTtVSp8+rCUrBZxhfEIllcyK+B4+fs=;
+ b=KfW+00UjDecGGXEt40zDoo2HKWeXJQMI8p1us9o2lRG3n6618/nxZzg0
+ pxVHBYfmttYlM9q4OYoYjj91RHEwzXFk0E6+NGoAy0zIAg6kJVfeeCMNe
+ uCJwpa8ucKuAVJhALqzbyxcCMruh4mXJ9GxfbHl+/pmfECafj5Vxx7esK
+ prPuomJAvCTu8rfHHhyu08tPbEP4U/UIVYv9XlsTKbBzjCw1f5U4r+MMX
+ jutZRowFlGg1zdbd8Sz9ZXtzgj6nyPvRhAukHpZrOp03wejiqGdbQvlQd
+ 3iD0ZSc5/hQ1FxQuYyGigqqlkRghw2MJQH65gEHQSv8GHc6slmyNBKNZr Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="15217672"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="15217672"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 08:22:32 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="9638232"
+   d="scan'208";a="9182244"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 08:08:47 -0800
-Date: Mon, 4 Mar 2024 17:08:44 +0100
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 08:22:29 -0800
+Date: Mon, 4 Mar 2024 17:22:25 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Riana Tauro <riana.tauro@intel.com>
-Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- aravind.iddamsetty@intel.com, badal.nilawar@intel.com,
- sujaritha.sundaresan@intel.com
-Subject: Re: [PATCH i-g-t 2/2] HAX: Add freq tests to xe-fast-feedback.testlist
-Message-ID: <20240304160844.n7ak25dmna5slspt@kamilkon-desk.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Arthur Grillo <arthurgrillo@riseup.net>,
+ Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Pekka Paalanen <pekka.paalanen@haloniitty.fi>
+Subject: Re: [PATCH i-g-t 1/2] lib/igt_kms: Enable DRM_CLIENT_CAP_ATOMIC
+ before enabling DRM_CLIENT_CAP_WRITEBACK_CONNECTORS
+Message-ID: <20240304162225.lnagoe4biwvddmdo@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Riana Tauro <riana.tauro@intel.com>, igt-dev@lists.freedesktop.org,
- anshuman.gupta@intel.com, aravind.iddamsetty@intel.com,
- badal.nilawar@intel.com, sujaritha.sundaresan@intel.com
-References: <20240227093337.1151505-1-riana.tauro@intel.com>
- <20240227093337.1151505-3-riana.tauro@intel.com>
+ igt-dev@lists.freedesktop.org,
+ Arthur Grillo <arthurgrillo@riseup.net>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Pekka Paalanen <pekka.paalanen@haloniitty.fi>
+References: <20240215-duplicate-calls-v1-0-512afbe1bda7@riseup.net>
+ <20240215-duplicate-calls-v1-1-512afbe1bda7@riseup.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240227093337.1151505-3-riana.tauro@intel.com>
+In-Reply-To: <20240215-duplicate-calls-v1-1-512afbe1bda7@riseup.net>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,41 +80,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Riana,
-On 2024-02-27 at 15:03:37 +0530, Riana Tauro wrote:
-> Add freq_fixed_exec and freq_range_exec to fast feedback
-> testlist.
+Hi Arthur,
+On 2024-02-15 at 16:21:04 -0300, Arthur Grillo wrote:
+> As stated at [1], we first need to set DRM_CLIENT_CAP_ATOMIC before
+> setting DRM_CLIENT_CAP_WRITEBACK_CONNECTORS. Fix that.
 > 
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+> [1]: https://docs.kernel.org/gpu/drm-uapi.html?highlight=writeback#c.DRM_CLIENT_CAP_WRITEBACK_CONNECTORS
+> 
+> Fixes: 3642acbb74f5 ("lib/igt_kms: Add writeback support")
+> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
 
-CI is no longer managing our f-f testlists, so imho:
-
-HAX: Add freq tests to xe-fast-feedback.testlist
-
-should be:
-
-tests/intel-ci: Add freq_fixed/range_exec to xe-fast-feedback
-
-Regards,
-Kamil
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  tests/intel-ci/xe-fast-feedback.testlist | 2 ++
->  1 file changed, 2 insertions(+)
+>  lib/igt_kms.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 > 
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> index 17863b6b1..b1e769e56 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -87,6 +87,8 @@ igt@xe_exec_threads@threads-mixed-fd-basic
->  igt@xe_exec_threads@threads-mixed-userptr-invalidate
->  igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race
->  igt@xe_gpgpu_fill@basic
-> +igt@xe_gt_freq@freq_fixed_exec
-> +igt@xe_gt_freq@freq_range_exec
->  igt@xe_gt_freq@freq_basic_api
->  igt@xe_gt_freq@freq_fixed_idle
->  igt@xe_gt_freq@freq_range_idle
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 1b4d0d7612a2..e18f6fe59882 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -2747,6 +2747,9 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>  	display->drm_fd = drm_fd;
+>  	is_intel_dev = is_intel_device(drm_fd);
+>  
+> +	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
+> +		display->is_atomic = 1;
+> +
+>  	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
+>  
+>  	resources = drmModeGetResources(display->drm_fd);
+> @@ -2795,8 +2798,6 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>  	}
+>  
+>  	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+> -	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
+> -		display->is_atomic = 1;
+>  
+>  	if (drmSetClientCap(drm_fd, LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 1) == 0)
+>  		display->has_virt_cursor_plane = 1;
+> 
 > -- 
-> 2.40.0
+> 2.43.0
 > 
