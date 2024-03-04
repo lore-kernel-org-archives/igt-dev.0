@@ -4,47 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A94DEC5478C
-	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 11:18:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D07BEC5478C
+	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 11:19:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2FCC810E3AC;
-	Mon,  4 Mar 2024 11:18:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 723E210E224;
+	Mon,  4 Mar 2024 11:19:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YL17ri/9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Lthvtq0Q";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A848410E3AC
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 11:18:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B100E10E224
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 11:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709551137; x=1741087137;
+ t=1709551148; x=1741087148;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Acmocrip9WG/bpa/qmAXjXp6Z8qVsZqnRlTcZuN/npE=;
- b=YL17ri/9gFRZ7bxIgW4co5XHy+iG60hK1LHYk4NBZxVUJIcsZFMgUsDe
- tRm9Ujvv66pVRG2nn+49UTXNV3PCV/wfHO9dgJgmTe6mx4QoM3YVCq+um
- 29xNLOmK31oxgDzM86Z36apKFrrYlO6mjaUxy89ZEb3bvMI2tWI42UXtG
- GCbtrL6+k1VTGw0hUuHSBzgsL4O9HLRLsyXVfUW9lwHw3+etTONFwQYk0
- vCxPWp2FNoYDSJlfqdMTb9XolVgsXp92EugdBF5Jou+HOcWhzEPbvWACk
- J/4gg9LlaIMNloAlBJPlIwJdB28F3XK8lEYDuUdvELcGsiogSDgp/89xd w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="29461591"
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="29461591"
+ bh=T4NVofJxb3Gb4/L0nAOPKwtwTy+ForIRRze330AiOZE=;
+ b=Lthvtq0QyH6Tyj197TB6kpKfWRzAuJ9sLGZ/npjiRbWaXmxp2HIlr8X3
+ RilI03wv0UfjgULM6NRVg5caHNN/bFbpkvax5Ji+tHkRguERyCdKizr8x
+ 1gyWK+huEr1csqufHk/LBoR8LIFf/Ro63vQCgHzQZfs7N5YU3iBPIbH1y
+ GxsWvA91mEvbDZRMrjxY4P8rCmCXZvGjG9vmJqpWiT3dXaTvjCbo6vDOs
+ 88oSjRnYkHa1RjFZW8s8DzvLGqQ7BPkH3ZSZz1a21YYU0W1+r4uVIMmAX
+ HCJ1BNnYg3RNyyjqCywDu6JaDq6aqQo7RMXh/JvXAIIhDcOTqbb8mxQNA A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="29461598"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="29461598"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 03:18:57 -0800
+ 04 Mar 2024 03:19:07 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="39818147"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="39818210"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 03:18:55 -0800
+ 04 Mar 2024 03:19:05 -0800
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t 14/24] tests/intel: Introduce Obsolete subcategory
-Date: Mon,  4 Mar 2024 11:16:07 +0000
-Message-Id: <20240304111617.849785-15-katarzyna.piecielska@intel.com>
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 15/24] tests/intel: Introduce Power management
+ subcategory
+Date: Mon,  4 Mar 2024 11:16:08 +0000
+Message-Id: <20240304111617.849785-16-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240304111617.849785-1-katarzyna.piecielska@intel.com>
 References: <20240304111617.849785-1-katarzyna.piecielska@intel.com>
@@ -65,89 +67,137 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-gen3_* tests are obsolete, so let's put them into one subcategory.
+Let's put e.g. pm_rps, pm_rpm, sseu, hwmon, suspend, freg multipliers
+and others under Power management subcategory.
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/intel/gen3_mixed_blits.c         | 3 +++
- tests/intel/gen3_render_linear_blits.c | 3 +++
- tests/intel/gen3_render_mixed_blits.c  | 3 +++
- tests/intel/gen3_render_tiledx_blits.c | 3 +++
- tests/intel/gen3_render_tiledy_blits.c | 3 +++
- 5 files changed, 15 insertions(+)
+ tests/intel/gem_pxp.c               | 1 +
+ tests/intel/i915_pm_freq_mult.c     | 9 ++++++---
+ tests/intel/i915_pm_rc6_residency.c | 1 +
+ tests/intel/i915_pm_rpm.c           | 2 ++
+ tests/intel/i915_pm_rps.c           | 3 +++
+ tests/intel/i915_pm_sseu.c          | 3 +++
+ tests/intel/i915_power.c            | 3 +++
+ tests/intel/i915_suspend.c          | 3 +++
+ 8 files changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/gen3_mixed_blits.c b/tests/intel/gen3_mixed_blits.c
-index 3c6fb141a..b9ae784da 100644
---- a/tests/intel/gen3_mixed_blits.c
-+++ b/tests/intel/gen3_mixed_blits.c
-@@ -51,6 +51,9 @@
- /**
-  * TEST: gen3 mixed blits
-  * Feature: obsolete
-+ * Sub-category: Obsolete
-+ * Functionality: obsolete
-+ * Category: Obsolete
+diff --git a/tests/intel/gem_pxp.c b/tests/intel/gem_pxp.c
+index 6a7f8e487..72f34c982 100644
+--- a/tests/intel/gem_pxp.c
++++ b/tests/intel/gem_pxp.c
+@@ -13,6 +13,7 @@
+  * Feature: PXP
+  * Functionality: pxp
+  * Sub-category: Power management
++ * Category: Desktop client
   * Run type: FULL
   *
-  * SUBTEST:
-diff --git a/tests/intel/gen3_render_linear_blits.c b/tests/intel/gen3_render_linear_blits.c
-index 7dfb2709a..e62a0e9a1 100644
---- a/tests/intel/gen3_render_linear_blits.c
-+++ b/tests/intel/gen3_render_linear_blits.c
-@@ -50,6 +50,9 @@
+  * SUBTEST: create-protected-buffer
+diff --git a/tests/intel/i915_pm_freq_mult.c b/tests/intel/i915_pm_freq_mult.c
+index 49f6722b1..de65eaedf 100644
+--- a/tests/intel/i915_pm_freq_mult.c
++++ b/tests/intel/i915_pm_freq_mult.c
+@@ -12,9 +12,12 @@
+ #include "igt_sysfs.h"
  /**
-  * TEST: gen3 render linear blits
-  * Feature: obsolete
-+ * Sub-category: Obsolete
-+ * Functionality: obsolete
-+ * Category: Obsolete
+  * TEST: i915 pm freq mult
+- * Description:
+- *   Tests for sysfs controls (or multipliers) for IP blocks which run at frequencies different
+- *   from the main GT frequency.
++ * Description: Tests for sysfs controls (or multipliers) for IP blocks which
++ *		run at frequencies different from the main GT frequency.
++ * Category: Firmware
++ * Functionality: freg multipliers
++ * Test category: i915
++ * Sub-category: Power management
   * Run type: FULL
   *
-  * SUBTEST:
-diff --git a/tests/intel/gen3_render_mixed_blits.c b/tests/intel/gen3_render_mixed_blits.c
-index f8e1bdfbd..f3fa937d0 100644
---- a/tests/intel/gen3_render_mixed_blits.c
-+++ b/tests/intel/gen3_render_mixed_blits.c
-@@ -51,6 +51,9 @@
- /**
-  * TEST: gen3 render mixed blits
-  * Feature: obsolete
-+ * Sub-category: Obsolete
-+ * Functionality: obsolete
-+ * Category: Obsolete
+  * SUBTEST: media-freq
+diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
+index 30f57858d..67ae1f1f9 100644
+--- a/tests/intel/i915_pm_rc6_residency.c
++++ b/tests/intel/i915_pm_rc6_residency.c
+@@ -46,6 +46,7 @@
+  * Feature: GuCRC, pm_rc6
+  * Functionality: rc6
+  * Sub-category: Power management
++ * Category: Desktop client
   * Run type: FULL
   *
-  * SUBTEST:
-diff --git a/tests/intel/gen3_render_tiledx_blits.c b/tests/intel/gen3_render_tiledx_blits.c
-index 1abe5adbc..88dd606ec 100644
---- a/tests/intel/gen3_render_tiledx_blits.c
-+++ b/tests/intel/gen3_render_tiledx_blits.c
-@@ -51,6 +51,9 @@
- /**
-  * TEST: gen3 render tiledx blits
-  * Feature: obsolete
-+ * Sub-category: Obsolete
-+ * Category: Obsolete
-+ * Functionality: obsolete
+  * SUBTEST: media-rc6-accuracy
+diff --git a/tests/intel/i915_pm_rpm.c b/tests/intel/i915_pm_rpm.c
+index 9fbfac744..be8d5fd77 100644
+--- a/tests/intel/i915_pm_rpm.c
++++ b/tests/intel/i915_pm_rpm.c
+@@ -44,6 +44,8 @@
+  * TEST: i915 pm rpm
+  * Feature: pm_rpm
+  * Functionality: D3 state entry-exit
++ * Sub-category: Power management
++ * Category: Desktop client
+  * Test category: pm_rpm
   * Run type: FULL
   *
-  * SUBTEST:
-diff --git a/tests/intel/gen3_render_tiledy_blits.c b/tests/intel/gen3_render_tiledy_blits.c
-index b1f4b628a..c2fa63c74 100644
---- a/tests/intel/gen3_render_tiledy_blits.c
-+++ b/tests/intel/gen3_render_tiledy_blits.c
-@@ -51,6 +51,9 @@
- /**
-  * TEST: gen3 render tiledy blits
-  * Feature: obsolete
-+ * Sub-category: Obsolete
-+ * Category: Obsolete
-+ * Functionality: obsolete
+diff --git a/tests/intel/i915_pm_rps.c b/tests/intel/i915_pm_rps.c
+index 820edd45e..17784daa9 100644
+--- a/tests/intel/i915_pm_rps.c
++++ b/tests/intel/i915_pm_rps.c
+@@ -49,6 +49,9 @@
+  * Description: Render P-States tests - verify GPU frequency changes
+  * Feature: pm_rps
+  * Test category: pm_rps
++ * Functionality: pm_rps
++ * Sub-category: Power management
++ * Category: Desktop client
   * Run type: FULL
   *
-  * SUBTEST:
+  * SUBTEST: basic-api
+diff --git a/tests/intel/i915_pm_sseu.c b/tests/intel/i915_pm_sseu.c
+index cee29a7c5..354403ef2 100644
+--- a/tests/intel/i915_pm_sseu.c
++++ b/tests/intel/i915_pm_sseu.c
+@@ -39,6 +39,9 @@
+  * TEST: i915 pm sseu
+  * Description: Tests slice/subslice/EU power gating functionality.
+  * Feature: pm_sseu
++ * Sub-category: Power management
++ * Category: Desktop client
++ * Functionality: sseu
+  * Run type: FULL
+  *
+  * SUBTEST: full-enable
+diff --git a/tests/intel/i915_power.c b/tests/intel/i915_power.c
+index ee00cbcd8..0f083b375 100644
+--- a/tests/intel/i915_power.c
++++ b/tests/intel/i915_power.c
+@@ -13,6 +13,9 @@
+  * Feature: hwmon
+  * Run type: FULL
+  * Test category: GEM_Legacy
++ * Sub-category: Power management
++ * Category: Desktop client
++ * Functionality: hwmon
+  *
+  * SUBTEST: sanity
+  * Description: Sanity check gpu power measurement
+diff --git a/tests/intel/i915_suspend.c b/tests/intel/i915_suspend.c
+index 4ee815031..7c96e25f5 100644
+--- a/tests/intel/i915_suspend.c
++++ b/tests/intel/i915_suspend.c
+@@ -49,6 +49,9 @@
+  * Feature: suspend
+  * Functionality: s2idle w/o i915
+  * Test category: suspend
++ * Functionality: suspend
++ * Sub-category: Power management
++ * Category: Desktop client
+  * Run type: FULL
+  *
+  * SUBTEST: basic-s2idle-without-i915
 -- 
 2.34.1
 
