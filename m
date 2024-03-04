@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD756C48BF6
-	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 15:05:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BD02C48BF6
+	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 15:06:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 44F4210E681;
-	Mon,  4 Mar 2024 15:05:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4A04B10E756;
+	Mon,  4 Mar 2024 15:06:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BLY65TIq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YlMuAtqe";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E69A010E681
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 15:05:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C970B10E756
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 15:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709564720; x=1741100720;
+ t=1709564801; x=1741100801;
  h=date:from:to:cc:subject:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=36Akf+Si7cjWIuo1HRr1VneeyXvJH9Iie2ik4mGYcq8=;
- b=BLY65TIq3mDkrCXG1GgoLMG4ByKT/a/tGmUEK/LKrhzbeBS9gQfJMU0U
- 0NmjG4QsIKweE179sC6bGVYU1IQZi24eHN4X8yd4KJ/T6Y6Kxa6HrHCIe
- 4sSRYwlHB5EgL52WY9oT/LuDOV6K8XLkjXWVia6SKecK79VH6XEoF4HXY
- icdxATZCIazy3qOVnhSW0PrYEF5JLk/Of2/3iDrgHebRvt0P5JOQSkByW
- FTHnr1D59D2KzZwqzBXhxpWDsR9Jb9kpOVJ8pt5PqQA7D/zjCeUEdlp7G
- r4u089/CVCdG4UX9dTxzmQnQWqSR+aFNc9WkwfMkeLJgCunAJfUISfb65 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="3921599"
+ bh=idAN6ta5DJx5yIt4Lq4uBNKqowf8lmvJyxR0+a9jIdo=;
+ b=YlMuAtqe6aqXPM3L8XY6BRx6dvegOlKSTqDIGmUjT8L3v/gSnIWbUmKI
+ nRSs49KPC5Zao1yhABD8XwgNVUep1xUFMq9dkvF0kxwyHBtF5cyJzl+i+
+ SPbp4bcMtg+257aTzsq3AS9I0y1uEL1S3D/B5Nc9Hs7+MswYYdaX86FW1
+ AgGaiXE+AjvuZ6aqhRb061b3dMDd2kR/+7vBoOViNzzkwgTwlBtVliV9L
+ JgLVr1f5LVKMyx6JjhsMajoWAsxDf03zDahOeOGJFrV8RaPLgq6G6l8nP
+ mnmt8g8T9xpf8Ezd2D8lLjlfOzXam1+6HkDwQGe3K3ZQkel3tl80qTCao A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="3919924"
 X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="3921599"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 07:05:20 -0800
+   d="scan'208";a="3919924"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 07:06:40 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="13709760"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="13683021"
 Received: from linux.intel.com ([10.54.29.200])
- by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 07:05:19 -0800
+ by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 07:06:39 -0800
 Received: from maurocar-mobl2 (maurocar-mobl2.ger.corp.intel.com
  [10.245.244.104])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id B3F0B580960;
- Mon,  4 Mar 2024 07:05:16 -0800 (PST)
-Date: Mon, 4 Mar 2024 16:05:13 +0100
+ by linux.intel.com (Postfix) with ESMTPS id 4E68A580960;
+ Mon,  4 Mar 2024 07:06:37 -0800 (PST)
+Date: Mon, 4 Mar 2024 16:06:34 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>, Priyanka Dandamudi
  <priyanka.dandamudi@intel.com>, Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Subject: Re: [PATCH i-g-t 05/24] tests/intel: Introduce Caching subcategory
-Message-ID: <20240304160513.40470a12@maurocar-mobl2>
-In-Reply-To: <20240304111617.849785-6-katarzyna.piecielska@intel.com>
+Subject: Re: [PATCH i-g-t 06/24] tests/intel: Introduce Context subcategory
+Message-ID: <20240304160634.0327dc48@maurocar-mobl2>
+In-Reply-To: <20240304111617.849785-7-katarzyna.piecielska@intel.com>
 References: <20240304111617.849785-1-katarzyna.piecielska@intel.com>
- <20240304111617.849785-6-katarzyna.piecielska@intel.com>
+ <20240304111617.849785-7-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -73,13 +73,11 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon,  4 Mar 2024 11:15:58 +0000
+On Mon,  4 Mar 2024 11:15:59 +0000
 Katarzyna Piecielska <katarzyna.piecielska@intel.com> wrote:
 
-> Let's have 'Caching' subcategory to show where we are testing cashing.
+> Let's introduce Context subcategory.
 
-LGTM.
-Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
 
 > 
@@ -90,22 +88,43 @@ Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 > Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 > Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 > ---
->  tests/intel/gem_caching.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  tests/intel/gem_ctx_bad_destroy.c | 4 ++--
+>  tests/intel/gem_ctx_engines.c     | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/tests/intel/gem_caching.c b/tests/intel/gem_caching.c
-> index 4a8f69e97..4a95cf528 100644
-> --- a/tests/intel/gem_caching.c
-> +++ b/tests/intel/gem_caching.c
-> @@ -45,9 +45,9 @@
->   * Category: Desktop client
->   * Description: Test snoop consistency when touching partial cachelines.
->   * Feature: caching
-> - * Functionality: data coherency
-> + * Functionality: coherency
+> diff --git a/tests/intel/gem_ctx_bad_destroy.c b/tests/intel/gem_ctx_bad_destroy.c
+> index 65f6b5583..b6575e2d8 100644
+> --- a/tests/intel/gem_ctx_bad_destroy.c
+> +++ b/tests/intel/gem_ctx_bad_destroy.c
+> @@ -39,9 +39,9 @@
+>   * Category: Infrastructure
+>   * Description: Negative test cases for destroy contexts.
+>   * Feature: context
+> - * Functionality: context management
+> + * Functionality: context
 >   * Run type: FULL
 > - * Sub-category: i915
-> + * Sub-category: Caching
+> + * Sub-category: Context
+
+As explained on patch 3, having two buckets with the same name is
+confusing.
+
 >   * Test category: GEM_Legacy
 >   *
->   * SUBTEST: read-writes
+>   * SUBTEST: double-destroy
+> diff --git a/tests/intel/gem_ctx_engines.c b/tests/intel/gem_ctx_engines.c
+> index 61718494e..75770e1f1 100644
+> --- a/tests/intel/gem_ctx_engines.c
+> +++ b/tests/intel/gem_ctx_engines.c
+> @@ -47,9 +47,9 @@
+>   * TEST: gem ctx engines
+>   * Category: Infrastructure
+>   * Feature: context
+> - * Functionality: context management
+> + * Functionality: context
+>   * Run type: FULL
+> - * Sub-category: i915
+> + * Sub-category: Context
+>   * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: execute-allforone
