@@ -4,54 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 522E0C5478C
-	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 10:17:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 805CDC48BF6
+	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 10:19:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DC21510FF4D;
-	Mon,  4 Mar 2024 10:17:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 36B2510FF51;
+	Mon,  4 Mar 2024 10:19:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YTw31vJU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TKiloIAg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4DC4310FF4C
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 10:17:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3093610FF2B
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 10:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709547452; x=1741083452;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=G1jYtw6PQ/KsYCAPtKGvSYaAp1N/4V7YJZVehyodvMw=;
- b=YTw31vJUhHHVZI85YRMF7yromgmWrflg3uuaTV33+IB8gaCijkyBeFRb
- 7+5qp17TkOlc5p3HUnujqoDryw3+zf6aVv6+686ZVKwmgiYgH9QqKh34x
- LiUBKizUKtiIeNE5JgS49MWcqmknzk5J9VoO09HO47/aTyWQIikZSfLQ9
- NmjK6wdlm87SQ2VLOOGAtkeLaoIxLjWBnwQHVWnQHHPtYn9upFZ8WUWhj
- 8vE40thKzbzKihW+YJ7FnKOAHf0lht/tNvMafiBUu6LVE00rbL1lCALu9
- zJ+3HOEWBr4i56fFYnx3nBKSMR4+pucxwl4lEmahEIjc3DvD9SgcOATbE Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="3894481"
+ t=1709547546; x=1741083546;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=B6zWBh5FMJZmAher+nsdifxpouPVkbb4ZiVxp4qNkns=;
+ b=TKiloIAgc6MkxHHxqUQL8huiN1RYYD/hreZ7A/cWvWPPKEAPzO8Tkc1b
+ OzBMOBbqlFGb2jUuGNVNs9PJfRpXoRyVnG9JTNlUBV2Z7hSGhMLgQnTAS
+ vhn5FCz7EqWqdmatk+VhUv2Y+CCGci1Fm+QgHiXPFwzJxS6qzj0F98ArR
+ KfhP3cEC6ummmD3ru/h7c/KecqTGCwI8ZzzKSMIF0Wgbsrzra1TTIrmOW
+ mJj0eheDqslCKpsMUmaL/2XSI1yazc86vfCfDcRrjooGgIMmVmgfwlU84
+ SI+WJDsFqkhBlFDEqy79kT+cWkRA0Cm2RtL2wdXjygFpjykujEg/nQm+P g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="3887899"
 X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="3894481"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 02:17:31 -0800
+   d="scan'208";a="3887899"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 02:19:06 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="8831578"
-Received: from unknown (HELO localhost) ([10.245.244.101])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 02:17:29 -0800
-Date: Mon, 4 Mar 2024 11:17:27 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 2/5] lib/intel_buf: revamp MOCS usage
-Message-ID: <20240304101727.k6726kkhnjbvlstm@zkempczy-mobl2>
-References: <20240301171618.395851-1-matthew.auld@intel.com>
- <20240301171618.395851-2-matthew.auld@intel.com>
+   d="scan'208";a="8897977"
+Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 02:19:04 -0800
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [PATCH i-g-t 1/2] tests/intel-ci/xe: Block PSR + DRRS tests
+Date: Mon,  4 Mar 2024 15:42:51 +0530
+Message-ID: <20240304101252.3242812-1-bhanuprakash.modem@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240301171618.395851-2-matthew.auld@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,213 +63,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Mar 01, 2024 at 05:16:15PM +0000, Matthew Auld wrote:
-> We want to allow the caller the set any valid MOCS index as part of the
-> the intel_buf. Drop the MOCS enum in favour of raw mocs_index. Also drop
-> the getter/setter interface, for which there are no current callers for
-> the setter part. In the next patch we will expose the raw mocs_index.
-> Should be no functional changes here.
-> 
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  lib/gpu_cmds.c        | 21 ++++++---------------
->  lib/intel_bufops.c    |  3 ++-
->  lib/intel_bufops.h    | 23 +++--------------------
->  lib/intel_mocs.h      |  2 ++
->  lib/rendercopy_gen9.c |  8 ++++++--
->  5 files changed, 19 insertions(+), 38 deletions(-)
-> 
-> diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
-> index 49ba364f9..f1a27b368 100644
-> --- a/lib/gpu_cmds.c
-> +++ b/lib/gpu_cmds.c
-> @@ -194,7 +194,6 @@ gen9_fill_surface_state(struct intel_bb *ibb,
->  	struct gen9_surface_state *ss;
->  	uint32_t write_domain, read_domain, offset;
->  	uint64_t address;
-> -	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
->  
->  	if (is_dst) {
->  		write_domain = read_domain = I915_GEM_DOMAIN_RENDER;
-> @@ -214,10 +213,8 @@ gen9_fill_surface_state(struct intel_bb *ibb,
->  	ss->ss0.vertical_alignment = 1; /* align 4 */
->  	ss->ss0.horizontal_alignment = 1; /* align 4 */
->  
-> -	if (mocs == INTEL_BUF_MOCS_UC)
-> -		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
-> -	else if (mocs == INTEL_BUF_MOCS_WB)
-> -		ss->ss1.mocs_index = intel_get_wb_mocs_index(ibb->fd);
-> +	if (buf->mocs_index != DEFAULT_MOCS_INDEX)
-> +		ss->ss1.mocs_index = buf->mocs_index;
->  
->  	if (buf->tiling == I915_TILING_X)
->  		ss->ss0.tiled_mode = 2;
-> @@ -255,7 +252,6 @@ gen11_fill_surface_state(struct intel_bb *ibb,
->  	struct gen9_surface_state *ss;
->  	uint32_t write_domain, read_domain, offset;
->  	uint64_t address;
-> -	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
->  
->  	if (is_dst) {
->  		write_domain = read_domain = I915_GEM_DOMAIN_RENDER;
-> @@ -275,10 +271,8 @@ gen11_fill_surface_state(struct intel_bb *ibb,
->  	ss->ss0.vertical_alignment = vertical_alignment; /* align 4 */
->  	ss->ss0.horizontal_alignment = horizontal_alignment; /* align 4 */
->  
-> -	if (mocs == INTEL_BUF_MOCS_UC)
-> -		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
-> -	else if (mocs == INTEL_BUF_MOCS_WB)
-> -		ss->ss1.mocs_index = intel_get_wb_mocs_index(ibb->fd);
-> +	if (buf->mocs_index != DEFAULT_MOCS_INDEX)
-> +		ss->ss1.mocs_index = buf->mocs_index;
->  
->  	if (buf->tiling == I915_TILING_X)
->  		ss->ss0.tiled_mode = 2;
-> @@ -911,7 +905,6 @@ xehp_fill_surface_state(struct intel_bb *ibb,
->  	struct xehp_surface_state *ss;
->  	uint32_t write_domain, read_domain, offset;
->  	uint64_t address;
-> -	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
->  
->  	if (is_dst) {
->  		write_domain = read_domain = I915_GEM_DOMAIN_RENDER;
-> @@ -931,10 +924,8 @@ xehp_fill_surface_state(struct intel_bb *ibb,
->  	ss->ss0.vertical_alignment = 1; /* align 4 */
->  	ss->ss0.horizontal_alignment = 1; /* align 4 */
->  
-> -	if (mocs == INTEL_BUF_MOCS_UC)
-> -		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
-> -	else if (mocs == INTEL_BUF_MOCS_WB)
-> -		ss->ss1.mocs_index = intel_get_wb_mocs_index(ibb->fd);
-> +	if (buf->mocs_index != DEFAULT_MOCS_INDEX)
-> +		ss->ss1.mocs_index = buf->mocs_index;
->  
->  	if (buf->tiling == I915_TILING_X)
->  		ss->ss0.tiled_mode = 2;
-> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-> index 5e2701a7d..6b769fb9d 100644
-> --- a/lib/intel_bufops.c
-> +++ b/lib/intel_bufops.c
-> @@ -29,6 +29,7 @@
->  #include "igt.h"
->  #include "igt_x86.h"
->  #include "intel_bufops.h"
-> +#include "intel_mocs.h"
->  #include "intel_pat.h"
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
-> @@ -877,8 +878,8 @@ static void __intel_buf_init(struct buf_ops *bops,
->  	buf->bpp = bpp;
->  	buf->compression = compression;
->  	buf->addr.offset = INTEL_BUF_INVALID_ADDRESS;
-> -	buf->mocs = INTEL_BUF_MOCS_DEFAULT;
->  	buf->pat_index = pat_index;
-> +	buf->mocs_index = DEFAULT_MOCS_INDEX;
->  	IGT_INIT_LIST_HEAD(&buf->link);
->  
->  	tile_width = __get_min_stride(width, bpp, tiling);
-> diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-> index 363f7abaa..60f7785fe 100644
-> --- a/lib/intel_bufops.h
-> +++ b/lib/intel_bufops.h
-> @@ -12,12 +12,6 @@ struct buf_ops;
->  #define INTEL_BUF_NAME_MAXSIZE 32
->  #define INVALID_ADDR(x) ((x) == INTEL_BUF_INVALID_ADDRESS)
->  
-> -enum intel_buf_mocs {
-> -	INTEL_BUF_MOCS_DEFAULT,
-> -	INTEL_BUF_MOCS_UC,
-> -	INTEL_BUF_MOCS_WB,
-> -};
-> -
->  struct intel_buf {
->  	struct buf_ops *bops;
->  
-> @@ -31,7 +25,6 @@ struct intel_buf {
->  	uint32_t compression;
->  	uint32_t swizzle_mode;
->  	uint32_t yuv_semiplanar_bpp;
-> -	enum intel_buf_mocs mocs;
->  	bool format_is_yuv;
->  	bool format_is_yuv_semiplanar;
->  	struct {
-> @@ -68,6 +61,9 @@ struct intel_buf {
->  	/* pat_index to use for mapping this buf. Only used in Xe. */
->  	uint8_t pat_index;
->  
-> +	/* mocs_index to use for operations using this intel_buf, like render_copy  */
-> +	uint8_t mocs_index;
-> +
->  	/* For debugging purposes */
->  	char name[INTEL_BUF_NAME_MAXSIZE + 1];
->  };
-> @@ -227,17 +223,4 @@ void intel_buf_draw_pattern(struct buf_ops *bops, struct intel_buf *buf,
->  			    int cx, int cy, int cw, int ch,
->  			    bool use_alternate_colors);
->  
-> -static inline enum intel_buf_mocs intel_buf_get_mocs(const struct intel_buf *buf)
-> -{
-> -	igt_assert(buf);
-> -	return buf->mocs;
-> -}
-> -
-> -static inline void intel_buf_set_mocs(struct intel_buf *buf,
-> -				      enum intel_buf_mocs mocs)
-> -{
-> -	igt_assert(buf);
-> -	buf->mocs = mocs;
-> -}
-> -
->  #endif
-> diff --git a/lib/intel_mocs.h b/lib/intel_mocs.h
-> index a9e075273..b5c79b0e1 100644
-> --- a/lib/intel_mocs.h
-> +++ b/lib/intel_mocs.h
-> @@ -8,6 +8,8 @@
->  
->  #include <stdint.h>
->  
-> +#define DEFAULT_MOCS_INDEX ((uint8_t)-1)
-> +
->  uint8_t intel_get_wb_mocs_index(int fd);
->  uint8_t intel_get_uc_mocs_index(int fd);
->  
-> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-> index 404406e5f..801fcd877 100644
-> --- a/lib/rendercopy_gen9.c
-> +++ b/lib/rendercopy_gen9.c
-> @@ -153,6 +153,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
->  	struct gen9_surface_state *ss;
->  	uint32_t write_domain, read_domain;
->  	uint64_t address;
-> +	uint8_t mocs_index = buf->mocs_index;
->  	int i915 = buf_ops_get_fd(buf->bops);
->  
->  	igt_assert_lte(buf->surface[0].stride, 256*1024);
-> @@ -179,12 +180,15 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
->  	ss->ss0.vertical_alignment = 1; /* align 4 */
->  	ss->ss0.horizontal_alignment = 1; /* align 4 or HALIGN_32 on display ver >= 13*/
->  
-> +	if (mocs_index == DEFAULT_MOCS_INDEX)
-> +		mocs_index = intel_get_uc_mocs_index(i915);
-> +
-> +	ss->ss1.mocs_index = mocs_index;
-> +
->  	if (HAS_4TILE(ibb->devid)) {
-> -		ss->ss1.mocs_index = intel_get_uc_mocs_index(i915);
->  		ss->ss5.mip_tail_start_lod = 0;
->  	} else {
->  		ss->ss0.render_cache_read_write = 1;
-> -		ss->ss1.mocs_index = intel_get_uc_mocs_index(i915);
->  		ss->ss5.mip_tail_start_lod = 1; /* needed with trmode */
->  	}
->  
-> -- 
-> 2.43.2
-> 
+As Driver prefers PSR over DRRS, we can't enable PSR & DRRS
+together. Hence block PSR + DRRS subtests in CI.
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/intel-ci/xe.blocklist.txt | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---
-Zbigniew
+diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+index cd8960c64..bc1325bae 100644
+--- a/tests/intel-ci/xe.blocklist.txt
++++ b/tests/intel-ci/xe.blocklist.txt
+@@ -72,6 +72,10 @@ igt@kms_rotation_crc@exhaust-fences
+ igt@kms_pm_lpsp@screens-disabled
+ igt@kms_pm_rpm@(fences|fences-dpms|pm-caching|pm-tiling)
+ ##################################################################
++# KMS: Invalid combo:- PSR + DRRS can't be tested together
++##################################################################
++igt@kms_frontbuffer_tracking@(fbcpsrdrrs|psrdrrs).*
++##################################################################
+ # KMS: Yet to add/missing XE support
+ ##################################################################
+ igt@kms_prime@.*
+-- 
+2.43.0
+
