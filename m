@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1797C48BF6
-	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 11:17:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 758DEC5478C
+	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 11:17:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5F985112003;
-	Mon,  4 Mar 2024 11:17:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 16D45112004;
+	Mon,  4 Mar 2024 11:17:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A/AUXZSQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bqvvyUcA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF131112003
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 11:17:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 84FED112004
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 11:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709551047; x=1741087047;
+ t=1709551056; x=1741087056;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=rzYNboGZeGRSG3uWcbPYJBvyVvzCfF2QTS2SNnAlmMg=;
- b=A/AUXZSQj1etxpEw61YsNyDWTo0z4notXLB7xEf/l7K9FOIqWU4Ldia4
- EWY8Wo/U0UNDSkLH3XLvthQP1BLNJepRz1EaJ6nOlhzovOExk/VKAo1hE
- KaTD/doxY0VyTty69+pGHU3sJKLSwgz/FVbUbrcYDqWoUiCt/eUBp9Wwr
- YlaJQ9LibdiiAGboFJjxEfDoQiPZ0WHXtx8cWxD+2NFtUKvJRNQVUgiCf
- edG2DiLcnSWPJZm8GtegXU++5Kps96WTbHGJ3Dz3UJ2ho+5ScEljN37dN
- XFfk3hS9aSjHhF/ZYEH31eFoNl3vJxKxtAR+CcteZ6Pwbll/EXeVQSidi A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="15444938"
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="15444938"
+ bh=mtyreevWd7t4wE6TnlbAgKtmDBcnmfrweeUfSe7I3d0=;
+ b=bqvvyUcAtKYKjPkuTaezvoCVQNDi1lmam95CV6brTcnxpVbyp35j+aQx
+ qDie0GqAodxZow0pFxIpHy4HMai+hym1nYabe3DjW+rYLLu8Sa80nFHax
+ 8kSo/K3GlZzZPH8+BCAtn82MGxDiYl4vGne3s4rGukBScmAZDLVEnIzBZ
+ vXwpvNzPyn0jWXIu28CNpAkxs0viAveAakDIKtYSS2jK2F0isMt3SzLMh
+ CpFRMbeMKaUKReMOh1nGp/pkT5u+hUOmti7tNhYOS1N8vlp5BP/uN4kj4
+ MRGhqwg5uWfEKU8RePNaY5sga2oroxThFoAoA5lqwaLP1J26hATwMYRuL A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="15444950"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="15444950"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 03:17:26 -0800
+ 04 Mar 2024 03:17:36 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="8840408"
+   d="scan'208";a="8840423"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 03:17:24 -0800
+ 04 Mar 2024 03:17:34 -0800
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
@@ -46,9 +46,9 @@ Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Priyanka Dandamudi <priyanka.dandamudi@intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
  Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Subject: [PATCH i-g-t 05/24] tests/intel: Introduce Caching subcategory
-Date: Mon,  4 Mar 2024 11:15:58 +0000
-Message-Id: <20240304111617.849785-6-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t 06/24] tests/intel: Introduce Context subcategory
+Date: Mon,  4 Mar 2024 11:15:59 +0000
+Message-Id: <20240304111617.849785-7-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240304111617.849785-1-katarzyna.piecielska@intel.com>
 References: <20240304111617.849785-1-katarzyna.piecielska@intel.com>
@@ -69,7 +69,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's have 'Caching' subcategory to show where we are testing cashing.
+Let's introduce Context subcategory.
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Chris Wilson <chris@chris-wilson.co.uk>
@@ -78,25 +78,42 @@ Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 ---
- tests/intel/gem_caching.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/intel/gem_ctx_bad_destroy.c | 4 ++--
+ tests/intel/gem_ctx_engines.c     | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel/gem_caching.c b/tests/intel/gem_caching.c
-index 4a8f69e97..4a95cf528 100644
---- a/tests/intel/gem_caching.c
-+++ b/tests/intel/gem_caching.c
-@@ -45,9 +45,9 @@
-  * Category: Desktop client
-  * Description: Test snoop consistency when touching partial cachelines.
-  * Feature: caching
-- * Functionality: data coherency
-+ * Functionality: coherency
+diff --git a/tests/intel/gem_ctx_bad_destroy.c b/tests/intel/gem_ctx_bad_destroy.c
+index 65f6b5583..b6575e2d8 100644
+--- a/tests/intel/gem_ctx_bad_destroy.c
++++ b/tests/intel/gem_ctx_bad_destroy.c
+@@ -39,9 +39,9 @@
+  * Category: Infrastructure
+  * Description: Negative test cases for destroy contexts.
+  * Feature: context
+- * Functionality: context management
++ * Functionality: context
   * Run type: FULL
 - * Sub-category: i915
-+ * Sub-category: Caching
++ * Sub-category: Context
   * Test category: GEM_Legacy
   *
-  * SUBTEST: read-writes
+  * SUBTEST: double-destroy
+diff --git a/tests/intel/gem_ctx_engines.c b/tests/intel/gem_ctx_engines.c
+index 61718494e..75770e1f1 100644
+--- a/tests/intel/gem_ctx_engines.c
++++ b/tests/intel/gem_ctx_engines.c
+@@ -47,9 +47,9 @@
+  * TEST: gem ctx engines
+  * Category: Infrastructure
+  * Feature: context
+- * Functionality: context management
++ * Functionality: context
+  * Run type: FULL
+- * Sub-category: i915
++ * Sub-category: Context
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: execute-allforone
 -- 
 2.34.1
 
