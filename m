@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D07BEC5478C
-	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 11:19:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8B2BC5478C
+	for <igt-dev@archiver.kernel.org>; Mon,  4 Mar 2024 11:19:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 723E210E224;
-	Mon,  4 Mar 2024 11:19:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6BC9A10E4D7;
+	Mon,  4 Mar 2024 11:19:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Lthvtq0Q";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FOtUwk61";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B100E10E224
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 11:19:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 59EE510E4D7
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Mar 2024 11:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709551148; x=1741087148;
+ t=1709551159; x=1741087159;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=T4NVofJxb3Gb4/L0nAOPKwtwTy+ForIRRze330AiOZE=;
- b=Lthvtq0QyH6Tyj197TB6kpKfWRzAuJ9sLGZ/npjiRbWaXmxp2HIlr8X3
- RilI03wv0UfjgULM6NRVg5caHNN/bFbpkvax5Ji+tHkRguERyCdKizr8x
- 1gyWK+huEr1csqufHk/LBoR8LIFf/Ro63vQCgHzQZfs7N5YU3iBPIbH1y
- GxsWvA91mEvbDZRMrjxY4P8rCmCXZvGjG9vmJqpWiT3dXaTvjCbo6vDOs
- 88oSjRnYkHa1RjFZW8s8DzvLGqQ7BPkH3ZSZz1a21YYU0W1+r4uVIMmAX
- HCJ1BNnYg3RNyyjqCywDu6JaDq6aqQo7RMXh/JvXAIIhDcOTqbb8mxQNA A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="29461598"
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="29461598"
+ bh=C1+xxJsXfx6jzqaR3tdVWQTmiH4CULG4ldxT4vbRMhE=;
+ b=FOtUwk61aWjrO7KOfyaLScKzHQ86BdFVQk9mVu+rV+JJYNKTYnEgMEc/
+ cIA0rKTbjzQbcQJ7YvEmdKglEJ1VfyaQOcZmSwEgjhs3O6Ee7EBtHopEg
+ z0I03ELJmYTTgPWYLg4ioGAMeooO2oqnnneb/V0PzxOQ6kaiS+ynE2Nup
+ ITLN/zW11BcktEOhmw7Dabi6Zb8RCLXCJA0SzBtrEyJtYFq/7x3b9my71
+ QnHA1XYdBS+NZU/+jx1x1VsryHC9SMjbk1ZMBOjgkzUSqVv2i3WgN/the
+ DC05p5oOoOC/Y5pZbTVbFffRgKqMK6khpHq0zM4tzXckONNrq5FmY4jw1 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="29461607"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="29461607"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 03:19:07 -0800
+ 04 Mar 2024 03:19:19 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="39818210"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; d="scan'208";a="39818233"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 03:19:05 -0800
+ 04 Mar 2024 03:19:16 -0800
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ Chris Wilson <chris@chris-wilson.co.uk>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH i-g-t 15/24] tests/intel: Introduce Power management
- subcategory
-Date: Mon,  4 Mar 2024 11:16:08 +0000
-Message-Id: <20240304111617.849785-16-katarzyna.piecielska@intel.com>
+ Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Subject: [PATCH i-g-t 16/24] tests/intel: Introduce SysMan subcategory
+Date: Mon,  4 Mar 2024 11:16:09 +0000
+Message-Id: <20240304111617.849785-17-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240304111617.849785-1-katarzyna.piecielska@intel.com>
 References: <20240304111617.849785-1-katarzyna.piecielska@intel.com>
@@ -67,137 +67,62 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's put e.g. pm_rps, pm_rpm, sseu, hwmon, suspend, freg multipliers
-and others under Power management subcategory.
+Let's put e.g. sysfs heartbeat, sysfs preempt timeout, timeslise sysfs
+under SysMan subcategory.
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- tests/intel/gem_pxp.c               | 1 +
- tests/intel/i915_pm_freq_mult.c     | 9 ++++++---
- tests/intel/i915_pm_rc6_residency.c | 1 +
- tests/intel/i915_pm_rpm.c           | 2 ++
- tests/intel/i915_pm_rps.c           | 3 +++
- tests/intel/i915_pm_sseu.c          | 3 +++
- tests/intel/i915_power.c            | 3 +++
- tests/intel/i915_suspend.c          | 3 +++
- 8 files changed, 22 insertions(+), 3 deletions(-)
+ tests/intel/sysfs_heartbeat_interval.c | 3 +++
+ tests/intel/sysfs_preempt_timeout.c    | 3 +++
+ tests/intel/sysfs_timeslice_duration.c | 3 +++
+ 3 files changed, 9 insertions(+)
 
-diff --git a/tests/intel/gem_pxp.c b/tests/intel/gem_pxp.c
-index 6a7f8e487..72f34c982 100644
---- a/tests/intel/gem_pxp.c
-+++ b/tests/intel/gem_pxp.c
-@@ -13,6 +13,7 @@
-  * Feature: PXP
-  * Functionality: pxp
-  * Sub-category: Power management
-+ * Category: Desktop client
+diff --git a/tests/intel/sysfs_heartbeat_interval.c b/tests/intel/sysfs_heartbeat_interval.c
+index 09dbc4129..8c6c448fa 100644
+--- a/tests/intel/sysfs_heartbeat_interval.c
++++ b/tests/intel/sysfs_heartbeat_interval.c
+@@ -45,6 +45,9 @@
+  * TEST: sysfs heartbeat interval
+  * Feature: SMI, cmd_submission
+  * Test category: SysMan
++ * Sub-category: SysMan
++ * Category: Desktop \ Server
++ * Functionality: sysfs heartbeat
   * Run type: FULL
   *
-  * SUBTEST: create-protected-buffer
-diff --git a/tests/intel/i915_pm_freq_mult.c b/tests/intel/i915_pm_freq_mult.c
-index 49f6722b1..de65eaedf 100644
---- a/tests/intel/i915_pm_freq_mult.c
-+++ b/tests/intel/i915_pm_freq_mult.c
-@@ -12,9 +12,12 @@
- #include "igt_sysfs.h"
- /**
-  * TEST: i915 pm freq mult
-- * Description:
-- *   Tests for sysfs controls (or multipliers) for IP blocks which run at frequencies different
-- *   from the main GT frequency.
-+ * Description: Tests for sysfs controls (or multipliers) for IP blocks which
-+ *		run at frequencies different from the main GT frequency.
-+ * Category: Firmware
-+ * Functionality: freg multipliers
-+ * Test category: i915
-+ * Sub-category: Power management
+  * SUBTEST: idempotent
+diff --git a/tests/intel/sysfs_preempt_timeout.c b/tests/intel/sysfs_preempt_timeout.c
+index 606491c34..0663c347a 100644
+--- a/tests/intel/sysfs_preempt_timeout.c
++++ b/tests/intel/sysfs_preempt_timeout.c
+@@ -44,6 +44,9 @@
+  * TEST: sysfs preempt timeout
+  * Feature: SMI, context
+  * Test category: SysMan
++ * Sub-category: SysMan
++ * Category: Desktop \ Server
++ * Functionality: sysfs preempt timeout
   * Run type: FULL
   *
-  * SUBTEST: media-freq
-diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
-index 30f57858d..67ae1f1f9 100644
---- a/tests/intel/i915_pm_rc6_residency.c
-+++ b/tests/intel/i915_pm_rc6_residency.c
-@@ -46,6 +46,7 @@
-  * Feature: GuCRC, pm_rc6
-  * Functionality: rc6
-  * Sub-category: Power management
-+ * Category: Desktop client
+  * SUBTEST: idempotent
+diff --git a/tests/intel/sysfs_timeslice_duration.c b/tests/intel/sysfs_timeslice_duration.c
+index cceac94f2..e8dd2677e 100644
+--- a/tests/intel/sysfs_timeslice_duration.c
++++ b/tests/intel/sysfs_timeslice_duration.c
+@@ -47,6 +47,9 @@
+  * TEST: sysfs timeslice duration
+  * Feature: SMI, cmd_submission
+  * Test category: SysMan
++ * Functionality: timeslise sysfs
++ * Sub-category: SysMan
++ * Category: Desktop \ Server
   * Run type: FULL
   *
-  * SUBTEST: media-rc6-accuracy
-diff --git a/tests/intel/i915_pm_rpm.c b/tests/intel/i915_pm_rpm.c
-index 9fbfac744..be8d5fd77 100644
---- a/tests/intel/i915_pm_rpm.c
-+++ b/tests/intel/i915_pm_rpm.c
-@@ -44,6 +44,8 @@
-  * TEST: i915 pm rpm
-  * Feature: pm_rpm
-  * Functionality: D3 state entry-exit
-+ * Sub-category: Power management
-+ * Category: Desktop client
-  * Test category: pm_rpm
-  * Run type: FULL
-  *
-diff --git a/tests/intel/i915_pm_rps.c b/tests/intel/i915_pm_rps.c
-index 820edd45e..17784daa9 100644
---- a/tests/intel/i915_pm_rps.c
-+++ b/tests/intel/i915_pm_rps.c
-@@ -49,6 +49,9 @@
-  * Description: Render P-States tests - verify GPU frequency changes
-  * Feature: pm_rps
-  * Test category: pm_rps
-+ * Functionality: pm_rps
-+ * Sub-category: Power management
-+ * Category: Desktop client
-  * Run type: FULL
-  *
-  * SUBTEST: basic-api
-diff --git a/tests/intel/i915_pm_sseu.c b/tests/intel/i915_pm_sseu.c
-index cee29a7c5..354403ef2 100644
---- a/tests/intel/i915_pm_sseu.c
-+++ b/tests/intel/i915_pm_sseu.c
-@@ -39,6 +39,9 @@
-  * TEST: i915 pm sseu
-  * Description: Tests slice/subslice/EU power gating functionality.
-  * Feature: pm_sseu
-+ * Sub-category: Power management
-+ * Category: Desktop client
-+ * Functionality: sseu
-  * Run type: FULL
-  *
-  * SUBTEST: full-enable
-diff --git a/tests/intel/i915_power.c b/tests/intel/i915_power.c
-index ee00cbcd8..0f083b375 100644
---- a/tests/intel/i915_power.c
-+++ b/tests/intel/i915_power.c
-@@ -13,6 +13,9 @@
-  * Feature: hwmon
-  * Run type: FULL
-  * Test category: GEM_Legacy
-+ * Sub-category: Power management
-+ * Category: Desktop client
-+ * Functionality: hwmon
-  *
-  * SUBTEST: sanity
-  * Description: Sanity check gpu power measurement
-diff --git a/tests/intel/i915_suspend.c b/tests/intel/i915_suspend.c
-index 4ee815031..7c96e25f5 100644
---- a/tests/intel/i915_suspend.c
-+++ b/tests/intel/i915_suspend.c
-@@ -49,6 +49,9 @@
-  * Feature: suspend
-  * Functionality: s2idle w/o i915
-  * Test category: suspend
-+ * Functionality: suspend
-+ * Sub-category: Power management
-+ * Category: Desktop client
-  * Run type: FULL
-  *
-  * SUBTEST: basic-s2idle-without-i915
+  * SUBTEST: duration
 -- 
 2.34.1
 
