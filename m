@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57E2FC54798
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 23:16:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25020C54798
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 23:16:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0245D112D7C;
-	Tue,  5 Mar 2024 23:16:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A55BA112D7D;
+	Tue,  5 Mar 2024 23:16:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="mtEoo+hg";
+	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="hsU5aNS5";
 	dkim-atps=neutral
 Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 74EB2112D7B
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 23:16:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7FCF1112D7F
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 23:16:20 +0000 (UTC)
 Received: from fews02-sea.riseup.net (fews02-sea-pn.riseup.net [10.0.1.112])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx1.riseup.net (Postfix) with ESMTPS id 4TqBJd0DKkzDqFV;
- Tue,  5 Mar 2024 23:16:17 +0000 (UTC)
+ by mx1.riseup.net (Postfix) with ESMTPS id 4TqBJh1NPRzDqY0;
+ Tue,  5 Mar 2024 23:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
- t=1709680577; bh=91a7PDhBGiJ5p5K6w87bxHG5JsA77nU9uktuM6D/Ozo=;
+ t=1709680580; bh=QW3+86mskIm+LV6jbthtQl4JwfEnO2Y7IPwy8ZZHOdQ=;
  h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=mtEoo+hgAO6ouI6TQ4/Je3psiG338vEAGD8TS9bYVYOmPWxm4Z8B2DsyDLRk/ocXu
- 6BXaGkhpT/HSvo4Qt/8fOZFfdyCIK5Q4uaiD5un5WTRs9/s7h3ybuwK+Phk9nxIay5
- HMZUX+Ha2TceOAnyjOzcG90RVPpRzjUqV5pSS1N0=
-X-Riseup-User-ID: 8BF7DE7BCBBBC465174FEFD9DBD46400F95866D3374BEE8A3D8CD61A80983EE5
+ b=hsU5aNS5Ex4xp3QmLQ6w/ohg1jGVMOlL/mxJVv1vhnY7PPmAisUKL9DKdgKPQH5ao
+ wP6tqw4VYrD5RgxTQbAOfsJDbfU8s2ojjPnkykydFoJWNsiYAaoipdzsCOcF+H7cOL
+ wbBap0b1kmPf0cEAnPxPrArK4UuomUvRjxX8t95E=
+X-Riseup-User-ID: AFE5AF6959FC70060B32517C735E69AB6513BA5C3183F23CE5F739E3AA4AA91C
 Received: from [127.0.0.1] (localhost [127.0.0.1])
- by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4TqBJY2D74zFvjs;
- Tue,  5 Mar 2024 23:16:13 +0000 (UTC)
+ by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4TqBJd2VYwzFvWb;
+ Tue,  5 Mar 2024 23:16:17 +0000 (UTC)
 From: Arthur Grillo <arthurgrillo@riseup.net>
-Date: Tue, 05 Mar 2024 20:15:42 -0300
-Subject: [PATCH i-g-t v2 5/7] benchmarks/kms_fb_stress: Don't paint the
- FB's if the format is DRM_FORMAT_RGB565
+Date: Tue, 05 Mar 2024 20:15:43 -0300
+Subject: [PATCH i-g-t v2 6/7] benchmarks/kms_fb_stress: Test every possible
+ format combinations
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240305-kms_fb_stress-dev-v2-5-78888a38e563@riseup.net>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240305-kms_fb_stress-dev-v2-6-78888a38e563@riseup.net>
 References: <20240305-kms_fb_stress-dev-v2-0-78888a38e563@riseup.net>
 In-Reply-To: <20240305-kms_fb_stress-dev-v2-0-78888a38e563@riseup.net>
 To: igt-dev@lists.freedesktop.org
@@ -65,80 +65,157 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Cairo does not fully support the RGB565 due to some stride issues.
-So, don't paint the FB's if the format is DRM_FORMAT_RGB565.
+After some discussion[1], we realized that it would be good for the
+kms_fb_stress to test all possible combinations of properties in a single
+run. Currently, we only manage the formats of each plane.
+
+So, test every possible format combinations.
+
+[1]: https://lore.kernel.org/all/6979cd2e-2b00-4dc4-8e41-66b435cf7ea8@riseup.net/
 
 Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
 ---
- benchmarks/kms_fb_stress.c | 55 ++++++++++++++++++++++++++++++++++------------
- 1 file changed, 41 insertions(+), 14 deletions(-)
+ benchmarks/kms_fb_stress.c | 67 ++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 62 insertions(+), 5 deletions(-)
 
 diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
-index c3b32072384e..d3823908f131 100644
+index d3823908f131..deee9d557175 100644
 --- a/benchmarks/kms_fb_stress.c
 +++ b/benchmarks/kms_fb_stress.c
-@@ -52,20 +52,47 @@ static void gen_fbs(struct data_t *data)
- 	drmModeModeInfo *mode = igt_output_get_mode(data->wb_output);
+@@ -3,6 +3,8 @@
+  * Copyright © 2024 Arthur Grillo
+  */
  
- 	for (int i = 0; i < NUM_FBS; i++) {
--		igt_create_color_fb(data->fd, kms->primary.rect.width, kms->primary.rect.height,
--				    kms->primary.format, DRM_FORMAT_MOD_LINEAR,
--				    !i, i, i,
--				    &kms->primary.fbs[i]);
--
--		igt_create_color_fb(data->fd, kms->overlay_a.rect.width, kms->overlay_a.rect.height,
--				    kms->overlay_a.format, DRM_FORMAT_MOD_LINEAR,
--				    i, !i, i,
--				    &kms->overlay_a.fbs[i]);
--
--		igt_create_color_fb(data->fd, kms->overlay_b.rect.width, kms->overlay_b.rect.height,
--				    kms->overlay_b.format, DRM_FORMAT_MOD_LINEAR,
--				    i, i, !i,
--				    &kms->overlay_b.fbs[i]);
-+		// Cairo does not fully support this format
-+		if (kms->primary.format != DRM_FORMAT_RGB565) {
-+			igt_create_color_fb(data->fd,
-+					    kms->primary.rect.width, kms->primary.rect.height,
-+					    kms->primary.format, DRM_FORMAT_MOD_LINEAR,
-+					    !i, i, i,
-+					    &kms->primary.fbs[i]);
-+		} else {
-+			igt_create_fb(data->fd,
-+				      kms->primary.rect.width, kms->primary.rect.height,
-+				      kms->primary.format, DRM_FORMAT_MOD_LINEAR,
-+				      &kms->primary.fbs[i]);
-+		}
++#include <stdint.h>
 +
-+		// Cairo does not fully support this format
-+		if (kms->overlay_a.format != DRM_FORMAT_RGB565) {
-+			igt_create_color_fb(data->fd,
-+					    kms->overlay_a.rect.width, kms->overlay_a.rect.height,
-+					    kms->overlay_a.format, DRM_FORMAT_MOD_LINEAR,
-+					    i, !i, i,
-+					    &kms->overlay_a.fbs[i]);
-+		} else {
-+			igt_create_fb(data->fd,
-+				      kms->overlay_a.rect.width, kms->overlay_a.rect.height,
-+				      kms->overlay_a.format, DRM_FORMAT_MOD_LINEAR,
-+				      &kms->overlay_a.fbs[i]);
-+		}
-+
-+		// Cairo does not fully support this format
-+		if (kms->overlay_b.format != DRM_FORMAT_RGB565) {
-+			igt_create_color_fb(data->fd,
-+					    kms->overlay_b.rect.width, kms->overlay_b.rect.height,
-+					    kms->overlay_b.format, DRM_FORMAT_MOD_LINEAR,
-+					    i, i, !i,
-+					    &kms->overlay_b.fbs[i]);
-+		} else {
-+			igt_create_fb(data->fd,
-+				      kms->overlay_b.rect.width, kms->overlay_b.rect.height,
-+				      kms->overlay_b.format, DRM_FORMAT_MOD_LINEAR,
-+				      &kms->overlay_b.fbs[i]);
-+		}
+ #include "igt.h"
  
- 		kms->writeback.rect.width = mode->hdisplay;
- 		kms->writeback.rect.height = mode->vdisplay;
+ #define FRAME_COUNT 100
+@@ -35,6 +37,8 @@ struct data_t {
+ 	int fd;
+ 	igt_display_t display;
+ 	igt_output_t *wb_output;
++	uint32_t *wb_formats;
++	size_t wb_fmt_count;
+ 	drmModeModeInfo *mode;
+ 	struct kms_t kms;
+ };
+@@ -117,6 +121,26 @@ static igt_output_t *find_wb_output(struct data_t *data)
+ 	return NULL;
+ }
+ 
++static void get_wb_formats(struct data_t *data)
++{
++	drmModePropertyBlobRes *blob = NULL;
++	uint64_t blob_id;
++	int ret;
++
++	ret = kmstest_get_property(data->fd,
++				   data->wb_output->config.connector->connector_id,
++				   DRM_MODE_OBJECT_CONNECTOR,
++				   igt_connector_prop_names[IGT_CONNECTOR_WRITEBACK_PIXEL_FORMATS],
++				   NULL, &blob_id, NULL);
++	if (ret)
++		blob = drmModeGetPropertyBlob(data->fd, blob_id);
++
++	data->wb_formats = blob->data;
++	data->wb_fmt_count = blob->length / 4;
++
++	igt_assert_f(blob, "Could not get writeback formats");
++}
++
+ static void set_wb_pipe(struct data_t *data)
+ {
+ 	enum pipe pipe = PIPE_NONE;
+@@ -228,28 +252,24 @@ static struct kms_t default_kms = {
+ 			.x = 101, .y = 0,
+ 			.width = 3639, .height = 2160,
+ 		},
+-		.format = DRM_FORMAT_XRGB8888,
+ 	},
+ 	.overlay_a = {
+ 		.rect = {
+ 			.x = 201, .y = 199,
+ 			.width = 3033, .height = 1777,
+ 		},
+-		.format = DRM_FORMAT_XRGB16161616,
+ 	},
+ 	.overlay_b = {
+ 		.rect = {
+ 			.x = 1800, .y = 250,
+ 			.width = 1507, .height = 1400,
+ 		},
+-		.format = DRM_FORMAT_ARGB8888,
+ 	},
+ 	.writeback = {
+ 		.rect = {
+ 			.x = 0, .y = 0,
+ 			// Size is to be determined at runtime
+ 		},
+-		.format = DRM_FORMAT_XRGB8888,
+ 	},
+ };
+ 
+@@ -257,6 +277,9 @@ static struct kms_t default_kms = {
+ igt_simple_main
+ {
+ 	struct data_t data = {0};
++	size_t primary_fmt_count = 0;
++	size_t overlay_a_fmt_count = 0;
++	size_t overlay_b_fmt_count = 0;
+ 
+ 	data.kms = default_kms;
+ 
+@@ -276,6 +299,7 @@ igt_simple_main
+ 	data.wb_output = find_wb_output(&data);
+ 	igt_require(data.wb_output);
+ 	set_wb_pipe(&data);
++	get_wb_formats(&data);
+ 
+ 	set_crtc_size(&data);
+ 
+@@ -290,7 +314,40 @@ igt_simple_main
+ 								  DRM_PLANE_TYPE_OVERLAY, 1);
+ 	igt_assert(data.kms.overlay_b.base != NULL);
+ 
+-	stress_driver(&data);
++	primary_fmt_count = data.kms.primary.base->format_mod_count;
++	overlay_a_fmt_count = data.kms.overlay_a.base->format_mod_count;
++	overlay_b_fmt_count = data.kms.overlay_b.base->format_mod_count;
++
++	for (size_t i = 0;
++	     i < primary_fmt_count *
++		 overlay_a_fmt_count *
++		 overlay_b_fmt_count *
++		 data.wb_fmt_count;
++	     i++) {
++		size_t p = (i / (overlay_a_fmt_count *
++				 overlay_b_fmt_count *
++				 data.wb_fmt_count)) % primary_fmt_count;
++
++		size_t a = (i / (overlay_b_fmt_count *
++				 data.wb_fmt_count)) % overlay_a_fmt_count;
++
++		size_t b = (i / data.wb_fmt_count) % overlay_a_fmt_count;
++
++		size_t w = i % data.wb_fmt_count;
++
++		data.kms.primary.format = data.kms.primary.base->formats[p];
++		data.kms.overlay_a.format = data.kms.overlay_a.base->formats[a];
++		data.kms.overlay_b.format = data.kms.overlay_b.base->formats[b];
++		data.kms.writeback.format = data.wb_formats[w];
++
++		igt_info("formats: primary: %zu/%zu overlay_a: %zu/%zu overlay_b: %zu/%zu writeback: %zu/%zu\n",
++			 p + 1, primary_fmt_count,
++			 a + 1, overlay_a_fmt_count,
++			 b + 1, overlay_b_fmt_count,
++			 w + 1, data.wb_fmt_count);
++
++		stress_driver(&data);
++	}
+ 
+ 	igt_display_fini(&data.display);
+ 	drm_close_driver(data.fd);
 
 -- 
 2.43.0
