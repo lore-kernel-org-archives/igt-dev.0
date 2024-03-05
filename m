@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF37CC54E49
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 23:16:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57E2FC54798
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 23:16:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 56A221123F3;
-	Tue,  5 Mar 2024 23:16:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0245D112D7C;
+	Tue,  5 Mar 2024 23:16:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="o5H2wmwo";
+	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="mtEoo+hg";
 	dkim-atps=neutral
 Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73E541123F3
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 23:16:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 74EB2112D7B
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 23:16:17 +0000 (UTC)
 Received: from fews02-sea.riseup.net (fews02-sea-pn.riseup.net [10.0.1.112])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx1.riseup.net (Postfix) with ESMTPS id 4TqBJY0MQhzDqY0;
- Tue,  5 Mar 2024 23:16:13 +0000 (UTC)
+ by mx1.riseup.net (Postfix) with ESMTPS id 4TqBJd0DKkzDqFV;
+ Tue,  5 Mar 2024 23:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
- t=1709680573; bh=hY/Zz9C3Jm+99TMScTM8fF8ojpz8FxTn1PqGrjWmaCI=;
+ t=1709680577; bh=91a7PDhBGiJ5p5K6w87bxHG5JsA77nU9uktuM6D/Ozo=;
  h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=o5H2wmwoYmqIvHx+nMjqV+CHwaMGJ1Hpm0bOZrMwL4xFgD6QMn5MMdW9Eukx6ml17
- B1+FzB2tQQFgxLh+8m6qHEqEluNsWiZIlSVfw40eXVIRINzaJKY5+k3Nqlq7bjRG59
- DIYv0So5RK796N80oACqibE2nQc96fYhc/qiIR0o=
-X-Riseup-User-ID: 6757450B41F89E74587E86FDE3208CDF80FB04AB2D623A0ADC6F33F3583B67DA
+ b=mtEoo+hgAO6ouI6TQ4/Je3psiG338vEAGD8TS9bYVYOmPWxm4Z8B2DsyDLRk/ocXu
+ 6BXaGkhpT/HSvo4Qt/8fOZFfdyCIK5Q4uaiD5un5WTRs9/s7h3ybuwK+Phk9nxIay5
+ HMZUX+Ha2TceOAnyjOzcG90RVPpRzjUqV5pSS1N0=
+X-Riseup-User-ID: 8BF7DE7BCBBBC465174FEFD9DBD46400F95866D3374BEE8A3D8CD61A80983EE5
 Received: from [127.0.0.1] (localhost [127.0.0.1])
- by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4TqBJT6mbwzFvWb;
- Tue,  5 Mar 2024 23:16:09 +0000 (UTC)
+ by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4TqBJY2D74zFvjs;
+ Tue,  5 Mar 2024 23:16:13 +0000 (UTC)
 From: Arthur Grillo <arthurgrillo@riseup.net>
-Date: Tue, 05 Mar 2024 20:15:41 -0300
-Subject: [PATCH i-g-t v2 4/7] benchmarks/kms_fb_stress: Free resources on
- the stress procedure
+Date: Tue, 05 Mar 2024 20:15:42 -0300
+Subject: [PATCH i-g-t v2 5/7] benchmarks/kms_fb_stress: Don't paint the
+ FB's if the format is DRM_FORMAT_RGB565
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240305-kms_fb_stress-dev-v2-4-78888a38e563@riseup.net>
+Message-Id: <20240305-kms_fb_stress-dev-v2-5-78888a38e563@riseup.net>
 References: <20240305-kms_fb_stress-dev-v2-0-78888a38e563@riseup.net>
 In-Reply-To: <20240305-kms_fb_stress-dev-v2-0-78888a38e563@riseup.net>
 To: igt-dev@lists.freedesktop.org
@@ -65,49 +65,80 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On the stress_driver(), the fbs and the sync file are not released. Fix
-that by freeing all the allocated resources.
+Cairo does not fully support the RGB565 due to some stride issues.
+So, don't paint the FB's if the format is DRM_FORMAT_RGB565.
 
 Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
 ---
- benchmarks/kms_fb_stress.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ benchmarks/kms_fb_stress.c | 55 ++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 41 insertions(+), 14 deletions(-)
 
 diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
-index ba4af5970796..c3b32072384e 100644
+index c3b32072384e..d3823908f131 100644
 --- a/benchmarks/kms_fb_stress.c
 +++ b/benchmarks/kms_fb_stress.c
-@@ -165,11 +165,30 @@ static void stress_driver(struct data_t *data)
- 		igt_output_set_writeback_fb(data->wb_output, &data->kms.writeback.fbs[fb_index]);
+@@ -52,20 +52,47 @@ static void gen_fbs(struct data_t *data)
+ 	drmModeModeInfo *mode = igt_output_get_mode(data->wb_output);
  
- 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+		if (data->wb_output->writeback_out_fence_fd != -1) {
-+			close(data->wb_output->writeback_out_fence_fd);
-+			data->wb_output->writeback_out_fence_fd = -1;
+ 	for (int i = 0; i < NUM_FBS; i++) {
+-		igt_create_color_fb(data->fd, kms->primary.rect.width, kms->primary.rect.height,
+-				    kms->primary.format, DRM_FORMAT_MOD_LINEAR,
+-				    !i, i, i,
+-				    &kms->primary.fbs[i]);
+-
+-		igt_create_color_fb(data->fd, kms->overlay_a.rect.width, kms->overlay_a.rect.height,
+-				    kms->overlay_a.format, DRM_FORMAT_MOD_LINEAR,
+-				    i, !i, i,
+-				    &kms->overlay_a.fbs[i]);
+-
+-		igt_create_color_fb(data->fd, kms->overlay_b.rect.width, kms->overlay_b.rect.height,
+-				    kms->overlay_b.format, DRM_FORMAT_MOD_LINEAR,
+-				    i, i, !i,
+-				    &kms->overlay_b.fbs[i]);
++		// Cairo does not fully support this format
++		if (kms->primary.format != DRM_FORMAT_RGB565) {
++			igt_create_color_fb(data->fd,
++					    kms->primary.rect.width, kms->primary.rect.height,
++					    kms->primary.format, DRM_FORMAT_MOD_LINEAR,
++					    !i, i, i,
++					    &kms->primary.fbs[i]);
++		} else {
++			igt_create_fb(data->fd,
++				      kms->primary.rect.width, kms->primary.rect.height,
++				      kms->primary.format, DRM_FORMAT_MOD_LINEAR,
++				      &kms->primary.fbs[i]);
 +		}
- 	}
- 
- 	igt_assert_eq(igt_gettime(&now), 0);
- 	elapsed = igt_time_elapsed(&then, &now);
- 
-+	igt_plane_set_fb(data->kms.primary.base, NULL);
-+	igt_plane_set_fb(data->kms.overlay_a.base, NULL);
-+	igt_plane_set_fb(data->kms.overlay_b.base, NULL);
-+	igt_output_set_writeback_fb(data->wb_output, NULL);
 +
-+	for (int i = 0; i < NUM_FBS; i++) {
-+		igt_remove_fb(data->fd, &data->kms.primary.fbs[i]);
-+		igt_remove_fb(data->fd, &data->kms.overlay_a.fbs[i]);
-+		igt_remove_fb(data->fd, &data->kms.overlay_b.fbs[i]);
-+		igt_remove_fb(data->fd, &data->kms.writeback.fbs[i]);
-+	}
++		// Cairo does not fully support this format
++		if (kms->overlay_a.format != DRM_FORMAT_RGB565) {
++			igt_create_color_fb(data->fd,
++					    kms->overlay_a.rect.width, kms->overlay_a.rect.height,
++					    kms->overlay_a.format, DRM_FORMAT_MOD_LINEAR,
++					    i, !i, i,
++					    &kms->overlay_a.fbs[i]);
++		} else {
++			igt_create_fb(data->fd,
++				      kms->overlay_a.rect.width, kms->overlay_a.rect.height,
++				      kms->overlay_a.format, DRM_FORMAT_MOD_LINEAR,
++				      &kms->overlay_a.fbs[i]);
++		}
 +
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
- 	igt_info("Time spent in the loop with %d frames: %lfs.\n", FRAME_COUNT, elapsed);
- }
++		// Cairo does not fully support this format
++		if (kms->overlay_b.format != DRM_FORMAT_RGB565) {
++			igt_create_color_fb(data->fd,
++					    kms->overlay_b.rect.width, kms->overlay_b.rect.height,
++					    kms->overlay_b.format, DRM_FORMAT_MOD_LINEAR,
++					    i, i, !i,
++					    &kms->overlay_b.fbs[i]);
++		} else {
++			igt_create_fb(data->fd,
++				      kms->overlay_b.rect.width, kms->overlay_b.rect.height,
++				      kms->overlay_b.format, DRM_FORMAT_MOD_LINEAR,
++				      &kms->overlay_b.fbs[i]);
++		}
  
+ 		kms->writeback.rect.width = mode->hdisplay;
+ 		kms->writeback.rect.height = mode->vdisplay;
 
 -- 
 2.43.0
