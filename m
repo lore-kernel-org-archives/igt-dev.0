@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AF0DC54E41
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 13:40:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 533E3C54798
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 13:59:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CCA4410E8A1;
-	Tue,  5 Mar 2024 13:40:17 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6026A10E8A1;
- Tue,  5 Mar 2024 13:40:16 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5621257929706727325=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E311C10E168;
+	Tue,  5 Mar 2024 13:59:54 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QiCkq1vp";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C65610E168
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 13:59:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709647194; x=1741183194;
+ h=date:from:to:subject:message-id:references:mime-version:
+ in-reply-to; bh=fu+v9AJxty0q1jaqH+lAYib+fslB2+pueWnkMzKQOxc=;
+ b=QiCkq1vpBxgdN37KNrWOt9eHrl1XqLUCQM7kiHrl/QVWCavn/sqI2HkO
+ /SQNp3BZdZAdoxJo++Dhtsr07NGb/dSUl0sxoB3e4GbM4ZeZbjQGvxlT6
+ ++EoMd1lcmL5luDqCZYLq0N1Czbg6YbbuKrZci+hPHD4ISgoFVbmg/F3I
+ n3UJ92WIHV4qSvp0XDZqIRWpWQvaCuLcharg5KwpVsxVx3qWoqR+oa7/5
+ OHP/xBO8qVcg9fykWQpp0EIz1W43kkSBEves+2CgETHUUmqsSGZxcIOxF
+ 0X0kT0jcw5oDUj3OiKfKKtps3LxYG5IEsjVq84+UZ6gDiwGdg9bKLmimZ Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="4060154"
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
+   d="scan'208";a="4060154"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2024 05:59:52 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
+   d="scan'208";a="9960581"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 05:59:51 -0800
+Date: Tue, 5 Mar 2024 14:59:25 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLkJBVA==?= =?utf-8?Q?=3A?= failure for
+ tests/kms_atomic: fix musl compilation
+Message-ID: <20240305135925.fautsex2eq6mj33o@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20240304164354.112440-1-kamil.konieczny@linux.intel.com>
+ <170958971529.502968.10435585257224165228@8e613ede5ea5>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
- =?utf-8?q?=2Cv2=2C1/6=5D_lib/rendercopy=5Fgen9=3A_use_MOCS_index_helper?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matthew Auld" <matthew.auld@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 05 Mar 2024 13:40:16 -0000
-Message-ID: <170964601638.524851.4133919197425228687@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240305121754.182425-1-matthew.auld@intel.com>
-In-Reply-To: <20240305121754.182425-1-matthew.auld@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <170958971529.502968.10435585257224165228@8e613ede5ea5>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +64,113 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5621257929706727325==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi igt-dev,
+On 2024-03-04 at 22:01:55 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/kms_atomic: fix musl compilation
+> URL   : https://patchwork.freedesktop.org/series/130682/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_14382 -> IGTPW_10772
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10772 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10772, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10772/index.html
+> 
+> Participating hosts (41 -> 37)
+> ------------------------------
+> 
+>   Missing    (4): fi-cfl-8109u bat-jsl-1 fi-snb-2520m bat-arls-3 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10772:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@live@client:
+>     - bat-dg2-8:          [PASS][1] -> [ABORT][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14382/bat-dg2-8/igt@i915_selftest@live@client.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10772/bat-dg2-8/igt@i915_selftest@live@client.html
+> 
+>   * igt@kms_pm_rpm@basic-pci-d3-state:
+>     - bat-dg2-11:         [PASS][3] -> [ABORT][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14382/bat-dg2-11/igt@kms_pm_rpm@basic-pci-d3-state.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10772/bat-dg2-11/igt@kms_pm_rpm@basic-pci-d3-state.html
+> 
 
-== Series Details ==
+This is unrelated to change in kms_atomic,
 
-Series: series starting with [i-g-t,v2,1/6] lib/rendercopy_gen9: use MOCS index helper
-URL   : https://patchwork.freedesktop.org/series/130736/
-State : success
+Regards,
+Kamil
 
-== Summary ==
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_10772 that come from known issues:
+> 
+> ### IGT changes ###
+> 
 
-CI Bug Log - changes from XEIGT_7746_BAT -> XEIGTPW_10778_BAT
-====================================================
+...cut...
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7746 -> IGTPW_10778
-  * Linux: xe-897-98da761379cfaa31b32641ad648f83c90a8e629e -> xe-898-1d6fe19a74ebc7356b6cbed32aa1dedb215b4aff
-
-  IGTPW_10778: 10778
-  IGT_7746: 7746
-  xe-897-98da761379cfaa31b32641ad648f83c90a8e629e: 98da761379cfaa31b32641ad648f83c90a8e629e
-  xe-898-1d6fe19a74ebc7356b6cbed32aa1dedb215b4aff: 1d6fe19a74ebc7356b6cbed32aa1dedb215b4aff
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10778/index.html
-
---===============5621257929706727325==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/6] lib/rendercopy_gen9: use MOCS index helper</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130736/">https://patchwork.freedesktop.org/series/130736/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10778/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10778/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7746_BAT -&gt; XEIGTPW_10778_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7746 -&gt; IGTPW_10778</li>
-<li>Linux: xe-897-98da761379cfaa31b32641ad648f83c90a8e629e -&gt; xe-898-1d6fe19a74ebc7356b6cbed32aa1dedb215b4aff</li>
-</ul>
-<p>IGTPW_10778: 10778<br />
-  IGT_7746: 7746<br />
-  xe-897-98da761379cfaa31b32641ad648f83c90a8e629e: 98da761379cfaa31b32641ad648f83c90a8e629e<br />
-  xe-898-1d6fe19a74ebc7356b6cbed32aa1dedb215b4aff: 1d6fe19a74ebc7356b6cbed32aa1dedb215b4aff</p>
-
-</body>
-</html>
-
---===============5621257929706727325==--
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@i915_selftest@live@hangcheck:
+>     - {bat-rpls-3}:       [DMESG-WARN][14] ([i915#5591]) -> [PASS][15]
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14382/bat-rpls-3/igt@i915_selftest@live@hangcheck.html
+>    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10772/bat-rpls-3/igt@i915_selftest@live@hangcheck.html
+> 
+>   
+>   {name}: This element is suppressed. This means it is ignored when computing
+>           the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+>   [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+>   [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+>   [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+>   [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
+>   [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+>   [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+>   [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
+>   [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
+>   [i915#9732]: https://gitlab.freedesktop.org/drm/intel/issues/9732
+>   [i915#9812]: https://gitlab.freedesktop.org/drm/intel/issues/9812
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7745 -> IGTPW_10772
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14382: e8bc216572501440efb20e112bb5aa60599f1863 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10772: 10772
+>   IGT_7745: 838ad56bf511c1caf56851c661fb5828c0440e3b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10772/index.html
