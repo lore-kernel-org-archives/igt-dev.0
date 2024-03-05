@@ -4,52 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75864C54798
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 16:25:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AC8FC54798
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 16:32:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D5BB1112BF2;
-	Tue,  5 Mar 2024 16:25:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9EE1B112BFC;
+	Tue,  5 Mar 2024 16:32:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PiuE1K3L";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BCUpX44O";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 431CA112BED
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 16:25:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8D00112BF7
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 16:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709655947; x=1741191947;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=y+PloaqBdZXRrH6QYqSwvE+2YrOkreB7XJGuR1Rwhyw=;
- b=PiuE1K3LBqDzrG55KjHoETCKK9oxsOEqhnaesghQ+LAv29+NJTc561Qr
- n/e3ESgKPcNu8L2uEmEX9UrJluIImmQ009+W3HibteFYDmQLOt/r9KWpJ
- by2lVzuNQ2JLduu7KdjjZ1AzQmOQL1Gr4QGuizcoHRxdvojJ9oO4pIfXU
- IEY22ilUXvcLFTjpLspz0Qb/12cjwoUziEMcKxDrQaMHV8mbUGIhdxns+
- B4JrdhOLR2uzVS7imBP7aH+K0BEZ6+T2/m1aSG26i7UYfGTE79cHFZGM5
- UB5Ar2fomf2dqv9Q+RcJiA+HDWMojm64Q4Yf1hlrSg5yLS/iRr51l2mxj g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="4079938"
-X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="4079938"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2024 08:25:47 -0800
+ t=1709656357; x=1741192357;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=HU0nSklh/N/uGETlldRgtbLHs4lMBxt7fpVeCejqFX0=;
+ b=BCUpX44Ou8E8rU/kieVr4Vq2jUMB3wfYZ/rm1MX5exJ89W9qgAgoBoim
+ wUD7D52BlWOgn2K2IfVlDM6i/+iYwp9OOn5S6msymxsPEJwyryj4XSgzC
+ KOJIb+rm4n6OKtX5rOKsfT1BS4kvghWveJon2OmvM0br4jSHujD3ssQZy
+ u1Z8qOWBqXB1rLSUBx7unGB9/Yjd5Q+DZtV/9zwCo/0PfA3SzXjOonrOp
+ /bVscybRpURNUIS0jdSS5zHQXSO1F42OMD//5grhwQ86jwvpI4INQpzaE
+ ldYQjlWs18J6ie4gXZPtrv07EMxC1tahFXmAAl/hlXb5swZZPcXA2mu70 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="15623802"
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="15623802"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2024 08:32:36 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="14010216"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 08:25:45 -0800
-From: Kunal Joshi <kunal1.joshi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="14112476"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 08:32:34 -0800
+Date: Tue, 5 Mar 2024 17:32:16 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>, Karthik B S <karthik.b.s@intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/intel/kms_big_joiner: revamp kms_big_joiner
-Date: Tue,  5 Mar 2024 22:06:07 +0530
-Message-Id: <20240305163607.688251-3-kunal1.joshi@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240305163607.688251-1-kunal1.joshi@intel.com>
-References: <20240305163607.688251-1-kunal1.joshi@intel.com>
+Cc: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: Re: [PATCH i-g-t 4/4] tests/xe_render_copy: Add render-copy test for
+ xe
+Message-ID: <20240305163216.zuoojfseaegbsrfb@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+References: <20240305054056.139691-1-zbigniew.kempczynski@intel.com>
+ <20240305054056.139691-5-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240305054056.139691-5-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,506 +75,486 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-big joiner outputs are statically assigned to pipe,
-rewrite to assign dynamically
+Hi Zbigniew,
+On 2024-03-05 at 06:40:56 +0100, Zbigniew Kempczyński wrote:
+> Fill the gap with testing render-copy for xe driver. Currently only
+> few basic render-copy checks are executing within xe_intel_bb@render.
+> 
+> xe_render_copy introduces new checks comparing to gem_render_copy
+> test. During my work on enabling render-copy on LunarLake I've
+> used same r6 subregisters like on previous platforms what causes
+> full render-copy between surfaces worked but partials were not.
+> 
+> I decided to include square and v/h stripes tests to verify cofficients
+> for barycentric coordinates matches expected <x,y> position. More
+> stressful is random subtest which randomizes width and height as well
+> as division point (it copies four rectangles to destination surface).
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> ---
+>  tests/intel/xe_render_copy.c | 430 +++++++++++++++++++++++++++++++++++
+>  tests/meson.build            |   1 +
+>  2 files changed, 431 insertions(+)
+>  create mode 100644 tests/intel/xe_render_copy.c
+> 
+> diff --git a/tests/intel/xe_render_copy.c b/tests/intel/xe_render_copy.c
+> new file mode 100644
+> index 0000000000..ce9547df50
+> --- /dev/null
+> +++ b/tests/intel/xe_render_copy.c
+> @@ -0,0 +1,430 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
+> +
+> +#include <cairo.h>
+> +#include <errno.h>
+> +#include <fcntl.h>
+> +#include <glib.h>
+> +#include <inttypes.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <sys/ioctl.h>
+> +#include <sys/stat.h>
+> +#include <unistd.h>
 
-v2: Don't change license (Bhanu)
-    Add documentation for generate_combinations (Bhanu)
-    Print the pipe name (Bhanu)
-    Remove unwanted commit (Bhanu)
-    Move combine output logic to igt_fixture (Bhanu)
-    split revamp and force joiner (Bhanu)
+We strive for alphabeticall order but unistd.h have some
+impact on other headers (not sure if only for glib.h?),
+so I do see it is sometimes a first include. +cc Mauro
 
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
----
- tests/intel/kms_big_joiner.c | 392 +++++++++++++++++------------------
- 1 file changed, 187 insertions(+), 205 deletions(-)
+Regards,
+Kamil
 
-diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
-index 28678b958..2bbc23fb5 100644
---- a/tests/intel/kms_big_joiner.c
-+++ b/tests/intel/kms_big_joiner.c
-@@ -43,16 +43,19 @@
-  *
-  * SUBTEST: basic
-  * Description: Verify the basic modeset on big joiner mode on all pipes
-- *
-- * SUBTEST: 2x-modeset
-- * Description: Verify simultaneous modeset on 2 big joiner outputs
-  */
--
- IGT_TEST_DESCRIPTION("Test big joiner");
- 
--struct bigjoiner_output {
--	uint32_t output_id;
--	drmModeModeInfo mode;
-+#define MAX_OUTPUTS 256
-+#define MAX_COMBINATIONS 1000
-+#define INVALID_TEST_OUTPUT 2
-+typedef struct {
-+    int combination[MAX_OUTPUTS];
-+} Combination;
-+
-+enum joiner_type {
-+	BIG_JOINER = 1 << 1,
-+	INVALID_JOINER = -1,
- };
- 
- typedef struct {
-@@ -60,274 +63,253 @@ typedef struct {
- 	igt_display_t display;
- 	struct igt_fb fb;
- 	int n_pipes;
--	enum pipe pipe1;
--	enum pipe pipe2;
--	struct bigjoiner_output output[2];
-+	uint64_t big_joiner_outputs[IGT_MAX_PIPES];
-+	uint64_t non_big_joiner_outputs[IGT_MAX_PIPES];
-+	uint64_t combined_outputs[IGT_MAX_PIPES];
-+	int big_joiner_output_count;
-+	int non_big_joiner_output_count;
-+	int combined_output_count;
-+	int output_count;
-+	enum pipe pipe_seq[IGT_MAX_PIPES];
- } data_t;
- 
- static int max_dotclock;
- 
--static void test_invalid_modeset(data_t *data)
-+/*
-+ * The generate_combinations function generates combinations of pipe allocations
-+ * for a given number of outputs
-+ *
-+ * @output_count: Number of outputs to allocate pipes for.
-+ * @pipe_count: Total number of available pipes.
-+ * @pipes_per_output: Number of pipes to be allocated for a single output.
-+ * @combinations: Array to store generated combinations.
-+ * @num_combinations: Pointer to a variable that stores the number of generated combinations.
-+ *
-+ * Example (output_count=2, pipe_count=4, pipes_per_output=2):
-+ * Combination 1: 0 2
-+ * Combination 2: 1 3
-+*/
-+static void generate_combinations(int output_count, int pipe_count,
-+				  int pipes_per_output,
-+				  Combination combinations[MAX_COMBINATIONS],
-+				  uint64_t *num_combinations)
- {
--	igt_output_t *output;
--	igt_display_t *display = &data->display;
--	int ret;
--
--	igt_info("Bigjoiner test on ");
--	for_each_connected_output(display, output){
--		enum pipe p = output->pending_pipe;
--		drmModeModeInfo *mode;
--		igt_pipe_t *pipe;
--		igt_plane_t *plane;
-+	int i, index;
-+	int current_combination[MAX_OUTPUTS];
- 
--		if (p == PIPE_NONE)
--			continue;
-+	for (i = 0; i < output_count; ++i)
-+		current_combination[i] = i * pipes_per_output;
- 
--		mode = igt_output_get_mode(output);
--		igt_info("pipe:%s, output:%s, mode:", kmstest_pipe_name(p), igt_output_name(output));
--		kmstest_dump_mode(mode);
-+	while (*num_combinations < MAX_COMBINATIONS && current_combination[0] <= pipe_count - output_count * pipes_per_output) {
-+		for (i = 0; i < output_count; ++i)
-+			combinations[*num_combinations].combination[i] = current_combination[i];
- 
--		pipe = &display->pipes[p];
--		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+		(*num_combinations)++;
- 
--		igt_plane_set_fb(plane, &data->fb);
--		igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
--		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
--	}
-+		index = output_count - 1;
-+		while (index >= 0 && current_combination[index] == pipe_count - (output_count - index) * pipes_per_output)
-+			index--;
- 
--	igt_assert(!igt_check_bigjoiner_support(display));
-+		if (index < 0)
-+			break;
- 
--	/* This commit is expectd to fail as this pipe is being used for big joiner */
--	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY |
--					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+		current_combination[index]++;
-+		for (i = index + 1; i < output_count; ++i)
-+			current_combination[i] = current_combination[i - 1] + pipes_per_output;
-+    }
-+}
- 
--	igt_display_reset(&data->display);
--	igt_display_commit2(display, COMMIT_ATOMIC);
-+static igt_output_t *get_output_by_id_or_assert(data_t *data, uint64_t output_id)
-+{
-+	igt_output_t *output;
- 
--	igt_assert_lt(ret, 0);
-+	for_each_connected_output(&data->display, output) {
-+		if (output->id == output_id)
-+			return output;
-+	}
-+	igt_assert("Output not found\n");
-+	return NULL;
- }
- 
--static void test_basic_modeset(data_t *data)
-+static void test_invalid_modeset_two_joiner(data_t *data, bool combined)
- {
-+	int i, j, ret;
-+	igt_output_t *output;
-+	uint64_t *outputs;
-+	igt_plane_t *primary[INVALID_TEST_OUTPUT];
-+	igt_fb_t fb[INVALID_TEST_OUTPUT];
- 	drmModeModeInfo *mode;
--	igt_output_t *output, *bigjoiner_output = NULL;
--	igt_display_t *display = &data->display;
--	igt_pipe_t *pipe;
--	igt_plane_t *plane;
--
--	igt_display_reset(display);
- 
--	for_each_connected_output(display, output) {
--		if (data->output[0].output_id == output->id) {
--			bigjoiner_output = output;
--			break;
-+	outputs = combined ? data->combined_outputs : data->big_joiner_outputs;
-+
-+	for (i = 0; i < data->n_pipes-1; i++) {
-+		igt_display_reset(&data->display);
-+		for (j = 0; j < INVALID_TEST_OUTPUT; j++) {
-+			output = get_output_by_id_or_assert(data, outputs[j]);
-+			igt_assert(output);
-+			igt_output_set_pipe(output, data->pipe_seq[i + j]);
-+			mode = igt_output_get_mode(output);
-+			igt_info("Assigning pipe %s to %s with mode %dx%d@%d%s",
-+				 kmstest_pipe_name(data->pipe_seq[i + j]),
-+				 igt_output_name(output), mode->hdisplay,
-+				 mode->vdisplay, mode->vrefresh,
-+				 j == INVALID_TEST_OUTPUT - 1 ? "\n" : ", ");
-+			primary[j] = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+			igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
-+								  DRM_FORMAT_MOD_LINEAR, &fb[j]);
-+			igt_plane_set_fb(primary[j], &fb[j]);
- 		}
-+		ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
-+		igt_assert_f(ret != 0, "Commit shouldn't have passed\n");
- 	}
--
--	igt_output_set_pipe(bigjoiner_output, data->pipe1);
--
--	mode = &data->output[0].mode;
--	igt_output_override_mode(bigjoiner_output, mode);
--
--	pipe = &display->pipes[data->pipe1];
--	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
--
--	igt_plane_set_fb(plane, &data->fb);
--	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
--	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
--
--	igt_display_commit2(display, COMMIT_ATOMIC);
--
--	igt_output_set_pipe(bigjoiner_output, PIPE_NONE);
--	igt_plane_set_fb(plane, NULL);
--	igt_display_commit2(display, COMMIT_ATOMIC);
- }
- 
--static void test_dual_display(data_t *data)
-+static void tets_big_joiner_on_last_pipe(data_t *data)
- {
-+	int i, ret;
-+	uint64_t *outputs;
-+	igt_output_t *output;
-+	igt_plane_t *primary;
-+	igt_fb_t fb;
- 	drmModeModeInfo *mode;
--	igt_output_t *output, *bigjoiner_output[2];
--	igt_display_t *display = &data->display;
--	igt_pipe_t *pipe;
--	igt_plane_t *plane1, *plane2;
--	int count = 0;
--
--	igt_display_reset(display);
--
--	for_each_connected_output(display, output) {
--		if (data->output[count].output_id == output->id) {
--			bigjoiner_output[count] = output;
--			count++;
--		}
- 
--		if (count > 1)
--			break;
-+	outputs = data->big_joiner_outputs;
-+	for (i = 0; i < data->big_joiner_output_count; i++) {
-+		igt_display_reset(&data->display);
-+		output = get_output_by_id_or_assert(data, outputs[i]);
-+		igt_output_set_pipe(output, data->pipe_seq[data->n_pipes - 1]);
-+		mode = igt_output_get_mode(output);
-+		igt_info("Assigning pipe %s to %s with mode %dx%d@%d\n",
-+				 kmstest_pipe_name(data->pipe_seq[data->n_pipes - 1]),
-+				 igt_output_name(output), mode->hdisplay,
-+				 mode->vdisplay, mode->vrefresh);
-+		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+		igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
-+							  DRM_FORMAT_MOD_LINEAR, &fb);
-+		igt_plane_set_fb(primary, &fb);
-+		ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
-+		igt_assert_f(ret != 0, "Commit shouldn't have passed\n");
- 	}
-+}
- 
--	igt_output_set_pipe(bigjoiner_output[0], data->pipe1);
--	igt_output_set_pipe(bigjoiner_output[1], data->pipe2);
--
--	/* Set up first big joiner output on Pipe A*/
--	mode = &data->output[0].mode;
--	igt_output_override_mode(bigjoiner_output[0], mode);
--
--	pipe = &display->pipes[data->pipe1];
--	plane1 = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
--
--	igt_plane_set_fb(plane1, &data->fb);
--	igt_fb_set_size(&data->fb, plane1, mode->hdisplay, mode->vdisplay);
--	igt_plane_set_size(plane1, mode->hdisplay, mode->vdisplay);
--
--	/* Set up second big joiner output on Pipe C*/
--	mode = &data->output[1].mode;
--	igt_output_override_mode(bigjoiner_output[1], mode);
--
--	pipe = &display->pipes[data->pipe2];
--	plane2 = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
--
--	igt_plane_set_fb(plane2, &data->fb);
--	igt_fb_set_size(&data->fb, plane2, mode->hdisplay, mode->vdisplay);
--	igt_plane_set_size(plane2, mode->hdisplay, mode->vdisplay);
--
--	igt_display_commit2(display, COMMIT_ATOMIC);
-+static void test_basic_modeset(data_t *data, int num_outputs,
-+			       Combination combinations[MAX_COMBINATIONS],
-+			       uint64_t num_combinations)
-+{
-+	int i, j, ret;
-+	igt_display_t *display = &data->display;
-+	igt_output_t *output[num_outputs];
-+	igt_plane_t *primary[num_outputs];
-+	igt_fb_t fb[num_outputs];
-+	drmModeModeInfo *mode;
- 
--	/* Clean up */
--	igt_output_set_pipe(bigjoiner_output[0], PIPE_NONE);
--	igt_output_set_pipe(bigjoiner_output[1], PIPE_NONE);
--	igt_plane_set_fb(plane1, NULL);
--	igt_plane_set_fb(plane2, NULL);
--	igt_display_commit2(display, COMMIT_ATOMIC);
-+	for (i = 0; i < num_combinations; i++) {
-+		igt_display_reset(display);
-+		for (j = 0; j < num_outputs; j++) {
-+			output[j] = get_output_by_id_or_assert(data,
-+						     data->big_joiner_outputs[j]);
-+			igt_info("Assigning pipe %s to %s%s",
-+				 kmstest_pipe_name(data->pipe_seq[combinations[i].combination[j]]),
-+				 output[j]->name, j == num_outputs - 1 ? "\n" : ", ");
-+			igt_output_set_pipe(output[j], data->pipe_seq[combinations[i].combination[j]]);
-+			primary[j] = igt_output_get_plane_type(output[j], DRM_PLANE_TYPE_PRIMARY);
-+			mode = igt_output_get_mode(output[j]);
-+			igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
-+								  DRM_FORMAT_MOD_LINEAR, &fb[j]);
-+			igt_plane_set_fb(primary[j], &fb[j]);
-+		}
-+		ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
-+		igt_assert_f(ret == 0, "Commit failed\n");
-+    }
- }
- 
- igt_main
- {
-+	int i, j;
- 	data_t data;
- 	igt_output_t *output;
--	drmModeModeInfo mode;
--	int valid_output = 0, i, count = 0, j = 0;
--	uint16_t width = 0, height = 0;
--	enum pipe pipe_seq[IGT_MAX_PIPES];
-+	drmModeModeInfo default_mode;
- 
-+	i = j = 0;
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 		kmstest_set_vt_graphics_mode();
--
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_require(data.display.is_atomic);
--
- 		max_dotclock = igt_get_max_dotclock(data.drm_fd);
-+		data.big_joiner_output_count = 0;
-+		data.non_big_joiner_output_count = 0;
-+		data.combined_output_count = 0;
-+		data.output_count = 0;
- 
- 		for_each_connected_output(&data.display, output) {
- 			bool found = false;
- 			drmModeConnector *connector = output->config.connector;
--
--			/*
--			 * Bigjoiner will come in to the picture when the
--			 * resolution > 5K or clock > max-dot-clock.
--			 */
- 			found = bigjoiner_mode_found(data.drm_fd, connector, max_dotclock);
--
- 			if (found) {
--				data.output[count].output_id = output->id;
--				memcpy(&data.output[count].mode, &mode, sizeof(drmModeModeInfo));
--				count++;
--
--				width = max(width, mode.hdisplay);
--				height = max(height, mode.vdisplay);
-+				data.big_joiner_outputs[data.big_joiner_output_count++] = output->id;
-+				igt_output_override_mode(output, &connector->modes[0]);
-+			} else {
-+				data.non_big_joiner_outputs[data.non_big_joiner_output_count++] = output->id;
-+				kmstest_get_connector_default_mode(data.drm_fd, connector, &default_mode);
-+				igt_output_override_mode(output, &default_mode);
- 			}
--			valid_output++;
-+			data.output_count++;
-+		}
-+
-+		if (data.big_joiner_output_count == 1 && data.non_big_joiner_output_count > 0) {
-+			data.combined_outputs[data.combined_output_count++] = data.big_joiner_outputs[0];
-+			data.combined_outputs[data.combined_output_count++] = data.non_big_joiner_outputs[0];
- 		}
- 
- 		data.n_pipes = 0;
- 		for_each_pipe(&data.display, i) {
- 			data.n_pipes++;
--			pipe_seq[j] = i;
-+			data.pipe_seq[j] = i;
- 			j++;
- 		}
--
--		igt_require_f(count > 0, "No output with 5k+ mode (or) clock > max-dot-clock found\n");
--
--		igt_create_pattern_fb(data.drm_fd, width, height, DRM_FORMAT_XRGB8888,
--				      DRM_FORMAT_MOD_LINEAR, &data.fb);
- 	}
- 
- 	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
- 	igt_subtest_with_dynamic("basic") {
--		for (i = 0; i < data.n_pipes - 1; i++) {
--			data.pipe1 = pipe_seq[i];
--			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe_seq[i]))
--				test_basic_modeset(&data);
-+		igt_require_f(data.big_joiner_output_count > 0, "Big joiner output not found\n");
-+		igt_require_f(data.n_pipes > 1, "Minimum of 2 pipes are required\n");
-+
-+		for (i = 0; i < data.big_joiner_output_count; i++) {
-+			uint64_t num_combinations = 0;
-+			Combination combinations[MAX_COMBINATIONS];
-+
-+			generate_combinations(i+1, data.n_pipes, BIG_JOINER, combinations, &num_combinations);
-+			igt_info("Number of combinations for %d outputs and %d pipes are %ld\n",
-+					 i+1, data.n_pipes, num_combinations);
-+
-+			if (num_combinations > 0)
-+				igt_dynamic_f("%dx-big-joiner", i+1)
-+					test_basic_modeset(&data, i+1, combinations, num_combinations);
-+			else
-+				break;
- 		}
- 	}
- 
--	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
--		     "when the pipe is active with a big joiner modeset");
- 	igt_subtest_with_dynamic("invalid-modeset") {
--		data.pipe1 = pipe_seq[j - 1];
-+		igt_require_f(data.big_joiner_output_count > 0, "Big joiner output not found\n");
-+		igt_require_f(data.n_pipes > 1, "Minimum of 2 pipes are required\n");
- 
--		igt_display_reset(&data.display);
--		for_each_connected_output(&data.display, output) {
--			if (data.output[0].output_id != output->id)
--				continue;
--
--			mode = data.output[0].mode;
--			igt_output_set_pipe(output, data.pipe1);
--			igt_output_override_mode(output, &mode);
--
--			igt_dynamic_f("pipe-%s-%s",
--				      kmstest_pipe_name(data.pipe1),
--				      igt_output_name(output))
--				test_invalid_modeset(&data);
--		}
-+		if (data.big_joiner_output_count >= 1)
-+			igt_dynamic_f("big_joiner_on_last_pipe")
-+				tets_big_joiner_on_last_pipe(&data);
- 
--		if(valid_output > 1) {
--			for (i = 0; i < data.n_pipes - 1; i++) {
--				igt_output_t *first_output = NULL, *second_output = NULL;
--
--				data.pipe1 = pipe_seq[i];
--				data.pipe2 = pipe_seq[i + 1];
--
--				igt_display_reset(&data.display);
--				for_each_connected_output(&data.display, output) {
--					if (data.output[0].output_id == output->id) {
--						first_output = output;
--						mode = data.output[0].mode;
--
--						igt_output_set_pipe(output, data.pipe1);
--						igt_output_override_mode(output, &mode);
--					} else if (second_output == NULL) {
--						second_output = output;
--						igt_output_set_pipe(output, data.pipe2);
--
--						break;
--					}
--				}
--
--				igt_dynamic_f("pipe-%s-%s-pipe-%s-%s",
--					      kmstest_pipe_name(data.pipe1),
--					      igt_output_name(first_output),
--					      kmstest_pipe_name(data.pipe2),
--					      igt_output_name(second_output))
--					test_invalid_modeset(&data);
--			}
--		}
--	}
-+		if (data.big_joiner_output_count > 1)
-+			igt_dynamic_f("invalid_combinations_with_two_bigjoiner")
-+				test_invalid_modeset_two_joiner(&data, false);
- 
--	igt_describe("Verify simultaneous modeset on 2 big joiner outputs");
--	igt_subtest_with_dynamic("2x-modeset") {
--		igt_require_f(count > 1, "2 outputs with big joiner modes are required\n");
--		igt_require_f(data.n_pipes > 3, "Minumum of 4 pipes are required\n");
--		for (i = 0; (i + 2) < data.n_pipes - 1; i++) {
--			data.pipe1 = pipe_seq[i];
--			data.pipe2 = pipe_seq[i + 2];
--			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe_seq[i]), kmstest_pipe_name(pipe_seq[i + 2]))
--				test_dual_display(&data);
-+		if (data.combined_output_count) {
-+			igt_dynamic_f("invalid_combinations_with_bigjoiner_non_bigjoiner")
-+				test_invalid_modeset_two_joiner(&data, true);
- 		}
- 	}
- 
- 	igt_fixture {
--		igt_remove_fb(data.drm_fd, &data.fb);
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
- 	}
--}
--- 
-2.25.1
 
+> +#include <zlib.h>
+> +
+> +#include "igt.h"
+> +#include "igt_crc.h"
+> +#include "intel_blt.h"
+> +#include "intel_bufops.h"
+> +#include "intel_pat.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +
+> +/**
+> + * TEST: Copy memory using 3d engine
+> + * Category: Software building block
+> + * Sub-category: 3d
+> + * Functionality: render
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: render-square
+> + * Description: Copy surface using 3d engine dividing to 2x2 squares
+> + *
+> + * SUBTEST: render-vstripes
+> + * Description: Copy surface using 3d engine dividing to 4x1 rectangles
+> + *
+> + * SUBTEST: render-hstripes
+> + * Description: Copy surface using 3d engine dividing to 1x4 rectangles
+> + *
+> + * SUBTEST: render-random
+> + * Description: Copy surface using 3d engine with randomized width, height and
+> + *              rectangles size
+> + *
+> + * SUBTEST: render-full
+> + * Description: Copy surface using 3d engine (1:1)
+> + */
+> +#define WIDTH	256
+> +#define HEIGHT	256
+> +IGT_TEST_DESCRIPTION("Exercise render-copy on xe");
+> +
+> +static bool debug_bb;
+> +static bool write_png;
+> +static bool buf_info;
+> +static uint32_t surfwidth = WIDTH;
+> +static uint32_t surfheight = HEIGHT;
+> +
+> +static void scratch_buf_init(struct buf_ops *bops,
+> +			     struct intel_buf *buf,
+> +			     int width, int height,
+> +			     uint32_t req_tiling,
+> +			     enum i915_compression compression)
+> +{
+> +	int fd = buf_ops_get_fd(bops);
+> +	int bpp = 32;
+> +
+> +	intel_buf_init_in_region(bops, buf, width, height, bpp, 0,
+> +				 req_tiling, compression, system_memory(fd));
+> +
+> +	igt_assert(intel_buf_width(buf) == width);
+> +	igt_assert(intel_buf_height(buf) == height);
+> +}
+> +
+> +#define GROUP_SIZE 4096
+> +static int compare_detail(const uint32_t *ptr1, uint32_t *ptr2,
+> +			  uint32_t size)
+> +{
+> +	int i, ok = 0, fail = 0;
+> +	int groups = size / GROUP_SIZE;
+> +	int *hist = calloc(GROUP_SIZE, groups);
+> +
+> +	igt_debug("size: %d, group_size: %d, groups: %d\n",
+> +		  size, GROUP_SIZE, groups);
+> +
+> +	for (i = 0; i < size / sizeof(uint32_t); i++) {
+> +		if (ptr1[i] == ptr2[i]) {
+> +			ok++;
+> +		} else {
+> +			fail++;
+> +			hist[i * sizeof(uint32_t) / GROUP_SIZE]++;
+> +		}
+> +	}
+> +
+> +	for (i = 0; i < groups; i++) {
+> +		if (hist[i])
+> +			igt_debug("[group %4x]: %d\n", i, hist[i]);
+> +	}
+> +	free(hist);
+> +
+> +	igt_debug("ok: %d, fail: %d\n", ok, fail);
+> +
+> +	return fail;
+> +}
+> +
+> +static int compare_bufs(struct intel_buf *buf1, struct intel_buf *buf2,
+> +			bool detail_compare)
+> +{
+> +	void *ptr1, *ptr2;
+> +	int fd1, fd2, ret;
+> +
+> +	/* Avoid comparison of buffers of different sizes */
+> +	if (buf1->surface[0].size != buf2->surface[0].size)
+> +		return 0;
+> +
+> +	fd1 = buf_ops_get_fd(buf1->bops);
+> +	fd2 = buf_ops_get_fd(buf2->bops);
+> +
+> +	ptr1 = xe_bo_map(fd1, buf1->handle, buf1->surface[0].size);
+> +	ptr2 = xe_bo_map(fd2, buf2->handle, buf2->surface[0].size);
+> +	ret = memcmp(ptr1, ptr2, buf1->surface[0].size);
+> +	if (detail_compare)
+> +		ret = compare_detail(ptr1, ptr2, buf1->surface[0].size);
+> +
+> +	munmap(ptr1, buf1->surface[0].size);
+> +	munmap(ptr2, buf2->surface[0].size);
+> +
+> +	return ret;
+> +}
+> +
+> +/*
+> + *
+> + * Scenarios implemented are presented below. We copy from linear to and forth
+> + * linear/tiled and back manipulating x,y coordinates from source and
+> + * destination.
+> + * For render randomize width and height and randomize x,y inside.
+> + *
+> + *  <linear>        <linear/x/y/4/64>
+> + *
+> + *  Square:
+> + *  +---+---+       +---+---+
+> + *  | 1 | 2 |  ==>  | 3 | 1 |
+> + *  +---+---+       +---+---+
+> + *  | 3 | 4 |  <==  | 4 | 2 |
+> + *  +---+---+       +---+---+
+> + *
+> + *  VStripes:
+> + *  +-+-+-+-+       +-+-+-+-+
+> + *  | | | | |  ==>  | | | | |
+> + *  |1|2|3|4|       |2|4|1|3|
+> + *  | | | | |  ==>  | | | | |
+> + *  +-+-+-+-+       +-+-+-+-+
+> + *
+> + *  HStripes:
+> + *  +-------+       +-------+
+> + *  |   1   |       |   2   |
+> + *  +-------+  ==>  +-------+
+> + *  |   2   |       |   4   |
+> + *  +-------+       +-------+
+> + *  |   3   |       |   1   |
+> + *  +-------+  <==  +-------+
+> + *  |   4   |       |   3   |
+> + *  +-------+       +-------+
+> + *
+> + *   Full:
+> + *  +-------+       +-------+
+> + *  |       |  ==>  |       |
+> + *  |   1   |       |   1   |
+> + *  |       |  <==  |       |
+> + *  +-------+       +-------+
+> + *
+> + *  Random:
+> + *  +-+-----+       +-+-----+
+> + *  |1|  2  |       |1|  2  |
+> + *  +-+-----+  ==>  +-+-----+
+> + *  |3|  4  |       |3|  4  |
+> + *  | |     |  <==  | |     |
+> + *  +-+-----+       +-+-----+
+> + */
+> +
+> +enum render_copy_testtype {
+> +	COPY_SQUARE,
+> +	COPY_VSTRIPES,
+> +	COPY_HSTRIPES,
+> +	COPY_RANDOM,
+> +	COPY_FULL,
+> +};
+> +
+> +static const char * const testname[] = {
+> +	[COPY_SQUARE]	= "square",
+> +	[COPY_VSTRIPES]	= "vstripes",
+> +	[COPY_HSTRIPES]	= "hstripes",
+> +	[COPY_RANDOM]	= "random",
+> +	[COPY_FULL]	= "full",
+> +};
+> +
+> +static int render(struct buf_ops *bops, uint32_t tiling,
+> +		  uint32_t width, uint32_t height,
+> +		  enum render_copy_testtype testtype)
+> +{
+> +	struct intel_bb *ibb;
+> +	struct intel_buf src, dst, final, grfs;
+> +	int xe = buf_ops_get_fd(bops);
+> +	uint32_t fails = 0;
+> +	uint32_t devid = intel_get_drm_devid(xe);
+> +	igt_render_copyfunc_t render_copy = NULL;
+> +	struct posrc {
+> +		uint32_t x0, y0;
+> +		uint32_t x1, y1;
+> +		uint32_t x2, y2;
+> +		uint32_t x3, y3;
+> +		uint32_t w, h;
+> +	} xys[] = {
+> +		/* square */
+> +		{ .x0 = 0,		.y0 = 0,
+> +		  .x1 = width/2,	.y1 = 0,
+> +		  .x2 = width/2,	.y2 = height/2,
+> +		  .x3 = 0,		.y3 = height/2,
+> +		  .w = width/2,		.h = height/2 },
+> +
+> +		/* vstripes */
+> +		{ .x0 = 0,
+> +		  .x1 = width/2,
+> +		  .x2 = width/2 + width/4,
+> +		  .x3 = width/4,
+> +		  .w = width/4,		.h = height },
+> +
+> +		/* hstripes */
+> +		{ .y0 = 0,
+> +		  .y1 = height/2,
+> +		  .y2 = height/2 + height/4,
+> +		  .y3 = height/4,
+> +		  .w = width,		.h = height/4 },
+> +
+> +		/* random - filled later */
+> +		{ 0, }
+> +	}, *p;
+> +
+> +	if (testtype == COPY_RANDOM) {
+> +		width = rand() % width + 1;
+> +		height = rand() % height + 1;
+> +	}
+> +
+> +	ibb = intel_bb_create(xe, SZ_4K);
+> +
+> +	if (debug_bb)
+> +		intel_bb_set_debug(ibb, true);
+> +
+> +	scratch_buf_init(bops, &src, width, height, I915_TILING_NONE,
+> +			 I915_COMPRESSION_NONE);
+> +	scratch_buf_init(bops, &dst, width, height, tiling,
+> +			 I915_COMPRESSION_NONE);
+> +	scratch_buf_init(bops, &final, width, height, I915_TILING_NONE,
+> +			 I915_COMPRESSION_NONE);
+> +	scratch_buf_init(bops, &grfs, 64, height * 4, I915_TILING_NONE,
+> +			 I915_COMPRESSION_NONE);
+> +
+> +	intel_buf_draw_pattern(bops, &src,
+> +			       0, 0, width, height,
+> +			       0, 0, width, height, 0);
+> +
+> +	render_copy = igt_get_render_copyfunc(devid);
+> +	igt_assert(render_copy);
+> +
+> +	switch (testtype) {
+> +	case COPY_SQUARE:
+> +	case COPY_VSTRIPES:
+> +	case COPY_HSTRIPES:
+> +		p = &xys[testtype];
+> +
+> +		/* copy to intermediate surface (dst) */
+> +		render_copy(ibb,
+> +			    &src, p->x0, p->y0, p->w, p->h,
+> +			    &dst, p->x1, p->y1);
+> +		render_copy(ibb,
+> +			    &src, p->x1, p->y1, p->w, p->h,
+> +			    &dst, p->x2, p->y2);
+> +		render_copy(ibb,
+> +			    &src, p->x2, p->y2, p->w, p->h,
+> +			    &dst, p->x3, p->y3);
+> +		render_copy(ibb,
+> +			    &src, p->x3, p->y3, p->w, p->h,
+> +			    &dst, p->x0, p->y0);
+> +
+> +		/* copy to final */
+> +		render_copy(ibb,
+> +			    &dst, p->x0, p->y0, p->w, p->h,
+> +			    &final, p->x3, p->y3);
+> +		render_copy(ibb,
+> +			    &dst, p->x1, p->y1, p->w, p->h,
+> +			    &final, p->x0, p->y0);
+> +		render_copy(ibb,
+> +			    &dst, p->x2, p->y2, p->w, p->h,
+> +			    &final, p->x1, p->y1);
+> +		render_copy(ibb,
+> +			    &dst, p->x3, p->y3, p->w, p->h,
+> +			    &final, p->x2, p->y2);
+> +		break;
+> +
+> +	case COPY_RANDOM:
+> +		p = &xys[testtype];
+> +		p->x0 = rand() % width;
+> +		p->y0 = rand() % height;
+> +		igt_debug("Random <width: %u, height: %u, x0: %d, y0: %d>\n",
+> +			  width, height, p->x0, p->y0);
+> +
+> +		/* copy to intermediate surface (dst), split is randomized */
+> +		render_copy(ibb,
+> +			    &src, 0, 0, p->x0, p->y0,
+> +			    &dst, 0, 0);
+> +		render_copy(ibb,
+> +			    &src, p->x0, 0, width - p->x0, p->y0,
+> +			    &dst, p->x0, 0);
+> +		render_copy(ibb,
+> +			    &src, 0, p->y0, p->x0, height - p->y0,
+> +			    &dst, 0, p->y0);
+> +		render_copy(ibb,
+> +			    &src, p->x0, p->y0, width - p->x0, height - p->y0,
+> +			    &dst, p->x0, p->y0);
+> +
+> +		render_copy(ibb,
+> +			    &dst, 0, 0, width, height,
+> +			    &final, 0, 0);
+> +		break;
+> +
+> +
+> +	case COPY_FULL:
+> +		render_copy(ibb,
+> +			    &src, 0, 0, width, height,
+> +			    &dst, 0, 0);
+> +
+> +		render_copy(ibb,
+> +			    &dst, 0, 0, width, height,
+> +			    &final, 0, 0);
+> +		break;
+> +	}
+> +
+> +	intel_bb_sync(ibb);
+> +	intel_bb_destroy(ibb);
+> +
+> +	if (write_png) {
+> +		intel_buf_raw_write_to_png(&src, "render_src_tiling_%d_%dx%d.png",
+> +					   tiling, width, height);
+> +		intel_buf_raw_write_to_png(&dst, "render_dst_tiling_%d_%dx%d.png",
+> +					   tiling, width, height);
+> +		intel_buf_raw_write_to_png(&final, "render_final_tiling_%d_%dx%d.png",
+> +					   tiling, width, height);
+> +	}
+> +
+> +	fails = compare_bufs(&src, &final, true);
+> +
+> +	intel_buf_close(bops, &src);
+> +	intel_buf_close(bops, &dst);
+> +	intel_buf_close(bops, &final);
+> +
+> +	igt_assert_f(fails == 0, "%s: (tiling: %d) fails: %d\n",
+> +		     __func__, tiling, fails);
+> +
+> +	return fails;
+> +}
+> +
+> +static int opt_handler(int opt, int opt_index, void *data)
+> +{
+> +	switch (opt) {
+> +	case 'd':
+> +		debug_bb = true;
+> +		break;
+> +	case 'p':
+> +		write_png = true;
+> +		break;
+> +	case 'i':
+> +		buf_info = true;
+> +		break;
+> +	case 'W':
+> +		surfwidth = atoi(optarg);
+> +		break;
+> +	case 'H':
+> +		surfheight = atoi(optarg);
+> +		break;
+> +	default:
+> +		return IGT_OPT_HANDLER_ERROR;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +const char *help_str =
+> +	"  -d\tDebug bb\n"
+> +	"  -p\tWrite surfaces to png\n"
+> +	"  -i\tPrint buffer info\n"
+> +	"  -W\tWidth (default 256)\n"
+> +	"  -H\tHeight (default 256)"
+> +	;
+> +
+> +
+> +igt_main_args("dpiW:H:", NULL, help_str, opt_handler, NULL)
+> +{
+> +	int xe;
+> +	struct buf_ops *bops;
+> +	const char *tiling_name;
+> +	int tiling;
+> +
+> +	igt_fixture {
+> +		xe = drm_open_driver(DRIVER_XE);
+> +		bops = buf_ops_create(xe);
+> +		srand(time(NULL));
+> +	}
+> +
+> +	for (int id = 0; id <= COPY_FULL; id++) {
+> +		igt_subtest_with_dynamic_f("render-%s", testname[id]) {
+> +			igt_require(xe_has_engine_class(xe, DRM_XE_ENGINE_CLASS_RENDER));
+> +
+> +			for_each_tiling(tiling) {
+> +				if (!blt_block_copy_supports_tiling(xe, tiling))
+> +					continue;
+> +
+> +				tiling_name = blt_tiling_name(tiling);
+> +				tiling = blt_tile_to_fb_tile(tiling);
+> +				igt_dynamic_f("render-%s-%ux%u", tiling_name, surfwidth, surfheight)
+> +					render(bops, tiling, surfwidth, surfheight, id);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		buf_ops_destroy(bops);
+> +		drm_close_driver(xe);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 02cbc37806..a856510fce 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -309,6 +309,7 @@ intel_xe_progs = [
+>  	'xe_pm_residency',
+>  	'xe_prime_self_import',
+>  	'xe_query',
+> +	'xe_render_copy',
+>  	'xe_vm',
+>  	'xe_waitfence',
+>  	'xe_spin_batch',
+> -- 
+> 2.34.1
+> 
