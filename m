@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE7CDC54798
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 05:41:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93D2CC54798
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 05:41:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7151E112710;
-	Tue,  5 Mar 2024 05:41:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 30DD211270F;
+	Tue,  5 Mar 2024 05:41:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AN5nCuat";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m8cEKp0Y";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1BD9D112710
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 05:41:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 311F711270F
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 05:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709617277; x=1741153277;
+ t=1709617280; x=1741153280;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Lzl5V7KTiCu7lwqYg9NFPmKWVJ4WD1mRu/qFA3HyIKY=;
- b=AN5nCuatBeB7m/+pHjMqujIu/bUHcpVqC7ZjhCIlJ1tuVugpjViPxJfO
- 7Y3CFvL0xZdgrbzeDXlBL5iClZVc+msEya4XP+Lh1bYatz/ZIyYJ0hMvc
- vjYvolaIQHrej71Nep+vdcm/sCIwwutrteDfnhsTUaLTBMSzU9JTHAHof
- 26j1wDJ8zCteRqp3JefSL4/65WQsqDq2uvgL1wxkwsaf2VBWtkjvt0/yo
- 2duIV43PUs1Oreslm+eYrFyUghyf+0oNKM0Fk1hUl2cLycrxAe6a+9jfx
- ive6UpNk3Zq4Mf2Yk93tmo9eWvWio5G8w+p0j+/BMGOXaofZocJLOg8xk A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="4009521"
+ bh=x3ZDNYId5204X4DeVaD1lz9BEyRJ6r6jdc862k7bN/k=;
+ b=m8cEKp0Y/hMnlVziLEfLpw89O0KkJSbeQLcGXE4qq1Dm5RnbWkZnNny2
+ mpa65str9Q9DM2W48soC1pbBkuaMOpevhQh4GlGGVzgaNx9mgy/v8Fp/G
+ RADRgEWxPLXq4z6+tBdXr0nR4+173GjVp/2JX67+5vw2a+tsE7UooqJfo
+ UgJtPKNyC4OFsYlL0/M/5hJOc/sXdt9CNvz8Oof4douN3y7bqEWj9Bjrz
+ tm5Yu83mR1IY4LwYn/dBD+4yxDCxsr0m+aEN9/fxenuCXF/3jkKmXpTT5
+ Y3lh1sd4eFXRdIYxa7jvVOJyRGOTFUhP+fXHgQ9q0u8eSSj0AdL53QZ/E A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="4009525"
 X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="4009521"
+   d="scan'208";a="4009525"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 21:41:16 -0800
+ 04 Mar 2024 21:41:20 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="9099893"
+   d="scan'208";a="9099948"
 Received: from unknown (HELO localhost) ([10.245.244.112])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 21:41:15 -0800
+ 04 Mar 2024 21:41:19 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH i-g-t 1/4] lib/intel_blt: Add blitter tile to legacy tile id
- helper
-Date: Tue,  5 Mar 2024 06:40:53 +0100
-Message-Id: <20240305054056.139691-2-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 2/4] lib/intel_bufops: Use printf style filename
+ formatting
+Date: Tue,  5 Mar 2024 06:40:54 +0100
+Message-Id: <20240305054056.139691-3-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240305054056.139691-1-zbigniew.kempczynski@intel.com>
 References: <20240305054056.139691-1-zbigniew.kempczynski@intel.com>
@@ -68,68 +68,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Due to differences between supported tilings on newer hardware (xe)
-we use for_each_tiling() macro in blitter tests. Assuming these
-tilings are also valid for render pipeline we need to convert
-them to legacy tilings (I915_TILING_*). Add helper which does
-this job allowing to iterate on supported tilings using blitter macros.
+Dumping to png where we want to pass width, height and/or other
+values is much easier when we use printf style filename formatting
+instead preparing string with filename separately. Replace current
+ write to raw png from single string to string formatting.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Matthew Auld <matthew.auld@intel.com>
 ---
- lib/intel_blt.c | 25 +++++++++++++++++++++++++
- lib/intel_blt.h |  2 ++
- 2 files changed, 27 insertions(+)
+ lib/intel_bufops.c | 14 +++++++++++++-
+ lib/intel_bufops.h |  2 +-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 3c26faba2d..fe0a45cb8e 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -521,6 +521,31 @@ static int __block_tiling(enum blt_tiling_type tiling)
- 	return 0;
+diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+index 5e2701a7dc..e45b17b0a8 100644
+--- a/lib/intel_bufops.c
++++ b/lib/intel_bufops.c
+@@ -1367,9 +1367,21 @@ static void __intel_buf_raw_write_to_png(struct buf_ops *bops,
+ 	munmap(linear, buf->bo_size);
  }
  
-+/**
-+ * blt_tile_to_fb_tile:
-+ * @tiling: tiling id
-+ *
-+ * Returns:
-+ * id of tiling introduced in i915 like I915_TILING_* used for example
-+ * in render-copy code.
-+ */
-+int blt_tile_to_fb_tile(enum blt_tiling_type tiling)
-+{
-+	switch (tiling) {
-+	case T_LINEAR: return I915_TILING_NONE;
-+	case T_XMAJOR: return I915_TILING_X;
-+	case T_YMAJOR: return I915_TILING_Y;
-+	case T_TILE4:  return I915_TILING_4;
-+	case T_TILE64: return I915_TILING_64;
-+	case T_YFMAJOR: return I915_TILING_Yf;
-+	default:
-+		break;
-+	}
+-void intel_buf_raw_write_to_png(struct intel_buf *buf, const char *filename)
++__attribute__((format(printf, 2, 3)))
++void intel_buf_raw_write_to_png(struct intel_buf *buf, const char *namefmt, ...)
+ {
++	char *filename;
++	int ret;
++	va_list ap;
 +
-+	igt_warn("invalid tiling passed: %d\n", tiling);
-+	return 0;
-+}
++	va_start(ap, namefmt);
++	ret = vasprintf(&filename, namefmt, ap);
++	igt_assert(ret >= 0);
++	va_end(ap);
 +
- /**
-  * blt_get_min_stride
-  * @width: width in pixels
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index 077283a088..1f6c713596 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -212,6 +212,8 @@ bool blt_block_copy_supports_compression(int fd);
- bool blt_uses_extended_block_copy(int fd);
+ 	__intel_buf_raw_write_to_png(buf->bops, buf, filename);
++
++	free(filename);
+ }
  
- const char *blt_tiling_name(enum blt_tiling_type tiling);
-+int blt_tile_to_fb_tile(enum blt_tiling_type tiling);
-+
- uint32_t blt_get_min_stride(uint32_t width, uint32_t bpp,
- 			    enum blt_tiling_type tiling);
- uint32_t blt_get_aligned_height(uint32_t height, uint32_t bpp,
+ static void *alloc_aligned(uint64_t size)
+diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
+index 363f7abaad..828ed7be9d 100644
+--- a/lib/intel_bufops.h
++++ b/lib/intel_bufops.h
+@@ -221,7 +221,7 @@ const char *intel_buf_set_name(struct intel_buf *buf, const char *name);
+ 
+ void intel_buf_write_to_png(struct intel_buf *buf, const char *filename);
+ void intel_buf_write_aux_to_png(struct intel_buf *buf, const char *filename);
+-void intel_buf_raw_write_to_png(struct intel_buf *buf, const char *filename);
++void intel_buf_raw_write_to_png(struct intel_buf *buf, const char *namefmt, ...);
+ void intel_buf_draw_pattern(struct buf_ops *bops, struct intel_buf *buf,
+ 			    int x, int y, int w, int h,
+ 			    int cx, int cy, int cw, int ch,
 -- 
 2.34.1
 
