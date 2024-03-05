@@ -4,41 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E131C54E49
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 23:16:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69AF5C54E49
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 23:16:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9DF14112D74;
-	Tue,  5 Mar 2024 23:16:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CBAA2112D77;
+	Tue,  5 Mar 2024 23:16:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="OOwGguh8";
+	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="tTwYLd+q";
 	dkim-atps=neutral
 Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5DF39112D74
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 23:16:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 09D16112D77
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 23:16:06 +0000 (UTC)
 Received: from fews02-sea.riseup.net (fews02-sea-pn.riseup.net [10.0.1.112])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx1.riseup.net (Postfix) with ESMTPS id 4TqBJK6N5YzDqPl;
- Tue,  5 Mar 2024 23:16:01 +0000 (UTC)
+ by mx1.riseup.net (Postfix) with ESMTPS id 4TqBJP3p88zDqFV;
+ Tue,  5 Mar 2024 23:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
- t=1709680562; bh=csv6Z9O5a4THxO6FeizjnjMvRYGm+gYqNSfVI07QoCQ=;
+ t=1709680565; bh=DJiYgm/Wp6Q5TpSFc+k9sF4OozNujrie518DAfo+stQ=;
  h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=OOwGguh8+Kg/Hw0vNpswBvsxzYIoQ/AQf5aE/JW3+cVvaxg5dFmMhT7VPjcteQVyy
- 7kvF5yIdVF7rjhzJcmDkbI4xm0NlyTYutGYpbvE5tDMtbodBr/KWXYjhNdOiFPQG14
- INbMJaxD+4sTZ23Gh94LfzRX7mEy99P2fJRGP92Q=
-X-Riseup-User-ID: 3D89FCDF7A4666028D24FC3DC1A75689874824EB922756E38CFFC237CE39DB65
+ b=tTwYLd+qq+BtC3PN4f7Ji3fI8FnqTTTmtAelwJqdsIZogqqZ0JIoNslH8t/xxQlQC
+ yD8oU2VMrp436VXvSnw5JUrHP2MiMOyrIwY45gIhJwhaoUaPGfdxf6l9CJOhRCZoey
+ RwfJL9RzjTLVlIzTguJX/M8qhAqLlVSJe5GRqUqA=
+X-Riseup-User-ID: 07DFF5F2A3F3D62C92E40493424E7719701B88A00A94F452ADB12696B1CCEED6
 Received: from [127.0.0.1] (localhost [127.0.0.1])
- by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4TqBJ33szgzFvWb;
- Tue,  5 Mar 2024 23:15:47 +0000 (UTC)
+ by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4TqBJL2lXrzFvWb;
+ Tue,  5 Mar 2024 23:16:02 +0000 (UTC)
 From: Arthur Grillo <arthurgrillo@riseup.net>
-Date: Tue, 05 Mar 2024 20:15:38 -0300
-Subject: [PATCH i-g-t v2 1/7] benchmarks/kms_fb_stress: Assert that we have
- an supported pipe
+Date: Tue, 05 Mar 2024 20:15:39 -0300
+Subject: [PATCH i-g-t v2 2/7] benchmarks/kms_fb_stress: Log the KMS structure
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240305-kms_fb_stress-dev-v2-1-78888a38e563@riseup.net>
+Message-Id: <20240305-kms_fb_stress-dev-v2-2-78888a38e563@riseup.net>
 References: <20240305-kms_fb_stress-dev-v2-0-78888a38e563@riseup.net>
 In-Reply-To: <20240305-kms_fb_stress-dev-v2-0-78888a38e563@riseup.net>
 To: igt-dev@lists.freedesktop.org
@@ -65,84 +64,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some driver may not support overlay planes. Add a check for that.
+In the future, the KMS structure could be dynamically changed. So, log
+the KMS structure to the user.
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
 ---
- benchmarks/kms_fb_stress.c | 36 +++++++++++++++++++++++++++---------
- 1 file changed, 27 insertions(+), 9 deletions(-)
+ benchmarks/kms_fb_stress.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
 diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
-index 9a0e98bed8ad..8fea10ef069f 100644
+index 8fea10ef069f..186e92ebaf9b 100644
 --- a/benchmarks/kms_fb_stress.c
 +++ b/benchmarks/kms_fb_stress.c
-@@ -87,6 +87,27 @@ static igt_output_t *find_wb_output(struct data_t *data)
- 	return NULL;
- }
+@@ -8,6 +8,9 @@
+ #define FRAME_COUNT 100
+ #define NUM_FBS 2
  
-+static void set_wb_pipe(struct data_t *data)
-+{
-+	enum pipe pipe = PIPE_NONE;
++#define RECT_FMT "%dx%d%+d%+d"
++#define RECT_ARG(r) (r)->width, (r)->height, (r)->x, (r)->y
 +
-+	for_each_pipe(&data->display, pipe) {
-+		igt_pipe_t *pipe_obj = &data->display.pipes[pipe];
-+
-+		if (igt_pipe_count_plane_type(pipe_obj, DRM_PLANE_TYPE_OVERLAY) < 2)
-+			continue;
-+
-+		igt_debug("Selecting pipe %s to %s\n",
-+			  kmstest_pipe_name(pipe),
-+			  igt_output_name(data->wb_output));
-+		igt_output_set_pipe(data->wb_output, pipe);
-+
-+		return;
-+	}
-+
-+	igt_assert_f(0, "No pipe supports this benchmark\n");
-+}
-+
- static void set_crtc_size(struct data_t *data)
- {
- 	drmModeModeInfo *mode;
-@@ -142,7 +163,6 @@ static struct kms_t default_kms = {
- igt_simple_main
- {
- 	struct data_t data = {0};
--	enum pipe pipe = PIPE_NONE;
- 	struct timespec then, now;
- 	double elapsed;
- 
-@@ -163,24 +183,22 @@ igt_simple_main
- 
- 	data.wb_output = find_wb_output(&data);
- 	igt_require(data.wb_output);
--
--	for_each_pipe(&data.display, pipe) {
--		igt_debug("Selecting pipe %s to %s\n",
--			  kmstest_pipe_name(pipe),
--			  igt_output_name(data.wb_output));
--		igt_output_set_pipe(data.wb_output, pipe);
--		break;
--	}
-+	set_wb_pipe(&data);
- 
- 	set_crtc_size(&data);
+ struct rect_t {
+ 	int x, y;
+ 	int width, height;
+@@ -189,6 +192,22 @@ igt_simple_main
  
  	gen_fbs(&data);
  
++	igt_info("KMS structure:\n");
++	igt_info("\tCRTC:\n");
++	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data.kms.crtc));
++	igt_info("\tprimary:\n");
++	igt_info("\t\tformat: %s\n", igt_format_str(data.kms.primary.format));
++	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data.kms.primary.rect));
++	igt_info("\toverlay A:\n");
++	igt_info("\t\tformat: %s\n", igt_format_str(data.kms.overlay_a.format));
++	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data.kms.overlay_a.rect));
++	igt_info("\toverlay B:\n");
++	igt_info("\t\tformat: %s\n", igt_format_str(data.kms.overlay_b.format));
++	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data.kms.overlay_b.rect));
++	igt_info("\twriteback:\n");
++	igt_info("\t\tformat: %s\n", igt_format_str(data.kms.writeback.format));
++	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data.kms.writeback.rect));
++
  	data.kms.primary.base = igt_output_get_plane_type(data.wb_output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_assert(data.kms.primary.base != NULL);
-+
- 	data.kms.overlay_a.base = igt_output_get_plane_type_index(data.wb_output,
- 								  DRM_PLANE_TYPE_OVERLAY, 0);
-+	igt_assert(data.kms.overlay_a.base != NULL);
-+
- 	data.kms.overlay_b.base = igt_output_get_plane_type_index(data.wb_output,
- 								  DRM_PLANE_TYPE_OVERLAY, 1);
-+	igt_assert(data.kms.overlay_b.base != NULL);
- 
- 	igt_assert_eq(igt_gettime(&then), 0);
+ 	igt_assert(data.kms.primary.base != NULL);
  
 
 -- 
