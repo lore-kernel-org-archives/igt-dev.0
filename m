@@ -4,61 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8473EC54798
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 11:50:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C863C54E41
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 12:18:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 226C710EAAE;
-	Tue,  5 Mar 2024 11:50:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CC8A6112A85;
+	Tue,  5 Mar 2024 12:18:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nZrEANjA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jhwmtVWD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2840110EAAE
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 11:50:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8483D112A85
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 12:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709639440; x=1741175440;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=9jimdBrnDgEhLJhSxjl+cbH8i1/cSnTY2Cr/WYDGFE8=;
- b=nZrEANjAvFSgPsMyw+fe4QI6uLUqWHZp9ATmDpIS46Nggp1mO79zVjVE
- AGDixOZbsGaNr/GWG7p/oi61SHPDoYmhv9HDWa9GM6tnObacktRMQ5Yv6
- l/hP9GYUq5QUNLDbdJUGwRBe10Y7URMjTvbRc55DkXygSTbTjq1jnhxcP
- Cb/onRS4AK9cBg5R+zX1duj9wjp28A6EG1p5vZmoiOs1lV0HOTT82rIKM
- iUE6tp2IptOm4eqggFPKTt3G9F2P+K7/olmgdqFrz83VwZc6yqHoBUhAY
- 4s41oyc6XvFTNCSVYc6jiJV/g/V+/LIVGI5fADMZMyr6M2GlUXHfdGF1m w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="7130219"
-X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="7130219"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2024 03:50:39 -0800
+ t=1709641098; x=1741177098;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=s/l7b9Lf6zgVceDaCN81gZsBeGQJ2GMlancRjk1Ez8M=;
+ b=jhwmtVWDuO8+ajt2//EaudWM2g9XBtXf5DjkdP30SS/ROMyrfgFlaMs/
+ MvsA/x8iUDqziQ+oMqYfr+tKCkMyeDIOYchKojFJKvK4GXBT3BGYYynKg
+ SP8wii1qQqxo8vsao1ZdTBEWB51D7dexeQk8Wr1XFxsV4YtwgqAwTOsG4
+ 7I7BQthIEVC2BWMFzD0i+fjmUFDRP+stdg8Y8tqriEfDm22udbkI40aGP
+ XNJaNh+KK4i9hvY4KLJwHdkPCZbc4In26SQI0wnjvLOOwsMIJkRQFztdS
+ 6oyMRLM/QH8/irP/BkhLkWEPKpOuPUAA8S7xUju6eRqgcUXhSPDOaD5PB Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="15616287"
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="15616287"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2024 04:18:17 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="9764690"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 03:50:30 -0800
-Date: Tue, 5 Mar 2024 12:50:07 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+   d="scan'208";a="9779407"
+Received: from pkunieck-mobl.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
+ ([10.249.140.91])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2024 04:18:15 -0800
+From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: vitaly.prosyak@amd.com, Christian Koenig <christian.koenig@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Michael Strawbridge <michael.strawbridge@amd.com>,
- Petri Latvala <adrinael@adrinael.net>
-Subject: Re: [PATCH] amdgpu/tests: Fix vce enc test failure
-Message-ID: <20240305115007.o5bbwh4pepg5mdzh@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, vitaly.prosyak@amd.com,
- Christian Koenig <christian.koenig@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Michael Strawbridge <michael.strawbridge@amd.com>,
- Petri Latvala <adrinael@adrinael.net>
-References: <20240304211632.184249-1-vitaly.prosyak@amd.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Nirmoy Das <nirmoy.das@intel.com>
+Subject: [PATCH i-g-t v2 1/6] lib/rendercopy_gen9: use MOCS index helper
+Date: Tue,  5 Mar 2024 12:17:49 +0000
+Message-ID: <20240305121754.182425-1-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240304211632.184249-1-vitaly.prosyak@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,87 +65,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Vitaly,
-On 2024-03-04 at 16:16:32 -0500, vitaly.prosyak@amd.com wrote:
-> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> 
+UC looks to be the sensible default here, since it will work with
+display engine if rendering onto scanout surface. Use the matching
+helper.
 
-just spotted:
-[PATCH] amdgpu/tests: Fix vce enc test failure
-------- ^ -----^:
-These two words should be exchanged, "tests/amdgpu:"
-imho even better would be to write test name there:
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+---
+ lib/rendercopy_gen9.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-[PATCH] tests/amdgpu/amd_vce_dec: Fix test failure
+diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+index efd7cb37c..404406e5f 100644
+--- a/lib/rendercopy_gen9.c
++++ b/lib/rendercopy_gen9.c
+@@ -180,10 +180,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+ 	ss->ss0.horizontal_alignment = 1; /* align 4 or HALIGN_32 on display ver >= 13*/
+ 
+ 	if (HAS_4TILE(ibb->devid)) {
+-		/*
+-		 * mocs table version 1 index 3 groub wb use l3
+-		 */
+-		ss->ss1.mocs_index = 3;
++		ss->ss1.mocs_index = intel_get_uc_mocs_index(i915);
+ 		ss->ss5.mip_tail_start_lod = 0;
+ 	} else {
+ 		ss->ss0.render_cache_read_write = 1;
+-- 
+2.43.2
 
-With that fixed:
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-> Combine the following sub-tests: creation, encoding
-> and destroy as a single sub-test for vce encoder.
-> It is a similar change as commit 40ed74461d8a44657a0f4799ade86116722d3ea2.
-> 
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Michael Strawbridge <michael.strawbridge@amd.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Petri Latvala <adrinael@adrinael.net>
-> Signed-off-by: Michael Strawbridge <michael.strawbridge@amd.com>
-> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> ---
->  tests/amdgpu/amd_vce_dec.c | 32 ++++++++++++++------------------
->  1 file changed, 14 insertions(+), 18 deletions(-)
-> 
-> diff --git a/tests/amdgpu/amd_vce_dec.c b/tests/amdgpu/amd_vce_dec.c
-> index 364534955..51902802c 100644
-> --- a/tests/amdgpu/amd_vce_dec.c
-> +++ b/tests/amdgpu/amd_vce_dec.c
-> @@ -552,6 +552,17 @@ amdgpu_cs_vce_destroy(amdgpu_device_handle device_handle, struct mmd_context *co
->  	free_resource(&enc->fb[0]);
->  }
->  
-> +static void
-> +amdgpu_vce_enc_test(amdgpu_device_handle device, struct mmd_context *context,
-> +		struct amdgpu_vce_encode *enc, bool is_mv_supported)
-> +{
-> +	amdgpu_cs_vce_create(device, enc, context, is_mv_supported);
-> +	amdgpu_cs_vce_encode(device, context, enc, is_mv_supported);
-> +	if (is_mv_supported)
-> +		amdgpu_cs_vce_encode_mv(device, context, enc, is_mv_supported);
-> +	amdgpu_cs_vce_destroy(device, &context, &enc);
-> +}
-> +
->  igt_main
->  {
->  	amdgpu_device_handle device;
-> @@ -574,24 +585,9 @@ igt_main
->  		igt_skip_on(!is_vce_tests_enable(device, context.family_id, context.chip_id,
->  				context.chip_rev, &is_mv_supported));
->  	}
-> -	igt_describe("Test whether vce enc is created");
-> -	igt_subtest("amdgpu_cs_vce_create")
-> -	amdgpu_cs_vce_create(device, &enc, &context, is_mv_supported);
-> -
-> -	igt_describe("Test whether vce enc encodes");
-> -	igt_subtest("amdgpu_cs_vce_encode")
-> -	amdgpu_cs_vce_encode(device, &context, &enc,  is_mv_supported);
-> -
-> -	if (is_mv_supported) {
-> -		igt_describe("Test whether vce enc encodes mv");
-> -		igt_subtest("amdgpu_cs_vce_encode_mv")
-> -		amdgpu_cs_vce_encode_mv(device, &context, &enc, is_mv_supported);
-> -	}
-> -
-> -	igt_describe("Test whether vce enc is destroyed");
-> -	igt_subtest("amdgpu_cs_vce_destroy")
-> -	amdgpu_cs_vce_destroy(device, &context, &enc);
-> -
-> +	igt_describe("Test vce enc is created, encode, destroy");
-> +	igt_subtest("amdgpu_vce_encoder")
-> +		amdgpu_vce_enc_test(device, &context, &enc, is_mv_supported);
->  
->  	igt_fixture {
->  		mmd_context_clean(device, &context);
-> -- 
-> 2.25.1
-> 
