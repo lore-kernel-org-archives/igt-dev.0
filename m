@@ -4,141 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE931C54798
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 14:23:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8907C54E41
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 14:23:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2276C10FF31;
-	Tue,  5 Mar 2024 14:23:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 567DE112B37;
+	Tue,  5 Mar 2024 14:23:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gvbEuWd/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WdUZ4+da";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B902E10FF31
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 14:23:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9E43112B39
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 14:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709648614; x=1741184614;
- h=date:from:to:subject:message-id:references:in-reply-to:
- mime-version; bh=JpEcAUIaYZDo5Hc/nPo2RQIC76vcIm/hxbZLCtG7f/A=;
- b=gvbEuWd/LSFdkq6LgTsS74ATGxCcKy1lRqEsEMm5SPiIOIV20XhKKEgl
- XGSfe1/B7DwW5rlpmtba6ncd4dtJMZg627eXY/XZ4ad2yDGCcm0G4I/8c
- lFsFFPgxNgVJ0DHGy2l/sexWV29A1nDo1JIJFC3VwqXyr/jH99YmudFi2
- +Xv/i8ma8KScPQlx+CPWQhu/kBjdBxghzy1zZ3yaw6UddmzRIKXivccF2
- EkS1LwAXTW5XODa3YJXPtQ9vf56Q2RZNQeGHbBwptMwpwONelYPXoheMH
- s2zK07om3BZz7psMdluIQSCDHRsTdil4zlkDOZhk8qfNEvff8u8VDbaYR A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="21660311"
-X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="21660311"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2024 06:23:34 -0800
-X-ExtLoop1: 1
+ t=1709648638; x=1741184638;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=/5KWN85tdXztAKIdOsleGXrPmhAqguAgNbtMeuhdoGc=;
+ b=WdUZ4+dav+sXW4V53U4leV+f2kiiI0R6D9OTid5An8P+ygexm3WPnEQH
+ d6liJpXawUpd3UnY9WUUddptfLkRPYk1NFoBx4MiRcGa77MpdKB4/Bg/v
+ jgVACM2d98aC7DGRFv53dUtOjSYn7DKClTevCGBDcu+MfH2jjUGlJ3LtZ
+ 6+1FeHaImmmS9dXryHU/4Db3PTS1z7z+9QmHVjG0j/GMXybwby8bUZyjh
+ vnzze5LHrSzQGR1+9AjA7GIJN9BnKLhgp6Zli+UhPmovjeaXGBKdahl2c
+ qnzFBqY/Pm1G7UmzBnjSRkhLP2Hvy5hfy87KRHGDzicNhpa3OHPjvJeSf g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="4319627"
 X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="9817978"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 05 Mar 2024 06:23:34 -0800
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 5 Mar 2024 06:23:33 -0800
-Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 5 Mar 2024 06:23:32 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Tue, 5 Mar 2024 06:23:32 -0800
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.100)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 5 Mar 2024 06:23:32 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HbiuBDz9oZhfRq2D8diGIGreLJRuAIuNz2gl4o5CHkP7jcfoKHpA3lT1Il01BU4g5eCbV8BT+u8x1b9ANqcL/C4jBtuiXGK6Cl9GHUWQrhdmt7v7IbnvedibqgmWJu82tkKjD9qbxR3sdWXyki7e4TI02b0nJvE9Y0k9/Vyyxf6qRDR9BOx056m8366dGVKNr7PJtBIp6AgsbMXH8LlCQZ+sXgCXGxzl90Qsv3JmTLF9BFlnAqHKWl3nGnJlLNthMLxDM7R6R0EKPav/RmGhgElO4gXP2SYHKxxWuYswCMR/6t0QDuhzFfNgLSZoQKvM6I0XklVAaatyjZzYA+QUTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nvYycCWyuJEJUT7nNxfx4c6SR2sBquPmdUxg9qynl4k=;
- b=W79wcKjNIAmUeDL9DEWHltcJmEFlNUXpiv+5Kl15kFu1Z0tQPONzQakRMIVbWT7l/oetbS+x71O0HNmDRBQ1PmbWfQjHzBMXv+fl2Tm9fqaI5UiMbTc+aDNn1z/ZEKu2iphXXwomlXYkocj9jh0ImcaTXJRkRcmNC4qNFsDqF1OoFMDFnNhOMWAynlgJzm3OYTz2f5FUJ2YinBXq9J7Le06dUIHzgOysZ9HKkrH2unYN0xOoMRA/Cx6nzH0HQQADFf3Qx61XgPVyXE3mDNSX/Ohz+2dyQOSD3+03/6oG0sZfFV7iFvsdllv78R/rVz1Yo5UDjwmCk1Uaxt9L5v3o1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
- by MN2PR11MB4677.namprd11.prod.outlook.com (2603:10b6:208:24e::23)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.23; Tue, 5 Mar
- 2024 14:23:30 +0000
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::e9dd:320:976f:e257]) by CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::e9dd:320:976f:e257%4]) with mapi id 15.20.7362.019; Tue, 5 Mar 2024
- 14:23:30 +0000
-Date: Tue, 5 Mar 2024 08:23:28 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>, Janusz Krzysztofik
- <janusz.krzysztofik@linux.intel.com>
-Subject: Re: [PATCH i-g-t] lib/igt_kmod: Allow to load kunit from alias
-Message-ID: <zqmldqo5fr4bpuegclkh2we7twqwijppjin2ry5uktgh5yyobx@wixslkby4fbh>
-References: <20240222193044.3004471-1-lucas.demarchi@intel.com>
- <20240304160529.rr2z4dmzbkeyih4o@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20240304160529.rr2z4dmzbkeyih4o@kamilkon-desk.igk.intel.com>
-X-ClientProxiedBy: SJ0PR05CA0086.namprd05.prod.outlook.com
- (2603:10b6:a03:332::31) To CY5PR11MB6139.namprd11.prod.outlook.com
- (2603:10b6:930:29::17)
+   d="scan'208";a="4319627"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2024 06:23:57 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="14057962"
+Received: from pkunieck-mobl.ger.corp.intel.com (HELO [10.249.140.91])
+ ([10.249.140.91])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2024 06:23:56 -0800
+Message-ID: <fd9d0b84-3414-4eba-b878-7dfdf2c7595f@intel.com>
+Date: Tue, 5 Mar 2024 14:23:53 +0000
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|MN2PR11MB4677:EE_
-X-MS-Office365-Filtering-Correlation-Id: 449f84da-3b8c-477e-2911-08dc3d1fd50c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: mNjIMODczR7FR9qolIA3BC8r8bQBha6HzWTmfCUREeeq5ZgzACGY5NxVOR721qcYuv9row8qMDeszKe+LdJbakk7w4iOCNo5BAz9i3Z4dO5KnkPrWzpNKqI0GbaPBOv7yLDce0W6prgfYHiAEGCyM932eARluN+1D4GRT4r3gkoSnkk6lRYFhgQIXttemypIJ4u3fqKJSK9VN84ZUu6yWq0VN/7LmogU4dMnBAgAsrTE6ZNe5z2re57cU0D4mQV8aY74Ze6I4kc972O5P9ugthDRAcUoyuPGBLWAgeVZQmUcHXzEwmR+cCljL0BrDsq484HEutP3CO1lu86UV1vxfRf2gVWhmFjlbf27UqGBLUVLaPWyG2fCXd8E+omjQmpkSQ/sSFCx507rjdWXtN4EzURH7osYwtDca6pwbJ8R06mEN0Am9QlOKpxnh0OVaxuL+ec7m2Z4XOWZ1Re5Xw3K75XS/iFAGKdCt7bd/Ge94QLGMDJfRnDVR3q2wTkEgp4gxj3NeorZPu2xVtCsR8w+DWImCAmwG8MU97/Uz/r3BkeLcPU5jDLjSVjRfC2oQH2VSfQVV9YIHf/wkKcHw5euDGYFkLQRctTdSi/6p9979brBgOKlX/w61jw1OiRpnMQ5e8ajsJhaA0d/VKkHpm2+wg4JWif7gGTwMW6TycHVIAc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376005); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?eKE5FPW3yPGpU1qxe7Uv5tCAg3BSzVAJd7apKenub20e4jJ/+vR79BOeGNcC?=
- =?us-ascii?Q?bF1U25bRecgjJ/NMbAtGvmSMHK4dNCnjNemhNjNlJMkz7jtyFsu0sW9ESL0L?=
- =?us-ascii?Q?UPftamcOhsOWAkKSWZf6e2jFhbsCXLRmovl6C2vpQuDutumAZ8rZwIqZIjc6?=
- =?us-ascii?Q?sAdoiNHp4UkHJmCVwC3q+N1D2m39C4c0xlW09ODsCS8e8QauLEgPdyR8RhGK?=
- =?us-ascii?Q?IeRly2P22U6YAFUQZ3C26Qd5UTETgVRPyTlguaLeEvo0hqHi/W91O+csIXNR?=
- =?us-ascii?Q?kNqQlOhRMGX13A/w4tCm1rm8REyZl4yy/UgD7UJ8IZM57/lYkInFWFgSCBAX?=
- =?us-ascii?Q?Cm0bMISQfQPrlqMWhVdaEQdSge9X2SRtWcM8QhGQuJEM03y1kwQKVZ6eB9xd?=
- =?us-ascii?Q?jS6QcO5VQ13ndfHbc7FHsn0c8wk2dysBI/7yNjCwg4vX2ouWFzfAxVsPzAtk?=
- =?us-ascii?Q?qJwtQrXo84giuNArkIQ8IorshUXDD7MIyPSdhrqAjZdQkJRSH1w9juSkpo2L?=
- =?us-ascii?Q?DVREi89NvLZqJt8uhr2h+5k2vRsi7gr/yWt0v4id0D5Q2CoBIQtUeGUYL4LZ?=
- =?us-ascii?Q?lcn/MqB9CBjB6icLchKBpSllDv54l7zkmkls8lDFst69oN/TEJ3vaQt3+Z+Y?=
- =?us-ascii?Q?lKpkBJryBXFUUfrzsJofZ/99cNIEyw+Bkee67ZYHH6VHs5/jOwh7BOCcCOgl?=
- =?us-ascii?Q?TT9c9Ww8eMClBUyrZEOzId1VuLuf5XJdw34RXgvYqwXElDLBMlxnVsGqit6p?=
- =?us-ascii?Q?lF2K/x1LPBQGP07jwLBP/Waf8CEeMQha4SHOG1yVg1kxv/nm7FNM3jDdv1Jr?=
- =?us-ascii?Q?pF3wQByGVtseTOrpVogkqzFLJOcfXGeGYu2bF0+gU8OhAtohmX+Md14RRsW4?=
- =?us-ascii?Q?MLVIhZ4sRqzP+WMiGrY7RVU0NkvERikAqXedA9yHGceF8kUP7n3igKqI5sY8?=
- =?us-ascii?Q?x95vZsIadblzRHqHI2YowU6DPi/0apEIyzKRh7J+wqmlctj+Weinwsm0xKZa?=
- =?us-ascii?Q?9JGXF7J5cpqb9D75taNskp5IA4gfzP2qJwCqyzcSAkDjGcpr10iYoIwmAgbm?=
- =?us-ascii?Q?Z5A1Y/ZtqZqWjNAKRDL4NEOlRE64+IPvWPvEztjMHexOc5itZu74ZJfT5Bn8?=
- =?us-ascii?Q?k68UmkIV/1/vEDx3jnKMOT8fRfzRLzgnHSKKmLhaxpO79Jf4v5tgvwrR7eF+?=
- =?us-ascii?Q?DVc92KqutJ/5O2qKZTJdKf4QxKwIhU2OTr2DJ965GKQDL1IN4X2VtJ6dcmXk?=
- =?us-ascii?Q?mBOfA1rnwXlJjqnrsFUdoK8YjV8KXku4cRT1UVVstOjyFJISwFThzpZ1O3mi?=
- =?us-ascii?Q?GQDcJ6ZEPH4aauO53m1eYti1MRqks9GpIPi+Rj1iu/4oi783H6fCPYKNUa19?=
- =?us-ascii?Q?hx+KnZmov6+wwTPuin490s2mO241Qy2roDx+P7gH85ol7Q6cjVgFjXn1/97+?=
- =?us-ascii?Q?bTFvRwiTQP3pmiPAmKYUYIL0TsnUTbQZ+EMs8ZEd6ImKfpiEVjI47+RxHSBi?=
- =?us-ascii?Q?BubU6oL05VjtZ9HTevlsr4Y1WwGZ2CrYw80iTJ7ZwktngiezjITtbSg4KaCy?=
- =?us-ascii?Q?w011l7OVBmtb+ih620Qnzx/uhqr5ZkHt6G3lsJ4BfVesv71/Pq0NCgBt7MLS?=
- =?us-ascii?Q?+w=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 449f84da-3b8c-477e-2911-08dc3d1fd50c
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2024 14:23:30.8123 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vhft4CTGXQaKD33MR0z6xxtWd9JINR/CHfOJdh1sBbbBGuShSTkRXrn24hVzZ2BzwGlH8nGTh5YUl4/YUlAhUp2EKUnsZIUi5+Bd4x1TAPw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4677
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 4/4] tests/xe_render_copy: Add render-copy test for
+ xe
+Content-Language: en-GB
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20240305054056.139691-1-zbigniew.kempczynski@intel.com>
+ <20240305054056.139691-5-zbigniew.kempczynski@intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20240305054056.139691-5-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -154,27 +69,478 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Mar 04, 2024 at 05:05:29PM +0100, Kamil Konieczny wrote:
->Hi Lucas,
->On 2024-02-22 at 11:30:44 -0800, Lucas De Marchi wrote:
->> Instead of only allowing to load the from the module name, also allow it
->> from alias by using kmod_module_new_from_lookup(). With that a user can
->> have their on aliases and the kernel can also export a compat alias for
->> future module renames.
->>
->> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->
->It is somehow test listing failing: ./dmabuf --list
->
->tests/dmabuf:
->Checking invalid option handling...
->Checking valid option handling...
->Checking subtest enumeration...
->test does seem to be using igt_main() (should have subtests) and yet --list-subtests is empty!
->FAIL: tests/dmabuf
+On 05/03/2024 05:40, Zbigniew Kempczyński wrote:
+> Fill the gap with testing render-copy for xe driver. Currently only
+> few basic render-copy checks are executing within xe_intel_bb@render.
+> 
+> xe_render_copy introduces new checks comparing to gem_render_copy
+> test. During my work on enabling render-copy on LunarLake I've
+> used same r6 subregisters like on previous platforms what causes
+> full render-copy between surfaces worked but partials were not.
+> 
+> I decided to include square and v/h stripes tests to verify cofficients
+> for barycentric coordinates matches expected <x,y> position. More
+> stressful is random subtest which randomizes width and height as well
+> as division point (it copies four rectangles to destination surface).
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> ---
+>   tests/intel/xe_render_copy.c | 430 +++++++++++++++++++++++++++++++++++
+>   tests/meson.build            |   1 +
+>   2 files changed, 431 insertions(+)
+>   create mode 100644 tests/intel/xe_render_copy.c
+> 
+> diff --git a/tests/intel/xe_render_copy.c b/tests/intel/xe_render_copy.c
+> new file mode 100644
+> index 0000000000..ce9547df50
+> --- /dev/null
+> +++ b/tests/intel/xe_render_copy.c
+> @@ -0,0 +1,430 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
 
-how did you find what was the test failing?  The new version is still
-failing, although dmabuf --list does return the same as before.
+s/2023/2024/
 
-thanks
-Lucas De Marchi
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+
+> + */
+> +
+> +#include <cairo.h>
+> +#include <errno.h>
+> +#include <fcntl.h>
+> +#include <glib.h>
+> +#include <inttypes.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <sys/ioctl.h>
+> +#include <sys/stat.h>
+> +#include <unistd.h>
+> +#include <zlib.h>
+> +
+> +#include "igt.h"
+> +#include "igt_crc.h"
+> +#include "intel_blt.h"
+> +#include "intel_bufops.h"
+> +#include "intel_pat.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +
+> +/**
+> + * TEST: Copy memory using 3d engine
+> + * Category: Software building block
+> + * Sub-category: 3d
+> + * Functionality: render
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: render-square
+> + * Description: Copy surface using 3d engine dividing to 2x2 squares
+> + *
+> + * SUBTEST: render-vstripes
+> + * Description: Copy surface using 3d engine dividing to 4x1 rectangles
+> + *
+> + * SUBTEST: render-hstripes
+> + * Description: Copy surface using 3d engine dividing to 1x4 rectangles
+> + *
+> + * SUBTEST: render-random
+> + * Description: Copy surface using 3d engine with randomized width, height and
+> + *              rectangles size
+> + *
+> + * SUBTEST: render-full
+> + * Description: Copy surface using 3d engine (1:1)
+> + */
+> +#define WIDTH	256
+> +#define HEIGHT	256
+> +IGT_TEST_DESCRIPTION("Exercise render-copy on xe");
+> +
+> +static bool debug_bb;
+> +static bool write_png;
+> +static bool buf_info;
+> +static uint32_t surfwidth = WIDTH;
+> +static uint32_t surfheight = HEIGHT;
+> +
+> +static void scratch_buf_init(struct buf_ops *bops,
+> +			     struct intel_buf *buf,
+> +			     int width, int height,
+> +			     uint32_t req_tiling,
+> +			     enum i915_compression compression)
+> +{
+> +	int fd = buf_ops_get_fd(bops);
+> +	int bpp = 32;
+> +
+> +	intel_buf_init_in_region(bops, buf, width, height, bpp, 0,
+> +				 req_tiling, compression, system_memory(fd));
+> +
+> +	igt_assert(intel_buf_width(buf) == width);
+> +	igt_assert(intel_buf_height(buf) == height);
+> +}
+> +
+> +#define GROUP_SIZE 4096
+> +static int compare_detail(const uint32_t *ptr1, uint32_t *ptr2,
+> +			  uint32_t size)
+> +{
+> +	int i, ok = 0, fail = 0;
+> +	int groups = size / GROUP_SIZE;
+> +	int *hist = calloc(GROUP_SIZE, groups);
+> +
+> +	igt_debug("size: %d, group_size: %d, groups: %d\n",
+> +		  size, GROUP_SIZE, groups);
+> +
+> +	for (i = 0; i < size / sizeof(uint32_t); i++) {
+> +		if (ptr1[i] == ptr2[i]) {
+> +			ok++;
+> +		} else {
+> +			fail++;
+> +			hist[i * sizeof(uint32_t) / GROUP_SIZE]++;
+> +		}
+> +	}
+> +
+> +	for (i = 0; i < groups; i++) {
+> +		if (hist[i])
+> +			igt_debug("[group %4x]: %d\n", i, hist[i]);
+> +	}
+> +	free(hist);
+> +
+> +	igt_debug("ok: %d, fail: %d\n", ok, fail);
+> +
+> +	return fail;
+> +}
+> +
+> +static int compare_bufs(struct intel_buf *buf1, struct intel_buf *buf2,
+> +			bool detail_compare)
+> +{
+> +	void *ptr1, *ptr2;
+> +	int fd1, fd2, ret;
+> +
+> +	/* Avoid comparison of buffers of different sizes */
+> +	if (buf1->surface[0].size != buf2->surface[0].size)
+> +		return 0;
+> +
+> +	fd1 = buf_ops_get_fd(buf1->bops);
+> +	fd2 = buf_ops_get_fd(buf2->bops);
+> +
+> +	ptr1 = xe_bo_map(fd1, buf1->handle, buf1->surface[0].size);
+> +	ptr2 = xe_bo_map(fd2, buf2->handle, buf2->surface[0].size);
+> +	ret = memcmp(ptr1, ptr2, buf1->surface[0].size);
+> +	if (detail_compare)
+> +		ret = compare_detail(ptr1, ptr2, buf1->surface[0].size);
+> +
+> +	munmap(ptr1, buf1->surface[0].size);
+> +	munmap(ptr2, buf2->surface[0].size);
+> +
+> +	return ret;
+> +}
+> +
+> +/*
+> + *
+> + * Scenarios implemented are presented below. We copy from linear to and forth
+> + * linear/tiled and back manipulating x,y coordinates from source and
+> + * destination.
+> + * For render randomize width and height and randomize x,y inside.
+> + *
+> + *  <linear>        <linear/x/y/4/64>
+> + *
+> + *  Square:
+> + *  +---+---+       +---+---+
+> + *  | 1 | 2 |  ==>  | 3 | 1 |
+> + *  +---+---+       +---+---+
+> + *  | 3 | 4 |  <==  | 4 | 2 |
+> + *  +---+---+       +---+---+
+> + *
+> + *  VStripes:
+> + *  +-+-+-+-+       +-+-+-+-+
+> + *  | | | | |  ==>  | | | | |
+> + *  |1|2|3|4|       |2|4|1|3|
+> + *  | | | | |  ==>  | | | | |
+> + *  +-+-+-+-+       +-+-+-+-+
+> + *
+> + *  HStripes:
+> + *  +-------+       +-------+
+> + *  |   1   |       |   2   |
+> + *  +-------+  ==>  +-------+
+> + *  |   2   |       |   4   |
+> + *  +-------+       +-------+
+> + *  |   3   |       |   1   |
+> + *  +-------+  <==  +-------+
+> + *  |   4   |       |   3   |
+> + *  +-------+       +-------+
+> + *
+> + *   Full:
+> + *  +-------+       +-------+
+> + *  |       |  ==>  |       |
+> + *  |   1   |       |   1   |
+> + *  |       |  <==  |       |
+> + *  +-------+       +-------+
+> + *
+> + *  Random:
+> + *  +-+-----+       +-+-----+
+> + *  |1|  2  |       |1|  2  |
+> + *  +-+-----+  ==>  +-+-----+
+> + *  |3|  4  |       |3|  4  |
+> + *  | |     |  <==  | |     |
+> + *  +-+-----+       +-+-----+
+> + */
+> +
+> +enum render_copy_testtype {
+> +	COPY_SQUARE,
+> +	COPY_VSTRIPES,
+> +	COPY_HSTRIPES,
+> +	COPY_RANDOM,
+> +	COPY_FULL,
+> +};
+> +
+> +static const char * const testname[] = {
+> +	[COPY_SQUARE]	= "square",
+> +	[COPY_VSTRIPES]	= "vstripes",
+> +	[COPY_HSTRIPES]	= "hstripes",
+> +	[COPY_RANDOM]	= "random",
+> +	[COPY_FULL]	= "full",
+> +};
+> +
+> +static int render(struct buf_ops *bops, uint32_t tiling,
+> +		  uint32_t width, uint32_t height,
+> +		  enum render_copy_testtype testtype)
+> +{
+> +	struct intel_bb *ibb;
+> +	struct intel_buf src, dst, final, grfs;
+> +	int xe = buf_ops_get_fd(bops);
+> +	uint32_t fails = 0;
+> +	uint32_t devid = intel_get_drm_devid(xe);
+> +	igt_render_copyfunc_t render_copy = NULL;
+> +	struct posrc {
+> +		uint32_t x0, y0;
+> +		uint32_t x1, y1;
+> +		uint32_t x2, y2;
+> +		uint32_t x3, y3;
+> +		uint32_t w, h;
+> +	} xys[] = {
+> +		/* square */
+> +		{ .x0 = 0,		.y0 = 0,
+> +		  .x1 = width/2,	.y1 = 0,
+> +		  .x2 = width/2,	.y2 = height/2,
+> +		  .x3 = 0,		.y3 = height/2,
+> +		  .w = width/2,		.h = height/2 },
+> +
+> +		/* vstripes */
+> +		{ .x0 = 0,
+> +		  .x1 = width/2,
+> +		  .x2 = width/2 + width/4,
+> +		  .x3 = width/4,
+> +		  .w = width/4,		.h = height },
+> +
+> +		/* hstripes */
+> +		{ .y0 = 0,
+> +		  .y1 = height/2,
+> +		  .y2 = height/2 + height/4,
+> +		  .y3 = height/4,
+> +		  .w = width,		.h = height/4 },
+> +
+> +		/* random - filled later */
+> +		{ 0, }
+> +	}, *p;
+> +
+> +	if (testtype == COPY_RANDOM) {
+> +		width = rand() % width + 1;
+> +		height = rand() % height + 1;
+> +	}
+> +
+> +	ibb = intel_bb_create(xe, SZ_4K);
+> +
+> +	if (debug_bb)
+> +		intel_bb_set_debug(ibb, true);
+> +
+> +	scratch_buf_init(bops, &src, width, height, I915_TILING_NONE,
+> +			 I915_COMPRESSION_NONE);
+> +	scratch_buf_init(bops, &dst, width, height, tiling,
+> +			 I915_COMPRESSION_NONE);
+> +	scratch_buf_init(bops, &final, width, height, I915_TILING_NONE,
+> +			 I915_COMPRESSION_NONE);
+> +	scratch_buf_init(bops, &grfs, 64, height * 4, I915_TILING_NONE,
+> +			 I915_COMPRESSION_NONE);
+> +
+> +	intel_buf_draw_pattern(bops, &src,
+> +			       0, 0, width, height,
+> +			       0, 0, width, height, 0);
+> +
+> +	render_copy = igt_get_render_copyfunc(devid);
+> +	igt_assert(render_copy);
+> +
+> +	switch (testtype) {
+> +	case COPY_SQUARE:
+> +	case COPY_VSTRIPES:
+> +	case COPY_HSTRIPES:
+> +		p = &xys[testtype];
+> +
+> +		/* copy to intermediate surface (dst) */
+> +		render_copy(ibb,
+> +			    &src, p->x0, p->y0, p->w, p->h,
+> +			    &dst, p->x1, p->y1);
+> +		render_copy(ibb,
+> +			    &src, p->x1, p->y1, p->w, p->h,
+> +			    &dst, p->x2, p->y2);
+> +		render_copy(ibb,
+> +			    &src, p->x2, p->y2, p->w, p->h,
+> +			    &dst, p->x3, p->y3);
+> +		render_copy(ibb,
+> +			    &src, p->x3, p->y3, p->w, p->h,
+> +			    &dst, p->x0, p->y0);
+> +
+> +		/* copy to final */
+> +		render_copy(ibb,
+> +			    &dst, p->x0, p->y0, p->w, p->h,
+> +			    &final, p->x3, p->y3);
+> +		render_copy(ibb,
+> +			    &dst, p->x1, p->y1, p->w, p->h,
+> +			    &final, p->x0, p->y0);
+> +		render_copy(ibb,
+> +			    &dst, p->x2, p->y2, p->w, p->h,
+> +			    &final, p->x1, p->y1);
+> +		render_copy(ibb,
+> +			    &dst, p->x3, p->y3, p->w, p->h,
+> +			    &final, p->x2, p->y2);
+> +		break;
+> +
+> +	case COPY_RANDOM:
+> +		p = &xys[testtype];
+> +		p->x0 = rand() % width;
+> +		p->y0 = rand() % height;
+> +		igt_debug("Random <width: %u, height: %u, x0: %d, y0: %d>\n",
+> +			  width, height, p->x0, p->y0);
+> +
+> +		/* copy to intermediate surface (dst), split is randomized */
+> +		render_copy(ibb,
+> +			    &src, 0, 0, p->x0, p->y0,
+> +			    &dst, 0, 0);
+> +		render_copy(ibb,
+> +			    &src, p->x0, 0, width - p->x0, p->y0,
+> +			    &dst, p->x0, 0);
+> +		render_copy(ibb,
+> +			    &src, 0, p->y0, p->x0, height - p->y0,
+> +			    &dst, 0, p->y0);
+> +		render_copy(ibb,
+> +			    &src, p->x0, p->y0, width - p->x0, height - p->y0,
+> +			    &dst, p->x0, p->y0);
+> +
+> +		render_copy(ibb,
+> +			    &dst, 0, 0, width, height,
+> +			    &final, 0, 0);
+> +		break;
+> +
+> +
+> +	case COPY_FULL:
+> +		render_copy(ibb,
+> +			    &src, 0, 0, width, height,
+> +			    &dst, 0, 0);
+> +
+> +		render_copy(ibb,
+> +			    &dst, 0, 0, width, height,
+> +			    &final, 0, 0);
+> +		break;
+> +	}
+> +
+> +	intel_bb_sync(ibb);
+> +	intel_bb_destroy(ibb);
+> +
+> +	if (write_png) {
+> +		intel_buf_raw_write_to_png(&src, "render_src_tiling_%d_%dx%d.png",
+> +					   tiling, width, height);
+> +		intel_buf_raw_write_to_png(&dst, "render_dst_tiling_%d_%dx%d.png",
+> +					   tiling, width, height);
+> +		intel_buf_raw_write_to_png(&final, "render_final_tiling_%d_%dx%d.png",
+> +					   tiling, width, height);
+> +	}
+> +
+> +	fails = compare_bufs(&src, &final, true);
+> +
+> +	intel_buf_close(bops, &src);
+> +	intel_buf_close(bops, &dst);
+> +	intel_buf_close(bops, &final);
+> +
+> +	igt_assert_f(fails == 0, "%s: (tiling: %d) fails: %d\n",
+> +		     __func__, tiling, fails);
+> +
+> +	return fails;
+> +}
+> +
+> +static int opt_handler(int opt, int opt_index, void *data)
+> +{
+> +	switch (opt) {
+> +	case 'd':
+> +		debug_bb = true;
+> +		break;
+> +	case 'p':
+> +		write_png = true;
+> +		break;
+> +	case 'i':
+> +		buf_info = true;
+> +		break;
+> +	case 'W':
+> +		surfwidth = atoi(optarg);
+> +		break;
+> +	case 'H':
+> +		surfheight = atoi(optarg);
+> +		break;
+> +	default:
+> +		return IGT_OPT_HANDLER_ERROR;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +const char *help_str =
+> +	"  -d\tDebug bb\n"
+> +	"  -p\tWrite surfaces to png\n"
+> +	"  -i\tPrint buffer info\n"
+> +	"  -W\tWidth (default 256)\n"
+> +	"  -H\tHeight (default 256)"
+> +	;
+> +
+> +
+> +igt_main_args("dpiW:H:", NULL, help_str, opt_handler, NULL)
+> +{
+> +	int xe;
+> +	struct buf_ops *bops;
+> +	const char *tiling_name;
+> +	int tiling;
+> +
+> +	igt_fixture {
+> +		xe = drm_open_driver(DRIVER_XE);
+> +		bops = buf_ops_create(xe);
+> +		srand(time(NULL));
+> +	}
+> +
+> +	for (int id = 0; id <= COPY_FULL; id++) {
+> +		igt_subtest_with_dynamic_f("render-%s", testname[id]) {
+> +			igt_require(xe_has_engine_class(xe, DRM_XE_ENGINE_CLASS_RENDER));
+> +
+> +			for_each_tiling(tiling) {
+> +				if (!blt_block_copy_supports_tiling(xe, tiling))
+> +					continue;
+> +
+> +				tiling_name = blt_tiling_name(tiling);
+> +				tiling = blt_tile_to_fb_tile(tiling);
+> +				igt_dynamic_f("render-%s-%ux%u", tiling_name, surfwidth, surfheight)
+> +					render(bops, tiling, surfwidth, surfheight, id);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		buf_ops_destroy(bops);
+> +		drm_close_driver(xe);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 02cbc37806..a856510fce 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -309,6 +309,7 @@ intel_xe_progs = [
+>   	'xe_pm_residency',
+>   	'xe_prime_self_import',
+>   	'xe_query',
+> +	'xe_render_copy',
+>   	'xe_vm',
+>   	'xe_waitfence',
+>   	'xe_spin_batch',
