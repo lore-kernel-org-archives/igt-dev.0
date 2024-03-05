@@ -4,47 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C577C54E5D
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 12:18:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B4BFC54E41
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 12:18:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 030F3112A87;
-	Tue,  5 Mar 2024 12:18:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C3C23112A89;
+	Tue,  5 Mar 2024 12:18:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f0t21WlD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KWYFLtut";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0458C112A87
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 12:18:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BBD86112A88
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 12:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709641100; x=1741177100;
+ t=1709641102; x=1741177102;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Qo8CnF8PgSxFTvsJ6lgsVMIgSWmyvE0sDrbfxgWrpcQ=;
- b=f0t21WlDRnheTKk7ud28rE5+Olq+5+kIvUYz/6++mKtqSqGtVBWvvvm/
- Vnrd3F0xvib91alySUnxVml+ZoyAS+WsqmQz4oM7vVq+/LTByp8eaDMtO
- y5v2u8rki703v3IUVwKOMmkjnM7YaRM+0jAQOAEORY5Bah3E18idCz013
- QQpqB94yowT2F4AeHgb87NJP67xATEdLHGItwKqVkGZHyaker1Sk5TvAc
- 8DD+7DOGnN1i1uwW5bO3GbJ8oo2Iq2wqx4DFdzymWfo1ln/n3NHo+lrMh
- 3ZUZkGT/5qROgh3aQg2EydWu3tjU/sNIjJWWeDezPx3zjghQbnAidfxWR Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="15616297"
-X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="15616297"
+ bh=KZawhXcQytk9q6ojYlnrdD59PRk5TX8ubcDQvoU2cPo=;
+ b=KWYFLtutOnKTKU8gn3beDtfLzYRuLkGU62hIl4bC/4NIHIZNEkDFj0WQ
+ qC8shgtCiyK4tDPrxIzIOzuJJa+Va7VpnB+gRIw2HjoHpMDpiCcaEIWrz
+ pwSvRO91LDsoSzNPbtlGfGLZw4YmdmBn9FNqBb+lKVyHL43b9W6pmmqMt
+ k1rRHRhA7RPesdLPkz4W9WrSQUXUOFmICMqwTpkVILhG50BiDvz5bQusI
+ NqnMDYXwzMF/ugpaURFgAVgEipT9gTvp1y5GKyOoc9kBRakyTG8q2J1uj
+ bEWz4AHXzMjLhf2X8xITpvi30b9XIx3rUihwAEmICc6aA/dkQQA/OBKCz g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="15616300"
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="15616300"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2024 04:18:20 -0800
+ 05 Mar 2024 04:18:22 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="9779440"
+   d="scan'208";a="9779452"
 Received: from pkunieck-mobl.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
  ([10.249.140.91])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2024 04:18:18 -0800
+ 05 Mar 2024 04:18:20 -0800
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v2 3/6] lib/intel_buf: revamp MOCS usage
-Date: Tue,  5 Mar 2024 12:17:51 +0000
-Message-ID: <20240305121754.182425-3-matthew.auld@intel.com>
+Subject: [PATCH i-g-t v2 4/6] lib/intel_buf: expose mocs_index
+Date: Tue,  5 Mar 2024 12:17:52 +0000
+Message-ID: <20240305121754.182425-4-matthew.auld@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240305121754.182425-1-matthew.auld@intel.com>
 References: <20240305121754.182425-1-matthew.auld@intel.com>
@@ -66,190 +66,339 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-We want to allow the caller the set any valid MOCS index as part of the
-the intel_buf. Drop the MOCS enum in favour of raw mocs_index. Also drop
-the getter/setter interface, for which there are no current callers for
-the setter part. In the next patch we will expose the raw mocs_index.
-Should be no functional changes here.
-
-v2 (Zbigniew):
-  - Rather just pass along UC directly to lower layers.
+Allow the caller the set the intel_buf.mocs_index as part of the usual
+_full variants.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/gpu_cmds.c        | 18 +++---------------
- lib/intel_bufops.c    |  3 ++-
- lib/intel_bufops.h    | 23 +++--------------------
- lib/rendercopy_gen9.c |  5 ++---
- 4 files changed, 10 insertions(+), 39 deletions(-)
+ lib/igt_draw.c            |  7 ++++---
+ lib/igt_fb.c              |  3 ++-
+ lib/intel_bufops.c        | 30 ++++++++++++++++++++----------
+ lib/intel_bufops.h        |  6 ++++--
+ lib/intel_mocs.h          |  2 ++
+ tests/intel/kms_big_fb.c  |  4 +++-
+ tests/intel/kms_dirtyfb.c |  7 +++++--
+ tests/intel/kms_psr.c     |  4 +++-
+ tests/intel/xe_intel_bb.c |  4 +++-
+ tests/intel/xe_pat.c      |  8 ++++----
+ 10 files changed, 50 insertions(+), 25 deletions(-)
 
-diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
-index d909efde8..da41121ce 100644
---- a/lib/gpu_cmds.c
-+++ b/lib/gpu_cmds.c
-@@ -194,7 +194,6 @@ gen9_fill_surface_state(struct intel_bb *ibb,
- 	struct gen9_surface_state *ss;
- 	uint32_t write_domain, read_domain, offset;
- 	uint64_t address;
--	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
+diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+index 1b702e376..2c01d7b02 100644
+--- a/lib/igt_draw.c
++++ b/lib/igt_draw.c
+@@ -663,7 +663,8 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
+ 				    tiling, 0,
+ 				    size, 0,
+ 				    region,
+-				    from->pat_index);
++				    from->pat_index,
++				    DEFAULT_MOCS_INDEX);
  
- 	if (is_dst) {
- 		write_domain = read_domain = I915_GEM_DOMAIN_RENDER;
-@@ -214,10 +213,7 @@ gen9_fill_surface_state(struct intel_bb *ibb,
- 	ss->ss0.vertical_alignment = 1; /* align 4 */
- 	ss->ss0.horizontal_alignment = 1; /* align 4 */
+ 	/* Make sure we close handle on destroy path */
+ 	intel_buf_set_ownership(buf, true);
+@@ -723,9 +724,9 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+ 		pitch = tiling ? buf->stride / 4 : buf->stride;
  
--	if (mocs == INTEL_BUF_MOCS_WB)
--		ss->ss1.mocs_index = intel_get_wb_mocs_index(ibb->fd);
--	else
--		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
-+	ss->ss1.mocs_index = buf->mocs_index;
+ 		if (ver >= 20)
+-			mocs = intel_get_uc_mocs_index(fd) << XE2_XY_FAST_COLOR_BLT_MOCS_INDEX_SHIFT;
++			mocs = dst->mocs_index << XE2_XY_FAST_COLOR_BLT_MOCS_INDEX_SHIFT;
+ 		else
+-			mocs = intel_get_uc_mocs_index(fd) << XY_FAST_COLOR_BLT_MOCS_INDEX_SHIFT;
++			mocs = dst->mocs_index << XY_FAST_COLOR_BLT_MOCS_INDEX_SHIFT;
  
- 	if (buf->tiling == I915_TILING_X)
- 		ss->ss0.tiled_mode = 2;
-@@ -255,7 +251,6 @@ gen11_fill_surface_state(struct intel_bb *ibb,
- 	struct gen9_surface_state *ss;
- 	uint32_t write_domain, read_domain, offset;
- 	uint64_t address;
--	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
+ 		intel_bb_out(ibb, XY_FAST_COLOR_BLT | blt_cmd_depth);
+ 		intel_bb_out(ibb, blt_cmd_tiling | mocs | (pitch-1));
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 0ac2a76b0..cc70cb91c 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2642,7 +2642,8 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
+ 				    compression, fb->size,
+ 				    fb->strides[0],
+ 				    region,
+-				    intel_get_pat_idx_uc(fd));
++				    intel_get_pat_idx_uc(fd),
++				    DEFAULT_MOCS_INDEX);
+ 	intel_buf_set_name(buf, name);
  
- 	if (is_dst) {
- 		write_domain = read_domain = I915_GEM_DOMAIN_RENDER;
-@@ -275,10 +270,7 @@ gen11_fill_surface_state(struct intel_bb *ibb,
- 	ss->ss0.vertical_alignment = vertical_alignment; /* align 4 */
- 	ss->ss0.horizontal_alignment = horizontal_alignment; /* align 4 */
- 
--	if (mocs == INTEL_BUF_MOCS_WB)
--		ss->ss1.mocs_index = intel_get_wb_mocs_index(ibb->fd);
--	else
--		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
-+	ss->ss1.mocs_index = buf->mocs_index;
- 
- 	if (buf->tiling == I915_TILING_X)
- 		ss->ss0.tiled_mode = 2;
-@@ -911,7 +903,6 @@ xehp_fill_surface_state(struct intel_bb *ibb,
- 	struct xehp_surface_state *ss;
- 	uint32_t write_domain, read_domain, offset;
- 	uint64_t address;
--	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
- 
- 	if (is_dst) {
- 		write_domain = read_domain = I915_GEM_DOMAIN_RENDER;
-@@ -931,10 +922,7 @@ xehp_fill_surface_state(struct intel_bb *ibb,
- 	ss->ss0.vertical_alignment = 1; /* align 4 */
- 	ss->ss0.horizontal_alignment = 1; /* align 4 */
- 
--	if (mocs == INTEL_BUF_MOCS_WB)
--		ss->ss1.mocs_index = intel_get_wb_mocs_index(ibb->fd);
--	else
--		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
-+	ss->ss1.mocs_index = buf->mocs_index;
- 
- 	if (buf->tiling == I915_TILING_X)
- 		ss->ss0.tiled_mode = 2;
+ 	/* Make sure we close handle on destroy path */
 diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 5e2701a7d..c34d778a1 100644
+index c34d778a1..1dc25d61f 100644
 --- a/lib/intel_bufops.c
 +++ b/lib/intel_bufops.c
-@@ -29,6 +29,7 @@
+@@ -857,7 +857,8 @@ static void __intel_buf_init(struct buf_ops *bops,
+ 			     int width, int height, int bpp, int alignment,
+ 			     uint32_t req_tiling, uint32_t compression,
+ 			     uint64_t bo_size, int bo_stride,
+-			     uint64_t region, uint8_t pat_index)
++			     uint64_t region, uint8_t pat_index,
++			     uint8_t mocs_index)
+ {
+ 	uint32_t tiling = req_tiling;
+ 	uint64_t size;
+@@ -879,7 +880,9 @@ static void __intel_buf_init(struct buf_ops *bops,
+ 	buf->compression = compression;
+ 	buf->addr.offset = INTEL_BUF_INVALID_ADDRESS;
+ 	buf->pat_index = pat_index;
+-	buf->mocs_index = intel_get_uc_mocs_index(bops->fd);
++	if (mocs_index == DEFAULT_MOCS_INDEX)
++		mocs_index = intel_get_uc_mocs_index(bops->fd);
++	buf->mocs_index = mocs_index;
+ 	IGT_INIT_LIST_HEAD(&buf->link);
+ 
+ 	tile_width = __get_min_stride(width, bpp, tiling);
+@@ -973,7 +976,8 @@ void intel_buf_init(struct buf_ops *bops,
+ 	region = bops->driver == INTEL_DRIVER_I915 ? I915_SYSTEM_MEMORY :
+ 						     system_memory(bops->fd);
+ 	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
+-			 tiling, compression, 0, 0, region, DEFAULT_PAT_INDEX);
++			 tiling, compression, 0, 0, region, DEFAULT_PAT_INDEX,
++			 DEFAULT_MOCS_INDEX);
+ 
+ 	intel_buf_set_ownership(buf, true);
+ }
+@@ -990,7 +994,8 @@ void intel_buf_init_in_region(struct buf_ops *bops,
+ 			      uint64_t region)
+ {
+ 	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
+-			 tiling, compression, 0, 0, region, DEFAULT_PAT_INDEX);
++			 tiling, compression, 0, 0, region, DEFAULT_PAT_INDEX,
++			 DEFAULT_MOCS_INDEX);
+ 
+ 	intel_buf_set_ownership(buf, true);
+ }
+@@ -1053,7 +1058,8 @@ void intel_buf_init_using_handle_and_size(struct buf_ops *bops,
+ 	igt_assert(handle);
+ 	igt_assert(size);
+ 	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+-			 req_tiling, compression, size, 0, -1, DEFAULT_PAT_INDEX);
++			 req_tiling, compression, size, 0, -1, DEFAULT_PAT_INDEX,
++			 DEFAULT_MOCS_INDEX);
+ }
+ 
+ /**
+@@ -1071,6 +1077,8 @@ void intel_buf_init_using_handle_and_size(struct buf_ops *bops,
+  * @stride: bo stride
+  * @region: region
+  * @pat_index: pat_index to use for the binding (only used on xe)
++ * @pat_index: mocs_index to use for operations using this intel_buf, like render
++ * copy.
+  *
+  * Function configures BO handle within intel_buf structure passed by the caller
+  * (with all its metadata - width, height, ...). Useful if BO was created
+@@ -1089,11 +1097,12 @@ void intel_buf_init_full(struct buf_ops *bops,
+ 			 uint64_t size,
+ 			 int stride,
+ 			 uint64_t region,
+-			 uint8_t pat_index)
++			 uint8_t pat_index,
++			 uint8_t mocs_index)
+ {
+ 	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+ 			 req_tiling, compression, size, stride, region,
+-			 pat_index);
++			 pat_index, mocs_index);
+ }
+ 
+ /**
+@@ -1155,7 +1164,7 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
+ 	igt_assert(size);
+ 	return intel_buf_create_full(bops, handle, width, height, bpp, alignment,
+ 				     req_tiling, compression, size, 0, -1,
+-				     DEFAULT_PAT_INDEX);
++				     DEFAULT_PAT_INDEX, DEFAULT_MOCS_INDEX);
+ }
+ 
+ struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+@@ -1167,7 +1176,8 @@ struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+ 					uint64_t size,
+ 					int stride,
+ 					uint64_t region,
+-					uint8_t pat_index)
++					uint8_t pat_index,
++					uint8_t mocs_index)
+ {
+ 	struct intel_buf *buf;
+ 
+@@ -1178,7 +1188,7 @@ struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+ 
+ 	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+ 			 req_tiling, compression, size, stride, region,
+-			 pat_index);
++			 pat_index, mocs_index);
+ 
+ 	return buf;
+ }
+diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
+index 60f7785fe..af2009b3d 100644
+--- a/lib/intel_bufops.h
++++ b/lib/intel_bufops.h
+@@ -158,7 +158,8 @@ void intel_buf_init_full(struct buf_ops *bops,
+ 			 uint64_t size,
+ 			 int stride,
+ 			 uint64_t region,
+-			 uint8_t pat_index);
++			 uint8_t pat_index,
++			 uint8_t mocs_index);
+ 
+ struct intel_buf *intel_buf_create(struct buf_ops *bops,
+ 				   int width, int height,
+@@ -191,7 +192,8 @@ struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+ 					uint64_t size,
+ 					int stride,
+ 					uint64_t region,
+-					uint8_t pat_index);
++					uint8_t pat_index,
++					uint8_t mocs_index);
+ void intel_buf_destroy(struct intel_buf *buf);
+ 
+ static inline void intel_buf_set_pxp(struct intel_buf *buf, bool new_pxp_state)
+diff --git a/lib/intel_mocs.h b/lib/intel_mocs.h
+index a9e075273..b5c79b0e1 100644
+--- a/lib/intel_mocs.h
++++ b/lib/intel_mocs.h
+@@ -8,6 +8,8 @@
+ 
+ #include <stdint.h>
+ 
++#define DEFAULT_MOCS_INDEX ((uint8_t)-1)
++
+ uint8_t intel_get_wb_mocs_index(int fd);
+ uint8_t intel_get_uc_mocs_index(int fd);
+ 
+diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+index 0bd79394b..f7f303d41 100644
+--- a/tests/intel/kms_big_fb.c
++++ b/tests/intel/kms_big_fb.c
+@@ -37,6 +37,7 @@
+ #include <string.h>
+ 
+ #include "i915/gem_create.h"
++#include "intel_mocs.h"
+ #include "intel_pat.h"
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+@@ -206,7 +207,8 @@ static struct intel_buf *init_buf(data_t *data,
+ 	buf = intel_buf_create_full(data->bops, handle, width, height,
+ 				    bpp, 0, tiling, 0, size, 0,
+ 				    region,
+-				    intel_get_pat_idx_uc(data->drm_fd));
++				    intel_get_pat_idx_uc(data->drm_fd),
++				    DEFAULT_MOCS_INDEX);
+ 
+ 	intel_buf_set_name(buf, buf_name);
+ 	intel_buf_set_ownership(buf, true);
+diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+index 9aa066004..9e4832929 100644
+--- a/tests/intel/kms_dirtyfb.c
++++ b/tests/intel/kms_dirtyfb.c
+@@ -20,6 +20,7 @@
+ 
+ #include "i915/intel_drrs.h"
+ #include "i915/intel_fbc.h"
++#include "intel_mocs.h"
+ #include "intel_pat.h"
+ 
+ #include "xe/xe_query.h"
+@@ -256,7 +257,8 @@ static void run_test(data_t *data)
+ 				    igt_fb_mod_to_tiling(data->fbs[1].modifier),
+ 				    0, data->fbs[1].size, 0, is_xe_device(data->drm_fd) ?
+ 				    system_memory(data->drm_fd) : 0,
+-				    intel_get_pat_idx_uc(data->drm_fd));
++				    intel_get_pat_idx_uc(data->drm_fd),
++				    DEFAULT_MOCS_INDEX);
+ 	dst = intel_buf_create_full(data->bops, data->fbs[2].gem_handle,
+ 				    data->fbs[2].width,
+ 				    data->fbs[2].height,
+@@ -264,7 +266,8 @@ static void run_test(data_t *data)
+ 				    0, igt_fb_mod_to_tiling(data->fbs[2].modifier),
+ 				    0, data->fbs[2].size, 0, is_xe_device(data->drm_fd) ?
+ 				    system_memory(data->drm_fd) : 0,
+-				    intel_get_pat_idx_uc(data->drm_fd));
++				    intel_get_pat_idx_uc(data->drm_fd),
++				    DEFAULT_MOCS_INDEX);
+ 	ibb = intel_bb_create(data->drm_fd, PAGE_SIZE);
+ 
+ 	spin = igt_spin_new(data->drm_fd, .ahnd = ibb->allocator_handle);
+diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
+index 3822b3081..c90612426 100644
+--- a/tests/intel/kms_psr.c
++++ b/tests/intel/kms_psr.c
+@@ -35,6 +35,7 @@
  #include "igt.h"
- #include "igt_x86.h"
+ #include "igt_sysfs.h"
+ #include "igt_psr.h"
++#include "intel_mocs.h"
+ #include "intel_pat.h"
+ #include <errno.h>
+ #include <stdbool.h>
+@@ -421,7 +422,8 @@ static struct intel_buf *create_buf_from_fb(data_t *data,
+ 	handle = gem_open(data->drm_fd, name);
+ 	buf = intel_buf_create_full(data->bops, handle, width, height,
+ 				    bpp, 0, tiling, 0, size, stride, region,
+-				    intel_get_pat_idx_uc(data->drm_fd));
++				    intel_get_pat_idx_uc(data->drm_fd),
++				    DEFAULT_MOCS_INDEX);
+ 	intel_buf_set_ownership(buf, true);
+ 
+ 	return buf;
+diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
+index c3a4b5450..09164c41f 100644
+--- a/tests/intel/xe_intel_bb.c
++++ b/tests/intel/xe_intel_bb.c
+@@ -19,6 +19,7 @@
+ #include "igt.h"
+ #include "igt_crc.h"
  #include "intel_bufops.h"
 +#include "intel_mocs.h"
  #include "intel_pat.h"
  #include "xe/xe_ioctl.h"
  #include "xe/xe_query.h"
-@@ -877,8 +878,8 @@ static void __intel_buf_init(struct buf_ops *bops,
- 	buf->bpp = bpp;
- 	buf->compression = compression;
- 	buf->addr.offset = INTEL_BUF_INVALID_ADDRESS;
--	buf->mocs = INTEL_BUF_MOCS_DEFAULT;
- 	buf->pat_index = pat_index;
-+	buf->mocs_index = intel_get_uc_mocs_index(bops->fd);
- 	IGT_INIT_LIST_HEAD(&buf->link);
+@@ -393,7 +394,8 @@ static void create_in_region(struct buf_ops *bops, uint64_t region)
+ 	intel_buf_init_full(bops, handle, &buf,
+ 			    width/4, height, 32, 0,
+ 			    I915_TILING_NONE, 0,
+-			    size, 0, region, DEFAULT_PAT_INDEX);
++			    size, 0, region, DEFAULT_PAT_INDEX,
++			    DEFAULT_MOCS_INDEX);
+ 	intel_buf_set_ownership(&buf, true);
  
- 	tile_width = __get_min_stride(width, bpp, tiling);
-diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-index 363f7abaa..60f7785fe 100644
---- a/lib/intel_bufops.h
-+++ b/lib/intel_bufops.h
-@@ -12,12 +12,6 @@ struct buf_ops;
- #define INTEL_BUF_NAME_MAXSIZE 32
- #define INVALID_ADDR(x) ((x) == INTEL_BUF_INVALID_ADDRESS)
+ 	intel_bb_add_intel_buf(ibb, &buf, false);
+diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+index 3d7d7400c..6918ebe7e 100644
+--- a/tests/intel/xe_pat.c
++++ b/tests/intel/xe_pat.c
+@@ -388,11 +388,11 @@ static void pat_index_render(struct xe_pat_param *p)
  
--enum intel_buf_mocs {
--	INTEL_BUF_MOCS_DEFAULT,
--	INTEL_BUF_MOCS_UC,
--	INTEL_BUF_MOCS_WB,
--};
--
- struct intel_buf {
- 	struct buf_ops *bops;
+ 	intel_buf_init_full(bops, p->r1_bo, &src, width, height, bpp, 0,
+ 			    I915_TILING_NONE, I915_COMPRESSION_NONE, size,
+-			    stride, p->r1, p->r1_pat_index);
++			    stride, p->r1, p->r1_pat_index, DEFAULT_MOCS_INDEX);
  
-@@ -31,7 +25,6 @@ struct intel_buf {
- 	uint32_t compression;
- 	uint32_t swizzle_mode;
- 	uint32_t yuv_semiplanar_bpp;
--	enum intel_buf_mocs mocs;
- 	bool format_is_yuv;
- 	bool format_is_yuv_semiplanar;
- 	struct {
-@@ -68,6 +61,9 @@ struct intel_buf {
- 	/* pat_index to use for mapping this buf. Only used in Xe. */
- 	uint8_t pat_index;
+ 	intel_buf_init_full(bops, p->r2_bo, &dst, width, height, bpp, 0,
+ 			    I915_TILING_NONE, I915_COMPRESSION_NONE, size,
+-			    stride, p->r2, p->r2_pat_index);
++			    stride, p->r2, p->r2_pat_index, DEFAULT_MOCS_INDEX);
  
-+	/* mocs_index to use for operations using this intel_buf, like render_copy  */
-+	uint8_t mocs_index;
-+
- 	/* For debugging purposes */
- 	char name[INTEL_BUF_NAME_MAXSIZE + 1];
- };
-@@ -227,17 +223,4 @@ void intel_buf_draw_pattern(struct buf_ops *bops, struct intel_buf *buf,
- 			    int cx, int cy, int cw, int ch,
- 			    bool use_alternate_colors);
+ 	/* Ensure we always see zeroes for the initial KMD zeroing */
+ 	render_copy(ibb,
+@@ -483,12 +483,12 @@ static void pat_index_dw(struct xe_pat_param *p)
  
--static inline enum intel_buf_mocs intel_buf_get_mocs(const struct intel_buf *buf)
--{
--	igt_assert(buf);
--	return buf->mocs;
--}
--
--static inline void intel_buf_set_mocs(struct intel_buf *buf,
--				      enum intel_buf_mocs mocs)
--{
--	igt_assert(buf);
--	buf->mocs = mocs;
--}
--
- #endif
-diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-index 404406e5f..caf4623af 100644
---- a/lib/rendercopy_gen9.c
-+++ b/lib/rendercopy_gen9.c
-@@ -153,7 +153,6 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
- 	struct gen9_surface_state *ss;
- 	uint32_t write_domain, read_domain;
- 	uint64_t address;
--	int i915 = buf_ops_get_fd(buf->bops);
+ 	intel_buf_init_full(bops, p->r1_bo, &r1_buf, width, height, bpp, 0,
+ 			    I915_TILING_NONE, I915_COMPRESSION_NONE, size,
+-			    stride, p->r1, p->r1_pat_index);
++			    stride, p->r1, p->r1_pat_index, DEFAULT_MOCS_INDEX);
+ 	intel_bb_add_intel_buf(ibb, &r1_buf, true);
  
- 	igt_assert_lte(buf->surface[0].stride, 256*1024);
- 	igt_assert_lte(intel_buf_width(buf), 16384);
-@@ -179,12 +178,12 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
- 	ss->ss0.vertical_alignment = 1; /* align 4 */
- 	ss->ss0.horizontal_alignment = 1; /* align 4 or HALIGN_32 on display ver >= 13*/
+ 	intel_buf_init_full(bops, p->r2_bo, &r2_buf, width, height, bpp, 0,
+ 			    I915_TILING_NONE, I915_COMPRESSION_NONE, size,
+-			    stride, p->r2, p->r2_pat_index);
++			    stride, p->r2, p->r2_pat_index, DEFAULT_MOCS_INDEX);
+ 	intel_bb_add_intel_buf(ibb, &r2_buf, true);
  
-+	ss->ss1.mocs_index = buf->mocs_index;
-+
- 	if (HAS_4TILE(ibb->devid)) {
--		ss->ss1.mocs_index = intel_get_uc_mocs_index(i915);
- 		ss->ss5.mip_tail_start_lod = 0;
- 	} else {
- 		ss->ss0.render_cache_read_write = 1;
--		ss->ss1.mocs_index = intel_get_uc_mocs_index(i915);
- 		ss->ss5.mip_tail_start_lod = 1; /* needed with trmode */
- 	}
- 
+ 	/*
 -- 
 2.43.2
 
