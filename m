@@ -4,54 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D125DC5478C
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 04:15:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A33D8C54798
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 04:17:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7034810F5AC;
-	Tue,  5 Mar 2024 04:15:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4D0E810ED8F;
+	Tue,  5 Mar 2024 04:17:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mi9GCWMo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GZ6+Lu9T";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7FB9910F5AC
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 04:15:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C730010ED8F
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 04:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709612156; x=1741148156;
+ t=1709612225; x=1741148225;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=Z8oZ9QAFUSMswpf2Rt8oCagqasdMjK1f7XNXsgHd13E=;
- b=mi9GCWMoYh6O/LdbHglukWe93oCuK5rSz59FCDHYLKrtpkUjMkx0sQf4
- 1MriOZ8+C7XgnMurQZ1NANseOAtjqGs2jUIyugIXi/bBHln35iCzWHUT6
- 4+aJAeYdbXv2a/BcIOe9uT/K2WTTv3GanbXDRfc5PkS16Ah7WPjezb61n
- MJsMMqY+CV81a+SGDpxqIitl4KHEZ5kjCVXWs3MZ790DmSBtRPIHDF9Ru
- oM2DyYR9DeeK1DQud+QIOwLTIPLTQqVpO7srN83Rr/JY/3rcWR+1JDqyM
- AKxroxCXMnZy16ljGvp/02ar1G/HLYHBiwx6RaUA1xlCpD9muyp/yoU38 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="4263595"
-X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="4263595"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 20:15:55 -0800
+ bh=BcoYBHdslu3K0gHcoAENXu5hEABLhD0fr9XXevi6pf0=;
+ b=GZ6+Lu9TlCCzJZ2W3Rc5utxEy1tPDf0Cp2iTTThgK2+iL6MXKHNMgnZv
+ 9nKewgeYfJ1hLOaUEZq5DMrd51MUoAQfS7Ah5SSmsQji1BmZw3yKq9knh
+ wB9Vf1qXDHYf53+6CukfSlkMZYqZLdx9VLPo1TqefXZ05IzR9CJ5/mMT5
+ WcqcKvx1XPAQl1W3lCLPn5+dc3bPY5B4gI30ig8rYbSjDUO0RNFBku5Ig
+ rOzLj5foPpmAad1SvIBZsJsPiRs8YStUch7C1cFK/n7fMErJrGuVG/3/1
+ 7bO0A7s89pfGkRMUkrqsiFabRU8Gjb/h/4J3GHNbFEc1OSe+3TThw1HS5 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="15282513"
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="15282513"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 20:17:05 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="9076736"
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="46767034"
 Received: from unknown (HELO localhost) ([10.245.244.112])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2024 20:15:53 -0800
-Date: Tue, 5 Mar 2024 05:15:51 +0100
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2024 20:17:03 -0800
+Date: Tue, 5 Mar 2024 05:16:59 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: =?utf-8?B?UGnDs3Jrb3dza2ks?= Piotr <piotr.piorkowski@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 1/3] lib/drmtest: Add IS_ALIGNED macro
-Message-ID: <20240305041551.6lzxnsgzvphbnkf2@zkempczy-mobl2>
+Subject: Re: [PATCH i-g-t 2/3] lib/intel_mmio: Add 64-bits ioread/iowrite
+Message-ID: <20240305041659.zjqgebw4aqwbavns@zkempczy-mobl2>
 References: <20240301151541.1280595-1-piotr.piorkowski@intel.com>
- <20240301151541.1280595-2-piotr.piorkowski@intel.com>
+ <20240301151541.1280595-3-piotr.piorkowski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240301151541.1280595-2-piotr.piorkowski@intel.com>
+In-Reply-To: <20240301151541.1280595-3-piotr.piorkowski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,42 +65,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Mar 01, 2024 at 04:15:39PM +0100, Piórkowski, Piotr wrote:
+On Fri, Mar 01, 2024 at 04:15:40PM +0100, Piórkowski, Piotr wrote:
 > From: Piotr Piórkowski <piotr.piorkowski@intel.com>
 > 
-> Let's add a new macro that will be used to verify whether one value is
-> aligned to the other.
+> Add functions to read/write 64-bit values from MMIO
 > 
 > Signed-off-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
 > ---
->  lib/drmtest.h | 9 +++++++++
->  1 file changed, 9 insertions(+)
+>  lib/intel_io.h | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/lib/drmtest.h b/lib/drmtest.h
-> index 6bc819734..588d7da17 100644
-> --- a/lib/drmtest.h
-> +++ b/lib/drmtest.h
-> @@ -99,6 +99,15 @@ void __set_forced_driver(const char *name);
->   */
->  #define ALIGN_DOWN(x, a)	ALIGN((x) - ((a) - 1), (a))
->  
-> +/**
-> + * IS_ALIGNED:
-> + * @v: value to check
-> + * @a: alignment unit in bytes
-> + *
-> + * Macro to check if value @v is aligned to @a
-> + */
-> +#define IS_ALIGNED(v, a)	(((v) & ((typeof(v))(a) - 1)) == 0)
-> +
->  int __drm_open_device(const char *name, unsigned int chipset);
->  void drm_load_module(unsigned int chipset);
->  int drm_open_driver(int chipset);
+> diff --git a/lib/intel_io.h b/lib/intel_io.h
+> index e39384ca5..e8dfd930b 100644
+> --- a/lib/intel_io.h
+> +++ b/lib/intel_io.h
+> @@ -79,6 +79,7 @@ static inline uint##x__##_t ioread##x__(void *mmio, uint32_t reg) \
+>  {\
+>  	return *(volatile uint##x__##_t *)(mmio + reg);\
+>  }
+> +__ioread(64)
+>  __ioread(32)
+>  __ioread(16)
+>  __ioread(8)
+> @@ -89,6 +90,7 @@ static inline void iowrite##x__(void *mmio, uint32_t reg, uint##x__##_t val) \
+>  {\
+>  	*(volatile uint##x__##_t *)(mmio + reg) = val; \
+>  }
+> +__iowrite(64)
+>  __iowrite(32)
+>  __iowrite(16)
+>  __iowrite(8)
 > -- 
 > 2.34.1
->
+> 
 
-There's no current user but code looks good to me, so:
+Same as 1/3, lgtm:
 
 Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
