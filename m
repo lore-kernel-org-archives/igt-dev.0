@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8907C54E41
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 14:23:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C46CC54798
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Mar 2024 14:31:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 567DE112B37;
-	Tue,  5 Mar 2024 14:23:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8CBC1112B4B;
+	Tue,  5 Mar 2024 14:31:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WdUZ4+da";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="emLp+y4n";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E9E43112B39
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 14:23:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BF40112B56
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 14:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709648638; x=1741184638;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=/5KWN85tdXztAKIdOsleGXrPmhAqguAgNbtMeuhdoGc=;
- b=WdUZ4+dav+sXW4V53U4leV+f2kiiI0R6D9OTid5An8P+ygexm3WPnEQH
- d6liJpXawUpd3UnY9WUUddptfLkRPYk1NFoBx4MiRcGa77MpdKB4/Bg/v
- jgVACM2d98aC7DGRFv53dUtOjSYn7DKClTevCGBDcu+MfH2jjUGlJ3LtZ
- 6+1FeHaImmmS9dXryHU/4Db3PTS1z7z+9QmHVjG0j/GMXybwby8bUZyjh
- vnzze5LHrSzQGR1+9AjA7GIJN9BnKLhgp6Zli+UhPmovjeaXGBKdahl2c
- qnzFBqY/Pm1G7UmzBnjSRkhLP2Hvy5hfy87KRHGDzicNhpa3OHPjvJeSf g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="4319627"
-X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="4319627"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2024 06:23:57 -0800
+ t=1709649105; x=1741185105;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=QapeVivXWGoLptZLctmZZhixLhu4TFoALA0Un0H16I4=;
+ b=emLp+y4nhx2ZIbdtgoRHym7FAY1P6RmOoBdAlXPHGiaIOGPM1nlhXAp/
+ 2E7njmIS+Dg036Ov7yZUwfuVk/coXIHN51i2Kpcxb7GfBQ8LurLoYBrvy
+ 4VlDJiUBbiJtK94JH4h3SVgipOca7dDOlNer8E5VTVbQoRgfdLTmZo0Ic
+ 2tFRg8IJREftYbLDOvYptsaCZCPo5HPvWRTMHlJPIsJcee6vajGghoFPk
+ YWApagpqp8nzblIHEN1EEmTYc4hHPOe9UqIXXcib0O0B90V66ZzwrGZPi
+ Q9SKO/1/ea+el9Z/N3lItqOKRPxE/YS/pK/cnWPv0YIasuPfCs5oDBzaz g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="15631484"
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="15631484"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2024 06:31:44 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; d="scan'208";a="14057962"
-Received: from pkunieck-mobl.ger.corp.intel.com (HELO [10.249.140.91])
- ([10.249.140.91])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2024 06:23:56 -0800
-Message-ID: <fd9d0b84-3414-4eba-b878-7dfdf2c7595f@intel.com>
-Date: Tue, 5 Mar 2024 14:23:53 +0000
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
+   d="scan'208";a="9797294"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 06:31:43 -0800
+Date: Tue, 5 Mar 2024 15:31:40 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>,
+ Priyanka Dandamudi <Priyanka.dandamudi@intel.com>
+Subject: Re: [PATCH] xe_exec_compute_mode: Add malloc-ufence test
+Message-ID: <20240305143140.wh2de353ldq6fldr@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Matthew Brost <matthew.brost@intel.com>,
+ Priyanka Dandamudi <Priyanka.dandamudi@intel.com>
+References: <20240227023956.141475-1-matthew.brost@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 4/4] tests/xe_render_copy: Add render-copy test for
- xe
-Content-Language: en-GB
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20240305054056.139691-1-zbigniew.kempczynski@intel.com>
- <20240305054056.139691-5-zbigniew.kempczynski@intel.com>
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20240305054056.139691-5-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240227023956.141475-1-matthew.brost@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,478 +69,139 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 05/03/2024 05:40, Zbigniew Kempczyński wrote:
-> Fill the gap with testing render-copy for xe driver. Currently only
-> few basic render-copy checks are executing within xe_intel_bb@render.
+Hi Matthew,
+On 2024-02-26 at 18:39:56 -0800, Matthew Brost wrote:
+> The get user page ufence path is not triggered by the test as ufence
+> memory is a mapped BO. To trigger this path use a malloc'd address.
 > 
-> xe_render_copy introduces new checks comparing to gem_render_copy
-> test. During my work on enabling render-copy on LunarLake I've
-> used same r6 subregisters like on previous platforms what causes
-> full render-copy between surfaces worked but partials were not.
-> 
-> I decided to include square and v/h stripes tests to verify cofficients
-> for barycentric coordinates matches expected <x,y> position. More
-> stressful is random subtest which randomizes width and height as well
-> as division point (it copies four rectangles to destination surface).
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 > ---
->   tests/intel/xe_render_copy.c | 430 +++++++++++++++++++++++++++++++++++
->   tests/meson.build            |   1 +
->   2 files changed, 431 insertions(+)
->   create mode 100644 tests/intel/xe_render_copy.c
+>  tests/intel/xe_exec_compute_mode.c | 28 ++++++++++++++++++++--------
+>  1 file changed, 20 insertions(+), 8 deletions(-)
 > 
-> diff --git a/tests/intel/xe_render_copy.c b/tests/intel/xe_render_copy.c
-> new file mode 100644
-> index 0000000000..ce9547df50
-> --- /dev/null
-> +++ b/tests/intel/xe_render_copy.c
-> @@ -0,0 +1,430 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2023 Intel Corporation
+> diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
+> index 7dad715093..c0cddbc02b 100644
+> --- a/tests/intel/xe_exec_compute_mode.c
+> +++ b/tests/intel/xe_exec_compute_mode.c
+> @@ -31,6 +31,7 @@
+>  #define BIND_EXECQUEUE		(0x1 << 4)
+>  #define VM_FOR_BO			(0x1 << 5)
+>  #define EXEC_QUEUE_EARLY	(0x1 << 6)
+> +#define MALLOC_USER_FENCE		(0x1 <<7)
+------------------------------------------ ^
+Put space before 7:
+#define MALLOC_USER_FENCE		(0x1 << 7)
 
-s/2023/2024/
+>  
+>  /**
+>   * SUBTEST: twice-%s
+> @@ -48,6 +49,7 @@
+>   * arg[1]:
+>   *
+>   * @basic:				basic
+> + * @malloc-ufence:			malloc user fence
 
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+You need this also for many-execqueues subtest below.
 
-> + */
+Regards,
+Kamil
+
+>   * @preempt-fence-early:		preempt fence early
+>   * @userptr:				userptr
+>   * @rebind:				rebind
+> @@ -110,6 +112,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>  		uint64_t exec_sync;
+>  		uint32_t data;
+>  	} *data;
+> +	uint64_t *vm_sync;
+>  	int i, j, b;
+>  	int map_fd = -1;
+>  	int64_t fence_timeout;
+> @@ -149,6 +152,12 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>  	}
+>  	memset(data, 0, bo_size);
+>  
+> +	if (flags & MALLOC_USER_FENCE)
+> +		vm_sync = malloc(sizeof(*vm_sync));
+> +	else
+> +		vm_sync = &data[0].vm_sync;
+> +	igt_assert(vm_sync);
 > +
-> +#include <cairo.h>
-> +#include <errno.h>
-> +#include <fcntl.h>
-> +#include <glib.h>
-> +#include <inttypes.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <sys/ioctl.h>
-> +#include <sys/stat.h>
-> +#include <unistd.h>
-> +#include <zlib.h>
-> +
-> +#include "igt.h"
-> +#include "igt_crc.h"
-> +#include "intel_blt.h"
-> +#include "intel_bufops.h"
-> +#include "intel_pat.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
-> +
-> +/**
-> + * TEST: Copy memory using 3d engine
-> + * Category: Software building block
-> + * Sub-category: 3d
-> + * Functionality: render
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: render-square
-> + * Description: Copy surface using 3d engine dividing to 2x2 squares
-> + *
-> + * SUBTEST: render-vstripes
-> + * Description: Copy surface using 3d engine dividing to 4x1 rectangles
-> + *
-> + * SUBTEST: render-hstripes
-> + * Description: Copy surface using 3d engine dividing to 1x4 rectangles
-> + *
-> + * SUBTEST: render-random
-> + * Description: Copy surface using 3d engine with randomized width, height and
-> + *              rectangles size
-> + *
-> + * SUBTEST: render-full
-> + * Description: Copy surface using 3d engine (1:1)
-> + */
-> +#define WIDTH	256
-> +#define HEIGHT	256
-> +IGT_TEST_DESCRIPTION("Exercise render-copy on xe");
-> +
-> +static bool debug_bb;
-> +static bool write_png;
-> +static bool buf_info;
-> +static uint32_t surfwidth = WIDTH;
-> +static uint32_t surfheight = HEIGHT;
-> +
-> +static void scratch_buf_init(struct buf_ops *bops,
-> +			     struct intel_buf *buf,
-> +			     int width, int height,
-> +			     uint32_t req_tiling,
-> +			     enum i915_compression compression)
-> +{
-> +	int fd = buf_ops_get_fd(bops);
-> +	int bpp = 32;
-> +
-> +	intel_buf_init_in_region(bops, buf, width, height, bpp, 0,
-> +				 req_tiling, compression, system_memory(fd));
-> +
-> +	igt_assert(intel_buf_width(buf) == width);
-> +	igt_assert(intel_buf_height(buf) == height);
-> +}
-> +
-> +#define GROUP_SIZE 4096
-> +static int compare_detail(const uint32_t *ptr1, uint32_t *ptr2,
-> +			  uint32_t size)
-> +{
-> +	int i, ok = 0, fail = 0;
-> +	int groups = size / GROUP_SIZE;
-> +	int *hist = calloc(GROUP_SIZE, groups);
-> +
-> +	igt_debug("size: %d, group_size: %d, groups: %d\n",
-> +		  size, GROUP_SIZE, groups);
-> +
-> +	for (i = 0; i < size / sizeof(uint32_t); i++) {
-> +		if (ptr1[i] == ptr2[i]) {
-> +			ok++;
-> +		} else {
-> +			fail++;
-> +			hist[i * sizeof(uint32_t) / GROUP_SIZE]++;
-> +		}
-> +	}
-> +
-> +	for (i = 0; i < groups; i++) {
-> +		if (hist[i])
-> +			igt_debug("[group %4x]: %d\n", i, hist[i]);
-> +	}
-> +	free(hist);
-> +
-> +	igt_debug("ok: %d, fail: %d\n", ok, fail);
-> +
-> +	return fail;
-> +}
-> +
-> +static int compare_bufs(struct intel_buf *buf1, struct intel_buf *buf2,
-> +			bool detail_compare)
-> +{
-> +	void *ptr1, *ptr2;
-> +	int fd1, fd2, ret;
-> +
-> +	/* Avoid comparison of buffers of different sizes */
-> +	if (buf1->surface[0].size != buf2->surface[0].size)
-> +		return 0;
-> +
-> +	fd1 = buf_ops_get_fd(buf1->bops);
-> +	fd2 = buf_ops_get_fd(buf2->bops);
-> +
-> +	ptr1 = xe_bo_map(fd1, buf1->handle, buf1->surface[0].size);
-> +	ptr2 = xe_bo_map(fd2, buf2->handle, buf2->surface[0].size);
-> +	ret = memcmp(ptr1, ptr2, buf1->surface[0].size);
-> +	if (detail_compare)
-> +		ret = compare_detail(ptr1, ptr2, buf1->surface[0].size);
-> +
-> +	munmap(ptr1, buf1->surface[0].size);
-> +	munmap(ptr2, buf2->surface[0].size);
-> +
-> +	return ret;
-> +}
-> +
-> +/*
-> + *
-> + * Scenarios implemented are presented below. We copy from linear to and forth
-> + * linear/tiled and back manipulating x,y coordinates from source and
-> + * destination.
-> + * For render randomize width and height and randomize x,y inside.
-> + *
-> + *  <linear>        <linear/x/y/4/64>
-> + *
-> + *  Square:
-> + *  +---+---+       +---+---+
-> + *  | 1 | 2 |  ==>  | 3 | 1 |
-> + *  +---+---+       +---+---+
-> + *  | 3 | 4 |  <==  | 4 | 2 |
-> + *  +---+---+       +---+---+
-> + *
-> + *  VStripes:
-> + *  +-+-+-+-+       +-+-+-+-+
-> + *  | | | | |  ==>  | | | | |
-> + *  |1|2|3|4|       |2|4|1|3|
-> + *  | | | | |  ==>  | | | | |
-> + *  +-+-+-+-+       +-+-+-+-+
-> + *
-> + *  HStripes:
-> + *  +-------+       +-------+
-> + *  |   1   |       |   2   |
-> + *  +-------+  ==>  +-------+
-> + *  |   2   |       |   4   |
-> + *  +-------+       +-------+
-> + *  |   3   |       |   1   |
-> + *  +-------+  <==  +-------+
-> + *  |   4   |       |   3   |
-> + *  +-------+       +-------+
-> + *
-> + *   Full:
-> + *  +-------+       +-------+
-> + *  |       |  ==>  |       |
-> + *  |   1   |       |   1   |
-> + *  |       |  <==  |       |
-> + *  +-------+       +-------+
-> + *
-> + *  Random:
-> + *  +-+-----+       +-+-----+
-> + *  |1|  2  |       |1|  2  |
-> + *  +-+-----+  ==>  +-+-----+
-> + *  |3|  4  |       |3|  4  |
-> + *  | |     |  <==  | |     |
-> + *  +-+-----+       +-+-----+
-> + */
-> +
-> +enum render_copy_testtype {
-> +	COPY_SQUARE,
-> +	COPY_VSTRIPES,
-> +	COPY_HSTRIPES,
-> +	COPY_RANDOM,
-> +	COPY_FULL,
-> +};
-> +
-> +static const char * const testname[] = {
-> +	[COPY_SQUARE]	= "square",
-> +	[COPY_VSTRIPES]	= "vstripes",
-> +	[COPY_HSTRIPES]	= "hstripes",
-> +	[COPY_RANDOM]	= "random",
-> +	[COPY_FULL]	= "full",
-> +};
-> +
-> +static int render(struct buf_ops *bops, uint32_t tiling,
-> +		  uint32_t width, uint32_t height,
-> +		  enum render_copy_testtype testtype)
-> +{
-> +	struct intel_bb *ibb;
-> +	struct intel_buf src, dst, final, grfs;
-> +	int xe = buf_ops_get_fd(bops);
-> +	uint32_t fails = 0;
-> +	uint32_t devid = intel_get_drm_devid(xe);
-> +	igt_render_copyfunc_t render_copy = NULL;
-> +	struct posrc {
-> +		uint32_t x0, y0;
-> +		uint32_t x1, y1;
-> +		uint32_t x2, y2;
-> +		uint32_t x3, y3;
-> +		uint32_t w, h;
-> +	} xys[] = {
-> +		/* square */
-> +		{ .x0 = 0,		.y0 = 0,
-> +		  .x1 = width/2,	.y1 = 0,
-> +		  .x2 = width/2,	.y2 = height/2,
-> +		  .x3 = 0,		.y3 = height/2,
-> +		  .w = width/2,		.h = height/2 },
-> +
-> +		/* vstripes */
-> +		{ .x0 = 0,
-> +		  .x1 = width/2,
-> +		  .x2 = width/2 + width/4,
-> +		  .x3 = width/4,
-> +		  .w = width/4,		.h = height },
-> +
-> +		/* hstripes */
-> +		{ .y0 = 0,
-> +		  .y1 = height/2,
-> +		  .y2 = height/2 + height/4,
-> +		  .y3 = height/4,
-> +		  .w = width,		.h = height/4 },
-> +
-> +		/* random - filled later */
-> +		{ 0, }
-> +	}, *p;
-> +
-> +	if (testtype == COPY_RANDOM) {
-> +		width = rand() % width + 1;
-> +		height = rand() % height + 1;
-> +	}
-> +
-> +	ibb = intel_bb_create(xe, SZ_4K);
-> +
-> +	if (debug_bb)
-> +		intel_bb_set_debug(ibb, true);
-> +
-> +	scratch_buf_init(bops, &src, width, height, I915_TILING_NONE,
-> +			 I915_COMPRESSION_NONE);
-> +	scratch_buf_init(bops, &dst, width, height, tiling,
-> +			 I915_COMPRESSION_NONE);
-> +	scratch_buf_init(bops, &final, width, height, I915_TILING_NONE,
-> +			 I915_COMPRESSION_NONE);
-> +	scratch_buf_init(bops, &grfs, 64, height * 4, I915_TILING_NONE,
-> +			 I915_COMPRESSION_NONE);
-> +
-> +	intel_buf_draw_pattern(bops, &src,
-> +			       0, 0, width, height,
-> +			       0, 0, width, height, 0);
-> +
-> +	render_copy = igt_get_render_copyfunc(devid);
-> +	igt_assert(render_copy);
-> +
-> +	switch (testtype) {
-> +	case COPY_SQUARE:
-> +	case COPY_VSTRIPES:
-> +	case COPY_HSTRIPES:
-> +		p = &xys[testtype];
-> +
-> +		/* copy to intermediate surface (dst) */
-> +		render_copy(ibb,
-> +			    &src, p->x0, p->y0, p->w, p->h,
-> +			    &dst, p->x1, p->y1);
-> +		render_copy(ibb,
-> +			    &src, p->x1, p->y1, p->w, p->h,
-> +			    &dst, p->x2, p->y2);
-> +		render_copy(ibb,
-> +			    &src, p->x2, p->y2, p->w, p->h,
-> +			    &dst, p->x3, p->y3);
-> +		render_copy(ibb,
-> +			    &src, p->x3, p->y3, p->w, p->h,
-> +			    &dst, p->x0, p->y0);
-> +
-> +		/* copy to final */
-> +		render_copy(ibb,
-> +			    &dst, p->x0, p->y0, p->w, p->h,
-> +			    &final, p->x3, p->y3);
-> +		render_copy(ibb,
-> +			    &dst, p->x1, p->y1, p->w, p->h,
-> +			    &final, p->x0, p->y0);
-> +		render_copy(ibb,
-> +			    &dst, p->x2, p->y2, p->w, p->h,
-> +			    &final, p->x1, p->y1);
-> +		render_copy(ibb,
-> +			    &dst, p->x3, p->y3, p->w, p->h,
-> +			    &final, p->x2, p->y2);
-> +		break;
-> +
-> +	case COPY_RANDOM:
-> +		p = &xys[testtype];
-> +		p->x0 = rand() % width;
-> +		p->y0 = rand() % height;
-> +		igt_debug("Random <width: %u, height: %u, x0: %d, y0: %d>\n",
-> +			  width, height, p->x0, p->y0);
-> +
-> +		/* copy to intermediate surface (dst), split is randomized */
-> +		render_copy(ibb,
-> +			    &src, 0, 0, p->x0, p->y0,
-> +			    &dst, 0, 0);
-> +		render_copy(ibb,
-> +			    &src, p->x0, 0, width - p->x0, p->y0,
-> +			    &dst, p->x0, 0);
-> +		render_copy(ibb,
-> +			    &src, 0, p->y0, p->x0, height - p->y0,
-> +			    &dst, 0, p->y0);
-> +		render_copy(ibb,
-> +			    &src, p->x0, p->y0, width - p->x0, height - p->y0,
-> +			    &dst, p->x0, p->y0);
-> +
-> +		render_copy(ibb,
-> +			    &dst, 0, 0, width, height,
-> +			    &final, 0, 0);
-> +		break;
-> +
-> +
-> +	case COPY_FULL:
-> +		render_copy(ibb,
-> +			    &src, 0, 0, width, height,
-> +			    &dst, 0, 0);
-> +
-> +		render_copy(ibb,
-> +			    &dst, 0, 0, width, height,
-> +			    &final, 0, 0);
-> +		break;
-> +	}
-> +
-> +	intel_bb_sync(ibb);
-> +	intel_bb_destroy(ibb);
-> +
-> +	if (write_png) {
-> +		intel_buf_raw_write_to_png(&src, "render_src_tiling_%d_%dx%d.png",
-> +					   tiling, width, height);
-> +		intel_buf_raw_write_to_png(&dst, "render_dst_tiling_%d_%dx%d.png",
-> +					   tiling, width, height);
-> +		intel_buf_raw_write_to_png(&final, "render_final_tiling_%d_%dx%d.png",
-> +					   tiling, width, height);
-> +	}
-> +
-> +	fails = compare_bufs(&src, &final, true);
-> +
-> +	intel_buf_close(bops, &src);
-> +	intel_buf_close(bops, &dst);
-> +	intel_buf_close(bops, &final);
-> +
-> +	igt_assert_f(fails == 0, "%s: (tiling: %d) fails: %d\n",
-> +		     __func__, tiling, fails);
-> +
-> +	return fails;
-> +}
-> +
-> +static int opt_handler(int opt, int opt_index, void *data)
-> +{
-> +	switch (opt) {
-> +	case 'd':
-> +		debug_bb = true;
-> +		break;
-> +	case 'p':
-> +		write_png = true;
-> +		break;
-> +	case 'i':
-> +		buf_info = true;
-> +		break;
-> +	case 'W':
-> +		surfwidth = atoi(optarg);
-> +		break;
-> +	case 'H':
-> +		surfheight = atoi(optarg);
-> +		break;
-> +	default:
-> +		return IGT_OPT_HANDLER_ERROR;
-> +	}
-> +
-> +	return IGT_OPT_HANDLER_SUCCESS;
-> +}
-> +
-> +const char *help_str =
-> +	"  -d\tDebug bb\n"
-> +	"  -p\tWrite surfaces to png\n"
-> +	"  -i\tPrint buffer info\n"
-> +	"  -W\tWidth (default 256)\n"
-> +	"  -H\tHeight (default 256)"
-> +	;
-> +
-> +
-> +igt_main_args("dpiW:H:", NULL, help_str, opt_handler, NULL)
-> +{
-> +	int xe;
-> +	struct buf_ops *bops;
-> +	const char *tiling_name;
-> +	int tiling;
-> +
-> +	igt_fixture {
-> +		xe = drm_open_driver(DRIVER_XE);
-> +		bops = buf_ops_create(xe);
-> +		srand(time(NULL));
-> +	}
-> +
-> +	for (int id = 0; id <= COPY_FULL; id++) {
-> +		igt_subtest_with_dynamic_f("render-%s", testname[id]) {
-> +			igt_require(xe_has_engine_class(xe, DRM_XE_ENGINE_CLASS_RENDER));
-> +
-> +			for_each_tiling(tiling) {
-> +				if (!blt_block_copy_supports_tiling(xe, tiling))
-> +					continue;
-> +
-> +				tiling_name = blt_tiling_name(tiling);
-> +				tiling = blt_tile_to_fb_tile(tiling);
-> +				igt_dynamic_f("render-%s-%ux%u", tiling_name, surfwidth, surfheight)
-> +					render(bops, tiling, surfwidth, surfheight, id);
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_fixture {
-> +		buf_ops_destroy(bops);
-> +		drm_close_driver(xe);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 02cbc37806..a856510fce 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -309,6 +309,7 @@ intel_xe_progs = [
->   	'xe_pm_residency',
->   	'xe_prime_self_import',
->   	'xe_query',
-> +	'xe_render_copy',
->   	'xe_vm',
->   	'xe_waitfence',
->   	'xe_spin_batch',
+>  	for (i = 0; !(flags & EXEC_QUEUE_EARLY) && i < n_exec_queues; i++) {
+>  		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
+>  		if (flags & BIND_EXECQUEUE)
+> @@ -158,7 +167,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>  			bind_exec_queues[i] = 0;
+>  	};
+>  
+> -	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+> +	sync[0].addr = to_user_pointer(vm_sync);
+>  	if (bo)
+>  		xe_vm_bind_async(fd, vm, bind_exec_queues[0], bo, 0, addr,
+>  				 bo_size, sync, 1);
+> @@ -171,9 +180,9 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>  
+>  	fence_timeout = igt_run_in_simulation() ? HUNDRED_SEC : ONE_SEC;
+>  
+> -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> +	xe_wait_ufence(fd, vm_sync, USER_FENCE_VALUE,
+>  		       bind_exec_queues[0], fence_timeout);
+> -	data[0].vm_sync = 0;
+> +	*vm_sync = 0;
+>  
+>  	for (i = 0; i < n_execs; i++) {
+>  		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+> @@ -202,7 +211,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>  			xe_vm_unbind_async(fd, vm, bind_exec_queues[e], 0,
+>  					   addr, bo_size, NULL, 0);
+>  
+> -			sync[0].addr = to_user_pointer(&data[0].vm_sync);
+> +			sync[0].addr = to_user_pointer(vm_sync);
+>  			addr += bo_size;
+>  			if (bo)
+>  				xe_vm_bind_async(fd, vm, bind_exec_queues[e], bo,
+> @@ -213,9 +222,9 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>  							 to_user_pointer(data),
+>  							 addr, bo_size, sync,
+>  							 1);
+> -			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> +			xe_wait_ufence(fd, vm_sync, USER_FENCE_VALUE,
+>  				       bind_exec_queues[e], fence_timeout);
+> -			data[0].vm_sync = 0;
+> +			*vm_sync = 0;
+>  		}
+>  
+>  		if (flags & INVALIDATE && i + 1 != n_execs) {
+> @@ -264,10 +273,10 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>  	if (flags & INVALIDATE)
+>  		usleep(250000);
+>  
+> -	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+> +	sync[0].addr = to_user_pointer(vm_sync);
+>  	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr, bo_size,
+>  			   sync, 1);
+> -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> +	xe_wait_ufence(fd, vm_sync, USER_FENCE_VALUE,
+>  		       bind_exec_queues[0], fence_timeout);
+>  
+>  	for (i = j; i < n_execs; i++)
+> @@ -288,6 +297,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>  	xe_vm_destroy(fd, vm);
+>  	if (map_fd != -1)
+>  		close(map_fd);
+> +	if (flags & MALLOC_USER_FENCE)
+> +		free(vm_sync);
+>  }
+>  
+>  /**
+> @@ -408,6 +419,7 @@ igt_main
+>  		unsigned int flags;
+>  	} sections[] = {
+>  		{ "basic", 0 },
+> +		{ "malloc-ufence", MALLOC_USER_FENCE },
+>  		{ "preempt-fence-early", VM_FOR_BO | EXEC_QUEUE_EARLY },
+>  		{ "userptr", USERPTR },
+>  		{ "rebind", REBIND },
+> -- 
+> 2.34.1
+> 
