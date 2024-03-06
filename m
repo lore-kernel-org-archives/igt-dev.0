@@ -4,59 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14BA0C54E41
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7BEEC54E49
 	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 17:28:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2466311338F;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 782FC11338B;
 	Wed,  6 Mar 2024 17:28:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="R7yrB1u8";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="KvxW54JH";
 	dkim-atps=neutral
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
  [217.70.183.196])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B1173113394
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 17:28:44 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 08B9EE0005;
- Wed,  6 Mar 2024 17:28:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E25511338B
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 17:28:45 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 65B89E000C;
+ Wed,  6 Mar 2024 17:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1709746123;
+ t=1709746124;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KxOg8Q7QVju9ImXPvjEGtTtDBZBGeWSZ1qVTn6ETC44=;
- b=R7yrB1u8yhYxCC9pD+hM5ZuWs2eVNk0sXWaKV0TaNoiFS/aCKaFCP+gKbwUKxCgx8zIQ7F
- 5xZ7t8KiVkBHgaZu2NkNPgJ65JuoSB7HS9gWtp0brFr4rK7AEmDZhzM1dZ9/61ydT1zvaZ
- FooiXikpKBWYAcF6oznIsyANwy19CM5vyl1xRkwhrXrcy/wpoEHuudv+L1yH+bQeEbukpZ
- bneu4qMLxodhtMv5OtX9Nlj+IGdloTT2dC9PrFEYGUWLow++Nyn2fkImqw+g+6nW3ZOJOW
- //ZCOyoUr8SNpZRh+OKvsgGphfzdl9uzPMdfzVgNzXRbrmP6F26VcqM3ASrwIg==
+ bh=FQyAqUZ0UqY76A/i3A+S4UoZd1z+Z+rBz4QzzwKsHYY=;
+ b=KvxW54JHGskx2vOAVGuJBVhW4M1p3xOoQxcyGucQfTscDzqPFuwq4rwpColKIPwYqddm68
+ BK2yOLvmbMCoLrk1VblWYEQM1mFhJ6uXbxw+jHVcaqJPR0ZLu9hpTcwUJSMkfS+e2ucBD0
+ +8H02DqyUXH4KZCJdSlAwmiFazZBLraFWXz4Ci4R3C9/RQk8icJrsrwnR9wpiTYUcVr04y
+ ZpWMYF7HVo44emCPHhSvFoQBb4FB5kobtis0UwgQLeJewhIiE5R2uJ4ecCL7SHYJ56/+yP
+ vPW76h8P3VGD3nHu6/fDP28yO7nwtZ/mw3A24dmATqpD+zTf0BVORvgkJ4v4Og==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 06 Mar 2024 18:28:36 +0100
-Subject: [PATCH i-g-t 2/9] tests/kms_plane: Fix some formatting and alignment
+Date: Wed, 06 Mar 2024 18:28:40 +0100
+Subject: [PATCH i-g-t 6/9] tests/kms_plane: Use the square pattern even
+ when using multiple planes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240306-b4-kms_tests-v1-2-8fe451efd2ac@bootlin.com>
+Message-Id: <20240306-b4-kms_tests-v1-6-8fe451efd2ac@bootlin.com>
 References: <20240306-b4-kms_tests-v1-0-8fe451efd2ac@bootlin.com>
 In-Reply-To: <20240306-b4-kms_tests-v1-0-8fe451efd2ac@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: miquel.raynal@bootlin.com, jeremie.dautheribes@bootlin.com, 
  thomas.petazzoni@bootlin.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2900;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3002;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=822nCjCbFfeBvf2zWoS4yzRDSqxd3CR4HhlMfLSHNZw=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBl6KfIKOtU5kRhXa5Qs8kFmSjj2Odx2Fr+xQwklS0z
- ktWSCiiJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZeinyAAKCRAgrS7GWxAs4nDKD/
- wP+xttvXiXO335bXEr1W4Q4sx1YY6/0eFphSV0YPmx1rytO53+/JVO8/L5lGKieD5ciKJKwjprqXGQ
- lWbAacJeaq/TaTnEvY4H2aOH2KaBxVI3caEmAY+Z8m0fxf6WB6DW5iKxXJ1YdEsJ4Rlt6GYlit2Chq
- O5Lbdx9WjLJ7jfuszICChRGHLSC5TtM2grKXj3RWVe4VBO58XEFq4NzeB8BU+xrVUyBoi9uz9cFCey
- R6X9XPWBLpLd9OWYOpd8aljudZgTU1r9SXQXBCpOd3Qp/w0ST6Yr8R2V/INuAbPcBu0F4ef0nZFzYb
- JxY7SuU7cNBLYQGzDfqHOGTfVgni6ADtSMjzW9D3LM4u752tMFXGIDRJxCxsEX3ruxqQLmeFoQ03lB
- LtMYwaF17KOX9Rpir2HtAHjUyKaSnYIkJc9pjxS7yCLoda1vPw2ag4SKMMtNA3pSRToK20Oax95BXz
- TdqdqGFKq7wmVrDErsqh5rKQmn51gfHQbT0uC51iGfEz1dS7JzKvCTO/AKzhJYfU1JiGiilNWxgVyG
- GsXxFq9DyRJPL5KapHScT0AR1bHuZ4NUPuCtBjZjdpi3cxot8M2AWw/cXQTlx+ljxJGbl3YWe6mDtV
- qTtmbzh78eX+Bx4eSMV9JNLDEbNTHtl88cOCFE+v6lyJKH1iBwX2944Kdt8g==
+ bh=y+kZsjNhrcKjorDYEmW8zHta7n4z0cxOfKhkkqOznxU=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBl6KfJP/3uGbpAzGlQAxFtsH/NBMwFiU5EvBY07tGU
+ hKR7N0uJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZeinyQAKCRAgrS7GWxAs4phBEA
+ CwX0E12t7rohBKhk2YYo6ppIwgdpJqdTIt5pEvpRCh4NSwle9Bh121qztEVBJu2l021ML0HxchUtCd
+ thGikJAwuTNvzDHOm3aVHNm8oN3iFP0W1lpBc1TfUfPZlghCbBzeJFm5PMVTqx4vdowx/62uV4JQAB
+ Wi+ibD+jrLgitOlkG6km2SeDyNmIXOQlTkBqj5PWbHAbGbsm3IaDDNdSCpMOh7VtI2n0G0AS9HCFOA
+ Zmuc282CnIt0JA2NwhwFgYYyq5yXR45pN/tj7emXu5y2Zf8ftxGCyQ+z8vIKSg4U20hlsC9cSAjD4x
+ JsufsFuVnqknZM+vKGA2sc07ctMB8VrFxpQ1BlrkXDhdzufwVcoIOg7+6GAotLijuxUvSm+T2OiKva
+ hX5yFONi4wFBu3HQO4jtszA96SxgQTT+XfITTDdzpdiHVLxJ1u5/Ne5XjZ9ImGGCbIbFJT6prBz8Dg
+ sg8Jh4gOluwITsF7KTLvsCAakozoqElrWfJKQfTjYiTuaGaLa32vMC1nce5qmTPbz2wASrnbsmJP52
+ aY+jIGeapbHEolzLwP+r+8NIuxQXxnyAaDKoogDBA3FV6YInr7owg70sN0g8BUy5PqpKGcwvqvK+cq
+ Xl19oCA0xG+G7tripPhiM0qwsJnXmXqtNDCvXLub9/EHKZLog6llp/vGx0Mw==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -75,86 +76,75 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+When the capture_format_crcs_multiple function is used, it was only using
+plain colors. It is enough to detect if the format conversion don't
+return the correct color, but it was not sufficient to check if the
+correct pixel is converted.
+
+As seen in [1], the capture_format_crcs_multiple was "SUCCESS" because if
+the whole plane have only one color, if the wrong pixel is read, it will
+always convert to the correct color.
+
+[1]: https://lore.kernel.org/dri-devel/ZbvXV-1hrfXLcvC3@localhost.localdomain/
+
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- tests/kms_plane.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ tests/kms_plane.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 406aecc04297..dd830e68a177 100644
+index f0be09b8e506..bb8229124b8c 100644
 --- a/tests/kms_plane.c
 +++ b/tests/kms_plane.c
-@@ -286,7 +286,7 @@ test_plane_position_with_output(data_t *data,
+@@ -728,6 +728,12 @@ static void capture_format_crcs_multiple(data_t *data, enum pipe pipe,
+ 	struct drm_event_vblank ev;
+ 	int i;
  
- 	if (primary->drm_plane->plane_id > sprite->drm_plane->plane_id) {
- 		igt_info("primary plane ID (%d) > sprite plane ID (%d), skipping plane %d\n",
--				primary->drm_plane->plane_id, sprite->drm_plane->plane_id, plane);
-+			 primary->drm_plane->plane_id, sprite->drm_plane->plane_id, plane);
- 		return;
- 	}
- 
-@@ -373,7 +373,7 @@ test_plane_position(data_t *data, enum pipe pipe)
-  */
- static void
- create_fb_for_mode_panning(data_t *data, drmModeModeInfo *mode,
--			    struct igt_fb *fb /* out */)
-+			   struct igt_fb *fb /* out */)
++	/* Also run single colors to capture more failures */
++	capture_format_crcs_single(data, pipe, plane, format, modifier, width, height, encoding, range, crc, fb);
++
++	/* Skip the first crc as it's taken by "capture_format_crcs_single" */
++	crc = crc + 1;
++
+ restart_round:
+ 	for (i = 0; i < data->num_colors; i++) {
+ 		const color_t *c = &data->colors[i];
+@@ -853,7 +859,7 @@ static bool test_format_plane_colors(data_t *data, enum pipe pipe,
+ 				     igt_crc_t ref_crc[],
+ 				     struct igt_fb *fb)
  {
- 	unsigned int fb_id;
- 	cairo_t *cr;
-@@ -463,7 +463,6 @@ test_plane_panning(data_t *data, enum pipe pipe)
- 		for_each_memory_region(r, data->drm_fd)
- 			if (r->ci.memory_class == I915_MEMORY_CLASS_DEVICE)
- 				mem_size = r->cpu_size;
--
- 	}
+-	igt_crc_t crc[ARRAY_SIZE(colors_extended)];
++	igt_crc_t crc[ARRAY_SIZE(colors_extended) + 1];
+ 	unsigned int crc_mismatch_mask = 0;
+ 	int crc_mismatch_count = 0;
+ 	bool result = true;
+@@ -863,7 +869,7 @@ static bool test_format_plane_colors(data_t *data, enum pipe pipe,
+ 		capture_format_crcs_multiple(data, pipe, plane, format, modifier,
+ 					     width, height, encoding, range, crc,
+ 					     fb);
+-		total_crcs = data->num_colors;
++		total_crcs = data->num_colors + 1;
+ 	} else {
+ 		capture_format_crcs_single(data, pipe, plane, format, modifier,
+ 					   width, height, encoding, range, crc,
+@@ -881,7 +887,7 @@ static bool test_format_plane_colors(data_t *data, enum pipe pipe,
+ 	if (crc_mismatch_count)
+ 		igt_warn("CRC mismatches with format " IGT_FORMAT_FMT " on %s.%u with %d/%d solid colors tested (0x%X)\n",
+ 			 IGT_FORMAT_ARGS(format), kmstest_pipe_name(pipe),
+-			 plane->index, crc_mismatch_count, data->num_colors, crc_mismatch_mask);
++			 plane->index, crc_mismatch_count, total_crcs, crc_mismatch_mask);
  
- 	if (is_xe_device(data->drm_fd)) {
-@@ -705,7 +704,7 @@ static void capture_format_crcs_single(data_t *data, enum pipe pipe,
- 			     width, height, encoding, range, &black, fb, true);
- 
- 	igt_display_commit2(&data->display, data->display.is_atomic ?
--			    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
-+					    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
- 
- 	igt_remove_fb(data->drm_fd, &old_fb);
- 
-@@ -796,7 +795,7 @@ restart_round:
- 				igt_display_t *display = &data->display;
- 
- 				igt_wait_for_vblank(data->drm_fd,
--						display->pipes[pipe].crtc_offset);
-+						    display->pipes[pipe].crtc_offset);
- 			}
- 		}
- 
-@@ -1009,7 +1008,7 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
- 	igt_crc_t ref_crc[MAX_CRC_SET][ARRAY_SIZE(colors_extended)];
+ 	return result;
+ }
+@@ -1010,7 +1016,7 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+ 	struct igt_fb *clear_fb = plane->type == DRM_PLANE_TYPE_PRIMARY ? primary_fb : NULL;
+ 	drmModeModeInfo *mode;
+ 	uint64_t width, height;
+-	igt_crc_t ref_crc[MAX_CRC_SET][ARRAY_SIZE(colors_extended)];
++	igt_crc_t ref_crc[MAX_CRC_SET][ARRAY_SIZE(colors_extended) + 1];
  	struct igt_vec tested_formats;
  	struct format_mod ref = {};
--	igt_crc_t* crcset;
-+	igt_crc_t *crcset;
- 	bool result = true;
- 
- 	/*
-@@ -1352,7 +1351,7 @@ run_tests_for_pipe_plane(data_t *data)
- 	}
- 
- 	igt_describe("verify plane position using two planes to create a partially covered screen and"
--		       "check for DPMS");
-+		     "check for DPMS");
- 	igt_subtest_with_dynamic_f("plane-position-hole-dpms") {
- 		data->flags = TEST_POSITION_PARTIALLY_COVERED | TEST_DPMS;
- 		run_test(data, test_plane_position);
-@@ -1371,7 +1370,7 @@ run_tests_for_pipe_plane(data_t *data)
- 	}
- 
- 	igt_describe("verify plane panning at bottom-right position using primary plane and executes system"
--		       "suspend cycles");
-+		     "suspend cycles");
- 	igt_subtest_with_dynamic_f("plane-panning-bottom-right-suspend") {
- 		data->flags = TEST_PANNING_BOTTOM_RIGHT | TEST_SUSPEND_RESUME;
- 		run_test(data, test_plane_panning);
+ 	igt_crc_t *crcset;
 
 -- 
 2.43.0
