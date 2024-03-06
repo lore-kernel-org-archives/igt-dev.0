@@ -4,54 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78B10C5475B
-	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 09:53:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAD15C54E41
+	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 09:57:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EA42610F6A8;
-	Wed,  6 Mar 2024 09:53:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9083A10FE87;
+	Wed,  6 Mar 2024 09:57:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XJUOGgAr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G8lNJghl";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D26910F82A
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 09:53:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89FCB10FFD1;
+ Wed,  6 Mar 2024 09:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709718836; x=1741254836;
+ t=1709719041; x=1741255041;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=X3WRGSR7GSw2+K5BuEp+QKbTXaBXdRcrXxxgRtclIds=;
- b=XJUOGgArSrQ2GPaUHYbWa661uKq1IWx4Lbgm3zA9p6jrMuuy4BB2csoI
- jlvswrq8eNm3SJlLxDOFYzTdECYPoxzRytg1SQFNaLrY6ygGCkCdxWpr4
- Uepx3Q/nIrYFMcsOJtLtCQRd4xoKtFP0sh82+i5nfSDgFOXwDbNSjEmeu
- UBU0lFchQpNIo4EFvNMfyHBLhlk6FFq7Z7S9A/xGMdwUVCqxzEElDz/Dw
- k69R01z1EF/xsLTkNc+Hzn5hhH9eZYfD3maZ5iuNNhtG5sWP6Fv6h8J3A
- ZsJDcl9y5hlB6PUDWdMSbX5QiGXKvn4SB8nUdBtB3gV1eYFi0eZquebZE w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="8083376"
+ bh=To28DcoI0EZnpWdXoNBmj3wYYXL0SS2ihfAft3EuVpY=;
+ b=G8lNJghlU5eAyUvo4UqDwt5J5tcNTABqY8lAEE3oiT87vJXxHco4nKii
+ d4hPcTinv9mr7Vytcpx9lsQ6DiiRojDJC6MMeJA5Dvb4sQU86ET8s9zJX
+ cKOb/EP3vhRHCa4penvtP978ZpEyZT/zR583amT7lEhPv/eeofKUAaWr1
+ apoBNQm7NM8Yyv64DlMALv98MnicXLK/NM80NHeeazf6Sp0DWwZSSmU3J
+ CoabjuhFMuhLVRmD+Hiwp30Z6Z3Df0x+R2g0Ezs/1MKXEIgmX8seTaz/C
+ rBJ3HuYOvEfpGXDJmYyogCmcVzWq7RIBaZI3fKTFn8aS1pFukcRUj6X/U A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="4186267"
 X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; 
-   d="scan'208";a="8083376"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2024 01:53:56 -0800
+   d="scan'208";a="4186267"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Mar 2024 01:57:20 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; d="scan'208";a="32856165"
-Received: from unknown (HELO intel.com) ([10.237.72.65])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2024 01:53:54 -0800
-Date: Wed, 6 Mar 2024 11:53:46 +0200
-From: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
-To: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: Re: [PATCH i-g-t 2/2] tests/intel/kms_big_joiner: revamp
- kms_big_joiner
-Message-ID: <Zeg9KosfNa0Lld1C@intel.com>
-References: <20240306052509.717026-1-kunal1.joshi@intel.com>
- <20240306052509.717026-3-kunal1.joshi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; d="scan'208";a="10097487"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 01:57:19 -0800
+Date: Wed, 6 Mar 2024 10:57:16 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: John Harrison <john.c.harrison@intel.com>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+Subject: Re: =?utf-8?Q?=E2=9C=97_Fi=2ECI=2EIGT=3A_failure_for_tests=2Finte?=
+ =?utf-8?Q?l=2Fgem=5Fexec=5Fcapture?= =?utf-8?Q?=3A?= Check for partial
+ register captures (rev2)
+Message-ID: <20240306095716.wyvubkwb5h6j2qpj@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ John Harrison <john.c.harrison@intel.com>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+References: <20240229195522.2942946-1-John.C.Harrison@Intel.com>
+ <170933449068.453612.2245101994274581916@8e613ede5ea5>
+ <20240305175020.owfzmpn4frw2n7yy@kamilkon-desk.igk.intel.com>
+ <52567ff5-e174-4842-bfda-304ef3f8066b@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240306052509.717026-3-kunal1.joshi@intel.com>
+In-Reply-To: <52567ff5-e174-4842-bfda-304ef3f8066b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,523 +76,144 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Mar 06, 2024 at 10:55:09AM +0530, Kunal Joshi wrote:
-> big joiner outputs are statically assigned to pipe,
-> rewrite to assign dynamically
+Hi John,
+On 2024-03-05 at 10:07:21 -0800, John Harrison wrote:
+> On 3/5/2024 09:50, Kamil Konieczny wrote:
+> > Hi igt-dev,
+> > On 2024-03-01 at 23:08:10 -0000, Patchwork wrote:
+> > > == Series Details ==
+> > > 
+> > > Series: tests/intel/gem_exec_capture: Check for partial register captures (rev2)
+> > > URL   : https://patchwork.freedesktop.org/series/130332/
+> > > State : failure
+> > > 
+> > > == Summary ==
+> > > 
+> > > CI Bug Log - changes from CI_DRM_14370_full -> IGTPW_10760_full
+> > > ====================================================
+> > > 
+> > > Summary
+> > > -------
+> > > 
+> > >    **FAILURE**
+> > > 
+> > >    Serious unknown changes coming with IGTPW_10760_full absolutely need to be
+> > >    verified manually.
+> > >    If you think the reported changes have nothing to do with the changes
+> > >    introduced in IGTPW_10760_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+> > >    to document this new failure mode, which will reduce false positives in CI.
+> > > 
+> > >    External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10760/index.html
+> > > 
+> > > Participating hosts (8 -> 8)
+> > > ------------------------------
+> > > 
+> > >    No changes in participating hosts
+> > > 
+> > > Possible new issues
+> > > -------------------
+> > > 
+> > >    Here are the unknown changes that may have been introduced in IGTPW_10760_full:
+> > > 
+> > > ### IGT changes ###
+> > > 
+> > > #### Possible regressions ####
+> > > 
+> > >    * igt@gem_exec_capture@capture@ccs3-smem:
+> > >      - shard-dg2:          [PASS][1] -> [FAIL][2] +13 other tests fail
+> > >     [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14370/shard-dg2-10/igt@gem_exec_capture@capture@ccs3-smem.html
+> > >     [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10760/shard-dg2-6/igt@gem_exec_capture@capture@ccs3-smem.html
+> > > 
+> > >    * igt@gem_exec_capture@capture@rcs0-smem:
+> > >      - shard-mtlp:         [PASS][3] -> [FAIL][4] +3 other tests fail
+> > >     [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14370/shard-mtlp-8/igt@gem_exec_capture@capture@rcs0-smem.html
+> > >     [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10760/shard-mtlp-6/igt@gem_exec_capture@capture@rcs0-smem.html
+> > > 
+> > >    * igt@gem_exec_capture@capture@vecs0-lmem0:
+> > >      - shard-dg1:          [PASS][5] -> [FAIL][6] +3 other tests fail
+> > >     [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14370/shard-dg1-13/igt@gem_exec_capture@capture@vecs0-lmem0.html
+> > >     [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10760/shard-dg1-19/igt@gem_exec_capture@capture@vecs0-lmem0.html
+> > > 
+> > >    * igt@gem_exec_capture@userptr:
+> > >      - shard-dg1:          NOTRUN -> [FAIL][7]
+> > >     [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10760/shard-dg1-18/igt@gem_exec_capture@userptr.html
+> > > 
+> > Above are bugs which were spotted by a change in test.
+> Correct, this is the test saying that the kernel is broken.
 > 
-> v2: Don't change license (Bhanu)
->     Add documentation for generate_combinations (Bhanu)
->     Print the pipe name (Bhanu)
->     Remove unwanted commit (Bhanu)
->     Move combine output logic to igt_fixture (Bhanu)
->     split revamp and force joiner (Bhanu)
+> How does one know what build of the kernel the test was run against?
+> Specifically, does it contain this patch:
+> e45afbeb59347 drm/i915/guc: Correct capture of EIR register on hang
+
+I merged it today, btw could you in future provide link(s)
+to lore.kernel.org with kernel-side patch(es)?
+
+Regards,
+Kamil
+
 > 
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> ---
->  tests/intel/kms_big_joiner.c | 391 +++++++++++++++++------------------
->  1 file changed, 187 insertions(+), 204 deletions(-)
 > 
-> diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
-> index 28678b958..ba4097d8b 100644
-> --- a/tests/intel/kms_big_joiner.c
-> +++ b/tests/intel/kms_big_joiner.c
-> @@ -43,16 +43,19 @@
->   *
->   * SUBTEST: basic
->   * Description: Verify the basic modeset on big joiner mode on all pipes
-> - *
-> - * SUBTEST: 2x-modeset
-> - * Description: Verify simultaneous modeset on 2 big joiner outputs
->   */
-> -
->  IGT_TEST_DESCRIPTION("Test big joiner");
->  
-> -struct bigjoiner_output {
-> -	uint32_t output_id;
-> -	drmModeModeInfo mode;
-> +#define MAX_OUTPUTS 256
-> +#define MAX_COMBINATIONS 1000
-> +#define INVALID_TEST_OUTPUT 2
-> +typedef struct {
-> +    int combination[MAX_OUTPUTS];
-> +} Combination;
-> +
-> +enum joiner_type {
-> +	BIG_JOINER = 1 << 1,
-> +	INVALID_JOINER = -1,
->  };
->  
->  typedef struct {
-> @@ -60,273 +63,253 @@ typedef struct {
->  	igt_display_t display;
->  	struct igt_fb fb;
->  	int n_pipes;
-> -	enum pipe pipe1;
-> -	enum pipe pipe2;
-> -	struct bigjoiner_output output[2];
-> +	uint64_t big_joiner_outputs[IGT_MAX_PIPES];
-> +	uint64_t non_big_joiner_outputs[IGT_MAX_PIPES];
-> +	uint64_t combined_outputs[IGT_MAX_PIPES];
-> +	int big_joiner_output_count;
-> +	int non_big_joiner_output_count;
-> +	int combined_output_count;
-> +	int output_count;
-> +	enum pipe pipe_seq[IGT_MAX_PIPES];
->  } data_t;
->  
->  static int max_dotclock;
->  
-> -static void test_invalid_modeset(data_t *data)
-> +/*
-> + * The generate_combinations function generates combinations of pipe allocations
-> + * for a given number of outputs
-> + *
-> + * @output_count: Number of outputs to allocate pipes for.
-> + * @pipe_count: Total number of available pipes.
-> + * @pipes_per_output: Number of pipes to be allocated for a single output.
-> + * @combinations: Array to store generated combinations.
-> + * @num_combinations: Pointer to a variable that stores the number of generated combinations.
-> + *
-> + * Example (output_count=2, pipe_count=4, pipes_per_output=2):
-> + * Combination 1: 0 2
-> + * Combination 2: 1 3
-
-I think this might be a bit overcomplicated - just for your information, we can't deliberately
-choose which pipes can be used for bigjoiner. On some platforms even only certain pipes, can be
-used for bigjoiner.
-Moreover the way how driver decides, which pipes are going to be used for bigjoiner is basically
-this code in intel_dp.c:
-
-if (intel_dp_need_bigjoiner(intel_dp, adjusted_mode->crtc_hdisplay,
-			    adjusted_mode->crtc_clock))
-         pipe_config->bigjoiner_pipes = GENMASK(crtc->pipe + 1, crtc->pipe);
-
-Means if you try to do a modeset with resolution > 5K or exceed max_dot_clock on crtc->pipe,
-then _always_ pipe + 1, going to be used for bigjoiner.
-
-
-Stan
-
-> +*/
-> +static void generate_combinations(int output_count, int pipe_count,
-> +				  int pipes_per_output,
-> +				  Combination combinations[MAX_COMBINATIONS],
-> +				  uint64_t *num_combinations)
->  {
-> -	igt_output_t *output;
-> -	igt_display_t *display = &data->display;
-> -	int ret;
-> +	int i, index;
-> +	int current_combination[MAX_OUTPUTS];
->  
-> -	igt_info("Bigjoiner test on ");
-> -	for_each_connected_output(display, output){
-> -		enum pipe p = output->pending_pipe;
-> -		drmModeModeInfo *mode;
-> -		igt_pipe_t *pipe;
-> -		igt_plane_t *plane;
-> +	for (i = 0; i < output_count; ++i)
-> +		current_combination[i] = i * pipes_per_output;
->  
-> -		if (p == PIPE_NONE)
-> -			continue;
-> -
-> -		mode = igt_output_get_mode(output);
-> -		igt_info("pipe:%s, output:%s, mode:", kmstest_pipe_name(p), igt_output_name(output));
-> -		kmstest_dump_mode(mode);
-> +	while (*num_combinations < MAX_COMBINATIONS && current_combination[0] <= pipe_count - output_count * pipes_per_output) {
-> +		for (i = 0; i < output_count; ++i)
-> +			combinations[*num_combinations].combination[i] = current_combination[i];
->  
-> -		pipe = &display->pipes[p];
-> -		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +		(*num_combinations)++;
->  
-> -		igt_plane_set_fb(plane, &data->fb);
-> -		igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> -		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> -	}
-> +		index = output_count - 1;
-> +		while (index >= 0 && current_combination[index] == pipe_count - (output_count - index) * pipes_per_output)
-> +			index--;
->  
-> -	igt_assert(!igt_check_bigjoiner_support(display));
-> +		if (index < 0)
-> +			break;
->  
-> -	/* This commit is expectd to fail as this pipe is being used for big joiner */
-> -	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY |
-> -					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +		current_combination[index]++;
-> +		for (i = index + 1; i < output_count; ++i)
-> +			current_combination[i] = current_combination[i - 1] + pipes_per_output;
-> +    }
-> +}
->  
-> -	igt_display_reset(&data->display);
-> -	igt_display_commit2(display, COMMIT_ATOMIC);
-> +static igt_output_t *get_output_by_id_or_assert(data_t *data, uint64_t output_id)
-> +{
-> +	igt_output_t *output;
->  
-> -	igt_assert_lt(ret, 0);
-> +	for_each_connected_output(&data->display, output) {
-> +		if (output->id == output_id)
-> +			return output;
-> +	}
-> +	igt_assert("Output not found\n");
-> +	return NULL;
->  }
->  
-> -static void test_basic_modeset(data_t *data)
-> +static void test_invalid_modeset_two_joiner(data_t *data, bool combined)
->  {
-> +	int i, j, ret;
-> +	igt_output_t *output;
-> +	uint64_t *outputs;
-> +	igt_plane_t *primary[INVALID_TEST_OUTPUT];
-> +	igt_fb_t fb[INVALID_TEST_OUTPUT];
->  	drmModeModeInfo *mode;
-> -	igt_output_t *output, *bigjoiner_output = NULL;
-> -	igt_display_t *display = &data->display;
-> -	igt_pipe_t *pipe;
-> -	igt_plane_t *plane;
->  
-> -	igt_display_reset(display);
-> -
-> -	for_each_connected_output(display, output) {
-> -		if (data->output[0].output_id == output->id) {
-> -			bigjoiner_output = output;
-> -			break;
-> +	outputs = combined ? data->combined_outputs : data->big_joiner_outputs;
-> +
-> +	for (i = 0; i < data->n_pipes-1; i++) {
-> +		igt_display_reset(&data->display);
-> +		for (j = 0; j < INVALID_TEST_OUTPUT; j++) {
-> +			output = get_output_by_id_or_assert(data, outputs[j]);
-> +			igt_assert(output);
-> +			igt_output_set_pipe(output, data->pipe_seq[i + j]);
-> +			mode = igt_output_get_mode(output);
-> +			igt_info("Assigning pipe %s to %s with mode %dx%d@%d%s",
-> +				 kmstest_pipe_name(data->pipe_seq[i + j]),
-> +				 igt_output_name(output), mode->hdisplay,
-> +				 mode->vdisplay, mode->vrefresh,
-> +				 j == INVALID_TEST_OUTPUT - 1 ? "\n" : ", ");
-> +			primary[j] = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +			igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
-> +								  DRM_FORMAT_MOD_LINEAR, &fb[j]);
-> +			igt_plane_set_fb(primary[j], &fb[j]);
->  		}
-> +		ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
-> +		igt_assert_f(ret != 0, "Commit shouldn't have passed\n");
->  	}
-> -
-> -	igt_output_set_pipe(bigjoiner_output, data->pipe1);
-> -
-> -	mode = &data->output[0].mode;
-> -	igt_output_override_mode(bigjoiner_output, mode);
-> -
-> -	pipe = &display->pipes[data->pipe1];
-> -	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> -
-> -	igt_plane_set_fb(plane, &data->fb);
-> -	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> -	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> -
-> -	igt_display_commit2(display, COMMIT_ATOMIC);
-> -
-> -	igt_output_set_pipe(bigjoiner_output, PIPE_NONE);
-> -	igt_plane_set_fb(plane, NULL);
-> -	igt_display_commit2(display, COMMIT_ATOMIC);
->  }
->  
-> -static void test_dual_display(data_t *data)
-> +static void tets_big_joiner_on_last_pipe(data_t *data)
->  {
-> +	int i, ret;
-> +	uint64_t *outputs;
-> +	igt_output_t *output;
-> +	igt_plane_t *primary;
-> +	igt_fb_t fb;
->  	drmModeModeInfo *mode;
-> -	igt_output_t *output, *bigjoiner_output[2];
-> -	igt_display_t *display = &data->display;
-> -	igt_pipe_t *pipe;
-> -	igt_plane_t *plane1, *plane2;
-> -	int count = 0;
-> -
-> -	igt_display_reset(display);
-> -
-> -	for_each_connected_output(display, output) {
-> -		if (data->output[count].output_id == output->id) {
-> -			bigjoiner_output[count] = output;
-> -			count++;
-> -		}
->  
-> -		if (count > 1)
-> -			break;
-> +	outputs = data->big_joiner_outputs;
-> +	for (i = 0; i < data->big_joiner_output_count; i++) {
-> +		igt_display_reset(&data->display);
-> +		output = get_output_by_id_or_assert(data, outputs[i]);
-> +		igt_output_set_pipe(output, data->pipe_seq[data->n_pipes - 1]);
-> +		mode = igt_output_get_mode(output);
-> +		igt_info("Assigning pipe %s to %s with mode %dx%d@%d\n",
-> +				 kmstest_pipe_name(data->pipe_seq[data->n_pipes - 1]),
-> +				 igt_output_name(output), mode->hdisplay,
-> +				 mode->vdisplay, mode->vrefresh);
-> +		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +		igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
-> +							  DRM_FORMAT_MOD_LINEAR, &fb);
-> +		igt_plane_set_fb(primary, &fb);
-> +		ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
-> +		igt_assert_f(ret != 0, "Commit shouldn't have passed\n");
->  	}
-> +}
->  
-> -	igt_output_set_pipe(bigjoiner_output[0], data->pipe1);
-> -	igt_output_set_pipe(bigjoiner_output[1], data->pipe2);
-> -
-> -	/* Set up first big joiner output on Pipe A*/
-> -	mode = &data->output[0].mode;
-> -	igt_output_override_mode(bigjoiner_output[0], mode);
-> -
-> -	pipe = &display->pipes[data->pipe1];
-> -	plane1 = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> -
-> -	igt_plane_set_fb(plane1, &data->fb);
-> -	igt_fb_set_size(&data->fb, plane1, mode->hdisplay, mode->vdisplay);
-> -	igt_plane_set_size(plane1, mode->hdisplay, mode->vdisplay);
-> -
-> -	/* Set up second big joiner output on Pipe C*/
-> -	mode = &data->output[1].mode;
-> -	igt_output_override_mode(bigjoiner_output[1], mode);
-> -
-> -	pipe = &display->pipes[data->pipe2];
-> -	plane2 = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> -
-> -	igt_plane_set_fb(plane2, &data->fb);
-> -	igt_fb_set_size(&data->fb, plane2, mode->hdisplay, mode->vdisplay);
-> -	igt_plane_set_size(plane2, mode->hdisplay, mode->vdisplay);
-> -
-> -	igt_display_commit2(display, COMMIT_ATOMIC);
-> +static void test_basic_modeset(data_t *data, int num_outputs,
-> +			       Combination combinations[MAX_COMBINATIONS],
-> +			       uint64_t num_combinations)
-> +{
-> +	int i, j, ret;
-> +	igt_display_t *display = &data->display;
-> +	igt_output_t *output[num_outputs];
-> +	igt_plane_t *primary[num_outputs];
-> +	igt_fb_t fb[num_outputs];
-> +	drmModeModeInfo *mode;
->  
-> -	/* Clean up */
-> -	igt_output_set_pipe(bigjoiner_output[0], PIPE_NONE);
-> -	igt_output_set_pipe(bigjoiner_output[1], PIPE_NONE);
-> -	igt_plane_set_fb(plane1, NULL);
-> -	igt_plane_set_fb(plane2, NULL);
-> -	igt_display_commit2(display, COMMIT_ATOMIC);
-> +	for (i = 0; i < num_combinations; i++) {
-> +		igt_display_reset(display);
-> +		for (j = 0; j < num_outputs; j++) {
-> +			output[j] = get_output_by_id_or_assert(data,
-> +						     data->big_joiner_outputs[j]);
-> +			igt_info("Assigning pipe %s to %s%s",
-> +				 kmstest_pipe_name(data->pipe_seq[combinations[i].combination[j]]),
-> +				 output[j]->name, j == num_outputs - 1 ? "\n" : ", ");
-> +			igt_output_set_pipe(output[j], data->pipe_seq[combinations[i].combination[j]]);
-> +			primary[j] = igt_output_get_plane_type(output[j], DRM_PLANE_TYPE_PRIMARY);
-> +			mode = igt_output_get_mode(output[j]);
-> +			igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
-> +								  DRM_FORMAT_MOD_LINEAR, &fb[j]);
-> +			igt_plane_set_fb(primary[j], &fb[j]);
-> +		}
-> +		ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
-> +		igt_assert_f(ret == 0, "Commit failed\n");
-> +    }
->  }
->  
->  igt_main
->  {
-> +	int i, j;
->  	data_t data;
->  	igt_output_t *output;
-> -	drmModeModeInfo mode;
-> -	int valid_output = 0, i, count = 0, j = 0;
-> -	uint16_t width = 0, height = 0;
-> -	enum pipe pipe_seq[IGT_MAX_PIPES];
-> +	drmModeModeInfo default_mode;
->  
-> +	i = j = 0;
->  	igt_fixture {
->  		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
->  		kmstest_set_vt_graphics_mode();
-> -
->  		igt_display_require(&data.display, data.drm_fd);
->  		igt_require(data.display.is_atomic);
-> -
->  		max_dotclock = igt_get_max_dotclock(data.drm_fd);
-> +		data.big_joiner_output_count = 0;
-> +		data.non_big_joiner_output_count = 0;
-> +		data.combined_output_count = 0;
-> +		data.output_count = 0;
->  
->  		for_each_connected_output(&data.display, output) {
->  			bool found = false;
->  			drmModeConnector *connector = output->config.connector;
-> -
-> -			/*
-> -			 * Bigjoiner will come in to the picture when the
-> -			 * resolution > 5K or clock > max-dot-clock.
-> -			 */
->  			found = bigjoiner_mode_found(data.drm_fd, connector, max_dotclock);
-> -
->  			if (found) {
-> -				data.output[count].output_id = output->id;
-> -				memcpy(&data.output[count].mode, &mode, sizeof(drmModeModeInfo));
-> -				count++;
-> -
-> -				width = max(width, mode.hdisplay);
-> -				height = max(height, mode.vdisplay);
-> +				data.big_joiner_outputs[data.big_joiner_output_count++] = output->id;
-> +				igt_output_override_mode(output, &connector->modes[0]);
-> +			} else {
-> +				data.non_big_joiner_outputs[data.non_big_joiner_output_count++] = output->id;
-> +				kmstest_get_connector_default_mode(data.drm_fd, connector, &default_mode);
-> +				igt_output_override_mode(output, &default_mode);
->  			}
-> -			valid_output++;
-> +			data.output_count++;
-> +		}
-> +
-> +		if (data.big_joiner_output_count == 1 && data.non_big_joiner_output_count > 0) {
-> +			data.combined_outputs[data.combined_output_count++] = data.big_joiner_outputs[0];
-> +			data.combined_outputs[data.combined_output_count++] = data.non_big_joiner_outputs[0];
->  		}
->  
->  		data.n_pipes = 0;
->  		for_each_pipe(&data.display, i) {
->  			data.n_pipes++;
-> -			pipe_seq[j] = i;
-> +			data.pipe_seq[j] = i;
->  			j++;
->  		}
-> -
-> -		igt_require_f(count > 0, "No output with 5k+ mode (or) clock > max-dot-clock found\n");
-> -
-> -		igt_create_pattern_fb(data.drm_fd, width, height, DRM_FORMAT_XRGB8888,
-> -				      DRM_FORMAT_MOD_LINEAR, &data.fb);
->  	}
->  
->  	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
->  	igt_subtest_with_dynamic("basic") {
-> -		for (i = 0; i < data.n_pipes - 1; i++) {
-> -			data.pipe1 = pipe_seq[i];
-> -			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe_seq[i]))
-> -				test_basic_modeset(&data);
-> +		igt_require_f(data.big_joiner_output_count > 0, "Big joiner output not found\n");
-> +		igt_require_f(data.n_pipes > 1, "Minimum of 2 pipes are required\n");
-> +
-> +		for (i = 0; i < data.big_joiner_output_count; i++) {
-> +			uint64_t num_combinations = 0;
-> +			Combination combinations[MAX_COMBINATIONS];
-> +
-> +			generate_combinations(i+1, data.n_pipes, BIG_JOINER, combinations, &num_combinations);
-> +			igt_info("Number of combinations for %d outputs and %d pipes are %ld\n",
-> +					 i+1, data.n_pipes, num_combinations);
-> +
-> +			if (num_combinations > 0)
-> +				igt_dynamic_f("%dx-big-joiner", i+1)
-> +					test_basic_modeset(&data, i+1, combinations, num_combinations);
-> +			else
-> +				break;
->  		}
->  	}
->  
-> -	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
-> -		     "when the pipe is active with a big joiner modeset");
->  	igt_subtest_with_dynamic("invalid-modeset") {
-> -		data.pipe1 = pipe_seq[j - 1];
-> -
-> -		igt_display_reset(&data.display);
-> -		for_each_connected_output(&data.display, output) {
-> -			if (data.output[0].output_id != output->id)
-> -				continue;
-> -
-> -			mode = data.output[0].mode;
-> -			igt_output_set_pipe(output, data.pipe1);
-> -			igt_output_override_mode(output, &mode);
-> +		igt_require_f(data.big_joiner_output_count > 0, "Big joiner output not found\n");
-> +		igt_require_f(data.n_pipes > 1, "Minimum of 2 pipes are required\n");
->  
-> -			igt_dynamic_f("pipe-%s-%s",
-> -				      kmstest_pipe_name(data.pipe1),
-> -				      igt_output_name(output))
-> -				test_invalid_modeset(&data);
-> -		}
-> +		if (data.big_joiner_output_count >= 1)
-> +			igt_dynamic_f("big_joiner_on_last_pipe")
-> +				tets_big_joiner_on_last_pipe(&data);
->  
-> -		if(valid_output > 1) {
-> -			for (i = 0; i < data.n_pipes - 1; i++) {
-> -				igt_output_t *first_output = NULL, *second_output = NULL;
-> -
-> -				data.pipe1 = pipe_seq[i];
-> -				data.pipe2 = pipe_seq[i + 1];
-> -
-> -				igt_display_reset(&data.display);
-> -				for_each_connected_output(&data.display, output) {
-> -					if (data.output[0].output_id == output->id) {
-> -						first_output = output;
-> -						mode = data.output[0].mode;
-> -
-> -						igt_output_set_pipe(output, data.pipe1);
-> -						igt_output_override_mode(output, &mode);
-> -					} else if (second_output == NULL) {
-> -						second_output = output;
-> -						igt_output_set_pipe(output, data.pipe2);
-> -
-> -						break;
-> -					}
-> -				}
-> -
-> -				igt_dynamic_f("pipe-%s-%s-pipe-%s-%s",
-> -					      kmstest_pipe_name(data.pipe1),
-> -					      igt_output_name(first_output),
-> -					      kmstest_pipe_name(data.pipe2),
-> -					      igt_output_name(second_output))
-> -					test_invalid_modeset(&data);
-> -			}
-> -		}
-> -	}
-> +		if (data.big_joiner_output_count > 1)
-> +			igt_dynamic_f("invalid_combinations_with_two_bigjoiner")
-> +				test_invalid_modeset_two_joiner(&data, false);
->  
-> -	igt_describe("Verify simultaneous modeset on 2 big joiner outputs");
-> -	igt_subtest_with_dynamic("2x-modeset") {
-> -		igt_require_f(count > 1, "2 outputs with big joiner modes are required\n");
-> -		igt_require_f(data.n_pipes > 3, "Minumum of 4 pipes are required\n");
-> -		for (i = 0; (i + 2) < data.n_pipes - 1; i++) {
-> -			data.pipe1 = pipe_seq[i];
-> -			data.pipe2 = pipe_seq[i + 2];
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe_seq[i]), kmstest_pipe_name(pipe_seq[i + 2]))
-> -				test_dual_display(&data);
-> +		if (data.combined_output_count) {
-> +			igt_dynamic_f("invalid_combinations_with_bigjoiner_non_bigjoiner")
-> +				test_invalid_modeset_two_joiner(&data, true);
->  		}
->  	}
->  
->  	igt_fixture {
-> -		igt_remove_fb(data.drm_fd, &data.fb);
->  		igt_display_fini(&data.display);
->  		drm_close_driver(data.drm_fd);
->  	}
-> -- 
-> 2.25.1
+> If not, then the test is expected to fail.
+> 
+> John.
+> 
+> > 
+> > >    * igt@i915_pm_rpm@gem-execbuf-stress@extra-wait-lmem0:
+> > >      - shard-dg1:          [PASS][8] -> [ABORT][9] +1 other test abort
+> > >     [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14370/shard-dg1-15/igt@i915_pm_rpm@gem-execbuf-stress@extra-wait-lmem0.html
+> > >     [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10760/shard-dg1-16/igt@i915_pm_rpm@gem-execbuf-stress@extra-wait-lmem0.html
+> > > 
+> > >    * igt@i915_pm_rpm@gem-execbuf-stress@lmem0:
+> > >      - shard-dg2:          [PASS][10] -> [ABORT][11] +1 other test abort
+> > >     [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14370/shard-dg2-7/igt@i915_pm_rpm@gem-execbuf-stress@lmem0.html
+> > >     [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10760/shard-dg2-11/igt@i915_pm_rpm@gem-execbuf-stress@lmem0.html
+> > > 
+> > >    * igt@vgem_basic@unload:
+> > >      - shard-glk:          [PASS][12] -> [INCOMPLETE][13]
+> > >     [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14370/shard-glk8/igt@vgem_basic@unload.html
+> > >     [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10760/shard-glk7/igt@vgem_basic@unload.html
+> > > 
+> > These are unrelated.
+> > 
+> > Regards,
+> > Kamil
+> > 
+> > > New tests
+> > > ---------
+> > > 
+> > >    New tests have been introduced between CI_DRM_14370_full and IGTPW_10760_full:
+> > > 
+> > > ### New IGT tests (4) ###
+> > > 
+> > >    * igt@kms_cursor_edge_walk@128x128-top-bottom@pipe-a-dp-4:
+> > >      - Statuses : 1 pass(s)
+> > >      - Exec time: [3.52] s
+> > > 
+> > >    * igt@kms_cursor_edge_walk@128x128-top-bottom@pipe-d-dp-4:
+> > >      - Statuses : 1 pass(s)
+> > >      - Exec time: [3.31] s
+> > > 
+> > >    * igt@kms_cursor_edge_walk@256x256-right-edge@pipe-a-dp-4:
+> > >      - Statuses : 1 pass(s)
+> > >      - Exec time: [3.46] s
+> > > 
+> > >    * igt@kms_cursor_edge_walk@256x256-right-edge@pipe-d-dp-4:
+> > >      - Statuses : 1 pass(s)
+> > >      - Exec time: [3.31] s
+> > > 
+> > > 
+> > > Known issues
+> > > ------------
+> > > 
+> > >    Here are the changes found in IGTPW_10760_full that come from known issues:
+> > > 
+> > > ### IGT changes ###
+> > > 
+> > > #### Issues hit ####
+> > > 
+> > ...cut...
+> > 
+> > > == Logs ==
+> > > 
+> > > For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10760/index.html
 > 
