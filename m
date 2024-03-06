@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08D80C5475B
-	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 17:28:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EBE1C5475B
+	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 17:28:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 309CE113392;
-	Wed,  6 Mar 2024 17:28:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A30AB113395;
+	Wed,  6 Mar 2024 17:28:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="eoQIkmBf";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="KYoGudeZ";
 	dkim-atps=neutral
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
  [217.70.183.196])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 07E6311338B
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 17:28:44 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5A783E0006;
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CCC7113395
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 17:28:45 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B5724E000A;
  Wed,  6 Mar 2024 17:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1709746123;
+ t=1709746124;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=917ir0yy5t8i4BjTkgmdbaaS8TICfUneWYf7lwj7i+g=;
- b=eoQIkmBfLmhnap/459gsMNSfSIBVjKKqljPgVvr4W4hvptFmnfTLlQ0wSi0Sjx95QNKYCM
- Sa0vdhPRCEbVLfgKt+OzPW5GHrmbpAR2aD94N/wGTeYgmOMyj35LG0g3rjC9OL4GmY7j/Q
- 3ScFq3Xau8S/TC2WDOxpUG4EnVhMuYNzTJNESTvk9r23e7HMFaHceSDkUkN5WaAB+UFzxy
- t8X8ACB3LaAUmsNUARge5BmgZgY3EjvuXbvxYMHe5vorhWH3KPGKpY2pRzwPaLdc8hw9QV
- 3Dn0TCJxeJkb+nlT0yqopWOiFjmmJuYc2PrJvpRlZnDFwaSoqd8ieZpo80gDhA==
+ bh=tuNNbcbBjwGQ2TZo+A54PuAQErITp8+5JrQc3shbxA8=;
+ b=KYoGudeZ++IROwO1qNXDYemyu2cKW4TJBRnvxo1gM+e5oy+oCJg3uGxxBypQDmmEG2VAA9
+ KCvs1CZLtDAxXFcx6FzB+RjTcAb1xkVkOS2t4g3xGSCvpvNjTvBqPoBQgTzm0zi855Zi8q
+ GJiAYZ7H8Abr67/HHCZubiFdV4oqtNjtAjT7f/YTyEKt0r4s4vb8zvZ4jjbjxbWppU17JL
+ 79S2uNup5FrTlCAvXQnmwlgKeYeiHaZmyf97llgNnN9SgldD07+Dc1LaU4IjCrxgX6cCwI
+ QOgYWJg3tsWMBU5ZdqTnlY2lI4mX0xLN/nj8mEUziM24bJLNtsilxFmbOjcASA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 06 Mar 2024 18:28:37 +0100
-Subject: [PATCH i-g-t 3/9] tests/kms_plane: Rename test_planar_settings to
- test_odd_size_with_yuv and remove intel guards
+Date: Wed, 06 Mar 2024 18:28:38 +0100
+Subject: [PATCH i-g-t 4/9] lib/color_encoding: Add support for NV24 and
+ NV42 pixel formats
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240306-b4-kms_tests-v1-3-8fe451efd2ac@bootlin.com>
+Message-Id: <20240306-b4-kms_tests-v1-4-8fe451efd2ac@bootlin.com>
 References: <20240306-b4-kms_tests-v1-0-8fe451efd2ac@bootlin.com>
 In-Reply-To: <20240306-b4-kms_tests-v1-0-8fe451efd2ac@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: miquel.raynal@bootlin.com, jeremie.dautheribes@bootlin.com, 
  thomas.petazzoni@bootlin.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5248;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4699;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=gXcERIPEVuLhmRypDei/zpdLuag+TtJaqFVNu4d2YEo=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBl6KfIO6muGLnFk480NfeYJd0RZK0e3SmTWyjLqRB2
- Pxsm69+JAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZeinyAAKCRAgrS7GWxAs4kZ0EA
- C20UUnW9cf98k5LZgTMVdR6zJoLLFiXp/pVy6+h8psdVpxaiYd9z9UWwe5GcERpGxHGw6TSjrkwxY1
- WqCsQ09rINRqrPQg4PlVEhZAaSo6S6aL0jAQ1YHrGrTpNsuwejnbUYyB9YsLRftjwrS/EqeGFa0rCN
- P3TVjf6mSLq2E2znlS811A+W9AeLeKqG+A5v1rJk2MGoUQRD5Br5PTVb+wtREW+i/VuO1ggT0nu8FD
- FvSmcjzoFjaGOlhaS6t84twVU8hZe3oDg02Hwxao5bEwt9dCefZgZz0loeEePYiuGSzYL5C7LQG06p
- WRy/k4Fc4iarBokS+/ErNs7Nlyq7Qcr6GaExBU5hkxefHaaZZWi7FM6xcS3PTc6SExE0wcwXKvaFHU
- APwLIWAZWTlFe1WkhJwXyGQqM+JagkbyQm+nNZTGBbXKawPKNkfQqO0A/AGqGE7biOJfN+YoBinogg
- qRzvGW+d3zpwa/wSmmqzCUT0a7NbxQLA3D3VmnZ4RPkTCwtnadmVlWNQyJNnyV3z2iVzEwDa6yjvUs
- /3pUQAGIElFlDvhvq3rRQU4XDKIbveE8Chewt6JO/9Lyj9gn8VjF9Jzq+tfC731irxgrfnJHd3gb8q
- 50Zu0BuvR+4y/X5aKkYa99JAP/laXPsHBwKkodCWnByHdRHDbgF+HABmxU6g==
+ bh=mEwHjfxVlgtzisrpDQmnWbjBfCI67GjWw1fJS/fFXPE=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBl6KfIwhP8DcJ6mWibdo+aX1a65LfCoKaeiiMfNBip
+ flOJ6eKJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZeinyAAKCRAgrS7GWxAs4m5MD/
+ 4+E4t2EAa+GID8HvF+H5KP2DXhXkK4EiC2guky1bYEGf/mBDnKsV71JmGEMrdv0ieV5P6BMkM290x+
+ DVEnIjVqBFWLNwBphfVGlvUaoiNI0OQEJ9OeHN5jiL84Ne5QEISoQ7QL5W8JxejE9889BshFOZqaaJ
+ drbD5zrqTl/MW9mKD8MaNVij9b0rvxf26ufU5adpbgJJueGfYtOwmt8h+ANelat+gzGRLQw2fgz54K
+ wKz/eK0u5BQTbE+WSHEgOLFz8fC9Otjq7tr5L771tjrwewluVqtE8sCbiyNuJ4fTsK1grTaOONqLXz
+ l5l+50kJIvvy5F/3b3qDhDQLADnOX6aV79sl8fVyP+BWwVvG77HIGE2s2DTEgjvBh7VNazT4zU+F+W
+ XXr+ZXoyck+woEhJKS3+ujvGJFGiJuVpfieqsgpwlJk21uAxzsN9kzYVHD7j9Q0/3ZREcK1d3x9hfb
+ hEo98aRbBnhlcWHfvNREdfPP0GrS2LScxT4UhuR3+3olDVpD8BsQkvwyxFyXAr6Aiska8/A/Fnrbvh
+ 4jpE7asRv+BXXxVV7e7D/uggH0tUUY1REmUEmW/bzm1jbvvqrDi4vwhunIDUVb4bF+nma82lSIl+WQ
+ F1X/zY1Z7iDozMGqfCnvVH+fhjsswoW5p0Z87wH2nkGMNRJwRiD8yzM0hhlg==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -76,152 +76,130 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The test_planar_settings name and description is not very descriptive for
-the content of the test. Change it to "test_odd_size_with_yuv".
-
-Also remove the intel guard on this test, so it can be run for other
-platforms like VKMS.
+The current conversion algorithm is able to convert NV24 and NV42
+formats. Add those format in the list so they can also be tested.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- tests/kms_plane.c | 91 ++++++++++++++++++++++++++-----------------------------
- 1 file changed, 43 insertions(+), 48 deletions(-)
+ lib/igt_color_encoding.c |  2 ++
+ lib/igt_fb.c             | 22 ++++++++++++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index dd830e68a177..9757c6e44325 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -42,8 +42,8 @@
- #include "xe/xe_query.h"
+diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
+index a7bd2b22f73b..43105de34889 100644
+--- a/lib/igt_color_encoding.c
++++ b/lib/igt_color_encoding.c
+@@ -138,8 +138,10 @@ static const struct color_encoding_format {
+ 	{ IGT_FORMAT_FLOAT, 1.f, },
+ 	{ DRM_FORMAT_NV12, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+ 	{ DRM_FORMAT_NV16, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
++	{ DRM_FORMAT_NV24, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+ 	{ DRM_FORMAT_NV21, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+ 	{ DRM_FORMAT_NV61, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
++	{ DRM_FORMAT_NV42, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+ 	{ DRM_FORMAT_YUV420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+ 	{ DRM_FORMAT_YUV422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+ 	{ DRM_FORMAT_YVU420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 0ac2a76b0c52..b6f28cf3ee52 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -252,6 +252,11 @@ static const struct format_desc_struct {
+ 	  .num_planes = 2, .plane_bpp = { 8, 16, },
+ 	  .hsub = 2, .vsub = 1,
+ 	},
++	{ .name = "NV24", .depth = -1, .drm_id = DRM_FORMAT_NV24,
++		.cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
++		.num_planes = 2, .plane_bpp = { 8, 16, },
++		.hsub = 1, .vsub = 1,
++	},
+ 	{ .name = "NV21", .depth = -1, .drm_id = DRM_FORMAT_NV21,
+ 	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+ 	  .num_planes = 2, .plane_bpp = { 8, 16, },
+@@ -262,6 +267,11 @@ static const struct format_desc_struct {
+ 	  .num_planes = 2, .plane_bpp = { 8, 16, },
+ 	  .hsub = 2, .vsub = 1,
+ 	},
++	{ .name = "NV42", .depth = -1, .drm_id = DRM_FORMAT_NV24,
++		.cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
++		.num_planes = 2, .plane_bpp = { 8, 16, },
++		.hsub = 1, .vsub = 1,
++	},
+ 	{ .name = "YUYV", .depth = -1, .drm_id = DRM_FORMAT_YUYV,
+ 	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+ 	  .num_planes = 1, .plane_bpp = { 16, },
+@@ -3398,8 +3408,10 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+ 	switch (fb->drm_format) {
+ 	case DRM_FORMAT_NV12:
+ 	case DRM_FORMAT_NV16:
++	case DRM_FORMAT_NV24:
+ 	case DRM_FORMAT_NV21:
+ 	case DRM_FORMAT_NV61:
++	case DRM_FORMAT_NV42:
+ 	case DRM_FORMAT_P010:
+ 	case DRM_FORMAT_P012:
+ 	case DRM_FORMAT_P016:
+@@ -3439,8 +3451,10 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+ 	switch (fb->drm_format) {
+ 	case DRM_FORMAT_NV12:
+ 	case DRM_FORMAT_NV16:
++	case DRM_FORMAT_NV24:
+ 	case DRM_FORMAT_NV21:
+ 	case DRM_FORMAT_NV61:
++	case DRM_FORMAT_NV42:
+ 	case DRM_FORMAT_YUV420:
+ 	case DRM_FORMAT_YUV422:
+ 	case DRM_FORMAT_YVU420:
+@@ -3472,6 +3486,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+ 	switch (fb->drm_format) {
+ 	case DRM_FORMAT_NV12:
+ 	case DRM_FORMAT_NV16:
++	case DRM_FORMAT_NV24:
+ 		params->y_offset = fb->offsets[0];
+ 		params->u_offset = fb->offsets[1];
+ 		params->v_offset = fb->offsets[1] + 1;
+@@ -3479,6 +3494,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
  
- /**
-- * SUBTEST: planar-pixel-format-settings
-- * Description: verify planar settings for pixel format are handled correctly
-+ * SUBTEST: test-odd-size-with-yuv
-+ * Description: verify that yuv odd size are handled correctly by the driver
-  * Functionality: pixel_formats, plane
-  *
-  * SUBTEST: plane-position-%s
-@@ -1225,8 +1225,7 @@ test_pixel_formats(data_t *data, enum pipe pipe)
- 
- 	igt_assert_f(result, "At least one CRC mismatch happened\n");
- }
--
--static void test_planar_settings(data_t *data)
-+static void test_odd_size_with_yuv(data_t *data)
- {
- 	enum pipe pipe = PIPE_A;
- 	igt_output_t *output;
-@@ -1235,14 +1234,18 @@ static void test_planar_settings(data_t *data)
- 	int devid;
- 	int rval;
- 
--	/*
--	 * If here is added non-intel tests below require will need to be
--	 * changed to if(..)
--	 */
-+	bool should_fail = false;
- 	igt_require(data->display.is_atomic);
--	igt_require_intel(data->drm_fd);
--	devid = intel_get_drm_devid(data->drm_fd);
--	igt_require(intel_display_ver(devid) >= 9);
-+
-+	/* Add more devices here if they are expected to fail */
-+	if (is_intel_device(data->drm_fd)) {
-+		/* This was required in the original test */
-+		igt_require(intel_display_ver(devid) >= 9);
-+		/* Intel display version below 20 are expected to fail */
-+		if (intel_display_ver(devid) < 20) {
-+			should_fail = true;
-+		}
-+	}
- 
- 	output = igt_get_single_output_for_pipe(&data->display, pipe);
- 	igt_require(output);
-@@ -1254,44 +1257,37 @@ static void test_planar_settings(data_t *data)
- 				  DRM_MODE_ATOMIC_ALLOW_MODESET,
- 				  NULL);
- 
--	/* test against intel_plane_check_src_coordinates() in i915 */
--	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
--				     DRM_FORMAT_MOD_LINEAR)) {
--		int expected_rval = -EINVAL;
--
--		if (intel_display_ver(devid) >= 20)
--			expected_rval = 0;
--
--		igt_create_fb(data->drm_fd, 257, 256,
--			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
--		igt_plane_set_fb(primary, &fb);
--		rval = igt_display_try_commit_atomic(&data->display,
--						     DRM_MODE_ATOMIC_ALLOW_MODESET,
--						     NULL);
--		igt_remove_fb(data->drm_fd, &fb);
--		igt_assert_f(rval == expected_rval, "Odd width NV12 framebuffer\n");
-+	igt_require(igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
-+					     DRM_FORMAT_MOD_LINEAR));
-+
-+
-+	igt_create_fb(data->drm_fd, 257, 256,
-+		      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
-+	igt_plane_set_fb(primary, &fb);
-+	rval = igt_display_try_commit_atomic(&data->display,
-+					     DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					     NULL);
-+	igt_remove_fb(data->drm_fd, &fb);
-+
-+	if (should_fail) {
-+		igt_assert_f(rval == -EINVAL, "Odd width NV12 framebuffer correctly failed\n");
- 	} else {
--		igt_debug("Odd width NV12 framebuffer test skipped\n");
-+		igt_assert_f(rval == 0, "Odd width NV12 framebuffer correctly succeed\n");
- 	}
- 
--	/* test against intel_plane_check_src_coordinates() in i915 */
--	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
--				     DRM_FORMAT_MOD_LINEAR)) {
--		int expected_rval = -EINVAL;
--
--		if (intel_display_ver(devid) >= 20)
--			expected_rval = 0;
--
--		igt_create_fb(data->drm_fd, 256, 257,
--			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
--		igt_plane_set_fb(primary, &fb);
--		rval = igt_display_try_commit_atomic(&data->display,
--						     DRM_MODE_ATOMIC_ALLOW_MODESET,
--						     NULL);
--		igt_remove_fb(data->drm_fd, &fb);
--		igt_assert_f(rval == expected_rval, "Odd height NV12 framebuffer\n");
-+
-+	igt_create_fb(data->drm_fd, 256, 257,
-+		      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
-+	igt_plane_set_fb(primary, &fb);
-+	rval = igt_display_try_commit_atomic(&data->display,
-+					     DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					     NULL);
-+	igt_remove_fb(data->drm_fd, &fb);
-+
-+	if (should_fail) {
-+		igt_assert_f(rval == -EINVAL, "Odd height NV12 framebuffer correctly failed\n");
- 	} else {
--		igt_debug("Odd height NV12 framebuffer test skipped\n");
-+		igt_assert_f(rval == 0, "Odd height NV12 framebuffer correctly succeed\n");
- 	}
- }
- 
-@@ -1376,9 +1372,8 @@ run_tests_for_pipe_plane(data_t *data)
- 		run_test(data, test_plane_panning);
- 	}
- 
--	igt_describe("verify planar settings for pixel format are accepted or rejected correctly");
--	igt_subtest_f("planar-pixel-format-settings")
--		test_planar_settings(data);
-+	igt_describe("verify that odd sizes for yuv format are accepted or rejected correctly");
-+	igt_subtest_f("test-odd-size-with-yuv") test_odd_size_with_yuv(data);
- }
- 
- static int opt_handler(int opt, int opt_index, void *_data)
+ 	case DRM_FORMAT_NV21:
+ 	case DRM_FORMAT_NV61:
++	case DRM_FORMAT_NV42:
+ 		params->y_offset = fb->offsets[0];
+ 		params->u_offset = fb->offsets[1] + 1;
+ 		params->v_offset = fb->offsets[1];
+@@ -4224,9 +4240,11 @@ static void fb_convert(struct fb_convert *cvt)
+ 		switch (cvt->src.fb->drm_format) {
+ 		case DRM_FORMAT_XYUV8888:
+ 		case DRM_FORMAT_NV12:
++		case DRM_FORMAT_NV24:
+ 		case DRM_FORMAT_NV16:
+ 		case DRM_FORMAT_NV21:
+ 		case DRM_FORMAT_NV61:
++		case DRM_FORMAT_NV42:
+ 		case DRM_FORMAT_UYVY:
+ 		case DRM_FORMAT_VYUY:
+ 		case DRM_FORMAT_YUV420:
+@@ -4243,8 +4261,10 @@ static void fb_convert(struct fb_convert *cvt)
+ 		case DRM_FORMAT_XYUV8888:
+ 		case DRM_FORMAT_NV12:
+ 		case DRM_FORMAT_NV16:
++		case DRM_FORMAT_NV24:
+ 		case DRM_FORMAT_NV21:
+ 		case DRM_FORMAT_NV61:
++		case DRM_FORMAT_NV42:
+ 		case DRM_FORMAT_UYVY:
+ 		case DRM_FORMAT_VYUY:
+ 		case DRM_FORMAT_YUV420:
+@@ -4823,8 +4843,10 @@ bool igt_format_is_yuv(uint32_t drm_format)
+ 	switch (drm_format) {
+ 	case DRM_FORMAT_NV12:
+ 	case DRM_FORMAT_NV16:
++	case DRM_FORMAT_NV24:
+ 	case DRM_FORMAT_NV21:
+ 	case DRM_FORMAT_NV61:
++	case DRM_FORMAT_NV42:
+ 	case DRM_FORMAT_YUV420:
+ 	case DRM_FORMAT_YUV422:
+ 	case DRM_FORMAT_YVU420:
 
 -- 
 2.43.0
