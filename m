@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44CBAC54E41
-	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 17:09:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39C53C5475B
+	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 17:28:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F34EF113369;
-	Wed,  6 Mar 2024 17:09:40 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C9D7113369;
- Wed,  6 Mar 2024 17:09:39 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3318852413214582426=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id D0C2E11338D;
+	Wed,  6 Mar 2024 17:28:46 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ekK5RHCB";
+	dkim-atps=neutral
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
+ [217.70.183.196])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B111E113393
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 17:28:44 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A3856E0002;
+ Wed,  6 Mar 2024 17:28:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+ t=1709746122;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cYtpKNbOXqXuoHBRDfQM7jAatwz+Q8P9rpXtK8wsA7Y=;
+ b=ekK5RHCBPGFrYfSZil15aGOTyJDGVK3ntiDtRTlH+03jNXdyWfScJJttipVmiemCNednrd
+ Ibs39Qstx/Eo2ENKqvr01xW4Z+Y8dNu+JjLFhHOoxJzj0rEdPgFgaFCzqL0i+Oh8wdYWUp
+ ZrqinSh8Hz49tnlIjkryophtF29I1G7QOLU3UOdu7T9bI0cTPtg0jbdocziXCTRhaO/tiL
+ gLZh6Kl95apVWV6/ZvuLkpya0clqfvf7cqg74DxeEIXpzvNn8ek9tXzT9tvwJ9EmvDGrgA
+ ZjCsmku7b405wmIVRd3pCyiAbhLdODGLB3+EZ7BZrKJ9n6I4WJfYSmRL3f+Ljw==
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Date: Wed, 06 Mar 2024 18:28:35 +0100
+Subject: [PATCH i-g-t 1/9] tests/kms_rotation_crc: Remove intel guards
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_introduce_Xe_multigpu_and_othe?=
- =?utf-8?q?r_multi-GPU_helpers_=28rev11=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 06 Mar 2024 17:09:39 -0000
-Message-ID: <170974497951.562292.11648376352059461272@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240306133158.45187-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20240306133158.45187-1-kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240306-b4-kms_tests-v1-1-8fe451efd2ac@bootlin.com>
+References: <20240306-b4-kms_tests-v1-0-8fe451efd2ac@bootlin.com>
+In-Reply-To: <20240306-b4-kms_tests-v1-0-8fe451efd2ac@bootlin.com>
+To: igt-dev@lists.freedesktop.org
+Cc: miquel.raynal@bootlin.com, jeremie.dautheribes@bootlin.com, 
+ thomas.petazzoni@bootlin.com, Louis Chauvet <louis.chauvet@bootlin.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3945;
+ i=louis.chauvet@bootlin.com; h=from:subject:message-id;
+ bh=YPlPvloe1w1AbC2/tI/ckjwBOlYAWMRb3mhQ/CGeCbE=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBl6KfIDpFlTLxIyPmZkxEDf+6Ar6Zzkt5YxETaWEbU
+ UrDGmXGJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZeinyAAKCRAgrS7GWxAs4l4dD/
+ 4k5P/qa6svMW7h5WohIzhl4fDKtjxVJMyvJFNpDpgkBNDVrlSZr4ijbbPVmhVx0o61R1pNoNEhZ+E6
+ TgjdgsCnoFNoD/EDhXIfBYp4T645gh6gwZTmt4QB1PPKkvZf471MQ9Kbok0vorc0OmqO1/GhEIXL/B
+ nsC3uurVq4AD0wDqcmHoFQfXAr4aAqPIqZ0GZ60jquCRdpYjWinioRrNaqodUVO7u7km2R/Mzzsr28
+ 62HeabGjr7341b5yJqa4o6+VkkfBTynxf5sP2Z4BIl8SrMnKzaZxiK73zoj88MIFINp046Jp2O5r0s
+ fhXz/PSe12F+6YqIooGgQC/ckLnNeHco/rvpx0L1Si+ifYgykGnvs5SR6q0A7hFjPzm6xLsA7nsWYt
+ bGyQiWnisS8LQO8iOPtcCRoU6jWvCIv6QXxqnZhU225GAqYznnL7VqrWbRWgt8B+Qf/PXoyJ8+iyJI
+ eKRIHPZa72Uiyhc1iVfnwhAk0nDe3wLniHt82ZF35ShIqz+2mbulSIClhLtz0XZ1TGCAgCT9w+8RCk
+ wD3m65RvuOk3VdTpCJCgdoJL+axcf1oMp6yeobxExfFDFShsxrzfKFYm6mxuLgr5YnHNTD2Ek4IM3l
+ vGnP28tb1/WAxXZVFTy+wG2DfG4thR0IKrbPm5vWzdgtgeMX6KaF6JfZkBUQ==
+X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
+ fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
+X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,155 +72,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3318852413214582426==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+A lot of rotation tests were behind intel guards, so remove them to make
+them working with VKMS.
 
-== Series Details ==
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+---
+ tests/kms_rotation_crc.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-Series: introduce Xe multigpu and other multi-GPU helpers (rev11)
-URL   : https://patchwork.freedesktop.org/series/129101/
-State : success
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index 8d8c53b5ff84..1ab2dc68663b 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -634,7 +634,8 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 		plane = igt_output_get_plane_type(output, plane_type);
+ 		igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
+ 		igt_require(igt_plane_has_rotation(plane, data->rotation));
+-		/* CHV can't rotate and reflect simultaneously */
++		/* When using CHERRYVIEW intel device, simultaneous rotation and reflection are not supported at the
++		 * same time, so skip this test */
+ 		igt_require(!is_intel_device(data->gfx_fd) ||
+ 			    !IS_CHERRYVIEW(data->devid) ||
+ 			    data->rotation != (IGT_ROTATION_180 | IGT_REFLECT_X));
+@@ -1250,12 +1251,13 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	data.pos_x = 0,
+ 	data.pos_y = 0;
+ 
+-	igt_describe("Checking unsupported pixel format for gen9+ with 90 degree of rotation");
++	igt_describe("Checking unsupported pixel format for Intel gen9+ with 90 degree of rotation");
+ 	igt_subtest_f("bad-pixel-format") {
+ 		 /* gen11 enables RGB565 rotation for 90/270 degrees.
+ 		  * so apart from this, any other gen11+ pixel format
+ 		  * can be used which doesn't support 90/270 degree
+ 		  * rotation */
++		igt_require(is_intel_device(data.gfx_fd));
+ 		data.rotation = IGT_ROTATION_90;
+ 		data.override_fmt = gen < 11 ? DRM_FORMAT_RGB565 : DRM_FORMAT_Y212;
+ 		test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, true);
+@@ -1270,11 +1272,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	}
+ 	data.override_modifier = 0;
+ 
+-	igt_describe("Tiling and Rotation test for gen 10+ for primary plane");
++	igt_describe("Tiling and Rotation test for primary plane");
+ 	for (reflect_x = reflect_x_subtests; reflect_x->modifier; reflect_x++) {
+-		igt_fixture
+-			igt_require_intel(data.gfx_fd);
+-
+ 		igt_subtest_f("primary-%s-tiled-reflect-x-%s",
+ 			      igt_fb_modifier_name(reflect_x->modifier),
+ 			      igt_plane_rotation_name(reflect_x->rot)) {
+@@ -1286,7 +1285,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 
+ 	igt_describe("Rotation test on both planes by making them fully visible");
+ 	igt_subtest_f("multiplane-rotation") {
+-		igt_require(gen >= 9);
++		/* This feature is only supported for Intel device >= 9 */
++		if (is_intel_device(data.gfx_fd))
++			igt_require(gen > 9);
+ 		cleanup_crtc(&data);
+ 		data.planepos[0].origo = p_top | p_left;
+ 		data.planepos[0].x = .2f;
+@@ -1300,7 +1301,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	igt_describe("Rotation test on both planes by cropping left/top corner of primary plane and"
+ 			"right/top corner of sprite plane");
+ 	igt_subtest_f("multiplane-rotation-cropping-top") {
+-		igt_require(gen >= 9);
++/* This feature is only supported for Intel device >= 9 */
++		if (is_intel_device(data.gfx_fd))
++			igt_require(gen > 9);
+ 		cleanup_crtc(&data);
+ 		data.planepos[0].origo = p_top | p_left;
+ 		data.planepos[0].x = -.05f;
+@@ -1314,7 +1317,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	igt_describe("Rotation test on both planes by cropping left/bottom corner of primary plane"
+ 			"and right/bottom corner of sprite plane");
+ 	igt_subtest_f("multiplane-rotation-cropping-bottom") {
+-		igt_require(gen >= 9);
++/* This feature is only supported for Intel device >= 9 */
++		if (is_intel_device(data.gfx_fd))
++			igt_require(gen > 9);
+ 		cleanup_crtc(&data);
+ 		data.planepos[0].origo = p_bottom | p_left;
+ 		data.planepos[0].x = -.05f;
 
-== Summary ==
+-- 
+2.43.0
 
-CI Bug Log - changes from XEIGT_7749_BAT -> XEIGTPW_10786_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10786_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_evict@evict-mixed-threads-small:
-    - bat-dg2-oem2:       [DMESG-WARN][1] ([Intel XE#1009]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10786/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html
-
-  * igt@xe_exec_threads@threads-basic:
-    - bat-dg2-oem2:       [DMESG-WARN][3] ([Intel XE#1232]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10786/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-dg2-oem2:       [SKIP][5] ([Intel XE#1192]) -> [PASS][6] +2 other tests pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_live_ktest@xe_bo.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10786/bat-dg2-oem2/igt@xe_live_ktest@xe_bo.html
-
-  
-  [Intel XE#1009]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009
-  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
-  [Intel XE#1232]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1232
-
-
-Build changes
--------------
-
-  * IGT: IGT_7749 -> IGTPW_10786
-  * Linux: xe-906-6e50187af603728329f9d3c3a53ad162d7eda9a4 -> xe-908-e96742a33719079709b8e180448b491622e6a427
-
-  IGTPW_10786: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/index.html
-  IGT_7749: 2fd91b8c3cf9aa2b0bb78537a6b5e2bc3de50e0e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-906-6e50187af603728329f9d3c3a53ad162d7eda9a4: 6e50187af603728329f9d3c3a53ad162d7eda9a4
-  xe-908-e96742a33719079709b8e180448b491622e6a427: e96742a33719079709b8e180448b491622e6a427
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10786/index.html
-
---===============3318852413214582426==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>introduce Xe multigpu and other multi-GPU helpers (rev11)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129101/">https://patchwork.freedesktop.org/series/129101/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10786/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10786/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7749_BAT -&gt; XEIGTPW_10786_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10786_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@xe_evict@evict-mixed-threads-small:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009">Intel XE#1009</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10786/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_threads@threads-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1232">Intel XE#1232</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10786/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10786/bat-dg2-oem2/igt@xe_live_ktest@xe_bo.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7749 -&gt; IGTPW_10786</li>
-<li>Linux: xe-906-6e50187af603728329f9d3c3a53ad162d7eda9a4 -&gt; xe-908-e96742a33719079709b8e180448b491622e6a427</li>
-</ul>
-<p>IGTPW_10786: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/index.html<br />
-  IGT_7749: 2fd91b8c3cf9aa2b0bb78537a6b5e2bc3de50e0e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-906-6e50187af603728329f9d3c3a53ad162d7eda9a4: 6e50187af603728329f9d3c3a53ad162d7eda9a4<br />
-  xe-908-e96742a33719079709b8e180448b491622e6a427: e96742a33719079709b8e180448b491622e6a427</p>
-
-</body>
-</html>
-
---===============3318852413214582426==--
