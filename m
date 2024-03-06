@@ -4,59 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7439C54E49
-	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 17:28:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08D80C5475B
+	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 17:28:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DBEF7113390;
-	Wed,  6 Mar 2024 17:28:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 309CE113392;
+	Wed,  6 Mar 2024 17:28:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="DaUxqM+y";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="eoQIkmBf";
 	dkim-atps=neutral
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
  [217.70.183.196])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0745710E086
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 17:28:46 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 677A9E000F;
- Wed,  6 Mar 2024 17:28:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 07E6311338B
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 17:28:44 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5A783E0006;
+ Wed,  6 Mar 2024 17:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1709746125;
+ t=1709746123;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=G8tl3i3UxXadJB8ZiMQUDTIw4k7tz2Xv2+6uTDj7B3s=;
- b=DaUxqM+ywQRQ2T+O9bEhqk5Vrce08AMluztyVhyAA7G2m81UufXDBKVex0tSpV9XtE6orN
- 8pJo728QiQHSlfVTyTgEWOfgwdgfw7fUKvvUGWuvFMZHTfcAe1CIYr6Jx7QkKJ2k2ueKzB
- 3BMy8YGXfHDsBIoEu81LbwgxAn6cTzFplZQ6dL+TIPS57x9/IfbOCTuLgCDAcngALAtN5i
- FzL2Y1dQVH/hkz5M4NdMyqj/uih/mGeIXOddmjkx6A+ZvDMzVEwzc6ZTLx8GJMHGi1eUbf
- u4bw3gl/cComfBIxBmQncq0yMwodDQZJSbsHjF/62F2N+KQBIQ91sBt5E3U6ww==
+ bh=917ir0yy5t8i4BjTkgmdbaaS8TICfUneWYf7lwj7i+g=;
+ b=eoQIkmBfLmhnap/459gsMNSfSIBVjKKqljPgVvr4W4hvptFmnfTLlQ0wSi0Sjx95QNKYCM
+ Sa0vdhPRCEbVLfgKt+OzPW5GHrmbpAR2aD94N/wGTeYgmOMyj35LG0g3rjC9OL4GmY7j/Q
+ 3ScFq3Xau8S/TC2WDOxpUG4EnVhMuYNzTJNESTvk9r23e7HMFaHceSDkUkN5WaAB+UFzxy
+ t8X8ACB3LaAUmsNUARge5BmgZgY3EjvuXbvxYMHe5vorhWH3KPGKpY2pRzwPaLdc8hw9QV
+ 3Dn0TCJxeJkb+nlT0yqopWOiFjmmJuYc2PrJvpRlZnDFwaSoqd8ieZpo80gDhA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 06 Mar 2024 18:28:43 +0100
-Subject: [PATCH i-g-t 9/9] tests/kms_plane: Add black and white test
+Date: Wed, 06 Mar 2024 18:28:37 +0100
+Subject: [PATCH i-g-t 3/9] tests/kms_plane: Rename test_planar_settings to
+ test_odd_size_with_yuv and remove intel guards
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240306-b4-kms_tests-v1-9-8fe451efd2ac@bootlin.com>
+Message-Id: <20240306-b4-kms_tests-v1-3-8fe451efd2ac@bootlin.com>
 References: <20240306-b4-kms_tests-v1-0-8fe451efd2ac@bootlin.com>
 In-Reply-To: <20240306-b4-kms_tests-v1-0-8fe451efd2ac@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: miquel.raynal@bootlin.com, jeremie.dautheribes@bootlin.com, 
  thomas.petazzoni@bootlin.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7691;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5248;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=fS+8n31PM+T/V8CNyhdVOuGqoyL9/VI+L4i829QcmD0=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBl6KfJM8gSfGLAvDWRp00Z4ezc4uxivx4jtn78FGsv
- XkHwWJqJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZeinyQAKCRAgrS7GWxAs4nxPEA
- C2jSQlgfAus+iD8jyL43Y67HumDM7wnvtxmEr1qSejqUJL8zP1DVkVrgg+K8HvhqwjvJYIrHn9MY1G
- MB3N7WlfVe8b+ZSsOBzsc81KUIv9y7ZgzC/B971X/4gj4jQGvlegH1LJ0fFAmyvRzLwhiFW/k1Azr/
- 1tjURUssUYaVktk+XANf4d2vRPL3pRgLBwCNsAoDpIJXG0hXDuwzlT8nLXoDuRwzUSaL4tTwFPERLR
- ktuoIapmjnhvAjJEtgNJPvlx7wF83SW0Kk3EWYP4ULGWzWiJjluStuiri78zkTVPZa/ntCa+iqc2/g
- bTErchqrVzMpZ2xB87CxXF9Fak1sA51y6kPaO8QkOBI37Py37w6vmEn1A5ul+p+IoTPxa8fMl9MdSO
- q8MioTEw1n3buL+oxFYdQxkmN04l8VY8VxDuIhBCoOM5WcWzoWWZQXQfLVp8UstNsRZDSYw5U+Qzf7
- Xk8YUyoGqUEiLtTGlNnaalHejCHLu7CXQV5fWvC66A0mdiS4sXP7aL7cCUH4dUkp2RpAHX0mPzSTrw
- eUK+vXJd8kn0PNulZORLWtxvNX2TmJz+6TM/833W+bcz2iMdvLU9UPmMOHhVS6fQ7QGzYn6l0oN08J
- tl8wg3woTKCMhGy6Wvk2fCrLikaQVtf7Vhp4L8n7xi3Wc9/tbuIux9mi1/rQ==
+ bh=gXcERIPEVuLhmRypDei/zpdLuag+TtJaqFVNu4d2YEo=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBl6KfIO6muGLnFk480NfeYJd0RZK0e3SmTWyjLqRB2
+ Pxsm69+JAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZeinyAAKCRAgrS7GWxAs4kZ0EA
+ C20UUnW9cf98k5LZgTMVdR6zJoLLFiXp/pVy6+h8psdVpxaiYd9z9UWwe5GcERpGxHGw6TSjrkwxY1
+ WqCsQ09rINRqrPQg4PlVEhZAaSo6S6aL0jAQ1YHrGrTpNsuwejnbUYyB9YsLRftjwrS/EqeGFa0rCN
+ P3TVjf6mSLq2E2znlS811A+W9AeLeKqG+A5v1rJk2MGoUQRD5Br5PTVb+wtREW+i/VuO1ggT0nu8FD
+ FvSmcjzoFjaGOlhaS6t84twVU8hZe3oDg02Hwxao5bEwt9dCefZgZz0loeEePYiuGSzYL5C7LQG06p
+ WRy/k4Fc4iarBokS+/ErNs7Nlyq7Qcr6GaExBU5hkxefHaaZZWi7FM6xcS3PTc6SExE0wcwXKvaFHU
+ APwLIWAZWTlFe1WkhJwXyGQqM+JagkbyQm+nNZTGBbXKawPKNkfQqO0A/AGqGE7biOJfN+YoBinogg
+ qRzvGW+d3zpwa/wSmmqzCUT0a7NbxQLA3D3VmnZ4RPkTCwtnadmVlWNQyJNnyV3z2iVzEwDa6yjvUs
+ /3pUQAGIElFlDvhvq3rRQU4XDKIbveE8Chewt6JO/9Lyj9gn8VjF9Jzq+tfC731irxgrfnJHd3gb8q
+ 50Zu0BuvR+4y/X5aKkYa99JAP/laXPsHBwKkodCWnByHdRHDbgF+HABmxU6g==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -75,221 +76,152 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The black and white formats can't use the same list of colors as the
-standard colors test. This new subtest uses only black and white to check
-if the conversion is correct.
+The test_planar_settings name and description is not very descriptive for
+the content of the test. Change it to "test_odd_size_with_yuv".
+
+Also remove the intel guard on this test, so it can be run for other
+platforms like VKMS.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- tests/kms_plane.c | 172 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 171 insertions(+), 1 deletion(-)
+ tests/kms_plane.c | 91 ++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 43 insertions(+), 48 deletions(-)
 
 diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 8e92d2e13993..1d47ccc73f75 100644
+index dd830e68a177..9757c6e44325 100644
 --- a/tests/kms_plane.c
 +++ b/tests/kms_plane.c
-@@ -521,6 +521,11 @@ static const color_t colors_reduced[] = {
- 	{ 0.0f, 1.0f, 1.0f, },
- };
+@@ -42,8 +42,8 @@
+ #include "xe/xe_query.h"
  
-+static const color_t color_black_white[] = {
-+	{ 1.0f, 1.0f, 1.0f },
-+	{ 0.0f, 0.0f, 0.0f },
-+};
-+
- static void set_legacy_lut(data_t *data, enum pipe pipe,
- 			   uint16_t mask)
- {
-@@ -1159,6 +1164,118 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
- 	return result;
- }
- 
-+static bool test_format_black_and_white_plane(data_t *data, enum pipe pipe,
-+					      igt_output_t *output, igt_plane_t *plane, igt_fb_t *primary_fb)
-+{
-+	struct igt_fb fb = {};
-+	struct igt_fb *clear_fb = plane->type == DRM_PLANE_TYPE_PRIMARY ? primary_fb : NULL;
-+	drmModeModeInfo *mode;
-+	int width, height;
-+	igt_crc_t ref_crc[ARRAY_SIZE(color_black_white) + 1];
-+	igt_crc_t crc[ARRAY_SIZE(color_black_white) + 1];
-+	struct format_mod ref = {};
-+	bool result = true;
-+
-+	/*
-+	 * No clamping test for cursor plane
-+	 */
-+	if (data->crop != 0 && plane->type == DRM_PLANE_TYPE_CURSOR)
-+		return true;
-+
-+
-+	mode = igt_output_get_mode(output);
-+	if (plane->type != DRM_PLANE_TYPE_CURSOR) {
-+		width = mode->hdisplay;
-+		height = mode->vdisplay;
-+		ref.format = DRM_FORMAT_XRGB8888;
-+		ref.modifier = DRM_FORMAT_MOD_LINEAR;
-+	} else {
-+		if (!plane->drm_plane) {
-+			igt_debug("Only legacy cursor ioctl supported, skipping cursor plane\n");
-+			return true;
-+		}
-+		do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &width));
-+		do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_HEIGHT, &height));
-+		ref.format = DRM_FORMAT_ARGB8888;
-+		ref.modifier = DRM_FORMAT_MOD_LINEAR;
-+	}
-+
-+	igt_debug("Testing connector %s on %s plane %s.%u with black and white colors\n",
-+		  igt_output_name(output), kmstest_plane_type_name(plane->type),
-+		  kmstest_pipe_name(pipe), plane->index);
-+
-+	igt_pipe_crc_start(data->pipe_crc);
-+
-+	igt_info("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u for reference CRC\n",
-+		 IGT_FORMAT_ARGS(ref.format), IGT_MODIFIER_ARGS(ref.modifier),
-+		 kmstest_pipe_name(pipe), plane->index);
-+
-+	check_allowed_plane_size_64x64(data, plane, &width, &height, ref.format);
-+
-+	/* Capture the reference CRCs */
-+	capture_format_crcs_single(data, pipe, plane, ref.format, ref.modifier,
-+				   width, height, IGT_COLOR_YCBCR_BT709,
-+				   IGT_COLOR_YCBCR_LIMITED_RANGE,
-+				   &ref_crc[0], &fb, color_black_white, ARRAY_SIZE(color_black_white));
-+
-+	for (int i = 0; i < ARRAY_SIZE(color_black_white); i++) {
-+		capture_format_crcs_single(data, pipe, plane, ref.format, ref.modifier, width, height,
-+					   IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE, &ref_crc[i + 1], &fb,
-+					   &color_black_white[i], 1);
-+	}
-+
-+	for (int i = 0; i < plane->format_mod_count; i++) {
-+		uint32_t format = plane->formats[i];
-+		uint64_t modifier = plane->modifiers[i];
-+
-+		if (!igt_fb_supported_format(format)
-+		    || !igt_format_is_black_white(format))
-+			continue;
-+
-+		igt_info("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
-+			 IGT_FORMAT_ARGS(format), IGT_MODIFIER_ARGS(modifier),
-+			 kmstest_pipe_name(pipe), plane->index);
-+
-+		capture_format_crcs_single(data, pipe, plane, format, modifier,
-+					   width, height, IGT_COLOR_YCBCR_BT709,
-+					   IGT_COLOR_YCBCR_LIMITED_RANGE,
-+					   &crc[0], &fb, color_black_white, ARRAY_SIZE(color_black_white));
-+
-+		for (int i = 0; i < ARRAY_SIZE(color_black_white); i++) {
-+			capture_format_crcs_single(data, pipe, plane, format, modifier, width, height,
-+						   IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE, &crc[i + 1],
-+						   &fb,
-+						   &color_black_white[i], 1);
-+		}
-+
-+		bool tmp_result = igt_check_crc_equal(&crc[0], &ref_crc[0]);
-+		if (!tmp_result)
-+			igt_warn(
-+				"Format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " failed on %s.%u with the array pattern\n",
-+				IGT_FORMAT_ARGS(format), IGT_MODIFIER_ARGS(modifier), kmstest_pipe_name(pipe),
-+				plane->index);
-+		result &= tmp_result;
-+
-+		for (int i = 1; i < ARRAY_SIZE(crc); i++) {
-+			tmp_result = igt_check_crc_equal(&crc[i], &ref_crc[i]);
-+			if (!tmp_result)
-+				igt_warn(
-+					"Format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " failed on %s.%u for the color (r=%f,g=%f,b=%f)\n",
-+					IGT_FORMAT_ARGS(format), IGT_MODIFIER_ARGS(modifier), kmstest_pipe_name(pipe),
-+					plane->index, color_black_white[i - 1].red, color_black_white[i - 1].green,
-+					color_black_white[i - 1].blue);
-+			result &= tmp_result;
-+		}
-+	}
-+
-+	igt_pipe_crc_stop(data->pipe_crc);
-+
-+	igt_plane_set_fb(plane, clear_fb);
-+	igt_remove_fb(data->drm_fd, &fb);
-+
-+	return result;
-+}
-+
- static bool skip_plane(data_t *data, igt_plane_t *plane)
- {
- 	int index = plane->index;
-@@ -1251,6 +1368,55 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+ /**
+- * SUBTEST: planar-pixel-format-settings
+- * Description: verify planar settings for pixel format are handled correctly
++ * SUBTEST: test-odd-size-with-yuv
++ * Description: verify that yuv odd size are handled correctly by the driver
+  * Functionality: pixel_formats, plane
+  *
+  * SUBTEST: plane-position-%s
+@@ -1225,8 +1225,7 @@ test_pixel_formats(data_t *data, enum pipe pipe)
  
  	igt_assert_f(result, "At least one CRC mismatch happened\n");
  }
-+
-+
-+static void
-+test_pixel_black_and_white_formats(data_t *data, enum pipe pipe)
-+{
-+	struct igt_fb primary_fb;
-+	igt_plane_t *primary;
-+	drmModeModeInfo *mode;
-+	bool result;
-+	igt_output_t *output = data->output;
-+	igt_plane_t *plane;
-+
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
-+	test_init(data, pipe);
-+
-+	mode = igt_output_get_mode(output);
-+
-+	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &primary_fb);
-+
-+	igt_output_set_pipe(output, pipe);
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, &primary_fb);
-+
-+	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+
-+	set_legacy_lut(data, pipe, LUT_MASK);
-+
-+	result = true;
-+	for_each_plane_on_pipe(&data->display, pipe, plane) {
-+		if (skip_plane(data, plane))
-+			continue;
-+		result &= test_format_black_and_white_plane(data, pipe, output, plane, &primary_fb);
-+	}
-+
-+	test_fini(data);
-+
-+	set_legacy_lut(data, pipe, 0xffff);
-+
-+	igt_plane_set_fb(primary, NULL);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+
-+	igt_remove_fb(data->drm_fd, &primary_fb);
-+
-+	igt_assert_f(result, "At least one CRC mismatch happened\n");
-+}
- static void test_odd_size_with_yuv(data_t *data)
+-
+-static void test_planar_settings(data_t *data)
++static void test_odd_size_with_yuv(data_t *data)
  {
  	enum pipe pipe = PIPE_A;
-@@ -1350,9 +1516,13 @@ static void
- run_tests_for_pipe_plane(data_t *data)
- {
- 	igt_describe("verify the pixel formats for given plane and pipe");
--	igt_subtest_with_dynamic_f("pixel-format")
-+	igt_subtest_with_dynamic_f("pixel-format-colors")
- 		run_test(data, test_pixel_formats);
+ 	igt_output_t *output;
+@@ -1235,14 +1234,18 @@ static void test_planar_settings(data_t *data)
+ 	int devid;
+ 	int rval;
  
-+	igt_describe("verify the black and white pixel formats for given plane and pipe");
-+	igt_subtest_with_dynamic_f("pixel-format-black-white")
-+		run_test(data, test_pixel_black_and_white_formats);
+-	/*
+-	 * If here is added non-intel tests below require will need to be
+-	 * changed to if(..)
+-	 */
++	bool should_fail = false;
+ 	igt_require(data->display.is_atomic);
+-	igt_require_intel(data->drm_fd);
+-	devid = intel_get_drm_devid(data->drm_fd);
+-	igt_require(intel_display_ver(devid) >= 9);
 +
- 	igt_describe("verify the pixel formats for given plane and pipe with source clamping");
- 	igt_subtest_with_dynamic_f("pixel-format-source-clamping") {
- 		data->crop = 4;
++	/* Add more devices here if they are expected to fail */
++	if (is_intel_device(data->drm_fd)) {
++		/* This was required in the original test */
++		igt_require(intel_display_ver(devid) >= 9);
++		/* Intel display version below 20 are expected to fail */
++		if (intel_display_ver(devid) < 20) {
++			should_fail = true;
++		}
++	}
+ 
+ 	output = igt_get_single_output_for_pipe(&data->display, pipe);
+ 	igt_require(output);
+@@ -1254,44 +1257,37 @@ static void test_planar_settings(data_t *data)
+ 				  DRM_MODE_ATOMIC_ALLOW_MODESET,
+ 				  NULL);
+ 
+-	/* test against intel_plane_check_src_coordinates() in i915 */
+-	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
+-				     DRM_FORMAT_MOD_LINEAR)) {
+-		int expected_rval = -EINVAL;
+-
+-		if (intel_display_ver(devid) >= 20)
+-			expected_rval = 0;
+-
+-		igt_create_fb(data->drm_fd, 257, 256,
+-			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
+-		igt_plane_set_fb(primary, &fb);
+-		rval = igt_display_try_commit_atomic(&data->display,
+-						     DRM_MODE_ATOMIC_ALLOW_MODESET,
+-						     NULL);
+-		igt_remove_fb(data->drm_fd, &fb);
+-		igt_assert_f(rval == expected_rval, "Odd width NV12 framebuffer\n");
++	igt_require(igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
++					     DRM_FORMAT_MOD_LINEAR));
++
++
++	igt_create_fb(data->drm_fd, 257, 256,
++		      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
++	igt_plane_set_fb(primary, &fb);
++	rval = igt_display_try_commit_atomic(&data->display,
++					     DRM_MODE_ATOMIC_ALLOW_MODESET,
++					     NULL);
++	igt_remove_fb(data->drm_fd, &fb);
++
++	if (should_fail) {
++		igt_assert_f(rval == -EINVAL, "Odd width NV12 framebuffer correctly failed\n");
+ 	} else {
+-		igt_debug("Odd width NV12 framebuffer test skipped\n");
++		igt_assert_f(rval == 0, "Odd width NV12 framebuffer correctly succeed\n");
+ 	}
+ 
+-	/* test against intel_plane_check_src_coordinates() in i915 */
+-	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
+-				     DRM_FORMAT_MOD_LINEAR)) {
+-		int expected_rval = -EINVAL;
+-
+-		if (intel_display_ver(devid) >= 20)
+-			expected_rval = 0;
+-
+-		igt_create_fb(data->drm_fd, 256, 257,
+-			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
+-		igt_plane_set_fb(primary, &fb);
+-		rval = igt_display_try_commit_atomic(&data->display,
+-						     DRM_MODE_ATOMIC_ALLOW_MODESET,
+-						     NULL);
+-		igt_remove_fb(data->drm_fd, &fb);
+-		igt_assert_f(rval == expected_rval, "Odd height NV12 framebuffer\n");
++
++	igt_create_fb(data->drm_fd, 256, 257,
++		      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
++	igt_plane_set_fb(primary, &fb);
++	rval = igt_display_try_commit_atomic(&data->display,
++					     DRM_MODE_ATOMIC_ALLOW_MODESET,
++					     NULL);
++	igt_remove_fb(data->drm_fd, &fb);
++
++	if (should_fail) {
++		igt_assert_f(rval == -EINVAL, "Odd height NV12 framebuffer correctly failed\n");
+ 	} else {
+-		igt_debug("Odd height NV12 framebuffer test skipped\n");
++		igt_assert_f(rval == 0, "Odd height NV12 framebuffer correctly succeed\n");
+ 	}
+ }
+ 
+@@ -1376,9 +1372,8 @@ run_tests_for_pipe_plane(data_t *data)
+ 		run_test(data, test_plane_panning);
+ 	}
+ 
+-	igt_describe("verify planar settings for pixel format are accepted or rejected correctly");
+-	igt_subtest_f("planar-pixel-format-settings")
+-		test_planar_settings(data);
++	igt_describe("verify that odd sizes for yuv format are accepted or rejected correctly");
++	igt_subtest_f("test-odd-size-with-yuv") test_odd_size_with_yuv(data);
+ }
+ 
+ static int opt_handler(int opt, int opt_index, void *_data)
 
 -- 
 2.43.0
