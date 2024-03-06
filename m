@@ -4,49 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64E49C54E41
-	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 15:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07529C5475B
+	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 15:02:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 01E2A113264;
-	Wed,  6 Mar 2024 15:02:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A5479113266;
+	Wed,  6 Mar 2024 15:02:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MZ4Qdcj0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oGwQT4jN";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF403113264
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 15:02:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67CE2113266
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 15:02:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709737355; x=1741273355;
+ t=1709737365; x=1741273365;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ibS4pj5wfh4pz63eiJbjmZKMN4VFungZKBozgxsEDZg=;
- b=MZ4Qdcj0MlDxwulygnkl4T+QSTbOQztHDC/GGfHjCz6yA0uTqss/stRw
- 1TPw5PLc8014wZFfltLMAhd65BXiSx8Axm3muIEjyHFsquFlxeiy/lLGT
- BCbxPJM0rJ5xY7yt2QDISSQfFHsf1+F5tkTugaFZ6iuxAPFaeUjjCTwp+
- /NG50FP9oZzttCgZ2+BopLNOQwFVrB1DbLD5dCDJUGgYdehSeUyC+erkG
- FbOImwkBglo0Atu8cPL4Ip5bTg1UIh6dXwnEmCqNt+besk9AtpLIyo3pC
- UxPoaDdLNIEAz7vgYdjQb0Fzz0vq+28D7iCTv4WWdhaAul9MV9hecaQSU w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="4467141"
+ bh=tTf3qmNYvEm4PCwjNWnH+LXpC3CO/xFioRC4Fa5rbZo=;
+ b=oGwQT4jNsLi9oXYIQvmSAId+Emd3lGuIpiyrR0XVfxT8irVoLm6eDoqr
+ XWc1wLNTJMU5XcF5ifMSPDImvt3m6EYYuGfLSxB9zRetNgqY9lLqjNvKI
+ msunlT18/UB+eAvWQBIgqM3zwNEYRRdu8pvSJ072LQUYjG1+t9HEcQO8o
+ Jgw/iEhu5vrjtGMTCgqznp1pYphhceEtV85tK9ElXllw3uj+R7mug9WdR
+ ZF2xL1YgwOTO58kByZO+5omLz4jx2wc7l7u9s0g6Vh/mdGcDkyBT22aTe
+ RlxyBzttf2clfmp4E5m+ftbgB8WNT7Xzxrcn0uZ1JX0XR1Hw1IQ8t0yyf w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="4284122"
 X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
-   d="scan'208";a="4467141"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2024 07:02:33 -0800
+   d="scan'208";a="4284122"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Mar 2024 07:02:37 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
-   d="scan'208";a="9927800"
+X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; d="scan'208";a="32929543"
 Received: from unknown (HELO localhost) ([10.245.244.139])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2024 07:02:32 -0800
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Mar 2024 07:02:36 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH i-g-t v2 2/4] lib/intel_bufops: Use printf style filename
- formatting
-Date: Wed,  6 Mar 2024 16:02:17 +0100
-Message-Id: <20240306150219.301977-3-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v2 3/4] lib/rendercopy_gen9: Add Tile64 support for
+ render-copy
+Date: Wed,  6 Mar 2024 16:02:18 +0100
+Message-Id: <20240306150219.301977-4-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240306150219.301977-1-zbigniew.kempczynski@intel.com>
 References: <20240306150219.301977-1-zbigniew.kempczynski@intel.com>
@@ -68,60 +67,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Dumping to png where we want to pass width, height and/or other
-values is much easier when we use printf style filename formatting
-instead preparing string with filename separately. Replace current
- write to raw png from single string to string formatting.
+Refactor a bit handling different tilings in render-copy pipeline
+and add Tile64 which I want to exercise in xe_render_copy test.
 
 Cc: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://lore.kernel.org/r/20240305054056.139691-3-zbigniew.kempczynski@intel.com
+Acked-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://lore.kernel.org/r/20240305054056.139691-4-zbigniew.kempczynski@intel.com
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/intel_bufops.c | 14 +++++++++++++-
- lib/intel_bufops.h |  2 +-
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ lib/rendercopy_gen9.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 5e2701a7dc..e45b17b0a8 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -1367,9 +1367,21 @@ static void __intel_buf_raw_write_to_png(struct buf_ops *bops,
- 	munmap(linear, buf->bo_size);
- }
+diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+index efd7cb37c1..2b66e15ee6 100644
+--- a/lib/rendercopy_gen9.c
++++ b/lib/rendercopy_gen9.c
+@@ -191,19 +191,29 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+ 		ss->ss5.mip_tail_start_lod = 1; /* needed with trmode */
+ 	}
  
--void intel_buf_raw_write_to_png(struct intel_buf *buf, const char *filename)
-+__attribute__((format(printf, 2, 3)))
-+void intel_buf_raw_write_to_png(struct intel_buf *buf, const char *namefmt, ...)
- {
-+	char *filename;
-+	int ret;
-+	va_list ap;
-+
-+	va_start(ap, namefmt);
-+	ret = vasprintf(&filename, namefmt, ap);
-+	igt_assert(ret >= 0);
-+	va_end(ap);
-+
- 	__intel_buf_raw_write_to_png(buf->bops, buf, filename);
-+
-+	free(filename);
- }
+-	if (buf->tiling == I915_TILING_X)
++	switch (buf->tiling) {
++	case I915_TILING_NONE:
++		ss->ss0.tiled_mode = 0;
++		break;
++	case I915_TILING_X:
+ 		ss->ss0.tiled_mode = 2;
+-	else if (buf->tiling != I915_TILING_NONE)
++		break;
++	case I915_TILING_64:
++		ss->ss0.tiled_mode = 1;
++		ss->ss5.mip_tail_start_lod = 0xf;
++		break;
++	default:
+ 		ss->ss0.tiled_mode = 3;
++		if (buf->tiling == I915_TILING_Yf)
++			ss->ss5.trmode = 1;
++		else if (buf->tiling == I915_TILING_Ys)
++			ss->ss5.trmode = 2;
++		break;
++	}
  
- static void *alloc_aligned(uint64_t size)
-diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-index 363f7abaad..828ed7be9d 100644
---- a/lib/intel_bufops.h
-+++ b/lib/intel_bufops.h
-@@ -221,7 +221,7 @@ const char *intel_buf_set_name(struct intel_buf *buf, const char *name);
+ 	if (intel_buf_pxp(buf))
+ 		ss->ss1.pxp = 1;
  
- void intel_buf_write_to_png(struct intel_buf *buf, const char *filename);
- void intel_buf_write_aux_to_png(struct intel_buf *buf, const char *filename);
--void intel_buf_raw_write_to_png(struct intel_buf *buf, const char *filename);
-+void intel_buf_raw_write_to_png(struct intel_buf *buf, const char *namefmt, ...);
- void intel_buf_draw_pattern(struct buf_ops *bops, struct intel_buf *buf,
- 			    int x, int y, int w, int h,
- 			    int cx, int cy, int cw, int ch,
+-	if (buf->tiling == I915_TILING_Yf)
+-		ss->ss5.trmode = 1;
+-	else if (buf->tiling == I915_TILING_Ys)
+-		ss->ss5.trmode = 2;
+-
+ 	address = intel_bb_offset_reloc(ibb, buf->handle,
+ 					read_domain, write_domain,
+ 					intel_bb_offset(ibb) + 4 * 8,
 -- 
 2.34.1
 
