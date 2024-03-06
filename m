@@ -4,62 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EBE1C5475B
-	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 17:28:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFE89C54E41
+	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 17:30:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A30AB113395;
-	Wed,  6 Mar 2024 17:28:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 40B33113303;
+	Wed,  6 Mar 2024 17:30:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="KYoGudeZ";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="S6vZPis9";
 	dkim-atps=neutral
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
- [217.70.183.196])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5CCC7113395
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 17:28:45 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B5724E000A;
- Wed,  6 Mar 2024 17:28:43 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
+ [217.70.183.195])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C2DCD11339B
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 17:29:59 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6C8D46000A;
+ Wed,  6 Mar 2024 17:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1709746124;
+ t=1709746197;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tuNNbcbBjwGQ2TZo+A54PuAQErITp8+5JrQc3shbxA8=;
- b=KYoGudeZ++IROwO1qNXDYemyu2cKW4TJBRnvxo1gM+e5oy+oCJg3uGxxBypQDmmEG2VAA9
- KCvs1CZLtDAxXFcx6FzB+RjTcAb1xkVkOS2t4g3xGSCvpvNjTvBqPoBQgTzm0zi855Zi8q
- GJiAYZ7H8Abr67/HHCZubiFdV4oqtNjtAjT7f/YTyEKt0r4s4vb8zvZ4jjbjxbWppU17JL
- 79S2uNup5FrTlCAvXQnmwlgKeYeiHaZmyf97llgNnN9SgldD07+Dc1LaU4IjCrxgX6cCwI
- QOgYWJg3tsWMBU5ZdqTnlY2lI4mX0xLN/nj8mEUziM24bJLNtsilxFmbOjcASA==
+ bh=lmMY8UNx6AzHIeSAZ0J1XMbXzTotW8uit2zv5lsdf1Y=;
+ b=S6vZPis9hB6K+w8OCJOxAEI8svMsKxTa8DyAPbPxWa7vcVtt0+zAL9PW9NoRDwU+ZSRKRO
+ bIzXp+KoGaMjrKjcQlxUwWaXTcNnjFfyIeA41IlS1r3qoXPQ0OVHMJzdvdFerN4OEA80do
+ l7fEGbEa0/B2lQTwHGvhXCm6xO5G8Y/q+PTD/xiWozutq+QdQ4s7/zAdwejc9rZ43VluxY
+ RZIQFm4NFOIotfXpVyEEvIwy+e1NPG5HxItd0qPWwebKMyK9GADWua2SVb1rUIaoS501a1
+ JGBZIHFcPDDh4Qo+P9QZdAWen8ipFurvFNhCfdiYgOin9eHclvAMEpYWwiPq/Q==
+Date: Wed, 6 Mar 2024 18:29:55 +0100
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 06 Mar 2024 18:28:38 +0100
-Subject: [PATCH i-g-t 4/9] lib/color_encoding: Add support for NV24 and
- NV42 pixel formats
+To: Arthur Grillo <arthurgrillo@riseup.net>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Pekka Paalanen <pekka.paalanen@collabora.com>
+Subject: Re: [PATCH i-g-t v2 7/7] benchmarks/kms_fb_stress: Add command line
+ options to pin the planes or writeback formats
+Message-ID: <ZeioE0eiabj1Tp4x@localhost.localdomain>
+References: <20240305-kms_fb_stress-dev-v2-0-78888a38e563@riseup.net>
+ <20240305-kms_fb_stress-dev-v2-7-78888a38e563@riseup.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240306-b4-kms_tests-v1-4-8fe451efd2ac@bootlin.com>
-References: <20240306-b4-kms_tests-v1-0-8fe451efd2ac@bootlin.com>
-In-Reply-To: <20240306-b4-kms_tests-v1-0-8fe451efd2ac@bootlin.com>
-To: igt-dev@lists.freedesktop.org
-Cc: miquel.raynal@bootlin.com, jeremie.dautheribes@bootlin.com, 
- thomas.petazzoni@bootlin.com, Louis Chauvet <louis.chauvet@bootlin.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4699;
- i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=mEwHjfxVlgtzisrpDQmnWbjBfCI67GjWw1fJS/fFXPE=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBl6KfIwhP8DcJ6mWibdo+aX1a65LfCoKaeiiMfNBip
- flOJ6eKJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZeinyAAKCRAgrS7GWxAs4m5MD/
- 4+E4t2EAa+GID8HvF+H5KP2DXhXkK4EiC2guky1bYEGf/mBDnKsV71JmGEMrdv0ieV5P6BMkM290x+
- DVEnIjVqBFWLNwBphfVGlvUaoiNI0OQEJ9OeHN5jiL84Ne5QEISoQ7QL5W8JxejE9889BshFOZqaaJ
- drbD5zrqTl/MW9mKD8MaNVij9b0rvxf26ufU5adpbgJJueGfYtOwmt8h+ANelat+gzGRLQw2fgz54K
- wKz/eK0u5BQTbE+WSHEgOLFz8fC9Otjq7tr5L771tjrwewluVqtE8sCbiyNuJ4fTsK1grTaOONqLXz
- l5l+50kJIvvy5F/3b3qDhDQLADnOX6aV79sl8fVyP+BWwVvG77HIGE2s2DTEgjvBh7VNazT4zU+F+W
- XXr+ZXoyck+woEhJKS3+ujvGJFGiJuVpfieqsgpwlJk21uAxzsN9kzYVHD7j9Q0/3ZREcK1d3x9hfb
- hEo98aRbBnhlcWHfvNREdfPP0GrS2LScxT4UhuR3+3olDVpD8BsQkvwyxFyXAr6Aiska8/A/Fnrbvh
- 4jpE7asRv+BXXxVV7e7D/uggH0tUUY1REmUEmW/bzm1jbvvqrDi4vwhunIDUVb4bF+nma82lSIl+WQ
- F1X/zY1Z7iDozMGqfCnvVH+fhjsswoW5p0Z87wH2nkGMNRJwRiD8yzM0hhlg==
-X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
- fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240305-kms_fb_stress-dev-v2-7-78888a38e563@riseup.net>
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -76,131 +66,233 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The current conversion algorithm is able to convert NV24 and NV42
-formats. Add those format in the list so they can also be tested.
+Le 05/03/24 - 20:15, Arthur Grillo a écrit :
+> Currently, the benchmark runs all the possible combinations of formats,
+> which can take a lot of time. Change that by adding command line options
+> to pin the planes or writeback formats, with the intention to decrease
+> the number of cases to run.
+> 
+> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
+> ---
+>  benchmarks/kms_fb_stress.c | 140 ++++++++++++++++++++++++++++++++-------------
+>  1 file changed, 99 insertions(+), 41 deletions(-)
+> 
+> diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
+> index deee9d557175..37f60f0bfa94 100644
+> --- a/benchmarks/kms_fb_stress.c
+> +++ b/benchmarks/kms_fb_stress.c
+> @@ -3,6 +3,7 @@
+>   * Copyright © 2024 Arthur Grillo
+>   */
+>  
+> +#include <stdbool.h>
+>  #include <stdint.h>
+>  
+>  #include "igt.h"
+> @@ -41,6 +42,10 @@ struct data_t {
+>  	size_t wb_fmt_count;
+>  	drmModeModeInfo *mode;
+>  	struct kms_t kms;
+> +	bool selected_primary_fmt;
+> +	bool selected_overlay_a_fmt;
+> +	bool selected_overlay_b_fmt;
+> +	bool selected_writeback_fmt;
+>  };
 
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
----
- lib/igt_color_encoding.c |  2 ++
- lib/igt_fb.c             | 22 ++++++++++++++++++++++
- 2 files changed, 24 insertions(+)
+Hi Arthur!
 
-diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
-index a7bd2b22f73b..43105de34889 100644
---- a/lib/igt_color_encoding.c
-+++ b/lib/igt_color_encoding.c
-@@ -138,8 +138,10 @@ static const struct color_encoding_format {
- 	{ IGT_FORMAT_FLOAT, 1.f, },
- 	{ DRM_FORMAT_NV12, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_NV16, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_NV24, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_NV21, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_NV61, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_NV42, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YUV420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YUV422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YVU420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 0ac2a76b0c52..b6f28cf3ee52 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -252,6 +252,11 @@ static const struct format_desc_struct {
- 	  .num_planes = 2, .plane_bpp = { 8, 16, },
- 	  .hsub = 2, .vsub = 1,
- 	},
-+	{ .name = "NV24", .depth = -1, .drm_id = DRM_FORMAT_NV24,
-+		.cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+		.num_planes = 2, .plane_bpp = { 8, 16, },
-+		.hsub = 1, .vsub = 1,
-+	},
- 	{ .name = "NV21", .depth = -1, .drm_id = DRM_FORMAT_NV21,
- 	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
- 	  .num_planes = 2, .plane_bpp = { 8, 16, },
-@@ -262,6 +267,11 @@ static const struct format_desc_struct {
- 	  .num_planes = 2, .plane_bpp = { 8, 16, },
- 	  .hsub = 2, .vsub = 1,
- 	},
-+	{ .name = "NV42", .depth = -1, .drm_id = DRM_FORMAT_NV24,
-+		.cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+		.num_planes = 2, .plane_bpp = { 8, 16, },
-+		.hsub = 1, .vsub = 1,
-+	},
- 	{ .name = "YUYV", .depth = -1, .drm_id = DRM_FORMAT_YUYV,
- 	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
- 	  .num_planes = 1, .plane_bpp = { 16, },
-@@ -3398,8 +3408,10 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 	switch (fb->drm_format) {
- 	case DRM_FORMAT_NV12:
- 	case DRM_FORMAT_NV16:
-+	case DRM_FORMAT_NV24:
- 	case DRM_FORMAT_NV21:
- 	case DRM_FORMAT_NV61:
-+	case DRM_FORMAT_NV42:
- 	case DRM_FORMAT_P010:
- 	case DRM_FORMAT_P012:
- 	case DRM_FORMAT_P016:
-@@ -3439,8 +3451,10 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 	switch (fb->drm_format) {
- 	case DRM_FORMAT_NV12:
- 	case DRM_FORMAT_NV16:
-+	case DRM_FORMAT_NV24:
- 	case DRM_FORMAT_NV21:
- 	case DRM_FORMAT_NV61:
-+	case DRM_FORMAT_NV42:
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
- 	case DRM_FORMAT_YVU420:
-@@ -3472,6 +3486,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 	switch (fb->drm_format) {
- 	case DRM_FORMAT_NV12:
- 	case DRM_FORMAT_NV16:
-+	case DRM_FORMAT_NV24:
- 		params->y_offset = fb->offsets[0];
- 		params->u_offset = fb->offsets[1];
- 		params->v_offset = fb->offsets[1] + 1;
-@@ -3479,6 +3494,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 
- 	case DRM_FORMAT_NV21:
- 	case DRM_FORMAT_NV61:
-+	case DRM_FORMAT_NV42:
- 		params->y_offset = fb->offsets[0];
- 		params->u_offset = fb->offsets[1] + 1;
- 		params->v_offset = fb->offsets[1];
-@@ -4224,9 +4240,11 @@ static void fb_convert(struct fb_convert *cvt)
- 		switch (cvt->src.fb->drm_format) {
- 		case DRM_FORMAT_XYUV8888:
- 		case DRM_FORMAT_NV12:
-+		case DRM_FORMAT_NV24:
- 		case DRM_FORMAT_NV16:
- 		case DRM_FORMAT_NV21:
- 		case DRM_FORMAT_NV61:
-+		case DRM_FORMAT_NV42:
- 		case DRM_FORMAT_UYVY:
- 		case DRM_FORMAT_VYUY:
- 		case DRM_FORMAT_YUV420:
-@@ -4243,8 +4261,10 @@ static void fb_convert(struct fb_convert *cvt)
- 		case DRM_FORMAT_XYUV8888:
- 		case DRM_FORMAT_NV12:
- 		case DRM_FORMAT_NV16:
-+		case DRM_FORMAT_NV24:
- 		case DRM_FORMAT_NV21:
- 		case DRM_FORMAT_NV61:
-+		case DRM_FORMAT_NV42:
- 		case DRM_FORMAT_UYVY:
- 		case DRM_FORMAT_VYUY:
- 		case DRM_FORMAT_YUV420:
-@@ -4823,8 +4843,10 @@ bool igt_format_is_yuv(uint32_t drm_format)
- 	switch (drm_format) {
- 	case DRM_FORMAT_NV12:
- 	case DRM_FORMAT_NV16:
-+	case DRM_FORMAT_NV24:
- 	case DRM_FORMAT_NV21:
- 	case DRM_FORMAT_NV61:
-+	case DRM_FORMAT_NV42:
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
- 	case DRM_FORMAT_YVU420:
+Nice work, for the next iteration of my series I will use this to run 
+a full test, thanks!
 
--- 
-2.43.0
+If I understand correclty, when you "pin" a format, it will always use the 
+first available? It's not possible to say "I want to test NV24"?
 
+Do you think it will be difficult to add this kind of option (like 
+--writeback-format in kms_writeback)?
+
+Kind regards,
+Louis Chauvet
+
+>  static void plane_setup(struct plane_t *plane, int index)
+> @@ -243,45 +248,87 @@ static void stress_driver(struct data_t *data)
+>  	igt_info("Time spent in the loop with %d frames: %lfs.\n", FRAME_COUNT, elapsed);
+>  }
+>  
+> -static struct kms_t default_kms = {
+> -	.crtc = {
+> -		.width = 4096, .height = 2160,
+> -	},
+> -	.primary = {
+> -		.rect = {
+> -			.x = 101, .y = 0,
+> -			.width = 3639, .height = 2160,
+> +static int opt_handler(int opt, int opt_index, void *_data)
+> +{
+> +	struct data_t *data = _data;
+> +	struct kms_t *kms =  &data->kms;
+> +
+> +	switch (opt) {
+> +	case 'p':
+> +		kms->primary.format = igt_drm_format_str_to_format(optarg);
+> +		data->selected_primary_fmt = true;
+> +		break;
+> +	case 'a':
+> +		kms->overlay_a.format = igt_drm_format_str_to_format(optarg);
+> +		data->selected_overlay_a_fmt = true;
+> +		break;
+> +	case 'b':
+> +		kms->overlay_b.format = igt_drm_format_str_to_format(optarg);
+> +		data->selected_overlay_b_fmt = true;
+> +		break;
+> +	case 'w':
+> +		kms->writeback.format = igt_drm_format_str_to_format(optarg);
+> +		data->selected_writeback_fmt = true;
+> +		break;
+> +	default:
+> +		return IGT_OPT_HANDLER_ERROR;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +static const char *help_str =
+> +	"  --primary-format\t\tPin the primary plane format\n"
+> +	"  --overlay-a-format\t\tPin the overlay A plane format\n"
+> +	"  --overlay-b-format\t\tPin the overlay B plane format\n"
+> +	"  --writeback-format\t\tPin the writeback format\n";
+> +
+> +static const struct option long_options[] = {
+> +	{ .name = "primary-format", .has_arg = true, .val = 'p'},
+> +	{ .name = "overlay-a-format", .has_arg = true, .val = 'a'},
+> +	{ .name = "overlay-b-format", .has_arg = true, .val = 'b'},
+> +	{ .name = "writeback-format", .has_arg = true, .val = 'w'},
+> +	{}
+> +};
+> +
+> +static struct data_t data = (struct data_t){
+> +	.kms = {
+> +			.crtc = {
+> +				.width = 4096, .height = 2160,
+> +			},
+> +		.primary = {
+> +			.rect = {
+> +				.x = 101, .y = 0,
+> +				.width = 3639, .height = 2160,
+> +			},
+>  		},
+> -	},
+> -	.overlay_a = {
+> -		.rect = {
+> -			.x = 201, .y = 199,
+> -			.width = 3033, .height = 1777,
+> +		.overlay_a = {
+> +			.rect = {
+> +				.x = 201, .y = 199,
+> +				.width = 3033, .height = 1777,
+> +			},
+>  		},
+> -	},
+> -	.overlay_b = {
+> -		.rect = {
+> -			.x = 1800, .y = 250,
+> -			.width = 1507, .height = 1400,
+> +		.overlay_b = {
+> +			.rect = {
+> +				.x = 1800, .y = 250,
+> +				.width = 1507, .height = 1400,
+> +			},
+>  		},
+> -	},
+> -	.writeback = {
+> -		.rect = {
+> -			.x = 0, .y = 0,
+> -			// Size is to be determined at runtime
+> +		.writeback = {
+> +			.rect = {
+> +				.x = 0, .y = 0,
+> +				// Size is to be determined at runtime
+> +			},
+>  		},
+>  	},
+>  };
+>  
+> -
+> -igt_simple_main
+> +igt_simple_main_args(NULL, long_options, help_str, opt_handler, &data)
+>  {
+> -	struct data_t data = {0};
+>  	size_t primary_fmt_count = 0;
+>  	size_t overlay_a_fmt_count = 0;
+>  	size_t overlay_b_fmt_count = 0;
+> -
+> -	data.kms = default_kms;
+> +	size_t wb_fmt_count = 0;
+>  
+>  	data.fd = drm_open_driver_master(DRIVER_ANY);
+>  
+> @@ -314,37 +361,48 @@ igt_simple_main
+>  								  DRM_PLANE_TYPE_OVERLAY, 1);
+>  	igt_assert(data.kms.overlay_b.base != NULL);
+>  
+> -	primary_fmt_count = data.kms.primary.base->format_mod_count;
+> -	overlay_a_fmt_count = data.kms.overlay_a.base->format_mod_count;
+> -	overlay_b_fmt_count = data.kms.overlay_b.base->format_mod_count;
+> +	primary_fmt_count = data.selected_primary_fmt ?
+> +			    1 : data.kms.primary.base->format_mod_count;
+> +	overlay_a_fmt_count = data.selected_overlay_a_fmt ?
+> +			      1 : data.kms.overlay_a.base->format_mod_count;
+> +	overlay_b_fmt_count = data.selected_overlay_b_fmt ?
+> +			      1 : data.kms.overlay_b.base->format_mod_count;
+> +	wb_fmt_count = data.selected_writeback_fmt ? 1 : data.wb_fmt_count;
+>  
+>  	for (size_t i = 0;
+>  	     i < primary_fmt_count *
+>  		 overlay_a_fmt_count *
+>  		 overlay_b_fmt_count *
+> -		 data.wb_fmt_count;
+> +		 wb_fmt_count;
+>  	     i++) {
+>  		size_t p = (i / (overlay_a_fmt_count *
+>  				 overlay_b_fmt_count *
+> -				 data.wb_fmt_count)) % primary_fmt_count;
+> +				 wb_fmt_count)) % primary_fmt_count;
+>  
+>  		size_t a = (i / (overlay_b_fmt_count *
+> -				 data.wb_fmt_count)) % overlay_a_fmt_count;
+> +				 wb_fmt_count)) % overlay_a_fmt_count;
+> +
+> +		size_t b = (i / wb_fmt_count) % overlay_a_fmt_count;
+> +
+> +		size_t w = i % wb_fmt_count;
+> +
+> +		if (data.selected_primary_fmt == false)
+> +			data.kms.primary.format = data.kms.primary.base->formats[p];
+>  
+> -		size_t b = (i / data.wb_fmt_count) % overlay_a_fmt_count;
+> +		if (data.selected_overlay_a_fmt == false)
+> +			data.kms.overlay_a.format = data.kms.overlay_a.base->formats[a];
+>  
+> -		size_t w = i % data.wb_fmt_count;
+> +		if (data.selected_overlay_b_fmt == false)
+> +			data.kms.overlay_b.format = data.kms.overlay_b.base->formats[b];
+>  
+> -		data.kms.primary.format = data.kms.primary.base->formats[p];
+> -		data.kms.overlay_a.format = data.kms.overlay_a.base->formats[a];
+> -		data.kms.overlay_b.format = data.kms.overlay_b.base->formats[b];
+> -		data.kms.writeback.format = data.wb_formats[w];
+> +		if (data.selected_writeback_fmt == false)
+> +			data.kms.writeback.format = data.wb_formats[w];
+>  
+>  		igt_info("formats: primary: %zu/%zu overlay_a: %zu/%zu overlay_b: %zu/%zu writeback: %zu/%zu\n",
+>  			 p + 1, primary_fmt_count,
+>  			 a + 1, overlay_a_fmt_count,
+>  			 b + 1, overlay_b_fmt_count,
+> -			 w + 1, data.wb_fmt_count);
+> +			 w + 1, wb_fmt_count);
+>  
+>  		stress_driver(&data);
+>  	}
+> 
+> -- 
+> 2.43.0
+> 
