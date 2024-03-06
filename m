@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7D83C54E41
-	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 06:01:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3642CC5475B
+	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 06:27:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1CC80112B56;
-	Wed,  6 Mar 2024 06:01:13 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b0qLKdmD";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3186A112B56
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 06:01:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709704871; x=1741240871;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=+P6RH7MLoyq9V8u7UKEBUX66BiCPmaSKA0SmYzrysQg=;
- b=b0qLKdmDQ4x+UTm49rXWhC4nH5BfT2MMoNIzWbna1I71cRBwggg2D4u1
- cmqhjA3KkZUbWoHSGrOBEK11atGI/RQ+MI5IblZNu72afCWP433Quz5wJ
- ysewswWgZ1VTOiGXrTHJKKsefUgwmdRTKEa8/aCbeGh2YjWm+rJ3f4eJt
- o+CLJARRjpT69mZAC2DLazJ4n1u9YXXGflY0BN2gxPSGv89uRR4zPwPe1
- goOIa3eGOsLowKJTNewYBZ2+Lq33dh2wfEC1y1Lem1d3+JkC3pElNFgTL
- aPvGZCfravIW0Bi+svQC6LVf1ijDTuWvTqDZ64jNjBHyJuK8DQ5nJoy8F Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="21824028"
-X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; d="scan'208";a="21824028"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2024 22:01:11 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; d="scan'208";a="47168715"
-Received: from unknown (HELO localhost) ([10.245.244.139])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2024 22:01:08 -0800
-Date: Wed, 6 Mar 2024 07:01:05 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v2 2/6] lib/gpu_cmds: default to uc MOCS index
-Message-ID: <20240306060105.3xwjdknn7b7omcin@zkempczy-mobl2>
-References: <20240305121754.182425-1-matthew.auld@intel.com>
- <20240305121754.182425-2-matthew.auld@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A1A8F112F35;
+	Wed,  6 Mar 2024 06:27:38 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 26564112F35;
+ Wed,  6 Mar 2024 06:27:37 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1766330240572518340=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240305121754.182425-2-matthew.auld@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_revamp_big_joiner_test_=28rev6?=
+ =?utf-8?q?=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 06 Mar 2024 06:27:37 -0000
+Message-ID: <170970645715.524258.17735441949252061646@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240306052509.717026-1-kunal1.joshi@intel.com>
+In-Reply-To: <20240306052509.717026-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,73 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Mar 05, 2024 at 12:17:50PM +0000, Matthew Auld wrote:
-> Currently we just default to index=0, but that can have different
-> meaning between HW versions. Rather just default to UC mocs index.
+--===============1766330240572518340==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Makes sense to me:
+== Series Details ==
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Series: revamp big joiner test (rev6)
+URL   : https://patchwork.freedesktop.org/series/130572/
+State : success
 
---
-Zbigniew
+== Summary ==
 
-> 
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  lib/gpu_cmds.c | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
-> 
-> diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
-> index 49ba364f9..d909efde8 100644
-> --- a/lib/gpu_cmds.c
-> +++ b/lib/gpu_cmds.c
-> @@ -214,10 +214,10 @@ gen9_fill_surface_state(struct intel_bb *ibb,
->  	ss->ss0.vertical_alignment = 1; /* align 4 */
->  	ss->ss0.horizontal_alignment = 1; /* align 4 */
->  
-> -	if (mocs == INTEL_BUF_MOCS_UC)
-> -		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
-> -	else if (mocs == INTEL_BUF_MOCS_WB)
-> +	if (mocs == INTEL_BUF_MOCS_WB)
->  		ss->ss1.mocs_index = intel_get_wb_mocs_index(ibb->fd);
-> +	else
-> +		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
->  
->  	if (buf->tiling == I915_TILING_X)
->  		ss->ss0.tiled_mode = 2;
-> @@ -275,10 +275,10 @@ gen11_fill_surface_state(struct intel_bb *ibb,
->  	ss->ss0.vertical_alignment = vertical_alignment; /* align 4 */
->  	ss->ss0.horizontal_alignment = horizontal_alignment; /* align 4 */
->  
-> -	if (mocs == INTEL_BUF_MOCS_UC)
-> -		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
-> -	else if (mocs == INTEL_BUF_MOCS_WB)
-> +	if (mocs == INTEL_BUF_MOCS_WB)
->  		ss->ss1.mocs_index = intel_get_wb_mocs_index(ibb->fd);
-> +	else
-> +		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
->  
->  	if (buf->tiling == I915_TILING_X)
->  		ss->ss0.tiled_mode = 2;
-> @@ -931,10 +931,10 @@ xehp_fill_surface_state(struct intel_bb *ibb,
->  	ss->ss0.vertical_alignment = 1; /* align 4 */
->  	ss->ss0.horizontal_alignment = 1; /* align 4 */
->  
-> -	if (mocs == INTEL_BUF_MOCS_UC)
-> -		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
-> -	else if (mocs == INTEL_BUF_MOCS_WB)
-> +	if (mocs == INTEL_BUF_MOCS_WB)
->  		ss->ss1.mocs_index = intel_get_wb_mocs_index(ibb->fd);
-> +	else
-> +		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
->  
->  	if (buf->tiling == I915_TILING_X)
->  		ss->ss0.tiled_mode = 2;
-> -- 
-> 2.43.2
-> 
+CI Bug Log - changes from XEIGT_7747_BAT -> XEIGTPW_10784_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7747 -> IGTPW_10784
+
+  IGTPW_10784: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10784/index.html
+  IGT_7747: 7747
+  xe-905-dd08fd912fdc1b72984a39852fdbee49b97b8ce4: dd08fd912fdc1b72984a39852fdbee49b97b8ce4
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10784/index.html
+
+--===============1766330240572518340==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>revamp big joiner test (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130572/">https://patchwork.freedesktop.org/series/130572/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10784/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10784/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7747_BAT -&gt; XEIGTPW_10784_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7747 -&gt; IGTPW_10784</li>
+</ul>
+<p>IGTPW_10784: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10784/index.html<br />
+  IGT_7747: 7747<br />
+  xe-905-dd08fd912fdc1b72984a39852fdbee49b97b8ce4: dd08fd912fdc1b72984a39852fdbee49b97b8ce4</p>
+
+</body>
+</html>
+
+--===============1766330240572518340==--
