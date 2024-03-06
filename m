@@ -4,28 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05A06C5475B
-	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 05:12:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE3C6C5475B
+	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 05:14:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7199B112ED4;
-	Wed,  6 Mar 2024 05:12:15 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 97B08112ED4;
- Wed,  6 Mar 2024 05:12:13 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0604683160278220378=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 33082112ED9;
+	Wed,  6 Mar 2024 05:14:44 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nZM4gMcc";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 714DB112ED9
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 05:14:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709702082; x=1741238082;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=tEqRLayO/XSni9HuWPomIhZKKZX3QJ0PrAs3z9bgcxs=;
+ b=nZM4gMcc3MCWgU6RepZoNqBZybtQdDwHmPeYDyFGKmd0Ltd40sEDxO/g
+ y9tTKSsrK/let7ls74BsM61VxXe/fYp59DN3joWmzUzWuV8iCpzppdDxa
+ 4SLDHxf9hQOLcu5nNMChq0EyqlCwYzPmcPrvbj2GA2k5oVAxd8z0E1ZSc
+ IKknYuIoL27IPu9h4tMLrdMwBmIa3IErjh1MarO39r5BGAjC4m3C37B7f
+ yOHsWvu9hzdo8ZUhqNIS0aslPY07dOh4A5C0+ZLQqBXpuTXiLH5NgikQ5
+ z4dyGuP7ZoND4rAT//0etbfYR3kP95UGveXGI4Pym/PjVkPemDKGCa6Lr A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="7240386"
+X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; 
+   d="scan'208";a="7240386"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2024 21:14:39 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; 
+   d="scan'208";a="9709991"
+Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 21:14:38 -0800
+From: Kunal Joshi <kunal1.joshi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kunal Joshi <kunal1.joshi@intel.com>, Karthik B S <karthik.b.s@intel.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [PATCH i-g-t 1/2] lib/igt_kms: move bigjoiner_mode_found to lib
+Date: Wed,  6 Mar 2024 10:55:08 +0530
+Message-Id: <20240306052509.717026-2-kunal1.joshi@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240306052509.717026-1-kunal1.joshi@intel.com>
+References: <20240306052509.717026-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2Cv4=2C1/4=5D_lib/igt=5Fsysfs=3A_Use_same_var_for_sizeof=28=29?=
- =?utf-8?q?_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lucas De Marchi" <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 06 Mar 2024 05:12:13 -0000
-Message-ID: <170970193361.524851.27587750844279414@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240228223134.3908035-1-lucas.demarchi@intel.com>
-In-Reply-To: <20240228223134.3908035-1-lucas.demarchi@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,177 +63,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0604683160278220378==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+move bigjoiner_mode_found to lib
 
-== Series Details ==
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ lib/igt_kms.c                | 25 +++++++++++++++++++++++++
+ lib/igt_kms.h                |  2 ++
+ tests/intel/kms_big_joiner.c | 14 +-------------
+ 3 files changed, 28 insertions(+), 13 deletions(-)
 
-Series: series starting with [i-g-t,v4,1/4] lib/igt_sysfs: Use same var for sizeof() (rev3)
-URL   : https://patchwork.freedesktop.org/series/130530/
-State : failure
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index e18f6fe59..63c8045c7 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6143,6 +6143,31 @@ bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock)
+ 		mode->clock > max_dotclock);
+ }
+ 
++/**
++ * bigjoiner_mode_found:
++ * @connector: libdrm connector
++ * @sort_method: comparator method
++ * @mode: libdrm mode
++ *
++ * Bigjoiner will come in to the picture when the
++ * resolution > 5K or clock > max-dot-clock.
++ *
++ * Returns: True if big joiner found in connector modes
++ */
++bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
++			  int max_dotclock)
++{
++	bool found = false;
++
++	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
++	found = igt_bigjoiner_possible(&connector->modes[0], max_dotclock);
++	if (!found) {
++		igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
++		found = igt_bigjoiner_possible(&connector->modes[0], max_dotclock);
++	}
++	return found;
++}
++
+ /**
+  * igt_check_bigjoiner_support:
+  * @display: a pointer to an #igt_display_t structure
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index b3882808b..bab8487d3 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1212,6 +1212,8 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
+ 		igt_output_t *output, int bpc);
+ int igt_get_max_dotclock(int fd);
+ bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
++bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
++			  int max_dotclock);
+ bool igt_check_bigjoiner_support(igt_display_t *display);
+ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
+ bool intel_pipe_output_combo_valid(igt_display_t *display);
+diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
+index aba2adfbe..28678b958 100644
+--- a/tests/intel/kms_big_joiner.c
++++ b/tests/intel/kms_big_joiner.c
+@@ -199,16 +199,6 @@ static void test_dual_display(data_t *data)
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ }
+ 
+-static bool bigjoiner_mode_found(drmModeConnector *connector,
+-				 int (*sort_method)(const void *, const void*),
+-				 drmModeModeInfo *mode)
+-{
+-	igt_sort_connector_modes(connector, sort_method);
+-	*mode = connector->modes[0];
+-
+-	return igt_bigjoiner_possible(mode, max_dotclock);
+-}
+-
+ igt_main
+ {
+ 	data_t data;
+@@ -235,9 +225,7 @@ igt_main
+ 			 * Bigjoiner will come in to the picture when the
+ 			 * resolution > 5K or clock > max-dot-clock.
+ 			 */
+-			found = (bigjoiner_mode_found(connector, sort_drm_modes_by_res_dsc, &mode) ||
+-				 bigjoiner_mode_found(connector, sort_drm_modes_by_clk_dsc, &mode)) ?
+-					true : false;
++			found = bigjoiner_mode_found(data.drm_fd, connector, max_dotclock);
+ 
+ 			if (found) {
+ 				data.output[count].output_id = output->id;
+-- 
+2.25.1
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_14395 -> IGTPW_10783
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_10783 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_10783, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10783/index.html
-
-Participating hosts (41 -> 39)
-------------------------------
-
-  Missing    (2): fi-apl-guc fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_10783:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_module_load@load:
-    - bat-arls-2:         [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14395/bat-arls-2/igt@i915_module_load@load.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10783/bat-arls-2/igt@i915_module_load@load.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - bat-dg2-8:          [PASS][3] -> [ABORT][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14395/bat-dg2-8/igt@i915_selftest@live@gt_heartbeat.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10783/bat-dg2-8/igt@i915_selftest@live@gt_heartbeat.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10783 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@guc_hang:
-    - bat-arls-3:         [DMESG-FAIL][5] ([i915#10262]) -> [PASS][6] +12 other tests pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14395/bat-arls-3/igt@i915_selftest@live@guc_hang.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10783/bat-arls-3/igt@i915_selftest@live@guc_hang.html
-
-  
-  [i915#10262]: https://gitlab.freedesktop.org/drm/intel/issues/10262
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7746 -> IGTPW_10783
-
-  CI-20190529: 20190529
-  CI_DRM_14395: dd08fd912fdc1b72984a39852fdbee49b97b8ce4 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10783: 10783
-  IGT_7746: 7746
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10783/index.html
-
---===============0604683160278220378==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v4,1/4] lib/igt_sysfs: Use same var for sizeof() (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130530/">https://patchwork.freedesktop.org/series/130530/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10783/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10783/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14395 -&gt; IGTPW_10783</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_10783 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_10783, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10783/index.html</p>
-<h2>Participating hosts (41 -&gt; 39)</h2>
-<p>Missing    (2): fi-apl-guc fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_10783:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14395/bat-arls-2/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10783/bat-arls-2/igt@i915_module_load@load.html">INCOMPLETE</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14395/bat-dg2-8/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10783/bat-dg2-8/igt@i915_selftest@live@gt_heartbeat.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10783 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@guc_hang:<ul>
-<li>bat-arls-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14395/bat-arls-3/igt@i915_selftest@live@guc_hang.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10262">i915#10262</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10783/bat-arls-3/igt@i915_selftest@live@guc_hang.html">PASS</a> +12 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7746 -&gt; IGTPW_10783</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14395: dd08fd912fdc1b72984a39852fdbee49b97b8ce4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10783: 10783<br />
-  IGT_7746: 7746</p>
-
-</body>
-</html>
-
---===============0604683160278220378==--
