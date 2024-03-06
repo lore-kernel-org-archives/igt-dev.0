@@ -4,58 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C9A0C54E41
-	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 18:13:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F040C5475B
+	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 18:15:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B7281133E7;
-	Wed,  6 Mar 2024 18:13:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2FF2C1133EF;
+	Wed,  6 Mar 2024 18:15:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OgioxH5e";
+	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="owxoBrgZ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D74C21133E4;
- Wed,  6 Mar 2024 18:13:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709748801; x=1741284801;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=1dn8YYma1NLQrXGL6vPg28DA9wzZNq7Di7tJuwcN9bI=;
- b=OgioxH5e8F7NSyLn1YZw63ygcFFoNJz+JaYXizKlLbDcWJv2vS9Tced5
- yUHQ5y4nilfZ8Wa5NR3PdCxj56nUarBRdl1/3xVX/U+b+0H0aN6bboo6m
- +Gdhxsd8Z+PgnbwhgNEvH1rrWFfG3BXtWfhoxn3qjk9o/0+DW0pWIaISY
- nxtg9Tf5ULo9WBabHmpxWyH55ngebdcjd3vojUwXfPgrWI2chM8VDZ8R0
- zQu9U8LTxKhMgR3tAze7AWvLjgge7L7nbE+XlsFHQFnxSQK7U2zPwJRIP
- mute6SR2xClzfnn/BhOEn2zTp4uh0rJPsCaU6kq3IKDQDDRAnC0D922Bh Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="4265410"
-X-IronPort-AV: E=Sophos;i="6.06,209,1705392000"; 
-   d="scan'208";a="4265410"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2024 10:13:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,209,1705392000"; d="scan'208";a="14406876"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 10:13:18 -0800
-Date: Wed, 6 Mar 2024 19:13:00 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
- TejasreeX Illipilli <tejasreex.illipilli@intel.com>
-Subject: Re: =?utf-8?B?4pyXIEZpLkNJLkJBVDogZmFpbHVy?= =?utf-8?Q?e?= for
- introduce Xe multigpu and other multi-GPU helpers (rev11)
-Message-ID: <20240306181300.ip62t4qktccowpze@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org,
- lgci.bug.filing@intel.com,
- TejasreeX Illipilli <tejasreex.illipilli@intel.com>
-References: <20240306133158.45187-1-kamil.konieczny@linux.intel.com>
- <170974431520.562293.4843385438372194349@8e613ede5ea5>
+Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8DC321133F6
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 18:15:00 +0000 (UTC)
+Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx0.riseup.net (Postfix) with ESMTPS id 4TqgZV6Sn5z9wCJ;
+ Wed,  6 Mar 2024 18:14:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
+ t=1709748899; bh=x/6zs1F4AyulShblWmAKd9jt13Pu19HejR19BTW/taQ=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=owxoBrgZoFqqA3GepbEiJNrs2WMYx/1GkqUirz5TQkac5SbpIYtNrf453d5ter/uX
+ XLESwrvKXLEujGHE46cZ+Gc0qxhp5wWJvZ3hHTlVsaunsiG4JEWLg0vVEzRC2uON2O
+ mKuAASYvQamsHTg8qE0BvCyaFHlFeVPplnxySh/U=
+X-Riseup-User-ID: 6359B10A727144A9DB8F40CA48B28A6AB7857A66CCA886ADC2034A2851BE2028
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+ by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4TqgZS1J6yzJqdb;
+ Wed,  6 Mar 2024 18:14:55 +0000 (UTC)
+Message-ID: <9e745f33-3b42-441b-b65a-18a3c61a2030@riseup.net>
+Date: Wed, 6 Mar 2024 15:14:53 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <170974431520.562293.4843385438372194349@8e613ede5ea5>
+Subject: Re: [PATCH i-g-t v2 7/7] benchmarks/kms_fb_stress: Add command line
+ options to pin the planes or writeback formats
+Content-Language: en-US
+To: Louis Chauvet <louis.chauvet@bootlin.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Pekka Paalanen <pekka.paalanen@collabora.com>
+References: <20240305-kms_fb_stress-dev-v2-0-78888a38e563@riseup.net>
+ <20240305-kms_fb_stress-dev-v2-7-78888a38e563@riseup.net>
+ <ZeioE0eiabj1Tp4x@localhost.localdomain>
+From: Arthur Grillo <arthurgrillo@riseup.net>
+In-Reply-To: <ZeioE0eiabj1Tp4x@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,259 +67,258 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-03-06 at 16:58:35 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: introduce Xe multigpu and other multi-GPU helpers (rev11)
-> URL   : https://patchwork.freedesktop.org/series/129101/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_14398 -> IGTPW_10786
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_10786 absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_10786, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/index.html
-> 
-> Participating hosts (41 -> 38)
-> ------------------------------
-> 
->   Missing    (3): fi-cfl-8109u bat-jsl-1 fi-snb-2520m 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_10786:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_selftest@live@gem_migrate:
->     - bat-dg2-11:         [PASS][1] -> [ABORT][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14398/bat-dg2-11/igt@i915_selftest@live@gem_migrate.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-dg2-11/igt@i915_selftest@live@gem_migrate.html
-> 
 
-This is unrelated,
 
-Regards,
-Kamil
+On 06/03/24 14:29, Louis Chauvet wrote:
+> Le 05/03/24 - 20:15, Arthur Grillo a écrit :
+>> Currently, the benchmark runs all the possible combinations of formats,
+>> which can take a lot of time. Change that by adding command line options
+>> to pin the planes or writeback formats, with the intention to decrease
+>> the number of cases to run.
+>>
+>> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
+>> ---
+>>  benchmarks/kms_fb_stress.c | 140 ++++++++++++++++++++++++++++++++-------------
+>>  1 file changed, 99 insertions(+), 41 deletions(-)
+>>
+>> diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
+>> index deee9d557175..37f60f0bfa94 100644
+>> --- a/benchmarks/kms_fb_stress.c
+>> +++ b/benchmarks/kms_fb_stress.c
+>> @@ -3,6 +3,7 @@
+>>   * Copyright © 2024 Arthur Grillo
+>>   */
+>>  
+>> +#include <stdbool.h>
+>>  #include <stdint.h>
+>>  
+>>  #include "igt.h"
+>> @@ -41,6 +42,10 @@ struct data_t {
+>>  	size_t wb_fmt_count;
+>>  	drmModeModeInfo *mode;
+>>  	struct kms_t kms;
+>> +	bool selected_primary_fmt;
+>> +	bool selected_overlay_a_fmt;
+>> +	bool selected_overlay_b_fmt;
+>> +	bool selected_writeback_fmt;
+>>  };
+> 
+> Hi Arthur!
+> 
+> Nice work, for the next iteration of my series I will use this to run 
+> a full test, thanks!
 
->   
-> Known issues
-> ------------
+Hi Louis!
+
+That would be great! While developing this, I ran it with your patch and
+I could see a significant improvement!
+
 > 
->   Here are the changes found in IGTPW_10786 that come from known issues:
+> If I understand correclty, when you "pin" a format, it will always use the 
+> first available? It's not possible to say "I want to test NV24"?
+
+
+No, you can choose what format you "pin", like:
+kms_fb_stress --primary-format=NV24
+
+With this, the primary plane format will always be NV24 and the
+others will change.
+
+Do you think this is not clear in the commit msg or help text?
+
 > 
-> ### IGT changes ###
+> Do you think it will be difficult to add this kind of option (like 
+> --writeback-format in kms_writeback)?
+
+I think the option already does what you want. If not, please reply.
+
+Best Regards,
+~Arthur Grillo
+
 > 
-> #### Issues hit ####
+> Kind regards,
+> Louis Chauvet
 > 
->   * igt@gem_lmem_swapping@verify-random:
->     - bat-arls-2:         NOTRUN -> [SKIP][3] ([i915#10213]) +3 other tests skip
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@gem_lmem_swapping@verify-random.html
-> 
->   * igt@gem_mmap@basic:
->     - bat-arls-2:         NOTRUN -> [SKIP][4] ([i915#4083])
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@gem_mmap@basic.html
-> 
->   * igt@gem_mmap_gtt@basic:
->     - bat-arls-2:         NOTRUN -> [SKIP][5] ([i915#10196] / [i915#4077]) +2 other tests skip
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@gem_mmap_gtt@basic.html
-> 
->   * igt@gem_render_tiled_blits@basic:
->     - bat-arls-2:         NOTRUN -> [SKIP][6] ([i915#10197] / [i915#10211] / [i915#4079])
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@gem_render_tiled_blits@basic.html
-> 
->   * igt@gem_tiled_pread_basic:
->     - bat-arls-2:         NOTRUN -> [SKIP][7] ([i915#10206] / [i915#4079])
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@gem_tiled_pread_basic.html
-> 
->   * igt@i915_pm_rps@basic-api:
->     - bat-arls-2:         NOTRUN -> [SKIP][8] ([i915#10209])
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@i915_pm_rps@basic-api.html
-> 
->   * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
->     - bat-arls-2:         NOTRUN -> [SKIP][9] ([i915#10200]) +9 other tests skip
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-> 
->   * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
->     - bat-arls-2:         NOTRUN -> [SKIP][10] ([i915#10202]) +1 other test skip
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-> 
->   * igt@kms_dsc@dsc-basic:
->     - bat-arls-2:         NOTRUN -> [SKIP][11] ([i915#9886])
->    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@kms_dsc@dsc-basic.html
-> 
->   * igt@kms_force_connector_basic@force-load-detect:
->     - bat-arls-2:         NOTRUN -> [SKIP][12] ([i915#10207])
->    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@kms_force_connector_basic@force-load-detect.html
-> 
->   * igt@kms_psr@psr-primary-mmap-gtt@edp-1:
->     - bat-arls-2:         NOTRUN -> [SKIP][13] ([i915#10196] / [i915#4077] / [i915#9688])
->    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@kms_psr@psr-primary-mmap-gtt@edp-1.html
-> 
->   * igt@kms_setmode@basic-clone-single-crtc:
->     - bat-arls-2:         NOTRUN -> [SKIP][14] ([i915#10208] / [i915#8809])
->    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@kms_setmode@basic-clone-single-crtc.html
-> 
->   * igt@prime_vgem@basic-fence-mmap:
->     - bat-arls-2:         NOTRUN -> [SKIP][15] ([i915#10196] / [i915#3708] / [i915#4077]) +1 other test skip
->    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@prime_vgem@basic-fence-mmap.html
-> 
->   * igt@prime_vgem@basic-fence-read:
->     - bat-arls-2:         NOTRUN -> [SKIP][16] ([i915#10212] / [i915#3708])
->    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@prime_vgem@basic-fence-read.html
-> 
->   * igt@prime_vgem@basic-read:
->     - bat-arls-2:         NOTRUN -> [SKIP][17] ([i915#10214] / [i915#3708])
->    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@prime_vgem@basic-read.html
-> 
->   * igt@prime_vgem@basic-write:
->     - bat-arls-2:         NOTRUN -> [SKIP][18] ([i915#10216] / [i915#3708])
->    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@prime_vgem@basic-write.html
-> 
->   
-> #### Possible fixes ####
-> 
->   * igt@gem_exec_parallel@engines@contexts:
->     - bat-arls-2:         [ABORT][19] -> [PASS][20]
->    [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14398/bat-arls-2/igt@gem_exec_parallel@engines@contexts.html
->    [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-2/igt@gem_exec_parallel@engines@contexts.html
-> 
->   * igt@gem_lmem_swapping@basic@lmem0:
->     - bat-dg2-14:         [FAIL][21] ([i915#10378]) -> [PASS][22]
->    [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14398/bat-dg2-14/igt@gem_lmem_swapping@basic@lmem0.html
->    [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-dg2-14/igt@gem_lmem_swapping@basic@lmem0.html
-> 
->   * igt@i915_selftest@live@gt_pm:
->     - bat-dg2-14:         [ABORT][23] ([i915#10366]) -> [PASS][24]
->    [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14398/bat-dg2-14/igt@i915_selftest@live@gt_pm.html
->    [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-dg2-14/igt@i915_selftest@live@gt_pm.html
-> 
->   * igt@i915_selftest@live@gt_timelines:
->     - bat-arls-1:         [INCOMPLETE][25] -> [PASS][26]
->    [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14398/bat-arls-1/igt@i915_selftest@live@gt_timelines.html
->    [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-arls-1/igt@i915_selftest@live@gt_timelines.html
-> 
->   * igt@i915_selftest@live@hangcheck:
->     - {bat-rpls-3}:       [DMESG-WARN][27] ([i915#5591]) -> [PASS][28]
->    [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14398/bat-rpls-3/igt@i915_selftest@live@hangcheck.html
->    [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/bat-rpls-3/igt@i915_selftest@live@hangcheck.html
-> 
->   
->   {name}: This element is suppressed. This means it is ignored when computing
->           the status of the difference (SUCCESS, WARNING, or FAILURE).
-> 
->   [i915#10196]: https://gitlab.freedesktop.org/drm/intel/issues/10196
->   [i915#10197]: https://gitlab.freedesktop.org/drm/intel/issues/10197
->   [i915#10200]: https://gitlab.freedesktop.org/drm/intel/issues/10200
->   [i915#10202]: https://gitlab.freedesktop.org/drm/intel/issues/10202
->   [i915#10206]: https://gitlab.freedesktop.org/drm/intel/issues/10206
->   [i915#10207]: https://gitlab.freedesktop.org/drm/intel/issues/10207
->   [i915#10208]: https://gitlab.freedesktop.org/drm/intel/issues/10208
->   [i915#10209]: https://gitlab.freedesktop.org/drm/intel/issues/10209
->   [i915#10211]: https://gitlab.freedesktop.org/drm/intel/issues/10211
->   [i915#10212]: https://gitlab.freedesktop.org/drm/intel/issues/10212
->   [i915#10213]: https://gitlab.freedesktop.org/drm/intel/issues/10213
->   [i915#10214]: https://gitlab.freedesktop.org/drm/intel/issues/10214
->   [i915#10216]: https://gitlab.freedesktop.org/drm/intel/issues/10216
->   [i915#10366]: https://gitlab.freedesktop.org/drm/intel/issues/10366
->   [i915#10378]: https://gitlab.freedesktop.org/drm/intel/issues/10378
->   [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
->   [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
->   [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
->   [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
->   [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
->   [i915#8809]: https://gitlab.freedesktop.org/drm/intel/issues/8809
->   [i915#9688]: https://gitlab.freedesktop.org/drm/intel/issues/9688
->   [i915#9886]: https://gitlab.freedesktop.org/drm/intel/issues/9886
-> 
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7749 -> IGTPW_10786
-> 
->   CI-20190529: 20190529
->   CI_DRM_14398: e96742a33719079709b8e180448b491622e6a427 @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_10786: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/index.html
->   IGT_7749: 2fd91b8c3cf9aa2b0bb78537a6b5e2bc3de50e0e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
-> 
-> Testlist changes
-> ----------------
-> 
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race
-> +igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind
-> +igt@xe_exec_basic@multigpu-no-exec-basic
-> +igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind
-> +igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap
-> +igt@xe_exec_basic@multigpu-no-exec-bindexecqueue
-> +igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind
-> +igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr
-> +igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate
-> +igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race
-> +igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind
-> +igt@xe_exec_basic@multigpu-no-exec-null
-> +igt@xe_exec_basic@multigpu-no-exec-null-defer-bind
-> +igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap
-> +igt@xe_exec_basic@multigpu-no-exec-null-rebind
-> +igt@xe_exec_basic@multigpu-no-exec-rebind
-> +igt@xe_exec_basic@multigpu-no-exec-userptr
-> +igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate
-> +igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race
-> +igt@xe_exec_basic@multigpu-no-exec-userptr-rebind
-> +igt@xe_exec_basic@multigpu-once-basic
-> +igt@xe_exec_basic@multigpu-once-basic-defer-bind
-> +igt@xe_exec_basic@multigpu-once-basic-defer-mmap
-> +igt@xe_exec_basic@multigpu-once-bindexecqueue
-> +igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind
-> +igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr
-> +igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate
-> +igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race
-> +igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind
-> +igt@xe_exec_basic@multigpu-once-null
-> +igt@xe_exec_basic@multigpu-once-null-defer-bind
-> +igt@xe_exec_basic@multigpu-once-null-defer-mmap
-> +igt@xe_exec_basic@multigpu-once-null-rebind
-> +igt@xe_exec_basic@multigpu-once-rebind
-> +igt@xe_exec_basic@multigpu-once-userptr
-> +igt@xe_exec_basic@multigpu-once-userptr-invalidate
-> +igt@xe_exec_basic@multigpu-once-userptr-invalidate-race
-> +igt@xe_exec_basic@multigpu-once-userptr-rebind
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10786/index.html
+>>  static void plane_setup(struct plane_t *plane, int index)
+>> @@ -243,45 +248,87 @@ static void stress_driver(struct data_t *data)
+>>  	igt_info("Time spent in the loop with %d frames: %lfs.\n", FRAME_COUNT, elapsed);
+>>  }
+>>  
+>> -static struct kms_t default_kms = {
+>> -	.crtc = {
+>> -		.width = 4096, .height = 2160,
+>> -	},
+>> -	.primary = {
+>> -		.rect = {
+>> -			.x = 101, .y = 0,
+>> -			.width = 3639, .height = 2160,
+>> +static int opt_handler(int opt, int opt_index, void *_data)
+>> +{
+>> +	struct data_t *data = _data;
+>> +	struct kms_t *kms =  &data->kms;
+>> +
+>> +	switch (opt) {
+>> +	case 'p':
+>> +		kms->primary.format = igt_drm_format_str_to_format(optarg);
+>> +		data->selected_primary_fmt = true;
+>> +		break;
+>> +	case 'a':
+>> +		kms->overlay_a.format = igt_drm_format_str_to_format(optarg);
+>> +		data->selected_overlay_a_fmt = true;
+>> +		break;
+>> +	case 'b':
+>> +		kms->overlay_b.format = igt_drm_format_str_to_format(optarg);
+>> +		data->selected_overlay_b_fmt = true;
+>> +		break;
+>> +	case 'w':
+>> +		kms->writeback.format = igt_drm_format_str_to_format(optarg);
+>> +		data->selected_writeback_fmt = true;
+>> +		break;
+>> +	default:
+>> +		return IGT_OPT_HANDLER_ERROR;
+>> +	}
+>> +
+>> +	return IGT_OPT_HANDLER_SUCCESS;
+>> +}
+>> +
+>> +static const char *help_str =
+>> +	"  --primary-format\t\tPin the primary plane format\n"
+>> +	"  --overlay-a-format\t\tPin the overlay A plane format\n"
+>> +	"  --overlay-b-format\t\tPin the overlay B plane format\n"
+>> +	"  --writeback-format\t\tPin the writeback format\n";
+>> +
+>> +static const struct option long_options[] = {
+>> +	{ .name = "primary-format", .has_arg = true, .val = 'p'},
+>> +	{ .name = "overlay-a-format", .has_arg = true, .val = 'a'},
+>> +	{ .name = "overlay-b-format", .has_arg = true, .val = 'b'},
+>> +	{ .name = "writeback-format", .has_arg = true, .val = 'w'},
+>> +	{}
+>> +};
+>> +
+>> +static struct data_t data = (struct data_t){
+>> +	.kms = {
+>> +			.crtc = {
+>> +				.width = 4096, .height = 2160,
+>> +			},
+>> +		.primary = {
+>> +			.rect = {
+>> +				.x = 101, .y = 0,
+>> +				.width = 3639, .height = 2160,
+>> +			},
+>>  		},
+>> -	},
+>> -	.overlay_a = {
+>> -		.rect = {
+>> -			.x = 201, .y = 199,
+>> -			.width = 3033, .height = 1777,
+>> +		.overlay_a = {
+>> +			.rect = {
+>> +				.x = 201, .y = 199,
+>> +				.width = 3033, .height = 1777,
+>> +			},
+>>  		},
+>> -	},
+>> -	.overlay_b = {
+>> -		.rect = {
+>> -			.x = 1800, .y = 250,
+>> -			.width = 1507, .height = 1400,
+>> +		.overlay_b = {
+>> +			.rect = {
+>> +				.x = 1800, .y = 250,
+>> +				.width = 1507, .height = 1400,
+>> +			},
+>>  		},
+>> -	},
+>> -	.writeback = {
+>> -		.rect = {
+>> -			.x = 0, .y = 0,
+>> -			// Size is to be determined at runtime
+>> +		.writeback = {
+>> +			.rect = {
+>> +				.x = 0, .y = 0,
+>> +				// Size is to be determined at runtime
+>> +			},
+>>  		},
+>>  	},
+>>  };
+>>  
+>> -
+>> -igt_simple_main
+>> +igt_simple_main_args(NULL, long_options, help_str, opt_handler, &data)
+>>  {
+>> -	struct data_t data = {0};
+>>  	size_t primary_fmt_count = 0;
+>>  	size_t overlay_a_fmt_count = 0;
+>>  	size_t overlay_b_fmt_count = 0;
+>> -
+>> -	data.kms = default_kms;
+>> +	size_t wb_fmt_count = 0;
+>>  
+>>  	data.fd = drm_open_driver_master(DRIVER_ANY);
+>>  
+>> @@ -314,37 +361,48 @@ igt_simple_main
+>>  								  DRM_PLANE_TYPE_OVERLAY, 1);
+>>  	igt_assert(data.kms.overlay_b.base != NULL);
+>>  
+>> -	primary_fmt_count = data.kms.primary.base->format_mod_count;
+>> -	overlay_a_fmt_count = data.kms.overlay_a.base->format_mod_count;
+>> -	overlay_b_fmt_count = data.kms.overlay_b.base->format_mod_count;
+>> +	primary_fmt_count = data.selected_primary_fmt ?
+>> +			    1 : data.kms.primary.base->format_mod_count;
+>> +	overlay_a_fmt_count = data.selected_overlay_a_fmt ?
+>> +			      1 : data.kms.overlay_a.base->format_mod_count;
+>> +	overlay_b_fmt_count = data.selected_overlay_b_fmt ?
+>> +			      1 : data.kms.overlay_b.base->format_mod_count;
+>> +	wb_fmt_count = data.selected_writeback_fmt ? 1 : data.wb_fmt_count;
+>>  
+>>  	for (size_t i = 0;
+>>  	     i < primary_fmt_count *
+>>  		 overlay_a_fmt_count *
+>>  		 overlay_b_fmt_count *
+>> -		 data.wb_fmt_count;
+>> +		 wb_fmt_count;
+>>  	     i++) {
+>>  		size_t p = (i / (overlay_a_fmt_count *
+>>  				 overlay_b_fmt_count *
+>> -				 data.wb_fmt_count)) % primary_fmt_count;
+>> +				 wb_fmt_count)) % primary_fmt_count;
+>>  
+>>  		size_t a = (i / (overlay_b_fmt_count *
+>> -				 data.wb_fmt_count)) % overlay_a_fmt_count;
+>> +				 wb_fmt_count)) % overlay_a_fmt_count;
+>> +
+>> +		size_t b = (i / wb_fmt_count) % overlay_a_fmt_count;
+>> +
+>> +		size_t w = i % wb_fmt_count;
+>> +
+>> +		if (data.selected_primary_fmt == false)
+>> +			data.kms.primary.format = data.kms.primary.base->formats[p];
+>>  
+>> -		size_t b = (i / data.wb_fmt_count) % overlay_a_fmt_count;
+>> +		if (data.selected_overlay_a_fmt == false)
+>> +			data.kms.overlay_a.format = data.kms.overlay_a.base->formats[a];
+>>  
+>> -		size_t w = i % data.wb_fmt_count;
+>> +		if (data.selected_overlay_b_fmt == false)
+>> +			data.kms.overlay_b.format = data.kms.overlay_b.base->formats[b];
+>>  
+>> -		data.kms.primary.format = data.kms.primary.base->formats[p];
+>> -		data.kms.overlay_a.format = data.kms.overlay_a.base->formats[a];
+>> -		data.kms.overlay_b.format = data.kms.overlay_b.base->formats[b];
+>> -		data.kms.writeback.format = data.wb_formats[w];
+>> +		if (data.selected_writeback_fmt == false)
+>> +			data.kms.writeback.format = data.wb_formats[w];
+>>  
+>>  		igt_info("formats: primary: %zu/%zu overlay_a: %zu/%zu overlay_b: %zu/%zu writeback: %zu/%zu\n",
+>>  			 p + 1, primary_fmt_count,
+>>  			 a + 1, overlay_a_fmt_count,
+>>  			 b + 1, overlay_b_fmt_count,
+>> -			 w + 1, data.wb_fmt_count);
+>> +			 w + 1, wb_fmt_count);
+>>  
+>>  		stress_driver(&data);
+>>  	}
+>>
+>> -- 
+>> 2.43.0
+>>
