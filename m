@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 080ACC5475B
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06775C54E41
 	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 15:06:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9C1CA11327B;
-	Wed,  6 Mar 2024 15:06:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7EEB1113283;
+	Wed,  6 Mar 2024 15:06:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Wveenzce";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GSVIEn8/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6EDB310F090
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 15:06:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5160F113276
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 15:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709737562; x=1741273562;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=s/l7b9Lf6zgVceDaCN81gZsBeGQJ2GMlancRjk1Ez8M=;
- b=WveenzceNHpDaCoQM4yJJtAzbU3QR1dUfTFOTkEMn095XhWooU8uv3dH
- LPSfiaMuZ6J4johCpBwAKNSNbCEID+jfvJchqAqd9SylLag515ypg9LGk
- P6aaF746WgjIyPt5t5N7eqZtUm4nGKxiVDzpRIVxZsScrkMXQI3gN4GEK
- iyWaZxeFt9DIBiaZglFBtd/QonIYOZx41k7ZMXCxKJIfGMdi/uTnJeWLD
- 75wZumUYw4qe8pi8PS03L5pxJ6t+/V5gHQ8dsDLYbF3b/HQ6yoz/DRcj8
- fEvpkGIxHyuLCIFyPve5wUxdNFbrI0K3aDI6BAR7UfEm8bNrhj2w7dwkb g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="4240915"
+ t=1709737563; x=1741273563;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=OSL/owOU1knJ2UUxKGKJHJ6IqcVwUjIsRoHAEipanFU=;
+ b=GSVIEn8/qwLe6FPBzgc9hQEeO6SrkhCzPwLkdotHodEuEBBGYvmnsHWl
+ KVwGhnJO/lAeiRUfDGnGD+ydcN31UCM6VYMmH38CBkaOR5h0YXVnDQTEE
+ 1sdBMkT5vyKvQ0q0/d6HGmECmog7A2wWZGP/fIBWtlzdjAzcx6ME6dWKE
+ JMa7nQOM8VnpcJgI+WMc5y6IaTbSzHK7CR6JkI8bFwYU+KDwr1dpmu8r5
+ XMGzd1ETsQn2iVhrG996aunOpWC62/+/8IexB8heA0jE+xKnUIpUgAWj7
+ 31i7Gk8+fK8chfklmE2pSfzI61LCR+1NG8eFPxFePk25TKcvqFZUAhwrW w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="4240922"
 X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
-   d="scan'208";a="4240915"
+   d="scan'208";a="4240922"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2024 07:06:02 -0800
+ 06 Mar 2024 07:06:03 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; d="scan'208";a="47296593"
+X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; d="scan'208";a="47296604"
 Received: from dawidzix-mobl1.ger.corp.intel.com (HELO mwauld-mobl1.intel.com)
  ([10.249.140.92])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2024 07:06:00 -0800
+ 06 Mar 2024 07:06:02 -0800
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Nirmoy Das <nirmoy.das@intel.com>
-Subject: [PATCH i-g-t v3 1/6] lib/rendercopy_gen9: use MOCS index helper
-Date: Wed,  6 Mar 2024 15:04:47 +0000
-Message-ID: <20240306150453.254144-1-matthew.auld@intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v3 2/6] lib/gpu_cmds: default to uc MOCS index
+Date: Wed,  6 Mar 2024 15:04:48 +0000
+Message-ID: <20240306150453.254144-2-matthew.auld@intel.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240306150453.254144-1-matthew.auld@intel.com>
+References: <20240306150453.254144-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -65,34 +66,62 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-UC looks to be the sensible default here, since it will work with
-display engine if rendering onto scanout surface. Use the matching
-helper.
+Currently we just default to index=0, but that can have different
+meaning between HW versions. Rather just default to UC mocs index.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
 ---
- lib/rendercopy_gen9.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ lib/gpu_cmds.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-index efd7cb37c..404406e5f 100644
---- a/lib/rendercopy_gen9.c
-+++ b/lib/rendercopy_gen9.c
-@@ -180,10 +180,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
- 	ss->ss0.horizontal_alignment = 1; /* align 4 or HALIGN_32 on display ver >= 13*/
+diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+index 49ba364f9..d909efde8 100644
+--- a/lib/gpu_cmds.c
++++ b/lib/gpu_cmds.c
+@@ -214,10 +214,10 @@ gen9_fill_surface_state(struct intel_bb *ibb,
+ 	ss->ss0.vertical_alignment = 1; /* align 4 */
+ 	ss->ss0.horizontal_alignment = 1; /* align 4 */
  
- 	if (HAS_4TILE(ibb->devid)) {
--		/*
--		 * mocs table version 1 index 3 groub wb use l3
--		 */
--		ss->ss1.mocs_index = 3;
-+		ss->ss1.mocs_index = intel_get_uc_mocs_index(i915);
- 		ss->ss5.mip_tail_start_lod = 0;
- 	} else {
- 		ss->ss0.render_cache_read_write = 1;
+-	if (mocs == INTEL_BUF_MOCS_UC)
+-		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
+-	else if (mocs == INTEL_BUF_MOCS_WB)
++	if (mocs == INTEL_BUF_MOCS_WB)
+ 		ss->ss1.mocs_index = intel_get_wb_mocs_index(ibb->fd);
++	else
++		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
+ 
+ 	if (buf->tiling == I915_TILING_X)
+ 		ss->ss0.tiled_mode = 2;
+@@ -275,10 +275,10 @@ gen11_fill_surface_state(struct intel_bb *ibb,
+ 	ss->ss0.vertical_alignment = vertical_alignment; /* align 4 */
+ 	ss->ss0.horizontal_alignment = horizontal_alignment; /* align 4 */
+ 
+-	if (mocs == INTEL_BUF_MOCS_UC)
+-		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
+-	else if (mocs == INTEL_BUF_MOCS_WB)
++	if (mocs == INTEL_BUF_MOCS_WB)
+ 		ss->ss1.mocs_index = intel_get_wb_mocs_index(ibb->fd);
++	else
++		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
+ 
+ 	if (buf->tiling == I915_TILING_X)
+ 		ss->ss0.tiled_mode = 2;
+@@ -931,10 +931,10 @@ xehp_fill_surface_state(struct intel_bb *ibb,
+ 	ss->ss0.vertical_alignment = 1; /* align 4 */
+ 	ss->ss0.horizontal_alignment = 1; /* align 4 */
+ 
+-	if (mocs == INTEL_BUF_MOCS_UC)
+-		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
+-	else if (mocs == INTEL_BUF_MOCS_WB)
++	if (mocs == INTEL_BUF_MOCS_WB)
+ 		ss->ss1.mocs_index = intel_get_wb_mocs_index(ibb->fd);
++	else
++		ss->ss1.mocs_index = intel_get_uc_mocs_index(ibb->fd);
+ 
+ 	if (buf->tiling == I915_TILING_X)
+ 		ss->ss0.tiled_mode = 2;
 -- 
 2.43.2
 
