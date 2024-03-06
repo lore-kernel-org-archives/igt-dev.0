@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A97EEC5475B
-	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 06:54:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B938C5475B
+	for <igt-dev@archiver.kernel.org>; Wed,  6 Mar 2024 07:24:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 48FB110E22F;
-	Wed,  6 Mar 2024 06:54:05 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TkPOEw29";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7430F10E22F
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Mar 2024 06:54:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709708043; x=1741244043;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding:sender;
- bh=N4h36pagQJ3atRzsDRTDf5cdpfwM0fHorvGfOk1huho=;
- b=TkPOEw29FZmL1vvLAyvmxCdY7aR/x8N6+9ojidt8mKRFL3knmokRbo+g
- JixBYs0QLSAbOW5caOoYFWdt2neRSLJBW37yZiesuG3PSmvM0oe0pfGw4
- 6WInrw8vl0mT3WmNG8ebKj8N2g7JbNC1LU1F+rcZ0Be16cVlsAyJwqCpq
- q9MFGEK/FOjDZJqHe899COGvRYFbiAsCOA2mBFMHsY4tz0a38i/eR45Dq
- WTzSScflPnU1WMHBTNRUaZ8cVNnBio35jzNNkEj8lSC1hLlWcDBaua8+M
- +yLStdulrLYvN7Umo6+17hYWcKZfysQcstdbDvMNQrks5Lt4eT/lJY3g8 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="4167874"
-X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; 
-   d="scan'208";a="4167874"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2024 22:54:02 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; d="scan'208";a="40538895"
-Received: from linux.intel.com ([10.54.29.200])
- by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2024 22:54:02 -0800
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.245.244.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 7E7D0580DA0
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2024 22:54:02 -0800 (PST)
-Received: from maurocar by linux.intel.com with local (Exim 4.97.1)
- (envelope-from <mauro.chehab@linux.intel.com>)
- id 1rhlA8-00000003GuA-2NcB for igt-dev@lists.freedesktop.org;
- Wed, 06 Mar 2024 07:54:00 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] scripts/igt_doc.py: store igt test names in lowercase
-Date: Wed,  6 Mar 2024 07:53:58 +0100
-Message-ID: <20240306065358.779956-1-mauro.chehab@linux.intel.com>
-X-Mailer: git-send-email 2.43.2
+	by gabe.freedesktop.org (Postfix) with ESMTP id 93C2D10EB73;
+	Wed,  6 Mar 2024 07:24:29 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB6BF10EB73;
+ Wed,  6 Mar 2024 07:24:27 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4320936343070471198=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_scripts/igt=5Fdoc=2Epy=3A_stor?=
+ =?utf-8?q?e_igt_test_names_in_lowercase?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mauro Carvalho Chehab" <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 06 Mar 2024 07:24:27 -0000
+Message-ID: <170970986789.524258.9278473346953603987@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240306065358.779956-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20240306065358.779956-1-mauro.chehab@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,33 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+--===============4320936343070471198==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-IGT runner is case insensitive, so, for machine, it doesn't matter.
+== Series Details ==
 
-Yet, as dictionaries are case sensitive, better to place the tests
-on a canonical form, e. g. in lower case.
+Series: scripts/igt_doc.py: store igt test names in lowercase
+URL   : https://patchwork.freedesktop.org/series/130787/
+State : success
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- scripts/igt_doc.py | 1 +
- 1 file changed, 1 insertion(+)
+== Summary ==
 
-diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-index 1cb8e617abca..fa2c2c7ca146 100755
---- a/scripts/igt_doc.py
-+++ b/scripts/igt_doc.py
-@@ -98,6 +98,7 @@ class IgtTestList(TestList):
-             tests_per_list[driver] = {}
- 
-         for subname, subtest in subtest_dict.items():
-+            subname = subname.lower()
-             run_types = subtest.get("Run type", "other").lower()
- 
-             run_type_dict = self._get_run_type_drivers(run_types)
--- 
-2.43.2
+CI Bug Log - changes from XEIGT_7747_BAT -> XEIGTPW_10785_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7747 -> IGTPW_10785
+
+  IGTPW_10785: 10785
+  IGT_7747: 7747
+  xe-905-dd08fd912fdc1b72984a39852fdbee49b97b8ce4: dd08fd912fdc1b72984a39852fdbee49b97b8ce4
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10785/index.html
+
+--===============4320936343070471198==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>scripts/igt_doc.py: store igt test names in lowercase</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130787/">https://patchwork.freedesktop.org/series/130787/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10785/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10785/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7747_BAT -&gt; XEIGTPW_10785_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7747 -&gt; IGTPW_10785</li>
+</ul>
+<p>IGTPW_10785: 10785<br />
+  IGT_7747: 7747<br />
+  xe-905-dd08fd912fdc1b72984a39852fdbee49b97b8ce4: dd08fd912fdc1b72984a39852fdbee49b97b8ce4</p>
+
+</body>
+</html>
+
+--===============4320936343070471198==--
