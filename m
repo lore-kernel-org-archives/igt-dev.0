@@ -4,40 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D86EC54798
-	for <igt-dev@archiver.kernel.org>; Thu,  7 Mar 2024 19:41:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3153C54E4A
+	for <igt-dev@archiver.kernel.org>; Thu,  7 Mar 2024 19:41:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E288E112565;
-	Thu,  7 Mar 2024 19:41:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3BF7C10EE25;
+	Thu,  7 Mar 2024 19:41:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="cdwop/ml";
+	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="V+szPvke";
 	dkim-atps=neutral
 Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B07B112565
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Mar 2024 19:41:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3000D112691
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Mar 2024 19:41:25 +0000 (UTC)
 Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx0.riseup.net (Postfix) with ESMTPS id 4TrKRj4S7fz9tkS;
- Thu,  7 Mar 2024 19:41:21 +0000 (UTC)
+ by mx0.riseup.net (Postfix) with ESMTPS id 4TrKRn3p3Pz9tkS;
+ Thu,  7 Mar 2024 19:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
- t=1709840481; bh=DJiYgm/Wp6Q5TpSFc+k9sF4OozNujrie518DAfo+stQ=;
+ t=1709840485; bh=UWEZd35Rmd1uJzUeVup2+uaJ5rUBEdC4nmEhVKJfW68=;
  h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=cdwop/ml7dyg9hzPn0Vm/G8+2rL8rxtn1in0bhuw8zDcn+QTbofXipBBYME7zF+Ce
- gwpVDXvpd0TtsLA9Ws/Gk04XXXLpFsRDkBsXX6q+Z3LK0VCzsEhh33V7SDsuOQhhID
- JiKRPtzhanDrrN7Vmb3Uk/YrEIu1yVSUEBBTmnqg=
-X-Riseup-User-ID: 81F19223B94B4381405F1702C33D4000756BFFFA51A15425D33AC9DE72638FFD
+ b=V+szPvkeKjHKveVqkv50oNGf96j3q9MPlXj6nRASJiyBM6uNED2yLTcuyH/scwAP9
+ sQyoba9eMq3hEFPDpNzVd0len+KqNkpK4v7t9VcBteI2Sj3M5any0GDVxQsJA18P5B
+ tIToUaWI49NvfMc1lKgX/Ny9Bjwr3aoxZJnlnVBI=
+X-Riseup-User-ID: 5AF968D645EF1CBAFA1D25C0FC748EF84F00C5374F7B3625A69D9DEFB9999A8B
 Received: from [127.0.0.1] (localhost [127.0.0.1])
- by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4TrKRf687VzJtT4;
- Thu,  7 Mar 2024 19:41:18 +0000 (UTC)
+ by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4TrKRj6dNmzJtT4;
+ Thu,  7 Mar 2024 19:41:21 +0000 (UTC)
 From: Arthur Grillo <arthurgrillo@riseup.net>
-Date: Thu, 07 Mar 2024 16:41:04 -0300
-Subject: [PATCH i-g-t v3 2/7] benchmarks/kms_fb_stress: Log the KMS structure
+Date: Thu, 07 Mar 2024 16:41:05 -0300
+Subject: [PATCH i-g-t v3 3/7] benchmarks/kms_fb_stress: Move the stress
+ procedure to its own function
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240307-kms_fb_stress-dev-v3-2-d5b948a541be@riseup.net>
+Message-Id: <20240307-kms_fb_stress-dev-v3-3-d5b948a541be@riseup.net>
 References: <20240307-kms_fb_stress-dev-v3-0-d5b948a541be@riseup.net>
 In-Reply-To: <20240307-kms_fb_stress-dev-v3-0-d5b948a541be@riseup.net>
 To: igt-dev@lists.freedesktop.org
@@ -64,52 +65,133 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In the future, the KMS structure could be dynamically changed. So, log
-the KMS structure to the user.
+In the future, we want to do this procedure multiple times in a single
+execution of the program. To allow that, move the stress procedure to
+its own function. This should be noop.
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
 ---
- benchmarks/kms_fb_stress.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ benchmarks/kms_fb_stress.c | 86 +++++++++++++++++++++++++---------------------
+ 1 file changed, 46 insertions(+), 40 deletions(-)
 
 diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
-index 8fea10ef069f..186e92ebaf9b 100644
+index 186e92ebaf9b..ba4af5970796 100644
 --- a/benchmarks/kms_fb_stress.c
 +++ b/benchmarks/kms_fb_stress.c
-@@ -8,6 +8,9 @@
- #define FRAME_COUNT 100
- #define NUM_FBS 2
+@@ -128,6 +128,51 @@ static void set_crtc_size(struct data_t *data)
+ 	igt_assert_f(0, "CRTC size %dx%d not supported\n", crtc->width, crtc->height);
+ }
  
-+#define RECT_FMT "%dx%d%+d%+d"
-+#define RECT_ARG(r) (r)->width, (r)->height, (r)->x, (r)->y
++static void stress_driver(struct data_t *data)
++{
++	struct timespec then, now;
++	double elapsed;
 +
- struct rect_t {
- 	int x, y;
- 	int width, height;
-@@ -189,6 +192,22 @@ igt_simple_main
- 
- 	gen_fbs(&data);
- 
 +	igt_info("KMS structure:\n");
 +	igt_info("\tCRTC:\n");
-+	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data.kms.crtc));
++	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data->kms.crtc));
 +	igt_info("\tprimary:\n");
-+	igt_info("\t\tformat: %s\n", igt_format_str(data.kms.primary.format));
-+	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data.kms.primary.rect));
++	igt_info("\t\tformat: %s\n", igt_format_str(data->kms.primary.format));
++	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data->kms.primary.rect));
 +	igt_info("\toverlay A:\n");
-+	igt_info("\t\tformat: %s\n", igt_format_str(data.kms.overlay_a.format));
-+	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data.kms.overlay_a.rect));
++	igt_info("\t\tformat: %s\n", igt_format_str(data->kms.overlay_a.format));
++	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data->kms.overlay_a.rect));
 +	igt_info("\toverlay B:\n");
-+	igt_info("\t\tformat: %s\n", igt_format_str(data.kms.overlay_b.format));
-+	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data.kms.overlay_b.rect));
++	igt_info("\t\tformat: %s\n", igt_format_str(data->kms.overlay_b.format));
++	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data->kms.overlay_b.rect));
 +	igt_info("\twriteback:\n");
-+	igt_info("\t\tformat: %s\n", igt_format_str(data.kms.writeback.format));
-+	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data.kms.writeback.rect));
++	igt_info("\t\tformat: %s\n", igt_format_str(data->kms.writeback.format));
++	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data->kms.writeback.rect));
 +
++	gen_fbs(data);
++
++	igt_assert_eq(igt_gettime(&then), 0);
++
++	for (int i = 0; i < FRAME_COUNT; i++) {
++		int fb_index = i % NUM_FBS;
++
++		plane_setup(&data->kms.primary, fb_index);
++
++		plane_setup(&data->kms.overlay_a, fb_index);
++
++		plane_setup(&data->kms.overlay_b, fb_index);
++
++		igt_output_set_writeback_fb(data->wb_output, &data->kms.writeback.fbs[fb_index]);
++
++		igt_display_commit2(&data->display, COMMIT_ATOMIC);
++	}
++
++	igt_assert_eq(igt_gettime(&now), 0);
++	elapsed = igt_time_elapsed(&then, &now);
++
++	igt_info("Time spent in the loop with %d frames: %lfs.\n", FRAME_COUNT, elapsed);
++}
++
+ static struct kms_t default_kms = {
+ 	.crtc = {
+ 		.width = 4096, .height = 2160,
+@@ -166,8 +211,6 @@ static struct kms_t default_kms = {
+ igt_simple_main
+ {
+ 	struct data_t data = {0};
+-	struct timespec then, now;
+-	double elapsed;
+ 
+ 	data.kms = default_kms;
+ 
+@@ -190,24 +233,6 @@ igt_simple_main
+ 
+ 	set_crtc_size(&data);
+ 
+-	gen_fbs(&data);
+-
+-	igt_info("KMS structure:\n");
+-	igt_info("\tCRTC:\n");
+-	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data.kms.crtc));
+-	igt_info("\tprimary:\n");
+-	igt_info("\t\tformat: %s\n", igt_format_str(data.kms.primary.format));
+-	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data.kms.primary.rect));
+-	igt_info("\toverlay A:\n");
+-	igt_info("\t\tformat: %s\n", igt_format_str(data.kms.overlay_a.format));
+-	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data.kms.overlay_a.rect));
+-	igt_info("\toverlay B:\n");
+-	igt_info("\t\tformat: %s\n", igt_format_str(data.kms.overlay_b.format));
+-	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data.kms.overlay_b.rect));
+-	igt_info("\twriteback:\n");
+-	igt_info("\t\tformat: %s\n", igt_format_str(data.kms.writeback.format));
+-	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data.kms.writeback.rect));
+-
  	data.kms.primary.base = igt_output_get_plane_type(data.wb_output, DRM_PLANE_TYPE_PRIMARY);
  	igt_assert(data.kms.primary.base != NULL);
  
+@@ -219,26 +244,7 @@ igt_simple_main
+ 								  DRM_PLANE_TYPE_OVERLAY, 1);
+ 	igt_assert(data.kms.overlay_b.base != NULL);
+ 
+-	igt_assert_eq(igt_gettime(&then), 0);
+-
+-	for (int i = 0; i < FRAME_COUNT; i++) {
+-		int fb_index = i % NUM_FBS;
+-
+-		plane_setup(&data.kms.primary, fb_index);
+-
+-		plane_setup(&data.kms.overlay_a, fb_index);
+-
+-		plane_setup(&data.kms.overlay_b, fb_index);
+-
+-		igt_output_set_writeback_fb(data.wb_output, &data.kms.writeback.fbs[fb_index]);
+-
+-		igt_display_commit2(&data.display, COMMIT_ATOMIC);
+-	}
+-
+-	igt_assert_eq(igt_gettime(&now), 0);
+-	elapsed = igt_time_elapsed(&then, &now);
+-
+-	igt_info("Time spent in the loop with %d frames: %lfs.\n", FRAME_COUNT, elapsed);
++	stress_driver(&data);
+ 
+ 	igt_display_fini(&data.display);
+ 	drm_close_driver(data.fd);
 
 -- 
 2.43.0
