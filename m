@@ -4,61 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F29CFC54E49
-	for <igt-dev@archiver.kernel.org>; Thu,  7 Mar 2024 17:54:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03265C54798
+	for <igt-dev@archiver.kernel.org>; Thu,  7 Mar 2024 18:21:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8AE4410E37E;
-	Thu,  7 Mar 2024 17:54:21 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="laqPOHyg";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6622010E37E;
- Thu,  7 Mar 2024 17:54:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709834060; x=1741370060;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=se49cfhKepMvWVvIU9I3CrOj6t1DWeBKvjwqvhG3R80=;
- b=laqPOHygv0HvjrRZPDhG3U0+3GWBvBGH/jWB5yLXKgKveN0oNKvhOgJz
- 5jrILRlHoR1BtH+YyqQ1Jt7nQuDUD6pg2WZhO32feUvXLEVJH4eqwuqgK
- RH22xH3RiHqWAsdihcaiox19lQbQ4KW0SIIGvYSzckvkmBrnIkZaF4xr1
- 7q9Z5WPM1Z/DwWSOrkpeVgCHTO35hi0GxZw6mTUI/SqgZtwN6SxU9qUsX
- LNmedlj6Bt+Dj0R8rGAewN4+21yX/nFTHaMZQUrixUZr/shJ6tV8DZgLG
- gXOe5qrvnze6jZxxkRlcMwaOwjNVMGnAC3/MdEjHv2UTcoCz1p/NZ0eP3 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4390264"
-X-IronPort-AV: E=Sophos;i="6.07,107,1708416000"; 
-   d="scan'208";a="4390264"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Mar 2024 09:54:19 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,107,1708416000"; d="scan'208";a="10631611"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 09:54:18 -0800
-Date: Thu, 7 Mar 2024 18:54:15 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: Re: [PATCH i-g-t v2 1/2] lib/kunit: Execute test cases synchronously
-Message-ID: <20240307175415.bkldt23btxli2ssm@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-References: <20240227151128.16802-4-janusz.krzysztofik@linux.intel.com>
- <20240227151128.16802-5-janusz.krzysztofik@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 959E810EAA2;
+	Thu,  7 Mar 2024 18:21:08 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C52C10E74E;
+ Thu,  7 Mar 2024 18:21:07 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1899586662022416080=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240227151128.16802-5-janusz.krzysztofik@linux.intel.com>
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_lib/kunit=3A_Execute_test_c?=
+ =?utf-8?q?ases_synchronously_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 07 Mar 2024 18:21:07 -0000
+Message-ID: <170983566757.580282.6853893858242634477@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240227151128.16802-4-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20240227151128.16802-4-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,277 +37,213 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Janusz,
-On 2024-02-27 at 16:10:41 +0100, Janusz Krzysztofik wrote:
-> Up to now we were loading a KUnit test module in test execution mode only
-> once per subtest, in background, and then, in parallel with execution of
-> test cases while the module was loading, we were looking through dmesg for
-> KTAP results from each expected test case.  As a consequence, our IGT
-> messages were more or less delayed, never in full sync with kernel
-> messages.  Moreover, parsing of KTAP results from already completed test
-> cases could be abandoned on a failure from loading the test module or
-> kernel taint caused by a subsequent test case.  Also, parsing of KTAP
-> results from all subsequent test cases could be abandoned on a failure of
-> the parser caused by any test case.  Other than that, if a user requested
-> a single dynamic sub-subtest, all test cases were executed anyway while
-> results from only one of them that corresponded to the selected dynamic
-> sub-subtest were reported.  That way, kernel messages from unrelated test
-> cases, not only the selected one, could contribute to dmesg-fail or dmesg-
-> warn CI results from that sub-subtest.
-> 
-> Since recent KUnit implementation is capable of executing only those test
-> cases that match a user filter, stop executing all of them asynchronously
-> and parsing their KTAP results as they appear.  Instead, reload the test
-> module once per each dynamic sub-subtest with a filter that selects a
-> specific test case and wait for its completion.  If successful and no
-> kernel taint has occurred then parse the whole KTAP report from a single
-> test case it has produced and translate it to IGT result of that single
-> corresponding sub-subtest.
-> 
-> With that in place, we no longer need to skip the whole subtest on a
-> failure from module loading or KTAP reading or parsing.  Since such event
-> is now local to execution of an individual test case, only fail its
-> corresponding dynamic sub-subtests and continue with subsequent ones.
-> However, still omit execution of subsequent test cases once the kernel
-> gets tainted.
-> 
-> v2: Refresh on top of changes to KUnit filters handling,
->   - include the code of a new helper from a previously separate patch,
->   - actually limit the scope of the helper to fetching a KTAP report from
->     a file descriptor, and let the caller decide on how other steps, like
->     setting up filters or loading a test module, and errors they return
->     are handled,
->   - similar to kernel taint handling, just omit any remaining dynamic sub-
->     subtests if unloading the test module fails,
->   - update commit description with a more detailed justification of why we
->     need these changes.
-> 
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  lib/igt_kmod.c | 157 ++++++++++++++++---------------------------------
->  1 file changed, 52 insertions(+), 105 deletions(-)
-> 
-> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index cc242838fa..e9e00ac5b2 100644
-> --- a/lib/igt_kmod.c
-> +++ b/lib/igt_kmod.c
-> @@ -1018,6 +1018,25 @@ static void kunit_results_free(struct igt_list_head *results,
->  	free(*suite_name);
->  }
->  
-> +static int kunit_get_results(struct igt_list_head *results, int kmsg_fd)
-> +{
-> +	struct igt_ktap_results *ktap;
-> +	int err;
-> +
-> +	ktap = igt_ktap_alloc(results);
-> +	if (igt_debug_on(!ktap))
-> +		return -ENOMEM;
-> +
-> +	do
-> +		igt_debug_on((err = kunit_kmsg_result_get(results, NULL, kmsg_fd, ktap),
-> +			      err && err != -EINPROGRESS));
-> +	while (err == -EINPROGRESS);
-> +
-> +	igt_ktap_free(ktap);
-> +
-> +	return err;
-> +}
-> +
->  static void __igt_kunit_legacy(struct igt_ktest *tst,
->  			       const char *subtest,
->  			       const char *opts)
-> @@ -1211,86 +1230,51 @@ static void __igt_kunit(struct igt_ktest *tst,
->  			const char *opts,
->  			struct igt_list_head *tests)
->  {
-> -	struct modprobe_data modprobe = { tst->kmod, opts, 0, pthread_self(), };
-> -	char *suite_name = NULL, *case_name = NULL;
-> -	struct igt_ktap_result *t, *r = NULL;
-> -	struct igt_ktap_results *ktap;
-> -	pthread_mutexattr_t attr;
-> -	IGT_LIST_HEAD(results);
-> -	int ret = -EINPROGRESS;
-> -	unsigned long taints;
-> -
-> -	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
-> -
-> -	ktap = igt_ktap_alloc(&results);
-> -	igt_require(ktap);
-> +	struct igt_ktap_result *t;
->  
->  	igt_list_for_each_entry(t, tests, link) {
-> +		char *suite_name = NULL, *case_name = NULL;
-> +		IGT_LIST_HEAD(results);
-> +		unsigned long taints;
-> +
->  		igt_dynamic_f("%s%s%s",
->  			      strcmp(t->suite_name, subtest) ?  t->suite_name : "",
->  			      strcmp(t->suite_name, subtest) ? "-" : "",
->  			      t->case_name) {
-> +			struct igt_ktap_result *r = NULL;
-> +			char glob[1024];
-> +			int expect = 2;
->  
-> -			if (!modprobe.thread) {
-> -				igt_require(kunit_set_filtering(suite, NULL, NULL));
-> +			igt_skip_on(igt_kernel_tainted(&taints));
->  
-> -				igt_assert_eq(pthread_mutexattr_init(&attr), 0);
-> -				igt_assert_eq(pthread_mutexattr_setrobust(&attr,
-> -							  PTHREAD_MUTEX_ROBUST),
-> -					      0);
-> -				igt_assert_eq(pthread_mutex_init(&modprobe.lock,
-> -								 &attr), 0);
-> +			igt_fail_on(lseek(tst->kmsg, 0, SEEK_END) == -1 && errno);
->  
-> -				modprobe.err = pthread_create(&modprobe.thread,
-> -							      NULL,
-> -							      modprobe_task,
-> -							      &modprobe);
-> -				igt_assert_eq(modprobe.err, 0);
-> +			igt_assert_lt(snprintf(glob, sizeof(glob), "%s.%s",
-> +					       t->suite_name, t->case_name),
-> +				      sizeof(glob));
-> +			igt_assert(kunit_set_filtering(glob, NULL, NULL));
->  
-> -				igt_assert(igt_list_empty(&results));
-> -				igt_assert_eq(ret, -EINPROGRESS);
-> -				ret = kunit_kmsg_result_get(&results, &modprobe,
-> -							    tst->kmsg, ktap);
-> -				igt_fail_on(igt_list_empty(&results));
-> +			igt_assert_eq(modprobe(tst->kmod, opts), 0);
-> +			igt_assert_eq(igt_kernel_tainted(&taints), 0);
->  
-> -				r = igt_list_first_entry(&results, r, link);
-> -			}
-> +			igt_assert_eq(kunit_get_results(&results, tst->kmsg), 0);
->  
-> -			while (igt_debug_on_f(strcmp(r->suite_name, t->suite_name),
-> -					      "suite_name expected: %s, got: %s\n",
-> -					      t->suite_name, r->suite_name) ||
-> -			       igt_debug_on_f(strcmp(r->case_name, t->case_name),
-> -					      "case_name expected: %s, got: %s\n",
-> -					      t->case_name, r->case_name) ||
-> -			       r->code == IGT_EXIT_INVALID) {
-> -
-> -				int code = r->code;
-> +			do {
-> +				igt_fail_on_f(!expect--, "Invalid result code\n");
------------------------------- ^^^^^^
-Name for this var is misleading, could you consider changing this?
-Why not for(;;) loop? Are you expecting this loop twice, third one
-is error?
+--===============1899586662022416080==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Regards,
-Kamil
+== Series Details ==
 
->  
->  				kunit_result_free(&r, &suite_name, &case_name);
-> -				if (igt_list_empty(&results)) {
-> -					igt_assert_eq(ret, -EINPROGRESS);
-> -					ret = kunit_kmsg_result_get(&results,
-> -								    &modprobe,
-> -								    tst->kmsg,
-> -								    ktap);
-> -					igt_fail_on(igt_list_empty(&results));
-> -				}
-> +				igt_fail_on(igt_list_empty(&results));
->  
->  				r = igt_list_first_entry(&results, r, link);
->  
-> -				if (code != IGT_EXIT_INVALID)
-> -					continue;
-> -
-> -				/* result from parametrized test case */
-> -				igt_fail_on_f(strcmp(r->suite_name, suite_name),
-> +				igt_fail_on_f(strcmp(r->suite_name, t->suite_name),
->  					      "suite_name expected: %s, got: %s\n",
-> -					      suite_name, r->suite_name);
-> -				igt_fail_on_f(strcmp(r->case_name, case_name),
-> +					      t->suite_name, r->suite_name);
-> +				igt_fail_on_f(strcmp(r->case_name, t->case_name),
->  					      "case_name expected: %s, got: %s\n",
-> -					      case_name, r->case_name);
-> -			}
-> +					      t->case_name, r->case_name);
->  
-> -			igt_assert_neq(r->code, IGT_EXIT_INVALID);
-> +			} while (r->code == IGT_EXIT_INVALID);
->  
->  			if (r->msg && *r->msg) {
->  				igt_skip_on_f(r->code == IGT_EXIT_SKIP,
-> @@ -1306,58 +1290,21 @@ static void __igt_kunit(struct igt_ktest *tst,
->  					igt_fail(r->code);
->  			}
->  			igt_assert_eq(r->code, IGT_EXIT_SUCCESS);
-> -
-> -			switch (pthread_mutex_lock(&modprobe.lock)) {
-> -			case 0:
-> -				igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> -				break;
-> -			case EOWNERDEAD:
-> -				/* leave the mutex unrecoverable */
-> -				igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> -				__attribute__ ((fallthrough));
-> -			case ENOTRECOVERABLE:
-> -				igt_assert_eq(modprobe.err, 0);
-> -				break;
-> -			default:
-> -				igt_debug("pthread_mutex_lock() failed\n");
-> -				break;
-> -			}
-> -
-> -			igt_assert_eq(igt_kernel_tainted(&taints), 0);
->  		}
->  
-> -		if (igt_debug_on(ret != -EINPROGRESS))
-> -			break;
-> -	}
-> +		kunit_results_free(&results, &suite_name, &case_name);
->  
-> -	kunit_results_free(&results, &suite_name, &case_name);
-> -
-> -	if (modprobe.thread) {
-> -		switch (pthread_mutex_lock(&modprobe.lock)) {
-> -		case 0:
-> -			igt_debug_on(pthread_cancel(modprobe.thread));
-> -			igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> -			igt_debug_on(pthread_join(modprobe.thread, NULL));
-> -			break;
-> -		case EOWNERDEAD:
-> -			/* leave the mutex unrecoverable */
-> -			igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> +		if (igt_debug_on(igt_kernel_tainted(&taints))) {
-> +			igt_info("Kernel tainted, not executing more selftests.\n");
->  			break;
-> -		case ENOTRECOVERABLE:
-> -			break;
-> -		default:
-> -			igt_debug("pthread_mutex_lock() failed\n");
-> -			igt_debug_on(pthread_join(modprobe.thread, NULL));
-> +		}
-> +
-> +		if (igt_debug_on(kmod_module_remove_module(tst->kmod,
-> +							   KMOD_REMOVE_FORCE))) {
-> +			igt_info("Unloading test module failed, not executing more selftests.\n");
->  			break;
->  		}
->  	}
-> -
-> -	igt_ktap_free(ktap);
-> -
-> -	igt_skip_on(modprobe.err);
-> -	igt_skip_on(igt_kernel_tainted(&taints));
-> -	if (ret != -EINPROGRESS)
-> -		igt_skip_on_f(ret, "KTAP parser failed\n");
->  }
->  
->  /**
-> -- 
-> 2.43.0
-> 
+Series: lib/kunit: Execute test cases synchronously (rev4)
+URL   : https://patchwork.freedesktop.org/series/126017/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_14405 -> IGTPW_10792
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_10792 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_10792, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/index.html
+
+Participating hosts (40 -> 38)
+------------------------------
+
+  Missing    (2): bat-mtlp-8 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_10792:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@objects:
+    - bat-arls-2:         [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14405/bat-arls-2/igt@i915_selftest@live@objects.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/bat-arls-2/igt@i915_selftest@live@objects.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10792 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-apl-guc:         NOTRUN -> [SKIP][3] ([i915#4613]) +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/fi-apl-guc/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_lmem_swapping@basic@lmem0:
+    - bat-dg2-11:         [PASS][4] -> [FAIL][5] ([i915#10378])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14405/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html
+
+  * igt@gem_lmem_swapping@random-engines:
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][6] +19 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-apl-guc:         NOTRUN -> [SKIP][7] +17 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/fi-apl-guc/igt@kms_hdmi_inject@inject-audio.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-rplp-1:         [ABORT][8] ([i915#10021]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14405/bat-rplp-1/igt@i915_selftest@live@hangcheck.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/bat-rplp-1/igt@i915_selftest@live@hangcheck.html
+
+  
+  [i915#10021]: https://gitlab.freedesktop.org/drm/intel/issues/10021
+  [i915#10378]: https://gitlab.freedesktop.org/drm/intel/issues/10378
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7749 -> IGTPW_10792
+
+  CI-20190529: 20190529
+  CI_DRM_14405: 56720b5e1da1b816a1bf532359941adb002c4432 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10792: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/index.html
+  IGT_7749: 2fd91b8c3cf9aa2b0bb78537a6b5e2bc3de50e0e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/index.html
+
+--===============1899586662022416080==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/kunit: Execute test cases synchronously (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126017/">https://patchwork.freedesktop.org/series/126017/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_14405 -&gt; IGTPW_10792</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_10792 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_10792, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/index.html</p>
+<h2>Participating hosts (40 -&gt; 38)</h2>
+<p>Missing    (2): bat-mtlp-8 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_10792:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@objects:<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14405/bat-arls-2/igt@i915_selftest@live@objects.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/bat-arls-2/igt@i915_selftest@live@objects.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10792 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/fi-apl-guc/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic@lmem0:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14405/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10378">i915#10378</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@random-engines:</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html">SKIP</a> +19 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/fi-apl-guc/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> +17 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14405/bat-rplp-1/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10021">i915#10021</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/bat-rplp-1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7749 -&gt; IGTPW_10792</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14405: 56720b5e1da1b816a1bf532359941adb002c4432 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10792: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10792/index.html<br />
+  IGT_7749: 2fd91b8c3cf9aa2b0bb78537a6b5e2bc3de50e0e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1899586662022416080==--
