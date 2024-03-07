@@ -4,46 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E756DC48BF6
-	for <igt-dev@archiver.kernel.org>; Thu,  7 Mar 2024 12:56:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ECA6C48BF6
+	for <igt-dev@archiver.kernel.org>; Thu,  7 Mar 2024 12:56:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9106310F431;
-	Thu,  7 Mar 2024 12:56:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C56A811221C;
+	Thu,  7 Mar 2024 12:56:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c/9PAxUz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Eb2aW3+4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6EACB10F431
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Mar 2024 12:56:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 424D011221C
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Mar 2024 12:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709816202; x=1741352202;
+ t=1709816217; x=1741352217;
  h=date:from:to:cc:subject:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Jgq6Op1VauMwTW4dn+jnB9B4i7/XMz18YOfCoLZbI/Y=;
- b=c/9PAxUzVKS/WKHZByOb25OQJEMhL9bXTgiQN5h9fNCcEaeh+Zv/RtAe
- OXvMdxGl7dxv9cpcuT/zy0SUKSymtt9US1H8K90Tl56K911+swrxayAny
- KaM8+pSVPMbf97ZG+0NJBcxBf7+g893ZTwerW5oYHQ7MdsfQRsfvHxhKB
- xQQUicqXYEQXvrYNRIwWvsSVtLMXjN1T4zuYAmL57I9wurb52Wr2tGH0l
- nSHdGY38Tax5K5TxqzwD9hkG3Tv0lJWMn5gjDKHGodF97S766ij+FwHv5
- mMHsSxTHj2L1k5ETWSyMW/+nwzELAscYiYCVZsbFE4QIMCDtc2O6J0EfJ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="15203521"
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="15203521"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Mar 2024 04:56:42 -0800
+ bh=rnWv0UmQ6zCc+IP/yy74RSiU1SvkHTmPYejZ+uBYgoI=;
+ b=Eb2aW3+4L6aEvvOsjkY5sopRmCCuvh0fqIwgQkktcOUwY+J3IfjkCLTL
+ uNr8kwQIa27qqqjBaM3IgRCugNYrXSdzLzAzatQ01/fpQYEMZjpRpDq5/
+ +4gc9prbT+5Nqb5ru96XXx+sa+J48lcF5HgUNdJWPJYE2yZD5vUmUhM/A
+ SFxW31/lquAWB2SzXH/eVi5nNyYYyKDjMyTA6TuA8NlVQiy3YXn++GZ3T
+ V02EGo0sMkhRPvgZzEWhWpR5c/Soe+KOt0kYHPbkR8fWClScLF+3vfaYA
+ O/8Ey70oMsap5oz8WvLkf8mup5MsBqh5TwB1YxmRQxkVLlcuEZZWCsj8P g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="4361452"
+X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; 
+   d="scan'208";a="4361452"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Mar 2024 04:56:56 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="33255949"
+X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="10005089"
 Received: from linux.intel.com ([10.54.29.200])
- by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Mar 2024 04:56:41 -0800
+ by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Mar 2024 04:56:55 -0800
 Received: from maurocar-mobl2 (maurocar-mobl2.ger.corp.intel.com
  [10.245.244.161])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 3E8F9580D94;
- Thu,  7 Mar 2024 04:56:40 -0800 (PST)
-Date: Thu, 7 Mar 2024 13:56:37 +0100
+ by linux.intel.com (Postfix) with ESMTPS id 47F70580D94;
+ Thu,  7 Mar 2024 04:56:54 -0800 (PST)
+Date: Thu, 7 Mar 2024 13:56:51 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: "Piecielska, Katarzyna" <katarzyna.piecielska@intel.com>
 Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Kamil
@@ -73,6 +74,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Message-ID: <20240307125651.svA_q4diFWXkN7ObiO8IILqUbNhVz0nxxfWwJvsMs2U@z>
 
 On Thu, 7 Mar 2024 09:50:02 +0000
 "Piecielska, Katarzyna" <katarzyna.piecielska@intel.com> wrote:
@@ -107,8 +109,8 @@ left/reverse backslash, while on others, you're using the right one.=20
 >=20
 > I would standardize it to always use "/".
 
->> Looking at i915 for DII I see only 'Desktop \ Server'. If we want to sta=
-ndardize that - let's do that in separate commit.
+> > Looking at i915 for DII I see only 'Desktop \ Server'. If we want to st=
+andardize that - let's do that in separate commit.
 
 Yeah, sure.=20
 
