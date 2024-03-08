@@ -4,139 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92231C5475B
-	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 05:06:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78B2DC54E4A
+	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 08:37:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 30F1D10F7A4;
-	Fri,  8 Mar 2024 05:06:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 29358113544;
+	Fri,  8 Mar 2024 08:37:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G813Qw33";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nx3Bjbo/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4367810F7A4
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 05:06:53 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 33AB0113544
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 08:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709874413; x=1741410413;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=X5mK07PiH1ki/ykXCEzSZC//vni4NelimdWnfPtum7Q=;
- b=G813Qw3324dHXOakut2Ngcst/P9JEb+eXOqFy05DOdYcTrr34UVRTpd0
- 7kdImGv400CD6Uw9FYEP6k5qlFLHK2ktn1GDRMfi5JD6SRnoR+wHv3mNR
- kvTgZRL8OAAN46zlPsqTvcqVxTqVvi+7gbsNQTkoXG+v5UYcx0TFUC660
- m4P/rzBjlmeETSg4pIP6ci3tdXJr8BzyXKFmjuOTtprOuDVmQSPk8C6EE
- DXKffMu/OgaYAZd1Qzmfo1AWbnlBSnRHmqOjJZFdy1wjogYRIHrrKMlWk
- T3jDfwl2bAysX0AZZfFU3TmjOl6FTPUVhf4ZrJ/t9wUR0JmVikvUgKl61 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="5179377"
-X-IronPort-AV: E=Sophos;i="6.07,108,1708416000"; 
-   d="scan'208";a="5179377"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Mar 2024 21:06:52 -0800
+ t=1709887039; x=1741423039;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=rWv4JxBqGawRbAM28S4dliAnJQyPLkeCe9DoYTKajrA=;
+ b=nx3Bjbo/FQnnwfp1y9dX/06h38ubhHXYjpAMlZKZRmNp8rHlF2u8vPEn
+ K8anFxWlF5z4w69dy941oSH4+uWcOyBdkE4Ki/ujBc9K5Gt2dWFt1YQ47
+ EP3e0H4fjrUkSTEa4l0VB0u8RxQPVpVfIlz4QwlSN2VVMNn7ekOEJkHCQ
+ TZYSDcyDovSWf1OIIUmyxs7VwRtmBq++SSKXoM1Bk1XNuF6TEU6lI98TS
+ OuMBvSgONGc6reygUIEXurzvqy1asL0XB/lzZvOUHu5F8dJe9lX6CeDlm
+ LE2tdedPNvozHsu8sQizOwhp4shjDY4+7261RW7WDWs+lSD78aeN03Tlh g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4723653"
+X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; 
+   d="scan'208";a="4723653"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Mar 2024 00:37:18 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,108,1708416000"; d="scan'208";a="14915930"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 07 Mar 2024 21:06:49 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 7 Mar 2024 21:06:49 -0800
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 7 Mar 2024 21:06:48 -0800
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.101)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 7 Mar 2024 21:06:48 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HpCuQNtumiy4e2A8MxpMIoKTxe//ULXVrrbB2TQyYmXlCuLHjGA+LsDYVDUnsvc5pmSLQI76PrpuOhCoMK189hXP+D+fddqCysppNKDpIKkiOLQO6rcOFpzHsIAKUFqSSEIrxwU+LYbDkd8j+dTmE8acnFlXhRQqUuETJVrSMHLLUL3BXOx5yZrC4w5rPmOIU3WDswBrrlXGneqYCA1T+5lrQhN+Ml53Ap/QNRjk+QNvViERHUG3n7ZP6UYW9HPYtjGQqBmkYjD1mR1xTYSvKKrQyyfYdlmHW3q2+NJB+fob/dryrWRP3rCKTihemjHnbdg7LvvZBFuqquzKKbiY4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Vj+ornDRuwXLqIxGV10CdP4rhXTRJOJLXzodqRKcgdg=;
- b=MX15Go/9S2YChBdVaPAx3rp4e5x9eUbT/pGDPKec6HUXRxL7slXPtofzmuf0cvRw2XCxhSI2K4VXVsqWIALVpJFfqO2BVLHC0hK7chI7RkGY2Jvks1PJs47yCc2DYxG2DlZVYlZ7EGKkSo4p2Belv7Q7TGB5BXMHkG+Qrx1defkH9VLnGYWmb22h38cCUZtyTntEn3SOTKkhoCJRqryU5Wo4aTvKkGsAblTBilS7N2Ar67uixN35j7blfcQxpLX/hQARuijhGb/fD2cym996cwcrYp/c3XgDbK4aA+WfoWO0wt79aMngBoX5dIVhBYXjc01Ic5/4HNCtSkXUhPnj1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CY5PR11MB6211.namprd11.prod.outlook.com (2603:10b6:930:25::6)
- by IA1PR11MB6266.namprd11.prod.outlook.com (2603:10b6:208:3e6::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.24; Fri, 8 Mar
- 2024 05:06:46 +0000
-Received: from CY5PR11MB6211.namprd11.prod.outlook.com
- ([fe80::35eb:1d4b:b90f:e584]) by CY5PR11MB6211.namprd11.prod.outlook.com
- ([fe80::35eb:1d4b:b90f:e584%3]) with mapi id 15.20.7386.006; Fri, 8 Mar 2024
- 05:06:46 +0000
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-CC: "De Marchi, Lucas" <lucas.demarchi@intel.com>
-Subject: RE: [PATCH i-g-t] tests/intel/xe_pm: Fix runtime_pm tests
-Thread-Topic: [PATCH i-g-t] tests/intel/xe_pm: Fix runtime_pm tests
-Thread-Index: AQHacL2in7csUWB81km8bx8H6cIGiLEtSzdQ
-Date: Fri, 8 Mar 2024 05:06:46 +0000
-Message-ID: <CY5PR11MB6211D6C121C2A6A5BD46A1EB95272@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20240307183103.188082-1-rodrigo.vivi@intel.com>
-In-Reply-To: <20240307183103.188082-1-rodrigo.vivi@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY5PR11MB6211:EE_|IA1PR11MB6266:EE_
-x-ms-office365-filtering-correlation-id: 21073660-e744-47c8-338f-08dc3f2d8dca
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: qJh/TtiebFNxwnbYMBZN2M/NV57wjudNu34RSYf1bwmlUXBsh5KNr3KoE7RJkQNHbBMG1AC8joHQR3XypW08qjXzidV+N93MtTjCg51Py6Y0urbZFSn6VgV4iKzVAPNdIF0paxE2mgkibnAQ26TcRzzzGS/Rbv5zoAV5K+NotYio7B1KIticz8DiZHIMeN367foYt00Ho2zpn6YVwuahzl1jtWH2PTGS2hztvryZ0RBslULRfMRE3U65i+f2dq9tNtaFobTsyocmiHWj+sAznVhernfxRlDtGmndHEsVnaagSJc1nes2oYOcrW8d8Cm51dYGVlFLWP2cSMtmF55PW1qHz+67UvlV/i7HVtLzBnxU9OPK8FXwJLIwviod7jY9oG5LSyWYzpVZBdlzASW1DLeOouwoQMCMZwXLXuSORf3wSzLXzYWrSm+6NT8GKFtYhxvQ8oqdGnXMzb84A2rkmaPq5Q+qvBBjpltlkGQZ0489MGRXQmPPxCwiJxr8rkNr83OaYF+NqbsqW5exy3v3Ysu8AG2Rg0FOdEwnE8TxsH5CHcn+77JwYswFDCc3qdEB6OII4fPaANCH6++Q7RtVhUH32SGjiptR4yj13d2UaGH0qPzUsls1xeDuomS5uCRAI+29Owtt702U0zgVVgqXlzFyQp2KNUxyak5/P19fSmMzjHqU3nsfuBI84WWWQP01YFIj2cxk10qlX12X17vcxw==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY5PR11MB6211.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376005)(1800799015)(38070700009); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?EVNPkvQki2o7DX3Hkt/VhZjcuxAAnfmUaQIswsgK0VY0DSHEsjfP4Ltdgx3i?=
- =?us-ascii?Q?760/vzHivEgLCdt6F15d1TCXCVcEyVmW4AiEgTkweMC3aYwUUgR0EMj84tQ3?=
- =?us-ascii?Q?v/5UpOV0EA/V3PBHg0RevTpEBO3OzuSsRfk5DQWvwn5FYQmGeSRhbD2oZGgO?=
- =?us-ascii?Q?ck1Z1MOxDlvtfA1Gf7sDacKEjVhywaStef4Tood/Xt+oOMuhYG49yeENWpFG?=
- =?us-ascii?Q?GcDYW/bccKEkKG3W+q0AQLiQybXEmpBtUNQNBL287xbWlAEkdEcy+zvTkegX?=
- =?us-ascii?Q?Zg+bLUHqH7Xmr+UeQWI6LcBjNcRHybOF90EJGZGvCegS0TdYV3ime0zVfqjz?=
- =?us-ascii?Q?oSfjuyEY6Z6PFOfCXLtlOxWbplWVpOb0cJTe5vHCDYEMFLoR8Cgvl2PCxLSx?=
- =?us-ascii?Q?7ts8M2EyRZRtoRPwywxi63mEJ5kaGSaZfqH+E/NXXr7lK5NhjJJy+thepb3K?=
- =?us-ascii?Q?iyp54PQNt+Rt6DG+OKXG5aL1wFuX7uPGZwwQn7BTpl/ag9/6J4Atb1uE9Avv?=
- =?us-ascii?Q?2WNHifwWd/tejFZgQol/YWQYdXWoCek5tKpgh3bCRGCdwKKtD2+eapzaahnk?=
- =?us-ascii?Q?fKzVkrfhx+bnFBUQSo4L5SbtTMnnSNlRQeXN+nWu+zmZNz5j7cbI4nWQ48z6?=
- =?us-ascii?Q?dm55P1EFuMNaD+8CY1s/9DFTRErcTZ3UXXUbV+etDUJasQIhHy5L57j34PIz?=
- =?us-ascii?Q?l61uD3WGrUpTQFoSR2FkZ60FJQsIdKboq2HlyGeLbG/NyyNASmqolVQZxIGy?=
- =?us-ascii?Q?e7H9As51IbHKccNWkJqilTj1E8u8cf7EIfrEvmgsMTmMcQa5ybnsk9QuGhpr?=
- =?us-ascii?Q?FiPD33KQtbbK6Fxt3W5gs4mE8nirzyx4jBA6Xb2/A1JuuA2CiHXaQT26ai6G?=
- =?us-ascii?Q?huG47onicaA5KHNJnIHBfQBlefWcJUz9R08l4Egzo379ARo589CRLF3PANhX?=
- =?us-ascii?Q?OcRzpVlBWNALuO1yQLS0s94eOecMhmyweM38Mde75M6YxkN55LYQD4m2NIn5?=
- =?us-ascii?Q?OjCZH3oj3x9L3Vc7T2xtxBMi149iyiz7WsE1jLZjuiNWSN7bniWftpT8fdTI?=
- =?us-ascii?Q?Plh2q+lncls3FnBvTEI10QKcx9dLiOJb2wAc/pm6XUS3MGC1ISFOPMaLOt9g?=
- =?us-ascii?Q?oGRh00jOqb+tLnjjoGXkQ/jpZqtLnJXhz3/+3QLuE3mny8upsTWF0vuKByI8?=
- =?us-ascii?Q?gU54E2VP7gHdBabL9z37PT2dB8cqwUpySN4VvKVJnU2wPvSlopZNyq8bxxK2?=
- =?us-ascii?Q?uZp3CSzInqd46B3LAJ2figMeLOdmW/iuiAVpWOV5NAPDEis0XDwVSoS7ZFbS?=
- =?us-ascii?Q?H/EuMpBIxxD4qFzUTR3fj4gA5RIBqQ25dcN/+LO5ExwNPNPc9pTptZbs4fj3?=
- =?us-ascii?Q?g5cPb8+7muUY5tlO8mUxBJlciFXVBsjatUZfajIO4R0YT70qjZ71Ye1Cgyc2?=
- =?us-ascii?Q?xoSj+uA4Es1A2fdH9k83XcO+GExIVO+9B6RBh74aTe4Fia0DWYmJh7APqfi5?=
- =?us-ascii?Q?KDgfKYIsA1SnqQsPZG9P59bxkxJCgG20JJOy2XWL6nQ8Xwu/TPklz5RKqIGK?=
- =?us-ascii?Q?Uj3zp1wBZrUete0vlnBATd6O6jLdAPpbISbC6C4b?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; d="scan'208";a="15063169"
+Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Mar 2024 00:37:16 -0800
+From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Chris Wilson <chris@chris-wilson.co.uk>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t v2 00/25] Update test documentation for i915 tests
+Date: Fri,  8 Mar 2024 08:36:32 +0000
+Message-Id: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6211.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 21073660-e744-47c8-338f-08dc3f2d8dca
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Mar 2024 05:06:46.4152 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: GnTZ3xBDFc0O5RUtsmzF5npCB3YdKidp2PK+dVXjPptaLrsiVW+QwIkMdXS39p/rciSNjlZ8JLrJk4aJXyl2QrNsn8aA2nN/fml+P+5BITM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6266
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -152,78 +68,235 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+There are many warnings about missing test documentation, so let's fix that.
+While I am already doing that - let's introduce more subcategories and
+functionalities. Additionally adjust categorization for all i915 tests.
 
+Last patch is removing 'Run type' field from all Intel tests - both XE and i915.
 
-> -----Original Message-----
-> From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> Sent: Friday, March 8, 2024 12:01 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: De Marchi, Lucas <lucas.demarchi@intel.com>; Vivi, Rodrigo
-> <rodrigo.vivi@intel.com>; Gupta, Anshuman <anshuman.gupta@intel.com>
-> Subject: [PATCH i-g-t] tests/intel/xe_pm: Fix runtime_pm tests
->=20
-> After the introduction of kernel commit
-> 23cf006beac3 ("drm/xe: Runtime PM wake on every IOCTL") the many ioctl
-> called during dpms_on_off might be forcing rpm to transition back and for=
-th
-> active to suspend.
->=20
-> Then, when setting the d3cold_allowed during a transitional runtime_state=
-,
-> we got some situation where the runtime pm might decide to keep the devic=
-e
-> awake for a very long time even with runtime_usage =3D=3D 0.
->=20
-> Then our tests would start to break like crazy:
->=20
-> (xe_pm:29453) igt_pm-WARNING: timeout: pm_status expected:suspended,
-> got:active
-> (xe_pm:29453) CRITICAL: Test assertion failure function
-> __igt_unique____real_main473, file ../tests/intel/xe_pm.c:556:
-> (xe_pm:29453) CRITICAL: Failed assertion: in_d3(device, d->state) Stack t=
-race:
->   #0 ../lib/igt_core.c:1989 __igt_fail_assert()
->   #1 ../tests/intel/xe_pm.c:432 __igt_unique____real_main473()
->   #2 ../tests/intel/xe_pm.c:473 main()
->   #3 [__libc_start_call_main+0x7a]
->   #4 [__libc_start_main+0x8b]
->   #5 [_start+0x25]
-> Subtest d3hot-basic failed.
-> **** DEBUG ****
-> (xe_pm:29453) igt_pm-WARNING: timeout: pm_status expected:suspended,
-> got:active
->=20
-> By simply waiting the suspended state before we touch d3cold_allowed, we
-> get our tests back to a sane state.
->=20
-> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> ---
->  tests/intel/xe_pm.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->=20
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c index
-> a0045da0b..fcbed6249 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -121,6 +121,16 @@ static bool setup_d3(device_t device, enum
-> igt_acpi_d_state state)  {
->  	dpms_on_off(device, DRM_MODE_DPMS_OFF);
->=20
-> +	/*
-> +	 * The drm calls used for dpms status above will result in IOCTLs
-> +	 * that might wake up the device. Let's ensure the device is back
-> +	 * to a stable suspended state before we can proceed with the
-> +	 * configuration below, since some strange failures were seen
-> +	 * when d3cold_allowed is toggle while runtime is in a transition
-> +	 * state.
-> +	 */
-> +	igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED);
-> +
->  	switch (state) {
->  	case IGT_ACPI_D3Cold:
->  		igt_require(igt_pm_acpi_d3cold_supported(device.pci_root));
-> --
-> 2.43.2
+v2: Apply review comments: fix commit messages, remove duplicates in Subcategory
+and Functionality
+
+Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+
+Katarzyna Piecielska (25):
+  tests: Introduce uapi subcategory
+  tests/intel: Introduce Memory management subcategory
+  tests/intel: Introduce CMD submission subcategory
+  tests/intel: Introduce Caching subcategory
+  tests/intel: Let's introduce Workarounds subcategory
+  tests/intel: Add tests to Compute subcategory
+  tests/intel: Introduce GPGPU subcategory
+  tests/intel: Introduce Blitter subcategory
+  tests/intel: Introduce FDinfo subcategory
+  tests/intel: Introduce Flat-ccs subcategory
+  tests/intel: Introduce Firmware subcategory
+  tests/intel: Introduce Media subcategory
+  tests/intel: Introduce Render copy subcategory
+  tests/intel: Introduce Obsolete subcategory
+  tests/intel: Introduce Power management subcategory
+  tests/intel: Introduce SysMan subcategory
+  tests: Introduce Core subcategory
+  tests: Introduce Synchronization subcategory
+  tests: Introduce intel-nouveau subcategory
+  tests/intel: Introduce Debugging subcategory
+  tests/intel: Add missing documentation fields in i915_selftest
+  tests/intel: Add more tests to Performance subcategory
+  tests: Add missing documentation fields for SRIOV and Display
+  tests: Remove 'Run type' documentation field
+  tests: Update device_reset functionality
+
+ tests/core_auth.c                            |   8 +-
+ tests/core_getclient.c                       |   2 +-
+ tests/core_getstats.c                        |   6 +-
+ tests/core_getversion.c                      |   2 +-
+ tests/core_hotunplug.c                       |   4 +-
+ tests/core_setmaster.c                       |   2 +-
+ tests/core_setmaster_vs_auth.c               |   2 +-
+ tests/device_reset.c                         |   4 +-
+ tests/dmabuf.c                               |   2 +-
+ tests/dmabuf_sync_file.c                     |  18 +
+ tests/drm_mm.c                               |   4 +-
+ tests/drm_read.c                             |  17 +
+ tests/dumb_buffer.c                          |   8 +-
+ tests/intel/api_intel_allocator.c            |   2 +-
+ tests/intel/api_intel_bb.c                   |   2 +-
+ tests/intel/debugfs_test.c                   |   6 +-
+ tests/intel/drm_fdinfo.c                     |   5 +-
+ tests/intel/gem_bad_reloc.c                  |  16 +-
+ tests/intel/gem_barrier_race.c               |   5 +-
+ tests/intel/gem_basic.c                      |   4 +-
+ tests/intel/gem_blits.c                      |   2 +-
+ tests/intel/gem_busy.c                       |   4 +-
+ tests/intel/gem_caching.c                    |   6 +-
+ tests/intel/gem_ccs.c                        |   5 +-
+ tests/intel/gem_close.c                      |   4 +-
+ tests/intel/gem_close_race.c                 |   6 +-
+ tests/intel/gem_compute.c                    |   4 +-
+ tests/intel/gem_create.c                     |  17 +-
+ tests/intel/gem_cs_tlb.c                     |   5 +-
+ tests/intel/gem_ctx_bad_destroy.c            |   4 +-
+ tests/intel/gem_ctx_create.c                 |   8 +-
+ tests/intel/gem_ctx_engines.c                |   5 +-
+ tests/intel/gem_ctx_exec.c                   |   8 +-
+ tests/intel/gem_ctx_freq.c                   |   2 +-
+ tests/intel/gem_ctx_isolation.c              |   2 +-
+ tests/intel/gem_ctx_param.c                  |   2 +-
+ tests/intel/gem_ctx_persistence.c            |   2 +-
+ tests/intel/gem_ctx_shared.c                 |   4 +-
+ tests/intel/gem_ctx_sseu.c                   |   5 +-
+ tests/intel/gem_ctx_switch.c                 |   5 +-
+ tests/intel/gem_eio.c                        |   2 +-
+ tests/intel/gem_evict_alignment.c            |   5 +-
+ tests/intel/gem_evict_everything.c           |   5 +-
+ tests/intel/gem_exec_alignment.c             |   6 +-
+ tests/intel/gem_exec_async.c                 |   6 +-
+ tests/intel/gem_exec_await.c                 |   6 +-
+ tests/intel/gem_exec_balancer.c              |   2 +-
+ tests/intel/gem_exec_basic.c                 |   2 +-
+ tests/intel/gem_exec_big.c                   |   2 +-
+ tests/intel/gem_exec_capture.c               |   4 +-
+ tests/intel/gem_exec_create.c                |   4 +-
+ tests/intel/gem_exec_endless.c               |   8 +-
+ tests/intel/gem_exec_fair.c                  |   5 +-
+ tests/intel/gem_exec_fence.c                 |  10 +-
+ tests/intel/gem_exec_flush.c                 |   5 +-
+ tests/intel/gem_exec_gttfill.c               |   4 +-
+ tests/intel/gem_exec_latency.c               |   5 +-
+ tests/intel/gem_exec_lut_handle.c            |   5 +-
+ tests/intel/gem_exec_nop.c                   |   6 +-
+ tests/intel/gem_exec_parallel.c              |   4 +-
+ tests/intel/gem_exec_params.c                |   2 +-
+ tests/intel/gem_exec_reloc.c                 |   5 +-
+ tests/intel/gem_exec_schedule.c              |   2 +-
+ tests/intel/gem_exec_store.c                 |  20 +-
+ tests/intel/gem_exec_suspend.c               |   5 +-
+ tests/intel/gem_exec_whisper.c               |   6 +-
+ tests/intel/gem_exercise_blt.c               |  14 +-
+ tests/intel/gem_fd_exhaustion.c              |   5 +-
+ tests/intel/gem_fence_thrash.c               |   5 +-
+ tests/intel/gem_fence_upload.c               |   5 +-
+ tests/intel/gem_fenced_exec_thrash.c         |   5 +-
+ tests/intel/gem_flink_basic.c                |   2 +-
+ tests/intel/gem_flink_race.c                 |   2 +-
+ tests/intel/gem_gpgpu_fill.c                 |   8 +-
+ tests/intel/gem_gtt_cpu_tlb.c                |   5 +-
+ tests/intel/gem_gtt_hog.c                    |   5 +-
+ tests/intel/gem_gtt_speed.c                  |   5 +-
+ tests/intel/gem_huc_copy.c                   |   4 +-
+ tests/intel/gem_linear_blits.c               |   8 +-
+ tests/intel/gem_lmem_evict.c                 |   5 +-
+ tests/intel/gem_lmem_swapping.c              |  10 +-
+ tests/intel/gem_lut_handle.c                 |   5 +-
+ tests/intel/gem_madvise.c                    |   4 +-
+ tests/intel/gem_media_fill.c                 |   4 +-
+ tests/intel/gem_media_vme.c                  |   4 +-
+ tests/intel/gem_mmap.c                       |   7 +-
+ tests/intel/gem_mmap_gtt.c                   |   5 +-
+ tests/intel/gem_mmap_offset.c                |   2 +-
+ tests/intel/gem_mmap_wc.c                    |   5 +-
+ tests/intel/gem_partial_pwrite_pread.c       |   5 +-
+ tests/intel/gem_pipe_control_store_loop.c    |   6 +-
+ tests/intel/gem_ppgtt.c                      |   2 +-
+ tests/intel/gem_pread.c                      |   5 +-
+ tests/intel/gem_pread_after_blit.c           |   5 +-
+ tests/intel/gem_pwrite.c                     |   5 +-
+ tests/intel/gem_pwrite_snooped.c             |   5 +-
+ tests/intel/gem_pxp.c                        |   3 +-
+ tests/intel/gem_read_read_speed.c            |   5 +-
+ tests/intel/gem_readwrite.c                  |   5 +-
+ tests/intel/gem_reg_read.c                   |   5 +-
+ tests/intel/gem_render_copy.c                |   4 +-
+ tests/intel/gem_render_copy_redux.c          |   4 +-
+ tests/intel/gem_render_linear_blits.c        |   7 +-
+ tests/intel/gem_render_tiled_blits.c         |   7 +-
+ tests/intel/gem_request_retire.c             |   6 +-
+ tests/intel/gem_reset_stats.c                |   5 +-
+ tests/intel/gem_ringfill.c                   |   8 +-
+ tests/intel/gem_set_tiling_vs_blt.c          |   5 +-
+ tests/intel/gem_set_tiling_vs_gtt.c          |   5 +-
+ tests/intel/gem_set_tiling_vs_pwrite.c       |   5 +-
+ tests/intel/gem_shrink.c                     |   2 +-
+ tests/intel/gem_softpin.c                    |   6 +-
+ tests/intel/gem_spin_batch.c                 |   2 +-
+ tests/intel/gem_streaming_writes.c           |   5 +-
+ tests/intel/gem_stress.c                     |   5 +-
+ tests/intel/gem_sync.c                       |  10 +-
+ tests/intel/gem_tiled_blits.c                |   7 +-
+ tests/intel/gem_tiled_fence_blits.c          |   7 +-
+ tests/intel/gem_tiled_partial_pwrite_pread.c |   4 +-
+ tests/intel/gem_tiled_pread_basic.c          |   5 +-
+ tests/intel/gem_tiled_pread_pwrite.c         |   5 +-
+ tests/intel/gem_tiled_swapping.c             |   5 +-
+ tests/intel/gem_tiled_wb.c                   |   5 +-
+ tests/intel/gem_tiled_wc.c                   |   5 +-
+ tests/intel/gem_tiling_max_stride.c          |   5 +-
+ tests/intel/gem_unfence_active_buffers.c     |   5 +-
+ tests/intel/gem_unref_active_buffers.c       |   4 +-
+ tests/intel/gem_userptr_blits.c              |   2 +-
+ tests/intel/gem_vm_create.c                  |   5 +-
+ tests/intel/gem_wait.c                       |   8 +-
+ tests/intel/gem_watchdog.c                   |   5 +-
+ tests/intel/gem_workarounds.c                |   6 +-
+ tests/intel/gen3_mixed_blits.c               |   5 +-
+ tests/intel/gen3_render_linear_blits.c       |   5 +-
+ tests/intel/gen3_render_mixed_blits.c        |   5 +-
+ tests/intel/gen3_render_tiledx_blits.c       |   6 +-
+ tests/intel/gen3_render_tiledy_blits.c       |   6 +-
+ tests/intel/gen7_exec_parse.c                |   5 +-
+ tests/intel/gen9_exec_parse.c                |   5 +-
+ tests/intel/i915_fb_tiling.c                 |   5 +-
+ tests/intel/i915_getparams_basic.c           |   4 +-
+ tests/intel/i915_hangman.c                   |  20 +-
+ tests/intel/i915_module_load.c               |   6 +-
+ tests/intel/i915_pciid.c                     |   4 +-
+ tests/intel/i915_pipe_stress.c               |  13 +-
+ tests/intel/i915_pm_freq_api.c               |   5 +-
+ tests/intel/i915_pm_freq_mult.c              |  11 +-
+ tests/intel/i915_pm_rc6_residency.c          |   3 +-
+ tests/intel/i915_pm_rpm.c                    |   4 +-
+ tests/intel/i915_pm_rps.c                    |   7 +-
+ tests/intel/i915_pm_sseu.c                   |   5 +-
+ tests/intel/i915_power.c                     |   5 +-
+ tests/intel/i915_query.c                     |   2 +-
+ tests/intel/i915_selftest.c                  | 397 ++++++++++---------
+ tests/intel/i915_suspend.c                   |   7 +-
+ tests/intel/intel_hwmon.c                    |   2 +-
+ tests/intel/perf.c                           |   3 +-
+ tests/intel/perf_pmu.c                       |   3 +-
+ tests/intel/prime_busy.c                     |   3 +-
+ tests/intel/prime_mmap.c                     |   6 +-
+ tests/intel/prime_mmap_coherency.c           |   6 +-
+ tests/intel/prime_mmap_kms.c                 |   2 +-
+ tests/intel/prime_self_import.c              |  13 +-
+ tests/intel/sysfs_defaults.c                 |   6 +-
+ tests/intel/sysfs_heartbeat_interval.c       |   5 +-
+ tests/intel/sysfs_preempt_timeout.c          |   5 +-
+ tests/intel/sysfs_timeslice_duration.c       |   5 +-
+ tests/intel/xe_drm_fdinfo.c                  |   2 +-
+ tests/intel/xe_pm.c                          |   2 +-
+ tests/intel/xe_pm_residency.c                |   2 +-
+ tests/intel/xe_spin_batch.c                  |   4 +-
+ tests/intel/xe_waitfence.c                   |   2 +-
+ tests/prime_nv_api.c                         |  22 +
+ tests/prime_nv_pcopy.c                       |  18 +
+ tests/prime_nv_test.c                        |  17 +
+ tests/prime_vgem.c                           |  14 +-
+ tests/sriov_basic.c                          |   9 +-
+ tests/sw_sync.c                              |   4 +-
+ tests/syncobj_basic.c                        |   4 +-
+ tests/syncobj_eventfd.c                      |   2 +-
+ tests/syncobj_timeline.c                     |   4 +-
+ tests/syncobj_wait.c                         |   4 +-
+ tests/vgem_basic.c                           |  25 +-
+ tests/vgem_slow.c                            |   2 +-
+ 184 files changed, 885 insertions(+), 545 deletions(-)
+
+-- 
+2.34.1
 
