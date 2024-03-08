@@ -4,52 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05CA6C5475B
-	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 08:40:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5E5EC5475B
+	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 08:40:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 900E11136EA;
-	Fri,  8 Mar 2024 08:40:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 552A511371B;
+	Fri,  8 Mar 2024 08:40:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gyBM98Ab";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Hy/fWHWM";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 756B71136EA
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 08:40:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 88DA611371B
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 08:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709887205; x=1741423205;
+ t=1709887215; x=1741423215;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/RMp2+Xa7nmnNUMJTgG+kUmsIvzPRbSPS819o8zxk0g=;
- b=gyBM98AbE/kKqT/E8HlJz/12SznIAxxpPH6JxjdsAY2Kd0iOJ/GNapgt
- r6tZXhwJxaTVd4rt5JdvDteEYE6Uz/dVEsfxDLfnHsqbLxPnFaLDCgR8f
- LBxUa3wuH9mTw8GuTJ49sH1mCQBCcf0Zrz8XhpVSa1G4JrsVRqIskMnhj
- +gQP+0A1KI3lvWYESzz0UMayytN/5R2tGt2qV2nQBRrYSnSCoJqKQN/Gg
- XKmImS84CWckzEzwXQcLIcOH+hEmyewzujaJ8QLDnffrRboadVWU4nfT/
- aybLJgecRxGR8oxDt5PGs3XOHXmchiNavVxCzcYDb+drHPn1Kw51am4gZ A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4767362"
+ bh=6lovIj6sqsJHTjzKAvy/q0z1PvOwd/ZgliirpwvsY7k=;
+ b=Hy/fWHWMCTjNncxx2X4T5VL3YFl+R23wOG+TBfQZ+FboALswEUWBA7e4
+ L2U5ne4L30L0MnNZ79HLiq7qZ6yRwNJeDEy5Bt+YxekQRmYUOvV3g4eHU
+ V7CQ75QOxKNh2RcKWcyNuH6YV01QaFkzmEzbNvGAi2gX46mWZgwvMwiqz
+ taIcCLvQaGUWbO9x0sqNULNmjkD1QZqPJrmoBEawiP7xh5LicaN7nlCYH
+ WADnfLCXInhuXutvnbtEkHw+nKHlzm6lMfOU1uqPJkj+5DxJRIQSCVLTW
+ RnG4CMK2WuPnRMtTcnC80WJdQUdMYGkqnLmOaVFj4AfMFLy+wa8LZwMg0 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4767376"
 X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; 
-   d="scan'208";a="4767362"
+   d="scan'208";a="4767376"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Mar 2024 00:40:05 -0800
+ 08 Mar 2024 00:40:15 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; d="scan'208";a="10411393"
+X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; d="scan'208";a="10411451"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Mar 2024 00:40:04 -0800
+ 08 Mar 2024 00:40:13 -0800
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Subject: [PATCH i-g-t v2 18/25] tests: Introduce Synchronization subcategory
-Date: Fri,  8 Mar 2024 08:36:50 +0000
-Message-Id: <20240308083657.1092049-19-katarzyna.piecielska@intel.com>
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v2 19/25] tests: Introduce intel-nouveau subcategory
+Date: Fri,  8 Mar 2024 08:36:51 +0000
+Message-Id: <20240308083657.1092049-20-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
 References: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,100 +69,110 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-DRM and i915 subcategories seems to be too wide and general. Let's use
-Synchronization subcategory.
+There are some intel-nouveau tests that deserve its own subcategory.
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Reviewed-by: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 ---
- tests/intel/gem_sync.c   | 2 +-
- tests/intel/gem_wait.c   | 2 +-
- tests/sw_sync.c          | 2 +-
- tests/syncobj_basic.c    | 2 +-
- tests/syncobj_timeline.c | 2 +-
- tests/syncobj_wait.c     | 2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+ tests/prime_nv_api.c   | 22 ++++++++++++++++++++++
+ tests/prime_nv_pcopy.c | 18 ++++++++++++++++++
+ tests/prime_nv_test.c  | 17 +++++++++++++++++
+ 3 files changed, 57 insertions(+)
 
-diff --git a/tests/intel/gem_sync.c b/tests/intel/gem_sync.c
-index d3de2e77e..129ee3b68 100644
---- a/tests/intel/gem_sync.c
-+++ b/tests/intel/gem_sync.c
-@@ -38,7 +38,7 @@
-  * Description: Basic check of ring<->ring write synchronisation.
-  * Feature: synchronization
-  * Functionality: semaphore
-- * Sub-category: i915
-+ * Sub-category: Synchronization
-  * Test category: GEM_Legacy
-  * Run type: FULL
-  *
-diff --git a/tests/intel/gem_wait.c b/tests/intel/gem_wait.c
-index e2a598c64..0d4a959b1 100644
---- a/tests/intel/gem_wait.c
-+++ b/tests/intel/gem_wait.c
-@@ -37,7 +37,7 @@
-  * Description: Tests the GEM_WAIT ioctl
-  * Feature: synchronization
-  * Functionality: semaphore
-- * Sub-category: i915
-+ * Sub-category: Synchronization
-  * Test category: GEM_Legacy
-  * Run type: FULL
-  *
-diff --git a/tests/sw_sync.c b/tests/sw_sync.c
-index 6c476ff46..40ecec665 100644
---- a/tests/sw_sync.c
-+++ b/tests/sw_sync.c
-@@ -45,7 +45,7 @@
-  * Feature: synchronization
-  * Functionality: semaphore
-  * Run type: FULL
-- * Sub-category: DRM
-+ * Sub-category: Synchronization
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: alloc_fence
-diff --git a/tests/syncobj_basic.c b/tests/syncobj_basic.c
-index f079baf09..6c75fce96 100644
---- a/tests/syncobj_basic.c
-+++ b/tests/syncobj_basic.c
-@@ -33,7 +33,7 @@
-  * Feature: synchronization
-  * Functionality: semaphore
-  * Run type: FULL
-- * Sub-category: DRM
-+ * Sub-category: Synchronization
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: bad-create-flags
-diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
-index ea8341a30..083091583 100644
---- a/tests/syncobj_timeline.c
-+++ b/tests/syncobj_timeline.c
-@@ -37,7 +37,7 @@
-  * Feature: synchronization
-  * Functionality: semaphore
-  * Run type: FULL
-- * Sub-category: DRM
-+ * Sub-category: Synchronization
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: 32bits-limit
-diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
-index e0ff69b79..687f2613e 100644
---- a/tests/syncobj_wait.c
-+++ b/tests/syncobj_wait.c
-@@ -37,7 +37,7 @@
-  * Feature: synchronization
-  * Functionality: semaphore
-  * Run type: FULL
-- * Sub-category: DRM
-+ * Sub-category: Synchronization
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: invalid-multi-wait-all-unsubmitted
+diff --git a/tests/prime_nv_api.c b/tests/prime_nv_api.c
+index cb3d52e8d..a33e2202b 100644
+--- a/tests/prime_nv_api.c
++++ b/tests/prime_nv_api.c
+@@ -8,6 +8,28 @@
+    test4 - export handle twice from intel, import into nouveau twice, check handle is the same
+ */
+ 
++/**
++ * TEST: prime_nv_api
++ * Description: Basic api tests between intel and nouveau
++ * Sub-category: uapi
++ * Functionality: intel-nouveau
++ * Run type: FULL
++ *
++ * SUBTEST: i915_nv_import_twice
++ * SUBTEST: i915_nv_import_twice_check_flink_name
++ * SUBTEST: i915_nv_reimport_twice_check_flink_name
++ * SUBTEST: nv_i915_import_twice_check_flink_name
++ * SUBTEST: nv_i915_reimport_twice_check_flink_name
++ * SUBTEST: i915_nv_import_vs_close
++ * SUBTEST: i915_nv_double_import
++ * SUBTEST: i915_nv_double_export
++ * SUBTEST: i915_self_import
++ * SUBTEST: nv_self_import
++ * SUBTEST: i915_self_import_to_different_fd
++ * SUBTEST: nv_self_import_to_different_fd
++ *
++ */
++
+ #include "igt.h"
+ #include <stdio.h>
+ #include <stdlib.h>
+diff --git a/tests/prime_nv_pcopy.c b/tests/prime_nv_pcopy.c
+index 5b2a89d80..ecaa9fb1b 100644
+--- a/tests/prime_nv_pcopy.c
++++ b/tests/prime_nv_pcopy.c
+@@ -13,6 +13,24 @@
+    TODO add some nouveau rendering tests
+ */
+ 
++/**
++ * TEST: prime_nv_pcopy
++ * Description: Basic set of prime tests between intel and nouveau
++ * Sub-category: intel-nouveau
++ * Functionality: buffer management
++ * Run type: FULL
++ *
++ * SUBTEST: test1_macro
++ * SUBTEST: test1_micro
++ * SUBTEST: test2
++ * SUBTEST: test3_1
++ * SUBTEST: test3_2
++ * SUBTEST: test3_3
++ * SUBTEST: test3_4
++ * SUBTEST: test3_5
++ * SUBTEST: test_semaphore
++ *
++ */
+ 
+ #include "igt.h"
+ #include <inttypes.h>
+diff --git a/tests/prime_nv_test.c b/tests/prime_nv_test.c
+index eb5e2d8ea..be9e56414 100644
+--- a/tests/prime_nv_test.c
++++ b/tests/prime_nv_test.c
+@@ -13,6 +13,23 @@
+    TODO add some nouveau rendering tests
+ */
+ 
++/**
++ * TEST: prime_nv_test
++ * Description: Basic set of prime tests between intel and nouveau
++ * Sub-category: intel-nouveau
++ * Functionality: buffer management
++ * Run type: FULL
++ *
++ * SUBTEST: i915_nv_sharing
++ * SUBTEST: nv_i915_sharing
++ * SUBTEST: nv_write_i915_cpu_mmap_read
++ * SUBTEST: nv_write_i915_gtt_mmap_read
++ * SUBTEST: i915_import_cpu_mmap
++ * SUBTEST: i915_import_gtt_mmap
++ * SUBTEST: i915_import_pread_pwrite
++ * SUBTEST: i915_blt_fill_nv_read
++ *
++ */
+ 
+ #include "igt.h"
+ #include <stdio.h>
 -- 
 2.34.1
 
