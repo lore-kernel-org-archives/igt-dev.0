@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89AB7C54E4A
-	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 08:39:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05CA6C5475B
+	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 08:40:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B88F1136E8;
-	Fri,  8 Mar 2024 08:39:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 900E11136EA;
+	Fri,  8 Mar 2024 08:40:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZEhbBXOS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gyBM98Ab";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E5D51136E8
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 08:39:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 756B71136EA
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 08:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709887197; x=1741423197;
+ t=1709887205; x=1741423205;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=4sMvq69kcccj3D3XOELjRgtDEQbx4C/ZyvlRl9YxE4Y=;
- b=ZEhbBXOStJfuJFf6xyH114Ik2AGDM4LHFuAeA3eJNIMudBSe6r+3uQv9
- 4xnKwbCdMroV3+gQAQ2N788EHe+F60i9vKEBhCybRcYqe9EYvuat9rSRH
- N4UBL4URmnaRWLCqc+FoR8V9ZVVBR3cWvSy07PFPcb4whxj74zMmi94He
- Mifh2GnFv0P0FuR5JWhlgWZINMCiI0+xP7tD+RIm1NifsnkwmHiEhB99R
- 8gPiPQNGdEnvBEdJ6Z1YHDzmZNArN+0Zg2eBFacj7grBMI0xJ4HlcYDuG
- tZMSY8SgGudvFMS7OampsVD/mT6m8jIHCePYeE27FJ6LpyRxvomF5SMRB w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4767336"
+ bh=/RMp2+Xa7nmnNUMJTgG+kUmsIvzPRbSPS819o8zxk0g=;
+ b=gyBM98AbE/kKqT/E8HlJz/12SznIAxxpPH6JxjdsAY2Kd0iOJ/GNapgt
+ r6tZXhwJxaTVd4rt5JdvDteEYE6Uz/dVEsfxDLfnHsqbLxPnFaLDCgR8f
+ LBxUa3wuH9mTw8GuTJ49sH1mCQBCcf0Zrz8XhpVSa1G4JrsVRqIskMnhj
+ +gQP+0A1KI3lvWYESzz0UMayytN/5R2tGt2qV2nQBRrYSnSCoJqKQN/Gg
+ XKmImS84CWckzEzwXQcLIcOH+hEmyewzujaJ8QLDnffrRboadVWU4nfT/
+ aybLJgecRxGR8oxDt5PGs3XOHXmchiNavVxCzcYDb+drHPn1Kw51am4gZ A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4767362"
 X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; 
-   d="scan'208";a="4767336"
+   d="scan'208";a="4767362"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Mar 2024 00:39:56 -0800
+ 08 Mar 2024 00:40:05 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; d="scan'208";a="10411342"
+X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; d="scan'208";a="10411393"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Mar 2024 00:39:55 -0800
+ 08 Mar 2024 00:40:04 -0800
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Subject: [PATCH i-g-t v2 17/25] tests: Introduce Core subcategory
-Date: Fri,  8 Mar 2024 08:36:49 +0000
-Message-Id: <20240308083657.1092049-18-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v2 18/25] tests: Introduce Synchronization subcategory
+Date: Fri,  8 Mar 2024 08:36:50 +0000
+Message-Id: <20240308083657.1092049-19-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
 References: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
@@ -66,72 +66,100 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's have Core subcategory instead of 'i915' or 'drm'.
+DRM and i915 subcategories seems to be too wide and general. Let's use
+Synchronization subcategory.
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Reviewed-by: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 ---
- tests/dmabuf_sync_file.c | 18 ++++++++++++++++++
- tests/intel/i915_pciid.c |  2 +-
- tests/vgem_basic.c       |  1 +
- 3 files changed, 20 insertions(+), 1 deletion(-)
+ tests/intel/gem_sync.c   | 2 +-
+ tests/intel/gem_wait.c   | 2 +-
+ tests/sw_sync.c          | 2 +-
+ tests/syncobj_basic.c    | 2 +-
+ tests/syncobj_timeline.c | 2 +-
+ tests/syncobj_wait.c     | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tests/dmabuf_sync_file.c b/tests/dmabuf_sync_file.c
-index cfa73117b..57f1ce2bc 100644
---- a/tests/dmabuf_sync_file.c
-+++ b/tests/dmabuf_sync_file.c
-@@ -10,6 +10,24 @@
- 
- IGT_TEST_DESCRIPTION("Tests for sync_file support in dma-buf");
- 
-+/**
-+ * TEST: dmabuf_sync_file
-+ * Category: Infrastructure
-+ * Description: Tests for sync_file support in dma-buf
-+ * Functionality: dmabuf
-+ * Sub-category: Core
-+ * Run type: FULL
-+ *
-+ * SUBTEST: export-basic
-+ * SUBTEST: export-before-signal
-+ * SUBTEST: export-multiwait
-+ * SUBTEST: export-wait-after-attach
-+ * SUBTEST: import-basic
-+ * SUBTEST: import-multiple-read-only
-+ * SUBTEST: import-multiple-read-write
-+ *
-+ */
-+
- static void test_export_basic(int fd)
- {
- 	struct vgem_bo bo;
-diff --git a/tests/intel/i915_pciid.c b/tests/intel/i915_pciid.c
-index 8322bd564..436acdaeb 100644
---- a/tests/intel/i915_pciid.c
-+++ b/tests/intel/i915_pciid.c
-@@ -35,7 +35,7 @@
-  * Feature: core
-  * Functionality: device management
-  * Run type: BAT
+diff --git a/tests/intel/gem_sync.c b/tests/intel/gem_sync.c
+index d3de2e77e..129ee3b68 100644
+--- a/tests/intel/gem_sync.c
++++ b/tests/intel/gem_sync.c
+@@ -38,7 +38,7 @@
+  * Description: Basic check of ring<->ring write synchronisation.
+  * Feature: synchronization
+  * Functionality: semaphore
 - * Sub-category: i915
-+ * Sub-category: Core
++ * Sub-category: Synchronization
+  * Test category: GEM_Legacy
+  * Run type: FULL
+  *
+diff --git a/tests/intel/gem_wait.c b/tests/intel/gem_wait.c
+index e2a598c64..0d4a959b1 100644
+--- a/tests/intel/gem_wait.c
++++ b/tests/intel/gem_wait.c
+@@ -37,7 +37,7 @@
+  * Description: Tests the GEM_WAIT ioctl
+  * Feature: synchronization
+  * Functionality: semaphore
+- * Sub-category: i915
++ * Sub-category: Synchronization
+  * Test category: GEM_Legacy
+  * Run type: FULL
+  *
+diff --git a/tests/sw_sync.c b/tests/sw_sync.c
+index 6c476ff46..40ecec665 100644
+--- a/tests/sw_sync.c
++++ b/tests/sw_sync.c
+@@ -45,7 +45,7 @@
+  * Feature: synchronization
+  * Functionality: semaphore
+  * Run type: FULL
+- * Sub-category: DRM
++ * Sub-category: Synchronization
   * Test category: GEM_Legacy
   *
-  * SUBTEST:
-diff --git a/tests/vgem_basic.c b/tests/vgem_basic.c
-index 6cfb02e82..fe201908c 100644
---- a/tests/vgem_basic.c
-+++ b/tests/vgem_basic.c
-@@ -36,6 +36,7 @@
-  * Category: Infrastructure
-  * Description: Basic sanity check of Virtual GEM module (vGEM).
-  * Functionality: mock device
-+ * Sub-category: Core
-  * Test category: GEM_Legacy
-  * Feature: vgem
+  * SUBTEST: alloc_fence
+diff --git a/tests/syncobj_basic.c b/tests/syncobj_basic.c
+index f079baf09..6c75fce96 100644
+--- a/tests/syncobj_basic.c
++++ b/tests/syncobj_basic.c
+@@ -33,7 +33,7 @@
+  * Feature: synchronization
+  * Functionality: semaphore
   * Run type: FULL
+- * Sub-category: DRM
++ * Sub-category: Synchronization
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: bad-create-flags
+diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
+index ea8341a30..083091583 100644
+--- a/tests/syncobj_timeline.c
++++ b/tests/syncobj_timeline.c
+@@ -37,7 +37,7 @@
+  * Feature: synchronization
+  * Functionality: semaphore
+  * Run type: FULL
+- * Sub-category: DRM
++ * Sub-category: Synchronization
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: 32bits-limit
+diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
+index e0ff69b79..687f2613e 100644
+--- a/tests/syncobj_wait.c
++++ b/tests/syncobj_wait.c
+@@ -37,7 +37,7 @@
+  * Feature: synchronization
+  * Functionality: semaphore
+  * Run type: FULL
+- * Sub-category: DRM
++ * Sub-category: Synchronization
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-multi-wait-all-unsubmitted
 -- 
 2.34.1
 
