@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEE2EC5475B
-	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 10:18:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BA03C5475B
+	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 10:36:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7568910EBAE;
-	Fri,  8 Mar 2024 10:18:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1481C10F950;
+	Fri,  8 Mar 2024 10:36:12 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D40010F942;
- Fri,  8 Mar 2024 10:18:02 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7330210F950;
+ Fri,  8 Mar 2024 10:36:10 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5979667390589080670=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_Update_test_documentati?=
- =?utf-8?q?on_for_i915_tests_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Update_test_documentation_for_?=
+ =?utf-8?q?i915_tests_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Katarzyna Piecielska" <katarzyna.piecielska@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 08 Mar 2024 10:18:02 -0000
-Message-ID: <170989308205.612184.10711932412246858440@8e613ede5ea5>
+Date: Fri, 08 Mar 2024 10:36:10 -0000
+Message-ID: <170989417047.612184.2334290992323320039@8e613ede5ea5>
 X-Patchwork-Hint: ignore
 References: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
 In-Reply-To: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
@@ -41,40 +41,151 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============5979667390589080670==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: Update test documentation for i915 tests (rev2)
 URL   : https://patchwork.freedesktop.org/series/130665/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7749_BAT -> XEIGTPW_10795_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1122740 for the overview.
+Summary
+-------
 
-containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56037773):
-  Checking out 9f92e761 as detached HEAD (ref is intel/IGTPW_10795)...
-  Removing build/
-  Removing installdir/
-  Removing scripts/__pycache__/
+  **SUCCESS**
+
+  No regressions found.
+
   
-  Skipping Git submodules setup
-  section_end:1709892879:get_sources
-  section_start:1709892879:download_artifacts
-  Downloading artifacts
-  Downloading artifacts for build:tests-fedora (56037758)...
-  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=56037758 responseStatus=200 OK token=glcbt-64
-  section_end:1709892889:download_artifacts
-  section_start:1709892889:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
-  section_end:1709892889:step_script
-  section_start:1709892889:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1709892891:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176: image not known (docker.go:570:0s)
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10795_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_evict@evict-mixed-threads-small:
+    - bat-dg2-oem2:       [DMESG-WARN][1] ([Intel XE#1009]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10795/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html
+
+  * igt@xe_exec_threads@threads-basic:
+    - bat-dg2-oem2:       [DMESG-WARN][3] ([Intel XE#1232]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10795/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-dg2-oem2:       [SKIP][5] ([Intel XE#1192]) -> [PASS][6] +2 other tests pass
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_live_ktest@xe_bo.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10795/bat-dg2-oem2/igt@xe_live_ktest@xe_bo.html
+
+  
+  [Intel XE#1009]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#1232]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1232
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7749 -> IGTPW_10795
+  * Linux: xe-906-6e50187af603728329f9d3c3a53ad162d7eda9a4 -> xe-921-2137bb3e829c5f310013289535d53fb5c273fed0
+
+  IGTPW_10795: 10795
+  IGT_7749: 2fd91b8c3cf9aa2b0bb78537a6b5e2bc3de50e0e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-906-6e50187af603728329f9d3c3a53ad162d7eda9a4: 6e50187af603728329f9d3c3a53ad162d7eda9a4
+  xe-921-2137bb3e829c5f310013289535d53fb5c273fed0: 2137bb3e829c5f310013289535d53fb5c273fed0
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1122740
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10795/index.html
+
+--===============5979667390589080670==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Update test documentation for i915 tests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130665/">https://patchwork.freedesktop.org/series/130665/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10795/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10795/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7749_BAT -&gt; XEIGTPW_10795_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10795_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-mixed-threads-small:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009">Intel XE#1009</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10795/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_threads@threads-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1232">Intel XE#1232</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10795/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10795/bat-dg2-oem2/igt@xe_live_ktest@xe_bo.html">PASS</a> +2 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7749 -&gt; IGTPW_10795</li>
+<li>Linux: xe-906-6e50187af603728329f9d3c3a53ad162d7eda9a4 -&gt; xe-921-2137bb3e829c5f310013289535d53fb5c273fed0</li>
+</ul>
+<p>IGTPW_10795: 10795<br />
+  IGT_7749: 2fd91b8c3cf9aa2b0bb78537a6b5e2bc3de50e0e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-906-6e50187af603728329f9d3c3a53ad162d7eda9a4: 6e50187af603728329f9d3c3a53ad162d7eda9a4<br />
+  xe-921-2137bb3e829c5f310013289535d53fb5c273fed0: 2137bb3e829c5f310013289535d53fb5c273fed0</p>
+
+</body>
+</html>
+
+--===============5979667390589080670==--
