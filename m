@@ -4,54 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78B2DC54E4A
-	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 08:37:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FD49C54E5C
+	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 08:37:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 29358113544;
-	Fri,  8 Mar 2024 08:37:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1773F11356F;
+	Fri,  8 Mar 2024 08:37:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nx3Bjbo/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G/6hDFFL";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33AB0113544
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 08:37:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B1DF11356F
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 08:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709887039; x=1741423039;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=rWv4JxBqGawRbAM28S4dliAnJQyPLkeCe9DoYTKajrA=;
- b=nx3Bjbo/FQnnwfp1y9dX/06h38ubhHXYjpAMlZKZRmNp8rHlF2u8vPEn
- K8anFxWlF5z4w69dy941oSH4+uWcOyBdkE4Ki/ujBc9K5Gt2dWFt1YQ47
- EP3e0H4fjrUkSTEa4l0VB0u8RxQPVpVfIlz4QwlSN2VVMNn7ekOEJkHCQ
- TZYSDcyDovSWf1OIIUmyxs7VwRtmBq++SSKXoM1Bk1XNuF6TEU6lI98TS
- OuMBvSgONGc6reygUIEXurzvqy1asL0XB/lzZvOUHu5F8dJe9lX6CeDlm
- LE2tdedPNvozHsu8sQizOwhp4shjDY4+7261RW7WDWs+lSD78aeN03Tlh g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4723653"
+ t=1709887053; x=1741423053;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=rRA1cX5rwM8ckXGUuMUEiiUnXuJDfZedVy5k26YaZWU=;
+ b=G/6hDFFLhXq/MHp6ie05BQhRYCEQJxQQHITVMOo++nZG5USdLa07Vp6a
+ LGoqrg4PLBH7V0DziCH/vj9wQgc7N/yUqAjfwpcbE4z009zvqZtfqkrjz
+ GJ2ivF+dF61y0+CWV8xIf3OfzqSjPm2CF4x7UHFnnYZO1fxSRTXGv7Oa+
+ LUKV++x4CiH/irm3TmoqRxPAcxe6j+YlLvCFKGBt//dixyslCCuWDSw3Y
+ DHX77d8psdOiBV6NQTahRaxu3JmYg+RZy8+gqdFlH1UYSZ0ROsS61bLxn
+ v4kxna/oCtxV1ZZETOkLCJf75DABbi2BCXgy6Su1A69CTsBsJkq814HBy g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4723681"
 X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; 
-   d="scan'208";a="4723653"
+   d="scan'208";a="4723681"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Mar 2024 00:37:18 -0800
+ 08 Mar 2024 00:37:32 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; d="scan'208";a="15063169"
+X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; d="scan'208";a="15063197"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Mar 2024 00:37:16 -0800
+ 08 Mar 2024 00:37:25 -0800
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Chris Wilson <chris@chris-wilson.co.uk>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t v2 00/25] Update test documentation for i915 tests
-Date: Fri,  8 Mar 2024 08:36:32 +0000
-Message-Id: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v2 01/25] tests: Introduce uapi subcategory
+Date: Fri,  8 Mar 2024 08:36:33 +0000
+Message-Id: <20240308083657.1092049-2-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
+References: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,235 +66,210 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There are many warnings about missing test documentation, so let's fix that.
-While I am already doing that - let's introduce more subcategories and
-functionalities. Additionally adjust categorization for all i915 tests.
-
-Last patch is removing 'Run type' field from all Intel tests - both XE and i915.
-
-v2: Apply review comments: fix commit messages, remove duplicates in Subcategory
-and Functionality
+Let's introduce uapi subcategory to explicitly show where we are testing
+the basics.
+Also fix already set values:
+- fix subcategory for create-ext-set-pat subtest
+- fix functionality for gem_ctx_sseu: s/Sub-slice programming/sseu
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ tests/core_getstats.c              |  4 ++--
+ tests/drm_read.c                   | 17 +++++++++++++++++
+ tests/dumb_buffer.c                |  6 +++---
+ tests/intel/gem_create.c           | 15 +++------------
+ tests/intel/gem_ctx_sseu.c         |  3 +++
+ tests/intel/gem_reg_read.c         |  3 +++
+ tests/intel/gem_reset_stats.c      |  3 +++
+ tests/intel/i915_getparams_basic.c |  2 +-
+ tests/intel/i915_pm_freq_api.c     |  3 +++
+ tests/intel/sysfs_defaults.c       |  6 +++---
+ 10 files changed, 41 insertions(+), 21 deletions(-)
 
-Katarzyna Piecielska (25):
-  tests: Introduce uapi subcategory
-  tests/intel: Introduce Memory management subcategory
-  tests/intel: Introduce CMD submission subcategory
-  tests/intel: Introduce Caching subcategory
-  tests/intel: Let's introduce Workarounds subcategory
-  tests/intel: Add tests to Compute subcategory
-  tests/intel: Introduce GPGPU subcategory
-  tests/intel: Introduce Blitter subcategory
-  tests/intel: Introduce FDinfo subcategory
-  tests/intel: Introduce Flat-ccs subcategory
-  tests/intel: Introduce Firmware subcategory
-  tests/intel: Introduce Media subcategory
-  tests/intel: Introduce Render copy subcategory
-  tests/intel: Introduce Obsolete subcategory
-  tests/intel: Introduce Power management subcategory
-  tests/intel: Introduce SysMan subcategory
-  tests: Introduce Core subcategory
-  tests: Introduce Synchronization subcategory
-  tests: Introduce intel-nouveau subcategory
-  tests/intel: Introduce Debugging subcategory
-  tests/intel: Add missing documentation fields in i915_selftest
-  tests/intel: Add more tests to Performance subcategory
-  tests: Add missing documentation fields for SRIOV and Display
-  tests: Remove 'Run type' documentation field
-  tests: Update device_reset functionality
-
- tests/core_auth.c                            |   8 +-
- tests/core_getclient.c                       |   2 +-
- tests/core_getstats.c                        |   6 +-
- tests/core_getversion.c                      |   2 +-
- tests/core_hotunplug.c                       |   4 +-
- tests/core_setmaster.c                       |   2 +-
- tests/core_setmaster_vs_auth.c               |   2 +-
- tests/device_reset.c                         |   4 +-
- tests/dmabuf.c                               |   2 +-
- tests/dmabuf_sync_file.c                     |  18 +
- tests/drm_mm.c                               |   4 +-
- tests/drm_read.c                             |  17 +
- tests/dumb_buffer.c                          |   8 +-
- tests/intel/api_intel_allocator.c            |   2 +-
- tests/intel/api_intel_bb.c                   |   2 +-
- tests/intel/debugfs_test.c                   |   6 +-
- tests/intel/drm_fdinfo.c                     |   5 +-
- tests/intel/gem_bad_reloc.c                  |  16 +-
- tests/intel/gem_barrier_race.c               |   5 +-
- tests/intel/gem_basic.c                      |   4 +-
- tests/intel/gem_blits.c                      |   2 +-
- tests/intel/gem_busy.c                       |   4 +-
- tests/intel/gem_caching.c                    |   6 +-
- tests/intel/gem_ccs.c                        |   5 +-
- tests/intel/gem_close.c                      |   4 +-
- tests/intel/gem_close_race.c                 |   6 +-
- tests/intel/gem_compute.c                    |   4 +-
- tests/intel/gem_create.c                     |  17 +-
- tests/intel/gem_cs_tlb.c                     |   5 +-
- tests/intel/gem_ctx_bad_destroy.c            |   4 +-
- tests/intel/gem_ctx_create.c                 |   8 +-
- tests/intel/gem_ctx_engines.c                |   5 +-
- tests/intel/gem_ctx_exec.c                   |   8 +-
- tests/intel/gem_ctx_freq.c                   |   2 +-
- tests/intel/gem_ctx_isolation.c              |   2 +-
- tests/intel/gem_ctx_param.c                  |   2 +-
- tests/intel/gem_ctx_persistence.c            |   2 +-
- tests/intel/gem_ctx_shared.c                 |   4 +-
- tests/intel/gem_ctx_sseu.c                   |   5 +-
- tests/intel/gem_ctx_switch.c                 |   5 +-
- tests/intel/gem_eio.c                        |   2 +-
- tests/intel/gem_evict_alignment.c            |   5 +-
- tests/intel/gem_evict_everything.c           |   5 +-
- tests/intel/gem_exec_alignment.c             |   6 +-
- tests/intel/gem_exec_async.c                 |   6 +-
- tests/intel/gem_exec_await.c                 |   6 +-
- tests/intel/gem_exec_balancer.c              |   2 +-
- tests/intel/gem_exec_basic.c                 |   2 +-
- tests/intel/gem_exec_big.c                   |   2 +-
- tests/intel/gem_exec_capture.c               |   4 +-
- tests/intel/gem_exec_create.c                |   4 +-
- tests/intel/gem_exec_endless.c               |   8 +-
- tests/intel/gem_exec_fair.c                  |   5 +-
- tests/intel/gem_exec_fence.c                 |  10 +-
- tests/intel/gem_exec_flush.c                 |   5 +-
- tests/intel/gem_exec_gttfill.c               |   4 +-
- tests/intel/gem_exec_latency.c               |   5 +-
- tests/intel/gem_exec_lut_handle.c            |   5 +-
- tests/intel/gem_exec_nop.c                   |   6 +-
- tests/intel/gem_exec_parallel.c              |   4 +-
- tests/intel/gem_exec_params.c                |   2 +-
- tests/intel/gem_exec_reloc.c                 |   5 +-
- tests/intel/gem_exec_schedule.c              |   2 +-
- tests/intel/gem_exec_store.c                 |  20 +-
- tests/intel/gem_exec_suspend.c               |   5 +-
- tests/intel/gem_exec_whisper.c               |   6 +-
- tests/intel/gem_exercise_blt.c               |  14 +-
- tests/intel/gem_fd_exhaustion.c              |   5 +-
- tests/intel/gem_fence_thrash.c               |   5 +-
- tests/intel/gem_fence_upload.c               |   5 +-
- tests/intel/gem_fenced_exec_thrash.c         |   5 +-
- tests/intel/gem_flink_basic.c                |   2 +-
- tests/intel/gem_flink_race.c                 |   2 +-
- tests/intel/gem_gpgpu_fill.c                 |   8 +-
- tests/intel/gem_gtt_cpu_tlb.c                |   5 +-
- tests/intel/gem_gtt_hog.c                    |   5 +-
- tests/intel/gem_gtt_speed.c                  |   5 +-
- tests/intel/gem_huc_copy.c                   |   4 +-
- tests/intel/gem_linear_blits.c               |   8 +-
- tests/intel/gem_lmem_evict.c                 |   5 +-
- tests/intel/gem_lmem_swapping.c              |  10 +-
- tests/intel/gem_lut_handle.c                 |   5 +-
- tests/intel/gem_madvise.c                    |   4 +-
- tests/intel/gem_media_fill.c                 |   4 +-
- tests/intel/gem_media_vme.c                  |   4 +-
- tests/intel/gem_mmap.c                       |   7 +-
- tests/intel/gem_mmap_gtt.c                   |   5 +-
- tests/intel/gem_mmap_offset.c                |   2 +-
- tests/intel/gem_mmap_wc.c                    |   5 +-
- tests/intel/gem_partial_pwrite_pread.c       |   5 +-
- tests/intel/gem_pipe_control_store_loop.c    |   6 +-
- tests/intel/gem_ppgtt.c                      |   2 +-
- tests/intel/gem_pread.c                      |   5 +-
- tests/intel/gem_pread_after_blit.c           |   5 +-
- tests/intel/gem_pwrite.c                     |   5 +-
- tests/intel/gem_pwrite_snooped.c             |   5 +-
- tests/intel/gem_pxp.c                        |   3 +-
- tests/intel/gem_read_read_speed.c            |   5 +-
- tests/intel/gem_readwrite.c                  |   5 +-
- tests/intel/gem_reg_read.c                   |   5 +-
- tests/intel/gem_render_copy.c                |   4 +-
- tests/intel/gem_render_copy_redux.c          |   4 +-
- tests/intel/gem_render_linear_blits.c        |   7 +-
- tests/intel/gem_render_tiled_blits.c         |   7 +-
- tests/intel/gem_request_retire.c             |   6 +-
- tests/intel/gem_reset_stats.c                |   5 +-
- tests/intel/gem_ringfill.c                   |   8 +-
- tests/intel/gem_set_tiling_vs_blt.c          |   5 +-
- tests/intel/gem_set_tiling_vs_gtt.c          |   5 +-
- tests/intel/gem_set_tiling_vs_pwrite.c       |   5 +-
- tests/intel/gem_shrink.c                     |   2 +-
- tests/intel/gem_softpin.c                    |   6 +-
- tests/intel/gem_spin_batch.c                 |   2 +-
- tests/intel/gem_streaming_writes.c           |   5 +-
- tests/intel/gem_stress.c                     |   5 +-
- tests/intel/gem_sync.c                       |  10 +-
- tests/intel/gem_tiled_blits.c                |   7 +-
- tests/intel/gem_tiled_fence_blits.c          |   7 +-
- tests/intel/gem_tiled_partial_pwrite_pread.c |   4 +-
- tests/intel/gem_tiled_pread_basic.c          |   5 +-
- tests/intel/gem_tiled_pread_pwrite.c         |   5 +-
- tests/intel/gem_tiled_swapping.c             |   5 +-
- tests/intel/gem_tiled_wb.c                   |   5 +-
- tests/intel/gem_tiled_wc.c                   |   5 +-
- tests/intel/gem_tiling_max_stride.c          |   5 +-
- tests/intel/gem_unfence_active_buffers.c     |   5 +-
- tests/intel/gem_unref_active_buffers.c       |   4 +-
- tests/intel/gem_userptr_blits.c              |   2 +-
- tests/intel/gem_vm_create.c                  |   5 +-
- tests/intel/gem_wait.c                       |   8 +-
- tests/intel/gem_watchdog.c                   |   5 +-
- tests/intel/gem_workarounds.c                |   6 +-
- tests/intel/gen3_mixed_blits.c               |   5 +-
- tests/intel/gen3_render_linear_blits.c       |   5 +-
- tests/intel/gen3_render_mixed_blits.c        |   5 +-
- tests/intel/gen3_render_tiledx_blits.c       |   6 +-
- tests/intel/gen3_render_tiledy_blits.c       |   6 +-
- tests/intel/gen7_exec_parse.c                |   5 +-
- tests/intel/gen9_exec_parse.c                |   5 +-
- tests/intel/i915_fb_tiling.c                 |   5 +-
- tests/intel/i915_getparams_basic.c           |   4 +-
- tests/intel/i915_hangman.c                   |  20 +-
- tests/intel/i915_module_load.c               |   6 +-
- tests/intel/i915_pciid.c                     |   4 +-
- tests/intel/i915_pipe_stress.c               |  13 +-
- tests/intel/i915_pm_freq_api.c               |   5 +-
- tests/intel/i915_pm_freq_mult.c              |  11 +-
- tests/intel/i915_pm_rc6_residency.c          |   3 +-
- tests/intel/i915_pm_rpm.c                    |   4 +-
- tests/intel/i915_pm_rps.c                    |   7 +-
- tests/intel/i915_pm_sseu.c                   |   5 +-
- tests/intel/i915_power.c                     |   5 +-
- tests/intel/i915_query.c                     |   2 +-
- tests/intel/i915_selftest.c                  | 397 ++++++++++---------
- tests/intel/i915_suspend.c                   |   7 +-
- tests/intel/intel_hwmon.c                    |   2 +-
- tests/intel/perf.c                           |   3 +-
- tests/intel/perf_pmu.c                       |   3 +-
- tests/intel/prime_busy.c                     |   3 +-
- tests/intel/prime_mmap.c                     |   6 +-
- tests/intel/prime_mmap_coherency.c           |   6 +-
- tests/intel/prime_mmap_kms.c                 |   2 +-
- tests/intel/prime_self_import.c              |  13 +-
- tests/intel/sysfs_defaults.c                 |   6 +-
- tests/intel/sysfs_heartbeat_interval.c       |   5 +-
- tests/intel/sysfs_preempt_timeout.c          |   5 +-
- tests/intel/sysfs_timeslice_duration.c       |   5 +-
- tests/intel/xe_drm_fdinfo.c                  |   2 +-
- tests/intel/xe_pm.c                          |   2 +-
- tests/intel/xe_pm_residency.c                |   2 +-
- tests/intel/xe_spin_batch.c                  |   4 +-
- tests/intel/xe_waitfence.c                   |   2 +-
- tests/prime_nv_api.c                         |  22 +
- tests/prime_nv_pcopy.c                       |  18 +
- tests/prime_nv_test.c                        |  17 +
- tests/prime_vgem.c                           |  14 +-
- tests/sriov_basic.c                          |   9 +-
- tests/sw_sync.c                              |   4 +-
- tests/syncobj_basic.c                        |   4 +-
- tests/syncobj_eventfd.c                      |   2 +-
- tests/syncobj_timeline.c                     |   4 +-
- tests/syncobj_wait.c                         |   4 +-
- tests/vgem_basic.c                           |  25 +-
- tests/vgem_slow.c                            |   2 +-
- 184 files changed, 885 insertions(+), 545 deletions(-)
-
+diff --git a/tests/core_getstats.c b/tests/core_getstats.c
+index 8b5655053..1a8ad22c7 100644
+--- a/tests/core_getstats.c
++++ b/tests/core_getstats.c
+@@ -37,9 +37,9 @@
+  * Category: Desktop client
+  * Description: Tests the DRM_IOCTL_GET_STATS ioctl.
+  * Feature: core
+- * Functionality: permission management for clients
++ * Functionality: DRM memory management
+  * Run type: FULL
+- * Sub-category: DRM
++ * Sub-category: uapi
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST:
+diff --git a/tests/drm_read.c b/tests/drm_read.c
+index 36dc623ed..f8ef324fa 100644
+--- a/tests/drm_read.c
++++ b/tests/drm_read.c
+@@ -50,6 +50,23 @@
+ 
+ IGT_TEST_DESCRIPTION("Call read(drm) and see if it behaves.");
+ 
++/**
++ * TEST: drm read
++ * Description: boundary testing of read(drm_fd)
++ * Category: Infrastructure
++ * Functionality: DRM memory managemnt
++ * Sub-category: uapi
++ * Run type: FULL
++ *
++ * SUBTEST: invalid-buffer
++ * SUBTEST: fault-buffer
++ * SUBTEST: empty-block
++ * SUBTEST: empty-nonblock
++ * SUBTEST: short-buffer-block
++ * SUBTEST: short-buffer-nonblock
++ * SUBTEST: short-buffer-wakeup
++ */
++
+ static void sighandler(int sig, siginfo_t * info, void *context)
+ {
+ }
+diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
+index 9db857f9f..d76f0c70f 100644
+--- a/tests/dumb_buffer.c
++++ b/tests/dumb_buffer.c
+@@ -54,10 +54,10 @@
+  * Category: Desktop client
+  * Description: This is a test for the generic dumb buffer interface.
+  * Feature: prime
+- * Functionality: IOCTL check for buffer management
++ * Functionality: ioctl
+  * Run type: FULL
+- * Sub-category: Compositor
+- * Test category: GEM_Legacy
++ * Sub-category: uapi
++ * Test category: Compositor
+  *
+  * SUBTEST: create-clear
+  *
+diff --git a/tests/intel/gem_create.c b/tests/intel/gem_create.c
+index 77ffceda4..ae9575089 100644
+--- a/tests/intel/gem_create.c
++++ b/tests/intel/gem_create.c
+@@ -98,6 +98,9 @@
+  * SUBTEST: create-ext-placement-sanity-check
+  * Description: Exercise create_ext placements extension.
+  *
++ * SUBTEST: create-ext-set-pat
++ * Description:  Create GEM object with specific PAT index
++ *
+  * SUBTEST: create-invalid-size
+  * Description: Try to create a gem object of invalid size 0 and check if
+  *		ioctl returns error.
+@@ -594,18 +597,6 @@ static void create_ext_placement_each(int fd)
+ 	free(regions);
+ }
+ 
+-/**
+-  * TEST: GEM create uAPI
+-  * Category: Infrastructure
+-  * Description: Tests the DRM_IOCTL_I915_GEM_CREATE_EXT ioctl.
+-  * Feature: core
+-  * Functionality: Create GEM object with specific PAT index
+-  * Run type: BAT
+-  * Sub-category: i915
+-  * Test category: GEM_Legacy
+-  *
+-  * SUBTEST: create-ext-set-pat
+-  */
+ static void create_ext_set_pat(int fd)
+ {
+ 	struct drm_i915_gem_create_ext_set_pat setparam_pat = {
+diff --git a/tests/intel/gem_ctx_sseu.c b/tests/intel/gem_ctx_sseu.c
+index 3a01944e4..a9d400c2d 100644
+--- a/tests/intel/gem_ctx_sseu.c
++++ b/tests/intel/gem_ctx_sseu.c
+@@ -48,6 +48,9 @@
+  * TEST: gem ctx sseu
+  * Description: Test context render powergating programming.
+  * Feature: pm_sseu
++ * Sub-category: uapi
++ * Category: Desktop client
++ * Functionality: sseu
+  * Run type: FULL
+  *
+  * SUBTEST: engines
+diff --git a/tests/intel/gem_reg_read.c b/tests/intel/gem_reg_read.c
+index de6788abe..03b12551d 100644
+--- a/tests/intel/gem_reg_read.c
++++ b/tests/intel/gem_reg_read.c
+@@ -35,6 +35,9 @@
+ /**
+  * TEST: gem reg read
+  * Feature: gem_core
++ * Sub-category: uapi
++ * Category: Desktop client
++ * Functionality: ioctl
+  * Run type: FULL
+  *
+  * SUBTEST: bad-register
+diff --git a/tests/intel/gem_reset_stats.c b/tests/intel/gem_reset_stats.c
+index 5dfc1fc67..a62c4061a 100644
+--- a/tests/intel/gem_reset_stats.c
++++ b/tests/intel/gem_reset_stats.c
+@@ -49,6 +49,9 @@
+ #include "sw_sync.h"
+ /**
+  * TEST: gem reset stats
++ * Sub-category: uapi
++ * Category: Desktop client
++ * Functionality: reset
+  * Run type: FULL
+  *
+  * SUBTEST: ban-blt
+diff --git a/tests/intel/i915_getparams_basic.c b/tests/intel/i915_getparams_basic.c
+index b22ab5d93..971c35e55 100644
+--- a/tests/intel/i915_getparams_basic.c
++++ b/tests/intel/i915_getparams_basic.c
+@@ -37,7 +37,7 @@
+  * Feature: gem_core
+  * Functionality: device topology
+  * Run type: BAT
+- * Sub-category: i915
++ * Sub-category: uapi
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-eu-total
+diff --git a/tests/intel/i915_pm_freq_api.c b/tests/intel/i915_pm_freq_api.c
+index 6018692a2..aa2de74c9 100644
+--- a/tests/intel/i915_pm_freq_api.c
++++ b/tests/intel/i915_pm_freq_api.c
+@@ -11,6 +11,9 @@
+ /**
+  * TEST: i915 pm freq api
+  * Description: Test SLPC freq API
++ * Category: Infrastructure
++ * Sub-category: uapi
++ * Functionality: slpc
+  * Run type: FULL
+  *
+  * SUBTEST: freq-basic-api
+diff --git a/tests/intel/sysfs_defaults.c b/tests/intel/sysfs_defaults.c
+index b686c19fc..a80f7126c 100644
+--- a/tests/intel/sysfs_defaults.c
++++ b/tests/intel/sysfs_defaults.c
+@@ -37,10 +37,10 @@
+  * TEST: sysfs defaults
+  * Category: Infrastructure
+  * Feature: gem_core
+- * Functionality: driver handler
+- * Run type: FULL
+- * Sub-category: i915
++ * Functionality: sysfs
++ * Sub-category: uapi
+  * Test category: GEM_Legacy
++ * Run type: FULL
+  *
+  * SUBTEST: readonly
+  */
 -- 
 2.34.1
 
