@@ -4,27 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A1FCC5475B
-	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 12:26:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7BD0C5475B
+	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 19:31:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 09FDE10F579;
-	Fri,  8 Mar 2024 12:26:49 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7605510F45A;
- Fri,  8 Mar 2024 12:26:48 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0035576080882118958=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6B76811397B;
+	Fri,  8 Mar 2024 19:31:34 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EcIbNcVL";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2000711397B
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 19:31:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1709926293; x=1741462293;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=2fHgBf21bQHNBCL588wbWrXye5GKEWpFU0Y8U37BVhM=;
+ b=EcIbNcVLT9HZ7J8jx2RRRsKxlho9dKVk1BXi7w8pMp7gfWlRkH2ZZCaO
+ 3bA8Nx7KLDiQDeT88f5acNbAMw1zuCMSLIXnab/Zi4+++lD3VBqgZt+XU
+ LTG1rt2ZKMWZ7jhepzMbhzXk3yq/1owQOvQ9RnvbLKyCOlrWfxi3z6c2U
+ Uh1ls4rRKFAgz9DEXMsz2TA4ahghVbsF48xgX1YrZIWsnh3J0eZx8TSD3
+ oFiliVgYNcvR0DZksrMKuGYafzalOX7Y5dYJAFjCerR5QoJCRjEvC1Hvl
+ rqz3RnjB1Qc8kvaEtvKn3e178Cw/bcluw1Yk7wrGNKcaXgwzCJbWXzKxn w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11007"; a="16067372"
+X-IronPort-AV: E=Sophos;i="6.07,110,1708416000"; d="scan'208";a="16067372"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Mar 2024 11:31:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,110,1708416000"; d="scan'208";a="10950225"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Mar 2024 11:31:32 -0800
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t v3] lib/igt_kmod: Allow to load kunit from alias
+Date: Fri,  8 Mar 2024 11:31:49 -0800
+Message-ID: <20240308193149.2220807-1-lucas.demarchi@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Fix_scripts/xls=5Fto=5Fdoc=2Ep?=
- =?utf-8?q?y?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mauro Carvalho Chehab" <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 08 Mar 2024 12:26:48 -0000
-Message-ID: <170990080848.612256.225574920911410515@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240308100933.912014-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20240308100933.912014-1-mauro.chehab@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,155 +58,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0035576080882118958==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Instead of only allowing to load the from the module name, also allow it
+from alias by using kmod_module_new_from_lookup(). With that a user can
+have their on aliases and the kernel can also export a compat alias for
+future module renames.
 
-== Series Details ==
+There was a bug in libkmod <= 29 that would make
+kmod_module_new_from_lookup() return prematurely after a failed alias
+lookup when we don't have a modules.alias file in the modules dir. So
+add a workaround to check for -ENOSYS return code too. It should still
+be compatible with what we are doing here.
 
-Series: Fix scripts/xls_to_doc.py
-URL   : https://patchwork.freedesktop.org/series/130909/
-State : success
+v2: Fallback to kmod_module_new_from_name() since the kmod ctx is also
+    used on builder machines to determine the test lists.
+v3: Add workaround to bug in libkmod
 
-== Summary ==
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+ lib/igt_kmod.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-CI Bug Log - changes from XEIGT_7749_BAT -> XEIGTPW_10796_BAT
-====================================================
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index cc242838f..d581f9073 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -1443,6 +1443,7 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
+ int igt_ktest_init(struct igt_ktest *tst,
+ 		   const char *module_name)
+ {
++	struct kmod_list *l = NULL;
+ 	int err;
+ 
+ 	memset(tst, 0, sizeof(*tst));
+@@ -1453,9 +1454,25 @@ int igt_ktest_init(struct igt_ktest *tst,
+ 
+ 	tst->kmsg = -1;
+ 
+-	err = kmod_module_new_from_name(kmod_ctx(), module_name, &tst->kmod);
+-	if (err)
++	err = kmod_module_new_from_lookup(kmod_ctx(), module_name, &l);
++
++	/*
++	 * Check for -ENOSYS to workaround bug in kmod_module_new_from_lookup()
++	 * from libkmod <= 29
++	 */
++	if (err < 0 && err != -ENOSYS) {
+ 		return err;
++	}
++
++	/*
++	 * Lookup may not resolve to a module when used to just list subtests,
++	 * where module is not available. Fallback to _new_from_name().
++	 */
++	if (!l)
++		return kmod_module_new_from_name(kmod_ctx(), module_name, &tst->kmod);
++
++	tst->kmod = kmod_module_get_module(l);
++	kmod_module_unref_list(l);
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10796_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_evict@evict-mixed-threads-small:
-    - bat-dg2-oem2:       [DMESG-WARN][1] ([Intel XE#1009]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10796/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html
-
-  * igt@xe_exec_threads@threads-basic:
-    - bat-dg2-oem2:       [DMESG-WARN][3] ([Intel XE#1232]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10796/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-dg2-oem2:       [SKIP][5] ([Intel XE#1192]) -> [PASS][6] +2 other tests pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_live_ktest@xe_bo.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10796/bat-dg2-oem2/igt@xe_live_ktest@xe_bo.html
-
-  
-  [Intel XE#1009]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009
-  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
-  [Intel XE#1232]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1232
-
-
-Build changes
--------------
-
-  * IGT: IGT_7749 -> IGTPW_10796
-  * Linux: xe-906-6e50187af603728329f9d3c3a53ad162d7eda9a4 -> xe-923-024301d28b0b2cf492ffdb3ce688044cd9923f38
-
-  IGTPW_10796: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10796/index.html
-  IGT_7749: 2fd91b8c3cf9aa2b0bb78537a6b5e2bc3de50e0e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-906-6e50187af603728329f9d3c3a53ad162d7eda9a4: 6e50187af603728329f9d3c3a53ad162d7eda9a4
-  xe-923-024301d28b0b2cf492ffdb3ce688044cd9923f38: 024301d28b0b2cf492ffdb3ce688044cd9923f38
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10796/index.html
-
---===============0035576080882118958==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Fix scripts/xls_to_doc.py</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130909/">https://patchwork.freedesktop.org/series/130909/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10796/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10796/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7749_BAT -&gt; XEIGTPW_10796_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10796_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@xe_evict@evict-mixed-threads-small:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1009">Intel XE#1009</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10796/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_threads@threads-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1232">Intel XE#1232</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10796/bat-dg2-oem2/igt@xe_exec_threads@threads-basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7749/bat-dg2-oem2/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10796/bat-dg2-oem2/igt@xe_live_ktest@xe_bo.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7749 -&gt; IGTPW_10796</li>
-<li>Linux: xe-906-6e50187af603728329f9d3c3a53ad162d7eda9a4 -&gt; xe-923-024301d28b0b2cf492ffdb3ce688044cd9923f38</li>
-</ul>
-<p>IGTPW_10796: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10796/index.html<br />
-  IGT_7749: 2fd91b8c3cf9aa2b0bb78537a6b5e2bc3de50e0e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-906-6e50187af603728329f9d3c3a53ad162d7eda9a4: 6e50187af603728329f9d3c3a53ad162d7eda9a4<br />
-  xe-923-024301d28b0b2cf492ffdb3ce688044cd9923f38: 024301d28b0b2cf492ffdb3ce688044cd9923f38</p>
-
-</body>
-</html>
-
---===============0035576080882118958==--
