@@ -4,59 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B786CC54E41
-	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 22:18:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41DD3C5475B
+	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 22:20:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3C2C51123E2;
-	Fri,  8 Mar 2024 22:18:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 952FA112C9D;
+	Fri,  8 Mar 2024 22:20:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nOgOyRMd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HDiFecge";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 63C081123E2
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 22:18:09 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 18B2E112C9D
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 22:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709936289; x=1741472289;
- h=from:to:cc:subject:date:message-id:
- content-transfer-encoding:mime-version;
- bh=sLT++pTJ56BhOpUwqNOsq2oxotDTcVjC58LLeR0ksRQ=;
- b=nOgOyRMdgpINSe6eRqo3LUDWjNFFqR+QdIUx7GMHc7uY1gY/Apkld2xe
- OvBZWpLb3gTkQoSdBrLWTuwweoeA0KHvcGY05JGIOtcYp9vaqA5icTtVV
- pkqhG2d0xz3BAfRxgwvqQGAK8tf3n0XpNwzPV6tLjNR9wt5VM3ccF79m5
- HDy2c6qq69eYp19NGD+5Epc6qE0VgoKNaMN5fmjLXK90smEnxGdDjTTYR
- iN+AyLbuWe5ZT9nBZiiQobzFNsHKGhtXz6auWSybNQDro2zfOGyr6zDmB
- oNb1EVKAT269IahAd28Rao0MwMNwkvLHJzcm5RoYAq08xnQb/sd/ysp3s w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11007"; a="4854007"
+ t=1709936422; x=1741472422;
+ h=date:from:to:cc:subject:message-id:references:
+ content-transfer-encoding:in-reply-to:mime-version;
+ bh=hPdjUUaKy6BehlmpHweR/ZLwiayIDng6CvXG3j45w4Y=;
+ b=HDiFecge+z7c8bcY/wTeeLuw3c0oso/sZ69FS/2lberOMxaJcyBlH74B
+ WI5gfEDyOV0UzVLfxi++nbLqDhSw07mz+P4XgTj1zsTSV4Iw0VUMjiCMX
+ eDvW/0K1xd/kyln4ftnpdGu52NRVCAxWUNto+VBVXaKg79hgAC0ugkdKg
+ xtienwfi1q6bfeYu1+CT5GiyEDw3+wI3Qe2HR1FUTMMEVyWjm9Et/RIuI
+ HIcyeLp0E4oHzyGv41TM6buCm4mQXPApjgfAqhcRcuy2WFGT2NAYrNR6O
+ tfZzTnNNy4wEZoTh3LpTQlDyhEYnPrf5e1WBXJg5PiJy2KU31eCBvx50x w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11007"; a="8427301"
 X-IronPort-AV: E=Sophos;i="6.07,110,1708416000"; 
-   d="scan'208";a="4854007"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Mar 2024 14:18:08 -0800
+   d="scan'208";a="8427301"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Mar 2024 14:20:17 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,110,1708416000"; d="scan'208";a="15157721"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
- by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 08 Mar 2024 14:18:08 -0800
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.07,110,1708416000"; d="scan'208";a="11026635"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+ by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 08 Mar 2024 14:20:17 -0800
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 8 Mar 2024 14:18:07 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ 15.1.2507.35; Fri, 8 Mar 2024 14:20:16 -0800
+Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Fri, 8 Mar 2024 14:18:07 -0800
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.168)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.1.2507.35; Fri, 8 Mar 2024 14:20:16 -0800
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Fri, 8 Mar 2024 14:20:16 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.168)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 8 Mar 2024 14:18:06 -0800
+ 15.1.2507.35; Fri, 8 Mar 2024 14:20:16 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KqvzJCVp2vRmFNOnZdV3BELJNdnuIOw+cOGCED8eRGo1oDGvVKNoFO+EM5i6OADj2FFAruj0zq33YICNBNDlZ4IJOMgTFBe16quj6uCmVvAwx8B4OHy2KRpjX4rA/pOVFz+pcEIwKdeRIF2nrYLgRxtkoq+0fzhUFU+y+PUcUaCxyBpOKnFfg820yfidwU99qjNQ2/v2gZw/jKR2HaGBv56ulTDUqKHugijmCAp8KL7R7A/MC/qdNjuOp/hdH6Nj+Z9goARL4pZ4yuXQhetCFCDIgIZBFHZxvHSgAGGiG9IQkyGzHPE66wd7a84SFgOQTJGUJOEj9FDOOI+yqH8uCQ==
+ b=niU98QITrG2rDQohdJTLCN7BRXANB3Bn6yKACotOE1kZuK2JtQxVKZl8RoTsILivGy6xFonVQVsAAhbngULH0Cx59HJsq9gKPOGtwgWGyM5NgIrvN0+9vugLrMkU3DV4VSRS2JjkB5ruxHSHbET5J4HOxCQMvNYnRrTCpoYmLLnR89Hk00drzIG55Mo8H4UofhCIWHkf0V6bFnkGC4h2KTOnqmR3+ySZob1bzYMNf1pdTklLGQv/AjSNUCLdPBmjz6OP01ohiJ+rzmrL1h0yRILi9WZOFbYnQUQj/4dSYE4lfXuLkIwI+iBoYld9SIFC409+seycePUTWGu6CmWR1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3riGe7kuI8I4edRIx2E44Jf6/1uqNm9viDl1rFZ3l+M=;
- b=nCD6BxZ6TnoCEB74BaHUnuZh9XBgFNzqXYtDJXR+dYyxuYyjMRjUfTdyBKF8pickZJ5XtV5V1q7k3xzN3MQ7FscT2XU5kGSf0s6Vzb66rijhhY3Ni0qFGJGmDoeNeW8QYNcOxTEot9p3X/2zfJGFd63zoPF4cD2/qGbfm6S2ks9VbOHiOvRBL1N2tyA1fdJh614ZM6qq9gWT8kkSexEi0rD+Nhm/cXIE7iod7Z5kmFfnah7Z6vlZQ8oq5QycE2wpoJzlXpw/bBaaj1TFiItLtWkDeMV8DL3u7oP77ydltlAZxYgyniqq4r7S1bhUbIILD5S1Jpm0f+ly49WO4j3SDw==
+ bh=nm8pAX/EScAF5QOo8jlG5YLN5Gv0ealwj4tceysh+GA=;
+ b=W2Ku2Mk77CKMgufFgMDUFp8+RTEDUIvEZQvAVBoC/l7ZxDKS8UYJcyWI4GVBBggJIq2V3onVP08NNfrtVvlHNhx7qT19ZpPtSZOBePMgf+Kg08HqRy4Ycbhn9Jwdxrjz25xrhx6SQkK26oh0Je7IQ6nSHcMth/sH6+fculNcp7Mu3a9Xuip5SqetlHpZfrHOLbNtEPL3Elj0rgC999cSQ7Nv5Z8MzOKOrcm3FG8CNfyaxbLIslt6H7qYd7QyLY+KcNp2pPSFivRTq/8sB4q++LozRYFlQNhpQy5aZ3edcllGONiuXg0VcJ65w06LkjKVSWmhkco+yzZn2Dk1dJ0DDQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -66,83 +70,75 @@ Received: from MN0PR11MB6059.namprd11.prod.outlook.com (2603:10b6:208:377::9)
  by SA3PR11MB7535.namprd11.prod.outlook.com (2603:10b6:806:307::10)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.9; Fri, 8 Mar
- 2024 22:18:05 +0000
+ 2024 22:20:14 +0000
 Received: from MN0PR11MB6059.namprd11.prod.outlook.com
  ([fe80::a7f1:384c:5d93:1d1d]) by MN0PR11MB6059.namprd11.prod.outlook.com
  ([fe80::a7f1:384c:5d93:1d1d%4]) with mapi id 15.20.7362.019; Fri, 8 Mar 2024
- 22:18:05 +0000
+ 22:20:14 +0000
+Date: Fri, 8 Mar 2024 17:20:10 -0500
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Rodrigo Vivi <rodrigo.vivi@intel.com>, Lucas De Marchi
- <lucas.demarchi@intel.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,
- =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
-Subject: [PATCH i-g-t] lib/igt_kmod: drop devcoredump before a PCI module
- unload
-Date: Fri, 8 Mar 2024 17:18:00 -0500
-Message-ID: <20240308221800.48860-1-rodrigo.vivi@intel.com>
-X-Mailer: git-send-email 2.44.0
-Content-Type: text/plain; charset="UTF-8"
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+CC: <igt-dev@lists.freedesktop.org>
+Subject: Re: [RFC] lib/igt_kmod: remove devcoredump before a PCI module unload
+Message-ID: <ZeuPGiQSoh-TxgD_@intel.com>
+References: <20240130223702.50769-1-rodrigo.vivi@intel.com>
+ <eeldbmdvytrzcgvzxr7sf7ja5hdtspcnkxwveoniykwppixqpv@2ksbzzudvnis>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR13CA0057.namprd13.prod.outlook.com
- (2603:10b6:a03:2c2::32) To MN0PR11MB6059.namprd11.prod.outlook.com
+In-Reply-To: <eeldbmdvytrzcgvzxr7sf7ja5hdtspcnkxwveoniykwppixqpv@2ksbzzudvnis>
+X-ClientProxiedBy: BY3PR05CA0024.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::29) To MN0PR11MB6059.namprd11.prod.outlook.com
  (2603:10b6:208:377::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: MN0PR11MB6059:EE_|SA3PR11MB7535:EE_
-X-MS-Office365-Filtering-Correlation-Id: 09e1bedf-3975-40d9-e0fe-08dc3fbda01e
+X-MS-Office365-Filtering-Correlation-Id: bfac728d-254f-4bce-c39f-08dc3fbded12
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: bR2DW6va2Y/YPmjhX0ny8QcYKyjWNwdgCEct47r52aHSJU97m/Tlpq0M6ACnCtmIbAlD46g+e5lHUAf10WSRnouGN1oQ5oj6vPiGt5HoQ9dcUB1tkStEW6B+Dxq1oS6qyynUz2Ik8yMKKcHChlplOUU7OiJhqtEniqvWF+lKYphs77WIsQFqVTWVitfFh2lbucwjh7lPtyUQD4oG2STN9hO9+GTOM0XceFLFpfO5RTWGsT5r4TT0EfCxF9mhvd2hfTM5Ol7kYPZ+d+5oxbuXp2ahS7FcKwraOTSmIFnrsgzKbfFBbVyj7vzJF3dlDB6u4mf/hqiip6zZEpGMSPfrjps7NMRgRG3lZPCssdaEXI2sJ/Ms+ImcGuAxdRMaSql5oV5Ody7E8Vez9/atdkbLJtrcVVOo4XPxULw0xgq/gUc2AZIjqkm6xjR4xbJYGLYymydRCqFPVfhazOL6fRjEF59J/2Uo4CByN+DS/Bto+aLGYIv+b047wpS71fv5mfwoORueI5qx3FLujnjJ9szYt2lWPiwkxHpyLEHv/AkMtBJ77yV6KwyxzncAwOtUqqulDM3QnmUMgSNSp42tvTqZ3qDzFWENuJwNzGZLWoTAmLYFXjaD294+A6tFHMD8gdv8EAjiLXyuG5Yn56Jy1cF02WQuqxUBBVgsD8Ykw3hV7jI=
+X-Microsoft-Antispam-Message-Info: Mfj8j1BxWoiUSMXGF6JxeaU61yY90Dh2GycSyxr4gptHUsNLDDLw8r28r0kOSSSpoH8bTiCwLn+6L48hM3ZTvvSlHnd70WNtY0gbB8HC/JS82tdbpA3VDDAsq1fmGmRfQonJ5xd5XAmD1vrwYVU2f2zdqZtM42b2UWJpfvyseJlh4bL1tSpxxPelYRHZvmdQN831v9r+NsxvSVcvcXsdNdiJC0Q+TTnZHpsaA4mphZbrKEQFWRAlUvIPEII+YYi8gTiAaidT0mFSi7L2WWqsFM3QLkcD3FqO2cVnA1Q/PFJV3jme1687dfRPwrB9TbxCWpwS4juBI+vA2mpY0HG6yCgQ3LlIbFEfADof6Ly0L+VsSkUk8puS+NFvzp0Pgaqkp9zQupZrSNUtv0dIRAlF/b6+ZrwW1IhGFbgBt8WwYzE/qXJbXQbvvyhgwtKrBGyXDyWqLn1LZaD55ti8Vy1yWtROpeO+9rI31Jt+jFrNsyiVQIG390kwlzWtkibGjCCVlV3n9stmFH5+zKyZ/u5n8CLJe20S8DHVvc8YgsH0LBCNOlQXmTf/y4vxuMksFtH8s6imQXKasZh0m2XwsqQyqcEQVP+HIr6HYgck1oeUg3lzNzHPtBQmVcHY1iEUyA3NcBv9NWQQ5O5awN9lPtK/yO4RWp626quIlitYO5w6E6w=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:MN0PR11MB6059.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230031)(376005)(1800799015); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?U0Y1QW90K0djclBZeWpnZVM2WWhDdXlmZDNNN3NrYVd1L1NOZFRGVHM3MDg4?=
- =?utf-8?B?RnBHU2lLSkdnenBvMldXMlFzS1BTVjE0WGluMDZNYXpFUFZRWndjMlYxd3dM?=
- =?utf-8?B?bnZIWWJQYWVHTlNoODFJYmZBWXlqcVJVZlI0QkozMnkvUzJkY0hvc25NeHRt?=
- =?utf-8?B?VFQ0MGNQck9aa056RSs3VnJ0MWd0WjV1ajdXTURjU1Ivang0Z0VocXlBTDh6?=
- =?utf-8?B?QVQwSmZnU0d4V1N3SnF1ZVdPZldLbGlaQUpueE9uU2oyQmRKNkFPZGNKODE1?=
- =?utf-8?B?cENUekxMMnh6aldLa2ZWUWdLa0QyOFV3aXFFVzMzTGI0VTN6aDBXMlRxTmdS?=
- =?utf-8?B?RkMvcGMvUldnenV2d0F0Sm9rQ1hlaTdPajNFem5qOHIvbjBFSEo3SUF1UldK?=
- =?utf-8?B?aWJmckJvNGNRZVF1Uis2OHFyZ28rWVpHTGo5TW9jRVpCbVkzYkNlQ1d0b01s?=
- =?utf-8?B?dUZ1R2w1YVZtMjZTN1ZoVFA0NU1BWHFxd3pQTkxha25RU0t6TTQxQnpKMlZa?=
- =?utf-8?B?ZVVkSG9qM1JoRjJVTFl0dm55S1RSdHpvcCt1Q2V5QTdIWFhSMElPVWpNMWxB?=
- =?utf-8?B?ZVd0VFhvTU9LVnlFUzM0MC9Ib3B4TDg0TWJmVHVjVGloZS9HdzlQN2ZzTWVN?=
- =?utf-8?B?MFNJZlRtbURBNHJOSFNoWDFneHhFQ3dGekx0QUsvUlpMN2UzYWl1d3lId2J2?=
- =?utf-8?B?WGY1VTgyRnN0RVZ6MU9PcWRYZVluL3pmU1hValNmb09wVUttUW1FS3pWMHhi?=
- =?utf-8?B?d0hLdS81OUZQby80TzZiclFMUWVPeERNWlpNNGpGQ21Bc0ZlRTZuTUs5OHFB?=
- =?utf-8?B?QUIxSCtSaXMyK0lKNlpWNlovdnNvcHUyT2h2c1lZWG1nN0ZybDExWlNuOXhP?=
- =?utf-8?B?bmJaWS9uaVlITjB5ZjNGUGcxZEpob09SK3R6OXdoT3lRYXBBS1JIYjd2aFBw?=
- =?utf-8?B?RDJBZ3hWZklscFAvNUw2bGVYVFVHckhYM210Rml3Um55bm5yV3FLRS9SdzBG?=
- =?utf-8?B?UUlhNkFaSWlxZm93Ri9Hd3NMNzh0eExORlBuNGR3Z2t1c1d2T3BZS09makFZ?=
- =?utf-8?B?YTlzMGhvOFJRampIeWZZTGZ4UFNqYnNrNjY3NmIrdExQcWhoSjZVQUN2Z3Za?=
- =?utf-8?B?S1c0TEJOR0I5M0hsdjY3VnBaZFhIR0kyZWZNQmZGdHpHeWQ3Vi9hN3k4NlVu?=
- =?utf-8?B?eVc1cjY4WDhuUjRrdHUvSnFJN2JaZHRhVjZxTXQvd21CQm1VMlY3R2hRYThL?=
- =?utf-8?B?VjhYNUI4YzV1d3oxT2MxYW4zTXNCZmRhRzVwSEhucWJIZHZEYkdJdURtQzNq?=
- =?utf-8?B?UVZsUDlTR2FyQWVrS2p4VDlJbEZCc0F5YlY5RHU3NXZpR1FMYVU3ZWJlY1dQ?=
- =?utf-8?B?WmpxM212d1N6ckNpNmVtSkd4cEt4d3hkQXc2L3B2Vm8yQ3FvTFAyV25UcThL?=
- =?utf-8?B?L0JpRlZaRE9QVjVzcDB2a09OMGdwTW9SM0w3dnV1Mk9XUm93RXdBbUVmMlhy?=
- =?utf-8?B?VGhFQnBFMjhBMm96dUNHNVVoT295R0p6bHZ6K2pFaDFLY1JhellUS1hsaDNm?=
- =?utf-8?B?endoRWxrSmE4cURiVGwybHVPNUtPR3ZsNldXeTBoUFdic0JiUHg2M2NjQ1cv?=
- =?utf-8?B?VVMrZjhQZ2Y3ZlpvQTUreFkwZ1hzOGxSbHFxamVrT3I4L0lEaWtweVBSUytH?=
- =?utf-8?B?ak5DQkRlUktpTHFlVUtJdlRIbHR4V2NrVGNLV09xRXB0ak1nSHRDU1hxSnU5?=
- =?utf-8?B?c3RESVVrRlRORGJzR05Od2dSblZRdUxBQUdvVEtXTGJlYm5uMWJVbFhKTnFK?=
- =?utf-8?B?V3hab0hVcGdqVkpnVlNvUU5RblczY2NRUFVmbEJYcUVrekNRNUVkV3VKeGlk?=
- =?utf-8?B?Rm9WSnNNbzlJZGl6VEZVZ3VGalV6MURkNmhIaHNPai9aR2JaREsxM2FDaEdr?=
- =?utf-8?B?SFpYNWZLUHBMbUI4QWJEU01uYXlPWlQ0cFYwU1l5S05qYXlscGpWbS9qZXVy?=
- =?utf-8?B?TDUzNHEreE9SeDJEZDJoYmNPejJ1Z2RhU2xsaXllVitES1R2UkY4aHRqMHNu?=
- =?utf-8?B?M1pZelRyak9RaG0rdUw1TUdHSGtnWlpadmtGazc1c1FTQVpGYjE3WkIxT0Ix?=
- =?utf-8?Q?1l0lH69+OvsKPNxsNvw2trTK9?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 09e1bedf-3975-40d9-e0fe-08dc3fbda01e
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?msEG4fcMNMblvMhok6EzUCfZfBBc8tVGUKUDaN3dw0lUiVgkwehrjLxN6O?=
+ =?iso-8859-1?Q?KJlXfxzSwcYrAHNSKWNCQ9rVCvQayk0LsLKrYtvzAHhLMLJ7J3y3ocsd5E?=
+ =?iso-8859-1?Q?+X0GyoxdcmEBdTL90t67LT/Cu8ov/gQUM/YBqkNK2GB6otAFf293/azoOj?=
+ =?iso-8859-1?Q?xmshQC98l0r/By0px/9nTNB0aLnWucpR3Xj7qEmAAGXNuo9jQGNL+0tL74?=
+ =?iso-8859-1?Q?ruzeUEaWXApJdAtZiZITtuQ7e1i4nZ2DTjCVbZY2y8yWFc7y5PlMIoTXir?=
+ =?iso-8859-1?Q?sgFMu1dhqb0o87K2pcVlHx3K8Y0nAYHKo/I6jpNk84EGhOLaiBYH0qNVfn?=
+ =?iso-8859-1?Q?4QjVdcjOaTDxGYvyXBufaV6eVy40wRsaaSvAiHd05bOjKzdUUcUaeSBpKN?=
+ =?iso-8859-1?Q?GSy/t+JtNegP09h/DCCbteqDaAVUW+Zo2Qqh7Q1oOJ+uqjOD/cMm6iD0OS?=
+ =?iso-8859-1?Q?KeVYVmS1P7/uLi7NOCF3FVmL6Mk0sLabPbMlsIBe9gN7YWoXIJ3axf72sW?=
+ =?iso-8859-1?Q?ByFgnPDwtOyzu5+BRToHsjgOhU10D66O6JZMjy2SyHAD8ppnihliFUnw9e?=
+ =?iso-8859-1?Q?BTB77iWORG63sCbz6eTGTYEQt/U4ATR7d0XTnYucVyG47zie08U3OMD8Ic?=
+ =?iso-8859-1?Q?fkwgH23gzoWYF8jWjCtE3fkmg9djZ2dITaaLxs58YEk19vgeRuogBtrnjj?=
+ =?iso-8859-1?Q?wn2G7loibmCk8ToD1FYFo5/rXESOJsqmwiVAJMz6ZSiULRe+Ahul6h+oRm?=
+ =?iso-8859-1?Q?9BToKRkoiTpXbMVwuIarzGbX526qJ6qHWLk/FYHFhjLEntfxAXwvnc7mcK?=
+ =?iso-8859-1?Q?AYSrstYIO1C08juGR9hRh6VdQl5ob2BY6YpaT0J/priaMWP5AB6hn3lETC?=
+ =?iso-8859-1?Q?UoZBRpViuRFu51HSr+BRxYvBJuToM5SFrFZNNmFgo4+5P8HgbKXNg63Dib?=
+ =?iso-8859-1?Q?EFLmjsz2QFRoJN6pfAPqjtjbnLxe8TbGYic144Z6sJP75+8cCAKfEjXIoB?=
+ =?iso-8859-1?Q?6d7i8JVfSQTFjT34WvfqYj/BGGmXbNLn4Q7WMvEDxy38ovakXYn+YI2Rpk?=
+ =?iso-8859-1?Q?11rDbqDlf0MHy3knmlk53712em8brubij1UzEkCzMc2a2c9DkrKVARAkHN?=
+ =?iso-8859-1?Q?8WPY3LyhJCccxZm32QF6ymLdrwWc5vxfv1b9i+33wyMINPojaqIPETq/d4?=
+ =?iso-8859-1?Q?BJWd0hpUnEOQ4WZKFe99/ayrE48Dx51S9JAbWYPs5SHmKQR8EvMIMH5MbI?=
+ =?iso-8859-1?Q?onMYm1Ao9Xl2M3nI1o0kGDZJmoqVcMBeNS8etT8eeuMP1kl0uZn8gDdVte?=
+ =?iso-8859-1?Q?X4GBmxFyNzq7v+sIS5kB98OhMO9RAgIPZ8YZMlp0wp9rq2aWmp229qhPZi?=
+ =?iso-8859-1?Q?XdRRZ3nzz1pdaYRGHBNcz68puo+a51QrGrU8+yw2xDERMSD0EvK1zk/ZuP?=
+ =?iso-8859-1?Q?DKr0LeVwpZ2DgHYqa+1hupTMA9nCcnSF2Xmq9bHkYGJNAsPiS98jOrHULQ?=
+ =?iso-8859-1?Q?9POVwoxn07cgSALHz3hdIpmNYaxCU9B3aWwDKp2Qx4arUj6JLsPNPaFrr/?=
+ =?iso-8859-1?Q?bgz6BO1TAPmWS2nGYDtOfld6LRcirYrTG6jSgd+buD8ji4KJRIczgsdk+a?=
+ =?iso-8859-1?Q?spxc/IBPfs/SOEx+d1UyAlLtqYaeEJcj5SMo7UiM8U1dnFQgpg5WNncA?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: bfac728d-254f-4bce-c39f-08dc3fbded12
 X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB6059.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2024 22:18:04.9883 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2024 22:20:14.0722 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uc/oLGiZFjJNY/A045kg/73fa1CEu0lA9Y/JsFZEx6ctjEa1yImCcXOoFR+YUzrO3u3I4zGHcLKWvxlFAnM1Yw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: lBLSZKJPr/6lSJbEHZPIxvX2gvZkeKZh/Wft2SZ4TeeKrNQ9MpFQOS8PYvvPGFQPGsiZEIhFuOtS+rH86vMZFg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7535
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -160,95 +156,143 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-devcoredump holds a module reference, blocking the module removal.
+On Thu, Feb 01, 2024 at 05:14:58PM -0600, Lucas De Marchi wrote:
+> On Tue, Jan 30, 2024 at 05:37:02PM -0500, Rodrigo Vivi wrote:
+> > devcoredump holds a module reference, blocking the module removal.
+> > 
+> > It is intentional from the devcoredump perspective to keep the
+> > log available even after the unbind/unprobe. However it blocks
+> > our module removal here.
+> > 
+> > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> > Cc: José Roberto de Souza <jose.souza@intel.com>
+> > Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > ---
+> > lib/igt_kmod.c | 54 ++++++++++++++++++++++++++++++++++++++++++++++++++
+> > 1 file changed, 54 insertions(+)
+> > 
+> > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> > index 250ab2107..da44a7bca 100644
+> > --- a/lib/igt_kmod.c
+> > +++ b/lib/igt_kmod.c
+> > @@ -323,6 +323,58 @@ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
+> > 	return err;
+> > }
+> > 
+> > +#define MAX_PATH 256
+> 
+> just use PATH_MAX? it's more than this and should be sufficient for
+> these sysfs paths
+> 
+> > +
+> > +static void _igt_remove_devcoredump(const char *driver)
+> > +{
+> > +	char sysfspath[MAX_PATH];
+> > +	DIR *dir;
+> > +	char devcoredump[MAX_PATH];
+> > +	FILE *data;
+> > +	struct dirent *entry;
+> > +
+> > +	snprintf(sysfspath, sizeof(sysfspath),
+> > +		 "/sys/module/%s/drivers/pci:%s/", driver, driver);
+> 
+> "/sys/bus/pci/drivers/%s", driver
+> 
+> I´d also save the return value so you can 1) check if it was truncated,
+> 2) do something like  `char *entry = sysfspath + len`,
+> so you don't have to keep printing the prefix below.
+> 
+> > +
+> > +	/* Not a PCI module */
+> > +	if(access(sysfspath, F_OK) == -1)
+> > +		return;
+> 
+> coding style
+> 
+> > +
+> > +	dir = opendir(sysfspath);
+> > +	igt_assert(dir);
+> > +
+> > +	while ((entry = readdir(dir)) != NULL) {
+> > +		if (entry->d_type == DT_LNK && strcmp(entry->d_name, ".") != 0
+> > +		    && strcmp(entry->d_name, "..") != 0) {
+> 
+> invert the comparison and do a "continue;" ? It would drop the indent a
+> little bit.
+> 
+> > +
+> > +#pragma GCC diagnostic push
+> > +#pragma GCC diagnostic ignored "-Wformat-truncation"
+> > +			snprintf(devcoredump, sizeof(devcoredump),
+> > +				 "%s/%s/devcoredump", sysfspath, entry->d_name);
+> > +#pragma GCC diagnostic pop
+> 
+> instead of ignoring the truncation, simply check the return? As per
+> above you could do:
+> 
+> 	ret = snprintf(entry, sizeof(sysfspath) - prefixlen,
+> 		       "/%s/devcoredump", entry->d_name);
+> 
+> then check ret <  sizeof(sysfspath) - prefixlen
+> 
+> if you follow this, then you should use sysfspath everywhere below
+> rather than devcoredump.
+> 
+> > +
+> > +			igt_info("%s\n", devcoredump);
+> > +
+> > +			if (access(devcoredump, F_OK) != -1) {
+> > +				igt_info("Removing devcoredump before module unload: %s\n",
+> > +					 devcoredump);
+> > +
+> > +				strcat(devcoredump, "/data");
+> 
+> could we just do that above and check if we have a devcoredump/data?
+> 
+> 
+> I'd reword the commit message to say "drop" instead of remove. The
+> reason I came here to review was that you had
+> "igt_kmod: remove devcoredump ..." and I thought you were talking about a
+> **module** called devcoredump.
+> 
+> 
+> > +				data = fopen(devcoredump, "w");
+> > +				igt_assert(data);
+> > +
+> > +				/*
+> > +				 * Write anything to devcoredump/data to
+> > +				 * force its deletion
+> > +				 */
+> > +				fprintf(data, "1\n");
+> > +				fclose(data);
+> > +			}
+> > +		}
+> > +	}
+> > +	closedir(dir);
+> > +}
+> > +
+> > /**
+> >  * igt_kmod_unload:
+> >  * @mod_name: Module name.
+> > @@ -341,6 +393,8 @@ igt_kmod_unload(const char *mod_name, unsigned int flags)
+> > 	struct kmod_module *kmod;
+> > 	int err;
+> > 
+> > +	_igt_remove_devcoredump(mod_name);
+> 
+> what's the _ for? Also as I said above please s/remove/drop/
+> 
+> However I wonder if we shouldn't **dump** and make it available as
+> output, just like we save the dmesg.
 
-It is intentional from the devcoredump perspective to keep the
-log available even after the unbind/unprobe. However it blocks
-our module removal here.
+all the suggestions above accepted, except the dump here.
+dmesg dump is at the runner/executor.
 
-v2: Accepting many suggestions from Lucas.
+We might need to collect that there or add the udev rule, but
+I believe it is orthogonal to the goal of this patch that is
+to unblock the module reload/unload after a hang has happened.
 
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: JosÃ© Roberto de Souza <jose.souza@intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- lib/igt_kmod.c | 55 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+Thank you so much for all the suggestions.
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index cc242838f..14d51f4f6 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -323,6 +323,59 @@ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
- 	return err;
- }
- 
-+static void igt_drop_devcoredump(const char *driver)
-+{
-+	char sysfspath[PATH_MAX];
-+	DIR *dir;
-+	char *devcoredump;
-+	FILE *data;
-+	struct dirent *entry;
-+	int len, ret;
-+
-+	len = snprintf(sysfspath, sizeof(sysfspath),
-+		       "/sys/bus/pci/drivers/%s", driver);
-+
-+	igt_assert(len < sizeof(sysfspath));
-+
-+	 /* Not a PCI module */
-+	if (access(sysfspath, F_OK))
-+		return;
-+
-+	devcoredump = sysfspath + len;
-+
-+	dir = opendir(sysfspath);
-+	igt_assert(dir);
-+
-+	while ((entry = readdir(dir)) != NULL) {
-+		if (entry->d_type != DT_LNK ||
-+		    strcmp(entry->d_name, ".") == 0 ||
-+		    strcmp(entry->d_name, "..") == 0)
-+			continue;
-+
-+		ret = snprintf(devcoredump, sizeof(sysfspath) - len,
-+			       "/%s/devcoredump", entry->d_name);
-+
-+		igt_assert(ret < sizeof(sysfspath) - len);
-+
-+		if (access(sysfspath, F_OK) != -1) {
-+			igt_info("Removing devcoredump before module unload: %s\n",
-+				 sysfspath);
-+
-+			strcat(sysfspath, "/data");
-+			data = fopen(sysfspath, "w");
-+			igt_assert(data);
-+
-+			/*
-+			 * Write anything to devcoredump/data to
-+			 * force its deletion
-+			 */
-+			fprintf(data, "1\n");
-+			fclose(data);
-+		}
-+	}
-+	closedir(dir);
-+}
-+
- /**
-  * igt_kmod_unload:
-  * @mod_name: Module name.
-@@ -341,6 +394,8 @@ igt_kmod_unload(const char *mod_name, unsigned int flags)
- 	struct kmod_module *kmod;
- 	int err;
- 
-+	igt_drop_devcoredump(mod_name);
-+
- 	err = kmod_module_new_from_name(ctx, mod_name, &kmod);
- 	if (err < 0) {
- 		igt_debug("Could not use module %s (%s)\n", mod_name,
--- 
-2.44.0
-
+> 
+> Lucas De Marchi
