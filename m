@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E810C5475B
-	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 10:09:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEE2EC5475B
+	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 10:18:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 31D3C10F93D;
-	Fri,  8 Mar 2024 10:09:41 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Eo9nPlxf";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 65C7410EA1B
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 10:09:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709892578; x=1741428578;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding:sender;
- bh=BBh1OtXh7v9NYhs7DOC7mFSR9/SuxBF5Axqm3tsrAz8=;
- b=Eo9nPlxfQmrVcE4Nyu9jQUAhO8d6R/0CjKv/CYy7EUzuNxdcMCMa+ZYM
- duJZxqGZKOs9KxLNhmzdqXEnzJqjipmv9oMrUcFHYutK/KKjwR7nScK6T
- PSw/CH0mUkNVD0ZCk091U9BeS4saGxdT1u6dfZXOMPu5qiz96rXbFsi41
- cthMv9g81g8/BjdvNF8P4ZMMs7Kqz2wesAe4l9BEmgDfpr9W8gvoccy20
- tQLgHpoL7nX7L4KUEKhMhFE/VlJsbgpSLmi+JGVWHxMMERPFd7r6P7K+D
- c4NICEeH5vpvdGAV5tsR86R7B5+HhW9BgaT7G+VnbyBhU8kFfL8HKIbpW Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4465411"
-X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; 
-   d="scan'208";a="4465411"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Mar 2024 02:09:38 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; d="scan'208";a="14900004"
-Received: from linux.intel.com ([10.54.29.200])
- by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Mar 2024 02:09:37 -0800
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.245.244.185])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id EECF4580E6A
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 02:09:36 -0800 (PST)
-Received: from maurocar by linux.intel.com with local (Exim 4.97.1)
- (envelope-from <mauro.chehab@linux.intel.com>)
- id 1riXAV-00000003pHu-02zp for igt-dev@lists.freedesktop.org;
- Fri, 08 Mar 2024 11:09:35 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 2/3] scripts/xls_to_doc.py: remove some dead code
-Date: Fri,  8 Mar 2024 11:07:43 +0100
-Message-ID: <20240308100933.912014-3-mauro.chehab@linux.intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240308100933.912014-1-mauro.chehab@linux.intel.com>
-References: <20240308100933.912014-1-mauro.chehab@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7568910EBAE;
+	Fri,  8 Mar 2024 10:18:03 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D40010F942;
+ Fri,  8 Mar 2024 10:18:02 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_Update_test_documentati?=
+ =?utf-8?q?on_for_i915_tests_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Katarzyna Piecielska" <katarzyna.piecielska@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 08 Mar 2024 10:18:02 -0000
+Message-ID: <170989308205.612184.10711932412246858440@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
+In-Reply-To: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,72 +37,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+== Series Details ==
 
-There are two functions there that aren't unused.
+Series: Update test documentation for i915 tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/130665/
+State : warning
 
-Drop the dead code.
+== Summary ==
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- scripts/xls_to_doc.py | 41 -----------------------------------------
- 1 file changed, 41 deletions(-)
+Pipeline status: FAILED.
 
-diff --git a/scripts/xls_to_doc.py b/scripts/xls_to_doc.py
-index 60ad8225d71d..91440ac6291f 100755
---- a/scripts/xls_to_doc.py
-+++ b/scripts/xls_to_doc.py
-@@ -70,47 +70,6 @@ class FillTests(TestList):
- 
-         dic[field] = value
- 
--    def read_testlist(self, filename):
--        if re.match("^xe", filename):
--            return
--        name = re.sub(r"(.*/)?(.*)\.testlist$", r"\2", filename)
--        if name == "fast-feedback":
--            name = "BAT"
--        elif name == "eu-debugger-fast-feedback":
--            name = "BAT eudebugger"
--        elif name == "fast-feedback-extras-for-simulator":
--            name = "BAT simulator"
--        elif name == "fast-feedback_suspend":
--            name = "suspend"
--
--        name = re.sub(r"eu-debugger", "eudebugger ", name)
--        name = re.sub(r"\bbat\b", "BAT", name)
--        name = re.sub(r"[._\-]", " ", name)
--
--        with open(filename, 'r', newline = '', encoding = 'utf8') as fp:
--            for line in fp:
--                match = re.match(r"^\s*(igt@[^\s\@]+)(\S*)\#?", line)
--                if match:
--                    testname = match.group(1)
--                    subtest = match.group(2)
--                    if testname not in self.tests:
--                        self.tests[testname] = {}
--                        self.tests[testname]["properties"] ={}
--                        self.tests[testname]["subtests"] = {}
--                    if subtest not in self.tests[testname]["subtests"]:
--                        self.tests[testname]["subtests"][subtest] = {}
--                    self.add_field(self.tests[testname]["subtests"][subtest], "Run type", name)
--
--    def get_testlists(self, path):
--        # Create a dictionary with filenames
--
--        regex = re.compile(r".*\.testlist")
--
--        for root,d_names,f_names in os.walk(path):          # pylint: disable=W0612
--            for filename in f_names:
--                if regex.match(filename):
--                    self.read_testlist(os.path.join(root, filename))
--
-     def process_spreadsheet_sheet(self, sheet):
- 
-         column_list=[]
--- 
-2.43.2
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1122740 for the overview.
 
+containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56037773):
+  Checking out 9f92e761 as detached HEAD (ref is intel/IGTPW_10795)...
+  Removing build/
+  Removing installdir/
+  Removing scripts/__pycache__/
+  
+  Skipping Git submodules setup
+  section_end:1709892879:get_sources
+  section_start:1709892879:download_artifacts
+  Downloading artifacts
+  Downloading artifacts for build:tests-fedora (56037758)...
+  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=56037758 responseStatus=200 OK token=glcbt-64
+  section_end:1709892889:download_artifacts
+  section_start:1709892889:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
+  section_end:1709892889:step_script
+  section_start:1709892889:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1709892891:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176: image not known (docker.go:570:0s)
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1122740
