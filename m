@@ -4,53 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DD68C54E4A
-	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 08:41:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D55E4C54E5C
+	for <igt-dev@archiver.kernel.org>; Fri,  8 Mar 2024 09:00:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 96A961137AC;
-	Fri,  8 Mar 2024 08:41:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 89CAA10EEC7;
+	Fri,  8 Mar 2024 09:00:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QOw255DR";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="VKw2EZa8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C82831137AC
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 08:41:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1709887272; x=1741423272;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=3YUEIyijPuu21vOCA4aUVG1wKj4KRqf/wxmquFmDJMc=;
- b=QOw255DR277moqItSY+LKFiv3A7Q5iTYYtDxXqVHpVpG+DsLtJfoE+WT
- O2jon3wRy+E14ifOdLqSV9cUBuZeXYXQ6oBKMmCOF1s2IpmCLnkbkcS8V
- DOWVcY7UWBfXSHIA6gbr5vZMPsxjUx40Q0kGzB1PUuqLd18DPDPUi36Ux
- W1yWPhCkjNFlgse+eFkr8zW2IXM4FxMU3SzhfojFO01yFSMsDaJ3gvSPw
- KdxERT6fvNm+zyowcBHgoEdVrCYdP5LEqkMiwyDATLf3r/XbR1sLWdyFf
- eQ39o5iscxBbTLuzMP7LoQXHHEy3h0/mB5W1mDT5wirkPBrvoODDqlMyq w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4725383"
-X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; 
-   d="scan'208";a="4725383"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Mar 2024 00:41:12 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; d="scan'208";a="10276643"
-Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Mar 2024 00:41:10 -0800
-From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
+ [217.70.183.194])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F60E10EEC7
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 09:00:13 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2877940015
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Mar 2024 09:00:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+ t=1709888411;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4nljFXHO5Ln/bbZIUa+/5g1+i2Jhc30XUzDiElyY9v8=;
+ b=VKw2EZa85QDJSyCEzRuwjXaV6QWyhjHPM8g6/R05MQ1IIc8ls+mhOVUlzdkPl+sUiVEsyG
+ n2fUOjEvBoxioyllKqkIMcAg63IuQP74e+LapXszjbCEhBD1Hl3QwbJXjucYW/yz5Xbqeg
+ 1AcGj1RViykj7ihMPaX34FCsotp3nan4sDOIYK2DxynlFYDQebxLRLXIt9NJEz4dxjfzwg
+ bF7OROOMgzershcaiHhBqEMQB/vq60CgFXvCdfVvC0NU4+0WE+wKEmWe71Cajnn6+F3kWe
+ xOM1qtdL73mY/qOH3M2sSdP1R9abbd5L896ls2HDCDXUB6qRPinNBcY8zzrh9Q==
+Date: Fri, 8 Mar 2024 10:00:09 +0100
+From: Louis Chauvet <louis.chauvet@bootlin.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v2 25/25] tests: Update device_reset functionality
-Date: Fri,  8 Mar 2024 08:36:57 +0000
-Message-Id: <20240308083657.1092049-26-katarzyna.piecielska@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
-References: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
+Subject: Re: =?utf-8?Q?=E2=9C=97_GitLab=2EPipeline?= =?utf-8?Q?=3A?= warning
+ for Enable more tests for VKMS
+Message-ID: <ZerTmbkt2sml02fq@localhost.localdomain>
+References: <20240306-b4-kms_tests-v1-0-8fe451efd2ac@bootlin.com>
+ <170974845025.562293.694143167815801626@8e613ede5ea5>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <170974845025.562293.694143167815801626@8e613ede5ea5>
+X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,29 +59,184 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There is a need to keep Sub-category and Functionality different, so
-automation tools can work properly.
+Hi,
 
-Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/device_reset.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I think this is because I forgot to document the tests. As the command 
 
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index 018c8a9ac..d7163b277 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -20,7 +20,7 @@
-  * Description: Examine behavior of a driver on device sysfs reset
-  * Category: Server
-  * Feature: reset
-- * Functionality: reset
-+ * Functionality: sysfs reset
-  * Sub-category: Reset
-  * Test category: GEM_Legacy
+	ninja igt-gpu-tools-doc
+
+worked fine, I did not notice it. Is there a different command to run to 
+check the validity of the documentation?
+
+Once I've received feedback on the rest of the series, I'll send out a v2 
+with the test documentation:
+
+ /**
+  * SUBTEST: pixel-%s
+  * Description: verify the pixel formats for given plane and pipe
+  * Functionality: pixel_formats, plane
   *
--- 
-2.34.1
+  * arg[1]:
+  *
+- * @format:
++ * @format-colors:			test colors (RGB, YUV) formats
++ * @format-black-white:			test the black and white formats
+  * @format-source-clamping:          with source clamping
+  */
 
+
+Kind regards,
+Louis Chauvet
+
+Le 06/03/24 - 18:07, Patchwork a écrit :
+> == Series Details ==
+> 
+> Series: Enable more tests for VKMS
+> URL   : https://patchwork.freedesktop.org/series/130818/
+> State : warning
+> 
+> == Summary ==
+> 
+> Pipeline status: FAILED.
+> 
+> see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1121225 for the overview.
+> 
+> build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55955062):
+>   Checking if the user of the pipeline is allowed...
+>   Checking if the job's project is part of a well-known group...
+>   Thank you for contributing to freedesktop.org
+>   Fetching changes...
+>   Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+>   Checking out 69fbed73 as detached HEAD (ref is intel/IGTPW_10789)...
+>   Removing build/
+>   Removing lib/i915/perf-configs/__pycache__/
+>   Removing scripts/__pycache__/
+>   
+>   Skipping Git submodules setup
+>   section_end:1709748272:get_sources
+>   section_start:1709748272:step_script
+>   Executing "step_script" stage of the job script
+>   Using docker image sha256:ca01fc804bb92e5df42a202dd7e0470610c6711c66a808525defcb8bbb774078 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian:commit-69fbed7368fcb3c662c803ba0c46d6c7c672dfee with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian@sha256:b9fe73c6ff5d68f5692fd18b9076735679c8bfa7ed393e752dd4927a2cdf9874 ...
+>   section_end:1709748274:step_script
+>   section_start:1709748274:cleanup_file_variables
+>   Cleaning up project directory and file based variables
+>   section_end:1709748275:cleanup_file_variables
+>   ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:ca01fc804bb92e5df42a202dd7e0470610c6711c66a808525defcb8bbb774078: image not known (docker.go:570:0s)
+> 
+> build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55955057):
+>   [1790/1793] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+>   ninja: build stopped: subcommand failed.
+>   ninja: Entering directory `build'
+>   [1/821] Generating version.h with a custom command.
+>   [2/6] Linking target runner/runner_test.
+>   [3/6] Generating i915_tests.html with a custom command.
+>   [4/6] Generating kms_tests.rst with a custom command.
+>   FAILED: docs/testplan/kms_tests.rst 
+>   /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+>   Warning: Documented igt@kms_plane@pixel-format doesn't exist on source files
+>   Warning: Missing documentation for igt@kms_plane@pixel-format-black-white
+>   Warning: Missing documentation for igt@kms_plane@pixel-format-colors
+>   Please refer: docs/test_documentation.md for more details
+>   ninja: build stopped: subcommand failed.
+>   section_end:1709748299:step_script
+>   section_start:1709748299:cleanup_file_variables
+>   Cleaning up project directory and file based variables
+>   section_end:1709748300:cleanup_file_variables
+>   ERROR: Job failed: exit code 1
+>   
+> 
+> build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55955061):
+>   [1791/1793] Generating xe_tests.html with a custom command.
+>   ninja: build stopped: subcommand failed.
+>   ninja: Entering directory `build'
+>   [1/821] Generating version.h with a custom command.
+>   [2/5] Generating intel-ci-tests with a custom command.
+>   [3/5] Generating i915_tests.html with a custom command.
+>   [4/5] Generating kms_tests.rst with a custom command.
+>   FAILED: docs/testplan/kms_tests.rst 
+>   /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+>   Warning: Documented igt@kms_plane@pixel-format doesn't exist on source files
+>   Warning: Missing documentation for igt@kms_plane@pixel-format-black-white
+>   Warning: Missing documentation for igt@kms_plane@pixel-format-colors
+>   Please refer: docs/test_documentation.md for more details
+>   ninja: build stopped: subcommand failed.
+>   section_end:1709748326:step_script
+>   section_start:1709748326:cleanup_file_variables
+>   Cleaning up project directory and file based variables
+>   section_end:1709748328:cleanup_file_variables
+>   ERROR: Job failed: exit code 1
+>   
+> 
+> build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55955060):
+>   ninja: build stopped: subcommand failed.
+>   ninja: Entering directory `build'
+>   [1/771] Generating version.h with a custom command.
+>   [2/6] Linking target runner/runner_test.
+>   [3/6] Generating i915_tests.html with a custom command.
+>   [4/6] Generating intel-ci-tests with a custom command.
+>   [5/6] Generating kms_tests.rst with a custom command.
+>   FAILED: docs/testplan/kms_tests.rst 
+>   /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+>   Warning: Documented igt@kms_plane@pixel-format doesn't exist on source files
+>   Warning: Missing documentation for igt@kms_plane@pixel-format-black-white
+>   Warning: Missing documentation for igt@kms_plane@pixel-format-colors
+>   Please refer: docs/test_documentation.md for more details
+>   ninja: build stopped: subcommand failed.
+>   section_end:1709748306:step_script
+>   section_start:1709748306:cleanup_file_variables
+>   Cleaning up project directory and file based variables
+>   section_end:1709748306:cleanup_file_variables
+>   ERROR: Job failed: exit code 1
+>   
+> 
+> build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55955058):
+>   ninja: build stopped: subcommand failed.
+>   ninja: Entering directory `build'
+>   [1/821] Generating version.h with a custom command.
+>   [2/6] Linking target runner/runner_test.
+>   [3/6] Generating i915_tests.html with a custom command.
+>   [4/6] Generating intel-ci-tests with a custom command.
+>   [5/6] Generating kms_tests.rst with a custom command.
+>   FAILED: docs/testplan/kms_tests.rst 
+>   /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+>   Warning: Documented igt@kms_plane@pixel-format doesn't exist on source files
+>   Warning: Missing documentation for igt@kms_plane@pixel-format-black-white
+>   Warning: Missing documentation for igt@kms_plane@pixel-format-colors
+>   Please refer: docs/test_documentation.md for more details
+>   ninja: build stopped: subcommand failed.
+>   section_end:1709748299:step_script
+>   section_start:1709748299:cleanup_file_variables
+>   Cleaning up project directory and file based variables
+>   section_end:1709748300:cleanup_file_variables
+>   ERROR: Job failed: exit code 1
+>   
+> 
+> build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/55955059):
+>   [1790/1793] Compiling C object 'runner/runner@@runner_test@exe/runner_tests.c.o'.
+>   ninja: build stopped: subcommand failed.
+>   ninja: Entering directory `build'
+>   [1/821] Generating version.h with a custom command.
+>   [2/6] Linking target runner/runner_test.
+>   [3/6] Generating i915_tests.html with a custom command.
+>   [4/6] Generating kms_tests.rst with a custom command.
+>   FAILED: docs/testplan/kms_tests.rst 
+>   /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+>   Warning: Documented igt@kms_plane@pixel-format doesn't exist on source files
+>   Warning: Missing documentation for igt@kms_plane@pixel-format-black-white
+>   Warning: Missing documentation for igt@kms_plane@pixel-format-colors
+>   Please refer: docs/test_documentation.md for more details
+>   ninja: build stopped: subcommand failed.
+>   section_end:1709748292:step_script
+>   section_start:1709748292:cleanup_file_variables
+>   Cleaning up project directory and file based variables
+>   section_end:1709748292:cleanup_file_variables
+>   ERROR: Job failed: exit code 1
+> 
+> == Logs ==
+> 
+> For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1121225
+
+-- 
+Louis Chauvet, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
