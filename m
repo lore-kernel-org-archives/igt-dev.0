@@ -4,57 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C94BC54E58
-	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 13:02:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95EDBC5475B
+	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 13:08:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 14F7210E9F1;
-	Mon, 11 Mar 2024 13:02:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3870510F602;
+	Mon, 11 Mar 2024 13:08:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PsqpGsfI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DjPeO3Qs";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D07D710E9F1
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Mar 2024 13:02:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F63611264E;
+ Mon, 11 Mar 2024 13:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710162145; x=1741698145;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding:sender;
- bh=kGcwmJZ3f3Sd/IafPHyqXK26LkFH4w7E7zJVdZSqraE=;
- b=PsqpGsfId/AGHQsh9ko20mv2u53OX8329EfJWeMbShJ3YjJhHSw+6Y7F
- AxFE9QNuXIIiFwAg4usTZ3aUt6ZcGCCpeRTCwZ4ODh9ukxluRLjWCZKDc
- Vkm0Tzchmni7ku0cbCI/ms2rhEWAFmRsfU+8vOBemupatNMkeAoz//MrR
- mh64/2tUwHVcjdy0IZTFZDXrgA4Imo9GpnZ42FGMpA9u5/pnPXpA5PDmt
- joUXTllickNKK9iasLkDoulIeDRgpwmJ/DERR/JpbZC0+Mt331p3+DUz9
- h0Pk1t6iG9P/Gg13xph74BVXm1NN380GChjMW4K6CSjJmLNE3W/ipdgWD g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="15960231"
-X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; d="scan'208";a="15960231"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2024 06:02:25 -0700
+ t=1710162480; x=1741698480;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=X6oA2JDk4Eqs//SDxIkOMtyc6CIb+Vu2mdbVTjTWObc=;
+ b=DjPeO3Qsmr06ZaAMvDw0RIULtAJzJSb+Ao7y3BYM+I7vuSJGLsMVNt+m
+ Yh5Ia6S+VoqqwHGqLP9iZIsk8m1A6dszpTkgkKJl8dLc26bTuFp6l79xE
+ CFIDXo0v881+FD/ITqTuirw32bDRMJUFdpCPHpaalwkyWcmuZdQtW+oc2
+ wFAJtWIuHTzJ035vJPAEXuYySRUDIKu4nVt6SzrANuII0iSly3AgW8q7G
+ ED9B+Trl6lYIAzz6n37o2G5DAPys6eVl/JyjSGXKGbD4ktn5gbN8i5DS7
+ esT8njod3pHdGlWGpMgExLxSVuk8V8FyqtkSfM/eiLxBWZDIIcFHhvX6p A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="4999936"
+X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; 
+   d="scan'208";a="4999936"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2024 06:07:59 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; d="scan'208";a="11156280"
-Received: from linux.intel.com ([10.54.29.200])
- by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2024 06:02:25 -0700
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.245.244.193])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 2197F580CBC
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Mar 2024 06:02:24 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.97.1)
- (envelope-from <mauro.chehab@linux.intel.com>)
- id 1rjfIM-000000047ci-0S2h for igt-dev@lists.freedesktop.org;
- Mon, 11 Mar 2024 14:02:22 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; d="scan'208";a="34309704"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 06:07:57 -0700
+Date: Mon, 11 Mar 2024 14:07:54 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] scripts/xls_to_doc.py: use a main() function
-Date: Mon, 11 Mar 2024 14:02:20 +0100
-Message-ID: <20240311130220.982606-1-mauro.chehab@linux.intel.com>
-X-Mailer: git-send-email 2.43.2
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVA==?= =?utf-8?Q?=3A?= failure for
+ tests/intel/xe_pm: Fix runtime_pm tests
+Message-ID: <20240311130754.acpcgy5wiyx2wbny@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+References: <20240307183103.188082-1-rodrigo.vivi@intel.com>
+ <170987429944.611156.2570029856524079774@8e613ede5ea5>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <170987429944.611156.2570029856524079774@8e613ede5ea5>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,82 +73,109 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Hi igt-dev,
+On 2024-03-08 at 05:04:59 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/intel/xe_pm: Fix runtime_pm tests
+> URL   : https://patchwork.freedesktop.org/series/130876/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_14405_full -> IGTPW_10793_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10793_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10793_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10793/index.html
+> 
+> Participating hosts (8 -> 9)
+> ------------------------------
+> 
+>   Additional (1): shard-snb-0 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10793_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_exec_schedule@deep@ccs0:
+>     - shard-dg2:          [PASS][1] -> [INCOMPLETE][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14405/shard-dg2-3/igt@gem_exec_schedule@deep@ccs0.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10793/shard-dg2-11/igt@gem_exec_schedule@deep@ccs0.html
+> 
+>   * igt@gem_workarounds@reset-context:
+>     - shard-dg2:          [PASS][3] -> [ABORT][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14405/shard-dg2-5/igt@gem_workarounds@reset-context.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10793/shard-dg2-3/igt@gem_workarounds@reset-context.html
+>     - shard-dg1:          [PASS][5] -> [ABORT][6]
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14405/shard-dg1-16/igt@gem_workarounds@reset-context.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10793/shard-dg1-19/igt@gem_workarounds@reset-context.html
+> 
+>   * igt@i915_pm_rpm@gem-execbuf:
+>     - shard-dg2:          NOTRUN -> [SKIP][7]
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10793/shard-dg2-11/igt@i915_pm_rpm@gem-execbuf.html
+> 
+>   * igt@perf_pmu@all-busy-check-all:
+>     - shard-dg2:          [PASS][8] -> [FAIL][9]
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14405/shard-dg2-11/igt@perf_pmu@all-busy-check-all.html
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10793/shard-dg2-11/igt@perf_pmu@all-busy-check-all.html
+> 
 
-Move the main code to a function, called only when the script
-is executed directly from command line.
+These are unrelated, no need for respin (already merged).
 
-That allows the method to be re-used by other scripts if needed.
+Regards,
+Kamil
 
-No functional changes.
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_10793_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@api_intel_bb@blit-reloc-purge-cache:
+>     - shard-mtlp:         NOTRUN -> [SKIP][10] ([i915#8411])
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10793/shard-mtlp-8/igt@api_intel_bb@blit-reloc-purge-cache.html
+> 
+>   * igt@debugfs_test@basic-hwmon:
+>     - shard-rkl:          NOTRUN -> [SKIP][11] ([i915#9318])
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10793/shard-rkl-7/igt@debugfs_test@basic-hwmon.html
+> 
+>   * igt@device_reset@unbind-cold-reset-rebind:
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- scripts/xls_to_doc.py | 47 +++++++++++++++++++++++--------------------
- 1 file changed, 25 insertions(+), 22 deletions(-)
+...cut...
 
-diff --git a/scripts/xls_to_doc.py b/scripts/xls_to_doc.py
-index 510ab54276ba..fdf98105cd4b 100755
---- a/scripts/xls_to_doc.py
-+++ b/scripts/xls_to_doc.py
-@@ -293,32 +293,35 @@ class FillTests(TestList):
- # Main
- ######
- 
--parser = argparse.ArgumentParser(description=__doc__,
--                                    formatter_class = argparse.ArgumentDefaultsHelpFormatter,
--                                    argument_default = argparse.SUPPRESS,
--                                    epilog = EPILOG)
--parser.add_argument("--config", required = True,
--                    help="JSON file describing the test plan template")
--parser.add_argument("--xls", required = True,
--                    help="Input XLS file.")
--parser.add_argument("--sheets", nargs = "*",
--                    help="Input only some specific sheets from the XLS file.")
--parser.add_argument('--ignore-lists',action='store_false', default=True, help='Ignore fields that are updated via test lists')
-+def main():
-+    parser = argparse.ArgumentParser(description=__doc__,
-+                                        formatter_class = argparse.ArgumentDefaultsHelpFormatter,
-+                                        argument_default = argparse.SUPPRESS,
-+                                        epilog = EPILOG)
-+    parser.add_argument("--config", required = True,
-+                        help="JSON file describing the test plan template")
-+    parser.add_argument("--xls", required = True,
-+                        help="Input XLS file.")
-+    parser.add_argument("--sheets", nargs = "*",
-+                        help="Input only some specific sheets from the XLS file.")
-+    parser.add_argument('--ignore-lists',action='store_false', default=True, help='Ignore fields that are updated via test lists')
- 
--parse_args = parser.parse_args()
-+    parse_args = parser.parse_args()
- 
--fill_test = FillTests(parse_args.config)
-+    fill_test = FillTests(parse_args.config)
- 
--if "sheets" not in parse_args:
--    parse_args.sheets = None
-+    if "sheets" not in parse_args:
-+        parse_args.sheets = None
- 
--fill_test.parse_spreadsheet(parse_args.xls, parse_args.sheets)
-+    fill_test.parse_spreadsheet(parse_args.xls, parse_args.sheets)
- 
--## DEBUG: remove it later on
--with open("fill_test.json", "w", encoding='utf8') as write_file:
--    json.dump(fill_test.tests, write_file, indent = 4)
--with open("doc.json", "w", encoding='utf8') as write_file:
--    json.dump(fill_test.doc, write_file, indent = 4)
-+    ## DEBUG: remove it later on
-+    with open("fill_test.json", "w", encoding='utf8') as write_file:
-+        json.dump(fill_test.tests, write_file, indent = 4)
-+    with open("doc.json", "w", encoding='utf8') as write_file:
-+        json.dump(fill_test.doc, write_file, indent = 4)
- 
-+    fill_test.update_test_files(parse_args)
- 
--fill_test.update_test_files(parse_args)
-+if __name__ == '__main__':
-+    main()
--- 
-2.43.2
-
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7749 -> IGTPW_10793
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14405: 56720b5e1da1b816a1bf532359941adb002c4432 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10793: 10793
+>   IGT_7749: 2fd91b8c3cf9aa2b0bb78537a6b5e2bc3de50e0e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10793/index.html
