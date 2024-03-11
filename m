@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69365C5475B
-	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 11:47:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB7C9C54E58
+	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 12:45:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0F2BC1129C2;
-	Mon, 11 Mar 2024 11:47:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 63B4710EC93;
+	Mon, 11 Mar 2024 12:45:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jl6nM6tS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ipsO2GTF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C60931129C2
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Mar 2024 11:47:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A82C10EC93
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Mar 2024 12:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710157656; x=1741693656;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=K9CpgvWiouKGurK3cArb56KtXGOuiAh1aCg6Nk21U6k=;
- b=Jl6nM6tSISjN4zspsZVZQbmiaW8uofgT/KKwzPQ9k5dYq8lmK5MpE+kI
- Gj9WEgO+3aG5/rZmXFnJ3nW5gY2ammuynzn9Bsod3HNJ60VrOwfPHmsbA
- VTd3buouRBlBuYGQndANg0xP2tMR4QEc+4TOQJdnhcTnqwpUUVznnRZd2
- oI71kDzcNWcZ+7+h8xyoLP73yCcJtfLvAeMAE4Cc7SIuHxHkP0cjaNyl3
- aEMKoO7Ka1A5t8HTE61a6NRTAXZgpbYyur53yZ24b0NDFrl2lgo3Nem5o
- IfazuEs/xvnme96Nn3u3+R8oQZUTVPvZr2eSKPMoTuz8n5LMgya6SDMCH Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="8568409"
+ t=1710161130; x=1741697130;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=ZKHBNIU6yVxhs2PdmMQLgDxyuXnFCMt6g9dWegSEEOI=;
+ b=ipsO2GTF3c8p9QA4PvM1Jt6gDZ+MVT19YbZCqFt2NRbNw/m77ZDtJOSa
+ A16doUNDXGSvP87DnQrDvVePe/jAw5KnlYxIEzWo0fxfmGPr0wLWumua+
+ 7EJTdtN2da1KoCaf30giEv3Ci7uoZTCdPfhfeRhp1X2EmT088dNBHdggJ
+ MFZ+RY23LBzF6DSuMvUWdPIq1BwZZqi49f2JXNspIKEnmjGMRETL9OHyX
+ nzlXVAt57FaqQVMkfwA4KVOg5M/aD6QqZ0NCZZ1AsvF3Dqjwx6sIG478/
+ N6Omqg+tmAsyo4GYcbSmfulhmF4iSGa5CupUbwfBnA3qTiGB8XWFaNvhH Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="4996709"
 X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; 
-   d="scan'208";a="8568409"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2024 04:47:35 -0700
+   d="scan'208";a="4996709"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2024 05:45:19 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; d="scan'208";a="42122777"
-Received: from unknown (HELO localhost) ([10.245.244.202])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2024 04:47:33 -0700
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; d="scan'208";a="15804612"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 05:45:18 -0700
+Date: Mon, 11 Mar 2024 13:44:58 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH i-g-t] tests/xe_ccs: Separate inc dimension start width
-Date: Mon, 11 Mar 2024 12:47:30 +0100
-Message-Id: <20240311114730.77947-1-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.34.1
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: Re: [PATCH i-g-t v3] lib/igt_kmod: Allow to load kunit from alias
+Message-ID: <20240311124458.s6qjnwvrqqzx7g4n@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+References: <20240308193149.2220807-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240308193149.2220807-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,66 +67,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Instead of manipulating param width/heigth add dedicated variable
-used in inc-dimension subtests. This fixes issue when all subtests
-are run one-by-one what causes failures on comparing surfaces due
-to different sizes.
+Hi Lucas,
+On 2024-03-08 at 11:31:49 -0800, Lucas De Marchi wrote:
+> Instead of only allowing to load the from the module name, also allow it
+> from alias by using kmod_module_new_from_lookup(). With that a user can
+> have their on aliases and the kernel can also export a compat alias for
+> future module renames.
+> 
+> There was a bug in libkmod <= 29 that would make
+> kmod_module_new_from_lookup() return prematurely after a failed alias
+> lookup when we don't have a modules.alias file in the modules dir. So
+> add a workaround to check for -ENOSYS return code too. It should still
+> be compatible with what we are doing here.
+> 
+> v2: Fallback to kmod_module_new_from_name() since the kmod ctx is also
+>     used on builder machines to determine the test lists.
+> v3: Add workaround to bug in libkmod
+> 
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> ---
+>  lib/igt_kmod.c | 21 +++++++++++++++++++--
+>  1 file changed, 19 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index cc242838f..d581f9073 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -1443,6 +1443,7 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
+>  int igt_ktest_init(struct igt_ktest *tst,
+>  		   const char *module_name)
+>  {
+> +	struct kmod_list *l = NULL;
+>  	int err;
+>  
+>  	memset(tst, 0, sizeof(*tst));
+> @@ -1453,9 +1454,25 @@ int igt_ktest_init(struct igt_ktest *tst,
+>  
+>  	tst->kmsg = -1;
+>  
+> -	err = kmod_module_new_from_name(kmod_ctx(), module_name, &tst->kmod);
+> -	if (err)
+> +	err = kmod_module_new_from_lookup(kmod_ctx(), module_name, &l);
+> +
+> +	/*
+> +	 * Check for -ENOSYS to workaround bug in kmod_module_new_from_lookup()
+> +	 * from libkmod <= 29
+> +	 */
+> +	if (err < 0 && err != -ENOSYS) {
+>  		return err;
+> +	}
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
----
- tests/intel/xe_ccs.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+You do not need braces here. With that fixed:
 
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index 9ac05983fb..5a79642c9d 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -63,6 +63,7 @@ static struct param {
- 	bool print_surface_info;
- 	int width;
- 	int height;
-+	int incdim_width;
- } param = {
- 	.compression_format = 0,
- 	.tiling = -1,
-@@ -71,6 +72,7 @@ static struct param {
- 	.print_surface_info = false,
- 	.width = 512,
- 	.height = 512,
-+	.incdim_width = 1,
- };
- 
- struct test_config {
-@@ -636,8 +638,8 @@ static void block_copy_test(int xe,
- 						    param.width, param.height,
- 						    tiling, copy_function);
- 			} else {
--				for (int w = param.width;
--				     w < param.width + config->width_steps;
-+				for (int w = param.incdim_width;
-+				     w < param.incdim_width + config->width_steps;
- 				     w += config->width_increment) {
- 					snprintf(testname, sizeof(testname),
- 						 "%s-%s-compfmt%d-%s%s-%dx%d",
-@@ -735,8 +737,6 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 	igt_subtest_with_dynamic("block-copy-uncompressed-inc-dimension") {
- 		struct test_config config = { .width_increment = 15,
- 					      .width_steps = 512 };
--		param.width = 1;
--		param.height = 1;
- 
- 		block_copy_test(xe, &config, set, BLOCK_COPY);
- 	}
-@@ -753,8 +753,6 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 		struct test_config config = { .compression = true,
- 					      .width_increment = 15,
- 					      .width_steps = 512 };
--		param.width = 1;
--		param.height = 1;
- 
- 		block_copy_test(xe, &config, set, BLOCK_COPY);
- 	}
--- 
-2.34.1
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+> +
+> +	/*
+> +	 * Lookup may not resolve to a module when used to just list subtests,
+> +	 * where module is not available. Fallback to _new_from_name().
+> +	 */
+> +	if (!l)
+> +		return kmod_module_new_from_name(kmod_ctx(), module_name, &tst->kmod);
+> +
+> +	tst->kmod = kmod_module_get_module(l);
+> +	kmod_module_unref_list(l);
+>  
+>  	return 0;
+>  }
+> -- 
+> 2.43.0
+> 
