@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0938C5475B
-	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 22:24:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8785BC5475B
+	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 22:45:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 72CF21127CE;
-	Mon, 11 Mar 2024 22:24:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 17310112CE5;
+	Mon, 11 Mar 2024 22:45:12 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E5F61127CE;
- Mon, 11 Mar 2024 22:24:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83F591121D3;
+ Mon, 11 Mar 2024 22:45:10 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8712551360678924045=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/device=5Freset=3A?=
- =?utf-8?q?_Skip_if_no_drm_devices_are_preset?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_tests_to_query_firmware_ve?=
+ =?utf-8?q?rsion_=28rev6=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nirmoy Das" <nirmoy.das@intel.com>
+To: "Francois Dugast" <francois.dugast@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 11 Mar 2024 22:24:06 -0000
-Message-ID: <171019584644.680152.1816204364803135090@8e613ede5ea5>
+Date: Mon, 11 Mar 2024 22:45:10 -0000
+Message-ID: <171019711053.680152.298231256092965700@8e613ede5ea5>
 X-Patchwork-Hint: ignore
-References: <20240311162713.19137-1-nirmoy.das@intel.com>
-In-Reply-To: <20240311162713.19137-1-nirmoy.das@intel.com>
+References: <20240311162336.7-1-francois.dugast@intel.com>
+In-Reply-To: <20240311162336.7-1-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,282 +41,106 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+--===============8712551360678924045==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Series: tests/device_reset: Skip if no drm devices are preset
-URL   : https://patchwork.freedesktop.org/series/130992/
-State : warning
+== Series Details ==
 
-=3D=3D Summary =3D=3D
+Series: Add tests to query firmware version (rev6)
+URL   : https://patchwork.freedesktop.org/series/129647/
+State : success
 
-Pipeline status: FAILED.
+== Summary ==
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1125299 f=
-or the overview.
+CI Bug Log - changes from XEIGT_7754_BAT -> XEIGTPW_10808_BAT
+====================================================
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/56156374):
-  ../tests/device_reset.c: In function =E2=80=98init_device_fds=E2=80=99:
-  ../tests/device_reset.c:201:14: error: =E2=80=98drm_fd=E2=80=99 undeclare=
-d (first use in this function); did you mean =E2=80=98dremf=E2=80=99?
-    igt_require(drm_fd !=3D -1);
-                ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-    if (!(expr)) igt_skip_check(#expr , NULL); \
-          ^~~~
-  ../tests/device_reset.c:201:14: note: each undeclared identifier is repor=
-ted only once for each function it appears in
-    igt_require(drm_fd !=3D -1);
-                ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-    if (!(expr)) igt_skip_check(#expr , NULL); \
-          ^~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1710195533:step_script
-  section_start:1710195533:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710195533:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+Summary
+-------
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/56156377):
-  ../tests/device_reset.c: In function =E2=80=98init_device_fds=E2=80=99:
-  ../tests/device_reset.c:201:14: error: =E2=80=98drm_fd=E2=80=99 undeclare=
-d (first use in this function); did you mean =E2=80=98dremf=E2=80=99?
-    igt_require(drm_fd !=3D -1);
-                ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-    if (!(expr)) igt_skip_check(#expr , NULL); \
-          ^~~~
-  ../tests/device_reset.c:201:14: note: each undeclared identifier is repor=
-ted only once for each function it appears in
-    igt_require(drm_fd !=3D -1);
-                ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-    if (!(expr)) igt_skip_check(#expr , NULL); \
-          ^~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1710195575:step_script
-  section_start:1710195575:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710195575:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  **SUCCESS**
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/56156376):
-  ../tests/device_reset.c: In function =E2=80=98init_device_fds=E2=80=99:
-  ../tests/device_reset.c:201:14: error: =E2=80=98drm_fd=E2=80=99 undeclare=
-d (first use in this function); did you mean =E2=80=98dremf=E2=80=99?
-    igt_require(drm_fd !=3D -1);
-                ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-    if (!(expr)) igt_skip_check(#expr , NULL); \
-          ^~~~
-  ../tests/device_reset.c:201:14: note: each undeclared identifier is repor=
-ted only once for each function it appears in
-    igt_require(drm_fd !=3D -1);
-                ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-    if (!(expr)) igt_skip_check(#expr , NULL); \
-          ^~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1710195540:step_script
-  section_start:1710195540:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710195541:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  No regressions found.
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/56156378):
-  ../tests/device_reset.c: In function =E2=80=98init_device_fds=E2=80=99:
-  ../tests/device_reset.c:201:14: error: =E2=80=98drm_fd=E2=80=99 undeclare=
-d (first use in this function); did you mean =E2=80=98dremf=E2=80=99?
-    igt_require(drm_fd !=3D -1);
-                ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-    if (!(expr)) igt_skip_check(#expr , NULL); \
-          ^~~~
-  ../tests/device_reset.c:201:14: note: each undeclared identifier is repor=
-ted only once for each function it appears in
-    igt_require(drm_fd !=3D -1);
-                ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-    if (!(expr)) igt_skip_check(#expr , NULL); \
-          ^~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1710195590:step_script
-  section_start:1710195590:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710195592:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
--tags/-/jobs/56156369):
-  ../tests/device_reset.c: In function =E2=80=98init_device_fds=E2=80=99:
-  ../tests/device_reset.c:201:14: error: =E2=80=98drm_fd=E2=80=99 undeclare=
-d (first use in this function)
-    201 |  igt_require(drm_fd !=3D -1);
-        |              ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
-        |        ^~~~
-  ../tests/device_reset.c:201:14: note: each undeclared identifier is repor=
-ted only once for each function it appears in
-    201 |  igt_require(drm_fd !=3D -1);
-        |              ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
-        |        ^~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1710195576:step_script
-  section_start:1710195576:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710195576:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+Participating hosts (4 -> 4)
+------------------------------
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/56156373):
-  ninja: Entering directory `build'
-  [1/1361] Generating version.h with a custom command.
-  [2/1308] Linking target lib/libi915_perf.so.1.5.
-  [3/1308] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.=
-so.1.5.symbols'.
-  [4/1308] Linking target tests/core_hotunplug.
-  [5/1308] Generating core_hotunplug.testlist with a meson_exe.py custom co=
-mmand.
-  [6/1308] Compiling C object 'tests/59830eb@@device_reset@exe/device_reset=
-.c.o'.
-  FAILED: tests/59830eb@@device_reset@exe/device_reset.c.o=20
-  clang -Itests/59830eb@@device_reset@exe -Itests -I../tests -I../include -=
-I../include/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/=
-syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib6=
-4/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/=
-include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr=
-/include/valgrind -Xclang -fcolor-diagnostics -pipe -D_FILE_OFFSET_BITS=3D6=
-4 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include co=
-nfig.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statem=
-ent -Wformat=3D2 -Wmissing-declarations -Wmissing-format-attribute -Wmissin=
-g-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wp=
-ointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized=
- -Wunused -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-o=
-f-packed-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -W=
-no-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplici=
-t -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=
-=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=
-=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite=
--strings -fno-builtin-malloc -fno-builtin-calloc -pthread -MD -MQ 'tests/59=
-830eb@@device_reset@exe/device_reset.c.o' -MF 'tests/59830eb@@device_reset@=
-exe/device_reset.c.o.d' -o 'tests/59830eb@@device_reset@exe/device_reset.c.=
-o' -c ../tests/device_reset.c
-  ../tests/device_reset.c:201:14: error: use of undeclared identifier 'drm_=
-fd'
-          igt_require(drm_fd !=3D -1);
-                      ^
-  1 error generated.
-  ninja: build stopped: subcommand failed.
-  section_end:1710195558:step_script
-  section_start:1710195558:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710195558:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  No changes in participating hosts
 
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop=
-.org/gfx-ci/igt-ci-tags/-/jobs/56156372):
-  ../tests/device_reset.c: In function =E2=80=98init_device_fds=E2=80=99:
-  ../tests/device_reset.c:201:14: error: =E2=80=98drm_fd=E2=80=99 undeclare=
-d (first use in this function)
-    201 |  igt_require(drm_fd !=3D -1);
-        |              ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
-        |        ^~~~
-  ../tests/device_reset.c:201:14: note: each undeclared identifier is repor=
-ted only once for each function it appears in
-    201 |  igt_require(drm_fd !=3D -1);
-        |              ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
-        |        ^~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1710195526:step_script
-  section_start:1710195526:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710195526:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
 
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/56156370):
-  ../tests/device_reset.c: In function =E2=80=98init_device_fds=E2=80=99:
-  ../tests/device_reset.c:201:14: error: =E2=80=98drm_fd=E2=80=99 undeclare=
-d (first use in this function)
-    201 |  igt_require(drm_fd !=3D -1);
-        |              ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
-        |        ^~~~
-  ../tests/device_reset.c:201:14: note: each undeclared identifier is repor=
-ted only once for each function it appears in
-    201 |  igt_require(drm_fd !=3D -1);
-        |              ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
-        |        ^~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1710195527:step_script
-  section_start:1710195527:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710195528:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+Changes
+-------
 
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/56156371):
-  ../tests/device_reset.c: In function =E2=80=98init_device_fds=E2=80=99:
-  ../tests/device_reset.c:201:14: error: =E2=80=98drm_fd=E2=80=99 undeclare=
-d (first use in this function)
-    201 |  igt_require(drm_fd !=3D -1);
-        |              ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
-        |        ^~~~
-  ../tests/device_reset.c:201:14: note: each undeclared identifier is repor=
-ted only once for each function it appears in
-    201 |  igt_require(drm_fd !=3D -1);
-        |              ^~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
-re=E2=80=99
-   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
-        |        ^~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1710195570:step_script
-  section_start:1710195570:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710195571:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  No changes found
 
-=3D=3D Logs =3D=3D
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/1125299
+Build changes
+-------------
+
+  * IGT: IGT_7754 -> IGTPW_10808
+  * Linux: xe-928-2c2957bb1a0058ea85ca21d62762aa54e28aff54 -> xe-929-61fa386186cb302cf26e29aef76d5b1a6ffe57ad
+
+  IGTPW_10808: 10808
+  IGT_7754: 5fb3239299b5be2c110aafa483c9e197c53f8bb8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-928-2c2957bb1a0058ea85ca21d62762aa54e28aff54: 2c2957bb1a0058ea85ca21d62762aa54e28aff54
+  xe-929-61fa386186cb302cf26e29aef76d5b1a6ffe57ad: 61fa386186cb302cf26e29aef76d5b1a6ffe57ad
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10808/index.html
+
+--===============8712551360678924045==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add tests to query firmware version (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/129647/">https://patchwork.freedesktop.org/series/129647/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10808/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10808/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7754_BAT -&gt; XEIGTPW_10808_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7754 -&gt; IGTPW_10808</li>
+<li>Linux: xe-928-2c2957bb1a0058ea85ca21d62762aa54e28aff54 -&gt; xe-929-61fa386186cb302cf26e29aef76d5b1a6ffe57ad</li>
+</ul>
+<p>IGTPW_10808: 10808<br />
+  IGT_7754: 5fb3239299b5be2c110aafa483c9e197c53f8bb8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-928-2c2957bb1a0058ea85ca21d62762aa54e28aff54: 2c2957bb1a0058ea85ca21d62762aa54e28aff54<br />
+  xe-929-61fa386186cb302cf26e29aef76d5b1a6ffe57ad: 61fa386186cb302cf26e29aef76d5b1a6ffe57ad</p>
+
+</body>
+</html>
+
+--===============8712551360678924045==--
