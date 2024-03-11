@@ -4,59 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57705C54E58
-	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 15:11:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44463C5475B
+	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 15:18:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B02D112AFA;
-	Mon, 11 Mar 2024 15:11:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D925110F055;
+	Mon, 11 Mar 2024 15:18:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aj5VPemT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Pty0sR1N";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC9C4112AF1
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Mar 2024 15:11:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A2BA10F055
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Mar 2024 15:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710169873; x=1741705873;
+ t=1710170282; x=1741706282;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=uC/EzNEjv0u3/z3X1ckI9WgQAxZcZEA6x+TSgCUYlo8=;
- b=aj5VPemToDuG/Su6vecxuS3L/j9YmA4Lm3iKAbZk1Sj82BbhzyAqrBYQ
- YPW8fOXxA6at6IIm++lAXqwra+e2by2dV3iLOhYq+GZsYcMejlF0uf9Hp
- AgW8ME4d7P9f+l/v1/Lf1wGiV6UNdnVaLdJnGrK6amQMv03JHOOgPog38
- mVuCBXmejrsJkZfJ9SZ7JHbCPTjj3ev7+4TMVcM+nyU2DARFvrGTlq5oI
- yOV3ufFNRaxa7v4CvtwSBT0s+rlmzOg+WkW/P8L/n3olzfvBYAmpFpduu
- hmldJE7fyLb/U4CQiWfILtFshzCtZCE7pSlPjAJrk6PRRN6p7ih6WV/hz g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="8654563"
+ bh=VxFEdCReiUlpgLN+0UeSr1a55vddm4Z//7Q6pkoJQlU=;
+ b=Pty0sR1Nes3V7mHUjNVQBuRn8vi4+BYeWSUQNPE7VviWhjEZv1AwxtMG
+ lIqs/bBldzO2TMqIUiBrjn/aZBppa3YkKss04LaBErnPH7G0FTQRBmOBx
+ rb6GXD7H+z03ShCQFDcpFUClzioySuk0SaBlB5Qj26jXh+wfcaNJX7ujU
+ 6Yjz/kcMxNQKh8Bik3ps1X0d2ct4GRowQAHGqVVsWnoaeb0+COZCC85Vx
+ P5lJurkwHNxgCe8twFSEY4rFueBZIh78yKZ1qt0RcesHYgwq8d3wAJ915
+ NiJaqDued2Cj1ZnoJyXUIsl/kO9NAZfOg0YDCzdD2MS/NB24zchOj/poY Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="5440247"
 X-IronPort-AV: E=Sophos;i="6.07,117,1708416000"; 
-   d="scan'208";a="8654563"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2024 08:11:01 -0700
+   d="scan'208";a="5440247"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2024 08:18:01 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,117,1708416000"; d="scan'208";a="11111835"
+X-IronPort-AV: E=Sophos;i="6.07,117,1708416000"; d="scan'208";a="15768906"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 08:10:57 -0700
-Date: Mon, 11 Mar 2024 16:10:55 +0100
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 08:17:59 -0700
+Date: Mon, 11 Mar 2024 16:17:57 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+ Chris Wilson <chris.p.wilson@intel.com>,
+ Antonio Argenziano <antonio.argenziano@intel.com>,
+ Feng Qi <feng.qi@intel.com>, Tony Ye <tony.ye@intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Subject: Re: [PATCH i-g-t v2 09/25] tests/intel: Introduce FDinfo subcategory
-Message-ID: <20240311151055.7vkmvsrdgw25kruw@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH i-g-t v2 11/25] tests/intel: Introduce Firmware subcategory
+Message-ID: <20240311151757.g7gxl7nbagynv5b4@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+ Chris Wilson <chris.p.wilson@intel.com>,
+ Antonio Argenziano <antonio.argenziano@intel.com>,
+ Feng Qi <feng.qi@intel.com>, Tony Ye <tony.ye@intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 References: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
- <20240308083657.1092049-10-katarzyna.piecielska@intel.com>
+ <20240308083657.1092049-12-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240308083657.1092049-10-katarzyna.piecielska@intel.com>
+In-Reply-To: <20240308083657.1092049-12-katarzyna.piecielska@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,34 +77,79 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Katarzyna,
-On 2024-03-08 at 08:36:41 +0000, Katarzyna Piecielska wrote:
-> Let's introduce FDinfo subcategory.
+On 2024-03-08 at 08:36:43 +0000, Katarzyna Piecielska wrote:
+> Let's put huc & guc tests under Firmware subcategory.
+> 
+> v2: Let's introduce Firmware subcategory and put there GUC and HUC related
+> tests.
 > 
 > Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Chris Wilson <chris.p.wilson@intel.com>
+> Cc: Antonio Argenziano <antonio.argenziano@intel.com>
+> Cc: Feng Qi <feng.qi@intel.com>
+> Cc: Tony Ye <tony.ye@intel.com>
 > Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  tests/intel/drm_fdinfo.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  tests/intel/gem_huc_copy.c  |  3 +++
+>  tests/intel/i915_selftest.c | 12 ++++++++----
+>  2 files changed, 11 insertions(+), 4 deletions(-)
 > 
-> diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
-> index 3ced658f2..65d942330 100644
-> --- a/tests/intel/drm_fdinfo.c
-> +++ b/tests/intel/drm_fdinfo.c
-> @@ -37,6 +37,9 @@
->   * TEST: drm fdinfo
->   * Description: Test the i915 drm fdinfo data
->   * Feature: client_busyness
-> + * Functionality: client_busyness
-> + * Sub-category: FDinfo
+> diff --git a/tests/intel/gem_huc_copy.c b/tests/intel/gem_huc_copy.c
+> index 246fa0a8b..e0e16aa58 100644
+> --- a/tests/intel/gem_huc_copy.c
+> +++ b/tests/intel/gem_huc_copy.c
+> @@ -39,6 +39,9 @@
+>   * TEST: gem huc copy
+>   * Description: A very simple workload for the HuC.
+>   * Feature: huc
+> + * Sub-category: Firmware
 > + * Category: Desktop client
->   * Run type: FULL
+> + * Functionality: HUC
+>   * Run type: BAT
 >   *
->   * SUBTEST: all-busy-check-all
+>   * SUBTEST: huc-copy
+> diff --git a/tests/intel/i915_selftest.c b/tests/intel/i915_selftest.c
+> index bb0e844e9..2c5f6bce2 100644
+> --- a/tests/intel/i915_selftest.c
+> +++ b/tests/intel/i915_selftest.c
+> @@ -192,25 +192,29 @@
+>   * SUBTEST: live@guc
+>   * Category: Selftest
+>   * Feature: GuC
+> - * Functionality: Guc specific selftests
+> + * Sub-category: Firmware
+> + * Functionality: GUC
+>   * Test category: GuC
+>   *
+>   * SUBTEST: live@guc_doorbells
+>   * Category: Selftest
+>   * Feature: GuC
+> - * Functionality: Guc specific selftests
+> + * Sub-category: Firmware
+> + * Functionality: GUC
+>   * Test category: GuC
+>   *
+>   * SUBTEST: live@guc_hang
+>   * Category: Selftest
+>   * Feature: GuC
+> - * Functionality: Guc specific selftests
+> + * Sub-category: Firmware
+> + * Functionality: GUC
+>   * Test category: GuC
+>   *
+>   * SUBTEST: live@guc_multi_lrc
+>   * Category: Selftest
+>   * Feature: GuC
+> - * Functionality: Guc specific selftests
+> + * Sub-category: Firmware
+> + * Functionality: GUC
+>   * Test category: GuC
+>   *
+>   * SUBTEST: live@hangcheck
 > -- 
 > 2.34.1
 > 
