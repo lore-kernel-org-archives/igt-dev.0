@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4B9EC5475B
-	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 16:24:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42208C54E58
+	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 16:24:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9B17510F462;
-	Mon, 11 Mar 2024 16:24:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E1FC411273B;
+	Mon, 11 Mar 2024 16:24:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MbvWzmne";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZR/niHhi";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2826010F462
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Mar 2024 16:24:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E7BA211273B
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Mar 2024 16:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710174248; x=1741710248;
+ t=1710174250; x=1741710250;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Pjbdd8kZIUkWLglwoQjIrY0lukqtOdOtXfpVr7ZajBk=;
- b=MbvWzmneawNJGfCuQVRxOlBV8PygUCovzN8WOlOtWwKqbuZ/QmUjb/RX
- O49p+tWeM8cu43jkdnWsAlTYU0KP6EYKANbEANS0dkL5A2cfLfzNjGZbc
- 9J1lWbBfWjLAuR1ugvl408YBx3UtysvF03be4C6LJYzLeXbiFOY0JQ/wa
- 6IW4XaQz+AP3RplJsFbuelpwTlGOTNgLehT6bfyQvWmV6ZVZFj13MPpgo
- JMeB9Gl09+sBtC5Cu9ltz2dnzyebxzzbsT8XCJK2kW25j22CejGSS6GJm
- MiWcyq4sQ/bvOEio5NrDYS9DfkMin/ORelYkS2qznRzfsSSRGkVg7JDbS A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="15409759"
-X-IronPort-AV: E=Sophos;i="6.07,117,1708416000"; d="scan'208";a="15409759"
+ bh=joVevzTNFaggYHgxWeVvC7OJzAhQh0JPGXrh3yR4gIA=;
+ b=ZR/niHhipTRNdKxNZ9SBG1TD/RQJtd2qXvH70/yB8+FKMHSsIjqYim2G
+ T/19mucXdXo7lAnzH+zAZojAalGTY4yOGnsMQqoADBOQVRe7QufAeg2lD
+ wax4iz2y+XQxWKrMP7WolS3H65gwiausZz/OOW4Yvzh1tk44izhDcpvdf
+ OuL6gSPzr1Dm+Am2tIWMgfsC0FJWxHoZj+F/DpVJCl4vB1oCu3dcyX/47
+ IgwewMZdBO8VNkg9wZqeWlvKcy6zcpTx+eY0Es3ZulN1uAqtKCFNjrzz3
+ YP73+iD6BC8cG9fh6lPFInssvMkShgEG+haklBZU64wjzq0ws9TWwbMNQ g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="15409765"
+X-IronPort-AV: E=Sophos;i="6.07,117,1708416000"; d="scan'208";a="15409765"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2024 09:24:08 -0700
+ 11 Mar 2024 09:24:10 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,117,1708416000"; d="scan'208";a="15861867"
+X-IronPort-AV: E=Sophos;i="6.07,117,1708416000"; d="scan'208";a="15861891"
 Received: from tlonnber-mobl3.ger.corp.intel.com (HELO b33d611921ea.intel.com)
  ([10.251.208.140])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2024 09:24:06 -0700
+ 11 Mar 2024 09:24:07 -0700
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Francois Dugast <francois.dugast@intel.com>,
@@ -45,9 +45,9 @@ Cc: Francois Dugast <francois.dugast@intel.com>,
  =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>
 Subject: [PATCH i-g-t,
- v5 1/2] drm-uapi/xe: Add test to query GuC firmware submission version
-Date: Mon, 11 Mar 2024 16:23:35 +0000
-Message-Id: <20240311162336.7-2-francois.dugast@intel.com>
+ v5 2/2] drm-uapi/xe: Add test to query HuC firmware version
+Date: Mon, 11 Mar 2024 16:23:36 +0000
+Message-Id: <20240311162336.7-3-francois.dugast@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240311162336.7-1-francois.dugast@intel.com>
 References: <20240311162336.7-1-francois.dugast@intel.com>
@@ -69,31 +69,124 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This aligns with kernel commit ("drm/xe: Add uAPI to query GuC firmware
-submission version").
+This aligns with kernel commit ("drm/xe: Extend uAPI to query HuC
+micro-controler firmware version").
 
-v2: Print branch first, use memset to zero the query (John Harrison)
+v2:
+- Fix printing branch (Francois Dugast)
+- Make ENODEV the only accepted error (José Roberto de Souza)
 
-v3: Update header to match the KMD version with branch first (John Harrison)
+v3: Share code between guc and huc tests (John Harrison)
 
-v4: Add lore link to corresponding kernel commit (Francois Dugast)
+v4: Better use of asserts to report errors (John Harrison)
+
+v5: Add lore link to corresponding kernel commit (Francois Dugast)
 
 Cc: John Harrison <John.C.Harrison@Intel.com>
 Cc: José Roberto de Souza <jose.souza@intel.com>
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-Link: https://lore.kernel.org/intel-xe/20240208183539.185095-1-jose.souza@intel.com/
+Link: https://lore.kernel.org/intel-xe/20240208183539.185095-2-jose.souza@intel.com/
 Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
 ---
- tests/intel/xe_query.c | 92 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 92 insertions(+)
+ include/drm-uapi/xe_drm.h |  1 +
+ tests/intel/xe_query.c    | 88 ++++++++++++++++++++++++++++++---------
+ 2 files changed, 70 insertions(+), 19 deletions(-)
 
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 0d2ff6efd..86b426f49 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -583,6 +583,7 @@ struct drm_xe_query_engine_cycles {
+ struct drm_xe_query_uc_fw_version {
+ 	/** @uc_type: The micro-controller type to query firmware version */
+ #define XE_QUERY_UC_TYPE_GUC_SUBMISSION 0
++#define XE_QUERY_UC_TYPE_HUC 1
+ 	__u16 uc_type;
+ 
+ 	/** @pad: MBZ */
 diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index 5807fe3ed..d0cc89092 100644
+index d0cc89092..9ebc7e806 100644
 --- a/tests/intel/xe_query.c
 +++ b/tests/intel/xe_query.c
-@@ -741,6 +741,96 @@ static void test_engine_cycles_invalid(int fd)
+@@ -741,18 +741,8 @@ static void test_engine_cycles_invalid(int fd)
  	query_engine_cycles(fd, &ts);
+ }
+ 
+-/**
+- * SUBTEST: query-uc-fw-version-guc
+- * Test category: functionality test
+- * Description: Display the GuC firmware submission version
+- *
+- * SUBTEST: multigpu-query-uc-fw-version-guc
+- * Test category: functionality test
+- * Sub-category: MultiGPU
+- * Description: Display GuC firmware submission version for all Xe devices.
+- */
+ static void
+-test_query_uc_fw_version_guc(int fd)
++test_query_uc_fw_version(int fd, uint32_t uc_type)
+ {
+ 	struct drm_xe_query_uc_fw_version *uc_fw_version;
+ 	struct drm_xe_device_query query = {
+@@ -761,6 +751,7 @@ test_query_uc_fw_version_guc(int fd)
+ 		.size = 0,
+ 		.data = 0,
+ 	};
++	int ret;
+ 
+ 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+ 
+@@ -768,20 +759,62 @@ test_query_uc_fw_version_guc(int fd)
+ 	igt_assert(uc_fw_version);
+ 
+ 	memset(uc_fw_version, 0, sizeof(*uc_fw_version));
+-	uc_fw_version->uc_type = XE_QUERY_UC_TYPE_GUC_SUBMISSION;
++	uc_fw_version->uc_type = uc_type;
+ 	query.data = to_user_pointer(uc_fw_version);
+ 
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+-	igt_info("XE_QUERY_UC_TYPE_GUC_SUBMISSION %u.%u.%u.%u\n",
+-		 uc_fw_version->branch_ver,
+-		 uc_fw_version->major_ver,
+-		 uc_fw_version->minor_ver,
+-		 uc_fw_version->patch_ver);
+-	igt_assert(uc_fw_version->major_ver > 0 || uc_fw_version->minor_ver > 0);
++	ret = igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
++
++	switch (uc_type) {
++	case XE_QUERY_UC_TYPE_GUC_SUBMISSION:
++		igt_assert_eq(ret, 0);
++		igt_info("XE_QUERY_UC_TYPE_GUC_SUBMISSION %u.%u.%u.%u\n",
++			 uc_fw_version->branch_ver,
++			 uc_fw_version->major_ver,
++			 uc_fw_version->minor_ver,
++			 uc_fw_version->patch_ver);
++		igt_assert(uc_fw_version->major_ver > 0 ||
++			   uc_fw_version->minor_ver > 0);
++		break;
++	case XE_QUERY_UC_TYPE_HUC:
++		if (ret == 0) {
++			igt_info("XE_QUERY_UC_TYPE_HUC %u.%u.%u.%u\n",
++				 uc_fw_version->branch_ver,
++				 uc_fw_version->major_ver,
++				 uc_fw_version->minor_ver,
++				 uc_fw_version->patch_ver);
++			igt_assert(uc_fw_version->major_ver > 0);
++		} else {
++			igt_assert_eq(errno, ENODEV);
++			/*
++			 * No HuC was found, either because it is not running
++			 * yet or there is no media IP.
++			 */
++			igt_info("XE_QUERY_UC_TYPE_HUC No HuC is running\n");
++		}
++		break;
++	default:
++		igt_assert(false);
++	}
+ 
+ 	free(uc_fw_version);
  }
  
 +/**
@@ -109,99 +202,43 @@ index 5807fe3ed..d0cc89092 100644
 +static void
 +test_query_uc_fw_version_guc(int fd)
 +{
-+	struct drm_xe_query_uc_fw_version *uc_fw_version;
-+	struct drm_xe_device_query query = {
-+		.extensions = 0,
-+		.query = DRM_XE_DEVICE_QUERY_UC_FW_VERSION,
-+		.size = 0,
-+		.data = 0,
-+	};
-+
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+
-+	uc_fw_version = malloc(query.size);
-+	igt_assert(uc_fw_version);
-+
-+	memset(uc_fw_version, 0, sizeof(*uc_fw_version));
-+	uc_fw_version->uc_type = XE_QUERY_UC_TYPE_GUC_SUBMISSION;
-+	query.data = to_user_pointer(uc_fw_version);
-+
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+	igt_info("XE_QUERY_UC_TYPE_GUC_SUBMISSION %u.%u.%u.%u\n",
-+		 uc_fw_version->branch_ver,
-+		 uc_fw_version->major_ver,
-+		 uc_fw_version->minor_ver,
-+		 uc_fw_version->patch_ver);
-+	igt_assert(uc_fw_version->major_ver > 0 || uc_fw_version->minor_ver > 0);
-+
-+	free(uc_fw_version);
++	test_query_uc_fw_version(fd, XE_QUERY_UC_TYPE_GUC_SUBMISSION);
 +}
 +
+ /**
+  * SUBTEST: query-invalid-uc-fw-version-mbz
+  * Test category: functionality test
+@@ -831,6 +864,22 @@ test_query_uc_fw_version_invalid_mbz(int fd)
+ 	free(uc_fw_version);
+ }
+ 
 +/**
-+ * SUBTEST: query-invalid-uc-fw-version-mbz
++ * SUBTEST: query-uc-fw-version-huc
 + * Test category: functionality test
-+ * Description: Check query with invalid arguments returns expected error code.
++ * Description: Display the HuC firmware version
 + *
-+ * SUBTEST: multigpu-query-invalid-uc-fw-version-mbz
++ * SUBTEST: multigpu-query-uc-fw-version-huc
 + * Test category: functionality test
 + * Sub-category: MultiGPU
-+ * Description: Check query with invalid arguments for all Xe devices.
++ * Description: Display HuC firmware version for all Xe devices.
 + */
 +static void
-+test_query_uc_fw_version_invalid_mbz(int fd)
++test_query_uc_fw_version_huc(int fd)
 +{
-+	struct drm_xe_query_uc_fw_version *uc_fw_version;
-+	struct drm_xe_device_query query = {
-+		.extensions = 0,
-+		.query = DRM_XE_DEVICE_QUERY_UC_FW_VERSION,
-+		.size = 0,
-+		.data = 0,
-+	};
-+
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+
-+	uc_fw_version = malloc(query.size);
-+	igt_assert(uc_fw_version);
-+
-+	memset(uc_fw_version, 0, sizeof(*uc_fw_version));
-+	uc_fw_version->uc_type = XE_QUERY_UC_TYPE_GUC_SUBMISSION;
-+	query.data = to_user_pointer(uc_fw_version);
-+
-+	/* Make sure the baseline passes */
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+
-+	/* Make sure KMD rejects non-zero padding/reserved fields */
-+	uc_fw_version->pad = -1;
-+	do_ioctl_err(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query, EINVAL);
-+	uc_fw_version->pad = 0;
-+
-+	uc_fw_version->pad2 = -1;
-+	do_ioctl_err(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query, EINVAL);
-+	uc_fw_version->pad2 = 0;
-+
-+	uc_fw_version->reserved = -1;
-+	do_ioctl_err(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query, EINVAL);
-+	uc_fw_version->reserved = 0;
-+
-+	free(uc_fw_version);
++	test_query_uc_fw_version(fd, XE_QUERY_UC_TYPE_HUC);
 +}
 +
  igt_main
  {
  	const struct {
-@@ -754,10 +844,12 @@ igt_main
- 		{ "query-hwconfig", test_query_hwconfig },
+@@ -845,6 +894,7 @@ igt_main
  		{ "query-topology", test_query_gt_topology },
  		{ "query-cs-cycles", test_query_engine_cycles },
-+		{ "query-uc-fw-version-guc", test_query_uc_fw_version_guc },
+ 		{ "query-uc-fw-version-guc", test_query_uc_fw_version_guc },
++		{ "query-uc-fw-version-huc", test_query_uc_fw_version_huc },
  		{ "query-invalid-cs-cycles", test_engine_cycles_invalid },
  		{ "query-invalid-query", test_query_invalid_query },
  		{ "query-invalid-size", test_query_invalid_size },
- 		{ "query-invalid-extension", test_query_invalid_extension },
-+		{ "query-invalid-uc-fw-version-mbz", test_query_uc_fw_version_invalid_mbz },
- 		{ }
- 	}, *f;
- 	int xe, gpu_count;
 -- 
 2.34.1
 
