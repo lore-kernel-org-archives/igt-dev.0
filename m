@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7192BC5475B
-	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 13:58:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF9D6C54E58
+	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 13:59:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0868B112A9A;
-	Mon, 11 Mar 2024 13:58:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 94CB8112AA7;
+	Mon, 11 Mar 2024 13:59:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K+urC0Z2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JkH/AjE4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C96E10E479
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Mar 2024 13:58:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F838112AA7
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Mar 2024 13:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710165517; x=1741701517;
+ t=1710165594; x=1741701594;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=zF7oVZtYeWBAhy5kt4xhl9pEUU+TwGglSmxcPdY+4yw=;
- b=K+urC0Z2xUXz8OgsRPQhldCPsQh0bQ/If93VLOqx5xLzzNpRYLqwINrm
- vNqEjKOb3Vwty2cViz9tYfr8t1FnnthzGtOxQ//2sE8C4JL+s73hMjSKN
- 6l/Dfw5Gl4e6TTb2VsHQGNj/XWvDw4rp9b0PIX9i9XfBS6U1vk7QmzqVB
- L3vRvzU0JQAbSu3hiLs/8E71u1I6j3+uyC1ceKMKlslX9Kj9Mh4qt02hh
- 5T+cvNAmqNk4/xZsk1uuRnD3hKeCi7W3scPFOfB/cYE8cinbhL+mDPDo9
- /mYZ1VYUw9duTDqbdicFSFVWBzaI1CwzMmbTceiK7rKIm9iQdHWORU7D9 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="15558263"
-X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; d="scan'208";a="15558263"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2024 06:58:36 -0700
+ bh=NWPuKn8jh5IMZDvn3o7l5FsMl95H12ngPLGHe9qPQns=;
+ b=JkH/AjE4XNW1fQPnsncLGEPEl37TIU36BEaNPtD5QIFo1n4orx5eKg9H
+ 4SCLq8z3bQUajlPPM8PuUix21s2FJ20Oo8Ae8o8Yx2eecYFewLNwnH/cl
+ xF2T3j09S5ekLogNhgsLFAiJMs79DW1g5juzjnqzS0hlejoKfg/UN5Ytd
+ RfeW2nZMv63sccp07ImuVbAjcakLGTBOa1PUCIv8JspdQ8ieV3Ea8/wGv
+ C4KTmGk2NL+JUo80StvANSeMLX8Y1n5AeUOdIkr52NQhRcwv/OswAYImt
+ FTAyG2BaUgyYuAl4uRBmHqHD6LN6Iq/exWIEeguIbTXrmlC012JyWbYHb w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="15389620"
+X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; d="scan'208";a="15389620"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2024 06:59:54 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; d="scan'208";a="15880917"
+X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; d="scan'208";a="11168371"
 Received: from unknown (HELO localhost) ([10.245.244.202])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2024 06:58:35 -0700
-Date: Mon, 11 Mar 2024 14:58:32 +0100
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2024 06:59:53 -0700
+Date: Mon, 11 Mar 2024 14:59:50 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: igt-dev@lists.freedesktop.org,
+ Andrzej Turko <andrzej.turko@linux.intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: Re: [PATCH i-g-t v2 13/25] tests/intel: Introduce Render copy
- subcategory
-Message-ID: <20240311135832.u3fyrnkvusbpbxpq@zkempczy-mobl2>
+Subject: Re: [PATCH i-g-t v2 12/25] tests/intel: Introduce Media subcategory
+Message-ID: <20240311135950.svr5sqke2cjgh2l5@zkempczy-mobl2>
 References: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
- <20240308083657.1092049-14-katarzyna.piecielska@intel.com>
+ <20240308083657.1092049-13-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240308083657.1092049-14-katarzyna.piecielska@intel.com>
+In-Reply-To: <20240308083657.1092049-13-katarzyna.piecielska@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,48 +68,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Mar 08, 2024 at 08:36:45AM +0000, Katarzyna Piecielska wrote:
-> Let's put render tests under Render copy subcategory.
+On Fri, Mar 08, 2024 at 08:36:44AM +0000, Katarzyna Piecielska wrote:
+> Let's have media tests under Media subcategory.
 > 
-> v2: Change functionality to render_copy to not break automation tools
+> v2: changing functionality to not break automation tools:
+>  - igt@gem_media_fill@media-fill - s/media/fill media/
+>  - igt@gem_media_vme - s/media/vme media block/
 > 
 > Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Andrzej Turko <andrzej.turko@linux.intel.com>
 > Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > ---
->  tests/intel/gem_render_copy.c       | 3 +++
->  tests/intel/gem_render_copy_redux.c | 3 +++
+>  tests/intel/gem_media_fill.c | 3 +++
+>  tests/intel/gem_media_vme.c  | 3 +++
 >  2 files changed, 6 insertions(+)
 > 
-> diff --git a/tests/intel/gem_render_copy.c b/tests/intel/gem_render_copy.c
-> index 57ca2c9ec..91979ba07 100644
-> --- a/tests/intel/gem_render_copy.c
-> +++ b/tests/intel/gem_render_copy.c
-> @@ -52,6 +52,9 @@
->   * TEST: gem render copy
->   * Description: Basic test for the render_copy() function.
->   * Feature: mapping
-> + * Sub-category: Render copy
+> diff --git a/tests/intel/gem_media_fill.c b/tests/intel/gem_media_fill.c
+> index 79a06f7b8..f0ba797d9 100644
+> --- a/tests/intel/gem_media_fill.c
+> +++ b/tests/intel/gem_media_fill.c
+> @@ -49,6 +49,9 @@
+>   * TEST: gem media fill
+>   * Description: Basic test for the media_fill() function, a very simple workload for the Media pipeline.
+>   * Feature: media
+> + * Sub-category: Media
 > + * Category: Desktop client
-> + * Functionality: render_copy
+> + * Functionality: fill media
 >   * Run type: FULL
 >   *
->   * SUBTEST: linear
-> diff --git a/tests/intel/gem_render_copy_redux.c b/tests/intel/gem_render_copy_redux.c
-> index 06777dd7f..681cb5cca 100644
-> --- a/tests/intel/gem_render_copy_redux.c
-> +++ b/tests/intel/gem_render_copy_redux.c
-> @@ -51,6 +51,9 @@
->  /**
->   * TEST: gem render copy redux
->   * Description: Advanced test for the render_copy() function.
-> + * Sub-category: Render copy
+>   * SUBTEST: media-fill
+> diff --git a/tests/intel/gem_media_vme.c b/tests/intel/gem_media_vme.c
+> index 38ebd157d..ee1f020fc 100644
+> --- a/tests/intel/gem_media_vme.c
+> +++ b/tests/intel/gem_media_vme.c
+> @@ -39,6 +39,9 @@
+>   * TEST: gem media vme
+>   * Description: A very simple workload for the VME media block.
+>   * Feature: media
+> + * Sub-category: Media
 > + * Category: Desktop client
-> + * Functionality: render_copy
+> + * Functionality: vme media block
 >   * Run type: FULL
 >   *
->   * SUBTEST: flink
+>   * SUBTEST:
 > -- 
 > 2.34.1
 >
