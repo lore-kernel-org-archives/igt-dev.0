@@ -4,143 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 677C3C54E60
-	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 14:06:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77AB6C5475B
+	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 14:17:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 26100112AB3;
-	Mon, 11 Mar 2024 14:06:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1174B10E29A;
+	Mon, 11 Mar 2024 14:17:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EAArZFA/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Wgi5Zypd";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A447112AB6
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Mar 2024 14:06:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B0B8710E29A
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Mar 2024 14:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710165983; x=1741701983;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=pg7m1DUZ8vEgdKBfSnyZmDFUhIyJ6dVwIoed53jgaao=;
- b=EAArZFA/YKhJ8/qNw2qVyipshnuuBqFOTp55S/WA/lxbqmNEKR+ZCMYB
- g2Uaaeh/jqAC62aj66nBuWdBRZmFzp64AjmP/2MxJjiM2Veyo3+JYgFRU
- 6eLKPpRfHxuL7VjIQsIJeTnfYGghjHk0siRybhsLycYxC85Fl3/0ULJ+D
- VQiyo0PRV1ccbApm8BAQP94qwVDalwtGgu9AVBwXER4KxxKUl2ATvLuTV
- 43eLmqJIByZ29PpyBM0mZV507XXlGHuiy7FY93WOakytuTPgRGIvwsr37
- DxL/U/quPmfV31cln4SG5su5KoHWNYE6F0E2Gs3fWG5e7Uc4Ieb8IJOmv A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="15390965"
-X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; d="scan'208";a="15390965"
+ t=1710166652; x=1741702652;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=1NeINiX5Ff20jKZcx3KA9Tv6Dh/2mAa/HGejmtUUV+4=;
+ b=Wgi5ZypdqEiJvsNdxdumajxoicRyPRujlx4UwVbEvw0NJlJrI47diRtA
+ pTJtowX4FnCjZIgQhmJFmPJ5MQKI25GIIt6DXMCHB7YuObxu1JC79clR5
+ 1NFbrEIvcdpoUjuupEBbDuklSb0QGSxNNqbIweLckx+xy0DE7tQUk5ecX
+ 4QxYFobBpRLncss8nAqN2vFP4MDEpGnrNxgrfC3DQDvZoQPVyzR24pfoK
+ tT3aoG+B00EDgKrOTMJ6YP367R/rxP2+jelTKU3ntV9/YPOWhByzrgZMp
+ LI7yBZxo646fo8MnRzFCSteV4kxml97wF2g2L6g9RwrGrmDzf5f2SJYDU g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="4690947"
+X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; 
+   d="scan'208";a="4690947"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2024 07:06:13 -0700
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2024 07:17:31 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; d="scan'208";a="15816363"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; d="scan'208";a="15818484"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
  by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 11 Mar 2024 07:06:12 -0700
+ 11 Mar 2024 07:17:31 -0700
 Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 11 Mar 2024 07:06:12 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ 15.1.2507.35; Mon, 11 Mar 2024 07:17:29 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
  fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Mon, 11 Mar 2024 07:06:12 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.168)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ 15.1.2507.35 via Frontend Transport; Mon, 11 Mar 2024 07:17:29 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 11 Mar 2024 07:06:11 -0700
+ 15.1.2507.35; Mon, 11 Mar 2024 07:17:27 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UC4E1IXfhSgmkjutOI5OomFPkMZVEBWtdtG2wUuJphF5yl3jX5Z9KLyZscSup0duWkU4u7VtEDn9urZsMzVgvRDIV75ANM56NLl/UGvZL/bRQOLNMdv0LSTnmBLOSwBLYOr5nCoQttXhQiIHOEe2LKTSCJ8DW48lXp59WFQYCWwiuV76sJ3yS4fqvSq96RswkC5/Ww2JUQ+SVq4NLkdtBKoTOY9LqxVEXjFo3N7dUMgRvVg/+eYWldXC7jrtjc/F2JCLXp8rXoWim3KlfgMK/iqpHOIiYeWjYTa5W33/4qMRc9ZQwuvoAVPLYjW4YLUWCru9WHIcDI5VqGRvUWadCQ==
+ b=P9qYqO8c7l2rmCfhdfpsHnbh6adPb+Blq4jp1ooQYgTpOI0Jabn8SUzaJXzQA/AR5FccW+1aGWnqPnuTjfc9jCtqP3c+iGTBUUZzbMk8Ly0QJ7Kmh8kfMWNIzOIqcH+5PiyHpM8oE+rJiWFjtDEo05Ey1/iOimDzvsGJy/Ats+EfcT0WvU7U+FvfOwhW0lUgzns9t3207SI5k3k9aWqeVxcY0FVMf5uUi3uo3HfphUFLish9IOLAUVf1HYHsme58Wdcw/Ya6PPU0am74HYNZlV+WgRcpJITNoKW5cVFdIo8WyJ9J/E9mfZK9n32ESoIA4CSfRsPQA3DXQkjOnUKeBQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JWPnkiV+fN2funsKsImd3tj7y33xSjuM0U3LsBjGPpM=;
- b=G+/r9yTG/dNsrkfI5gV5V9FgvDpeeIs/xUGFkuqQGSwBbgKurEzJTNgz1Fl93Lj9nBPBX9kQvNSsdl5ol2/2VRPXAs/vAqaFXtDulkRljEe8GxBOd2Amjwhy+Nnspwzk/jBNdCkjrQKofuPDb9m/VfJQJAUbHiLqWw23+C32sTFSSTfl7p05/gqMCfUqW8A0CJA22pq/qmTcFT5JShDGpK+Ayz+dFkQzvm8GY4yHPR4593lQTw0BPl1zYHXK/uNHFavv3kKlvr+puwzLCag1AmbIJmy/bpPhNrrCPY3EtyRZeSh/wwYhK/ZHJ8ma6yjVs55SpA4TPZUUJ9oAAe+yxQ==
+ bh=1NeINiX5Ff20jKZcx3KA9Tv6Dh/2mAa/HGejmtUUV+4=;
+ b=OQYdLOFqLm9BGW1DjsvDtmuz5KXBAS1AGwBaI9fs170cq549HCRVw1oiBwMoWixKEo2qkS36HgSVRQBrQZuD6rSma7yAoaYU0znPk3ZNANzywd2iP2oRbuBvBVwlaoR3sBeQ2hozDfEIKmgb6m9G6Gs3R2mig/7e9877u6xfiduZDuq8AK10Ndd161nD8/4JUzqsD7qLEVVujOAB8vzeVdHZJ5RIloUCkUrfAqb9TgNpY24UwpeePR8e8FUXbky5ymB1r3ckRvzjMqHyvxCKEaDbxHG2F/Lhq3d6YJJtQxywhDJ9svjD2SqlvArqq4mhnCQxfRmFHk2tsGIlEAybng==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from SA1PR11MB8428.namprd11.prod.outlook.com (2603:10b6:806:38b::20)
- by SN7PR11MB6725.namprd11.prod.outlook.com (2603:10b6:806:267::18)
+Received: from IA1PR11MB6097.namprd11.prod.outlook.com (2603:10b6:208:3d7::17)
+ by IA1PR11MB6323.namprd11.prod.outlook.com (2603:10b6:208:389::14)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.14; Mon, 11 Mar
- 2024 14:06:09 +0000
-Received: from SA1PR11MB8428.namprd11.prod.outlook.com
- ([fe80::d6b:6160:8399:11d1]) by SA1PR11MB8428.namprd11.prod.outlook.com
- ([fe80::d6b:6160:8399:11d1%3]) with mapi id 15.20.7386.016; Mon, 11 Mar 2024
- 14:06:08 +0000
-From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
-To: "Piecielska, Katarzyna" <katarzyna.piecielska@intel.com>,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.15; Mon, 11 Mar
+ 2024 14:17:25 +0000
+Received: from IA1PR11MB6097.namprd11.prod.outlook.com
+ ([fe80::12a0:a81e:3093:97d0]) by IA1PR11MB6097.namprd11.prod.outlook.com
+ ([fe80::12a0:a81e:3093:97d0%3]) with mapi id 15.20.7386.014; Mon, 11 Mar 2024
+ 14:17:25 +0000
+From: "Piecielska, Katarzyna" <katarzyna.piecielska@intel.com>
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Wilson, Chris P" <chris.p.wilson@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Mauro Carvalho Chehab
- <mauro.chehab@linux.intel.com>
-Subject: RE: [PATCH i-g-t v2 02/25] tests/intel: Introduce Memory management
- subcategory
-Thread-Topic: [PATCH i-g-t v2 02/25] tests/intel: Introduce Memory management
- subcategory
-Thread-Index: AQHacTPm/vAgbSsf3k2NmbxqXnnP/rEyl/Fw
-Date: Mon, 11 Mar 2024 14:06:08 +0000
-Message-ID: <SA1PR11MB8428D7D83449B9C0A0B3A0008D242@SA1PR11MB8428.namprd11.prod.outlook.com>
-References: <20240308083657.1092049-1-katarzyna.piecielska@intel.com>
- <20240308083657.1092049-3-katarzyna.piecielska@intel.com>
-In-Reply-To: <20240308083657.1092049-3-katarzyna.piecielska@intel.com>
-Accept-Language: en-IN, en-US
+Subject: RE: [PATCH i-g-t v2] scripts/doc_to_xls.py: split code into a XLS
+ conversion and main()
+Thread-Topic: [PATCH i-g-t v2] scripts/doc_to_xls.py: split code into a XLS
+ conversion and main()
+Thread-Index: AQHac71ccrKiiuribUWJhQwtc6M4KbEylfDA
+Date: Mon, 11 Mar 2024 14:17:25 +0000
+Message-ID: <IA1PR11MB609753B18FE6E545754F82F586242@IA1PR11MB6097.namprd11.prod.outlook.com>
+References: <20240311140515.988767-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20240311140515.988767-1-mauro.chehab@linux.intel.com>
+Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR11MB8428:EE_|SN7PR11MB6725:EE_
-x-ms-office365-filtering-correlation-id: 65cc167e-037f-4cb9-273a-08dc41d4668c
+x-ms-traffictypediagnostic: IA1PR11MB6097:EE_|IA1PR11MB6323:EE_
+x-ms-office365-filtering-correlation-id: c37b38a5-bb3f-41f7-70c0-08dc41d5f9cd
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: bLg8aXiOqv6ayt+huFGTYyOg5YFp0wtEffRYCE4lmnm1LzjgwUE9L3x84/fyQUKcb6CRD7bFLyK8UIucVkaGInLMb5Qu8OLid4uqCbcY4mOnJ+aH4f1xNNVG4AsS9yBxbVPCYYdSifQjar/o1c9mPiTH7fcNpkTnWBD9r5HAno98YJtXOqTQjTx0iIUGmTC6ifTyykjC2UhQ3lsIe4ngAGNVsWoQ48Z9s00+fdLzpP54lqXE9YtUzNBpjMP+X5TGZAGPRd7VehfnlYUKNXmPaqoLiM/bZGEGOdI/iljygN2uRMl0GbzxtUbLjnJoQILIKL44lxCGdgmsex8K4+47Ge8p6p4bBQ15VNL8XaSPqEfvf/+z4ukGaQWkt+hVDzGlG/b+WZoVu9ihuGvtJViUETlXf178+GXIZ4SMwx9nUETTsjx+Lga8eq/CfMiqsI26l1IQKAQtA2Coj52+fWjyxppBvhwgcKSpNBwBSpu5iqKn8jdMZunxaT3n4VoL86MBNA2VXMvPwv6P5Cpv/xtGyaXekxr4/yYE7zqA1CfZZhwPbmcKtdBMK2bZk5pma/PFIZVYsKI8zebGJOwmALyaIjQvZy/1nNEg7tvyz2yOP+C89P3tetGKOxZT6MK0eBjr6cOn/1PwugHyniuXvMntW+GzeRo4ebpnoGVmsRsXKe3ns9st0l4NzioX303kP7jIlFSUKNg5C2N6p3DWfHOsqBzn6qudGWdXDae+6b16YH8=
+x-microsoft-antispam-message-info: YtXJ0B9KOoliziekybkMUTribDAEN4ebIYPJmkXSsnA8xCXimQvRFKJ6xDU/suVI7wZmYbFX4QreAZCunNadGryp8wk7quzjofQPipd+ewpXUkofNE3c3ToHZC1gevPyyxyFY0aTFkjJhO58vxfP7fckuMups4FARFYXuhl/NpYmfOTsoIyR84Cr5f7sVfH802L5IaWoGBVE0vlfGe73CfbcWjXHaqrlMxNI8kmTjbY3E5yEp7oPgAY1/nww/O99GVr8yyh0ermZJdh6ImDk6Kc61EzHpcVn2YVG1c9g8g4jYdL6RlbzAMJjR38BNbp6gatrSHz/KqHCLQQ2/hgRdu0hfBtFgH9hKhP5WpJICvTyEyeSYriSZJGcYNmt2L8s+IjTjch/pAKF0I/lLyiEmNd/pa9qHmFKu4lvX8ohJTxInAB6Qla7rrLQA1Qlb4WLrFL9mlwyf1F4EnjEsPFsECcNff/oeR1VbuIMQjhJ91VGbRM2sEXhpJr4C8yPsXGsev4Bs1/EY7PeFD7aMB12hf1X73tTT0le/0f2GBnmW1EGC9B10c/c34i1xq06hiyMONQ2B3X2OEpVlahqGq/jUrRCmhWONESq/sUFxl4U6VL3K2N8OxsFTv+ZP0h5dPKrSZRpaJ5cFDoBE/4PWG+uP4N9bLM3HwMVIsMop6X32SadW2+oAIAnBf0dkoIrqIzPsF8g4Op7Wx5rd239tODmcqOKOJm7V1hqgHTS43y773I=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA1PR11MB8428.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(1800799015)(376005)(38070700009); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:IA1PR11MB6097.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376005)(1800799015)(38070700009); DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?RuOkzufW+aUHRR062CQxDbvfSzFZg9QXDK8TYtjF+Q8cMKepFyO4vaIyqlvp?=
- =?us-ascii?Q?aoUuFWRPGWaUUkQ264/v+MqRuIhhgSvrVQuTq9CX2IopLCi8eidLN/25oMSQ?=
- =?us-ascii?Q?5aX9e6vVSVIG43C6y+5dgexwjNdKyQQB7txH3JFQbkfW0kRkngzjZSUEb9Iz?=
- =?us-ascii?Q?/r/nAthZzvyr2zjXdqdim1M0XnyS1hOAENphpi1wn/Mb+aApjW6m2yC/uOqY?=
- =?us-ascii?Q?7Pt0FzjWQGkAytU88WWMaTiXLRmR5nrBBPFlfIEKg0xtsJG8KpsyikT19Ebr?=
- =?us-ascii?Q?fYKu79tNjVlQl3pTTdfvdplDDZM5cRhv5rE0B0KjPpK+o+zDOh5AlLmIBgGq?=
- =?us-ascii?Q?cXK/V3Oo2eogXpax3DEYblT0qr3p0kSC15txOnV076mN0pCr4MLkI8GxJeWW?=
- =?us-ascii?Q?Fr7ZUL+XZuTGYZBslAjQOWcjB+u+HunJnpBwL1AyciBejajBLKW7Zlo/xCKV?=
- =?us-ascii?Q?TnkBbSLvT/CC5P9aE1KEPzhDHRQVZaCI1lDxbZUsRJM0mlm771qSLvutQUaw?=
- =?us-ascii?Q?91O4HRfcBUrJUzKMTu16LJfkHeVE5Dn5B1R1CPn6qSnFTjIRnSg+gxfJPJbA?=
- =?us-ascii?Q?uC4Joes7NQ45GumUuIzZMIQJYaBPQIw4/hhBJJbNHa881JnJ8rBMcADtyKMj?=
- =?us-ascii?Q?6OIPGvsNlrDd2dc2blLF1crNM0+yZtVCOUBoYSuCzvofvc/BNTNWT3m7K0Wr?=
- =?us-ascii?Q?Oy6Ad/Q2yp99CBix4EsWrCLSW1Ci2m3Vsd8rAtF9MdUnrt3bA4cG2CF3kvJx?=
- =?us-ascii?Q?+/8Vyyw1bx3NYd2X3iJgUnmIS+UHiEX9dvJj9Cwc3uN4A55QzOOW1PykGsEa?=
- =?us-ascii?Q?pUpOiNfx63FxDa61nKI6tjI8OPBQRAaQXU3SM11AiE5Q70bqSz6Qfpd6edFk?=
- =?us-ascii?Q?v+UQcRC2hI4r/LxTSmqshU4BBDInEG6tDB14VVOMJZ8QJ+cZi1A80QNsiVCG?=
- =?us-ascii?Q?GKqSJwUa3nDfJbK1TBl384dCyO3vgn1QqWdBUZxonKRhRVcpoLwrVak1MEKr?=
- =?us-ascii?Q?xKG9ZgfrynSwcnStNOoIEUSmDttTiJ17MtG6WySL64bip4TtHuLT19t/wngt?=
- =?us-ascii?Q?NDJtFn7wVW2KGtY+bew08rS7pLCys37y+rmbPuAXJgTlmSwJxhGfloCKeqs0?=
- =?us-ascii?Q?woZKPf4jgLdVa240YeR7GkOQLGc4EPZlIP8SW1nkGIJ388VD8raDxSUHQQpy?=
- =?us-ascii?Q?k7nHgz5DnAcxFiJ3zOffrXv40PMYVEe7hSqhjHFevsQQ18dgUlT6/c5U87ls?=
- =?us-ascii?Q?d6TGUyVbjWRhAwQZC1GhWPqnViy7qoBUssi27op5odZ+GgsJYFiJ0SzbraTO?=
- =?us-ascii?Q?Qx9tIicotfiVLr9EnKxpIKa+546+9V9YhL6RnxLbaJuQhxO+Hyn/+ICUKBQE?=
- =?us-ascii?Q?JiFn7ncIjqcbvqbMBuOhjhNVoemFCE+clhJGD2qJgdOnzN30Q9QTXQhuB3I1?=
- =?us-ascii?Q?pu9cczmPtbRn+cbjnsaRHGUC+P7hOEQ6Lk9+Tqet5gSy5j1QUiKAViQfoez2?=
- =?us-ascii?Q?6CRziaVxakqpHN2IqukkkzbiGuRM9BPpFg80hMpOoOllUfXkADarmq8DRIsp?=
- =?us-ascii?Q?LQbGnOiihOiHcQcz4DZ1q2/d7cJ3vmeoHGIAeoZF5+dRiT/PiEMHMxZTPs5k?=
- =?us-ascii?Q?/g=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VVJRMlpkcGJybXhIeEhtR2ZJTGo3ZWZWdHJwT3YxWmFGWklxUmE4RFRHNEpK?=
+ =?utf-8?B?dXRCZDByRTJaRlA5eVMxbk5HQzNCZEROdHdRallVNTJTY0NrQUJkWk96bE9w?=
+ =?utf-8?B?YUkzelA0d1RrRWh0SjFpelJibDJ4c2I1S25JWmxkU1U4N2NPNzR1akJSUDIz?=
+ =?utf-8?B?dGpicGpzcjRRM2p2NzVJMitIYm03emMydjB3ZDFkN29tUktqekZodFNWTXJm?=
+ =?utf-8?B?eElrOVNPOE01UGcyS2x2MHBKSFlFS2lURldlcGl1aDkzTEM3UnJzM1Q3c21q?=
+ =?utf-8?B?TVcwbFBzeENPNmdmL1dpZW9pdXNLSEdLZStja3BheWs2dmJCbFo5Q3NITm1O?=
+ =?utf-8?B?SVVmRWl4V2RGY29tcEl6eXYxSFlZZkdmNUxhd1hXQ1NhR0FRYS91dkVJZytZ?=
+ =?utf-8?B?NTdCclc3VCtKeGtwZDBEREhNZjIzcTlzK2ZORzdPU1A1L293dzlWNWk2ZUZp?=
+ =?utf-8?B?NHp3NjhLU2NsWkJyYnpIVDRZR0F4ck9XV0d5RnVWMklQa3lnaUxVcWVoZ3VE?=
+ =?utf-8?B?Z09jRGhsTDZyWWRyMUJRcTFhVENPNzlFdkQxaWU0RTF4cm55b01qWVFuaHRy?=
+ =?utf-8?B?RTcwQm1lakpYWEJsWTZoZkE1MkFIbWhRaEdVeHFWdVFiMkRjZ0ZvUTBqOVlz?=
+ =?utf-8?B?YmtVRzN1bkswWWd1TTdwTVc0eUh5ZkdJZldFUWxzMUR0aW1nbUUxVFM4d1hv?=
+ =?utf-8?B?RHExL0JQaFFycCtPdnVvK0tFNGdpMEJWMmlEOGFWbVgxN3RvazVlWkEwTTAv?=
+ =?utf-8?B?Y2FSZW1OaU1mZ01TQnNNNThxVzBsOCtmL2Q0VkFJVDdGZVk4YUxjVVpXUTYr?=
+ =?utf-8?B?czIvVzlrNkhMUEhVNmVFc1pvYTBZbzNITGlCMTFiWlgvS3I1MFNMZC9NeVQr?=
+ =?utf-8?B?cCsvcy9oY05vbjEwQTdsUjFscWU3Q3pxQmtrNUN2cURhbGQxaW5aUEpwbWZ2?=
+ =?utf-8?B?YVJPeVkrYWQraFNDZ1k3MWFTWWxmYm96ajU2WWx1czRIenJKaTdiMjZ5MkQ1?=
+ =?utf-8?B?K2F4U1dQM3pGK1pvNWo5SUhpUE1BZlUzSFBiN3Bza0NnQ1BBM3Z2dzg4M2V5?=
+ =?utf-8?B?bUxudjZSMCt4VDdKdjZ2bllQSlRRY0luSVpzZmFvNVF3UVF0a0hnSVhqejZn?=
+ =?utf-8?B?N1MwY2hWY2pVOEdVbHdmWVdYNDBiVHUra2xsRTJLZGVqZ0Q4MHdsT3pKWVM1?=
+ =?utf-8?B?TDVNUjU2MmZ6YlhpNDYrZDFPd001TE9hRGp6WjJQeUNqMlB3R3BCN1JIL0R6?=
+ =?utf-8?B?NGVqUDlvQWRNQjNLVFczY3gzeTdqOE94aDdOTGF4N1B1OTBsbStsQzN5N1Z2?=
+ =?utf-8?B?Mld3anlyc3I4Q3A2NDJTdnFGc0xkcDN1T2lmdjNoaUNPUVkvK2R1L3RtRDc2?=
+ =?utf-8?B?bUFSYnhEVVl2NW9meTM4dWtqLzRFNWc0dndvSUg5dTkwMHkvQXErYVJZQlo0?=
+ =?utf-8?B?QlRwYyt3SGR5cjhnRGlpZjNYSEtidEFEeUtUOHhaUW9lQUx0VHNTUm9IemRw?=
+ =?utf-8?B?OU5aeEtMNWg0YVQ2QXd0eUFHdytta3g1VlpXbzVOdUNFWXpqZ2ZKNFJPMFEv?=
+ =?utf-8?B?SGx1aFhnMG9zejJsQzVpZm80SEVrVGJsOUFqeDlFRTFmMTJDR256ZkZVQXlT?=
+ =?utf-8?B?WFQxdUFnV3lsaDR3dTJGUkR3RHZFWFQ0M1BGSitUZU1SYTZWbDFqQWgyQzFH?=
+ =?utf-8?B?eEdzUnVkc2VNclNISlh0dDlsdWYrT1R1Z2dKdG9JVzFhUElsOERWb1JPbUtT?=
+ =?utf-8?B?QmZ2UXM3ejZxLzVCc29UWHN2Njk3UGo0L1gwczF4U0hpVFZvYjJVcUEzalg2?=
+ =?utf-8?B?d3hGays4eVJTSDBBQ1BLMGtBWFhiTWFzYmNTQ1BzZUR1UHpuT0drMndQSkR5?=
+ =?utf-8?B?dVRQY2JFbG13RW81VlZ0MWVEdDRpMmpzejhUSUhoOVZtdFlPeWpFTHBYczJY?=
+ =?utf-8?B?SEduVU8rWFJEVzB2cUMvMVh1SWtzOHhJZUtJTVNkb3YvOVoyaEFQZXUwbS9R?=
+ =?utf-8?B?SVUwelhaSTN0SUxjamR6bG1jOGtkSTVmdklWcUJVTWNTUUFMUk82Wkh6end6?=
+ =?utf-8?B?c1NTZE14cHhFREt6MDZEY0dMWXdoVjRDMWEyTzFCaVpWZ0tpWVlhdlYvVXg0?=
+ =?utf-8?B?dUV5MXdwK2VNbU9EWC9kNC9pNGpkZG1EOE5RalJtcW9jTDRsOGJNS3VqdWtt?=
+ =?utf-8?B?MlE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB8428.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 65cc167e-037f-4cb9-273a-08dc41d4668c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Mar 2024 14:06:08.8504 (UTC)
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6097.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c37b38a5-bb3f-41f7-70c0-08dc41d5f9cd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Mar 2024 14:17:25.4257 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rOqW2hbinCHxXi2qrw/wTit3l6Qv7jR5Pi6R5BTFCfTepnriU89T9j7rRSNVESV/7rF7/VAVnfSAIoJLdPfOO6xEvMA2fc32WehmK/m5Y6Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6725
+X-MS-Exchange-CrossTenant-userprincipalname: h5EwEMzdruBOzOC6/E0Aap5yLFK6gU/Bl56BTqsrpO2SH7wnSB0BSVMknAP+5tDYb8Xsc033TiSGNx8RGxv9dWhnIcYKMfRcr06r2RDdUEg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6323
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -157,583 +163,103 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-
-> -----Original Message-----
-> From: Piecielska, Katarzyna <katarzyna.piecielska@intel.com>
-> Sent: Friday, March 8, 2024 2:07 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Piecielska, Katarzyna <katarzyna.piecielska@intel.com>; Wilson, Chris=
- P
-> <chris.p.wilson@intel.com>; Kamil Konieczny
-> <kamil.konieczny@linux.intel.com>; Dandamudi, Priyanka
-> <priyanka.dandamudi@intel.com>; Mauro Carvalho Chehab
-> <mauro.chehab@linux.intel.com>
-> Subject: [PATCH i-g-t v2 02/25] tests/intel: Introduce Memory management
-> subcategory
->=20
-> Let's add Memory management subcategory for tests that are validating
-> memory.
->=20
-> Change subcategory s/i915/Memory management/ for tests:
->  - gem_lmem_swapping.c
->  - gem_madvise.c
->=20
-> Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> Cc: Chris Wilson <chris.p.wilson@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-> ---
->  tests/drm_mm.c                               | 2 +-
->  tests/intel/gem_close.c                      | 2 +-
->  tests/intel/gem_cs_tlb.c                     | 4 ++--
->  tests/intel/gem_gtt_cpu_tlb.c                | 3 +++
->  tests/intel/gem_gtt_hog.c                    | 3 +++
->  tests/intel/gem_gtt_speed.c                  | 3 +++
->  tests/intel/gem_lmem_evict.c                 | 3 +++
->  tests/intel/gem_lmem_swapping.c              | 2 +-
->  tests/intel/gem_madvise.c                    | 2 +-
->  tests/intel/gem_mmap.c                       | 3 +++
->  tests/intel/gem_mmap_gtt.c                   | 3 +++
->  tests/intel/gem_mmap_wc.c                    | 3 +++
->  tests/intel/gem_read_read_speed.c            | 3 +++
->  tests/intel/gem_readwrite.c                  | 3 +++
->  tests/intel/gem_set_tiling_vs_gtt.c          | 3 +++
->  tests/intel/gem_set_tiling_vs_pwrite.c       | 3 +++
->  tests/intel/gem_streaming_writes.c           | 3 +++
->  tests/intel/gem_tiled_blits.c                | 3 +++
->  tests/intel/gem_tiled_fence_blits.c          | 3 +++
->  tests/intel/gem_tiled_partial_pwrite_pread.c | 3 +++
->  tests/intel/gem_tiled_pread_basic.c          | 3 +++
->  tests/intel/gem_tiled_pread_pwrite.c         | 3 +++
->  tests/intel/gem_tiled_swapping.c             | 3 +++
->  tests/intel/gem_tiled_wb.c                   | 3 +++
->  tests/intel/gem_tiled_wc.c                   | 3 +++
->  tests/intel/gem_tiling_max_stride.c          | 3 +++
->  tests/intel/gem_unfence_active_buffers.c     | 3 +++
->  tests/intel/i915_fb_tiling.c                 | 3 +++
->  tests/intel/prime_busy.c                     | 2 +-
->  tests/intel/prime_mmap.c                     | 4 ++--
->  tests/intel/prime_mmap_coherency.c           | 4 ++--
->  tests/intel/prime_self_import.c              | 9 ++-------
->  32 files changed, 82 insertions(+), 18 deletions(-)
->=20
-> diff --git a/tests/drm_mm.c b/tests/drm_mm.c index f2e6c6cd1..9319558db
-> 100644
-> --- a/tests/drm_mm.c
-> +++ b/tests/drm_mm.c
-> @@ -28,7 +28,7 @@
->   * Description: Basic sanity check of DRM's range manager (struct drm_mm=
-)
->   * Feature: mapping
->   * Category: Infrastructure
-> - * Functionality: DRM memory mangemnt
-> + * Functionality: DRM
->   * Sub-category: Memory management
->   * Test category: GEM_Legacy
->   * Run type: FULL
-> diff --git a/tests/intel/gem_close.c b/tests/intel/gem_close.c index
-> 20aff600d..91cda5bdc 100644
-> --- a/tests/intel/gem_close.c
-> +++ b/tests/intel/gem_close.c
-> @@ -31,7 +31,7 @@
->   * Feature: mapping
->   * Functionality: driver handler
->   * Run type: FULL
-> - * Sub-category: i915
-> + * Sub-category: Memory management
->   * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic
-> diff --git a/tests/intel/gem_cs_tlb.c b/tests/intel/gem_cs_tlb.c index
-> 2c7781d06..f9bd86785 100644
-> --- a/tests/intel/gem_cs_tlb.c
-> +++ b/tests/intel/gem_cs_tlb.c
-> @@ -57,9 +57,9 @@
->   * Category: Infrastructure
->   * Description: Check whether we correctly invalidate the cs tlb.
->   * Feature: mapping
-> - * Functionality: command submission
-> + * Functionality: tlb
->   * Run type: FULL
-> - * Sub-category: i915
-> + * Sub-category: Memory management
->   * Test category: GEM_Legacy
->   *
->   * SUBTEST: engines
-> diff --git a/tests/intel/gem_gtt_cpu_tlb.c b/tests/intel/gem_gtt_cpu_tlb.=
-c index
-> 155aa6516..9d9068d31 100644
-> --- a/tests/intel/gem_gtt_cpu_tlb.c
-> +++ b/tests/intel/gem_gtt_cpu_tlb.c
-> @@ -47,6 +47,9 @@
->   * TEST: gem gtt cpu tlb
->   * Description: Check whether gtt tlbs for cpu access are correctly inva=
-lidated.
->   * Feature: gtt, mapping
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: mapping
->   * Run type: FULL
->   *
->   * SUBTEST:
-> diff --git a/tests/intel/gem_gtt_hog.c b/tests/intel/gem_gtt_hog.c index
-> 1227c7633..247b31da5 100644
-> --- a/tests/intel/gem_gtt_hog.c
-> +++ b/tests/intel/gem_gtt_hog.c
-> @@ -44,6 +44,9 @@
->  #include "igt.h"
->  /**
->   * TEST: gem gtt hog
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: gtt
->   * Run type: FULL
->   *
->   * SUBTEST:
-> diff --git a/tests/intel/gem_gtt_speed.c b/tests/intel/gem_gtt_speed.c in=
-dex
-> c85c359a0..6cc34ce87 100644
-> --- a/tests/intel/gem_gtt_speed.c
-> +++ b/tests/intel/gem_gtt_speed.c
-> @@ -44,6 +44,9 @@
->  #include "i915/gem_create.h"
->  /**
->   * TEST: gem gtt speed
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: gtt
->   * Run type: FULL
->   *
->   * SUBTEST:
-> diff --git a/tests/intel/gem_lmem_evict.c b/tests/intel/gem_lmem_evict.c
-> index a3ca2c861..1574bbb9f 100644
-> --- a/tests/intel/gem_lmem_evict.c
-> +++ b/tests/intel/gem_lmem_evict.c
-> @@ -11,6 +11,9 @@
->   * TEST: gem lmem evict
->   * Description: Force tiny lmem size for easily testing eviction scenari=
-os.
->   * Feature: local_memory
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: local memory eviction
->   * Run type: FULL
->   * Test category: GEM_Legacy
->   *
-> diff --git a/tests/intel/gem_lmem_swapping.c
-> b/tests/intel/gem_lmem_swapping.c index 451d55423..d38a04673 100644
-> --- a/tests/intel/gem_lmem_swapping.c
-> +++ b/tests/intel/gem_lmem_swapping.c
-> @@ -30,7 +30,7 @@
->   * Description: Exercise local memory swapping.
->   * Feature: local_memory
->   * Functionality: buffer management
-> - * Sub-category: i915
-> + * Sub-category: Memory management
->   * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic
-> diff --git a/tests/intel/gem_madvise.c b/tests/intel/gem_madvise.c index
-> b443d16ae..c8aa71c1b 100644
-> --- a/tests/intel/gem_madvise.c
-> +++ b/tests/intel/gem_madvise.c
-> @@ -44,7 +44,7 @@
->   * Description: Checks that the kernel reports EFAULT when trying to use
-> purged bo.
->   * Feature: caching, mapping
->   * Functionality: buffer management
-> - * Sub-category: i915
-> + * Sub-category: Memory management
->   * Test category: GEM_Legacy
->   * Run type: FULL
->   *
-> diff --git a/tests/intel/gem_mmap.c b/tests/intel/gem_mmap.c index
-> a7c5f0bce..5cb8282b0 100644
-> --- a/tests/intel/gem_mmap.c
-> +++ b/tests/intel/gem_mmap.c
-> @@ -42,6 +42,9 @@
->   * TEST: gem mmap
->   * Description: Basic MMAP IOCTL tests for memory regions.
->   * Feature: mapping
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: mapping
->   * Run type: FULL
->   *
->   * SUBTEST: bad-object
-> diff --git a/tests/intel/gem_mmap_gtt.c b/tests/intel/gem_mmap_gtt.c inde=
-x
-> 9aecd08ce..8d04188f7 100644
-> --- a/tests/intel/gem_mmap_gtt.c
-> +++ b/tests/intel/gem_mmap_gtt.c
-> @@ -50,6 +50,9 @@
->   * TEST: gem mmap gtt
->   * Description: Ensure that all operations around MMAP_GTT ioctl works.
->   * Feature: gtt
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: map gtt
->   * Run type: FULL
->   *
->   * SUBTEST: bad-object
-> diff --git a/tests/intel/gem_mmap_wc.c b/tests/intel/gem_mmap_wc.c index
-> a82d779f9..766ee61fc 100644
-> --- a/tests/intel/gem_mmap_wc.c
-> +++ b/tests/intel/gem_mmap_wc.c
-> @@ -42,6 +42,9 @@
->  /**
->   * TEST: gem mmap wc
->   * Feature: caching, mapping
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: cache
->   * Run type: FULL
->   *
->   * SUBTEST: bad-object
-> diff --git a/tests/intel/gem_read_read_speed.c
-> b/tests/intel/gem_read_read_speed.c
-> index 95ef47da6..dde021f22 100644
-> --- a/tests/intel/gem_read_read_speed.c
-> +++ b/tests/intel/gem_read_read_speed.c
-> @@ -45,6 +45,9 @@
->  /**
->   * TEST: gem read read speed
->   * Description: Test speed of concurrent reads between engines.
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: read/write memory
->   * Run type: FULL
->   *
->   * SUBTEST: read-read-1024x1024
-> diff --git a/tests/intel/gem_readwrite.c b/tests/intel/gem_readwrite.c in=
-dex
-> 864a2d8d8..545e97f17 100644
-> --- a/tests/intel/gem_readwrite.c
-> +++ b/tests/intel/gem_readwrite.c
-> @@ -41,6 +41,9 @@
->  /**
->   * TEST: gem readwrite
->   * Feature: mapping
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: read/write memory
->   * Run type: FULL
->   *
->   * SUBTEST: beyond-EOB
-> diff --git a/tests/intel/gem_set_tiling_vs_gtt.c
-> b/tests/intel/gem_set_tiling_vs_gtt.c
-> index 4a7ecdc88..7e5dab1fa 100644
-> --- a/tests/intel/gem_set_tiling_vs_gtt.c
-> +++ b/tests/intel/gem_set_tiling_vs_gtt.c
-> @@ -42,6 +42,9 @@
->   * TEST: gem set tiling vs gtt
->   * Description: Check set_tiling vs gtt mmap coherency.
->   * Feature: gtt
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: tiling vs gtt coherency
->   * Run type: FULL
->   *
->   * SUBTEST:
-> diff --git a/tests/intel/gem_set_tiling_vs_pwrite.c
-> b/tests/intel/gem_set_tiling_vs_pwrite.c
-> index ede0c58b6..a358ddba6 100644
-> --- a/tests/intel/gem_set_tiling_vs_pwrite.c
-> +++ b/tests/intel/gem_set_tiling_vs_pwrite.c
-> @@ -42,6 +42,9 @@
->   * TEST: gem set tiling vs pwrite
->   * Description: Check set_tiling vs pwrite coherency.
->   * Feature: gtt
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: tiling vs pwrite coherency
->   * Run type: FULL
->   *
->   * SUBTEST:
-> diff --git a/tests/intel/gem_streaming_writes.c
-> b/tests/intel/gem_streaming_writes.c
-> index fc2d3d89f..dd2f28331 100644
-> --- a/tests/intel/gem_streaming_writes.c
-> +++ b/tests/intel/gem_streaming_writes.c
-> @@ -43,6 +43,9 @@
->  /**
->   * TEST: gem streaming writes
->   * Description: Test of streaming writes into active GPU sources
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: barrier
->   * Run type: FULL
->   *
->   * SUBTEST: batch-cpu
-> diff --git a/tests/intel/gem_tiled_blits.c b/tests/intel/gem_tiled_blits.=
-c index
-> 27971a2b9..ec6e88477 100644
-> --- a/tests/intel/gem_tiled_blits.c
-> +++ b/tests/intel/gem_tiled_blits.c
-> @@ -58,6 +58,9 @@
->   * TEST: gem tiled blits
->   * Description: Test doing many tiled blits, with a working set larger t=
-han the
-> aperture size.
->   * Feature: gtt, mapping
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: tiled blits
->   * Run type: FULL
->   *
->   * SUBTEST: basic
-> diff --git a/tests/intel/gem_tiled_fence_blits.c
-> b/tests/intel/gem_tiled_fence_blits.c
-> index c536c3699..920eeb42d 100644
-> --- a/tests/intel/gem_tiled_fence_blits.c
-> +++ b/tests/intel/gem_tiled_fence_blits.c
-> @@ -51,6 +51,9 @@
->   *   Tests fence management problems related to tiled blits by performin=
-g
-> many blits on tiled
->   *   buffer objects with fences enabled and with working set larger than=
- the
-> aperture size.
->   * Feature: gtt, mapping
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: tiled blits
->   *
->   * SUBTEST: basic
->   * Description: Check basic functionality.
-> diff --git a/tests/intel/gem_tiled_partial_pwrite_pread.c
-> b/tests/intel/gem_tiled_partial_pwrite_pread.c
-> index d4f66d51e..c4686739e 100644
-> --- a/tests/intel/gem_tiled_partial_pwrite_pread.c
-> +++ b/tests/intel/gem_tiled_partial_pwrite_pread.c
-> @@ -42,6 +42,9 @@
->   * TEST: gem tiled partial pwrite pread
->   * Description: Test pwrite/pread consistency when touching partial
-> cachelines.
->   * Feature: gtt, mapping
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: tiled pread/pwrite
->   * Run type: FULL
->   *
->   * SUBTEST: reads
-> diff --git a/tests/intel/gem_tiled_pread_basic.c
-> b/tests/intel/gem_tiled_pread_basic.c
-> index a2253b51e..13181d86c 100644
-> --- a/tests/intel/gem_tiled_pread_basic.c
-> +++ b/tests/intel/gem_tiled_pread_basic.c
-> @@ -52,6 +52,9 @@
->   * TEST: gem tiled pread basic
->   * Description: Test pread behavior on tiled objects with respect to the
-> reported swizzling value.
->   * Feature: gtt, mapping
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: tiled pread/pwrite
->   * Run type: BAT
->   *
->   * SUBTEST:
-> diff --git a/tests/intel/gem_tiled_pread_pwrite.c
-> b/tests/intel/gem_tiled_pread_pwrite.c
-> index 2f0f6f547..f8bc79731 100644
-> --- a/tests/intel/gem_tiled_pread_pwrite.c
-> +++ b/tests/intel/gem_tiled_pread_pwrite.c
-> @@ -62,6 +62,9 @@
->   * TEST: gem tiled pread pwrite
->   * Description: Test swizzling by testing pwrite does the inverse of pre=
-ad.
->   * Feature: gtt, mapping
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: tiled pread/pwrite
->   * Run type: FULL
->   *
->   * SUBTEST:
-> diff --git a/tests/intel/gem_tiled_swapping.c
-> b/tests/intel/gem_tiled_swapping.c
-> index 90ce70bdb..13f9fb41f 100644
-> --- a/tests/intel/gem_tiled_swapping.c
-> +++ b/tests/intel/gem_tiled_swapping.c
-> @@ -62,6 +62,9 @@
->   * TEST: gem tiled swapping
->   * Description: Exercise swizzle code for swapping.
->   * Feature: gtt, mapping
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: swapping
->   * Run type: FULL
->   *
->   * SUBTEST: non-threaded
-> diff --git a/tests/intel/gem_tiled_wb.c b/tests/intel/gem_tiled_wb.c inde=
-x
-> 6a8b79ecc..ee17b587d 100644
-> --- a/tests/intel/gem_tiled_wb.c
-> +++ b/tests/intel/gem_tiled_wb.c
-> @@ -51,6 +51,9 @@
->   *   This is a test of write-combining mmap's behavior on tiled objects =
-with
-> respect to the reported
->   *   swizzling value.
->   * Feature: caching, gtt
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: cache
->   * Run type: FULL
->   *
->   * SUBTEST:
-> diff --git a/tests/intel/gem_tiled_wc.c b/tests/intel/gem_tiled_wc.c inde=
-x
-> 1994453b3..356b48829 100644
-> --- a/tests/intel/gem_tiled_wc.c
-> +++ b/tests/intel/gem_tiled_wc.c
-> @@ -48,6 +48,9 @@
->  /**
->   * TEST: gem tiled wc
->   * Feature: caching, gtt
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: cache
->   * Run type: FULL
->   *
->   * SUBTEST:
-> diff --git a/tests/intel/gem_tiling_max_stride.c
-> b/tests/intel/gem_tiling_max_stride.c
-> index 5943ed93f..93b89b00e 100644
-> --- a/tests/intel/gem_tiling_max_stride.c
-> +++ b/tests/intel/gem_tiling_max_stride.c
-> @@ -43,6 +43,9 @@
->   * TEST: gem tiling max stride
->   * Description: Check that max fence stride works.
->   * Feature: gtt, mapping
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: fences
->   * Run type: FULL
->   *
->   * SUBTEST:
-> diff --git a/tests/intel/gem_unfence_active_buffers.c
-> b/tests/intel/gem_unfence_active_buffers.c
-> index d3bc1cee6..aaa841f46 100644
-> --- a/tests/intel/gem_unfence_active_buffers.c
-> +++ b/tests/intel/gem_unfence_active_buffers.c
-> @@ -56,6 +56,9 @@
->   * TEST: gem unfence active buffers
->   * Description: Check for use-after-free in the fence stealing code.
->   * Feature: synchronization
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: fences
->   * Run type: FULL
->   *
->   * SUBTEST:
-> diff --git a/tests/intel/i915_fb_tiling.c b/tests/intel/i915_fb_tiling.c =
-index
-> 14c17b030..e1dc54cc5 100644
-> --- a/tests/intel/i915_fb_tiling.c
-> +++ b/tests/intel/i915_fb_tiling.c
-> @@ -27,6 +27,9 @@
->   * TEST: i915 fb tiling
->   * Description: Object tiling must be fixed after framebuffer creation.
->   * Feature: mapping
-> + * Sub-category: Memory management
-> + * Category: Desktop client
-> + * Functionality: tiling
->   * Run type: FULL
->   *
->   * SUBTEST:
-> diff --git a/tests/intel/prime_busy.c b/tests/intel/prime_busy.c index
-> 90d79864f..79f5922a9 100644
-> --- a/tests/intel/prime_busy.c
-> +++ b/tests/intel/prime_busy.c
-> @@ -33,7 +33,7 @@
->   * Feature: prime
->   * Functionality: buffer management
->   * Run type: FULL
-> - * Sub-category: DRM
-> + * Sub-category: Memory management
->   * Test category: GEM_Legacy
->   *
->   * SUBTEST: after
-> diff --git a/tests/intel/prime_mmap.c b/tests/intel/prime_mmap.c index
-> 25b2939e9..aee90ca23 100644
-> --- a/tests/intel/prime_mmap.c
-> +++ b/tests/intel/prime_mmap.c
-> @@ -54,9 +54,9 @@
->   * TEST: prime mmap
->   * Category: Infrastructure
->   * Feature: prime
-> - * Functionality: memory management
-> + * Functionality: prime
->   * Run type: FULL
-> - * Sub-category: DRM
-> + * Sub-category: Memory management
->   * Test category: GEM_Legacy
->   *
->   * SUBTEST: test_aperture_limit
-> diff --git a/tests/intel/prime_mmap_coherency.c
-> b/tests/intel/prime_mmap_coherency.c
-> index 01eb2002d..bca46d9e8 100644
-> --- a/tests/intel/prime_mmap_coherency.c
-> +++ b/tests/intel/prime_mmap_coherency.c
-> @@ -38,9 +38,9 @@
->   *   Test dma-buf mmap on !llc platforms mostly and provoke coherency bu=
-gs
-> so we know for sure where
->   *   we need the sync ioctls.
->   * Feature: prime
-> - * Functionality: memory management
-> + * Functionality: prime
->   * Run type: FULL
-> - * Sub-category: DRM
-> + * Sub-category: Memory management
->   * Test category: GEM_Legacy
->   *
->   * SUBTEST: ioctl-errors
-> diff --git a/tests/intel/prime_self_import.c b/tests/intel/prime_self_imp=
-ort.c
-> index 2dbf4e20f..e1dcebfd8 100644
-> --- a/tests/intel/prime_self_import.c
-> +++ b/tests/intel/prime_self_import.c
-> @@ -51,32 +51,27 @@
->   * Description: Check whether prime import/export works on the same
-> device... but with different fds.
->   * Feature: prime
->   * Functionality: buffer management
-> - * Sub-category: DRM
-> + * Sub-category: Memory management
->   * Test category: GEM_Legacy
-> + * Run type: BAT
->   *
->   * SUBTEST: basic-llseek-bad
->   * Description: Check dmabuf llseek support with invalid values.
-> - * Run type: BAT
->   *
->   * SUBTEST: basic-llseek-size
->   * Description: Check dmabuf llseek support.
-> - * Run type: BAT
->   *
->   * SUBTEST: basic-with_fd_dup
->   * Description: Check prime export with duplicate fd.
-> - * Run type: BAT
->   *
->   * SUBTEST: basic-with_one_bo
->   * Description: Check prime import/export with one buffer object.
-> - * Run type: BAT
->   *
->   * SUBTEST: basic-with_one_bo_two_files
->   * Description: Check prime/flink with one buffer object.
-> - * Run type: BAT
->   *
->   * SUBTEST: basic-with_two_bos
->   * Description: Check prime import/export with two buffer objects.
-> - * Run type: BAT
->   *
->   * SUBTEST: export-vs-gem_close-race
->   * Description: Check race of gem close against prime export.
-> --
-> 2.34.1
-LGTM
-Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-
+RnJvbTogTWF1cm8gQ2FydmFsaG8gQ2hlaGFiIDxtY2hlaGFiQGtlcm5lbC5vcmc+DQoNClN1Y2gg
+Y2hhbmdlIGFsbG93cyB1c2luZyB0aGUgY29kZSBvbiBzb21lIG90aGVyIHB5dGhvbiBzY3JpcHQg
+dGhhdCB3b3VsZCBiZSBjb252ZXJ0aW5nIElHVCBkb2MgdGVzdCBkb2N1bWVudGF0aW9uIGludG8g
+WExTIGZpbGVzLg0KDQpTaWduZWQtb2ZmLWJ5OiBNYXVybyBDYXJ2YWxobyBDaGVoYWIgPG1jaGVo
+YWJAa2VybmVsLm9yZz4NCi0tLQ0KdjI6DQogIC0gdXNlIGF1dG9wZXA4IHRvIGZvbGxvdyBQRVA4
+IGNvZGluZyBzdHlsZTsNCiAgLSBtYWtlIHB5bGludCBoYXBweS4NCg0KIHNjcmlwdHMvZG9jX3Rv
+X3hscy5weSB8IDEzMiArKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0N
+CiAxIGZpbGUgY2hhbmdlZCwgNzYgaW5zZXJ0aW9ucygrKSwgNTYgZGVsZXRpb25zKC0pDQoNCmRp
+ZmYgLS1naXQgYS9zY3JpcHRzL2RvY190b194bHMucHkgYi9zY3JpcHRzL2RvY190b194bHMucHkg
+aW5kZXggMTJjMDIyMzkyMGFlLi40NDhmZjE4NDI5YjYgMTAwNzU1DQotLS0gYS9zY3JpcHRzL2Rv
+Y190b194bHMucHkNCisrKyBiL3NjcmlwdHMvZG9jX3RvX3hscy5weQ0KQEAgLTEwLDcgKzEwLDE1
+IEBADQogDQogIiIiV3JpdGUgdGhlIGNvbnRlbnRzIG9mIHRoZSB0ZXN0cGxhbiBkb2N1bWVudGF0
+aW9uIHRvIGEgWExTIGZpbGUuIiIiDQogDQotRVBJTE9HPSIiIg0KK2ltcG9ydCBhcmdwYXJzZQ0K
+Kw0KK2Zyb20gb3BlbnB5eGwuc3R5bGVzIGltcG9ydCBGb250DQorZnJvbSBvcGVucHl4bC51dGls
+cyBpbXBvcnQgZ2V0X2NvbHVtbl9sZXR0ZXIgZnJvbSBvcGVucHl4bCBpbXBvcnQgDQorV29ya2Jv
+b2sNCisNCitmcm9tIHRlc3RfbGlzdCBpbXBvcnQgVGVzdExpc3QNCisNCitFUElMT0cgPSAiIiIN
+CiBFeGFtcGxlczoNCiANCiAxLiBDcmVhdGUgYSBYTFMgZmlsZSB3aXRoIGEgc2luZ2xlIHdvcmtz
+aGVldCB3aXRoIFhlIGRyaXZlciBkb2N1bWVudGF0aW9uOg0KQEAgLTIyLDcxICszMCw4MyBAQCBF
+eGFtcGxlczoNCiAgICBzY3JpcHRzL2RvY190b194bHMucHkgLS1jb25maWcgdGVzdHMva21zXypq
+c29uIHRlc3RzLyovKi5qc29uIC0teGxzIGlndF90ZXN0X2RvY3VtZW50YXRpb24ueGxzICAiIiIN
+CiANCi1pbXBvcnQgYXJncGFyc2UNCiANCi1mcm9tIG9wZW5weXhsIGltcG9ydCBXb3JrYm9vaw0K
+LWZyb20gb3BlbnB5eGwudXRpbHMgaW1wb3J0IGdldF9jb2x1bW5fbGV0dGVyIC1mcm9tIG9wZW5w
+eXhsLnN0eWxlcyBpbXBvcnQgRm9udA0KK2RlZiB0ZXN0c190b194bHModGVzdHMsIGZuYW1lKToN
+CisgICAgIiIiDQorICAgIENvbnZlcnQgYW4gYXJyYXkgb2YgSUdUIGRvY3VtZW50YXRpb24gdGVz
+dHMgaW50byBhIFhMUyBmaWxlDQorICAgICIiIg0KIA0KLWZyb20gdGVzdF9saXN0IGltcG9ydCBU
+ZXN0TGlzdA0KKyAgICB3YiA9IFdvcmtib29rKCkNCisgICAgd3MgPSBOb25lDQogDQotcGFyc2Vy
+ID0gYXJncGFyc2UuQXJndW1lbnRQYXJzZXIoZGVzY3JpcHRpb249X19kb2NfXywNCi0gICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICBmb3JtYXR0ZXJfY2xhc3MgPSBhcmdwYXJzZS5SYXdE
+ZXNjcmlwdGlvbkhlbHBGb3JtYXR0ZXIsDQotICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgZXBpbG9nID0gRVBJTE9HKQ0KLXBhcnNlci5hZGRfYXJndW1lbnQoIi0tY29uZmlnIiwgcmVx
+dWlyZWQgPSBUcnVlLCAgbmFyZ3M9JysnLA0KLSAgICAgICAgICAgICAgICAgICAgaGVscD0iSlNP
+TiBmaWxlIGRlc2NyaWJpbmcgdGhlIHRlc3QgcGxhbiB0ZW1wbGF0ZSIpDQotcGFyc2VyLmFkZF9h
+cmd1bWVudCgiLS1pbmNsdWRlLXBsYW4iLCBhY3Rpb249InN0b3JlX3RydWUiLA0KLSAgICAgICAg
+ICAgICAgICAgICAgaGVscD0iSW5jbHVkZSB0ZXN0IHBsYW5zLCBpZiBhbnkuIikNCi1wYXJzZXIu
+YWRkX2FyZ3VtZW50KCItLXhscyIsIHJlcXVpcmVkID0gVHJ1ZSwNCi0gICAgICAgICAgICAgICAg
+ICAgIGhlbHA9Ik91dHB1dCBYTFMgZmlsZS4iKQ0KKyAgICBleHBhbmRfZmllbGRzID0gew0KKyAg
+ICAgICAgIkdQVSBleGNsdWRlZCBwbGF0Zm9ybSI6ICJibG9ja2xpc3QgIg0KKyAgICB9DQogDQot
+cGFyc2VfYXJncyA9IHBhcnNlci5wYXJzZV9hcmdzKCkNCisgICAgZm9yIHJvdyBpbiByYW5nZShs
+ZW4odGVzdHMpKToNCisgICAgICAgIHRlc3QgPSB0ZXN0c1tyb3ddDQorICAgICAgICBzaGVldF9u
+YW1lID0gdGVzdC50aXRsZQ0KIA0KLXRlc3RzID0gW10NCi1mb3IgY29uZmlnX2ZpbGUgaW4gcGFy
+c2VfYXJncy5jb25maWc6DQotICAgICMgSW1wbGVtZW50ZWQgdGVzdHMNCi0gICAgdGVzdHMuYXBw
+ZW5kKFRlc3RMaXN0KGNvbmZpZ19maWxlLCBwYXJzZV9hcmdzLmluY2x1ZGVfcGxhbikpDQorICAg
+ICAgICBpZiBub3Qgd3M6DQorICAgICAgICAgICAgd3MgPSB3Yi5hY3RpdmUNCisgICAgICAgICAg
+ICB3cy50aXRsZSA9IHNoZWV0X25hbWUNCisgICAgICAgIGVsc2U6DQorICAgICAgICAgICAgd3Mg
+PSB3Yi5jcmVhdGVfc2hlZXQoc2hlZXRfbmFtZSkNCiANCi13YiA9IFdvcmtib29rKCkNCi13cyA9
+IE5vbmUNCisgICAgICAgIHNoZWV0ID0gdGVzdC5nZXRfc3ByZWFkc2hlZXQoZXhwYW5kX2ZpZWxk
+cykNCiANCi1leHBhbmRfZmllbGRzID0gew0KLSAgICAiR1BVIGV4Y2x1ZGVkIHBsYXRmb3JtIjog
+ImJsb2NrbGlzdCAiDQotfQ0KLQ0KLWZvciByb3cgaW4gcmFuZ2UobGVuKHRlc3RzKSk6DQotICAg
+IHRlc3QgPSB0ZXN0c1tyb3ddDQotICAgIHNoZWV0X25hbWUgPSB0ZXN0LnRpdGxlDQotDQotICAg
+IGlmIG5vdCB3czoNCi0gICAgICAgIHdzID0gd2IuYWN0aXZlDQotICAgICAgICB3cy50aXRsZSA9
+IHNoZWV0X25hbWUNCi0gICAgZWxzZToNCi0gICAgICAgIHdzID0gd2IuY3JlYXRlX3NoZWV0KHNo
+ZWV0X25hbWUpDQotDQotICAgIHNoZWV0ID0gdGVzdC5nZXRfc3ByZWFkc2hlZXQoZXhwYW5kX2Zp
+ZWxkcykNCi0NCi0gICAgbWF4X2xlbmd0aCA9IFtdDQotICAgIGZvciBjb2wgaW4gcmFuZ2UobGVu
+KHNoZWV0W3Jvd10pKToNCi0gICAgICAgIG1heF9sZW5ndGguYXBwZW5kKDApDQotDQotICAgIGZv
+ciByb3cgaW4gcmFuZ2UobGVuKHNoZWV0KSk6DQorICAgICAgICBtYXhfbGVuZ3RoID0gW10NCiAg
+ICAgICAgIGZvciBjb2wgaW4gcmFuZ2UobGVuKHNoZWV0W3Jvd10pKToNCi0gICAgICAgICAgICBj
+ID0gd3MuY2VsbChyb3cgPSByb3cgKyAxLCBjb2x1bW4gPSBjb2wgKyAxLCB2YWx1ZSA9IHNoZWV0
+W3Jvd11bY29sXSkNCi0gICAgICAgICAgICBpZiByb3cgPT0gMDoNCi0gICAgICAgICAgICAgICAg
+Yy5mb250ID0gRm9udChib2xkPVRydWUpDQorICAgICAgICAgICAgbWF4X2xlbmd0aC5hcHBlbmQo
+MCkNCiANCi0gICAgICAgICAgICBpZiBsZW4oc2hlZXRbcm93XVtjb2xdKSA+IG1heF9sZW5ndGhb
+Y29sXToNCi0gICAgICAgICAgICAgICAgbWF4X2xlbmd0aFtjb2xdID0gbGVuKHNoZWV0W3Jvd11b
+Y29sXSkNCisgICAgICAgIGZvciByb3cgaW4gcmFuZ2UobGVuKHNoZWV0KSk6DQorICAgICAgICAg
+ICAgZm9yIGNvbCBpbiByYW5nZShsZW4oc2hlZXRbcm93XSkpOg0KKyAgICAgICAgICAgICAgICBj
+ID0gd3MuY2VsbChyb3c9cm93ICsgMSwgY29sdW1uPWNvbCArIDEsIHZhbHVlPXNoZWV0W3Jvd11b
+Y29sXSkNCisgICAgICAgICAgICAgICAgaWYgcm93ID09IDA6DQorICAgICAgICAgICAgICAgICAg
+ICBjLmZvbnQgPSBGb250KGJvbGQ9VHJ1ZSkNCiANCi0gICAgIyBFc3RpbWF0ZSBjb2x1bW4gbGVu
+Z3RoDQotICAgIGZvciBjb2wgaW4gcmFuZ2UobGVuKHNoZWV0WzBdKSk6DQotICAgICAgICBjb2x1
+bW4gPSBnZXRfY29sdW1uX2xldHRlcihjb2wgKyAxKQ0KKyAgICAgICAgICAgICAgICBpZiBsZW4o
+c2hlZXRbcm93XVtjb2xdKSA+IG1heF9sZW5ndGhbY29sXToNCisgICAgICAgICAgICAgICAgICAg
+IG1heF9sZW5ndGhbY29sXSA9IGxlbihzaGVldFtyb3ddW2NvbF0pDQogDQotICAgICAgICBhZGp1
+c3RlZF93aWR0aCA9IChtYXhfbGVuZ3RoW2NvbF0gKyAyKSAqIDEuMg0KLSAgICAgICAgd3MuY29s
+dW1uX2RpbWVuc2lvbnNbY29sdW1uXS53aWR0aCA9IGFkanVzdGVkX3dpZHRoDQorICAgICAgICAj
+IEVzdGltYXRlIGNvbHVtbiBsZW5ndGgNCisgICAgICAgIGZvciBjb2wgaW4gcmFuZ2UobGVuKHNo
+ZWV0WzBdKSk6DQorICAgICAgICAgICAgY29sdW1uID0gZ2V0X2NvbHVtbl9sZXR0ZXIoY29sICsg
+MSkNCiANCi0gICAgIyBUdXJuIG9uIGF1dG8tZmlsdGVyDQotICAgIHdzLmF1dG9fZmlsdGVyLnJl
+ZiA9IHdzLmRpbWVuc2lvbnMNCisgICAgICAgICAgICBhZGp1c3RlZF93aWR0aCA9IChtYXhfbGVu
+Z3RoW2NvbF0gKyAyKSAqIDEuMg0KKyAgICAgICAgICAgIHdzLmNvbHVtbl9kaW1lbnNpb25zW2Nv
+bHVtbl0ud2lkdGggPSBhZGp1c3RlZF93aWR0aA0KIA0KLXdiLnNhdmUocGFyc2VfYXJncy54bHMp
+DQorICAgICAgICAjIFR1cm4gb24gYXV0by1maWx0ZXINCisgICAgICAgIHdzLmF1dG9fZmlsdGVy
+LnJlZiA9IHdzLmRpbWVuc2lvbnMNCisNCisgICAgd2Iuc2F2ZShmbmFtZSkNCisNCisjIyMjIyMN
+CisjIE1haW4NCisjIyMjIyMNCisNCisNCitkZWYgbWFpbigpOg0KKyAgICAiIiJNYWluIHByb2dy
+YW0iIiINCisNCisgICAgcGFyc2VyID0gYXJncGFyc2UuQXJndW1lbnRQYXJzZXIoZGVzY3JpcHRp
+b249X19kb2NfXywNCisgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZm9ybWF0
+dGVyX2NsYXNzPWFyZ3BhcnNlLlJhd0Rlc2NyaXB0aW9uSGVscEZvcm1hdHRlciwNCisgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZXBpbG9nPUVQSUxPRykNCisgICAgcGFyc2Vy
+LmFkZF9hcmd1bWVudCgiLS1jb25maWciLCByZXF1aXJlZD1UcnVlLCAgbmFyZ3M9JysnLA0KKyAg
+ICAgICAgICAgICAgICAgICAgICAgIGhlbHA9IkpTT04gZmlsZSBkZXNjcmliaW5nIHRoZSB0ZXN0
+IHBsYW4gdGVtcGxhdGUiKQ0KKyAgICBwYXJzZXIuYWRkX2FyZ3VtZW50KCItLWluY2x1ZGUtcGxh
+biIsIGFjdGlvbj0ic3RvcmVfdHJ1ZSIsDQorICAgICAgICAgICAgICAgICAgICAgICAgaGVscD0i
+SW5jbHVkZSB0ZXN0IHBsYW5zLCBpZiBhbnkuIikNCisgICAgcGFyc2VyLmFkZF9hcmd1bWVudCgi
+LS14bHMiLCByZXF1aXJlZD1UcnVlLA0KKyAgICAgICAgICAgICAgICAgICAgICAgIGhlbHA9Ik91
+dHB1dCBYTFMgZmlsZS4iKQ0KKw0KKyAgICBwYXJzZV9hcmdzID0gcGFyc2VyLnBhcnNlX2FyZ3Mo
+KQ0KKw0KKyAgICB0ZXN0cyA9IFtdDQorICAgIGZvciBjb25maWdfZmlsZSBpbiBwYXJzZV9hcmdz
+LmNvbmZpZzoNCisgICAgICAgICMgSW1wbGVtZW50ZWQgdGVzdHMNCisgICAgICAgIHRlc3RzLmFw
+cGVuZChUZXN0TGlzdChjb25maWdfZmlsZSwgcGFyc2VfYXJncy5pbmNsdWRlX3BsYW4pKQ0KKw0K
+KyAgICB0ZXN0c190b194bHModGVzdHMsIGZuYW1lPXBhcnNlX2FyZ3MueGxzKQ0KKw0KKw0KK2lm
+IF9fbmFtZV9fID09ICdfX21haW5fXyc6DQorICAgIG1haW4oKQ0KW0thdGFyenluYV0gDQpJJ3Zl
+IGFwcGxpZWQgcGF0Y2ggYW5kIGdlbmVyYXRlZCB4bHMuIFRvIG1lIGl0IHdvcmtzLg0KQWNrZWQt
+Ynk6IEthdGFyenluYSBQaWVjaWVsc2thIDxrYXRhcnp5bmEucGllY2llbHNrYUBpbnRlbC5jb20+
+DQpLYXNpYSDwn5iKDQotLQ0KMi40My4yDQoNCg==
