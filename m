@@ -4,27 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8471CC5475B
-	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 22:18:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00E4DC5475B
+	for <igt-dev@archiver.kernel.org>; Mon, 11 Mar 2024 22:19:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3B5BD112517;
-	Mon, 11 Mar 2024 22:18:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8960D112CCC;
+	Mon, 11 Mar 2024 22:19:59 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 303791123B0;
- Mon, 11 Mar 2024 22:18:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A594112CCC;
+ Mon, 11 Mar 2024 22:19:58 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3042299404721856293=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_tests/device=5Freset=3A_S?=
- =?utf-8?q?kip_if_no_drm_devices_are_preset?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
+ =?utf-8?q?=2Cv4=2C1/4=5D_lib/igt=5Fsysfs=3A_Use_same_var_for_sizeof=28=29_?=
+ =?utf-8?q?=28rev4=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nirmoy Das" <nirmoy.das@intel.com>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 11 Mar 2024 22:18:11 -0000
-Message-ID: <171019549119.680152.10796964518950140525@8e613ede5ea5>
+Date: Mon, 11 Mar 2024 22:19:58 -0000
+Message-ID: <171019559816.681939.15464678547829326122@8e613ede5ea5>
 X-Patchwork-Hint: ignore
-References: <20240311162713.19137-1-nirmoy.das@intel.com>
-In-Reply-To: <20240311162713.19137-1-nirmoy.das@intel.com>
+References: <20240228223134.3908035-1-lucas.demarchi@intel.com>
+In-Reply-To: <20240228223134.3908035-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,67 +42,106 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============3042299404721856293==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: tests/device_reset: Skip if no drm devices are preset
-URL   : https://patchwork.freedesktop.org/series/130992/
-State : failure
+Series: series starting with [i-g-t,v4,1/4] lib/igt_sysfs: Use same var for sizeof() (rev4)
+URL   : https://patchwork.freedesktop.org/series/130530/
+State : success
 
 == Summary ==
 
-IGT patchset build failed on latest successful build
-5fb3239299b5be2c110aafa483c9e197c53f8bb8 lib/igt_kmod: drop devcoredump before a PCI module unload
+CI Bug Log - changes from XEIGT_7754_BAT -> XEIGTPW_10806_BAT
+====================================================
 
-Tail of build.log:
-[126/1670] Generating i915-perf-metrics-acmgt1 with a custom command.
-[127/1670] Compiling C object 'tests/59830eb@@kms_multipipe_modeset@exe/kms_multipipe_modeset.c.o'.
-[128/1670] Compiling C object 'tests/59830eb@@kms_display_modes@exe/kms_display_modes.c.o'.
-[129/1670] Compiling C object 'tests/59830eb@@dmabuf_sync_file@exe/dmabuf_sync_file.c.o'.
-[130/1670] Compiling C object 'lib/76b5a35@@igt-i915_intel_fbc_c@sta/i915_intel_fbc.c.o'.
-[131/1670] Compiling C object 'tests/59830eb@@kms_atomic_interruptible@exe/kms_atomic_interruptible.c.o'.
-[132/1670] Compiling C object 'tests/59830eb@@fbdev@exe/fbdev.c.o'.
-[133/1670] Compiling C object 'lib/76b5a35@@igt-i915_i915_crc_c@sta/i915_i915_crc.c.o'.
-[134/1670] Compiling C object 'tests/59830eb@@kms_force_connector_basic@exe/kms_force_connector_basic.c.o'.
-[135/1670] Compiling C object 'tests/59830eb@@kms_panel_fitting@exe/kms_panel_fitting.c.o'.
-[136/1670] Compiling C object 'tests/59830eb@@kms_cursor_edge_walk@exe/kms_cursor_edge_walk.c.o'.
-[137/1670] Compiling C object 'tests/59830eb@@gem_vm_create@exe/intel_gem_vm_create.c.o'.
-[138/1670] Compiling C object 'tests/59830eb@@gem_ctx_engines@exe/intel_gem_ctx_engines.c.o'.
-[139/1670] Compiling C object 'tests/59830eb@@kms_async_flips@exe/kms_async_flips.c.o'.
-[140/1670] Compiling C object 'lib/76b5a35@@igt-igt_color_encoding_c@sta/igt_color_encoding.c.o'.
-[141/1670] Compiling C object 'lib/76b5a35@@igt-drmtest_c@sta/drmtest.c.o'.
-[142/1670] Compiling C object 'lib/76b5a35@@igt-i915_gem_mman_c@sta/i915_gem_mman.c.o'.
-[143/1670] Compiling C object 'lib/76b5a35@@igt-igt_device_c@sta/igt_device.c.o'.
-[144/1670] Compiling C object 'lib/76b5a35@@igt-i915_gem_engine_topology_c@sta/i915_gem_engine_topology.c.o'.
-[145/1670] Compiling C object 'tests/59830eb@@gem_ccs@exe/intel_gem_ccs.c.o'.
-[146/1670] Compiling C object 'tests/59830eb@@core_hotunplug@exe/core_hotunplug.c.o'.
-[147/1670] Compiling C object 'tests/59830eb@@kms_color@exe/kms_color.c.o'.
-[148/1670] Compiling C object 'tests/59830eb@@kms_hdr@exe/kms_hdr.c.o'.
-[149/1670] Compiling C object 'lib/76b5a35@@igt-igt_collection_c@sta/igt_collection.c.o'.
-[150/1670] Compiling C object 'tests/59830eb@@kms_pipe_crc_basic@exe/kms_pipe_crc_basic.c.o'.
-[151/1670] Compiling C object 'lib/76b5a35@@igt-i915_intel_memory_region_c@sta/i915_intel_memory_region.c.o'.
-[152/1670] Compiling C object 'lib/76b5a35@@igt_device_scan@sta/igt_device_scan.c.o'.
-[153/1670] Compiling C object 'lib/76b5a35@@igt-igt_drm_fdinfo_c@sta/igt_drm_fdinfo.c.o'.
-[154/1670] Compiling C object 'tests/59830eb@@kms_content_protection@exe/kms_content_protection.c.o'.
-[155/1670] Compiling C object 'lib/76b5a35@@igt-igt_debugfs_c@sta/igt_debugfs.c.o'.
-[156/1670] Compiling C object 'tests/59830eb@@kms_getfb@exe/kms_getfb.c.o'.
-[157/1670] Compiling C object 'lib/76b5a35@@igt-igt_gt_c@sta/igt_gt.c.o'.
-[158/1670] Compiling C object 'tests/59830eb@@kms_cursor_crc@exe/kms_cursor_crc.c.o'.
-[159/1670] Generating i915-perf-registers-acmgt2 with a custom command.
-[160/1670] Generating i915-perf-metrics-acmgt2 with a custom command.
-[161/1670] Compiling C object 'lib/76b5a35@@igt-igt_halffloat_c@sta/igt_halffloat.c.o'.
-[162/1670] Compiling C object 'tests/59830eb@@kms_atomic_transition@exe/kms_atomic_transition.c.o'.
-[163/1670] Compiling C object 'tests/59830eb@@kms_addfb_basic@exe/kms_addfb_basic.c.o'.
-[164/1670] Compiling C object 'tests/59830eb@@kms_lease@exe/kms_lease.c.o'.
-[165/1670] Compiling C object 'lib/76b5a35@@igt-igt_device_scan_c@sta/igt_device_scan.c.o'.
-[166/1670] Compiling C object 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o'.
-[167/1670] Compiling C object 'tests/59830eb@@kms_atomic@exe/kms_atomic.c.o'.
-[168/1670] Compiling C object 'tests/59830eb@@kms_flip@exe/kms_flip.c.o'.
-[169/1670] Generating i915-perf-registers-acmgt3 with a custom command.
-[170/1670] Generating i915-perf-metrics-acmgt3 with a custom command.
-[171/1670] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
-[172/1670] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
-[173/1670] Compiling C object 'tests/59830eb@@gem_userptr_blits@exe/intel_gem_userptr_blits.c.o'.
-[174/1670] Generating i915-perf-equations with a custom command.
-ninja: build stopped: subcommand failed.
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
 
 
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7754 -> IGTPW_10806
+  * Linux: xe-928-2c2957bb1a0058ea85ca21d62762aa54e28aff54 -> xe-929-61fa386186cb302cf26e29aef76d5b1a6ffe57ad
+
+  IGTPW_10806: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10806/index.html
+  IGT_7754: 5fb3239299b5be2c110aafa483c9e197c53f8bb8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-928-2c2957bb1a0058ea85ca21d62762aa54e28aff54: 2c2957bb1a0058ea85ca21d62762aa54e28aff54
+  xe-929-61fa386186cb302cf26e29aef76d5b1a6ffe57ad: 61fa386186cb302cf26e29aef76d5b1a6ffe57ad
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10806/index.html
+
+--===============3042299404721856293==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v4,1/4] lib/igt_sysfs: Use same var for sizeof() (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130530/">https://patchwork.freedesktop.org/series/130530/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10806/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10806/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7754_BAT -&gt; XEIGTPW_10806_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7754 -&gt; IGTPW_10806</li>
+<li>Linux: xe-928-2c2957bb1a0058ea85ca21d62762aa54e28aff54 -&gt; xe-929-61fa386186cb302cf26e29aef76d5b1a6ffe57ad</li>
+</ul>
+<p>IGTPW_10806: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10806/index.html<br />
+  IGT_7754: 5fb3239299b5be2c110aafa483c9e197c53f8bb8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-928-2c2957bb1a0058ea85ca21d62762aa54e28aff54: 2c2957bb1a0058ea85ca21d62762aa54e28aff54<br />
+  xe-929-61fa386186cb302cf26e29aef76d5b1a6ffe57ad: 61fa386186cb302cf26e29aef76d5b1a6ffe57ad</p>
+
+</body>
+</html>
+
+--===============3042299404721856293==--
