@@ -4,47 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F9EAC54E58
-	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 10:48:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D9C6C54E58
+	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 10:54:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0D06E10ED04;
-	Tue, 12 Mar 2024 10:48:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2AFD510F32D;
+	Tue, 12 Mar 2024 10:54:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="GNqyCV5e";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jjY8541F";
 	dkim-atps=neutral
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
- [217.70.183.200])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 860E110ED04
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2024 10:48:17 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8C56B2000A;
- Tue, 12 Mar 2024 10:48:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1710240496;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LUYqzcKg5ikKmCfHruF/l1gJQDjvc6cXgIo3n7JnSdU=;
- b=GNqyCV5e7K+X3FXOH2FrzxrHDlQ9Qly3cy4+UTvesRzitZsF5+uC7F/R2EA4zzuF8Bg3me
- FDwR8V/ZOMnFMOmy6cMjzvj/DQRC9yBiGjeSL3WecL4eM/MsXhL8VXl0Eb6xgHu7+DGTqn
- n6a3gi+7WXuXy8uXCtU/ppmwQEsszElieAaiFrbQrdohduBHaIA7aohZIZDmCBIMb5mfsI
- PL71cgqOOo/Km5QgUp3wGWpERNwrqjGR8ArpCWz3PWK4BOzRgENapbn3ED4hf8FxJn/eX3
- 5ervi6t4jtTWc2j0IE+Yns0/VWRzgUJcuXkGB2uUt8cu2bQevpKuAg/F8AUjhA==
-Date: Tue, 12 Mar 2024 11:48:14 +0100
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-To: igt-dev@lists.freedesktop.org
-Cc: miquel.raynal@bootlin.com, jeremie.dautheribes@bootlin.com,
- thomas.petazzoni@bootlin.com, arthurgrillo@riseup.net
-Subject: Re: [PATCH i-g-t 2/3] tests/kms_rotation: Add extensive rotation test
-Message-ID: <ZfAy7mVuSlPHOEHA@localhost.localdomain>
-References: <20240312-new_rotation-v1-0-ed9fe82589df@bootlin.com>
- <20240312-new_rotation-v1-2-ed9fe82589df@bootlin.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46E6810F32D
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2024 10:54:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1710240879; x=1741776879;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:mime-version;
+ bh=J2qX3SIEqX4mRbh8tn4XnVJmfrcx+7a3HHmFGsoSFqY=;
+ b=jjY8541FsXsTa7VPtmnlpZUl1mQenzjYLwK3m8mrYVCdd9/f4wDVMyJd
+ uZgegyyz4sWGTjJUxkmvCs2dqiB8OnQBGCLcW5wc1eFe326fnMeS4VW0u
+ /TtCSdr8UXRXusLivnf21ANhwLolZdSq3oK/LxRG1Re31Qswgj436Ta61
+ ONMcNSvPvpP2Gdsf1vUB3UTnsGI5CiyPueJdOypRce0WWnMp7HwYeqot3
+ IvYUcczaS/N+q2V8PKu56qxpCsqPYfbVsXuGSHim8uwZOHsv/jvvFjDGz
+ NiplJScuow9mAeb0O62eJARGjvs1V51G+T3Re1Qz4tSHO6whWQVOAXiJo Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="5067271"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208,217";a="5067271"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2024 03:54:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208,217";a="11471193"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 12 Mar 2024 03:54:39 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 12 Mar 2024 03:54:38 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 12 Mar 2024 03:54:37 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 12 Mar 2024 03:54:37 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 12 Mar 2024 03:54:37 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=E8kaazsfzBStW5Twur39xm/Rn3clzIGWmZZvda+X2+XmNxC345jeDHU4LJ1lMWGeh7negzV/r/05J6TzpxKT1YdMHvuZvm8MFFSF+RrgmR3YFJ9EgcxoCEx0lmWC1qT8Q1fMQtKwkL1spdLWj/5doFtfdHMbE1PY1wHV4xqB+qUOiFkgtgujr7vBETUVQM1Ug1PZtH5p9cNpRS402XtLFYv0EK0hVA6fpgAnj+JMfp/bqfW1E805PxVW9OV4YlkPvweMXQ0uJCoh5k8o5smaw4shv1t3RiZ5rYHb4ZFotiSwmcJWP/00UKopaNS2ZO7Lc61ibXJAOyJvg7wA7O5ZDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8cznv1ykoqeo+jiOwJFN09iz15v8S9lQDIqQ4RFslcE=;
+ b=dEPLgMrkXmXiPJMdtCXqGzUr+X8zebD81j0Hv+Zf4AihhutHKRMwTRolu+AVGGzS1qUEQwXFzFZRGJb3Hd3eobM3rk8h9WRorBgt07dfEuVf3asC/XiJkPz7Kud1KHu+uxneb0zlohbUewd//ihDXtnL2gNNVqZtK1nhjd83+MEN9EVFSmyAGclLz5RAKt/9SVAoYiYEzWFLXOlSX7Woj0qckdAUywUsGHM8FUbmIhlxuAIpT7vKoYgM9GT4RZ/QAxZTyCfkFOUKF76IPTIFVgwl6vAhSq/guZjN+QRrp5zEDBqOPBSgMhobGNl0NChX1MogLZCntZwnycw1AHra8w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB6541.namprd11.prod.outlook.com (2603:10b6:8:d3::14) by
+ SA2PR11MB5178.namprd11.prod.outlook.com (2603:10b6:806:fa::17) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7386.17; Tue, 12 Mar 2024 10:54:35 +0000
+Received: from DS0PR11MB6541.namprd11.prod.outlook.com
+ ([fe80::a8f5:a774:62a3:dd1e]) by DS0PR11MB6541.namprd11.prod.outlook.com
+ ([fe80::a8f5:a774:62a3:dd1e%7]) with mapi id 15.20.7386.015; Tue, 12 Mar 2024
+ 10:54:35 +0000
+Content-Type: multipart/alternative;
+ boundary="------------GgIngWaG5xnYqxo8SdYHzXfg"
+Message-ID: <87d94f4c-a484-422a-b443-ade32ca50e8d@intel.com>
+Date: Tue, 12 Mar 2024 11:54:32 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/device_reset: Skip if no drm devices are
+ preset
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>
+CC: <kamil.konieczny@linux.intel.com>
+References: <20240312100757.14685-1-nirmoy.das@intel.com>
+ <85522185.BzKH3j3Lxt@jkrzyszt-mobl2.ger.corp.intel.com>
+Content-Language: en-US
+From: Nirmoy Das <nirmoy.das@intel.com>
+In-Reply-To: <85522185.BzKH3j3Lxt@jkrzyszt-mobl2.ger.corp.intel.com>
+X-ClientProxiedBy: MI1P293CA0025.ITAP293.PROD.OUTLOOK.COM
+ (2603:10a6:290:3::11) To DS0PR11MB6541.namprd11.prod.outlook.com
+ (2603:10b6:8:d3::14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240312-new_rotation-v1-2-ed9fe82589df@bootlin.com>
-X-GND-Sasl: louis.chauvet@bootlin.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB6541:EE_|SA2PR11MB5178:EE_
+X-MS-Office365-Filtering-Correlation-Id: f1f00052-0490-464d-738b-08dc4282ce53
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: w0iOmUfPKMYAQTWBrVXAyyQjx1GUslvsFEtf9G4uY7SgWBzAbnMTLDuv8lM20Or14cWdGVSRyjZ/DVpI+4/mygCiDjsLKO1a/WQn4i9uRURw1vnfxfoSkY1ZGpZq4/SVj1dAlkq8bq6LRz8Fhd15b8qg5W3TC/m2G2AeBetkE2cvB1VtstOuFX20SRAwTIFTOnGjY6amnU/ZdNlkNWX16UqDeJNGfgvQsbA5Tkx+8i6HnT4kNVfj73v+07osSDenUni5CiPiLCKJi1AouCgK87QBQMkD9HTbIfNHXb8bC3Dbud7Ou2jtY6pYJ91robUS0eJ+MqXC2WptXPxMk1SocQ7z48koS0upC0q4NRUi5jAfDB3UUcCRCVT/jJP5QPt3ebODhXjPp5GDqaE7wPGuBBWYCGDBK4hP1m2Xuq1lLTi0Cq0Qi2j4E5Xa7g3NAtP5L+jHKRU++W7PF5VRRWR9atJHHa2IOvqYLAU2k05teKE2EsUcq4Ptpb0GHdwmvOuQK5iVh0edyi9/UkGNYsv5gb8xGZSbRDTqtBV4RZwetP93PNL9+gNIAqTMZbQ0Bu0jyXoWYAFuLjJhD/gXwB/bkArx1I0dgJawYlt6r1jAasc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB6541.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376005)(1800799015); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cnNwd2JwMnpIa0ZCMmU3UzdrcnExZkdFODhnMTRSS3AwME9Jb2JJRm9uakVa?=
+ =?utf-8?B?N25QR1JJbm5rMDhFaWVJL3BVQXg3MTRvTnpJSU82UXJQbGljOGo3MDZvTzJ4?=
+ =?utf-8?B?MCtVVGdjYTVKd0NobE5aaUpEVUorQ1g0cTVNbCtuZ3pDblVNY3Z1aHhaYTRx?=
+ =?utf-8?B?TDd5UWhybTNLeU50VHFDUUZGbG9BUXRoMmpkb3gvazNpMzNZblBUVTBab2ds?=
+ =?utf-8?B?d2RWVStsanoyTlNkZmUzWXhoSG5Pd1dScFhWS1QyUVNUU2ZUVUlGMkpJMklK?=
+ =?utf-8?B?RjNMZXl3Zys2V3VEdmoweWZpcXVGY1p4QkxHYUF4U1ZKNG9aZkxMczk0ZmxZ?=
+ =?utf-8?B?Z0RvVWZFVEM0bFB3cXRmSC9GR21FL1VYczlLWm9UQnRmTWFVd2lTVVl0Ni9t?=
+ =?utf-8?B?cWsxcHNrOVFpM2t4R2E5eWNoc0k3L01kVnBmSkJuWkU1RUVzZzQvcUtSQTNY?=
+ =?utf-8?B?SERNdFQ5R1kvU0xEd0pCOERDWXVrV1R5N2xQS0wwSFU4TjBiSzUzdWxjZEx3?=
+ =?utf-8?B?MXIrR216Z1FOVEp5SzhLb1VHYWljVkpiU2Q0b2hBV3FCVDhtRUJnam9BRERo?=
+ =?utf-8?B?VjFYRGpzdWZiYW1vVVJTT1liN0U2MEhhRTM5OE5ZQzV2WnhYVWM5S2JxYk4w?=
+ =?utf-8?B?L0VIMzJ4UGlmc1NlUXhhZVVXNFdUNXBQOGdXSzZZODR3azJNcUZQWW5mNHFP?=
+ =?utf-8?B?eHM5MzlldDJkSWtGRUpxQ0VGMlVaZ2c2ejNVc0tmakk0cm5hcDcrQUtCUEdn?=
+ =?utf-8?B?V3ZCSVhxSEVSM0dUeEE3UG9aT2ZxU01KOHhabmwxOXpNckNNQU1kdzdaTkFT?=
+ =?utf-8?B?R3hSUS9ZK0s2TEJsL0UyNVJyUVZ6ckkzUVdlNG5IU04yRGhuSTlwQkJ2eHc2?=
+ =?utf-8?B?TUNmVTM0NHV1N0xMY05MU0dOc3VnNkhnSmIvZW5LTWx4aXJrYVpjKzFOT1Fp?=
+ =?utf-8?B?UnpLcVpMd1pvQTNUYjk4Yy9IbTA4Ylk5WHV1dTcvSUpMSXBiVWVhT1o4UU5K?=
+ =?utf-8?B?bjFLZ1dsWnpVTWpucDRpSUlBUzlrWXA4Y1Y2ZW53UGpaMTJCVXJncE1yYlVj?=
+ =?utf-8?B?N2ZuOFg1MFIzUFZXTkpMdTdrMjArdy9kOTVrbXBwY0FFSTg0NTdBWlpoMWFU?=
+ =?utf-8?B?OE9WYW53OGtRd3UxTGxvNXQzWVNnQ1RiNFhYMHAwMXFQT2EwNldXaEZndXhJ?=
+ =?utf-8?B?Wm9td2RmWDFDbElTcjFVMVc0UHJxTmZQOEZ3WVExMHNtTWdjQVFGcm04bkU3?=
+ =?utf-8?B?MnRJbFp2MHZSWkFJbFBiTzVlVWt0Vk00YmpCR2xlU1FkRHU4NVZwVzM3dk9y?=
+ =?utf-8?B?RHhmY2dRWHZHalNxTk5VTFJDUEJvdDZKbElrYUZPOVBvMExsY1RpRXNNaFNp?=
+ =?utf-8?B?bUJqRVY3YmFKWGJkaUo5aDRLb1lLY09CTk5wY0FERjg4dldkdTNDcVM3L0pv?=
+ =?utf-8?B?LzhCektxNStPa2k0OTFJR0FRVzlPSTIxWVRVdlJyR3I2cHBOQzAwSUVLNWU5?=
+ =?utf-8?B?bnhBdy9hVXdLOGc4WGkyQ0x1TTRmejZUTXArbG9nZkZUYzhPSko0S2Rpb2FY?=
+ =?utf-8?B?RU1VQWNQNnpWTlE3OWw0TUtzZUw4bEp0YVJaek02c1I2SUVOOWpNa1d0NHhY?=
+ =?utf-8?B?ZlJCTDdjUERGNllMQzZYRDVCWTZQVkJJdmFEQVhNTW9HRUNHNWZ1ZmpvYU12?=
+ =?utf-8?B?L052UWIweW10RTRJR1FObnJvTVhpdFM1N0dwSHE4NnNlVUJHOWV2blozRnRL?=
+ =?utf-8?B?UEcyUEZRb1NsRGRaa3R4eHpITlB4a0wvK29uWlpnbUtQdVBaaHVjZW5nMkZh?=
+ =?utf-8?B?UzJudWQwY084K3dWS1ZBY3ErWjVwdFZSOFkrWmo2N2Uzc3JldG8yQWxCd2RN?=
+ =?utf-8?B?b1k1V3o2V1NiSHRVTkNQMGZyTGNTOHY0K1dSMWlCR2xUekR3ZGZyajZQNnh6?=
+ =?utf-8?B?a3lLVkFpWDZ2R0xHR0dUR0VzOVpYUnRUZVJidUhRdlNXazE0K040dTJqcC9G?=
+ =?utf-8?B?TFVOd1p6Z3R4NXc0dDZTMHlTbFl1Y2gvTjByc0Ruc1FSeDZmMjVLNjRoVWsy?=
+ =?utf-8?B?eVkzVjRpTTNOazE5Rjk1M3dqcTNYYitSeWRhdFNjMkN5UXBGYWdjR0VnVi9t?=
+ =?utf-8?Q?Qr6pptPc5jZ1bHek0UD4Z489J?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1f00052-0490-464d-738b-08dc4282ce53
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB6541.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2024 10:54:35.7034 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XjzvLZuif0DLCXoKbpWF3V55OXToNtftTcOmN2fr6wjKutfdSt0j90gZbpt/U/uQfTcP9dy8kKIDWNtITEbwRw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5178
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,429 +165,152 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Le 12/03/24 - 10:38, Louis Chauvet a écrit :
-> The actual kms_rotation_crc test does not tes all the rotation with all
-> the formats. Create the test kms_rotation, which only test "full plane
-> rotation", but for all formats, planes and rotations.
-> 
-> This allow the detection of issues like in [1], where the YUV rotation is
-> not working for specific rotations.
-> 
-> [1]: https://lore.kernel.org/dri-devel/20240304-yuv-v4-11-76beac8e9793@bootlin.com/
-> 
-> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> ---
->  tests/kms_rotation.c | 366 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build    |   1 +
->  2 files changed, 367 insertions(+)
-> 
-> diff --git a/tests/kms_rotation.c b/tests/kms_rotation.c
-> new file mode 100644
-> index 000000000000..4062549a0beb
-> --- /dev/null
-> +++ b/tests/kms_rotation.c
-> @@ -0,0 +1,366 @@
-> +#include "igt.h"
-> +
-> +/**
-> + * TEST: kms_rotation
-> + * Category: Display
-> + * Description: Tests all rotations for all planes and formats.
-> + * Driver requirement: none
-> + * Functionality: plane, rotation
-> + * Mega feature: General Display Features
-> + * Test category: functionality test
-> + */
-> +
-> +/**
-> + * SUBTEST: rotations
-> + * Description: Test for all rotations, planes and formats.
-> + */
-> +
-> +/**
-> + * struct data_t - Stores the test configuration
-> + *
-> + * @fd: file descriptor for the current drm device
-> + * @display: display used for the tests
-> + */
-> +struct data_t {
-> +	int fd;
-> +	igt_display_t display;
-> +};
-> +
-> +/**
-> + * colors - List of colors used to put things on the plane
-> + *
-> + * Those colors are used to create a color pattern on the plane, which is not invariant by rotation or reflexion.
-> + *
-> + * At least black and white must be in this list to properly test black and white formats.
-> + */
-> +static const struct igt_vec4 colors[] = {
-> +	{{1.0f, 0.0f, 0.0f, 0.0f}},
-> +	{{1.0f, 1.0f, 1.0f, 0.0f}},
-> +	{{0.0f, 0.0f, 0.0f, 0.0f}},
-> +	{{0.0f, 1.0f, 1.0f, 0.0f}},
-> +	{{0.0f, 0.0f, 0.0f, 0.0f}},
-> +};
-> +
-> +/**
-> + * tested_rotation - List of all tested rotation configuration
-> + */
-> +static uint32_t tested_rotation[] = {
-> +	IGT_ROTATION_0,
-> +	IGT_ROTATION_0 | IGT_REFLECT_X,
-> +	IGT_ROTATION_0 | IGT_REFLECT_Y,
-> +	IGT_ROTATION_0 | IGT_REFLECT_X | IGT_REFLECT_Y,
-> +	IGT_ROTATION_90,
-> +	IGT_ROTATION_90 | IGT_REFLECT_X,
-> +	IGT_ROTATION_90 | IGT_REFLECT_Y,
-> +	IGT_ROTATION_90 | IGT_REFLECT_X | IGT_REFLECT_Y,
-> +	IGT_ROTATION_180,
-> +	IGT_ROTATION_180 | IGT_REFLECT_X,
-> +	IGT_ROTATION_180 | IGT_REFLECT_Y,
-> +	IGT_ROTATION_180 | IGT_REFLECT_X | IGT_REFLECT_Y,
-> +	IGT_ROTATION_270,
-> +	IGT_ROTATION_270 | IGT_REFLECT_X,
-> +	IGT_ROTATION_270 | IGT_REFLECT_Y,
-> +	IGT_ROTATION_270 | IGT_REFLECT_X | IGT_REFLECT_Y,
-> +};
-> +
-> +/**
-> + * non_equals_crc() - Check if at least one CRC is different
-> + *
-> + * Check if at least one CRC is different, so we can verify that the rendering is working.
-> + *
-> + * @crcs: List of all tested crcs
-> + * @crc_count: Number of crcs in the list
-> + */
-> +static bool non_equals_crc(igt_crc_t crcs[], int crc_count) {
-> +	if (!crc_count) {
-> +		return true;
-> +	}
-> +	for (int i = 0; i < crc_count; i++)
-> +		if (!igt_check_crc_equal(&crcs[i], &crcs[0]))
-> +			return true;
-> +	return false;
-> +}
-> +
-> +/**
-> + * create_fb() - Create a framebuffer
-> + *
-> + * This create a framebuffer and fill it with a pattern. This pattern is not invariant by rotation and reflection.
-> + *
-> + * The @width and @height parameters are automaticaly inverted according to @rotation if needed. If the requested plane
-> + * is 1024*768 with IGT_ROTATION_90, the returned plane will have the size 768*1024.
-> + *
-> + * @data: Current test configuration
-> + * @rotation: Rotation to apply to the pattern
-> + * @format: Format of the requested plane
-> + * @modifier: Modifier for the requested plane
-> + * @width: Width of the requested plane
-> + * @height: Height of the requested plane
-> + * @fb: Place to store the created framebuffer
-> + */
-> +static void create_fb(struct data_t *data, igt_rotation_t rotation, uint32_t format, uint64_t modifier, int width,
-> +		      int height, igt_fb_t *fb)
-> +{
-> +	int step_x, step_y, color_index, current_n, current_m;
-> +	cairo_t *cr;
-> +
-> +	switch (rotation & IGT_ROTATION_MASK) {
-> +		case IGT_ROTATION_90:
-> +		case IGT_ROTATION_270:
-> +			igt_swap(width, height);
-> +			break;
-> +		case IGT_ROTATION_0:
-> +		case IGT_ROTATION_180:
-> +		default:
-> +			break;
-> +	}
-> +
-> +	igt_create_fb(data->fd, width, height, format, modifier, fb);
-> +	cr = igt_get_cairo_ctx(data->fd, fb);
-> +
-> +	step_x = (width) / ARRAY_SIZE(colors);
-> +	step_y = (height) / ARRAY_SIZE(colors);
-> +	/* Iterate over all colors in x and y direction. The pattern is a colored chessboard */
-> +	for (int n = 0; n < ARRAY_SIZE(colors); n++) {
-> +		for (int m = 0; m < ARRAY_SIZE(colors); m++) {
-> +			color_index = (n + m) % ARRAY_SIZE(colors);
-> +			current_n = n;
-> +			current_m = m;
-> +
-> +			/*
-> +			 * If a reflexion and a rotation is requested, apply this to the pattern rendering
-> +			 * If a reflexion is given, it must be applied before the rotation.
-> +			 */
-> +			switch (rotation & IGT_REFLECT_MASK) {
-> +				case IGT_REFLECT_X:
-> +					current_n = ARRAY_SIZE(colors) - 1 - current_n;
-> +					break;
-> +				case IGT_REFLECT_Y:
-> +					current_m = ARRAY_SIZE(colors) - 1 - current_m;
-> +					break;
-> +				case IGT_REFLECT_X | IGT_REFLECT_Y:
-> +					current_n = ARRAY_SIZE(colors) - 1 - current_n;
-> +					current_m = ARRAY_SIZE(colors) - 1 - current_m;
-> +					break;
-> +			}
-> +			switch (rotation & IGT_ROTATION_MASK) {
-> +				case IGT_ROTATION_0:
-> +					break;
-> +				case IGT_ROTATION_90:
-> +					igt_swap(current_n, current_m);
-> +					current_m = ARRAY_SIZE(colors) - 1 - current_m;
-> +					break;
-> +				case IGT_ROTATION_180:
-> +					current_n = ARRAY_SIZE(colors) - 1 - current_n;
-> +					current_m = ARRAY_SIZE(colors) - 1 - current_m;
-> +					break;
-> +				case IGT_ROTATION_270:
-> +					igt_swap(current_n, current_m);
-> +					current_n = ARRAY_SIZE(colors) - 1 - current_n;
-> +					break;
-> +			}
-> +
-> +			igt_paint_color(cr,
-> +					current_n * step_x,
-> +					current_m * step_y,
-> +					step_x,
-> +					step_y,
-> +					colors[color_index].d[0],
-> +					colors[color_index].d[1],
-> +					colors[color_index].d[2]);
-> +		}
-> +	}
-> +
-> +	igt_put_cairo_ctx(cr);
-> +}
+--------------GgIngWaG5xnYqxo8SdYHzXfg
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi all,
 
-I just found an issue in create_fb when using different plane size. The 
-current implementation does not works when width % ARRAY_SIZE(colors) != 0 
-or height % ARRAY_SIZE(colors) != 0.
+On 3/12/2024 11:43 AM, Janusz Krzysztofik wrote:
+> Hi Nirmoy,
+>
+> On Tuesday, 12 March 2024 11:07:57 CET Nirmoy Das wrote:
+>> Skip the test if no drm devices are preset.
+> Did you mean present? (also in the subject line)
+Right, another typo
+>
+>> v2: fix a typo.
+>>
+>> Closes:https://gitlab.freedesktop.org/drm/intel/-/issues/10087
+>> Signed-off-by: Nirmoy Das<nirmoy.das@intel.com>
+>> ---
+>>   tests/device_reset.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/tests/device_reset.c b/tests/device_reset.c
+>> index 817cbc285..73531d696 100644
+>> --- a/tests/device_reset.c
+>> +++ b/tests/device_reset.c
+>> @@ -198,7 +198,7 @@ static void init_device_fds(struct device_fds *dev)
+>>   	 * a device file descriptor open for exit handler use.
+>>   	 */
+>>   	dev->fds.dev = __drm_open_driver(DRIVER_ANY);
+>> -	igt_assert_fd(dev->fds.dev);
+>> +	igt_require(dev->fds.dev != -1);
+> What if __drm_open_driver() returns (unlikely) a negative value other than -1?
 
-I did not see it during my tests because I was using only 4 colors and the 
-default size of VKMS, which is a multiple of 4.
+__drm_open_driverdoc says: "An open DRM fd or -1 on error" so that won't happen.
 
-I'm currently working on a fix to this, adding an offset to ensure that 
-"software rotated buffers" and "hardware rotated buffers" are the same.
+>   
+> In IGT we used to verify validity of a file descriptor by checking if its
+> value is not negative, i.e., >= 0 (see e.g. lib/igt_core:igt_assert_fd(),
+> lib/drmtest.c:drm_open_driver()).  Please follow the same convention.
 
-I will also fix the typo in the test name reported by the CI.
+I can do s/igt_assert_fd/igt_require_fd
 
-In the mean time, don't hesitate to make comments on the rest of the 
-series, its content being mostly unchanged.
+Thanks,
 
-Kind regards,
-Louis Chauvet
+Nirmoy
 
-> +
-> +/**
-> + * get_ref_crcs() - Compute the reference CRC for a specific format
-> + *
-> + * The rotation are done by create_fb in software.
-> + *
-> + * @data: Test configuration
-> + * @output, @pipe, @plane: Plane to use for the test
-> + * @format, @modifier: Format description to test
-> + * @ref_crc: Array to store the resulting CRC. Its size must be at least ARRAY_SIZE(tested_rotation).
-> + */
-> +static void get_ref_crcs(struct data_t *data, igt_output_t *output, enum pipe pipe, igt_plane_t *plane, uint32_t format,
-> +			 uint64_t modifier, igt_crc_t ref_crc[ARRAY_SIZE(tested_rotation)])
-> +{
-> +	drmModeModeInfo *mode;
-> +	igt_pipe_crc_t *pipe_crc;
-> +	igt_fb_t fb;
-> +
-> +	igt_display_reset(&data->display);
-> +	igt_output_set_pipe(output, pipe);
-> +
-> +
-> +	for (int r = 0; r < ARRAY_SIZE(tested_rotation); r++) {
-> +		int rotation = tested_rotation[r];
-> +		/* Configure the pipe for reference frame */
-> +		igt_display_reset(&data->display);
-> +		igt_output_set_pipe(output, pipe);
-> +		igt_plane_set_rotation(plane, IGT_ROTATION_0);
-> +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +		mode = igt_output_get_mode(output);
-> +
-> +		/* Start the CRC */
-> +		pipe_crc = igt_pipe_crc_new(data->fd, pipe, IGT_PIPE_CRC_SOURCE_AUTO);
-> +		igt_pipe_crc_start(pipe_crc);
-> +
-> +		create_fb(data, rotation, format, modifier, mode->vdisplay, mode->hdisplay, &fb);
-> +		igt_plane_set_fb(plane, &fb);
-> +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +		igt_pipe_crc_get_current(
-> +			data->display.drm_fd, pipe_crc,
-> +			&ref_crc[r]);
-> +
-> +		igt_pipe_crc_stop(pipe_crc);
-> +		igt_pipe_crc_free(pipe_crc);
-> +		igt_remove_fb(data->fd, &fb);
-> +	}
-> +}
-> +
-> +/**
-> + * get_crcs() - Compute the CRC for a specific format
-> + *
-> + * @data: Test configuration
-> + * @output, @pipe, @plane: Plane to use for the test
-> + * @format, @modifier: Format description to test
-> + * @crc: Array to store the resulting CRC. Its size must be at least ARRAY_SIZE(tested_rotation).
-> + */
-> +static void get_crcs(struct data_t *data, igt_output_t *output, enum pipe pipe, igt_plane_t *plane, uint32_t format,
-> +		     uint64_t modifier, igt_crc_t crc[ARRAY_SIZE(tested_rotation)])
-> +{
-> +	drmModeModeInfo *mode;
-> +	igt_pipe_crc_t *pipe_crc;
-> +	igt_fb_t fb;
-> +
-> +	igt_display_reset(&data->display);
-> +	igt_output_set_pipe(output, pipe);
-> +
-> +
-> +	for (int r = 0; r < ARRAY_SIZE(tested_rotation); r++) {
-> +		int rotation = tested_rotation[r];
-> +		/* Configure the pipe for reference frame */
-> +		igt_display_reset(&data->display);
-> +		igt_output_set_pipe(output, pipe);
-> +		igt_plane_set_rotation(plane, rotation);
-> +
-> +		if (!igt_plane_has_rotation(plane, rotation))
-> +			continue;
-> +
-> +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +		mode = igt_output_get_mode(output);
-> +
-> +		/* Start the CRC */
-> +		pipe_crc = igt_pipe_crc_new(data->fd, pipe, IGT_PIPE_CRC_SOURCE_AUTO);
-> +		igt_pipe_crc_start(pipe_crc);
-> +
-> +		create_fb(data, IGT_ROTATION_0, format, modifier, mode->vdisplay, mode->hdisplay, &fb);
-> +		igt_plane_set_fb(plane, &fb);
-> +		if (igt_rotation_90_or_270(rotation))
-> +			igt_plane_set_size(plane, fb.height, fb.width);
-> +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +		igt_pipe_crc_get_current(
-> +			data->display.drm_fd, pipe_crc,
-> +			&crc[r]);
-> +
-> +		igt_pipe_crc_stop(pipe_crc);
-> +		igt_pipe_crc_free(pipe_crc);
-> +		igt_remove_fb(data->fd, &fb);
-> +	}
-> +}
-> +
-> +/**
-> + * run_test() - Run the subtests for a specific plane
-> + *
-> + * @data: Test configuration
-> + * @output, @pipe, @plane: Plane to use for the test
-> + * @format, @modifier: Format description to test
-> + */
-> +static void run_test(struct data_t *data, igt_output_t *output, enum pipe pipe, igt_plane_t *plane, uint32_t format, uint64_t modifier)
-> +{
-> +	igt_crc_t ref_crc[ARRAY_SIZE(tested_rotation)];
-> +	igt_crc_t crc[ARRAY_SIZE(tested_rotation)];
-> +
-> +	igt_display_reset(&data->display);
-> +	igt_output_set_pipe(output, pipe);
-> +	/* Check that the rotation is supported */
-> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
-> +
-> +	/* Generate reference CRC with software rotation */
-> +	get_ref_crcs(data, output, pipe, plane, format, modifier, ref_crc);
-> +	igt_assert_f(non_equals_crc(ref_crc, ARRAY_SIZE(tested_rotation)), "All the reference CRC are equals.");
-> +
-> +	/* Generate CRC with hardware rotation */
-> +	get_crcs(data, output, pipe, plane, format, modifier, crc);
-> +
-> +	for (int c = 0; c < ARRAY_SIZE(tested_rotation); c++) {
-> +		int rotation = tested_rotation[c];
-> +		igt_dynamic_f("pipe-%s-format-%s-modifier-%s-rotation-%s-reflect-%s", kmstest_pipe_name(pipe),
-> +			      igt_format_str(format),
-> +			      igt_fb_modifier_name(modifier), igt_plane_rotation_name(rotation),
-> +			      igt_plane_reflect_name(rotation)) {
-> +			igt_assert_crc_equal(&ref_crc[c], &crc[c]);
-> +		}
-> +	}
-> +}
-> +
-> +/**
-> + * test_all_formats() - Run all the tests for all planes
-> + *
-> + * @data: Test configuration
-> + */
-> +static void test_all_formats(struct data_t *data)
-> +{
-> +	enum pipe pipe;
-> +	struct igt_plane *plane;
-> +	igt_output_t *output;
-> +	for_each_pipe_with_single_output(&data->display, pipe, output) {
-> +		for_each_plane_on_pipe(&data->display, pipe, plane) {
-> +			for (int f = 0; f < plane->format_mod_count; f++) {
-> +				uint32_t format = plane->formats[f];
-> +				uint32_t modifier = plane->modifiers[f];
-> +
-> +				if (!igt_fb_supported_format(format))
-> +					continue;
-> +				run_test(data, output, pipe, plane, format, modifier);
-> +			}
-> +		}
-> +	}
-> +}
-> +
-> +static int opt_handler(int opt, int opt_index, void *void_data)
-> +{
-> +	return IGT_OPT_HANDLER_SUCCESS;
-> +}
-> +
-> +static const struct option long_opts[] = {
-> +	{}
-> +};
-> +
-> +static const char help_str[] = "";
-> +
-> +static struct data_t global_data;
-> +
-> +igt_main_args("", long_opts, help_str, opt_handler, &global_data)
-> +{
-> +	igt_fixture {
-> +		global_data.fd = drm_open_driver_master(DRIVER_ANY);
-> +
-> +		kmstest_set_vt_graphics_mode();
-> +
-> +		igt_display_require(&global_data.display, global_data.fd);
-> +		igt_require(global_data.display.is_atomic);
-> +		igt_display_require_output(&global_data.display);
-> +		igt_display_reset(&global_data.display);
-> +	}
-> +
-> +	igt_describe("Testing different rotation and reflexions for different formats");
-> +	igt_subtest_with_dynamic_f("rotation") {
-> +		test_all_formats(&global_data);
-> +	}
-> +
-> +}
-> \ No newline at end of file
-> diff --git a/tests/meson.build b/tests/meson.build
-> index a856510fcea7..71b628b86e96 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -82,6 +82,7 @@ test_progs = [
->  	'tools_test',
->  	'vgem_basic',
->  	'vgem_slow',
-> +	'kms_rotation',
->  ]
->  
->  intel_i915_xe_progs = [
-> 
-> -- 
-> 2.43.0
-> 
+> Thanks,
+> Janusz
+>
+>>   	if (is_i915_device(dev->fds.dev))
+>>   		igt_require_gem(dev->fds.dev);
+>>   
+>>
+>
+>
+>
+--------------GgIngWaG5xnYqxo8SdYHzXfg
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 3/12/2024 11:43 AM, Janusz
+      Krzysztofik wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:85522185.BzKH3j3Lxt@jkrzyszt-mobl2.ger.corp.intel.com">
+      <pre class="moz-quote-pre" wrap="">Hi Nirmoy,
+
+On Tuesday, 12 March 2024 11:07:57 CET Nirmoy Das wrote:
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">Skip the test if no drm devices are preset.
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Did you mean present? (also in the subject line)</pre>
+    </blockquote>
+    Right, another typo<br>
+    <blockquote type="cite" cite="mid:85522185.BzKH3j3Lxt@jkrzyszt-mobl2.ger.corp.intel.com">
+      <pre class="moz-quote-pre" wrap="">
+
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">
+v2: fix a typo.
+
+Closes: <a class="moz-txt-link-freetext" href="https://gitlab.freedesktop.org/drm/intel/-/issues/10087">https://gitlab.freedesktop.org/drm/intel/-/issues/10087</a>
+Signed-off-by: Nirmoy Das <a class="moz-txt-link-rfc2396E" href="mailto:nirmoy.das@intel.com">&lt;nirmoy.das@intel.com&gt;</a>
+---
+ tests/device_reset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/device_reset.c b/tests/device_reset.c
+index 817cbc285..73531d696 100644
+--- a/tests/device_reset.c
++++ b/tests/device_reset.c
+@@ -198,7 +198,7 @@ static void init_device_fds(struct device_fds *dev)
+ 	 * a device file descriptor open for exit handler use.
+ 	 */
+ 	dev-&gt;fds.dev = __drm_open_driver(DRIVER_ANY);
+-	igt_assert_fd(dev-&gt;fds.dev);
++	igt_require(dev-&gt;fds.dev != -1);
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+What if __drm_open_driver() returns (unlikely) a negative value other than -1? </pre>
+    </blockquote>
+    <pre class="moz-quote-pre" wrap="">__drm_open_driver <span style="white-space: normal">doc says: &quot;An open DRM fd or -1 on error&quot; so that won't happen. </span>
+</pre>
+    <blockquote type="cite" cite="mid:85522185.BzKH3j3Lxt@jkrzyszt-mobl2.ger.corp.intel.com">
+      <pre class="moz-quote-pre" wrap=""> 
+In IGT we used to verify validity of a file descriptor by checking if its 
+value is not negative, i.e., &gt;= 0 (see e.g. lib/igt_core:igt_assert_fd(), 
+lib/drmtest.c:drm_open_driver()).  Please follow the same convention.
+</pre>
+    </blockquote>
+    <p>I can do s/<span style="white-space: pre-wrap">igt_assert_fd/igt_require_fd </span></p>
+    <p><span style="white-space: pre-wrap">
+</span></p>
+    <p><span style="white-space: pre-wrap">Thanks,</span></p>
+    <p><span style="white-space: pre-wrap">Nirmoy
+</span></p>
+    <blockquote type="cite" cite="mid:85522185.BzKH3j3Lxt@jkrzyszt-mobl2.ger.corp.intel.com">
+      <pre class="moz-quote-pre" wrap="">
+Thanks,
+Janusz
+
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap=""> 	if (is_i915_device(dev-&gt;fds.dev))
+ 		igt_require_gem(dev-&gt;fds.dev);
+ 
+
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+
+
+
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------GgIngWaG5xnYqxo8SdYHzXfg--
