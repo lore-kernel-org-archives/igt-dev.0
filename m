@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 171F2C54E68
-	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 20:54:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 673F8C54E58
+	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 21:24:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7239910F104;
-	Tue, 12 Mar 2024 20:54:39 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L2UgtMLq";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A6AE010F0F8
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2024 20:54:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710276878; x=1741812878;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=xcl1/w+wjUKzVkMLFQBdYutp2X1myWSYlo6z3kUZokw=;
- b=L2UgtMLq9cE2kpkd5CEQ6u4uZL3Q8OiAwxPTtJUH/c9DdGCFElVIKDGm
- 7Ar+cwfAgn1LPrblz5MlcX4C+DKPt9s0Km7yYJ9UxyihWFDBBRr2S00bM
- ag5Ij+iAiGjS2xq4tVru1VoqY/3mv6/us18nUgfj43nL+UcjrKTKONlDL
- NN2lPc6nVLenuoQ4Ca5n0mWoFmKV4VpEe6NB5EKd84l+2KA0eTxV9wZu1
- DzEJlh35f7kla6pktIYIyuEf7Ah/S/KbgS29GroHVld9aLgH/fCbtroBv
- +787Sz6ccExkGteWQTKI6wMxmb6QG4s/HKpJX49c9aHSBTlxksVdDOraW Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="4871522"
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="4871522"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 13:54:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="42668545"
-Received: from mdroper-desk1.fm.intel.com ([10.1.39.140])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 13:54:37 -0700
-From: Matt Roper <matthew.d.roper@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: matthew.d.roper@intel.com,
-	Gustavo Sousa <gustavo.sousa@intel.com>
-Subject: [PATCH i-g-t v3 2/2] tests/xe_query: Print and sanity-check GT ip
- versions
-Date: Tue, 12 Mar 2024 13:54:31 -0700
-Message-ID: <20240312205431.2869411-3-matthew.d.roper@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240312205431.2869411-1-matthew.d.roper@intel.com>
-References: <20240312205431.2869411-1-matthew.d.roper@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 091AB10EA00;
+	Tue, 12 Mar 2024 21:24:14 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E37510EA00;
+ Tue, 12 Mar 2024 21:24:12 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============9088224120727780008=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_GT_IP_version_query_suppor?=
+ =?utf-8?q?t_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matt Roper" <matthew.d.roper@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 12 Mar 2024 21:24:12 -0000
+Message-ID: <171027865218.714563.2894656012873454864@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240312205431.2869411-1-matthew.d.roper@intel.com>
+In-Reply-To: <20240312205431.2869411-1-matthew.d.roper@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,78 +37,234 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Update the query test to include the GT's IP version in the output and
-to also perform some simple sanity checks on the version received.  We
-don't want to try to match any specific version numbers (since we expect
-new versions to show up in the future), but we do know that the uapi
-should never return version numbers older than 12.70 for the primary GT
-or 13.00 for the media GT since those were the first IP versions to
-include GMD_ID support.  We also know that MTL/ARL are the only pre-Xe2
-platforms to support GMD_ID, so if we're not running on MTL/ARL, the
-version numbers must always be 20.00 or greater.
+--===============9088224120727780008==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
----
- tests/intel/xe_query.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+== Series Details ==
 
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index 9ebc7e806..a5a2dd7d4 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -277,6 +277,7 @@ test_query_mem_regions(int fd)
- static void
- test_query_gt_list(int fd)
- {
-+	uint16_t dev_id = intel_get_drm_devid(fd);
- 	struct drm_xe_query_gt_list *gt_list;
- 	struct drm_xe_device_query query = {
- 		.extensions = 0,
-@@ -296,13 +297,40 @@ test_query_gt_list(int fd)
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
- 
- 	for (i = 0; i < gt_list->num_gt; i++) {
-+		int verx100 = 100 * gt_list->gt_list[i].ip_ver_major +
-+			gt_list->gt_list[i].ip_ver_minor;
-+
- 		igt_info("type: %d\n", gt_list->gt_list[i].type);
- 		igt_info("gt_id: %d\n", gt_list->gt_list[i].gt_id);
-+		igt_info("IP version: %d.%02d, stepping %d\n",
-+			 gt_list->gt_list[i].ip_ver_major,
-+			 gt_list->gt_list[i].ip_ver_minor,
-+			 gt_list->gt_list[i].ip_ver_rev);
- 		igt_info("reference_clock: %u\n", gt_list->gt_list[i].reference_clock);
- 		igt_info("near_mem_regions: 0x%016llx\n",
- 		       gt_list->gt_list[i].near_mem_regions);
- 		igt_info("far_mem_regions: 0x%016llx\n",
- 		       gt_list->gt_list[i].far_mem_regions);
-+
-+		/* Sanity check IP version. */
-+		if (verx100) {
-+			/*
-+			 * First GMD_ID platforms had graphics 12.70 and media
-+			 * 13.00 so we should never see non-zero values lower
-+			 * than those.
-+			 */
-+			if (gt_list->gt_list[i].type == DRM_XE_QUERY_GT_TYPE_MEDIA)
-+				igt_assert_lte(1300, verx100);
-+			else
-+				igt_assert_lte(1270, verx100);
-+
-+			/*
-+			 * Aside from MTL/ARL, all version numbers should be
-+			 * 20.00 or higher.
-+			 */
-+			if (!IS_METEORLAKE(dev_id))
-+				igt_assert_lte(20, gt_list->gt_list[i].ip_ver_major);
-+		}
- 	}
- }
- 
--- 
-2.43.0
+Series: Add GT IP version query support (rev3)
+URL   : https://patchwork.freedesktop.org/series/127456/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7756_BAT -> XEIGTPW_10818_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10818_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-adlp-7:         NOTRUN -> [SKIP][1] ([Intel XE#455])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         NOTRUN -> [FAIL][2] ([Intel XE#616])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - bat-adlp-7:         NOTRUN -> [SKIP][3] ([Intel XE#417])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@xe_evict@evict-small-cm:
+    - bat-adlp-7:         NOTRUN -> [SKIP][4] ([Intel XE#261] / [Intel XE#688]) +15 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@xe_evict@evict-small-cm.html
+
+  * igt@xe_evict_ccs@evict-overcommit-simple:
+    - bat-adlp-7:         NOTRUN -> [SKIP][5] ([Intel XE#688]) +1 other test skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@xe_evict_ccs@evict-overcommit-simple.html
+
+  * igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:
+    - bat-adlp-7:         NOTRUN -> [SKIP][6] ([Intel XE#288]) +22 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html
+
+  * igt@xe_mmap@vram:
+    - bat-adlp-7:         NOTRUN -> [SKIP][7] ([Intel XE#1008])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@xe_mmap@vram.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-adlp-7:         NOTRUN -> [SKIP][8] ([Intel XE#977])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-adlp-7:         NOTRUN -> [SKIP][9] ([Intel XE#979]) +1 other test skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@xe_pat@pat-index-xehpc.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_module_load@load:
+    - bat-adlp-7:         [INCOMPLETE][10] ([Intel XE#1319]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7756/bat-adlp-7/igt@xe_module_load@load.html
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@xe_module_load@load.html
+
+  
+  [Intel XE#1008]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008
+  [Intel XE#1319]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1319
+  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#417]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/417
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7756 -> IGTPW_10818
+  * Linux: xe-929-61fa386186cb302cf26e29aef76d5b1a6ffe57ad -> xe-930-1dfbf3ced62236dd318c701e3f21f5a33c226d0d
+
+  IGTPW_10818: 10818
+  IGT_7756: 7756
+  xe-929-61fa386186cb302cf26e29aef76d5b1a6ffe57ad: 61fa386186cb302cf26e29aef76d5b1a6ffe57ad
+  xe-930-1dfbf3ced62236dd318c701e3f21f5a33c226d0d: 1dfbf3ced62236dd318c701e3f21f5a33c226d0d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/index.html
+
+--===============9088224120727780008==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add GT IP version query support (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127456/">https://patchwork.freedesktop.org/series/127456/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7756_BAT -&gt; XEIGTPW_10818_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10818_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/417">Intel XE#417</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-small-cm:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@xe_evict@evict-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict_ccs@evict-overcommit-simple:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@xe_evict_ccs@evict-overcommit-simple.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +22 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_mmap@vram:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008">Intel XE#1008</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_module_load@load:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7756/bat-adlp-7/igt@xe_module_load@load.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1319">Intel XE#1319</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10818/bat-adlp-7/igt@xe_module_load@load.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7756 -&gt; IGTPW_10818</li>
+<li>Linux: xe-929-61fa386186cb302cf26e29aef76d5b1a6ffe57ad -&gt; xe-930-1dfbf3ced62236dd318c701e3f21f5a33c226d0d</li>
+</ul>
+<p>IGTPW_10818: 10818<br />
+  IGT_7756: 7756<br />
+  xe-929-61fa386186cb302cf26e29aef76d5b1a6ffe57ad: 61fa386186cb302cf26e29aef76d5b1a6ffe57ad<br />
+  xe-930-1dfbf3ced62236dd318c701e3f21f5a33c226d0d: 1dfbf3ced62236dd318c701e3f21f5a33c226d0d</p>
+
+</body>
+</html>
+
+--===============9088224120727780008==--
