@@ -4,26 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34178C54E66
-	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 10:07:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBC59C54E66
+	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 10:08:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DD5B2112D76;
-	Tue, 12 Mar 2024 10:07:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 84DCE112D73;
+	Tue, 12 Mar 2024 10:08:15 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2BFB9112D73;
- Tue, 12 Mar 2024 10:07:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A066A112D77;
+ Tue, 12 Mar 2024 10:08:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_New_rotation_test?=
+Content-Transfer-Encoding: quoted-printable
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/device=5Freset=3A?=
+ =?utf-8?q?_Skip_if_no_drm_devices_are_preset_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Louis Chauvet" <louis.chauvet@bootlin.com>
+To: "Nirmoy Das" <nirmoy.das@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 12 Mar 2024 10:07:58 -0000
-Message-ID: <171023807817.694324.4425452884086595195@8e613ede5ea5>
+Date: Tue, 12 Mar 2024 10:08:13 -0000
+Message-ID: <171023809365.694325.3045360624522453988@8e613ede5ea5>
 X-Patchwork-Hint: ignore
-References: <20240312-new_rotation-v1-0-ed9fe82589df@bootlin.com>
-In-Reply-To: <20240312-new_rotation-v1-0-ed9fe82589df@bootlin.com>
+References: <20240311162713.19137-1-nirmoy.das@intel.com>
+In-Reply-To: <20240311162713.19137-1-nirmoy.das@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,149 +41,255 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+=3D=3D Series Details =3D=3D
 
-Series: New rotation test
-URL   : https://patchwork.freedesktop.org/series/131011/
+Series: tests/device_reset: Skip if no drm devices are preset (rev2)
+URL   : https://patchwork.freedesktop.org/series/130992/
 State : warning
 
-== Summary ==
+=3D=3D Summary =3D=3D
 
 Pipeline status: FAILED.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1125655 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1125656 f=
+or the overview.
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56172970):
-  [1790/1793] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
+igt-ci-tags/-/jobs/56172992):
+  ../tests/device_reset.c: In function =E2=80=98init_device_fds=E2=80=99:
+  ../tests/device_reset.c:201:14: error: =E2=80=98drm_fd=E2=80=99 undeclare=
+d (first use in this function); did you mean =E2=80=98dremf=E2=80=99?
+    igt_require(drm_fd !=3D -1);
+                ^~~~~~
+  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
+re=E2=80=99
+    if (!(expr)) igt_skip_check(#expr , NULL); \
+          ^~~~
+  ../tests/device_reset.c:201:14: note: each undeclared identifier is repor=
+ted only once for each function it appears in
+    igt_require(drm_fd !=3D -1);
+                ^~~~~~
+  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
+re=E2=80=99
+    if (!(expr)) igt_skip_check(#expr , NULL); \
+          ^~~~
   ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/823] Generating version.h with a custom command.
-  [2/6] Linking target runner/runner_test.
-  [3/6] Generating intel-ci-tests with a custom command.
-  [4/6] Generating i915_tests.html with a custom command.
-  [5/6] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_rotation@rotations doesn't exist on source files
-  Warning: Missing documentation for igt@kms_rotation@rotation
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1710237700:step_script
-  section_start:1710237700:cleanup_file_variables
+  section_end:1710237826:step_script
+  section_start:1710237826:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1710237700:cleanup_file_variables
+  section_end:1710237827:cleanup_file_variables
   ERROR: Job failed: exit code 1
-  
+ =20
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56172965):
-  [1796/1799] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
+fx-ci/igt-ci-tags/-/jobs/56172995):
+  ../tests/device_reset.c: In function =E2=80=98init_device_fds=E2=80=99:
+  ../tests/device_reset.c:201:14: error: =E2=80=98drm_fd=E2=80=99 undeclare=
+d (first use in this function); did you mean =E2=80=98dremf=E2=80=99?
+    igt_require(drm_fd !=3D -1);
+                ^~~~~~
+  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
+re=E2=80=99
+    if (!(expr)) igt_skip_check(#expr , NULL); \
+          ^~~~
+  ../tests/device_reset.c:201:14: note: each undeclared identifier is repor=
+ted only once for each function it appears in
+    igt_require(drm_fd !=3D -1);
+                ^~~~~~
+  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
+re=E2=80=99
+    if (!(expr)) igt_skip_check(#expr , NULL); \
+          ^~~~
   ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/825] Generating version.h with a custom command.
-  [2/6] Linking target runner/runner_test.
-  [3/6] Generating i915_tests.html with a custom command.
-  [4/6] Generating intel-ci-tests with a custom command.
-  [5/6] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_rotation@rotations doesn't exist on source files
-  Warning: Missing documentation for igt@kms_rotation@rotation
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1710237773:step_script
-  section_start:1710237773:cleanup_file_variables
+  section_end:1710237887:step_script
+  section_start:1710237887:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1710237774:cleanup_file_variables
+  section_end:1710237888:cleanup_file_variables
   ERROR: Job failed: exit code 1
-  
+ =20
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56172969):
-  [1796/1799] Generating intel-ci-tests with a custom command.
-  [1797/1799] Generating xe_tests.html with a custom command.
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
+x-ci/igt-ci-tags/-/jobs/56172996):
+  ../tests/device_reset.c: In function =E2=80=98init_device_fds=E2=80=99:
+  ../tests/device_reset.c:201:14: error: =E2=80=98drm_fd=E2=80=99 undeclare=
+d (first use in this function); did you mean =E2=80=98dremf=E2=80=99?
+    igt_require(drm_fd !=3D -1);
+                ^~~~~~
+  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
+re=E2=80=99
+    if (!(expr)) igt_skip_check(#expr , NULL); \
+          ^~~~
+  ../tests/device_reset.c:201:14: note: each undeclared identifier is repor=
+ted only once for each function it appears in
+    igt_require(drm_fd !=3D -1);
+                ^~~~~~
+  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
+re=E2=80=99
+    if (!(expr)) igt_skip_check(#expr , NULL); \
+          ^~~~
   ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/825] Generating version.h with a custom command.
-  [2/5] Generating intel-ci-tests with a custom command.
-  [3/5] Generating i915_tests.html with a custom command.
-  [4/5] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_rotation@rotations doesn't exist on source files
-  Warning: Missing documentation for igt@kms_rotation@rotation
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1710237725:step_script
-  section_start:1710237725:cleanup_file_variables
+  section_end:1710237864:step_script
+  section_start:1710237864:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1710237725:cleanup_file_variables
+  section_end:1710237865:cleanup_file_variables
   ERROR: Job failed: exit code 1
-  
+ =20
 
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56172968):
-  [1630/1633] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
+-tags/-/jobs/56172987):
+  ../tests/device_reset.c: In function =E2=80=98init_device_fds=E2=80=99:
+  ../tests/device_reset.c:201:14: error: =E2=80=98drm_fd=E2=80=99 undeclare=
+d (first use in this function)
+    201 |  igt_require(drm_fd !=3D -1);
+        |              ^~~~~~
+  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
+re=E2=80=99
+   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
+        |        ^~~~
+  ../tests/device_reset.c:201:14: note: each undeclared identifier is repor=
+ted only once for each function it appears in
+    201 |  igt_require(drm_fd !=3D -1);
+        |              ^~~~~~
+  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
+re=E2=80=99
+   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
+        |        ^~~~
   ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/775] Generating version.h with a custom command.
-  [2/6] Linking target runner/runner_test.
-  [3/6] Generating intel-ci-tests with a custom command.
-  [4/6] Generating i915_tests.html with a custom command.
-  [5/6] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_rotation@rotations doesn't exist on source files
-  Warning: Missing documentation for igt@kms_rotation@rotation
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1710237697:step_script
-  section_start:1710237697:cleanup_file_variables
+  section_end:1710237811:step_script
+  section_start:1710237811:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1710237698:cleanup_file_variables
+  section_end:1710237812:cleanup_file_variables
   ERROR: Job failed: exit code 1
-  
+ =20
 
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56172966):
-  [1796/1799] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-  ninja: build stopped: subcommand failed.
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
+igt-ci-tags/-/jobs/56172991):
   ninja: Entering directory `build'
-  [1/825] Generating version.h with a custom command.
-  [2/6] Linking target runner/runner_test.
-  [3/6] Generating i915_tests.html with a custom command.
-  [4/6] Generating intel-ci-tests with a custom command.
-  [5/6] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_rotation@rotations doesn't exist on source files
-  Warning: Missing documentation for igt@kms_rotation@rotation
-  Please refer: docs/test_documentation.md for more details
+  [1/1361] Generating version.h with a custom command.
+  [2/1308] Linking target lib/libi915_perf.so.1.5.
+  [3/1308] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.=
+so.1.5.symbols'.
+  [4/1308] Linking target tests/core_hotunplug.
+  [5/1308] Generating core_hotunplug.testlist with a meson_exe.py custom co=
+mmand.
+  [6/1308] Compiling C object 'tests/59830eb@@device_reset@exe/device_reset=
+.c.o'.
+  FAILED: tests/59830eb@@device_reset@exe/device_reset.c.o=20
+  clang -Itests/59830eb@@device_reset@exe -Itests -I../tests -I../include -=
+I../include/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/=
+syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib6=
+4/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/=
+include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr=
+/include/valgrind -Xclang -fcolor-diagnostics -pipe -D_FILE_OFFSET_BITS=3D6=
+4 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include co=
+nfig.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statem=
+ent -Wformat=3D2 -Wmissing-declarations -Wmissing-format-attribute -Wmissin=
+g-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wp=
+ointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized=
+ -Wunused -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-o=
+f-packed-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -W=
+no-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplici=
+t -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=
+=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=
+=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite=
+-strings -fno-builtin-malloc -fno-builtin-calloc -pthread -MD -MQ 'tests/59=
+830eb@@device_reset@exe/device_reset.c.o' -MF 'tests/59830eb@@device_reset@=
+exe/device_reset.c.o.d' -o 'tests/59830eb@@device_reset@exe/device_reset.c.=
+o' -c ../tests/device_reset.c
+  ../tests/device_reset.c:201:14: error: use of undeclared identifier 'drm_=
+fd'
+          igt_require(drm_fd !=3D -1);
+                      ^
+  1 error generated.
   ninja: build stopped: subcommand failed.
-  section_end:1710237689:step_script
-  section_start:1710237689:cleanup_file_variables
+  section_end:1710237831:step_script
+  section_start:1710237831:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1710237689:cleanup_file_variables
+  section_end:1710237832:cleanup_file_variables
   ERROR: Job failed: exit code 1
-  
+ =20
 
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56172967):
-  [1796/1799] Compiling C object 'runner/runner@@runner_test@exe/runner_tests.c.o'.
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop=
+.org/gfx-ci/igt-ci-tags/-/jobs/56172990):
+  ../tests/device_reset.c: In function =E2=80=98init_device_fds=E2=80=99:
+  ../tests/device_reset.c:201:14: error: =E2=80=98drm_fd=E2=80=99 undeclare=
+d (first use in this function)
+    201 |  igt_require(drm_fd !=3D -1);
+        |              ^~~~~~
+  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
+re=E2=80=99
+   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
+        |        ^~~~
+  ../tests/device_reset.c:201:14: note: each undeclared identifier is repor=
+ted only once for each function it appears in
+    201 |  igt_require(drm_fd !=3D -1);
+        |              ^~~~~~
+  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
+re=E2=80=99
+   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
+        |        ^~~~
   ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/825] Generating version.h with a custom command.
-  [2/6] Linking target runner/runner_test.
-  [3/6] Generating intel-ci-tests with a custom command.
-  [4/6] Generating i915_tests.html with a custom command.
-  [5/6] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_rotation@rotations doesn't exist on source files
-  Warning: Missing documentation for igt@kms_rotation@rotation
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1710237691:step_script
-  section_start:1710237691:cleanup_file_variables
+  section_end:1710237816:step_script
+  section_start:1710237816:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1710237692:cleanup_file_variables
+  section_end:1710237817:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/=
+gfx-ci/igt-ci-tags/-/jobs/56172988):
+  ../tests/device_reset.c: In function =E2=80=98init_device_fds=E2=80=99:
+  ../tests/device_reset.c:201:14: error: =E2=80=98drm_fd=E2=80=99 undeclare=
+d (first use in this function)
+    201 |  igt_require(drm_fd !=3D -1);
+        |              ^~~~~~
+  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
+re=E2=80=99
+   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
+        |        ^~~~
+  ../tests/device_reset.c:201:14: note: each undeclared identifier is repor=
+ted only once for each function it appears in
+    201 |  igt_require(drm_fd !=3D -1);
+        |              ^~~~~~
+  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
+re=E2=80=99
+   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
+        |        ^~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1710237816:step_script
+  section_start:1710237816:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710237817:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
+gfx-ci/igt-ci-tags/-/jobs/56172989):
+  ../tests/device_reset.c: In function =E2=80=98init_device_fds=E2=80=99:
+  ../tests/device_reset.c:201:14: error: =E2=80=98drm_fd=E2=80=99 undeclare=
+d (first use in this function)
+    201 |  igt_require(drm_fd !=3D -1);
+        |              ^~~~~~
+  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
+re=E2=80=99
+   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
+        |        ^~~~
+  ../tests/device_reset.c:201:14: note: each undeclared identifier is repor=
+ted only once for each function it appears in
+    201 |  igt_require(drm_fd !=3D -1);
+        |              ^~~~~~
+  ../lib/igt_core.h:1006:8: note: in definition of macro =E2=80=98igt_requi=
+re=E2=80=99
+   1006 |  if (!(expr)) igt_skip_check(#expr , NULL); \
+        |        ^~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1710237848:step_script
+  section_start:1710237848:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710237849:cleanup_file_variables
   ERROR: Job failed: exit code 1
 
-== Logs ==
+=3D=3D Logs =3D=3D
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1125655
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
+ipelines/1125656
