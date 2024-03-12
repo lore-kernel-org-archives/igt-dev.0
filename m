@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32B36C54E5D
-	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 14:17:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 995E5C54E58
+	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 14:18:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BCC6E10F145;
-	Tue, 12 Mar 2024 14:17:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3496810E728;
+	Tue, 12 Mar 2024 14:18:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W1hTWOBm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OUxDQyn2";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD03710F145
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2024 14:17:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 763DA10F165
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2024 14:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710253072; x=1741789072;
+ t=1710253081; x=1741789081;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=sUB3klp5wtLKhwqLGCrMpwSb94J2mK04O8xme4uIVec=;
- b=W1hTWOBmQWD9VB9I17Krrhc4tSLR1gAv0KO5ripX1eRc5tQX2TGoxUA5
- NvCCklJXN8uqEhB5Jjwt8s7F6P+vDNCRzi0xJ2EoZqeXbHyva881TnpAg
- CcmWo5ELvmG0l/zgS4SVUq/y6afdrxI0IP09PXDDMj8J6Zdavsfv4EubQ
- eBGE5cBtTsOS1UHsWkIkC7k6lZufbfOh/yyBUFBxB6Z11ydDBfxQHSpPB
- fE5FizdzMw0qXZNn1HIpvNhl74WBsoKCgO7hPKr5fUHGJqqf1k+p1IZy9
- AblA57/+u4XduRQV+ZC5NKzwrxV0KQNe0lcrj5LIvu791CAlHFRvnPyhL Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="7909599"
+ bh=wFzELWk1b1AUWtKJk+mBjnMTpSWkyX8JTT5F8oQwFxk=;
+ b=OUxDQyn2/vVUa1ECEpMPhaWlThdua2zVEev1H4OMsELlGErZDkCn5prF
+ duLPttDnCTD20FQCaxgKHuQIsm95+zXBeTKSM7o54BKdOUg3U/WZWQjG2
+ bSxga7zyJCuQdthC1txjHvLiwO2Dqj3UQYls/sllT3PQVSUvb7vJdJo/d
+ OpSzd0zwl4xNQ+4QbLACpLmfPoDN+owg/40qV5vnSX8vP38x5tdO93psc
+ T3zs7u/DASETzRjVAxBtkV0TfBSC0yc7ZW0cm0ON50durEa8lx8BNXP7y
+ M8GvAV6QTW8w9WXb1kypVay8+sQPvxDAeVKkhY9x3lT5fCf/V34kjs2ar Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="7909609"
 X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="7909599"
+   d="scan'208";a="7909609"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 07:17:52 -0700
+ 12 Mar 2024 07:18:01 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="11459586"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="11459615"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 07:17:50 -0700
+ 12 Mar 2024 07:17:59 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Chris Wilson <chris.p.wilson@intel.com>
-Subject: [PATCH i-g-t v3 22/25] tests/intel: Add more tests to Performance
- subcategory
-Date: Tue, 12 Mar 2024 14:14:16 +0000
-Message-Id: <20240312141419.1277931-23-katarzyna.piecielska@intel.com>
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v3 23/25] tests: Add missing documentation fields for
+ SRIOV and Display
+Date: Tue, 12 Mar 2024 14:14:17 +0000
+Message-Id: <20240312141419.1277931-24-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240312141419.1277931-1-katarzyna.piecielska@intel.com>
 References: <20240312141419.1277931-1-katarzyna.piecielska@intel.com>
@@ -69,43 +69,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Tag tests/intel/perf.c & tests/intel/perf_pmu.c as performance.
+Add missing documentation fields for:
+
+ tests/intel/i915_pipe_stress.c - add Category, Sub-category, Functionality to
+KMS test
+ tests/sriov_basic.c - add missing functionality
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Chris Wilson <chris.p.wilson@intel.com>
-Reviewed-by: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Acked-by: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 ---
- tests/intel/perf.c     | 1 +
- tests/intel/perf_pmu.c | 1 +
- 2 files changed, 2 insertions(+)
+ tests/intel/i915_pipe_stress.c | 11 ++++++++---
+ tests/sriov_basic.c            |  1 +
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/perf.c b/tests/intel/perf.c
-index e5d3fbd0e..fdfb75603 100644
---- a/tests/intel/perf.c
-+++ b/tests/intel/perf.c
-@@ -52,6 +52,7 @@
-  * Test category: Perf
-  * Functionality: oa
-  * Sub-category: Performance
-+ * Category: Desktop client
+diff --git a/tests/intel/i915_pipe_stress.c b/tests/intel/i915_pipe_stress.c
+index 79f83d266..a487f70de 100644
+--- a/tests/intel/i915_pipe_stress.c
++++ b/tests/intel/i915_pipe_stress.c
+@@ -20,9 +20,14 @@
+ #include "i915/gem.h"
+ /**
+  * TEST: i915 pipe stress
+- * Description:
+- *   Stress test how gpu and cpu behaves if maximum amount of planes, cpu and gpu utilization is
+- *   achieved in order to reveal possible bandwidth/watermark and similar problems.
++ * Category: Display
++ * Description: Stress test how gpu and cpu behaves if maximum amount of
++ *              planes, cpu and gpu utilization is achieved in order to reveal
++ *              possible bandwidth/watermark and similar problems.
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Sub-category: Display
++ * Test category: stress test
   * Run type: FULL
   *
-  * SUBTEST: blocking
-diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
-index 718a3ed37..b80273a56 100644
---- a/tests/intel/perf_pmu.c
-+++ b/tests/intel/perf_pmu.c
-@@ -55,6 +55,7 @@
-  * Feature: i915 pmu perf interface, pmu
-  * Test category: Perf
-  * Sub-category: Performance
-+ * Category: Desktop client
-  * Functionality: pmu
-  * Run type: FULL
-  *
+  * SUBTEST: stress-xrgb8888-untiled
+diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
+index bc7c09e1c..b2b63c702 100644
+--- a/tests/sriov_basic.c
++++ b/tests/sriov_basic.c
+@@ -14,6 +14,7 @@ IGT_TEST_DESCRIPTION("Basic tests for enabling SR-IOV Virtual Functions");
+  * Category: Software building block
+  * Mega feature: SR-IOV
+  * Sub-category: VFs enabling
++ * Functionality: configure / enable VFs
+  * Description: Validate SR-IOV VFs enabling
+  */
+ 
 -- 
 2.34.1
 
