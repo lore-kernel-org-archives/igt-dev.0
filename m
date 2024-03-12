@@ -4,55 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4059C54E60
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBCF4C54E5D
 	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 14:16:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 72010112E5F;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 66548112E5C;
 	Tue, 12 Mar 2024 14:16:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PLrEgoaW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QwwMoUh+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2941112E56
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2024 14:16:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 34B96112E56
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2024 14:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1710252965; x=1741788965;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=hEsGW9QQMiGdqLnEUKl1ZELleVXI/DDSrHIMpFQj0NQ=;
- b=PLrEgoaW6BHxgGoYF2FGwVgvj2RRZgoUE9EBYVcdHG1JqxV1a4r7zqEk
- VrQ4cvgTZ9i35+5Ibvgu70c+Vw/fxztK1L0xgyfeHlhDMDSBbEL08QKmB
- f3T0/Uv8fmcB2SdRCheGs7MovQR9cEv+12igb1XUTk/8v21erRFDuILHD
- BmO986jJHzzpYkXtTTf114ELLhUJl2wlKjClqF1XjNKuWfETClcN9A0KJ
- iXcOH4dLyyVxb+vBNDPYYbVWRAxsrIdiyJzdeRZYVl+O2YswsxjyydZuM
- vos7MFeHc5pf39CErE2tGw6qzqSZvIRe1gxNcHdA9hm/1QuBo4vheIyIt w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="5133416"
+ bh=gKIbXZSHk4Ke71TRbP4vvt4qXqJRMyEfJGlUeb5qfag=;
+ b=QwwMoUh+49LEsVWHmcjaXBYfiW7HLPmj0M6M3Hf72gy7wWIFYnGLKwYO
+ tDeEmLMTBNqP4k8bqZf555kqR66cw2+/Up1gSl32rpcLLPLOLEGGAEQzo
+ HuXL/uV8y7jFlVtdjr9Xn+FqmZkrLpOWXgO45sASGm/VgVC/zl1WVEG0p
+ oiUGODFxuas8oJhAWhfAusSSfcHiIqVCDpco2e5SXa6GqilpBW1fsyauJ
+ 9mmiK3nSyFEobqxBP5s/1q7+VK77ZeZqfPZMkT8RahI0sxwd7cmso1WQI
+ d2itsacZ6BWMNqyh1u1aNYrJ3BzpL9WN2A1ecJ+NsWV4bmo85mMrbPG+6 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="5085622"
 X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="5133416"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 07:15:46 -0700
+   d="scan'208";a="5085622"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2024 07:15:30 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="11522055"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="11474715"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 07:15:43 -0700
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2024 07:15:26 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Karolina Stolarek <karolina.stolarek@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Subject: [PATCH i-g-t v3 08/25] tests/intel: Introduce Blitter subcategory
-Date: Tue, 12 Mar 2024 14:14:02 +0000
-Message-Id: <20240312141419.1277931-9-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v3 06/25] tests/intel: Add tests to Compute subcategory
+Date: Tue, 12 Mar 2024 14:14:00 +0000
+Message-Id: <20240312141419.1277931-7-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240312141419.1277931-1-katarzyna.piecielska@intel.com>
 References: <20240312141419.1277931-1-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,99 +66,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's introduce Blitter subcategory.
-
-v2: introduce more granularity in Blitter subcategory to not break
-automation:
- - igt@gem_exercise_blt@fast-copy* - s/blitter/fast-copy/
- - igt@gem_linear_blits@ - s/blitter/linear blit/
+Let's add to Compute subcategory:
+ - tests/intel/gem_compute.c
+ - tests/intel/gem_vm_create.c
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Karolina Stolarek <karolina.stolarek@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/gem_exercise_blt.c      | 14 +++++++-------
- tests/intel/gem_linear_blits.c      |  4 ++--
- tests/intel/gem_set_tiling_vs_blt.c |  3 +++
- tests/intel/gen9_exec_parse.c       |  3 +++
- 4 files changed, 15 insertions(+), 9 deletions(-)
+ tests/intel/gem_compute.c   | 2 +-
+ tests/intel/gem_vm_create.c | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/gem_exercise_blt.c b/tests/intel/gem_exercise_blt.c
-index 4a9bc3729..0aa660ce9 100644
---- a/tests/intel/gem_exercise_blt.c
-+++ b/tests/intel/gem_exercise_blt.c
-@@ -14,18 +14,18 @@
-  * TEST: gem exercise blt
-  * Description: Exercise blitter commands
-  * Feature: blitter
+diff --git a/tests/intel/gem_compute.c b/tests/intel/gem_compute.c
+index 8d0214c4d..8bd9635ae 100644
+--- a/tests/intel/gem_compute.c
++++ b/tests/intel/gem_compute.c
+@@ -6,7 +6,7 @@
+ /**
+  * TEST: Check compute-related functionality
+  * Category: Hardware building block
+- * Sub-category: compute
++ * Sub-category: Compute
+  * Test category: functionality test
+  * Run type: BAT
+  */
+diff --git a/tests/intel/gem_vm_create.c b/tests/intel/gem_vm_create.c
+index 8834c987f..12503c0e5 100644
+--- a/tests/intel/gem_vm_create.c
++++ b/tests/intel/gem_vm_create.c
+@@ -30,10 +30,11 @@
+ /**
+  * TEST: gem vm create
+  * Category: Server
+- * Functionality: context management
 - * Run type: FULL
-+ * Sub-category: Blitter
-+ * Category: Desktop client
-+ * Functionality: fast-copy
++ * Functionality: context
+  * Sub-category: Compute
++ * Feature: mapping
   * Test category: GEM_Legacy
 + * Run type: FULL
   *
-  * SUBTEST: fast-copy
-- * Description:
-- *   Check fast-copy blit
-- *   blitter
-+ * Description: Check fast-copy blit blitter
-  *
-  * SUBTEST: fast-copy-emit
-- * Description:
-- *   Check multiple fast-copy in one batch
-- *   blitter
-+ * Description: Check multiple fast-copy in one batch blitter
-+ *
-  */
- 
- IGT_TEST_DESCRIPTION("Exercise blitter commands");
-diff --git a/tests/intel/gem_linear_blits.c b/tests/intel/gem_linear_blits.c
-index 64f220cb3..eeb5cd541 100644
---- a/tests/intel/gem_linear_blits.c
-+++ b/tests/intel/gem_linear_blits.c
-@@ -54,8 +54,8 @@
-  * Category: Infrastructure
-  * Description: Test doing many blits with a working set larger than the aperture size.
-  * Feature: blitter
-- * Functionality: blitter
-- * Sub-category: CMD submission
-+ * Functionality: linear blits
-+ * Sub-category: Blitter
-  * Test category: GEM_Legacy
-  * Run type: FULL
-  *
-diff --git a/tests/intel/gem_set_tiling_vs_blt.c b/tests/intel/gem_set_tiling_vs_blt.c
-index 9077e0f3f..28469f5f3 100644
---- a/tests/intel/gem_set_tiling_vs_blt.c
-+++ b/tests/intel/gem_set_tiling_vs_blt.c
-@@ -61,6 +61,9 @@
-  * TEST: gem set tiling vs blt
-  * Description: Check for proper synchronization of tiling changes vs. tiled gpu access.
-  * Feature: blitter, gtt
-+ * Functionality: tiling
-+ * Sub-category: Blitter
-+ * Category: Desktop client
-  * Run type: FULL
-  *
-  * SUBTEST: tiled-to-tiled
-diff --git a/tests/intel/gen9_exec_parse.c b/tests/intel/gen9_exec_parse.c
-index 33ff6bcb5..509a2e80f 100644
---- a/tests/intel/gen9_exec_parse.c
-+++ b/tests/intel/gen9_exec_parse.c
-@@ -36,6 +36,9 @@
- /**
-  * TEST: gen9 exec parse
-  * Feature: blitter, command_parser
-+ * Sub-category: Blitter
-+ * Functionality: command_parser
-+ * Category: Desktop client
-  * Run type: FULL
-  *
-  * SUBTEST: allowed-all
+  * SUBTEST: create-ext
+  * Feature: mapping
 -- 
 2.34.1
 
