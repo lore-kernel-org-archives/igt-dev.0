@@ -4,47 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4296BC54E58
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58135C54E66
 	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 20:54:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C132A10F0F8;
+	by gabe.freedesktop.org (Postfix) with ESMTP id BAF6610F0DB;
 	Tue, 12 Mar 2024 20:54:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BSRXf2UW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SvyMbs0A";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D41110F0DB
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8971E10F0DB
  for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2024 20:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710276877; x=1741812877;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=sSOg7TCx6+zWXg/NRD7ZoWL0JzfJMtzCy38UXXrHKBc=;
- b=BSRXf2UWjhlCOuylNDPqpTGvdxC7WGPdctQxW7YAZzFdpaukp7epYBXj
- HPbT+TJu0JEdkeJ0tLkWpGuJED/nRH8T9eEBA/1co5mRNf0D9X5ezVQ6F
- 2go9TB32dh1fQztDHYWifUFiRXpA2SKFcaztF1KgrI8fvKIER3ozDnTmH
- UlqZmGngIOJgr8aFWm+JwV7t2g37iSYhPCRy3Ypj55COOQ+hblVlvNEsb
- dyAFx4aJOi6lkRHMw6mkwnva3P8qIZtcIYoyYzMugbNgMzqt0rD8bFpUx
- 1Jrs97dxQFywzsEM2NzATNNArGrdmSVFxMq2ybccjmdcSTKVYkqcvS3gq Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="4871518"
+ t=1710276878; x=1741812878;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=CQYH73d7dSxzqHAbroumzerrwCYtvus12JsKgm6lQGc=;
+ b=SvyMbs0ACxl5pZOWowR5lbjdoud5PAYc5dPp1TeHTL16tjUn9KnDFkp6
+ tjQA0og/nM5iCUDgVbR+Otz11ehcW4uaZwT1EptkuJ3i+4Aj91xvQNvG/
+ LJ+aH1V/Sk2vThCGQaObRq+w9Nh4+ozZEaGS+k7GXXjbXjju+FcDU2kc/
+ SEq5YyTbIK0bj88BD+gj0xE74i2tC4ma72umunOvlATxUDdjwJLc9FXT6
+ xd87SOjKyZptrRveWjcq1tB3TC/L0rqw0WMlwqWI5ZUzc9SQICeMU+KGk
+ hhOqc9dmi1K1KZRs8O1ksMBKZVeB5t6kxCN7otBdKdTyuHk+eB6fHKQQ0 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="4871521"
 X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="4871518"
+   d="scan'208";a="4871521"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 13:54:36 -0700
+ 12 Mar 2024 13:54:37 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="42668537"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="42668543"
 Received: from mdroper-desk1.fm.intel.com ([10.1.39.140])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 13:54:36 -0700
+ 12 Mar 2024 13:54:37 -0700
 From: Matt Roper <matthew.d.roper@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: matthew.d.roper@intel.com
-Subject: [PATCH i-g-t v3 0/2] Add GT IP version query support
-Date: Tue, 12 Mar 2024 13:54:29 -0700
-Message-ID: <20240312205431.2869411-1-matthew.d.roper@intel.com>
+Cc: matthew.d.roper@intel.com,
+	Gustavo Sousa <gustavo.sousa@intel.com>
+Subject: [PATCH i-g-t v3 1/2] drm-uapi/xe: Add IP version to GT query
+Date: Tue, 12 Mar 2024 13:54:30 -0700
+Message-ID: <20240312205431.2869411-2-matthew.d.roper@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240312205431.2869411-1-matthew.d.roper@intel.com>
+References: <20240312205431.2869411-1-matthew.d.roper@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -62,23 +65,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Update the Xe uapi header to match the proposed XeKMD uapi (i.e.,
-replacing one of the reserved qwords of the GT query with IP version
-fields) and add support to the Xe query test.
+Align with commit ("drm/xe/uapi: Add IP version and stepping to GT list
+query")
 
 v2:
- - Rename 'revid' to 'rev' to match kernel series update.
-v3:
- - Resend for CI now that we're ready to land the KMD and IGT changes.
+ - s/revid/rev/ to match rename on kernel series
 
-Matt Roper (2):
-  drm-uapi/xe: Add IP version to GT query
-  tests/xe_query: Print and sanity-check GT ip versions
-
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
+---
  include/drm-uapi/xe_drm.h | 10 +++++++++-
- tests/intel/xe_query.c    | 28 ++++++++++++++++++++++++++++
- 2 files changed, 37 insertions(+), 1 deletion(-)
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 86b426f49..4353595a4 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -459,8 +459,16 @@ struct drm_xe_gt {
+ 	 * by struct drm_xe_query_mem_regions' mem_class.
+ 	 */
+ 	__u64 far_mem_regions;
++	/** @ip_ver_major: Graphics/media IP major version on GMD_ID platforms */
++	__u16 ip_ver_major;
++	/** @ip_ver_minor: Graphics/media IP minor version on GMD_ID platforms */
++	__u16 ip_ver_minor;
++	/** @ip_ver_rev: Graphics/media IP revision version on GMD_ID platforms */
++	__u16 ip_ver_rev;
++	/** @pad2: MBZ */
++	__u16 pad2;
+ 	/** @reserved: Reserved */
+-	__u64 reserved[8];
++	__u64 reserved[7];
+ };
+ 
+ /**
 -- 
 2.43.0
 
