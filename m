@@ -4,54 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 241EDC54E5D
-	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 12:59:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B128C54E58
+	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 13:19:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 948C710F06A;
-	Tue, 12 Mar 2024 12:59:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E753810EF6B;
+	Tue, 12 Mar 2024 13:19:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JAUSLd/g";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iGsIFMqa";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 80CF510F06A
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2024 12:59:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7746D10EF6B
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2024 13:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710248385; x=1741784385;
+ t=1710249549; x=1741785549;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=GYJ6x5dIu07OJJvuv+q3hoU3zKgw5hGfSNcQoeFOugU=;
- b=JAUSLd/gSeSRMI9RTgVAoVTPBv+ZaXUMm03N7TY5vRV2YixWcuKpr3qL
- 7tJ0rSuiJq09udSSCHmns/1tkopcER7TfmGiXA+Ustwm+6Y5mBUvCPZcV
- /KHGBAboWWLlMaH70b3wCKsgiKCXxIdvjBL6sj2y77Z/TIQl/IqO54EBG
- g45lhHgpmiR8cnwWprJVb7grAXUFbzK7aKFcPqqoWhfC3gOzBYqWFNK2I
- oQaTj3Y4aoQiSL1EtftQWapN+WeORF09sJcIcPTqcEl2Opj/H7Ch2gHqO
- FUKOPMWrjVwmH+F7YFsEpre9UDBJt8V7OGHY50EPIEvuedFZXBODvp6B+ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="5140974"
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="5140974"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 05:59:44 -0700
+ bh=ZUNUqXhdvvgfgr7WyJVKia9cz0QIH6fAhZmbQC79pQI=;
+ b=iGsIFMqak6UAIvMxRRIeGCu7dWikgNQe6WNMprf7UGqng9Hbvf2VNPa/
+ xxIsmIDtT/+e8vKTmdi2Qaf9kmPgHBEnMJh8itOTs+KeGQEvmQ9f106Le
+ R6FI7T70C34kiglrgyKsfEQj58b30+Izw1qOB8MCi2TlqVqNZmNeonCe3
+ 3l2eZsOSgVm5mnrNqxv1KLIEqtLd0an0ICMYqevdeeR2QVCNA3SYN7YL8
+ HOe6V4ivSzFmF06f/PlRF47wsqlsLtpeVrjt/NMwZ2sursvY9rwoAlZcz
+ tpiMOxi6nzym9Edb2zIG/MRQ0z8DyA0xW0gwsoW+86nYSygQZSZ/C6Z3H A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="16096900"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="16096900"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2024 06:19:08 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="16139052"
-Received: from unknown (HELO localhost) ([10.245.244.207])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 05:59:43 -0700
-Date: Tue, 12 Mar 2024 13:59:40 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 1/2] lib/intel_common: Add placeholder for common
- i915 and xe functions
-Message-ID: <20240312125940.rbh3xc7a5isypal2@zkempczy-mobl2>
-References: <20240312122654.73689-1-zbigniew.kempczynski@intel.com>
- <0f8784e3-05bb-4b35-ae56-8e6ac53f5390@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="42464794"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 06:19:06 -0700
+Date: Tue, 12 Mar 2024 14:18:15 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>
+Subject: Re: [PATCH i-g-t v11 4/6] lib/intel_multigpu: Add
+ multi_fork_foreach_gpu_chip
+Message-ID: <20240312131815.jg3gwzjwwqu2yk3d@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>
+References: <20240306133158.45187-1-kamil.konieczny@linux.intel.com>
+ <20240306133158.45187-5-kamil.konieczny@linux.intel.com>
+ <2754559.9PvXe5no7K@jkrzyszt-mobl2.ger.corp.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0f8784e3-05bb-4b35-ae56-8e6ac53f5390@intel.com>
+In-Reply-To: <2754559.9PvXe5no7K@jkrzyszt-mobl2.ger.corp.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,190 +74,252 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Mar 12, 2024 at 12:43:41PM +0000, Matthew Auld wrote:
-> On 12/03/2024 12:26, Zbigniew Kempczyński wrote:
-> > Some constructs like querying if device is discrete or getting memory
-> > region origin are common so add new file to place those functions into.
+Hi Janusz,
+On 2024-03-06 at 20:03:11 +0100, Janusz Krzysztofik wrote:
+> Hi Kamil,
+> 
+> On Wednesday, 6 March 2024 14:31:56 CET Kamil Konieczny wrote:
+> > Create macro for testing drm driver in multigpu scenarios with
+> > the help of few new multigpu functions. Also while at this,
+> > add documentation for public functions and use new helper in
+> > existing multi-gpu macro.
+> 
+> Is that correct?  I can't see any existing macro modified.
+> 
+
+Good point, I moved doc to patch where it belongs, I will
+correct description here.
+
 > > 
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Cc: Matthew Auld <matthew.auld@intel.com>
+> > v2: corrected description (Kamil), rebased on corrected patches
+> >   after Dominik review
+> > v3: corrected descriptions, renamed function to print_gpus
+> >   and did small refactoring (Kamil)
+> >   fixed typo in function name (Dominik)
+> > v4: fixed typos (Dominik)
+> > v10: rename new macro into multi_fork_foreach_gpu_chip (Zbigniew)
+> > 
+> > Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+> > Reviewed-by: "Dominik Karol Piątkowski" <dominik.karol.piatkowski@intel.com>
+> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > > ---
-> >   lib/intel_common.c | 91 ++++++++++++++++++++++++++++++++++++++++++++++
-> >   lib/intel_common.h | 25 +++++++++++++
-> >   lib/meson.build    |  1 +
-> >   3 files changed, 117 insertions(+)
-> >   create mode 100644 lib/intel_common.c
-> >   create mode 100644 lib/intel_common.h
+> >  lib/intel_multigpu.c | 72 ++++++++++++++++++++++++++++++++++++++++++++
+> >  lib/intel_multigpu.h | 10 ++++++
+> >  2 files changed, 82 insertions(+)
 > > 
-> > diff --git a/lib/intel_common.c b/lib/intel_common.c
-> > new file mode 100644
-> > index 0000000000..3cc7b7f2be
-> > --- /dev/null
-> > +++ b/lib/intel_common.c
-> > @@ -0,0 +1,91 @@
-> > +// SPDX-License-Identifier: MIT
-> > +/*
-> > + * Copyright © 2024 Intel Corporation
-> > + */
-> > +
-> > +#include "drmtest.h"
-> > +#include "intel_chipset.h"
-> > +#include "intel_common.h"
-> > +#include "i915/intel_memory_region.h"
-> > +#include "xe/xe_query.h"
+> > diff --git a/lib/intel_multigpu.c b/lib/intel_multigpu.c
+> > index c4e7cf542..8b7d6f3fc 100644
+> > --- a/lib/intel_multigpu.c
+> > +++ b/lib/intel_multigpu.c
+> > @@ -4,6 +4,7 @@
+> >   */
+> >  
+> >  #include "drmtest.h"
+> > +#include "i915/gem.h"
+> >  #include "igt_core.h"
+> >  #include "igt_device_scan.h"
+> >  #include "intel_multigpu.h"
+> > @@ -60,3 +61,74 @@ void gem_require_multigpu(int gpus_wanted)
+> >  	print_gpus(gpus_wanted, gpu_filters);
+> >  	igt_skip_on(gpu_filters < gpus_wanted);
+> >  }
 > > +
 > > +/**
-> > + * is_intel_dgfx:
-> > + * @fd: drm fd
+> > + * multigpu_acquire_view:
+> > + * @gpus_wanted: minimum number of GPUs required
+> 
+> That's what I think makes a non-iterating function multigpu specific -- an 
+> argument for passing a minimum number of user required GPUs.  But still not 
+> Intel specific, I believe, then I'm not happy with the source file name.
+> 
+
+Yes, I renemed it to igt_multigpu.*
+
+> > + * @chipset: chipset, e.g. DRIVER_XE or DRIVER_INTEL
 > > + *
-> > + * Check if Intel device opened at @fd is discrete regardless driver (i915/xe).
-> > + *
-> > + * Returns: True if device is Intel discrete, false otherwise
+> > + * Function prepares filtered view for GPU cards with given chipset.
+> > + * On error skips and prints available GPUs found on PCI bus.
+> > + * Returns: number of GPUs found
 > > + */
-> > +bool is_intel_dgfx(int fd)
+> > +int multigpu_acquire_view(int gpus_wanted, unsigned int chipset)
 > > +{
-> > +	return get_intel_driver(fd) == INTEL_DRIVER_XE ? xe_has_vram(fd) :
-> > +							 gem_has_lmem(fd);
+> > +	int gpu_count = drm_prepare_filtered_multigpu(chipset);
+> > +
+> > +	igt_assert(gpus_wanted > 1);
+> 
+> Why?  Can't we imagine a test that uses the same code for exercising any 
+> number of GPUs, including 1 as a special case?  I would call such test 
+> "multigpu ready".
+>  
+
+Should I warn/info about it being 1 here?
+What about:
+
+	igt_assert(gpus_wanted > 0);
+	if(gpus_wanted == 1)
+            igt_info("requested only one GPU for multi-gpu test\n");
+
+Or maybe not here but just before return, when gpu_count == 1?
+
+> > +	if (gpu_count >= gpus_wanted)
+> > +		return gpu_count;
+> > +
+> > +	print_gpus(gpus_wanted, gpu_count);
+> > +	igt_skip_on(gpu_count < gpus_wanted);
+> > +
+> > +	return gpu_count; /* non-reachable */
 > > +}
 > > +
 > > +/**
-> > + * is_intel_system_region:
-> > + * @fd: drm fd
-> > + * @region: region id
+> > + * multigpu_open_another:
+> > + * @idx: index of GPU card, starting from 0
+> > + * @chipset: chipset, e.g. DRIVER_XE or DRIVER_INTEL
 > > + *
-> > + * Check if @region is system region on @fd opened Intel device.
+> > + * Function opens GPU card with drm_open_driver_another(). For i915 it 
+> checks
+> > + * if opened card is functional. Skips on errors.
 > > + *
-> > + * Returns: True if @region is system memory, false otherwise
+> > + * Returns: opened fd for @idx card
 > > + */
-> > +bool is_intel_system_region(int fd, uint64_t region)
+> > +int multigpu_open_another(int idx, unsigned int chipset)
 > > +{
-> > +	enum intel_driver driver = get_intel_driver(fd);
-> > +	bool is_system;
+> > +	int fd;
 > > +
-> > +	if (driver == INTEL_DRIVER_I915)
-> > +		is_system = IS_SYSTEM_MEMORY_REGION(region);
-> > +	else
-> > +		is_system = (region == system_memory(fd));
+> > +	igt_assert(idx >= 0);
+> 
+> I think the above check belongs to drm_open_driver_another().
+> 
+
+Right, I will remove it.
+
+> > +	fd = drm_open_driver_another(idx, chipset);
 > > +
-> > +	return is_system;
+> > +	if (chipset == DRIVER_INTEL)
+> > +		igt_require_gem(fd);
+> > +
+> > +	return fd;
+> 
+> This function doesn't look like multigpu specific, nor even Intel specific, as 
+> other vendors may easily add their own chipset specific requirements.  Do we 
+> really want to give it a name multigpu_* and place it in an intel_* library?
+> 
+> Besides, we may not need it (see below).
+> 
+
+Note that it do some extra work - it checks for has_gem(fd)
+but I think that it should also check DRIVER_ANY and is_i915()
+
 > > +}
 > > +
 > > +/**
-> > + * is_intel_vram_region:
-> > + * @fd: drm fd
-> > + * @region: region id
+> > + * multigpu_open_filtered_card:
+> > + * @idx: index of GPU card, starting from 0
+> > + * @chipset: chipset, e.g. DRIVER_XE or DRIVER_INTEL
 > > + *
-> > + * Check if @region is vram (device memory) region on @fd opened Intel device.
+> > + * Function opens GPU card prepared with filtered view. It also checks if
+> > + * opened card agrees with desired chipset or checks if opened card is
+> > + * functional. Skips on errors.
 > > + *
-> > + * Returns: True if @region is vram, false otherwise
+> > + * Returns: opened fd for @idx card
 > > + */
-> > +bool is_intel_vram_region(int fd, uint64_t region)
+> > +int multigpu_open_filtered_card(int idx, unsigned int chipset)
 > > +{
-> 
-> return !is_intel_system_region(fd, region)
-
-I thought about it but what if user will pass 'region == 0'?
-This is not system and not vram, so I assumed both functions
-on xe will return false. I may assert on region == 0 on xe
-to make sure user won't pass invalid region.
-
-> 
-> ?
-> 
-> > +	enum intel_driver driver = get_intel_driver(fd);
-> > +	bool is_vram;
+> > +	int fd;
 > > +
-> > +	if (driver == INTEL_DRIVER_I915)
-> > +		is_vram = IS_DEVICE_MEMORY_REGION(region);
-> > +	else
-> > +		is_vram = (region & (all_memory_regions(fd) & (~system_memory(fd))));
+> > +	igt_assert(idx >= 0);
+> > +	fd = drm_open_filtered_card(idx);
+> > +	if (chipset == DRIVER_XE)
+> > +		igt_require_xe(fd);
+> > +	else if (chipset == DRIVER_INTEL)
+> > +		igt_require_gem(fd);
+> 
+> The same here (we may not need it if we call drm_open_filtered_card() after 
+> multigpu_acquire_view() (or drm_prepare_filtered_multigpu()) -- see below).
+> 
+
+Same here - it do some more extra work.
+
 > > +
-> > +	return is_vram;
+> > +	return fd;
 > > +}
+> > diff --git a/lib/intel_multigpu.h b/lib/intel_multigpu.h
+> > index 5acfcd5f6..a99e7a85e 100644
+> > --- a/lib/intel_multigpu.h
+> > +++ b/lib/intel_multigpu.h
+> > @@ -12,6 +12,10 @@
+> >  void gem_require_multigpu(int count);
+> >  int gem_multigpu_count_class(int chipset);
+> >  
+> > +int multigpu_acquire_view(int min_gpus_wanted, unsigned int chipset);
+> > +int multigpu_open_another(int idx, unsigned int chipset);
+> > +int multigpu_open_filtered_card(int idx, unsigned int chipset);
 > > +
-> > +/**
-> > + * is_intel_region_compressible:
-> > + * @fd: drm fd
-> > + * @region: region id
-> > + *
-> > + * Check if @region is compressible on @fd opened Intel device.
-> > + *
-> > + * Returns: True if @region is compressible, false otherwise
-> > + */
-> > +bool is_intel_region_compressible(int fd, uint64_t region)
-> > +{
-> > +	bool is_dgfx = is_intel_dgfx(fd);
-> > +	bool is_vram = is_intel_vram_region(fd, region);
-> > +
-> > +	if (is_dgfx && is_vram)
-> > +		return true;
-> > +
-> > +	if (AT_LEAST_GEN(intel_get_drm_devid(fd), 20) && !is_dgfx)
-> > +		return true;
-> > +
-> > +	return false;
-> > +}
+> >  #define igt_foreach_gpu(fd__, chipset__) \
+> >  	for (int igt_unique(i) = 0, fd__; \
+> >  		(fd__ = __drm_open_driver_another(igt_unique(i)++, 
+> chipset__)) >= 0; \
+> > @@ -23,4 +27,10 @@ int gem_multigpu_count_class(int chipset);
+> >  			__fd >= 0; \
+> >  			drm_close_driver(__fd), __fd = -1) \
+> >  
+> > +#define multi_fork_foreach_gpu_chip(__fd, __gpu_index, __chipset) \
+> > +	igt_multi_fork(__gpu_index, multigpu_acquire_view(2, __chipset)) \
 > 
-> Just thinking about DG1. It's dgpu but I don't think it has flat-ccs, so I
-> assume it is using aux-ccs and therefore anything is compressible? But here
-> we return true for vram only? We also also have older igpu platforms that
-> use aux-ccs, but we return false here. Perhaps we mean
-> is_intel_region_flat_ccs_compressible() ? Or we need to check if the
-> platform has_flatccs() && is_dgfx ?
+> Instead of hardcoding the minimum number of 2 GPUs, maybe let this macro 
+> accept a gpus_wanted parameter, and wrap another macro around it that passes 2 
+> as gpus_wanted.
+> 
+> > +		for (int __fd = multigpu_open_filtered_card(__gpu_index, 
+> __chipset); \
+> 
+> Again, your multigpu_open_filtered_card() may skip, while igt_multi_fork() 
+> documentation says it expects no skips.
+> 
 
-Agree, I silently bypassed DG1 and aux-ccs platforms. I think it makes
-sense to have dedicated helpers for flatccs and aux-ccs grouping in
-is_intel_region_compressible(). I'm going to slightly reshape and
-respin.
+It is because it treats such skips as failures, not as a skips.
 
-Thanks for the review.
+> We could avoid skips inside the body of igt_multi_fork() if we moved required 
+> checks to a variant of multigpu_acquire_view() that sets up filters for GPUs 
+> that not only match the selected chipset but also satisfy those checks.  Since 
+> devices are now iterated inside drm_prepare_filtered_multigpu(), we  could 
+> implement a new variant of this function that either performs some predefined 
+> chipset based checks, like you proposed for multigpu_open_another() and 
+> multigpu_open_filtered_card(), or accepts an argument that points to an 
+> arbitrary user provided function, either boolean that returns OK/not OK for a 
+> GPU file descriptor, or void that skips if not OK.  That way, potential skips 
+> would occur outside of igt_multi_fork() body, and you could drop those 
+> multigpu_open_*() helpers which seem of limited use -- test functions 
+> themselves should detect potential device issues.
+> 
 
---
-Zbigniew
+It is, first line of this macro:
+  igt_multi_fork(__gpu_index, multigpu_acquire_view(2, __chipset)) \
+
+has multigpu_acuire_view() and it should do exactly what you wrote,
+it should make checks that all opens later should end in success.
+They can still fail later (for example - has_gem() for i915).
+
+> > +			__fd >= 0; \
+> > +			drm_close_driver(__fd), __fd = -1) \
+> 
+> Another trailing backslash, not necessarily intended.
+
+Right, I will fix it.
 
 > 
-> Otherwise I think looks good.
+> Thanks,
+> Janusz
 > 
-> > diff --git a/lib/intel_common.h b/lib/intel_common.h
-> > new file mode 100644
-> > index 0000000000..924802473b
-> > --- /dev/null
-> > +++ b/lib/intel_common.h
-> > @@ -0,0 +1,25 @@
-> > +/* SPDX-License-Identifier: MIT */
-> > +/*
-> > + * Copyright © 2024 Intel Corporation
-> > + */
+
+Thank you for your comments,
+
+Regards,
+Kamil
+
 > > +
-> > +#ifndef __INTEL_COMMON_H__
-> > +#define __INTEL_COMMON_H__
-> > +
-> > +/**
-> > + * SECTION:intel_common
-> > + * @short_description: i915/xe common library code
-> > + * @title: Intel library
-> > + * @include: intel_common.h
-> > + *
-> > + */
-> > +
-> > +#include <stdbool.h>
-> > +#include <stdint.h>
-> > +
-> > +bool is_intel_dgfx(int fd);
-> > +bool is_intel_system_region(int fd, uint64_t region);
-> > +bool is_intel_vram_region(int fd, uint64_t region);
-> > +bool is_intel_region_compressible(int fd, uint64_t region);
-> > +
-> > +#endif
-> > diff --git a/lib/meson.build b/lib/meson.build
-> > index 6122861d8b..934bac5c67 100644
-> > --- a/lib/meson.build
-> > +++ b/lib/meson.build
-> > @@ -59,6 +59,7 @@ lib_sources = [
-> >   	'intel_bufops.c',
-> >   	'intel_chipset.c',
-> >   	'intel_cmds_info.c',
-> > +	'intel_common.c',
-> >   	'intel_compute.c',
-> >   	'intel_compute_square_kernels.c',
-> >   	'intel_ctx.c',
+> >  #endif /* __INTEL_MULTIGPU_H */
+> > 
+> 
+> 
+> 
+> 
