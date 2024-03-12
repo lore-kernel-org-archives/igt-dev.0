@@ -4,27 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CD0AC54E58
-	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 10:02:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34178C54E66
+	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 10:07:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D80D410EFBC;
-	Tue, 12 Mar 2024 10:02:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DD5B2112D76;
+	Tue, 12 Mar 2024 10:07:58 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E38C310EFBC;
- Tue, 12 Mar 2024 10:02:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2BFB9112D73;
+ Tue, 12 Mar 2024 10:07:58 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_tests/device=5Freset=3A_S?=
- =?utf-8?q?kip_if_no_drm_devices_are_preset_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_New_rotation_test?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nirmoy Das" <nirmoy.das@intel.com>
+To: "Louis Chauvet" <louis.chauvet@bootlin.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 12 Mar 2024 10:02:31 -0000
-Message-ID: <171023775193.694325.3662702558538839413@8e613ede5ea5>
+Date: Tue, 12 Mar 2024 10:07:58 -0000
+Message-ID: <171023807817.694324.4425452884086595195@8e613ede5ea5>
 X-Patchwork-Hint: ignore
-References: <20240311162713.19137-1-nirmoy.das@intel.com>
-In-Reply-To: <20240311162713.19137-1-nirmoy.das@intel.com>
+References: <20240312-new_rotation-v1-0-ed9fe82589df@bootlin.com>
+In-Reply-To: <20240312-new_rotation-v1-0-ed9fe82589df@bootlin.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,65 +42,147 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: tests/device_reset: Skip if no drm devices are preset (rev2)
-URL   : https://patchwork.freedesktop.org/series/130992/
-State : failure
+Series: New rotation test
+URL   : https://patchwork.freedesktop.org/series/131011/
+State : warning
 
 == Summary ==
 
-IGT patchset build failed on latest successful build
-a44ebfe43edc96acab22a19b6a8850eef9202eea tests/xe_ccs: Separate inc dimension start width
+Pipeline status: FAILED.
 
-Tail of build.log:
-[121/1670] Compiling C object 'lib/76b5a35@@igt-i915_gem_c@sta/i915_gem.c.o'.
-[122/1670] Compiling C object 'tests/59830eb@@gem_ctx_engines@exe/intel_gem_ctx_engines.c.o'.
-[123/1670] Compiling C object 'tests/59830eb@@kms_display_modes@exe/kms_display_modes.c.o'.
-[124/1670] Compiling C object 'tests/59830eb@@dmabuf_sync_file@exe/dmabuf_sync_file.c.o'.
-[125/1670] Compiling C object 'tests/59830eb@@kms_atomic_interruptible@exe/kms_atomic_interruptible.c.o'.
-[126/1670] Generating i915-perf-metrics-acmgt1 with a custom command.
-[127/1670] Compiling C object 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o'.
-[128/1670] Compiling C object 'tests/59830eb@@fbdev@exe/fbdev.c.o'.
-[129/1670] Compiling C object 'tests/59830eb@@kms_cursor_edge_walk@exe/kms_cursor_edge_walk.c.o'.
-[130/1670] Compiling C object 'tests/59830eb@@kms_force_connector_basic@exe/kms_force_connector_basic.c.o'.
-[131/1670] Compiling C object 'tests/59830eb@@kms_plane_cursor@exe/kms_plane_cursor.c.o'.
-[132/1670] Compiling C object 'lib/76b5a35@@igt-i915_intel_drrs_c@sta/i915_intel_drrs.c.o'.
-[133/1670] Compiling C object 'tests/59830eb@@kms_plane_lowres@exe/kms_plane_lowres.c.o'.
-[134/1670] Compiling C object 'tests/59830eb@@kms_rmfb@exe/kms_rmfb.c.o'.
-[135/1670] Compiling C object 'tests/59830eb@@gem_vm_create@exe/intel_gem_vm_create.c.o'.
-[136/1670] Compiling C object 'lib/76b5a35@@igt-i915_gem_context_c@sta/i915_gem_context.c.o'.
-[137/1670] Compiling C object 'lib/76b5a35@@igt-drmtest_c@sta/drmtest.c.o'.
-[138/1670] Compiling C object 'tests/59830eb@@kms_async_flips@exe/kms_async_flips.c.o'.
-[139/1670] Compiling C object 'tests/59830eb@@kms_pipe_crc_basic@exe/kms_pipe_crc_basic.c.o'.
-[140/1670] Compiling C object 'lib/76b5a35@@igt-i915_gem_mman_c@sta/i915_gem_mman.c.o'.
-[141/1670] Compiling C object 'tests/59830eb@@kms_content_protection@exe/kms_content_protection.c.o'.
-[142/1670] Generating i915-perf-registers-acmgt2 with a custom command.
-[143/1670] Compiling C object 'tests/59830eb@@gem_ccs@exe/intel_gem_ccs.c.o'.
-[144/1670] Compiling C object 'tests/59830eb@@kms_prop_blob@exe/kms_prop_blob.c.o'.
-[145/1670] Compiling C object 'tests/59830eb@@core_hotunplug@exe/core_hotunplug.c.o'.
-[146/1670] Compiling C object 'tests/59830eb@@kms_plane_multiple@exe/kms_plane_multiple.c.o'.
-[147/1670] Compiling C object 'lib/76b5a35@@igt-i915_gem_engine_topology_c@sta/i915_gem_engine_topology.c.o'.
-[148/1670] Compiling C object 'tests/59830eb@@kms_hdr@exe/kms_hdr.c.o'.
-[149/1670] Compiling C object 'tests/59830eb@@kms_prime@exe/kms_prime.c.o'.
-[150/1670] Compiling C object 'tests/59830eb@@kms_color@exe/kms_color.c.o'.
-[151/1670] Compiling C object 'tests/59830eb@@kms_plane_alpha_blend@exe/kms_plane_alpha_blend.c.o'.
-[152/1670] Compiling C object 'tests/59830eb@@kms_getfb@exe/kms_getfb.c.o'.
-[153/1670] Compiling C object 'lib/76b5a35@@igt_device_scan@sta/igt_device_scan.c.o'.
-[154/1670] Compiling C object 'tests/59830eb@@kms_cursor_crc@exe/kms_cursor_crc.c.o'.
-[155/1670] Compiling C object 'tests/59830eb@@kms_addfb_basic@exe/kms_addfb_basic.c.o'.
-[156/1670] Compiling C object 'tests/59830eb@@kms_plane@exe/kms_plane.c.o'.
-[157/1670] Generating i915-perf-metrics-acmgt2 with a custom command.
-[158/1670] Compiling C object 'tests/59830eb@@kms_atomic_transition@exe/kms_atomic_transition.c.o'.
-[159/1670] Compiling C object 'tests/59830eb@@kms_lease@exe/kms_lease.c.o'.
-[160/1670] Compiling C object 'tests/59830eb@@kms_rotation_crc@exe/kms_rotation_crc.c.o'.
-[161/1670] Compiling C object 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o'.
-[162/1670] Compiling C object 'tests/59830eb@@kms_flip@exe/kms_flip.c.o'.
-[163/1670] Generating i915-perf-registers-acmgt3 with a custom command.
-[164/1670] Compiling C object 'tests/59830eb@@kms_atomic@exe/kms_atomic.c.o'.
-[165/1670] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
-[166/1670] Generating i915-perf-metrics-acmgt3 with a custom command.
-[167/1670] Compiling C object 'tests/59830eb@@gem_userptr_blits@exe/intel_gem_userptr_blits.c.o'.
-[168/1670] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
-[169/1670] Generating i915-perf-equations with a custom command.
-ninja: build stopped: subcommand failed.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1125655 for the overview.
 
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56172970):
+  [1790/1793] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/823] Generating version.h with a custom command.
+  [2/6] Linking target runner/runner_test.
+  [3/6] Generating intel-ci-tests with a custom command.
+  [4/6] Generating i915_tests.html with a custom command.
+  [5/6] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Documented igt@kms_rotation@rotations doesn't exist on source files
+  Warning: Missing documentation for igt@kms_rotation@rotation
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1710237700:step_script
+  section_start:1710237700:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710237700:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56172965):
+  [1796/1799] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/825] Generating version.h with a custom command.
+  [2/6] Linking target runner/runner_test.
+  [3/6] Generating i915_tests.html with a custom command.
+  [4/6] Generating intel-ci-tests with a custom command.
+  [5/6] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Documented igt@kms_rotation@rotations doesn't exist on source files
+  Warning: Missing documentation for igt@kms_rotation@rotation
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1710237773:step_script
+  section_start:1710237773:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710237774:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56172969):
+  [1796/1799] Generating intel-ci-tests with a custom command.
+  [1797/1799] Generating xe_tests.html with a custom command.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/825] Generating version.h with a custom command.
+  [2/5] Generating intel-ci-tests with a custom command.
+  [3/5] Generating i915_tests.html with a custom command.
+  [4/5] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Documented igt@kms_rotation@rotations doesn't exist on source files
+  Warning: Missing documentation for igt@kms_rotation@rotation
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1710237725:step_script
+  section_start:1710237725:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710237725:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56172968):
+  [1630/1633] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/775] Generating version.h with a custom command.
+  [2/6] Linking target runner/runner_test.
+  [3/6] Generating intel-ci-tests with a custom command.
+  [4/6] Generating i915_tests.html with a custom command.
+  [5/6] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Documented igt@kms_rotation@rotations doesn't exist on source files
+  Warning: Missing documentation for igt@kms_rotation@rotation
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1710237697:step_script
+  section_start:1710237697:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710237698:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56172966):
+  [1796/1799] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/825] Generating version.h with a custom command.
+  [2/6] Linking target runner/runner_test.
+  [3/6] Generating i915_tests.html with a custom command.
+  [4/6] Generating intel-ci-tests with a custom command.
+  [5/6] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Documented igt@kms_rotation@rotations doesn't exist on source files
+  Warning: Missing documentation for igt@kms_rotation@rotation
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1710237689:step_script
+  section_start:1710237689:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710237689:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56172967):
+  [1796/1799] Compiling C object 'runner/runner@@runner_test@exe/runner_tests.c.o'.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/825] Generating version.h with a custom command.
+  [2/6] Linking target runner/runner_test.
+  [3/6] Generating intel-ci-tests with a custom command.
+  [4/6] Generating i915_tests.html with a custom command.
+  [5/6] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Documented igt@kms_rotation@rotations doesn't exist on source files
+  Warning: Missing documentation for igt@kms_rotation@rotation
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1710237691:step_script
+  section_start:1710237691:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710237692:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1125655
