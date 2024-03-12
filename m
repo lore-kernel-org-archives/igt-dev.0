@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7251DC54E60
-	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 12:10:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62796C54E58
+	for <igt-dev@archiver.kernel.org>; Tue, 12 Mar 2024 12:22:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 17EEE10FC7F;
-	Tue, 12 Mar 2024 12:10:13 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C9EA110FC7F;
- Tue, 12 Mar 2024 12:10:11 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4405743188733991280=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/device=5Freset=3A_Skip_i?=
- =?utf-8?q?f_no_drm_devices_are_present?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nirmoy Das" <nirmoy.das@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 12 Mar 2024 12:10:11 -0000
-Message-ID: <171024541181.695179.15008849061514144081@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240312110059.18944-1-nirmoy.das@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id BD2E210E509;
+	Tue, 12 Mar 2024 12:22:47 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J1ITk3ll";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 603F610E509
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2024 12:22:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1710246166; x=1741782166;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=AmtZml9kkIm88StLHci55AffOkNB9JboEeldojan28w=;
+ b=J1ITk3lld5XOKTTO3iAi/eMSnF9y0s35nQfH08Xza6izeEGps3uQtrAI
+ TFYKyYk5SfnvgMmrT7D8634OSP7Vg7tzfNt66qZneXviRf5Nx57qIUjMC
+ KFSZBfDFXX1wLQu0aAoiqZz5R4kah73Vtzqrf/nXLBMj98OjSEmmM8CVf
+ SW7Ec5BOxSb0FnNVsOyGJJovH03exrTuaHiCe7HP2BMUwgWBB+TX1B2Vb
+ sYSVCmARfU6WKdPy1FwSjuBGw9uxCwT2l3Llfx0dKLXJBilt43jzqsNeL
+ kz6nl9SLD9GF35EjMgSQF0jC1rWkpEOQAjnUvHPD1Hb8ncW3/IrKAIKqt Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="16391797"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="16391797"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2024 05:22:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="11985746"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.6.110])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2024 05:22:43 -0700
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>
+Cc: kamil.konieczny@linux.intel.com, Nirmoy Das <nirmoy.das@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: Re: [PATCH i-g-t] tests/device_reset: Skip if no drm devices are
+ present
+Date: Tue, 12 Mar 2024 13:22:39 +0100
+Message-ID: <4191705.3T5rpR7ggn@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
 In-Reply-To: <20240312110059.18944-1-nirmoy.das@intel.com>
+References: <20240312110059.18944-1-nirmoy.das@intel.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +64,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4405743188733991280==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tuesday, 12 March 2024 12:00:59 CET Nirmoy Das wrote:
+> The assert is unnecessary at this early while init phase
+> of the test so skip the test instead when are no drm devices.
+> 
+> v2: fix a typo.
+> v3:  s/igt_assert_fd/igt_require_fd(Janusz)
+> 
+> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10087
+> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
 
-== Series Details ==
+Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-Series: tests/device_reset: Skip if no drm devices are present
-URL   : https://patchwork.freedesktop.org/series/131018/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7755_BAT -> XEIGTPW_10814_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
+> ---
+>  tests/device_reset.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/device_reset.c b/tests/device_reset.c
+> index 817cbc285..9ec9a213e 100644
+> --- a/tests/device_reset.c
+> +++ b/tests/device_reset.c
+> @@ -198,7 +198,7 @@ static void init_device_fds(struct device_fds *dev)
+>  	 * a device file descriptor open for exit handler use.
+>  	 */
+>  	dev->fds.dev = __drm_open_driver(DRIVER_ANY);
+> -	igt_assert_fd(dev->fds.dev);
+> +	igt_require_fd(dev->fds.dev);
+>  	if (is_i915_device(dev->fds.dev))
+>  		igt_require_gem(dev->fds.dev);
+>  
+> 
 
 
-Build changes
--------------
-
-  * IGT: IGT_7755 -> IGTPW_10814
-
-  IGTPW_10814: 10814
-  IGT_7755: 7755
-  xe-929-61fa386186cb302cf26e29aef76d5b1a6ffe57ad: 61fa386186cb302cf26e29aef76d5b1a6ffe57ad
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10814/index.html
-
---===============4405743188733991280==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/device_reset: Skip if no drm devices are present</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131018/">https://patchwork.freedesktop.org/series/131018/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10814/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10814/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7755_BAT -&gt; XEIGTPW_10814_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7755 -&gt; IGTPW_10814</li>
-</ul>
-<p>IGTPW_10814: 10814<br />
-  IGT_7755: 7755<br />
-  xe-929-61fa386186cb302cf26e29aef76d5b1a6ffe57ad: 61fa386186cb302cf26e29aef76d5b1a6ffe57ad</p>
-
-</body>
-</html>
-
---===============4405743188733991280==--
