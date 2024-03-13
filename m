@@ -4,51 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 187D7C54791
-	for <igt-dev@archiver.kernel.org>; Wed, 13 Mar 2024 11:59:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0152C54791
+	for <igt-dev@archiver.kernel.org>; Wed, 13 Mar 2024 11:59:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A16EB10F76C;
-	Wed, 13 Mar 2024 11:59:18 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gnP9CwpN";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 522CB10F75E
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Mar 2024 11:59:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710331157; x=1741867157;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=vuPUgr8dRnzP4yp6Yku2jQjA+IpGvItuP6mCXkPvbCY=;
- b=gnP9CwpNHra0AHVWsADb6huPZDJ7TrswYkB/AGJnPJ/J3aaEFtNqOXzX
- K9Bs4VITJ3aX8JoAigJR4pPHd3blJC5bkppCSNgrMqgYtgyPqSC2PpcPk
- waO7IP1P47qhHSAerBUO2OFnH47ZR6Y/O7nUsrgxMJXkRlDHPoq47YECk
- ZyPF7Y0SFu/yv5AoQVSCYeMHNTNcT0c/K/nwUpQiXXpSK3i+I4P8iNwaf
- ltPW/YH7E4+4bD83rrOvhiNvytE4QgiwKUIE1TJepBT2FqHczglKlgwOj
- wfTxZH7eYS5HB3mHIROHKRwQdC/IVXlY6oFcZChzC1AjuPC0wV1Ziot1h g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="4945989"
-X-IronPort-AV: E=Sophos;i="6.07,122,1708416000"; 
-   d="scan'208";a="4945989"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2024 04:59:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,122,1708416000"; d="scan'208";a="42833291"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.246.0.122])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2024 04:59:14 -0700
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com,
-	lukasz.laguna@intel.com
-Subject: [PATCH i-g-t] SRIOV: lib/igt_sriov_device: Cache xe device at open
-Date: Wed, 13 Mar 2024 12:59:11 +0100
-Message-Id: <20240313115911.22870-1-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.31.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 403C310F772;
+	Wed, 13 Mar 2024 11:59:45 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A3F610F770;
+ Wed, 13 Mar 2024 11:59:44 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5358245348038043225=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/kunit=3A_Execute_test_case?=
+ =?utf-8?q?s_synchronously_=28rev5=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 13 Mar 2024 11:59:44 -0000
+Message-ID: <171033118450.732430.12291858516760822964@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240227151128.16802-4-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20240227151128.16802-4-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,49 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Be consistent with other drm_open_xxx functions.
+--===============5358245348038043225==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
----
- lib/igt_sriov_device.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
-index f20761669..f425a5ecf 100644
---- a/lib/igt_sriov_device.c
-+++ b/lib/igt_sriov_device.c
-@@ -12,6 +12,7 @@
- #include "igt_device.h"
- #include "igt_sriov_device.h"
- #include "igt_sysfs.h"
-+#include "xe/xe_query.h"
- 
- /**
-  * igt_sriov_is_pf - Check if device is PF
-@@ -232,6 +233,7 @@ int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num)
- 	DIR *dir;
- 	struct dirent *de;
- 	bool found = false;
-+	int fd;
- 
- 	if (!vf_num)
- 		return -1;
-@@ -258,7 +260,11 @@ int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num)
- 	if (!found)
- 		return -1;
- 
--	return __drm_open_device(dev_name, DRIVER_ANY);
-+	fd = __drm_open_device(dev_name, DRIVER_ANY);
-+	if (fd >= 0 && is_xe_device(fd))
-+		xe_device_get(fd);
-+
-+	return fd;
- }
- 
- /**
--- 
-2.31.1
+Series: lib/kunit: Execute test cases synchronously (rev5)
+URL   : https://patchwork.freedesktop.org/series/126017/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7759_BAT -> XEIGTPW_10822_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7759 -> IGTPW_10822
+  * Linux: xe-932-8762453258673794e13e4d59cb9df1042b97ba01 -> xe-933-c323e03ff602c24e09dd579aae3e1c2ceb4b8531
+
+  IGTPW_10822: 10822
+  IGT_7759: 7759
+  xe-932-8762453258673794e13e4d59cb9df1042b97ba01: 8762453258673794e13e4d59cb9df1042b97ba01
+  xe-933-c323e03ff602c24e09dd579aae3e1c2ceb4b8531: c323e03ff602c24e09dd579aae3e1c2ceb4b8531
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10822/index.html
+
+--===============5358245348038043225==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/kunit: Execute test cases synchronously (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126017/">https://patchwork.freedesktop.org/series/126017/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10822/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10822/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7759_BAT -&gt; XEIGTPW_10822_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7759 -&gt; IGTPW_10822</li>
+<li>Linux: xe-932-8762453258673794e13e4d59cb9df1042b97ba01 -&gt; xe-933-c323e03ff602c24e09dd579aae3e1c2ceb4b8531</li>
+</ul>
+<p>IGTPW_10822: 10822<br />
+  IGT_7759: 7759<br />
+  xe-932-8762453258673794e13e4d59cb9df1042b97ba01: 8762453258673794e13e4d59cb9df1042b97ba01<br />
+  xe-933-c323e03ff602c24e09dd579aae3e1c2ceb4b8531: c323e03ff602c24e09dd579aae3e1c2ceb4b8531</p>
+
+</body>
+</html>
+
+--===============5358245348038043225==--
