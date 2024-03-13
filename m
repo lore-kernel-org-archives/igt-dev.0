@@ -4,54 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C151EC54791
-	for <igt-dev@archiver.kernel.org>; Wed, 13 Mar 2024 16:52:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3AAAC54791
+	for <igt-dev@archiver.kernel.org>; Wed, 13 Mar 2024 16:54:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5D0A110E2DE;
-	Wed, 13 Mar 2024 16:52:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 57A8910E4B5;
+	Wed, 13 Mar 2024 16:54:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Et3vZd9T";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TvwwFLss";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2197F10E2DE
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Mar 2024 16:52:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1AC0110E4B5
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Mar 2024 16:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710348769; x=1741884769;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=wGC5C826aJqi81FLSUCct0dByZBTbJ3m7cdVlg3axD8=;
- b=Et3vZd9TZQbxWGV25teu1cQYV0pHyqU+gGLdfzWSdqJHz7PVn9bN8N0q
- 5sNCeIVggqudVlpTB/OE5JccZGyTcGj0qwZo4g2WWRYmraAmUXSf3Wloq
- tGUvL2ka10RZoUXaYwMWyYl0K51J8yiq+hysmp58am4QDXfFSwVC1aafo
- 6oHRt0n44bNBuXJFpXCFgjjd1P20aHoyXFt5KspT+waNuRMz1CWBDZtgw
- Puys7YE8GS1cAbjlN8FO2BG1ilQBiNUSAjWLXMNpwKjtQGY6ct2pTH/TJ
- nRtu8FP9yI9xHQ8G5LDuoYtYi1KC/0Y11ZcBJPcRLBJ9zDj+x1gMAc1/q w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="16283701"
-X-IronPort-AV: E=Sophos;i="6.07,123,1708416000"; d="scan'208";a="16283701"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2024 09:52:48 -0700
+ t=1710348862; x=1741884862;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=ZTFTKyO3TnbUmiFlbTUG7Ic32JPq7mf9dV4sjNURKaU=;
+ b=TvwwFLssCiYwvYztZ3ELQ4U7hCR13ZWeuLN9HjkjW4MCJLv22hHZDn6f
+ F4VUFIBsiLZcnumGK3FISCdyEnhZ7JTagUmjLHifYCMS6YYFyq1Ex3t9O
+ WVdYIA9PeH3soAcDYxrROCY5uIzYuvFUbwV0KeQ3ztjTDFkfrh9JdYnxJ
+ /9ya7TqT3Z+jnu3I3vfs8LqvLpZWe2uVxHa/JBsSGNKz3puc0ZYN4bnf6
+ JpXI8S/uWlztB5H2Yeb+1OoG5Zj9UXClYVJJraInJHpH4XMnzmeAQOIJ2
+ W99mc7dn1AgLdL/SykDp1B2chsVjxY5q8sArcYuut7ygGDDHFMOkClq1v w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="15685341"
+X-IronPort-AV: E=Sophos;i="6.07,123,1708416000"; d="scan'208";a="15685341"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Mar 2024 09:54:20 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,123,1708416000"; d="scan'208";a="42915849"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.25.211])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2024 09:52:47 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: lgci.bug.filing@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: =?UTF-8?B?4pyX?= Fi.CI.IGT: failure for lib/kunit: Execute test
- cases synchronously (rev5)
-Date: Wed, 13 Mar 2024 17:52:44 +0100
-Message-ID: <2984694.A7TYtsqqnE@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <171034760395.732671.5727539964803646204@8e613ede5ea5>
-References: <20240227151128.16802-4-janusz.krzysztofik@linux.intel.com>
- <171034760395.732671.5727539964803646204@8e613ede5ea5>
+X-IronPort-AV: E=Sophos;i="6.07,123,1708416000"; d="scan'208";a="12402527"
+Received: from unknown (HELO [10.245.244.231]) ([10.245.244.231])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Mar 2024 09:54:19 -0700
+Message-ID: <d78b0e4e-0113-4bc1-8b52-0c0dc886b904@intel.com>
+Date: Wed, 13 Mar 2024 16:54:15 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/intel/xe_evict: Skip test if smem less than
+ lmem
+Content-Language: en-GB
+To: "Nayana, Venkata Ramana" <venkata.ramana.nayana@intel.com>,
+ "Brost, Matthew" <matthew.brost@intel.com>,
+ "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+References: <20240312071502.2188325-1-priyanka.dandamudi@intel.com>
+ <ZfEldQt9qH1lLuTp@DUT025-TGLU.fm.intel.com>
+ <DS7PR11MB6078B65CA9CB5429B73F0A3DA52A2@DS7PR11MB6078.namprd11.prod.outlook.com>
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <DS7PR11MB6078B65CA9CB5429B73F0A3DA52A2@DS7PR11MB6078.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,75 +70,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi BUG Filing,
+On 13/03/2024 09:47, Nayana, Venkata Ramana wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Brost, Matthew <matthew.brost@intel.com>
+>> Sent: Wednesday, March 13, 2024 9:33 AM
+>> To: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
+>> Cc: Nayana, Venkata Ramana <venkata.ramana.nayana@intel.com>; igt-
+>> dev@lists.freedesktop.org
+>> Subject: Re: [PATCH i-g-t] tests/intel/xe_evict: Skip test if smem less than
+>> lmem
+>>
+>> On Tue, Mar 12, 2024 at 12:45:02PM +0530, priyanka.dandamudi@intel.com
+>> wrote:
+>>> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+>>>
+>>> Currently the tests are failing with OOO memory error.
+>>> Added code to skip the test if the system memory size is less than
+>>> local memory size.
+>>>
+>>> Cc: Matthew Brost <matthew.brost@intel.com>
+>>> Cc: Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
+>>> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+>>> ---
+>>>   tests/intel/xe_evict.c | 2 ++
+>>>   1 file changed, 2 insertions(+)
+>>>
+>>> diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c index
+>>> 4de82c3bd..2dc3fe542 100644
+>>> --- a/tests/intel/xe_evict.c
+>>> +++ b/tests/intel/xe_evict.c
+>>> @@ -753,6 +753,8 @@ igt_main
+>>>   		igt_require(xe_has_vram(fd));
+>>>   		vram_size = xe_visible_vram_size(fd, 0);
+>>>   		igt_assert(vram_size);
+>>
+>> I'd add a comment here explaining why we are skipping.
+>>
+>> Test requires SRAM to about as big as VRAM. For example, small-cm creates
+>> (448 / 2) BOs with a size (1 / 128) of the total VRAM size. For simplicity ensure
+>> the SRAM size >= VRAM before running this test.
 
-On Wednesday, 13 March 2024 17:33:23 CET Patchwork wrote:
-> == Series Details ==
-> 
-> Series: lib/kunit: Execute test cases synchronously (rev5)
-> URL   : https://patchwork.freedesktop.org/series/126017/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_14424_full -> IGTPW_10822_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_10822_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_10822_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10822/index.html
-> 
-> Participating hosts (9 -> 9)
-> ------------------------------
-> 
->   Additional (1): shard-dg2-4 
->   Missing    (1): shard-snb-0 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_10822_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_module_load@reload-with-fault-injection:
->     - shard-tglu:         [PASS][1] -> [INCOMPLETE][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14424/shard-tglu-6/igt@i915_module_load@reload-with-fault-injection.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10822/shard-tglu-6/igt@i915_module_load@reload-with-fault-injection.html
-> 
->   * igt@kms_flip@plain-flip-ts-check@a-hdmi-a4:
->     - shard-dg1:          [PASS][3] -> [FAIL][4]
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14424/shard-dg1-17/igt@kms_flip@plain-flip-ts-check@a-hdmi-a4.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10822/shard-dg1-15/igt@kms_flip@plain-flip-ts-check@a-hdmi-a4.html
-> 
->   * igt@sysfs_timeslice_duration@timeout@ccs3:
->     - shard-dg2:          [PASS][5] -> [TIMEOUT][6]
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14424/shard-dg2-2/igt@sysfs_timeslice_duration@timeout@ccs3.html
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10822/shard-dg2-6/igt@sysfs_timeslice_duration@timeout@ccs3.html
+Don't we also need ram_mb() / 2? IIRC that is the actual size of the 
+system memory manager in ttm. Instead of using igt_get_avail_ram_mb() 
+maybe use we can use the xe region query interface which already 
+accounts for that?
 
-None of the above is related to the scope of this patch series which touches 
-only KUnit tests (drm_buddy, drm_mm, kms_selftest or xe_live_ktest for now).  
+>>
+>> Matt
+> Hi Matt,
+> 
+> If expectation is always SRAM >= VRAM then in pre-silicon environment tests will always skip
+> because on emulation LMEM size is 64GB and SMEM is 8GB, we can't get 64gb system memory
+> machines. Can't we change the design? Means in the test can we limit LMEM to 4GB and do object's
+> evict if >4gb? My intension instead of skip on presil environments, at least test eviction flows.
 
-BUG Filing, please update filters and re-report.
-
-Thanks,
-Janusz
+fwiw we did something like that in i915 where you can set the usable 
+VRAM size via a modparam, which we make use of in gem_lmem_swapping to 
+force the VRAM size to be ~4G (for similar reasons). Here we could do 
+maybe do something similar using the xe region size for system memory?
 
 > 
->   
-> #### Suppressed ####
-<snip>
-
-
+> Any suggestions Matt.
+> 
+> Thanks,
+> Venkat.
+>>
+>>> +		igt_skip_on_f(igt_get_avail_ram_mb() < (vram_size >> 20),
+>>> +			      "System memory is less than local memory \n");
+>>>
+>>>   		xe_for_each_engine(fd, hwe)
+>>>   			if (hwe->engine_class !=
+>> DRM_XE_ENGINE_CLASS_COPY)
+>>> --
+>>> 2.25.1
+>>>
