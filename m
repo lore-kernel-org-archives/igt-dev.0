@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E637C54E58
-	for <igt-dev@archiver.kernel.org>; Wed, 13 Mar 2024 13:29:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DDC0C54E58
+	for <igt-dev@archiver.kernel.org>; Wed, 13 Mar 2024 13:57:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 10E6610E4D0;
-	Wed, 13 Mar 2024 13:29:29 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82A4110E4D0;
- Wed, 13 Mar 2024 13:29:27 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3570293814179838507=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id B555910EC1D;
+	Wed, 13 Mar 2024 13:57:08 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aBcR+TnL";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 35FB910EC1D
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Mar 2024 13:57:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1710338227; x=1741874227;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=WOT7PpoQxcZhlgZZxKk91oVydrbT+grREkT/C6KdFgY=;
+ b=aBcR+TnL6TtIm0rDAA8ekkVWi2hyk+b4vjECILueMRjSNr2h9V4A1GTk
+ NyJmYu9kTfm7WFC9izEr0MZ60L6OUXC6eebjyZ97zhLt5g/TMgnqFAK3R
+ pa4rttyBs0gnUge1HSzP+Ff4A1AGppOQWYTqCjKJxlc7kksn44BmhkzdS
+ mBcdGxxnGkq6IuAfziZC4vlWB8AcaMtj6EFhuNF9jP07Ume0SONipSiBd
+ kqfoJ+gfp0eAULV3DBapcgCvWjUud5YUdrxSA6o1A6tF/AW+MtiOHl6p8
+ 8yM9LLEeR4hgBWCxe06ji+cHa8OejuUs4np/bza/TWL0vV3aGY5g5R+bF A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="5272910"
+X-IronPort-AV: E=Sophos;i="6.07,122,1708416000"; 
+   d="scan'208";a="5272910"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Mar 2024 06:57:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,122,1708416000"; d="scan'208";a="11836571"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2024 06:57:05 -0700
+Date: Wed, 13 Mar 2024 14:56:44 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, lukasz.laguna@intel.com
+Subject: Re: [PATCH i-g-t] SRIOV: lib/igt_sriov_device: Cache xe device at open
+Message-ID: <20240313135644.hlsexcbvuotvzext@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, lukasz.laguna@intel.com
+References: <20240313115911.22870-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_Add_common_functions_for_i9?=
- =?utf-8?q?15_and_xe?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 13 Mar 2024 13:29:27 -0000
-Message-ID: <171033656753.732599.8475998951728509698@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240313104520.148338-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20240313104520.148338-1-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240313115911.22870-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,170 +64,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3570293814179838507==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Marcin,
+On 2024-03-13 at 12:59:11 +0100, Marcin Bernatowicz wrote:
+> Be consistent with other drm_open_xxx functions.
+s/xxx/*/
 
-== Series Details ==
+In subject, drop SRIOV:, s/SRIOV: lib/lib/
 
-Series: Add common functions for i915 and xe
-URL   : https://patchwork.freedesktop.org/series/131069/
-State : success
+With that fixed,
 
-== Summary ==
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-CI Bug Log - changes from CI_DRM_14425 -> IGTPW_10823
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10823/index.html
-
-Participating hosts (37 -> 34)
-------------------------------
-
-  Missing    (3): fi-cfl-8109u bat-jsl-1 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10823 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@dmabuf:
-    - {bat-mtlp-9}:       [DMESG-FAIL][1] -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14425/bat-mtlp-9/igt@i915_selftest@live@dmabuf.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10823/bat-mtlp-9/igt@i915_selftest@live@dmabuf.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg2-9:          [ABORT][3] ([i915#10366]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14425/bat-dg2-9/igt@i915_selftest@live@hangcheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10823/bat-dg2-9/igt@i915_selftest@live@hangcheck.html
-    - bat-rpls-3:         [DMESG-WARN][5] ([i915#5591]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14425/bat-rpls-3/igt@i915_selftest@live@hangcheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10823/bat-rpls-3/igt@i915_selftest@live@hangcheck.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10366]: https://gitlab.freedesktop.org/drm/intel/issues/10366
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#8809]: https://gitlab.freedesktop.org/drm/intel/issues/8809
-  [i915#9159]: https://gitlab.freedesktop.org/drm/intel/issues/9159
-  [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
-  [i915#9732]: https://gitlab.freedesktop.org/drm/intel/issues/9732
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7759 -> IGTPW_10823
-
-  CI-20190529: 20190529
-  CI_DRM_14425: 050dddfc65dd66c35a848204141eb9ee289cc6c9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10823: 10823
-  IGT_7759: 7759
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10823/index.html
-
---===============3570293814179838507==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add common functions for i915 and xe</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131069/">https://patchwork.freedesktop.org/series/131069/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10823/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10823/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14425 -&gt; IGTPW_10823</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10823/index.html</p>
-<h2>Participating hosts (37 -&gt; 34)</h2>
-<p>Missing    (3): fi-cfl-8109u bat-jsl-1 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10823 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@dmabuf:</p>
-<ul>
-<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14425/bat-mtlp-9/igt@i915_selftest@live@dmabuf.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10823/bat-mtlp-9/igt@i915_selftest@live@dmabuf.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14425/bat-dg2-9/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10366">i915#10366</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10823/bat-dg2-9/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-<li>bat-rpls-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14425/bat-rpls-3/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5591">i915#5591</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10823/bat-rpls-3/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7759 -&gt; IGTPW_10823</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14425: 050dddfc65dd66c35a848204141eb9ee289cc6c9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10823: 10823<br />
-  IGT_7759: 7759</p>
-
-</body>
-</html>
-
---===============3570293814179838507==--
+> 
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> ---
+>  lib/igt_sriov_device.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
+> index f20761669..f425a5ecf 100644
+> --- a/lib/igt_sriov_device.c
+> +++ b/lib/igt_sriov_device.c
+> @@ -12,6 +12,7 @@
+>  #include "igt_device.h"
+>  #include "igt_sriov_device.h"
+>  #include "igt_sysfs.h"
+> +#include "xe/xe_query.h"
+>  
+>  /**
+>   * igt_sriov_is_pf - Check if device is PF
+> @@ -232,6 +233,7 @@ int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num)
+>  	DIR *dir;
+>  	struct dirent *de;
+>  	bool found = false;
+> +	int fd;
+>  
+>  	if (!vf_num)
+>  		return -1;
+> @@ -258,7 +260,11 @@ int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num)
+>  	if (!found)
+>  		return -1;
+>  
+> -	return __drm_open_device(dev_name, DRIVER_ANY);
+> +	fd = __drm_open_device(dev_name, DRIVER_ANY);
+> +	if (fd >= 0 && is_xe_device(fd))
+> +		xe_device_get(fd);
+> +
+> +	return fd;
+>  }
+>  
+>  /**
+> -- 
+> 2.31.1
+> 
