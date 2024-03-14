@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A4E4C5475B
-	for <igt-dev@archiver.kernel.org>; Thu, 14 Mar 2024 11:24:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C843BC5475B
+	for <igt-dev@archiver.kernel.org>; Thu, 14 Mar 2024 11:47:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3D2C010ECE7;
-	Thu, 14 Mar 2024 11:24:35 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="If3Ub/6X";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B36F10ECE7
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Mar 2024 11:24:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710415474; x=1741951474;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=I0IyaWHlNbYcJX97vcrA5yk7l4dkV3FRwzXWwL9hXPU=;
- b=If3Ub/6XE1MNU7lMLh2LkjzpiJEGdPltIffQ0if3hNIJlMfFG0Rti+uM
- 1eZBhhTyrej+Lb7BFNmh1fXmr8xd3hID5uLtmiWC90Q0fMFIIp4ZyiHYI
- sAwhZ63O+qWSvxaZETAptS45LOG4P0GoE2cv00leKaq56s8n800xnkxDH
- tqCDF/GI7URomfQ00k8OhdLyHi/+JFQIzhxaPRsMIfbDeJ23rXwe564JR
- TJVQNbeQaBuY7HHQ8dhZ/16mEzPOpXCkZVfp2nqlHIr+9HmB2rBqbHrW6
- h1sebGWFzankRzvhr6J4PrJBzK86rrAUYSzeAvvRx3hjEJl44KKtyXEjp w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="5422645"
-X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; 
-   d="scan'208";a="5422645"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2024 04:24:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; d="scan'208";a="43296406"
-Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.246.35.115])
- ([10.246.35.115])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2024 04:24:33 -0700
-Message-ID: <9acb2321-0a14-4ab8-a3c9-c082ce381870@linux.intel.com>
-Date: Thu, 14 Mar 2024 12:24:30 +0100
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7B60E10FA9E;
+	Thu, 14 Mar 2024 11:47:05 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE1C610FAA0;
+ Thu, 14 Mar 2024 11:47:03 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7036474544822328766=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] lib/xe_spin: Fix MI_STORE_REGISTER_MEM instruction
- usage
-Content-Language: en-US
-To: Matt Roper <matthew.d.roper@intel.com>, igt-dev@lists.freedesktop.org
-References: <20240314005852.2985628-1-matthew.d.roper@intel.com>
-From: Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <20240314005852.2985628-1-matthew.d.roper@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_More_improvements_to_scripts/x?=
+ =?utf-8?q?ls=5Fto=5Fdoc=2Epy?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mauro Carvalho Chehab" <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 14 Mar 2024 11:47:03 -0000
+Message-ID: <171041682370.753906.15208475146360286776@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240314103014.1170437-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20240314103014.1170437-1-mauro.chehab@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,40 +37,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============7036474544822328766==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 3/14/2024 1:58 AM, Matt Roper wrote:
-> The MI_STORE_REGISTER_MEM macro in IGT's instruction header is the "old"
-> version of this define, intended for use on pre-gen8 platforms since it
-> bakes in the fixed 3-dword instruction length in the instruction header.
-> For gen8 and beyond (i.e., every platform the Xe driver supports), the
-> MI_STORE_REGISTER_MEM_GEN8 macro should be used instead, which properly
-> bakes in the 4-dword instruction length.  Since the xe_spin library was
-> using the old macro, but then manually |'ing in a "2" at the end of the
-> expression, it was effectively winding up with a field value of 3 (which
-> would represent a 5-dword instruction).
->
-> Switch xe_spin to using the "GEN8" macro and drop the redundant "| 2"
-> which is already handled by the macro itself.
->
-> Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-> ---
->   lib/xe/xe_spin.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index 2c531e85e..1ca54ea19 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -114,7 +114,7 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
->   		spin->batch[b++] = MI_MATH_STOREINV(MI_MATH_REG(NOW_TS), MI_MATH_REG_ACCU);
->   
->   		/* Save delta for reading by COND_BBE */
-> -		spin->batch[b++] = MI_STORE_REGISTER_MEM | MI_SRM_CS_MMIO | 2;
-> +		spin->batch[b++] = MI_STORE_REGISTER_MEM_GEN8 | MI_SRM_CS_MMIO;
->   		spin->batch[b++] = CS_GPR(NOW_TS);
->   		spin->batch[b++] = ticks_delta_addr;
->   		spin->batch[b++] = ticks_delta_addr >> 32;
+== Series Details ==
+
+Series: More improvements to scripts/xls_to_doc.py
+URL   : https://patchwork.freedesktop.org/series/131130/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7762_BAT -> XEIGTPW_10834_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10834_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_exec_threads@threads-mixed-shared-vm-basic:
+    - bat-pvc-2:          [PASS][1] -> [DMESG-WARN][2] ([Intel XE#1238])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7762/bat-pvc-2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10834/bat-pvc-2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html
+
+  
+  [Intel XE#1238]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1238
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7762 -> IGTPW_10834
+
+  IGTPW_10834: 10834
+  IGT_7762: 7725ae2998aed37bcc2e38926e404e5eec143451 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-939-9bedef916cef04bba9e98430c1c1de637219a573: 9bedef916cef04bba9e98430c1c1de637219a573
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10834/index.html
+
+--===============7036474544822328766==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>More improvements to scripts/xls_to_doc.py</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131130/">https://patchwork.freedesktop.org/series/131130/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10834/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10834/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7762_BAT -&gt; XEIGTPW_10834_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10834_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_exec_threads@threads-mixed-shared-vm-basic:<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7762/bat-pvc-2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10834/bat-pvc-2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1238">Intel XE#1238</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7762 -&gt; IGTPW_10834</li>
+</ul>
+<p>IGTPW_10834: 10834<br />
+  IGT_7762: 7725ae2998aed37bcc2e38926e404e5eec143451 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-939-9bedef916cef04bba9e98430c1c1de637219a573: 9bedef916cef04bba9e98430c1c1de637219a573</p>
+
+</body>
+</html>
+
+--===============7036474544822328766==--
