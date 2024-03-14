@@ -4,49 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 334E6C54E58
-	for <igt-dev@archiver.kernel.org>; Thu, 14 Mar 2024 00:59:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDCBAC54E66
+	for <igt-dev@archiver.kernel.org>; Thu, 14 Mar 2024 01:51:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BE27D10E105;
-	Thu, 14 Mar 2024 00:58:59 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Nt4f5o45";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 43D4810E105
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Mar 2024 00:58:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710377939; x=1741913939;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=jDpPFTt8Qk6zfxtQQFWgQM6MjgpXkUrZWG2QZiJqnNo=;
- b=Nt4f5o45oLd5QwwrQUFsHUdJn0juLGJuzz2V9ZGMjEm4/jUqlXDAdv6y
- yrvOWSIWodOwkJbCCEJxaCpI38Z4X/SLQhh9l+7y0AmGROfIdrk2C2pqK
- ufM7f7z/vwaY9omkwipoiE1xRjPxhY0Pd9VQR+5lNyS3KWaAPOBnHD4l2
- reZiZID6m71RkuTdJlzGLooILk89URkzTADu2cTCTnqdeFhE8osB7xeUN
- NikdrVtFkUnPErwluP2wRm0FhOQy881IwlSFwr3C7Me/5iw12zwbDmYvJ
- F7qHmtj3UeJvC2Ry9qf94MixFzyvqIqpkiTu8lk1NNGqr2hzVdAe73u2o A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="5041839"
-X-IronPort-AV: E=Sophos;i="6.07,124,1708416000"; 
-   d="scan'208";a="5041839"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2024 17:58:58 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,124,1708416000"; d="scan'208";a="49558568"
-Received: from mdroper-desk1.fm.intel.com ([10.1.39.140])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Mar 2024 17:58:56 -0700
-From: Matt Roper <matthew.d.roper@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: matthew.d.roper@intel.com
-Subject: [PATCH i-g-t] lib/xe_spin: Fix MI_STORE_REGISTER_MEM instruction usage
-Date: Wed, 13 Mar 2024 17:58:52 -0700
-Message-ID: <20240314005852.2985628-1-matthew.d.roper@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4653410EE80;
+	Thu, 14 Mar 2024 01:51:54 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C92610EE80;
+ Thu, 14 Mar 2024 01:51:53 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3895054818766188442=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/xe=5Fspin=3A_Fix_MI=5FSTOR?=
+ =?utf-8?q?E=5FREGISTER=5FMEM_instruction_usage?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matt Roper" <matthew.d.roper@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 14 Mar 2024 01:51:53 -0000
+Message-ID: <171038111351.734591.11663691741216322507@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240314005852.2985628-1-matthew.d.roper@intel.com>
+In-Reply-To: <20240314005852.2985628-1-matthew.d.roper@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,40 +37,140 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The MI_STORE_REGISTER_MEM macro in IGT's instruction header is the "old"
-version of this define, intended for use on pre-gen8 platforms since it
-bakes in the fixed 3-dword instruction length in the instruction header.
-For gen8 and beyond (i.e., every platform the Xe driver supports), the
-MI_STORE_REGISTER_MEM_GEN8 macro should be used instead, which properly
-bakes in the 4-dword instruction length.  Since the xe_spin library was
-using the old macro, but then manually |'ing in a "2" at the end of the
-expression, it was effectively winding up with a field value of 3 (which
-would represent a 5-dword instruction).
+--===============3895054818766188442==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Switch xe_spin to using the "GEN8" macro and drop the redundant "| 2"
-which is already handled by the macro itself.
+== Series Details ==
 
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
----
- lib/xe/xe_spin.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Series: lib/xe_spin: Fix MI_STORE_REGISTER_MEM instruction usage
+URL   : https://patchwork.freedesktop.org/series/131112/
+State : success
 
-diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index 2c531e85e..1ca54ea19 100644
---- a/lib/xe/xe_spin.c
-+++ b/lib/xe/xe_spin.c
-@@ -114,7 +114,7 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
- 		spin->batch[b++] = MI_MATH_STOREINV(MI_MATH_REG(NOW_TS), MI_MATH_REG_ACCU);
- 
- 		/* Save delta for reading by COND_BBE */
--		spin->batch[b++] = MI_STORE_REGISTER_MEM | MI_SRM_CS_MMIO | 2;
-+		spin->batch[b++] = MI_STORE_REGISTER_MEM_GEN8 | MI_SRM_CS_MMIO;
- 		spin->batch[b++] = CS_GPR(NOW_TS);
- 		spin->batch[b++] = ticks_delta_addr;
- 		spin->batch[b++] = ticks_delta_addr >> 32;
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_7760_BAT -> XEIGTPW_10830_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10830_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-adlp-7:         [SKIP][1] -> [PASS][2] +2 other tests pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7760/bat-adlp-7/igt@xe_live_ktest@xe_migrate.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10830/bat-adlp-7/igt@xe_live_ktest@xe_migrate.html
+    - bat-pvc-2:          [SKIP][3] -> [PASS][4] +2 other tests pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7760/bat-pvc-2/igt@xe_live_ktest@xe_migrate.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10830/bat-pvc-2/igt@xe_live_ktest@xe_migrate.html
+    - bat-dg2-oem2:       [SKIP][5] -> [PASS][6] +2 other tests pass
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7760/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10830/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html
+    - bat-atsm-2:         [SKIP][7] -> [PASS][8] +2 other tests pass
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7760/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10830/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html
+
+  
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7760 -> IGTPW_10830
+  * Linux: xe-936-ca050304d54e3a0f96bf148053f738d6b62de43a -> xe-937-790a1d4e546a1d7f1cc5316c77f21379a4083250
+
+  IGTPW_10830: 10830
+  IGT_7760: 7760
+  xe-936-ca050304d54e3a0f96bf148053f738d6b62de43a: ca050304d54e3a0f96bf148053f738d6b62de43a
+  xe-937-790a1d4e546a1d7f1cc5316c77f21379a4083250: 790a1d4e546a1d7f1cc5316c77f21379a4083250
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10830/index.html
+
+--===============3895054818766188442==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/xe_spin: Fix MI_STORE_REGISTER_MEM instruction usage</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131112/">https://patchwork.freedesktop.org/series/131112/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10830/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10830/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7760_BAT -&gt; XEIGTPW_10830_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10830_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_migrate:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7760/bat-adlp-7/igt@xe_live_ktest@xe_migrate.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10830/bat-adlp-7/igt@xe_live_ktest@xe_migrate.html">PASS</a> +2 other tests pass</li>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7760/bat-pvc-2/igt@xe_live_ktest@xe_migrate.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10830/bat-pvc-2/igt@xe_live_ktest@xe_migrate.html">PASS</a> +2 other tests pass</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7760/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10830/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate.html">PASS</a> +2 other tests pass</li>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7760/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10830/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html">PASS</a> +2 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7760 -&gt; IGTPW_10830</li>
+<li>Linux: xe-936-ca050304d54e3a0f96bf148053f738d6b62de43a -&gt; xe-937-790a1d4e546a1d7f1cc5316c77f21379a4083250</li>
+</ul>
+<p>IGTPW_10830: 10830<br />
+  IGT_7760: 7760<br />
+  xe-936-ca050304d54e3a0f96bf148053f738d6b62de43a: ca050304d54e3a0f96bf148053f738d6b62de43a<br />
+  xe-937-790a1d4e546a1d7f1cc5316c77f21379a4083250: 790a1d4e546a1d7f1cc5316c77f21379a4083250</p>
+
+</body>
+</html>
+
+--===============3895054818766188442==--
