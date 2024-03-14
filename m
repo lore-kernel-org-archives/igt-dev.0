@@ -4,59 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3356C54E60
-	for <igt-dev@archiver.kernel.org>; Thu, 14 Mar 2024 15:39:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED740C54E60
+	for <igt-dev@archiver.kernel.org>; Thu, 14 Mar 2024 16:45:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6E5ED10E771;
-	Thu, 14 Mar 2024 15:39:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 75ACE10F97B;
+	Thu, 14 Mar 2024 16:45:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nPijLGwz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZKUKeRNI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E81A910E771
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Mar 2024 15:39:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C540D10F97B
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Mar 2024 16:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710430795; x=1741966795;
+ t=1710434747; x=1741970747;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=0h5VD+egksMKXXQRzhAhPwUa6VLCjX6u3mMLGX69z8M=;
- b=nPijLGwzelcVHJw406ryO/REYF1K+WaKgow9hPJJ/DZrkj+5WlveR454
- hHVg7Wl5U/vn0THVspjJkF9XUrw1W2hAKxgT64DRsOhVSP5MIMyI7Xyun
- a9DhYUoA4eKburn0lI2D9lGaIqcKr7KUdpxQaLsyTm0daRulBQpkX8Ko7
- Y/HaqoODFRNdQHX+fv2ybe0yPR6HdXryJPXC/PxVFi1EzUuh1hVtfCf7p
- rf8MCFhaFCDsL5VXLM5AFyk5xMyLvV5Kq4PdCnIR5zNgrwzqx6/ZiBEf6
- qv8AHSiTr8BEof4vhu1TH0QV1CqsiWmkEDxJNNjGLfCL671ksQ3R1rsHN g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="16653256"
-X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; d="scan'208";a="16653256"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2024 08:39:54 -0700
+ bh=JNWFaPB/sVjY9A0vd2RGwfHy0uIEfu4IpjC3VrPEjo8=;
+ b=ZKUKeRNIP37Wv6D0L627Al6S3IjpvPXgEuBfEGs5g4qn2X4nMKpDPN2W
+ PsgpJnxyPhqcOtlXzuf62OogjuYEMmjZrAvGYoFgvWiz4N7AO1eF2quKS
+ 7KtA9qeCMA4lm/FSC7gndnx47ulGCQxpvPLl6MB2xy2vnDp5jQAuymak9
+ G38O9KUtu65IK1oFKDpRy/Ghu+KpwZaevbOHsY833UhJJaq9TWTQ9Nhx6
+ YJAVMNuzptw1xviuydAxox4W+eYp0HZVPCfSFNyGthRuZ+VIIN3+uM8pB
+ 7tVC4Vp8PfsFZiF3geJpd1eTfbIkn8IMu2/luaswztsNmoVKBKv+DyR6t A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="9080816"
+X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; 
+   d="scan'208";a="9080816"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Mar 2024 09:45:46 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; d="scan'208";a="35456624"
+X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; d="scan'208";a="49785054"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2024 08:39:53 -0700
-Date: Thu, 14 Mar 2024 16:39:50 +0100
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Mar 2024 09:45:45 -0700
+Date: Thu, 14 Mar 2024 17:45:42 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: Re: [PATCH i-g-t 06/10] scripts/xls_to_doc.py: preserve line for
- found fields
-Message-ID: <20240314153950.b7a7iq5x5d7yb6fy@kamilkon-desk.igk.intel.com>
+ Helen Koike <helen.koike@collabora.com>
+Subject: Re: [PATCH i-g-t v2 3/3] tests/core_getversion: test all drm devices
+Message-ID: <20240314164542.7pefksrqi5wb265t@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-References: <20240314103014.1170437-1-mauro.chehab@linux.intel.com>
- <20240314103014.1170437-7-mauro.chehab@linux.intel.com>
+ Helen Koike <helen.koike@collabora.com>
+References: <20240221102930.21473-1-kamil.konieczny@linux.intel.com>
+ <20240221102930.21473-4-kamil.konieczny@linux.intel.com>
+ <20240313150050.40a683bb@maurocar-mobl2>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240314103014.1170437-7-mauro.chehab@linux.intel.com>
+In-Reply-To: <20240313150050.40a683bb@maurocar-mobl2>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,58 +72,77 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Mauro,
-On 2024-03-14 at 11:29:15 +0100, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+On 2024-03-13 at 15:00:50 +0100, Mauro Carvalho Chehab wrote:
+> On Wed, 21 Feb 2024 11:29:29 +0100
+> Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 > 
-> By default, the update logic will place new values at the end of
-> subtests.
+> > Create multigpu subtest and check all drm devices.
+> > 
+> > v2: add define for number of max tested cards (Helen)
+> > 
+> > Cc: Helen Koike <helen.koike@collabora.com>
+> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > ---
+> >  tests/core_getversion.c | 21 +++++++++++++++++++++
+> >  1 file changed, 21 insertions(+)
+> > 
+> > diff --git a/tests/core_getversion.c b/tests/core_getversion.c
+> > index 8b95e2ce4..1311e8dc5 100644
+> > --- a/tests/core_getversion.c
+> > +++ b/tests/core_getversion.c
+> > @@ -40,11 +40,17 @@
+> >   *
+> >   * SUBTEST: basic
+> >   * Description: Tests GET_VERSION ioctl of the first device.
+> > + *
+> > + * SUBTEST: multigpu
+> > + * Description: Tests GET_VERSION ioctl for all drm devices.
+> >   */
+> >  
+> >  IGT_TEST_DESCRIPTION("Tests the DRM_IOCTL_GET_VERSION ioctl and libdrm's "
+> >  		     "drmGetVersion() interface to it.");
+> >  
+> > +/* constant same as in drmtest.c */
+> > +#define MAX_DRM_CARDS 16
+> > +
 > 
-> Yet, if the field is already at the source file, just update
-> the value at the line.
+> I would prefer to have MAX_DRM_CARDS defined into a header file
+> probably at lib/drmtest.h, where __drm_open_driver_another() is
+> declared.
 > 
-> Please notice that the logic needs to parse the entire subtest
-> description, as continuation lines may be present.
+> Either way,
 > 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Good point, I will merge first two patches and prepare
+change for drmtest.h/c
 
-> ---
->  scripts/xls_to_doc.py | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/scripts/xls_to_doc.py b/scripts/xls_to_doc.py
-> index 0aa774e811a3..749666faf41f 100755
-> --- a/scripts/xls_to_doc.py
-> +++ b/scripts/xls_to_doc.py
-> @@ -155,6 +155,7 @@ class FillTests(TestList):
->          """
->  
->          current_field = None
-> +        found_line = None
->          i = line
->          while True:
->              i += 1
-> @@ -193,7 +194,7 @@ class FillTests(TestList):
->                  current_field = self.field_list[match.group(1).lower()]
->                  if current_field != field:
->                      continue
-> -                content[i] = ""
-> +                found_line = i
->  
->              # Handle continuation lines
->              if current_field:
-> @@ -205,6 +206,10 @@ class FillTests(TestList):
->                      content[i] = ""
->  
->          if value != "":
-> +            if found_line:
-> +                content[found_line] = f' * {field}: {value}\n'
-> +                return
-> +
->              if i > 2 and re.match(r'\s*\*\s*$', content[i - 1]):
->                  i -= 1
->  
-> -- 
-> 2.43.2
-> 
+Regards,
+Kamil
+
+> >  static void check(int fd, char *dst, int len)
+> >  {
+> >  	drmVersionPtr v;
+> > @@ -78,6 +84,21 @@ igt_main
+> >  		igt_info("0: %s\n", info);
+> >  	}
+> >  
+> > +	igt_describe("Check GET_VERSION ioctl for all drm devices.");
+> > +	igt_subtest("multigpu") {
+> > +		int fd2;
+> > +
+> > +		for (int i = 0; i < MAX_DRM_CARDS; ++i) {
+> > +			fd2 = __drm_open_driver_another(i, DRIVER_ANY);
+> > +			if (fd2 == -1)
+> > +				break;
+> > +
+> > +			check(fd2, info, sizeof(info));
+> > +			igt_info("%d: %s\n", i, info);
+> > +			drm_close_driver(fd2);
+> > +		}
+> > +	}
+> > +
+> >  	igt_fixture
+> >  		drm_close_driver(fd);
+> >  }
