@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08338C54E5D
-	for <igt-dev@archiver.kernel.org>; Thu, 14 Mar 2024 16:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCA65C54E5D
+	for <igt-dev@archiver.kernel.org>; Thu, 14 Mar 2024 17:07:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BA6FD10FC19;
-	Thu, 14 Mar 2024 16:56:23 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 078CA10FC19;
- Thu, 14 Mar 2024 16:56:22 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7640203855781674233=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8001610FC29;
+	Thu, 14 Mar 2024 17:07:07 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MQsFDUe4";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A9A6910FC29
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Mar 2024 17:07:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1710436027; x=1741972027;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=RTgNGccDQw1QK7JYBBa6U1jaOqNUw/njzR26eZ0VAoE=;
+ b=MQsFDUe4FCSbhd4NZoDe+WIzFmv5yiokvJFSaEnLQAcIlp9C7/Zoj7pZ
+ wrk3cn8yGu3F0o2lXiqkfpOvK8cZChdB5EtVKAKnUuUKTboKIg9fsHUgl
+ gt2zy7qG3pybqjU1uYas5ijFFqCow14FJ8nMMf4FHHRru2L4/0Mz1Fg6y
+ fqxfwuPTTJmligEg/eOzVmjINFJo8oGcyJAChOxS2pV1SM9FmyqWEnEDT
+ OMM5OqkoMdAVDNxN9on36vBi6tlfBqxRJ8+94hlngLNX4cehsZVxAtiee
+ TNkfpS1bZmTOnMogkYUykUP+Nju548sKB80RseMFDuiEXIgT32fPiqe+f Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="5140105"
+X-IronPort-AV: E=Sophos;i="6.07,126,1708416000"; 
+   d="scan'208";a="5140105"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Mar 2024 10:07:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,126,1708416000"; d="scan'208";a="12428474"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2024 10:07:04 -0700
+Date: Thu, 14 Mar 2024 18:06:43 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Louis Chauvet <louis.chauvet@bootlin.com>, miquel.raynal@bootlin.com,
+ jeremie.dautheribes@bootlin.com, thomas.petazzoni@bootlin.com,
+ arthurgrillo@riseup.net,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Subject: Re: [PATCH i-g-t v2 3/4] tests/kms_rotation: Add extensive rotation
+ test
+Message-ID: <20240314170643.77vzqqoie2otyu4w@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Louis Chauvet <louis.chauvet@bootlin.com>,
+ miquel.raynal@bootlin.com, jeremie.dautheribes@bootlin.com,
+ thomas.petazzoni@bootlin.com, arthurgrillo@riseup.net,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+References: <20240313-new_rotation-v2-0-6230fd5cae59@bootlin.com>
+ <20240313-new_rotation-v2-3-6230fd5cae59@bootlin.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_Update_test_documentation_f?=
- =?utf-8?q?or_i915_tests_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Katarzyna Piecielska" <katarzyna.piecielska@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 14 Mar 2024 16:56:22 -0000
-Message-ID: <171043538203.754222.17199824012066872105@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240314143455.1436688-1-katarzyna.piecielska@intel.com>
-In-Reply-To: <20240314143455.1436688-1-katarzyna.piecielska@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240313-new_rotation-v2-3-6230fd5cae59@bootlin.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,343 +72,504 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7640203855781674233==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Louis,
+On 2024-03-13 at 18:09:42 +0100, Louis Chauvet wrote:
+> The actual kms_rotation_crc test does not tes all the rotation with all
+> the formats. Create the test kms_rotation, which only test "full plane
+> rotation", but for all formats, planes and rotations.
+> 
+> This allow the detection of issues like in [1], where the YUV rotation is
+> not working for specific rotations.
+> 
+> [1]: https://lore.kernel.org/dri-devel/20240304-yuv-v4-11-76beac8e9793@bootlin.com/
+> 
+> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+> ---
+>  tests/kms_rotation.c | 444 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build    |   1 +
+>  2 files changed, 445 insertions(+)
+> 
+> diff --git a/tests/kms_rotation.c b/tests/kms_rotation.c
+> new file mode 100644
+> index 000000000000..333485619541
+> --- /dev/null
+> +++ b/tests/kms_rotation.c
+> @@ -0,0 +1,444 @@
 
-== Series Details ==
+Please add here SPDX MIT licence.
 
-Series: Update test documentation for i915 tests (rev4)
-URL   : https://patchwork.freedesktop.org/series/130665/
-State : failure
+> +#include "igt.h"
+> +
+> +/**
+> + * TEST: kms_rotation
+> + * Category: Display
+> + * Description: Tests all rotations for all planes and formats.
+> + * Driver requirement: none
+------------------------- ^
+It is better to not have 'none' as a driver, just drop this line.
++cc Mauro.
 
-== Summary ==
+Please use checkpatch.pl script from Linux kernel,
+it can spot some code style problems (line too long can
+be sometimes ignored).
 
-CI Bug Log - changes from CI_DRM_14432 -> IGTPW_10836
-====================================================
+Regards,
+Kamil
 
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_10836 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_10836, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/index.html
-
-Participating hosts (37 -> 35)
-------------------------------
-
-  Additional (3): fi-glk-j4005 bat-kbl-2 fi-kbl-8809g 
-  Missing    (5): bat-dg1-7 fi-apl-guc fi-snb-2520m fi-cfl-8109u bat-mtlp-8 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_10836:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_addfb_basic@too-high:
-    - fi-kbl-8809g:       NOTRUN -> [FAIL][1] +2 other tests fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@kms_addfb_basic@too-high.html
-
-  * igt@kms_force_connector_basic@force-edid:
-    - fi-kbl-8809g:       NOTRUN -> [DMESG-FAIL][2]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@kms_force_connector_basic@force-edid.html
-
-  * igt@kms_force_connector_basic@prune-stale-modes:
-    - fi-kbl-8809g:       NOTRUN -> [DMESG-WARN][3] +2 other tests dmesg-warn
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@kms_force_connector_basic@prune-stale-modes.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10836 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@debugfs_test@basic-hwmon:
-    - bat-jsl-1:          NOTRUN -> [SKIP][4] ([i915#9318])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-jsl-1/igt@debugfs_test@basic-hwmon.html
-
-  * igt@fbdev@info:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][5] ([i915#1849])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@fbdev@info.html
-    - bat-kbl-2:          NOTRUN -> [SKIP][6] ([i915#1849])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-kbl-2/igt@fbdev@info.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][7] ([i915#2190])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html
-    - bat-jsl-1:          NOTRUN -> [SKIP][8] ([i915#2190])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-jsl-1/igt@gem_huc_copy@huc-copy.html
-    - fi-glk-j4005:       NOTRUN -> [SKIP][9] ([i915#2190])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][10] ([i915#4613]) +3 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-glk-j4005/igt@gem_lmem_swapping@basic.html
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][11] ([i915#4613]) +3 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - bat-kbl-2:          NOTRUN -> [SKIP][12] +39 other tests skip
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@gem_lmem_swapping@verify-random:
-    - bat-jsl-1:          NOTRUN -> [SKIP][13] ([i915#4613]) +3 other tests skip
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-jsl-1/igt@gem_lmem_swapping@verify-random.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][14] +10 other tests skip
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-glk-j4005/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-    - bat-jsl-1:          NOTRUN -> [SKIP][15] ([i915#4103]) +1 other test skip
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-jsl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-jsl-1:          NOTRUN -> [SKIP][16] ([i915#3555] / [i915#9886])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-jsl-1/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-jsl-1:          NOTRUN -> [SKIP][17]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-jsl-1/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-kbl-8809g:       NOTRUN -> [FAIL][18] ([IGT#3])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-hdmi-a-1:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][19] +58 other tests skip
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-hdmi-a-1.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-jsl-1:          NOTRUN -> [SKIP][20] ([i915#3555])
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_lmem_swapping@basic@lmem0:
-    - bat-dg2-11:         [FAIL][21] ([i915#10378]) -> [PASS][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14432/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html
-
-  
-  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
-  [i915#10378]: https://gitlab.freedesktop.org/drm/intel/issues/10378
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
-  [i915#9886]: https://gitlab.freedesktop.org/drm/intel/issues/9886
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7764 -> IGTPW_10836
-
-  CI-20190529: 20190529
-  CI_DRM_14432: 6ef6a88b113169e4637be283b2514cfed22f8d99 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10836: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/index.html
-  IGT_7764: 7764
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/index.html
-
---===============7640203855781674233==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Update test documentation for i915 tests (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130665/">https://patchwork.freedesktop.org/series/130665/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14432 -&gt; IGTPW_10836</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_10836 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_10836, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/index.html</p>
-<h2>Participating hosts (37 -&gt; 35)</h2>
-<p>Additional (3): fi-glk-j4005 bat-kbl-2 fi-kbl-8809g <br />
-  Missing    (5): bat-dg1-7 fi-apl-guc fi-snb-2520m fi-cfl-8109u bat-mtlp-8 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_10836:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@kms_addfb_basic@too-high:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@kms_addfb_basic@too-high.html">FAIL</a> +2 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-edid:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@kms_force_connector_basic@force-edid.html">DMESG-FAIL</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@kms_force_connector_basic@prune-stale-modes.html">DMESG-WARN</a> +2 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10836 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@basic-hwmon:</p>
-<ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-jsl-1/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9318">i915#9318</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@info:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</li>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-kbl-2/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-jsl-1/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-glk-j4005/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> +39 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
-<ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-jsl-1/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-glk-j4005/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> +10 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
-<ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-jsl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-jsl-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9886">i915#9886</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-jsl-1/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-hdmi-a-1:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/fi-kbl-8809g/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-hdmi-a-1.html">SKIP</a> +58 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@gem_lmem_swapping@basic@lmem0:<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14432/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10378">i915#10378</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7764 -&gt; IGTPW_10836</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14432: 6ef6a88b113169e4637be283b2514cfed22f8d99 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10836: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10836/index.html<br />
-  IGT_7764: 7764</p>
-
-</body>
-</html>
-
---===============7640203855781674233==--
+> + * Functionality: plane, rotation
+> + * Mega feature: General Display Features
+> + * Test category: functionality test
+> + */
+> +
+> +/**
+> + * SUBTEST: rotations
+> + * Description: Test for all rotations, planes and formats.
+> + */
+> +
+> +/**
+> + * struct data_t - Stores the test configuration
+> + *
+> + * @fd: file descriptor for the current drm device
+> + * @display: display used for the tests
+> + * @width, @height: Size of the CRTC used for this test
+> + */
+> +struct data_t {
+> +	int fd;
+> +	igt_display_t display;
+> +	uint32_t width;
+> +	uint32_t height;
+> +};
+> +
+> +/**
+> + * colors - List of colors used to put things on the plane
+> + *
+> + * Those colors are used to create a color pattern on the plane, which is not invariant by rotation or reflexion.
+> + *
+> + * At least black and white must be in this list to properly test black and white formats.
+> + */
+> +static const struct igt_vec4 colors[] = {
+> +	{{1.0f, 0.0f, 0.0f, 0.0f}},
+> +	{{1.0f, 1.0f, 1.0f, 0.0f}},
+> +	{{0.0f, 0.0f, 0.0f, 0.0f}},
+> +	{{0.0f, 1.0f, 1.0f, 0.0f}},
+> +	{{0.0f, 0.0f, 0.0f, 0.0f}},
+> +};
+> +
+> +/**
+> + * tested_rotation - List of all tested rotation configuration
+> + */
+> +static uint32_t tested_rotation[] = {
+> +	IGT_ROTATION_0,
+> +	IGT_ROTATION_0 | IGT_REFLECT_X,
+> +	IGT_ROTATION_0 | IGT_REFLECT_Y,
+> +	IGT_ROTATION_0 | IGT_REFLECT_X | IGT_REFLECT_Y,
+> +	IGT_ROTATION_90,
+> +	IGT_ROTATION_90 | IGT_REFLECT_X,
+> +	IGT_ROTATION_90 | IGT_REFLECT_Y,
+> +	IGT_ROTATION_90 | IGT_REFLECT_X | IGT_REFLECT_Y,
+> +	IGT_ROTATION_180,
+> +	IGT_ROTATION_180 | IGT_REFLECT_X,
+> +	IGT_ROTATION_180 | IGT_REFLECT_Y,
+> +	IGT_ROTATION_180 | IGT_REFLECT_X | IGT_REFLECT_Y,
+> +	IGT_ROTATION_270,
+> +	IGT_ROTATION_270 | IGT_REFLECT_X,
+> +	IGT_ROTATION_270 | IGT_REFLECT_Y,
+> +	IGT_ROTATION_270 | IGT_REFLECT_X | IGT_REFLECT_Y,
+> +};
+> +
+> +/**
+> + * non_equals_crc() - Check if at least one CRC is different
+> + *
+> + * Check if at least one CRC is different, so we can verify that the rendering is working.
+> + *
+> + * @crcs: List of all tested crcs
+> + * @crc_count: Number of crcs in the list
+> + */
+> +static bool non_equals_crc(igt_crc_t crcs[], int crc_count)
+> +{
+> +	if (!crc_count) {
+> +		return true;
+> +	}
+> +	for (int i = 0; i < crc_count; i++)
+> +		if (!igt_check_crc_equal(&crcs[i], &crcs[0]))
+> +			return true;
+> +	return false;
+> +}
+> +
+> +/**
+> + * create_fb() - Create a framebuffer
+> + *
+> + * This create a framebuffer and fill it with a pattern. This pattern is not invariant by rotation and reflection.
+> + *
+> + * The @width and @height parameters are automaticaly inverted according to @rotation if needed. If the requested plane
+> + * is 1024*768 with IGT_ROTATION_90, the returned plane will have the size 768*1024.
+> + *
+> + * @data: Current test configuration
+> + * @rotation: Rotation to apply to the pattern
+> + * @format: Format of the requested plane
+> + * @modifier: Modifier for the requested plane
+> + * @width, @height: Size of the plane to use (without rotation)
+> + * @width: Width of the requested plane
+> + * @height: Height of the requested plane
+> + * @fb: Place to store the created framebuffer
+> + */
+> +static void create_fb(struct data_t *data, igt_rotation_t rotation, uint32_t format, uint64_t modifier, int width,
+> +		      int height, igt_fb_t *fb)
+> +{
+> +	int step_x, step_y, color_index, current_n, current_m;
+> +	int offset_x, offset_y;
+> +	cairo_t *cr;
+> +
+> +	switch (rotation & IGT_ROTATION_MASK) {
+> +		case IGT_ROTATION_90:
+> +		case IGT_ROTATION_270:
+> +			igt_swap(width, height);
+> +			break;
+> +		case IGT_ROTATION_0:
+> +		case IGT_ROTATION_180:
+> +		default:
+> +			break;
+> +	}
+> +
+> +	igt_create_fb(data->fd, width, height, format, modifier, fb);
+> +	cr = igt_get_cairo_ctx(data->fd, fb);
+> +
+> +	step_x = (width) / ARRAY_SIZE(colors);
+> +	step_y = (height) / ARRAY_SIZE(colors);
+> +
+> +	/*
+> +	 * This pair of offset is used to ensure that a software rotated plane is the same as a hardware rotated plane.
+> +	 */
+> +	switch ((int)rotation) {
+> +		case IGT_ROTATION_0:
+> +		case IGT_ROTATION_0 | IGT_REFLECT_Y:
+> +		case IGT_ROTATION_90:
+> +		case IGT_ROTATION_90 | IGT_REFLECT_X:
+> +		case IGT_ROTATION_180 | IGT_REFLECT_X | IGT_REFLECT_Y:
+> +		case IGT_ROTATION_180 | IGT_REFLECT_X:
+> +		case IGT_ROTATION_270 | IGT_REFLECT_Y:
+> +		case IGT_ROTATION_270 | IGT_REFLECT_X | IGT_REFLECT_Y:
+> +			offset_x = 0;
+> +			break;
+> +		case IGT_ROTATION_0 | IGT_REFLECT_X:
+> +		case IGT_ROTATION_0 | IGT_REFLECT_X | IGT_REFLECT_Y:
+> +		case IGT_ROTATION_90 | IGT_REFLECT_Y:
+> +		case IGT_ROTATION_90 | IGT_REFLECT_X | IGT_REFLECT_Y:
+> +		case IGT_ROTATION_180:
+> +		case IGT_ROTATION_180 | IGT_REFLECT_Y:
+> +		case IGT_ROTATION_270:
+> +		case IGT_ROTATION_270 | IGT_REFLECT_X:
+> +			offset_x = width % step_x;
+> +			break;
+> +	}
+> +	switch ((int)rotation) {
+> +		case IGT_ROTATION_0:
+> +		case IGT_ROTATION_0 | IGT_REFLECT_X:
+> +		case IGT_ROTATION_90 | IGT_REFLECT_X:
+> +		case IGT_ROTATION_90 | IGT_REFLECT_X | IGT_REFLECT_Y:
+> +		case IGT_ROTATION_180 | IGT_REFLECT_Y:
+> +		case IGT_ROTATION_180 | IGT_REFLECT_X | IGT_REFLECT_Y:
+> +		case IGT_ROTATION_270:
+> +		case IGT_ROTATION_270 | IGT_REFLECT_Y:
+> +			offset_y = 0;
+> +			break;
+> +		case IGT_ROTATION_0 | IGT_REFLECT_Y:
+> +		case IGT_ROTATION_0 | IGT_REFLECT_X | IGT_REFLECT_Y:
+> +		case IGT_ROTATION_90:
+> +		case IGT_ROTATION_90 | IGT_REFLECT_Y:
+> +		case IGT_ROTATION_180:
+> +		case IGT_ROTATION_180 | IGT_REFLECT_X:
+> +		case IGT_ROTATION_270 | IGT_REFLECT_X:
+> +		case IGT_ROTATION_270 | IGT_REFLECT_X | IGT_REFLECT_Y:
+> +			offset_y = height % step_y;
+> +			break;
+> +	}
+> +
+> +	/* Iterate over all colors in x and y direction. The pattern is a colored chessboard */
+> +	for (int n = 0; n < ARRAY_SIZE(colors); n++) {
+> +		for (int m = 0; m < ARRAY_SIZE(colors); m++) {
+> +			color_index = (n + m) % ARRAY_SIZE(colors);
+> +			current_n = n;
+> +			current_m = m;
+> +
+> +			/*
+> +			 * If a reflexion and a rotation is requested, apply this to the pattern rendering
+> +			 * If a reflexion is given, it must be applied before the rotation.
+> +			 */
+> +			switch (rotation & IGT_REFLECT_MASK) {
+> +				case IGT_REFLECT_X:
+> +					current_n = ARRAY_SIZE(colors) - 1 - current_n;
+> +					break;
+> +				case IGT_REFLECT_Y:
+> +					current_m = ARRAY_SIZE(colors) - 1 - current_m;
+> +					break;
+> +				case IGT_REFLECT_X | IGT_REFLECT_Y:
+> +					current_n = ARRAY_SIZE(colors) - 1 - current_n;
+> +					current_m = ARRAY_SIZE(colors) - 1 - current_m;
+> +					break;
+> +			}
+> +			switch (rotation & IGT_ROTATION_MASK) {
+> +				case IGT_ROTATION_0:
+> +					break;
+> +				case IGT_ROTATION_90:
+> +					igt_swap(current_n, current_m);
+> +					current_m = ARRAY_SIZE(colors) - 1 - current_m;
+> +					break;
+> +				case IGT_ROTATION_180:
+> +					current_n = ARRAY_SIZE(colors) - 1 - current_n;
+> +					current_m = ARRAY_SIZE(colors) - 1 - current_m;
+> +					break;
+> +				case IGT_ROTATION_270:
+> +					igt_swap(current_n, current_m);
+> +					current_n = ARRAY_SIZE(colors) - 1 - current_n;
+> +					break;
+> +			}
+> +
+> +			igt_paint_color(cr,
+> +					offset_x + current_n * step_x,
+> +					offset_y + current_m * step_y,
+> +					step_x,
+> +					step_y,
+> +					colors[color_index].d[0],
+> +					colors[color_index].d[1],
+> +					colors[color_index].d[2]);
+> +		}
+> +	}
+> +
+> +	igt_put_cairo_ctx(cr);
+> +}
+> +
+> +/**
+> + * get_ref_crcs() - Compute the reference CRC for a specific format
+> + *
+> + * The rotation are done by create_fb in software.
+> + *
+> + * @data: Test configuration
+> + * @output, @pipe, @plane: Plane to use for the test
+> + * @width, @height: Size of the plane to use (without rotation)
+> + * @format, @modifier: Format description to test
+> + * @ref_crc: Array to store the resulting CRC. Its size must be at least ARRAY_SIZE(tested_rotation).
+> + */
+> +static void get_ref_crcs(struct data_t *data, igt_output_t *output, enum pipe pipe, igt_plane_t *plane, int width,
+> +			 int height, uint32_t format, uint64_t modifier, igt_crc_t ref_crc[ARRAY_SIZE(tested_rotation)])
+> +{
+> +	drmModeModeInfo *mode;
+> +	igt_pipe_crc_t *pipe_crc;
+> +	igt_fb_t fb;
+> +
+> +	igt_display_reset(&data->display);
+> +	igt_output_set_pipe(output, pipe);
+> +
+> +
+> +	for (int r = 0; r < ARRAY_SIZE(tested_rotation); r++) {
+> +		int rotation = tested_rotation[r];
+> +		igt_debug("Computing reference CRC for rotation-%s-reflect-%s\n", igt_plane_rotation_name(rotation),
+> +			  igt_plane_reflect_name(rotation));
+> +		/* Configure the pipe for reference frame */
+> +		igt_display_reset(&data->display);
+> +
+> +		mode = igt_output_get_mode(output);
+> +		mode->hdisplay = width;
+> +		mode->vdisplay = height;
+> +		igt_output_override_mode(output, mode);
+> +		mode = igt_output_get_mode(output);
+> +
+> +		igt_output_set_pipe(output, pipe);
+> +		igt_plane_set_rotation(plane, IGT_ROTATION_0);
+> +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +
+> +		/* Start the CRC */
+> +		pipe_crc = igt_pipe_crc_new(data->fd, pipe, IGT_PIPE_CRC_SOURCE_AUTO);
+> +		igt_pipe_crc_start(pipe_crc);
+> +
+> +		create_fb(data, rotation, format, modifier, mode->vdisplay, mode->hdisplay, &fb);
+> +		igt_plane_set_fb(plane, &fb);
+> +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +
+> +		igt_pipe_crc_get_current(
+> +			data->display.drm_fd, pipe_crc,
+> +			&ref_crc[r]);
+> +
+> +		igt_pipe_crc_stop(pipe_crc);
+> +		igt_pipe_crc_free(pipe_crc);
+> +		igt_remove_fb(data->fd, &fb);
+> +	}
+> +}
+> +
+> +/**
+> + * get_crcs() - Compute the CRC for a specific format
+> + *
+> + * @data: Test configuration
+> + * @output, @pipe, @plane: Plane to use for the test
+> + * @width, @height: Size of the plane to use (without rotation)
+> + * @format, @modifier: Format description to test
+> + * @crc: Array to store the resulting CRC. Its size must be at least ARRAY_SIZE(tested_rotation).
+> + */
+> +static void get_crcs(struct data_t *data, igt_output_t *output, enum pipe pipe, igt_plane_t *plane, int width,
+> +		     int height, uint32_t format, uint64_t modifier, igt_crc_t crc[ARRAY_SIZE(tested_rotation)])
+> +{
+> +	drmModeModeInfo *mode;
+> +	igt_pipe_crc_t *pipe_crc;
+> +	igt_fb_t fb;
+> +
+> +	igt_display_reset(&data->display);
+> +	igt_output_set_pipe(output, pipe);
+> +
+> +	for (int r = 0; r < ARRAY_SIZE(tested_rotation); r++) {
+> +		int rotation = tested_rotation[r];
+> +		igt_debug("Computing CRC for rotation-%s-reflect-%s\n", igt_plane_rotation_name(rotation),
+> +			  igt_plane_reflect_name(rotation));
+> +		/* Configure the pipe for reference frame */
+> +		igt_display_reset(&data->display);
+> +
+> +		mode = igt_output_get_mode(output);
+> +		mode->hdisplay = width;
+> +		mode->vdisplay = height;
+> +		igt_output_override_mode(output, mode);
+> +		mode = igt_output_get_mode(output);
+> +
+> +		igt_output_set_pipe(output, pipe);
+> +		igt_plane_set_rotation(plane, rotation);
+> +
+> +		if (!igt_plane_has_rotation(plane, rotation))
+> +			continue;
+> +
+> +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +
+> +		/* Start the CRC */
+> +		pipe_crc = igt_pipe_crc_new(data->fd, pipe, IGT_PIPE_CRC_SOURCE_AUTO);
+> +		igt_pipe_crc_start(pipe_crc);
+> +
+> +		create_fb(data, IGT_ROTATION_0, format, modifier, mode->vdisplay, mode->hdisplay, &fb);
+> +		igt_plane_set_fb(plane, &fb);
+> +		if (igt_rotation_90_or_270(rotation))
+> +			igt_plane_set_size(plane, fb.height, fb.width);
+> +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +
+> +		igt_pipe_crc_get_current(
+> +			data->display.drm_fd, pipe_crc,
+> +			&crc[r]);
+> +
+> +		igt_pipe_crc_stop(pipe_crc);
+> +		igt_pipe_crc_free(pipe_crc);
+> +		igt_remove_fb(data->fd, &fb);
+> +	}
+> +}
+> +
+> +/**
+> + * run_test() - Run the subtests for a specific plane
+> + *
+> + * @data: Test configuration
+> + * @output, @pipe, @plane: Plane to use for the test
+> + * @format, @modifier: Format description to test
+> + */
+> +static void run_test(struct data_t *data, igt_output_t *output, enum pipe pipe, igt_plane_t *plane, uint32_t format,
+> +		     uint64_t modifier)
+> +{
+> +	int width, height;
+> +	const struct format_desc_struct *format_description;
+> +	igt_crc_t ref_crc[ARRAY_SIZE(tested_rotation)];
+> +	igt_crc_t crc[ARRAY_SIZE(tested_rotation)];
+> +
+> +	igt_display_reset(&data->display);
+> +	igt_output_set_pipe(output, pipe);
+> +	/* Check that the rotation is supported */
+> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
+> +	format_description = lookup_drm_format(format);
+> +	width = ARRAY_SIZE(colors) * format_description->hsub * format_description->vsub * 6;
+> +	height = ARRAY_SIZE(colors) * format_description->hsub * format_description->vsub * 6;
+> +
+> +	/* Generate reference CRC with software rotation */
+> +	get_ref_crcs(data, output, pipe, plane, width, height, format, modifier, ref_crc);
+> +	igt_assert_f(non_equals_crc(ref_crc, ARRAY_SIZE(tested_rotation)), "All the reference CRC are equals.");
+> +
+> +	/* Generate CRC with hardware rotation */
+> +	get_crcs(data, output, pipe, plane, width, height, format, modifier, crc);
+> +
+> +	for (int c = 0; c < ARRAY_SIZE(tested_rotation); c++) {
+> +		int rotation = tested_rotation[c];
+> +		igt_dynamic_f("pipe-%s-format-%s-modifier-%s-rotation-%s-reflect-%s", kmstest_pipe_name(pipe),
+> +			      igt_format_str(format),
+> +			      igt_fb_modifier_name(modifier), igt_plane_rotation_name(rotation),
+> +			      igt_plane_reflect_name(rotation)) {
+> +			igt_assert_crc_equal(&ref_crc[c], &crc[c]);
+> +		}
+> +	}
+> +}
+> +
+> +/**
+> + * test_all_formats() - Run all the tests for all planes
+> + *
+> + * @data: Test configuration
+> + */
+> +static void test_all_formats(struct data_t *data)
+> +{
+> +	enum pipe pipe;
+> +	struct igt_plane *plane;
+> +	igt_output_t *output;
+> +	for_each_pipe_with_single_output(&data->display, pipe, output) {
+> +		for_each_plane_on_pipe(&data->display, pipe, plane) {
+> +			for (int f = 0; f < plane->format_mod_count; f++) {
+> +				uint32_t format = plane->formats[f];
+> +				uint32_t modifier = plane->modifiers[f];
+> +
+> +				if (!igt_fb_supported_format(format))
+> +					continue;
+> +				run_test(data, output, pipe, plane, format, modifier);
+> +			}
+> +		}
+> +	}
+> +}
+> +
+> +static int opt_handler(int opt, int opt_index, void *void_data)
+> +{
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +static const struct option long_opts[] = {
+> +	{}
+> +};
+> +
+> +static const char help_str[] = "";
+> +
+> +static struct data_t global_data;
+> +
+> +igt_main_args("", long_opts, help_str, opt_handler, &global_data)
+> +{
+> +	igt_fixture {
+> +		global_data.fd = drm_open_driver_master(DRIVER_ANY);
+> +
+> +		kmstest_set_vt_graphics_mode();
+> +
+> +		igt_display_require(&global_data.display, global_data.fd);
+> +		igt_require(global_data.display.is_atomic);
+> +		igt_display_require_output(&global_data.display);
+> +		igt_display_reset(&global_data.display);
+> +	}
+> +
+> +	igt_describe("Testing different rotation and reflexions for different formats");
+> +	igt_subtest_with_dynamic_f("rotations") {
+> +		test_all_formats(&global_data);
+> +	}
+> +
+> +}
+> \ No newline at end of file
+> diff --git a/tests/meson.build b/tests/meson.build
+> index a856510fcea7..71b628b86e96 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -82,6 +82,7 @@ test_progs = [
+>  	'tools_test',
+>  	'vgem_basic',
+>  	'vgem_slow',
+> +	'kms_rotation',
+>  ]
+>  
+>  intel_i915_xe_progs = [
+> 
+> -- 
+> 2.43.0
+> 
