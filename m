@@ -4,48 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41728C54E60
-	for <igt-dev@archiver.kernel.org>; Thu, 14 Mar 2024 14:35:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 141C1C54E67
+	for <igt-dev@archiver.kernel.org>; Thu, 14 Mar 2024 14:35:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DB81210FBA9;
-	Thu, 14 Mar 2024 14:35:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B4ED010FBAA;
+	Thu, 14 Mar 2024 14:35:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z1a3m5pK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NQGf+xeV";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C1EE10FBA9
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Mar 2024 14:35:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 804B810FBAA
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Mar 2024 14:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710426917; x=1741962917;
+ t=1710426926; x=1741962926;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=azZFCT2MwabeDCy7txhl6w8c/aGg3J0W0uovglTCSgU=;
- b=Z1a3m5pKHRyEPqSlCVlmulpipuUMtcLsgPxupGJqYCkBXxi3D5iYluAt
- +crKslD+AVzIsSvQFFlSs4U21CsLrjl10Q0jnBZwfTUV9FYMc7mGMw/1x
- RM1G8mwAChdWNMVXEVfJMvyppLD3x6cq5yIPAVPOyd+BEYoarHhE7iP81
- 6D3g+CcSqa++2ym+CR6l4lIjWv6TsFsaw2pBVBNK1L7koQdvtKy2njdly
- P0FJR31DS4xA8Iv4NZjAdH93QNiNJop3jcjEHWUE4wKhKAXRBe3VY0j4f
- hewS6FN/UZ5+9ibe9Cim/cooAmGbABAENpKpiLbq+/fQVTDIjLZ3zUR1j Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="5098464"
+ bh=960K9CplOVhmWHUv1mqj5hudI722jHXOIDMUSVpIJrw=;
+ b=NQGf+xeVgUs11rF+od4fBIWbJQx+tVi5L9WNewBWAEI8EpLt0+csIEkt
+ 3MjDNaxgXVjcSUYj6gUrEin2xQEGe0R4q11oOhfjY2R9lIWrs92pmA2HW
+ Ncap611b5KE1k5j2adM2RhxjHEeBtOtrDkGu4GRJl87nFZUE3NcBcRGE7
+ +IEHztHhebbI1iAvczpOzmMyX5TrCeQvuAkmHu/j/DrZfhaA/fPXteE3f
+ YweYm5cjpXfoVcipuyU9GwODz4nlkwr27nk42fo1e+wbh1tpxaACXEzsu
+ 2N9nLEpMYv6p2G3hwcFv563dPNsdP2rxv1wnz9QEboOwY8KBHfjIyVKx9 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="5098482"
 X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; 
-   d="scan'208";a="5098464"
+   d="scan'208";a="5098482"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2024 07:35:17 -0700
+ 14 Mar 2024 07:35:26 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; d="scan'208";a="12321574"
+X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; d="scan'208";a="12321643"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2024 07:35:16 -0700
+ 14 Mar 2024 07:35:24 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v4 01/25] tests: Introduce uapi subcategory
-Date: Thu, 14 Mar 2024 14:34:31 +0000
-Message-Id: <20240314143455.1436688-2-katarzyna.piecielska@intel.com>
+ Chris Wilson <chris.p.wilson@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Priyanka Dandamudi <priyanka.dandamudi@intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Subject: [PATCH i-g-t v4 02/25] tests/intel: Introduce Memory management
+ subcategory
+Date: Thu, 14 Mar 2024 14:34:32 +0000
+Message-Id: <20240314143455.1436688-3-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240314143455.1436688-1-katarzyna.piecielska@intel.com>
 References: <20240314143455.1436688-1-katarzyna.piecielska@intel.com>
@@ -66,316 +69,543 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's introduce uapi subcategory to explicitly show where we are testing
-the basics.
-Also fix already set values:
-- fix subcategory for create-ext-set-pat subtest
-- fix functionality for gem_ctx_sseu: s/Sub-slice programming/sseu
+Let's add Memory management subcategory for tests that are validating
+memory.
 
-v2: Add more tests to uapi from synchronization/semephore features. Make
-Sub-category/Functionality/Feature unique. (Kamil)
+Change subcategory s/i915/Memory management/ for tests:
+ - gem_lmem_swapping.c
+ - gem_madvise.c
+
+v2: Make Sub-category/Functionality/Feature unique (Kamil)
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: Chris Wilson <chris.p.wilson@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 ---
- tests/core_getstats.c              |  4 ++--
- tests/drm_read.c                   | 17 +++++++++++++++++
- tests/dumb_buffer.c                |  6 +++---
- tests/intel/gem_create.c           | 15 +++------------
- tests/intel/gem_ctx_param.c        |  2 +-
- tests/intel/gem_ctx_sseu.c         |  3 +++
- tests/intel/gem_eio.c              |  2 +-
- tests/intel/gem_reg_read.c         |  3 +++
- tests/intel/gem_reset_stats.c      |  3 +++
- tests/intel/gem_wait.c             |  6 +++---
- tests/intel/i915_getparams_basic.c |  2 +-
- tests/intel/i915_pm_freq_api.c     |  3 +++
- tests/intel/sysfs_defaults.c       |  6 +++---
- tests/sw_sync.c                    |  7 +++----
- tests/syncobj_timeline.c           |  6 +++---
- tests/syncobj_wait.c               |  6 +++---
- 16 files changed, 55 insertions(+), 36 deletions(-)
+ tests/drm_mm.c                               | 2 +-
+ tests/intel/gem_close.c                      | 2 +-
+ tests/intel/gem_cs_tlb.c                     | 4 ++--
+ tests/intel/gem_gtt_cpu_tlb.c                | 3 +++
+ tests/intel/gem_gtt_hog.c                    | 3 +++
+ tests/intel/gem_gtt_speed.c                  | 3 +++
+ tests/intel/gem_lmem_evict.c                 | 3 +++
+ tests/intel/gem_lmem_swapping.c              | 2 +-
+ tests/intel/gem_madvise.c                    | 2 +-
+ tests/intel/gem_mmap.c                       | 3 +++
+ tests/intel/gem_mmap_gtt.c                   | 3 +++
+ tests/intel/gem_mmap_offset.c                | 2 +-
+ tests/intel/gem_mmap_wc.c                    | 3 +++
+ tests/intel/gem_read_read_speed.c            | 3 +++
+ tests/intel/gem_readwrite.c                  | 3 +++
+ tests/intel/gem_set_tiling_vs_gtt.c          | 3 +++
+ tests/intel/gem_set_tiling_vs_pwrite.c       | 3 +++
+ tests/intel/gem_streaming_writes.c           | 3 +++
+ tests/intel/gem_tiled_blits.c                | 3 +++
+ tests/intel/gem_tiled_fence_blits.c          | 3 +++
+ tests/intel/gem_tiled_partial_pwrite_pread.c | 3 +++
+ tests/intel/gem_tiled_pread_basic.c          | 3 +++
+ tests/intel/gem_tiled_pread_pwrite.c         | 3 +++
+ tests/intel/gem_tiled_swapping.c             | 3 +++
+ tests/intel/gem_tiled_wb.c                   | 3 +++
+ tests/intel/gem_tiled_wc.c                   | 3 +++
+ tests/intel/gem_tiling_max_stride.c          | 3 +++
+ tests/intel/gem_unfence_active_buffers.c     | 3 +++
+ tests/intel/i915_fb_tiling.c                 | 3 +++
+ tests/intel/prime_busy.c                     | 2 +-
+ tests/intel/prime_mmap.c                     | 4 ++--
+ tests/intel/prime_mmap_coherency.c           | 4 ++--
+ tests/intel/prime_self_import.c              | 9 ++-------
+ 33 files changed, 83 insertions(+), 19 deletions(-)
 
-diff --git a/tests/core_getstats.c b/tests/core_getstats.c
-index 8b5655053..1a8ad22c7 100644
---- a/tests/core_getstats.c
-+++ b/tests/core_getstats.c
-@@ -37,9 +37,9 @@
-  * Category: Desktop client
-  * Description: Tests the DRM_IOCTL_GET_STATS ioctl.
-  * Feature: core
-- * Functionality: permission management for clients
-+ * Functionality: DRM memory management
-  * Run type: FULL
-- * Sub-category: DRM
-+ * Sub-category: uapi
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST:
-diff --git a/tests/drm_read.c b/tests/drm_read.c
-index 36dc623ed..f8ef324fa 100644
---- a/tests/drm_read.c
-+++ b/tests/drm_read.c
-@@ -50,6 +50,23 @@
- 
- IGT_TEST_DESCRIPTION("Call read(drm) and see if it behaves.");
- 
-+/**
-+ * TEST: drm read
-+ * Description: boundary testing of read(drm_fd)
-+ * Category: Infrastructure
-+ * Functionality: DRM memory managemnt
-+ * Sub-category: uapi
-+ * Run type: FULL
-+ *
-+ * SUBTEST: invalid-buffer
-+ * SUBTEST: fault-buffer
-+ * SUBTEST: empty-block
-+ * SUBTEST: empty-nonblock
-+ * SUBTEST: short-buffer-block
-+ * SUBTEST: short-buffer-nonblock
-+ * SUBTEST: short-buffer-wakeup
-+ */
-+
- static void sighandler(int sig, siginfo_t * info, void *context)
- {
- }
-diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
-index 9db857f9f..d76f0c70f 100644
---- a/tests/dumb_buffer.c
-+++ b/tests/dumb_buffer.c
-@@ -54,10 +54,10 @@
-  * Category: Desktop client
-  * Description: This is a test for the generic dumb buffer interface.
-  * Feature: prime
-- * Functionality: IOCTL check for buffer management
-+ * Functionality: ioctl
-  * Run type: FULL
-- * Sub-category: Compositor
-- * Test category: GEM_Legacy
-+ * Sub-category: uapi
-+ * Test category: Compositor
-  *
-  * SUBTEST: create-clear
-  *
-diff --git a/tests/intel/gem_create.c b/tests/intel/gem_create.c
-index 77ffceda4..ae9575089 100644
---- a/tests/intel/gem_create.c
-+++ b/tests/intel/gem_create.c
-@@ -98,6 +98,9 @@
-  * SUBTEST: create-ext-placement-sanity-check
-  * Description: Exercise create_ext placements extension.
-  *
-+ * SUBTEST: create-ext-set-pat
-+ * Description:  Create GEM object with specific PAT index
-+ *
-  * SUBTEST: create-invalid-size
-  * Description: Try to create a gem object of invalid size 0 and check if
-  *		ioctl returns error.
-@@ -594,18 +597,6 @@ static void create_ext_placement_each(int fd)
- 	free(regions);
- }
- 
--/**
--  * TEST: GEM create uAPI
--  * Category: Infrastructure
--  * Description: Tests the DRM_IOCTL_I915_GEM_CREATE_EXT ioctl.
--  * Feature: core
--  * Functionality: Create GEM object with specific PAT index
--  * Run type: BAT
--  * Sub-category: i915
--  * Test category: GEM_Legacy
--  *
--  * SUBTEST: create-ext-set-pat
--  */
- static void create_ext_set_pat(int fd)
- {
- 	struct drm_i915_gem_create_ext_set_pat setparam_pat = {
-diff --git a/tests/intel/gem_ctx_param.c b/tests/intel/gem_ctx_param.c
-index c6fa31875..26f2a28f0 100644
---- a/tests/intel/gem_ctx_param.c
-+++ b/tests/intel/gem_ctx_param.c
-@@ -34,7 +34,7 @@
-  * TEST: gem ctx param
-  * Description: Basic test for context set/get param input validation.
+diff --git a/tests/drm_mm.c b/tests/drm_mm.c
+index f2e6c6cd1..9319558db 100644
+--- a/tests/drm_mm.c
++++ b/tests/drm_mm.c
+@@ -28,7 +28,7 @@
+  * Description: Basic sanity check of DRM's range manager (struct drm_mm)
+  * Feature: mapping
   * Category: Infrastructure
-- * Feature: context
-+ * Feature: contexts
-  * Functionality: context
-  * Sub-category: uapi
+- * Functionality: DRM memory mangemnt
++ * Functionality: DRM
+  * Sub-category: Memory management
   * Test category: GEM_Legacy
-diff --git a/tests/intel/gem_ctx_sseu.c b/tests/intel/gem_ctx_sseu.c
-index 3a01944e4..a9d400c2d 100644
---- a/tests/intel/gem_ctx_sseu.c
-+++ b/tests/intel/gem_ctx_sseu.c
-@@ -48,6 +48,9 @@
-  * TEST: gem ctx sseu
-  * Description: Test context render powergating programming.
-  * Feature: pm_sseu
-+ * Sub-category: uapi
-+ * Category: Desktop client
-+ * Functionality: sseu
   * Run type: FULL
+diff --git a/tests/intel/gem_close.c b/tests/intel/gem_close.c
+index 20aff600d..91cda5bdc 100644
+--- a/tests/intel/gem_close.c
++++ b/tests/intel/gem_close.c
+@@ -31,7 +31,7 @@
+  * Feature: mapping
+  * Functionality: driver handler
+  * Run type: FULL
+- * Sub-category: i915
++ * Sub-category: Memory management
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic
+diff --git a/tests/intel/gem_cs_tlb.c b/tests/intel/gem_cs_tlb.c
+index 2c7781d06..f9bd86785 100644
+--- a/tests/intel/gem_cs_tlb.c
++++ b/tests/intel/gem_cs_tlb.c
+@@ -57,9 +57,9 @@
+  * Category: Infrastructure
+  * Description: Check whether we correctly invalidate the cs tlb.
+  * Feature: mapping
+- * Functionality: command submission
++ * Functionality: tlb
+  * Run type: FULL
+- * Sub-category: i915
++ * Sub-category: Memory management
+  * Test category: GEM_Legacy
   *
   * SUBTEST: engines
-diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
-index d6d12bd08..6fa68441f 100644
---- a/tests/intel/gem_eio.c
-+++ b/tests/intel/gem_eio.c
-@@ -57,7 +57,7 @@
-  * TEST: gem eio
-  * Description: Test that specific ioctls report a wedged GPU (EIO).
-  * Category: Infrastructure
-- * Feature: reset
-+ * Feature: reset uapi
-  * Functionality: reset
-  * Sub-category: uapi
-  * Test category: GEM_Legacy
-diff --git a/tests/intel/gem_reg_read.c b/tests/intel/gem_reg_read.c
-index de6788abe..03b12551d 100644
---- a/tests/intel/gem_reg_read.c
-+++ b/tests/intel/gem_reg_read.c
-@@ -35,6 +35,9 @@
- /**
-  * TEST: gem reg read
-  * Feature: gem_core
-+ * Sub-category: uapi
+diff --git a/tests/intel/gem_gtt_cpu_tlb.c b/tests/intel/gem_gtt_cpu_tlb.c
+index 155aa6516..760e0a4ac 100644
+--- a/tests/intel/gem_gtt_cpu_tlb.c
++++ b/tests/intel/gem_gtt_cpu_tlb.c
+@@ -47,6 +47,9 @@
+  * TEST: gem gtt cpu tlb
+  * Description: Check whether gtt tlbs for cpu access are correctly invalidated.
+  * Feature: gtt, mapping
++ * Sub-category: Memory management
 + * Category: Desktop client
-+ * Functionality: ioctl
++ * Functionality: mmap
   * Run type: FULL
   *
-  * SUBTEST: bad-register
-diff --git a/tests/intel/gem_reset_stats.c b/tests/intel/gem_reset_stats.c
-index 5dfc1fc67..a62c4061a 100644
---- a/tests/intel/gem_reset_stats.c
-+++ b/tests/intel/gem_reset_stats.c
-@@ -49,6 +49,9 @@
- #include "sw_sync.h"
+  * SUBTEST:
+diff --git a/tests/intel/gem_gtt_hog.c b/tests/intel/gem_gtt_hog.c
+index 1227c7633..247b31da5 100644
+--- a/tests/intel/gem_gtt_hog.c
++++ b/tests/intel/gem_gtt_hog.c
+@@ -44,6 +44,9 @@
+ #include "igt.h"
  /**
-  * TEST: gem reset stats
-+ * Sub-category: uapi
+  * TEST: gem gtt hog
++ * Sub-category: Memory management
 + * Category: Desktop client
-+ * Functionality: reset
++ * Functionality: gtt
   * Run type: FULL
   *
-  * SUBTEST: ban-blt
-diff --git a/tests/intel/gem_wait.c b/tests/intel/gem_wait.c
-index e2a598c64..abd936cf1 100644
---- a/tests/intel/gem_wait.c
-+++ b/tests/intel/gem_wait.c
-@@ -35,9 +35,9 @@
-  * TEST: gem wait
-  * Category: Infrastructure
-  * Description: Tests the GEM_WAIT ioctl
-- * Feature: synchronization
-- * Functionality: semaphore
-- * Sub-category: i915
-+ * Feature: synchronization uapi
-+ * Functionality: GEM_WAIT ioctl
-+ * Sub-category: uapi
-  * Test category: GEM_Legacy
+  * SUBTEST:
+diff --git a/tests/intel/gem_gtt_speed.c b/tests/intel/gem_gtt_speed.c
+index c85c359a0..6cc34ce87 100644
+--- a/tests/intel/gem_gtt_speed.c
++++ b/tests/intel/gem_gtt_speed.c
+@@ -44,6 +44,9 @@
+ #include "i915/gem_create.h"
+ /**
+  * TEST: gem gtt speed
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: gtt
   * Run type: FULL
   *
-diff --git a/tests/intel/i915_getparams_basic.c b/tests/intel/i915_getparams_basic.c
-index b22ab5d93..971c35e55 100644
---- a/tests/intel/i915_getparams_basic.c
-+++ b/tests/intel/i915_getparams_basic.c
-@@ -37,7 +37,7 @@
-  * Feature: gem_core
-  * Functionality: device topology
-  * Run type: BAT
-- * Sub-category: i915
-+ * Sub-category: uapi
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic-eu-total
-diff --git a/tests/intel/i915_pm_freq_api.c b/tests/intel/i915_pm_freq_api.c
-index 6018692a2..aa2de74c9 100644
---- a/tests/intel/i915_pm_freq_api.c
-+++ b/tests/intel/i915_pm_freq_api.c
+  * SUBTEST:
+diff --git a/tests/intel/gem_lmem_evict.c b/tests/intel/gem_lmem_evict.c
+index a3ca2c861..1574bbb9f 100644
+--- a/tests/intel/gem_lmem_evict.c
++++ b/tests/intel/gem_lmem_evict.c
 @@ -11,6 +11,9 @@
- /**
-  * TEST: i915 pm freq api
-  * Description: Test SLPC freq API
-+ * Category: Infrastructure
-+ * Sub-category: uapi
-+ * Functionality: slpc
+  * TEST: gem lmem evict
+  * Description: Force tiny lmem size for easily testing eviction scenarios.
+  * Feature: local_memory
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: local memory eviction
   * Run type: FULL
+  * Test category: GEM_Legacy
   *
-  * SUBTEST: freq-basic-api
-diff --git a/tests/intel/sysfs_defaults.c b/tests/intel/sysfs_defaults.c
-index b686c19fc..a80f7126c 100644
---- a/tests/intel/sysfs_defaults.c
-+++ b/tests/intel/sysfs_defaults.c
-@@ -37,10 +37,10 @@
-  * TEST: sysfs defaults
-  * Category: Infrastructure
-  * Feature: gem_core
-- * Functionality: driver handler
-- * Run type: FULL
+diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+index 451d55423..d38a04673 100644
+--- a/tests/intel/gem_lmem_swapping.c
++++ b/tests/intel/gem_lmem_swapping.c
+@@ -30,7 +30,7 @@
+  * Description: Exercise local memory swapping.
+  * Feature: local_memory
+  * Functionality: buffer management
 - * Sub-category: i915
-+ * Functionality: sysfs
-+ * Sub-category: uapi
-  * Test category: GEM_Legacy
-+ * Run type: FULL
-  *
-  * SUBTEST: readonly
-  */
-diff --git a/tests/sw_sync.c b/tests/sw_sync.c
-index 6c476ff46..a276c4a22 100644
---- a/tests/sw_sync.c
-+++ b/tests/sw_sync.c
-@@ -42,10 +42,9 @@
-  * TEST: sw sync
-  * Category: Infrastructure
-  * Description: Test SW Sync Framework
-- * Feature: synchronization
-- * Functionality: semaphore
-- * Run type: FULL
-- * Sub-category: DRM
-+ * Feature: semaphore
-+ * Functionality: sw sync framework
-+ * Sub-category: uapi
++ * Sub-category: Memory management
   * Test category: GEM_Legacy
   *
-  * SUBTEST: alloc_fence
-diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
-index ea8341a30..465761d6d 100644
---- a/tests/syncobj_timeline.c
-+++ b/tests/syncobj_timeline.c
-@@ -34,10 +34,10 @@
-  * TEST: syncobj timeline
+  * SUBTEST: basic
+diff --git a/tests/intel/gem_madvise.c b/tests/intel/gem_madvise.c
+index b443d16ae..c8aa71c1b 100644
+--- a/tests/intel/gem_madvise.c
++++ b/tests/intel/gem_madvise.c
+@@ -44,7 +44,7 @@
+  * Description: Checks that the kernel reports EFAULT when trying to use purged bo.
+  * Feature: caching, mapping
+  * Functionality: buffer management
+- * Sub-category: i915
++ * Sub-category: Memory management
+  * Test category: GEM_Legacy
+  * Run type: FULL
+  *
+diff --git a/tests/intel/gem_mmap.c b/tests/intel/gem_mmap.c
+index a7c5f0bce..c64c8f52a 100644
+--- a/tests/intel/gem_mmap.c
++++ b/tests/intel/gem_mmap.c
+@@ -42,6 +42,9 @@
+  * TEST: gem mmap
+  * Description: Basic MMAP IOCTL tests for memory regions.
+  * Feature: mapping
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: mmap
+  * Run type: FULL
+  *
+  * SUBTEST: bad-object
+diff --git a/tests/intel/gem_mmap_gtt.c b/tests/intel/gem_mmap_gtt.c
+index 9aecd08ce..8d04188f7 100644
+--- a/tests/intel/gem_mmap_gtt.c
++++ b/tests/intel/gem_mmap_gtt.c
+@@ -50,6 +50,9 @@
+  * TEST: gem mmap gtt
+  * Description: Ensure that all operations around MMAP_GTT ioctl works.
+  * Feature: gtt
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: map gtt
+  * Run type: FULL
+  *
+  * SUBTEST: bad-object
+diff --git a/tests/intel/gem_mmap_offset.c b/tests/intel/gem_mmap_offset.c
+index b069b80f6..b1134afb4 100644
+--- a/tests/intel/gem_mmap_offset.c
++++ b/tests/intel/gem_mmap_offset.c
+@@ -42,7 +42,7 @@
+  * Description: Basic MMAP_OFFSET IOCTL tests for mem regions
   * Category: Infrastructure
-  * Description: Tests for the drm timeline sync object API
-- * Feature: synchronization
-- * Functionality: semaphore
+  * Feature: mapping
+- * Functionality: mapping
++ * Functionality: mmap
+  * Sub-category: Memory management
+  * Test category: GEM_Legacy
+  * Run type: FULL
+diff --git a/tests/intel/gem_mmap_wc.c b/tests/intel/gem_mmap_wc.c
+index a82d779f9..766ee61fc 100644
+--- a/tests/intel/gem_mmap_wc.c
++++ b/tests/intel/gem_mmap_wc.c
+@@ -42,6 +42,9 @@
+ /**
+  * TEST: gem mmap wc
+  * Feature: caching, mapping
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: cache
+  * Run type: FULL
+  *
+  * SUBTEST: bad-object
+diff --git a/tests/intel/gem_read_read_speed.c b/tests/intel/gem_read_read_speed.c
+index 95ef47da6..dde021f22 100644
+--- a/tests/intel/gem_read_read_speed.c
++++ b/tests/intel/gem_read_read_speed.c
+@@ -45,6 +45,9 @@
+ /**
+  * TEST: gem read read speed
+  * Description: Test speed of concurrent reads between engines.
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: read/write memory
+  * Run type: FULL
+  *
+  * SUBTEST: read-read-1024x1024
+diff --git a/tests/intel/gem_readwrite.c b/tests/intel/gem_readwrite.c
+index 864a2d8d8..545e97f17 100644
+--- a/tests/intel/gem_readwrite.c
++++ b/tests/intel/gem_readwrite.c
+@@ -41,6 +41,9 @@
+ /**
+  * TEST: gem readwrite
+  * Feature: mapping
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: read/write memory
+  * Run type: FULL
+  *
+  * SUBTEST: beyond-EOB
+diff --git a/tests/intel/gem_set_tiling_vs_gtt.c b/tests/intel/gem_set_tiling_vs_gtt.c
+index 4a7ecdc88..7e5dab1fa 100644
+--- a/tests/intel/gem_set_tiling_vs_gtt.c
++++ b/tests/intel/gem_set_tiling_vs_gtt.c
+@@ -42,6 +42,9 @@
+  * TEST: gem set tiling vs gtt
+  * Description: Check set_tiling vs gtt mmap coherency.
+  * Feature: gtt
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: tiling vs gtt coherency
+  * Run type: FULL
+  *
+  * SUBTEST:
+diff --git a/tests/intel/gem_set_tiling_vs_pwrite.c b/tests/intel/gem_set_tiling_vs_pwrite.c
+index ede0c58b6..a358ddba6 100644
+--- a/tests/intel/gem_set_tiling_vs_pwrite.c
++++ b/tests/intel/gem_set_tiling_vs_pwrite.c
+@@ -42,6 +42,9 @@
+  * TEST: gem set tiling vs pwrite
+  * Description: Check set_tiling vs pwrite coherency.
+  * Feature: gtt
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: tiling vs pwrite coherency
+  * Run type: FULL
+  *
+  * SUBTEST:
+diff --git a/tests/intel/gem_streaming_writes.c b/tests/intel/gem_streaming_writes.c
+index fc2d3d89f..dd2f28331 100644
+--- a/tests/intel/gem_streaming_writes.c
++++ b/tests/intel/gem_streaming_writes.c
+@@ -43,6 +43,9 @@
+ /**
+  * TEST: gem streaming writes
+  * Description: Test of streaming writes into active GPU sources
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: barrier
+  * Run type: FULL
+  *
+  * SUBTEST: batch-cpu
+diff --git a/tests/intel/gem_tiled_blits.c b/tests/intel/gem_tiled_blits.c
+index 27971a2b9..ec6e88477 100644
+--- a/tests/intel/gem_tiled_blits.c
++++ b/tests/intel/gem_tiled_blits.c
+@@ -58,6 +58,9 @@
+  * TEST: gem tiled blits
+  * Description: Test doing many tiled blits, with a working set larger than the aperture size.
+  * Feature: gtt, mapping
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: tiled blits
+  * Run type: FULL
+  *
+  * SUBTEST: basic
+diff --git a/tests/intel/gem_tiled_fence_blits.c b/tests/intel/gem_tiled_fence_blits.c
+index c536c3699..920eeb42d 100644
+--- a/tests/intel/gem_tiled_fence_blits.c
++++ b/tests/intel/gem_tiled_fence_blits.c
+@@ -51,6 +51,9 @@
+  *   Tests fence management problems related to tiled blits by performing many blits on tiled
+  *   buffer objects with fences enabled and with working set larger than the aperture size.
+  * Feature: gtt, mapping
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: tiled blits
+  *
+  * SUBTEST: basic
+  * Description: Check basic functionality.
+diff --git a/tests/intel/gem_tiled_partial_pwrite_pread.c b/tests/intel/gem_tiled_partial_pwrite_pread.c
+index d4f66d51e..c4686739e 100644
+--- a/tests/intel/gem_tiled_partial_pwrite_pread.c
++++ b/tests/intel/gem_tiled_partial_pwrite_pread.c
+@@ -42,6 +42,9 @@
+  * TEST: gem tiled partial pwrite pread
+  * Description: Test pwrite/pread consistency when touching partial cachelines.
+  * Feature: gtt, mapping
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: tiled pread/pwrite
+  * Run type: FULL
+  *
+  * SUBTEST: reads
+diff --git a/tests/intel/gem_tiled_pread_basic.c b/tests/intel/gem_tiled_pread_basic.c
+index a2253b51e..13181d86c 100644
+--- a/tests/intel/gem_tiled_pread_basic.c
++++ b/tests/intel/gem_tiled_pread_basic.c
+@@ -52,6 +52,9 @@
+  * TEST: gem tiled pread basic
+  * Description: Test pread behavior on tiled objects with respect to the reported swizzling value.
+  * Feature: gtt, mapping
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: tiled pread/pwrite
+  * Run type: BAT
+  *
+  * SUBTEST:
+diff --git a/tests/intel/gem_tiled_pread_pwrite.c b/tests/intel/gem_tiled_pread_pwrite.c
+index 2f0f6f547..f8bc79731 100644
+--- a/tests/intel/gem_tiled_pread_pwrite.c
++++ b/tests/intel/gem_tiled_pread_pwrite.c
+@@ -62,6 +62,9 @@
+  * TEST: gem tiled pread pwrite
+  * Description: Test swizzling by testing pwrite does the inverse of pread.
+  * Feature: gtt, mapping
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: tiled pread/pwrite
+  * Run type: FULL
+  *
+  * SUBTEST:
+diff --git a/tests/intel/gem_tiled_swapping.c b/tests/intel/gem_tiled_swapping.c
+index 90ce70bdb..13f9fb41f 100644
+--- a/tests/intel/gem_tiled_swapping.c
++++ b/tests/intel/gem_tiled_swapping.c
+@@ -62,6 +62,9 @@
+  * TEST: gem tiled swapping
+  * Description: Exercise swizzle code for swapping.
+  * Feature: gtt, mapping
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: swapping
+  * Run type: FULL
+  *
+  * SUBTEST: non-threaded
+diff --git a/tests/intel/gem_tiled_wb.c b/tests/intel/gem_tiled_wb.c
+index 6a8b79ecc..ee17b587d 100644
+--- a/tests/intel/gem_tiled_wb.c
++++ b/tests/intel/gem_tiled_wb.c
+@@ -51,6 +51,9 @@
+  *   This is a test of write-combining mmap's behavior on tiled objects with respect to the reported
+  *   swizzling value.
+  * Feature: caching, gtt
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: cache
+  * Run type: FULL
+  *
+  * SUBTEST:
+diff --git a/tests/intel/gem_tiled_wc.c b/tests/intel/gem_tiled_wc.c
+index 1994453b3..356b48829 100644
+--- a/tests/intel/gem_tiled_wc.c
++++ b/tests/intel/gem_tiled_wc.c
+@@ -48,6 +48,9 @@
+ /**
+  * TEST: gem tiled wc
+  * Feature: caching, gtt
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: cache
+  * Run type: FULL
+  *
+  * SUBTEST:
+diff --git a/tests/intel/gem_tiling_max_stride.c b/tests/intel/gem_tiling_max_stride.c
+index 5943ed93f..93b89b00e 100644
+--- a/tests/intel/gem_tiling_max_stride.c
++++ b/tests/intel/gem_tiling_max_stride.c
+@@ -43,6 +43,9 @@
+  * TEST: gem tiling max stride
+  * Description: Check that max fence stride works.
+  * Feature: gtt, mapping
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: fences
+  * Run type: FULL
+  *
+  * SUBTEST:
+diff --git a/tests/intel/gem_unfence_active_buffers.c b/tests/intel/gem_unfence_active_buffers.c
+index d3bc1cee6..aaa841f46 100644
+--- a/tests/intel/gem_unfence_active_buffers.c
++++ b/tests/intel/gem_unfence_active_buffers.c
+@@ -56,6 +56,9 @@
+  * TEST: gem unfence active buffers
+  * Description: Check for use-after-free in the fence stealing code.
+  * Feature: synchronization
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: fences
+  * Run type: FULL
+  *
+  * SUBTEST:
+diff --git a/tests/intel/i915_fb_tiling.c b/tests/intel/i915_fb_tiling.c
+index 14c17b030..e1dc54cc5 100644
+--- a/tests/intel/i915_fb_tiling.c
++++ b/tests/intel/i915_fb_tiling.c
+@@ -27,6 +27,9 @@
+  * TEST: i915 fb tiling
+  * Description: Object tiling must be fixed after framebuffer creation.
+  * Feature: mapping
++ * Sub-category: Memory management
++ * Category: Desktop client
++ * Functionality: tiling
+  * Run type: FULL
+  *
+  * SUBTEST:
+diff --git a/tests/intel/prime_busy.c b/tests/intel/prime_busy.c
+index 90d79864f..79f5922a9 100644
+--- a/tests/intel/prime_busy.c
++++ b/tests/intel/prime_busy.c
+@@ -33,7 +33,7 @@
+  * Feature: prime
+  * Functionality: buffer management
   * Run type: FULL
 - * Sub-category: DRM
-+ * Feature: synchronization uapi
-+ * Functionality: sync_object
-+ * Sub-category: uapi
++ * Sub-category: Memory management
   * Test category: GEM_Legacy
   *
-  * SUBTEST: 32bits-limit
-diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
-index e0ff69b79..c8cf4014d 100644
---- a/tests/syncobj_wait.c
-+++ b/tests/syncobj_wait.c
-@@ -34,10 +34,10 @@
-  * TEST: syncobj wait
+  * SUBTEST: after
+diff --git a/tests/intel/prime_mmap.c b/tests/intel/prime_mmap.c
+index 25b2939e9..e0735496a 100644
+--- a/tests/intel/prime_mmap.c
++++ b/tests/intel/prime_mmap.c
+@@ -54,9 +54,9 @@
+  * TEST: prime mmap
   * Category: Infrastructure
-  * Description: Tests for the drm sync object wait API
-- * Feature: synchronization
-- * Functionality: semaphore
-+ * Feature: synchronization uapi
-+ * Functionality: object wait
+  * Feature: prime
+- * Functionality: memory management
++ * Functionality: prime mmap
   * Run type: FULL
 - * Sub-category: DRM
-+ * Sub-category: uapi
++ * Sub-category: Memory management
   * Test category: GEM_Legacy
   *
-  * SUBTEST: invalid-multi-wait-all-unsubmitted
+  * SUBTEST: test_aperture_limit
+diff --git a/tests/intel/prime_mmap_coherency.c b/tests/intel/prime_mmap_coherency.c
+index 01eb2002d..61bc5d312 100644
+--- a/tests/intel/prime_mmap_coherency.c
++++ b/tests/intel/prime_mmap_coherency.c
+@@ -38,9 +38,9 @@
+  *   Test dma-buf mmap on !llc platforms mostly and provoke coherency bugs so we know for sure where
+  *   we need the sync ioctls.
+  * Feature: prime
+- * Functionality: memory management
++ * Functionality: prime mmap
+  * Run type: FULL
+- * Sub-category: DRM
++ * Sub-category: Memory management
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: ioctl-errors
+diff --git a/tests/intel/prime_self_import.c b/tests/intel/prime_self_import.c
+index 2dbf4e20f..e1dcebfd8 100644
+--- a/tests/intel/prime_self_import.c
++++ b/tests/intel/prime_self_import.c
+@@ -51,32 +51,27 @@
+  * Description: Check whether prime import/export works on the same device... but with different fds.
+  * Feature: prime
+  * Functionality: buffer management
+- * Sub-category: DRM
++ * Sub-category: Memory management
+  * Test category: GEM_Legacy
++ * Run type: BAT
+  *
+  * SUBTEST: basic-llseek-bad
+  * Description: Check dmabuf llseek support with invalid values.
+- * Run type: BAT
+  *
+  * SUBTEST: basic-llseek-size
+  * Description: Check dmabuf llseek support.
+- * Run type: BAT
+  *
+  * SUBTEST: basic-with_fd_dup
+  * Description: Check prime export with duplicate fd.
+- * Run type: BAT
+  *
+  * SUBTEST: basic-with_one_bo
+  * Description: Check prime import/export with one buffer object.
+- * Run type: BAT
+  *
+  * SUBTEST: basic-with_one_bo_two_files
+  * Description: Check prime/flink with one buffer object.
+- * Run type: BAT
+  *
+  * SUBTEST: basic-with_two_bos
+  * Description: Check prime import/export with two buffer objects.
+- * Run type: BAT
+  *
+  * SUBTEST: export-vs-gem_close-race
+  * Description: Check race of gem close against prime export.
 -- 
 2.34.1
 
