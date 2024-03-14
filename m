@@ -4,48 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDA0AC54E60
-	for <igt-dev@archiver.kernel.org>; Thu, 14 Mar 2024 14:36:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1F1EC54E67
+	for <igt-dev@archiver.kernel.org>; Thu, 14 Mar 2024 14:36:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7375C10FBAD;
-	Thu, 14 Mar 2024 14:36:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 69C8210FBAF;
+	Thu, 14 Mar 2024 14:36:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="id9D6vKW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WW6nCA2l";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A511F10FBAD
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Mar 2024 14:36:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CAC9B10FBC0
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Mar 2024 14:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710426981; x=1741962981;
+ t=1710426989; x=1741962989;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=VNBjWeBcvAnnv/P47h3V89pygDW3leT+Q1Z7+22JgPQ=;
- b=id9D6vKWzt48TjeV+X3Pc1sIOnm2n7YD6eZL06fc3GvbHEAi57nGAK94
- Tn53LauE2/btIRTP+kyJI8QaongJ8kXCx9ED42do8AYypRLW5SR73mNKI
- R38agzQj5aDZKlaTbexrASknoRne4C6SPpHI6FntUEfJ7xe9NEt8pxq1l
- jRIVe6wAkkoeLXz6Np7e9BDlcAzITtQ8vNZ871dSE2reqruqS4INJkzhy
- VDE0ZKhGp5/6JuIuOEPdpNf7T+tSrPEGP+g6pVV7dLzOZaNpmx1i3bi2j
- fsQWo4SI0n8Af1iK80lTVzO3WnysULq1y4KIex4bpvJD9Q+inLJGWKUwA w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="16697638"
-X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; d="scan'208";a="16697638"
+ bh=oIpC+xbXCAPRaQQOZ6gqv1tu3eFOGb1fP7+kvKR+Blw=;
+ b=WW6nCA2lzjwiHcupdUVqfj2MVzqGOVE8x9a8SEWaij1xHU6xDet77kZX
+ kUEyPpzZp7zBUeHYz1D/SsKQIN7DGUf8GXR5KCcZx1mF8YHe5GYTG+I9b
+ UnuV0gHt8eQeNgufKjmnedMN0Wm5aaccZSHR9NLTJspgvpcujdemFrs7s
+ 2tZZgL/eiNAKxsVPF0DpxwKH5uQioYPTHEymJOiZ9DDQip1ztRHxbwJjq
+ dppPU7EcIHHCejgpnWcxBu3JDtVf7obZHRQuCQcszGn7WCi7+xaenzqKK
+ f9AacRT0n/HTL8EsALAucPlzUDmDGgsOeUjtQrH0c3bcFe76jLqGXo+Df Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="16697655"
+X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; d="scan'208";a="16697655"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2024 07:36:21 -0700
+ 14 Mar 2024 07:36:29 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; d="scan'208";a="12233907"
+X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; d="scan'208";a="12234021"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2024 07:36:19 -0700
+ 14 Mar 2024 07:36:28 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Karolina Stolarek <karolina.stolarek@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Subject: [PATCH i-g-t v4 07/25] tests/intel: Introduce GPGPU subcategory
-Date: Thu, 14 Mar 2024 14:34:37 +0000
-Message-Id: <20240314143455.1436688-8-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v4 08/25] tests/intel: Introduce Blitter subcategory
+Date: Thu, 14 Mar 2024 14:34:38 +0000
+Message-Id: <20240314143455.1436688-9-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240314143455.1436688-1-katarzyna.piecielska@intel.com>
 References: <20240314143455.1436688-1-katarzyna.piecielska@intel.com>
@@ -67,41 +68,104 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's introduce GPGPU subcategory.
+Let's introduce Blitter subcategory.
 
-v2: functionality s/gpgpu/gpgpu_fill/ to not trouble automation tools
+v2: introduce more granularity in Blitter subcategory to not break
+automation:
+ - igt@gem_exercise_blt@fast-copy* - s/blitter/fast-copy/
+ - igt@gem_linear_blits@ - s/blitter/linear blit/
+
+v2: Make Sub-category/Functionality/Feature unique values. (Kamil)
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Karolina Stolarek <karolina.stolarek@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/intel/gem_gpgpu_fill.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tests/intel/gem_exercise_blt.c      | 16 ++++++++--------
+ tests/intel/gem_linear_blits.c      |  6 +++---
+ tests/intel/gem_set_tiling_vs_blt.c |  3 +++
+ tests/intel/gen9_exec_parse.c       |  3 +++
+ 4 files changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/tests/intel/gem_gpgpu_fill.c b/tests/intel/gem_gpgpu_fill.c
-index ac283620e..3a6d66b35 100644
---- a/tests/intel/gem_gpgpu_fill.c
-+++ b/tests/intel/gem_gpgpu_fill.c
-@@ -51,13 +51,13 @@
+diff --git a/tests/intel/gem_exercise_blt.c b/tests/intel/gem_exercise_blt.c
+index 4a9bc3729..39bbdda17 100644
+--- a/tests/intel/gem_exercise_blt.c
++++ b/tests/intel/gem_exercise_blt.c
+@@ -13,19 +13,19 @@
  /**
-  * TEST: gem gpgpu fill
-  * Category: Server
-- * Functionality: command submission
+  * TEST: gem exercise blt
+  * Description: Exercise blitter commands
+- * Feature: blitter
 - * Run type: FULL
-- * Sub-category: Compute
-+ * Functionality: gpgpu_fill
-+ * Sub-category: GPGPU
++ * Feature: blitter feature
++ * Sub-category: Blitter
++ * Category: Desktop client
++ * Functionality: fast-copy
   * Test category: GEM_Legacy
-+ * Feature: compute
 + * Run type: FULL
   *
-  * SUBTEST: basic
-- * Feature: compute
+  * SUBTEST: fast-copy
+- * Description:
+- *   Check fast-copy blit
+- *   blitter
++ * Description: Check fast-copy blit blitter
+  *
+  * SUBTEST: fast-copy-emit
+- * Description:
+- *   Check multiple fast-copy in one batch
+- *   blitter
++ * Description: Check multiple fast-copy in one batch blitter
++ *
   */
  
- #define WIDTH 64
+ IGT_TEST_DESCRIPTION("Exercise blitter commands");
+diff --git a/tests/intel/gem_linear_blits.c b/tests/intel/gem_linear_blits.c
+index 64f220cb3..aac84211f 100644
+--- a/tests/intel/gem_linear_blits.c
++++ b/tests/intel/gem_linear_blits.c
+@@ -53,9 +53,9 @@
+  * TEST: gem linear blits
+  * Category: Infrastructure
+  * Description: Test doing many blits with a working set larger than the aperture size.
+- * Feature: blitter
+- * Functionality: blitter
+- * Sub-category: CMD submission
++ * Feature: blitter feature
++ * Functionality: linear blits
++ * Sub-category: Blitter
+  * Test category: GEM_Legacy
+  * Run type: FULL
+  *
+diff --git a/tests/intel/gem_set_tiling_vs_blt.c b/tests/intel/gem_set_tiling_vs_blt.c
+index 9077e0f3f..28469f5f3 100644
+--- a/tests/intel/gem_set_tiling_vs_blt.c
++++ b/tests/intel/gem_set_tiling_vs_blt.c
+@@ -61,6 +61,9 @@
+  * TEST: gem set tiling vs blt
+  * Description: Check for proper synchronization of tiling changes vs. tiled gpu access.
+  * Feature: blitter, gtt
++ * Functionality: tiling
++ * Sub-category: Blitter
++ * Category: Desktop client
+  * Run type: FULL
+  *
+  * SUBTEST: tiled-to-tiled
+diff --git a/tests/intel/gen9_exec_parse.c b/tests/intel/gen9_exec_parse.c
+index 33ff6bcb5..509a2e80f 100644
+--- a/tests/intel/gen9_exec_parse.c
++++ b/tests/intel/gen9_exec_parse.c
+@@ -36,6 +36,9 @@
+ /**
+  * TEST: gen9 exec parse
+  * Feature: blitter, command_parser
++ * Sub-category: Blitter
++ * Functionality: command_parser
++ * Category: Desktop client
+  * Run type: FULL
+  *
+  * SUBTEST: allowed-all
 -- 
 2.34.1
 
