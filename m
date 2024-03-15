@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10B7FC54E58
-	for <igt-dev@archiver.kernel.org>; Fri, 15 Mar 2024 08:41:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6952C54E66
+	for <igt-dev@archiver.kernel.org>; Fri, 15 Mar 2024 08:43:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9B7DA112010;
-	Fri, 15 Mar 2024 08:41:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 66E0710F092;
+	Fri, 15 Mar 2024 08:43:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DBpZLEb3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RV5J1UPA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7EC211200C
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Mar 2024 08:41:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D7E0A10F092
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Mar 2024 08:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710492085; x=1742028085;
+ t=1710492183; x=1742028183;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=BZsu7H2PWI26/qgiDoW+9sUDVnTxF7BUDQcAZva/8zo=;
- b=DBpZLEb3/YEqTbAmUkRKh/WR0+Jb3H5Vk/h5dZRWTJWanxAf2QbX3xbl
- MyOzHW1o/2IUbEerK2ZpXSqzeQeGwxI08ki0rKBbD3SoZ6xu1PlnY6U1b
- 589NxpILsi/bmBxyiX0iDTUQzAreY7FvS/f73/Q28MHU+yTx3qO9MfsBB
- Rwq16IIH9rXVkLj4Bt8ZMuBnxPvgi2FY8xhBJA8V/nsKgg4TPj36YGhgM
- 6kN3FDpQ74aQpa7irKIsSkwjoRgkoonNwHFYC8rWKqlctQyYZfFPnbmwW
- tsMyGrClGtMhJyYIFl+XKkcDE/cnNpuTiNX2DJt6JQjaodWVJDY3omjAB w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="27821080"
-X-IronPort-AV: E=Sophos;i="6.07,128,1708416000"; d="scan'208";a="27821080"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ bh=UQpnavKYN0jfyIhToMtKvcqbAUjfYPyVTiXQJwkdpNk=;
+ b=RV5J1UPAqwt6FMrp69gaVc7vP5OUk6bmC8/4M2xEAeSK+/ckkoIgK1SA
+ 5bbh5aD/kqAB1bYpoRPLhfsum2Ndm4C4uIkFQltjD/xR2e6kXkG0N75ug
+ EukNnUW/8iq4tE4ezg5fhvwWd+CexahuJHOIpZ0izs5T4PeT/YJeJ1Kh/
+ onptExVAUMYuZFzv8TmWsBkT1T/UKoKq8X5jFA0sdS22uB/QdjcnhYaw/
+ CjsgLVz8v8lllrZfXVHry9wjrtoiL5vqjb0Fw6fBvSBxTNVOxitTNFjHS
+ a4jR5y4EPO6p2A3P6hUEJatwQjz/RSOuHyaaEwfZPfzmRBLaRapODeQdd g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="27821236"
+X-IronPort-AV: E=Sophos;i="6.07,128,1708416000"; d="scan'208";a="27821236"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Mar 2024 01:41:24 -0700
+ 15 Mar 2024 01:43:02 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,128,1708416000"; d="scan'208";a="12659056"
+X-IronPort-AV: E=Sophos;i="6.07,128,1708416000"; d="scan'208";a="17066759"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2024 01:41:22 -0700
-Date: Fri, 15 Mar 2024 09:40:58 +0100
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2024 01:43:01 -0700
+Date: Fri, 15 Mar 2024 09:42:58 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
  Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: Re: [PATCH i-g-t 10/10] scripts/xls_to_doc.py: add a logic to
- simplify tags
-Message-ID: <20240315084058.5tbgo5l2pp37y5f6@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH i-g-t 09/10] scripts/xls_to_doc.py: better handle common
+ attributes
+Message-ID: <20240315084258.jgrnbtpkseh2ilw2@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
  Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>
 References: <20240314103014.1170437-1-mauro.chehab@linux.intel.com>
- <20240314103014.1170437-11-mauro.chehab@linux.intel.com>
+ <20240314103014.1170437-10-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240314103014.1170437-11-mauro.chehab@linux.intel.com>
+In-Reply-To: <20240314103014.1170437-10-mauro.chehab@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,256 +73,82 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Mauro,
-On 2024-03-14 at 11:29:19 +0100, Mauro Carvalho Chehab wrote:
+On 2024-03-14 at 11:29:18 +0100, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> When there are common fields at the test and they were updated,
-> reflect the changes at the test level if all subtests have equal
-> values at the same field(s).
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Please add description here, with that:
 
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 > ---
->  scripts/xls_to_doc.py | 133 ++++++++++++++++++++++++++++++++++++++----
->  1 file changed, 121 insertions(+), 12 deletions(-)
+>  scripts/xls_to_doc.py | 27 ++++++++++++++++++++-------
+>  1 file changed, 20 insertions(+), 7 deletions(-)
 > 
 > diff --git a/scripts/xls_to_doc.py b/scripts/xls_to_doc.py
-> index 60f7536c8839..6492c5d8337a 100755
+> index 03feae5834d7..60f7536c8839 100755
 > --- a/scripts/xls_to_doc.py
 > +++ b/scripts/xls_to_doc.py
-> @@ -8,6 +8,7 @@
->  """Import contents of a XLS file into testplan documentation."""
+> @@ -31,9 +31,10 @@ class FillTests(TestList):
+>      def __init__(self, config_path, verbose):
+>          self.tests = {}
+>          self.spreadsheet_data = {}
+> -        self.ignore_fields = []
+>          self.verbose = verbose
 >  
->  import argparse
-> +import copy
->  import json
->  import os
->  import re
-> @@ -38,7 +39,7 @@ class FillTests(TestList):
+> +        self.update_fields = []
+> +
 >          # Read current documentation
 >          TestList.__init__(self, config_path)
 >  
-> -        self.orig_doc = self.doc.copy()
-> +        self.orig_doc = copy.deepcopy(self.doc)
->  
->          self.testname_regex = re.compile(r'^\s*(igt@[^\n\@]+)\@?(\S*)\s*')
->          self.key_has_wildcard = re.compile(r'\%?arg\[(\d+)\]')
-> @@ -152,11 +153,26 @@ class FillTests(TestList):
->  
->          return self.spreadsheet_data
->  
-> -    def change_value(self, content, subtest, line, field, value):
-> +    def change_value(self, content, test, subtest, line, field, value):
->          """
->          Change the contents of a source file to update its documentation.
->          """
->  
-> +        if test:
-> +            line = 0
-> +            while True:
-> +                line += 1
-> +                if line >= len(content):
-> +                    break
-> +
-> +                file_line = content[line]
-> +
-> +                match = re.match(r'^\s*\* ?TEST:\s*(.*)', file_line)
-> +                if match:
-> +                    break
-> +
-> +            line += 1
-> +
->          current_field = None
->          found_line = None
->          i = line
-> @@ -173,11 +189,14 @@ class FillTests(TestList):
->              file_line = re.sub(r'^\s*\* ?', '', file_line)
->  
->              match = re.match(r'^SUBTESTS?:\s*(.*)', file_line)
-> -            if match and match.group(1) != subtest:
-> -                break
-> +            if match:
-> +                if subtest and match.group(1) != subtest:
-> +                    break
-> +                if test:
-> +                    break
->  
->              match = re.match(r'^TEST:\s*(.*)', file_line)
-> -            if match and match.group(1) != subtest:
-> +            if match:
->                  break
->  
->              match = re.match(r'arg\[(\d+)\]:\s*(.*)', file_line)
-> @@ -208,11 +227,22 @@ class FillTests(TestList):
->  
->                      content[i] = ""
->  
-> -        if value != "":
-> -            if found_line:
-> +        if i > len(content):
-> +            if test:
-> +                print(f"Warning: coun't find doc string for test {subtest}, field {field}")
-> +            else:
-> +                print(f"Warning: coun't find doc string for subtest {subtest}, field {field} on line {line}")
-> +
-> +            return
-> +
-> +        if found_line:
-> +            if value != "":
->                  content[found_line] = f' * {field}: {value}\n'
-> -                return
-> +            else:
-> +                content[found_line] = ""
-> +            return
->  
-> +        if value != "":
->              if i > 2 and re.match(r'\s*\*\s*$', content[i - 1]):
->                  i -= 1
->  
-> @@ -261,6 +291,78 @@ class FillTests(TestList):
->              for key, value in row.items():
->                  self.tests[testname]["subtests"][subtest][key] = value
->  
-> +    def simplify_doc_strings(self):
-> +        """
-> +        Group common properties at TEST level if all subtests have identical
-> +        values for such property.
-> +        """
-> +
-> +        print("Handling common information on test from subtests")
-> +
-> +        for testname in self.tests:
-> +            # Get common properties
-> +            common = {}
-> +            test_nr = self.tests[testname].get("Test")
-> +            for key, value in self.doc[test_nr].items():
-> +                # Ignore description when checking common fields
-> +                if key.lower() == "description":
+> @@ -78,7 +79,9 @@ class FillTests(TestList):
+>              if "sublevel" in item["_properties_"]:
+>                  update = item["_properties_"].get("update-from-file")
+>                  if update:
+> -                    self.ignore_fields.append(field)
 > +                    continue
 > +
-> +                if key in self.update_fields:
-> +                    common[key] = value
-> +
-> +            # Step 1: verify common items
-> +            first = True
-> +            for subtest in sorted(list(self.tests[testname]["subtests"].keys())):
-> +                if subtest.count("@") > 1:
-> +                    print(f"Warning: don't simplify dynamic subtest: {testname}{subtest}")
+> +            self.update_fields.append(field)
+>  
+>      def add_field(self, dic, field, value):
+>          """
+> @@ -276,8 +279,22 @@ class FillTests(TestList):
+>  
+>              test_nr = self.tests[testname]["Test"]
+>  
+> +            # Update common fields
+>              doc_content = self.orig_doc[test_nr]
+> +            fields = set(self.doc[test_nr].keys()) | set(doc_content.keys())
+>  
+> +            for field in sorted(fields):
+> +                if field not in self.update_fields:
 > +                    continue
 > +
-> +                # Store common items
-> +                subtest_fields = sorted(self.tests[testname]["subtests"][subtest].keys())
-> +                for k in subtest_fields:
-> +                    # Ignore description when checking common fields
-> +                    if k.lower() == "description":
-> +                        continue
+> +                value = self.doc[test_nr].get(field, "")
+> +                doc_value = doc_content.get(field, "")
 > +
-> +                    # Ignore internal fields
-> +                    if k not in self.update_fields:
-> +                        continue
+> +                if doc_value == value:
+> +                    continue
 > +
-> +                    val = self.tests[testname]["subtests"][subtest][k]
-> +                    val = val.strip()
-> +                    val = re.sub(r" +", " ", val)
-> +                    val = re.sub(r"([^\.])\s?\n\s*([A-Z])", r"\1.\n\2", val)
-> +                    self.tests[testname]["subtests"][subtest][k] = val
 > +
-> +                    if first and val != '':
-> +                        common[k] = val
-> +                    else:
-> +                        if k not in common:
-> +                            continue
-> +                        if common[k] != val:
-> +                            del common[k]
-> +
-> +                first = False
-> +
-> +                # Remove keys that aren't common to all subtests
-> +                for k in list(common.keys()):
-> +                    if k not in subtest_fields:
-> +                        del common[k]
-> +
-> +            # Step 2: drop common items from subtests
-> +            for subtest, fields in list(self.tests[testname]["subtests"].items()):
-> +                for k, val in list(fields.items()):
-> +                    if k not in common:
-> +                        continue
-> +
-> +                    if val == common[k]:
-> +                        self.tests[testname]["subtests"][subtest][k] = ""
-> +
-> +            # Step 3: store the modified common properties
-> +            for k, val in common.items():
-> +                self.doc[test_nr][k] = val
-> +
->      def update_test_file(self, testname, args):
->          """
->          Update a C source file using the contents of self.tests as
-> @@ -293,6 +395,7 @@ class FillTests(TestList):
->                  if doc_value == value:
->                      continue
->  
-> +                self.change_value(content, True, testname, 0, field, value)
->  
->              # Update subtest fields
+> +            # Update subtest fields
 >              for subtest, subtest_content in sorted(self.tests[testname]["subtests"].items()):
-> @@ -300,7 +403,6 @@ class FillTests(TestList):
+>                  if "line" not in subtest_content:
 >                      print(f"Warning: didn't find where {subtest} is documented.")
->                      continue
->  
-> -                line = subtest_content['line']
->                  subtest_nr = subtest_content['subtest_nr']
->  
->                  if subtest_nr not in self.doc[test_nr]["subtest"]:
-> @@ -310,6 +412,7 @@ class FillTests(TestList):
->                          print(f"Warning: test {testname}, subtest {subtest} is not documented.")
->                      continue
->  
-> +                line = self.doc[test_nr]["_subtest_line_"][subtest_nr]
->                  doc_content = self.orig_doc[test_nr]["subtest"][subtest_nr]
->  
+> @@ -298,11 +315,7 @@ class FillTests(TestList):
 >                  fields = set(subtest_content.keys()) | set(doc_content.keys())
-> @@ -342,7 +445,7 @@ class FillTests(TestList):
->                      # Just in case, handle continuation lines
->                      value = re.sub(r"\n", "\n *   ", value)
 >  
-> -                    self.change_value(content, subtest, line, field, value)
-> +                    self.change_value(content, False, subtest, line, field, value)
+>                  for field in sorted(fields):
+> -                    if field not in self.props:
+> -                        continue
+> -
+> -                    if args.ignore_lists:
+> -                        if field in self.ignore_fields:
+> +                    if field not in self.update_fields:
+>                              continue
 >  
->                      # Update line numbers after insert
->                      skip = True
-> @@ -391,7 +494,7 @@ def main():
->      parser = argparse.ArgumentParser(description=__doc__)
->      parser.add_argument("--config", required=True,
->                          help="JSON file describing the test plan template")
-> -    parser.add_argument("--xls", required=True,
-> +    parser.add_argument("--xls",
->                          help="Input XLS file.")
->      parser.add_argument("--sheets", nargs="*",
->                          help="Input only some specific sheets from the XLS file.")
-> @@ -399,13 +502,19 @@ def main():
->                          help='Ignore fields that are updated via test lists')
->      parser.add_argument("--store-json", action="store_true",
->                          help="Generate JSON files with documentation. Useful for debugging purposes.")
-> +    parser.add_argument("--simplify", action="store_true",
-> +                        help="Run a simplify logic to cleanup TEST common fields.")
->      parser.add_argument('-v', '--verbose', action='count', default=0)
->  
->      parse_args = parser.parse_args()
->  
->      fill_test = FillTests(parse_args.config, parse_args.verbose)
->  
-> -    fill_test.parse_spreadsheet(parse_args.xls, parse_args.sheets)
-> +    if parse_args.xls:
-> +        fill_test.parse_spreadsheet(parse_args.xls, parse_args.sheets)
-> +
-> +    if parse_args.simplify:
-> +        fill_test.simplify_doc_strings()
->  
->      if "store_json" in parse_args:
->          print("Generating fill_test.json debug file")
+>                      value = subtest_content.get(field, "")
 > -- 
 > 2.43.2
 > 
