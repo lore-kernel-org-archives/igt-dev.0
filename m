@@ -4,54 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9BB6C54E69
-	for <igt-dev@archiver.kernel.org>; Fri, 15 Mar 2024 09:13:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E49AC54E69
+	for <igt-dev@archiver.kernel.org>; Fri, 15 Mar 2024 09:15:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 501D010F5AA;
-	Fri, 15 Mar 2024 09:13:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5057711205C;
+	Fri, 15 Mar 2024 09:15:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i7IYSIju";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NGXIXvg1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9307110F5AA
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Mar 2024 09:13:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0430311205A
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Mar 2024 09:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710494025; x=1742030025;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version:content-transfer-encoding;
- bh=XUeK0g8Oiz3T0X/9aBlz2HaUx5WE12Mqef646Tl+l7E=;
- b=i7IYSIju8LrokaJUdTZImkvzpg/eWQicBUUjbIe9L+kFVrUPl3xy/pIG
- 1fogfS8ms00tv0RTA6WI2on/w2XTf0id8DfqCb3jF8Tr9bE0UeeMm7DLR
- p7r1tjOX//ylecZwsjjtgUI+IIziwRU3OZoBD8KMHxACv7rsWKE1Yn5eH
- qL+WpUEYs6yS/7qjk/O5DjzfR1G/NRhuocLG1KCaNGH4ZTkblwmjzvskQ
- o5Q63Mox3mvGc5fu07GVL6yZ5827p4V9lSQC2hi7ufL6rJA197rG9pfBF
- 4euAvf1zJfk2Qka6q6kLg3qW748dFuXAy8yKoy8mOl4MxPTm+IEWSwCmG Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="5485159"
+ t=1710494155; x=1742030155;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Mlpg40p0k/rxPAC7A93vQho/Rc3tiSyZqkkbqwTh22A=;
+ b=NGXIXvg1ZUTBUQRHFQq/ntLGSqk88zyGR0IxQKYm23Ta3436vpBqspZT
+ JcvBq90u9khWpKaHbK69FFMHiFotCPB75a9Xpi6mm0Pt1OZ5KQp8fpqKJ
+ 8DjivlDZgjlV6bRScgyNIuYFNoWmxIvBaINr6yBMxIsZdRIbhMNP6vTvn
+ DAbTkr0gNzvftM35cXZvr6Sqidfkae8DbJlf2m5DfMYyIq4+1nE+5gO+f
+ bYRKc5uuZRaOuWfG6a4K0ndwHZRz0LK9TdQvREvA4MUuuXuiqeOW+Oaau
+ 90OPXI6XBSS6Se3b7IWhNjd0YyHnZbdCSEQ5ASRwjFmpD1mtlg7etMXGX Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="5489553"
 X-IronPort-AV: E=Sophos;i="6.07,128,1708416000"; 
-   d="scan'208";a="5485159"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Mar 2024 02:13:44 -0700
+   d="scan'208";a="5489553"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Mar 2024 02:15:54 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,128,1708416000"; d="scan'208";a="12499179"
-Received: from denache-mobl.ger.corp.intel.com (HELO localhost)
- ([10.252.36.82])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Mar 2024 02:13:42 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, Zbigniew Kempczynski
- <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t] tools/intel_reg: add possibility to select device
-In-Reply-To: <20240314225839.2845585-1-ashutosh.dixit@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20240314225839.2845585-1-ashutosh.dixit@intel.com>
-Date: Fri, 15 Mar 2024 11:13:37 +0200
-Message-ID: <87cyrvrh6m.fsf@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,128,1708416000"; d="scan'208";a="50064740"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Mar 2024 02:15:53 -0700
+Date: Fri, 15 Mar 2024 10:15:50 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: Re: [PATCH 11/10] scripts/xls_to_doc.py: make pylint happy
+Message-ID: <20240315091550.s4t6zkbq3ej5jzlh@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+References: <20240314103014.1170437-11-mauro.chehab@linux.intel.com>
+ <20240315085018.1210934-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <20240315085018.1210934-1-mauro.chehab@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,283 +70,131 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 14 Mar 2024, Ashutosh Dixit <ashutosh.dixit@intel.com> wrote:
-> From: =C5=81ukasz =C5=81aguna <lukasz.laguna@intel.com>
->
-> Device can be selected by slot or using filter. Example:
->
-> intel_reg dump --slot "0000:01:00.0"
-> intel_reg dump --filter "pci:vendor=3D8086"
+Hi Mauro,
+On 2024-03-15 at 09:50:18 +0100, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Pylint is too picky. Still, it is useful to run it, as sometimes
+> it could point to real issues.
+> 
+> So, let's make it happy by:
+> - disabling R0902, which is one of those "too many" warnings
+>   (IMO, it doesn't make sense to limit the number of times some
+>   thing can be used inside a code;
+> 
+> - disabling another warning about not using .items(). On that
+>   particular case, IMO it will make the code less clearer for
+>   reviewers and future maintainership, e. g.:
+> 
+> 	test_nr = self.tests[testname].get("Test")
+> 
+>   and similar occurrences for self.tests[testname] is a lot clearer
+>   than:
+> 
+> 	for testname, value in self.tests.items():
+> 		...
+> 		test_nr = value.get("Test")
+> 		...
+> 		value["subtests"][subtest][k] = val
+> 
+> 	(and other similar occurrences)
+> 
+>   ok, a better name than "value" might help, but still the
+>   obvious choice would be "test", "test_testname" and such,
+>   which just makes the code more obfuscated.
+> 
+>   So, ignore the warning for good.
+> 
+> - remove a blank line before a docstring comment;
+> 
+> - remove a currently unused argument from update_files;
+> 
+> - fix indent on a single line.
+> 
+> No functional changes.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Really, if you want to add device filtering, the sensible thing to do is
-to mimic lspci -s or -d options instead of NIH'ing your own. Maybe add a
-subset of the functionality first, but please don't deviate from the
-format.
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Other comments inline.
 
-> Signed-off-by: =C5=81ukasz =C5=81aguna <lukasz.laguna@intel.com>
 > ---
->  tools/intel_reg.c | 128 +++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 126 insertions(+), 2 deletions(-)
->
-> diff --git a/tools/intel_reg.c b/tools/intel_reg.c
-> index 6c37e14d12..6b903f3f87 100644
-> --- a/tools/intel_reg.c
-> +++ b/tools/intel_reg.c
-> @@ -39,6 +39,7 @@
->  #include "intel_chipset.h"
->=20=20
->  #include "intel_reg_spec.h"
-> +#include "igt_device_scan.h"
->=20=20
->=20=20
->  #ifdef HAVE_SYS_IO_H
-> @@ -86,6 +87,13 @@ struct config {
->  	int verbosity;
->  };
->=20=20
-> +struct pci_slot {
-
-The name has clash potential with pci libs.
-
-> +	int domain;
-> +	int bus;
-> +	int dev;
-> +	int func;
-> +};
-> +
->  /* port desc must have been set */
->  static int set_reg_by_addr(struct config *config, struct reg *reg,
->  			   uint32_t addr)
-> @@ -958,6 +966,12 @@ static int intel_reg_list(struct config *config, int=
- argc, char *argv[])
->  	return EXIT_SUCCESS;
->  }
->=20=20
-> +static int intel_reg_list_filters(struct config *config, int argc, char =
-*argv[])
-> +{
-> +	igt_device_print_filter_types();
-> +	return EXIT_SUCCESS;
-> +}
-> +
->  static int intel_reg_help(struct config *config, int argc, char *argv[]);
->=20=20
->  struct command {
-> @@ -1001,6 +1015,11 @@ static const struct command commands[] =3D {
->  		.function =3D intel_reg_list,
->  		.description =3D "list all known register names",
->  	},
-> +	{
-> +		.name =3D "list_filters",
-
-Please do not use underscore in subcommands. list-filters.
-
-When you update the command-line interface, a man page update is
-required as well: man/intel_reg.rst.
-
-> +		.function =3D intel_reg_list_filters,
-> +		.description =3D "list registered device filters types",
-> +	},
->  	{
->  		.name =3D "help",
->  		.function =3D intel_reg_help,
-> @@ -1041,6 +1060,8 @@ static int intel_reg_help(struct config *config, in=
-t argc, char *argv[])
->  	printf(" --mmio=3DFILE    Use an MMIO snapshot\n");
->  	printf(" --devid=3DDEVID  Specify PCI device ID for --mmio=3DFILE\n");
->  	printf(" --all          Decode registers for all known platforms\n");
-> +	printf(" --filter       Decode registers for platform described by filt=
-er\n");
-> +	printf(" --slot         Decode registers for platform described by slot=
-\n");
->  	printf(" --binary       Binary dump registers\n");
->  	printf(" --verbose      Increase verbosity\n");
->  	printf(" --quiet        Reduce verbosity\n");
-> @@ -1147,6 +1168,52 @@ builtin:
->  	return config->regcount;
->  }
->=20=20
-> +static void parse_pci_slot_name(struct pci_slot *pci_slot, const char *p=
-ci_slot_name)
-> +{
-> +	igt_assert_eq(sscanf(pci_slot_name, "%x:%x:%x.%x",
-> +		&pci_slot->domain, &pci_slot->bus, &pci_slot->dev, &pci_slot->func), 4=
-);
-
-This is a tool, not a test. Please do not use igt_assert or anything
-like that. Handle the errors and fprintf a message to stderr.
-
-> +}
-> +
-> +static struct pci_device *find_intel_graphics_card(void)
-> +{
-> +	struct pci_device *pci_dev;
-> +	struct pci_device_iterator *iter;
-> +	struct pci_id_match match;
-> +
-> +	match.vendor_id =3D 0x8086; /* Intel */
-> +	match.device_id =3D PCI_MATCH_ANY;
-> +	match.subvendor_id =3D PCI_MATCH_ANY;
-> +	match.subdevice_id =3D PCI_MATCH_ANY;
-> +
-> +	match.device_class =3D 0x3 << 16;
-> +	match.device_class_mask =3D 0xff << 16;
-> +
-> +	match.match_data =3D 0;
-> +
-> +	iter =3D pci_id_match_iterator_create(&match);
-> +	pci_dev =3D pci_device_next(iter);
-> +	pci_iterator_destroy(iter);
-> +
-> +	return pci_dev;
-> +}
-> +
-> +static bool is_graphics_card_valid(struct pci_device *pci_dev)
-> +{
-> +	if (!pci_dev) {
-> +		fprintf(stderr, "Graphics card not found\n");
-> +		return false;
-> +	}
-> +	if (pci_device_probe(pci_dev) !=3D 0) {
-> +		fprintf(stderr, "Couldn't probe graphics card\n");
-> +		return false;
-> +	}
-> +	if (pci_dev->vendor_id !=3D 0x8086) {
-> +		fprintf(stderr, "Graphics card is non-intel\n");
-> +		return false;
-> +	}
-> +	return true;
-> +}
-> +
->  enum opt {
->  	OPT_UNKNOWN =3D '?',
->  	OPT_END =3D -1,
-> @@ -1155,6 +1222,8 @@ enum opt {
->  	OPT_COUNT,
->  	OPT_POST,
->  	OPT_ALL,
-> +	OPT_FILTER,
-> +	OPT_SLOT,
->  	OPT_BINARY,
->  	OPT_SPEC,
->  	OPT_VERBOSE,
-> @@ -1164,8 +1233,12 @@ enum opt {
->=20=20
->  int main(int argc, char *argv[])
->  {
-> -	int ret, i, index;
-> +	int ret, i, index, len;
->  	char *endp;
-> +	char *opt_filter =3D NULL;
-> +	struct pci_slot bdf;
-> +	struct pci_device *pci_dev =3D NULL;
-> +	struct igt_device_card card;
->  	enum opt opt;
->  	const struct command *command =3D NULL;
->  	struct config config =3D {
-> @@ -1189,6 +1262,8 @@ int main(int argc, char *argv[])
->  		{ "post",	no_argument,		NULL,	OPT_POST },
->  		/* options specific to read, dump and decode */
->  		{ "all",	no_argument,		NULL,	OPT_ALL },
-> +		{ "filter",	required_argument,	NULL,	OPT_FILTER },
-> +		{ "slot",	required_argument,	NULL,	OPT_SLOT },
->  		{ "binary",	no_argument,		NULL,	OPT_BINARY },
->  		{ 0 }
->  	};
-> @@ -1233,6 +1308,24 @@ int main(int argc, char *argv[])
->  		case OPT_ALL:
->  			config.all_platforms =3D true;
->  			break;
-> +		case OPT_FILTER:
-> +			opt_filter =3D strdup(optarg);
-> +			if (!opt_filter) {
-> +				fprintf(stderr, "strdup: %s\n",
-> +					strerror(errno));
-> +				return EXIT_FAILURE;
-> +			}
-> +			break;
-> +		case OPT_SLOT:
-> +			len =3D strlen("pci:slot=3D") + strlen(optarg) + 1;
-> +			opt_filter =3D malloc(len);
-> +			snprintf(opt_filter, len, "%s%s", "pci:slot=3D", optarg);
-> +			if (!opt_filter) {
-
-snprintf() would've crashed by now if !opt_filter.
-
-But maybe you're looking for asprintf() instead.
-
-> +				fprintf(stderr, "opt_filter: %s\n",
-> +					strerror(errno));
-> +				return EXIT_FAILURE;
-> +			}
-> +			break;
-
-Adding both --filter and --slot options leaks opt_filter. It's benign
-for a small tool like this, but still wrong.
-
->  		case OPT_BINARY:
->  			config.binary =3D true;
->  			break;
-> @@ -1258,6 +1351,9 @@ int main(int argc, char *argv[])
->  	if (help || (argc > 0 && strcmp(argv[0], "help") =3D=3D 0))
->  		return intel_reg_help(&config, argc, argv);
->=20=20
-> +	if (argc > 0 && strcmp(argv[0], "list_filters") =3D=3D 0)
-> +		return intel_reg_list_filters(&config, argc, argv);
-> +
->  	if (argc =3D=3D 0) {
->  		fprintf(stderr, "Command missing. Try intel_reg help.\n");
->  		return EXIT_FAILURE;
-> @@ -1274,7 +1370,32 @@ int main(int argc, char *argv[])
->  			fprintf(stderr, "--devid without --mmio\n");
->  			return EXIT_FAILURE;
->  		}
-> -		config.pci_dev =3D intel_get_pci_device();
-> +
-> +		if (pci_system_init() !=3D 0) {
-> +			fprintf(stderr, "Couldn't initialize PCI system\n");
-> +			return EXIT_FAILURE;
-> +		}
-> +
-> +		igt_devices_scan(false);
-> +
-> +		if (opt_filter) {
-> +			if (!igt_device_card_match(opt_filter, &card)) {
-> +				fprintf(stderr, "Requested device %s not found!\n", opt_filter);
-> +				ret =3D EXIT_FAILURE;
-> +				goto exit;
-> +			}
-> +			parse_pci_slot_name(&bdf, card.pci_slot_name);
-> +			pci_dev =3D pci_device_find_by_slot(bdf.domain, bdf.bus, bdf.dev, bdf=
-.func);
-> +		} else {
-> +			pci_dev =3D find_intel_graphics_card();
-> +		}
-> +
-> +		if (!is_graphics_card_valid(pci_dev)) {
-> +			ret =3D EXIT_FAILURE;
-> +			goto exit;
-> +		}
-> +
-
-All of the above should be abstracted to a function instead of crammed
-into main().
-
-> +		config.pci_dev =3D pci_dev;
->  		config.devid =3D config.pci_dev->device_id;
->  	}
->=20=20
-> @@ -1301,5 +1422,8 @@ int main(int argc, char *argv[])
->  	if (config.fd >=3D 0)
->  		close(config.fd);
->=20=20
-> +exit:
-> +	igt_devices_free();
-> +	free(opt_filter);
->  	return ret;
->  }
-
---=20
-Jani Nikula, Intel
+>  scripts/xls_to_doc.py | 15 +++++++--------
+>  1 file changed, 7 insertions(+), 8 deletions(-)
+> 
+> diff --git a/scripts/xls_to_doc.py b/scripts/xls_to_doc.py
+> index 6492c5d8337a..50ae56477647 100755
+> --- a/scripts/xls_to_doc.py
+> +++ b/scripts/xls_to_doc.py
+> @@ -1,5 +1,5 @@
+>  #!/usr/bin/env python3
+> -# pylint: disable=C0301,R0912,R0913,R0914,R0915,R1702
+> +# pylint: disable=C0301,R0902,R0912,R0913,R0914,R0915,R1702
+>  # SPDX-License-Identifier: (GPL-2.0 OR MIT)
+>  
+>  ## Copyright (C) 2023    Intel Corporation                 ##
+> @@ -97,7 +97,6 @@ class FillTests(TestList):
+>          dic[field] = value
+>  
+>      def process_spreadsheet_sheet(self, sheet):
+> -
+>          """
+>          Convert a single sheet into a dictionary.
+>  
+> @@ -299,7 +298,7 @@ class FillTests(TestList):
+>  
+>          print("Handling common information on test from subtests")
+>  
+> -        for testname in self.tests:
+> +        for testname in self.tests:                  # pylint: disable=C0206
+>              # Get common properties
+>              common = {}
+>              test_nr = self.tests[testname].get("Test")
+> @@ -363,7 +362,7 @@ class FillTests(TestList):
+>              for k, val in common.items():
+>                  self.doc[test_nr][k] = val
+>  
+> -    def update_test_file(self, testname, args):
+> +    def update_test_file(self, testname):
+>          """
+>          Update a C source file using the contents of self.tests as
+>          the source of data to be filled at the igt_doc documentation
+> @@ -419,7 +418,7 @@ class FillTests(TestList):
+>  
+>                  for field in sorted(fields):
+>                      if field not in self.update_fields:
+> -                            continue
+> +                        continue
+>  
+>                      value = subtest_content.get(field, "")
+>                      doc_value = doc_content.get(field, "")
+> @@ -472,7 +471,7 @@ class FillTests(TestList):
+>          except EnvironmentError:
+>              print(f'Failed to write to {sourcename}')
+>  
+> -    def update_test_files(self, args):
+> +    def update_test_files(self):
+>          """
+>          Populate all test files with the documentation from self.tests.
+>          """
+> @@ -481,7 +480,7 @@ class FillTests(TestList):
+>              print("Update source files")
+>  
+>          for testname in self.tests:
+> -            self.update_test_file(testname, args)
+> +            self.update_test_file(testname)
+>  
+>  ######
+>  # Main
+> @@ -525,7 +524,7 @@ def main():
+>          with open("doc.json", "w", encoding='utf8') as write_file:
+>              json.dump(fill_test.doc, write_file, indent=4)
+>  
+> -    fill_test.update_test_files(parse_args)
+> +    fill_test.update_test_files()
+>  
+>  
+>  if __name__ == '__main__':
+> -- 
+> 2.43.2
+> 
