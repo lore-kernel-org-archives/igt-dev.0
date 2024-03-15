@@ -4,53 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1D76C54E58
-	for <igt-dev@archiver.kernel.org>; Fri, 15 Mar 2024 06:11:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0B49C54E66
+	for <igt-dev@archiver.kernel.org>; Fri, 15 Mar 2024 06:16:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 463A810FA15;
-	Fri, 15 Mar 2024 06:11:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5D8E510FA32;
+	Fri, 15 Mar 2024 06:16:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="O0YMk5+D";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NoCCM3WK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E43510F9F3
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Mar 2024 06:11:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F76010FA32
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Mar 2024 06:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710483081; x=1742019081;
- h=from:to:cc:subject:date:message-id:in-reply-to:
+ t=1710483363; x=1742019363;
+ h=date:from:to:cc:subject:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=b2kNc4K7YcurRtCbwCRdE7ao6jT7qw/YCrkd+XAPhig=;
- b=O0YMk5+DtB6M3OEKbW3scqKVhkT/HpZ1OJ/GtXFiYeF3ch7TO3sspVwn
- Dinqus4W8auNoA+Er4t3yBKqMScqHlqcxEqRQnhvKvl8qPtYl4ZqLc3ij
- CzXBlu+r/e0o4WG5t2RJZNX0CBCvwQyelGrtT9By/tO4oAdEBQH1ohV/q
- obEYpD/4FavhfGKONrw5pmSi6w4PbwOzgPl/V2d/CWWpE6H+xIHsXn3xr
- F/B2ZhUfAWHlmXURcfb8HVXNRtxLabxH7cCI6E7WSroFoSJZgX330JQZT
- iCaiR8jLrEzVvA90Qqrb2IB4Uyr3hy23W/09v+rXBExE3NeJORJtQL5pA A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="5187370"
+ bh=H697GChBkvLnXyQ5SVGg/JJ9QLYt/9dvgmBbuR/ElAY=;
+ b=NoCCM3WKbxQeS8wes2AZuh+l/6FwrldH6QBj10kq451snTz90MAR+zXb
+ gSeGHxk1a3mzZBx/2mA9WjouxccQ1kNdri7Jx3Jb8LrVXgUpMjOzImFl8
+ WbjbLfa7awa7XlH7MKHXNtjBn3vjFVKyhGUkTKCHrbih4gVrNPShzOyz+
+ kHIT04/vOyCj+wI143rdm39vdDQKh20Cm1oLLoBhE+8/LUdrRG2duPvqJ
+ o9500aWYeyIyDz5QdiivR0LDqzGOJ0r1aRLkHuQHC50dSYB2N8FkCNFIk
+ UK6hQ/g5Zm/gX0rUfimVzLTZrtAD1Dc5fS3PJH7NpLLzPwc0jQun5E6CE g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="8278328"
 X-IronPort-AV: E=Sophos;i="6.07,127,1708416000"; 
-   d="scan'208";a="5187370"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2024 23:11:20 -0700
+   d="scan'208";a="8278328"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Mar 2024 23:15:55 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,127,1708416000"; d="scan'208";a="12463521"
-Received: from unknown (HELO localhost.localdomain) ([10.190.238.8])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2024 23:11:18 -0700
-From: Vandita Kulkarni <vandita.kulkarni@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: zbigniew.kempczynski@intel.com, bhanuprakash.modem@intel.com,
- Vandita Kulkarni <vandita.kulkarni@intel.com>
-Subject: [PATCH i-g-t 2/3] tests/kms_async_flips: Reuse the already mmapped
- buffer
-Date: Fri, 15 Mar 2024 11:41:41 +0530
-Message-ID: <20240315061142.6591-3-vandita.kulkarni@intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240315061142.6591-1-vandita.kulkarni@intel.com>
-References: <20240315061142.6591-1-vandita.kulkarni@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,127,1708416000"; d="scan'208";a="13012814"
+Received: from linux.intel.com ([10.54.29.200])
+ by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Mar 2024 23:15:55 -0700
+Received: from maurocar-mobl2 (maurocar-mobl2.ger.corp.intel.com
+ [10.245.244.246])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 81239580DA4;
+ Thu, 14 Mar 2024 23:15:54 -0700 (PDT)
+Date: Fri, 15 Mar 2024 07:15:51 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t v3] lib/igt_kmod: Allow to load kunit from alias
+Message-ID: <20240315071551.0661aad9@maurocar-mobl2>
+In-Reply-To: <20240308193149.2220807-1-lucas.demarchi@intel.com>
+References: <20240308193149.2220807-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,54 +70,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In crc test case where we are trying to update the fb
-dont mmap it agian. On some platforms it was found that
-updating a newly mmapped buffer takes longer time.
+On Fri,  8 Mar 2024 11:31:49 -0800
+Lucas De Marchi <lucas.demarchi@intel.com> wrote:
 
-Signed-off-by: Vandita Kulkarni <vandita.kulkarni@intel.com>
----
- tests/kms_async_flips.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+> Instead of only allowing to load the from the module name, also allow it
+> from alias by using kmod_module_new_from_lookup(). With that a user can
+> have their on aliases and the kernel can also export a compat alias for
+> future module renames.
+> 
+> There was a bug in libkmod <= 29 that would make
+> kmod_module_new_from_lookup() return prematurely after a failed alias
+> lookup when we don't have a modules.alias file in the modules dir. So
+> add a workaround to check for -ENOSYS return code too. It should still
+> be compatible with what we are doing here.
+> 
+> v2: Fallback to kmod_module_new_from_name() since the kmod ctx is also
+>     used on builder machines to determine the test lists.
+> v3: Add workaround to bug in libkmod
+> 
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> ---
+>  lib/igt_kmod.c | 21 +++++++++++++++++++--
+>  1 file changed, 19 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index cc242838f..d581f9073 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -1443,6 +1443,7 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
+>  int igt_ktest_init(struct igt_ktest *tst,
+>  		   const char *module_name)
+>  {
+> +	struct kmod_list *l = NULL;
+>  	int err;
+>  
+>  	memset(tst, 0, sizeof(*tst));
+> @@ -1453,9 +1454,25 @@ int igt_ktest_init(struct igt_ktest *tst,
+>  
+>  	tst->kmsg = -1;
+>  
+> -	err = kmod_module_new_from_name(kmod_ctx(), module_name, &tst->kmod);
+> -	if (err)
+> +	err = kmod_module_new_from_lookup(kmod_ctx(), module_name, &l);
+> +
+> +	/*
+> +	 * Check for -ENOSYS to workaround bug in kmod_module_new_from_lookup()
+> +	 * from libkmod <= 29
+> +	 */
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 2895168f7..4658ca4c0 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -221,12 +221,19 @@ static void test_init_fbs(data_t *data)
- 		prev_modifier = data->modifier;
- 
- 		if (data->bufs[0].fb_id) {
--			for (i = 0; i < NUM_FBS; i++)
-+			for (i = 0; i < NUM_FBS; i++) {
-+				if (is_intel_device(data->drm_fd))
-+					igt_fb_unmap_buffer(&data->bufs[i], data->bufs[i].driver_priv);
- 				igt_remove_fb(data->drm_fd, &data->bufs[i]);
-+			}
- 		}
- 
--		for (i = 0; i < NUM_FBS; i++)
-+		for (i = 0; i < NUM_FBS; i++) {
- 			make_fb(data, &data->bufs[i], width, height, i);
-+			if (is_intel_device(data->drm_fd))
-+				data->bufs[i].driver_priv = igt_fb_map_buffer(data->drm_fd,
-+									      &data->bufs[i]);
-+		}
- 	}
- 
- 	igt_plane_set_fb(data->plane, &data->bufs[0]);
-@@ -730,8 +737,11 @@ igt_main
- 	}
- 
- 	igt_fixture {
--		for (i = 0; i < NUM_FBS; i++)
-+		for (i = 0; i < NUM_FBS; i++) {
-+			if (is_intel_device(data.drm_fd))
-+				igt_fb_unmap_buffer(&data.bufs[i], data.bufs[i].driver_priv);
- 			igt_remove_fb(data.drm_fd, &data.bufs[i]);
-+		}
- 
- 		if (is_intel_device(data.drm_fd))
- 			buf_ops_destroy(data.bops);
--- 
-2.34.1
+Hmm... if the bug is not present anymore on more modern libkmod versions,
+shouldn't the code be verifying the libkmod version?
 
+Also, better to add a link to the bug inside the comment, in case the
+workaround would require maintenance in the future.
+
+With that, feel free to add my:
+
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+> +	if (err < 0 && err != -ENOSYS) {
+>  		return err;
+> +	}
+> +
+> +	/*
+> +	 * Lookup may not resolve to a module when used to just list subtests,
+> +	 * where module is not available. Fallback to _new_from_name().
+> +	 */
+> +	if (!l)
+> +		return kmod_module_new_from_name(kmod_ctx(), module_name, &tst->kmod);
+> +
+> +	tst->kmod = kmod_module_get_module(l);
+> +	kmod_module_unref_list(l);
+>  
+>  	return 0;
+>  }
