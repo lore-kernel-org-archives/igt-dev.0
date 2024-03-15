@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F2E8C54E69
-	for <igt-dev@archiver.kernel.org>; Fri, 15 Mar 2024 13:19:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52A21C54E67
+	for <igt-dev@archiver.kernel.org>; Fri, 15 Mar 2024 13:19:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D661910E156;
-	Fri, 15 Mar 2024 13:19:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF2A710E15A;
+	Fri, 15 Mar 2024 13:19:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IKL2eCvK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m9/1xDIj";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1CBFE10E156
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Mar 2024 13:19:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A371E10E15A
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Mar 2024 13:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710508754; x=1742044754;
+ t=1710508756; x=1742044756;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=rmpXprq7tpKaqJEXKkWofPkmDxEaur2m7z8CAS4nMKM=;
- b=IKL2eCvKbVVfcyoKh7QSjaCauVGJtGSJYia0VgqHiZZiKXP1zejWmUZU
- cNf9jgxeI6s7v630E0WT0Gzch+GbNJdrHc6Mbq7SLs5WvQmVeQJbWk6m4
- FdY4xQjCpw+YoQxk1jvzXXTSV7ZS+EcsOlSwSNS5PI4/wOdTBHZKHYnnT
- 4YgLOedCBgpNELjam+u0gweAy4tArJYSeCm1Hp1ymUgi6JtvspgBF9Plo
- Ru0yuXcoM0y2FanIr2/vFOttQYGcLVT+ppiPjvLAdhqgAU4dXbKbgBn6z
- 7nU+pMLzkl78t4+19lvkhtul7yFHtvJZIyV1ldT4NrbCPvGOcd9B5FGYl A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="22897135"
-X-IronPort-AV: E=Sophos;i="6.07,128,1708416000"; d="scan'208";a="22897135"
+ bh=OBVs+fTlVukCjDB/LNsAV8VH02wBquEdRJdelgHFzoo=;
+ b=m9/1xDIjixDDslrvgfMr+l02KhQIxlLfExR7UMyA9/q1aDMN9BzWuW2O
+ 7yXUiKVCDhXF4dwkAooyvjldIhtk8R/cJFN9H+BzWKP6XSyN0x+xfhTgh
+ 9WsyoxAB28x6nonMmqeXkZO5fDbcxVGdKNUYtQf7K2jkVK6EV/Sz4n3x4
+ B+4h7q/JFZmAA82RdU6Obegu/d26vIiGvCK7x2OGILOmmTfirKJRpvfQI
+ zJSDIhGJdh4uTj5qV9XhidaWr9gRQZri0a+5x/Wdh5QzN9ULK6m27JwE6
+ Pjel946QOSWcm38sme6uI7uQP+JrDnBduOld+br2KWGGHLq1yWyARO2vj A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="22897139"
+X-IronPort-AV: E=Sophos;i="6.07,128,1708416000"; d="scan'208";a="22897139"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Mar 2024 06:19:13 -0700
+ 15 Mar 2024 06:19:16 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,128,1708416000"; d="scan'208";a="17372706"
+X-IronPort-AV: E=Sophos;i="6.07,128,1708416000"; d="scan'208";a="17372761"
 Received: from unknown (HELO localhost) ([10.245.246.202])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Mar 2024 06:19:11 -0700
+ 15 Mar 2024 06:19:15 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Bernd Kuhls <bernd@kuhls.net>
-Subject: [PATCH i-g-t v1 1/3] lib/igt_sriov_device: fix musl libc build
-Date: Fri, 15 Mar 2024 14:18:59 +0100
-Message-ID: <20240315131901.28144-2-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v1 2/3] lib/igt_kmod: fix musl builds
+Date: Fri, 15 Mar 2024 14:19:00 +0100
+Message-ID: <20240315131901.28144-3-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240315131901.28144-1-kamil.konieczny@linux.intel.com>
 References: <20240315131901.28144-1-kamil.konieczny@linux.intel.com>
@@ -71,21 +71,21 @@ Link: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/138
 Cc: Bernd Kuhls <bernd@kuhls.net>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/igt_sriov_device.c | 1 +
+ lib/igt_kmod.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
-index f425a5ecf..a0ef05d5c 100644
---- a/lib/igt_sriov_device.c
-+++ b/lib/igt_sriov_device.c
-@@ -5,6 +5,7 @@
- 
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index b4b884898..0b01f070f 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -25,6 +25,7 @@
  #include <dirent.h>
  #include <errno.h>
+ #include <fcntl.h>
 +#include <limits.h>
- #include <pciaccess.h>
- 
- #include "drmtest.h"
+ #include <pthread.h>
+ #include <signal.h>
+ #include <stdlib.h>
 -- 
 2.42.0
 
