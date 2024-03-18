@@ -4,153 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01B37C54E58
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Mar 2024 08:27:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8C3CC54E5D
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Mar 2024 08:42:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A615A10F495;
-	Mon, 18 Mar 2024 08:27:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4173310F4AD;
+	Mon, 18 Mar 2024 08:42:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ao1PO0M/";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="j1YMxhRg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 32C6210F495
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Mar 2024 08:27:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710750434; x=1742286434;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=iMH2ynXoWLuu6EHdwZ/DE5qA0WLtaD1TKtGFH3FM+2o=;
- b=ao1PO0M/GA12OmggWQo1PgRzF84Ok6SwyYRsIGkA5VEm6YmXaCaeDUlJ
- yldmfwsQqiLg+webPOCpLtBNhBWe+1DXRLUACmV5MfEGNYOR7Wg/uu6K7
- h7+ElDs2AFqn8SEmyEJg2r29tOItppDNwyV88mc4xV9D8zK9FZCJAz4p+
- kygNkUueAmg5mfbLLGn4nuFDVadT5plnU+tEXnipEHclE3j0c7aFDJQG/
- bN4Dm31wsCEsCSo1cM8J2CaMYVJrr3Cph6i22TswuJ7Z162QTalS7kYwH
- XUPWZJeY5zW2oojKUFbLuW0DRUx11HS+VJpuqSYSTcLYEpdMQpFDgc5iK g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="6155887"
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
-   d="scan'208";a="6155887"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2024 01:27:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="18107064"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 18 Mar 2024 01:27:13 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 18 Mar 2024 01:27:12 -0700
-Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 18 Mar 2024 01:27:11 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Mon, 18 Mar 2024 01:27:11 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 18 Mar 2024 01:27:11 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DXlqqhVowz36WSzCealbNQ/0HJ0DRho/4wWbGudMMBgN5Z0x7KTN9//MqdGF5OlR/5IB9fOyHEyJ3WYOopjOfUftHatpNGd0AhRt71enqAqeA9KgcPPOk+zjyWdm/qdiKNkvREGJF1pP3sBCq4tBIQLh/8ZNeZZj4Jb6rerbfoSnDHedtJvDU+wap8owPWIdXo/EvL4yC+wCZ+lVeu4+jg1E2aXp0Xn5j5l5SuS4OwQ603bDz6NxrDK2IDtBVUAL3NxUCFWIc2kN+T0Zpo6suFWLMKOOZ5nNRRpi+zdStYIfGKoMIGem0KxerEKGUnfXgMJj311hk1nWdcOmjCKfDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qf8/NHDH7qvcnmyY+SNfM2TBq04XUH0Sc/tG+ivjz5E=;
- b=Bb6wBQYThDkLzPE6/Y/UG90ADefXSxtm1WAOz8I/1RHk+gRoB6ojyuicTgwEB3LUGYrWWPFeReL/2gr7JFLHi8fQbrYbLU8AgX2SHlnDxdAnJxJuVpkEs1w7im5T+BESAiwqhVUCmalJbHbdbdu0JDqfuLEW1vWYaKzpqBIGCyjpzz9eYRzGDnx6I/PoNFVIbNJLszq/+9+Qyz5AvwD8SbhAnzTHMgrRl2vEbtE8cl4HPVC78WUQiilHDEMSPYFBkxc2avZsbboY2AuHSVZOtMAuOAuBZEQQdh9psLEqWpNJaNpNmYhxKuMYl/cb13Cpn53JPELQYZdPVRiHrX0CjQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM8PR11MB5719.namprd11.prod.outlook.com (2603:10b6:8:10::6) by
- PH7PR11MB7549.namprd11.prod.outlook.com (2603:10b6:510:27b::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.11; Mon, 18 Mar
- 2024 08:27:04 +0000
-Received: from DM8PR11MB5719.namprd11.prod.outlook.com
- ([fe80::f58b:e2d4:835d:d592]) by DM8PR11MB5719.namprd11.prod.outlook.com
- ([fe80::f58b:e2d4:835d:d592%4]) with mapi id 15.20.7409.010; Mon, 18 Mar 2024
- 08:27:04 +0000
-Message-ID: <ec684fc4-4448-4280-bfc7-d268aaf1de7c@intel.com>
-Date: Mon, 18 Mar 2024 13:56:49 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 0/4] New rotation test
-To: Louis Chauvet <louis.chauvet@bootlin.com>, <igt-dev@lists.freedesktop.org>
-CC: <miquel.raynal@bootlin.com>, <jeremie.dautheribes@bootlin.com>,
- <thomas.petazzoni@bootlin.com>, <arthurgrillo@riseup.net>, "Juha-Pekka
- Heikkila" <juhapekka.heikkila@gmail.com>
-References: <20240313-new_rotation-v2-0-6230fd5cae59@bootlin.com>
-Content-Language: en-US
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20240313-new_rotation-v2-0-6230fd5cae59@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI1PR02CA0004.apcprd02.prod.outlook.com
- (2603:1096:4:1f7::12) To DM8PR11MB5719.namprd11.prod.outlook.com
- (2603:10b6:8:10::6)
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com
+ [209.85.218.42])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19C2310F4AD
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Mar 2024 08:42:41 +0000 (UTC)
+Received: by mail-ej1-f42.google.com with SMTP id
+ a640c23a62f3a-a28a6cef709so590893166b.1
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Mar 2024 01:42:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1710751359; x=1711356159; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=3pnVyIuZNArSOP3CKZLQgKQRlkmpaxx9QFsE3hZjxgk=;
+ b=j1YMxhRgv4SAtbYQbbjXsM8AkqV3nAmg1vMlbI7ot7ML0cw2oPK0qjUwmDuV9kQ0p1
+ ePIo2jyMTJaGyCnjrybwqXTntWkdW6nJ+ksRahtnNtBIK+K8KO6aIXdgeR/LmAOx4zZn
+ s3NV9BQaaXonz8WKpLRMUx9Tq9nmsSC6lLnIM8yOQD0TnB45Ug4Y8GUEaAbnFT/wGUdU
+ lu+e404exT8+1uOfqA1m5/6W5RJO5MZDmInuGb4bUSLmerG7AgH16z85uxJf2TsYxKWj
+ x3HrT0C0EWNxqO4VGj9QLt71nJAJkzHIhZfosslLTLBsrE1zfe+sQpvnyU/E+fPTUON9
+ 4uzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710751359; x=1711356159;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3pnVyIuZNArSOP3CKZLQgKQRlkmpaxx9QFsE3hZjxgk=;
+ b=q8cqdHYlp0yS8YXzJYQKAJrLmy6Sjda+KXrv6gauwTTupTDq2Ht+e60DgEhYGMVDSQ
+ RUne5DxfwpCExFAd8BU/1r+6mjQCuuIahwtJJydjpxvuj3i3+dL8qMLJIPbhS/a9U8dt
+ XJCjPkOMSdLPBzeRr28EjCdjiQW0o247kTj/4KMFO2x3e8fHnvsR8FKdATWec86AHEce
+ ZVeqphlWCeaZm2t/WJQGW6+kL+pAm6L2zyaCz1MUz1+7gIs3XA4uFLx4R3cHJ5Qw5V4Y
+ UMMzipmkC40C2niaKY/r10Lf9jeJXZjhl0aZ1cO6CrAE7KfRt+8pbqZJe7YFJvc9X+o8
+ xn0g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUNBKFev61A1TPKga4gYdfii/0V5hRyEGUqy47bBzSK2a8/QFZWX6mShbBWcpC26vvybTRWdvilvTNUCy6glCFJftnWgCbxUkF6FAF2wg==
+X-Gm-Message-State: AOJu0YzLzWfhISYYT6VO5spD0OP6tHBoElBKcvU/Y7gimMnnf0bC2jbY
+ tmvntA9tkCi9CVJnpuAfEStsEgWHmNnKFSINr4GE2guqeVbDRsKy
+X-Google-Smtp-Source: AGHT+IGOYTuKAPE+mTbQlm/jQidp6Ijlv0EGUfyISuq6pWrA0kO/0MTZUFo0itQmj+okQ+sPbpxJfg==
+X-Received: by 2002:a17:907:807:b0:a46:c09b:f1f3 with SMTP id
+ wv7-20020a170907080700b00a46c09bf1f3mr1567331ejb.41.1710751358850; 
+ Mon, 18 Mar 2024 01:42:38 -0700 (PDT)
+Received: from [0.0.0.0] ([134.134.139.71])
+ by smtp.googlemail.com with ESMTPSA id
+ v17-20020a1709063bd100b00a46caa13e67sm357511ejf.105.2024.03.18.01.42.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 18 Mar 2024 01:42:38 -0700 (PDT)
+Message-ID: <2ad7c886-a5c4-417e-bce3-4fb5aa473940@gmail.com>
+Date: Mon, 18 Mar 2024 10:42:28 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM8PR11MB5719:EE_|PH7PR11MB7549:EE_
-X-MS-Office365-Filtering-Correlation-Id: a15d1c20-67c6-4bd2-7ab0-08dc47253109
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: LWNsEM1OClZBnhoM5iXUZ2mVIxfKMUFZ2y3iZW3KUVuVduhzOkKmuK46HvGYMF7+unJ1PTs3Kp8KQy0yoMPNdPqEKUceyOC0RWlUXs6PBnN/4cxcFHXXfkmh9Zr3WCdYF0F3wPQcr9GsQwLhyY3hcYOgRS9T2v/3XR3/8lBYfR/8qPGic2To1PGQ2P+hC69fSiZeyuchEu8xK34bTX3o4PsWoIkFTf8AlbievzTV3rKBr/YdYySklo9exdOkZfInvkPw/aPD4yf8N83bXonUovMCqC0od8PhxMdSNAs7jJWeHKj9XOTnh6ekYHtGQ//MeG6+6qKFc45n/8P1dO+UdqiNmCH7j7j88v93uFo1AxmXFA9+t9nIJ1ZOUvOM+JX9FOTwFK28A/Ee1j3JmZncw2OMomxhoaP9VGytea7GSWEv4iE6Hu9wzxeFK2iF0INb5XQswj3Xu3Ly9Tr4Un1+1xa/3w1DyCDYP+Z15J8qKyyllTvMWaUgTK7keoJONa8D3qrwyHKmD8LNYjWP5oVaCW3WZB5kX7s1YZkWeIsZo6WVoVz3PVM5JjudgcnWGs+Ow8AhgQNj7Fvis+CIHgukPukgW35lFbU3ZMAYihpc+Hl/S+VRDyMkOQdUnMSJ4OSj
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM8PR11MB5719.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376005)(1800799015)(366007); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TGl5VGE5NDViSTlvZTRIUlAxQ0FEVGttMm5yRS9vdGk2c0g3VThNWlArUUFE?=
- =?utf-8?B?SWJTdmk1K1JaZzF5VW91WHZEekNOMXBlbHZCWW8rYXRJQ0o2T0JGc0JmNVR5?=
- =?utf-8?B?M2wxRzl2RjVaV2djQUdIV21xRGlIU1FmUXRhVTUyY2o2ZE1jQ2JKYjdKWXMy?=
- =?utf-8?B?UWZ2NlNZYytJcVJwQytZd3FuZDBybDI1NkRWSUNSTkY4ZXgvRFoycWk2aFlP?=
- =?utf-8?B?dlUxU2d4Ny9vbmI5N0x1cVQ4MHJLeWtUWC9pYTRlVFlOSUxCS2Q1dktxT1Bi?=
- =?utf-8?B?dWJweEVEMmRMTE55UUVLelZxRkZjZkhyUGFBalRqektxN2p1dHZvc1MrMm1y?=
- =?utf-8?B?Y3NTRkRXYXRXQmtkMlhhbzBlUGY0NjlKaHBWeTU2RndqRkFTOWszSXF2ZEF0?=
- =?utf-8?B?aU41cGJUeUtvWlNJQVp5MzB5M0tROXlqWktaNmtkTWxSK3RHNmxEQ0dvaTZN?=
- =?utf-8?B?K2hLNHJQM1lJZks5cTR0OUQ2cHM4dm9pU1QwL0ViakNyZGZTY3JCcmxFd1Fn?=
- =?utf-8?B?VUFSWHBKdkpocFMvd0dONzA1WEZmVlRoY3VYam1LWjhjdVA4Skp2U2FTa0hi?=
- =?utf-8?B?aXEzbDQySmRxb1IxY25SaERlMVduTVlYR1YvcFlrcUYvNHM0UjNqbGFHOWpG?=
- =?utf-8?B?NkQ4Wk8ydks5K0c4eUxhV0VESXpWaTBrakowYWJpRWdkamx0eHF1Q3Bqdkta?=
- =?utf-8?B?RDVZZ09DS1FYK2RjUGJFUVF1SFo1dk51YTNtUFA3RGwwOVh4VmtiMFlyVDE5?=
- =?utf-8?B?bXo4R2w1KzIxbGVEZ1FZQXBVa0hjV05wTzdycjh2VGN3eEFXZmhWZXdpL0Jk?=
- =?utf-8?B?WUR4QXJtZ29PNUcreExxSlF6ZGdJZUlUVUoyTWhVSnFLOThkcTJocVB0eEI2?=
- =?utf-8?B?SUhCTEYrREJPdXpIak05aGFkTE4xd3VESk93L09TVDFRQmtFSS9mZVZsRm11?=
- =?utf-8?B?UkpGTmwzajBPMHRUNHUrR0dWQlgyVlpZMC9wcGY0YWdSYlp3SlRlWThIbmRG?=
- =?utf-8?B?dTNzb3IwdFFnTjZablhkbys5dzB4ejZvTW12czUxM2J6TTBqUmswRGlyVUZo?=
- =?utf-8?B?MFY1aVZYU3k1Q2tOcVF0MVd6OVQvTlhGM0V0UXBsQ3hCeSt3eHVWOUFPN2Ft?=
- =?utf-8?B?UXIzbzZ4d1JRQnMxV1BtYnNibTZqdWtLVDNZY1I5REx3Q3BCR3ZBVitvc1cw?=
- =?utf-8?B?VS9UV3p4VDFnVEM1ZVVyd0Qva3R5ZHZ5QnFROWZFRHB3ZGlITms0dlQ2NG9W?=
- =?utf-8?B?ZTFoeHBOckU2Um1zd3B0Z3crU1JMUVdBcWx0NzB6cWZJV3FKK0Q4MHBTanhu?=
- =?utf-8?B?T0FGekRSZDBSVitFeWFpbjU2bnByR0F3MjEwa0JvV01GRXVaYzNyRTJmdUUz?=
- =?utf-8?B?eVpubCtXZm5GMGZaSllrVVlRWHFSYzNJT2dwcGlHTTVLZWY4U3hrVkt2T1Fq?=
- =?utf-8?B?Y3BXeVBFRVpWR202YWdmazBvM0RXMFIwcFY1bTN0QWh0dTJWd0VucURnQ29S?=
- =?utf-8?B?REN1NjhmNWl1eWZGV0hxUVgvWlVQcUFhWW5Id3RrT3k0dVVvY2ViZDBjb0dJ?=
- =?utf-8?B?dHk2TGtPRFpLcDdUZjVNc1NyNzRySWtuREpzQ2JmOE1oVjBPZjdXVlVzam5J?=
- =?utf-8?B?UVpFMlNwL0lTZ2R3cDdyWFh6OFVaZ2ZJM2F0RytOK3pRSWhTQksrT0d5WEV3?=
- =?utf-8?B?Smk2WHlMR1BvcG1XbGQ3RTU0bzkxLzFHc01tOVpJdE9Zd0VINnV1SW1TL3c5?=
- =?utf-8?B?eTBOWHdPRncrSnRKemxQdGJ5Z0ZXV216ZWxkdDR0aW5wNWhmQVNmVUpUU2Fi?=
- =?utf-8?B?cTFkL1V0QzI5eUp4OXNKTTlKUFZuRC9SUjgvenNYZlJBRWtXRzdhYkxvVmVj?=
- =?utf-8?B?eHAyeitnU2EzdlVWcFRCY1kwUkJsNHI5TXhjTHJZeUpnNUYzSC84cmI4Vk1n?=
- =?utf-8?B?alFBakxpZ2w1Nk9LWG1xRkM1ODcvVXdCY0NZcHkvZUsyTCtEMGFocHc0Mzlv?=
- =?utf-8?B?Q05CRWxLT3czQmMyTytrTFZLemtRTmJVTkZDV0NzL28rckJpeEFMTktOS2Zn?=
- =?utf-8?B?Y2tGT1Z5QTFicXJqQ0Vndllqait2TlFHYUdMWGNDTjJIclBzSzNiR2hxTjVC?=
- =?utf-8?B?eWxTaU5pT0JaaHNIS0xDamxpVExVYU14ZFgwRk5FTUhBMElsOE5OamZ6emta?=
- =?utf-8?B?b3c9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a15d1c20-67c6-4bd2-7ab0-08dc47253109
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5719.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2024 08:27:04.3062 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XiEessMI4HJNLlXFKt6ekfw7ey35vguaKxe6veJVrXUI3j1UcrCJEbRb9DLeGW/B+yp3Hlk091E8FcQagu+BkAQ7QPr2eZCZPWUmFI9L3GI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7549
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/intel/xe_ccs: fix bo size for ccs
+Content-Language: en-US
+To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20240315162701.309560-1-matthew.auld@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20240315162701.309560-1-matthew.auld@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -163,58 +82,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-On 13-03-2024 10:39 pm, Louis Chauvet wrote:
-> The actual kms_rotation_crc test does not test all the rotation with all
-> the formats. Create the test kms_rotation, which only test "full plane
-> rotation", but for all the formats, plane and rotations configuration.
-
-Why do we need a new test binary 'kms_rotation'?
-
-IMHO, you could extend kms_rotation_crc to support other combinations.
-
-- Bhanu
-
+On 15.3.2024 18.27, Matthew Auld wrote:
+> Don't just assume it will always fit into the default page size. When
+> passing in custom -W or -H the raw CCS size could be larger than BO,
+> leading to assertions.
 > 
-> This new test allows to detect issues in [1], where the YUV rotation is
-> faulty for reflect_x and reflect_y cases.
-> 
-> [1]: https://lore.kernel.org/dri-devel/20240304-yuv-v4-11-76beac8e9793@bootlin.com/
-> 
-> To: igt-dev@lists.freedesktop.org
-> Cc: miquel.raynal@bootlin.com
-> Cc: jeremie.dautheribes@bootlin.com
-> Cc: thomas.petazzoni@bootlin.com
-> Cc: arthurgrillo@riseup.net
-> 
-> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 > ---
-> Changes in v2:
-> - Fix a typo in documentation
-> - Fix a bug when using subsampling with non compatible sizes
-> - Fix a bug I found when using different color count.
-> - Add cli options to set specific plane size
-> - Link to v1: https://lore.kernel.org/r/20240312-new_rotation-v1-0-ed9fe82589df@bootlin.com
+>   tests/intel/xe_ccs.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> ---
-> Louis Chauvet (4):
->        lib/igt_kms: Add reflection name and mask
->        lib/igt_fb: Expose lookup_drm_format to access format properties in tests
->        tests/kms_rotation: Add extensive rotation test
->        tests/kms_rotation: Add command line option to reduce the number of tests
-> 
->   lib/igt_fb.c         |  15 +-
->   lib/igt_fb.h         |  29 +++
->   lib/igt_kms.c        |  23 +++
->   lib/igt_kms.h        |   3 +
->   tests/kms_rotation.c | 550 +++++++++++++++++++++++++++++++++++++++++++++++++++
->   tests/meson.build    |   1 +
->   6 files changed, 608 insertions(+), 13 deletions(-)
-> ---
-> base-commit: a44ebfe43edc96acab22a19b6a8850eef9202eea
-> change-id: 20240312-new_rotation-c034a68b3b9d
-> 
-> Best regards,
+> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+> index d6f5408a7..aec83a057 100644
+> --- a/tests/intel/xe_ccs.c
+> +++ b/tests/intel/xe_ccs.c
+> @@ -108,7 +108,7 @@ static void surf_copy(int xe,
+>   	const uint32_t bpp = 32;
+>   	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
+>   	uint64_t bb_size, ccssize = mid->size / CCS_RATIO(xe);
+> -	uint64_t ccs_bo_size = xe_get_default_alignment(xe);
+> +	uint64_t ccs_bo_size = ALIGN(ccssize, xe_get_default_alignment(xe));
+>   	uint32_t *ccscopy;
+>   	uint8_t uc_mocs = intel_get_uc_mocs_index(xe);
+>   	uint32_t sysmem = system_memory(xe);
+
