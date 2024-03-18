@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 220E6C54E58
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Mar 2024 13:26:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78B5BC54E5D
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Mar 2024 13:26:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C465610F723;
-	Mon, 18 Mar 2024 13:26:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 24DF010F725;
+	Mon, 18 Mar 2024 13:26:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eX/wiWMF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="du32ErDV";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC43D10F723
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Mar 2024 13:26:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 11EB110F725
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Mar 2024 13:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710768406; x=1742304406;
+ t=1710768411; x=1742304411;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=g4hioP71BrwSRK2+jD2FzAnfj3C9AioettItNFlbKGI=;
- b=eX/wiWMFk6Q/gIOVCAGGumv1gYGGr/FB+Ekh2eUmXOgjmGy5eK5ReF7Y
- 9VpUhCZdprMLiTws4ZX3MF/JpnHzGaAvODMs041kfUHuU59cNLjz+vbiX
- Vw14/7DutEvEeQzYhvucX4kwAl3Puj1UTJXqrdz1DLtz+AMJcMCDl8Yb6
- pBeZler2dtSqz+MUHQsIwMRiZ20ZasOd8KfN6UbZSHUNADJNsWXs/C8Ad
- 3NvdzoNNc8tWP3ZlRdCr5jNDqkwqQVggvBMdm/HkP/aTkgP5T109xqJ1/
- g+6kckVQcXL/vqlwJPIy9G1WEgroJDtLi6ZJTVVlPbzubTZBUKzUhRspl g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="9386927"
+ bh=03RY6OcpXijsm74cmkBM2zF9kqs5VaoDytVYKqy3HbM=;
+ b=du32ErDV2et2y8aZW9P/COY4fQWEcSh7SynN5vnUq+yNnmtumQzSd2nQ
+ G8gto8hGRj9SuxfdjWxrGi01yaLN91OFxH9BoAzC7nDBzlIQnNbDEt/1A
+ o0VVaflcHOOamUGFhrEU/d25SFxpGd7vmaZSkjQEkgHOUDRcGpXNd41ik
+ Jdk03IWZFTvZkf2PwaOgrFWyn3f3zfooJFmzZdDjcdF+0tS7aL0BGb/gp
+ jaNUpGXgnS4oafLD/UA25G8nZKLs4NqeQphDITF7faHHyCQBibtgDONUo
+ op/hT+F/EIwEJn/u86H4MpBcYZu5Q6X5NxrKTQ/ecQHwZYPbFHxThnwU5 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="9386936"
 X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
-   d="scan'208";a="9386927"
+   d="scan'208";a="9386936"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2024 06:26:46 -0700
+ 18 Mar 2024 06:26:50 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="13501405"
+X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="13501421"
 Received: from unknown (HELO localhost) ([10.245.246.221])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2024 06:26:44 -0700
+ 18 Mar 2024 06:26:48 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>, 
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t v13 4/5] tests/intel/xe_exec_basic: add multigpu subtests
-Date: Mon, 18 Mar 2024 14:26:22 +0100
-Message-ID: <20240318132624.110746-5-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v13 5/5] tests/intel/gem_exec_gttfill: simplify multiGPU
+ subtest
+Date: Mon, 18 Mar 2024 14:26:23 +0100
+Message-ID: <20240318132624.110746-6-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240318132624.110746-1-kamil.konieczny@linux.intel.com>
 References: <20240318132624.110746-1-kamil.konieczny@linux.intel.com>
@@ -69,85 +70,69 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a few multi-gpu subtests:
+Simplify multi-GPU subtest with the help of new multigpu library.
 
-multigpu-once-*
-multigpu-many-execqueues-many-vm-*
-multigpu-no-exec-*
+v10: remove igt_require_multigpu() as it checks filters but we
+  want to use legacy opens (Kamil), correct Cc name (Zbigniew)
 
-run on two or more GPUs. Many variant was limited to take at most
-few seconds.
-
-v10: use new renamed macro multi_fork_foreach_gpu_chip (Zbigniew)
-v13: use igt_multi_fork_foreach_gpu (Janusz)
-
-Cc: "Dominik Karol Piątkowski" <dominik.karol.piatkowski@intel.com>
 Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+Cc: "Dominik Karol Piątkowski" <dominik.karol.piatkowski@intel.com>
 Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_exec_basic.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ tests/intel/gem_exec_gttfill.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
-index e6f8db5b0..f0230a9ca 100644
---- a/tests/intel/xe_exec_basic.c
-+++ b/tests/intel/xe_exec_basic.c
-@@ -11,6 +11,7 @@
-  */
- 
+diff --git a/tests/intel/gem_exec_gttfill.c b/tests/intel/gem_exec_gttfill.c
+index b1063437b..1eb7325bb 100644
+--- a/tests/intel/gem_exec_gttfill.c
++++ b/tests/intel/gem_exec_gttfill.c
+@@ -24,8 +24,8 @@
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
  #include "igt.h"
+-#include "igt_device_scan.h"
+ #include "igt_rand.h"
 +#include "igt_multigpu.h"
- #include "lib/igt_syncobj.h"
- #include "lib/intel_reg.h"
- #include "xe_drm.h"
-@@ -54,6 +55,18 @@
-  * Description: Run no-exec %arg[1] test
-  * Test category: functionality test
-  *
-+ * SUBTEST: multigpu-once-%s
-+ * Description: Run %arg[1] test only once on multiGPU
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: multigpu-many-execqueues-many-vm-%s
-+ * Description: Run %arg[1] test on many exec_queues and many VMs on multiGPU
-+ * Test category: stress test
-+ *
-+ * SUBTEST: multigpu-no-exec-%s
-+ * Description: Run no-exec %arg[1] test on multiGPU
-+ * Test category: functionality test
-+ *
-  * arg[1]:
-  *
-  * @basic:				basic
-@@ -368,4 +381,27 @@ igt_main
+ /**
+  * TEST: gem exec gttfill
+  * Description: Fill the GTT with batches.
+@@ -251,7 +251,7 @@ igt_main
+ {
+ 	const struct intel_execution_engine2 *e;
+ 	const intel_ctx_t *ctx;
+-	int i915 = -1, gpu_count;
++	int i915 = -1;
  
- 	igt_fixture
- 		drm_close_driver(fd);
-+
-+	for (const struct section *s = sections; s->name; s++) {
-+		igt_subtest_f("multigpu-once-%s", s->name) {
-+			igt_multi_fork_foreach_multigpu(gpu_fd, gpu_idx, DRIVER_XE)
-+				xe_for_each_engine(gpu_fd, hwe)
-+					test_exec(gpu_fd, hwe, 1, 1, 1, s->flags);
-+			igt_waitchildren();
-+		}
-+
-+		igt_subtest_f("multigpu-many-execqueues-many-vm-%s", s->name) {
-+			igt_multi_fork_foreach_multigpu(gpu_fd, gpu_idx, DRIVER_XE)
-+				xe_for_each_engine(gpu_fd, hwe)
-+					test_exec(gpu_fd, hwe, 16, 32, 16, s->flags);
-+			igt_waitchildren();
-+		}
-+
-+		igt_subtest_f("multigpu-no-exec-%s", s->name) {
-+			igt_multi_fork_foreach_multigpu(gpu_fd, gpu_idx, DRIVER_XE)
-+				xe_for_each_engine(gpu_fd, hwe)
-+					test_exec(gpu_fd, hwe, 1, 0, 1, s->flags);
-+			igt_waitchildren();
-+		}
-+	}
- }
+ 	igt_fixture {
+ 		i915 = drm_open_driver(DRIVER_INTEL);
+@@ -285,17 +285,11 @@ igt_main
+ 	igt_fixture {
+ 		igt_stop_hang_detector();
+ 		intel_ctx_destroy(i915, ctx);
+-		// prepare multigpu tests
+-		gpu_count = igt_device_filter_count();
+ 	}
+ 
+ 	igt_subtest("multigpu-basic") { /* run on two or more discrete cards */
+-		igt_require(gpu_count > 1);
+-		igt_multi_fork(child, gpu_count) {
+-			int g_fd;
++		igt_multi_fork_foreach_gpu(g_fd, gpu_idx, DRIVER_INTEL) {
+ 			// prepare
+-			g_fd = __drm_open_driver_another(child, DRIVER_INTEL);
+-			igt_assert(g_fd >= 0);
+ 			ctx = intel_ctx_create_all_physical(g_fd);
+ 			igt_fork_hang_detector(g_fd);
+ 			// subtest
+@@ -303,7 +297,6 @@ igt_main
+ 			// release resources
+ 			igt_stop_hang_detector();
+ 			intel_ctx_destroy(g_fd, ctx);
+-			drm_close_driver(g_fd);
+ 		}
+ 
+ 		igt_waitchildren();
 -- 
 2.42.0
 
