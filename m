@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DD22C54E5D
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Mar 2024 08:47:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4B14C54E5D
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Mar 2024 09:55:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F2D4E10F4BE;
-	Mon, 18 Mar 2024 08:47:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5FA9A10EF02;
+	Mon, 18 Mar 2024 09:55:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G/1xLtBb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dVX33IVN";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2FCE10F4BE
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Mar 2024 08:47:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ECDEB10F26A
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Mar 2024 09:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710751624; x=1742287624;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=j6Yq0A5Tm+6GCmS23+WgRzSr+FnD4HR/3xFtz/ltalU=;
- b=G/1xLtBbzKnbnwcfvbuaZF2fRyID/JkTNbCbryOzqPwZYdwvOXRnmQJW
- kebyiLYTU9sqq3dxi/+S+GUUREzq/ghHwgrsjI4rXgXe6Z8l1HfE+84ia
- kV9i3o4uMv0Qp/29DWCmqj6jSA+FYMpf1MthpbTFNiqNdQht5PpF36NRb
- XUa5ujrD2P7C9ImOpcm+oeuCpgQxKw2M1D5YFJ4plz8tO7Le4GcBNn9ci
- at8MSbJouTCpQCjIdxXDTdHL8bUdF9QE7pUsSUwtt+Savba19V6t0SZXh
- 0t1fI69e9lBn9t4g9xzg3mqLM1375GWPC6SuXYEjJ1L0G7/zpFJDyrNLs w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="5412200"
+ t=1710755744; x=1742291744;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=uoqL8ltdeKbYKlOq0vtvstzfRBBYUo32dsyMCN+1IHE=;
+ b=dVX33IVN703Mnf8eMVa259Cp+c3P+nIp7HA9obeMHODwcxSHc2HShOn1
+ Fckk9RCmICjOKkG5myFYUVJpW5EMg2ascKsg2vFBceQpCvBc+4Qg9X33P
+ yIsmaN9O2qU9SGCWcTwSzpSdDbwXX1U2zuSQU8GEdQrq3n4b1LzE0++Ru
+ C/B5jWqXJCV/lvkP3Qae79iGgxWiUpEuaMKJ8zpZEH+YVa3PUJyStbIJy
+ pEzyWMo5nL6HVkB5Hq56gqPHoNvoV8JAVNzfC96/kmsJWThOD6oEZHfFM
+ T4/NJfawjVRZHYZljtVZt/zfv/8vGl+LzIq3PyRy43UwICq19uXHp7EhT g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="5418120"
 X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
-   d="scan'208";a="5412200"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
+   d="scan'208";a="5418120"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2024 01:46:46 -0700
+ 18 Mar 2024 02:55:43 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="13787363"
-Received: from rahul-super-server.iind.intel.com ([10.145.169.156])
- by orviesa006.jf.intel.com with ESMTP; 18 Mar 2024 01:46:45 -0700
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Cc: nirmoy.das@intel.com
-Subject: [PATCH i-g-t] lib/intel_compute: Add documentation of global
- workgroup size
-Date: Mon, 18 Mar 2024 14:22:27 +0530
-Message-Id: <20240318085227.2624098-1-janga.rahul.kumar@intel.com>
-X-Mailer: git-send-email 2.25.1
+X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="13454124"
+Received: from unknown (HELO localhost) ([10.245.246.218])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Mar 2024 02:55:42 -0700
+Date: Mon, 18 Mar 2024 10:55:37 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Nirmoy Das <nirmoy.das@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Subject: Re: [PATCH i-g-t] lib/intel_compute: Do not assume engine class
+Message-ID: <20240318095537.eivmsosxvp7t7ea6@zkempczy-mobl2>
+References: <20240314213748.6323-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240314213748.6323-1-nirmoy.das@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,45 +66,92 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+On Thu, Mar 14, 2024 at 10:37:48PM +0100, Nirmoy Das wrote:
+> Let the test decide what engine class to use instead of
+> a lib function deciding it for tests.
+> 
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+> ---
+>  lib/intel_compute.c      | 20 +++-----------------
+>  tests/intel/xe_compute.c | 21 ++++++++++++++++++++-
+>  2 files changed, 23 insertions(+), 18 deletions(-)
+> 
+> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+> index 9d3b97efe..c96e60027 100644
+> --- a/lib/intel_compute.c
+> +++ b/lib/intel_compute.c
+> @@ -81,24 +81,10 @@ static void bo_execenv_create(int fd, struct bo_execenv *execenv,
+>  	execenv->driver = get_intel_driver(fd);
+>  
+>  	if (execenv->driver == INTEL_DRIVER_XE) {
+> +		igt_fail_on(eci == NULL);
+>  		execenv->vm = xe_vm_create(fd, 0, 0);
+> -
+> -		if (eci) {
+> -			execenv->exec_queue = xe_exec_queue_create(fd, execenv->vm,
+> -								   eci, 0);
+> -		} else {
+> -			uint16_t engine_class;
+> -			uint32_t devid = intel_get_drm_devid(fd);
+> -			const struct intel_device_info *info = intel_get_device_info(devid);
+> -
+> -			if (info->graphics_ver >= 12 && info->graphics_rel < 60)
+> -				engine_class = DRM_XE_ENGINE_CLASS_RENDER;
+> -			else
+> -				engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
+> -
+> -			execenv->exec_queue = xe_exec_queue_create_class(fd, execenv->vm,
+> -									 engine_class);
+> -		}
+> +		execenv->exec_queue = xe_exec_queue_create(fd, execenv->vm, eci,
+> +							   0);
+>  	}
+>  }
+>  
 
-Global workgroup size is calculated based on local X/Y/Z maximum
-and thread group id X dimension.
+I don't like this. You're moving logic which is common for compute
+users outside, giving possibility to pass invalid queue. I vote
+to not merge this.
 
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
----
- lib/intel_compute.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+--
+Zbigniew
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 9d3b97efe..72025a481 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -1243,15 +1243,19 @@ static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = offset_indirect_data_start;
- 	addr_bo_buffer_batch[b++] = 0xbe040000;
- 	addr_bo_buffer_batch[b++] = 0xffffffff;
--	addr_bo_buffer_batch[b++] = 0x000003ff;
-+	addr_bo_buffer_batch[b++] = 0x000003ff; // Local X/Y/Z Dimension
- 
- 	if (threadgroup_preemption)
--		addr_bo_buffer_batch[b++] = 0x00200000; // Global workgroup size
-+		/*
-+		 * Create multiple threadgroups using higher gloabl workgroup size
-+		 * Global Workgroup size = Local X * Thread Group X +  Local Y * Thread Group Y + Local Z * Thread Group Z
-+		 */
-+		addr_bo_buffer_batch[b++] = 0x00200000; // Thread Group ID X Dimension
- 	else
- 		addr_bo_buffer_batch[b++] = 0x00000002;
- 
--	addr_bo_buffer_batch[b++] = 0x00000001;
--	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = 0x00000001; // Thread Group ID Y Dimension
-+	addr_bo_buffer_batch[b++] = 0x00000001; // Thread Group ID Z Dimension
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
--- 
-2.25.1
-
+> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+> index 42f42ca0c..cb98b00d5 100644
+> --- a/tests/intel/xe_compute.c
+> +++ b/tests/intel/xe_compute.c
+> @@ -163,9 +163,28 @@ test_compute_kernel_with_ccs_mode(int num_gt)
+>  static void
+>  test_compute_square(int fd)
+>  {
+> -	igt_require_f(run_intel_compute_kernel(fd), "GPU not supported\n");
+> +	struct drm_xe_engine_class_instance *hwe;
+> +	const struct intel_device_info *info;
+> +	uint16_t engine_class;
+> +	uint32_t devid = intel_get_drm_devid(fd);
+> +
+> +	info = intel_get_device_info(devid);
+> +
+> +	if (info->graphics_ver >= 12 && info->graphics_rel < 60)
+> +		engine_class = DRM_XE_ENGINE_CLASS_RENDER;
+> +	else
+> +		engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
+> +
+> +	xe_for_each_engine(fd, hwe) {
+> +		if (hwe->engine_class != engine_class)
+> +			continue;
+> +
+> +		igt_require_f(xe_run_intel_compute_kernel_on_engine(fd, hwe),
+> +			      "GPU not supported\n");
+> +	}
+>  }
+>  
+> +
+>  igt_main
+>  {
+>  	int xe, num_gt;
+> -- 
+> 2.42.0
+> 
