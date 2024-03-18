@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89879C54E5D
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Mar 2024 23:32:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C5E2C54E5D
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Mar 2024 23:38:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2956510E661;
-	Mon, 18 Mar 2024 23:32:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3917A10E2CE;
+	Mon, 18 Mar 2024 23:38:00 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A421310E24E;
- Mon, 18 Mar 2024 23:32:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 795B210E2CE;
+ Mon, 18 Mar 2024 23:37:58 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_tests/kms=5Fvrr=3A_Add_a_?=
- =?utf-8?q?subtest_for_seamless_modeset_to_a_virtual_LRR_mode?=
+Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/kms=5Fvrr=3A_Add_?=
+ =?utf-8?q?a_subtest_for_seamless_modeset_to_a_virtual_LRR_mode?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Manasi Navare" <navaremanasi@chromium.org>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 18 Mar 2024 23:32:34 -0000
-Message-ID: <171080475466.900325.6106307260694029552@8e613ede5ea5>
+Date: Mon, 18 Mar 2024 23:37:58 -0000
+Message-ID: <171080507849.900325.9484502906684254214@8e613ede5ea5>
 X-Patchwork-Hint: ignore
 References: <20240318230241.3758794-1-navaremanasi@chromium.org>
 In-Reply-To: <20240318230241.3758794-1-navaremanasi@chromium.org>
@@ -45,63 +45,233 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Series: tests/kms_vrr: Add a subtest for seamless modeset to a virtual LRR mode
 URL   : https://patchwork.freedesktop.org/series/131295/
-State : failure
+State : warning
 
 == Summary ==
 
-IGT patchset build failed on latest successful build
-ecff97233376d876f3b47d7323267453c43f3376 tests/intel/xe_debugfs: fix musl build
+Pipeline status: FAILED.
 
-Tail of build.log:
-[358/1672] Compiling C object 'lib/76b5a35@@igt-igt_pm_c@sta/igt_pm.c.o'.
-[359/1672] Compiling C object 'tests/59830eb@@panfrost_prime@exe/panfrost_prime.c.o'.
-[360/1672] Compiling C object 'lib/76b5a35@@igt-intel_compute_c@sta/intel_compute.c.o'.
-[361/1672] Compiling C object 'tests/59830eb@@kms_prop_blob@exe/kms_prop_blob.c.o'.
-[362/1672] Compiling C object 'tests/59830eb@@prime_udl@exe/prime_udl.c.o'.
-[363/1672] Compiling C object 'tests/59830eb@@template@exe/template.c.o'.
-[364/1672] Compiling C object 'tests/59830eb@@kms_flip@exe/kms_flip.c.o'.
-[365/1672] Compiling C object 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o'.
-[366/1672] Compiling C object 'tests/59830eb@@panfrost_submit@exe/panfrost_submit.c.o'.
-[367/1672] Compiling C object 'tests/59830eb@@syncobj_basic@exe/syncobj_basic.c.o'.
-[368/1672] Compiling C object 'lib/76b5a35@@igt-igt_vmwgfx_c@sta/igt_vmwgfx.c.o'.
-[369/1672] Compiling C object 'tests/59830eb@@testdisplay@exe/testdisplay_hotplug.c.o'.
-[370/1672] Compiling C object 'tests/59830eb@@sriov_basic@exe/sriov_basic.c.o'.
-[371/1672] Compiling C object 'lib/76b5a35@@igt-intel_bufops_c@sta/intel_bufops.c.o'.
-[372/1672] Compiling C object 'tests/59830eb@@kms_tiled_display@exe/kms_tiled_display.c.o'.
-[373/1672] Compiling C object 'tests/59830eb@@syncobj_eventfd@exe/syncobj_eventfd.c.o'.
-[374/1672] Compiling C object 'tests/59830eb@@vgem_slow@exe/vgem_slow.c.o'.
-[375/1672] Compiling C object 'tests/59830eb@@tools_test@exe/tools_test.c.o'.
-[376/1672] Compiling C object 'lib/76b5a35@@igt-intel_blt_c@sta/intel_blt.c.o'.
-[377/1672] Compiling C object 'tests/59830eb@@intel_hwmon@exe/intel_intel_hwmon.c.o'.
-[378/1672] Compiling C object 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o'.
-[379/1672] Generating i915-perf-registers-acmgt3 with a custom command.
-[380/1672] Compiling C object 'lib/76b5a35@@igt-igt_kmod_c@sta/igt_kmod.c.o'.
-[381/1672] Compiling C object 'tests/59830eb@@kms_rotation_crc@exe/kms_rotation_crc.c.o'.
-[382/1672] Compiling C object 'tests/59830eb@@kms_writeback@exe/kms_writeback.c.o'.
-[383/1672] Compiling C object 'tests/59830eb@@kms_vblank@exe/kms_vblank.c.o'.
-[384/1672] Compiling C object 'tests/59830eb@@testdisplay@exe/testdisplay.c.o'.
-[385/1672] Compiling C object 'tests/59830eb@@kms_setmode@exe/kms_setmode.c.o'.
-[386/1672] Compiling C object 'tests/59830eb@@kms_universal_plane@exe/kms_universal_plane.c.o'.
-[387/1672] Compiling C object 'tests/59830eb@@syncobj_wait@exe/syncobj_wait.c.o'.
-[388/1672] Compiling C object 'tests/59830eb@@kms_atomic@exe/kms_atomic.c.o'.
-[389/1672] Compiling C object 'tests/59830eb@@sw_sync@exe/sw_sync.c.o'.
-[390/1672] Compiling C object 'tests/59830eb@@vgem_basic@exe/vgem_basic.c.o'.
-[391/1672] Compiling C object 'tests/59830eb@@api_intel_allocator@exe/intel_api_intel_allocator.c.o'.
-[392/1672] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen8_c@sta/rendercopy_gen8.c.o'.
-[393/1672] Compiling C object 'tests/59830eb@@prime_vgem@exe/prime_vgem.c.o'.
-[394/1672] Compiling C object 'lib/76b5a35@@igt-intel_batchbuffer_c@sta/intel_batchbuffer.c.o'.
-[395/1672] Compiling C object 'lib/76b5a35@@igt-igt_core_c@sta/igt_core.c.o'.
-[396/1672] Generating i915-perf-metrics-acmgt3 with a custom command.
-[397/1672] Compiling C object 'lib/76b5a35@@igt-igt_chamelium_c@sta/igt_chamelium.c.o'.
-[398/1672] Compiling C object 'tests/59830eb@@syncobj_timeline@exe/syncobj_timeline.c.o'.
-[399/1672] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen9_c@sta/rendercopy_gen9.c.o'.
-[400/1672] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
-[401/1672] Compiling C object 'tests/59830eb@@api_intel_bb@exe/intel_api_intel_bb.c.o'.
-[402/1672] Compiling C object 'tests/59830eb@@gem_userptr_blits@exe/intel_gem_userptr_blits.c.o'.
-[403/1672] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
-[404/1672] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
-[405/1672] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
-[406/1672] Generating i915-perf-equations with a custom command.
-ninja: build stopped: subcommand failed.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1131039 for the overview.
 
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56455809):
+      ~~~~~~~~~~^~~~~~~~
+  ../tests/kms_vrr.c:88:26: warning: overflow in conversion from ‘long long unsigned int’ to ‘int’ changes value from ‘5000000000’ to ‘705032704’ [-Woverflow]
+   #define TEST_DURATION_NS (5000000000ull)
+                            ^~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:55: note: in expansion of macro ‘TEST_DURATION_NS’
+     result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+                                                         ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:12: error: too few arguments to function ‘flip_and_measure’
+     result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+              ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:411:1: note: declared here
+   flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+   ^~~~~~~~~~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1710804753:step_script
+  section_start:1710804753:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710804754:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56455812):
+      ~~~~~~~~~~^~~~~~~~
+  ../tests/kms_vrr.c:88:26: warning: overflow in conversion from ‘long long unsigned int’ to ‘int’ changes value from ‘5000000000’ to ‘705032704’ [-Woverflow]
+   #define TEST_DURATION_NS (5000000000ull)
+                            ^~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:55: note: in expansion of macro ‘TEST_DURATION_NS’
+     result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+                                                         ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:12: error: too few arguments to function ‘flip_and_measure’
+     result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+              ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:411:1: note: declared here
+   flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+   ^~~~~~~~~~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1710804782:step_script
+  section_start:1710804782:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710804782:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56455811):
+      ~~~~~~~~~~^~~~~~~~
+  ../tests/kms_vrr.c:88:26: warning: overflow in conversion from ‘long long unsigned int’ to ‘int’ changes value from ‘5000000000’ to ‘705032704’ [-Woverflow]
+   #define TEST_DURATION_NS (5000000000ull)
+                            ^~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:55: note: in expansion of macro ‘TEST_DURATION_NS’
+     result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+                                                         ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:12: error: too few arguments to function ‘flip_and_measure’
+     result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+              ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:411:1: note: declared here
+   flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+   ^~~~~~~~~~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1710804779:step_script
+  section_start:1710804779:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710804781:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56455813):
+      ~~~~~~~~~~^~~~~~~~
+  ../tests/kms_vrr.c:88:26: warning: overflow in conversion from ‘long long unsigned int’ to ‘int’ changes value from ‘5000000000’ to ‘705032704’ [-Woverflow]
+   #define TEST_DURATION_NS (5000000000ull)
+                            ^~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:55: note: in expansion of macro ‘TEST_DURATION_NS’
+     result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+                                                         ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:12: error: too few arguments to function ‘flip_and_measure’
+     result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+              ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:411:1: note: declared here
+   flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+   ^~~~~~~~~~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1710804789:step_script
+  section_start:1710804789:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710804790:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56455810):
+  ninja: Entering directory `build'
+  [1/105] Generating version.h with a custom command.
+  [2/9] Linking target lib/libi915_perf.so.1.5.
+  [3/9] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
+  [4/9] Linking target tools/intel_gpu_top.
+  [5/9] Linking target tools/i915-perf/i915-perf-configs.
+  [6/9] Linking target tools/i915-perf/i915-perf-recorder.
+  [7/9] Linking target tools/i915-perf/i915-perf-reader.
+  [8/9] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst
+  /builds/gfx-ci/igt-ci-tags/tests/intel/../kms_vrr.c:75: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json?
+  	==> without a full modeset.
+  ninja: build stopped: subcommand failed.
+  section_end:1710804739:step_script
+  section_start:1710804739:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710804740:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56455804):
+        |    ~~~~~~~~~~^~~~~~~~
+  ../tests/kms_vrr.c:88:26: warning: overflow in conversion from ‘long long unsigned int’ to ‘int’ changes value from ‘5000000000’ to ‘705032704’ [-Woverflow]
+     88 | #define TEST_DURATION_NS (5000000000ull)
+        |                          ^~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:55: note: in expansion of macro ‘TEST_DURATION_NS’
+    699 |   result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+        |                                                       ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:12: error: too few arguments to function ‘flip_and_measure’
+    699 |   result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+        |            ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:411:1: note: declared here
+    411 | flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+        | ^~~~~~~~~~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1710804802:step_script
+  section_start:1710804802:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710804803:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56455808):
+  ../tests/kms_vrr.c:684:70: error: too few arguments to function call, expected 6, have 5
+          result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+                   ~~~~~~~~~~~~~~~~                                           ^
+  ../tests/kms_vrr.c:410:1: note: 'flip_and_measure' declared here
+  static uint32_t
+  ^
+  ../tests/kms_vrr.c:699:71: error: too few arguments to function call, expected 6, have 5
+                  result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+                           ~~~~~~~~~~~~~~~~                                           ^
+  ../tests/kms_vrr.c:410:1: note: 'flip_and_measure' declared here
+  static uint32_t
+  ^
+  2 warnings and 2 errors generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1710804778:step_script
+  section_start:1710804778:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710804778:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56455807):
+        |    ~~~~~~~~~~^~~~~~~~
+  ../tests/kms_vrr.c:88:26: warning: overflow in conversion from ‘long long unsigned int’ to ‘int’ changes value from ‘5000000000’ to ‘705032704’ [-Woverflow]
+     88 | #define TEST_DURATION_NS (5000000000ull)
+        |                          ^~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:55: note: in expansion of macro ‘TEST_DURATION_NS’
+    699 |   result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+        |                                                       ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:12: error: too few arguments to function ‘flip_and_measure’
+    699 |   result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+        |            ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:411:1: note: declared here
+    411 | flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+        | ^~~~~~~~~~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1710804754:step_script
+  section_start:1710804754:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710804755:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56455805):
+        |    ~~~~~~~~~~^~~~~~~~
+  ../tests/kms_vrr.c:88:26: warning: overflow in conversion from ‘long long unsigned int’ to ‘int’ changes value from ‘5000000000’ to ‘705032704’ [-Woverflow]
+     88 | #define TEST_DURATION_NS (5000000000ull)
+        |                          ^~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:55: note: in expansion of macro ‘TEST_DURATION_NS’
+    699 |   result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+        |                                                       ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:12: error: too few arguments to function ‘flip_and_measure’
+    699 |   result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+        |            ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:411:1: note: declared here
+    411 | flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+        | ^~~~~~~~~~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1710804760:step_script
+  section_start:1710804760:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710804761:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56455806):
+        |    ~~~~~~~~~~^~~~~~~~
+  ../tests/kms_vrr.c:88:26: warning: overflow in conversion from ‘long long unsigned int’ to ‘int’ changes value from ‘5000000000’ to ‘705032704’ [-Woverflow]
+     88 | #define TEST_DURATION_NS (5000000000ull)
+        |                          ^~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:55: note: in expansion of macro ‘TEST_DURATION_NS’
+    699 |   result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+        |                                                       ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:699:12: error: too few arguments to function ‘flip_and_measure’
+    699 |   result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+        |            ^~~~~~~~~~~~~~~~
+  ../tests/kms_vrr.c:411:1: note: declared here
+    411 | flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+        | ^~~~~~~~~~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1710804759:step_script
+  section_start:1710804759:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1710804760:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1131039
