@@ -4,67 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57A16C54E58
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Mar 2024 11:43:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AEBCC54E5D
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Mar 2024 11:44:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E49BD10E837;
-	Mon, 18 Mar 2024 11:43:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ACDF210F2E3;
+	Mon, 18 Mar 2024 11:44:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y2rJ3zZq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fNtdJE3K";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFB9B10E837
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Mar 2024 11:43:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFA6810E8D2;
+ Mon, 18 Mar 2024 11:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710762216; x=1742298216;
+ t=1710762279; x=1742298279;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=8+svChy55CzpYF5fyvnbOgaety5i/7vrYWQGAbOmb0E=;
- b=Y2rJ3zZqMuihAoKUWwPKmPjiSllHOqxik6sqz5ZNMV2hzkUP8jvaroGJ
- fFYQWGmvZUTMcLRbJhFLvUiagU7IriMktifHDozIJ2yju6pPYhe3Y2MrK
- 8CecZ7aMs3+iRnITWQZJfEYxEpUOyGs63mgUAjvwzkEE9DX6990o3gJg5
- BtXiKzAN1DZwkEfgudojOMiyjx2LRJkUr9zfPnLAsQp9uj9lhKyJuokO/
- dYWkxAvufb2ntVXaRWbU22KXuTpLotzmEi/Oc4HtoePQeSZR4X2bR0U48
- m6nIMqA31VZjD1rJmXWqxwxsIP+4Dn/DqeEyXFg9hWaTqJVJO2sZ1pAa9 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="9340561"
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
-   d="scan'208";a="9340561"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2024 04:43:35 -0700
+ bh=ujLHVjcV3ZbRGoEme4B0dwBach+I+r/sFNsV65w8LF0=;
+ b=fNtdJE3Kn9KfnL6BxusCLbZBBqG1zON0V+s9TrYCJdzhRlCZ/uQohvlW
+ rkWudurHJft7PKTpKoSFFTIEp2rt3/BSvHQy1BaXWrBmZ2jKFTBZuRGD7
+ 1Vg4g29VzQ+KdAhCPJN/o8x/i7ESVAu1pG0rULypTATMrllvvsNT/QedZ
+ mb9kQFSUohHoO/Vnx+Mf3L28S2HQlDl3rRMmOkjEb48aMo3WmI2uXW75x
+ v8QF/uvkg4iVZqG5mG6+RCVMXWfh8RHSI+FwD3PsIpxiHcOwylJzr7ukC
+ BhEPQSmBxZv0Cj7lIVgvyXy5bALtyZ2SHxBEBwnJknv6SRgEPm6NFsVQa A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="16116033"
+X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="16116033"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Mar 2024 04:44:38 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="14083694"
+X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="50875436"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 04:43:32 -0700
-Date: Mon, 18 Mar 2024 12:43:29 +0100
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Mar 2024 04:44:37 -0700
+Date: Mon, 18 Mar 2024 12:44:34 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Louis Chauvet <louis.chauvet@bootlin.com>, miquel.raynal@bootlin.com,
- thomas.petazzoni@bootlin.com, jeremie.dautheribes@bootlin.com,
- arthurgrillo@riseup.net, seanpaul@google.com, marcheu@google.com,
- nicolejadeyee@google.com, Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Petri Latvala <adrinael@adrinael.net>
-Subject: Re: [PATCH i-g-t] CONTRIBUTING: Add coding style guidelines
-Message-ID: <20240318114329.drrzkqmirdaahigm@kamilkon-desk.igk.intel.com>
+Cc: Louis Chauvet <louis.chauvet@bootlin.com>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLkJBVA==?= =?utf-8?Q?=3A?= failure for
+ CONTRIBUTING: Add coding style guidelines
+Message-ID: <20240318114434.zbqvi637ook5pv3o@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Louis Chauvet <louis.chauvet@bootlin.com>,
- miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
- jeremie.dautheribes@bootlin.com, arthurgrillo@riseup.net,
- seanpaul@google.com, marcheu@google.com, nicolejadeyee@google.com,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Petri Latvala <adrinael@adrinael.net>
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
 References: <20240315-add_coding_style-v1-1-50ad93cfa250@bootlin.com>
+ <171052169182.795787.252679567301376195@8e613ede5ea5>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240315-add_coding_style-v1-1-50ad93cfa250@bootlin.com>
+In-Reply-To: <171052169182.795787.252679567301376195@8e613ede5ea5>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,87 +72,91 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Louis,
-On 2024-03-15 at 17:08:37 +0100, Louis Chauvet wrote:
-> As explained in [1], the submitted patches should follow the same style as
-> the Linux kernel and must be checked against checkpatch.pl, so add this
-> recommendation in the CONTRIBUTING.md file.
+Hi igt-dev,
+On 2024-03-15 at 16:54:51 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> [1]: https://lore.kernel.org/all/20240314170643.77vzqqoie2otyu4w@kamilkon-desk.igk.intel.com/
+> Series: CONTRIBUTING: Add coding style guidelines
+> URL   : https://patchwork.freedesktop.org/series/131192/
+> State : failure
 > 
-> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+> == Summary ==
 > 
-> To: igt-dev@lists.freedesktop.org
--^^^^^^^^^^^^^^
-Drop this.
-
-> Cc: miquel.raynal@bootlin.com
-> Cc: thomas.petazzoni@bootlin.com
-> Cc: jeremie.dautheribes@bootlin.com
-> Cc: arthurgrillo@riseup.net
-> Cc: seanpaul@google.com
-> Cc: marcheu@google.com
-> Cc: nicolejadeyee@google.com
-> Cc: kamil.konieczny@linux.intel.com
-
-These should be before your s-o-b above.
-I will add here few more maintainers:
-
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: Petri Latvala <adrinael@adrinael.net>
-
-> ---
-
-Here you could add your notes which will be ignored by git
-at merging but I do not see any?
-
-> To: igt-dev@lists.freedesktop.org
-> Cc: miquel.raynal@bootlin.com
-> Cc: thomas.petazzoni@bootlin.com
-> Cc: jeremie.dautheribes@bootlin.com
-> Cc: arthurgrillo@riseup.net
-> Cc: seanpaul@google.com
-> Cc: marcheu@google.com
-> Cc: nicolejadeyee@google.com
-> Cc: kamil.konieczny@linux.intel.com
+> CI Bug Log - changes from CI_DRM_14440 -> IGTPW_10846
+> ====================================================
 > 
-> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> ---
->  CONTRIBUTING.md | 2 ++
->  1 file changed, 2 insertions(+)
+> Summary
+> -------
 > 
-> diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
-> index 2ab8a48f6ae9..ec8debb4091e 100644
-> --- a/CONTRIBUTING.md
-> +++ b/CONTRIBUTING.md
-> @@ -78,6 +78,8 @@ Sending Patches
->  - Changes to the testcases are automatically tested. Take the results into
->    account before merging.
->  
-> +- The coding rules are the same as for the Linux kernel. To check for common
--------------------------^
-insert 'almost' here: s/are the same/are almost the same/
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10846 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10846, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10846/index.html
+> 
+> Participating hosts (35 -> 34)
+> ------------------------------
+> 
+>   Missing    (1): fi-snb-2520m 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10846:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_module_load@load:
+>     - bat-dg2-9:          [PASS][1] -> [DMESG-WARN][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14440/bat-dg2-9/igt@i915_module_load@load.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10846/bat-dg2-9/igt@i915_module_load@load.html
+> 
 
-> +  style problems, you need to use the kernel's checkpatch.pl script.
-
-There are known variations like we do not have MAINTAINERS, or
-we allow to use typdefs, allow to have (reasonable) longer lines
-and few others differences.
+This is unrelated to change in documentation,
+no need for respin.
 
 Regards,
 Kamil
 
->  
->  Commit Rights
->  -------------
+>   
+> Known issues
+> ------------
 > 
-> ---
-> base-commit: ed47dd9fb6b5be6c88513c2816f0f7cfdd0e02f6
-> change-id: 20240315-add_coding_style-b755454de958
+>   Here are the changes found in IGTPW_10846 that come from known issues:
 > 
-> Best regards,
-> -- 
-> Louis Chauvet <louis.chauvet@bootlin.com>
+> ### IGT changes ###
 > 
+> #### Possible fixes ####
+> 
+>   * igt@i915_pm_rpm@module-reload:
+>     - {bat-mtlp-9}:       [CRASH][3] -> [PASS][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14440/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10846/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html
+> 
+>   
+>   {name}: This element is suppressed. This means it is ignored when computing
+>           the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7768 -> IGTPW_10846
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14440: 22ba12a6eded33d40fba58b4dac24a1e2bdc4b25 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10846: 10846
+>   IGT_7768: 7768
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10846/index.html
