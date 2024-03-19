@@ -4,58 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B3D3C54E71
-	for <igt-dev@archiver.kernel.org>; Tue, 19 Mar 2024 17:09:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF4A8C6FD1F
+	for <igt-dev@archiver.kernel.org>; Tue, 19 Mar 2024 17:17:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D741710FBF3;
-	Tue, 19 Mar 2024 17:09:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6DA8410ED74;
+	Tue, 19 Mar 2024 17:17:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RdTsxWlu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HuWVZUvI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD69310FBF3
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Mar 2024 17:09:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FD9110FBFB
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Mar 2024 17:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710868176; x=1742404176;
+ t=1710868637; x=1742404637;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=UPaW9Ou7wSdePg3ngTHX9H0vZ2nNie1lmSNa8tkUoV4=;
- b=RdTsxWluK9btV3SHQE4RJJ3rrT8Sr9fiypvMs4FNoROY2XaXCmRhGZtu
- cqNO8ipP9UvxkJAjhxKcRFkJ+bvWdkqnwEJPAn346ICG2WkQZ1Od7H1q5
- CcCXpMVazSgcpOPaRNgsMnCTjqoyh2EUpk6J2xY3G94P5hfTQu09+1O0b
- Mt3n3OlruhKHR26nswUcZk6tvN/zWaoiUSoH4aZwnGEmZd5JQRHoJUdS+
- zB+A/orSkbNv9Om+LzHEW8ewe43+UR5YUtEIVspMUPytA6wu1itMr2AIx
- UYUyxe6YfUOVvM4crJivfkYVYQIHIaWff36Rmpd5KfzPwEXGPkrTjIRn8 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="5877027"
+ bh=DTlsbUcH7nAmtL2r0iLj0ZCFE6ipUQSr+li7BiqXDK8=;
+ b=HuWVZUvIazqhGRHfTH47ocQwQRkucmatHuBSN7w/YcH1rWJ8nL0Tms9I
+ YjijC03jF/5Sa0/1/oMnzffei4ZnWiflIu2Zch5Dsroh5s8eCR5jh9aRJ
+ SwNVbhgmgscB1OXbSJJeaNhVn36Ld3Y8iIO4Bjq+OHP4U43Tnq70MxhUY
+ 6s2OPQCbOL3e2f/SGppDY73pVylq31gA3q/LHLpa9mfi0jGsv+M+3CJCW
+ wvpJbTAaUlwhFa6JsmLMiPqQnIJNfIpZoD+qpvvuxzKrW8asDqAGRCb14
+ oOpj8LfTQeLE8SViAa4yLTEVv4thz/wJTaGOwEF4w9++Bls7qpJZWHF+I w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="6362411"
 X-IronPort-AV: E=Sophos;i="6.07,137,1708416000"; 
-   d="scan'208";a="5877027"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Mar 2024 10:09:27 -0700
+   d="scan'208";a="6362411"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Mar 2024 10:17:17 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,137,1708416000"; d="scan'208";a="13944303"
+X-IronPort-AV: E=Sophos;i="6.07,137,1708416000"; d="scan'208";a="14537579"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 10:09:24 -0700
-Date: Tue, 19 Mar 2024 18:09:21 +0100
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 10:17:15 -0700
+Date: Tue, 19 Mar 2024 18:17:12 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ Chris Wilson <chris.p.wilson@intel.com>,
+ Antonio Argenziano <antonio.argenziano@intel.com>,
+ Feng Qi <feng.qi@intel.com>, Tony Ye <tony.ye@intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Subject: Re: [PATCH i-g-t v4 05/25] tests/intel: Let's introduce Workarounds
- subcategory
-Message-ID: <20240319170921.2raqcp5pw3kukwlx@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH i-g-t v4 11/25] tests/intel: Introduce Firmware subcategory
+Message-ID: <20240319171712.z4qigrfeoumbxvoc@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ Chris Wilson <chris.p.wilson@intel.com>,
+ Antonio Argenziano <antonio.argenziano@intel.com>,
+ Feng Qi <feng.qi@intel.com>, Tony Ye <tony.ye@intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 References: <20240314143455.1436688-1-katarzyna.piecielska@intel.com>
- <20240314143455.1436688-6-katarzyna.piecielska@intel.com>
+ <20240314143455.1436688-12-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240314143455.1436688-6-katarzyna.piecielska@intel.com>
+In-Reply-To: <20240314143455.1436688-12-katarzyna.piecielska@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,62 +77,92 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Katarzyna,
-On 2024-03-14 at 14:34:35 +0000, Katarzyna Piecielska wrote:
-> There is gem_workaround test that deserves it's own subcategory.
+On 2024-03-14 at 14:34:41 +0000, Katarzyna Piecielska wrote:
+> Let's put huc & guc tests under Firmware subcategory.
 > 
-> v2: Make Sub-category/Functionality/Feature unique values (Kamil)
+> v2: Let's introduce Firmware subcategory and put there GUC and HUC related
+> tests.
+> v3: Make Sub-category/Functionality/Feature unique values. (Kamil)
 > 
 > Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Chris Wilson <chris.p.wilson@intel.com>
+> Cc: Antonio Argenziano <antonio.argenziano@intel.com>
+> Cc: Feng Qi <feng.qi@intel.com>
+> Cc: Tony Ye <tony.ye@intel.com>
 > Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/intel/gem_huc_copy.c  |  5 ++++-
+>  tests/intel/i915_selftest.c | 12 ++++++++----
+>  2 files changed, 12 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tests/intel/gem_huc_copy.c b/tests/intel/gem_huc_copy.c
+> index 246fa0a8b..bacc03966 100644
+> --- a/tests/intel/gem_huc_copy.c
+> +++ b/tests/intel/gem_huc_copy.c
+> @@ -38,7 +38,10 @@
+>  /**
+>   * TEST: gem huc copy
+>   * Description: A very simple workload for the HuC.
+> - * Feature: huc
+> + * Feature: firmware feature
+> + * Sub-category: Firmware
+> + * Category: Desktop client
+> + * Functionality: HUC
 
-There are few 'workarounds' left:
+Why not "HuC copy"?
+In tests/, run: grep -ri ": huc" *
 
-957:intel/gem_workarounds.c: * Feature: hibernate, workarounds
-958:intel/gem_workarounds.c: * Feature: hibernate, workarounds
-959:intel/gem_workarounds.c: * Feature: hibernate, workarounds
-
-Also what about using 'gpu_workaround'?
+intel/xe_huc_copy.c: * Sub-category: HuC
+intel/xe_huc_copy.c: * Functionality: HuC copy
+intel/xe_huc_copy.c: * SUBTEST: huc_copy
+intel/gem_huc_copy.c: * Functionality: HUC
+intel/gem_huc_copy.c: * SUBTEST: huc-copy
 
 Regards,
 Kamil
 
-> ---
->  tests/intel/gem_workarounds.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/intel/gem_workarounds.c b/tests/intel/gem_workarounds.c
-> index d83c0a1db..ddb9bddbe 100644
-> --- a/tests/intel/gem_workarounds.c
-> +++ b/tests/intel/gem_workarounds.c
-> @@ -35,9 +35,9 @@
->  /**
->   * TEST: gem workarounds
->   * Category: Infrastructure
-> - * Feature: workarounds
-> - * Functionality: workarounds
-> - * Sub-category: Context
-> + * Feature: workaround
-> + * Functionality: context
-> + * Sub-category: Workarounds
->   * Test category: GEM_Legacy
->   * Run type: FULL
+>   * Run type: BAT
 >   *
-> @@ -59,12 +59,12 @@
+>   * SUBTEST: huc-copy
+> diff --git a/tests/intel/i915_selftest.c b/tests/intel/i915_selftest.c
+> index bb0e844e9..2c5f6bce2 100644
+> --- a/tests/intel/i915_selftest.c
+> +++ b/tests/intel/i915_selftest.c
+> @@ -192,25 +192,29 @@
+>   * SUBTEST: live@guc
+>   * Category: Selftest
+>   * Feature: GuC
+> - * Functionality: Guc specific selftests
+> + * Sub-category: Firmware
+> + * Functionality: GUC
+>   * Test category: GuC
 >   *
->   * SUBTEST: suspend-resume-context
->   * Description: Test to verify gem WA registers during suspend-resume
-> - * Feature: suspend, workarounds
-> + * Feature: suspend, workaround
->   * Test category: suspend
+>   * SUBTEST: live@guc_doorbells
+>   * Category: Selftest
+>   * Feature: GuC
+> - * Functionality: Guc specific selftests
+> + * Sub-category: Firmware
+> + * Functionality: GUC
+>   * Test category: GuC
 >   *
->   * SUBTEST: suspend-resume-fd
->   * Description: Test to verify gem WA registers during suspend-resume
-> - * Feature: suspend, workarounds
-> + * Feature: suspend, workaround
->   * Test category: suspend
->   */
->  
+>   * SUBTEST: live@guc_hang
+>   * Category: Selftest
+>   * Feature: GuC
+> - * Functionality: Guc specific selftests
+> + * Sub-category: Firmware
+> + * Functionality: GUC
+>   * Test category: GuC
+>   *
+>   * SUBTEST: live@guc_multi_lrc
+>   * Category: Selftest
+>   * Feature: GuC
+> - * Functionality: Guc specific selftests
+> + * Sub-category: Firmware
+> + * Functionality: GUC
+>   * Test category: GuC
+>   *
+>   * SUBTEST: live@hangcheck
 > -- 
 > 2.34.1
 > 
