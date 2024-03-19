@@ -4,27 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E8AACD11BF
-	for <igt-dev@archiver.kernel.org>; Tue, 19 Mar 2024 15:43:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ACF1C6FD1F
+	for <igt-dev@archiver.kernel.org>; Tue, 19 Mar 2024 16:33:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BA55A10FB97;
-	Tue, 19 Mar 2024 15:43:22 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09FAE10E324;
- Tue, 19 Mar 2024 15:43:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id DAC7110E164;
+	Tue, 19 Mar 2024 16:33:44 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="Jko1dTN9";
+	dkim-atps=neutral
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com
+ [209.85.214.176])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B0C310E164
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Mar 2024 16:33:44 +0000 (UTC)
+Received: by mail-pl1-f176.google.com with SMTP id
+ d9443c01a7336-1e00d1e13a2so17707715ad.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Mar 2024 09:33:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1710866023; x=1711470823;
+ darn=lists.freedesktop.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=v16KZGkdXHJRr1fOckFnSDHC2HJqL65eLZWXfUME/vw=;
+ b=Jko1dTN9iqVBxl+WP8iqR5hdXQ6c1cLMEo5H30ObHK+mMg1cBMhwKX1JewBPZ1b9vE
+ WLYEWFyTbwNaKv3cJWuylcOj+D4RucxVXREFrR3JaOJCKUaVAkZl1qFvsIub5ggNmxiw
+ HfyiMo25b41yXQ7DX7za/eUdFSfVnlrHKOOZQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710866023; x=1711470823;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=v16KZGkdXHJRr1fOckFnSDHC2HJqL65eLZWXfUME/vw=;
+ b=IYrVn7kiAN8VT6mRQQp5YpdPwuXoDfcY2SreK1EEQSUXENeqc95H5rhf1NrgOXP5v1
+ NBwjtxLwVNoNrkFYRKQuI4xtbQnEMJXw1UUHck7+bAuYFViSVmZ67tZH+4i7zPmaUETg
+ UJfKQ22r5ZMaW/FInOMQ9/W65O0wJUqY7ErE+f5sRN4yeuVoko+z0sLAxirMe/i901hi
+ 9QMgQIhBEI9SX9VOBIlyFRuejhpNtUlQon/ZohZ4NUl6R50V4IrXSLJjJwZp5D+Xhj5a
+ RdJZL4Mo8OLq8S3qwMrz53+GmgT/xY0GWjA3tDyR3VmnLDyaPi1kbP08t2Oul28zaQYZ
+ mRqw==
+X-Gm-Message-State: AOJu0YxxMSQdoGabxC7CAZQkPxbwRzRDnJmrSaeLQG0t9HG3X9qm5CoS
+ P1cRYF9b0cvYDqp4BOw1aMZk0pXMu1AbD/WyP8/wcpdRvRy9KMKZneZd7PSeXYubmW+9GydO49E
+ =
+X-Google-Smtp-Source: AGHT+IHEYnGs5OPeVS834Q8I2GwTohFzAPWOSRlURLGzmoAeaTTA+skhutAnT6H6Dxmz+2x9yfTnsQ==
+X-Received: by 2002:a17:902:b706:b0:1dd:df8c:4334 with SMTP id
+ d6-20020a170902b70600b001dddf8c4334mr12285206pls.62.1710866023052; 
+ Tue, 19 Mar 2024 09:33:43 -0700 (PDT)
+Received: from navaremanasi.c.googlers.com.com
+ (219.29.83.34.bc.googleusercontent.com. [34.83.29.219])
+ by smtp.gmail.com with ESMTPSA id
+ p20-20020a170902ead400b001db9cb62f7bsm11597943pld.153.2024.03.19.09.33.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 19 Mar 2024 09:33:42 -0700 (PDT)
+From: Manasi Navare <navaremanasi@chromium.org>
+To: igt-dev@lists.freedesktop.org
+Cc: Manasi Navare <navaremanasi@chromium.org>,
+ Drew Davenport <ddavenport@chromium.org>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+ Sean Paul <seanpaul@chromium.org>
+Subject: [PATCH v3] tests/kms_vrr: Add a subtest for seamless modeset to a
+ virtual LRR mode
+Date: Tue, 19 Mar 2024 16:33:38 +0000
+Message-ID: <20240319163338.3993235-1-navaremanasi@chromium.org>
+X-Mailer: git-send-email 2.44.0.291.gc1ea87d7ee-goog
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_lib/drmtest=3A_idle_all?=
- =?utf-8?q?_GPUs_before_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 19 Mar 2024 15:43:21 -0000
-Message-ID: <171086300104.903241.2434667316356704278@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240319111932.30401-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20240319111932.30401-1-kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,309 +80,147 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+This subtest validates LRR fastset functionality by testing seamless switching
+without full modeset to any of the virtual LRR mode within VRR range.
+Here we start from highest refresh rate mode and then switch to virtual LRR
+modes in the steps of 10Hz within the VRR range.
 
-Series: lib/drmtest: idle all GPUs before test
-URL   : https://patchwork.freedesktop.org/series/131321/
-State : warning
+This is used to test the LRR fastset functionality of the driver.
 
-=3D=3D Summary =3D=3D
+v3:
+- Fix build error due to rebase (Manasi)
 
-Pipeline status: FAILED.
+Cc: Drew Davenport <ddavenport@chromium.org>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Sean Paul <seanpaul@chromium.org>
+Signed-off-by: Manasi Navare <navaremanasi@chromium.org>
+---
+ tests/kms_vrr.c | 68 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 67 insertions(+), 1 deletion(-)
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1131636 f=
-or the overview.
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 15c62b34b..316b626c3 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -70,6 +70,11 @@
+  * Description: Oscillates between highest and lowest refresh each frame for
+  *              manual flicker profiling
+  *
++ * SUBTEST: seamless-virtual-rr-switch
++ * Description: Test to create a Virtual Mode in VRR range and switch to it
++ * 		without a full modeset.
++ * Functionality: LRR
++ *
+  * SUBTEST: negative-basic
+  * Description: Make sure that VRR should not be enabled on the Non-VRR panel.
+  */
+@@ -92,11 +97,13 @@ enum {
+ 	TEST_FASTSET = 1 << 6,
+ 	TEST_MAXMIN = 1 << 7,
+ 	TEST_NEGATIVE = 1 << 8,
++	TEST_SEAMLESS_VIRTUAL_RR = 1 << 9,
+ };
+ 
+ enum {
+ 	HIGH_RR_MODE,
+ 	LOW_RR_MODE,
++	VIRTUAL_RR_MODE,
+ 	RR_MODES_COUNT,
+ };
+ 
+@@ -214,6 +221,19 @@ low_rr_mode_with_same_res(igt_output_t *output, unsigned int vrr_min)
+ 	return mode;
+ }
+ 
++static drmModeModeInfo
++virtual_rr_vrr_range_mode(igt_output_t *output, unsigned int virtual_refresh_rate)
++{
++	int i;
++	drmModeConnectorPtr connector = output->config.connector;
++	drmModeModeInfo mode = *igt_output_get_mode(output);
++	uint64_t clock_hz = mode.clock * 1000;
++
++	mode.vtotal = clock_hz / (mode.htotal * virtual_refresh_rate);
++	mode.vrefresh = virtual_refresh_rate;
++	return mode;
++}
++
+ /* Read min and max vrr range from the connector debugfs. */
+ static range_t
+ get_vrr_range(data_t *data, igt_output_t *output)
+@@ -641,6 +661,48 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
+ 		     vrr ? "on" : "off", vrr ? "not reached" : "exceeded", result);
+ }
+ 
++static void
++test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
++{
++	uint32_t result;
++	uint64_t rate;
++	unsigned int vrefresh;
++
++	igt_info("Use HIGH_RR Mode as default\n");
++	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
++
++	prepare_test(data, output, pipe);
++	rate = rate_from_refresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
++
++	/*
++	 * Sink with DRR and VRR can be in downclock mode so
++	 * switch to highest refresh rate mode.
++	 */
++	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
++	igt_assert(igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_EVENT, NULL) == 0);
++
++	result = flip_and_measure(data, output, pipe, rate, 1, TEST_DURATION_NS);
++	igt_assert_f(result > 75,
++		     "Refresh rate (%u Hz) %"PRIu64"ns: Target threshold not reached, result was %u%%\n",
++		     data->switch_modes[HIGH_RR_MODE].vrefresh, rate, result);
++
++	/* Switch to Virtual RR */
++	for (vrefresh = data->range.min + 10; vrefresh < data->range.max; vrefresh += 10) {
++
++		data->switch_modes[VIRTUAL_RR_MODE] = virtual_rr_vrr_range_mode(output, vrefresh);
++		igt_info("Requesting Virtual Mode with Refresh Rate (%u Hz): \n", vrefresh);
++		kmstest_dump_mode(&data->switch_modes[VIRTUAL_RR_MODE]);
++		igt_output_override_mode(output, &data->switch_modes[VIRTUAL_RR_MODE]);
++		igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
++
++		rate = rate_from_refresh(vrefresh);
++		result = flip_and_measure(data, output, pipe, rate, 1, TEST_DURATION_NS);
++		igt_assert_f(result > 75,
++			     "Refresh rate (%u Hz) %"PRIu64"ns: Target threshold not reached, result was %u%%\n",
++			     vrefresh, rate, result);
++	}
++}
++
+ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
+ {
+ 	if (vrr_capable(output))
+@@ -686,7 +748,7 @@ static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags
+ 	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
+ 
+ 	/* Search for a low refresh rate mode. */
+-	if (!(flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS)))
++	if (!(flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS | TEST_SEAMLESS_VIRTUAL_RR)))
+ 		return true;
+ 
+ 	data->switch_modes[LOW_RR_MODE] = low_rr_mode_with_same_res(output, data->range.min);
+@@ -841,6 +903,10 @@ igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
+ 			     "between flip timestamps converges to the requested rate");
+ 		igt_subtest_with_dynamic("flip-basic-fastset")
+ 			run_vrr_test(&data, test_basic, TEST_FASTSET);
++
++		igt_describe("Test to switch to any custom virtual mode in VRR range without modeset.");
++		igt_subtest_with_dynamic("seamless-virtual-rr-switch")
++			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR);
+ 	}
+ 
+ 	igt_fixture {
+-- 
+2.44.0.291.gc1ea87d7ee-goog
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/56492984):
-                                                 ^~~
-                                                 int
-  ../lib/drmtest.c: In function =E2=80=98__drm_open_driver_another=E2=80=99:
-  ../lib/drmtest.c:601:3: error: implicit declaration of function =E2=80=98=
-__multigpu_make_idle_once=E2=80=99; did you mean =E2=80=98__gpu_make_idle=
-=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-     __multigpu_make_idle_once(fd, idx);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~
-     __gpu_make_idle
-  ../lib/drmtest.c:601:3: warning: nested extern declaration of =E2=80=98__=
-multigpu_make_idle_once=E2=80=99 [-Wnested-externs]
-  At top level:
-  ../lib/drmtest.c:487:13: warning: =E2=80=98__gpu_make_idle=E2=80=99 defin=
-ed but not used [-Wunused-function]
-   static void __gpu_make_idle(int fd)
-               ^~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1710862821:step_script
-  section_start:1710862821:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710862821:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/56492987):
-                                                 ^~~
-                                                 int
-  ../lib/drmtest.c: In function =E2=80=98__drm_open_driver_another=E2=80=99:
-  ../lib/drmtest.c:601:3: error: implicit declaration of function =E2=80=98=
-__multigpu_make_idle_once=E2=80=99; did you mean =E2=80=98__gpu_make_idle=
-=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-     __multigpu_make_idle_once(fd, idx);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~
-     __gpu_make_idle
-  ../lib/drmtest.c:601:3: warning: nested extern declaration of =E2=80=98__=
-multigpu_make_idle_once=E2=80=99 [-Wnested-externs]
-  At top level:
-  ../lib/drmtest.c:487:13: warning: =E2=80=98__gpu_make_idle=E2=80=99 defin=
-ed but not used [-Wunused-function]
-   static void __gpu_make_idle(int fd)
-               ^~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1710862867:step_script
-  section_start:1710862867:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710862869:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/56492986):
-                                                 ^~~
-                                                 int
-  ../lib/drmtest.c: In function =E2=80=98__drm_open_driver_another=E2=80=99:
-  ../lib/drmtest.c:601:3: error: implicit declaration of function =E2=80=98=
-__multigpu_make_idle_once=E2=80=99; did you mean =E2=80=98__gpu_make_idle=
-=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-     __multigpu_make_idle_once(fd, idx);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~
-     __gpu_make_idle
-  ../lib/drmtest.c:601:3: warning: nested extern declaration of =E2=80=98__=
-multigpu_make_idle_once=E2=80=99 [-Wnested-externs]
-  At top level:
-  ../lib/drmtest.c:487:13: warning: =E2=80=98__gpu_make_idle=E2=80=99 defin=
-ed but not used [-Wunused-function]
-   static void __gpu_make_idle(int fd)
-               ^~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1710862868:step_script
-  section_start:1710862868:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710862869:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/56492988):
-                                                 ^~~
-                                                 int
-  ../lib/drmtest.c: In function =E2=80=98__drm_open_driver_another=E2=80=99:
-  ../lib/drmtest.c:601:3: error: implicit declaration of function =E2=80=98=
-__multigpu_make_idle_once=E2=80=99; did you mean =E2=80=98__gpu_make_idle=
-=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-     __multigpu_make_idle_once(fd, idx);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~
-     __gpu_make_idle
-  ../lib/drmtest.c:601:3: warning: nested extern declaration of =E2=80=98__=
-multigpu_make_idle_once=E2=80=99 [-Wnested-externs]
-  At top level:
-  ../lib/drmtest.c:487:13: warning: =E2=80=98__gpu_make_idle=E2=80=99 defin=
-ed but not used [-Wunused-function]
-   static void __gpu_make_idle(int fd)
-               ^~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1710862869:step_script
-  section_start:1710862869:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710862871:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-c=
-i/igt-ci-tags/-/jobs/56492985):
-                                                 ^~~
-                                                 int
-  ../lib/drmtest.c: In function =E2=80=98__drm_open_driver_another=E2=80=99:
-  ../lib/drmtest.c:601:3: error: implicit declaration of function =E2=80=98=
-__multigpu_make_idle_once=E2=80=99; did you mean =E2=80=98__gpu_make_idle=
-=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-     __multigpu_make_idle_once(fd, idx);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~
-     __gpu_make_idle
-  ../lib/drmtest.c:601:3: warning: nested extern declaration of =E2=80=98__=
-multigpu_make_idle_once=E2=80=99 [-Wnested-externs]
-  At top level:
-  ../lib/drmtest.c:487:13: warning: =E2=80=98__gpu_make_idle=E2=80=99 defin=
-ed but not used [-Wunused-function]
-   static void __gpu_make_idle(int fd)
-               ^~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1710862841:step_script
-  section_start:1710862841:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710862842:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
--tags/-/jobs/56492979):
-    499 | static void __multigpu_make_idle_once(int fd, inr idx)
-        |                                               ^~~
-        |                                               int
-  ../lib/drmtest.c: In function =E2=80=98__drm_open_driver_another=E2=80=99:
-  ../lib/drmtest.c:601:3: error: implicit declaration of function =E2=80=98=
-__multigpu_make_idle_once=E2=80=99 [-Werror=3Dimplicit-function-declaration]
-    601 |   __multigpu_make_idle_once(fd, idx);
-        |   ^~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/drmtest.c:601:3: warning: nested extern declaration of =E2=80=98__=
-multigpu_make_idle_once=E2=80=99 [-Wnested-externs]
-  At top level:
-  ../lib/drmtest.c:487:13: warning: =E2=80=98__gpu_make_idle=E2=80=99 defin=
-ed but not used [-Wunused-function]
-    487 | static void __gpu_make_idle(int fd)
-        |             ^~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1710862817:step_script
-  section_start:1710862817:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710862818:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/56492983):
-  [19/1798] Compiling C object 'lib/76b5a35@@igt-i915_gem_c@sta/i915_gem.c.=
-o'.
-  [20/1798] Compiling C object 'lib/76b5a35@@igt_device_scan@sta/igt_device=
-_scan.c.o'.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/1780] Generating version.h with a custom command.
-  [2/1780] Compiling C object 'lib/76b5a35@@igt-drmtest_c@sta/drmtest.c.o'.
-  FAILED: lib/76b5a35@@igt-drmtest_c@sta/drmtest.c.o=20
-  clang -Ilib/76b5a35@@igt-drmtest_c@sta -Ilib -I../lib -I../include -I../i=
-nclude/drm-uapi -I../include/linux-uapi -I../lib/stubs/syscalls -I. -I../ -=
-I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -=
-I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/=
-usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/valgrind -X=
-clang -fcolor-diagnostics -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pc=
-h -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SO=
-URCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wm=
-issing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing=
--prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredun=
-dant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-missi=
-ng-field-initializers -Wno-pointer-arith -Wno-address-of-packed-member -Wno=
--sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -We=
-rror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-sel=
-f -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -We=
-rror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=
-=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-=
-malloc -fno-builtin-calloc -fPIC -pthread '-DIGT_DATADIR=3D"/usr/local/shar=
-e/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tests"' '-DIG=
-T_LOG_DOMAIN=3D"drmtest"' -MD -MQ 'lib/76b5a35@@igt-drmtest_c@sta/drmtest.c=
-.o' -MF 'lib/76b5a35@@igt-drmtest_c@sta/drmtest.c.o.d' -o 'lib/76b5a35@@igt=
--drmtest_c@sta/drmtest.c.o' -c ../lib/drmtest.c
-  ../lib/drmtest.c:499:47: error: unknown type name 'inr'; did you mean 'in=
-t'?
-  static void __multigpu_make_idle_once(int fd, inr idx)
-                                                ^~~
-                                                int
-  1 error generated.
-  ninja: build stopped: subcommand failed.
-  section_end:1710862819:step_script
-  section_start:1710862819:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710862819:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop=
-.org/gfx-ci/igt-ci-tags/-/jobs/56492982):
-    499 | static void __multigpu_make_idle_once(int fd, inr idx)
-        |                                               ^~~
-        |                                               int
-  ../lib/drmtest.c: In function =E2=80=98__drm_open_driver_another=E2=80=99:
-  ../lib/drmtest.c:601:3: error: implicit declaration of function =E2=80=98=
-__multigpu_make_idle_once=E2=80=99 [-Werror=3Dimplicit-function-declaration]
-    601 |   __multigpu_make_idle_once(fd, idx);
-        |   ^~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/drmtest.c:601:3: warning: nested extern declaration of =E2=80=98__=
-multigpu_make_idle_once=E2=80=99 [-Wnested-externs]
-  At top level:
-  ../lib/drmtest.c:487:13: warning: =E2=80=98__gpu_make_idle=E2=80=99 defin=
-ed but not used [-Wunused-function]
-    487 | static void __gpu_make_idle(int fd)
-        |             ^~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1710862806:step_script
-  section_start:1710862806:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710862807:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/56492980):
-    499 | static void __multigpu_make_idle_once(int fd, inr idx)
-        |                                               ^~~
-        |                                               int
-  ../lib/drmtest.c: In function =E2=80=98__drm_open_driver_another=E2=80=99:
-  ../lib/drmtest.c:601:3: error: implicit declaration of function =E2=80=98=
-__multigpu_make_idle_once=E2=80=99 [-Werror=3Dimplicit-function-declaration]
-    601 |   __multigpu_make_idle_once(fd, idx);
-        |   ^~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/drmtest.c:601:3: warning: nested extern declaration of =E2=80=98__=
-multigpu_make_idle_once=E2=80=99 [-Wnested-externs]
-  At top level:
-  ../lib/drmtest.c:487:13: warning: =E2=80=98__gpu_make_idle=E2=80=99 defin=
-ed but not used [-Wunused-function]
-    487 | static void __gpu_make_idle(int fd)
-        |             ^~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1710862811:step_script
-  section_start:1710862811:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710862812:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/56492981):
-    499 | static void __multigpu_make_idle_once(int fd, inr idx)
-        |                                               ^~~
-        |                                               int
-  ../lib/drmtest.c: In function =E2=80=98__drm_open_driver_another=E2=80=99:
-  ../lib/drmtest.c:601:3: error: implicit declaration of function =E2=80=98=
-__multigpu_make_idle_once=E2=80=99 [-Werror=3Dimplicit-function-declaration]
-    601 |   __multigpu_make_idle_once(fd, idx);
-        |   ^~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/drmtest.c:601:3: warning: nested extern declaration of =E2=80=98__=
-multigpu_make_idle_once=E2=80=99 [-Wnested-externs]
-  At top level:
-  ../lib/drmtest.c:487:13: warning: =E2=80=98__gpu_make_idle=E2=80=99 defin=
-ed but not used [-Wunused-function]
-    487 | static void __gpu_make_idle(int fd)
-        |             ^~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1710862806:step_script
-  section_start:1710862806:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1710862806:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-=3D=3D Logs =3D=3D
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/1131636
