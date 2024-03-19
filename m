@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 121D1C54E60
-	for <igt-dev@archiver.kernel.org>; Tue, 19 Mar 2024 13:46:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B49DFC54E5D
+	for <igt-dev@archiver.kernel.org>; Tue, 19 Mar 2024 14:08:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A3ED10FAD9;
-	Tue, 19 Mar 2024 13:46:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4DB2810E3CD;
+	Tue, 19 Mar 2024 14:08:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="yTjr4jSU";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="HRBlpEOk";
 	dkim-atps=neutral
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com
  [46.235.227.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B6F010FAD9
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Mar 2024 13:46:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E010E10E3CD
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Mar 2024 14:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1710856000;
- bh=M/3XHCZgcHzmz4oW6UT18Xh9a0JWBT2+sbUzIvm5UUQ=;
+ s=mail; t=1710857280;
+ bh=wgFcXRLcAAGlIw3pbjJFUZsBrVTxgJBRWCxe9eLBov0=;
  h=Date:From:To:Subject:References:In-Reply-To:From;
- b=yTjr4jSUWM2AdUqgMbT8a9sXGkKTw1FGKrW6yVdT0v6ZboGjuX1ovLfkUQDpI858Q
- 1JKqC2q0okcijZcwFTbyjJDRh0wgNv5/oJUaLo2TyhrovYCEj1haoTfNICq0eMiPAI
- bzh/QIFIoGrjen0ZiVP8gudjS2RaP0AaAr8Vo5IfHh7gSBwxM5/fVVPlT0tp5Apd2n
- 2ExXWMXC0xvLooSwwWNxQ/16qvp6CU09BiG7IgrvnbqmfTMcA9kDpihziXye3TA2K4
- Tf7v9AqgiTBTz6kJa0tgeOwLOnO+znvRfcAcc+29IfokQTMjVN2j8F/5JTGeGd4duN
- S1xiopehYcNyQ==
+ b=HRBlpEOkFjdGQ4zPCzpVBn9up0X0bDu+3FF6BSGNLgZtarnxND9hkORzFdCOTpWxx
+ ykkkJWp9M7yG3TsreRzfbOjsz9NFLJFr8iIzJCjDxJrKuukPzmqr3o0tkdg/gtmZwZ
+ SBZZr/YsgdJvlgOlY/9YpofKBTTV8X2vBs/0sR1oFHo0mjr0j9TKSU1IotjdgNal3V
+ WXmWUzgjhkdo8dZ8OGt1J0TtuAUiDzCVg8SUHsz7nq/m5zxL0e4hCUvm3fePY2vrW4
+ GLdZAhd1vHJ7DYMSh0BY97CbBcC2vYLb+YlYm2CwYSHur06UFWWNG/ODoa3c/Ridga
+ SH2wkcGS6EOug==
 Received: from localhost (cola.collaboradmins.com [195.201.22.229])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits)
  server-digest SHA256) (No client certificate requested)
  (Authenticated sender: alarumbe)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id C396637813EA;
- Tue, 19 Mar 2024 13:46:39 +0000 (UTC)
-Date: Tue, 19 Mar 2024 13:46:39 +0000
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id 3230A3780626;
+ Tue, 19 Mar 2024 14:08:00 +0000 (UTC)
+Date: Tue, 19 Mar 2024 14:07:59 +0000
 From: =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- igt-dev@lists.freedesktop.org, tvrtko.ursulin@intel.com, daniel@ffwll.ch, 
- boris.brezillon@collabora.com, 
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH 1/2] lib: Add DRM driver sysfs profiling knob toggling
- functions
-Message-ID: <47nkmtwfrq5sbrnuyjuic3gn6alughyew4n7aa3g66xwnwb5qh@qmtbmugutqco>
+ igt-dev@lists.freedesktop.org, daniel@ffwll.ch, boris.brezillon@collabora.com
+Subject: Re: [PATCH 2/2] tools/gputop: toggle sysfs profiling knob if
+ available for device
+Message-ID: <se3sah6btzu6qdqq2kclgeytgwvppioqz2yoqvay2plgy3etaq@vcqmkd4peacb>
 References: <20240316220229.249119-1-adrian.larumbe@collabora.com>
- <20240318123237.7qjhwob4dhigia3v@kamilkon-desk.igk.intel.com>
+ <20240316220229.249119-2-adrian.larumbe@collabora.com>
+ <20240318124039.btbkh5ann72ez5nk@kamilkon-desk.igk.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240318123237.7qjhwob4dhigia3v@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20240318124039.btbkh5ann72ez5nk@kamilkon-desk.igk.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,289 +63,127 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 18.03.2024 13:32, Kamil Konieczny wrote:
+On 18.03.2024 13:40, Kamil Konieczny wrote:
 > Hi Adrián,
-> On 2024-03-16 at 22:00:37 +0000, Adrián Larumbe wrote:
-> > Some DRM drivers need to have their accounting HW toggled on demand from
-> > user space so that fdinfo's drm-engine and drm-cycles tags can be updated
-> > upon job completion.
+> On 2024-03-16 at 22:00:38 +0000, Adrián Larumbe wrote:
+> > For every DRM device that enables its job accounting HW from user space,
+> > toggle it right before obtaining per-client fdinfo numbers.
 > > 
-> > A profiler such as gputop should be able to check which DRM devices have
-> > such a sysfs knob, record its original state, toggle-enable it and revert
-> > this operation right before exiting.
+> > Make sure profiling status is returned to its original state before
+> > exiting, by handling the SIGINT signal just like in intel_gpu_top.
 > > 
-> > A new igt library igt_profiling.c file was added because using igt lib's
-> > sysfs access functions would've triggered a cascade of linking dependencies
-> > in intel_gpu_top, which only statically links a very small subset of the
-> > igt library.
+> > Also dynamically link gputop against igt lib instead of separate per-file
+> > static libraries to avoid dependence cascade because of using igt_sysfs
+> > functions.
 > > 
-> 
-> Please add here Cc: 
-> 
-> Cc: tvrtko.ursulin@intel.com
-> Cc: daniel@ffwll.ch
-> Cc: boris.brezillon@collabora.com
-> 
-> You are also touching igt_device_scan, so +Cc Zbigniew.
-> Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
-> 
 > > Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
 > > ---
-> >  lib/igt_device_scan.c | 45 +++++++++++++++++++++++++++++++++++++++++
-> >  lib/igt_device_scan.h |  7 +++++++
-> >  lib/igt_profiling.c   | 47 +++++++++++++++++++++++++++++++++++++++++++
-> >  lib/igt_profiling.h   | 31 ++++++++++++++++++++++++++++
-> >  lib/meson.build       |  1 +
-> >  5 files changed, 131 insertions(+)
-> >  create mode 100644 lib/igt_profiling.c
-> >  create mode 100644 lib/igt_profiling.h
+> >  tools/gputop.c    | 30 +++++++++++++++++++++++++++++-
+> >  tools/meson.build |  2 +-
+> >  2 files changed, 30 insertions(+), 2 deletions(-)
 > > 
-> > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> > index fbf3fa482e21..e5b126cc5448 100644
-> > --- a/lib/igt_device_scan.c
-> > +++ b/lib/igt_device_scan.c
-> > @@ -1105,6 +1105,51 @@ void igt_devices_scan(bool force)
-> >  	igt_devs.devs_scanned = true;
+> > diff --git a/tools/gputop.c b/tools/gputop.c
+> > index 71e28f43ee4c..d6885be6aa16 100644
+> > --- a/tools/gputop.c
+> > +++ b/tools/gputop.c
+> > @@ -27,7 +27,9 @@
+> >  #include <stdbool.h>
+> >  
+> >  #include "igt_drm_clients.h"
+> > +#include "igt_device_scan.h"
+> >  #include "igt_drm_fdinfo.h"
+> > +#include "igt_profiling.h"
+> >  #include "drmtest.h"
+> >  
+> >  static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
+> > @@ -243,9 +245,17 @@ static int client_cmp(const void *_a, const void *_b, void *unused)
+> >  
 > >  }
 > >  
-> > +struct igt_profiled_device *igt_devices_profiled(void)
+> > +static bool stop_top;
+> --------- ^^^^^^
+> Add 'volatile' here as compiler could optimise your loop into
+> while(true).
+> 
+> > +
+> > +static void sigint_handler(int  sig)
 > > +{
-> > +	struct igt_profiled_device *profiled_devices;
-> > +	struct igt_device *dev;
-> > +	unsigned int devlist_len;
-> > +	unsigned int i = 0;
+> > +	stop_top = true;
+> > +}
 > > +
-> > +	if (!igt_devs.devs_scanned)
-> > +		return NULL;
+> >  int main(int argc, char **argv)
+> >  {
+> >  	unsigned int period_us = 2e6;
+> > +	struct igt_profiled_device *profiled_devices = NULL;
+> >  	struct igt_drm_clients *clients = NULL;
+> >  	int con_w = -1, con_h = -1;
+> >  
+> > @@ -253,9 +263,22 @@ int main(int argc, char **argv)
+> >  	if (!clients)
+> >  		exit(1);
+> >  
+> > +	igt_devices_scan(false);
 > > +
-> > +	devlist_len = igt_list_length(&igt_devs.all);
-> > +	if (devlist_len == 0)
-> > +		return NULL;
+> > +	profiled_devices = igt_devices_profiled();
+> > +	if (profiled_devices != NULL)
+> > +		igt_devices_toggle_profiling(profiled_devices, true);
 > > +
-> > +	profiled_devices = malloc(devlist_len * sizeof(struct igt_profiled_device));
-> > +	if (!profiled_devices)
-> > +		return NULL;
-> > +
-> > +	memset(profiled_devices, 0, devlist_len * sizeof(struct igt_profiled_device));
-> > +
-> > +	igt_list_for_each_entry(dev, &igt_devs.all, link) {
-> > +		char path[PATH_MAX];
-> > +		int sysfs_fd;
-> > +
-> > +		if (!get_attr(dev, "profiling"))
-> > +			continue;
-> > +
-> > +		snprintf(path, sizeof(path), "%s/%s", dev->syspath, "profiling");
-> > +		sysfs_fd = open(path, O_RDONLY);
-> > +		if (sysfs_fd < 0)
-> > +			continue;
-> > +
-> > +		profiled_devices[i].syspath = dev->syspath;
-> > +		profiled_devices[i++].original_state =
-> > +			strtoul(get_attr(dev, "profiling"), NULL, 10);
-> > +	}
-> > +
-> > +	if (i == 0) {
+> > +	if (signal(SIGINT, sigint_handler) == SIG_ERR) {
+> > +		fprintf(stderr, "Failed to install signal handler!\n");
+> > +		igt_devices_toggle_profiling(profiled_devices, false);
 > > +		free(profiled_devices);
 > > +		profiled_devices = NULL;
 > > +	}
 > > +
-> > +	return profiled_devices;
-> > +}
-> > +
-> >  static inline void _pr_simple(const char *k, const char *v)
-> >  {
-> >  	printf("    %-16s: %s\n", k, v);
-> > diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
-> > index 48690e236c01..6c725d9081b2 100644
-> > --- a/lib/igt_device_scan.h
-> > +++ b/lib/igt_device_scan.h
-> > @@ -63,8 +63,15 @@ struct igt_device_card {
-> >  	uint16_t pci_vendor, pci_device;
-> >  };
+> >  	igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
 > >  
-> > +struct igt_profiled_device {
-> > +	char *syspath;
-> > +	bool original_state;
-> > +};
-> > +
-> >  void igt_devices_scan(bool force);
+> > -	for (;;) {
+> > +	while (!stop_top) {
+> >  		struct igt_drm_client *c, *prevc = NULL;
+> >  		int i, engine_w = 0, lines = 0;
+> >  		struct winsize ws;
+> > @@ -293,5 +316,10 @@ int main(int argc, char **argv)
+> >  		usleep(period_us);
+> >  	}
 > >  
-> > +struct igt_profiled_device *igt_devices_profiled(void);
-> > +
-> >  void igt_devices_print(const struct igt_devices_print_format *fmt);
-> >  void igt_devices_print_vendors(void);
-> >  void igt_device_print_filter_types(void);
-> > diff --git a/lib/igt_profiling.c b/lib/igt_profiling.c
-> > new file mode 100644
-> > index 000000000000..63a2dd949dbc
-> > --- /dev/null
-> > +++ b/lib/igt_profiling.c
-> > @@ -0,0 +1,47 @@
-> 
-> Add here SPDX MIT licence, see other headers, for example
-> lib/intel_blt.h, so Add at begin of .c file:
-> 
-> // SPDX-License-Identifier: MIT
-> 
-> > +/*
-> > + * Copyright © 2024 Collabora Ltd.
-> > + * Copyright 2024 Adrian Larumbe <adrian.larumbe@collabora.com>
-> -------------- ^
-> Be consistent in using '(c)', it is missing here.
-> 
-> > + * Copyright 2024 Amazon.com, Inc. or its affiliates.
-> -------------- ^
-> Same here.
-> 
-> > + *
-> > + * Permission is hereby granted, free of charge, to any person obtaining a
-> 
-> Remove this, it is replaced by SPDX.
-> 
-> > + * copy of this software and associated documentation files (the "Software"),
-> > + * to deal in the Software without restriction, including without limitation
-> > + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> > + * and/or sell copies of the Software, and to permit persons to whom the
-> > + * Software is furnished to do so, subject to the following conditions:
-> > + *
-> > + * The above copyright notice and this permission notice (including the next
-> > + * paragraph) shall be included in all copies or substantial portions of the
-> > + * Software.
-> > + *
-> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> > + * IN THE SOFTWARE.
-> > + *
-> > + */
-> > +
-> > +#include "igt_core.h"
-> > +#include "igt_sysfs.h"
-> > +#include "igt_device_scan.h"
-> ---------------- ^
-> Keep it sorted alphabetically.
-> 
-> > +#include "igt_profiling.h"
-> ---------------- ^
-> Same here.
-> 
-> > +
-> > +#include <fcntl.h>
-> ----------- ^^
-> 
-> Move system includes before igt ones.
-> 
-> > +
-> > +void igt_devices_toggle_profiling(struct igt_profiled_device *devices, bool enable)
-> > +{
-> > +	for (unsigned int i = 0; devices[i].syspath; i++) {
-> > +		int sysfs_fd = open(devices[i].syspath, O_RDONLY);
-> > +
-> > +		if (sysfs_fd < 0)
-> > +			continue;
-> > +
-> > +		igt_sysfs_set_boolean(sysfs_fd, "profiling",
-> > +				      enable ? true : devices[i].original_state);
-> > +
-> > +		close(sysfs_fd);
+> > +	if (profiled_devices != NULL) {
+> > +		igt_devices_toggle_profiling(profiled_devices, false);
+> > +		free(profiled_devices);
 > > +	}
-> > +}
-> > diff --git a/lib/igt_profiling.h b/lib/igt_profiling.h
-> > new file mode 100644
-> > index 000000000000..e00345b46e3f
-> > --- /dev/null
-> > +++ b/lib/igt_profiling.h
-> > @@ -0,0 +1,31 @@
-> 
-> Use SPDX here, for example look into lib/intel_blt.h
-> 
-> /* SPDX-License-Identifier: MIT */
-> 
-> > +/*
-> > + * Copyright (C) 2024 Adrian Larumbe <adrian.larumbe@collabora.com>
-> > + * Copyright 2024 Collabora Ltd.
-> -------------- ^
-> Missed (c)
-> 
-> > + * Copyright 2024 Amazon.com, Inc. or its affiliates.
-> -------------- ^
-> Same here.
-> 
-> > + *
-> > + * Permission is hereby granted, free of charge, to any person obtaining a
-> ----- ^
-> Remove this text, see example intel_blt.h
-> 
-> > + * copy of this software and associated documentation files (the "Software"),
-> > + * to deal in the Software without restriction, including without limitation
-> > + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> > + * and/or sell copies of the Software, and to permit persons to whom the
-> > + * Software is furnished to do so, subject to the following conditions:
-> > + *
-> > + * The above copyright notice and this permission notice (including the next
-> > + * paragraph) shall be included in all copies or substantial portions of the
-> > + * Software.
-> > + *
-> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> > + * IN THE SOFTWARE.
-> > + *
-> > + */
-> 
-> In C language headers we useally protect them with ifdef/define/endif, so add:
-> 
-> #ifndef IGT_PROFILING_H
-> #define IGT_PROFILING_H
-> 
-> and undef at end of file.
-> 
 > > +
-> > +#include <stdbool.h>
-> > +
-> > +struct igt_profiled_device;
-> > +
-> > +void igt_devices_toggle_profiling(struct igt_profiled_device *devices, bool enable);
-> 
-> Here add:
-> 
-> #undef IGT_PROFILING_H
-> 
-> > diff --git a/lib/meson.build b/lib/meson.build
-> > index 6122861d8b7a..70a6fe4485a2 100644
-> > --- a/lib/meson.build
-> > +++ b/lib/meson.build
-> > @@ -24,6 +24,7 @@ lib_sources = [
-> >  	'igt_device_scan.c',
-> >  	'igt_drm_clients.h',
-> >  	'igt_drm_fdinfo.c',
-> > +        'igt_profiling.c',
-> --------------- ^
-> Try to keep it sorted. Imho this is wrong as it adds to igt lib
-> and you said you want to minimize gputop lib useage?
-> Maybe you should create igt_profiling lib, like others used by
-> gputop?
+> >  	return 0;
+> >  }
+> > diff --git a/tools/meson.build b/tools/meson.build
+> > index ac79d8b5840c..a126d6cad7ba 100644
+> > --- a/tools/meson.build
+> > +++ b/tools/meson.build
+> > @@ -68,7 +68,7 @@ endif
+> >  executable('gputop', 'gputop.c',
+> >             install : true,
+> >             install_rpath : bindir_rpathdir,
+> > -           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,math])
+> ------------------------------------------------- ^^^^^^^^^^^^^^^^^^
+> > +           dependencies : [lib_igt, lib_igt_drm_clients, math])
+> ----------------------------- ^^^^^^^
+> This will blow-up size of tool, also why did you removed
+> lib_igt_drm_fdinfo?
 
-I tried this at first, creating a single-file static archive from
-igt_profiling.c and adding it to gputop's dependency list. The problem is this
-triggers a huge dependence cascade because of referencing igt_sysfs.c symbols
-inside igt_profiling.c, so I thought I would avoid this headache by expanding
-lib igt and linking gputop dynamically instead against it, which I did in the
-second patch.
+I removed it because igt_drm_fdinfo.c is part of lib_sources, and since I decided to link gputop
+dynamically against libigt, it didn't make any sense to have the same symbols provided by both
+a static archive and a dynamic library (although I guess the linker will pick them up from whatever
+shows up first in the command line).
+
+As to the new tool size, I think it'd be smaller than before, because it's dynamically linked.
+Although if this is unacceptable I could traverse the whole tree of dependencies and create a new
+archive dependency for gputop that includes both igt_profiling.c, igt_sysfs.c and everything
+they depend on.
 
 > Regards,
 > Kamil
 > 
-> >  	'igt_aux.c',
-> >  	'igt_gt.c',
-> >  	'igt_halffloat.c',
+> >  
+> >  intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
+> >  executable('intel_l3_parity', sources : intel_l3_parity_src,
 > > -- 
 > > 2.43.0
 > > 
