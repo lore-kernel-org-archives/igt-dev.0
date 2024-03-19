@@ -4,70 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ACF1C6FD1F
-	for <igt-dev@archiver.kernel.org>; Tue, 19 Mar 2024 16:33:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 518B6C6FD1F
+	for <igt-dev@archiver.kernel.org>; Tue, 19 Mar 2024 17:03:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DAC7110E164;
-	Tue, 19 Mar 2024 16:33:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C357010F2D2;
+	Tue, 19 Mar 2024 17:03:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="Jko1dTN9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k+kObJ/S";
 	dkim-atps=neutral
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com
- [209.85.214.176])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B0C310E164
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Mar 2024 16:33:44 +0000 (UTC)
-Received: by mail-pl1-f176.google.com with SMTP id
- d9443c01a7336-1e00d1e13a2so17707715ad.0
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Mar 2024 09:33:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1710866023; x=1711470823;
- darn=lists.freedesktop.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=v16KZGkdXHJRr1fOckFnSDHC2HJqL65eLZWXfUME/vw=;
- b=Jko1dTN9iqVBxl+WP8iqR5hdXQ6c1cLMEo5H30ObHK+mMg1cBMhwKX1JewBPZ1b9vE
- WLYEWFyTbwNaKv3cJWuylcOj+D4RucxVXREFrR3JaOJCKUaVAkZl1qFvsIub5ggNmxiw
- HfyiMo25b41yXQ7DX7za/eUdFSfVnlrHKOOZQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710866023; x=1711470823;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=v16KZGkdXHJRr1fOckFnSDHC2HJqL65eLZWXfUME/vw=;
- b=IYrVn7kiAN8VT6mRQQp5YpdPwuXoDfcY2SreK1EEQSUXENeqc95H5rhf1NrgOXP5v1
- NBwjtxLwVNoNrkFYRKQuI4xtbQnEMJXw1UUHck7+bAuYFViSVmZ67tZH+4i7zPmaUETg
- UJfKQ22r5ZMaW/FInOMQ9/W65O0wJUqY7ErE+f5sRN4yeuVoko+z0sLAxirMe/i901hi
- 9QMgQIhBEI9SX9VOBIlyFRuejhpNtUlQon/ZohZ4NUl6R50V4IrXSLJjJwZp5D+Xhj5a
- RdJZL4Mo8OLq8S3qwMrz53+GmgT/xY0GWjA3tDyR3VmnLDyaPi1kbP08t2Oul28zaQYZ
- mRqw==
-X-Gm-Message-State: AOJu0YxxMSQdoGabxC7CAZQkPxbwRzRDnJmrSaeLQG0t9HG3X9qm5CoS
- P1cRYF9b0cvYDqp4BOw1aMZk0pXMu1AbD/WyP8/wcpdRvRy9KMKZneZd7PSeXYubmW+9GydO49E
- =
-X-Google-Smtp-Source: AGHT+IHEYnGs5OPeVS834Q8I2GwTohFzAPWOSRlURLGzmoAeaTTA+skhutAnT6H6Dxmz+2x9yfTnsQ==
-X-Received: by 2002:a17:902:b706:b0:1dd:df8c:4334 with SMTP id
- d6-20020a170902b70600b001dddf8c4334mr12285206pls.62.1710866023052; 
- Tue, 19 Mar 2024 09:33:43 -0700 (PDT)
-Received: from navaremanasi.c.googlers.com.com
- (219.29.83.34.bc.googleusercontent.com. [34.83.29.219])
- by smtp.gmail.com with ESMTPSA id
- p20-20020a170902ead400b001db9cb62f7bsm11597943pld.153.2024.03.19.09.33.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Mar 2024 09:33:42 -0700 (PDT)
-From: Manasi Navare <navaremanasi@chromium.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6582210EA0D
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Mar 2024 17:03:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1710867788; x=1742403788;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=LeH28snlj8CJs5apSU3nSAjw1GhbrX2xy/vv6ACZ5bY=;
+ b=k+kObJ/S3UE9HujMXxOX0af+nRX0IrxxJUgaoE6NovMTHwfbKwQK6oBD
+ zg85Jva1XjsfEVAqbfZG9beuvPIcqR4/57x1n/boq4EdAe7f0vcJc6/i/
+ qvpUldlZkNbqMkqRxZ1bpBvghdt2Wl85qcECRgmVbDKzpjajz05jDQwDI
+ o+zf0b3opKZfher/TzqCMQHNtR1QL3OsYefwOIGd1ebxHlWtdteHRwqzt
+ p8W7CgNP+BV6UHUyW1Cz1SiMgBH1J2mLU1Cj63w6NrYXOuQmpcYMeVTOS
+ r8IChJa3y6s2aZXT6Y/+9VW/Os/6Q5pqmqBXX936yNl24+PcF9lygA658 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="6359191"
+X-IronPort-AV: E=Sophos;i="6.07,137,1708416000"; 
+   d="scan'208";a="6359191"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Mar 2024 10:03:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,137,1708416000"; d="scan'208";a="14529950"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 10:02:50 -0700
+Date: Tue, 19 Mar 2024 18:02:13 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Manasi Navare <navaremanasi@chromium.org>,
- Drew Davenport <ddavenport@chromium.org>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
- Sean Paul <seanpaul@chromium.org>
-Subject: [PATCH v3] tests/kms_vrr: Add a subtest for seamless modeset to a
- virtual LRR mode
-Date: Tue, 19 Mar 2024 16:33:38 +0000
-Message-ID: <20240319163338.3993235-1-navaremanasi@chromium.org>
-X-Mailer: git-send-email 2.44.0.291.gc1ea87d7ee-goog
+Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Subject: Re: [PATCH i-g-t v4 01/25] tests: Introduce uapi subcategory
+Message-ID: <20240319170213.kjeovrx5km5jhlkz@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+References: <20240314143455.1436688-1-katarzyna.piecielska@intel.com>
+ <20240314143455.1436688-2-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240314143455.1436688-2-katarzyna.piecielska@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,144 +70,329 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This subtest validates LRR fastset functionality by testing seamless switching
-without full modeset to any of the virtual LRR mode within VRR range.
-Here we start from highest refresh rate mode and then switch to virtual LRR
-modes in the steps of 10Hz within the VRR range.
+Hi Katarzyna,
+On 2024-03-14 at 14:34:31 +0000, Katarzyna Piecielska wrote:
+> Let's introduce uapi subcategory to explicitly show where we are testing
+> the basics.
+> Also fix already set values:
+> - fix subcategory for create-ext-set-pat subtest
+> - fix functionality for gem_ctx_sseu: s/Sub-slice programming/sseu
+> 
+> v2: Add more tests to uapi from synchronization/semephore features. Make
+> Sub-category/Functionality/Feature unique. (Kamil)
+> 
+> Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-This is used to test the LRR fastset functionality of the driver.
+See one concern below, it is not blocking so
 
-v3:
-- Fix build error due to rebase (Manasi)
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Cc: Drew Davenport <ddavenport@chromium.org>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Sean Paul <seanpaul@chromium.org>
-Signed-off-by: Manasi Navare <navaremanasi@chromium.org>
----
- tests/kms_vrr.c | 68 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 67 insertions(+), 1 deletion(-)
+> ---
+>  tests/core_getstats.c              |  4 ++--
+>  tests/drm_read.c                   | 17 +++++++++++++++++
+>  tests/dumb_buffer.c                |  6 +++---
+>  tests/intel/gem_create.c           | 15 +++------------
+>  tests/intel/gem_ctx_param.c        |  2 +-
+>  tests/intel/gem_ctx_sseu.c         |  3 +++
+>  tests/intel/gem_eio.c              |  2 +-
+>  tests/intel/gem_reg_read.c         |  3 +++
+>  tests/intel/gem_reset_stats.c      |  3 +++
+>  tests/intel/gem_wait.c             |  6 +++---
+>  tests/intel/i915_getparams_basic.c |  2 +-
+>  tests/intel/i915_pm_freq_api.c     |  3 +++
+>  tests/intel/sysfs_defaults.c       |  6 +++---
+>  tests/sw_sync.c                    |  7 +++----
+>  tests/syncobj_timeline.c           |  6 +++---
+>  tests/syncobj_wait.c               |  6 +++---
+>  16 files changed, 55 insertions(+), 36 deletions(-)
+> 
+> diff --git a/tests/core_getstats.c b/tests/core_getstats.c
+> index 8b5655053..1a8ad22c7 100644
+> --- a/tests/core_getstats.c
+> +++ b/tests/core_getstats.c
+> @@ -37,9 +37,9 @@
+>   * Category: Desktop client
+>   * Description: Tests the DRM_IOCTL_GET_STATS ioctl.
+>   * Feature: core
+> - * Functionality: permission management for clients
+> + * Functionality: DRM memory management
+>   * Run type: FULL
+> - * Sub-category: DRM
+> + * Sub-category: uapi
+>   * Test category: GEM_Legacy
+>   *
+>   * SUBTEST:
+> diff --git a/tests/drm_read.c b/tests/drm_read.c
+> index 36dc623ed..f8ef324fa 100644
+> --- a/tests/drm_read.c
+> +++ b/tests/drm_read.c
+> @@ -50,6 +50,23 @@
+>  
+>  IGT_TEST_DESCRIPTION("Call read(drm) and see if it behaves.");
+>  
+> +/**
+> + * TEST: drm read
+> + * Description: boundary testing of read(drm_fd)
+> + * Category: Infrastructure
+> + * Functionality: DRM memory managemnt
+> + * Sub-category: uapi
+> + * Run type: FULL
+> + *
+> + * SUBTEST: invalid-buffer
+> + * SUBTEST: fault-buffer
+> + * SUBTEST: empty-block
+> + * SUBTEST: empty-nonblock
+> + * SUBTEST: short-buffer-block
+> + * SUBTEST: short-buffer-nonblock
+> + * SUBTEST: short-buffer-wakeup
+> + */
+> +
+>  static void sighandler(int sig, siginfo_t * info, void *context)
+>  {
+>  }
+> diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
+> index 9db857f9f..d76f0c70f 100644
+> --- a/tests/dumb_buffer.c
+> +++ b/tests/dumb_buffer.c
+> @@ -54,10 +54,10 @@
+>   * Category: Desktop client
+>   * Description: This is a test for the generic dumb buffer interface.
+>   * Feature: prime
+> - * Functionality: IOCTL check for buffer management
+> + * Functionality: ioctl
+>   * Run type: FULL
+> - * Sub-category: Compositor
+> - * Test category: GEM_Legacy
+> + * Sub-category: uapi
+> + * Test category: Compositor
+>   *
+>   * SUBTEST: create-clear
+>   *
+> diff --git a/tests/intel/gem_create.c b/tests/intel/gem_create.c
+> index 77ffceda4..ae9575089 100644
+> --- a/tests/intel/gem_create.c
+> +++ b/tests/intel/gem_create.c
+> @@ -98,6 +98,9 @@
+>   * SUBTEST: create-ext-placement-sanity-check
+>   * Description: Exercise create_ext placements extension.
+>   *
+> + * SUBTEST: create-ext-set-pat
+> + * Description:  Create GEM object with specific PAT index
+> + *
+>   * SUBTEST: create-invalid-size
+>   * Description: Try to create a gem object of invalid size 0 and check if
+>   *		ioctl returns error.
+> @@ -594,18 +597,6 @@ static void create_ext_placement_each(int fd)
+>  	free(regions);
+>  }
+>  
+> -/**
+> -  * TEST: GEM create uAPI
+> -  * Category: Infrastructure
+> -  * Description: Tests the DRM_IOCTL_I915_GEM_CREATE_EXT ioctl.
+> -  * Feature: core
+> -  * Functionality: Create GEM object with specific PAT index
+> -  * Run type: BAT
+> -  * Sub-category: i915
+> -  * Test category: GEM_Legacy
+> -  *
+> -  * SUBTEST: create-ext-set-pat
+> -  */
+>  static void create_ext_set_pat(int fd)
+>  {
+>  	struct drm_i915_gem_create_ext_set_pat setparam_pat = {
+> diff --git a/tests/intel/gem_ctx_param.c b/tests/intel/gem_ctx_param.c
+> index c6fa31875..26f2a28f0 100644
+> --- a/tests/intel/gem_ctx_param.c
+> +++ b/tests/intel/gem_ctx_param.c
+> @@ -34,7 +34,7 @@
+>   * TEST: gem ctx param
+>   * Description: Basic test for context set/get param input validation.
+>   * Category: Infrastructure
+> - * Feature: context
+> + * Feature: contexts
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 15c62b34b..316b626c3 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -70,6 +70,11 @@
-  * Description: Oscillates between highest and lowest refresh each frame for
-  *              manual flicker profiling
-  *
-+ * SUBTEST: seamless-virtual-rr-switch
-+ * Description: Test to create a Virtual Mode in VRR range and switch to it
-+ * 		without a full modeset.
-+ * Functionality: LRR
-+ *
-  * SUBTEST: negative-basic
-  * Description: Make sure that VRR should not be enabled on the Non-VRR panel.
-  */
-@@ -92,11 +97,13 @@ enum {
- 	TEST_FASTSET = 1 << 6,
- 	TEST_MAXMIN = 1 << 7,
- 	TEST_NEGATIVE = 1 << 8,
-+	TEST_SEAMLESS_VIRTUAL_RR = 1 << 9,
- };
- 
- enum {
- 	HIGH_RR_MODE,
- 	LOW_RR_MODE,
-+	VIRTUAL_RR_MODE,
- 	RR_MODES_COUNT,
- };
- 
-@@ -214,6 +221,19 @@ low_rr_mode_with_same_res(igt_output_t *output, unsigned int vrr_min)
- 	return mode;
- }
- 
-+static drmModeModeInfo
-+virtual_rr_vrr_range_mode(igt_output_t *output, unsigned int virtual_refresh_rate)
-+{
-+	int i;
-+	drmModeConnectorPtr connector = output->config.connector;
-+	drmModeModeInfo mode = *igt_output_get_mode(output);
-+	uint64_t clock_hz = mode.clock * 1000;
-+
-+	mode.vtotal = clock_hz / (mode.htotal * virtual_refresh_rate);
-+	mode.vrefresh = virtual_refresh_rate;
-+	return mode;
-+}
-+
- /* Read min and max vrr range from the connector debugfs. */
- static range_t
- get_vrr_range(data_t *data, igt_output_t *output)
-@@ -641,6 +661,48 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint3
- 		     vrr ? "on" : "off", vrr ? "not reached" : "exceeded", result);
- }
- 
-+static void
-+test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
-+{
-+	uint32_t result;
-+	uint64_t rate;
-+	unsigned int vrefresh;
-+
-+	igt_info("Use HIGH_RR Mode as default\n");
-+	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
-+
-+	prepare_test(data, output, pipe);
-+	rate = rate_from_refresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
-+
-+	/*
-+	 * Sink with DRR and VRR can be in downclock mode so
-+	 * switch to highest refresh rate mode.
-+	 */
-+	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
-+	igt_assert(igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_EVENT, NULL) == 0);
-+
-+	result = flip_and_measure(data, output, pipe, rate, 1, TEST_DURATION_NS);
-+	igt_assert_f(result > 75,
-+		     "Refresh rate (%u Hz) %"PRIu64"ns: Target threshold not reached, result was %u%%\n",
-+		     data->switch_modes[HIGH_RR_MODE].vrefresh, rate, result);
-+
-+	/* Switch to Virtual RR */
-+	for (vrefresh = data->range.min + 10; vrefresh < data->range.max; vrefresh += 10) {
-+
-+		data->switch_modes[VIRTUAL_RR_MODE] = virtual_rr_vrr_range_mode(output, vrefresh);
-+		igt_info("Requesting Virtual Mode with Refresh Rate (%u Hz): \n", vrefresh);
-+		kmstest_dump_mode(&data->switch_modes[VIRTUAL_RR_MODE]);
-+		igt_output_override_mode(output, &data->switch_modes[VIRTUAL_RR_MODE]);
-+		igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
-+
-+		rate = rate_from_refresh(vrefresh);
-+		result = flip_and_measure(data, output, pipe, rate, 1, TEST_DURATION_NS);
-+		igt_assert_f(result > 75,
-+			     "Refresh rate (%u Hz) %"PRIu64"ns: Target threshold not reached, result was %u%%\n",
-+			     vrefresh, rate, result);
-+	}
-+}
-+
- static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
- {
- 	if (vrr_capable(output))
-@@ -686,7 +748,7 @@ static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags
- 	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
- 
- 	/* Search for a low refresh rate mode. */
--	if (!(flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS)))
-+	if (!(flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS | TEST_SEAMLESS_VIRTUAL_RR)))
- 		return true;
- 
- 	data->switch_modes[LOW_RR_MODE] = low_rr_mode_with_same_res(output, data->range.min);
-@@ -841,6 +903,10 @@ igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
- 			     "between flip timestamps converges to the requested rate");
- 		igt_subtest_with_dynamic("flip-basic-fastset")
- 			run_vrr_test(&data, test_basic, TEST_FASTSET);
-+
-+		igt_describe("Test to switch to any custom virtual mode in VRR range without modeset.");
-+		igt_subtest_with_dynamic("seamless-virtual-rr-switch")
-+			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR);
- 	}
- 
- 	igt_fixture {
--- 
-2.44.0.291.gc1ea87d7ee-goog
+contexts is very similar to context, what about gpu_contexts?
 
+Regards,
+Kamil
+
+>   * Functionality: context
+>   * Sub-category: uapi
+>   * Test category: GEM_Legacy
+> diff --git a/tests/intel/gem_ctx_sseu.c b/tests/intel/gem_ctx_sseu.c
+> index 3a01944e4..a9d400c2d 100644
+> --- a/tests/intel/gem_ctx_sseu.c
+> +++ b/tests/intel/gem_ctx_sseu.c
+> @@ -48,6 +48,9 @@
+>   * TEST: gem ctx sseu
+>   * Description: Test context render powergating programming.
+>   * Feature: pm_sseu
+> + * Sub-category: uapi
+> + * Category: Desktop client
+> + * Functionality: sseu
+>   * Run type: FULL
+>   *
+>   * SUBTEST: engines
+> diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
+> index d6d12bd08..6fa68441f 100644
+> --- a/tests/intel/gem_eio.c
+> +++ b/tests/intel/gem_eio.c
+> @@ -57,7 +57,7 @@
+>   * TEST: gem eio
+>   * Description: Test that specific ioctls report a wedged GPU (EIO).
+>   * Category: Infrastructure
+> - * Feature: reset
+> + * Feature: reset uapi
+>   * Functionality: reset
+>   * Sub-category: uapi
+>   * Test category: GEM_Legacy
+> diff --git a/tests/intel/gem_reg_read.c b/tests/intel/gem_reg_read.c
+> index de6788abe..03b12551d 100644
+> --- a/tests/intel/gem_reg_read.c
+> +++ b/tests/intel/gem_reg_read.c
+> @@ -35,6 +35,9 @@
+>  /**
+>   * TEST: gem reg read
+>   * Feature: gem_core
+> + * Sub-category: uapi
+> + * Category: Desktop client
+> + * Functionality: ioctl
+>   * Run type: FULL
+>   *
+>   * SUBTEST: bad-register
+> diff --git a/tests/intel/gem_reset_stats.c b/tests/intel/gem_reset_stats.c
+> index 5dfc1fc67..a62c4061a 100644
+> --- a/tests/intel/gem_reset_stats.c
+> +++ b/tests/intel/gem_reset_stats.c
+> @@ -49,6 +49,9 @@
+>  #include "sw_sync.h"
+>  /**
+>   * TEST: gem reset stats
+> + * Sub-category: uapi
+> + * Category: Desktop client
+> + * Functionality: reset
+>   * Run type: FULL
+>   *
+>   * SUBTEST: ban-blt
+> diff --git a/tests/intel/gem_wait.c b/tests/intel/gem_wait.c
+> index e2a598c64..abd936cf1 100644
+> --- a/tests/intel/gem_wait.c
+> +++ b/tests/intel/gem_wait.c
+> @@ -35,9 +35,9 @@
+>   * TEST: gem wait
+>   * Category: Infrastructure
+>   * Description: Tests the GEM_WAIT ioctl
+> - * Feature: synchronization
+> - * Functionality: semaphore
+> - * Sub-category: i915
+> + * Feature: synchronization uapi
+> + * Functionality: GEM_WAIT ioctl
+> + * Sub-category: uapi
+>   * Test category: GEM_Legacy
+>   * Run type: FULL
+>   *
+> diff --git a/tests/intel/i915_getparams_basic.c b/tests/intel/i915_getparams_basic.c
+> index b22ab5d93..971c35e55 100644
+> --- a/tests/intel/i915_getparams_basic.c
+> +++ b/tests/intel/i915_getparams_basic.c
+> @@ -37,7 +37,7 @@
+>   * Feature: gem_core
+>   * Functionality: device topology
+>   * Run type: BAT
+> - * Sub-category: i915
+> + * Sub-category: uapi
+>   * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: basic-eu-total
+> diff --git a/tests/intel/i915_pm_freq_api.c b/tests/intel/i915_pm_freq_api.c
+> index 6018692a2..aa2de74c9 100644
+> --- a/tests/intel/i915_pm_freq_api.c
+> +++ b/tests/intel/i915_pm_freq_api.c
+> @@ -11,6 +11,9 @@
+>  /**
+>   * TEST: i915 pm freq api
+>   * Description: Test SLPC freq API
+> + * Category: Infrastructure
+> + * Sub-category: uapi
+> + * Functionality: slpc
+>   * Run type: FULL
+>   *
+>   * SUBTEST: freq-basic-api
+> diff --git a/tests/intel/sysfs_defaults.c b/tests/intel/sysfs_defaults.c
+> index b686c19fc..a80f7126c 100644
+> --- a/tests/intel/sysfs_defaults.c
+> +++ b/tests/intel/sysfs_defaults.c
+> @@ -37,10 +37,10 @@
+>   * TEST: sysfs defaults
+>   * Category: Infrastructure
+>   * Feature: gem_core
+> - * Functionality: driver handler
+> - * Run type: FULL
+> - * Sub-category: i915
+> + * Functionality: sysfs
+> + * Sub-category: uapi
+>   * Test category: GEM_Legacy
+> + * Run type: FULL
+>   *
+>   * SUBTEST: readonly
+>   */
+> diff --git a/tests/sw_sync.c b/tests/sw_sync.c
+> index 6c476ff46..a276c4a22 100644
+> --- a/tests/sw_sync.c
+> +++ b/tests/sw_sync.c
+> @@ -42,10 +42,9 @@
+>   * TEST: sw sync
+>   * Category: Infrastructure
+>   * Description: Test SW Sync Framework
+> - * Feature: synchronization
+> - * Functionality: semaphore
+> - * Run type: FULL
+> - * Sub-category: DRM
+> + * Feature: semaphore
+> + * Functionality: sw sync framework
+> + * Sub-category: uapi
+>   * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: alloc_fence
+> diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
+> index ea8341a30..465761d6d 100644
+> --- a/tests/syncobj_timeline.c
+> +++ b/tests/syncobj_timeline.c
+> @@ -34,10 +34,10 @@
+>   * TEST: syncobj timeline
+>   * Category: Infrastructure
+>   * Description: Tests for the drm timeline sync object API
+> - * Feature: synchronization
+> - * Functionality: semaphore
+>   * Run type: FULL
+> - * Sub-category: DRM
+> + * Feature: synchronization uapi
+> + * Functionality: sync_object
+> + * Sub-category: uapi
+>   * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: 32bits-limit
+> diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
+> index e0ff69b79..c8cf4014d 100644
+> --- a/tests/syncobj_wait.c
+> +++ b/tests/syncobj_wait.c
+> @@ -34,10 +34,10 @@
+>   * TEST: syncobj wait
+>   * Category: Infrastructure
+>   * Description: Tests for the drm sync object wait API
+> - * Feature: synchronization
+> - * Functionality: semaphore
+> + * Feature: synchronization uapi
+> + * Functionality: object wait
+>   * Run type: FULL
+> - * Sub-category: DRM
+> + * Sub-category: uapi
+>   * Test category: GEM_Legacy
+>   *
+>   * SUBTEST: invalid-multi-wait-all-unsubmitted
+> -- 
+> 2.34.1
+> 
