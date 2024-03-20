@@ -4,154 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D86AAC54E58
-	for <igt-dev@archiver.kernel.org>; Wed, 20 Mar 2024 12:53:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1973CC54E67
+	for <igt-dev@archiver.kernel.org>; Wed, 20 Mar 2024 13:13:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7BD6E10E46F;
-	Wed, 20 Mar 2024 12:53:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B4C4C10E42F;
+	Wed, 20 Mar 2024 13:13:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UbaJGxBB";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="Tb1l+7wV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDDF810E46F
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2024 12:53:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710939229; x=1742475229;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=Ql4PQ4xtTpD6qbg4XrqUQQiSGqiqn791ALuo/shH3ug=;
- b=UbaJGxBBh7oFc846RSHRl31MJIFA0jvI+EKrPgJxQtsRmq1Ol5t4TcbY
- /AOUNeLMF0DPhQHKK5yj01+RK93J9BU789M/Hie7W+k6b+U+pf93QjCKF
- BlXwPQ3G7NkKa1r4Cyf4WA5oMPE0lalQBCcS0z8SZNW1EPyeP+O6XlJxW
- JrM0Y2qcn8q2MyQ7GumppPsbxsFMGdYpZj9JY2MUhDCBMCBvZ32WDyAll
- ZIEdA8wfepoGXkeSt8EKSiUR9jowrqB0A5CQfglPBZ2qRo7dEUGTBWlnt
- kkOH4KWLLiKAJm3Y3mbLijkVo7pJDQkf2cctpl5+Yfn66b1ZyZ5Hnlp+/ Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="5984192"
-X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; 
-   d="scan'208";a="5984192"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2024 05:53:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; d="scan'208";a="18728032"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 20 Mar 2024 05:53:43 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 20 Mar 2024 05:53:42 -0700
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 20 Mar 2024 05:53:42 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Wed, 20 Mar 2024 05:53:42 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.100)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 20 Mar 2024 05:53:42 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Oz8971LG6rCJyiweWSWmuZLv2wVNSoYqMXlLK6NLMDzM8FmMd89Da1LkYkXpjnDUSCKjd3eVrCKVlkiwVEPb+lOI7p2byXtfrXXQH/Qj8OEkRzLVCOnbEDRnDMcTv8KR+2g3xTLUHcaPTYeov4wvgf0RbnPXhINhO+WDaOVbctLOQH2fEeGkVHP0ie2CYE8ZAze8R6FDm/qiQWnmM7AuYxg66vhfPGer8YaxnrLiC81yuMlFi22GObz1KZqYecPKwAtHkucycFfSEvUx0+XmF6KPhbKdmWbss4fHGetNBLuC/c1XffJS2LrEkrGuQ8aA4IhyNamlSi4pLupc/1QM+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vX7JzdgQ2fT8IWhQnicBNTz6c4EUNHuhrRa90n9K9mg=;
- b=MJSo5Q7j9pGvxRyYE0zbxNihFHVyJ1glxzS/73ZeQsvkTpB+OnNEbaBtSw6QVdqiw1nlSDHG0w/iCiGzBWwEoXZeln3IIYeRR74Cte8W67GoPVuPDePkgi1E5gYDtFUj4hFa3Cp0EBpV5wrkimSOT/WDu5Rmr2QfhGgWkfQELdT7y1AEMH+onBdpmvoFAsvsWp686Jb5xmgbYfnz55aL0JVpJ3nmRJAAO62As3IBB2iYEk2H4d69BYlHT7UheeuKBSB9+d0FUDd7f9BSRbHOxZ9+Sodeu7OZYXwWLQXcIcRV1K4kU0IHsT/LDCOaTV0DeuFFcvUB/tPVPklEPzdpOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
- by SA1PR11MB5924.namprd11.prod.outlook.com (2603:10b6:806:23b::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.20; Wed, 20 Mar
- 2024 12:53:40 +0000
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::31a1:93ed:8501:f2c9]) by DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::31a1:93ed:8501:f2c9%3]) with mapi id 15.20.7409.010; Wed, 20 Mar 2024
- 12:53:40 +0000
-Message-ID: <55d5762f-7ca5-453a-8d08-a34e89ad6350@intel.com>
-Date: Wed, 20 Mar 2024 18:23:33 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 3/4] lib/igt_kms: add helper to enable/disable force
- joiner
-Content-Language: en-US
-To: Kunal Joshi <kunal1.joshi@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>, Karthik B S
- <karthik.b.s@intel.com>, Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-References: <20240310142721.874315-1-kunal1.joshi@intel.com>
- <20240310142721.874315-4-kunal1.joshi@intel.com>
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20240310142721.874315-4-kunal1.joshi@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN2PR01CA0159.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:26::14) To DM4PR11MB5341.namprd11.prod.outlook.com
- (2603:10b6:5:390::22)
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com
+ [209.85.128.54])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9D0A10E42F
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2024 13:13:05 +0000 (UTC)
+Received: by mail-wm1-f54.google.com with SMTP id
+ 5b1f17b1804b1-4146f2bf8ecso1081035e9.3
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2024 06:13:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1710940384; x=1711545184; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=xXNrSp9twj2awuh81KaWwXsn2iAztPvZiPXI039xi6Q=;
+ b=Tb1l+7wVMXEjn3EcmKwm9Q1dQUuWbrk2Vzb55NHV9lVJd4uOBr1lNxWTntvh8tMglT
+ cxlovIMeJRvZd0AwGIllaOhCnOkT0TI/iMsD6UnOkP040DETlrHO1x/LKO02Zo0Cr4JO
+ FGkLlBju0Bw+N5j9AjBsS/rzkx28nM6gBAQUvu68zrt3TL7k+Ivmr/cP0Ft50C18GdsB
+ AKzGErN2hVH827hrvCiF2PIioqn2Gf2QZIlxHYPZ8ntX8T2giKi1MgGfRmhxLEA/J0Rk
+ h0axBbbQiPBcCc519VAkmS7V4GdNLmET4AtYvTR/zmQqXy9JRtXoXBa2zMPiQpAUzJ86
+ 19sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710940384; x=1711545184;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xXNrSp9twj2awuh81KaWwXsn2iAztPvZiPXI039xi6Q=;
+ b=kFT/anNjEYMrQV4hu+dwtw0NKHkfV6yOIUTv4Z06Hvase9ppyRJLRXi9yTNFl//kja
+ 9f1ul+kD/CQvb6fJmZYytyZ/Dq+0IPpI01VFAYvHq0TVIGS4YdBD+g3anhrNUZLhLI28
+ Fgz3z4yYiox/fiQ9ef+tYJM0Q3UuKW60xttjtjfJ3c3RFzn9c981/4CLkHbiC7erDObP
+ pr4dl4r/WrqhHqae84T+1gIH1o0wVoPOhgUFwI2gQbMmPzU3iSO2n2wD32UtiofjUjoj
+ x5B9Ii2+1kijiNUbSMgIWPpdy8lum4z9sJMgEkx1rwf0rBooiyOkHCv3gkm2gLzbSYag
+ GRrw==
+X-Gm-Message-State: AOJu0Yyi7LnXneoPkwjYq90vCgq5rzi/IEnA8U4Z8Z/9Kx+9dxAn7CG2
+ ehdsLrANNcaDHpv8AamRJSpmyL0hqJN6dO5Z0RWZwn41uptzn3T7AHbXZWMyWFriWg==
+X-Google-Smtp-Source: AGHT+IELeS4/puIFgWbQq8DfHhbg9+cV/IRWrjtY1DJi30fPnDFBudguzLnqiVTr76kGnBTV93l+9Q==
+X-Received: by 2002:a05:600c:1d09:b0:414:48f:a7ab with SMTP id
+ l9-20020a05600c1d0900b00414048fa7abmr10240462wms.30.1710940383657; 
+ Wed, 20 Mar 2024 06:13:03 -0700 (PDT)
+Received: from [0.0.0.0] ([134.134.137.85])
+ by smtp.googlemail.com with ESMTPSA id
+ e13-20020a05600c218d00b00412cfdc41f7sm1255113wme.0.2024.03.20.06.13.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 20 Mar 2024 06:13:03 -0700 (PDT)
+Message-ID: <e2e3c8a4-3b1b-4ead-8764-14c47f7545d6@gmail.com>
+Date: Wed, 20 Mar 2024 15:12:53 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|SA1PR11MB5924:EE_
-X-MS-Office365-Filtering-Correlation-Id: d5c93ad7-b66d-4fbd-ea30-08dc48dcc41b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: F2xOEOu2IPbXYnONm1IkcxjFUHx3lgNYUdyKQN64JVFqin15fGrFsSdAY2teyOoLIDmUbmDpguDoJmrNCKU5e3lHlAk3Sc+Q9jJ0FcUPtYAgZniirb5/h336EE/rET7J2P8swVqONsFEZu5FDo2Z+868xhdKQTYX0Z1a9dBFYHpGw0lUa7M2V7Xlc4WufpLVuz+cjtC7KppBJ8qqW9e3hB60MrwIqAxEx1m6Y1VT5JCxCOOs4irJBLOEqqcZcsycI/DHQRMHFKxwC7sq1TRUrdxavsuZ8buEoOvYTd3pNTzxCtZzOWwUFMTuuPRapIXSodBNJmOnbsdAkuEczEIAXZIRtMQb2kc8L/VLtyKkDdT38xoSgnhNfETYoCRCsqu5lzcn1pPs5TblE5gj55gkI8tZLm1XLv1601STnNXGHnhMOf6gNx7soSJboXpwtk9IT/nY5RhdkZS3jhcegTICJ5JxLNXY2dIexw8s/m66WioCUzfu7aMnPzAVYh8nRemAMm69wm20LDmjQXulpgAZRI+wH08DDYOFi0e5PTfjCYCAbiuFyUQuUouS/88BXPvL3rexovBJsszvDU/G6ont9+Pr5AVu1vdr20DNqKigd+lbSiSMYDMY3jEKaV6/huQrJ7fd4o7ru4+nxfGJ8MAdfl1D06rX5kiCec70vspemg4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB5341.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366007)(1800799015)(376005); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TUk0VW1PaVpreU1zLzI2eWxjelhtcFlZRDFGK2p4MEFUQmFMRUpxWkIxLzha?=
- =?utf-8?B?RzRhQ2w5b3RUeTVZU21yWHg3cWVob3I0cTBZdmYvMVM0UmZIN2ZIbWlucHFL?=
- =?utf-8?B?L2wxS1oxVkU0NEVqb1RxYkFqUFU2S2ZzMUNVY2RXT3lmMmpDem5SLzR1WVFr?=
- =?utf-8?B?K1d6Q2dzakNrS3dpTFFMSVRiUkl4a0VJYUNwSjIwVzB2V1JWdkJIclcyWWJE?=
- =?utf-8?B?Qml2MFlSTng0KytCUGtxUm9MQmlRVXZwUzhXOHF5V1gxL1RMUHlnOXBOak9v?=
- =?utf-8?B?SHdQRFl0c1QyWmpFa0ZLMUc5cUtiR0w3ZUpIc2lIVWxvV1p4T1dmUk4rYjhY?=
- =?utf-8?B?NHlKQzc1M1lHQ1F1dUZ2Y3dvWnJTYTExZzV2R1RUd1ZNdDJCeTBOc051RW1X?=
- =?utf-8?B?clVIbDdLdlJNbkx2OWRVNjlIdFhHRzRtdmJ1RzdIdTdFZ2dHRjlURHBHME5G?=
- =?utf-8?B?N2pmbVNpWnRJaXc3Y1dkWVRlL2JHYThMdkJScncyNlV2WCtSS3M0Q0QzeGo2?=
- =?utf-8?B?RldYL0pKSzlUTmxYTU00OTBTMDdzbW9za01VVWRrTW5yaG5XdjBjTHo3ZkFV?=
- =?utf-8?B?UkYrVUdTZjcwVXUvR3FkbERQSVg1ODEzR3hZdTN5VGNVVlpRa2xEK1c0Tita?=
- =?utf-8?B?MXhQODkyMUJraFhoQ3c3cmVuT0NKUTljNHZnVTBvWCt0UU16UzVXczRlUkVR?=
- =?utf-8?B?RTEyeHEvandkdUYrUnEvWExndGxiL0dMWit1TFJPaHY3ZFllVEhhaXZYanFF?=
- =?utf-8?B?NDE2dzB4U25Bd2ZETHdoK3gyQ2JEbU1INGVwczZWZHFpYTNWa0RoQXI4TEcy?=
- =?utf-8?B?WnBXUGNNMVVkRnZnZ283empRdVpTOElaUHhPSG13Sm5JRW5kRGpNUlV1d2ln?=
- =?utf-8?B?TzVnU24zWTFXbC91SngrMUZnWGNKYnFyTDIxR041V0RsSHlYcnhwQjhKNVZH?=
- =?utf-8?B?TzFWU2hsMTdqOUtucnVtMnhCMVlXRTJXQnBwT1ppQ3pNUnc5OVY4aXQzQkIz?=
- =?utf-8?B?dUtNYWxXZ1N5SmJTczRwWnRBbWdFclQ0dlJUa1UvSVEwekJwMjJyVG50dEZo?=
- =?utf-8?B?OWd4azduM1RGd2VUb1pOTXN6dm5sQlM5K3ZwNkFlWlYxUUhMQ09mRy9FN2N0?=
- =?utf-8?B?NFdtVGVEYVh5U2xrWDIzMHQ5UnJxeE5WQWEwQm1EeGcyVHBQbEVLUFI0TkJo?=
- =?utf-8?B?TDlnalBnWlYybTZjc292ZEgzbjBNVFlYcUwzd2RqbHZxM09HL1Q2WXh2WHp4?=
- =?utf-8?B?VUVxUks5L1QyYUlreWxld1RVWUxaUzZZVnAvUlRzRjNFeG5GU1JzZFRBaWw3?=
- =?utf-8?B?TXJsNTZwV1drWWVEbW92UnVTREFHcmlDVlZucXBCekNmYlIyZDkrUlVMS2U4?=
- =?utf-8?B?U3Q0MThkYkZ2L2x5MzRYVzloc241Y0tFVHlLTm5rMzJ2dU5kc0l6a25QcWk4?=
- =?utf-8?B?a3F1aUh0Q3loQXNkR0tnNlNjWm9TNGNVOWdJZlpwWWNVR0pEYXMxSk9GcER4?=
- =?utf-8?B?eUc3Tlg5d0MrenlXaWVKaGYwU09PRkdudGpCM1h1V08waFBUOEFoalcrYlY3?=
- =?utf-8?B?cUdCM2lQOVg5d005R0dyUHd4U1Y2UUV0UTRNQVFkYVFvbUpCQitBZUNsNmg4?=
- =?utf-8?B?N1lXKytveGE5VWt1UVU1cXl4eXdhczkrMzd2Mkg5dDdDSWZGRHkwaFk0RlU2?=
- =?utf-8?B?OUovS0pjbE9mbWY1WTZ3cE1uZE5HSnRZRDRuMWdLU0pXNVZhY2NWczEyN1M1?=
- =?utf-8?B?ZDZONU9aWDRYZllJUzl0MVE0aDlRaXhkd3NjNmFON2lHWjBrZUk3cUNOc1FV?=
- =?utf-8?B?NmtZYVFBTVhRanV5TngzdXIzNHhBbTVkd2d5NXlrRitPUk93aEFNYlBLa0VC?=
- =?utf-8?B?eUhHZGkxeDlCdVUrMkRFM0lGaHBTR0wvdjczcE9JbUtPWjI3c0RTNjBCc3k1?=
- =?utf-8?B?SDVsTlBWcWcrQlZSUjRSTUdzKzE1dkxxSXVPZ0NkRWN1TjFuVjdBOTBaM20v?=
- =?utf-8?B?VC9Ldi9GRDNkRFk3UGpGSjllSEJPWkNPTGZhemc0eFY2eWFzaTVEdDB1VWFu?=
- =?utf-8?B?b1VETFR6TnRDQ0lUOFNiRHBDVUxXb3I5ZXIzUTk3MjVxRE50TVA2MmFzMzRB?=
- =?utf-8?B?OTBNU0lBZVBITmpuZ1k5RGdpQy9UajIzUXp3amY1T1Z1Smx0bElwZlo0dU9T?=
- =?utf-8?B?YXc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5c93ad7-b66d-4fbd-ea30-08dc48dcc41b
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2024 12:53:40.0926 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3ZHKYB4AiZ7zEf+eZK3h1QE+HZQhrt/kjjHaXEMWvw0yzQznlKXtJ+8/v23W7euRS3lWO/LBx6dTbdwF1nrC51q6yUcyRJyT7Aq8BiVHkKc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB5924
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/intel/kms_ccs: add access to control surface
+ on xe2
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+References: <20240318114758.108006-1-juhapekka.heikkila@gmail.com>
+ <20240320084652.gyd4w5sc6fufqf2u@zkempczy-mobl2>
+ <3bda2e06-b7b9-4e8a-a959-2cf8ed5d0d05@gmail.com>
+ <20240320113457.7zc3jngv2x3faejx@zkempczy-mobl2>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20240320113457.7zc3jngv2x3faejx@zkempczy-mobl2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -164,125 +84,84 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+On 20.3.2024 13.34, Zbigniew Kempczyński wrote:
+> On Wed, Mar 20, 2024 at 12:07:39PM +0200, Juha-Pekka Heikkila wrote:
+> 
+> <cut>
+> 
+>>>> +	bb_size = xe_bb_size(fb->fd, SZ_4K);
+>>>> +	bb1 = xe_bo_create(fb->fd, 0, bb_size, sysmem, 0);
+>>>> +	blt_set_batch(&surf.bb, bb1, bb_size, sysmem);
+>>>> +	blt_ctrl_surf_copy(fb->fd, surf_ctx, NULL, surf_ahnd, &surf);
+>>>> +	intel_ctx_xe_sync(surf_ctx, true);
+>>>> +
+>>>> +	ccsmap = xe_bo_map(fb->fd, ccs, surf.dst.size);
+>>>> +
+>>>> +	if (verify_compression) {
+>>>> +		for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++) {
+>>>> +			if (ccsmap[i] != 0)
+>>>> +				goto ccs_vefiried;
+> 
+> Problem I see for noise data in fb ccsmap[] will contain only zeros
+> so we catch assert below.
+> 
 
-On 3/10/2024 7:57 PM, Kunal Joshi wrote:
-> add helpers to check whether force joiner debugfs exists
-> and to enable/disable force joiner for a specific connector.
->
-> Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> ---
->   lib/igt_kms.c | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++
->   lib/igt_kms.h |  2 ++
->   2 files changed, 61 insertions(+)
->
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 63c8045c7..9d0cbd329 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -6168,6 +6168,65 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
->   	return found;
->   }
->   
-> +/**
-> + * Checks if the force big joiner is enabled for a specific connector.
-> + *
-> + * @drmfd The file descriptor of the DRM device.
-> + * @connector_name The name of the connector.
+but this part is on the other side of if() like this
 
-I think we dont need documentation for this, as this is straight forward 
-and just static function which is called from one place.
++	if (verify_compression) {
++		for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++) {
++			if (ccsmap[i] != 0)
++				goto ccs_vefiried;
++		}
++		igt_assert_f(false, "framebuffer was not compressed!\n");
++	} else {
++		for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
++			ccsmap[i] = rand();
++	}
 
-> + * Returns:
-> + *  true if status equals enable, false otherwise.
-> + */
-> +static bool igt_check_force_bigjoiner_status(int drmfd, char *connector_name, bool enable)
-> +{
-> +	char buf[512];
-> +	int debugfs_fd, ret;
-> +
-> +	igt_assert_f(connector_name, "Connector name cannot be NULL\n");
-> +	debugfs_fd = igt_debugfs_connector_dir(drmfd, connector_name, O_RDONLY);
-> +	igt_assert_f(debugfs_fd >= 0, "Could not open debugfs for connector %s\n", connector_name);
-> +	ret = igt_debugfs_simple_read(debugfs_fd, "i915_bigjoiner_force_enable", buf, sizeof(buf));
-> +	close(debugfs_fd);
-> +	igt_assert_f(ret > 0, "Could not read i915_bigjoiner_force_enable for connector %s\n", connector_name);
-> +	return enable ? strstr(buf, "Bigjoiner enable: 1") :
-> +					strstr(buf, "Bigjoiner enable: 0");
-> +}
-> +
-> +bool has_force_joiner_debugfs(int drmfd, igt_output_t *output)
+that verify_compression flag is set only when coming here from 
+xe2_ccs_blit() where on fb is always supposing to be compressed test 
+image. I made it this way just to avoid duplicating all the above code.
 
-Since this helper is expected to be used in other tests, it would be 
-good to have documentation for this.
+>>>
+>>> That's minor nit, s/vefiried/verified/g.
+>>>
+>>> Second doesn't reside in this code, it is in the test itself:
+>>>
+>>> static void fill_fb_random(int drm_fd, igt_fb_t *fb)
+>>> {
+>>> ...
+>>> 	for (i = 0; i < fb->size; i++)
+>>> 		p[i] = rand();
+>>> ...
+>>>
+>>> Randomized data might lead your surface won't be surprised at all (data
+>>> are noise). I experimented with this some time ago when I played with
+>>> ctrl-surf-copy. Noise wasn't compressible so I think you should less
+>>> random data in case you want to check the ccs data.
+>>
+>> Idea of this test is exatcly as you described above. Throw completely random
+>> data at control surface (same way as is done in aux ccs version of this
+>> test) and see nothing breaks, ie. no hw hangs, no unexpected display
+>> behaviors etc. Plan with this test is not to behave correctly towards hw but
+>> just see hw survived unexpected situation.
+>>
+>> /Juha-Pekka
+>>
+>>>> +		}
+>>>> +		igt_assert_f(false, "framebuffer was not compressed!\n");
+> 
+> I mean this one. So if I'm not wrong on some noise you may be catched
+> on assertion when fb won't be compressed due to data are not
+> compressible. Really assertion is your intention?
 
-Also, imho, it would be better to use igt_* for helpers, though we seem 
-to be not following this strictly.
+When this side of that if() is being run we're coming from 
+xe2_ccs_blit() and on framebuffer is supposing to be compressed test 
+image. If there's no compression information it mean blit didn't 
+compress image hence assert as we have non-compressed test image.
 
-
-> +{
-> +	char buf[512];
-> +	int debugfs_fd, ret;
-> +
-> +	igt_assert_f(output->name, "Connector name cannot be NULL\n");
-> +	debugfs_fd = igt_debugfs_connector_dir(drmfd, output->name, O_RDONLY);
-> +	igt_assert_f(debugfs_fd >= 0, "Could not open debugfs for connector %s\n", output->name);
-
-I think we should not assert here, this will fail for platforms that do 
-not support bigjoiner. Perhaps returning false will be sufficient.
-
-
-Regards,
-
-Ankit
-
-> +	ret = igt_debugfs_simple_read(debugfs_fd, "i915_bigjoiner_force_enable", buf, sizeof(buf));
-> +	close(debugfs_fd);
-> +	return ret >= 0;
-> +}
-> +
-> +/**
-> + * Forces the enable/disable state of big joiner for a specific connector.
-> + *
-> + * @drmfd The file descriptor of the DRM device.
-> + * @connector_name The name of the connector.
-> + * @enable The desired state of big joiner (true for enable, false for disable).
-> + * Returns:
-> + *  true on success, false otherwise.
-> + */
-> +bool igt_force_bigjoiner_enable(int drmfd, char *connector_name, bool enable)
-> +{
-> +	int debugfs_fd, ret;
-> +
-> +	igt_assert_f(connector_name, "Connector name cannot be NULL\n");
-> +	debugfs_fd = igt_debugfs_connector_dir(drmfd, connector_name, O_DIRECTORY);
-> +	igt_assert_f(debugfs_fd >= 0, "Could not open debugfs for connector %s\n", connector_name);
-> +	ret = igt_sysfs_write(debugfs_fd, "i915_bigjoiner_force_enable", enable ? "1" : "0", 1);
-> +	close(debugfs_fd);
-> +	igt_assert_f(ret > 0, "Could not write i915_bigjoiner_force_enable for connector %s\n", connector_name);
-> +
-> +	return igt_check_force_bigjoiner_status(drmfd, connector_name, enable);
-> +}
-> +
->   /**
->    * igt_check_bigjoiner_support:
->    * @display: a pointer to an #igt_display_t structure
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index bab8487d3..f13b7fd53 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1214,6 +1214,8 @@ int igt_get_max_dotclock(int fd);
->   bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
->   bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
->   			  int max_dotclock);
-> +bool has_force_joiner_debugfs(int drmfd, igt_output_t *output);
-> +bool igt_force_bigjoiner_enable(int drmfd, char *connector_name, bool enable);
->   bool igt_check_bigjoiner_support(igt_display_t *display);
->   bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
->   bool intel_pipe_output_combo_valid(igt_display_t *display);
+/Juha-Pekka
