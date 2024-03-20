@@ -4,49 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EDB7C54E58
-	for <igt-dev@archiver.kernel.org>; Wed, 20 Mar 2024 16:41:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF79AC54E58
+	for <igt-dev@archiver.kernel.org>; Wed, 20 Mar 2024 17:20:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 01C6810FE12;
-	Wed, 20 Mar 2024 16:41:12 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="QsukeX3+";
-	dkim-atps=neutral
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
- [217.70.183.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04F2910FE11
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2024 16:41:09 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BFA5040007;
- Wed, 20 Mar 2024 16:41:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1710952866;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vPVDStUEuZqIY/cIlZU5iaD0bAvCTMO5HqimWPrcbFc=;
- b=QsukeX3+XYATv9LtRBWTPFD7UgI0s70XF3c1Rr6F5Lao5JDF8+2tBaFWOtb0ag2eqtsMg6
- RoJO965+fmVJGyXeopJp9xJB9GuSG7XeY7KeITtqlUVSOZj3Od2Ws1adeifcRsHnQv9HDd
- ZGJ5o3whUffyryMQ4RVNeVcezoe5D6DGbx8nZk7vgv7M7RyUUJ+2r4sOs/N1Y8AgJDfqHq
- hws7aReNjQ1GYwzrOL3m0IOHfrLeCPQ8XmlhvvuKnGFWPB9YsJ8ocnXFWHpm9j3xu/8wm8
- K0mlGp82crcGjb1YXVtPA/loVqh6MDckQGz/gUHUh7mw7m2uAdxnhNnKP6srAg==
-Date: Wed, 20 Mar 2024 17:41:04 +0100
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, miquel.raynal@bootlin.com,
- thomas.petazzoni@bootlin.com, jeremie.dautheribes@bootlin.com,
- arthurgrillo@riseup.net, seanpaul@google.com, marcheu@google.com,
- nicolejadeyee@google.com
-Subject: Re: [PATCH i-g-t] CONTRIBUTING: Add coding style guidelines
-Message-ID: <ZfsRoFUsUbRZrfIH@localhost.localdomain>
-References: <20240315-add_coding_style-v1-1-50ad93cfa250@bootlin.com>
- <20240320152233.gydl3lwmexdoto5o@kamilkon-desk.igk.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4E19F10FE79;
+	Wed, 20 Mar 2024 17:20:40 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC56010FE79;
+ Wed, 20 Mar 2024 17:20:38 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6559258275221480063=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240320152233.gydl3lwmexdoto5o@kamilkon-desk.igk.intel.com>
-X-GND-Sasl: louis.chauvet@bootlin.com
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fexec=5Fcomput?=
+ =?utf-8?q?e=5Fmode=3A_Test_to_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: sai.gowtham.ch@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 20 Mar 2024 17:20:38 -0000
+Message-ID: <171095523883.921315.4199797820451645596@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240320155430.11877-1-sai.gowtham.ch@intel.com>
+In-Reply-To: <20240320155430.11877-1-sai.gowtham.ch@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,125 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Le 20/03/24 - 16:22, Kamil Konieczny a écrit :
-> Hi Louis,
-> On 2024-03-15 at 17:08:37 +0100, Louis Chauvet wrote:
-> > As explained in [1], the submitted patches should follow the same style as
-> > the Linux kernel and must be checked against checkpatch.pl, so add this
-> > recommendation in the CONTRIBUTING.md file.
-> > 
-> > [1]: https://lore.kernel.org/all/20240314170643.77vzqqoie2otyu4w@kamilkon-desk.igk.intel.com/
-> > 
-> 
-> There is code style mensioned at line 13, grep -n -A1 kernel CONTRIBUTING.md
-> gives (in second match):
+--===============6559258275221480063==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I missed it, I think it's because I read this section too fast and jumped 
-to "Sending Patches".
- 
-> 13:- The code should follow kernel coding style:
-> 14:  https://www.kernel.org/doc/html/latest/process/coding-style.html
-> 
-> So maybe place it after that line?
+== Series Details ==
 
-Yes, I can move the checkpatch sentence+command here.
+Series: tests/intel/xe_exec_compute_mode: Test to (rev2)
+URL   : https://patchwork.freedesktop.org/series/131163/
+State : success
 
-But as the "The Code" section deals in more detail with the internal 
-workings of the igt, I think it's better to keep something in "Sending 
-Patches", like:
+== Summary ==
 
- - Your patch must adhere the code style defined in "The Code".
+CI Bug Log - changes from XEIGT_7770_BAT -> XEIGTPW_10865_BAT
+====================================================
 
-This way, the section "Sending Patches" can serve as a "checklist" (accept 
-the licence, use igt prefix, check the style).
+Summary
+-------
 
-Additionally, as the documentation is automaticaly build, maybe it 
-might be useful to include the following point:
+  **SUCCESS**
 
- - If you're add new tests, please ensure that you've written the 
-   documentation before submitting by running:
+  No regressions found.
 
-      ninja -C build igt-gpu-tools-doc
+  
 
-   Otherwise, auto-builders will complain if the documentation is missing.
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
 
 
-I have a question regarding the documentation. [1] explains that 
-igt_describe is deprecated, but CONTRIBUTION.md and igt_describe() doc 
-don't explain the "new" testplan documentation. Perhaps I could revise 
-"The Code" section to include:
+Changes
+-------
 
- - All new test must be documented in two ways:
-     - A call to igt_describe(), just before the test. This should provide 
-       a concise description of the test's purpose, and it will be 
-       displayed during execution.
-     - A testplan comment at the top of the file. This should 
-       provide further explanation of the test's functionality and is 
-       utilized in reporting tools.
-   Please refer to [1] for more details
+  No changes found
 
-[1]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/docs/test_documentation.md?ref_type=heads
 
-Thanks,
-Louis Chauvet
+Build changes
+-------------
 
-> Regards,
-> Kamil
-> 
-> > Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> > 
-> > To: igt-dev@lists.freedesktop.org
-> > Cc: miquel.raynal@bootlin.com
-> > Cc: thomas.petazzoni@bootlin.com
-> > Cc: jeremie.dautheribes@bootlin.com
-> > Cc: arthurgrillo@riseup.net
-> > Cc: seanpaul@google.com
-> > Cc: marcheu@google.com
-> > Cc: nicolejadeyee@google.com
-> > Cc: kamil.konieczny@linux.intel.com
-> > ---
-> > To: igt-dev@lists.freedesktop.org
-> > Cc: miquel.raynal@bootlin.com
-> > Cc: thomas.petazzoni@bootlin.com
-> > Cc: jeremie.dautheribes@bootlin.com
-> > Cc: arthurgrillo@riseup.net
-> > Cc: seanpaul@google.com
-> > Cc: marcheu@google.com
-> > Cc: nicolejadeyee@google.com
-> > Cc: kamil.konieczny@linux.intel.com
-> > 
-> > Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> > ---
-> >  CONTRIBUTING.md | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
-> > index 2ab8a48f6ae9..ec8debb4091e 100644
-> > --- a/CONTRIBUTING.md
-> > +++ b/CONTRIBUTING.md
-> > @@ -78,6 +78,8 @@ Sending Patches
-> >  - Changes to the testcases are automatically tested. Take the results into
-> >    account before merging.
-> >  
-> > +- The coding rules are the same as for the Linux kernel. To check for common
-> > +  style problems, you need to use the kernel's checkpatch.pl script.
-> >  
-> >  Commit Rights
-> >  -------------
-> > 
-> > ---
-> > base-commit: ed47dd9fb6b5be6c88513c2816f0f7cfdd0e02f6
-> > change-id: 20240315-add_coding_style-b755454de958
-> > 
-> > Best regards,
-> > -- 
-> > Louis Chauvet <louis.chauvet@bootlin.com>
-> > 
+  * IGT: IGT_7770 -> IGTPW_10865
+  * Linux: xe-955-8bce3f2c9e8b3c23a242b11e32c62e662e722d85 -> xe-965-6f58195da10f53d9886f86920c8f06058cb63b9c
 
--- 
-Louis Chauvet, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+  IGTPW_10865: 10865
+  IGT_7770: fef0422fd296f7c65724315f2a455ffb6959fb0d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-955-8bce3f2c9e8b3c23a242b11e32c62e662e722d85: 8bce3f2c9e8b3c23a242b11e32c62e662e722d85
+  xe-965-6f58195da10f53d9886f86920c8f06058cb63b9c: 6f58195da10f53d9886f86920c8f06058cb63b9c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10865/index.html
+
+--===============6559258275221480063==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_compute_mode: Test to (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131163/">https://patchwork.freedesktop.org/series/131163/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10865/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10865/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7770_BAT -&gt; XEIGTPW_10865_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7770 -&gt; IGTPW_10865</li>
+<li>Linux: xe-955-8bce3f2c9e8b3c23a242b11e32c62e662e722d85 -&gt; xe-965-6f58195da10f53d9886f86920c8f06058cb63b9c</li>
+</ul>
+<p>IGTPW_10865: 10865<br />
+  IGT_7770: fef0422fd296f7c65724315f2a455ffb6959fb0d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-955-8bce3f2c9e8b3c23a242b11e32c62e662e722d85: 8bce3f2c9e8b3c23a242b11e32c62e662e722d85<br />
+  xe-965-6f58195da10f53d9886f86920c8f06058cb63b9c: 6f58195da10f53d9886f86920c8f06058cb63b9c</p>
+
+</body>
+</html>
+
+--===============6559258275221480063==--
