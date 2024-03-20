@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41DFAC54E58
-	for <igt-dev@archiver.kernel.org>; Wed, 20 Mar 2024 19:49:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAA34C6FD1F
+	for <igt-dev@archiver.kernel.org>; Wed, 20 Mar 2024 19:49:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D65D710FF25;
-	Wed, 20 Mar 2024 19:49:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 15AAE10FF21;
+	Wed, 20 Mar 2024 19:49:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YNPNx2m7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U479n2sP";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F5D210FC3F
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2024 19:49:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D8AB710FF21
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2024 19:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710964148; x=1742500148;
+ t=1710964188; x=1742500188;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=FuY0RymJUwn35h+LtnZerFmypxFZAWxN9VaaAVsZA20=;
- b=YNPNx2m7qTwEGoz8J446qDk+NwEzT83QAaiXfHcB5Pcru5hQ1AKO4b1c
- Zov4RGmvrr8PV6+m3xgqLROTL+QM9U73c4JFEEDAazSqhFW0w1HOeQyar
- qgJ0EraCQcIOKiTCTVpvcusDaSvtDH3PWOfc/UQzHrq/Lau2VP5exZpb2
- ztL6GYVJ7T66kv4Wk9IDPCQpFWWekjZIAZ9dpC+EE/Ev+4Rw5tVhDX6yC
- d7cc/+XAylChuRX8gg6JEEj5xN+8TrtV6tGxVkMJHXiuSr91C4aV7QDYO
- b/hd2sejvyGhL9sUbyLykUA9rlm40PvWk5oAtqtYO82GzD0k4A9/6vWMN g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="5800939"
+ bh=Wtw7p9Xt7nTzTZpPf9/aVJsm8/sN5dYztosXtOIKJMc=;
+ b=U479n2sP3ZJC7LRIoRAyFMEVZtDNQ8ZW3fqulo6EwWpKTQhdokZ2JneB
+ hlhvPFgczGGmfpRZN9Zh6NjbXR9NE0urqQ/GFcZAkgIkAKmQkjr7oaYl5
+ vpXt81Ry/3S5Rdr1drTIRhQwjXF7BkRP8Odv/cbIJi31VYPWBHzFffQOC
+ AUKaD6WPx7J+hMaycuAkuEuOglXvE+GxlzjdgFJ9bZDn2fBm/BIF0eVho
+ 4UXjpYhIG5QBvI7QyWynXP2mAQZZzUr+ItF2dbdV4heqB37hVhgNfzXgQ
+ MMpRnAMUkNt3gEzUpbIqXG7QtHO511ruW8ZHs10eIdcs+85DYKwSsMe+d g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="5801152"
 X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
-   d="scan'208";a="5800939"
+   d="scan'208";a="5801152"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2024 12:49:07 -0700
+ 20 Mar 2024 12:49:41 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; d="scan'208";a="18740925"
+X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; d="scan'208";a="18740996"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.7.80])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2024 12:49:04 -0700
+ 20 Mar 2024 12:49:38 -0700
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
@@ -45,15 +45,15 @@ Cc: Dominik Karol =?utf-8?B?UGnEhXRrb3dza2k=?=
  <dominik.karol.piatkowski@intel.com>,
  Zbigniew =?utf-8?B?S2VtcGN6ecWEc2tp?= <zbigniew.kempczynski@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: Re: [PATCH i-g-t v14 2/5] lib/drmtest: Introduced
- drm_open_driver_another
-Date: Wed, 20 Mar 2024 20:49:02 +0100
-Message-ID: <8157623.tOnEmuZJvr@jkrzyszt-mobl2.ger.corp.intel.com>
+Subject: Re: [PATCH i-g-t v14 3/5] lib/igt_multigpu: Introduce library for
+ multi-GPU scenarios
+Date: Wed, 20 Mar 2024 20:49:35 +0100
+Message-ID: <2357176.ZkOooBPedc@jkrzyszt-mobl2.ger.corp.intel.com>
 Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
  80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20240320155659.33518-3-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20240320155659.33518-4-kamil.konieczny@linux.intel.com>
 References: <20240320155659.33518-1-kamil.konieczny@linux.intel.com>
- <20240320155659.33518-3-kamil.konieczny@linux.intel.com>
+ <20240320155659.33518-4-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="UTF-8"
@@ -74,212 +74,218 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Kamil,
 
-On Wednesday, 20 March 2024 16:56:56 CET Kamil Konieczny wrote:
+On Wednesday, 20 March 2024 16:56:57 CET Kamil Konieczny wrote:
 > From: Dominik Karol Pi=C4=85tkowski <dominik.karol.piatkowski@intel.com>
 >=20
-> For user convenience, introduce drm_open_driver_another as
-> a wrapper for __drm_open_driver_another with skip on fail.
-> Also add counterpart to open: __drm_close_driver() with
-> no warning for non-opened fd.
+> Implemented igt_require_multigpu in order to replace
+> igt_require(gpu_count > 1), as well as printing available
+> PCI devices if requirement fails.
 >=20
-> v2: rebased (Kamil)
-> v6: reword description (Janusz)
-> v10: change assert into skip, add TODO note about atomic reset
->   before tests starts for i915 and on exit path (Janusz)
->   add __drm_close_driver() (Kamil)
+> Introduced igt_multigpu_count_class function that returns an actual
+> number of GPUs present in system, which allows for writing multi-GPU
+> test scenarios that does not require filter
+> --device pci:vendor=3Dintel,device=3Ddiscrete,card=3Dall
+> to run as intended. Based on patch by Chris Wilson.
 >=20
-> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> Introduced igt_multi_fork_foreach_gpu macro that helps with
+> writing multi-GPU test scenarios in idiomatic form:
+>=20
+> igt_multi_fork_foreach_gpu(i915, DRIVER_INTEL)
+> 	test_function(i915);
+> igt_waitchildren();
+>=20
+> This is multi-GPU ready as it will run also on single GPU
+> board. For running tests on two or more GPUs there is new
+> igt_multi_fork_foreach_multigpu macro.
+>=20
+> v10: squashed two commits which introduce multigpu functions (Zbigniew)
+>   renamed __id and id__ into __chipset/chipset__ (Zbigniew)
+>   used __drm_close_driver() instead of close() in first macro (Kamil)
+> v11: added functions descriptions (Janusz)
+> v12: moved to igt_multigpu.c/h (Janusz)
+>  changed names from gem_ to igt_, removed '\' from end of macro (Janusz)
+> v13: added new macro igt_multi_fork_foreach_multigpu which will require
+>  two or more GPUs, changing old igt_multi_fork_foreach_gpu to work with
+>  one or more GPUs, so tests using _gpu will be multi-GPU ready (Janusz)
+> v14: dropped multigpu_open_another and replace it with
+>  drm_open_driver_another, extending description (Janusz)
+>=20
 > Cc: "Zbigniew Kempczy=C5=84ski" <zbigniew.kempczynski@intel.com>
+> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 > Signed-off-by: "Dominik Karol Pi=C4=85tkowski" <dominik.karol.piatkowski@=
 intel.com>
+> [Kamil: fixed whitespace and tabs, moved to lib/igt_multigpu.*]
 > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->  lib/drmtest.c | 109 ++++++++++++++++++++++++++++++++++----------------
->  lib/drmtest.h |   2 +
->  2 files changed, 76 insertions(+), 35 deletions(-)
+>  lib/igt_multigpu.c | 88 ++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_multigpu.h | 36 +++++++++++++++++++
+>  lib/meson.build    |  1 +
+>  3 files changed, 125 insertions(+)
+>  create mode 100644 lib/igt_multigpu.c
+>  create mode 100644 lib/igt_multigpu.h
 >=20
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 52b5a2020..f8810da43 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -241,6 +241,35 @@ static void modulename_to_chipset(const char *name, =
-unsigned int *chip)
->  	}
->  }
-> =20
-> +static const char *chipset_to_str(int chipset)
+> diff --git a/lib/igt_multigpu.c b/lib/igt_multigpu.c
+> new file mode 100644
+> index 000000000..be0c11332
+> --- /dev/null
+> +++ b/lib/igt_multigpu.c
+> @@ -0,0 +1,88 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright =C2=A9 2023 Intel Corporation
+> + */
+> +
+> +#include "drmtest.h"
+> +#include "i915/gem.h"
+> +#include "igt_core.h"
+> +#include "igt_device_scan.h"
+> +#include "igt_multigpu.h"
+> +
+> +/**
+> + * igt_multigpu_count_class:
+> + * @class: chipset, e.g. DRIVER_XE or DRIVER_INTEL
+> + *
+> + * Function counts number of GPU cards with the help of opening all of t=
+hem.
+> + *
+> + * Returns: number of GPUs cards found
+> + */
+> +int igt_multigpu_count_class(int class)
 > +{
-> +	switch (chipset) {
-> +	case DRIVER_INTEL:
-> +		return "intel";
-> +	case DRIVER_V3D:
-> +		return "v3d";
-> +	case DRIVER_VC4:
-> +		return "vc4";
-> +	case DRIVER_VGEM:
-> +		return "vgem";
-> +	case DRIVER_AMDGPU:
-> +		return "amdgpu";
-> +	case DRIVER_PANFROST:
-> +		return "panfrost";
-> +	case DRIVER_MSM:
-> +		return "msm";
-> +	case DRIVER_XE:
-> +		return "xe";
-> +	case DRIVER_VMWGFX:
-> +		return "vmwgfx";
-> +	case DRIVER_ANY:
-> +		return "any";
-> +	default:
-> +		return "other";
-> +	}
+> +	int count =3D 0;
+> +
+> +	igt_foreach_gpu(fd, class)
+> +		count++;
+> +
+> +	return count;
 > +}
 > +
-> +
->  /*
->   * Logs path of opened device. Device path opened for the first time is =
-logged at info level,
->   * subsequent opens (if any) are logged at debug level.
-> @@ -563,6 +592,27 @@ int __drm_open_driver_another(int idx, int chipset)
->  	return fd;
->  }
-> =20
-> +/**
-> + * drm_open_driver_another:
-> + * @idx: index of the device you are opening
-> + * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
-> + *
-> + * A wrapper for __drm_open_driver with skip on fail.
-> + *
-> + * Returns:
-> + * An open DRM fd or skips
-> + */
-> +int drm_open_driver_another(int idx, int chipset)
+> +static int print_gpus(int count, int gpu_num)
 > +{
-> +	int fd =3D __drm_open_driver_another(idx, chipset);
+> +	struct igt_devices_print_format fmt =3D {
+> +		.type =3D IGT_PRINT_SIMPLE,
+> +		.option =3D IGT_PRINT_PCI,
+> +	};
+> +	int devices;
 > +
-> +	igt_skip_on_f(fd < 0, "No known gpu found for chipset flags %d (%s)\n",
-> +		      chipset, chipset_to_str(chipset));
+> +	igt_info("PCI devices available in the system:\n");
 > +
-> +	/* TODO: for i915 and idx > 0 add atomic reset before test */
+> +	igt_devices_scan(true);
+> +	devices =3D igt_device_filter_pci();
+> +	igt_devices_print(&fmt);
+> +
+> +	return devices;
+> +}
+> +
+> +/**
+> + * igt_require_filtered_multigpu:
+> + * @count: minimum number of GPUs required found with filters
+> + *
+> + * Function checks number of filtered GPU cards.
+> + * On error prints available GPUs found on PCI bus and skips.
+> + */
+> +int igt_require_filtered_multigpu(int gpus_wanted)
 
-NIT: ... and after test via exit handler, like drm_open does.
-BTW, why idx > 0?
+NIT: Not used by any other function withing this series, then probably belo=
+ngs=20
+to another set of patches.
 
 Anyway,
 Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-> +	return fd;
-> +}
-> +
->  /**
->   * __drm_open_driver:
->   * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
-> @@ -643,34 +693,6 @@ static void cancel_work_at_exit_render(int sig)
->  	at_exit_drm_render_fd =3D -1;
->  }
-> =20
-> -static const char *chipset_to_str(int chipset)
-> -{
-> -	switch (chipset) {
-> -	case DRIVER_INTEL:
-> -		return "intel";
-> -	case DRIVER_V3D:
-> -		return "v3d";
-> -	case DRIVER_VC4:
-> -		return "vc4";
-> -	case DRIVER_VGEM:
-> -		return "vgem";
-> -	case DRIVER_AMDGPU:
-> -		return "amdgpu";
-> -	case DRIVER_PANFROST:
-> -		return "panfrost";
-> -	case DRIVER_MSM:
-> -		return "msm";
-> -	case DRIVER_XE:
-> -		return "xe";
-> -	case DRIVER_VMWGFX:
-> -		return "vmwgfx";
-> -	case DRIVER_ANY:
-> -		return "any";
-> -	default:
-> -		return "other";
-> -	}
-> -}
-> -
->  static const char *chipset_to_vendor_str(int chipset)
->  {
->  	return chipset =3D=3D DRIVER_XE ? chipset_to_str(DRIVER_INTEL) : chipse=
-t_to_str(chipset);
-> @@ -733,12 +755,33 @@ static bool is_valid_fd(int fd)
->  	return false;
->  }
-> =20
-> +/**
-> + * __drm_close_driver:
-> + * @fd: a drm file descriptor
-> + *
-> + * Check the given drm file descriptor @fd is valid and if not,
-> + * return -1. For valid fd close it and make cleanups.
-> + *
-> + * Returns: 0 on success or -1 on error.
-> + */
-> +int __drm_close_driver(int fd)
 > +{
-> +	if (!is_valid_fd(fd))
-> +		return -1;
+> +	int gpu_count =3D igt_device_filter_count();
+> +	int num;
 > +
-> +	/* Remove xe_device from cache. */
-> +	if (is_xe_device(fd))
-> +		xe_device_put(fd);
+> +	if (gpu_count >=3D gpus_wanted)
+> +		return gpu_count;
 > +
-> +	return close(fd);
+> +	num =3D print_gpus(gpus_wanted, gpu_count);
+> +	igt_skip_on_f(gpu_count < gpus_wanted, "Test requires at least %d GPUs,=
+ got %d, available: %d\n", gpus_wanted, gpu_count, num);
+> +
+> +	return 0; /* unreachable */
 > +}
 > +
->  /**
->   * drm_close_driver:
->   * @fd: a drm file descriptor
->   *
-> - * Check the given drm file descriptor @fd is valid & Close if it is
-> - * an valid drm fd.
-> + * Check the given drm file descriptor @fd is valid and if not issue war=
-ning.
-> + * For valid fd close it and make cleanups.
->   *
->   * Returns: 0 on success or -1 on error.
->   */
-> @@ -750,11 +793,7 @@ int drm_close_driver(int fd)
->  		return -1;
->  	}
-> =20
-> -	/* Remove xe_device from cache. */
-> -	if (is_xe_device(fd))
-> -		xe_device_put(fd);
-> -
-> -	return close(fd);
-> +	return __drm_close_driver(fd);
->  }
-> =20
->  /**
-> diff --git a/lib/drmtest.h b/lib/drmtest.h
-> index 588d7da17..bbe5f252f 100644
-> --- a/lib/drmtest.h
-> +++ b/lib/drmtest.h
-> @@ -110,12 +110,14 @@ void __set_forced_driver(const char *name);
-> =20
->  int __drm_open_device(const char *name, unsigned int chipset);
->  void drm_load_module(unsigned int chipset);
-> +int drm_open_driver_another(int idx, int chipset);
->  int drm_open_driver(int chipset);
->  int drm_open_driver_master(int chipset);
->  int drm_open_driver_render(int chipset);
->  int __drm_open_driver_another(int idx, int chipset);
->  int __drm_open_driver(int chipset);
->  int __drm_open_driver_render(int chipset);
-> +int __drm_close_driver(int fd);
->  int drm_close_driver(int fd);
-> =20
->  int drm_reopen_driver(int fd);
+> +/**
+> + * igt_require_multigpu:
+> + * @count: minimum number of GPUs required
+> + * @chipset: for example DRIVER_XE or DRIVER_INTEL
+> + *
+> + * Function checks number of GPU cards with __drm_open_driver_another()
+> + * On error prints available GPUs found on PCI bus and skips.
+> + */
+> +int igt_require_multigpu(int gpus_wanted, unsigned int chipset)
+> +{
+> +	int gpu_filters =3D igt_multigpu_count_class(chipset);
+> +	int num;
+> +
+> +	if (gpu_filters >=3D gpus_wanted)
+> +		return gpu_filters;
+> +
+> +	num =3D print_gpus(gpus_wanted, gpu_filters);
+> +	igt_skip_on_f(gpu_filters < gpus_wanted, "Test requires at least %d GPU=
+s, got %d, available: %d\n", gpus_wanted, gpu_filters, num);
+> +
+> +	return 0; /* unreachable */
+> +}
+> diff --git a/lib/igt_multigpu.h b/lib/igt_multigpu.h
+> new file mode 100644
+> index 000000000..b002f98e0
+> --- /dev/null
+> +++ b/lib/igt_multigpu.h
+> @@ -0,0 +1,36 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright =C2=A9 2023 Intel Corporation
+> + */
+> +
+> +#ifndef __INTEL_MULTIGPU_H
+> +#define __INTEL_MULTIGPU_H
+> +
+> +#include "drmtest.h"
+> +#include "igt_core.h"
+> +
+> +int igt_multigpu_count_class(int chipset);
+> +int igt_require_filtered_multigpu(int count);
+> +int igt_require_multigpu(int count, unsigned int chipset);
+> +
+> +#define igt_foreach_gpu(fd__, chipset__) \
+> +	for (int igt_unique(i) =3D 0, fd__; \
+> +		(fd__ =3D __drm_open_driver_another(igt_unique(i)++, (chipset__))) >=
+=3D 0; \
+> +		__drm_close_driver(fd__))
+> +
+> +#define igt_multi_fork_foreach_gpu_num(__fd, __gpu_idx, __chipset, __wan=
+ted) \
+> +	for (int igt_unique(__j) =3D igt_require_multigpu((__wanted), (__chipse=
+t)); \
+> +	     igt_unique(__j) !=3D -1; \
+> +	     igt_unique(__j) =3D -1) \
+> +		igt_multi_fork(__gpu_idx, igt_unique(__j)) \
+> +			for (int __fd =3D drm_open_driver_another(__gpu_idx, (__chipset)); \
+> +			     __fd >=3D 0; \
+> +			     drm_close_driver(__fd), __fd =3D -1)
+> +
+> +#define igt_multi_fork_foreach_gpu(__fd, __gpu_idx, __chipset) \
+> +		igt_multi_fork_foreach_gpu_num(__fd, __gpu_idx, (__chipset), 1)
+> +
+> +#define igt_multi_fork_foreach_multigpu(__fd, __gpu_idx, __chipset) \
+> +		igt_multi_fork_foreach_gpu_num(__fd, __gpu_idx, (__chipset), 2)
+> +
+> +#endif /* __INTEL_MULTIGPU_H */
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 934bac5c6..a5651571b 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -66,6 +66,7 @@ lib_sources =3D [
+>  	'intel_device_info.c',
+>  	'intel_mmio.c',
+>  	'intel_mocs.c',
+> +	'igt_multigpu.c',
+>  	'intel_pat.c',
+>  	'ioctl_wrappers.c',
+>  	'media_spin.c',
 >=20
 
 
