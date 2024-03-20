@@ -4,48 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EA4EC54E58
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4779C6FD1F
 	for <igt-dev@archiver.kernel.org>; Wed, 20 Mar 2024 15:55:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1FE5210FD9D;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 681E010FDA1;
 	Wed, 20 Mar 2024 15:55:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hsiPf8xd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bRyATF1q";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B88C10FD9D
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2024 15:55:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 44B0610FD9D
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2024 15:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710950125; x=1742486125;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=4aSxn23eqFWYjF0VBlZ/KTdYt5zPEGgCNmjW45YigIk=;
- b=hsiPf8xdITGS1Lymly72F2IJ4u2kxM1ORcrNJO2cxl4o8pg9eMzgF4uT
- RMplpn3yGH4vPZ5b355i/Yn0qL0c5aQ1yucpulRbm6CqYayv4FpFdBylL
- oJnOjg+PzYFHGh66rNalBgTQIuepdUCQY6gJxna8Q9WbT3us6s/dK53sP
- l+w5t2Re6O1/YQ54kFodEUEKEU1C+IveEsq+dZlzYoxWPJnJNQK7WAKy1
- Vww6yIp6va2GxFAV+KPHXmdzmDn5Mh4g+YMxI8Op8PWisEEU+vYvkmIj8
- MTrhZJ5SRUxV4YWYVtAPDgTTGPcjxQI6FsEx/dPkTKSYUaBN6v1VMOGq1 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="5821255"
+ t=1710950126; x=1742486126;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=9xYnl4KYijOSNCQzTd8lAGQbbs2IAwlDcmNQCv5B+1A=;
+ b=bRyATF1qJ4a+5muypj/tzh7n8iFlPMShXmynyk6nGnovXMgrLL3Fb7Tw
+ 8ypfliKASWWsdizXxAL5KFUKZhtsAoHoTxQOHqLIHb+pKY/Ic8Hr06t+8
+ f5Y63EC7lXezCOZupYwCU613KA65jpZCnLEd7l+rssRe+pT60Bp8/iPhB
+ OfoC+N+H4Z0xfOQTyrlOlmM5msvFe4KcLcfrYEU+H23CGllEPjHaeu/Pi
+ WjRfM4g9OzvHWUWfljqBtRLnY3z5w/tUpDb5uxNn4MRAGiK4rkGMHnn4E
+ nlWHchU3JoyANdJsqywJVZ6ouQYQeLc/aqH3ZlAnCPZMKl//jRMO0eHEu Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="5821256"
 X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; 
-   d="scan'208";a="5821255"
+   d="scan'208";a="5821256"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2024 08:55:24 -0700
+ 20 Mar 2024 08:55:26 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; d="scan'208";a="14590080"
+X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; d="scan'208";a="14590084"
 Received: from gfx2.iind.intel.com ([10.145.169.154])
- by orviesa006.jf.intel.com with ESMTP; 20 Mar 2024 08:55:24 -0700
+ by orviesa006.jf.intel.com with ESMTP; 20 Mar 2024 08:55:25 -0700
 From: sai.gowtham.ch@intel.com
 To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
  sai.gowtham.ch@intel.com
-Subject: [PATCH i-g-t 0/3] tests/intel/xe_exec_compute_mode: Test to
-Date: Wed, 20 Mar 2024 21:24:27 +0530
-Message-Id: <20240320155430.11877-1-sai.gowtham.ch@intel.com>
+Subject: [PATCH i-g-t 1/3] lib/xe/xe_spin: Update xe_spin with exec_sync
+Date: Wed, 20 Mar 2024 21:24:28 +0530
+Message-Id: <20240320155430.11877-2-sai.gowtham.ch@intel.com>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20240320155430.11877-1-sai.gowtham.ch@intel.com>
+References: <20240320155430.11877-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -64,25 +66,27 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-This Patch series involves below changes:
-1. Updating xe_spin structure with exec_sync In LR mode it can be used as a GPU address
-   when sync is passed via exec IOCTL.
-2. Adding support in xe_spin to store/write ctx timestamps.
-3. Test to Validate LR mode for 30's.
+When a spinner is submitted with LR mode, exec_sync can be used
+as GPU address when sync is passed in via exec IOCTL.
 
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc:Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+---
+ lib/xe/xe_spin.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-Sai Gowtham Ch (3):
-  lib/xe/xe_spin: Update xe_spin with exec_sync
-  lib/xe/xe_spin: Add support to store/write ctx time
-  tests/intel/xe_exec_compute_mode: Test to validate LR mode
-
- lib/xe/xe_spin.c                   | 12 +++++
- lib/xe/xe_spin.h                   |  3 ++
- tests/intel/xe_exec_compute_mode.c | 80 ++++++++++++++++++++++++++++++
- 3 files changed, 95 insertions(+)
-
+diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+index 5c8c45143..87b7c1716 100644
+--- a/lib/xe/xe_spin.h
++++ b/lib/xe/xe_spin.h
+@@ -38,6 +38,7 @@ struct xe_spin {
+ 	uint32_t start;
+ 	uint32_t end;
+ 	uint32_t ticks_delta;
++	uint64_t exec_sync;
+ };
+ 
+ igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
 -- 
 2.39.1
 
