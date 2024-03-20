@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53AACC54E58
-	for <igt-dev@archiver.kernel.org>; Wed, 20 Mar 2024 11:06:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C01EC54E58
+	for <igt-dev@archiver.kernel.org>; Wed, 20 Mar 2024 11:10:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D4EA710EC1B;
-	Wed, 20 Mar 2024 11:06:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C7E5610F424;
+	Wed, 20 Mar 2024 11:10:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i28jHiU9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VSiqIbJC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DBFA610EC1B
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2024 11:06:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9687610F424
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2024 11:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710932786; x=1742468786;
+ t=1710933053; x=1742469053;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=RFN9KfxMgx6jbmIzKTrjBOqsjGhQ59AtTwU5nPPmg/w=;
- b=i28jHiU9F20QClGSCQaCz6Dj1abx+VE4/zfLu7NJVrvgt5hoCIHtVAXK
- /xmi8Ncfc5+DmPdU4Cr7yF0L3ypW4HFZ5hWTRSIc7CdBs1J4beUxAuGWx
- 7mZG/+NZHCjgVb0BsVERV6NLXHM5R8jS8UfMZkqv1rT7fLQDdP1rZ+R/A
- Fkb3LTxEgsPf3pqWV67HQwnKdggF79rITCAhRkAHlbNIVM1jmxbi1Qbhh
- 3If4w/H+nw98O0s7pZS2kPt5vDHjJWVcddxDGDS9u1s/dwDe1B7ekY8Ev
- MnTB4R4vGHXG5btf7q+6lgJaknaLIxQisec6sx5gl5/CldsDoVv/HjQJI Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="9645161"
+ bh=JiN/knkEAnQo06ABnDZJ0QJVyfg6k9iVBYfgDgFqwj4=;
+ b=VSiqIbJCGeSSi8PYnT+a9GWzPeK0BCj9/bZMDtQemnzoQUIrodblyQ/6
+ OgVzOl1yQJAiAYkJj5B9fYkmIevKHmUsrBkt8oYFzxh70IF0FPlKxXM9L
+ juPo3iH+Ug4ECM9JgIhvgGBZNqiK4MmrbOaTz3tfcxx9IsgKzYy1zdnl4
+ 4BFPHGOTNLYOdY5ccvh4cMnL0rDzPQeYlb/oIyoNkJ5ck+QuKk/FLgzN+
+ 5C+LdZXiPnLmOBg8GouWgT5TEVq5+vWYa2u6DPhWvEykHnsnBTZW7FqwM
+ diS9DbiiedVGE9qZSrffgNeUMqpxwUzdjVXaJq0dAOfKCdlCI/6TTQFvv Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="5787827"
 X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; 
-   d="scan'208";a="9645161"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2024 04:06:26 -0700
+   d="scan'208";a="5787827"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2024 04:10:52 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; d="scan'208";a="18776504"
+X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; d="scan'208";a="14021805"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 04:06:23 -0700
-Date: Wed, 20 Mar 2024 12:06:06 +0100
+ by orviesa010-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 04:10:51 -0700
+Date: Wed, 20 Mar 2024 12:10:47 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Himanshu Nayak <himanshu.nayak@amd.com>, sjamadar@amd.com,
  Leo.Liu@amd.com, Boyuan.Zhang@amd.com,
  Veerabadhran.Gopalakrishnan@amd.com, Ruijing.Dong@amd.com,
  Sathishkumar.Sundararaju@amd.com
-Subject: Re: [PATCH 1/2] added support for hevc encoder
-Message-ID: <20240320110606.mawc3q4mksh3qicv@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH 2/2] new files are added in meson.build file
+Message-ID: <20240320111047.vvtjyegjul44itnm@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Himanshu Nayak <himanshu.nayak@amd.com>, sjamadar@amd.com,
@@ -54,10 +54,11 @@ Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Veerabadhran.Gopalakrishnan@amd.com, Ruijing.Dong@amd.com,
  Sathishkumar.Sundararaju@amd.com
 References: <20240319125915.1122577-1-himanshu.nayak@amd.com>
+ <20240319125915.1122577-2-himanshu.nayak@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240319125915.1122577-1-himanshu.nayak@amd.com>
+In-Reply-To: <20240319125915.1122577-2-himanshu.nayak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,53 +75,48 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Himanshu,
-On 2024-03-19 at 18:29:14 +0530, Himanshu Nayak wrote:
+On 2024-03-19 at 18:29:15 +0530, Himanshu Nayak wrote:
 
-Add description here. Also correct your subject, was:
+your subject should be:
 
-[PATCH 1/2] added support for hevc encoder
-------^---- ^
-should be:
+[PATCH i-g-t 2/2] tests/amdgpu/meson: change amd_vcn in meson.build
 
-[PATCH i-g-t 1/2] tests/amdgpu/amd_vcn_hevc: added support for hevc encoder
-
-> ---
->  lib/amdgpu/amd_mmd_decode_messages.h | 373 ++++++++++-
->  lib/amdgpu/amd_mmd_frame.h           | 771 +++++++++++++++++++++++
->  tests/amdgpu/amd_vcn.c               | 828 ++-----------------------
->  tests/amdgpu/amd_vcn_common.c        | 727 ++++++++++++++++++++++
->  tests/amdgpu/amd_vcn_common.h        | 187 ++++++
----^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Consider moving this to new lib, also split this patch into
-smaller ones to easy review.
-
-Last note, please subscribe to igt-dev list here:
-
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Add also description here. For your patches, please use
+checkpatch.pl script from Linux kernel to spot some problems, for
+example missing s-o-b.
 
 Regards,
 Kamil
 
->  tests/amdgpu/amd_vcn_hevc.c          | 887 +++++++++++++++++++++++++++
->  tests/amdgpu/amd_vcn_hevc.h          |  89 +++
->  7 files changed, 3075 insertions(+), 787 deletions(-)
->  create mode 100644 tests/amdgpu/amd_vcn_common.c
->  create mode 100644 tests/amdgpu/amd_vcn_common.h
->  create mode 100644 tests/amdgpu/amd_vcn_hevc.c
->  create mode 100644 tests/amdgpu/amd_vcn_hevc.h
+> ---
+>  tests/amdgpu/meson.build | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
 > 
-> diff --git a/lib/amdgpu/amd_mmd_decode_messages.h b/lib/amdgpu/amd_mmd_decode_messages.h
-> index 22f223aaf..c30202411 100644
-> --- a/lib/amdgpu/amd_mmd_decode_messages.h
-> +++ b/lib/amdgpu/amd_mmd_decode_messages.h
-> @@ -324,6 +324,123 @@ static const uint8_t uvd_bitstream[] ={
->  	0xeb,0xae,0xba,0xf0,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
->  };
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index a58d18ad3..0f5eb197f 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -60,10 +60,19 @@ if libdrm_amdgpu.found()
+>  endif
 >  
-> +static const uint8_t hevc_bitstream[] ={
-> +	0x00,0x00,0x00,0x01,0x26,0x01,0xAD,0xC0,0x37,0x12,0x32,0xE0,0x72,0x3D,0xA8,0x69,
-> +	0x4D,0x13,0xB7,0x96,0xB6,0x88,0x98,0x91,0x51,0x41,0xAE,0x7B,0x2C,0x61,0xF0,0xE4,
-> +	0xE0,0x37,0x42,0x4F,0x5A,0x44,0x6C,0xE2,0x34,0x0D,0x69,0x57,0x92,0x3A,0x00,0x03,
-
-...cut...
-
+>  foreach prog : amdgpu_progs
+> -	test_executables += executable(prog, prog + '.c',
+> +        if prog == 'amd_vcn'
+> +              test_executables += executable(prog, prog + '.c', 'amd_vcn_common.c', 'amd_vcn_hevc.c',
+>  				       dependencies : amdgpu_deps,
+>  				       install_dir : amdgpudir,
+>  				       install_rpath : amdgpudir_rpathdir,
+>  				       install : true)
+> +
+> +        else
+> +            test_executables += executable(prog, prog + '.c',
+> +				       dependencies : amdgpu_deps,
+> +				       install_dir : amdgpudir,
+> +				       install_rpath : amdgpudir_rpathdir,
+> +				       install : true)
+> +        endif
+>  	test_list += join_paths('amdgpu', prog)
+>  endforeach
+> -- 
+> 2.34.1
+> 
