@@ -4,53 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47758C6FD1F
-	for <igt-dev@archiver.kernel.org>; Wed, 20 Mar 2024 15:42:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EA4EC54E58
+	for <igt-dev@archiver.kernel.org>; Wed, 20 Mar 2024 15:55:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D277010F20C;
-	Wed, 20 Mar 2024 15:42:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1FE5210FD9D;
+	Wed, 20 Mar 2024 15:55:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="bLle+AGZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hsiPf8xd";
 	dkim-atps=neutral
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com
- [46.235.227.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E164210F20C
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2024 15:42:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1710949323;
- bh=8VVJQl5HN4/KXCudVbJJAiyszsc/k2bHRchZbjJS5CA=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=bLle+AGZefAZYexmhB8Nm2oHSBSkX0QU7HslFleEkflk1UteSF5j95HXCrLZmLZ8y
- xWhZmSLT5fTKEnV3fg/kkamSebj4Ro3psctygwlxAr2TwmeHF9qGGcX4tdIW0kf/9Y
- qz0HvnKkCqs5TC8LAZm18Lk8EezjIl8UiSXj8AO/Jig2nliIFC87DGTftlxiESH3Kn
- +VRQXZWpdRQmCM2iw3LOOfGK3rRpUIeoNRNcU59fIgwqLs4cRzdglauRe+oWBc63sE
- olsAo/h7xn4R8/g9EluPJjGgcfnhBOc34R5ayb6da/V9aag/KbRBbpnBe3hWWeMjn3
- AtwIU2F5pCOpQ==
-Received: from eldfell (cola.collaboradmins.com [195.201.22.229])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits)
- server-digest SHA256) (No client certificate requested)
- (Authenticated sender: pq)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id CA36B37820EF;
- Wed, 20 Mar 2024 15:42:02 +0000 (UTC)
-Date: Wed, 20 Mar 2024 17:42:01 +0200
-From: Pekka Paalanen <pekka.paalanen@collabora.com>
-To: Arthur Grillo <arthurgrillo@riseup.net>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
- <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
- <bhanuprakash.modem@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t v3 0/7] benchmarks/kms_fb_stress: Test all
- possible combinations of formats
-Message-ID: <20240320174201.3b49c82a.pekka.paalanen@collabora.com>
-In-Reply-To: <20240307-kms_fb_stress-dev-v3-0-d5b948a541be@riseup.net>
-References: <20240307-kms_fb_stress-dev-v3-0-d5b948a541be@riseup.net>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B88C10FD9D
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2024 15:55:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1710950125; x=1742486125;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=4aSxn23eqFWYjF0VBlZ/KTdYt5zPEGgCNmjW45YigIk=;
+ b=hsiPf8xdITGS1Lymly72F2IJ4u2kxM1ORcrNJO2cxl4o8pg9eMzgF4uT
+ RMplpn3yGH4vPZ5b355i/Yn0qL0c5aQ1yucpulRbm6CqYayv4FpFdBylL
+ oJnOjg+PzYFHGh66rNalBgTQIuepdUCQY6gJxna8Q9WbT3us6s/dK53sP
+ l+w5t2Re6O1/YQ54kFodEUEKEU1C+IveEsq+dZlzYoxWPJnJNQK7WAKy1
+ Vww6yIp6va2GxFAV+KPHXmdzmDn5Mh4g+YMxI8Op8PWisEEU+vYvkmIj8
+ MTrhZJ5SRUxV4YWYVtAPDgTTGPcjxQI6FsEx/dPkTKSYUaBN6v1VMOGq1 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="5821255"
+X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; 
+   d="scan'208";a="5821255"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2024 08:55:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; d="scan'208";a="14590080"
+Received: from gfx2.iind.intel.com ([10.145.169.154])
+ by orviesa006.jf.intel.com with ESMTP; 20 Mar 2024 08:55:24 -0700
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ sai.gowtham.ch@intel.com
+Subject: [PATCH i-g-t 0/3] tests/intel/xe_exec_compute_mode: Test to
+Date: Wed, 20 Mar 2024 21:24:27 +0530
+Message-Id: <20240320155430.11877-1-sai.gowtham.ch@intel.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/IUnZDliRLaS9uMhW2ITMZ6V";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,130 +62,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---Sig_/IUnZDliRLaS9uMhW2ITMZ6V
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-On Thu, 07 Mar 2024 16:41:02 -0300
-Arthur Grillo <arthurgrillo@riseup.net> wrote:
+This Patch series involves below changes:
+1. Updating xe_spin structure with exec_sync In LR mode it can be used as a GPU address
+   when sync is passed via exec IOCTL.
+2. Adding support in xe_spin to store/write ctx timestamps.
+3. Test to Validate LR mode for 30's.
 
-> After some discussion[1], I changed how to tackle the problem.
->=20
-> With the upcoming addition of YUV format to VKMS[2] it would be great to
-> test the their performance. So, test all possible combinations of
-> formats.
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Hi Arthur,
+Sai Gowtham Ch (3):
+  lib/xe/xe_spin: Update xe_spin with exec_sync
+  lib/xe/xe_spin: Add support to store/write ctx time
+  tests/intel/xe_exec_compute_mode: Test to validate LR mode
 
-what do you gain by testing all possible combinations of formats on
-planes?
+ lib/xe/xe_spin.c                   | 12 +++++
+ lib/xe/xe_spin.h                   |  3 ++
+ tests/intel/xe_exec_compute_mode.c | 80 ++++++++++++++++++++++++++++++
+ 3 files changed, 95 insertions(+)
 
-I would have thought that if you can pick and choose a format, then you
-don't need to test combinations. Each format alone (but as plane source
-and writeback destination separately) would exercise all the VKMS code
-there is for that format, given that VKMS uses the intermediate pixel
-format for all blending etc. operations.
+-- 
+2.39.1
 
-
-What will the standard benchmark results printout look like?
-
-I imagine it should be a simple table that people could put in their
-commit message, something like this:
-
-kms_fb_stress test results, plane source:
-
-            before    after    difference
-  ARGB8888   3.6 s    3.7 s       +2.7 %
-  ABGR8888   3.6 s    3.8 s       +5.6 %
-  YUV420    15.5 s    9.9 s        -36 %
-  YUV410         -    8.8 s          -
-
-and another table for writeback destination, if that's interesting.
-
-But that requires both before and after runs, so one would need to save
-results in a file, and use a tool to generate the table. Well, maybe
-something to consider in the future. One could also get even fancier
-with statistical analysis, but I guess this would be plenty already.
-
-
-Thanks,
-pq
-
-> Also, to focus in an combination subset, add command-line options to
-> arbitrarily select the format of each plane and writeback.
->=20
-> - PATCH #1: Just a non-related assert that I found needed while developing
-> - PATCH #2: Log the KMS structure
-> - PATCH #3: Moving code, should be noop
-> - PATCH #4 & #5: Fix a couple of bugs found while developing patch #6
-> - PATCH #6: Test all possible combinations
-> - PATCH #7: Add command-line options
->=20
-> [1]: https://lore.kernel.org/all/6979cd2e-2b00-4dc4-8e41-66b435cf7ea8@ris=
-eup.net/
-> [2]: https://lore.kernel.org/all/20240304-yuv-v4-11-76beac8e9793@bootlin.=
-com/
->=20
-> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
-> ---
-> Changes in v3:
-> - Make the help message and commit message more clear on how the
->   command-line options work (Louis Chauvet)
-> - Link to v2: https://lore.kernel.org/r/20240305-kms_fb_stress-dev-v2-0-7=
-8888a38e563@riseup.net
->=20
-> Changes in v2:
-> - Change how the command-line options work, now they pin the specific
->   format and let the other change.
-> - Add a patch to test all the possible formats combination
-> - Add a couple of patches to fix some bugs
-> - Move the KMS logging patch to the beginning of the series
-> - Move the default_kms definition to the static struct data_t variable
-> - Link to v1: https://lore.kernel.org/r/20240226-kms_fb_stress-dev-v1-0-1=
-c14942b1244@riseup.net
->=20
-> ---
-> Arthur Grillo (7):
->       benchmarks/kms_fb_stress: Assert that we have an supported pipe
->       benchmarks/kms_fb_stress: Log the KMS structure
->       benchmarks/kms_fb_stress: Move the stress procedure to its own func=
-tion
->       benchmarks/kms_fb_stress: Free resources on the stress procedure
->       benchmarks/kms_fb_stress: Don't paint the FB's if the format is DRM=
-_FORMAT_RGB565
->       benchmarks/kms_fb_stress: Test every possible format combinations
->       benchmarks/kms_fb_stress: Add command line options to pin the plane=
-s or writeback formats
->=20
->  benchmarks/kms_fb_stress.c | 342 ++++++++++++++++++++++++++++++++++++---=
-------
->  1 file changed, 273 insertions(+), 69 deletions(-)
-> ---
-> base-commit: 32369affc1fdb8194c4e7274d1d4dfd74f4aae88
-> change-id: 20240226-kms_fb_stress-dev-c93ae176f901
->=20
-> Best regards,
-
-
---Sig_/IUnZDliRLaS9uMhW2ITMZ6V
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmX7A8kACgkQI1/ltBGq
-qqcBSBAAmTqMQvJa3C6ocif8nu//WL/fNKqLuWuSSY7JMVrPBrzZElL+QGprQzlt
-yTkFwKEsP4Qwmd2sMnXwZSTnT0/p/UVeu31aPGygF2JBpnQdkfdujtRyaQwQgnw5
-raLMduCQBvgWLkwTW6VSVXbO1JbkcA7qBTcmLjoOF5PFbiR2GwmFBuZGSC6RdJH0
-6l/+XDLfexy4ie28r+Wpm/IRrbAtcRDK2+VZeNx4fm3F3pyFq1KXToFJy5e4HE5F
-Rsr+bf48y6dYYCBeIy4mqQ3R5D5I4oy95VcLzrCHMIVTEpIU4XmoenrSATYUlYIC
-v9xLU0EJxLKrPVz7bJCxS4lK/d95SXg86SgTt+sNCPzpeFZlRAsvueSl4BqbuJdP
-Ky3/Yp9NyXAeb6QtdNmA6ed4UOKgbh3UvgqIcQxQDdRlVQOGa/2BMpSvrPrctNLb
-oN+nJBozqT8pOAEpJwjxASiMqUpDDAS7U3VFGUU2eAE20+evMCXJoDDJ0xvQci78
-GPJgXWuI8C/7Ein9Va/B71IowZWGf70gscWuCuL3duWMJwnBV/Y6Zyqk6aHpYvKm
-9h8mvOC3UVpYpivi1pQ+kV3E55qJbqIIU/sPpmnAQB0y9ez+NdeDfKOFIrFBjiaP
-JuLCX2Shz2oxd61yhv79jqGuLBYhsJ2Gogymm4zQ38vyOzz2VXc=
-=3Sza
------END PGP SIGNATURE-----
-
---Sig_/IUnZDliRLaS9uMhW2ITMZ6V--
