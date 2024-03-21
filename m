@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ACF8C54E68
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 15:39:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9C50C54E68
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 15:40:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E8C4110ECC4;
-	Thu, 21 Mar 2024 15:39:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3FACD10ECCA;
+	Thu, 21 Mar 2024 15:40:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UfCQ01t1";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cTXh3B0J";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C67410ECCA
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 15:39:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7194810ECCA
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 15:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711035596; x=1742571596;
+ t=1711035605; x=1742571605;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=T4moPWjz/f2Bn7r8csLKKoRRgTnY1nEfI/XCBUwn2fw=;
- b=UfCQ01t1MhhRalWtY4SS3PeJF6fQK5HECXs3GqZjTNFVgCtVebEr/2Mw
- Yg4ZhP842GHcewMKYxx6AfVLA4BvDcJs/qL3EGsXKJQ+c/G5zyulbMreA
- PmuSbv3IWRFjyvlmJR7dF6gAqFiN2VLxkCLa0pR0W+L7ycuy3AoJV23IT
- +PjhS7bUcgoTmVMLpUOyVR/iFg6wfxk01GOElqJLymwKPsQBxT6GtA4de
- ZVwzfCVtWdv0gdycrVmdHAyB93uX3FjgxWWL1FuX0NeZiMT4xETIq+ZYP
- btKikXcnbDYHefv2CST0UPoVqBl5EkBbf/ovV8vSOxBXaAYe2TaZ2Uv74 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="6146376"
+ bh=VNBjWeBcvAnnv/P47h3V89pygDW3leT+Q1Z7+22JgPQ=;
+ b=cTXh3B0JIfLM2gpk/zo+w3ffd3bvGcrGsvahfjHjAcvfSA6rViJDqF1/
+ KNixiyusJJ84elM6rynEU9wRAEghorZGn7h3VhGJAJxXXvb1J07IuJ82l
+ Q1dXpVzMhlDTmwGV1Rt29/ucMqNmr0irbhiUcJJHLjquHaRgPOiNzktFj
+ +F8/BNjOsLrzCzQr7hxMvxuWue97cDFRkYCQR16urO3DDtD9GwuLf9iGh
+ bWHiTurKE9LOqRL7VkKonGwgWhicJS7NPEwvFo2FFwM01adrwGsMaIXyi
+ F7Jp4Umfn2bZ3RtmWtQ2OU/7pYl2iWbzuPrBYYcDV0iMdtBZnM7chwX4k g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="6146392"
 X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
-   d="scan'208";a="6146376"
+   d="scan'208";a="6146392"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 08:39:56 -0700
+ 21 Mar 2024 08:40:05 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="19266813"
+X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="19266817"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 08:39:54 -0700
+ 21 Mar 2024 08:40:03 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Subject: [PATCH i-g-t v5 05/24] tests/intel: Add tests to Compute subcategory
-Date: Thu, 21 Mar 2024 15:38:28 +0000
-Message-Id: <20240321153847.1787625-6-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v5 06/24] tests/intel: Introduce GPGPU subcategory
+Date: Thu, 21 Mar 2024 15:38:29 +0000
+Message-Id: <20240321153847.1787625-7-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240321153847.1787625-1-katarzyna.piecielska@intel.com>
 References: <20240321153847.1787625-1-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,74 +68,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's add to Compute subcategory:
- - tests/intel/gem_compute.c
- - tests/intel/gem_vm_create.c
+Let's introduce GPGPU subcategory.
 
-v2: Make Sub-category/Functionality/Feature unique values. (Kamil)
+v2: functionality s/gpgpu/gpgpu_fill/ to not trouble automation tools
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/intel/gem_compute.c         | 2 +-
- tests/intel/gem_ctx_persistence.c | 2 +-
- tests/intel/gem_vm_create.c       | 7 ++++---
- 3 files changed, 6 insertions(+), 5 deletions(-)
+ tests/intel/gem_gpgpu_fill.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel/gem_compute.c b/tests/intel/gem_compute.c
-index 8d0214c4d..8bd9635ae 100644
---- a/tests/intel/gem_compute.c
-+++ b/tests/intel/gem_compute.c
-@@ -6,7 +6,7 @@
+diff --git a/tests/intel/gem_gpgpu_fill.c b/tests/intel/gem_gpgpu_fill.c
+index ac283620e..3a6d66b35 100644
+--- a/tests/intel/gem_gpgpu_fill.c
++++ b/tests/intel/gem_gpgpu_fill.c
+@@ -51,13 +51,13 @@
  /**
-  * TEST: Check compute-related functionality
-  * Category: Hardware building block
-- * Sub-category: compute
-+ * Sub-category: Compute
-  * Test category: functionality test
-  * Run type: BAT
-  */
-diff --git a/tests/intel/gem_ctx_persistence.c b/tests/intel/gem_ctx_persistence.c
-index 3f10c0fa3..6528e0f9c 100644
---- a/tests/intel/gem_ctx_persistence.c
-+++ b/tests/intel/gem_ctx_persistence.c
-@@ -47,7 +47,7 @@
- #include "sw_sync.h"
- /**
-  * TEST: gem ctx persistence
-- * Feature: context
-+ * Feature: context feature
+  * TEST: gem gpgpu fill
   * Category: Server
-  * Functionality: context
-  * Sub-category: Compute
-diff --git a/tests/intel/gem_vm_create.c b/tests/intel/gem_vm_create.c
-index 8834c987f..cb73828da 100644
---- a/tests/intel/gem_vm_create.c
-+++ b/tests/intel/gem_vm_create.c
-@@ -30,10 +30,11 @@
- /**
-  * TEST: gem vm create
-  * Category: Server
-- * Functionality: context management
+- * Functionality: command submission
 - * Run type: FULL
-+ * Functionality: context
-  * Sub-category: Compute
-+ * Feature: mapping
+- * Sub-category: Compute
++ * Functionality: gpgpu_fill
++ * Sub-category: GPGPU
   * Test category: GEM_Legacy
++ * Feature: compute
 + * Run type: FULL
   *
-  * SUBTEST: create-ext
-  * Feature: mapping
-@@ -48,7 +49,7 @@
-  * Feature: mapping
-  *
-  * SUBTEST: isolation
-- * Feature: context, mapping
-+ * Feature: context feature, mapping
+  * SUBTEST: basic
+- * Feature: compute
   */
  
- static int vm_create_ioctl(int i915, struct drm_i915_gem_vm_control *ctl)
+ #define WIDTH 64
 -- 
 2.34.1
 
