@@ -4,49 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8410EC54E58
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 15:39:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ACF8C54E68
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 15:39:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D72F110ECCE;
-	Thu, 21 Mar 2024 15:39:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E8C4110ECC4;
+	Thu, 21 Mar 2024 15:39:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QFjae1EP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UfCQ01t1";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21D4610ECC4
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 15:39:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C67410ECCA
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 15:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711035587; x=1742571587;
+ t=1711035596; x=1742571596;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=rIz2XDocHK9C3HSMCuJ7jUBhSNUaPPXSSGu1FopILjw=;
- b=QFjae1EPniZQvx/ImJFuxNr7j7slonOo49PWzA6ONnASILXy8TDgP20v
- Ha/CbDk0q2oEOdC5rQ7fSWGYPkoC53afcY7egynmOU8yusFOU0qHJNVWo
- OxvMBvF2QwV8QkFZANGyww62lKzKpUoEWyMjib6dcjWEL3LMEEcylQ1b7
- NyHblTNCifGVAtIWO/c4L9TxDaiJGGkZM6iS+Ml2IVcA2pJSBjpWSAZgk
- UBOxMsje7Il1B+Z67W7VD/LOf9ci+sFEiY9sQp5PqCOHLikdRrSNCCx4l
- dlpR7QSZ8PaoKghjOhmwdmyZYY78qrXiFF3u527CnlOFAIK/aGLXr9f99 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="6146365"
+ bh=T4moPWjz/f2Bn7r8csLKKoRRgTnY1nEfI/XCBUwn2fw=;
+ b=UfCQ01t1MhhRalWtY4SS3PeJF6fQK5HECXs3GqZjTNFVgCtVebEr/2Mw
+ Yg4ZhP842GHcewMKYxx6AfVLA4BvDcJs/qL3EGsXKJQ+c/G5zyulbMreA
+ PmuSbv3IWRFjyvlmJR7dF6gAqFiN2VLxkCLa0pR0W+L7ycuy3AoJV23IT
+ +PjhS7bUcgoTmVMLpUOyVR/iFg6wfxk01GOElqJLymwKPsQBxT6GtA4de
+ ZVwzfCVtWdv0gdycrVmdHAyB93uX3FjgxWWL1FuX0NeZiMT4xETIq+ZYP
+ btKikXcnbDYHefv2CST0UPoVqBl5EkBbf/ovV8vSOxBXaAYe2TaZ2Uv74 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="6146376"
 X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
-   d="scan'208";a="6146365"
+   d="scan'208";a="6146376"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 08:39:46 -0700
+ 21 Mar 2024 08:39:56 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="19266807"
+X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="19266813"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 08:39:45 -0700
+ 21 Mar 2024 08:39:54 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Subject: [PATCH i-g-t v5 04/24] tests/intel: Let's introduce Workarounds
- subcategory
-Date: Thu, 21 Mar 2024 15:38:27 +0000
-Message-Id: <20240321153847.1787625-5-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v5 05/24] tests/intel: Add tests to Compute subcategory
+Date: Thu, 21 Mar 2024 15:38:28 +0000
+Message-Id: <20240321153847.1787625-6-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240321153847.1787625-1-katarzyna.piecielska@intel.com>
 References: <20240321153847.1787625-1-katarzyna.piecielska@intel.com>
@@ -67,67 +66,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There is gem_workaround test that deserves it's own subcategory.
+Let's add to Compute subcategory:
+ - tests/intel/gem_compute.c
+ - tests/intel/gem_vm_create.c
 
-v2: Make Sub-category/Functionality/Feature unique values (Kamil)
+v2: Make Sub-category/Functionality/Feature unique values. (Kamil)
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 ---
- tests/intel/gem_workarounds.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ tests/intel/gem_compute.c         | 2 +-
+ tests/intel/gem_ctx_persistence.c | 2 +-
+ tests/intel/gem_vm_create.c       | 7 ++++---
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/tests/intel/gem_workarounds.c b/tests/intel/gem_workarounds.c
-index d83c0a1db..682fc3163 100644
---- a/tests/intel/gem_workarounds.c
-+++ b/tests/intel/gem_workarounds.c
-@@ -35,9 +35,9 @@
+diff --git a/tests/intel/gem_compute.c b/tests/intel/gem_compute.c
+index 8d0214c4d..8bd9635ae 100644
+--- a/tests/intel/gem_compute.c
++++ b/tests/intel/gem_compute.c
+@@ -6,7 +6,7 @@
  /**
-  * TEST: gem workarounds
-  * Category: Infrastructure
-- * Feature: workarounds
-- * Functionality: workarounds
-- * Sub-category: Context
-+ * Feature: workaround
+  * TEST: Check compute-related functionality
+  * Category: Hardware building block
+- * Sub-category: compute
++ * Sub-category: Compute
+  * Test category: functionality test
+  * Run type: BAT
+  */
+diff --git a/tests/intel/gem_ctx_persistence.c b/tests/intel/gem_ctx_persistence.c
+index 3f10c0fa3..6528e0f9c 100644
+--- a/tests/intel/gem_ctx_persistence.c
++++ b/tests/intel/gem_ctx_persistence.c
+@@ -47,7 +47,7 @@
+ #include "sw_sync.h"
+ /**
+  * TEST: gem ctx persistence
+- * Feature: context
++ * Feature: context feature
+  * Category: Server
+  * Functionality: context
+  * Sub-category: Compute
+diff --git a/tests/intel/gem_vm_create.c b/tests/intel/gem_vm_create.c
+index 8834c987f..cb73828da 100644
+--- a/tests/intel/gem_vm_create.c
++++ b/tests/intel/gem_vm_create.c
+@@ -30,10 +30,11 @@
+ /**
+  * TEST: gem vm create
+  * Category: Server
+- * Functionality: context management
+- * Run type: FULL
 + * Functionality: context
-+ * Sub-category: Workarounds
+  * Sub-category: Compute
++ * Feature: mapping
   * Test category: GEM_Legacy
-  * Run type: FULL
++ * Run type: FULL
   *
-@@ -45,11 +45,14 @@
-  * SUBTEST: basic-read-context
-  * SUBTEST: basic-read-fd
-  * SUBTEST: hibernate-resume
-- * Feature: hibernate, workarounds
-+ * Feature: hibernate, workaround
-+ *
-  * SUBTEST: hibernate-resume-context
-- * Feature: hibernate, workarounds
-+ * Feature: hibernate, workaround
-+ *
-  * SUBTEST: hibernate-resume-fd
-- * Feature: hibernate, workarounds
-+ * Feature: hibernate, workaround
-+ *
-  * SUBTEST: reset
-  * SUBTEST: reset-context
-  * SUBTEST: reset-fd
-@@ -59,12 +62,12 @@
+  * SUBTEST: create-ext
+  * Feature: mapping
+@@ -48,7 +49,7 @@
+  * Feature: mapping
   *
-  * SUBTEST: suspend-resume-context
-  * Description: Test to verify gem WA registers during suspend-resume
-- * Feature: suspend, workarounds
-+ * Feature: suspend, workaround
-  * Test category: suspend
-  *
-  * SUBTEST: suspend-resume-fd
-  * Description: Test to verify gem WA registers during suspend-resume
-- * Feature: suspend, workarounds
-+ * Feature: suspend, workaround
-  * Test category: suspend
+  * SUBTEST: isolation
+- * Feature: context, mapping
++ * Feature: context feature, mapping
   */
  
+ static int vm_create_ioctl(int i915, struct drm_i915_gem_vm_control *ctl)
 -- 
 2.34.1
 
