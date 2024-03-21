@@ -4,44 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44BBAC54E58
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 11:28:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 104B5C54E58
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 11:28:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E1AEF10E75F;
-	Thu, 21 Mar 2024 11:28:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9429910E76A;
+	Thu, 21 Mar 2024 11:28:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XTsZTUye";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lFGNfWZ6";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 91DD110E570
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 11:28:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6558B10E76A
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 11:28:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711020517; x=1742556517;
+ t=1711020519; x=1742556519;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=4xQ1pW/TEUTJ8py0ULaNi1NyB28lctn5MfCXiAwQQgI=;
- b=XTsZTUyes46kERDUxYQUAc31tAExU6S/RSeXj4RzaqoeF98nORMh946h
- ytkScC3QGXd7qSCefSNAziucphsbn+x/D6a1E61VbPtBNjbyn3hIeIei3
- YyyvPl37FnnHAirAuWdIstk6sexoJpoTf9cj3CocS6ubzSCGCpnSEwu/N
- 9uvq0bT2owNOd9qfbmEe2srj0tcXI7odiTGSSQI/aAKgU+Wb2meSTkTv/
- NnQjJQIF8f9DWjyeIB1xlvZYfdTs3mJlSaciWvlbibsTOLe/lpQBddjgC
- BSvlP7zAIOACHViLkUd0pSRGECwXqpv3/2ElmOZRm2b9YHn656oh6NW3m w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="17140071"
-X-IronPort-AV: E=Sophos;i="6.07,142,1708416000"; d="scan'208";a="17140071"
+ bh=sPfnsH3yz0u2yjp41odvUY8twqTfIG3b0VLdp+56uyw=;
+ b=lFGNfWZ6NaodRLEEKxKte/0wpWBRBVHG/RErpfZkse3SCgZeCulPFtHY
+ MslJaLJPe5QkXqL3Ty+bJjI8nzSQU81+dLSK0r4Y6DZ4bHD4Vpyz4aMpl
+ fCggxru8Wy7uIo+dqs1WhihzRBpx3ZktSj0+RwHLkOdlLQwCErYTY0dYk
+ 9jc5z79iFihFCIv5nj2P55qSbF3sNe3wO5gN4xC/0kkdunaATtJnFlvQ5
+ fnkgSDVW3DTEkprueOsNeiS5MRW9qrSjiy+omRrOS0yZTN3W1dK/hiQ1y
+ FNUpNB4ELYvpySQCzhDFaBi/5VJqRuLW2C7LWnenIaxIk9rNaO5mB2Ttc Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="17140092"
+X-IronPort-AV: E=Sophos;i="6.07,142,1708416000"; d="scan'208";a="17140092"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 04:28:37 -0700
+ 21 Mar 2024 04:28:39 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,142,1708416000"; d="scan'208";a="15119384"
+X-IronPort-AV: E=Sophos;i="6.07,142,1708416000"; d="scan'208";a="15119408"
 Received: from gfx2.iind.intel.com ([10.145.169.154])
- by orviesa008.jf.intel.com with ESMTP; 21 Mar 2024 04:28:36 -0700
+ by orviesa008.jf.intel.com with ESMTP; 21 Mar 2024 04:28:38 -0700
 From: sai.gowtham.ch@intel.com
 To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
  sai.gowtham.ch@intel.com
-Subject: [PATCH i-g-t 2/3] lib/xe/xe_spin: Add support to store/write timestamp
-Date: Thu, 21 Mar 2024 16:57:37 +0530
-Message-Id: <20240321112738.8703-3-sai.gowtham.ch@intel.com>
+Subject: [PATCH i-g-t 3/3] tests/intel/xe_exec_compute_mode: Test to validate
+ LR mode
+Date: Thu, 21 Mar 2024 16:57:38 +0530
+Message-Id: <20240321112738.8703-4-sai.gowtham.ch@intel.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20240321112738.8703-1-sai.gowtham.ch@intel.com>
 References: <20240321112738.8703-1-sai.gowtham.ch@intel.com>
@@ -65,67 +66,114 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Store timestamp on demand in the spinner to allow user code verify
-is it still running.
+Validate job which is executed with LR mode flag on VM runs on GPU
+long enough and is not prematurely killed.
 
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/xe/xe_spin.c | 12 ++++++++++++
- lib/xe/xe_spin.h |  2 ++
- 2 files changed, 14 insertions(+)
+ tests/intel/xe_exec_compute_mode.c | 81 ++++++++++++++++++++++++++++++
+ 1 file changed, 81 insertions(+)
 
-diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index 1ca54ea19..2c9b5848a 100644
---- a/lib/xe/xe_spin.c
-+++ b/lib/xe/xe_spin.c
-@@ -72,6 +72,7 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
- 	uint64_t end_addr = opts->addr + offsetof(struct xe_spin, end);
- 	uint64_t ticks_delta_addr = opts->addr + offsetof(struct xe_spin, ticks_delta);
- 	uint64_t pad_addr = opts->addr + offsetof(struct xe_spin, pad);
-+	uint64_t timestamp_addr = opts->addr + offsetof(struct xe_spin, timestamp);
- 	int b = 0;
+diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
+index 7dad71509..2ba94d2c6 100644
+--- a/tests/intel/xe_exec_compute_mode.c
++++ b/tests/intel/xe_exec_compute_mode.c
+@@ -400,6 +400,84 @@ static void non_block(int fd, int expect)
+ 	xe_vm_destroy(fd, vm);
+ }
  
- 	spin->start = 0;
-@@ -98,6 +99,17 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
- 	if (opts->preempt)
- 		spin->batch[b++] = (0x5 << 23);
- 
-+	if (opts->write_timestamp) {
-+		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
-+		spin->batch[b++] = CTX_TIMESTAMP;
-+		spin->batch[b++] = CS_GPR(NOW_TS);
++#define LR_SPINNER_TIME 30
++/**
++ * SUBTEST: lr-mode-workload
++ * Description: Stress LR mode workload for 30s.
++ * Test category: functionality test
++ */
++static void lr_mode_workload(int fd)
++{
++	struct drm_xe_sync sync = {
++		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.timeline_value = USER_FENCE_VALUE,
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++	struct xe_spin *spin;
++	struct drm_xe_engine *engine;
++	uint64_t vm_sync;
++	size_t bo_size;
++	uint32_t vm;
++	uint32_t exec_queue;
++	uint64_t spin_addr;
++	uint64_t ahnd;
++	uint32_t bo;
++	uint32_t ts_1, ts_2;
 +
-+		spin->batch[b++] = MI_STORE_REGISTER_MEM_GEN8 | MI_SRM_CS_MMIO;
-+		spin->batch[b++] = CS_GPR(NOW_TS);
-+		spin->batch[b++] = timestamp_addr;
-+		spin->batch[b++] = timestamp_addr >> 32;
-+	}
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
++	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
++	bo_size = xe_bb_size(fd, sizeof(*spin));
++	engine = xe_engine(fd, 1);
++	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, engine->instance.gt_id), 0);
++	spin = xe_bo_map(fd, bo, bo_size);
 +
- 	if (opts->ctx_ticks) {
- 		spin->batch[b++] = MI_LOAD_REGISTER_IMM(1) | MI_LRI_CS_MMIO;
- 		spin->batch[b++] = CS_GPR(NOW_TS) + 4;
-diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-index 87b7c1716..d65adb05c 100644
---- a/lib/xe/xe_spin.h
-+++ b/lib/xe/xe_spin.h
-@@ -29,6 +29,7 @@ struct xe_spin_opts {
- 	uint64_t addr;
- 	bool preempt;
- 	uint32_t ctx_ticks;
-+	bool write_timestamp;
- };
++	exec_queue = xe_exec_queue_create(fd, vm, &engine->instance, 0);
++	spin_addr = intel_allocator_alloc_with_strategy(ahnd, bo, bo_size, 0,
++							ALLOC_STRATEGY_LOW_TO_HIGH);
++
++	sync.addr = to_user_pointer(&vm_sync);
++	xe_vm_bind_async(fd, vm, engine->instance.gt_id, bo, 0, spin_addr, bo_size, &sync, 1);
++	xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, ONE_SEC);
++
++	xe_spin_init_opts(spin, .addr = spin_addr, .write_timestamp = true);
++	sync.addr = spin_addr + (char *)&spin->exec_sync - (char *)spin;
++	exec.exec_queue_id = exec_queue;
++	exec.address = spin_addr;
++	xe_exec(fd, &exec);
++	xe_spin_wait_started(spin);
++
++	/* Collect and check timestamps before stopping the spinner */
++	sleep(LR_SPINNER_TIME);
++	ts_1 = spin->timestamp;
++	sleep(1);
++	ts_2 = spin->timestamp;
++	igt_assert(ts_1 != ts_2);
++
++	xe_spin_end(spin);
++	xe_wait_ufence(fd, &spin->exec_sync, USER_FENCE_VALUE, 0, ONE_SEC);
++
++	/* Check timestamps to make sure spinner is stopped */
++	ts_1 = spin->timestamp;
++	sleep(1);
++	ts_2 = spin->timestamp;
++	igt_assert(ts_1 == ts_2);
++
++	sync.addr = to_user_pointer(&vm_sync);
++	xe_vm_unbind_async(fd, vm, 0, 0, spin_addr, bo_size, &sync, 1);
++	xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, ONE_SEC);
++	munmap(spin, bo_size);
++	gem_close(fd, bo);
++
++	xe_exec_queue_destroy(fd, exec_queue);
++	xe_vm_destroy(fd, vm);
++	put_ahnd(ahnd);
++}
++
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -460,6 +538,9 @@ igt_main
+ 	igt_subtest("non-blocking")
+ 		non_block(fd, EWOULDBLOCK);
  
- /* Mapped GPU object */
-@@ -39,6 +40,7 @@ struct xe_spin {
- 	uint32_t end;
- 	uint32_t ticks_delta;
- 	uint64_t exec_sync;
-+	uint32_t timestamp;
- };
++	igt_subtest("lr-mode-workload")
++		lr_mode_workload(fd);
++
  
- igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
+ 	igt_fixture
+ 		drm_close_driver(fd);
 -- 
 2.39.1
 
