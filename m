@@ -4,93 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C7F6C54E58
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 02:07:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC079C54E58
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 03:09:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B2D3A10F637;
-	Thu, 21 Mar 2024 02:07:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 314B710EE18;
+	Thu, 21 Mar 2024 03:09:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="SH9r31qc";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="l1JBWoDQ";
 	dkim-atps=neutral
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2061.outbound.protection.outlook.com [40.107.243.61])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33F8010F637
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 02:07:05 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Zim/Ghk3mHgJVWlGF3EVHefIglIoozZa06I5vhfclo+p8rXyXcSEcbzhVXN1Q64uTm2VYtSBajaKb7FT2KTcS+9ymFW1BCWEAo5VoMbxMEBehLQAoCeYPtT/KGmxq8RE3GDYzg3CosYPJAxy+Oe5IElTQPUGDpWGDasZa9D3zlVUEpnkX35asttG1dxNFkYkHlJeUX0FHJgq9sYl3pHzOfbx54FEHwqfKO+Gjs/WIg96DpCZ201eCGHVDgAUpKxLtlzSVU4OTlcq7DdtAFRi1hMvBUARklmpREn8UCuh3kWy6aYIhQJHqMoHvcteTZIbIv/wEI9lXlH5M/JIfdIsbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8qSDAgqWvPbngkkf/MJQ6XZ95hg6Y2fFqI6XQfLCHAA=;
- b=RAwwRkllXFHW6UQlHKJnFcQagiw3xzsHlW4giuOnYYKmKF2O5ZkMZR2NBWrvh958g7Oz8QmAiFiOUw/JzmNZjRSkSAGa2xxE9kcmg7LFv/HM5JMLXR4bz84a5rcg4ijms/am+6Mo9SLpzkJ2du8iJHs+WH+w1v7BAOchmC9a9jJZzX/BbS8EMn2XLipBSF/2PV8Sbly9upzxPb+a3ChQHUxzdaceirDw+6lEFkUeWR/nHylG2Gn8wtrB9vbFDQW3a02GLDA/T9xX4dCW49FaNm4HsL4VjfwM7wTwG34ZkvSzL0yhcj9BaUSSlPxoAM0HF3djceFtc4jfwJMGvmFu7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8qSDAgqWvPbngkkf/MJQ6XZ95hg6Y2fFqI6XQfLCHAA=;
- b=SH9r31qcswFS4viwleMmDfVps8+UOBrt81HtKhlWo8InkMTAEpc7pCYLKt+ivHe0IvUAmACTCiDfYoC13aIQmWqD+jUcP2rQ+Cmj4Yi87K0vA0VhUSVH+13/z+LZVpw7l5tyjbMgazEHCdiylkuI+3d6RtAdakti7tA9xnbqNAU=
-Received: from DM6PR07CA0055.namprd07.prod.outlook.com (2603:10b6:5:74::32) by
- SA3PR12MB9089.namprd12.prod.outlook.com (2603:10b6:806:39f::7) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7386.31; Thu, 21 Mar 2024 02:06:58 +0000
-Received: from DS1PEPF0001708E.namprd03.prod.outlook.com
- (2603:10b6:5:74:cafe::9) by DM6PR07CA0055.outlook.office365.com
- (2603:10b6:5:74::32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.27 via Frontend
- Transport; Thu, 21 Mar 2024 02:06:58 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS1PEPF0001708E.mail.protection.outlook.com (10.167.17.134) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7409.10 via Frontend Transport; Thu, 21 Mar 2024 02:06:57 +0000
-Received: from dev.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 20 Mar
- 2024 21:06:56 -0500
-From: Alex Hung <alex.hung@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: <rodrigo.siqueira@amd.com>, <harry.wentland@amd.com>,
- <hersenxs.wu@amd.com>, Alex Hung <alex.hung@amd.com>
-Subject: [PATCH] tests/kms: Skip amdgpu's writeback connectors on panning tests
-Date: Wed, 20 Mar 2024 20:06:46 -0600
-Message-ID: <20240321020646.844372-1-alex.hung@amd.com>
-X-Mailer: git-send-email 2.34.1
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com
+ [209.85.208.172])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 04AAC10EE18
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 03:09:25 +0000 (UTC)
+Received: by mail-lj1-f172.google.com with SMTP id
+ 38308e7fff4ca-2d48f03a8bbso14861421fa.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2024 20:09:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1710990564; x=1711595364; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MUioduBdLUazsxO28UIWDZyXElRa4JZ8tu49q43RI04=;
+ b=l1JBWoDQJ1BJh7ZveAJda7V0uqpxnQjPBMqB+lbL1/JpHlSd/jXnM7tpUNzvofBPfg
+ es8XRkX6yJzj7JMfDufnKJLTFmPQR/DOCROeLhybb8UJLyvCtZFV9W2AhihDphAswu07
+ XY8QCYkKYJMCaG0fppE73skfccY3MBU0i/SgjJ8Dh47sramHBXLl75Sx7+4C1hHZaJft
+ qYg3iAFdi89aQydoji3ZotzC0S1P1Ec2NwJGbvlmxr9ABLsjRX0SgccHpmMzK4DRYFQe
+ TXg2A7XyYMmfxItN5zKhUaZ0XRq0NeLDu9VpJKrCafhosV+nfa5tpqrBb/Mq9ZqvLuGD
+ 6Zdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710990564; x=1711595364;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=MUioduBdLUazsxO28UIWDZyXElRa4JZ8tu49q43RI04=;
+ b=SxhwTpjc6J135JoNnD0dAOxhDnW3mesur0HsOv5mgI7pXOACdE+aLEbUR3xJjoqWKy
+ fSHhYGGClg17mqN9OZZjZYJKtYwssLqSUVepo5BSw80QjooNO7/WskFY/m/WGfDbt9Mu
+ tkupHdmOPai0V9OmtCX022pAVrOwgRyT7I3IQXqqezCddMLFe2Uk7C5AG9c5dOSBJox6
+ owhHTxY/1VX9VoH1aCift5pTnH0PJ8/qbX4py7VVbbNaN8F244uHF0Lsy7OTAEpF5R/v
+ ipOLPp6QDeG6E/o02Velo9n87LdVgVJ1THdcDA8uvWc1ujTDR6DA2HOIVUk8t6D9352N
+ RS2w==
+X-Gm-Message-State: AOJu0YxLUyehJVzmB6+h0pmVsQ436SIYADsz/A7Z3Mcfxb7uU7aejnSU
+ MeAY70yFY1QV0uOChD3RPmR6l0vd6gHQ44WVpPZPZW3z2OiT2jkqowdHZPWlGNeUhRt9aC3PmFs
+ tK5PrhwM1eerosWX5Zb4sUsxyj1o=
+X-Google-Smtp-Source: AGHT+IFcHqdOb0u8eNZcgeEWdjEYt7qMrDExizBNH1rtZRiGhggyy546io/+ponfZwzRlTfLdFDW7M1H4ZKSGJ6bJ3g=
+X-Received: by 2002:a2e:2e03:0:b0:2d4:91c4:fca8 with SMTP id
+ u3-20020a2e2e03000000b002d491c4fca8mr487072lju.11.1710990563526; Wed, 20 Mar
+ 2024 20:09:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF0001708E:EE_|SA3PR12MB9089:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6d1cafbd-c696-4f9d-048c-08dc494b96b6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: hQoGGTSv9OK+OFnadhnbul/bj/0XWTRoXh+uPXc1Eo/bcg5XX6WpsnxJMWml8KUAO8KQux434xKLJ8Yd5GHp4Dq0BFR5scCDzCqipSaT7YKwUO2aLo2dROY+7Fss0lLM8/GKS4ThBTzyLwHN1mTnWnfugaeO5WNa4zym06o7qk9WvNkdLvNDEsK03v3/WfRaiUrFxQOGzQuUt9rbkZ+2mKrhX4jUbiz/nEPmlRuT5Ma/LF6i4kAwRiPe3c2n/B8XrT4r8fcxvUUeKA4LZ5NgtM/Nk4lqWppbNW1OALwufDw4larZP6HV37exvNLlmwnx5kkKvmOIR7RcWZaRBF4cDefC6nbW/hkUHmm/cJdgiwg5beYZ8ximYeodkmHwgoq3fp08/pQ464HDn1Hd95o5FLMTAKDGH3+/F0ekBrelE6YJLU2tsUeCP5sZQQW1z3Af8nOqXbghFUAvrXrs+hLx3217vkEHRiqgnSrIZpACZbFpugjJ8SQhtWOFrLMO5D5WGEHGfNishRBDy9odU3t21HObG8ApXvHQK+IsU6oaXOeDhh0cVGO2/FOoQd+2/XRNg+Q5r/drwXSQov+V7IPqDDXDV6lqEJ0ebEYJ3JOyBuhMToxZg9Ce1arHn8ovQJ8VfNsEG5OYbPExRbC9fuS9OkdJ9TWLflwKnTu5B9rlR/6mgp7Y9+sFRba6BClfnwoxbQdHHCtm2GAcdP6Al0xiikZAinpcKxKD3+GVJ4IiT8ShKJH1IvrBJ0vVPkIw3DEm
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(36860700004)(376005)(82310400014)(1800799015); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2024 02:06:57.8716 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d1cafbd-c696-4f9d-048c-08dc494b96b6
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF0001708E.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9089
+References: <20240304221800.1161896-1-mattst88@gmail.com>
+ <20240313090911.27uhiwrd6de256dc@zkempczy-mobl2>
+In-Reply-To: <20240313090911.27uhiwrd6de256dc@zkempczy-mobl2>
+From: Matt Turner <mattst88@gmail.com>
+Date: Wed, 20 Mar 2024 23:09:11 -0400
+Message-ID: <CAEdQ38F2TANoeavq6UvBHE_4kYkeLViNDMY==8cCEKTikdP1Ow@mail.gmail.com>
+Subject: Re: [PATCH i-g-t] lib: Inline igt_x86_features() into ifunc resolvers
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,31 +77,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-With commit ff1d9a601 writeback connector will be enabled. The
-AMDGPU writeback connector is to be skipped.
+On Wed, Mar 13, 2024 at 5:09=E2=80=AFAM Zbigniew Kempczy=C5=84ski
+<zbigniew.kempczynski@intel.com> wrote:
+>
+> On Mon, Mar 04, 2024 at 05:16:40PM -0500, Matt Turner wrote:
+> > Quoting https://sourceware.org/glibc/wiki/GNU_IFUNC
+> >
+> > > When LD_BIND_NOW=3D1 or -Wl,z,now is in effect symbols must be
+> > > immediately resolved at startup. In cases where an external function
+> > > call depends needs to be made that may fail if such a call has not
+> > > been initialized yet (PLT-based relocation which is processed later).
+> > > For example calling strlen in an IFUNC resolver built with -Wl,z,now
+> > > may lead to a segfault because the PLT is not yet resolved.
+> >
+> > We cannot rely on function calls through the PLT in ifunc resolvers as
+> > the PLT may not have been initialized yet.
+> >
+> > In practice, this causes crashes when igt is linked with -Wl,-z,now or
+> > when linked with the mold linker.
+> >
+> > To avoid this problem, we do two things:
+> >     1. move igt_x86_features() to igt_x86.h so its definition is
+> >        available to compilation units that call the function.
+> >     2. mark the ifunc resolvers with __attribute__((flatten)) to ensure
+> >        igt_x86_features() is inlined.
+> >
+> > Bug: https://bugs.gentoo.org/788625
+> > Bug: https://bugs.gentoo.org/925348
+> > Signed-off-by: Matt Turner <mattst88@gmail.com>
+>
+> Hi.
+>
+> I started review of your code, but this this touches some linking intrisi=
+cs
+> I'm not familiar with yet so I need more time to explore this. I hope
+> this is not a problem for you.
 
-Signed-off-by: Alex Hung <alex.hung@amd.com>
----
- tests/kms_plane.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 406aecc04..d76b3a8f5 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -482,6 +482,12 @@ test_plane_panning(data_t *data, enum pipe pipe)
- 		drmModeModeInfo *m = &output->config.connector->modes[j__];
- 		uint32_t fb_size = m->hdisplay * m->vdisplay * 4;
- 
-+		if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK &&
-+		   is_amdgpu_device(data->drm_fd)) {
-+			igt_debug("Skipping Writeback connector\n");
-+			continue;
-+		}
-+
- 		/* test allocates 2 double-dim fbs, add one more, to be safe */
- 		if (mem_size && 3 * 4 * fb_size > mem_size) {
- 			igt_debug("Skipping mode %s due to low memory\n", m->name);
--- 
-2.34.1
-
+Do you have any questions I can answer? I tried my best to explain the
+how and the why of the change in the commit message.
