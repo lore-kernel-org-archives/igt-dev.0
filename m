@@ -4,57 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2F60C54E58
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 15:34:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6504FC54E58
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 15:39:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5FE6B10EC04;
-	Thu, 21 Mar 2024 15:34:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EF75110ECAA;
+	Thu, 21 Mar 2024 15:39:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iIveRu+K";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LYS0r08n";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC32C10EC95
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 15:34:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F2CE10ECAA
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 15:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711035242; x=1742571242;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=tFLFWfiE4W8XUUA4fk5z4mL94zGdF7KFFzdzYtwIcFg=;
- b=iIveRu+KOU+/Nui9cq4obYptiQSw7mWh6vbp4I4M6YkjcXrazoDzcywX
- K+y5NPFwNPJwyniLLyaRfuBiyKT8hXgwcqA9XOa8w/82taHGLHnK7jB91
- Ju6r9k7y4+kbGPCePCJV42y82BMdleH7LB2+NMGXBfNcClYtbpAVHRcG9
- UI8dt7GNFvzZCaDIUjowKm20hz9mvN9o2sOWXZhTjDCl49OqCe579Figw
- Xb9580Wf10q8DFs7yQBSYTC5Jn9jLsZ0tFVdL6qMsNwei9hxzj2kWDl6K
- fDt4vQE8aV27QdNVeAQAjBj0C/9WkffEbNMUKGVOmNibNrUYsfiMT0iG4 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="5896437"
+ t=1711035548; x=1742571548;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=JmohqqEAFZ6+NdBBhoKm51FxC2jDnDJhGkWa2epj3z8=;
+ b=LYS0r08nkfiPhoIkFKl9tsUEuGgyNvq6ldpcE1VZnC5p/k/QabfhyLsf
+ tUaDQpcLnggUUYWPCI4kmnlSd5Txb1FqDxwjFyZkEmVNgwp2N6K0sSCVH
+ Rmh5rsnE22EluLhHrNAJw+Qbz2XAymI0Yjr8rljIblI14vvMW0Iq/RH3k
+ AGld7Ex5GU6lRI1xqCxhOSE655agfyxaBILrCsPxmjxBmmTx1D/Nu6OjT
+ EaZa2xYAbn8d9S8pc91TC6SUMPM18aXWeU9LUn9RXZzSHpp7mIZMO0VHu
+ klp/twiYv8D6pe1OQ166tyPvp4o90IuKo8OpliuEk79qBW+HAwZ/l/Jti Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="9795179"
 X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
-   d="scan'208";a="5896437"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 08:34:00 -0700
+   d="scan'208";a="9795179"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2024 08:39:08 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="37662599"
-Received: from maurocar-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.246.3])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 08:33:59 -0700
-Date: Thu, 21 Mar 2024 16:33:56 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Matt Turner <mattst88@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] lib: Inline igt_x86_features() into ifunc resolvers
-Message-ID: <20240321153356.544hbqtwk5fcp7vl@zkempczy-mobl2>
-References: <20240304221800.1161896-1-mattst88@gmail.com>
- <20240313090911.27uhiwrd6de256dc@zkempczy-mobl2>
- <CAEdQ38F2TANoeavq6UvBHE_4kYkeLViNDMY==8cCEKTikdP1Ow@mail.gmail.com>
- <20240321070310.iydocnqqgxxigisz@zkempczy-mobl2>
- <CAEdQ38FeutN1yPkK4ymmeb0YPeg85wo56s61w1wMQr9kPHspZw@mail.gmail.com>
+X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="19255735"
+Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2024 08:39:06 -0700
+From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Chris Wilson <chris@chris-wilson.co.uk>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t v5 00/24] Update test documentation for i915 tests
+Date: Thu, 21 Mar 2024 15:38:23 +0000
+Message-Id: <20240321153847.1787625-1-katarzyna.piecielska@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEdQ38FeutN1yPkK4ymmeb0YPeg85wo56s61w1wMQr9kPHspZw@mail.gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,84 +68,239 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Mar 21, 2024 at 11:02:16AM -0400, Matt Turner wrote:
-> On Thu, Mar 21, 2024 at 3:03 AM Zbigniew Kempczyński
-> <zbigniew.kempczynski@intel.com> wrote:
-> >
-> > On Wed, Mar 20, 2024 at 11:09:11PM -0400, Matt Turner wrote:
-> > > On Wed, Mar 13, 2024 at 5:09 AM Zbigniew Kempczyński
-> > > <zbigniew.kempczynski@intel.com> wrote:
-> > > >
-> > > > On Mon, Mar 04, 2024 at 05:16:40PM -0500, Matt Turner wrote:
-> > > > > Quoting https://sourceware.org/glibc/wiki/GNU_IFUNC
-> > > > >
-> > > > > > When LD_BIND_NOW=1 or -Wl,z,now is in effect symbols must be
-> > > > > > immediately resolved at startup. In cases where an external function
-> > > > > > call depends needs to be made that may fail if such a call has not
-> > > > > > been initialized yet (PLT-based relocation which is processed later).
-> > > > > > For example calling strlen in an IFUNC resolver built with -Wl,z,now
-> > > > > > may lead to a segfault because the PLT is not yet resolved.
-> > > > >
-> > > > > We cannot rely on function calls through the PLT in ifunc resolvers as
-> > > > > the PLT may not have been initialized yet.
-> > > > >
-> > > > > In practice, this causes crashes when igt is linked with -Wl,-z,now or
-> > > > > when linked with the mold linker.
-> > > > >
-> > > > > To avoid this problem, we do two things:
-> > > > >     1. move igt_x86_features() to igt_x86.h so its definition is
-> > > > >        available to compilation units that call the function.
-> > > > >     2. mark the ifunc resolvers with __attribute__((flatten)) to ensure
-> > > > >        igt_x86_features() is inlined.
-> > > > >
-> > > > > Bug: https://bugs.gentoo.org/788625
-> > > > > Bug: https://bugs.gentoo.org/925348
-> > > > > Signed-off-by: Matt Turner <mattst88@gmail.com>
-> > > >
-> > > > Hi.
-> > > >
-> > > > I started review of your code, but this this touches some linking intrisics
-> > > > I'm not familiar with yet so I need more time to explore this. I hope
-> > > > this is not a problem for you.
-> > >
-> > > Do you have any questions I can answer? I tried my best to explain the
-> > > how and the why of the change in the commit message.
-> >
-> > I wanted to prepare better for the discussion - I extracted few
-> > functions on which I'm reproducing segv issue when LD_BIND_NOW=1 is set.
-> > I confirm, GOT doesn't contain valid function addresses so jump goes
-> > to nowhere. I'm pretty sure intel_vbd_decode with LD_BIND_NOW=1 only
-> > reveals the problem, but it lays within linker logic:
-> >
-> > # LD_BIND_NOW=1 LD_PRELOAD=./build/lib/libigt.so.0 LD_DEBUG=all ps
-> >
-> > ps definitely doesn't call igt_half_to_float() which in turn calls
-> > unresolved igt_x86_features@plt. It looks linker first tries to
-> > call all ifunc's to establish addresses, unfortunately it is doing
-> > this before filling GOT. Backtrace shows we're still in _start
-> > from /lib64/ld-linux-x86-64.so.2 so we even didn't get a chance
-> > to get to the main().
-> 
-> Right, exactly. I believe ifuncs are resolved regardless of whether
-> they're used.
-> 
-> > Before I'll give you my ack (I still want to experiment with this
-> > one more day) - may you explain what for you need to bind relocs
-> > immediately? This is slower than lazy binding as it resolves all
-> > PLTs instead resolving only required symbols.
-> 
-> Gentoo/Hardened uses `-z now` to improve security. By binding upfront,
-> the loader can mark the GOT as read-only for a security enhancement.
-> See https://wiki.gentoo.org/wiki/Hardened/Toolchain for more details.
-> 
-> Apparently (according to that page) `-z now` will become the default
-> in standard Gentoo profiles very soon.
+There are many warnings about missing test documentation, so let's fix that.
+While I am already doing that - let's introduce more subcategories and
+functionalities. Additionally adjust categorization for all i915 tests.
 
-I'm not going to block this change. igt_x86_features() is used only in
-few places so there's not a problem to flattenize it. So from me:
+Last patch is removing 'Run type' field from all Intel tests - both XE and i915.
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+v2: Apply review comments: fix commit messages, remove duplicates in Subcategory
+and Functionality (Mauro)
 
---
-Zbigniew
+v3: Fix duplication of name for Obsolete tests (Kamil)
+v4: Make Sub-category/Functionality/Feature unique (Kamil)
+v5: Make Sub-category/Functionality/Feature unique - probaly most of remaining
+duplicates was removed. (Kamil)
+
+Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+
+Katarzyna Piecielska (24):
+  tests: Introduce uapi subcategory
+  tests/intel: Introduce Memory management subcategory
+  tests/intel: Introduce CMD submission subcategory
+  tests/intel: Let's introduce Workarounds subcategory
+  tests/intel: Add tests to Compute subcategory
+  tests/intel: Introduce GPGPU subcategory
+  tests/intel: Introduce Blitter subcategory
+  tests/intel: Introduce FDinfo subcategory
+  tests/intel: Introduce Flat-ccs subcategory
+  tests/intel: Introduce Firmware subcategory
+  tests/intel: Introduce Media subcategory
+  tests/intel: Introduce Render copy subcategory
+  tests/intel: Introduce Obsolete subcategory
+  tests/intel: Introduce Power management subcategory
+  tests/intel: Introduce SysMan subcategory
+  tests: Introduce Core subcategory
+  tests: Introduce Synchronization subcategory
+  tests: Introduce intel-nouveau subcategory
+  tests/intel: Introduce Debugging subcategory
+  tests/intel: Add missing documentation fields in i915_selftest
+  tests/intel: Add more tests to Performance subcategory
+  tests: Update device_reset functionality
+  tests: Add missing documentation fields for SRIOV and Display
+  tests: Remove 'Run type' documentation field
+
+ tests/core_auth.c                            |   4 -
+ tests/core_getclient.c                       |   1 -
+ tests/core_getstats.c                        |   5 +-
+ tests/core_getversion.c                      |   1 -
+ tests/core_hotunplug.c                       |   2 -
+ tests/core_setmaster.c                       |   1 -
+ tests/core_setmaster_vs_auth.c               |   1 -
+ tests/device_reset.c                         |   3 +-
+ tests/dmabuf.c                               |   1 -
+ tests/dmabuf_sync_file.c                     |  17 +
+ tests/drm_mm.c                               |   3 +-
+ tests/drm_read.c                             |  16 +
+ tests/dumb_buffer.c                          |   7 +-
+ tests/intel/api_intel_allocator.c            |   1 -
+ tests/intel/api_intel_bb.c                   |   1 -
+ tests/intel/debugfs_test.c                   |   3 -
+ tests/intel/drm_fdinfo.c                     |   6 +-
+ tests/intel/gem_bad_reloc.c                  |  15 +-
+ tests/intel/gem_barrier_race.c               |   4 +-
+ tests/intel/gem_basic.c                      |   2 -
+ tests/intel/gem_blits.c                      |   1 -
+ tests/intel/gem_busy.c                       |   2 -
+ tests/intel/gem_caching.c                    |   7 +-
+ tests/intel/gem_ccs.c                        |   4 +-
+ tests/intel/gem_close.c                      |   3 +-
+ tests/intel/gem_close_race.c                 |   5 +-
+ tests/intel/gem_compute.c                    |   3 +-
+ tests/intel/gem_create.c                     |  16 +-
+ tests/intel/gem_cs_tlb.c                     |   5 +-
+ tests/intel/gem_ctx_bad_destroy.c            |   7 +-
+ tests/intel/gem_ctx_create.c                 |   7 +-
+ tests/intel/gem_ctx_engines.c                |   7 +-
+ tests/intel/gem_ctx_exec.c                   |   8 +-
+ tests/intel/gem_ctx_freq.c                   |   3 +-
+ tests/intel/gem_ctx_isolation.c              |   1 -
+ tests/intel/gem_ctx_param.c                  |   3 +-
+ tests/intel/gem_ctx_persistence.c            |   3 +-
+ tests/intel/gem_ctx_shared.c                 |   5 +-
+ tests/intel/gem_ctx_sseu.c                   |   4 +-
+ tests/intel/gem_ctx_switch.c                 |   6 +-
+ tests/intel/gem_eio.c                        |   3 +-
+ tests/intel/gem_evict_alignment.c            |   4 +-
+ tests/intel/gem_evict_everything.c           |   4 +-
+ tests/intel/gem_exec_alignment.c             |   5 +-
+ tests/intel/gem_exec_async.c                 |   5 +-
+ tests/intel/gem_exec_await.c                 |   5 +-
+ tests/intel/gem_exec_balancer.c              |   1 -
+ tests/intel/gem_exec_basic.c                 |   1 -
+ tests/intel/gem_exec_big.c                   |   1 -
+ tests/intel/gem_exec_capture.c               |   3 +-
+ tests/intel/gem_exec_create.c                |   2 -
+ tests/intel/gem_exec_endless.c               |   7 +-
+ tests/intel/gem_exec_fair.c                  |   4 +-
+ tests/intel/gem_exec_fence.c                 |  23 +-
+ tests/intel/gem_exec_flush.c                 |   4 +-
+ tests/intel/gem_exec_gttfill.c               |   2 -
+ tests/intel/gem_exec_latency.c               |   4 +-
+ tests/intel/gem_exec_lut_handle.c            |   4 +-
+ tests/intel/gem_exec_nop.c                   |   5 +-
+ tests/intel/gem_exec_parallel.c              |   2 -
+ tests/intel/gem_exec_params.c                |   1 -
+ tests/intel/gem_exec_reloc.c                 |   4 +-
+ tests/intel/gem_exec_schedule.c              |   1 -
+ tests/intel/gem_exec_store.c                 |  18 +-
+ tests/intel/gem_exec_suspend.c               |   6 +-
+ tests/intel/gem_exec_whisper.c               |   5 +-
+ tests/intel/gem_exercise_blt.c               |  15 +-
+ tests/intel/gem_fd_exhaustion.c              |   4 +-
+ tests/intel/gem_fence_thrash.c               |   6 +-
+ tests/intel/gem_fence_upload.c               |   4 +-
+ tests/intel/gem_fenced_exec_thrash.c         |   6 +-
+ tests/intel/gem_flink_basic.c                |   1 -
+ tests/intel/gem_flink_race.c                 |   1 -
+ tests/intel/gem_gpgpu_fill.c                 |   7 +-
+ tests/intel/gem_gtt_cpu_tlb.c                |   4 +-
+ tests/intel/gem_gtt_hog.c                    |   4 +-
+ tests/intel/gem_gtt_speed.c                  |   4 +-
+ tests/intel/gem_huc_copy.c                   |   6 +-
+ tests/intel/gem_linear_blits.c               |   8 +-
+ tests/intel/gem_lmem_evict.c                 |   4 +-
+ tests/intel/gem_lmem_swapping.c              |   6 +-
+ tests/intel/gem_lut_handle.c                 |   4 +-
+ tests/intel/gem_madvise.c                    |   3 +-
+ tests/intel/gem_media_fill.c                 |   6 +-
+ tests/intel/gem_media_vme.c                  |   6 +-
+ tests/intel/gem_mmap.c                       |   5 +-
+ tests/intel/gem_mmap_gtt.c                   |   4 +-
+ tests/intel/gem_mmap_offset.c                |   3 +-
+ tests/intel/gem_mmap_wc.c                    |   4 +-
+ tests/intel/gem_partial_pwrite_pread.c       |   4 +-
+ tests/intel/gem_pipe_control_store_loop.c    |   5 +-
+ tests/intel/gem_ppgtt.c                      |   1 -
+ tests/intel/gem_pread.c                      |   4 +-
+ tests/intel/gem_pread_after_blit.c           |   4 +-
+ tests/intel/gem_pwrite.c                     |   4 +-
+ tests/intel/gem_pwrite_snooped.c             |   4 +-
+ tests/intel/gem_pxp.c                        |   4 +-
+ tests/intel/gem_read_read_speed.c            |   4 +-
+ tests/intel/gem_readwrite.c                  |   4 +-
+ tests/intel/gem_reg_read.c                   |   4 +-
+ tests/intel/gem_render_copy.c                |   4 +-
+ tests/intel/gem_render_copy_redux.c          |   4 +-
+ tests/intel/gem_render_linear_blits.c        |   5 +-
+ tests/intel/gem_render_tiled_blits.c         |   5 +-
+ tests/intel/gem_request_retire.c             |   5 +-
+ tests/intel/gem_reset_stats.c                |   4 +-
+ tests/intel/gem_ringfill.c                   |   6 +-
+ tests/intel/gem_set_tiling_vs_blt.c          |   6 +-
+ tests/intel/gem_set_tiling_vs_gtt.c          |   4 +-
+ tests/intel/gem_set_tiling_vs_pwrite.c       |   4 +-
+ tests/intel/gem_shrink.c                     |   1 -
+ tests/intel/gem_softpin.c                    |   3 -
+ tests/intel/gem_spin_batch.c                 |   1 -
+ tests/intel/gem_streaming_writes.c           |   4 +-
+ tests/intel/gem_stress.c                     |   4 +-
+ tests/intel/gem_sync.c                       |  32 +-
+ tests/intel/gem_tiled_blits.c                |   5 +-
+ tests/intel/gem_tiled_fence_blits.c          |   5 +-
+ tests/intel/gem_tiled_partial_pwrite_pread.c |   4 +-
+ tests/intel/gem_tiled_pread_basic.c          |   4 +-
+ tests/intel/gem_tiled_pread_pwrite.c         |   4 +-
+ tests/intel/gem_tiled_swapping.c             |   4 +-
+ tests/intel/gem_tiled_wb.c                   |   4 +-
+ tests/intel/gem_tiled_wc.c                   |   4 +-
+ tests/intel/gem_tiling_max_stride.c          |   4 +-
+ tests/intel/gem_unfence_active_buffers.c     |   6 +-
+ tests/intel/gem_unref_active_buffers.c       |   3 +-
+ tests/intel/gem_userptr_blits.c              |   1 -
+ tests/intel/gem_vm_create.c                  |   6 +-
+ tests/intel/gem_wait.c                       |   9 +-
+ tests/intel/gem_watchdog.c                   |   4 +-
+ tests/intel/gem_workarounds.c                |  20 +-
+ tests/intel/gen3_mixed_blits.c               |   4 +-
+ tests/intel/gen3_render_linear_blits.c       |   4 +-
+ tests/intel/gen3_render_mixed_blits.c        |   4 +-
+ tests/intel/gen3_render_tiledx_blits.c       |   6 +-
+ tests/intel/gen3_render_tiledy_blits.c       |   6 +-
+ tests/intel/gen7_exec_parse.c                |   4 +-
+ tests/intel/gen9_exec_parse.c                |   6 +-
+ tests/intel/i915_fb_tiling.c                 |   4 +-
+ tests/intel/i915_getparams_basic.c           |   3 +-
+ tests/intel/i915_hangman.c                   |  11 +-
+ tests/intel/i915_module_load.c               |   3 -
+ tests/intel/i915_pciid.c                     |   3 +-
+ tests/intel/i915_pipe_stress.c               |  12 +-
+ tests/intel/i915_pm_freq_api.c               |   4 +-
+ tests/intel/i915_pm_freq_mult.c              |  10 +-
+ tests/intel/i915_pm_rc6_residency.c          |   2 +-
+ tests/intel/i915_pm_rpm.c                    |   3 +-
+ tests/intel/i915_pm_rps.c                    |   7 +-
+ tests/intel/i915_pm_sseu.c                   |   4 +-
+ tests/intel/i915_power.c                     |   4 +-
+ tests/intel/i915_query.c                     |   1 -
+ tests/intel/i915_selftest.c                  | 407 ++++++++++---------
+ tests/intel/i915_suspend.c                   |  15 +-
+ tests/intel/intel_hwmon.c                    |   1 -
+ tests/intel/perf.c                           |  34 +-
+ tests/intel/perf_pmu.c                       |  20 +-
+ tests/intel/prime_busy.c                     |   3 +-
+ tests/intel/prime_mmap.c                     |   5 +-
+ tests/intel/prime_mmap_coherency.c           |   5 +-
+ tests/intel/prime_mmap_kms.c                 |   1 -
+ tests/intel/prime_self_import.c              |  10 +-
+ tests/intel/sysfs_defaults.c                 |   5 +-
+ tests/intel/sysfs_heartbeat_interval.c       |   4 +-
+ tests/intel/sysfs_preempt_timeout.c          |   4 +-
+ tests/intel/sysfs_timeslice_duration.c       |   4 +-
+ tests/intel/xe_drm_fdinfo.c                  |   1 -
+ tests/intel/xe_pm.c                          |   1 -
+ tests/intel/xe_pm_residency.c                |   1 -
+ tests/intel/xe_spin_batch.c                  |   2 -
+ tests/intel/xe_waitfence.c                   |   1 -
+ tests/prime_nv_api.c                         |  21 +
+ tests/prime_nv_pcopy.c                       |  17 +
+ tests/prime_nv_test.c                        |  16 +
+ tests/prime_vgem.c                           |   7 -
+ tests/sriov_basic.c                          |   5 +-
+ tests/sw_sync.c                              |   7 +-
+ tests/syncobj_basic.c                        |   7 +-
+ tests/syncobj_eventfd.c                      |   1 -
+ tests/syncobj_timeline.c                     |   7 +-
+ tests/syncobj_wait.c                         |   7 +-
+ tests/vgem_basic.c                           |  13 +-
+ tests/vgem_slow.c                            |   1 -
+ 184 files changed, 746 insertions(+), 646 deletions(-)
+
+-- 
+2.34.1
 
