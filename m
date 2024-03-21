@@ -4,55 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B2C6C54E58
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 15:40:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03E0DC54E68
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 15:40:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B1A3410ECD0;
-	Thu, 21 Mar 2024 15:40:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A19CD10ECD2;
+	Thu, 21 Mar 2024 15:40:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xv6oiHdV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W6alH9mo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0A7210ECD0
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 15:40:13 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 96BE610ECD2
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 15:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711035614; x=1742571614;
+ t=1711035623; x=1742571623;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=2jwc6CMng5AY8axbiLss/2ZMhbW8elTjKZwz0GGJaXg=;
- b=Xv6oiHdV33+y+rUCwIO0gTgQ1cIS3i3FCJd1026u4xyoL/COxjbS7Mry
- yQq/51Z+vUyhGVgl/sFJVjw/aeWcVDx1WREPsRv+gZXABnqyXzhTGJdeL
- z6TMJSHhZmwekry+f8wMx6zaCXCLXSiFp9kDe96q+SoGDtKUIMhpZFNYF
- QslYBKd0wUa7l0I+B8cU6hlEfgjPjCcM06Eqswex08ASak6u1ZgtDNyro
- t9stcE745ayVt1IKO1XN1EOFQwY26uvRswtRuaCzRZvBe44Sj9I7XvNEA
- RCsPoJAa79IGxTJtzmR97t1fBM582vuDdwdK40vJ6AS4RwcNuTzDCqSF2 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="6146417"
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
-   d="scan'208";a="6146417"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 08:40:14 -0700
+ bh=hXSUaOuFIDygdC+wL400/aUdTYlhuIlbW/fxwWnPXh0=;
+ b=W6alH9moQb7+3itPEo0GKkYWZvdkOQabq+ioRy92Y9CVNex6X94tv1Uh
+ aP57Blhi/YR5u4Hv/W3LN1cQvBF4K34TNEGMEZDUii4pKUatVPjIlgbPp
+ FkWumSebCuT+ktGeSw/FZy3TIjGQbCNlXqL/9JpxvXcKEgT0O3TOuhpG7
+ DYhE/nHSoiYOrcEWqNzEJWfHFEvzygDIefniX70nVtBF2wTBLPDsbMSsl
+ kXDrlQIOpqotbo+iNrjNHC4XY1YhewbLg9LJpm/sb/lEAUxdzXYqH7Eys
+ GUloK9Nej0eiFxM+trcagGldCtXLDhY4QCNCGsYXEMqzxRIUwgwwi6AwW g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="23527395"
+X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="23527395"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2024 08:40:23 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="19266831"
+X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="45538354"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 08:40:12 -0700
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2024 08:40:21 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Karolina Stolarek <karolina.stolarek@intel.com>,
+ Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Subject: [PATCH i-g-t v5 07/24] tests/intel: Introduce Blitter subcategory
-Date: Thu, 21 Mar 2024 15:38:30 +0000
-Message-Id: <20240321153847.1787625-8-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v5 08/24] tests/intel: Introduce FDinfo subcategory
+Date: Thu, 21 Mar 2024 15:38:31 +0000
+Message-Id: <20240321153847.1787625-9-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240321153847.1787625-1-katarzyna.piecielska@intel.com>
 References: <20240321153847.1787625-1-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,110 +66,35 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's introduce Blitter subcategory.
-
-v2: introduce more granularity in Blitter subcategory to not break
-automation:
- - igt@gem_exercise_blt@fast-copy* - s/blitter/fast-copy/
- - igt@gem_linear_blits@ - s/blitter/linear blit/
+Let's introduce FDinfo subcategory.
 
 v2: Make Sub-category/Functionality/Feature unique values. (Kamil)
-v3: s/command_parser/command parser/ (Zbyszek)
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Karolina Stolarek <karolina.stolarek@intel.com>
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Acked-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/gem_exercise_blt.c      | 16 ++++++++--------
- tests/intel/gem_linear_blits.c      |  6 +++---
- tests/intel/gem_set_tiling_vs_blt.c |  5 ++++-
- tests/intel/gen9_exec_parse.c       |  5 ++++-
- 4 files changed, 19 insertions(+), 13 deletions(-)
+ tests/intel/drm_fdinfo.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel/gem_exercise_blt.c b/tests/intel/gem_exercise_blt.c
-index 4a9bc3729..39bbdda17 100644
---- a/tests/intel/gem_exercise_blt.c
-+++ b/tests/intel/gem_exercise_blt.c
-@@ -13,19 +13,19 @@
+diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
+index 3ced658f2..aac2fdb6a 100644
+--- a/tests/intel/drm_fdinfo.c
++++ b/tests/intel/drm_fdinfo.c
+@@ -36,7 +36,10 @@
  /**
-  * TEST: gem exercise blt
-  * Description: Exercise blitter commands
-- * Feature: blitter
-- * Run type: FULL
-+ * Feature: blitter feature
-+ * Sub-category: Blitter
-+ * Category: Desktop client
-+ * Functionality: fast-copy
-  * Test category: GEM_Legacy
-+ * Run type: FULL
-  *
-  * SUBTEST: fast-copy
-- * Description:
-- *   Check fast-copy blit
-- *   blitter
-+ * Description: Check fast-copy blit blitter
-  *
-  * SUBTEST: fast-copy-emit
-- * Description:
-- *   Check multiple fast-copy in one batch
-- *   blitter
-+ * Description: Check multiple fast-copy in one batch blitter
-+ *
-  */
- 
- IGT_TEST_DESCRIPTION("Exercise blitter commands");
-diff --git a/tests/intel/gem_linear_blits.c b/tests/intel/gem_linear_blits.c
-index 64f220cb3..aac84211f 100644
---- a/tests/intel/gem_linear_blits.c
-+++ b/tests/intel/gem_linear_blits.c
-@@ -53,9 +53,9 @@
-  * TEST: gem linear blits
-  * Category: Infrastructure
-  * Description: Test doing many blits with a working set larger than the aperture size.
-- * Feature: blitter
-- * Functionality: blitter
-- * Sub-category: CMD submission
-+ * Feature: blitter feature
-+ * Functionality: linear blits
-+ * Sub-category: Blitter
-  * Test category: GEM_Legacy
-  * Run type: FULL
-  *
-diff --git a/tests/intel/gem_set_tiling_vs_blt.c b/tests/intel/gem_set_tiling_vs_blt.c
-index 9077e0f3f..5188e6b2b 100644
---- a/tests/intel/gem_set_tiling_vs_blt.c
-+++ b/tests/intel/gem_set_tiling_vs_blt.c
-@@ -60,7 +60,10 @@
- /**
-  * TEST: gem set tiling vs blt
-  * Description: Check for proper synchronization of tiling changes vs. tiled gpu access.
-- * Feature: blitter, gtt
-+ * Feature: blitter feature, gtt
-+ * Functionality: tiling
-+ * Sub-category: Blitter
+  * TEST: drm fdinfo
+  * Description: Test the i915 drm fdinfo data
+- * Feature: client_busyness
++ * Feature: client busyness
++ * Functionality: client_busyness
++ * Sub-category: FDinfo
 + * Category: Desktop client
   * Run type: FULL
   *
-  * SUBTEST: tiled-to-tiled
-diff --git a/tests/intel/gen9_exec_parse.c b/tests/intel/gen9_exec_parse.c
-index 33ff6bcb5..9f4929e71 100644
---- a/tests/intel/gen9_exec_parse.c
-+++ b/tests/intel/gen9_exec_parse.c
-@@ -35,7 +35,10 @@
- #include "sw_sync.h"
- /**
-  * TEST: gen9 exec parse
-- * Feature: blitter, command_parser
-+ * Feature: blitter feature, command_parser
-+ * Sub-category: Blitter
-+ * Functionality: command parser
-+ * Category: Desktop client
-  * Run type: FULL
-  *
-  * SUBTEST: allowed-all
+  * SUBTEST: all-busy-check-all
 -- 
 2.34.1
 
