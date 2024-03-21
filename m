@@ -4,50 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4181C6FD1F
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 18:45:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07745C54E58
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 19:06:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8BE3B10FE19;
-	Thu, 21 Mar 2024 18:45:34 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mvdDXZh1";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4709510FEDC
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 18:45:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711046733; x=1742582733;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=S0j/NZFyUzrpSmd+y8SDzV3cmf3u8eDPrIdWlOnT3ro=;
- b=mvdDXZh1xEntY+CdR/EeZikdpksTv55KW0sBqOzwAn95TzOjxMKi6W8s
- m7z915keqC6SwyIF1Pl1qbZjg8UC9FJXmh8J5sqfssEP8VtNC2HmPfNr7
- pfzr7xRhfgCLYP1thke1yYYrw7JAXa8Y36uAtfOGiYPhj4qNSsIBWNcBl
- +FKC/q379bRCKjA4rtlCLTid1dH7gcjL02GkqnxtG9lF7lcfjgEH/yG2u
- /n/3iFt6rrcRnOUY8hd+TXLkzpPPaTh5lZd5VrhyZQfC3zeyhclmuOvvK
- uAiTPHmcC7xByVVVqVYHCxSeO9lKvTh60YB6nqm9JUsmGclRC187oBYpt g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="9824094"
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
-   d="scan'208";a="9824094"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 11:45:32 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="19331122"
-Received: from dut-internal-9dd7.jf.intel.com ([10.165.21.194])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 11:45:33 -0700
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jonathan.cavitt@intel.com, saurabhg.gupta@intel.com,
- chris.p.wilson@linux.intel.com, yu.bruce.chang@intel.com
-Subject: [PATCH i-g-t] i915/gem_exec_whisper: Limit workload
-Date: Thu, 21 Mar 2024 11:30:05 -0700
-Message-Id: <20240321183005.2130924-1-jonathan.cavitt@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 833E411204B;
+	Thu, 21 Mar 2024 19:06:30 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5DEC911204B;
+ Thu, 21 Mar 2024 19:06:29 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7325661976379497839=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_revamp_big_joiner_test_=28r?=
+ =?utf-8?q?ev8=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 21 Mar 2024 19:06:29 -0000
+Message-ID: <171104798938.941104.16307841211382064713@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240321182831.1143175-1-kunal1.joshi@intel.com>
+In-Reply-To: <20240321182831.1143175-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,121 +37,171 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@linux.intel.com>
+--===============7325661976379497839==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-For large machines with lots of cpus and many engines, using a workload
-that tries to use every engine from every cpu causes massive
-oversaturation. The goal of the test workload is to cause saturation on
-both engines and cpus so that we apply some pressure on the scheduler to
-maintain order, but to do so we only need to ensure each scheduling
-queue is saturated and there is sufficient pressure for the CPU
-scheduler to push work across cores. We can impose a limit on the number
-of threads such that we ensure that every engine and every core should
-be occupied. Furthermore we can scale the amount of work submitted by
-each thread to keep the total amount of work under a reasonable time
-bound.
+== Series Details ==
 
-Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-CC: Bruce Chang <yu.bruce.chang@intel.com>
----
- tests/intel/gem_exec_whisper.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+Series: revamp big joiner test (rev8)
+URL   : https://patchwork.freedesktop.org/series/130572/
+State : success
 
-diff --git a/tests/intel/gem_exec_whisper.c b/tests/intel/gem_exec_whisper.c
-index effb473350..429dfc00d5 100644
---- a/tests/intel/gem_exec_whisper.c
-+++ b/tests/intel/gem_exec_whisper.c
-@@ -294,6 +294,7 @@ static void whisper(int fd, const intel_ctx_t *ctx,
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
-+	const unsigned int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
- 	struct drm_i915_gem_exec_object2 batches[QLEN];
- 	struct drm_i915_gem_relocation_entry inter[QLEN];
- 	struct drm_i915_gem_relocation_entry reloc;
-@@ -306,18 +307,19 @@ static void whisper(int fd, const intel_ctx_t *ctx,
- 	int fds[64];
- 	intel_ctx_cfg_t local_cfg;
- 	const intel_ctx_t *contexts[64];
--	unsigned nengine;
- 	uint32_t batch[16];
- 	unsigned int relocations = 0;
- 	unsigned int reloc_migrations = 0;
- 	unsigned int reloc_interruptions = 0;
- 	unsigned int eb_migrations = 0;
- 	struct power_sample sample[2];
-+	unsigned int nengine;
-+	unsigned int nchild;
-+	unsigned int qlen;
- 	struct igt_power gpu;
- 	uint64_t old_offset;
- 	int i, n, loc;
- 	int debugfs;
--	int nchild;
- 	bool has_relocs = gem_has_relocations(fd);
- 
- 	if (flags & PRIORITY) {
-@@ -356,9 +358,13 @@ static void whisper(int fd, const intel_ctx_t *ctx,
- 
- 	nchild = 1;
- 	if (flags & FORKED)
--		nchild *= sysconf(_SC_NPROCESSORS_ONLN);
-+		nchild *= ncpus;
- 	if (flags & ALL)
- 		nchild *= nengine;
-+	nchild = min(nchild, 2 * max(ncpus, nengine));
-+	qlen = max(2u, QLEN * nengine / (nchild + nengine - 1));
-+	igt_info("Using nchild:%d (out of ncpus:%d and nengine:%d), with a qlen:%d\n",
-+		 nchild, ncpus, nengine, qlen);
- 
- 	intel_detect_and_clear_missed_interrupts(fd);
- 	igt_power_get_energy(&gpu, &sample[0]);
-@@ -448,19 +454,19 @@ static void whisper(int fd, const intel_ctx_t *ctx,
- 		}
- 
- 		memset(batches, 0, sizeof(batches));
--		for (n = 0; n < QLEN; n++) {
-+		for (n = 0; n < qlen; n++) {
- 			batches[n].handle = gem_create(fd, 4096);
- 			gem_write(fd, batches[n].handle, 0, &bbe, sizeof(bbe));
- 		}
- 		execbuf.buffers_ptr = to_user_pointer(batches);
--		execbuf.buffer_count = QLEN;
-+		execbuf.buffer_count = qlen;
- 		gem_execbuf(fd, &execbuf);
- 
- 		execbuf.buffers_ptr = to_user_pointer(tmp);
- 		execbuf.buffer_count = 2;
- 
- 		old_offset = store.offset;
--		for (n = 0; n < QLEN; n++) {
-+		for (n = 0; n < qlen; n++) {
- 			if (gen >= 8) {
- 				batch[1] = old_offset + loc;
- 				batch[2] = (old_offset + loc) >> 32;
-@@ -525,8 +531,8 @@ static void whisper(int fd, const intel_ctx_t *ctx,
- 					gem_sync(fd, tmp[0].handle);
- 				scratch = tmp[0];
- 
--				gem_write(fd, batches[QLEN-1].handle, loc, &pass, sizeof(pass));
--				for (n = QLEN; --n >= 1; ) {
-+				gem_write(fd, batches[qlen-1].handle, loc, &pass, sizeof(pass));
-+				for (n = qlen; --n >= 1; ) {
- 					uint32_t handle[2] = {};
- 					int this_fd = fd;
- 
-@@ -648,7 +654,7 @@ static void whisper(int fd, const intel_ctx_t *ctx,
- 				gem_vm_destroy(fd, local_cfg.vm);
- 			}
- 		}
--		for (n = 0; n < QLEN; n++)
-+		for (n = 0; n < qlen; n++)
- 			gem_close(fd, batches[n].handle);
- 		if (flags & FDS) {
- 			for (n = 0; n < 64; n++)
--- 
-2.25.1
+== Summary ==
 
+CI Bug Log - changes from IGT_7775 -> IGTPW_10875
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10875/index.html
+
+Participating hosts (40 -> 36)
+------------------------------
+
+  Missing    (4): bat-dg2-11 bat-jsl-1 fi-snb-2520m fi-kbl-8809g 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10875 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-rpls-3:         [PASS][1] -> [DMESG-WARN][2] ([i915#5591])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7775/bat-rpls-3/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10875/bat-rpls-3/igt@i915_selftest@live@hangcheck.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_lmem_swapping@basic@lmem0:
+    - bat-dg2-14:         [FAIL][3] ([i915#10378]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7775/bat-dg2-14/igt@gem_lmem_swapping@basic@lmem0.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10875/bat-dg2-14/igt@gem_lmem_swapping@basic@lmem0.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-adlm-1:         [ABORT][5] -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7775/bat-adlm-1/igt@i915_selftest@live@hangcheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10875/bat-adlm-1/igt@i915_selftest@live@hangcheck.html
+
+  
+  [i915#10378]: https://gitlab.freedesktop.org/drm/intel/issues/10378
+  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7775 -> IGTPW_10875
+
+  CI-20190529: 20190529
+  CI_DRM_14463: 0cd99ca612f004f19c35f4966a584f0a729bbc31 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10875: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10875/index.html
+  IGT_7775: 0ee4074685c1e184f2d3612ea6eb4d126f9a2e23 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_big_joiner@basic-force-joiner
++igt@kms_big_joiner@invalid-modeset-force-joiner
+-igt@kms_big_joiner@2x-modeset
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10875/index.html
+
+--===============7325661976379497839==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>revamp big joiner test (rev8)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/130572/">https://patchwork.freedesktop.org/series/130572/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10875/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10875/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7775 -&gt; IGTPW_10875</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10875/index.html</p>
+<h2>Participating hosts (40 -&gt; 36)</h2>
+<p>Missing    (4): bat-dg2-11 bat-jsl-1 fi-snb-2520m fi-kbl-8809g </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10875 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>bat-rpls-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7775/bat-rpls-3/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10875/bat-rpls-3/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5591">i915#5591</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_lmem_swapping@basic@lmem0:</p>
+<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7775/bat-dg2-14/igt@gem_lmem_swapping@basic@lmem0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10378">i915#10378</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10875/bat-dg2-14/igt@gem_lmem_swapping@basic@lmem0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7775/bat-adlm-1/igt@i915_selftest@live@hangcheck.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10875/bat-adlm-1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7775 -&gt; IGTPW_10875</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14463: 0cd99ca612f004f19c35f4966a584f0a729bbc31 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10875: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10875/index.html<br />
+  IGT_7775: 0ee4074685c1e184f2d3612ea6eb4d126f9a2e23 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_big_joiner@basic-force-joiner<br />
++igt@kms_big_joiner@invalid-modeset-force-joiner<br />
+-igt@kms_big_joiner@2x-modeset</p>
+
+</body>
+</html>
+
+--===============7325661976379497839==--
