@@ -4,60 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D698BC54E58
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 13:23:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB52DC54E58
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 13:56:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 317D410E0D0;
-	Thu, 21 Mar 2024 13:23:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8A97810E94D;
+	Thu, 21 Mar 2024 13:56:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i5MZTetR";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="KPZQj12a";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD5F210E0D0;
- Thu, 21 Mar 2024 13:23:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711027399; x=1742563399;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=ZJDFJFXroQxdU6av8v+nVYA73Qjid3WHUBBkJoqTzgM=;
- b=i5MZTetRWriAReETRIq41aSYz/JOVbCPjYnEFiWMeFQgovdtDByZpaeR
- RP2n52wX3spABazFWzbHkjhZmrLQodJiQItt/9oqVBoXLsQT4KCN5NnWI
- KifYSHV7eIuEOCUDYXm2LScaz12wWjKWP03AnCsSLYtieXbeUAqfWvrAk
- hC7XUDPjm0lDuVCVwm6Zf6oUWLVWmh40ZxvMpmR8GqEpp0vZLqIXRy0c7
- 2t544gzLZSL/QFWp/m58w3b/onBScSj3wzpAOs5lIN0L4gTGbhhyoBWeV
- Y4XIhCq0pUsKb7Lxs23uJyfCXIZUtdSVEZR4sBRhBFa6coJxcMTInl+WO A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="6621091"
-X-IronPort-AV: E=Sophos;i="6.07,142,1708416000"; 
-   d="scan'208";a="6621091"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 06:23:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,142,1708416000"; d="scan'208";a="37616688"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 06:23:17 -0700
-Date: Thu, 21 Mar 2024 14:23:14 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Matt Roper <matthew.d.roper@intel.com>,
- I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
- TejasreeX Illipilli <tejasreex.illipilli@intel.com>
-Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHMveGVf?=
- =?utf-8?Q?exec=5Fthreads=3A?= Fill in GT field for second balancer thread
-Message-ID: <20240321132314.dk6gkcggtpnijlwl@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Matt Roper <matthew.d.roper@intel.com>,
- I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
- TejasreeX Illipilli <tejasreex.illipilli@intel.com>
-References: <20240320192356.359327-1-matthew.d.roper@intel.com>
- <171101244539.939689.9495282268259536683@8e613ede5ea5>
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com
+ (mail-bn1nam02on2081.outbound.protection.outlook.com [40.107.212.81])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 33C7710E94D
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 13:56:21 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=b5EJ3pf0RfY+BjjfNZySjaAEVAEZPLpv+R0542Z0ggnywE6u/+H7PTbXimViobCDYOQdfYpZwOEEE9RnnbhNTTiiAHxSsRMlBLxECq00PPeolHd0JEHayXD5JreOTjycQRF+2Jo4RGUnU5htzxWaLEw4NX+V0ak7k7iQim1AdbZ0pDyhzKiuQUmVKNfHANLD/09mu6uVyCi4GJ1leimTHaeEPCRxD5T+mQXy+D0db1iNWrpv5FM7rVajhD+gqC8mgzIzQ8OH9Yfyap3xR5hQtEINIP+m+kNTFeHxew2t2EoLmSPY+vreA8VoEGvE9bLs8Xn8zAgMczHWdctLTQ6f+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mWA3x+LRi9wpBqgZDgy3Yeyiw+qrOw9Q1BB+99m4jf4=;
+ b=OZRZdPMUY9ux8qHYSarrAaAp7rMc8l6x2/TSI0nUHCejGs+apSa6lboXCJQNXcmZtYpj+snaeJUBeqUmdQet8o0XEZ6YJB6zAqqfXN8WfEjC+M7fUubwKtHuRVHWug1MJP3C8JWJXvzt6XpGD+eHer17ROYcgxMFn7sbKzMEcmDcDADDdpFiqPdjqTtBIMJ+ul2vhXxsXic8OFFKNy4Hs8AZX9LZMVVyBqauPs2M+ZMcLucwWIwyvu60c4D3n9ez/eecyI/Z8nOggltY6n13CcT2ygFMHBQSDpR21MKhzKrfiqSxnruMkFp9lsto1iGB5e5DYXrGB/pd9HCuXpfT6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mWA3x+LRi9wpBqgZDgy3Yeyiw+qrOw9Q1BB+99m4jf4=;
+ b=KPZQj12aVswcm7yXSlhZF9rCLemVpGON9nfCeqV3OzB/0i6/G3iHU4msdmv9TGplr2v8mK2uOwtuwAhXB0++6UTtJUQhWQ+E5x9YW4jtvZXxR17K7WwhuXixPqJG/dAEF7FsDHfxPgore/pOIF4ZAAb1V3bd5lakP03aqyICmWI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CO6PR12MB5427.namprd12.prod.outlook.com (2603:10b6:5:358::13)
+ by MW4PR12MB8609.namprd12.prod.outlook.com (2603:10b6:303:1e2::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.28; Thu, 21 Mar
+ 2024 13:56:18 +0000
+Received: from CO6PR12MB5427.namprd12.prod.outlook.com
+ ([fe80::8d12:60ee:8dfb:daef]) by CO6PR12MB5427.namprd12.prod.outlook.com
+ ([fe80::8d12:60ee:8dfb:daef%4]) with mapi id 15.20.7386.025; Thu, 21 Mar 2024
+ 13:56:18 +0000
+Message-ID: <bbf73dfe-5043-4486-8e81-158f7204a9b7@amd.com>
+Date: Thu, 21 Mar 2024 09:56:14 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] lib/amd: check output has hpd before trigger hotplug
+To: Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org
+Cc: rodrigo.siqueira@amd.com, hersenxs.wu@amd.com
+References: <20240321020354.843729-1-alex.hung@amd.com>
+Content-Language: en-US
+From: Harry Wentland <harry.wentland@amd.com>
+In-Reply-To: <20240321020354.843729-1-alex.hung@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YT4PR01CA0430.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10b::13) To CO6PR12MB5427.namprd12.prod.outlook.com
+ (2603:10b6:5:358::13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <171101244539.939689.9495282268259536683@8e613ede5ea5>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO6PR12MB5427:EE_|MW4PR12MB8609:EE_
+X-MS-Office365-Filtering-Correlation-Id: 659a302c-e1d4-4583-c5bf-08dc49aeae6a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: gGrruFkBupa53TDN2zsoQeWWKskwiRkFyJKRRpOd1EknEFwSvgHQ1594X6dtA3e5Zz04l9ylbn7kDjsr7la+m1ynTcOdBFOz9sZUWtiTknQJxtHf/L0z8iEt0GaJ3VGwhAZpZixCsIAtjyZfuGh8zk70JYuymBAdtoA1z8YbIpZW22JLxtHMi0g85js84KY3fjSOiED2XUR9srdkjbG0rDWFaw8YhYAdZj5apzociD9C5odtNBixUdbmeukRGQY0rzvqC1LpRfjdWOG12PhACdF+Ub0FDtxDtZ8wabiBN14FXisb3LxglGpjC1tvCTN8fLvZ3+7uEx3udtwcuSLYRYQ+W//Rbo9QE619bs47oFDudQuzf1+Nyesxcfrobo4LEKlKRqoLKbDOqkG0bdfewu6sG0gjAPVDy5uCWMRvN9ZEFcTuW9cAPiVPhqK6iENvNF4OnTF0qhn/5DsYhH6LkTWBEFPeli613p+ZCz6vbmXImHbljTqNLei3wMbI7MNOQNRvIPwVwIAaWTd0zUB+KrNAh3E9rGKIjs5B4tL2XvFRKzRdrVV2B43pkZciFJibUu5vm8CZay1qG1DMZUu2HqRgPpKWUugrFxX5ObWLYVX7W3qw+z8FqS4T8qGigpXyvNi4WHgZcZOjxquqzwxdbW8+37TlD7KzR2pIEV8magM=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CO6PR12MB5427.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376005)(366007)(1800799015); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TE5QeWY0TmJ3Mm1wQ0NrZzdnOGVCYVZoSjZGcU5TMnZJbTkrVk4xeDFYYkxt?=
+ =?utf-8?B?YlNwa2dPQWtXZFlaWVhNbDdSVE95R1FwTDduUHJsVVA1NEdFMU43blJLS2ti?=
+ =?utf-8?B?S3ZaN2MwRXdNQXJkcXBiY1ZITkcyUTFQS1BBTndyVXF1OTMxTExGMTc0eDZO?=
+ =?utf-8?B?eDZTb243Uk9uZkhsMFYwUytTbnJsblNkWUIzNUZSaHlCOGkwdWZpM2E4M0NM?=
+ =?utf-8?B?M2pTQnFPWkpFcTlpTHRCNEZMbFhCU2N1eHRjK0lEeFRKU2VPdUY0OGd1aFVM?=
+ =?utf-8?B?ajRlKzM0OU13QSs4LzRPZHdsdE9BZlBoNTNyT00weVFaM2d0VHdYSG95SWlV?=
+ =?utf-8?B?enIxbkRMMngzNldkWVBIKzR2bVZXc3JYd2tBV01idG84ZnhzRlp6VjdGNWdv?=
+ =?utf-8?B?T0s4SjRxVUc0eEZ0cnBSUm84ZXpoYnVOZnNWcnI4UEx4RHoxVDI1OE96Skoy?=
+ =?utf-8?B?Q1V5QVFxenVjSHVseUNub20vUm0rSktOUGEycHI0RE10V0pPNGt4QnlsSkJX?=
+ =?utf-8?B?aHdjMkI5NW0ySU0rWWo0LzREek50UldSOWpSUTh6RGVtQ1pqdVlGcFcxeDc1?=
+ =?utf-8?B?NlQ4cjZMY3pMU3ZzaWxyQVloOVc1ZmxHVmk5dFBZcUEwM1BWeFRTaDgyVU10?=
+ =?utf-8?B?U1hEU1h2dURwaXVGMUtIajlybHBaejhLMk83RzJ0bWpBd1dGUzdod1g2emJ2?=
+ =?utf-8?B?QXk1d2dwK2I1MWlLemtiRFY2RU9hMUwycE5EdmZyZG41U3Q0azVpZUNaamZ3?=
+ =?utf-8?B?dUVFY055Vm1NQTFCbUNNdGJmeXRSd2ZzNVFIL3dwdW9pTUZzd2xWWXJpOU52?=
+ =?utf-8?B?dzdBSFZDMXZrTUg3RTVJRXdqMjFpRmhkb3JOQ0RXR2NmYWdKRGp1eHFLa3FE?=
+ =?utf-8?B?cFMyWjEvdzJnTnlOU2NKNHhGVURGZ3REZkt6YVM4bW9Ia0xndFFDNkV2cUZy?=
+ =?utf-8?B?OEUzZm9EUlZoTFR5a0dRMlplSm9UREFPK3AwVHhpT1lKS0o0TkYzL2xKeUVu?=
+ =?utf-8?B?RFBCMTRJMlZMMGlGL1JLVHRhNC90bzU1TlVjRk0wS2NCZUpWZWFaZndRSkx0?=
+ =?utf-8?B?U0xTMnIzK1BDN0w5bTlpalNObFB6a1ArUW1QNVNUVjZtdFVGTjZMa3IxWE1R?=
+ =?utf-8?B?dXlBVTdXdGRjMGgrWFRHaTFsNFhSZXVCTXdTem0vOUZSOS9BZzNQczBxckpi?=
+ =?utf-8?B?cWdPWks0SzF0cG85S0Z3NHBrb1NqNytJT3B5aGpXRHVpL1BPRTZKWWV3ZTFw?=
+ =?utf-8?B?Umk4WVFUL1BTTlV1d01PVzdmYXB0UXRFaUpIeHU4MEladlJ4cWYrMnJNZUJD?=
+ =?utf-8?B?K2NGYjg5aXZKeFBlNFZPNXhzVWxyeVZBUS9tY3FaR25wR3JrOVk1OGlKeEp5?=
+ =?utf-8?B?RmhGQnNuaHlxV0t3M2VSZ3Z5NGNUbFArNGJtZG1Fa0M4WHR4a0ZMOWxCSTBI?=
+ =?utf-8?B?VW9CZzc3L2wzUHYxVVhydWVmSnhBWk1IYVRUNDlLWnJvaHVSNmtSNk1qSHJZ?=
+ =?utf-8?B?MjhWTWgvZlNIZ1VVQUFqaWg1dy9iRFJmOThUVGZRaE1qazRhNEZTMWg4bW9G?=
+ =?utf-8?B?bHplcC9vN0hKR0JMZUQwRnBiQThxNlNKOHpsZjZ1b3E4ZU03c25peXZzZStU?=
+ =?utf-8?B?bzJOZnlPRGkvaVUrTUF0QzlBaWtPK0p0TlY3eWlHdm1ERzdjWmxhaDdVcVFy?=
+ =?utf-8?B?anZadE1tTGNJbDhxTGdaMG1UZlZLQVFOaERkWGlNdWZqa0NiTDFNdTNsT0dt?=
+ =?utf-8?B?V0hGMWo2SnBoVTdSTkd6NVA3bE14MEVVa042dmZUQVVRV1VzK1BYRStoT1hj?=
+ =?utf-8?B?R0gvcmdMN3I5T1FqYStjSXZtWVRHUExKekFZQjQ5TDFYVmY5WExRNEJlZHUv?=
+ =?utf-8?B?dmZ6aTcvTmc0NVRoZ2k2TnhkVHpCNnc0eHdEQVkrRXVhNzREVFVnK0R1bGVx?=
+ =?utf-8?B?UEZxLzVvSkFtV3RzYnRoMUJrRjBZcHRwUmdIalU2bjhFYUs5bHAvdVpOS0RV?=
+ =?utf-8?B?OVg2d1NhS1AyK2ljWnpoelNuTFpYTGJFV2VCY1I0MWlvWGVYdTV3MEFUam5a?=
+ =?utf-8?B?MWxYRzcyZ1BNUk84RExqS1dIdUpWKzRkVHpweWE1T1ArR3J3cjlnZjN5TnNP?=
+ =?utf-8?Q?HiAZ07xF8nx6iIgrRGZFXrAg5?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 659a302c-e1d4-4583-c5bf-08dc49aeae6a
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5427.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2024 13:56:18.1436 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Tknjv29ay/B+0rZvX68RSsIdrju7a3w0b46xeB6cgIwyT6oEg6hZFQ8eZYZxQ4+R1JeqlYGEEsGlv/TMA1AjOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB8609
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,100 +129,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-03-21 at 09:14:05 -0000, Patchwork wrote:
-> == Series Details ==
+On 2024-03-20 22:03, Alex Hung wrote:
+> With commit ff1d9a601 writeback connector will be enabled and it has no
+> hotplug capability. As a result, this function always fails for such
+> cases. This is fixed by checking HDP in advance.
 > 
-> Series: tests/xe_exec_threads: Fill in GT field for second balancer thread
-> URL   : https://patchwork.freedesktop.org/series/131382/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_14458_full -> IGTPW_10867_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_10867_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_10867_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10867/index.html
-> 
-> Participating hosts (9 -> 10)
-> ------------------------------
-> 
->   Additional (1): shard-snb-0 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_10867_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@gem_exec_store@dword@vcs0:
->     - shard-mtlp:         [PASS][1] -> [ABORT][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14458/shard-mtlp-5/igt@gem_exec_store@dword@vcs0.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10867/shard-mtlp-8/igt@gem_exec_store@dword@vcs0.html
-> 
->   * igt@kms_flip@plain-flip-ts-check@b-hdmi-a4:
->     - shard-dg1:          NOTRUN -> [FAIL][3] +1 other test fail
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10867/shard-dg1-17/igt@kms_flip@plain-flip-ts-check@b-hdmi-a4.html
-> 
->   
-> #### Warnings ####
-> 
->   * igt@gem_eio@kms:
->     - shard-dg1:          [FAIL][4] ([i915#5784]) -> [INCOMPLETE][5]
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14458/shard-dg1-13/igt@gem_eio@kms.html
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10867/shard-dg1-17/igt@gem_eio@kms.html
-> 
+> Signed-off-by: Alex Hung <alex.hung@amd.com>
 
-These are unrelated to change in Xe test, no need for respin
-as this is already merged.
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 
-Regards,
-Kamil
+Harry
 
->   
-> Known issues
-> ------------
+> ---
+>  lib/igt_amd.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
->   Here are the changes found in IGTPW_10867_full that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@device_reset@cold-reset-bound:
->     - shard-dg1:          NOTRUN -> [SKIP][6] ([i915#7701])
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10867/shard-dg1-15/igt@device_reset@cold-reset-bound.html
+> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+> index d0b53c08a..623883dbc 100644
+> --- a/lib/igt_amd.c
+> +++ b/lib/igt_amd.c
+> @@ -799,6 +799,9 @@ int igt_amd_trigger_hotplug(int drm_fd, char *connector_name)
+>          int wr_len;
+>          const char *enable_hpd = "1";
+>  
+> +	if (!igt_amd_output_has_hpd(drm_fd, connector_name))
+> +		return 0;
+> +
+>          fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
+>          igt_assert(fd >= 0);
+>          hpd_fd = openat(fd, DEBUGFS_HPD_TRIGGER, O_WRONLY);
 
-...cut...
-
-> 
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7771 -> IGTPW_10867
-> 
->   CI-20190529: 20190529
->   CI_DRM_14458: 1cbe0387180a61b6abb4f5a6261763adaecbf51b @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_10867: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10867/index.html
->   IGT_7771: 7771
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10867/index.html
