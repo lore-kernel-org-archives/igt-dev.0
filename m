@@ -4,69 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BFA1C6FD1F
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 18:42:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE352C54E58
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 18:44:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AD7CD10FD64;
-	Thu, 21 Mar 2024 18:42:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5DCD210F5A3;
+	Thu, 21 Mar 2024 18:44:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="QphVhEnR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TWpXajay";
 	dkim-atps=neutral
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com
- [209.85.128.182])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 170BC10FD64
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 18:42:08 +0000 (UTC)
-Received: by mail-yw1-f182.google.com with SMTP id
- 00721157ae682-60cbcd04de9so13188747b3.2
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 11:42:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711046527; x=1711651327; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CTOWc5u1+H9+LFabx4a6z2ntm/zRz7juckKAPz7Vjtg=;
- b=QphVhEnR0/OjvcIaFKJX1Coba1c/9AfSg6IZ4SB1aM3/rYETYIAOdOfUFYeAff/aXo
- aEnZ7LfnFNtMsgPir9cEqDN7yzeEeJDhsocDIfuMNiX5t7tvRXueBa/M9XRozObrkwDj
- QEWoYL5QRkCp7hcIf9fqTxtbNma4aF7dY8D3LtatE0WA/YNBwnhwJSejr7HgcHuaVEid
- WH9Tgxy3TR7XzEAxlbjXnCTISc6RESh5QANIKY7z7h6ezYxTR49/PbaPqX/RbpGYU6ai
- uFxfYQDRRClOW9eGT765ZPeaftO2Ndz9mIsZmnStPa4DMelad2wyJ3w82p6/MnMMLzcX
- EEJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711046527; x=1711651327;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CTOWc5u1+H9+LFabx4a6z2ntm/zRz7juckKAPz7Vjtg=;
- b=xNsYQ56zE987YFu+Svc/0MgZIfjWht89qpm8bxXpUY3InXjKEARsFVN6dHJaaqAbfA
- bgakcZpvt2vYPMYOb8h5RVDne8QB+NoDvhu0cOe05CUrrYqa1oKy0jZOjpgkKNDxtz4U
- vBFWxFdHlGS0GZSWqpQ5qJvObu4TzCmS5Ed5rNbP5IdX0UReRFDKoWZRLng7p6+pWz36
- sY0bgooEjFNp2AsQ74maDA5XdxMbmh8FleaTRfyBOJKp2rZfOziStWmGLPBjJOvlEXR6
- zTgcl06lFyO64tiEs0FYXV4eihV9wLWEvdcC4r/58hpMJ5ywdsqEUWleGlJj4gKs9gLU
- iZSg==
-X-Gm-Message-State: AOJu0YxRd5bA9dMTeSIZR23jQzKil1e5kZGj2mrtcWxoGOPd5gbYbExu
- /EjKlvQTkvBXi0Q8Wpysmz1E7ZTpTyMYwh8VgN1UTr2wc07ibzq91DSkldaN
-X-Google-Smtp-Source: AGHT+IH6Tn8+SfzewWUCD9HuhClA+iftVFVfIUe7cYQUhCIFLHUEbbNy3vqJzosh24pkI/ls6UhT6Q==
-X-Received: by 2002:a81:6f55:0:b0:611:16f0:51b9 with SMTP id
- k82-20020a816f55000000b0061116f051b9mr93265ywc.15.1711046526708; 
- Thu, 21 Mar 2024 11:42:06 -0700 (PDT)
-Received: from localhost ([162.208.5.36]) by smtp.gmail.com with ESMTPSA id
- o11-20020a0dcc0b000000b0060cb9691f78sm47929ywd.52.2024.03.21.11.42.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Mar 2024 11:42:05 -0700 (PDT)
-From: Matt Turner <mattst88@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Matt Turner <mattst88@gmail.com>
-Subject: [PATCH v2] lib: Inline igt_x86_features() into ifunc resolvers
-Date: Thu, 21 Mar 2024 14:41:50 -0400
-Message-ID: <20240321184150.26552-1-mattst88@gmail.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240304221800.1161896-1-mattst88@gmail.com>
-References: <20240304221800.1161896-1-mattst88@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 81C5410F5A3
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 18:44:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711046663; x=1742582663;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=IKW6ZA3paxf7G6CBec4qSR2CKQvuVtJMHM5thxME3qc=;
+ b=TWpXajayG4D6dbUycUDVY/zmy7d2Y1cTXQrEIRcEwrgSCPDGJir3e7L4
+ 0Cq7Pi2eJO3JS4HP7rMJlujSkgLqkBz4ujgKN/CBXg7mWpPzv+Q3PIbjk
+ BOQHgn3piInSZqIeemqXmKSIaVQS/ICEGdWuQLFQIZWcREMG8aUFGzDEV
+ VxeU1iF3R4j+qTJzwBvQeAcyE4ZEmM3TGXd7YV8N1pFRi1xi32uU8Po2+
+ 57g+A2c4U7g9jWPuJzvrQyikHgzvF/lsxVyZuPN1I1QUgjPy235nSulER
+ EmZ/EfpfQRps9FvwsnGvSqvsLKKasJXk3TTfnS2J+UH6vS173QA/FOB0p w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="6272617"
+X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
+   d="scan'208";a="6272617"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2024 11:44:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="37738102"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 21 Mar 2024 11:44:23 -0700
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 21 Mar 2024 11:44:22 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Thu, 21 Mar 2024 11:44:22 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.40) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 21 Mar 2024 11:44:22 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NjbInm/ETjul4wZQ5EF94PtD/6xGP5GqaUY3H5yXIdcwET5NzWnSyRe0XNs8SAQn147oPkQksGYNC4KE8ADFNGmZQrxfBJcI3Ha54HmYdqAeMgdAx7qDLJgLIJR+NLulAv5IoGE7dIHyJi8Gz6IwbIz3iFZEWFXqnFz/KIyoO8MNGyj+2jR+ezCI/5dmxZQEJwmHFBODbCJCQ7unElIIKy/3oo3vuwuAmQtuEc7e3vTbq6tla88Ysu4Edsqv3gHup7antd2djqFWgqjZGrA+rJgIllJojR8GW3eEDuZxq/LCM2OZYXWMjziJmXEUsDZbKKms/IU3JeHKdmj1FF/+Fg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hRMyUgAHcDF84ricHuJoUPSXbnGDlcvdxK8p7hDnqxc=;
+ b=HQPYxs+pGRAnU/Spz1kNs5ksmz7N5gd8zlSWLrBWnorbkYpJEa7U7pxFiiQPlWEluQ4511VqBgxoMV/siKiKs5MI+n1b++OkteN2FJ6kc9vyPcf+xxRdY/8IlGXGPpJGmzooNN9HnmosA1U0uMvYNcBtYUG/5o1ZmZwuM8Eewye2bKE6+EtEtzn2biFQ3xCASL40wZWFatuVSZ+5wZUYIeWOhceqTSabn2YMn8Bs/rv13T9uBWO6oQWhadUFBLas67dl5jg5n6KskfIF+h2PD+0DUyuCM04ioDMyUcKPfncd5mRvgb7Do2SR4DlGDzyyTa05tnnBSzFM7RIJMtFRNw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by PH8PR11MB7118.namprd11.prod.outlook.com (2603:10b6:510:216::6)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.12; Thu, 21 Mar
+ 2024 18:44:20 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e7c:ccbc:a71c:6c15]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e7c:ccbc:a71c:6c15%5]) with mapi id 15.20.7409.010; Thu, 21 Mar 2024
+ 18:44:20 +0000
+Date: Thu, 21 Mar 2024 18:43:46 +0000
+From: Matthew Brost <matthew.brost@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+CC: Matt Roper <matthew.d.roper@intel.com>, <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t] tests/xe_exec_threads: Fill in GT field for second
+ balancer thread
+Message-ID: <Zfx/4tqsIyhVYDSl@DUT025-TGLU.fm.intel.com>
+References: <20240320192356.359327-1-matthew.d.roper@intel.com>
+ <7vgrnkw4ndo5ydxybh3qoqriovorgyvrrsatt4tgifis7xo3ju@3g7qmeluwrps>
+ <ZfuHpR6TCEnzLw8X@DUT025-TGLU.fm.intel.com>
+ <5frc2lhbpyb7xlpt2pt3rce4jo4pes5qbpjjsuase57pwen4hm@44wimyrmjomc>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <5frc2lhbpyb7xlpt2pt3rce4jo4pes5qbpjjsuase57pwen4hm@44wimyrmjomc>
+X-ClientProxiedBy: BYAPR02CA0010.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::23) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|PH8PR11MB7118:EE_
+X-MS-Office365-Filtering-Correlation-Id: 73e80ae0-6e01-4585-d9c8-08dc49d6eb81
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ION1cCpBIdjoXscevhLradoQ36erOrrN9TfetdfbO43j47WWx2mGXopM64BJvr5TeaXcPbtlQeXKnrh6NziqXi08tbI4oV++1C4VDOxNtw34/HJGwQqWYK8z7Ge1iPGCNszV9zLwno19bL1iSdkmpJRX2RdCecUuaCUcYZEUCvb/xwqB6snuqe6No+6iewSFVSwW16db6/gkQiv441UdoxPEU577UnyDqLI5xESHv/28Cpotee4DSoQC441KuvW97IElhW0WE/GEba82d4D0x6zA1mFc31WTkmrYIBJg0FSVM+Q2YsY4bdp5AEzMak6KoeGW5nPDas1E2YMFGl3RylI5+P48RXBl894xw8TOLv+lEi0iK6yayPBW1lhkFLmobCLnUz6k8XrieYxwVy4LNQqCdI2KE4JMA8Fj8RsVXSDqPGfKAxjTyK2HyTaGG98kVLnmWJEwUGOEaTcLpEgZKnx1DNj0vo3H1UGUlJwTEduJXWfZxZVXe91QciTAcLQnaqtKiwQq8xMtZWeL5X5hdGpYL5Mw6TSLFdlsho0w2oNZ3af9VPO9yx4Z5wfd6dOCkhD9ssbPYajVqTl1xj0JPP5+qlWjta2LI9BapRixGjtF2T7vUVKU0bkWOjGzZiVCH6RzZ3tZ6Y6/5zjHdRiSa/RnH772X7fXz7tcFLAxD8A=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB6522.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366007)(1800799015)(376005); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?fROmO1sob2vvM7ptYqLPhj0GP4I2iWVewmVNxlBqPB9NJ91jy374o8VEeUj7?=
+ =?us-ascii?Q?eeX4DSF6oolbWbPX2QhQX1rQknEhVdkt3clrnR5CmV7lADIGcfiH6oOpHgMe?=
+ =?us-ascii?Q?YSkLLfwcYZY7BEHe3n5waE0j7y0eu/Mx68dC2/w7ixoiFT/rO7OZGWj3hbtp?=
+ =?us-ascii?Q?4yP7kekEeoCPUNBajaq2eyjfV6UvzrLU/t6pp//maNTvUb/wmadXnE8RV1Mz?=
+ =?us-ascii?Q?tgxwFxIxIZ8fgrxkbZtoCCKnv0KmCuqVp5x+rhKkFFHFiObJ7EVUy1tLqV2G?=
+ =?us-ascii?Q?LSN1XHz5tau+zqSifaPcGgzX0iVUKHCSd0vi+ToA4HwdhS15E3pxLabOVWUI?=
+ =?us-ascii?Q?khp8+ytKSN92Ri+4wsy0Twf4oiPHikg+FgkXBsgB9V9oNhLxXKDLuG670X4t?=
+ =?us-ascii?Q?5fMzqoKN8stXGCR6V1aDgIOAbAZzA6vIYUZ5XHZJys+aDi9Incl3j5aJdgF/?=
+ =?us-ascii?Q?BLY2mb6fWc+gF8jHh/VkoLQdp87Di71etl2j1t+SR19oR3y3YJhnNdTCSZOJ?=
+ =?us-ascii?Q?eAdgrsvggrhJhL+SO5wZNptTx2OnS99YNBTBcgsex66lUm8xjFRd4dDjg6Cd?=
+ =?us-ascii?Q?GFMogAI2XBPFRlBzeIb858RuW0i5mkx9e3a6CoVis5TBnFWDnps2jHnBViF4?=
+ =?us-ascii?Q?gK6p/q4j/ebdi4l34P4JdQlvnI27lMkNvMvJcMpz4A8h48Jf4qjGYoEfTl+T?=
+ =?us-ascii?Q?MRU/B7U6DkZd+7ldDnXCwhc2/g81ZJUNasKYEBxNX1DYXGp+BTQNZPnO5Nt8?=
+ =?us-ascii?Q?aReJUNpndqEXYicdiAx4F7Auo4WBck20A2P/egK0q4aJXvA7XaWBd3gV3C6o?=
+ =?us-ascii?Q?S46KnNYHCt7wZHhzuWqBzRB84Uw8yu0H7c/ac7d3ImRQZNZPiTJKxsSxf+rc?=
+ =?us-ascii?Q?5Ec20bxvqIWB71XQspKWUyKStJdbv2HE8T+FZe8zvrMysX6F1tp5jjO6SHeJ?=
+ =?us-ascii?Q?yqtlnD5urTFP7GKaiSObp19HfLnvG/U4ctecKAbBhSq/2RNeDaUtiRhQA49D?=
+ =?us-ascii?Q?xc8MV7VweBjjIkmI39X1JuvVwJkRYHBcU1T1U0U/uvvmLREo5CKn2cQdMOzy?=
+ =?us-ascii?Q?DJHKyerTfG/aftkayU0qeC9/31LLqbhYm3Y/ylGE4o/LRYiiHY1Rb6SPcEYQ?=
+ =?us-ascii?Q?n1At1gJYj9OrBmSGB9dg1Ol890c64hsAlQdxTznFoqyRdXW/HNykgOb5mufk?=
+ =?us-ascii?Q?UmeAZ/q3pT6TArNQPVWwQvmvon8an4aW9LPX7DAUgT+LyVyDLOlZ+q3Ip7V/?=
+ =?us-ascii?Q?5NzmidHi75Ot6J8zoyBRz1Hcc6VJmh85vyuOobW5joMoveGGkQbrkGJwCWQ3?=
+ =?us-ascii?Q?r5UPmCs352SkBmkroJi7pN0Ll/x0Cpd/LdOwfZjyzfWt7+QFbAFw+4sgrMop?=
+ =?us-ascii?Q?b4Lxpc00XJqCKuSnjxnY5bRlNWcpRTqwRBvEpLpqeVU21Qebso/0s7dbd98f?=
+ =?us-ascii?Q?1Jol0grnx21f4+2JiVnodKiVn4N8CkTLkiM2/Mob5+wFyT+Rr9OezPq31c2c?=
+ =?us-ascii?Q?Jh7UlHPB7ayiNW9ht4Fi2ETZFo2Rm1Hn1ZclEIpw8evVFZuymer+dJx3FwB7?=
+ =?us-ascii?Q?h+xddG5+6DesTBD0LF+bKTvmlSbCZN0V274QrSI8pby/pMsNl8CckQYTruYl?=
+ =?us-ascii?Q?IA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 73e80ae0-6e01-4585-d9c8-08dc49d6eb81
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2024 18:44:20.4290 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9GgS1nZNcum+QpE5H6F+3v4UTzbDQOi1OBzHx/vGp1C1o1MnyCHLUKQe2YysZhXNGVcVoNTifCMcKZY/GUS/kQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7118
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,350 +153,150 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Quoting https://sourceware.org/glibc/wiki/GNU_IFUNC
+On Thu, Mar 21, 2024 at 01:01:22AM -0500, Lucas De Marchi wrote:
+> On Thu, Mar 21, 2024 at 01:04:37AM +0000, Matthew Brost wrote:
+> > On Wed, Mar 20, 2024 at 03:47:57PM -0500, Lucas De Marchi wrote:
+> > > On Wed, Mar 20, 2024 at 12:23:56PM -0700, Matt Roper wrote:
+> > > > The balancer subtests spawn two pthreads per engine class if there are
+> > > > multiple instances of the class.  The GT field of the data structure is
+> > > > filled in properly for the first thread, but not for the second,
+> > > > effectively leaving it set to "0."
+> > > >
+> > > > For platforms with standalone media, this will result in failures when
+> > > > the thread tries to find the instances of a media class on GT0 and trips
+> > > > the "igt_assert(num_placements > 1)" assertion in test_balancer().
+> > > >
+> > > > Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+> > > 
+> > > 
+> > > Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> > > 
+> > > do you know why we unrolled a loop in there and did a wrong copy and
+> > 
+> > I think the for_gt loop was added after the original version of this.
+> > Likely an ommision when that was added.
+> > 
+> > > paste? That together with vertical spacing on flow control seems to be a
+> > > good source of bugs. Good find.
+> > > 
+> > > The only difference between the first and second thread data I'm seeing
+> > > is flags VIRTUAL vs PARALLEL. Matt Brost, is this test from you? Could
+> > 
+> > Yes, I wrote this one. Not my finest work in terms of copy / pasting,
+> > indeed the only difference should be VIRTUAL vs. PARALLEL. I think this
+> > should be consolidated into a loop.
+> 
+> 
+> sounds good. Something like this on top of this patch? (completely untested, it builds)
+> 
 
-> When LD_BIND_NOW=1 or -Wl,z,now is in effect symbols must be
-> immediately resolved at startup. In cases where an external function
-> call depends needs to be made that may fail if such a call has not
-> been initialized yet (PLT-based relocation which is processed later).
-> For example calling strlen in an IFUNC resolver built with -Wl,z,now
-> may lead to a segfault because the PLT is not yet resolved.
+Yes, that looks about right.
 
-We cannot rely on function calls through the PLT in ifunc resolvers as
-the PLT may not have been initialized yet.
+>   diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+>   index 977e8c600..b95870714 100644
+>   --- a/tests/intel/xe_exec_threads.c
+>   +++ b/tests/intel/xe_exec_threads.c
+>   @@ -1030,6 +1030,7 @@ static void threads(int fd, int flags)
+>                   xe_for_each_gt(fd, gt)
+>                           xe_for_each_engine_class(class) {
+>                                   int num_placements = 0;
+>   +                               int *data_flags = (int[]){ VIRTUAL, PARALLEL, -1 };
+>                                   xe_for_each_engine(fd, hwe) {
+>                                           if (hwe->engine_class != class ||
+>   @@ -1038,36 +1039,10 @@ static void threads(int fd, int flags)
+>                                           ++num_placements;
+>                                   }
+>   -                               if (num_placements > 1) {
+>   -                                       threads_data[i].mutex = &mutex;
+>   -                                       threads_data[i].cond = &cond;
+>   -                                       if (flags & SHARED_VM)
+>   -                                               threads_data[i].addr = addr |
+>   -                                                       (i << ADDRESS_SHIFT);
+>   -                                       else
+>   -                                               threads_data[i].addr = addr;
+>   -                                       threads_data[i].userptr = userptr |
+>   -                                               (i << ADDRESS_SHIFT);
+>   -                                       if (flags & FD)
+>   -                                               threads_data[i].fd = 0;
+>   -                                       else
+>   -                                               threads_data[i].fd = fd;
+>   -                                       threads_data[i].gt = gt;
+>   -                                       threads_data[i].vm_legacy_mode =
+>   -                                               vm_legacy_mode;
+>   -                                       threads_data[i].class = class;
+>   -                                       threads_data[i].n_exec_queue = N_EXEC_QUEUE;
+>   -                                       threads_data[i].n_exec = N_EXEC;
+>   -                                       threads_data[i].flags = flags;
+>   -                                       threads_data[i].flags &= ~BALANCER;
+>   -                                       threads_data[i].flags |= VIRTUAL;
+>   -                                       threads_data[i].go = &go;
+>   -
+>   -                                       ++n_threads;
+>   -                                       pthread_create(&threads_data[i].thread, 0,
+>   -                                                      thread, &threads_data[i]);
+>   -                                       ++i;
+>   +                               if (num_placements <= 1)
+>   +                                       continue;
+>   +                               while (*data_flags >= 0) {
+>                                           threads_data[i].mutex = &mutex;
+>                                           threads_data[i].cond = &cond;
+>                                           if (flags & SHARED_VM)
+>   @@ -1089,13 +1064,14 @@ static void threads(int fd, int flags)
+>                                           threads_data[i].n_exec = N_EXEC;
+>                                           threads_data[i].flags = flags;
+>                                           threads_data[i].flags &= ~BALANCER;
+>   -                                       threads_data[i].flags |= PARALLEL;
+>   +                                       threads_data[i].flags |= *data_flags;
+>                                           threads_data[i].go = &go;
+>                                           ++n_threads;
+>                                           pthread_create(&threads_data[i].thread, 0,
+>                                                          thread, &threads_data[i]);
+>                                           ++i;
+>   +                                       data_flags++;
+>                                   }
+>                           }
+>           }
+> 
+> > 
+> > > you add an overview to its documentation? The boilerplate doc added
+> > > there after the fact looks less than helpful.
+> > > 
+> > 
+> > What kinda of documentation were you thinking of? Most all the IGTs are
+> > light on doc but updating the doc for ones I wrote is on my todo list...
+> 
+> It would be good to have an overview on what the test is checking and
+> how the different subtests are different from each other.
+> 
+> thanks
+> Lucas De Marchi
 
-In practice, this causes crashes when igt is linked with -Wl,-z,now or
-when linked with the mold linker.
+Ok let me see if I can write something up.
 
-To avoid this problem, we do two things:
-    1. move igt_x86_features() to igt_x86.h so its definition is
-       available to compilation units that call the function.
-    2. mark the ifunc resolvers with __attribute__((flatten)) to ensure
-       igt_x86_features() is inlined. Since this function is only called
-       from a few places it does not significantly increase binary size
-       to inline it.
+Matt
 
-Linux distros (at least Fedora since v23, Gentoo/Hardened, soon standard
-Gentoo) use `-Wl,-z now` to improve security. By binding upfront, the
-loader can mark the GOT as read-only for a security enhancement. See
-https://wiki.gentoo.org/wiki/Hardened/Toolchain for more details.
-
-Bug: https://bugs.gentoo.org/788625
-Bug: https://bugs.gentoo.org/925348
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Matt Turner <mattst88@gmail.com>
----
- lib/igt_halffloat.c |   8 +++
- lib/igt_x86.c       | 119 ++------------------------------------------
- lib/igt_x86.h       | 117 ++++++++++++++++++++++++++++++++++++++++++-
- 3 files changed, 128 insertions(+), 116 deletions(-)
-
-diff --git a/lib/igt_halffloat.c b/lib/igt_halffloat.c
-index 5dbe08e01..560952d20 100644
---- a/lib/igt_halffloat.c
-+++ b/lib/igt_halffloat.c
-@@ -194,6 +194,10 @@ static void half_to_float(const uint16_t *h, float *f, unsigned int num)
- 		f[i] = _half_to_float(h[i]);
- }
- 
-+/* The PLT is not initialized when ifunc resolvers run, so all external
-+ * functions must be inlined with __attribute__((flatten)).
-+ */
-+__attribute__((flatten))
- static void (*resolve_float_to_half(void))(const float *f, uint16_t *h, unsigned int num)
- {
- 	if (igt_x86_features() & F16C)
-@@ -205,6 +209,10 @@ static void (*resolve_float_to_half(void))(const float *f, uint16_t *h, unsigned
- void igt_float_to_half(const float *f, uint16_t *h, unsigned int num)
- 	__attribute__((ifunc("resolve_float_to_half")));
- 
-+/* The PLT is not initialized when ifunc resolvers run, so all external
-+ * functions must be inlined with __attribute__((flatten)).
-+ */
-+__attribute__((flatten))
- static void (*resolve_half_to_float(void))(const uint16_t *h, float *f, unsigned int num)
- {
- 	if (igt_x86_features() & F16C)
-diff --git a/lib/igt_x86.c b/lib/igt_x86.c
-index 8c102fd13..f60568be5 100644
---- a/lib/igt_x86.c
-+++ b/lib/igt_x86.c
-@@ -27,14 +27,6 @@
- 
- #include "config.h"
- 
--#ifdef HAVE_CPUID_H
--#include <cpuid.h>
--#else
--#define __get_cpuid_max(x, y) 0
--#define __cpuid(level, a, b, c, d) a = b = c = d = 0
--#define __cpuid_count(level, count, a, b, c, d) a = b = c = d = 0
--#endif
--
- #include "igt_x86.h"
- #include "igt_aux.h"
- 
-@@ -49,114 +41,7 @@
-  * @include: igt_x86.h
-  */
- 
--#define BASIC_CPUID 0x0
--#define EXTENDED_CPUID 0x80000000
--
--#ifndef bit_MMX
--#define bit_MMX		(1 << 23)
--#endif
--
--#ifndef bit_SSE
--#define bit_SSE		(1 << 25)
--#endif
--
--#ifndef bit_SSE2
--#define bit_SSE2	(1 << 26)
--#endif
--
--#ifndef bit_SSE3
--#define bit_SSE3	(1 << 0)
--#endif
--
--#ifndef bit_SSSE3
--#define bit_SSSE3	(1 << 9)
--#endif
--
--#ifndef bit_SSE4_1
--#define bit_SSE4_1	(1 << 19)
--#endif
--
--#ifndef bit_SSE4_2
--#define bit_SSE4_2	(1 << 20)
--#endif
--
--#ifndef bit_OSXSAVE
--#define bit_OSXSAVE	(1 << 27)
--#endif
--
--#ifndef bit_AVX
--#define bit_AVX		(1 << 28)
--#endif
--
--#ifndef bit_F16C
--#define bit_F16C	(1 << 29)
--#endif
--
--#ifndef bit_AVX2
--#define bit_AVX2	(1<<5)
--#endif
--
--#define xgetbv(index,eax,edx) \
--	__asm__ ("xgetbv" : "=a"(eax), "=d"(edx) : "c" (index))
--
--#define has_YMM 0x1
--
- #if defined(__x86_64__) || defined(__i386__)
--unsigned igt_x86_features(void)
--{
--	unsigned max = __get_cpuid_max(BASIC_CPUID, 0);
--	unsigned eax, ebx, ecx, edx;
--	unsigned features = 0;
--	unsigned extra = 0;
--
--	if (max >= 1) {
--		__cpuid(1, eax, ebx, ecx, edx);
--
--		if (ecx & bit_SSE3)
--			features |= SSE3;
--
--		if (ecx & bit_SSSE3)
--			features |= SSSE3;
--
--		if (ecx & bit_SSE4_1)
--			features |= SSE4_1;
--
--		if (ecx & bit_SSE4_2)
--			features |= SSE4_2;
--
--		if (ecx & bit_OSXSAVE) {
--			unsigned int bv_eax, bv_ecx;
--			xgetbv(0, bv_eax, bv_ecx);
--			if ((bv_eax & 6) == 6)
--				extra |= has_YMM;
--		}
--
--		if ((extra & has_YMM) && (ecx & bit_AVX))
--			features |= AVX;
--
--		if (edx & bit_MMX)
--			features |= MMX;
--
--		if (edx & bit_SSE)
--			features |= SSE;
--
--		if (edx & bit_SSE2)
--			features |= SSE2;
--
--		if (ecx & bit_F16C)
--			features |= F16C;
--	}
--
--	if (max >= 7) {
--		__cpuid_count(7, 0, eax, ebx, ecx, edx);
--
--		if ((extra & has_YMM) && (ebx & bit_AVX2))
--			features |= AVX2;
--	}
--
--	return features;
--}
--
- char *igt_x86_features_to_string(unsigned features, char *line)
- {
- 	char *ret = line;
-@@ -284,6 +169,10 @@ static void memcpy_from_wc(void *dst, const void *src, unsigned long len)
- 	memcpy(dst, src, len);
- }
- 
-+/* The PLT is not initialized when ifunc resolvers run, so all external
-+ * functions must be inlined with __attribute__((flatten)). 
-+ */
-+__attribute__((flatten))
- static void (*resolve_memcpy_from_wc(void))(void *, const void *, unsigned long)
- {
- 	if (igt_x86_features() & SSE4_1)
-diff --git a/lib/igt_x86.h b/lib/igt_x86.h
-index c7b84dec2..1e0195c4b 100644
---- a/lib/igt_x86.h
-+++ b/lib/igt_x86.h
-@@ -30,6 +30,14 @@
- #ifndef IGT_X86_H
- #define IGT_X86_H
- 
-+#ifdef HAVE_CPUID_H
-+#include <cpuid.h>
-+#else
-+#define __get_cpuid_max(x, y) 0
-+#define __cpuid(level, a, b, c, d) a = b = c = d = 0
-+#define __cpuid_count(level, count, a, b, c, d) a = b = c = d = 0
-+#endif
-+
- #define MMX	0x1
- #define SSE	0x2
- #define SSE2	0x4
-@@ -42,7 +50,114 @@
- #define F16C	0x200
- 
- #if defined(__x86_64__) || defined(__i386__)
--unsigned igt_x86_features(void);
-+
-+#define BASIC_CPUID 0x0
-+#define EXTENDED_CPUID 0x80000000
-+
-+#ifndef bit_MMX
-+#define bit_MMX		(1 << 23)
-+#endif
-+
-+#ifndef bit_SSE
-+#define bit_SSE		(1 << 25)
-+#endif
-+
-+#ifndef bit_SSE2
-+#define bit_SSE2	(1 << 26)
-+#endif
-+
-+#ifndef bit_SSE3
-+#define bit_SSE3	(1 << 0)
-+#endif
-+
-+#ifndef bit_SSSE3
-+#define bit_SSSE3	(1 << 9)
-+#endif
-+
-+#ifndef bit_SSE4_1
-+#define bit_SSE4_1	(1 << 19)
-+#endif
-+
-+#ifndef bit_SSE4_2
-+#define bit_SSE4_2	(1 << 20)
-+#endif
-+
-+#ifndef bit_OSXSAVE
-+#define bit_OSXSAVE	(1 << 27)
-+#endif
-+
-+#ifndef bit_AVX
-+#define bit_AVX		(1 << 28)
-+#endif
-+
-+#ifndef bit_F16C
-+#define bit_F16C	(1 << 29)
-+#endif
-+
-+#ifndef bit_AVX2
-+#define bit_AVX2	(1<<5)
-+#endif
-+
-+#define xgetbv(index,eax,edx) \
-+	__asm__ ("xgetbv" : "=a"(eax), "=d"(edx) : "c" (index))
-+
-+#define has_YMM 0x1
-+
-+static inline unsigned igt_x86_features(void)
-+{
-+	unsigned max = __get_cpuid_max(BASIC_CPUID, 0);
-+	unsigned eax, ebx, ecx, edx;
-+	unsigned features = 0;
-+	unsigned extra = 0;
-+
-+	if (max >= 1) {
-+		__cpuid(1, eax, ebx, ecx, edx);
-+
-+		if (ecx & bit_SSE3)
-+			features |= SSE3;
-+
-+		if (ecx & bit_SSSE3)
-+			features |= SSSE3;
-+
-+		if (ecx & bit_SSE4_1)
-+			features |= SSE4_1;
-+
-+		if (ecx & bit_SSE4_2)
-+			features |= SSE4_2;
-+
-+		if (ecx & bit_OSXSAVE) {
-+			unsigned int bv_eax, bv_ecx;
-+			xgetbv(0, bv_eax, bv_ecx);
-+			if ((bv_eax & 6) == 6)
-+				extra |= has_YMM;
-+		}
-+
-+		if ((extra & has_YMM) && (ecx & bit_AVX))
-+			features |= AVX;
-+
-+		if (edx & bit_MMX)
-+			features |= MMX;
-+
-+		if (edx & bit_SSE)
-+			features |= SSE;
-+
-+		if (edx & bit_SSE2)
-+			features |= SSE2;
-+
-+		if (ecx & bit_F16C)
-+			features |= F16C;
-+	}
-+
-+	if (max >= 7) {
-+		__cpuid_count(7, 0, eax, ebx, ecx, edx);
-+
-+		if ((extra & has_YMM) && (ebx & bit_AVX2))
-+			features |= AVX2;
-+	}
-+
-+	return features;
-+}
-+
- char *igt_x86_features_to_string(unsigned features, char *line);
- #else
- static inline unsigned igt_x86_features(void)
--- 
-2.43.2
-
+> 
+> > 
+> > Matt
+> > 
+> > > Lucas De Marchi
+> > > 
+> > > > ---
+> > > > tests/intel/xe_exec_threads.c | 1 +
+> > > > 1 file changed, 1 insertion(+)
+> > > >
+> > > > diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+> > > > index 55907e2b3..977e8c600 100644
+> > > > --- a/tests/intel/xe_exec_threads.c
+> > > > +++ b/tests/intel/xe_exec_threads.c
+> > > > @@ -1081,6 +1081,7 @@ static void threads(int fd, int flags)
+> > > > 						threads_data[i].fd = 0;
+> > > > 					else
+> > > > 						threads_data[i].fd = fd;
+> > > > +					threads_data[i].gt = gt;
+> > > > 					threads_data[i].vm_legacy_mode =
+> > > > 						vm_legacy_mode;
+> > > > 					threads_data[i].class = class;
+> > > > --
+> > > > 2.43.0
+> > > >
