@@ -4,50 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA31AC54E68
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 15:10:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89A78C54E58
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 15:14:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 65C7C10EBE3;
-	Thu, 21 Mar 2024 15:10:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2BF4C10EB56;
+	Thu, 21 Mar 2024 15:14:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y3Uwb4lT";
+	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="lqw78zNw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 05B3210EBE3
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 15:10:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711033856; x=1742569856;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=o3TJe0YX9ZG/h8bdbRi7JqHR84eh0MjvVrVC0xZqH8Q=;
- b=Y3Uwb4lTlxjF8i9FqAAOcWqIu0ojbmxhoDzbyP8MY7U2u9yMb0MDk/IZ
- SP1fQ47h1STAbrtUej0ufPZ6vySFRNg1zXNxrVU0YIk/MJTpp8VdM/eLA
- EowE55yBFxqn0rrSHQvSQ/Z0R7KxAPOgMulN9ZdWfBFVCKEYUDDtTTTE7
- nbhts5qg6lL5ubceqESC5iwqss++kSISusFWqVf0tbdOGNmKAD50YRqlA
- G1dPO4A44YDMHkEtm0VnFUN89lc9lCJUicgc8Phxi3sWZ6ZB9/iMw3rRc
- 3S+b+iYBCWCQWKLCQVINMk/pNoexbbGdpQAYNUSOENxGfMxKMdZbb0P71 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="16575635"
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="16575635"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 08:10:56 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="19011331"
-Received: from rahul-super-server.iind.intel.com ([10.145.169.156])
- by fmviesa005.fm.intel.com with ESMTP; 21 Mar 2024 08:10:54 -0700
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Cc: matthew.d.roper@intel.com
-Subject: [PATCH i-g-t 2/2] tests/intel/xe_pm: Add mocs suspend resume test
-Date: Thu, 21 Mar 2024 20:46:37 +0530
-Message-Id: <20240321151637.3320911-3-janga.rahul.kumar@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240321151637.3320911-1-janga.rahul.kumar@intel.com>
-References: <20240321151637.3320911-1-janga.rahul.kumar@intel.com>
+Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8330A10EBE2
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 15:14:43 +0000 (UTC)
+Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx0.riseup.net (Postfix) with ESMTPS id 4V0psZ3ZTtz9s5s;
+ Thu, 21 Mar 2024 15:14:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
+ t=1711034082; bh=pLepd1e7vUrR9636GuxZqChoZZNF/eBqlg6rpawnsdA=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=lqw78zNwMhYPv0p/zaWbhx8UbAmVfXF6YJwePhWASMRNuXv4gcEnrgNRKo/c014uR
+ DKunyW4Cnw+BcxPaYrNsbfnz6SXzIGtFcHDpxjTmeNuRbmmtUWhax+L/TMBQE/80yl
+ 7zeUBO/QKJRVtdly1tDmiNhOoJNfMkFS1+WR//g8=
+X-Riseup-User-ID: 1D5614615C3C2B03B0C96E594FCEA288717BEFD030800170FD880ECA5E06FD3E
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+ by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4V0psH1z0rzJsDX;
+ Thu, 21 Mar 2024 15:14:26 +0000 (UTC)
+Message-ID: <5b66792a-1f1b-4070-ab5e-d27346316162@riseup.net>
+Date: Thu, 21 Mar 2024 12:14:17 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH i-g-t v3 5/7] benchmarks/kms_fb_stress: Don't paint the
+ FB's if the format is DRM_FORMAT_RGB565
+To: Pekka Paalanen <pekka.paalanen@collabora.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>
+References: <20240307-kms_fb_stress-dev-v3-0-d5b948a541be@riseup.net>
+ <20240307-kms_fb_stress-dev-v3-5-d5b948a541be@riseup.net>
+ <20240320173645.1a5479e2.pekka.paalanen@collabora.com>
+Content-Language: en-US
+From: Arthur Grillo <arthurgrillo@riseup.net>
+In-Reply-To: <20240320173645.1a5479e2.pekka.paalanen@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,77 +67,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Add test to check mocs values are retained over suspend/resume.
 
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
----
- tests/intel/xe_pm.c | 43 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+On 20/03/24 12:36, Pekka Paalanen wrote:
+> On Thu, 07 Mar 2024 16:41:07 -0300
+> Arthur Grillo <arthurgrillo@riseup.net> wrote:
+> 
+>> Cairo does not fully support the RGB565 due to some stride issues.
+>> So, don't paint the FB's if the format is DRM_FORMAT_RGB565.
+> 
+> Cairo, as it is based on Pixman, requires stride to be divisible by
+> sizeof(uint32_t). Pixman makes use of that requirement to go faster.
+> 
+> It probably wouldn't hurt if VKMS happened to have the same convention?
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index fcbed6249..0761d59c4 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -560,6 +560,45 @@ static void test_mmap(device_t device, uint32_t placement, uint32_t flags)
- 	close(fw_handle);
- }
- 
-+/**
-+ * SUBTEST: mocs_suspend_resume
-+ * Description:
-+ *     Validate mocs register contents over suspend resume
-+ *
-+ * Functionality: mocs
-+ * Run type: FULL
-+ */
-+static void test_mocs_suspend_resume(device_t device)
-+{
-+	int gt;
-+
-+	xe_for_each_gt(device.fd_xe, gt) {
-+		char path[256];
-+
-+		// Mocs debugfs contents before and after suspend-resume
-+		char mocs_content_pre[4096], mocs_contents_post[4096];
-+
-+		sprintf(path, "gt%d/mocs", gt);
-+		igt_assert(igt_debugfs_exists(device.fd_xe, path, O_RDONLY));
-+		igt_debugfs_dump(device.fd_xe, path);
-+		igt_debugfs_read(device.fd_xe, path, mocs_content_pre);
-+
-+		fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
-+		igt_assert(fw_handle >= 0);
-+		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-+
-+		/* Runtime suspend  */
-+		close(fw_handle);
-+		igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-+
-+		igt_assert(igt_debugfs_exists(device.fd_xe, path, O_RDONLY));
-+		igt_debugfs_dump(device.fd_xe, path);
-+		igt_debugfs_read(device.fd_xe, path, mocs_contents_post);
-+
-+		igt_assert(strcmp(mocs_content_pre, mocs_contents_post) == 0);
-+	}
-+}
-+
- igt_main
- {
- 	struct drm_xe_engine_class_instance *hwe;
-@@ -701,6 +740,10 @@ igt_main
- 			dpms_on_off(device, DRM_MODE_DPMS_ON);
- 			igt_pm_set_autosuspend_delay(device.pci_xe, delay_ms);
- 		}
-+
-+		igt_subtest("mocs_suspend_resume")
-+			test_mocs_suspend_resume(device);
-+
- 	}
- 
- 	igt_fixture {
--- 
-2.25.1
+By not supporting too? Or converting the plane to have strides divisible
+by sizeof(uint32_t) before doing the format conversion?
 
+> 
+> Anyway, it would be better to test the stride, not format. Maybe IGT
+> should grow a function to check if it can paint with a specific stride
+> & format?
+
+If the stride issue is the only thing that decides if a format can be
+painted, I think I can create this function.
+
+Best Regards,
+~Arthur Grillo
+
+> 
+>>
+>> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
+>> ---
+>>  benchmarks/kms_fb_stress.c | 55 ++++++++++++++++++++++++++++++++++------------
+>>  1 file changed, 41 insertions(+), 14 deletions(-)
+> 
+> Thanks,
+> pq
