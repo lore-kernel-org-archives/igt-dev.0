@@ -4,57 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC3B2C54E68
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 15:39:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8410EC54E58
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 15:39:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 71E3F10ECB5;
-	Thu, 21 Mar 2024 15:39:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D72F110ECCE;
+	Thu, 21 Mar 2024 15:39:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JShp3yaR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QFjae1EP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6769C10ECB5
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 15:39:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21D4610ECC4
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 15:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711035576; x=1742571576;
+ t=1711035587; x=1742571587;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=oCb/7hnnqdjJG0h4W0BQPXgpTU+Kwx/LOtCLKytXVdQ=;
- b=JShp3yaRrseYy9BAJUQgehiB2KoVlCHzHjJ99yrAXBNS7CmAwKOFLsJI
- OLT97p+f2pGi3QHqr1d29jmN71vAKjw3qUloiO78zOG6Hn0wLUycW27yI
- sQvaPYSds/NfHHUgHtp3vSE8XA2CVqqOcVRJWQ6aE3dptPCH8dFGt6B/C
- gyqQYVdnV1MXNahYgK41h6ETMtWOyQtDtWB+/m8jaePpOPhaVXWGa6eap
- K8dlFgbKAfq1IxTXIz3DLZi12I96G3F1rgBoorVoFDUyQ0FUSXgxaLCGT
- HRykoS+KJavHgn9EqUJ7Zm32M2Bls7HpKJs+t3zJvTC6RHDWlr+U2382h w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="9795268"
+ bh=rIz2XDocHK9C3HSMCuJ7jUBhSNUaPPXSSGu1FopILjw=;
+ b=QFjae1EPniZQvx/ImJFuxNr7j7slonOo49PWzA6ONnASILXy8TDgP20v
+ Ha/CbDk0q2oEOdC5rQ7fSWGYPkoC53afcY7egynmOU8yusFOU0qHJNVWo
+ OxvMBvF2QwV8QkFZANGyww62lKzKpUoEWyMjib6dcjWEL3LMEEcylQ1b7
+ NyHblTNCifGVAtIWO/c4L9TxDaiJGGkZM6iS+Ml2IVcA2pJSBjpWSAZgk
+ UBOxMsje7Il1B+Z67W7VD/LOf9ci+sFEiY9sQp5PqCOHLikdRrSNCCx4l
+ dlpR7QSZ8PaoKghjOhmwdmyZYY78qrXiFF3u527CnlOFAIK/aGLXr9f99 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="6146365"
 X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
-   d="scan'208";a="9795268"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 08:39:36 -0700
+   d="scan'208";a="6146365"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2024 08:39:46 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="19255918"
+X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="19266807"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 08:39:34 -0700
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2024 08:39:45 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Chris Wilson <chris.p.wilson@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Priyanka Dandamudi <priyanka.dandamudi@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v5 03/24] tests/intel: Introduce CMD submission
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Subject: [PATCH i-g-t v5 04/24] tests/intel: Let's introduce Workarounds
  subcategory
-Date: Thu, 21 Mar 2024 15:38:26 +0000
-Message-Id: <20240321153847.1787625-4-katarzyna.piecielska@intel.com>
+Date: Thu, 21 Mar 2024 15:38:27 +0000
+Message-Id: <20240321153847.1787625-5-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240321153847.1787625-1-katarzyna.piecielska@intel.com>
 References: <20240321153847.1787625-1-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,825 +67,67 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's have 'CMD submission' subcategory to explicitly show where we are
-testing cmd submission.
-In some cases change subcategory i915 to CMD submission.
+There is gem_workaround test that deserves it's own subcategory.
 
-v2: Make Sub-category/Functionality/Feature unique. (Kamil)
+v2: Make Sub-category/Functionality/Feature unique values (Kamil)
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Chris Wilson <chris.p.wilson@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Acked-by: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 ---
- tests/intel/gem_bad_reloc.c               | 14 ++++++++------
- tests/intel/gem_barrier_race.c            |  3 +++
- tests/intel/gem_close_race.c              |  2 +-
- tests/intel/gem_ctx_bad_destroy.c         |  6 +++---
- tests/intel/gem_ctx_create.c              |  4 ++--
- tests/intel/gem_ctx_engines.c             |  6 +++---
- tests/intel/gem_ctx_exec.c                |  6 +++---
- tests/intel/gem_ctx_shared.c              |  4 ++--
- tests/intel/gem_ctx_switch.c              |  5 ++++-
- tests/intel/gem_evict_alignment.c         |  3 +++
- tests/intel/gem_evict_everything.c        |  3 +++
- tests/intel/gem_exec_alignment.c          |  4 ++--
- tests/intel/gem_exec_async.c              |  4 ++--
- tests/intel/gem_exec_await.c              |  4 ++--
- tests/intel/gem_exec_endless.c            |  6 +++---
- tests/intel/gem_exec_fair.c               |  3 +++
- tests/intel/gem_exec_fence.c              | 18 +++++++++---------
- tests/intel/gem_exec_flush.c              |  3 +++
- tests/intel/gem_exec_latency.c            |  3 +++
- tests/intel/gem_exec_lut_handle.c         |  3 +++
- tests/intel/gem_exec_nop.c                |  4 ++--
- tests/intel/gem_exec_reloc.c              |  3 +++
- tests/intel/gem_exec_store.c              | 18 ++++++++++--------
- tests/intel/gem_exec_suspend.c            |  5 ++++-
- tests/intel/gem_exec_whisper.c            |  4 ++--
- tests/intel/gem_fd_exhaustion.c           |  3 +++
- tests/intel/gem_fence_thrash.c            |  5 ++++-
- tests/intel/gem_fence_upload.c            |  3 +++
- tests/intel/gem_fenced_exec_thrash.c      |  5 ++++-
- tests/intel/gem_lut_handle.c              |  3 +++
- tests/intel/gem_partial_pwrite_pread.c    |  3 +++
- tests/intel/gem_pipe_control_store_loop.c |  4 ++--
- tests/intel/gem_pread.c                   |  3 +++
- tests/intel/gem_pread_after_blit.c        |  3 +++
- tests/intel/gem_pwrite.c                  |  3 +++
- tests/intel/gem_pwrite_snooped.c          |  3 +++
- tests/intel/gem_render_linear_blits.c     |  3 +++
- tests/intel/gem_render_tiled_blits.c      |  3 +++
- tests/intel/gem_request_retire.c          |  6 +++---
- tests/intel/gem_ringfill.c                |  4 ++--
- tests/intel/gem_stress.c                  |  3 +++
- tests/intel/gem_unref_active_buffers.c    |  2 +-
- tests/intel/gem_watchdog.c                |  3 +++
- tests/intel/gen7_exec_parse.c             |  3 +++
- 44 files changed, 141 insertions(+), 62 deletions(-)
+ tests/intel/gem_workarounds.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/tests/intel/gem_bad_reloc.c b/tests/intel/gem_bad_reloc.c
-index b058639ea..8e17d6630 100644
---- a/tests/intel/gem_bad_reloc.c
-+++ b/tests/intel/gem_bad_reloc.c
-@@ -43,16 +43,18 @@
- #include "igt.h"
+diff --git a/tests/intel/gem_workarounds.c b/tests/intel/gem_workarounds.c
+index d83c0a1db..682fc3163 100644
+--- a/tests/intel/gem_workarounds.c
++++ b/tests/intel/gem_workarounds.c
+@@ -35,9 +35,9 @@
  /**
-  * TEST: gem bad reloc
-- * Description:
-- *   Simulates SNA behaviour using negative self-relocations for STATE_BASE_ADDRESS command
-- *   packets.
-+ * Description: Simulates SNA behaviour using negative self-relocations for
-+ *		STATE_BASE_ADDRESS command packets.
-  * Feature: cmd_submission
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: relocations
-  * Run type: FULL
-  *
-  * SUBTEST: negative-reloc
-- * Description:
-- *   SNA behaviour is compressing batch buffer which leads to negative relocation deltas.
-- *   Negative self-relocation happening with real offset 0.
-+ * Description: SNA behaviour is compressing batch buffer which leads to
-+ *		negative relocation deltas. Negative self-relocation happening
-+ *		with real offset 0.
-  *
-  * SUBTEST: negative-reloc-bltcopy
-  * Description: Exercising blitter operation with negative reloc.
-diff --git a/tests/intel/gem_barrier_race.c b/tests/intel/gem_barrier_race.c
-index 591ddc222..7f434a68c 100644
---- a/tests/intel/gem_barrier_race.c
-+++ b/tests/intel/gem_barrier_race.c
-@@ -21,6 +21,9 @@
-  * TEST: gem barrier race
-  * Description: Exercise engine barriers and their interaction with other subsystems
-  * Feature: core
-+ * Category: Desktop client
-+ * Sub-category: CMD submission
-+ * Functionality: barrier
-  * Run type: FULL
-  * Test category: GEM_Legacy
-  *
-diff --git a/tests/intel/gem_close_race.c b/tests/intel/gem_close_race.c
-index 9c2034ad3..acfa8166a 100644
---- a/tests/intel/gem_close_race.c
-+++ b/tests/intel/gem_close_race.c
-@@ -52,7 +52,7 @@
-  * TEST: gem close race
-  * Description: Test try to race gem_close against workload submission.
+  * TEST: gem workarounds
   * Category: Infrastructure
-- * Feature: synchronization
-+ * Feature: synchronization feature
-  * Functionality: driver handler
-  * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-diff --git a/tests/intel/gem_ctx_bad_destroy.c b/tests/intel/gem_ctx_bad_destroy.c
-index 65f6b5583..9d8c6fff7 100644
---- a/tests/intel/gem_ctx_bad_destroy.c
-+++ b/tests/intel/gem_ctx_bad_destroy.c
-@@ -38,10 +38,10 @@
-  * TEST: gem ctx bad destroy
-  * Category: Infrastructure
-  * Description: Negative test cases for destroy contexts.
-- * Feature: context
-- * Functionality: context management
-+ * Feature: cmd_submission
-+ * Functionality: context
-  * Run type: FULL
-- * Sub-category: i915
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: double-destroy
-diff --git a/tests/intel/gem_ctx_create.c b/tests/intel/gem_ctx_create.c
-index 5fb0f9a1f..bcd74f51f 100644
---- a/tests/intel/gem_ctx_create.c
-+++ b/tests/intel/gem_ctx_create.c
-@@ -39,9 +39,9 @@
-  * TEST: gem ctx create
-  * Description: Test the context create ioctls
-  * Category: Infrastructure
-- * Feature: context
-+ * Feature: cmd_submission
-  * Functionality: context
+- * Feature: workarounds
+- * Functionality: workarounds
 - * Sub-category: Context
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-  * Run type: FULL
-  *
-diff --git a/tests/intel/gem_ctx_engines.c b/tests/intel/gem_ctx_engines.c
-index 61718494e..146a68cfd 100644
---- a/tests/intel/gem_ctx_engines.c
-+++ b/tests/intel/gem_ctx_engines.c
-@@ -46,10 +46,10 @@
- /**
-  * TEST: gem ctx engines
-  * Category: Infrastructure
-- * Feature: context
-- * Functionality: context management
-+ * Feature: cmd_submission
++ * Feature: workaround
 + * Functionality: context
-  * Run type: FULL
-- * Sub-category: i915
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: execute-allforone
-diff --git a/tests/intel/gem_ctx_exec.c b/tests/intel/gem_ctx_exec.c
-index 20d42d5b0..2643821a0 100644
---- a/tests/intel/gem_ctx_exec.c
-+++ b/tests/intel/gem_ctx_exec.c
-@@ -51,9 +51,9 @@
-  * TEST: gem ctx exec
-  * Description: Test context batch buffer execution.
-  * Category: Infrastructure
-- * Feature: context
-- * Functionality: execbuf
-- * Sub-category: Context
-+ * Feature: cmd_submission
-+ * Functionality: context
-+ * Sub-category: CMD submission
++ * Sub-category: Workarounds
   * Test category: GEM_Legacy
   * Run type: FULL
   *
-diff --git a/tests/intel/gem_ctx_shared.c b/tests/intel/gem_ctx_shared.c
-index 8b045e20a..a8cbcf12a 100644
---- a/tests/intel/gem_ctx_shared.c
-+++ b/tests/intel/gem_ctx_shared.c
-@@ -51,9 +51,9 @@
-  * TEST: gem ctx shared
-  * Description: Test shared contexts.
-  * Category: Desktop client
-- * Feature: context
-+ * Feature: context feature
-  * Functionality: shared contex
-- * Sub-category: Context
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-  * Run type: FULL
+@@ -45,11 +45,14 @@
+  * SUBTEST: basic-read-context
+  * SUBTEST: basic-read-fd
+  * SUBTEST: hibernate-resume
+- * Feature: hibernate, workarounds
++ * Feature: hibernate, workaround
++ *
+  * SUBTEST: hibernate-resume-context
+- * Feature: hibernate, workarounds
++ * Feature: hibernate, workaround
++ *
+  * SUBTEST: hibernate-resume-fd
+- * Feature: hibernate, workarounds
++ * Feature: hibernate, workaround
++ *
+  * SUBTEST: reset
+  * SUBTEST: reset-context
+  * SUBTEST: reset-fd
+@@ -59,12 +62,12 @@
   *
-diff --git a/tests/intel/gem_ctx_switch.c b/tests/intel/gem_ctx_switch.c
-index f94a41bec..2f9786bf7 100644
---- a/tests/intel/gem_ctx_switch.c
-+++ b/tests/intel/gem_ctx_switch.c
-@@ -47,7 +47,10 @@
- #include "igt.h"
- /**
-  * TEST: gem ctx switch
-- * Feature: context
-+ * Feature: context feature
-+ * Category: Desktop client
-+ * Sub-category: CMD Submission
-+ * Functionality: context switching
-  * Run type: FULL
+  * SUBTEST: suspend-resume-context
+  * Description: Test to verify gem WA registers during suspend-resume
+- * Feature: suspend, workarounds
++ * Feature: suspend, workaround
+  * Test category: suspend
   *
-  * SUBTEST: all-heavy
-diff --git a/tests/intel/gem_evict_alignment.c b/tests/intel/gem_evict_alignment.c
-index 4a9507a06..7cd11d169 100644
---- a/tests/intel/gem_evict_alignment.c
-+++ b/tests/intel/gem_evict_alignment.c
-@@ -50,6 +50,9 @@
- /**
-  * TEST: gem evict alignment
-  * Description: Run a couple of big batches to force the unbind on misalignment code.
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: misalignment
-  * Run type: FULL
-  *
-  * SUBTEST: major-hang
-diff --git a/tests/intel/gem_evict_everything.c b/tests/intel/gem_evict_everything.c
-index f0f356cc3..578018e4d 100644
---- a/tests/intel/gem_evict_everything.c
-+++ b/tests/intel/gem_evict_everything.c
-@@ -51,6 +51,9 @@
- /**
-  * TEST: gem evict everything
-  * Description: Run a couple of big batches to force the eviction code.
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: eviction
-  * Run type: FULL
-  *
-  * SUBTEST: forked-interruptible
-diff --git a/tests/intel/gem_exec_alignment.c b/tests/intel/gem_exec_alignment.c
-index 10732fec5..40ff15030 100644
---- a/tests/intel/gem_exec_alignment.c
-+++ b/tests/intel/gem_exec_alignment.c
-@@ -50,9 +50,9 @@
-  * Category: Desktop client
-  * Description: Exercises the basic execbuffer using object alignments
-  * Feature: cmd_submission
-- * Functionality: command submission
-+ * Functionality: execbuf
-  * Run type: FULL
-- * Sub-category: i915
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: forked
-diff --git a/tests/intel/gem_exec_async.c b/tests/intel/gem_exec_async.c
-index 1497c5c6c..8db8fbf3c 100644
---- a/tests/intel/gem_exec_async.c
-+++ b/tests/intel/gem_exec_async.c
-@@ -29,9 +29,9 @@
-  * Category: Infrastructure
-  * Description: Check that we can issue concurrent writes across the engines.
-  * Feature: cmd_submission
-- * Functionality: command submission
-+ * Functionality: concurent writes
-  * Run type: FULL
-- * Sub-category: i915
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: concurrent-writes
-diff --git a/tests/intel/gem_exec_await.c b/tests/intel/gem_exec_await.c
-index 0652b649b..b2b8218bf 100644
---- a/tests/intel/gem_exec_await.c
-+++ b/tests/intel/gem_exec_await.c
-@@ -47,9 +47,9 @@
-  * TEST: gem exec await
-  * Category: Infrastructure
-  * Feature: cmd_submission
-- * Functionality: command submission
-+ * Functionality: requests
-  * Run type: FULL
-- * Sub-category: i915
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: wide-all
-diff --git a/tests/intel/gem_exec_endless.c b/tests/intel/gem_exec_endless.c
-index 42991c018..b7e2bb429 100644
---- a/tests/intel/gem_exec_endless.c
-+++ b/tests/intel/gem_exec_endless.c
-@@ -34,10 +34,10 @@
-  * TEST: gem exec endless
-  * Category: Server
-  * Feature: cmd_submission
-- * Functionality: command submission
-+ * Functionality: compute
-  * Run type: FULL
-- * Sub-category: Compute
-- * Test category: GEM_Legacy
-+ * Sub-category: CMD submission
-+ * Test category: Compute
-  *
-  * SUBTEST: dispatch
-  */
-diff --git a/tests/intel/gem_exec_fair.c b/tests/intel/gem_exec_fair.c
-index 5ad13f97a..2c33c0187 100644
---- a/tests/intel/gem_exec_fair.c
-+++ b/tests/intel/gem_exec_fair.c
-@@ -30,6 +30,9 @@
-  * TEST: gem exec fair
-  * Description: Check that GPU time and execution order is fairly distributed across clients
-  * Feature: cmd_submission
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: multi-client systems
-  * Run type: FULL
-  *
-  * SUBTEST: basic-deadline
-diff --git a/tests/intel/gem_exec_fence.c b/tests/intel/gem_exec_fence.c
-index a0cfc1378..e640a0a0a 100644
---- a/tests/intel/gem_exec_fence.c
-+++ b/tests/intel/gem_exec_fence.c
-@@ -39,7 +39,7 @@
-  * TEST: gem exec fence
-  * Description: Check that execbuf waits for explicit fences
-  * Category: Infrastructure
-- * Feature: cmd_submission, synchronization
-+ * Feature: cmd_submission, synchronization feature
-  * Functionality: semaphore
-  * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-@@ -56,19 +56,19 @@
-  *
-  * SUBTEST: basic-busy
-  * Description: Basic check for explicit fence on each busy engine.
-- * Feature: cmd_submission, multitile, synchronization
-+ * Feature: cmd_submission, multitile, synchronization feature
-  * Run type: BAT
-  * Test category: MultiTile
-  *
-  * SUBTEST: basic-busy-all
-  * Description: Basic check for composite fence on all busy engines.
-- * Feature: cmd_submission, multitile, synchronization
-+ * Feature: cmd_submission, multitile, synchronization feature
-  * Test category: MultiTile
-  *
-  * SUBTEST: basic-wait
-  * Description: Basic check for explicit fence with additional wait time on
-  *		each busy engine.
-- * Feature: cmd_submission, multitile, synchronization
-+ * Feature: cmd_submission, multitile, synchronization feature
-  * Run type: BAT
-  * Test category: MultiTile
-  *
-@@ -77,7 +77,7 @@
-  *		busy engines. Execute the same batch on each engine and check
-  *		that the composite fence across all engines completes only
-  *		after the batch is completed on every engine.
-- * Feature: cmd_submission, multitile, synchronization
-+ * Feature: cmd_submission, multitile, synchronization feature
-  * Test category: MultiTile
-  *
-  * SUBTEST: busy-hang
-@@ -104,7 +104,7 @@
-  *
-  * SUBTEST: keep-in-fence
-  * Description: Check in-fence is not overwritten with out-fence on each engine.
-- * Feature: cmd_submission, multitile, synchronization
-+ * Feature: cmd_submission, multitile, synchronization feature
-  * Test category: MultiTile
-  *
-  * SUBTEST: long-history
-@@ -112,19 +112,19 @@
-  *
-  * SUBTEST: nb-await
-  * Description: Check for explicit fence with non-blocking wait on each engine.
-- * Feature: cmd_submission, multitile, synchronization
-+ * Feature: cmd_submission, multitile, synchronization feature
-  * Run type: BAT
-  * Test category: MultiTile
-  *
-  * SUBTEST: nb-await-hang
-  * Description: Check for explicit fence with non-blocking async wait on each
-  *		engine with a pending gpu hang.
-- * Feature: cmd_submission, multitile, synchronization
-+ * Feature: cmd_submission, multitile, synchronization feature
-  *
-  * SUBTEST: parallel
-  * Description: Check for EXEC_FENCE_SUBMIT in parallel execution scenarios
-  *		on each engine.
-- * Feature: cmd_submission, multitile, synchronization
-+ * Feature: cmd_submission, multitile, synchronization feature
-  * Test category: MultiTile
-  *
-  * SUBTEST: submit
-diff --git a/tests/intel/gem_exec_flush.c b/tests/intel/gem_exec_flush.c
-index 3902ee957..a540d1f30 100644
---- a/tests/intel/gem_exec_flush.c
-+++ b/tests/intel/gem_exec_flush.c
-@@ -31,6 +31,9 @@
- /**
-  * TEST: gem exec flush
-  * Description: Basic check of flushing after batches
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: execbuf
-  * Run type: FULL
-  *
-  * SUBTEST: basic-batch-kernel-default-cmd
-diff --git a/tests/intel/gem_exec_latency.c b/tests/intel/gem_exec_latency.c
-index c0e607f97..42955e97a 100644
---- a/tests/intel/gem_exec_latency.c
-+++ b/tests/intel/gem_exec_latency.c
-@@ -50,6 +50,9 @@
- #include "i915/gem_create.h"
- /**
-  * TEST: gem exec latency
-+ * Sub-category: CMD submission
-+ * Functionality: execbuf
-+ * Category: Desktop client
-  * Run type: FULL
-  *
-  * SUBTEST: context-preempt
-diff --git a/tests/intel/gem_exec_lut_handle.c b/tests/intel/gem_exec_lut_handle.c
-index c5e8f1d72..a03a716e5 100644
---- a/tests/intel/gem_exec_lut_handle.c
-+++ b/tests/intel/gem_exec_lut_handle.c
-@@ -43,6 +43,9 @@
- /**
-  * TEST: gem exec lut handle
-  * Description: Exercises the basic execbuffer using the handle LUT interface.
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: execbuf
-  * Run type: FULL
-  *
-  * SUBTEST:
-diff --git a/tests/intel/gem_exec_nop.c b/tests/intel/gem_exec_nop.c
-index 88a6ba224..48308312e 100644
---- a/tests/intel/gem_exec_nop.c
-+++ b/tests/intel/gem_exec_nop.c
-@@ -52,8 +52,8 @@
-  * TEST: gem exec nop
-  * Category: Infrastructure
-  * Feature: cmd_submission
-- * Functionality: command submission
-- * Sub-category: i915
-+ * Functionality: execbuf
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-  * Run type: FULL
-  *
-diff --git a/tests/intel/gem_exec_reloc.c b/tests/intel/gem_exec_reloc.c
-index 8259ff1d9..f3a8a45c0 100644
---- a/tests/intel/gem_exec_reloc.c
-+++ b/tests/intel/gem_exec_reloc.c
-@@ -34,6 +34,9 @@
- /**
-  * TEST: gem exec reloc
-  * Description: Basic sanity check of execbuf-ioctl relocations.
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: relocations
-  * Run type: FULL
-  *
-  * SUBTEST: basic-active
-diff --git a/tests/intel/gem_exec_store.c b/tests/intel/gem_exec_store.c
-index 0ab931062..a5a6538cb 100644
---- a/tests/intel/gem_exec_store.c
-+++ b/tests/intel/gem_exec_store.c
-@@ -40,24 +40,26 @@
-  * Description: Exercise store dword functionality using execbuf-ioctl
-  * Feature: cmd_submission
-  * Functionality: coherency
-- * Sub-category: HW
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-+ * Run type: FULL
-  *
-  * SUBTEST: basic
-- * Description: Verify that all capable engines can store dwords to a common buffer object
-+ * Description: Verify that all capable engines can store dwords to a common
-+ *		buffer object
-  * Run type: BAT
-  *
-  * SUBTEST: cachelines
-- * Description: Verify that each capable engine can store a dword to different cachelines of a buffer object
-- * Run type: FULL
-+ * Description: Verify that each capable engine can store a dword to different
-+ *		cachelines of a buffer object
-  *
-  * SUBTEST: dword
-- * Description: Verify that each capable engine can store a dword to a buffer object
-- * Run type: FULL
-+ * Description: Verify that each capable engine can store a dword to a buffer
-+ *		object
-  *
-  * SUBTEST: pages
-- * Description: Verify that each capable engine can store a dword to various page-sized buffer objects
-- * Run type: FULL
-+ * Description: Verify that each capable engine can store a dword to various
-+ *		page-sized buffer objects
+  * SUBTEST: suspend-resume-fd
+  * Description: Test to verify gem WA registers during suspend-resume
+- * Feature: suspend, workarounds
++ * Feature: suspend, workaround
+  * Test category: suspend
   */
  
- IGT_TEST_DESCRIPTION("Exercise store dword functionality using execbuf-ioctl");
-diff --git a/tests/intel/gem_exec_suspend.c b/tests/intel/gem_exec_suspend.c
-index faf2e10f5..5e88ac378 100644
---- a/tests/intel/gem_exec_suspend.c
-+++ b/tests/intel/gem_exec_suspend.c
-@@ -39,7 +39,10 @@
- /**
-  * TEST: gem exec suspend
-  * Description: Exercise simple execbufs runs across various suspend/resume cycles.
-- * Feature: cmd_submission, suspend
-+ * Feature: cmd_submission, suspend feature
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: suspend
-  * Run type: FULL
-  *
-  * SUBTEST: basic
-diff --git a/tests/intel/gem_exec_whisper.c b/tests/intel/gem_exec_whisper.c
-index effb47335..29ed163cc 100644
---- a/tests/intel/gem_exec_whisper.c
-+++ b/tests/intel/gem_exec_whisper.c
-@@ -41,8 +41,8 @@
-  * TEST: gem exec whisper
-  * Feature: cmd_submission
-  * Category: Infrastructure
-- * Functionality: command submission
-- * Sub-category: i915
-+ * Functionality: execbuf
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-  * Run type: FULL
-  *
-diff --git a/tests/intel/gem_fd_exhaustion.c b/tests/intel/gem_fd_exhaustion.c
-index e79d03478..0bf7b309a 100644
---- a/tests/intel/gem_fd_exhaustion.c
-+++ b/tests/intel/gem_fd_exhaustion.c
-@@ -36,6 +36,9 @@
- #include "i915/gem_create.h"
- /**
-  * TEST: gem fd exhaustion
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: fd exhaustion
-  * Run type: FULL
-  *
-  * SUBTEST:
-diff --git a/tests/intel/gem_fence_thrash.c b/tests/intel/gem_fence_thrash.c
-index 4cb3d842b..95cd6cf90 100644
---- a/tests/intel/gem_fence_thrash.c
-+++ b/tests/intel/gem_fence_thrash.c
-@@ -45,7 +45,10 @@
- #include "igt_x86.h"
- /**
-  * TEST: gem fence thrash
-- * Feature: gtt, synchronization
-+ * Feature: gtt, synchronization feature
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: synchronization
-  * Run type: FULL
-  *
-  * SUBTEST: bo-copy
-diff --git a/tests/intel/gem_fence_upload.c b/tests/intel/gem_fence_upload.c
-index b239c0e78..fd6858759 100644
---- a/tests/intel/gem_fence_upload.c
-+++ b/tests/intel/gem_fence_upload.c
-@@ -43,6 +43,9 @@
- #include "i915/gem_create.h"
- /**
-  * TEST: gem fence upload
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: synchronization
-  * Run type: FULL
-  *
-  * SUBTEST: performance
-diff --git a/tests/intel/gem_fenced_exec_thrash.c b/tests/intel/gem_fenced_exec_thrash.c
-index 098f22ef4..7203ac204 100644
---- a/tests/intel/gem_fenced_exec_thrash.c
-+++ b/tests/intel/gem_fenced_exec_thrash.c
-@@ -36,7 +36,10 @@
- /**
-  * TEST: gem fenced exec thrash
-  * Description: Test execbuf fence accounting.
-- * Feature: gtt, synchronization
-+ * Feature: gtt, synchronization feature
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: synchronization
-  * Run type: FULL
-  *
-  * SUBTEST: 2-spare-fences
-diff --git a/tests/intel/gem_lut_handle.c b/tests/intel/gem_lut_handle.c
-index cdd56a5d8..359e1a921 100644
---- a/tests/intel/gem_lut_handle.c
-+++ b/tests/intel/gem_lut_handle.c
-@@ -42,6 +42,9 @@
- /**
-  * TEST: gem lut handle
-  * Description: Exercises the basic execbuffer using the handle LUT interface.
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: execbuf
-  * Run type: FULL
-  *
-  * SUBTEST:
-diff --git a/tests/intel/gem_partial_pwrite_pread.c b/tests/intel/gem_partial_pwrite_pread.c
-index 9a5855752..782a4f3b8 100644
---- a/tests/intel/gem_partial_pwrite_pread.c
-+++ b/tests/intel/gem_partial_pwrite_pread.c
-@@ -42,6 +42,9 @@
-  * TEST: gem partial pwrite pread
-  * Description: Test pwrite/pread consistency when touching partial cachelines.
-  * Feature: caching, mapping
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: pread/pwrite
-  * Run type: FULL
-  *
-  * SUBTEST: reads
-diff --git a/tests/intel/gem_pipe_control_store_loop.c b/tests/intel/gem_pipe_control_store_loop.c
-index 1913b874a..3cfef84e7 100644
---- a/tests/intel/gem_pipe_control_store_loop.c
-+++ b/tests/intel/gem_pipe_control_store_loop.c
-@@ -48,9 +48,9 @@
-  * Category: Desktop client
-  * Description: Test (TLB-)Coherency of pipe_control QW writes.
-  * Feature: cmd_submission
-- * Functionality: command submission
-+ * Functionality: coherency
-  * Run type: FULL
-- * Sub-category: i915
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: fresh-buffer
-diff --git a/tests/intel/gem_pread.c b/tests/intel/gem_pread.c
-index 6f50785da..bfd20b8f8 100644
---- a/tests/intel/gem_pread.c
-+++ b/tests/intel/gem_pread.c
-@@ -48,6 +48,9 @@
- /**
-  * TEST: gem pread
-  * Feature: mapping
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: pread
-  * Run type: FULL
-  *
-  * SUBTEST: bench
-diff --git a/tests/intel/gem_pread_after_blit.c b/tests/intel/gem_pread_after_blit.c
-index b3e20697d..64453ad3d 100644
---- a/tests/intel/gem_pread_after_blit.c
-+++ b/tests/intel/gem_pread_after_blit.c
-@@ -50,6 +50,9 @@
- /**
-  * TEST: gem pread after blit
-  * Description: Test pread behavior when getting values out of just-drawn-to buffers.
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: pread
-  * Run type: FULL
-  *
-  * SUBTEST: default-hang
-diff --git a/tests/intel/gem_pwrite.c b/tests/intel/gem_pwrite.c
-index e2b48b843..f265eb68c 100644
---- a/tests/intel/gem_pwrite.c
-+++ b/tests/intel/gem_pwrite.c
-@@ -49,6 +49,9 @@
- /**
-  * TEST: gem pwrite
-  * Feature: mapping
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: pwrite
-  * Run type: FULL
-  *
-  * SUBTEST: basic-exhaustion
-diff --git a/tests/intel/gem_pwrite_snooped.c b/tests/intel/gem_pwrite_snooped.c
-index 5d9e8da20..fede6e1c8 100644
---- a/tests/intel/gem_pwrite_snooped.c
-+++ b/tests/intel/gem_pwrite_snooped.c
-@@ -41,6 +41,9 @@
-  * TEST: gem pwrite snooped
-  * Description: pwrite to a snooped bo then make it uncached and check that the GPU sees the data.
-  * Feature: gtt, mapping
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: pwrite
-  * Run type: FULL
-  *
-  * SUBTEST:
-diff --git a/tests/intel/gem_render_linear_blits.c b/tests/intel/gem_render_linear_blits.c
-index 61ec1593f..095d0acb2 100644
---- a/tests/intel/gem_render_linear_blits.c
-+++ b/tests/intel/gem_render_linear_blits.c
-@@ -52,6 +52,9 @@
- /**
-  * TEST: gem render linear blits
-  * Feature: mapping
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: render blits
-  * Run type: FULL
-  *
-  * SUBTEST: aperture-shrink
-diff --git a/tests/intel/gem_render_tiled_blits.c b/tests/intel/gem_render_tiled_blits.c
-index a25ea0812..dda6faf42 100644
---- a/tests/intel/gem_render_tiled_blits.c
-+++ b/tests/intel/gem_render_tiled_blits.c
-@@ -55,6 +55,9 @@
-  *   objects using render engine with various working set sizes and compares
-  *   outputs with expected ones.
-  * Feature: mapping
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: render blits
-  * Run type: FULL
-  *
-  * SUBTEST: aperture-shrink
-diff --git a/tests/intel/gem_request_retire.c b/tests/intel/gem_request_retire.c
-index 9814b435d..8db5780c5 100644
---- a/tests/intel/gem_request_retire.c
-+++ b/tests/intel/gem_request_retire.c
-@@ -54,10 +54,10 @@
-  * Category: Infrastructure
-  * Description: Collection of tests targeting request retirement code paths.
-  * Feature: cmd_submission
-- * Functionality: command submission
-- * Run type: FULL
-- * Sub-category: i915
-+ * Functionality: requests
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-+ * Run type: FULL
-  *
-  * SUBTEST: retire-vma-not-inactive
-  */
-diff --git a/tests/intel/gem_ringfill.c b/tests/intel/gem_ringfill.c
-index 0704ac1be..e9f0c7d97 100644
---- a/tests/intel/gem_ringfill.c
-+++ b/tests/intel/gem_ringfill.c
-@@ -48,8 +48,8 @@
-  *   Exercise many tiny batchbuffer operations, in the hope of catching failure to manage the ring
-  *   properly near full.
-  * Feature: cmd_submission
-- * Functionality: command submission
-- * Sub-category: i915
-+ * Functionality: execbuf
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-  * Run type: FULL
-  *
-diff --git a/tests/intel/gem_stress.c b/tests/intel/gem_stress.c
-index bf2e06d71..c3ee00012 100644
---- a/tests/intel/gem_stress.c
-+++ b/tests/intel/gem_stress.c
-@@ -64,6 +64,9 @@
- /**
-  * TEST: gem stress
-  * Description: General gem coherency test.
-+ * Category: Desktop client
-+ * Sub-category: CMD submission
-+ * Functionality: coherency
-  * Run type: FULL
-  *
-  * SUBTEST:
-diff --git a/tests/intel/gem_unref_active_buffers.c b/tests/intel/gem_unref_active_buffers.c
-index 47023a3a0..e30214bc7 100644
---- a/tests/intel/gem_unref_active_buffers.c
-+++ b/tests/intel/gem_unref_active_buffers.c
-@@ -48,7 +48,7 @@
-  * Feature: cmd_submission
-  * Functionality: buffer management
-  * Run type: FULL
-- * Sub-category: i915
-+ * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST:
-diff --git a/tests/intel/gem_watchdog.c b/tests/intel/gem_watchdog.c
-index c9dd0deb5..a844cdfe0 100644
---- a/tests/intel/gem_watchdog.c
-+++ b/tests/intel/gem_watchdog.c
-@@ -38,6 +38,9 @@
- /**
-  * TEST: gem watchdog
-  * Feature: gem_core
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: fences
-  * Run type: FULL
-  *
-  * SUBTEST: default-physical
-diff --git a/tests/intel/gen7_exec_parse.c b/tests/intel/gen7_exec_parse.c
-index 807cb1e9d..9e99f7a3e 100644
---- a/tests/intel/gen7_exec_parse.c
-+++ b/tests/intel/gen7_exec_parse.c
-@@ -37,6 +37,9 @@
- /**
-  * TEST: gen7 exec parse
-  * Feature: cmd_submission, command_parser
-+ * Sub-category: CMD submission
-+ * Category: Desktop client
-+ * Functionality: command parser
-  * Run type: FULL
-  *
-  * SUBTEST: basic-allocation
 -- 
 2.34.1
 
