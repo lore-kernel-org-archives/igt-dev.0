@@ -4,142 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65AF5C54E58
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 01:05:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D716C54E67
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 02:04:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 02F2010FB12;
-	Thu, 21 Mar 2024 01:05:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3587510E384;
+	Thu, 21 Mar 2024 02:04:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L6QT7QdR";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="QbZcBpQi";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 80120112017
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 01:05:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710983146; x=1742519146;
- h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=3Dq2N8azZMoz3gLUp+PD28rt+QjfGR77A2ObWiNfh1o=;
- b=L6QT7QdRaU0HUqFB8WKq/6QagSxJ8CKHFjmWipGVPXaeQmkZQGJa6TKd
- pzpKOam3VPuAcEKXLPoQHKRv6xQNhanRVi+NYYj0N4zdJ4E8w+wujA4SC
- 9/pwS/KXA/biFCO0tif11QEycceXGp1Zq6IVf1bBWajc2jaSPPcruRW5g
- cilYVK+Es7gWp1YOf3/UPyvFFxAxqOKnUDAi7iLhz1VUQ0eZdaWkNz0PJ
- nM4oy4X2il64FH1ECcfgvicmZFMeZJnQPBYsMdK3sC7GF39hPi/N4EgNz
- gqzLss6UG0VkyrKyn4YNnSjLOokyq9Zc4nAYjByKyoXmWXzittmbJKGga A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="5792867"
-X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
-   d="scan'208";a="5792867"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2024 18:05:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; d="scan'208";a="51779745"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by orviesa001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 20 Mar 2024 18:05:44 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 20 Mar 2024 18:05:44 -0700
-Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 20 Mar 2024 18:05:43 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Wed, 20 Mar 2024 18:05:43 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.168)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 20 Mar 2024 18:05:40 -0700
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com
+ (mail-dm3nam02on2057.outbound.protection.outlook.com [40.107.95.57])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 51A4F10E384
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 02:04:35 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TzSLOgE2q1OQ702tZ2hPlj3lvcAtmzF1+5jpBBjevUGYiU733Vj/R5gS2/P//R7fHVeN7Og7leKMC1VJ5NY5Z+FvPRgfeOqrzfqQyY83oOWT1N5MH5MS6VmjJkLvkobxNsdQaFrGIHwYhYXt0kc4S+tQewGSPPUocRlHL+AstmfwwV/8OuPQoZL1LfX/ubGkCzHBOKAQ3GgWVA1ymiwm92tiyiFIpf5UHpHHt+NZujNJkk6ZMhT91rkKSKsCpGXnGRXRLi7l93PWLATbSJ3nBPCz9NpKTCz5qmgcSbsXBBGJebyDuG/wHx4uBVeqMCxx+KljOKe6JLVH9z576vh6Sg==
+ b=J9ykG64LaH2tMrm8eW99WrruuIFXFNnsketYgtl2qxQLN/2RvXNDMuNLaX7p9iwxL6Qbyn5z0qY9VVTrzWVP6QWxfE2RWy/jzrONbLLbc0tFyuuBkliet4BoZj2IDVMIVc9xPA06vTSWbE6LH6Df7gYRKcGAFIsOyXUejsYSuLoEPra63ZBh6EWDIwN/SWJenygODCCr+TFaP1bxC9aUaH000PAdokKqpy0OarkY/luMXAHnO/1akqRVAmzg9iW3E5BLPcGEkH/vOaFYIvg2qveFmg0Mw+GhsA1HJGoT2Zkt3WwEx6WE0CHSXsA3YCVWSGBmrpx6ZR4iNjeMVlMVkg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=U/a1C8AYiLJKVymzY5Dcz4z5oAfr9dP6SknkisQZIn8=;
- b=QxejNh9o4ZITESGax3uy6AvgTLdzJ81pIbG4Y7PguN4j2D4s+vJvUh46jp48TLY0xrJ/34JE1gDQDEq65maOAtUy8HjvXq7kvaBJM2liCbmhnPcdow+vUCeM2BtVS44Xkc8WGT1cgqpudADvFW65jwLRvQlmo8rZQsNHOTpHfFxoWS7ECeJJoch21PCnx+BD0AVtnP+2bYwrhiTe2U+Ex6N0Wo5fYADukimGUDouv0uG5wAvuyVI+XV2WzWooSsN/f5ICB2gAjwYe9o9Gm5jJrWMhXplTWr8DIDMqD6Ryi7K1wcm57084AOwPNpp8xrzb1/UZODHVPCfyn63zE0Z+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by DM6PR11MB4740.namprd11.prod.outlook.com (2603:10b6:5:2ad::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.13; Thu, 21 Mar
- 2024 01:05:39 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e7c:ccbc:a71c:6c15]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e7c:ccbc:a71c:6c15%5]) with mapi id 15.20.7409.010; Thu, 21 Mar 2024
- 01:05:39 +0000
-Date: Thu, 21 Mar 2024 01:04:37 +0000
-From: Matthew Brost <matthew.brost@intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-CC: Matt Roper <matthew.d.roper@intel.com>, <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t] tests/xe_exec_threads: Fill in GT field for second
- balancer thread
-Message-ID: <ZfuHpR6TCEnzLw8X@DUT025-TGLU.fm.intel.com>
-References: <20240320192356.359327-1-matthew.d.roper@intel.com>
- <7vgrnkw4ndo5ydxybh3qoqriovorgyvrrsatt4tgifis7xo3ju@3g7qmeluwrps>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <7vgrnkw4ndo5ydxybh3qoqriovorgyvrrsatt4tgifis7xo3ju@3g7qmeluwrps>
-X-ClientProxiedBy: SJ0PR05CA0132.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::17) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+ bh=c9Umw1Rh0AF2370igqPEg0sAatFEppoj9PNS+90F0CM=;
+ b=FPiIGTEDcuiGDhu1Dgp54/KUHDxH1GmxJg7Vpnqm6K7dTjzbi1xpi+WJmZw5CH1lqXQ/sa5hCXDYjr8aBfcC+qQLewDlG/jA+CpYllVbNrcD5/JQ7cR5+qngCiXiWk3/XfheWHoB5v4f7a5pA0wqewYe99P37wpKzBMLFesJWcxBr4B2AuNk8tgGRiZIP+ZlsA0SA8jcdn0MQDI3t7Ofk2E7vXFUY0KUPd9Sn+lNRAGRi+SijJMdrrJSwELCRkP/CYVapoALlJpSb1i0wJh2vqLRqbJQih32KtBefj9aYVB9O/k998CpLEgpVhBDbLdXarMUNBeOx+V6N5hxm/k7Sg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=c9Umw1Rh0AF2370igqPEg0sAatFEppoj9PNS+90F0CM=;
+ b=QbZcBpQieD+vpWRHb518iYJgUT7//AFjFfIRNJEwuCryyxcMXklIXF3ibqPeENU0QvacbtFkcl0m3GAKuciJ0ceCM93M9BhSdohMIkt/rR9r4ifJmCHXXMnYSRCpnPKyEsNxPEJBx/b3ZzXHLABT6CykfcGoMKdmtVJQtGynuJk=
+Received: from CH2PR12CA0007.namprd12.prod.outlook.com (2603:10b6:610:57::17)
+ by SA1PR12MB6994.namprd12.prod.outlook.com (2603:10b6:806:24d::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.30; Thu, 21 Mar
+ 2024 02:04:26 +0000
+Received: from CH2PEPF0000014A.namprd02.prod.outlook.com
+ (2603:10b6:610:57:cafe::b1) by CH2PR12CA0007.outlook.office365.com
+ (2603:10b6:610:57::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.20 via Frontend
+ Transport; Thu, 21 Mar 2024 02:04:26 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH2PEPF0000014A.mail.protection.outlook.com (10.167.244.107) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7409.10 via Frontend Transport; Thu, 21 Mar 2024 02:04:26 +0000
+Received: from dev.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 20 Mar
+ 2024 21:04:22 -0500
+From: Alex Hung <alex.hung@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: <rodrigo.siqueira@amd.com>, <harry.wentland@amd.com>,
+ <hersenxs.wu@amd.com>, Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 1/2] lib/amd: check output has hpd before trigger hotplug
+Date: Wed, 20 Mar 2024 20:03:53 -0600
+Message-ID: <20240321020354.843729-1-alex.hung@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|DM6PR11MB4740:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ee49b51-91cf-445e-33e3-08dc494305c1
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000014A:EE_|SA1PR12MB6994:EE_
+X-MS-Office365-Filtering-Correlation-Id: 308411ff-a112-44fa-49bd-08dc494b3c38
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Nj2nNjAr2ga321pkpoTE9gvLOQ276bcy7j9lrGT9SQNVnNR2zObezFhovGMiHf/XhvEqk1qo32vZDkA3XfQuerY17dGeQ6633BCDX74CRgvElPuM9UD2vgwCTzho9P5boNJnw/J4nTfXY9kk7QXCkLVeeSwP5XS2+EB5J3fgwFUM0YCS/tM4KICTzXmtNEd+EeNnqSlO+XYH1eXAVNwlPmXH95NaOhq1KeJYdcNp5WwqO31vNN/l3gPsq5GULezKUkok8bUXMwtj6d1+KeitHCYX3DKSLpD84zTq6c4eTVtddu7PlVq6aK4Y+7/YbVSK9s+fyiHlwh0xhGtOVcj49A5vlxw7XJ+Jor2mqXCxQYqNMhqEHvWYRRBlJCsomQjdlBAVuoP96IWQai4Zkpt3ZWpCMKw7XsY/igcIaOZJ5vXUYy9fR/iRH/XyauOqR9Ui48PKG1QPjgmrNswtUUH6A7nckoeEonIEhZ3Nwm0kW8643oLQCRQE7l45ev5C03MU02VjAiAZnZqSFEGQsIecXKTrjqeZrdtgVJuTc2ScVDajSYoAq1qK/znz4ROIompUw+2R/U8Fo4wZ+fLwW2QIJpAPMCeXKGJl0ESP5n0WVoBywStDDt+I5YwRkj5SV0pZbcdtTbZut6DTTzI7cQ5iplOLgzMRC02oNBAvB/4f2mI=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB6522.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366007)(376005)(1800799015); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Xmn8PHLp882yDJV31Rz00z/70tW1jjGuoDuTorFsfWmIuq3Iy+oAB1fSdWrs?=
- =?us-ascii?Q?IYvGnksupEIJ5o1gDyy36l6bzjVpamKtn8cwokEabxpLISrt0X594ndsdtNq?=
- =?us-ascii?Q?l0q4kNLxTfFVWRdCBTVF/Ceh43BOL0/bN6hUKPfvXDr+JlAH5K1T9DgjdJpu?=
- =?us-ascii?Q?U7V1lAxICji/UF54LZfEr5zhbzjsNQEuvp5o7OJEIZ1kkRc6R6z3xnKm8VUU?=
- =?us-ascii?Q?UH2bU0AsmxY/TRw2OTBzCNGz00g57t7Y1F0tjGeA0ZRWiDzsMS1L+jg25zK0?=
- =?us-ascii?Q?CODa0hMyYT2ydqGGvBlqZuRZ5rsWuY1YsBx4OLslwB67s0G8rCfiRYm8pqpH?=
- =?us-ascii?Q?UoXh+TXztv7JNjWyVrNuI7Oh86OKvXj5yzoFcC7o7s7flPyIE+w5QghZkzJN?=
- =?us-ascii?Q?Zo4xa63SWPT4KlxAGGeqaLTxNXLkVZfdK3uzjHNlbI9uztjLJGYc4eJjL4Ah?=
- =?us-ascii?Q?2Fn6BLgnLFVGcP2it0VXSrzOFVHnyxnhDeIe2Pk7MBD0uQWPIegfzHzXNMZO?=
- =?us-ascii?Q?+fyN6JO5HLXHnqOyEUAFf+BjIWDDNNDGutwuCgTAFYYa0t3obl4DFoZ4EcLY?=
- =?us-ascii?Q?+cbJuLh4tF2UHq871GI8AJuovbL9KYaHO02tuTQ6bK/3zFhrFPF16zoSVxI7?=
- =?us-ascii?Q?/PQIvfhivn7oYqG8ynzjsy+3L16zitzQC8LDCN4xPGJEu6olvRszUMQlvaLP?=
- =?us-ascii?Q?r7DnXbKGHqxIQw7XxYOKfBQehR0l1zfpyfT+gjY8Z8WaKWu6tajryz1+6SYp?=
- =?us-ascii?Q?LBPXtc8nCZjEoNNStYSx7cXnUYi6+/Y/HR7Z2nLHwym55LAZckwL9p9Lt8Qr?=
- =?us-ascii?Q?/pjnKuWD0DwIY6cZKiS9TGilt9sUqQUr+8ntjtSqHdjv69wbMe097yxtNSQ7?=
- =?us-ascii?Q?Ed8JN58gQk4tM2yEG5Qbm1Ct8lY3L0NbLGW/UTt/GPgLRCcuk/BjTZH2Y93s?=
- =?us-ascii?Q?/EcOTijEKHlcAgOT9TI1sM3RzZDXTH9drDHwJHIbXLbySJlSfhxEj7nHIhor?=
- =?us-ascii?Q?wWtHbdnNQ6HH1iAk2fHNGRxPZW7/a9JX15UXo9i0nTPXp6ZLnCZELCyKVpq6?=
- =?us-ascii?Q?BOcNloXnUNoQ7edkMOCtlOsyfcY6p/fzRPjth4e0jLzVIdNjlRNT0jio7hN1?=
- =?us-ascii?Q?heX/ExK8gwWu/JOCRtj01WUDcOzLgLbaUarrPoNL8ynML70dTz/wCw3eRozq?=
- =?us-ascii?Q?LfDzVEfNUjkeMhsHRRJMHPfj3XJkCGnSONOENSaEQgAbAmUJCYvfa6Btj1ki?=
- =?us-ascii?Q?NqyuggNf2mD5tL6sd9BB+ZE0r3Jr81PDdFNDnJtrmOWrvLYzP6d1bUvtNNOt?=
- =?us-ascii?Q?C+gNRsFkgdIuhlxwMu1w7Fc3ZsolNfxMvFsPCILgNa744vCgOslSXHAV/jHJ?=
- =?us-ascii?Q?JQlqjGWbh1YWpiwpCM0RP9ikLpB+ivlp1cKrqknk7hokEfbl55puqImK8quK?=
- =?us-ascii?Q?4KrfHkydXMHL0B22nbWk0qCE4DVtgLzz9T9J7hJ6lkM676hp2mkZGxSmjIZ7?=
- =?us-ascii?Q?EwResaR0DefyeUOffQBN3ZGDosw/fzVGcjAP4NE5S7njfEhZbcPNF4uuY2kw?=
- =?us-ascii?Q?gE7SnSdHbYqaVj+huoofKznMcKK0KOdk9L+S2jEa9qQh8MykyLUsFbr2jYwQ?=
- =?us-ascii?Q?NA=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ee49b51-91cf-445e-33e3-08dc494305c1
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2024 01:05:39.0498 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jxspV1pWZ+qrvNx6IkuGQvfVlryV2JJ6iFW7mkaogNyH/kgbGEn0l0f/sdk+wqNYPIC/v5wJCiP98dxyV6XzRg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4740
-X-OriginatorOrg: intel.com
+X-Microsoft-Antispam-Message-Info: Fi50eHqeG4Ht8Kx00foXdxWWEdjXhxu9FGZYDatYrFD7X8S8aPYR5ITJVJJLdfc5SzSam9m9oJ6IFZc+cVllyuV+ADPxo3KG+TT04SdxUhAZfi8yHx77+Wis1Hu8/9aoj4JPPinkl4NfgdorP6dsoIart6H8Ad16QHvE4vEHSATB/blBSI6+rnjFtaUmChC6uxQ9EbToDGMPrPEhZiqicv7VMh4cqf1C2WZYODYZ97xbIFPzMqycgIJsNh1T2j4dWslMW9McUKNzhQxhhAhRDrB+0p8/mTeH/Jvq3Z85bpFq7puehuj2ICpbk+nhpts4lqoghLAanWlyGY/51JXJI0AgdTPJ8gElYLcKKf8/+HDaYne3OrTInSUcFm5CQORdoX4TD+pmsBJ3Bjwohl+QEGvFtPmjC/QQX19l8ND+iE7T+t30mB72D9kXFIQk1wticr6v17rsU6x2NepZYKR8mL4HU3qC+zlOMmFcruaYzqPzIAsMhdV3O66gK6oBXHaWcWR/vJAkYr+Ybtj+tHEUvr94lGEmOzaNljGg0XN9xkecGhSgKOz03H0naQWUjtp0+Fu86pV4zQmj2lt4QjrxtZkjtxZx3XyAifPmJOmWKf2+zdrznwUuC06rF7RhFvI+kDlCi4BjqudwNk3SvxFppWGof/XxNZGualptYXcwZJHphr9MAXdOVyCZSNOmGr/oG7F84oG4se8QUlg1kqtuqX0mum0e+iQKNb/Kyx7VpEffhYJgp+wC+REPERPe9OBg
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(376005)(36860700004)(1800799015)(82310400014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2024 02:04:26.0839 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 308411ff-a112-44fa-49bd-08dc494b3c38
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH2PEPF0000014A.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6994
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -155,64 +106,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Mar 20, 2024 at 03:47:57PM -0500, Lucas De Marchi wrote:
-> On Wed, Mar 20, 2024 at 12:23:56PM -0700, Matt Roper wrote:
-> > The balancer subtests spawn two pthreads per engine class if there are
-> > multiple instances of the class.  The GT field of the data structure is
-> > filled in properly for the first thread, but not for the second,
-> > effectively leaving it set to "0."
-> > 
-> > For platforms with standalone media, this will result in failures when
-> > the thread tries to find the instances of a media class on GT0 and trips
-> > the "igt_assert(num_placements > 1)" assertion in test_balancer().
-> > 
-> > Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-> 
-> 
-> Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> 
-> do you know why we unrolled a loop in there and did a wrong copy and
+With commit ff1d9a601 writeback connector will be enabled and it has no
+hotplug capability. As a result, this function always fails for such
+cases. This is fixed by checking HDP in advance.
 
-I think the for_gt loop was added after the original version of this.
-Likely an ommision when that was added.
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+---
+ lib/igt_amd.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> paste? That together with vertical spacing on flow control seems to be a
-> good source of bugs. Good find.
-> 
-> The only difference between the first and second thread data I'm seeing
-> is flags VIRTUAL vs PARALLEL. Matt Brost, is this test from you? Could
-
-Yes, I wrote this one. Not my finest work in terms of copy / pasting,
-indeed the only difference should be VIRTUAL vs. PARALLEL. I think this
-should be consolidated into a loop.
-
-> you add an overview to its documentation? The boilerplate doc added
-> there after the fact looks less than helpful.
->
-
-What kinda of documentation were you thinking of? Most all the IGTs are
-light on doc but updating the doc for ones I wrote is on my todo list...
-
-Matt
+diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+index d0b53c08a..623883dbc 100644
+--- a/lib/igt_amd.c
++++ b/lib/igt_amd.c
+@@ -799,6 +799,9 @@ int igt_amd_trigger_hotplug(int drm_fd, char *connector_name)
+         int wr_len;
+         const char *enable_hpd = "1";
  
-> Lucas De Marchi
-> 
-> > ---
-> > tests/intel/xe_exec_threads.c | 1 +
-> > 1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-> > index 55907e2b3..977e8c600 100644
-> > --- a/tests/intel/xe_exec_threads.c
-> > +++ b/tests/intel/xe_exec_threads.c
-> > @@ -1081,6 +1081,7 @@ static void threads(int fd, int flags)
-> > 						threads_data[i].fd = 0;
-> > 					else
-> > 						threads_data[i].fd = fd;
-> > +					threads_data[i].gt = gt;
-> > 					threads_data[i].vm_legacy_mode =
-> > 						vm_legacy_mode;
-> > 					threads_data[i].class = class;
-> > -- 
-> > 2.43.0
-> > 
++	if (!igt_amd_output_has_hpd(drm_fd, connector_name))
++		return 0;
++
+         fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
+         igt_assert(fd >= 0);
+         hpd_fd = openat(fd, DEBUGFS_HPD_TRIGGER, O_WRONLY);
+-- 
+2.34.1
+
