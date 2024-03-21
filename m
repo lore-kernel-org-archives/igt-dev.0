@@ -4,64 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC079C54E58
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 03:09:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 255E4C54E68
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 03:30:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 314B710EE18;
-	Thu, 21 Mar 2024 03:09:27 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="l1JBWoDQ";
-	dkim-atps=neutral
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com
- [209.85.208.172])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04AAC10EE18
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 03:09:25 +0000 (UTC)
-Received: by mail-lj1-f172.google.com with SMTP id
- 38308e7fff4ca-2d48f03a8bbso14861421fa.0
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2024 20:09:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710990564; x=1711595364; darn=lists.freedesktop.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MUioduBdLUazsxO28UIWDZyXElRa4JZ8tu49q43RI04=;
- b=l1JBWoDQJ1BJh7ZveAJda7V0uqpxnQjPBMqB+lbL1/JpHlSd/jXnM7tpUNzvofBPfg
- es8XRkX6yJzj7JMfDufnKJLTFmPQR/DOCROeLhybb8UJLyvCtZFV9W2AhihDphAswu07
- XY8QCYkKYJMCaG0fppE73skfccY3MBU0i/SgjJ8Dh47sramHBXLl75Sx7+4C1hHZaJft
- qYg3iAFdi89aQydoji3ZotzC0S1P1Ec2NwJGbvlmxr9ABLsjRX0SgccHpmMzK4DRYFQe
- TXg2A7XyYMmfxItN5zKhUaZ0XRq0NeLDu9VpJKrCafhosV+nfa5tpqrBb/Mq9ZqvLuGD
- 6Zdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710990564; x=1711595364;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MUioduBdLUazsxO28UIWDZyXElRa4JZ8tu49q43RI04=;
- b=SxhwTpjc6J135JoNnD0dAOxhDnW3mesur0HsOv5mgI7pXOACdE+aLEbUR3xJjoqWKy
- fSHhYGGClg17mqN9OZZjZYJKtYwssLqSUVepo5BSw80QjooNO7/WskFY/m/WGfDbt9Mu
- tkupHdmOPai0V9OmtCX022pAVrOwgRyT7I3IQXqqezCddMLFe2Uk7C5AG9c5dOSBJox6
- owhHTxY/1VX9VoH1aCift5pTnH0PJ8/qbX4py7VVbbNaN8F244uHF0Lsy7OTAEpF5R/v
- ipOLPp6QDeG6E/o02Velo9n87LdVgVJ1THdcDA8uvWc1ujTDR6DA2HOIVUk8t6D9352N
- RS2w==
-X-Gm-Message-State: AOJu0YxLUyehJVzmB6+h0pmVsQ436SIYADsz/A7Z3Mcfxb7uU7aejnSU
- MeAY70yFY1QV0uOChD3RPmR6l0vd6gHQ44WVpPZPZW3z2OiT2jkqowdHZPWlGNeUhRt9aC3PmFs
- tK5PrhwM1eerosWX5Zb4sUsxyj1o=
-X-Google-Smtp-Source: AGHT+IFcHqdOb0u8eNZcgeEWdjEYt7qMrDExizBNH1rtZRiGhggyy546io/+ponfZwzRlTfLdFDW7M1H4ZKSGJ6bJ3g=
-X-Received: by 2002:a2e:2e03:0:b0:2d4:91c4:fca8 with SMTP id
- u3-20020a2e2e03000000b002d491c4fca8mr487072lju.11.1710990563526; Wed, 20 Mar
- 2024 20:09:23 -0700 (PDT)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 849B510E3A6;
+	Thu, 21 Mar 2024 03:30:18 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 608FA10E2D9;
+ Thu, 21 Mar 2024 03:30:17 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1300595192439279213=="
 MIME-Version: 1.0
-References: <20240304221800.1161896-1-mattst88@gmail.com>
- <20240313090911.27uhiwrd6de256dc@zkempczy-mobl2>
-In-Reply-To: <20240313090911.27uhiwrd6de256dc@zkempczy-mobl2>
-From: Matt Turner <mattst88@gmail.com>
-Date: Wed, 20 Mar 2024 23:09:11 -0400
-Message-ID: <CAEdQ38F2TANoeavq6UvBHE_4kYkeLViNDMY==8cCEKTikdP1Ow@mail.gmail.com>
-Subject: Re: [PATCH i-g-t] lib: Inline igt_x86_features() into ifunc resolvers
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5B1/2=5D?=
+ =?utf-8?q?_lib/amd=3A_check_output_has_hpd_before_trigger_hotplug?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Alex Hung" <alex.hung@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Thu, 21 Mar 2024 03:30:17 -0000
+Message-ID: <171099181739.938557.2376159439939318412@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240321020354.843729-1-alex.hung@amd.com>
+In-Reply-To: <20240321020354.843729-1-alex.hung@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,44 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Mar 13, 2024 at 5:09=E2=80=AFAM Zbigniew Kempczy=C5=84ski
-<zbigniew.kempczynski@intel.com> wrote:
->
-> On Mon, Mar 04, 2024 at 05:16:40PM -0500, Matt Turner wrote:
-> > Quoting https://sourceware.org/glibc/wiki/GNU_IFUNC
-> >
-> > > When LD_BIND_NOW=3D1 or -Wl,z,now is in effect symbols must be
-> > > immediately resolved at startup. In cases where an external function
-> > > call depends needs to be made that may fail if such a call has not
-> > > been initialized yet (PLT-based relocation which is processed later).
-> > > For example calling strlen in an IFUNC resolver built with -Wl,z,now
-> > > may lead to a segfault because the PLT is not yet resolved.
-> >
-> > We cannot rely on function calls through the PLT in ifunc resolvers as
-> > the PLT may not have been initialized yet.
-> >
-> > In practice, this causes crashes when igt is linked with -Wl,-z,now or
-> > when linked with the mold linker.
-> >
-> > To avoid this problem, we do two things:
-> >     1. move igt_x86_features() to igt_x86.h so its definition is
-> >        available to compilation units that call the function.
-> >     2. mark the ifunc resolvers with __attribute__((flatten)) to ensure
-> >        igt_x86_features() is inlined.
-> >
-> > Bug: https://bugs.gentoo.org/788625
-> > Bug: https://bugs.gentoo.org/925348
-> > Signed-off-by: Matt Turner <mattst88@gmail.com>
->
-> Hi.
->
-> I started review of your code, but this this touches some linking intrisi=
-cs
-> I'm not familiar with yet so I need more time to explore this. I hope
-> this is not a problem for you.
+--===============1300595192439279213==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Do you have any questions I can answer? I tried my best to explain the
-how and the why of the change in the commit message.
+== Series Details ==
+
+Series: series starting with [1/2] lib/amd: check output has hpd before trigger hotplug
+URL   : https://patchwork.freedesktop.org/series/131396/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7773_BAT -> XEIGTPW_10868_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7773 -> IGTPW_10868
+
+  IGTPW_10868: 10868
+  IGT_7773: 7773
+  xe-968-b8290992108644cb99d7d9db2921bb25369ead3c: b8290992108644cb99d7d9db2921bb25369ead3c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10868/index.html
+
+--===============1300595192439279213==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/2] lib/amd: check output has hpd before trigger hotplug</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131396/">https://patchwork.freedesktop.org/series/131396/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10868/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10868/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7773_BAT -&gt; XEIGTPW_10868_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7773 -&gt; IGTPW_10868</li>
+</ul>
+<p>IGTPW_10868: 10868<br />
+  IGT_7773: 7773<br />
+  xe-968-b8290992108644cb99d7d9db2921bb25369ead3c: b8290992108644cb99d7d9db2921bb25369ead3c</p>
+
+</body>
+</html>
+
+--===============1300595192439279213==--
