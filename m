@@ -4,54 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A145C54E68
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 15:41:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A45FC54E68
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Mar 2024 15:41:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D6BA810ED37;
-	Thu, 21 Mar 2024 15:41:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DC94E10ED3B;
+	Thu, 21 Mar 2024 15:41:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="go25o/0K";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FFkSPr+u";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 84DEC10ECD4
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 15:41:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CC3010ED31
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Mar 2024 15:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711035663; x=1742571663;
+ t=1711035671; x=1742571671;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=tsgsdFrIeuNfetfqXDhhb5djgx3ha41vsuhMg5xTepw=;
- b=go25o/0K/L8LBaIweJrDHKKQ+8r8mWXMqxfhbF8RkV7j2PaHYysP+TXb
- tmW8KduCXFa8ICSOej6/5BDSNzNyQ8oUir55YTh+jyyBnxOjpQiPTQx7P
- xeJSTk25D3TRCD82nSuEVLVnZpQaDbrUmNlvUDNK7k9aianUKreShT16m
- ysjbxnrM1XR6nbv2eVAdePIWtk9LutO7tkfZPC5KQKC9uA6+g8JVWgZDv
- K79Rp8ebU/4SYWGe9QAEfZCeINc2ky0ptOYo+JI7Z/jBH7EEBIgFBw1c/
- +SpYdalAaqIZiOJJZSBDMBq6uQBTvnkWBj/BdK0BcR23XDcj3SCTdJteK Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="5885154"
+ bh=IaeCY+WxzBWxBFt5ctrVaiQxJCWKKYa1xQL9rkMdGyU=;
+ b=FFkSPr+uz94v2O9UYVzjw8FxP02oGkg5+Vx6B0v2k0zAoBWKeEb6dThP
+ 8hNlbJp6JW44WjiOPd3i08UoBhR+UEOE5Qhn89zfkuwyNkwa2L6JA6SRb
+ BT38bkS9ieTY3UbH0yTEuAUOULOlRmfmvFliZaWqPibPE9PAkY+NBknRF
+ f3Bg4XwKjWU+IlpajKDNrZ4GdPqDlaDSo9BOiS5H+K1TGlYfmnBsnB19u
+ DJ3Ve9apLSmjwtm8MwoD8Chv8VcDuig1iB+XPx89Sn35FyNPlQsdSu8FH
+ VtoPQU4oEXXCADV2dH/i726PGlFQeNo1VQtvgcQH6Kq9uiwCd8SK2EnoG Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="5885169"
 X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
-   d="scan'208";a="5885154"
+   d="scan'208";a="5885169"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 08:41:02 -0700
+ 21 Mar 2024 08:41:11 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="19197728"
+X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="19197787"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 08:41:01 -0700
+ 21 Mar 2024 08:41:10 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v5 12/24] tests/intel: Introduce Render copy subcategory
-Date: Thu, 21 Mar 2024 15:38:35 +0000
-Message-Id: <20240321153847.1787625-13-katarzyna.piecielska@intel.com>
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v5 13/24] tests/intel: Introduce Obsolete subcategory
+Date: Thu, 21 Mar 2024 15:38:36 +0000
+Message-Id: <20240321153847.1787625-14-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240321153847.1787625-1-katarzyna.piecielska@intel.com>
 References: <20240321153847.1787625-1-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,48 +66,112 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's put render tests under Render copy subcategory.
+gen3_* tests are obsolete, so let's put them into one subcategory.
 
-v2: Change functionality to render_copy to not break automation tools
+v2: change functionality to 'obsolete_test' to not break automation
+tools
+v3: Category and Sub-category need to be unique as well, so change
+Sub-category s/Obsolete/Obsolete_gen3/.
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/intel/gem_render_copy.c       | 3 +++
- tests/intel/gem_render_copy_redux.c | 3 +++
- 2 files changed, 6 insertions(+)
+ tests/intel/gen3_mixed_blits.c         | 3 +++
+ tests/intel/gen3_render_linear_blits.c | 3 +++
+ tests/intel/gen3_render_mixed_blits.c  | 3 +++
+ tests/intel/gen3_render_tiledx_blits.c | 5 ++++-
+ tests/intel/gen3_render_tiledy_blits.c | 5 ++++-
+ 5 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/gem_render_copy.c b/tests/intel/gem_render_copy.c
-index 57ca2c9ec..91979ba07 100644
---- a/tests/intel/gem_render_copy.c
-+++ b/tests/intel/gem_render_copy.c
-@@ -52,6 +52,9 @@
-  * TEST: gem render copy
-  * Description: Basic test for the render_copy() function.
-  * Feature: mapping
-+ * Sub-category: Render copy
-+ * Category: Desktop client
-+ * Functionality: render_copy
-  * Run type: FULL
-  *
-  * SUBTEST: linear
-diff --git a/tests/intel/gem_render_copy_redux.c b/tests/intel/gem_render_copy_redux.c
-index 06777dd7f..681cb5cca 100644
---- a/tests/intel/gem_render_copy_redux.c
-+++ b/tests/intel/gem_render_copy_redux.c
+diff --git a/tests/intel/gen3_mixed_blits.c b/tests/intel/gen3_mixed_blits.c
+index 3c6fb141a..2bb5517c8 100644
+--- a/tests/intel/gen3_mixed_blits.c
++++ b/tests/intel/gen3_mixed_blits.c
 @@ -51,6 +51,9 @@
  /**
-  * TEST: gem render copy redux
-  * Description: Advanced test for the render_copy() function.
-+ * Sub-category: Render copy
-+ * Category: Desktop client
-+ * Functionality: render_copy
+  * TEST: gen3 mixed blits
+  * Feature: obsolete
++ * Sub-category: Obsolete_gen3
++ * Functionality: obsolete_test
++ * Category: Obsolete
   * Run type: FULL
   *
-  * SUBTEST: flink
+  * SUBTEST:
+diff --git a/tests/intel/gen3_render_linear_blits.c b/tests/intel/gen3_render_linear_blits.c
+index 7dfb2709a..681d7b01b 100644
+--- a/tests/intel/gen3_render_linear_blits.c
++++ b/tests/intel/gen3_render_linear_blits.c
+@@ -50,6 +50,9 @@
+ /**
+  * TEST: gen3 render linear blits
+  * Feature: obsolete
++ * Sub-category: Obsolete_gen3
++ * Functionality: obsolete_test
++ * Category: Obsolete
+  * Run type: FULL
+  *
+  * SUBTEST:
+diff --git a/tests/intel/gen3_render_mixed_blits.c b/tests/intel/gen3_render_mixed_blits.c
+index f8e1bdfbd..ee42f068b 100644
+--- a/tests/intel/gen3_render_mixed_blits.c
++++ b/tests/intel/gen3_render_mixed_blits.c
+@@ -51,6 +51,9 @@
+ /**
+  * TEST: gen3 render mixed blits
+  * Feature: obsolete
++ * Sub-category: Obsolete_gen3
++ * Functionality: obsolete_test
++ * Category: Obsolete
+  * Run type: FULL
+  *
+  * SUBTEST:
+diff --git a/tests/intel/gen3_render_tiledx_blits.c b/tests/intel/gen3_render_tiledx_blits.c
+index 1abe5adbc..ca49576a9 100644
+--- a/tests/intel/gen3_render_tiledx_blits.c
++++ b/tests/intel/gen3_render_tiledx_blits.c
+@@ -25,7 +25,7 @@
+  *
+  */
+ 
+-/** @file gen3_linear_render_blits.c
++/** @file gen3_render_tiledx_blits.c
+  *
+  * This is a test of doing many blits, with a working set
+  * larger than the aperture size.
+@@ -51,6 +51,9 @@
+ /**
+  * TEST: gen3 render tiledx blits
+  * Feature: obsolete
++ * Sub-category: Obsolete_gen3
++ * Category: Obsolete
++ * Functionality: obsolete_test
+  * Run type: FULL
+  *
+  * SUBTEST:
+diff --git a/tests/intel/gen3_render_tiledy_blits.c b/tests/intel/gen3_render_tiledy_blits.c
+index b1f4b628a..dfd3ef947 100644
+--- a/tests/intel/gen3_render_tiledy_blits.c
++++ b/tests/intel/gen3_render_tiledy_blits.c
+@@ -25,7 +25,7 @@
+  *
+  */
+ 
+-/** @file gen3_linear_render_blits.c
++/** @file gen3_render_tiledy_blits.c
+  *
+  * This is a test of doing many blits, with a working set
+  * larger than the aperture size.
+@@ -51,6 +51,9 @@
+ /**
+  * TEST: gen3 render tiledy blits
+  * Feature: obsolete
++ * Sub-category: Obsolete_gen3
++ * Category: Obsolete
++ * Functionality: obsolete_test
+  * Run type: FULL
+  *
+  * SUBTEST:
 -- 
 2.34.1
 
