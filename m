@@ -4,28 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7F35C54E64
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 23:03:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89785C54E64
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 23:09:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 72C4E11289E;
-	Fri, 22 Mar 2024 23:03:44 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D46F411288D;
- Fri, 22 Mar 2024 23:03:42 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3567437866386355320=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3DEF8112887;
+	Fri, 22 Mar 2024 23:09:17 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bk5MF2+6";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EB2C112887
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2024 23:09:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711148955; x=1742684955;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=vKpkabkwMZ69MxrCX0AqaOav11LWrIdtwb1626HbtsU=;
+ b=bk5MF2+6vORNyZNLxr6qMGTSZgd7WEplSYrXBcFjNCZEpGEknD2KeOB7
+ Il5w1ZeNytlNBTUgc8ffEMY/bR3u1ag0Anj93AfN9F2ostxU0D+x3tmxr
+ lq2o8DtMS9tsXOZfZFTRe6TYePihpFEa0dr6NtTCU10DsfCnXO4uvCthR
+ MTiCKmhQh+77fpo94CHwTJiv/GracfO7SRRhMkM1fawQ9KJqAdrg8xu6n
+ 6LEqZZAXEXJLTXyOUBJvrc5nuni/p3kI1q5YF/xvrdDvnUtIF+icdDMEJ
+ p5Ot2/7Nd/vEgefiW5vycGnH0TXVS30Qw7YQkynkSxnISVdPUAGr2kceN w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="6339216"
+X-IronPort-AV: E=Sophos;i="6.07,147,1708416000"; 
+   d="scan'208";a="6339216"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Mar 2024 16:09:15 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,147,1708416000"; d="scan'208";a="19538665"
+Received: from jrandhaw-desk.jf.intel.com ([10.24.12.119])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Mar 2024 16:09:14 -0700
+From: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+To: 
+Cc: igt-dev@lists.freedesktop.org, oak.zeng@intel.com,
+ Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+Subject: [PATCH] Fix WB caching PAT index for coherency mode
+Date: Fri, 22 Mar 2024 16:09:06 -0700
+Message-Id: <3f2c5a052be93e68e44d203f164dbcc36941e34b.1711148627.git.jagmeet.randhawa@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
- =?utf-8?q?=2C1/2=5D_tests/kms=5Fasync=5Fflips=3A_Extend_the_=22async_flip_n?=
- =?utf-8?q?eeds_an_extra_frame=22_logic?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ville Syrjala" <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 22 Mar 2024 23:03:42 -0000
-Message-ID: <171114862286.962476.10892774420415992258@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240322203726.16637-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20240322203726.16637-1-ville.syrjala@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,144 +60,32 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3567437866386355320==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+By default "coh_mode" is "XE_COH_NONE" and
+"cpu_caching" is set to "DRM_XE_GEM_CPU_CACHING_WB"
+because write back (WB) caching requires
+a valid coherence mode, and "coh_mode" is set to
+"XE_COH_NONE" there is no coherence leading to this
+contradiction. So to address this issue, we set the
+pat_index with intel_get_pat_idx_wb(fd);
+---
+ tests/intel/xe_vm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-== Series Details ==
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 7c061c497..1f458174d 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -1789,6 +1789,7 @@ static void bind_flag_invalid(int fd)
+ 	bind.bind.range = bo_size;
+ 	bind.bind.addr = addr;
+ 	bind.bind.op = DRM_XE_VM_BIND_OP_MAP;
++	bind.bind.pat_index = intel_get_pat_idx_wb(fd);
+ 	bind.num_syncs = 1;
+ 	bind.syncs = (uintptr_t)sync;
+ 
+-- 
+2.25.1
 
-Series: series starting with [i-g-t,1/2] tests/kms_async_flips: Extend the "async flip needs an extra frame" logic
-URL   : https://patchwork.freedesktop.org/series/131518/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7778_BAT -> XEIGTPW_10888_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10888_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_evict@evict-mixed-threads-small:
-    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#1259])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7778/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10888/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html
-
-  
-#### Possible fixes ####
-
-  * igt@xe_evict@evict-cm-threads-small:
-    - bat-dg2-oem2:       [TIMEOUT][3] ([Intel XE#1259]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7778/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10888/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html
-
-  
-  [Intel XE#1259]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1259
-
-
-Build changes
--------------
-
-  * IGT: IGT_7778 -> IGTPW_10888
-  * Linux: xe-978-b89042d4d087c1e037c1f7904b4c223e48919b88 -> xe-983-657dd8fcd2f1d1205c6f98fdb8b60915228991d1
-
-  IGTPW_10888: 10888
-  IGT_7778: 0f63f0cf1fefbf7933ca33441c7a89966e85d8c8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-978-b89042d4d087c1e037c1f7904b4c223e48919b88: b89042d4d087c1e037c1f7904b4c223e48919b88
-  xe-983-657dd8fcd2f1d1205c6f98fdb8b60915228991d1: 657dd8fcd2f1d1205c6f98fdb8b60915228991d1
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10888/index.html
-
---===============3567437866386355320==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/kms_async_flips: Extend the &quot;async flip needs an extra frame&quot; logic</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131518/">https://patchwork.freedesktop.org/series/131518/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10888/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10888/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7778_BAT -&gt; XEIGTPW_10888_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10888_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_evict@evict-mixed-threads-small:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7778/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10888/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1259">Intel XE#1259</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_evict@evict-cm-threads-small:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7778/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1259">Intel XE#1259</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10888/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7778 -&gt; IGTPW_10888</li>
-<li>Linux: xe-978-b89042d4d087c1e037c1f7904b4c223e48919b88 -&gt; xe-983-657dd8fcd2f1d1205c6f98fdb8b60915228991d1</li>
-</ul>
-<p>IGTPW_10888: 10888<br />
-  IGT_7778: 0f63f0cf1fefbf7933ca33441c7a89966e85d8c8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-978-b89042d4d087c1e037c1f7904b4c223e48919b88: b89042d4d087c1e037c1f7904b4c223e48919b88<br />
-  xe-983-657dd8fcd2f1d1205c6f98fdb8b60915228991d1: 657dd8fcd2f1d1205c6f98fdb8b60915228991d1</p>
-
-</body>
-</html>
-
---===============3567437866386355320==--
