@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5103C54E71
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 12:43:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84B34C47DD9
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 13:03:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6126E10F945;
-	Fri, 22 Mar 2024 12:43:23 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kYM6sGDi";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C33C10FA54
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2024 12:43:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711111402; x=1742647402;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=jJUHApafy3DZ/Cr7Eq7xFXxwDpgv7qD64hOGd0I9+os=;
- b=kYM6sGDi3a9pEbmyKJnYpL0EfCiy0rQbGBDxQinwsD2AR297yWRiyATo
- Kuu2oHQdA9q0Ql2t3TP1VXjJlCXHVg9i8vEY4bAVydyeEH3zo6UOyDJOK
- 3tVMXA7xbq7UIAvS7d/yzwG1/5jAJdxmvmNogAUzt9gINmO+xX0CqKLaw
- 0gt+3ZC3fsFgATIEELCAvDHU3voj19D6x3ykLbcv0kf9CCAicNnR0YZDh
- iFaAQ9On0dSc6oMo5eOJB2gSnLAX8tjrgCwoP5fCNNwju6LBYg1oCtkFq
- acYKOlvsGsZallTyRq6Hdqj+Jq/gCVxeFjX7ysonS8C/V0kQ5bgRibp/5 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="9919501"
-X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; 
-   d="scan'208";a="9919501"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Mar 2024 05:43:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; d="scan'208";a="45895963"
-Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Mar 2024 05:43:21 -0700
-From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Aditya Chauhan <aditya.chauhan@intel.com>,
- Girotra Himanshu <himanshu.girotra@intel.com>
-Subject: [PATCH i-g-t 12/12] tests/intel: Move xe_exec_reset.c to Reset
- Sub-category
-Date: Fri, 22 Mar 2024 12:41:08 +0000
-Message-Id: <20240322124108.1825345-14-katarzyna.piecielska@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240322124108.1825345-1-katarzyna.piecielska@intel.com>
-References: <20240322124108.1825345-1-katarzyna.piecielska@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2EB811121D2;
+	Fri, 22 Mar 2024 13:03:51 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 827991121D2;
+ Fri, 22 Mar 2024 13:03:50 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0885851691390194159=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/igt=5Ffb=3A_fix_intel_modi?=
+ =?utf-8?q?fiers_for_fb_copying_on_xe_driver?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 22 Mar 2024 13:03:50 -0000
+Message-ID: <171111263053.961261.5798358032236448645@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240322120914.205342-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20240322120914.205342-1-juhapekka.heikkila@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,36 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-It looks like Sub-category=Reset and Functionality=gt reset is better
-for xe_exec_reset.c test.
+--===============0885851691390194159==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: Aditya Chauhan <aditya.chauhan@intel.com>
-Cc: Girotra Himanshu <himanshu.girotra@intel.com>
----
- tests/intel/xe_exec_reset.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index 22735688a..cc10900d9 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -6,8 +6,8 @@
- /**
-  * TEST: Basic tests for execbuf functionality for virtual and parallel exec_queues
-  * Category: Hardware building block
-- * Sub-category: CMD submission
-- * Functionality: reset
-+ * Sub-category: Reset
-+ * Functionality: gt reset
-  * Test category: functionality test
-  */
- 
--- 
-2.34.1
+Series: lib/igt_fb: fix intel modifiers for fb copying on xe driver
+URL   : https://patchwork.freedesktop.org/series/131490/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7777_BAT -> XEIGTPW_10884_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10884_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_exec_threads@threads-mixed-fd-basic:
+    - bat-dg2-oem2:       [PASS][1] -> [TIMEOUT][2] ([Intel XE#1167])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7777/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10884/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
+
+  
+  [Intel XE#1167]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1167
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7777 -> IGTPW_10884
+  * Linux: xe-975-236ae2b6b695ecedc3cf4453a1679d53b2e06f32 -> xe-977-a19e6423c2c21b8dc7ad79ca95cc24637b248bd0
+
+  IGTPW_10884: 10884
+  IGT_7777: 7777
+  xe-975-236ae2b6b695ecedc3cf4453a1679d53b2e06f32: 236ae2b6b695ecedc3cf4453a1679d53b2e06f32
+  xe-977-a19e6423c2c21b8dc7ad79ca95cc24637b248bd0: a19e6423c2c21b8dc7ad79ca95cc24637b248bd0
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10884/index.html
+
+--===============0885851691390194159==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_fb: fix intel modifiers for fb copying on xe driver</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131490/">https://patchwork.freedesktop.org/series/131490/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10884/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10884/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7777_BAT -&gt; XEIGTPW_10884_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10884_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_exec_threads@threads-mixed-fd-basic:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7777/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10884/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1167">Intel XE#1167</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7777 -&gt; IGTPW_10884</li>
+<li>Linux: xe-975-236ae2b6b695ecedc3cf4453a1679d53b2e06f32 -&gt; xe-977-a19e6423c2c21b8dc7ad79ca95cc24637b248bd0</li>
+</ul>
+<p>IGTPW_10884: 10884<br />
+  IGT_7777: 7777<br />
+  xe-975-236ae2b6b695ecedc3cf4453a1679d53b2e06f32: 236ae2b6b695ecedc3cf4453a1679d53b2e06f32<br />
+  xe-977-a19e6423c2c21b8dc7ad79ca95cc24637b248bd0: a19e6423c2c21b8dc7ad79ca95cc24637b248bd0</p>
+
+</body>
+</html>
+
+--===============0885851691390194159==--
