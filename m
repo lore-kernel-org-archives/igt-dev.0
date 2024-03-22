@@ -4,49 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0185C47DD9
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 22:19:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7F35C54E64
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 23:03:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6A80211284C;
-	Fri, 22 Mar 2024 22:19:11 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZdQ63pzN";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 97D9811283E
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2024 22:19:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711145951; x=1742681951;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=nL2KSO1i2WrooDVWUFr3NozkEQhrhQwwC9fX1If026A=;
- b=ZdQ63pzNsGLgiLuUdROa01T/MYZytbESZydlH6iaoc/OjsptUe6CohlL
- 1JmKZFX62zf1y58qRFd97RgQK1pOEZWyXriTONlINj2+11z7DU1natbwW
- 4ANYdYhc8IpeDNT/FVfpEUm6EcQpo0Ji86mQRsBYeBM5TZHJR9AHo52Pv
- Oj6VeN5d+q5F6+YAGWzhJxZQszDF3IGsMtG657QIUwTHnGRpSpO3KU51d
- acRD1wp0Y0+4oYR55lIo/DfklZ54VjfQvOesoRjDfFY5/JgTCe134eBNm
- rjnzLJ39kfrYe1zad7SPgFttn9dEPuOJUv+T8LzeAjl1UN8cSaPwkhE1y Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="10016751"
-X-IronPort-AV: E=Sophos;i="6.07,147,1708416000"; d="scan'208";a="10016751"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Mar 2024 15:19:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,147,1708416000"; d="scan'208";a="38170412"
-Received: from mdroper-desk1.fm.intel.com ([10.1.39.140])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Mar 2024 15:19:10 -0700
-From: Matt Roper <matthew.d.roper@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: matthew.d.roper@intel.com,
- Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Subject: [PATCH i-g-t] tests/xe_compute: Don't require ccs_mode on every GT
-Date: Fri, 22 Mar 2024 15:19:08 -0700
-Message-ID: <20240322221908.857024-1-matthew.d.roper@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 72C4E11289E;
+	Fri, 22 Mar 2024 23:03:44 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D46F411288D;
+ Fri, 22 Mar 2024 23:03:42 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3567437866386355320=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
+ =?utf-8?q?=2C1/2=5D_tests/kms=5Fasync=5Fflips=3A_Extend_the_=22async_flip_n?=
+ =?utf-8?q?eeds_an_extra_frame=22_logic?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Ville Syrjala" <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 22 Mar 2024 23:03:42 -0000
+Message-ID: <171114862286.962476.10892774420415992258@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240322203726.16637-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20240322203726.16637-1-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,53 +38,144 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On platforms with standalone media, we expect some GTs to have CCS
-engines (meaning ccs_mode can be tested if there's more than one CCS),
-but the media GT will never have any CCS engines and will never expose
-ccs_mode.  Move the igt_require() out of the loop so that we don't
-declare the whole test a skip upon encountering the media GT when the
-test already executed successfully on the primary GT.
+--===============3567437866386355320==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
----
- tests/intel/xe_compute.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index 42f42ca0c..fffcfa08e 100644
---- a/tests/intel/xe_compute.c
-+++ b/tests/intel/xe_compute.c
-@@ -51,13 +51,15 @@ test_ccs_mode(int num_gt)
- {
- 	struct drm_xe_engine_class_instance *hwe;
- 	u32 gt, m, ccs_mode, vm, q, num_slices;
--	int fd, gt_fd;
-+	int fd, gt_fd, num_gt_with_ccs_mode = 0;
- 
- 	for (gt = 0; gt < num_gt; gt++) {
--		igt_require(get_num_cslices(gt, &num_slices));
-+		if (get_num_cslices(gt, &num_slices) == 0)
-+			continue;
- 
- 		gt_fd = gt_sysfs_open(gt);
- 		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 0) < 0);
-+		num_gt_with_ccs_mode++;
- 		for (m = 1; m <= num_slices; m++) {
- 			/* compute slices are to be equally distributed among enabled engines */
- 			if (num_slices % m) {
-@@ -105,6 +107,8 @@ test_ccs_mode(int num_gt)
- 
- 		close(gt_fd);
- 	}
-+
-+	igt_require(num_gt_with_ccs_mode > 0);
- }
- 
- /**
--- 
-2.43.0
+Series: series starting with [i-g-t,1/2] tests/kms_async_flips: Extend the "async flip needs an extra frame" logic
+URL   : https://patchwork.freedesktop.org/series/131518/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7778_BAT -> XEIGTPW_10888_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10888_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_evict@evict-mixed-threads-small:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#1259])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7778/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10888/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_evict@evict-cm-threads-small:
+    - bat-dg2-oem2:       [TIMEOUT][3] ([Intel XE#1259]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7778/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10888/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html
+
+  
+  [Intel XE#1259]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1259
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7778 -> IGTPW_10888
+  * Linux: xe-978-b89042d4d087c1e037c1f7904b4c223e48919b88 -> xe-983-657dd8fcd2f1d1205c6f98fdb8b60915228991d1
+
+  IGTPW_10888: 10888
+  IGT_7778: 0f63f0cf1fefbf7933ca33441c7a89966e85d8c8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-978-b89042d4d087c1e037c1f7904b4c223e48919b88: b89042d4d087c1e037c1f7904b4c223e48919b88
+  xe-983-657dd8fcd2f1d1205c6f98fdb8b60915228991d1: 657dd8fcd2f1d1205c6f98fdb8b60915228991d1
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10888/index.html
+
+--===============3567437866386355320==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/kms_async_flips: Extend the &quot;async flip needs an extra frame&quot; logic</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131518/">https://patchwork.freedesktop.org/series/131518/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10888/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10888/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7778_BAT -&gt; XEIGTPW_10888_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10888_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_evict@evict-mixed-threads-small:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7778/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10888/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1259">Intel XE#1259</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_evict@evict-cm-threads-small:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7778/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1259">Intel XE#1259</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10888/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7778 -&gt; IGTPW_10888</li>
+<li>Linux: xe-978-b89042d4d087c1e037c1f7904b4c223e48919b88 -&gt; xe-983-657dd8fcd2f1d1205c6f98fdb8b60915228991d1</li>
+</ul>
+<p>IGTPW_10888: 10888<br />
+  IGT_7778: 0f63f0cf1fefbf7933ca33441c7a89966e85d8c8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-978-b89042d4d087c1e037c1f7904b4c223e48919b88: b89042d4d087c1e037c1f7904b4c223e48919b88<br />
+  xe-983-657dd8fcd2f1d1205c6f98fdb8b60915228991d1: 657dd8fcd2f1d1205c6f98fdb8b60915228991d1</p>
+
+</body>
+</html>
+
+--===============3567437866386355320==--
