@@ -4,48 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 239F8C54E71
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 20:41:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB4E1C47DD9
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 20:41:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 856EF112762;
-	Fri, 22 Mar 2024 20:41:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8FA7611275E;
+	Fri, 22 Mar 2024 20:41:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Cpx4Hk91";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BGCRBtXq";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A29AF11275E
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2024 20:41:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 615FF11275E
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2024 20:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711140089; x=1742676089;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=hsWX2DM8BD/wZfUICv4MCCdUJyGJ2Xx7HJDj+qb9seM=;
- b=Cpx4Hk91l2B3LXqLRzQ7Do9EIR0SWcX5AjovQ0KV1NeGkBX6DyqCB9jZ
- YIAhnFDCzqd6BSeiqKDB5wSYdT/ZUVuym4egLPT11SNHf9b9zX9SspRbw
- OIJo6Xv2XaHPTm8JtbTr/lbFiKeAShsm0LUhwPBFbRlo7a4pNXGGPXXZg
- B6Esp7BeZE2+IwVhYBcm0es1jI7L3ULFupVJA8tKYQcR3wX5DGn6YUfzS
- 7PoNns+PaZ6IMj5g8XbOSc8zE3+MGF91wypkQ8fZ9xoY3y805W3kcLwUj
- YGvBFs7xdH8J89Qpk4c90wupO3+8on7QDKhL36Pf0mRw8lyHoIZc5y637 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="6329353"
+ t=1711140092; x=1742676092;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=2K18ULsgqzJGWkQBHZQESURt1SOJPUKgfVPd+w+GPm4=;
+ b=BGCRBtXqH6nmNpnFZGsZP5GFdjOJKLIpCevDnIcEuK3cpdEMF1TRfyAl
+ 8XUZ84cPaOwSOzTyiYnO8Ag2TVFfPigIbWGZucfP6b6x8P0EIIVGNXRjS
+ hdz9KecCc1o9+J9CCQkM0fbSRJ2qa1bK6EwsUl51DkFARh8IEvMYnzM+e
+ eL1hlMAPmJE4Yf9HLEQ2FvIFUA1cNVaFs8jgP1DeVRQEwoznH6HkOjxQU
+ kEpkfO+EpLXo+0LcOzicApcpoqZwnqiBjdkToCzkvXCN9vC99cx3NSvJP
+ kwbfrJi8YuYMAXVutuFEr0EPTzKxf7jYavuaitcaQMYNwEFlbPXZLQstw w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="6329354"
 X-IronPort-AV: E=Sophos;i="6.07,147,1708416000"; 
-   d="scan'208";a="6329353"
+   d="scan'208";a="6329354"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Mar 2024 13:41:29 -0700
+ 22 Mar 2024 13:41:32 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="827783609"
-X-IronPort-AV: E=Sophos;i="6.07,147,1708416000"; d="scan'208";a="827783609"
+X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="827783610"
+X-IronPort-AV: E=Sophos;i="6.07,147,1708416000"; d="scan'208";a="827783610"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by orsmga001.jf.intel.com with SMTP; 22 Mar 2024 13:41:26 -0700
+ by orsmga001.jf.intel.com with SMTP; 22 Mar 2024 13:41:29 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 22 Mar 2024 22:41:25 +0200
+ Fri, 22 Mar 2024 22:41:28 +0200
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 00/13] tools/intel_vbt_decode: Various improvement
-Date: Fri, 22 Mar 2024 22:41:12 +0200
-Message-ID: <20240322204125.17212-1-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 01/13] tools/intel_vbt_decode: update vbt defs from
+ kernel
+Date: Fri, 22 Mar 2024 22:41:13 +0200
+Message-ID: <20240322204125.17212-2-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240322204125.17212-1-ville.syrjala@linux.intel.com>
+References: <20240322204125.17212-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -66,29 +69,97 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-A pile of improvements to the VBT decoder.
+Sync intel_vbt_defs.h up to kernel
+commit 962601ac4c78 ("drm/i915/bios: Pimp the VBT backlight
+data BDB version comments")
 
-Ville Syrjälä (13):
-  tools/intel_vbt_decode: update vbt defs from kernel
-  tools/intel_vbt_decode: Extract default_algorithm()
-  tools/intel_vbt_decode: Allow blocks to be named without full decoding
-  tools/intel_vbt_decode: Print the block min size
-  tools/intel_vbt_decode: Dump AIM offsets
-  tools/intel_vbt_decode: Decode the backlight i2c stuff
-  tools/intel_vbt_decode: Decode the obsolote DPST supported field
-  tools/intel_vbt_decode: Check version before decoding
-    lace_aggressiveness_profile
-  tools/intel_vbt_decode: Add version checks for backlight decoding
-  tools/intel_vbt_decode: Dump out the backlight entry size
-  tools/intel_vbt_decode: Dump MIPI sequences in the order they appear
-    in VBT
-  tools/intel_vbt_decode: Decode all the driver feature bits
-  tools/intel_vbt_decode: Decode the EFP index
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ tools/intel_vbt_defs.h | 36 +++++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
 
- tools/intel_vbt_decode.c | 125 +++++++++++++++++++++++++++------------
- tools/intel_vbt_defs.h   |  36 +++++------
- 2 files changed, 106 insertions(+), 55 deletions(-)
-
+diff --git a/tools/intel_vbt_defs.h b/tools/intel_vbt_defs.h
+index a9f44abfc9fc..3815aa21d19f 100644
+--- a/tools/intel_vbt_defs.h
++++ b/tools/intel_vbt_defs.h
+@@ -485,6 +485,7 @@ struct child_device_config {
+ 	u8 hdmi_iboost_level:4;					/* 196+ */
+ 	u8 dp_max_link_rate:3;					/* 216+ */
+ 	u8 dp_max_link_rate_reserved:5;				/* 216+ */
++	u8 efp_index;						/* 256+ */
+ } __packed;
+ 
+ struct bdb_general_definitions {
+@@ -602,22 +603,22 @@ struct bdb_driver_features {
+ 	u8 custom_vbt_version;					/* 155+ */
+ 
+ 	/* Driver Feature Flags */
+-	u16 rmpm_enabled:1;					/* 165+ */
+-	u16 s2ddt_enabled:1;					/* 165+ */
+-	u16 dpst_enabled:1;					/* 165-227 */
+-	u16 bltclt_enabled:1;					/* 165+ */
+-	u16 adb_enabled:1;					/* 165-227 */
+-	u16 drrs_enabled:1;					/* 165-227 */
+-	u16 grs_enabled:1;					/* 165+ */
+-	u16 gpmt_enabled:1;					/* 165+ */
+-	u16 tbt_enabled:1;					/* 165+ */
++	u16 rmpm_enabled:1;					/* 159+ */
++	u16 s2ddt_enabled:1;					/* 159+ */
++	u16 dpst_enabled:1;					/* 159-227 */
++	u16 bltclt_enabled:1;					/* 159+ */
++	u16 adb_enabled:1;					/* 159-227 */
++	u16 drrs_enabled:1;					/* 159-227 */
++	u16 grs_enabled:1;					/* 159+ */
++	u16 gpmt_enabled:1;					/* 159+ */
++	u16 tbt_enabled:1;					/* 159+ */
+ 	u16 psr_enabled:1;					/* 165-227 */
+ 	u16 ips_enabled:1;					/* 165+ */
+-	u16 dpfs_enabled:1;					/* 165+ */
++	u16 dfps_enabled:1;					/* 165+ */
+ 	u16 dmrrs_enabled:1;					/* 174-227 */
+ 	u16 adt_enabled:1;					/* ???-228 */
+ 	u16 hpd_wake:1;						/* 201-240 */
+-	u16 pc_feature_valid:1;
++	u16 pc_feature_valid:1;					/* 159+ */
+ } __packed;
+ 
+ /*
+@@ -880,11 +881,12 @@ struct bdb_lvds_lfp_data_tail {
+ struct lfp_backlight_data_entry {
+ 	u8 type:2;
+ 	u8 active_low_pwm:1;
+-	u8 obsolete1:5;
++	u8 i2c_pin:3;						/* obsolete since ? */
++	u8 i2c_speed:2;						/* obsolete since ? */
+ 	u16 pwm_freq_hz;
+ 	u8 min_brightness;					/* ???-233 */
+-	u8 obsolete2;
+-	u8 obsolete3;
++	u8 i2c_address;						/* obsolete since ? */
++	u8 i2c_command;						/* obsolete since ? */
+ } __packed;
+ 
+ struct lfp_backlight_control_method {
+@@ -905,8 +907,8 @@ struct lfp_brightness_level {
+ struct bdb_lfp_backlight_data {
+ 	u8 entry_size;
+ 	struct lfp_backlight_data_entry data[16];
+-	u8 level[16];							/* ???-233 */
+-	struct lfp_backlight_control_method backlight_control[16];
++	u8 level[16];							/* 162-233 */
++	struct lfp_backlight_control_method backlight_control[16];	/* 191+ */
+ 	struct lfp_brightness_level brightness_level[16];		/* 234+ */
+ 	struct lfp_brightness_level brightness_min_level[16];		/* 234+ */
+ 	u8 brightness_precision_bits[16];				/* 236+ */
+@@ -917,7 +919,7 @@ struct bdb_lfp_backlight_data {
+  * Block 44 - LFP Power Conservation Features Block
+  */
+ struct lfp_power_features {
+-	u8 reserved1:1;
++	u8 dpst_support:1;						/* ???-159 */
+ 	u8 power_conservation_pref:3;
+ 	u8 reserved2:1;
+ 	u8 lace_enabled_status:1;					/* 210+ */
 -- 
 2.43.2
 
