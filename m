@@ -4,39 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E993C54E71
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 12:42:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53354C54E71
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 12:43:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 20AC510F820;
-	Fri, 22 Mar 2024 12:42:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E335510F884;
+	Fri, 22 Mar 2024 12:43:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WZ1T4ODD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I6pxeRPh";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C48F10F820
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2024 12:42:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0CB7E10F884
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2024 12:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711111375; x=1742647375;
+ t=1711111384; x=1742647384;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=PR0HYDyiFp/tfrOlcimwQg71/VpSOYh03JqUkG8LQ94=;
- b=WZ1T4ODDrcMX9ft/4oCJ5JD7jfUlzTDetE7W1TXpOsFRSugMvkzw2dRA
- 6MwMagddN1FbOL5qpd8AES7rsXHBMAfSq1aX5evEihRNEuaLt1l5tpgOP
- 3BWUnlxTb6WAgaSz95Nsh5HzZ9Q132JVFEqmSnB/EcQTnURQsXJFlmR5h
- balvknfHJRNlT+HhxXbULCbN890zVft2pusY9hjBFpwjCfbeSId7+AsHI
- EtIp6+WCg8p3GVnc1lkXtDsEdmkG1SOt21p79Me1Yr3Pg/ZuPNfksgmxi
- CTA05cT9XMAo7AiZcvslHFxodw//e/P9g6npkNXoYPNGzqMdIn69mLK5q Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="23645163"
-X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; d="scan'208";a="23645163"
+ bh=sg0dD7RjlLC2jiMmDlQDAVPiyHtWPvILuCjMfffMOZs=;
+ b=I6pxeRPh5y4lwFu+7owzq4Ro3x7NdDbI33JAvV+TeyKFkaE7Rp8C/gzO
+ avKDRd6fkmacccoYPjpf9fb6qVnvhha/RGzx8jmnzLXtPWdGgkyYg90JQ
+ z368Se2lh/cxoCd/TVIaUdCC6CyrVX1Y2xPuHS3YxSDFNRT8jSh+UhqpU
+ txb5/q4LxVwweo0l3ZbFkONCpwNtsQcluX/LizMAzp/KKZ/c2ImMth4Mr
+ gnM53DEP9SBTtEpeD+LYIp2zOCOr9+Sgyq94ur7X/yM3PMzHEvu8jnW/P
+ XNWn8maNuYgGH9bTI5n6sEVqClhVhajDX3v/Md/tk5oGjN+kKx5ztRYrX w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="23645174"
+X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; d="scan'208";a="23645174"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Mar 2024 05:42:55 -0700
+ 22 Mar 2024 05:43:04 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; d="scan'208";a="14994429"
+X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; d="scan'208";a="14994458"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Mar 2024 05:42:53 -0700
+ 22 Mar 2024 05:43:02 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
@@ -44,10 +44,10 @@ Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
  Aditya Chauhan <aditya.chauhan@intel.com>,
  Girotra Himanshu <himanshu.girotra@intel.com>
-Subject: [PATCH i-g-t 09/12] tests/intel: Move xe_exec_queue_property to
- Sub-category uapi
-Date: Fri, 22 Mar 2024 12:41:05 +0000
-Message-Id: <20240322124108.1825345-11-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t 10/12] tests/intel: Move xe_waitfence test to
+ Synchronization sub-category
+Date: Fri, 22 Mar 2024 12:41:06 +0000
+Message-Id: <20240322124108.1825345-12-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240322124108.1825345-1-katarzyna.piecielska@intel.com>
 References: <20240322124108.1825345-1-katarzyna.piecielska@intel.com>
@@ -68,8 +68,8 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's move xe_exec_queue_property to Sub-category uapi to align with
-i915 test documentation.
+Let's move xe_waitfence test to Synchronization sub-category to align
+with i915 test documentation.
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
@@ -77,22 +77,30 @@ Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: Aditya Chauhan <aditya.chauhan@intel.com>
 Cc: Girotra Himanshu <himanshu.girotra@intel.com>
 ---
- tests/intel/xe_exec_queue_property.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/intel/xe_waitfence.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_exec_queue_property.c b/tests/intel/xe_exec_queue_property.c
-index b1cdc7ffe..51ecd725d 100644
---- a/tests/intel/xe_exec_queue_property.c
-+++ b/tests/intel/xe_exec_queue_property.c
-@@ -6,7 +6,7 @@
+diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
+index 5a67148ed..071e67bd6 100644
+--- a/tests/intel/xe_waitfence.c
++++ b/tests/intel/xe_waitfence.c
+@@ -16,7 +16,7 @@
  /**
-  * TEST: Basic tests to check exec_queue set/get property functionality
+  * TEST: Check if waitfences work
   * Category: Software building block
-- * Sub-category: exec queue property
-+ * Sub-category: uapi
-  * Functionality: exec queue set property
+- * Sub-category: waitfence
++ * Sub-category: Synchronization
+  * Functionality: waitfence
   * Test category: functionality test
-  * SUBTEST: priority-set-property
+  * Description: Test waitfences functionality
+@@ -140,7 +140,6 @@ waitfence(int fd, enum waittype wt)
+ /**
+  * TEST: Negative test for wait ufence ioctl
+  * Category: Software building block
+- * Sub-category: waitfence
+  * Functionality: waitfence
+  * Test category: negative test
+  *
 -- 
 2.34.1
 
