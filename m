@@ -4,152 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECDA0C47DD9
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 11:03:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4391AC47DD9
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 11:07:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 70A2B10E917;
-	Fri, 22 Mar 2024 11:03:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DD59410F543;
+	Fri, 22 Mar 2024 11:07:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZwGLxFgi";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WrdOM4WF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8EB4210EF31
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2024 11:03:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C93E10F543;
+ Fri, 22 Mar 2024 11:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711105427; x=1742641427;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=RAcrhDE3uDoozua9NtUFIE/0e+hQaMxUfSDBrVvQI0E=;
- b=ZwGLxFgidRGBVeWJZ3fq8UzYZ99yDpDL97hLn0La2LbYkn8NaFMEbxeU
- Q+9sSj157XyhaavSE1le52A4ccPP5vl0GIPZmJfN4pBrG69Tx8RnjC+Af
- 7G/50ZIOzgVMJEFFFFKdpM9lO77e3/uoB4tUsQqswHxCD2HoPzn1KD1qo
- YCkYQhs5bf5AipjWz/mRjodzWM+wCbvMVjIcjH8dI1sEHeOCGrIRirkEC
- FPut/1GRy+imPX7uNZV4Bx3lh3ex7tqgwzh6ZldP2foDKGh3LPNcUBM1u
- gfaMWKS/Epls1bBmkwMP6h9zuI0Xd4yd7FJOH2YcNuI3XLwP2mzRJxSGj w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="9099780"
+ t=1711105624; x=1742641624;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=i4Ab64bMyQRUWKX6BUfj4EZrzlWAx54/XuZi0gUHMDs=;
+ b=WrdOM4WFjduaL2HsOJoANfXxpvjDPLwoEENKQ2YtgVYfQicbe2N18yqH
+ DqzSRR19Q3EfuzQVqSXhosLdTXfu+wEaPNm/vsJ+X1wURrqc1gVVgQjue
+ +Tx/g6nGFjTVXhSCw4aWrNnnhTfhrGb0KW7PelhqbwUYbhOLwuHqgso2R
+ fF7WEG3v0NF6bSAEcd82pjfgJK4KTUG5sng5pD12NoowM+4C6gPi5OfX8
+ YSWLFu6TBwq86UjIlDLk6OtvSmaVBDtI0z3KOuPPVYdpmY+zxQfqeGMfD
+ ZnUj2MmlTAO67Y+gcAw47lM8AKpzSQwkGW9jMMKGqMpyq5SVhcdQ6Rtt1 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="6042504"
 X-IronPort-AV: E=Sophos;i="6.07,145,1708416000"; 
-   d="scan'208";a="9099780"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Mar 2024 04:03:08 -0700
+   d="scan'208";a="6042504"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Mar 2024 04:07:04 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,145,1708416000"; d="scan'208";a="14879470"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by orviesa009.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 22 Mar 2024 04:03:08 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 22 Mar 2024 04:03:07 -0700
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 22 Mar 2024 04:03:07 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Fri, 22 Mar 2024 04:03:07 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 22 Mar 2024 04:03:06 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GyoJ3eQR4QP9v23E6ks0xghCLlJtTC5cEdJ2GjDegVx/6lnrNGNYpBsRaGdl+/dt9ARGcsD1rLJatdqDykuRX2dn5G4MHK4OfIoxaFTDlVczZQggdzyDx5bkaESIjsfEc2uGMLun1d2X1tF7ViE+JqFdsOxhkx9/tZaXtl/QnRAgMw34IxKX7Lnei95kKBW4szzODrIOB7dzCvhJFsFwAAThQ7rvXYWQvId0Jo4ChKe4eE7aXEvk+XjU03m0fogIlmUb3lD4F34Jx3J0/lfS8dbD9gKvbo5tZABDkTpvv4CVEp/gBjbYMd7x1oJDprG+UGeUUXRPyfzhej2DVv/yuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mIccZSr8XIAbU/SSB6VadtO/xPiygIifp4Z/CcZN7HI=;
- b=Y+pd4BmJFvDyILzpaBBSAQp6UJxBRSwLWGO1MagxeaKJ6+6fbbUSFHB8/XsA7D7b9lSoEEeMU82OikqXoSq0hzS3F6vni9+R7avIT2aHLKR09Fi63lZCjXCbOyUoZ6XMhUR28CogD1CWHEDrBOo+WpitC0meb0sUBCuFbgHwlYWQav/XywSFZyl9nIKLLRyKn11tNWnhjHPUGY3gzKP6ija7PBDmcDOAMSGNO4evCHDjBgFRbF7ytn4xddcb8Sog/n05G6pmJMp+CW7Fu7p+9bsKw5lH2Hr6InmLpTZurDGrejBIGleWTpLUhGqaUVsTioPTMCKo0688dj1spAeBWQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM8PR11MB5719.namprd11.prod.outlook.com (2603:10b6:8:10::6) by
- BY1PR11MB8128.namprd11.prod.outlook.com (2603:10b6:a03:52c::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.23; Fri, 22 Mar
- 2024 11:03:00 +0000
-Received: from DM8PR11MB5719.namprd11.prod.outlook.com
- ([fe80::f58b:e2d4:835d:d592]) by DM8PR11MB5719.namprd11.prod.outlook.com
- ([fe80::f58b:e2d4:835d:d592%4]) with mapi id 15.20.7409.023; Fri, 22 Mar 2024
- 11:03:00 +0000
-Message-ID: <ff4d3189-9ee2-4501-b49b-4efa9bd09da4@intel.com>
-Date: Fri, 22 Mar 2024 16:32:47 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel/kms_dsc: Use high resolution mode for
- output format subtests
-Content-Language: en-US
-To: Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20240322081442.4120318-1-ankit.k.nautiyal@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20240322081442.4120318-1-ankit.k.nautiyal@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SGBP274CA0015.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::27)
- To DM8PR11MB5719.namprd11.prod.outlook.com
- (2603:10b6:8:10::6)
+X-IronPort-AV: E=Sophos;i="6.07,145,1708416000"; d="scan'208";a="14968745"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 04:07:02 -0700
+Date: Fri, 22 Mar 2024 12:07:00 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVA==?= =?utf-8?Q?=3A?= failure for
+ Update test documentation for i915 tests (rev5)
+Message-ID: <20240322110700.a66d6byrmmaqurg3@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+References: <20240321153847.1787625-1-katarzyna.piecielska@intel.com>
+ <171109892389.960365.1614357944542697464@8e613ede5ea5>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM8PR11MB5719:EE_|BY1PR11MB8128:EE_
-X-MS-Office365-Filtering-Correlation-Id: 390aaa0b-6265-46a2-960d-08dc4a5fa325
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: gcEb0N2gfbBk00RkizNYx1dKSi+598N/Yge19lr1ig+7rBBUZYPT/mEkZ2KiPJr2c0bx1s1PAFfO65h0hiDnDdqCVCypdyTsueTivMXzuCJor+fv++sZNfDOoGSwD3StyCb5DUa0CvbSI6u+smtgBUrSFOFyBuZzXuN7ElTT13RBXgvGKs3cUf8DpmA7cgqNS+A0EX4YnUFm7aua3t/nn53+U6FMoiAa6Hco0M2ANPf7tyRiP6mXgbRRQvF4kGW+X+em8xoorFkrmLvNI6TPIXQERApjCXzHIKYSCHcr49hJv/qP/5DqvuB/UVVFKhUn9dEjC0SwKf1wCPn4vgTBQm6JMBIj1Km3stdphAIFT41C1PZZI/KWkHOrhHoh/B+As1Hv5g+YBCJLFaUx6kG3yczh04mJP+MvxQgVuYmulIGzw3AyggHnNiGj/Fbulk/ynH90XBOjMWHs/nlcyqgh6plzEIGXp/Iw5P/9ka/yl2ZUNh3S61B2nbrIuylPA3JYBYvTE3HUIeFWHf3snQCWwYajG9rRXQHBLabRzMfga/JhhJLX2zNaZ7UknD4693P5LLwm6V6d90rQeukiufIbp8aJkBsXxmaspsu2MgDR7NmsAl1O4AW8wSLKXzfZAR4ZTueaNf/95JUipcOpHvqX7A==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM8PR11MB5719.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376005)(366007)(1800799015); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b3QybHNYYWpjVmhBSWxOYXZpWWpHQVZyK0ZzSGpMaWV3WEtJdHA3OFMyMW1Z?=
- =?utf-8?B?V043aEZrQU9DcW9zSHIwaS95Y21OSzV1UmVJbnNhQWtPUWdTNzZuUCt4ZXF3?=
- =?utf-8?B?NVFwUnRBNnlwNjBoZVRpUFJOR0J4QlNxVk02aCtldVlXOXFWdEo1L0lFSmt1?=
- =?utf-8?B?Y2J4cExoZFVTZSsvbitDYmFERGQ3cUx0Z3ZKZk1ob2tkaDB5VHlKOHZJWE9G?=
- =?utf-8?B?ZzN5dnFUaEMvR0YxcHhVeWpxUm5ZcGErdDlJb3dDODNxNG55c3hTejJUcDJY?=
- =?utf-8?B?OFZCQk9sRldNNWJkQXhneGExeFE4WlMxQ3NUb2J1RG9qT0tUellyeklPUTlh?=
- =?utf-8?B?TStGS2JIY0F4MzI3MzlQYmE5YUYrQnYyQzBvTXNhTGVsNGt3WGNIR1ZiTjV5?=
- =?utf-8?B?OFR5VElPTXFXTER5TTY2RHNCOGZoUndRai9OS2NILzAvakJabm10dzcrbUZE?=
- =?utf-8?B?WlUzMG11V3czV2V6bjZYQ3Bpb296ZHdSZlRMY0JNWGptM2xpcDdZdkdMdmZY?=
- =?utf-8?B?Wnhia25kdzQvUjNOb0V6MFUrbit1Q1NITzcvS3g3aHovSlZhN0lKR3hTdnhW?=
- =?utf-8?B?T2I1dGFwUmNJcnhDb2FMTzFNRlVwdXBKR2piUlpiaHc1SmRiblcwai9wd1Qr?=
- =?utf-8?B?QUtNaUttMDRHZUc1ejQreXlORzRTK1IxSGhEL0ViekxzWFh6ZEFFZnMvZURB?=
- =?utf-8?B?WTl5MjdNM2RXNmhIV3RudHRqanFxdVhQUHRhTno1TkN2THdmRFNpdnExM0V3?=
- =?utf-8?B?eDFEa0ZkaXpXM2tUdUQ4WlFNQ3o3T2RlWmV5a3VFWlFXL2ZvbllJN21GdXFI?=
- =?utf-8?B?OHBqZGpTWVBGV1orUUpVaDJZdWl1OWp2ZTV0RDZPQ3cyTk9zRmlVZHJQc2ds?=
- =?utf-8?B?NkFRQWdSSTIwS3FGOVJuS0VBN0RWMFd0UmRDMm9nZUF1c3pjVjhsVlo3V0V0?=
- =?utf-8?B?bDRHUEViSTdHUHo2KzFzYXpXTkRPOTZHS09hbGVyQlZMZlFVZytTUHVOZWZx?=
- =?utf-8?B?V05SZTNOUGNVVkd3OG9iQ1lHNVlSU2duR2pvYVdPYmFvL0lPMXBiZ0EwNXpD?=
- =?utf-8?B?Z3F2a3M4N1RqbEh1S3VuWENOR2N3UVJMYi9QVDdxbnoyV3RFYm9QU2pBcmoz?=
- =?utf-8?B?eEVKZys4bk1hVHFhdW0wSFN5THYyQzhSSmJSWEttQ2cyQ1FBTUFyTC8rTVQ1?=
- =?utf-8?B?VVowMHNDcy9rS3NOd3RLdnFWN0VqMWFvQ2pneE5weHJFSWpPNlBHUW9Sbisx?=
- =?utf-8?B?THl0Y28zQ0hseGdLdG5obTNTWXdRS3VuN2ZDdzUvTXZNMGhrR1hueGQ4UTZk?=
- =?utf-8?B?RHlwZ1hKckNLT2hFTW1CTGMrWXI1NE1naTNlUlJFMFlhdFBqbGF5T0wxMDVM?=
- =?utf-8?B?TmFibDNiRXJCQ21oTWZ6QUlzSXBvbkdFeXZWSW1MQUl4NlZjLzJnN0thZGs3?=
- =?utf-8?B?MWIyaHVuVCtKUE9Qc0tzN255VzZUZ3VRcFIrcGpGQUs2UjFqRXUySGNIOU1D?=
- =?utf-8?B?dWwraUpxRHBVKzhEdmxJMVAvT3hCUkVZZ3JvZlk0T0Vnd2Iyd0NMaUNOd1hY?=
- =?utf-8?B?L1Zpa1hEZU5RK1J2ek5SWk1wZ2VSZ0loVGJBSTFQbnpoR0xucXJNSUY1WWdx?=
- =?utf-8?B?TkRkUkl1TUFBbnFzK0dKdWN3aXhTa0ZDdjlMTVBZSCtDWWRMc1lleHRndmh3?=
- =?utf-8?B?R21udU9LaW9CR0hWdVJWOUl2bEppVi9NcjU3eGswQlJBWUwxb0VyWHVRU1RV?=
- =?utf-8?B?TkEwV3lHZStERVZua1lTZVRtMlk0T0RoODFVeUM1SmtPWUV2Q0lGSnRkNmho?=
- =?utf-8?B?bTZnWnE1elBjK2Y5cU14UWlWd2xqS2xJRUkwRU81K2ZqTjlOOFZZcktiK1Rp?=
- =?utf-8?B?SUh6R2daR0s1Sy9DSExEV1RocmZCZHU3MUxIMXpZQXVKZkY0V3RLSCtlbUJX?=
- =?utf-8?B?cU45ZVlkUTVKMTYvSldKelBqemlLV0I3Z0RuaDRhYlhyaUN1eUxyMWN5c2Qy?=
- =?utf-8?B?YmR6V1Z3ekFhalFxazBDbGFHN0NmQmtxZm5aYjZFbTdCaUNYenlRd2VPdjhN?=
- =?utf-8?B?NnNkazQwMEIwYjFqSzh2VlhlV3Z1Y091V0JWZzBHMGJCREE2MnJBVmt5a0ow?=
- =?utf-8?B?eHpTK3YzMElQNXkwa0xzZWdpTllTWk5xWXpDZVkyWEZnQmh4ZjBLRzE4UUJh?=
- =?utf-8?B?Umc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 390aaa0b-6265-46a2-960d-08dc4a5fa325
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5719.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Mar 2024 11:03:00.0133 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mZ4H8qD9y5lxOB1ajQAbvvHdoQxYLjjSsh55ez6JPKiT81/r5J/NqulVePSDofgrx68VYxk1O/C89jNChN7E5UdEsaUo+RW6hzM4DXHBBuo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR11MB8128
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <171109892389.960365.1614357944542697464@8e613ede5ea5>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -165,41 +73,103 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-On 22-03-2024 01:44 pm, Ankit Nautiyal wrote:
-> Currently, we are not using the highest resolution mode for output formats
-> other than RGB. For testing other formats we force an output format, and
-> try the mode from list of modes.
-> Lets call get_highres_mode before using the modes, so that we try modes
-> that are sorted in descending order of resolution. This is to ensure we
-> try with higher resolution mode and use DSC with that mode.
+Hi igt-dev,
+On 2024-03-22 at 09:15:23 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> ---
->   tests/intel/kms_dsc.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+> Series: Update test documentation for i915 tests (rev5)
+> URL   : https://patchwork.freedesktop.org/series/130665/
+> State : failure
 > 
-> diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
-> index b5c0fa6ab925..9b48caf762f1 100644
-> --- a/tests/intel/kms_dsc.c
-> +++ b/tests/intel/kms_dsc.c
-> @@ -184,10 +184,10 @@ static void update_display(data_t *data, uint32_t test_type)
->   	igt_skip_on(!igt_plane_has_format_mod(primary, data->plane_format,
->   		    DRM_FORMAT_MOD_LINEAR));
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_14463_full -> IGTPW_10874_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10874_full absolutely need to be
+>   verified manually.
 >   
-> +	mode = get_highres_mode(output);
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10874_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10874/index.html
+> 
+> Participating hosts (9 -> 10)
+> ------------------------------
+> 
+>   Additional (1): shard-snb-0 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10874_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_pm_rc6_residency@rc6-idle@gt0-vcs0:
+>     - shard-snb:          [PASS][1] -> [ABORT][2] +1 other test abort
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14463/shard-snb1/igt@i915_pm_rc6_residency@rc6-idle@gt0-vcs0.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10874/shard-snb6/igt@i915_pm_rc6_residency@rc6-idle@gt0-vcs0.html
+> 
+>   * igt@i915_selftest@live@perf:
+>     - shard-dg2:          NOTRUN -> [INCOMPLETE][3]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10874/shard-dg2-8/igt@i915_selftest@live@perf.html
+> 
+>   * igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-hdmi-a-1:
+>     - shard-glk:          NOTRUN -> [INCOMPLETE][4]
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10874/shard-glk5/igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-hdmi-a-1.html
+> 
+>   * igt@kms_flip@plain-flip-ts-check-interruptible@b-hdmi-a1:
+>     - shard-rkl:          NOTRUN -> [FAIL][5]
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10874/shard-rkl-5/igt@kms_flip@plain-flip-ts-check-interruptible@b-hdmi-a1.html
+> 
 
-Irrespective of the formats, this ensures to try with the highest 
-possible resolution.
+These are unralated to changes in comments (test documentation in C comments),
+no need for respin (already merged).
 
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Regards,
+Kamil
 
-> +
->   	do {
-> -		if (data->output_format == DSC_FORMAT_RGB)
-> -			mode = get_highres_mode(output);
-> -		else
-> +		if (data->output_format != DSC_FORMAT_RGB && index > 0)
->   			mode = get_next_mode(output, index++);
 >   
->   		if (mode == NULL)
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_10874_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@api_intel_bb@object-reloc-keep-cache:
+>     - shard-rkl:          NOTRUN -> [SKIP][6] ([i915#8411]) +1 other test skip
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10874/shard-rkl-5/igt@api_intel_bb@object-reloc-keep-cache.html
+>     - shard-dg1:          NOTRUN -> [SKIP][7] ([i915#8411])
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10874/shard-dg1-15/igt@api_intel_bb@object-reloc-keep-cache.html
+> 
+
+...cut...
+
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7774 -> IGTPW_10874
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14463: 0cd99ca612f004f19c35f4966a584f0a729bbc31 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10874: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10874/index.html
+>   IGT_7774: 7774
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10874/index.html
