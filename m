@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B5FEC54E71
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 20:41:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D52EFC54E71
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 20:41:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0D252112760;
-	Fri, 22 Mar 2024 20:41:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 76AB3112763;
+	Fri, 22 Mar 2024 20:41:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FBseTr6p";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Bpne5L50";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C697112763
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2024 20:41:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 37E10112763
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2024 20:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711140095; x=1742676095;
+ t=1711140098; x=1742676098;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=2TcnDt0jlp7PsvF76xDvAJ0pD3oTp6wyD4mH5OGN7eY=;
- b=FBseTr6paOUKDa8HEqOEwT1rkrJpZA69HVAjgZTS4+waXp60YKaqTGfB
- bdcno+kJpbpFc1lwRovZqye1eP6cW3kdS8a3rZBPCqRd4cnhhEXFFB4Tz
- GLxVYfz+5EaKKuwAGQ5flKW++CN5AeHFNVT32J375cTTq2H+2ebjVsiqg
- ec9SrOlySPdCuOzJrwU4S71aweTyhG+qCrq6oxlh+drjsIKBC4CsMQzHR
- dfcdNU9rV/qdQwGpKkcdhzrsEViNS11vI0fOBYLzI+pzpuX6xBncX6xmI
- J494GNRQqQgv0k4NWFgwelgl0+ftRQpsrG/3Qo/B3dtfWKAnsduGFnOf4 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="6329355"
+ bh=qz1WQCBt8wQbhOHmBJCa/+x63XH7HLgFnSIHF39t3hk=;
+ b=Bpne5L50PywAymIcQTPAS7hxFxCo84fnEUnxUZhAyQiMtY4Hj1/u9ILg
+ 6BTAvZQ3iM81jUxdk0r+5Tk/JsrGgSA4XHpbMO21AQvzTx4yvYKpVo9Vz
+ yT2BLbYAW6XEvvznQhcEzVV7vtRlN3c46XdBOlTOkZ7S/vV+/rHedk24L
+ Jo48vyiVUpxPtG65rJyZYpli51XIyVIPrcsoy/B8wQ1U8FeUdz0ShLdlw
+ IIX6mvSlcV7/JLs3qPylKdHa9/1vCOa4Fp6Xf2v4v+je0fT4XSPrwQsNA
+ ded5/yIvU0dK8dL8qqEtvFFlZkBN2CJPPF0hKTO1hu1cxasLJ/Oj2LPat w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="6329357"
 X-IronPort-AV: E=Sophos;i="6.07,147,1708416000"; 
-   d="scan'208";a="6329355"
+   d="scan'208";a="6329357"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Mar 2024 13:41:35 -0700
+ 22 Mar 2024 13:41:38 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="827783611"
-X-IronPort-AV: E=Sophos;i="6.07,147,1708416000"; d="scan'208";a="827783611"
+X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="827783612"
+X-IronPort-AV: E=Sophos;i="6.07,147,1708416000"; d="scan'208";a="827783612"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by orsmga001.jf.intel.com with SMTP; 22 Mar 2024 13:41:32 -0700
+ by orsmga001.jf.intel.com with SMTP; 22 Mar 2024 13:41:35 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 22 Mar 2024 22:41:31 +0200
+ Fri, 22 Mar 2024 22:41:34 +0200
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 02/13] tools/intel_vbt_decode: Extract
- default_algorithm()
-Date: Fri, 22 Mar 2024 22:41:14 +0200
-Message-ID: <20240322204125.17212-3-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 03/13] tools/intel_vbt_decode: Allow blocks to be named
+ without full decoding
+Date: Fri, 22 Mar 2024 22:41:15 +0200
+Message-ID: <20240322204125.17212-4-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240322204125.17212-1-ville.syrjala@linux.intel.com>
 References: <20240322204125.17212-1-ville.syrjala@linux.intel.com>
@@ -69,39 +69,34 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Extract default_algorithm() for later use in decoding
-other blocks.
+Make it possible to give blocks a name without having to
+implement full decoding.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_vbt_decode.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/intel_vbt_decode.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index fd8118772845..b7cd2b3bfa69 100644
+index b7cd2b3bfa69..1d1ba46db6e7 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -1460,6 +1460,11 @@ static const char * const lvds_config[] = {
- 	[BDB_DRIVER_EDP] = "Embedded DisplayPort",
- };
+@@ -2672,11 +2672,10 @@ static bool dump_section(struct context *context, int section_id)
+ 		}
+ 	}
  
-+static const char *default_algorithm(bool algorithm)
-+{
-+	return algorithm ? "driver default" : "OS default";
-+}
-+
- static void dump_driver_feature(struct context *context,
- 				const struct bdb_block *block)
- {
-@@ -1480,7 +1485,7 @@ static void dump_driver_feature(struct context *context,
- 	printf("\tAllow display switching when DVD active: %s\n",
- 	       YESNO(feature->allow_display_switch_dvd));
- 	printf("\tBoot Device Algorithm: %s\n",
--	       feature->boot_dev_algorithm ? "driver default" : "os default");
-+	       default_algorithm(feature->boot_dev_algorithm));
+-	if (dumper && dumper->name)
+-		printf("BDB block %d (%d bytes) - %s:\n", block->id, block->size, dumper->name);
+-	else
+-		printf("BDB block %d (%d bytes) - Unknown, no decoding available:\n",
+-		       block->id, block->size);
++	printf("BDB block %d (%d bytes) - %s%s:\n",
++	       block->id, block->size,
++	       dumper ? dumper->name : "Unknown",
++	       dumper && !dumper->dump ? ", no decoding available" : "");
  
- 	printf("\tBoot Mode X: %u\n", feature->boot_mode_x);
- 	printf("\tBoot Mode Y: %u\n", feature->boot_mode_y);
+ 	if (context->hexdump)
+ 		hex_dump_block(block);
 -- 
 2.43.2
 
