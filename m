@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB4E1C47DD9
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 20:41:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B5FEC54E71
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 20:41:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8FA7611275E;
-	Fri, 22 Mar 2024 20:41:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0D252112760;
+	Fri, 22 Mar 2024 20:41:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BGCRBtXq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FBseTr6p";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 615FF11275E
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2024 20:41:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C697112763
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2024 20:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711140092; x=1742676092;
+ t=1711140095; x=1742676095;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=2K18ULsgqzJGWkQBHZQESURt1SOJPUKgfVPd+w+GPm4=;
- b=BGCRBtXqH6nmNpnFZGsZP5GFdjOJKLIpCevDnIcEuK3cpdEMF1TRfyAl
- 8XUZ84cPaOwSOzTyiYnO8Ag2TVFfPigIbWGZucfP6b6x8P0EIIVGNXRjS
- hdz9KecCc1o9+J9CCQkM0fbSRJ2qa1bK6EwsUl51DkFARh8IEvMYnzM+e
- eL1hlMAPmJE4Yf9HLEQ2FvIFUA1cNVaFs8jgP1DeVRQEwoznH6HkOjxQU
- kEpkfO+EpLXo+0LcOzicApcpoqZwnqiBjdkToCzkvXCN9vC99cx3NSvJP
- kwbfrJi8YuYMAXVutuFEr0EPTzKxf7jYavuaitcaQMYNwEFlbPXZLQstw w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="6329354"
+ bh=2TcnDt0jlp7PsvF76xDvAJ0pD3oTp6wyD4mH5OGN7eY=;
+ b=FBseTr6paOUKDa8HEqOEwT1rkrJpZA69HVAjgZTS4+waXp60YKaqTGfB
+ bdcno+kJpbpFc1lwRovZqye1eP6cW3kdS8a3rZBPCqRd4cnhhEXFFB4Tz
+ GLxVYfz+5EaKKuwAGQ5flKW++CN5AeHFNVT32J375cTTq2H+2ebjVsiqg
+ ec9SrOlySPdCuOzJrwU4S71aweTyhG+qCrq6oxlh+drjsIKBC4CsMQzHR
+ dfcdNU9rV/qdQwGpKkcdhzrsEViNS11vI0fOBYLzI+pzpuX6xBncX6xmI
+ J494GNRQqQgv0k4NWFgwelgl0+ftRQpsrG/3Qo/B3dtfWKAnsduGFnOf4 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="6329355"
 X-IronPort-AV: E=Sophos;i="6.07,147,1708416000"; 
-   d="scan'208";a="6329354"
+   d="scan'208";a="6329355"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Mar 2024 13:41:32 -0700
+ 22 Mar 2024 13:41:35 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="827783610"
-X-IronPort-AV: E=Sophos;i="6.07,147,1708416000"; d="scan'208";a="827783610"
+X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="827783611"
+X-IronPort-AV: E=Sophos;i="6.07,147,1708416000"; d="scan'208";a="827783611"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by orsmga001.jf.intel.com with SMTP; 22 Mar 2024 13:41:29 -0700
+ by orsmga001.jf.intel.com with SMTP; 22 Mar 2024 13:41:32 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 22 Mar 2024 22:41:28 +0200
+ Fri, 22 Mar 2024 22:41:31 +0200
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 01/13] tools/intel_vbt_decode: update vbt defs from
- kernel
-Date: Fri, 22 Mar 2024 22:41:13 +0200
-Message-ID: <20240322204125.17212-2-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 02/13] tools/intel_vbt_decode: Extract
+ default_algorithm()
+Date: Fri, 22 Mar 2024 22:41:14 +0200
+Message-ID: <20240322204125.17212-3-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240322204125.17212-1-ville.syrjala@linux.intel.com>
 References: <20240322204125.17212-1-ville.syrjala@linux.intel.com>
@@ -69,97 +69,39 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Sync intel_vbt_defs.h up to kernel
-commit 962601ac4c78 ("drm/i915/bios: Pimp the VBT backlight
-data BDB version comments")
+Extract default_algorithm() for later use in decoding
+other blocks.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_vbt_defs.h | 36 +++++++++++++++++++-----------------
- 1 file changed, 19 insertions(+), 17 deletions(-)
+ tools/intel_vbt_decode.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tools/intel_vbt_defs.h b/tools/intel_vbt_defs.h
-index a9f44abfc9fc..3815aa21d19f 100644
---- a/tools/intel_vbt_defs.h
-+++ b/tools/intel_vbt_defs.h
-@@ -485,6 +485,7 @@ struct child_device_config {
- 	u8 hdmi_iboost_level:4;					/* 196+ */
- 	u8 dp_max_link_rate:3;					/* 216+ */
- 	u8 dp_max_link_rate_reserved:5;				/* 216+ */
-+	u8 efp_index;						/* 256+ */
- } __packed;
+diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+index fd8118772845..b7cd2b3bfa69 100644
+--- a/tools/intel_vbt_decode.c
++++ b/tools/intel_vbt_decode.c
+@@ -1460,6 +1460,11 @@ static const char * const lvds_config[] = {
+ 	[BDB_DRIVER_EDP] = "Embedded DisplayPort",
+ };
  
- struct bdb_general_definitions {
-@@ -602,22 +603,22 @@ struct bdb_driver_features {
- 	u8 custom_vbt_version;					/* 155+ */
++static const char *default_algorithm(bool algorithm)
++{
++	return algorithm ? "driver default" : "OS default";
++}
++
+ static void dump_driver_feature(struct context *context,
+ 				const struct bdb_block *block)
+ {
+@@ -1480,7 +1485,7 @@ static void dump_driver_feature(struct context *context,
+ 	printf("\tAllow display switching when DVD active: %s\n",
+ 	       YESNO(feature->allow_display_switch_dvd));
+ 	printf("\tBoot Device Algorithm: %s\n",
+-	       feature->boot_dev_algorithm ? "driver default" : "os default");
++	       default_algorithm(feature->boot_dev_algorithm));
  
- 	/* Driver Feature Flags */
--	u16 rmpm_enabled:1;					/* 165+ */
--	u16 s2ddt_enabled:1;					/* 165+ */
--	u16 dpst_enabled:1;					/* 165-227 */
--	u16 bltclt_enabled:1;					/* 165+ */
--	u16 adb_enabled:1;					/* 165-227 */
--	u16 drrs_enabled:1;					/* 165-227 */
--	u16 grs_enabled:1;					/* 165+ */
--	u16 gpmt_enabled:1;					/* 165+ */
--	u16 tbt_enabled:1;					/* 165+ */
-+	u16 rmpm_enabled:1;					/* 159+ */
-+	u16 s2ddt_enabled:1;					/* 159+ */
-+	u16 dpst_enabled:1;					/* 159-227 */
-+	u16 bltclt_enabled:1;					/* 159+ */
-+	u16 adb_enabled:1;					/* 159-227 */
-+	u16 drrs_enabled:1;					/* 159-227 */
-+	u16 grs_enabled:1;					/* 159+ */
-+	u16 gpmt_enabled:1;					/* 159+ */
-+	u16 tbt_enabled:1;					/* 159+ */
- 	u16 psr_enabled:1;					/* 165-227 */
- 	u16 ips_enabled:1;					/* 165+ */
--	u16 dpfs_enabled:1;					/* 165+ */
-+	u16 dfps_enabled:1;					/* 165+ */
- 	u16 dmrrs_enabled:1;					/* 174-227 */
- 	u16 adt_enabled:1;					/* ???-228 */
- 	u16 hpd_wake:1;						/* 201-240 */
--	u16 pc_feature_valid:1;
-+	u16 pc_feature_valid:1;					/* 159+ */
- } __packed;
- 
- /*
-@@ -880,11 +881,12 @@ struct bdb_lvds_lfp_data_tail {
- struct lfp_backlight_data_entry {
- 	u8 type:2;
- 	u8 active_low_pwm:1;
--	u8 obsolete1:5;
-+	u8 i2c_pin:3;						/* obsolete since ? */
-+	u8 i2c_speed:2;						/* obsolete since ? */
- 	u16 pwm_freq_hz;
- 	u8 min_brightness;					/* ???-233 */
--	u8 obsolete2;
--	u8 obsolete3;
-+	u8 i2c_address;						/* obsolete since ? */
-+	u8 i2c_command;						/* obsolete since ? */
- } __packed;
- 
- struct lfp_backlight_control_method {
-@@ -905,8 +907,8 @@ struct lfp_brightness_level {
- struct bdb_lfp_backlight_data {
- 	u8 entry_size;
- 	struct lfp_backlight_data_entry data[16];
--	u8 level[16];							/* ???-233 */
--	struct lfp_backlight_control_method backlight_control[16];
-+	u8 level[16];							/* 162-233 */
-+	struct lfp_backlight_control_method backlight_control[16];	/* 191+ */
- 	struct lfp_brightness_level brightness_level[16];		/* 234+ */
- 	struct lfp_brightness_level brightness_min_level[16];		/* 234+ */
- 	u8 brightness_precision_bits[16];				/* 236+ */
-@@ -917,7 +919,7 @@ struct bdb_lfp_backlight_data {
-  * Block 44 - LFP Power Conservation Features Block
-  */
- struct lfp_power_features {
--	u8 reserved1:1;
-+	u8 dpst_support:1;						/* ???-159 */
- 	u8 power_conservation_pref:3;
- 	u8 reserved2:1;
- 	u8 lace_enabled_status:1;					/* 210+ */
+ 	printf("\tBoot Mode X: %u\n", feature->boot_mode_x);
+ 	printf("\tBoot Mode Y: %u\n", feature->boot_mode_y);
 -- 
 2.43.2
 
