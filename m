@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A38F6C6FD1F
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 10:26:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD9A1C6FD1F
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Mar 2024 10:38:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2A9A410F2B2;
-	Fri, 22 Mar 2024 10:26:50 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A16E610F434;
- Fri, 22 Mar 2024 10:26:48 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2040722376653414849=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6B3DF10EF83;
+	Fri, 22 Mar 2024 10:38:37 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nJFAd7SU";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B273310ECA7;
+ Fri, 22 Mar 2024 10:38:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711103915; x=1742639915;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=95YigKOEo4eWAUMfrybZRAr4waGbJ09LjeLqbqrouJ4=;
+ b=nJFAd7SUChF8Y5Cvrf8KVHIjZI5TuaDIbh+PRiCshMrjmvahS5Qz2S88
+ UokU3QZ8eBgcWfjJZVDQpU+CJkg+w1mEqgcbWrndj3YKFoH6subOGQaXZ
+ kCjITRxcDqkLSgi1+qfzLmNegtSpEzBt0YWvYip6t7H7kKg9+LX53/UpG
+ VbfOzuE8nZKBoSjZ1/eZ47xfA3Ze1yBRas/tld7UZG4TdxprjhS9Y8e+L
+ CGPHnWMEp/0Wkf/PiwUSWOEJpwM1lXUTKxTgUvXUpPJQrc+3frvJSYTYF
+ rk3XBovtSHV/rzJ8n+ahkTPhYcOqZxBcZVcpyXICQI67fd05X+zNiVN2t w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="9949090"
+X-IronPort-AV: E=Sophos;i="6.07,145,1708416000"; 
+   d="scan'208";a="9949090"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Mar 2024 03:38:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,145,1708416000"; d="scan'208";a="14831458"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 03:38:31 -0700
+Date: Fri, 22 Mar 2024 11:38:11 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+ Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Subject: Re: [PATCH i-g-t] tools/intel_gpu_top: Fix near full percentage bar
+ formatting
+Message-ID: <20240322103811.yqnznxqwl62xdtzq@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+ Intel-gfx@lists.freedesktop.org,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+References: <20240118084838.734165-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/kms=5Fdsc=3A_Use_h?=
- =?utf-8?q?igh_resolution_mode_for_output_format_subtests?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ankit Nautiyal" <ankit.k.nautiyal@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 22 Mar 2024 10:26:48 -0000
-Message-ID: <171110320866.960914.17847629904066900990@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240322081442.4120318-1-ankit.k.nautiyal@intel.com>
-In-Reply-To: <20240322081442.4120318-1-ankit.k.nautiyal@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240118084838.734165-1-tvrtko.ursulin@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,129 +68,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2040722376653414849==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Tvrtko,
+On 2024-01-18 at 08:48:38 +0000, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> 
+> Fix a bug where 1) the end vertical separator element would not be printed
+> if the progress bar portion was all filled by the progress bar characters
+> (no trailing spaces), and 2) the numerical overlay would be skipped to.
+> 
+> The bug would also shift the layout of following UI elements since the
+> progress bar would not be consuming all the allocated horizontal space.
+> 
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Reported-by: anonymoustranquillity@proton.me
 
-== Series Details ==
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: tests/intel/kms_dsc: Use high resolution mode for output format subtests
-URL   : https://patchwork.freedesktop.org/series/131478/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7777_BAT -> XEIGTPW_10882_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10882_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [FAIL][1] ([Intel XE#616]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7777/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10882/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
-
-
-Build changes
--------------
-
-  * IGT: IGT_7777 -> IGTPW_10882
-  * Linux: xe-975-236ae2b6b695ecedc3cf4453a1679d53b2e06f32 -> xe-976-3d5d23573ab7e4244935bb8dd93d385a9f5c8f4a
-
-  IGTPW_10882: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10882/index.html
-  IGT_7777: 7777
-  xe-975-236ae2b6b695ecedc3cf4453a1679d53b2e06f32: 236ae2b6b695ecedc3cf4453a1679d53b2e06f32
-  xe-976-3d5d23573ab7e4244935bb8dd93d385a9f5c8f4a: 3d5d23573ab7e4244935bb8dd93d385a9f5c8f4a
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10882/index.html
-
---===============2040722376653414849==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_dsc: Use high resolution mode for output format subtests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131478/">https://patchwork.freedesktop.org/series/131478/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10882/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10882/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7777_BAT -&gt; XEIGTPW_10882_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10882_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7777/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10882/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7777 -&gt; IGTPW_10882</li>
-<li>Linux: xe-975-236ae2b6b695ecedc3cf4453a1679d53b2e06f32 -&gt; xe-976-3d5d23573ab7e4244935bb8dd93d385a9f5c8f4a</li>
-</ul>
-<p>IGTPW_10882: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10882/index.html<br />
-  IGT_7777: 7777<br />
-  xe-975-236ae2b6b695ecedc3cf4453a1679d53b2e06f32: 236ae2b6b695ecedc3cf4453a1679d53b2e06f32<br />
-  xe-976-3d5d23573ab7e4244935bb8dd93d385a9f5c8f4a: 3d5d23573ab7e4244935bb8dd93d385a9f5c8f4a</p>
-
-</body>
-</html>
-
---===============2040722376653414849==--
+> ---
+>  tools/intel_gpu_top.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> index 046ead15a122..5b4f94d7de7a 100644
+> --- a/tools/intel_gpu_top.c
+> +++ b/tools/intel_gpu_top.c
+> @@ -1015,9 +1015,8 @@ print_percentage_bar(double percent, double max, int max_len, bool numeric)
+>  		printf("%s", bars[i]);
+>  
+>  	len -= (bar_len + (w - 1)) / w;
+> -	if (len < 1)
+> -		return;
+> -	n_spaces(len);
+> +	if (len >= 1)
+> +		n_spaces(len);
+>  
+>  	putchar('|');
+>  
+> -- 
+> 2.40.1
+> 
