@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 068DBC54E64
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 20:11:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BD41CD11DB
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 20:11:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 562F910E7E9;
-	Mon, 25 Mar 2024 20:11:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E4E4910E851;
+	Mon, 25 Mar 2024 20:11:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QINa9QB0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GjforjFa";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 948BB10E7CA
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 20:11:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E9EE10E851
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 20:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711397509; x=1742933509;
+ t=1711397510; x=1742933510;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=Fa28UWTF/+V0msOQzkCkc6ZAFtxR4wMRUnMPivybH8k=;
- b=QINa9QB0bd4z+FA7udS9bTR3XhPJB2zT5zfo3OEOBbI5YSbUjs8n40mu
- FMaOsxBZ1DvUeHDFU7vh1WXAqbqjSzwONOcRknJ8hJjZdIkOIk2MPThPo
- ZOgpYcVI9TjtGxXTN+D8O7ohHLhix9JO3W/QXFr2S9N9/tOegxydD4UTo
- Nr9k/gBTmNkTDroYeZYvC/LvKmaYRmnwiWcTlfwRgXkHOyYE9hVghFyM9
- nN/RH48dREwFRzKwwUFsAuOJuWQrTjd0Np9znn67kgnhYdDApYqZxkiEt
- 5/LpLM33FoU3CrA+zn+Rplv13pTsIXLHXqKXy/Oz2oCaP8XpJqp4aHkIy Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6289291"
+ bh=kRxkSgTpt47HEMUuxxg9B6m1jjvxeI1obham6JPGSYQ=;
+ b=GjforjFavPGktR0FeKhrsV2IZGPOiO6IP/NJr2oG9Bq72mQfB2gEuUFl
+ +5uua67E/Zv72H7mqVl/J6ppGLW5Ji2ebbozGFVZqA3XbrAxqmS8a8qMG
+ iJPMXlafvcyK3s1YFsSBR/+8uiFJQT01ZlYMzAzeWe33f/lQAV8YarIt3
+ u5M/ivlT/8cBfhvriIq4oYfsRWFUzE1T+SB0Ks/42M9dWRaN6TekBtEZ/
+ wTmLgY8e+0UkGSTAFRAkezotigw/VIrdhUahJ/usi2G9e91Jw8SbRik4Y
+ oIdCJDSYqcYKjy02ou61X9H1wcFKKVf1HPD4P3VAOs6sHlWnWdG2x3ozy g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6289293"
 X-IronPort-AV: E=Sophos;i="6.07,154,1708416000"; 
-   d="scan'208";a="6289291"
+   d="scan'208";a="6289293"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2024 13:11:48 -0700
+ 25 Mar 2024 13:11:50 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,154,1708416000"; d="scan'208";a="16400502"
+X-IronPort-AV: E=Sophos;i="6.07,154,1708416000"; d="scan'208";a="16400508"
 Received: from gfx2.iind.intel.com ([10.145.169.154])
- by orviesa008.jf.intel.com with ESMTP; 25 Mar 2024 13:11:46 -0700
+ by orviesa008.jf.intel.com with ESMTP; 25 Mar 2024 13:11:48 -0700
 From: sai.gowtham.ch@intel.com
 To: igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com,
  rodrigo.vivi@intel.com
-Subject: [PATCH i-g-t 1/3] tests/intel/xe_pm: Test validates vm-bind userptr
- flag with suspend and resume
-Date: Tue, 26 Mar 2024 01:40:43 +0530
-Message-Id: <20240325201045.25805-2-sai.gowtham.ch@intel.com>
+Subject: [PATCH i-g-t 2/3] tests/intel/xe_pm: Validate vm-bind prefetch flag
+ with suspend and resume
+Date: Tue, 26 Mar 2024 01:40:44 +0530
+Message-Id: <20240325201045.25805-3-sai.gowtham.ch@intel.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20240325201045.25805-1-sai.gowtham.ch@intel.com>
 References: <20240325201045.25805-1-sai.gowtham.ch@intel.com>
@@ -66,189 +66,73 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Test validates vm bind usertpr functionality, by suspend and resuming the device
-after binding VM to a VA.
+Test functionality of vm_bind prefetch with S&R
 
 Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 ---
- tests/intel/xe_pm.c | 78 ++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 60 insertions(+), 18 deletions(-)
+ tests/intel/xe_pm.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
 diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index 3aa247353..8659e87cc 100644
+index 8659e87cc..e016f2bca 100644
 --- a/tests/intel/xe_pm.c
 +++ b/tests/intel/xe_pm.c
-@@ -33,6 +33,8 @@
- #define MAGIC_1 0xc0ffee
+@@ -34,6 +34,7 @@
  #define MAGIC_2 0xdeadbeef
  
-+#define USERPTR         (0x1 << 0)
-+
+ #define USERPTR         (0x1 << 0)
++#define PREFETCH        (0x1 << 5)
+ 
  typedef struct {
  	int fd_xe;
- 	struct pci_device *pci_xe;
-@@ -272,11 +274,26 @@ static void close_fw_handle(int sig)
-  * @d3hot:	d3hot
-  * @d3cold:	d3cold
+@@ -289,6 +290,7 @@ static void close_fw_handle(int sig)
+  * arg[2]:
+  *
+  * @usrptr:     usrptr
++ * @prefetch:  prefetch
   */
--
-+/**
-+ * SUBTEST: %s-vm-bind-%s
-+ * DESCRIPTION: Test to check suspend/autoresume on %arg[1] state
-+ * 		with vm bind %arg[2] combination
-+ * Functionality: pm - %arg[1]
-+ *
-+ * arg[1]:
-+ *
-+ * @s2idle:     s2idle
-+ * @s3:         s3
-+ * @s4:         s4
-+ *
-+ * arg[2]:
-+ *
-+ * @usrptr:     usrptr
-+ */
  static void
  test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
- 	  int n_exec_queues, int n_execs, enum igt_suspend_state s_state,
--	  enum igt_acpi_d_state d_state)
-+	  enum igt_acpi_d_state d_state, unsigned int flags)
- {
- 	uint32_t vm;
- 	uint64_t addr = 0x1a0000;
-@@ -320,10 +337,15 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
- 	if (check_rpm && runtime_usage_available(device.pci_xe))
- 		rpm_usage = igt_pm_get_runtime_usage(device.pci_xe);
+@@ -340,9 +342,16 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
+ 	if (flags & USERPTR) {
+ 		data = aligned_alloc(xe_get_default_alignment(device.fd_xe), bo_size);
+ 	} else {
+-		bo = xe_bo_create(device.fd_xe, vm, bo_size,
+-				  vram_if_possible(device.fd_xe, eci->gt_id),
+-				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++
++		if (flags & PREFETCH)
++			bo = xe_bo_create(device.fd_xe, 0, bo_size,
++					  all_memory_regions(device.fd_xe) |
++					  vram_if_possible(device.fd_xe, 0),
++					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++		else
++			bo = xe_bo_create(device.fd_xe, vm, bo_size,
++					  vram_if_possible(device.fd_xe, eci->gt_id),
++					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+ 		data = xe_bo_map(device.fd_xe, bo, bo_size);
+ 	}
+ 	memset(data, 0, bo_size);
+@@ -362,6 +371,10 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
+ 		xe_vm_bind_userptr_async(device.fd_xe, vm, bind_exec_queues[0],
+ 					 to_user_pointer(data), addr, bo_size, sync, 1);
  
--	bo = xe_bo_create(device.fd_xe, vm, bo_size,
--			  vram_if_possible(device.fd_xe, eci->gt_id),
--			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
--	data = xe_bo_map(device.fd_xe, bo, bo_size);
-+	if (flags & USERPTR) {
-+		data = aligned_alloc(xe_get_default_alignment(device.fd_xe), bo_size);
-+	} else {
-+		bo = xe_bo_create(device.fd_xe, vm, bo_size,
-+				  vram_if_possible(device.fd_xe, eci->gt_id),
-+				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+		data = xe_bo_map(device.fd_xe, bo, bo_size);
-+	}
-+	memset(data, 0, bo_size);
- 
- 	for (i = 0; i < n_exec_queues; i++) {
- 		exec_queues[i] = xe_exec_queue_create(device.fd_xe, vm, eci, 0);
-@@ -333,8 +355,12 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
- 
- 	sync[0].handle = syncobj_create(device.fd_xe, 0);
- 
--	xe_vm_bind_async(device.fd_xe, vm, bind_exec_queues[0], bo, 0, addr,
--			 bo_size, sync, 1);
-+	if (bo)
-+		xe_vm_bind_async(device.fd_xe, vm, bind_exec_queues[0], bo, 0, addr,
-+				 bo_size, sync, 1);
-+	else
-+		xe_vm_bind_userptr_async(device.fd_xe, vm, bind_exec_queues[0],
-+					 to_user_pointer(data), addr, bo_size, sync, 1);
- 
++	if (flags & PREFETCH)
++		xe_vm_prefetch_async(device.fd_xe, vm, bind_exec_queues[0], 0, addr,
++				     bo_size, sync, 1, 0);
++
  	if (check_rpm && runtime_usage_available(device.pci_xe))
  		igt_assert(igt_pm_get_runtime_usage(device.pci_xe) > rpm_usage);
-@@ -398,9 +424,10 @@ NULL));
- 			xe_exec_queue_destroy(device.fd_xe, bind_exec_queues[i]);
- 	}
  
--	munmap(data, bo_size);
--
--	gem_close(device.fd_xe, bo);
-+	if (bo) {
-+		munmap(data, bo_size);
-+		gem_close(device.fd_xe, bo);
-+	}
- 
- 	if (check_rpm && runtime_usage_available(device.pci_xe))
- 		igt_assert(igt_pm_get_runtime_usage(device.pci_xe) < rpm_usage);
-@@ -583,6 +610,13 @@ igt_main
- 		{ "d3cold", IGT_ACPI_D3Cold },
+@@ -615,6 +628,7 @@ igt_main
+ 		unsigned int flags;
+ 	} vm_op[] = {
+ 		{ "usrptr", USERPTR },
++		{ "prefetch", PREFETCH },
  		{ NULL },
  	};
-+	const struct vm_op {
-+		const char *name;
-+		unsigned int flags;
-+	} vm_op[] = {
-+		{ "usrptr", USERPTR },
-+		{ NULL },
-+	};
  
- 	igt_fixture {
- 		memset(&device, 0, sizeof(device));
-@@ -593,7 +627,7 @@ igt_main
- 
- 		/* Always perform initial once-basic exec checking for health */
- 		xe_for_each_engine(device.fd_xe, hwe)
--			test_exec(device, hwe, 1, 1, NO_SUSPEND, NO_RPM);
-+			test_exec(device, hwe, 1, 1, NO_SUSPEND, NO_RPM, 0);
- 
- 		igt_pm_get_d3cold_allowed(device.pci_slot_name, &d3cold_allowed);
- 		igt_assert(igt_setup_runtime_pm(device.fd_xe));
-@@ -610,7 +644,7 @@ igt_main
- 		igt_subtest_f("%s-basic-exec", s->name) {
- 			xe_for_each_engine(device.fd_xe, hwe)
- 				test_exec(device, hwe, 1, 2, s->state,
--					  NO_RPM);
-+					  NO_RPM, 0);
- 		}
- 
- 		igt_subtest_f("%s-exec-after", s->name) {
-@@ -618,13 +652,21 @@ igt_main
- 						      SUSPEND_TEST_NONE);
- 			xe_for_each_engine(device.fd_xe, hwe)
- 				test_exec(device, hwe, 1, 2, NO_SUSPEND,
--					  NO_RPM);
-+					  NO_RPM, 0);
- 		}
- 
- 		igt_subtest_f("%s-multiple-execs", s->name) {
- 			xe_for_each_engine(device.fd_xe, hwe)
- 				test_exec(device, hwe, 16, 32, s->state,
--					  NO_RPM);
-+					  NO_RPM, 0);
-+		}
-+
-+		for (const struct vm_op *op = vm_op; op->name; op++) {
-+			igt_subtest_f("%s-vm-bind-%s", s->name, op->name) {
-+				xe_for_each_engine(device.fd_xe, hwe)
-+					test_exec(device, hwe, 16, 32, s->state,
-+						  NO_RPM, op->flags);
-+			}
- 		}
- 
- 		for (const struct d_state *d = d_states; d->name; d++) {
-@@ -632,7 +674,7 @@ igt_main
- 				igt_assert(setup_d3(device, d->state));
- 				xe_for_each_engine(device.fd_xe, hwe)
- 					test_exec(device, hwe, 1, 2, s->state,
--						  NO_RPM);
-+						  NO_RPM, 0);
- 				cleanup_d3(device);
- 			}
- 		}
-@@ -649,7 +691,7 @@ igt_main
- 			igt_assert(setup_d3(device, d->state));
- 			xe_for_each_engine(device.fd_xe, hwe)
- 				test_exec(device, hwe, 1, 1,
--					  NO_SUSPEND, d->state);
-+					  NO_SUSPEND, d->state, 0);
- 			cleanup_d3(device);
- 		}
- 
-@@ -657,7 +699,7 @@ igt_main
- 			igt_assert(setup_d3(device, d->state));
- 			xe_for_each_engine(device.fd_xe, hwe)
- 				test_exec(device, hwe, 16, 32,
--					  NO_SUSPEND, d->state);
-+					  NO_SUSPEND, d->state, 0);
- 			cleanup_d3(device);
- 		}
- 	}
 -- 
 2.39.1
 
