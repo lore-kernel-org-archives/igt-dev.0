@@ -4,45 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEB52C54E64
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 09:20:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5BB4C6FD1F
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 09:20:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 69EB510E6DB;
-	Mon, 25 Mar 2024 09:20:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6E3D510E6CE;
+	Mon, 25 Mar 2024 09:20:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="epgluTpm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="POOEyz2Y";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4FFB110E6CE
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 09:20:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 32ECE10E6CE
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 09:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711358408; x=1742894408;
+ t=1711358410; x=1742894410;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=XvdoXUTVUK+cFTO3HqAYqg3mMwX9eK+MvxcSqW7SQ68=;
- b=epgluTpmDYcUqcjooJ6YQK8PkMqXqMV0URTqnLOC5nAo5v4oumB98vKq
- 0ljWyKpVV1CvAk0y1OapQdIqHpJeYhFO78BDD4fo+fwGtt04E7z1xKwtu
- ehdsqr0xIS8RZl4r6Md/O+VR3n6BLr4CEStj46EY8xv7TSOaaJAZwt2wZ
- KcCK3W+Ut+HcXLPRb29G8xyXKC42Kr1+GAYlGH5WuM+ZMcBuD9T/k/HZY
- 3VFi+vL/fvrLyNNyP9x0XLGC0mUgXt+UvN7f9aFNzp6TftS5G0GroTTei
- wjkytUxds754I/WWt3/CLSLrcFJB2vDn0AeqQQdhsO2lril8sfH/aVr95 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="31786255"
-X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; d="scan'208";a="31786255"
+ bh=Ib5gOYeMyuYnlsdwwIODPTAVpoQeTYWQdPms+oZ/4do=;
+ b=POOEyz2Ymckoudy48UEQllbh6UIqKpoWmYdA8XUU3EKsPuzKxWlapBXj
+ TivVqNH/TgJvb8PuCe4Xgg7patQ/A0mrPDqxQDpzPbwCVlRV6BwZmlhUt
+ S3IFmVnSs/YrS8hyIsF8w7tBxPQT5tu9w8FBPc/fm4Ca5XNU6u9WWuId0
+ y46EPcmQVUNBUu5uHmp6b/rRELHTxdzA0fC+HUMM53NzLyBsX1kHHCrAx
+ A2916HskkI87WQ8uLYifC7lV2k+NetpGoYmg8/1OeGmkfK5qq8leUKpTk
+ khC5lydG6H9qRJVfWAFthD9CWYKHQBmmqnEcOeVop5JJM1QcZAVsEwDUp w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="31786257"
+X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; d="scan'208";a="31786257"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2024 02:20:08 -0700
+ 25 Mar 2024 02:20:10 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; d="scan'208";a="20294288"
+X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; d="scan'208";a="20294295"
 Received: from dut-dii-e5ff.iind.intel.com ([10.145.169.50])
- by orviesa005.jf.intel.com with ESMTP; 25 Mar 2024 02:20:06 -0700
+ by orviesa005.jf.intel.com with ESMTP; 25 Mar 2024 02:20:08 -0700
 From: priyanka.dandamudi@intel.com
 To: priyanka.dandamudi@intel.com, krishnaiah.bommu@intel.com,
  janga.rahul.kumar@intel.com, igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 1/2] tests/intel/xe_exec_fault_mode: Test to check the
- access of invalid va
-Date: Mon, 25 Mar 2024 14:48:09 +0530
-Message-Id: <20240325091810.2942038-2-priyanka.dandamudi@intel.com>
+Subject: [PATCH i-g-t 2/2] tests/intel/xe_exec_fault_mode: Extend invalid va
+ test
+Date: Mon, 25 Mar 2024 14:48:10 +0530
+Message-Id: <20240325091810.2942038-3-priyanka.dandamudi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240325091810.2942038-1-priyanka.dandamudi@intel.com>
 References: <20240325091810.2942038-1-priyanka.dandamudi@intel.com>
@@ -65,121 +65,77 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Added a test where it submits a batch to access invalid va (not binded)
-Expected result to be -EIO from user fence ioctl caused due to CAT error.
+Extend invalid va test by enabling scratch page without pagefault
+and check for success of userfence.
 
-v2: Remove assert condition specific to invalid va.(Rahul)
-
-v3: Optimised code related to flag.(Rahul)
-Added if loop to skip COPY engine.
-
-TODO: if loop to skip COPY engine will be removed once related Kernel Bug gets resolved.
+v2: Rename flag NOPAGEFAULT to ENABLE_SCRATCH and
+add INVALID_VA to test.(Rahul)
 
 Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 ---
- tests/intel/xe_exec_fault_mode.c | 42 +++++++++++++++++++++++---------
- 1 file changed, 31 insertions(+), 11 deletions(-)
+ tests/intel/xe_exec_fault_mode.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
 diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-index 20a7cf8fe..8b1040103 100644
+index 8b1040103..050d2c782 100644
 --- a/tests/intel/xe_exec_fault_mode.c
 +++ b/tests/intel/xe_exec_fault_mode.c
-@@ -31,8 +31,13 @@
- #define BIND_EXEC_QUEUE	(0x1 << 4)
+@@ -32,12 +32,17 @@
  #define PREFETCH	(0x1 << 5)
  #define INVALID_FAULT	(0x1 << 6)
-+#define INVALID_VA	(0x1 << 7)
+ #define INVALID_VA	(0x1 << 7)
++#define ENABLE_SCRATCH  (0x1 << 8)
  
  /**
-+ * SUBTEST: invalid-va
-+ * Description: Access invalid va and check for EIO through user fence.
+  * SUBTEST: invalid-va
+  * Description: Access invalid va and check for EIO through user fence.
+  * Test category: functionality test
+  *
++ * SUBTEST: invalid-va-scratch-nopagefault
++ * Description: Access invalid va without pageafault with scratch page enabled.
 + * Test category: functionality test
 + *
   * SUBTEST: once-%s
   * Description: Run %arg[1] fault mode test only once
   * Test category: functionality test
-@@ -157,13 +162,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+@@ -120,8 +125,12 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
  
- 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
- 	if (bo)
--		xe_vm_bind_async(fd, vm, bind_exec_queues[0], bo, 0, addr,
--				 bo_size, sync, 1);
-+		xe_vm_bind_async(fd, vm, bind_exec_queues[0], bo, 0, addr, bo_size, sync, 1);
- 	else
- 		xe_vm_bind_userptr_async(fd, vm, bind_exec_queues[0],
- 					 to_user_pointer(data), addr,
- 					 bo_size, sync, 1);
--
- #define ONE_SEC	MS_TO_NS(1000)
- 	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
- 		       bind_exec_queues[0], ONE_SEC);
-@@ -186,6 +189,9 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		int e = i % n_exec_queues;
+ 	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
  
- 		b = 0;
-+		if (flags & INVALID_VA)
-+			sdi_addr = 0x1fffffffffff000;
-+
- 		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
- 		data[i].batch[b++] = sdi_addr;
- 		data[i].batch[b++] = sdi_addr >> 32;
-@@ -257,23 +263,29 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			igt_assert(data != MAP_FAILED);
- 		}
- 	}
--
- 	if (!(flags & INVALID_FAULT)) {
-+		int64_t timeout = ONE_SEC;
-+
+-	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
+-			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
++	if (flags & ENABLE_SCRATCH)
++		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
++				  DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
++	else
++		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
++				  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
+ 	bo_size = sizeof(*data) * n_execs;
+ 	bo_size = xe_bb_size(fd, bo_size);
+ 
+@@ -269,7 +278,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
  		j = flags & INVALIDATE ? n_execs - 1 : 0;
--		for (i = j; i < n_execs; i++)
--			xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
--				       exec_queues[i % n_exec_queues], ONE_SEC);
--	}
  
-+		for (i = j; i < n_execs; i++) {
-+			if (flags & INVALID_VA)
-+				igt_assert_eq(__xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
-+							       exec_queues[i % n_exec_queues], &timeout), EIO);
-+			else
-+				igt_assert_eq(__xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
-+							       exec_queues[i % n_exec_queues], &timeout), 0);
-+		}
-+	}
- 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
- 	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr, bo_size,
- 			   sync, 1);
- 	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
- 		       bind_exec_queues[0], ONE_SEC);
+ 		for (i = j; i < n_execs; i++) {
+-			if (flags & INVALID_VA)
++			if (flags & INVALID_VA && !(flags & ENABLE_SCRATCH))
+ 				igt_assert_eq(__xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+ 							       exec_queues[i % n_exec_queues], &timeout), EIO);
+ 			else
+@@ -385,6 +394,10 @@ igt_main
+ 			test_exec(fd, hwe, 1, 1, INVALID_VA);
+ 		}
  
--	if (!(flags & INVALID_FAULT)) {
-+	if (!(flags & INVALID_FAULT) && !(flags & INVALID_VA)) {
- 		for (i = j; i < n_execs; i++)
--			igt_assert_eq(data[i].data, 0xc0ffee);
-+				igt_assert_eq(data[i].data, 0xc0ffee);
- 	}
- 
- 	for (i = 0; i < n_exec_queues; i++) {
-@@ -366,6 +378,14 @@ igt_main
- 					  s->flags);
- 	}
- 
--	igt_fixture
-+	igt_subtest("invalid-va")
-+		xe_for_each_engine(fd, hwe) {
-+			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COPY)
-+			       continue;	
-+			test_exec(fd, hwe, 1, 1, INVALID_VA);
-+		}
++	igt_subtest("invalid-va-scratch-nopagefault")
++		xe_for_each_engine(fd, hwe)
++			test_exec(fd, hwe, 1, 1, ENABLE_SCRATCH | INVALID_VA);
 +
-+	igt_fixture {
+ 	igt_fixture {
  		drm_close_driver(fd);
-+	}
- }
+ 	}
 -- 
 2.25.1
 
