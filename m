@@ -4,26 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C3E5C54E64
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 10:24:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCE9AC54E64
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 10:48:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D7E0F10E708;
-	Mon, 25 Mar 2024 10:24:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5964410E733;
+	Mon, 25 Mar 2024 10:48:33 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E83E510E708;
- Mon, 25 Mar 2024 10:24:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D52110E733;
+ Mon, 25 Mar 2024 10:48:32 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============7608021246913612366=="
+ boundary="===============5679563895913960599=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_meson=3A_Turn_on_few_warns?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/igt=5Ffb=3A_fix_intel_modi?=
+ =?utf-8?q?fiers_for_fb_copying_on_xe_driver_=28rev4=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 25 Mar 2024 10:24:41 -0000
-Message-ID: <171136228194.1035680.280849654758717864@8e613ede5ea5>
+Date: Mon, 25 Mar 2024 10:48:32 -0000
+Message-ID: <171136371264.1035674.4817228077654937924@8e613ede5ea5>
 X-Patchwork-Hint: ignore
-References: <20240325082422.691115-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20240325082422.691115-1-bhanuprakash.modem@intel.com>
+References: <20240322120914.205342-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20240322120914.205342-1-juhapekka.heikkila@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7608021246913612366==
+--===============5679563895913960599==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: meson: Turn on few warns
-URL   : https://patchwork.freedesktop.org/series/131560/
+Series: lib/igt_fb: fix intel modifiers for fb copying on xe driver (rev4)
+URL   : https://patchwork.freedesktop.org/series/131490/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7780_BAT -> XEIGTPW_10895_BAT
+CI Bug Log - changes from XEIGT_7780_BAT -> XEIGTPW_10896_BAT
 ====================================================
 
 Summary
@@ -73,7 +74,7 @@ Participating hosts (4 -> 4)
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_10895_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_10896_BAT that come from known issues:
 
 ### IGT changes ###
 
@@ -82,7 +83,7 @@ Known issues
   * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
     - bat-dg2-oem2:       [FAIL][1] ([Intel XE#1259]) -> [INCOMPLETE][2] ([Intel XE#804])
    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7780/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10895/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10896/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
 
   
   [Intel XE#1259]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1259
@@ -92,19 +93,19 @@ Known issues
 Build changes
 -------------
 
-  * IGT: IGT_7780 -> IGTPW_10895
+  * IGT: IGT_7780 -> IGTPW_10896
   * Linux: xe-984-093d82c02921344d8d400989af156aaf79b9d961 -> xe-985-553abc52013db468864e0e89844b58ef1ab8d214
 
-  IGTPW_10895: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10895/index.html
+  IGTPW_10896: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10896/index.html
   IGT_7780: 93a5298ac980333738cf75da6b66fa6f3769205f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-984-093d82c02921344d8d400989af156aaf79b9d961: 093d82c02921344d8d400989af156aaf79b9d961
   xe-985-553abc52013db468864e0e89844b58ef1ab8d214: 553abc52013db468864e0e89844b58ef1ab8d214
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10895/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10896/index.html
 
---===============7608021246913612366==
+--===============5679563895913960599==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -124,37 +125,37 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>meson: Turn on few warns</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131560/">https://patchwork.freedesktop.org/series/131560/</a></td></tr>
+<tr><td><b>Series:</b></td><td>lib/igt_fb: fix intel modifiers for fb copying on xe driver (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131490/">https://patchwork.freedesktop.org/series/131490/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10895/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10895/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10896/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10896/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7780_BAT -&gt; XEIGTPW_10895_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_7780_BAT -&gt; XEIGTPW_10896_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (4 -&gt; 4)</h2>
 <p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10895_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_10896_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Warnings</h4>
 <ul>
 <li>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7780/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1259">Intel XE#1259</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10895/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/804">Intel XE#804</a>)</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7780/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1259">Intel XE#1259</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10896/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/804">Intel XE#804</a>)</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_7780 -&gt; IGTPW_10895</li>
+<li>IGT: IGT_7780 -&gt; IGTPW_10896</li>
 <li>Linux: xe-984-093d82c02921344d8d400989af156aaf79b9d961 -&gt; xe-985-553abc52013db468864e0e89844b58ef1ab8d214</li>
 </ul>
-<p>IGTPW_10895: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10895/index.html<br />
+<p>IGTPW_10896: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10896/index.html<br />
   IGT_7780: 93a5298ac980333738cf75da6b66fa6f3769205f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-984-093d82c02921344d8d400989af156aaf79b9d961: 093d82c02921344d8d400989af156aaf79b9d961<br />
   xe-985-553abc52013db468864e0e89844b58ef1ab8d214: 553abc52013db468864e0e89844b58ef1ab8d214</p>
@@ -162,4 +163,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============7608021246913612366==--
+--===============5679563895913960599==--
