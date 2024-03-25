@@ -4,27 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DB29C54E64
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 19:42:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B032C54E58
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 20:11:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CA19710E11A;
-	Mon, 25 Mar 2024 19:42:17 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7294210E0EE;
- Mon, 25 Mar 2024 19:42:16 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3946738206189057350=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E1AC810E7CA;
+	Mon, 25 Mar 2024 20:11:48 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fsM/Znis";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A074E10E7CA
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 20:11:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711397508; x=1742933508;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=VWYUMpbdokIaQSU1gyl99PhQH5UHIZ+pnCVTbk1LZL0=;
+ b=fsM/Zniseg8r732szPgoQuEzZie0JZLqcxr605YLJLelkHFTlFgumIfv
+ Fd+SsfXtw9JLNBaGjMggIPZaM0t0Mt8pJeONCVN5MCmCvlqInruR8VunP
+ V4J0+veRLO/tvE0tQ1L00vP5UE2+J7tXOSdtrHO3/oFM7FsmTvMWn8lSi
+ FrQte+FhY/cVeymd3lGrFTkg7QE4k2F8iQNNgpxFaP7Obbap7DlzXgndC
+ kRKH+UJVQi1GU0DG1gyV2VAZAPtgbvayhpdysuV0WiL2tu5H54WJ6h+Xf
+ Guooqz3JA9NaHVuz8GM4VNxNsPirmL1I0U4SoO2v43idEGk4IHqoUc1Y1 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6289289"
+X-IronPort-AV: E=Sophos;i="6.07,154,1708416000"; 
+   d="scan'208";a="6289289"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2024 13:11:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,154,1708416000"; d="scan'208";a="16400497"
+Received: from gfx2.iind.intel.com ([10.145.169.154])
+ by orviesa008.jf.intel.com with ESMTP; 25 Mar 2024 13:11:45 -0700
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com,
+ rodrigo.vivi@intel.com
+Subject: [PATCH i-g-t 0/3] tests/intel/xe_pm: Tests to validate vm-bind
+Date: Tue, 26 Mar 2024 01:40:42 +0530
+Message-Id: <20240325201045.25805-1-sai.gowtham.ch@intel.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tools/intel=5Fvbt=5Fdecode=3A_?=
- =?utf-8?q?Improve_panel_type_handling_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 25 Mar 2024 19:42:16 -0000
-Message-ID: <171139573646.1037808.9475509911143473461@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240322163251.11102-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20240322163251.11102-1-ville.syrjala@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,126 +58,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3946738206189057350==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-== Series Details ==
+This patch series has following changes:
+1. Validate functionality of VM_BIND USERPTR/PREFETCH op with S&R
+2. Test vm_unbind op by binding multiple va's to a vm and check the
+functionality with S&R.
 
-Series: tools/intel_vbt_decode: Improve panel type handling (rev3)
-URL   : https://patchwork.freedesktop.org/series/131502/
-State : success
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+ 
+Sai Gowtham Ch (3):
+  tests/intel/xe_pm: Test validates vm-bind userptr flag with suspend
+    and resume
+  tests/intel/xe_pm: Validate vm-bind prefetch flag with suspend and
+    resume
+  tests/intel/xe_pm: Tests vm-unbind all flag functionality with s&R
 
-== Summary ==
+ tests/intel/xe_pm.c | 125 +++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 106 insertions(+), 19 deletions(-)
 
-CI Bug Log - changes from XEIGT_7782_BAT -> XEIGTPW_10903_BAT
-====================================================
+-- 
+2.39.1
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 3)
-------------------------------
-
-  Missing    (1): bat-dg2-oem2 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10903_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@xe_exec_threads@threads-mixed-userptr-invalidate:
-    - bat-adlp-7:         [INCOMPLETE][1] ([Intel XE#1044] / [Intel XE#1376]) -> [INCOMPLETE][2] ([Intel XE#1044])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7782/bat-adlp-7/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10903/bat-adlp-7/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html
-
-  
-  [Intel XE#1044]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1044
-  [Intel XE#1376]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1376
-
-
-Build changes
--------------
-
-  * IGT: IGT_7782 -> IGTPW_10903
-
-  IGTPW_10903: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10903/index.html
-  IGT_7782: a404f73182948e843640d00cc279883391cf6ef4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-988-d1ecfbbbb194e8f7941bd84f77f7c938b461ce14: d1ecfbbbb194e8f7941bd84f77f7c938b461ce14
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10903/index.html
-
---===============3946738206189057350==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tools/intel_vbt_decode: Improve panel type handling (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131502/">https://patchwork.freedesktop.org/series/131502/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10903/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10903/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7782_BAT -&gt; XEIGTPW_10903_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 3)</h2>
-<p>Missing    (1): bat-dg2-oem2 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10903_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_exec_threads@threads-mixed-userptr-invalidate:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7782/bat-adlp-7/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1044">Intel XE#1044</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1376">Intel XE#1376</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10903/bat-adlp-7/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1044">Intel XE#1044</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7782 -&gt; IGTPW_10903</li>
-</ul>
-<p>IGTPW_10903: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10903/index.html<br />
-  IGT_7782: a404f73182948e843640d00cc279883391cf6ef4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-988-d1ecfbbbb194e8f7941bd84f77f7c938b461ce14: d1ecfbbbb194e8f7941bd84f77f7c938b461ce14</p>
-
-</body>
-</html>
-
---===============3946738206189057350==--
