@@ -4,49 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5DDEC54E58
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 16:29:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A463C54E64
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 16:33:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 78F1A10E9B0;
-	Mon, 25 Mar 2024 16:29:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 31CE910E9A1;
+	Mon, 25 Mar 2024 16:33:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XXzhPIz6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VySUKgDk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B001D10E9A9
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 16:29:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B07F410E14E
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 16:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711384156; x=1742920156;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=+9W2bOOWFo/V6CbZATplhiBWMlF+ak9ji921VEtgYfY=;
- b=XXzhPIz653qRXwX24LGHIEt3Az5hTbjMeDkEWS4mly6A+b4p3xzkl0iX
- ZXKTG7u+61ms+S6MxkPBJUzBrmTanZ5BFsWghHXgLgPTHCM11CNJy38pI
- f+71ov2UzfA37wd6QmT0RKyWsnJNFrC6s5xRIWH8IMGl2Uira71S64oZd
- Hg797IdYODxvcVNFQ8chF8qV204OxWEwWMX5LfKExIe0Peuebv1F54Aal
- sCkmy45qG7h6AgpDxRMnnRWCIjiaOrij5UpnTJKlFejeBYWmR8h1RRAdD
- StpRpwcntEUtUaisOo5XWofRmNrD0D41riiMrPrr8KyFYjELgiETjutNP w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="28877619"
-X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="28877619"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2024 09:29:16 -0700
+ t=1711384411; x=1742920411;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=B43Bfohc04tEmZ9XQo58Y6AD/15SIUntcDZdeGrh1jw=;
+ b=VySUKgDkDmb9+/lrAtIYtws/fRfw2cP+FMx4mtsZb3TYHLvo1/Ej38j7
+ Fa5hzEuI9xVb66w9XbGGE3PPsh1Sc/0AyeupDLaZKA/taS2aZIExRcVzN
+ QqbntYciKqulgt06pSDrTy6kfOQRqefS/PTAGv6nLKbwi8vyvabYuI3Gg
+ mkqSDiiK56Ci6i3+h7xcZoF49CqxjMM9XKMq2Rmy821ifr6J5ELhluOoU
+ JUB2xu4b3ykqx00YTLaF4KmMWu3kp0zuHR0WEWcHdG67pIBIXfaXXjcqi
+ /GZJKz7pviBcP4RcqNpwqkEm1gcvSEt/LyriUHUCZaZcHWkdrYAitnfoq A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6526340"
+X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
+   d="scan'208";a="6526340"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2024 09:33:31 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="15539429"
-Received: from dut-internal-9dd7.jf.intel.com ([10.165.21.194])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2024 09:29:16 -0700
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="827784753"
+X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="827784753"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+ by orsmga001.jf.intel.com with SMTP; 25 Mar 2024 09:33:27 -0700
+Received: by stinkbox (sSMTP sendmail emulation);
+ Mon, 25 Mar 2024 18:33:27 +0200
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: jonathan.cavitt@intel.com, saurabhg.gupta@intel.com,
- chris.p.wilson@linux.intel.com, nirmoy.das@intel.com,
- kamil.konieczny@linux.intel.com
-Subject: [PATCH i-g-t] i915/gem_exec_whisper: Limit workload
-Date: Mon, 25 Mar 2024 09:13:57 -0700
-Message-Id: <20240325161357.2588401-1-jonathan.cavitt@intel.com>
-X-Mailer: git-send-email 2.25.1
+Cc: Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH i-g-t v2 4/5] tools/intel_vbt_decode: Also dump the second
+ panel (panel_type2)
+Date: Mon, 25 Mar 2024 18:33:27 +0200
+Message-ID: <20240325163327.22757-1-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240322163251.11102-5-ville.syrjala@linux.intel.com>
+References: <20240322163251.11102-5-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -63,120 +68,156 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@linux.intel.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-For large machines with lots of cpus and many engines, using a workload
-that tries to use every engine from every cpu causes massive
-oversaturation. The goal of the test workload is to cause saturation on
-both engines and cpus so that we apply some pressure on the scheduler to
-maintain order, but to do so we only need to ensure each scheduling
-queue is saturated and there is sufficient pressure for the CPU
-scheduler to push work across cores. We can impose a limit on the number
-of threads such that we ensure that every engine and every core should
-be occupied. Furthermore we can scale the amount of work submitted by
-each thread to keep the total amount of work under a reasonable time
-bound.
+Modern VBTs can declare two panel types in order to support
+dual panel systems. Dump the panel information for the second
+panel as well. Since panel_type2 could also be declared as 255
+(== match pnpid to EDID) we also add a new command line knob
+to select panel_type2 by hand.
 
-Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Data for the second panel will be indicated by "(2)", as opposed
+to "(1)" for the first panel.
 
+We can also end up in a situation where panel_type==panel_type2.
+The reasons being a dodgy VBT, or the VBT might declare
+panel_type==255 and panel_type2=0, and if we can't determine
+which panel the 255 refers to (via pnpid) then we just default
+to panel_type==0.
+
+v2: Break the ?: into separate ifs (Jani)
+    Clarify why we can end up with panel_type==panel_type2 (Jani)
+
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/intel/gem_exec_whisper.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ tools/intel_vbt_decode.c | 45 ++++++++++++++++++++++++++++++++++------
+ 1 file changed, 39 insertions(+), 6 deletions(-)
 
-diff --git a/tests/intel/gem_exec_whisper.c b/tests/intel/gem_exec_whisper.c
-index effb473350..429dfc00d5 100644
---- a/tests/intel/gem_exec_whisper.c
-+++ b/tests/intel/gem_exec_whisper.c
-@@ -294,6 +294,7 @@ static void whisper(int fd, const intel_ctx_t *ctx,
+diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+index 98f64d0822c6..788c2903e4a1 100644
+--- a/tools/intel_vbt_decode.c
++++ b/tools/intel_vbt_decode.c
+@@ -79,7 +79,7 @@ struct context {
+ 	int size;
+ 
+ 	uint32_t devid;
+-	int panel_type;
++	int panel_type, panel_type2;
+ 	bool dump_all_panel_types;
+ 	bool hexdump;
+ };
+@@ -87,12 +87,23 @@ struct context {
+ static bool dump_panel(const struct context *context, int panel_type)
  {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
-+	const unsigned int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
- 	struct drm_i915_gem_exec_object2 batches[QLEN];
- 	struct drm_i915_gem_relocation_entry inter[QLEN];
- 	struct drm_i915_gem_relocation_entry reloc;
-@@ -306,18 +307,19 @@ static void whisper(int fd, const intel_ctx_t *ctx,
- 	int fds[64];
- 	intel_ctx_cfg_t local_cfg;
- 	const intel_ctx_t *contexts[64];
--	unsigned nengine;
- 	uint32_t batch[16];
- 	unsigned int relocations = 0;
- 	unsigned int reloc_migrations = 0;
- 	unsigned int reloc_interruptions = 0;
- 	unsigned int eb_migrations = 0;
- 	struct power_sample sample[2];
-+	unsigned int nengine;
-+	unsigned int nchild;
-+	unsigned int qlen;
- 	struct igt_power gpu;
- 	uint64_t old_offset;
- 	int i, n, loc;
- 	int debugfs;
--	int nchild;
- 	bool has_relocs = gem_has_relocations(fd);
+ 	return panel_type == context->panel_type ||
++		panel_type == context->panel_type2 ||
+ 		context->dump_all_panel_types;
+ }
  
- 	if (flags & PRIORITY) {
-@@ -356,9 +358,13 @@ static void whisper(int fd, const intel_ctx_t *ctx,
+ static const char *panel_str(const struct context *context, int panel_type)
+ {
+-	return panel_type == context->panel_type ? " (1)" : "";
++	if (panel_type == context->panel_type &&
++	    panel_type == context->panel_type2)
++		return " (1)(2)";
++
++	if (panel_type == context->panel_type)
++		return " (1)";
++
++	if (panel_type == context->panel_type2)
++		return " (2)";
++
++	return "";
+ }
  
- 	nchild = 1;
- 	if (flags & FORKED)
--		nchild *= sysconf(_SC_NPROCESSORS_ONLN);
-+		nchild *= ncpus;
- 	if (flags & ALL)
- 		nchild *= nengine;
-+	nchild = min(nchild, 2 * max(ncpus, nengine));
-+	qlen = max(2u, QLEN * nengine / (nchild + nengine - 1));
-+	igt_info("Using nchild:%d (out of ncpus:%d and nengine:%d), with a qlen:%d\n",
-+		 nchild, ncpus, nengine, qlen);
+ /* Get BDB block size given a pointer to Block ID. */
+@@ -2503,18 +2514,21 @@ static void dump_compression_parameters(struct context *context,
+ }
  
- 	intel_detect_and_clear_missed_interrupts(fd);
- 	igt_power_get_energy(&gpu, &sample[0]);
-@@ -448,19 +454,19 @@ static void whisper(int fd, const intel_ctx_t *ctx,
- 		}
+ /* get panel type from lvds options block, or -1 if block not found */
+-static int get_panel_type(struct context *context)
++static int get_panel_type(struct context *context, bool is_panel_type2)
+ {
+ 	struct bdb_block *block;
+ 	const struct bdb_lvds_options *options;
+-	int panel_type;
++	int panel_type = -1;
  
- 		memset(batches, 0, sizeof(batches));
--		for (n = 0; n < QLEN; n++) {
-+		for (n = 0; n < qlen; n++) {
- 			batches[n].handle = gem_create(fd, 4096);
- 			gem_write(fd, batches[n].handle, 0, &bbe, sizeof(bbe));
- 		}
- 		execbuf.buffers_ptr = to_user_pointer(batches);
--		execbuf.buffer_count = QLEN;
-+		execbuf.buffer_count = qlen;
- 		gem_execbuf(fd, &execbuf);
+ 	block = find_section(context, BDB_LVDS_OPTIONS);
+ 	if (!block)
+ 		return -1;
  
- 		execbuf.buffers_ptr = to_user_pointer(tmp);
- 		execbuf.buffer_count = 2;
+ 	options = block_data(block);
+-	panel_type = options->panel_type;
++	if (!is_panel_type2)
++		panel_type = options->panel_type;
++	else if (context->bdb->version >= 212)
++		panel_type = options->panel_type2;
  
- 		old_offset = store.offset;
--		for (n = 0; n < QLEN; n++) {
-+		for (n = 0; n < qlen; n++) {
- 			if (gen >= 8) {
- 				batch[1] = old_offset + loc;
- 				batch[2] = (old_offset + loc) >> 32;
-@@ -525,8 +531,8 @@ static void whisper(int fd, const intel_ctx_t *ctx,
- 					gem_sync(fd, tmp[0].handle);
- 				scratch = tmp[0];
+ 	free(block);
  
--				gem_write(fd, batches[QLEN-1].handle, loc, &pass, sizeof(pass));
--				for (n = QLEN; --n >= 1; ) {
-+				gem_write(fd, batches[qlen-1].handle, loc, &pass, sizeof(pass));
-+				for (n = qlen; --n >= 1; ) {
- 					uint32_t handle[2] = {};
- 					int this_fd = fd;
- 
-@@ -648,7 +654,7 @@ static void whisper(int fd, const intel_ctx_t *ctx,
- 				gem_vm_destroy(fd, local_cfg.vm);
+@@ -2776,6 +2790,7 @@ enum opt {
+ 	OPT_FILE,
+ 	OPT_DEVID,
+ 	OPT_PANEL_TYPE,
++	OPT_PANEL_TYPE2,
+ 	OPT_ALL_PANELS,
+ 	OPT_HEXDUMP,
+ 	OPT_BLOCK,
+@@ -2812,6 +2827,7 @@ int main(int argc, char **argv)
+ 	int size;
+ 	struct context context = {
+ 		.panel_type = -1,
++		.panel_type2 = -1,
+ 	};
+ 	char *endp;
+ 	int block_number = -1;
+@@ -2821,6 +2837,7 @@ int main(int argc, char **argv)
+ 		{ "file",	required_argument,	NULL,	OPT_FILE },
+ 		{ "devid",	required_argument,	NULL,	OPT_DEVID },
+ 		{ "panel-type",	required_argument,	NULL,	OPT_PANEL_TYPE },
++		{ "panel-type2",	required_argument,	NULL,	OPT_PANEL_TYPE2 },
+ 		{ "all-panels",	no_argument,		NULL,	OPT_ALL_PANELS },
+ 		{ "hexdump",	no_argument,		NULL,	OPT_HEXDUMP },
+ 		{ "block",	required_argument,	NULL,	OPT_BLOCK },
+@@ -2852,6 +2869,14 @@ int main(int argc, char **argv)
+ 				return EXIT_FAILURE;
  			}
- 		}
--		for (n = 0; n < QLEN; n++)
-+		for (n = 0; n < qlen; n++)
- 			gem_close(fd, batches[n].handle);
- 		if (flags & FDS) {
- 			for (n = 0; n < 64; n++)
+ 			break;
++		case OPT_PANEL_TYPE2:
++			context.panel_type2 = strtoul(optarg, &endp, 0);
++			if (*endp || context.panel_type2 > 15) {
++				fprintf(stderr, "invalid panel type2 '%s'\n",
++					optarg);
++				return EXIT_FAILURE;
++			}
++			break;
+ 		case OPT_ALL_PANELS:
+ 			context.dump_all_panel_types = true;
+ 			break;
+@@ -2969,12 +2994,20 @@ int main(int argc, char **argv)
+ 		fprintf(stderr, "Warning: could not find PCI device ID!\n");
+ 
+ 	if (context.panel_type == -1)
+-		context.panel_type = get_panel_type(&context);
++		context.panel_type = get_panel_type(&context, false);
+ 	if (context.panel_type == -1) {
+ 		fprintf(stderr, "Warning: panel type not set, using 0\n");
+ 		context.panel_type = 0;
+ 	}
+ 
++	if (context.panel_type2 == -1)
++		context.panel_type2 = get_panel_type(&context, true);
++	if (context.panel_type2 != -1 && context.bdb->version < 212) {
++		fprintf(stderr, "Warning: panel type2 not valid for BDB version %d\n",
++			context.bdb->version);
++		context.panel_type2 = -1;
++	}
++
+ 	if (describe) {
+ 		print_description(&context);
+ 	} else if (header_only) {
 -- 
-2.25.1
+2.43.2
 
