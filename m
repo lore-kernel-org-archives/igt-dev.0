@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1EE2C54E58
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 09:36:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63D45CD11DB
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 09:37:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3AB3E10E6E3;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5D9EE10E6F7;
 	Mon, 25 Mar 2024 09:36:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CxeKKJgq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="meEtWsq7";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E98EE10E6E0
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9B7E10E6E1
  for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 09:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711359417; x=1742895417;
+ t=1711359416; x=1742895416;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Yla258niWQMxJUgIsMc6oPste0voHiw+vk00dGpkhbs=;
- b=CxeKKJgqwC7yW3YEWrfP2+bmpQDwU8kKyFYcZhFYC+AbfkAv3tFCTWH0
- h5GHzNozctgjjRgnDrz5aMafRjQ7WgMgLvRMEGIWc3N1biVA2aFRuKzkU
- 5Jvndlxx/CFJ3DE1/Eh149AxBgjRtICefEBGuZp8Nty9jGrg4JvsIaUpC
- MfmHQGuetbPCpbs2UcjSlGyRJUzhEM7pttfgZfRXeHl4VPQbeZ3EK1pPs
- CiQYSYXUaQTUsD512O0y1gejhLKYnx+KYzq3sp7Da8+a0ygA3u6N9adfH
- ENYr82Y5WxFkL8cc/KgWIfcaqyRFILD66OZSMf4pdolQKAQRwXbI6VZwX w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="16983176"
-X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; d="scan'208";a="16983176"
+ bh=nTjAtLNBUUpB+uz6yrIRYmutqV2d7hK4qkM1XRFxVdM=;
+ b=meEtWsq7qMIZvbpWiVLHpv7x3QfUlAoOmIbeoVWXvbkdWnoZUlzX9qyk
+ SN8MNC3gXaxgRZtyF2zL8G0xKixQT8SH60lHlIj/aU9wsyZR9nOwCUG9f
+ rDxF2EPpKIILROZStMQiDMt0oVzOe1jutaD+LBCV4hmofF3Gj15oEfBpn
+ gRiaBBmkYKX2yv79H7j7RVUr00Mnc0NEmGtzz5j+PQVA6br57E/BumnK9
+ IhgizbrJkgrp1XLyqDh4FdkWNx59B99iOQy4T8Fb36Tx2x1YRNBOHXZSo
+ 26yPsxQWBB9BTGdZQTvQYRPKqg614oJ8mc9BMXGZim48FosfXDyi5La3M w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="16983174"
+X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; d="scan'208";a="16983174"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2024 02:36:56 -0700
+ 25 Mar 2024 02:36:55 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; d="scan'208";a="15471353"
+X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; d="scan'208";a="15471350"
 Received: from unknown (HELO localhost.localdomain) ([10.190.238.8])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2024 02:36:55 -0700
+ 25 Mar 2024 02:36:54 -0700
 From: Vandita Kulkarni <vandita.kulkarni@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com,
  Vandita Kulkarni <vandita.kulkarni@intel.com>
-Subject: [v2 2/2] tests/kms_async_flips: Reuse the already mmapped buffer
-Date: Mon, 25 Mar 2024 15:07:30 +0530
-Message-ID: <20240325093730.13640-3-vandita.kulkarni@intel.com>
+Subject: [v2 1/2] lib/igt_draw: Dont mmap, if the buffer is already mmapped
+Date: Mon, 25 Mar 2024 15:07:29 +0530
+Message-ID: <20240325093730.13640-2-vandita.kulkarni@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240325093730.13640-1-vandita.kulkarni@intel.com>
 References: <20240325093730.13640-1-vandita.kulkarni@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -65,55 +64,176 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In crc test case where we are trying to update the fb
-dont mmap it agian. On some platforms it was found that
-updating a newly mmapped buffer takes longer time.
+This will help add support to tests which would reuse the
+same fbs and would not want to mmap again and would just
+want to update the fbs.
+
+v2: Handle non null buf ptr cases in non WC mmap cases.
+    Squash changes in kms_frontbuffer_tracking which is using
+    this function. (Zbigniew)
 
 Signed-off-by: Vandita Kulkarni <vandita.kulkarni@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/kms_async_flips.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ lib/igt_draw.c                         | 61 ++++++++++++++++----------
+ lib/igt_draw.h                         |  2 +-
+ tests/intel/kms_frontbuffer_tracking.c |  2 +-
+ 3 files changed, 39 insertions(+), 26 deletions(-)
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 2895168f7..4658ca4c0 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -221,12 +221,19 @@ static void test_init_fbs(data_t *data)
- 		prev_modifier = data->modifier;
+diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+index 2c01d7b02..6a3b55377 100644
+--- a/lib/igt_draw.c
++++ b/lib/igt_draw.c
+@@ -75,6 +75,7 @@ struct buf_data {
+ 	uint32_t handle;
+ 	uint32_t size;
+ 	uint32_t stride;
++	void *buf_ptr;
+ 	int width;
+ 	int height;
+ 	int bpp;
+@@ -448,6 +449,8 @@ static void draw_rect_mmap_cpu(int fd, struct buf_data *buf, struct rect *rect,
+ {
+ 	uint32_t *ptr;
  
- 		if (data->bufs[0].fb_id) {
--			for (i = 0; i < NUM_FBS; i++)
-+			for (i = 0; i < NUM_FBS; i++) {
-+				if (is_intel_device(data->drm_fd))
-+					igt_fb_unmap_buffer(&data->bufs[i], data->bufs[i].driver_priv);
- 				igt_remove_fb(data->drm_fd, &data->bufs[i]);
-+			}
- 		}
++	igt_assert(buf->buf_ptr != NULL);
++
+ 	gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_CPU,
+ 		       I915_GEM_DOMAIN_CPU);
  
--		for (i = 0; i < NUM_FBS; i++)
-+		for (i = 0; i < NUM_FBS; i++) {
- 			make_fb(data, &data->bufs[i], width, height, i);
-+			if (is_intel_device(data->drm_fd))
-+				data->bufs[i].driver_priv = igt_fb_map_buffer(data->drm_fd,
-+									      &data->bufs[i]);
+@@ -483,6 +486,8 @@ static void draw_rect_mmap_gtt(int fd, struct buf_data *buf, struct rect *rect,
+ {
+ 	uint32_t *ptr;
+ 
++	igt_assert(buf->buf_ptr != NULL);
++
+ 	gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
+ 		       I915_GEM_DOMAIN_GTT);
+ 
+@@ -499,28 +504,32 @@ static void draw_rect_mmap_wc(int fd, struct buf_data *buf, struct rect *rect,
+ {
+ 	uint32_t *ptr;
+ 
+-	if (is_i915_device(fd)) {
+-		gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
+-			       I915_GEM_DOMAIN_GTT);
+-
+-		/* We didn't implement suport for the older tiling methods yet. */
+-		if (tiling != I915_TILING_NONE)
+-			igt_require(intel_display_ver(intel_get_drm_devid(fd)) >= 5);
+-
+-		if (gem_has_lmem(fd))
+-			ptr = gem_mmap_offset__fixed(fd, buf->handle, 0,
+-						     PAGE_ALIGN(buf->size),
+-						     PROT_READ | PROT_WRITE);
+-		else if (gem_has_legacy_mmap(fd))
+-			ptr = gem_mmap__wc(fd, buf->handle, 0, PAGE_ALIGN(buf->size),
+-					   PROT_READ | PROT_WRITE);
+-		else
+-			ptr = gem_mmap_offset__wc(fd, buf->handle, 0,
+-						  PAGE_ALIGN(buf->size),
+-						  PROT_READ | PROT_WRITE);
++	if (!buf->buf_ptr) {
++		if (is_i915_device(fd)) {
++			gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
++				       I915_GEM_DOMAIN_GTT);
++
++			/* We didn't implement suport for the older tiling methods yet. */
++			if (tiling != I915_TILING_NONE)
++				igt_require(intel_display_ver(intel_get_drm_devid(fd)) >= 5);
++
++			if (gem_has_lmem(fd))
++				ptr = gem_mmap_offset__fixed(fd, buf->handle, 0,
++							     PAGE_ALIGN(buf->size),
++							     PROT_READ | PROT_WRITE);
++			else if (gem_has_legacy_mmap(fd))
++				ptr = gem_mmap__wc(fd, buf->handle, 0, PAGE_ALIGN(buf->size),
++						   PROT_READ | PROT_WRITE);
++			else
++				ptr = gem_mmap_offset__wc(fd, buf->handle, 0,
++							  PAGE_ALIGN(buf->size),
++							  PROT_READ | PROT_WRITE);
++		} else {
++			ptr = xe_bo_mmap_ext(fd, buf->handle, buf->size,
++					     PROT_READ | PROT_WRITE);
 +		}
+ 	} else {
+-		ptr = xe_bo_mmap_ext(fd, buf->handle, buf->size,
+-				     PROT_READ | PROT_WRITE);
++		ptr = buf->buf_ptr;
  	}
  
- 	igt_plane_set_fb(data->plane, &data->bufs[0]);
-@@ -730,8 +737,11 @@ igt_main
+ 	switch (tiling) {
+@@ -538,7 +547,8 @@ static void draw_rect_mmap_wc(int fd, struct buf_data *buf, struct rect *rect,
+ 		break;
  	}
  
- 	igt_fixture {
--		for (i = 0; i < NUM_FBS; i++)
-+		for (i = 0; i < NUM_FBS; i++) {
-+			if (is_intel_device(data.drm_fd))
-+				igt_fb_unmap_buffer(&data.bufs[i], data.bufs[i].driver_priv);
- 			igt_remove_fb(data.drm_fd, &data.bufs[i]);
-+		}
+-	igt_assert(gem_munmap(ptr, buf->size) == 0);
++	if (ptr != buf->buf_ptr)
++		igt_assert(gem_munmap(ptr, buf->size) == 0);
+ }
  
- 		if (is_intel_device(data.drm_fd))
- 			buf_ops_destroy(data.bops);
+ static void draw_rect_pwrite_untiled(int fd, struct buf_data *buf,
+@@ -839,6 +849,8 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+  * @buf_handle: the handle of the buffer where you're going to draw to
+  * @buf_size: the size of the buffer
+  * @buf_stride: the stride of the buffer
++ * @buf_ptr: if required can be used to pass already mmapped buffer ptr
++ *           only in case of wc mmap, can be NULL in any other case.
+  * @buf_width: the width of the buffer
+  * @buf_height: the height of the buffer
+  * @tiling: the tiling of the buffer
+@@ -855,7 +867,7 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+  */
+ void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
+ 		   uint32_t buf_handle, uint32_t buf_size, uint32_t buf_stride,
+-		   int buf_width, int buf_height,
++		   void *buf_ptr, int buf_width, int buf_height,
+ 		   uint32_t tiling, enum igt_draw_method method,
+ 		   int rect_x, int rect_y, int rect_w, int rect_h,
+ 		   uint32_t color, int bpp)
+@@ -870,6 +882,7 @@ void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
+ 		.handle = buf_handle,
+ 		.size = buf_size,
+ 		.stride = buf_stride,
++		.buf_ptr = buf_ptr,
+ 		.width = buf_width,
+ 		.height = buf_height,
+ 		.bpp = bpp,
+@@ -935,7 +948,7 @@ void igt_draw_rect_fb(int fd, struct buf_ops *bops,
+ 		      int rect_w, int rect_h, uint32_t color)
+ {
+ 	igt_draw_rect(fd, bops, ctx, fb->gem_handle, fb->size, fb->strides[0],
+-		      fb->width, fb->height,
++		      fb->driver_priv, fb->width, fb->height,
+ 		      igt_fb_mod_to_tiling(fb->modifier), method,
+ 		      rect_x, rect_y, rect_w, rect_h, color,
+ 		      igt_drm_format_to_bpp(fb->drm_format));
+diff --git a/lib/igt_draw.h b/lib/igt_draw.h
+index 1dec95e86..865641ef6 100644
+--- a/lib/igt_draw.h
++++ b/lib/igt_draw.h
+@@ -54,7 +54,7 @@ bool igt_draw_supports_method(int fd, enum igt_draw_method method);
+ 
+ void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
+ 		   uint32_t buf_handle, uint32_t buf_size, uint32_t buf_stride,
+-		   int buf_width, int buf_height,
++		   void *buf_ptr, int buf_width, int buf_height,
+ 		   uint32_t tiling, enum igt_draw_method method,
+ 		   int rect_x, int rect_y, int rect_w, int rect_h,
+ 		   uint32_t color, int bpp);
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index db2db0ff1..392539408 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -2254,7 +2254,7 @@ static void *busy_thread_func(void *data)
+ {
+ 	while (!busy_thread.stop)
+ 		igt_draw_rect(drm.fd, drm.bops, 0, busy_thread.handle,
+-			      busy_thread.size, busy_thread.stride,
++			      busy_thread.size, busy_thread.stride, NULL,
+ 			      busy_thread.width, busy_thread.height,
+ 			      busy_thread.tiling, IGT_DRAW_BLT, 0, 0,
+ 			      busy_thread.width, busy_thread.height,
 -- 
 2.43.2
 
