@@ -4,62 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86708C54E58
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 15:02:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71BD3C54E58
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 15:05:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E994010E992;
-	Mon, 25 Mar 2024 15:02:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1B46310E948;
+	Mon, 25 Mar 2024 15:05:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N4xSc/RK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="abXVuzkw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B25510E999
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 15:02:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A65510E948
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 15:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711378933; x=1742914933;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Ejvb8JyekTGVu+/zYTlbOMVLr9k5pkPT1yW7/HqtrVg=;
- b=N4xSc/RKsxhZpm3h3Wx+HS+p0dToRGTJk2l9WmbCDA5OAuwcM2CwAJbh
- PpBsozSSzUL6h8IR0SlJG485B9Md/e7yqHHaluSAN4yNQR8l1Qfk8Xg2R
- 1I5GqdwXi5/zRc+qTYWRv1rjEvK3cjyGgG9BLrw7PxxTJJ+nuv9lyK1rt
- 1kccSmxL7eErpKz9LNnh47AEZYtsk53lCSHoidPrcIC/IOYtczxnR2tLa
- +M30l/USgNuhNF0h2aGJTJHrKdhHA073kWnNrm6jNEwQYNz83foU19MxY
- aleKlVig3/VxIiGo55i+KfqHOcUoqnmTYKc5eux93vQ/YQneHTwTll8uY A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6493845"
+ t=1711379102; x=1742915102;
+ h=from:to:subject:in-reply-to:references:date:message-id:
+ mime-version:content-transfer-encoding;
+ bh=36cQz5Lh8ucYjY46xfUvMTYGhwghNlbVvhUOJoFM22M=;
+ b=abXVuzkwDY8PkTDNh2fhf2kGj1W2sOOx1EPlAgX31pOMHTlBPhxcHQBH
+ uzb5mrcuyQUEyFDktJP0QlKvwMedMmOF9179kXNmcDuFuO4OO6G7gxNrG
+ Rp31uc0iAJRueDzvMQcmfx6F02daSMB/xYXdhlHRkes2jjcZ+QK04Hrl9
+ VEgc6LsIiJGP7cuLoxuPlDCMPxGl0l6+9Kgh1harBFRh+iwLsgkp7hZo8
+ +xR5UDRjOxELtRVS0kykBtD9nixmood+YebRaKp19mn3Nuebbidodl8t9
+ wxen5kqEwYokk5JSDCmdMvJUhWjGevB0mbnVHtQvtIni+UBMp5c/7SRHL w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6598003"
 X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
-   d="scan'208";a="6493845"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2024 08:02:13 -0700
+   d="scan'208";a="6598003"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2024 08:04:45 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="20325463"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 08:02:11 -0700
-Date: Mon, 25 Mar 2024 16:02:08 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Aditya Chauhan <aditya.chauhan@intel.com>,
- Girotra Himanshu <himanshu.girotra@intel.com>
-Subject: Re: [PATCH i-g-t 03/12] tests/intel: Fix inconsitency in
- Sub-category/Functionality names
-Message-ID: <20240325150208.6fxxl4hjfgpwixki@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Aditya Chauhan <aditya.chauhan@intel.com>,
- Girotra Himanshu <himanshu.girotra@intel.com>
-References: <20240322124108.1825345-1-katarzyna.piecielska@intel.com>
- <20240322124108.1825345-4-katarzyna.piecielska@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="15511396"
+Received: from idirlea-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.252.55.171])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2024 08:04:44 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 4/5] tools/intel_vbt_decode: Also dump the second
+ panel (panel_type2)
+In-Reply-To: <20240322163251.11102-5-ville.syrjala@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240322163251.11102-1-ville.syrjala@linux.intel.com>
+ <20240322163251.11102-5-ville.syrjala@linux.intel.com>
+Date: Mon, 25 Mar 2024 17:04:40 +0200
+Message-ID: <87jzlqic8n.fsf@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240322124108.1825345-4-katarzyna.piecielska@intel.com>
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,237 +68,153 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Katarzyna,
-On 2024-03-22 at 12:40:58 +0000, Katarzyna Piecielska wrote:
-> Let's fix:
->  - s/compute/Compute/
->  - s/Flat-CCS/Flat-ccs/
->  - s/frequency/Power management/.
---------------------------------- ^
-Drop dot from end. imho it would be better to split series
-into one with functional changes like this and then rest
-with only changes in letter conversion lowercase to/from uppercase.
-
->  - s/power management/Power management/
->  - s/Power Management/Power management/
->  - s/sysman/SysMan/
->  - s/gpgpu/GPGPU/
------- ^
->  - s/gpgpu/gpgpu_fill/
------- ^
-This collide with previous one, imho just write in which one
-you used former and in which latter.
-
->  - s/evict/eviction/
->  - s/BO creation/bo/
-
-"bo" looks a little too short, what about "buffer object"?
-
->  - s/sysman/SysMan/
-
-This was already handled above, drop it from here.
-
-With this:
-
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
->  - s/fill surface with media block/fill media/
-> 
-> Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Aditya Chauhan <aditya.chauhan@intel.com>
-> Cc: Girotra Himanshu <himanshu.girotra@intel.com>
+On Fri, 22 Mar 2024, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>
+> Modern VBTs can declare two panel types in order to support
+> dual panel systems. Dump the panel information for the second
+> panel as well. Since panel_type2 could also be declared as 255
+> (=3D=3D match pnpid to EDID) we also add a new command line knob
+> to select panel_type2 by hand.
+>
+> Data for the second panel will be indicated by "(2)", as opposed
+> to "(1)" for the first panel.
+>
+> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 > ---
->  tests/intel/xe_compute.c          | 2 +-
->  tests/intel/xe_compute_preempt.c  | 2 +-
->  tests/intel/xe_create.c           | 2 +-
->  tests/intel/xe_evict.c            | 2 +-
->  tests/intel/xe_evict_ccs.c        | 2 +-
->  tests/intel/xe_gpgpu_fill.c       | 4 ++--
->  tests/intel/xe_gt_freq.c          | 2 +-
->  tests/intel/xe_media_fill.c       | 4 ++--
->  tests/intel/xe_noexec_ping_pong.c | 2 +-
->  tests/intel/xe_pm.c               | 2 +-
->  tests/intel/xe_pm_residency.c     | 2 +-
->  tests/intel/xe_sysfs_defaults.c   | 2 +-
->  tests/intel/xe_sysfs_scheduler.c  | 2 +-
->  13 files changed, 15 insertions(+), 15 deletions(-)
-> 
-> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-> index 42f42ca0c..9cf359383 100644
-> --- a/tests/intel/xe_compute.c
-> +++ b/tests/intel/xe_compute.c
-> @@ -6,7 +6,7 @@
->  /**
->   * TEST: Check compute-related functionality
->   * Category: Hardware building block
-> - * Sub-category: compute
-> + * Sub-category: Compute
->   * Test category: functionality test
->   */
->  
-> diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
-> index 2bc27eff1..45aa15c78 100644
-> --- a/tests/intel/xe_compute_preempt.c
-> +++ b/tests/intel/xe_compute_preempt.c
-> @@ -6,7 +6,7 @@
->  /**
->   * TEST: Check compute-related preemption functionality
->   * Category: Hardware building block
-> - * Sub-category: compute
-> + * Sub-category: Compute
->   * Test category: functionality test
->   */
->  
-> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-> index 1d3918663..fd5d71d8a 100644
-> --- a/tests/intel/xe_create.c
-> +++ b/tests/intel/xe_create.c
-> @@ -273,7 +273,7 @@ static void create_massive_size(int fd)
->  
->  /**
->   * SUBTEST: create-big-vram
-> - * Functionality: BO creation
-> + * Functionality: bo
->   * Test category: functionality test
->   * Description: Verifies the creation of substantial BO within VRAM,
->   *		constituting all available CPU-visible VRAM.
-> diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
-> index 43e20ef6c..8ef55211f 100644
-> --- a/tests/intel/xe_evict.c
-> +++ b/tests/intel/xe_evict.c
-> @@ -7,7 +7,7 @@
->   * TEST: Check VMA eviction
->   * Category: Software building block
->   * Sub-category: VMA
-> - * Functionality: evict
-> + * Functionality: eviction
->   * GPU requirements: GPU needs to have dedicated VRAM
->   */
->  
-> diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
-> index 35ae8151a..8e43f691d 100644
-> --- a/tests/intel/xe_evict_ccs.c
-> +++ b/tests/intel/xe_evict_ccs.c
-> @@ -6,7 +6,7 @@
->  /**
->   * TEST: Check flat-ccs eviction
->   * Category: Software building block
-> - * Sub-category: Flat-CCS
-> + * Sub-category: Flat-ccs
->   * Functionality: ccs-evict
->   * GPU requirements: GPU needs to have dedicated VRAM
->   */
-> diff --git a/tests/intel/xe_gpgpu_fill.c b/tests/intel/xe_gpgpu_fill.c
-> index eee77d252..a359f9f55 100644
-> --- a/tests/intel/xe_gpgpu_fill.c
-> +++ b/tests/intel/xe_gpgpu_fill.c
-> @@ -6,8 +6,8 @@
->  /**
->   * TEST: Basic tests for gpgpu functionality
->   * Category: Software building block
-> - * Sub-category: gpgpu
-> - * Functionality: gpgpu
-> + * Sub-category: GPGPU
-> + * Functionality: gpgpu_fill
->   * Test category: functionality test
->   */
->  
-> diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
-> index f0de341cb..c12f6c52c 100644
-> --- a/tests/intel/xe_gt_freq.c
-> +++ b/tests/intel/xe_gt_freq.c
-> @@ -6,7 +6,7 @@
->  /**
->   * TEST: Test Xe GT frequency request functionality
->   * Category: Infrastructure
-> - * Sub-category: frequency
-> + * Sub-category: Power management
->   * Functionality: frequency request
->   * Test category: functionality test
->   */
-> diff --git a/tests/intel/xe_media_fill.c b/tests/intel/xe_media_fill.c
-> index ddda1b535..e6b5aaf73 100644
-> --- a/tests/intel/xe_media_fill.c
-> +++ b/tests/intel/xe_media_fill.c
-> @@ -29,9 +29,9 @@
->   * TEST: xe media fill
->   * Category: Hardware building block
->   * Sub-category: Media
-> - * Functionality: fill surface with media block
-> + * Functionality: fill media
->   * Description: Basic tests for the media_fill() function.
-> - * Feature: media
-> + * Feature: media feature
->   * Test category: functionality test
->   *
->   * SUBTEST: media-fill
-> diff --git a/tests/intel/xe_noexec_ping_pong.c b/tests/intel/xe_noexec_ping_pong.c
-> index d02ef62e4..51f28d9d0 100644
-> --- a/tests/intel/xe_noexec_ping_pong.c
-> +++ b/tests/intel/xe_noexec_ping_pong.c
-> @@ -18,7 +18,7 @@
->  /**
->   * TEST: Expose compute VM's unnecessary rebinds
->   * Category: Hardware building block
-> - * Sub-category: compute
-> + * Sub-category: Compute
->   * Functionality: compute VM rebind
->   * Test category: functionality test
->   *
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index 3aa247353..c8a5cc6de 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -6,7 +6,7 @@
->  /**
->   * TEST: Check Power Management functionality
->   * Category: Software building block
-> - * Sub-category: power management
-> + * Sub-category: Power management
->   * Test category: functionality test
->   */
->  
-> diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-> index 0d8ead6a2..ad70e2430 100644
-> --- a/tests/intel/xe_pm_residency.c
-> +++ b/tests/intel/xe_pm_residency.c
-> @@ -6,7 +6,7 @@
->  /**
->   * TEST: Test gtidle properties
->   * Category: Software building block
-> - * Sub-category: Power Management
-> + * Sub-category: Power management
->   * Functionality: GT C States
->   * Test category: functionality test
->   */
-> diff --git a/tests/intel/xe_sysfs_defaults.c b/tests/intel/xe_sysfs_defaults.c
-> index 4a6b3ba6d..b1ab36589 100644
-> --- a/tests/intel/xe_sysfs_defaults.c
-> +++ b/tests/intel/xe_sysfs_defaults.c
-> @@ -7,7 +7,7 @@
->   * TEST: xe sysfs defaults
->   * Category: Infrastructure
->   * Functionality: sysman defaults
-> - * Sub-category: sysman
-> + * Sub-category: SysMan
->   * Test category: functionality test
->   * SUBTEST: engine-defaults
->   * Description: check if the sysfs engine .defaults node has all values.
-> diff --git a/tests/intel/xe_sysfs_scheduler.c b/tests/intel/xe_sysfs_scheduler.c
-> index 5a22abbf1..d1ef422f4 100644
-> --- a/tests/intel/xe_sysfs_scheduler.c
-> +++ b/tests/intel/xe_sysfs_scheduler.c
-> @@ -6,7 +6,7 @@
->  /**
->   * TEST: xe sysfs scheduler
->   * Category: Infrastructure
-> - * Sub-category: sysman
-> + * Sub-category: SysMan
->   * Functionality: scheduler control interface
->   *
->   * SUBTEST: %s-invalid
-> -- 
-> 2.34.1
-> 
+>  tools/intel_vbt_decode.c | 38 ++++++++++++++++++++++++++++++++------
+>  1 file changed, 32 insertions(+), 6 deletions(-)
+>
+> diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+> index 98f64d0822c6..f223ce2bf5a1 100644
+> --- a/tools/intel_vbt_decode.c
+> +++ b/tools/intel_vbt_decode.c
+> @@ -79,7 +79,7 @@ struct context {
+>  	int size;
+>=20=20
+>  	uint32_t devid;
+> -	int panel_type;
+> +	int panel_type, panel_type2;
+>  	bool dump_all_panel_types;
+>  	bool hexdump;
+>  };
+> @@ -87,12 +87,16 @@ struct context {
+>  static bool dump_panel(const struct context *context, int panel_type)
+>  {
+>  	return panel_type =3D=3D context->panel_type ||
+> +		panel_type =3D=3D context->panel_type2 ||
+>  		context->dump_all_panel_types;
+>  }
+>=20=20
+>  static const char *panel_str(const struct context *context, int panel_ty=
+pe)
+>  {
+> -	return panel_type =3D=3D context->panel_type ? " (1)" : "";
+> +	return panel_type =3D=3D context->panel_type &&
+> +		panel_type =3D=3D context->panel_type2 ? " (1)(2)" :
+> +		panel_type =3D=3D context->panel_type ? " (1)" :
+> +		panel_type =3D=3D context->panel_type2 ? " (2)" : "";
+
+This might be better broken down to regular if statements for clarity.
+
+Please clue me in, when is it possible for both panel types to match?
+
+
+Other than that,
+
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+
+
+>  }
+>=20=20
+>  /* Get BDB block size given a pointer to Block ID. */
+> @@ -2503,18 +2507,21 @@ static void dump_compression_parameters(struct co=
+ntext *context,
+>  }
+>=20=20
+>  /* get panel type from lvds options block, or -1 if block not found */
+> -static int get_panel_type(struct context *context)
+> +static int get_panel_type(struct context *context, bool is_panel_type2)
+>  {
+>  	struct bdb_block *block;
+>  	const struct bdb_lvds_options *options;
+> -	int panel_type;
+> +	int panel_type =3D -1;
+>=20=20
+>  	block =3D find_section(context, BDB_LVDS_OPTIONS);
+>  	if (!block)
+>  		return -1;
+>=20=20
+>  	options =3D block_data(block);
+> -	panel_type =3D options->panel_type;
+> +	if (!is_panel_type2)
+> +		panel_type =3D options->panel_type;
+> +	else if (context->bdb->version >=3D 212)
+> +		panel_type =3D options->panel_type2;
+>=20=20
+>  	free(block);
+>=20=20
+> @@ -2776,6 +2783,7 @@ enum opt {
+>  	OPT_FILE,
+>  	OPT_DEVID,
+>  	OPT_PANEL_TYPE,
+> +	OPT_PANEL_TYPE2,
+>  	OPT_ALL_PANELS,
+>  	OPT_HEXDUMP,
+>  	OPT_BLOCK,
+> @@ -2812,6 +2820,7 @@ int main(int argc, char **argv)
+>  	int size;
+>  	struct context context =3D {
+>  		.panel_type =3D -1,
+> +		.panel_type2 =3D -1,
+>  	};
+>  	char *endp;
+>  	int block_number =3D -1;
+> @@ -2821,6 +2830,7 @@ int main(int argc, char **argv)
+>  		{ "file",	required_argument,	NULL,	OPT_FILE },
+>  		{ "devid",	required_argument,	NULL,	OPT_DEVID },
+>  		{ "panel-type",	required_argument,	NULL,	OPT_PANEL_TYPE },
+> +		{ "panel-type2",	required_argument,	NULL,	OPT_PANEL_TYPE2 },
+>  		{ "all-panels",	no_argument,		NULL,	OPT_ALL_PANELS },
+>  		{ "hexdump",	no_argument,		NULL,	OPT_HEXDUMP },
+>  		{ "block",	required_argument,	NULL,	OPT_BLOCK },
+> @@ -2852,6 +2862,14 @@ int main(int argc, char **argv)
+>  				return EXIT_FAILURE;
+>  			}
+>  			break;
+> +		case OPT_PANEL_TYPE2:
+> +			context.panel_type2 =3D strtoul(optarg, &endp, 0);
+> +			if (*endp || context.panel_type2 > 15) {
+> +				fprintf(stderr, "invalid panel type2 '%s'\n",
+> +					optarg);
+> +				return EXIT_FAILURE;
+> +			}
+> +			break;
+>  		case OPT_ALL_PANELS:
+>  			context.dump_all_panel_types =3D true;
+>  			break;
+> @@ -2969,12 +2987,20 @@ int main(int argc, char **argv)
+>  		fprintf(stderr, "Warning: could not find PCI device ID!\n");
+>=20=20
+>  	if (context.panel_type =3D=3D -1)
+> -		context.panel_type =3D get_panel_type(&context);
+> +		context.panel_type =3D get_panel_type(&context, false);
+>  	if (context.panel_type =3D=3D -1) {
+>  		fprintf(stderr, "Warning: panel type not set, using 0\n");
+>  		context.panel_type =3D 0;
+>  	}
+>=20=20
+> +	if (context.panel_type2 =3D=3D -1)
+> +		context.panel_type2 =3D get_panel_type(&context, true);
+> +	if (context.panel_type2 !=3D -1 && context.bdb->version < 212) {
+> +		fprintf(stderr, "Warning: panel type2 not valid for BDB version %d\n",
+> +			context.bdb->version);
+> +		context.panel_type2 =3D -1;
+> +	}
+> +
+>  	if (describe) {
+>  		print_description(&context);
+>  	} else if (header_only) {
+
+--=20
+Jani Nikula, Intel
