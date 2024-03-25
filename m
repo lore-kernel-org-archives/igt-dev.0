@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5BB4C6FD1F
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 09:20:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ECF3C54E64
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 09:36:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6E3D510E6CE;
-	Mon, 25 Mar 2024 09:20:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EA9CC10E6E0;
+	Mon, 25 Mar 2024 09:36:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="POOEyz2Y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VLvyCNwR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 32ECE10E6CE
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 09:20:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 47C4210E6E0
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 09:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711358410; x=1742894410;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=Ib5gOYeMyuYnlsdwwIODPTAVpoQeTYWQdPms+oZ/4do=;
- b=POOEyz2Ymckoudy48UEQllbh6UIqKpoWmYdA8XUU3EKsPuzKxWlapBXj
- TivVqNH/TgJvb8PuCe4Xgg7patQ/A0mrPDqxQDpzPbwCVlRV6BwZmlhUt
- S3IFmVnSs/YrS8hyIsF8w7tBxPQT5tu9w8FBPc/fm4Ca5XNU6u9WWuId0
- y46EPcmQVUNBUu5uHmp6b/rRELHTxdzA0fC+HUMM53NzLyBsX1kHHCrAx
- A2916HskkI87WQ8uLYifC7lV2k+NetpGoYmg8/1OeGmkfK5qq8leUKpTk
- khC5lydG6H9qRJVfWAFthD9CWYKHQBmmqnEcOeVop5JJM1QcZAVsEwDUp w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="31786257"
-X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; d="scan'208";a="31786257"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2024 02:20:10 -0700
+ t=1711359416; x=1742895416;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=zPIEro+GXpdCM1J7yZRvPsC7UYG/KKJ/k8V++vnpqAg=;
+ b=VLvyCNwRBHNyjyH/0011WXki0nGVhIjT4+p04NAmH90ZhzNJkaWXsgo9
+ 4MUZmDG5gyfL0CnNsoyB3ZxgaVVh+8sMncGqKNRUqbhsuguSjKm1PpWu6
+ eooGPEzsa8benetV0Hdjxd6sB15vlqUmMT9s4KXxX5By4KQ/Lhe6QaCgp
+ NVAFbe1eEH27KF9Dv172QSMCCpfl6E8FE79dyfN2xc47bAlt/CYC4gfcp
+ L/NmcwRlmZN3J1wvy5VhodHIETC5vP+W7c1RtqWpEJTDsx65xmmDhdfTO
+ oLeJh+S6aHWG4AvNhe+P5dVxACxOP+3uTYUwG0wSghqibNdC60nPkabb6 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="16983172"
+X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; d="scan'208";a="16983172"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2024 02:36:53 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; d="scan'208";a="20294295"
-Received: from dut-dii-e5ff.iind.intel.com ([10.145.169.50])
- by orviesa005.jf.intel.com with ESMTP; 25 Mar 2024 02:20:08 -0700
-From: priyanka.dandamudi@intel.com
-To: priyanka.dandamudi@intel.com, krishnaiah.bommu@intel.com,
- janga.rahul.kumar@intel.com, igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 2/2] tests/intel/xe_exec_fault_mode: Extend invalid va
- test
-Date: Mon, 25 Mar 2024 14:48:10 +0530
-Message-Id: <20240325091810.2942038-3-priyanka.dandamudi@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240325091810.2942038-1-priyanka.dandamudi@intel.com>
-References: <20240325091810.2942038-1-priyanka.dandamudi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; d="scan'208";a="15471347"
+Received: from unknown (HELO localhost.localdomain) ([10.190.238.8])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2024 02:36:52 -0700
+From: Vandita Kulkarni <vandita.kulkarni@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: zbigniew.kempczynski@intel.com,
+ Vandita Kulkarni <vandita.kulkarni@intel.com>
+Subject: [v2 0/2] Add support to paint already mmaped buffer
+Date: Mon, 25 Mar 2024 15:07:28 +0530
+Message-ID: <20240325093730.13640-1-vandita.kulkarni@intel.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -63,79 +63,22 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+On some of the platforms first write after mmap takes longer time,
+hence provide and option to just update the fb incase we are resuing
+the mmaped fb.
 
-Extend invalid va test by enabling scratch page without pagefault
-and check for success of userfence.
+v2: merge patches 1 and 3 from v1 to patch 1, and fix review comments
 
-v2: Rename flag NOPAGEFAULT to ENABLE_SCRATCH and
-add INVALID_VA to test.(Rahul)
+Vandita Kulkarni (2):
+  lib/igt_draw: Dont mmap, if the buffer is already mmapped
+  tests/kms_async_flips: Reuse the already mmapped buffer
 
-Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
----
- tests/intel/xe_exec_fault_mode.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ lib/igt_draw.c                         | 61 ++++++++++++++++----------
+ lib/igt_draw.h                         |  2 +-
+ tests/intel/kms_frontbuffer_tracking.c |  2 +-
+ tests/kms_async_flips.c                | 16 +++++--
+ 4 files changed, 52 insertions(+), 29 deletions(-)
 
-diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-index 8b1040103..050d2c782 100644
---- a/tests/intel/xe_exec_fault_mode.c
-+++ b/tests/intel/xe_exec_fault_mode.c
-@@ -32,12 +32,17 @@
- #define PREFETCH	(0x1 << 5)
- #define INVALID_FAULT	(0x1 << 6)
- #define INVALID_VA	(0x1 << 7)
-+#define ENABLE_SCRATCH  (0x1 << 8)
- 
- /**
-  * SUBTEST: invalid-va
-  * Description: Access invalid va and check for EIO through user fence.
-  * Test category: functionality test
-  *
-+ * SUBTEST: invalid-va-scratch-nopagefault
-+ * Description: Access invalid va without pageafault with scratch page enabled.
-+ * Test category: functionality test
-+ *
-  * SUBTEST: once-%s
-  * Description: Run %arg[1] fault mode test only once
-  * Test category: functionality test
-@@ -120,8 +125,12 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
--			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-+	if (flags & ENABLE_SCRATCH)
-+		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+				  DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
-+	else
-+		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+				  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
- 	bo_size = sizeof(*data) * n_execs;
- 	bo_size = xe_bb_size(fd, bo_size);
- 
-@@ -269,7 +278,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		j = flags & INVALIDATE ? n_execs - 1 : 0;
- 
- 		for (i = j; i < n_execs; i++) {
--			if (flags & INVALID_VA)
-+			if (flags & INVALID_VA && !(flags & ENABLE_SCRATCH))
- 				igt_assert_eq(__xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
- 							       exec_queues[i % n_exec_queues], &timeout), EIO);
- 			else
-@@ -385,6 +394,10 @@ igt_main
- 			test_exec(fd, hwe, 1, 1, INVALID_VA);
- 		}
- 
-+	igt_subtest("invalid-va-scratch-nopagefault")
-+		xe_for_each_engine(fd, hwe)
-+			test_exec(fd, hwe, 1, 1, ENABLE_SCRATCH | INVALID_VA);
-+
- 	igt_fixture {
- 		drm_close_driver(fd);
- 	}
 -- 
-2.25.1
+2.43.2
 
