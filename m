@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69219C54E58
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 21:56:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9296C54E58
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 22:00:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 17A8010EB16;
-	Mon, 25 Mar 2024 21:56:36 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NlWZNK39";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E86B10EB12
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 21:56:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711403788; x=1742939788;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=ttY+lHL7tUzZH1GYl+S+c1sekUrEzFzF9kpJie1xxsc=;
- b=NlWZNK397vap16FoNFTMKAzPpRMK7hfIqZrCCNIvljVsEdWvhkP/tbXv
- 23qyGAGX6MAoOGOR93xkc+ZiSDlQwFIXYEqELG85VpVDDsp2kHvh51A3z
- wBiiDq6BWlg68OtzsOCVEhnJkKRBEANasgJUcfdGYghZnOEaRaPhEobeM
- Np4CM/u57eNYLPb9slYxtYCGiTy3x/uwLqbnjcUECBzzvT2S4jgKulOfE
- PJZYfViegLAQcPg/IGgfaL4/L7Ue806Bb3TVZ3bpa9P/Rf7IegDk1DPAx
- 52Xf78tRGdWHbatIoGoEKmOshKac6gs2Ebp5pXRSddSVYO3gLwJcuxrtB g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6540571"
-X-IronPort-AV: E=Sophos;i="6.07,154,1708416000"; 
-   d="scan'208";a="6540571"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2024 14:56:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,154,1708416000"; d="scan'208";a="20413093"
-Received: from saurabhg-nuc10i5fnh.jf.intel.com ([10.165.21.145])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2024 14:56:27 -0700
-From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-To: 
-Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Subject: [PATCH i-g-t v1 2/3] lib/intel_blt: Add helper function to ensure
- platform supports compression
-Date: Tue, 26 Mar 2024 02:54:37 -0700
-Message-Id: <0f495ff3456654eaa1666351d16d916cced6e891.1711444735.git.akshata.jahagirdar@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1711444735.git.akshata.jahagirdar@intel.com>
-References: <cover.1711444735.git.akshata.jahagirdar@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 71B0210E60E;
+	Mon, 25 Mar 2024 22:00:03 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B314D10E60E;
+ Mon, 25 Mar 2024 22:00:02 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2508256990317480877=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fpm=3A_Tests_t?=
+ =?utf-8?q?o_validate_vm-bind_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: sai.gowtham.ch@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 25 Mar 2024 22:00:02 -0000
+Message-ID: <171140400272.1038646.17028563714331737617@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240325201045.25805-1-sai.gowtham.ch@intel.com>
+In-Reply-To: <20240325201045.25805-1-sai.gowtham.ch@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,59 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add helper function to check if platform supports compression by
-reading the flat_ccs value from struct drm_xe_query_config.
+--===============2508256990317480877==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
----
- lib/intel_blt.c | 18 ++++++++++++++++++
- lib/intel_blt.h |  1 +
- 2 files changed, 19 insertions(+)
+== Series Details ==
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index fe0a45cb8..076b065c0 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -464,6 +464,24 @@ bool blt_block_copy_supports_compression(int fd)
- 				    BLT_CMD_SUPPORTS_COMPRESSION);
- }
- 
-+/**
-+ * blt_platform_supports_compression
-+ * @fd: drm fd
-+ *
-+ * Check if platform provided by @fd device supports compression.
-+ *
-+ * Returns:
-+ * true if it does, false otherwise.
-+ */
-+bool blt_platform_supports_compression(int fd)
-+{
-+	struct drm_xe_query_config *config = xe_config(fd);
-+
-+	igt_assert(config);
-+	return  config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
-+		DRM_XE_QUERY_CONFIG_FLAG_HAS_FLAT_CCS;
-+}
-+
- /**
-  * blt_uses_extended_block_copy
-  * @fd: drm fd
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index 1f6c71359..a2c4a4adb 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -209,6 +209,7 @@ bool blt_fast_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
- bool blt_block_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
- bool blt_xy_src_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
- bool blt_block_copy_supports_compression(int fd);
-+bool blt_platform_supports_compression(int fd);
- bool blt_uses_extended_block_copy(int fd);
- 
- const char *blt_tiling_name(enum blt_tiling_type tiling);
--- 
-2.34.1
+Series: tests/intel/xe_pm: Tests to validate vm-bind (rev2)
+URL   : https://patchwork.freedesktop.org/series/131164/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7782_BAT -> XEIGTPW_10905_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 3)
+------------------------------
+
+  Missing    (1): bat-dg2-oem2 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7782 -> IGTPW_10905
+  * Linux: xe-988-d1ecfbbbb194e8f7941bd84f77f7c938b461ce14 -> xe-990-3dc2116dbf63f02771f241fdabee8a3e3ff9e8a8
+
+  IGTPW_10905: 10905
+  IGT_7782: a404f73182948e843640d00cc279883391cf6ef4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-988-d1ecfbbbb194e8f7941bd84f77f7c938b461ce14: d1ecfbbbb194e8f7941bd84f77f7c938b461ce14
+  xe-990-3dc2116dbf63f02771f241fdabee8a3e3ff9e8a8: 3dc2116dbf63f02771f241fdabee8a3e3ff9e8a8
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10905/index.html
+
+--===============2508256990317480877==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_pm: Tests to validate vm-bind (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131164/">https://patchwork.freedesktop.org/series/131164/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10905/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10905/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7782_BAT -&gt; XEIGTPW_10905_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 3)</h2>
+<p>Missing    (1): bat-dg2-oem2 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7782 -&gt; IGTPW_10905</li>
+<li>Linux: xe-988-d1ecfbbbb194e8f7941bd84f77f7c938b461ce14 -&gt; xe-990-3dc2116dbf63f02771f241fdabee8a3e3ff9e8a8</li>
+</ul>
+<p>IGTPW_10905: 10905<br />
+  IGT_7782: a404f73182948e843640d00cc279883391cf6ef4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-988-d1ecfbbbb194e8f7941bd84f77f7c938b461ce14: d1ecfbbbb194e8f7941bd84f77f7c938b461ce14<br />
+  xe-990-3dc2116dbf63f02771f241fdabee8a3e3ff9e8a8: 3dc2116dbf63f02771f241fdabee8a3e3ff9e8a8</p>
+
+</body>
+</html>
+
+--===============2508256990317480877==--
