@@ -4,61 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E098C54E64
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 14:48:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 386CEC54E64
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 14:56:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 236AC10E94A;
-	Mon, 25 Mar 2024 14:48:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E609D10E965;
+	Mon, 25 Mar 2024 14:56:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UkhLRb83";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cF/wooLs";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 25A7C10E94A
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 14:48:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A14BA10E965
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 14:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711378103; x=1742914103;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=OVou1cha6xqjawLjaTvlQLQ5BVfO7rK/WHkboJbMn70=;
- b=UkhLRb83CryOgclw7G3VpVRg472jXAZ7akMlj/qtNJ/lfe6Hkvcn5j1M
- TlB479luB0h44z9bnI1yXnfvOma80dZ/fvKlqW6LldO3HMaBN/sg3BdCV
- 2yXJYQF94iOVh/M40AWn9NMsoF/LmwVx+QpOy+kAcKXNFyD3ntx68grIR
- hfjtbm890wDP9uEnh0z9LW8RNW4HsvWz96c1aSuucmwMx+BXywKfEF/k+
- YpeiRW4iFP8EvX1sVSjpbM/8Zg+N7fckGws2T8QZV1ugwwh+kx4z1SYPV
- WhIh0m0qmWxDGaqD6IVSRKf0s1ctM+nrE4GoETdzWzFe2FL303yxNCEKR w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="10157462"
-X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="10157462"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2024 07:48:22 -0700
+ t=1711378591; x=1742914591;
+ h=from:to:subject:in-reply-to:references:date:message-id:
+ mime-version:content-transfer-encoding;
+ bh=zScV8yN76YGJv35X06kRrQpfJNlUE0eFRo9+Nqc2r+c=;
+ b=cF/wooLsj3cwvtD3dXhlcNfu2KYovB/qQmYjOUuUPS2DnmlOcn9AMp/K
+ OVvmtPPrOeOxr5Oa1o4QmGiiqMK++9jgMbJCqIjPsq0QIHMEsCeteMNvM
+ 0j8ITxIZpwFcyy/bhXoPBL5mv6iBr5Jh24tSGn1DxbYHnE2QTY6tpJbir
+ Al34fG5aNT3FS6OGblYy/ZrTozuDEwZxrLV5Nb89DJyY5o8XlGoym0OTs
+ Je95oSU/7obM6yzZJAMboK47LijdcWbE2MYl0Xjj3YawlMGS8KH3ckmQm
+ p4+8cmkVQZZ+pP64hJ0VNlxiTffhy3gEh2tkqO3P1/KeK0hNwHwaRW8u0 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6281787"
+X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
+   d="scan'208";a="6281787"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2024 07:56:31 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="46790880"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2024 07:48:21 -0700
-Date: Mon, 25 Mar 2024 15:48:18 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Aditya Chauhan <aditya.chauhan@intel.com>,
- Girotra Himanshu <himanshu.girotra@intel.com>
-Subject: Re: [PATCH i-g-t 02/12] tests/intel: Introduce CMD submission
- Sub-category for XE
-Message-ID: <20240325144818.tzplezllbgybznoy@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Aditya Chauhan <aditya.chauhan@intel.com>,
- Girotra Himanshu <himanshu.girotra@intel.com>
-References: <20240322124108.1825345-1-katarzyna.piecielska@intel.com>
- <20240322124108.1825345-3-katarzyna.piecielska@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="15669677"
+Received: from idirlea-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.252.55.171])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2024 07:56:29 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 1/5] tools/intel_vbt_decode: Extract dump_panel()
+In-Reply-To: <20240322163251.11102-2-ville.syrjala@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240322163251.11102-1-ville.syrjala@linux.intel.com>
+ <20240322163251.11102-2-ville.syrjala@linux.intel.com>
+Date: Mon, 25 Mar 2024 16:56:27 +0200
+Message-ID: <87sf0eicmc.fsf@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240322124108.1825345-3-katarzyna.piecielska@intel.com>
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,121 +67,133 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Katarzyna,
-On 2024-03-22 at 12:40:57 +0000, Katarzyna Piecielska wrote:
-> Let's introduce 'CMD submission' subcategory in Xe. So far 'execbuf'
-> subcategory was used.
-> Also let's move xe_exec_store to CMD submission subcategory
-> 
-> Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Aditya Chauhan <aditya.chauhan@intel.com>
-> Cc: Girotra Himanshu <himanshu.girotra@intel.com>
+On Fri, 22 Mar 2024, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>
+> Pull the repeated "dump this panel?" expression
+> into a small helper.
+>
+> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
 > ---
->  tests/intel/xe_exec_balancer.c     | 2 +-
->  tests/intel/xe_exec_basic.c        | 2 +-
->  tests/intel/xe_exec_compute_mode.c | 2 +-
->  tests/intel/xe_exec_fault_mode.c   | 2 +-
->  tests/intel/xe_exec_reset.c        | 2 +-
->  tests/intel/xe_exec_store.c        | 2 +-
->  tests/intel/xe_exec_threads.c      | 2 +-
->  7 files changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-> index 02edd389d..6e467e34a 100644
-> --- a/tests/intel/xe_exec_balancer.c
-> +++ b/tests/intel/xe_exec_balancer.c
-> @@ -6,7 +6,7 @@
->  /**
->   * TEST: Basic tests for execbuf functionality for virtual and parallel exec_queues
->   * Category: Hardware building block
-> - * Sub-category: execbuf
-> + * Sub-category: CMD submission
->   * Functionality: virtual and parallel exec_queues
->   * Test category: functionality test
->   */
-> diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
-> index e6f8db5b0..06be502d6 100644
-> --- a/tests/intel/xe_exec_basic.c
-> +++ b/tests/intel/xe_exec_basic.c
-> @@ -6,7 +6,7 @@
->  /**
->   * TEST: Basic tests for execbuf functionality
->   * Category: Hardware building block
-> - * Sub-category: execbuf
-> + * Sub-category: CMD submission
->   * Functionality: exec_queues
->   */
->  
-> diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-> index 2ba94d2c6..c1f703c43 100644
-> --- a/tests/intel/xe_exec_compute_mode.c
-> +++ b/tests/intel/xe_exec_compute_mode.c
-> @@ -6,7 +6,7 @@
->  /**
->   * TEST: Basic tests for execbuf compute machine functionality
->   * Category: Hardware building block
-> - * Sub-category: execbuf
-> + * Sub-category: CMD submission
->   * Functionality: compute machine
->   */
->  
-> diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-> index 20a7cf8fe..72a7bd4fd 100644
-> --- a/tests/intel/xe_exec_fault_mode.c
-> +++ b/tests/intel/xe_exec_fault_mode.c
-> @@ -6,7 +6,7 @@
->  /**
->   * TEST: Basic tests for execbuf functionality for virtual and parallel exec_queues
->   * Category: Hardware building block
-> - * Sub-category: execbuf
-> + * Sub-category: CMD submission
->   * Functionality: fault mode
->   * GPU requirements: GPU needs support for DRM_XE_VM_CREATE_FLAG_FAULT_MODE
->   */
-> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-> index a39e5860e..22735688a 100644
-> --- a/tests/intel/xe_exec_reset.c
-> +++ b/tests/intel/xe_exec_reset.c
-> @@ -6,7 +6,7 @@
->  /**
->   * TEST: Basic tests for execbuf functionality for virtual and parallel exec_queues
->   * Category: Hardware building block
-> - * Sub-category: execbuf
-> + * Sub-category: CMD submission
->   * Functionality: reset
->   * Test category: functionality test
->   */
-> diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-> index 55354e688..c57bcb852 100644
-> --- a/tests/intel/xe_exec_store.c
-> +++ b/tests/intel/xe_exec_store.c
-> @@ -15,7 +15,7 @@
->  /**
->   * TEST: Tests to verify store dword functionality.
->   * Category: Software building block
-> - * Sub-category: HW
-> + * Sub-category: CMD submission
->   * Functionality: intel-bb
->   * Test category: functionality test
->   */
-> diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-> index 977e8c600..05ea1d35a 100644
-> --- a/tests/intel/xe_exec_threads.c
-> +++ b/tests/intel/xe_exec_threads.c
-> @@ -6,7 +6,7 @@
->  /**
->   * TEST: Basic tests for execbuf functionality
->   * Category: Hardware building block
-> - * Sub-category: execbuf
-> + * Sub-category: CMD submission
->   * Functionality: multi-threads
->   * Test category: functionality test
->   */
-> -- 
-> 2.34.1
-> 
+>  tools/intel_vbt_decode.c | 26 ++++++++++++++++----------
+>  1 file changed, 16 insertions(+), 10 deletions(-)
+>
+> diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+> index fd8118772845..9a65a67b42bf 100644
+> --- a/tools/intel_vbt_decode.c
+> +++ b/tools/intel_vbt_decode.c
+> @@ -84,6 +84,12 @@ struct context {
+>  	bool hexdump;
+>  };
+>=20=20
+> +static bool dump_panel(const struct context *context, int panel_type)
+> +{
+> +	return panel_type =3D=3D context->panel_type ||
+> +		context->dump_all_panel_types;
+> +}
+> +
+>  /* Get BDB block size given a pointer to Block ID. */
+>  static uint32_t _get_blocksize(const uint8_t *block_base)
+>  {
+> @@ -607,7 +613,7 @@ static void dump_backlight_info(struct context *conte=
+xt,
+>  	}
+>=20=20
+>  	for (i =3D 0; i < ARRAY_SIZE(backlight->data); i++) {
+> -		if (i !=3D context->panel_type && !context->dump_all_panel_types)
+> +		if (!dump_panel(context, i))
+>  			continue;
+>=20=20
+>  		printf("\tPanel %d%s\n", i,
+> @@ -1222,7 +1228,7 @@ static void dump_lvds_options(struct context *conte=
+xt,
+>  	for (int i =3D 0; i < 16; i++) {
+>  		unsigned int val;
+>=20=20
+> -		if (i !=3D context->panel_type && !context->dump_all_panel_types)
+> +		if (!dump_panel(context, i))
+>  			continue;
+>=20=20
+>  		printf("\tPanel %d%s\n", i, context->panel_type =3D=3D i ? " *" : "");
+> @@ -1289,7 +1295,7 @@ static void dump_lvds_ptr_data(struct context *cont=
+ext,
+>  	printf("\tNumber of entries: %d\n", ptrs->lvds_entries);
+>=20=20
+>  	for (int i =3D 0; i < 16; i++) {
+> -		if (i !=3D context->panel_type && !context->dump_all_panel_types)
+> +		if (!dump_panel(context, i))
+>  			continue;
+>=20=20
+>  		printf("\tPanel %d%s\n", i, context->panel_type =3D=3D i ? " *" : "");
+> @@ -1361,7 +1367,7 @@ static void dump_lvds_data(struct context *context,
+>  			block_data(block) + ptrs->panel_name.offset;
+>  		char mfg[4];
+>=20=20
+> -		if (i !=3D context->panel_type && !context->dump_all_panel_types)
+> +		if (!dump_panel(context, i))
+>  			continue;
+>=20=20
+>  		hdisplay =3D _H_ACTIVE(timing_data);
+> @@ -1571,7 +1577,7 @@ static void dump_edp(struct context *context,
+>  	int i;
+>=20=20
+>  	for (i =3D 0; i < 16; i++) {
+> -		if (i !=3D context->panel_type && !context->dump_all_panel_types)
+> +		if (!dump_panel(context, i))
+>  			continue;
+>=20=20
+>  		printf("\tPanel %d%s\n", i, context->panel_type =3D=3D i ? " *" : "");
+> @@ -1714,7 +1720,7 @@ static void dump_psr(struct context *context,
+>  	for (i =3D 0; i < 16; i++) {
+>  		const struct psr_table *psr =3D &psr_block->psr_table[i];
+>=20=20
+> -		if (i !=3D context->panel_type && !context->dump_all_panel_types)
+> +		if (!dump_panel(context, i))
+>  			continue;
+>=20=20
+>  		printf("\tPanel %d%s\n", i, context->panel_type =3D=3D i ? " *" : "");
+> @@ -1791,7 +1797,7 @@ static void dump_lfp_power(struct context *context,
+>  		return;
+>=20=20
+>  	for (i =3D 0; i < 16; i++) {
+> -		if (i !=3D context->panel_type && !context->dump_all_panel_types)
+> +		if (!dump_panel(context, i))
+>  			continue;
+>=20=20
+>  		printf("\tPanel %d%s\n", i, context->panel_type =3D=3D i ? " *" : "");
+> @@ -1923,7 +1929,7 @@ static void dump_mipi_config(struct context *contex=
+t,
+>  		const struct edp_pwm_delays *pwm_delays =3D
+>  			&start->pwm_delays[context->panel_type];
+>=20=20
+> -		if (i !=3D context->panel_type && !context->dump_all_panel_types)
+> +		if (!dump_panel(context, i))
+>  			continue;
+>=20=20
+>  		printf("\tPanel %d%s\n", i,
+> @@ -2372,7 +2378,7 @@ static void dump_mipi_sequence(struct context *cont=
+ext,
+>  		uint32_t seq_size;
+>  		int index =3D 0;
+>=20=20
+> -		if (i !=3D context->panel_type && !context->dump_all_panel_types)
+> +		if (!dump_panel(context, i))
+>  			continue;
+>=20=20
+>  		data =3D find_panel_sequence_block(sequence, i,
+> @@ -2467,7 +2473,7 @@ static void dump_compression_parameters(struct cont=
+ext *context,
+>  		/* FIXME: need to handle sizeof(*data) !=3D dsc->entry_size */
+>  		data =3D &dsc->data[i];
+>=20=20
+> -		if (i !=3D context->panel_type && !context->dump_all_panel_types)
+> +		if (!dump_panel(context, i))
+>  			continue;
+>=20=20
+>  		printf("\tDSC block %d%s\n", i,
+
+--=20
+Jani Nikula, Intel
