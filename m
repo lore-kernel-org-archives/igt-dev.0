@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6E7EC54E64
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 22:59:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67FE8C54E64
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 23:05:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6223910EB51;
-	Mon, 25 Mar 2024 22:59:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0ED3610EB69;
+	Mon, 25 Mar 2024 23:05:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="PItiuEG8";
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="Hc9RDeEM";
 	dkim-atps=neutral
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com
- [209.85.214.182])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01A7D10EB51
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 22:59:19 +0000 (UTC)
-Received: by mail-pl1-f182.google.com with SMTP id
- d9443c01a7336-1dddbe47ac1so37092675ad.1
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 15:59:19 -0700 (PDT)
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com
+ [209.85.210.178])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 04C5610EB69
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 23:05:24 +0000 (UTC)
+Received: by mail-pf1-f178.google.com with SMTP id
+ d2e1a72fcca58-6ea7f2d093aso3151406b3a.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 16:05:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1711407558; x=1712012358;
+ d=chromium.org; s=google; t=1711407924; x=1712012724;
  darn=lists.freedesktop.org; 
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=nJhjt7lQxOUKTe2MCmAEnvu8c7tQYLm1P++uYljyFGg=;
- b=PItiuEG8pPC7mX53dP8erpJ9mvHErtp8Wi44Pq4YITeU+klId9ITFI/FKG9+8hh4O3
- 6FU3v2HMqZ/s9gueU5dJWrFqN4lYPZmksiLHpQwaXtNMM532OvBgQ8g8fWyGTdEybEzH
- 5Thf6n3GNMzwLXpQS9FwlplTZgi+y/ndXzQvs=
+ bh=Y60ATwASvO1dmkT5Iw76C/XgfM7PT+rsIm12u5u9RbI=;
+ b=Hc9RDeEMxfti7slQGjLKXhirKEfoGUBs/AKOicAj9Ht1tmPxTKWIAG3oqxwt4kK090
+ aw08BPlvCQ6GFY6I8cBlOccHDmJbObwlsP0sWBav3mwdRwEopXLiAhbYr7//NPNCLUmh
+ 3U5dHdaUvrvp2GpBFYx85pUAHO1wsvIy7O0s0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711407558; x=1712012358;
+ d=1e100.net; s=20230601; t=1711407924; x=1712012724;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=nJhjt7lQxOUKTe2MCmAEnvu8c7tQYLm1P++uYljyFGg=;
- b=UjojaV8EVAvnFSvs57tyA/spqYk4wmk7r8caaKGYCcfwUfJH611IiSeEpO+wkUrMky
- Ygt5TYg6OvB7jpLF345y2wBdC1W7BaKawdAKn8M1igZPjXFSP2H83iNZPq4h/R6wkgMX
- bWaViw3eWMREBnFxpl+Itg3qP9aVvcgc54UmdL63mawh3vgNu971ZTtG7KOy3a3tYTnT
- hQD2vFMMcJyavvWlI5vMzIK46sQeJavJUfZ+ebPtkQBC/+HF7BSeBHsXXkSC8K+QjZhI
- PyH7kl0e4zYlXEfigg6QhfQSA+EabK5SRLzQq/QymExwFckHgGjwbb6RQ7QIGbnsp3pS
- 0R6g==
-X-Gm-Message-State: AOJu0Yz1Hkm9GiNcxWLSX7FH7KSxvnWaQzB/e/MXa/nUcEblIUze+rrA
- wd6rFa/Xjj6RBk6rCnqnFiQ8PC6RI9SxzpXFtTSh5M91b7EmZ5btafrv40U2WWai7lOBdVv6x2Q
+ bh=Y60ATwASvO1dmkT5Iw76C/XgfM7PT+rsIm12u5u9RbI=;
+ b=GJP+d36Vmyc12aCXTOXmlbgdfrL7PxUda/+mRC8EIi9I+YS+073vgL7ATTP6hRvKI2
+ lJfNitBrg5KVEmvfdGuzGDDdshTxuNfqBfQwurJytmGVLsThI1Q77C3wOVtp7ug7+cbb
+ nPgKl2NWfxxwlQ1BN95H0HJCMI75SAHbtwXajHtnUBd4e03XQSq/Crx9xlSP1d6UoN6s
+ GUgJEWhMfSLaWTjpHaqqxkn6oIOH/NK79ot0lqV1VOHXkInI7BD11g+hYsq5fDrGdUkJ
+ Pe5ByskrUhbnc/I9mOkZizh7tSLwETobgRxwtbtrw/Y1Gq0VAq6CTfdBTGqCS7sH+7T8
+ MqzQ==
+X-Gm-Message-State: AOJu0YynhaisO2pwgTcEWYI8ZeD7SXldCZN4gsTYky1EsRPn+m2kooG0
+ xpOvQksLaYLG1N3M49k3PIdWzOo3qLvsZ/gdmo9KpR4DCnNDgrm9+GbJWJ2P8oTGF+HZINvsWG0
  =
-X-Google-Smtp-Source: AGHT+IEh1/psvHEWjDT6aHY7BfLOlTpeodOV1miaJ14xzbu/ZyQiKZ4AhW7keA3pG2nFlHM32woysA==
-X-Received: by 2002:a17:902:ecc1:b0:1de:de7d:d3a6 with SMTP id
- a1-20020a170902ecc100b001dede7dd3a6mr11044846plh.30.1711407558491; 
- Mon, 25 Mar 2024 15:59:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGHPC/hs/aIeGUiztclCBP/kI8KUWRdRJAj/FBOFRfXPPTDZgjK0CNeCmFgApTrC0QRHenruQ==
+X-Received: by 2002:a05:6a00:178a:b0:6e9:2051:9dfe with SMTP id
+ s10-20020a056a00178a00b006e920519dfemr8735424pfg.21.1711407923957; 
+ Mon, 25 Mar 2024 16:05:23 -0700 (PDT)
 Received: from navaremanasi.c.googlers.com.com
  (219.29.83.34.bc.googleusercontent.com. [34.83.29.219])
  by smtp.gmail.com with ESMTPSA id
- b6-20020a170902650600b001def18c0cedsm5419211plk.179.2024.03.25.15.59.17
+ fi4-20020a056a00398400b006e5359e621csm4648030pfb.182.2024.03.25.16.05.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Mar 2024 15:59:18 -0700 (PDT)
+ Mon, 25 Mar 2024 16:05:23 -0700 (PDT)
 From: Manasi Navare <navaremanasi@chromium.org>
 To: igt-dev@lists.freedesktop.org
 Cc: Manasi Navare <navaremanasi@chromium.org>,
@@ -60,10 +60,10 @@ Cc: Manasi Navare <navaremanasi@chromium.org>,
  Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
  Sean Paul <seanpaul@chromium.org>
-Subject: [PATCH v4] tests/kms_vrr: Add a subtest for seamless modeset to a
+Subject: [PATCH v5] tests/kms_vrr: Add a subtest for seamless modeset to a
  virtual LRR mode
-Date: Mon, 25 Mar 2024 22:59:14 +0000
-Message-ID: <20240325225914.1785260-1-navaremanasi@chromium.org>
+Date: Mon, 25 Mar 2024 23:05:19 +0000
+Message-ID: <20240325230519.1787483-1-navaremanasi@chromium.org>
 X-Mailer: git-send-email 2.44.0.396.g6e790dbe36-goog
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -108,7 +108,7 @@ Signed-off-by: Manasi Navare <navaremanasi@chromium.org>
  1 file changed, 68 insertions(+), 4 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 15c62b34b..5fc3a306f 100644
+index 15c62b34b..d838647bd 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
 @@ -66,6 +66,11 @@
@@ -220,7 +220,7 @@ index 15c62b34b..5fc3a306f 100644
  			run_vrr_test(&data, test_basic, TEST_FASTSET);
 +
 +		igt_describe("Test to switch to any custom virtual mode in VRR range without modeset.");
-+		igt_subtest_with_dynamic("seamless-virtual-rr-switch")
++		igt_subtest_with_dynamic("seamless-rr-switch-virtual")
 +			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR);
  	}
  
