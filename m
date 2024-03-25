@@ -4,59 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A37CC54E58
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 14:44:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BC23CD11BF
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 14:46:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DCD6E10E93E;
-	Mon, 25 Mar 2024 14:44:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F251210E948;
+	Mon, 25 Mar 2024 14:46:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KDmPZ+Dx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X+lwWSpp";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D10010E93A;
- Mon, 25 Mar 2024 14:44:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 604DC10E94A
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 14:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711377863; x=1742913863;
+ t=1711378013; x=1742914013;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=MozBBeofAwG7Kl3rKWhW/8IJA69L/XcsAMA6RVrhAZk=;
- b=KDmPZ+DxKlBO5REyOFZqfu+mN9lnJKa8KyNcIEz1BQJY3LgMNssPc6AU
- mLOtqszBKTsPe1FbcIGZ9ocnFMN0mlCksgP1GLWo0ktpNerQ0w0Ucmy9K
- UPkC/N+Ngk2D9UoABumXEk/UQK7+KsjnRkaO9nKX9bijMS4C8hlJ76SjW
- M/rXMYJjD3QOEhbXc/fJnR4peDfB789UlSLfUjJFTTn7omNG14FB06oOq
- 1IfICR874/ZVo2XrXY/N95B9wJw1eHjluemnazQ4KPZH6BLOBE4mMVmbB
- 2L747KshObL7qdE1yPGwP/Guel++y+XLxqrETUngUvibGJJ/Iuc2Ghzwq w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="10177593"
-X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="10177593"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2024 07:44:23 -0700
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=wDFA1b4iPGXliM6B3/dBdsJcCVtBmsFlKbGKc+LhqC0=;
+ b=X+lwWSppeKbYFrUcBuLMRKyRTX5QPi8CCQyZEOtFWeVdtfDeBGBrNNNx
+ +XkV9OtWp26H6LxOkkf2mXeTSnorxZBndE1CuVFyUIHttrBo3U6NQ3Bcm
+ irQFGYnnb4lTG+N0v2MvPKqbRDxW9PMnPacgQ7P23g2wbhd6N9RmhYbP3
+ XaPORvwNhvrcwifelF48BV3TD/TCmHbfmsyki9FynsyXjt/OTjIfgIGgw
+ s1Vdk3/JAR4Mv37EPBPx1RVnOCLB5Lbrv+f1lbzBz4gq8q7vpkD8W1Tim
+ Ni1IGMwsYS2P14jMkP6isEM7ZQR7bU1oXXQ6i2PthMCcCGgR+X9zBR/8w w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="23833847"
+X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="23833847"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2024 07:46:53 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="16309363"
+X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="20104969"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 07:44:21 -0700
-Date: Mon, 25 Mar 2024 15:44:02 +0100
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 07:46:51 -0700
+Date: Mon, 25 Mar 2024 15:46:48 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
- TejasreeX Illipilli <tejasreex.illipilli@intel.com>
-Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVDogZmFpbHVy?= =?utf-8?Q?e?= for Align
- Xe test documentation to recent i915 changes
-Message-ID: <20240325144402.oyuvbro7uv7bf6mj@kamilkon-desk.igk.intel.com>
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Aditya Chauhan <aditya.chauhan@intel.com>,
+ Girotra Himanshu <himanshu.girotra@intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: Re: [PATCH i-g-t 01/12] tests/intel: Unify Blitter subcategory for
+ i915 and Xe
+Message-ID: <20240325144648.dloupzq2qrh3myrh@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
- TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Aditya Chauhan <aditya.chauhan@intel.com>,
+ Girotra Himanshu <himanshu.girotra@intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 References: <20240322124108.1825345-1-katarzyna.piecielska@intel.com>
- <171118303653.1017268.10788856667177000245@8e613ede5ea5>
+ <20240322124108.1825345-2-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <171118303653.1017268.10788856667177000245@8e613ede5ea5>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240322124108.1825345-2-katarzyna.piecielska@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,90 +77,53 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-03-23 at 08:37:16 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Katarzyna,
+On 2024-03-22 at 12:40:56 +0000, Katarzyna Piecielska wrote:
+> After cleaning up test documentation for i915 tests some Xe tweaks are
+> needed. Let's unify Blitter subcategory between Xe and i915.
 > 
-> Series: Align Xe test documentation to recent i915 changes
-> URL   : https://patchwork.freedesktop.org/series/131492/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_14468_full -> IGTPW_10885_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_10885_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_10885_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10885/index.html
-> 
-> Participating hosts (9 -> 9)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_10885_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@gem_exec_suspend@basic-s3@smem:
->     - shard-dg2:          [PASS][1] -> [INCOMPLETE][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14468/shard-dg2-3/igt@gem_exec_suspend@basic-s3@smem.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10885/shard-dg2-11/igt@gem_exec_suspend@basic-s3@smem.html
-> 
->   * igt@kms_plane_lowres@tiling-none@pipe-a-hdmi-a-1:
->     - shard-snb:          [PASS][3] -> [ABORT][4]
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14468/shard-snb7/igt@kms_plane_lowres@tiling-none@pipe-a-hdmi-a-1.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10885/shard-snb7/igt@kms_plane_lowres@tiling-none@pipe-a-hdmi-a-1.html
-> 
+> Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Aditya Chauhan <aditya.chauhan@intel.com>
+> Cc: Girotra Himanshu <himanshu.girotra@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-This is unrelated to changes in C comments (test docs),
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Regards,
-Kamil
-
->   
-> Known issues
-> ------------
+> ---
+>  tests/intel/xe_ccs.c        | 2 +-
+>  tests/intel/xe_copy_basic.c | 4 ++--
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 > 
->   Here are the changes found in IGTPW_10885_full that come from known issues:
+> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+> index aec83a057..7d0f2f2a1 100644
+> --- a/tests/intel/xe_ccs.c
+> +++ b/tests/intel/xe_ccs.c
+> @@ -21,7 +21,7 @@
+>  /**
+>   * TEST: xe ccs
+>   * Category: Hardware building block
+> - * Sub-category: blitter
+> + * Sub-category: Blitter
+>   * Functionality: flat_ccs
+>   * Description: Exercise gen12 blitter with and without flatccs compression on Xe
+>   * Test category: functionality test
+> diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
+> index 66c666eac..25e8adca0 100644
+> --- a/tests/intel/xe_copy_basic.c
+> +++ b/tests/intel/xe_copy_basic.c
+> @@ -22,8 +22,8 @@
+>  /**
+>   * TEST: Test to validate copy commands on xe
+>   * Category: Software building block
+> - * Sub-category: Copy
+> - * Functionality: blitter
+> + * Sub-category: Blitter
+> + * Functionality: copy
+>   */
+>  
+>  /**
+> -- 
+> 2.34.1
 > 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
-
-...cut...
-
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7777 -> IGTPW_10885
->   * Piglit: piglit_4509 -> None
-> 
->   CI-20190529: 20190529
->   CI_DRM_14468: a19e6423c2c21b8dc7ad79ca95cc24637b248bd0 @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_10885: 10885
->   IGT_7777: 7777
->   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10885/index.html
