@@ -4,39 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBB03C54E64
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 16:41:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 253E5C54E64
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 16:41:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9B67010E9BB;
-	Mon, 25 Mar 2024 16:41:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D7BCA10E744;
+	Mon, 25 Mar 2024 16:41:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PEUOnPzJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R9QVV198";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24FC010E9B4
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 16:40:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43FD610E9B1
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 16:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711384855; x=1742920855;
+ t=1711384857; x=1742920857;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Vd3UQk7tW1NbGjHus9DdmUZsQM9RAXwAkpbH69wK+TE=;
- b=PEUOnPzJgsO+1KYKzO5bprG9wzPy3hiXRixR3yDeL96on/R+Yj6iB6OF
- PUgoFvifwVjbSGMw+j7/0n4nk49b+V0SNjwyXyunKzUbzSgdZYwtY2fU5
- SzvGMM4QHX3THAEt8f55CPiZ2se3SPx/yN0jtdP5R78KVh0Z6J5GgwXjs
- HsQ3fdUGExSdDXIXKonH3gLt8YyDP7Sj+sjlqhgqgmiG5ymA70JsOAypW
- S7Q2zE43mJ8FUaqCwdL5b35IxYKtFxTiiVaDBtGDUD+F1X/86mNpMFseZ
- isBoeyknlNqzRX4zUupUnWuGmEKPtluEBKDN4CEuAaT05VhJ9XkCcbW8v Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="17132553"
-X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="17132553"
+ bh=3/Ev/POKbKkXeArjXHjgSO0ASJQArbeb8u14U0gZ4No=;
+ b=R9QVV198EjtKnPDyxP5bS+4V8uG43dvfTMSWNdhpa5iPsEDsU2i4FuPO
+ Pwl7I1qyUJFnJuqgzBX79ae7pQOllvoP2Gq68LmDoEpz4S5L6e+jIS3hO
+ MAmh2PcNVj7TDPwp6iAnn3m2GLo9KBOh0HumzIf0lmltojXbKMzyNifQ0
+ XMfiwO4yd2HMUDxxAc1ebj6Q8Y7/MYxkI89jufAI2l0t4xpHRMsBx8uXY
+ RMY/J9hXijDc+fDNRMKJWH4ynFnZk+lXbtABgzixfb8IeLMDw2URWGewq
+ zhFQCuDu+L6t0gR/l+YPY2v/vVACTdIOPjf+ULEkmdTF/F4Vzl0HIAFNz w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="17132555"
+X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="17132555"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Mar 2024 09:40:54 -0700
+ 25 Mar 2024 09:40:57 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="38784677"
+X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; d="scan'208";a="38784681"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 09:40:53 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 09:40:55 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>,
@@ -44,10 +44,10 @@ Cc: Kunal Joshi <kunal1.joshi@intel.com>,
  Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
  Karthik B S <karthik.b.s@intel.com>,
  Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t 3/4] lib/igt_kms: add helper to enable/disable force
+Subject: [PATCH i-g-t 4/4] tests/intel/kms_big_joiner: add tests for force
  joiner
-Date: Mon, 25 Mar 2024 22:21:35 +0530
-Message-Id: <20240325165136.1265895-4-kunal1.joshi@intel.com>
+Date: Mon, 25 Mar 2024 22:21:36 +0530
+Message-Id: <20240325165136.1265895-5-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240325165136.1265895-1-kunal1.joshi@intel.com>
 References: <20240325165136.1265895-1-kunal1.joshi@intel.com>
@@ -68,99 +68,238 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-v2: Add documentation and rename (Ankit)
-    Combine enable/disable and status check (Ankit)
-    Don't assert in igt_has_force_joiner_debugfs (Ankit)
+add tests for force joiner
 
-add helpers to check whether force joiner debugfs exists
-and to enable/disable force joiner for a specific connector.
+v2: check status after forcing (Ankit)
+    take out commoon code (Ankit)
+    fix missing force_joiner (Ankit)
 
 Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
 Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Karthik B S <karthik.b.s@intel.com>
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- lib/igt_kms.c | 51 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  2 ++
- 2 files changed, 53 insertions(+)
+ tests/intel/kms_big_joiner.c | 102 +++++++++++++++++++++++++++++------
+ 1 file changed, 85 insertions(+), 17 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 548c9d1f3..c38021dd7 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -6171,6 +6171,57 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
- 	return found;
+diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
+index b57996212..fd6baccc3 100644
+--- a/tests/intel/kms_big_joiner.c
++++ b/tests/intel/kms_big_joiner.c
+@@ -44,9 +44,14 @@
+  * SUBTEST: basic
+  * Description: Verify the basic modeset on big joiner mode on all pipes
+  *
++ * SUBTEST: invalid-modeset-force-joiner
++ * Description: Verify if the modeset on the adjoining pipe is rejected when
++ *              the pipe is active with a force joiner modeset
++ *
++ * SUBTEST: basic-force-joiner
++ * Description: Verify the basic modeset on force joiner mode on all pipes
+  */
+-
+-IGT_TEST_DESCRIPTION("Test big joiner");
++IGT_TEST_DESCRIPTION("Test big joiner / force joiner");
+ 
+ #define INVALID_TEST_OUTPUT 2
+ 
+@@ -79,6 +84,19 @@ static void set_all_master_pipes_for_platform(data_t *data)
+ 	}
  }
  
-+/**
-+ * Checks if the force big joiner debugfs is available
-+ * for a specific connector.
-+ *
-+ * @drmfd: file descriptor of the DRM device.
-+ * @output: output to check.
-+ * Returns:
-+ *  true if the debugfs is available, false otherwise.
-+ */
-+bool igt_has_force_joiner_debugfs(int drmfd, igt_output_t *output)
++static void toggle_force_joiner_on_all_non_big_joiner_outputs(data_t *data, bool toggle)
 +{
-+	char buf[512];
-+	int debugfs_fd, ret;
++	bool status;
++	igt_output_t *output;
++	int i;
 +
-+	igt_assert_f(output->name, "Connector name cannot be NULL\n");
-+	debugfs_fd = igt_debugfs_connector_dir(drmfd, output->name, O_RDONLY);
-+	if (debugfs_fd < 0)
-+		return false;
-+	ret = igt_debugfs_simple_read(debugfs_fd, "i915_bigjoiner_force_enable", buf, sizeof(buf));
-+	close(debugfs_fd);
-+	return ret >= 0;
++	for (i = 0; i < data->non_big_joiner_output_count; i++) {
++		output = data->non_big_joiner_output[i];
++		status = igt_force_and_check_bigjoiner_status(data->drm_fd, output->name, toggle);
++		igt_assert_f(status, "Failed to toggle force joiner\n");
++	}
 +}
 +
-+/**
-+ * Forces the enable/disable state of big joiner for a specific connector.
-+ *
-+ * @drmfd The file descriptor of the DRM device.
-+ * @connector_name The name of the connector.
-+ * @enable The desired state of big joiner (true for enable, false for disable).
-+ * Returns:
-+ *  true if writing the debugfs was successful
-+ *  and the state was set as requested, false otherwise.
-+ */
-+bool igt_force_and_check_bigjoiner_status(int drmfd, char *connector_name, bool enable)
-+{
-+	int debugfs_fd, ret;
-+	char buf[512];
+ static enum pipe get_next_master_pipe(data_t *data, unsigned int available_pipe_mask)
+ {
+ 	if ((data->master_pipes & available_pipe_mask) == 0)
+@@ -105,7 +123,7 @@ static enum pipe setup_pipe(data_t *data, igt_output_t *output, enum pipe pipe,
+ 	return master_pipe;
+ }
+ 
+-static void test_single_joiner(data_t *data, int output_count)
++static void test_single_joiner(data_t *data, int output_count, bool force_joiner)
+ {
+ 	int i;
+ 	enum pipe pipe, master_pipe;
+@@ -116,7 +134,7 @@ static void test_single_joiner(data_t *data, int output_count)
+ 	igt_fb_t fb;
+ 	drmModeModeInfo *mode;
+ 
+-	outputs = data->big_joiner_output;
++	outputs = force_joiner ? data->non_big_joiner_output : data->big_joiner_output;
+ 
+ 	for (i = 0; i < output_count; i++) {
+ 		output = outputs[i];
+@@ -137,7 +155,7 @@ static void test_single_joiner(data_t *data, int output_count)
+ 	}
+ }
+ 
+-static void test_multi_joiner(data_t *data, int output_count)
++static void test_multi_joiner(data_t *data, int output_count, bool force_joiner)
+ {
+ 	int i;
+ 	unsigned int available_pipe_mask;
+@@ -149,7 +167,7 @@ static void test_multi_joiner(data_t *data, int output_count)
+ 	drmModeModeInfo *mode;
+ 
+ 	available_pipe_mask = BIT(data->n_pipes) - 1;
+-	outputs = data->big_joiner_output;
++	outputs = force_joiner ? data->non_big_joiner_output : data->big_joiner_output;
+ 
+ 	igt_display_reset(&data->display);
+ 	for (i = 0; i < output_count; i++) {
+@@ -177,7 +195,7 @@ static void test_multi_joiner(data_t *data, int output_count)
+ }
+ 
+ static void test_invalid_modeset_two_joiner(data_t *data,
+-					    bool combined)
++					    bool combined, bool force_joiner)
+ {
+ 	int i, j, ret;
+ 	unsigned int available_pipe_mask;
+@@ -190,7 +208,8 @@ static void test_invalid_modeset_two_joiner(data_t *data,
+ 	drmModeModeInfo *mode;
+ 
+ 	available_pipe_mask = BIT(data->n_pipes) - 1;
+-	outputs = combined ? data->combined_output : data->big_joiner_output;
++	outputs = force_joiner ? data->non_big_joiner_output :
++			  combined ? data->combined_output : data->big_joiner_output;
+ 
+ 	for (i = 0; i < data->n_pipes-1; i++) {
+ 		igt_display_reset(&data->display);
+@@ -223,7 +242,7 @@ static void test_invalid_modeset_two_joiner(data_t *data,
+ 	}
+ }
+ 
+-static void test_big_joiner_on_last_pipe(data_t *data)
++static void test_joiner_on_last_pipe(data_t *data, bool force_joiner)
+ {
+ 	int i, len, ret;
+ 	igt_output_t **outputs;
+@@ -232,8 +251,8 @@ static void test_big_joiner_on_last_pipe(data_t *data)
+ 	igt_fb_t fb;
+ 	drmModeModeInfo *mode;
+ 
+-	len = data->big_joiner_output_count;
+-	outputs = data->big_joiner_output;
++	len = force_joiner ? data->non_big_joiner_output_count : data->big_joiner_output_count;
++	outputs = force_joiner ? data->non_big_joiner_output : data->big_joiner_output;
+ 
+ 	for (i = 0; i < len; i++) {
+ 		igt_display_reset(&data->display);
+@@ -257,12 +276,14 @@ static void test_big_joiner_on_last_pipe(data_t *data)
+ 
+ igt_main
+ {
++	bool force_joiner_supported;
+ 	int i, j;
+ 	igt_output_t *output;
+ 	drmModeModeInfo mode;
+ 	data_t data;
+ 
+ 	igt_fixture {
++		force_joiner_supported = false;
+ 		data.big_joiner_output_count = 0;
+ 		data.non_big_joiner_output_count = 0;
+ 		data.combined_output_count = 0;
+@@ -290,7 +311,10 @@ igt_main
+ 				data.big_joiner_output[data.big_joiner_output_count++] = output;
+ 				igt_output_override_mode(output, &mode);
+ 			} else {
+-				data.non_big_joiner_output[data.non_big_joiner_output_count++] = output;
++				if (igt_has_force_joiner_debugfs(data.drm_fd, output)) {
++					force_joiner_supported = true;
++					data.non_big_joiner_output[data.non_big_joiner_output_count++] = output;
++				}
+ 			}
+ 			data.output_count++;
+ 		}
+@@ -313,10 +337,10 @@ igt_main
+ 			igt_require_f(data.n_pipes > 1,
+ 				      "Minimum 2 pipes required\n");
+ 			igt_dynamic_f("single-joiner")
+-				test_single_joiner(&data, data.big_joiner_output_count);
++				test_single_joiner(&data, data.big_joiner_output_count, false);
+ 			if (data.big_joiner_output_count > 1)
+ 				igt_dynamic_f("multi-joiner")
+-					test_multi_joiner(&data, data.big_joiner_output_count);
++					test_multi_joiner(&data, data.big_joiner_output_count, false);
+ 	}
+ 
+ 	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
+@@ -326,13 +350,57 @@ igt_main
+ 		igt_require_f(data.n_pipes > 1, "Minimum of 2 pipes are required\n");
+ 		if (data.big_joiner_output_count >= 1)
+ 			igt_dynamic_f("big_joiner_on_last_pipe")
+-				test_big_joiner_on_last_pipe(&data);
++				test_joiner_on_last_pipe(&data, false);
+ 		if (data.big_joiner_output_count > 1)
+ 			igt_dynamic_f("invalid_combinations")
+-				test_invalid_modeset_two_joiner(&data, false);
++				test_invalid_modeset_two_joiner(&data, false, false);
+ 		if (data.combined_output_count)
+ 			igt_dynamic_f("combined_output")
+-				test_invalid_modeset_two_joiner(&data, true);
++				test_invalid_modeset_two_joiner(&data, true, false);
++	}
 +
-+	igt_assert_f(connector_name, "Connector name cannot be NULL\n");
-+	debugfs_fd = igt_debugfs_connector_dir(drmfd, connector_name, O_DIRECTORY);
-+	igt_assert_f(debugfs_fd >= 0, "Could not open debugfs for connector %s\n", connector_name);
-+	ret = igt_sysfs_write(debugfs_fd, "i915_bigjoiner_force_enable", enable ? "1" : "0", 1);
-+	igt_assert_f(ret > 0, "Could not write i915_bigjoiner_force_enable for connector %s\n", connector_name);
-+	ret = igt_debugfs_simple_read(debugfs_fd, "i915_bigjoiner_force_enable", buf, sizeof(buf));
-+	close(debugfs_fd);
-+	igt_assert_f(ret > 0, "Could not read i915_bigjoiner_force_enable for connector %s\n", connector_name);
++	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
++	igt_subtest_with_dynamic("basic-force-joiner") {
++			igt_require_f(force_joiner_supported,
++						 "force joiner not supported on this platform or none of the connected output supports it\n");
++			igt_require_f(data.non_big_joiner_output_count > 0,
++				      "No non big joiner output found\n");
++			igt_require_f(data.n_pipes > 1,
++				      "Minimum 2 pipes required\n");
++			igt_dynamic_f("single") {
++				toggle_force_joiner_on_all_non_big_joiner_outputs(&data, true);
++				test_single_joiner(&data, data.non_big_joiner_output_count, true);
++				toggle_force_joiner_on_all_non_big_joiner_outputs(&data, false);
++			}
++			if (data.non_big_joiner_output_count > 1) {
++				igt_dynamic_f("multi") {
++					toggle_force_joiner_on_all_non_big_joiner_outputs(&data, true);
++					test_multi_joiner(&data, data.non_big_joiner_output_count, true);
++					toggle_force_joiner_on_all_non_big_joiner_outputs(&data, false);
++				}
++			}
++	}
 +
-+	return enable ? strstr(buf, "Bigjoiner enable: 1") :
-+		    strstr(buf, "Bigjoiner enable: 0");
-+}
++	igt_subtest_with_dynamic("invalid-modeset-force-joiner") {
++			igt_require_f(force_joiner_supported,
++						 "force joiner not supported on this platform or none of the connected output supports it\n");
++		igt_require_f(data.non_big_joiner_output_count > 0, "Non big joiner output not found\n");
++		igt_require_f(data.n_pipes > 1, "Minimum of 2 pipes are required\n");
 +
- /**
-  * igt_check_bigjoiner_support:
-  * @display: a pointer to an #igt_display_t structure
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 0fa7a2ea1..6d13e5851 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1214,6 +1214,8 @@ int igt_get_max_dotclock(int fd);
- bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
- bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
- 			  int max_dotclock, drmModeModeInfo *mode);
-+bool igt_has_force_joiner_debugfs(int drmfd, igt_output_t *output);
-+bool igt_force_and_check_bigjoiner_status(int drmfd, char *connector_name, bool enable);
- bool igt_check_bigjoiner_support(igt_display_t *display);
- bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
- bool intel_pipe_output_combo_valid(igt_display_t *display);
++		if (data.non_big_joiner_output_count >= 1) {
++			igt_dynamic_f("big_joiner_on_last_pipe") {
++				toggle_force_joiner_on_all_non_big_joiner_outputs(&data, true);
++				test_joiner_on_last_pipe(&data, true);
++				toggle_force_joiner_on_all_non_big_joiner_outputs(&data, false);
++			}
++		}
++		if (data.non_big_joiner_output_count > 1) {
++			igt_dynamic_f("invalid_combinations") {
++				toggle_force_joiner_on_all_non_big_joiner_outputs(&data, true);
++				test_invalid_modeset_two_joiner(&data, false, true);
++				toggle_force_joiner_on_all_non_big_joiner_outputs(&data, false);
++			}
++		}
+ 	}
+ 
+ 	igt_fixture {
 -- 
 2.34.1
 
