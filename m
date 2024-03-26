@@ -4,60 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B8EACD11DD
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 11:19:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9C7ECD11DD
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 12:05:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 099C010E4FE;
-	Tue, 26 Mar 2024 11:19:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2076210E1D0;
+	Tue, 26 Mar 2024 12:05:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HbQ9ShO/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GlBbAzeO";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 002CE10E4FE
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 11:19:09 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46D2410E1D0
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 12:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711451950; x=1742987950;
+ t=1711454715; x=1742990715;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=7JQVMrBnqCRSG+ydRreOCz5qumUCVDw1c4b5irpyBRY=;
- b=HbQ9ShO/QixHV9yASpD2ZjKMlqeLZsLBqJq+HaU67IsxFf4FCOAIgTf7
- MkSpRW4FIKQ+M1qCUs7ahBLwLoAugPMtKJjsjC5WxNpvDg6bH+tx3Bj4O
- awyrpz6jsfEv46xLprHNCjZd5vYfAq+at3lHp24jwOuR4O++9S68ZORza
- UGq03wvtIZsHF9GZz+GVL+SBp13c5r7B1wSnYZ8sjdZstj/86iALFTQUN
- J0tvVpw1qAnfThtNu5mFh/tUJQ4tK7zuxLUL3BB2nAUIibw4Lb+IGzWpt
- pUXY6rQnGlYrbgIl1Etd6NnmXqhCjp3GN/21oXoy7zsCkk8U2AmX23pZo Q==;
-X-CSE-ConnectionGUID: 7j3Sh+jmRPaNcyTd4YI/9A==
-X-CSE-MsgGUID: Vdm/PPSzQzadsTfD1upKWQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6362337"
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="6362337"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2024 04:19:06 -0700
+ bh=03LkWZFEqNbHkLj8jbeFM8Afcdsh+Ijt+FNcKKcYscA=;
+ b=GlBbAzeOrPNw1YSF/Z4pUFZVV8CH5nb8cJhiS61rrTYK3lGXmT9nbhVB
+ r4/Kph5i9XaTs/YlitLxgX+Quzi5BY5dM0us06DTgDwMCUOTjRUm2viKO
+ qaiOyTw41XBnThh1CePbBq8yyma8+kZLpSaXbkB3oOEPHAjQgc746zEs0
+ dZ+SVHPUgzxPapKCxpXQZrAft5M3HWhE4tQA8Uii96FlxwwjRRcV9IhQN
+ fzzj54sVOaF6FnS75S6LQOFF3RGi5MWzsKGfbwihzHnZIcqwUqnTcP8vQ
+ KeJM0GR60wVuvL0nixu3zfCrqV6m04LnpM7kANKqeLA5aqdSlybJcdLn0 A==;
+X-CSE-ConnectionGUID: B9L5O6RmTI+++pP6s5RXsw==
+X-CSE-MsgGUID: /V0pLVEKQF+us8s+fizbqQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="17644479"
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; d="scan'208";a="17644479"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2024 05:05:14 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; d="scan'208";a="20483048"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 04:19:04 -0700
-Date: Tue, 26 Mar 2024 12:19:02 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jesse Zhang <jesse.zhang@amd.com>, Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
-Subject: Re: [PATCH i-g-t V3] tests/amd_basic:fix eviction test failure
-Message-ID: <20240326111902.rj37niyehgeolj5a@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Jesse Zhang <jesse.zhang@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
-References: <20240326023440.2460660-1-jesse.zhang@amd.com>
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; d="scan'208";a="15979293"
+Received: from unknown (HELO intel.com) ([10.247.118.204])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2024 05:05:10 -0700
+Date: Tue, 26 Mar 2024 13:05:05 +0100
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Peter Senna Tschudin <me@petersenna.com>
+Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
+ andi.shyti@linux.intel.com, Peter Senna Tschudin <peter.senna@gmail.com>
+Subject: Re: [PATCH i-g-t v2] Fix memory access issue due to variable block
+ scope
+Message-ID: <ZgK58ZwkJxhF6G6C@ashyti-mobl2.lan>
+References: <20240325213548.2881-1-me@petersenna.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240326023440.2460660-1-jesse.zhang@amd.com>
+In-Reply-To: <20240325213548.2881-1-me@petersenna.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,84 +67,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jesse,
-On 2024-03-26 at 10:34:40 +0800, Jesse Zhang wrote:
+Hey Peter,
 
-small nit to subject, please add space after ':', see
+On Mon, Mar 25, 2024 at 10:35:48PM +0100, Peter Senna Tschudin wrote:
+> This patch fixes the tests gem_exec_capture@many-4k-incremental and
+> gem_exec_capture@many-4k-zero that are currently failing with an invalid file
+> descriptor error.
 
-[PATCH i-g-t V3] tests/amd_basic:fix eviction test failure
---------------------------------^
+where is gem_exec_capture calling for_each_ctx_cfg_engine()?
 
-This should be
-
-tests/amd_basic: fix eviction test failure
-
-Btw this can be done during merge.
-
-Regards,
-Kamil
-
-> Test case name:igt@amdgpu/amd_basic@eviction-test-with-ip-dma@eviction_test
-> Fail error: "Starting subtest: eviction-test-with-IP-DMA
-> Starting dynamic subtest: eviction_test
-> (amd_basic:9425) amdgpu/amd_command_submission-CRITICAL: Test assertion failure function amdgpu_test_exec_cs_helper, file ../lib/amdgpu/amd_command_submission.c:77:
-> (amd_basic:9425) amdgpu/amd_command_submission-CRITICAL: Failed assertion: r == 0
-> (amd_basic:9425) amdgpu/amd_command_submission-CRITICAL: Last errno: 12, Cannot allocate memory
-> (amd_basic:9425) amdgpu/amd_command_submission-CRITICAL: error: -12 != 0
-> Dynamic subtest eviction_test failed.
+>  struct intel_execution_engine2 *
+>  intel_get_current_engine(struct intel_engine_data *ed)
 > 
-> There is a case where the system size and gtt memory are smaller.
-> When evicting vram to gtt or system memory, there is not enough gtt or memory system memory available for allocation.
-> Therefore, try to reduce the use of gtt during initialization to meet the requirements for evicting vram.
+> When intel_get_current_engine is called from the macro
+> for_each_ctx_cfg_engine(), the variable *ed is defined within a for loop. The
+> scope of *ed is limited to that loop, leading to access violations when
+> attempting to access its contents outside the loop.
 > 
-> V3: Provided an example in the code of exactly the numeric number (Vitaly)
->     Remove the space and empty line (Kamil)
+> Before to this patch, intel_get_current_engine() would return an element of *ed
+> and attempting to use it after the loop ended resulted in undefined behavior.
 > 
-> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+> This patch introduces a memcpy() to copy the contents of ed->current_engine to
+> a memory area not confined by the loop's scope, ensuring safe access to the
+> data.
+> 
+> v2: Added 'i-g-t' to the Subject.
+> 
+> Signed-off-by: Peter Senna Tschudin <peter.senna@gmail.com>
 > ---
->  tests/amdgpu/amd_basic.c | 18 ++++++++++++++----
->  1 file changed, 14 insertions(+), 4 deletions(-)
+>  lib/i915/gem_engine_topology.c | 14 +++++++++++++-
+>  1 file changed, 13 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-> index 70e45649d..8819b9cd4 100644
-> --- a/tests/amdgpu/amd_basic.c
-> +++ b/tests/amdgpu/amd_basic.c
-> @@ -358,6 +358,20 @@ amdgpu_bo_eviction_test(amdgpu_device_handle device_handle)
->  				   0, &vram_info);
->  	igt_assert_eq(r, 0);
->  
-> +	r = amdgpu_query_heap_info(device_handle, AMDGPU_GEM_DOMAIN_GTT,
-> +				   0, &gtt_info);
-> +	igt_assert_eq(r, 0);
+> diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+> index afb576afb..b3b809482 100644
+> --- a/lib/i915/gem_engine_topology.c
+> +++ b/lib/i915/gem_engine_topology.c
+> @@ -189,12 +189,24 @@ static int __query_engine_list(int fd, struct intel_engine_data *ed)
+>  struct intel_execution_engine2 *
+>  intel_get_current_engine(struct intel_engine_data *ed)
+>  {
+> +	struct intel_execution_engine2 *ret = NULL;
 > +
-> +	/* For smaller gtt memory sizes, reduce gtt usage on initialization
-> +	 * to satisfy eviction vram requirements. Example:
-> +	 * gtt_info.heap_size 3036569600, gtt_info.max_allocation 2114244608  gtt_info.heap_usage 12845056
-> +	 * gtt_info.heap_size 2895 mb, gtt_info.max_allocation 2016 mb gtt_info.heap_usage 12 mb
-> +	 * vram_info.heap_size 2114244608, vram_info.max_allocation 2114244608 vram_info.heap_usage 26951680
-> +	 * vram_info.heap_size 2016 mb, vram_info.max_allocation 2016 mb vram_info.heap_usage 25 mb
-> +	 */
-> +	if (gtt_info.heap_size - gtt_info.max_allocation < vram_info.max_allocation)
-> +		gtt_info.max_allocation /=3;
-> +
->  	r = amdgpu_bo_alloc_wrap(device_handle, vram_info.max_allocation, 4096,
->  				 AMDGPU_GEM_DOMAIN_VRAM, 0, &ring_context->boa_vram[0]);
->  	igt_assert_eq(r, 0);
-> @@ -365,10 +379,6 @@ amdgpu_bo_eviction_test(amdgpu_device_handle device_handle)
->  				 AMDGPU_GEM_DOMAIN_VRAM, 0, &ring_context->boa_vram[1]);
->  	igt_assert_eq(r, 0);
+>  	if (ed->n >= ed->nengines)
+>  		ed->current_engine = NULL;
+>  	else if (!ed->n)
+>  		ed->current_engine = &ed->engines[0];
 >  
-> -	r = amdgpu_query_heap_info(device_handle, AMDGPU_GEM_DOMAIN_GTT,
-> -				   0, &gtt_info);
-> -	igt_assert_eq(r, 0);
-> -
->  	r = amdgpu_bo_alloc_wrap(device_handle, gtt_info.max_allocation, 4096,
->  				 AMDGPU_GEM_DOMAIN_GTT, 0, &ring_context->boa_gtt[0]);
->  	igt_assert_eq(r, 0);
-> -- 
-> 2.25.1
-> 
+> -	return ed->current_engine;
+> +	// When called from the macro for_each_ctx_cfg_engine(), *ed is defined
+> +	// inside a for loop. In that case, not memcping ed->current_engine
+> +	// will lead to a memory access violation when trying to access the
+> +	// contents of ed->current_engine after the end of the for loop
+
+can you please use /* ... */ style of comment?
+
+> +	if (ed->current_engine) {
+> +		ret = malloc(sizeof(*ret));
+
+should this be freed at some point?
+
+Andi
