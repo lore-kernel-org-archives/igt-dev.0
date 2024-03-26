@@ -4,37 +4,37 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48483C54E58
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11B69C54E64
 	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 21:56:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CC32E10EB11;
+	by gabe.freedesktop.org (Postfix) with ESMTP id E0BDC10EB12;
 	Mon, 25 Mar 2024 21:56:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PK17++hq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dgAiT+tK";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8743F10EB14
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 21:56:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA9AC10EB12
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 21:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1711403788; x=1742939788;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=3/u/HpVBjdv60JTAPSzrd2pvnlrwmV2SlalsfSsOW3s=;
- b=PK17++hqVhxZUvfLuA07HcoilV0emb1uVkAMrNJpZsfCQR5pcZoUultd
- ftIOGEzHH+pU6JrnsDP7K3BwWb88dEtk+QdH8fHv4/z/1w+lAeLBPjex1
- kWFbQm+QOm97pxZSxCWsOKOPsJ7/JpwcUiC14sA8eCbEP4Gbyg500/h/y
- sLT1/oLBvQzJnzqnvZJqeFBrvBrd48p5JBYFytR9oOyGpvTXI2yDBUJ8a
- KTAjFQvSsrPtprORM5kAx9JFEuqkZ7uPn3puEtg3Rlok0nKni6l2qhNjJ
- 4MClr3gMgwMo0RFUCGjp/N0jPNCwgwmqbYhDItet/qLOetYavrdcRq8Te Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6540572"
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=pUijdEmGq+bACKITlBxSN72SVsTkN6hiXs8N3qMzkJE=;
+ b=dgAiT+tK3GYL/qtMqdwLid8Cnyub7/79hk/dUFD9sJ9oyoV20ZXHmNil
+ Wq507l0x+XQMfggxEV7GIxkZLyZrc3mQjFJM9dxgtB+qpn4qRaeq3+1Rv
+ tRe/25YKxoAE0U+/oKPX4oRIsSDc2w2K3QO84XjSP37etQUcbDNZzHUNk
+ HeMfHe9blEof5V3qMbmf3V4HjCoYgLWXNrWac1dI+MZoQAL7JVqwQLDhT
+ Un3U+llsFh8ZEPTlUHeRfyDZClPqbtywaw2OAKrXgWYvpYzcCglkrhUi0
+ /JR1by4/oc8lSc4P/g05UDytf/2N1Dk9QtSa15axUZxZYJmds7ez6CRqv w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6540569"
 X-IronPort-AV: E=Sophos;i="6.07,154,1708416000"; 
-   d="scan'208";a="6540572"
+   d="scan'208";a="6540569"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  25 Mar 2024 14:56:27 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,154,1708416000"; d="scan'208";a="20413096"
+X-IronPort-AV: E=Sophos;i="6.07,154,1708416000"; d="scan'208";a="20413087"
 Received: from saurabhg-nuc10i5fnh.jf.intel.com ([10.165.21.145])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  25 Mar 2024 14:56:27 -0700
@@ -42,13 +42,10 @@ From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 To: 
 Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
  Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Subject: [PATCH i-g-t v1 3/3] tests/xe_ccs: Check if platform supports
- compression
-Date: Tue, 26 Mar 2024 02:54:38 -0700
-Message-Id: <1d66863d0c0ba1e70c8a668ed88a1ed69321e29f.1711444735.git.akshata.jahagirdar@intel.com>
+Subject: [PATCH i-g-t v1 0/3] Add check to ensure platform supports compression
+Date: Tue, 26 Mar 2024 02:54:35 -0700
+Message-Id: <cover.1711444735.git.akshata.jahagirdar@intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1711444735.git.akshata.jahagirdar@intel.com>
-References: <cover.1711444735.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,26 +63,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add check before running the test to ensure the platform supports
-compression and has flat ccs enabled.
+Currently, the igt testcases don't have any check to ensure the platform
+supports compression (has flat ccs enabled) before running the test.
+Add this check by reading the flat_ccs value received from DRM_IOCTL_XE_DEVICE_QUERY 
+ioctl and proceed accordingly.
 
-Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
----
- tests/intel/xe_ccs.c | 1 +
- 1 file changed, 1 insertion(+)
+KMD-changes patch: https://patchwork.freedesktop.org/series/131595/
+Fixes : VLK-56136
 
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index 8fe1f62eb..b424a1d6d 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -718,6 +718,7 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 	igt_fixture {
- 		xe = drm_open_driver(DRIVER_XE);
- 		igt_require(blt_has_block_copy(xe));
-+		igt_require(blt_platform_supports_compression(xe));
- 		if (AT_LEAST_GEN(xe, 20))
- 			igt_require(HAS_FLATCCS(xe));
- 
+Akshata Jahagirdar (2):
+  lib/intel_blt: Add helper function to ensure platform supports
+    compression
+  tests/xe_ccs: Check if platform supports compression
+  drm-uapi/xe_drm: Read flat ccs value from drm_xe_query_config
+
+ include/drm-uapi/xe_drm.h |  3 +++
+ lib/intel_blt.c           | 18 ++++++++++++++++++
+ lib/intel_blt.h           |  1 +
+ tests/intel/xe_ccs.c      |  1 +
+ 4 files changed, 23 insertions(+)
+
 -- 
 2.34.1
 
