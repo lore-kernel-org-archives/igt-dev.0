@@ -4,30 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AC31C54E64
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 21:35:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48483C54E58
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Mar 2024 21:56:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E9F1710E3F3;
-	Mon, 25 Mar 2024 21:35:54 +0000 (UTC)
-X-Greylist: delayed 1796 seconds by postgrey-1.36 at gabe;
- Mon, 25 Mar 2024 21:35:52 UTC
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net
- [217.70.183.193])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D512610E3F3
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 21:35:52 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B315F240002;
- Mon, 25 Mar 2024 21:35:49 +0000 (UTC)
-From: Peter Senna Tschudin <me@petersenna.com>
-To: igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com, andi.shyti@linux.intel.com,
- Peter Senna Tschudin <peter.senna@gmail.com>
-Subject: [PATCH i-g-t v2] Fix memory access issue due to variable block scope
-Date: Mon, 25 Mar 2024 22:35:48 +0100
-Message-ID: <20240325213548.2881-1-me@petersenna.com>
-X-Mailer: git-send-email 2.44.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id CC32E10EB11;
+	Mon, 25 Mar 2024 21:56:29 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PK17++hq";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8743F10EB14
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Mar 2024 21:56:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711403788; x=1742939788;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=3/u/HpVBjdv60JTAPSzrd2pvnlrwmV2SlalsfSsOW3s=;
+ b=PK17++hqVhxZUvfLuA07HcoilV0emb1uVkAMrNJpZsfCQR5pcZoUultd
+ ftIOGEzHH+pU6JrnsDP7K3BwWb88dEtk+QdH8fHv4/z/1w+lAeLBPjex1
+ kWFbQm+QOm97pxZSxCWsOKOPsJ7/JpwcUiC14sA8eCbEP4Gbyg500/h/y
+ sLT1/oLBvQzJnzqnvZJqeFBrvBrd48p5JBYFytR9oOyGpvTXI2yDBUJ8a
+ KTAjFQvSsrPtprORM5kAx9JFEuqkZ7uPn3puEtg3Rlok0nKni6l2qhNjJ
+ 4MClr3gMgwMo0RFUCGjp/N0jPNCwgwmqbYhDItet/qLOetYavrdcRq8Te Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6540572"
+X-IronPort-AV: E=Sophos;i="6.07,154,1708416000"; 
+   d="scan'208";a="6540572"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2024 14:56:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,154,1708416000"; d="scan'208";a="20413096"
+Received: from saurabhg-nuc10i5fnh.jf.intel.com ([10.165.21.145])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Mar 2024 14:56:27 -0700
+From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+To: 
+Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Subject: [PATCH i-g-t v1 3/3] tests/xe_ccs: Check if platform supports
+ compression
+Date: Tue, 26 Mar 2024 02:54:38 -0700
+Message-Id: <1d66863d0c0ba1e70c8a668ed88a1ed69321e29f.1711444735.git.akshata.jahagirdar@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1711444735.git.akshata.jahagirdar@intel.com>
+References: <cover.1711444735.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: me@petersenna.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,62 +66,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patch fixes the tests gem_exec_capture@many-4k-incremental and
-gem_exec_capture@many-4k-zero that are currently failing with an invalid file
-descriptor error.
+Add check before running the test to ensure the platform supports
+compression and has flat ccs enabled.
 
- struct intel_execution_engine2 *
- intel_get_current_engine(struct intel_engine_data *ed)
-
-When intel_get_current_engine is called from the macro
-for_each_ctx_cfg_engine(), the variable *ed is defined within a for loop. The
-scope of *ed is limited to that loop, leading to access violations when
-attempting to access its contents outside the loop.
-
-Before to this patch, intel_get_current_engine() would return an element of *ed
-and attempting to use it after the loop ended resulted in undefined behavior.
-
-This patch introduces a memcpy() to copy the contents of ed->current_engine to
-a memory area not confined by the loop's scope, ensuring safe access to the
-data.
-
-v2: Added 'i-g-t' to the Subject.
-
-Signed-off-by: Peter Senna Tschudin <peter.senna@gmail.com>
+Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 ---
- lib/i915/gem_engine_topology.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ tests/intel/xe_ccs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-index afb576afb..b3b809482 100644
---- a/lib/i915/gem_engine_topology.c
-+++ b/lib/i915/gem_engine_topology.c
-@@ -189,12 +189,24 @@ static int __query_engine_list(int fd, struct intel_engine_data *ed)
- struct intel_execution_engine2 *
- intel_get_current_engine(struct intel_engine_data *ed)
- {
-+	struct intel_execution_engine2 *ret = NULL;
-+
- 	if (ed->n >= ed->nengines)
- 		ed->current_engine = NULL;
- 	else if (!ed->n)
- 		ed->current_engine = &ed->engines[0];
+diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+index 8fe1f62eb..b424a1d6d 100644
+--- a/tests/intel/xe_ccs.c
++++ b/tests/intel/xe_ccs.c
+@@ -718,6 +718,7 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+ 	igt_fixture {
+ 		xe = drm_open_driver(DRIVER_XE);
+ 		igt_require(blt_has_block_copy(xe));
++		igt_require(blt_platform_supports_compression(xe));
+ 		if (AT_LEAST_GEN(xe, 20))
+ 			igt_require(HAS_FLATCCS(xe));
  
--	return ed->current_engine;
-+	// When called from the macro for_each_ctx_cfg_engine(), *ed is defined
-+	// inside a for loop. In that case, not memcping ed->current_engine
-+	// will lead to a memory access violation when trying to access the
-+	// contents of ed->current_engine after the end of the for loop
-+	if (ed->current_engine) {
-+		ret = malloc(sizeof(*ret));
-+		if (ret)
-+			memcpy(ret, ed->current_engine, sizeof(*ret));
-+	}
-+
-+	return ret;
- }
- 
- void intel_next_engine(struct intel_engine_data *ed)
 -- 
 2.34.1
 
