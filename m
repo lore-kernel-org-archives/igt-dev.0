@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93A93C6FD1F
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 09:31:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 054A9C6FD1F
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 09:31:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 37FEF10EE22;
-	Tue, 26 Mar 2024 09:31:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 99B1110EE25;
+	Tue, 26 Mar 2024 09:31:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S2hsBwEf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Qtc4QL+q";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 19B9910EE25
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 09:31:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C93AA10EE25
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 09:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711445467; x=1742981467;
+ t=1711445476; x=1742981476;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=XDZEkLdIuZ7sdwTGqs85MqtwF7bTmFSTsLolNGwMqNM=;
- b=S2hsBwEfkA05uL63BTSQwbSiGZnXux3/iPGC61Wse4DRz1XAP20qdUIV
- G0fzJovPcePMJJm2RdZ0KSkntCWnZ3TQdXKY33Le4EC70u4cwg/uecwSS
- L78NiAlZY01uf9A5qDDmyATOIXDfwKJTOl4EqmK5ApWa1n0w5o74SzH3b
- +LzeXsu0MKp7CLBRn+CpHxOU67vlEW+5pQS4XS8jMC4is1fmJdMakLhas
- M7vFR/30zelTlVvQFb10/wN8eJu1BDkPVfA2vi2Yyo1fmnkxDihmPCHwQ
- 1+Gz7NlCwYnAU3cdcnAFWleGGuTid/iSug4JqmHihFr3nhWIeFMQSTkjm w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6351263"
+ bh=5lExDwMmMd178OYtJLkNvbzuMFEW6mn1SaPIqoK69uk=;
+ b=Qtc4QL+qJ6QHFVcYq9d14pXFGOBOqcD/JXZGY/tf+6yPcZgfI+LXdoTT
+ cxEWhQO0varPoEppCboi3jCSA48/6dkJbXAbUpOiM9TsGl5GjEbp18NnM
+ nboMCfk9Akv7m/OvX9dEv6yg3dMwEeJVE8yIw+kBTrYbr+MIu+EGSf5ab
+ tj+R1h/Gy5fw6OjaQdI16wDK5DlAA8HO79zvMXDdBn2lZvv68QLLEXX1h
+ ey5MQzhJu8RSzlIV8RB4Pen1iCk7cHEBdVxFg4LTScjqa/4cVPOc5ZhCz
+ f6mWeRo735buQq/+0FE9KR4CIxrqQxQ0JjtCldxjB+H/TU9v7kHmkU9YP Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6351272"
 X-IronPort-AV: E=Sophos;i="6.07,155,1708416000"; 
-   d="scan'208";a="6351263"
+   d="scan'208";a="6351272"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2024 02:31:06 -0700
+ 26 Mar 2024 02:31:15 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,155,1708416000"; d="scan'208";a="15875733"
+X-IronPort-AV: E=Sophos;i="6.07,155,1708416000"; d="scan'208";a="15875748"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2024 02:31:05 -0700
+ 26 Mar 2024 02:31:14 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
@@ -45,10 +45,10 @@ Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
  Aditya Chauhan <aditya.chauhan@intel.com>,
  Girotra Himanshu <himanshu.girotra@intel.com>
-Subject: [PATCH i-g-t v2 12/13] tests/intel: Unify functionality for compute
- tests
-Date: Tue, 26 Mar 2024 09:29:06 +0000
-Message-Id: <20240326092907.1979345-13-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v2 13/13] tests/intel: Move xe_exec_reset.c to Reset
+ Sub-category
+Date: Tue, 26 Mar 2024 09:29:07 +0000
+Message-Id: <20240326092907.1979345-14-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240326092907.1979345-1-katarzyna.piecielska@intel.com>
 References: <20240326092907.1979345-1-katarzyna.piecielska@intel.com>
@@ -69,14 +69,11 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's clean up functionality for Xe compute tests:
+It looks like Sub-category=Reset and Functionality=gt reset is better
+for xe_exec_reset.c test.
 
-	s/compute machine/compute/ for xe_exec_compute_mode.c
-	s/compute VM bind/VM bind/ for igt@xe_noexec_ping_pong.c
-	s/compute openCL kernel/openCL kernel/ for xe_compute*.c
-	s/ccs_mode user interface/ccs mode/ for xe_compute@ccs-mode-*
-
-v2:  s/compute openCL kernel/OpenCL kernel/ for xe_compute*.c (Kamil)
+v2: Change Functionality s/reset/sysfs reset/ in device_reset.c,
+gem_reset_stats.c, gem_eio.c (Kamil)
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
@@ -85,101 +82,65 @@ Cc: Aditya Chauhan <aditya.chauhan@intel.com>
 Cc: Girotra Himanshu <himanshu.girotra@intel.com>
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_compute.c           | 6 +++---
- tests/intel/xe_compute_preempt.c   | 6 +++---
- tests/intel/xe_exec_compute_mode.c | 2 +-
- tests/intel/xe_noexec_ping_pong.c  | 2 +-
- 4 files changed, 8 insertions(+), 8 deletions(-)
+ tests/device_reset.c          | 1 -
+ tests/intel/gem_eio.c         | 2 +-
+ tests/intel/gem_reset_stats.c | 2 +-
+ tests/intel/xe_exec_reset.c   | 4 ++--
+ 4 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index 9cf359383..e773e798a 100644
---- a/tests/intel/xe_compute.c
-+++ b/tests/intel/xe_compute.c
-@@ -44,7 +44,7 @@ static bool get_num_cslices(u32 gt, u32 *num_slices)
-  * SUBTEST: ccs-mode-basic
-  * GPU requirement: PVC
-  * Description: Validate 'ccs_mode' sysfs uapi
-- * Functionality: ccs_mode user interface
-+ * Functionality: ccs mode
-  */
- static void
- test_ccs_mode(int num_gt)
-@@ -111,7 +111,7 @@ test_ccs_mode(int num_gt)
-  * SUBTEST: ccs-mode-compute-kernel
-  * GPU requirement: PVC
-  * Description: Validate 'ccs_mode' by running compute kernel
-- * Functionality: CCS mode funtionality
-+ * Functionality: ccs mode
-  */
- static void
- test_compute_kernel_with_ccs_mode(int num_gt)
-@@ -158,7 +158,7 @@ test_compute_kernel_with_ccs_mode(int num_gt)
-  * Description:
-  *	Run an openCL Kernel that returns output[i] = input[i] * input[i],
-  *	for an input dataset..
-- * Functionality: compute openCL kernel
-+ * Functionality: OpenCL kernel
-  */
- static void
- test_compute_square(int fd)
-diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
-index 45aa15c78..b8448ef91 100644
---- a/tests/intel/xe_compute_preempt.c
-+++ b/tests/intel/xe_compute_preempt.c
-@@ -7,6 +7,7 @@
-  * TEST: Check compute-related preemption functionality
-  * Category: Hardware building block
-  * Sub-category: Compute
-+ * Functionality: OpenCL kernel
-  * Test category: functionality test
+diff --git a/tests/device_reset.c b/tests/device_reset.c
+index e19e672ce..583a59039 100644
+--- a/tests/device_reset.c
++++ b/tests/device_reset.c
+@@ -39,7 +39,6 @@
+  *   validating device resets
+  * Category: Infrastructure
+  * Sub-category: SysMan
+- * Functionality: reset
+  * Feature: reset, sriov-reset
   */
  
-@@ -21,17 +22,16 @@
-  * GPU requirement: LNL
-  * Description:
-  *      Exercise compute walker mid thread preemption scenario
-- * Functionality: compute openCL kernel
-+ *
-  * SUBTEST: compute-preempt-many
-  * GPU requirement: LNL
-  * Description:
-  *      Exercise multiple walker mid thread preemption scenario
-- * Functionality: compute openCL kernel
-+ *
-  * SUBTEST: compute-threadgroup-preempt
-  * GPU requirement: LNL
-  * Description:
-  *      Exercise compute walker threadgroup preemption scenario
-- * Functionality: compute openCL kernel
-  */
- static void
- test_compute_preempt(int fd, struct drm_xe_engine_class_instance *hwe, bool threadgroup_preemption)
-diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-index c1f703c43..3ec848164 100644
---- a/tests/intel/xe_exec_compute_mode.c
-+++ b/tests/intel/xe_exec_compute_mode.c
-@@ -7,7 +7,7 @@
-  * TEST: Basic tests for execbuf compute machine functionality
-  * Category: Hardware building block
-  * Sub-category: CMD submission
-- * Functionality: compute machine
-+ * Functionality: compute
-  */
- 
- #include <fcntl.h>
-diff --git a/tests/intel/xe_noexec_ping_pong.c b/tests/intel/xe_noexec_ping_pong.c
-index 51f28d9d0..f88f2af9d 100644
---- a/tests/intel/xe_noexec_ping_pong.c
-+++ b/tests/intel/xe_noexec_ping_pong.c
-@@ -19,7 +19,7 @@
-  * TEST: Expose compute VM's unnecessary rebinds
-  * Category: Hardware building block
-  * Sub-category: Compute
-- * Functionality: compute VM rebind
-+ * Functionality: VM rebind
-  * Test category: functionality test
+diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
+index 4661a8959..c2fdff7c0 100644
+--- a/tests/intel/gem_eio.c
++++ b/tests/intel/gem_eio.c
+@@ -58,7 +58,7 @@
+  * Description: Test that specific ioctls report a wedged GPU (EIO).
+  * Category: Infrastructure
+  * Feature: reset uapi
+- * Functionality: reset
++ * Functionality: sysfs reset
+  * Sub-category: uapi
+  * Test category: GEM_Legacy
   *
-  * SUBTEST:
+diff --git a/tests/intel/gem_reset_stats.c b/tests/intel/gem_reset_stats.c
+index 18875a530..fdad7600c 100644
+--- a/tests/intel/gem_reset_stats.c
++++ b/tests/intel/gem_reset_stats.c
+@@ -51,7 +51,7 @@
+  * TEST: gem reset stats
+  * Sub-category: uapi
+  * Category: Desktop client
+- * Functionality: reset
++ * Functionality: sysfs reset
+  *
+  * SUBTEST: ban-blt
+  *
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 22735688a..cc10900d9 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -6,8 +6,8 @@
+ /**
+  * TEST: Basic tests for execbuf functionality for virtual and parallel exec_queues
+  * Category: Hardware building block
+- * Sub-category: CMD submission
+- * Functionality: reset
++ * Sub-category: Reset
++ * Functionality: gt reset
+  * Test category: functionality test
+  */
+ 
 -- 
 2.34.1
 
