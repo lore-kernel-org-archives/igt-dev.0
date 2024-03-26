@@ -4,62 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D33FC6FD1F
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 11:15:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A6E1C6FD1F
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 11:17:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D136110EE8C;
-	Tue, 26 Mar 2024 11:15:37 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B22FBe98";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA2DF10EE8C;
- Tue, 26 Mar 2024 11:15:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711451737; x=1742987737;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=T8KpcWKWM0F5074ClKpGDlFLhuRBpv681FmQ1IsxaUw=;
- b=B22FBe9864P1cY9SE+/dc/tF09hpUGxWF/2YIrlMHusrdSvYl9vSSxft
- it3ykHKjTxl3hjjUkx9Fajwg0K4K3Hb2BbU5JwWVqcqFt7PRfa7IH5Oi2
- FAp26lx+wQ7lVkwwW99elbGo7URfa8TVxdgSsmt4dctLzyrEa1daw4rxF
- XtdG2z6wMu1+vuC/FoqqXDkbWAiJr2BmpUxmppIWBk9p+BQkrfVQIniLp
- 0Xa8WKDlSMGCZFyviCqq/CVlEC6OxpWqxPqkGK9e3csRtWRThbOVUoIP2
- vckmGfSrEMU36x2pZAiEaG0FZLkjBTuZB199x1Yf4JGAy8ENXDdmKBXMF A==;
-X-CSE-ConnectionGUID: cX1vnko5QTKUBC6cmCjvdQ==
-X-CSE-MsgGUID: HfcV4qufSeyITIHOgfSFww==
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6625795"
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="6625795"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2024 04:15:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; d="scan'208";a="20591631"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 04:15:35 -0700
-Date: Tue, 26 Mar 2024 12:15:32 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>,
- I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
- TejasreeX Illipilli <tejasreex.illipilli@intel.com>
-Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVA==?= =?utf-8?Q?=3A?= failure for
- i915/gem_exec_whisper: Limit workload (rev2)
-Message-ID: <20240326111532.vhjq2lqn7jw3xf64@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Jonathan Cavitt <jonathan.cavitt@intel.com>,
- I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
- TejasreeX Illipilli <tejasreex.illipilli@intel.com>
-References: <20240325161357.2588401-1-jonathan.cavitt@intel.com>
- <171142529307.1039408.10558496569297405833@8e613ede5ea5>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 44FB410EE9A;
+	Tue, 26 Mar 2024 11:17:06 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B9EF110EE9A;
+ Tue, 26 Mar 2024 11:17:05 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============9163688850958826952=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <171142529307.1039408.10558496569297405833@8e613ede5ea5>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Align_Xe_test_documentation_to?=
+ =?utf-8?q?_recent_i915_changes_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Katarzyna Piecielska" <katarzyna.piecielska@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 26 Mar 2024 11:17:05 -0000
+Message-ID: <171145182575.1039951.7404498552861707803@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240326092907.1979345-1-katarzyna.piecielska@intel.com>
+In-Reply-To: <20240326092907.1979345-1-katarzyna.piecielska@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,87 +37,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-03-26 at 03:54:53 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: i915/gem_exec_whisper: Limit workload (rev2)
-> URL   : https://patchwork.freedesktop.org/series/131448/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from IGT_7782_full -> IGTPW_10902_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_10902_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_10902_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10902/index.html
-> 
-> Participating hosts (9 -> 9)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_10902_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@gem_eio@kms:
->     - shard-snb:          [PASS][1] -> [INCOMPLETE][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7782/shard-snb5/igt@gem_eio@kms.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10902/shard-snb6/igt@gem_eio@kms.html
-> 
->   * igt@kms_cursor_legacy@cursor-vs-flip-varying-size:
->     - shard-dg1:          NOTRUN -> [INCOMPLETE][3]
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10902/shard-dg1-15/igt@kms_cursor_legacy@cursor-vs-flip-varying-size.html
-> 
->   * igt@kms_flip@absolute-wf_vblank@c-hdmi-a1:
->     - shard-glk:          NOTRUN -> [INCOMPLETE][4]
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10902/shard-glk3/igt@kms_flip@absolute-wf_vblank@c-hdmi-a1.html
-> 
->   * igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible@a-hdmi-a4:
->     - shard-dg1:          [PASS][5] -> [FAIL][6]
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7782/shard-dg1-15/igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible@a-hdmi-a4.html
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10902/shard-dg1-15/igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible@a-hdmi-a4.html
->
+--===============9163688850958826952==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This is unrelated to changes in gem_exec_whisper.
+== Series Details ==
 
-Regards,
-Kamil
+Series: Align Xe test documentation to recent i915 changes (rev2)
+URL   : https://patchwork.freedesktop.org/series/131492/
+State : success
 
-> 
+== Summary ==
 
-...cut...
+CI Bug Log - changes from XEIGT_7782_BAT -> XEIGTPW_10914_BAT
+====================================================
 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7782 -> IGTPW_10902
-> 
->   CI-20190529: 20190529
->   CI_DRM_14479: d1ecfbbbb194e8f7941bd84f77f7c938b4
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10902/index.html
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10914_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
+    - bat-dg2-oem2:       [TIMEOUT][1] ([Intel XE#1027] / [Intel XE#1088]) -> [INCOMPLETE][2] ([Intel XE#804])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7782/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10914/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+
+  
+  [Intel XE#1027]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1027
+  [Intel XE#1088]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1088
+  [Intel XE#804]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/804
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7782 -> IGTPW_10914
+  * Linux: xe-988-d1ecfbbbb194e8f7941bd84f77f7c938b461ce14 -> xe-992-d652ec2b081fc8e252cc86ee84f72a3b78ee9732
+
+  IGTPW_10914: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10914/index.html
+  IGT_7782: a404f73182948e843640d00cc279883391cf6ef4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-988-d1ecfbbbb194e8f7941bd84f77f7c938b461ce14: d1ecfbbbb194e8f7941bd84f77f7c938b461ce14
+  xe-992-d652ec2b081fc8e252cc86ee84f72a3b78ee9732: d652ec2b081fc8e252cc86ee84f72a3b78ee9732
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10914/index.html
+
+--===============9163688850958826952==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Align Xe test documentation to recent i915 changes (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131492/">https://patchwork.freedesktop.org/series/131492/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10914/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10914/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7782_BAT -&gt; XEIGTPW_10914_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10914_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7782/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1027">Intel XE#1027</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1088">Intel XE#1088</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10914/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/804">Intel XE#804</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7782 -&gt; IGTPW_10914</li>
+<li>Linux: xe-988-d1ecfbbbb194e8f7941bd84f77f7c938b461ce14 -&gt; xe-992-d652ec2b081fc8e252cc86ee84f72a3b78ee9732</li>
+</ul>
+<p>IGTPW_10914: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10914/index.html<br />
+  IGT_7782: a404f73182948e843640d00cc279883391cf6ef4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-988-d1ecfbbbb194e8f7941bd84f77f7c938b461ce14: d1ecfbbbb194e8f7941bd84f77f7c938b461ce14<br />
+  xe-992-d652ec2b081fc8e252cc86ee84f72a3b78ee9732: d652ec2b081fc8e252cc86ee84f72a3b78ee9732</p>
+
+</body>
+</html>
+
+--===============9163688850958826952==--
