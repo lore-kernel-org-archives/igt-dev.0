@@ -4,42 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4197CD11DD
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 13:19:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 393DDCD11DD
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 13:20:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A351F10E9BA;
-	Tue, 26 Mar 2024 13:19:01 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
- [217.70.183.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C273D10E9BA
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 13:18:59 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2F48A40005
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 13:18:56 +0000 (UTC)
-Received: by mail-ej1-f47.google.com with SMTP id
- a640c23a62f3a-a46d0a8399aso1084985566b.1
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 06:18:56 -0700 (PDT)
-X-Gm-Message-State: AOJu0YybxkRTm0je2/dv4SnkeC3Ler5Jwd/6mDhUqogWwp9hz0JAD1vj
- vzOpGCWRH+pHhPMu4mmUGSOxYNWP4NqdnsutcmBc2OaXiiz+6AjTWpF6Fairwv/+woEcJhPYX/C
- vh9kFW0qRMJzVlUSegi58FAzEpDI=
-X-Google-Smtp-Source: AGHT+IH4q5EnTq01TyXYQtjjdJjz4YHnK4Yku0PzKwxv0SKvhLIDVtlGrm220ycbRdCmtTMQzbWWQgN9eWH5xSkSPeE=
-X-Received: by 2002:a17:906:c311:b0:a46:a8b8:f4cf with SMTP id
- s17-20020a170906c31100b00a46a8b8f4cfmr1131757ejz.35.1711459136665; Tue, 26
- Mar 2024 06:18:56 -0700 (PDT)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E2C1C10EE3E;
+	Tue, 26 Mar 2024 13:20:44 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QKI9Stm4";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A54910E9E2
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 13:20:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711459243; x=1742995243;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=gFyjRpWW9UtrhTXoLFxp1H0/vo5aJU69IxHQs4bUWWw=;
+ b=QKI9Stm4d2B19431pnA+xCz0gKe6TjrlE2th2n9g4KEKsPdjQLaZOvix
+ 6hTm0b2aUk6jNXz7JA9UAmAPg+DXLyVquC8Dz1ocLP4fP1szDmFbvP1HG
+ iwlAtjoPIlWBKHlLYQsKC95pExFueN60l48rJ6s4lAoS5yP59TQ3bC7Vs
+ RVYeVwtWwIfHknaNwVMY8t+kfQp/K8brKVuC7TZEdZc8GQcg83KtbCPWc
+ K7Tg0OPAtMqFj1HP9gIInxLWYZBGcmoaO3LytUWxlaJShhfjFtq729wNX
+ HG0JuCIKzbEq3wn8YaIKsnVQby9c8dbDYizr/QxEAC+F/TCrMaNyRaKaT A==;
+X-CSE-ConnectionGUID: 7NTFs/GaR3uFbEMTcsaeJQ==
+X-CSE-MsgGUID: 2G70NfGiRiac5TSEBjJjaw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="10302173"
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; d="scan'208";a="10302173"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2024 06:20:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; d="scan'208";a="20508283"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO jhogande-mobl1.intel.com)
+ ([10.252.55.55])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2024 06:20:41 -0700
+From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
+Subject: [PATCH i-g-t 1/2] tests/kms_pm_dc: Ensure PSR is enabled
+Date: Tue, 26 Mar 2024 15:20:11 +0200
+Message-Id: <20240326132012.3747302-1-jouni.hogander@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240325213548.2881-1-me@petersenna.com>
- <ZgK58ZwkJxhF6G6C@ashyti-mobl2.lan>
-In-Reply-To: <ZgK58ZwkJxhF6G6C@ashyti-mobl2.lan>
-From: Peter Senna Tschudin <me@petersenna.com>
-Date: Tue, 26 Mar 2024 14:18:43 +0100
-X-Gmail-Original-Message-ID: <CA+MoWDpEpvpfbGEroLCCi=6dA+qeGu_i6h9VhYt3HMZyfzZ8Ug@mail.gmail.com>
-Message-ID: <CA+MoWDpEpvpfbGEroLCCi=6dA+qeGu_i6h9VhYt3HMZyfzZ8Ug@mail.gmail.com>
-Subject: Re: [PATCH i-g-t v2] Fix memory access issue due to variable block
- scope
-To: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: me@petersenna.com
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,124 +63,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: peter.senna@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Andi,
+In certain cases PSR support is informed, but it doesn't get enabled
+due to some limitations. This is causing failures which are actually just
+expected behaviour. Fix this by checking PSR is really enabled and skip in
+case it is not
 
-Thank you for your reply.
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9737
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+---
+ tests/intel/kms_pm_dc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-On Tue, Mar 26, 2024 at 1:05=E2=80=AFPM Andi Shyti <andi.shyti@linux.intel.=
-com> wrote:
->
-> Hey Peter,
->
-> On Mon, Mar 25, 2024 at 10:35:48PM +0100, Peter Senna Tschudin wrote:
-> > This patch fixes the tests gem_exec_capture@many-4k-incremental and
-> > gem_exec_capture@many-4k-zero that are currently failing with an invali=
-d file
-> > descriptor error.
->
-> where is gem_exec_capture calling for_each_ctx_cfg_engine()?
+diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+index 7deebf83d..176f7a04b 100644
+--- a/tests/intel/kms_pm_dc.c
++++ b/tests/intel/kms_pm_dc.c
+@@ -399,6 +399,7 @@ static void test_dc_state_psr(data_t *data, int dc_flag)
+ 	dc_counter_before_psr = read_dc_counter(data->debugfs_fd, dc_flag);
+ 	setup_output(data);
+ 	setup_primary(data);
++	igt_require(!psr_disabled_check(data->debugfs_fd));
+ 	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
+ 	check_dc_counter(data, dc_flag, dc_counter_before_psr);
+ 	cleanup_dc_psr(data);
+@@ -605,6 +606,7 @@ static void test_pkgc_state_psr(data_t *data)
+ 	prev_value = read_pkgc_counter(data->debugfs_root_fd);
+ 	setup_output(data);
+ 	setup_primary(data);
++	igt_require(!psr_disabled_check(data->debugfs_fd));
+ 	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
+ 	psr_dpms(data, DRM_MODE_DPMS_OFF);
+ 	igt_wait((cur_value = read_pkgc_counter(data->debugfs_root_fd)) > prev_value,
+-- 
+2.34.1
 
-many(), userptr(), capture_invisible()
-    find_first_available_engine()
-        for_each_ctx_engine()
-
-When called by many(), 'e' gets corrupted when configure_hangs() tries
-to assign 'e' to another variable. Then after 'e' is corrupted, the
-call __captureN() will fail because it expects 'e' to be valid.
-
->
-> >  struct intel_execution_engine2 *
-> >  intel_get_current_engine(struct intel_engine_data *ed)
-> >
-> > When intel_get_current_engine is called from the macro
-> > for_each_ctx_cfg_engine(), the variable *ed is defined within a for loo=
-p. The
-> > scope of *ed is limited to that loop, leading to access violations when
-> > attempting to access its contents outside the loop.
-> >
-> > Before to this patch, intel_get_current_engine() would return an elemen=
-t of *ed
-> > and attempting to use it after the loop ended resulted in undefined beh=
-avior.
-> >
-> > This patch introduces a memcpy() to copy the contents of ed->current_en=
-gine to
-> > a memory area not confined by the loop's scope, ensuring safe access to=
- the
-> > data.
-> >
-> > v2: Added 'i-g-t' to the Subject.
-> >
-> > Signed-off-by: Peter Senna Tschudin <peter.senna@gmail.com>
-> > ---
-> >  lib/i915/gem_engine_topology.c | 14 +++++++++++++-
-> >  1 file changed, 13 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topol=
-ogy.c
-> > index afb576afb..b3b809482 100644
-> > --- a/lib/i915/gem_engine_topology.c
-> > +++ b/lib/i915/gem_engine_topology.c
-> > @@ -189,12 +189,24 @@ static int __query_engine_list(int fd, struct int=
-el_engine_data *ed)
-> >  struct intel_execution_engine2 *
-> >  intel_get_current_engine(struct intel_engine_data *ed)
-> >  {
-> > +     struct intel_execution_engine2 *ret =3D NULL;
-> > +
-> >       if (ed->n >=3D ed->nengines)
-> >               ed->current_engine =3D NULL;
-> >       else if (!ed->n)
-> >               ed->current_engine =3D &ed->engines[0];
-> >
-> > -     return ed->current_engine;
-> > +     // When called from the macro for_each_ctx_cfg_engine(), *ed is d=
-efined
-> > +     // inside a for loop. In that case, not memcping ed->current_engi=
-ne
-> > +     // will lead to a memory access violation when trying to access t=
-he
-> > +     // contents of ed->current_engine after the end of the for loop
->
-> can you please use /* ... */ style of comment?
-
-sure, thank you for pointing this out.
-
->
-> > +     if (ed->current_engine) {
-> > +             ret =3D malloc(sizeof(*ret));
->
-> should this be freed at some point?
-
-I am not convinced that his patch is the best approach. If the problem
-is indeed the block scope of '*ed', I will propose to give
-for_each_ctx_engine() some serious love. I tried to come up with a
-proper solution but I failed to find one. The problems I faced are:
- - for_each_ctx_engine() requires an struct intel_execution_engine2 as
-an iterator
- - I did not find any way to keep for_each_ctx_engine() as a macro and
-change the scope(other than declaring ed outside the macro, argh...).
- - Because for_each_ctx_engine() is a macro, I could not find a
-compiler friendly way to define the struct intel_execution_engine2
-within the macro
- - To use free() 'properly', we need to save the information of when
-'e' was allocated to prevent the code from trying to free something
-that should not be freed.
-
-This is why I asked for help here* on how you want me to fix it: I am
-under the impression that there is not a good solution for this
-problem. And then it becomes a question of long term maintenance.
-Should we drop the macro? Forbid the use of 'e' after the macro ends?
-Properly trace memory allocation of 'e' to prevent the potential
-free() issue? Something else? Please let me know.
-
-* - https://lists.freedesktop.org/archives/igt-dev/2024-March/070468.html
-
-
-
->
-> Andi
