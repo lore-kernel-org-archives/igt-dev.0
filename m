@@ -4,49 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 393DDCD11DD
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 13:20:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CC5CCD11DD
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 13:20:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E2C1C10EE3E;
-	Tue, 26 Mar 2024 13:20:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9238710E9E2;
+	Tue, 26 Mar 2024 13:20:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QKI9Stm4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OYcKX6AC";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A54910E9E2
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 13:20:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E6B4010EE3E
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 13:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711459243; x=1742995243;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=gFyjRpWW9UtrhTXoLFxp1H0/vo5aJU69IxHQs4bUWWw=;
- b=QKI9Stm4d2B19431pnA+xCz0gKe6TjrlE2th2n9g4KEKsPdjQLaZOvix
- 6hTm0b2aUk6jNXz7JA9UAmAPg+DXLyVquC8Dz1ocLP4fP1szDmFbvP1HG
- iwlAtjoPIlWBKHlLYQsKC95pExFueN60l48rJ6s4lAoS5yP59TQ3bC7Vs
- RVYeVwtWwIfHknaNwVMY8t+kfQp/K8brKVuC7TZEdZc8GQcg83KtbCPWc
- K7Tg0OPAtMqFj1HP9gIInxLWYZBGcmoaO3LytUWxlaJShhfjFtq729wNX
- HG0JuCIKzbEq3wn8YaIKsnVQby9c8dbDYizr/QxEAC+F/TCrMaNyRaKaT A==;
-X-CSE-ConnectionGUID: 7NTFs/GaR3uFbEMTcsaeJQ==
-X-CSE-MsgGUID: 2G70NfGiRiac5TSEBjJjaw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="10302173"
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; d="scan'208";a="10302173"
+ t=1711459244; x=1742995244;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=0ViXYX+cC2WJZrVHEIDda/MfneA6nzg4Jzy4bDiCJ10=;
+ b=OYcKX6ACO2Hhy/laMQl9rL1Ub/gg+8AzRSZ+eH/SwXnAE68UTXCpHahc
+ Wp5Q1nSaW9hQh4AFQMFu1mTr0ziLtxgmFjQW9CUaJflrOCS8XwPnQPSrt
+ DwiOEuahIhNa57VX0HoTeeiC57j2DeBc3i/hG0XOtUkweCq3XxJIF8nDR
+ V3O1LPg9jVzByIxTAl07tl12AtvoMvBfqmiil/EUHlwOw+3cc4eTccuoL
+ E4XCECIgljaHkGtdCg7EVc8Ncxq40qLv++iPgIEzdPEwXcxc5nJpG6VTN
+ V7gwmbgcNX8ugq8eBv6JMMyCJt6XYA22izEMBlH/E4vZyAfQXXArhB8zZ A==;
+X-CSE-ConnectionGUID: sobBUNkXROedH59btgiEjw==
+X-CSE-MsgGUID: CSzHjZU4SrWmwp0DV8pcDg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="10302176"
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; d="scan'208";a="10302176"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2024 06:20:43 -0700
+ 26 Mar 2024 06:20:44 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; d="scan'208";a="20508283"
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; d="scan'208";a="20508290"
 Received: from rvuia-mobl.ger.corp.intel.com (HELO jhogande-mobl1.intel.com)
  ([10.252.55.55])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2024 06:20:41 -0700
+ 26 Mar 2024 06:20:43 -0700
 From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-Subject: [PATCH i-g-t 1/2] tests/kms_pm_dc: Ensure PSR is enabled
-Date: Tue, 26 Mar 2024 15:20:11 +0200
-Message-Id: <20240326132012.3747302-1-jouni.hogander@intel.com>
+Subject: [PATCH i-g-t 2/2]  tests/kms_dirtyfb: Ensure PSR is enabled
+Date: Tue, 26 Mar 2024 15:20:12 +0200
+Message-Id: <20240326132012.3747302-2-jouni.hogander@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240326132012.3747302-1-jouni.hogander@intel.com>
+References: <20240326132012.3747302-1-jouni.hogander@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
@@ -71,32 +73,24 @@ due to some limitations. This is causing failures which are actually just
 expected behaviour. Fix this by checking PSR is really enabled and skip in
 case it is not
 
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9737
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9735
 Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
 ---
- tests/intel/kms_pm_dc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/intel/kms_dirtyfb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 7deebf83d..176f7a04b 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -399,6 +399,7 @@ static void test_dc_state_psr(data_t *data, int dc_flag)
- 	dc_counter_before_psr = read_dc_counter(data->debugfs_fd, dc_flag);
- 	setup_output(data);
- 	setup_primary(data);
-+	igt_require(!psr_disabled_check(data->debugfs_fd));
- 	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
- 	check_dc_counter(data, dc_flag, dc_counter_before_psr);
- 	cleanup_dc_psr(data);
-@@ -605,6 +606,7 @@ static void test_pkgc_state_psr(data_t *data)
- 	prev_value = read_pkgc_counter(data->debugfs_root_fd);
- 	setup_output(data);
- 	setup_primary(data);
-+	igt_require(!psr_disabled_check(data->debugfs_fd));
- 	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
- 	psr_dpms(data, DRM_MODE_DPMS_OFF);
- 	igt_wait((cur_value = read_pkgc_counter(data->debugfs_root_fd)) > prev_value,
+diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+index 9e4832929..6121599ec 100644
+--- a/tests/intel/kms_dirtyfb.c
++++ b/tests/intel/kms_dirtyfb.c
+@@ -151,6 +151,7 @@ static void check_feature(data_t *data)
+ 			     "FBC still disabled\n");
+ 		break;
+ 	case FEATURE_PSR:
++		igt_require(!psr_disabled_check(data->debugfs_fd));
+ 		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1, NULL),
+ 			     "PSR still disabled\n");
+ 		break;
 -- 
 2.34.1
 
