@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97D41C54E67
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 22:31:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30B50CD11DF
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 22:51:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 35B6C10F40A;
-	Tue, 26 Mar 2024 22:31:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C31BD10F457;
+	Tue, 26 Mar 2024 22:51:11 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B0B210F409;
- Tue, 26 Mar 2024 22:31:26 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 55AA010F457;
+ Tue, 26 Mar 2024 22:51:07 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8030186047795862082=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_Fix_memory_access_issue?=
- =?utf-8?q?_due_to_variable_block_scope_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Fix_memory_access_issue_due_to?=
+ =?utf-8?q?_variable_block_scope_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Peter Senna Tschudin" <me@petersenna.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 26 Mar 2024 22:31:26 -0000
-Message-ID: <171149228624.1054169.5081608609613022794@8e613ede5ea5>
+Date: Tue, 26 Mar 2024 22:51:07 -0000
+Message-ID: <171149346735.1054169.14165301005538081934@8e613ede5ea5>
 X-Patchwork-Hint: ignore
 References: <20240326213937.11750-1-me@petersenna.com>
 In-Reply-To: <20240326213937.11750-1-me@petersenna.com>
@@ -41,43 +41,106 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============8030186047795862082==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: Fix memory access issue due to variable block scope (rev3)
 URL   : https://patchwork.freedesktop.org/series/131602/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7785_BAT -> XEIGTPW_10922_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1138362 for the overview.
+Summary
+-------
 
-build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56836336):
-  Running with gitlab-runner 16.3.0 (8ec04662)
-    on fdo-equinix-m3l-28 _cvnfVvT, system ID: s_d7b83ec7ddf0
-  section_start:1711491874:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
-  Authenticating with credentials from job payload (GitLab Registry)
-  Pulling docker image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
-  WARNING: Failed to pull image with policy "if-not-present": Error response from daemon: Head "https://registry.freedesktop.org/v2/wayland/ci-templates/buildah/manifests/2019-08-13.0": Get "https://gitlab.freedesktop.org/jwt/auth?account=gitlab-ci-token&scope=repository%3Awayland%2Fci-templates%2Fbuildah%3Apull&service=container_registry": net/http: request canceled (Client.Timeout exceeded while awaiting headers) (manager.go:237:15s)
-  section_end:1711491889:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0" with specified policies [if-not-present]: Error response from daemon: Head "https://registry.freedesktop.org/v2/wayland/ci-templates/buildah/manifests/2019-08-13.0": Get "https://gitlab.freedesktop.org/jwt/auth?account=gitlab-ci-token&scope=repository%3Awayland%2Fci-templates%2Fbuildah%3Apull&service=container_registry": net/http: request canceled (Client.Timeout exceeded while awaiting headers) (manager.go:237:15s)
+  **SUCCESS**
+
+  No regressions found.
+
   
 
-build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/56836338):
-  Running with gitlab-runner 16.3.0 (8ec04662)
-    on fdo-equinix-m3l-27 EfLUxtkS, system ID: s_53a5e12e8cde
-  section_start:1711491875:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
-  Authenticating with credentials from job payload (GitLab Registry)
-  Pulling docker image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
-  WARNING: Failed to pull image with policy "if-not-present": Error response from daemon: Head "https://registry.freedesktop.org/v2/wayland/ci-templates/buildah/manifests/2019-08-13.0": Get "https://gitlab.freedesktop.org/jwt/auth?account=gitlab-ci-token&scope=repository%3Awayland%2Fci-templates%2Fbuildah%3Apull&service=container_registry": context deadline exceeded (Client.Timeout exceeded while awaiting headers) (manager.go:237:15s)
-  section_end:1711491892:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0" with specified policies [if-not-present]: Error response from daemon: Head "https://registry.freedesktop.org/v2/wayland/ci-templates/buildah/manifests/2019-08-13.0": Get "https://gitlab.freedesktop.org/jwt/auth?account=gitlab-ci-token&scope=repository%3Awayland%2Fci-templates%2Fbuildah%3Apull&service=container_registry": context deadline exceeded (Client.Timeout exceeded while awaiting headers) (manager.go:237:15s)
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7785 -> IGTPW_10922
+  * Linux: xe-995-79a0d94585cad50ad2446ebdf3f1317b7d18157c -> xe-997-1750e10841917cd6fb9cb84bec2c0e134cca212f
+
+  IGTPW_10922: 10922
+  IGT_7785: 7785
+  xe-995-79a0d94585cad50ad2446ebdf3f1317b7d18157c: 79a0d94585cad50ad2446ebdf3f1317b7d18157c
+  xe-997-1750e10841917cd6fb9cb84bec2c0e134cca212f: 1750e10841917cd6fb9cb84bec2c0e134cca212f
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1138362
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10922/index.html
+
+--===============8030186047795862082==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Fix memory access issue due to variable block scope (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131602/">https://patchwork.freedesktop.org/series/131602/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10922/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10922/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7785_BAT -&gt; XEIGTPW_10922_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7785 -&gt; IGTPW_10922</li>
+<li>Linux: xe-995-79a0d94585cad50ad2446ebdf3f1317b7d18157c -&gt; xe-997-1750e10841917cd6fb9cb84bec2c0e134cca212f</li>
+</ul>
+<p>IGTPW_10922: 10922<br />
+  IGT_7785: 7785<br />
+  xe-995-79a0d94585cad50ad2446ebdf3f1317b7d18157c: 79a0d94585cad50ad2446ebdf3f1317b7d18157c<br />
+  xe-997-1750e10841917cd6fb9cb84bec2c0e134cca212f: 1750e10841917cd6fb9cb84bec2c0e134cca212f</p>
+
+</body>
+</html>
+
+--===============8030186047795862082==--
