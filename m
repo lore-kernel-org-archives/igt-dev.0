@@ -4,46 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68CB1CD11DF
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 21:41:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66AE8CD11DF
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 22:21:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 07A8010F37D;
-	Tue, 26 Mar 2024 21:41:43 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
- [217.70.183.197])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FCBD10F380
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 21:41:41 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DE52E1C0002
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 21:41:39 +0000 (UTC)
-Received: by mail-ej1-f54.google.com with SMTP id
- a640c23a62f3a-a4df5bd63fbso140613166b.2
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 14:41:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1;
- AJvYcCWFVP5cNhYX6DCSw5L6fWRmHjK9e0h5kreZRItzYGmtNWALVhS3X5ZUOrgvlV8jAQm5JNKV99LsLbFVC41tKoOSVKkGIg4/KyCMueksMw==
-X-Gm-Message-State: AOJu0YyZejNN4fwwdOTEHH/QPZokF+jTuW7eSjsDVGTicK/mkNYPsdY9
- RA9PPx8fpK8/mJsJmzajI++2HIg4lVWZBeYEe0LKX99X8TMl6B31f+FRNEJHgqpLb7baA61Avuz
- LB0DOp79/5ycty4zhiQf+R6pu6fY=
-X-Google-Smtp-Source: AGHT+IEtjxOBTqnUqViKbfIq1NeMlM8cqLlqoHR5UCNqhQpirwajgxeQjPAYXaGGtr/0CgE5odT9qU/ojlO4W7ONJJ8=
-X-Received: by 2002:a17:907:944f:b0:a49:452d:e722 with SMTP id
- dl15-20020a170907944f00b00a49452de722mr6808622ejc.29.1711489299321; Tue, 26
- Mar 2024 14:41:39 -0700 (PDT)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 04F9D10F3F5;
+	Tue, 26 Mar 2024 22:21:04 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BFB7D10F3F5;
+ Tue, 26 Mar 2024 22:21:02 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5011522323536666009=="
 MIME-Version: 1.0
-References: <20240325213548.2881-1-me@petersenna.com>
- <ZgK58ZwkJxhF6G6C@ashyti-mobl2.lan>
- <CA+MoWDpEpvpfbGEroLCCi=6dA+qeGu_i6h9VhYt3HMZyfzZ8Ug@mail.gmail.com>
- <20240326182006.xwloqd3ks4vsartq@kamilkon-desk.igk.intel.com>
-In-Reply-To: <20240326182006.xwloqd3ks4vsartq@kamilkon-desk.igk.intel.com>
-From: Peter Senna Tschudin <me@petersenna.com>
-Date: Tue, 26 Mar 2024 22:41:27 +0100
-X-Gmail-Original-Message-ID: <CA+MoWDoKgm43ysBsN+Ta2KG6jSOKuLkznCVxobyfCVzrJKDRZg@mail.gmail.com>
-Message-ID: <CA+MoWDoKgm43ysBsN+Ta2KG6jSOKuLkznCVxobyfCVzrJKDRZg@mail.gmail.com>
-Subject: Re: [PATCH i-g-t v2] Fix memory access issue due to variable block
- scope
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Andi Shyti <andi.shyti@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: me@petersenna.com
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fvm=3A_Fix_WB_?=
+ =?utf-8?q?caching_PAT_index_for_coherency_mode_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jagmeet Randhawa" <jagmeet.randhawa@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 26 Mar 2024 22:21:02 -0000
+Message-ID: <171149166278.1054169.14698598156048593713@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240326181628.130143-1-jagmeet.randhawa@intel.com>
+In-Reply-To: <20240326181628.130143-1-jagmeet.randhawa@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,159 +37,173 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: peter.senna@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kamil,
+--===============5011522323536666009==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thank you for your email!
+== Series Details ==
 
-On Tue, Mar 26, 2024 at 7:20=E2=80=AFPM Kamil Konieczny
-<kamil.konieczny@linux.intel.com> wrote:
->
-> Hi peter.senna,
-> On 2024-03-26 at 14:18:43 +0100, Peter Senna Tschudin wrote:
-> > Hi Andi,
-> >
-> > Thank you for your reply.
-> >
-> > On Tue, Mar 26, 2024 at 1:05=E2=80=AFPM Andi Shyti <andi.shyti@linux.in=
-tel.com> wrote:
-> > >
-> > > Hey Peter,
-> > >
-> > > On Mon, Mar 25, 2024 at 10:35:48PM +0100, Peter Senna Tschudin wrote:
-> > > > This patch fixes the tests gem_exec_capture@many-4k-incremental and
-> > > > gem_exec_capture@many-4k-zero that are currently failing with an in=
-valid file
-> > > > descriptor error.
-> > >
-> > > where is gem_exec_capture calling for_each_ctx_cfg_engine()?
-> >
-> > many(), userptr(), capture_invisible()
-> >     find_first_available_engine()
-> >         for_each_ctx_engine()
-> >
-> > When called by many(), 'e' gets corrupted when configure_hangs() tries
-> > to assign 'e' to another variable. Then after 'e' is corrupted, the
-> > call __captureN() will fail because it expects 'e' to be valid.
-> >
->
-> imho first step whould be to replace macro with a function:
->
-> saved =3D find_first_available_engine(fd, ctx, e);
+Series: tests/intel/xe_vm: Fix WB caching PAT index for coherency mode (rev2)
+URL   : https://patchwork.freedesktop.org/series/131605/
+State : success
 
-When I was done with the replacement function, I found a simple
-solution that seems to be adequate. I made a small change to
-find_first_available_engine() to reassign e to an element of saved. My
-patch v3 has the details. What do you think?
+== Summary ==
 
-May I ask you to increase the time the CI will waits for the tests to compl=
-ete:
- - many-4k-zero: 2 minutes
- - many-4k-incremental: 5 minutes (It takes 4 minutes on my N3150)
+CI Bug Log - changes from XEIGT_7785_BAT -> XEIGTPW_10921_BAT
+====================================================
 
-Thank you,
+Summary
+-------
 
-Peter
+  **SUCCESS**
 
->
-> Regards,
-> Kamil
->
-> > >
-> > > >  struct intel_execution_engine2 *
-> > > >  intel_get_current_engine(struct intel_engine_data *ed)
-> > > >
-> > > > When intel_get_current_engine is called from the macro
-> > > > for_each_ctx_cfg_engine(), the variable *ed is defined within a for=
- loop. The
-> > > > scope of *ed is limited to that loop, leading to access violations =
-when
-> > > > attempting to access its contents outside the loop.
-> > > >
-> > > > Before to this patch, intel_get_current_engine() would return an el=
-ement of *ed
-> > > > and attempting to use it after the loop ended resulted in undefined=
- behavior.
-> > > >
-> > > > This patch introduces a memcpy() to copy the contents of ed->curren=
-t_engine to
-> > > > a memory area not confined by the loop's scope, ensuring safe acces=
-s to the
-> > > > data.
-> > > >
-> > > > v2: Added 'i-g-t' to the Subject.
-> > > >
-> > > > Signed-off-by: Peter Senna Tschudin <peter.senna@gmail.com>
-> > > > ---
-> > > >  lib/i915/gem_engine_topology.c | 14 +++++++++++++-
-> > > >  1 file changed, 13 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_t=
-opology.c
-> > > > index afb576afb..b3b809482 100644
-> > > > --- a/lib/i915/gem_engine_topology.c
-> > > > +++ b/lib/i915/gem_engine_topology.c
-> > > > @@ -189,12 +189,24 @@ static int __query_engine_list(int fd, struct=
- intel_engine_data *ed)
-> > > >  struct intel_execution_engine2 *
-> > > >  intel_get_current_engine(struct intel_engine_data *ed)
-> > > >  {
-> > > > +     struct intel_execution_engine2 *ret =3D NULL;
-> > > > +
-> > > >       if (ed->n >=3D ed->nengines)
-> > > >               ed->current_engine =3D NULL;
-> > > >       else if (!ed->n)
-> > > >               ed->current_engine =3D &ed->engines[0];
-> > > >
-> > > > -     return ed->current_engine;
-> > > > +     // When called from the macro for_each_ctx_cfg_engine(), *ed =
-is defined
-> > > > +     // inside a for loop. In that case, not memcping ed->current_=
-engine
-> > > > +     // will lead to a memory access violation when trying to acce=
-ss the
-> > > > +     // contents of ed->current_engine after the end of the for lo=
-op
-> > >
-> > > can you please use /* ... */ style of comment?
-> >
-> > sure, thank you for pointing this out.
-> >
-> > >
-> > > > +     if (ed->current_engine) {
-> > > > +             ret =3D malloc(sizeof(*ret));
-> > >
-> > > should this be freed at some point?
-> >
-> > I am not convinced that his patch is the best approach. If the problem
-> > is indeed the block scope of '*ed', I will propose to give
-> > for_each_ctx_engine() some serious love. I tried to come up with a
-> > proper solution but I failed to find one. The problems I faced are:
-> >  - for_each_ctx_engine() requires an struct intel_execution_engine2 as
-> > an iterator
-> >  - I did not find any way to keep for_each_ctx_engine() as a macro and
-> > change the scope(other than declaring ed outside the macro, argh...).
-> >  - Because for_each_ctx_engine() is a macro, I could not find a
-> > compiler friendly way to define the struct intel_execution_engine2
-> > within the macro
-> >  - To use free() 'properly', we need to save the information of when
-> > 'e' was allocated to prevent the code from trying to free something
-> > that should not be freed.
-> >
-> > This is why I asked for help here* on how you want me to fix it: I am
-> > under the impression that there is not a good solution for this
-> > problem. And then it becomes a question of long term maintenance.
-> > Should we drop the macro? Forbid the use of 'e' after the macro ends?
-> > Properly trace memory allocation of 'e' to prevent the potential
-> > free() issue? Something else? Please let me know.
-> >
-> > * - https://lists.freedesktop.org/archives/igt-dev/2024-March/070468.ht=
-ml
-> >
-> >
-> >
-> > >
-> > > Andi
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10921_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_evict@evict-beng-small:
+    - bat-dg2-oem2:       NOTRUN -> [DMESG-WARN][1] ([Intel XE#1088] / [Intel XE#1373])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10921/bat-dg2-oem2/igt@xe_evict@evict-beng-small.html
+
+  * igt@xe_evict@evict-cm-threads-small:
+    - bat-dg2-oem2:       NOTRUN -> [INCOMPLETE][2] ([Intel XE#804])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10921/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html
+
+  
+#### Warnings ####
+
+  * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
+    - bat-dg2-oem2:       [INCOMPLETE][3] ([Intel XE#804]) -> [TIMEOUT][4] ([Intel XE#1027] / [Intel XE#1088])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7785/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10921/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+
+  * igt@xe_exec_threads@threads-mixed-userptr-invalidate:
+    - bat-adlp-7:         [INCOMPLETE][5] ([Intel XE#1044]) -> [INCOMPLETE][6] ([Intel XE#1044] / [Intel XE#1376])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7785/bat-adlp-7/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10921/bat-adlp-7/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html
+
+  
+  [Intel XE#1027]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1027
+  [Intel XE#1044]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1044
+  [Intel XE#1088]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1088
+  [Intel XE#1373]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1373
+  [Intel XE#1376]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1376
+  [Intel XE#804]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/804
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7785 -> IGTPW_10921
+  * Linux: xe-995-79a0d94585cad50ad2446ebdf3f1317b7d18157c -> xe-997-1750e10841917cd6fb9cb84bec2c0e134cca212f
+
+  IGTPW_10921: 10921
+  IGT_7785: 7785
+  xe-995-79a0d94585cad50ad2446ebdf3f1317b7d18157c: 79a0d94585cad50ad2446ebdf3f1317b7d18157c
+  xe-997-1750e10841917cd6fb9cb84bec2c0e134cca212f: 1750e10841917cd6fb9cb84bec2c0e134cca212f
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10921/index.html
+
+--===============5011522323536666009==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Fix WB caching PAT index for coherency mode (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131605/">https://patchwork.freedesktop.org/series/131605/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10921/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10921/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7785_BAT -&gt; XEIGTPW_10921_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10921_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-beng-small:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10921/bat-dg2-oem2/igt@xe_evict@evict-beng-small.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1088">Intel XE#1088</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1373">Intel XE#1373</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-cm-threads-small:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10921/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/804">Intel XE#804</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7785/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/804">Intel XE#804</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10921/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1027">Intel XE#1027</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1088">Intel XE#1088</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_threads@threads-mixed-userptr-invalidate:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7785/bat-adlp-7/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1044">Intel XE#1044</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10921/bat-adlp-7/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1044">Intel XE#1044</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1376">Intel XE#1376</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7785 -&gt; IGTPW_10921</li>
+<li>Linux: xe-995-79a0d94585cad50ad2446ebdf3f1317b7d18157c -&gt; xe-997-1750e10841917cd6fb9cb84bec2c0e134cca212f</li>
+</ul>
+<p>IGTPW_10921: 10921<br />
+  IGT_7785: 7785<br />
+  xe-995-79a0d94585cad50ad2446ebdf3f1317b7d18157c: 79a0d94585cad50ad2446ebdf3f1317b7d18157c<br />
+  xe-997-1750e10841917cd6fb9cb84bec2c0e134cca212f: 1750e10841917cd6fb9cb84bec2c0e134cca212f</p>
+
+</body>
+</html>
+
+--===============5011522323536666009==--
