@@ -4,40 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B989BC6FD1F
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 09:30:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F9D3CD11DF
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 09:30:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 51D1E10EE13;
-	Tue, 26 Mar 2024 09:30:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B5F9310EE15;
+	Tue, 26 Mar 2024 09:30:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eR+TnHs9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H8H9x8G9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E97F610EE13
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 09:30:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 87C7510EE15
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 09:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711445420; x=1742981420;
+ t=1711445431; x=1742981431;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=qoZz53nAxT0nx4F/o5H/PymBRQqeWUFvXBBEpX/AC9U=;
- b=eR+TnHs9nczdMEHCyrbiO1WZTCqzc/lPvMWvgqCod39y0qax6uH/M77y
- vblkBCcqYClTiUKOtBKA7nUgyDp5bQ1/FfUZukQOXNx5LwguINcvRx+sZ
- ZUZyhxTVF9Bi4cQAL0YijUWgC4eHgjjkMPF4NbSpALMG2g1P5pjQsMwpC
- 8wqqR8hYMCWyihCfQ4yzoQsJ5YHFxruBPYJop3KBdQqEG7zLkLknmoZ8P
- O1Z31kS/zEFLwYKTHEYKI4gfPu0nKe+6Y+YCKC2rcKEDa9jiggdtaq6SP
- +Z4/XWekxpMY8y/YYhFSuBNsrcAycBSVPJvKbjegQZEunh+PMyCVqK2zF w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6378730"
-X-IronPort-AV: E=Sophos;i="6.07,155,1708416000"; 
-   d="scan'208";a="6378730"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2024 02:30:20 -0700
+ bh=RHyL3Ri+gnkHsfWvmmx3iy42EICJEZkrcK0WGpMJSYg=;
+ b=H8H9x8G9uXWme57uPKp5vtV5IbULIboHMue8bwfFvKwgLSPC8oEhv0Jd
+ ovVm98f9V08JpUtTiQC7MF2vl4eFpC2ylnaRXmxaX+7sWcbIMQ9gIN8r7
+ xyTSWiAP0+lk0n7XQqdM3gMTYPem0kePiSdkvVfuGBBrEQ+wOmD5XKimF
+ 5fNBmly6XWExW8e2BTMXn/Y9FxgKiwQQ14kN960WJTIvxetw7pBNRVihZ
+ oBRxjbSoSrI5z1ClGhDF8YXy0na6RhVJ4gvM6tfKSnveHKm1nqJHdOfNK
+ AzoGa1ZjOKksQ78L9lqGqPahngSlHyHFwiihz3EJN0sgvuSpc4bjpE4ho w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="10279956"
+X-IronPort-AV: E=Sophos;i="6.07,155,1708416000"; d="scan'208";a="10279956"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2024 02:30:30 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,155,1708416000"; d="scan'208";a="15965139"
+X-IronPort-AV: E=Sophos;i="6.07,155,1708416000"; d="scan'208";a="47064561"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2024 02:30:17 -0700
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2024 02:30:27 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
@@ -45,10 +44,10 @@ Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Aditya Chauhan <aditya.chauhan@intel.com>,
  Girotra Himanshu <himanshu.girotra@intel.com>
-Subject: [PATCH i-g-t v2 07/13] tests/intel: Add xe_prime_self_import to DRM
- subcategory
-Date: Tue, 26 Mar 2024 09:29:01 +0000
-Message-Id: <20240326092907.1979345-8-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v2 08/13] tests/intel: Move xe_mmap to Memory management
+ Sub-category
+Date: Tue, 26 Mar 2024 09:29:02 +0000
+Message-Id: <20240326092907.1979345-9-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240326092907.1979345-1-katarzyna.piecielska@intel.com>
 References: <20240326092907.1979345-1-katarzyna.piecielska@intel.com>
@@ -69,8 +68,8 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's move xe_prime_self_import to DRM subcategory to unify with i915
-test documentation.
+It looks like Memory management is more suitable Sub-category for
+xe_mmap test.
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
@@ -79,22 +78,22 @@ Cc: Aditya Chauhan <aditya.chauhan@intel.com>
 Cc: Girotra Himanshu <himanshu.girotra@intel.com>
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_prime_self_import.c | 2 +-
+ tests/intel/xe_mmap.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/intel/xe_prime_self_import.c b/tests/intel/xe_prime_self_import.c
-index 8e7290e9e..f47733bb2 100644
---- a/tests/intel/xe_prime_self_import.c
-+++ b/tests/intel/xe_prime_self_import.c
-@@ -28,7 +28,7 @@
+diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
+index e96192d23..dcd36a50d 100644
+--- a/tests/intel/xe_mmap.c
++++ b/tests/intel/xe_mmap.c
+@@ -6,7 +6,7 @@
  /**
-  * TEST: Check whether prime import/export works on the same device
+  * TEST: Test if the driver is capable of doing mmap on different memory regions
   * Category: Software building block
-- * Sub-category: drm prime
-+ * Sub-category: DRM
-  * Functionality: prime import/export
-  * Test category: functionality test
-  *
+- * Sub-category: VMA
++ * Sub-category: Memory management
+  * Functionality: mmap
+  */
+ 
 -- 
 2.34.1
 
