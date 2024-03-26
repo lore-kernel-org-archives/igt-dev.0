@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEDDBCD11DF
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 09:29:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA11CC6FD1F
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Mar 2024 09:29:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5280410E414;
-	Tue, 26 Mar 2024 09:29:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3921810E849;
+	Tue, 26 Mar 2024 09:29:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Fdxv+T/y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SvDoUJf/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7094910E414
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 09:29:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8DFCA10E849
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Mar 2024 09:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711445379; x=1742981379;
+ t=1711445386; x=1742981386;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=l395t95k8mTqCAaVj1BMig6e4ISKbnVNsbnXjXBNuQE=;
- b=Fdxv+T/yMDtrzwA1d59IO8p3QXISzCPIT+tswMJcjHbx+5AFHPgFpaHB
- MKMHNCUzt7aLOQbhE5M2ZDWut9tL22WcxJ9G3BxKoo2SnQTKf1zkf4mzj
- 4mVH2FYgjx2pQQhqYX7HAYuUdXY4fIpITE8NHOmba1NSeVI4nRvLWB1it
- ju2fsranCIVFy52FEiqOVEObbL3GDCGkhKHcnqHAa8AAoV0KcaTjDmTvj
- 5VjH2+WcxKtF+N+4Yls2+nJWP97/8aPl/vG5d1YI+HcRYEuBgvtDBox3P
- gs2CV6QW5ANGT++YCQrQCIvPCvDoTJLQlnwE0DAT1PM4JpJUlW3FnpODp w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6378529"
+ bh=eDX+4ApeG1qepqEF3lDtQWXvIkLIqgU6Xr8HKsNSsus=;
+ b=SvDoUJf/C+06jQuyFSimonT+smpxMe7v/uup83/qvH1mw29D6W+hLDNj
+ c6HiKqp6uHkWMsuaW0V/BZZGdArLx1HC/n3tM+fOYo8Bwq4t0STcN8CCU
+ AzPcwfpHltmRe9fymHEd/Jbw0gMIaYgknQYmIAA1+aeRR+YfNndZJmPGQ
+ eXPQzZI5GTvvoHadIT6nUShis5jBNpaMYv5Kv5boUmUFcZk2H6L6plwDB
+ z887rgbeJWUX6JtmypKd3wHD0FRJzcVWJJA1JvUA1rOpCd7mOItLzx1Tj
+ LXJnk4zOgq8oTQ574tb3mLF1LDv9uX5K2S1JLmbhxNAzzPLjUvvcTGpoD Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6378554"
 X-IronPort-AV: E=Sophos;i="6.07,155,1708416000"; 
-   d="scan'208";a="6378529"
+   d="scan'208";a="6378554"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2024 02:29:38 -0700
+ 26 Mar 2024 02:29:44 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,155,1708416000"; d="scan'208";a="15964877"
+X-IronPort-AV: E=Sophos;i="6.07,155,1708416000"; d="scan'208";a="15964916"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2024 02:29:32 -0700
+ 26 Mar 2024 02:29:42 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
@@ -45,10 +45,10 @@ Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Aditya Chauhan <aditya.chauhan@intel.com>,
  Girotra Himanshu <himanshu.girotra@intel.com>
-Subject: [PATCH i-g-t v2 02/13] tests/intel: Introduce CMD submission
- Sub-category for XE
-Date: Tue, 26 Mar 2024 09:28:56 +0000
-Message-Id: <20240326092907.1979345-3-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v2 03/13] tests/intel: Fix inconsitency in
+ Sub-category/Functionality names
+Date: Tue, 26 Mar 2024 09:28:57 +0000
+Message-Id: <20240326092907.1979345-4-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240326092907.1979345-1-katarzyna.piecielska@intel.com>
 References: <20240326092907.1979345-1-katarzyna.piecielska@intel.com>
@@ -69,9 +69,16 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's introduce 'CMD submission' subcategory in Xe. So far 'execbuf'
-subcategory was used.
-Also let's move xe_exec_store to CMD submission subcategory
+Let's fix:
+	- s/compute/Compute/
+	- s/Flat-CCS/Flat-ccs/
+	- s/power management/Power management/
+	- s/Power Management/Power management/
+	- s/sysman/SysMan/
+	- s/gpgpu/GPGPU/ for Sub-category
+	- s/gpgpu/gpgpu_fill/ for Functionality
+	- s/evict/eviction/
+	- s/sysman/SysMan/
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
@@ -80,106 +87,150 @@ Cc: Aditya Chauhan <aditya.chauhan@intel.com>
 Cc: Girotra Himanshu <himanshu.girotra@intel.com>
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_exec_balancer.c     | 2 +-
- tests/intel/xe_exec_basic.c        | 2 +-
- tests/intel/xe_exec_compute_mode.c | 2 +-
- tests/intel/xe_exec_fault_mode.c   | 2 +-
- tests/intel/xe_exec_reset.c        | 2 +-
- tests/intel/xe_exec_store.c        | 2 +-
- tests/intel/xe_exec_threads.c      | 2 +-
- 7 files changed, 7 insertions(+), 7 deletions(-)
+ tests/intel/xe_compute.c          | 2 +-
+ tests/intel/xe_compute_preempt.c  | 2 +-
+ tests/intel/xe_evict.c            | 2 +-
+ tests/intel/xe_evict_ccs.c        | 2 +-
+ tests/intel/xe_gpgpu_fill.c       | 4 ++--
+ tests/intel/xe_noexec_ping_pong.c | 2 +-
+ tests/intel/xe_pm.c               | 2 +-
+ tests/intel/xe_pm_residency.c     | 2 +-
+ tests/intel/xe_sysfs_defaults.c   | 2 +-
+ tests/intel/xe_sysfs_scheduler.c  | 2 +-
+ 10 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-index 02edd389d..6e467e34a 100644
---- a/tests/intel/xe_exec_balancer.c
-+++ b/tests/intel/xe_exec_balancer.c
+diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+index 42f42ca0c..9cf359383 100644
+--- a/tests/intel/xe_compute.c
++++ b/tests/intel/xe_compute.c
 @@ -6,7 +6,7 @@
  /**
-  * TEST: Basic tests for execbuf functionality for virtual and parallel exec_queues
+  * TEST: Check compute-related functionality
   * Category: Hardware building block
-- * Sub-category: execbuf
-+ * Sub-category: CMD submission
-  * Functionality: virtual and parallel exec_queues
+- * Sub-category: compute
++ * Sub-category: Compute
   * Test category: functionality test
   */
-diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
-index f0230a9ca..5210e6730 100644
---- a/tests/intel/xe_exec_basic.c
-+++ b/tests/intel/xe_exec_basic.c
-@@ -6,7 +6,7 @@
- /**
-  * TEST: Basic tests for execbuf functionality
-  * Category: Hardware building block
-- * Sub-category: execbuf
-+ * Sub-category: CMD submission
-  * Functionality: exec_queues
-  */
  
-diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-index 2ba94d2c6..c1f703c43 100644
---- a/tests/intel/xe_exec_compute_mode.c
-+++ b/tests/intel/xe_exec_compute_mode.c
+diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
+index 2bc27eff1..45aa15c78 100644
+--- a/tests/intel/xe_compute_preempt.c
++++ b/tests/intel/xe_compute_preempt.c
 @@ -6,7 +6,7 @@
  /**
-  * TEST: Basic tests for execbuf compute machine functionality
+  * TEST: Check compute-related preemption functionality
   * Category: Hardware building block
-- * Sub-category: execbuf
-+ * Sub-category: CMD submission
-  * Functionality: compute machine
-  */
- 
-diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-index 20a7cf8fe..72a7bd4fd 100644
---- a/tests/intel/xe_exec_fault_mode.c
-+++ b/tests/intel/xe_exec_fault_mode.c
-@@ -6,7 +6,7 @@
- /**
-  * TEST: Basic tests for execbuf functionality for virtual and parallel exec_queues
-  * Category: Hardware building block
-- * Sub-category: execbuf
-+ * Sub-category: CMD submission
-  * Functionality: fault mode
-  * GPU requirements: GPU needs support for DRM_XE_VM_CREATE_FLAG_FAULT_MODE
-  */
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index a39e5860e..22735688a 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -6,7 +6,7 @@
- /**
-  * TEST: Basic tests for execbuf functionality for virtual and parallel exec_queues
-  * Category: Hardware building block
-- * Sub-category: execbuf
-+ * Sub-category: CMD submission
-  * Functionality: reset
+- * Sub-category: compute
++ * Sub-category: Compute
   * Test category: functionality test
   */
-diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-index 55354e688..c57bcb852 100644
---- a/tests/intel/xe_exec_store.c
-+++ b/tests/intel/xe_exec_store.c
-@@ -15,7 +15,7 @@
- /**
-  * TEST: Tests to verify store dword functionality.
+ 
+diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
+index 43e20ef6c..8ef55211f 100644
+--- a/tests/intel/xe_evict.c
++++ b/tests/intel/xe_evict.c
+@@ -7,7 +7,7 @@
+  * TEST: Check VMA eviction
   * Category: Software building block
-- * Sub-category: HW
-+ * Sub-category: CMD submission
-  * Functionality: intel-bb
-  * Test category: functionality test
+  * Sub-category: VMA
+- * Functionality: evict
++ * Functionality: eviction
+  * GPU requirements: GPU needs to have dedicated VRAM
   */
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index 977e8c600..05ea1d35a 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
+ 
+diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
+index 35ae8151a..8e43f691d 100644
+--- a/tests/intel/xe_evict_ccs.c
++++ b/tests/intel/xe_evict_ccs.c
 @@ -6,7 +6,7 @@
  /**
-  * TEST: Basic tests for execbuf functionality
-  * Category: Hardware building block
-- * Sub-category: execbuf
-+ * Sub-category: CMD submission
-  * Functionality: multi-threads
+  * TEST: Check flat-ccs eviction
+  * Category: Software building block
+- * Sub-category: Flat-CCS
++ * Sub-category: Flat-ccs
+  * Functionality: ccs-evict
+  * GPU requirements: GPU needs to have dedicated VRAM
+  */
+diff --git a/tests/intel/xe_gpgpu_fill.c b/tests/intel/xe_gpgpu_fill.c
+index eee77d252..a359f9f55 100644
+--- a/tests/intel/xe_gpgpu_fill.c
++++ b/tests/intel/xe_gpgpu_fill.c
+@@ -6,8 +6,8 @@
+ /**
+  * TEST: Basic tests for gpgpu functionality
+  * Category: Software building block
+- * Sub-category: gpgpu
+- * Functionality: gpgpu
++ * Sub-category: GPGPU
++ * Functionality: gpgpu_fill
   * Test category: functionality test
   */
+ 
+diff --git a/tests/intel/xe_noexec_ping_pong.c b/tests/intel/xe_noexec_ping_pong.c
+index d02ef62e4..51f28d9d0 100644
+--- a/tests/intel/xe_noexec_ping_pong.c
++++ b/tests/intel/xe_noexec_ping_pong.c
+@@ -18,7 +18,7 @@
+ /**
+  * TEST: Expose compute VM's unnecessary rebinds
+  * Category: Hardware building block
+- * Sub-category: compute
++ * Sub-category: Compute
+  * Functionality: compute VM rebind
+  * Test category: functionality test
+  *
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index 3aa247353..c8a5cc6de 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -6,7 +6,7 @@
+ /**
+  * TEST: Check Power Management functionality
+  * Category: Software building block
+- * Sub-category: power management
++ * Sub-category: Power management
+  * Test category: functionality test
+  */
+ 
+diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+index 0d8ead6a2..ad70e2430 100644
+--- a/tests/intel/xe_pm_residency.c
++++ b/tests/intel/xe_pm_residency.c
+@@ -6,7 +6,7 @@
+ /**
+  * TEST: Test gtidle properties
+  * Category: Software building block
+- * Sub-category: Power Management
++ * Sub-category: Power management
+  * Functionality: GT C States
+  * Test category: functionality test
+  */
+diff --git a/tests/intel/xe_sysfs_defaults.c b/tests/intel/xe_sysfs_defaults.c
+index 4a6b3ba6d..b1ab36589 100644
+--- a/tests/intel/xe_sysfs_defaults.c
++++ b/tests/intel/xe_sysfs_defaults.c
+@@ -7,7 +7,7 @@
+  * TEST: xe sysfs defaults
+  * Category: Infrastructure
+  * Functionality: sysman defaults
+- * Sub-category: sysman
++ * Sub-category: SysMan
+  * Test category: functionality test
+  * SUBTEST: engine-defaults
+  * Description: check if the sysfs engine .defaults node has all values.
+diff --git a/tests/intel/xe_sysfs_scheduler.c b/tests/intel/xe_sysfs_scheduler.c
+index 5a22abbf1..d1ef422f4 100644
+--- a/tests/intel/xe_sysfs_scheduler.c
++++ b/tests/intel/xe_sysfs_scheduler.c
+@@ -6,7 +6,7 @@
+ /**
+  * TEST: xe sysfs scheduler
+  * Category: Infrastructure
+- * Sub-category: sysman
++ * Sub-category: SysMan
+  * Functionality: scheduler control interface
+  *
+  * SUBTEST: %s-invalid
 -- 
 2.34.1
 
