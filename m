@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C738C47DD9
-	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 20:17:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE82CC47DD9
+	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 20:30:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E42F710FFA2;
-	Wed, 27 Mar 2024 20:17:35 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B/fSeHDy";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 20F5310FFCC
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Mar 2024 20:17:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711570655; x=1743106655;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=P4VrXhSR65ggQIv6oIYufD8BNbQnSY9hzvSQOKOt1Q8=;
- b=B/fSeHDyAjaGnVLfPbt7NEhOE1Txpp8qvoD6TJysHwG1QgOzxmLuQhXY
- FmuZituhpwPIWr9ZWVEYy2Hhylz7zbKGLfbSBXoyUKwMvZjsvn379dt3e
- AyPfmKVyokZ2k6vBlkvktYy9wepm4K3IEXqoQPy3evJYNAREYd5+FFq4m
- NyzgmeXcHJrSUbMna89oLggS188ZZQ/CncTRSaxAGGplYlxmE5m3eTrYi
- qgAbaMZgoNaiydiUA/UoI4T+lrluzcYrW5FkIW+Q/3XvY83n0vPv0A4Ls
- KDTvG4q7vKPrv4/QrSnVZ1fBPfVymW2t1qOgriFQgzjD274lrh93ZqPG4 g==;
-X-CSE-ConnectionGUID: 6B8tt7q+SbShgIEun0xIsQ==
-X-CSE-MsgGUID: aJ7poR9ZTV+wchfoPi8fEw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="10490619"
-X-IronPort-AV: E=Sophos;i="6.07,159,1708416000"; d="scan'208";a="10490619"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 13:17:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,159,1708416000"; d="scan'208";a="16249681"
-Received: from rvodapal-desk.iind.intel.com ([10.145.162.163])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 13:17:29 -0700
-From: Ravi Kumar Vodapalli <ravi.kumar.vodapalli@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: balasubramani.vivekanandan@intel.com, matthew.d.roper@intel.com,
- lucas.demarchi@intel.com, gustavo.sousa@intel.com,
- radhakrishna.sripada@intel.com, clinton.a.taylor@intel.com,
- matthew.s.atwood@intel.com, dnyaneshwar.bhadane@intel.com,
- haridhar.kalvala@intel.com, shekhar.chauhan@intel.com
-Subject: [PATCH] lib: sync xe_pciids.h with kernel
-Date: Thu, 28 Mar 2024 01:51:00 +0530
-Message-Id: <20240327202100.3910719-1-ravi.kumar.vodapalli@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8A5EB10FFD8;
+	Wed, 27 Mar 2024 20:30:41 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 93D0710FFD7;
+ Wed, 27 Mar 2024 20:30:40 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1281652704284183629=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5B1/3=2C?=
+ =?utf-8?q?V2=5D_tests/amdgpu/amd=5Fdp=5Fdsc=3A_Correct_code_style_problems?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Alex Hung" <alex.hung@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 27 Mar 2024 20:30:40 -0000
+Message-ID: <171157144060.1055708.16646415536714637082@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240327162737.1082932-1-alex.hung@amd.com>
+In-Reply-To: <20240327162737.1082932-1-alex.hung@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,149 +37,174 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This synchronizes with kernel commit
-0bd25f78c4fc ("drm/xe: Add new PCI IDs to DG2 platform")
+--===============1281652704284183629==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Ravi Kumar Vodapalli <ravi.kumar.vodapalli@intel.com>
----
- lib/xe_pciids.h | 72 +++++++++++++++++++++++--------------------------
- 1 file changed, 34 insertions(+), 38 deletions(-)
+== Series Details ==
 
-diff --git a/lib/xe_pciids.h b/lib/xe_pciids.h
-index 29f07a00a..c7fc288da 100644
---- a/lib/xe_pciids.h
-+++ b/lib/xe_pciids.h
-@@ -67,6 +67,7 @@
- 	MACRO__(0x4682, ## __VA_ARGS__),	\
- 	MACRO__(0x4688, ## __VA_ARGS__),	\
- 	MACRO__(0x468A, ## __VA_ARGS__),	\
-+	MACRO__(0x468B, ## __VA_ARGS__),	\
- 	MACRO__(0x4690, ## __VA_ARGS__),	\
- 	MACRO__(0x4692, ## __VA_ARGS__),	\
- 	MACRO__(0x4693, ## __VA_ARGS__)
-@@ -113,13 +114,18 @@
- #define XE_RPLU_IDS(MACRO__, ...)		\
- 	MACRO__(0xA721, ## __VA_ARGS__),	\
- 	MACRO__(0xA7A1, ## __VA_ARGS__),	\
--	MACRO__(0xA7A9, ## __VA_ARGS__)
-+	MACRO__(0xA7A9, ## __VA_ARGS__),	\
-+	MACRO__(0xA7AC, ## __VA_ARGS__),	\
-+	MACRO__(0xA7AD, ## __VA_ARGS__)
- 
- /* RPL-P */
- #define XE_RPLP_IDS(MACRO__, ...)		\
-+	XE_RPLU_IDS(MACRO__, ## __VA_ARGS__),	\
- 	MACRO__(0xA720, ## __VA_ARGS__),	\
- 	MACRO__(0xA7A0, ## __VA_ARGS__),	\
--	MACRO__(0xA7A8, ## __VA_ARGS__)
-+	MACRO__(0xA7A8, ## __VA_ARGS__),	\
-+	MACRO__(0xA7AA, ## __VA_ARGS__),	\
-+	MACRO__(0xA7AB, ## __VA_ARGS__)
- 
- /* DG2 */
- #define XE_DG2_G10_IDS(MACRO__, ...)		\
-@@ -128,17 +134,22 @@
- 	MACRO__(0x5692, ## __VA_ARGS__),	\
- 	MACRO__(0x56A0, ## __VA_ARGS__),	\
- 	MACRO__(0x56A1, ## __VA_ARGS__),	\
--	MACRO__(0x56A2, ## __VA_ARGS__)
-+	MACRO__(0x56A2, ## __VA_ARGS__),	\
-+	MACRO__(0x56BE, ## __VA_ARGS__),	\
-+	MACRO__(0x56BF, ## __VA_ARGS__)
- 
- #define XE_DG2_G11_IDS(MACRO__, ...)		\
- 	MACRO__(0x5693, ## __VA_ARGS__),	\
- 	MACRO__(0x5694, ## __VA_ARGS__),	\
- 	MACRO__(0x5695, ## __VA_ARGS__),	\
--	MACRO__(0x5698, ## __VA_ARGS__),	\
- 	MACRO__(0x56A5, ## __VA_ARGS__),	\
- 	MACRO__(0x56A6, ## __VA_ARGS__),	\
- 	MACRO__(0x56B0, ## __VA_ARGS__),	\
--	MACRO__(0x56B1, ## __VA_ARGS__)
-+	MACRO__(0x56B1, ## __VA_ARGS__),	\
-+	MACRO__(0x56BA, ## __VA_ARGS__),	\
-+	MACRO__(0x56BB, ## __VA_ARGS__),	\
-+	MACRO__(0x56BC, ## __VA_ARGS__),	\
-+	MACRO__(0x56BD, ## __VA_ARGS__)
- 
- #define XE_DG2_G12_IDS(MACRO__, ...)		\
- 	MACRO__(0x5696, ## __VA_ARGS__),	\
-@@ -154,7 +165,8 @@
- 	XE_DG2_G12_IDS(MACRO__, ## __VA_ARGS__)
- 
- #define XE_ATS_M150_IDS(MACRO__, ...)		\
--	MACRO__(0x56C0, ## __VA_ARGS__)
-+	MACRO__(0x56C0, ## __VA_ARGS__),	\
-+	MACRO__(0x56C2, ## __VA_ARGS__)
- 
- #define XE_ATS_M75_IDS(MACRO__, ...)		\
- 	MACRO__(0x56C1, ## __VA_ARGS__)
-@@ -163,8 +175,23 @@
- 	XE_ATS_M150_IDS(MACRO__, ## __VA_ARGS__),\
- 	XE_ATS_M75_IDS(MACRO__, ## __VA_ARGS__)
- 
-+/* MTL / ARL */
-+#define XE_MTL_IDS(MACRO__, ...)		\
-+	MACRO__(0x7D40, ## __VA_ARGS__),	\
-+	MACRO__(0x7D41, ## __VA_ARGS__),	\
-+	MACRO__(0x7D45, ## __VA_ARGS__),	\
-+	MACRO__(0x7D51, ## __VA_ARGS__),        \
-+	MACRO__(0x7D55, ## __VA_ARGS__),	\
-+	MACRO__(0x7D60, ## __VA_ARGS__),	\
-+	MACRO__(0x7D67, ## __VA_ARGS__),	\
-+	MACRO__(0x7DD1, ## __VA_ARGS__),        \
-+	MACRO__(0x7DD5, ## __VA_ARGS__)
-+
- /* PVC */
--#define XE_PVC_XT_IDS(MACRO__, ...)		\
-+#define XE_PVC_IDS(MACRO__, ...)		\
-+	MACRO__(0x0B69, ## __VA_ARGS__),	\
-+	MACRO__(0x0B6E, ## __VA_ARGS__),	\
-+	MACRO__(0x0BD4, ## __VA_ARGS__),	\
- 	MACRO__(0x0BD5, ## __VA_ARGS__),	\
- 	MACRO__(0x0BD6, ## __VA_ARGS__),	\
- 	MACRO__(0x0BD7, ## __VA_ARGS__),	\
-@@ -176,37 +203,6 @@
- 	MACRO__(0x0BE1, ## __VA_ARGS__),	\
- 	MACRO__(0x0BE5, ## __VA_ARGS__)
- 
--#define XE_PVC_IDS(MACRO__, ...)		\
--	XE_PVC_XT_IDS(MACRO__, ## __VA_ARGS__)
--
--/* MTL */
--#define XE_MTL_M_IDS(MACRO__, ...)		\
--	MACRO__(0x7D40, ## __VA_ARGS__),	\
--	MACRO__(0x7D43, ## __VA_ARGS__),	\
--	MACRO__(0x7DC0, ## __VA_ARGS__)
--
--#define XE_MTL_P_IDS(MACRO__, ...)		\
--	MACRO__(0x7D45, ## __VA_ARGS__),	\
--	MACRO__(0x7D47, ## __VA_ARGS__),	\
--	MACRO__(0x7D50, ## __VA_ARGS__),	\
--	MACRO__(0x7D55, ## __VA_ARGS__),	\
--	MACRO__(0x7DC5, ## __VA_ARGS__),	\
--	MACRO__(0x7DD0, ## __VA_ARGS__),	\
--	MACRO__(0x7DD5, ## __VA_ARGS__)
--
--#define XE_MTL_S_IDS(MACRO__, ...)		\
--	MACRO__(0x7D60, ## __VA_ARGS__),	\
--	MACRO__(0x7DE0, ## __VA_ARGS__)
--
--#define XE_ARL_IDS(MACRO__, ...)		\
--	MACRO__(0x7D67, ## __VA_ARGS__)
--
--#define XE_MTL_IDS(MACRO__, ...)		\
--	XE_MTL_M_IDS(MACRO__, ## __VA_ARGS__),	\
--	XE_MTL_P_IDS(MACRO__, ## __VA_ARGS__),	\
--	XE_MTL_S_IDS(MACRO__, ## __VA_ARGS__),	\
--	XE_ARL_IDS(MACRO__, ## __VA_ARGS__)
--
- #define XE_LNL_IDS(MACRO__, ...) \
- 	MACRO__(0x6420, ## __VA_ARGS__), \
- 	MACRO__(0x64A0, ## __VA_ARGS__), \
--- 
-2.25.1
+Series: series starting with [1/3,V2] tests/amdgpu/amd_dp_dsc: Correct code style problems
+URL   : https://patchwork.freedesktop.org/series/131697/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7786_BAT -> XEIGTPW_10932_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 4)
+------------------------------
+
+  Missing    (1): bat-lnl-1 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10932_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_dma_buf_sync@export-dma-buf-once:
+    - bat-dg2-oem2:       [SKIP][1] ([Intel XE#1130]) -> [PASS][2] +9 other tests pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_dma_buf_sync@export-dma-buf-once.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10932/bat-dg2-oem2/igt@xe_dma_buf_sync@export-dma-buf-once.html
+
+  * igt@xe_module_load@load:
+    - bat-dg2-oem2:       [FAIL][3] ([Intel XE#1132]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_module_load@load.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10932/bat-dg2-oem2/igt@xe_module_load@load.html
+
+  
+#### Warnings ####
+
+  * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
+    - bat-dg2-oem2:       [SKIP][5] ([Intel XE#1130]) -> [TIMEOUT][6] ([Intel XE#1027] / [Intel XE#1088])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10932/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+
+  * igt@xe_evict@evict-beng-small:
+    - bat-dg2-oem2:       [SKIP][7] ([Intel XE#1130]) -> [INCOMPLETE][8] ([Intel XE#804])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_evict@evict-beng-small.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10932/bat-dg2-oem2/igt@xe_evict@evict-beng-small.html
+
+  
+  [Intel XE#1027]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1027
+  [Intel XE#1088]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1088
+  [Intel XE#1130]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130
+  [Intel XE#1132]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1132
+  [Intel XE#804]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/804
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7786 -> IGTPW_10932
+  * Linux: xe-998-f9c56f1a03b5c35488671e4ffe61e28b12ffe163 -> xe-1002-942f9f7739422dcb10052c56d5b518123f2b7406
+
+  IGTPW_10932: 3643f65d31fe98a477bec079aa4fab774b9e64ae @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_7786: 1e4a3cd0a4bb3419fb70ed3e01259485b056dcfd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1002-942f9f7739422dcb10052c56d5b518123f2b7406: 942f9f7739422dcb10052c56d5b518123f2b7406
+  xe-998-f9c56f1a03b5c35488671e4ffe61e28b12ffe163: f9c56f1a03b5c35488671e4ffe61e28b12ffe163
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10932/index.html
+
+--===============1281652704284183629==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/3,V2] tests/amdgpu/amd_dp_dsc: Correct code style problems</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131697/">https://patchwork.freedesktop.org/series/131697/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10932/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10932/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7786_BAT -&gt; XEIGTPW_10932_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 4)</h2>
+<p>Missing    (1): bat-lnl-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10932_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@xe_dma_buf_sync@export-dma-buf-once:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_dma_buf_sync@export-dma-buf-once.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10932/bat-dg2-oem2/igt@xe_dma_buf_sync@export-dma-buf-once.html">PASS</a> +9 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_module_load@load:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_module_load@load.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1132">Intel XE#1132</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10932/bat-dg2-oem2/igt@xe_module_load@load.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10932/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1027">Intel XE#1027</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1088">Intel XE#1088</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-small:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_evict@evict-beng-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10932/bat-dg2-oem2/igt@xe_evict@evict-beng-small.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/804">Intel XE#804</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7786 -&gt; IGTPW_10932</li>
+<li>Linux: xe-998-f9c56f1a03b5c35488671e4ffe61e28b12ffe163 -&gt; xe-1002-942f9f7739422dcb10052c56d5b518123f2b7406</li>
+</ul>
+<p>IGTPW_10932: 3643f65d31fe98a477bec079aa4fab774b9e64ae @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7786: 1e4a3cd0a4bb3419fb70ed3e01259485b056dcfd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1002-942f9f7739422dcb10052c56d5b518123f2b7406: 942f9f7739422dcb10052c56d5b518123f2b7406<br />
+  xe-998-f9c56f1a03b5c35488671e4ffe61e28b12ffe163: f9c56f1a03b5c35488671e4ffe61e28b12ffe163</p>
+
+</body>
+</html>
+
+--===============1281652704284183629==--
