@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25F7FC47DD9
-	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 16:24:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49D44C47DD9
+	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 16:25:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CA7EA10FE00;
-	Wed, 27 Mar 2024 16:24:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D652C10FE04;
+	Wed, 27 Mar 2024 16:25:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="vEkE6zFI";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="zKt2QKLL";
 	dkim-atps=neutral
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2066.outbound.protection.outlook.com [40.107.220.66])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E48810FE00
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Mar 2024 16:24:54 +0000 (UTC)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ADFD710FE14
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Mar 2024 16:25:09 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Jfu1LJkwgEoSqutdi+DRqV9owktncy8S14vBODNVF4T61N8ag6LwC2gYJwXW+zCqXTM68EnoVo67Ty9GSG1LxJeFU6NkPz/G9FbB2NHBKM2D/84FzWyE6WOGQa2Llr+G1l93N70yK3ZOCZe/RciKuNGAy0HKHMUPMYqDIyMdVa8W50gAXiri+nxjiXVY8sbVVJSFGIPSsd4YpnJb0Jqj7U4DfhL+fVIkpDBiitVjH7CXM1MIFAnD+05xdWbHHpm1pfvwxS+90vit/q3wV/OFgZdZP2KuP5uNYATJ0WWfZjkZPNpKy6Qx5NvEI4qjbcN2QGlJdfsYswJv33AET5/hfA==
+ b=k5BjDAd+6wddvA2Mf76u0fSExpw2D3KEu15Wt/80gm6dTzL08yc09Osvfte/1WqjoPIx5tPMf2iiGQk/nP/UagPlfzr3GXKf26V2/1A5s48sqztDCEPHM9Yc2WknoDtJaPUOMFbXz4A0yJy8ko2ZKgTNoU4s4OTdLb5Vl+59CUsDLXpxu7OYiwnboSgg8lsGhG/0Jnh6HXmGCk8HgNQCi8DEB2OROptIa0Z+z3zsjyAka5h84610qwEmCFngAMxYuupN0uwlu2vUUjuJV5vhpY0rXL4M/BxHJLITkp0MoLvwN8rWihj4z+kgHXC1AJHKhtBLLgQz3nAD5Y4uzT0CMw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LML+aMwhIc2jzrlOgDxJ2cPLyo0VrJ15kPP36R3jqQw=;
- b=N5cYh9IKF8gV+nt1ajR0RQF+oeYtA6bfq6hctPbrkFT3yIiYXXQk3y6hEV5RgK6b0gbB3RopuHAGqCjlGuAY4v3LFO5Ewf9xtZKA6iUfJ3O43y+FgbyQKjwzmYpXgIgmAlUnkvwtWmxQZYRd9vypvCmozp/ZW/Y0JERL192DLsdv2hM+eBgBs/2EhUBKtpuItifLuxWJLNu1OC2d/cdJ7cCA0gMyNVjJVKUjENn6cD40jmTp9s+k9hugTkSJbCh3Dg+wBsPpnw1LZeqbLAU6qgNN2fq0RUkV1BHxlSONdqdmOAdFvdnqiG9uuTRppzh34gXYDJsWD0oNMQD5NJcnPQ==
+ bh=DxHD3VY6VHw7NG8NHLkj4p0P2Sa3M4OsWm9RJRsakg8=;
+ b=chBrbGMc9++GGu04eGZEDm9CL7ESWf4RmPU4n+D24q663TjVZ30bnXAUEOpgfi4Y+FY+22bZfb8xC0+A+R0tRjsnosLOqFEwBMXTPyYYs/b4RKLjWHGV+QSzFuM+KLexJpbPhslNgJG7GB2LWEiaAADT4T28tvbELTFqiEvOYdjJruRyFM04D/+a5tDmEzTrZu1zlKMJKqhRPzxOgG5MkAHITQUDcISLlgc5iMuCtXVZE7u7m6QB+5PuqJolQXhsDv0U4/Zzd4IbDuo6zibNaV8d0s0OdzOC1XJhAzArWqOVPB4awoonwk7JsecIRiML2jvTCA0djYcN4cgEbG+9yQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LML+aMwhIc2jzrlOgDxJ2cPLyo0VrJ15kPP36R3jqQw=;
- b=vEkE6zFIzqEVrygGKmWai/DdFvywbiVeHoV6lv7Wa01E0tsEBTSUhS7SjGRyhyZDOHbL72LRzvna7LGWbmB5LCa0ADOm2RFm7MUbKM1zIzJCWkCYFDIlDVuGd+p3kTgf19yyKVflCc2eQT5lcoJy9HjnmkPdg1HjZD/hg86udLY=
-Received: from DM6PR01CA0012.prod.exchangelabs.com (2603:10b6:5:296::17) by
- IA1PR12MB8540.namprd12.prod.outlook.com (2603:10b6:208:454::20) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=DxHD3VY6VHw7NG8NHLkj4p0P2Sa3M4OsWm9RJRsakg8=;
+ b=zKt2QKLL8YINtm5CZLV/2rvuOUmmvmnlev0o9ko1hWdx4FcT9JXam0d9rEjtCoOJJa7bay4VT0+04RszB6YY9qxfFNAZiOZtxXi8m/uSDHfqVpbPmUzNMZY+3aivkYGbMRxPO7DqDh3c8N+EDeCpVgHnKskf816+22NvaPKY7UE=
+Received: from CH2PR11CA0001.namprd11.prod.outlook.com (2603:10b6:610:54::11)
+ by SJ0PR12MB6757.namprd12.prod.outlook.com (2603:10b6:a03:449::21)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.32; Wed, 27 Mar
- 2024 16:24:52 +0000
-Received: from DS2PEPF0000343B.namprd02.prod.outlook.com
- (2603:10b6:5:296:cafe::65) by DM6PR01CA0012.outlook.office365.com
- (2603:10b6:5:296::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.13 via Frontend
- Transport; Wed, 27 Mar 2024 16:24:52 +0000
+ 2024 16:25:06 +0000
+Received: from DS2PEPF0000343D.namprd02.prod.outlook.com
+ (2603:10b6:610:54:cafe::e3) by CH2PR11CA0001.outlook.office365.com
+ (2603:10b6:610:54::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.25 via Frontend
+ Transport; Wed, 27 Mar 2024 16:25:06 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,21 +48,21 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS2PEPF0000343B.mail.protection.outlook.com (10.167.18.38) with Microsoft
+ DS2PEPF0000343D.mail.protection.outlook.com (10.167.18.40) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7409.10 via Frontend Transport; Wed, 27 Mar 2024 16:24:52 +0000
+ 15.20.7409.10 via Frontend Transport; Wed, 27 Mar 2024 16:25:05 +0000
 Received: from dev.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 27 Mar
- 2024 11:24:49 -0500
+ 2024 11:25:02 -0500
 From: Alex Hung <alex.hung@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: <rodrigo.siqueira@amd.com>, <harry.wentland@amd.com>,
  <hersenxs.wu@amd.com>, Alex Hung <alex.hung@amd.com>, Hersen Wu
  <Hersenxs.Wu@amd.com>
-Subject: [PATCH 2/3] lib/amd: Return false if dp_fec or dp_dsc is not supported
-Date: Wed, 27 Mar 2024 10:23:21 -0600
-Message-ID: <20240327162322.1068745-2-alex.hung@amd.com>
+Subject: [PATCH 3/3] tests/amdgpu/amd_dp_dsc: Check connector's dsc capability
+Date: Wed, 27 Mar 2024 10:23:22 -0600
+Message-ID: <20240327162322.1068745-3-alex.hung@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240327162322.1068745-1-alex.hung@amd.com>
 References: <20240327162322.1068745-1-alex.hung@amd.com>
@@ -74,26 +74,26 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF0000343B:EE_|IA1PR12MB8540:EE_
-X-MS-Office365-Filtering-Correlation-Id: e1f32d8e-c1b8-43c8-7818-08dc4e7a6e3e
+X-MS-TrafficTypeDiagnostic: DS2PEPF0000343D:EE_|SJ0PR12MB6757:EE_
+X-MS-Office365-Filtering-Correlation-Id: 426adb45-597b-44a8-d83d-08dc4e7a767b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 6zhIau+uQ8llOWTSBOjqx5AyYTZw91qmS3hYQbJqBPBOHfCGqr0HOaq7l7FojA77scrOzbLV3id5pXl0WkC4Ta5QuY4qjgxQjiAkDRRFk61nxwOKahiYCJ+EpZLKqf9MoxhZilmdm6P9bFLb8V4XAG/oemmN18uiB0Zpi8G7i+RcA1svCXKbvDP6m9/mR6tgaLSjPWMhkTOe0AaQuicSskMMUByKOQHQ4LBpJggacoNif1daEwPL6mCtMJZSgTQQVz16Y4hJw53rrOQBi7rLdlymQNs4XFR1TDLdNNNB6jStM9Lfo08UFltwyNWdu5Gc8AO2gsvnf+SZaK68Zff69QN9/3pFoVsY6Axs3EqoHiNNTk9y57+MA/0uiGL52+9UAJRrw6lGSBEwpAN97bV8ArWZhA3J836A7zcmR3PIlFeYbcxgZ1VPvET6Nm1BGMUSEWnt7V0+JR3GyXBc24OPqSrkGxB5kNbglJTPvs77qTXHgq5cW5aBazlC4G7FRjU9mRTxJHX+jMzDbRYGNadlHpDT4No8eP09SGDjVyXSU7Ws3dVKB4zHXmesREr1FOSlDSimezBojF13stpkriRCLM1uAGjbmeS8sIKFxh9r3UFVRlsHB1XabMzBKRsjo9gkSbjmLfdLe3L4a/Zwm64DctTRVqKV2Tte0gjY4+aBOwTFrjsaSWycZDdntH7W5s9lkhk4Rf8gdQkkiG7gZoKiU44iuGIICy/VEVFQ+aYqg7GZiS5BG75KQLGSQVAZegwI
+X-Microsoft-Antispam-Message-Info: Dy1hue6ayWQriWn01GqzEPvkltOU1Xdux9PM3vMl/KU+Uw+t+Q6er4Ld663c2ogrPOTj6/EZq0gDz31NY6Mfhcsgi6auNBoEQ11dAzHwMkCW2zQJBKNa6sGEEf2oAjaoHb2g/TBdmedLAWOzx/+mVNfU5kTPKdC96Qr/oqFkKQ3vyt9gv7Irp/KnfY2tPaNJyxCRuQozYEJwucN6XWYTps8wA+VNHBVRnQ7uhKbRd7KywUkZumtdJ5tn/fuDx5qvmLwgYx8NmaLiCTkD7FHw6E9PPA4v0srV48fJ13ZQvzLbrfBWY+6x3pdE/tan0lcYCwf8rxL5sGBU+xqokKTwdRzK3mBEaTAlZiP5zMNJ6zQaUWlHNzfDz6i+2pvkX4Kb5oOJJTEpbqt2n2TTYAGywIqfXAyJShjLTdYg5AUA1cAFbo50MGBCyTqwYzQ/PbdWTzLVs5ln4D3B3ORob2txpK7QQJP3/Os7v3WmPTT0DVxtm4aG9VwcHXUw2wnAr+pp0tVSUG0ICzyTCjw67N08K83ZUw/CidqMQVQJzYrKNdm0JS1PRhy+ouOym/sflxH5Mps8s9cGnUyMI+5/Uy55kEtBv67z0JD7TNdc/BIQ8aBKqijscIrv3TRCOKprRPiNUCFy4SdfFj4dQ0tE6sTOyg2TfUY3dp44w2ttLhAZ/f/a16xgszxdUF0BkygR7lxKm42/PzxIsTLhvUwHLwbgsvJ62aUvtkvCYG8Al0aZm15eH81mq+aLCwXhJMeqAFuo
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
  SFS:(13230031)(36860700004)(82310400014)(376005)(1800799015); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2024 16:24:52.1394 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e1f32d8e-c1b8-43c8-7818-08dc4e7a6e3e
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2024 16:25:05.9634 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 426adb45-597b-44a8-d83d-08dc4e7a767b
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF0000343B.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF0000343D.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8540
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6757
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,51 +109,104 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Stop assertion but return accordingly when dp_fec or dp_dsc is
-not supported.
+test_init() only sets data->mode when an output is DSC capable. As a
+result, it is necessary to check it before running each subtest.
 
 Reviewed-by: Hersen Wu <Hersenxs.Wu@amd.com>
 Signed-off-by: Alex Hung <alex.hung@amd.com>
 ---
-V2: - Limit lines to 100
+V2: Limit lines to 100
 
- lib/igt_amd.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ tests/amdgpu/amd_dp_dsc.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index 623883dbc..c0c4dfc67 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -353,10 +353,11 @@ bool is_dp_dsc_supported(int drm_fd, char *connector_name)
+diff --git a/tests/amdgpu/amd_dp_dsc.c b/tests/amdgpu/amd_dp_dsc.c
+index 900182443..13c4452da 100644
+--- a/tests/amdgpu/amd_dp_dsc.c
++++ b/tests/amdgpu/amd_dp_dsc.c
+@@ -99,6 +99,15 @@ static void test_init(data_t *data)
+ 	igt_display_reset(display);
+ }
+ 
++static bool is_dsc_capable(drmModeModeInfo *mode)
++{
++	/* mode is not set in test_init() if it is dsc capable */
++	if (mode->hdisplay == 0 || mode->vdisplay == 0)
++		return false;
++
++	return true;
++}
++
+ static void test_dsc_enable(data_t *data)
+ {
+ 	bool dsc_on, dsc_after, dsc_before;
+@@ -113,7 +122,7 @@ static void test_dsc_enable(data_t *data)
+ 	for_each_pipe(&data->display, i) {
+ 		/* Setup the output */
+ 		output = data->output[i];
+-		if (!output || !igt_output_is_connected(output))
++		if (!output || !igt_output_is_connected(output) || !is_dsc_capable(&data->mode[i]))
+ 			continue;
+ 
+ 		igt_create_pattern_fb(data->fd,
+@@ -259,7 +268,7 @@ static void test_dsc_slice_dimensions_change(data_t *data)
+ 	for_each_pipe(&data->display, i) {
+ 		/* Setup the output */
+ 		output = data->output[i];
+-		if (!output || !igt_output_is_connected(output))
++		if (!output || !igt_output_is_connected(output) || !is_dsc_capable(&data->mode[i]))
+ 			continue;
+ 
+ 		igt_create_pattern_fb(data->fd,
+@@ -349,7 +358,7 @@ static void test_dsc_link_settings(data_t *data)
+ 	/* Setup all outputs */
+ 	for_each_pipe(&data->display, i) {
+ 		output = data->output[i];
+-		if (!output || !igt_output_is_connected(output))
++		if (!output || !igt_output_is_connected(output) || !is_dsc_capable(&data->mode[i]))
+ 			continue;
+ 
+ 		igt_create_pattern_fb(data->fd,
+@@ -366,7 +375,7 @@ static void test_dsc_link_settings(data_t *data)
+ 	/* Collect reference CRCs */
+ 	for_each_pipe(&data->display, i) {
+ 		output = data->output[i];
+-		if (!output || !igt_output_is_connected(output))
++		if (!output || !igt_output_is_connected(output) || !is_dsc_capable(&data->mode[i]))
+ 			continue;
+ 
+ 		igt_pipe_crc_collect_crc(data->pipe_crc[i], &ref_crc[i]);
+@@ -377,7 +386,8 @@ static void test_dsc_link_settings(data_t *data)
+ 			/* Write new link_settings */
+ 			for_each_pipe(&data->display, i) {
+ 				output = data->output[i];
+-				if (!output || !igt_output_is_connected(output))
++				if (!output || !igt_output_is_connected(output) ||
++				    !is_dsc_capable(&data->mode[i]))
+ 					continue;
+ 
+ 				/* Write lower link settings */
+@@ -395,7 +405,8 @@ static void test_dsc_link_settings(data_t *data)
+ 
+ 			for_each_pipe(&data->display, i) {
+ 				output = data->output[i];
+-				if (!output || !igt_output_is_connected(output))
++				if (!output || !igt_output_is_connected(output) ||
++				    !is_dsc_capable(&data->mode[i]))
+ 					continue;
+ 
+ 				/* Verify lower link settings */
+@@ -425,8 +436,9 @@ static void test_dsc_link_settings(data_t *data)
+ 	/* Cleanup all fbs */
+ 	for_each_pipe(&data->display, i) {
+ 		output = data->output[i];
+-		if (!output || !igt_output_is_connected(output))
++		if (!output || !igt_output_is_connected(output) || !is_dsc_capable(&data->mode[i]))
+ 			continue;
++
+ 		igt_remove_fb(data->fd, &ref_fb[i]);
  	}
  
- 	ret = igt_debugfs_simple_read(fd, DEBUGFS_DSC_FEC_SUPPORT, buf, sizeof(buf));
--	close(fd);
-+	if (ret < 0)
-+		igt_info("Reading %s for connector %s failed.\n",
-+			 DEBUGFS_DSC_FEC_SUPPORT, connector_name);
- 
--	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
--		     DEBUGFS_DSC_FEC_SUPPORT, connector_name);
-+	close(fd);
- 
- 	return strstr(buf, "DSC_Sink_Support: yes");
- }
-@@ -380,10 +381,11 @@ bool is_dp_fec_supported(int drm_fd, char *connector_name)
- 	}
- 
- 	ret = igt_debugfs_simple_read(fd, DEBUGFS_DSC_FEC_SUPPORT, buf, sizeof(buf));
--	close(fd);
-+	if (ret < 0)
-+		igt_info("Reading %s for connector %s failed.\n",
-+			 DEBUGFS_DSC_FEC_SUPPORT, connector_name);
- 
--	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
--		     DEBUGFS_DSC_FEC_SUPPORT, connector_name);
-+	close(fd);
- 
- 	return strstr(buf, "FEC_Sink_Support: yes");
- }
 -- 
 2.34.1
 
