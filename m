@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09283C54E67
-	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 12:28:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EFD2CD11DD
+	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 12:28:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A1CFE10F8AE;
-	Wed, 27 Mar 2024 12:28:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1510F10FCCC;
+	Wed, 27 Mar 2024 12:28:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nHs5ZLVk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Br44Ols8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B9E3510F8AE
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Mar 2024 12:28:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF66310FCCC
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Mar 2024 12:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711542498; x=1743078498;
+ t=1711542508; x=1743078508;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=k4nkRS1Ea9OTKoM1Q0ItuaUI5ZS3o/NOARRpUpbpAn8=;
- b=nHs5ZLVkdV93WMgH839Oo3SeLTCzA85T/LUKfir6+PtgIhva16mfks79
- NkGJtFW7T0WzYpamA/YwVfzIkrZgtMAp7ykJIi71ouFn8LLsyuWukTXPl
- Pds9TTW3vlyY/1gUowZ5zx9bBDeO+9+TbuVD/mTyOyqJz8xBp3ZBC0gBS
- 61XOFXJ8y8bvln2fNTHipnIqSfLrt+AnfHdJB6/IL5OTzmmw2Z35MnJmh
- VGr+l062xWzai2lUIVVa27yv51F4CUYB1FZWvke2mNa6gjaCpNnjClfZQ
- n3CQ6r6rnWa0lQt32gVegG5js8xYY/boWeYtct1bMY8XZSUp1d5+bCqbK w==;
-X-CSE-ConnectionGUID: SQs5qKTkRX2INY/RO1bf1Q==
-X-CSE-MsgGUID: wtm5jzGLSPmH121OEmtptg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="6530859"
+ bh=hFpJmMdOiMT/Z9x82S7U4Yjv7V6Q85tCEDURllNRCk8=;
+ b=Br44Ols8GNQ7LWPE29AgmYV5WXNxsqaYF8eDijMf2se3zUF796GjCc6y
+ KVEnhJphp09wSmMLDaWucHyniMjh7FZwjOs4DbyzhIFMgKfuIjaSD35AR
+ sckw8C2Wd8nuY9v4osNi3XVwyU+FPHhFVOT/XcVVR4aelb/ffEZYmjH3t
+ TBV905bBYc1/UVpMAb16JU03EAZciQUas73myXzYUH8WFNyIseWNT7bJ0
+ 8oFq6pTB6YaF0qq/ww6r3o/P2wMRJrsq6boGHyJWPwlsO+bPeSCCNK2xI
+ Xarrc6oCNJGBR5yRvwivl/KikHv3nYH9mz0yY2koHz4+d2d4aU/4bb3mg w==;
+X-CSE-ConnectionGUID: KKm4bqIaQBydWXw5DFPnsg==
+X-CSE-MsgGUID: OYtRYPPBQL6UU0vOMIfM9w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="6771253"
 X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; 
-   d="scan'208";a="6530859"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 05:28:18 -0700
+   d="scan'208";a="6771253"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2024 05:28:28 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="16932903"
+X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="16118397"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 05:28:17 -0700
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2024 05:28:25 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
@@ -48,10 +48,9 @@ Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Aditya Chauhan <aditya.chauhan@intel.com>,
  Girotra Himanshu <himanshu.girotra@intel.com>,
  Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
-Subject: [PATCH i-g-t 04/16] tests/intel: Introduce Power management
- megafeature
-Date: Wed, 27 Mar 2024 12:27:19 +0000
-Message-Id: <20240327122731.2104614-5-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t 05/16] tests/intel: Introduce Compute mega feature
+Date: Wed, 27 Mar 2024 12:27:20 +0000
+Message-Id: <20240327122731.2104614-6-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240327122731.2104614-1-katarzyna.piecielska@intel.com>
 References: <20240327122731.2104614-1-katarzyna.piecielska@intel.com>
@@ -72,14 +71,14 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
- Add mega feature to Blitter tests.
- Group:
+Add mega feature to Compute tests.
+Group:
 	SUBTEST
- 	Description
- 	Category
- 	Mega feature
- 	Sub-category
- 	Functionality
+	Description
+	Category
+	Mega feature
+	Sub-category
+	Functionality
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
@@ -88,299 +87,130 @@ Cc: Aditya Chauhan <aditya.chauhan@intel.com>
 Cc: Girotra Himanshu <himanshu.girotra@intel.com>
 CC: Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
 ---
- tests/intel/gem_pxp.c               |  7 +++---
- tests/intel/i915_pm_freq_mult.c     |  7 +++---
- tests/intel/i915_pm_rc6_residency.c |  7 +++---
- tests/intel/i915_pm_rpm.c           |  7 +++---
- tests/intel/i915_pm_rps.c           |  7 +++---
- tests/intel/i915_pm_sseu.c          |  5 ++--
- tests/intel/i915_power.c            |  7 +++---
- tests/intel/i915_selftest.c         | 38 +++++++++++++++--------------
- tests/intel/i915_suspend.c          |  8 +++---
- tests/intel/xe_gt_freq.c            |  3 ++-
- tests/intel/xe_pm.c                 |  3 ++-
- tests/intel/xe_pm_residency.c       |  3 ++-
- 12 files changed, 57 insertions(+), 45 deletions(-)
+ tests/intel/gem_compute.c         | 5 +++--
+ tests/intel/gem_ctx_persistence.c | 5 +++--
+ tests/intel/gem_userptr_blits.c   | 5 +++--
+ tests/intel/gem_vm_create.c       | 3 ++-
+ tests/intel/xe_compute.c          | 3 ++-
+ tests/intel/xe_compute_preempt.c  | 3 ++-
+ tests/intel/xe_noexec_ping_pong.c | 3 ++-
+ 7 files changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/tests/intel/gem_pxp.c b/tests/intel/gem_pxp.c
-index f90e92abd..b2789ccc6 100644
---- a/tests/intel/gem_pxp.c
-+++ b/tests/intel/gem_pxp.c
-@@ -10,10 +10,11 @@
- /**
-  * TEST: gem pxp
-  * Description: Test PXP that manages protected content through arbitrated HW-PXP-session
-- * Feature: Protected Xe Path
-- * Functionality: pxp
-- * Sub-category: Power management
-  * Category: Desktop client
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
-+ * Functionality: pxp
-+ * Feature: PXP
-  *
-  * SUBTEST: create-protected-buffer
-  *
-diff --git a/tests/intel/i915_pm_freq_mult.c b/tests/intel/i915_pm_freq_mult.c
-index 3c390d427..6d375c5aa 100644
---- a/tests/intel/i915_pm_freq_mult.c
-+++ b/tests/intel/i915_pm_freq_mult.c
-@@ -14,10 +14,11 @@
-  * TEST: i915 pm freq mult
-  * Description: Tests for sysfs controls (or multipliers) for IP blocks which
-  *		run at frequencies different from the main GT frequency.
-- * Category: Firmware building block
-- * Functionality: freq multipliers
-+ * Category: Firmware
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
-+ * Functionality: freg multipliers
-  * Test category: i915
-- * Sub-category: Power management
-  *
-  * SUBTEST: media-freq
-  * Description: Tests for media frequency factor sysfs
-diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
-index be9f9117a..92dae43b3 100644
---- a/tests/intel/i915_pm_rc6_residency.c
-+++ b/tests/intel/i915_pm_rc6_residency.c
-@@ -43,10 +43,11 @@
- #include "sw_sync.h"
- /**
-  * TEST: i915 pm rc6 residency
-- * Feature: GuCRC, pm_rc6
-- * Functionality: rc6
-- * Sub-category: Power management
-  * Category: Desktop client
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
-+ * Functionality: rc6
-+ * Feature: GuCRC, pm_rc6
-  *
-  * SUBTEST: media-rc6-accuracy
-  * Feature: pm_rc6
-diff --git a/tests/intel/i915_pm_rpm.c b/tests/intel/i915_pm_rpm.c
-index 8ea3fd315..52e00489d 100644
---- a/tests/intel/i915_pm_rpm.c
-+++ b/tests/intel/i915_pm_rpm.c
-@@ -42,11 +42,12 @@
- #include <sys/stat.h>
- /**
-  * TEST: i915 pm rpm
-- * Feature: pm_rpm
-- * Functionality: D3 state entry-exit
-- * Sub-category: Power management
-  * Category: Desktop client
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
-+ * Functionality: D3 state entry-exit
-  * Test category: pm_rpm
-+ * Feature: pm_rpm
-  *
-  * SUBTEST: debugfs-forcewake-user
-  * SUBTEST: debugfs-read
-diff --git a/tests/intel/i915_pm_rps.c b/tests/intel/i915_pm_rps.c
-index 5aa5c6dbb..b6f55bb48 100644
---- a/tests/intel/i915_pm_rps.c
-+++ b/tests/intel/i915_pm_rps.c
-@@ -47,11 +47,12 @@
- /**
-  * TEST: i915 pm rps
-  * Description: Render P-States tests - verify GPU frequency changes
-+ * Category: Desktop client
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
-+ * Functionality: pm_rps
-  * Feature: pm_rps
-  * Test category: pm_rps
-- * Functionality: rps
-- * Sub-category: Power management
-- * Category: Desktop client
-  *
-  * SUBTEST: basic-api
-  *
-diff --git a/tests/intel/i915_pm_sseu.c b/tests/intel/i915_pm_sseu.c
-index 11df4f06c..1fb938893 100644
---- a/tests/intel/i915_pm_sseu.c
-+++ b/tests/intel/i915_pm_sseu.c
-@@ -38,10 +38,11 @@
- /**
-  * TEST: i915 pm sseu
-  * Description: Tests slice/subslice/EU power gating functionality.
-- * Feature: pm_sseu
-- * Sub-category: Power management
-  * Category: Desktop client
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
-  * Functionality: sseu
-+ * Feature: pm_sseu
-  *
-  * SUBTEST: full-enable
-  */
-diff --git a/tests/intel/i915_power.c b/tests/intel/i915_power.c
-index fe8437a0f..ef92efb6f 100644
---- a/tests/intel/i915_power.c
-+++ b/tests/intel/i915_power.c
-@@ -10,11 +10,12 @@
- /**
-  * TEST: i915 power
-  * Description: i915 power measurement tests
-- * Feature: hwmon
-- * Test category: GEM_Legacy
-- * Sub-category: Power management
-  * Category: Desktop client
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
-  * Functionality: hwmon
-+ * Feature: hwmon
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: sanity
-  * Description: Sanity check gpu power measurement
-diff --git a/tests/intel/i915_selftest.c b/tests/intel/i915_selftest.c
-index 580cfd127..675dad574 100644
---- a/tests/intel/i915_selftest.c
-+++ b/tests/intel/i915_selftest.c
-@@ -174,10 +174,11 @@
-  * Sub-category: Mocs
-  *
-  * SUBTEST: live@gt_pm
-- * Category: Selftest
-  * Description: Basic i915 driver module selftests
-+ * Category: Selftest
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
-  * Functionality: rps, rc6
-- * Sub-category: Power management
-  *
-  * SUBTEST: live@gt_timelines
-  * Category: Selftest
-@@ -252,11 +253,12 @@
-  * Test category: i915
-  *
-  * SUBTEST: live@late_gt_pm
-+ * Description: Basic i915 driver module selftests
-  * Category: Selftest
-- * Feature: rc6 feature
-- * Functionality: Basic i915 driver module selftests
-- * Test category: rc6
-- * Sub-category: Power management
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
-+ * Feature: rc6
-+ * Functionality: rc6
-  *
-  * SUBTEST: live@lmem
-  * Description: Basic i915 driver module selftests
-@@ -351,20 +353,20 @@
-  * Sub-category: Synchronization
-  *
-  * SUBTEST: live@slpc
-- * Category: Selftest
-- * Feature: slpc feature/ pm_rps
-- * Test category: slpc / pm_rps
-  * Description: Basic i915 driver module selftests
-+ * Category: Selftest
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
-  * Functionality: slpc
-- * Sub-category: Power management
-+ * Feature: slpc / pm_rps
-  *
-  * SUBTEST: live@uncore
-- * Category: Selftest
-  * Description: Basic i915 driver module selftests
-- * Feature: forcewake feature
-- * Test category: forcewake
-+ * Category: Selftest
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
-  * Functionality: forcewake
-- * Sub-category: Power management
-+ * Feature: forcewake
-  *
-  * SUBTEST: live@vma
-  * Description: Per-object virtual address management
-@@ -530,12 +532,12 @@
-  * Test category: Memory Management
-  *
-  * SUBTEST: mock@uncore
-- * Category: Selftest
-  * Description: Basic i915 driver module selftests
-- * Feature: forcewake feature
-- * Test category: forcewake
-+ * Category: Selftest
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
-  * Functionality: forcewake
-- * Sub-category: Power management
-+ * Feature: forcewake
-  *
-  * SUBTEST: mock@vma
-  * Category: Selftest
-diff --git a/tests/intel/i915_suspend.c b/tests/intel/i915_suspend.c
-index ae4404101..1f99c2ddc 100644
---- a/tests/intel/i915_suspend.c
-+++ b/tests/intel/i915_suspend.c
-@@ -46,12 +46,12 @@
- #include "igt_device_scan.h"
- /**
-  * TEST: i915 suspend
-- * Feature: suspend feature
-+ * Category: Desktop client
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
-  * Functionality: s2idle w/o i915
-  * Test category: suspend
-- * Functionality: suspend
-- * Sub-category: Power management
-- * Category: Desktop client
-+ * Feature: suspend
-  *
-  * SUBTEST: basic-s2idle-without-i915
-  * Description: Validate suspend-to-idle without i915 module
-diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
-index c12f6c52c..0c1acc688 100644
---- a/tests/intel/xe_gt_freq.c
-+++ b/tests/intel/xe_gt_freq.c
+diff --git a/tests/intel/gem_compute.c b/tests/intel/gem_compute.c
+index ffab45d61..bc640fa11 100644
+--- a/tests/intel/gem_compute.c
++++ b/tests/intel/gem_compute.c
 @@ -6,7 +6,8 @@
  /**
-  * TEST: Test Xe GT frequency request functionality
-  * Category: Infrastructure
-- * Sub-category: Power management
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
-  * Functionality: frequency request
-  * Test category: functionality test
-  */
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index c8a5cc6de..6f4ca2472 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -6,7 +6,8 @@
- /**
-  * TEST: Check Power Management functionality
-  * Category: Software building block
-- * Sub-category: Power management
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
+  * TEST: Check compute-related functionality
+  * Category: Hardware building block
+- * Sub-category: Compute
++ * Mega feature: Compute
++ * Sub-category: Compute tests
   * Test category: functionality test
   */
  
-diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-index ad70e2430..d58ebe804 100644
---- a/tests/intel/xe_pm_residency.c
-+++ b/tests/intel/xe_pm_residency.c
+@@ -21,7 +22,7 @@
+  * Description:
+  *	Run an openCL Kernel that returns output[i] = input[i] * input[i],
+  *	for an input dataset..
+- * Functionality: compute openCL kernel
++ * Functionality: OpenCL kernel
+  */
+ static void
+ test_compute_square(int fd)
+diff --git a/tests/intel/gem_ctx_persistence.c b/tests/intel/gem_ctx_persistence.c
+index 80ece13a7..1d4a14900 100644
+--- a/tests/intel/gem_ctx_persistence.c
++++ b/tests/intel/gem_ctx_persistence.c
+@@ -47,10 +47,11 @@
+ #include "sw_sync.h"
+ /**
+  * TEST: gem ctx persistence
+- * Feature: context feature
+  * Category: Server
++ * Sub-category: Compute tests
++ * Mega feature: Compute
+  * Functionality: context
+- * Sub-category: Compute
++ * Feature: context
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines-cleanup
+diff --git a/tests/intel/gem_userptr_blits.c b/tests/intel/gem_userptr_blits.c
+index 51948db0c..6f33a6546 100644
+--- a/tests/intel/gem_userptr_blits.c
++++ b/tests/intel/gem_userptr_blits.c
+@@ -70,9 +70,10 @@
+ /**
+  * TEST: gem userptr blits
+  * Category: Server
+- * Feature: userptr
++ * Mega feature: Compute
++ * Sub-category: Compute tests
+  * Functionality: buffer management
+- * Sub-category: Compute
++ * Feature: userptr
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: access-control
+diff --git a/tests/intel/gem_vm_create.c b/tests/intel/gem_vm_create.c
+index 2788e1745..8e9d1c193 100644
+--- a/tests/intel/gem_vm_create.c
++++ b/tests/intel/gem_vm_create.c
+@@ -30,8 +30,9 @@
+ /**
+  * TEST: gem vm create
+  * Category: Server
++ * Mega feature: Compute
++ * Sub-category: Compute tests
+  * Functionality: context
+- * Sub-category: Compute
+  * Feature: mapping
+  * Test category: GEM_Legacy
+  *
+diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+index e773e798a..f806dfb31 100644
+--- a/tests/intel/xe_compute.c
++++ b/tests/intel/xe_compute.c
 @@ -6,7 +6,8 @@
  /**
-  * TEST: Test gtidle properties
-  * Category: Software building block
-- * Sub-category: Power management
-+ * Mega feature: Power management
-+ * Sub-category: Power management tests
-  * Functionality: GT C States
+  * TEST: Check compute-related functionality
+  * Category: Hardware building block
+- * Sub-category: Compute
++ * Mega feature: Compute
++ * Sub-category: Compute tests
   * Test category: functionality test
   */
+ 
+diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
+index b8448ef91..ccab069c6 100644
+--- a/tests/intel/xe_compute_preempt.c
++++ b/tests/intel/xe_compute_preempt.c
+@@ -6,7 +6,8 @@
+ /**
+  * TEST: Check compute-related preemption functionality
+  * Category: Hardware building block
+- * Sub-category: Compute
++ * Mega feature: Compute
++ * Sub-category: Compute tests
+  * Functionality: OpenCL kernel
+  * Test category: functionality test
+  */
+diff --git a/tests/intel/xe_noexec_ping_pong.c b/tests/intel/xe_noexec_ping_pong.c
+index f88f2af9d..9024623d9 100644
+--- a/tests/intel/xe_noexec_ping_pong.c
++++ b/tests/intel/xe_noexec_ping_pong.c
+@@ -18,7 +18,8 @@
+ /**
+  * TEST: Expose compute VM's unnecessary rebinds
+  * Category: Hardware building block
+- * Sub-category: Compute
++ * Mega feature: Compute
++ * Sub-category: Compute tests
+  * Functionality: VM rebind
+  * Test category: functionality test
+  *
 -- 
 2.34.1
 
