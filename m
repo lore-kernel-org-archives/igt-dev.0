@@ -4,62 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91C63C47DD9
-	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 17:21:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01B9CC54E67
+	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 17:27:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0470710FE8A;
-	Wed, 27 Mar 2024 17:21:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 835DE10FE84;
+	Wed, 27 Mar 2024 17:27:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mohlldmU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gvVHKITT";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B71A10FE87
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Mar 2024 17:21:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C833610EF51;
+ Wed, 27 Mar 2024 17:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711560115; x=1743096115;
+ t=1711560476; x=1743096476;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=OeRpKays354T/MKHATQGt1+bxZKSVqf6RWuArqNFxdA=;
- b=mohlldmUvQQNV/lBuf3Y6JHgbA9IHwpqYv3tPvQWbgEwWbvv3o9j/+37
- MMrxXck4czI7iXI323wlasx/msYSqsXhdOtCCe55azJL0weXuXeyBbWic
- 5/idsNgcsOStdLycBSqDds8c4GhQGieu4hwYoaeT1VXoDRYMyeRFM+pYV
- WrKs0Amv97ExPAHLqMXINjw6tp3CKv7lsyBCjqjRaLTiziarJNl9CXkeI
- 9y6P7TITkBUel1Pxih6FgpvNhU8UdiM6xdtJVxNfq/s6V4swTkZRq4StV
- p9h2WtFL74Rmohd6XKNpv7IdwEbijAqP5fuE4orIcS7yKoBE3fy1bSeKP g==;
-X-CSE-ConnectionGUID: nGV+VTkcTcG9/xw0BnsW7A==
-X-CSE-MsgGUID: nTuTehjXQ1WpvSNdBpSe0A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="6868487"
+ mime-version:in-reply-to;
+ bh=/Z8Hy5QHAyB1RzU7/9bPurJZFIDMHK/R/Y9zCGuIkuE=;
+ b=gvVHKITTvAc4JZ6GKuq58MGaChV9GcMHlGDi1Sk+x/gxJfMBMoedNXQ6
+ +XGqapKj3KFXXxjtuOSlhqU87PyNo+00t/sB42Mq7R319X8NzoK2DAnqz
+ EcCEVuLYiMYaOvUIWqT62/z04jLnEci2eqmU0Lh0GzOMzp+qEWmI5SfkJ
+ GUyXelQXRt8p94hWtXUGr7OJrqIpYkTe1XZ29Jhlk0SG1eUTi6lNhX93h
+ pOIrap3s0GwaPx9pWj8c6HPQ/JQBp+RzJFM7awf26QfEuXk3xG9qAHFb8
+ YXFO0/bqcg0L/LTkfl0d/nbr/YgjeOhv9fxCmQbRi61lYKx4q1baEwCgO g==;
+X-CSE-ConnectionGUID: kV1ny3H6SMaxWb9tpSD/Cg==
+X-CSE-MsgGUID: 9+uYqvc5S4SUnzlbMPRLVQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="7283711"
 X-IronPort-AV: E=Sophos;i="6.07,159,1708416000"; 
-   d="scan'208";a="6868487"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 10:21:54 -0700
+   d="scan'208";a="7283711"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2024 10:27:55 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,159,1708416000"; d="scan'208";a="47572717"
+X-IronPort-AV: E=Sophos;i="6.07,159,1708416000"; d="scan'208";a="20847636"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 09:59:50 -0700
-Date: Wed, 27 Mar 2024 17:59:32 +0100
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2024 10:27:53 -0700
+Date: Wed, 27 Mar 2024 18:27:50 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: peter.senna@gmail.com, Andi Shyti <andi.shyti@linux.intel.com>
-Subject: Re: [PATCH i-g-t v2] Fix memory access issue due to variable block
- scope
-Message-ID: <20240327165932.wnp332o5rcbnikyk@kamilkon-desk.igk.intel.com>
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: Re: [PATCH i-g-t] lib/kunit: Read results from debugfs
+Message-ID: <20240327172750.dckajao4pfvjy763@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, peter.senna@gmail.com,
- Andi Shyti <andi.shyti@linux.intel.com>
-References: <20240325213548.2881-1-me@petersenna.com>
- <ZgK58ZwkJxhF6G6C@ashyti-mobl2.lan>
- <CA+MoWDpEpvpfbGEroLCCi=6dA+qeGu_i6h9VhYt3HMZyfzZ8Ug@mail.gmail.com>
- <20240326182006.xwloqd3ks4vsartq@kamilkon-desk.igk.intel.com>
- <CA+MoWDoKgm43ysBsN+Ta2KG6jSOKuLkznCVxobyfCVzrJKDRZg@mail.gmail.com>
+ igt-dev@lists.freedesktop.org,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+References: <20240327113700.7123-2-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+MoWDoKgm43ysBsN+Ta2KG6jSOKuLkznCVxobyfCVzrJKDRZg@mail.gmail.com>
+In-Reply-To: <20240327113700.7123-2-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,151 +77,298 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
-
-On 2024-03-26 at 22:41:27 +0100, Peter Senna Tschudin wrote:
-> Hi Kamil,
+Hi Janusz,
+On 2024-03-27 at 12:22:54 +0100, Janusz Krzysztofik wrote:
+> KUnit can provide KTAP reports from test modules via debugfs files, one
+> per test suite.  Using that source of test results instead of extracting
+> them from dmesg, where they may be interleaved with other kernel messages,
+> seems more easy to handle and less error prone.  Switch to it.
 > 
-> Thank you for your email!
+> If KUnit debugfs support is found not configured then fall back to legacy
+> processing path.
 > 
-> On Tue, Mar 26, 2024 at 7:20 PM Kamil Konieczny
-> <kamil.konieczny@linux.intel.com> wrote:
-> >
-> > Hi peter.senna,
-> > On 2024-03-26 at 14:18:43 +0100, Peter Senna Tschudin wrote:
-> > > Hi Andi,
-> > >
-> > > Thank you for your reply.
-> > >
-> > > On Tue, Mar 26, 2024 at 1:05 PM Andi Shyti <andi.shyti@linux.intel.com> wrote:
-> > > >
-> > > > Hey Peter,
-> > > >
-> > > > On Mon, Mar 25, 2024 at 10:35:48PM +0100, Peter Senna Tschudin wrote:
-> > > > > This patch fixes the tests gem_exec_capture@many-4k-incremental and
-> > > > > gem_exec_capture@many-4k-zero that are currently failing with an invalid file
-> > > > > descriptor error.
-> > > >
-> > > > where is gem_exec_capture calling for_each_ctx_cfg_engine()?
-> > >
-> > > many(), userptr(), capture_invisible()
-> > >     find_first_available_engine()
-> > >         for_each_ctx_engine()
-> > >
-> > > When called by many(), 'e' gets corrupted when configure_hangs() tries
-> > > to assign 'e' to another variable. Then after 'e' is corrupted, the
-> > > call __captureN() will fail because it expects 'e' to be valid.
-> > >
-> >
-> > imho first step whould be to replace macro with a function:
-> >
-> > saved = find_first_available_engine(fd, ctx, e);
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> ---
+>  lib/igt_kmod.c | 143 ++++++++++++++++++++++++++++++++++++-------------
+>  1 file changed, 105 insertions(+), 38 deletions(-)
 > 
-> When I was done with the replacement function, I found a simple
-> solution that seems to be adequate. I made a small change to
-> find_first_available_engine() to reassign e to an element of saved. My
-> patch v3 has the details. What do you think?
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index 1ec9c8a602..a5b170ca9c 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -28,6 +28,7 @@
+>  #include <limits.h>
+>  #include <pthread.h>
+>  #include <signal.h>
+> +#include <stdio.h>
+>  #include <stdlib.h>
+>  #include <string.h>
+>  #include <sys/stat.h>
+> @@ -39,6 +40,7 @@
+>  
+>  #include "igt_aux.h"
+>  #include "igt_core.h"
+> +#include "igt_debugfs.h"
+>  #include "igt_kmod.h"
+>  #include "igt_ktap.h"
+>  #include "igt_sysfs.h"
+> @@ -864,6 +866,31 @@ static int open_parameters(const char *module_name)
+>  	return open(path, O_RDONLY);
+>  }
+>  
+> +static DIR *kunit_debugfs_open(void)
+> +{
+> +	const char *debugfs_path = igt_debugfs_mount();
+> +	int debugfs_fd, kunit_fd;
+> +	DIR *kunit_dir;
+> +
+> +	if (igt_debug_on(!debugfs_path))
+> +		return NULL;
+> +
+> +	debugfs_fd = open(debugfs_path, O_DIRECTORY);
+> +	if (igt_debug_on(debugfs_fd < 0))
+> +		return NULL;
+> +
+> +	kunit_fd = openat(debugfs_fd, "kunit", O_DIRECTORY);
+> +	close(debugfs_fd);
+> +	if (igt_debug_on(kunit_fd < 0))
+> +		return NULL;
+> +
+> +	kunit_dir = fdopendir(kunit_fd);
+> +	if (igt_debug_on(!kunit_dir))
+> +		close(kunit_fd);
 
-I will reply to your v4 patch, it looks promising.
+imho here:
+	close(kunit_fd);
+    igt_debug_on(!kunit_dir);
 
-> 
-> May I ask you to increase the time the CI will waits for the tests to complete:
->  - many-4k-zero: 2 minutes
->  - many-4k-incremental: 5 minutes (It takes 4 minutes on my N3150)
+> +
+> +	return kunit_dir;
+> +}
+> +
+>  static bool kunit_set_filtering(const char *filter_glob, const char *filter,
+>  				const char *filter_action)
+>  {
+> @@ -1071,23 +1098,48 @@ static void kunit_results_free(struct igt_list_head *results,
+>  	free(*suite_name);
+>  }
+>  
+> -static int kunit_get_results(struct igt_list_head *results, int kmsg_fd,
+> -			     struct igt_ktap_results **ktap)
+> +static int kunit_get_results(struct igt_list_head *results, int debugfs_fd,
+> +			     const char *suite, struct igt_ktap_results **ktap)
+>  {
+> -	int err;
+> +	FILE *results_stream;
+> +	int ret, results_fd;
+> +	char *buf = NULL;
+> +	size_t size = 0;
+> +	ssize_t len;
+> +
+> +	if (igt_debug_on((ret = openat(debugfs_fd, suite, O_DIRECTORY), ret < 0)))
+> +		return ret;
+> +
+> +	results_fd = openat(ret, "results", O_RDONLY);
+> +	close(ret);
+> +	if (igt_debug_on(results_fd < 0))
+> +		return results_fd;
+> +
+> +	results_stream = fdopen(results_fd, "r");
+> +	if (igt_debug_on(!results_stream)) {
+> +		close(results_fd);
+> +		return -errno;
+> +	}
+>  
+>  	*ktap = igt_ktap_alloc(results);
+> -	if (igt_debug_on(!*ktap))
+> -		return -ENOMEM;
+> +	if (igt_debug_on(!*ktap)) {
+> +		ret = -ENOMEM;
+> +		goto out_fclose;
+> +	}
+> +
+> +	while (len = getline(&buf, &size, results_stream), len > 0) {
+> +		ret = igt_ktap_parse(buf, *ktap);
+> +		if (ret != -EINPROGRESS)
+> +			break;
+> +	}
+>  
+> -	do
+> -		igt_debug_on((err = kunit_kmsg_result_get(results, NULL, kmsg_fd, *ktap),
+> -			      err && err != -EINPROGRESS));
+> -	while (err == -EINPROGRESS);
+> +	free(buf);
+>  
+>  	igt_ktap_free(ktap);
+> +out_fclose:
+> +	fclose(results_stream);
+>  
+> -	return err;
+> +	return ret;
+>  }
+>  
+>  static void __igt_kunit_legacy(struct igt_ktest *tst,
+> @@ -1101,7 +1153,13 @@ static void __igt_kunit_legacy(struct igt_ktest *tst,
+>  	pthread_mutexattr_t attr;
+>  	IGT_LIST_HEAD(results);
+>  	unsigned long taints;
+> -	int ret;
+> +	int flags, ret;
+> +
+> +	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
+> +
+> +	igt_skip_on((flags = fcntl(tst->kmsg, F_GETFL, 0), flags < 0));
+> +	igt_skip_on_f(fcntl(tst->kmsg, F_SETFL, flags & ~O_NONBLOCK) == -1,
+> +		      "Could not set /dev/kmsg to blocking mode\n");
+>  
+>  	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
+>  
+> @@ -1224,30 +1282,20 @@ static void __igt_kunit_legacy(struct igt_ktest *tst,
+>  	igt_skip_on_f(ret, "KTAP parser failed\n");
+>  }
+>  
+> -static void kunit_get_tests_timeout(int signal)
+> -{
+> -	igt_skip("Timed out while trying to extract a list of KUnit test cases from /dev/kmsg\n");
+> -}
+> -
+>  static bool kunit_get_tests(struct igt_list_head *tests,
+>  			    struct igt_ktest *tst,
+>  			    const char *suite,
+>  			    const char *opts,
+> +			    DIR *debugfs_dir,
+>  			    struct igt_ktap_results **ktap)
+>  {
+> -	struct sigaction sigalrm = { .sa_handler = kunit_get_tests_timeout, },
+> -			 *saved;
+>  	struct igt_ktap_result *r, *rn;
+> +	struct dirent *subdir;
+>  	unsigned long taints;
+> -	int flags, err;
+> -
+> -	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
+> +	int debugfs_fd;
+>  
+> -	igt_skip_on((flags = fcntl(tst->kmsg, F_GETFL, 0), flags < 0));
+> -	igt_skip_on_f(fcntl(tst->kmsg, F_SETFL, flags & ~O_NONBLOCK) == -1,
+> -		      "Could not set /dev/kmsg to blocking mode\n");
+> -
+> -	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
+> +	if (igt_debug_on(!debugfs_dir))
+> +		return false;
 
-It is not posibble, sorry, as there are many of them and time adds up...
+imho this should be before you set blocking mode or before you
+call this function.
+
+>  
+>  	/*
+>  	 * To get a list of test cases provided by a kunit test module, ask the
+> @@ -1260,19 +1308,32 @@ static bool kunit_get_tests(struct igt_list_head *tests,
+>  	if (igt_debug_on(!kunit_set_filtering(suite, "module=none", "skip")))
+>  		return false;
+>  
+> +	if (!suite) {
+> +		seekdir(debugfs_dir, 2);	/* directory itself and its parent */
+> +		errno = 0;
+> +		igt_skip_on_f(readdir(debugfs_dir) || errno,
+> +			      "Require empty KUnit debugfs directory\n");
+> +		rewinddir(debugfs_dir);
+> +	}
+> +
+>  	igt_skip_on(modprobe(tst->kmod, opts));
+>  	igt_skip_on(igt_kernel_tainted(&taints));
+>  
+> -	igt_skip_on(sigaction(SIGALRM, &sigalrm, saved));
+> -	alarm(10);
+
+Why you removed alarm(10)?
 
 Regards,
 Kamil
 
+> +	debugfs_fd = dirfd(debugfs_dir);
+> +	if (suite) {
+> +		igt_skip_on(kunit_get_results(tests, debugfs_fd, suite, ktap));
+>  
+> -	err = kunit_get_results(tests, tst->kmsg, ktap);
+> +	} else while (subdir = readdir(debugfs_dir), subdir) {
+> +		if (!(subdir->d_type & DT_DIR))
+> +			continue;
+>  
+> -	alarm(0);
+> -	igt_debug_on(sigaction(SIGALRM, saved, NULL));
+> +		if (!strcmp(subdir->d_name, ".") || !strcmp(subdir->d_name, ".."))
+> +			continue;
+>  
+> -	igt_skip_on_f(err,
+> -		      "KTAP parser failed while getting a list of test cases\n");
+> +		igt_warn_on_f(kunit_get_results(tests, debugfs_fd, subdir->d_name, ktap),
+> +			      "parsing KTAP report from test suite \"%s\" failed\n",
+> +			      subdir->d_name);
+> +	}
+>  
+>  	igt_list_for_each_entry_safe(r, rn, tests, link)
+>  		igt_require_f(r->code == IGT_EXIT_SKIP,
+> @@ -1287,6 +1348,7 @@ static void __igt_kunit(struct igt_ktest *tst,
+>  			const char *subtest,
+>  			const char *suite,
+>  			const char *opts,
+> +			int debugfs_fd,
+>  			struct igt_list_head *tests,
+>  			struct igt_ktap_results **ktap)
+>  {
+> @@ -1307,8 +1369,6 @@ static void __igt_kunit(struct igt_ktest *tst,
+>  
+>  			igt_skip_on(igt_kernel_tainted(&taints));
+>  
+> -			igt_fail_on(lseek(tst->kmsg, 0, SEEK_END) == -1 && errno);
+> -
+>  			igt_assert_lt(snprintf(glob, sizeof(glob), "%s.%s",
+>  					       t->suite_name, t->case_name),
+>  				      sizeof(glob));
+> @@ -1317,7 +1377,8 @@ static void __igt_kunit(struct igt_ktest *tst,
+>  			igt_assert_eq(modprobe(tst->kmod, opts), 0);
+>  			igt_assert_eq(igt_kernel_tainted(&taints), 0);
+>  
+> -			igt_assert_eq(kunit_get_results(&results, tst->kmsg, ktap), 0);
+> +			igt_assert_eq(kunit_get_results(&results, debugfs_fd,
+> +							t->suite_name, ktap), 0);
+>  
+>  			for (i = 0; i < 2; i++) {
+>  				kunit_result_free(&r, &suite_name, &case_name);
+> @@ -1388,6 +1449,7 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
+>  	struct igt_ktest tst = { .kmsg = -1, };
+>  	struct igt_ktap_results *ktap = NULL;
+>  	const char *subtest = suite;
+> +	DIR *debugfs_dir = NULL;
+>  	IGT_LIST_HEAD(tests);
+>  
+>  	/*
+> @@ -1435,10 +1497,12 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
+>  		 *	 LTS kernels not capable of using KUnit filters for
+>  		 *	 listing test cases in KTAP format, with igt_require.
+>  		 */
+> -		if (!kunit_get_tests(&tests, &tst, suite, opts, &ktap))
+> +		debugfs_dir = kunit_debugfs_open();
+> +		if (!kunit_get_tests(&tests, &tst, suite, opts, debugfs_dir, &ktap))
+>  			__igt_kunit_legacy(&tst, subtest, opts);
+>  		else
+> -			__igt_kunit(&tst, subtest, suite, opts, &tests, &ktap);
+> +			__igt_kunit(&tst, subtest, suite, opts,
+> +				    dirfd(debugfs_dir), &tests, &ktap);
+>  	}
+>  
+>  	igt_fixture {
+> @@ -1448,6 +1512,9 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
+>  
+>  		kunit_results_free(&tests, &suite_name, &case_name);
+>  
+> +		if (debugfs_dir)
+> +			closedir(debugfs_dir);
+> +
+>  		igt_ktest_end(&tst);
+>  	}
+>  
+> -- 
+> 2.44.0
 > 
-> Thank you,
-> 
-> Peter
-> 
-> >
-> > Regards,
-> > Kamil
-> >
-> > > >
-> > > > >  struct intel_execution_engine2 *
-> > > > >  intel_get_current_engine(struct intel_engine_data *ed)
-> > > > >
-> > > > > When intel_get_current_engine is called from the macro
-> > > > > for_each_ctx_cfg_engine(), the variable *ed is defined within a for loop. The
-> > > > > scope of *ed is limited to that loop, leading to access violations when
-> > > > > attempting to access its contents outside the loop.
-> > > > >
-> > > > > Before to this patch, intel_get_current_engine() would return an element of *ed
-> > > > > and attempting to use it after the loop ended resulted in undefined behavior.
-> > > > >
-> > > > > This patch introduces a memcpy() to copy the contents of ed->current_engine to
-> > > > > a memory area not confined by the loop's scope, ensuring safe access to the
-> > > > > data.
-> > > > >
-> > > > > v2: Added 'i-g-t' to the Subject.
-> > > > >
-> > > > > Signed-off-by: Peter Senna Tschudin <peter.senna@gmail.com>
-> > > > > ---
-> > > > >  lib/i915/gem_engine_topology.c | 14 +++++++++++++-
-> > > > >  1 file changed, 13 insertions(+), 1 deletion(-)
-> > > > >
-> > > > > diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-> > > > > index afb576afb..b3b809482 100644
-> > > > > --- a/lib/i915/gem_engine_topology.c
-> > > > > +++ b/lib/i915/gem_engine_topology.c
-> > > > > @@ -189,12 +189,24 @@ static int __query_engine_list(int fd, struct intel_engine_data *ed)
-> > > > >  struct intel_execution_engine2 *
-> > > > >  intel_get_current_engine(struct intel_engine_data *ed)
-> > > > >  {
-> > > > > +     struct intel_execution_engine2 *ret = NULL;
-> > > > > +
-> > > > >       if (ed->n >= ed->nengines)
-> > > > >               ed->current_engine = NULL;
-> > > > >       else if (!ed->n)
-> > > > >               ed->current_engine = &ed->engines[0];
-> > > > >
-> > > > > -     return ed->current_engine;
-> > > > > +     // When called from the macro for_each_ctx_cfg_engine(), *ed is defined
-> > > > > +     // inside a for loop. In that case, not memcping ed->current_engine
-> > > > > +     // will lead to a memory access violation when trying to access the
-> > > > > +     // contents of ed->current_engine after the end of the for loop
-> > > >
-> > > > can you please use /* ... */ style of comment?
-> > >
-> > > sure, thank you for pointing this out.
-> > >
-> > > >
-> > > > > +     if (ed->current_engine) {
-> > > > > +             ret = malloc(sizeof(*ret));
-> > > >
-> > > > should this be freed at some point?
-> > >
-> > > I am not convinced that his patch is the best approach. If the problem
-> > > is indeed the block scope of '*ed', I will propose to give
-> > > for_each_ctx_engine() some serious love. I tried to come up with a
-> > > proper solution but I failed to find one. The problems I faced are:
-> > >  - for_each_ctx_engine() requires an struct intel_execution_engine2 as
-> > > an iterator
-> > >  - I did not find any way to keep for_each_ctx_engine() as a macro and
-> > > change the scope(other than declaring ed outside the macro, argh...).
-> > >  - Because for_each_ctx_engine() is a macro, I could not find a
-> > > compiler friendly way to define the struct intel_execution_engine2
-> > > within the macro
-> > >  - To use free() 'properly', we need to save the information of when
-> > > 'e' was allocated to prevent the code from trying to free something
-> > > that should not be freed.
-> > >
-> > > This is why I asked for help here* on how you want me to fix it: I am
-> > > under the impression that there is not a good solution for this
-> > > problem. And then it becomes a question of long term maintenance.
-> > > Should we drop the macro? Forbid the use of 'e' after the macro ends?
-> > > Properly trace memory allocation of 'e' to prevent the potential
-> > > free() issue? Something else? Please let me know.
-> > >
-> > > * - https://lists.freedesktop.org/archives/igt-dev/2024-March/070468.html
-> > >
-> > >
-> > >
-> > > >
-> > > > Andi
