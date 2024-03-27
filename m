@@ -4,57 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B39D9C54E67
-	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 18:43:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7897AC47DD9
+	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 20:09:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4CB8C10FF3F;
-	Wed, 27 Mar 2024 18:43:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 17D1910F318;
+	Wed, 27 Mar 2024 20:09:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nJbFXmhX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IUfkk7aS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4FBDB10FF3F
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Mar 2024 18:43:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3BF4210F318
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Mar 2024 20:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711565030; x=1743101030;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=g56jWZJ8jV+o7unzo/pnR6k0uyoMjPjo58Zs04FIMe4=;
- b=nJbFXmhXRFC63Q5Qeee8WqG6P3zp5+ArFMZ9ynyVCBNR7ZWg6vCV8lic
- BZvLnQPRzWzfL3oF15vW5I0thyVLpum1fbvsnDBEETdFil8vv+J6msNXk
- Flrx0UxqQBYKNJ4jXE5xnuBU/FU5PWB267z3Q6hDidqpyiGajYt0vIWXj
- +xKe4uvqfzqoAAwvZlMsoYEhvQt9YN/yRRzikI9x8m1rIdFyvVtPztrM3
- S4zKPDSVzpfqJiG8DjHBJXlkZQwKuaadq7OGhVuC8B6ld9epRIcc8Atxr
- +R5nhy8vaZxWax4E7jo0t4IjulGmG6Uw3z6U27ht3SyXTvH1MHY7IUgzZ g==;
-X-CSE-ConnectionGUID: wxdDsaXETbq3kVZ5ReB+Ow==
-X-CSE-MsgGUID: 0NYLjYR2Qg+4hCKCNo1kjQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="17324819"
-X-IronPort-AV: E=Sophos;i="6.07,159,1708416000"; d="scan'208";a="17324819"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 11:43:49 -0700
+ t=1711570147; x=1743106147;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=8fOVPNEhiM0piVD7uAqTnqOW0p/OZ0BnieENod+TiYM=;
+ b=IUfkk7aS/S5Rl2QyRcqYX6tvaV2hExwYvJ7M8XD2Ys+eXSBcksfbpsiR
+ LDlFgT6T3qAIHN4APD1kDCAez9nww/+zhGdVGOMcKYz4/h5JY9pRuWTno
+ w8rcuAse0hlHzDILDm/sFcPcJpguJMF+MLE+XunmtLKUSlP1EAB4yiq2i
+ Hzy70V2DJgbOQRvaxxAl8uqVvW1mn00EAYDkQuaswatlQFmI6Lv1scYy7
+ j2o1shqjQvoeJJ1fkiWpub9zwIBpVMQHPMnf1GGCGegG6v0icOnsm3cny
+ 089WVb1KUwZWWEbi0benfa3n5OWKOLDb0KYrA5eeDzk5sRZtCV5jvC0Pu Q==;
+X-CSE-ConnectionGUID: YXnyMYS1QFGN4dIf1cDqiw==
+X-CSE-MsgGUID: iqgnV1cHTUi5SVDgiqA+1w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="24190157"
+X-IronPort-AV: E=Sophos;i="6.07,159,1708416000"; d="scan'208";a="24190157"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2024 13:09:06 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,159,1708416000"; d="scan'208";a="21097294"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2024 11:43:49 -0700
-Date: Wed, 27 Mar 2024 19:43:30 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,159,1708416000"; d="scan'208";a="21074931"
+Received: from rvodapal-desk.iind.intel.com ([10.145.162.163])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2024 13:09:03 -0700
+From: Ravi Kumar Vodapalli <ravi.kumar.vodapalli@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <me@petersenna.com>, andi.shyti@linux.intel.com
-Subject: Re: [PATCH i-g-t v4] Fix memory access issue due to variable block
- scope
-Message-ID: <20240327184330.a3be36wl6tzveqrq@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Peter Senna Tschudin <me@petersenna.com>,
- andi.shyti@linux.intel.com
-References: <20240327065928.5522-1-me@petersenna.com>
+Cc: balasubramani.vivekanandan@intel.com, matthew.d.roper@intel.com,
+ lucas.demarchi@intel.com, gustavo.sousa@intel.com,
+ radhakrishna.sripada@intel.com, clinton.a.taylor@intel.com,
+ matthew.s.atwood@intel.com, dnyaneshwar.bhadane@intel.com,
+ haridhar.kalvala@intel.com, shekhar.chauhan@intel.com
+Subject: [PATCH] lib: sync i915_pciids.h with kernel
+Date: Thu, 28 Mar 2024 01:42:32 +0530
+Message-Id: <20240327201232.3910334-1-ravi.kumar.vodapalli@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240327065928.5522-1-me@petersenna.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,85 +67,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
-On 2024-03-27 at 07:59:27 +0100, Peter Senna Tschudin wrote:
+This synchronizes with kernel commit
+	2bcf0f9bb33d ("drm/i915: Add new PCI IDs to DG2 platform in driver")
 
-One nit about subject, as you can see on patchwork
-https://patchwork.freedesktop.org/project/igt/series/?ordering=-last_updated
+Signed-off-by: Ravi Kumar Vodapalli <ravi.kumar.vodapalli@intel.com>
+---
+ lib/i915_pciids.h | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-we use test name as prefix for a patch, so instead of:
+diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
+index fcf1849aa..85ce33ad6 100644
+--- a/lib/i915_pciids.h
++++ b/lib/i915_pciids.h
+@@ -672,7 +672,9 @@
+ #define INTEL_ADLN_IDS(info) \
+ 	INTEL_VGA_DEVICE(0x46D0, info), \
+ 	INTEL_VGA_DEVICE(0x46D1, info), \
+-	INTEL_VGA_DEVICE(0x46D2, info)
++	INTEL_VGA_DEVICE(0x46D2, info), \
++	INTEL_VGA_DEVICE(0x46D3, info), \
++	INTEL_VGA_DEVICE(0x46D4, info)
+ 
+ /* RPL-S */
+ #define INTEL_RPLS_IDS(info) \
+@@ -709,7 +711,9 @@
+ 	INTEL_VGA_DEVICE(0x5692, info), \
+ 	INTEL_VGA_DEVICE(0x56A0, info), \
+ 	INTEL_VGA_DEVICE(0x56A1, info), \
+-	INTEL_VGA_DEVICE(0x56A2, info)
++	INTEL_VGA_DEVICE(0x56A2, info), \
++	INTEL_VGA_DEVICE(0x56BE, info), \
++	INTEL_VGA_DEVICE(0x56BF, info)
+ 
+ #define INTEL_DG2_G11_IDS(info) \
+ 	INTEL_VGA_DEVICE(0x5693, info), \
+@@ -751,10 +755,13 @@
+ /* MTL */
+ #define INTEL_MTL_IDS(info) \
+ 	INTEL_VGA_DEVICE(0x7D40, info), \
++	INTEL_VGA_DEVICE(0x7D41, info), \
+ 	INTEL_VGA_DEVICE(0x7D45, info), \
++	INTEL_VGA_DEVICE(0x7D51, info), \
+ 	INTEL_VGA_DEVICE(0x7D55, info), \
+ 	INTEL_VGA_DEVICE(0x7D60, info), \
+ 	INTEL_VGA_DEVICE(0x7D67, info), \
++	INTEL_VGA_DEVICE(0x7DD1, info), \
+ 	INTEL_VGA_DEVICE(0x7DD5, info)
+ 
+ #endif /* _I915_PCIIDS_H */
+-- 
+2.25.1
 
-[PATCH i-g-t v4] Fix memory access issue due to variable block
-
-it should be:
-
-[PATCH i-g-t v4] tests/intel/gem_exec_capture: Fix many-* subtests
-
-> This patch fixes the tests many-4k-incremental and many-4k-zero from
-> gem_exec_capture that are currently failing with an invalid file
-> descriptor error.
-> 
-> tests/intel/gem_exec_capture.c
->     many(), userptr(), capture_invisible()
->         find_first_available_engine()
->             for_each_ctx_engine()
->                 for_each_ctx_cfg_engine()
-> 
-> find_first_available_engine() expects a struct intel_execution_engine2
-> *e as parameter. for_each_ctx_cfg_engine() allocates a struct
-> intel_engine_data ed inside a for loop and then update e to point to an
-> element of ed.
-> 
-> The problem is that ed has the block scope of the for loop, and trying
-> to access its content through e after the for loop has ended creates
-> undefined behavior.
-> 
-> This patch updates e to point to the same content at a different memory
-> region, to avoid the block scope of ed.
-> 
-> v4: Move `saved = configure_hangs(fd, e, ctx->id);` to inside the for
-> loop where it is safe to use 'e'. This is because 'e' points to an
-> element of a variable that is defined with the block scope of the for
-> loop.
-
-Yes, this way it works but I still think it would be better
-to use function for it.
-
-> 
-> Signed-off-by: Peter Senna Tschudin <me@petersenna.com>
-> ---
->  tests/intel/gem_exec_capture.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/intel/gem_exec_capture.c b/tests/intel/gem_exec_capture.c
-> index 57b178f3e..f7b10bdd4 100644
-> --- a/tests/intel/gem_exec_capture.c
-> +++ b/tests/intel/gem_exec_capture.c
-> @@ -665,10 +665,12 @@ static bool needs_recoverable_ctx(int fd)
->  		ctx = intel_ctx_create_all_physical(fd); \
->  		igt_assert(ctx); \
->  		for_each_ctx_engine(fd, ctx, e) \
-> -			for_each_if(gem_class_can_store_dword(fd, e->class)) \
-> +			for_each_if(gem_class_can_store_dword(fd, e->class)) { \
-> +				saved = configure_hangs(fd, e, ctx->id); \
-
-Yes, it is a fix for a problem but something strange is
-happening here, imho we need to debug it more.
-
->  				break; \
->               } \
->               e = &saved.engine; \
->       		igt_assert(e); \
-
-Two above lines are not needed, 'e' will always be != NULL.
-
-Regards,
-Kamil
-
-> -		saved = configure_hangs(fd, e, ctx->id); \
->  	} while(0)
->  
->  static void many(int fd, int dir, uint64_t size, unsigned int flags)
-> -- 
-> 2.44.0
-> 
