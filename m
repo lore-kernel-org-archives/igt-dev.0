@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72A19C47DD9
-	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 12:30:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CF96C54E67
+	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 12:30:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0164F10FCF4;
-	Wed, 27 Mar 2024 12:30:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F110710FCF5;
+	Wed, 27 Mar 2024 12:30:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fE7d7sVP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OJDGNpWo";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C05F10FCF4
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Mar 2024 12:30:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A3C8210FCF3
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Mar 2024 12:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711542610; x=1743078610;
+ t=1711542620; x=1743078620;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=pxekVTwtpVMkPkEr9edVzakllVStSkKZVrU834FKs4o=;
- b=fE7d7sVPcZDk+A2ZPbLgwjYL4aszxcOMpmxl5FM/UxM6QLwN2dc4Hc+B
- 9fhIT3Lc+wdYvQT8FkJgfGwlev9ZQTYu1RG5EEoxhQ2QKDHYtIWhBzXkP
- BU3NKcBesicvn8z6v8z5+3bvMYGvDpImBAkU0C1/WFyoFycqJodFQ4CV/
- Rpz+BiKEjSOCHxMmJNp4f6KKwvS8ykdOBKBqNXd2s8QiYxKZNRZ2izu1/
- K0LlQnuPO0gqF8eWmxxOHTbLgvS4J33JtAmCr2ZZQ+XreaUthGd/Xm7zu
- IBrbz4KmKdC/qba/ZR/mcPXlxU74HjBKJ1h6ULzunGVga8lc6mJy5KRY3 w==;
-X-CSE-ConnectionGUID: 0iHUEQeDSLiF2hW8SV7zTg==
-X-CSE-MsgGUID: VMkABZbxTquM4opLGMHugQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="17781561"
-X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="17781561"
+ bh=+oeDLIoTnQWV/y0t/QLlSD7lO830kPczKnX3o8gSuzg=;
+ b=OJDGNpWokS8cW7uJ5d4mHObeWfdDRK7zm6wMkfrUU3KgRcMmjOQlGrs/
+ vJl07eXeYtQuHfPMKhKAcIvA+gnag3n5Id80qYgkvsEWIVB6YHmIacpig
+ Tpc8KZSaM2vb+ccNER3tr3JpWoyiZZQALQicqGG/y1IgJuo/JRZmckGSO
+ 4FNh6uTbPXUFbqD7a237+CjUA2tOi5PfHzG1J7fG2cZAdH3MGAIIM31mH
+ vBKaV1uJZviPVMXiIAOaf1n8zPNEwbC4EbGi/5z9jQti8YhhbMUgfg4pi
+ EviLyiBvohJ4I9+IaENloazjnQHpHit96q/pnEIRVkEiXDrbrxHQQvVDC w==;
+X-CSE-ConnectionGUID: xuu5z40CTRqfFGOdwkY88A==
+X-CSE-MsgGUID: 3lgXQCdrSuax3IANeTGvgg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="17781575"
+X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="17781575"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 05:30:10 -0700
+ 27 Mar 2024 05:30:20 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="20982533"
+X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="20982584"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 05:30:06 -0700
+ 27 Mar 2024 05:30:18 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
@@ -47,9 +47,10 @@ Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Aditya Chauhan <aditya.chauhan@intel.com>,
  Girotra Himanshu <himanshu.girotra@intel.com>,
  Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
-Subject: [PATCH i-g-t 15/16] tests/intel: Introduce RAS mega feature
-Date: Wed, 27 Mar 2024 12:27:30 +0000
-Message-Id: <20240327122731.2104614-16-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t 16/16] tests/intel: Add display tests to General Display
+ Features
+Date: Wed, 27 Mar 2024 12:27:31 +0000
+Message-Id: <20240327122731.2104614-17-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240327122731.2104614-1-katarzyna.piecielska@intel.com>
 References: <20240327122731.2104614-1-katarzyna.piecielska@intel.com>
@@ -70,7 +71,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add mega feature to RAS tests.
+Add display tests to General Display Features.
 Group:
 	SUBTEST
 	Description
@@ -86,23 +87,46 @@ Cc: Aditya Chauhan <aditya.chauhan@intel.com>
 Cc: Girotra Himanshu <himanshu.girotra@intel.com>
 CC: Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
 ---
- tests/intel/intel_hwmon.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/intel/i915_pipe_stress.c | 4 ++--
+ tests/intel/i915_selftest.c    | 3 ++-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/intel_hwmon.c b/tests/intel/intel_hwmon.c
-index 7c6ee0100..448f780d4 100644
---- a/tests/intel/intel_hwmon.c
-+++ b/tests/intel/intel_hwmon.c
-@@ -12,7 +12,8 @@
-  * TEST: intel hwmon
-  * Description: Tests for intel hwmon
-  * Category: Software Building Block
-- * Sub-category: RAS
-+ * Mega feature: RAS
-+ * Sub-category: RAS tests
-  * Functionality: hwmon
-  * Test category: functionality
+diff --git a/tests/intel/i915_pipe_stress.c b/tests/intel/i915_pipe_stress.c
+index 6c5e951ab..3b73a0ff8 100644
+--- a/tests/intel/i915_pipe_stress.c
++++ b/tests/intel/i915_pipe_stress.c
+@@ -20,13 +20,13 @@
+ #include "i915/gem.h"
+ /**
+  * TEST: i915 pipe stress
+- * Category: Display
+  * Description: Stress test how gpu and cpu behaves if maximum amount of
+  *              planes, cpu and gpu utilization is achieved in order to reveal
+  *              possible bandwidth/watermark and similar problems.
+- * Functionality: kms_core
++ * Category: Display
+  * Mega feature: General Display Features
+  * Sub-category: Display
++ * Functionality: kms_core
+  * Test category: stress test
   *
+  * SUBTEST: stress-xrgb8888-untiled
+diff --git a/tests/intel/i915_selftest.c b/tests/intel/i915_selftest.c
+index aeb9deb13..217286da3 100644
+--- a/tests/intel/i915_selftest.c
++++ b/tests/intel/i915_selftest.c
+@@ -74,9 +74,10 @@
+  *
+  * SUBTEST: live@display
+  * Category: Selftest
++ * Mega feature: General Display Features
++ * Sub-category: Display
+  * Functionality: display sanity
+  * Test category: i915
+- * Sub-category: Display
+  *
+  * SUBTEST: live@dmabuf
+  * Category: Selftest
 -- 
 2.34.1
 
