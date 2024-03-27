@@ -4,42 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CADD4C47DD9
-	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 12:29:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4B3AC47DD9
+	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 12:29:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 683EF10FCE2;
-	Wed, 27 Mar 2024 12:29:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 37FE710FCE9;
+	Wed, 27 Mar 2024 12:29:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QAym7bg0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FWsL6awo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 89CF810FCE1
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Mar 2024 12:28:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD02610FCE7
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Mar 2024 12:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711542536; x=1743078536;
+ t=1711542550; x=1743078550;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=GAIZMeG1Rw+T8BCwPvsG11rhanqYJSFiYOQWhRFSPKQ=;
- b=QAym7bg0owD2zBZgOUdbe/1xHwDMPiFzkx4aAkqnZpREhEZY+xnogXML
- QYAIndZZp+DstvPIuAtECQN9UdlVFqUQQ8u+uR5IQZ0gvJXZduHpYaxg2
- TGrCXxIlz83DXqrKtd2Xlrv/d8bOasqdSPdKvOHM35TIntrtipByhkKPR
- 2Tk4L/ghXHIBrRAAa9tu8uZZ0Z7bkvf1ag3+G6USipK2AUYCS1cGGZ66j
- bixg624e5lnHaT63RQ16psmhcL7UAEtsWAfY57TOuJN6GncJ5t8GHYs7T
- bJJK5vcd4JJ798RQdnXdlzJAvkcPKUQS+OWPwba5DnqpZtYZSoYjUCnm1 w==;
-X-CSE-ConnectionGUID: 8V1Ox7PESMK/0MlZjI/8Ng==
-X-CSE-MsgGUID: 0WZ+7YiSRuCit1OMP9AHzA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="6771298"
-X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; 
-   d="scan'208";a="6771298"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 05:28:56 -0700
+ bh=01a8iLCOmXonSomW6HELIwXzAIHnjAVkS/htyZYU3DA=;
+ b=FWsL6awolRLgco3/eAoUNVS+VvtqRU8syUWApvDx21i/8+lQYIM/sMs2
+ ARFoqlwGDbsJ2RQk2QEQUv0flROM9XP2Sd+VxYJ6DJ0PFcoWt9RO+/nbD
+ vRu+sh845l856Ld0o0Sek0YEudg0wq5YZNKTKU6u6FAZU3T0HgKghs9pL
+ zBUKcZN4D5Et/8w3a7XPwqcfBIkUz8+SSOekJaiXmtdRdjh6RcPjBldjy
+ GV39wIZR4Yg/Tns38SnR4TmY0thJXOK/6N4/Izthd7ZxIBaizXFMuJJPa
+ CvYRNUvZpmytxWW9H+66ZhT7zGrlh7oRdDQVWtaKPAY+s049zRv+nFPGn g==;
+X-CSE-ConnectionGUID: wsi9aedZSOKxV9j7fa/PAw==
+X-CSE-MsgGUID: OkLAn4z5TDOc/SH3gHbTrQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="10419113"
+X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="10419113"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2024 05:29:09 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="16118513"
+X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="16336905"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 05:28:53 -0700
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2024 05:29:07 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
@@ -48,9 +47,9 @@ Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Aditya Chauhan <aditya.chauhan@intel.com>,
  Girotra Himanshu <himanshu.girotra@intel.com>,
  Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
-Subject: [PATCH i-g-t 08/16] tests/intel: Introduce SysMan mega feature
-Date: Wed, 27 Mar 2024 12:27:23 +0000
-Message-Id: <20240327122731.2104614-9-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t 09/16] tests/intel: Introduce General XE mega feature
+Date: Wed, 27 Mar 2024 12:27:24 +0000
+Message-Id: <20240327122731.2104614-10-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240327122731.2104614-1-katarzyna.piecielska@intel.com>
 References: <20240327122731.2104614-1-katarzyna.piecielska@intel.com>
@@ -71,7 +70,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add tests to SysMan mega feature.
+Add tests to 'General tests feature' mega feature.
 Group:
 	SUBTEST
 	Description
@@ -87,123 +86,414 @@ Cc: Aditya Chauhan <aditya.chauhan@intel.com>
 Cc: Girotra Himanshu <himanshu.girotra@intel.com>
 CC: Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
 ---
- tests/device_reset.c                   | 3 ++-
- tests/intel/sysfs_heartbeat_interval.c | 7 ++++---
- tests/intel/sysfs_preempt_timeout.c    | 7 ++++---
- tests/intel/sysfs_timeslice_duration.c | 7 ++++---
- tests/intel/xe_sysfs_defaults.c        | 6 ++++--
- tests/intel/xe_sysfs_scheduler.c       | 3 ++-
- 6 files changed, 20 insertions(+), 13 deletions(-)
+ tests/intel/xe_create.c              |  1 +
+ tests/intel/xe_debugfs.c             |  3 +-
+ tests/intel/xe_dma_buf_sync.c        |  1 +
+ tests/intel/xe_drm_fdinfo.c          |  3 +-
+ tests/intel/xe_exec_atomic.c         |  1 +
+ tests/intel/xe_exec_queue_property.c |  1 +
+ tests/intel/xe_huc_copy.c            |  1 +
+ tests/intel/xe_intel_bb.c            |  1 +
+ tests/intel/xe_live_ktest.c          |  1 +
+ tests/intel/xe_module_load.c         |  1 +
+ tests/intel/xe_peer2peer.c           |  3 +-
+ tests/intel/xe_prime_self_import.c   |  1 +
+ tests/intel/xe_query.c               | 66 +++++++++++++++++-----------
+ tests/intel/xe_spin_batch.c          |  1 +
+ tests/intel/xe_waitfence.c           |  3 ++
+ 15 files changed, 59 insertions(+), 29 deletions(-)
 
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index 2e1619f60..036000640 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -38,7 +38,8 @@
-  *   Unbinds driver from device, initiates reset then rebinds driver to device
-  *   validating device resets
-  * Category: Infrastructure
-- * Sub-category: SysMan
-+ * Mega feature: SysMan
-+ * Sub-category: SysMan tests
-  * Feature: reset, sriov-reset
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index fd5d71d8a..52ba4a579 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -6,6 +6,7 @@
+ /**
+  * TEST: Check bo create ioctl
+  * Category: Software building block
++ * Mega feature: General Xe features
+  * Sub-category: uapi
   */
  
-diff --git a/tests/intel/sysfs_heartbeat_interval.c b/tests/intel/sysfs_heartbeat_interval.c
-index 5f82185bc..0af8879f6 100644
---- a/tests/intel/sysfs_heartbeat_interval.c
-+++ b/tests/intel/sysfs_heartbeat_interval.c
-@@ -43,11 +43,12 @@
- #include "sw_sync.h"
- /**
-  * TEST: sysfs heartbeat interval
-- * Feature: SMI, cmd_submission
-- * Test category: SysMan
-- * Sub-category: SysMan
-  * Category: Desktop \ Server
-+ * Mega feature: SysMan
-+ * Sub-category: SysMan tests
-  * Functionality: sysfs heartbeat
-+ * Feature: SMI, cmd_submission
-+ * Test category: SysMan
-  *
-  * SUBTEST: idempotent
-  * Description: Test to check whether the heartbeat parameter reports the values set.
-diff --git a/tests/intel/sysfs_preempt_timeout.c b/tests/intel/sysfs_preempt_timeout.c
-index 84f8ba7d3..88f2cdfcd 100644
---- a/tests/intel/sysfs_preempt_timeout.c
-+++ b/tests/intel/sysfs_preempt_timeout.c
-@@ -42,11 +42,12 @@
- #include "sw_sync.h"
- /**
-  * TEST: sysfs preempt timeout
-- * Feature: SMI, context
-- * Test category: SysMan
-- * Sub-category: SysMan
-  * Category: Desktop \ Server
-+ * Mega feature: SysMan
-+ * Sub-category: SysMan tests
-  * Functionality: sysfs preempt timeout
-+ * Feature: SMI, context
-+ * Test category: SysMan
-  *
-  * SUBTEST: idempotent
-  * Description: Test to check whether the preempt_timeout parameter reports the
-diff --git a/tests/intel/sysfs_timeslice_duration.c b/tests/intel/sysfs_timeslice_duration.c
-index b48152ecc..6baa000df 100644
---- a/tests/intel/sysfs_timeslice_duration.c
-+++ b/tests/intel/sysfs_timeslice_duration.c
-@@ -45,11 +45,12 @@
- #include "sw_sync.h"
- /**
-  * TEST: sysfs timeslice duration
-+ * Category: Desktop \ Server
-+ * Mega feature: SysMan
-+ * Sub-category: SysMan tests
-+ * Functionality: timeslise sysfs
-  * Feature: SMI, cmd_submission
-  * Test category: SysMan
-- * Functionality: timeslise sysfs
-- * Sub-category: SysMan
-- * Category: Desktop \ Server
-  *
-  * SUBTEST: duration
-  * Description: Test to measure the timeslice duration by watching the
-diff --git a/tests/intel/xe_sysfs_defaults.c b/tests/intel/xe_sysfs_defaults.c
-index b1ab36589..a90b2f3b3 100644
---- a/tests/intel/xe_sysfs_defaults.c
-+++ b/tests/intel/xe_sysfs_defaults.c
-@@ -5,12 +5,14 @@
+diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
+index c5a586e9b..162830787 100644
+--- a/tests/intel/xe_debugfs.c
++++ b/tests/intel/xe_debugfs.c
+@@ -5,11 +5,12 @@
  
  /**
-  * TEST: xe sysfs defaults
-+ * Description: check if the sysfs engine .defaults node has all values.
-  * Category: Infrastructure
-+ * Mega feature: SysMan
-+ * Sub-category: SysMan tests
-  * Functionality: sysman defaults
-- * Sub-category: SysMan
+  * TEST: Check debugfs userspace API
++ * Description: Validate debugfs entries
+  * Category: Software building block
++ * Mega feature: General Xe features
+  * Sub-category: uapi
+  * Functionality: debugfs
   * Test category: functionality test
-+ *
-  * SUBTEST: engine-defaults
-- * Description: check if the sysfs engine .defaults node has all values.
+- * Description: Validate debugfs entries
   */
  
- #include <dirent.h>
-diff --git a/tests/intel/xe_sysfs_scheduler.c b/tests/intel/xe_sysfs_scheduler.c
-index d1ef422f4..5c4fb1114 100644
---- a/tests/intel/xe_sysfs_scheduler.c
-+++ b/tests/intel/xe_sysfs_scheduler.c
-@@ -6,7 +6,8 @@
+ #include <fcntl.h>
+diff --git a/tests/intel/xe_dma_buf_sync.c b/tests/intel/xe_dma_buf_sync.c
+index b69283093..a7d10f0ef 100644
+--- a/tests/intel/xe_dma_buf_sync.c
++++ b/tests/intel/xe_dma_buf_sync.c
+@@ -6,6 +6,7 @@
  /**
-  * TEST: xe sysfs scheduler
-  * Category: Infrastructure
-- * Sub-category: SysMan
-+ * Mega feature: SysMan
-+ * Sub-category: SysMan tests
-  * Functionality: scheduler control interface
+  * TEST: Check dmabuf functionality
+  * Category: Software building block
++ * Mega feature: General Xe features
+  * Sub-category: dmabuf
+  * Test category: functionality test
+  */
+diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
+index 9e5d0644a..554082d3b 100644
+--- a/tests/intel/xe_drm_fdinfo.c
++++ b/tests/intel/xe_drm_fdinfo.c
+@@ -15,10 +15,11 @@
+ /**
+  * TEST: xe drm fdinfo
+  * Description: Read and verify drm client memory consumption using fdinfo
+- * Feature: SMI, core
+  * Category: Software building block
++ * Mega feature: General Xe features
+  * Sub-category: driver
+  * Functionality: Per client memory statistics
++ * Feature: SMI, core
+  * Test category: SysMan
   *
-  * SUBTEST: %s-invalid
+  * SUBTEST: basic
+diff --git a/tests/intel/xe_exec_atomic.c b/tests/intel/xe_exec_atomic.c
+index d9790da78..7ce374b75 100644
+--- a/tests/intel/xe_exec_atomic.c
++++ b/tests/intel/xe_exec_atomic.c
+@@ -15,6 +15,7 @@
+ /**
+  * TEST: Tests to verify atomic functionality.
+  * Category: Software building block
++ * Mega feature: General Xe features
+  * Sub-category: HW
+  * Functionality: intel-bb
+  * Test category: functionality test
+diff --git a/tests/intel/xe_exec_queue_property.c b/tests/intel/xe_exec_queue_property.c
+index 51ecd725d..4a0681fe8 100644
+--- a/tests/intel/xe_exec_queue_property.c
++++ b/tests/intel/xe_exec_queue_property.c
+@@ -6,6 +6,7 @@
+ /**
+  * TEST: Basic tests to check exec_queue set/get property functionality
+  * Category: Software building block
++ * Mega feature: General Xe features
+  * Sub-category: uapi
+  * Functionality: exec queue set property
+  * Test category: functionality test
+diff --git a/tests/intel/xe_huc_copy.c b/tests/intel/xe_huc_copy.c
+index 339cf6e5f..3c475112d 100644
+--- a/tests/intel/xe_huc_copy.c
++++ b/tests/intel/xe_huc_copy.c
+@@ -6,6 +6,7 @@
+ /**
+  * TEST: Test HuC copy firmware.
+  * Category: Firmware building block
++ * Mega feature: General Xe features
+  * Sub-category: Firmware
+  * Functionality: huc copy
+  * Test category: functionality test
+diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
+index 09164c41f..bad2b622d 100644
+--- a/tests/intel/xe_intel_bb.c
++++ b/tests/intel/xe_intel_bb.c
+@@ -27,6 +27,7 @@
+ /**
+  * TEST: Basic tests for intel-bb xe functionality
+  * Category: Software building block
++ * Mega feature: General Xe features
+  * Sub-category: IGT Lib
+  * Functionality: intel-bb
+  * Test category: functionality test
+diff --git a/tests/intel/xe_live_ktest.c b/tests/intel/xe_live_ktest.c
+index c50aefea8..fc2ba29a9 100644
+--- a/tests/intel/xe_live_ktest.c
++++ b/tests/intel/xe_live_ktest.c
+@@ -5,6 +5,7 @@
+  * TEST: Xe driver live kunit tests
+  * Description: Xe driver live dmabuf unit tests
+  * Category: Software building block
++ * Mega feature: General Xe features
+  * Sub-category: kunit
+  * Functionality: kunit
+  * Test category: functionality test
+diff --git a/tests/intel/xe_module_load.c b/tests/intel/xe_module_load.c
+index 080e12ec8..f93b93f9f 100644
+--- a/tests/intel/xe_module_load.c
++++ b/tests/intel/xe_module_load.c
+@@ -6,6 +6,7 @@
+ /**
+  * TEST: Tests the xe module loading
+  * Category: Software building block
++ * Mega feature: General Xe features
+  * Sub-category: driver
+  * Functionality: module load
+  * Test category: functionality test
+diff --git a/tests/intel/xe_peer2peer.c b/tests/intel/xe_peer2peer.c
+index c63f1e4c4..35c8df252 100644
+--- a/tests/intel/xe_peer2peer.c
++++ b/tests/intel/xe_peer2peer.c
+@@ -17,10 +17,11 @@
+ 
+ /**
+  * TEST: xe_peer2peer
++ * Description: Peer2peer dma buf copy tests
+  * Category: Hardware building block
++ * Mega feature: General Xe features
+  * Sub-category: MultiGPU
+  * Functionality: dma buf copy
+- * Description: Peer2peer dma buf copy tests
+  * Test category: xe
+  *
+  * SUBTEST: read
+diff --git a/tests/intel/xe_prime_self_import.c b/tests/intel/xe_prime_self_import.c
+index f47733bb2..4220a6677 100644
+--- a/tests/intel/xe_prime_self_import.c
++++ b/tests/intel/xe_prime_self_import.c
+@@ -28,6 +28,7 @@
+ /**
+  * TEST: Check whether prime import/export works on the same device
+  * Category: Software building block
++ * Mega feature: General Xe features
+  * Sub-category: DRM
+  * Functionality: prime import/export
+  * Test category: functionality test
+diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+index a5a2dd7d4..d0416ee17 100644
+--- a/tests/intel/xe_query.c
++++ b/tests/intel/xe_query.c
+@@ -6,6 +6,7 @@
+ /**
+  * TEST: Check device configuration query
+  * Category: Software building block
++ * Mega feature: General Xe features
+  * Sub-category: uapi
+  * Functionality: ioctl
+  * Description: Acquire configuration data for xe device
+@@ -176,10 +177,11 @@ const char *get_topo_name(int value)
+  * Test category: functionality test
+  *
+  * SUBTEST: multigpu-query-engines
+- * Category: Hardware building block
+  * Description: Display engine classes available for all Xe devices.
+- * Test category: functionality test
++ * Category: Hardware building block
++ * Mega feature: General Xe features
+  * Sub-category: MultiGPU
++ * Test category: functionality test
+  */
+ static void
+ test_query_engines(int fd)
+@@ -204,10 +206,11 @@ test_query_engines(int fd)
+  *	and alignment.
+  *
+  * SUBTEST: multigpu-query-mem-usage
++ * Description: Display memory information for all Xe devices.
+  * Category: Hardware building block
+- * Test category: functionality test
++ * Mega feature: General Xe features
+  * Sub-category: MultiGPU
+- * Description: Display memory information for all Xe devices.
++ * Test category: functionality test
+  */
+ static void
+ test_query_mem_regions(int fd)
+@@ -269,10 +272,11 @@ test_query_mem_regions(int fd)
+  * Description: Display information about available GT components for xe device.
+  *
+  * SUBTEST: multigpu-query-gt-list
+- * Category: Hardware building block
+- * Test category: functionality test
+  * Description: Display information about GT components for all Xe devices.
++ * Category: Hardware building block
++ * Mega feature: General Xe features
+  * Sub-category: MultiGPU
++ * Test category: functionality test
+  */
+ static void
+ test_query_gt_list(int fd)
+@@ -340,10 +344,11 @@ test_query_gt_list(int fd)
+  * Description: Display topology information of GT.
+  *
+  * SUBTEST: multigpu-query-topology
+- * Category: Hardware building block
+- * Test category: functionality test
+  * Description: Display topology information of GT for all Xe devices.
++ * Category: Hardware building block
++ * Mega feature: General Xe features
+  * Sub-category: MultiGPU
++ * Test category: functionality test
+  */
+ static void
+ test_query_gt_topology(int fd)
+@@ -390,10 +395,11 @@ test_query_gt_topology(int fd)
+  * Description: Display xe device id, revision and configuration.
+  *
+  * SUBTEST: multigpu-query-config
+- * Category: Hardware building block
+- * Test category: functionality test
+  * Description: Display config information for all Xe devices.
++ * Category: Hardware building block
++ * Mega feature: General Xe features
+  * Sub-category: MultiGPU
++ * Test category: functionality test
+  */
+ static void
+ test_query_config(int fd)
+@@ -445,10 +451,11 @@ test_query_config(int fd)
+  * Description: Display hardware configuration of xe device.
+  *
+  * SUBTEST: multigpu-query-hwconfig
+- * Category: Hardware building block
+- * Test category: functionality test
+  * Description: Display hardware configuration for all Xe devices.
++ * Category: Hardware building block
+  * Sub-category: MultiGPU
++ * Mega feature: General Xe features
++ * Test category: functionality test
+  */
+ static void
+ test_query_hwconfig(int fd)
+@@ -485,10 +492,11 @@ test_query_hwconfig(int fd)
+  * Description: Check query with invalid arguments returns expected error code.
+  *
+  * SUBTEST: multigpu-query-invalid-query
+- * Category: Hardware building block
+- * Test category: negative test
+  * Description: Check query with invalid arguments for all Xe devices.
++ * Category: Hardware building block
++ * Mega feature: General Xe features
+  * Sub-category: MultiGPU
++ * Test category: negative test
+  */
+ static void
+ test_query_invalid_query(int fd)
+@@ -509,10 +517,11 @@ test_query_invalid_query(int fd)
+  * Description: Check query with invalid size returns expected error code.
+  *
+  * SUBTEST: multigpu-query-invalid-size
+- * Category: Hardware building block
+- * Test category: negative test
+  * Description: Check query with invalid size for all Xe devices.
++ * Category: Hardware building block
++ * Mega feature: General Xe features
+  * Sub-category: MultiGPU
++ * Test category: negative test
+  */
+ static void
+ test_query_invalid_size(int fd)
+@@ -533,10 +542,11 @@ test_query_invalid_size(int fd)
+  * Description: Check query with invalid extension returns expected error code.
+  *
+  * SUBTEST: multigpu-query-invalid-extension
+- * Category: Hardware building block
+- * Test category: negative test
+  * Description: Check query with invalid extension for all Xe devices.
++ * Category: Hardware building block
++ * Mega feature: General Xe features
+  * Sub-category: MultiGPU
++ * Test category: negative test
+  */
+ static void
+ test_query_invalid_extension(int fd)
+@@ -698,8 +708,9 @@ __engine_cycles(int fd, struct drm_xe_engine_class_instance *hwe)
+  * Description: Query CPU-GPU timestamp correlation
+  *
+  * SUBTEST: multigpu-query-cs-cycles
+- * Category: Hardware building block
+  * Description: Query CPU-GPU timestamp correlation for all Xe devices.
++ * Category: Hardware building block
++ * Mega feature: General Xe features
+  * Sub-category: MultiGPU
+  */
+ static void test_query_engine_cycles(int fd)
+@@ -719,8 +730,9 @@ static void test_query_engine_cycles(int fd)
+  * Description: Check query with invalid arguments returns expected error code.
+  *
+  * SUBTEST: multigpu-query-invalid-cs-cycles
+- * Category: Hardware building block
+  * Description: Check query with invalid arguments for all Xe devices.
++ * Category: Hardware building block
++ * Mega feature: General Xe features
+  * Sub-category: MultiGPU
+  */
+ static void test_engine_cycles_invalid(int fd)
+@@ -833,9 +845,10 @@ test_query_uc_fw_version(int fd, uint32_t uc_type)
+  * Description: Display the GuC firmware submission version
+  *
+  * SUBTEST: multigpu-query-uc-fw-version-guc
+- * Test category: functionality test
+- * Sub-category: MultiGPU
+  * Description: Display GuC firmware submission version for all Xe devices.
++ * Mega feature: General Xe features
++ * Sub-category: MultiGPU
++ * Test category: functionality test
+  */
+ static void
+ test_query_uc_fw_version_guc(int fd)
+@@ -849,9 +862,10 @@ test_query_uc_fw_version_guc(int fd)
+  * Description: Check query with invalid arguments returns expected error code.
+  *
+  * SUBTEST: multigpu-query-invalid-uc-fw-version-mbz
+- * Test category: functionality test
+- * Sub-category: MultiGPU
+  * Description: Check query with invalid arguments for all Xe devices.
++ * Mega feature: General Xe features
++ * Sub-category: MultiGPU
++ * Test category: functionality test
+  */
+ static void
+ test_query_uc_fw_version_invalid_mbz(int fd)
+@@ -898,9 +912,9 @@ test_query_uc_fw_version_invalid_mbz(int fd)
+  * Description: Display the HuC firmware version
+  *
+  * SUBTEST: multigpu-query-uc-fw-version-huc
+- * Test category: functionality test
+- * Sub-category: MultiGPU
+  * Description: Display HuC firmware version for all Xe devices.
++ * Sub-category: MultiGPU
++ * Test category: functionality test
+  */
+ static void
+ test_query_uc_fw_version_huc(int fd)
+diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
+index da8fd0a30..ee9a223d3 100644
+--- a/tests/intel/xe_spin_batch.c
++++ b/tests/intel/xe_spin_batch.c
+@@ -9,6 +9,7 @@
+ /**
+  * TEST: Tests for spin batch submissons.
+  * Category: Software building block
++ * Mega feature: General Xe features
+  * Sub-category: IGT Lib
+  * Functionality: parallel execution
+  * Test category: functionality test
+diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
+index 071e67bd6..099ba4f8f 100644
+--- a/tests/intel/xe_waitfence.c
++++ b/tests/intel/xe_waitfence.c
+@@ -16,6 +16,7 @@
+ /**
+  * TEST: Check if waitfences work
+  * Category: Software building block
++ * Mega feature: General Xe features
+  * Sub-category: Synchronization
+  * Functionality: waitfence
+  * Test category: functionality test
+@@ -140,6 +141,8 @@ waitfence(int fd, enum waittype wt)
+ /**
+  * TEST: Negative test for wait ufence ioctl
+  * Category: Software building block
++ * Mega feature: General Xe features
++ * Sub-category: Synchronization
+  * Functionality: waitfence
+  * Test category: negative test
+  *
 -- 
 2.34.1
 
