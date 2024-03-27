@@ -4,48 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E51EC47DD9
-	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 17:35:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97801C54E67
+	for <igt-dev@archiver.kernel.org>; Wed, 27 Mar 2024 17:57:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BC51E10FEA7;
-	Wed, 27 Mar 2024 17:35:04 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net
- [217.70.183.193])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D28210FEA7
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Mar 2024 17:35:03 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2AB95240004
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Mar 2024 17:35:00 +0000 (UTC)
-Received: by mail-ej1-f47.google.com with SMTP id
- a640c23a62f3a-a46ea03c2a5so21078366b.1
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Mar 2024 10:35:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1;
- AJvYcCWOKcwY+Il6N+vA0hZ1wwzCzibENam4oCqdB5946SOVBeT9wAWbHPV5VhGekcbK0C5NA1mkFLO+FrrT5O3M3gxi7w7HZQ9qxywVwss2QQ==
-X-Gm-Message-State: AOJu0YwM/ikG2O5jxxWoJjXqRvdp6UeM7ftAqJqxWp+1AnApTQN5ddge
- cY3sykHUq3IyJIQ+tHOxXkEDM7AhDCVrDurjtCYdthpfOhxXkMuL59EBhZ6sZ4A9sYg9sbTGHSu
- qV31xvi3i9uLmxOX9MMnp6kWl4OQ=
-X-Google-Smtp-Source: AGHT+IGFIMGWKkDGfQ3wn4RD2TtW/z6ei0eMWlmTVdWFwFcOK8lNO1yew4SWy0susbK4PJcA4B0HRwrHcqsKRrPK1Es=
-X-Received: by 2002:a17:906:8305:b0:a4d:f8d7:8546 with SMTP id
- j5-20020a170906830500b00a4df8d78546mr239532ejx.7.1711560900673; Wed, 27 Mar
- 2024 10:35:00 -0700 (PDT)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 43DF110ED64;
+	Wed, 27 Mar 2024 17:57:48 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A63710EBDC;
+ Wed, 27 Mar 2024 17:57:47 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8092021317716759387=="
 MIME-Version: 1.0
-References: <20240325213548.2881-1-me@petersenna.com>
- <ZgK58ZwkJxhF6G6C@ashyti-mobl2.lan>
- <CA+MoWDpEpvpfbGEroLCCi=6dA+qeGu_i6h9VhYt3HMZyfzZ8Ug@mail.gmail.com>
- <20240326182006.xwloqd3ks4vsartq@kamilkon-desk.igk.intel.com>
- <CA+MoWDoKgm43ysBsN+Ta2KG6jSOKuLkznCVxobyfCVzrJKDRZg@mail.gmail.com>
- <20240327165932.wnp332o5rcbnikyk@kamilkon-desk.igk.intel.com>
-In-Reply-To: <20240327165932.wnp332o5rcbnikyk@kamilkon-desk.igk.intel.com>
-From: Peter Senna Tschudin <me@petersenna.com>
-Date: Wed, 27 Mar 2024 18:34:47 +0100
-X-Gmail-Original-Message-ID: <CA+MoWDpKVrjku8Tb8VpbPAwkZ62y_kU9OmHpHbBYC+7eVbvmMA@mail.gmail.com>
-Message-ID: <CA+MoWDpKVrjku8Tb8VpbPAwkZ62y_kU9OmHpHbBYC+7eVbvmMA@mail.gmail.com>
-Subject: Re: [PATCH i-g-t v2] Fix memory access issue due to variable block
- scope
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Andi Shyti <andi.shyti@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: me@petersenna.com
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5B1/3=2C?=
+ =?utf-8?q?V2=5D_tests/amdgpu/amd=5Fdp=5Fdsc=3A_Correct_code_style_problems?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Alex Hung" <alex.hung@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 27 Mar 2024 17:57:47 -0000
+Message-ID: <171156226730.1055708.9258860768568204116@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240327162322.1068745-1-alex.hung@amd.com>
+In-Reply-To: <20240327162322.1068745-1-alex.hung@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,76 +37,197 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: peter.senna@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Mar 27, 2024 at 5:59=E2=80=AFPM Kamil Konieczny
-<kamil.konieczny@linux.intel.com> wrote:
->
-> Hi Peter,
->
-> On 2024-03-26 at 22:41:27 +0100, Peter Senna Tschudin wrote:
-> > Hi Kamil,
-> >
-> > Thank you for your email!
-> >
-> > On Tue, Mar 26, 2024 at 7:20=E2=80=AFPM Kamil Konieczny
-> > <kamil.konieczny@linux.intel.com> wrote:
-> > >
-> > > Hi peter.senna,
-> > > On 2024-03-26 at 14:18:43 +0100, Peter Senna Tschudin wrote:
-> > > > Hi Andi,
-> > > >
-> > > > Thank you for your reply.
-> > > >
-> > > > On Tue, Mar 26, 2024 at 1:05=E2=80=AFPM Andi Shyti <andi.shyti@linu=
-x.intel.com> wrote:
-> > > > >
-> > > > > Hey Peter,
-> > > > >
-> > > > > On Mon, Mar 25, 2024 at 10:35:48PM +0100, Peter Senna Tschudin wr=
-ote:
-> > > > > > This patch fixes the tests gem_exec_capture@many-4k-incremental=
- and
-> > > > > > gem_exec_capture@many-4k-zero that are currently failing with a=
-n invalid file
-> > > > > > descriptor error.
-> > > > >
-> > > > > where is gem_exec_capture calling for_each_ctx_cfg_engine()?
-> > > >
-> > > > many(), userptr(), capture_invisible()
-> > > >     find_first_available_engine()
-> > > >         for_each_ctx_engine()
-> > > >
-> > > > When called by many(), 'e' gets corrupted when configure_hangs() tr=
-ies
-> > > > to assign 'e' to another variable. Then after 'e' is corrupted, the
-> > > > call __captureN() will fail because it expects 'e' to be valid.
-> > > >
-> > >
-> > > imho first step whould be to replace macro with a function:
-> > >
-> > > saved =3D find_first_available_engine(fd, ctx, e);
-> >
-> > When I was done with the replacement function, I found a simple
-> > solution that seems to be adequate. I made a small change to
-> > find_first_available_engine() to reassign e to an element of saved. My
-> > patch v3 has the details. What do you think?
->
-> I will reply to your v4 patch, it looks promising.
+--===============8092021317716759387==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thanks!
+== Series Details ==
 
->
-> >
-> > May I ask you to increase the time the CI will waits for the tests to c=
-omplete:
-> >  - many-4k-zero: 2 minutes
-> >  - many-4k-incremental: 5 minutes (It takes 4 minutes on my N3150)
->
-> It is not posibble, sorry, as there are many of them and time adds up...
+Series: series starting with [1/3,V2] tests/amdgpu/amd_dp_dsc: Correct code style problems
+URL   : https://patchwork.freedesktop.org/series/131696/
+State : success
 
-Should I send a patch to reduce the test sizes by half?
+== Summary ==
 
-[...]
+CI Bug Log - changes from XEIGT_7786_BAT -> XEIGTPW_10931_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 4)
+------------------------------
+
+  Missing    (1): bat-lnl-1 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10931_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_evict@evict-beng-small-external:
+    - bat-dg2-oem2:       [SKIP][1] ([Intel XE#1130]) -> [PASS][2] +13 other tests pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_evict@evict-beng-small-external.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10931/bat-dg2-oem2/igt@xe_evict@evict-beng-small-external.html
+
+  * igt@xe_module_load@load:
+    - bat-dg2-oem2:       [FAIL][3] ([Intel XE#1132]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_module_load@load.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10931/bat-dg2-oem2/igt@xe_module_load@load.html
+
+  
+#### Warnings ####
+
+  * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
+    - bat-dg2-oem2:       [SKIP][5] ([Intel XE#1130]) -> [TIMEOUT][6] ([Intel XE#1027] / [Intel XE#1088])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10931/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+
+  * igt@xe_evict@evict-beng-small:
+    - bat-dg2-oem2:       [SKIP][7] ([Intel XE#1130]) -> [DMESG-WARN][8] ([Intel XE#1373])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_evict@evict-beng-small.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10931/bat-dg2-oem2/igt@xe_evict@evict-beng-small.html
+
+  * igt@xe_evict@evict-cm-threads-small:
+    - bat-dg2-oem2:       [SKIP][9] ([Intel XE#1130]) -> [INCOMPLETE][10] ([Intel XE#1027] / [Intel XE#804])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10931/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html
+
+  * igt@xe_evict@evict-mixed-threads-small:
+    - bat-dg2-oem2:       [SKIP][11] ([Intel XE#1130]) -> [INCOMPLETE][12] ([Intel XE#804])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10931/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html
+
+  
+  [Intel XE#1027]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1027
+  [Intel XE#1088]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1088
+  [Intel XE#1130]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130
+  [Intel XE#1132]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1132
+  [Intel XE#1373]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1373
+  [Intel XE#804]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/804
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7786 -> IGTPW_10931
+  * Linux: xe-998-f9c56f1a03b5c35488671e4ffe61e28b12ffe163 -> xe-1001-0a8fdcee5ce9a43e8411ea096c7361f8ec7829ca
+
+  IGTPW_10931: 10931
+  IGT_7786: 1e4a3cd0a4bb3419fb70ed3e01259485b056dcfd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1001-0a8fdcee5ce9a43e8411ea096c7361f8ec7829ca: 0a8fdcee5ce9a43e8411ea096c7361f8ec7829ca
+  xe-998-f9c56f1a03b5c35488671e4ffe61e28b12ffe163: f9c56f1a03b5c35488671e4ffe61e28b12ffe163
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10931/index.html
+
+--===============8092021317716759387==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/3,V2] tests/amdgpu/amd_dp_dsc: Correct code style problems</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131696/">https://patchwork.freedesktop.org/series/131696/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10931/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10931/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7786_BAT -&gt; XEIGTPW_10931_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 4)</h2>
+<p>Missing    (1): bat-lnl-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10931_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-beng-small-external:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_evict@evict-beng-small-external.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10931/bat-dg2-oem2/igt@xe_evict@evict-beng-small-external.html">PASS</a> +13 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_module_load@load:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_module_load@load.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1132">Intel XE#1132</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10931/bat-dg2-oem2/igt@xe_module_load@load.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10931/bat-dg2-oem2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1027">Intel XE#1027</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1088">Intel XE#1088</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-small:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_evict@evict-beng-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10931/bat-dg2-oem2/igt@xe_evict@evict-beng-small.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1373">Intel XE#1373</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-cm-threads-small:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10931/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1027">Intel XE#1027</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/804">Intel XE#804</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-mixed-threads-small:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7786/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1130">Intel XE#1130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10931/bat-dg2-oem2/igt@xe_evict@evict-mixed-threads-small.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/804">Intel XE#804</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7786 -&gt; IGTPW_10931</li>
+<li>Linux: xe-998-f9c56f1a03b5c35488671e4ffe61e28b12ffe163 -&gt; xe-1001-0a8fdcee5ce9a43e8411ea096c7361f8ec7829ca</li>
+</ul>
+<p>IGTPW_10931: 10931<br />
+  IGT_7786: 1e4a3cd0a4bb3419fb70ed3e01259485b056dcfd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1001-0a8fdcee5ce9a43e8411ea096c7361f8ec7829ca: 0a8fdcee5ce9a43e8411ea096c7361f8ec7829ca<br />
+  xe-998-f9c56f1a03b5c35488671e4ffe61e28b12ffe163: f9c56f1a03b5c35488671e4ffe61e28b12ffe163</p>
+
+</body>
+</html>
+
+--===============8092021317716759387==--
