@@ -4,64 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C29E7C54E67
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Mar 2024 14:25:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE411CD1283
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Mar 2024 14:35:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B5D8112450;
-	Thu, 28 Mar 2024 14:25:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 550FC112463;
+	Thu, 28 Mar 2024 14:35:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="iXWChPWH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jze4pwlt";
 	dkim-atps=neutral
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com
- [209.85.208.180])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6FDAD112454
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Mar 2024 14:25:58 +0000 (UTC)
-Received: by mail-lj1-f180.google.com with SMTP id
- 38308e7fff4ca-2d48f03a8bbso17861691fa.0
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Mar 2024 07:25:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711635956; x=1712240756; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=fTascmuJXaHm9ayV7T4bYcz6LNfwLSaUuJJzQXl50jo=;
- b=iXWChPWHH+6aVy10pa6uJOpZZ6Opstg1KfHB1W8Jn5Aco/SvlaPwMstjqmZRvci90k
- iZHKV6UiS/asM216zfuMQJFvwGHprVuNYnRpZpEqebiRYtFEDIrzFa4TeiHpQF0uNTCG
- cEri22kvAWgsiPtGv+we1Tb46BJ8PLTqzC9T4DsrM3I8t31vxESkhQ5aiEuUd3YfNNcR
- r5Dpgd7MlkjMPd6sNSKJlYRvR0EewSM0LUPno3fwE3osgb5c3eDx07xCqZRnQeU6Rwui
- HutX1tU7Ur7We+TPfIXjIgfH5B28seAZY7PYfRBLyz1x22kNr3wqp8MOJoMuA0tVOlN0
- +2IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711635956; x=1712240756;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=fTascmuJXaHm9ayV7T4bYcz6LNfwLSaUuJJzQXl50jo=;
- b=jKVUMNJ9hJax1pmZmRB5A0+cabGnvbWr2bqXYMP4O6FghEN7+B73e9+G9e4MPEhtUf
- bPD74lLEh60ZHm6+7KMu+7ueuA1yhITdj815U/vTW+bp6vShLFHwWfJU4iwmGMWA1dSW
- gfaUqOrHugUX9uPDYztmxrHp0voc3QV9ZbigR54GFu0gcgzgBwydQS/+oNF2KiPh0uGO
- iP38etQ8AB5lq89MT6x5kRXC8piZN8m3xD5iRygBt9q6ujE6eGNsQ9aoDS5YRpDCDx2W
- IvTLKEJp7C4lw0CMS7xbEB+c6h+Vva3I1ZgNKrGrOsdXHf9FHUTSyf0/SMrst1bmAvZo
- bueA==
-X-Gm-Message-State: AOJu0Yz9M5wHR9s6Cy0+DubRWkewf7lKDl8NVFvw7hfPMn3xe7OrFgPN
- oj7lD0vBT3wq0D5211RSchFZxzhZHqOjqDC4UxLnDLq2E9gnyewYj+4u6iSf7VuX7g==
-X-Google-Smtp-Source: AGHT+IFm7TH7e4vCiFmsfzB1trNHKlWJ2Z3MwdHozkCnR3UydY5p/Tg2Y8nVVEkghx4zjidBa+31qw==
-X-Received: by 2002:a2e:3314:0:b0:2d6:dd34:d38 with SMTP id
- d20-20020a2e3314000000b002d6dd340d38mr808416ljc.17.1711635955772; 
- Thu, 28 Mar 2024 07:25:55 -0700 (PDT)
-Received: from jheikkil-mobl1.. ([2001:998:22:0:1fcd:f37:81ff:7a1f])
- by smtp.gmail.com with ESMTPSA id
- a18-20020a05651c031200b002d465c62f16sm248018ljp.68.2024.03.28.07.25.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Mar 2024 07:25:55 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 95630112463
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Mar 2024 14:35:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711636509; x=1743172509;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=4yL+Eop5Swc9KTZyzOb13q8p313FDGq0Drv+v0qg6cw=;
+ b=Jze4pwltMainvIaH3vv+IVQm3cFskXgjQat87QcVWOEhlezrhXVQOznm
+ 5o4EE+8H+0STW/SrjC1AmysbPjC9SsvErgL8iFjHw9MA4nbLHofWR23hU
+ 6YV0FYL1wwuGJeti626Rip7MFlGyLm/ipHaA+8WJXuNZZbXiMYUiTqIKe
+ OS8NtaFVQvbdLIvYLGAKBVFBCrUWzes1HZ6hAqoWqMCezfYEJ3Dsg7xxZ
+ oG06hV7KEGSsxhG3Eav9i/bhg0M7nDCTyCXiOz9yc1naAK5F0q4Ux7u+6
+ y4Z8ftaUAdSnVhPB93r/ImFcDEtDxOPWdUt3EQOqGIt5lB+sNbGqoI0pB A==;
+X-CSE-ConnectionGUID: 2LW0qDD8TJSScGr72RS7cQ==
+X-CSE-MsgGUID: sr69eLWDQwOfW9v7qVD+Gw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="10602436"
+X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; d="scan'208";a="10602436"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Mar 2024 07:35:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; d="scan'208";a="17114894"
+Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2024 07:35:06 -0700
+From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t v2] lib/igt_fb: fix intel modifiers for fb copying on xe
- driver
-Date: Thu, 28 Mar 2024 16:25:42 +0200
-Message-Id: <20240328142542.79809-1-juhapekka.heikkila@gmail.com>
-X-Mailer: git-send-email 2.34.1
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 0/5] revamp big joiner test
+Date: Thu, 28 Mar 2024 20:15:49 +0530
+Message-Id: <20240328144554.1371727-1-kunal1.joshi@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -79,60 +63,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-mc ccs need to go to vebox copy, blitter doesn't do mc ccs hence
-on all platforms with ccs modifiers use engine copy for those.
+modify test to support multiple big joiner outputs
+simultaneously, support for ignoring fused pipes and
+addition of subtests for testing force joiner support for
+which is added by below in kmd.
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
-v2: here fixed only mc ccs. Seems x-tile for legacy blitter will need to be
-fixed elsewhere. This patch will allow mc ccs to be tested on dg2 with Xe
-driver but on the same go reveal rc-ccs-cc is not working on igt side with
-Xe and need to be looked at.
+drm/i915: Add bigjoiner force enable option to debugfs
 
- lib/igt_fb.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+Kunal Joshi (5):
+  lib/igt_kms: move bigjoiner_mode_found to lib
+  tests/intel/kms_big_joiner: revamp bigjoiner
+  lib/igt_kms: add helper to enable/disable force joiner
+  tests/intel/kms_big_joiner: add tests for force joiner
+  HAX: tests/intel-ci/fast-feedback: do not merge
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index cc70cb91c..880fd08c9 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2508,9 +2508,7 @@ static bool blitter_ok(const struct igt_fb *fb)
- 	if (!is_intel_device(fb->fd))
- 		return false;
- 
--	if ((is_ccs_modifier(fb->modifier) &&
--	     !HAS_FLATCCS(intel_get_drm_devid(fb->fd))) ||
--	     is_gen12_mc_ccs_modifier(fb->modifier))
-+	if (is_ccs_modifier(fb->modifier))
- 		return false;
- 
- 	if (is_xe_device(fb->fd))
-@@ -3062,7 +3060,12 @@ static void free_linear_mapping(struct fb_blit_upload *blit)
- 		igt_nouveau_delete_bo(&linear->fb);
- 	} else if (is_xe_device(fd)) {
- 		gem_munmap(linear->map, linear->fb.size);
--		blitcopy(fb, &linear->fb);
-+
-+		if (blit->ibb)
-+			copy_with_engine(blit, fb, &linear->fb);
-+		else
-+			blitcopy(fb, &linear->fb);
-+
- 		gem_close(fd, linear->fb.gem_handle);
- 	} else {
- 		gem_munmap(linear->map, linear->fb.size);
-@@ -3142,7 +3145,10 @@ static void setup_linear_mapping(struct fb_blit_upload *blit)
- 
- 		linear->map = igt_nouveau_mmap_bo(&linear->fb, PROT_READ | PROT_WRITE);
- 	} else if (is_xe_device(fd)) {
--		blitcopy(&linear->fb, fb);
-+		if (blit->ibb)
-+			copy_with_engine(blit, &linear->fb, fb);
-+		else
-+			blitcopy(&linear->fb, fb);
- 
- 		linear->map = xe_bo_mmap_ext(fd, linear->fb.gem_handle,
- 					     linear->fb.size, PROT_READ | PROT_WRITE);
+ lib/igt_kms.c                         |  79 +++++
+ lib/igt_kms.h                         |   4 +
+ tests/intel-ci/fast-feedback.testlist |   4 +
+ tests/intel/kms_big_joiner.c          | 483 +++++++++++++++-----------
+ 4 files changed, 369 insertions(+), 201 deletions(-)
+
 -- 
 2.25.1
 
