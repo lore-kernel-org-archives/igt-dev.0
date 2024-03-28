@@ -4,150 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B08AEC54E67
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Mar 2024 02:03:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB6BDC54E67
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Mar 2024 02:05:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3EDBE112299;
-	Thu, 28 Mar 2024 02:03:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 50D171122A8;
+	Thu, 28 Mar 2024 02:05:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mABb+sIy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CRjqL+Va";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2910112299
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Mar 2024 02:03:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B8E71122A8
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Mar 2024 02:05:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711591383; x=1743127383;
+ t=1711591525; x=1743127525;
  h=content-transfer-encoding:in-reply-to:references:subject:
  from:cc:to:date:message-id:mime-version;
- bh=hVrSTYMbmPNdBdhun74eyslh4D2kL5NBcx55ye1RCu4=;
- b=mABb+sIyFaxJdJrCaCVXJMToDkBYwnYZRxEEdy1Vg9ZxI7wTWZVPlQzU
- J+KBVoHp9ZuyFHIA5Kt0FfN8sE4XVuC+oVC0VTGkLsuKB5ZhwMhBSbifw
- jKJL0sobuTha2ET+BUTD0BjPoX+7BhSDaJw/F3PuKnL07ghiCVRd7tWqk
- 00Xhcp9Agziwq/7eG8VkhEH2J7S345RXJxVc8vnRXWNmY3+3FAJ6QGFv3
- HA3RFX5a5ry5o7JzVkjbVIuwMGERIueqfu9K0xcKCD9+IndaQRs+zmPTA
- TNuHDdmK6C/X9YEm+hOqYzjysQup4OznmzaQEOpZkSRQz2UASI45KeuDE w==;
-X-CSE-ConnectionGUID: QmS8AtlWShWWQ3tsl89pvg==
-X-CSE-MsgGUID: mkSmii5jRZiQ1QEIp3+4ag==
-X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="6589892"
+ bh=dhMalXxWXwQJaD4lKMN8oOs3J4yNnuk1WskdLKc56ks=;
+ b=CRjqL+Va9BSTh0Ew1RJgIUa7y/ex05lhXZ8WhfNIq16ZmxJYWMINQxmV
+ bKRBbkFMd0a5TIPmzQ8uWWhWB/CcKscJV/utGFzBznLILAiEmdRCiE3xi
+ UEC+etZKaNnBrxJKU7OintlfJ+Q9ruDmyx6dnbp6TNQxXKF9pMhUr1AqK
+ euW2rSt1ULxOlNIN6nXPj8b3MhEk35gkwYpE4o4ESqC9vMcmchOl/nQzk
+ MaiZ398j+H1kq0e/5hAYU2rccH9n38i/KgjR0A5OlDDqTKMFD7uXlYnpK
+ 1FPB30AyYFfInkyB7qqfw3N3sO5Kd+2fDPYwUwFV3Ekb+XTMJRUAD3nq7 Q==;
+X-CSE-ConnectionGUID: 7l5cP/jOTN+8BNLDMPdP3g==
+X-CSE-MsgGUID: S9BIYGtERc2zbJ+fSt39Ag==
+X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="6590057"
 X-IronPort-AV: E=Sophos;i="6.07,160,1708416000"; 
-   d="scan'208";a="6589892"
+   d="scan'208";a="6590057"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 19:03:01 -0700
+ 27 Mar 2024 19:05:24 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,160,1708416000"; d="scan'208";a="17112712"
+X-IronPort-AV: E=Sophos;i="6.07,160,1708416000"; d="scan'208";a="17113029"
 Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
  by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 27 Mar 2024 19:03:01 -0700
-Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
+ 27 Mar 2024 19:05:23 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
  fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 27 Mar 2024 19:02:59 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ 15.1.2507.35; Wed, 27 Mar 2024 19:05:23 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Wed, 27 Mar 2024 19:02:59 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
+ 15.1.2507.35; Wed, 27 Mar 2024 19:05:22 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Wed, 27 Mar 2024 19:05:22 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
  by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 27 Mar 2024 19:02:59 -0700
+ 15.1.2507.35; Wed, 27 Mar 2024 19:05:22 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OkubipmTKHQ1Kw7rD6bWCwXLNwv5xSGFc7o0hJIljwiROo8iOCxbnvahKY/tOAqMtOyLmD3FaVafdrk3UMaMwDsckmKfrIGXJ19L2d09y2EHzTPspNWnIIjXBdBTxMZO9YwPNPBGOXZoC3UxAHhDRmCpTni0yVZ6m6l9G15qyBHyXU4VWBYQhzepsRhvFB7mkLC8eBzhDVpNLfNxveVQjYmSFZxeHb7SQ4xYUf8r6JmAbdav77ZftKRm61/ZNt/GAsOEYSWirAGHSNrfZIhzu5OyU8djLXWSyN9l9kDOPqOHQ5r8FIc3/ksmnq+QOePD8Y2H+1TcQQ0Lybr7S9jGIg==
+ b=eDaUrIc/Ft5VKeRKQwqEVot38z6kUWLMFIZnvbnUmGfgmvdGas2aPBL6l8Irnbt9O7DCEJD78QA63RsZmCYTb07LZhBzL4gOzWUJiWm5P+YKQ0AvsZ8gIkxAGghPJ8CE80MeenVm59lsSDIVCgBsWgyfFTJTedN7DWmYYl9M1Z7axXRiOoEH1F56R9ym4uoyPadgO6hkUJz+AoTAi65E4MBjXy4r0q0qyoWgFXKCW2zUVlBJmY9Fx55vTixhL94Mv4cBQChFDPAYPu4yW7a8sDtkSsCUxsr1mVqzKjBvYTOE5CaLVVBv8/4faIlUOIYHrcCF1W65so997eO1LdpKNQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Pfx0mDQGpev+YxXJMJzSQIQ7+Ze4J/jg2OssO8hdj7Y=;
- b=XGklAwogsrMYO7Uy1q0K/QTb8meNhBIhOpSNJ07fhVPXXb/pr495IaBGMApn5T0R/8EdU44hdIG9anU9HCfxTKV6M4kw5net3GA8vf/u/+AG9E81I+XfowxVP0cSE18ff4u+F8EuTCcOIJ33DDVar0UhSSdy55QxCyRuP2g4GExFvEMYs3v5hO6CUB1j+1Ji8AWar/BpeZ70Tt3EDT5Q4Hx8T78LacSthlD3PpKUIkN2PfqRr0780S9WvZM/IyOBUCjsF6ZdECq84VyAmGi+G8FYJiCbpdaWUsj+Sik9vZdZQ+lS4WWJhs4E7suArxTVj3xmkq+Ylr5WWGWhMTcBaA==
+ bh=uvXUYKejIkpnDxmnpHTjv8TSikRgEvkLBmvKCejqkRU=;
+ b=CC/u1r71mQWBqFswhlEOms98cfET7rPrFC4kGd+ujOyrIMjyLtrNN1EHiLcabaM+xG2bInoLvgxdGZRwIbuTqWs/TYn8QLe/GhPj7VorZQ4vRrlqUDPP1qBDzq3yYUOGBrv6ywEpFkjzNp5DghgW0he0T80ZLFzXPjzr7pD97UulWi9GZKOOluw6+YPZBu7Cf0h0GsOCmzhoGClhg+L0pvxzZ2bOfwtE19+ccgy3wsxs0Z0HUn2EDPsC20ynlcgAW2nuzOYHQpPxmTklBNbhsOzZhqtTevTC/EGBa+qYbFG+9aGSdj1C8ej5xbTgznPiZFAxkZbhUFl8bh0Cw9JHVA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from PH8PR11MB8287.namprd11.prod.outlook.com (2603:10b6:510:1c7::14)
- by MW5PR11MB5884.namprd11.prod.outlook.com (2603:10b6:303:1a0::16)
+ by CH3PR11MB8342.namprd11.prod.outlook.com (2603:10b6:610:167::10)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.31; Thu, 28 Mar
- 2024 02:02:53 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.32; Thu, 28 Mar
+ 2024 02:05:20 +0000
 Received: from PH8PR11MB8287.namprd11.prod.outlook.com
  ([fe80::3191:4863:ad54:bdb1]) by PH8PR11MB8287.namprd11.prod.outlook.com
  ([fe80::3191:4863:ad54:bdb1%4]) with mapi id 15.20.7409.028; Thu, 28 Mar 2024
- 02:02:53 +0000
+ 02:05:20 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20240327234732.GF1332995@mdroper-desk1.amr.corp.intel.com>
-References: <20240322221908.857024-1-matthew.d.roper@intel.com>
- <171154886764.4174.2317120354856149525@gjsousa-mobl2>
- <20240327234732.GF1332995@mdroper-desk1.amr.corp.intel.com>
-Subject: Re: [PATCH i-g-t] tests/xe_compute: Don't require ccs_mode on every GT
+In-Reply-To: <20240327234759.1473420-1-matthew.d.roper@intel.com>
+References: <20240327234759.1473420-1-matthew.d.roper@intel.com>
+Subject: Re: [PATCH i-g-t v2] tests/xe_compute: Don't require ccs_mode on
+ every GT
 From: Gustavo Sousa <gustavo.sousa@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, Niranjana Vishwanathapura
+CC: <matthew.d.roper@intel.com>, Niranjana Vishwanathapura
  <niranjana.vishwanathapura@intel.com>
-To: Matt Roper <matthew.d.roper@intel.com>
-Date: Wed, 27 Mar 2024 23:02:47 -0300
-Message-ID: <171159136738.2300.12315030317124177867@gjsousa-mobl2>
+To: Matt Roper <matthew.d.roper@intel.com>, <igt-dev@lists.freedesktop.org>
+Date: Wed, 27 Mar 2024 23:05:16 -0300
+Message-ID: <171159151680.2300.15911375470977991669@gjsousa-mobl2>
 User-Agent: alot/0.10
-X-ClientProxiedBy: SJ0PR03CA0131.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::16) To PH8PR11MB8287.namprd11.prod.outlook.com
+X-ClientProxiedBy: BYAPR04CA0022.namprd04.prod.outlook.com
+ (2603:10b6:a03:40::35) To PH8PR11MB8287.namprd11.prod.outlook.com
  (2603:10b6:510:1c7::14)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8287:EE_|MW5PR11MB5884:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0a1b64dd-d3ef-421a-9f3f-08dc4ecb2d3f
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8287:EE_|CH3PR11MB8342:EE_
+X-MS-Office365-Filtering-Correlation-Id: 856f8795-1518-446d-8992-08dc4ecb8598
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: aDoxRYT9HLfka26+nciTrMh8Xi3NfAhG/X64sJXiYIFluYFnWK+xFtTHJDx29suFzLITDqzWzMtIcgMUncjULTcsP4ukfgQXWl+eMbe+k/2yg8xCuMssaM4WzgLYMCNnXs2VJMmmzWnvzjkpzf5NKp94UiiSlz2g/6pss+BWUbQqCaa2p2LG/codPf9r2WCaW7ttvjAg20LX9kqxffBkIc3VPns9jxpZfcEK1urQS5SmXQmOr+OoQI48Kh5JZvN2x6W2cDCTj9qZ8wYd9L/e/efMSlLWVDOB0gNnv4px38YHx3ntS1Il3wyYUdvzCQA0vphYqoEOMFy+AkeEqzz+c3IGPAXtJIZCijYrppnlW+qgzXNn2Js+I0RT5mSkJ98RB7hTGOAp6JxTlkPeWElPx55f/FLvWaxa3poodt0uyrcMucnP2p+cW3ZfqDKDNP3hA5dp3DKdtqmBj7SrM2afHc2Jl/6Bt4ApyR08Bab8FfHucvInlf1LEv1ekCmuGU7fYiwheTF8K0ZJf6xHVwEi6yQFCBm1NwuFR0++Dj7vK2fw31LVUkYn2rgdoSdPZW+SPX18HwEx16hhXpzfFYBts0mLkCsHCagc3qhj0O710MH22Kzf2PEgaEKmm2L0GhTGOqyKm2M81Dw78nUrWaId1yzzBFdWnf8geo3yAdduG1E=
+X-Microsoft-Antispam-Message-Info: SYa2izzTZy4kUFAAcXJFz3GBDwv26ia9Loea+vhNHB0UE4iS3Ayu/nUqCCxs1bvG10RdgN35KbK20q+ekR24rPeWtlB5LB/ACeNzCI2rpaME0xW71127kEUd02/xLRbwndV4JD5sZoCZAGmXxJFz7eJhReqcChsqJRWE5atTfctu/ij75ScvyCqB+mXUa4P4YKwkK1KCA58oVnIKtikIl2d2DGwMGy5qQWssPKTd3IyVZQpBbYo1gs3DeHuFtVLAsNsoKfq7JO47ETeq1GVtMyq9gqRXIoZRm2hIupWsejuHmqy2I83BtIp9IB/RvQOCsXJcm/+ghvOrP+ZbpFgzuSU8Z8C0dW5ioiABxiymegDhgcjQiUR6Xlna1BEXKvtXG29ENlkqe6CYfVhlwswj2x3qeI+HuT3Vw0JT9JgN55jHGmSGsOZtot/Th6+6+gQnBMOJncg67Kqzt+1/Q5sIA9wF0/VPk6Qj027T1krD94F4Z8Qk5MJJU7OBCKD/lxlrN8B9W2wOQwzGZAq9+0n1/78SqNovCWtU5db+Cd3fCEWtWjFZmajnTt53Ei4LC4cxGAIKuGBcyeLv6kVh6xm68mSKYyHkpYRmC7kKkjJTZoRmYvWeh5MkSz6anftpRGWqnIWmh1IHAvNCvJg37RTpQNhHgj4bZDUu1zcklSIt3Eo=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH8PR11MB8287.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366007)(376005)(1800799015); DIR:OUT; SFP:1101; 
+ SFS:(13230031)(1800799015)(366007)(376005); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dE1Yd2pVNFBlQzZzV0cxWlo1VDUyRXpmM2pxcWpJeFRHbFhWTUtaZXVYaE1P?=
- =?utf-8?B?M3MvMENRYkovd1RxSTJEdEQxeU03TmgwUCtTYXdLanZIYkV2clE3czZUdXV6?=
- =?utf-8?B?cG9OMFRjem1jZUllVVhlMm1qa3ZBMmxzTHRKLzBZcW81c0xBcGZZRU5UOWZD?=
- =?utf-8?B?SERKamhZQ1ZkTjVOeXpNUmVhLzh6b2Y4SzE3dWIvenVBY1JtM3RaWURaZHVi?=
- =?utf-8?B?ZFpOMmxsY0tVK1h2QnRDTUlOVUZKWmR3akM2M0kzZ3EyY0RlVGFvNWZVb0I2?=
- =?utf-8?B?eFhmNEdvUnBPNnh4NVUveFBXKzhRVlZIYVNpTnAwek1acGliMkgxR1ZCY3Zk?=
- =?utf-8?B?OFExbE5pdmpUKzdNeElEa1o5UGgwVWhkWFdwVWw1Ym1rZXdZcjhKRnhZR3hq?=
- =?utf-8?B?VW4vdHpMaExHUWNTU2FyT1hkNmVNeldFOUVOUmVEZVFzaStkSlB1RWZXY2Fh?=
- =?utf-8?B?YVIwOVlPLzByM1RzN3lzSkQ4ZmJ4UFBaVGY0Y2VKNExXRThnT0huUFd6d0VR?=
- =?utf-8?B?SExzUGorcHJON2V4MGd6ZEpXOGd2MVRwT3R1K1p2VkYrYzR0eWVmMTdYa2hx?=
- =?utf-8?B?dDg5YVp1cnQxVEFmZll4ZUYwOEJpMlB0MXFZNXNYeG16WW1vN1lIanlhM0V2?=
- =?utf-8?B?UWdORDFrK3pJbXQzazFoR1RuL2pXQnh5QllXb3dmbFB2d29SN1MyTnhsUXRj?=
- =?utf-8?B?bDZ2ZG13MXdQNHhyU3JIM1dHMTdJZUhSTFdVZ1diVmJ5b2poa0NubGo0UGcz?=
- =?utf-8?B?MDJjbGxNWEN6cTJhckdZWlROTUlvVVl0OFBaSVdSd2RIRGl0bElyelJsTmZj?=
- =?utf-8?B?RlZwS3F0LzNWUjVLcFRaMjhpUFgrYmNMMWlobWIxTVMyK0NBTEJZaUttamxL?=
- =?utf-8?B?UHJxR3JqL1hTR05HRlE2UVp5RzhxZVo1aVlIakh4cWhnWTNwdUJRZFJSTnR3?=
- =?utf-8?B?UjQ0cHBiRHdWUDFLUWl6cDM5K0RkTWlpUGlGRjVmZDVYeHZUa2dQL1prT2c1?=
- =?utf-8?B?K3BhelNoZ3FOS1pqTlhrOEtKTHBuNjUwdUgvMUh0ODhyYnFraHluVGdRdFRX?=
- =?utf-8?B?dlVTVVNDQi9ueUZkcW9ZYUFrNDYvSTZDT2k2WFRrSk5TdFBYTjhsNjIzU0V5?=
- =?utf-8?B?eVBuNmxXeXlGRHVJQXBKZFhENVNiTnlGaVM0TEtoUzE1eC9ydVplVUlNVmxq?=
- =?utf-8?B?SDBDUHp2a09Vb3p6R3cvT2YxUzg3WEI5aUJ3RmZLQThoVEs1YVUyN056ZjRT?=
- =?utf-8?B?TldNYVZBaDNLRkxQNmg4b2V6bnpZSlllS0I3eEpRbFlHTWd3Mk0rUnNkVFov?=
- =?utf-8?B?ckNqam84VStLYXhpbytscFZnUGxkaUN4M3lqOElxU1ZEWkJBSjhUVFQ1QWNP?=
- =?utf-8?B?SndueFpoZnRQR052dC95NTR1WXdJQlJSSEVBZmdmYldaSW40NXVkTjFzQmFn?=
- =?utf-8?B?eFI3RFZkVHd0eGw1WlVWV1JQWDVyckhZNUNLc1JRTVE1NTZlbUFHN1RrQXd3?=
- =?utf-8?B?dzhOY3IvenM4ZWltYk5Udm05V0V2T1dvalFmMjBPdCt1c0NTdWsxaEZUdllX?=
- =?utf-8?B?dXNGYlVaTE0xaDNUVUN4TzVMVVlWczhML3h0eGtsSmpBVmpmeHpCN3hnWEFp?=
- =?utf-8?B?aWlUaHVKdVhNQlRzcVF3RW5wUHVrWk1uVDlieWdxV3ZLNG5ZWVNJZnNQRU1Y?=
- =?utf-8?B?aGdsZ1pVZXhEQWZhYWRmWTNMaE5ONUthZnVPN0xLTm5aZnZ3VGtmV1k0ckx6?=
- =?utf-8?B?OGFrMkN4WUNsS1hjN3hPR1hEeEdTb3Iyb2pUUHR1SE94MHFoSnJGU21rdUJm?=
- =?utf-8?B?blZtZVdPQytJaEt0SFpTdUtZMVo4ODN0RHJUN0tIeW1jUVQzRG5rdU9GK01W?=
- =?utf-8?B?UEV2bVc4UkNWZGFXQXRjOENleXQ3bEdOanExZFRnUXBYUHNkUG5pb2pQbzVC?=
- =?utf-8?B?RXdKc1ZHQWtLRkFWdVN5RldLclJCcm9LNWtsc2V6TVVjMFpZQUF0WEM0ZTZO?=
- =?utf-8?B?Z0NDYTFsTUhPL2VrWk9EdzlqT256MkVJZkFGRGxKQW5Pa0JkdEhGa1VVbXc5?=
- =?utf-8?B?YzBoRkpCZnJzV0IwUCthN0pZbkxYZkVtM0hhNVFvcS9yZnJHV1lZRDllU1Nu?=
- =?utf-8?B?SDV1T1FrN28zQWpkL2ZLSUFYSnRrMXkrRnZOZVJYelJCRG44TWY5ZEZ5eERi?=
- =?utf-8?B?ckE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a1b64dd-d3ef-421a-9f3f-08dc4ecb2d3f
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MEZQWW1mNlk3cFVhRnJkczZlM25NL294dmZCMDdYL1E0RzE4bzlDeHM2dmV4?=
+ =?utf-8?B?ZmtQenp6cjFDOU1RNjB5cmxVaDFxUTNzb01BaEdoc2lWdVhnWldVWnNVNHo2?=
+ =?utf-8?B?MUp4ZTF1Tm43dDZUa09PUmJQKzAySThxRWZuSUJ2dnh2dlFOekFIVUlaRlZV?=
+ =?utf-8?B?d2l2cjBiVkZDaHp6TS9QeWkvNzBabzVlS3B4OFROMy9jaURsM25JMVhrSkhM?=
+ =?utf-8?B?YVYwVWszZ1ZFT2MxamQzNFhreTVveXFVTzJ1bkJzZE03SWdweHowOXF2K3V2?=
+ =?utf-8?B?MXAzVjBqOHRUdzFZYXlVelk4Vk1CUmxPOG51UTJxc21LdzVpM1hMeDIrZ3E4?=
+ =?utf-8?B?Y3dCWWczR3MxbGJJSmVDUW5qcWN1YXpDM0JUaU1rUnRPYlJ2bG5OeWpiOERL?=
+ =?utf-8?B?SHJFR2ZjMlI3WFBKQzR0VTQyOG9wQVBkVWxvZUtNV2F2QWhYN01uYVl1Q0Nt?=
+ =?utf-8?B?MlFNOTRKWWRRTjFBZXB2dFY5RnFsT1AzbGc3M1YwZWY5TkdDTGwxRG12TTYv?=
+ =?utf-8?B?VUZNeFZsVm1JV0U0cWVsekNyOWhxRkFaMWRhbTVzUTZhRzNMMHgramVvU0hJ?=
+ =?utf-8?B?a2FmSEVLb0VvVzVld2w0QzN6aDBDWXowTldtazdKc2lSUG4wdlllWFJZY0py?=
+ =?utf-8?B?SE8zY0hCZEg4d1BySE9pM0FhSHR1VnZMaU5lNFNWZWE4ZmYxTzZsQUZuTEdR?=
+ =?utf-8?B?aUtVWnpMSVdhNmNVajNlMHlNbjV4SFdUSVFUV2FzL2tKdTk4MDJsTTAyTmZR?=
+ =?utf-8?B?RU9oRi9pK2lyRkI5aFBEcThId3dFOGFSUEZWVzhNeUZ1bGJIZ2tTdEN3MWFs?=
+ =?utf-8?B?eUJ0YzNoMUt6M0E3SXhXaUkrU0twckpUT3FYWDB3dTh0Q2tONWdpUkVHekpa?=
+ =?utf-8?B?cXIxLytNRjN3QS9Sd3JENmRNcTBob1RvdXB5T21oRzR3Q2M0bHpZd0VodVNX?=
+ =?utf-8?B?Zm5tUWUybG8wRjlOR2VlL0Evbkc4NmphWkV2bUpsZlNrMkFYc2gyamk0NHIx?=
+ =?utf-8?B?SzIrWlRHN3VYUXlUaTRvM0NKenVSS1V6OVE3TmhUaFRvS2FGdXA5N0ZIZHJp?=
+ =?utf-8?B?M0pRQU5relYyajExN2MxT0xaN0dVb0xHT2l3YU9ra1crL2t2SXZvUjczSW51?=
+ =?utf-8?B?OFNLOG9HeHZBMUdhZUloQjdBK3FSSFZOR1d1cDh4MkdqZ215cllySWRqSGZm?=
+ =?utf-8?B?V3VjbEtkTzZNMGhNREhUQlRuc0JRRmhKRDVTVnEyaU5SZUtYQWc1d2Q5QWNw?=
+ =?utf-8?B?Nk9QanAyQ1hRNDRzRk00Wkd5cTdBaHJXUGZlVm81UFhYMnNMQmpUM01nd2Zl?=
+ =?utf-8?B?WStnN2p2ZmZBN04xRjlBNzkvQi94YTVEejlzc1lCeUJma09FNG9VbmxBQTl6?=
+ =?utf-8?B?bEowK2cwS2lpdzhuRlJUeVp3amk0SVFVRG1zclovTVI4RDBHQXp4Q3RmUXhn?=
+ =?utf-8?B?ODd0SUZOUkVjTlFtdVpPOW15QzJnSkVoam1TVkFBdjIzT0I3YnZVT09scENC?=
+ =?utf-8?B?R244eHhDZmlwalcvSEN2YlBJVWM4WXRKRDh1cmpoU05BUE9sQTBjZVVNekJi?=
+ =?utf-8?B?ZC9xUEZZTURlb2dhV0YrSldRMHh6bXJSUEFrZGlHdks0UndOMGZ5MEtVaThR?=
+ =?utf-8?B?MjA4eHJjWS9FRGh1NlNvZitVUThSQ0s2M2N4L3k4SXBtYWNOMVduNXdlS2Jl?=
+ =?utf-8?B?ZDE5TXgxekpSRnlaM01xVzRwc09HUGhhbzFBeHlyNG1PRGZIZG5Dazd1eUF4?=
+ =?utf-8?B?M2FSTkx1alFZMzNGVnVuM2tyM05RYUNFNlRMWkZKWjlLQlhzUS94NmlEa1NX?=
+ =?utf-8?B?cTc3eFk2VXcvWHZnT3V1aExUbjBWK0hyK2VObFpMM1ZoWk0wMG44VVorcUJt?=
+ =?utf-8?B?eUplWGthR25jV0kzdUp6TlVkd0FRT3dKMmVsNklIdVA5S3AySlpFWDVJdUI2?=
+ =?utf-8?B?K1dXT2MxeTZNQXZuWU1FV1NmMUJrMEJXeHNuMWZaWGJBSEhXaHFEK1RBdWhG?=
+ =?utf-8?B?L1pkTlY2UWJ4STRmNUk2b2tzREo0QWtVOWZyczVmTVNsZFZiZE5mRDBKbVY1?=
+ =?utf-8?B?eTlPWDQrMTlmMzZ1OWQ2T04yUmFub0dxdEtFOGVVTFRZYzRMdmFpaTA0U2o5?=
+ =?utf-8?B?Rkc3WnFUdktvNUhwWjNNSlNGUml0RVBsYTVsSHoraGp6N1lPNitKTVF2NFhq?=
+ =?utf-8?B?aGc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 856f8795-1518-446d-8992-08dc4ecb8598
 X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8287.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2024 02:02:52.8955 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2024 02:05:20.7992 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uI6kDVV/UfMdIbhUyccLGi6yO7QdOFn3j+t+CBWeYJJp1rYrW3HyjwfH8mUCEMpRbolWmS3WrFiNTShQhOToNQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5884
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2yH9ef7UzMd1s+gS2r9pkP2brnI233iMhMNzISTgkKty0gzjbIaGfTL2QSe22tkkrNflJmJbUQq9YlInKfLFaA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8342
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -164,109 +167,85 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Quoting Matt Roper (2024-03-27 20:47:47-03:00)
->On Wed, Mar 27, 2024 at 11:14:27AM -0300, Gustavo Sousa wrote:
->> Quoting Matt Roper (2024-03-22 19:19:08-03:00)
->> >On platforms with standalone media, we expect some GTs to have CCS
->> >engines (meaning ccs_mode can be tested if there's more than one CCS),
->> >but the media GT will never have any CCS engines and will never expose
->> >ccs_mode.  Move the igt_require() out of the loop so that we don't
->> >declare the whole test a skip upon encountering the media GT when the
->> >test already executed successfully on the primary GT.
->> >
->> >Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
->> >Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
->> >---
->> > tests/intel/xe_compute.c | 8 ++++++--
->> > 1 file changed, 6 insertions(+), 2 deletions(-)
->> >
->> >diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
->> >index 42f42ca0c..fffcfa08e 100644
->> >--- a/tests/intel/xe_compute.c
->> >+++ b/tests/intel/xe_compute.c
->> >@@ -51,13 +51,15 @@ test_ccs_mode(int num_gt)
->>=20
->> Looks like we also need to fix test_compute_kernel_with_ccs_mode()?
->>=20
->> > {
->> >         struct drm_xe_engine_class_instance *hwe;
->> >         u32 gt, m, ccs_mode, vm, q, num_slices;
->> >-        int fd, gt_fd;
->> >+        int fd, gt_fd, num_gt_with_ccs_mode =3D 0;
->> >=20
->> >         for (gt =3D 0; gt < num_gt; gt++) {
->> >-                igt_require(get_num_cslices(gt, &num_slices));
->> >+                if (get_num_cslices(gt, &num_slices) =3D=3D 0)
->>=20
->> This next comment is not really related to this specific patch, but I
->> wonder if `igt_require(get_num_cslices(gt, &num_slices))` should have
->> been `igt_require(get_num_cslices(gt, &num_slices) > 0)`, since ccs_mode
->> is only exposed in that case.
+Quoting Matt Roper (2024-03-27 20:47:59-03:00)
+>On platforms with standalone media, we expect some GTs to have CCS
+>engines (meaning ccs_mode can be tested if there's more than one CCS),
+>but the media GT will never have any CCS engines and will never expose
+>ccs_mode.  Move the igt_require() out of the loop so that we don't
+>declare the whole test a skip upon encountering the media GT when the
+>test already executed successfully on the primary GT.
 >
->get_num_cslices() actually returns a boolean success/fail for whether it
->was able to read a value at all rather than the number of cslices it
->discovered (the number of cslices is instead returned via the num_slices
->parameter that gets passed by reference).  So I think the check should
->be correct (fail means we couldn't read the sysfs, usually because it
->didn't exist on this GT).  In v2 I'll clarify by checking for
->!get_num_cslices() rather than "get_num_cslices() =3D=3D 0" since that's
->more appropriate for testing a bool value anyway.
-
-Yep. Thanks for clarifying! :-)
-
-My bad on not reading the code carefully.
-
+>v2:
+> - Make the same fix for the compute_kernel subtest, not just the basic
+>   subtest.  (Gustavo)
+> - Treat get_num_cslices()'s return value as a bool rather than an
+>   integer for clarity.
 >
->The two sysfs nodes this test uses (num_cslices and ccs_mode) only get
->created if the GT has two or more cslices.  Arguably we could improve
->the test a bit by adding some assertions that we never read a value of 0
->or 1 from the num_cslices sysfs (since the sysfs shouldn't have existed
->in that case), but that's getting a bit away from the goal of this
->specific patch.
+>Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+>Cc: Gustavo Sousa <gustavo.sousa@intel.com>
+>Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
 
-Alright. Makes sense.
+Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
 
---
-Gustavo Sousa
-
+>---
+> tests/intel/xe_compute.c | 16 ++++++++++++----
+> 1 file changed, 12 insertions(+), 4 deletions(-)
 >
->
->Matt
->
->>=20
->> If so, then maybe add a follow up patch replacing `get_num_cslices(gt,
->> &num_slices) =3D=3D 0` with `get_num_cslices(gt, &num_slices) <=3D 1` in=
- the
->> condition above?
->>=20
->> --
->> Gustavo Sousa
->>=20
->> >+                        continue;
->> >=20
->> >                 gt_fd =3D gt_sysfs_open(gt);
->> >                 igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 0=
-) < 0);
->> >+                num_gt_with_ccs_mode++;
->> >                 for (m =3D 1; m <=3D num_slices; m++) {
->> >                         /* compute slices are to be equally distribute=
-d among enabled engines */
->> >                         if (num_slices % m) {
->> >@@ -105,6 +107,8 @@ test_ccs_mode(int num_gt)
->> >=20
->> >                 close(gt_fd);
->> >         }
->> >+
->> >+        igt_require(num_gt_with_ccs_mode > 0);
->> > }
->> >=20
->> > /**
->> >--=20
->> >2.43.0
->> >
->
+>diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+>index e773e798a..ac6351276 100644
+>--- a/tests/intel/xe_compute.c
+>+++ b/tests/intel/xe_compute.c
+>@@ -51,11 +51,13 @@ test_ccs_mode(int num_gt)
+> {
+>         struct drm_xe_engine_class_instance *hwe;
+>         u32 gt, m, ccs_mode, vm, q, num_slices;
+>-        int fd, gt_fd;
+>+        int fd, gt_fd, num_gt_with_ccs_mode =3D 0;
+>=20
+>         for (gt =3D 0; gt < num_gt; gt++) {
+>-                igt_require(get_num_cslices(gt, &num_slices));
+>+                if (!get_num_cslices(gt, &num_slices))
+>+                        continue;
+>=20
+>+                num_gt_with_ccs_mode++;
+>                 gt_fd =3D gt_sysfs_open(gt);
+>                 igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 0) <=
+ 0);
+>                 for (m =3D 1; m <=3D num_slices; m++) {
+>@@ -105,6 +107,8 @@ test_ccs_mode(int num_gt)
+>=20
+>                 close(gt_fd);
+>         }
+>+
+>+        igt_require(num_gt_with_ccs_mode > 0);
+> }
+>=20
+> /**
+>@@ -118,11 +122,13 @@ test_compute_kernel_with_ccs_mode(int num_gt)
+> {
+>         struct drm_xe_engine_class_instance *hwe;
+>         u32 gt, m, num_slices;
+>-        int fd, gt_fd;
+>+        int fd, gt_fd, num_gt_with_ccs_mode =3D 0;
+>=20
+>         for (gt =3D 0; gt < num_gt; gt++) {
+>-                igt_require(get_num_cslices(gt, &num_slices));
+>+                if (!get_num_cslices(gt, &num_slices))
+>+                        continue;
+>=20
+>+                num_gt_with_ccs_mode++;
+>                 gt_fd =3D gt_sysfs_open(gt);
+>                 for (m =3D 1; m <=3D num_slices; m++) {
+>                         if (num_slices % m)
+>@@ -150,6 +156,8 @@ test_compute_kernel_with_ccs_mode(int num_gt)
+>=20
+>                 close(gt_fd);
+>         }
+>+
+>+        igt_require(num_gt_with_ccs_mode > 0);
+> }
+>=20
+> /**
 >--=20
->Matt Roper
->Graphics Software Engineer
->Linux GPU Platform Enablement
->Intel Corporation
+>2.43.0
+>
