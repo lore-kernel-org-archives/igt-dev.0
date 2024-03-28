@@ -4,121 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E697C54E67
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Mar 2024 13:04:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C23FC54E64
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Mar 2024 13:09:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D9C3610F64C;
-	Thu, 28 Mar 2024 13:04:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D2BF9112153;
+	Thu, 28 Mar 2024 13:09:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="Vr/thBk4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hK0f958l";
 	dkim-atps=neutral
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2071.outbound.protection.outlook.com [40.107.220.71])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C996B10F64C
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Mar 2024 13:04:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D275112153;
+ Thu, 28 Mar 2024 13:09:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711631381; x=1743167381;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=PyT9jZbLzyl0LSQVtczBlc0Ogsfoskfi6klb/FVyBOw=;
+ b=hK0f958l4+WM7XaplhNSjLQjlm1+G7/VRSwWbqQzestE3ANWmxPFmDqr
+ VzCpj55JqXYJqpYWCMonl2w6CwVL9JXVzuigpIH+vFf0lFi0hWT17kFXc
+ 2I3C8n3MR/IpbAOWphBhISE3KGhhaU4KP3XAPw9nNSqAlpEN4MZB1VcnJ
+ L0Rq5T6BiaAmmvXpEIqb4arr05Y+y3Uub+kW4rpAJ5gdcTsgZ0vuiz7Do
+ hZdF5llrN68C39LjTcmI/HQ41oWqjUrT7DJMZ0CLIMRLx/mKTqYtTU9dQ
+ gI57ymjvhDJfIQYPuM2A77JcGhZXh0NUXPzm5odSD/+2jmrx/DqbpS9it g==;
+X-CSE-ConnectionGUID: hkQr3CPPQOS5hWqpZbYExg==
+X-CSE-MsgGUID: 16kC3ocXS+2N0//2gYaY6w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="10566486"
+X-IronPort-AV: E=Sophos;i="6.07,161,1708416000"; d="scan'208";a="10566486"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Mar 2024 06:09:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,161,1708416000"; d="scan'208";a="47618582"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 28 Mar 2024 06:09:40 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 28 Mar 2024 06:09:40 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Thu, 28 Mar 2024 06:09:40 -0700
+Received: from outbound.mail.protection.outlook.com (104.47.56.168) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 28 Mar 2024 06:09:40 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=M5I8EbtYipQg/h7JKIu95r4ACo1tSTo6i7zjljg9hcjbYNrDo9nq0H8vfyIK20BwTpBVXoJ5thwXChVZs2/Jhc19NKLIyyLBJdH9rbfQXt4waj7vFjbijciRbBMZqnLkXYahZrFo+iXZeib0mI5Mz5fu6K/c+5l+22E2Amipq7t3AyWIvhWvwbSMnn+ty1oywOtHEC+hwNAaCOJJR0TSl/OqOThGWqLmDQJzLqKc8Z/YDLDkW9hIWq4D5l1Bl7O7byXqta7RCVylqZJ3fWxPgsuLJRQWEsWSYJJwCP/3VgbISzmluwMYn5jp6W+oxW7XuBQBnf0Qxyhmtkf6mEjNHg==
+ b=Tc8XrzvsLk6qT5212zQKj4wjgcraJoXwDQlFkOjxSXQ0T5Qd/NzMrPmoUKDyDLUxp5YcF78j8Udf8KZSLHDGfBMwnbQ8kAiVJKEJb0GO2uWWB/pMsItGUP6/swGnxn+oovlA3JIRZOQ67IrUWAGWnWF2X9P5kpqK2WtSGflOf/CDLLdQ44ym8EDEVRXrA8VS5m64E2tGBmdS7tBJX8pWvxIm3xza5c0NPEVXboofBDEAVoy8QlUwulvgULSyo13e04W1O7Y3bJTJcSy0uPTQIjDLJvhe9BIqc4djcbWzjqHboCvDlvle483+FDfcfVTttG0n3PF0Aai3CV2WYN3sGg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HWgOXSBh7qhCBg6FeNzoMmH3hEMVC+m5ROL7BODQRt8=;
- b=fgRPUQsG09rn7gU+JJ4aGqboaJyIb2XFzTIBvQspss6R9dsUagBsX4bTQCzDw8aBCSnUnfdIGjYpTXtEr9q6XFD4CfDNT+svGbBUvteYzmFR5ZJ+m10g2vDLMyx59MJBMv3dJ71AdxKmmlzZKMXYTEkqiNZ1yudgjpSGPy7MXhoUmgCtiFZF3Xp4o5GdPVf1BJKXgfVKd5twG3lq6nuZMVsA5Usrv1BPNEmGWLRexpamyZ1lswf8WOQJ4n1wmwuaTGsHajXu81/WsIDvdQ6rzUfBm9XHlt5DmtnPDXAI5bJFW0J3tVcNw6SoH5ZvP0HAFw2ZtbILVcxQ7rAg7QJ6cg==
+ bh=2ly9UP7qeKzllavhBnwqzZ79QiDPI6dTQL1eYfYSVzE=;
+ b=f3+klLSvc4mNSTuTa7h4LB/OozQ2TBpHQAKzObGf6lbZ0iYNzKDSOtIYZ5KNycBZI0JR9XvKT7NjSx3EErhY6oGVSfYDpw81+ITkTSnRuGsIVwUFjS41J3zpkGVDpP0PwBi6oLtiWU/sJZkAE0f/MtryzDXwgzTTBv/IigXa9xRwLFJncVhrZCmKwZveuXKQR3r6B0Y64wAAqpAJ8UE5AaEewpJZzv4XiA3HaeI5cVMNhjUhafDbOHx/+hoY7HhLH6uOwfb0WBw8TEYmpFYhA9BS1lQlYjFOXsMYellXEL3ORWKnK5BVMk1nwNCrvMtSbOCyDelWlo7H5shYUx4Z+g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HWgOXSBh7qhCBg6FeNzoMmH3hEMVC+m5ROL7BODQRt8=;
- b=Vr/thBk4wAhyJ4dDmsjvpwPqo9PZMeLZavjkCA65FlWbTVgMmeEKhC06FOqROxwhtjG7+PceDLraKdbUTrk1t5PkdA6i/GyjGmDB2v81uEScWpeUGvcCy4DwOtpuk3i+VojcAbSOjzZQdp0tbX9XWuYHykUWJ/BzgDZqQ/JMQNc=
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB6420.namprd12.prod.outlook.com (2603:10b6:510:1fc::18)
- by PH7PR12MB5949.namprd12.prod.outlook.com (2603:10b6:510:1d8::21)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
+ by PH7PR11MB6330.namprd11.prod.outlook.com (2603:10b6:510:1fe::12)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.33; Thu, 28 Mar
- 2024 13:04:27 +0000
-Received: from PH7PR12MB6420.namprd12.prod.outlook.com
- ([fe80::ee1b:768b:715f:e5b5]) by PH7PR12MB6420.namprd12.prod.outlook.com
- ([fe80::ee1b:768b:715f:e5b5%5]) with mapi id 15.20.7409.028; Thu, 28 Mar 2024
- 13:04:27 +0000
-Message-ID: <4caf8ccb-b403-41a9-bde7-e7895761221a@amd.com>
-Date: Thu, 28 Mar 2024 09:04:22 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/amdgpu: add gem create fuzzing test
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, vitaly.prosyak@amd.com,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>,
- Joonkyo Jung <joonkyoj@yonsei.ac.kr>, Jesse Zhang <Jesse.Zhang@amd.com>,
- Tvrtko Ursulin <tursulin@igalia.com>
-References: <20240327042703.471787-1-vitaly.prosyak@amd.com>
- <20240328130141.whwcrpyud4kt7zcf@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <20240328130141.whwcrpyud4kt7zcf@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: YQBPR0101CA0069.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c00:1::46) To PH7PR12MB6420.namprd12.prod.outlook.com
- (2603:10b6:510:1fc::18)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.32; Thu, 28 Mar
+ 2024 13:09:37 +0000
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::e9dd:320:976f:e257]) by CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::e9dd:320:976f:e257%4]) with mapi id 15.20.7409.031; Thu, 28 Mar 2024
+ 13:09:37 +0000
+Date: Thu, 28 Mar 2024 08:09:33 -0500
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+CC: <igt-dev@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
+ <intel-xe@lists.freedesktop.org>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Jonathan Cavitt <jonathan.cavitt@intel.com>
+Subject: Re: [PATCH i-g-t] lib/kunit: Read results from debugfs
+Message-ID: <kcd7mkgkxuemwv5zgihvofmlrmyrhkyauqwzgd3ijtx3ntmmis@6qxhiky4c2a2>
+References: <20240327113700.7123-2-janusz.krzysztofik@linux.intel.com>
+ <leokqgcgm67t54fvdv4od2z3wbhef6r6ejygn7wklpmzykk5ks@tp2xec36zeg4>
+ <2598806.Lt9SDvczpP@jkrzyszt-mobl2.ger.corp.intel.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <2598806.Lt9SDvczpP@jkrzyszt-mobl2.ger.corp.intel.com>
+X-ClientProxiedBy: BYAPR05CA0025.namprd05.prod.outlook.com
+ (2603:10b6:a03:c0::38) To CY5PR11MB6139.namprd11.prod.outlook.com
+ (2603:10b6:930:29::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB6420:EE_|PH7PR12MB5949:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1eb37436-e3bf-4bab-817d-08dc4f27991b
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|PH7PR11MB6330:EE_
+X-MS-Office365-Filtering-Correlation-Id: 76c9d0b4-9847-4adb-1248-08dc4f285219
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: HV0VEY7vW83V04Sox3jzxlbARuHRlMLfL6WVg3IlbbY0CKGTk7wxu3T+pUJyMMZ3VEaQjILFAWNmMJlGFJEp9RDw5UmPX8eHHF2hRVU5ac+wVujS9RTQ+2MtSemcH4E7rnXN520+h9JsFCYSUbGAWRT7qJ07/J/R0y/2AKu/ljFwqqh0B6woDsbiiPevYtO7F+OYuDd7L16jDHyKcGtbfT2v5/UHKS66FV+pDyFModUphx4thZh59kKrXXq6+uVxXdUXWy75gVC6fD+uDcLI9wPYcxBkP685/EN8eDAF1lSWREDZexzm+erZLUolvv14KoD3FtPge81Th30WOS8mUfHJbmbAoz2OUOmFNjL+NKkjPV9JT7wKebOEguGnl08S3TTbRzqdFYOLje+FxuCacMC+MkXPb/4nrg7C/OY310idbXwPNSFATvtGuD7CgpQMZvM57+XOHV0yda2RH10vHMUCuzRxY99E0f59O/RXDXBkFDYK/Bl+ahnR4ztzDCo42Sybk73qJspH3anlmlrKeYAdt+ejbn5v0iOp+XhMn9E/e2hK3bWBTzstTfehr8xD/Sz8Xnk054XAtgQz3lIdVS1Ri76BnWsZNFX01D7Pm+Q=
+X-Microsoft-Antispam-Message-Info: xEpXxx/sBjJHuprLxSBIDnYeWi85zP+iSgo+hZ7h9OJNLKQsDCVxAhK279WARWDrx90Bnob3YpbTNEeMts2AwIPsSGUyT63/EibExyke4GnbKFaKK+HmwCHn0vujaGs5uVbC4KLGIlTfWM3dWlxnmGLiikQUECGnTjXiImFCt763W8h+0QhiAwpgrhL4PSM8wNEWWX946Yq50QYAkgc3Za3cuKgVDkL8yd16nvqPAq6Pcu+JQJWUkRnG1nIIBW65bbGmq0GWK6ICVczssnozkOp4k8f55qfNy7BVWQu0vPntpXThLGBp+ke10FvFxjb5alsi/IqM0ndybKzeejRsXdj/6XuokvSgpGLGeXxnZFNgMfl0yf4FSAjR04esMdrwfSN00NT8T9CA4HUy22NAgZ12Ge9th/NYJ3GD752qe6855ZIr1V+QVBGSdC2TJfMDTODQdholV6u0C/QeJPTxcR31/wYqcAvfYmTux99T3/gp8eO/wvG6PIJb84n2n+i/vGSUOhDXgEQ+NHGI9clAATMx+Jnkf1ddCu2vIaAyrj7vSnysdrTEicW/UQP4psSmJo/GyOUB2bKs//Gy9I2urbiWhYXx6d0HAJxMDLQppEwO7qq3ZfjUUvbVXJSs7Bu8mIu6wGh4s34sorx5VFLVdfqpf0Fy3lHi0F0eShwLLbw=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR12MB6420.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376005)(366007)(1800799015); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366007)(1800799015)(376005); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QXhvN3BOZFNCaXM4Y1N0KzNpaFhNQVlZZmw0Uk5EdzN4R2VibmFlaTJRRGNK?=
- =?utf-8?B?N2tpdkI5WSsyYTFrK1UxSXZEdlZhd050Umd0K2ZNSUhrTnFKRjBPbnpucExS?=
- =?utf-8?B?U2V3cVRnMWxRVWZvN1U1VndGdHlNZk0yeC9zcElTZkMxaHRaRC9IL0UrNWU5?=
- =?utf-8?B?L2dqSHljRGRtU3J4REU0aXM3L2JpaGVoRHdaOUdkMkI0YUZydlZ6RHVtQzlz?=
- =?utf-8?B?NktXK3g1WGNrWmdNNjViMkdqcjNMZDFWOERSMU9zUE5zQWdURVFzTk0zek8x?=
- =?utf-8?B?cWljcU1IMGo2aWI4UEFNQW0zMFJsaFVMbWFleEd6cFE5UmR1UHF3K01GSU1Q?=
- =?utf-8?B?U0FBY2ZGQ2JBVGhLODhXVVBOV0l2QmlzR3AyVHp3ZEhNTE9sdXcvVE1NT3p0?=
- =?utf-8?B?ZDJwMjlGY0VualhnNDV6YW5udWRqTm9GeFo2by9DSU1BUmVmbXluUlFTY2da?=
- =?utf-8?B?cVQ5QjJDdXVQV01CaTg0azR0NkhYRkMwaUczWVlaTzBYUXc5UFJXdVFzK0hB?=
- =?utf-8?B?MUVUeGdxV1dhNjBaSk42ai9uR0R0SlZwNmIrdFJadThuZDU2ZGRrdmlhQ1cw?=
- =?utf-8?B?TTN2Q3YwZTlNMmMxN0VJM1ZhcWlkRExyS1NTM085dDJMcFd1YjRmbG8wVHNw?=
- =?utf-8?B?Q1EwdVY0MnlmWHZvaVByZzRBZGJwQ1FVNjNnYTRlUU5YKzJZNlNUR2E2L0I5?=
- =?utf-8?B?Z2lrMXZxMzFXTHBxcDhCOWJKWUJzejA2MkV1c1RCb3E0dnBaQktmdFd1Vndx?=
- =?utf-8?B?V3piYXBXdzBKd0NORlI1M3c1Q0Y1ZFBucm03cGQ2SkhaclVQaUJTRWFCbm5z?=
- =?utf-8?B?SHhscHlhL2xrdllKV0RoTk0wbStnNXNyb3RCQ0FndjBHay9QbFlCSmVZbmpW?=
- =?utf-8?B?eGxGSDlZKzJMRjFVc1ZDREY1NVJWd3pWdk45OEMvTWQ3aExieEJvSHJ1SmNx?=
- =?utf-8?B?T1diNUNCL1RHb01yQ3ZvbDJVRE5YbEJOZnIyVnM5YmZYaHZPTUh5bGN5cGlB?=
- =?utf-8?B?NE5lWXB6VEJ0R3l2SzJuVEd2SkNsMGl4QnVTQlNEbFp1M21IeXhCMEk5VVJn?=
- =?utf-8?B?TFJQNWcvT1lUc3V1d0hMZVFsRUVRdU9HNkFwS0ZIb3c3Tlc2SExEMHN5bXNS?=
- =?utf-8?B?azJidGlwS0NjaVJCOE1FT1kzakpYM3JDRTNXdmZ6ZVk3SjFPbjRqRExpZ3R6?=
- =?utf-8?B?UUhLKzBTZXhhcWlhUnZGZHdQUUhMVFBPcFZ1eVpxbmJMeTlvblpXa2x1KzM5?=
- =?utf-8?B?a1BmYXQ4V2xHVjg4SjlwdjlrTVJqK054TUZRL2d3R21aU0VMTG52K2kwUWlM?=
- =?utf-8?B?N0FQUEdqYWtrNnZuS3cybDh0Ykd6Rm1vK2pTZEV5WE5ZdGFlMDhxSUJGTGRu?=
- =?utf-8?B?MXloNFVDZzltQ0YyT2RZUW5CR1BacGVJREZQc2IrK0JJc2trNnE2QVpTTkN6?=
- =?utf-8?B?R2VGYjhmMXZ5bElTamdSY0FPVjl0RGhsTUdzcUw4ZzhaVWFZSUtpTlMzYkF1?=
- =?utf-8?B?Sy90QlVqVnBXQTJNVU9TbmhXamQ0RlhXQlpBNkd1N0NOOWpScHk3WTI0MzJD?=
- =?utf-8?B?UkRWQkZuOWtRekcyd2pETUdKMkpSVjdzY3Q4eDN4aVdFWGZWN3BLZm1vSjNU?=
- =?utf-8?B?MVFGY2RKNEpsTk55Yjc5cUt5VnhJRFJIdjFpbXcyZ0tGTGZ2S2h5UGZtRk1u?=
- =?utf-8?B?aW00SWxHbHVSTVExVHdKTkxweFhTdHhpNzlCcVpLVUxxTFRwN3JnTzdXcG5X?=
- =?utf-8?B?VW1IenlsVDA4M3pBeXlaMTF4dmo0MmJPRzNGdUg2UGdubkFCdmVqeUg1S3N4?=
- =?utf-8?B?TUhGaktINGV3K24zblprdENVTmF5dERxTlhjZE5OMVBXaW5xU2ZCc24vdXoy?=
- =?utf-8?B?UDRSN3d2ZnlmNVEwbnRiMTdUVjFPM3QrYVBzeElKV0h5NVByM2V4a3U1YlM5?=
- =?utf-8?B?RlhjSE1sTlhnUFVKc3Y1b1Bqd253UkhCUklQZ2JyS3BXVG5ySXBQY0VwQ3JX?=
- =?utf-8?B?TVh2WkYza3lGT0REZjBXUTg4by85VWVrcURMeXYzcDEwQXV1YmRTV0tZTUFJ?=
- =?utf-8?B?MExLM1I3SG0yY1E4L2RnM0M3V0g2UU5ZZnZCamZ2YldMSEpjQVZFcGhLMncz?=
- =?utf-8?Q?+WbL52WXykGLU96snZWa/a1Kf?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1eb37436-e3bf-4bab-817d-08dc4f27991b
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6420.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?7BPYztny8Ik/oTvvwz6XMyGhICN+zZU86+2+pl+OnaIcVvvtw0keeajKWCM+?=
+ =?us-ascii?Q?4BWpRC5iu5jcBxOZAYtOliw/jZ8xHda14/ueRqe60NnwMv7yOKd9ka8SoB6S?=
+ =?us-ascii?Q?u5ZgCT2+8z+dCdfF/Y/JpfChRAmQ2mv7AFUzjcfP5iuVn74VXVXqtYKF6SYL?=
+ =?us-ascii?Q?GXrpjOnxweU3x/8r1ePBs73YPubs2D1gYPffSg4CFKzqVWlNX/mgjd7S36jd?=
+ =?us-ascii?Q?j4neTX/jPta9l+QePfNQP33NdzB671kqTOMJMWUDLaY0elZbb7448ZP1wQ3/?=
+ =?us-ascii?Q?+z5h6Cj7thIxVKQh5Fk/GRqCjhNwid39f1EgT3dGHQ3v8CcT1gNeKDZK562E?=
+ =?us-ascii?Q?E2ajWW7yUAr4Xbl1totXQvNB9iZeBXQ5grEaatyZxcYUIJ7A4O+awN2DlEAu?=
+ =?us-ascii?Q?FDcQD349SqcZbLImKw03DjBRDR2NoHNTF0QwZWEWFbV4dsREEfr1AWCI++T6?=
+ =?us-ascii?Q?6KGFJmPuOCp+KOHuRU1J30UIuNsfR+4Ikm8VL481m//A4Kkwo3FSkDeQqeMX?=
+ =?us-ascii?Q?2vT2vHImteO+ErQpIpalUe3COyFWqpOp5d8Mzut9KfZdzOOOh0FC9f6VjA4a?=
+ =?us-ascii?Q?PGEiHoDLBJqiOlUKOz5Dd5X3noBzzJqyVo9DtpNye34d6qeBbzOHOMReUHl9?=
+ =?us-ascii?Q?gFbxncK4NIBmuYfvgp6NpdZYtwmBmMpDuBmis19HKUXgh4V3y1MW3mXh3L1K?=
+ =?us-ascii?Q?pApHuyR3J3P7UHtofutzd/NT7TdSXDaQlcRD//QSZV7unhyE27fY/AtYpuhg?=
+ =?us-ascii?Q?Cbemy2NAsVaQ2nxy6M5ObaFjnr13ZCULUpjPpaVYbtez8fwUAXwUzZ/de7Hf?=
+ =?us-ascii?Q?8vDQ+1TK3V6saR1+vWU8CWq5OdJZ9+Bh0/sviNabVH7dlCtPkJc+F+HinriG?=
+ =?us-ascii?Q?Mwkye78Vrc8ARaqFLn2cXX+ooYu1kTnUuIabnyj7E4hGpGDYK/Gpf0Ma4rm0?=
+ =?us-ascii?Q?KjgrKh/0DPzpjzhsq+22CBgrLJiqX9RM/bhEIDsWKUtUlO/Xa0w9ydOyK8NF?=
+ =?us-ascii?Q?/rP3tCCjY8tdXAC2SkC4AYD06z5wEmas/fKKufunr6MMb8TNllrm7KPaNbEb?=
+ =?us-ascii?Q?Pz7qVl/SR0QEXuA435dv0L929Ht1JEcmpQUD5y00epzDG7WeHP7elW7uWBRk?=
+ =?us-ascii?Q?Sz0Qn0FLsUf3P7brvesgNQallE13cbUUH/OkVwzCO7i6x/uMAwvuW2wy8CVJ?=
+ =?us-ascii?Q?8ulmOEnU5M7GdEqtIcbXtZGJcn46c5wtQ3iIYm6rTPBssq2tswxZzb5HEI08?=
+ =?us-ascii?Q?paJaGOWenduyWLYyaZSbGQSI8f9MQTav5KGciSrEGH+D8IE39MrPKxwD2N3G?=
+ =?us-ascii?Q?7uyldX7b5QPNFM99V2YE+30bqIfdgSIF5VY9ESQBmlttuTwo8OSINIkGpYKq?=
+ =?us-ascii?Q?mknVeoRHQcSuymo39XAlFZyHt5YKegcisPsXeDoMGGvwqBhpcf9aYwpRrmLC?=
+ =?us-ascii?Q?a5ZPAUMfwwAuYYmD5cD1nOv64XBOWPRq5nAkB0T2qdogPpanbabGICzZZdBw?=
+ =?us-ascii?Q?ACBzEEe9ldHcInVPMLHLaY8TIQ1pRxQ+z3ESe8uQprEYhhEFqG6WyQWz4Wey?=
+ =?us-ascii?Q?JKT5RWYc5YzTtJbOsLaG87I6UgLxd6MeyY4FgowCXTl3xjzafLcc0bNqMl90?=
+ =?us-ascii?Q?ag=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76c9d0b4-9847-4adb-1248-08dc4f285219
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2024 13:04:27.3301 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2024 13:09:37.6135 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: htwySl0lx4XUo0HnHhlAIRUOexVyE60XWOkS7OVZUvgVKSHVkdYvvx42IZrTJz5yVMpl8P6mZjkbcEJVz/yaQQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5949
+X-MS-Exchange-CrossTenant-UserPrincipalName: CXRd0GnA+LcsT8RIWAj6amTXULMXjLugRjKcsjzsmiJlbxHWW4iO5aC2zo67l60o4IZQmSc4qVbdyqu54veFG9q9TO5sVcV1isUEj9m/YAw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6330
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,154 +155,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kamil,
-
-
-Thanks for your email!
-
-On 2024-03-28 09:01, Kamil Konieczny wrote:
-> Hi Vitaly,
->
-> On 2024-03-27 at 00:27:03 -0400, vitaly.prosyak@amd.com wrote:
->> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+On Wed, Mar 27, 2024 at 10:54:53PM +0100, Janusz Krzysztofik wrote:
+>> >+static DIR *kunit_debugfs_open(void)
+>> >+{
+>> >+	const char *debugfs_path = igt_debugfs_mount();
+>> >+	int debugfs_fd, kunit_fd;
+>> >+	DIR *kunit_dir;
+>> >+
+>> >+	if (igt_debug_on(!debugfs_path))
+>> >+		return NULL;
+>> >+
+>> >+	debugfs_fd = open(debugfs_path, O_DIRECTORY);
+>> >+	if (igt_debug_on(debugfs_fd < 0))
+>> >+		return NULL;
+>> >+
+>> >+	kunit_fd = openat(debugfs_fd, "kunit", O_DIRECTORY);
+>> >+	close(debugfs_fd);
+>> >+	if (igt_debug_on(kunit_fd < 0))
+>> >+		return NULL;
+>> >+
+>> >+	kunit_dir = fdopendir(kunit_fd);
+>> >+	if (igt_debug_on(!kunit_dir))
+>> >+		close(kunit_fd);
+>> >+
+>> >+	return kunit_dir;
 >>
-> You didn't address my comments, I have also more nits, first is
-> your code fails in GitLab check:
-Sorry for delay, i will do
->
-> meson test -C build
->
->> The bug in amdgpu was found using customized Syzkaller and with Kazan enabled.
->> Report a slab-use-after-free bug in the AMDGPU DRM driver.
->> Ftrace enablement is mandatory precondition to reproduce the error once after boot.
->> The bug was reported by Joonkyo Jung <joonkyoj@yonsei.ac.kr>.
-> - ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> Instead of this write it as Reported-by: before your Signed-off-by:
->
->> The following scenario is a different reproduction of same issue:
->> BUG: KFENCE: use-after-free read in amdgpu_bo_move+0x1ce/0x710 [amdgpu]
->> https://gitlab.freedesktop.org/drm/amd/-/issues/3171#note_2287646.
-> imho (note final dot removed) it is better:
-> https://gitlab.freedesktop.org/drm/amd/-/issues/3171#note_2287646
->
->> Fix Christian König ckoenig.leichtzumerken at gmail.com
->> https://lists.freedesktop.org/archives/amd-gfx/2024-March/105680.html.
-> Same here (final dot).
->
->> The issue is visible only when Kazan enables and dumps to the kernel log:
->> BUG: KASAN: slab-use-after-free in amdgpu_bo_move+0x974/0xd90.
-> Add newline here.
->
-> Regards,
-> Kamil
->
->> We accessed the freed memory during the ftrace enablement in a
->> amdgpu_bo_move_notify.
 >>
->> The test amd_gem_create_fuzzing does amdgpu_bo_reserve 2 times.
->>
->> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
->> Cc: Alex Deucher <alexander.deucher@amd.com>
->> Cc: Christian Koenig <christian.koenig@amd.com>
->> Cc: Joonkyo Jung <joonkyoj@yonsei.ac.kr>
->> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->> Cc: Jesse Zhang <Jesse.Zhang@amd.com>
->> Cc: Tvrtko Ursulin <tursulin@igalia.com>
->> ---
->>  tests/amdgpu/amd_fuzzing.c | 69 ++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 69 insertions(+)
->>
->> diff --git a/tests/amdgpu/amd_fuzzing.c b/tests/amdgpu/amd_fuzzing.c
->> index 69c9e8dad..dccac8cc1 100644
->> --- a/tests/amdgpu/amd_fuzzing.c
->> +++ b/tests/amdgpu/amd_fuzzing.c
->> @@ -95,6 +95,67 @@ void amd_cs_wait_fuzzing(int fd, const enum amd_ip_block_type types[], int size)
->>  	}
->>  }
->>  
->> +static int
->> +amdgpu_ftrace_enablement(const char *function, bool enable)
->> +{
->> +	char cmd[128];
->> +	int ret;
->> +
->> +	snprintf(cmd, sizeof(cmd),
->> +			"echo %s > /sys/kernel/debug/tracing/events/amdgpu/%s/enable",
->> +			enable == true ? "1":"0", function);
->> +	ret = igt_system(cmd);
->> +
->> +	return ret;
->> +}
->> +
->> +/* The bug was found using customized Syzkaller and with Kazan enabled.
->> + * Report a slab-use-after-free bug in the AMDGPU DRM driver.
->> + * Ftrace enablement is mandatory precondition to reproduce the error once after boot.
->> + * The bug was reported by Joonkyo Jung <joonkyoj@yonsei.ac.kr>.
->> + *
->> + * BUG: KFENCE: use-after-free read in amdgpu_bo_move+0x1ce/0x710 [amdgpu]
->> + * https://gitlab.freedesktop.org/drm/amd/-/issues/3171#note_2287646
->> + *
->> + * Fix Christian König ckoenig.leichtzumerken at gmail.com
->> + * https://lists.freedesktop.org/archives/amd-gfx/2024-March/105680.html
->> + *
->> + * The issue is visible only when Kazan enables and dumps to the kernel log:
->> + * BUG: KASAN: slab-use-after-free in amdgpu_bo_move+0x974/0xd90
->> + * We accessed the freed memory during the ftrace enablement in a
->> + * amdgpu_bo_move_notify.
->> + * The test amd_gem_create_fuzzing does amdgpu_bo_reserve
->> + */
->> +static void
->> +amd_gem_create_fuzzing(int fd)
->> +{
->> +	static const char function_amdgpu_bo_move[] = "amdgpu_bo_move";
->> +	union drm_amdgpu_gem_create arg;
->> +	int ret;
->> +
->> +	ret = amdgpu_ftrace_enablement(function_amdgpu_bo_move, true);
->> +	igt_assert_eq(ret, 0);
->> +	arg.in.bo_size = 0x8;
->> +	arg.in.alignment = 0x0;
->> +	arg.in.domains = 0x4;
->> +	arg.in.domain_flags = 0x9;
->> +	ret = drmIoctl(fd, 0xc0206440
->> +			/* DRM_AMDGPU_GEM_CREATE amdgpu_gem_create_ioctl */, &arg);
->> +	igt_info("drmCommandWriteRead DRM_AMDGPU_GEM_CREATE ret %d\n", ret);
->> +
->> +	arg.in.bo_size = 0x7fffffff;
->> +	arg.in.alignment = 0x0;
->> +	arg.in.domains = 0x4;
->> +	arg.in.domain_flags = 0x9;
->> +	ret = drmIoctl(fd, 0xc0206440
->> +			/* DRM_AMDGPU_GEM_CREATE amdgpu_gem_create_ioctl */, &arg);
->> +	igt_info("drmCommandWriteRead DRM_AMDGPU_GEM_CREATE ret %d\n", ret);
->> +
->> +	ret = amdgpu_ftrace_enablement(function_amdgpu_bo_move, false);
->> +	igt_assert_eq(ret, 0);
->> +
->> +}
->> +
->>  igt_main
->>  {
->>  	int fd = -1;
->> @@ -114,6 +175,14 @@ igt_main
->>  	igt_subtest("cs-wait-fuzzing")
->>  		amd_cs_wait_fuzzing(fd, arr_types, ARRAY_SIZE(arr_types));
->>  
->> +	igt_describe("Check cs wait fuzzing");
->> +	igt_subtest("cs-wait-fuzzing")
->> +		amd_cs_wait_fuzzing(fd, arr_types, ARRAY_SIZE(arr_types));
->> +
->> +	igt_describe("Check gem create fuzzing");
->> +	igt_subtest("gem-create-fuzzing")
->> +		amd_gem_create_fuzzing(fd);
->> +
->>  	igt_fixture {
->>  		drm_close_driver(fd);
->>  	}
->> -- 
->> 2.25.1
+>> any reason not to use strcat() + return fopen()
+>
+>To me the code looked simpler than if I copied and concatenated strings to a
+>local buffer of fixed size with potential truncation handling.  I guess
+>you prefer your pattern over mine, but you haven't explained why.  Would you
+>like to convince me?
 
+not really important. It just seems simpler to me, with no calls into
+the kernel... completely untested, but something like:
 
-Thanks, Vitaly
+	const char *debugfs_path = igt_debugfs_mount();
+	char path[PATH_MAX];
 
->>
+	if (igt_debug_on(!debugfs_path || (strlen(debugfs_path) + strlen("/kunit") >= PATH_MAX)))
+		return NULL;
+
+	strcat(stpcpy(path, debugfs_path), "/kunit");
+
+	return opendir(path);
+
+Lucas De Marchi
