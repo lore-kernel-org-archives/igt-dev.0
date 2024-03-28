@@ -4,60 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3D86C54E67
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Mar 2024 12:51:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 337E2C54E64
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Mar 2024 13:01:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4F58610F5FC;
-	Thu, 28 Mar 2024 12:51:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AD24510F63A;
+	Thu, 28 Mar 2024 13:01:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="egtsZYi7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DI91VpC9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6758B10F59D;
- Thu, 28 Mar 2024 12:51:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A402810FED3
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Mar 2024 13:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711630285; x=1743166285;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=+Y85YPZDb4/37CnUc7GCOgmjUlN35Fb3b+ypPc4B/HY=;
- b=egtsZYi7xHh+NrTvl0HvxW7BO5EmT2khTi6Zhoh3nG9m83WnxjH4mEUA
- V9Q7YlXQ3Q6dECU61yFWmCFu0z3rlgoE51jd2wtF4U7w9R9PM5hEYiUZn
- BVHgoz89VoqaO/aZiiXig96JMCKehb+2UagcBGfIsXN44Z8ERvQdsZSYi
- HQDelsDI0PjxsmBLsp4usDPR3gAV3XjFRYzVg7avM9zUpA9ZTOpbPK37P
- sWLrltelGZ825M4OavQso4UoMHOldySHVVOB61WuYpfvzC/jQfY/FI4kc
- 4NNQV5LUSpviOqJMJIp9raRtusxIRZ7HeRW48PlMMPY+gxTLx4oQSEhek A==;
-X-CSE-ConnectionGUID: MZsu+lqLS7yg9NjC/+g8Zw==
-X-CSE-MsgGUID: hNpZKY9yRj+OLfqlB246wQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="17408810"
-X-IronPort-AV: E=Sophos;i="6.07,161,1708416000"; d="scan'208";a="17408810"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Mar 2024 05:51:24 -0700
+ t=1711630907; x=1743166907;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=DSraP9pLOy1oXln39DuLfiuJlfhpAL/RQEalTwvJ8QA=;
+ b=DI91VpC9/FRbTxAYtWhSamvVLyxhc1AiHYqJ1cHLmNJz6Aj78cRPsuj7
+ OftTQtEjUrZ2QiLdGidWHeWzVP34sz9I5eeitzVqOQDAIVWvoAnC1Bsgo
+ uJ82gdTbMlDRk+kuf5bjQGI8sSQ2peyxdS0maoyUH9fU1ieuh3piWfBw1
+ AVSXLU/HSNzYV3oMcqx2vJG/9ifmOJ3fpPuO+6Tm9ESmF+tr/h2zOh5tb
+ NeJjjH63U/hyBPxkvql+Xi2QNL/bGUnWqPfLc3rz/rGtvFy/6swDX+GKm
+ eab8j71Quotix5XCJsLmf6ugAI1hE0GsVTk1ivP18ZULAYotDxwlEFfCD Q==;
+X-CSE-ConnectionGUID: jDPK1sGpRfWa4K8oTIGZUg==
+X-CSE-MsgGUID: Hi9VltVyRVqOd13GWNLx3Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="10565054"
+X-IronPort-AV: E=Sophos;i="6.07,161,1708416000"; d="scan'208";a="10565054"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Mar 2024 06:01:47 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,161,1708416000"; d="scan'208";a="21357942"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.16.240])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Mar 2024 05:51:22 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Jonathan Cavitt <jonathan.cavitt@intel.com>
-Subject: Re: [PATCH i-g-t] lib/kunit: Read results from debugfs
-Date: Thu, 28 Mar 2024 13:51:18 +0100
-Message-ID: <2854291.88bMQJbFj6@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <2598806.Lt9SDvczpP@jkrzyszt-mobl2.ger.corp.intel.com>
-References: <20240327113700.7123-2-janusz.krzysztofik@linux.intel.com>
- <leokqgcgm67t54fvdv4od2z3wbhef6r6ejygn7wklpmzykk5ks@tp2xec36zeg4>
- <2598806.Lt9SDvczpP@jkrzyszt-mobl2.ger.corp.intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,161,1708416000"; d="scan'208";a="47617613"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2024 06:01:44 -0700
+Date: Thu, 28 Mar 2024 14:01:41 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: vitaly.prosyak@amd.com, Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>,
+ Joonkyo Jung <joonkyoj@yonsei.ac.kr>, Jesse Zhang <Jesse.Zhang@amd.com>,
+ Tvrtko Ursulin <tursulin@igalia.com>
+Subject: Re: [PATCH] tests/amdgpu: add gem create fuzzing test
+Message-ID: <20240328130141.whwcrpyud4kt7zcf@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, vitaly.prosyak@amd.com,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>,
+ Joonkyo Jung <joonkyoj@yonsei.ac.kr>,
+ Jesse Zhang <Jesse.Zhang@amd.com>,
+ Tvrtko Ursulin <tursulin@igalia.com>
+References: <20240327042703.471787-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240327042703.471787-1-vitaly.prosyak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,356 +76,150 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wednesday, 27 March 2024 22:54:53 CET Janusz Krzysztofik wrote:
-> On Wednesday, 27 March 2024 17:03:01 CET Lucas De Marchi wrote:
-> > On Wed, Mar 27, 2024 at 12:22:54PM +0100, Janusz Krzysztofik wrote:
-> > >KUnit can provide KTAP reports from test modules via debugfs files, one
-> > >per test suite.  Using that source of test results instead of extracting
-> > >them from dmesg, where they may be interleaved with other kernel messages,
-> > >seems more easy to handle and less error prone.  Switch to it.
-> > >
-> > >If KUnit debugfs support is found not configured then fall back to legacy
-> > >processing path.
-> > >
-> > >Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > >---
-> > > lib/igt_kmod.c | 143 ++++++++++++++++++++++++++++++++++++-------------
-> > > 1 file changed, 105 insertions(+), 38 deletions(-)
-> > >
-> > >diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> > >index 1ec9c8a602..a5b170ca9c 100644
-> > >--- a/lib/igt_kmod.c
-> > >+++ b/lib/igt_kmod.c
-> > >@@ -28,6 +28,7 @@
-> > > #include <limits.h>
-> > > #include <pthread.h>
-> > > #include <signal.h>
-> > >+#include <stdio.h>
-> > > #include <stdlib.h>
-> > > #include <string.h>
-> > > #include <sys/stat.h>
-> > >@@ -39,6 +40,7 @@
-> > >
-> > > #include "igt_aux.h"
-> > > #include "igt_core.h"
-> > >+#include "igt_debugfs.h"
-> > > #include "igt_kmod.h"
-> > > #include "igt_ktap.h"
-> > > #include "igt_sysfs.h"
-> > >@@ -864,6 +866,31 @@ static int open_parameters(const char *module_name)
-> > > 	return open(path, O_RDONLY);
-> > > }
-> > >
-> > >+static DIR *kunit_debugfs_open(void)
-> > >+{
-> > >+	const char *debugfs_path = igt_debugfs_mount();
-> > >+	int debugfs_fd, kunit_fd;
-> > >+	DIR *kunit_dir;
-> > >+
-> > >+	if (igt_debug_on(!debugfs_path))
-> > >+		return NULL;
-> > >+
-> > >+	debugfs_fd = open(debugfs_path, O_DIRECTORY);
-> > >+	if (igt_debug_on(debugfs_fd < 0))
-> > >+		return NULL;
-> > >+
-> > >+	kunit_fd = openat(debugfs_fd, "kunit", O_DIRECTORY);
-> > >+	close(debugfs_fd);
-> > >+	if (igt_debug_on(kunit_fd < 0))
-> > >+		return NULL;
-> > >+
-> > >+	kunit_dir = fdopendir(kunit_fd);
-> > >+	if (igt_debug_on(!kunit_dir))
-> > >+		close(kunit_fd);
-> > >+
-> > >+	return kunit_dir;
-> > 
-> > 
-> > any reason not to use strcat() + return fopen()
-> 
-> To me the code looked simpler than if I copied and concatenated strings to a 
-> local buffer of fixed size with potential truncation handling.  I guess 
-> you prefer your pattern over mine, but you haven't explained why.  Would you 
-> like to convince me?
-> 
-> > 
-> > >+}
-> > >+
-> > > static bool kunit_set_filtering(const char *filter_glob, const char *filter,
-> > > 				const char *filter_action)
-> > > {
-> > >@@ -1071,23 +1098,48 @@ static void kunit_results_free(struct igt_list_head *results,
-> > > 	free(*suite_name);
-> > > }
-> > >
-> > >-static int kunit_get_results(struct igt_list_head *results, int kmsg_fd,
-> > >-			     struct igt_ktap_results **ktap)
-> > >+static int kunit_get_results(struct igt_list_head *results, int debugfs_fd,
-> > >+			     const char *suite, struct igt_ktap_results **ktap)
-> > > {
-> > >-	int err;
-> > >+	FILE *results_stream;
-> > >+	int ret, results_fd;
-> > >+	char *buf = NULL;
-> > >+	size_t size = 0;
-> > >+	ssize_t len;
-> > >+
-> > >+	if (igt_debug_on((ret = openat(debugfs_fd, suite, O_DIRECTORY), ret < 0)))
-> > 
-> > a little odd to return on any value != 0, but log on < 0. did you mean
-> > to compare < 0 in the first arg?.
-> 
-> I'm not able to recall what I could mean, but anyway, you are right, 
-> 	if (igt_debug_on((ret = openat(...)) < 0))
-> will be more correct.
+Hi Vitaly,
 
-At a second glance, my
-
-	if (igt_debug_on((ret = openat(...), ret < 0)))
-
-was equally correct (both log and return on ret < 0), and now I recall what I 
-meant: I tried to work around checkpatch rule of not using assignment 
-expressions in if conditions -- with no success.  Let me refactor that line to 
-make checkpatch happy.
-
-Thanks,
-Janusz
-
-> 
-> > 
-> > >+		return ret;
-> > >+
-> > >+	results_fd = openat(ret, "results", O_RDONLY);
-> > >+	close(ret);
-> > >+	if (igt_debug_on(results_fd < 0))
-> > >+		return results_fd;
-> > >+
-> > >+	results_stream = fdopen(results_fd, "r");
-> > >+	if (igt_debug_on(!results_stream)) {
-> > >+		close(results_fd);
-> > >+		return -errno;
-> > >+	}
-> > >
-> > > 	*ktap = igt_ktap_alloc(results);
-> > >-	if (igt_debug_on(!*ktap))
-> > >-		return -ENOMEM;
-> > >+	if (igt_debug_on(!*ktap)) {
-> > >+		ret = -ENOMEM;
-> > >+		goto out_fclose;
-> > >+	}
-> > >+
-> > >+	while (len = getline(&buf, &size, results_stream), len > 0) {
-> > >+		ret = igt_ktap_parse(buf, *ktap);
-> > >+		if (ret != -EINPROGRESS)
-> > >+			break;
-> > >+	}
-> > >
-> > >-	do
-> > >-		igt_debug_on((err = kunit_kmsg_result_get(results, NULL, kmsg_fd, *ktap),
-> > >-			      err && err != -EINPROGRESS));
-> > >-	while (err == -EINPROGRESS);
-> > >+	free(buf);
-> > >
-> > > 	igt_ktap_free(ktap);
-> > >+out_fclose:
-> > >+	fclose(results_stream);
-> > >
-> > >-	return err;
-> > >+	return ret;
-> > > }
-> > >
-> > > static void __igt_kunit_legacy(struct igt_ktest *tst,
-> > >@@ -1101,7 +1153,13 @@ static void __igt_kunit_legacy(struct igt_ktest *tst,
-> > > 	pthread_mutexattr_t attr;
-> > > 	IGT_LIST_HEAD(results);
-> > > 	unsigned long taints;
-> > >-	int ret;
-> > >+	int flags, ret;
-> > >+
-> > >+	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
-> > >+
-> > >+	igt_skip_on((flags = fcntl(tst->kmsg, F_GETFL, 0), flags < 0));
-> > >+	igt_skip_on_f(fcntl(tst->kmsg, F_SETFL, flags & ~O_NONBLOCK) == -1,
-> > >+		      "Could not set /dev/kmsg to blocking mode\n");
-> > >
-> > > 	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
-> > >
-> > >@@ -1224,30 +1282,20 @@ static void __igt_kunit_legacy(struct igt_ktest *tst,
-> > > 	igt_skip_on_f(ret, "KTAP parser failed\n");
-> > > }
-> > >
-> > >-static void kunit_get_tests_timeout(int signal)
-> > >-{
-> > >-	igt_skip("Timed out while trying to extract a list of KUnit test cases from /dev/kmsg\n");
-> > >-}
-> > >-
-> > > static bool kunit_get_tests(struct igt_list_head *tests,
-> > > 			    struct igt_ktest *tst,
-> > > 			    const char *suite,
-> > > 			    const char *opts,
-> > >+			    DIR *debugfs_dir,
-> > > 			    struct igt_ktap_results **ktap)
-> > > {
-> > >-	struct sigaction sigalrm = { .sa_handler = kunit_get_tests_timeout, },
-> > >-			 *saved;
-> > > 	struct igt_ktap_result *r, *rn;
-> > >+	struct dirent *subdir;
-> > > 	unsigned long taints;
-> > >-	int flags, err;
-> > >-
-> > >-	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
-> > >+	int debugfs_fd;
-> > >
-> > >-	igt_skip_on((flags = fcntl(tst->kmsg, F_GETFL, 0), flags < 0));
-> > >-	igt_skip_on_f(fcntl(tst->kmsg, F_SETFL, flags & ~O_NONBLOCK) == -1,
-> > >-		      "Could not set /dev/kmsg to blocking mode\n");
-> > >-
-> > >-	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
-> > >+	if (igt_debug_on(!debugfs_dir))
-> > >+		return false;
-> > >
-> > > 	/*
-> > > 	 * To get a list of test cases provided by a kunit test module, ask the
-> > >@@ -1260,19 +1308,32 @@ static bool kunit_get_tests(struct igt_list_head *tests,
-> > > 	if (igt_debug_on(!kunit_set_filtering(suite, "module=none", "skip")))
-> > > 		return false;
-> > >
-> > >+	if (!suite) {
-> > >+		seekdir(debugfs_dir, 2);	/* directory itself and its parent */
-> > >+		errno = 0;
-> > >+		igt_skip_on_f(readdir(debugfs_dir) || errno,
-> > >+			      "Require empty KUnit debugfs directory\n");
-> > >+		rewinddir(debugfs_dir);
-> > >+	}
-> > >+
-> > > 	igt_skip_on(modprobe(tst->kmod, opts));
-> > > 	igt_skip_on(igt_kernel_tainted(&taints));
-> > >
-> > >-	igt_skip_on(sigaction(SIGALRM, &sigalrm, saved));
-> > >-	alarm(10);
-> > >+	debugfs_fd = dirfd(debugfs_dir);
-> > >+	if (suite) {
-> > >+		igt_skip_on(kunit_get_results(tests, debugfs_fd, suite, ktap));
-> > 
-> > instead of skipping, do we need to treat it specially if this returns
-> > -EINPROGRESS? That would probably be bug in our ktap parser or a format
-> > change or something like that so we may want to start failing rather
-> > than skipping.
-> 
-> Unfortunately we are not allowed to fail here because kunit_get_tests() is 
-> called from inside a body of igt_subtest_with_dynamic() but outside of any 
-> igt_dynamic(), where fails are allowed again.  We may use a verbose variant of 
-> igt_skip() to provide additional information on that skip.  We may also 
-> precede that skip with igt_warn(), but I'm not sure how that will by reported 
-> by upper layers (igt_runner, CI).
-
-For symmetry with the below case of NULL suite argument, I'd rather use 
-igt_warn_on() here and let the subtest skip automatically if the list of KUnit 
-test cases occurs empty and no IGT dynamic sub-subtests are executed.  Or 
-maybe still better, drop that if section preceding the while section below and 
-handle the non-NULL suite case inside the while loop.
-
-Thanks,
-Janusz
-
-> 
-> > 
-> > anyway, consider the comments above as just nits. This seems like a
-> > great improvement.
-> > 
-> > Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> 
-> Thank you,
-> Janusz
-> 
-> > 
-> > thanks
-> > Lucas De Marchi
-> > 
-> > >
-> > >-	err = kunit_get_results(tests, tst->kmsg, ktap);
-> > >+	} else while (subdir = readdir(debugfs_dir), subdir) {
-> > >+		if (!(subdir->d_type & DT_DIR))
-> > >+			continue;
-> > >
-> > >-	alarm(0);
-> > >-	igt_debug_on(sigaction(SIGALRM, saved, NULL));
-> > >+		if (!strcmp(subdir->d_name, ".") || !strcmp(subdir->d_name, ".."))
-> > >+			continue;
-> > >
-> > >-	igt_skip_on_f(err,
-> > >-		      "KTAP parser failed while getting a list of test cases\n");
-> > >+		igt_warn_on_f(kunit_get_results(tests, debugfs_fd, subdir->d_name, ktap),
-> > >+			      "parsing KTAP report from test suite \"%s\" failed\n",
-> > >+			      subdir->d_name);
-> > >+	}
-> > >
-> > > 	igt_list_for_each_entry_safe(r, rn, tests, link)
-> > > 		igt_require_f(r->code == IGT_EXIT_SKIP,
-> > >@@ -1287,6 +1348,7 @@ static void __igt_kunit(struct igt_ktest *tst,
-> > > 			const char *subtest,
-> > > 			const char *suite,
-> > > 			const char *opts,
-> > >+			int debugfs_fd,
-> > > 			struct igt_list_head *tests,
-> > > 			struct igt_ktap_results **ktap)
-> > > {
-> > >@@ -1307,8 +1369,6 @@ static void __igt_kunit(struct igt_ktest *tst,
-> > >
-> > > 			igt_skip_on(igt_kernel_tainted(&taints));
-> > >
-> > >-			igt_fail_on(lseek(tst->kmsg, 0, SEEK_END) == -1 && errno);
-> > >-
-> > > 			igt_assert_lt(snprintf(glob, sizeof(glob), "%s.%s",
-> > > 					       t->suite_name, t->case_name),
-> > > 				      sizeof(glob));
-> > >@@ -1317,7 +1377,8 @@ static void __igt_kunit(struct igt_ktest *tst,
-> > > 			igt_assert_eq(modprobe(tst->kmod, opts), 0);
-> > > 			igt_assert_eq(igt_kernel_tainted(&taints), 0);
-> > >
-> > >-			igt_assert_eq(kunit_get_results(&results, tst->kmsg, ktap), 0);
-> > >+			igt_assert_eq(kunit_get_results(&results, debugfs_fd,
-> > >+							t->suite_name, ktap), 0);
-> > >
-> > > 			for (i = 0; i < 2; i++) {
-> > > 				kunit_result_free(&r, &suite_name, &case_name);
-> > >@@ -1388,6 +1449,7 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
-> > > 	struct igt_ktest tst = { .kmsg = -1, };
-> > > 	struct igt_ktap_results *ktap = NULL;
-> > > 	const char *subtest = suite;
-> > >+	DIR *debugfs_dir = NULL;
-> > > 	IGT_LIST_HEAD(tests);
-> > >
-> > > 	/*
-> > >@@ -1435,10 +1497,12 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
-> > > 		 *	 LTS kernels not capable of using KUnit filters for
-> > > 		 *	 listing test cases in KTAP format, with igt_require.
-> > > 		 */
-> > >-		if (!kunit_get_tests(&tests, &tst, suite, opts, &ktap))
-> > >+		debugfs_dir = kunit_debugfs_open();
-> > >+		if (!kunit_get_tests(&tests, &tst, suite, opts, debugfs_dir, &ktap))
-> > > 			__igt_kunit_legacy(&tst, subtest, opts);
-> > > 		else
-> > >-			__igt_kunit(&tst, subtest, suite, opts, &tests, &ktap);
-> > >+			__igt_kunit(&tst, subtest, suite, opts,
-> > >+				    dirfd(debugfs_dir), &tests, &ktap);
-> > > 	}
-> > >
-> > > 	igt_fixture {
-> > >@@ -1448,6 +1512,9 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
-> > >
-> > > 		kunit_results_free(&tests, &suite_name, &case_name);
-> > >
-> > >+		if (debugfs_dir)
-> > >+			closedir(debugfs_dir);
-> > >+
-> > > 		igt_ktest_end(&tst);
-> > > 	}
-> > >
-> > 
-> 
+On 2024-03-27 at 00:27:03 -0400, vitaly.prosyak@amd.com wrote:
+> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 > 
 
+You didn't address my comments, I have also more nits, first is
+your code fails in GitLab check:
 
+meson test -C build
 
+> The bug in amdgpu was found using customized Syzkaller and with Kazan enabled.
+> Report a slab-use-after-free bug in the AMDGPU DRM driver.
+> Ftrace enablement is mandatory precondition to reproduce the error once after boot.
+> The bug was reported by Joonkyo Jung <joonkyoj@yonsei.ac.kr>.
+- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Instead of this write it as Reported-by: before your Signed-off-by:
 
+> 
+> The following scenario is a different reproduction of same issue:
+> BUG: KFENCE: use-after-free read in amdgpu_bo_move+0x1ce/0x710 [amdgpu]
+> https://gitlab.freedesktop.org/drm/amd/-/issues/3171#note_2287646.
+
+imho (note final dot removed) it is better:
+https://gitlab.freedesktop.org/drm/amd/-/issues/3171#note_2287646
+
+> 
+> Fix Christian König ckoenig.leichtzumerken at gmail.com
+> https://lists.freedesktop.org/archives/amd-gfx/2024-March/105680.html.
+
+Same here (final dot).
+
+> 
+> The issue is visible only when Kazan enables and dumps to the kernel log:
+> BUG: KASAN: slab-use-after-free in amdgpu_bo_move+0x974/0xd90.
+
+Add newline here.
+
+Regards,
+Kamil
+
+> We accessed the freed memory during the ftrace enablement in a
+> amdgpu_bo_move_notify.
+> 
+> The test amd_gem_create_fuzzing does amdgpu_bo_reserve 2 times.
+> 
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Christian Koenig <christian.koenig@amd.com>
+> Cc: Joonkyo Jung <joonkyoj@yonsei.ac.kr>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Jesse Zhang <Jesse.Zhang@amd.com>
+> Cc: Tvrtko Ursulin <tursulin@igalia.com>
+> ---
+>  tests/amdgpu/amd_fuzzing.c | 69 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 69 insertions(+)
+> 
+> diff --git a/tests/amdgpu/amd_fuzzing.c b/tests/amdgpu/amd_fuzzing.c
+> index 69c9e8dad..dccac8cc1 100644
+> --- a/tests/amdgpu/amd_fuzzing.c
+> +++ b/tests/amdgpu/amd_fuzzing.c
+> @@ -95,6 +95,67 @@ void amd_cs_wait_fuzzing(int fd, const enum amd_ip_block_type types[], int size)
+>  	}
+>  }
+>  
+> +static int
+> +amdgpu_ftrace_enablement(const char *function, bool enable)
+> +{
+> +	char cmd[128];
+> +	int ret;
+> +
+> +	snprintf(cmd, sizeof(cmd),
+> +			"echo %s > /sys/kernel/debug/tracing/events/amdgpu/%s/enable",
+> +			enable == true ? "1":"0", function);
+> +	ret = igt_system(cmd);
+> +
+> +	return ret;
+> +}
+> +
+> +/* The bug was found using customized Syzkaller and with Kazan enabled.
+> + * Report a slab-use-after-free bug in the AMDGPU DRM driver.
+> + * Ftrace enablement is mandatory precondition to reproduce the error once after boot.
+> + * The bug was reported by Joonkyo Jung <joonkyoj@yonsei.ac.kr>.
+> + *
+> + * BUG: KFENCE: use-after-free read in amdgpu_bo_move+0x1ce/0x710 [amdgpu]
+> + * https://gitlab.freedesktop.org/drm/amd/-/issues/3171#note_2287646
+> + *
+> + * Fix Christian König ckoenig.leichtzumerken at gmail.com
+> + * https://lists.freedesktop.org/archives/amd-gfx/2024-March/105680.html
+> + *
+> + * The issue is visible only when Kazan enables and dumps to the kernel log:
+> + * BUG: KASAN: slab-use-after-free in amdgpu_bo_move+0x974/0xd90
+> + * We accessed the freed memory during the ftrace enablement in a
+> + * amdgpu_bo_move_notify.
+> + * The test amd_gem_create_fuzzing does amdgpu_bo_reserve
+> + */
+> +static void
+> +amd_gem_create_fuzzing(int fd)
+> +{
+> +	static const char function_amdgpu_bo_move[] = "amdgpu_bo_move";
+> +	union drm_amdgpu_gem_create arg;
+> +	int ret;
+> +
+> +	ret = amdgpu_ftrace_enablement(function_amdgpu_bo_move, true);
+> +	igt_assert_eq(ret, 0);
+> +	arg.in.bo_size = 0x8;
+> +	arg.in.alignment = 0x0;
+> +	arg.in.domains = 0x4;
+> +	arg.in.domain_flags = 0x9;
+> +	ret = drmIoctl(fd, 0xc0206440
+> +			/* DRM_AMDGPU_GEM_CREATE amdgpu_gem_create_ioctl */, &arg);
+> +	igt_info("drmCommandWriteRead DRM_AMDGPU_GEM_CREATE ret %d\n", ret);
+> +
+> +	arg.in.bo_size = 0x7fffffff;
+> +	arg.in.alignment = 0x0;
+> +	arg.in.domains = 0x4;
+> +	arg.in.domain_flags = 0x9;
+> +	ret = drmIoctl(fd, 0xc0206440
+> +			/* DRM_AMDGPU_GEM_CREATE amdgpu_gem_create_ioctl */, &arg);
+> +	igt_info("drmCommandWriteRead DRM_AMDGPU_GEM_CREATE ret %d\n", ret);
+> +
+> +	ret = amdgpu_ftrace_enablement(function_amdgpu_bo_move, false);
+> +	igt_assert_eq(ret, 0);
+> +
+> +}
+> +
+>  igt_main
+>  {
+>  	int fd = -1;
+> @@ -114,6 +175,14 @@ igt_main
+>  	igt_subtest("cs-wait-fuzzing")
+>  		amd_cs_wait_fuzzing(fd, arr_types, ARRAY_SIZE(arr_types));
+>  
+> +	igt_describe("Check cs wait fuzzing");
+> +	igt_subtest("cs-wait-fuzzing")
+> +		amd_cs_wait_fuzzing(fd, arr_types, ARRAY_SIZE(arr_types));
+> +
+> +	igt_describe("Check gem create fuzzing");
+> +	igt_subtest("gem-create-fuzzing")
+> +		amd_gem_create_fuzzing(fd);
+> +
+>  	igt_fixture {
+>  		drm_close_driver(fd);
+>  	}
+> -- 
+> 2.25.1
+> 
