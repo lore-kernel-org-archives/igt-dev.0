@@ -4,29 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBE01C54E64
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Mar 2024 12:43:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9326C54E64
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Mar 2024 12:50:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6E51D10E299;
-	Thu, 28 Mar 2024 12:43:41 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net
- [217.70.183.193])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B17B410E299
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Mar 2024 12:43:39 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CC32C24000A;
- Thu, 28 Mar 2024 12:43:36 +0000 (UTC)
-From: Peter Senna Tschudin <me@petersenna.com>
-To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
- andi.shyti@linux.intel.com
-Subject: [PATCH i-g-t v5] tests/intel/gem_exec_capture: Fix many-* subtests
-Date: Thu, 28 Mar 2024 13:42:51 +0100
-Message-ID: <20240328124335.6109-1-me@petersenna.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240327065928.5522-1-me@petersenna.com>
-References: <20240327065928.5522-1-me@petersenna.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5C11210F59D;
+	Thu, 28 Mar 2024 12:50:34 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gDszwRSS";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2442610F59D;
+ Thu, 28 Mar 2024 12:50:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711630234; x=1743166234;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=v+gFigt1wEZNcbi5DoGAZsIlAcTL/2s9UYATUT1/YTg=;
+ b=gDszwRSScSRKMqAuwqSv1VTnRbuKm0aLefGEgapoo0g+/FpSLKoeOqbf
+ CMh2RNt8udEUHjbehYFqUu8hwb5mW6nW2eQg1nra9ZHVrjTrMi9hQcWOV
+ noNYIboqiLJICTTsAL1148WT0PklDsYt7EdEkq9Buh3JX4E0YSSl/PRlf
+ O0wGhraF8RV92fW1MHWXWaIk0P4swQNZwgOUtzXMF0VyugFn8+oZQ4u4S
+ WOtMhss01acdD6+eCSb3ZPP8ASnFySs4mFd9DRJ2Rslzlhfwx/5NGvOxY
+ BYOEsV44LRPFQbBZqHQgzFqIlFEImanPe6OZEk8BfqxrAcRciq5KBTn7h A==;
+X-CSE-ConnectionGUID: NDuy1QnQRrWP6KCVyCPR9A==
+X-CSE-MsgGUID: FYnAbAC3SeuMOy09zWUhTw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="6891689"
+X-IronPort-AV: E=Sophos;i="6.07,161,1708416000"; 
+   d="scan'208";a="6891689"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Mar 2024 05:50:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,161,1708416000"; d="scan'208";a="16628888"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2024 05:50:31 -0700
+Date: Thu, 28 Mar 2024 13:50:15 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVDogZmFpbHVy?= =?utf-8?Q?e?= for Align
+ Xe test documentation to recent i915 changes (rev2)
+Message-ID: <20240328125015.ynbcvtl3zxq3n4ba@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ I915-ci-infra@lists.freedesktop.org, lgci.bug.filing@intel.com,
+ TejasreeX Illipilli <tejasreex.illipilli@intel.com>
+References: <20240326092907.1979345-1-katarzyna.piecielska@intel.com>
+ <171159552492.1060939.1106694945252250710@8e613ede5ea5>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: me@petersenna.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <171159552492.1060939.1106694945252250710@8e613ede5ea5>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,56 +75,95 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patch fixes the tests many-4k-incremental and many-4k-zero from
-gem_exec_capture that are currently failing with an invalid file
-descriptor error.
+Hi igt-dev,
+On 2024-03-28 at 03:12:04 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: Align Xe test documentation to recent i915 changes (rev2)
+> URL   : https://patchwork.freedesktop.org/series/131492/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_14483_full -> IGTPW_10914_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10914_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10914_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10914/index.html
+> 
+> Participating hosts (9 -> 9)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10914_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@live@evict:
+>     - shard-dg1:          NOTRUN -> [INCOMPLETE][1]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10914/shard-dg1-15/igt@i915_selftest@live@evict.html
+> 
+>   * igt@i915_selftest@perf@request:
+>     - shard-dg2:          [PASS][2] -> [ABORT][3]
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14483/shard-dg2-6/igt@i915_selftest@perf@request.html
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10914/shard-dg2-3/igt@i915_selftest@perf@request.html
+> 
 
-tests/intel/gem_exec_capture.c
-    many(), userptr(), capture_invisible()
-        find_first_available_engine()
-            for_each_ctx_engine()
-                for_each_ctx_cfg_engine()
+This is unrelated to changes in documentation, no need for respin
+(already merged).
 
-find_first_available_engine() expects a struct intel_execution_engine2
-*e as parameter. for_each_ctx_cfg_engine() allocates a struct
-intel_engine_data ed inside a for loop and then update e to point to an
-element of ed.
+Regards,
+Kamil
 
-The problem is that ed has the block scope of the for loop, and trying
-to access its content through e after the for loop has ended creates
-undefined behavior.
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_10914_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@api_intel_bb@blit-reloc-purge-cache:
+>     - shard-dg1:          NOTRUN -> [SKIP][4] ([i915#8411]) +1 other test skip
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10914/shard-dg1-15/igt@api_intel_bb@blit-reloc-purge-cache.html
+>     - shard-mtlp:         NOTRUN -> [SKIP][5] ([i915#8411])
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10914/shard-mtlp-5/igt@api_intel_bb@blit-reloc-purge-cache.html
+> 
 
-This patch updates e to point to the same content at a different memory
-region, to avoid the block scope of ed. `e = &saved.engine;` updates e
-to point to the same content but without scope restrictions as both
-saved and e have the scope of the calling function.
+...cut...
 
-v5: Update subject and commit message.
-
-Signed-off-by: Peter Senna Tschudin <me@petersenna.com>
----
- tests/intel/gem_exec_capture.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/tests/intel/gem_exec_capture.c b/tests/intel/gem_exec_capture.c
-index 57b178f3e..f7b10bdd4 100644
---- a/tests/intel/gem_exec_capture.c
-+++ b/tests/intel/gem_exec_capture.c
-@@ -665,10 +665,12 @@ static bool needs_recoverable_ctx(int fd)
- 		ctx = intel_ctx_create_all_physical(fd); \
- 		igt_assert(ctx); \
- 		for_each_ctx_engine(fd, ctx, e) \
--			for_each_if(gem_class_can_store_dword(fd, e->class)) \
-+			for_each_if(gem_class_can_store_dword(fd, e->class)) { \
-+				saved = configure_hangs(fd, e, ctx->id); \
- 				break; \
-+			}  \
-+		e = &saved.engine; \
- 		igt_assert(e); \
--		saved = configure_hangs(fd, e, ctx->id); \
- 	} while(0)
- 
- static void many(int fd, int dir, uint64_t size, unsigned int flags)
--- 
-2.44.0
-
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7782 -> IGTPW_10914
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14483: d652ec2b081fc8e252cc86ee84f72a3b78ee9732 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10914: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10914/index.html
+>   IGT_7782: a404f73182948e843640d00cc279883391cf6ef4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10914/index.html
