@@ -4,51 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02700CD11DD
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Mar 2024 17:32:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B048CD11DD
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Mar 2024 17:41:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 91BF410E8B2;
-	Thu, 28 Mar 2024 17:32:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E880F1124FD;
+	Thu, 28 Mar 2024 17:41:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z7Chhrkn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UY302dlV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B4D110E8B2
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Mar 2024 17:32:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 056B51124FD
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Mar 2024 17:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711647175; x=1743183175;
+ t=1711647707; x=1743183707;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=rw4velbqbueqm2naTnIs4xF/qxP52aBY3x/6MJC6P/Q=;
- b=Z7Chhrkn9xSd2ywZseouuwz1J1u2OxVXtnYp273A9xQ0Tj3sOv15wlXI
- oOE2RvzodJiYIw95lLjZ8Ou0H7iWd2vVJhkxgHULD4ygEqE6KTKANv+U1
- ByU0eegVjiAqlBrP+VnsuJiwR2W/mm2WQ1sPANSohcxKKM93sHbm0xNbx
- sc9/6xS71Y4HNLn3/5Usjm+ZuO57zz4MXp8eIgsB2earcOBVf1EOJVuis
- h1b5tDNU+Nd6COnwn+q3h9yq1I6TwK+MWToQJm9XdGFzGs+wnLRbc3EPt
- sRGRGlQG1dgDVnO10RbWEuOBLz5rltlhl3E+fvCAHWm3d2II3iW8u60h6 g==;
-X-CSE-ConnectionGUID: kwRHC30aTBiILR568eEnZQ==
-X-CSE-MsgGUID: FZGRaDqoTPu5fs9M+0ACmQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="6929551"
-X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; 
-   d="scan'208";a="6929551"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Mar 2024 10:32:55 -0700
+ bh=Wrw1kqxcpGpBca0FK9CS0AgdDh6PYmrADORSoYoPz+A=;
+ b=UY302dlVE6M8jFnReafEbUMgetbL2Qhka6e7gTpaGZd9TkehovvHWvSz
+ JaJfK87qUfrqsI96QgYVNV4gtcU0z4U1nFHuNFSi/ze1JmvaLqCmYMOF5
+ UaC91GljVZuKA7oCQp27Cfli7v1CItrQUGuyq9/yOxzFOUGfq2cURp/aP
+ CuJ/w6JIAx6cFPIW/TtbPhPdmYP5e52wl/LK5rAQetxigP2rxIH4vgAqB
+ /h7ripdtuzCJGgzTPG5qZd30/fxtx1qpWdKcrCu9c2P1DArLVJaNc0QBW
+ f0B+r3WznXEZDZyPUq5fZaTfUtKkSjtglm+/iYf9lQaxj+GOuxZHNLSwR Q==;
+X-CSE-ConnectionGUID: /6H2l5rUSC2pKvk2ZPVp/w==
+X-CSE-MsgGUID: LKqAWYeFTjCfhuvc4VEMyQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="17452736"
+X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; d="scan'208";a="17452736"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Mar 2024 10:41:46 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; d="scan'208";a="21424845"
-Received: from jattlan-mobl1.ger.corp.intel.com (HELO a276e54ca1b6.intel.com)
- ([10.252.56.46])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Mar 2024 10:32:54 -0700
-From: Francois Dugast <francois.dugast@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; d="scan'208";a="16750681"
+Received: from mdroper-desk1.fm.intel.com ([10.1.39.140])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Mar 2024 10:41:46 -0700
+From: Matt Roper <matthew.d.roper@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Francois Dugast <francois.dugast@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH i-g-t] drm-uapi: Align header with drm-xe-next
-Date: Thu, 28 Mar 2024 17:32:43 +0000
-Message-Id: <20240328173243.7-1-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.34.1
+Cc: matthew.d.roper@intel.com
+Subject: [PATCH i-g-t] tests: Use MI_ARB_CHECK definition more consistently
+Date: Thu, 28 Mar 2024 10:41:39 -0700
+Message-ID: <20240328174139.1533658-1-matthew.d.roper@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,66 +63,218 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently xe_drm.h is based on drm-next with some additions from
-drm-xe-next.
+Even though we have MI_ARB_CHECK defined in our GPU instruction header,
+several of our tests and test libraries seem to be using alternate
+definitions and/or magic numbers to emit this instruction, which makes
+grep'ing the code for it challenging (and makes the behavior of the
+tests themselves less obvious in some cases).  Try to use the standard
+definition more consistently everywhere.
 
-However some uAPI updates brought by commit ca4607939 ("drm-uapi/xe: \
-Remove unused flags") were mistakenly reverted by commit aef5f4742
-("drm-uapi: sync with drm-next f112b68f273f").
-
-Ensure xe_drm.h is now aligned with kernel commit ("drm/xe/uapi: Add \
-IP version and stepping to GT list query").
-
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 19 -------------------
- 1 file changed, 19 deletions(-)
+ lib/igt_dummyload.c             |  4 +---
+ lib/xe/xe_spin.c                |  2 +-
+ tests/intel/gem_exec_balancer.c |  2 +-
+ tests/intel/gem_exec_fair.c     |  2 +-
+ tests/intel/gem_exec_fence.c    |  2 +-
+ tests/intel/gem_exec_latency.c  |  4 ++--
+ tests/intel/gem_exec_nop.c      | 10 ++++------
+ tests/intel/gem_sync.c          |  2 +-
+ tests/intel/gem_watchdog.c      |  2 +-
+ tests/intel/i915_pm_rps.c       |  2 +-
+ 10 files changed, 14 insertions(+), 18 deletions(-)
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 4353595a4..91ea92035 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -871,10 +871,6 @@ struct drm_xe_vm_destroy {
-  *  - %DRM_XE_VM_BIND_OP_PREFETCH
-  *
-  * and the @flags can be:
-- *  - %DRM_XE_VM_BIND_FLAG_READONLY
-- *  - %DRM_XE_VM_BIND_FLAG_IMMEDIATE - Valid on a faulting VM only, do the
-- *    MAP operation immediately rather than deferring the MAP to the page
-- *    fault handler.
-  *  - %DRM_XE_VM_BIND_FLAG_NULL - When the NULL flag is set, the page
-  *    tables are setup with a special bit which indicates writes are
-  *    dropped and all reads return zero. In the future, the NULL flags
-@@ -967,8 +963,6 @@ struct drm_xe_vm_bind_op {
- 	/** @op: Bind operation to perform */
- 	__u32 op;
+diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+index d3cee9154..2e842929b 100644
+--- a/lib/igt_dummyload.c
++++ b/lib/igt_dummyload.c
+@@ -64,8 +64,6 @@
  
--#define DRM_XE_VM_BIND_FLAG_READONLY	(1 << 0)
--#define DRM_XE_VM_BIND_FLAG_IMMEDIATE	(1 << 1)
- #define DRM_XE_VM_BIND_FLAG_NULL	(1 << 2)
- #define DRM_XE_VM_BIND_FLAG_DUMPABLE	(1 << 3)
- 	/** @flags: Bind flags */
-@@ -1085,19 +1079,6 @@ struct drm_xe_exec_queue_create {
- #define DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY		0
- #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY		0
- #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE		1
--#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT	2
--#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT		4
--#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_TRIGGER		5
--#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_NOTIFY		6
--#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY	7
--/* Monitor 128KB contiguous region with 4K sub-granularity */
--#define     DRM_XE_ACC_GRANULARITY_128K				0
--/* Monitor 2MB contiguous region with 64KB sub-granularity */
--#define     DRM_XE_ACC_GRANULARITY_2M				1
--/* Monitor 16MB contiguous region with 512KB sub-granularity */
--#define     DRM_XE_ACC_GRANULARITY_16M				2
--/* Monitor 64MB contiguous region with 2M sub-granularity */
--#define     DRM_XE_ACC_GRANULARITY_64M				3
+ #define ENGINE_MASK  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
  
- 	/** @extensions: Pointer to the first extension struct, if any */
- 	__u64 extensions;
+-#define MI_ARB_CHK (0x5 << 23)
+-
+ static const int BATCH_SIZE = 4096;
+ static const int LOOP_START_OFFSET = 64;
+ 
+@@ -286,7 +284,7 @@ emit_recursive_batch(igt_spin_t *spin,
+ 
+ 	/* Allow ourselves to be preempted */
+ 	if (!(opts->flags & IGT_SPIN_NO_PREEMPTION))
+-		*cs++ = MI_ARB_CHK;
++		*cs++ = MI_ARB_CHECK;
+ 	if (opts->flags & IGT_SPIN_INVALID_CS) {
+ 		igt_assert(opts->ctx);
+ 		if (!gem_engine_has_cmdparser(fd, &opts->ctx->cfg, opts->engine))
+diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+index 2c9b5848a..d142f2cac 100644
+--- a/lib/xe/xe_spin.c
++++ b/lib/xe/xe_spin.c
+@@ -97,7 +97,7 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+ 	spin->batch[b++] = 0xc0ffee;
+ 
+ 	if (opts->preempt)
+-		spin->batch[b++] = (0x5 << 23);
++		spin->batch[b++] = MI_ARB_CHECK;
+ 
+ 	if (opts->write_timestamp) {
+ 		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
+diff --git a/tests/intel/gem_exec_balancer.c b/tests/intel/gem_exec_balancer.c
+index b1a108a5a..7504f3737 100644
+--- a/tests/intel/gem_exec_balancer.c
++++ b/tests/intel/gem_exec_balancer.c
+@@ -1276,7 +1276,7 @@ static void disable_preparser(int i915, uint32_t ctx)
+ 
+ 	cs = gem_mmap__device_coherent(i915, obj.handle, 0, 4096, PROT_WRITE);
+ 
+-	cs[0] = 0x5 << 23 | 1 << 8 | 0; /* disable preparser magic */
++	cs[0] = MI_ARB_CHECK | 1 << 8 | 0; /* disable preparser magic */
+ 	cs[1] = MI_BATCH_BUFFER_END;
+ 	munmap(cs, 4096);
+ 
+diff --git a/tests/intel/gem_exec_fair.c b/tests/intel/gem_exec_fair.c
+index 29d732205..c903b6edd 100644
+--- a/tests/intel/gem_exec_fair.c
++++ b/tests/intel/gem_exec_fair.c
+@@ -236,7 +236,7 @@ static void delay(int i915,
+ 		*cs++ = 0;
+ 	jmp = cs;
+ 
+-	*cs++ = 0x5 << 23; /* MI_ARB_CHECK */
++	*cs++ = MI_ARB_CHECK;
+ 
+ 	*cs++ = MI_LOAD_REGISTER_IMM(1);
+ 	*cs++ = CS_GPR(NOW_TS) + 4;
+diff --git a/tests/intel/gem_exec_fence.c b/tests/intel/gem_exec_fence.c
+index 3ed61b5f5..e4263b3f9 100644
+--- a/tests/intel/gem_exec_fence.c
++++ b/tests/intel/gem_exec_fence.c
+@@ -318,7 +318,7 @@ static void test_fence_busy_all(int fd, const intel_ctx_t *ctx, unsigned flags)
+ 
+ 	i = 0;
+ 	if ((flags & HANG) == 0)
+-		batch[i++] = 0x5 << 23;
++		batch[i++] = MI_ARB_CHECK;
+ 
+ 	if (!ahnd) {
+ 		obj.relocs_ptr = to_user_pointer(&reloc);
+diff --git a/tests/intel/gem_exec_latency.c b/tests/intel/gem_exec_latency.c
+index e5399de17..b9d086afc 100644
+--- a/tests/intel/gem_exec_latency.c
++++ b/tests/intel/gem_exec_latency.c
+@@ -816,7 +816,7 @@ static void context_switch(int i915, const intel_ctx_t *ctx,
+ 		       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
+ 
+ 	cs = bbe;
+-	*cs++ = 0x5 << 23;
++	*cs++ = MI_ARB_CHECK;
+ 	*cs++ = 0x24 << 23 | 2; /* SRM */
+ 	*cs++ = mmio_base + 0x358; /* TIMESTAMP */
+ 	reloc[0].target_handle = obj[0].handle;
+@@ -871,7 +871,7 @@ static void context_switch(int i915, const intel_ctx_t *ctx,
+ 
+ 		*bbe = 0xa << 23;
+ 		gem_sync(i915, obj[1].handle);
+-		*bbe = 0x5 << 23;
++		*bbe = MI_ARB_CHECK;
+ 
+ 		v = results[0];
+ 		igt_mean_add(&mean, (results[1] - results[2]) * rcs_clock);
+diff --git a/tests/intel/gem_exec_nop.c b/tests/intel/gem_exec_nop.c
+index 8a6d6c42a..6c547a412 100644
+--- a/tests/intel/gem_exec_nop.c
++++ b/tests/intel/gem_exec_nop.c
+@@ -154,7 +154,6 @@ static void poll_ring(int fd, const intel_ctx_t *ctx,
+ 		      int timeout)
+ {
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+-	const uint32_t MI_ARB_CHK = 0x5 << 23;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+ 	struct drm_i915_gem_relocation_entry reloc[4], *r;
+@@ -206,7 +205,7 @@ static void poll_ring(int fd, const intel_ctx_t *ctx,
+ 
+ 		b = batch + (start_offset + 64) / sizeof(*batch);
+ 		bbe[start_offset != 0] = b;
+-		*b++ = MI_ARB_CHK;
++		*b++ = MI_ARB_CHECK;
+ 
+ 		r->target_handle = obj.handle;
+ 		r->offset = (b - batch + 1) * sizeof(uint32_t);
+@@ -240,7 +239,7 @@ static void poll_ring(int fd, const intel_ctx_t *ctx,
+ 	do {
+ 		unsigned int idx = ++cycles & 1;
+ 
+-		*bbe[idx] = MI_ARB_CHK;
++		*bbe[idx] = MI_ARB_CHECK;
+ 		execbuf.batch_start_offset =
+ 			(bbe[idx] - batch) * sizeof(*batch) - 64;
+ 
+@@ -267,7 +266,6 @@ static void poll_sequential(int fd, const intel_ctx_t *ctx,
+ {
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+ 	const struct intel_execution_engine2 *e;
+-	const uint32_t MI_ARB_CHK = 0x5 << 23;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj[2];
+ 	struct drm_i915_gem_relocation_entry reloc[4], *r;
+@@ -334,7 +332,7 @@ static void poll_sequential(int fd, const intel_ctx_t *ctx,
+ 
+ 		b = batch + (start_offset + 64) / sizeof(*batch);
+ 		bbe[start_offset != 0] = b;
+-		*b++ = MI_ARB_CHK;
++		*b++ = MI_ARB_CHECK;
+ 
+ 		r->target_handle = obj[1].handle;
+ 		r->offset = (b - batch + 1) * sizeof(uint32_t);
+@@ -371,7 +369,7 @@ static void poll_sequential(int fd, const intel_ctx_t *ctx,
+ 	do {
+ 		unsigned int idx = ++cycles & 1;
+ 
+-		*bbe[idx] = MI_ARB_CHK;
++		*bbe[idx] = MI_ARB_CHECK;
+ 		execbuf.batch_start_offset =
+ 			(bbe[idx] - batch) * sizeof(*batch) - 64;
+ 
+diff --git a/tests/intel/gem_sync.c b/tests/intel/gem_sync.c
+index 80119e30b..041ea5959 100644
+--- a/tests/intel/gem_sync.c
++++ b/tests/intel/gem_sync.c
+@@ -876,7 +876,7 @@ switch_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 					*b++ = offset;
+ 				}
+ 				*b++ = r;
+-				*b++ = 0x5 << 23;
++				*b++ = MI_ARB_CHECK;
+ 			}
+ 			*b++ = MI_BATCH_BUFFER_END;
+ 			igt_assert((b - batch)*sizeof(uint32_t) < sz);
+diff --git a/tests/intel/gem_watchdog.c b/tests/intel/gem_watchdog.c
+index 98da6cdce..b66667f46 100644
+--- a/tests/intel/gem_watchdog.c
++++ b/tests/intel/gem_watchdog.c
+@@ -356,7 +356,7 @@ static void delay(int i915,
+ 		*cs++ = 0;
+ 	jmp = cs;
+ 
+-	*cs++ = 0x5 << 23; /* MI_ARB_CHECK */
++	*cs++ = MI_ARB_CHECK;
+ 
+ 	*cs++ = MI_LOAD_REGISTER_IMM(1);
+ 	*cs++ = CS_GPR(NOW_TS) + 4;
+diff --git a/tests/intel/i915_pm_rps.c b/tests/intel/i915_pm_rps.c
+index 5aa5c6dbb..648765b02 100644
+--- a/tests/intel/i915_pm_rps.c
++++ b/tests/intel/i915_pm_rps.c
+@@ -653,7 +653,7 @@ static void waitboost(int fd, bool reset)
+ static uint32_t batch_create(int i915, uint64_t sz)
+ {
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+-	const uint32_t chk = 0x5 << 23;
++	const uint32_t chk = MI_ARB_CHECK;
+ 	uint32_t handle = gem_create(i915, sz);
+ 	uint32_t *map;
+ 
 -- 
-2.34.1
+2.43.0
 
