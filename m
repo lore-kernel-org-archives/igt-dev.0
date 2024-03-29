@@ -4,27 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FB45CD1288
-	for <igt-dev@archiver.kernel.org>; Fri, 29 Mar 2024 00:36:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F719CD1288
+	for <igt-dev@archiver.kernel.org>; Fri, 29 Mar 2024 04:32:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C001310E798;
-	Fri, 29 Mar 2024 00:36:26 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA55210E798;
- Fri, 29 Mar 2024 00:36:25 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3103699870768479566=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 380CD10EAA4;
+	Fri, 29 Mar 2024 04:32:09 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IddxT4Qa";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2691210EAA4
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Mar 2024 04:32:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711686727; x=1743222727;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Ja//E89G0soN7upqSuq15CxeqQD8cooRSEI+4DhYkcw=;
+ b=IddxT4QaPZnXT6v/rCLIXpR6KXf/aJLzHv6o17UqWevDjg7CvgY0jlh7
+ uSLSBU8GxZ55s8wkJCUD7+E4roX9n5+sCa9tiL+JLGRRRCnLmWIg2sNUX
+ +0dFhsX/eUZiISxEuERoP4hQnqrcaiVrpbDJFS/mQsJ9ZSQaNGXsB6z0X
+ f+IKN0cSehLxJF5lOc3pV4HAPDf9dJNMwlcHQ5l/FQe/z8HRsBj6WizrV
+ gnV1gP9ZKbqnbNyPspcEirjrGlO0zVLuaLDbR0Pw3OWsWineNGQ16oW7s
+ uhgCz00CZBbzIYot/IWTDsmuYOo2dgiFRRYa3dK/O+18c0Ozm5jZUBxv2 w==;
+X-CSE-ConnectionGUID: NcclVfOATNe/ZhmtgUsL2Q==
+X-CSE-MsgGUID: tHJEf3UpS/S35/92HJsXOA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="17501425"
+X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; d="scan'208";a="17501425"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Mar 2024 21:32:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; d="scan'208";a="16829099"
+Received: from saurabhg-nuc10i5fnh.jf.intel.com ([10.165.21.145])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Mar 2024 21:32:05 -0700
+From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+To: 
+Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ matthew.auld@intel.com, Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Subject: [PATCH i-g-t v2 0/2] Update compression in config based on platform
+Date: Fri, 29 Mar 2024 09:30:11 -0700
+Message-Id: <cover.1711729399.git.akshata.jahagirdar@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests=3A_Use_MI=5FARB=5FCHECK_?=
- =?utf-8?q?definition_more_consistently?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matt Roper" <matthew.d.roper@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 29 Mar 2024 00:36:25 -0000
-Message-ID: <171167258589.1064930.16277615734566644456@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240328174139.1533658-1-matthew.d.roper@intel.com>
-In-Reply-To: <20240328174139.1533658-1-matthew.d.roper@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +61,25 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3103699870768479566==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In Xe2+ platforms, we need to run the xe_ccs test regardless of the status of
+flat-ccs.
+Check if the platform supports compression and has flat ccs enabled, before
+the execution if this test, and if it doesn't, then update to compression
+disabled and proceed with the test.
 
-== Series Details ==
+Akshata Jahagirdar (2):
+  lib/intel_blt: Add helper function to ensure platform supports
+    compression
+  tests/xe_ccs: Update compression in config based on platform
 
-Series: tests: Use MI_ARB_CHECK definition more consistently
-URL   : https://patchwork.freedesktop.org/series/131782/
-State : success
+ lib/intel_blt.c      | 14 ++++++++++++++
+ lib/intel_blt.h      |  1 +
+ tests/intel/xe_ccs.c | 26 ++++++++++++++++++++++++--
+ 3 files changed, 39 insertions(+), 2 deletions(-)
 
-== Summary ==
+-- 
+2.34.1
 
-CI Bug Log - changes from XEIGT_7790_BAT -> XEIGTPW_10946_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (5 -> 5)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7790 -> IGTPW_10946
-  * Linux: xe-1010-9fa8d9d87035d810ad988bdebdce39fa0255cdb8 -> xe-1012-2d5dd7e81854b3cc0f82cd9706d78dc71fe24a5f
-
-  IGTPW_10946: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10946/index.html
-  IGT_7790: 5ec1ff6da3535cf80fd4e1844867d75c481ef86a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1010-9fa8d9d87035d810ad988bdebdce39fa0255cdb8: 9fa8d9d87035d810ad988bdebdce39fa0255cdb8
-  xe-1012-2d5dd7e81854b3cc0f82cd9706d78dc71fe24a5f: 2d5dd7e81854b3cc0f82cd9706d78dc71fe24a5f
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10946/index.html
-
---===============3103699870768479566==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests: Use MI_ARB_CHECK definition more consistently</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131782/">https://patchwork.freedesktop.org/series/131782/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10946/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10946/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7790_BAT -&gt; XEIGTPW_10946_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (5 -&gt; 5)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7790 -&gt; IGTPW_10946</li>
-<li>Linux: xe-1010-9fa8d9d87035d810ad988bdebdce39fa0255cdb8 -&gt; xe-1012-2d5dd7e81854b3cc0f82cd9706d78dc71fe24a5f</li>
-</ul>
-<p>IGTPW_10946: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10946/index.html<br />
-  IGT_7790: 5ec1ff6da3535cf80fd4e1844867d75c481ef86a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1010-9fa8d9d87035d810ad988bdebdce39fa0255cdb8: 9fa8d9d87035d810ad988bdebdce39fa0255cdb8<br />
-  xe-1012-2d5dd7e81854b3cc0f82cd9706d78dc71fe24a5f: 2d5dd7e81854b3cc0f82cd9706d78dc71fe24a5f</p>
-
-</body>
-</html>
-
---===============3103699870768479566==--
