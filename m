@@ -4,150 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 852CEC6FD1F
-	for <igt-dev@archiver.kernel.org>; Fri, 29 Mar 2024 13:31:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F61EC6FD1F
+	for <igt-dev@archiver.kernel.org>; Fri, 29 Mar 2024 13:41:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B12BA112715;
-	Fri, 29 Mar 2024 13:31:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 74BB011271F;
+	Fri, 29 Mar 2024 13:41:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dmGjrsKU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DIfePv7v";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D0940112716
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Mar 2024 13:31:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A36BC11271F
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Mar 2024 13:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711719108; x=1743255108;
+ t=1711719658; x=1743255658;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=HPiVCQQUuZVN6r9HvW6xmPOmKDotC4Ju5FGY/mk7gaM=;
- b=dmGjrsKUY2f+Vun4MdXbMQHW0Z2sldHBkwz1y8nnl+9E12npfKIpS9M3
- P+I09Gp1Pb4CVfueWPqQQ93gTNXebdUaG1urcxSaj15Eb55/JCn79eJIk
- 9n6tnT+or+/K+tvlwHL6clZJNVAOx5jo4Zxga5PbTCt/CTtAtOlsmxvcg
- yV8sIsqMLi+qvut9y0oyL/yuv87vvHRgmG07FoaxH28/XkX99AjEHz55z
- IlowVhdYK0oV20CA5whDrIWsmWaUNmBhsVxddEZ47garvPfurdZWuhR29
- 9pNl3Y5YejW3wmVO9gDsurTmDkr056FYWl+py0OESML9ypaJpwX8DlT2F Q==;
-X-CSE-ConnectionGUID: S5uhhIaORgGmLGb78QgUKQ==
-X-CSE-MsgGUID: E2SPpERQR7eOzeU7pYKdJw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="17533407"
-X-IronPort-AV: E=Sophos;i="6.07,165,1708416000"; d="scan'208";a="17533407"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Mar 2024 06:31:45 -0700
+ bh=lmdHZC8wGAvbWOZliYrd+Aac+zR74rGbqa3fpYK/Zfs=;
+ b=DIfePv7vx/Wi9bn1Zm0OUXJBmOw7Vb8ucfeve9+U7DPqytNdYznkLSmZ
+ Ldhk2TNKh6xjlbLH2MuS4HKqomvwpveHxZa04isNgJ7l/nhIhoCBEhdT3
+ Azbl4JfhTMFWUZX3vpu6POCeZd4PUyrj/4A4yazz5etiI6pm3SjYQEO3Z
+ iohfoMVq6dqsL2i7jcWGRzh3bzgz11ZUGZB8IgJUh9pLbHQF5UfQ8YpQu
+ SSD8IW/gDMAi/6M+i/axQrQwjl3L0qlTLd1u9j9PtOsg9SaUOHzkbydsK
+ OVCP2tDcAQMlDa8/anHC+XGCykBjinYKgnwPZAy0jzuyOLX+HQqabFd8h w==;
+X-CSE-ConnectionGUID: Da8dAtCbSieOH7GdCF4oaA==
+X-CSE-MsgGUID: rwTGc6p1SmS/LwmVMqw1aQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="24360482"
+X-IronPort-AV: E=Sophos;i="6.07,165,1708416000"; d="scan'208";a="24360482"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Mar 2024 06:40:57 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,165,1708416000"; d="scan'208";a="54429165"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by orviesa001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 29 Mar 2024 06:31:44 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.07,165,1708416000"; d="scan'208";a="17039670"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by fmviesa008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 29 Mar 2024 06:40:57 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 29 Mar 2024 06:31:43 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.1.2507.35; Fri, 29 Mar 2024 06:40:57 -0700
+Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Fri, 29 Mar 2024 06:31:43 -0700
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.40) by
- edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ 15.1.2507.35; Fri, 29 Mar 2024 06:40:56 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Fri, 29 Mar 2024 06:40:56 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.168)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 29 Mar 2024 06:31:43 -0700
+ 15.1.2507.35; Fri, 29 Mar 2024 06:40:56 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VcRJTbqFO8f1WdKEuqea+LbAKURdl0TkOfVIcV+TVJ9/EMBCFOXuqgZje1EJk2LwlvU0icrTqoYn+g8JDnT8mQsqOqzavp12turTw2WFDHjdR0jTkOGhaM1zPoN5Lh0ZxnzZPLWcqQt1wn6yrALxh5+GfG4a9BsN8oPPlvChcEerH6G10QK4XQV1Oj8iqEiXC3w1ltJewfmTBHprhE+qAWZ8eoKSTO23iKQZLQKAsp/LQZNrd60W6f1oO/EQMLRoEpbFWBkwcnPb6xdOGNiVdEzLsy4ZtUlHI0gQ0ZYfc0i6yqdgbM2q3D7VEKhst2IP3Anq9rWegDZnrNMiG4Yr1A==
+ b=aWvelZChMSJQqmo4lsUHd3wxLIaVe54TDGogZMXQhIa04y5YiGV2RgY8xj5ofWO1+WAZQjms9rp4NLoUbZf/BVzkr5yPsagNKjFbAKqSfDTW+Um9ObS8OAZpLCyHIs2SrRChw0nQ+bqXKL5W9DergsLPcyCBDU6Gf2N47+RDNYnCjwm7PQ11Ll9pUqVSizJYZdIkZ43HXIvo/QFqbjxzf72H/2REyInAgQ5i4IOG1QpQvoDOIrR3EaNBw/1+DrEiE/CZ+/2PR/f99jCCMdPVKX7Aj2lB4ctKt89nFI5NjZJPzmKqAGE+6bnyiCVITJtrRm32trp91cdh8SLXgIZ0/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EeEehdsdYo5QYFXmL8Ju1gqelQCs/kBmzLkfO23SR3s=;
- b=lUR/XzWkUmiHF6skVZz34fvEv3lP7bGQ4Q+VLtF9r4zDqBKil1/Svz218Oq8XZb8zYqOIks1GJrEVEe7+8Hjyz6TdnMPIBE09O858NS76GWFx46hqQxhPZEpD0S4G1g8H4mwhYPIo/oMkHuC/jDVfTLEiBx080X93mFbG8RhMfnA13nw4f9sRLOqU2kpglUrokauCTgkZdx/HdmXfPbcsv5cqokqvxzfl0qJg5r9nEhF6/NCwhP5HvcCasE7pEQs9tejaQZwkuhIUF3uIip2o0XqsOvBOFf0IBZ82Z8Z1vuSKwSL87SOezBw+o2GEIQteaZBtEWvmi+kqGXwDNWyag==
+ bh=uDuReVrZryI+Uu1Wi7bO1qZDA3F4+cFs33J929mGETw=;
+ b=QenlWq7cuGhfR6RHoV8NLmpqpKORydvI8Or4AbaaL/SeViUmvDJ5Dhd1R2CzscsKkAIy1fGqW7eVjBl4ppWsVos4GsLEVL8CheMlrXQrdU04wBDLWd/WxIPDh92d1rrsV7H7ma5c20a6xRiO3+uvT0d/ydSE+P/ATMzQPgmPsvDDTOP+UFCvZdU/rXvRtlHxu/NjyKB2j9q70Bl/GUPbzsWmNClsWS1WfqjoHT5zTpxW2Fz1qRkH07ta72YiRcXerrmPPvnlYBiH9aqDv/EGkeYVDNrsuG2dW930xmHIxZ3spKlA/MWcAppE2vLKlHHoRtISPQZ5LZrRkZECq53IbQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from IA1PR11MB7388.namprd11.prod.outlook.com (2603:10b6:208:420::8)
- by DM4PR11MB6168.namprd11.prod.outlook.com (2603:10b6:8:ab::22) with
+ by DM4PR11MB7256.namprd11.prod.outlook.com (2603:10b6:8:10c::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.32; Fri, 29 Mar
- 2024 13:31:41 +0000
+ 2024 13:40:54 +0000
 Received: from IA1PR11MB7388.namprd11.prod.outlook.com
  ([fe80::cb4f:467b:3a52:9494]) by IA1PR11MB7388.namprd11.prod.outlook.com
  ([fe80::cb4f:467b:3a52:9494%6]) with mapi id 15.20.7409.028; Fri, 29 Mar 2024
- 13:31:40 +0000
-Message-ID: <94371ee6-82a9-40a8-b29b-9ef459f3ac6a@intel.com>
-Date: Fri, 29 Mar 2024 14:31:36 +0100
+ 13:40:54 +0000
+Message-ID: <8e2ab6f9-7619-43ef-8cab-29c3a7e8bbd9@intel.com>
+Date: Fri, 29 Mar 2024 14:40:50 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/2] lib/intel_blt: Add functions which extract and
- check object ccs data
+Subject: Re: [PATCH i-g-t 2/2] tests/gem|xe_ccs: Check surface ccs data
+ instead of naive comparison
+Content-Language: en-US
 To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  <igt-dev@lists.freedesktop.org>
 CC: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 References: <20240329091655.1347862-1-zbigniew.kempczynski@intel.com>
- <20240329091655.1347862-2-zbigniew.kempczynski@intel.com>
-Content-Language: en-US
+ <20240329091655.1347862-3-zbigniew.kempczynski@intel.com>
 From: Karolina Stolarek <karolina.stolarek@intel.com>
 Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
  Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20240329091655.1347862-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20240329091655.1347862-3-zbigniew.kempczynski@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: DB8PR03CA0030.eurprd03.prod.outlook.com
- (2603:10a6:10:be::43) To IA1PR11MB7388.namprd11.prod.outlook.com
+X-ClientProxiedBy: DU7P194CA0012.EURP194.PROD.OUTLOOK.COM
+ (2603:10a6:10:553::18) To IA1PR11MB7388.namprd11.prod.outlook.com
  (2603:10b6:208:420::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB7388:EE_|DM4PR11MB6168:EE_
+X-MS-TrafficTypeDiagnostic: IA1PR11MB7388:EE_|DM4PR11MB7256:EE_
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: eIa3xjGTTCvyK8r437zMxg6sszVC+C9w1VTpA57EG+50Pk5Ot39OESpUrqrFHYy7Cj/r1coD03JGrz2qDOkP8fW0MkC3BYb+jRrLbH6Hcmc5X9Bufyhzc5rULrCLoH16W/ZitCURklqn7l8EAKk06Yrq1fo5FM7tXERy7bfhYfF0qXSoNTPHX0CMHhxb4O6jvqosxM8STCHI/gGCv2plIuBl5CsRctmffcgzmaKo/lDZCU/kwAauRBq+zYySkX4r9CxHJxuxK0/PsfHn3F5ekL0r2S3vh9SnvaScZzFpV+sJFQly47MAaBO/5wvfisgJupEwfch4TmdZLXCv4tjE4CESV8ULyNXz4CI+D71tqPqgp6RNOBGY4028V2OLEpPA+QcirO4zClHLXyxJSJjJITVspUGfm36Rf3+/fU0PE8pnu9MfGZJG1JL2vC+lORKRiAHhS95jIEN8/H8SatJUxk961mbcapQnWGVh/2f92xZ4iJbhjK2XnA30SWS/4p3kNHl7BN8qJsh6wSmBoJvJwLgmsvH44p2p1T3/dHc11TbsQrlflztlSLNtQHrB+Rh/IzHEmaU2KuTpoBzjl7V/cNV4gpqMvnvHDiWDTOE1pFvTPQHKvwgwrEwcHE8NwsewAQyt1i2qwFnryVur17b7kCf4DCc7epNxW3k1vjUfXNY=
+X-Microsoft-Antispam-Message-Info: gSzGrL/gB58LRthIxWJiFc7VB/eS+tz+77jApjO2AMYYtzOaoI1DJ8gpqX1+h70IhZ+F65b5tgr2s8wVFg3PNwMSaeTMz7S9SxD10IbAnYaogTYiuHgOkV/YNdfXuaphCBrF0xUJjPJRyqG9d1xRWwVyKaq3WCa5buaH3/dlIMGQdtwDz9CYVhcY4po8Mzn0SDTDBCHJVmFP1bVmsgnXLi0wnWPlYpzqtJ5t5s+ZPKw9sKdELyugLuR+Ui9+WMfn5bzNFM3VYT5SXr2VP3vdqGbOXK0m4cc4/rMfOdUvtRHBr5bpQ/RgBfwGQlqiqVVF/32/UiO3vf3O13iKxSv5Lk/4CbjaNoOwVT5hC6Zjn+y1OBWIkKVH5KEFEgQkmG/EqO0yVX4uwIxZ7uxx6e1KoZnJsCFffHVA8d056A/leejOo1hTekZgtBxgNZbY5OXAAVzCPXH1r6WBCwzOk/Mr9CZv2Rcr/ID8pY8ZLmPguBOSAHp/HqJG9Qw3vnBQ+PZ3W9MB1LrH+IjfMQBgWRS2DC3jU0d9FBkYuEmk0mBos/9+qXpTYSbhe6SfFSa+Wta71+yWU/qf/dSBKlq4vD+BOwJJ8PimMfg9f5P143Et/pRlMHbDNogwidZu3WVq5/djVn671/5/cnlE0RjfnSncPw==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:IA1PR11MB7388.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376005)(1800799015)(366007); DIR:OUT; SFP:1102; 
+ SFS:(13230031)(1800799015)(366007)(376005); DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L1d2VW81c3ZYcG9pTlhwUTRob0xacU5xTlJ5NFA4MEtHZUo4NHpxTmFOM1p6?=
- =?utf-8?B?M2ZCMDZGbkNUTUVWR3UzS3AyaXRjTURzNEEzNzlybWZJclZGSVdtdGpacFpz?=
- =?utf-8?B?YjhQaythVWxwVUtZR2x3WTRDYjRSQm9JV3J3YWFVOVQvRkRlR29scUJxQkdR?=
- =?utf-8?B?d29JSkxLL3hLRzY4czRWY3JEMzBNYzUrcnVPT1FXaExPT3BMYW5jZ0xHY3R2?=
- =?utf-8?B?QXdwU2dSYW1BaGxQYWM0dTJnVDBVd1dJVWlNRDhadHpaUUpnKy9jTVpUdkpC?=
- =?utf-8?B?dEU2WDA0VTZib1Z4VVJnNFVtQlJwS0s5WHVZekFZTXRrK0Y3QjlxbXVyV1lv?=
- =?utf-8?B?aU1DNzlWSHNHWWYzTkx1U0c4WFRpWGJRR09sbjY4K1phQmZOUVZzMmkyUG84?=
- =?utf-8?B?UHB2ZXkvRE1jc1JYSEY2U3F5YkdOeERFMmhGdXNLN3VhajZRSXkrMGh5UDVQ?=
- =?utf-8?B?bkd1Q1hydTRuZytDeEQzZzQxV1Z2OEVNVFBmamxvR2diQlFQVUtGQzhiTVhm?=
- =?utf-8?B?ampna3NjNVBvdG00eHB4aXF3NUdTZjdPSGFwOXU5ZzFaL05aczgzUFNETmZV?=
- =?utf-8?B?SUw4cGM3dXNlVktROElkMzdsY0tCQVBhenV5SUp3SnBwZlYxUmEvdlhQOUZj?=
- =?utf-8?B?QWo2cEdTWCtrN3VIeDBRTXp3ZFltV01DT0prL2ZhRjdSVW5qN0pxUlNrRktM?=
- =?utf-8?B?dkdVTE9aRmZCWmJTbGlGVGxJNEwvdkczWGYwd3Z2QS9mZkNGdWdQT0p5c3pR?=
- =?utf-8?B?UkQ4amZCelI0NzU3emljdXdNb2pzTTJBYzdHNnJ2TExFNmZ6Mko1ZWtOMXJv?=
- =?utf-8?B?cnBBQjFXV1ZEbmRWSHZneDcxLzR3VEhsOG9PUkNRNExFUGRyRnIxMjFjWDNU?=
- =?utf-8?B?aCtWRzNGSjVOSEVSaUlWYi9MS2U0czU1VXFJZUlzRjUyUmJlN3VsbEszWEti?=
- =?utf-8?B?aHBPbkF5RUZUNTJ4N1M1RFpJOXl1aUFydEF0TDhzYktZZ0RtNWJsbkZiMTg3?=
- =?utf-8?B?VFJuSEhjVHl1YU9XZVNNUnhFZlpHdm5GdVdhRTZVM1BzTVluMzh2UDZ5RkVv?=
- =?utf-8?B?VlVPci95TUdDUGN0UVRhUzNsWWI3NjNMWU5ZYzZ1NnRNSzQ5eURjd1VNV1ZD?=
- =?utf-8?B?MmdCaS9lK21ZWjJwVEVEQno0MU1laTJOalVQRTFKV1o1d3F6TW5OdWV3MC8r?=
- =?utf-8?B?YmxqOTBZd1lPMEh4N3RqQXJyems2WWpMSTlkNzkvOEl6T04yTE4zM1pVVzRv?=
- =?utf-8?B?L0VWSm5vbXJENmpyUHJ6a1NGYVI2b1pGS0ErSzFUNWt0M05jaDI0Q1JOeEln?=
- =?utf-8?B?eEZoOHFzTG5vVG45OU1LMWlwenZHWmwyaWVRWkYwMVJWRjBtNlZVaTJJOHEz?=
- =?utf-8?B?aXdvcWNQUWpRQXJUaEpEbVExQ0lFZVBBNi9Oc1hIbTBNUUdkTTNWRVU4bGt5?=
- =?utf-8?B?a3lCMGFCRXBqTSsxT1NqTS9PR05URUQrUitRQng4SHFSZi9ueVhpbnVCbWx4?=
- =?utf-8?B?c0I1dEhHeDBscGlEb2tUSndiVThRZDc0Q1J2dFdGeEJvUExFWjh3RnJTaTZS?=
- =?utf-8?B?Y3dzZWw1NTJPcUt0KzNhQkk2NktNU0lWcmpXeUs1d0U4emhGZ21nVnFpbXM1?=
- =?utf-8?B?OUdLZW9BRExBdnV0YVJEUldQUTdqVjBuaEVwSUV6SGhzU1lpdlRNc2VyN0U0?=
- =?utf-8?B?QndxNkppUEdFaU5CdzQzNEdIdzRhaStkVnFFZ2tzU2tXejhkZ2ppYUxVb0cy?=
- =?utf-8?B?aEtuNGhvU2QvOGx3cjY4MVZoT3dWZmlhbTY3TUNCQWlUTFZYOW1uSk9GSzN1?=
- =?utf-8?B?RGpUbnhlSzMvMkhWOGd0ZEtGZ2pzQlJFV1hua0gvRy83OGZ5dWNPQ1BUM2NC?=
- =?utf-8?B?TnFqdGJVckJDa25JWE1GWGRXZXhlK3UvOG9pUDZHM3JaZitUZ2ErMU5QQmJM?=
- =?utf-8?B?c1FqcnQycVpHb09QUCt3dXErS0NVTEZMVFdTRTk3QTgvdFhnUFFobVlRMkp4?=
- =?utf-8?B?NUpjdXJrYlFUVlZSdHBtYzlzdGkwd2FIYnd2Nm5mZTgzS1lGSTQ5ZGhmWks5?=
- =?utf-8?B?UWtPbGNOUFFJL2pHUVIybnRBQlUyODlOeUUrYUFVTldEc3lkZWpJM24zUlJl?=
- =?utf-8?B?QVpXZzFkRnVKbXdMQXdERTZWRVNzaWxSeEZ3SzNqTURuajV2VzQ0RGowTHho?=
- =?utf-8?B?c2FWQVVkUTR5THdWcSs5dEVjNjZ4V2NnOXJQeHMvN281UC81cE11Qkp0NHpT?=
- =?utf-8?B?dmVrdmdUWXJFNUFYSlhQbG5aN3Z3PT0=?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79e79a2e-073c-4585-f0b2-08dc4ff490fc
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L3BVUU92Qk5UTGZlMmhhOXhEcDRkek85cjFXZ202UThtQVYyczZKb1FTczhU?=
+ =?utf-8?B?dkN5ZFQvdXkxaFlzWndTZmR1NWRsYmk2UVMrOEhvMURuVmlMZUlSdkk0UzJR?=
+ =?utf-8?B?WDFOU21DcUVDV3B6VVlVZ3FzMUtkQ1QwK0pZOFZEdkM4SjdOcmVxQXNTd1pz?=
+ =?utf-8?B?WW9sU29vcGdZZmdGTXJrUEg5U3VXUHQvclBLV1ZWazd5UFNqd29USVdKcS82?=
+ =?utf-8?B?NmlkZDNIQmpaK3R5L3l1S3dNanVlTWVrS3BKRHkyNlFXcDgzc2NQT2x0WGN2?=
+ =?utf-8?B?MFJhVm9ET3pqS2pCYWxpMzVEQ0Q2dHhlRmx2dUw1d0VicW5TZ3pVK0lmdFJJ?=
+ =?utf-8?B?MmdHNWdpVElNQzUxOG5Ed3hkQlJqVm1CZGlFZjV1TVZQeks1ZUJmQ09YWmwv?=
+ =?utf-8?B?SktxTjdERWxZSFBxYktnWDgxMENQUUY4UG9FRE8xa1dTUzVnb0phTWE4Q0Ux?=
+ =?utf-8?B?TzFxaStQR2gyM3R5ZHYvaWZPT1VkQkN6Z0pMNmNHUlNSclRFUitJcnc5L3NC?=
+ =?utf-8?B?VVFqV0Y3N0Z1Qzh1SmhUSHBmOS8zUjF0Mnh6MVlpc0JhY1k3MGJJNmVsY081?=
+ =?utf-8?B?TGlFWnJQckFRUjJ3eFhRdmNVbndWZGtlbUQ0NHFGWXU1TU9Zc1hrWE1oTTha?=
+ =?utf-8?B?SnlaOVZST0lmZlZnRVJsMWJHM2k0NldlVlovbWY1MWFYU1VSaHk3QS9uMm42?=
+ =?utf-8?B?SmdMNXltQ3ZCN09UOFBxeEZENjZiaHhNd3JzTWNCTUZKL3BtVDRQMFhpdk5n?=
+ =?utf-8?B?Q3dhb1FGTHR4THVtMWgrdm9iQklZaW4xaThNYzlobWkveUlXeTdENEZYTFFS?=
+ =?utf-8?B?N0pvR3REL0Q5b21LQS92WFc3ZTI0ZzNWUW1sYXhxcFFOZE9YbWI1TjNyMDU3?=
+ =?utf-8?B?WFord3IwNXdDR0JZd0FaZjJsdURkMmRoYjRZVmsvYURIVjlTQzZDY293cjF3?=
+ =?utf-8?B?SUs5QkszSm5pOHVIWURnSVVjaEYvOWhUTGlIUVllVHpPSVRJTGg4WGVEL2FN?=
+ =?utf-8?B?V2VsVitSQ3RuMWgzTmw3VjF2b1FSYkczMGlGZ3d6WFpsUFNhbFVlMC94a3J4?=
+ =?utf-8?B?ZW55ekxQTytiYnhDYUhJNzU5amtmU0VSZllnUmhTSVpjdHpKaFIwd1JzSjl2?=
+ =?utf-8?B?MUs5Z29nWGZJQTNZbGdYQWRpNEpIaVdIYmxwMERsdnpjeWFYR1k3djVzNkxv?=
+ =?utf-8?B?OU5NbklJV3VmbTBXMHc4T0JORWQrL1Y5dTdBbXp2V2FEMFAwRC9CRlZFZmRE?=
+ =?utf-8?B?MFV6ZFFVSkZqNThmL1hZdFZwZFUrTVN0MkpTK2JZem9oZ0V5YVNHNmE2d0Fh?=
+ =?utf-8?B?b1c4YlNyY1JUQ1J2a2dPTlZlZ09GbjkrNHJKVFhtdzVKNTVxZlkrK3VrQ0Nr?=
+ =?utf-8?B?MTFFdDhCT1EvT3psMUFGRkJEeTdkVjdHRzdab3VSRFdZR3BFaGZtNFlOa081?=
+ =?utf-8?B?UnpVcVRSNE9QUXFLVmQ1dkJ0T09tMW5FNnN0WExPMUlMR0VQajhBVHNpN0w2?=
+ =?utf-8?B?L3BtY2Vvdk8wbCtFTlJtTDQzbnloU1Ixa1B3SzcyWVU4OTA2L251ckM4TEVh?=
+ =?utf-8?B?YVRJL3JVd3pCZXJDTm9EZDc3bVIwQXJXcE0rYVQrRm9LQXV6NUJtNjFscUZ6?=
+ =?utf-8?B?TTVJN3FhTC9tbkVuQVRiSEgyOElOTFF2aG5zRFFUN0t2eFZPc3lReXV2b1ZN?=
+ =?utf-8?B?VW0yTU82N2VobUNkbFdzN01FRnB0aTM4c3JPN2RvMTlWMGdlMU11ZFU5YXZv?=
+ =?utf-8?B?MTJOWVBvcmNpdEFKQmVMS04xSkZkampib1BTUFdad1RQWms1VVFlQWRtMXZs?=
+ =?utf-8?B?UURQUjlpVUY1Ymk1Rm5UQW1EUWdYRHAzRndvbTg2d3poTDFHV2JraGU1bmtJ?=
+ =?utf-8?B?Rm9rQjBDRi9TaEU4YWE3V2xiNmsvTEtyNkNLaEprZVlVT1dLWTBuYmE0djVY?=
+ =?utf-8?B?Z1ROdUp1cFB4Y0dSQWY0dEJhTi80TUtocTJCT1dsaHAvcUlTVU9yQ1MyeC8r?=
+ =?utf-8?B?VTE3YWF6aHhyOHl1WUlkU205WUhiWm1sQmIyZVVpUUxqRnpmTStwckJLeFFH?=
+ =?utf-8?B?MWdHQkt4Vys1SEtsQi9kVldFekkzT2xzUEplTC9RWDZMV01ZVm5ZOU1ubGow?=
+ =?utf-8?B?WXVsTmw5d0g5QVVkQ0hWSXhvc0dLSUhtbkMwUm1yWnVWZjJONXUvYm1rRjZp?=
+ =?utf-8?B?emNYK0tNY3dTWmJ0dmhDaXIvMUZVdG1ncmIxNGZJZlpJZUxzYkdSeHhlZkNK?=
+ =?utf-8?B?UXlGeGJiWU16U29JcU5ZK2FVNWhBPT0=?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5c64a7fe-9c1d-4529-d75e-08dc4ff5db47
 X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7388.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Mar 2024 13:31:40.5330 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Mar 2024 13:40:54.5450 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ev8EYvsb9EcptDa46jnh/iOXLpCm9Lkz/PUmjXMVf5/hhwK+uzWwhN9Ad1Pb4ZDnm1OJgzTmmOd/VPgHhKSB2Dz2FHrdtP+VzvCeNCkz4rY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6168
+X-MS-Exchange-CrossTenant-UserPrincipalName: miHZwIEXRizvkrk1pYObBSwkFtsnpc0ev5Hji7qNBOe3dthPfJJon0P7cVDUQZQHZOvPY8REDxnxkFvYtN5F4U2FQKepoMBfkKEVHJORLIc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7256
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -165,188 +169,81 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 On 29.03.2024 10:16, Zbigniew Kempczyński wrote:
-> In tests which use compression we did very naive check in which we
-> compare source and destination surface. For linear we could expect
-> differences are related to compression, unfortunately for tiled data
-> this attitude is not appropriate due to natural data layout difference.
-> 
-> Lets add helpers to extract surface ccs data and check if such
-> surface is compressed. Function which extracts ccs data is defined
-> as public to dump such data to png in the future.
+> Start using function which extracts ccs data from the surface and
+> determines its compression.
 > 
 > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Cc: Karolina Stolarek <karolina.stolarek@intel.com>
 > Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 > ---
->   lib/intel_blt.c | 116 ++++++++++++++++++++++++++++++++++++++++++++++++
->   lib/intel_blt.h |  11 +++++
->   2 files changed, 127 insertions(+)
+>   tests/intel/gem_ccs.c | 15 ++++++++++++---
+>   tests/intel/xe_ccs.c  |  9 +++------
+>   2 files changed, 15 insertions(+), 9 deletions(-)
 > 
-> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index fe0a45cb8e..fa8e61732c 100644
-> --- a/lib/intel_blt.c
-> +++ b/lib/intel_blt.c
-> @@ -2094,6 +2094,122 @@ void blt_surface_info(const char *info, const struct blt_copy_object *obj)
->   		 obj->x1, obj->y1, obj->x2, obj->y2);
+> diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
+> index e4126bcaa8..c59fc69fb7 100644
+> --- a/tests/intel/gem_ccs.c
+> +++ b/tests/intel/gem_ccs.c
+> @@ -305,6 +305,10 @@ static int blt_block_copy3(int i915,
+>   	return ret;
 >   }
 >   
-> +/**
-> + * blt_surface_get_flatccs_data:
-> + * @fd: drm fd
-> + * @ctx: intel_ctx_t context
-> + * @e: blitter engine for @ctx
-> + * @ahnd: allocator handle
-> + * @obj: object from which flatccs data will be extracted
-> + *
-> + * Function executes ctrl-surf-copy to extract object ccs data from flatccs
-> + * area. Memory for the result ccs data are allocated in the function and must
-> + * be freed by the caller.
-> + */
-> +void blt_surface_get_flatccs_data(int fd,
-> +				  intel_ctx_t *ctx,
-> +				  const struct intel_execution_engine2 *e,
-> +				  uint64_t ahnd,
-> +				  const struct blt_copy_object *obj,
-> +				  uint32_t **ccsptr, uint64_t *sizeptr)
-> +{
-> +	struct blt_ctrl_surf_copy_data surf = {};
-> +	uint32_t bb, ccs, *ccsmap;
-> +	uint64_t bb_size, ccssize = obj->size / CCS_RATIO(fd);
-> +	uint32_t *ccscopy;
-> +	uint32_t sysmem;
-> +	uint8_t uc_mocs = intel_get_uc_mocs_index(fd);
-> +	uint8_t comp_pat_index = DEFAULT_PAT_INDEX;
+> +#define CHECK_FROM_WIDTH 256
+> +#define CHECK_FROM_HEIGHT 256
+
+I'm not a fan of adding another magic number to the mix. I know it's 
+hardly magic, you found it by testing, but could we at least define it 
+as a half of default dimensions (512x512)?
+
+> +#define FROM_EXP_WH(w, h) ((w) >= CHECK_FROM_WIDTH && (h) >= CHECK_FROM_HEIGHT)
 > +
-> +	igt_assert(ccsptr != NULL);
-> +	igt_assert(sizeptr != NULL);
+>   static void block_copy(int i915,
+>   		       const intel_ctx_t *ctx,
+>   		       const struct intel_execution_engine2 *e,
+> @@ -359,9 +363,14 @@ static void block_copy(int i915,
+>   	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
+>   	gem_sync(i915, mid->handle);
+>   
+> -	/* We expect mid != src if there's compression */
+> -	if (mid->compression)
+> -		igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
+> +	/*
+> +	 * We expect mid != src if there's compression. Ignore this for small
+> +	 * width x height for linear as compression for gradient occurs in the
+> +	 * middle for bigger sizes.
+> +	 */
 
-I think we can drop these "!= NULL"
+You mention we ignore this check for small surfaces with no tiling, but 
+there's no check for mid_tiling. Is that on purpose? This comment 
+applies to comments both in gem_ccs and xe_ccs.
 
-> +
-> +	blt_ctrl_surf_copy_init(fd, &surf);
-> +
-> +	ccscopy = (uint32_t *)malloc(ccssize);
-> +	igt_assert(ccscopy);
-> +
-> +	if (surf.driver == INTEL_DRIVER_XE) {
-> +		uint16_t cpu_caching = __xe_default_cpu_caching(fd, sysmem, 0);
-
-sysmem is undefined here, I'd move the definition from below to here 
-(i.e., to the line before cpu_caching).
-
-Apart from that, the patch looks good (+ one nit below). I haven't test 
-it on my machine, but I trust you played with your changes to verify 
-their correctness :)
-
-> +		uint64_t ccs_bo_size = ALIGN(ccssize, xe_get_default_alignment(fd));
-> +
-> +		if (AT_LEAST_GEN(intel_get_drm_devid(fd), 20) && obj->compression) {
-> +			comp_pat_index  = intel_get_pat_idx_uc_comp(fd);
-> +			cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
-> +		}
-> +		sysmem = system_memory(fd);
-> +		ccs = xe_bo_create_caching(fd, 0, ccs_bo_size, sysmem, 0, cpu_caching);
-> +		bb_size = xe_bb_size(fd, SZ_4K);
-> +		bb = xe_bo_create(fd, 0, bb_size, sysmem, 0);
-> +	} else {
-> +		sysmem = REGION_SMEM;
-> +		ccs = gem_create(fd, ccssize);
-> +		bb_size = 4096;
-> +		igt_assert_eq(__gem_create(fd, &bb_size, &bb), 0);
-> +	}
-> +	blt_set_ctrl_surf_object(&surf.src, obj->handle, obj->region, obj->size,
-> +				 uc_mocs, comp_pat_index, BLT_INDIRECT_ACCESS);
-> +	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs,
-> +				 DEFAULT_PAT_INDEX, DIRECT_ACCESS);
-> +	blt_set_batch(&surf.bb, bb, bb_size, sysmem);
-> +	blt_ctrl_surf_copy(fd, ctx, e, ahnd, &surf);
-> +
-> +	if (surf.driver == INTEL_DRIVER_XE) {
-> +		intel_ctx_xe_sync(ctx, true);
-> +		ccsmap = xe_bo_map(fd, ccs, surf.dst.size);
-> +	} else {
-> +		gem_sync(fd, surf.dst.handle);
-> +		ccsmap = gem_mmap__device_coherent(fd, ccs, 0, surf.dst.size,
-> +						   PROT_READ | PROT_WRITE);
-> +	}
-> +	memcpy(ccscopy, ccsmap, ccssize);
-
-The promised nit -- how about adding a blank line after else to improve 
-readability? That would probably also mean adding one for "surf.driver 
-== INTEL_DRIVER_XE" else to keep it consistent.
-
-All the best,
+Many thanks,
 Karolina
 
-> +	munmap(ccsmap, surf.dst.size);
-> +
-> +	gem_close(fd, ccs);
-> +	gem_close(fd, bb);
-> +	put_offset(ahnd, ccs);
-> +	put_offset(ahnd, bb);
-> +	if (surf.driver == INTEL_DRIVER_XE)
-> +		intel_allocator_bind(ahnd, 0, 0);
-> +
-> +	*ccsptr = ccscopy;
-> +	*sizeptr = ccssize;
-> +}
-> +
-> +/**
-> + * blt_surface_is_compressed:
-> + * @fd: drm fd
-> + * @ctx: intel_ctx_t context
-> + * @e: blitter engine for @ctx
-> + * @ahnd: allocator handle
-> + * @obj: object to check
-> + *
-> + * Function extracts object ccs data and check it contains any non-zero
-> + * value what means surface is compressed. Returns true if it is, otherwise
-> + * false.
-> + */
-> +bool blt_surface_is_compressed(int fd,
-> +			       intel_ctx_t *ctx,
-> +			       const struct intel_execution_engine2 *e,
-> +			       uint64_t ahnd,
-> +			       const struct blt_copy_object *obj)
-> +{
-> +	uint64_t size;
-> +	uint32_t *ptr;
-> +	bool is_compressed = false;
-> +
-> +	blt_surface_get_flatccs_data(fd, ctx, e, ahnd, obj, &ptr, &size);
-> +	for (int i = 0; i < size / sizeof(*ptr); i++) {
-> +		if (ptr[i] != 0) {
-> +			is_compressed = true;
-> +			break;
-> +		}
-> +	}
-> +	free(ptr);
-> +
-> +	return is_compressed;
-> +}
-> +
->   /**
->    * blt_surface_to_png:
->    * @fd: drm fd
-> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-> index 1f6c713596..d9c4d107f1 100644
-> --- a/lib/intel_blt.h
-> +++ b/lib/intel_blt.h
-> @@ -311,6 +311,17 @@ void blt_set_ctrl_surf_object(struct blt_ctrl_surf_copy_object *obj,
->   			      uint8_t mocs_index, uint8_t pat_index,
->   			      enum blt_access_type access_type);
+> +	if (mid->compression && FROM_EXP_WH(width, height))
+> +		igt_assert(blt_surface_is_compressed(i915, (intel_ctx_t *)ctx, e,
+> +						     ahnd, mid));
 >   
-> +void blt_surface_get_flatccs_data(int fd,
-> +				  intel_ctx_t *ctx,
-> +				  const struct intel_execution_engine2 *e,
-> +				  uint64_t ahnd,
-> +				  const struct blt_copy_object *obj,
-> +				  uint32_t **ccsptr, uint64_t *sizeptr);
-> +bool blt_surface_is_compressed(int fd,
-> +			       intel_ctx_t *ctx,
-> +			       const struct intel_execution_engine2 *e,
-> +			       uint64_t ahnd,
-> +			       const struct blt_copy_object *obj);
->   void blt_surface_info(const char *info,
->   		      const struct blt_copy_object *obj);
->   void blt_surface_fill_rect(int fd, const struct blt_copy_object *obj,
+>   	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height, bpp);
+>   
+> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+> index 7d0f2f2a11..5525aaed65 100644
+> --- a/tests/intel/xe_ccs.c
+> +++ b/tests/intel/xe_ccs.c
+> @@ -361,13 +361,10 @@ static void block_copy(int xe,
+>   	/*
+>   	 * We expect mid != src if there's compression. Ignore this for small
+>   	 * width x height for linear as compression for gradient occurs in the
+> -	 * middle for bigger sizes. We also ignore 1x1 as this looks same for
+> -	 * xmajor.
+> +	 * middle for bigger sizes.
+>   	 */
+> -	if (mid->compression && MIN_EXP_WH(width, height)) {
+> -		if (mid_tiling != T_LINEAR || FROM_EXP_WH(width, height))
+> -			igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
+> -	}
+> +	if (mid->compression && FROM_EXP_WH(width, height))
+> +		igt_assert(blt_surface_is_compressed(xe, ctx, NULL, ahnd, mid));
+>   
+>   	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height, bpp);
+>   
