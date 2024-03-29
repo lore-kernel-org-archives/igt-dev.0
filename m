@@ -4,64 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09D68C6FD1F
-	for <igt-dev@archiver.kernel.org>; Fri, 29 Mar 2024 05:16:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC6D9C6FD1F
+	for <igt-dev@archiver.kernel.org>; Fri, 29 Mar 2024 05:18:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3B84210E52F;
-	Fri, 29 Mar 2024 05:16:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4E12710E52F;
+	Fri, 29 Mar 2024 05:18:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Nj3G4UhK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MIf2wy52";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C683710E52F
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Mar 2024 05:15:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C281110E52F
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Mar 2024 05:18:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711689361; x=1743225361;
+ t=1711689494; x=1743225494;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=PuwlqPKRfZNZsRnPQTXLcXjkIkNg2re967kqSG4pyZQ=;
- b=Nj3G4UhKm+Lzb9tMZCkQS7TUA0Wf3zg0cT2xRX3zVEF0/nXSu6ACl3kB
- aFfh454knJkei31+O5NNVBIYF+7OArGh7EnaA8naaM7StjnWgFHd8HpBB
- okYN5RZWPy+g8cG2KSP2mOFsM3g1pFqfE4GUlOpy+z2vjpV7IrbzIlDgu
- c/IX5xrCmkHjFfYBcQ+XDrcTHt3vXSb9a71oMEqY9Yv89pMzTmgWcPhHq
- ck0daqeq3qjTF48vzUbVxOz2ZdYA+b8YDkbTdC4Tt5dy8JYq+YYUVJKS8
- jz0auD0Qu55cIx8NVuis72sYoyggCmVYaqLZKqGkAfqBPMFeWGN+Zbnpw g==;
-X-CSE-ConnectionGUID: lRJk5PQXQhaJhPiEvbLihQ==
-X-CSE-MsgGUID: 6XkvCkiZT6Cp4eXJB89VdQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="18022053"
-X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; d="scan'208";a="18022053"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Mar 2024 22:15:43 -0700
+ bh=Q/SXoeuJsSjZFv7sMWyqDHXpvgBX8Y/qEcXmLSxzVGA=;
+ b=MIf2wy52MCMgIhLSDPwz8HqO72Zbi3nkUs/v5I0qiofWsv7wchG1NKd6
+ t18eXY0XETeuEU6yHqPJzrDX+T8bj7u6zQJzgF3QOJO6hpAjwhcePjJ8Y
+ hrRR4RljOz57xnJtXBZzkX2d28TzZlsdFHttIXlrVwbuxl2xQGHswfd5H
+ IX8hhbjMYN8kD8jNXT5Lrmo0WEbGhujulJ7gdFJuTTr4HXP8AZRqEgw8r
+ Rbk18UHsJVfCJitLe/fA5D1B/xxLo0Nj2oyDRVP88AByF8zEZFxYvPNxW
+ ezwpMS4ktwjgZcDhRozIVJ5iT7ET9GTCOb0Kn/o5gK0kFnKhK/8nhKA+2 Q==;
+X-CSE-ConnectionGUID: WFmqe7onTwWjn4M8sF15YA==
+X-CSE-MsgGUID: EywNFVCSQGet7giL6OIWLA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="6730974"
+X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; 
+   d="scan'208";a="6730974"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Mar 2024 22:18:13 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; d="scan'208";a="21523251"
+X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; d="scan'208";a="16756603"
 Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 28 Mar 2024 22:15:44 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ by fmviesa010.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 28 Mar 2024 22:18:13 -0700
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
  fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 28 Mar 2024 22:15:42 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.1.2507.35; Thu, 28 Mar 2024 22:18:13 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 28 Mar 2024 22:15:41 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 28 Mar 2024 22:15:41 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.40) by
- edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ 15.1.2507.35 via Frontend Transport; Thu, 28 Mar 2024 22:18:13 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 28 Mar 2024 22:15:41 -0700
+ 15.1.2507.35; Thu, 28 Mar 2024 22:18:12 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=janLQt8D3EBcwWZ1gkK+XocojTqUtQlr5BtToILH8ksxBEs3jM2s82f0/CdHAe71KpWHFdhdhM8jPBJMQrmUGu9M6KfJiBCJIrWC2JIzAYkV0qBLCaPuM/BQ75rB7sOZeJ9iMWwLwbTjojlEt3tztenyeDTReKAqk6E97n/YbSjsae1vOwVQJSzMmspnstiHZtpxt1PsjziYZIz49VzQFjhW17fclAIAka+yhbDuVQeY/midO9HqKI6Y1V1qcJhANSbqS1Gvi52cIbcjP0VWDf9d0w2uw+bizmPopProFjcktRIndk/iAwC67I0o+cWFzyDQSGD9Rx31pLlRs6jJiQ==
+ b=oH+pnr+7yAOyFutNuJUV8MorZlCASHN6uaHxO7uHfUFklgk6z4TLhM8xbmkSpxnp0oSVY8nqy9XZSoN5g94w2PlxkxRyD/pP4dojfnaHKl1BoeCcAuiZe7Wj+fkqsiraTyUIvY4wlKFznPgeVQYHb0EHHss0J03hv1McONzCSDzkCvZUQzG0qoqZ2nFAOvSWXy1lIXA5VEwyepfAM4a+brXUnYOb90z2TWfbYWc+gQwZTeZfGo5FmzKmeCjQwXMO14lQmI/mn6Ny/9w99nxEugLZazvhaXU8w5MT6/Zv3KnTAJxdWe07pWQExDCtVzMhNsGEES005Tv5CSytLjG9gQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yq11OdnXiChySH+iDQNy7yvtAiUJPMmtWR5g3cX6o+s=;
- b=ketmzee345kxH8J1vmEp/1AzpbzfTFYoA3kIglAzboSHYJGKYjQCbWCT8U1cX9yfvIyc2jrqX03YuampfwUmfp05JUP+R4NFuMl1aieeBeajrMg8yJixWwhfR2K6vqc/vaKgj4vMxhEoPXP6eVGgrZ8AKmGUAcTdLv6Dhe44dn3Qj1j4hQrKFH92eBhLdsF04dpmIZJjTydsWS1BOfdl88s0Fq6KGf1JLhLUA0fU5ji5yvk97hndFz5sATP4uawAElAAD18215UXgZ2jGqJ3pkWWmjsA1ncflbDYiE5+f0zCBgMzBBam1BGi9pUJ5av+gcP44amazsrXvEwkXybQfQ==
+ bh=5a2AwEfbMV+L9DUIqQuaKtT3CUqHFqIwqXN73F5ZV9c=;
+ b=DCK02eouNaj5/5Gfaigwvw8kY7CChi4nF36WcPKG+oVhS4SFH6XaKfmnKsf6Ua1eEHh3cR6ERLp16BlRvDcPEkFIdLOnvh2xadBOjrBbj3EKjru/GIpVLNjQm0ZzBqlHaB/Bzd7LaQE6CWsRQvvYQ/LEv2fK7/Wz9byCUJAm2KYJRMM3PV+KBWxLJ7rsFH0eukv4Qe9WBLy1MlnRU+Zdgn06U7VaMyH1VhRGU1Xuj+Yy2rnXAencMc6s/dt/OIMHuXeKWd/nIdkKV2l3pjx4AzStAPQCI3Mfb7ik1fnolxmwS8IIuNYImYtKMaMg9hYRMWJmbIoPNvX7h8v4ktslWQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,28 +66,28 @@ Received: from CO1PR11MB4977.namprd11.prod.outlook.com (2603:10b6:303:6d::14)
  by PH7PR11MB7985.namprd11.prod.outlook.com (2603:10b6:510:240::16)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.33; Fri, 29 Mar
- 2024 05:15:39 +0000
+ 2024 05:18:09 +0000
 Received: from CO1PR11MB4977.namprd11.prod.outlook.com
  ([fe80::a2d7:1d52:5a1c:88d]) by CO1PR11MB4977.namprd11.prod.outlook.com
  ([fe80::a2d7:1d52:5a1c:88d%4]) with mapi id 15.20.7409.031; Fri, 29 Mar 2024
- 05:15:39 +0000
-Message-ID: <2cbcd814-3bad-4665-9dcc-dd23d64533a4@intel.com>
-Date: Thu, 28 Mar 2024 22:15:37 -0700
+ 05:18:09 +0000
+Message-ID: <07a3ac74-53a5-4f84-b4a2-b449b7da3802@intel.com>
+Date: Thu, 28 Mar 2024 22:18:07 -0700
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 1/2] lib/intel_blt: Add helper function to ensure
- platform supports compression
+Subject: Re: [PATCH i-g-t v2 2/2] tests/xe_ccs: Update compression in config
+ based on platform
 Content-Language: en-US
 To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 CC: <igt-dev@lists.freedesktop.org>, <matthew.auld@intel.com>
 References: <cover.1711729399.git.akshata.jahagirdar@intel.com>
- <6e857ec4a881f64a2cce7b3ec84cd4e1d74a55f3.1711729400.git.akshata.jahagirdar@intel.com>
- <20240329050132.myk23se7d22cude6@zkempczy-mobl2>
+ <cb8e514071a09bbcf1492005daaf53083616b1a9.1711729400.git.akshata.jahagirdar@intel.com>
+ <20240329050515.q4tqnnxj45onvsgd@zkempczy-mobl2>
 From: "Jahagirdar, Akshata" <akshata.jahagirdar@intel.com>
-In-Reply-To: <20240329050132.myk23se7d22cude6@zkempczy-mobl2>
+In-Reply-To: <20240329050515.q4tqnnxj45onvsgd@zkempczy-mobl2>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4P222CA0028.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:303:114::33) To CO1PR11MB4977.namprd11.prod.outlook.com
+X-ClientProxiedBy: MW4PR04CA0271.namprd04.prod.outlook.com
+ (2603:10b6:303:89::6) To CO1PR11MB4977.namprd11.prod.outlook.com
  (2603:10b6:303:6d::14)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
@@ -98,56 +95,56 @@ X-MS-TrafficTypeDiagnostic: CO1PR11MB4977:EE_|PH7PR11MB7985:EE_
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: PF+VlCLxsk/XKKlF4ejWXxZUq9UvOnx5XewgzvsDPUAhEnGwwcheoC1VMozk9fJd38yL0/PI3MBMmBB8knKHfX1k8Zfp8SH7ktBCTZ8Z9BO4C/WPnMbORMJD7Nb+vQWBajVoJAmh76KqEYcb0pzpt5pqLfRVyo0izoTWf8D8HbsRm5/ROpdSLwT0j8pWVzIEiTlODcBKJ9jZ8hiusyWm2s2+pYU9vrXbVwbnSw+0C5iXG3NmvA+bNJuGXSbT6hA418MGFfXZD2Ig4M0kyhz0cX3JpdDOfiFpbDnLGL0uATbRM+SE4imwrkivNtyTk49HyrjBWiaNW5c56eaNxmvXXVWtocynQLXKkv5gVrgeRbHjeidkIXb92VleND2ol9Uka/LUIosWFHGq++dVG+XhW1IhP3iErK+OXw3dbs2DIVzDzyQ/CS1Q4y3/P+R1cCeTqML4gqoDXHgaDnAtEE47Lc8tDlCrB78kz/eVu7VIBvPIFpskFn1CKx2VwBxobwXVX9oyq8q0ldbVlAuVNYG9k9L+3qTy98ZJDty8fOH4HRnZbtSs7MjtV9BoD4YU5BOzTHKEP5cN4IZJh1v03cv83OghncxqkpH9Uk53i2Dnka6SRxbMVu+707Fq9TsZPPaSRUZMzBE8w1bMJg7o+LV7Jw==
+X-Microsoft-Antispam-Message-Info: bfBPQYSZNwLuliSIJmVAkQhXXD+XbyaQ4NFUhtXJrBqNfnhHv5UBWvIdhhP0VlYCunsZE1YQmUYp9rD9UJ28ch3VQALhZMQt3zpCt0SgDmx+a1WC3leRRHdbvf7GcIp79QQXywKdJeTUS3P/i5tuelxTWZ/QvNlRlfMF/BGzOgbDrjoh75A6/yqU56VZ7goAc0DbzG0MIMVe+cYbrMXU66PsyFx4GvEJrwBPpm1JVxN9sE09bDc55xxhmyemAWXK8AnW4Jh+Gx0eFALiVLLl9ge6KtQwC6gHSJ3uDRqG86kaTNVOsjRVvAKeAS/PhcKWv54K2gyVxZfBP0CxREybW1gmUxzvHhmFnD2lSorSCc8P++bAGE4aeeKS+KxqAIysDIFOg3QzhK/li0gRNYNhA/Wr/mFRKnFs261eEZxnP5yzH+viY+cwZ7oUWimEAuGQhDBnjIePuZUD6++c5NlZZKMnBb5xJIlcoxLVuRcr3XB/YgiOkVH5rDq8GzUNbBgW6xp3KZoGj43/S+xxIioTVNWUJ0+jRceO0HpHqsb76los63yJ1gD3MfKDQu23T17KdIHvc9IwzoR23xKykA7hkzN9vzjdIpMIQ7H5i7BNPZiZM8GKqXtxr99it51gVRl0X6XcLIXfgs9cV6XRaor/mbgjja61enqjoBtq5JrVtK0=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CO1PR11MB4977.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230031)(376005)(366007)(1800799015); DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?djgwUGZDUG1VUmNybW5OaUJEVnYzY055RmViaEV4eTdWaU5uMEg2eGcvb01D?=
- =?utf-8?B?RVdjblgwUmIxbStheDUrN0VzclVORWN3SGlGd0xBSVRiTkY0WHduMWoxVkpL?=
- =?utf-8?B?bjJDTS9YQjNzR2YvZHJJM2x4bjRlZ002d2hEeWhQZHlLVXJwSEVUZ2hlQy9K?=
- =?utf-8?B?OE1hMU00M0x1WVhNTXVPNE5nbmdsMElocmdrZEgrZGFsUkZnV0Q0MzY0ZUtL?=
- =?utf-8?B?cW1VM09OU3ZuY0FpZDBnWHRGK3BSc1JyWmdsaFJaaGFqanF2WUdhc2IrWDJl?=
- =?utf-8?B?OXlSM1A5UmxleVJ4WFJjaTBBK05uS2Fhc2NYOFVIR084SWhqcmRjUEJNVFQz?=
- =?utf-8?B?ZWNtVktTeElGQmVKOWZaT21lNTJtNEtKOHR5eUE0UUVnR2twbThJN284SG9m?=
- =?utf-8?B?ZDlwbG90N25aZ29oMlhNRTZMSWpiYnZ3TGtBNmpmWDlsZlNjUUpEcjd4WDd5?=
- =?utf-8?B?ZFhxVmVZNXNLOXRpZUQ2UzZwallFVEJOMmpRMkpVTVFuRVlHUVFzZEhkZGo5?=
- =?utf-8?B?cWlkSG5neHVqUDdGZXNkd2h4QlUrM3d0L3dRbjRtOVNCZkx6azk0dlhmb2x2?=
- =?utf-8?B?STQra1Jlb0JaRHQ5bStRV2hqWUtDVys2QVg2dWlFV2NObnlYMHIyMUNrNmgr?=
- =?utf-8?B?ZTc2MnhmRDFwZzRFTU9ETkRHNHhUZDBTTUUyVFBOU0JwdDFYdEw5cUJ5b0U2?=
- =?utf-8?B?aFRxR21pd2RvNHcwMnlMbjJ3cFU5MytuTFV6Zm9EZ2JkQ2R3R3ZDOUVvMzVS?=
- =?utf-8?B?R0tFbURsbXFvcU1UMlM0MHhXbUprb09pUldlb1czY2M0OFhxUjZSQTkrYm5N?=
- =?utf-8?B?SERZZnpFdk9ySGM3SUNOQXB1d25XWXR6bEN5L2QzWmhSRkRrUndnWkpIdzRO?=
- =?utf-8?B?R2JLNnlYaXQ3Mk5zamR1U3FLT3VLYkhJeHprSE1GV2RUbDNuSHBpOWh5b2dL?=
- =?utf-8?B?RDlLTmFrRERHWW9HOVpLTllPd0FIblFZS3FGOTFkbEJIdGYxdGhIbjloL0I1?=
- =?utf-8?B?bitXejVsRmE4WU1jY2l4UjRSNHNZUG5wUHJFSGN4ZHV6V3NRbmdreDh4Y2dG?=
- =?utf-8?B?T0lpeHhpTE4vMlBqdEVmMHFLby9xVWZkTGJyVUtGajVyY1U3Tk1UNGRtMCtu?=
- =?utf-8?B?K0gyRVF0ZDBkOHZSbGFDQ2tXdmZYWGpwWFZsMVRrVFBvSmI0WGIwbVM4Q0Za?=
- =?utf-8?B?YmFCcFNHUWRoYjRRVU5SbTJpeTlJUExtczVNTk92Sm5IYzczNnJBLzRGb3dv?=
- =?utf-8?B?bEtKbVc1VmU5aXkyQ3BnT3dKL3RJa3graDdZbjNYMHZSNnVUUlVPMU1IbGpj?=
- =?utf-8?B?UHI4NTI5Wm1DOWlsOUdEQ0o0VnNEbjhsQm16eUlCK3UxRnpwVGJZWUwrdCtJ?=
- =?utf-8?B?L2NIVS8waUc0N1NIVkRpMURrZ0t4eXFNN2Znc2NaclBCMjMvWGdCUjJlamFy?=
- =?utf-8?B?cVl4ODVySE5kc1J2Q3h4MnRwMmxvQjcyb3ZlM0gwL3RnLzNKa0FITFNXclNp?=
- =?utf-8?B?bmNmWTRNbml3cXZlbmZuRDlKL0NaWnRaVHVQSmtzN1Z6OFNSZlRsc0haZTVL?=
- =?utf-8?B?Njg3djBDQnlaRXFDRHZIR0x3WEx3UDZqNStuZG05UXlxZnd4RTg1NGlUbW1G?=
- =?utf-8?B?RllVNXd2ZUl5bE93SW9vVHNQaHhlWWIwdzJjMVFQVlEwSGtqM1Z2cituQ0N0?=
- =?utf-8?B?a0dvY2J5MGY0RW4ybUtGZWgwOFJBSThYUm1oM0xnKzVzbm9JSDNWYkF6RDl5?=
- =?utf-8?B?ZVUrUGU4aExvUGt0MmFPUmZFS0JVNmNYTml4bUtMQ2ZzZFdpTzNpaXFCOHlP?=
- =?utf-8?B?cGIwQzV5enBkdzFQVXJKK01ISUNPTFZ5L0ZVRGpsUjgxdk16RldudjB1TXEv?=
- =?utf-8?B?dGF4Sm9GM1JqdVVZSU45ZDk2QUZBTTR6ZDVHY2VFbThyN3p3aE5yZ1JRSzhF?=
- =?utf-8?B?dm11TVVYUEt3djdMT0I1WDRlNjBVb3VJaC9qSndaZU5mYU9SVzBlZVJ6Y3cy?=
- =?utf-8?B?ZWVpcUhLWGg4QlpiRDJNTzc0ZXEveVpVQnNMZDZSS0l2WkJ4VHdXS2w2TklK?=
- =?utf-8?B?eGNEWXF1TFZ5enp6WEN2dDRKV0pjQVJ2YzJla0phMjJJYlk4b2wxUi80Y055?=
- =?utf-8?B?aFFYWkxoSjNkQmJGRXc5SEVTZTM4UzJ0QVJNNG1WajJibHBkZWI4MFcxZHF2?=
- =?utf-8?B?TUE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52fb71ae-c902-4466-76b7-08dc4faf4637
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bHkzekpNQy9FeEF2NTg0bkNPVDVIUEhyMUxhM3dZVTE2VkNQVVVuQmRlT3pS?=
+ =?utf-8?B?YVhRWTZhaHNNMnRiVDBpWWljQzMyMVJoYUQ2cHhCT3BnR3k2a2Uwa1kyeGJh?=
+ =?utf-8?B?SDVoM2I1TWl1RWtSV3AzM3FiTC9VUnlBQ2ExekZpWWlVdE9vZFEvVTA5b3hE?=
+ =?utf-8?B?TGZPQysweHREUldaT3RXU0RreU9BcFJYaUhvcytRS1lTM2Z1THJLMDN4dk8w?=
+ =?utf-8?B?RjNreVRjdnFBWVk1TlByT0MvWGRwZithVkpaNGtGWlZJaUNzV1JqVnI5YUpQ?=
+ =?utf-8?B?NTZVQTl3Zm1pcDJEdUxONzhtcmJ0Uk9uNDA2UUxUNkYwbkpUTUlXcG41TmVp?=
+ =?utf-8?B?bThEQXBrYlB1ZHo3VHFvOHI2V2Z3c2xjc1hPMGNlMzhDQWZBeGVVVWcvNEJt?=
+ =?utf-8?B?dFBuQnIydkZNS09ZbVJFczRHQnVyajFUeEszV0dlVGNtV3hTT3U3T2o1d2hB?=
+ =?utf-8?B?QlExNE1BNjhybGVVcTdaaGhzSEhwcE9ERmk0b3Z0UWpmV0J1TElNVmtRR3pN?=
+ =?utf-8?B?SkFzOHN0TUsyM241c0lmRW9xUGk2OU42ekxiTEdORlZhanJrSzdtYnZtSDY4?=
+ =?utf-8?B?MFpycTRlUkd5N2RyaWFMNUZwalVxRVc5RW5UZ3NEbDdkTkpGb2Yvenh6T3Aw?=
+ =?utf-8?B?aE5EaTNuQURuNFhQM3FJRkttdmtIdm9jU2hJZUpaQzA1NkN3NGRrU3FtUDFu?=
+ =?utf-8?B?TlZjMllob2ZhMy82d1QzTWJmakRvVkYyVitzRVNmc3REeGtxOERrUGg0bFBy?=
+ =?utf-8?B?RU0rMXdUTFlyaFlyWGg1ZkFZZ0RNZXdneUxwa2hLakNZcEQ2bmdRd1ZoRjM1?=
+ =?utf-8?B?T2xCMUhNWVBjWjlQbmY1RVBXcmc0UmVoNHRobnFxOXZHbG9uNFpJVXUrblBS?=
+ =?utf-8?B?UlI4RlVBNUljaGRBWVFVVGlYT2xFYnQyRDhVS0NhODl4QzRycUVSQVRJZHRj?=
+ =?utf-8?B?QXc1S3ZjLzh4alJ4a25NdDlSSmtjU3dXaHN5dVgxNVdaWktHMkozL3lReTVt?=
+ =?utf-8?B?T2RNT1ZnZ1l0bDFhTmY0S294MnhGbGJPQnFzSkRGRXBuSm9MbWYva0xEQWlH?=
+ =?utf-8?B?T3FxN09aRmpWZ014b1paRXdHUlVlVEtVUU5pMVRJOUU3UU9Od1RaWW95Njhy?=
+ =?utf-8?B?UFI1aVREMXdoK3hSTDNQbXlZVkFDdTFYL2lXQXJxV0w4REo3Y2N2cFgzOElk?=
+ =?utf-8?B?TU9sVkNEVzlzSWJGamJmY3RScVNMWWkrazRmcWlwNEJucXdyNE5MbFhmckpJ?=
+ =?utf-8?B?TzB1M25Wd3hhOGRLWmpGY2pheFg1ZDhTaTFENDlCTGhMK2dzL1FjTjBUMFJy?=
+ =?utf-8?B?NlB6V245RlozT2x5b2d3bUR2QzM2QXNoWVo0OTlrWG9JbWRaUThXQjk0bUJ5?=
+ =?utf-8?B?YWZhdERKV0YvSDRROHdNdjREaGgzUGVwZmVtRUYzSHVUemV0L0JEWFdMRzVX?=
+ =?utf-8?B?eXkxcmhoS2RGVUsrcjlnZzZSalJXYWV3NTA4cjkvRFlBRUFCekhrOEw2RXZ4?=
+ =?utf-8?B?K0ZpWVZpLy9Xa2kxV0dpVXE4a2lMSWY2S3JTR2Njb3ROdm52MjlnSTlQRDcw?=
+ =?utf-8?B?VVZNa1ErSU9iWSt1Vnk3aU0rSWN2RnFyeTZTcUtJekV2SE5sZ3o3ZTVZbkVy?=
+ =?utf-8?B?Mjh6NUZRL0grSXhaajNaSmRLRkVYbDZkYmExU1B3ZVBOQnA4ZmRubUhtZDZH?=
+ =?utf-8?B?b1NNN1AxOVlyUG1NWE1NTGFuUndsZDRPaG04U29MeklYV1VvMFdja0pCdzN5?=
+ =?utf-8?B?U3E3Tzc2ZUoyRTRJcWd6ak9EWlJEMEd4cXVsdlVHQ21Nemc5NVBDb1d6dHVL?=
+ =?utf-8?B?NlpteUovNzdPOHJBL2F2cVB1NzMrR0k1eFpLMklBWXRaclRiTHRUNkpFeHhM?=
+ =?utf-8?B?a3B0MURMT2dHQnJaOGp5blJmMkNLM2E5YnVNb3ZXazU0MHJiWFNwcDJNNGpy?=
+ =?utf-8?B?K3pqY3dMT3gxclhYNXc1aGE1bVNycXZzdzBCRk4rZTZ6ZmxTUmF2eC9oaThh?=
+ =?utf-8?B?am5lbTRzdEwxZXlmcGQrZTJLVXBvMzFDN1ZvNVR3dWwxVUZjazhWS0ZqQSsv?=
+ =?utf-8?B?TWdlUGd5OXQvd2R3NUlGNHc1bUZwZDNiclVvZlNzdGdYcGoySHJFcUM3TGJ4?=
+ =?utf-8?B?NDZJQ29Tb2M2cGE5M1I1bFBqTTZ3QmU1ckRvcnZrblp5OXRNbnNqdkdiSUQx?=
+ =?utf-8?B?ZVE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e8a3b1c3-f720-4568-da09-08dc4faf9f88
 X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4977.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Mar 2024 05:15:39.6607 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Mar 2024 05:18:09.4929 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: J0KC6B8WQRowjl7bPOFOfF1QlXcsgnw7IC9JLMA8KTO5AkuBCiWciinR0i6TiE3kOHu+5bb95SE7qDDcpF0lukPrm6cRP/RiAbj7A91gWgw=
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0mSD4kFQx+lvMETY7hiY6tmMSgmbvCV6vnFyh8c2U36UCD5l5KyFZKZ3tgjBp5+uGj70yrAWrTh/dhuSs4CHgVZplSosMsnllceisE0pLXc=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7985
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -166,67 +163,122 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 3/28/2024 10:01 PM, Zbigniew Kempczyński wrote:
-> On Fri, Mar 29, 2024 at 09:30:12AM -0700, Akshata Jahagirdar wrote:
->> Add helper function to check if platform has flat-ccs enabled  by
->> reading from debugfs entry.
+On 3/28/2024 10:05 PM, Zbigniew Kempczyński wrote:
+> On Fri, Mar 29, 2024 at 09:30:13AM -0700, Akshata Jahagirdar wrote:
+>> In Xe2+ platforms, we need to run this test regardless of the status of
+>> flat-ccs. The entore flow of the test should work even in case of flat-ccs
+>> disabled, Everything should "just work".
+>> Check if the platform supports compression and has flat ccs enabled, before
+>> the execution if this test, and if it doesn't, then update to compression
+>> disabled and proceed with the test.
 >>
 >> Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 >> ---
->>   lib/intel_blt.c | 14 ++++++++++++++
->>   lib/intel_blt.h |  1 +
->>   2 files changed, 15 insertions(+)
+>>   tests/intel/xe_ccs.c | 26 ++++++++++++++++++++++++--
+>>   1 file changed, 24 insertions(+), 2 deletions(-)
 >>
->> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
->> index fe0a45cb8..0e569c5a2 100644
->> --- a/lib/intel_blt.c
->> +++ b/lib/intel_blt.c
->> @@ -464,6 +464,20 @@ bool blt_block_copy_supports_compression(int fd)
->>   				    BLT_CMD_SUPPORTS_COMPRESSION);
->>   }
+>> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+>> index ad2eeb259..9f427e730 100644
+>> --- a/tests/intel/xe_ccs.c
+>> +++ b/tests/intel/xe_ccs.c
+>> @@ -116,7 +116,6 @@ static void surf_copy(int xe,
+>>   	uint16_t cpu_caching = __xe_default_cpu_caching(xe, sysmem, 0);
+>>   	int result;
 >>   
->> +/**
->> + * blt_platform_supports_compression
->> + * @fd: drm fd
->> + *
->> + * Check if platform provided by @fd device supports compression.
->> + *
->> + * Returns:
->> + * true if it does, false otherwise.
->> + */
->> +bool blt_platform_supports_compression(int fd)
->> +{
->> +	return igt_debugfs_search(fd, "info", "has_flat_ccs yes");
->> +}
-> I would use 'blt_platform_has_flat_ccs_enabled' as the function name, as
-> this describes BIOS may have disabled it. Same I would update comment
-> because platform may support compression but it is not enabled.
+>> -	igt_assert(mid->compression);
+>>   	if (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) && mid->compression) {
+>>   		comp_pat_index  = intel_get_pat_idx_uc_comp(xe);
+>>   		cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
+>> @@ -193,7 +192,8 @@ static void surf_copy(int xe,
+>>   	intel_ctx_xe_sync(ctx, true);
+>>   	WRITE_PNG(xe, run_id, "corrupted", &blt.dst, dst->x2, dst->y2, bpp);
+>>   	result = memcmp(src->ptr, dst->ptr, src->size);
+>> -	igt_assert(result != 0);
+>> +	if(mid->compression)
+>> +		igt_assert(result != 0);
+> I'm working on a patch which extract ccs data from the surface and
+> verifies it is containing non-zero data in case of compression enabled.
+> I'm going to send it today, so along with your 1/2 patch we'll fix
+> flat-ccs issue when it is disabled in BIOS.
 >
 > --
 > Zbigniew
-
-Got it, will update it! Thank you for your review.
-
-Best,
-
-Akshata
-
->> +
->>   /**
->>    * blt_uses_extended_block_copy
->>    * @fd: drm fd
->> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
->> index 1f6c71359..a2c4a4adb 100644
->> --- a/lib/intel_blt.h
->> +++ b/lib/intel_blt.h
->> @@ -209,6 +209,7 @@ bool blt_fast_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
->>   bool blt_block_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
->>   bool blt_xy_src_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
->>   bool blt_block_copy_supports_compression(int fd);
->> +bool blt_platform_supports_compression(int fd);
->>   bool blt_uses_extended_block_copy(int fd);
+I see. That would be great. I will send the revised 1/2 patch soon.
+-- Akshata
 >>   
->>   const char *blt_tiling_name(enum blt_tiling_type tiling);
+>>   	/* retrieve back ccs */
+>>   	memcpy(ccsmap, ccscopy, ccssize);
+>> @@ -747,6 +747,9 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>>   	igt_subtest_with_dynamic("block-copy-compressed") {
+>>   		struct test_config config = { .compression = true };
+>>   
+>> +		if(AT_LEAST_GEN(xe, 20) && !blt_platform_supports_compression(xe))
+>> +			config.compression = false;
+>> +
+>>   		block_copy_test(xe, &config, set, BLOCK_COPY);
+>>   	}
+>>   
+>> @@ -756,6 +759,10 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>>   					      .width_increment = 15,
+>>   					      .width_steps = 512 };
+>>   
+>> +		if(AT_LEAST_GEN(xe, 20) && !blt_platform_supports_compression(xe))
+>> +			config.compression = false;
+>> +
+>> +		igt_info("p1: config.compression:%d\n",config.compression);
+>>   		block_copy_test(xe, &config, set, BLOCK_COPY);
+>>   	}
+>>   
+>> @@ -763,6 +770,9 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>>   	igt_subtest_with_dynamic("block-multicopy-compressed") {
+>>   		struct test_config config = { .compression = true };
+>>   
+>> +		if(AT_LEAST_GEN(xe, 20) && !blt_platform_supports_compression(xe))
+>> +			config.compression = false;
+>> +
+>>   		block_copy_test(xe, &config, set, BLOCK_MULTICOPY);
+>>   	}
+>>   
+>> @@ -771,6 +781,9 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>>   		struct test_config config = { .compression = true,
+>>   					      .inplace = true };
+>>   
+>> +		if(AT_LEAST_GEN(xe, 20) && !blt_platform_supports_compression(xe))
+>> +			config.compression = false;
+>> +
+>>   		block_copy_test(xe, &config, set, BLOCK_MULTICOPY);
+>>   	}
+>>   
+>> @@ -779,6 +792,9 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>>   		struct test_config config = { .compression = true,
+>>   					      .surfcopy = true };
+>>   
+>> +		if(AT_LEAST_GEN(xe, 20) && !blt_platform_supports_compression(xe))
+>> +			config.compression = false;
+>> +
+>>   		block_copy_test(xe, &config, set, BLOCK_COPY);
+>>   	}
+>>   
+>> @@ -789,6 +805,9 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>>   					      .surfcopy = true,
+>>   					      .new_ctx = true };
+>>   
+>> +		if(AT_LEAST_GEN(xe, 20) && !blt_platform_supports_compression(xe))
+>> +			config.compression = false;
+>> +
+>>   		block_copy_test(xe, &config, set, BLOCK_COPY);
+>>   	}
+>>   
+>> @@ -798,6 +817,9 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>>   					      .surfcopy = true,
+>>   					      .suspend_resume = true };
+>>   
+>> +		if(AT_LEAST_GEN(xe, 20) && !blt_platform_supports_compression(xe))
+>> +			config.compression = false;
+>> +
+>>   		block_copy_test(xe, &config, set, BLOCK_COPY);
+>>   	}
+>>   
 >> -- 
 >> 2.34.1
 >>
