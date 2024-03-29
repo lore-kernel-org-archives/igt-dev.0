@@ -4,54 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DF8ACD128E
-	for <igt-dev@archiver.kernel.org>; Fri, 29 Mar 2024 04:32:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A9C2CD1283
+	for <igt-dev@archiver.kernel.org>; Fri, 29 Mar 2024 05:01:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DD35010E89B;
-	Fri, 29 Mar 2024 04:32:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2883510E361;
+	Fri, 29 Mar 2024 05:01:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QJRBau1m";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g8PVkne1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0309A10EADE
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Mar 2024 04:32:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B46D910E361
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Mar 2024 05:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711686728; x=1743222728;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=CwSb6cHq9xFXScy/Mh+zcyDzgWK1Gj1mUjCAuhL8LIU=;
- b=QJRBau1mAdQshXhL6O7lg/ylUzaDWAu3x73VpSQS+OBa7g8tFFlulByi
- Q+xhx1EkyWUk75RP3QZlZSGUI1Kpz8atDG+Z/+zayt5LfF2P5UP9AsmEh
- Y3VIRWXcAZQfXNZG5n22DES3CyCYWXrCZUON5yeg6c0BjucWQXJ5KQNa1
- 3TUOi7qbkNnRezzEt1Y1IfG1yulPKqQZ0URCn8XZh5bZN3e5ePKWDB6bu
- P2Xssdn/lAZeIYGzUEfnFTha2dqpfTY6s4/y6InB/DZEvUcY+xzVip8Tg
- 0TG12x8nqYWg1q0t6zncCd3/PSpjgeEXbx4esJBRzmTozElR/VNZiVTKF A==;
-X-CSE-ConnectionGUID: Vq0F00Y0SUqSNoR0xU81Ww==
-X-CSE-MsgGUID: xQBf55umRCiZNATBuzEF/g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="17501427"
-X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; d="scan'208";a="17501427"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Mar 2024 21:32:06 -0700
+ t=1711688500; x=1743224500;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=raMHU25x5FRUwKZUOOdXMfh915asgfSmnRLavy0OVR0=;
+ b=g8PVkne1caECcr9QgbVObsB8wpxbVlEhl+mRWg/slPiuuWqgoRciSRUA
+ awpiQ6/KKn5f/lBce4eBk5sk/2pwqffHcpwpPrqyo7fnePNbpp09ej0fO
+ GbiGlkYmxlpx6AxYYkN4p3nfLeqhym9c3q3dhixD9X/PJbbr8QLotE1Ie
+ wSwxpE1U3pAMNmTH3HoyJIFHiMhUj68a7m1w7my1TPJ05BRHqvBhIvhpV
+ +o+ju7e0DhYtrhTDTelp6L4L0Xf9Q9nYrQWMlJigVRZaOMXmzy+ZYTveK
+ VaaJiIvN3ECq7cR6mwy7CcVBDs9ER+l3qZGLi8Npt9sukpYlhtMD/o9vd g==;
+X-CSE-ConnectionGUID: HpRAjKB7REqp5vIlPVaDZA==
+X-CSE-MsgGUID: 91TDLStkQ1uZGvNNXfVrKg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="6708600"
+X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; 
+   d="scan'208";a="6708600"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Mar 2024 22:01:37 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; d="scan'208";a="16829104"
-Received: from saurabhg-nuc10i5fnh.jf.intel.com ([10.165.21.145])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Mar 2024 21:32:05 -0700
-From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-To: 
-Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- matthew.auld@intel.com, Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Subject: [PATCH i-g-t v2 2/2] tests/xe_ccs: Update compression in config based
- on platform
-Date: Fri, 29 Mar 2024 09:30:13 -0700
-Message-Id: <cb8e514071a09bbcf1492005daaf53083616b1a9.1711729400.git.akshata.jahagirdar@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1711729399.git.akshata.jahagirdar@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; d="scan'208";a="16703810"
+Received: from mklonows-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.67])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Mar 2024 22:01:35 -0700
+Date: Fri, 29 Mar 2024 06:01:32 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Cc: igt-dev@lists.freedesktop.org, matthew.auld@intel.com
+Subject: Re: [PATCH i-g-t v2 1/2] lib/intel_blt: Add helper function to
+ ensure platform supports compression
+Message-ID: <20240329050132.myk23se7d22cude6@zkempczy-mobl2>
 References: <cover.1711729399.git.akshata.jahagirdar@intel.com>
+ <6e857ec4a881f64a2cce7b3ec84cd4e1d74a55f3.1711729400.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6e857ec4a881f64a2cce7b3ec84cd4e1d74a55f3.1711729400.git.akshata.jahagirdar@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,111 +69,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In Xe2+ platforms, we need to run this test regardless of the status of
-flat-ccs. The entore flow of the test should work even in case of flat-ccs
-disabled, Everything should "just work".
-Check if the platform supports compression and has flat ccs enabled, before
-the execution if this test, and if it doesn't, then update to compression
-disabled and proceed with the test.
+On Fri, Mar 29, 2024 at 09:30:12AM -0700, Akshata Jahagirdar wrote:
+> Add helper function to check if platform has flat-ccs enabled  by
+> reading from debugfs entry.
+> 
+> Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+> ---
+>  lib/intel_blt.c | 14 ++++++++++++++
+>  lib/intel_blt.h |  1 +
+>  2 files changed, 15 insertions(+)
+> 
+> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+> index fe0a45cb8..0e569c5a2 100644
+> --- a/lib/intel_blt.c
+> +++ b/lib/intel_blt.c
+> @@ -464,6 +464,20 @@ bool blt_block_copy_supports_compression(int fd)
+>  				    BLT_CMD_SUPPORTS_COMPRESSION);
+>  }
+>  
+> +/**
+> + * blt_platform_supports_compression
+> + * @fd: drm fd
+> + *
+> + * Check if platform provided by @fd device supports compression.
+> + *
+> + * Returns:
+> + * true if it does, false otherwise.
+> + */
+> +bool blt_platform_supports_compression(int fd)
+> +{
+> +	return igt_debugfs_search(fd, "info", "has_flat_ccs yes");
+> +}
 
-Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
----
- tests/intel/xe_ccs.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+I would use 'blt_platform_has_flat_ccs_enabled' as the function name, as
+this describes BIOS may have disabled it. Same I would update comment
+because platform may support compression but it is not enabled.
 
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index ad2eeb259..9f427e730 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -116,7 +116,6 @@ static void surf_copy(int xe,
- 	uint16_t cpu_caching = __xe_default_cpu_caching(xe, sysmem, 0);
- 	int result;
- 
--	igt_assert(mid->compression);
- 	if (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) && mid->compression) {
- 		comp_pat_index  = intel_get_pat_idx_uc_comp(xe);
- 		cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
-@@ -193,7 +192,8 @@ static void surf_copy(int xe,
- 	intel_ctx_xe_sync(ctx, true);
- 	WRITE_PNG(xe, run_id, "corrupted", &blt.dst, dst->x2, dst->y2, bpp);
- 	result = memcmp(src->ptr, dst->ptr, src->size);
--	igt_assert(result != 0);
-+	if(mid->compression)
-+		igt_assert(result != 0);
- 
- 	/* retrieve back ccs */
- 	memcpy(ccsmap, ccscopy, ccssize);
-@@ -747,6 +747,9 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 	igt_subtest_with_dynamic("block-copy-compressed") {
- 		struct test_config config = { .compression = true };
- 
-+		if(AT_LEAST_GEN(xe, 20) && !blt_platform_supports_compression(xe))
-+			config.compression = false;
-+
- 		block_copy_test(xe, &config, set, BLOCK_COPY);
- 	}
- 
-@@ -756,6 +759,10 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 					      .width_increment = 15,
- 					      .width_steps = 512 };
- 
-+		if(AT_LEAST_GEN(xe, 20) && !blt_platform_supports_compression(xe))
-+			config.compression = false;
-+
-+		igt_info("p1: config.compression:%d\n",config.compression);
- 		block_copy_test(xe, &config, set, BLOCK_COPY);
- 	}
- 
-@@ -763,6 +770,9 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 	igt_subtest_with_dynamic("block-multicopy-compressed") {
- 		struct test_config config = { .compression = true };
- 
-+		if(AT_LEAST_GEN(xe, 20) && !blt_platform_supports_compression(xe))
-+			config.compression = false;
-+
- 		block_copy_test(xe, &config, set, BLOCK_MULTICOPY);
- 	}
- 
-@@ -771,6 +781,9 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 		struct test_config config = { .compression = true,
- 					      .inplace = true };
- 
-+		if(AT_LEAST_GEN(xe, 20) && !blt_platform_supports_compression(xe))
-+			config.compression = false;
-+
- 		block_copy_test(xe, &config, set, BLOCK_MULTICOPY);
- 	}
- 
-@@ -779,6 +792,9 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 		struct test_config config = { .compression = true,
- 					      .surfcopy = true };
- 
-+		if(AT_LEAST_GEN(xe, 20) && !blt_platform_supports_compression(xe))
-+			config.compression = false;
-+
- 		block_copy_test(xe, &config, set, BLOCK_COPY);
- 	}
- 
-@@ -789,6 +805,9 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 					      .surfcopy = true,
- 					      .new_ctx = true };
- 
-+		if(AT_LEAST_GEN(xe, 20) && !blt_platform_supports_compression(xe))
-+			config.compression = false;
-+
- 		block_copy_test(xe, &config, set, BLOCK_COPY);
- 	}
- 
-@@ -798,6 +817,9 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 					      .surfcopy = true,
- 					      .suspend_resume = true };
- 
-+		if(AT_LEAST_GEN(xe, 20) && !blt_platform_supports_compression(xe))
-+			config.compression = false;
-+
- 		block_copy_test(xe, &config, set, BLOCK_COPY);
- 	}
- 
--- 
-2.34.1
+--
+Zbigniew
 
+> +
+>  /**
+>   * blt_uses_extended_block_copy
+>   * @fd: drm fd
+> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+> index 1f6c71359..a2c4a4adb 100644
+> --- a/lib/intel_blt.h
+> +++ b/lib/intel_blt.h
+> @@ -209,6 +209,7 @@ bool blt_fast_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
+>  bool blt_block_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
+>  bool blt_xy_src_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
+>  bool blt_block_copy_supports_compression(int fd);
+> +bool blt_platform_supports_compression(int fd);
+>  bool blt_uses_extended_block_copy(int fd);
+>  
+>  const char *blt_tiling_name(enum blt_tiling_type tiling);
+> -- 
+> 2.34.1
+> 
