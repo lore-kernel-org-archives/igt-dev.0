@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0B40C6FD1F
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Apr 2024 16:06:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 744FECD1284
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Apr 2024 16:13:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 87AD110FE2C;
-	Tue,  2 Apr 2024 16:06:31 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BeI0SOcW";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7193310FE2C
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Apr 2024 16:06:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712073989; x=1743609989;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=iQkb6UNdHcnGLEbq6jg2WkDL0Ttqec/bh085SdAf8DY=;
- b=BeI0SOcWye/yUfUFumSGHq1hVKQFVeFH7vxM6bxLMpPujzzX9cCQFNdI
- gwuJvMHWuqvjCTbln0HEAiWNwZybmpS3raCkWCvjdDzSpHpubqVEtoF2S
- sQ5r+fwp2LJwKMrrTiCqRmrD57jB8a5jBNKSUbw1kQ4+eHwCgrCbRaS+l
- 1t1xO8gkENIw027P3C0pnzILX7oSwts26kEVfX8BL84a4qNzfS+y7Tiwu
- WwYOD57PKgMshNaYcJRgBJCPTn9gBeRsrlCTktLITc1Z3NjzBuhamydl4
- Zrxiz8bQ7oWbe0fAwLjaXnqma3h8s+mlxa5hhvrFkL7cXIiH/OIB+exq9 g==;
-X-CSE-ConnectionGUID: y2JOMwFWSDaUWMGmFqmphg==
-X-CSE-MsgGUID: 2uospfskQrO34RIIvfieEw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="11091132"
-X-IronPort-AV: E=Sophos;i="6.07,175,1708416000"; d="scan'208";a="11091132"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2024 09:06:28 -0700
-X-CSE-ConnectionGUID: Kl2dtQPhSquC0B1/c7IxDw==
-X-CSE-MsgGUID: v0VTfPCMS/C2V+r0HgBq1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,175,1708416000"; d="scan'208";a="22575858"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 09:06:27 -0700
-Date: Tue, 2 Apr 2024 18:06:25 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <me@petersenna.com>, andi.shyti@linux.intel.com
-Subject: Re: [PATCH i-g-t v6 1/2] tests/intel/gem_exec_capture: Fix many-*
- subtests
-Message-ID: <20240402160625.uj7owqpikixecjpw@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Peter Senna Tschudin <me@petersenna.com>,
- andi.shyti@linux.intel.com
-References: <20240327065928.5522-1-me@petersenna.com>
- <20240330141951.84598-1-me@petersenna.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0D0F910F38F;
+	Tue,  2 Apr 2024 16:13:01 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E1E1B10F010;
+ Tue,  2 Apr 2024 16:12:59 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4451969773087475674=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240330141951.84598-1-me@petersenna.com>
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/amdgpu/amd=5Filr=3A_F?=
+ =?utf-8?q?ix_eDP_PSR_not_be_re-enabled_after_test_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Hersen Wu" <hersenxs.wu@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 02 Apr 2024 16:12:59 -0000
+Message-ID: <171207437992.1154304.11014445381262316464@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240402152040.29149-1-hersenxs.wu@amd.com>
+In-Reply-To: <20240402152040.29149-1-hersenxs.wu@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,85 +37,154 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
-On 2024-03-30 at 15:19:31 +0100, Peter Senna Tschudin wrote:
-> Currently trying to run `gem_exec_capture --run-subtest
-> many-4K-incremental` or `gem_exec_capture --run-subtest many-4K-zero`
-> will fail with:
-> 
->  (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: Test
->  assertion failure function gem_engine_properties_configure, file
->  ../lib/i915/gem_engine_topology.c:577:
->  (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: Failed assertion: ret == 1
->  (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: Last errno: 9, Bad file descriptor
->  (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: error: -1 != 1
-> 
-> This problem happens inside the macro find_first_available_engine()
-> when:
->  1. for_each_ctx_engine() allocates an struct intel_engine_data 'ed'
->     inside a for loop. The core of the issue is that ed only exists
->     inside the for loop. As soon as the for loop ends, ed is out of scope
->     and after it's lifetime.
->  2. intel_get_current_engine() sets '*e' to an address of ed. This is ok
->     while inside the for loop, and is undefined behavior after the for
->     loop ends.
->  3. configure_hangs() uses '*e' after the lifetime of 'ed' has ended
->     leading to undefined behavior
->  4. After the call to find_first_available_engine() __captureN() will
->     fail as it expects '*e' to be valid. This is also undefined
->     behavior.
-> 
-> This patch fixes the issue in two steps:
->  1. Moves the call to configure_hangs() to inside the for loop, where
->     '*e' is valid because there are no issues with scope and lifetime of
->     'ed'.
->  2. Adds `e = &saved.engine;` to the end of
->     find_first_available_engine(). The reason why this works is twofold:
->     First 'saved' has the same content as e had when there were no
->     variable scope and lifetime issues. Second both '*e' and 'saved' are
->     defined in many() meaning that they both have the same scope and
->     lifetime.
-> 
->  v6: new commit message; moves igt_assert(e); to before the call to
->      configure_hangs(). This check is there because '*e' is set by
->      intel_get_current_engine() which will return NULL if ed->n >=
->      ed->nengines.
-> 
-> Signed-off-by: Peter Senna Tschudin <me@petersenna.com>
-> ---
->  tests/intel/gem_exec_capture.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/intel/gem_exec_capture.c b/tests/intel/gem_exec_capture.c
-> index 57b178f3e..a8348f21b 100644
-> --- a/tests/intel/gem_exec_capture.c
-> +++ b/tests/intel/gem_exec_capture.c
-> @@ -665,10 +665,12 @@ static bool needs_recoverable_ctx(int fd)
->  		ctx = intel_ctx_create_all_physical(fd); \
->  		igt_assert(ctx); \
->  		for_each_ctx_engine(fd, ctx, e) \
-> -			for_each_if(gem_class_can_store_dword(fd, e->class)) \
-> +			for_each_if(gem_class_can_store_dword(fd, e->class)) { \
-> +				igt_assert(e); \
---------------- ^
-Why do you assert here? If it will be NULL code would blow at line
-above, where e->class is used.
+--===============4451969773087475674==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Regards,
-Kamil
+== Series Details ==
 
-> +				saved = configure_hangs(fd, e, ctx->id); \
->  				break; \
-> -		igt_assert(e); \
-> -		saved = configure_hangs(fd, e, ctx->id); \
-> +			} \
-> +		e = &saved.engine; \
->  	} while(0)
->  
->  static void many(int fd, int dir, uint64_t size, unsigned int flags)
-> -- 
-> 2.44.0
-> 
+Series: tests/amdgpu/amd_ilr: Fix eDP PSR not be re-enabled after test (rev4)
+URL   : https://patchwork.freedesktop.org/series/131298/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_14516 -> IGTPW_10966
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10966/index.html
+
+Participating hosts (37 -> 33)
+------------------------------
+
+  Additional (1): fi-cfl-8109u 
+  Missing    (5): fi-snb-2520m bat-dg2-11 fi-bsw-nick bat-mtlp-8 bat-arls-3 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10966 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][1] ([i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10966/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@verify-random:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10966/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@kms_pm_rpm@basic-rte:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][3] +14 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10966/fi-cfl-8109u/igt@kms_pm_rpm@basic-rte.html
+
+  
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7796 -> IGTPW_10966
+
+  CI-20190529: 20190529
+  CI_DRM_14516: 5100fcc57dc5d45b246a0aeb068f4f8062d29b09 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10966: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10966/index.html
+  IGT_7796: 2cfed18f6aa776c1593d7cc328d23225dd61bdf9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10966/index.html
+
+--===============4451969773087475674==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_ilr: Fix eDP PSR not be re-enabled after test (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131298/">https://patchwork.freedesktop.org/series/131298/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10966/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10966/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_14516 -&gt; IGTPW_10966</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10966/index.html</p>
+<h2>Participating hosts (37 -&gt; 33)</h2>
+<p>Additional (1): fi-cfl-8109u <br />
+  Missing    (5): fi-snb-2520m bat-dg2-11 fi-bsw-nick bat-mtlp-8 bat-arls-3 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10966 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10966/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10966/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@basic-rte:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10966/fi-cfl-8109u/igt@kms_pm_rpm@basic-rte.html">SKIP</a> +14 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7796 -&gt; IGTPW_10966</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14516: 5100fcc57dc5d45b246a0aeb068f4f8062d29b09 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10966: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10966/index.html<br />
+  IGT_7796: 2cfed18f6aa776c1593d7cc328d23225dd61bdf9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4451969773087475674==--
