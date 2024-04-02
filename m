@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B04CECD1284
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Apr 2024 22:17:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB510C6FD1F
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Apr 2024 22:17:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 870FD1120EA;
+	by gabe.freedesktop.org (Postfix) with ESMTP id C338D1120EE;
 	Tue,  2 Apr 2024 22:16:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DnCOzPww";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZvkgUZFI";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2419B1120E7
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 162D21120E9
  for <igt-dev@lists.freedesktop.org>; Tue,  2 Apr 2024 22:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1712096218; x=1743632218;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=cygGBZ2OkhgQQWygxYkyW9vTBOmlrDsp8bPPNreCLlk=;
- b=DnCOzPww2mIfyocv/RhqmP/mRFPN8HXfHR0iTipBl9BlWt0DRf9iNtj4
- oC30nmOoPcUa6JA0n4tnrSD80x+EBmivBuszxwmmK6cwfMlN8bstY19qV
- TFj5HK2dWXN1MKW8AO6dNfMZ+RfPIwk3dkf/BVIjppf1L7RNfhsR4+Jnl
- PIk9FXRK5+6/JaFzdzPyPJJzhJjel04cpn/G2HZk+Gxoz9X+g/QIJ7N3Y
- pdWlhT6GyO1Hj2zYMpzgcbJZo964JJWEMSDRKBu+z+nAyiJAlKqI4IUdq
- 41zfDPMneljttJQ/HmQ58SnTO0VNLF4wZwJr3BamGr0ICDwZlt0ifdYBI Q==;
-X-CSE-ConnectionGUID: exWK8kNkQpGLxelROik9lA==
-X-CSE-MsgGUID: rTwSZxgvQPqAxDs+9Wx3iA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="7424328"
+ bh=Mq3VTGqnVrsvjcukYTxKYOSMJ6AJcT5y++q5F8hAFq4=;
+ b=ZvkgUZFImiUfLLq5nF3G0m9dFXkVEAaaNXpJAT8eKEJJdu2QLi7FhAmC
+ 6Qsk3AKQTWNMUHyJR5Rs8/9nyrU4Zf1QrSavp4yjvUCqJDDfaVMT7Dad6
+ s7bqyB6lFFBS5UibqzJKo+z9tN28+T+hKeW+BhQYtGg1B7y4F/nwSwm/O
+ //5SVXfe0ICjn8mu7M0nFZA7SU30JwtynO1uwJqdZD5uoM+sbLKRtysHm
+ ylKkXraqp+eGR/cDAR5f9t3U9C+gGz+b0zyBpDuwOrUrHbnFDG2be2VBx
+ GP5H2m+Uc2Qtp5Y8i0ggta0u/xETE0d0MEuwXNP1/moef2EPd34DN14k+ A==;
+X-CSE-ConnectionGUID: t7nX95dTS+SpwlrHoP8jwA==
+X-CSE-MsgGUID: WPPT7pb0TpORRBePsaYT+w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="7424326"
 X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; 
-   d="scan'208";a="7424328"
+   d="scan'208";a="7424326"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  02 Apr 2024 15:16:57 -0700
-X-CSE-ConnectionGUID: c+cTWMIDQsmLsZN/xVe5Jw==
-X-CSE-MsgGUID: t8tvRSy8SaybKU4FXxHlQg==
+X-CSE-ConnectionGUID: l7W2nJpiQMSBEPCq34ttYw==
+X-CSE-MsgGUID: qR5ufuaSSJKw/+uu7e6QCw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; d="scan'208";a="18035607"
+X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; d="scan'208";a="18035604"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  02 Apr 2024 15:16:57 -0700
@@ -47,9 +47,9 @@ To: igt-dev@lists.freedesktop.org
 Cc: Tvrtko Ursulin <tursulin@ursulin.net>,
  Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 5/8] lib/igt_drm_fdinfo: Simplify find_kv()
-Date: Tue,  2 Apr 2024 15:17:13 -0700
-Message-ID: <20240402221716.1840148-6-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 4/8] gputop: Free clients on exit
+Date: Tue,  2 Apr 2024 15:17:12 -0700
+Message-ID: <20240402221716.1840148-5-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240402221716.1840148-1-lucas.demarchi@intel.com>
 References: <20240402221716.1840148-1-lucas.demarchi@intel.com>
@@ -70,56 +70,25 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-index() is deprecate from libc and strchr() should rather be used.
-Moreover the return value is NULL or a pointer to the occurrence, never
-the initial string and `(p - buf) != keylen` can only be true if ':' is
-the next char after the key.
+So it's easily checked with valgrind if we there's something leaking.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- lib/igt_drm_fdinfo.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ tools/gputop.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
-index 17cac4009..15f71e172 100644
---- a/lib/igt_drm_fdinfo.c
-+++ b/lib/igt_drm_fdinfo.c
-@@ -106,20 +106,17 @@ static int parse_engine(char *line, struct drm_client_fdinfo *info,
+diff --git a/tools/gputop.c b/tools/gputop.c
+index 71e28f43e..b13044b50 100644
+--- a/tools/gputop.c
++++ b/tools/gputop.c
+@@ -293,5 +293,7 @@ int main(int argc, char **argv)
+ 		usleep(period_us);
+ 	}
  
- static const char *find_kv(const char *buf, const char *key, size_t keylen)
- {
--	const char *p = buf;
-+	const char *p;
- 
- 	if (strncmp(buf, key, keylen))
- 		return NULL;
- 
--	p = index(buf, ':');
--	if (!p || p == buf)
--		return NULL;
--	if ((p - buf) != keylen)
-+	p = buf + keylen;
-+	if (*p != ':')
- 		return NULL;
- 
--	p++;
--	while (*p && isspace(*p))
--		p++;
-+	for (p++; *p && isspace(*p); p++)
-+		;
- 
- 	return *p ? p : NULL;
++	igt_drm_clients_free(clients);
++
+ 	return 0;
  }
-@@ -233,8 +230,7 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
- 		if ((v = find_kv(l, "drm-driver", strlen("drm-driver")))) {
- 			strncpy(info->driver, v, sizeof(info->driver) - 1);
- 			good++;
--		}  else if ((v = find_kv(l, "drm-client-id",
--					 strlen("drm-client-id")))) {
-+		}  else if ((v = find_kv(l, "drm-client-id", strlen("drm-client-id")))) {
- 			info->id = atol(v);
- 			good++;
- 		} else if ((v = find_kv(l, "drm-pdev", strlen("drm-pdev")))) {
 -- 
 2.43.0
 
