@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44353CD1296
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Apr 2024 22:17:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C160CD1297
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Apr 2024 22:17:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B38FE1120EB;
-	Tue,  2 Apr 2024 22:16:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8093B1120F1;
+	Tue,  2 Apr 2024 22:17:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CU3o8rUP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PF65GVuj";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 537B31120E9
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4423A1120E5
  for <igt-dev@lists.freedesktop.org>; Tue,  2 Apr 2024 22:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1712096218; x=1743632218;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=y1IFGTBRzdJrPmHhJekWBcVAKLItYfNTZo8J65cU0VY=;
- b=CU3o8rUPxkKZ92KCWfbKHAxjzi2rrjUX0TgtoFLp/D1VZq7aRbXTAFZp
- 54FAH696/Xn64s75sYCscWxQ88MEUhccGYBKrI5UDU2Pn+ADTDFVf1JUd
- db2yv9gZreTqMm4XQ8QlUGSxqm+YHI52OOhRJNNnSUIpIwK3vomNekQsw
- hBO2/OmYMLTRoSBOlrQpotyOXVZ1sfd17NpiUkLj+0qmupSVTUmAqSF5I
- mC2eF7Z4rQIPeTgvdAaInRMVvcJpovPNZ8LvqY5KKVXut57/+1Uos7n8a
- 9ts7RQIlIXI3WMVgCGU3H2YAk3jdXZ7sGhEBFzX/t2JRXpIQY8bEf6HTj g==;
-X-CSE-ConnectionGUID: sHKH7P9OTl6UcLfeMH0meg==
-X-CSE-MsgGUID: WXj07D7iQKS1WvWY5AudUw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="7424334"
+ bh=sZCb0jgZxMSm28i3mxJ9Dw3+dmjru1TM86ee5yU6LqQ=;
+ b=PF65GVujo+Yuzu3ZVZWu/YMlazNDreeq65Kc9mHFUC2u1IAJidAwvPoh
+ UEtLFX8+Z0VciDpJz3cqti09UeBMgO4HCUJ5LXd8Zafh27tRe5qOa6YLI
+ 5B2V4NyZNRvgUHRS7zKDFy5XoM7lhCsLjuWVejt2dXHFs6p3A/uKym6M6
+ FSSgoOg0xZK9O06tR0IYpwO46oDF7saizRTJpIIrSlafB9V5IV/YBsn74
+ rRh9OBixEnLYDUhgQsRFJjfsq0NOQyKiPR87U/NPPJfk5rtWSza36P5y6
+ 3/QMKjy4n1+VJELCb4KRAOpXTzAOpncX3hy3tiC80QlvdyOlf2LIEBiAj A==;
+X-CSE-ConnectionGUID: W35r7pxyRkmxrYyhdh7BJA==
+X-CSE-MsgGUID: bswhV3s+S5CxLScb/i8O/g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="7424332"
 X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; 
-   d="scan'208";a="7424334"
+   d="scan'208";a="7424332"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  02 Apr 2024 15:16:58 -0700
-X-CSE-ConnectionGUID: ENRt+bzYTuGc8iR46U+k2A==
-X-CSE-MsgGUID: QDvyAFihRueJH3aeyw2gmg==
+X-CSE-ConnectionGUID: d3nglXCTTaeZ2ouIVIijJg==
+X-CSE-MsgGUID: moZAhQPMSlGEAG+2Gf9oBA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; d="scan'208";a="18035616"
+X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; d="scan'208";a="18035613"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  02 Apr 2024 15:16:57 -0700
@@ -47,9 +47,10 @@ To: igt-dev@lists.freedesktop.org
 Cc: Tvrtko Ursulin <tursulin@ursulin.net>,
  Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 8/8] lib/igt_drm_clients: lazy stat process
-Date: Tue,  2 Apr 2024 15:17:16 -0700
-Message-ID: <20240402221716.1840148-9-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 7/8] lib/igt_drm_fdinfo: Remove prefix arg from parse
+ functions
+Date: Tue,  2 Apr 2024 15:17:15 -0700
+Message-ID: <20240402221716.1840148-8-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240402221716.1840148-1-lucas.demarchi@intel.com>
 References: <20240402221716.1840148-1-lucas.demarchi@intel.com>
@@ -70,110 +71,177 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Only try to get task data like pid and name when that is required.
-Typically most of the processes in a system don't have a drm fd open.
-So only open and use /proc/<pid>/stat when it's needed.
+The prefix is not really needed and __igt_parse_drm_fdinfo()
+can simply pass l + keylen as argument which simplifies the parse
+functions.
+
+While refactoring this, it also replaces the remaining calls to index()
+to use strchr().
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- lib/igt_drm_clients.c | 50 +++++++++++++++++++++----------------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ lib/igt_drm_fdinfo.c | 69 ++++++++++++++++++--------------------------
+ 1 file changed, 28 insertions(+), 41 deletions(-)
 
-diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
-index c174c96ab..1e9781c68 100644
---- a/lib/igt_drm_clients.c
-+++ b/lib/igt_drm_clients.c
-@@ -367,26 +367,33 @@ static size_t readat2buf(int at, const char *name, char *buf, const size_t sz)
+diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
+index a0b41e956..7a9ae94f0 100644
+--- a/lib/igt_drm_fdinfo.c
++++ b/lib/igt_drm_fdinfo.c
+@@ -61,25 +61,23 @@ static const char *ignore_space(const char *s)
+ 	return s;
+ }
+ 
+-static int parse_engine(char *line, struct drm_client_fdinfo *info,
+-			size_t prefix_len,
++static int parse_engine(const char *name, struct drm_client_fdinfo *info,
+ 			const char **name_map, unsigned int map_entries,
+ 			uint64_t *val)
+ {
+-	ssize_t name_len;
+-	char *name, *p;
++	const char *p;
++	size_t name_len;
+ 	int found = -1;
+ 	unsigned int i;
+ 
+-	p = index(line, ':');
+-	if (!p || p == line)
++	p = strchr(name, ':');
++	if (!p)
+ 		return -1;
+ 
+-	name_len = p - line - prefix_len;
++	name_len = p - name;
+ 	if (name_len < 1)
+ 		return -1;
+-
+-	name = line + prefix_len;
++	p++;
+ 
+ 	if (name_map) {
+ 		for (i = 0; i < map_entries; i++) {
+@@ -105,40 +103,30 @@ static int parse_engine(char *line, struct drm_client_fdinfo *info,
  	}
+ 
+ 	if (found >= 0) {
+-		while (*++p && isspace(*p));
++		p = ignore_space(p);
+ 		*val = strtoull(p, NULL, 10);
+ 	}
+ 
+ 	return found;
  }
  
--static bool get_task_name(const char *buffer, char *out, unsigned long sz)
-+static void get_task_data(int pid_dir, unsigned int *pid, char *task, size_t tasksz)
+-static const char *ignore_space(const char *s)
+-{
+-	for (; *s && isspace(*s); s++)
+-		;
+-
+-	return s;
+-}
+-
+-static int parse_region(char *line, struct drm_client_fdinfo *info,
+-			size_t prefix_len,
++static int parse_region(const char *name, struct drm_client_fdinfo *info,
+ 			const char **region_map, unsigned int region_entries,
+ 			uint64_t *val)
  {
--	char *s = index(buffer, '(');
--	char *e = rindex(buffer, ')');
--	unsigned int len;
-+	char buf[4096];
-+	char *s, *e;
-+	size_t len;
+-	char *name, *p, *unit = NULL;
+-	ssize_t name_len;
++	const char *p;
++	size_t name_len;
+ 	int found = -1;
+ 	unsigned int i;
  
-+	if (!readat2buf(pid_dir, "stat", buf, sizeof(buf)))
-+		return;
-+
-+	s = strchr(buf, '(');
-+	e = strchr(s, ')');
- 	if (!s || !e)
--		return false;
--	assert(e >= s);
-+		return;
+-	p = index(line, ':');
+-	if (!p || p == line)
++	p = strchr(name, ':');
++	if (!p)
+ 		return -1;
  
- 	len = e - ++s;
--	if(!len || (len + 1) >= sz)
--		return false;
-+	if (!len)
-+		return;
- 
--	strncpy(out, s, len);
--	out[len] = 0;
-+	if (len + 1 > tasksz)
-+		len = tasksz - 1;
- 
--	return true;
-+	strncpy(task, s, len);
-+	task[len] = 0;
-+	*pid = atoi(buf);
- }
- 
-+
- static bool is_drm_fd(int fd_dir, const char *name, unsigned int *minor)
- {
- 	struct stat stat;
-@@ -480,13 +487,11 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
- 		return clients;
- 
- 	while ((proc_dent = readdir(proc_dir)) != NULL) {
--		unsigned int client_pid, minor = 0;
-+		unsigned int client_pid = 0, minor = 0;
- 		int pid_dir = -1, fd_dir = -1;
- 		struct dirent *fdinfo_dent;
- 		char client_name[64] = { };
- 		DIR *fdinfo_dir = NULL;
--		char buf[4096];
--		size_t count;
- 
- 		if (proc_dent->d_type != DT_DIR)
- 			continue;
-@@ -498,17 +503,6 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
- 		if (pid_dir < 0)
- 			continue;
- 
--		count = readat2buf(pid_dir, "stat", buf, sizeof(buf));
--		if (!count)
--			goto next;
+-	name_len = p - line - prefix_len;
++	name_len = p - name;
+ 	if (name_len < 1)
+ 		return -1;
 -
--		client_pid = atoi(buf);
--		if (!client_pid)
--			goto next;
--
--		if (!get_task_name(buf, client_name, sizeof(client_name)))
--			goto next;
--
- 		fd_dir = openat(pid_dir, "fd", O_DIRECTORY | O_RDONLY);
- 		if (fd_dir < 0)
- 			goto next;
-@@ -541,6 +535,12 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
- 						 minor, info.id))
- 				continue; /* Skip duplicate fds. */
+-	name = line + prefix_len;
++	p++;
  
-+			if (!client_pid) {
-+				get_task_data(pid_dir, &client_pid, client_name,
-+					      sizeof(client_name));
-+				assert(client_pid > 0);
-+			}
-+
- 			c = igt_drm_clients_find(clients, IGT_DRM_CLIENT_PROBE,
- 						 minor, info.id);
- 			if (!c)
+ 	if (region_map) {
+ 		for (i = 0; i < region_entries; i++) {
+@@ -170,20 +158,19 @@ static int parse_region(char *line, struct drm_client_fdinfo *info,
+ 	if (found < 0)
+ 		goto out;
+ 
+-	while (*++p && isspace(*p))
+-		;
++	p = ignore_space(p);
+ 	*val = strtoull(p, NULL, 10);
+ 
+-	p = index(p, ' ');
++	p = strchr(p, ' ');
+ 	if (!p)
+ 		goto out;
++	p++;
+ 
+-	unit = ++p;
+-	if (!strcmp(unit, "KiB")) {
++	if (!strcmp(p, "KiB")) {
+ 		*val *= 1024;
+-	} else if (!strcmp(unit, "MiB")) {
++	} else if (!strcmp(p, "MiB")) {
+ 		*val *= 1024 * 1024;
+-	} else if (!strcmp(unit, "GiB")) {
++	} else if (!strcmp(p, "GiB")) {
+ 		*val *= 1024 * 1024 * 1024;
+ 	}
+ 
+@@ -251,14 +238,14 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
+ 			v = ignore_space(v);
+ 			strncpy(info->pdev, v, sizeof(info->pdev) - 1);
+ 		} else if (strstartswith(l, "drm-engine-capacity-", &keylen)) {
+-			idx = parse_engine(l, info, keylen,
++			idx = parse_engine(l + keylen, info,
+ 					   name_map, map_entries, &val);
+ 			if (idx >= 0) {
+ 				info->capacity[idx] = val;
+ 				num_capacity++;
+ 			}
+ 		} else if (strstartswith(l, "drm-engine-", &keylen)) {
+-			idx = parse_engine(l, info, keylen,
++			idx = parse_engine(l + keylen, info,
+ 					   name_map, map_entries, &val);
+ 			if (idx >= 0) {
+ 				if (!info->capacity[idx])
+@@ -269,23 +256,23 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
+ 					info->last_engine_index = idx;
+ 			}
+ 		} else if (strstartswith(l, "drm-total-", &keylen)) {
+-			idx = parse_region(l, info, keylen,
++			idx = parse_region(l + keylen, info,
+ 					   region_map, region_entries, &val);
+ 			UPDATE_REGION(idx, total, val);
+ 		} else if (strstartswith(l, "drm-shared-", &keylen)) {
+-			idx = parse_region(l, info, keylen,
++			idx = parse_region(l + keylen, info,
+ 					   region_map, region_entries, &val);
+ 			UPDATE_REGION(idx, shared, val);
+ 		} else if (strstartswith(l, "drm-resident-", &keylen)) {
+-			idx = parse_region(l, info, keylen,
++			idx = parse_region(l + keylen, info,
+ 					   region_map, region_entries, &val);
+ 			UPDATE_REGION(idx, resident, val);
+ 		} else if (strstartswith(l, "drm-purgeable-", &keylen)) {
+-			idx = parse_region(l, info, keylen,
++			idx = parse_region(l + keylen, info,
+ 					   region_map, region_entries, &val);
+ 			UPDATE_REGION(idx, purgeable, val);
+ 		} else if (strstartswith(l, "drm-active-", &keylen)) {
+-			idx = parse_region(l, info, keylen,
++			idx = parse_region(l + keylen, info,
+ 					   region_map, region_entries, &val);
+ 			UPDATE_REGION(idx, active, val);
+ 		}
 -- 
 2.43.0
 
