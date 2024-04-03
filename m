@@ -4,66 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8898CD128A
-	for <igt-dev@archiver.kernel.org>; Wed,  3 Apr 2024 17:22:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64BF8CD1288
+	for <igt-dev@archiver.kernel.org>; Wed,  3 Apr 2024 17:23:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8090C112DDF;
-	Wed,  3 Apr 2024 17:22:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E3EB11127CF;
+	Wed,  3 Apr 2024 17:23:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mJ17dsAZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z/sDmQSi";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 060141127CE
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Apr 2024 17:22:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DABC71127CF
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Apr 2024 17:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712164962; x=1743700962;
+ t=1712165030; x=1743701030;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=IHCe17O7jVKjjtWqOAmzlLM3IR2gaFuMU+yf8PkpLPk=;
- b=mJ17dsAZAhsI5IaJaW2ALQJU2JaqnFAdb3pmDm8Fu4SCbu6Ae+s7vbpJ
- wBNuUC0U0xj10RHvnAz0W/lqQNYK/WpOrky5FiNCopmUGDIwXH4T4djFM
- 3AZsrvLr/jOnmrMcxzzrbhUMugaCQSIZ1gFQK4NdZyEQnY6wzhUHPaEe6
- qoELB7nwZXMA3wDw4Ct3i0JvAwXs5MF8IAMaGYs3vS/kZPXTjZ3iKQwn0
- 9MLS08bBQ+5ADeCtrQP/qKHKG9CoLqp7k1LmgqxTPrCjFUCQCKxQhGevj
- ZEa9FkbE/Bl8+nOaZn9qhCxv7LSYKd2Gb6gBPaU07lm7XLUFeawfY+4kw A==;
-X-CSE-ConnectionGUID: woTSXc6QQRy9E9s1S9axtg==
-X-CSE-MsgGUID: Dm0vk0MbRiablZaEDRkBSQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="11232114"
-X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; d="scan'208";a="11232114"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Apr 2024 10:22:41 -0700
-X-CSE-ConnectionGUID: qdwXdGdeSjuZbiJeGFx+Og==
-X-CSE-MsgGUID: xCG1mU+8QbuGV35yuIOhag==
+ mime-version:in-reply-to;
+ bh=J2/wHSAbGGV6/LqR2xmIeN27tLQKfCoLeRoVYEEmDwQ=;
+ b=Z/sDmQSidMHrr+Rirdzx5oNm/vK84kJVetC04uFq54nUUS3+Tw5+Pciz
+ cjAE+7UzO3/FbbOTROwxgEUV0+GMlmKGY4BI/lTb++QBYyGgytK1W4xNd
+ 0zqHdYnBGXXryMZInCEybeulm6e7OX32OXT+girhFEAgKo5XRKcB21vSY
+ 6Nf1/YY/PUWpS61DAfLWFT8krEc4we78xilt1iohrk5/Xtba6oPqfWqTT
+ pBfyqwrVaqiJl+dREJhJhAA0+jNkDzD9M89Ccs+i4RxNpRBIQ/zc18vQ6
+ P5c/9Ys7xs0VJbDd5BtnlShv6oVUYIAg9FXkAHSdtJ3Y96yevhPxVmh1h A==;
+X-CSE-ConnectionGUID: eerVdbo3S56phugQLZeb6g==
+X-CSE-MsgGUID: dByZFNEbRLmCIBqO1HGl5Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="11241891"
+X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; d="scan'208";a="11241891"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Apr 2024 10:23:50 -0700
+X-CSE-ConnectionGUID: zTbXj96+Rb6qtPFIS3fi9Q==
+X-CSE-MsgGUID: NCN5OzttRzKDhrDxU5M8hQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; d="scan'208";a="22995960"
+X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; d="scan'208";a="18618224"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 10:22:39 -0700
-Date: Wed, 3 Apr 2024 19:22:36 +0200
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 10:23:48 -0700
+Date: Wed, 3 Apr 2024 19:23:45 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
- tursulin@ursulin.net, daniel@ffwll.ch,
- boris.brezillon@collabora.com, zbigniew.kempczynski@intel.com,
- healych@amazon.com, kernel@collabora.com
-Subject: Re: [PATCH v2 2/2] tools/gputop: toggle sysfs profiling knob if
- available for device
-Message-ID: <20240403172236.zi7ruqdyzdto2q45@kamilkon-desk.igk.intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Subject: Re: [PATCH i-g-t 1/8] lib/igt_drm_clients: Use calloc
+Message-ID: <20240403172345.xh54t354getamv4v@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
- tursulin@ursulin.net, daniel@ffwll.ch,
- boris.brezillon@collabora.com, zbigniew.kempczynski@intel.com,
- healych@amazon.com, kernel@collabora.com
-References: <20240402222813.277470-1-adrian.larumbe@collabora.com>
- <20240402222813.277470-3-adrian.larumbe@collabora.com>
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+References: <20240402221716.1840148-1-lucas.demarchi@intel.com>
+ <20240402221716.1840148-2-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240402222813.277470-3-adrian.larumbe@collabora.com>
+In-Reply-To: <20240402221716.1840148-2-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,127 +75,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Adrián,
-On 2024-04-02 at 23:27:45 +0100, Adrián Larumbe wrote:
-> For every DRM device that enables its job accounting HW from user space,
-> toggle it right before obtaining per-client fdinfo numbers.
+Hi Lucas,
+On 2024-04-02 at 15:17:09 -0700, Lucas De Marchi wrote:
+> Replace malloc + memset with a single calloc as it's shorter and there's
+> no point keeping them separate.
 > 
-> Make sure profiling status is returned to its original state before
-> exiting, by handling the SIGINT signal just like in intel_gpu_top.
-> 
-> Also dynamically link gputop against igt lib instead of separate per-file
-> static libraries to avoid dependence cascade because of using igt_sysfs
-> functions.
-> 
-> Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Boris Brezillon <boris.brezillon@collabora.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->  tools/gputop.c    | 30 +++++++++++++++++++++++++++++-
->  tools/meson.build |  2 +-
->  2 files changed, 30 insertions(+), 2 deletions(-)
+>  lib/igt_drm_clients.c | 10 +++-------
+>  1 file changed, 3 insertions(+), 7 deletions(-)
 > 
-> diff --git a/tools/gputop.c b/tools/gputop.c
-> index 71e28f43ee4c..5b390cbdb3e7 100644
-> --- a/tools/gputop.c
-> +++ b/tools/gputop.c
-> @@ -26,8 +26,10 @@
->  #include <sys/sysmacros.h>
->  #include <stdbool.h>
->  
-> +#include "igt_device_scan.h"
->  #include "igt_drm_clients.h"
->  #include "igt_drm_fdinfo.h"
-> +#include "igt_profiling.h"
->  #include "drmtest.h"
->  
->  static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
-> @@ -243,9 +245,17 @@ static int client_cmp(const void *_a, const void *_b, void *unused)
->  
->  }
->  
-> +static volatile bool stop_top;
-> +
-> +static void sigint_handler(int  sig)
-> +{
-> +	stop_top = true;
-> +}
-> +
->  int main(int argc, char **argv)
+> diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
+> index 025d60c51..90ca6d61c 100644
+> --- a/lib/igt_drm_clients.c
+> +++ b/lib/igt_drm_clients.c
+> @@ -35,12 +35,10 @@ struct igt_drm_clients *igt_drm_clients_init(void *private_data)
 >  {
->  	unsigned int period_us = 2e6;
-> +	struct igt_profiled_device *profiled_devices = NULL;
->  	struct igt_drm_clients *clients = NULL;
->  	int con_w = -1, con_h = -1;
+>  	struct igt_drm_clients *clients;
 >  
-> @@ -253,9 +263,22 @@ int main(int argc, char **argv)
+> -	clients = malloc(sizeof(*clients));
+> +	clients = calloc(1, sizeof(*clients));
 >  	if (!clients)
->  		exit(1);
+>  		return NULL;
 >  
-> +	igt_devices_scan(false);
-> +
-> +	profiled_devices = igt_devices_profiled();
-> +	if (profiled_devices != NULL)
-> +		igt_devices_toggle_profiling(profiled_devices, true);
-> +
-> +	if (signal(SIGINT, sigint_handler) == SIG_ERR) {
-> +		fprintf(stderr, "Failed to install signal handler!\n");
-> +		igt_devices_toggle_profiling(profiled_devices, false);
-> +		free(profiled_devices);
-> +		profiled_devices = NULL;
-> +	}
-> +
->  	igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
+> -	memset(clients, 0, sizeof(*clients));
+> -
+>  	clients->private_data = private_data;
 >  
-> -	for (;;) {
-> +	while (!stop_top) {
->  		struct igt_drm_client *c, *prevc = NULL;
->  		int i, engine_w = 0, lines = 0;
->  		struct winsize ws;
-> @@ -293,5 +316,10 @@ int main(int argc, char **argv)
->  		usleep(period_us);
->  	}
+>  	return clients;
+> @@ -165,9 +163,8 @@ igt_drm_client_add(struct igt_drm_clients *clients,
+>  	c->clients = clients;
 >  
-> +	if (profiled_devices != NULL) {
-> +		igt_devices_toggle_profiling(profiled_devices, false);
-> +		free(profiled_devices);
-> +	}
-> +
->  	return 0;
->  }
-> diff --git a/tools/meson.build b/tools/meson.build
-> index ac79d8b5840c..a126d6cad7ba 100644
-> --- a/tools/meson.build
-> +++ b/tools/meson.build
-> @@ -68,7 +68,7 @@ endif
->  executable('gputop', 'gputop.c',
->             install : true,
->             install_rpath : bindir_rpathdir,
-> -           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,math])
-> +           dependencies : [lib_igt, lib_igt_drm_clients, math])
-
-Why not creating lib_igt_profiling with only needed dependeces and
-adding it here? Before your patch:
-
-ldd build/tools/gputop
-
-linux-vdso.so.1 (0x00007ffc5e120000)
-libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007bf0a4200000)
-/lib64/ld-linux-x86-64.so.2 (0x00007bf0a452b000)
-
-After:
-
-ldd gputop |wc -l
-78
-
-Regards,
-Kamil
-
+>  	/* Engines */
+> -	c->engines = malloc(sizeof(*c->engines));
+> +	c->engines = calloc(1, sizeof(*c->engines));
+>  	assert(c->engines);
+> -	memset(c->engines, 0, sizeof(*c->engines));
+>  	c->engines->capacity = calloc(info->last_engine_index + 1,
+>  				      sizeof(*c->engines->capacity));
+>  	assert(c->engines->capacity);
+> @@ -190,9 +187,8 @@ igt_drm_client_add(struct igt_drm_clients *clients,
+>  	assert(c->val && c->last);
 >  
->  intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
->  executable('intel_l3_parity', sources : intel_l3_parity_src,
+>  	/* Memory regions */
+> -	c->regions = malloc(sizeof(*c->regions));
+> +	c->regions = calloc(1, sizeof(*c->regions));
+>  	assert(c->regions);
+> -	memset(c->regions, 0, sizeof(*c->regions));
+>  	c->regions->names = calloc(info->last_region_index + 1,
+>  				   sizeof(*c->regions->names));
+>  	assert(c->regions->names);
 > -- 
-> 2.44.0
+> 2.43.0
 > 
