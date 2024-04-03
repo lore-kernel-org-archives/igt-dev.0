@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D8DBCD1288
-	for <igt-dev@archiver.kernel.org>; Wed,  3 Apr 2024 18:19:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A417CD1288
+	for <igt-dev@archiver.kernel.org>; Wed,  3 Apr 2024 18:23:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3F32A11281E;
-	Wed,  3 Apr 2024 18:19:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B928010E766;
+	Wed,  3 Apr 2024 18:23:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k/8zDLja";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="elPF45rG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6728112819
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Apr 2024 18:19:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5A78310E766
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Apr 2024 18:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712168344; x=1743704344;
+ t=1712168589; x=1743704589;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=//cwaTIpEmbvdH4xWfFtvuHgtdIw2iUnauVhHnDe/NM=;
- b=k/8zDLjaQAXqEd/iSalXKm4+leWw88aAoMCPALAcGqgNf8Yf7AJjJ9F/
- SklTGpNvEucgNqLt2ACWDbMIdNiirm1seDV3mYZgDimxMtZQyJcxVr1zD
- ipeoxCpp5R4WkCEBHQBmOzBJGuePoR4TJBA8GW0vkSQFC3fgsQQnRLC0I
- Mlioaec1fJkrSqFN/ABZFy0+9Rj8IAbYj/XbFR056aNzGAApQxVG+TYv+
- Ogwv45xeIyQzeigTdHEaPrc6UCDeQ0JFcy8FVx5KhrtorUxgLu3Ow7Gye
- tVkLaQ9qae9lGZbmGzMGK81ltHRiCql19zSNuzXd74bR0T9nFoZ2y+Usc w==;
-X-CSE-ConnectionGUID: QxlGLBfjQiO6ExgJFKrg3w==
-X-CSE-MsgGUID: Oda0ADqiSYKq/p5lGtbBgw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="7654928"
-X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="7654928"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Apr 2024 11:19:02 -0700
-X-CSE-ConnectionGUID: W2flD95BTzKDtFd4PllxPw==
-X-CSE-MsgGUID: bufaFBAFRtacfXWIwqh8SA==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=75pQ4sBBmrkyW63dRli2DUrSqspdhZRGCOaSN39ndHQ=;
+ b=elPF45rG6lOcs0i0VOG8m3JRz8MUXuX5Do3vsI3j5qod3sHILtZZbJFF
+ 4O4PuAvGr/e6IicxkgyspJOKgD+tu4iDu2KjPPSFyUwr6O5DOiJb6R+2g
+ tT9fdZH4x/OhGOhmnKy4z31nmPx887MGwK0YOA20tUkHKjoAAcbR1Ar3r
+ brgDGA6hS9A+H/HM9QIKoLHltrupnmYkyHM8E8w8C4k3CC6Mo9Tr+c8mb
+ tEV36sTxoEewVKZ59Y9lWPKVYbsHkAa1WL5kFg/H4/106Pyfn4tq33OAW
+ 91486YzaVVJ60AsVuIKmo8Jh9W+umyYnQTkYeNNNifK94aMqMj9G2s/I5 g==;
+X-CSE-ConnectionGUID: JlxIe9VKT3GrJ3hS4FUGMQ==
+X-CSE-MsgGUID: Y5HSxAKkRx+CJ0gYQuxcSQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="11239386"
+X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; d="scan'208";a="11239386"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Apr 2024 11:23:09 -0700
+X-CSE-ConnectionGUID: gRmeca9ZR0OWry0psxfxvQ==
+X-CSE-MsgGUID: ghJporUKQjus35kFDd//iA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; d="scan'208";a="23205432"
+X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; d="scan'208";a="18564378"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 11:19:01 -0700
-Date: Wed, 3 Apr 2024 20:18:58 +0200
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 11:23:07 -0700
+Date: Wed, 3 Apr 2024 20:23:04 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tursulin@igalia.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
-Subject: Re: [PATCH i-g-t] tools/gputop: Fix engine columns with amdgpu
-Message-ID: <20240403181858.kqf2r53zj7l332nu@kamilkon-desk.igk.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/xe_busted: Introduce a new test for Xe
+ device busted state
+Message-ID: <20240403182304.kwm52y3nzgvvqg3u@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tursulin@igalia.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
-References: <20240403150057.25765-1-tursulin@igalia.com>
+ igt-dev@lists.freedesktop.org,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+References: <20240315010843.194335-1-rodrigo.vivi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240403150057.25765-1-tursulin@igalia.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240315010843.194335-1-rodrigo.vivi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,83 +76,160 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Tvrtko,
-On 2024-04-03 at 16:00:57 +0100, Tvrtko Ursulin wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> 
-> Amdgpu kernel driver skips output of fdinfo keys for unused engines. That
-> is completely legal but corrupts the column formatting in the current
-> code.
-> 
-> Fix it by simply treating change in detected engines used by a client
-> as trigger to re-emit a new header. This ensures columns are always
-> correctly aligned, albeit with a cost of potentially duplicating the
-> header for the same DRM minor.
-> 
-> This is considered good enough for a reference implementation. The
-> alternative would be to add some real per DRM minor state tracking which
-> sounds like an overkill, at least until gputop gains a nicer (any) UI.
-
-+Cc few amd devs:
-
-Alex Deucher <alexander.deucher@amd.com>
-Christian Koenig <christian.koenig@amd.com>
-Vitaly Prosyak <vitaly.prosyak@amd.com>
-
-Change looks ok so from me:
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Hi Rodrigo,
+On 2024-03-14 at 21:08:41 -0400, Rodrigo Vivi wrote:
+> Let's inject a gt_reset failure that will put Xe device in the
+> new busted state, then we confirm the IOCTL is blocked and we
+----- ^^^^^^
+Why is not 'wedged'? What is a difference?
 
 Regards,
 Kamil
 
+> reload the driver to get back to a clean state for other test
+> execution, since busted state in Xe is a final state that can only
+> be cleared with a device rebind/reprobe.
 > 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> The fault injection of this test is entirely based on xe_uevent
+> provided by Himal.
+> 
+> v2: Use rebind instead of module reload (Lucas)
+>     And other improvements also pointed out by Lucas.
+> 
+> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+> Cc:  Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > ---
->  tools/gputop.c | 27 ++++++++++++++++++++++++++-
->  1 file changed, 26 insertions(+), 1 deletion(-)
+>  tests/intel/xe_busted.c | 107 ++++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build       |   1 +
+>  2 files changed, 108 insertions(+)
+>  create mode 100644 tests/intel/xe_busted.c
 > 
-> diff --git a/tools/gputop.c b/tools/gputop.c
-> index 71e28f43ee4c..76075c5dde8b 100644
-> --- a/tools/gputop.c
-> +++ b/tools/gputop.c
-> @@ -119,11 +119,36 @@ print_client_header(struct igt_drm_client *c, int lines, int con_w, int con_h,
->  	return lines;
->  }
->  
-> +static bool
-> +engines_identical(const struct igt_drm_client *c,
-> +		  const struct igt_drm_client *pc)
+> diff --git a/tests/intel/xe_busted.c b/tests/intel/xe_busted.c
+> new file mode 100644
+> index 000000000..88278213d
+> --- /dev/null
+> +++ b/tests/intel/xe_busted.c
+> @@ -0,0 +1,107 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2024 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: cause fake gt reset failure which put Xe device in busted state
+> + * Category: Software building block
+> + * Sub-category: driver
+> + * Functionality: busted
+> + * Test category: functionality test
+> + */
+> +
+> +#include <limits.h>
+> +#include <dirent.h>
+> +
+> +#include "igt.h"
+> +#include "igt_device.h"
+> +#include "igt_kmod.h"
+> +#include "igt_sysfs.h"
+> +
+> +#include "xe/xe_ioctl.h"
+> +
+> +static void force_busted(int fd)
 > +{
-> +	unsigned int i;
+> +	igt_debugfs_write(fd, "fail_gt_reset/probability", "100");
+> +	igt_debugfs_write(fd, "fail_gt_reset/times", "2");
 > +
-> +	if (c->engines->num_engines != pc->engines->num_engines ||
-> +	    c->engines->max_engine_id != pc->engines->max_engine_id)
-> +		return false;
-> +
-> +	for (i = 0; i <= c->engines->max_engine_id; i++)
-> +		if (c->engines->capacity[i] != pc->engines->capacity[i] ||
-> +		    !!c->engines->names[i] != !!pc->engines->names[i] ||
-> +		    strcmp(c->engines->names[i], pc->engines->names[i]))
-> +			return false;
-> +
-> +	return true;
+> +	xe_force_gt_reset(fd, 0);
+> +	sleep(1);
 > +}
+> +
+> +static int rebind_xe(int fd)
+> +{
+> +	char pci_slot[NAME_MAX];
+> +	int sysfs;
+> +
+> +	igt_device_get_pci_slot_name(fd, pci_slot);
+> +
+> +	sysfs = open("/sys/bus/pci/drivers/xe", O_DIRECTORY);
+> +	igt_assert(sysfs);
+> +
+> +        igt_assert(igt_sysfs_set(sysfs, "unbind", pci_slot));
+> +
+> +	/*
+> +	 * We need to close the client for a proper release, before
+> +	 * binding back again.
+> +	 */
+> +	close(fd);
+> +
+> +        igt_assert(igt_sysfs_set(sysfs, "bind", pci_slot));
+> +	close(sysfs);
+> +
+> +	/* Renew the client connection */
+> +	fd = drm_open_driver(DRIVER_XE);
+> +	igt_assert(fd);
+> +
+> +	return fd;
+> +}
+> +
+> +static int simple_ioctl(int fd)
+> +{
+> +	int ret;
+> +
+> +	struct drm_xe_vm_create create = {
+> +		.extensions = 0,
+> +		.flags = 0,
+> +	};
+> +
+> +	ret = igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create);
+> +
+> +	if (ret == 0)
+> +		xe_vm_destroy(fd, create.vm_id);
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * SUBTEST: basic-busted
+> + * Description: Force Xe device busted after injecting a failure in GT reset
+> + */
+> +igt_main
+> +{
+> +	int fd;
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		igt_require(igt_debugfs_exists(fd, "fail_gt_reset/probability",
+> +					       O_RDWR));
+> +	}
+> +
+> +	igt_subtest("basic-busted") {
+> +		igt_assert_eq(simple_ioctl(fd), 0);
+> +		force_busted(fd);
+> +		igt_assert_neq(simple_ioctl(fd), 0);
+> +		fd = rebind_xe(fd);
+> +		igt_assert_eq(simple_ioctl(fd), 0);
+> +	}
+> +
+> +	igt_fixture {
+> +		if (igt_debugfs_exists(fd, "fail_gt_reset/probability", O_RDWR)) {
+> +			igt_debugfs_write(fd, "fail_gt_reset/probability", "0");
+> +			igt_debugfs_write(fd, "fail_gt_reset/times", "1");
+> +		}
+> +		drm_close_driver(fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index a856510fc..87a531051 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -274,6 +274,7 @@ intel_kms_progs = [
+>  ]
 >  
->  static bool
->  newheader(const struct igt_drm_client *c, const struct igt_drm_client *pc)
->  {
-> -	return !pc || c->drm_minor != pc->drm_minor;
-> +	return !pc || c->drm_minor != pc->drm_minor ||
-> +	       /*
-> +		* Below is a a hack for drivers like amdgpu which omit listing
-> +		* unused engines. Simply treat them as separate minors which
-> +		* will ensure the per-engine columns are correctly sized in all
-> +		* cases.
-> +		*/
-> +	       !engines_identical(c, pc);
->  }
->  
->  static int
+>  intel_xe_progs = [
+> +	'xe_busted',
+>  	'xe_ccs',
+>  	'xe_create',
+>  	'xe_compute',
 > -- 
 > 2.44.0
 > 
