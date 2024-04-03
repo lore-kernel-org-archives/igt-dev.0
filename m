@@ -4,73 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02E30CD1288
-	for <igt-dev@archiver.kernel.org>; Wed,  3 Apr 2024 16:24:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64E4FCD1288
+	for <igt-dev@archiver.kernel.org>; Wed,  3 Apr 2024 17:01:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A2594112CA9;
-	Wed,  3 Apr 2024 16:24:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F319B112DA7;
+	Wed,  3 Apr 2024 17:01:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="EjWVFFah";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c8QNrt+W";
 	dkim-atps=neutral
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com
- [209.85.221.46])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 927BA112CA9
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Apr 2024 16:24:55 +0000 (UTC)
-Received: by mail-wr1-f46.google.com with SMTP id
- ffacd0b85a97d-34356f794a5so2237893f8f.1
- for <igt-dev@lists.freedesktop.org>; Wed, 03 Apr 2024 09:24:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1712161494; x=1712766294;
- darn=lists.freedesktop.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fpeL1l02xJRcTfDfVx2cLZRk+iZuN/Q3US7N0obMf+8=;
- b=EjWVFFahDATDeT1bgUAohwx3ko4NBS+mNKM495QKl6JgvxAXjALGnnrVNucuC7pyUE
- EvNXcunrJQ5zk7kLOnxVomJ4vX1O2nU3+CTg6rMEoMiCJs5DaXL5TzpsZKFnI4btFgJ2
- +Q9KSoBcxKXH3DlzeLnUCCv0RPFmYFPBW87GCGZ5At3mTvVNPRmMPfzo1Zo04pOZL5b7
- EqMD3XPe2ObwR//qFLqmzbLXGVSfB4nQV7bcEsFEE+lImvgQbMAXDStO5sYGbgseeI8Y
- ZlpK4XgwL6hkqgGZTlJYZL0fGO3QkFne7rPXXYVh7VbrciKwblqXFnAj8HOGw21f9sfC
- EeYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712161494; x=1712766294;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fpeL1l02xJRcTfDfVx2cLZRk+iZuN/Q3US7N0obMf+8=;
- b=Ma0o/s6oiCkWSMjMAV6p59MvQoFbWeMYtLYNZXb4P0zKGd7qETcM0ZQiF59NkXIMBW
- Rc3zj7P6SaHTbzCEn8jd5XfIqqaniifCEx8e5KkFhRL7M1RzX4pVpaH/7wfJ3uvsnf+W
- 03L2WVpz7tHpHyfs2HIDUXzzC1NMN1irA0jt2KzOnNZeheyoK60yRJoRbQfIuvx/S4md
- xuhV0NsxawHuMTGoTT3uNJk/+cwjmdef8dTFwS6urRG4denL1dRXxczn6NmKk9cFO6/X
- q6W3YmETT8uk4fW0bGpTkukZ2zxw1PZo2thWpRX4zX3G8xzWhu6TL7p8nGJ9k+XH/Drd
- TS7w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXcR0B8GhOnOV2gC6X0WODTvOe63XgS/s4Nnr9AD6/IHoafGeQEGF7H74oqCkuIHgUwuHPaeJmrWTXz+7skILbblUTWgSCIOYxSVWKrSg==
-X-Gm-Message-State: AOJu0YyGy39f9RkM5xUfWTYvz+KmQLjNroZW20SlS+6KvWHctajlk4on
- lN7G7thaTiMl6ojhGvYC+Lpbi25HjAIUrk3vFkLLUMu53DHEbGRrGT8wYxu4an8=
-X-Google-Smtp-Source: AGHT+IE57BnmLbWYgrXN1vxz2v85CgekkFgO+YoXdlOJFSgkDwv5Dumss98qCVg8Ca4BQzd9KRx3BA==
-X-Received: by 2002:adf:fe43:0:b0:33f:6ec1:56dd with SMTP id
- m3-20020adffe43000000b0033f6ec156ddmr4841120wrs.45.1712161493896; 
- Wed, 03 Apr 2024 09:24:53 -0700 (PDT)
-Received: from [192.168.0.101] ([84.65.0.132])
- by smtp.gmail.com with ESMTPSA id
- u5-20020a056000038500b00343491b9cbesm10450651wrf.41.2024.04.03.09.24.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Apr 2024 09:24:53 -0700 (PDT)
-Message-ID: <aaab8699-399e-4d1d-8922-1e303eef103e@ursulin.net>
-Date: Wed, 3 Apr 2024 17:24:52 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6507112DA7
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Apr 2024 17:01:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1712163672; x=1743699672;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=X7fDWuR0XNP43qpwDHz0jtlR8rew0Rc4L16hBSiKRxA=;
+ b=c8QNrt+WVtGWxnUO1r/zYV9NdlIwg4+Y1HuABQNjQ0t2/jTlSn46lJcU
+ yjahP/g7DZkAROOgLKLj4S+q+qFkvlX91oyX1ptJHjk9RpcynSheUnpv6
+ tr6fvGNf7jIaMeTCVlBy5q3KTeq6lXiCyNrteAyEjeocvu1lhH1237/6X
+ Wg6d06DI20BvmxhNB424fLP4wy6umYP24D3YPItLcGf8yxTSZJHqcSpsE
+ EXVCXymrYHIwvTbz9dqKtdoZuGYg3EzWbWF1v6smhF6IeB7cKK0ou9L9q
+ Oxx8tT/3hMPzQpJWr6xO/OjivHE1ZjN3jKXqko14tiWHlmn3EUQBqkOio Q==;
+X-CSE-ConnectionGUID: oZcSnps3Tn+jz05VopLBWQ==
+X-CSE-MsgGUID: mOlAyTYTT7i/faHOcfsJyQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="7527305"
+X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
+   d="scan'208";a="7527305"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Apr 2024 10:01:12 -0700
+X-CSE-ConnectionGUID: ChLgTrU3Q86Ip6Qxfrl/eQ==
+X-CSE-MsgGUID: 63aFrN5BTFuuOxNgkF1nJg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; d="scan'208";a="18545545"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 10:01:09 -0700
+Date: Wed, 3 Apr 2024 19:00:48 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: nakshtra.goyal@intel.com
+Cc: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
+ janga.rahul.kumar@intel.com, himal.prasad.ghimiray@intel.com,
+ priyanka.dandamudi@intel.com
+Subject: Re: [PATCH i-g-t] tests/intel/xe_sysfs_defaults: Validate for all
+ default values
+Message-ID: <20240403170048.o5dq3ps2nekg6zmm@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ nakshtra.goyal@intel.com, igt-dev@lists.freedesktop.org,
+ ramadevi.gandi@intel.com, janga.rahul.kumar@intel.com,
+ himal.prasad.ghimiray@intel.com, priyanka.dandamudi@intel.com
+References: <20240403042445.3807946-1-nakshtra.goyal@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 8/8] lib/igt_drm_clients: lazy stat process
-Content-Language: en-GB
-To: Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-References: <20240402221716.1840148-1-lucas.demarchi@intel.com>
- <20240402221716.1840148-9-lucas.demarchi@intel.com>
-From: Tvrtko Ursulin <tursulin@ursulin.net>
-In-Reply-To: <20240402221716.1840148-9-lucas.demarchi@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240403042445.3807946-1-nakshtra.goyal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,118 +75,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Hi nakshtra.goyal,
+On 2024-04-03 at 09:54:45 +0530, nakshtra.goyal@intel.com wrote:
+> From: nakshtra goyal <nakshtra.goyal@intel.com>
+> 
+> Change in igt_assert_f function parameters so that it also validate for
+> property value equals to 0.
+> 
+> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> Signed-off-by: nakshtra goyal <nakshtra.goyal@intel.com>
+> ---
+>  tests/intel/xe_sysfs_defaults.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/intel/xe_sysfs_defaults.c b/tests/intel/xe_sysfs_defaults.c
+> index 4a6b3ba6d..a0014a832 100644
+> --- a/tests/intel/xe_sysfs_defaults.c
+> +++ b/tests/intel/xe_sysfs_defaults.c
+> @@ -42,8 +42,8 @@ static void test_defaults(int xe, int engine, const char **property)
+>  
+>  		igt_debug("Checking attr '%s'\n", de->d_name);
+>  
+> -		igt_assert_f(property_value = igt_sysfs_get_u64(defaults, de->d_name),
+> -			     "Default value %s is not present!\n", de->d_name);
+> +		property_value = igt_sysfs_get_u64(defaults, de->d_name);
 
-On 02/04/2024 23:17, Lucas De Marchi wrote:
-> Only try to get task data like pid and name when that is required.
-> Typically most of the processes in a system don't have a drm fd open.
-> So only open and use /proc/<pid>/stat when it's needed.
+This could assert at lib, why not using:
 
-This sounds like a very good optimisation to me too and I also don't 
-understand how it could be making things less efficient (as you say in 
-the cover letter). Unfortunately I will not have time to cross check in 
-the next week or so.
+bool __igt_sysfs_get_u64(int dir, const char *attr, uint64_t *value);
+
+Also, type for 'int property_value;' should be uint64_t, not int.
 
 Regards,
+Kamil
 
-Tvrtko
-
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->   lib/igt_drm_clients.c | 50 +++++++++++++++++++++----------------------
->   1 file changed, 25 insertions(+), 25 deletions(-)
+> +		igt_assert_f(property_value >= 0, "Default value %s is not present!\n", de->d_name);
+>  
+>  		igt_debug("Default property:%s, value:%d\n", de->d_name, property_value);
+>  
+> -- 
+> 2.34.1
 > 
-> diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
-> index c174c96ab..1e9781c68 100644
-> --- a/lib/igt_drm_clients.c
-> +++ b/lib/igt_drm_clients.c
-> @@ -367,26 +367,33 @@ static size_t readat2buf(int at, const char *name, char *buf, const size_t sz)
->   	}
->   }
->   
-> -static bool get_task_name(const char *buffer, char *out, unsigned long sz)
-> +static void get_task_data(int pid_dir, unsigned int *pid, char *task, size_t tasksz)
->   {
-> -	char *s = index(buffer, '(');
-> -	char *e = rindex(buffer, ')');
-> -	unsigned int len;
-> +	char buf[4096];
-> +	char *s, *e;
-> +	size_t len;
->   
-> +	if (!readat2buf(pid_dir, "stat", buf, sizeof(buf)))
-> +		return;
-> +
-> +	s = strchr(buf, '(');
-> +	e = strchr(s, ')');
->   	if (!s || !e)
-> -		return false;
-> -	assert(e >= s);
-> +		return;
->   
->   	len = e - ++s;
-> -	if(!len || (len + 1) >= sz)
-> -		return false;
-> +	if (!len)
-> +		return;
->   
-> -	strncpy(out, s, len);
-> -	out[len] = 0;
-> +	if (len + 1 > tasksz)
-> +		len = tasksz - 1;
->   
-> -	return true;
-> +	strncpy(task, s, len);
-> +	task[len] = 0;
-> +	*pid = atoi(buf);
->   }
->   
-> +
->   static bool is_drm_fd(int fd_dir, const char *name, unsigned int *minor)
->   {
->   	struct stat stat;
-> @@ -480,13 +487,11 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
->   		return clients;
->   
->   	while ((proc_dent = readdir(proc_dir)) != NULL) {
-> -		unsigned int client_pid, minor = 0;
-> +		unsigned int client_pid = 0, minor = 0;
->   		int pid_dir = -1, fd_dir = -1;
->   		struct dirent *fdinfo_dent;
->   		char client_name[64] = { };
->   		DIR *fdinfo_dir = NULL;
-> -		char buf[4096];
-> -		size_t count;
->   
->   		if (proc_dent->d_type != DT_DIR)
->   			continue;
-> @@ -498,17 +503,6 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
->   		if (pid_dir < 0)
->   			continue;
->   
-> -		count = readat2buf(pid_dir, "stat", buf, sizeof(buf));
-> -		if (!count)
-> -			goto next;
-> -
-> -		client_pid = atoi(buf);
-> -		if (!client_pid)
-> -			goto next;
-> -
-> -		if (!get_task_name(buf, client_name, sizeof(client_name)))
-> -			goto next;
-> -
->   		fd_dir = openat(pid_dir, "fd", O_DIRECTORY | O_RDONLY);
->   		if (fd_dir < 0)
->   			goto next;
-> @@ -541,6 +535,12 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
->   						 minor, info.id))
->   				continue; /* Skip duplicate fds. */
->   
-> +			if (!client_pid) {
-> +				get_task_data(pid_dir, &client_pid, client_name,
-> +					      sizeof(client_name));
-> +				assert(client_pid > 0);
-> +			}
-> +
->   			c = igt_drm_clients_find(clients, IGT_DRM_CLIENT_PROBE,
->   						 minor, info.id);
->   			if (!c)
