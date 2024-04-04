@@ -4,116 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FFF5CD1284
-	for <igt-dev@archiver.kernel.org>; Thu,  4 Apr 2024 09:08:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5B2ECD1292
+	for <igt-dev@archiver.kernel.org>; Thu,  4 Apr 2024 09:37:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 988C611A506;
-	Thu,  4 Apr 2024 09:08:27 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="U73Q/vXH";
-	dkim-atps=neutral
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2125.outbound.protection.outlook.com [40.107.243.125])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7427711A506
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Apr 2024 09:08:24 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=j4LVRcgtTsDqoKG2kRG080S+dowN+1CBRFZzXwSfkmZd+aV5tJNb0hQ7lpu99whd/6yQlqBVdQ/wk1YSnAC3eqN/IKnLbVlGuA4nakF1IdhLCIX8fKQ6F6sENcXg6jTuLJQjfzEuiidn3xIDw8pN2zkRA/RBpp1JlprBl1mwaL/hMHuQsJZIiDoo6dCRAIhLm/elhWVmL/xicLxhGxtmQZRLL0zEjdG+X2Ql0NT30vNpL7+awCRirVprhwzsu2a6IcrQie+cJNjBKkoP1rb9cp1yMQqEsgsr3Qwyz93aiMVgBzt6uoLwKzq14nZRxEqFt35VCFOf15FJNeX6ALx6+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q/YNAtCAfwJApLGxjeqv2LkymVenUmA13XtmFH/eC6Q=;
- b=AIo2C+w01W/X4LMwMB6siBtPEEIqyP63ttDp94j2RWyU8oNSr0WAYexkj5tIDe+oQIzkzpEAMRx3cHZlc7drMEPTzXF93kruoOjcY/2daV9JyuJ/+nrSI3XWjEAoNmu+t1KEcr99l5kqByXio3b7lmvzzVNf2RRWqhJk+rQ5tKdJyji4lgGHMTfkgI4QW09FMc3eBaEyP3X40JWKEHFx443QEU4TP//x/xZZjm82qY1yzmyirt3mtZs3a+s/yNYCoP/fuTBQA7uoQ0OGIwf1GufpOF1rkWbbsAFP3hUtbzNQZREJWCT6WI1w4PSk/hq/IKNC8M48R44MaDVn3rPP/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q/YNAtCAfwJApLGxjeqv2LkymVenUmA13XtmFH/eC6Q=;
- b=U73Q/vXHQMk6ofrtecNaxR0mvpSvEZz7uevDaCBMCErcbD6l5/6bUFdlGW25QptJUKwU9XGvGUAfxbKKP6h/Ok26IA0KBk4aa3uuT03xgiyhRDObzZlgw6TyI7tTIc7ecglmcHWsCOnedsOuWhi31IP31I3etSdAVmXT02gPJHQ=
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by DM6PR12MB4283.namprd12.prod.outlook.com (2603:10b6:5:211::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Thu, 4 Apr
- 2024 09:08:21 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::f2b6:1034:76e8:f15a]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::f2b6:1034:76e8:f15a%6]) with mapi id 15.20.7409.042; Thu, 4 Apr 2024
- 09:08:21 +0000
-Message-ID: <0691d5fd-ab4a-4680-954f-6150cdf78e46@amd.com>
-Date: Thu, 4 Apr 2024 11:08:16 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tools/gputop: Fix engine columns with amdgpu
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tursulin@igalia.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
-References: <20240403150057.25765-1-tursulin@igalia.com>
- <20240403181858.kqf2r53zj7l332nu@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20240403181858.kqf2r53zj7l332nu@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR0P281CA0118.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a8::19) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D6CD911ADAC;
+	Thu,  4 Apr 2024 09:37:53 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9C7411AD12;
+ Thu,  4 Apr 2024 09:37:50 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DM6PR12MB4283:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: oSgXgsEfNYUCKuzZO27gjpst1CDrSamiLGsQH3ZW3SdOfaDQ7v+259JcLeHKzyAvT0pUE9Mjn+ZgX/OTxPGOrf40VcF4j8MT3Lll4ODt+Qr+IRxMShnHON7ILlQtcDksAhTiS9Mo+ZMY1Jfgm8kU42jKhfT5poWn9LN6R+fCogCc19IVLw0yO9D7zUCxRT2anl2g8gtD4pH/sKnAjjsR4q+fItCruT8ESkJeS0U2FFuhVEk0q+pVcZQWAYcIznnEixqZhfhNiSJ4BjUQnY15H4dAaJWWq6yYIHIdDe0zSAYlZ774BVtwiH3wxeVqa6m8+qkIxZqM4HwhJWstkyiXpvZ6cELE9bODy2xC0KHfenIIR6qwkWCB6JEJNHHXHjzEmOemqaewTYYYZ/AivuYOyl2NPgPwr1iIVV8odE+ifPNAhs2371P7pBps3Eaj9T/O20g0KOP2bGTNDEmGKI/ER8q2qAt8EpQ7C0/Qusz3zVlP4B3nLikJg1D0zqJAksF3TNFYI07NpTjnRbrn8dFZdZkTiTrFYB5c+sdsPgy2ZrTkan0RCQ8xaqnDXYHd3vsEctaB/ONgAz3Ft/cH7o+aU1JZWtfCcua0KJ1HvVlLHdTlLSOsfHzhPR/+dNXUWzk/jgb4aaz1ZVCe7AIYsx78pF+iVs4CD3xU8cUNd/gF218=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR12MB5685.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(1800799015)(366007)(376005); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eFhQQUtSOERQb0NadmhRN1VZdldoaXhudHRzMTEzV2I3Z3g4eE91TlkwUGtt?=
- =?utf-8?B?ZFM1WkVjMVNUWkNta2FvbkgwVmtteHNJUUNPeGVpcTk5L1ZlTXZDbmVXckRj?=
- =?utf-8?B?Mkl1VzJxc0lqbEJ3bHNGQTZuZGk4UmVLYTQ5L0J1YU1yejhlaUI4SW5uaWtr?=
- =?utf-8?B?bHcxb1dONCtXcWoyMkY0QXhKTk5scEV0REJiTi92QzFrRjZNa05ReFdoeitV?=
- =?utf-8?B?RFUyRVN0UXQ0ZUZPUDFZa2NBVmFTZGR6eHhKK2QzVnA5QzVFS2lhTE5PWEtv?=
- =?utf-8?B?WTBiNDlBODJ5VXdoa3BBTlZKZHBLdkR1a3BDbm5PcEIvdlk3M1FOVjVydG14?=
- =?utf-8?B?dGtMUTE2NFNGUVNMME5BMU5lSzRwNkdnK3FsRDlFSi9uNUZ1T0hUckF0akJ5?=
- =?utf-8?B?VTl1aUQvclBoUXl4bG5DYTk1MUE2Q3hhMkxCMGlkRmdvNXVpa00yVFlFN2FL?=
- =?utf-8?B?elI5NkZDMVVnL2twZ1VxcC83OUFCNitMS3FVMTNkbVBRZ0VCeHpMeDhZT1NS?=
- =?utf-8?B?blBoMERocGZ0ZStvamJqSG5CcVdKbG1YQnJQcGVxd1FnQ1ZuOVpXWEg1Nm1H?=
- =?utf-8?B?UnRrSTVkb1JxUUR4UkU1UXNRVFdZSWtBbUZyQlpldENNSHZmTmtGTkwvQXZh?=
- =?utf-8?B?L2MydWE2MlhaYjV2QzlCeHFoSTZzeFJiTzI0WmVydGJoMTl5TVI4UHVKRUJB?=
- =?utf-8?B?Tlkwb3grV0prN2FPeVIyZFNkVDQ0enRTb1Y3TW9ScXFRYjZXQ05PS0xZR1FB?=
- =?utf-8?B?S2xGVmxvM1hueVpaZEg2a0xWcUZDRHBsNFk2SGZ0cGwxMVlkdHU5OU9MOU5P?=
- =?utf-8?B?eklaZ0RYYkw2S2tUNHBxWUdBS3JDYi9BdDRSVWJWWi9PRXRZV2J2L2xpQUEw?=
- =?utf-8?B?Uy9EUXJ0YXRrMGdrUER3TkxneG1MQ1FEN0dIR3dUdzNrcitFVHJzV3Rtc1dW?=
- =?utf-8?B?NzhjWkJYMFhwU1dKaVFWNjgxWkFXSWNPeEVDQ2U2YUkvK05GWXN0TE00V3Qw?=
- =?utf-8?B?aldoZWZBTzJxYU1DcGZrRk1IemltZzV3RTNXa0U3STA5UzhObWtiVER3NENh?=
- =?utf-8?B?RU81bWpDSmpOcS93bzFsdTFRQTVZS3I0WlYwaG9CbWVTbW1Pcnk1dEdrV0g0?=
- =?utf-8?B?WmR5VnRSbkpiUit3azlWZWxmSGpzdGZ4ZDNtWEpjSC9wR3pWQmJHT1FQVlJx?=
- =?utf-8?B?eC9uQkFpTXVVMUMxOUIxOFI1NjdlSTVFaE94djkwQlVOS0RQdUovY3pFVTdR?=
- =?utf-8?B?MmdIVDVYeTlKeDFmYlJIOFk2MkRobkYzZk9MeVZjanlWSE50MGozUnhWY1d2?=
- =?utf-8?B?UVZNMmtxOC9haFdWV2lMS09TRHZUcGZQVFB5d1ZGWThJRElEekdkalgzNGZu?=
- =?utf-8?B?a2pKOXlSOGhWd3FOQ2FUUUdyTVZ3YytZRDNVc0ZrMjNMNG9nUkthMHJHZmRt?=
- =?utf-8?B?QnplUk0rRkRxanNyVDBKUzlrajBaKzhqRlBLZVVkMTZEMXZEcFphcGNXWXhY?=
- =?utf-8?B?Nkw1blVzcHdvTXZvdkxpWVpDQnNKQjZIRllDRVhuMUQ4bEJmL2V3eUdibW1Q?=
- =?utf-8?B?cDZ3SzZsNkxJWG5YSkwvbURUbXZCb3paOTdNbjJibjJTaENqdDdyVjkxV1lT?=
- =?utf-8?B?UFVmaXNFNWJydUpqQk9QV1dKdzFtamdmKzhHdWZ0Z2F6MHNrazZ2V0ZHdEJi?=
- =?utf-8?B?dHY3eE1nZkRDTFR6ZFlLbEVYSVZvaUxkazRiU3N4bUVzVFFBK3VkTDB2YjVz?=
- =?utf-8?B?dmhJSTdJakpTU05Xd2NHTWxIb3ZYZzNYNlQwY2tPbmVVRkFGUVNqZG1ZOUVF?=
- =?utf-8?B?Nk9KaEp2cEI0ajV1WU9BelhVVDZOMWVKbDY0S1NtUzU1QUtiNHVjM2lMcnpy?=
- =?utf-8?B?cnR5bkZzTWVSSzE2VEkvTzNjNHdITDg1VWNTT0MxMFEreGtCaXhuN1AySEJh?=
- =?utf-8?B?RzEvbUJnM3JhY1FUbmR0OFY3WTJrWUU5SXhuOTlMVFNvc01lazkrZ0M3WXFH?=
- =?utf-8?B?ZWZZNzU3VXd5eFg0dWc5cWZaL0RHR2t2aWh0MjJDWlFIcStEV2duQldUM2dR?=
- =?utf-8?B?VGZodU5KYmp5cjZveTFnNDczN2FvRStKQytJbkV4YUNSTGVJb09HTlRqL0ZK?=
- =?utf-8?Q?inrL3Drnfulo6RaKU8ZR5y/BD?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3a1d133-6e4d-422a-eafe-08dc5486c666
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2024 09:08:21.2342 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: o78rumH1Waxesrc0v6CKdpyRqr4oX4aj62OdxhaMn6mojK/y5nzUQocA4a5YFt+E
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4283
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_Update_compression_check_?=
+ =?utf-8?q?based_on_platform?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Akshata Jahagirdar" <akshata.jahagirdar@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 04 Apr 2024 09:37:50 -0000
+Message-ID: <171222347095.1209409.15059796103284125162@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <cover.1712252787.git.akshata.jahagirdar@intel.com>
+In-Reply-To: <cover.1712252787.git.akshata.jahagirdar@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -126,92 +37,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Am 03.04.24 um 20:18 schrieb Kamil Konieczny:
-> Hi Tvrtko,
-> On 2024-04-03 at 16:00:57 +0100, Tvrtko Ursulin wrote:
->> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->>
->> Amdgpu kernel driver skips output of fdinfo keys for unused engines. That
->> is completely legal but corrupts the column formatting in the current
->> code.
->>
->> Fix it by simply treating change in detected engines used by a client
->> as trigger to re-emit a new header. This ensures columns are always
->> correctly aligned, albeit with a cost of potentially duplicating the
->> header for the same DRM minor.
->>
->> This is considered good enough for a reference implementation. The
->> alternative would be to add some real per DRM minor state tracking which
->> sounds like an overkill, at least until gputop gains a nicer (any) UI.
-> +Cc few amd devs:
->
-> Alex Deucher <alexander.deucher@amd.com>
-> Christian Koenig <christian.koenig@amd.com>
-> Vitaly Prosyak <vitaly.prosyak@amd.com>
->
-> Change looks ok so from me:
-> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Series Details ==
 
-Acked-by: Christian König <christian.koenig@amd.com>
+Series: Update compression check based on platform
+URL   : https://patchwork.freedesktop.org/series/132014/
+State : failure
 
-Thanks for taking care of this,
-Christian.
+== Summary ==
 
->
-> Regards,
-> Kamil
->
->> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->> ---
->>   tools/gputop.c | 27 ++++++++++++++++++++++++++-
->>   1 file changed, 26 insertions(+), 1 deletion(-)
->>
->> diff --git a/tools/gputop.c b/tools/gputop.c
->> index 71e28f43ee4c..76075c5dde8b 100644
->> --- a/tools/gputop.c
->> +++ b/tools/gputop.c
->> @@ -119,11 +119,36 @@ print_client_header(struct igt_drm_client *c, int lines, int con_w, int con_h,
->>   	return lines;
->>   }
->>   
->> +static bool
->> +engines_identical(const struct igt_drm_client *c,
->> +		  const struct igt_drm_client *pc)
->> +{
->> +	unsigned int i;
->> +
->> +	if (c->engines->num_engines != pc->engines->num_engines ||
->> +	    c->engines->max_engine_id != pc->engines->max_engine_id)
->> +		return false;
->> +
->> +	for (i = 0; i <= c->engines->max_engine_id; i++)
->> +		if (c->engines->capacity[i] != pc->engines->capacity[i] ||
->> +		    !!c->engines->names[i] != !!pc->engines->names[i] ||
->> +		    strcmp(c->engines->names[i], pc->engines->names[i]))
->> +			return false;
->> +
->> +	return true;
->> +}
->>   
->>   static bool
->>   newheader(const struct igt_drm_client *c, const struct igt_drm_client *pc)
->>   {
->> -	return !pc || c->drm_minor != pc->drm_minor;
->> +	return !pc || c->drm_minor != pc->drm_minor ||
->> +	       /*
->> +		* Below is a a hack for drivers like amdgpu which omit listing
->> +		* unused engines. Simply treat them as separate minors which
->> +		* will ensure the per-engine columns are correctly sized in all
->> +		* cases.
->> +		*/
->> +	       !engines_identical(c, pc);
->>   }
->>   
->>   static int
->> -- 
->> 2.44.0
->>
+IGT patchset build failed on latest successful build
+5e3263748a636ebc91ecfafbd339870c77e3eed6 tests/amdgpu/amd_ilr: Fix eDP PSR not be re-enabled after test
+
+Tail of build.log:
+[657/1674] Compiling C object 'tests/v3d/cad21b8@@v3d_create_bo@exe/v3d_create_bo.c.o'.
+[658/1674] Compiling C object 'tests/v3d/cad21b8@@v3d_get_bo_offset@exe/v3d_get_bo_offset.c.o'.
+[659/1674] Compiling C object 'tests/v3d/cad21b8@@v3d_mmap@exe/v3d_mmap.c.o'.
+[660/1674] Compiling C object 'tests/vc4/e4667e8@@vc4_dmabuf_poll@exe/vc4_dmabuf_poll.c.o'.
+[661/1674] Compiling C object 'tests/vc4/e4667e8@@vc4_lookup_fail@exe/vc4_lookup_fail.c.o'.
+[662/1674] Generating testlist with a custom command.
+[663/1674] Generating testlist-full with a custom command.
+[664/1674] Compiling C object 'tests/59830eb@@xe_query@exe/intel_xe_query.c.o'.
+[665/1674] Compiling C object 'tests/vc4/e4667e8@@vc4_mmap@exe/vc4_mmap.c.o'.
+[666/1674] Compiling C object 'tests/59830eb@@i915_query@exe/intel_i915_query.c.o'.
+[667/1674] Compiling C object 'tests/v3d/cad21b8@@v3d_perfmon@exe/v3d_perfmon.c.o'.
+[668/1674] Compiling C object 'tests/vc4/e4667e8@@vc4_create_bo@exe/vc4_create_bo.c.o'.
+[669/1674] Compiling C object 'tests/vc4/e4667e8@@vc4_tiling@exe/vc4_tiling.c.o'.
+[670/1674] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_registers_hsw.c.o'.
+[671/1674] Compiling C object 'tests/v3d/cad21b8@@v3d_wait_bo@exe/v3d_wait_bo.c.o'.
+[672/1674] Compiling C object 'tests/vc4/e4667e8@@vc4_label_bo@exe/vc4_label_bo.c.o'.
+[673/1674] Compiling C object 'tests/59830eb@@kms_pm_rpm@exe/intel_kms_pm_rpm.c.o'.
+[674/1674] Compiling C object 'tests/59830eb@@gem_exec_balancer@exe/intel_gem_exec_balancer.c.o'.
+[675/1674] Compiling C object 'tests/v3d/cad21b8@@v3d_job_submission@exe/v3d_job_submission.c.o'.
+[676/1674] Compiling C object 'tests/vc4/e4667e8@@vc4_perfmon@exe/vc4_perfmon.c.o'.
+[677/1674] Compiling C object 'tests/59830eb@@kms_chamelium_audio@exe/chamelium_kms_chamelium_audio.c.o'.
+[678/1674] Compiling C object 'tests/vc4/e4667e8@@vc4_purgeable_bo@exe/vc4_purgeable_bo.c.o'.
+[679/1674] Compiling C object 'tests/vc4/e4667e8@@vc4_wait_seqno@exe/vc4_wait_seqno.c.o'.
+[680/1674] Compiling C object 'tests/59830eb@@kms_chamelium_edid@exe/chamelium_kms_chamelium_edid.c.o'.
+[681/1674] Compiling C object 'tests/59830eb@@kms_chamelium_color@exe/chamelium_kms_chamelium_color.c.o'.
+[682/1674] Compiling C object 'tests/vc4/e4667e8@@vc4_wait_bo@exe/vc4_wait_bo.c.o'.
+[683/1674] Compiling C object 'tests/59830eb@@kms_psr2_sf@exe/intel_kms_psr2_sf.c.o'.
+[684/1674] Compiling C object 'tests/v3d/cad21b8@@v3d_submit_cl@exe/v3d_submit_cl.c.o'.
+[685/1674] Compiling C object 'tests/59830eb@@xe_exec_threads@exe/intel_xe_exec_threads.c.o'.
+[686/1674] Compiling C object 'tests/vmwgfx/776e741@@vmw_mob_stress@exe/vmw_mob_stress.c.o'.
+[687/1674] Compiling C object 'tests/v3d/cad21b8@@v3d_submit_csd@exe/v3d_submit_csd.c.o'.
+[688/1674] Compiling C object 'tests/59830eb@@kms_chamelium_hpd@exe/chamelium_kms_chamelium_hpd.c.o'.
+[689/1674] Compiling C object 'benchmarks/cb1d2fd@@gem_exec_reloc@exe/gem_exec_reloc.c.o'.
+[690/1674] Compiling C object 'tests/vmwgfx/776e741@@vmw_tri@exe/vmw_tri.c.o'.
+[691/1674] Compiling C object 'tests/vmwgfx/776e741@@vmw_execution_buffer@exe/vmw_execution_buffer.c.o'.
+[692/1674] Compiling C object 'tests/vmwgfx/776e741@@vmw_ref_count@exe/vmw_ref_count.c.o'.
+[693/1674] Compiling C object 'benchmarks/cb1d2fd@@gem_blt@exe/gem_blt.c.o'.
+[694/1674] Compiling C object 'tests/59830eb@@kms_chamelium_frames@exe/chamelium_kms_chamelium_frames.c.o'.
+[695/1674] Compiling C object 'tests/vmwgfx/776e741@@vmw_surface_copy@exe/vmw_surface_copy.c.o'.
+[696/1674] Compiling C object 'tests/59830eb@@gem_stress@exe/intel_gem_stress.c.o'.
+[697/1674] Compiling C object 'tests/59830eb@@gem_exec_fence@exe/intel_gem_exec_fence.c.o'.
+[698/1674] Compiling C object 'tests/59830eb@@gem_userptr_blits@exe/intel_gem_userptr_blits.c.o'.
+[699/1674] Compiling C object 'tests/59830eb@@xe_vm@exe/intel_xe_vm.c.o'.
+[700/1674] Compiling C object 'tests/59830eb@@kms_frontbuffer_tracking@exe/intel_kms_frontbuffer_tracking.c.o'.
+[701/1674] Compiling C object 'tests/59830eb@@gem_concurrent_all@exe/intel_gem_concurrent_all.c.o'.
+[702/1674] Compiling C object 'tests/59830eb@@perf_pmu@exe/intel_perf_pmu.c.o'.
+[703/1674] Compiling C object 'tests/59830eb@@gem_exec_schedule@exe/intel_gem_exec_schedule.c.o'.
+[704/1674] Compiling C object 'tests/59830eb@@perf@exe/intel_perf.c.o'.
+[705/1674] Linking target lib/libigt.so.0.
+ninja: build stopped: subcommand failed.
+
 
