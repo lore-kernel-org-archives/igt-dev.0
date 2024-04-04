@@ -4,66 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92895CD1299
-	for <igt-dev@archiver.kernel.org>; Thu,  4 Apr 2024 13:44:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6DBCCD1284
+	for <igt-dev@archiver.kernel.org>; Thu,  4 Apr 2024 15:41:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 062B110FA2A;
-	Thu,  4 Apr 2024 13:44:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 04D9311323C;
+	Thu,  4 Apr 2024 15:41:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HYSRtRsV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lwtm6Ldg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4763910F318
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Apr 2024 13:44:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7717611323C
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Apr 2024 15:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712238281; x=1743774281;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=GgOazif9E0h9c6HEQGcbLIqcbuWW79k+3LPU8mPehVY=;
- b=HYSRtRsVXF+qheMTRgjN4EkQ705dc/wfKsyf0UceLSSAMnN3/Qtzl134
- Tah87ARWnXEjl1AD+aEs0znQJc5Cr5qB/3Rp8mGfxz5GMtvG6TgC2b1Bd
- CaqOQigFEutsT9iJjBSRp5s+QZI/ENZ/A4VnJ3YA14mH3L/LVwE6uDgED
- 4P1Dcd/sXvg8MThcrYbWBr1mo3Pl4ax1WjOeRIexwIQyDhRWVviMzQwEQ
- V7k4hYEq2lFbDWYRqj7quOoiPl+hLmQ0qfo+rC7aZ/R8RKY6CUQ0t7Bo7
- UrFgmDICICxoGN0a0ahNdvkEAwc//MRMnZtC0jJKpjntgzCnEdUOpnh4+ w==;
-X-CSE-ConnectionGUID: tRJqO7YNS4yeGRzzl8xk3A==
-X-CSE-MsgGUID: jbWGiyuBTXeDio4EWS64Pw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="11337749"
-X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; d="scan'208";a="11337749"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Apr 2024 06:05:36 -0700
+ t=1712245306; x=1743781306;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Ur7vYxHS4KUwWEgmAmS/2ulM6TjgM3in2iqtCHnUy8E=;
+ b=lwtm6LdgTdFi0lvnT8t34ypLskbvChBy2bbLmp9ezKcnNeWdNIcMv3hV
+ u5H4/N0ve1FKZyiX+vd+wHXBOLRdlc8cOP/3xlmho8YaFfG+mIoBNM4KP
+ rhzs3flT9bZbj1fcQUt1C7NP1Z+KPOy4NsKgcU98TkBz10d3GYqD6L5B+
+ 4FAQ/X4Bsl+Fp8HCvKmeeJBwfdN6AP1RtpoM4MGor6vmA+ogCvx6BY4ac
+ qXRGhdla972+mGNOyIZGvKRZNlLe2p2wKYsc06PWrGTeh4XTiwUnflMkI
+ qdCF7h3fueK17ZqG1m57INpm8NEHUbrM3hDZVUF4hsAESb13nUwAqppvb w==;
+X-CSE-ConnectionGUID: HmWM+v55RAiCkp2xa06JcQ==
+X-CSE-MsgGUID: /PwCF/KJQPqJY2TcNsvjyQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="10510538"
+X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; d="scan'208";a="10510538"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Apr 2024 08:41:44 -0700
+X-CSE-ConnectionGUID: 1LrAthTORi2kaoC3nrmSKA==
+X-CSE-MsgGUID: yB0HtDDHTGe0q2KejODLxw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="827790427"
-X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; d="scan'208";a="827790427"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by orsmga001.jf.intel.com with SMTP; 04 Apr 2024 06:05:32 -0700
-Received: by stinkbox (sSMTP sendmail emulation);
- Thu, 04 Apr 2024 16:05:32 +0300
-Date: Thu, 4 Apr 2024 16:05:32 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Pekka Paalanen <pekka.paalanen@collabora.com>
-Cc: igt-dev@lists.freedesktop.org, Simon Ser <contact@emersion.fr>,
- Jonas =?iso-8859-1?Q?=C5dahl?= <jadahl@redhat.com>,
- Daniel Stone <daniel@fooishbar.org>,
- Sameer Lattannavar <sameer.lattannavar@intel.com>,
- Sebastian Wick <sebastian.wick@redhat.com>,
- Harry Wentland <harry.wentland@amd.com>
-Subject: Re: [PATCH i-g-t 4/5] tests/kms_cursor_crc: Test the SIZE_HINTS
- property
-Message-ID: <Zg6lnKuoVrR5OjK8@intel.com>
-References: <20240315191505.27620-1-ville.syrjala@linux.intel.com>
- <20240315191505.27620-5-ville.syrjala@linux.intel.com>
- <20240404115105.0d2a9694.pekka.paalanen@collabora.com>
- <Zg6HQgfK4JZtH2tB@intel.com>
- <20240404155250.7fb245d2.pekka.paalanen@collabora.com>
+X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; d="scan'208";a="18870185"
+Received: from unknown (HELO localhost) ([10.245.246.95])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Apr 2024 08:41:43 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Subject: [PATCH i-g-t] tests/device_reset: move later skips into subtests
+Date: Thu,  4 Apr 2024 17:41:34 +0200
+Message-ID: <20240404154134.90603-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240404155250.7fb245d2.pekka.paalanen@collabora.com>
-X-Patchwork-Hint: comment
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,51 +67,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Apr 04, 2024 at 03:52:50PM +0300, Pekka Paalanen wrote:
-> On Thu, 4 Apr 2024 13:56:02 +0300
-> Ville Syrjälä <ville.syrjala@linux.intel.com> wrote:
-> 
-> > On Thu, Apr 04, 2024 at 11:51:05AM +0300, Pekka Paalanen wrote:
-> > > On Fri, 15 Mar 2024 21:15:04 +0200
-> > > Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
-> > >   
-> > > > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > > > 
-> > > > Make sure the driver accepts all the sizes declared in the
-> > > > plane's SIZE_HINTS property.
-> > > > 
-> > > > TODO: Actually test that each reported size works fully?  
-> > > 
-> > > What does this mean? What does cursor_size_supported() do?  
-> > 
-> > It does a TEST_ONLY commit using data->fb and the specified size.
-> > So just confirms that the kernel accepts it, not that it actually
-> > looks correct on screen.
-> 
-> Good, that's better than my first impression.
-> 
-> > > I don't know that, so it looks like you just create an FB and destroy
-> > > it, never putting it on the plane where the SIZE_HINTS were found.
-> > >   
-> > > >       Would need a bunch of restructuring of the test,
-> > > >       and for the moment i915 is the only driver that
-> > > >       supports SIZE_HINTS and it's already >100% covered
-> > > >       by the existing tests. So I'll leave this for the
-> > > >       next guy whose driver has different needs...  
-> > > 
-> > > How would they know to fix this test? They just see the test pass and
-> > > are happy, right?  
-> > 
-> > I would expect them to actually care about testing their driver
-> > properly. But perhaps my expectations are a bit high.
-> 
-> Yeah, a screenshot or CRC test would be best.
+It is safe to use skips just after igt_main() for skipping all
+subtests but later on they produce logs and even if CI will
+ignore that, such logs can mislead developers reading them.
 
-Yep. We have CRC tests, but the impelementation would need to be
-completely flipped on its head to iterate the sizes as the inner
-loop rather than as the outer loop. Not impossible, just a bunch
-of work (and wouldn't extend the coverage for i915 at all).
+Move a skip from middle of igt_main() code block into subtests
+which needed them.
 
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/device_reset.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/tests/device_reset.c b/tests/device_reset.c
+index 583a59039..9b3b8ee6c 100644
+--- a/tests/device_reset.c
++++ b/tests/device_reset.c
+@@ -424,22 +424,25 @@ igt_main
+ 		healthcheck(&dev);
+ 	}
+ 
+-	igt_subtest_group {
+-		igt_fixture {
+-			igt_skip_on_f(dev.fds.slot_dir < 0, "Gfx Card does not support any "
+-				      "pcie slot for cold reset\n");
+-			igt_skip_on(!is_sysfs_cold_reset_supported(dev.fds.slot_dir));
+-		}
++#define SKIP_IF_NO_COLD_RESET(slot_dir) \
++	do { \
++		igt_skip_on_f(slot_dir < 0, "Gfx Card does not support any " \
++			      "pcie slot for cold reset\n"); \
++		igt_skip_on(!is_sysfs_cold_reset_supported(slot_dir)); \
++	} while(0)
+ 
++	igt_subtest_group {
+ 		igt_describe("Unbinds driver from device, initiates cold reset"
+ 			     " then rebinds driver to device");
+ 		igt_subtest("unbind-cold-reset-rebind") {
++			SKIP_IF_NO_COLD_RESET(dev.fds.slot_dir);
+ 			unbind_reset_rebind(&dev, COLD_RESET);
+ 			healthcheck(&dev);
+ 		}
+ 
+ 		igt_describe("Cold Resets device with bound driver");
+ 		igt_subtest("cold-reset-bound") {
++			SKIP_IF_NO_COLD_RESET(dev.fds.slot_dir);
+ 			initiate_device_reset(&dev, COLD_RESET);
+ 			/*
+ 			 * Cold reset will initiate card boot sequence again,
 -- 
-Ville Syrjälä
-Intel
+2.42.0
+
