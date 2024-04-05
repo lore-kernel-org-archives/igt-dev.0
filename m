@@ -4,28 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E218FC67861
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Apr 2024 10:46:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ECF1CD11C2
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Apr 2024 11:04:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5EFD4113AF3;
-	Fri,  5 Apr 2024 10:46:15 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 045C0113AF3;
- Fri,  5 Apr 2024 10:46:13 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1714911648864594925=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E8FFA113B08;
+	Fri,  5 Apr 2024 11:04:40 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="njCxrRwh";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 69793113B04
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Apr 2024 11:04:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1712315078; x=1743851078;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=bH9WX2uLyjPqRWXQzdBPxyiA7pUwoPcF1qA0PuvkZG0=;
+ b=njCxrRwh+4uNOFc2bYe/0AH1r3gXVrRqwj3lC9WBdDMQuBs1M2Th+f2x
+ WFiwM8KPuNu7i46yC6jgQC5I9MA9TmQAbDDrXpSuQvwuRmN0ydOOxhJwp
+ fX1iyyvAUDM822VoVx7fkJPnoGWtwAD4buFcqEQ5PGZgWFG+8C0zmfIpY
+ mU03NvTP6V+TWrqNySawAfsbxF0wjhzYcQoBfcC0xavFWjJyxi8VdiHVn
+ V/5+wh9DQ4sFsRAEUQTVYD7N11/+ZZtOyCKIU65zCiS0b7TfSeFzohYH2
+ Yfe4zGvojosJyBszr7iuIntCJtlk1cXzBd7Rna27DwVXyQtYLZ8/pL7TV Q==;
+X-CSE-ConnectionGUID: afWaDvuxRnG3E36y7hk4OQ==
+X-CSE-MsgGUID: WFym54zWR9CdXFCah4KDEA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="25080879"
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; d="scan'208";a="25080879"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Apr 2024 04:04:37 -0700
+X-CSE-ConnectionGUID: Dmm9VOYuTsGP3fU/3dI7DQ==
+X-CSE-MsgGUID: smbuVZOBRXeUymY/Xc/DtA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; d="scan'208";a="23772123"
+Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 04:04:34 -0700
+From: Kunal Joshi <kunal1.joshi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kunal Joshi <kunal1.joshi@intel.com>,
+ =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+ Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_big_joiner: cleanup force joiner
+ debugfs state
+Date: Fri,  5 Apr 2024 16:45:25 +0530
+Message-Id: <20240405111525.1748544-1-kunal1.joshi@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/kms=5Fflip=5Fscale?=
- =?utf-8?q?d=5Fcrc=3A_Add_support_for_FP16_format_of_MTL_compressed_modifier?=
- =?utf-8?q?_=28rev16=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Melanie Lobo" <melanie.lobo@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 05 Apr 2024 10:46:13 -0000
-Message-ID: <171231397301.1228889.4158884395574942373@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20231010134540.28485-1-melanie.lobo@intel.com>
-In-Reply-To: <20231010134540.28485-1-melanie.lobo@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,110 +66,38 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1714911648864594925==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+cleanup force joiner debugfs state
 
-== Series Details ==
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/intel/kms_big_joiner.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Series: tests/intel/kms_flip_scaled_crc: Add support for FP16 format of MTL compressed modifier (rev16)
-URL   : https://patchwork.freedesktop.org/series/124956/
-State : success
+diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
+index 078f76ac1..a507f524a 100644
+--- a/tests/intel/kms_big_joiner.c
++++ b/tests/intel/kms_big_joiner.c
+@@ -291,6 +291,7 @@ igt_main
+ 	drmModeModeInfo mode;
+ 	data_t data;
+ 
++
+ 	igt_fixture {
+ 		force_joiner_supported = false;
+ 		data.big_joiner_output_count = 0;
+@@ -417,6 +418,7 @@ igt_main
+ 	}
+ 
+ 	igt_fixture {
++		toggle_force_joiner_on_all_non_big_joiner_outputs(&data, false);
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
+ 	}
+-- 
+2.25.1
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7800_BAT -> XEIGTPW_10981_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (5 -> 5)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7800 -> IGTPW_10981
-  * Linux: xe-1043-9619b05620f06aaf89a5c603c2ba55c1419ee78e -> xe-1044-5f66b4d72c631a3bc5e5ef7e62dbcbf221d28fa3
-
-  IGTPW_10981: 10981
-  IGT_7800: 7800
-  xe-1043-9619b05620f06aaf89a5c603c2ba55c1419ee78e: 9619b05620f06aaf89a5c603c2ba55c1419ee78e
-  xe-1044-5f66b4d72c631a3bc5e5ef7e62dbcbf221d28fa3: 5f66b4d72c631a3bc5e5ef7e62dbcbf221d28fa3
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10981/index.html
-
---===============1714911648864594925==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_flip_scaled_crc: Add support for FP16 format of MTL compressed modifier (rev16)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124956/">https://patchwork.freedesktop.org/series/124956/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10981/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10981/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7800_BAT -&gt; XEIGTPW_10981_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (5 -&gt; 5)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7800 -&gt; IGTPW_10981</li>
-<li>Linux: xe-1043-9619b05620f06aaf89a5c603c2ba55c1419ee78e -&gt; xe-1044-5f66b4d72c631a3bc5e5ef7e62dbcbf221d28fa3</li>
-</ul>
-<p>IGTPW_10981: 10981<br />
-  IGT_7800: 7800<br />
-  xe-1043-9619b05620f06aaf89a5c603c2ba55c1419ee78e: 9619b05620f06aaf89a5c603c2ba55c1419ee78e<br />
-  xe-1044-5f66b4d72c631a3bc5e5ef7e62dbcbf221d28fa3: 5f66b4d72c631a3bc5e5ef7e62dbcbf221d28fa3</p>
-
-</body>
-</html>
-
---===============1714911648864594925==--
