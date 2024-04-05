@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54F9BC67861
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Apr 2024 18:58:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8959C67861
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Apr 2024 19:11:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CF10710E28F;
-	Fri,  5 Apr 2024 18:58:11 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UlajZ+7V";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0C6410E28F
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Apr 2024 18:58:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712343491; x=1743879491;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=G1uL/mUaCWVvE/dbotqTPi+zpIKFM9Uk1uEhxk2oi5I=;
- b=UlajZ+7V5MgSRSeDUtnlAveEG1HvRPA9YVYfgkWSITgAuIJqF2QSdoon
- Q66xutCxaJ8eRvIGhVrnRDaWXK7alnrNAwXkSLARlOyT2nEsleQnPd0Lw
- J/Wustr9D+lr9VrDgGupRDuRqWDx4fGLOWuS3w6SkYsQXMOogpNQopv+i
- yBhymr3jKCP2KnA9i7jRtdDws0A+NdgxMimobg3vL6J+47Fj5Ua4pnqUL
- 2cPVhOOtzU/vtDImhBiQrkuRipap5723j5oExk/MUDff+7nPaAspVrtNx
- pY59SiZHH7OeJSA/Thli0ouGTxeQ7i4cCyFsXTIy0phOkIYaJx3ZqROr0 Q==;
-X-CSE-ConnectionGUID: ybbcmH3DSrW/iqej8G/sQA==
-X-CSE-MsgGUID: fB02dekfTeu9gpGJm9ZdpQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="25191975"
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; d="scan'208";a="25191975"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Apr 2024 11:58:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="827790990"
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; d="scan'208";a="827790990"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by orsmga001.jf.intel.com with SMTP; 05 Apr 2024 11:58:07 -0700
-Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 05 Apr 2024 21:58:07 +0300
-Date: Fri, 5 Apr 2024 21:58:07 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Subject: Re: [PATCH i-g-t] tests/intel/kms_big_joiner: cleanup force joiner
- debugfs state
-Message-ID: <ZhBJv1sqXOU78bGQ@intel.com>
-References: <20240405111525.1748544-1-kunal1.joshi@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3DC2010E69F;
+	Fri,  5 Apr 2024 19:11:32 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3AA3B10E69F;
+ Fri,  5 Apr 2024 19:11:30 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6706341090914279890=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240405111525.1748544-1-kunal1.joshi@intel.com>
-X-Patchwork-Hint: comment
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/kunit=3A_Read_results_from?=
+ =?utf-8?q?_debugfs_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 05 Apr 2024 19:11:30 -0000
+Message-ID: <171234429023.1239329.4132655875303701369@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240405175544.6047-2-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20240405175544.6047-2-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,46 +37,161 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Apr 05, 2024 at 04:45:25PM +0530, Kunal Joshi wrote:
-> cleanup force joiner debugfs state
+--===============6706341090914279890==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-We have igt_reset_connectors(), which seems like the place
-where *all* force knobs should be reset.
+== Series Details ==
 
-> 
-> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> ---
->  tests/intel/kms_big_joiner.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
-> index 078f76ac1..a507f524a 100644
-> --- a/tests/intel/kms_big_joiner.c
-> +++ b/tests/intel/kms_big_joiner.c
-> @@ -291,6 +291,7 @@ igt_main
->  	drmModeModeInfo mode;
->  	data_t data;
->  
-> +
->  	igt_fixture {
->  		force_joiner_supported = false;
->  		data.big_joiner_output_count = 0;
-> @@ -417,6 +418,7 @@ igt_main
->  	}
->  
->  	igt_fixture {
-> +		toggle_force_joiner_on_all_non_big_joiner_outputs(&data, false);
->  		igt_display_fini(&data.display);
->  		drm_close_driver(data.drm_fd);
->  	}
-> -- 
-> 2.25.1
+Series: lib/kunit: Read results from debugfs (rev2)
+URL   : https://patchwork.freedesktop.org/series/131686/
+State : success
 
--- 
-Ville Syrjälä
-Intel
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7801_BAT -> XEIGTPW_10985_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10985_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#616])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7801/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10985/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@xe_exec_threads@threads-mixed-fd-basic:
+    - bat-dg2-oem2:       [PASS][3] -> [TIMEOUT][4] ([Intel XE#1167] / [Intel XE#1356])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7801/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10985/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_evict@evict-cm-threads-small:
+    - bat-dg2-oem2:       [TIMEOUT][5] ([Intel XE#1259] / [Intel XE#1473]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7801/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10985/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html
+
+  
+  [Intel XE#1167]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1167
+  [Intel XE#1259]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1259
+  [Intel XE#1356]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1356
+  [Intel XE#1473]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1473
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7801 -> IGTPW_10985
+  * Linux: xe-1046-5714711c6612120bd9c306824ec807d322c0735b -> xe-1048-8cb1ee178ef7e504e233814ef50c1f18f42dac72
+
+  IGTPW_10985: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10985/index.html
+  IGT_7801: 7801
+  xe-1046-5714711c6612120bd9c306824ec807d322c0735b: 5714711c6612120bd9c306824ec807d322c0735b
+  xe-1048-8cb1ee178ef7e504e233814ef50c1f18f42dac72: 8cb1ee178ef7e504e233814ef50c1f18f42dac72
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10985/index.html
+
+--===============6706341090914279890==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/kunit: Read results from debugfs (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131686/">https://patchwork.freedesktop.org/series/131686/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10985/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10985/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7801_BAT -&gt; XEIGTPW_10985_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10985_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7801/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10985/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_threads@threads-mixed-fd-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7801/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10985/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1167">Intel XE#1167</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1356">Intel XE#1356</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_evict@evict-cm-threads-small:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7801/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1259">Intel XE#1259</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1473">Intel XE#1473</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10985/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7801 -&gt; IGTPW_10985</li>
+<li>Linux: xe-1046-5714711c6612120bd9c306824ec807d322c0735b -&gt; xe-1048-8cb1ee178ef7e504e233814ef50c1f18f42dac72</li>
+</ul>
+<p>IGTPW_10985: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10985/index.html<br />
+  IGT_7801: 7801<br />
+  xe-1046-5714711c6612120bd9c306824ec807d322c0735b: 5714711c6612120bd9c306824ec807d322c0735b<br />
+  xe-1048-8cb1ee178ef7e504e233814ef50c1f18f42dac72: 8cb1ee178ef7e504e233814ef50c1f18f42dac72</p>
+
+</body>
+</html>
+
+--===============6706341090914279890==--
