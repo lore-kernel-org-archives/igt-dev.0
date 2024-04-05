@@ -4,57 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D9A0C67861
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Apr 2024 17:56:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE0CECD1296
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Apr 2024 18:15:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7198A10ED7F;
-	Fri,  5 Apr 2024 17:56:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5C57710E3EA;
+	Fri,  5 Apr 2024 18:15:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Kw5lyOE8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="D3Lec3Df";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CEE9110ED7F;
- Fri,  5 Apr 2024 17:56:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8CA3410E074;
+ Fri,  5 Apr 2024 18:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712339786; x=1743875786;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=/Pq2znYZpOya2WwCnqfkjcIcNaEmpEaAxGe1Vj3wPBg=;
- b=Kw5lyOE84rk161g+bMYmVHs82eACh+qGXiJg4FExJFwZNNA9LweK01st
- 0Frf/diRyhks/oSTPdmHASyOB0CM6wBEjxeR5LIsG8XfFAqVBIInjaIS8
- cUkduz/9lvp6uY+jq74xKlcd5YshHTY0n/FSyLYhFcO4zqwDdswEV7x4r
- PnshkXX/T6JE4hLO+5Am10r0Ccw03gI9BSW34hOHdLZPn22VC/CNcnzh4
- AlzZG/EPQ9S5vZ/oZvOPpy51cS8shXAKLrzI8fesN9ziOYBCYyFBLiXOD
- ziBrw7qIsMr81HiKZNfgPXjB5luwBD6fpLoNf3B9+7bGTdvjNZjEnE356 g==;
-X-CSE-ConnectionGUID: s38LU/mvQuCF7Q/j/16gnA==
-X-CSE-MsgGUID: ZK3dJo50RIaoy66ICcdkKw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="11475285"
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; d="scan'208";a="11475285"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Apr 2024 10:56:26 -0700
-X-CSE-ConnectionGUID: RH9u11y2QgaDgCS6lKGB1A==
-X-CSE-MsgGUID: FDvIYcIXSDaq2+iPyIt5mA==
+ t=1712340923; x=1743876923;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:mime-version;
+ bh=GOr2GxES2W6s5kXbmf7IJfBEWLOJcS/KGTNFOkfzi1w=;
+ b=D3Lec3DfZEPLpJN9kl+n9Nqx3o/N0Irb7w6AQ112XhWifMRQt6MEumQj
+ uIhmo5A96u7GK1AJ3N1IWpu/FDYVjKMtPaqmWN69tQJhSQDehKmuuosw/
+ SDKAxsoiUhJ5nz6Ur1loQpEjxitSOy7V/MkveMjEuLWnwLnrM5RYVMY25
+ I4sGt9/VYcKYuNVdR+c9afTHhxpTfRFjnM0zdX9W+EwhS5TLgDG+kRwiU
+ fLSuzxAlJAIleHfnUvGPNBYAUiKc8kjtVxhaIBRLOTq8PMjaxbn/IAkyo
+ g75r0hr/sBSeauTU8JcFLMppEAzNcGHSTY3nJPTbc0ARN1EIlWDGkVeuM g==;
+X-CSE-ConnectionGUID: HLbtlcyESwKxtIoJ9loZaQ==
+X-CSE-MsgGUID: vdpav0V8RjWcecpvwJqEkA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="7534824"
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; d="scan'208,217";a="7534824"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Apr 2024 11:15:23 -0700
+X-CSE-ConnectionGUID: HZkrBGk+TDKqB0xNTfk+gQ==
+X-CSE-MsgGUID: Cm3HK2AGTKq5PmKq3dDOug==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; d="scan'208";a="19668302"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO
- jkrzyszt-mobl2.intranet) ([10.213.17.221])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Apr 2024 10:56:23 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t v2] lib/kunit: Read results from debugfs
-Date: Fri,  5 Apr 2024 19:54:53 +0200
-Message-ID: <20240405175544.6047-2-janusz.krzysztofik@linux.intel.com>
-X-Mailer: git-send-email 2.44.0
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; d="scan'208,217";a="23969063"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+ by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 05 Apr 2024 11:15:22 -0700
+Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Fri, 5 Apr 2024 11:15:21 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Fri, 5 Apr 2024 11:15:21 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.41) by
+ edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 5 Apr 2024 11:15:21 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XOMGx+GOhFE75sIY4Bx1TKrxhqe+oa3X5OjnASd1bXH914T9rNA1hkCiHBCAgzIddzciDwMO1mMNjco7gd+y5g7x0q2MoA61gg6Zsb482gMyuiZVzb4DhjX2KezRkB68S+SPph8BcSwhQfy5ju5DU7wcPTybvJr6wy8qzhmG4FQNB0V5iRFVTXrljrAceem8gSEWm6422Xz3XChdY979rDPFJXM1H8NYW0OP0hu3xNhvfBZ88l0lNGlQSMEODhooKqjmJzE+mVcX55xLibpTDq2rXww0PF4lqF30vNsG53MkJi7hDvAgC1ylwFAL4EVjRdLADod+vcJjRx2g4WNuPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0YGnnMdxP0z/wh3E9rN03NH+5bSmgPSNesXn06lhSfw=;
+ b=gkf9Ta1P12oJQytGFVNYBpYxVGVrOHBkIcDyoO3pKkEWA0MYoYTpaLSuwrjWC8/3QEZM9+Lc8keT7gDaFZQni55CKrsToM0VedxCanEbW2CcTBKftVC7Ahw+aui1nNr9nkXONTl/WQXvUiY4qDIwXSNdAs9b5DM1EJ2edYmbs/q4Aym9ghGkUISy0NxvJ7ye+dcALj0XidiWOWhfoquuiUdKzF/CNKq+ZV8CBzzGhBUJ0QSGOo0GENqaeSuhEx1SV+EzW1yFrHanaHo9udE43DF088uqvJdw6GXh4f9gfOw1pd2KaFqxlX7h0++lmm/bakI2voeHqLMWHA/gx6UePw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CH3PR11MB8441.namprd11.prod.outlook.com (2603:10b6:610:1bc::12)
+ by SN7PR11MB6799.namprd11.prod.outlook.com (2603:10b6:806:261::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.25; Fri, 5 Apr
+ 2024 18:15:18 +0000
+Received: from CH3PR11MB8441.namprd11.prod.outlook.com
+ ([fe80::71ea:e0ea:808d:793b]) by CH3PR11MB8441.namprd11.prod.outlook.com
+ ([fe80::71ea:e0ea:808d:793b%4]) with mapi id 15.20.7452.019; Fri, 5 Apr 2024
+ 18:15:18 +0000
+Content-Type: multipart/alternative;
+ boundary="------------rek0wkfZJxJR1KAL001gjXwh"
+Message-ID: <76010aec-7937-4e5a-afd2-672b338df8df@intel.com>
+Date: Fri, 5 Apr 2024 11:15:14 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 i-g-t] tests/xe_exec_threads: Make hang tests reset
+ domain aware
+To: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>, "De Marchi, Lucas"
+ <lucas.demarchi@intel.com>, "Roper, Matthew D" <matthew.d.roper@intel.com>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>, "Brost,
+ Matthew" <matthew.brost@intel.com>
+References: <20240402122223.643413-1-tejas.upadhyay@intel.com>
+ <20240402194017.GJ6574@mdroper-desk1.amr.corp.intel.com>
+ <kss23fgx24bvhlarkvrivrvvh32pxugpvgavdo3tc4u55jmidf@rnr7terjza6w>
+ <SJ1PR11MB62041F26676765342848070D813D2@SJ1PR11MB6204.namprd11.prod.outlook.com>
+ <7eac7b89-8c32-4261-b288-0cf2002b4e93@intel.com>
+ <SJ1PR11MB6204AA1AFB30BFEF7EBAA3D281032@SJ1PR11MB6204.namprd11.prod.outlook.com>
+Content-Language: en-GB
+From: John Harrison <john.c.harrison@intel.com>
+In-Reply-To: <SJ1PR11MB6204AA1AFB30BFEF7EBAA3D281032@SJ1PR11MB6204.namprd11.prod.outlook.com>
+X-ClientProxiedBy: SJ0PR03CA0059.namprd03.prod.outlook.com
+ (2603:10b6:a03:33e::34) To CH3PR11MB8441.namprd11.prod.outlook.com
+ (2603:10b6:610:1bc::12)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8441:EE_|SN7PR11MB6799:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: +6fj59pAVqJxO15vlbM0NgABxaCNGhCuPzn4RU6BN01Ahw2w5fSuXk+H4QFMVMJyW2GZcJwssGOTz0NPazpz1GxnfXixabKR8Z5xeOodkvexVSkFb6/XcYt/r3TRqBpikidMvYrwr02A5HjalHK5z2SGi3U2xNbfER0STiRfdnXKsHnTzimpDbm8XqEQwv3rCOwOeZE4DoEEnf/QZpPvBaa1lWbU0N1Pa5XFIAyG441ZwGLJhCxnlcXEn2BsQlrlQFSeJShiXGju39u9fyn5UMQbH5YHzBJa3s21c46m+681pLqjWV7qty8vyQ2So42qdfkrAxoz2aeNmiWBz/HXsDulmdO4JKFkAjVW7utwb6I/c0sutD4kEEGiyOG9k9PPTVZktP4vvQneu8PCXF3gRs8wDTh+etmC63HPZurzAP49JHIneVn5emzX6Hv1KH/ecnvpIx9gZoMQd7frUNqnc5Aoy6yXvIrn3y4tCntDEzjGImQmUJaYwJEFoVjnmvtfYkJkRRqdd83OUxecjI+CC05kCGdMqVWoit434kQVIlL0hWuIG7mw1eetVNMwtkaJVCQs3uXjcikcZylaztKzx/XjkLqBTgH1EmbrtVGydrFcubHi/rS6eajE4qK6NOkaCVfWFU9I396IbhRqIkLg/8XzS9zNyykY63kamZzC6NU=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH3PR11MB8441.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376005)(1800799015)(366007); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UktNL0RPNzNIYkd1U2E2VldDREkzVG1EcDFSWXBrQk1iZ1JaVXBaeFJWd0pC?=
+ =?utf-8?B?NXd4V21JUjZXcW5hd1VZSkFQR0N3YitlZHRuaU5QRW96REFaWkk5cVhsRGts?=
+ =?utf-8?B?THBjbGV3bkNTTUhKRzZER2tkN0hyeDJveW5MOXNESTQraElLenZxazhQL1Zm?=
+ =?utf-8?B?MHZyWU43YTlEejJYMU5vSVg0S2puOXVLMzVRRU91emZ6Q3FIUmp1ekh1NzhR?=
+ =?utf-8?B?bnBZSUdTZnkzd3FvZHhsN1pocHVFdlRmZC9HbnhYMm5pUkMvOUN3L0J6NnB2?=
+ =?utf-8?B?MHdiclJuM1F6ejRqTEV5V3FNcW0yeGt3WTJnZHdEdFlYU1dEYS9KZmZqeTNt?=
+ =?utf-8?B?cWY1ZGN6ZmZPM01TUXdpbzdUeTM2RXZpRWZ5cXpNUktFeEtkOWU2K1BvbDF3?=
+ =?utf-8?B?ZWI1NithTEtFSmI0SnM1V0w2M1E5YXpFYkpTZHJSMzB4L2F2ZzZIRVA5YTVq?=
+ =?utf-8?B?QVh2eUE2N3JJcjdMbkRNMis1SWsrT0tPRGo5cTZvMDhOLzJBNzJEVXAyUU5z?=
+ =?utf-8?B?ZjFKbWV5Z21qTzhMOFFTYTE2cFUra09nalBsUUlNWHE4YVpBTmFIT0MzT0g5?=
+ =?utf-8?B?MGJLSktRWkV2R09PY2ZVLzdXQ3VzbHpoenQ5L0Z5L1RSQ3hLOVV1eHFsVnpR?=
+ =?utf-8?B?VzNuNGhTWnFMVkZqekZZbXRNeERSaWxod3A5MUNYc0xUQW5LWmhQYjgxV3ZQ?=
+ =?utf-8?B?aS9lRWpmWGZzOUFlYmR5b2JMY2dPRUpJdXM4Q2xFdTc4SG01bkxZdXJGaFN4?=
+ =?utf-8?B?VHpSZEJ3R1FpTGVXWElRT1N4Mkx2RXRsZ1A5Q2dFaWw4QzVrNERsM3VxS1d3?=
+ =?utf-8?B?SUNYa1RDL01xYXMzWnBMYUpqUGUzWU4wSTlCTVJ1Uzdwc25rMEJvTVI2R0d6?=
+ =?utf-8?B?YlZqZmNxelYyV3V6YVphOTllL1h6UVAxU1k0QWpyWkdORVZjTTZKcERRWkU3?=
+ =?utf-8?B?VWFYVmtlQnRHelJkMjdBc0N3b0tCVU9sK04yVjFmcUhIYmhnY1RlU3hoSFBS?=
+ =?utf-8?B?UUVjWVUydk1XL1E2QkVWbklCbFBYTW9OMFJSQTVjZFRKdXRmUUJ6RjBLWmhS?=
+ =?utf-8?B?ckpFS25PR1NQc09KaG9Lc28waW9mYndMN01QS0h2UHh2Z3cyMXB2OFFWS0Mw?=
+ =?utf-8?B?WW4rN3ZRNFNWa29DZm4wWTJid01oWlVDNjBjUE1VZ3dmVTFEUlkrQjJZcWR5?=
+ =?utf-8?B?S2lqeHdUV0ZlWUp5d0NlVXdOYTQ3SEsydkdRVjMxdDlhbTZ0elFkSHBNMWJh?=
+ =?utf-8?B?blpyZGJxRmRyVlMxWVRSWThEcWZzS0xUWDE5cVJUK09PcE43TEFpS0pVaFhF?=
+ =?utf-8?B?d3lkaU9QVGNYb01BMVpzQkZHWjJEcG5Qa2NNVDA4QUpzSXFMN0VLSWY2S2E2?=
+ =?utf-8?B?Y1k5eWltMXh6eVJMMFJxbSs3ZjQ4M1JwRCtMTU03eHN0Y09OZ0gwSW1yeThy?=
+ =?utf-8?B?QUhNeVptclpUYU1EaTZUZktsSlBaazJVaWZBUHFWM3pERjN1TlZiYTMrMGVr?=
+ =?utf-8?B?Vm9mMk1kekM2czdmTVVJMmlabHFtdUhtcXZpbnVsNHlKK0I0VElvTi9wRDlz?=
+ =?utf-8?B?UVJJYnI0YUVlWFpvcmNhbHdPTk81SWtUQ0tqbWhQbnVUVmxETUx2KzJNRVht?=
+ =?utf-8?B?czR6RS9iVDkwSlRWMGZ6UGxHd3BtMitIdy81ZFJLdEx0MjJlZEFXLzBPYnlW?=
+ =?utf-8?B?RVJSeXZLRHowK0o3KzU5bGwxeGNXNGNoVnlMUEdMOGRqSXU2cXNLZ21HMkwz?=
+ =?utf-8?B?ckZBalVxaXpwMlc5VytsamtSdlc2eTVZNGJCSVFaeDhrNVBKdzhaQXZPYmJ0?=
+ =?utf-8?B?WlJ1bEpPWC8reERWOEkrQ1k2dkozUXFNcmlER0J0NWxveW5ISjNmc0JwdjR1?=
+ =?utf-8?B?WTExOW5KYjI3M0VVSkRKQzhPTmtTREpPWnhydDdUWE1GL3dzcHJHT1VSZDBy?=
+ =?utf-8?B?NWpianpTN1RPWEhqbkZ1OFZxY3hScHBSUEVqRjBDRnhHRTlzd3JSMTFFZXlE?=
+ =?utf-8?B?d0VKSUFSbGlkVk1pSm11Q3hSUE1GczVmOWFkb3B6dWRGM0xacHFVc2tHcitS?=
+ =?utf-8?B?RFVXOW1JRXZuNzBoNTNyNzF5NENjZDVEcnc4RWlsMUtTS0RsYUZ6ZTFtaDJC?=
+ =?utf-8?B?TUlWaVMxaU1rQUFJM1B5Z3JNNGpJUFNjY0hDYzJyZFN0NThKaVdseXVpcVJS?=
+ =?utf-8?B?c2c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 03648d87-e27f-4610-38f6-08dc559c5964
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8441.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Apr 2024 18:15:18.4249 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9QEAaMw8qPIjJy9j8G6LeT7QOpiWUSQ6mztDnTrOAdV6Wz5mQw4oq5d+5tQ3e5HA607FtLWbgfJ4hdbfnOCC7Zy0e6u0S/6ikMfrnVHWjNg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6799
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,282 +169,449 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-KUnit can provide KTAP reports from test modules via debugfs files, one
-per test suite.  Using that source of test results instead of extracting
-them from dmesg, where they may be interleaved with other kernel messages,
-seems more easy to handle and less error prone.  Switch to it.
+--------------rek0wkfZJxJR1KAL001gjXwh
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 
-If KUnit debugfs support is found not configured then fall back to legacy
-processing path.
+On 4/4/2024 21:47, Upadhyay, Tejas wrote:
+>> -----Original Message-----
+>> From: Harrison, John C<john.c.harrison@intel.com>
+>> Sent: Friday, April 5, 2024 4:53 AM
+>> To: Upadhyay, Tejas<tejas.upadhyay@intel.com>; De Marchi, Lucas
+>> <lucas.demarchi@intel.com>; Roper, Matthew D
+>> <matthew.d.roper@intel.com>
+>> Cc:igt-dev@lists.freedesktop.org;intel-xe@lists.freedesktop.org; Brost,
+>> Matthew<matthew.brost@intel.com>
+>> Subject: Re: [PATCH V2 i-g-t] tests/xe_exec_threads: Make hang tests reset
+>> domain aware
+>>
+>> On 4/2/2024 22:35, Upadhyay, Tejas wrote:
+>>>> -----Original Message-----
+>>>> From: De Marchi, Lucas<lucas.demarchi@intel.com>
+>>>> Sent: Wednesday, April 3, 2024 2:26 AM
+>>>> To: Roper, Matthew D<matthew.d.roper@intel.com>
+>>>> Cc: Upadhyay, Tejas<tejas.upadhyay@intel.com>; igt-
+>>>> dev@lists.freedesktop.org;intel-xe@lists.freedesktop.org; Brost,
+>>>> Matthew<matthew.brost@intel.com>
+>>>> Subject: Re: [PATCH V2 i-g-t] tests/xe_exec_threads: Make hang tests
+>>>> reset domain aware
+>>>>
+>>>> On Tue, Apr 02, 2024 at 12:40:17PM -0700, Matt Roper wrote:
+>>>>> On Tue, Apr 02, 2024 at 05:52:23PM +0530, Tejas Upadhyay wrote:
+>>>>>> RCS/CCS are dependent engines as they are sharing reset domain.
+>>>>>> Whenever there is reset from CCS, all the exec queues running on
+>>>>>> RCS are victimised mainly on Lunarlake.
+>>>>>>
+>>>>>> Lets skip parallel execution on CCS with RCS.
+>>>>> I haven't really looked at this specific test in detail, but based
+>>>>> on your explanation here, you're also going to run into problems
+>>>>> with multiple CCS engines since they all share the same reset.  You
+>>>>> won't see that on platforms like LNL that only have a single CCS,
+>>>>> but platforms
+>>>> but it is seen on LNL because of having both RCS and CCS.
+>>>>
+>>>>> like PVC, ATS-M, DG2, etc. can all have multiple CCS where a reset
+>>>>> on one kills anything running on the others.
+>>>>>
+>>>>>
+>>>>> Matt
+>>>>>
+>>>>>> It helps in fixing following errors:
+>>>>>> 1. Test assertion failure function test_legacy_mode, file, Failed
+>>>>>> assertion: data[i].data == 0xc0ffee
+>>>>>>
+>>>>>> 2.Test assertion failure function xe_exec, file
+>>>>>> ../lib/xe/xe_ioctl.c, Failed assertion: __xe_exec(fd, exec) == 0,
+>>>>>> error: -125 != 0
+>>>>>>
+>>>>>> Signed-off-by: Tejas Upadhyay<tejas.upadhyay@intel.com>
+>>>>>> ---
+>>>>>>    tests/intel/xe_exec_threads.c | 26 +++++++++++++++++++++++++-
+>>>>>>    1 file changed, 25 insertions(+), 1 deletion(-)
+>>>>>>
+>>>>>> diff --git a/tests/intel/xe_exec_threads.c
+>>>>>> b/tests/intel/xe_exec_threads.c index 8083980f9..31af61dc9 100644
+>>>>>> --- a/tests/intel/xe_exec_threads.c
+>>>>>> +++ b/tests/intel/xe_exec_threads.c
+>>>>>> @@ -710,6 +710,17 @@ static void *thread(void *data)
+>>>>>>    	return NULL;
+>>>>>>    }
+>>>>>>
+>>>>>> +static bool is_engine_contexts_victimized(int fd, unsigned int
+>>>>>> +flags) {
+>>>>>> +	if (!IS_LUNARLAKE(intel_get_drm_devid(fd)))
+>>>>>> +		return false;
+>>>> as above, I don't think we should add any platform check here. It's
+>>>> impossible to keep it up to date and it's also testing the wrong thing.
+>>>> AFAIU you don't want parallel submission on engines that share the
+>>>> same reset domain. So, this is actually what should be tested.
+>>> Platforms like  PVC, ATS-M, DG2, etc. have some kind of WA/noWA which
+>> helps to run things parallelly on engines in same reset domain and apparently
+>> BMG/LNL does not have that kind of support so applicable for LNL/BMG with
+>> parallel submission on RCS/CCS only.
+>>> @Harrison, John C please reply if you have any other input here.
+>> I don't get what you mean by 'have some kind of WA/noWA'. All platforms
+>> with compute engines have shared reset domains. That is all there is to it. I.e.
+>> everything from TGL onwards. That includes RCS and all CCS engines. So RCS +
+>> CCS, CCS0 + CCS1, RCS + CC0 + CCS1, etc. Any platform with multiple engines
+>> that talk to EUs will reset all of those engines in parallel.
+>>
+>> There are w/a's which make the situation even worse. E.g. on DG2/MTL you
+>> are not allowed to context switch one of those engines while another is busy.
+>> Which means that if one hangs, they all hang - you cannot just wait for other
+>> workloads to complete and/or pre-empt them off the engine prior to doing
+>> the shared reset. But there is nothing that makes it better.
+>>
+>> I assume we are talking about GuC triggered engine resets here? As opposed
+>> to driver triggered full GT resets?
+>>
+>> The GuC will attempt to idle all other connected engines first by pre-empting
+>> out any executing contexts. If those contexts are pre-emptible then they will
+>> survive - GuC will automatically restart them once the reset is complete. If
+>> they are not (or at least not pre-emptible within the pre-emption timeout
+>> limit) then they will be killed as collateral damage.
+>>
+>> What are the workloads being submitted by this test? Are the pre-emptible
+>> spinners? If so, then they should survive (assuming you don't have the
+>> DG2/MTL RCS/CCS w/a in effect). If they are non-preemptible spinners then
+>> they are toast.
+> Main question here was, if this fix should be applied to all platforms who has RCS and CCS both or just LNL/BMG. Reason to ask is, only LNL/BMG are hitting this issue, with same tests PVC and other platforms are not hitting issue which we are addressing here.
+And the answer is that yes, shared reset domains are common to all 
+platforms with compute engines. So if only LNL/BMG are failing then the 
+problem is not understood. Which is not helped by this test code being 
+extremely complex and having almost zero explanation in it at all :(.
 
-v2: Check validity of debugfs argument before calling kunit_get_tests()
-    (Kamil),
-  - replace multiple openat() + fdopen/fdopendir(), each followed by an
-    error check, with less expensive fopen/opendir() of file/dir pathname
-    components concatentated to a local buffer, protected from buffer
-    overflow or truncation with a single check for enough buffer space
-    (Lucas),
-  - avoid confusing 'if' statement condition (Lucas).
+As noted, PVC has multiple compute engines but no RCS engine. If any 
+compute engine is reset then all are reset. So if the test is running 
+correctly and passing on PVC then it cannot be failing on LNL/BMG purely 
+due to shared domain resets.
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Is the reset not happening on PVC? Is the test not actually running 
+multiple contexts in parallel on PVC? Or are the spinners pre-emptible 
+and are therefore supposed to survive the reset of a shared domain 
+engine by being swapped out first? In which case LNL/BMG are broken 
+because the killed contexts are not supposed to be killed even though 
+the engine is reset?
+
+John.
+
+>
+> Thanks,
+> Tejas
+>> John.
+>>
+>>
+>>> Thanks,
+>>> Tejas
+>>>> Lucas De Marchi
+>>>>
+>>>>>> +
+>>>>>> +	if (flags & HANG)
+>>>>>> +		return true;
+>>>>>> +
+>>>>>> +	return false;
+>>>>>> +}
+>>>>>> +
+>>>>>>    /**
+>>>>>>     * SUBTEST: threads-%s
+>>>>>>     * Description: Run threads %arg[1] test with multi threads @@
+>>>>>> -955,9 +966,13 @@ static void threads(int fd, int flags)
+>>>>>>    	bool go = false;
+>>>>>>    	int n_threads = 0;
+>>>>>>    	int gt;
+>>>>>> +	bool has_rcs = false;
+>>>>>>
+>>>>>> -	xe_for_each_engine(fd, hwe)
+>>>>>> +	xe_for_each_engine(fd, hwe) {
+>>>>>> +		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER)
+>>>>>> +			has_rcs = true;
+>>>>>>    		++n_engines;
+>>>>>> +	}
+>>>>>>
+>>>>>>    	if (flags & BALANCER) {
+>>>>>>    		xe_for_each_gt(fd, gt)
+>>>>>> @@ -990,6 +1005,15 @@ static void threads(int fd, int flags)
+>>>>>>    	}
+>>>>>>
+>>>>>>    	xe_for_each_engine(fd, hwe) {
+>>>>>> +		/* RCS/CCS sharing reset domain hence dependent engines.
+>>>>>> +		 * When CCS is doing reset, all the contexts of RCS are
+>>>>>> +		 * victimized, so skip the compute engine avoiding
+>>>>>> +		 * parallel execution with RCS
+>>>>>> +		 */
+>>>>>> +		if (has_rcs && hwe->engine_class ==
+>>>> DRM_XE_ENGINE_CLASS_COMPUTE &&
+>>>>>> +		    is_engine_contexts_victimized(fd, flags))
+>>>>>> +			continue;
+>>>>>> +
+>>>>>>    		threads_data[i].mutex = &mutex;
+>>>>>>    		threads_data[i].cond = &cond;
+>>>>>>    #define ADDRESS_SHIFT	39
+>>>>>> --
+>>>>>> 2.25.1
+>>>>>>
+>>>>> --
+>>>>> Matt Roper
+>>>>> Graphics Software Engineer
+>>>>> Linux GPU Platform Enablement
+>>>>> Intel Corporation
+
+--------------rek0wkfZJxJR1KAL001gjXwh
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    On 4/4/2024 21:47, Upadhyay, Tejas wrote:<span style="white-space: pre-wrap">
+</span>
+    <blockquote type="cite" cite="mid:SJ1PR11MB6204AA1AFB30BFEF7EBAA3D281032@SJ1PR11MB6204.namprd11.prod.outlook.com">
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">-----Original Message-----
+From: Harrison, John C <a class="moz-txt-link-rfc2396E" href="mailto:john.c.harrison@intel.com">&lt;john.c.harrison@intel.com&gt;</a>
+Sent: Friday, April 5, 2024 4:53 AM
+To: Upadhyay, Tejas <a class="moz-txt-link-rfc2396E" href="mailto:tejas.upadhyay@intel.com">&lt;tejas.upadhyay@intel.com&gt;</a>; De Marchi, Lucas
+<a class="moz-txt-link-rfc2396E" href="mailto:lucas.demarchi@intel.com">&lt;lucas.demarchi@intel.com&gt;</a>; Roper, Matthew D
+<a class="moz-txt-link-rfc2396E" href="mailto:matthew.d.roper@intel.com">&lt;matthew.d.roper@intel.com&gt;</a>
+Cc: <a class="moz-txt-link-abbreviated" href="mailto:igt-dev@lists.freedesktop.org">igt-dev@lists.freedesktop.org</a>; <a class="moz-txt-link-abbreviated" href="mailto:intel-xe@lists.freedesktop.org">intel-xe@lists.freedesktop.org</a>; Brost,
+Matthew <a class="moz-txt-link-rfc2396E" href="mailto:matthew.brost@intel.com">&lt;matthew.brost@intel.com&gt;</a>
+Subject: Re: [PATCH V2 i-g-t] tests/xe_exec_threads: Make hang tests reset
+domain aware
+
+On 4/2/2024 22:35, Upadhyay, Tejas wrote:
+</pre>
+        <blockquote type="cite">
+          <blockquote type="cite">
+            <pre class="moz-quote-pre" wrap="">-----Original Message-----
+From: De Marchi, Lucas <a class="moz-txt-link-rfc2396E" href="mailto:lucas.demarchi@intel.com">&lt;lucas.demarchi@intel.com&gt;</a>
+Sent: Wednesday, April 3, 2024 2:26 AM
+To: Roper, Matthew D <a class="moz-txt-link-rfc2396E" href="mailto:matthew.d.roper@intel.com">&lt;matthew.d.roper@intel.com&gt;</a>
+Cc: Upadhyay, Tejas <a class="moz-txt-link-rfc2396E" href="mailto:tejas.upadhyay@intel.com">&lt;tejas.upadhyay@intel.com&gt;</a>; igt-
+<a class="moz-txt-link-abbreviated" href="mailto:dev@lists.freedesktop.org">dev@lists.freedesktop.org</a>; <a class="moz-txt-link-abbreviated" href="mailto:intel-xe@lists.freedesktop.org">intel-xe@lists.freedesktop.org</a>; Brost,
+Matthew <a class="moz-txt-link-rfc2396E" href="mailto:matthew.brost@intel.com">&lt;matthew.brost@intel.com&gt;</a>
+Subject: Re: [PATCH V2 i-g-t] tests/xe_exec_threads: Make hang tests
+reset domain aware
+
+On Tue, Apr 02, 2024 at 12:40:17PM -0700, Matt Roper wrote:
+</pre>
+            <blockquote type="cite">
+              <pre class="moz-quote-pre" wrap="">On Tue, Apr 02, 2024 at 05:52:23PM +0530, Tejas Upadhyay wrote:
+</pre>
+              <blockquote type="cite">
+                <pre class="moz-quote-pre" wrap="">RCS/CCS are dependent engines as they are sharing reset domain.
+Whenever there is reset from CCS, all the exec queues running on
+RCS are victimised mainly on Lunarlake.
+
+Lets skip parallel execution on CCS with RCS.
+</pre>
+              </blockquote>
+              <pre class="moz-quote-pre" wrap="">I haven't really looked at this specific test in detail, but based
+on your explanation here, you're also going to run into problems
+with multiple CCS engines since they all share the same reset.  You
+won't see that on platforms like LNL that only have a single CCS,
+but platforms
+</pre>
+            </blockquote>
+            <pre class="moz-quote-pre" wrap="">but it is seen on LNL because of having both RCS and CCS.
+
+</pre>
+            <blockquote type="cite">
+              <pre class="moz-quote-pre" wrap="">like PVC, ATS-M, DG2, etc. can all have multiple CCS where a reset
+on one kills anything running on the others.
+
+
+Matt
+
+</pre>
+              <blockquote type="cite">
+                <pre class="moz-quote-pre" wrap="">It helps in fixing following errors:
+1. Test assertion failure function test_legacy_mode, file, Failed
+assertion: data[i].data == 0xc0ffee
+
+2.Test assertion failure function xe_exec, file
+../lib/xe/xe_ioctl.c, Failed assertion: __xe_exec(fd, exec) == 0,
+error: -125 != 0
+
+Signed-off-by: Tejas Upadhyay <a class="moz-txt-link-rfc2396E" href="mailto:tejas.upadhyay@intel.com">&lt;tejas.upadhyay@intel.com&gt;</a>
 ---
- lib/igt_kmod.c | 131 +++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 94 insertions(+), 37 deletions(-)
+  tests/intel/xe_exec_threads.c | 26 +++++++++++++++++++++++++-
+  1 file changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 1ec9c8a602..243785873d 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -28,6 +28,7 @@
- #include <limits.h>
- #include <pthread.h>
- #include <signal.h>
-+#include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
- #include <sys/stat.h>
-@@ -39,6 +40,7 @@
- 
- #include "igt_aux.h"
- #include "igt_core.h"
-+#include "igt_debugfs.h"
- #include "igt_kmod.h"
- #include "igt_ktap.h"
- #include "igt_sysfs.h"
-@@ -864,6 +866,19 @@ static int open_parameters(const char *module_name)
- 	return open(path, O_RDONLY);
- }
- 
-+static void kunit_debugfs_path(char *kunit_path)
-+{
-+	const char *debugfs_path = igt_debugfs_mount();
+diff --git a/tests/intel/xe_exec_threads.c
+b/tests/intel/xe_exec_threads.c index 8083980f9..31af61dc9 100644
+--- a/tests/intel/xe_exec_threads.c
++++ b/tests/intel/xe_exec_threads.c
+@@ -710,6 +710,17 @@ static void *thread(void *data)
+  	return NULL;
+  }
+
++static bool is_engine_contexts_victimized(int fd, unsigned int
++flags) {
++	if (!IS_LUNARLAKE(intel_get_drm_devid(fd)))
++		return false;
+</pre>
+              </blockquote>
+            </blockquote>
+            <pre class="moz-quote-pre" wrap="">as above, I don't think we should add any platform check here. It's
+impossible to keep it up to date and it's also testing the wrong thing.
+AFAIU you don't want parallel submission on engines that share the
+same reset domain. So, this is actually what should be tested.
+</pre>
+          </blockquote>
+          <pre class="moz-quote-pre" wrap="">Platforms like  PVC, ATS-M, DG2, etc. have some kind of WA/noWA which
+</pre>
+        </blockquote>
+        <pre class="moz-quote-pre" wrap="">helps to run things parallelly on engines in same reset domain and apparently
+BMG/LNL does not have that kind of support so applicable for LNL/BMG with
+parallel submission on RCS/CCS only.
+</pre>
+        <blockquote type="cite">
+          <pre class="moz-quote-pre" wrap="">
+@Harrison, John C please reply if you have any other input here.
+</pre>
+        </blockquote>
+        <pre class="moz-quote-pre" wrap="">I don't get what you mean by 'have some kind of WA/noWA'. All platforms
+with compute engines have shared reset domains. That is all there is to it. I.e.
+everything from TGL onwards. That includes RCS and all CCS engines. So RCS +
+CCS, CCS0 + CCS1, RCS + CC0 + CCS1, etc. Any platform with multiple engines
+that talk to EUs will reset all of those engines in parallel.
+
+There are w/a's which make the situation even worse. E.g. on DG2/MTL you
+are not allowed to context switch one of those engines while another is busy.
+Which means that if one hangs, they all hang - you cannot just wait for other
+workloads to complete and/or pre-empt them off the engine prior to doing
+the shared reset. But there is nothing that makes it better.
+
+I assume we are talking about GuC triggered engine resets here? As opposed
+to driver triggered full GT resets?
+
+The GuC will attempt to idle all other connected engines first by pre-empting
+out any executing contexts. If those contexts are pre-emptible then they will
+survive - GuC will automatically restart them once the reset is complete. If
+they are not (or at least not pre-emptible within the pre-emption timeout
+limit) then they will be killed as collateral damage.
+
+What are the workloads being submitted by this test? Are the pre-emptible
+spinners? If so, then they should survive (assuming you don't have the
+DG2/MTL RCS/CCS w/a in effect). If they are non-preemptible spinners then
+they are toast.
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Main question here was, if this fix should be applied to all platforms who has RCS and CCS both or just LNL/BMG. Reason to ask is, only LNL/BMG are hitting this issue, with same tests PVC and other platforms are not hitting issue which we are addressing here.</pre>
+    </blockquote>
+    And the answer is that yes, shared reset domains are common to all
+    platforms with compute engines. So if only LNL/BMG are failing then
+    the problem is not understood. Which is not helped by this test code
+    being extremely complex and having almost zero explanation in it at
+    all :(.<br>
+    <br>
+    As noted, PVC has multiple compute engines but no RCS engine. If any
+    compute engine is reset then all are reset. So if the test is
+    running correctly and passing on PVC then it cannot be failing on
+    LNL/BMG purely due to shared domain resets.<br>
+    <br>
+    Is the reset not happening on PVC? Is the test not actually running
+    multiple contexts in parallel on PVC? Or are the spinners
+    pre-emptible and are therefore supposed to survive the reset of a
+    shared domain engine by being swapped out first? In which case
+    LNL/BMG are broken because the killed contexts are not supposed to
+    be killed even though the engine is reset?<br>
+    <br>
+    John.<br>
+    <br>
+    <blockquote type="cite" cite="mid:SJ1PR11MB6204AA1AFB30BFEF7EBAA3D281032@SJ1PR11MB6204.namprd11.prod.outlook.com">
+      <pre class="moz-quote-pre" wrap="">
+
+Thanks,
+Tejas
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">
+John.
+
+
+</pre>
+        <blockquote type="cite">
+          <pre class="moz-quote-pre" wrap="">
+Thanks,
+Tejas
+</pre>
+          <blockquote type="cite">
+            <pre class="moz-quote-pre" wrap="">Lucas De Marchi
+
+</pre>
+            <blockquote type="cite">
+              <blockquote type="cite">
+                <pre class="moz-quote-pre" wrap="">+
++	if (flags &amp; HANG)
++		return true;
 +
-+	if (igt_debug_on(!debugfs_path))
-+		return;
-+
-+	if (igt_debug_on(strlen(debugfs_path) + strlen("/kunit/") >= PATH_MAX))
-+		return;
-+
-+	strcpy(stpcpy(kunit_path, debugfs_path), "/kunit/");
++	return false;
 +}
 +
- static bool kunit_set_filtering(const char *filter_glob, const char *filter,
- 				const char *filter_action)
- {
-@@ -1071,21 +1086,41 @@ static void kunit_results_free(struct igt_list_head *results,
- 	free(*suite_name);
- }
- 
--static int kunit_get_results(struct igt_list_head *results, int kmsg_fd,
--			     struct igt_ktap_results **ktap)
-+static int kunit_get_results(struct igt_list_head *results, const char *debugfs_path,
-+			     const char *suite, struct igt_ktap_results **ktap)
- {
-+	char results_path[PATH_MAX];
-+	FILE *results_stream;
-+	char *buf = NULL;
-+	size_t size = 0;
-+	ssize_t len;
- 	int err;
- 
-+	if (igt_debug_on(strlen(debugfs_path) + strlen(suite) + strlen("/results") >= PATH_MAX))
-+		return -ENOSPC;
-+
-+	strcpy(stpcpy(stpcpy(results_path, debugfs_path), suite), "/results");
-+	results_stream = fopen(results_path, "r");
-+	if (igt_debug_on(!results_stream))
-+		return -errno;
-+
- 	*ktap = igt_ktap_alloc(results);
--	if (igt_debug_on(!*ktap))
--		return -ENOMEM;
-+	if (igt_debug_on(!*ktap)) {
-+		err = -ENOMEM;
-+		goto out_fclose;
-+	}
- 
--	do
--		igt_debug_on((err = kunit_kmsg_result_get(results, NULL, kmsg_fd, *ktap),
--			      err && err != -EINPROGRESS));
--	while (err == -EINPROGRESS);
-+	while (len = getline(&buf, &size, results_stream), len > 0) {
-+		err = igt_ktap_parse(buf, *ktap);
-+		if (err != -EINPROGRESS)
-+			break;
-+	}
-+
-+	free(buf);
- 
- 	igt_ktap_free(ktap);
-+out_fclose:
-+	fclose(results_stream);
- 
- 	return err;
- }
-@@ -1101,7 +1136,13 @@ static void __igt_kunit_legacy(struct igt_ktest *tst,
- 	pthread_mutexattr_t attr;
- 	IGT_LIST_HEAD(results);
- 	unsigned long taints;
--	int ret;
-+	int flags, ret;
-+
-+	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
-+
-+	igt_skip_on((flags = fcntl(tst->kmsg, F_GETFL, 0), flags < 0));
-+	igt_skip_on_f(fcntl(tst->kmsg, F_SETFL, flags & ~O_NONBLOCK) == -1,
-+		      "Could not set /dev/kmsg to blocking mode\n");
- 
- 	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
- 
-@@ -1224,30 +1265,17 @@ static void __igt_kunit_legacy(struct igt_ktest *tst,
- 	igt_skip_on_f(ret, "KTAP parser failed\n");
- }
- 
--static void kunit_get_tests_timeout(int signal)
--{
--	igt_skip("Timed out while trying to extract a list of KUnit test cases from /dev/kmsg\n");
--}
--
- static bool kunit_get_tests(struct igt_list_head *tests,
- 			    struct igt_ktest *tst,
- 			    const char *suite,
- 			    const char *opts,
-+			    const char *debugfs_path,
-+			    DIR **debugfs_dir,
- 			    struct igt_ktap_results **ktap)
- {
--	struct sigaction sigalrm = { .sa_handler = kunit_get_tests_timeout, },
--			 *saved;
- 	struct igt_ktap_result *r, *rn;
-+	struct dirent *subdir;
- 	unsigned long taints;
--	int flags, err;
--
--	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
--
--	igt_skip_on((flags = fcntl(tst->kmsg, F_GETFL, 0), flags < 0));
--	igt_skip_on_f(fcntl(tst->kmsg, F_SETFL, flags & ~O_NONBLOCK) == -1,
--		      "Could not set /dev/kmsg to blocking mode\n");
--
--	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
- 
- 	/*
- 	 * To get a list of test cases provided by a kunit test module, ask the
-@@ -1260,19 +1288,41 @@ static bool kunit_get_tests(struct igt_list_head *tests,
- 	if (igt_debug_on(!kunit_set_filtering(suite, "module=none", "skip")))
- 		return false;
- 
-+	*debugfs_dir = opendir(debugfs_path);
-+	if (!*debugfs_dir)
-+		return false;
-+
-+	if (!suite) {
-+		seekdir(*debugfs_dir, 2);	/* directory itself and its parent */
-+		errno = 0;
-+		igt_skip_on_f(readdir(*debugfs_dir) || errno,
-+			      "Require empty KUnit debugfs directory\n");
-+		rewinddir(*debugfs_dir);
-+	}
-+
- 	igt_skip_on(modprobe(tst->kmod, opts));
- 	igt_skip_on(igt_kernel_tainted(&taints));
- 
--	igt_skip_on(sigaction(SIGALRM, &sigalrm, saved));
--	alarm(10);
-+	while (subdir = readdir(*debugfs_dir), subdir) {
-+		if (!(subdir->d_type & DT_DIR))
-+			continue;
- 
--	err = kunit_get_results(tests, tst->kmsg, ktap);
-+		if (!strcmp(subdir->d_name, ".") || !strcmp(subdir->d_name, ".."))
-+			continue;
- 
--	alarm(0);
--	igt_debug_on(sigaction(SIGALRM, saved, NULL));
-+		if (suite && strcmp(subdir->d_name, suite))
-+			continue;
- 
--	igt_skip_on_f(err,
--		      "KTAP parser failed while getting a list of test cases\n");
-+		igt_warn_on_f(kunit_get_results(tests, debugfs_path, subdir->d_name, ktap),
-+			      "parsing KTAP report from test suite \"%s\" failed\n",
-+			      subdir->d_name);
-+
-+		if (suite)
-+			break;
-+	}
-+
-+	closedir(*debugfs_dir);
-+	*debugfs_dir = NULL;
- 
- 	igt_list_for_each_entry_safe(r, rn, tests, link)
- 		igt_require_f(r->code == IGT_EXIT_SKIP,
-@@ -1287,6 +1337,7 @@ static void __igt_kunit(struct igt_ktest *tst,
- 			const char *subtest,
- 			const char *suite,
- 			const char *opts,
-+			const char *debugfs_path,
- 			struct igt_list_head *tests,
- 			struct igt_ktap_results **ktap)
- {
-@@ -1307,8 +1358,6 @@ static void __igt_kunit(struct igt_ktest *tst,
- 
- 			igt_skip_on(igt_kernel_tainted(&taints));
- 
--			igt_fail_on(lseek(tst->kmsg, 0, SEEK_END) == -1 && errno);
--
- 			igt_assert_lt(snprintf(glob, sizeof(glob), "%s.%s",
- 					       t->suite_name, t->case_name),
- 				      sizeof(glob));
-@@ -1317,7 +1366,8 @@ static void __igt_kunit(struct igt_ktest *tst,
- 			igt_assert_eq(modprobe(tst->kmod, opts), 0);
- 			igt_assert_eq(igt_kernel_tainted(&taints), 0);
- 
--			igt_assert_eq(kunit_get_results(&results, tst->kmsg, ktap), 0);
-+			igt_assert_eq(kunit_get_results(&results, debugfs_path,
-+							t->suite_name, ktap), 0);
- 
- 			for (i = 0; i < 2; i++) {
- 				kunit_result_free(&r, &suite_name, &case_name);
-@@ -1385,9 +1435,11 @@ static void __igt_kunit(struct igt_ktest *tst,
-  */
- void igt_kunit(const char *module_name, const char *suite, const char *opts)
- {
-+	char debugfs_path[PATH_MAX] = { '\0', };
- 	struct igt_ktest tst = { .kmsg = -1, };
- 	struct igt_ktap_results *ktap = NULL;
- 	const char *subtest = suite;
-+	DIR *debugfs_dir = NULL;
- 	IGT_LIST_HEAD(tests);
- 
- 	/*
-@@ -1435,10 +1487,12 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
- 		 *	 LTS kernels not capable of using KUnit filters for
- 		 *	 listing test cases in KTAP format, with igt_require.
- 		 */
--		if (!kunit_get_tests(&tests, &tst, suite, opts, &ktap))
-+		kunit_debugfs_path(debugfs_path);
-+		if (!*debugfs_path ||
-+		    !kunit_get_tests(&tests, &tst, suite, opts, debugfs_path, &debugfs_dir, &ktap))
- 			__igt_kunit_legacy(&tst, subtest, opts);
- 		else
--			__igt_kunit(&tst, subtest, suite, opts, &tests, &ktap);
-+			__igt_kunit(&tst, subtest, suite, opts, debugfs_path, &tests, &ktap);
- 	}
- 
- 	igt_fixture {
-@@ -1448,6 +1502,9 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
- 
- 		kunit_results_free(&tests, &suite_name, &case_name);
- 
-+		if (debugfs_dir)
-+			closedir(debugfs_dir);
-+
- 		igt_ktest_end(&tst);
- 	}
- 
--- 
-2.44.0
+  /**
+   * SUBTEST: threads-%s
+   * Description: Run threads %arg[1] test with multi threads @@
+-955,9 +966,13 @@ static void threads(int fd, int flags)
+  	bool go = false;
+  	int n_threads = 0;
+  	int gt;
++	bool has_rcs = false;
 
+-	xe_for_each_engine(fd, hwe)
++	xe_for_each_engine(fd, hwe) {
++		if (hwe-&gt;engine_class == DRM_XE_ENGINE_CLASS_RENDER)
++			has_rcs = true;
+  		++n_engines;
++	}
+
+  	if (flags &amp; BALANCER) {
+  		xe_for_each_gt(fd, gt)
+@@ -990,6 +1005,15 @@ static void threads(int fd, int flags)
+  	}
+
+  	xe_for_each_engine(fd, hwe) {
++		/* RCS/CCS sharing reset domain hence dependent engines.
++		 * When CCS is doing reset, all the contexts of RCS are
++		 * victimized, so skip the compute engine avoiding
++		 * parallel execution with RCS
++		 */
++		if (has_rcs &amp;&amp; hwe-&gt;engine_class ==
+</pre>
+              </blockquote>
+            </blockquote>
+            <pre class="moz-quote-pre" wrap="">DRM_XE_ENGINE_CLASS_COMPUTE &amp;&amp;
+</pre>
+            <blockquote type="cite">
+              <blockquote type="cite">
+                <pre class="moz-quote-pre" wrap="">+		    is_engine_contexts_victimized(fd, flags))
++			continue;
++
+  		threads_data[i].mutex = &amp;mutex;
+  		threads_data[i].cond = &amp;cond;
+  #define ADDRESS_SHIFT	39
+--
+2.25.1
+
+</pre>
+              </blockquote>
+              <pre class="moz-quote-pre" wrap="">--
+Matt Roper
+Graphics Software Engineer
+Linux GPU Platform Enablement
+Intel Corporation
+</pre>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+</pre>
+    </blockquote>
+    <br>
+  </body>
+</html>
+
+--------------rek0wkfZJxJR1KAL001gjXwh--
