@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA3FEC67861
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Apr 2024 12:03:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2D1BC67861
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Apr 2024 12:32:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B13E11302F;
-	Fri,  5 Apr 2024 12:03:08 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2453411302F;
- Fri,  5 Apr 2024 12:03:06 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7340004947543671233=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3FE10113BA5;
+	Fri,  5 Apr 2024 12:32:06 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fDJluC36";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7BFBA113BA5
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Apr 2024 12:31:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1712320318; x=1743856318;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=LWTOdJJJARuFZfzgObQgV9RA0itCTfyNiBVMqRitMpU=;
+ b=fDJluC36fDUhckb20sAC3s0I5rlRzEd8qzcpwHwR7Ldg7B8LUtmSXzh2
+ AO+zx2+DhrtOQeUm9e7eY7Ay/hsGJgCVllB8IO5GgZEeso3ExYGYEA1Hy
+ pZhBu8/Y/Irabk/JkViDZwd/MPTBrowXYW2EtEdUO2INjR5FnBoKH3HlW
+ usEDoCnc9A0Z9uwk9kR5UEXyt8+o7Qho4N9291gOeNnK5wkXrL6nV+Vb1
+ EqiVVDfNoAurC+G7knwUs2ZkBu61IILCjNZ4xH479fsR+MLH4nLlAZQb1
+ GftbZqcriQbS/W4wsLka+lpJk0Gnuu56LKlrQd6EqbpIoabNPRn+3YI+Q w==;
+X-CSE-ConnectionGUID: WneXi+VwQlezFyfGWVcA1A==
+X-CSE-MsgGUID: 61ZPUxAQQ6u26kD83AdymQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="7485967"
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
+   d="scan'208";a="7485967"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Apr 2024 05:31:57 -0700
+X-CSE-ConnectionGUID: dBFg6MT3RACZc53pKlQxGA==
+X-CSE-MsgGUID: /MyQ+oW7QI+DF0sE7vhH9g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; d="scan'208";a="23871806"
+Received: from himanshu-h97m-d3h.iind.intel.com ([10.145.169.80])
+ by orviesa004.jf.intel.com with ESMTP; 05 Apr 2024 05:31:56 -0700
+From: himanshu.girotra@intel.com
+To: ramadevi.gandi@intel.com, aditya.chauhan@intel.com,
+ kamil.konieczny@linux.intel.com, bhanuprakash.modem@intel.com,
+ igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t v2] tests/intel-ci: Addback evict & threads tests to BAT
+Date: Fri,  5 Apr 2024 18:01:54 +0530
+Message-Id: <20240405123154.15406-1-himanshu.girotra@intel.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel-ci=3A_Addback_evic?=
- =?utf-8?q?t_=26_threads_tests_to_BAT?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: himanshu.girotra@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 05 Apr 2024 12:03:06 -0000
-Message-ID: <171231858614.1228984.11842188621172250425@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240405104159.14617-1-himanshu.girotra@intel.com>
-In-Reply-To: <20240405104159.14617-1-himanshu.girotra@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,176 +63,185 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7340004947543671233==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Himanshu Girotra <himanshu.girotra@intel.com>
 
-== Series Details ==
+Addback xe_evict and xe_exec_threads to fast feedback testlist to bring
+back the coverage of BAT and reorder testlist so that kms tests run
+before core tests to encounter problem caused by "6.9.0-rc1-xe"
+Regression.
 
-Series: tests/intel-ci: Addback evict & threads tests to BAT
-URL   : https://patchwork.freedesktop.org/series/132070/
-State : success
+v2: move evict, threads tests at the end(Rama)
 
-== Summary ==
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
+---
+ tests/intel-ci/xe-fast-feedback.testlist | 138 +++++++++++++----------
+ 1 file changed, 80 insertions(+), 58 deletions(-)
 
-CI Bug Log - changes from XEIGT_7800_BAT -> XEIGTPW_10982_BAT
-====================================================
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index c859acdca..f9dbf5705 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -1,6 +1,64 @@
+ # Should be the first test
+ igt@xe_module_load@load
+ 
++igt@kms_addfb_basic@addfb25-4-tiled
++igt@kms_addfb_basic@addfb25-bad-modifier
++igt@kms_addfb_basic@addfb25-modifier-no-flag
++igt@kms_addfb_basic@addfb25-x-tiled-legacy
++igt@kms_addfb_basic@addfb25-yf-tiled-legacy
++igt@kms_addfb_basic@addfb25-y-tiled-legacy
++igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
++igt@kms_addfb_basic@bad-pitch-0
++igt@kms_addfb_basic@bad-pitch-1024
++igt@kms_addfb_basic@bad-pitch-128
++igt@kms_addfb_basic@bad-pitch-256
++igt@kms_addfb_basic@bad-pitch-32
++igt@kms_addfb_basic@bad-pitch-63
++igt@kms_addfb_basic@bad-pitch-65536
++igt@kms_addfb_basic@bad-pitch-999
++igt@kms_addfb_basic@basic
++igt@kms_addfb_basic@basic-x-tiled-legacy
++igt@kms_addfb_basic@bo-too-small
++igt@kms_addfb_basic@invalid-get-prop
++igt@kms_addfb_basic@invalid-get-prop-any
++igt@kms_addfb_basic@invalid-set-prop
++igt@kms_addfb_basic@invalid-set-prop-any
++igt@kms_addfb_basic@no-handle
++igt@kms_addfb_basic@size-max
++igt@kms_addfb_basic@small-bo
++igt@kms_addfb_basic@too-high
++igt@kms_addfb_basic@too-wide
++igt@kms_addfb_basic@unused-handle
++igt@kms_addfb_basic@unused-modifier
++igt@kms_addfb_basic@unused-offsets
++igt@kms_addfb_basic@unused-pitches
++igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
++igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
++igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
++igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
++igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
++igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
++igt@kms_dsc@dsc-basic
++igt@kms_flip@basic-flip-vs-dpms
++igt@kms_flip@basic-flip-vs-modeset
++igt@kms_flip@basic-flip-vs-wf_vblank
++igt@kms_flip@basic-plain-flip
++igt@kms_force_connector_basic@force-connector-state
++igt@kms_force_connector_basic@force-edid
++igt@kms_force_connector_basic@prune-stale-modes
++igt@kms_frontbuffer_tracking@basic
++igt@kms_hdmi_inject@inject-audio
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
++igt@kms_pipe_crc_basic@hang-read-crc
++igt@kms_pipe_crc_basic@nonblocking-crc
++igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
++igt@kms_pipe_crc_basic@read-crc
++igt@kms_pipe_crc_basic@read-crc-frame-sequence
++igt@kms_prop_blob@basic
++igt@kms_psr@psr-primary-page-flip
++igt@kms_psr@psr-cursor-plane-move
++igt@kms_psr@psr-sprite-plane-onoff
+ igt@xe_compute@compute-square
+ igt@xe_create@create-execqueues-noleak
+ igt@xe_create@create-execqueues-leak
+@@ -142,64 +200,6 @@ igt@xe_pat@pat-index-xe2
+ igt@xe_waitfence@abstime
+ igt@xe_waitfence@engine
+ igt@xe_waitfence@reltime
+-igt@kms_addfb_basic@addfb25-4-tiled
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled-legacy
+-igt@kms_addfb_basic@addfb25-yf-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled-legacy
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
+-igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
+-igt@kms_dsc@dsc-basic
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_hdmi_inject@inject-audio
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
+-igt@kms_pipe_crc_basic@hang-read-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc
+-igt@kms_pipe_crc_basic@read-crc-frame-sequence
+-igt@kms_prop_blob@basic
+-igt@kms_psr@psr-primary-page-flip
+-igt@kms_psr@psr-cursor-plane-move
+-igt@kms_psr@psr-sprite-plane-onoff
+ 
+ # All tests that do module unloading and reloading are executed last.
+ # They will sometimes reveal issues of earlier tests leaving the
+@@ -235,3 +235,25 @@ igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-prefetch
+ igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-prefetch
+ igt@xe_exec_fault_mode@twice-invalid-fault
+ igt@xe_exec_fault_mode@twice-invalid-userptr-fault
++igt@xe_exec_threads@threads-basic
++igt@xe_exec_threads@threads-mixed-basic
++igt@xe_exec_threads@threads-mixed-shared-vm-basic
++igt@xe_exec_threads@threads-mixed-fd-basic
++igt@xe_exec_threads@threads-mixed-userptr-invalidate
++igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race
++igt@xe_evict@evict-beng-mixed-threads-small-multi-vm
++igt@xe_evict@evict-beng-small
++igt@xe_evict@evict-beng-small-cm
++igt@xe_evict@evict-beng-small-external
++igt@xe_evict@evict-beng-small-external-cm
++igt@xe_evict@evict-beng-small-multi-vm
++igt@xe_evict@evict-cm-threads-small
++igt@xe_evict@evict-mixed-threads-small
++igt@xe_evict@evict-mixed-threads-small-multi-vm
++igt@xe_evict@evict-small
++igt@xe_evict@evict-small-cm
++igt@xe_evict@evict-small-external
++igt@xe_evict@evict-small-external-cm
++igt@xe_evict@evict-small-multi-vm
++igt@xe_evict@evict-small-multi-vm-cm
++igt@xe_evict@evict-threads-small
+-- 
+2.40.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (5 -> 5)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10982_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_evict@evict-beng-small-external:
-    - bat-pvc-2:          NOTRUN -> [FAIL][1] ([Intel XE#1000]) +3 other tests fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10982/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html
-
-  * igt@xe_evict@evict-small-cm:
-    - bat-adlp-7:         NOTRUN -> [SKIP][2] ([Intel XE#261] / [Intel XE#688]) +15 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10982/bat-adlp-7/igt@xe_evict@evict-small-cm.html
-
-  * igt@xe_evict@evict-small-external-cm:
-    - bat-pvc-2:          NOTRUN -> [DMESG-FAIL][3] ([Intel XE#482]) +3 other tests dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10982/bat-pvc-2/igt@xe_evict@evict-small-external-cm.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [FAIL][4] ([Intel XE#616]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7800/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10982/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#1000]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1000
-  [Intel XE#1442]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1442
-  [Intel XE#1462]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1462
-  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
-  [Intel XE#482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/482
-  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
-  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
-
-
-Build changes
--------------
-
-  * IGT: IGT_7800 -> IGTPW_10982
-  * Linux: xe-1043-9619b05620f06aaf89a5c603c2ba55c1419ee78e -> xe-1045-019010dd870216d30458836f988b4461674a051a
-
-  IGTPW_10982: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10982/index.html
-  IGT_7800: 7800
-  xe-1043-9619b05620f06aaf89a5c603c2ba55c1419ee78e: 9619b05620f06aaf89a5c603c2ba55c1419ee78e
-  xe-1045-019010dd870216d30458836f988b4461674a051a: 019010dd870216d30458836f988b4461674a051a
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10982/index.html
-
---===============7340004947543671233==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel-ci: Addback evict &amp; threads tests to BAT</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132070/">https://patchwork.freedesktop.org/series/132070/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10982/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10982/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7800_BAT -&gt; XEIGTPW_10982_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (5 -&gt; 5)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10982_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_evict@evict-beng-small-external:</p>
-<ul>
-<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10982/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1000">Intel XE#1000</a>) +3 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_evict@evict-small-cm:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10982/bat-adlp-7/igt@xe_evict@evict-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +15 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_evict@evict-small-external-cm:</p>
-<ul>
-<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10982/bat-pvc-2/igt@xe_evict@evict-small-external-cm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/482">Intel XE#482</a>) +3 other tests dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7800/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10982/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7800 -&gt; IGTPW_10982</li>
-<li>Linux: xe-1043-9619b05620f06aaf89a5c603c2ba55c1419ee78e -&gt; xe-1045-019010dd870216d30458836f988b4461674a051a</li>
-</ul>
-<p>IGTPW_10982: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10982/index.html<br />
-  IGT_7800: 7800<br />
-  xe-1043-9619b05620f06aaf89a5c603c2ba55c1419ee78e: 9619b05620f06aaf89a5c603c2ba55c1419ee78e<br />
-  xe-1045-019010dd870216d30458836f988b4461674a051a: 019010dd870216d30458836f988b4461674a051a</p>
-
-</body>
-</html>
-
---===============7340004947543671233==--
