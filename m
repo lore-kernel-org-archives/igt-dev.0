@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DB42CD11C2
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Apr 2024 12:56:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3385CD11C2
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Apr 2024 13:34:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3B897113BD3;
-	Fri,  5 Apr 2024 12:56:15 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="V+h7BQ2Q";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F347113BD1
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Apr 2024 12:56:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712321772; x=1743857772;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=HpBAX9ccDBrcnEoqD5oWdjdGOc1vXWl8BWL/IPl19Ks=;
- b=V+h7BQ2QqfDGboJ5sQ0zBMS7YzGEwg2owENn5TSAQgHI9lqDcev57H6a
- KTi/AjSiS6G0lbJkMTVe8s3bkjAVTNRpD9p/GGp6DmgIrc311/u6zW9lE
- UAIv1+hL1SPFdhvh53QREvcJ5NA5dErujRlbURYFVf2YfIcWBhFJjh4lE
- X4tsmpi7xuzfi7OS7gW+d/i98y1gzj1X564QkCuL1Kh0jYBgKeKUJMA5C
- ELNUXEA5O+3fvnvju3pnKiRbbpRiEq3WDXIuZW4TJc6IggE4+lPNS3i8L
- dBGZ380tFRDPCb1rBi2EomwMITS3Ma3WUYMcmEtQ2Uqfs5hFO/LRxrv8a Q==;
-X-CSE-ConnectionGUID: TkX2lXzKSvCYm0y2jZvO3w==
-X-CSE-MsgGUID: jg8F6SplR2eYOu1w/ptUOA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="7775553"
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="7775553"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Apr 2024 05:56:11 -0700
-X-CSE-ConnectionGUID: VA1ZepRwRY2wc5uE5E/x+g==
-X-CSE-MsgGUID: yLBRNyD3QZGxP6LpeZICzw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; d="scan'208";a="19011003"
-Received: from unknown (HELO localhost) ([10.245.246.109])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Apr 2024 05:56:10 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Subject: [PATCH i-g-t] tests/device_reset: move later skips into subtests
-Date: Fri,  5 Apr 2024 14:56:05 +0200
-Message-ID: <20240405125605.10425-1-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.42.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 95BBD113C21;
+	Fri,  5 Apr 2024 13:34:47 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EB53113C0E;
+ Fri,  5 Apr 2024 13:34:45 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2031843870966151133=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/kms=5Fbig=5Fjoiner?=
+ =?utf-8?q?=3A_cleanup_force_joiner_debugfs_state?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 05 Apr 2024 13:34:45 -0000
+Message-ID: <171232408525.1229792.4454077407117438199@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240405111525.1748544-1-kunal1.joshi@intel.com>
+In-Reply-To: <20240405111525.1748544-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,61 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-It is safe to use skips just after igt_main() for skipping all
-subtests but later on they produce logs and even if CI will
-ignore that, such logs can mislead developers reading them.
+--===============2031843870966151133==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Move a skip from middle of igt_main() code block into subtests
-which needed them.
+== Series Details ==
 
-v2: add space after while (Kamil)
+Series: tests/intel/kms_big_joiner: cleanup force joiner debugfs state
+URL   : https://patchwork.freedesktop.org/series/132071/
+State : success
 
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/device_reset.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+== Summary ==
 
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index 583a59039..de9e9d8c9 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -424,22 +424,25 @@ igt_main
- 		healthcheck(&dev);
- 	}
- 
--	igt_subtest_group {
--		igt_fixture {
--			igt_skip_on_f(dev.fds.slot_dir < 0, "Gfx Card does not support any "
--				      "pcie slot for cold reset\n");
--			igt_skip_on(!is_sysfs_cold_reset_supported(dev.fds.slot_dir));
--		}
-+#define SKIP_IF_NO_COLD_RESET(slot_dir) \
-+	do { \
-+		igt_skip_on_f(slot_dir < 0, "Gfx Card does not support any " \
-+			      "pcie slot for cold reset\n"); \
-+		igt_skip_on(!is_sysfs_cold_reset_supported(slot_dir)); \
-+	} while (0)
- 
-+	igt_subtest_group {
- 		igt_describe("Unbinds driver from device, initiates cold reset"
- 			     " then rebinds driver to device");
- 		igt_subtest("unbind-cold-reset-rebind") {
-+			SKIP_IF_NO_COLD_RESET(dev.fds.slot_dir);
- 			unbind_reset_rebind(&dev, COLD_RESET);
- 			healthcheck(&dev);
- 		}
- 
- 		igt_describe("Cold Resets device with bound driver");
- 		igt_subtest("cold-reset-bound") {
-+			SKIP_IF_NO_COLD_RESET(dev.fds.slot_dir);
- 			initiate_device_reset(&dev, COLD_RESET);
- 			/*
- 			 * Cold reset will initiate card boot sequence again,
--- 
-2.42.0
+CI Bug Log - changes from XEIGT_7800_BAT -> XEIGTPW_10983_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7800 -> IGTPW_10983
+  * Linux: xe-1043-9619b05620f06aaf89a5c603c2ba55c1419ee78e -> xe-1045-019010dd870216d30458836f988b4461674a051a
+
+  IGTPW_10983: 10983
+  IGT_7800: 7800
+  xe-1043-9619b05620f06aaf89a5c603c2ba55c1419ee78e: 9619b05620f06aaf89a5c603c2ba55c1419ee78e
+  xe-1045-019010dd870216d30458836f988b4461674a051a: 019010dd870216d30458836f988b4461674a051a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10983/index.html
+
+--===============2031843870966151133==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_big_joiner: cleanup force joiner debugfs state</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132071/">https://patchwork.freedesktop.org/series/132071/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10983/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10983/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7800_BAT -&gt; XEIGTPW_10983_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7800 -&gt; IGTPW_10983</li>
+<li>Linux: xe-1043-9619b05620f06aaf89a5c603c2ba55c1419ee78e -&gt; xe-1045-019010dd870216d30458836f988b4461674a051a</li>
+</ul>
+<p>IGTPW_10983: 10983<br />
+  IGT_7800: 7800<br />
+  xe-1043-9619b05620f06aaf89a5c603c2ba55c1419ee78e: 9619b05620f06aaf89a5c603c2ba55c1419ee78e<br />
+  xe-1045-019010dd870216d30458836f988b4461674a051a: 019010dd870216d30458836f988b4461674a051a</p>
+
+</body>
+</html>
+
+--===============2031843870966151133==--
