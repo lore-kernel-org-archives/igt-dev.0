@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 417B8CD1296
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4447CD129C
 	for <igt-dev@archiver.kernel.org>; Mon,  8 Apr 2024 06:18:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9C343112114;
-	Mon,  8 Apr 2024 06:18:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0C32B112116;
+	Mon,  8 Apr 2024 06:18:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DnZA/GJX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h+az25LR";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 492A0112123
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Apr 2024 06:18:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4AE7611211A
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Apr 2024 06:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712557113; x=1744093113;
+ t=1712557112; x=1744093112;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=4woyvGP/1lyCN8KrmWfntW5W9rx9rExmqUn96HT28Fg=;
- b=DnZA/GJXysGP1aSoK7rfbdpA5WRDWQ6LtF264G+Gz33RgmkN1eqB1jVw
- 83f2O8sY8RNrujjm9XN9byWnhYIu7X2mOaEQBB7LyOe16xl0d+TgIszgc
- mmeZVu2DUxdXV4VwmIReexemGPKtvHhdBciAztuAv0khiZ5vm92d2xQHY
- JPp6I5W9KaLoCkBcp1fJ+Hr61Cnlmw9td1BYlE5kjKE95rcRiMroFe0RA
- C4ev+xSMue9IyU62wv67tAwYk8GYgVtJLpK0q77CM57TrG4axnxswGggX
- 2UQMvHAYlzHygfe0+xEaTR2Psdw76rXEuzeCYPtM2QXCbUudwhT5j+OQg w==;
-X-CSE-ConnectionGUID: /uP3enxPRZmCDo18XTkTxg==
-X-CSE-MsgGUID: 3MH42D3TSBChnCYkJmVkAQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11037"; a="7940245"
+ bh=n7gStZ2pWvb4+6M0NrbiCFrUpWu3spb/HOS4F2SskWc=;
+ b=h+az25LRNSxxMGQh6/1VsGmr5SQSLMTwscs+U+zNtWKK9vv/wCU15mh3
+ wQ743HBskiBu6Iiom5kcpwkEkZ5F5x96fkoRLxWH6nAkxBQGIuxDZ6tWl
+ Wk3riLzJ2eaKy/skbUmnJUPHRAW5rnO1W6twqAkdoItz4r1Z1ClV1PxQr
+ voaSg3evfOKCsGQliETgKof3mX7+dxoYR/imK7bfIxvP3pwuNKdaE+ZUb
+ uZRMaVwp1N3VfzS07OVGgqhxUqJFAlKjLtXDtUcwfJqy77x8WvezkKnm7
+ EGUh0vHIAlco350L+3u/QZwq9JQYrYdqcmSAeZ+2GYhZPo0EiLjPdNGoJ Q==;
+X-CSE-ConnectionGUID: dN03FBY1RYS+vWAUN+Hw7Q==
+X-CSE-MsgGUID: D4Xchi01TZ+P+wfTgoOqfQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11037"; a="7940238"
 X-IronPort-AV: E=Sophos;i="6.07,186,1708416000"; 
-   d="scan'208";a="7940245"
+   d="scan'208";a="7940238"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Apr 2024 23:18:18 -0700
-X-CSE-ConnectionGUID: XBRJfF/TTs6GywMgtpHKTA==
-X-CSE-MsgGUID: HmrbzgBiTna/2s9nJM8Kgw==
+ 07 Apr 2024 23:18:16 -0700
+X-CSE-ConnectionGUID: 90pnOjeESQuShsrbxsJ6EQ==
+X-CSE-MsgGUID: Tm4PR4WCRsqH1pH9ve8ptA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,186,1708416000"; d="scan'208";a="50976981"
+X-IronPort-AV: E=Sophos;i="6.07,186,1708416000"; d="scan'208";a="50976978"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Apr 2024 23:18:17 -0700
+ 07 Apr 2024 23:18:15 -0700
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t 3/5] tests/chamelium: Use lib helper to check the
- pipe/output combo validity
-Date: Mon,  8 Apr 2024 11:42:19 +0530
-Message-ID: <20240408061221.291523-4-bhanuprakash.modem@intel.com>
+Subject: [PATCH i-g-t 2/5] tests/kms: Drop redundant check for pipe/output
+ combo validity
+Date: Mon,  8 Apr 2024 11:42:18 +0530
+Message-ID: <20240408061221.291523-3-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240408061221.291523-1-bhanuprakash.modem@intel.com>
 References: <20240408061221.291523-1-bhanuprakash.modem@intel.com>
@@ -69,61 +69,81 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use IGT lib helper intel_pipe_output_combo_valid() to make sure the
-selected pipe/output/mode combo is valid.
+As intel_pipe_output_combo_valid() is taking care of pipe/output
+combo validity, drop other redundant checks.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/chamelium/kms_chamelium_helper.c | 12 +++++++++---
- tests/chamelium/kms_chamelium_hpd.c    |  5 ++---
- 2 files changed, 11 insertions(+), 6 deletions(-)
+ tests/kms_content_protection.c |  3 ---
+ tests/kms_properties.c         |  3 ---
+ tests/kms_vrr.c                | 22 ++++++++++------------
+ 3 files changed, 10 insertions(+), 18 deletions(-)
 
-diff --git a/tests/chamelium/kms_chamelium_helper.c b/tests/chamelium/kms_chamelium_helper.c
-index 197d29be9..26c5f87f1 100644
---- a/tests/chamelium/kms_chamelium_helper.c
-+++ b/tests/chamelium/kms_chamelium_helper.c
-@@ -207,9 +207,15 @@ enum pipe chamelium_get_pipe_for_output(igt_display_t *display,
- 	enum pipe pipe;
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 6858b22e2..e9a468eb0 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -564,9 +564,6 @@ test_content_protection(enum igt_commit_style s, int content_type)
  
- 	for_each_pipe(display, pipe) {
--		if (igt_pipe_connector_valid(pipe, output)) {
--			return pipe;
-+		igt_output_set_pipe(output, pipe);
-+
-+		if (!intel_pipe_output_combo_valid(display)) {
-+			igt_output_set_pipe(output, PIPE_NONE);
-+			continue;
+ 	for_each_connected_output(display, output) {
+ 		for_each_pipe(display, pipe) {
+-			if (!igt_pipe_connector_valid(pipe, output))
+-				continue;
+-
+ 			igt_display_reset(display);
+ 
+ 			igt_output_set_pipe(output, pipe);
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index bd414f534..6f92b218e 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -337,9 +337,6 @@ static void connector_properties(igt_display_t *display, bool atomic)
+ 		bool found = false;
+ 
+ 		for_each_pipe(display, pipe) {
+-			if (!igt_pipe_connector_valid(pipe, output))
+-				continue;
+-
+ 			igt_display_reset(display);
+ 
+ 			igt_output_set_pipe(output, pipe);
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 15c62b34b..2a160b990 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -733,22 +733,20 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
+ 			continue;
+ 
+ 		for_each_pipe(&data->display, pipe) {
+-			if (igt_pipe_connector_valid(pipe, output)) {
+-				igt_output_set_pipe(output, pipe);
++			igt_output_set_pipe(output, pipe);
+ 
+-				if (!intel_pipe_output_combo_valid(&data->display)) {
+-					igt_output_set_pipe(output, PIPE_NONE);
+-					continue;
+-				}
++			if (!intel_pipe_output_combo_valid(&data->display)) {
++				igt_output_set_pipe(output, PIPE_NONE);
++				continue;
++			}
+ 
+-				igt_dynamic_f("pipe-%s-%s",
+-					      kmstest_pipe_name(pipe), output->name)
+-					test(data, pipe, output, flags);
++			igt_dynamic_f("pipe-%s-%s",
++				      kmstest_pipe_name(pipe), output->name)
++				test(data, pipe, output, flags);
+ 
+-				test_cleanup(data, pipe, output);
++			test_cleanup(data, pipe, output);
+ 
+-				break;
+-			}
++			break;
  		}
-+
-+		igt_output_set_pipe(output, PIPE_NONE);
-+		return pipe;
  	}
- 
- 	igt_assert_f(false, "No pipe found for output %s\n",
-@@ -344,4 +350,4 @@ bool chamelium_check_analog_bridge(chamelium_data_t *data,
- 		return true;
- 
- 	return false;
--}
-\ No newline at end of file
-+}
-diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
-index 858c595cb..52e758087 100644
---- a/tests/chamelium/kms_chamelium_hpd.c
-+++ b/tests/chamelium/kms_chamelium_hpd.c
-@@ -345,10 +345,9 @@ static void test_hotplug_for_each_pipe(chamelium_data_t *data,
- 		output = chamelium_get_output_for_port(data, port);
- 
- 		/* If pipe is valid for output then set it */
--		if (igt_pipe_connector_valid(pipe, output)) {
--			igt_output_set_pipe(output, pipe);
-+		igt_output_set_pipe(output, pipe);
-+		if (intel_pipe_output_combo_valid(&data->display))
- 			igt_display_commit2(&data->display, COMMIT_ATOMIC);
--		}
- 
- 		chamelium_unplug(data->chamelium, port);
- 		chamelium_wait_for_connector_after_hotplug(
+ }
 -- 
 2.43.2
 
