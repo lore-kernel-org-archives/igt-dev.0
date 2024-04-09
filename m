@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91DBCC67861
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Apr 2024 11:20:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB209C67861
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Apr 2024 11:20:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1E753112CCA;
-	Tue,  9 Apr 2024 11:20:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A6E6C112CC9;
+	Tue,  9 Apr 2024 11:20:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ndGmW4SA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gCKSHzHv";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88BDF112CC9
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Apr 2024 11:19:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48546112CD1
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Apr 2024 11:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712661598; x=1744197598;
+ t=1712661607; x=1744197607;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=xGFkT8KEEO084QD/DqlqS/4GgXx42kIA08NNIF2JJ1w=;
- b=ndGmW4SAcOolR67Wk0+p6PjccI/YEz1qXINoahWzv36LiPuU0VUGyYzY
- EN96Gj7sL1K3CvX5jl8DRsam9gZ9h/LABxc7IxUD1Jf7VXULe8FaXcsSu
- YKi08mGh/YdWtr0W/vFSUTsnrCAoLcoqhfLjbvl2A+k3xN6lrbzT1cVqf
- AYNcQjXKVxJI5cbSheviS7cQsLFu1gIZdvjflN/pAoEFs4XikllPK3nMh
- XXvmvxPupDwqrCXtisK6e9uITqQId2XlN1bCFMto2qymMvyiq3wKwDS4q
- U7MVxNBRAnLwW7TUW8wULgZe+4+kz0PuDwMjpUtTGHNqKam/IYmUuaetU w==;
-X-CSE-ConnectionGUID: plzXdOpBS5OJzOuRe5SQpA==
-X-CSE-MsgGUID: 9eNsMVc3Re+vcHlskWApnQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="7839741"
+ bh=WymTC7g5PaKfb3bymPLZvsxVpY5R2IoBnFQZMMSHQ7o=;
+ b=gCKSHzHvgFzf1NSEgNhfbf941gdvk6B38g6VRAO07ST5mVsFJND7Ouio
+ c1+Ksaecb0/c0epCzaeTrqqm4rpNax0J/TnTTAoNtBLWCFiNEXWmbszCK
+ Ut38ZxUQ8+wOPjRZXsZOSo9nCMQeJE+TFTOqiz1GNz3zzq2qLPg2s/iqT
+ ymJvaZX20bZYPWa/0Cfjmy6aTd9+LORw/81M0OFmSYCHSZmJ5Tb7zxD77
+ nc0Jz9Gtg7rIHT0XJp0+ag/i+tYjraGeYzByvBMJu0IAu5AIXmzkdK7/P
+ DeQwcRacv9/Lw0LcRnic7Nn04IZnoDO4XpPv7Bg1GyjxkWPBJsmGFYels A==;
+X-CSE-ConnectionGUID: rkn/aaqXTNGybBCS6eFxfw==
+X-CSE-MsgGUID: et0V59d+SbSDbskXbFdqzw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="7839747"
 X-IronPort-AV: E=Sophos;i="6.07,189,1708416000"; 
-   d="scan'208";a="7839741"
+   d="scan'208";a="7839747"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2024 04:19:58 -0700
-X-CSE-ConnectionGUID: g2MkZnYsTjWcjE+zDdP7uw==
-X-CSE-MsgGUID: f3pxq/+vRq+f6q0osfetXg==
+ 09 Apr 2024 04:20:06 -0700
+X-CSE-ConnectionGUID: UGzPBrdAQgOhj/tEugBq6A==
+X-CSE-MsgGUID: NCNy0TxQQIqD1/k+u5jJhw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,189,1708416000"; d="scan'208";a="20640515"
+X-IronPort-AV: E=Sophos;i="6.07,189,1708416000"; d="scan'208";a="20640548"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2024 04:19:57 -0700
+ 09 Apr 2024 04:20:05 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t 3/5] tests/intel: Remove documentation collision for
- Obsolete category
-Date: Tue,  9 Apr 2024 11:19:13 +0000
-Message-Id: <20240409111915.2842477-4-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t 4/5] tests/intel: Remove documentation collisions in
+ i915_selftest
+Date: Tue,  9 Apr 2024 11:19:14 +0000
+Message-Id: <20240409111915.2842477-5-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240409111915.2842477-1-katarzyna.piecielska@intel.com>
 References: <20240409111915.2842477-1-katarzyna.piecielska@intel.com>
@@ -70,160 +70,81 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's remove collision in Category and Feature.
-Once I am here let's order docs as in other places:
+Let's remove Category/Sub-category/Functionality name collisions.
+Also reorder documentation in those cases to follow pattern as in other
+tests:
 	SUBTEST
 	Description
 	Category
 	Sub-category
-	Funtionality
+	Functionality
 	Feature
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/gem_exec_params.c          | 4 ++--
- tests/intel/gen3_mixed_blits.c         | 4 ++--
- tests/intel/gen3_render_linear_blits.c | 4 ++--
- tests/intel/gen3_render_mixed_blits.c  | 4 ++--
- tests/intel/gen3_render_tiledx_blits.c | 4 ++--
- tests/intel/gen3_render_tiledy_blits.c | 4 ++--
- tests/intel/perf.c                     | 6 +++---
- 7 files changed, 15 insertions(+), 15 deletions(-)
+ tests/intel/i915_selftest.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/tests/intel/gem_exec_params.c b/tests/intel/gem_exec_params.c
-index 9ce4d7653..b2f8fb247 100644
---- a/tests/intel/gem_exec_params.c
-+++ b/tests/intel/gem_exec_params.c
-@@ -111,10 +111,10 @@
-  * SUBTEST: rsvd2-dirt
+diff --git a/tests/intel/i915_selftest.c b/tests/intel/i915_selftest.c
+index edacb6250..1d03fb388 100644
+--- a/tests/intel/i915_selftest.c
++++ b/tests/intel/i915_selftest.c
+@@ -28,10 +28,10 @@
+  * Description: Basic unit tests for i915.ko
   *
-  * SUBTEST: secure-non-master
-- * Feature: cmd_submission, obsolete
-+ * Feature: cmd_submission, obsolete test
+  * SUBTEST: live
+- * Feature: gem_core
+- * Sub-category: Selftest
+  * Category: Selftest
++ * Sub-category: Selftest subcategory
+  * Functionality: live selftest
++ * Feature: gem_core
   *
-  * SUBTEST: secure-non-root
-- * Feature: cmd_submission, obsolete
-+ * Feature: cmd_submission, obsolete test
+  * SUBTEST: live@active
+  * Category: Selftest
+@@ -312,11 +312,11 @@
+  * Sub-category: Reset
   *
-  * SUBTEST: sol-reset-invalid
+  * SUBTEST: live@sanitycheck
+- * Category: Selftest
+  * Description: Checks the selftest infrastructure itself
+- * Functionality: selftest
+- * Test category: i915
++ * Category: Selftest
+  * Sub-category: Core
++ * Functionality: sanitycheck
++ * Test category: i915
   *
-diff --git a/tests/intel/gen3_mixed_blits.c b/tests/intel/gen3_mixed_blits.c
-index ea65579b2..55bbb5d45 100644
---- a/tests/intel/gen3_mixed_blits.c
-+++ b/tests/intel/gen3_mixed_blits.c
-@@ -50,10 +50,10 @@
- #include "igt.h"
- /**
-  * TEST: gen3 mixed blits
-- * Feature: obsolete
-+ * Category: Obsolete
-  * Sub-category: Obsolete_gen3
-  * Functionality: obsolete_test
-- * Category: Obsolete
-+ * Feature: obsolete test
+  * SUBTEST: live@scheduler
+  * Category: Selftest
+@@ -369,9 +369,9 @@
   *
-  * SUBTEST:
-  */
-diff --git a/tests/intel/gen3_render_linear_blits.c b/tests/intel/gen3_render_linear_blits.c
-index e370c4406..43a443e0a 100644
---- a/tests/intel/gen3_render_linear_blits.c
-+++ b/tests/intel/gen3_render_linear_blits.c
-@@ -49,10 +49,10 @@
- #include "igt.h"
- /**
-  * TEST: gen3 render linear blits
-- * Feature: obsolete
-+ * Category: Obsolete
-  * Sub-category: Obsolete_gen3
-  * Functionality: obsolete_test
-- * Category: Obsolete
-+ * Feature: obsolete test
+  * SUBTEST: mock
+  * Category: Selftest
+- * Feature: gem_core
+- * Sub-category: Selftest
++ * Sub-category: Selftest subcategory
+  * Functionality: mock selftest
++ * Feature: gem_core
   *
-  * SUBTEST:
-  */
-diff --git a/tests/intel/gen3_render_mixed_blits.c b/tests/intel/gen3_render_mixed_blits.c
-index 14fae3e7b..c7336adfe 100644
---- a/tests/intel/gen3_render_mixed_blits.c
-+++ b/tests/intel/gen3_render_mixed_blits.c
-@@ -50,10 +50,10 @@
- #include "igt.h"
- /**
-  * TEST: gen3 render mixed blits
-- * Feature: obsolete
-+ * Category: Obsolete
-  * Sub-category: Obsolete_gen3
-  * Functionality: obsolete_test
-- * Category: Obsolete
-+ * Feature: obsolete test
+  * SUBTEST: mock@buddy
+  * Category: Selftest
+@@ -465,11 +465,11 @@
+  * Sub-category: uapi
   *
-  * SUBTEST:
-  */
-diff --git a/tests/intel/gen3_render_tiledx_blits.c b/tests/intel/gen3_render_tiledx_blits.c
-index a2748f272..f5818135b 100644
---- a/tests/intel/gen3_render_tiledx_blits.c
-+++ b/tests/intel/gen3_render_tiledx_blits.c
-@@ -50,10 +50,10 @@
- #include "igt.h"
- /**
-  * TEST: gen3 render tiledx blits
-- * Feature: obsolete
-- * Sub-category: Obsolete_gen3
-  * Category: Obsolete
-+ * Sub-category: Obsolete_gen3
-  * Functionality: obsolete_test
-+ * Feature: obsolete test
+  * SUBTEST: mock@sanitycheck
+- * Category: Selftest
+  * Description: Selftest for the selftest
+- * Functionality: selftest
+- * Test category: i915
++ * Category: Selftest
+  * Sub-category: Core
++ * Functionality: sanitycheck
++ * Test category: i915
   *
-  * SUBTEST:
-  */
-diff --git a/tests/intel/gen3_render_tiledy_blits.c b/tests/intel/gen3_render_tiledy_blits.c
-index eb63aaa82..b40be62f6 100644
---- a/tests/intel/gen3_render_tiledy_blits.c
-+++ b/tests/intel/gen3_render_tiledy_blits.c
-@@ -50,10 +50,10 @@
- #include "igt.h"
- /**
-  * TEST: gen3 render tiledy blits
-- * Feature: obsolete
-- * Sub-category: Obsolete_gen3
-  * Category: Obsolete
-+ * Sub-category: Obsolete_gen3
-  * Functionality: obsolete_test
-+ * Feature: obsolete test
-  *
-  * SUBTEST:
-  */
-diff --git a/tests/intel/perf.c b/tests/intel/perf.c
-index 651ea9fd8..7a63a3bdd 100644
---- a/tests/intel/perf.c
-+++ b/tests/intel/perf.c
-@@ -99,7 +99,7 @@
-  * Feature: oa perf
-  *
-  * SUBTEST: gen8-unprivileged-single-ctx-counters
-- * Feature: oa perf, obsolete
-+ * Feature: oa perf, obsolete test
-  *
-  * SUBTEST: global-sseu-config
-  * Description: Verify specifying SSEU opening parameters
-@@ -155,7 +155,7 @@
-  * Description: Test the i915 perf metrics streaming interface
-  *
-  * SUBTEST: per-context-mode-unprivileged
-- * Feature: oa perf, obsolete
-+ * Feature: oa perf, obsolete test
-  *
-  * SUBTEST: polling
-  * Description: Test polled read with default hrtimer frequency
-@@ -180,7 +180,7 @@
-  * Description: Test the i915 perf metrics streaming interface
-  *
-  * SUBTEST: unprivileged-single-ctx-counters
-- * Feature: oa perf, obsolete
-+ * Feature: oa perf, obsolete test
-  *
-  * SUBTEST: whitelisted-registers-userspace-config
-  * Description: Test the i915 perf metrics streaming interface
+  * SUBTEST: mock@scatterlist
+  * Category: Selftest
 -- 
 2.34.1
 
