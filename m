@@ -4,55 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB387CD128A
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Apr 2024 17:31:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B2B5CD128A
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Apr 2024 17:38:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6CC76112E68;
-	Tue,  9 Apr 2024 17:31:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 031A210F85D;
+	Tue,  9 Apr 2024 17:38:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iWaQR5YX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U6f2RvG0";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 064AD112E67
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Apr 2024 17:31:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 55DAD10F85D
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Apr 2024 17:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712683864; x=1744219864;
+ t=1712684311; x=1744220311;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=JOqasQxsI/Q4pU/TlC02AKGz1g0ZRMpLMQhByFqeZd0=;
- b=iWaQR5YXrp5wf3jhdX3jUbauCFgwrMs9Shra5tVvXt9o+EshU8jpXKCI
- YaKNOzqQbDswE61gMoOz6JMJf511gd4jYALAFeRLh37VuWMrH8/3PlS6W
- x9KlDw8OpiPKT8XIjUDlJrDw9BN1xc73EhjTIEGoHQK1uQYTI07lJsPRe
- czbamAy7Iv5kh3Nx3UlU6yv3e57Me6uXUjDyT3rAXafTjm3JHn7y2hNWv
- 5eEbOnVtJKkj1zhG/mg7Wv8UqNPb1tRGTlv7Ifw7INswjuuC8VbyQsuLg
- ZWt2RkYeJIuqOu+y1V3/BjeiwmACj8D6jBH8gRs83cimBXV705o7t6c4b g==;
-X-CSE-ConnectionGUID: bped3Qk1TL6O+nhme6LPVA==
-X-CSE-MsgGUID: 8BWGssP8Sk207zFpiEc0GA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8117132"
+ bh=E4brYzqVm172OVAbDdL+lbjujxPFrD21m84CRdcVo2Q=;
+ b=U6f2RvG09tPK7DLgOe1lygVxo+hURYkL8drC9aoT/iMz5oTePx0ckBWU
+ VOMeNT8cxi6YeqVEN9+oCrXFQZ9z9R7RBsobd2mH3K0S7m6+X6Gdd4CWq
+ qGNhymYWMEKTmgsdzUXJkEXdMMKOJ/8akQcjoQ1sCoIBINTQsYbhL8uHX
+ vLqqj6iWHNgESUGBgYan+rE+87+jBv/0P2pMvgh2xmncBDxKYzoWWU+Ul
+ P3BIrnBwEfUKTeKXV2l+n5xlZE0YqAF1A+yzw4JZK/+EaSxmi46bgJgVf
+ nLqx0CFsGcXDsBeSx7atiPtc+P3POMHN90Ls8rixbRFajigpxbemkE92Y A==;
+X-CSE-ConnectionGUID: RbyofJhmTdCqSzeI/x+UCQ==
+X-CSE-MsgGUID: b9q0G4fmSFSnb54Ntnq/Jg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8586984"
 X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; 
-   d="scan'208";a="8117132"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2024 10:31:03 -0700
-X-CSE-ConnectionGUID: Tc6FniWSR/ivwpnV5XBmrg==
-X-CSE-MsgGUID: dF/PDKCrThyzW1HxiABWrA==
+   d="scan'208";a="8586984"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Apr 2024 10:37:24 -0700
+X-CSE-ConnectionGUID: tBnLvrpJS1yfOIgDdGojUg==
+X-CSE-MsgGUID: AAtA4iLBTwe2Wsgs8+WEdg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; d="scan'208";a="51503424"
+X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; d="scan'208";a="20238335"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.138])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2024 10:31:03 -0700
-Date: Tue, 09 Apr 2024 10:31:02 -0700
-Message-ID: <854jca30kp.wl-ashutosh.dixit@intel.com>
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Apr 2024 10:37:23 -0700
+Date: Tue, 09 Apr 2024 10:37:23 -0700
+Message-ID: <8534ru30a4.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Francois Dugast <francois.dugast@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 2/3] drm-uapi/xe: Define topology types as indexes
- rather than masks
-In-Reply-To: <20240329153058.7-3-francois.dugast@intel.com>
-References: <20240329153058.7-1-francois.dugast@intel.com>
- <20240329153058.7-3-francois.dugast@intel.com>
+Subject: Re: [PATCH i-g-t 3/3] drm-uapi/xe: Restore flags
+ VM_BIND_FLAG_READONLY and VM_BIND_FLAG_IMMEDIATE
+In-Reply-To: <20240329153058.7-4-francois.dugast@intel.com>
+References: <20240329153058.7-1-francois.dugast@intel.com>	<20240329153058.7-4-francois.dugast@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -73,39 +72,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, 29 Mar 2024 08:30:57 -0700, Francois Dugast wrote:
+On Fri, 29 Mar 2024 08:30:58 -0700, Francois Dugast wrote:
 >
-> Align with kernel commit ca83f9d20171 ("drm/xe/uapi: Define topology \
-> types as indexes rather than masks").
+
+Hi Francois,
+
+> The commit ca4607939 ("drm/xe/uapi: Remove unused flags") is partially
+> reverted. At the time, flags not used by user space were removed during
+> cleanup. As a consequence, tests depending on those flags were also
+> removed. Some of those flags are now needed by user space, so bring them
+> back and the removed tests as well.
 >
-> This is not a functional change.
-
-Matches defines in drm-xe-next:
-
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-
+> Align with kernel commit ("drm/xe/uapi: Restore flags \
+> VM_BIND_FLAG_READONLY and VM_BIND_FLAG_IMMEDIATE").
+>
 > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 > ---
->  include/drm-uapi/xe_drm.h | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  include/drm-uapi/xe_drm.h                |  8 +++
+>  tests/intel-ci/xe-fast-feedback.testlist | 10 ++++
+>  tests/intel/xe_exec_fault_mode.c         | 65 ++++++++++++++++++++----
+>  tests/intel/xe_vm.c                      | 16 ++++--
+>  4 files changed, 85 insertions(+), 14 deletions(-)
 >
 > diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 91ea92035..d8816df83 100644
+> index d8816df83..6cbfd8dc3 100644
 > --- a/include/drm-uapi/xe_drm.h
 > +++ b/include/drm-uapi/xe_drm.h
-> @@ -518,9 +518,9 @@ struct drm_xe_query_topology_mask {
->	/** @gt_id: GT ID the mask is associated with */
->	__u16 gt_id;
->
-> -#define DRM_XE_TOPO_DSS_GEOMETRY	(1 << 0)
-> -#define DRM_XE_TOPO_DSS_COMPUTE		(1 << 1)
-> -#define DRM_XE_TOPO_EU_PER_DSS		(1 << 2)
-> +#define DRM_XE_TOPO_DSS_GEOMETRY	1
-> +#define DRM_XE_TOPO_DSS_COMPUTE		2
-> +#define DRM_XE_TOPO_EU_PER_DSS		4
->	/** @type: type of mask */
->	__u16 type;
->
-> --
-> 2.34.1
->
+> @@ -871,6 +871,12 @@ struct drm_xe_vm_destroy {
+>   *  - %DRM_XE_VM_BIND_OP_PREFETCH
+>   *
+>   * and the @flags can be:
+> + *  - %DRM_XE_VM_BIND_FLAG_READONLY - Setup the page tables as read-only
+> + *    to ensure write protection.
+
+Hmm, this line in the kernel header is "to ensure write protection" so it
+doesn't have the period. Maybe it should be fixed before we merge this?
+
+Thanks.
+--
+Ashutosh
