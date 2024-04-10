@@ -4,24 +4,23 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A536BCD11C2
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Apr 2024 08:05:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C25ECD1296
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Apr 2024 08:22:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2256911323D;
-	Wed, 10 Apr 2024 08:05:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D7C9F113245;
+	Wed, 10 Apr 2024 08:22:20 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B4C1B11323D;
- Wed, 10 Apr 2024 08:05:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F28C5113245;
+ Wed, 10 Apr 2024 08:22:16 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5045087585655280131=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_Add_xe=5Fbo=5Falloc_tes?=
- =?utf-8?q?t?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_xe=5Fbo=5Falloc_test?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Matthew Brost" <matthew.brost@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 10 Apr 2024 08:05:30 -0000
-Message-ID: <171273633073.1319548.7731918767728178260@8e613ede5ea5>
+Date: Wed, 10 Apr 2024 08:22:16 -0000
+Message-ID: <171273733699.1318876.16313126482693368465@8e613ede5ea5>
 X-Patchwork-Hint: ignore
 References: <20240410071209.481206-1-matthew.brost@intel.com>
 In-Reply-To: <20240410071209.481206-1-matthew.brost@intel.com>
@@ -41,119 +40,106 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+--===============5045087585655280131==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
 
 Series: Add xe_bo_alloc test
 URL   : https://patchwork.freedesktop.org/series/132251/
-State : warning
+State : success
 
-=3D=3D Summary =3D=3D
+== Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7803_BAT -> XEIGTPW_10997_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1150423 f=
-or the overview.
+Summary
+-------
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/57417427):
-  ninja: Entering directory `build'
-  [1/1176] Generating version.h with a custom command.
-  [2/1172] Linking static target lib/libigt-igt_kms_c.a.
-  [3/1172] Linking static target lib/libigt-igt_fb_c.a.
-  [4/1172] Linking static target lib/libigt-igt_amd_c.a.
-  [5/1172] Compiling C object 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioc=
-tl.c.o'.
-  FAILED: lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.c.o=20
-  /usr/bin/arm-linux-gnueabihf-gcc -Ilib/76b5a35@@igt-xe_xe_ioctl_c@sta -Il=
-ib -I../lib -I../include -I../include/drm-uapi -I../include/linux-uapi -I..=
-/lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 =
--I/usr/lib/arm-linux-gnueabihf/glib-2.0/include -I/usr/include/pixman-1 -I/=
-usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/in=
-clude/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/arm-linux-gnueabi=
-hf -I/usr/include/valgrind -I/usr/include/alsa -fdiagnostics-color=3Dalways=
- -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O=
-2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-c=
-ast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -=
-Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wmissing-nor=
-eturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointe=
-r-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wun=
-used -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initializer=
-s -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-paramet=
-er -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dim=
-plicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -We=
-rror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werr=
-or=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwri=
-te-strings -fno-builtin-malloc -fno-builtin-calloc -fPIC -pthread '-DIGT_DA=
-TADIR=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/i=
-gt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=3D"xe/xe_ioctl"'  -MD -MQ 'lib/76b5a35=
-@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.c.o' -MF 'lib/76b5a35@@igt-xe_xe_ioctl_=
-c@sta/xe_xe_ioctl.c.o.d' -o 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl=
-.c.o' -c ../lib/xe/xe_ioctl.c
-  ../lib/xe/xe_ioctl.c: In function =E2=80=98xe_bo_map_fixed=E2=80=99:
-  ../lib/xe/xe_ioctl.c:433:13: error: cast to pointer from integer of diffe=
-rent size [-Werror=3Dint-to-pointer-cast]
-    map =3D mmap((void *)addr, size, PROT_WRITE, MAP_SHARED | MAP_FIXED, fd=
-, mmo);
-               ^
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1712735919:step_script
-  section_start:1712735919:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1712735920:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  **SUCCESS**
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/57417429):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/1173] Generating version.h with a custom command.
-  [2/1169] Linking static target lib/libigt-igt_kms_c.a.
-  [3/1169] Linking static target lib/libigt-igt_fb_c.a.
-  [4/1169] Compiling C object 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioc=
-tl.c.o'.
-  FAILED: lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.c.o=20
-  /usr/bin/mips-linux-gnu-gcc -Ilib/76b5a35@@igt-xe_xe_ioctl_c@sta -Ilib -I=
-../lib -I../include -I../include/drm-uapi -I../include/linux-uapi -I../lib/=
-stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/us=
-r/lib/mips-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/includ=
-e/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libd=
-rm -I/usr/include/libdrm/nouveau -I/usr/include/mips-linux-gnu -I/usr/inclu=
-de/valgrind -I/usr/include/alsa -fdiagnostics-color=3Dalways -pipe -D_FILE_=
-OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOU=
-RCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclarati=
-on-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wm=
-issing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing=
--prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredun=
-dant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobb=
-ered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer-=
-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-=
-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=
-=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing=
--braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-ty=
-pe -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fn=
-o-builtin-malloc -fno-builtin-calloc -fPIC -pthread '-DIGT_DATADIR=3D"/usr/=
-local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tes=
-ts"' '-DIGT_LOG_DOMAIN=3D"xe/xe_ioctl"'  -MD -MQ 'lib/76b5a35@@igt-xe_xe_io=
-ctl_c@sta/xe_xe_ioctl.c.o' -MF 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_io=
-ctl.c.o.d' -o 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.c.o' -c ../li=
-b/xe/xe_ioctl.c
-  ../lib/xe/xe_ioctl.c: In function =E2=80=98xe_bo_map_fixed=E2=80=99:
-  ../lib/xe/xe_ioctl.c:433:13: error: cast to pointer from integer of diffe=
-rent size [-Werror=3Dint-to-pointer-cast]
-    map =3D mmap((void *)addr, size, PROT_WRITE, MAP_SHARED | MAP_FIXED, fd=
-, mmo);
-               ^
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1712735912:step_script
-  section_start:1712735912:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1712735913:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  No regressions found.
 
-=3D=3D Logs =3D=3D
+  
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/1150423
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7803 -> IGTPW_10997
+  * Linux: xe-1063-7be27f645de2f00384b862d2812a90675e8392fa -> xe-1064-057ec21a54cddd595a7725fa8731eb4c5bd5abff
+
+  IGTPW_10997: 10997
+  IGT_7803: 9669a17ae56f1dcd22ba4c5cb39b3cd334a46862 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1063-7be27f645de2f00384b862d2812a90675e8392fa: 7be27f645de2f00384b862d2812a90675e8392fa
+  xe-1064-057ec21a54cddd595a7725fa8731eb4c5bd5abff: 057ec21a54cddd595a7725fa8731eb4c5bd5abff
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10997/index.html
+
+--===============5045087585655280131==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add xe_bo_alloc test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132251/">https://patchwork.freedesktop.org/series/132251/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10997/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10997/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7803_BAT -&gt; XEIGTPW_10997_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7803 -&gt; IGTPW_10997</li>
+<li>Linux: xe-1063-7be27f645de2f00384b862d2812a90675e8392fa -&gt; xe-1064-057ec21a54cddd595a7725fa8731eb4c5bd5abff</li>
+</ul>
+<p>IGTPW_10997: 10997<br />
+  IGT_7803: 9669a17ae56f1dcd22ba4c5cb39b3cd334a46862 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1063-7be27f645de2f00384b862d2812a90675e8392fa: 7be27f645de2f00384b862d2812a90675e8392fa<br />
+  xe-1064-057ec21a54cddd595a7725fa8731eb4c5bd5abff: 057ec21a54cddd595a7725fa8731eb4c5bd5abff</p>
+
+</body>
+</html>
+
+--===============5045087585655280131==--
