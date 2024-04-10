@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80802CD11C2
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Apr 2024 17:40:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B714CD11C2
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Apr 2024 17:47:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 136BB11274B;
-	Wed, 10 Apr 2024 17:40:39 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
- [217.70.183.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 154C310ED59
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2024 17:40:35 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D9E7660005;
- Wed, 10 Apr 2024 17:40:32 +0000 (UTC)
-From: Peter Senna Tschudin <me@petersenna.com>
-To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
- andi.shyti@linux.intel.com
-Subject: [PATCH i-g-t] tests/intel/gem_exec_capture: Fix many-* subtests
-Date: Wed, 10 Apr 2024 19:40:22 +0200
-Message-ID: <20240410174031.5840-1-me@petersenna.com>
-X-Mailer: git-send-email 2.44.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id C609610ED70;
+	Wed, 10 Apr 2024 17:47:10 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OX+f5f5y";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0AB2C11278D
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2024 17:47:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1712771226; x=1744307226;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=+Ts4d5KKeyJD3HaxE8oJ8POc9s/uIkKx/mOYp6kBmgM=;
+ b=OX+f5f5yEQ6IhoNtjG+ItTEieK93PoRPqWfWU569+D/rHxNTlCA7aAO+
+ FPkoTiQS2aAOErFYFVqFCDLkNPQVWyZpm4BmU6Eu9leZvWyW2zuCkdTLP
+ eiZbRr0o2K09RNFgpgDAyjY0KUml25cdxnZADR4ZzaMT90UVMaPbJOLsf
+ PnQyfGofrd99KZklK3fcczJSDUeHcKt9fI055sP1vjcIicTAkP1kEBZYg
+ V487Glcr1H8emFBDfPptSI/rCRaKN8WbkGtUALIXkP4jgyrIBT9thb+Ot
+ bikXz5+yOxm+H4LPqDp4g9bZmKmov2tVc0xRUY6aWU8glvwjOuV/QEtyH w==;
+X-CSE-ConnectionGUID: Jlh2bOXJTqaz7eBI23L0fg==
+X-CSE-MsgGUID: c5FT+IjJSimmlVBJnxlnXQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8014011"
+X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; 
+   d="scan'208";a="8014011"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2024 10:47:05 -0700
+X-CSE-ConnectionGUID: BnR5j6MWSRSwXMOshAW8vg==
+X-CSE-MsgGUID: sNnCSNxIQtW7Rne6FiHvMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; d="scan'208";a="20724495"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.151])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2024 10:47:04 -0700
+Date: Wed, 10 Apr 2024 19:47:01 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Sai Gowtham Ch <sai.gowtham.ch@intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_queue_property: move skip into
+ subtest
+Message-ID: <20240410174701.emdjwevsqz3lio5o@zkempczy-mobl2>
+References: <20240404155320.98116-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: me@petersenna.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240404155320.98116-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,76 +71,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently trying to run `gem_exec_capture --run-subtest
-many-4K-incremental` or `gem_exec_capture --run-subtest many-4K-zero`
-will fail with:
+On Thu, Apr 04, 2024 at 05:53:20PM +0200, Kamil Konieczny wrote:
+> Skips in fixture are safe to use just after begin of igt_main()
+> when they be working for all subtests. Later on, when used in
+> fixture they can mislead developers reading logs, so move one
+> into respective subtest.
+> 
+> Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/intel/xe_exec_queue_property.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/intel/xe_exec_queue_property.c b/tests/intel/xe_exec_queue_property.c
+> index 57baae305..21c51bae5 100644
+> --- a/tests/intel/xe_exec_queue_property.c
+> +++ b/tests/intel/xe_exec_queue_property.c
+> @@ -234,13 +234,14 @@ igt_main
+>  	igt_subtest_group {
+>  		igt_fixture {
+>  			sys_fd = igt_sysfs_open(xe);
+> -			igt_require(sys_fd != -1);
+> -			close(sys_fd);
+> +			if (sys_fd != -1)
+> +				close(sys_fd);
 
- (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: Test
- assertion failure function gem_engine_properties_configure, file
- ../lib/i915/gem_engine_topology.c:577:
- (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: Failed assertion: ret == 1
- (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: Last errno: 9, Bad file descriptor
- (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: error: -1 != 1
+After this you have stale sys_fd. Might be error prone when next
+open will return same fd as sys_fd has in this moment.
 
-This problem happens inside the macro find_first_available_engine()
-when:
- 1. for_each_ctx_engine() allocates an struct intel_engine_data 'ed'
-    inside a for loop. The core of the issue is that ed only exists
-    inside the for loop. As soon as the for loop ends, ed is out of scope
-    and after it's lifetime.
- 2. intel_get_current_engine() sets '*e' to an address of ed. This is ok
-    while inside the for loop, and is undefined behavior after the for
-    loop ends.
- 3. configure_hangs() uses '*e' after the lifetime of 'ed' has ended
-    leading to undefined behavior
- 4. After the call to find_first_available_engine() __captureN() will
-    fail as it expects '*e' to be valid. This is also undefined
-    behavior.
+>  		}
+>  
+>  		for (int i = 0; i < count; i++) {
+>  			for (typeof(*tests) *t = tests; t->name; t++) {
+>  				igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
+> +					igt_require(sys_fd != -1);
 
-Using 'e' outside for_each_ctx_engine() is incorrect and this patch
-fixes it. Additionally, this patch moves the 'igt_assert(tmpe);' to
-between the assignment and first use of 'tmpe' to prevent code
-from trying to use a NULL 'tmpe'.
+If you really need to check sysfs is available, maybe add new helper
+like:
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Peter Senna Tschudin <me@petersenna.com>
----
+	void igt_require_sysfs(int fd);
 
-Sending as a new patch instead of v8 of the following series:
- https://patchwork.freedesktop.org/series/131602/
+?
 
- tests/intel/gem_exec_capture.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+Anyway above construct is imo error prone and I vote to not to
+merge it.
 
-diff --git a/tests/intel/gem_exec_capture.c b/tests/intel/gem_exec_capture.c
-index 57b178f3e..8800fa586 100644
---- a/tests/intel/gem_exec_capture.c
-+++ b/tests/intel/gem_exec_capture.c
-@@ -662,13 +662,20 @@ static bool needs_recoverable_ctx(int fd)
- 
- #define find_first_available_engine(fd, ctx, e, saved) \
- 	do { \
-+		struct intel_execution_engine2 *tmpe = NULL; \
-+		e = NULL; \
-+		\
- 		ctx = intel_ctx_create_all_physical(fd); \
- 		igt_assert(ctx); \
--		for_each_ctx_engine(fd, ctx, e) \
--			for_each_if(gem_class_can_store_dword(fd, e->class)) \
-+		for_each_ctx_engine(fd, ctx, tmpe) { \
-+			igt_assert(tmpe); \
-+			if(gem_class_can_store_dword(fd, tmpe->class)) { \
-+				saved = configure_hangs(fd, tmpe, ctx->id); \
-+				e = &saved.engine; \
- 				break; \
--		igt_assert(e); \
--		saved = configure_hangs(fd, e, ctx->id); \
-+			} \
-+		} \
-+		igt_skip_on_f(e == NULL, "no capable engine found\n"); \
- 	} while(0)
- 
- static void many(int fd, int dir, uint64_t size, unsigned int flags)
--- 
-2.44.0
+--
+Zbigniew
 
+>  					xe_for_each_gt(xe, gt) {
+>  						int engines_fd = -1;
+>  						int gt_fd = -1;
+> -- 
+> 2.42.0
+> 
