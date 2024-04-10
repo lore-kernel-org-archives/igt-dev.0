@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ED8DCD1296
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Apr 2024 09:27:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2552DCD1296
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Apr 2024 10:09:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E231810E5C7;
-	Wed, 10 Apr 2024 09:27:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B78AA10E353;
+	Wed, 10 Apr 2024 10:09:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Cs8G9jnl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TdQhW/af";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7505A10E5C7;
- Wed, 10 Apr 2024 09:27:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 59F5810E639
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2024 10:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712741261; x=1744277261;
+ t=1712743761; x=1744279761;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=OINPhtRBxrjwl34cXdmZuj0Rdu4oeFqzELqtiE0sV54=;
- b=Cs8G9jnlzhGrrrp275Gm4tCeEbe1p3O4dcaQyCyU/9wS3zpubZRVRCWe
- SOMcphgsAxuMeWFjYJXMGjsM8dRUjTsdaRg9hWfJBTNjJsyznpRncdJS1
- WBsUFd8O1hwPk4MJASZU+qO0jAHocTf7AHr4CKjAMjcyz91HlqztJ7OJz
- 17Z5S0r1xtHXnXUL0hU/Te65PEa+cm+mgJzGlfuQhMUgdy29N4Wec6NmL
- oqpinBwDxi/qV2uEvZ56ddYp8Y2tlXkhFtPfqh5TO7LYoqHTpg+hAlqyL
- j1WRWA7WEEODKRi1/HzNLxEhApsUZe5LRfVy9oPscvtA6U3FNxlNE12oh A==;
-X-CSE-ConnectionGUID: qeni6bi3TfKB4iSAgP5bQg==
-X-CSE-MsgGUID: gwC28GlqT8uRCn/p0HhdgA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="19481029"
-X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; d="scan'208";a="19481029"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2024 02:27:40 -0700
-X-CSE-ConnectionGUID: mRRr/N3NS9acSiv/SH/X4w==
-X-CSE-MsgGUID: ht/EjKWbR769FYn2Rvt0vg==
+ bh=Jx8xRT0ptENWUv1B5mHhIKW2Y4Nr0izXfSmbNGU4xQM=;
+ b=TdQhW/afYhGFKhlZZ4v15joROpIYdEgyhJ9zew1HTHOxjIfOKFSZvZks
+ XaDzEDqE95lIJ45dF/VRIqRklcgKsCGDC2BKuPKx0QDx82FuZWW0K8b0s
+ 7vEoAgzlOBBKM+m54wFbQfMk8v9pIKfS/hc6qrrJvmPmO3QwXCr5qFc7b
+ IERP0YBHRhxZwIoP9RIPMK0TjcAY9Fa+L8wjXlTLmvmr4yF63lVcr8FxS
+ /KytoAIUNJoSe6Y5GvzRFwqcdM/lOEUDu6JWFTK5YBCdSe2HEU2VVBvaA
+ xL3tpS3NUedmonPFZ1psRVk/BvmdAtlbH4mBWdf1FDbu3eNI6trn/S6+E w==;
+X-CSE-ConnectionGUID: fMCgKAcOTO2SzN9diyRaUw==
+X-CSE-MsgGUID: 6QEhThuQSJCNE/UZpIMrww==
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="18662357"
+X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; d="scan'208";a="18662357"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2024 03:09:20 -0700
+X-CSE-ConnectionGUID: wc+xoyCAQRioEAji53gJCA==
+X-CSE-MsgGUID: SSNLOvujTNG5rB47zGtg7A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; d="scan'208";a="25280157"
-Received: from tejas-super-server.iind.intel.com ([10.145.169.166])
- by orviesa005.jf.intel.com with ESMTP; 10 Apr 2024 02:27:38 -0700
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; d="scan'208";a="25023306"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.142])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2024 03:09:19 -0700
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: intel-xe@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Tejas Upadhyay <tejas.upadhyay@intel.com>
-Subject: [PATCH V3 i-g-t] tests/xe_exec_threads: Make hang tests reset domain
- aware
-Date: Wed, 10 Apr 2024 15:10:52 +0530
-Message-Id: <20240410094052.1033721-1-tejas.upadhyay@intel.com>
-X-Mailer: git-send-email 2.25.1
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v2 0/2] Add surface flat ccs check
+Date: Wed, 10 Apr 2024 12:09:13 +0200
+Message-Id: <20240410100915.48541-1-zbigniew.kempczynski@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,97 +67,21 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-RCS/CCS are dependent engines as they are sharing reset
-domain. Whenever there is reset from CCS, all the exec queues
-running on RCS are victimised mainly on Lunarlake.
+Instead of guessing if surface is compressed use flat ccs check
+function.
 
-Lets skip parallel execution on CCS with RCS.
+v2: Address review comments
 
-It helps in fixing following errors:
-1. Test assertion failure function test_legacy_mode, file, Failed assertion: data[i].data == 0xc0ffee
+Zbigniew Kempczyński (2):
+  lib/intel_blt: Add functions which extract and check object ccs data
+  tests/gem|xe_ccs: Check surface ccs data instead of naive comparison
 
-2.Test assertion failure function xe_exec, file ../lib/xe/xe_ioctl.c, Failed assertion: __xe_exec(fd, exec) == 0, error: -125 != 0
+ lib/intel_blt.c       | 122 ++++++++++++++++++++++++++++++++++++++++++
+ lib/intel_blt.h       |  11 ++++
+ tests/intel/gem_ccs.c |  16 ++++--
+ tests/intel/xe_ccs.c  |  14 +++--
+ 4 files changed, 152 insertions(+), 11 deletions(-)
 
-V3:
-  - Check victimization reset domain wise irrespective of platform - Lucas/MattR
-V2:
-  - Add error details
-
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
----
- tests/intel/xe_exec_threads.c | 43 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 42 insertions(+), 1 deletion(-)
-
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index 8083980f9..24eac39de 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
-@@ -710,6 +710,24 @@ static void *thread(void *data)
- 	return NULL;
- }
- 
-+static bool is_engine_contexts_victimized(__u16 eclass, unsigned int flags,
-+					  bool has_rcs, bool multi_ccs,
-+					  bool *ccs0_created)
-+{
-+	if (!(eclass == DRM_XE_ENGINE_CLASS_COMPUTE && flags & HANG))
-+		return false;
-+	if (has_rcs) {
-+		return true;
-+	} else if (multi_ccs) {
-+		/* In case of multi ccs, allow only 1 ccs to run HANG test*/
-+		if (*ccs0_created)
-+			return true;
-+		*ccs0_created = true;
-+	}
-+
-+	return false;
-+}
-+
- /**
-  * SUBTEST: threads-%s
-  * Description: Run threads %arg[1] test with multi threads
-@@ -955,9 +973,20 @@ static void threads(int fd, int flags)
- 	bool go = false;
- 	int n_threads = 0;
- 	int gt;
-+	bool has_rcs = false;
-+	bool multi_ccs = false, has_ccs = false, ccs0_created = false;
- 
--	xe_for_each_engine(fd, hwe)
-+	xe_for_each_engine(fd, hwe) {
-+		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER) {
-+			has_rcs = true;
-+		} else if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
-+			if (has_ccs)
-+				multi_ccs = true;
-+			else
-+				has_ccs = true;
-+		}
- 		++n_engines;
-+	}
- 
- 	if (flags & BALANCER) {
- 		xe_for_each_gt(fd, gt)
-@@ -990,6 +1019,18 @@ static void threads(int fd, int flags)
- 	}
- 
- 	xe_for_each_engine(fd, hwe) {
-+		/* RCS/CCS sharing reset domain hence dependent engines.
-+		 * When CCS is doing reset, all the contexts of RCS are
-+		 * victimized. Also in case of multiple CCS instances
-+		 * contexts running on other CCS engine are victimized.
-+		 * so skip the compute engine avoiding parallel execution
-+		 * with RCS and other CCS.
-+		 */
-+		if (is_engine_contexts_victimized(hwe->engine_class, flags,
-+						  has_rcs, multi_ccs,
-+						  &ccs0_created))
-+			continue;
-+
- 		threads_data[i].mutex = &mutex;
- 		threads_data[i].cond = &cond;
- #define ADDRESS_SHIFT	39
 -- 
-2.25.1
+2.34.1
 
