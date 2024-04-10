@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27855CD1299
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Apr 2024 15:02:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDDDCCD129A
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Apr 2024 15:02:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A970A10EC9D;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 476A810E802;
 	Wed, 10 Apr 2024 15:02:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OtrRuir2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K7gFSdZc";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2105610EC9D
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2024 15:02:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B9F7112965
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2024 15:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712761357; x=1744297357;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Uk5rRIJIoURtOIF7B45ehfNZIrBCQ86CdG8wLQRk9YI=;
- b=OtrRuir2sYO3w9KNO97fI14mIpTaLapwaR5ISEwCDNFPshK4vrAocSCp
- wvt2FtgTUPpwWFageI1OIOZAqo+QUbkynZkeWFxwcKH0gcouGid0tmNQk
- nuoiFKf+I9JsR3+WZduKHxuNIFT5q1pw47y0ZbbYrcuVHVx8PnaFU7eZG
- YPoXsRF2UueNRN31Ey68bu0Jyr2lnFr5uCpNpp46VdFBV5McIEeLOMF7V
- V7SkAjfyyUuY+xHSLY/GYaT2Yco9ApTQRz8VfZGtyaQIPaGfy311EdYpf
- ypUXi/0Cms++MCnyObqNVs9drbVnQ8kisBJ1S7wP5senHrag5+lejg4XZ w==;
-X-CSE-ConnectionGUID: UOll8N14Rjm+n15Fdv/WDA==
-X-CSE-MsgGUID: YeECRsmDTz2Lf6kgqOX/Aw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8697253"
+ t=1712761359; x=1744297359;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=WyRmVpTAqGrFu7xArCQWMJmDabY590rcC0igXydWRv4=;
+ b=K7gFSdZcQCslRYVF/zPMs3EwaKQF1qIZ4NA4/XNW4zsyhTqV6fwMA9ej
+ x77URNU+N9BIBzNLyovuNXn16NSjlYe7wfuZ+Zgl7gZWOj4/TYRMHusnA
+ L9qmxu0z3eXsSnPLtb2zJO3GDltIPRFcEro1Ef4yaGN6dMrvQZKYUufBA
+ 9S6vTxyTNKpthgoyqz33JVDrt6p0xdILS+LREju0Ib4AZv6TONS/kgCY5
+ KtMaVRqH8rGVoav6Hb7/V4g6OsGLxCGPtgdLHiXQfaXdx1FXcnP3PMJjm
+ 66goS4rIjkX1OFTFHNYGMbbHK1L34Kuor/S3bOcYJRwPyxb+jQBLyn0MS Q==;
+X-CSE-ConnectionGUID: TEwtUPGxRPmDvqXjQjKzTA==
+X-CSE-MsgGUID: rYLs3JXaTk6dFeV5CRAMrw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8697269"
 X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; 
-   d="scan'208";a="8697253"
+   d="scan'208";a="8697269"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2024 08:02:32 -0700
+ 10 Apr 2024 08:02:38 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="827793153"
-X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; d="scan'208";a="827793153"
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="827793159"
+X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; d="scan'208";a="827793159"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by orsmga001.jf.intel.com with SMTP; 10 Apr 2024 08:02:29 -0700
+ by orsmga001.jf.intel.com with SMTP; 10 Apr 2024 08:02:35 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Wed, 10 Apr 2024 18:02:29 +0300
+ Wed, 10 Apr 2024 18:02:35 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 1/3] lib/kms: Introduce struct igt_forced_connector
-Date: Wed, 10 Apr 2024 18:02:27 +0300
-Message-ID: <20240410150229.28922-1-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 3/3] lib/kms: Generalize forced_connectors[] to handle
+ arbitrary attributes
+Date: Wed, 10 Apr 2024 18:02:29 +0300
+Message-ID: <20240410150229.28922-3-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240410150229.28922-1-ville.syrjala@linux.intel.com>
+References: <20240410150229.28922-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -69,133 +72,235 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Give the forced_connector[] struct a proper type name,
-and utilize it in various places to make the code
-less messy.
+We may want to poke at various other connector attributes
+via sysfs/debugfs. Generalize the existing the force_connectors
+mechamisn to handle arbitrary attributes.
 
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_kms.c | 50 +++++++++++++++++++++++++++++++-------------------
- 1 file changed, 31 insertions(+), 19 deletions(-)
+ lib/igt_kms.c | 131 ++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 85 insertions(+), 46 deletions(-)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 2a518eb8d936..f7dd1db91827 100644
+index 19bb4ac66ece..5b23fada94d9 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -91,12 +91,14 @@
+@@ -91,14 +91,18 @@
  #define MAX_EDID 2
  #define DISPLAY_TILE_BLOCK 0x12
  
--static struct {
-+struct igt_forced_connector {
+-struct igt_forced_connector {
++typedef bool (*igt_connector_attr_set)(int dir, const char *attr, const char *value);
++
++struct igt_connector_attr {
  	uint32_t connector_type;
  	uint32_t connector_type_id;
  	int idx;
  	int dir;
--} forced_connectors[MAX_CONNECTORS + 1];
-+};
-+
-+static struct igt_forced_connector forced_connectors[MAX_CONNECTORS + 1];
++	igt_connector_attr_set set;
++	const char *attr, *value, *reset_value;
+ };
+ 
+-static struct igt_forced_connector forced_connectors[MAX_CONNECTORS + 1];
++static struct igt_connector_attr connector_attrs[MAX_CONNECTORS + 1];
  
  /**
   * igt_kms_get_base_edid:
-@@ -1498,31 +1500,37 @@ static bool connector_is_forced(int idx, drmModeConnector *connector)
+@@ -1495,39 +1499,80 @@ int igt_connector_sysfs_open(int drm_fd,
+ 	return conn_dir;
+ }
+ 
+-static bool connector_is_forced(int idx, drmModeConnector *connector)
++static struct igt_connector_attr *connector_attr_find(int idx, drmModeConnector *connector,
++						      igt_connector_attr_set set,
++						      const char *attr)
+ {
  	igt_assert(connector->connector_type != 0);
  
- 	for (int i = 0; forced_connectors[i].connector_type; i++) {
--		if (forced_connectors[i].idx == idx &&
--		    forced_connectors[i].connector_type == connector->connector_type &&
--		    forced_connectors[i].connector_type_id == connector->connector_type_id)
-+		struct igt_forced_connector *c = &forced_connectors[i];
-+
-+		if (c->idx == idx &&
-+		    c->connector_type == connector->connector_type &&
-+		    c->connector_type_id == connector->connector_type_id)
- 			return true;
+-	for (int i = 0; forced_connectors[i].connector_type; i++) {
+-		struct igt_forced_connector *c = &forced_connectors[i];
++	for (int i = 0; connector_attrs[i].connector_type; i++) {
++		struct igt_connector_attr *c = &connector_attrs[i];
+ 
+ 		if (c->idx == idx &&
+ 		    c->connector_type == connector->connector_type &&
+-		    c->connector_type_id == connector->connector_type_id)
+-			return true;
++		    c->connector_type_id == connector->connector_type_id &&
++		    c->set == set && !strcmp(c->attr, attr))
++			return c;
  	}
  
- 	return false;
+-	return false;
++	return NULL;
  }
  
--static int forced_connector_free_index(void)
-+static struct igt_forced_connector *forced_connector_alloc(void)
+-static struct igt_forced_connector *forced_connector_alloc(void)
++static struct igt_connector_attr *connector_attr_alloc(int idx, drmModeConnector *connector,
++						       int dir, igt_connector_attr_set set,
++						       const char *attr, const char *reset_value)
  {
- 	int i;
+-	int i;
++	struct igt_connector_attr *c = NULL;
  
- 	for (i = 0; forced_connectors[i].connector_type; i++)
- 		;
- 
--	return i < ARRAY_SIZE(forced_connectors) ? i : -1;
-+	if (i >= ARRAY_SIZE(forced_connectors))
-+		return NULL;
+-	for (i = 0; forced_connectors[i].connector_type; i++)
+-		;
++	for (int i = 0; connector_attrs[i].connector_type; i++) {
++		c = &connector_attrs[i];
++		break;
++	}
 +
-+	return &forced_connectors[i];
- }
- 
- static bool force_connector(int drm_fd,
- 			    drmModeConnector *connector,
- 			    const char *value)
- {
-+	struct igt_forced_connector *c;
- 	char name[80];
--	int i, idx, dir;
-+	int idx, dir;
- 
- 	idx = igt_device_get_card_index(drm_fd);
- 	if (idx < 0 || idx > 63)
-@@ -1549,17 +1557,17 @@ static bool force_connector(int drm_fd,
- 		return true;
- 	}
- 
--	i = forced_connector_free_index();
--	if (i < 0) {
-+	c = forced_connector_alloc();
-+	if (!c) {
- 		igt_warn("Connector limit reached, %s will not be reset\n", name);
- 		close(dir);
- 		return true;
- 	}
- 
--	forced_connectors[i].idx = idx;
--	forced_connectors[i].connector_type = connector->connector_type;
--	forced_connectors[i].connector_type_id = connector->connector_type_id;
--	forced_connectors[i].dir = dir;
 +	c->idx = idx;
 +	c->connector_type = connector->connector_type;
 +	c->connector_type_id = connector->connector_type_id;
++
 +	c->dir = dir;
++	c->set = set;
++	c->attr = attr;
++	c->reset_value = reset_value;
++
++	return c;
++}
++
++static void connector_attr_free(struct igt_connector_attr *c)
++{
++	memset(c, 0, sizeof(*c));
++}
++
++static bool connector_attr_set(int idx, drmModeConnector *connector,
++			       int dir, igt_connector_attr_set set,
++			       const char *attr, const char *value,
++			       const char *reset_value)
++{
++	struct igt_connector_attr *c;
++
++	c = connector_attr_find(idx, connector, set, attr);
++	if (!c)
++		c = connector_attr_alloc(idx, connector, dir, set,
++					 attr, reset_value);
++
++	if (!c->set(c->dir, c->attr, c->value)) {
++		connector_attr_free(c);
++		return false;
++	}
+ 
+-	igt_assert_lt(i, ARRAY_SIZE(forced_connectors));
++	c->value = value;
+ 
+-	return &forced_connectors[i];
++	return true;
+ }
+ 
+-static bool force_connector(int drm_fd,
+-			    drmModeConnector *connector,
+-			    const char *value)
++static bool connector_attr_set_sysfs(int drm_fd,
++				     drmModeConnector *connector,
++				     const char *attr, const char *value,
++				     const char *reset_value)
+ {
+-	struct igt_forced_connector *c;
+ 	char name[80];
+ 	int idx, dir;
+ 
+@@ -1543,45 +1588,39 @@ static bool force_connector(int drm_fd,
+ 	if (dir < 0)
+ 		return false;
+ 
+-	if (!igt_sysfs_set(dir, "status", value)) {
+-		close(dir);
++	if (!connector_attr_set(idx, connector, dir,
++				igt_sysfs_set, attr, value, reset_value))
+ 		return false;
+-	}
+ 
+-	igt_debug("Connector %s is now forced %s\n", name, value);
+-
+-	/* already tracked? */
+-	if (connector_is_forced(idx, connector)) {
+-		close(dir);
+-		return true;
+-	}
+-
+-	c = forced_connector_alloc();
+-
+-	c->idx = idx;
+-	c->connector_type = connector->connector_type;
+-	c->connector_type_id = connector->connector_type_id;
+-	c->dir = dir;
++	igt_debug("Connector %s/%s is now %s\n", name, attr, value);
  
  	return true;
  }
-@@ -1571,9 +1579,10 @@ static void dump_forced_connectors(void)
- 	igt_debug("Current forced connectors:\n");
  
- 	for (int i = 0; forced_connectors[i].connector_type; i++) {
--		kmstest_connector_dirname(forced_connectors[i].idx,
--					  forced_connectors[i].connector_type,
--					  forced_connectors[i].connector_type_id,
-+		struct igt_forced_connector *c = &forced_connectors[i];
-+
-+		kmstest_connector_dirname(c->idx, c->connector_type,
-+					  c->connector_type_id,
- 					  name, sizeof(name));
- 		igt_debug("\t%s\n", name);
- 	}
-@@ -5302,8 +5311,11 @@ void igt_reset_connectors(void)
+-static void dump_forced_connectors(void)
++static void dump_connector_attrs(void)
  {
- 	/* reset the connectors stored in forced_connectors, avoiding any
- 	 * functions that are not safe to call in signal handlers */
--	for (int i = 0; i < forced_connectors[i].connector_type; i++)
--		igt_sysfs_set(forced_connectors[i].dir, "status",  "detect");
-+	for (int i = 0; i < forced_connectors[i].connector_type; i++) {
-+		struct igt_forced_connector *c = &forced_connectors[i];
+ 	char name[80];
+ 
+-	igt_debug("Current forced connectors:\n");
++	igt_debug("Current connector attrs:\n");
+ 
+-	for (int i = 0; forced_connectors[i].connector_type; i++) {
+-		struct igt_forced_connector *c = &forced_connectors[i];
++	for (int i = 0; connector_attrs[i].connector_type; i++) {
++		struct igt_connector_attr *c = &connector_attrs[i];
+ 
+ 		kmstest_connector_dirname(c->idx, c->connector_type,
+ 					  c->connector_type_id,
+ 					  name, sizeof(name));
+-		igt_debug("\t%s\n", name);
++		igt_debug("\t%s/%s: %s\n", name, c->attr, c->value);
+ 	}
+ }
+ 
++static bool force_connector(int drm_fd,
++			    drmModeConnector *connector,
++			    const char *value)
++{
++	return connector_attr_set_sysfs(drm_fd, connector,
++					"status", value, "detect");
++}
 +
-+		igt_sysfs_set(c->dir, "status",  "detect");
-+	}
+ /**
+  * kmstest_force_connector:
+  * @fd: drm file descriptor
+@@ -1626,7 +1665,7 @@ bool kmstest_force_connector(int drm_fd, drmModeConnector *connector,
+ 	if (!force_connector(drm_fd, connector, value))
+ 		return false;
+ 
+-	dump_forced_connectors();
++	dump_connector_attrs();
+ 
+ 	igt_install_exit_handler(reset_connectors_at_exit);
+ 
+@@ -2619,7 +2658,7 @@ static void igt_handle_spurious_hpd(igt_display_t *display)
+ 			 conn->connector_type_id);
+ 	}
+ 
+-	dump_forced_connectors();
++	dump_connector_attrs();
  }
  
  /**
+@@ -5303,12 +5342,12 @@ void igt_enable_connectors(int drm_fd)
+  */
+ void igt_reset_connectors(void)
+ {
+-	/* reset the connectors stored in forced_connectors, avoiding any
++	/* reset the connectors stored in connector_attrs, avoiding any
+ 	 * functions that are not safe to call in signal handlers */
+-	for (int i = 0; i < forced_connectors[i].connector_type; i++) {
+-		struct igt_forced_connector *c = &forced_connectors[i];
++	for (int i = 0; i < connector_attrs[i].connector_type; i++) {
++		struct igt_connector_attr *c = &connector_attrs[i];
+ 
+-		igt_sysfs_set(c->dir, "status",  "detect");
++		c->set(c->dir, c->attr, c->reset_value);
+ 	}
+ }
+ 
 -- 
 2.43.2
 
