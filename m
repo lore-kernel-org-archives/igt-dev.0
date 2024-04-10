@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 050E7CD1296
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Apr 2024 06:33:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A23A3CD1297
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Apr 2024 06:33:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7EB8D10FBCC;
-	Wed, 10 Apr 2024 06:33:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8EA751131C0;
+	Wed, 10 Apr 2024 06:33:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j/wZf8lT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IesVyHbN";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BE6E51131BF
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2024 06:33:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A934D10FBCC
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2024 06:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712730822; x=1744266822;
+ t=1712730823; x=1744266823;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=IjdSZF9DVI9uelEf+T420RZKcsiRlZT+O/pWgcC3aI8=;
- b=j/wZf8lTwLSbiTNRom7wxV/a4XJflRWA1hNbydcwcH77K4tdMgsRfeHA
- c3qoKL0Od9diayZbGRC9ppAdmgLiB6wZ1Qk2g+Ks1sug7bgtq4ODhFxQ2
- sgfxzBmKftv5Elp7tD16pNidqUGoMMDRS9ZmGdJo+HUofaGZzg6TupOi5
- F7+37UfOgCAL9K3Bd/ExSBcvhHxYH0qH2cAnBpSIDcWlcI32SfTvIzorv
- u1NAEsLkQ4m/HREoCBHKOod0i+AqkspsR2oi3STXEaeQWdaLkPhBtAVDB
- Rh2gYTaLKDNeNdSvb/iCMrdLTYNXq5qLvlU/1Qze9l5hzzz7jnt3i56Ul Q==;
-X-CSE-ConnectionGUID: yuiWlR6qQD6GQhK/uKHIgQ==
-X-CSE-MsgGUID: fvqNMwYJRp2Vu3MQL7f18A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="7948151"
+ bh=Y8j0By2LQ67rM36S793h89Y2KilmzMQWoq5PKTO3TTQ=;
+ b=IesVyHbNuuwGWR45Z7Zhg1SkKwWe98sqqMR3ZcxZ8zBN5zl1zMdRIPlJ
+ XtgT7IPMmXQXe5kbo+QJbzf2R8NJIY0gNN7n5/DTKaKo7NAxaCBUa+5kM
+ L9brl263zuvzLoGNh8rsDH5UD2Xadt6y/bu+qcytPsl6e4SLCbxo6OMcn
+ JgKzY/ku1HA4O6uEjO+SUnj4xcVHWoeGlMNgc6M1xhDWImO5bxawZ3BU8
+ +MAZpJmBvmhPk2S/YE6rxA8MnF8+lPZqsnG3ho8ahg0jAYyfMOAOqmDwV
+ me6sXDNVpapQECzT9JVoxhYdRBasxSJLkZCrxNVPdo37OR+hkiLmdwds6 g==;
+X-CSE-ConnectionGUID: TLI5LvCPRB6Y1gXXWuGLYQ==
+X-CSE-MsgGUID: hqG/0//2T/+3mLj6TvTv0A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="7948162"
 X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; 
-   d="scan'208";a="7948151"
+   d="scan'208";a="7948162"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2024 23:33:41 -0700
-X-CSE-ConnectionGUID: mu5gpS86TB+i/wUP1HhIMA==
-X-CSE-MsgGUID: JsRjKjZQRGKDTxJ3t/JUvQ==
+ 09 Apr 2024 23:33:43 -0700
+X-CSE-ConnectionGUID: +hByz537TcC1tb6E1GLO/w==
+X-CSE-MsgGUID: GaJPkr04RfSFKW4k2joZnA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; d="scan'208";a="25138141"
+X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; d="scan'208";a="25138151"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2024 23:33:40 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2024 23:33:41 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>,
@@ -49,9 +49,9 @@ Cc: Kunal Joshi <kunal1.joshi@intel.com>,
  Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
  Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t 2/9] lib/igt_kms: add forced_connectors_debugfs array
-Date: Wed, 10 Apr 2024 12:14:19 +0530
-Message-Id: <20240410064426.1968399-3-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 3/9] lib/igt_kms: add enum kmstest_force_type
+Date: Wed, 10 Apr 2024 12:14:20 +0530
+Message-Id: <20240410064426.1968399-4-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240410064426.1968399-1-kunal1.joshi@intel.com>
 References: <20240410064426.1968399-1-kunal1.joshi@intel.com>
@@ -73,8 +73,9 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-add forced_connectors_debugfs for tracking connector
-having a force debugfs set
+add enum to seperate out force_type,
+@FORCED_CONNECTOR: Uses sysfs and
+@FORCED_CONNECTOR_DEBUGFS: Uses debugfs
 
 Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
 Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
@@ -82,21 +83,31 @@ Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Cc: Karthik B S <karthik.b.s@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_kms.c | 1 +
- 1 file changed, 1 insertion(+)
+ lib/igt_kms.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index e3b6c607e..cc934a514 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -98,6 +98,7 @@ struct forced_connector {
- 	int dir;
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 6d13e5851..561edf98b 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -245,6 +245,17 @@ enum kmstest_force_connector_state {
+ 	FORCE_CONNECTOR_OFF
  };
- static struct forced_connector forced_connectors[MAX_CONNECTORS + 1];
-+static struct forced_connector forced_connectors_debugfs[MAX_CONNECTORS + 1];
  
++/**
++ * kmstest_force_type:
++ * @FORCED_CONNECTOR: Uses sysfs
++ * @FORCED_CONNECTOR_DEBUGFS: Uses debugfs
++ */
++enum kmstest_force_type {
++	FORCED_CONNECTOR,
++	FORCED_CONNECTOR_DEBUGFS,
++	FORCED_CONNECTOR_MAX
++};
++
  /**
-  * igt_kms_get_base_edid:
+  * intel_broadcast_rgb_mode:
+  * @BROADCAST_RGB_AUTO: Choose the color range to use automatically
 -- 
 2.34.1
 
