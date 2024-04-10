@@ -4,59 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79B2FCD1296
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Apr 2024 18:28:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8436CD128A
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Apr 2024 18:43:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D5B9C10E609;
-	Wed, 10 Apr 2024 18:28:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DF97710E348;
+	Wed, 10 Apr 2024 18:43:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HdlAXH+P";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iyo735l9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E813510E5D6;
- Wed, 10 Apr 2024 18:28:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D113F10E348
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2024 18:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712773726; x=1744309726;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=c/NI1pea22VQJ1CEEaqjBnrVfxb9qndHlv6Ixv5Ry7c=;
- b=HdlAXH+PBKMApvmwO5cU6z9FNw5NxvSY2ZS7DmUfWAdYwwJ+Aa760Gev
- AmUgdOUJSE0d7eaZwHQkpONthMDqoxEFQvn6FBRM3BNG+U1UJSuF/DHq4
- cPhkvbumOlsaTIuXy70Zp4oldzxmwniZyJN3cr/kDWbWpG/Ln/eEc++OU
- C7kxVq1v45xTtzJj+UWQbDqT3QSI43AFk1UJh1u4h7LFX0g022P2r7XLE
- 8aP9urYaz4AZo0sX6CTfC4pJmpinYBed/w+Y4pWmU2ULOE8t4OhXsT2xw
- 8e/r2WBDul2RKswooTZv3lBaJ0f6UMAJJn75EeyFQEZFZB5Z1gYEXq3f5 g==;
-X-CSE-ConnectionGUID: +dWxpG80Qz6izEPY0gdrIg==
-X-CSE-MsgGUID: NOo6VEXtTi+kcIasmEWHog==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="33559506"
-X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; d="scan'208";a="33559506"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2024 11:28:45 -0700
-X-CSE-ConnectionGUID: pEkqycurTG2K0Be/4qYPmQ==
-X-CSE-MsgGUID: t+CdGutPRaGCPY9QXDxzlA==
+ t=1712774591; x=1744310591;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=kEEF1AxL2rBmfCRxsWDi/tXiGZV1gosA0ZNDPe4auxg=;
+ b=iyo735l9JszyP8kxLog+L7JXzLzLWiiRH7G7RPVNvil/JOjcF8kVNKZi
+ ARxhNLkjUV8UgitFic7+lvhJwmZxcfHvr1RxlHgTSmGWFhYOvZp3L/69p
+ DLtuwdzmvjY/FRFA70PrwX1plmdbJYmlOKVun0PUGJwQiIgedU03mqkqX
+ EjKmfHebGKFH+EKagBjMpWlxQERq6jc9tfkZygUwDP0yAlmSTmjHQ2A2k
+ pYYil9oA2uAn55/gaPH/IUhr5wrqP6ACeY9dd9f9LxhVkwAT4+vq+M8/k
+ QHn/w1O+YUlRa05ttMHwuO7+GAKn4o4QZcsBkyB0qZE5kg5529gV2ktCh Q==;
+X-CSE-ConnectionGUID: QbS+ItKtRq+sbeDOb8gDuQ==
+X-CSE-MsgGUID: zRbaQgb+Q6epwT2JgS7WRg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="12010103"
+X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; d="scan'208";a="12010103"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2024 11:43:10 -0700
+X-CSE-ConnectionGUID: nC98ZfZORsGiMfk52UiAIw==
+X-CSE-MsgGUID: qnbWLBQOTHyajY1yqDqkeA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; d="scan'208";a="20532631"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.19.32])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2024 11:28:43 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: Re: [PATCH i-g-t v2] lib/kunit: Read results from debugfs
-Date: Wed, 10 Apr 2024 20:28:40 +0200
-Message-ID: <1881671.tdWV9SEqCh@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20240405175544.6047-2-janusz.krzysztofik@linux.intel.com>
-References: <20240405175544.6047-2-janusz.krzysztofik@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; d="scan'208";a="58075032"
+Received: from nakshtra-system-product-name.iind.intel.com ([10.145.169.86])
+ by orviesa001.jf.intel.com with ESMTP; 10 Apr 2024 11:43:07 -0700
+From: nakshtra.goyal@intel.com
+To: igt-dev@lists.freedesktop.org,
+	ramadevi.gandi@intel.com
+Cc: janga.rahul.kumar@intel.com, himal.prasad.ghimiray@intel.com,
+ priyanka.dandamudi@intel.com, kamil.konieczny@intel.com
+Subject: [PATCH v2 i-g-t] tests/intel/xe_sysfs_defaults: Validate for all
+ default values
+Date: Thu, 11 Apr 2024 00:13:30 +0530
+Message-Id: <20240410184330.3897514-1-nakshtra.goyal@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,293 +67,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Lucas,
+From: Nakshtra Goyal <nakshtra.goyal@intel.com>
 
-On Friday, 5 April 2024 19:54:53 CEST Janusz Krzysztofik wrote:
-> KUnit can provide KTAP reports from test modules via debugfs files, one
-> per test suite.  Using that source of test results instead of extracting
-> them from dmesg, where they may be interleaved with other kernel messages,
-> seems more easy to handle and less error prone.  Switch to it.
-> 
-> If KUnit debugfs support is found not configured then fall back to legacy
-> processing path.
-> 
-> v2: Check validity of debugfs argument before calling kunit_get_tests()
->     (Kamil),
->   - replace multiple openat() + fdopen/fdopendir(), each followed by an
->     error check, with less expensive fopen/opendir() of file/dir pathname
->     components concatentated to a local buffer, protected from buffer
->     overflow or truncation with a single check for enough buffer space
->     (Lucas),
->   - avoid confusing 'if' statement condition (Lucas).
+Change in igt_assert_f function parameters so that it also validate for
+property value equals to 0.
 
-Could you please confirm if your R-b still applies?
+v2: use uint64_t for property_value,use bool __igt_sysfs_get_u64 in
+igt_assert_f(Kamil)
 
-Thanks,
-Janusz
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@intel.com>
+Signed-off-by: Nakshtra Goyal <nakshtra.goyal@intel.com>
+---
+ tests/intel/xe_sysfs_defaults.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> 
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->  lib/igt_kmod.c | 131 +++++++++++++++++++++++++++++++++++--------------
->  1 file changed, 94 insertions(+), 37 deletions(-)
-> 
-> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index 1ec9c8a602..243785873d 100644
-> --- a/lib/igt_kmod.c
-> +++ b/lib/igt_kmod.c
-> @@ -28,6 +28,7 @@
->  #include <limits.h>
->  #include <pthread.h>
->  #include <signal.h>
-> +#include <stdio.h>
->  #include <stdlib.h>
->  #include <string.h>
->  #include <sys/stat.h>
-> @@ -39,6 +40,7 @@
->  
->  #include "igt_aux.h"
->  #include "igt_core.h"
-> +#include "igt_debugfs.h"
->  #include "igt_kmod.h"
->  #include "igt_ktap.h"
->  #include "igt_sysfs.h"
-> @@ -864,6 +866,19 @@ static int open_parameters(const char *module_name)
->  	return open(path, O_RDONLY);
->  }
->  
-> +static void kunit_debugfs_path(char *kunit_path)
-> +{
-> +	const char *debugfs_path = igt_debugfs_mount();
-> +
-> +	if (igt_debug_on(!debugfs_path))
-> +		return;
-> +
-> +	if (igt_debug_on(strlen(debugfs_path) + strlen("/kunit/") >= PATH_MAX))
-> +		return;
-> +
-> +	strcpy(stpcpy(kunit_path, debugfs_path), "/kunit/");
-> +}
-> +
->  static bool kunit_set_filtering(const char *filter_glob, const char *filter,
->  				const char *filter_action)
->  {
-> @@ -1071,21 +1086,41 @@ static void kunit_results_free(struct igt_list_head *results,
->  	free(*suite_name);
->  }
->  
-> -static int kunit_get_results(struct igt_list_head *results, int kmsg_fd,
-> -			     struct igt_ktap_results **ktap)
-> +static int kunit_get_results(struct igt_list_head *results, const char *debugfs_path,
-> +			     const char *suite, struct igt_ktap_results **ktap)
->  {
-> +	char results_path[PATH_MAX];
-> +	FILE *results_stream;
-> +	char *buf = NULL;
-> +	size_t size = 0;
-> +	ssize_t len;
->  	int err;
->  
-> +	if (igt_debug_on(strlen(debugfs_path) + strlen(suite) + strlen("/results") >= PATH_MAX))
-> +		return -ENOSPC;
-> +
-> +	strcpy(stpcpy(stpcpy(results_path, debugfs_path), suite), "/results");
-> +	results_stream = fopen(results_path, "r");
-> +	if (igt_debug_on(!results_stream))
-> +		return -errno;
-> +
->  	*ktap = igt_ktap_alloc(results);
-> -	if (igt_debug_on(!*ktap))
-> -		return -ENOMEM;
-> +	if (igt_debug_on(!*ktap)) {
-> +		err = -ENOMEM;
-> +		goto out_fclose;
-> +	}
->  
-> -	do
-> -		igt_debug_on((err = kunit_kmsg_result_get(results, NULL, kmsg_fd, *ktap),
-> -			      err && err != -EINPROGRESS));
-> -	while (err == -EINPROGRESS);
-> +	while (len = getline(&buf, &size, results_stream), len > 0) {
-> +		err = igt_ktap_parse(buf, *ktap);
-> +		if (err != -EINPROGRESS)
-> +			break;
-> +	}
-> +
-> +	free(buf);
->  
->  	igt_ktap_free(ktap);
-> +out_fclose:
-> +	fclose(results_stream);
->  
->  	return err;
->  }
-> @@ -1101,7 +1136,13 @@ static void __igt_kunit_legacy(struct igt_ktest *tst,
->  	pthread_mutexattr_t attr;
->  	IGT_LIST_HEAD(results);
->  	unsigned long taints;
-> -	int ret;
-> +	int flags, ret;
-> +
-> +	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
-> +
-> +	igt_skip_on((flags = fcntl(tst->kmsg, F_GETFL, 0), flags < 0));
-> +	igt_skip_on_f(fcntl(tst->kmsg, F_SETFL, flags & ~O_NONBLOCK) == -1,
-> +		      "Could not set /dev/kmsg to blocking mode\n");
->  
->  	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
->  
-> @@ -1224,30 +1265,17 @@ static void __igt_kunit_legacy(struct igt_ktest *tst,
->  	igt_skip_on_f(ret, "KTAP parser failed\n");
->  }
->  
-> -static void kunit_get_tests_timeout(int signal)
-> -{
-> -	igt_skip("Timed out while trying to extract a list of KUnit test cases from /dev/kmsg\n");
-> -}
-> -
->  static bool kunit_get_tests(struct igt_list_head *tests,
->  			    struct igt_ktest *tst,
->  			    const char *suite,
->  			    const char *opts,
-> +			    const char *debugfs_path,
-> +			    DIR **debugfs_dir,
->  			    struct igt_ktap_results **ktap)
->  {
-> -	struct sigaction sigalrm = { .sa_handler = kunit_get_tests_timeout, },
-> -			 *saved;
->  	struct igt_ktap_result *r, *rn;
-> +	struct dirent *subdir;
->  	unsigned long taints;
-> -	int flags, err;
-> -
-> -	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
-> -
-> -	igt_skip_on((flags = fcntl(tst->kmsg, F_GETFL, 0), flags < 0));
-> -	igt_skip_on_f(fcntl(tst->kmsg, F_SETFL, flags & ~O_NONBLOCK) == -1,
-> -		      "Could not set /dev/kmsg to blocking mode\n");
-> -
-> -	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
->  
->  	/*
->  	 * To get a list of test cases provided by a kunit test module, ask the
-> @@ -1260,19 +1288,41 @@ static bool kunit_get_tests(struct igt_list_head *tests,
->  	if (igt_debug_on(!kunit_set_filtering(suite, "module=none", "skip")))
->  		return false;
->  
-> +	*debugfs_dir = opendir(debugfs_path);
-> +	if (!*debugfs_dir)
-> +		return false;
-> +
-> +	if (!suite) {
-> +		seekdir(*debugfs_dir, 2);	/* directory itself and its parent */
-> +		errno = 0;
-> +		igt_skip_on_f(readdir(*debugfs_dir) || errno,
-> +			      "Require empty KUnit debugfs directory\n");
-> +		rewinddir(*debugfs_dir);
-> +	}
-> +
->  	igt_skip_on(modprobe(tst->kmod, opts));
->  	igt_skip_on(igt_kernel_tainted(&taints));
->  
-> -	igt_skip_on(sigaction(SIGALRM, &sigalrm, saved));
-> -	alarm(10);
-> +	while (subdir = readdir(*debugfs_dir), subdir) {
-> +		if (!(subdir->d_type & DT_DIR))
-> +			continue;
->  
-> -	err = kunit_get_results(tests, tst->kmsg, ktap);
-> +		if (!strcmp(subdir->d_name, ".") || !strcmp(subdir->d_name, ".."))
-> +			continue;
->  
-> -	alarm(0);
-> -	igt_debug_on(sigaction(SIGALRM, saved, NULL));
-> +		if (suite && strcmp(subdir->d_name, suite))
-> +			continue;
->  
-> -	igt_skip_on_f(err,
-> -		      "KTAP parser failed while getting a list of test cases\n");
-> +		igt_warn_on_f(kunit_get_results(tests, debugfs_path, subdir->d_name, ktap),
-> +			      "parsing KTAP report from test suite \"%s\" failed\n",
-> +			      subdir->d_name);
-> +
-> +		if (suite)
-> +			break;
-> +	}
-> +
-> +	closedir(*debugfs_dir);
-> +	*debugfs_dir = NULL;
->  
->  	igt_list_for_each_entry_safe(r, rn, tests, link)
->  		igt_require_f(r->code == IGT_EXIT_SKIP,
-> @@ -1287,6 +1337,7 @@ static void __igt_kunit(struct igt_ktest *tst,
->  			const char *subtest,
->  			const char *suite,
->  			const char *opts,
-> +			const char *debugfs_path,
->  			struct igt_list_head *tests,
->  			struct igt_ktap_results **ktap)
->  {
-> @@ -1307,8 +1358,6 @@ static void __igt_kunit(struct igt_ktest *tst,
->  
->  			igt_skip_on(igt_kernel_tainted(&taints));
->  
-> -			igt_fail_on(lseek(tst->kmsg, 0, SEEK_END) == -1 && errno);
-> -
->  			igt_assert_lt(snprintf(glob, sizeof(glob), "%s.%s",
->  					       t->suite_name, t->case_name),
->  				      sizeof(glob));
-> @@ -1317,7 +1366,8 @@ static void __igt_kunit(struct igt_ktest *tst,
->  			igt_assert_eq(modprobe(tst->kmod, opts), 0);
->  			igt_assert_eq(igt_kernel_tainted(&taints), 0);
->  
-> -			igt_assert_eq(kunit_get_results(&results, tst->kmsg, ktap), 0);
-> +			igt_assert_eq(kunit_get_results(&results, debugfs_path,
-> +							t->suite_name, ktap), 0);
->  
->  			for (i = 0; i < 2; i++) {
->  				kunit_result_free(&r, &suite_name, &case_name);
-> @@ -1385,9 +1435,11 @@ static void __igt_kunit(struct igt_ktest *tst,
->   */
->  void igt_kunit(const char *module_name, const char *suite, const char *opts)
->  {
-> +	char debugfs_path[PATH_MAX] = { '\0', };
->  	struct igt_ktest tst = { .kmsg = -1, };
->  	struct igt_ktap_results *ktap = NULL;
->  	const char *subtest = suite;
-> +	DIR *debugfs_dir = NULL;
->  	IGT_LIST_HEAD(tests);
->  
->  	/*
-> @@ -1435,10 +1487,12 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
->  		 *	 LTS kernels not capable of using KUnit filters for
->  		 *	 listing test cases in KTAP format, with igt_require.
->  		 */
-> -		if (!kunit_get_tests(&tests, &tst, suite, opts, &ktap))
-> +		kunit_debugfs_path(debugfs_path);
-> +		if (!*debugfs_path ||
-> +		    !kunit_get_tests(&tests, &tst, suite, opts, debugfs_path, &debugfs_dir, &ktap))
->  			__igt_kunit_legacy(&tst, subtest, opts);
->  		else
-> -			__igt_kunit(&tst, subtest, suite, opts, &tests, &ktap);
-> +			__igt_kunit(&tst, subtest, suite, opts, debugfs_path, &tests, &ktap);
->  	}
->  
->  	igt_fixture {
-> @@ -1448,6 +1502,9 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
->  
->  		kunit_results_free(&tests, &suite_name, &case_name);
->  
-> +		if (debugfs_dir)
-> +			closedir(debugfs_dir);
-> +
->  		igt_ktest_end(&tst);
->  	}
->  
-> 
-
-
-
+diff --git a/tests/intel/xe_sysfs_defaults.c b/tests/intel/xe_sysfs_defaults.c
+index 4a6b3ba6d..d38a75e55 100644
+--- a/tests/intel/xe_sysfs_defaults.c
++++ b/tests/intel/xe_sysfs_defaults.c
+@@ -28,7 +28,7 @@
+ static void test_defaults(int xe, int engine, const char **property)
+ {
+ 	struct dirent *de;
+-	int property_value;
++	uint64_t property_value;
+ 	int defaults;
+ 	DIR *dir;
+ 
+@@ -42,7 +42,7 @@ static void test_defaults(int xe, int engine, const char **property)
+ 
+ 		igt_debug("Checking attr '%s'\n", de->d_name);
+ 
+-		igt_assert_f(property_value = igt_sysfs_get_u64(defaults, de->d_name),
++		igt_assert_f(__igt_sysfs_get_u64(defaults, de->d_name, &property_value),
+ 			     "Default value %s is not present!\n", de->d_name);
+ 
+ 		igt_debug("Default property:%s, value:%d\n", de->d_name, property_value);
+-- 
+2.34.1
 
