@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED4C6CD128A
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Apr 2024 17:14:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80802CD11C2
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Apr 2024 17:40:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 65E2810ED4A;
-	Wed, 10 Apr 2024 17:14:41 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hbncPRRm";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB5B910ED47
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2024 17:14:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712769280; x=1744305280;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=7w999hcNzl22z+eXCXbws0cLyO5yKQW/PbmRBfpnzhI=;
- b=hbncPRRm3H4ctZlSABIk9QOyDFo9K++xAKBuJuIg2QI0T5egF7+okg9g
- 4N0YfmY0p+9rzxZmoKoR8ofGoOo9VSvi49SriORPL1dmr9FuCeRlOMm3K
- VXmoUnVeWoWYAbAz0pIB9moCYiWa1TznN0Dc4d4x9QR9sy2JoBmZkQapS
- d9LXc1M+vyfdg3mWGzxCcCRBShkECiJ6CEW1FUchftBf1LyhT+5jHZBWB
- F2Y0qH8ey84RqgOGyYbS51be8AEXnhaxje+GAT3dtbXY8IMuq3zvcRaWg
- mkW71DTXzMnuvJHEDXXAzF5v6udESxOfuyD2+ComGOZ/0lRex65VVQDph g==;
-X-CSE-ConnectionGUID: 2PTt6YcaTWeQn6CiEfDQ+g==
-X-CSE-MsgGUID: ieex2/iZRYmd9phHVoQyNA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="11927860"
-X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; d="scan'208";a="11927860"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2024 10:14:39 -0700
-X-CSE-ConnectionGUID: cbIlPQqeT0K8juCMANauKA==
-X-CSE-MsgGUID: mbZcH45/RvGvseKSZkeViA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; d="scan'208";a="20586340"
-Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2024 10:14:39 -0700
-From: Nirmoy Das <nirmoy.das@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/intel/xe_exec_atomic: Use new vm bind flag
-Date: Wed, 10 Apr 2024 19:00:41 +0200
-Message-ID: <20240410170041.24963-2-nirmoy.das@intel.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240410170041.24963-1-nirmoy.das@intel.com>
-References: <20240410170041.24963-1-nirmoy.das@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 136BB11274B;
+	Wed, 10 Apr 2024 17:40:39 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
+ [217.70.183.195])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 154C310ED59
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2024 17:40:35 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D9E7660005;
+ Wed, 10 Apr 2024 17:40:32 +0000 (UTC)
+From: Peter Senna Tschudin <me@petersenna.com>
+To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
+ andi.shyti@linux.intel.com
+Subject: [PATCH i-g-t] tests/intel/gem_exec_capture: Fix many-* subtests
+Date: Wed, 10 Apr 2024 19:40:22 +0200
+Message-ID: <20240410174031.5840-1-me@petersenna.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10,
- 85579 Neubiberg, Germany,
- Commercial Register: Amtsgericht Muenchen HRB 186928 
 Content-Transfer-Encoding: 8bit
+X-GND-Sasl: me@petersenna.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,61 +40,76 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use new vm bind flag to probe device atomics support.
+Currently trying to run `gem_exec_capture --run-subtest
+many-4K-incremental` or `gem_exec_capture --run-subtest many-4K-zero`
+will fail with:
 
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+ (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: Test
+ assertion failure function gem_engine_properties_configure, file
+ ../lib/i915/gem_engine_topology.c:577:
+ (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: Failed assertion: ret == 1
+ (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: Last errno: 9, Bad file descriptor
+ (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: error: -1 != 1
+
+This problem happens inside the macro find_first_available_engine()
+when:
+ 1. for_each_ctx_engine() allocates an struct intel_engine_data 'ed'
+    inside a for loop. The core of the issue is that ed only exists
+    inside the for loop. As soon as the for loop ends, ed is out of scope
+    and after it's lifetime.
+ 2. intel_get_current_engine() sets '*e' to an address of ed. This is ok
+    while inside the for loop, and is undefined behavior after the for
+    loop ends.
+ 3. configure_hangs() uses '*e' after the lifetime of 'ed' has ended
+    leading to undefined behavior
+ 4. After the call to find_first_available_engine() __captureN() will
+    fail as it expects '*e' to be valid. This is also undefined
+    behavior.
+
+Using 'e' outside for_each_ctx_engine() is incorrect and this patch
+fixes it. Additionally, this patch moves the 'igt_assert(tmpe);' to
+between the assignment and first use of 'tmpe' to prevent code
+from trying to use a NULL 'tmpe'.
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Peter Senna Tschudin <me@petersenna.com>
 ---
- tests/intel/xe_exec_atomic.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/tests/intel/xe_exec_atomic.c b/tests/intel/xe_exec_atomic.c
-index d9790da78..051f47a09 100644
---- a/tests/intel/xe_exec_atomic.c
-+++ b/tests/intel/xe_exec_atomic.c
-@@ -8,6 +8,7 @@
+Sending as a new patch instead of v8 of the following series:
+ https://patchwork.freedesktop.org/series/131602/
+
+ tests/intel/gem_exec_capture.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/tests/intel/gem_exec_capture.c b/tests/intel/gem_exec_capture.c
+index 57b178f3e..8800fa586 100644
+--- a/tests/intel/gem_exec_capture.c
++++ b/tests/intel/gem_exec_capture.c
+@@ -662,13 +662,20 @@ static bool needs_recoverable_ctx(int fd)
  
- #include "igt.h"
- #include "lib/igt_syncobj.h"
-+#include "lib/intel_pat.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- #include "xe_drm.h"
-@@ -85,7 +86,8 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
+ #define find_first_available_engine(fd, ctx, e, saved) \
+ 	do { \
++		struct intel_execution_engine2 *tmpe = NULL; \
++		e = NULL; \
++		\
+ 		ctx = intel_ctx_create_all_physical(fd); \
+ 		igt_assert(ctx); \
+-		for_each_ctx_engine(fd, ctx, e) \
+-			for_each_if(gem_class_can_store_dword(fd, e->class)) \
++		for_each_ctx_engine(fd, ctx, tmpe) { \
++			igt_assert(tmpe); \
++			if(gem_class_can_store_dword(fd, tmpe->class)) { \
++				saved = configure_hangs(fd, tmpe, ctx->id); \
++				e = &saved.engine; \
+ 				break; \
+-		igt_assert(e); \
+-		saved = configure_hangs(fd, e, ctx->id); \
++			} \
++		} \
++		igt_skip_on_f(e == NULL, "no capable engine found\n"); \
+ 	} while(0)
  
- 	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
- 	bind_engine = xe_bind_exec_queue_create(fd, vm, 0);
--	xe_vm_bind_async(fd, vm, bind_engine, bo, 0, addr, bo_size, &sync, 1);
-+	xe_vm_bind_async_flags(fd, vm, bind_engine, bo, 0, addr, bo_size,
-+			       &sync, 1, DRM_XE_VM_BIND_FLAG_DEVICE_ATOMICS);
- 	data = xe_bo_mmap_ext(fd, bo, bo_size, PROT_READ|PROT_WRITE);
- 	data->data = value;
- 
-@@ -112,11 +114,21 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
- 
- static bool has_atomics(int fd, uint32_t region)
- {
--	/* System memory atomics on dGPU is not functional as of now */
--	if (region == system_memory(fd) && xe_has_vram(fd))
--		return false;
-+	uint32_t vm;
-+	size_t size = xe_bb_size(fd, 4096);
-+	uint32_t bo = 0;
-+	int ret;
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	bo = xe_bo_create(fd, vm, size, region, 0);
-+	ret = __xe_vm_bind(fd, vm, 0, bo, 0, 0x40000, size,
-+			   DRM_XE_VM_BIND_OP_MAP,
-+			   DRM_XE_VM_BIND_FLAG_DEVICE_ATOMICS, NULL, 0, 0,
-+			   DEFAULT_PAT_INDEX, 0);
-+	gem_close(fd, bo);
-+	xe_vm_destroy(fd, vm);
- 
--	return true;
-+	return ret != -EINVAL;
- }
- 
- igt_main
+ static void many(int fd, int dir, uint64_t size, unsigned int flags)
 -- 
-2.42.0
+2.44.0
 
