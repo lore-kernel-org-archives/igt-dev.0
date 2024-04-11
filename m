@@ -4,151 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64CC3C4345F
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 15:32:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41D94C4345F
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 17:02:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 298A710F192;
-	Thu, 11 Apr 2024 15:32:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A3C9210F24C;
+	Thu, 11 Apr 2024 17:02:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FM0V1biv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XIbqxumk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E34710F190
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 15:32:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4193210F253
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 17:02:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712849545; x=1744385545;
- h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=MOW7WqNogWnUwy5o4xb2C9hci8KgEEG5GYZx6q4jmSM=;
- b=FM0V1bivxTLWTyuPv8Kcc5vD3kmZi175zJl0bPdVyLVEccqNIebVysGY
- FTq6MW6Le/QpNbWEOc7+S8IGkKmiS6AzywEo0BvtFq9b66KIwXme40mgK
- eXDDpv7fRfZ63KOmX4Sj7mIcOp9yVKXqiFlDjML4DPlv3F8/3wR+vfaCL
- 15mkx+K5XwPjeDeuWZCe+nOkshOaiypSmjnHQnl9Vlph+zmMFzee+mvp7
- 1QPkZLLXCj2kBrv+s2NwHiPKe+7cUichZbbWuMhU9t4uqYavGizMEusWX
- isCPOWFgduj9yH3PpsMhcrRVbV3m40If1LGYjlM3EScwJ2kmjdKussy6H A==;
-X-CSE-ConnectionGUID: hYLIpkqtT++N5Us0ioAxcw==
-X-CSE-MsgGUID: /ZxB+3NNRyGzHdPqY50etg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="18824702"
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="18824702"
+ t=1712854953; x=1744390953;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=6WULXwvCLeFUUjaz98QEtr9YgE9jK6kZaky4pFSmfoU=;
+ b=XIbqxumko7Va7UWccYSksg5ihzvgPYy+FU34wLkvRpGLUJlcWGHG5CpG
+ IZDjWXnP0Yk8g13s7rw7Rt0S+VNrqjNA3YRweE2vvC6xCB5/PUO9JwUbA
+ AYB09iw97ZGdDPvuGZje58qEGa+JaHRKqHqZOkRKblM8m0hFBswtL4GLb
+ eX+Ztrslc32fyekxTL7dQ+Y0ug/q3cSm6rJww2yrg7rXTR9kxC/OR+gtJ
+ Z/mwzJIvO/dO/efIG0jHkLif4v5DXQ1hBfk5LZq2Z9dwd52DFaFehgMBX
+ acvw9/OiDvYGHTCD0VuVxzNlJu9DiKKncr/W5E7NEa0J5IuddXlWPNq07 Q==;
+X-CSE-ConnectionGUID: KAx5Wgk+SnObIZsvpaE35g==
+X-CSE-MsgGUID: l6TVrxADTZSdcB9HpzkjuA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="19673801"
+X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="19673801"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2024 08:32:25 -0700
-X-CSE-ConnectionGUID: phMFKx+gSiqx8rocXHk9Zw==
-X-CSE-MsgGUID: Dh+EaokaSCi76x541m831g==
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Apr 2024 10:02:33 -0700
+X-CSE-ConnectionGUID: OyuCyvFlTWuSncKIf31lIw==
+X-CSE-MsgGUID: 2TVRkMODTbeqJDEcmLQRDQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="20841552"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 11 Apr 2024 08:32:24 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 11 Apr 2024 08:32:23 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 11 Apr 2024 08:32:23 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 11 Apr 2024 08:32:23 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.170)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 11 Apr 2024 08:32:23 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=e4uNaSZaAy0gKBO8a8kIwN0UhCPbnIRIuPmtivuYYstoMv6gMdF9u6qtMuMhhfAbusc5Yz0ww8duujZqDobKfcNYLQeGNXHOcCkJ/V/pMu6HmkqBt8x6cj78wutRRNj7lQs749nX1p8r0oBbVr/CG3HIFrDkxtdHWn6v+I/Kh5oA2NLQOkWMkycIIfyrBGdbJW2Tm6/hZ1ks15ooE2MkOGCWLTnNqPL2QVh//F7cLYSFAuqquDYhLJ5NQAFCabWS5bTrlsYfvTyje1hgKPCk1nNRe+XQvj9FFvE7DolAm1EsoxQAyPBaB0vTeKSkT5PCSVC7rtH4dkN+uOrOhYVXLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OLjy4vLusNrHMN7Tx4kGyFovgK6rc9x3vBUe3b+CHfE=;
- b=NuEI0FRakzX+i2wA8h+fxc0Z6NS57Bk6wj6aiwC334W73qDUFSTN5TSzeA61YlFXN/h/TBCrEOg8Y1EAdvv8t1OMqJWHzJq3bcj9+3Y5eQktvsTT4vwU1pPrUmjXvLW7WeLjrpETvmfHZOoOcQgCIQPPWY7uxX8BBWId2yKjgZdJODonkbb1E4Y5KELu6G+1rI79vUYB5XluiAaQoAarVYMF38uK5VKpWas1hEO/scm0PUoktBRmM1joVDwAqXmOZEDtnhCA5lii+MEyfTKLTWJpoLuQxXzqdfGBZXrVrtYnmLN8d2u7YBR1JGne9ifkeg6i6UGfm7O8J+sOJQyB5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB6141.namprd11.prod.outlook.com (2603:10b6:8:b3::13) by
- SN7PR11MB7020.namprd11.prod.outlook.com (2603:10b6:806:2af::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7430.46; Thu, 11 Apr
- 2024 15:32:14 +0000
-Received: from DM4PR11MB6141.namprd11.prod.outlook.com
- ([fe80::2875:354f:eb25:a4c5]) by DM4PR11MB6141.namprd11.prod.outlook.com
- ([fe80::2875:354f:eb25:a4c5%6]) with mapi id 15.20.7452.019; Thu, 11 Apr 2024
- 15:32:14 +0000
-Date: Thu, 11 Apr 2024 10:32:12 -0500
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, Matt Roper <matthew.d.roper@intel.com>,
- Ville Syrjala <ville.syrjala@linux.intel.com>
-Subject: Re: [PATCH i-g-t] intel_reg: Stop warning if register spec is not
- there
-Message-ID: <t5enlgj5nis26yzjvbwxlict6rpbugc4yj56zai5ibxw72g634@vvfryvmvmk5u>
-References: <20240410231710.3113867-1-lucas.demarchi@intel.com>
- <87le5k7028.fsf@intel.com>
- <bwwkqrnrd75zdnllhhtw3bapgz3fzdv2gjestlahdr4rxohxx5@5xgdosdtqwsa>
- <87cyqw58x0.fsf@intel.com>
- <75oqxqfgpu2gop5zq37hctzul7ztx2r2gwigxvl2trmwomn2lz@zqcsidtq627p>
- <87a5m054pp.fsf@intel.com>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <87a5m054pp.fsf@intel.com>
-X-ClientProxiedBy: SJ0PR03CA0136.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::21) To DM4PR11MB6141.namprd11.prod.outlook.com
- (2603:10b6:8:b3::13)
+X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="20874183"
+Received: from unknown (HELO localhost.localdomain) ([10.190.238.8])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Apr 2024 10:02:32 -0700
+From: Vandita Kulkarni <vandita.kulkarni@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: zbigniew.kempczynski@intel.com,
+ Vandita Kulkarni <vandita.kulkarni@intel.com>
+Subject: [PATCH i-g-t v2 1/2] lib/igt_draw: Add support for writing onto
+ already mmapped buffer
+Date: Thu, 11 Apr 2024 22:33:11 +0530
+Message-ID: <20240411170312.5615-2-vandita.kulkarni@intel.com>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240411170312.5615-1-vandita.kulkarni@intel.com>
+References: <20240411170312.5615-1-vandita.kulkarni@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB6141:EE_|SN7PR11MB7020:EE_
-X-MS-Office365-Filtering-Correlation-Id: d8be69b5-dd06-4ea4-7b2c-08dc5a3c9024
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: kod6uUi9zvUDFynvIL+XLda66D8ZUmzEf9F96++HFej/3JJpoUYLvg6y71ZXIPmAjSuNZ7AS4RtoeM81h4D50lX6krbWbvKX6CCEDSXp0OiOSIyf2MswIN//BK2t+jHk33BE1WAj0e2OQ42F6k7ygA1g5CAPXJ9aINPQxflDQdyVSk9YUN5cDXD5dJkeMoEKgqlPyn08aPKSJdsdKl0E67JLP4tr9/mzM2IAqJPuoX9T2wiYCA2JoDeC0DhH1jcFQox/spjTjMATIWZxOyviTVUD6HqpH8zWGxObD7iMtwULOLNVHVEopkk5SappkI7aLj2Sq3nR59wTV2rjrtELeMeNeeVSsQ1QvAVOtl1sWYJfOyhZfvIEaVaj2PLSaS2kSNOf8dVT7VrsrpyVw4tmmB9TK0ckK3RZw2Qr4MoePMvvFVHbzx3qTE6Ekry1eIjXP2N9vFyRaqcB1d7VKbOCbDMle4RvFTCkSDk8CF9eNMGtCYBQmLd0rI4kFvFHLE+5UQWfP8k9ygkNRm87Bu2jHVQZlGT201cBQy+UY0bhS4tsI/6b2/0jLmGWd8Y2x4sKEgLomGWCSpE2yMR7Xkh08mB4ARNGUmZ4EgPb3lzCgbW1+MGQ3gBil8neFNQC0nLlaixn0kAu4mPg3V62VPMFczPen4MUi02xeCuL5lRd/54=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB6141.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(1800799015)(376005)(366007); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?jl9TS/EWPGhZnjwpQByGCb2oFlyZYI49BR7FwQg6uriD55aOBuebDsFCI8mO?=
- =?us-ascii?Q?5eAfsv7Z5G7icYpBF4/j+I+GWuCPAyz4tCQw5PqH33vxjTB8Q6Q0AAc3MPEM?=
- =?us-ascii?Q?07NTfW0q+nbY19oNSJKYrFxtThck32m0LENHtEZxfqeiwp1k5/THtmqR1kiK?=
- =?us-ascii?Q?DtyackchtidcNS/BCX/yzUJOMM/l6MDtrKUqttbfj+bCofzXiI4/8U1eLX3Z?=
- =?us-ascii?Q?7nei5BUxv5KQbvSxyfmVjMDAuKl9KpykF34aBjZzDREfuyvF0L8lsD8QFkjJ?=
- =?us-ascii?Q?OwyOrzadRp5pfL957Md+GvaRiYlcnVZ90sTKo8n1ftfgc6vz4tTSmkqYAdDf?=
- =?us-ascii?Q?Kdi7rJeRQRnDWs94M+vB1Yl2GUf0PQv75oAccWAWIG6pId5tFS/9SOPhUOAF?=
- =?us-ascii?Q?MZ0kaogmtlFnUKNtBY4D05At1ETsASher5ItXx11EvK6tCCmJt5C/2QcpK33?=
- =?us-ascii?Q?O/rBsLhbbjhiQmoqFnrdKUVMff6fO5xLjOS9Ok2aqMUoX3k8LnqBT/ycjZ/1?=
- =?us-ascii?Q?vANkQuY/W5DsDNEEwwmk3FJKB/Kg0toPrqn25sNlq1nMTE3iKQIM7n0LVASJ?=
- =?us-ascii?Q?7gsFIJm4GS11SCUM9gh4FvDY0yjsQKHgG+08GgqiqgPMfFzOvyUPR64SFNLZ?=
- =?us-ascii?Q?5Ou3XgxiQEeu98RbjipB6FMu5IMJ8xwzVbpf/EOOPwWdQ6ameIRqH30OPZCq?=
- =?us-ascii?Q?acQ8lJvyO/fgHZGYZVcKwqpvdHbdk0orptFJlBmvqrtt/g8pdqSEBnx/66Gs?=
- =?us-ascii?Q?YmGCrFNP0gi+AdQ79tb5BD1Z2h21aQZi8ezu8oDk9gZ1L0gvj7FiUrZRdKF0?=
- =?us-ascii?Q?34x67lVyAdg5ehqvQwdBi1e+v57dqTsqNMeKWWpgc8VQ85ST/oFGVIOyYuCW?=
- =?us-ascii?Q?EvHduUaukWOQmHP3UYWWhJE0HIh35P6t99uqJrGAxR8n5eoLX4modqXyrekH?=
- =?us-ascii?Q?D/PmAHMWbCMvZVCsemT3SJrG8UJk+9KhRnAGtfuwlFKm6GUOFIyStCBZytXw?=
- =?us-ascii?Q?tsGD56/zXzCMWsKAirz0TZJ18Ek4/gqc07Bs/6W+UQE/2OSeaUb1W7BnNM+P?=
- =?us-ascii?Q?hrdKivbsuloPJvaPHs2z1h/i9ZwcVAcwoL44BWug6lwoM8NZ05VtK0EdADB9?=
- =?us-ascii?Q?HcvlwVmaBlsVta95ViwzTWQj/TRJsH5JF6w+QRg7A35vJh7oR3JKkzX9A8RM?=
- =?us-ascii?Q?VyQcKI64hIy98phLRf/MS29MU+APR5AvlPU9wf7ywPZQmcP1PqqifrusxvNd?=
- =?us-ascii?Q?cDfwkQbIjAutw8l19dqyQuf3Z71dAkA9dieiya8bNkX1PpYISth9AxCWG2v0?=
- =?us-ascii?Q?O2i9MmUbA4gu2UJz7xkSUuJNSflFodfSQ0NkGcFnupkgqMbqJ9ZNp0SZPA4U?=
- =?us-ascii?Q?ZUXUjWTaU9CdPIM0rq4VwkKtIT3GIN+LvkuZAtGUwAcQSPkGRgDCbiKogGR+?=
- =?us-ascii?Q?LzrqkoMWwoPAkggTk5nzQ9m5J6ZBnVeglPlWl882k/6R4KWLCOGKNmWOkWQY?=
- =?us-ascii?Q?NWZr5pqDSr5YSif01K/jBLyGVLnSqJF+VavW6i6iQGyHPmD42Z0+EbtSU1Wy?=
- =?us-ascii?Q?nupqF68pueFZCpEB5LMIEROfEroFX12y1WolqyBp5vU/WHQNPYUZUwzRwutN?=
- =?us-ascii?Q?EQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8be69b5-dd06-4ea4-7b2c-08dc5a3c9024
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6141.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2024 15:32:14.4277 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /0fzMxJbYpyhw6ZcAhlATHusFBCcryDjjW6x6KUmStPW3qWKi/LMMDH68PeL1HNR+nXTmkrZXXua2u8fVIisUfp4sCTc4xl/w4wxcySD29g=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7020
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -164,52 +69,191 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Apr 11, 2024 at 05:55:30PM +0300, Jani Nikula wrote:
->On Thu, 11 Apr 2024, Lucas De Marchi <lucas.demarchi@intel.com> wrote:
->> I don't think we will be able to invest time to manually update them.
->
->Agreed.
->
->> I have a dream of being able to partially generate the regs/*.h file
->> in xe. Maybe if we ever achieve that we can think of using the same
->> source for igt.
->
->Agreed.
->
->> But as I said, I think we are far far away from that. What do you think
->> should be done in the short/mid term?
->>
->> a) this patch as is
->> b) keep the warning for verbosity > 0 as sugggested by others
->
->Either as the first step is fine by me.
->
->> c) just remove tools/registers to simplify the code. To be added back if
->>     we ever figure how to autogenerate them with the same source that
->>     autogenerates the kernel
->
->I think they're still useful for deciding the contents of intel_reg
->dump, for the platforms defined anyway. I wouldn't throw them away.
->
->> d) something else?
->
->I wouldn't object to incorporating the information in the tool at build
->time. But if nobody has the time to do that, just let it be until we
->have figured out a way to generate the info, if ever.
->
->Since the decoding info is starting to be out of date, especially the
->builtin stuff, maybe it should be made optional via a --decode parameter
->similar to --binary, and default to off?
+Provide another draw method, for supporting drawing onto
+already mmapped buffer.
 
-sounds good. v2 will be  "keep the warning, but hide the feature behind
-an option."
+v2: Use fb->fb_map instead of fb->driver_priv (Zbigniew)
 
-thanks
-Lucas De Marchi
+Signed-off-by: Vandita Kulkarni <vandita.kulkarni@intel.com>
+---
+ lib/igt_draw.c                         | 37 ++++++++++++++++++++++++--
+ lib/igt_draw.h                         | 10 ++++++-
+ lib/igt_fb.h                           |  3 +++
+ tests/intel/kms_frontbuffer_tracking.c |  2 +-
+ 4 files changed, 48 insertions(+), 4 deletions(-)
 
->
->BR,
->Jani.
->
->-- 
->Jani Nikula, Intel
+diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+index 2c01d7b02..8673a6e58 100644
+--- a/lib/igt_draw.c
++++ b/lib/igt_draw.c
+@@ -75,6 +75,7 @@ struct buf_data {
+ 	uint32_t handle;
+ 	uint32_t size;
+ 	uint32_t stride;
++	void *buf_ptr;
+ 	int width;
+ 	int height;
+ 	int bpp;
+@@ -110,6 +111,8 @@ const char *igt_draw_get_method_name(enum igt_draw_method method)
+ 		return "blt";
+ 	case IGT_DRAW_RENDER:
+ 		return "render";
++	case IGT_DRAW_MMAP_PTR:
++		return "mmap-ptr";
+ 	default:
+ 		igt_assert(false);
+ 	}
+@@ -541,6 +544,27 @@ static void draw_rect_mmap_wc(int fd, struct buf_data *buf, struct rect *rect,
+ 	igt_assert(gem_munmap(ptr, buf->size) == 0);
+ }
+ 
++static void draw_rect_mmap_ptr(int fd, struct buf_data *buf, struct rect *rect,
++			      uint32_t tiling, uint32_t swizzle, uint32_t color)
++{
++	igt_assert(buf->buf_ptr != NULL);
++
++	switch (tiling) {
++	case I915_TILING_NONE:
++		draw_rect_ptr_linear(buf->buf_ptr, buf->stride, rect, color, buf->bpp);
++		break;
++	case I915_TILING_X:
++	case I915_TILING_Y:
++	case I915_TILING_4:
++		draw_rect_ptr_tiled(buf->buf_ptr, buf->stride, tiling, swizzle, rect,
++				    color, buf->bpp);
++		break;
++	default:
++		igt_assert(false);
++		break;
++	}
++}
++
+ static void draw_rect_pwrite_untiled(int fd, struct buf_data *buf,
+ 				     struct rect *rect, uint32_t color)
+ {
+@@ -839,6 +863,8 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+  * @buf_handle: the handle of the buffer where you're going to draw to
+  * @buf_size: the size of the buffer
+  * @buf_stride: the stride of the buffer
++ * @buf_ptr: Pointer to already mmapped buffer, to be used with IGT_DRAW_MMAP_PTR,
++	     otherwise can be left NULL.
+  * @buf_width: the width of the buffer
+  * @buf_height: the height of the buffer
+  * @tiling: the tiling of the buffer
+@@ -855,7 +881,7 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+  */
+ void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
+ 		   uint32_t buf_handle, uint32_t buf_size, uint32_t buf_stride,
+-		   int buf_width, int buf_height,
++		   void *buf_ptr, int buf_width, int buf_height,
+ 		   uint32_t tiling, enum igt_draw_method method,
+ 		   int rect_x, int rect_y, int rect_w, int rect_h,
+ 		   uint32_t color, int bpp)
+@@ -870,6 +896,7 @@ void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
+ 		.handle = buf_handle,
+ 		.size = buf_size,
+ 		.stride = buf_stride,
++		.buf_ptr = buf_ptr,
+ 		.width = buf_width,
+ 		.height = buf_height,
+ 		.bpp = bpp,
+@@ -907,6 +934,9 @@ void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
+ 	case IGT_DRAW_RENDER:
+ 		draw_rect_render(fd, &cmd_data, &buf, &rect, tiling, color);
+ 		break;
++	case IGT_DRAW_MMAP_PTR:
++		draw_rect_mmap_ptr(fd, &buf, &rect, tiling, swizzle, color);
++		break;
+ 	default:
+ 		igt_assert(false);
+ 		break;
+@@ -935,7 +965,7 @@ void igt_draw_rect_fb(int fd, struct buf_ops *bops,
+ 		      int rect_w, int rect_h, uint32_t color)
+ {
+ 	igt_draw_rect(fd, bops, ctx, fb->gem_handle, fb->size, fb->strides[0],
+-		      fb->width, fb->height,
++		      fb->fb_map, fb->width, fb->height,
+ 		      igt_fb_mod_to_tiling(fb->modifier), method,
+ 		      rect_x, rect_y, rect_w, rect_h, color,
+ 		      igt_drm_format_to_bpp(fb->drm_format));
+@@ -971,5 +1001,8 @@ bool igt_draw_supports_method(int fd, enum igt_draw_method method)
+ 	if (method == IGT_DRAW_RENDER)
+ 		return !!igt_get_render_copyfunc(intel_get_drm_devid(fd));
+ 
++	if (method == IGT_DRAW_MMAP_PTR)
++		return (is_i915_device(fd) && gem_has_mappable_ggtt(fd)) || is_xe_device(fd);
++
+ 	return true;
+ }
+diff --git a/lib/igt_draw.h b/lib/igt_draw.h
+index 1dec95e86..4979342c0 100644
+--- a/lib/igt_draw.h
++++ b/lib/igt_draw.h
+@@ -36,6 +36,7 @@
+  * @IGT_DRAW_PWRITE: draw using the pwrite ioctl.
+  * @IGT_DRAW_BLT: draw using the BLT ring.
+  * @IGT_DRAW_RENDER: draw using the render ring.
++ * @IGT_DRAW_MMAP_PTR: draw onto already mmapped buffer.
+  * @IGT_DRAW_METHOD_COUNT: useful for iterating through everything.
+  */
+ enum igt_draw_method {
+@@ -46,6 +47,13 @@ enum igt_draw_method {
+ 	IGT_DRAW_BLT,
+ 	IGT_DRAW_RENDER,
+ 	IGT_DRAW_METHOD_COUNT,
++	/*
++	 * NOTE: This enum is placed after IGT_DRAW_METHOD_COUNT in order
++	 * to avoid it being used by other tests which test all the DRAW methods
++	 * Once we add support for this draw method in all those tests keep it
++	 * outside the total count. Some examples are kms_draw_crc, kms_frontbuffer_tracking
++	 */
++	IGT_DRAW_MMAP_PTR,
+ };
+ 
+ const char *igt_draw_get_method_name(enum igt_draw_method method);
+@@ -54,7 +62,7 @@ bool igt_draw_supports_method(int fd, enum igt_draw_method method);
+ 
+ void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
+ 		   uint32_t buf_handle, uint32_t buf_size, uint32_t buf_stride,
+-		   int buf_width, int buf_height,
++		   void *buf_ptr, int buf_width, int buf_height,
+ 		   uint32_t tiling, enum igt_draw_method method,
+ 		   int rect_x, int rect_y, int rect_w, int rect_h,
+ 		   uint32_t color, int bpp);
+diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+index 834aaef54..0dae2b4a4 100644
+--- a/lib/igt_fb.h
++++ b/lib/igt_fb.h
+@@ -72,6 +72,8 @@ typedef struct _igt_crc igt_crc_t;
+  * @domain: current domain for cache flushing tracking on i915.ko
+  * @num_planes: Amount of planes on this fb. >1 for planar formats.
+  * @strides: line stride for each plane in bytes
++ * @fb_map: Pointer to mmapped buffer, used in case of IGT_DRAW_MMAP_PTR,
++ * 	    can be NULL otherwise.
+  * @offsets: Offset for each plane in bytes.
+  * @plane_bpp: The bpp for each plane.
+  * @plane_width: The width for each plane.
+@@ -96,6 +98,7 @@ typedef struct igt_fb {
+ 	unsigned int domain;
+ 	unsigned int num_planes;
+ 	uint32_t strides[4];
++	uint32_t *fb_map;
+ 	uint32_t offsets[4];
+ 	unsigned int plane_bpp[4];
+ 	unsigned int plane_width[4];
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index e45d17dd6..32cc50712 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -2262,7 +2262,7 @@ static void *busy_thread_func(void *data)
+ {
+ 	while (!busy_thread.stop)
+ 		igt_draw_rect(drm.fd, drm.bops, 0, busy_thread.handle,
+-			      busy_thread.size, busy_thread.stride,
++			      busy_thread.size, busy_thread.stride, NULL,
+ 			      busy_thread.width, busy_thread.height,
+ 			      busy_thread.tiling, IGT_DRAW_BLT, 0, 0,
+ 			      busy_thread.width, busy_thread.height,
+-- 
+2.43.2
+
