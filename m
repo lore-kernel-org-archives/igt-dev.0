@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2FAACD128A
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 11:17:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC765CD1284
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 11:17:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1483D10F016;
-	Thu, 11 Apr 2024 11:17:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3EA0810F01A;
+	Thu, 11 Apr 2024 11:17:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f7xq6dSt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ByGdfSUP";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD85F10F01A
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 11:17:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D69810F01A
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 11:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712834260; x=1744370260;
+ t=1712834268; x=1744370268;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=+hEQH16MfZ5r74BA8zY3t1Ww+ZDwbveCS2PDnV99ZVU=;
- b=f7xq6dSt/mCuc5B0Iu3i0RcisrpKfydiAlzr8tEQk0P63LesFophLybV
- 1I4agp88C9uUKRzDHnVKvFQL2jWLqMflsF01Hsm6PvWZSPn6m2TixGM7o
- 4CdhQw51uaMn8QgW4n7CA/VuCkQRfmw6fFfFTFNTPh0q9na+Bot8elnQJ
- jnCT/T9oG/7gwK0aHQgeVAMZt0BRkN8MSv/OYDh7hjJUahIZgIz2L3lxP
- OmvTbVvlfN7FPyQqDIR0AO9ga8usGNSi4iZgU+0b4JI5yVneK9O8zpQZo
- WAqIPI8aLgmXnjwv8FyBZClNZFN0G+tmf7FHRTbpcpX4dmhSjn1CBU4zC g==;
-X-CSE-ConnectionGUID: jZHERd9qSK+nHOsR6yhK6A==
-X-CSE-MsgGUID: HE6vXxooQDGeGP4a0MBOGQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8344487"
+ bh=PQYmE0d0ylugm7BX2z8ATZME++8Zy5Hy7hMVZC7suJI=;
+ b=ByGdfSUP4zWiMKRpPoIVIKRqQbtWjKwa6j71uiP00kv85+hcWVfpQwoB
+ jyuprnvvg4kFmXdUnNPY3Qk4oEY6c5DgjpOiUWj2xNRCsYidjUnZ0O6zp
+ ml3KqF4XDQ0QCzYP7iyWjsOhFen9tB8YnBDdHZxMnRtbK/4dzn3MK29s6
+ Mfyn/h4R2sJFlSaHVVv61NoDjxB7YX+zM1ChFa6c6Qt/fVxGS6wMm957E
+ TEy7e/PbdYk97Cj6rZHZZd+xwXMfezF0M7/J+DeT8FRpSDJfmsKGLvcat
+ omA1R3vKnbRuCkO0SaSSeYvcZVrMlWCy9MGVxwam6d0kUmlqIg/CgTqV/ g==;
+X-CSE-ConnectionGUID: uiABwT82QMuWNThlb8yFLg==
+X-CSE-MsgGUID: fcNmFT0kSPGCZgaYRCHi9w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8344497"
 X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; 
-   d="scan'208";a="8344487"
+   d="scan'208";a="8344497"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2024 04:17:39 -0700
-X-CSE-ConnectionGUID: Jkr1hTKNRHWJGU/56RDtKA==
-X-CSE-MsgGUID: jwPp5j+GSPWr3lBZIj+EtA==
+ 11 Apr 2024 04:17:48 -0700
+X-CSE-ConnectionGUID: 4wnJnsRgS8mcYJ0TpiVEeA==
+X-CSE-MsgGUID: icWIpho2T1uYHuEVIKzOdw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="44156100"
+X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="44156130"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2024 04:17:37 -0700
+ 11 Apr 2024 04:17:45 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Janga Rahul Kumar <janga.rahul.kumar@intel.com>,
- Priyanka Dandamudi <Priyanka.dandamudi@intel.com>
-Subject: [PATCH i-g-t v2 1/5] tests/intel: Add missing Sub-category for
- xe_waitfence
-Date: Thu, 11 Apr 2024 11:17:13 +0000
-Message-Id: <20240411111717.2941810-2-katarzyna.piecielska@intel.com>
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v2 2/5] tests/intel: Remove name collision in Display
+ tests visible in Core docs
+Date: Thu, 11 Apr 2024 11:17:14 +0000
+Message-Id: <20240411111717.2941810-3-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240411111717.2941810-1-katarzyna.piecielska@intel.com>
 References: <20240411111717.2941810-1-katarzyna.piecielska@intel.com>
@@ -71,26 +70,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add missing Sub-category for xe_waitfence subtests.
+Display team is not using Subcategory field, but this test is
+visible in Core documentation. Let's remove name collision in
+Category, Subcategory and Functionality.
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Cc: Priyanka Dandamudi <Priyanka.dandamudi@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_waitfence.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/intel/i915_pipe_stress.c | 2 +-
+ tests/intel/prime_mmap_kms.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-index 071e67bd6..45378d95d 100644
---- a/tests/intel/xe_waitfence.c
-+++ b/tests/intel/xe_waitfence.c
-@@ -140,6 +140,7 @@ waitfence(int fd, enum waittype wt)
- /**
-  * TEST: Negative test for wait ufence ioctl
-  * Category: Software building block
-+ * Sub-category: Synchronization
-  * Functionality: waitfence
-  * Test category: negative test
+diff --git a/tests/intel/i915_pipe_stress.c b/tests/intel/i915_pipe_stress.c
+index 6c5e951ab..de4df830f 100644
+--- a/tests/intel/i915_pipe_stress.c
++++ b/tests/intel/i915_pipe_stress.c
+@@ -26,7 +26,7 @@
+  *              possible bandwidth/watermark and similar problems.
+  * Functionality: kms_core
+  * Mega feature: General Display Features
+- * Sub-category: Display
++ * Sub-category: Display Tests
+  * Test category: stress test
+  *
+  * SUBTEST: stress-xrgb8888-untiled
+diff --git a/tests/intel/prime_mmap_kms.c b/tests/intel/prime_mmap_kms.c
+index 35d1eedde..7759b9469 100644
+--- a/tests/intel/prime_mmap_kms.c
++++ b/tests/intel/prime_mmap_kms.c
+@@ -41,7 +41,7 @@ IGT_TEST_DESCRIPTION(
+  * TEST: prime mmap kms
+  * Category: Infrastructure
+  * Feature: prime
+- * Functionality: memory management
++ * Functionality: prime
+  * Sub-category: DRM
+  * Test category: GEM_Legacy
   *
 -- 
 2.34.1
