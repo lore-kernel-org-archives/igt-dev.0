@@ -4,145 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47AF8C001CC
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 14:29:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64387C4345F
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 14:31:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 61A3510F113;
-	Thu, 11 Apr 2024 14:29:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D73F410F126;
+	Thu, 11 Apr 2024 14:31:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TREQ/g8m";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m9nObdkP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DEEE610F113
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 14:29:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF85110F11F
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 14:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712845759; x=1744381759;
+ t=1712845914; x=1744381914;
  h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=7VMlrYQfbpdez/w4TcbfluhbmT6X9yUywc6ADbDpua8=;
- b=TREQ/g8mKpl73Lex+Sqr8hMWsZoiVjMGaEnZhKnOBlH7kAvusnXnF3EI
- 4pxvK9oElIto1FBn9Tr9SmQAXSUNIWemB956fd5ZiOj45eujv6/2w/RPP
- qedI72Y55uc2gxSBId7vAactVq2wCvD+Ce9WVoHZdLIjPPSvQppWYOSIO
- Z8Fg9v07b7H6/0pzdHAnXCXYHSaWfWZP1oC3qDGa5BUsHFupOfvLhgVpA
- Ppa2oJpF4E+ZkCWOZn1jwrLwjqj9mHRVSLnr+ifShYHemdCzkrgqDSOvO
- lVmLEiUguV3JuM0FC82e6HCkIR7SdKjXJwlZ4adxMEYTTauKAonE9VAtE g==;
-X-CSE-ConnectionGUID: kBY3EHp+Tsq98b6eKKqwHw==
-X-CSE-MsgGUID: StueWks7STqCdoTQdzoTJg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="25712293"
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="25712293"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2024 07:29:19 -0700
-X-CSE-ConnectionGUID: WK8+ghClQ+ODdTZ1z01oWw==
-X-CSE-MsgGUID: ldYJ/YddSP6b4rGZO4ymQQ==
+ mime-version:in-reply-to;
+ bh=4T1WgH1fifa/mTDy8PDNyGxuIdxEnAMyt1BzsHdt2VU=;
+ b=m9nObdkP6QFOXoCwTWvsZGWjsptw2lHc9GPkTHhvtcCefC+IyS+h9uJL
+ 2cNKc7e3BJPdNVcYehdd4mFZpBEVz9kiZ3gv5IboSsu446LUbK3uvsGWY
+ 8fcdRlPwjvSG5T9xS8zQ+N7/1wJ9ZYilJQ0iFXh3QCHnixvbaRbpnmChr
+ qRebm2u6JBRW8QSPxRwXz7B6DTMoFUW+cpseZUdGkAwsZ1gkwtxFQ0qmd
+ kE4qBq2PLTns73FdzhkGuidtXawnqt11+m2Z+J7xrHsAp+8ZGAX3wkdkF
+ /Qbq+3429Lj8+GMfCzljv7UXfNQfJWIuCDHNnlcSseSwFZLYsRZat4NpL w==;
+X-CSE-ConnectionGUID: WkqQEPLWQ1qXMQmozA/u0w==
+X-CSE-MsgGUID: MOV39CLxSTWNfyZn11ZKnQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="8114701"
+X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; 
+   d="scan'208";a="8114701"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Apr 2024 07:31:48 -0700
+X-CSE-ConnectionGUID: j6jFMT0nSPunPfVORJvMkA==
+X-CSE-MsgGUID: /LraFgw2T7e4CA+zx6Q/6w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="21357448"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 11 Apr 2024 07:29:19 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 11 Apr 2024 07:29:17 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 11 Apr 2024 07:29:17 -0700
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.41) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 11 Apr 2024 07:29:11 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YR7e8DdTDMhoGUl6QznrwuVlDI2+sipnke77DOeBeuHYAbD7jV/8YMTMBidBE7+W/EQ+8hpZPNjg7xxes9yGmkcc67YTq7niayrN7L+mBAiXZyl3161KFw540XHUO/S/SU60hl2Lt9FwBzsAyAl0nqwTipZI/DXGNW5E7FXQroqPZSrcmELpTGKR4if07sfZOwu09OMYUaDNAPfbBrLu5QlXNZo/gHtXp21ZjmZ/9bAnxHaqyyNP8K9Rv2nb53qStO9VheabX0yVakVB7ewWC8eRF5mjR41evwxsPO17WjEz9cfXAdMQEVD8QEMZDw3mgMYpRG9pCPd4MCApCOJfbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XokeXcflGunyX/eru02eteVUf9f7cm2LtHdd1yuoTV8=;
- b=UVIaxAqdAm4xAiMz7dtn16ZkLld83dFT9Na6Af4xZ8S/kZZWIfdeL8RmmFRtqZF+ma+WRqq/BEcgWDQLikKKKb7a/rt1gRZt68i+22py4aPtkxjvy//iRR1N68QVTCvaeRpjGr3M4XrzWGxlbrZve90ejELLQwfiNlFSPzojdeylG0m6agYpJ71Vur34dMn7H4zy8GMRp32/qEtuqkFWfQ7UAaiR94giBTypIMWO/oqg+CbpwByVhAhyPHbaJ63yi4VQKxENv5vxGlYKccGk23yoF4XSlY9fuSCMi+5WFs8V3Ctc1hgQ9NvAdr9OqDz2ZH64ZrqWYWJOBfvoVHUaTA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB6141.namprd11.prod.outlook.com (2603:10b6:8:b3::13) by
- PH7PR11MB6450.namprd11.prod.outlook.com (2603:10b6:510:1f5::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.26; Thu, 11 Apr
- 2024 14:29:09 +0000
-Received: from DM4PR11MB6141.namprd11.prod.outlook.com
- ([fe80::2875:354f:eb25:a4c5]) by DM4PR11MB6141.namprd11.prod.outlook.com
- ([fe80::2875:354f:eb25:a4c5%6]) with mapi id 15.20.7452.019; Thu, 11 Apr 2024
- 14:29:08 +0000
-Date: Thu, 11 Apr 2024 09:29:00 -0500
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, Matt Roper <matthew.d.roper@intel.com>,
- Ville Syrjala <ville.syrjala@linux.intel.com>
-Subject: Re: [PATCH i-g-t] intel_reg: Stop warning if register spec is not
- there
-Message-ID: <75oqxqfgpu2gop5zq37hctzul7ztx2r2gwigxvl2trmwomn2lz@zqcsidtq627p>
-References: <20240410231710.3113867-1-lucas.demarchi@intel.com>
- <87le5k7028.fsf@intel.com>
- <bwwkqrnrd75zdnllhhtw3bapgz3fzdv2gjestlahdr4rxohxx5@5xgdosdtqwsa>
- <87cyqw58x0.fsf@intel.com>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <87cyqw58x0.fsf@intel.com>
-X-ClientProxiedBy: BY5PR13CA0005.namprd13.prod.outlook.com
- (2603:10b6:a03:180::18) To DM4PR11MB6141.namprd11.prod.outlook.com
- (2603:10b6:8:b3::13)
+X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="51885753"
+Received: from unknown (HELO localhost) ([10.245.246.155])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Apr 2024 07:31:46 -0700
+Date: Thu, 11 Apr 2024 16:31:42 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Vandita Kulkarni <vandita.kulkarni@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 1/2] lib/igt_draw: Add support for writing onto
+ already mmapped buffer
+Message-ID: <20240411143142.t74npydf2whvtotv@zkempczy-mobl2>
+References: <20240411114804.21206-1-vandita.kulkarni@intel.com>
+ <20240411114804.21206-2-vandita.kulkarni@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB6141:EE_|PH7PR11MB6450:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3f55ea2f-9c02-401a-8313-08dc5a33bc9e
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: e69Xj2x2pHqy+xEyzKwWnTZetzq1SEd+/5ywHfROrOFAb56Y1oyt6GL6yPFBDtzIZsx9W/ZP66w+8K9yNBCgNSqwxxC9sN0V3EhjRLcrSeNI7M52p/MwNC0P5kp5HhYvDm6NA72BasoU2fuNmHY5aX/OZ3UkjnRpNVDCJfHXBjx6sX/Vb/DKdgoJNTcTVM81W4GEc7ARnDZQ2tuMXnwfqbHXgtEZte08ONIqJQt3Y/nrmprOS/vaEm2L39PCUThCm5WFotsifEA2ELqZpwryFTSFwTgzSRiAFXqSJXbDLOXdmb+CT4gFSzUMNp9FjZVVHcSnsBpm6SBpobPOnJ9gDx7+Ts6F6saVbpgFP33Q1CAGqT9wWQ5Dyw0FWXrM1v+YnyOo/KljWdhh7X8UdDeX6ekbse3hyBLUlncob3ee6CEL5zFGhiZLS21LZ9mGLax5+CXjVdPxvfV7tkcWsH9NNMW0jbvXfMb3P8MpXrL+n6AagCwmq38Yk2oFtBVI06wSM4i/zM9my9q7g8UMOv8iSHIA/j4F5RtNFdQO8nvBVtgBE03K7zb8gcHQLqUx66BUKyanJ+vUtdx6WwkWMIbYPQFjpmyZa72/hN/Uc4+eEDdM3NEZcJqnTrZYzBwPWu3tHw2nfNgr2dVUvGEN3CAEDukshS6HiaDP+tD/md9Ka/k=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB6141.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366007)(1800799015)(376005); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?RE3imgyJNa9V1eWYu//O4+uAEfYhQMM/XwRP410g/L3Op3YJkFQBT1wve5pF?=
- =?us-ascii?Q?PMBcXU/ONn2znNTWsgl4W+1D/q8pz9XCEDteYYtnOMPsR8145uZSFRinJnEA?=
- =?us-ascii?Q?j5T3IWEuTOLPCEq7XfGiyWF3rtVEIm6lFlljtP9LnaHeumyiWLNgU33xz5xM?=
- =?us-ascii?Q?a8dl9B5d7HEviaTnE/91T2eUiSUPQZIANZGqdN7EI5QX14JCh48h2QfePD0P?=
- =?us-ascii?Q?wUJGVyl696jLQhx6cz48lYvzIMJHdm7X9Wf7T5Zbtmh625RW0u9v52ufYiO3?=
- =?us-ascii?Q?RmrNLARRpVqUy4CA4nLORZp11rFoAOH4r7CO0duBGErM8H69cgV0U2CvwaVP?=
- =?us-ascii?Q?tT7zutmXcRLOPHNCd8kK+ZuNM8tkQq7ncI6y5T1ecnRb68nUKJxgmmsFUtGz?=
- =?us-ascii?Q?J4mxhcsZniz5c2U2PhGe+PkhoHI6RjdaI2wuHX0d6heaasPE8QIZbxq09EfN?=
- =?us-ascii?Q?WAIXRC8QEtzG2N5/IujBFAm7LbMfK4nM/kwIJvSMtTeogeUOx6pbWisDBr0k?=
- =?us-ascii?Q?XPcdb54heDOzySdQKslklLkWIAqnciJEZ2cFcRt9INVWvJSr8p9liXJL6KiC?=
- =?us-ascii?Q?QeB8JM8jr27iPvNDzSRqzIOxL2AeTzVejJ0o3k+N7BWvMW4ui/JbRR/a3Wrq?=
- =?us-ascii?Q?7b6V5G4TkwH4C2Ma+lByeP8xVd5Arkp0SSyERpQ1D5dIah3oC1Gbpd49mcsf?=
- =?us-ascii?Q?pB42Aa/LJXrUDjEQBooytNvpOBXWVZhgqBDFxKw0kdN9P9lUBNEEStGUmU6n?=
- =?us-ascii?Q?B8x013H5Ft72kGIzMyFLtwnUEf90ujiqcw4qySvm1oaMFSQxsRg4H4AbrjgI?=
- =?us-ascii?Q?wP49s+H8R74423PYfrsb0T2GHtRqiUlMEwCly8judApai04FvB2eeb9V2432?=
- =?us-ascii?Q?H7+siUxRRCwkxDOs6aQ4STWJ24NWe/T1Dc2h/HTOD5uHhnWkwgFULic/FknM?=
- =?us-ascii?Q?o0kEvJEsxlJI7c4G+mLfuwRqZUQctk1Go22IsyarKS2v5UKrnI3bxgMvO90b?=
- =?us-ascii?Q?t7C++m/Skfmxe5LA1phEWz0Y5TFcdQXTt3oLTSAeoq19g9wwYWdUvXQksZ+9?=
- =?us-ascii?Q?uVcDTlDz2foPm/jKzaHBdXlHqTWZ7lIAxkeLHU0iRiX4ZBk8/fkB0YhiUGdC?=
- =?us-ascii?Q?EPg+SGo8d2WiZgnnmVbrOdNKAUQBCsK8Rm61/ywABObOWrDFJhphI9c6r44D?=
- =?us-ascii?Q?8IY7Oy8+V6BRsJEyKRmzcODSJ3JdbUnRZ3uKgg8f2/kreXtFGndIoGTvPT/h?=
- =?us-ascii?Q?VA1AEmwvritQSyRbJdkX/KK1GOP42+P/zpPN3pjOidbI25g+C9dyO9ERXNm6?=
- =?us-ascii?Q?4CFfyPShI16m0mw6wKVPs4pMQz9OuRgbpYpcPBAJ19+IZzcupQwPaD59F7RG?=
- =?us-ascii?Q?pNDLCR1y+4pt7Q6AtOqVibX+AuSDC/RT2pOWppKTMdhp8wXgbVrkpMWZTXuI?=
- =?us-ascii?Q?V6eyJ+fLMwQrdF6M4m/PquLydCOQPwvuzWX4HyGUzlgVnPoWMo0HpgFZnFwC?=
- =?us-ascii?Q?Rf0OA+z3vj3v8CvTOpdpoz0kEs8DbEAvvqrIwMYPst772M6RWF8e96T8vaZC?=
- =?us-ascii?Q?Lc1AlRqveTEry3I/CXIbuNQLZK4E+NnLhbG2ipLtiWgoo3UJ+Zf9TSU29ZSK?=
- =?us-ascii?Q?FQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f55ea2f-9c02-401a-8313-08dc5a33bc9e
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6141.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2024 14:29:07.7181 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jjCFvtexEOMO+lMNTBg9u3lEljfmFRMG5zQsZcFgohTPgjh7vPxaF3YHdMmRg22TNXURzRD/i2swwMXxY6cm/Z57vmNdrm94/1mnMRFYuQs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6450
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240411114804.21206-2-vandita.kulkarni@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -158,66 +70,180 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Apr 11, 2024 at 04:24:43PM +0300, Jani Nikula wrote:
->On Thu, 11 Apr 2024, Lucas De Marchi <lucas.demarchi@intel.com> wrote:
->> On Thu, Apr 11, 2024 at 11:53:03AM +0300, Jani Nikula wrote:
->>>On Wed, 10 Apr 2024, Lucas De Marchi <lucas.demarchi@intel.com> wrote:
->>>> Stop suffering when using igt from the git checkout, which is the case
->>>> for all/most developers.
->>>>
->>>> 	$ sudo ./build/tools/intel_reg write 0x2358 0xdeadbeef
->>>> 	Warning: stat '/usr/local/share/igt-gpu-tools/registers' failed: No such file or directory. Using builtin register spec.
->>>>
->>>> Pretty annoying when you have a bunch of commands to run and don't want
->>>> to simply ignore stderr.  Keep the other warnings as if the file is
->>>> there and can't be read for some reason, it's good to give a warning.
->>>> However if the file simply isn't there, let it pass.
->>>
->>>The TL;DR is,
->>>
->>>Acked-by: Jani Nikula <jani.nikula@intel.com>
->>>
->>>---
->>>
->>>We have the "register specs" in plain text files so that anyone could
->>>update them at runtime without building the source. And conceivably they
->>>could be generated from a more authoritative source. It would be nice if
->>>we could incorporate the info to the binary at build time as the builtin
->>>register specs (so no data dir lookups at all), but also be able to
->>>override them e.g. using a command-line parameter if the user wishes.
->>>
->>>I don't think that would even be so hard. But it would arguably be a bit
->>>wasted effort as long as the register files under tools/registers/
->>>aren't updated for newer platforms. (The current builtin register specs
->>>are completely out of date.)
->>
->> I don't really get why one would want the tools/registers actually. When
->> I'm using intel_reg I'm already working on a very low level interface
->> with the hardware and can simply pass/read the raw offsets.
->
->Something we wanted but never materialized was decoding register
->contents, like the builtin decoding does. But I think with the pace of
->registers added and meanings changing from platform to platform, etc,
->with no automated import of the specs, it was just too laborous by hand.
->
->And there's also the dumping, and it's kind of platform specific what
->should be included. I think that's where the tools/registers files
->originated.
+On Thu, Apr 11, 2024 at 05:18:03PM +0530, Vandita Kulkarni wrote:
+> Provide another draw method, for supporting drawing onto
+> already mmapped buffer.
+> 
+> Signed-off-by: Vandita Kulkarni <vandita.kulkarni@intel.com>
+> ---
+>  lib/igt_draw.c                         | 37 ++++++++++++++++++++++++--
+>  lib/igt_draw.h                         | 11 +++++++-
+>  tests/intel/kms_frontbuffer_tracking.c |  2 +-
+>  3 files changed, 46 insertions(+), 4 deletions(-)
+> 
+> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+> index 2c01d7b02..e458238f0 100644
+> --- a/lib/igt_draw.c
+> +++ b/lib/igt_draw.c
+> @@ -75,6 +75,7 @@ struct buf_data {
+>  	uint32_t handle;
+>  	uint32_t size;
+>  	uint32_t stride;
+> +	void *buf_ptr;
+>  	int width;
+>  	int height;
+>  	int bpp;
+> @@ -110,6 +111,8 @@ const char *igt_draw_get_method_name(enum igt_draw_method method)
+>  		return "blt";
+>  	case IGT_DRAW_RENDER:
+>  		return "render";
+> +	case IGT_DRAW_MMAP_PTR:
+> +		return "mmap-ptr";
+>  	default:
+>  		igt_assert(false);
+>  	}
+> @@ -541,6 +544,27 @@ static void draw_rect_mmap_wc(int fd, struct buf_data *buf, struct rect *rect,
+>  	igt_assert(gem_munmap(ptr, buf->size) == 0);
+>  }
+>  
+> +static void draw_rect_mmap_ptr(int fd, struct buf_data *buf, struct rect *rect,
+> +			      uint32_t tiling, uint32_t swizzle, uint32_t color)
+> +{
+> +	igt_assert(buf->buf_ptr != NULL);
+> +
+> +	switch (tiling) {
+> +	case I915_TILING_NONE:
+> +		draw_rect_ptr_linear(buf->buf_ptr, buf->stride, rect, color, buf->bpp);
+> +		break;
+> +	case I915_TILING_X:
+> +	case I915_TILING_Y:
+> +	case I915_TILING_4:
+> +		draw_rect_ptr_tiled(buf->buf_ptr, buf->stride, tiling, swizzle, rect,
+> +				    color, buf->bpp);
+> +		break;
+> +	default:
+> +		igt_assert(false);
+> +		break;
+> +	}
+> +}
+> +
+>  static void draw_rect_pwrite_untiled(int fd, struct buf_data *buf,
+>  				     struct rect *rect, uint32_t color)
+>  {
+> @@ -839,6 +863,8 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+>   * @buf_handle: the handle of the buffer where you're going to draw to
+>   * @buf_size: the size of the buffer
+>   * @buf_stride: the stride of the buffer
+> + * @buf_ptr: Pointer to already mmapped buffer, to be used with IGT_DRAW_MMAP_PTR,
+> +	     otherwise can be left NULL.
+>   * @buf_width: the width of the buffer
+>   * @buf_height: the height of the buffer
+>   * @tiling: the tiling of the buffer
+> @@ -855,7 +881,7 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+>   */
+>  void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
+>  		   uint32_t buf_handle, uint32_t buf_size, uint32_t buf_stride,
+> -		   int buf_width, int buf_height,
+> +		   void *buf_ptr, int buf_width, int buf_height,
+>  		   uint32_t tiling, enum igt_draw_method method,
+>  		   int rect_x, int rect_y, int rect_w, int rect_h,
+>  		   uint32_t color, int bpp)
+> @@ -870,6 +896,7 @@ void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
+>  		.handle = buf_handle,
+>  		.size = buf_size,
+>  		.stride = buf_stride,
+> +		.buf_ptr = buf_ptr,
+>  		.width = buf_width,
+>  		.height = buf_height,
+>  		.bpp = bpp,
+> @@ -907,6 +934,9 @@ void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
+>  	case IGT_DRAW_RENDER:
+>  		draw_rect_render(fd, &cmd_data, &buf, &rect, tiling, color);
+>  		break;
+> +	case IGT_DRAW_MMAP_PTR:
+> +		draw_rect_mmap_ptr(fd, &buf, &rect, tiling, swizzle, color);
+> +		break;
+>  	default:
+>  		igt_assert(false);
+>  		break;
+> @@ -935,7 +965,7 @@ void igt_draw_rect_fb(int fd, struct buf_ops *bops,
+>  		      int rect_w, int rect_h, uint32_t color)
+>  {
+>  	igt_draw_rect(fd, bops, ctx, fb->gem_handle, fb->size, fb->strides[0],
+> -		      fb->width, fb->height,
+> +		      fb->driver_priv, fb->width, fb->height,
 
-I don't think we will be able to invest time to manually update them.
-I have a dream of being able to partially generate the regs/*.h file
-in xe. Maybe if we ever achieve that we can think of using the same
-source for igt.
+May you add 'fb_map' to igt_fb struct? It will be more clear.
 
-But as I said, I think we are far far away from that. What do you think
-should be done in the short/mid term?
 
-a) this patch as is
-b) keep the warning for verbosity > 0 as sugggested by others
-c) just remove tools/registers to simplify the code. To be added back if
-    we ever figure how to autogenerate them with the same source that
-    autogenerates the kernel
-d) something else?
+>  		      igt_fb_mod_to_tiling(fb->modifier), method,
+>  		      rect_x, rect_y, rect_w, rect_h, color,
+>  		      igt_drm_format_to_bpp(fb->drm_format));
+> @@ -971,5 +1001,8 @@ bool igt_draw_supports_method(int fd, enum igt_draw_method method)
+>  	if (method == IGT_DRAW_RENDER)
+>  		return !!igt_get_render_copyfunc(intel_get_drm_devid(fd));
+>  
+> +	if (method == IGT_DRAW_MMAP_PTR)
+> +		return (is_i915_device(fd) && gem_has_mappable_ggtt(fd)) || is_xe_device(fd);
+> +
+>  	return true;
+>  }
+> diff --git a/lib/igt_draw.h b/lib/igt_draw.h
+> index 1dec95e86..e6cce7295 100644
+> --- a/lib/igt_draw.h
+> +++ b/lib/igt_draw.h
+> @@ -36,6 +36,7 @@
+>   * @IGT_DRAW_PWRITE: draw using the pwrite ioctl.
+>   * @IGT_DRAW_BLT: draw using the BLT ring.
+>   * @IGT_DRAW_RENDER: draw using the render ring.
+> + * @IGT_DRAW_MMAP_PTR: draw onto already mmapped buffer.
+>   * @IGT_DRAW_METHOD_COUNT: useful for iterating through everything.
+>   */
+>  enum igt_draw_method {
+> @@ -46,6 +47,14 @@ enum igt_draw_method {
+>  	IGT_DRAW_BLT,
+>  	IGT_DRAW_RENDER,
+>  	IGT_DRAW_METHOD_COUNT,
+> +	/*
+> +	 * FIXME: This enum is placed after IGT_DRAW_METHOD_COUNT in order
+> +	 * to avoid it being used by other tests which test all the DRAW methods
+> +	 * Once we add support for this draw method in all those tests keep it
+> +	 * outside the total count. Some examples are kms_draw_crc, kms_frontbuffer_tracking
+> +	 * Similarly add support in igt_draw_get_method_name and igt_draw_supports_method
+> +	 */
 
-thanks
-Lucas De Marchi
+Instead FIXME just annotate this as 'NOTE'. I think it will stay here
+without touching for a long time.
+
+--
+Zbigniew
+
+> +	IGT_DRAW_MMAP_PTR,
+>  };
+>  
+>  const char *igt_draw_get_method_name(enum igt_draw_method method);
+> @@ -54,7 +63,7 @@ bool igt_draw_supports_method(int fd, enum igt_draw_method method);
+>  
+>  void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
+>  		   uint32_t buf_handle, uint32_t buf_size, uint32_t buf_stride,
+> -		   int buf_width, int buf_height,
+> +		   void *buf_ptr, int buf_width, int buf_height,
+>  		   uint32_t tiling, enum igt_draw_method method,
+>  		   int rect_x, int rect_y, int rect_w, int rect_h,
+>  		   uint32_t color, int bpp);
+> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+> index e45d17dd6..32cc50712 100644
+> --- a/tests/intel/kms_frontbuffer_tracking.c
+> +++ b/tests/intel/kms_frontbuffer_tracking.c
+> @@ -2262,7 +2262,7 @@ static void *busy_thread_func(void *data)
+>  {
+>  	while (!busy_thread.stop)
+>  		igt_draw_rect(drm.fd, drm.bops, 0, busy_thread.handle,
+> -			      busy_thread.size, busy_thread.stride,
+> +			      busy_thread.size, busy_thread.stride, NULL,
+>  			      busy_thread.width, busy_thread.height,
+>  			      busy_thread.tiling, IGT_DRAW_BLT, 0, 0,
+>  			      busy_thread.width, busy_thread.height,
+> -- 
+> 2.43.2
+> 
