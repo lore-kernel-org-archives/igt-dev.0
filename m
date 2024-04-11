@@ -4,52 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B547DCD1284
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 11:17:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2FAACD128A
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 11:17:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0C90C10E3A1;
-	Thu, 11 Apr 2024 11:17:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1483D10F016;
+	Thu, 11 Apr 2024 11:17:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Rq9BZsTh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f7xq6dSt";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9354D10E3A1
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 11:17:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DD85F10F01A
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 11:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712834252; x=1744370252;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=KzqxmePtOb26oBfhC48Grp+5Nwt/63afnPij3bG8Pws=;
- b=Rq9BZsThUbLQ1AfDGlNcGSHWN/Xo+0CAdhSDtqTOAG+Ts4v83bYAUHCr
- LY0f7Dlp1Wi+Oj1w2yL15f3F8HlFNrQX1IZUF6L+VR16F3sKLPHxz9akq
- e8gCdnxOMXqjSTIFBZCjHwS3rRu3cUT8Nvf3mXCNYLxWdsHF6jzy3vuUV
- rq7Z+zqM5Um+F7I87aYguq55c2draeVy2/KjmQ0hOMAO6Bqn8U3CNmSWe
- a6B9yKpZ6RAvdBEH17bhCfPZoH12NXjR5Nc985mFoFOlX2DNqypPLSyHA
- mXw0aXgFjXYcsjxSt5Ck6eAooPJbNjc7pTgeoPy7i2Sn6PAw+ppo6ljun g==;
-X-CSE-ConnectionGUID: FA1AfPOwRSehFdk3v+M5pA==
-X-CSE-MsgGUID: NIyfKK1/Qve32KXNSyTJmw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8344471"
+ t=1712834260; x=1744370260;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=+hEQH16MfZ5r74BA8zY3t1Ww+ZDwbveCS2PDnV99ZVU=;
+ b=f7xq6dSt/mCuc5B0Iu3i0RcisrpKfydiAlzr8tEQk0P63LesFophLybV
+ 1I4agp88C9uUKRzDHnVKvFQL2jWLqMflsF01Hsm6PvWZSPn6m2TixGM7o
+ 4CdhQw51uaMn8QgW4n7CA/VuCkQRfmw6fFfFTFNTPh0q9na+Bot8elnQJ
+ jnCT/T9oG/7gwK0aHQgeVAMZt0BRkN8MSv/OYDh7hjJUahIZgIz2L3lxP
+ OmvTbVvlfN7FPyQqDIR0AO9ga8usGNSi4iZgU+0b4JI5yVneK9O8zpQZo
+ WAqIPI8aLgmXnjwv8FyBZClNZFN0G+tmf7FHRTbpcpX4dmhSjn1CBU4zC g==;
+X-CSE-ConnectionGUID: jZHERd9qSK+nHOsR6yhK6A==
+X-CSE-MsgGUID: HE6vXxooQDGeGP4a0MBOGQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8344487"
 X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; 
-   d="scan'208";a="8344471"
+   d="scan'208";a="8344487"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2024 04:17:31 -0700
-X-CSE-ConnectionGUID: LsBR2rneSbm7PgL7R6TDtA==
-X-CSE-MsgGUID: gYteRY4SRVivjCE4SkxbvA==
+ 11 Apr 2024 04:17:39 -0700
+X-CSE-ConnectionGUID: Jkr1hTKNRHWJGU/56RDtKA==
+X-CSE-MsgGUID: jwPp5j+GSPWr3lBZIj+EtA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="44156072"
+X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="44156100"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2024 04:17:28 -0700
+ 11 Apr 2024 04:17:37 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v2 0/5] Fix name collisions in Core test documentation
-Date: Thu, 11 Apr 2024 11:17:12 +0000
-Message-Id: <20240411111717.2941810-1-katarzyna.piecielska@intel.com>
+ Janga Rahul Kumar <janga.rahul.kumar@intel.com>,
+ Priyanka Dandamudi <Priyanka.dandamudi@intel.com>
+Subject: [PATCH i-g-t v2 1/5] tests/intel: Add missing Sub-category for
+ xe_waitfence
+Date: Thu, 11 Apr 2024 11:17:13 +0000
+Message-Id: <20240411111717.2941810-2-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240411111717.2941810-1-katarzyna.piecielska@intel.com>
+References: <20240411111717.2941810-1-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,51 +71,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-After updating i915 and XE test documentation for Core there is a need to fix
-some name collisions to make our infrastructure happy. These changes are around
-Core tests. To make sure all name collisions were removed I was using
-scripts/doc-tests-cross-check.sh. Remaining collisions are around KMS tests.
-
-Series contains also adding missing test documentation to xe_waitfence
-testcases.
-
-v2: Fix one more collision found by Kamil
+Add missing Sub-category for xe_waitfence subtests.
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Cc: Priyanka Dandamudi <Priyanka.dandamudi@intel.com>
+---
+ tests/intel/xe_waitfence.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Katarzyna Piecielska (5):
-  tests/intel: Add missing Sub-category for xe_waitfence
-  tests/intel: Remove name collision in Display tests visible in Core
-    docs
-  tests/intel: Remove documentation collision for Obsolete category
-  tests/intel: Remove documentation collisions in i915_selftest
-  tests: Remove collisions with Subcategory and Functionality
-
- tests/dmabuf.c                         |  2 +-
- tests/dmabuf_sync_file.c               |  2 +-
- tests/drm_mm.c                         |  2 +-
- tests/drm_read.c                       |  2 +-
- tests/intel/gem_exec_endless.c         |  4 ++--
- tests/intel/gem_exec_params.c          |  4 ++--
- tests/intel/gem_fence_thrash.c         |  2 +-
- tests/intel/gem_fence_upload.c         |  2 +-
- tests/intel/gem_fenced_exec_thrash.c   |  6 +++---
- tests/intel/gen3_mixed_blits.c         |  4 ++--
- tests/intel/gen3_render_linear_blits.c |  4 ++--
- tests/intel/gen3_render_mixed_blits.c  |  4 ++--
- tests/intel/gen3_render_tiledx_blits.c |  4 ++--
- tests/intel/gen3_render_tiledy_blits.c |  4 ++--
- tests/intel/i915_pipe_stress.c         |  2 +-
- tests/intel/i915_selftest.c            | 26 +++++++++++++-------------
- tests/intel/perf.c                     |  6 +++---
- tests/intel/prime_mmap_kms.c           |  2 +-
- tests/intel/xe_exec_compute_mode.c     |  2 +-
- tests/intel/xe_live_ktest.c            |  6 +++---
- tests/intel/xe_waitfence.c             |  1 +
- tests/prime_nv_api.c                   |  2 +-
- 22 files changed, 47 insertions(+), 46 deletions(-)
-
+diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
+index 071e67bd6..45378d95d 100644
+--- a/tests/intel/xe_waitfence.c
++++ b/tests/intel/xe_waitfence.c
+@@ -140,6 +140,7 @@ waitfence(int fd, enum waittype wt)
+ /**
+  * TEST: Negative test for wait ufence ioctl
+  * Category: Software building block
++ * Sub-category: Synchronization
+  * Functionality: waitfence
+  * Test category: negative test
+  *
 -- 
 2.34.1
 
