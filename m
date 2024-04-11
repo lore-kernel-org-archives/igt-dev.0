@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF513C001CC
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 18:09:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFA09C4345F
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 18:34:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4EC1610E5B4;
-	Thu, 11 Apr 2024 18:09:20 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7220010E6FE;
- Thu, 11 Apr 2024 18:09:18 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6622953986925705688=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id CBD9810F2B0;
+	Thu, 11 Apr 2024 18:34:56 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AMXSdSg9";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 682C310F2B0
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 18:34:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1712860494; x=1744396494;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=cepI2xMXRp6oPoq3AgLg46YjPtP1eipbc4pfYgCR1pU=;
+ b=AMXSdSg9Uhff35idBy6MLUKwr4DiPheyy4/xdCmrZpNB4G4hJCiH2NVD
+ OhO2+MEV1cGvNtCiBKr81ILFVPvT5j5YEnsB4VdW518eztXy4qwa3iYis
+ 9nqAjNN9A/oh1VMSC8IWc7u4VgSK6By9P1dG+uxHhrte0FhGsRACdbMef
+ GhpnhAgJt0i0yfSDJI26iDErKpzjc5khW/N/PnS1+8b3UY/GKfBKrunsS
+ M74bxQoogT4stWvKqEJpR7h/Ujl60KX116/syNe4ldd4I8WU6fI8ULYIg
+ 1wv5D6mIxFJiNJuZkzga4n8J8DKcoI2dW1Vxxu6LFvu2jQW1ZE9+ORmyl w==;
+X-CSE-ConnectionGUID: yw/iEAWKT1OY0wJdAOf9jQ==
+X-CSE-MsgGUID: SXgot0vJTW66m1Ec0DecSA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="8852302"
+X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; 
+   d="scan'208";a="8852302"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Apr 2024 11:34:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="827793653"
+X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="827793653"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+ by orsmga001.jf.intel.com with SMTP; 11 Apr 2024 11:34:50 -0700
+Received: by stinkbox (sSMTP sendmail emulation);
+ Thu, 11 Apr 2024 21:34:50 +0300
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t v2 1/4] lib/kms: Introduce struct igt_forced_connector
+Date: Thu, 11 Apr 2024 21:34:47 +0300
+Message-ID: <20240411183450.6417-1-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_Add_mmap_ptr_draw_method_?=
- =?utf-8?q?=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vandita Kulkarni" <vandita.kulkarni@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 11 Apr 2024 18:09:18 -0000
-Message-ID: <171285895846.1341523.3811905391696724450@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240411170312.5615-1-vandita.kulkarni@intel.com>
-In-Reply-To: <20240411170312.5615-1-vandita.kulkarni@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,371 +64,138 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6622953986925705688==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-== Series Details ==
+Give the forced_connector[] struct a proper type name,
+and utilize it in various places to make the code
+less messy.
 
-Series: Add mmap ptr draw method (rev2)
-URL   : https://patchwork.freedesktop.org/series/132323/
-State : failure
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ lib/igt_kms.c | 50 +++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 31 insertions(+), 19 deletions(-)
 
-== Summary ==
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 60339565a192..d20a93372540 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -91,12 +91,14 @@
+ #define MAX_EDID 2
+ #define DISPLAY_TILE_BLOCK 0x12
+ 
+-static struct {
++struct igt_forced_connector {
+ 	uint32_t connector_type;
+ 	uint32_t connector_type_id;
+ 	int idx;
+ 	int dir;
+-} forced_connectors[MAX_CONNECTORS + 1];
++};
++
++static struct igt_forced_connector forced_connectors[MAX_CONNECTORS + 1];
+ 
+ /**
+  * igt_kms_get_base_edid:
+@@ -1498,31 +1500,37 @@ static bool connector_is_forced(int idx, drmModeConnector *connector)
+ 	igt_assert(connector->connector_type != 0);
+ 
+ 	for (int i = 0; forced_connectors[i].connector_type; i++) {
+-		if (forced_connectors[i].idx == idx &&
+-		    forced_connectors[i].connector_type == connector->connector_type &&
+-		    forced_connectors[i].connector_type_id == connector->connector_type_id)
++		struct igt_forced_connector *c = &forced_connectors[i];
++
++		if (c->idx == idx &&
++		    c->connector_type == connector->connector_type &&
++		    c->connector_type_id == connector->connector_type_id)
+ 			return true;
+ 	}
+ 
+ 	return false;
+ }
+ 
+-static int forced_connector_free_index(void)
++static struct igt_forced_connector *forced_connector_alloc(void)
+ {
+ 	int i;
+ 
+ 	for (i = 0; forced_connectors[i].connector_type; i++)
+ 		;
+ 
+-	return i < ARRAY_SIZE(forced_connectors) ? i : -1;
++	if (i >= ARRAY_SIZE(forced_connectors))
++		return NULL;
++
++	return &forced_connectors[i];
+ }
+ 
+ static bool force_connector(int drm_fd,
+ 			    drmModeConnector *connector,
+ 			    const char *value)
+ {
++	struct igt_forced_connector *c;
+ 	char name[80];
+-	int i, idx, dir;
++	int idx, dir;
+ 
+ 	idx = igt_device_get_card_index(drm_fd);
+ 	if (idx < 0 || idx > 63)
+@@ -1549,17 +1557,17 @@ static bool force_connector(int drm_fd,
+ 		return true;
+ 	}
+ 
+-	i = forced_connector_free_index();
+-	if (i < 0) {
++	c = forced_connector_alloc();
++	if (!c) {
+ 		igt_warn("Connector limit reached, %s will not be reset\n", name);
+ 		close(dir);
+ 		return true;
+ 	}
+ 
+-	forced_connectors[i].idx = idx;
+-	forced_connectors[i].connector_type = connector->connector_type;
+-	forced_connectors[i].connector_type_id = connector->connector_type_id;
+-	forced_connectors[i].dir = dir;
++	c->idx = idx;
++	c->connector_type = connector->connector_type;
++	c->connector_type_id = connector->connector_type_id;
++	c->dir = dir;
+ 
+ 	return true;
+ }
+@@ -1571,9 +1579,10 @@ static void dump_forced_connectors(void)
+ 	igt_debug("Current forced connectors:\n");
+ 
+ 	for (int i = 0; forced_connectors[i].connector_type; i++) {
+-		kmstest_connector_dirname(forced_connectors[i].idx,
+-					  forced_connectors[i].connector_type,
+-					  forced_connectors[i].connector_type_id,
++		struct igt_forced_connector *c = &forced_connectors[i];
++
++		kmstest_connector_dirname(c->idx, c->connector_type,
++					  c->connector_type_id,
+ 					  name, sizeof(name));
+ 		igt_debug("\t%s\n", name);
+ 	}
+@@ -5302,8 +5311,11 @@ void igt_reset_connectors(void)
+ {
+ 	/* reset the connectors stored in forced_connectors, avoiding any
+ 	 * functions that are not safe to call in signal handlers */
+-	for (int i = 0; i < forced_connectors[i].connector_type; i++)
+-		igt_sysfs_set(forced_connectors[i].dir, "status",  "detect");
++	for (int i = 0; i < forced_connectors[i].connector_type; i++) {
++		struct igt_forced_connector *c = &forced_connectors[i];
++
++		igt_sysfs_set(c->dir, "status",  "detect");
++	}
+ }
+ 
+ /**
+-- 
+2.43.2
 
-CI Bug Log - changes from CI_DRM_14567 -> IGTPW_11010
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_11010 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_11010, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/index.html
-
-Participating hosts (37 -> 37)
-------------------------------
-
-  Additional (4): fi-kbl-7567u fi-blb-e6850 bat-atsm-1 fi-bsw-n3050 
-  Missing    (4): bat-dg2-11 fi-cfl-8109u fi-apl-guc fi-kbl-8809g 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_11010:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-arls-2:         [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14567/bat-arls-2/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-arls-2/igt@core_hotunplug@unbind-rebind.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11010 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][3] ([i915#2190])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/fi-kbl-7567u/igt@gem_huc_copy@huc-copy.html
-    - bat-atsm-1:         NOTRUN -> [FAIL][4] ([i915#10563])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][5] ([i915#4613]) +3 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/fi-kbl-7567u/igt@gem_lmem_swapping@basic.html
-
-  * igt@gem_lmem_swapping@random-engines:
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][6] +19 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html
-
-  * igt@gem_mmap@basic:
-    - bat-atsm-1:         NOTRUN -> [SKIP][7] ([i915#4083])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@gem_mmap@basic.html
-
-  * igt@gem_tiled_pread_basic:
-    - bat-atsm-1:         NOTRUN -> [SKIP][8] ([i915#4079]) +1 other test skip
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@gem_tiled_pread_basic.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-blb-e6850:       NOTRUN -> [SKIP][9] +32 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/fi-blb-e6850/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_pm_rps@basic-api:
-    - bat-atsm-1:         NOTRUN -> [SKIP][10] ([i915#6621])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@i915_pm_rps@basic-api.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-n3050:       NOTRUN -> [ABORT][11] ([i915#10594])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-
-  * igt@i915_selftest@live@gem:
-    - bat-atsm-1:         NOTRUN -> [ABORT][12] ([i915#10182] / [i915#10564])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@i915_selftest@live@gem.html
-
-  * igt@kms_addfb_basic@size-max:
-    - bat-atsm-1:         NOTRUN -> [SKIP][13] ([i915#6077]) +37 other tests skip
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@kms_addfb_basic@size-max.html
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
-    - bat-atsm-1:         NOTRUN -> [SKIP][14] ([i915#6078]) +22 other tests skip
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][15] +11 other tests skip
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/fi-kbl-7567u/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_force_connector_basic@prune-stale-modes:
-    - bat-atsm-1:         NOTRUN -> [SKIP][16] ([i915#6093]) +4 other tests skip
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@kms_force_connector_basic@prune-stale-modes.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
-    - bat-atsm-1:         NOTRUN -> [SKIP][17] ([i915#1836]) +6 other tests skip
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
-
-  * igt@kms_prop_blob@basic:
-    - bat-atsm-1:         NOTRUN -> [SKIP][18] ([i915#7357])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@kms_prop_blob@basic.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-atsm-1:         NOTRUN -> [SKIP][19] ([i915#6094])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-mmap:
-    - bat-atsm-1:         NOTRUN -> [SKIP][20] ([i915#4077]) +4 other tests skip
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@prime_vgem@basic-fence-mmap.html
-
-  * igt@prime_vgem@basic-write:
-    - bat-atsm-1:         NOTRUN -> [SKIP][21] +2 other tests skip
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@prime_vgem@basic-write.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_lmem_swapping@basic@lmem0:
-    - bat-dg2-9:          [FAIL][22] ([i915#10378]) -> [PASS][23]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14567/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html
-
-  
-  [i915#10182]: https://gitlab.freedesktop.org/drm/intel/issues/10182
-  [i915#10378]: https://gitlab.freedesktop.org/drm/intel/issues/10378
-  [i915#10563]: https://gitlab.freedesktop.org/drm/intel/issues/10563
-  [i915#10564]: https://gitlab.freedesktop.org/drm/intel/issues/10564
-  [i915#10594]: https://gitlab.freedesktop.org/drm/intel/issues/10594
-  [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#6077]: https://gitlab.freedesktop.org/drm/intel/issues/6077
-  [i915#6078]: https://gitlab.freedesktop.org/drm/intel/issues/6078
-  [i915#6093]: https://gitlab.freedesktop.org/drm/intel/issues/6093
-  [i915#6094]: https://gitlab.freedesktop.org/drm/intel/issues/6094
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#7357]: https://gitlab.freedesktop.org/drm/intel/issues/7357
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7806 -> IGTPW_11010
-
-  CI-20190529: 20190529
-  CI_DRM_14567: 64a24a7dc774886c660a412a0d12c02f4bfec223 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11010: 11010
-  IGT_7806: 849cd963ce7e8222dcf17cc872d355181fd2c2a2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/index.html
-
---===============6622953986925705688==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add mmap ptr draw method (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132323/">https://patchwork.freedesktop.org/series/132323/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14567 -&gt; IGTPW_11010</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_11010 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_11010, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/index.html</p>
-<h2>Participating hosts (37 -&gt; 37)</h2>
-<p>Additional (4): fi-kbl-7567u fi-blb-e6850 bat-atsm-1 fi-bsw-n3050 <br />
-  Missing    (4): bat-dg2-11 fi-cfl-8109u fi-apl-guc fi-kbl-8809g </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_11010:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14567/bat-arls-2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-arls-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11010 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/fi-kbl-7567u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@gem_huc_copy@huc-copy.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10563">i915#10563</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/fi-kbl-7567u/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@random-engines:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html">SKIP</a> +19 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_mmap@basic:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4083">i915#4083</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4079">i915#4079</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/fi-blb-e6850/igt@i915_pm_rpm@module-reload.html">SKIP</a> +32 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rps@basic-api:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10594">i915#10594</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gem:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@i915_selftest@live@gem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10182">i915#10182</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/10564">i915#10564</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@size-max:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@kms_addfb_basic@size-max.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6077">i915#6077</a>) +37 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6078">i915#6078</a>) +22 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/fi-kbl-7567u/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> +11 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6093">i915#6093</a>) +4 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1836">i915#1836</a>) +6 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_prop_blob@basic:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@kms_prop_blob@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7357">i915#7357</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6094">i915#6094</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-mmap:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@prime_vgem@basic-fence-mmap.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +4 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-write:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-atsm-1/igt@prime_vgem@basic-write.html">SKIP</a> +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@gem_lmem_swapping@basic@lmem0:<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14567/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10378">i915#10378</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11010/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7806 -&gt; IGTPW_11010</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14567: 64a24a7dc774886c660a412a0d12c02f4bfec223 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11010: 11010<br />
-  IGT_7806: 849cd963ce7e8222dcf17cc872d355181fd2c2a2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6622953986925705688==--
