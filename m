@@ -4,55 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 869B1CD1284
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 13:10:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ACA7CD128A
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 13:11:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 47FF410E244;
-	Thu, 11 Apr 2024 13:10:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AA74410E6F0;
+	Thu, 11 Apr 2024 13:11:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZT03ibKF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eVVvOGv3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 125BB10EC4A
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 13:10:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D0D0E10E6F0
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 13:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712841016; x=1744377016;
+ t=1712841106; x=1744377106;
  h=from:to:subject:in-reply-to:references:date:message-id:
  mime-version:content-transfer-encoding;
- bh=eceNHlh1xL2tc7V23m7V/cVDMc+W2ktEichXDrpg+OA=;
- b=ZT03ibKFpk3Rtv7HU8MM4fqolhS+8v0ahqTJVsGCRNcOHOi9MQ4oxPN4
- bH1Vym3fyBQ2bJ4tBLfMILnJIF3saD6crfphOIsgj7SKcXt/ZQ7uSrAhL
- 1R5eeOcypArR3FH9bxNo2yGAezfxQTpHnxaQOOEWeWpEae8A75SDJ7LZ1
- IyWjAN0uTydZ8tNG6LrEwtfe0+zev/rqkHksOeVBe6tcBntvpgqOIsnYS
- o8AHkA443YXYRzkC5SJxVdETBWKmt+t8h0N3B7GHkJsTFGOWQMZL7Uu9Z
- t6SZFub8wOyxE2sNIjkCXvYM6fQiYH8A1LHP/VC6va+eZg1h7gGJR2ljW Q==;
-X-CSE-ConnectionGUID: AbBdL6E+QUyGp1KBML8UXg==
-X-CSE-MsgGUID: wHoey1m+TSW5tPcmTzTFkA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="8377607"
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; 
-   d="scan'208";a="8377607"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2024 06:10:15 -0700
-X-CSE-ConnectionGUID: TXbh+zSoQa6VArte5x2p1g==
-X-CSE-MsgGUID: rwxTmSjJTlWemM2HYzk4uQ==
+ bh=wIah/lo0Bf+IpSklq/IkdS59o+6ktaZ70/MRKobVWSo=;
+ b=eVVvOGv3Cqz8sevM8NvlqR+SgidkBwEJDHXB4JLZtBpfO0hyZk9TTKYG
+ kW9+BJGj+v0fT7Kp1HZaf3LrzDujVg12MhOiV295PS3kbMjIWTysJADKk
+ ZZQ/Hpsxa1JUo7YbC5Lt+bmJuWGAzZyeV1HVpWEBJqX5NIR7pRWxpbp3R
+ CDpM6tFkDopRRRrzkvA8tdPXuR16+QWPIpcKbNjozMUyoPfRcp7uNIGwA
+ 7ydS6x+I1lWVyosvyFaAkHR6xfV3DuvGkh4Dp3VJA/TOSesRhbQq3hnHY
+ c4/vne1AgBjQXJgiUv4UXSsNVF9nLYF7YK3Ss2GnyAxUX2C1BWdvKi2O8 w==;
+X-CSE-ConnectionGUID: LkcdZ4dEQnmjcXRa8D0/KQ==
+X-CSE-MsgGUID: i+sVfHtjRb+KX7PSVd5N7g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="25760131"
+X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="25760131"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Apr 2024 06:11:45 -0700
+X-CSE-ConnectionGUID: ut0xcyAmQjKu7PEkxfzWHQ==
+X-CSE-MsgGUID: 0QjGnXbWSqWcXMfSg2p4+Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="21336739"
+X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="21485693"
 Received: from unknown (HELO localhost) ([10.237.66.160])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2024 06:10:14 -0700
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Apr 2024 06:11:43 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 12/13] tools/intel_vbt_decode: Decode all the
- driver feature bits
-In-Reply-To: <20240322204125.17212-13-ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t 13/13] tools/intel_vbt_decode: Decode the EFP index
+In-Reply-To: <20240322204125.17212-14-ville.syrjala@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 References: <20240322204125.17212-1-ville.syrjala@linux.intel.com>
- <20240322204125.17212-13-ville.syrjala@linux.intel.com>
-Date: Thu, 11 Apr 2024 16:10:11 +0300
-Message-ID: <87le5k59l8.fsf@intel.com>
+ <20240322204125.17212-14-ville.syrjala@linux.intel.com>
+Date: Thu, 11 Apr 2024 16:11:35 +0300
+Message-ID: <87il0o59iw.fsf@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -74,37 +72,34 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 On Fri, 22 Mar 2024, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
 > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >
-> Add decoding for bunch of driver feature bits: Hpd wake, ADT, DFPS.
+> Decode the new EFP panel index field.
+>
+> TODO: hook this up into panel_str()
 >
 > Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 
 Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
-
 > ---
->  tools/intel_vbt_decode.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  tools/intel_vbt_decode.c | 3 +++
+>  1 file changed, 3 insertions(+)
 >
 > diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-> index aa15dbb5e3fd..f6549d6e0f76 100644
+> index f6549d6e0f76..c3d5db79f182 100644
 > --- a/tools/intel_vbt_decode.c
 > +++ b/tools/intel_vbt_decode.c
-> @@ -1574,8 +1574,14 @@ static void dump_driver_feature(struct context *co=
-ntext,
+> @@ -1133,6 +1133,9 @@ static void dump_child_device(struct context *conte=
+xt,
+>  	if (context->bdb->version >=3D 216)
+>  		dump_dp_max_link_rate(context->bdb->version,
+>  				      child->dp_max_link_rate);
+> +
+> +	if (context->bdb->version >=3D 256)
+> +		printf("\t\tEFP panel index: %d\n", child->efp_index);
+>  }
 >=20=20
->  	printf("\tPC Features field validity: %s\n",
->  	       YESNO(feature->pc_feature_valid));
-> +	printf("\t\tHpd Wake: %s\n",
-> +	       YESNO(feature->hpd_wake));
-> +	printf("\t\tAssertive Display Technology (ADT): %s\n",
-> +	       YESNO(feature->adt_enabled));
->  	printf("\tDynamic Media Refresh Rate Switching (DMRRS): %s\n",
->  	       YESNO(feature->dmrrs_enabled));
-> +	printf("\tDynamic Frames Per Second (DFPS): %s\n",
-> +	       YESNO(feature->dfps_enabled));
->  	printf("\tIntermediate Pixel Storage (IPS): %s\n",
->  	       YESNO(feature->ips_enabled));
->  	printf("\tPanel Self Refresh (PSR): %s\n",
+>  static void dump_child_devices(struct context *context, const uint8_t *d=
+evices,
 
 --=20
 Jani Nikula, Intel
