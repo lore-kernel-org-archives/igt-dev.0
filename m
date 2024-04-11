@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8BEDCD1284
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 13:08:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 869B1CD1284
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 13:10:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3E71110E0A5;
-	Thu, 11 Apr 2024 13:08:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 47FF410E244;
+	Thu, 11 Apr 2024 13:10:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MVFokNIZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZT03ibKF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1519010E6BB
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 13:08:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 125BB10EC4A
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 13:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712840894; x=1744376894;
+ t=1712841016; x=1744377016;
  h=from:to:subject:in-reply-to:references:date:message-id:
  mime-version:content-transfer-encoding;
- bh=RSMT6rn2ZVSmBERnpByepDltXcdUelm+3y47nfmH9Po=;
- b=MVFokNIZeWWzuvhDT73FTldAK7ClaKkjJhXiJLJpy7gslro7SSOQ4je3
- +8b8uPrHq6wbryD2jv9hbrI7u/yKQCivwtM6fxbI3PdER2xkpjYfast7K
- sLqXE4CPg0WEQrJ7iuSj1M+lrkXEzd5usUeweRBKWT/RyFbPxCfP0yi1y
- S84AYZpEygE9YpvZTWKFrcVH5KQMKw/FxolTFJ8NC0C7J75XytzXP/jyH
- kPme3YDHrzkNn9DqkwPy20MAF3jdWRLc8rESaMVDQMtInLx1l4X8exj17
- JGphda0Bpj+pclBmVMp/kLOOvexLrRSXUE01UHPJL8Rtwnue9nT2bMT5O g==;
-X-CSE-ConnectionGUID: sT9/Qw9gRrePVvDgd746dg==
-X-CSE-MsgGUID: ffGTq1ZyQBCuPJs22TALIg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="8410134"
+ bh=eceNHlh1xL2tc7V23m7V/cVDMc+W2ktEichXDrpg+OA=;
+ b=ZT03ibKFpk3Rtv7HU8MM4fqolhS+8v0ahqTJVsGCRNcOHOi9MQ4oxPN4
+ bH1Vym3fyBQ2bJ4tBLfMILnJIF3saD6crfphOIsgj7SKcXt/ZQ7uSrAhL
+ 1R5eeOcypArR3FH9bxNo2yGAezfxQTpHnxaQOOEWeWpEae8A75SDJ7LZ1
+ IyWjAN0uTydZ8tNG6LrEwtfe0+zev/rqkHksOeVBe6tcBntvpgqOIsnYS
+ o8AHkA443YXYRzkC5SJxVdETBWKmt+t8h0N3B7GHkJsTFGOWQMZL7Uu9Z
+ t6SZFub8wOyxE2sNIjkCXvYM6fQiYH8A1LHP/VC6va+eZg1h7gGJR2ljW Q==;
+X-CSE-ConnectionGUID: AbBdL6E+QUyGp1KBML8UXg==
+X-CSE-MsgGUID: wHoey1m+TSW5tPcmTzTFkA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="8377607"
 X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; 
-   d="scan'208";a="8410134"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2024 06:08:13 -0700
-X-CSE-ConnectionGUID: 8rD2F3XyTROvLqHdhx910A==
-X-CSE-MsgGUID: 1LlFOM1rS/yVQP1A3iGQkA==
+   d="scan'208";a="8377607"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Apr 2024 06:10:15 -0700
+X-CSE-ConnectionGUID: TXbh+zSoQa6VArte5x2p1g==
+X-CSE-MsgGUID: rwxTmSjJTlWemM2HYzk4uQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="25545435"
+X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="21336739"
 Received: from unknown (HELO localhost) ([10.237.66.160])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2024 06:08:13 -0700
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Apr 2024 06:10:14 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 11/13] tools/intel_vbt_decode: Dump MIPI sequences
- in the order they appear in VBT
-In-Reply-To: <20240322204125.17212-12-ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t 12/13] tools/intel_vbt_decode: Decode all the
+ driver feature bits
+In-Reply-To: <20240322204125.17212-13-ville.syrjala@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 References: <20240322204125.17212-1-ville.syrjala@linux.intel.com>
- <20240322204125.17212-12-ville.syrjala@linux.intel.com>
-Date: Thu, 11 Apr 2024 16:08:09 +0300
-Message-ID: <87o7ag59om.fsf@intel.com>
+ <20240322204125.17212-13-ville.syrjala@linux.intel.com>
+Date: Thu, 11 Apr 2024 16:10:11 +0300
+Message-ID: <87le5k59l8.fsf@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -74,12 +74,7 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 On Fri, 22 Mar 2024, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
 > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >
-> Dump the MIPI sequence blocks in the order they appear
-> in the VBT (as opposed to being ordered by the sequence type).
->
-> This makes it easier to compare the hexdump vs. the decoded
-> output, which is what I tend to do occasionally when trying to
-> check whether we are decoding things correctly or not.
+> Add decoding for bunch of driver feature bits: Hpd wake, ADT, DFPS.
 >
 > Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 
@@ -87,28 +82,29 @@ Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
 
 > ---
->  tools/intel_vbt_decode.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+>  tools/intel_vbt_decode.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >
 > diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-> index b57d1e9602ae..aa15dbb5e3fd 100644
+> index aa15dbb5e3fd..f6549d6e0f76 100644
 > --- a/tools/intel_vbt_decode.c
 > +++ b/tools/intel_vbt_decode.c
-> @@ -2446,12 +2446,9 @@ static void dump_mipi_sequence(struct context *con=
-text,
->  				fprintf(stderr, "Invalid sequence %u\n", seq_id);
->  				return;
->  			}
-> -		}
+> @@ -1574,8 +1574,14 @@ static void dump_driver_feature(struct context *co=
+ntext,
 >=20=20
-> -		/* Dump the sequences. Corresponds to sequence execution in kernel. */
-> -		for (int j =3D 0; j < ARRAY_SIZE(sequence_ptrs); j++)
-> -			if (sequence_ptrs[j])
-> -				dump_sequence(sequence_ptrs[j], sequence->version);
-> +			dump_sequence(sequence_ptrs[seq_id], sequence->version);
-> +		}
->  	}
->  }
+>  	printf("\tPC Features field validity: %s\n",
+>  	       YESNO(feature->pc_feature_valid));
+> +	printf("\t\tHpd Wake: %s\n",
+> +	       YESNO(feature->hpd_wake));
+> +	printf("\t\tAssertive Display Technology (ADT): %s\n",
+> +	       YESNO(feature->adt_enabled));
+>  	printf("\tDynamic Media Refresh Rate Switching (DMRRS): %s\n",
+>  	       YESNO(feature->dmrrs_enabled));
+> +	printf("\tDynamic Frames Per Second (DFPS): %s\n",
+> +	       YESNO(feature->dfps_enabled));
+>  	printf("\tIntermediate Pixel Storage (IPS): %s\n",
+>  	       YESNO(feature->ips_enabled));
+>  	printf("\tPanel Self Refresh (PSR): %s\n",
 
 --=20
 Jani Nikula, Intel
