@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E89A9C04FF0
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 18:51:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D204C4345F
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 18:51:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6D1BA10F137;
-	Thu, 11 Apr 2024 18:51:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2007210F2A9;
+	Thu, 11 Apr 2024 18:51:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="moKwvIz1";
+	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="pvOlXX8Z";
 	dkim-atps=neutral
-Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 254CE10F137
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 18:51:37 +0000 (UTC)
+Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD44510F137
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 18:51:39 +0000 (UTC)
 Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx1.riseup.net (Postfix) with ESMTPS id 4VFph84LtwzDqkB;
- Thu, 11 Apr 2024 18:51:36 +0000 (UTC)
+ by mx0.riseup.net (Postfix) with ESMTPS id 4VFphC2KH9z9wsc;
+ Thu, 11 Apr 2024 18:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
- t=1712861496; bh=8GOzz+LAZnynKDleUbEhITxGEK82glaVT+p0yecNyMA=;
+ t=1712861499; bh=iJ8iPK8ezjO6rr2qRBmL226j3hf5Zl34c4xvMg8uIdw=;
  h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=moKwvIz1UAT56FtOjSRuj8CFO5Vs5hh4fIW2XsAXuJDCuEkcmXSsHFbGkJt6AkMum
- 2JZWQYWAudwZnd0j/uk0vj1mf+b1E2N7oUlg6HkVBF05VDeVyuBg9NcFQ+fkwrOPWO
- bzW0KNyUd48rk5hvBjhDipRhHcWKdFty41yWkdF0=
-X-Riseup-User-ID: 6A11C156A1AD4E76D678C40515750344C5AE64BB30EAFF2F5957FB017C121093
+ b=pvOlXX8ZA3ctD8jjhXa41nfIhS0pElWw1SIxtZ7tJuhP3jTDCsV+a5zGitKOuko19
+ QpwiWX30Inh6fjLtS++exvhmUiDQXdELi0bWvh4neQMkY1V+qA4KIGPGxvfDFFwIGa
+ 6/V7CMPnhdsYgRjPVsNS3MEBXQKuSZfhQSu72SMo=
+X-Riseup-User-ID: 2577D7C362AD4636C22BE3457E08839C5993BA59203108D327987AE88C66C3B7
 Received: from [127.0.0.1] (localhost [127.0.0.1])
- by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4VFph53q94zJrkm;
- Thu, 11 Apr 2024 18:51:33 +0000 (UTC)
+ by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4VFph84gWmzJrlH;
+ Thu, 11 Apr 2024 18:51:36 +0000 (UTC)
 From: Arthur Grillo <arthurgrillo@riseup.net>
-Date: Thu, 11 Apr 2024 15:51:14 -0300
-Subject: [PATCH i-g-t v4 4/7] benchmarks/kms_fb_stress: Free resources on
- the stress procedure
+Date: Thu, 11 Apr 2024 15:51:15 -0300
+Subject: [PATCH i-g-t v4 5/7] benchmarks/kms_fb_stress: Don't paint the
+ FB's if the format is not supported by Pixman
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240411-kms_fb_stress-dev-v4-4-7a8f3a419ebb@riseup.net>
+Message-Id: <20240411-kms_fb_stress-dev-v4-5-7a8f3a419ebb@riseup.net>
 References: <20240411-kms_fb_stress-dev-v4-0-7a8f3a419ebb@riseup.net>
 In-Reply-To: <20240411-kms_fb_stress-dev-v4-0-7a8f3a419ebb@riseup.net>
 To: igt-dev@lists.freedesktop.org
@@ -65,49 +65,93 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On the stress_driver(), the fbs and the sync file are not released. Fix
-that by freeing all the allocated resources.
+Pixman requires strides to be divisible by sizeof(uint32_t).
+So, don't paint the FB's if the stride is not.
 
 Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
 ---
- benchmarks/kms_fb_stress.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ benchmarks/kms_fb_stress.c | 62 +++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 48 insertions(+), 14 deletions(-)
 
 diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
-index bc548fae61f8..76e82e0d76ea 100644
+index 76e82e0d76ea..bb85dfb18d2b 100644
 --- a/benchmarks/kms_fb_stress.c
 +++ b/benchmarks/kms_fb_stress.c
-@@ -165,11 +165,30 @@ static void stress_driver(struct data_t *data)
- 		igt_output_set_writeback_fb(data->wb_output, &data->kms.writeback.fbs[fb_index]);
- 
- 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+		if (data->wb_output->writeback_out_fence_fd != -1) {
-+			close(data->wb_output->writeback_out_fence_fd);
-+			data->wb_output->writeback_out_fence_fd = -1;
-+		}
- 	}
- 
- 	igt_assert_eq(igt_gettime(&now), 0);
- 	elapsed = igt_time_elapsed(&then, &now);
- 
-+	igt_plane_set_fb(data->kms.primary.base, NULL);
-+	igt_plane_set_fb(data->kms.overlay_a.base, NULL);
-+	igt_plane_set_fb(data->kms.overlay_b.base, NULL);
-+	igt_output_set_writeback_fb(data->wb_output, NULL);
-+
-+	for (int i = 0; i < NUM_FBS; i++) {
-+		igt_remove_fb(data->fd, &data->kms.primary.fbs[i]);
-+		igt_remove_fb(data->fd, &data->kms.overlay_a.fbs[i]);
-+		igt_remove_fb(data->fd, &data->kms.overlay_b.fbs[i]);
-+		igt_remove_fb(data->fd, &data->kms.writeback.fbs[i]);
-+	}
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
- 	igt_info("Time spent in the loop with %d frames: %lfs.\n", FRAME_COUNT, elapsed);
+@@ -46,26 +46,60 @@ static void plane_setup(struct plane_t *plane, int index)
+ 	igt_plane_set_fb(plane->base, &plane->fbs[index]);
  }
  
++static bool have_supported_pixman_stride(int fd, struct plane_t *plane) {
++	unsigned stride;
++
++	igt_calc_fb_size(fd, plane->rect.width, plane->rect.height,
++			 plane->format, DRM_FORMAT_MOD_LINEAR,
++			 NULL, &stride);
++
++	return stride % sizeof(uint32_t) == 0;
++}
++
+ static void gen_fbs(struct data_t *data)
+ {
+ 	struct kms_t *kms = &data->kms;
+ 	drmModeModeInfo *mode = igt_output_get_mode(data->wb_output);
+ 
+ 	for (int i = 0; i < NUM_FBS; i++) {
+-		igt_create_color_fb(data->fd, kms->primary.rect.width, kms->primary.rect.height,
+-				    kms->primary.format, DRM_FORMAT_MOD_LINEAR,
+-				    !i, i, i,
+-				    &kms->primary.fbs[i]);
+-
+-		igt_create_color_fb(data->fd, kms->overlay_a.rect.width, kms->overlay_a.rect.height,
+-				    kms->overlay_a.format, DRM_FORMAT_MOD_LINEAR,
+-				    i, !i, i,
+-				    &kms->overlay_a.fbs[i]);
+-
+-		igt_create_color_fb(data->fd, kms->overlay_b.rect.width, kms->overlay_b.rect.height,
+-				    kms->overlay_b.format, DRM_FORMAT_MOD_LINEAR,
+-				    i, i, !i,
+-				    &kms->overlay_b.fbs[i]);
++		if (have_supported_pixman_stride(data->fd, &kms->primary)) {
++			igt_create_color_fb(data->fd,
++					    kms->primary.rect.width, kms->primary.rect.height,
++					    kms->primary.format, DRM_FORMAT_MOD_LINEAR,
++					    !i, i, i,
++					    &kms->primary.fbs[i]);
++		} else {
++			igt_create_fb(data->fd,
++				      kms->primary.rect.width, kms->primary.rect.height,
++				      kms->primary.format, DRM_FORMAT_MOD_LINEAR,
++				      &kms->primary.fbs[i]);
++		}
++
++		if (have_supported_pixman_stride(data->fd, &kms->overlay_a)) {
++			igt_create_color_fb(data->fd,
++					    kms->overlay_a.rect.width, kms->overlay_a.rect.height,
++					    kms->overlay_a.format, DRM_FORMAT_MOD_LINEAR,
++					    i, !i, i,
++					    &kms->overlay_a.fbs[i]);
++		} else {
++			igt_create_fb(data->fd,
++				      kms->overlay_a.rect.width, kms->overlay_a.rect.height,
++				      kms->overlay_a.format, DRM_FORMAT_MOD_LINEAR,
++				      &kms->overlay_a.fbs[i]);
++		}
++
++		if (have_supported_pixman_stride(data->fd, &kms->overlay_b)) {
++			igt_create_color_fb(data->fd,
++					    kms->overlay_b.rect.width, kms->overlay_b.rect.height,
++					    kms->overlay_b.format, DRM_FORMAT_MOD_LINEAR,
++					    i, i, !i,
++					    &kms->overlay_b.fbs[i]);
++		} else {
++			igt_create_fb(data->fd,
++				      kms->overlay_b.rect.width, kms->overlay_b.rect.height,
++				      kms->overlay_b.format, DRM_FORMAT_MOD_LINEAR,
++				      &kms->overlay_b.fbs[i]);
++		}
+ 
+ 		kms->writeback.rect.width = mode->hdisplay;
+ 		kms->writeback.rect.height = mode->vdisplay;
 
 -- 
 2.44.0
