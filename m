@@ -4,57 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0513C4345F
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 18:35:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA36DC4345F
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 18:51:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A113D10F2B2;
-	Thu, 11 Apr 2024 18:35:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 068F210EFC9;
+	Thu, 11 Apr 2024 18:51:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H2DuPPEu";
+	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="s5sL08ux";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ADE5310F2B2
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 18:34:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712860500; x=1744396500;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=s9d9+XwqeBgYUmYRvK1GPmmpfLqt/RB5HV/DnXuyrBU=;
- b=H2DuPPEu03V13QATolmmHWhQnK0U6e2YMhFoY22v/wg/u3mjq9WmNgmg
- Gp9ojtgVUOpLT0ajL6PIn09Ai4TLJbuoDwauJq4Gm5eD8we5wlLHlWy+N
- Qq63LfvG1aMBf02iNpDosJpedWJl0OALJ1QajO9TjOURsD8E04LHFPHM8
- F5MEo+Egqkq7W+nwsy0LEy0JMRzjpNPCIrv8CX/hnAbM4cmeJ+j92VNtE
- tphsoRbeWv7+Xj2TmhgUFKtkzDSJDGXeWnEAEP0cv5Af7rlTzqhCeY8AM
- 09+HtYHCTSfsKhAlLLJvjotgNu88sqzixlOx1gVJ5+dZmum/LM55t2AAb A==;
-X-CSE-ConnectionGUID: Se+piDZXSEid5Ta06zfqFQ==
-X-CSE-MsgGUID: UQLyzEDGT1aJEpvxsZXH0Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="8852314"
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; 
-   d="scan'208";a="8852314"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2024 11:34:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="827793659"
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="827793659"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by orsmga001.jf.intel.com with SMTP; 11 Apr 2024 11:34:57 -0700
-Received: by stinkbox (sSMTP sendmail emulation);
- Thu, 11 Apr 2024 21:34:56 +0300
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t v2 3/4] lib/kms: Generalize forced_connectors[] to
- handle arbitrary attributes
-Date: Thu, 11 Apr 2024 21:34:49 +0300
-Message-ID: <20240411183450.6417-3-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240411183450.6417-1-ville.syrjala@linux.intel.com>
-References: <20240411183450.6417-1-ville.syrjala@linux.intel.com>
+Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B393F10EFD7
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 18:51:24 +0000 (UTC)
+Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx0.riseup.net (Postfix) with ESMTPS id 4VFpgw0V8hz9x1Y;
+ Thu, 11 Apr 2024 18:51:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
+ t=1712861484; bh=7QN3bs/APCsCDunNiSyGWBL2zTTVzAxXcWa9fnc/fTY=;
+ h=From:Subject:Date:To:Cc:From;
+ b=s5sL08uxxs+EAiyid0K4wlQ3wRrVcQNhuF6bhcIYLxdLfWWwZ5QSRgqgydSbNKReM
+ llpgTfm4nUDSaRSr1w8kcssIhUNtbMhr35GxoMnlPr7ymakmAecAjz6CnTRJWFqgQu
+ ZPZpe6RVG49Qb6dcwi3+5fGm4SwVbPlpVAQO+ukM=
+X-Riseup-User-ID: 472197C9BF1055E89BED67DD73FBF68E12D7174289DD8409D774C54C3482A60E
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+ by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4VFpgr5FSRzJrkm;
+ Thu, 11 Apr 2024 18:51:20 +0000 (UTC)
+From: Arthur Grillo <arthurgrillo@riseup.net>
+Subject: [PATCH i-g-t v4 0/7] benchmarks/kms_fb_stress: benchmark formats
+Date: Thu, 11 Apr 2024 15:51:10 -0300
+Message-Id: <20240411-kms_fb_stress-dev-v4-0-7a8f3a419ebb@riseup.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB4xGGYC/33NSw6CMBCA4auQrq3pk4cr72EMaWGQxgikg42Gc
+ HcLGzUSZ/dPMt9MBME7QHJIJuIhOHR9F0PtElK1prsAdXVsIphQTIiUXm9YNrbE0QMirSHQqpA
+ GeJY2BeMk3g0eGvdYzdM5dutw7P1zfRH4sv2nBU4Z5RVXhRKWC6WO3iHch30HI1m4IN6EZHqLE
+ JHI8jhG5qBT+UPITyLbImQkam0LlRutuIUvYp7nF7zmafc5AQAA
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>, 
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, 
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>, 
+ Ashutosh Dixit <ashutosh.dixit@intel.com>, 
+ Pekka Paalanen <pekka.paalanen@collabora.com>, 
+ Louis Chauvet <louis.chauvet@bootlin.com>, 
+ Arthur Grillo <arthurgrillo@riseup.net>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,258 +66,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+After some discussion[1], I changed how to tackle the problem. (2x)
 
-We may want to poke at various other connector attributes
-via sysfs/debugfs. Generalize the existing the force_connectors
-mechamisn to handle arbitrary attributes.
+With the upcoming addition of YUV format to VKMS[2] it would be great to
+test the their performance. So, test all formats available.
 
-v2: Fix connector_attr_alloc()
-    Set c->value before using it
+- PATCH #1: Just a non-related assert that I found needed while developing
+- PATCH #2: Log the KMS structure
+- PATCH #3: Moving code, should be noop
+- PATCH #4 & #5: Fix a couple of bugs found while developing
+- PATCH #6: Add a enable_overlay flag in preparation for #7
+- PATCH #7: The new benchmark that tests performance between format
 
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+[1]: https://lore.kernel.org/all/6979cd2e-2b00-4dc4-8e41-66b435cf7ea8@riseup.net/
+[2]: https://lore.kernel.org/all/20240304-yuv-v4-11-76beac8e9793@bootlin.com/
+
+Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
 ---
- lib/igt_kms.c | 143 ++++++++++++++++++++++++++++++++------------------
- 1 file changed, 92 insertions(+), 51 deletions(-)
+Changes in v4:
+- Change (again) how the new test is done, now it just uses the primary
+  and writeback, and changes the formats based on primary format list.
+  (Pekka Paalanen)
+- Add an enable_overlay flag, for the new test.
+- Remove the addition of command-line flags, as I don't see them that
+  useful anymore (Pekka Paalanen)
+- Change the RGB565 test to a stride test (Pekka Paalanen)
+- Link to v3: https://lore.kernel.org/r/20240307-kms_fb_stress-dev-v3-0-d5b948a541be@riseup.net
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 86651e3de348..3da49d1ccb6e 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -91,14 +91,18 @@
- #define MAX_EDID 2
- #define DISPLAY_TILE_BLOCK 0x12
- 
--struct igt_forced_connector {
-+typedef bool (*igt_connector_attr_set)(int dir, const char *attr, const char *value);
-+
-+struct igt_connector_attr {
- 	uint32_t connector_type;
- 	uint32_t connector_type_id;
- 	int idx;
- 	int dir;
-+	igt_connector_attr_set set;
-+	const char *attr, *value, *reset_value;
- };
- 
--static struct igt_forced_connector forced_connectors[MAX_CONNECTORS];
-+static struct igt_connector_attr connector_attrs[MAX_CONNECTORS];
- 
- /**
-  * igt_kms_get_base_edid:
-@@ -1495,39 +1499,87 @@ int igt_connector_sysfs_open(int drm_fd,
- 	return conn_dir;
- }
- 
--static bool connector_is_forced(int idx, drmModeConnector *connector)
-+static struct igt_connector_attr *connector_attr_find(int idx, drmModeConnector *connector,
-+						      igt_connector_attr_set set,
-+						      const char *attr)
- {
- 	igt_assert(connector->connector_type != 0);
- 
--	for (int i = 0; i < ARRAY_SIZE(forced_connectors); i++) {
--		struct igt_forced_connector *c = &forced_connectors[i];
-+	for (int i = 0; i < ARRAY_SIZE(connector_attrs); i++) {
-+		struct igt_connector_attr *c = &connector_attrs[i];
- 
- 		if (c->idx == idx &&
- 		    c->connector_type == connector->connector_type &&
--		    c->connector_type_id == connector->connector_type_id)
--			return true;
-+		    c->connector_type_id == connector->connector_type_id &&
-+		    c->set == set && !strcmp(c->attr, attr))
-+			return c;
- 	}
- 
--	return false;
-+	return NULL;
- }
- 
--static struct igt_forced_connector *forced_connector_alloc(void)
-+static struct igt_connector_attr *connector_attr_find_free(void)
- {
--	for (int i = 0; i < ARRAY_SIZE(forced_connectors); i++) {
--		struct igt_forced_connector *c = &forced_connectors[i];
-+	for (int i = 0; i < ARRAY_SIZE(connector_attrs); i++) {
-+		struct igt_connector_attr *c = &connector_attrs[i];
- 
--		if (!c->connector_type)
-+		if (!c->attr)
- 			return c;
- 	}
- 
- 	return NULL;
- }
- 
--static bool force_connector(int drm_fd,
--			    drmModeConnector *connector,
--			    const char *value)
-+static struct igt_connector_attr *connector_attr_alloc(int idx, drmModeConnector *connector,
-+						       int dir, igt_connector_attr_set set,
-+						       const char *attr, const char *reset_value)
-+{
-+	struct igt_connector_attr *c = connector_attr_find_free();
-+
-+	c->idx = idx;
-+	c->connector_type = connector->connector_type;
-+	c->connector_type_id = connector->connector_type_id;
-+
-+	c->dir = dir;
-+	c->set = set;
-+	c->attr = attr;
-+	c->reset_value = reset_value;
-+
-+	return c;
-+}
-+
-+static void connector_attr_free(struct igt_connector_attr *c)
-+{
-+	memset(c, 0, sizeof(*c));
-+}
-+
-+static bool connector_attr_set(int idx, drmModeConnector *connector,
-+			       int dir, igt_connector_attr_set set,
-+			       const char *attr, const char *value,
-+			       const char *reset_value)
-+{
-+	struct igt_connector_attr *c;
-+
-+	c = connector_attr_find(idx, connector, set, attr);
-+	if (!c)
-+		c = connector_attr_alloc(idx, connector, dir, set,
-+					 attr, reset_value);
-+
-+	c->value = value;
-+
-+	if (!c->set(c->dir, c->attr, c->value)) {
-+		connector_attr_free(c);
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+static bool connector_attr_set_sysfs(int drm_fd,
-+				     drmModeConnector *connector,
-+				     const char *attr, const char *value,
-+				     const char *reset_value)
- {
--	struct igt_forced_connector *c;
- 	char name[80];
- 	int idx, dir;
- 
-@@ -1543,53 +1595,42 @@ static bool force_connector(int drm_fd,
- 	if (dir < 0)
- 		return false;
- 
--	if (!igt_sysfs_set(dir, "status", value)) {
--		close(dir);
-+	if (!connector_attr_set(idx, connector, dir,
-+				igt_sysfs_set, attr, value, reset_value))
- 		return false;
--	}
- 
--	igt_debug("Connector %s is now forced %s\n", name, value);
--
--	/* already tracked? */
--	if (connector_is_forced(idx, connector)) {
--		close(dir);
--		return true;
--	}
--
--	c = forced_connector_alloc();
--	if (!c) {
--		igt_warn("Connector limit reached, %s will not be reset\n", name);
--		close(dir);
--		return true;
--	}
--
--	c->idx = idx;
--	c->connector_type = connector->connector_type;
--	c->connector_type_id = connector->connector_type_id;
--	c->dir = dir;
-+	igt_debug("Connector %s/%s is now %s\n", name, attr, value);
- 
- 	return true;
- }
- 
--static void dump_forced_connectors(void)
-+static void dump_connector_attrs(void)
- {
- 	char name[80];
- 
--	igt_debug("Current forced connectors:\n");
-+	igt_debug("Current connector attrs:\n");
- 
--	for (int i = 0; i < ARRAY_SIZE(forced_connectors); i++) {
--		struct igt_forced_connector *c = &forced_connectors[i];
-+	for (int i = 0; i < ARRAY_SIZE(connector_attrs); i++) {
-+		struct igt_connector_attr *c = &connector_attrs[i];
- 
--		if (!c->connector_type)
-+		if (!c->attr)
- 			continue;
- 
- 		kmstest_connector_dirname(c->idx, c->connector_type,
- 					  c->connector_type_id,
- 					  name, sizeof(name));
--		igt_debug("\t%s\n", name);
-+		igt_debug("\t%s/%s: %s\n", name, c->attr, c->value);
- 	}
- }
- 
-+static bool force_connector(int drm_fd,
-+			    drmModeConnector *connector,
-+			    const char *value)
-+{
-+	return connector_attr_set_sysfs(drm_fd, connector,
-+					"status", value, "detect");
-+}
-+
- /**
-  * kmstest_force_connector:
-  * @fd: drm file descriptor
-@@ -1634,7 +1675,7 @@ bool kmstest_force_connector(int drm_fd, drmModeConnector *connector,
- 	if (!force_connector(drm_fd, connector, value))
- 		return false;
- 
--	dump_forced_connectors();
-+	dump_connector_attrs();
- 
- 	igt_install_exit_handler(reset_connectors_at_exit);
- 
-@@ -2627,7 +2668,7 @@ static void igt_handle_spurious_hpd(igt_display_t *display)
- 			 conn->connector_type_id);
- 	}
- 
--	dump_forced_connectors();
-+	dump_connector_attrs();
- }
- 
- /**
-@@ -5311,15 +5352,15 @@ void igt_enable_connectors(int drm_fd)
-  */
- void igt_reset_connectors(void)
- {
--	/* reset the connectors stored in forced_connectors, avoiding any
-+	/* reset the connectors stored in connector_attrs, avoiding any
- 	 * functions that are not safe to call in signal handlers */
--	for (int i = 0; i < ARRAY_SIZE(forced_connectors); i++) {
--		struct igt_forced_connector *c = &forced_connectors[i];
-+	for (int i = 0; i < ARRAY_SIZE(connector_attrs); i++) {
-+		struct igt_connector_attr *c = &connector_attrs[i];
- 
--		if (!c->connector_type)
-+		if (!c->attr)
- 			continue;
- 
--		igt_sysfs_set(c->dir, "status",  "detect");
-+		c->set(c->dir, c->attr, c->reset_value);
- 	}
- }
- 
+Changes in v3:
+- Make the help message and commit message more clear on how the
+  command-line options work (Louis Chauvet)
+- Link to v2: https://lore.kernel.org/r/20240305-kms_fb_stress-dev-v2-0-78888a38e563@riseup.net
+
+Changes in v2:
+- Change how the command-line options work, now they pin the specific
+  format and let the other change.
+- Add a patch to test all the possible formats combination
+- Add a couple of patches to fix some bugs
+- Move the KMS logging patch to the beginning of the series
+- Move the default_kms definition to the static struct data_t variable
+- Link to v1: https://lore.kernel.org/r/20240226-kms_fb_stress-dev-v1-0-1c14942b1244@riseup.net
+
+---
+Arthur Grillo (7):
+      benchmarks/kms_fb_stress: Assert that we have an supported pipe
+      benchmarks/kms_fb_stress: Log the KMS structure
+      benchmarks/kms_fb_stress: Separate the benchmark in a subtest
+      benchmarks/kms_fb_stress: Free resources on the stress procedure
+      benchmarks/kms_fb_stress: Don't paint the FB's if the format is not supported by Pixman
+      benchmarks/kms_fb_stress: Optionally enable the overlay planes
+      benchmarks/kms_fb_stress: Create a benchmark for formats
+
+ benchmarks/kms_fb_stress.c | 252 ++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 192 insertions(+), 60 deletions(-)
+---
+base-commit: e490cb6ffc497275544b36871c24af0a04f98470
+change-id: 20240226-kms_fb_stress-dev-c93ae176f901
+
+Best regards,
 -- 
-2.43.2
+Arthur Grillo <arthurgrillo@riseup.net>
 
