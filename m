@@ -4,28 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DD1CC4345F
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 19:17:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8766C4345F
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 19:19:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8F59B10F0B1;
-	Thu, 11 Apr 2024 19:17:13 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3868510F0B1;
- Thu, 11 Apr 2024 19:17:09 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5434038981283934192=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3350E10F2D6;
+	Thu, 11 Apr 2024 19:19:40 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
+ [217.70.183.196])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD59710F2D6
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 19:19:37 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 98B88E0002;
+ Thu, 11 Apr 2024 19:19:35 +0000 (UTC)
+From: Peter Senna Tschudin <me@petersenna.com>
+To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
+ andi.shyti@linux.intel.com
+Subject: [PATCH i-g-t] tests/intel/gem_exec_capture: fix use of
+ igt_allow_hang() / igt_disallow_hang()
+Date: Thu, 11 Apr 2024 21:19:23 +0200
+Message-ID: <20240411191934.10368-1-me@petersenna.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
- =?utf-8?q?=2Cv2=2C1/4=5D_lib/kms=3A_Introduce_struct_igt=5Fforced=5Fconnect?=
- =?utf-8?q?or?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ville Syrjala" <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 11 Apr 2024 19:17:09 -0000
-Message-ID: <171286302923.1341683.6214149591444557770@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240411183450.6417-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20240411183450.6417-1-ville.syrjala@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: me@petersenna.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,110 +38,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5434038981283934192==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The function main has a variable igt_hang_t hang defined, and it is
+currently used by igt_disallow_hang(). However igt_disallow_hang() is
+using the variable uninitialized making valgrind unhappy:
 
-== Series Details ==
+ Syscall param ioctl(generic) points to uninitialised byte(s)
+    at 0x4ACD3ED: ioctl (in /usr/lib64/libc.so.6)
+    by 0x49ACF4F: drmIoctl (xf86drm.c:704)
+    by 0x488AF46: __gem_context_set_param (gem_context.c:260)
+    by 0x48A4D9F: context_set_ban (igt_gt.c:161)
+    by 0x48A53DC: igt_disallow_hang (igt_gt.c:228)
+    by 0x4013D7: __igt_unique____real_main959 (gem_exec_capture.c:1069)
+    by 0x401242: main (gem_exec_capture.c:959)
+  Address 0x1fff000170 is on thread 1's stack
+  in frame #3, created by context_set_ban (igt_gt.c:154)
+  Uninitialised value was created by a stack allocation
+    at 0x401340: __igt_unique____real_main959 (gem_exec_capture.c:960)
 
-Series: series starting with [i-g-t,v2,1/4] lib/kms: Introduce struct igt_forced_connector
-URL   : https://patchwork.freedesktop.org/series/132327/
-State : success
+ Conditional jump or move depends on uninitialised value(s)
+    at 0x48A53E2: igt_disallow_hang (igt_gt.c:230)
+    by 0x4013D7: __igt_unique____real_main959 (gem_exec_capture.c:1069)
+    by 0x401242: main (gem_exec_capture.c:959)
+  Uninitialised value was created by a stack allocation
+    at 0x401340: __igt_unique____real_main959 (gem_exec_capture.c:960)
 
-== Summary ==
+ Syscall param ioctl(generic) points to uninitialised byte(s)
+    at 0x4ACD3ED: ioctl (in /usr/lib64/libc.so.6)
+    by 0x49ACF4F: drmIoctl (xf86drm.c:704)
+    by 0x488AF46: __gem_context_set_param (gem_context.c:260)
+    by 0x48A540A: igt_disallow_hang (igt_gt.c:236)
+    by 0x4013D7: __igt_unique____real_main959 (gem_exec_capture.c:1069)
+    by 0x401242: main (gem_exec_capture.c:959)
+  Address 0x1fff0001b0 is on thread 1's stack
+  in frame #3, created by igt_disallow_hang (igt_gt.c:224)
+  Uninitialised value was created by a stack allocation
+    at 0x401340: __igt_unique____real_main959 (gem_exec_capture.c:960)
 
-CI Bug Log - changes from XEIGT_7806_BAT -> XEIGTPW_11011_BAT
-====================================================
+This patch sets the content of the variable hang with the return value
+of igt_allow_hang() following what is used elsewhere in the codebase.
+After this patch valgrind does not complain about the  errors listed.
 
-Summary
--------
+Signed-off-by: Peter Senna Tschudin <me@petersenna.com>
+---
+ tests/intel/gem_exec_capture.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  **SUCCESS**
+diff --git a/tests/intel/gem_exec_capture.c b/tests/intel/gem_exec_capture.c
+index 8800fa586..e462aa96f 100644
+--- a/tests/intel/gem_exec_capture.c
++++ b/tests/intel/gem_exec_capture.c
+@@ -990,7 +990,7 @@ igt_main
+ 
+ 			gem_context_set_param(fd, &param);
+ 		}
+-		igt_allow_hang(fd, ctx->id, HANG_ALLOW_CAPTURE | HANG_WANT_ENGINE_RESET);
++		hang = igt_allow_hang(fd, ctx->id, HANG_ALLOW_CAPTURE | HANG_WANT_ENGINE_RESET);
+ 
+ 		dir = igt_sysfs_open(fd);
+ 		igt_require(igt_sysfs_set(dir, "error", "Begone!"));
+-- 
+2.44.0
 
-  No regressions found.
-
-  
-
-Participating hosts (5 -> 5)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7806 -> IGTPW_11011
-  * Linux: xe-1078-47b56114d9fd714a477581fbba985e0d98053f80 -> xe-1079-64a24a7dc774886c660a412a0d12c02f4bfec223
-
-  IGTPW_11011: 11011
-  IGT_7806: 849cd963ce7e8222dcf17cc872d355181fd2c2a2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1078-47b56114d9fd714a477581fbba985e0d98053f80: 47b56114d9fd714a477581fbba985e0d98053f80
-  xe-1079-64a24a7dc774886c660a412a0d12c02f4bfec223: 64a24a7dc774886c660a412a0d12c02f4bfec223
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11011/index.html
-
---===============5434038981283934192==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/4] lib/kms: Introduce struct igt_forced_connector</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132327/">https://patchwork.freedesktop.org/series/132327/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11011/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11011/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7806_BAT -&gt; XEIGTPW_11011_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (5 -&gt; 5)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7806 -&gt; IGTPW_11011</li>
-<li>Linux: xe-1078-47b56114d9fd714a477581fbba985e0d98053f80 -&gt; xe-1079-64a24a7dc774886c660a412a0d12c02f4bfec223</li>
-</ul>
-<p>IGTPW_11011: 11011<br />
-  IGT_7806: 849cd963ce7e8222dcf17cc872d355181fd2c2a2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1078-47b56114d9fd714a477581fbba985e0d98053f80: 47b56114d9fd714a477581fbba985e0d98053f80<br />
-  xe-1079-64a24a7dc774886c660a412a0d12c02f4bfec223: 64a24a7dc774886c660a412a0d12c02f4bfec223</p>
-
-</body>
-</html>
-
---===============5434038981283934192==--
