@@ -4,59 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC005C0005B
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 13:23:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7163C04D2B
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Apr 2024 13:24:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2B9B710E988;
-	Thu, 11 Apr 2024 13:23:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3C8F510E125;
+	Thu, 11 Apr 2024 13:24:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NwN01V1Z";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ioWmap36";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F06B010E988
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 13:23:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 24A4D10E125
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Apr 2024 13:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712841805; x=1744377805;
- h=date:from:to:subject:message-id:references:mime-version:
- content-transfer-encoding:in-reply-to;
- bh=cFeq4PJBnF9M7I7avRyaPeN3nBVYOEYO7ts4kddLFro=;
- b=NwN01V1ZlcopyhIkC+perpHjCj8Q90Th4Wlmn7aHBcwWTyu60al+np2m
- Jsz68/hZUuI+O0xOibewf++2Wuk7T1hj4ozJ3kNrt4qqvuIiEgHQikfhN
- Ddexi3lrqIKA/cWZhkmG6x2sas4DPq8MCd2QBE/oblAQ41X2qRCxpRrbB
- QCwCRViHK2AynxFqr0Lcn0lkvlxtK/44sRLVy0L8nOt1SvRPprXhGx8SG
- Csglj/pTo2cDiy7IF1YE3W93HEpUlV4MyqPDD5/K2hl+8nu3ympTyziVw
- 4mCLkR00sGXBDCEL+SFtEgtjFdiqLLVNhZsJwPAV+cMOvHXd6W7lixLgC Q==;
-X-CSE-ConnectionGUID: bEDsKwgsQyWypuJUZzPe1A==
-X-CSE-MsgGUID: 9Kt3dB4sRqCShX80ShN+cg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="25761734"
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="25761734"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2024 06:23:24 -0700
+ t=1712841890; x=1744377890;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=BRRxenebxtd3hd7RoajMGBXBlSMNnBmNdvpVEJgPEJM=;
+ b=ioWmap365tC9EyPAQ0kn82iLg9akKh5+aU6JF0E3OIGUm7Is/+FrVivB
+ Bxida5ckiODUSS+/b3PFQ9R3dHFyW8F2L57wMwu+HT0A0Ln8MPZ0rFCdX
+ aD36srGIAHxWjtvxQgkteEu8eJCddlvIy5pH/EpVp4ob27oSVp5dJxXJO
+ 2/SjfPcpG+ntjnhguJIBixmFUPUMrmo8my3MiE+pz/5Y0Hh0nYdqI99R1
+ 4dWDKi/gily4jsOA/bMrySpUtMv4Bv2QWVmP6B50FREn6vhlCRPD1gQaT
+ vtwEJfnWcRbyxHezLNbbbWZiD6d1r8yjjKR1fpUpINaR1QbsqK65qZk3O A==;
+X-CSE-ConnectionGUID: ePbDbI7UQQiypv76iciw5Q==
+X-CSE-MsgGUID: H6z0JtehQzWP70PCg2zI0A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="18958269"
+X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="18958269"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Apr 2024 06:24:48 -0700
+X-CSE-ConnectionGUID: xKd1w8qaSF+6e8uoOkR4aw==
+X-CSE-MsgGUID: wm/Fy34nTZm1mP05lFJnqA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="827793557"
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="827793557"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by orsmga001.jf.intel.com with SMTP; 11 Apr 2024 06:23:21 -0700
-Received: by stinkbox (sSMTP sendmail emulation);
- Thu, 11 Apr 2024 16:23:20 +0300
-Date: Thu, 11 Apr 2024 16:23:20 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Kunal Joshi <kunal1.joshi@intel.com>
-Subject: Re: [PATCH i-g-t 2/3] lib/kms: Simplify force_connectors[] error
- handling
-Message-ID: <ZhfkSJdayjDYejQZ@intel.com>
-References: <20240410150229.28922-1-ville.syrjala@linux.intel.com>
- <20240410150229.28922-2-ville.syrjala@linux.intel.com>
- <20240411082511.sovecvuopmcuhcnr@kamilkon-desk.igk.intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="20948100"
+Received: from unknown (HELO localhost) ([10.237.66.160])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Apr 2024 06:24:46 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Matt Roper <matthew.d.roper@intel.com>,
+ Ville Syrjala <ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t] intel_reg: Stop warning if register spec is not
+ there
+In-Reply-To: <bwwkqrnrd75zdnllhhtw3bapgz3fzdv2gjestlahdr4rxohxx5@5xgdosdtqwsa>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240410231710.3113867-1-lucas.demarchi@intel.com>
+ <87le5k7028.fsf@intel.com>
+ <bwwkqrnrd75zdnllhhtw3bapgz3fzdv2gjestlahdr4rxohxx5@5xgdosdtqwsa>
+Date: Thu, 11 Apr 2024 16:24:43 +0300
+Message-ID: <87cyqw58x0.fsf@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240411082511.sovecvuopmcuhcnr@kamilkon-desk.igk.intel.com>
-X-Patchwork-Hint: comment
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,74 +71,100 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Apr 11, 2024 at 10:25:11AM +0200, Kamil Konieczny wrote:
-> Hi Ville,
-> On 2024-04-10 at 18:02:28 +0300, Ville Syrjala wrote:
-> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > 
-> > The failure to allocate a forced_connector entry is entirely
-> > our own fault. If we hit this then we've screwd up and made
-> > the array too small. Skip the error handling and just assert
-> > that we must have enough room in the array.
-> > 
-> > Cc: Kunal Joshi <kunal1.joshi@intel.com>
-> > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > ---
-> >  lib/igt_kms.c | 8 +-------
-> >  1 file changed, 1 insertion(+), 7 deletions(-)
-> > 
-> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> > index f7dd1db91827..19bb4ac66ece 100644
-> > --- a/lib/igt_kms.c
-> > +++ b/lib/igt_kms.c
-> > @@ -1518,8 +1518,7 @@ static struct igt_forced_connector *forced_connector_alloc(void)
-> >  	for (i = 0; forced_connectors[i].connector_type; i++)
-> >  		;
-> >  
-> > -	if (i >= ARRAY_SIZE(forced_connectors))
-> > -		return NULL;
-> > +	igt_assert_lt(i, ARRAY_SIZE(forced_connectors));
-> 
-> Asserts in libs are ugly, could we just realloc it once?
+On Thu, 11 Apr 2024, Lucas De Marchi <lucas.demarchi@intel.com> wrote:
+> On Thu, Apr 11, 2024 at 11:53:03AM +0300, Jani Nikula wrote:
+>>On Wed, 10 Apr 2024, Lucas De Marchi <lucas.demarchi@intel.com> wrote:
+>>> Stop suffering when using igt from the git checkout, which is the case
+>>> for all/most developers.
+>>>
+>>> 	$ sudo ./build/tools/intel_reg write 0x2358 0xdeadbeef
+>>> 	Warning: stat '/usr/local/share/igt-gpu-tools/registers' failed: No such file or directory. Using builtin register spec.
+>>>
+>>> Pretty annoying when you have a bunch of commands to run and don't want
+>>> to simply ignore stderr.  Keep the other warnings as if the file is
+>>> there and can't be read for some reason, it's good to give a warning.
+>>> However if the file simply isn't there, let it pass.
+>>
+>>The TL;DR is,
+>>
+>>Acked-by: Jani Nikula <jani.nikula@intel.com>
+>>
+>>---
+>>
+>>We have the "register specs" in plain text files so that anyone could
+>>update them at runtime without building the source. And conceivably they
+>>could be generated from a more authoritative source. It would be nice if
+>>we could incorporate the info to the binary at build time as the builtin
+>>register specs (so no data dir lookups at all), but also be able to
+>>override them e.g. using a command-line parameter if the user wishes.
+>>
+>>I don't think that would even be so hard. But it would arguably be a bit
+>>wasted effort as long as the register files under tools/registers/
+>>aren't updated for newer platforms. (The current builtin register specs
+>>are completely out of date.)
+>
+> I don't really get why one would want the tools/registers actually. When
+> I'm using intel_reg I'm already working on a very low level interface
+> with the hardware and can simply pass/read the raw offsets.
 
-We never realloc anything. It's a static array.
+Something we wanted but never materialized was decoding register
+contents, like the builtin decoding does. But I think with the pace of
+registers added and meanings changing from platform to platform, etc,
+with no automated import of the specs, it was just too laborous by hand.
 
-> Btw (i == ARRAY_SIZE(forced_connectors) should be ok? Or do
-> we treat this as a end-of-array guard?
+And there's also the dumping, and it's kind of platform specific what
+should be included. I think that's where the tools/registers files
+originated.
 
-That's past the end of the array.
+BR,
+Jani.
 
-> 
-> If you insist on keeping assert please at least give a message
-> for ease of debug.
 
-Looks like I actually dropped the assert entirely in the next patch
-and let it explode naturally. Which it actually did in CI because
-I made a booboo in _alloc()...
 
-> 
-> Regards,
-> Kamil
-> 
-> >  
-> >  	return &forced_connectors[i];
-> >  }
-> > @@ -1558,11 +1557,6 @@ static bool force_connector(int drm_fd,
-> >  	}
-> >  
-> >  	c = forced_connector_alloc();
-> > -	if (!c) {
-> > -		igt_warn("Connector limit reached, %s will not be reset\n", name);
-> > -		close(dir);
-> > -		return true;
-> > -	}
-> >  
-> >  	c->idx = idx;
-> >  	c->connector_type = connector->connector_type;
-> > -- 
-> > 2.43.2
-> > 
+
+>
+> I think a reg spec like that is nice when we are e.g. tracing, so we
+> don't have to lookup all the registers that are showing up. I think
+> Gustavo had something wip related to that. However for intel_reg I don't
+> have a use case.
+>
+> Lucas De Marchi
+>
+>>
+>>The tool could use some love again. It's been almost 10 years since
+>>commit dfda0b6aecce ("intel_reg: introduce one intel_reg tool to rule
+>>them all").
+>>
+>>BR,
+>>Jani.
+>>
+>>>
+>>> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>>> ---
+>>>  tools/intel_reg.c | 6 +-----
+>>>  1 file changed, 1 insertion(+), 5 deletions(-)
+>>>
+>>> diff --git a/tools/intel_reg.c b/tools/intel_reg.c
+>>> index 6c37e14d1..ec311a05a 100644
+>>> --- a/tools/intel_reg.c
+>>> +++ b/tools/intel_reg.c
+>>> @@ -1114,12 +1114,8 @@ static int read_reg_spec(struct config *config)
+>>>  		path = IGT_DATADIR"/registers";
+>>>
+>>>  	r = stat(path, &st);
+>>> -	if (r) {
+>>> -		fprintf(stderr, "Warning: stat '%s' failed: %s. "
+>>> -			"Using builtin register spec.\n",
+>>> -			path, strerror(errno));
+>>> +	if (r)
+>>>  		goto builtin;
+>>> -	}
+>>>
+>>>  	if (S_ISDIR(st.st_mode)) {
+>>>  		r = get_reg_spec_file(buf, sizeof(buf), path, config->devid);
+>>
+>>-- 
+>>Jani Nikula, Intel
 
 -- 
-Ville Syrjälä
-Intel
+Jani Nikula, Intel
