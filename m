@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CDFAC04FFE
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECE7FC4345F
 	for <igt-dev@archiver.kernel.org>; Fri, 12 Apr 2024 09:15:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1A58A10F53F;
-	Fri, 12 Apr 2024 09:15:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 55A4910F546;
+	Fri, 12 Apr 2024 09:15:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VTQVbdAI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M9ku3NXX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B06CB10F537
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B0F2910F53C
  for <igt-dev@lists.freedesktop.org>; Fri, 12 Apr 2024 09:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1712913326; x=1744449326;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=pG8DV5LgKE3NHvCwqJdG30pbXe4pCuQQnQboN873jtU=;
- b=VTQVbdAIcou/quIiqnX09ud1uDHTAaLYRVbZOKLMycs5u7IykIRa1U1V
- G6VtIo7bR7qM2J5+eapOeQp6BLWhIAfdKBNEs1AIOL2fgmPh0jgzBk+uf
- ppo0ZJ12qUhPrDwTGxz69sgDwhx+1l+z1YxHBLQAaiRIPwP64CFng3Nxh
- aSL/yBa8LK0wY5YD850a50ttMS9VwVReCQ4jeRvaaSZ2D2d8jIY9s7tIX
- t2XsMgfJsVVfluz1xB4Jfzt9b3pGkH0kk4EwiFFbRwNuHYChvOosul/iY
- KiJaVMSGRakVVaZYxFmwm5X4A9xx7uXmJ8+hOMekPtPp2e+xg59ds9DW/ w==;
-X-CSE-ConnectionGUID: bNwDISO4Sz6R104UOKX3gQ==
-X-CSE-MsgGUID: CNxI9vDrSNmceid1YXcf/Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="12146417"
-X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; d="scan'208";a="12146417"
+ bh=S23uFzKKS3zw/qIVCBbWkNYhwi+wH4uQMChj6OStNsQ=;
+ b=M9ku3NXX5E85FLBXnVRKBtQ5bED3HvHmG0tQ4NIww2pi8biSuo2gBxAK
+ KmnRq2T3ty7Ur+BCTEThyZ9i/odjk7ToVR0o6sbxQbTAm9jj2XcLSbUHv
+ fkcTeVGkuToM+yUzQ9IU0R6hC9L5xjE5iE40KCJTcUKw0DaM/LeA2JC7N
+ U/SLIrY+JothY39NdPT5ZtmQR8v1IS1hhThCnFezB0O+IJRYDtTLzHa45
+ TI9Dqp9ZnDPR/MbxI3uuLMOckq0QEOyCGZB3ldj320I+65EFeRz6DYxUj
+ Ecln6S7BlDZTqDIi46LrBV/DEi57LYuu8jc4OHkBdoWyy2H2yss9AoJxO A==;
+X-CSE-ConnectionGUID: TmIlLhPUT4SKXTCTj/xMFQ==
+X-CSE-MsgGUID: 2cjpf/xoSRqtCJG5pU+b2w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="12146408"
+X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; d="scan'208";a="12146408"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Apr 2024 02:15:19 -0700
-X-CSE-ConnectionGUID: aLKd8+aoQniPgifrs8ER6Q==
-X-CSE-MsgGUID: SbFP7qnPRSKspf1Ez5UoHA==
+ 12 Apr 2024 02:15:17 -0700
+X-CSE-ConnectionGUID: i+iOoz6jTHmJSucyW8geEQ==
+X-CSE-MsgGUID: tk8LQ3HnSSGwTjr9h+5Mzw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; d="scan'208";a="21165136"
+X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; d="scan'208";a="21165127"
 Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Apr 2024 02:15:18 -0700
+ 12 Apr 2024 02:15:16 -0700
 From: Nirmoy Das <nirmoy.das@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Nirmoy Das <nirmoy.das@intel.com>
-Subject: [PATCH i-g-t 3/4] tests/intel/xe_exec_atomic: Use new vm bind flag
-Date: Fri, 12 Apr 2024 11:01:16 +0200
-Message-ID: <20240412090117.32727-4-nirmoy.das@intel.com>
+Subject: [PATCH i-g-t 1/4] drm-uapi/xe: Add device atomics vm bind flags
+Date: Fri, 12 Apr 2024 11:01:14 +0200
+Message-ID: <20240412090117.32727-2-nirmoy.das@intel.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240412090117.32727-1-nirmoy.das@intel.com>
 References: <20240412090117.32727-1-nirmoy.das@intel.com>
@@ -70,41 +70,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use new vm bind flag to probe device atomics support.
+Align with commit ("drm/xe/uapi: Introduce VMA bind flag for device
+atomics")
 
 Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
 ---
- tests/intel/xe_exec_atomic.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ include/drm-uapi/xe_drm.h | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel/xe_exec_atomic.c b/tests/intel/xe_exec_atomic.c
-index d9790da78..1ec149ca1 100644
---- a/tests/intel/xe_exec_atomic.c
-+++ b/tests/intel/xe_exec_atomic.c
-@@ -85,7 +85,8 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 4353595a4..9171cc0f1 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -881,6 +881,14 @@ struct drm_xe_vm_destroy {
+  *    will only be valid for DRM_XE_VM_BIND_OP_MAP operations, the BO
+  *    handle MBZ, and the BO offset MBZ. This flag is intended to
+  *    implement VK sparse bindings.
++ *  - %DRM_XE_VM_BIND_FLAG_DEVICE_ATOMICS - When this flag is set for
++ *    a VA range, all the corresponding PTEs will have atomic access bit
++ *    set. This will allow device atomics operation for that VA range.
++ *    This flag only works for single placement buffer objects and
++ *    mainly for SMEM only buffer objects where CPU atomics can be perform
++ *    by an application and so KMD can not set device atomics on such buffers
++ *    by default. This flag has no effect on LMEM only placed buffers as atomic
++ *    access bit is set for LMEM backed PTEs always.
+  */
+ struct drm_xe_vm_bind_op {
+ 	/** @extensions: Pointer to the first extension struct, if any */
+@@ -967,10 +975,11 @@ struct drm_xe_vm_bind_op {
+ 	/** @op: Bind operation to perform */
+ 	__u32 op;
  
- 	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
- 	bind_engine = xe_bind_exec_queue_create(fd, vm, 0);
--	xe_vm_bind_async(fd, vm, bind_engine, bo, 0, addr, bo_size, &sync, 1);
-+	xe_vm_bind_async_flags(fd, vm, bind_engine, bo, 0, addr, bo_size,
-+			       &sync, 1, DRM_XE_VM_BIND_FLAG_DEVICE_ATOMICS);
- 	data = xe_bo_mmap_ext(fd, bo, bo_size, PROT_READ|PROT_WRITE);
- 	data->data = value;
+-#define DRM_XE_VM_BIND_FLAG_READONLY	(1 << 0)
+-#define DRM_XE_VM_BIND_FLAG_IMMEDIATE	(1 << 1)
+-#define DRM_XE_VM_BIND_FLAG_NULL	(1 << 2)
+-#define DRM_XE_VM_BIND_FLAG_DUMPABLE	(1 << 3)
++#define DRM_XE_VM_BIND_FLAG_READONLY		(1 << 0)
++#define DRM_XE_VM_BIND_FLAG_IMMEDIATE		(1 << 1)
++#define DRM_XE_VM_BIND_FLAG_NULL		(1 << 2)
++#define DRM_XE_VM_BIND_FLAG_DUMPABLE		(1 << 3)
++#define DRM_XE_VM_BIND_FLAG_DEVICE_ATOMICS	(1 << 4)
+ 	/** @flags: Bind flags */
+ 	__u32 flags;
  
-@@ -112,9 +113,10 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
- 
- static bool has_atomics(int fd, uint32_t region)
- {
--	/* System memory atomics on dGPU is not functional as of now */
--	if (region == system_memory(fd) && xe_has_vram(fd))
--		return false;
-+	struct drm_xe_query_config *config = xe_config(fd);
-+
-+	if (region == system_memory(fd))
-+		return !!config->info[DRM_XE_QUERY_CONFIG_VA_BITS];
- 
- 	return true;
- }
 -- 
 2.42.0
 
