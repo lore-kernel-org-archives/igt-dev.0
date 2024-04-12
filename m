@@ -4,55 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05EF4C4345F
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Apr 2024 00:43:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AF28C4345F
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Apr 2024 01:39:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 752E410E5CD;
-	Fri, 12 Apr 2024 00:43:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9925B10ECB6;
+	Fri, 12 Apr 2024 01:39:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BvDJOal7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="coclC11t";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7EF4310E5CD;
- Fri, 12 Apr 2024 00:43:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 71F3C10ECF8
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Apr 2024 01:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712882598; x=1744418598;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=1H2+8qJ8RJeh4Td6fj9qsgBhjqo3o0STKbVuyqT4dJM=;
- b=BvDJOal7+a6X7zCh4ONQ88QUHN88bSrYCDYunS4Og/hDEslERmn0QEke
- kSiTSTF6U0yWmgsDGVdnjysvrS4yZy9+MbunU9sg46M1aWaO56xM8Z1sP
- YooyMcluiwkEuV/YnVr8Nofn3U/QlcjE8O9suRcbKbom5xTh9S4Bff8L1
- 6tlFD6i5ZrPQiBntTeJHOB9ufi58i0MhCAGvxLeay5tPI1cfeo3fKVSAX
- O4WiMSsQBcUhLeGVq3rF7AhfnM84DKl5H7Af7J6fmi0zweq8nDYt+CaU9
- JJ0VC5k2vxIw/HzYYOJGl47C8H1JDnN52g6YtxpOx6ZHsTJ4Fux30Xlsz w==;
-X-CSE-ConnectionGUID: L326h62KQUSqoes3AaDV1w==
-X-CSE-MsgGUID: 1maIlsywQjOngCr3QlczGA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="8492651"
-X-IronPort-AV: E=Sophos;i="6.07,194,1708416000"; 
-   d="scan'208";a="8492651"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2024 17:43:18 -0700
-X-CSE-ConnectionGUID: J6AbQ9GTQ8eZtL0MT5gHMQ==
-X-CSE-MsgGUID: P76nmuBnRZifpjDp6rcqAQ==
+ t=1712885976; x=1744421976;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=lsIV+SE1khyiKSFQqhRgo4SlSTSwB6P1cJg5vPvUlO0=;
+ b=coclC11tteRqPfYe8QeDc7s+usY6VphX7EMNNCZBhQpNWmbRzm/KPbin
+ BdV9gmevJpwHUNBEaXwoU4V51NpJvIADsHgyXUfnmeO5O0Ze0/JECNcHg
+ qLvvc4dfp7pnF/J8L86/ogzPVkOvGgskyh10b/hnq1ttzICZMMP+oXe6N
+ s67HSVFA+559FmXAzaB7P8N0MyeaW0VBKsKfQDdEKcNnfifCkffiWjsez
+ JSF+117VJwh6m7jtXhw9eC7SH1FTpvMoQvKwfCSwywjpS556gLLfJKgM+
+ fFcU+CpBkAtspxgZMH35ye4ZmrmRn84kWojetP7ysKPPreQGrCKVEDXPI Q==;
+X-CSE-ConnectionGUID: 8sF1yM5BRtyoiBlrebiEcg==
+X-CSE-MsgGUID: 19F2vQ8zS0iAcPAjbvEQEA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="19722803"
+X-IronPort-AV: E=Sophos;i="6.07,194,1708416000"; d="scan'208";a="19722803"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Apr 2024 18:39:34 -0700
+X-CSE-ConnectionGUID: LPdP/d1JT7yOKR0qeSsADg==
+X-CSE-MsgGUID: LP+q4sdaSpWtJkpwuSj1lw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,194,1708416000"; d="scan'208";a="21040913"
-Received: from unknown (HELO intel.com) ([10.247.119.7])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2024 17:43:14 -0700
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: igt-dev <igt-dev@lists.freedesktop.org>,
- intel-gfx <intel-gfx@lists.freedesktop.org>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>
-Subject: [PATCH i-g-t] i915/gem_mmap_offset: Partial mmap and munmap
-Date: Fri, 12 Apr 2024 02:42:55 +0200
-Message-ID: <20240412004255.288046-1-andi.shyti@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.07,194,1708416000"; d="scan'208";a="21171263"
+Received: from saurabhg-nuc10i5fnh.jf.intel.com ([10.165.21.145])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Apr 2024 18:39:33 -0700
+From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+To: 
+Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ jonathan.cavitt@intel.com,
+ Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Subject: [PATCH i-g-t v4 1/2] lib/intel_blt: Add helper function to ensure
+ platform has flat-ccs enabled
+Date: Fri, 12 Apr 2024 06:37:29 -0700
+Message-Id: <cb46ed9b1a504d182215be1045a0b5380a7c234f.1712928787.git.akshata.jahagirdar@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1712928787.git.akshata.jahagirdar@intel.com>
+References: <cover.1712928787.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,128 +71,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@linux.intel.com>
+Add helper function to check if platform has flat-ccs enabled  by
+reading from debugfs entry.
 
-Based on a test case developed by Lionel Landwerlin, this exercises
-creation of partial mmaps using both direct methods of a partial mmap()
-(where the mmap() only covers a portion of the object) and
-munmap() to do the same.
-
-Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Acked-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 ---
- tests/intel/gem_mmap_offset.c | 84 +++++++++++++++++++++++++++++++++++
- 1 file changed, 84 insertions(+)
+ lib/intel_blt.c | 14 ++++++++++++++
+ lib/intel_blt.h |  1 +
+ 2 files changed, 15 insertions(+)
 
-diff --git a/tests/intel/gem_mmap_offset.c b/tests/intel/gem_mmap_offset.c
-index 95d2158ca88f..0ba2f9591f85 100644
---- a/tests/intel/gem_mmap_offset.c
-+++ b/tests/intel/gem_mmap_offset.c
-@@ -56,6 +56,8 @@
-  * SUBTEST: isolation
-  * SUBTEST: oob-read
-  * SUBTEST: open-flood
-+ * SUBTEST: partial-mmap
-+ * SUBTEST: partial-unmap
-  * SUBTEST: perf
-  * SUBTEST: pf-nonblock
-  * SUBTEST: ptrace
-@@ -874,6 +876,83 @@ static void blt_coherency(int i915)
- 	igt_assert_f(compare_ok, "Problem with coherency, flush is too late\n");
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index dc6669889..4da5cc855 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -464,6 +464,20 @@ bool blt_block_copy_supports_compression(int fd)
+ 				    BLT_CMD_SUPPORTS_COMPRESSION);
  }
  
-+static void partial_mmap(int i915)
++/**
++ * blt_platform_has_flat_ccs_enabled
++ * @fd: drm fd
++ *
++ * Check if platform provided by @fd device has flat-ccs enabled.
++ *
++ * Returns:
++ * true if it does, false otherwise.
++ */
++bool blt_platform_has_flat_ccs_enabled(int fd)
 +{
-+	uint32_t handle;
-+
-+	handle = gem_create(i915, SZ_2M);
-+
-+	for_each_mmap_offset_type(i915, t) {
-+		struct drm_i915_gem_mmap_offset arg = {
-+			.handle = handle,
-+			.flags = t->type,
-+		};
-+		uint32_t *ptr;
-+
-+		if (mmap_offset_ioctl(i915, &arg))
-+			continue;
-+
-+		ptr = mmap(0, SZ_4K, PROT_WRITE, MAP_SHARED, i915, arg.offset);
-+		if (ptr == MAP_FAILED)
-+			continue;
-+
-+		memset(ptr, 0xcc, SZ_4K);
-+		munmap(ptr, SZ_4K);
-+
-+		ptr = mmap(0, SZ_4K, PROT_READ, MAP_SHARED, i915, arg.offset + SZ_2M - SZ_4K);
-+		igt_assert(ptr != MAP_FAILED);
-+
-+		for (uint32_t i = 0; i < SZ_4K / sizeof(uint32_t); i++)
-+			igt_assert_eq_u32(ptr[i], 0);
-+
-+		munmap(ptr, SZ_4K);
-+	}
-+
-+	gem_close(i915, handle);
++	return igt_debugfs_search(fd, "info", "has_flat_ccs yes");
 +}
 +
-+static void partial_unmap(int i915)
-+{
-+	uint32_t handle;
-+
-+	handle = gem_create(i915, SZ_2M);
-+
-+	for_each_mmap_offset_type(i915, t) {
-+		uint8_t *ptr_a, *ptr_b;
-+
-+		/* mmap the same GEM BO twice */
-+		ptr_a = __mmap_offset(i915, handle, 0, SZ_2M,
-+				PROT_READ | PROT_WRITE,
-+				t->type);
-+		if (!ptr_a)
-+			continue;
-+
-+		ptr_b = __mmap_offset(i915, handle, 0, SZ_2M,
-+				PROT_READ | PROT_WRITE,
-+				t->type);
-+		if (!ptr_b)
-+			continue;
-+
-+		/* unmap the first mapping but the last 4k */
-+		munmap(ptr_a, SZ_2M - SZ_4K);
-+
-+		/* memset that remaining 4k with 0xcc */
-+		memset(ptr_a + SZ_2M - SZ_4K, 0xcc, SZ_4K);
-+
-+		/* memset the first page of the 2Mb with 0xdd */
-+		memset(ptr_b, 0xdd, SZ_4K);
-+
-+		for (uint32_t i = 0; i < SZ_4K; i++)
-+			igt_assert_eq_u32(ptr_a[SZ_2M - SZ_4K + i], 0xcc);
-+
-+		munmap(ptr_a + SZ_2M - SZ_4K, SZ_4K);
-+		memset(ptr_b, 0, SZ_2M);
-+		munmap(ptr_b, SZ_2M);
-+	}
-+
-+	gem_close(i915, handle);
-+}
-+
- static int mmap_gtt_version(int i915)
- {
- 	int gtt_version = -1;
-@@ -931,6 +1010,11 @@ igt_main
- 	igt_subtest_f("open-flood")
- 		open_flood(i915, 20);
+ /**
+  * blt_uses_extended_block_copy
+  * @fd: drm fd
+diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+index d9c4d107f..cc5966686 100644
+--- a/lib/intel_blt.h
++++ b/lib/intel_blt.h
+@@ -209,6 +209,7 @@ bool blt_fast_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
+ bool blt_block_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
+ bool blt_xy_src_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
+ bool blt_block_copy_supports_compression(int fd);
++bool blt_platform_has_flat_ccs_enabled(int fd);
+ bool blt_uses_extended_block_copy(int fd);
  
-+	igt_subtest_f("partial-mmap")
-+		partial_mmap(i915);
-+	igt_subtest_f("partial-unmap")
-+		partial_unmap(i915);
-+
- 	igt_subtest_with_dynamic("clear") {
- 		for_each_memory_region(r, i915) {
- 			igt_dynamic_f("%s", r->name)
+ const char *blt_tiling_name(enum blt_tiling_type tiling);
 -- 
-2.43.0
+2.34.1
 
