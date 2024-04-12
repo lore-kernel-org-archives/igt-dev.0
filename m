@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16211C00A94
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Apr 2024 09:11:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4F14C4345F
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Apr 2024 09:12:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4673610F54B;
-	Fri, 12 Apr 2024 09:11:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5EF6810F545;
+	Fri, 12 Apr 2024 09:12:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DVW8qds+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lj96R5rj";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E551910F537
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Apr 2024 09:11:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 710D610F532
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Apr 2024 09:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712913115; x=1744449115;
+ t=1712913111; x=1744449111;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DYYihVbhsdxhebtaoTRzbZ87ejAr7AqdKGg2N2nohE8=;
- b=DVW8qds+/9OgZrLUebUHYC4SUnd2iUDVwiOoCfIOIGCaHE6Fi79dPlCt
- hX+sYBfVb8RA/BYfkWVA4C5YzJ+PhZNq5CZ1UksAumfbDWYt6CKGm1nru
- MblxoHGYlqpYNAXchcnRSgXrzjmKrHF/7ka2IBXxBwL4LvzrzNjhLeXpt
- MosX97tlrQyJwcqaRgp7lr6fsCbXTHj5z63Pts+APGzh9k2/2Mg+yqr7E
- qVasXguA9STOxSwUmBmmlNWZRnXMm9yHhMF9mm2E62O+CHtA8VD36a+hq
- ANIPAeigpSS8Rs/muyudtdBUkxe8KeAfobJ2LQS/+fs9WTU7Gme9S8lp7 g==;
-X-CSE-ConnectionGUID: OE+Lnkc6TcKjRmGYMy+f6g==
-X-CSE-MsgGUID: 57P6jvw5TieEWSpgTD0Uvw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="30842851"
-X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; d="scan'208";a="30842851"
+ bh=6dKJTzB5vMS6hJ5q4fQABlbA1tlrLui24MK5HoWgpug=;
+ b=lj96R5rj+ibrasH+l3FH3XvdparkIlb5yoFtqB5R/B0dVRIXnwcnA8wF
+ x7E+K65+TaedhKxGBIPZQ2ydMEt3FUVHaFepD0Ca6i0rcGKUQxKZ6xM9W
+ sgcDFSEYXu9z0VgMCuaaT/pvGh2XqHkKe+u6QJAvw+0lCPxaNr+at4D/F
+ BmdVpaqQO8C1F3xSuWUPDMTgVdIEr+atbQpmqZGN0WPlXLMIOH6GRftLp
+ sHiXlBP74/0cM7e/339ZcgmgHylCsGA38Cn7DfUrHMTpmtFwYnnPBfGSP
+ CVZw4YI405tK82GOBVxrU8mqqHurWQVA9cmZyoY/zbT7wRAMroHNhRLNy g==;
+X-CSE-ConnectionGUID: 0V/wekIdTG6T199My7/z7A==
+X-CSE-MsgGUID: xS0Rld3PTquIS6e2RtANBQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="30842841"
+X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; d="scan'208";a="30842841"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Apr 2024 02:11:55 -0700
-X-CSE-ConnectionGUID: oZ/Pbtd7Ql67DGysKFGgQA==
-X-CSE-MsgGUID: jlJOK45UQwSXFZvoie5qtA==
+ 12 Apr 2024 02:11:51 -0700
+X-CSE-ConnectionGUID: 3Eez0nv+SQGGUFoCQWQpSA==
+X-CSE-MsgGUID: 7X2oGB7YQc2E50jzvQnsVw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; d="scan'208";a="25625118"
+X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; d="scan'208";a="25625093"
 Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Apr 2024 02:11:54 -0700
+ 12 Apr 2024 02:11:49 -0700
 From: Nirmoy Das <nirmoy.das@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Subject: [PATCH i-g-t 4/4] tests/intel/gem_spin_batch: Skip some test on MTL
-Date: Fri, 12 Apr 2024 10:57:44 +0200
-Message-ID: <20240412085744.21196-9-nirmoy.das@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t 2/4] tests/intel/gem_ctx_shared: Skip some test on MTL
+Date: Fri, 12 Apr 2024 10:57:40 +0200
+Message-ID: <20240412085744.21196-5-nirmoy.das@intel.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240412085744.21196-1-nirmoy.das@intel.com>
 References: <20240412085744.21196-1-nirmoy.das@intel.com>
@@ -74,24 +75,55 @@ We do GGTT update on MTL using bcs engine, blocking that would
 fail the test so skip such subtests on bcs engine for MTL.
 
 Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/gem_spin_batch.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/intel/gem_ctx_shared.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel/gem_spin_batch.c b/tests/intel/gem_spin_batch.c
-index 18873be16..ec1458e35 100644
---- a/tests/intel/gem_spin_batch.c
-+++ b/tests/intel/gem_spin_batch.c
-@@ -227,6 +227,9 @@ static void spin_all(int i915, const intel_ctx_t *ctx, unsigned int flags)
- 		if (!gem_class_can_store_dword(i915, e->class))
- 			continue;
+diff --git a/tests/intel/gem_ctx_shared.c b/tests/intel/gem_ctx_shared.c
+index d24ae5483..fd429306e 100644
+--- a/tests/intel/gem_ctx_shared.c
++++ b/tests/intel/gem_ctx_shared.c
+@@ -1047,6 +1047,12 @@ static void smoketest(int i915, const intel_ctx_cfg_t *cfg,
+ 		for_each_if(gem_class_can_store_dword(i915, (e)->class)) \
+ 			igt_dynamic_f("%s", e->name)
  
-+		if (gem_engine_can_block_ggtt_binder(i915, e))
-+			continue;
++#define for_each_nonblocking_ggtt_binder_queue(e, i915, cfg) \
++	for_each_ctx_cfg_engine(i915, cfg, e) \
++		for_each_if(gem_class_can_store_dword(i915, (e)->class) && \
++			    !gem_engine_can_block_ggtt_binder(i915, e)) \
++			igt_dynamic_f("%s", e->name)
 +
- 		if (flags & PARALLEL_SPIN_NEW_CTX)
- 			ctx = intel_ctx_create(i915, &cfg);
- 		ahnd = get_reloc_ahnd(i915, ctx->id);
+ igt_main
+ {
+ 	const struct intel_execution_engine2 *e;
+@@ -1104,22 +1110,22 @@ igt_main
+ 			}
+ 
+ 			igt_subtest_with_dynamic("Q-independent") {
+-				for_each_queue(e, i915, &cfg)
++				for_each_nonblocking_ggtt_binder_queue(e, i915, &cfg)
+ 					independent(i915, &cfg, e, 0);
+ 			}
+ 
+ 			igt_subtest_with_dynamic("Q-in-order") {
+-				for_each_queue(e, i915, &cfg)
++				for_each_nonblocking_ggtt_binder_queue(e, i915, &cfg)
+ 					reorder(i915, &cfg, e->flags, EQUAL);
+ 			}
+ 
+ 			igt_subtest_with_dynamic("Q-out-order") {
+-				for_each_queue(e, i915, &cfg)
++				for_each_nonblocking_ggtt_binder_queue(e, i915, &cfg)
+ 					reorder(i915, &cfg, e->flags, 0);
+ 			}
+ 
+ 			igt_subtest_with_dynamic("Q-promotion") {
+-				for_each_queue(e, i915, &cfg)
++				for_each_nonblocking_ggtt_binder_queue(e, i915, &cfg)
+ 					promotion(i915, &cfg, e->flags);
+ 			}
+ 		}
 -- 
 2.41.0
 
