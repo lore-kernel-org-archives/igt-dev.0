@@ -4,57 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6115C4345F
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Apr 2024 09:14:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FA24C4345F
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Apr 2024 09:15:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1DF7410E8A9;
-	Fri, 12 Apr 2024 09:14:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 15F5410F537;
+	Fri, 12 Apr 2024 09:15:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FpB9tQa3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EWmx/1iF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1EA2A10E8A9
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Apr 2024 09:14:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 036EA10F54C
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Apr 2024 09:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712913244; x=1744449244;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=v79s/SOBwip2drlns9P4ZqG6tMh4SMmq6Uly+gEzrFk=;
- b=FpB9tQa38PXFF7myvT2DDWKpvuPESQJdiQpAnHTGQ010LMytL6Qo9waP
- jollHy0RlGLnes/WHY32Sje61euzhiZv8HJk8gyo0kFtRtiM0F8Ph9Fzi
- /e3Q+wJINzMmx6vnsTNIgvwSYTP1GDcb+aQfaOtdghAgvyUjeiy/Cq5Co
- FUvliTawgaGuBfsv+Fbkie2PumCyp1loRizrx/Mre3xemEkPdxcD6UHq5
- OBJRYtODqsanVRA2jZ2y40/hqa/ugckrHwFhmlZ+BDwNoWiow2QyNAom/
- +1oJMe44A+VA0n+w8HZgRehrGl1ItzZpAksdvcYHiP49BxjL8H9+dvSGI w==;
-X-CSE-ConnectionGUID: Y9K3Ue6WSr2qJWxHRAj3+w==
-X-CSE-MsgGUID: bE83u+iYT5+YpJePye9lsg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="8234470"
-X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; 
-   d="scan'208";a="8234470"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Apr 2024 02:14:03 -0700
-X-CSE-ConnectionGUID: zDtKWpQgSxOEOpe3NiE5iA==
-X-CSE-MsgGUID: jq/+rkIFQ/OedV0yfwRVVw==
+ t=1712913326; x=1744449326;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=rxxF0GKnuMADct4d9XE14T6H/V/Q3mE13oPVn++nDp8=;
+ b=EWmx/1iFSyCUoK0No10DUUOONUC2Xh8MpIbsAhSeCdaXMBoAyiKGXyKb
+ WIf815mNd6J6+u9e1F62siqzFKFbXHmXQ6DgVujOADEvmjBKPN+Jg6eZN
+ dGULYapomgJUbb+/x+TF3zQiRO9GyRDLW5GgayTWM8C33uCKXJgfykIhm
+ mfZTDJvOp2SlUpdORB6aPOUITH7I8IbR8DQgxIkbCHGZOHC0OPiq7/l3w
+ T41BKLEujaSMPTmNZtPwvY8GeVW5qZ91WlqYNrLK5AHThXBc7zmXhKFLH
+ eOkUCue+15hKL+vUCs/a6HpeSCvfaZxqq2FKR/i3kZkNh3+3H/uP2ffbx w==;
+X-CSE-ConnectionGUID: jHlHyDt3QjaKrSmgq8p73Q==
+X-CSE-MsgGUID: /MIgI7+fRgCUDYOoEgFpIQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="12146402"
+X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; d="scan'208";a="12146402"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Apr 2024 02:15:16 -0700
+X-CSE-ConnectionGUID: PMwegTPuT2i7rzo3Y7aO5A==
+X-CSE-MsgGUID: KpOzq+gdR0OW2dWXhAGF0g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; d="scan'208";a="21673037"
-Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.246.52.84])
- ([10.246.52.84])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Apr 2024 02:14:01 -0700
-Message-ID: <56f43b98-f190-4853-94bc-9384e9c9305c@linux.intel.com>
-Date: Fri, 12 Apr 2024 11:13:59 +0200
+X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; d="scan'208";a="21165121"
+Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Apr 2024 02:15:15 -0700
+From: Nirmoy Das <nirmoy.das@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Subject: [PATCH i-g-t 0/4] Tes update for atomics related uAPI changes
+Date: Fri, 12 Apr 2024 11:01:13 +0200
+Message-ID: <20240412090117.32727-1-nirmoy.das@intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 0/4] Tes update for atomics related uAPI changes
-To: Nirmoy Das <nirmoy.das@intel.com>, igt-dev@lists.freedesktop.org
-References: <20240412085744.21196-1-nirmoy.das@intel.com>
-Content-Language: en-US
-From: Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <20240412085744.21196-1-nirmoy.das@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10,
+ 85579 Neubiberg, Germany,
+ Commercial Register: Amtsgericht Muenchen HRB 186928 
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,21 +68,20 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Please ignore this series. I forgot to cleanup my out dir which had 
-stale patches
+Update tests as per newly added uAPIs.
+https://patchwork.freedesktop.org/series/132290/
 
-On 4/12/2024 10:57 AM, Nirmoy Das wrote:
-> Update tests as per newly added uAPIs.
-> https://patchwork.freedesktop.org/series/132290/
->
-> Nirmoy Das (4):
->    drm-uapi/xe: Add device atomics vm bind flags
->    drm-uapi/xe: Add query flag for dev atomics on SMEM
->    tests/intel/xe_exec_atomic: Use new vm bind flag
->    test/intel/xe_query: Print DRM_XE_QUERY_CONFIG_SUPP_DEV_ATOMIC_ON_SMEM
->
->   include/drm-uapi/xe_drm.h    | 20 ++++++++++++++++----
->   tests/intel/xe_exec_atomic.c | 10 ++++++----
->   tests/intel/xe_query.c       |  2 ++
->   3 files changed, 24 insertions(+), 8 deletions(-)
->
+Nirmoy Das (4):
+  drm-uapi/xe: Add device atomics vm bind flags
+  drm-uapi/xe: Add query flag for dev atomics on SMEM
+  tests/intel/xe_exec_atomic: Use new vm bind flag
+  test/intel/xe_query: Print DRM_XE_QUERY_CONFIG_SUPP_DEV_ATOMIC_ON_SMEM
+
+ include/drm-uapi/xe_drm.h    | 20 ++++++++++++++++----
+ tests/intel/xe_exec_atomic.c | 10 ++++++----
+ tests/intel/xe_query.c       |  2 ++
+ 3 files changed, 24 insertions(+), 8 deletions(-)
+
+-- 
+2.42.0
+
