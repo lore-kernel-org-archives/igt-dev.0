@@ -4,27 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16E7BC4345F
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Apr 2024 07:26:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C9F5C4345F
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Apr 2024 07:49:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 21E9E10FA32;
-	Tue, 16 Apr 2024 07:26:58 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B903E10F6F7;
- Tue, 16 Apr 2024 07:26:55 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1342838783316931377=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id A842010F010;
+	Tue, 16 Apr 2024 07:49:51 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="dhihuxJK";
+	dkim-atps=neutral
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com
+ [209.85.128.52])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 35BEE10EFC3
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Apr 2024 07:49:49 +0000 (UTC)
+Received: by mail-wm1-f52.google.com with SMTP id
+ 5b1f17b1804b1-417e327773cso25051025e9.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Apr 2024 00:49:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1713253787; x=1713858587;
+ darn=lists.freedesktop.org; 
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=QiSAdCw9IY3TsiSwocogdX1UvibBENisFH+nW4RZSKA=;
+ b=dhihuxJKTvb9Di9Gj6RbX1/VThBC+h02c8TK5HPlaRbzyPgvoBas+cBuqPWlZ83c+l
+ 1PZEP0ZqKRBx2BEeNe2TEWlzNNh14B/E9Mp7170DQclESg3sZu5pdhiAvK7b/NQ5DW68
+ ecAlfeYMKjIhMiYm6WIl0Z2eWwMkJCfc1jqLDLEj1Ja8DnPnS0Fsdhk5Hq+PAu+NXBBG
+ BrFKZWKdsDzgytoAqR4VjAGe8MfhT7EQ7Eau6/C0M/UW/vP7Uk0KsgqMfwpzNru6X85z
+ go58EvXKFUEaW4mIEbeCqs7fbQCmYN6zbISpkRHqm7WauNHokGopE5MyDh7djMEyLYtC
+ robg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1713253787; x=1713858587;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QiSAdCw9IY3TsiSwocogdX1UvibBENisFH+nW4RZSKA=;
+ b=WVXEMHTyAmZdEcyLHVJepoyA3KBBxX/9/p0sEhdXSUwsWM13Aww5wRqVmxPLfacZy+
+ LmccklBpl/dfARdtvPFlJ/PNweZZrWfbl9FuhzKBiU3baz9gD1Wpfbof2QrqDa1BlNj8
+ +ewsqRp7FHdOBd/S55r51vke96/v+whkQCSrUoA1PmlSEi4ZEfXTn3/R2aT5YKkSCb1Y
+ lmiJXqYKM+qoGdJ33Asb2o3TNKaGYAuLWlBUoIbrtHB2VZHmpyEmYo8rN5MpnsZ0Fs5/
+ IZ6ezFbPU5awT4UQ5iA/VZB1xm+YcvWc58yR1nWMSIgA6901S0GjjfxyVSpKNHCE5KFp
+ n7Og==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU6v3oNCtn7I4l8oOhmCb8KxWnXw/b+My1FToUjMYxYRQGYRSYlakaTNyLxdx/KuLWQQ+kYNJZ2Z/cMbaIKz+9UVehqeMSFBn5blcmeLA==
+X-Gm-Message-State: AOJu0YzVFAHAu8H9d0YzEL+ZvZfPU0FN7Ym030u8ZtijNDQ3XrhelVJZ
+ dxR73Ahae7Pl9RHL6w6UYvlALXLdPVW6KwsLN3MTRdXrXB3vq8JwaZLPLWWA+CQ=
+X-Google-Smtp-Source: AGHT+IFJ1PXl6AuW4PvsnHx/PuXW+vMAquhVFnO8yrXmIjfH3mWTmKVlDH0rDc4K939toMwnrWsgxQ==
+X-Received: by 2002:a05:600c:3b0d:b0:416:71ac:1bef with SMTP id
+ m13-20020a05600c3b0d00b0041671ac1befmr970153wms.13.1713253787200; 
+ Tue, 16 Apr 2024 00:49:47 -0700 (PDT)
+Received: from [192.168.0.101] ([84.65.0.132])
+ by smtp.gmail.com with ESMTPSA id
+ a13-20020a05600c348d00b004186eb69a55sm5374235wmq.25.2024.04.16.00.49.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 Apr 2024 00:49:46 -0700 (PDT)
+Message-ID: <0b34d35a-dd06-4700-a2ab-7118fc5b660e@ursulin.net>
+Date: Tue, 16 Apr 2024 08:49:46 +0100
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_Update_for_atomics_related_uAP?=
- =?utf-8?q?I_changes?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nirmoy Das" <nirmoy.das@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 16 Apr 2024 07:26:55 -0000
-Message-ID: <171325241575.1424598.3187080024984443370@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240415143528.4107-1-nirmoy.das@intel.com>
-In-Reply-To: <20240415143528.4107-1-nirmoy.das@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] tools/gputop: toggle sysfs profiling knob if
+ available for device
+Content-Language: en-GB
+To: =?UTF-8?Q?Adri=C3=A1n_Larumbe?= <adrian.larumbe@collabora.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, daniel@ffwll.ch,
+ boris.brezillon@collabora.com, zbigniew.kempczynski@intel.com,
+ healych@amazon.com, kernel@collabora.com
+References: <20240402222813.277470-1-adrian.larumbe@collabora.com>
+ <20240402222813.277470-3-adrian.larumbe@collabora.com>
+ <20240403172236.zi7ruqdyzdto2q45@kamilkon-desk.igk.intel.com>
+ <qzyjvkeieoxxalgsrv33zau34b6onf6bdababiynvy7ffbxkoj@lrfaipvmlc4n>
+From: Tvrtko Ursulin <tursulin@ursulin.net>
+In-Reply-To: <qzyjvkeieoxxalgsrv33zau34b6onf6bdababiynvy7ffbxkoj@lrfaipvmlc4n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,208 +89,150 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1342838783316931377==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
+On 15/04/2024 20:35, Adrián Larumbe wrote:
+> On 03.04.2024 19:22, Kamil Konieczny wrote:
+>> Hi Adrián,
+>> On 2024-04-02 at 23:27:45 +0100, Adrián Larumbe wrote:
+>>> For every DRM device that enables its job accounting HW from user space,
+>>> toggle it right before obtaining per-client fdinfo numbers.
+>>>
+>>> Make sure profiling status is returned to its original state before
+>>> exiting, by handling the SIGINT signal just like in intel_gpu_top.
+>>>
+>>> Also dynamically link gputop against igt lib instead of separate per-file
+>>> static libraries to avoid dependence cascade because of using igt_sysfs
+>>> functions.
+>>>
+>>> Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+>>> Cc: Daniel Vetter <daniel@ffwll.ch>
+>>> Cc: Boris Brezillon <boris.brezillon@collabora.com>
+>>> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+>>> Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+>>> ---
+>>>   tools/gputop.c    | 30 +++++++++++++++++++++++++++++-
+>>>   tools/meson.build |  2 +-
+>>>   2 files changed, 30 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/tools/gputop.c b/tools/gputop.c
+>>> index 71e28f43ee4c..5b390cbdb3e7 100644
+>>> --- a/tools/gputop.c
+>>> +++ b/tools/gputop.c
+>>> @@ -26,8 +26,10 @@
+>>>   #include <sys/sysmacros.h>
+>>>   #include <stdbool.h>
+>>>   
+>>> +#include "igt_device_scan.h"
+>>>   #include "igt_drm_clients.h"
+>>>   #include "igt_drm_fdinfo.h"
+>>> +#include "igt_profiling.h"
+>>>   #include "drmtest.h"
+>>>   
+>>>   static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
+>>> @@ -243,9 +245,17 @@ static int client_cmp(const void *_a, const void *_b, void *unused)
+>>>   
+>>>   }
+>>>   
+>>> +static volatile bool stop_top;
+>>> +
+>>> +static void sigint_handler(int  sig)
+>>> +{
+>>> +	stop_top = true;
+>>> +}
+>>> +
+>>>   int main(int argc, char **argv)
+>>>   {
+>>>   	unsigned int period_us = 2e6;
+>>> +	struct igt_profiled_device *profiled_devices = NULL;
+>>>   	struct igt_drm_clients *clients = NULL;
+>>>   	int con_w = -1, con_h = -1;
+>>>   
+>>> @@ -253,9 +263,22 @@ int main(int argc, char **argv)
+>>>   	if (!clients)
+>>>   		exit(1);
+>>>   
+>>> +	igt_devices_scan(false);
+>>> +
+>>> +	profiled_devices = igt_devices_profiled();
+>>> +	if (profiled_devices != NULL)
+>>> +		igt_devices_toggle_profiling(profiled_devices, true);
+>>> +
+>>> +	if (signal(SIGINT, sigint_handler) == SIG_ERR) {
+>>> +		fprintf(stderr, "Failed to install signal handler!\n");
+>>> +		igt_devices_toggle_profiling(profiled_devices, false);
+>>> +		free(profiled_devices);
+>>> +		profiled_devices = NULL;
+>>> +	}
+>>> +
+>>>   	igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
+>>>   
+>>> -	for (;;) {
+>>> +	while (!stop_top) {
+>>>   		struct igt_drm_client *c, *prevc = NULL;
+>>>   		int i, engine_w = 0, lines = 0;
+>>>   		struct winsize ws;
+>>> @@ -293,5 +316,10 @@ int main(int argc, char **argv)
+>>>   		usleep(period_us);
+>>>   	}
+>>>   
+>>> +	if (profiled_devices != NULL) {
+>>> +		igt_devices_toggle_profiling(profiled_devices, false);
+>>> +		free(profiled_devices);
+>>> +	}
+>>> +
+>>>   	return 0;
+>>>   }
+>>> diff --git a/tools/meson.build b/tools/meson.build
+>>> index ac79d8b5840c..a126d6cad7ba 100644
+>>> --- a/tools/meson.build
+>>> +++ b/tools/meson.build
+>>> @@ -68,7 +68,7 @@ endif
+>>>   executable('gputop', 'gputop.c',
+>>>              install : true,
+>>>              install_rpath : bindir_rpathdir,
+>>> -           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,math])
+>>> +           dependencies : [lib_igt, lib_igt_drm_clients, math])
+>>
+>> Why not creating lib_igt_profiling with only needed dependeces and
+>> adding it here? Before your patch:
+>>
+>> ldd build/tools/gputop
+>>
+>> linux-vdso.so.1 (0x00007ffc5e120000)
+>> libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007bf0a4200000)
+>> /lib64/ld-linux-x86-64.so.2 (0x00007bf0a452b000)
+>>
+>> After:
+>>
+>> ldd gputop |wc -l
+>> 78
+> 
+> I guess if dynamic library dependencies are seen as undesirable for gputop, then
+> I'll try to do as you suggested, but I suspect a hypothetical lib_igt_profiling
+> static library will contain most of the object files in igt_lib's lib_sources
+> list of files.
 
-Series: Update for atomics related uAPI changes
-URL   : https://patchwork.freedesktop.org/series/132451/
-State : failure
+It is correct that a goal so far was to avoid linking tools/ (outside 
+tests/ even) with igt_igt. But you use quite a lot of lib_igt stuff in 
+this work right? I am not sure it is easy to split it all out into 
+separate libraries. Question for IGT maintainers.
 
-== Summary ==
+Regards,
 
-CI Bug Log - changes from XEIGT_7807_BAT -> XEIGTPW_11023_BAT
-====================================================
+Tvrtko
 
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_11023_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_11023_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (5 -> 5)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_11023_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_compute-instance-0-tile-0-vram0-memory:
-    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] +15 other tests fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7807/bat-dg2-oem2/igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_compute-instance-0-tile-0-vram0-memory.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11023/bat-dg2-oem2/igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_compute-instance-0-tile-0-vram0-memory.html
-
-  * igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_copy-instance-1-tile-0-vram0-memory:
-    - bat-pvc-2:          [PASS][3] -> [FAIL][4] +15 other tests fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7807/bat-pvc-2/igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_copy-instance-1-tile-0-vram0-memory.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11023/bat-pvc-2/igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_copy-instance-1-tile-0-vram0-memory.html
-
-  * igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_render-instance-0-tile-0-vram0-memory:
-    - bat-atsm-2:         [PASS][5] -> [FAIL][6] +15 other tests fail
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7807/bat-atsm-2/igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_render-instance-0-tile-0-vram0-memory.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11023/bat-atsm-2/igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_render-instance-0-tile-0-vram0-memory.html
-
-  
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@xe_exec_atomic@basic-dec-all:
-    - {bat-lnl-1}:        [PASS][7] -> [SKIP][8] +1 other test skip
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7807/bat-lnl-1/igt@xe_exec_atomic@basic-dec-all.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11023/bat-lnl-1/igt@xe_exec_atomic@basic-dec-all.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11023_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_exec_atomic@basic-dec-all:
-    - bat-adlp-7:         [PASS][9] -> [SKIP][10] ([Intel XE#455]) +1 other test skip
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7807/bat-adlp-7/igt@xe_exec_atomic@basic-dec-all.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11023/bat-adlp-7/igt@xe_exec_atomic@basic-dec-all.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-
-
-Build changes
--------------
-
-  * IGT: IGT_7807 -> IGTPW_11023
-
-  IGTPW_11023: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11023/index.html
-  IGT_7807: 43e71eeac0fb4fe59df40df2c96fd0fdbf585c0b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1095-5f7597e990bea547bd1261170497e7476fb781bb: 5f7597e990bea547bd1261170497e7476fb781bb
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11023/index.html
-
---===============1342838783316931377==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Update for atomics related uAPI changes</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132451/">https://patchwork.freedesktop.org/series/132451/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11023/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11023/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7807_BAT -&gt; XEIGTPW_11023_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_11023_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_11023_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (5 -&gt; 5)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_11023_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_compute-instance-0-tile-0-vram0-memory:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7807/bat-dg2-oem2/igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_compute-instance-0-tile-0-vram0-memory.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11023/bat-dg2-oem2/igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_compute-instance-0-tile-0-vram0-memory.html">FAIL</a> +15 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_copy-instance-1-tile-0-vram0-memory:</p>
-<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7807/bat-pvc-2/igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_copy-instance-1-tile-0-vram0-memory.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11023/bat-pvc-2/igt@xe_exec_atomic@basic-dec-all@engine-drm_xe_engine_class_copy-instance-1-tile-0-vram0-memory.html">FAIL</a> +15 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_render-instance-0-tile-0-vram0-memory:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7807/bat-atsm-2/igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_render-instance-0-tile-0-vram0-memory.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11023/bat-atsm-2/igt@xe_exec_atomic@basic-inc-all@engine-drm_xe_engine_class_render-instance-0-tile-0-vram0-memory.html">FAIL</a> +15 other tests fail</li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@xe_exec_atomic@basic-dec-all:<ul>
-<li>{bat-lnl-1}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7807/bat-lnl-1/igt@xe_exec_atomic@basic-dec-all.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11023/bat-lnl-1/igt@xe_exec_atomic@basic-dec-all.html">SKIP</a> +1 other test skip</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11023_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_exec_atomic@basic-dec-all:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7807/bat-adlp-7/igt@xe_exec_atomic@basic-dec-all.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11023/bat-adlp-7/igt@xe_exec_atomic@basic-dec-all.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +1 other test skip</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7807 -&gt; IGTPW_11023</li>
-</ul>
-<p>IGTPW_11023: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11023/index.html<br />
-  IGT_7807: 43e71eeac0fb4fe59df40df2c96fd0fdbf585c0b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1095-5f7597e990bea547bd1261170497e7476fb781bb: 5f7597e990bea547bd1261170497e7476fb781bb</p>
-
-</body>
-</html>
-
---===============1342838783316931377==--
+> 
+>> Regards,
+>> Kamil
+>>
+>>>   
+>>>   intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
+>>>   executable('intel_l3_parity', sources : intel_l3_parity_src,
+>>> -- 
+>>> 2.44.0
+>>>
+> 
+> Adrian Larumbe
