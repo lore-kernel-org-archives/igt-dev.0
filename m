@@ -4,79 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99FE6C4345F
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Apr 2024 08:08:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83F4DC4345F
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Apr 2024 08:22:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1F31110EF31;
-	Tue, 16 Apr 2024 08:08:01 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="uuefSne+";
-	dkim-atps=neutral
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
- [209.85.221.45])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39B3C10EF32
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Apr 2024 08:07:59 +0000 (UTC)
-Received: by mail-wr1-f45.google.com with SMTP id
- ffacd0b85a97d-346406a5fb9so3120321f8f.1
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Apr 2024 01:07:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1713254877; x=1713859677;
- darn=lists.freedesktop.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=oYRwjmHaaFv9rvSnc938qa+T2JCzTKTUR+HksdGEc7Q=;
- b=uuefSne+hwCtpP7u1kcyL8gWF2lEJ0aSqjocalYW8b3GoQ13V7Wv8YXF3Jnn+1EqDf
- JVdKs9eUputNg6ERBvYnSCrmHb/00NusfePjVgLTBD+0AOt2HpINVT4lflGX+LztUrYD
- 0KeAsuyiKW+naIgeyakRCcLqnCCVfvQkqTUv7SNv9nI+DGZugW3FBQlhX/+ZIJFJIR/f
- ct7dGJLDiXag18xTKrwlf4CnrqDxn6zG/vAL2Fdx3/dFbYj7JYbD2uemvh5lpZC5h9gw
- ituDK5J5N75FfjjsaVlbDPP8piOyLJbML6qX/BLr9I7Jfpu6JelqND2teql7HGcMSdf6
- exLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713254877; x=1713859677;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oYRwjmHaaFv9rvSnc938qa+T2JCzTKTUR+HksdGEc7Q=;
- b=mBZeI79KP33LSkVR+UhmqDI83SXgi4VhkVLsVUXdfvO7hwhxE6gvylrmy6yExDUvmL
- uLDE3J+v0yERmAbzJ/AvRd7HLW8ZoZdtcU5x/d9iJmCdFoXouj6JuSE8IUYPG/x9FLqz
- bsVc8FtwbgqERy8s2Se9pYEQ9jf/90b+jcdGZYw/bT8sOYB7J0YNoYI8IsQDqEnaaHEN
- xGw/6/9fG+GuQMGnXC5zlpwoaapGZ8IT09Jo78qMt8U8ub9a+ectyS1XbCsOxttLOdWI
- wM96fLmZIoW1wW6pZaHs2bp3MnHDKoHQGeAVZEYF9A91Lkfg5RC/woED3OCLpl/LOtZ6
- Fk/g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVyOe9lKloFDSB4iwBPt3yT70Uqx63wQpJIqGsK787ussQndQdqxWha55A8GLS5rCHS408BewVCt2D1HOOnkxHGLzG1r+FjuBlkDtHvOw==
-X-Gm-Message-State: AOJu0YwrdtVwDg8KzJ6E04ClFuTudE2ZZMteWrrtUamCy8kK7vLvwwVD
- znP94v8KNcGdgjDUYHPsFevVdf2hZOS8vSSfnsQSfG9u0ky7YLVgDSzCn7NpLSc=
-X-Google-Smtp-Source: AGHT+IGRam/mH6VJr+WO3KPGRK8CK7x3LD73RNH1wTXqqF/lZ1vZDP9ylSVHu+jVGxoBg1nIV0hgIA==
-X-Received: by 2002:a5d:4851:0:b0:33d:a944:54c0 with SMTP id
- n17-20020a5d4851000000b0033da94454c0mr8140986wrs.22.1713254876873; 
- Tue, 16 Apr 2024 01:07:56 -0700 (PDT)
-Received: from [192.168.0.101] ([84.65.0.132])
- by smtp.gmail.com with ESMTPSA id
- q25-20020a056000137900b003455d32e944sm13988473wrz.96.2024.04.16.01.07.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 Apr 2024 01:07:56 -0700 (PDT)
-Message-ID: <cf1ed943-1daf-4f8d-a130-b900de233432@ursulin.net>
-Date: Tue, 16 Apr 2024 09:07:55 +0100
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0D23D10F357;
+	Tue, 16 Apr 2024 08:22:08 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5530710F357;
+ Tue, 16 Apr 2024 08:22:06 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1607636057295478392=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] tools/gputop: toggle sysfs profiling knob if
- available for device
-Content-Language: en-GB
-To: =?UTF-8?Q?Adri=C3=A1n_Larumbe?= <adrian.larumbe@collabora.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: daniel@ffwll.ch, boris.brezillon@collabora.com,
- kamil.konieczny@linux.intel.com, zbigniew.kempczynski@intel.com,
- igt-dev@lists.freedesktop.org, healych@amazon.com, kernel@collabora.com
-References: <20240402222813.277470-1-adrian.larumbe@collabora.com>
- <20240402222813.277470-3-adrian.larumbe@collabora.com>
- <xc4vz6uq4llsexgwurudl3jtv6bke3b4vsqnqgvvhs3gtkd6ay@5glimn77s3dq>
- <42eaigc7oogdzi4km5ytjph5ejzej65pgzygck24apdt2io4wr@v72l4hu47vic>
-From: Tvrtko Ursulin <tursulin@ursulin.net>
-In-Reply-To: <42eaigc7oogdzi4km5ytjph5ejzej65pgzygck24apdt2io4wr@v72l4hu47vic>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/kunit=3A_Read_results_from?=
+ =?utf-8?q?_debugfs_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 16 Apr 2024 08:22:06 -0000
+Message-ID: <171325572634.1424598.1892254293869268790@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240415173405.120137-2-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20240415173405.120137-2-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,54 +37,161 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============1607636057295478392==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 15/04/2024 20:31, Adrián Larumbe wrote:
-> On 03.04.2024 15:46, Lucas De Marchi wrote:
->> On Tue, Apr 02, 2024 at 11:27:45PM +0100, Adrián Larumbe wrote:
->>> For every DRM device that enables its job accounting HW from user space,
->>> toggle it right before obtaining per-client fdinfo numbers.
->>>
->>> Make sure profiling status is returned to its original state before
->>> exiting, by handling the SIGINT signal just like in intel_gpu_top.
->>
->> isn't this something that should be rather tracked on the kernel side
->> rather than relying on the userspace to behave?
-> 
-> This would simplify handling of the sysfs knob state from user space, but I'm
-> not sure normal sysfs device attributes are allowed to keep an internal state
-> between _show() calls.
-> 
->> 1) call gputop
->> 2) call gputop, because you forgot you had it open in another ssh
->>     session
->> 3) stop (1), because ssh session dies
-> 
-> I feel tempted to brush this off as legitimate behaviour, albeit 'undefined'.
-> If we cannot handle the scenario in which multiple profilers tweak the profiling
-> state at the same time from kernel space, then I would prefer to expect users to
-> readjust the sysfs attribute value manually.
+== Series Details ==
 
-I agree with Lucas that would be a pretty bad user experience. We have 
-to consider if more users for fdinfo appear there could be more fighting 
-over this control going on. And I don't see any reasonable solution 
-within the sysfs framework. It is not possible to have own fops in 
-there, is it?
+Series: lib/kunit: Read results from debugfs (rev3)
+URL   : https://patchwork.freedesktop.org/series/131686/
+State : success
 
-Would it be of any use if gputop would be checking the state of the knob 
-from the main loop so it can at least give explicit notification someone 
-toggled it to off? (Instead of suddenly and silently showing no GPU 
-utilisation.) Maybe also before trying to restore it. It would be racy 
-yes but maybe good enough for practical purposes?
+== Summary ==
 
-Regards,
+CI Bug Log - changes from XEIGT_7807_BAT -> XEIGTPW_11024_BAT
+====================================================
 
-Tvrtko
+Summary
+-------
 
-> 
->>  From the kernel side, I think it could be done by enabling it on fd
->> open, disabling it on last close.
-> 
-> Adrian Larumbe
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_11024_BAT:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc:
+    - {bat-lnl-1}:        [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7807/bat-lnl-1/igt@kms_pipe_crc_basic@nonblocking-crc.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11024/bat-lnl-1/igt@kms_pipe_crc_basic@nonblocking-crc.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11024_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_evict@evict-cm-threads-small:
+    - bat-dg2-oem2:       [PASS][3] -> [TIMEOUT][4] ([Intel XE#1259] / [Intel XE#1473])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7807/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11024/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1259]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1259
+  [Intel XE#1473]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1473
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7807 -> IGTPW_11024
+
+  IGTPW_11024: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11024/index.html
+  IGT_7807: 43e71eeac0fb4fe59df40df2c96fd0fdbf585c0b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1095-5f7597e990bea547bd1261170497e7476fb781bb: 5f7597e990bea547bd1261170497e7476fb781bb
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11024/index.html
+
+--===============1607636057295478392==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/kunit: Read results from debugfs (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131686/">https://patchwork.freedesktop.org/series/131686/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11024/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11024/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7807_BAT -&gt; XEIGTPW_11024_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_11024_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@kms_pipe_crc_basic@nonblocking-crc:<ul>
+<li>{bat-lnl-1}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7807/bat-lnl-1/igt@kms_pipe_crc_basic@nonblocking-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11024/bat-lnl-1/igt@kms_pipe_crc_basic@nonblocking-crc.html">DMESG-WARN</a> +1 other test dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11024_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_evict@evict-cm-threads-small:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7807/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11024/bat-dg2-oem2/igt@xe_evict@evict-cm-threads-small.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1259">Intel XE#1259</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1473">Intel XE#1473</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7807 -&gt; IGTPW_11024</li>
+</ul>
+<p>IGTPW_11024: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11024/index.html<br />
+  IGT_7807: 43e71eeac0fb4fe59df40df2c96fd0fdbf585c0b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1095-5f7597e990bea547bd1261170497e7476fb781bb: 5f7597e990bea547bd1261170497e7476fb781bb</p>
+
+</body>
+</html>
+
+--===============1607636057295478392==--
