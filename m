@@ -4,53 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A618C4345F
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Apr 2024 10:33:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24BF9C4345F
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Apr 2024 10:33:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E425310F595;
-	Wed, 17 Apr 2024 10:33:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9A09D10F5A2;
+	Wed, 17 Apr 2024 10:33:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aqBcir9O";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dp3WL6zo";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6BB3010F595
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Apr 2024 10:33:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D2C210F59B
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Apr 2024 10:33:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713350005; x=1744886005;
+ t=1713350009; x=1744886009;
  h=from:to:cc:subject:date:message-id:in-reply-to: references;
- bh=2fJZ35p56rwSfWwuKLagxYD4atqoulgrmSYqHg4kY6E=;
- b=aqBcir9OJhWupZIB5vm7JRO5z/ZJIrvT2BP2qsIeRKo9znj5b8BiMCac
- 5dmnCTPOO4Uw/625IasJt5I1uYwfNJIlrdt3izMPDPTEcGTVwzohkglTw
- 6+MxRyxSE7pKvlWjnQsp7/Ai7ItwkAMR8F+hh1BjneqavWW3Fz1z+EdR9
- fq75iDllbFZ1kp56AhYWg5/CSyNwGmX3ZzIEaMlZjxcRJuTDzNuE6Gjqm
- H/xi77i/3SiZBX84ddF0v2ei4J0DYv345pvztOq6vHGfEuD6QELfWYbYO
- C4wKumTjdWhj2TBCSD5QDT2CF65vYq11VKU1asNWdaONANigQ8AVyVZ8W w==;
-X-CSE-ConnectionGUID: pkowwdfXR0uhbgDZ6NDV+A==
-X-CSE-MsgGUID: Mo8O9/QSQ8GyYG5ObzOroA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="9383393"
+ bh=bnsGG0TggSXREQe0DC1rCmPtjYR/ZAb/IcNTR/10yIo=;
+ b=dp3WL6zo3gwk4hWLohA8GueZcgialF6dTw0WTU6Xs4cJyfxd9j119f0R
+ vPsI0Ot3m3nxsobEKjaoguY9ITIZ9+hKtatis4sQWpgUIQORYgwhGpF3T
+ /9+I5iDZdZPeyxBnMQWWQWSIl2iz+YL5MuqqPpgLb7umfTUq8At1gZNJU
+ yHnrXthO53ylqUNmpkg+J+/nRMZX4qx74a+0W4vzrY33QXOUikWgr+wk5
+ Qp0e6eAyUj6w5XJXo8Smr5qpgCzqMhYYi5zoNmvSBJejfiO6Qlp9ddys7
+ uERLy9gppke3CduCA9dxs81knZR/rz+PFwbLrU7Zq1DEL4TEjF6KBMfTB Q==;
+X-CSE-ConnectionGUID: obPE79boSt6Egl8p4WDN0A==
+X-CSE-MsgGUID: 7P34/AcRQ4Gc8hulhCYkCg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="9383398"
 X-IronPort-AV: E=Sophos;i="6.07,208,1708416000"; 
-   d="scan'208";a="9383393"
+   d="scan'208";a="9383398"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2024 03:33:25 -0700
-X-CSE-ConnectionGUID: u0angclbSB26QS5iwcmU5w==
-X-CSE-MsgGUID: WiOvjWhLS4Go8x8A3c96aw==
+ 17 Apr 2024 03:33:29 -0700
+X-CSE-ConnectionGUID: 0koYwpSMQVGgm5cvP3Q8Iw==
+X-CSE-MsgGUID: tRK+oqR9QoiBPxvXu5QNkw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,208,1708416000"; d="scan'208";a="27257327"
+X-IronPort-AV: E=Sophos;i="6.07,208,1708416000"; d="scan'208";a="27257331"
 Received: from basicluh01.gar.corp.intel.com (HELO localhost.localdomain)
  ([10.223.131.46])
- by orviesa003.jf.intel.com with ESMTP; 17 Apr 2024 03:33:23 -0700
+ by orviesa003.jf.intel.com with ESMTP; 17 Apr 2024 03:33:27 -0700
 From: Melanie Lobo <melanie.lobo@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: juha-pekka.heikkila@intel.com, vidya.srinivas@intel.com,
- kamil.konieczny@linux.intel.com, Melanie Lobo <melanie.lobo@intel.com>
-Subject: [PATCH 0/2] Adding FP16 XRGB16161616_64B tests in MTL
-Date: Wed, 17 Apr 2024 16:15:42 +0530
-Message-Id: <20240417104544.12963-1-melanie.lobo@intel.com>
+ kamil.konieczny@linux.intel.com, Melanie Lobo <melanie.lobo@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH 1/2] lib/intel_aux_pgtable: Library to add support for FP16
+ XRGB16161616_64B format
+Date: Wed, 17 Apr 2024 16:15:43 +0530
+Message-Id: <20240417104544.12963-2-melanie.lobo@intel.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20231010134540.28485-1-melanie.lobo@intel.com>
+In-Reply-To: <20240417104544.12963-1-melanie.lobo@intel.com>
 References: <20231010134540.28485-1-melanie.lobo@intel.com>
+ <20240417104544.12963-1-melanie.lobo@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,18 +71,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series adds tests for XRGB16161616_64B compressed format.
+MTL supports XRGB16161616_64B format which is a binary floating-point computer
+number format that occupies 16 bits in computer memory.
 
-Melanie Lobo (2):
-  lib/intel_aux_pgtable: Library to add support for FP16
-    XRGB16161616_64B format
-  tests/intel/kms_flip_scaled_crc: Add tests for FP16 XRGB16161616_64B
-    compressed format
+This was tested with kernel patch,
+https://patchwork.freedesktop.org/series/124957/
+https://lore.kernel.org/all/20231201091133.23508-1-melanie.lobo@intel.com/
 
- lib/intel_aux_pgtable.c           |  5 +++++
- tests/intel/kms_flip_scaled_crc.c | 20 ++++++++++++++++++++
- 2 files changed, 25 insertions(+)
+cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+cc: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Melanie Lobo <melanie.lobo@intel.com>
+---
+ lib/intel_aux_pgtable.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
+diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
+index 3cbb0e26f35c..1741c41af9a9 100644
+--- a/lib/intel_aux_pgtable.c
++++ b/lib/intel_aux_pgtable.c
+@@ -22,6 +22,7 @@
+ #define AUX_FORMAT_AYUV		0x09
+ #define AUX_FORMAT_ARGB_8B	0x0A
+ #define AUX_FORMAT_NV12_21	0x0F
++#define AUX_FORMAT_XRGB16161616_64B 0x10
+ 
+ struct pgtable_level_desc {
+ 	int idx_shift;
+@@ -306,6 +307,10 @@ static uint64_t pgt_get_l1_flags(const struct intel_buf *buf, int surface_idx)
+ 			entry.e.format = AUX_FORMAT_ARGB_8B;
+ 			entry.e.depth = bpp_to_depth_val(32);
+ 			break;
++		case 64:
++			entry.e.format = AUX_FORMAT_XRGB16161616_64B;
++			entry.e.depth = bpp_to_depth_val(64);
++			break;
+ 		default:
+ 			igt_assert(0);
+ 		}
 -- 
 2.17.1
 
