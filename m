@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62AEAC001CC
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Apr 2024 13:10:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF2F8C4345F
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Apr 2024 13:32:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B32C41134E1;
-	Wed, 17 Apr 2024 13:10:32 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UO8sSYHV";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A969113015;
- Wed, 17 Apr 2024 13:10:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713359431; x=1744895431;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=cTAInaZANfzoFWVDLbqgQg6Fmj442BT84k9ETPReAj4=;
- b=UO8sSYHVh54KOpLkz2kyx7L/6ETlaw2M/iEwCmb0J+BRjIKifHk6h/yq
- TSuu7IuVdO74xFpYwKmjJAHKwE/AlzA/A8ItGuSndVnqvalqbCw49kVOm
- DsampU9cLL9RRQJpDSEjs71JeiU2OZGzRkqaa3fdbyoWwQJwWl+l1n5Fw
- 4AZy9l47Ax/Z2seoS16QAmwdyI0oqYpph8iQwx5eH+X/xEHHmaVY8w0mk
- 64H6SM+MJe+D9kpDgSAN8coJhYggm4ZW40Gs8nUxzqoKBovYz27+8/9IY
- If4sPZb19RJ3H5S70LKdzSPOgtz7tnja/oH2e4akqAXybXwm0QYqBhWmn A==;
-X-CSE-ConnectionGUID: 8COOXvSUSpeZ7qicON5kGg==
-X-CSE-MsgGUID: 8+PdGsGmQ4+f3tfbz+457g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="19407486"
-X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; d="scan'208";a="19407486"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2024 06:10:31 -0700
-X-CSE-ConnectionGUID: 3bh5wj1FSd6/q8plAlcBoQ==
-X-CSE-MsgGUID: 5+6jKOEZRSqVAEY2vQ0iQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; d="scan'208";a="27260186"
-Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.94.250.221])
- ([10.94.250.221])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2024 06:10:29 -0700
-Message-ID: <49f9ac97-8b83-4495-840c-6c042b24aa14@linux.intel.com>
-Date: Wed, 17 Apr 2024 15:10:27 +0200
+	by gabe.freedesktop.org (Postfix) with ESMTP id 97E2410F62A;
+	Wed, 17 Apr 2024 13:32:36 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C3CE10F62A;
+ Wed, 17 Apr 2024 13:32:35 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1307835118646747979=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] i915/gem_mmap_offset: Partial mmap and munmap
-To: Andi Shyti <andi.shyti@linux.intel.com>,
- igt-dev <igt-dev@lists.freedesktop.org>,
- intel-gfx <intel-gfx@lists.freedesktop.org>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Chris Wilson <chris.p.wilson@linux.intel.com>
-References: <20240412004255.288046-1-andi.shyti@linux.intel.com>
-Content-Language: en-US
-From: Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <20240412004255.288046-1-andi.shyti@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_Put_=22Run_type=22_highest_in_?=
+ =?utf-8?q?documentation_hierarchy?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Katarzyna Piecielska" <katarzyna.piecielska@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 17 Apr 2024 13:32:35 -0000
+Message-ID: <171336075504.1465249.7128950849240748501@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240417111324.3231762-1-katarzyna.piecielska@intel.com>
+In-Reply-To: <20240417111324.3231762-1-katarzyna.piecielska@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,136 +37,122 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============1307835118646747979==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 4/12/2024 2:42 AM, Andi Shyti wrote:
-> From: Chris Wilson <chris.p.wilson@linux.intel.com>
->
-> Based on a test case developed by Lionel Landwerlin, this exercises
-> creation of partial mmaps using both direct methods of a partial mmap()
-> (where the mmap() only covers a portion of the object) and
-> munmap() to do the same.
->
-> Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> ---
->   tests/intel/gem_mmap_offset.c | 84 +++++++++++++++++++++++++++++++++++
->   1 file changed, 84 insertions(+)
->
-> diff --git a/tests/intel/gem_mmap_offset.c b/tests/intel/gem_mmap_offset.c
-> index 95d2158ca88f..0ba2f9591f85 100644
-> --- a/tests/intel/gem_mmap_offset.c
-> +++ b/tests/intel/gem_mmap_offset.c
-> @@ -56,6 +56,8 @@
->    * SUBTEST: isolation
->    * SUBTEST: oob-read
->    * SUBTEST: open-flood
-> + * SUBTEST: partial-mmap
-> + * SUBTEST: partial-unmap
->    * SUBTEST: perf
->    * SUBTEST: pf-nonblock
->    * SUBTEST: ptrace
-> @@ -874,6 +876,83 @@ static void blt_coherency(int i915)
->   	igt_assert_f(compare_ok, "Problem with coherency, flush is too late\n");
->   }
->   
-> +static void partial_mmap(int i915)
-> +{
-> +	uint32_t handle;
-> +
-> +	handle = gem_create(i915, SZ_2M);
-> +
-> +	for_each_mmap_offset_type(i915, t) {
-> +		struct drm_i915_gem_mmap_offset arg = {
-> +			.handle = handle,
-> +			.flags = t->type,
-> +		};
-> +		uint32_t *ptr;
-> +
-> +		if (mmap_offset_ioctl(i915, &arg))
-> +			continue;
-> +
-> +		ptr = mmap(0, SZ_4K, PROT_WRITE, MAP_SHARED, i915, arg.offset);
-> +		if (ptr == MAP_FAILED)
-> +			continue;
-> +
-> +		memset(ptr, 0xcc, SZ_4K);
-> +		munmap(ptr, SZ_4K);
-> +
-> +		ptr = mmap(0, SZ_4K, PROT_READ, MAP_SHARED, i915, arg.offset + SZ_2M - SZ_4K);
-> +		igt_assert(ptr != MAP_FAILED);
-> +
-> +		for (uint32_t i = 0; i < SZ_4K / sizeof(uint32_t); i++)
-> +			igt_assert_eq_u32(ptr[i], 0);
-> +
-> +		munmap(ptr, SZ_4K);
-> +	}
-> +
-> +	gem_close(i915, handle);
-> +}
-> +
-> +static void partial_unmap(int i915)
-> +{
-> +	uint32_t handle;
-> +
-> +	handle = gem_create(i915, SZ_2M);
-> +
-> +	for_each_mmap_offset_type(i915, t) {
-> +		uint8_t *ptr_a, *ptr_b;
-> +
-> +		/* mmap the same GEM BO twice */
-> +		ptr_a = __mmap_offset(i915, handle, 0, SZ_2M,
-> +				PROT_READ | PROT_WRITE,
-> +				t->type);
-> +		if (!ptr_a)
-> +			continue;
-> +
-> +		ptr_b = __mmap_offset(i915, handle, 0, SZ_2M,
-> +				PROT_READ | PROT_WRITE,
-> +				t->type);
-> +		if (!ptr_b)
-> +			continue;
-> +
-> +		/* unmap the first mapping but the last 4k */
-> +		munmap(ptr_a, SZ_2M - SZ_4K);
-> +
-> +		/* memset that remaining 4k with 0xcc */
-> +		memset(ptr_a + SZ_2M - SZ_4K, 0xcc, SZ_4K);
-> +
-> +		/* memset the first page of the 2Mb with 0xdd */
-> +		memset(ptr_b, 0xdd, SZ_4K);
-> +
-> +		for (uint32_t i = 0; i < SZ_4K; i++)
-> +			igt_assert_eq_u32(ptr_a[SZ_2M - SZ_4K + i], 0xcc);
-> +
-> +		munmap(ptr_a + SZ_2M - SZ_4K, SZ_4K);
-> +		memset(ptr_b, 0, SZ_2M);
+== Series Details ==
 
-Do we need this extra memset() ? Otherwise
+Series: Put "Run type" highest in documentation hierarchy
+URL   : https://patchwork.freedesktop.org/series/132552/
+State : failure
 
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7810_BAT -> XEIGTPW_11031_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_11031_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_11031_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (5 -> 0)
+------------------------------
+
+  ERROR: It appears as if the changes made in XEIGTPW_11031_BAT prevented too many machines from booting.
+
+  Missing    (5): bat-pvc-2 bat-lnl-1 bat-dg2-oem2 bat-adlp-7 bat-atsm-2 
 
 
-> +		munmap(ptr_b, SZ_2M);
-> +	}
-> +
-> +	gem_close(i915, handle);
-> +}
-> +
->   static int mmap_gtt_version(int i915)
->   {
->   	int gtt_version = -1;
-> @@ -931,6 +1010,11 @@ igt_main
->   	igt_subtest_f("open-flood")
->   		open_flood(i915, 20);
->   
-> +	igt_subtest_f("partial-mmap")
-> +		partial_mmap(i915);
-> +	igt_subtest_f("partial-unmap")
-> +		partial_unmap(i915);
-> +
->   	igt_subtest_with_dynamic("clear") {
->   		for_each_memory_region(r, i915) {
->   			igt_dynamic_f("%s", r->name)
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7810 -> IGTPW_11031
+  * Linux: xe-1104-c577180c5a61220ef8db9a4a3cd4de66bf58eed4 -> xe-1105-75418ec1fe7737396419e6447005b10e666aeaec
+
+  IGTPW_11031: 11031
+  IGT_7810: 189483744e9ff56ea573e07a049c5365404c7ecb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1104-c577180c5a61220ef8db9a4a3cd4de66bf58eed4: c577180c5a61220ef8db9a4a3cd4de66bf58eed4
+  xe-1105-75418ec1fe7737396419e6447005b10e666aeaec: 75418ec1fe7737396419e6447005b10e666aeaec
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11031/index.html
+
+--===============1307835118646747979==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Put &quot;Run type&quot; highest in documentation hierarchy</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132552/">https://patchwork.freedesktop.org/series/132552/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11031/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11031/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7810_BAT -&gt; XEIGTPW_11031_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_11031_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_11031_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (5 -&gt; 0)</h2>
+<p>ERROR: It appears as if the changes made in XEIGTPW_11031_BAT prevented too many machines from booting.</p>
+<p>Missing    (5): bat-pvc-2 bat-lnl-1 bat-dg2-oem2 bat-adlp-7 bat-atsm-2 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7810 -&gt; IGTPW_11031</li>
+<li>Linux: xe-1104-c577180c5a61220ef8db9a4a3cd4de66bf58eed4 -&gt; xe-1105-75418ec1fe7737396419e6447005b10e666aeaec</li>
+</ul>
+<p>IGTPW_11031: 11031<br />
+  IGT_7810: 189483744e9ff56ea573e07a049c5365404c7ecb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1104-c577180c5a61220ef8db9a4a3cd4de66bf58eed4: c577180c5a61220ef8db9a4a3cd4de66bf58eed4<br />
+  xe-1105-75418ec1fe7737396419e6447005b10e666aeaec: 75418ec1fe7737396419e6447005b10e666aeaec</p>
+
+</body>
+</html>
+
+--===============1307835118646747979==--
