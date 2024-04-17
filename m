@@ -4,55 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95C01C4345F
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Apr 2024 15:43:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50ED2C4345F
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Apr 2024 15:54:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F2D9310F040;
-	Tue, 16 Apr 2024 15:43:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DBB5710F196;
+	Tue, 16 Apr 2024 15:54:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="edKgWC2o";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EjXjfIq+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E846210F040
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Apr 2024 15:43:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 32D2E112D2A
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Apr 2024 15:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713282231; x=1744818231;
+ t=1713282855; x=1744818855;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=TaVZUO4kGVcb8VxuqnOnIutbaz0alUGB/LfoL29IMhc=;
- b=edKgWC2okvBv2khJ7ZSVq8Yz/33qyzD4RuaHp9XcBSrkvDMsnZgw4Ub4
- UwqEKJU1pbU2REUif8RaWYtEwNiV+xVNuOGSJp5jHFnewfi8uOpdbQUrN
- weSvVjM1/1T2RHtm1sQ0KhiE+egv0ZdiPdhtpLQLjVwm2r8rlZ2i2k4VF
- fXq3/O8AF6uVS5g8hiA2uZoqS1Uq4HimuRzmopQONRkxT69GuZnlnG3aa
- fUL7pF/9z7abqt9BUQd8tvG8soM6nxJznBiCNBlES3V6cCJWumHDqN8ZI
- D9TQG1yYEdsrcYEcGNWvNb2H/XFo9lgMav2hEMUnBYTGnd6AZR105YCdv A==;
-X-CSE-ConnectionGUID: H6nao4WiTY6szQm4Sl467Q==
-X-CSE-MsgGUID: ScdfWvMdRbqvdCghd+TcpA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="19877298"
-X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; d="scan'208";a="19877298"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2024 08:43:51 -0700
-X-CSE-ConnectionGUID: RzuK76ZUSSWX+4xZD4lWtg==
-X-CSE-MsgGUID: 9TzPsKTvQee+Dbr+KwPXVQ==
+ bh=JnzqH+Zd5yoKxLMSm54AXyCbHoa5cG/gEGYpozkE3OY=;
+ b=EjXjfIq+SwIgicgLe4wjZb4BDSWVSK1OwcMEcznGj1YfR/hB7QUhxNfP
+ veIBkllTlOsyyB6jOqGX9RkRBM3RCtPUPyfKJx0At1p+pEtrfbBZjH0CI
+ 9ZTl5umOCw3KuyY3J6Nc9p7l4knjU66aD3F+ltIEf/evofMsgLB+FSh96
+ q0hZuhLR8XeVjEAFEloXHVS0Ja1klgpP72zvQzfqYzyRzOduEz5eheTnZ
+ QCTB9j5eA90O0fmDdpt2yRVROENzEWRV0sijKa2WMDtUIoZFRYuYqc6r+
+ NJUhm7lTWzwnVAK/7EMLMzRk4CxScheKIWprNVQDCSR4evPAR02sX8XYO Q==;
+X-CSE-ConnectionGUID: dQbiumvWTVCFCXL52UC6mQ==
+X-CSE-MsgGUID: GACRedXWS7657V8KqANPyw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="8858469"
+X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; 
+   d="scan'208";a="8858469"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Apr 2024 08:54:14 -0700
+X-CSE-ConnectionGUID: 1de8ojKIQquBIsig/AFm0A==
+X-CSE-MsgGUID: 17BDe+/kQG+zjya4NzHOPw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; d="scan'208";a="22187445"
-Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2.intel.com)
- ([10.212.69.76])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2024 08:43:50 -0700
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Matt Roper <matthew.d.roper@intel.com>,
- Jani Nikula <jani.nikula@intel.com>,
- Ville Syrjala <ville.syrjala@linux.intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH] intel_reg: Move decoding behind an option
-Date: Tue, 16 Apr 2024 10:42:07 -0500
-Message-ID: <20240416154338.102157-1-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.44.0
+X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; d="scan'208";a="27099742"
+Received: from saurabhg-nuc10i5fnh.jf.intel.com ([10.165.21.145])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Apr 2024 08:54:14 -0700
+From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+To: 
+Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Subject: [PATCH i-g-t v5 0/2] Update compression check based on platform
+Date: Tue, 16 Apr 2024 20:52:05 -0700
+Message-Id: <cover.1713325737.git.akshata.jahagirdar@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,146 +68,22 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Decoding the register can be only as good as the reg_spec being used.
-The current builtin register spec is not that. Move that decoding behind
-an option to make it better for the normal case when running from the
-repo checkout where the external reg spec is not available. Passing any
-of --decode, --all, --spec brings the old behavior back:
+In Xe2+ platforms, we need to run the xe_ccs test regardless of the status of
+flat-ccs.
+Check if the platform supports compression and has flat ccs enabled,
+and if it doesn't, then update the check on compression
+and proceed with the test.
 
-	$ sudo ./build/tools/intel_reg --decode read 0x2358
-	Warning: stat '/usr/local/share/igt-gpu-tools/registers' failed: No such file or directory. Using builtin register spec.
-					    (0x00002358): 0x00000000
+Akshata Jahagirdar (2):
+  lib/intel_blt: Add helper function to ensure platform has  flat-ccs
+    enabled
+  tests/xe_ccs: Update compression check based on flat-ccs  enablement
 
-vs the new behavior:
+ lib/intel_blt.c      | 14 ++++++++++++++
+ lib/intel_blt.h      |  1 +
+ tests/intel/xe_ccs.c | 20 ++++++++++++++++----
+ 3 files changed, 31 insertions(+), 4 deletions(-)
 
-	$ sudo ./build/tools/intel_reg --decode read 0x2358
-					    (0x00002358): 0x00000000
-
-We could probably reduce the leading space since we won't have any name,
-but that can be improved later.
-
-v2: Instead of removing the warning, move the whole decoding logic
-    behind a command line option
-
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- tools/intel_reg.c | 31 ++++++++++++++++++++++++-------
- 1 file changed, 24 insertions(+), 7 deletions(-)
-
-diff --git a/tools/intel_reg.c b/tools/intel_reg.c
-index 6c37e14d1..1b6a07aca 100644
---- a/tools/intel_reg.c
-+++ b/tools/intel_reg.c
-@@ -68,6 +68,9 @@ struct config {
- 	/* write: do a posting read */
- 	bool post;
- 
-+	/* decode registers, otherwise use just raw values */
-+	bool decode;
-+
- 	/* decode register for all platforms */
- 	bool all_platforms;
- 
-@@ -195,7 +198,7 @@ static bool port_is_mmio(enum port_addr port)
- 	}
- }
- 
--static void dump_decode(struct config *config, struct reg *reg, uint32_t val)
-+static void dump_regval(struct config *config, struct reg *reg, uint32_t val)
- {
- 	char decode[1300];
- 	char tmp[1024];
-@@ -206,8 +209,11 @@ static void dump_decode(struct config *config, struct reg *reg, uint32_t val)
- 	else
- 		*bin = '\0';
- 
--	intel_reg_spec_decode(tmp, sizeof(tmp), reg, val,
--			      config->all_platforms ? 0 : config->devid);
-+	if (config->decode)
-+		intel_reg_spec_decode(tmp, sizeof(tmp), reg, val,
-+				      config->all_platforms ? 0 : config->devid);
-+	else
-+		*tmp = '\0';
- 
- 	if (*tmp) {
- 		/* We have a decode result, and maybe binary decode. */
-@@ -573,7 +579,7 @@ static void dump_register(struct config *config, struct reg *reg)
- 	uint32_t val;
- 
- 	if (read_register(config, reg, &val) == 0)
--		dump_decode(config, reg, val);
-+		dump_regval(config, reg, val);
- }
- 
- static int write_register(struct config *config, struct reg *reg, uint32_t val)
-@@ -941,7 +947,7 @@ static int intel_reg_decode(struct config *config, int argc, char *argv[])
- 			continue;
- 		}
- 
--		dump_decode(config, &reg, val);
-+		dump_regval(config, &reg, val);
- 	}
- 
- 	return EXIT_SUCCESS;
-@@ -1037,10 +1043,11 @@ static int intel_reg_help(struct config *config, int argc, char *argv[])
- 	printf("\n\n");
- 
- 	printf("OPTIONS common to most COMMANDS:\n");
--	printf(" --spec=PATH    Read register spec from directory or file\n");
-+	printf(" --spec=PATH    Read register spec from directory or file. Implies --decode\n");
- 	printf(" --mmio=FILE    Use an MMIO snapshot\n");
- 	printf(" --devid=DEVID  Specify PCI device ID for --mmio=FILE\n");
--	printf(" --all          Decode registers for all known platforms\n");
-+	printf(" --decode       Decode registers\n");
-+	printf(" --all          Decode registers for all known platforms. Implies --decode\n");
- 	printf(" --binary       Binary dump registers\n");
- 	printf(" --verbose      Increase verbosity\n");
- 	printf(" --quiet        Reduce verbosity\n");
-@@ -1106,6 +1113,9 @@ static int read_reg_spec(struct config *config)
- 	struct stat st;
- 	int r;
- 
-+	if (!config->decode)
-+		return 0;
-+
- 	path = config->specfile;
- 	if (!path)
- 		path = getenv("INTEL_REG_SPEC");
-@@ -1154,6 +1164,7 @@ enum opt {
- 	OPT_DEVID,
- 	OPT_COUNT,
- 	OPT_POST,
-+	OPT_DECODE,
- 	OPT_ALL,
- 	OPT_BINARY,
- 	OPT_SPEC,
-@@ -1188,6 +1199,7 @@ int main(int argc, char *argv[])
- 		/* options specific to write */
- 		{ "post",	no_argument,		NULL,	OPT_POST },
- 		/* options specific to read, dump and decode */
-+		{ "decode",	no_argument,		NULL,	OPT_DECODE },
- 		{ "all",	no_argument,		NULL,	OPT_ALL },
- 		{ "binary",	no_argument,		NULL,	OPT_BINARY },
- 		{ 0 }
-@@ -1223,6 +1235,7 @@ int main(int argc, char *argv[])
- 			config.post = true;
- 			break;
- 		case OPT_SPEC:
-+			config.decode = true;
- 			config.specfile = strdup(optarg);
- 			if (!config.specfile) {
- 				fprintf(stderr, "strdup: %s\n",
-@@ -1232,6 +1245,10 @@ int main(int argc, char *argv[])
- 			break;
- 		case OPT_ALL:
- 			config.all_platforms = true;
-+			config.decode = true;
-+			break;
-+		case OPT_DECODE:
-+			config.decode = true;
- 			break;
- 		case OPT_BINARY:
- 			config.binary = true;
 -- 
-2.44.0
+2.34.1
 
