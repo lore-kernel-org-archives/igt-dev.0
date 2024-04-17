@@ -4,58 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCC72C4345F
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Apr 2024 11:13:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3CD7C4345F
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Apr 2024 11:32:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6ADF71133E0;
-	Wed, 17 Apr 2024 11:13:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5F28310E721;
+	Wed, 17 Apr 2024 11:32:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M6n29Uqg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VWftXvM3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B4A51133E0
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Apr 2024 11:13:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3AB9310E721
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Apr 2024 11:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713352425; x=1744888425;
+ t=1713353557; x=1744889557;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=cJvrd+dgEXE/m523XSwWkfAwvrkYTIImRwwhWYzkahg=;
- b=M6n29Uqgi4w15B1mlxqPoEZvIj+aMx+k8mEl8IHOxepb8GHiWgsFcTdl
- m4Aafi40BhJTSP9zZ2+yGllbay0Ao2ZLfUgfEFY591w0m65fuk26oiMRH
- HnW9CjoCiZ2Sl7H5Ta685kaFBedvrvvf1gREMhcww4oZFynhCc8edqN8X
- 4RZSLsWGRlVOIH/Ni9Tqx7CyuYjY3bjLNUgl4+tk79GUQEWH6IflCvW5N
- GGrioMMfhJgRnhEj7lAxGvBA4856agQecnavPvUmZEGc/yczguHeMOSaQ
- 093JgxDaUL/W6K3dcjvMYr+fJDBH+0AeAqH8ZaFJDMzyV87JkvUeKFjmO w==;
-X-CSE-ConnectionGUID: HuycYZlSR2iRtCvyi/ve/w==
-X-CSE-MsgGUID: xBKpTDGYT6yrcKkUq6fW1w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="8699118"
+ bh=MNF1qiBSgt+QK/9cylriGSSgvXoUbEnEWq2q8EFC0OI=;
+ b=VWftXvM3iPXwErdjl6RSFx7r7fBSw2V26m29306Jo7nYrW7aYrXN+lOs
+ wLRJ/KQ1uzbH4wskcWVdNuyvsJ47psJpwggliPJUPzEQmSPNC/vkEx2zS
+ HlEic5XBN+Ex7N/aewkMKL/byViXcgTssAgjJrRCEPviXLKz+nj6CXl3P
+ kXUZf2jnYFexyVYylTtyeUr3eUfRGx/EBJEd2PaOkcjA1loK5ABaT7APV
+ XwbqMSt+gPuqdv41QAtrNIlM64bVRxqHfFsblddnJO1RyfsJYH9UMnCVL
+ dzHhzGbdEFqx84M7pTeO4NV79e98Wb91FAyMO0P5/epVXhOAT8HqbXkwg g==;
+X-CSE-ConnectionGUID: NKsVext2Ts2WG8MYnVCQNA==
+X-CSE-MsgGUID: /Xrb2WR3R4mKWi+T+561MA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="8719252"
 X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
-   d="scan'208";a="8699118"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2024 04:13:44 -0700
-X-CSE-ConnectionGUID: mnA7HetIT2KDpPXP3HDOkQ==
-X-CSE-MsgGUID: 1XIS+5EvQdOkkrIK83mUOw==
+   d="scan'208";a="8719252"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Apr 2024 04:32:37 -0700
+X-CSE-ConnectionGUID: XegfZuS9T7mVyZVAT+UgLg==
+X-CSE-MsgGUID: OPejDqhvSseNktLsDUYTKg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; d="scan'208";a="27384096"
-Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2024 04:13:43 -0700
-From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; d="scan'208";a="22658089"
+Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 04:32:35 -0700
+From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Kamil Konieczny <kamil.konieczny@intel.com>,
- Jari Tahvanainen <jari.tahvanainen@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Subject: [PATCH i-g-t 1/1] tests/intel: Put "Run type" highest in
- documentation hierarchy
-Date: Wed, 17 Apr 2024 11:13:24 +0000
-Message-Id: <20240417111324.3231762-2-katarzyna.piecielska@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240417111324.3231762-1-katarzyna.piecielska@intel.com>
-References: <20240417111324.3231762-1-katarzyna.piecielska@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>,
+ =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+ Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [PATCH i-g-t 1/6] tests/intel/kms_big_joiner: fix crash in multi
+ joiner test
+Date: Wed, 17 Apr 2024 17:13:21 +0530
+Message-Id: <20240417114326.2245087-2-kunal1.joshi@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240417114326.2245087-1-kunal1.joshi@intel.com>
+References: <20240417114326.2245087-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -72,106 +73,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's put "Run type" at highest place in documentation hierarchy. It
-will be reflected in html generated documentation.
+Fix test from crashing on out of bound.
 
-Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@intel.com>
-Cc: Jari Tahvanainen <jari.tahvanainen@intel.com>
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/intel/xe_test_config.json | 66 ++++++++++++++++-----------------
- 1 file changed, 33 insertions(+), 33 deletions(-)
+ tests/intel/kms_big_joiner.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
-index 22b43ffac..f88883414 100644
---- a/tests/intel/xe_test_config.json
-+++ b/tests/intel/xe_test_config.json
-@@ -4,51 +4,51 @@
-     "drivers": [ "xe" ],
-     "files": [ "xe_*.c", "../core_hotunplug.c", "../sriov_basic.c", "intel_hwmon.c" ],
-     "fields": {
--        "Category": {
-+        "Run type": {
-             "_properties_": {
-                 "mandatory": true,
--                "description": "Contains the major group for the tested functionality, being hardware, software or firmware"
-+                "description": "Defines what category of testlist it belongs",
-+                "default-testlist": "FULL",
-+                "update-from-file": {
-+                    "exclude-type": "regex-ignorecase",
-+                    "append-value-if-not-excluded": "Xe FULL",
-+                    "include": [
-+                        { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" }
-+                    ],
-+                    "exclude": [
-+                        { "Xe BAT, Xe FULL": "../intel-ci/xe.blocklist.txt" }
-+                    ]
-+                },
-+                "order": [
-+                    "boot",
-+                    "__all__",
-+                    "kunit"
-+                ]
-             },
--            "Mega feature": {
-+            "Category": {
-                 "_properties_": {
--                    "description": "Contains the mega feature for end to end use case, e. g. the 'sellable' feature."
-+                    "mandatory": true,
-+                    "description": "Contains the major group for the tested functionality, being hardware, software or firmware"
-                 },
--                "Sub-category": {
-+                "Mega feature": {
-                     "_properties_": {
--                        "mandatory": true,
--                        "description": "Contains the the technical feature/functionality"
-+                        "description": "Contains the mega feature for end to end use case, e. g. the 'sellable' feature."
-                     },
--                    "Functionality": {
-+                    "Sub-category": {
-                         "_properties_": {
-                             "mandatory": true,
--                            "description": "Groups page table tests on buckets containg more detailed functionality"
-+                            "description": "Contains the technical feature/functionality"
-                         },
--                        "Feature": {
-+                        "Functionality": {
-                             "_properties_": {
--                                "description": "Describes the lowest level feature bucket"
--                            }
--                        }
--                    },
--                    "Run type": {
--                        "_properties_": {
--                            "mandatory": true,
--                            "description": "Defines what category of testlist it belongs",
--                            "default-testlist": "FULL",
--                            "update-from-file": {
--                                "exclude-type": "regex-ignorecase",
--                                "append-value-if-not-excluded": "Xe FULL",
--                                "include": [
--                                    { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" }
--                                ],
--                                "exclude": [
--                                    { "Xe BAT, Xe FULL": "../intel-ci/xe.blocklist.txt" }
--                                ]
-+                                "mandatory": true,
-+                                "description": "Groups page table tests on buckets containg more detailed functionality"
-                             },
--                            "order": [
--                                "boot",
--                                "__all__",
--                                "kunit"
--                            ]
-+                            "Feature": {
-+                                "_properties_": {
-+                                    "description": "Describes the lowest level feature bucket"
-+                                }
-+                            }
-                         }
-                     }
-                 }
+diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
+index 078f76ac1..88923be6b 100644
+--- a/tests/intel/kms_big_joiner.c
++++ b/tests/intel/kms_big_joiner.c
+@@ -162,7 +162,7 @@ static void test_single_joiner(data_t *data, int output_count, bool force_joiner
+ 
+ static void test_multi_joiner(data_t *data, int output_count, bool force_joiner)
+ {
+-	int i;
++	int i, cleanup;
+ 	uint32_t available_pipe_mask;
+ 	enum pipe pipe, master_pipe;
+ 	igt_output_t **outputs;
+@@ -173,6 +173,7 @@ static void test_multi_joiner(data_t *data, int output_count, bool force_joiner)
+ 
+ 	available_pipe_mask = BIT(data->n_pipes) - 1;
+ 	outputs = force_joiner ? data->non_big_joiner_output : data->big_joiner_output;
++	cleanup = 0;
+ 
+ 	igt_display_reset(&data->display);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+@@ -183,6 +184,7 @@ static void test_multi_joiner(data_t *data, int output_count, bool force_joiner)
+ 			master_pipe = setup_pipe(data, output, pipe, available_pipe_mask);
+ 			if (master_pipe == PIPE_NONE)
+ 				continue;
++			cleanup++;
+ 			mode = igt_output_get_mode(output);
+ 			primary[i] = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 			igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
+@@ -195,7 +197,7 @@ static void test_multi_joiner(data_t *data, int output_count, bool force_joiner)
+ 		}
+ 	}
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+-	for (i = 0; i < output_count; i++) {
++	for (i = 0; i < cleanup; i++) {
+ 		igt_plane_set_fb(primary[i], NULL);
+ 		igt_remove_fb(data->drm_fd, &fb[i]);
+ 	}
 -- 
-2.34.1
+2.25.1
 
