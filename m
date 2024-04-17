@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92584C04FF6
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Apr 2024 16:27:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB923C04FF8
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Apr 2024 16:27:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E8109112D63;
-	Tue, 16 Apr 2024 16:27:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7CDD4112D75;
+	Tue, 16 Apr 2024 16:27:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aQ9XHSDu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Me0LjQNr";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7E8B112D6D
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B56A6112D70
  for <igt-dev@lists.freedesktop.org>; Tue, 16 Apr 2024 16:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1713284862; x=1744820862;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=lsIV+SE1khyiKSFQqhRgo4SlSTSwB6P1cJg5vPvUlO0=;
- b=aQ9XHSDuiQpvxz2cRppCU4NKJMcSbhFpv1gMY49R183QwzQZkI9whOqC
- ya46fysyKpDncY0r1pMElGvGfVE8sxH2rDwaIWH0NTLuOQO4SBNGM8yfL
- r6oVt8nFBocrRQiIanl9kXPokPV8ydw+0tenKtd+cGtAcfCaG/RA8gwOb
- 5/feYFYSwPDghBGTzZZ2MQ0HmzNeJpR/C47rGYNYsyDt27rf2asSkqjee
- CmG0kehvR4Z7f5OeczDA0xv8B+eBdtJKDBtGHilVegtQnrOieNbdMoema
- EMVk7hRhlkDsHYKnAHbBBFiAvdug/o5watqim2C9g1qrDIJbUCnwjex6Q A==;
-X-CSE-ConnectionGUID: g6cacFw+Q3WSqv8BIIL/0A==
-X-CSE-MsgGUID: 59FRPXh2RsyxMyAKpJRH7Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="31218246"
-X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; d="scan'208";a="31218246"
+ bh=8dG4vZCwAHSgDm2AieBa00mvc7CtGe9V/tHTbZZmJYA=;
+ b=Me0LjQNrmjldrdeIdVzefV5/vd+WoZRorQFfD8OHiu2eWz3utliBlIvm
+ 0s6B75FT26+pfohYGMAIKK2fKbe6rhC3r/Abksm8iGrc5bdbrKN32H8hg
+ W+KL7IEq+qLNdTeyslcNY/cxEAL/uI9gL7QhEzb3SDwqupRRnWvT+/WF0
+ MuQgxvHovNtnEspkYMZgqj3S2oCnAQDMOaujVK/yRWfLESqHHTP4ClmX/
+ hY/JrMk52zOATb/V/m0at+kUTOzkBfKG0CL3hd8Lfvjb7JW1TrdDijnd2
+ OIUQXjfcbyQdDEyPRpxC5CKFLRfUjKFWc7ZGbf1IauiCilW0LhI7/GGbz Q==;
+X-CSE-ConnectionGUID: ttOILODZTwGP5uj4eB62aw==
+X-CSE-MsgGUID: rMYR59U5SsGzRTfmNrKP9Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="31218247"
+X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; d="scan'208";a="31218247"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  16 Apr 2024 09:27:42 -0700
-X-CSE-ConnectionGUID: SJ3WwhVTRXGGIib/WkcOyQ==
-X-CSE-MsgGUID: w/cFzZ1nQGu4cFcA/Zhy2A==
+X-CSE-ConnectionGUID: vRZ8/3xPQKOmLPZ7r6izSw==
+X-CSE-MsgGUID: DaWUKBNzSPmUoKEYwTaLBA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; d="scan'208";a="26885965"
+X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; d="scan'208";a="26885970"
 Received: from saurabhg-nuc10i5fnh.jf.intel.com ([10.165.21.145])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  16 Apr 2024 09:27:41 -0700
@@ -46,15 +46,14 @@ To:
 Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
  Akshata Jahagirdar <akshata.jahagirdar@intel.com>,
  Jonathan Cavitt <jonathan.cavitt@intel.com>
-Subject: [PATCH i-g-t v5 1/2] lib/intel_blt: Add helper function to ensure
- platform has flat-ccs enabled
-Date: Tue, 16 Apr 2024 21:25:32 -0700
-Message-Id: <b867cc0ffad688ec182cbfe8adfccbd8f8fc25b0.1713327400.git.akshata.jahagirdar@intel.com>
+Subject: [PATCH i-g-t v5 2/2] tests/xe_ccs: Update compression check based on
+ flat-ccs enablement
+Date: Tue, 16 Apr 2024 21:25:33 -0700
+Message-Id: <8d12225cebb54ccf921c955501f61d407507e361.1713327400.git.akshata.jahagirdar@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1713327400.git.akshata.jahagirdar@intel.com>
 References: <cover.1713327400.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,54 +70,75 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add helper function to check if platform has flat-ccs enabled  by
-reading from debugfs entry.
+In Xe2+ platforms,we need to run this test regardless of the status of flat-ccs.
+Check if the platform supports compression and has flat ccs enabled, and if it
+doesn't, then update the checks accordingly and proceed with the test.
+
+Additionally, On Xe2 dGPU, compression is only supported with VRAM. When copying
+from VRAM -> sysmem the KMD uses mapping with uncompressed PAT so the copy
+in system memory is guaranteed to be uncompressed. When restoring such buffers
+from sysmem -> VRAM the KMD can't easily know which pages were originally
+compressed, so we always use uncompressed -> uncompressed here. so this means
+there's no need for extra CCS storage on such platforms.
+Thats why we shouldn't need to run suspend-resume on xe2 dgpu.
 
 Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Acked-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 ---
- lib/intel_blt.c | 14 ++++++++++++++
- lib/intel_blt.h |  1 +
- 2 files changed, 15 insertions(+)
+ tests/intel/xe_ccs.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index dc6669889..4da5cc855 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -464,6 +464,20 @@ bool blt_block_copy_supports_compression(int fd)
- 				    BLT_CMD_SUPPORTS_COMPRESSION);
- }
+diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+index b3bf97af7..d61644884 100644
+--- a/tests/intel/xe_ccs.c
++++ b/tests/intel/xe_ccs.c
+@@ -162,8 +162,24 @@ static void surf_copy(int xe,
+ 						      (void *)mid->ptr, mid->size);
  
-+/**
-+ * blt_platform_has_flat_ccs_enabled
-+ * @fd: drm fd
-+ *
-+ * Check if platform provided by @fd device has flat-ccs enabled.
-+ *
-+ * Returns:
-+ * true if it does, false otherwise.
-+ */
-+bool blt_platform_has_flat_ccs_enabled(int fd)
-+{
-+	return igt_debugfs_search(fd, "info", "has_flat_ccs yes");
-+}
+ 		munmap(ccsmap2, ccssize);
+-		igt_assert(!strcmp(orig, newsum));
+-		igt_assert(!strcmp(orig2, newsum2));
++		if (blt_platform_has_flat_ccs_enabled(xe))
++			if (IS_GEN(xe, 12) && is_intel_dgfx(xe)) {
++				igt_assert(!strcmp(orig, newsum));
++				igt_assert(!strcmp(orig2, newsum2));
++			} else if (AT_LEAST_GEN(xe, 20)) {
++				if (is_dgfx(xe)) {
++					/* buffer object would become
++					 * uncompressed in xe2+ dgfx
++					 */
++					igt_assert(!blt_surface_is_compressed(xe, ctx,
++							NULL, ahnd, mid));
++				} else {
++					/* ccs should be present in xe2+ igfx */
++					igt_assert(blt_surface_is_compressed(xe, ctx,
++							NULL, ahnd, mid));
++				}
++			}
 +
- /**
-  * blt_uses_extended_block_copy
-  * @fd: drm fd
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index d9c4d107f..cc5966686 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -209,6 +209,7 @@ bool blt_fast_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
- bool blt_block_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
- bool blt_xy_src_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
- bool blt_block_copy_supports_compression(int fd);
-+bool blt_platform_has_flat_ccs_enabled(int fd);
- bool blt_uses_extended_block_copy(int fd);
+ 		g_free(orig);
+ 		g_free(orig2);
+ 		g_free(newsum);
+@@ -193,7 +209,8 @@ static void surf_copy(int xe,
+ 	intel_ctx_xe_sync(ctx, true);
+ 	WRITE_PNG(xe, run_id, "corrupted", &blt.dst, dst->x2, dst->y2, bpp);
+ 	result = memcmp(src->ptr, dst->ptr, src->size);
+-	igt_assert(result != 0);
++	if (!blt_platform_has_flat_ccs_enabled(xe))
++		igt_assert(result != 0);
  
- const char *blt_tiling_name(enum blt_tiling_type tiling);
+ 	/* retrieve back ccs */
+ 	memcpy(ccsmap, ccscopy, ccssize);
+@@ -365,7 +382,8 @@ static void block_copy(int xe,
+ 	 * occurs and ctrl surface will be filled with some not-zeroed values.
+ 	 */
+ 	if (mid->compression && FROM_EXP_WH(width, height))
+-		igt_assert(blt_surface_is_compressed(xe, ctx, NULL, ahnd, mid));
++		if (!blt_platform_has_flat_ccs_enabled(xe))
++			igt_assert(blt_surface_is_compressed(xe, ctx, NULL, ahnd, mid));
+ 
+ 	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height, bpp);
+ 
 -- 
 2.34.1
 
