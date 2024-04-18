@@ -4,146 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8329DC4345F
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Apr 2024 13:27:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B735C04FFF
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Apr 2024 13:41:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1509B10EDA5;
-	Thu, 18 Apr 2024 13:27:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B10C3113C93;
+	Thu, 18 Apr 2024 13:41:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FTDmdZPt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YQPUFKxr";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F2C710EDA5
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Apr 2024 13:27:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13AF8113C91
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Apr 2024 13:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713446850; x=1744982850;
- h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=rhDTTca5iFcOmEIGUXS5foqUAWDP5T2xIkK0ssUx8B8=;
- b=FTDmdZPtTifqeLaCuXLF9UWQKNobtR/jTlTvWt3HzqtVlHPBnThcuE3+
- pJPTqM0wTBI8Pa9LJedrm0mUVdQsUxPAbtnZiRPACWlTet4wZMd9me1Rd
- jW1YaeGf2/pK65cJnYT8jAwpCVM3UyBpSQLIWE5Llw/uRUQUsF4ErJIA4
- m6s3QT1k0AA7gYdCYSAFfmQoFHoqRZ3E2J+YDDyYIHqHIVgLNPXccPBai
- n3ntm8KOYBpnH4jczEA240RY8Wh9MCNuJAB0fMjZjxIGAr33SnUxWbzip
- FubI44KZnhmsjasHvY7i4l9r2YYifi0sYpJdVXfE+ba2QFDO6s5n88MkV g==;
-X-CSE-ConnectionGUID: r/zZKPT2TYadEQvjEuvQCQ==
-X-CSE-MsgGUID: eNoGfC/rSmeicJ7bHeSjHQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="8918414"
-X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; 
-   d="scan'208";a="8918414"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2024 06:27:30 -0700
-X-CSE-ConnectionGUID: WlJDb+TXQsi+wDQM7W5TJw==
-X-CSE-MsgGUID: vjw3pA3yQL2Rx1UutiAXGA==
+ t=1713447684; x=1744983684;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=dNbNM7P5Fn4Ajq4k3MnTzuoGmJ6ue/p3C6wWzSGZMGc=;
+ b=YQPUFKxrHKwUxay1hR3HR9FJmAHtIFH/hfwl9d9a5ORBdN/2Df587+Zb
+ jsRxSzrmyPwMUHrdHDysyR+fyP/Wk0JXrKZv1e5SheOMKyTYUWjgOyfa/
+ /WH5S+tHwNG0I3VkkBekjRU3aDcaMLlN68W0bv0fCzmVkqmsOTkEiTBsC
+ mGfu3JUDdgeo96tYAEfZJHsXINPxaQ62AbewmxHp3R2lCZGswtQnMExaZ
+ Xppq6e6aoiiJTDy0246xWAZ5dcbHQl2oCGzStWlNxqmM/zqceFWyD1DP3
+ YNCXeTr+4755XaHoP0KYml2Ixlq+aWJdXTRTP4aPK0+U7ltsg/giuoRvt w==;
+X-CSE-ConnectionGUID: qpdcADTyTjGvaddvIA0tNg==
+X-CSE-MsgGUID: QyHJB//pSCW4cpsNLxGkeQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="34386014"
+X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; d="scan'208";a="34386014"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Apr 2024 06:41:23 -0700
+X-CSE-ConnectionGUID: HRZ+hdUDTcCDxTgFzBCzhQ==
+X-CSE-MsgGUID: /y1EyroRRLKvmbO5O1Mnbg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; d="scan'208";a="46277733"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 18 Apr 2024 06:27:29 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 18 Apr 2024 06:27:29 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 18 Apr 2024 06:27:28 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 18 Apr 2024 06:27:28 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.40) by
- edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 18 Apr 2024 06:27:28 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LhwZheihLCgkpFeAShhskrZxUo3/SeeNLfm6OORrSPoDJxTNwQxxsLZW7PAmqreP802O5hvHFv69IRF7mjUn/o7gBC6iBkVFe1N1+U6lY2O9eLVP92OYAY97FssZJJPcBpzYDiVWgAgGm8wWAHWTylBgEjWLisDv7fnl+ks1h40Lc7VmbJhwhCWZE26FMNAXoEdxGihNC1em+bKevbOQS58m3JLbMjQDC9pjSokd42bvm8zuCBT/B+iP8YuUnf5hkWbjEYWNuYbed3qq81nGdjRvqFLWsIWPG5C5XeazmmG7Jk4CIYkCjG4sGjpf5bd/QzhdUfMwe8pIHFEY9c2pHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wwGco2bUm+s+wlHhprbymsRZe34Vy0wpRCay/t5nxyo=;
- b=eAp7P38qNq6b/YV9S0lh0EJOidzlx36s+/c1Y1YedNObYEnxZ6BfsSvkAhESqNc3Jki6STONZsBLjvmHLiCv0e6hWiHe9LXulgQl//4jJo4M+wlMXogTyNgetj9h9r47nrE4y4NiliJYUAeKLrH2pc+LG1FWrNuw6i48eKBbozOEQicA63R6vEjTM1PGfXKb+2l3jrQcujaDSw+mR/jjkA8cI+brKlv6h6f9lLZFkE6z/XnF6i5rWUGxey/3cEJMpusZJ/bu8oFcnvJhV7bLMLVN+4KRGajMjzH46Dgjain2z0/BPVUXqXbvSgj7m1Wg9iWMGMYuTAY1nV8SaFn1mg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY8PR11MB7828.namprd11.prod.outlook.com (2603:10b6:930:78::8)
- by IA1PR11MB6172.namprd11.prod.outlook.com (2603:10b6:208:3e8::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.38; Thu, 18 Apr
- 2024 13:27:26 +0000
-Received: from CY8PR11MB7828.namprd11.prod.outlook.com
- ([fe80::602d:c299:6d13:7e5a]) by CY8PR11MB7828.namprd11.prod.outlook.com
- ([fe80::602d:c299:6d13:7e5a%3]) with mapi id 15.20.7472.025; Thu, 18 Apr 2024
- 13:27:26 +0000
-Date: Thu, 18 Apr 2024 15:27:20 +0200
-From: Francois Dugast <francois.dugast@intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-CC: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t,v1 0/4] L3 bank mask
-Message-ID: <ZiEfuLsKfFtoZ4LA@fdugast-desk.home>
-References: <20240417145049.7-1-francois.dugast@intel.com>
- <sx44ek2wi3megbrlu5pxzny55n6didg7kwopygzzywgcjs5ic5@wq56mdm4s4wi>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <sx44ek2wi3megbrlu5pxzny55n6didg7kwopygzzywgcjs5ic5@wq56mdm4s4wi>
-Organization: Intel Corporation
-X-ClientProxiedBy: DUZPR01CA0010.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:3c3::12) To CY8PR11MB7828.namprd11.prod.outlook.com
- (2603:10b6:930:78::8)
+X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; d="scan'208";a="23506611"
+Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Apr 2024 06:41:22 -0700
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [i-g-t V3 6/6] HAX: Test force joiner on BAT
+Date: Thu, 18 Apr 2024 19:05:13 +0530
+Message-ID: <20240418133513.812544-1-bhanuprakash.modem@intel.com>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240418091959.781560-7-bhanuprakash.modem@intel.com>
+References: <20240418091959.781560-7-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR11MB7828:EE_|IA1PR11MB6172:EE_
-X-MS-Office365-Filtering-Correlation-Id: ffeeedbd-6aa0-4ea7-277c-08dc5fab49c5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: GibK8hA7uFdJI1ncvQuIymkG4/bE45HoitBuqc6Rh51TShf2w8BUwF+Bxea7lIW4t3tercm+vfuSL+sHxq7LutMlI7ur/lzhrJvqsRxb4T1/a0TGS9pse1MFM/R8icTTQiOPaAJX6IF+DpSWiuKI/GT/DbGqK3D9FF+vC1rKQMJEyuTj2/8KTpGfdIKiPcu6vjfXhyw52++MoD6ztGvhQDoxHMgQUjTYS90xciR5/5EvV/AQKxZRFoX+6PbFItyjXlC09ryBRMeg5LbtIxOMy1eCbF+2GzWgd5zaCMSzmwVn8Dp12/brGQv2Re7xq1n1Mn9pCcJ9kO1h8h/LeUmGNsmGrvMBDYVSKdHc1XSyLki85MBAIbvVa7HhKMr8U6igGf1hUXyE32e7Wb6XEboue0me6I3qqP/PU/Ymh9sZmPt2D1HSV7avyEv10XZpTShvVPTC3eWd+R7Zcp3GRmKfBay5DFPtjN+r30J7oSMxQc2C6IfpTyGtOWbXI5usMRo4+vWTs07Tneiqgv7b+efFbBoRxpotTxFF5lezSET3hOpruYymgnvYIb+Wu/uAPytdEJ0Xnouk0AfnLbD/JYwrgmCbVLrCjD5w9KTbfnwzQPwbN9wju4p4tX8HELaW2iZ1
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY8PR11MB7828.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376005)(1800799015)(366007); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?oBMOXbHRJMJ1MVq2Brq8qXh01+trxAlbWBqGEGux0erR0WRcolcdFd2Y/BHd?=
- =?us-ascii?Q?fUh4YzFu+b5/+fBn2PCig0bVdan9InkEZaFJE6VV6xLi23jvIntOgb+66xNw?=
- =?us-ascii?Q?Uv4ll/PSS4c+YlBbtLBWPYaE+JhB8DWkuGbJTrjImO1JLD8I1uXQlGD/nX37?=
- =?us-ascii?Q?yz+CPnWGKP7wNHUN0QCQDa/wZJTFjPsEAsalf0G+smcQCrtQlLlmG8jSjMbC?=
- =?us-ascii?Q?YGWzyxOo36i5JGULKXDVXeJJBagSiz0Zj86pvrjWKAm3g2qOwtoiXt0XzFcN?=
- =?us-ascii?Q?LpyAnJksBChiAQb9HJDG0voSjCufRWJdX0AUfDaXPxTRM9H8kuzKM6MY8H0l?=
- =?us-ascii?Q?hBNWsR5e8i4GYqJ/9bfVsVMaKkHzJfwUhNRlpasYnOC4/mrutVKzVNN8+uGl?=
- =?us-ascii?Q?0iKI21WuR14SzSiWDFLadwFvJGlnnDskBVmH6mF1T/eU9IXMubNFn7/73xpK?=
- =?us-ascii?Q?nPGYZbjxPKDTgfAmauQNRYqpEfjeDeQJC+lIHAMmZXpvY/ZoeXZiKgiowwfU?=
- =?us-ascii?Q?lnS/7QrgeQs8S/U4QTAhgb7Vlrgex5UvnJb9OmqRM3KkErDJd1GI5atLNffj?=
- =?us-ascii?Q?lfdQjia2XGXL5zHji+ylDms46O4zTgMcnaSUKHs3mz4n1Ml/9huMU592lPYv?=
- =?us-ascii?Q?C2muH1vdiWhLjH8a6BnuzvQK0e3ZJkpyjuHrF2bCPPkjSJqeKTICevTiSE9+?=
- =?us-ascii?Q?A5bm1yEA3aztnXsGffXvXkqsvAkrxkMKMZiRuvZM+OHw7m31y5oYwpwbXXJa?=
- =?us-ascii?Q?qrcVseslNghsXLBITKVBr9qY8JnOiWrESKy0rBhxrfPfzP/001cvpHPpOu21?=
- =?us-ascii?Q?sdRP37R6tHHwW/REEW5DeW3viCUDNpFGcg3uVtPMm3xZha9Xs3Wgv99JADn2?=
- =?us-ascii?Q?+xp/T1Jr82YZ7n3kL2JUlt/t2EUTGJNJ8gHbDCZrvKEpfpsupZAFqUWi4WIN?=
- =?us-ascii?Q?qHQFV7UoR2J1suYhch+LLWZfF4I2ZzIUxlnLwrPWpsFnNdFgl48IYP5p9cIl?=
- =?us-ascii?Q?tlAPdul89SjDxinht24DSBCJAMuHB1BXq3iMIeVsB6yfA3BLkvCj4+uY/XXa?=
- =?us-ascii?Q?PALtQgU5zwi8kB5/p2BZbNdBTwG2ytYWhGb0V3WQyxIxcK9qcQG3w1WU+lx7?=
- =?us-ascii?Q?C2Lg9bBtnHI3ohW4dTDHPg9j8iYCE3Th5tfFQD49adh9/uTgZPcG5bjVDeAQ?=
- =?us-ascii?Q?QiEPZ858ItLDaTYRYCYIM/l6jexNd+MunDNiWW2Od+6CDBtGarrfRa4KSlaO?=
- =?us-ascii?Q?QmLEWmPYDQD+PwiqgPIzQb1/bxaT9NP+Y0bhTywck3WV3Gpxz7ntKOJeZXgZ?=
- =?us-ascii?Q?DnEXf3kW9C35uV6ajk5yAMmo0JVSDLR1JZ1B8d0ZnRvBYmI0yxb4bc/CqKSz?=
- =?us-ascii?Q?2FPuCxdtVMS40vC/Nlve6w9SUR+Feu185H9J9TLkiXYsYn/ivyEehW8dt1i7?=
- =?us-ascii?Q?J5IyRI50slq6HkNcQzDZDI4N7Aqslzqb63ntiyaW9vQLFX1aoxdpuQ0naYKA?=
- =?us-ascii?Q?/0ohDVDhzO8PPrJdEsgB39053ddxMBszasizS2JwbsTY4vBgTt2/eV/xN0Tv?=
- =?us-ascii?Q?usdJVwtOQanIMzGlNjKTVuzi+WPww58/EpStCwDeXyWZk304DXFLnq2kNGUK?=
- =?us-ascii?Q?Wg=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: ffeeedbd-6aa0-4ea7-277c-08dc5fab49c5
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7828.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 13:27:26.2974 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YoEozKwZI1IZMd6W+NQ7LnkHFkczkCcJni24ROfBTSyS9EcSX+Xnuf2EvJGDhCrk4Fu5j73cXohjOCardipqpaRwxxo8GoBwVdaeERFN9To=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6172
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -159,158 +67,144 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Lucas,
+Expectation: All pipe-D tests should skip.
 
-On Wed, Apr 17, 2024 at 11:07:54AM -0500, Lucas De Marchi wrote:
-> On Wed, Apr 17, 2024 at 02:50:45PM GMT, Francois Dugast wrote:
-> > Align the XeKMD header with the current version and add the L3 bank mask
-> > topology query proposed in this KMD series:
-> > https://patchwork.freedesktop.org/series/132075/
-> > 
-> > This series first includes some patches to align the XeKMD header which
-> > have already been reviewed but not yet applied, from this other series:
-> > https://patchwork.freedesktop.org/series/131816
-> > 
-> > Francois Dugast (4):
-> >  drm-uapi/xe: Align header with drm-xe-next
-> >  drm-uapi/xe: Define topology types as indexes rather than masks
-> >  drm-uapi/xe: Expose the L3 bank mask
-> 
-> no, I don't think we want to merge these as is in this series. It can be
-> used for premerge testing, but this is just reintroducing the same
-> problem fixed in patch 1.
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ lib/igt_kms.c                |  6 +++---
+ lib/igt_kms.h                |  2 +-
+ tests/intel/kms_big_joiner.c |  2 +-
+ tests/kms_flip.c             | 29 ++++++++++++++++++++++++++++-
+ tests/kms_pipe_crc_basic.c   | 10 ++++++++++
+ 5 files changed, 43 insertions(+), 6 deletions(-)
 
-The first two patches were not meant to be merged with this series, I
-should have made that clear in the cover letter.
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 9258e8f3f..8edbf2dce 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6241,13 +6241,13 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
+  * Returns:
+  *  true if the debugfs is available, false otherwise.
+  */
+-bool igt_has_force_joiner_debugfs(int drmfd, igt_output_t *output)
++bool igt_has_force_joiner_debugfs(int drmfd, char *conn_name)
+ {
+ 	char buf[512];
+ 	int debugfs_fd, ret;
+ 
+-	igt_assert_f(output->name, "Connector name cannot be NULL\n");
+-	debugfs_fd = igt_debugfs_connector_dir(drmfd, output->name, O_RDONLY);
++	igt_assert_f(conn_name, "Connector name cannot be NULL\n");
++	debugfs_fd = igt_debugfs_connector_dir(drmfd, conn_name, O_RDONLY);
+ 	if (debugfs_fd < 0)
+ 		return false;
+ 	ret = igt_debugfs_simple_read(debugfs_fd, "i915_bigjoiner_force_enable", buf, sizeof(buf));
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index b8f7c745b..8e34caa60 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1214,7 +1214,7 @@ int igt_get_max_dotclock(int fd);
+ bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
+ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
+ 			  int max_dotclock, drmModeModeInfo *mode);
+-bool igt_has_force_joiner_debugfs(int drmfd, igt_output_t *output);
++bool igt_has_force_joiner_debugfs(int drmfd, char *conn_name);
+ bool igt_force_and_check_bigjoiner_status(int drmfd, char *connector_name, bool enable);
+ bool igt_check_force_joiner_status(int drmfd, char *connector_name);
+ bool igt_check_bigjoiner_support(igt_display_t *display);
+diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
+index 078f76ac1..33e4046e3 100644
+--- a/tests/intel/kms_big_joiner.c
++++ b/tests/intel/kms_big_joiner.c
+@@ -320,7 +320,7 @@ igt_main
+ 				data.big_joiner_output[data.big_joiner_output_count++] = output;
+ 				igt_output_override_mode(output, &mode);
+ 			} else {
+-				if (igt_has_force_joiner_debugfs(data.drm_fd, output)) {
++				if (igt_has_force_joiner_debugfs(data.drm_fd, output->name)) {
+ 					force_joiner_supported = true;
+ 					data.non_big_joiner_output[data.non_big_joiner_output_count++] = output;
+ 				}
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index 57f6cff7a..d819779e5 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -1748,12 +1748,17 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 			 "%s-%d",
+ 			 kmstest_connector_type_str(o->kconnector[i]->connector_type),
+ 			 o->kconnector[i]->connector_type_id);
++		if (igt_has_force_joiner_debugfs(drm_fd, conn_name))
++			igt_force_and_check_bigjoiner_status(drm_fd, conn_name, true);
+ 
+-		if (i > 0)
++		if (i > 0) {
+ 			snprintf(prev_conn_name, sizeof(prev_conn_name),
+ 				 "%s-%d",
+ 				 kmstest_connector_type_str(o->kconnector[i - 1]->connector_type),
+ 				 o->kconnector[i - 1]->connector_type_id);
++			if (igt_has_force_joiner_debugfs(drm_fd, prev_conn_name))
++				igt_force_and_check_bigjoiner_status(drm_fd, prev_conn_name, true);
++		}
+ 
+ 		if (((igt_check_force_joiner_status(drm_fd, conn_name) ||
+ 		      igt_bigjoiner_possible(&o->kmode[i], max_dotclock)) &&
+@@ -2124,6 +2129,28 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 	igt_stop_signal_helper();
+ 
+ 	igt_fixture {
++		resources = drmModeGetResources(drm_fd);
++		if (resources) {
++			for (i = 0; i < resources->count_connectors; i++) {
++				drmModeConnector *connector = drmModeGetConnectorCurrent(drm_fd, resources->connectors[i]);
++				char conn_name[24];
++
++				if (!connector)
++					continue;
++
++				if (connector->connection == DRM_MODE_CONNECTED) {
++					snprintf(conn_name, sizeof(conn_name),
++						 "%s-%d",
++						 kmstest_connector_type_str(connector->connector_type),
++						 connector->connector_type_id);
++					if (igt_check_force_joiner_status(drm_fd, conn_name))
++						igt_force_and_check_bigjoiner_status(drm_fd, conn_name, false);
++				}
++			}
++
++			drmModeFreeResources(resources);
++		}
++
+ 		igt_display_fini(&display);
+ 		drm_close_driver(drm_fd);
+ 	}
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 0c19745bc..a5a2d61a1 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -411,6 +411,11 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 
+ 		data.debugfs = igt_debugfs_dir(data.drm_fd);
+ 
++		for_each_connected_output(&data.display, output) {
++			if (igt_has_force_joiner_debugfs(data.drm_fd, output->name))
++				igt_force_and_check_bigjoiner_status(data.drm_fd, output->name, true);
++		}
++
+ 		/* Get active pipes. */
+ 		for_each_pipe(&data.display, pipe)
+ 			active_pipes[last_pipe++] = pipe;
+@@ -499,6 +504,11 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 	}
+ 
+ 	igt_fixture {
++		for_each_connected_output(&data.display, output) {
++			if (igt_check_force_joiner_status(data.drm_fd, output->name))
++				igt_force_and_check_bigjoiner_status(data.drm_fd, output->name, false);
++		}
++
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
+ 	}
+-- 
+2.43.2
 
-> 
-> I applied patch 1 locally and then did a diff with the current
-> drm-xe-next:
-> 
-> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 4353595a4..0b709b374 100644
-> --- a/include/drm-uapi/xe_drm.h
-> +++ b/include/drm-uapi/xe_drm.h
-> @@ -518,9 +518,9 @@ struct drm_xe_query_topology_mask {
->         /** @gt_id: GT ID the mask is associated with */
->         __u16 gt_id;
-> 
-> -#define DRM_XE_TOPO_DSS_GEOMETRY       (1 << 0)
-> -#define DRM_XE_TOPO_DSS_COMPUTE                (1 << 1)
-> -#define DRM_XE_TOPO_EU_PER_DSS         (1 << 2)
-> +#define DRM_XE_TOPO_DSS_GEOMETRY       1
-> +#define DRM_XE_TOPO_DSS_COMPUTE                2
-> +#define DRM_XE_TOPO_EU_PER_DSS         4
->         /** @type: type of mask */
->         __u16 type;
-> 
-> @@ -871,10 +871,12 @@ struct drm_xe_vm_destroy {
->   *  - %DRM_XE_VM_BIND_OP_PREFETCH
->   *
->   * and the @flags can be:
-> - *  - %DRM_XE_VM_BIND_FLAG_READONLY
-> - *  - %DRM_XE_VM_BIND_FLAG_IMMEDIATE - Valid on a faulting VM only, do the
-> + *  - %DRM_XE_VM_BIND_FLAG_READONLY - Setup the page tables as read-only
-> + *    to ensure write protection
-> + *  - %DRM_XE_VM_BIND_FLAG_IMMEDIATE - On a faulting VM, do the
->   *    MAP operation immediately rather than deferring the MAP to the page
-> - *    fault handler.
-> + *    fault handler. This is implied on a non-faulting VM as there is no
-> + *    fault handler to defer to.
->   *  - %DRM_XE_VM_BIND_FLAG_NULL - When the NULL flag is set, the page
->   *    tables are setup with a special bit which indicates writes are
->   *    dropped and all reads return zero. In the future, the NULL flags
-> @@ -1085,19 +1087,6 @@ struct drm_xe_exec_queue_create {
->  #define DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY               0
->  #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY              0
->  #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE             1
-> -#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT    2
-> -#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT           4
-> -#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_TRIGGER           5
-> -#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_NOTIFY            6
-> -#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY       7
-> -/* Monitor 128KB contiguous region with 4K sub-granularity */
-> -#define     DRM_XE_ACC_GRANULARITY_128K                                0
-> -/* Monitor 2MB contiguous region with 64KB sub-granularity */
-> -#define     DRM_XE_ACC_GRANULARITY_2M                          1
-> -/* Monitor 16MB contiguous region with 512KB sub-granularity */
-> -#define     DRM_XE_ACC_GRANULARITY_16M                         2
-> -/* Monitor 64MB contiguous region with 2M sub-granularity */
-> -#define     DRM_XE_ACC_GRANULARITY_64M                         3
-> 
->         /** @extensions: Pointer to the first extension struct, if any */
-> 
-> I seems we don't need patch 1 and 2. We only need the commit used to be
-> closer to drm-xe-next.
-> 
-> include/drm-uapi/xe_drm.h should always and only be updated by copying
-> from kernel from specific commits documented in the commit message.
-> 
-> WIP changes while the kernel side is not merged should be moved to
-> another header. Traditionally we used LOCAL_* defines for that. But that
-> comes with its own problems as it's more work to  go find them all and
-> drop when we sync the headers.
-> 
-> What about doing this?
-> 
-> Add include/drm-uapi/local/ to -I in build system *before* the non-local
-> one. Something like:
-> 
-> meson.build:
-> 	inc = include_directories('include', 'include/drm-uapi/local' 'include/drm-uapi', 'include/linux-uapi', 'lib', 'lib/stubs/syscalls', '.')
-> 
-> Example content for
-> include/drm-uapi/local/drm_xe.h:
-> 	#pragma once
-> 	#include_next <xe_drm.h>
-> 
-> 	/*
-> 	 * Local definitions - delta with WIP UAPI while the upstream defines
-> 	 * are not yet merged. These are supposed to conflict whenever the
-> 	 * upstream header is updated and break the build. That is intended.
-> 	 * Commit updating the upstream header should garbage collect these
-> 	 * local definitions.
-> 	 */
-> 
-> 	#ifdef DRM_XE_TOPO_L3_BANK
-> 	#error "Already defined by upstream - remove"
-> 	#define DRM_XE_TOPO_L3_BANK		3
-> 	#endif
-> 
-> The ifdef + error could be optional as it's harmless (and allowed by
-> compiler) to redefine it multiple times to the same value.
-> 
-> Thoughts?
-
-Neither this solution nor the LOCAL_* defines have been in place for Xe
-until now, so is there a particular reason to introduce it now? Not
-questioning the benefit of doing it and I am all up for continuous
-improvement, just wondering if I did something different here.
-
-The proposal looks good, once it is in place it will be easy to add new
-values. I prefer the stricter but cleaner ifdef + error to prevent
-duplicates and to keep the local header to the minimum. But I will let
-others chime in especially if there are lessons learned from i915.
-
-> 
-> If we don't want to decide on this and you only want to unblock this
-> test for the kernel addition, then maybe just do the same LOCAL_
-> approach currently being used. See e.g. lib/i915/i915_drm_local.h
-
-Sure, will do for next versions until a solution is in place.
-
-Thanks,
-Francois
-
-> 
-> Lucas De Marchi
-> 
-> >  lib/xe/xe_query: Add L3 bank mask test
-> > 
-> > include/drm-uapi/xe_drm.h | 27 +++-------------
-> > tests/intel/xe_query.c    | 66 +++++++++++++++++++++++++++++++++++++++
-> > 2 files changed, 71 insertions(+), 22 deletions(-)
-> > 
-> > -- 
-> > 2.34.1
-> > 
