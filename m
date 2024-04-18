@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B180EC04FF8
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Apr 2024 09:26:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC353C4345F
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Apr 2024 09:26:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 575A110F7AC;
-	Thu, 18 Apr 2024 09:26:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 481F010FB56;
+	Thu, 18 Apr 2024 09:26:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M3HE65rZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cN103nBa";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BAB5210F7AC
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Apr 2024 09:26:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A614610FB56
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Apr 2024 09:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713432374; x=1744968374;
+ t=1713432376; x=1744968376;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=xY4Y8LtRCDn2+hc7IqH3Q9ifdL7yUzluAHxnv1i0g64=;
- b=M3HE65rZ4zPUvdkMs76G4G8zz4YYTML2bfosmRM+faA/z4iW0fayvY4i
- WEptqjSvGh3wY8LCFzaz9QK9QE74JzJtMVakPE4EX0DTPhNyomMXFi50V
- 3hyGAwbWebvXfecJKJG6X2BsR5TUltoULwiEzl/7N+kJCp737hj/+rOgq
- jK5XTmDdHzSp1iv9CYCMpf+7UBykgg/Fp3tTufmkL6lTfdxCA965eFVgg
- BOxIJQgmV//oatpU+hx2CTv0+JRjh1AtPxq+8/87cO78jlNzWa8nMb47g
- N09Xl0a1u79K6zowz9+mJpdhNgzv6aRkpuA6Ogr3L+xR4dEcyclwhBqvP g==;
-X-CSE-ConnectionGUID: AjPb2yxUT56dQLx4Jwo4Sw==
-X-CSE-MsgGUID: rxKuomJ0RTaU3pvlZrbMiA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="31447791"
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="31447791"
+ bh=jZryLln9k7277dHy6DQMDi/xfFsBYV6UyIZDFSW9FN0=;
+ b=cN103nBaqHdP1vDg6tlghP3xCEasysacw2YxGIYxq4eZHsVyeTw37kAm
+ kVAPxrNMFpL46OIZHytOMRuntE9fTZ4xCszXy6f45fRzU76c1HCXGzi3h
+ luX03QbgBz0i0Vfbb/Wke8JzmHTbqmk8a2rzARVKHHTZY7Ci6e1P8zMSh
+ 9GvBV7dRjDeV+Tg347YkQKoeZ6xgiS9ct76wINrkEe7zErIwFVd7tUy41
+ OSrli/CYMMjk9yilLiS48jElnAqyQrwD04QjBpP7LsGSzItHOI8mI9nGF
+ 2IcHsV4u+NMztyBskBB9GmKv2N8Sh4b0HLUvCjR+YigUhDMAEZpLUvGFb A==;
+X-CSE-ConnectionGUID: TqFyMNtpTHWkped0PCm0jg==
+X-CSE-MsgGUID: eHEoLnL+SJK/oL/ZuQ5vaA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="31447797"
+X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="31447797"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2024 02:26:14 -0700
-X-CSE-ConnectionGUID: bMO5Ma8BQqihw/KO+NbwTg==
-X-CSE-MsgGUID: +NLNXA2TR0GpWQZjbuOj/w==
+ 18 Apr 2024 02:26:16 -0700
+X-CSE-ConnectionGUID: poRPzlLoSCaLT2YeoKH/Vg==
+X-CSE-MsgGUID: rTRUaQcpRE6jF7MCcpwJVA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="53855385"
+X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="53855390"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2024 02:26:12 -0700
+ 18 Apr 2024 02:26:14 -0700
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [i-g-t V2 2/6] lib/igt_kms: Force joiner support in bigjoiner checks
-Date: Thu, 18 Apr 2024 14:49:55 +0530
-Message-ID: <20240418091959.781560-3-bhanuprakash.modem@intel.com>
+Subject: [i-g-t V2 3/6] tests/intel/kms_pm_lpsp: Force joiner support in
+ bigjoiner checks
+Date: Thu, 18 Apr 2024 14:49:56 +0530
+Message-ID: <20240418091959.781560-4-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240418091959.781560-1-bhanuprakash.modem@intel.com>
 References: <20240418091959.781560-1-bhanuprakash.modem@intel.com>
@@ -75,58 +76,23 @@ checks to handle the force joiner.
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/igt_kms.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ tests/intel/kms_pm_lpsp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 4c43921ce..9258e8f3f 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -6338,6 +6338,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
- 	struct {
- 		enum pipe idx;
- 		drmModeModeInfo *mode;
-+		bool force_joiner;
- 	} pipes[IGT_MAX_PIPES];
- 	int max_dotclock;
+diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
+index a76b423f4..f9ac508fb 100644
+--- a/tests/intel/kms_pm_lpsp.c
++++ b/tests/intel/kms_pm_lpsp.c
+@@ -163,6 +163,9 @@ static bool test_constraint(data_t *data)
+ 	mode = igt_output_get_mode(data->output);
  
-@@ -6355,6 +6356,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
- 
- 		pipes[pipes_in_use].idx = output->pending_pipe;
- 		pipes[pipes_in_use].mode = igt_output_get_mode(output);
-+		pipes[pipes_in_use].force_joiner = igt_check_force_joiner_status(display->drm_fd, output->name);
- 		pipes_in_use++;
- 	}
- 
-@@ -6366,21 +6368,24 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
- 	max_dotclock = igt_get_max_dotclock(display->drm_fd);
- 
- 	/*
--	 * if mode resolution > 5K (or) mode.clock > max dot-clock, then ignore
-+	 * if force joiner (or) mode resolution > 5K (or) mode.clock > max dot-clock,
-+	 * then ignore
- 	 *  - if the consecutive pipe is not available
- 	 *  - last crtc in single/multi-connector config
- 	 *  - consecutive crtcs in multi-connector config
- 	 *
- 	 * in multi-connector config ignore if
--	 *  - previous crtc (mode resolution > 5K or mode.clock > max dot-clock) and
-+	 *  - previous crtc (force joiner or mode resolution > 5K or mode.clock > max dot-clock) and
- 	 *  - current & previous crtcs are consecutive
- 	 */
- 	for (i = 0; i < pipes_in_use; i++) {
--		if ((igt_bigjoiner_possible(pipes[i].mode, max_dotclock) &&
-+		if (((pipes[i].force_joiner ||
-+		      igt_bigjoiner_possible(pipes[i].mode, max_dotclock)) &&
- 		     ((pipes[i].idx >= (total_pipes - 1)) ||
- 		      (!display->pipes[pipes[i].idx + 1].enabled) ||
- 		      ((i < (pipes_in_use - 1)) && (abs(pipes[i + 1].idx - pipes[i].idx) <= 1)))) ||
--		    ((i > 0) && igt_bigjoiner_possible(pipes[i - 1].mode, max_dotclock) &&
-+		    ((i > 0) && (pipes[i - 1].force_joiner ||
-+				 igt_bigjoiner_possible(pipes[i - 1].mode, max_dotclock)) &&
- 		     ((!display->pipes[pipes[i - 1].idx + 1].enabled) ||
- 		      (abs(pipes[i].idx - pipes[i - 1].idx) <= 1)))) {
- 			igt_debug("Pipe/Output combo is not possible with selected mode(s).\n");
+ 	/* For LPSP avoid Bigjoiner. */
++	if (igt_check_force_joiner_status(data->drm_fd, data->output->name))
++		return false;
++
+ 	if (igt_bigjoiner_possible(mode, max_dotclock)) {
+ 		for_each_connector_mode(data->output) {
+ 			mode = &data->output->config.connector->modes[j__];
 -- 
 2.43.2
 
