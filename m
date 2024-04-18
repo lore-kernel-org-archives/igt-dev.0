@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92720C04FF8
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 926ECC4345F
 	for <igt-dev@archiver.kernel.org>; Thu, 18 Apr 2024 09:26:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 113B110F2FD;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 03C9510E6B4;
 	Thu, 18 Apr 2024 09:26:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KzyoVvlO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LYbIwSpR";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B187210F2FD
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Apr 2024 09:26:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D04BE10E6B4
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Apr 2024 09:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713432371; x=1744968371;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=O8cHvbqfFv/t9zU6SfjquFWk//lYpqjy1swx+h2mRGA=;
- b=KzyoVvlORG+BdM5y0Sn+L7Rv2z5whD6D6T4PYsW+mGyak0L6FUIqqXvL
- TiYV3+ntDWG7rb+y4DyjPe7OK3vJ1CBAhID5pdDHDU95Kwm0p1MPWOzYS
- GljqB4mxl4CtinlsfKHn/AAgOtCZCXbeeRLD7UH/pWzqfR3Dtk8JcuKmL
- 7dTY5Gzzu4Bg9l9l7UCPK+49wjwd4JkZj00PSaG4AZ8A4unmdOrjn7jEK
- rN1cXDcxxJHsMbjcGPMUWKeM/PRIY+aYhWWkTGSwiBYpnzr7INn5IaZHa
- de7WHpOTy42ARqR+1hrz+Ijp+Bkprp2Zm12hB19PduqOz26vy8MOJPiBd Q==;
-X-CSE-ConnectionGUID: sr8WqEfbQbiWxbXieDIwiA==
-X-CSE-MsgGUID: umYjRVB0Rf+nXv3D+x5cbA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="31447781"
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="31447781"
+ t=1713432372; x=1744968372;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=KxHWhzOKbJ8Pubnw7m6mHerijzDbq+Tw/3Fi/wMZbuA=;
+ b=LYbIwSpRZq+5xaJuWwOrJWnwWcPjMwVFP0tDU7GzJRU7EgqrI0DY/XLi
+ w1jKspQIt7ZY5RC1UvHYu0x42hovVbz/vNyLbkfse2GO21BGrZceBqSQw
+ HLcuzT+Te3DuHNQyJ7Nhu3HVQev3Zq4PbOv1BeJ2/oH4hY+LeIh72swSi
+ COnrotisVvQfUo/yHkQCF/0HgfgT9uENnA/qBCTVYqOyUJdGJXv7XI7Z1
+ JLNvMrMWNONUBcXK7p+ejja2IBpdL8qMN9WHxB8lN6iKATU2ZRIdj9z8l
+ O2t1zzUbJk9ikXnvFCYGsqtE2j5ZzVjsxnhUQjH4ByyRtRdOe+8JSfhPk g==;
+X-CSE-ConnectionGUID: njxdyT5FQXa4GLanpFcH8A==
+X-CSE-MsgGUID: hQ08EtOmQkWggodwK2B0pQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="31447789"
+X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="31447789"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2024 02:26:10 -0700
-X-CSE-ConnectionGUID: 9R/Zw5tJQieYLy7E02ujsw==
-X-CSE-MsgGUID: H8adSLY9TmSqhNQAbblCMQ==
+ 18 Apr 2024 02:26:12 -0700
+X-CSE-ConnectionGUID: /1szgKHJRHeSBoP239nv3w==
+X-CSE-MsgGUID: PyyjjrjeRXe9bPTlG7HYkQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="53855367"
+X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="53855379"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2024 02:26:08 -0700
+ 18 Apr 2024 02:26:10 -0700
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [i-g-t V2 0/6] Force joiner support in bigjoiner checks
-Date: Thu, 18 Apr 2024 14:49:53 +0530
-Message-ID: <20240418091959.781560-1-bhanuprakash.modem@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Kunal Joshi <kunal1.joshi@intel.com>
+Subject: [i-g-t V2 1/6] lib/igt_kms: New helper to check force joiner status
+Date: Thu, 18 Apr 2024 14:49:54 +0530
+Message-ID: <20240418091959.781560-2-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240418091959.781560-1-bhanuprakash.modem@intel.com>
+References: <20240418091959.781560-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,26 +68,76 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As we recently introduced the option (through debugfs) to
-force the bigjoiner, needs to extend the support in bigjoiner
-checks to handle the force joiner.
+Add a new function to check the force joiner status
+on selected connecter, so that it would be helpful to
+check the force joiner status from other places too.
 
-Bhanuprakash Modem (6):
-  lib/igt_kms: New helper to check force joiner status
-  lib/igt_kms: Force joiner support in bigjoiner checks
-  tests/intel/kms_pm_lpsp: Force joiner support in bigjoiner checks
-  tests/kms_flip: Force joiner support in bigjoiner checks
-  tests/kms_setmode: Force joiner support in bigjoiner checks
-  HAX: Test force joiner on BAT
+V2: - Add few debug prints
 
- lib/igt_kms.c              | 47 ++++++++++++++++++++++++++++++++++----
- lib/igt_kms.h              |  1 +
- tests/intel/kms_pm_lpsp.c  |  3 +++
- tests/kms_flip.c           | 47 ++++++++++++++++++++++++++++++++++----
- tests/kms_pipe_crc_basic.c |  6 +++++
- tests/kms_setmode.c        | 22 ++++++++++++++----
- 6 files changed, 114 insertions(+), 12 deletions(-)
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ lib/igt_kms.c | 34 ++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h |  1 +
+ 2 files changed, 35 insertions(+)
 
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 3216fe7e4..4c43921ce 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6283,6 +6283,40 @@ bool igt_force_and_check_bigjoiner_status(int drmfd, char *connector_name, bool
+ 			strstr(buf, "N");
+ }
+ 
++/**
++ * igt_check_force_joiner_status
++ * @drmfd: file descriptor of the DRM device.
++ * @connector_name: connector to check.
++ *
++ * Checks if the force big joiner is enabled.
++ *
++ * Returns: True if the force big joiner is enabled, False otherwise.
++ */
++bool igt_check_force_joiner_status(int drmfd, char *connector_name)
++{
++	char buf[512];
++	int debugfs_fd, ret;
++
++	if (!connector_name)
++		return false;
++
++	debugfs_fd = igt_debugfs_connector_dir(drmfd, connector_name, O_RDONLY);
++	if (debugfs_fd < 0) {
++		igt_debug("Could not open debugfs for connector: %s\n", connector_name);
++		return false;
++	}
++
++	ret = igt_debugfs_simple_read(debugfs_fd, "i915_bigjoiner_force_enable", buf, sizeof(buf));
++	close(debugfs_fd);
++
++	if (ret < 0) {
++		igt_debug("Could not read i915_bigjoiner_force_enable for connector: %s\n", connector_name);
++		return false;
++	}
++
++	return strstr(buf, "Y");
++}
++
+ /**
+  * igt_check_bigjoiner_support:
+  * @display: a pointer to an #igt_display_t structure
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 6d13e5851..b8f7c745b 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1216,6 +1216,7 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
+ 			  int max_dotclock, drmModeModeInfo *mode);
+ bool igt_has_force_joiner_debugfs(int drmfd, igt_output_t *output);
+ bool igt_force_and_check_bigjoiner_status(int drmfd, char *connector_name, bool enable);
++bool igt_check_force_joiner_status(int drmfd, char *connector_name);
+ bool igt_check_bigjoiner_support(igt_display_t *display);
+ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
+ bool intel_pipe_output_combo_valid(igt_display_t *display);
 -- 
 2.43.2
 
