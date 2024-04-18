@@ -4,54 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B735C04FFF
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Apr 2024 13:41:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72E87C4345F
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Apr 2024 13:59:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B10C3113C93;
-	Thu, 18 Apr 2024 13:41:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2BF6B113CB3;
+	Thu, 18 Apr 2024 13:59:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YQPUFKxr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZQLmt81B";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 13AF8113C91
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Apr 2024 13:41:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49078113CB2
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Apr 2024 13:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713447684; x=1744983684;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=dNbNM7P5Fn4Ajq4k3MnTzuoGmJ6ue/p3C6wWzSGZMGc=;
- b=YQPUFKxrHKwUxay1hR3HR9FJmAHtIFH/hfwl9d9a5ORBdN/2Df587+Zb
- jsRxSzrmyPwMUHrdHDysyR+fyP/Wk0JXrKZv1e5SheOMKyTYUWjgOyfa/
- /WH5S+tHwNG0I3VkkBekjRU3aDcaMLlN68W0bv0fCzmVkqmsOTkEiTBsC
- mGfu3JUDdgeo96tYAEfZJHsXINPxaQ62AbewmxHp3R2lCZGswtQnMExaZ
- Xppq6e6aoiiJTDy0246xWAZ5dcbHQl2oCGzStWlNxqmM/zqceFWyD1DP3
- YNCXeTr+4755XaHoP0KYml2Ixlq+aWJdXTRTP4aPK0+U7ltsg/giuoRvt w==;
-X-CSE-ConnectionGUID: qpdcADTyTjGvaddvIA0tNg==
-X-CSE-MsgGUID: QyHJB//pSCW4cpsNLxGkeQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="34386014"
-X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; d="scan'208";a="34386014"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2024 06:41:23 -0700
-X-CSE-ConnectionGUID: HRZ+hdUDTcCDxTgFzBCzhQ==
-X-CSE-MsgGUID: /y1EyroRRLKvmbO5O1Mnbg==
+ t=1713448795; x=1744984795;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=hcVoQ+TcbW3Cbg+I9C0JEy4MQci7O2Gl5e0FWz2bkEk=;
+ b=ZQLmt81BRIRvZO0vbtJFPO2Dci4fZlD9LL66QQN0fsCeMwsX5G7xqQ8S
+ yiPjQqO7qX1QDAEBQVZPezYICupTpFlOzcsxa3M5MOLzCJC7gPRW/tn3e
+ jj64ulxNrQjwu4LlaKw3fIyrGr6XeuB1s0vB1/HkDn+lton2KsfXKj0XR
+ +7Gz4oo8wVsTl2ywZWQIVnhgkDBDp21guADpH4S2Goz2I6P7ixjKPuF7e
+ EqjJF8xus0Jz10e1EZqEMhuDUobUOFbegAAhO9gzniO4j08+DO0fTEdSB
+ sPPultnPftrfZdQig9SVG7lmGSQiofhAvgRuak5JlAQa+uuW+svP1307E w==;
+X-CSE-ConnectionGUID: ue0D53mMQXGpA2zkCsKisA==
+X-CSE-MsgGUID: ugvZP/GCTTq91fdlul/oOg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="12781093"
+X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; d="scan'208";a="12781093"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Apr 2024 06:59:54 -0700
+X-CSE-ConnectionGUID: S728s/eGSWiEozK6YZvHOQ==
+X-CSE-MsgGUID: SHRaypEgSxSSyFt/ZlJweQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; d="scan'208";a="23506611"
-Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2024 06:41:22 -0700
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [i-g-t V3 6/6] HAX: Test force joiner on BAT
-Date: Thu, 18 Apr 2024 19:05:13 +0530
-Message-ID: <20240418133513.812544-1-bhanuprakash.modem@intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240418091959.781560-7-bhanuprakash.modem@intel.com>
-References: <20240418091959.781560-7-bhanuprakash.modem@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; d="scan'208";a="22855672"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.234])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Apr 2024 06:59:53 -0700
+Date: Thu, 18 Apr 2024 15:59:49 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Jonathan Cavitt <jonathan.cavitt@intel.com>
+Subject: Re: [PATCH i-g-t v6 2/2] tests/xe_ccs: Update compression check
+ based on flat-ccs  enablement
+Message-ID: <20240418135949.ow7vnpidfjeclzcp@zkempczy-mobl2>
+References: <cover.1713429755.git.akshata.jahagirdar@intel.com>
+ <0cfbaccb86155a3e5b6fc5c68447848fb08c51ef.1713429755.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0cfbaccb86155a3e5b6fc5c68447848fb08c51ef.1713429755.git.akshata.jahagirdar@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,144 +70,102 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Expectation: All pipe-D tests should skip.
+On Thu, Apr 18, 2024 at 01:46:43AM -0700, Akshata Jahagirdar wrote:
+> In Xe2+ platforms,we need to run this test regardless of the status of flat-ccs.
+> Check if the platform supports compression and has flat ccs enabled, and if it
+> doesn't, then update the checks accordingly and proceed with the test.
+> 
+> Additionally, On Xe2 dGPU, compression is only supported with VRAM. When copying
+> from VRAM -> sysmem the KMD uses mapping with uncompressed PAT so the copy
+> in system memory is guaranteed to be uncompressed. When restoring such buffers
+> from sysmem -> VRAM the KMD can't easily know which pages were originally
+> compressed, so we always use uncompressed -> uncompressed here. so this means
+> there's no need for extra CCS storage on such platforms.
+> Thats why we shouldn't need to run suspend-resume on xe2 dgpu.
+> 
+> Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+> Acked-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> ---
+>  tests/intel/xe_ccs.c | 26 ++++++++++++++++++++++----
+>  1 file changed, 22 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+> index b3bf97af7..d6148dc44 100644
+> --- a/tests/intel/xe_ccs.c
+> +++ b/tests/intel/xe_ccs.c
+> @@ -162,8 +162,24 @@ static void surf_copy(int xe,
+>  						      (void *)mid->ptr, mid->size);
+>  
+>  		munmap(ccsmap2, ccssize);
+> -		igt_assert(!strcmp(orig, newsum));
+> -		igt_assert(!strcmp(orig2, newsum2));
+> +		if (blt_platform_has_flat_ccs_enabled(xe)) {
+> +			if (IS_GEN(xe, 12) && is_intel_dgfx(xe)) {
+> +				igt_assert(!strcmp(orig, newsum));
+> +				igt_assert(!strcmp(orig2, newsum2));
+> +			} else if (AT_LEAST_GEN(xe, 20)) {
+> +				if (is_intel_dgfx(xe)) {
+> +					/* buffer object would become
+> +					 * uncompressed in xe2+ dgfx
+> +					 */
+> +					igt_assert(!blt_surface_is_compressed(xe, ctx,
+> +							NULL, ahnd, mid));
+> +				} else {
+> +					/* ccs should be present in xe2+ igfx */
+> +					igt_assert(blt_surface_is_compressed(xe, ctx,
+> +							NULL, ahnd, mid));
+> +				}
+> +			}
+> +		}
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- lib/igt_kms.c                |  6 +++---
- lib/igt_kms.h                |  2 +-
- tests/intel/kms_big_joiner.c |  2 +-
- tests/kms_flip.c             | 29 ++++++++++++++++++++++++++++-
- tests/kms_pipe_crc_basic.c   | 10 ++++++++++
- 5 files changed, 43 insertions(+), 6 deletions(-)
+This part is fine for me, but below code doesn't work on Xe2/discrete.
+I mean I got:
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 9258e8f3f..8edbf2dce 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -6241,13 +6241,13 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
-  * Returns:
-  *  true if the debugfs is available, false otherwise.
-  */
--bool igt_has_force_joiner_debugfs(int drmfd, igt_output_t *output)
-+bool igt_has_force_joiner_debugfs(int drmfd, char *conn_name)
- {
- 	char buf[512];
- 	int debugfs_fd, ret;
- 
--	igt_assert_f(output->name, "Connector name cannot be NULL\n");
--	debugfs_fd = igt_debugfs_connector_dir(drmfd, output->name, O_RDONLY);
-+	igt_assert_f(conn_name, "Connector name cannot be NULL\n");
-+	debugfs_fd = igt_debugfs_connector_dir(drmfd, conn_name, O_RDONLY);
- 	if (debugfs_fd < 0)
- 		return false;
- 	ret = igt_debugfs_simple_read(debugfs_fd, "i915_bigjoiner_force_enable", buf, sizeof(buf));
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index b8f7c745b..8e34caa60 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1214,7 +1214,7 @@ int igt_get_max_dotclock(int fd);
- bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
- bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
- 			  int max_dotclock, drmModeModeInfo *mode);
--bool igt_has_force_joiner_debugfs(int drmfd, igt_output_t *output);
-+bool igt_has_force_joiner_debugfs(int drmfd, char *conn_name);
- bool igt_force_and_check_bigjoiner_status(int drmfd, char *connector_name, bool enable);
- bool igt_check_force_joiner_status(int drmfd, char *connector_name);
- bool igt_check_bigjoiner_support(igt_display_t *display);
-diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
-index 078f76ac1..33e4046e3 100644
---- a/tests/intel/kms_big_joiner.c
-+++ b/tests/intel/kms_big_joiner.c
-@@ -320,7 +320,7 @@ igt_main
- 				data.big_joiner_output[data.big_joiner_output_count++] = output;
- 				igt_output_override_mode(output, &mode);
- 			} else {
--				if (igt_has_force_joiner_debugfs(data.drm_fd, output)) {
-+				if (igt_has_force_joiner_debugfs(data.drm_fd, output->name)) {
- 					force_joiner_supported = true;
- 					data.non_big_joiner_output[data.non_big_joiner_output_count++] = output;
- 				}
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index 57f6cff7a..d819779e5 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -1748,12 +1748,17 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
- 			 "%s-%d",
- 			 kmstest_connector_type_str(o->kconnector[i]->connector_type),
- 			 o->kconnector[i]->connector_type_id);
-+		if (igt_has_force_joiner_debugfs(drm_fd, conn_name))
-+			igt_force_and_check_bigjoiner_status(drm_fd, conn_name, true);
- 
--		if (i > 0)
-+		if (i > 0) {
- 			snprintf(prev_conn_name, sizeof(prev_conn_name),
- 				 "%s-%d",
- 				 kmstest_connector_type_str(o->kconnector[i - 1]->connector_type),
- 				 o->kconnector[i - 1]->connector_type_id);
-+			if (igt_has_force_joiner_debugfs(drm_fd, prev_conn_name))
-+				igt_force_and_check_bigjoiner_status(drm_fd, prev_conn_name, true);
-+		}
- 
- 		if (((igt_check_force_joiner_status(drm_fd, conn_name) ||
- 		      igt_bigjoiner_possible(&o->kmode[i], max_dotclock)) &&
-@@ -2124,6 +2129,28 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 	igt_stop_signal_helper();
- 
- 	igt_fixture {
-+		resources = drmModeGetResources(drm_fd);
-+		if (resources) {
-+			for (i = 0; i < resources->count_connectors; i++) {
-+				drmModeConnector *connector = drmModeGetConnectorCurrent(drm_fd, resources->connectors[i]);
-+				char conn_name[24];
-+
-+				if (!connector)
-+					continue;
-+
-+				if (connector->connection == DRM_MODE_CONNECTED) {
-+					snprintf(conn_name, sizeof(conn_name),
-+						 "%s-%d",
-+						 kmstest_connector_type_str(connector->connector_type),
-+						 connector->connector_type_id);
-+					if (igt_check_force_joiner_status(drm_fd, conn_name))
-+						igt_force_and_check_bigjoiner_status(drm_fd, conn_name, false);
-+				}
-+			}
-+
-+			drmModeFreeResources(resources);
-+		}
-+
- 		igt_display_fini(&display);
- 		drm_close_driver(drm_fd);
- 	}
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index 0c19745bc..a5a2d61a1 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -411,6 +411,11 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 
- 		data.debugfs = igt_debugfs_dir(data.drm_fd);
- 
-+		for_each_connected_output(&data.display, output) {
-+			if (igt_has_force_joiner_debugfs(data.drm_fd, output->name))
-+				igt_force_and_check_bigjoiner_status(data.drm_fd, output->name, true);
-+		}
-+
- 		/* Get active pipes. */
- 		for_each_pipe(&data.display, pipe)
- 			active_pipes[last_pipe++] = pipe;
-@@ -499,6 +504,11 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 	}
- 
- 	igt_fixture {
-+		for_each_connected_output(&data.display, output) {
-+			if (igt_check_force_joiner_status(data.drm_fd, output->name))
-+				igt_force_and_check_bigjoiner_status(data.drm_fd, output->name, false);
-+		}
-+
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
- 	}
--- 
-2.43.2
+(xe_ccs:6919) CRITICAL: Test assertion failure function surf_copy, file ../tests/intel/xe_ccs.c:232:
+(xe_ccs:6919) CRITICAL: Failed assertion: result == 0
+(xe_ccs:6919) CRITICAL: Source and destination surfaces are different after restoring source ccs data
 
+After resume we put corrupted, then previous ccs data. In all cases
+along with uncompressed surface this leads to disaster. I mean for
+discrete instead putting original ccs data (this one extracted before
+suspend) you should fill it with zeros. Original ccs data were fine
+before suspend migrated surface to system memory, but after resume
+those ccs data are not valid anymore.
+
+I've verified that for Xe2/discrete:
+
+	/* retrieve back ccs */
+	/* memcpy(ccsmap, ccscopy, ccssize); */
+	memset(ccsmap, 0, ccssize);
+
+does last blit work correctly.
+
+--
+Zbigniew
+
+>  		g_free(orig);
+>  		g_free(orig2);
+>  		g_free(newsum);
+> @@ -193,7 +209,8 @@ static void surf_copy(int xe,
+>  	intel_ctx_xe_sync(ctx, true);
+>  	WRITE_PNG(xe, run_id, "corrupted", &blt.dst, dst->x2, dst->y2, bpp);
+>  	result = memcmp(src->ptr, dst->ptr, src->size);
+> -	igt_assert(result != 0);
+> +	if (!blt_platform_has_flat_ccs_enabled(xe))
+> +		igt_assert(result != 0);
+>  
+>  	/* retrieve back ccs */
+>  	memcpy(ccsmap, ccscopy, ccssize);
+> @@ -365,7 +382,8 @@ static void block_copy(int xe,
+>  	 * occurs and ctrl surface will be filled with some not-zeroed values.
+>  	 */
+>  	if (mid->compression && FROM_EXP_WH(width, height))
+> -		igt_assert(blt_surface_is_compressed(xe, ctx, NULL, ahnd, mid));
+> +		if (!blt_platform_has_flat_ccs_enabled(xe))
+> +			igt_assert(blt_surface_is_compressed(xe, ctx, NULL, ahnd, mid));
+>  
+>  	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height, bpp);
+>  
+> -- 
+> 2.34.1
+> 
