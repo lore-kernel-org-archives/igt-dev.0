@@ -4,57 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72E87C4345F
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Apr 2024 13:59:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F09C9C4345F
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Apr 2024 14:28:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2BF6B113CB3;
-	Thu, 18 Apr 2024 13:59:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AA92D10FCA2;
+	Thu, 18 Apr 2024 14:28:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZQLmt81B";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KXzNb+kI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 49078113CB2
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Apr 2024 13:59:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF50710FC9F;
+ Thu, 18 Apr 2024 14:28:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713448795; x=1744984795;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=hcVoQ+TcbW3Cbg+I9C0JEy4MQci7O2Gl5e0FWz2bkEk=;
- b=ZQLmt81BRIRvZO0vbtJFPO2Dci4fZlD9LL66QQN0fsCeMwsX5G7xqQ8S
- yiPjQqO7qX1QDAEBQVZPezYICupTpFlOzcsxa3M5MOLzCJC7gPRW/tn3e
- jj64ulxNrQjwu4LlaKw3fIyrGr6XeuB1s0vB1/HkDn+lton2KsfXKj0XR
- +7Gz4oo8wVsTl2ywZWQIVnhgkDBDp21guADpH4S2Goz2I6P7ixjKPuF7e
- EqjJF8xus0Jz10e1EZqEMhuDUobUOFbegAAhO9gzniO4j08+DO0fTEdSB
- sPPultnPftrfZdQig9SVG7lmGSQiofhAvgRuak5JlAQa+uuW+svP1307E w==;
-X-CSE-ConnectionGUID: ue0D53mMQXGpA2zkCsKisA==
-X-CSE-MsgGUID: ugvZP/GCTTq91fdlul/oOg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="12781093"
-X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; d="scan'208";a="12781093"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2024 06:59:54 -0700
-X-CSE-ConnectionGUID: S728s/eGSWiEozK6YZvHOQ==
-X-CSE-MsgGUID: SHRaypEgSxSSyFt/ZlJweQ==
+ t=1713450497; x=1744986497;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=xkUhIhjIkPDrVXSQyOP/IF42rqw//ccVXgZBVwKixfg=;
+ b=KXzNb+kIojsj6Md2Fftb9EAsjz2SLxRPOqMgYgKj8icwksHCks4LkSrZ
+ SMSzkRqtiiyxdXyy51erD46hjUzQvWhG5Kg8Ls4U9rEhUhytck8vS/uen
+ Z3zTuxY+xW0vnP7KhEBkXla4U0xuFI7+dwk3oBTHcD06TCN+hW2lCNmrA
+ UPYSWIPS0/893LfcNa55Y/WSFD3z8YchEWaipUcrdOxobqX8rRFLSap6v
+ wNFgNSysI1evu+Ql2Sx0r4We1WTSG4cs0p3h8J968jnLPRtFv4eVkuFcR
+ QAvdmWsLVZi0/FbXK6UdAM1erSiWxAW0mGgIiZCGipShWgv4aars/j/hj w==;
+X-CSE-ConnectionGUID: td9BuVHUSLuSjSQkyMiRsg==
+X-CSE-MsgGUID: npQZw0CbTSeHW93aAjppeg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="8925917"
+X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; 
+   d="scan'208";a="8925917"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Apr 2024 07:28:16 -0700
+X-CSE-ConnectionGUID: HcsRvf4aT1eaV3IUQDwNjA==
+X-CSE-MsgGUID: WLZWC0BYTKq5pSfyBD17dw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; d="scan'208";a="22855672"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.234])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2024 06:59:53 -0700
-Date: Thu, 18 Apr 2024 15:59:49 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Jonathan Cavitt <jonathan.cavitt@intel.com>
-Subject: Re: [PATCH i-g-t v6 2/2] tests/xe_ccs: Update compression check
- based on flat-ccs  enablement
-Message-ID: <20240418135949.ow7vnpidfjeclzcp@zkempczy-mobl2>
-References: <cover.1713429755.git.akshata.jahagirdar@intel.com>
- <0cfbaccb86155a3e5b6fc5c68447848fb08c51ef.1713429755.git.akshata.jahagirdar@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; d="scan'208";a="23521262"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 18 Apr 2024 07:28:16 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 18 Apr 2024 07:28:15 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 18 Apr 2024 07:28:15 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Thu, 18 Apr 2024 07:28:15 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.169)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 18 Apr 2024 07:28:15 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=N19beNNTfpynWExhzQZJblsMtFeD9PC47r26zvdEAeeiiew+sz7dJqG/1sHDrWnXP/SZoQMluEa/6pd9U+PkRDZu7XxQflQ37KRhGMLtYzsT6cMInP1ussJtt45I7kFjKpIutmZmU4P4YxGCH2Q6bxA7R1edsFfsSgLt8r+Wk9jgbGqt+8fTrhiY/LTKsFtw4J9dvaFNFlFjAagiq0oalLkUK4QLnOKFK3aQAl+1XkXXXZjfvYqfVM9Gl7oiNPfPcZ4lMGj+zEWq69fkOTflDkMmcEjvMsOrpmjYkXoJbkf/3nfG5Az//7gnPjyIALlLrgIDs1p/jxsZxKJdr309IQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GJS6wI0bkzVSywOnYwuZQel8cwE56IpChDrAaP7HxMA=;
+ b=OSl2d1MriX5E5s3+jt+jh4b70sJiFKgKIS3/oWd0+LjIpVfie16M6rK4fblU5vdclyn5xWy7GAvKvCoYpI/bZnfxZVB7eIq0RA2Bt3UPAEvm2owxo4IR69kkpzyr0kXzaug8PzkAUOblOWc5Hibe1EJk3QPsZbxE3hGYwGFPttlkKbHfV37J5utwn582f8CuKfeSmMzzz+hzW89uKP4umr5+d2oq7Fp4G6XwchpAsXgF7bQxnq5adLN8gQFsqeq6bYcHInbOqcGF7iZCRzasGjzVE6PHGc2vGIGvhZKRT+kx+zhmz0yC5XSFxkUSR0AGiOVsydHqduvLfk1XcadoVg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MW4PR11MB7056.namprd11.prod.outlook.com (2603:10b6:303:21a::12)
+ by SA2PR11MB5066.namprd11.prod.outlook.com (2603:10b6:806:110::9)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.42; Thu, 18 Apr
+ 2024 14:28:13 +0000
+Received: from MW4PR11MB7056.namprd11.prod.outlook.com
+ ([fe80::ff2a:1235:d1ba:4f93]) by MW4PR11MB7056.namprd11.prod.outlook.com
+ ([fe80::ff2a:1235:d1ba:4f93%3]) with mapi id 15.20.7472.037; Thu, 18 Apr 2024
+ 14:28:12 +0000
+Message-ID: <e7613a0e-0d65-4a10-bbc2-7955760333f5@intel.com>
+Date: Thu, 18 Apr 2024 19:58:06 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/3] tests/intel/xe_wedged: Introduce a new test for
+ Xe device wedged state
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>, <igt-dev@lists.freedesktop.org>
+CC: <intel-xe@lists.freedesktop.org>, Lucas De Marchi
+ <lucas.demarchi@intel.com>
+References: <20240409221908.1077893-1-rodrigo.vivi@intel.com>
+Content-Language: en-US
+From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20240409221908.1077893-1-rodrigo.vivi@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN3PR01CA0087.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:9a::12) To MW4PR11MB7056.namprd11.prod.outlook.com
+ (2603:10b6:303:21a::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0cfbaccb86155a3e5b6fc5c68447848fb08c51ef.1713429755.git.akshata.jahagirdar@intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR11MB7056:EE_|SA2PR11MB5066:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4bd18670-75af-421b-5cc3-08dc5fb3c72c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: UIfpjv55uOTMGCGBmFxi0sLdf5ds7AOpNX7imFNGiXAK7kJ01I3pao4u0/LZ1LKNQclEeceZ5ct0vMb138jmc5y+R94gnAcgw69nfHbF8pFhiWZXWpOaNW9j2y1lfZEnyZecUzm3G+AO4UO8yHdVRZIhbGyFrvoOXoGgCEqLB5vSxdftGBWb0iDxF0jBU19i/xGhj95HngCwXbVvgUD9gcv776sqpUOZw35nwyWKgR1/FwWWUnSOpU7p0yKUWjQant1JS9kXPWJB/B6nMAbNJqtpieW5B20tbD13dYepjZnwx8gjqJBUKONuQuOuU1EKtpJmOJR8NmeWUcL8UJhVhg5dNibFIo2EIOHQJ2pgUQ5D19snL0jhWR/WdiB6If+r4usaQRgqcEggcPjr4alDkk74sAvNpbaC7Wll+HxpPTIUZ1IV6t4eT2W7Or/+yjNRGUQIXgYFn6N2STe2PSjA78LNLgBFJIXZynzGKeAAlWf38HXIWVAjF7dmKmimUAWTeVe3pw29klfmNaRf6FIsfMmXYO0kfUxh2Yrt6kTXRQhEC5AO/8KJypiqN+5Gtzgz4fBHGz9X9N4x4WI4NW+wpC4KGcRKbUp0p17atlXqbCq330qgcj3389UXVXXQ8ecc2A0iEdtNdJbIfHhQ7B1lXYhqRgCxw2l1E7G7NYUFgpA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW4PR11MB7056.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376005)(1800799015)(366007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aTlDSmJkZUpwTXI2dDNKUm4yV1l4RmJDb3N1MzdpMVdFUU9Oa2Q1M0FaZmhV?=
+ =?utf-8?B?M0RISThmMTQ0UTZ0VEZrU3kvUWR4QlFzRERqdkNxNFVySm9RenJDdDFDa3Rv?=
+ =?utf-8?B?dEIxRks0L2Roc0cxVzUvZlJVTnBRMmlKcm9ZQVFpNmI1eFlrRWo3S01GNE1J?=
+ =?utf-8?B?K0hKZlowOTMydnV2RG8veUcwMGFicTJCTk9nTGIvdkIrT0pBb0t1M2RnVXZ1?=
+ =?utf-8?B?N1pHUjg4ODUvOUpPTTJVUW1ROU5QdVhLVWs1alZnVTB0V3RjQnZUUmJtRk5M?=
+ =?utf-8?B?d05OQlBHU0NPdkUwamR5dFUxUXdYeEhRd2h2dCtOUUhmRjc4bGpUdHhSdVQw?=
+ =?utf-8?B?c2NMTlVxRjhkVHhJTWcxKzIxSTA3VEdlRStOd21rUlFaYTJyQ3hKcWFzVzgz?=
+ =?utf-8?B?VytzcVQ0Q3BPL0o0MkJteDBXaWJtNlZYSmh5eWIwakY1eDZqWStnSlFoSUwv?=
+ =?utf-8?B?MlpJVXBYazhyb2xwSUNtSFdOQS9kQlpwd2VBVGQ3V3laNHJpb0MzVDA4UXFj?=
+ =?utf-8?B?ckFsTGdMUitPQWxJSmlRTW81M0ZtN1NOY2Y3WStFb2o4aUl4UkdKOGcrM0lv?=
+ =?utf-8?B?emh4aXRjL1ZVSWdMTCtjeTVZUzN1Qy9kTGovemVXOFhWSjAyQ01mS3FJbGlk?=
+ =?utf-8?B?WnIrL2lrSFZUWlBNU0tpNk5IRko2VitMb2xWLzdGMFJUb2ZMZEx5UURjY3pu?=
+ =?utf-8?B?UGpKY2ZMcVExMHJEZlRUUEEya3Q4a0Q4bkp0SjB3Q2RQREdBOU9yNVFYTkg3?=
+ =?utf-8?B?dmRZZzF0ZXpqOFdKQnY0RWZJQ1JmOE1xS1BwWE5lcVY0Z0F0RzkxMWFKVlcz?=
+ =?utf-8?B?bEFNbko3aVhHbG1VdmdvcG50Z1RBSC9tQU9iOGttSzJucXF1QkhjZjl3UzRP?=
+ =?utf-8?B?MjF4THlGM3ZNU3NIb2twQW1zZlAxTVVDdXFJOGJlcnpiWmxEeVJHcUJwaUhr?=
+ =?utf-8?B?VHNpbFJ1b2NEU00yRXpFY0cyUExlMzgyLytRZzdtUjNiUUxjd3o4aVJFQ2NB?=
+ =?utf-8?B?RDR3NzU4ZnlPdGRGVVd6YnhMdERzblVxbFlTa1FvM2hPdEdsNCtuM3ZNVEo0?=
+ =?utf-8?B?cHZlbVJLWGh3cTl2b0U3VUo4d2sycmZtNHV5aUtuYVJkR0pITzk3Z2R4UFNi?=
+ =?utf-8?B?NURIbGJrcFNKV3dLMkN2ZTlRRkxSbUQxdkd2NStOMkRqeUJlYnNuQlJXRmJk?=
+ =?utf-8?B?UEdhejcydjhnb3NGSk5YaER6SERtWFAxclNwL3NZUHMwaVFLS0d1U0tQWXh0?=
+ =?utf-8?B?UE04RWNCeHNWVTI5T1B3U3lxdUxaZjNMbWZFamFMOFoycUpoM0ZPcW9oc1A4?=
+ =?utf-8?B?dGVkSWNYbnpxeDdmWkpENEQxOTVBaWdVbjdMa0ZLNXVlWGxseXZURnZ5NjEy?=
+ =?utf-8?B?a0VUcGllcXlhbEk2czFteDBkbmVxN1BNRmVLdmJEWjk4VHNPZnNVME95Wk1W?=
+ =?utf-8?B?U1AzZFdvV3BMVzVQSGpJSStMYUJDeThUd1BYMXQ2TUpQSkZDc3puRGltZmFF?=
+ =?utf-8?B?eGJkeDQyZTM2dVFhTEUrTXpQYWZ6Z2tFT1o3cnN4d0Z2NE9YWnRJOGRiWXVL?=
+ =?utf-8?B?cncweWRJM1J4NHNZdkdVTUNsdVlLTWp1RjA1KzFscUwzNTNESW9FSXZHTE1n?=
+ =?utf-8?B?QmFXSEJ3UGtSd1VoSXlhTzV0anhFMnhCS1AzUGlUVGlvVnljbHMxWEFaRnV1?=
+ =?utf-8?B?dUFLbWZDWi9wemt1bGVFZW5ZWmZlUE9qMHNjcXdwK25nTkdhc255Q09TUGJN?=
+ =?utf-8?B?QVJmZHpUcEFGTkZEVjAxYUdITGpMdDg2c3czV1htQnFvQkRoamxnei91eG5q?=
+ =?utf-8?B?MThNNG9kYnBkMG9HVVpwUUxOOHdwVS9KTzJ6Y2xDVzUyLy9FTGpjNmVtUGhL?=
+ =?utf-8?B?S2E2eXgwWElGenMvLzVHbWxOc2djM0VhMUl0Q2IxeVIwREJlTjJmRFNBSHVM?=
+ =?utf-8?B?Uy9pY3BWSVAzRlM5bGxhV2Nuc1AyU2IydTFNNTRuZDJiRVh5NzVHZzl3TzFz?=
+ =?utf-8?B?a1dJRWlrSUhFVi9nZlJ5ZmcrQlFIQWp0QXNZeDJMRnJzd1ZFODFCNEZUN3RF?=
+ =?utf-8?B?V0dNLzllVFBhdXpKeS8zei9IaDBxd2swa1cwd21KdkY4SlgzazV4L2lOMFZo?=
+ =?utf-8?B?dFlubWZXY3MrWkJzdE9EcEljME9HdGMxOWtZRXhiQ3d0dHZkNUtkenpCMXlC?=
+ =?utf-8?B?U1E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4bd18670-75af-421b-5cc3-08dc5fb3c72c
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB7056.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 14:28:12.8687 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Bu+2K6BKRg5ovk2+jXxxrnJ05ZeBRgql2oSUiv2fzMFub3O6ppxyblzhVE48V6MPjNRmkz/r63a+jSn4PU+zfzkpminWctyNE72Yf/pJcG4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5066
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,102 +170,159 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Apr 18, 2024 at 01:46:43AM -0700, Akshata Jahagirdar wrote:
-> In Xe2+ platforms,we need to run this test regardless of the status of flat-ccs.
-> Check if the platform supports compression and has flat ccs enabled, and if it
-> doesn't, then update the checks accordingly and proceed with the test.
-> 
-> Additionally, On Xe2 dGPU, compression is only supported with VRAM. When copying
-> from VRAM -> sysmem the KMD uses mapping with uncompressed PAT so the copy
-> in system memory is guaranteed to be uncompressed. When restoring such buffers
-> from sysmem -> VRAM the KMD can't easily know which pages were originally
-> compressed, so we always use uncompressed -> uncompressed here. so this means
-> there's no need for extra CCS storage on such platforms.
-> Thats why we shouldn't need to run suspend-resume on xe2 dgpu.
-> 
-> Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-> Acked-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+
+On 10-04-2024 03:49, Rodrigo Vivi wrote:
+> Let's inject a gt_reset failure that will put Xe device in the
+> new wedged state, then we confirm the IOCTL is blocked and we
+> reload the driver to get back to a clean state for other test
+> execution, since wedged state in Xe is a final state that can only
+> be cleared with a device rebind/reprobe.
+>
+> The fault injection of this test is entirely based on xe_uevent
+> provided by Himal.
+>
+> v2: Use rebind instead of module reload (Lucas)
+>      And other improvements also pointed out by Lucas.
+>
+> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+> Cc:  Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > ---
->  tests/intel/xe_ccs.c | 26 ++++++++++++++++++++++----
->  1 file changed, 22 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-> index b3bf97af7..d6148dc44 100644
-> --- a/tests/intel/xe_ccs.c
-> +++ b/tests/intel/xe_ccs.c
-> @@ -162,8 +162,24 @@ static void surf_copy(int xe,
->  						      (void *)mid->ptr, mid->size);
->  
->  		munmap(ccsmap2, ccssize);
-> -		igt_assert(!strcmp(orig, newsum));
-> -		igt_assert(!strcmp(orig2, newsum2));
-> +		if (blt_platform_has_flat_ccs_enabled(xe)) {
-> +			if (IS_GEN(xe, 12) && is_intel_dgfx(xe)) {
-> +				igt_assert(!strcmp(orig, newsum));
-> +				igt_assert(!strcmp(orig2, newsum2));
-> +			} else if (AT_LEAST_GEN(xe, 20)) {
-> +				if (is_intel_dgfx(xe)) {
-> +					/* buffer object would become
-> +					 * uncompressed in xe2+ dgfx
-> +					 */
-> +					igt_assert(!blt_surface_is_compressed(xe, ctx,
-> +							NULL, ahnd, mid));
-> +				} else {
-> +					/* ccs should be present in xe2+ igfx */
-> +					igt_assert(blt_surface_is_compressed(xe, ctx,
-> +							NULL, ahnd, mid));
-> +				}
-> +			}
+>   tests/intel/xe_wedged.c | 108 ++++++++++++++++++++++++++++++++++++++++
+>   tests/meson.build       |   1 +
+>   2 files changed, 109 insertions(+)
+>   create mode 100644 tests/intel/xe_wedged.c
+>
+> diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
+> new file mode 100644
+> index 000000000..f2587cc43
+> --- /dev/null
+> +++ b/tests/intel/xe_wedged.c
+> @@ -0,0 +1,108 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2024 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: cause fake gt reset failure which put Xe device in wedged state
+> + * Category: Software building block
+> + * Sub-category: driver
+> + * Functionality: wedged
+> + * Test category: functionality test
+> + */
+> +
+> +#include <limits.h>
+> +#include <dirent.h>
+> +
+> +#include "igt.h"
+> +#include "igt_device.h"
+> +#include "igt_kmod.h"
+> +#include "igt_sysfs.h"
+> +
+> +#include "xe/xe_ioctl.h"
+> +
+> +static void force_wedged(int fd)
+> +{
+> +	igt_debugfs_write(fd, "fail_gt_reset/probability", "100");
+> +	igt_debugfs_write(fd, "fail_gt_reset/times", "2");
+> +
+> +	xe_force_gt_reset(fd, 0);
+> +	sleep(1);
+> +}
+> +
+> +static int rebind_xe(int fd)
+> +{
+> +	char pci_slot[NAME_MAX];
+> +	int sysfs;
+> +
+> +	igt_device_get_pci_slot_name(fd, pci_slot);
+> +
+> +	sysfs = open("/sys/bus/pci/drivers/xe", O_DIRECTORY);
+> +	igt_assert(sysfs);
+> +
+> +        igt_assert(igt_sysfs_set(sysfs, "unbind", pci_slot));
+> +
+> +	/*
+> +	 * We need to close the client for a proper release, before
+> +	 * binding back again.
+> +	 */
+> +	close(fd);
+> +
+> +        igt_assert(igt_sysfs_set(sysfs, "bind", pci_slot));
+> +	close(sysfs);
+> +
+> +	/* Renew the client connection */
+> +	fd = drm_open_driver(DRIVER_XE);
+> +	igt_assert(fd);
+> +
+> +	return fd;
+> +}
+> +
+> +static int simple_ioctl(int fd)
+> +{
+> +	int ret;
+> +
+> +	struct drm_xe_vm_create create = {
+> +		.extensions = 0,
+> +		.flags = 0,
+> +	};
+> +
+> +	ret = igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create);
+> +
+> +	if (ret == 0)
+> +		xe_vm_destroy(fd, create.vm_id);
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * SUBTEST: basic-wedged
+> + * Description: Force Xe device wedged after injecting a failure in GT reset
+> + */
+> +igt_main
+> +{
+> +	int fd;
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +	}
+> +
+> +	igt_subtest("basic-wedged") {
+> +		igt_require(igt_debugfs_exists(fd, "fail_gt_reset/probability",
+> +					       O_RDWR));
+> +
+> +		igt_assert_eq(simple_ioctl(fd), 0);
+> +		force_wedged(fd);
+> +		igt_assert_neq(simple_ioctl(fd), 0);
+> +		fd = rebind_xe(fd);
+> +		igt_assert_eq(simple_ioctl(fd), 0);
+> +	}
+> +
+> +	igt_fixture {
+> +		if (igt_debugfs_exists(fd, "fail_gt_reset/probability", O_RDWR)) {
+> +			igt_debugfs_write(fd, "fail_gt_reset/probability", "0");
+> +			igt_debugfs_write(fd, "fail_gt_reset/times", "1");
 > +		}
+> +		drm_close_driver(fd);
+> +	}
+> +}
 
-This part is fine for me, but below code doesn't work on Xe2/discrete.
-I mean I got:
 
-(xe_ccs:6919) CRITICAL: Test assertion failure function surf_copy, file ../tests/intel/xe_ccs.c:232:
-(xe_ccs:6919) CRITICAL: Failed assertion: result == 0
-(xe_ccs:6919) CRITICAL: Source and destination surfaces are different after restoring source ccs data
+Patch LGTM.
 
-After resume we put corrupted, then previous ccs data. In all cases
-along with uncompressed surface this leads to disaster. I mean for
-discrete instead putting original ccs data (this one extracted before
-suspend) you should fill it with zeros. Original ccs data were fine
-before suspend migrated surface to system memory, but after resume
-those ccs data are not valid anymore.
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 
-I've verified that for Xe2/discrete:
 
-	/* retrieve back ccs */
-	/* memcpy(ccsmap, ccscopy, ccssize); */
-	memset(ccsmap, 0, ccssize);
-
-does last blit work correctly.
-
---
-Zbigniew
-
->  		g_free(orig);
->  		g_free(orig2);
->  		g_free(newsum);
-> @@ -193,7 +209,8 @@ static void surf_copy(int xe,
->  	intel_ctx_xe_sync(ctx, true);
->  	WRITE_PNG(xe, run_id, "corrupted", &blt.dst, dst->x2, dst->y2, bpp);
->  	result = memcmp(src->ptr, dst->ptr, src->size);
-> -	igt_assert(result != 0);
-> +	if (!blt_platform_has_flat_ccs_enabled(xe))
-> +		igt_assert(result != 0);
->  
->  	/* retrieve back ccs */
->  	memcpy(ccsmap, ccscopy, ccssize);
-> @@ -365,7 +382,8 @@ static void block_copy(int xe,
->  	 * occurs and ctrl surface will be filled with some not-zeroed values.
->  	 */
->  	if (mid->compression && FROM_EXP_WH(width, height))
-> -		igt_assert(blt_surface_is_compressed(xe, ctx, NULL, ahnd, mid));
-> +		if (!blt_platform_has_flat_ccs_enabled(xe))
-> +			igt_assert(blt_surface_is_compressed(xe, ctx, NULL, ahnd, mid));
->  
->  	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height, bpp);
->  
-> -- 
-> 2.34.1
-> 
+> diff --git a/tests/meson.build b/tests/meson.build
+> index a856510fc..65b8bf23b 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -274,6 +274,7 @@ intel_kms_progs = [
+>   ]
+>   
+>   intel_xe_progs = [
+> +	'xe_wedged',
+>   	'xe_ccs',
+>   	'xe_create',
+>   	'xe_compute',
