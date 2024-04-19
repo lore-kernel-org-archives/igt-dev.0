@@ -4,59 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51B45C4345F
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Apr 2024 14:37:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29DBFC4345F
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Apr 2024 14:44:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CC44910E261;
-	Fri, 19 Apr 2024 14:37:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A705D10EE1E;
+	Fri, 19 Apr 2024 14:44:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nrGkEOqq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J0T0nibx";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A036B10E261
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Apr 2024 14:37:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA6F410E6F2
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Apr 2024 14:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713537456; x=1745073456;
+ t=1713537839; x=1745073839;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=0mNTVp+y0Hr2p+CB/Bn1U13kRI76qZTzQuORl+RnDwY=;
- b=nrGkEOqqsCQsSjMqtQ1/c+31DUv3h4uHXl+1k42+rAK8yBKs5ef3Zcm4
- O/jC50HZNYRLY/7nLequsTES+JGJfUKFP/rx5jQsPZZOz/E4DH5RYadx2
- NhVxTqpClLR4glCAaX7tRuCAnM00ZXJw8F75C425PctTMdjGzXBo8IZzX
- U/kPIzFHYqn++gQwe5Fms9ve0POg/b4JNkp2PfTCqAQmuu1T9cacbEA3A
- GKt1Tfm4pD46bCz58xqDbMpBR/9LfI3XoNtFvoOHA+amKuCoMh47lr+D6
- JPiyWtpfgSiu9Y/m9E5ZE17lJVJuNlF0oxYlHAAgMimza9nrWoBCBWFm/ w==;
-X-CSE-ConnectionGUID: UpCbqgCuTF+w3VpdM6pXjA==
-X-CSE-MsgGUID: 7fW+RtvbSNWMMcnC1fDysw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11049"; a="12932057"
-X-IronPort-AV: E=Sophos;i="6.07,214,1708416000"; d="scan'208";a="12932057"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Apr 2024 07:37:35 -0700
-X-CSE-ConnectionGUID: 27EycSfPRhGWpGcx1KCl8Q==
-X-CSE-MsgGUID: rvHjdiCqQ1KHrjUAiiIhLA==
+ bh=rNBiRK+K2/6seZP6tLx6GBvQCSFI/JGgCsv+y/KmzKA=;
+ b=J0T0nibxiZ1xTVd/HBFnKeAH+VJcqSlM5DqlZsw7eqGuNiKetbJVDmDf
+ qV5unnnWzv3yqlN4vFfRiHUi53kfHprxvRlA21gNupPww6lUsNtVK8Kye
+ 6auxn0A39oB9o42STUSHKYndAeJdGvDZzskHd49gLIErMW3uH9AGvZ13Y
+ m1BO2YOwIjhmOGlFkBBc/ov/zGKiNFPkF4JIqIxcf9EUXOqTeWs/fH9SU
+ 0VAMbHeGmq1aJaQrXJqkAbtn6P8T74SmFbeWm5dKEcQIvQ7ORrQN+lMMy
+ ViUB4AMVfuKEeZghkoyqrEHS2hDBL14vfp26kZyOlWMuRSPcYBFyfh6bp A==;
+X-CSE-ConnectionGUID: c7UUJDcdQlKkQlu3b2VrEg==
+X-CSE-MsgGUID: +k++4KlSSSG7eB99gloORQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11049"; a="26652940"
+X-IronPort-AV: E=Sophos;i="6.07,214,1708416000"; d="scan'208";a="26652940"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Apr 2024 07:43:58 -0700
+X-CSE-ConnectionGUID: UKFqSwilQQSzuwI2kaH/Sw==
+X-CSE-MsgGUID: Vf4lLhSoTzqqlCJeucNy3A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,214,1708416000"; d="scan'208";a="27813222"
+X-IronPort-AV: E=Sophos;i="6.07,214,1708416000"; d="scan'208";a="23404762"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2024 07:37:30 -0700
-Date: Fri, 19 Apr 2024 16:37:26 +0200
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2024 07:43:56 -0700
+Date: Fri, 19 Apr 2024 16:43:53 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <me@petersenna.com>, andi.shyti@linux.intel.com
-Subject: Re: [PATCH i-g-t] tests/intel/gem_exec_capture: fix use of
- igt_allow_hang() / igt_disallow_hang()
-Message-ID: <20240419143726.24mjecbdqcb6zrut@kamilkon-DESK.igk.intel.com>
+Cc: Arthur Grillo <arthurgrillo@riseup.net>,
+ Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Pekka Paalanen <pekka.paalanen@collabora.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>
+Subject: Re: [PATCH i-g-t v4 4/7] benchmarks/kms_fb_stress: Free resources on
+ the stress procedure
+Message-ID: <20240419144353.bot6el53yg7vvntz@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Peter Senna Tschudin <me@petersenna.com>,
- andi.shyti@linux.intel.com
-References: <20240411191934.10368-1-me@petersenna.com>
+ Arthur Grillo <arthurgrillo@riseup.net>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Pekka Paalanen <pekka.paalanen@collabora.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>
+References: <20240411-kms_fb_stress-dev-v4-0-7a8f3a419ebb@riseup.net>
+ <20240411-kms_fb_stress-dev-v4-4-7a8f3a419ebb@riseup.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240411191934.10368-1-me@petersenna.com>
+In-Reply-To: <20240411-kms_fb_stress-dev-v4-4-7a8f3a419ebb@riseup.net>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,82 +85,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
-On 2024-04-11 at 21:19:23 +0200, Peter Senna Tschudin wrote:
-
-small nit on subject, you fixed uninitialized var used, so imho
-
-[PATCH i-g-t] tests/intel/gem_exec_capture: fix use of igt_allow_hang() / igt_disallow_hang()
-
-would be better and shorter with:
-
-[PATCH i-g-t] tests/intel/gem_exec_capture: fix use of uninitialized hang var
-
-> The function main has a variable igt_hang_t hang defined, and it is
-> currently used by igt_disallow_hang(). However igt_disallow_hang() is
-> using the variable uninitialized making valgrind unhappy:
+Hi Arthur,
+On 2024-04-11 at 15:51:14 -0300, Arthur Grillo wrote:
+> On the stress_driver(), the fbs and the sync file are not released. Fix
+> that by freeing all the allocated resources.
 > 
->  Syscall param ioctl(generic) points to uninitialised byte(s)
->     at 0x4ACD3ED: ioctl (in /usr/lib64/libc.so.6)
->     by 0x49ACF4F: drmIoctl (xf86drm.c:704)
->     by 0x488AF46: __gem_context_set_param (gem_context.c:260)
->     by 0x48A4D9F: context_set_ban (igt_gt.c:161)
->     by 0x48A53DC: igt_disallow_hang (igt_gt.c:228)
->     by 0x4013D7: __igt_unique____real_main959 (gem_exec_capture.c:1069)
->     by 0x401242: main (gem_exec_capture.c:959)
->   Address 0x1fff000170 is on thread 1's stack
->   in frame #3, created by context_set_ban (igt_gt.c:154)
->   Uninitialised value was created by a stack allocation
->     at 0x401340: __igt_unique____real_main959 (gem_exec_capture.c:960)
-> 
->  Conditional jump or move depends on uninitialised value(s)
->     at 0x48A53E2: igt_disallow_hang (igt_gt.c:230)
->     by 0x4013D7: __igt_unique____real_main959 (gem_exec_capture.c:1069)
->     by 0x401242: main (gem_exec_capture.c:959)
->   Uninitialised value was created by a stack allocation
->     at 0x401340: __igt_unique____real_main959 (gem_exec_capture.c:960)
-> 
->  Syscall param ioctl(generic) points to uninitialised byte(s)
->     at 0x4ACD3ED: ioctl (in /usr/lib64/libc.so.6)
->     by 0x49ACF4F: drmIoctl (xf86drm.c:704)
->     by 0x488AF46: __gem_context_set_param (gem_context.c:260)
->     by 0x48A540A: igt_disallow_hang (igt_gt.c:236)
->     by 0x4013D7: __igt_unique____real_main959 (gem_exec_capture.c:1069)
->     by 0x401242: main (gem_exec_capture.c:959)
->   Address 0x1fff0001b0 is on thread 1's stack
->   in frame #3, created by igt_disallow_hang (igt_gt.c:224)
->   Uninitialised value was created by a stack allocation
->     at 0x401340: __igt_unique____real_main959 (gem_exec_capture.c:960)
+> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
 
-Good catch, could you leave only that 3rd report from valgrind
-starting from 'Syscall param ...'? imho this should explain it.
-
-With that,
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-> 
-> This patch sets the content of the variable hang with the return value
-> of igt_allow_hang() following what is used elsewhere in the codebase.
-> After this patch valgrind does not complain about the  errors listed.
-> 
-> Signed-off-by: Peter Senna Tschudin <me@petersenna.com>
 > ---
->  tests/intel/gem_exec_capture.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  benchmarks/kms_fb_stress.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
 > 
-> diff --git a/tests/intel/gem_exec_capture.c b/tests/intel/gem_exec_capture.c
-> index 8800fa586..e462aa96f 100644
-> --- a/tests/intel/gem_exec_capture.c
-> +++ b/tests/intel/gem_exec_capture.c
-> @@ -990,7 +990,7 @@ igt_main
+> diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
+> index bc548fae61f8..76e82e0d76ea 100644
+> --- a/benchmarks/kms_fb_stress.c
+> +++ b/benchmarks/kms_fb_stress.c
+> @@ -165,11 +165,30 @@ static void stress_driver(struct data_t *data)
+>  		igt_output_set_writeback_fb(data->wb_output, &data->kms.writeback.fbs[fb_index]);
 >  
->  			gem_context_set_param(fd, &param);
->  		}
-> -		igt_allow_hang(fd, ctx->id, HANG_ALLOW_CAPTURE | HANG_WANT_ENGINE_RESET);
-> +		hang = igt_allow_hang(fd, ctx->id, HANG_ALLOW_CAPTURE | HANG_WANT_ENGINE_RESET);
+>  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +
+> +		if (data->wb_output->writeback_out_fence_fd != -1) {
+> +			close(data->wb_output->writeback_out_fence_fd);
+> +			data->wb_output->writeback_out_fence_fd = -1;
+> +		}
+>  	}
 >  
->  		dir = igt_sysfs_open(fd);
->  		igt_require(igt_sysfs_set(dir, "error", "Begone!"));
+>  	igt_assert_eq(igt_gettime(&now), 0);
+>  	elapsed = igt_time_elapsed(&then, &now);
+>  
+> +	igt_plane_set_fb(data->kms.primary.base, NULL);
+> +	igt_plane_set_fb(data->kms.overlay_a.base, NULL);
+> +	igt_plane_set_fb(data->kms.overlay_b.base, NULL);
+> +	igt_output_set_writeback_fb(data->wb_output, NULL);
+> +
+> +	for (int i = 0; i < NUM_FBS; i++) {
+> +		igt_remove_fb(data->fd, &data->kms.primary.fbs[i]);
+> +		igt_remove_fb(data->fd, &data->kms.overlay_a.fbs[i]);
+> +		igt_remove_fb(data->fd, &data->kms.overlay_b.fbs[i]);
+> +		igt_remove_fb(data->fd, &data->kms.writeback.fbs[i]);
+> +	}
+> +
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +
+>  	igt_info("Time spent in the loop with %d frames: %lfs.\n", FRAME_COUNT, elapsed);
+>  }
+>  
+> 
 > -- 
 > 2.44.0
 > 
