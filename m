@@ -4,76 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F756C4345F
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Apr 2024 18:32:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAB79C4345F
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Apr 2024 18:34:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F055010FFC2;
-	Fri, 19 Apr 2024 18:32:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4BE5710FC25;
+	Fri, 19 Apr 2024 18:34:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="Y3WSvtXi";
+	dkim=pass (2048-bit key; unprotected) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="I4tGSKVX";
 	dkim-atps=neutral
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
- [209.85.128.44])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F40710FFC2
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Apr 2024 18:32:55 +0000 (UTC)
-Received: by mail-wm1-f44.google.com with SMTP id
- 5b1f17b1804b1-419ca3f3ee3so4440875e9.3
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Apr 2024 11:32:55 -0700 (PDT)
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com
+ [209.85.128.51])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 575F310FC25
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Apr 2024 18:34:42 +0000 (UTC)
+Received: by mail-wm1-f51.google.com with SMTP id
+ 5b1f17b1804b1-419c8236b34so5278565e9.0
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Apr 2024 11:34:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1713551574; x=1714156374;
+ d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1713551680; x=1714156480;
  darn=lists.freedesktop.org; 
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=QbJnEcTyQTqcX9oDhfc/wLstZbR4wVVqBU3wSfhf1+k=;
- b=Y3WSvtXifdao6ELW+KIkWeMyA5ug7tVyqwHoPjSKF7bz1AAhcV22GVsNh8WpKyOMaK
- PQSIo4CZiCjupC6nSo6ZWnenLIOK1KppZc3TJlbp9t3Hu9KqitVkcWzJ8eGqEOG2cDRo
- LgxhWura26pTDH4Gpa91Ac/Jl0YDTLqGATGkPd619RgVxbHg6MEqmHvnYY4WdM9pPakK
- +sDcNOZ+Z/f7YsRxhepM3bXKnOBRwZilKcGReVYX8sWR7qZiiMVvLu3QO/LX7C/gPgI+
- LQs+1GtVVVw6Is/zOnrk6EqoH/GtXe5JJDh4zZ7Yx9PeHfu2Q1OaxtjJlhn5fku18SCm
- O6OA==
+ bh=8dArLbXXyJQIDkT4eKnSB625CVcAtRyPMR1o/m8G3ls=;
+ b=I4tGSKVXfiBAGN4rr+QqsHbiMfOkbYjIEwZmkI/cZ/aRG7AVh/nAMmJFxLQq4pOIiD
+ cX+qPQGi4OIHDHt4ybtVMTgfgGaN+B/M5G0MN5Pd3dSRTQDtoMmVDECjX/lxKTIVd8PN
+ XBtqroSUyIhDjUe49X2O0p2zzvEtNIdlV0S+KjDqkP3eUtGDlLJdcD8fmV4tF/CaSLzi
+ P9V6j5ulKTZWJsCRJdb/SbdazBwglTEoGLofoShM3UiwfAv/s+ipFZiaXuNI16pQE75+
+ p9L+7eV+lDngEUTPyCd7M+dX/WTjJbUWUYXbqkoIQGGn7LBzmZQewFf00nnaft2ObpeM
+ aKNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713551574; x=1714156374;
+ d=1e100.net; s=20230601; t=1713551680; x=1714156480;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QbJnEcTyQTqcX9oDhfc/wLstZbR4wVVqBU3wSfhf1+k=;
- b=aIzM9/uyt8lGPMxp3BiLUfAmCXYJ7QOljSD7FZksry0crXYYFCMdtwowdxt8kkj0zY
- exHGdbl7qOuXLU4qygkiDMgFjWBk6cp6CDveATEMbTznDSqm7Egkl+bwYDKWeAPjkOQU
- X0NF5sLPtY2OVtfYbH+XJejgZe8fK52QRrDwqsX+0UK/MhzzRSf7h8ZRZdlzvS2uP+fJ
- qhgRYdjG/VFDlFXZsalI0OJiY6eZPcXewMGxSyS9celJ6lh2bUU00OK2WRjmLUT56W7Y
- sZ7VPb6Wpg+N85fJhAFsoF6gX/FKuhVj+5P8O3lEPPdB5jE3+zGDKnZ/JPH7JLHEV7UQ
- +WLw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVfiZjusxqGd0yhBpdtCNqB58TNxr5ZbuKezW5DF5p96es1KDHsfFUusgcFcpT1T4+IoAN38BKIcfIUeVp2fkDY+uLkXko8lkuW6459hg==
-X-Gm-Message-State: AOJu0YzFAVHIivxm7+cQ1tvIWXzB6/0uh3J90wxA9hFyd44KYpbrKRxu
- mqGKrZ6lE1VjWDraIENRgdbAZIApincywVmmbwQGXrNqm5HiaWbPykKpVboCpi0=
-X-Google-Smtp-Source: AGHT+IFhkquec+I/L0MxXvo5xGdY7xJexuPgaIfaCJYb0gVCTkW1Nq8TU8d+q9OhfdUhME652zWVjA==
-X-Received: by 2002:a05:600c:4e8b:b0:418:e2e4:a84c with SMTP id
- f11-20020a05600c4e8b00b00418e2e4a84cmr2060691wmq.30.1713551574096; 
- Fri, 19 Apr 2024 11:32:54 -0700 (PDT)
+ bh=8dArLbXXyJQIDkT4eKnSB625CVcAtRyPMR1o/m8G3ls=;
+ b=aYfNCMcATxyYY52ffrZiPCrS0OlWiRN7ymOYYLYMTRUStldlIQBOzLZfslEt3kCRYy
+ 7XgPl5PkbaNbLzfiNwUF+EGupIMeyuNjrDQHVAUHMemAeCe/qjP79egCaeNVY9pJvqSd
+ XKVlsQzVseqPiHUMkHCH5McvjcHXKcokC7GbbIcrOMdHbrYFMBzf1YuHjGZXBoUd5M6g
+ tNCKE/Iz07YkZb45Tq/jRlS0BNirFGyEgJtSBrvn1PrX2ucMepfMWuaLwSQ2C8NEvr5x
+ bu/+2LKxvb8/1wiE/DqE0I3QhhEvhFyGmlaSdrPPvpWv+GaTbnaXCUIrNF4BSR0DAGp5
+ DC5Q==
+X-Gm-Message-State: AOJu0YwKM9WlqtY1tJ/66JRo1fVCiOj39m+Edj3O323e8nJQuy8kV7Xq
+ +fr2Rb3gDnefp/sL47syGW13+0bN4XejpnGS2IWx4h6/LxzkcSmRm7Yw75uiSbE=
+X-Google-Smtp-Source: AGHT+IFF8J2zW+DP53eaUw3cYhNlqX/OJ2zzFdhfYXD5gU9i5kLltY2r9JRwEWb9F8AbhJQc6AemRg==
+X-Received: by 2002:a05:600c:474a:b0:416:643d:862 with SMTP id
+ w10-20020a05600c474a00b00416643d0862mr2348578wmo.25.1713551680349; 
+ Fri, 19 Apr 2024 11:34:40 -0700 (PDT)
 Received: from [192.168.0.101] ([84.65.0.132])
  by smtp.gmail.com with ESMTPSA id
- bd27-20020a05600c1f1b00b00419d47edc51sm890457wmb.47.2024.04.19.11.32.53
+ n6-20020a05600c3b8600b0041892e839bcsm7517789wms.33.2024.04.19.11.34.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 Apr 2024 11:32:53 -0700 (PDT)
-Message-ID: <43cef231-92ae-4eb5-aabe-a4ae350ba486@ursulin.net>
-Date: Fri, 19 Apr 2024 19:32:53 +0100
+ Fri, 19 Apr 2024 11:34:40 -0700 (PDT)
+Message-ID: <080cdfa1-6105-479e-8b1d-49759d5daa0e@ursulin.net>
+Date: Fri, 19 Apr 2024 19:34:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 07/12] lib/igt_drm_fdinfo: Parse unit for engine
- utilization
+Subject: Re: [PATCH i-g-t 01/12] lib/igt_drm_fdinfo: Stop passing key twice
 Content-Language: en-GB
 To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org,
+ Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 References: <20240405060056.59379-1-lucas.demarchi@intel.com>
- <20240405060056.59379-8-lucas.demarchi@intel.com>
- <ZiGjOeB2CSO7a/wO@orsosgc001>
- <36580d4b-f9c7-40f9-8b4a-16ff3b625036@ursulin.net>
- <y7fso2phqvfqlcuedtrpuni5tk6ztgfqa3gr6id2fnn2l4r27r@2lymyjdniuv2>
+ <20240405060056.59379-2-lucas.demarchi@intel.com>
+ <434d02cf-c683-40e6-b2f6-3462516a104e@ursulin.net>
+ <u7r2vd45ex7k5yyji3bfxysck5vtlsp233nofahzxwpcx4cqar@nffa7y555i6x>
 From: Tvrtko Ursulin <tursulin@ursulin.net>
-In-Reply-To: <y7fso2phqvfqlcuedtrpuni5tk6ztgfqa3gr6id2fnn2l4r27r@2lymyjdniuv2>
+In-Reply-To: <u7r2vd45ex7k5yyji3bfxysck5vtlsp233nofahzxwpcx4cqar@nffa7y555i6x>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -92,123 +88,145 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 19/04/2024 17:21, Lucas De Marchi wrote:
-> On Fri, Apr 19, 2024 at 08:58:25AM GMT, Tvrtko Ursulin wrote:
+On 19/04/2024 17:35, Lucas De Marchi wrote:
+> On Fri, Apr 19, 2024 at 08:42:50AM GMT, Tvrtko Ursulin wrote:
 >>
->> On 18/04/2024 23:48, Umesh Nerlige Ramappa wrote:
->>> On Fri, Apr 05, 2024 at 01:00:51AM -0500, Lucas De Marchi wrote:
->>>> Kernel adds a " ns" at the end of engine utilization. Make sure we 
->>>> parse
->>>> it so we don't fail if there's another suitable unit chosen by the
->>>> driver or another format.
->>>>
->>>> This prepares the ground for xe driver which will use 2 timestamps
->>>> rather than 1 with a different unit, to make sure it's compatible with
->>>> SR-IOV so we don't have to handle the conversion between GPU and CPU
->>>> clock domains.
->>>>
->>>> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->>>> ---
->>>> lib/igt_drm_fdinfo.c | 22 +++++++++++++++-------
->>>> 1 file changed, 15 insertions(+), 7 deletions(-)
->>>>
->>>> diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
->>>> index 5f05f210e..1541a62c9 100644
->>>> --- a/lib/igt_drm_fdinfo.c
->>>> +++ b/lib/igt_drm_fdinfo.c
->>>> @@ -63,9 +63,10 @@ static const char *ignore_space(const char *s)
->>>>
->>>> static int parse_engine(const char *name, struct drm_client_fdinfo 
->>>> *info,
->>>>             const char **name_map, unsigned int map_entries,
->>>> -            uint64_t *val)
->>>> +            uint64_t *val, const char **unit)
->>>> {
->>>>     const char *p;
->>>> +    char *end_ptr;
->>>>     size_t name_len;
->>>>     int found = -1;
->>>>     unsigned int i;
->>>> @@ -103,8 +104,15 @@ static int parse_engine(const char *name, 
->>>> struct drm_client_fdinfo *info,
->>>>         }
->>>>     }
->>>>
->>>> -    if (found >= 0)
->>>> -        *val = strtoull(p, NULL, 10);
->>>> +    if (found < 0)
->>>> +        return found;
->>>> +
->>>> +    *val = strtoull(p, &end_ptr, 10);
->>>> +    if (p == end_ptr)
->>>> +        return -1;
->>>> +
->>>> +    if (unit)
->>>> +        *unit = end_ptr;
->>>>
->>>>     return found;
->>>> }
->>>> @@ -212,7 +220,7 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, 
->>>> struct drm_client_fdinfo *info,
->>>>     while ((l = strtok_r(_buf, "\n", &ctx))) {
->>>>         uint64_t val = 0;
->>>>         size_t keylen;
->>>> -        const char *v;
->>>> +        const char *v, *unit;
->>>>         char *end_ptr;
->>>>         int idx;
->>>>
->>>> @@ -237,15 +245,15 @@ __igt_parse_drm_fdinfo(int dir, const char 
->>>> *fd, struct drm_client_fdinfo *info,
->>>>             strncpy(info->pdev, v, sizeof(info->pdev) - 1);
->>>>         } else if (strstartswith(l, "drm-engine-capacity-", &keylen)) {
->>>>             idx = parse_engine(l + keylen, info,
->>>> -                       name_map, map_entries, &val);
->>>> +                       name_map, map_entries, &val, NULL);
->>>>             if (idx >= 0) {
->>>>                 info->capacity[idx] = val;
->>>>                 num_capacity++;
->>>>             }
->>>>         } else if (strstartswith(l, "drm-engine-", &keylen)) {
->>>>             idx = parse_engine(l + keylen, info,
->>>> -                       name_map, map_entries, &val);
->>>> -            if (idx >= 0) {
->>>> +                       name_map, map_entries, &val, &unit);
+>> On 05/04/2024 07:00, Lucas De Marchi wrote:
+>>> Change strstartswith() so it also returns the length, which then can be
+>>> used inside the branch when it matches. A good compiler shall optimize
+>>> out the strlen call since the argument is a constant literal.
 >>>
->>> Should we ignore spaces in unit and then do a strcmp(unit, "ns")? OR 
->>> are we sure that there is just one space prior to unit here?
+>>> With this, the find_kv() is not needed anymore and the difference with
+>>> regard the other branches can be summarized with a new ignore_space()
+>>> helper and the fact it matches the entire key by appending the ':'. The
+>>> helper is added on top of the file so it can be reused later.
+>>>
+>>> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>>> ---
+>>>  lib/igt_drm_fdinfo.c | 87 +++++++++++++++++++++++---------------------
+>>>  1 file changed, 45 insertions(+), 42 deletions(-)
+>>>
+>>> diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
+>>> index 18dbb5d0b..bfc946f24 100644
+>>> --- a/lib/igt_drm_fdinfo.c
+>>> +++ b/lib/igt_drm_fdinfo.c
+>>> @@ -53,6 +53,14 @@ static size_t read_fdinfo(char *buf, const size_t 
+>>> sz, int at, const char *name)
+>>>      return count > 0 ? count : 0;
+>>>  }
+>>> +static const char *ignore_space(const char *s)
+>>> +{
+>>> +    for (; *s && isspace(*s); s++)
+>>> +        ;
+>>> +
+>>> +    return s;
+>>> +}
+>>> +
+>>>  static int parse_engine(char *line, struct drm_client_fdinfo *info,
+>>>              size_t prefix_len,
+>>>              const char **name_map, unsigned int map_entries,
+>>> @@ -104,23 +112,6 @@ static int parse_engine(char *line, struct 
+>>> drm_client_fdinfo *info,
+>>>      return found;
+>>>  }
+>>> -static const char *find_kv(const char *buf, const char *key, size_t 
+>>> keylen)
+>>> -{
+>>> -    const char *p;
+>>> -
+>>> -    if (strncmp(buf, key, keylen))
+>>> -        return NULL;
+>>> -
+>>> -    p = buf + keylen;
+>>> -    if (*p != ':')
+>>> -        return NULL;
+>>> -
+>>> -    for (p++; *p && isspace(*p); p++)
+>>> -        ;
+>>> -
+>>> -    return *p ? p : NULL;
+>>> -}
+>>> -
+>>>  static int parse_region(char *line, struct drm_client_fdinfo *info,
+>>>              size_t prefix_len,
+>>>              const char **region_map, unsigned int region_entries,
+>>> @@ -205,6 +196,11 @@ out:
+>>>          }                            \
+>>>      } while (0)
+>>> +#define strstartswith(a, b, plen__) ({                    \
+>>> +        *plen__ = strlen(b);                    \
+>>> +        strncmp(a, b, *plen__) == 0;                \
+>>> +})
 >>
->> Any type and number of whitespace shouldbe handled.
+>> Did it have to be a macro for optimization to work?
 > 
-> I can change this in igt, but...
+> if it's a function, it won't be handled as a string literal anymore and
+> may be a real strlen() call.  The compiler may or may not detect that.
 > 
 >>
->> I guess in drm-usage-stats.rst this needs to be improved:
+>>> +
+>>>  unsigned int
+>>>  __igt_parse_drm_fdinfo(int dir, const char *fd, struct 
+>>> drm_client_fdinfo *info,
+>>>                 const char **name_map, unsigned int map_entries,
+>>> @@ -222,31 +218,39 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, 
+>>> struct drm_client_fdinfo *info,
+>>>      while ((l = strtok_r(_buf, "\n", &ctx))) {
+>>>          uint64_t val = 0;
+>>> +        size_t keylen;
+>>>          const char *v;
+>>>          int idx;
+>>>          _buf = NULL;
+>>> -        if ((v = find_kv(l, "drm-driver", strlen("drm-driver")))) {
+>>> -            strncpy(info->driver, v, sizeof(info->driver) - 1);
+>>> -            good++;
+>>> -        }  else if ((v = find_kv(l, "drm-client-id",
+>>> -                     strlen("drm-client-id")))) {
+>>> -            info->id = atol(v);
+>>> -            good++;
+>>> -        } else if ((v = find_kv(l, "drm-pdev", strlen("drm-pdev")))) {
+>>> -            /* optional */
+>>> +        if (strstartswith(l, "drm-driver:", &keylen)) {
+>>> +            v = l + keylen;
+>>> +            v = ignore_space(v);
+>>> +            if (*v) {
+>>> +                strncpy(info->driver, v, sizeof(info->driver) - 1);
+>>> +                good++;
+>>> +            }
+>>> +        }  else if (strstartswith(l, "drm-client-id:", &keylen)) {
+>>> +            v = l + keylen;
+>>> +            v = ignore_space(v);
+>>> +            if (*v) {
+>>> +                info->id = atol(v);
+>>> +                good++;
+>>> +            }
+>>> +        } else if (strstartswith(l, "drm-pdev:", &keylen)) {
+>>> +            v = l + keylen;
+>>> +            v = ignore_space(v);
 >>
->> """
->> - Whitespace between the delimiter and first non-whitespace character 
->> shall be
->>  ignored when parsing.
->> - Keys are not allowed to contain whitespace characters.
->> - Numerical key value pairs can end with optional unit string.
->> """
->>
->> Perhaps append:
->>
->> - Whitespace between the value and the unit shall be ignored when 
->> parsing.
+>> Removing find_kv looks like a slight negative, given how now all 
+>> branches have to repeat v =  + keylen; v = ignore_space(v).
 > 
-> that would break userspace. Both nvtop and htop already do a strcmp
-> with " ns". nvtop seems to use it for specific platforms (so as long as
-> we don't change the existing one, it wouldn't break), but htop just
-> handles that as "GPUs in Linux".
+> the ignore_space() is later removed (my bad on the patch split here
+> since I only noticed later when converting to strtoull())
+> 
+>>
+>> I wonder if it would work by extending find_kv to allow prefix 
+>> matching mode, something like this (only two branches show to 
+>> illustrate the modes):
+>>
+>> ...
+>>         } else if ((v = find_kv(l, "drm-pdev", MATCH_FULL, &keylen))) {
+> 
+> with the downside that then there will be a real strlen() on the key.
 
-The joys of text formats failing to deliver flexibility. Might as well 
-use binary..
+I thought you said it worked. And I thought I tried and saw it working. 
+Bummer..
 
-Strictly speaking changing the spec would not break anything, as long as 
-existing kernel side implementation stays. It would just ensure future 
-implementation (on both sides) can be flexible and have been warned.
+> I can try playing with the patches to bring find_kv() back.
+
+If you don't see any readability savings by the end of the series then 
+don't bother.
 
 Regards,
 
