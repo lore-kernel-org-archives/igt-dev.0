@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2FA3C04FF6
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Apr 2024 06:29:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AAD4C4345F
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Apr 2024 06:29:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4433410FDA2;
-	Fri, 19 Apr 2024 06:29:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A661D10FDA4;
+	Fri, 19 Apr 2024 06:29:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C8ntvATm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P61/k3gp";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 91C7510FDA2
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Apr 2024 06:29:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B9C210FDA4
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Apr 2024 06:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713508160; x=1745044160;
+ t=1713508165; x=1745044165;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=4WNuqmF1Va+iGRTrR6CGkHFVu4A+94OzF5pAcguGf6c=;
- b=C8ntvATmecPND7L0rAhTj0oqBBme2OGK7uCR+b/HScVuCHdk4cIZE/az
- 9ge9N4wpXjoMcUF27RJ1E4L35kmr8+z8SrJLnuGfj5v8TrWovDqkdCyUm
- cq1Menxss04lNYvtzfJ7gvRMx3QVRvwrmQNxugPgAnaJoKgANXWrJD+Bh
- zRNBKnS6CaQoJFBw/hzjcat90R2foF8R3fXc+PKKs3BEZrQesH8WqjNAW
- UJeJnJjcp56p7f5UmcSx5feB9Gne1dtN6ypdiqEKsc54tKUKYLQms+OM3
- ux7X2WfCSw7Dw42WB4ZPSAf56O8si4HlQPCyerp1orKXlnYzuE7nOf74F w==;
-X-CSE-ConnectionGUID: N/tBjDUxQrqspqEITFIpAg==
-X-CSE-MsgGUID: U8+AZ26URo+2+MNc/UMe3g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="9637571"
+ bh=up42BSTEdpL6jnyWeCxBrnm24QNSMGKPAY0T88zOssc=;
+ b=P61/k3gpfpkIdwSJsgBPevkSfevvdq7ZNOyIZA539V4PUTpr+RpX/ywK
+ bJWQy/o/DsvEMwQe6ivR28wI3rPg684B7Hhx80N3gswh1FCOl380cG2re
+ eYcNGw0U0fHftvfXolswOpbwmEbTBzUYse5ZBG9PK7xuf1d7oeXY3WX0b
+ J5WljanfHiUCZU2xIbwwZUq0rvPKd11haytYACUz0YWDV9UxPqgX4GTtO
+ uucomj2vdJv7Vnuz8UOCZq5lNkCkRsGp2r/Iv4kdSZaQ2lavxD/vdJIba
+ 5KRhheq4OX3UA7RxDaxiiO11hbXD06rAe8qylAsqTn7VzfKoznp8q75+D g==;
+X-CSE-ConnectionGUID: VN+i8uG4TRKqy9PBQ8pRGw==
+X-CSE-MsgGUID: o2KZ+TkgRJCwizats93r/w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="9637605"
 X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; 
-   d="scan'208";a="9637571"
+   d="scan'208";a="9637605"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2024 23:29:20 -0700
-X-CSE-ConnectionGUID: 9rQ6rHX7Tpqh88d1r7Hnew==
-X-CSE-MsgGUID: WtJtlzwGREe0tuMXuk60aw==
+ 18 Apr 2024 23:29:22 -0700
+X-CSE-ConnectionGUID: mMhQUp4+TiOVPSeoxbPa1A==
+X-CSE-MsgGUID: 5Q9QlsqgTQi8rwAMZzVq0w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; d="scan'208";a="23310796"
+X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; d="scan'208";a="23310829"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2024 23:29:18 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2024 23:29:20 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>,
  =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
  Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
  Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t 4/7] lib/igt_kms: add support for forcing bigjoiner on
- particular connector
-Date: Fri, 19 Apr 2024 12:09:58 +0530
-Message-Id: <20240419064001.2401850-5-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 5/7] tests/intel/kms_big_joiner: use
+ kmstest_force_connector_bigjoiner
+Date: Fri, 19 Apr 2024 12:09:59 +0530
+Message-Id: <20240419064001.2401850-6-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240419064001.2401850-1-kunal1.joshi@intel.com>
 References: <20240419064001.2401850-1-kunal1.joshi@intel.com>
@@ -73,119 +73,89 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-add kmstest_force_connector_bigjoiner function which
-force bigjoiner on provided connector as well as resets on exit.
+use kmstest_force_connector_bigjoiner instead of
+kmstest_force_connector_bigjoiner
 
-v2: remove redundant function (Bhanu)
+v2: use igt_reset_connectors (Bhanu)
 
 Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
 Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_kms.c | 69 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  1 +
- 2 files changed, 70 insertions(+)
+ tests/intel/kms_big_joiner.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 378c97f88..324b0527f 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1607,6 +1607,32 @@ static bool connector_attr_set_sysfs(int drm_fd,
- 	return true;
+diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
+index f325a9839..4979cac06 100644
+--- a/tests/intel/kms_big_joiner.c
++++ b/tests/intel/kms_big_joiner.c
+@@ -87,7 +87,7 @@ static void set_all_master_pipes_for_platform(data_t *data)
+ 	}
  }
  
-+static bool connector_attr_set_debugfs(int drm_fd,
-+				       drmModeConnector *connector,
-+				       const char *attr, const char *value,
-+				       const char *reset_value)
-+{
-+	char name[80];
-+	int idx, dir;
-+
-+	snprintf(name, sizeof(name), "%s-%d",
-+		 kmstest_connector_type_str(connector->connector_type),
-+		 connector->connector_type_id);
-+
-+	dir = igt_debugfs_connector_dir(drm_fd, name, O_DIRECTORY);
-+	if (dir < 0)
-+		return false;
-+
-+	if (!connector_attr_set(idx, connector, dir,
-+				igt_sysfs_set, attr,
-+				value, reset_value))
-+		return false;
-+
-+	igt_info("Connector %s/%s is now %s\n", name, attr, value);
-+
-+	return true;
-+}
-+
- static void dump_connector_attrs(void)
+-static void toggle_force_joiner_on_all_non_big_joiner_outputs(data_t *data, bool toggle)
++static void enable_force_joiner_on_all_non_big_joiner_outputs(data_t *data)
  {
- 	char name[80];
-@@ -1690,6 +1716,49 @@ bool kmstest_force_connector(int drm_fd, drmModeConnector *connector,
- 	return true;
+ 	bool status;
+ 	igt_output_t *output;
+@@ -95,7 +95,7 @@ static void toggle_force_joiner_on_all_non_big_joiner_outputs(data_t *data, bool
+ 
+ 	for (i = 0; i < data->non_big_joiner_output_count; i++) {
+ 		output = data->non_big_joiner_output[i];
+-		status = igt_force_and_check_bigjoiner_status(data->drm_fd, output->name, toggle);
++		status = kmstest_force_connector_bigjoiner(data->drm_fd, output->config.connector);
+ 		igt_assert_f(status, "Failed to toggle force joiner\n");
+ 	}
  }
- 
-+static bool force_connector_bigjoiner(int drm_fd,
-+				      drmModeConnector *connector,
-+				      const char *value)
-+{
-+	return connector_attr_set_debugfs(drm_fd, connector,
-+					  "i915_bigjoiner_force_enable",
-+					  value, "0");
-+}
-+
-+/**
-+ * kmstest_force_connector_bigjoiner:
-+ * @fd: drm file descriptor
-+ * @connector: connector
-+ *
-+ * Enable force bigjoiner state on the specified connector
-+ * and install exit handler for resetting
-+ *
-+ * Returns: True on success
-+ */
-+bool kmstest_force_connector_bigjoiner(int drm_fd, drmModeConnector *connector)
-+{
-+	const char *value = "1";
-+	drmModeConnector *temp;
-+
-+	if (!is_intel_device(drm_fd))
-+		return false;
-+
-+	if (!force_connector_bigjoiner(drm_fd, connector, value))
-+		return false;
-+
-+	dump_connector_attrs();
-+	igt_install_exit_handler(reset_connectors_at_exit);
-+
-+	/*
-+	 * To allow callers to always use GetConnectorCurrent we need to force a
-+	 * redetection here.
-+	 */
-+	temp = drmModeGetConnector(drm_fd, connector->connector_id);
-+	drmModeFreeConnector(temp);
-+
-+	return true;
-+}
-+
- /**
-  * kmstest_force_edid:
-  * @drm_fd: drm file descriptor
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 6d13e5851..0abf450c1 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -262,6 +262,7 @@ struct edid;
- 
- bool kmstest_force_connector(int fd, drmModeConnector *connector,
- 			     enum kmstest_force_connector_state state);
-+bool kmstest_force_connector_bigjoiner(int drm_fd, drmModeConnector *connector);
- void kmstest_force_edid(int drm_fd, drmModeConnector *connector,
- 			const struct edid *edid);
- 
+@@ -383,15 +383,15 @@ igt_main
+ 		igt_require_f(data.n_pipes > 1,
+ 			      "Minimum 2 pipes required\n");
+ 		igt_dynamic_f("single") {
+-			toggle_force_joiner_on_all_non_big_joiner_outputs(&data, true);
++			enable_force_joiner_on_all_non_big_joiner_outputs(&data);
+ 			test_single_joiner(&data, data.non_big_joiner_output_count, true);
+-			toggle_force_joiner_on_all_non_big_joiner_outputs(&data, false);
++			igt_reset_connectors();
+ 		}
+ 		if (data.non_big_joiner_output_count > 1) {
+ 			igt_dynamic_f("multi") {
+-				toggle_force_joiner_on_all_non_big_joiner_outputs(&data, true);
++				enable_force_joiner_on_all_non_big_joiner_outputs(&data);
+ 				test_multi_joiner(&data, data.non_big_joiner_output_count, true);
+-				toggle_force_joiner_on_all_non_big_joiner_outputs(&data, false);
++				igt_reset_connectors();
+ 			}
+ 		}
+ 	}
+@@ -405,16 +405,16 @@ igt_main
+ 			      "Minimum of 2 pipes are required\n");
+ 		if (data.non_big_joiner_output_count >= 1) {
+ 			igt_dynamic_f("big_joiner_on_last_pipe") {
+-				toggle_force_joiner_on_all_non_big_joiner_outputs(&data, true);
++				enable_force_joiner_on_all_non_big_joiner_outputs(&data);
+ 				test_joiner_on_last_pipe(&data, true);
+-				toggle_force_joiner_on_all_non_big_joiner_outputs(&data, false);
++				igt_reset_connectors();
+ 			}
+ 		}
+ 		if (data.non_big_joiner_output_count > 1) {
+ 			igt_dynamic_f("invalid_combinations") {
+-				toggle_force_joiner_on_all_non_big_joiner_outputs(&data, true);
++				enable_force_joiner_on_all_non_big_joiner_outputs(&data);
+ 				test_invalid_modeset_two_joiner(&data, false, true);
+-				toggle_force_joiner_on_all_non_big_joiner_outputs(&data, false);
++				igt_reset_connectors();
+ 			}
+ 		}
+ 	}
+@@ -422,5 +422,6 @@ igt_main
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
++		igt_reset_connectors();
+ 	}
+ }
 -- 
 2.25.1
 
