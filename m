@@ -4,74 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 356AAC4345F
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Apr 2024 07:48:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 580A5C4345F
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Apr 2024 07:50:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D12D410F066;
-	Fri, 19 Apr 2024 07:48:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DF68510F0E8;
+	Fri, 19 Apr 2024 07:50:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="b7Gw6Q3v";
+	dkim=pass (2048-bit key; unprotected) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="wgi6rZJc";
 	dkim-atps=neutral
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com
- [209.85.221.54])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 751FD10F066
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Apr 2024 07:48:52 +0000 (UTC)
-Received: by mail-wr1-f54.google.com with SMTP id
- ffacd0b85a97d-345b857d7adso1268208f8f.1
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Apr 2024 00:48:52 -0700 (PDT)
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com
+ [209.85.128.51])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA5BB10F0E8
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Apr 2024 07:50:02 +0000 (UTC)
+Received: by mail-wm1-f51.google.com with SMTP id
+ 5b1f17b1804b1-4196c62bb41so1106335e9.0
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Apr 2024 00:50:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1713512930; x=1714117730;
+ d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1713513001; x=1714117801;
  darn=lists.freedesktop.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Co6gfGeUJxsELVGgRqudcAKEoTHtYav0+Iye5K3HGZ8=;
- b=b7Gw6Q3vhffsquytkCCTDf68ChFJF5g8yQ54x5cMCTNgsUwpTtVkIaRFvAFMivKGh9
- vkyJspzWCXxvMKB/aah885A2jy8wIDTZ5I7o9/lA9i33e6hOcgy0pZSJQojAY2DNxlZF
- +V2/oO222C5Wc3NHrffDb7lcWkHWzMZcuSj0BEb+X1P6SHrDHzwg+uxm6LVnd9z8xK9o
- 0+/AS7d9CW/mTR2cuMCHEkeelojfliVTDQPraJO0NOmjsYSjhBkaiVZ7K7TPVeo3feQP
- yUeUqTKQKyt/5ew8bfE46Fk/Fokmo3YNkI17Z/8tGQbXUdK+YKUFJrWGdghJ9vaR+X69
- rlkA==
+ bh=BUqHMe5F6GTamKUFi1bUmSjimfZEl6TCg9QnaylDtlU=;
+ b=wgi6rZJc3zTLKmGkkyo6/p+5WIjMDNVfUq//iJH6dnBypgDBjhPX7D0xo5Uv64MGKB
+ fRdoayW/ez3d68zbJD62BH2UcKuR5wklIQSif+b/7NF6TkpuVC+0jqzOugS0YrhH8m+o
+ fuwgcBCUB6kUprRKY2KYzoLKlIKsTjBQRfQoljRe9ztjgtlQaWCYwMU3ju117jxyF/Sp
+ DmKt3WK2qCQjZ4ke8IREOS8dRZsqcx7zl1OgRqV7TFAT6auX9Qv1PoWvBSg7GEePvnfp
+ c3+NXaBCvL+d6Ta67wVs15Vit05VgLbm+TL4/Z3AVLFQKQjv47bCi4QQPL2U858YN9+U
+ BjGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713512930; x=1714117730;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1713513001; x=1714117801;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Co6gfGeUJxsELVGgRqudcAKEoTHtYav0+Iye5K3HGZ8=;
- b=Rkwi41SnA8weFDN0y8x9ug2st49h8wlkDPf3tYngGgjcKrfAMzSlb8C7YVLLSbQQaL
- 9d1i1Wi7gP+DLpUfn8Q3nClPAFSaBLYvY+r91xys4wfJHaEhwQl/kKc6aL8BYsHY7Hoz
- Aex9LOqJlU5IqVSmJpXpTBm6MX0QPvkpfSMTMPRx735ECCvZhe0UGwaVVnRao2prFpqg
- WVUDVddosfZ3nwTGPBXPi+AKLAfmLXkBTBNI7dq+VYuWI0IqeEt72TYtI3nkYiPvqqLO
- 2Qgn/QHtQ4QY3TeEyfNjJ0iWQKXTsshnGPrjQgXz0DDyzrwgeslJuB/MnIGz8uqPHp6z
- oXVw==
+ bh=BUqHMe5F6GTamKUFi1bUmSjimfZEl6TCg9QnaylDtlU=;
+ b=kcxlb300e8P3okGqd0OqpHyvsNMbf5hzrzxDlm1g6nglSelGftSyqAkCAF2ZmDNB1Q
+ 2USiOA9SX+wOSqyWs2ugK0o/Z4ZRa55ci5E/WmSS6e0qqFRogS+ShqH7XCRHbsuPjTL/
+ 3bAbKhzjQS8DrAGkXbK6B/R+r93FE2dsbjGSDZMzpXlgPj28C9VMXfoZ7eEz5VB5Sfm8
+ RQlwZEbqwhAYZLbUYQXIziLoX3oKe2lxhJCzS348IQXip36MQfrB/16LJqb3Vj7BV579
+ kNN5BhlGKhmIhkrGl28XinFlV9fEVBooiVwr35ocjf1U78jezrt/lYe/pGbmQ84ZTjIC
+ SJ1Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXhJpc6eiHEI301EzpFVa7SOxsdifayY28B0X50Gp4nGeW7ZqgmeB9k3qOQ1Md/05WDX8/JvX+K0L9B2zKkfQpVPX+s+pTEB7ZZEaxgLg==
-X-Gm-Message-State: AOJu0YzoW7Za99OcNFxqoBN1Y3+UFUis/9CRtHDz7iuoaZ9ocF6VJMXK
- MqY/3VPa3JOgqsprWn6Nn23VXiwrnZj8La4IYauISdudRHeg9jDwOAXlho4mqYepkluLRJv7wwv
- H
-X-Google-Smtp-Source: AGHT+IF9ehZg7DL/528HFQfQ6X+/BuE0/c3bf4P5lZSfuVbtOa6J0ujOgquKby7iNUbUARLk5UVxpg==
-X-Received: by 2002:a05:6000:8e:b0:346:9301:fef1 with SMTP id
- m14-20020a056000008e00b003469301fef1mr902808wrx.18.1713512930336; 
- Fri, 19 Apr 2024 00:48:50 -0700 (PDT)
+ AJvYcCX+/uYc8izZdqFL6D8sChq2sQKLYBPSqRdZqCWwZ+S9NZLHaQc/lhzE0Wy/NDuV4fQd6VZdp60UokgZ6SG5cD1ciz56K7n77DHI0hIylQ==
+X-Gm-Message-State: AOJu0Yx2VhkuBP0FKp08tK2R7cBnc4VENwS3jowQktyIq+8YYAMSDmSo
+ vW7DCOWovYk09pdfss5lAyZnrLD11xnCRBAb/jDuEn9kCDGGRZxT4ysuug/WveGh7M/WhjUBpqc
+ 6
+X-Google-Smtp-Source: AGHT+IH41qsUErOCd59wB7pHqEyWvahBGzfdx2veupl3pxVGopCWF5DlJPzxxhtWQdLvs12gsmD3fg==
+X-Received: by 2002:a05:600c:470f:b0:418:c1a3:8521 with SMTP id
+ v15-20020a05600c470f00b00418c1a38521mr841798wmo.26.1713513000702; 
+ Fri, 19 Apr 2024 00:50:00 -0700 (PDT)
 Received: from [192.168.0.101] ([84.65.0.132])
  by smtp.gmail.com with ESMTPSA id
- u9-20020adfb209000000b0034330c9eccasm3771882wra.79.2024.04.19.00.48.49
+ i13-20020a05600c354d00b00418f1650c99sm3973207wmq.20.2024.04.19.00.50.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 Apr 2024 00:48:50 -0700 (PDT)
-Message-ID: <940ebe8a-3f16-4e1f-8215-29ef54b94a2b@ursulin.net>
-Date: Fri, 19 Apr 2024 08:48:49 +0100
+ Fri, 19 Apr 2024 00:50:00 -0700 (PDT)
+Message-ID: <4ad6f22f-8808-4fd5-a431-35d97a2aed27@ursulin.net>
+Date: Fri, 19 Apr 2024 08:49:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH i-g-t 03/12] lib/igt_drm_fdinfo: Fix wrong name len assert
 Content-Language: en-GB
+From: Tvrtko Ursulin <tursulin@ursulin.net>
 To: Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 References: <20240405060056.59379-1-lucas.demarchi@intel.com>
  <20240405060056.59379-4-lucas.demarchi@intel.com>
-From: Tvrtko Ursulin <tursulin@ursulin.net>
-In-Reply-To: <20240405060056.59379-4-lucas.demarchi@intel.com>
+ <940ebe8a-3f16-4e1f-8215-29ef54b94a2b@ursulin.net>
+In-Reply-To: <940ebe8a-3f16-4e1f-8215-29ef54b94a2b@ursulin.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,53 +89,64 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 05/04/2024 07:00, Lucas De Marchi wrote:
-> When parsing engine name, at this point we have something like:
+On 19/04/2024 08:48, Tvrtko Ursulin wrote:
 > 
-> 	"drm-engine-render:	232409619162 ns"
-> 	            ^      ^
-> 	            |      |
-> 	          name     p
+> On 05/04/2024 07:00, Lucas De Marchi wrote:
+>> When parsing engine name, at this point we have something like:
+>>
+>>     "drm-engine-render:    232409619162 ns"
+>>                 ^      ^
+>>                 |      |
+>>               name     p
+>>
+>> We are copying the engine name to the final destination, but
+>> strlen(name) will actually contain the entire string. Since we already
+>> know the name length, calculated previously, just use it for copying the
+>> string.
+>>
+>> Since each name is 256-bytes long, the assert doesn't trigger easily,
+>> but it's better to be correct. And more efficient.
+>>
+>> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>> ---
+>>   lib/igt_drm_fdinfo.c | 5 +++--
+>>   1 file changed, 3 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
+>> index 7a9ae94f0..9b1776775 100644
+>> --- a/lib/igt_drm_fdinfo.c
+>> +++ b/lib/igt_drm_fdinfo.c
+>> @@ -96,8 +96,9 @@ static int parse_engine(const char *name, struct 
+>> drm_client_fdinfo *info,
+>>           if (found < 0) {
+>>               assert((info->num_engines + 1) < ARRAY_SIZE(info->names));
+>> -            assert((strlen(name) + 1) < sizeof(info->names[0]));
+>> -            strncpy(info->names[info->num_engines], name, name_len);
+>> +            assert(name_len  < sizeof(info->names[0]));
+>> +            memcpy(info->names[info->num_engines], name, name_len);
+>> +            info->names[info->num_engines][name_len] = '\0';
+>>               found = info->num_engines;
+>>           }
+>>       }
 > 
-> We are copying the engine name to the final destination, but
-> strlen(name) will actually contain the entire string. Since we already
-> know the name length, calculated previously, just use it for copying the
-> string.
+> Ah a good fix.
 > 
-> Since each name is 256-bytes long, the assert doesn't trigger easily,
-> but it's better to be correct. And more efficient.
-> 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->   lib/igt_drm_fdinfo.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
-> index 7a9ae94f0..9b1776775 100644
-> --- a/lib/igt_drm_fdinfo.c
-> +++ b/lib/igt_drm_fdinfo.c
-> @@ -96,8 +96,9 @@ static int parse_engine(const char *name, struct drm_client_fdinfo *info,
->   
->   		if (found < 0) {
->   			assert((info->num_engines + 1) < ARRAY_SIZE(info->names));
-> -			assert((strlen(name) + 1) < sizeof(info->names[0]));
-> -			strncpy(info->names[info->num_engines], name, name_len);
-> +			assert(name_len  < sizeof(info->names[0]));
-> +			memcpy(info->names[info->num_engines], name, name_len);
-> +			info->names[info->num_engines][name_len] = '\0';
->   			found = info->num_engines;
->   		}
->   	}
+> Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Ah a good fix.
+Oooh the muscle memory.. I knew this would happen sooner or later! :))
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-
-Also, ideally fixes such as this and next few would be before 
-refactoring in the series, but okay, not asking you to re-order.
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
 Regards,
 
 Tvrtko
 
-P.S. One extra space in the assert fwiw.
+> 
+> Also, ideally fixes such as this and next few would be before 
+> refactoring in the series, but okay, not asking you to re-order.
+> 
+> Regards,
+> 
+> Tvrtko
+> 
+> P.S. One extra space in the assert fwiw.
