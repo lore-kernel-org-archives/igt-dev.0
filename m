@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6C6DC04FFE
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Apr 2024 13:15:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AE4AC4345F
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Apr 2024 14:12:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5EB4410E18E;
-	Fri, 19 Apr 2024 13:15:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BCD6410FF28;
+	Fri, 19 Apr 2024 14:12:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fcsHygz4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HRykaWOQ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5AB8810E18E
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Apr 2024 13:15:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E4C7810FF21;
+ Fri, 19 Apr 2024 14:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713532512; x=1745068512;
+ t=1713535935; x=1745071935;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=e4ATLl1+uNqPv7yUje17khhipncQ5mRB/OUXpq8kBgg=;
- b=fcsHygz4cenx07UNKUCif2lyAt6iwO+xLvy1GsdWcfdQXVchr33JGZP8
- 2BtKpAe1JR55bksSKv9+YSL6ZrPrs2PTlih8f+Qb5Iq/D4F/I8Kys97ib
- JopeteW6vWDiEor/XFUb1nCxC6fNndkqWR34ghM/Ox2Zmu1x7iPiVuK1t
- N99CaTx4UbbIPdKHE9jnihSBoo1o74Ah5n5ctdCWT4euU8xEgDlC9StHP
- K5go+SXf8QOZuFbXx2rv2tvDyH6ayBshO1qB17yu1JD61YjcGF3MZPMwu
- wwC7pqS5yGrlQfth/z3HNXvMnwRmuvfSf2Rr/rpwdl9XAKp/HK5GUFs4I w==;
-X-CSE-ConnectionGUID: 3t/yHHU8STSW2loiKNIkhQ==
-X-CSE-MsgGUID: xw74O96UTkWWwZeagHJ1rQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11049"; a="26644865"
-X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; d="scan'208";a="26644865"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Apr 2024 06:15:12 -0700
-X-CSE-ConnectionGUID: onBirQPKT7+sp28xKsJOUg==
-X-CSE-MsgGUID: y/yz/v3KR8qkqoUU9lw60g==
+ bh=miEgCPyv+L/Rm5QLsnWF/KhJVO37Gz7gVCeD73P/0sU=;
+ b=HRykaWOQK49g3R0IkWT8DPBmw6NxFV3BRYtyChpmoxHAoDvsUgnvErQ6
+ 2XxeOs40kaCdTMVsVg4ukVjhH351Q0EMi8IWSVMYlBPnWms0hC4l/gwUb
+ 82GUbEJRuTHrpccgR49V4tX0QIWIZ2yJ5xl0odXLBVTg0ZPFUq4OGlZfK
+ zjLwoNCZW1aLeHwW2b0pc7HbdI0CCUZF0CBpGrXEgD9VWExsVX5n1aJr/
+ WNMQHrNtxCqF0SHQh6rhTtSYJIDDhqDW90PTPgW/rGHoKJPIAyCAvYQ6m
+ LWLneGpi3rNieh3Qw253qVRVMcYz/pdhixZnN0mHNeY31j78RIgc9n1Y2 g==;
+X-CSE-ConnectionGUID: 0CqQ8lqSQUG2B/W6oVx27A==
+X-CSE-MsgGUID: CGSA8R+JQZuGzmPs5u9t/g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11049"; a="12973881"
+X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; d="scan'208";a="12973881"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Apr 2024 07:12:14 -0700
+X-CSE-ConnectionGUID: pKB/oeErTAmjnHlEFLnwiA==
+X-CSE-MsgGUID: WX5KzWkkTB24jz1kTS8CUg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; d="scan'208";a="60777426"
+X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; d="scan'208";a="23417711"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Apr 2024 06:15:10 -0700
-Date: Fri, 19 Apr 2024 15:14:52 +0200
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2024 07:12:13 -0700
+Date: Fri, 19 Apr 2024 16:12:10 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Francois Dugast <francois.dugast@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: Re: [PATCH i-g-t,v1 0/4] L3 bank mask
-Message-ID: <20240419131452.syac5sjam7ramkt4@kamilkon-DESK.igk.intel.com>
+Cc: I915-ci-infra@lists.freedesktop.org,
+ Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVDogZmFpbHVy?= =?utf-8?Q?e?= for Put
+ "Run type" highest in documentation hierarchy
+Message-ID: <20240419141210.cjkvcz4r2ybm2x37@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Francois Dugast <francois.dugast@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-References: <20240417145049.7-1-francois.dugast@intel.com>
- <sx44ek2wi3megbrlu5pxzny55n6didg7kwopygzzywgcjs5ic5@wq56mdm4s4wi>
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org,
+ Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+References: <20240417111324.3231762-1-katarzyna.piecielska@intel.com>
+ <171340514262.1483937.7199588920403383678@8e613ede5ea5>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <sx44ek2wi3megbrlu5pxzny55n6didg7kwopygzzywgcjs5ic5@wq56mdm4s4wi>
+In-Reply-To: <171340514262.1483937.7199588920403383678@8e613ede5ea5>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,145 +73,82 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi,
-On 2024-04-17 at 11:07:54 -0500, Lucas De Marchi wrote:
-> On Wed, Apr 17, 2024 at 02:50:45PM GMT, Francois Dugast wrote:
-> > Align the XeKMD header with the current version and add the L3 bank mask
-> > topology query proposed in this KMD series:
-> > https://patchwork.freedesktop.org/series/132075/
-> > 
-> > This series first includes some patches to align the XeKMD header which
-> > have already been reviewed but not yet applied, from this other series:
-> > https://patchwork.freedesktop.org/series/131816
-> > 
-> > Francois Dugast (4):
-> >  drm-uapi/xe: Align header with drm-xe-next
-> >  drm-uapi/xe: Define topology types as indexes rather than masks
-> >  drm-uapi/xe: Expose the L3 bank mask
+Hi igt-dev,
+On 2024-04-18 at 01:52:22 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> no, I don't think we want to merge these as is in this series. It can be
-> used for premerge testing, but this is just reintroducing the same
-> problem fixed in patch 1.
+> Series: Put "Run type" highest in documentation hierarchy
+> URL   : https://patchwork.freedesktop.org/series/132552/
+> State : failure
 > 
-> I applied patch 1 locally and then did a diff with the current
-> drm-xe-next:
+> == Summary ==
 > 
-> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 4353595a4..0b709b374 100644
-> --- a/include/drm-uapi/xe_drm.h
-> +++ b/include/drm-uapi/xe_drm.h
-> @@ -518,9 +518,9 @@ struct drm_xe_query_topology_mask {
->         /** @gt_id: GT ID the mask is associated with */
->         __u16 gt_id;
+> CI Bug Log - changes from CI_DRM_14593_full -> IGTPW_11031_full
+> ====================================================
 > 
-> -#define DRM_XE_TOPO_DSS_GEOMETRY       (1 << 0)
-> -#define DRM_XE_TOPO_DSS_COMPUTE                (1 << 1)
-> -#define DRM_XE_TOPO_EU_PER_DSS         (1 << 2)
-> +#define DRM_XE_TOPO_DSS_GEOMETRY       1
-> +#define DRM_XE_TOPO_DSS_COMPUTE                2
-> +#define DRM_XE_TOPO_EU_PER_DSS         4
->         /** @type: type of mask */
->         __u16 type;
+> Summary
+> -------
 > 
-> @@ -871,10 +871,12 @@ struct drm_xe_vm_destroy {
->   *  - %DRM_XE_VM_BIND_OP_PREFETCH
->   *
->   * and the @flags can be:
-> - *  - %DRM_XE_VM_BIND_FLAG_READONLY
-> - *  - %DRM_XE_VM_BIND_FLAG_IMMEDIATE - Valid on a faulting VM only, do the
-> + *  - %DRM_XE_VM_BIND_FLAG_READONLY - Setup the page tables as read-only
-> + *    to ensure write protection
-> + *  - %DRM_XE_VM_BIND_FLAG_IMMEDIATE - On a faulting VM, do the
->   *    MAP operation immediately rather than deferring the MAP to the page
-> - *    fault handler.
-> + *    fault handler. This is implied on a non-faulting VM as there is no
-> + *    fault handler to defer to.
->   *  - %DRM_XE_VM_BIND_FLAG_NULL - When the NULL flag is set, the page
->   *    tables are setup with a special bit which indicates writes are
->   *    dropped and all reads return zero. In the future, the NULL flags
-> @@ -1085,19 +1087,6 @@ struct drm_xe_exec_queue_create {
->  #define DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY               0
->  #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY              0
->  #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE             1
-> -#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT    2
-> -#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT           4
-> -#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_TRIGGER           5
-> -#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_NOTIFY            6
-> -#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY       7
-> -/* Monitor 128KB contiguous region with 4K sub-granularity */
-> -#define     DRM_XE_ACC_GRANULARITY_128K                                0
-> -/* Monitor 2MB contiguous region with 64KB sub-granularity */
-> -#define     DRM_XE_ACC_GRANULARITY_2M                          1
-> -/* Monitor 16MB contiguous region with 512KB sub-granularity */
-> -#define     DRM_XE_ACC_GRANULARITY_16M                         2
-> -/* Monitor 64MB contiguous region with 2M sub-granularity */
-> -#define     DRM_XE_ACC_GRANULARITY_64M                         3
+>   **FAILURE**
 > 
->         /** @extensions: Pointer to the first extension struct, if any */
+>   Serious unknown changes coming with IGTPW_11031_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_11031_full, please notify your bug team (&quot;I915-ci-infra@lists.freedesktop.org&quot;) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
 > 
-> I seems we don't need patch 1 and 2. We only need the commit used to be
-> closer to drm-xe-next.
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11031/index.html
 > 
-> include/drm-uapi/xe_drm.h should always and only be updated by copying
-> from kernel from specific commits documented in the commit message.
+> Participating hosts (9 -> 10)
+> ------------------------------
 > 
-> WIP changes while the kernel side is not merged should be moved to
-> another header. Traditionally we used LOCAL_* defines for that. But that
-> comes with its own problems as it's more work to  go find them all and
-> drop when we sync the headers.
+>   Additional (1): shard-snb-0 
 > 
-> What about doing this?
+> Possible new issues
+> -------------------
 > 
-> Add include/drm-uapi/local/ to -I in build system *before* the non-local
-> one. Something like:
+>   Here are the unknown changes that may have been introduced in IGTPW_11031_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_ccs@bad-rotation-90-4-tiled-mtl-mc-ccs@pipe-b-edp-1:
+>     - shard-mtlp:         [PASS][1] -> [ABORT][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14593/shard-mtlp-7/igt@kms_ccs@bad-rotation-90-4-tiled-mtl-mc-ccs@pipe-b-edp-1.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11031/shard-mtlp-7/igt@kms_ccs@bad-rotation-90-4-tiled-mtl-mc-ccs@pipe-b-edp-1.html
+> 
 
-We already have similar solution for i915, located in
-./lib/i915/i915_drm_local.h
-
-imho we could have it here: ./lib/xe/xe_drm_local.h
+This is unrelated to change in tests documentation,
 
 Regards,
 Kamil
 
+>   
+> Known issues
+> ------------
 > 
-> meson.build:
-> 	inc = include_directories('include', 'include/drm-uapi/local' 'include/drm-uapi', 'include/linux-uapi', 'lib', 'lib/stubs/syscalls', '.')
+>   Here are the changes found in IGTPW_11031_full that come from known issues:
 > 
-> Example content for
-> include/drm-uapi/local/drm_xe.h:
-> 	#pragma once
-> 	#include_next <xe_drm.h>
+
+...cut...
+
 > 
-> 	/*
-> 	 * Local definitions - delta with WIP UAPI while the upstream defines
-> 	 * are not yet merged. These are supposed to conflict whenever the
-> 	 * upstream header is updated and break the build. That is intended.
-> 	 * Commit updating the upstream header should garbage collect these
-> 	 * local definitions.
-> 	 */
 > 
-> 	#ifdef DRM_XE_TOPO_L3_BANK
-> 	#error "Already defined by upstream - remove"
-> 	#define DRM_XE_TOPO_L3_BANK		3
-> 	#endif
+> Build changes
+> -------------
 > 
-> The ifdef + error could be optional as it's harmless (and allowed by
-> compiler) to redefine it multiple times to the same value.
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7810 -> IGTPW_11031
+>   * Piglit: piglit_4509 -> None
 > 
-> Thoughts?
+>   CI-20190529: 20190529
+>   CI_DRM_14593: 75418ec1fe7737396419e6447005b10e666aeaec @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_11031: 11031
+>   IGT_7810: 189483744e9ff56ea573e07a049c5365404c7ecb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
 > 
-> If we don't want to decide on this and you only want to unblock this
-> test for the kernel addition, then maybe just do the same LOCAL_
-> approach currently being used. See e.g. lib/i915/i915_drm_local.h
+> == Logs ==
 > 
-> Lucas De Marchi
-> 
-> >  lib/xe/xe_query: Add L3 bank mask test
-> > 
-> > include/drm-uapi/xe_drm.h | 27 +++-------------
-> > tests/intel/xe_query.c    | 66 +++++++++++++++++++++++++++++++++++++++
-> > 2 files changed, 71 insertions(+), 22 deletions(-)
-> > 
-> > -- 
-> > 2.34.1
-> > 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11031/index.html
