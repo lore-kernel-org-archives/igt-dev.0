@@ -4,27 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5537C4345F
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Apr 2024 00:41:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C977C4345F
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Apr 2024 00:45:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4A02C10F75A;
-	Fri, 19 Apr 2024 00:41:14 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3790811A0CD;
- Fri, 19 Apr 2024 00:41:12 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8306253651088299340=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0903710FCE2;
+	Fri, 19 Apr 2024 00:45:12 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="0/+MzejU";
+	dkim-atps=neutral
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2052.outbound.protection.outlook.com [40.107.244.52])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 05FD210FCE2
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Apr 2024 00:45:09 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IJyVA3fG8OiswoTV+ViBnS6rcO8hIQ9yCHZtyUtXM1MNg/7an7DJyzX1xv0arQw6aRLmB+B1ctuLoRavmZ2ds+qdPOrWRQ03Pv/Hqf+a5z8G8W2iuY/XD/7Y0ZTFD4BWd2jMqA63dDtw4SoNoipdW/birFryNrM7vmc74ZLqpVqyYPxhIM7AbL6+GdUGB9YUNJsCAorW4l4M7JeVvOnmh7SVNEXMUbP6xCpjptMnuGPkKJoUoh7SsUdb7Yxwu5krbJ3DX5oHrfA6CLybzYolqYXaD3iOTBEd6BX/giIeLn9j9xf0ZC4aWifkR5AwGWXIi7IXgfdVP4B3JIyqs8Al4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iQ/omr2aS6xDCtytGIFQUEERr2kVPiKl4ykPtMEf7KA=;
+ b=OAFr4SyW6VIA1ZewPwiztUoe1pBE+v8C/ORQkV2+t/l6KZTTotkLzh9h/qv68Le/BmNO1FFwowXxLCMagQpVBEqkpCOnOCLcKs+YQxOIuKpUR8CKZbDsvkVmxj8ueIHgpO7ePA4adypZkXphjCYCqK57+Hmm0FRf8ZT3Xe34zXx5BYxaisB+UkywyaXSgFanC/UYQjDii6Z5hk7Z9pbcejsTmQJN6k7VgNlBD5cbw0r51VLuom+mcYZeABQmBtxOEbGE+/aVCRS1hGmXmgvVxLzHK3MHkRSR91tLDnyOr+dAm88lNgpVl+TE4Bpnhk70bueEacDNcI6zAq+uHdCGEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iQ/omr2aS6xDCtytGIFQUEERr2kVPiKl4ykPtMEf7KA=;
+ b=0/+MzejU4UErEArsy0q953MJw4Bwv5O37RK3SURvJ2hn/PRqBspKv9CeN0VDuxR6SkUCKam/ActCvVy+SCVHuVAdXbuMFDtjOWys0MU9ldqwXTD1LffHmb7GEHspb15Eps8KeZ06D0694Xi5vSxV11sP+QzKMqKX/iE4df3/TsQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB6420.namprd12.prod.outlook.com (2603:10b6:510:1fc::18)
+ by PH7PR12MB7308.namprd12.prod.outlook.com (2603:10b6:510:20c::9)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.38; Fri, 19 Apr
+ 2024 00:45:05 +0000
+Received: from PH7PR12MB6420.namprd12.prod.outlook.com
+ ([fe80::6d8c:44ea:199f:b618]) by PH7PR12MB6420.namprd12.prod.outlook.com
+ ([fe80::6d8c:44ea:199f:b618%3]) with mapi id 15.20.7472.037; Fri, 19 Apr 2024
+ 00:45:04 +0000
+Message-ID: <a154b26a-343c-4736-9109-9fb66f76457a@amd.com>
+Date: Thu, 18 Apr 2024 20:45:01 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/amdgpu: add check for deadlock test
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Jesse Zhang <jesse.zhang@amd.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
+References: <20240417011701.321744-1-jesse.zhang@amd.com>
+ <20240417090809.tu2bpfo5bebm5oo4@kamilkon-DESK.igk.intel.com>
+Content-Language: en-US
+From: vitaly prosyak <vprosyak@amd.com>
+In-Reply-To: <20240417090809.tu2bpfo5bebm5oo4@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YQ1P288CA0016.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:c01:9e::21) To PH7PR12MB6420.namprd12.prod.outlook.com
+ (2603:10b6:510:1fc::18)
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_cleanup_and_fixes_for_kms=5Fbi?=
- =?utf-8?q?g=5Fjoiner_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kunal Joshi" <kunal1.joshi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 19 Apr 2024 00:41:12 -0000
-Message-ID: <171348727222.1502081.17608972053500746060@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240418152817.2352850-1-kunal1.joshi@intel.com>
-In-Reply-To: <20240418152817.2352850-1-kunal1.joshi@intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB6420:EE_|PH7PR12MB7308:EE_
+X-MS-Office365-Filtering-Correlation-Id: ace51eee-7d7b-446c-7996-08dc6009f414
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: vUhjoNdJsCy2XqjNIMUiCRqP44xZDQ+Iuy4sPqaSFWuP7CEmJsPE/HTFu6eiPVUwz118WXVZK0fI3SB0dreZcVNS747JYOBaHfq6yX7zQA+Hshydjs+q2hkTRGxvRMZUy4yD9ILtdgNLA9Ywu0ofXWZLh8cwOKJUC7s3VGvY8pCngCqJArd5v4GKef+0MPEyF6imLYflDqubRa/AceHh4tnuNUs+Rq9j50kwwrXD1l5KFIoNrvzOXpkI26Hf0v2/Xwp9uXTQMp+NbREZl6z3REDf5G4awwUIc+4h7eCWw9gs+s1mnEGm7WnxsaPpwT6JjhfHc4tlzOtxHp3LNfcKmQ/WXPbsAdGckxb06fK3OajW0biW9v5ual8c9V9osXzetgiIaSVC2k8BHUk+PiwahZjK/1PfyDLcs5VRpDsKt3v3rHRHXfxsy3S86kYtZ78M+22fbFsp80OcWpSKSP7rSQlL4aRr8aUaW2JuVD0ORK/b6GmKYT12NVqCCDf/jBYhwYFO+AjEZWw/dnPUD+8guwikZ1IQr6Rxd1ai7iNGuhn+XuDRQkjnzPMYW67Z9P1v2Rl2jCQ3iX7lYzf3P/boHs9QGBIDJO6gl9/MMsVcMYu5ioB/cFDr0V12kj5+wQVNkAE0JK1RlAZk3NHdFaararxlsaLW7t/yUQjt38+W7bE=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR12MB6420.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366007)(376005)(1800799015); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dlFkZlZYc2o1M0xDVVJCNjZHNjFDckxkVDk0cXo1VjR4RjdzOEpRZURaZG5M?=
+ =?utf-8?B?WkZNOEpSVGd2UzF4RjhhNUI1TEgwQlJyckZPWWV0dE83cDB4RFNYRCtkQ3Iv?=
+ =?utf-8?B?NFVPWWlMV0J3ZGZQeU1mWmZ0VkY4cHFTOE9SWTRaaU1zWE5zNlRXWFFIMjZC?=
+ =?utf-8?B?VkE0U09jR0dPUGlMcWlYRVYzN3RldUlhbU5QVnpENDNaanhvcnB2SVNuMkd2?=
+ =?utf-8?B?bTlSUnZLSGFVeG96Z2RTY0hoNkl3Nkl1TXdFR2YzWEVCZkk5ZWNQSHpjWFdY?=
+ =?utf-8?B?Y3RUZkw0dHdXVVZBTHBtSWdwS0xvOWJ5eW03dSs5UGErRkRuSHlhd2p2MmFY?=
+ =?utf-8?B?QXJnMytYbFBwcHIwUDRTeTBXbzEvNXh3dGZhMWQ1cFpwbXJWTGtjWk9oTjhq?=
+ =?utf-8?B?ZXVMTjRVeGxrQVY5SWxhK1lySDdOdlE3cUZQS2JveDVWK2loNnd4YkREVUg3?=
+ =?utf-8?B?MDh0d3B2eUtKYzhkU0t6M0ZmNEJPclVkUGtrM2VNK1gvOVYrTkpaTU55SWR5?=
+ =?utf-8?B?d0QzMmlZeVZjbEYzcWNjUyt2MkE3REQ0VDJjOWZQNzBTMVRoOUszR2NQNitX?=
+ =?utf-8?B?c3pzUW5XRXF6ODZLSUhiNktWQ2orSVhFcm0zNlZNU0RZMlAxRlZsVWkxem5z?=
+ =?utf-8?B?MzUxVCtxSDJ4WnpFNUFZQi90V0tKa3greWoyaXZPZldZSGxZVHNQeWpkTldL?=
+ =?utf-8?B?Z25NT3RHaDJndTFHaExWd0YrWmM3STFoUDY0dENoNnhEakV1Nk9ReXJXU3Q2?=
+ =?utf-8?B?RmtESXhpMnczRnNKZ2ZWVFZKV2grbjBuQmkrZElhTm96K2p1L3pDOTZrcVdQ?=
+ =?utf-8?B?V1paRXZFeXJWdkNYRE0vSldVMzRoMTJSRXY4TkZOK1ZWcHNvUDQ1S1NXTWow?=
+ =?utf-8?B?NmU1NEJqRnZLamNiUTZlV1J5bktuNjJ1dFl3T1B2VEVxVy9FU2VMOHAxcDdq?=
+ =?utf-8?B?OVRITTEvbHhzbWoxWXNjODBGR0xxcm5VRlk5TFh4OWJvTzFMMUlHWStPTDNR?=
+ =?utf-8?B?bll2dmd6UjduQ3RFN080UU9DRTF1a2wrVlNWTC80bG5Zb2FnN1lBbWpKRGhm?=
+ =?utf-8?B?RnhTMEU2S0dtejFPYXdrcW9VcVRmLzAxaS9MbE5QU1B2bjVtNEhnRG1aTk4v?=
+ =?utf-8?B?V1R1NWVaMlhHaU1halV6ZU9hRFE2SFJlM08za0FkamtnMGVpT3JJMW9INEVP?=
+ =?utf-8?B?aXMzQWo5Q1R6UFN3SDkvZ2VTbzFNTWpOY3dhVVhMbE52ck15dERsZ25zbGFK?=
+ =?utf-8?B?WGQvM2kyMG5rcHRrczZHdEI3YkU1T09xd1M0YWxnS0hzL0ZwZmY0K0lhTVZ5?=
+ =?utf-8?B?L1R6SUJkR3lNdGRsc0VnYmN5WlNhcjlmMWZCZmh5SWUzZjVKVHYrNWZreVNy?=
+ =?utf-8?B?MnB3Nkl4a0hSZmtpT1R1ZkxaeEZUbUExUWtMTlRMUzdzMjBlcE05azVnODFz?=
+ =?utf-8?B?ZXpLcXpLSGZTQjJNT1dxVHhIWTFVUndHeU4rTndVQ3d5b3hIN0FvbFFIb1Jt?=
+ =?utf-8?B?blQvRndjSWt5Q2FVZzV0WUZ4Nm5FSkpZbCs1L29WYmV2cWcxbW5UdVUyaXhh?=
+ =?utf-8?B?dWlncUtYSFdTZjJMSG0wNEIzV3pWZDhCMmg5L2U2cTBJMVZQRUhid2N2WWV3?=
+ =?utf-8?B?Um9mV1lobldvQjBaMEd4Mi9hek5PRTI4OTFKeDF0SGdyVEFQcDZpZVIrOFQ0?=
+ =?utf-8?B?d2xQSElFd0RpdnZFRTJsMHQ5b2w0ZEhHT3QxSXBVdGUyeTBJRHUyMGJPUEt2?=
+ =?utf-8?B?cTE3NllhcytPdkhjdWRmTE4zeEVqZW1zaUdiUm9jZUIvZVl2Y3BnTmhnYVlw?=
+ =?utf-8?B?NnQ5OXhyV2Yyb0tuMER0Q3dlOU40bFZCZDlxMm1zV2xianB0L2dxUkJvekF6?=
+ =?utf-8?B?QVRXOVBIUDBtYUZhWXFzZ1JoY0VnaWdJbTBGMzFiWWhWcjRqVHdZTHZVWExL?=
+ =?utf-8?B?UzdVeXdaamltbDY4S2FtTG5sajdoYjVITXE0OU40UGFiQXEyYWU1KzJhbHNV?=
+ =?utf-8?B?N3Y1UitxUytZV0ozdk1YQnIxWmVDeG45bmJMUnpKZjFuUjF5UnJQMWd4Zkkx?=
+ =?utf-8?B?bEVaOVE0aVRmVWV5blArV3ArZDExWVh2eVNsTXd6MnhhUy9nakh1M0NkNmNn?=
+ =?utf-8?Q?9TwcOAlVDl4nQQlqVZ4vKE0TH?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ace51eee-7d7b-446c-7996-08dc6009f414
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6420.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2024 00:45:04.7896 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bxODgcMnFZZqNEMWOUYrddGI/hgGb8SAdF8AgjnoVx7mYT9KF9nNKN+yYIrT74Yc7lACiteG03kCYPfmYmwOrA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7308
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,207 +130,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8306253651088299340==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Kamil,
 
-== Series Details ==
-
-Series: cleanup and fixes for kms_big_joiner (rev2)
-URL   : https://patchwork.freedesktop.org/series/132554/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7813_BAT -> XEIGTPW_11042_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 5)
-------------------------------
-
-  Additional (1): bat-adlp-7 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11042_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-adlp-7:         NOTRUN -> [SKIP][1] ([Intel XE#455])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         NOTRUN -> [FAIL][2] ([Intel XE#616])
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@xe_evict@evict-small-cm:
-    - bat-adlp-7:         NOTRUN -> [SKIP][3] ([Intel XE#261] / [Intel XE#688]) +15 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@xe_evict@evict-small-cm.html
-
-  * igt@xe_evict_ccs@evict-overcommit-simple:
-    - bat-adlp-7:         NOTRUN -> [SKIP][4] ([Intel XE#688]) +1 other test skip
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@xe_evict_ccs@evict-overcommit-simple.html
-
-  * igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:
-    - bat-adlp-7:         NOTRUN -> [SKIP][5] ([Intel XE#288]) +22 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html
-
-  * igt@xe_mmap@vram:
-    - bat-adlp-7:         NOTRUN -> [SKIP][6] ([Intel XE#1008])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@xe_mmap@vram.html
-
-  * igt@xe_pat@pat-index-xe2:
-    - bat-adlp-7:         NOTRUN -> [SKIP][7] ([Intel XE#977])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@xe_pat@pat-index-xe2.html
-
-  * igt@xe_pat@pat-index-xehpc:
-    - bat-adlp-7:         NOTRUN -> [SKIP][8] ([Intel XE#979]) +1 other test skip
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@xe_pat@pat-index-xehpc.html
-
-  
-  [Intel XE#1008]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008
-  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
-  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
-  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
-  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+Thanks for your suggestion, we reflected it in our final commit.
 
 
-Build changes
--------------
-
-  * IGT: IGT_7813 -> IGTPW_11042
-  * Linux: xe-1112-618482f78fe3f9c8ee83442f39d0710623ffbbe0 -> xe-1119-cabe88f47c1f688f4493de88acc532bf584efe3c
-
-  IGTPW_11042: 7ef2322011f4c3919ba5cd773cf332b4e7498f10 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7813: 66841b7d9024447be4f4f5449aaf4f021e6323e5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1112-618482f78fe3f9c8ee83442f39d0710623ffbbe0: 618482f78fe3f9c8ee83442f39d0710623ffbbe0
-  xe-1119-cabe88f47c1f688f4493de88acc532bf584efe3c: cabe88f47c1f688f4493de88acc532bf584efe3c
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/index.html
-
---===============8306253651088299340==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>cleanup and fixes for kms_big_joiner (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132554/">https://patchwork.freedesktop.org/series/132554/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7813_BAT -&gt; XEIGTPW_11042_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 5)</h2>
-<p>Additional (1): bat-adlp-7 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11042_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_evict@evict-small-cm:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@xe_evict@evict-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +15 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_evict_ccs@evict-overcommit-simple:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@xe_evict_ccs@evict-overcommit-simple.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +22 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_mmap@vram:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008">Intel XE#1008</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xe2:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11042/bat-adlp-7/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>) +1 other test skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7813 -&gt; IGTPW_11042</li>
-<li>Linux: xe-1112-618482f78fe3f9c8ee83442f39d0710623ffbbe0 -&gt; xe-1119-cabe88f47c1f688f4493de88acc532bf584efe3c</li>
-</ul>
-<p>IGTPW_11042: 7ef2322011f4c3919ba5cd773cf332b4e7498f10 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7813: 66841b7d9024447be4f4f5449aaf4f021e6323e5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1112-618482f78fe3f9c8ee83442f39d0710623ffbbe0: 618482f78fe3f9c8ee83442f39d0710623ffbbe0<br />
-  xe-1119-cabe88f47c1f688f4493de88acc532bf584efe3c: cabe88f47c1f688f4493de88acc532bf584efe3c</p>
-
-</body>
-</html>
-
---===============8306253651088299340==--
+On 2024-04-17 05:08, Kamil Konieczny wrote:
+> Hi Jesse,
+> On 2024-04-17 at 09:17:01 +0800, Jesse Zhang wrote:
+>
+> imho you could improve subject, was:
+>
+> [PATCH i-g-t] tests/amdgpu: add check for deadlock test
+>
+> and it would be better with:
+>
+> [PATCH i-g-t] tests/amdgpu/amd_deadlock: run only on GPUs supporting reset
+>
+> No need for resend, it could be changed at merge.
+>
+>> Only enable deadlock test  for ASICs supporting GPU reset.
+>> The issue report by:GMP, Vikram <vikram.gmp@amd.com>
+>>
+>> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+>> Cc: Alex Deucher <alexander.deucher@amd.com>
+>> Cc: Christian Koenig <christian.koenig@amd.com>
+>> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+>> Reviewed by:  Vitaly Prosyak <vitaly.prosyak@amd.com>
+>> ---
+>>  tests/amdgpu/amd_deadlock.c | 23 +++++++++++++++++++++++
+>>  1 file changed, 23 insertions(+)
+>>
+>> diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
+>> index dc7ec4366..7a27fae51 100644
+>> --- a/tests/amdgpu/amd_deadlock.c
+>> +++ b/tests/amdgpu/amd_deadlock.c
+>> @@ -9,6 +9,28 @@
+>>  #include "lib/amdgpu/amd_command_submission.h"
+>>  #include "lib/amdgpu/amd_deadlock_helpers.h"
+>>  
+>> +#define AMDGPU_FAMILY_SI                        110 /* Hainan, Oland, Verde, Pitcairn, Tahiti */
+>> +#define AMDGPU_FAMILY_CI                        120 /* Bonaire, Hawaii */
+>> +#define AMDGPU_FAMILY_CZ                        135 /* Carrizo, Stoney */
+>> +#define AMDGPU_FAMILY_RV                        142 /* Raven */
+>> +
+>> +static bool
+>> +is_deadlock_tests_enable(const struct amdgpu_gpu_info *gpu_info)
+>> +{
+>> +	bool enable = true;
+>> +	/*
+>> +	 * skip for the ASICs that don't support GPU reset.
+>> +	 */
+>> +	if (gpu_info->family_id == AMDGPU_FAMILY_SI ||
+>> +	    gpu_info->family_id == AMDGPU_FAMILY_KV ||
+>> +	    gpu_info->family_id == AMDGPU_FAMILY_CZ ||
+>> +	    gpu_info->family_id == AMDGPU_FAMILY_RV) {
+>> +		igt_info("\n\nGPU reset is not enabled for the ASIC, deadlock test skip\n");
+> This print suggest other name for this function but as it is local
+> to this test it can stay as is. As it looks, you could run this test
+> on these GPUs but then you need to power cycle GPU (or machine?).
+The deadlock tests are skipped on GPU which does not support hardware reset, but when it is supported on GPU, the series of miscellaneous deadlock tests could be run without a power cycle.
+>
+> Regards,
+> Kamil
+>
+>> +		enable = false;
+>> +	}
+>> +	return enable;
+>> +}
+>> +
+>>  igt_main
+>>  {
+>>  	amdgpu_device_handle device;
+>> @@ -34,6 +56,7 @@ igt_main
+>>  		r = setup_amdgpu_ip_blocks(major, minor, &gpu_info, device);
+>>  		igt_assert_eq(r, 0);
+>>  		asic_rings_readness(device, 1, arr_cap);
+>> +		igt_skip_on(!is_deadlock_tests_enable(&gpu_info));
+>>  
+>>  	}
+>>  	igt_describe("Test-GPU-reset-by-flooding-sdma-ring-with-jobs");
+>> -- 
+>> 2.25.1
+>>
+Thanks, Vitaly
