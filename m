@@ -4,36 +4,36 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1096CC10F15
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Apr 2024 09:09:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1ACDC07E8F
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Apr 2024 09:09:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6868810F43E;
+	by gabe.freedesktop.org (Postfix) with ESMTP id A611C10F4E5;
 	Mon, 22 Apr 2024 09:09:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=ourmail.work header.i=@ourmail.work header.b="DLNZcYTg";
+	dkim=pass (1024-bit key; unprotected) header.d=ourmail.work header.i=@ourmail.work header.b="QWhn9YY1";
 	dkim-atps=neutral
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com
- [91.218.175.188])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC33010F401
+Received: from out-176.mta0.migadu.com (out-176.mta0.migadu.com
+ [91.218.175.176])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C3E6510E9EB
  for <igt-dev@lists.freedesktop.org>; Sun, 21 Apr 2024 23:32:38 +0000 (UTC)
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
  include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ourmail.work;
- s=default; t=1713741759;
+ s=default; t=1713741772;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5dsxb/ORKMmjnHBTf2iM16SFJGsdi5stZ+cRlF2wR0g=;
- b=DLNZcYTgGWI7QG0ZP6DO2VdD2nhsZfMTQKh0dw7bdB3ZiIuqFeWj2eX7WQO9jX9+XfCUBZ
- fwVIHDDauEjWNrknXNmsXI82WfUZxEOYskyeXQEDAfem6W11WhM5cSzu6DKfYhwuLqBonM
- Zv9EMNx0x06tAo34DFfm2EL1QKhG7fQ=
+ bh=JAdDwzXX3P5SrbR57x50mdY9vR3uK3EuK3J2DEh+S20=;
+ b=QWhn9YY1j6PqrnTu1xrNVEQ+WBo4JM/V/xp1vXPn8/xByRBtKFM5l06MTI7nSMner+Sqv3
+ OEiOacvzGGYHshWLLd+ovJO2rhYwwxDiXss9Aq+tWWn6xSBTLchrXFAoS0xPg4MU+efuHN
+ oRf0yULDR08hOTY790Eg97pZHsgcK2s=
 From: Reagan Bohan <reagan@ourmail.work>
 To: igt-dev@lists.freedesktop.org
 Cc: Reagan Bohan <xbjfk.github@gmail.com>
-Subject: [PATCH 1/3] Define _LARGEFILE64_SOURCE for musl libc
-Date: Sun, 21 Apr 2024 23:20:46 +0000
-Message-ID: <20240421232204.31704-2-reagan@ourmail.work>
+Subject: [PATCH 3/3] Change sys/signal.h to signal.h
+Date: Sun, 21 Apr 2024 23:20:48 +0000
+Message-ID: <20240421232204.31704-4-reagan@ourmail.work>
 In-Reply-To: <20240421232204.31704-1-reagan@ourmail.work>
 References: <20240421232204.31704-1-reagan@ourmail.work>
 MIME-Version: 1.0
@@ -57,37 +57,90 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Reagan Bohan <xbjfk.github@gmail.com>
 
+Not only is sys/signal.h non standard, it also:
+a) emits a warning on musl libc
+b) made the code inconsistent, as some files used signal.h and some
+sys/signal.h
 ---
- lib/i915/gem_engine_topology.c       | 2 ++
- tools/i915-perf/i915_perf_recorder.c | 2 ++
- 2 files changed, 4 insertions(+)
+ tests/intel/gem_exec_await.c           | 2 +-
+ tests/intel/gem_exec_balancer.c        | 2 +-
+ tests/intel/gem_exec_fence.c           | 2 +-
+ tests/intel/gem_exec_latency.c         | 2 +-
+ tests/intel/gem_unref_active_buffers.c | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-index afb576afb..9b8fb85e3 100644
---- a/lib/i915/gem_engine_topology.c
-+++ b/lib/i915/gem_engine_topology.c
-@@ -21,6 +21,8 @@
-  * IN THE SOFTWARE.
+diff --git a/tests/intel/gem_exec_await.c b/tests/intel/gem_exec_await.c
+index fcbca1547..cc976f09d 100644
+--- a/tests/intel/gem_exec_await.c
++++ b/tests/intel/gem_exec_await.c
+@@ -22,8 +22,8 @@
+  *
   */
  
-+#define _LARGEFILE64_SOURCE
-+
++#include <signal.h>
+ #include <sys/ioctl.h>
+-#include <sys/signal.h>
+ 
+ #include "drmtest.h"
+ #include "i915/gem.h"
+diff --git a/tests/intel/gem_exec_balancer.c b/tests/intel/gem_exec_balancer.c
+index 7504f3737..83cc7eea4 100644
+--- a/tests/intel/gem_exec_balancer.c
++++ b/tests/intel/gem_exec_balancer.c
+@@ -23,8 +23,8 @@
+ 
  #include <fcntl.h>
- #include <sys/stat.h>
- #include <sys/syscall.h>
-diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
-index ca4354832..5e7c233dd 100644
---- a/tools/i915-perf/i915_perf_recorder.c
-+++ b/tools/i915-perf/i915_perf_recorder.c
-@@ -20,6 +20,8 @@
-  * SOFTWARE.
-  */
+ #include <sched.h>
++#include <signal.h>
+ #include <sys/ioctl.h>
+-#include <sys/signal.h>
+ #include <poll.h>
  
-+#define _LARGEFILE64_SOURCE
-+
- #include <assert.h>
- #include <dirent.h>
+ #include "dmabuf_sync_file.h"
+diff --git a/tests/intel/gem_exec_fence.c b/tests/intel/gem_exec_fence.c
+index 28bad83f6..deff18abc 100644
+--- a/tests/intel/gem_exec_fence.c
++++ b/tests/intel/gem_exec_fence.c
+@@ -23,8 +23,8 @@
+ 
+ #include <poll.h>
+ #include <string.h>
++#include <signal.h>
+ #include <sys/ioctl.h>
+-#include <sys/signal.h>
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+ #include "igt.h"
+diff --git a/tests/intel/gem_exec_latency.c b/tests/intel/gem_exec_latency.c
+index b9d086afc..b802c2f31 100644
+--- a/tests/intel/gem_exec_latency.c
++++ b/tests/intel/gem_exec_latency.c
+@@ -30,10 +30,10 @@
+ #include <fcntl.h>
+ #include <inttypes.h>
  #include <errno.h>
++#include <signal.h>
+ #include <sys/stat.h>
+ #include <sys/ioctl.h>
+ #include <sys/time.h>
+-#include <sys/signal.h>
+ #include <time.h>
+ #include <sched.h>
+ 
+diff --git a/tests/intel/gem_unref_active_buffers.c b/tests/intel/gem_unref_active_buffers.c
+index f8138c7ac..47f792738 100644
+--- a/tests/intel/gem_unref_active_buffers.c
++++ b/tests/intel/gem_unref_active_buffers.c
+@@ -34,8 +34,8 @@
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <inttypes.h>
++#include <signal.h>
+ #include <sys/ioctl.h>
+-#include <sys/signal.h>
+ #include <sys/time.h>
+ 
+ #include "igt.h"
 -- 
 2.43.2
 
