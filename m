@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24749C4345F
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Apr 2024 14:47:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05BC6C4345F
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Apr 2024 15:24:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8C453112B9D;
-	Mon, 22 Apr 2024 14:47:22 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XcwH+KjT";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39A46112B97
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Apr 2024 14:47:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713797241; x=1745333241;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=cfAgAGnSGw2qwmxhR0TQmXkOqAA6fCMM2lPblrxW6U0=;
- b=XcwH+KjTVc5wBzHRdoZX0bbVHeNUcVQ6f/z2JNJCVvc6eyf1FZB7vx/7
- b4ZwOedBTZyX7J9/0b+qZ/1ULtdHXFb37sRs/e4HG+QcS6qTKCE1DzI7E
- Fg4aoFI3dD15DVlaHmfrDIo5B9h705GiXzix+ZvNxHTS9E+bovRfKV5Pv
- NRWm4mY4jd4P1xm8NkhJnfHLE9OnPHfZHAGJGy9EHKlHikNZUBv6f1OPL
- mnxSRAXRHMWv1OOFdsywZYpWeRlmiWgxO5ye68QG0yw0a5KUnByCNfiHP
- 78xlzq/rKHBM/csThCpXzMbOSM8VyA798AqQbEksy/ZRX0fv08lB7Og13 w==;
-X-CSE-ConnectionGUID: wq/xQwbvQn2PPrdg5LbWeA==
-X-CSE-MsgGUID: MVRLXTu2SpihYsY54k/l8A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="13174537"
-X-IronPort-AV: E=Sophos;i="6.07,220,1708416000"; d="scan'208";a="13174537"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2024 07:47:19 -0700
-X-CSE-ConnectionGUID: yJntRisoRzSlQU79JsqmXw==
-X-CSE-MsgGUID: 9q6wT4gAQwGADlRo8OtJyg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,220,1708416000"; d="scan'208";a="24552303"
-Received: from maurocar-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.246.17])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2024 07:47:18 -0700
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Matthew Brost <matthew.brost@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v2] tests/xe_evict|exec_threads: Use fd reopen to avoid
- corrupting global data
-Date: Mon, 22 Apr 2024 16:47:13 +0200
-Message-Id: <20240422144713.76025-1-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 78AE9112BE4;
+	Mon, 22 Apr 2024 15:24:02 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D3A4112BDE;
+ Mon, 22 Apr 2024 15:24:00 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7462964936969745944=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/gem=5Fexec=5Fcaptu?=
+ =?utf-8?q?re=3A_Fix_many-*_subtests_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Peter Senna Tschudin" <me@petersenna.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 22 Apr 2024 15:24:00 -0000
+Message-ID: <171379944057.1571015.4019073143425326299@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240410174031.5840-1-me@petersenna.com>
+In-Reply-To: <20240410174031.5840-1-me@petersenna.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,138 +37,213 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Device scanning and filtering was designed to work in multi-process
-environment. Due to that opening the device with drm_open_driver()
-in multiple threads lead to global device data corruption.
+--===============7462964936969745944==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-At the moment there's no easy way to redesign this so simplest thing
-we may do is to just acquire device fd in main process and reopen it
-(this doesn't involve any device scanning) in spawned threads.
+== Series Details ==
 
-Lets use drm_reopen_driver() to stop calling not thread-safe code.
+Series: tests/intel/gem_exec_capture: Fix many-* subtests (rev3)
+URL   : https://patchwork.freedesktop.org/series/132291/
+State : success
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Summary ==
 
----
-v2: Add reopen in test_evict_cm() (Kamil)
----
- tests/intel/xe_evict.c        | 10 +++++-----
- tests/intel/xe_exec_threads.c | 22 ++++++++--------------
- 2 files changed, 13 insertions(+), 19 deletions(-)
+CI Bug Log - changes from XEIGT_7815_BAT -> XEIGTPW_11049_BAT
+====================================================
 
-diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
-index 8ef55211f7..5994ebb142 100644
---- a/tests/intel/xe_evict.c
-+++ b/tests/intel/xe_evict.c
-@@ -61,7 +61,7 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
- 	bo = calloc(n_execs / 2, sizeof(*bo));
- 	igt_assert(bo);
- 
--	fd = drm_open_driver(DRIVER_XE);
-+	fd = drm_reopen_driver(fd);
- 
- 	vm = xe_vm_create(fd, 0, 0);
- 	if (flags & BIND_EXEC_QUEUE)
-@@ -241,7 +241,7 @@ test_evict_cm(int fd, struct drm_xe_engine_class_instance *eci,
- 	bo = calloc(n_execs / 2, sizeof(*bo));
- 	igt_assert(bo);
- 
--	fd = drm_open_driver(DRIVER_XE);
-+	fd = drm_reopen_driver(fd);
- 
- 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
- 	if (flags & BIND_EXEC_QUEUE)
-@@ -769,21 +769,21 @@ igt_main
- 
- 	for (const struct section *s = sections; s->name; s++) {
- 		igt_subtest_f("evict-%s", s->name)
--			test_evict(-1, hwe, s->n_exec_queues, s->n_execs,
-+			test_evict(fd, hwe, s->n_exec_queues, s->n_execs,
- 				   calc_bo_size(vram_size, s->mul, s->div),
- 				   s->flags, NULL);
- 	}
- 
- 	for (const struct section_cm *s = sections_cm; s->name; s++) {
- 		igt_subtest_f("evict-%s", s->name)
--			test_evict_cm(-1, hwe, s->n_exec_queues, s->n_execs,
-+			test_evict_cm(fd, hwe, s->n_exec_queues, s->n_execs,
- 				      calc_bo_size(vram_size, s->mul, s->div),
- 				      s->flags, NULL);
- 	}
- 
- 	for (const struct section_threads *s = sections_threads; s->name; s++) {
- 		igt_subtest_f("evict-%s", s->name)
--			threads(-1, hwe, s->n_threads, s->n_exec_queues,
-+			threads(fd, hwe, s->n_threads, s->n_exec_queues,
- 				 s->n_execs,
- 				 calc_bo_size(vram_size, s->mul, s->div),
- 				 s->flags);
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index 8083980f90..1e80842b98 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
-@@ -71,8 +71,8 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
- 
- 	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
- 
--	if (!fd) {
--		fd = drm_open_driver(DRIVER_XE);
-+	if (flags & FD) {
-+		fd = drm_reopen_driver(fd);
- 		owns_fd = true;
- 	}
- 
-@@ -273,8 +273,8 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 
- 	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
- 
--	if (!fd) {
--		fd = drm_open_driver(DRIVER_XE);
-+	if (flags & FD) {
-+		fd = drm_reopen_driver(fd);
- 		owns_fd = true;
- 	}
- 
-@@ -477,8 +477,8 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 
- 	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
- 
--	if (!fd) {
--		fd = drm_open_driver(DRIVER_XE);
-+	if (flags & FD) {
-+		fd = drm_reopen_driver(fd);
- 		owns_fd = true;
- 	}
- 
-@@ -995,10 +995,7 @@ static void threads(int fd, int flags)
- #define ADDRESS_SHIFT	39
- 		threads_data[i].addr = addr | (i << ADDRESS_SHIFT);
- 		threads_data[i].userptr = userptr | (i << ADDRESS_SHIFT);
--		if (flags & FD)
--			threads_data[i].fd = 0;
--		else
--			threads_data[i].fd = fd;
-+		threads_data[i].fd = fd;
- 		threads_data[i].vm_legacy_mode = vm_legacy_mode;
- 		threads_data[i].vm_compute_mode = vm_compute_mode;
- 		threads_data[i].eci = hwe;
-@@ -1046,10 +1043,7 @@ static void threads(int fd, int flags)
- 						threads_data[i].addr = addr;
- 					threads_data[i].userptr = userptr |
- 						(i << ADDRESS_SHIFT);
--					if (flags & FD)
--						threads_data[i].fd = 0;
--					else
--						threads_data[i].fd = fd;
-+					threads_data[i].fd = fd;
- 					threads_data[i].gt = gt;
- 					threads_data[i].vm_legacy_mode =
- 						vm_legacy_mode;
--- 
-2.34.1
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 5)
+------------------------------
+
+  Additional (1): bat-adlp-7 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11049_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-adlp-7:         NOTRUN -> [SKIP][1] ([Intel XE#455])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         NOTRUN -> [FAIL][2] ([Intel XE#616])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@xe_evict@evict-small-cm:
+    - bat-adlp-7:         NOTRUN -> [SKIP][3] ([Intel XE#261] / [Intel XE#688]) +15 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@xe_evict@evict-small-cm.html
+
+  * igt@xe_evict_ccs@evict-overcommit-simple:
+    - bat-adlp-7:         NOTRUN -> [SKIP][4] ([Intel XE#688]) +1 other test skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@xe_evict_ccs@evict-overcommit-simple.html
+
+  * igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:
+    - bat-adlp-7:         NOTRUN -> [SKIP][5] ([Intel XE#288]) +22 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html
+
+  * igt@xe_mmap@vram:
+    - bat-adlp-7:         NOTRUN -> [SKIP][6] ([Intel XE#1008])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@xe_mmap@vram.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-adlp-7:         NOTRUN -> [SKIP][7] ([Intel XE#977])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-adlp-7:         NOTRUN -> [SKIP][8] ([Intel XE#979]) +1 other test skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@xe_pat@pat-index-xehpc.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1008]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008
+  [Intel XE#1256]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1256
+  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7815 -> IGTPW_11049
+  * Linux: xe-1137-ff2f70f345aaee3cbcf93a3a06ff3a5ab88e1d7a -> xe-1142-7fb8042f224fd84650e556b13e2560d8f86a1914
+
+  IGTPW_11049: 11049
+  IGT_7815: d5d516bfdf77898e934b4c7ed947a43711cfb226 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1137-ff2f70f345aaee3cbcf93a3a06ff3a5ab88e1d7a: ff2f70f345aaee3cbcf93a3a06ff3a5ab88e1d7a
+  xe-1142-7fb8042f224fd84650e556b13e2560d8f86a1914: 7fb8042f224fd84650e556b13e2560d8f86a1914
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/index.html
+
+--===============7462964936969745944==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/gem_exec_capture: Fix many-* subtests (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132291/">https://patchwork.freedesktop.org/series/132291/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7815_BAT -&gt; XEIGTPW_11049_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 5)</h2>
+<p>Additional (1): bat-adlp-7 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11049_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-small-cm:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@xe_evict@evict-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict_ccs@evict-overcommit-simple:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@xe_evict_ccs@evict-overcommit-simple.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +22 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_mmap@vram:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008">Intel XE#1008</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11049/bat-adlp-7/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7815 -&gt; IGTPW_11049</li>
+<li>Linux: xe-1137-ff2f70f345aaee3cbcf93a3a06ff3a5ab88e1d7a -&gt; xe-1142-7fb8042f224fd84650e556b13e2560d8f86a1914</li>
+</ul>
+<p>IGTPW_11049: 11049<br />
+  IGT_7815: d5d516bfdf77898e934b4c7ed947a43711cfb226 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1137-ff2f70f345aaee3cbcf93a3a06ff3a5ab88e1d7a: ff2f70f345aaee3cbcf93a3a06ff3a5ab88e1d7a<br />
+  xe-1142-7fb8042f224fd84650e556b13e2560d8f86a1914: 7fb8042f224fd84650e556b13e2560d8f86a1914</p>
+
+</body>
+</html>
+
+--===============7462964936969745944==--
