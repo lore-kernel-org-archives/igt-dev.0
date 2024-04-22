@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD442C4345F
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Apr 2024 12:59:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2FC6C4345F
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Apr 2024 13:56:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 789A410F5E0;
-	Mon, 22 Apr 2024 12:59:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8DB8F112B09;
+	Mon, 22 Apr 2024 13:56:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yms+TpAm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fPbTdtup";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 03D9210F5E0
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Apr 2024 12:59:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C35D112B08
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Apr 2024 13:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713790763; x=1745326763;
+ t=1713794182; x=1745330182;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=+3IbBwwa+L8R1iOaRoI+ejYiWxswsgUC7i6vDFehlGI=;
- b=Yms+TpAmOpCDyEM53BKjzJVdzGkqVctLKn2VtUw9xZo/w7IzcMEwLRpc
- P8N0CA2O/MVU+63Up4OD5WnKkyZXqm/9JpV9nVzt2wEO3BaSupJSdZPVN
- DmCNMB/q+EasGD2nAIN6KU4KA89hXmynVWMxngPXPvjZNLiv7ZXdX+8cL
- VhLPluD64PbKZcCilqzKvQydFkxEs6u3P2mdg/Su23jCR3imbk8O87aWJ
- DZqsazjbPkT3w1TfN8+hWZeNQAcs1G8mSU4OUNLc+YbXj6T+wJp0deGex
- xLpgWNvqrpnxWbLwV+oKg6S1NDdU+I/VcoX5lL3mzzv+EOl8BZu9NBu72 g==;
-X-CSE-ConnectionGUID: TEk5Cqg7TVqDqR7SRwEdPA==
-X-CSE-MsgGUID: W4w7xO6bTiCr1LaHbI+Chw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="26842643"
-X-IronPort-AV: E=Sophos;i="6.07,220,1708416000"; d="scan'208";a="26842643"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2024 05:59:22 -0700
-X-CSE-ConnectionGUID: krLLaftjSsethlhazcLByw==
-X-CSE-MsgGUID: SoNzw8p9TPWVM5AOPBr7rQ==
+ bh=q3QTqU4NH2bw3vcoNW8jj0l67Ou7wMjFVt7C2E02Jm4=;
+ b=fPbTdtup+6Srt9O8qyZZ7KNRNSJl6WTR2e7BndZTld9k4tf/PKksog13
+ UqHY9oSthrVUhnYJnHkQBJpqTdOAR8dlhc6692UWQRT2HZrW5w1KR1Bwa
+ MWQL9jnDaSk5cbk5Oq07GxeBkerWBKbY/34c7U2FkRZJDA0+SoTJUOmUh
+ JSgb0yRWlHm4cmu51pLehYrYXUamzGANduNi50BwaUEmOFfiR+7OY+v6B
+ rdKiMJIsPhSEMQwwGaM/+1lf/R8AM0a9Sx9RZoWB+vjcuhtUz/1wm7yp7
+ dMgarlSXXFq+UDYEsd2yFkNVSSFbjtTQuLhSCBAbjE24ldWvq1gSr5CI5 g==;
+X-CSE-ConnectionGUID: 4FbjRL8NQl+/DuqDM08S6g==
+X-CSE-MsgGUID: ZdPD11uFQxiwB+hE3n1ArA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="9199517"
+X-IronPort-AV: E=Sophos;i="6.07,220,1708416000"; 
+   d="scan'208";a="9199517"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Apr 2024 06:56:22 -0700
+X-CSE-ConnectionGUID: oZP4dLwaQyWMn9Y7/Kt/xw==
+X-CSE-MsgGUID: ouHg9BqVQIiiGO2Fl4Gtmw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,220,1708416000"; d="scan'208";a="24612904"
+X-IronPort-AV: E=Sophos;i="6.07,220,1708416000"; d="scan'208";a="24072642"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2024 05:59:21 -0700
-Date: Mon, 22 Apr 2024 14:59:17 +0200
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2024 06:56:21 -0700
+Date: Mon, 22 Apr 2024 15:56:04 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Matthew Brost <matthew.brost@intel.com>
 Subject: Re: [PATCH i-g-t] tests/xe_evict|exec_threads: Use fd reopen to
  avoid corrupting global data
-Message-ID: <20240422125917.i6nj4strvmsdcwai@kamilkon-DESK.igk.intel.com>
+Message-ID: <20240422135604.fewegl3adby56fk2@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
@@ -88,9 +89,6 @@ On 2024-04-17 at 16:26:07 +0200, Zbigniew Kempczyński wrote:
 > 
 > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Cc: Matthew Brost <matthew.brost@intel.com>
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
 > ---
 >  tests/intel/xe_evict.c        |  8 ++++----
 >  tests/intel/xe_exec_threads.c | 22 ++++++++--------------
@@ -107,6 +105,21 @@ Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > -	fd = drm_open_driver(DRIVER_XE);
 > +	fd = drm_reopen_driver(fd);
 >  
+
+I checked xe_evict again just to be sure and there are
+two opens (not counting one from fixture):
+grep -n open_driver tests/intel/xe_evict.c
+64:     fd = drm_reopen_driver(fd);
+244:    fd = drm_open_driver(DRIVER_XE);
+
+imho that second one could also be called in multi-threaded version
+from thread() function, so line 244 should also be fixed into reopen.
+
+You can keep my r-b with fixed version.
+
+Regards,
+Kamil
+
 >  	vm = xe_vm_create(fd, 0, 0);
 >  	if (flags & BIND_EXEC_QUEUE)
 > @@ -769,21 +769,21 @@ igt_main
