@@ -4,59 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 629FFC07E8D
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Apr 2024 05:24:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8442FC04FF6
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Apr 2024 05:24:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 01F89112783;
-	Mon, 22 Apr 2024 05:24:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 24B50112785;
+	Mon, 22 Apr 2024 05:24:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G5npbxR5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aTy8PHO9";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6CC43112783
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Apr 2024 05:24:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C5E2D112783
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Apr 2024 05:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713763455; x=1745299455;
+ t=1713763456; x=1745299456;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=z0WQdGuWWsibZWpA/c/2OTvyVUALx9n5LsSxDwxMhiw=;
- b=G5npbxR5cFzVwveowu/toCFhUDAOxdnjiVoz145aLCSylO8hVGgo/T/J
- 9ql7eS2ArWb5216AzVk+7vBQS3e4j93oFCGA4u89W2i3mNXni3qtgVwCy
- rbYzpO7ROdfp6fnjDr1cQaviO9995Q3vQJh745CtrMTATFr9u2+yj4Aii
- 4ek+u1Jaj948hBU4ywTsJ4fb6Vslpdhvif1ng09ovPzk21gDQ6nyetH7S
- tcf/l9zBCoyKpwzk8rd54JZfDMbxXM20hvdS48GCwKm30QV7t2v7FNDdz
- Z9zlDWhZ9veNNn8/oBIY6i1sG+ul55IwXC/Wei7XXbUAYI8BAYmqU+TCn Q==;
-X-CSE-ConnectionGUID: mNg06EViRTan3jQy6sCvTg==
-X-CSE-MsgGUID: Efcg9Xd7QTik/wi1rYHOog==
-X-IronPort-AV: E=McAfee;i="6600,9927,11051"; a="9113800"
+ bh=b6klLX3Qqv7/at4X+2C0QK3pqWYWDbtpT5y1d68Wzeg=;
+ b=aTy8PHO9w1ecr1TrTlj+eOj03oKc3Deou3RP6qNu0jzf4X4G9ndOqJ7G
+ xuACqoqp8heDhGubYSnuVxxLDTRnUQm0ayymT7tptCvQ5pLKksxMxvSPW
+ ns7M39hrz6OVhIwTV2y5LoIOEMVhuhsri43AtPxFmJOmJMFtRbffqAgQu
+ jZgwSzHEnNanMJVx9hOEgLtY9neFIyooto0a3n8PxSwmjZ88g55kwfs7l
+ N4TKAIsshD0wTxIS8jamNDRtMk3gYqqGWworUAAaxtQVWGYQmnsbRC2kO
+ +rZh+7HM7hnqz3S6HBnpwC1Xl9A0sQWmQoztZ7i3/yjNMF0zU4RhQayTW w==;
+X-CSE-ConnectionGUID: ERXe5cvcQmaUPKPcXSZAQg==
+X-CSE-MsgGUID: QKymsbpxSQ+NodAvNiTldw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11051"; a="9113804"
 X-IronPort-AV: E=Sophos;i="6.07,219,1708416000"; 
-   d="scan'208";a="9113800"
+   d="scan'208";a="9113804"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Apr 2024 22:24:15 -0700
-X-CSE-ConnectionGUID: 8mtFrDZQQb6TUIfdDuKCaQ==
-X-CSE-MsgGUID: jPo2FF5sRPuJpcuILFfLZw==
+ 21 Apr 2024 22:24:16 -0700
+X-CSE-ConnectionGUID: 5prbVCcBQ3WcThc7zuqmSw==
+X-CSE-MsgGUID: iyOUXW9xRtulrNV2VLlSRQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,219,1708416000"; d="scan'208";a="23981159"
+X-IronPort-AV: E=Sophos;i="6.07,219,1708416000"; d="scan'208";a="23981168"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2024 22:24:13 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2024 22:24:15 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>,
- =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
- Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t 6/7] lib/igt_kms: remove unused
- igt_force_and_check_bigjoiner_status
-Date: Mon, 22 Apr 2024 11:04:53 +0530
-Message-Id: <20240422053454.2523989-7-kunal1.joshi@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 7/7] HAX: Do not merge
+Date: Mon, 22 Apr 2024 11:04:54 +0530
+Message-Id: <20240422053454.2523989-8-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240422053454.2523989-1-kunal1.joshi@intel.com>
 References: <20240422053454.2523989-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -73,69 +68,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-remove unused igt_force_and_check_bigjoiner_status
-
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/igt_kms.c | 28 ----------------------------
- lib/igt_kms.h |  1 -
- 2 files changed, 29 deletions(-)
+ tests/intel-ci/fast-feedback.testlist | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index c3fd7245f..29b30c7aa 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -6336,34 +6336,6 @@ bool igt_has_force_joiner_debugfs(int drmfd, igt_output_t *output)
- 	return ret >= 0;
- }
- 
--/**
-- * Forces the enable/disable state of big joiner for a specific connector.
-- *
-- * @drmfd The file descriptor of the DRM device.
-- * @connector_name The name of the connector.
-- * @enable The desired state of big joiner (true for enable, false for disable).
-- * Returns:
-- *  true if writing the debugfs was successful
-- *  and the state was set as requested, false otherwise.
-- */
--bool igt_force_and_check_bigjoiner_status(int drmfd, char *connector_name, bool enable)
--{
--	int debugfs_fd, ret;
--	char buf[512];
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index be0965110..0fc41236f 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,6 +1,9 @@
+ # Try to load the driver if it's not available yet.
+ igt@i915_module_load@load
 -
--	igt_assert_f(connector_name, "Connector name cannot be NULL\n");
--	debugfs_fd = igt_debugfs_connector_dir(drmfd, connector_name, O_DIRECTORY);
--	igt_assert_f(debugfs_fd >= 0, "Could not open debugfs for connector %s\n", connector_name);
--	ret = igt_sysfs_write(debugfs_fd, "i915_bigjoiner_force_enable", enable ? "1" : "0", 1);
--	igt_assert_f(ret > 0, "Could not write i915_bigjoiner_force_enable for connector %s\n", connector_name);
--	ret = igt_debugfs_simple_read(debugfs_fd, "i915_bigjoiner_force_enable", buf, sizeof(buf));
--	close(debugfs_fd);
--	igt_assert_f(ret > 0, "Could not read i915_bigjoiner_force_enable for connector %s\n", connector_name);
--
--	return enable ? strstr(buf, "Y") :
--			strstr(buf, "N");
--}
--
- /**
-  * igt_check_bigjoiner_support:
-  * @display: a pointer to an #igt_display_t structure
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 0abf450c1..01604dac9 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1216,7 +1216,6 @@ bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
- bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
- 			  int max_dotclock, drmModeModeInfo *mode);
- bool igt_has_force_joiner_debugfs(int drmfd, igt_output_t *output);
--bool igt_force_and_check_bigjoiner_status(int drmfd, char *connector_name, bool enable);
- bool igt_check_bigjoiner_support(igt_display_t *display);
- bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
- bool intel_pipe_output_combo_valid(igt_display_t *display);
++igt@kms_big_joiner@basic
++igt@kms_big_joiner@invalid-modeset
++igt@kms_big_joiner@basic-force-joiner
++igt@kms_big_joiner@invalid-modeset-force-joiner
+ # Keep alphabetically sorted by default
+ igt@core_auth@basic-auth
+ igt@debugfs_test@read_all_entries
 -- 
 2.25.1
 
