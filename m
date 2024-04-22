@@ -4,45 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF0B8C4345F
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Apr 2024 22:18:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EAB4C10F15
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Apr 2024 22:18:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 53E5110F8D5;
-	Mon, 22 Apr 2024 22:18:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A666E10FB9E;
+	Mon, 22 Apr 2024 22:18:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="Zlgn9Dnd";
+	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="nD8Pxevy";
 	dkim-atps=neutral
-Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 91FC310F8D5
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Apr 2024 22:18:25 +0000 (UTC)
+Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9836C112DD8
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Apr 2024 22:18:28 +0000 (UTC)
 Received: from fews02-sea.riseup.net (fews02-sea-pn.riseup.net [10.0.1.112])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx0.riseup.net (Postfix) with ESMTPS id 4VNflh3y3wz9v7t;
- Mon, 22 Apr 2024 22:18:24 +0000 (UTC)
+ by mx1.riseup.net (Postfix) with ESMTPS id 4VNflm01gwzDqgG;
+ Mon, 22 Apr 2024 22:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
- t=1713824304; bh=IudQae/tx0u90M2Q/vQE70boVUO1b/vHlIIRwqQN17g=;
- h=From:Subject:Date:To:Cc:From;
- b=Zlgn9DndqIyHs0x02ioJPW/Bw7UqGrR5/7oZ36gNcwepnnJsudOLQAXxosJNPpQHb
- fjAkSBESNnoR1JXqHhqvz9fGYsjGuCSAip8G/V/TbON6o1VsA1HiRjFQcXVuKbwMU7
- fWvGdhaS+A7By0Q9RHfbGTvwHvTDWLX9vvsG69+g=
-X-Riseup-User-ID: F4E6F34B1843A51296C254AB99F0822A7593D862E594F4FFF0AC27BC228386A1
+ t=1713824308; bh=1nXG1ED2qLaYPJLXH4vLjInBe+IxYsPtje41CXuWZ6g=;
+ h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+ b=nD8PxevydonrmvH5lz8UzKq2v6gpkgXJgd6FDlLXB37Q1OtzpoNxwDHrXc24lYlPa
+ 7rR3YAMdlO+aUyGfP9i3nKzdMBM/h0WnsGv++6nax65/qBmy+S/Xl3vOy9ttllZzI4
+ scol4C3jlZdu0yQmA63/FduGVueoENEt7R9xK71M=
+X-Riseup-User-ID: F45DB0B5D0C2A5DF63E04F266E9A4BD75EB85E1DAC09684A1ABA1CF17AC9D124
 Received: from [127.0.0.1] (localhost [127.0.0.1])
- by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4VNfld1by1zFv5M;
- Mon, 22 Apr 2024 22:18:21 +0000 (UTC)
+ by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4VNflh6w8zzFv5M;
+ Mon, 22 Apr 2024 22:18:24 +0000 (UTC)
 From: Arthur Grillo <arthurgrillo@riseup.net>
-Subject: [PATCH i-g-t v5 0/8] benchmarks/kms_fb_stress: benchmark formats
-Date: Mon, 22 Apr 2024 19:18:15 -0300
-Message-Id: <20240422-kms_fb_stress-dev-v5-0-0c577163dc88@riseup.net>
+Date: Mon, 22 Apr 2024 19:18:16 -0300
+Subject: [PATCH i-g-t v5 1/8] benchmarks/kms_fb_stress: Assert that we have
+ an supported pipe
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACfiJmYC/33OwW7CMAwG4FdBOZMpTpy24cR7TAglrTuiiRbFX
- cSE+u5LuTBEhW+/pf+zb4IpRWKx29xEohw5jkMJdrsR7ckPXyRjV7LQSqPSupLfZz724chTImb
- ZUZatM56grnqnQJTeJVEfr3fz81DyKfI0pt/7iQzL9p2WQSoJLaBDHUAj7lNk+rl8DDSJhcv6Q
- Rhl1whdiLop401DtjIvhPlP1GuEKURng8PGW4RALwQ+CARYI3D5wje98QiOQngi5nn+A5ynj7V
- 8AQAA
+Message-Id: <20240422-kms_fb_stress-dev-v5-1-0c577163dc88@riseup.net>
+References: <20240422-kms_fb_stress-dev-v5-0-0c577163dc88@riseup.net>
+In-Reply-To: <20240422-kms_fb_stress-dev-v5-0-0c577163dc88@riseup.net>
 To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
@@ -67,71 +65,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-After some discussion[1], I changed how to tackle the problem. (2x)
+Some driver may not support overlay planes. Add a check for that.
 
-With the upcoming addition of YUV format to VKMS[2] it would be great to
-test the their performance. So, test all formats available.
-
-- PATCH #1: Just a non-related assert that I found needed while developing
-- PATCH #2: Log the KMS structure
-- PATCH #3: Moving code, should be noop
-- PATCH #4, #5 & #6 : Fix a couple of bugs found while developing
-- PATCH #7: Add a enable_overlay flag in preparation for #8
-- PATCH #8: The new benchmark that tests performance between format
-
-[1]: https://lore.kernel.org/all/6979cd2e-2b00-4dc4-8e41-66b435cf7ea8@riseup.net/
-[2]: https://lore.kernel.org/all/20240304-yuv-v4-11-76beac8e9793@bootlin.com/
-
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
 ---
-Changes in v5:
-- Move global data variable to main (Kamil Konieczny)
-- Create a function for creating fbs named `create_fb` (Kamil Konieczny)
-- Move the stride checking to inside the `create_fb`
-- Link to v4: https://lore.kernel.org/r/20240411-kms_fb_stress-dev-v4-0-7a8f3a419ebb@riseup.net
+ benchmarks/kms_fb_stress.c | 36 +++++++++++++++++++++++++++---------
+ 1 file changed, 27 insertions(+), 9 deletions(-)
 
-Changes in v4:
-- Change (again) how the new test is done, now it just uses the primary
-  and writeback, and changes the formats based on primary format list.
-  (Pekka Paalanen)
-- Add an enable_overlay flag, for the new test.
-- Remove the addition of command-line flags, as I don't see them that
-  useful anymore (Pekka Paalanen)
-- Change the RGB565 test to a stride test (Pekka Paalanen)
-- Link to v3: https://lore.kernel.org/r/20240307-kms_fb_stress-dev-v3-0-d5b948a541be@riseup.net
+diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
+index 00eaa0a4931a..e9c051318ed6 100644
+--- a/benchmarks/kms_fb_stress.c
++++ b/benchmarks/kms_fb_stress.c
+@@ -87,6 +87,27 @@ static igt_output_t *find_wb_output(struct data_t *data)
+ 	return NULL;
+ }
+ 
++static void set_wb_pipe(struct data_t *data)
++{
++	enum pipe pipe = PIPE_NONE;
++
++	for_each_pipe(&data->display, pipe) {
++		igt_pipe_t *pipe_obj = &data->display.pipes[pipe];
++
++		if (igt_pipe_count_plane_type(pipe_obj, DRM_PLANE_TYPE_OVERLAY) < 2)
++			continue;
++
++		igt_debug("Selecting pipe %s to %s\n",
++			  kmstest_pipe_name(pipe),
++			  igt_output_name(data->wb_output));
++		igt_output_set_pipe(data->wb_output, pipe);
++
++		return;
++	}
++
++	igt_assert_f(0, "No pipe supports this benchmark\n");
++}
++
+ static void set_crtc_size(struct data_t *data)
+ {
+ 	drmModeModeInfo *mode;
+@@ -142,7 +163,6 @@ static struct kms_t default_kms = {
+ igt_simple_main
+ {
+ 	struct data_t data = {0};
+-	enum pipe pipe = PIPE_NONE;
+ 	struct timespec then, now;
+ 	double elapsed;
+ 
+@@ -161,24 +181,22 @@ igt_simple_main
+ 
+ 	data.wb_output = find_wb_output(&data);
+ 	igt_require(data.wb_output);
+-
+-	for_each_pipe(&data.display, pipe) {
+-		igt_debug("Selecting pipe %s to %s\n",
+-			  kmstest_pipe_name(pipe),
+-			  igt_output_name(data.wb_output));
+-		igt_output_set_pipe(data.wb_output, pipe);
+-		break;
+-	}
++	set_wb_pipe(&data);
+ 
+ 	set_crtc_size(&data);
+ 
+ 	gen_fbs(&data);
+ 
+ 	data.kms.primary.base = igt_output_get_plane_type(data.wb_output, DRM_PLANE_TYPE_PRIMARY);
++	igt_assert(data.kms.primary.base != NULL);
++
+ 	data.kms.overlay_a.base = igt_output_get_plane_type_index(data.wb_output,
+ 								  DRM_PLANE_TYPE_OVERLAY, 0);
++	igt_assert(data.kms.overlay_a.base != NULL);
++
+ 	data.kms.overlay_b.base = igt_output_get_plane_type_index(data.wb_output,
+ 								  DRM_PLANE_TYPE_OVERLAY, 1);
++	igt_assert(data.kms.overlay_b.base != NULL);
+ 
+ 	igt_assert_eq(igt_gettime(&then), 0);
+ 
 
-Changes in v3:
-- Make the help message and commit message more clear on how the
-  command-line options work (Louis Chauvet)
-- Link to v2: https://lore.kernel.org/r/20240305-kms_fb_stress-dev-v2-0-78888a38e563@riseup.net
-
-Changes in v2:
-- Change how the command-line options work, now they pin the specific
-  format and let the other change.
-- Add a patch to test all the possible formats combination
-- Add a couple of patches to fix some bugs
-- Move the KMS logging patch to the beginning of the series
-- Move the default_kms definition to the static struct data_t variable
-- Link to v1: https://lore.kernel.org/r/20240226-kms_fb_stress-dev-v1-0-1c14942b1244@riseup.net
-
----
-Arthur Grillo (8):
-      benchmarks/kms_fb_stress: Assert that we have an supported pipe
-      benchmarks/kms_fb_stress: Log the KMS structure
-      benchmarks/kms_fb_stress: Separate the benchmark in a subtest
-      benchmarks/kms_fb_stress: Free resources on the stress procedure
-      benchmarks/kms_fb_stress: Move FB creation to a separate function
-      benchmarks/kms_fb_stress: Don't paint the FB's if the format is not supported by Pixman
-      benchmarks/kms_fb_stress: Optionally enable the overlay planes
-      benchmarks/kms_fb_stress: Create a benchmark for formats
-
- benchmarks/kms_fb_stress.c | 227 +++++++++++++++++++++++++++++++++------------
- 1 file changed, 166 insertions(+), 61 deletions(-)
----
-base-commit: e490cb6ffc497275544b36871c24af0a04f98470
-change-id: 20240226-kms_fb_stress-dev-c93ae176f901
-
-Best regards,
 -- 
-Arthur Grillo <arthurgrillo@riseup.net>
+2.44.0
 
