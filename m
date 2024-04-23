@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3D87C10F15
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 08:57:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67D1CC4345F
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 08:58:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 325C0113235;
-	Tue, 23 Apr 2024 08:57:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0B9DE113225;
+	Tue, 23 Apr 2024 08:58:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dDylJ4V5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aWbs+Ecr";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BCF6011322B
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 08:57:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 628CB113225
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 08:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713862676; x=1745398676;
+ t=1713862681; x=1745398681;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MICrH+bA1h+s8iMGL7x9b+AS4V3tqMHuuJyhbkwUetQ=;
- b=dDylJ4V58Mt9UfWXq8BXrfOm2NndGtRyT/7Akd0XUwIU/p9b2WdBYmDW
- 980rS/NTrgOzVPi6LOSeMRuKTqpTKKKhMP/TSj02Td7uXlJi4samoBr8u
- 3TZWYASqfWsf7tPwm9CNDjj5uz+rCFUyejlbFHB8ml3NBbUAf1zWVOvVA
- 4GCgl5ElbVMm34Em8e3z4zxetufUKMWP+k54PBNy2G315mR41FfW9W+N2
- W6tcPay9JvJFpc8u61cP2fxhWd+JNcSR8U3o0fdVi5gNGDyTBgt8ID1HO
- 45OUYtvE683OeNYPKJLk8shrTpsxao81io/C7r6ek8FoSndSO5SgbeGjX g==;
-X-CSE-ConnectionGUID: SFssp7a3Q+WZ1FaAKBa/EQ==
-X-CSE-MsgGUID: K6HVNoOnQFWHzHCVq4T5og==
-X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="9602680"
+ bh=1x5bb+rdp/wttzKzMweOSIMXKVTisyTVqxyBvh6+tDU=;
+ b=aWbs+EcrnAqOpGOda44KL3rwcG4u+NvNxtypHpCxInIS0RzjGJDrkcFZ
+ sY/DN6utmLvL1OmK+lB3ZZ/Mu9pe34fTjw/P9W5LN34MxkL7WvK0pZB3Z
+ nkSeJmb5EXmFA92LBybAQo72XOmcL8KoCSusyTnCzA45/Mgn+7f7CNEq6
+ yct2OL7W4BOfAfU0Ynd6vLEoY6MuWuWjPIVpNatBSaCtFVQJ0/Vf+AYvE
+ N2bOlz2dqTL5pdNwPjFBaDdZ2aQvA/DotN+7eYCDha5r9+Ki1qOTqFfP4
+ U8DMbfYaEnsYAqgf7IzcKaKCYhozhaADNHi7vHilOcC7UpnAOMATGz4Uf w==;
+X-CSE-ConnectionGUID: eLIq311cSnW059+cfxXdTw==
+X-CSE-MsgGUID: Bs792BbERVqjmj/ZkjAw7A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="9602681"
 X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
-   d="scan'208";a="9602680"
+   d="scan'208";a="9602681"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2024 01:57:56 -0700
-X-CSE-ConnectionGUID: 8d51rElPSOCYBjlR84LPEg==
-X-CSE-MsgGUID: M8KN4t8bS2WsHwiOXvaTNg==
+ 23 Apr 2024 01:58:00 -0700
+X-CSE-ConnectionGUID: jxNFGOQqSuCqoKQLb+gEGA==
+X-CSE-MsgGUID: rCMOybUISSqQqXiA1b8SqA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="47587921"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="47587932"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.96.225])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2024 01:57:54 -0700
+ 23 Apr 2024 01:57:59 -0700
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: tvrtko.ursulin@linux.intel.com, kamil.konieczny@linux.intel.com,
  lukasz.laguna@intel.com
-Subject: [PATCH v2 i-g-t 3/6] benchmarks/gem_wsim: Introduce engine_idx to
- streamline engine selection
-Date: Tue, 23 Apr 2024 10:56:43 +0200
-Message-Id: <20240423085646.6672-4-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v2 i-g-t 4/6] benchmarks/gem_wsim: Update request_idx in
+ prepare phase
+Date: Tue, 23 Apr 2024 10:56:44 +0200
+Message-Id: <20240423085646.6672-5-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20240423085646.6672-1-marcin.bernatowicz@linux.intel.com>
 References: <20240423085646.6672-1-marcin.bernatowicz@linux.intel.com>
@@ -71,267 +71,142 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patch introduces a new member, engine_idx, to the w_step structure.
-This index is populated during the workload preparation phase and is
-designed to reference an engine within the context's dynamic engine map
-or legacy/static engine list.
-
-The introduction of engine_idx significantly simplifies the engine
-selection process during the run phase of the benchmark. By directly
-associating each workload step with a specific engine index, the patch
-eliminates the need for engine identification and mapping logic that was
-previously required. This change not only streamlines the execution flow
-but also lays the groundwork for supporting dynamic engine lists in
-coming patches.
+Renamed `request` to `request_idx` for consistency with `engine_idx`.
+The index references an element of device's physical engines array.
+Similar to engine_idx the field is initialized in workload's preparation
+phase. Field is used for throttling functionality, enabling control over
+the rate of requests on a given engine.
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- benchmarks/gem_wsim.c | 140 +++++++++++++++++++++++++-----------------
- 1 file changed, 82 insertions(+), 58 deletions(-)
+ benchmarks/gem_wsim.c | 35 +++++++++++++++++++----------------
+ 1 file changed, 19 insertions(+), 16 deletions(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 98e8fe55c..b50de78ec 100644
+index b50de78ec..821746feb 100644
 --- a/benchmarks/gem_wsim.c
 +++ b/benchmarks/gem_wsim.c
-@@ -159,6 +159,7 @@ struct w_step {
- 	enum w_type type;
- 	unsigned int context;
- 	unsigned int engine;
-+	unsigned int engine_idx;
- 	struct duration duration;
- 	struct deps data_deps;
- 	struct deps fence_deps;
-@@ -529,6 +530,41 @@ static int str_to_engine(const char *str)
- 	return -1;
- }
+@@ -181,7 +181,7 @@ struct w_step {
+ 	/* Implementation details */
+ 	unsigned int idx;
+ 	struct igt_list_head rq_link;
+-	unsigned int request;
++	unsigned int request_idx;
+ 	unsigned int preempt_us;
  
-+static unsigned int
-+engine_to_i915_legacy_ring(const enum intel_engine_id *engine)
-+{
-+	static const unsigned int eb_engine_map[NUM_ENGINES] = {
-+		[DEFAULT] = I915_EXEC_DEFAULT,
-+		[RCS] = I915_EXEC_RENDER,
-+		[BCS] = I915_EXEC_BLT,
-+		[VCS] = I915_EXEC_BSD,
-+		[VCS1] = I915_EXEC_BSD | I915_EXEC_BSD_RING1,
-+		[VCS2] = I915_EXEC_BSD | I915_EXEC_BSD_RING2,
-+		[VECS] = I915_EXEC_VEBOX
-+	};
-+
-+	return eb_engine_map[*engine];
-+}
-+
-+static bool are_equal_engines(const enum intel_engine_id *e1,
-+			      const enum intel_engine_id *e2)
-+{
-+	return *e1 == *e2;
-+}
-+
-+static bool find_engine_in_map(const enum intel_engine_id *engine,
-+			       struct intel_engines *engines, unsigned int *idx)
-+{
-+	igt_assert(idx);
-+	for (unsigned int i = 0; i < engines->nr_engines; ++i)
-+		if (are_equal_engines(engine, &engines->engines[i])) {
-+			*idx = i;
-+			return true;
-+		}
-+
-+	return false;
-+}
-+
- static struct intel_engine_data *query_engines(void)
- {
- 	static struct intel_engine_data engines = {};
-@@ -1587,47 +1623,10 @@ static unsigned int create_bb(struct w_step *w, int self)
- 	return r;
- }
+ 	union {
+@@ -1300,7 +1300,7 @@ add_step:
+ 			step.delay = __duration(step.delay, scale_time);
  
--static const unsigned int eb_engine_map[NUM_ENGINES] = {
--	[DEFAULT] = I915_EXEC_DEFAULT,
--	[RCS] = I915_EXEC_RENDER,
--	[BCS] = I915_EXEC_BLT,
--	[VCS] = I915_EXEC_BSD,
--	[VCS1] = I915_EXEC_BSD | I915_EXEC_BSD_RING1,
--	[VCS2] = I915_EXEC_BSD | I915_EXEC_BSD_RING2,
--	[VECS] = I915_EXEC_VEBOX
--};
--
- static void
--eb_set_engine(struct drm_i915_gem_execbuffer2 *eb, enum intel_engine_id engine)
--{
--	eb->flags = eb_engine_map[engine];
--}
--
--static unsigned int
--find_engine_in_map(struct ctx *ctx, enum intel_engine_id engine)
-+eb_update_flags(struct workload *wrk, struct w_step *w)
- {
--	unsigned int i;
--
--	for (i = 0; i < ctx->engine_map.nr_engines; i++) {
--		if (ctx->engine_map.engines[i] == engine)
--			return i + 1;
--	}
--
--	igt_assert(ctx->load_balance);
--	return 0;
--}
--
--static void
--eb_update_flags(struct workload *wrk, struct w_step *w,
--		enum intel_engine_id engine)
--{
--	struct ctx *ctx = __get_ctx(wrk, w);
--
--	if (ctx->engine_map.nr_engines)
--		w->i915.eb.flags = find_engine_in_map(ctx, engine);
--	else
--		eb_set_engine(&w->i915.eb, engine);
--
-+	w->i915.eb.flags = w->engine_idx;
- 	w->i915.eb.flags |= I915_EXEC_HANDLE_LUT;
- 	w->i915.eb.flags |= I915_EXEC_NO_RELOC;
+ 		step.idx = nr_steps++;
+-		step.request = -1;
++		step.rq_link.next = step.rq_link.prev = NULL;
+ 		steps = realloc(steps, sizeof(step) * nr_steps);
+ 		igt_assert(steps);
  
-@@ -1646,19 +1645,9 @@ static struct xe_exec_queue *
- xe_get_eq(struct workload *wrk, const struct w_step *w)
- {
- 	struct ctx *ctx = __get_ctx(wrk, w);
--	struct xe_exec_queue *eq;
- 
--	if (ctx->engine_map.nr_engines) {
--		igt_assert_eq(ctx->xe.nr_queues, 1);
--		igt_assert(ctx->xe.queue_list[0].id);
--		eq = &ctx->xe.queue_list[0];
--	} else {
--		igt_assert(w->engine >= 0 && w->engine < ctx->xe.nr_queues);
--		igt_assert(ctx->xe.queue_list[w->engine].id);
--		eq = &ctx->xe.queue_list[w->engine];
--	}
--
--	return eq;
-+	igt_assert_lt(w->engine_idx, ctx->xe.nr_queues);
-+	return &ctx->xe.queue_list[w->engine_idx];
- }
- 
- static struct vm *
-@@ -1686,7 +1675,6 @@ static uint32_t alloc_bo(int i915, unsigned long *size)
- static void
- alloc_step_batch(struct workload *wrk, struct w_step *w)
- {
--	enum intel_engine_id engine = w->engine;
- 	struct dep_entry *dep;
- 	unsigned int j = 0;
- 	unsigned int nr_obj = 2 + w->data_deps.nr;
-@@ -1774,7 +1762,7 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
- 	w->i915.eb.buffer_count = j + 1;
- 	w->i915.eb.rsvd1 = get_ctxid(wrk, w);
- 
--	eb_update_flags(wrk, w, engine);
-+	eb_update_flags(wrk, w);
- #ifdef DEBUG
- 	printf("%u: %u:|", w->idx, w->i915.eb.buffer_count);
- 	for (i = 0; i <= j; i++)
-@@ -2179,7 +2167,7 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
- 	/*
- 	 * Create and configure contexts.
- 	 */
--	for_each_ctx(ctx, wrk) {
-+	__for_each_ctx(ctx, wrk, ctx_idx) {
- 		struct drm_i915_gem_context_create_ext_setparam ext = {
- 			.base.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
- 			.param.param = I915_CONTEXT_PARAM_VM,
-@@ -2241,6 +2229,22 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
+@@ -2229,7 +2229,7 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
  			};
  			struct i915_context_engines_bond *last = NULL;
  
-+			/* update engine_idx */
-+			for_each_w_step(w, wrk) {
-+				if (w->context != ctx_idx)
-+					continue;
-+				if (w->type == BATCH) {
-+					unsigned int map_idx = 0;
+-			/* update engine_idx */
++			/* update engine_idx and request_idx */
+ 			for_each_w_step(w, wrk) {
+ 				if (w->context != ctx_idx)
+ 					continue;
+@@ -2242,6 +2242,8 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
+ 						w->engine_idx = map_idx + 1;
+ 					else
+ 						igt_assert(ctx->load_balance);
 +
-+					if (find_engine_in_map(&w->engine, &ctx->engine_map,
-+								&map_idx))
-+						/* 0 is virtual, map indexes are shifted by one */
-+						w->engine_idx = map_idx + 1;
-+					else
-+						igt_assert(ctx->load_balance);
-+				}
-+			}
-+
- 			if (ctx->load_balance) {
- 				set_engines->extensions =
- 					to_user_pointer(load_balance);
-@@ -2296,6 +2300,15 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
- 			load_balance->base.next_extension = to_user_pointer(last);
- 
- 			gem_context_set_param(fd, &param);
-+		} else {
-+			/* update engine_idx */
-+			for_each_w_step(w, wrk) {
-+				if (w->context != ctx_idx)
-+					continue;
-+				if (w->type == BATCH) {
-+					w->engine_idx = engine_to_i915_legacy_ring(&w->engine);
-+				}
-+			}
- 		}
- 
- 		if (wrk->sseu) {
-@@ -2382,6 +2395,14 @@ static int xe_prepare_contexts(unsigned int id, struct workload *wrk)
- 						eq->hwe_list[i].gt_id);
++					w->request_idx = ctx->engine_map.engines[map_idx];
+ 				}
  			}
  
-+			/* update engine_idx */
-+			for_each_w_step(w, wrk) {
-+				if (w->context != ctx_idx)
-+					continue;
-+				if (w->type == BATCH)
-+					w->engine_idx = 0;
-+			}
-+
- 			xe_exec_queue_create_(ctx, eq);
+@@ -2301,12 +2303,13 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
+ 
+ 			gem_context_set_param(fd, &param);
  		} else {
- 			int engine_classes[NUM_ENGINES] = {};
-@@ -2392,8 +2413,11 @@ static int xe_prepare_contexts(unsigned int id, struct workload *wrk)
+-			/* update engine_idx */
++			/* update engine_idx and request_idx */
+ 			for_each_w_step(w, wrk) {
+ 				if (w->context != ctx_idx)
+ 					continue;
+ 				if (w->type == BATCH) {
+ 					w->engine_idx = engine_to_i915_legacy_ring(&w->engine);
++					w->request_idx = w->engine;
+ 				}
+ 			}
+ 		}
+@@ -2399,8 +2402,10 @@ static int xe_prepare_contexts(unsigned int id, struct workload *wrk)
  			for_each_w_step(w, wrk) {
  				if (w->context != ctx_idx)
  					continue;
 -				if (w->type == BATCH)
 +				if (w->type == BATCH) {
- 					engine_classes[w->engine]++;
-+					/* update engine_idx */
-+					w->engine_idx = w->engine;
+ 					w->engine_idx = 0;
++					w->request_idx = ctx->engine_map.engines[w->engine_idx];
 +				}
  			}
  
- 			for (i = 0; i < NUM_ENGINES; i++) {
-@@ -2630,12 +2654,12 @@ static void do_xe_exec(struct workload *wrk, struct w_step *w)
- }
+ 			xe_exec_queue_create_(ctx, eq);
+@@ -2415,8 +2420,9 @@ static int xe_prepare_contexts(unsigned int id, struct workload *wrk)
+ 					continue;
+ 				if (w->type == BATCH) {
+ 					engine_classes[w->engine]++;
+-					/* update engine_idx */
++					/* update engine_idx and request_idx */
+ 					w->engine_idx = w->engine;
++					w->request_idx = w->engine;
+ 				}
+ 			}
  
- static void
--do_eb(struct workload *wrk, struct w_step *w, enum intel_engine_id engine)
-+do_eb(struct workload *wrk, struct w_step *w)
- {
- 	struct dep_entry *dep;
- 	unsigned int i;
+@@ -2733,7 +2739,6 @@ static void *run_workload(void *data)
+ 		clock_gettime(CLOCK_MONOTONIC, &repeat_start);
  
--	eb_update_flags(wrk, w, engine);
-+	eb_update_flags(wrk, w);
- 	update_bb_start(wrk, w);
+ 		for_each_w_step(w, wrk) {
+-			enum intel_engine_id engine = w->engine;
+ 			int do_sleep = 0;
  
- 	for_each_dep(dep, w->fence_deps) {
-@@ -2828,7 +2852,7 @@ static void *run_workload(void *data)
- 			if (is_xe)
- 				do_xe_exec(wrk, w);
+ 			if (!wrk->run)
+@@ -2854,13 +2859,12 @@ static void *run_workload(void *data)
  			else
--				do_eb(wrk, w, engine);
-+				do_eb(wrk, w);
+ 				do_eb(wrk, w);
  
- 			if (w->request != -1) {
+-			if (w->request != -1) {
++			if (w->rq_link.next) {
  				igt_list_del(&w->rq_link);
+-				wrk->nrequest[w->request]--;
++				wrk->nrequest[w->request_idx]--;
+ 			}
+-			w->request = engine;
+-			igt_list_add_tail(&w->rq_link, &wrk->requests[engine]);
+-			wrk->nrequest[engine]++;
++			igt_list_add_tail(&w->rq_link, &wrk->requests[w->request_idx]);
++			wrk->nrequest[w->request_idx]++;
+ 
+ 			if (!wrk->run)
+ 				break;
+@@ -2869,17 +2873,16 @@ static void *run_workload(void *data)
+ 				w_step_sync(w);
+ 
+ 			if (qd_throttle > 0) {
+-				while (wrk->nrequest[engine] > qd_throttle) {
++				while (wrk->nrequest[w->request_idx] > qd_throttle) {
+ 					struct w_step *s;
+ 
+-					s = igt_list_first_entry(&wrk->requests[engine],
++					s = igt_list_first_entry(&wrk->requests[w->request_idx],
+ 								 s, rq_link);
+ 
+ 					w_step_sync(s);
+ 
+-					s->request = -1;
+ 					igt_list_del(&s->rq_link);
+-					wrk->nrequest[engine]--;
++					wrk->nrequest[w->request_idx]--;
+ 				}
+ 			}
+ 		}
 -- 
 2.31.1
 
