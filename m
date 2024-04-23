@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A471C4345F
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 09:54:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F14ABC4345F
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 09:54:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E94C2113278;
-	Tue, 23 Apr 2024 09:54:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6C094113276;
+	Tue, 23 Apr 2024 09:54:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="icUT0USO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HU/Favt/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04A9B113277
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 09:54:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC737113276
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 09:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713866047; x=1745402047;
+ t=1713866056; x=1745402056;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=fcERp4l8XTvZqbW8GOpqqj4Tjno1a5o18Bpg9yeelMY=;
- b=icUT0USOrh1C0dKYKkYWCu3kPgGARtMEHUcqLZyUit6u5B97SFP/Hgqy
- 6MeuYTlWADnEFqY5j0I+oAqzyHhGMr8a9dnmSsBchmmdgJDKoVcMJy7YJ
- /eIKCxRq/Aix3xTJfIElz9nsRAttGXLwRbxWebw6Quo+OqwHD1xQgleYA
- iwg45IivVLpzkKprqFOYYKAY/ohkUN1o+gjC45xG7sDg9rID6VRMy2QPK
- uh/Sf0Y5rVwzKQQ29C95MoBGZb0OiRgablXdE6NW3tdylapi0tdjGHd9g
- Dvv13eVZWxZ+dQt106BYVXXDmsan5aSxHpxtio2drxB4VCS9RQk0NymZa g==;
-X-CSE-ConnectionGUID: qdiqphseRAymYGZxWr5G3A==
-X-CSE-MsgGUID: HNZyFEDyQ1eRRMoieJeJDg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="9306083"
+ bh=bF6pjbCDgGHLp5v3u1DEWsYRdCVGRTRyPRTawyC34Tw=;
+ b=HU/Favt/r8K580uGriUc37d+zJj3mYFIC2l5LLfeUMe3w/0XiDYQza80
+ KGtIlrXtlaNqZ+uCNrGjPYapQOh1TBvXgg006PXC1IHyvPRyLuZseNsn7
+ HdEYnW5i/DcBquG/boiN3rose+PJF6Us6+ECdkTuvFMUB+GSI208oKZJ/
+ 1wi43GzuusJItq7HV160aclpbSRQX5ETblDLp33N+yenXivIRVd2U4/Qf
+ rdVtxe31pfiNEIzyyS4uXGXQCwjulrf0B1goyKNSEepBrCI1mSimM2Pg5
+ /yUcwIIZOsw6a+KkJP16n/Rq0wNJqPJcyiIcmQjEXvP9vpYpxv+mWZHcP w==;
+X-CSE-ConnectionGUID: /ZnfC+2ySgepBrfYIOkw3A==
+X-CSE-MsgGUID: nbsd+sT8TAmOL/zBElXndQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="9306091"
 X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
-   d="scan'208";a="9306083"
+   d="scan'208";a="9306091"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2024 02:54:07 -0700
-X-CSE-ConnectionGUID: ubyRx0J5SlWtrQY8XoTrmA==
-X-CSE-MsgGUID: LFsTepSrT3K2UlWhokbNGQ==
+ 23 Apr 2024 02:54:16 -0700
+X-CSE-ConnectionGUID: snYIMH96TDiWyQ5ayzEXAw==
+X-CSE-MsgGUID: zRI0TGE2Se24XPaurUzAkg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="24322557"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="24322588"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2024 02:54:05 -0700
+ 23 Apr 2024 02:54:14 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Kamil Konieczny <kamil.konieczny@intel.com>,
  Jari Tahvanainen <jari.tahvanainen@intel.com>,
  Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Subject: [PATCH i-g-t v2 1/3] tests/intel: Put "Run type" highest in Xe
+Subject: [PATCH i-g-t v2 2/3] tests/intel: Put "Run type" highest in KMS
  documentation hierarchy
-Date: Tue, 23 Apr 2024 09:53:42 +0000
-Message-Id: <20240423095344.3518545-2-katarzyna.piecielska@intel.com>
+Date: Tue, 23 Apr 2024 09:53:43 +0000
+Message-Id: <20240423095344.3518545-3-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240423095344.3518545-1-katarzyna.piecielska@intel.com>
 References: <20240423095344.3518545-1-katarzyna.piecielska@intel.com>
@@ -72,7 +72,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's put "Run type" at highest place in Xe documentation hierarchy. It
+Let's put "Run type" at highest place in KMS documentation hierarchy. It
 will be reflected in html generated documentation.
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
@@ -80,98 +80,117 @@ Cc: Kamil Konieczny <kamil.konieczny@intel.com>
 Cc: Jari Tahvanainen <jari.tahvanainen@intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 ---
- tests/intel/xe_test_config.json | 66 ++++++++++++++++-----------------
- 1 file changed, 33 insertions(+), 33 deletions(-)
+ tests/intel/kms_test_config.json | 94 ++++++++++++++++----------------
+ 1 file changed, 47 insertions(+), 47 deletions(-)
 
-diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
-index 22b43ffac..f88883414 100644
---- a/tests/intel/xe_test_config.json
-+++ b/tests/intel/xe_test_config.json
-@@ -4,51 +4,51 @@
-     "drivers": [ "xe" ],
-     "files": [ "xe_*.c", "../core_hotunplug.c", "../sriov_basic.c", "intel_hwmon.c" ],
+diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
+index f3f6bfad6..35010d886 100644
+--- a/tests/intel/kms_test_config.json
++++ b/tests/intel/kms_test_config.json
+@@ -6,56 +6,56 @@
+     "exclude_files": [ "../chamelium/kms_chamelium_helper.c", "../kms_color_helper.c",
+                        "kms_dsc_helper.c" ],
      "fields": {
 -        "Category": {
 +        "Run type": {
              "_properties_": {
-                 "mandatory": true,
--                "description": "Contains the major group for the tested functionality, being hardware, software or firmware"
+-                "description": "Contains the major group for the tested functionality 'Display'"
+-            },
+-            "Mega feature": {
+-                "_properties_": {
+-                    "description": "Contains the mega feature for end to end use case, e.g. the 'PSR' feature."
+-                },
+-                "Functionality": {
+-                    "_properties_": {
+-                        "description": "Groups tests on buckets containg more detailed functionality"
+-                    }
+-                }
+-            },
+-            "Run type": {
+-                "_properties_": {
+-                    "description": "Defines what category of testlist it belongs",
+-                    "update-from-file": {
+-                        "append-value-if-not-excluded": "Xe FULL, i915 FULL",
+-                        "exclude-type": "regex-ignorecase",
+-                        "include": [
+-                            { "i915 BAT": "../intel-ci/fast-feedback.testlist" },
+-                            { "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist" },
+-                            { "i915 chamelium": "../intel-ci/chamelium-only.testlist" },
 +                "description": "Defines what category of testlist it belongs",
-+                "default-testlist": "FULL",
 +                "update-from-file": {
++                    "append-value-if-not-excluded": "Xe FULL, i915 FULL",
 +                    "exclude-type": "regex-ignorecase",
-+                    "append-value-if-not-excluded": "Xe FULL",
 +                    "include": [
-+                        { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" }
++                        { "i915 BAT": "../intel-ci/fast-feedback.testlist" },
++                        { "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist" },
++                        { "i915 chamelium": "../intel-ci/chamelium-only.testlist" },
+ 
+-                            { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" },
+-                            { "Xe BAT chamelium": "../intel-ci/xe-fast-feedback-chamelium-only.testlist" }
+-                        ],
+-                        "exclude": [
+-                            { "i915 BAT, i915 BAT chamelium, i915 chamelium, i915 FULL": "../intel-ci/blacklist.txt" },
++                        { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" },
++                        { "Xe BAT chamelium": "../intel-ci/xe-fast-feedback-chamelium-only.testlist" }
 +                    ],
 +                    "exclude": [
-+                        { "Xe BAT, Xe FULL": "../intel-ci/xe.blocklist.txt" }
-+                    ]
-+                },
-+                "order": [
-+                    "boot",
-+                    "__all__",
-+                    "kunit"
-+                ]
-             },
--            "Mega feature": {
-+            "Category": {
-                 "_properties_": {
--                    "description": "Contains the mega feature for end to end use case, e. g. the 'sellable' feature."
-+                    "mandatory": true,
-+                    "description": "Contains the major group for the tested functionality, being hardware, software or firmware"
-                 },
--                "Sub-category": {
-+                "Mega feature": {
-                     "_properties_": {
--                        "mandatory": true,
--                        "description": "Contains the the technical feature/functionality"
-+                        "description": "Contains the mega feature for end to end use case, e. g. the 'sellable' feature."
-                     },
--                    "Functionality": {
-+                    "Sub-category": {
-                         "_properties_": {
-                             "mandatory": true,
--                            "description": "Groups page table tests on buckets containg more detailed functionality"
-+                            "description": "Contains the technical feature/functionality"
-                         },
--                        "Feature": {
-+                        "Functionality": {
-                             "_properties_": {
--                                "description": "Describes the lowest level feature bucket"
--                            }
--                        }
--                    },
--                    "Run type": {
--                        "_properties_": {
--                            "mandatory": true,
--                            "description": "Defines what category of testlist it belongs",
--                            "default-testlist": "FULL",
--                            "update-from-file": {
--                                "exclude-type": "regex-ignorecase",
--                                "append-value-if-not-excluded": "Xe FULL",
--                                "include": [
--                                    { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" }
--                                ],
--                                "exclude": [
--                                    { "Xe BAT, Xe FULL": "../intel-ci/xe.blocklist.txt" }
--                                ]
-+                                "mandatory": true,
-+                                "description": "Groups page table tests on buckets containg more detailed functionality"
-                             },
--                            "order": [
--                                "boot",
--                                "__all__",
--                                "kunit"
--                            ]
-+                            "Feature": {
-+                                "_properties_": {
-+                                    "description": "Describes the lowest level feature bucket"
-+                                }
-+                            }
-                         }
++                        { "i915 BAT, i915 BAT chamelium, i915 chamelium, i915 FULL": "../intel-ci/blacklist.txt" },
+                             { "Xe BAT, Xe BAT chamelium, Xe FULL": "../intel-ci/xe.blocklist.txt" }
+                         ]
                      }
-                 }
+-                }
+-            }
+-        },
+-        "Driver requirement": {
+-            "_properties_": {
+-                "description": "Describes any Driver specific requrirement, like i915/xe."
+-            }
+-        },
+-        "Test category": {
+-            "_properties_": {
+-                "description": "Defines the test category. Usually used at subtest level."
+-            }
+-        },
+-        "Description" : {
+-            "_properties_": {
+-                "description": "Provides a description for the test/subtest."
+-            }
+-        }
+-    }
++                },
++				"Category": {
++					"_properties_": {
++						"description": "Contains the major group for the tested functionality 'Display'"
++					},
++					"Mega feature": {
++						"_properties_": {
++							"description": "Contains the mega feature for end to end use case, e.g. the 'PSR' feature."
++						},
++						"Functionality": {
++							"_properties_": {
++								"description": "Groups tests on buckets containg more detailed functionality"
++							}
++						}
++					}
++				},
++				"Driver requirement": {
++					"_properties_": {
++						"description": "Describes any Driver specific requrirement, like i915/xe."
++					}
++				},
++				"Test category": {
++					"_properties_": {
++						"description": "Defines the test category. Usually used at subtest level."
++					}
++				},
++				"Description" : {
++					"_properties_": {
++						"description": "Provides a description for the test/subtest."
++					}
++				}
++			}
++	}
+ }
 -- 
 2.34.1
 
