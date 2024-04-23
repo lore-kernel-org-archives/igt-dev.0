@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4E3BC4345F
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 20:09:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C854C4345F
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 20:16:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 68F1311366A;
-	Tue, 23 Apr 2024 20:09:15 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 065EB11366A;
- Tue, 23 Apr 2024 20:09:14 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0128059610268214255=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 87B6911367B;
+	Tue, 23 Apr 2024 20:16:14 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xp07b4IK";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 450DE11367B
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 20:16:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1713903372; x=1745439372;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=6cE/3zJmZnxMW7WGHZ6Gt2nXE0bUZeeBTldxBTWSZjI=;
+ b=Xp07b4IKDPWvt0BTSzbU0gyP70EcqqtqsSM/Rd3UkXQm8LtiZ2qbU2Cj
+ 3qPsW95y6it0wNuSCfzn50QXBubSKgeKxNrUBP1+ClUkyp9EqhnO6E1nx
+ NJ14FtfhG+AjgOXXTMmmk/whVcUTGd6oC0b91HWQLPKXrx4NMC5R/7y5e
+ +6+HiAqZreCOC3CggOqbWO00dEPRPB+6yGIz2ymcSClIjtxjM0Isc+9XP
+ EWDwXTxe22Ki6ocman3VdLSWVS9OPtcTfAMIRrK62YE3QQLfwXiwcZ2TW
+ 5OsYSoJVYwnOyBd1sSxSSZapppNIMrSHyS9O8/jQ8ZJ2l5ZbmMLF1zf7+ Q==;
+X-CSE-ConnectionGUID: Iqnfi72PTM+DKJ24+67wMw==
+X-CSE-MsgGUID: OY06+O9uTpSRSLqKVdGrTw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="20205325"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="20205325"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2024 13:16:12 -0700
+X-CSE-ConnectionGUID: HzS6oexlRBeB2dr2RplwdQ==
+X-CSE-MsgGUID: RS6uxH8cQQSHlXX5V5Ld7Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="24995711"
+Received: from jrandhaw-desk.jf.intel.com ([10.24.12.119])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2024 13:16:11 -0700
+From: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+To: 
+Cc: igt-dev@lists.freedesktop.org, oak.zeng@intel.com, matthew.auld@intel.com,
+ Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_vm.c: Enforce explicit WB caching in
+ bind-flag-invalid
+Date: Tue, 23 Apr 2024 13:16:01 -0700
+Message-Id: <bf76c34f97ed5e2ff935d4e8ff31c68dd13eb2d8.1713902821.git.jagmeet.randhawa@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_Intel_blitter_framebuffer_copy?=
- =?utf-8?q?ing_sanitizing_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 23 Apr 2024 20:09:14 -0000
-Message-ID: <171390295401.1607644.6594821789574499553@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240423143246.130884-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240423143246.130884-1-juhapekka.heikkila@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,118 +64,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0128059610268214255==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Update the bind-flag-invalid test by replacing xe_bo_create
+with xe_bo_create_caching, which introduces an additional
+parameter for setting the CPU caching mode explicitly.
+The cpu_caching parameter is now set to DRM_XE_GEM_CPU_CACHING_WB,
+aligning the buffer object's caching policy with the Write-Back (WB)
+memory type expected by intel_get_pat_idx_wb. Previously,
+xe_bo_create relied on a default cpu_caching that may or
+may not have been compatible with intel_get_pat_idx_wb.
 
-== Series Details ==
+Suggested-by: Oak Zeng <oak.zeng@intel.com>
+Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+---
+ tests/intel/xe_vm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Series: Intel blitter framebuffer copying sanitizing (rev4)
-URL   : https://patchwork.freedesktop.org/series/132733/
-State : failure
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 13cca2752..d40a6d76e 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -1776,13 +1776,14 @@ static void bind_flag_invalid(int fd)
+ 	uint32_t bo, bo_size = xe_get_default_alignment(fd);
+ 	uint64_t addr = 0x1a0000;
+ 	uint32_t vm;
++	uint16_t cpu_caching = DRM_XE_GEM_CPU_CACHING_WB;
+ 	struct drm_xe_vm_bind bind;
+ 	struct drm_xe_sync sync[1] = {
+ 		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
+ 	};
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+-	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, 0), 0);
++	bo = xe_bo_create_caching(fd, vm, bo_size, vram_if_possible(fd, 0), 0, cpu_caching);
+ 	sync[0].handle = syncobj_create(fd, 0);
+ 
+ 	memset(&bind, 0, sizeof(bind));
+-- 
+2.25.1
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7819_BAT -> XEIGTPW_11058_BAT
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_11058_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_11058_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (5 -> 0)
-------------------------------
-
-  ERROR: It appears as if the changes made in XEIGTPW_11058_BAT prevented too many machines from booting.
-
-  Missing    (5): bat-pvc-2 bat-lnl-1 bat-dg2-oem2 bat-adlp-7 bat-atsm-2 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7819 -> IGTPW_11058
-
-  IGTPW_11058: 2b6f2b0f7a4d4b5159c71a987abd3b1b62d625f2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7819: 98e0d03839ce31141328a2935eb193361eca61e3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1162-e1dc9638bb47a28181fee1a9a180445ca2a8b9cf: e1dc9638bb47a28181fee1a9a180445ca2a8b9cf
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11058/index.html
-
---===============0128059610268214255==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Intel blitter framebuffer copying sanitizing (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132733/">https://patchwork.freedesktop.org/series/132733/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11058/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11058/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7819_BAT -&gt; XEIGTPW_11058_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_11058_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_11058_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (5 -&gt; 0)</h2>
-<p>ERROR: It appears as if the changes made in XEIGTPW_11058_BAT prevented too many machines from booting.</p>
-<p>Missing    (5): bat-pvc-2 bat-lnl-1 bat-dg2-oem2 bat-adlp-7 bat-atsm-2 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7819 -&gt; IGTPW_11058</li>
-</ul>
-<p>IGTPW_11058: 2b6f2b0f7a4d4b5159c71a987abd3b1b62d625f2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7819: 98e0d03839ce31141328a2935eb193361eca61e3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1162-e1dc9638bb47a28181fee1a9a180445ca2a8b9cf: e1dc9638bb47a28181fee1a9a180445ca2a8b9cf</p>
-
-</body>
-</html>
-
---===============0128059610268214255==--
