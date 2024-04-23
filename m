@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94C11C4345F
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 23:43:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE291C10F15
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 23:43:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3A86611376D;
-	Tue, 23 Apr 2024 23:43:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0267510F32D;
+	Tue, 23 Apr 2024 23:43:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kAv80RMt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZBzVTx1j";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2BCE610F32D
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 23:43:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5ABD910F32D
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 23:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713915829; x=1745451829;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Bzek3WG43NRvodtnKHVTS87UvdD1CwFsRbysNlGuGQM=;
- b=kAv80RMtRcaCihabdXmVHwSnyRv6jO/Hi1JnxEheF4VIsW9toCKpbZVj
- fN+ASyN9ttZ/mlssumOFcRLVXRaWe9gj+Ox6JGPvJdGCY/4p+OY2gw3//
- yesv1uEHonsQRIrKJuv590T4BbQfggsqy4fhl0Ju5uijrIaEbF20ZnzyH
- vWxIMRIzV0yPvuwSN34+LCZLhZN8TTi6siBGnniLVEaod8R8fd1Hc6AY6
- XysSpEgM5HC1E5T+2LeZ/j85w7aaL/EUkS2HwLKJjXmBsr+CsIYYD78qc
- bhjrEZUhLksvMVFX2wP+DX9Z5l4F+PnqpkMOCTw2xFB0Fioje6xq58Mr3 w==;
-X-CSE-ConnectionGUID: JOGWzZc2Qgi81zMx+COZmA==
-X-CSE-MsgGUID: D8ENzh4UTV+vIFNj1xx+cA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="13361979"
-X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="13361979"
+ t=1713915830; x=1745451830;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=a9Btx0LuSnkSY25Wff9vjfKiekXDI6jlQT2l2cekvUc=;
+ b=ZBzVTx1jKxDOKzM1fltAn2yaNLBn51NBMz8VIFDF0deONdwuBrWvYpm6
+ ck6BC8n8dvyHH6XSVXzxkZ0wUko7yCGgK+2eQfCd+Ev7XI9K6+MZe0rXX
+ 7Xg2YUXOmdj6jQ0E7Qc3AZ2HYXgDb1VwEvJZICvglonl5nzTwKSSBQfd+
+ jQa11+MpeVe9jSYgxd3Io1b+yzzg648s4yIUTkHSwHaaJho7vVJTNTFf+
+ MNB5RRt2NP3RAnfi+0y5t4WkOzMnNsULw5bSryqb251eOqnoxhNGFuZoZ
+ 7yG1J38JoOI51f1GQ4QCV6iJUuvQU40Fd7WltnZ/gJYJLnSre3yyqt2sL w==;
+X-CSE-ConnectionGUID: N9zL2lu6Tlmiwr1FnsxvXg==
+X-CSE-MsgGUID: duBFreS9RjKL8zxoVcUl5w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="13362017"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="13362017"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2024 16:43:48 -0700
-X-CSE-ConnectionGUID: NcDNKmeQRKOJm0incwrJ8w==
-X-CSE-MsgGUID: ohbE1+hwT861ZsXSeGYIQg==
+ 23 Apr 2024 16:43:50 -0700
+X-CSE-ConnectionGUID: QdDinUZMTk+70h6f9zzOJw==
+X-CSE-MsgGUID: qQRn0tIoR5ig9IuHT+q4CQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="29180890"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="29180948"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2024 16:43:47 -0700
+ 23 Apr 2024 16:43:49 -0700
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  Tvrtko Ursulin <tursulin@ursulin.net>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v2 00/21] gputop: Add support for xe
-Date: Tue, 23 Apr 2024 16:44:10 -0700
-Message-ID: <20240423234431.1959354-1-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t v2 17/21] gputop: print percentage number
+Date: Tue, 23 Apr 2024 16:44:27 -0700
+Message-ID: <20240423234431.1959354-18-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240423234431.1959354-1-lucas.demarchi@intel.com>
+References: <20240423234431.1959354-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,72 +69,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-v2 of https://lore.kernel.org/all/20240405060056.59379-1-lucas.demarchi@intel.com/
+Besides printing the bar, also print the raw number for easy
+visualization of small quantities. While at it, make sure gputop still
+works with small console widths.
 
-This contains all the patches I had pending for igt to add support in
-gputop for the xe driver.
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+ tools/gputop.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-Not all of the patches are critical, some are more on the category
-"drive by improvements/fixes". Let me split them for ease of review:
-
-Patches 1-6: already reviewed in previous version, but needed to
-refactor them a little bit to detangle them from other patches. I kept
-the previous R-b for those.
-
-Patches 7-10: these were already in the previous version as well, but in
-a more noisy approach. This new version tries not to change multiple
-times the same part of the code.
-
-Tvrtko, worth noting that patches 7-10 still contain the strstartwith()
-rather than find_kv(). I did try adding find_kv() back but due to that
-function not inlining the strlen() was being computed again and again. I
-decided to keep as is so could move to the more important part. Maybe we
-can try something else on top.
-
-Patches 11-16 implement the new interface from the kernel. Difference
-from v1 is that it's now using the drm-cycles + drm-total-cycles
-suggested in the kernel side review. The state tracking is a little bit
-heavier due to having to handle 2 keys, possibly appearing in different
-order and at the same time decide what strategy to use (drm-engine vs
-drm-cycles). However with the additional renames I think this is much
-cleaner than v1.
-
-Patches 17-21 are gputop improvements to the visualization and
-performance: last patch with lazy stat is back from an older series, now
-with proper performance measurements.
-
-Lucas De Marchi (21):
-  lib/igt_drm_fdinfo: Fix wrong name len assert
-  lib/igt_drm_fdinfo: Assert pdev is not truncated
-  lib/igt_drm_fdinfo: Detect invalid drm-client-id
-  lib/igt_drm_fdinfo: Stop ignoring space where not needed
-  gputop: Extract method to update console size
-  gputop: Extract clrscr()
-  lib/igt_drm_fdinfo: Extract ignore_space()
-  lib/igt_drm_fdinfo: Allow any number of spaces before unit
-  lib/igt_drm_fdinfo: Stop passing key twice
-  lib/igt_drm_fdinfo: Remove prefix arg from parse functions
-  lib/igt_drm_fdinfo: Parse drm-cycles
-  lib/igt_drm_fdinfo: Parse drm-total-cycles
-  lib/igt_drm_clients: Rename engine busyness variables
-  lib/igt_drm_clients: Move engine fields to substruct
-  lib/igt_drm_clients: Record total cycles
-  gputop: Add support to drm-cycles/drm-total-cycles
-  gputop: print percentage number
-  gputop: Add option parsing
-  gputop: Allow to limit number of executions
-  gputop: Allow to set delay interval
-  lib/igt_drm_clients: lazy stat process
-
- lib/igt_core.h        |   1 +
- lib/igt_drm_clients.c | 106 ++++++++++++++++----------
- lib/igt_drm_clients.h |   9 ++-
- lib/igt_drm_fdinfo.c  | 172 ++++++++++++++++++++++++------------------
- lib/igt_drm_fdinfo.h  |  12 +++
- tools/gputop.c        | 142 +++++++++++++++++++++++++++++-----
- tools/intel_gpu_top.c |  15 ++--
- 7 files changed, 315 insertions(+), 142 deletions(-)
-
+diff --git a/tools/gputop.c b/tools/gputop.c
+index 9edb76acc..820a1b553 100644
+--- a/tools/gputop.c
++++ b/tools/gputop.c
+@@ -42,17 +42,19 @@ static void n_spaces(const unsigned int n)
+ 
+ static void print_percentage_bar(double percent, int max_len)
+ {
+-	int bar_len, i, len = max_len - 2;
++	int bar_len, i, len = max_len - 1;
+ 	const int w = 8;
+ 
+-	assert(max_len > 0);
++	len -= printf("|%.1f%% ", percent);
++
++	/* no space left for bars, do what we can */
++	if (len < 0)
++		len = 0;
+ 
+ 	bar_len = ceil(w * percent * len / 100.0);
+ 	if (bar_len > w * len)
+ 		bar_len = w * len;
+ 
+-	putchar('|');
+-
+ 	for (i = bar_len; i >= w; i -= w)
+ 		printf("%s", bars[w]);
+ 	if (i)
 -- 
 2.43.0
 
