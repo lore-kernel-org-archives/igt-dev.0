@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 298D1C04FFE
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1A21C10F1A
 	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 14:33:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D11F2113405;
-	Tue, 23 Apr 2024 14:33:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 63B8911340A;
+	Tue, 23 Apr 2024 14:33:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="cVCNTMlY";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="WJxCp9Ey";
 	dkim-atps=neutral
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com
- [209.85.167.52])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C4AC9113405
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 14:33:03 +0000 (UTC)
-Received: by mail-lf1-f52.google.com with SMTP id
- 2adb3069b0e04-516d1ecaf25so7502782e87.2
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 07:33:03 -0700 (PDT)
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com
+ [209.85.167.42])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49ECC113405
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 14:33:04 +0000 (UTC)
+Received: by mail-lf1-f42.google.com with SMTP id
+ 2adb3069b0e04-5196c755e82so8082931e87.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 07:33:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=gmail.com; s=20230601; t=1713882782; x=1714487582; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+pasxyCj3/teaKviOMlASMiZcwX3BOB1nh8sPDoVkBc=;
- b=cVCNTMlY1UZDpAQFeKaCbB6UYaxVlKiLZ53Lm/95pVcPy3npXZ8/Y8N3hHKfHnS7YF
- Xr1f6JWM7RJ1iPJKok6PkevQvauZLoLe9GZ31ZSxccn0s6haXTHZyE2luy7QRcu9qTuU
- VFDA+Aa6z5S391qcGTJhAXNovEzyKAed+EO2gx0r7gC8bHwA00wjU+Pg406flpgGBOTp
- 4KapaSsKCg3PVQxhGArU7bcCcQOQ7JoGUQS9ZpvEBSat4UG2yCiDRQhGn21JKiBEOXAf
- a4z4TdxpLSFXSYHAmpki0gQiqnks5hmjd0PqnecApymPU7WRn/ght43dcp1a7Df6R9rq
- 7zyQ==
+ bh=h9Wy1Dr2+9SI2cs0vSqCEVyJN8aZN8Ovjh4Tm70OXzw=;
+ b=WJxCp9EyCYVsoqciNpsB+PP0gUrIzA7Vf9Cz2HcNtqBjXD4HTAmPgyMcVJprkVUyra
+ vLvw5/3zA/Xx0Reh1oA08Q2dLTaPSUR2r6FJ8gKI71KI0L3Dm0+dhD80UddIfA6UjgbG
+ +6qQfTHiWu4nfi6niMpzTI1dQtAbPc3FABOv80XfvoZBAbkYAQykyFQytiHmMob37LaK
+ ttns8AAOCHi+iIM1hNNN1xhBPKYn4AGNVBZC3e7ToOM7W9vRmH7I4T9OsvgEIAKjfc57
+ M35smRoSI7eDdS9WaD49mW0GYnbIxyHNnKGBkR7K10mLgzBBdv1bXefEZFOUaY/2XKG0
+ NbSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1713882782; x=1714487582;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+pasxyCj3/teaKviOMlASMiZcwX3BOB1nh8sPDoVkBc=;
- b=Y3QWWamVMGJfyVTMBWTlO/INf1pJGoJtmqI1apLcq8miOziuZgy0bt0D3uq+xbZTKg
- fnpx7bABVgS7uTl33l05tjB69/5wgELGE4+ge0sEV04CjogOrJNTBZ+o7UkZ8UQNVDyx
- 158EdE7uJ/UBJeRUE2s71NEohMKEwd3nN5Y3EPAdTaRWxUZU7WqiGTj9Evi4qjO6oWPJ
- 2nefF3GTB8KPYj2s1ykd0wzv8QVoV56AAZ9MU8y7gOKdjZP9AI07oqI8lQ6dO4l34yov
- zVzGGYXVt9m44kTmJ06Y1uT0Mup90jry0qMWVYIF8WlCQGfpqT+V3SU2SDMn3jczc1DS
- CbNg==
-X-Gm-Message-State: AOJu0Yw0jquTqbqsfbORQPfA/ETUsrpXDeHpGFfUhX0T0IR6s8BgFtV9
- MRMDvq0dk6Z7X2KLI19QVHOQ5FF5ijPCvinXaaJ9ZIkr5ycTQD8iSBmL7jtmih4=
-X-Google-Smtp-Source: AGHT+IEhRWyiYAIGc2AdENjqKuQXbOUoZqbzfdq4UWi51akTOzTZF7iwoin1cmIXeeBr9Rg0LaA2qw==
-X-Received: by 2002:ac2:414e:0:b0:519:22f3:be78 with SMTP id
- c14-20020ac2414e000000b0051922f3be78mr7143081lfi.59.1713882781266; 
+ bh=h9Wy1Dr2+9SI2cs0vSqCEVyJN8aZN8Ovjh4Tm70OXzw=;
+ b=vPKaI4E74jT0VIBukNwRU/hf0p8LrPr7zkgdlI1F9bgyF++s5qqTpp/wzt3DjCqigg
+ IUdknC+iFtmIKpC7OC53vtc7WqKikcHzT+M3juoVfobTILWxWTTozWjujTwGj7k83NSx
+ m6S0mjg6dAPj+oGDGpzyMUrUod+WaypciHTzT/8MaTsDn+9UNUIhhABHKeX/Qd+mcQok
+ DI4eDRDLeAdtT/ZF9eg3LFLeppu7/bEbckT1r2N/7znqb3U2llDmo6JMVuPdGDSzsN6r
+ 8yN8hH8YNbYU15uN55BeSXLH44Gvpvj+CfFojQqU30gUCi53xSi/csJDkhN9gYjGSbKh
+ mAMg==
+X-Gm-Message-State: AOJu0YyJSAhfBZAUpieyNX5WZXyhIv8poa6rpLM1ouHQ98HrexGQ8KeR
+ Ccl1MCClVWKZBoZthi7ugz4yS8YySpSo9Kqo2yX+y6iXP57es1+SnMD3Ailfsjc=
+X-Google-Smtp-Source: AGHT+IFqilT8kad5S3msQEQ2UHWsVQA7+ITPwe+oTMImmaIQtSzKULv70sZkba9JRcbXK77nimoulw==
+X-Received: by 2002:a05:6512:2805:b0:51b:afbe:74b5 with SMTP id
+ cf5-20020a056512280500b0051bafbe74b5mr1301043lfb.34.1713882781927; 
  Tue, 23 Apr 2024 07:33:01 -0700 (PDT)
 Received: from jheikkil-mobl1.. (91-156-196-125.elisa-laajakaista.fi.
  [91.156.196.125]) by smtp.gmail.com with ESMTPSA id
- d25-20020a196b19000000b0051af5cba0f3sm988781lfa.11.2024.04.23.07.33.00
+ d25-20020a196b19000000b0051af5cba0f3sm988781lfa.11.2024.04.23.07.33.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Apr 2024 07:33:00 -0700 (PDT)
+ Tue, 23 Apr 2024 07:33:01 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t v2 4/6] lib/igt_fb: separate intel blitter context setup
- from blitter function
-Date: Tue, 23 Apr 2024 17:32:44 +0300
-Message-Id: <20240423143246.130884-5-juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t v2 5/6] lib/igt_fb: put intel blt cleanup into its own
+ function
+Date: Tue, 23 Apr 2024 17:32:45 +0300
+Message-Id: <20240423143246.130884-6-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240423143246.130884-1-juhapekka.heikkila@gmail.com>
 References: <20240423143246.130884-1-juhapekka.heikkila@gmail.com>
@@ -81,111 +81,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-separate context and memory region setup to setup_context_and_memory_region()
-helper to reduce blitcopy() overall size.
+make blitcopy function bit easier to handle
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/igt_fb.c | 72 ++++++++++++++++++++++++++++++----------------------
- 1 file changed, 41 insertions(+), 31 deletions(-)
+ lib/igt_fb.c | 33 +++++++++++++++++++++------------
+ 1 file changed, 21 insertions(+), 12 deletions(-)
 
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index ef21095ce..0dec6ce42 100644
+index 0dec6ce42..7aaeffeee 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -2899,6 +2899,44 @@ static uint32_t blt_compression_format(struct blt_copy_data *blt,
- 	igt_assert_f(0, "unknown compression\n");
+@@ -2937,6 +2937,25 @@ static void setup_context_and_memory_region(const struct igt_fb *fb, uint32_t *c
+ 	}
  }
  
-+static void setup_context_and_memory_region(const struct igt_fb *fb, uint32_t *ctx,
-+					    uint64_t *ahnd, uint32_t *mem_region,
-+					    uint32_t *vm, uint32_t *bb,
-+					    uint64_t *bb_size,
-+					    const intel_ctx_t **ictx,
-+					    uint32_t *exec_queue,
-+					    intel_ctx_t **xe_ctx)
++static void cleanup_blt_resources(uint32_t ctx, uint64_t ahnd, bool is_xe,
++				  uint32_t xe_bb, uint32_t exec_queue,
++				  uint32_t vm, intel_ctx_t *xe_ctx,
++				  int fd, const intel_ctx_t *ictx)
 +{
-+	struct drm_xe_engine_class_instance inst = {
-+		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-+	};
++	if (ctx)
++		gem_context_destroy(fd, ctx);
++	put_ahnd(ahnd);
 +
-+	if (is_i915_device(fb->fd) && !gem_has_relocations(fb->fd)) {
-+		*ictx = intel_ctx_create_all_physical(fb->fd);
-+		igt_require(gem_has_contexts(fb->fd));
-+		*mem_region = HAS_FLATCCS(intel_get_drm_devid(fb->fd)) ? REGION_LMEM(0) : REGION_SMEM;
-+		*ctx = gem_context_create(fb->fd);
-+		*ahnd = get_reloc_ahnd(fb->fd, *ctx);
-+
-+		igt_assert(__gem_create_in_memory_regions(fb->fd,
-+							  bb,
-+							  bb_size,
-+							  *mem_region) == 0);
-+	} else if (is_xe_device(fb->fd)) {
-+		*vm = xe_vm_create(fb->fd, 0, 0);
-+		*exec_queue = xe_exec_queue_create(fb->fd, *vm, &inst, 0);
-+		*xe_ctx = intel_ctx_xe(fb->fd, *vm, *exec_queue, 0, 0, 0);
-+		*mem_region = vram_if_possible(fb->fd, 0);
-+
-+		*ahnd = intel_allocator_open_full(fb->fd, (*xe_ctx)->vm, 0, 0,
-+						 INTEL_ALLOCATOR_SIMPLE,
-+						 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+
-+		*bb_size = xe_bb_size(fb->fd, *bb_size);
-+		*bb = xe_bo_create(fb->fd, 0, *bb_size, *mem_region, 0);
++	if(is_xe) {
++		gem_close(fd, xe_bb);
++		xe_exec_queue_destroy(fd, exec_queue);
++		xe_vm_destroy(fd, vm);
++		free(xe_ctx);
 +	}
++
++	intel_ctx_destroy(fd, ictx);
 +}
 +
  static void blitcopy(const struct igt_fb *dst_fb,
  		     const struct igt_fb *src_fb)
  {
-@@ -2919,11 +2957,6 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 	intel_ctx_t *xe_ctx;
- 	uint32_t vm, exec_queue;
- 	bool is_xe = is_xe_device(dst_fb->fd);
--	bool is_i915 = is_i915_device(dst_fb->fd);
--
--	struct drm_xe_engine_class_instance inst = {
--		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
--	};
+@@ -3077,18 +3096,8 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 		}
+ 	}
  
- 	igt_assert_eq(dst_fb->fd, src_fb->fd);
- 	igt_assert_eq(dst_fb->num_planes - dst_cc, src_fb->num_planes - src_cc);
-@@ -2931,32 +2964,9 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
- 	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
- 
--	if (is_i915 && !gem_has_relocations(dst_fb->fd)) {
--		igt_require(gem_has_contexts(dst_fb->fd));
--		mem_region = HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))
--			? REGION_LMEM(0) : REGION_SMEM;
+-	if (ctx)
+-		gem_context_destroy(dst_fb->fd, ctx);
+-	put_ahnd(ahnd);
 -
--		ictx = intel_ctx_create_all_physical(src_fb->fd);
--		ctx = gem_context_create(dst_fb->fd);
--		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
--
--		igt_assert(__gem_create_in_memory_regions(src_fb->fd,
--							  &bb,
--							  &bb_size,
--							  mem_region) == 0);
--	} else if (is_xe) {
--		vm = xe_vm_create(dst_fb->fd, 0, 0);
--		exec_queue = xe_exec_queue_create(dst_fb->fd, vm, &inst, 0);
--		xe_ctx = intel_ctx_xe(dst_fb->fd, vm, exec_queue, 0, 0, 0);
--		mem_region = vram_if_possible(dst_fb->fd, 0);
--
--		ahnd = intel_allocator_open_full(dst_fb->fd, xe_ctx->vm, 0, 0,
--						 INTEL_ALLOCATOR_SIMPLE,
--						 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
--
--		bb_size = xe_bb_size(dst_fb->fd, bb_size);
--		xe_bb = xe_bo_create(dst_fb->fd, 0, bb_size, mem_region, 0);
+-	if(is_xe) {
+-		gem_close(dst_fb->fd, xe_bb);
+-		xe_exec_queue_destroy(dst_fb->fd, exec_queue);
+-		xe_vm_destroy(dst_fb->fd, vm);
+-		free(xe_ctx);
 -	}
-+	setup_context_and_memory_region(dst_fb, &ctx, &ahnd, &mem_region,
-+					&vm, &xe_bb, &bb_size, &ictx,
-+					&exec_queue, &xe_ctx);
+-
+-	intel_ctx_destroy(src_fb->fd, ictx);
++	cleanup_blt_resources(ctx, ahnd, is_xe, bb, exec_queue, vm, xe_ctx,
++			      src_fb->fd, ictx);
+ }
  
- 	for (int i = 0; i < dst_fb->num_planes - dst_cc; i++) {
- 		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
+ static void free_linear_mapping(struct fb_blit_upload *blit)
 -- 
 2.25.1
 
