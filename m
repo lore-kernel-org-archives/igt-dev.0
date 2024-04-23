@@ -4,44 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2DFAC4345F
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 10:50:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51918C4345F
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 10:50:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5EF6A10FBC3;
-	Tue, 23 Apr 2024 10:50:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DB91C10FBC7;
+	Tue, 23 Apr 2024 10:50:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cYhfBZDW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ge7V4Y/4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A73510FBC3
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 10:50:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 26A7610FBC7
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 10:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713869422; x=1745405422;
+ t=1713869433; x=1745405433;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=I1oHhlDpDEIOpY6RMXgCy/JP8ZQfEASl8y23q53CRkk=;
- b=cYhfBZDW0foDcloZL8YTa/FoG+BteRGYiC9XFtz0LvTeF3G1ByqTTOyg
- N9/+qDqrahPOyOtCFZUURYnQf78goDtll6m3h0KjWjMYq+Vsui+UT8qq4
- kdTl/80pbXpqJjTEHdHX2sx4Xw+370/6qoq8R8pqKay712CiHL7LMyF55
- pEXEzniaLbljBOST2YhVoA8hGioBlPHbjtdkZhUHsrnGCBos1j3JqrP+v
- ImvXTwmroHlQlXmxlBzbIAiemuMC6pZZb7vYvLROyC6lcFs1pgrPZrIqq
- Vcaa9AZhZuG3rq1mAVR6uLVxnVLTVp6vUSaxMQ2WNP78ww9fh7E/eKx+X Q==;
-X-CSE-ConnectionGUID: ZNAkq+5qQZKusbd+2gCoUA==
-X-CSE-MsgGUID: hcV7H7C6SbKNIZAbbDSd8A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="9616654"
-X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
-   d="scan'208";a="9616654"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2024 03:50:22 -0700
-X-CSE-ConnectionGUID: WbDBh1gPQ1+TeGiSfHXzVw==
-X-CSE-MsgGUID: IahpYTX5TcSwlffgRbWPXw==
+ bh=UeVjMrQs4b4ZSlT+9rucK80BOXVXMwRIblFyovTHNZk=;
+ b=ge7V4Y/4X6GyC4U/hX/ZpacKM7KShqyjyMgAjU30HymItLdef3oz1wCs
+ 0T5+G9CTgaHEap+afAf6IqLovA0qhFUJwLq4c1qw+jXjU2Zku6MakZS0r
+ 05U+GZk6Y5MqVJtH171ndYcRzQbbGsBb1t6LT5P/Ms+XrPoMgIgAfajmO
+ uRT6nG1zGZfC+EDTIMCuBiO1MJ0IGvi5LVgF2UJWmmkUqkyJBp/4Q6bQb
+ MPeFki8LspITfDanwLG3lRDNaC4XggNXhNwIU5EpFIXdlfcKYjVK6kjVP
+ lj6p7bJDcSq3585mww6yeziUsUUOYllWJvwlHUEJuk+6oxV3VdmjqYdni g==;
+X-CSE-ConnectionGUID: ggKgQeAWQ1CUfT5KVwOnBg==
+X-CSE-MsgGUID: w+O8CHGgTIGGFLGci2joLg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="20594652"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="20594652"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2024 03:50:32 -0700
+X-CSE-ConnectionGUID: 0XrDEZrNT3uvPaGb7k2A/w==
+X-CSE-MsgGUID: hau+iyFQT6e33KJIGPsOSQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="29002105"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="28980021"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2024 03:50:20 -0700
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2024 03:50:29 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
@@ -50,10 +49,10 @@ Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Aditya Chauhan <aditya.chauhan@intel.com>,
  Girotra Himanshu <himanshu.girotra@intel.com>,
  Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
-Subject: [PATCH i-g-t v2 06/16] tests: Add DRIVER_ANY tests to General Core
- Mega feature
-Date: Tue, 23 Apr 2024 10:49:03 +0000
-Message-Id: <20240423104913.3559587-7-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v2 07/16] tests/intel: Add legacy i915 tests to General
+ Core Mega feature
+Date: Tue, 23 Apr 2024 10:49:04 +0000
+Message-Id: <20240423104913.3559587-8-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240423104913.3559587-1-katarzyna.piecielska@intel.com>
 References: <20240423104913.3559587-1-katarzyna.piecielska@intel.com>
@@ -74,7 +73,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add tests with DRIVER_ANY to 'General Core feature' mega feature.
+Add legacy and DRIVER_INTEL tests to 'General Core features' mega feature.
 Group:
 	SUBTEST
 	Description
@@ -90,257 +89,415 @@ Cc: Aditya Chauhan <aditya.chauhan@intel.com>
 Cc: Girotra Himanshu <himanshu.girotra@intel.com>
 CC: Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
 ---
- tests/core_auth.c              | 7 ++++---
- tests/core_getclient.c         | 7 ++++---
- tests/core_getstats.c          | 7 ++++---
- tests/core_getversion.c        | 7 ++++---
- tests/core_hotunplug.c         | 5 +++--
- tests/core_setmaster.c         | 7 ++++---
- tests/core_setmaster_vs_auth.c | 7 ++++---
- tests/device_reset.c           | 8 ++++----
- tests/dumb_buffer.c            | 7 ++++---
- tests/prime_vgem.c             | 7 ++++---
- tests/sw_sync.c                | 9 +++++----
- tests/syncobj_basic.c          | 7 ++++---
- tests/syncobj_timeline.c       | 9 +++++----
- tests/syncobj_wait.c           | 9 +++++----
- tests/vgem_basic.c             | 5 +++--
- tests/vgem_slow.c              | 7 ++++---
- 16 files changed, 65 insertions(+), 50 deletions(-)
+ tests/intel/api_intel_allocator.c      |   5 +-
+ tests/intel/api_intel_bb.c             |   7 +-
+ tests/intel/debugfs_test.c             |   5 +-
+ tests/intel/drm_fdinfo.c               |   7 +-
+ tests/intel/gem_basic.c                |   5 +-
+ tests/intel/gem_busy.c                 |   3 +-
+ tests/intel/gem_caching.c              |   7 +-
+ tests/intel/gem_create.c               |   5 +-
+ tests/intel/gem_ctx_isolation.c        |   5 +-
+ tests/intel/gem_ctx_param.c            |   5 +-
+ tests/intel/gem_ctx_sseu.c             |   5 +-
+ tests/intel/gem_eio.c                  |   5 +-
+ tests/intel/gem_exec_capture.c         |   5 +-
+ tests/intel/gem_exec_endless.c         |   1 +
+ tests/intel/gem_flink_basic.c          |   7 +-
+ tests/intel/gem_flink_race.c           |   7 +-
+ tests/intel/gem_huc_copy.c             |   7 +-
+ tests/intel/gem_reg_read.c             |   5 +-
+ tests/intel/gem_reset_stats.c          |   5 +-
+ tests/intel/gem_spin_batch.c           |   7 +-
+ tests/intel/gem_sync.c                 |   7 +-
+ tests/intel/gem_wait.c                 |   9 +-
+ tests/intel/gem_workarounds.c          |   5 +-
+ tests/intel/gen3_mixed_blits.c         |   1 +
+ tests/intel/gen3_render_linear_blits.c |   1 +
+ tests/intel/gen3_render_mixed_blits.c  |   1 +
+ tests/intel/gen3_render_tiledx_blits.c |   1 +
+ tests/intel/gen3_render_tiledy_blits.c |   1 +
+ tests/intel/i915_getparams_basic.c     |   7 +-
+ tests/intel/i915_hangman.c             |   7 +-
+ tests/intel/i915_module_load.c         |   7 +-
+ tests/intel/i915_pciid.c               |   7 +-
+ tests/intel/i915_pm_freq_api.c         |   1 +
+ tests/intel/i915_query.c               |   7 +-
+ tests/intel/i915_selftest.c            | 166 +++++++++++++++----------
+ tests/intel/prime_mmap_kms.c           |   5 +-
+ tests/intel/sysfs_defaults.c           |   5 +-
+ 37 files changed, 211 insertions(+), 135 deletions(-)
 
-diff --git a/tests/core_auth.c b/tests/core_auth.c
-index 2d6ad83e9..1ba518a58 100644
---- a/tests/core_auth.c
-+++ b/tests/core_auth.c
-@@ -44,11 +44,12 @@
- #include "drm.h"
- /**
-  * TEST: core auth
-- * Category: Desktop client
-  * Description: Call drmGetMagic() and drmAuthMagic() and see if it behaves.
-- * Feature: core
-- * Functionality: permission management for clients
-+ * Category: Desktop client
-+ * Mega feature: General Core features
-  * Sub-category: DRM
-+ * Functionality: permission management for clients
-+ * Feature: core
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic-auth
-diff --git a/tests/core_getclient.c b/tests/core_getclient.c
-index 308f2c0e4..9875ca990 100644
---- a/tests/core_getclient.c
-+++ b/tests/core_getclient.c
-@@ -33,11 +33,12 @@
+diff --git a/tests/intel/api_intel_allocator.c b/tests/intel/api_intel_allocator.c
+index 60cd16de0..95b85baff 100644
+--- a/tests/intel/api_intel_allocator.c
++++ b/tests/intel/api_intel_allocator.c
+@@ -15,10 +15,11 @@
  
  /**
-  * TEST: core getclient
-- * Category: Desktop client
-  * Description: Tests the DRM_IOCTL_GET_CLIENT ioctl.
-- * Feature: core
-- * Functionality: permission management for clients
-+ * Category: Desktop client
+  * TEST: api intel allocator
+- * Category: Infrastructure
+- * Functionality: virtual address
+  * Description: checking the virtual address ranges
++ * Category: Infrastructure
 + * Mega feature: General Core features
-  * Sub-category: DRM
-+ * Functionality: permission management for clients
-+ * Feature: core
+  * Sub-category: IGT Lib
++ * Functionality: virtual address
+  * Test category: GEM_Legacy
+  * Feature: igt_core
+  *
+diff --git a/tests/intel/api_intel_bb.c b/tests/intel/api_intel_bb.c
+index 6e5c1293e..e53298695 100644
+--- a/tests/intel/api_intel_bb.c
++++ b/tests/intel/api_intel_bb.c
+@@ -43,11 +43,12 @@
+ #include "intel_blt.h"
+ /**
+  * TEST: api intel bb
+- * Category: Infrastructure
+  * Description: checking dummy buffer creation & submission
+- * Feature: igt_core
+- * Functionality: dummy buffer creation & submission
++ * Category: Infrastructure
++ * Mega feature: General Core features
+  * Sub-category: IGT Lib
++ * Functionality: dummy buffer creation & submission
++ * Feature: igt_core
   * Test category: GEM_Legacy
   *
-  * SUBTEST:
-diff --git a/tests/core_getstats.c b/tests/core_getstats.c
-index b2d26a826..bb28c2d77 100644
---- a/tests/core_getstats.c
-+++ b/tests/core_getstats.c
-@@ -34,11 +34,12 @@
- 
+  * SUBTEST: add-remove-objects
+diff --git a/tests/intel/debugfs_test.c b/tests/intel/debugfs_test.c
+index 1278b0ae1..f3eb43d68 100644
+--- a/tests/intel/debugfs_test.c
++++ b/tests/intel/debugfs_test.c
+@@ -32,10 +32,11 @@
  /**
-  * TEST: core getstats
-- * Category: Desktop client
-  * Description: Tests the DRM_IOCTL_GET_STATS ioctl.
+  * TEST: debugfs test
+  * Description: Read entries from debugfs, hwmon and sysfs paths.
 - * Feature: core
-- * Functionality: DRM memory management
-+ * Category: Desktop client
+  * Category: Infrastructure
+- * Functionality: debugfs
 + * Mega feature: General Core features
   * Sub-category: uapi
-+ * Functionality: DRM memory management
++ * Functionality: debugfs
 + * Feature: core
+  * Test category: uapi
+  *
+  * SUBTEST: basic-hwmon
+diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
+index 61c66079e..effa01da4 100644
+--- a/tests/intel/drm_fdinfo.c
++++ b/tests/intel/drm_fdinfo.c
+@@ -36,10 +36,11 @@
+ /**
+  * TEST: drm fdinfo
+  * Description: Test the i915 drm fdinfo data
+- * Feature: client busyness
+- * Functionality: Per client memory statistics
+- * Sub-category: driver
+  * Category: Desktop client
++ * Mega feature: General Core features
++ * Sub-category: driver
++ * Functionality: Per client memory statistics
++ * Feature: client_busyness
+  *
+  * SUBTEST: all-busy-check-all
+  *
+diff --git a/tests/intel/gem_basic.c b/tests/intel/gem_basic.c
+index bd9401149..d5e6cc7e5 100644
+--- a/tests/intel/gem_basic.c
++++ b/tests/intel/gem_basic.c
+@@ -45,9 +45,10 @@
+  * TEST: gem basic
+  * Description: Tests basic gem_create and gem_close IOCTLs
+  * Category: Infrastructure
+- * Feature: gem_core
+- * Functionality: driver handler
++ * Mega feature: General Core features
+  * Sub-category: uapi
++ * Functionality: driver handler
++ * Feature: gem_core
   * Test category: GEM_Legacy
   *
-  * SUBTEST:
-diff --git a/tests/core_getversion.c b/tests/core_getversion.c
-index 94cedff8c..bb2e6013d 100644
---- a/tests/core_getversion.c
-+++ b/tests/core_getversion.c
-@@ -30,11 +30,12 @@
- #include <sys/ioctl.h>
+  * SUBTEST: bad-close
+diff --git a/tests/intel/gem_busy.c b/tests/intel/gem_busy.c
+index 58720b4dc..04f41231c 100644
+--- a/tests/intel/gem_busy.c
++++ b/tests/intel/gem_busy.c
+@@ -34,8 +34,9 @@
+  * TEST: gem busy
+  * Description: Basic check of busy-ioctl ABI.
+  * Category: Desktop client
+- * Functionality: semaphore
++ * Mega feature: General Core features
+  * Sub-category: uapi
++ * Functionality: semaphore
+  * Test category: GEM_Legacy
+  * Feature: cmd_submission
+  *
+diff --git a/tests/intel/gem_caching.c b/tests/intel/gem_caching.c
+index 475013739..d319467fb 100644
+--- a/tests/intel/gem_caching.c
++++ b/tests/intel/gem_caching.c
+@@ -42,11 +42,12 @@
+ #include "intel_blt.h"
  /**
-  * TEST: core getversion
+  * TEST: gem caching
 - * Category: Desktop client
-  * Description: Tests the DRM_IOCTL_GET_VERSION ioctl and libdrm's drmGetVersion() interface to it.
-- * Feature: core
-- * Functionality: permission management for clients
+  * Description: Test snoop consistency when touching partial cachelines.
+- * Feature: caching feature
 + * Category: Desktop client
 + * Mega feature: General Core features
-  * Sub-category: DRM
-+ * Functionality: permission management for clients
-+ * Feature: core
++ * Sub-category: Caching
+  * Functionality: coherency
+- * Sub-category: Memory management
++ * Feature: caching
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: read-writes
+diff --git a/tests/intel/gem_create.c b/tests/intel/gem_create.c
+index 1434a50a9..bb389e672 100644
+--- a/tests/intel/gem_create.c
++++ b/tests/intel/gem_create.c
+@@ -67,9 +67,10 @@
+  * Description: Ensure that basic gem_create and gem_create_ext works and that
+  *		invalid input combinations are rejected.
+  * Category: Infrastructure
+- * Feature: mapping
+- * Functionality: buffer management
++ * Mega feature: General Core features
+  * Sub-category: uapi
++ * Functionality: buffer management
++ * Feature: mapping
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: busy-create
+diff --git a/tests/intel/gem_ctx_isolation.c b/tests/intel/gem_ctx_isolation.c
+index e6b609e35..cd4aaee9c 100644
+--- a/tests/intel/gem_ctx_isolation.c
++++ b/tests/intel/gem_ctx_isolation.c
+@@ -29,9 +29,10 @@
+ /**
+  * TEST: gem ctx isolation
+  * Category: Infrastructure
+- * Feature: context
+- * Functionality: priv/non-priv registers
++ * Mega feature: General Core features
+  * Sub-category: Security
++ * Functionality: priv/non-priv registers
++ * Feature: context
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: clean
+diff --git a/tests/intel/gem_ctx_param.c b/tests/intel/gem_ctx_param.c
+index e09216487..921bb09ac 100644
+--- a/tests/intel/gem_ctx_param.c
++++ b/tests/intel/gem_ctx_param.c
+@@ -34,9 +34,10 @@
+  * TEST: gem ctx param
+  * Description: Basic test for context set/get param input validation.
+  * Category: Infrastructure
+- * Feature: context feature
+- * Functionality: context
++ * Mega feature: General Core features
+  * Sub-category: uapi
++ * Functionality: context
++ * Feature: context
   * Test category: GEM_Legacy
   *
   * SUBTEST: basic
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 9af857e67..afd7c3faa 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -42,11 +42,12 @@
+diff --git a/tests/intel/gem_ctx_sseu.c b/tests/intel/gem_ctx_sseu.c
+index d7cb730b1..7847e7ce9 100644
+--- a/tests/intel/gem_ctx_sseu.c
++++ b/tests/intel/gem_ctx_sseu.c
+@@ -47,10 +47,11 @@
  /**
-  * TEST: core hotunplug
-  * Description: Examine behavior of a driver on device hot unplug
-- * Feature: SMI, core
-- * Test category: functionality test
-  * Category: Software building block
+  * TEST: gem ctx sseu
+  * Description: Test context render powergating programming.
+- * Feature: pm_sseu
+- * Sub-category: uapi
+  * Category: Desktop client
 + * Mega feature: General Core features
-  * Sub-category: driver
-  * Functionality: device hotplug
-+ * Feature: SMI, core
-+ * Test category: functionality test
++ * Sub-category: uapi
+  * Functionality: sseu
++ * Feature: pm_sseu
   *
-  * SUBTEST: hotrebind
-  * Description: Check if the driver can be cleanly rebound to a device with a
-diff --git a/tests/core_setmaster.c b/tests/core_setmaster.c
-index 707c2305f..21c62036e 100644
---- a/tests/core_setmaster.c
-+++ b/tests/core_setmaster.c
-@@ -40,11 +40,12 @@
- #include <sys/stat.h>
+  * SUBTEST: engines
+  *
+diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
+index c2fdff7c0..39100086d 100644
+--- a/tests/intel/gem_eio.c
++++ b/tests/intel/gem_eio.c
+@@ -56,10 +56,11 @@
  /**
-  * TEST: core setmaster
-- * Category: Desktop client
-  * Description: Check that Drop/SetMaster behaves correctly wrt root/user access
-- * Feature: core
-- * Functionality: permission management for clients
-+ * Category: Desktop client
+  * TEST: gem eio
+  * Description: Test that specific ioctls report a wedged GPU (EIO).
 + * Mega feature: General Core features
-  * Sub-category: DRM
-+ * Functionality: permission management for clients
-+ * Feature: core
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: master-drop-set-root
-diff --git a/tests/core_setmaster_vs_auth.c b/tests/core_setmaster_vs_auth.c
-index 592d850f6..a5e0c8b2d 100644
---- a/tests/core_setmaster_vs_auth.c
-+++ b/tests/core_setmaster_vs_auth.c
-@@ -42,11 +42,12 @@
- #include "igt_device.h"
- /**
-  * TEST: core setmaster vs auth
-- * Category: Desktop client
-  * Description: Check that drop/setMaster correctly transfer master state
-- * Feature: core
-- * Functionality: permission management for clients
-+ * Category: Desktop client
-+ * Mega feature: General Core features
-  * Sub-category: DRM
-+ * Functionality: permission management for clients
-+ * Feature: core
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST:
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index 583a59039..de1a8a87b 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -16,12 +16,12 @@
- #include "igt_kmod.h"
- /**
-  * TEST: device reset
-- * Category: Hardware building block
-  * Description: Examine behavior of a driver on device sysfs reset
-- * Category: Server
-- * Feature: reset
+  * Category: Infrastructure
+- * Feature: reset uapi
 - * Functionality: sysfs reset
-+ * Category: Hardware building block
-+ * Mega feature: General Core features
-  * Sub-category: Reset
-+ * Functionality: sysfs reset
+  * Sub-category: uapi
++ * Functionality: reset
 + * Feature: reset
   * Test category: GEM_Legacy
   *
-  * SUBTEST: cold-reset-bound
-diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
-index 8e243459c..f27e113d4 100644
---- a/tests/dumb_buffer.c
-+++ b/tests/dumb_buffer.c
-@@ -51,11 +51,12 @@
- #include "ioctl_wrappers.h"
+  * SUBTEST: banned
+diff --git a/tests/intel/gem_exec_capture.c b/tests/intel/gem_exec_capture.c
+index 57b178f3e..5c50c7532 100644
+--- a/tests/intel/gem_exec_capture.c
++++ b/tests/intel/gem_exec_capture.c
+@@ -35,10 +35,11 @@
  /**
-  * TEST: dumb buffer
+  * TEST: gem exec capture
+  * Description: Check that we capture the user specified objects on a hang
+- * Feature: cmd_submission
+  * Category: Server
+- * Functionality: offline debugging
++ * Mega feature: General Core features
+  * Sub-category: Debugging
++ * Functionality: offline debugging
++ * Feature: cmd_submission
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: capture
+diff --git a/tests/intel/gem_exec_endless.c b/tests/intel/gem_exec_endless.c
+index f0bf82b54..99c5403ec 100644
+--- a/tests/intel/gem_exec_endless.c
++++ b/tests/intel/gem_exec_endless.c
+@@ -33,6 +33,7 @@
+ /**
+  * TEST: gem exec endless
+  * Category: Server
++ * Mega feature: General Core features
+  * Sub-category: CMD submission
+  * Functionality: compute test
+  * Test category: Compute
+diff --git a/tests/intel/gem_flink_basic.c b/tests/intel/gem_flink_basic.c
+index 049c91be2..28c7c4078 100644
+--- a/tests/intel/gem_flink_basic.c
++++ b/tests/intel/gem_flink_basic.c
+@@ -40,11 +40,12 @@
+ #include "igt_types.h"
+ /**
+  * TEST: gem flink basic
 - * Category: Desktop client
-  * Description: This is a test for the generic dumb buffer interface.
-- * Feature: prime
-- * Functionality: ioctl
+  * Description: Tests for flink - a way to export a gem object by name
+- * Feature: xorg_dri2
+- * Functionality: buffer management
 + * Category: Desktop client
 + * Mega feature: General Core features
-  * Sub-category: uapi
-+ * Functionality: ioctl
-+ * Feature: prime
-  * Test category: Compositor
+  * Sub-category: DRM
++ * Functionality: buffer management
++ * Feature: xorg_dri2
+  * Test category: GEM_Legacy
   *
-  * SUBTEST: create-clear
-diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-index fa19d8e64..3af0eb430 100644
---- a/tests/prime_vgem.c
-+++ b/tests/prime_vgem.c
-@@ -32,11 +32,12 @@
- #include "intel_batchbuffer.h"	/* igt_blitter_copy() */
+  * SUBTEST: bad-flink
+diff --git a/tests/intel/gem_flink_race.c b/tests/intel/gem_flink_race.c
+index 5675954bd..26bae7a87 100644
+--- a/tests/intel/gem_flink_race.c
++++ b/tests/intel/gem_flink_race.c
+@@ -37,11 +37,12 @@
+ #include "igt_stats.h"
  /**
-  * TEST: prime vgem
-- * Category: Infrastructure
-  * Description: Basic check of polling for prime/vgem fences.
-- * Feature: prime
-- * Functionality: mock device
-+ * Category: Infrastructure
+  * TEST: gem flink race
+- * Category: Desktop client
+  * Description: Check for flink/open vs. gem close races.
+- * Feature: xorg_dri2
+- * Functionality: buffer management
++ * Category: Desktop client
 + * Mega feature: General Core features
   * Sub-category: DRM
-+ * Functionality: mock device
-+ * Feature: prime
++ * Functionality: buffer management
++ * Feature: xorg_dri2
   * Test category: GEM_Legacy
   *
-  * SUBTEST: basic-blt
-diff --git a/tests/sw_sync.c b/tests/sw_sync.c
-index a276c4a22..e01397460 100644
---- a/tests/sw_sync.c
-+++ b/tests/sw_sync.c
-@@ -40,11 +40,12 @@
+  * SUBTEST: flink_close
+diff --git a/tests/intel/gem_huc_copy.c b/tests/intel/gem_huc_copy.c
+index 541ed01f1..606755a1f 100644
+--- a/tests/intel/gem_huc_copy.c
++++ b/tests/intel/gem_huc_copy.c
+@@ -38,10 +38,11 @@
+ /**
+  * TEST: gem huc copy
+  * Description: A very simple workload for the HuC.
+- * Feature: firmware feature
+- * Sub-category: Firmware
+  * Category: Desktop client
+- * Functionality: huc copy
++ * Mega feature: General Core features
++ * Sub-category: Firmware
++ * Functionality: HUC
++ * Feature: huc
+  *
+  * SUBTEST: huc-copy
+  * Description:
+diff --git a/tests/intel/gem_reg_read.c b/tests/intel/gem_reg_read.c
+index 8b7bc9898..46ea06979 100644
+--- a/tests/intel/gem_reg_read.c
++++ b/tests/intel/gem_reg_read.c
+@@ -34,10 +34,11 @@
  
  /**
-  * TEST: sw sync
-- * Category: Infrastructure
-  * Description: Test SW Sync Framework
-- * Feature: semaphore
-- * Functionality: sw sync framework
+  * TEST: gem reg read
+- * Feature: gem_core
 - * Sub-category: uapi
-+ * Category: Infrastructure
+  * Category: Desktop client
 + * Mega feature: General Core features
-+ * Sub-category: Synchronization
-+ * Functionality: semaphore
-+ * Feature: synchronization
-  * Test category: GEM_Legacy
++ * Sub-category: uapi
+  * Functionality: ioctl
++ * Feature: gem_core
   *
-  * SUBTEST: alloc_fence
-diff --git a/tests/syncobj_basic.c b/tests/syncobj_basic.c
-index d1ea872cf..9e905a939 100644
---- a/tests/syncobj_basic.c
-+++ b/tests/syncobj_basic.c
-@@ -28,11 +28,12 @@
- #include "drm.h"
+  * SUBTEST: bad-register
+  *
+diff --git a/tests/intel/gem_reset_stats.c b/tests/intel/gem_reset_stats.c
+index fdad7600c..df470fc6a 100644
+--- a/tests/intel/gem_reset_stats.c
++++ b/tests/intel/gem_reset_stats.c
+@@ -49,9 +49,10 @@
+ #include "sw_sync.h"
  /**
-  * TEST: syncobj basic
+  * TEST: gem reset stats
+- * Sub-category: uapi
+  * Category: Desktop client
+- * Functionality: sysfs reset
++ * Mega feature: General Core features
++ * Sub-category: uapi
++ * Functionality: reset
+  *
+  * SUBTEST: ban-blt
+  *
+diff --git a/tests/intel/gem_spin_batch.c b/tests/intel/gem_spin_batch.c
+index a865e8549..e1522c260 100644
+--- a/tests/intel/gem_spin_batch.c
++++ b/tests/intel/gem_spin_batch.c
+@@ -27,11 +27,12 @@
+ #include "igt.h"
+ /**
+  * TEST: gem spin batch
+- * Test category: GEM_Legacy
+  * Category: Infrastructure
+- * Feature: context, igt_core
+- * Functionality: dummy workload
++ * Mega feature: General Core features
+  * Sub-category: IGT Lib
++ * Functionality: dummy workload
++ * Feature: context, igt_core
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines
+  * SUBTEST: legacy
+diff --git a/tests/intel/gem_sync.c b/tests/intel/gem_sync.c
+index 041ea5959..e10f49f16 100644
+--- a/tests/intel/gem_sync.c
++++ b/tests/intel/gem_sync.c
+@@ -34,11 +34,12 @@
+ #include "igt_sysfs.h"
+ /**
+  * TEST: gem sync
 - * Category: Infrastructure
-  * Description: Basic check for drm sync objects.
-- * Feature: semaphore
-- * Functionality: drm sync object
+  * Description: Basic check of ring<->ring write synchronisation.
+- * Feature: synchronization feature
+- * Functionality: semaphore
 + * Category: Infrastructure
 + * Mega feature: General Core features
   * Sub-category: Synchronization
@@ -348,19 +505,19 @@ index d1ea872cf..9e905a939 100644
 + * Feature: synchronization
   * Test category: GEM_Legacy
   *
-  * SUBTEST: bad-create-flags
-diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
-index f7e33604d..e9c3ac740 100644
---- a/tests/syncobj_timeline.c
-+++ b/tests/syncobj_timeline.c
-@@ -32,11 +32,12 @@
- #include "drm.h"
+  * SUBTEST: active
+diff --git a/tests/intel/gem_wait.c b/tests/intel/gem_wait.c
+index fa6eb9f77..061deaa33 100644
+--- a/tests/intel/gem_wait.c
++++ b/tests/intel/gem_wait.c
+@@ -33,11 +33,12 @@
+ #include "igt_vgem.h"
  /**
-  * TEST: syncobj timeline
+  * TEST: gem wait
 - * Category: Infrastructure
-  * Description: Tests for the drm timeline sync object API
+  * Description: Tests the GEM_WAIT ioctl
 - * Feature: synchronization feature
-- * Functionality: sync_object
+- * Functionality: GEM_WAIT ioctl
 - * Sub-category: uapi
 + * Category: Infrastructure
 + * Mega feature: General Core features
@@ -369,66 +526,664 @@ index f7e33604d..e9c3ac740 100644
 + * Feature: synchronization
   * Test category: GEM_Legacy
   *
-  * SUBTEST: 32bits-limit
-diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
-index 571e3c2af..26fce89fe 100644
---- a/tests/syncobj_wait.c
-+++ b/tests/syncobj_wait.c
-@@ -32,11 +32,12 @@
- #include "drm.h"
+  * SUBTEST: await
+diff --git a/tests/intel/gem_workarounds.c b/tests/intel/gem_workarounds.c
+index dbde4cb45..4e325e10e 100644
+--- a/tests/intel/gem_workarounds.c
++++ b/tests/intel/gem_workarounds.c
+@@ -35,9 +35,10 @@
  /**
-  * TEST: syncobj wait
-- * Category: Infrastructure
-  * Description: Tests for the drm sync object wait API
-- * Feature: synchronization feature
-- * Functionality: object wait
-- * Sub-category: uapi
-+ * Category: Infrastructure
+  * TEST: gem workarounds
+  * Category: Infrastructure
+- * Feature: workaround
+- * Functionality: context
 + * Mega feature: General Core features
-+ * Sub-category: Synchronization
-+ * Functionality: semaphore
-+ * Feature: synchronization
+  * Sub-category: Workarounds
++ * Functionality: context
++ * Feature: workarounds
   * Test category: GEM_Legacy
   *
-  * SUBTEST: invalid-multi-wait-all-unsubmitted
-diff --git a/tests/vgem_basic.c b/tests/vgem_basic.c
-index cb92efbf5..fa61e6cdb 100644
---- a/tests/vgem_basic.c
-+++ b/tests/vgem_basic.c
-@@ -33,10 +33,11 @@
- #include <dirent.h>
+  * SUBTEST: basic-read
+diff --git a/tests/intel/gen3_mixed_blits.c b/tests/intel/gen3_mixed_blits.c
+index 55bbb5d45..fbfd04705 100644
+--- a/tests/intel/gen3_mixed_blits.c
++++ b/tests/intel/gen3_mixed_blits.c
+@@ -51,6 +51,7 @@
  /**
-  * TEST: vgem basic
+  * TEST: gen3 mixed blits
+  * Category: Obsolete
++ * Mega feature: General Core features
+  * Sub-category: Obsolete_gen3
+  * Functionality: obsolete_test
+  * Feature: obsolete test
+diff --git a/tests/intel/gen3_render_linear_blits.c b/tests/intel/gen3_render_linear_blits.c
+index 43a443e0a..34bf510f0 100644
+--- a/tests/intel/gen3_render_linear_blits.c
++++ b/tests/intel/gen3_render_linear_blits.c
+@@ -50,6 +50,7 @@
+ /**
+  * TEST: gen3 render linear blits
+  * Category: Obsolete
++ * Mega feature: General Core features
+  * Sub-category: Obsolete_gen3
+  * Functionality: obsolete_test
+  * Feature: obsolete test
+diff --git a/tests/intel/gen3_render_mixed_blits.c b/tests/intel/gen3_render_mixed_blits.c
+index c7336adfe..29db12d3d 100644
+--- a/tests/intel/gen3_render_mixed_blits.c
++++ b/tests/intel/gen3_render_mixed_blits.c
+@@ -51,6 +51,7 @@
+ /**
+  * TEST: gen3 render mixed blits
+  * Category: Obsolete
++ * Mega feature: General Core features
+  * Sub-category: Obsolete_gen3
+  * Functionality: obsolete_test
+  * Feature: obsolete test
+diff --git a/tests/intel/gen3_render_tiledx_blits.c b/tests/intel/gen3_render_tiledx_blits.c
+index f5818135b..578abdef0 100644
+--- a/tests/intel/gen3_render_tiledx_blits.c
++++ b/tests/intel/gen3_render_tiledx_blits.c
+@@ -51,6 +51,7 @@
+ /**
+  * TEST: gen3 render tiledx blits
+  * Category: Obsolete
++ * Mega feature: General Core features
+  * Sub-category: Obsolete_gen3
+  * Functionality: obsolete_test
+  * Feature: obsolete test
+diff --git a/tests/intel/gen3_render_tiledy_blits.c b/tests/intel/gen3_render_tiledy_blits.c
+index b40be62f6..d8ecc1626 100644
+--- a/tests/intel/gen3_render_tiledy_blits.c
++++ b/tests/intel/gen3_render_tiledy_blits.c
+@@ -51,6 +51,7 @@
+ /**
+  * TEST: gen3 render tiledy blits
+  * Category: Obsolete
++ * Mega feature: General Core features
+  * Sub-category: Obsolete_gen3
+  * Functionality: obsolete_test
+  * Feature: obsolete test
+diff --git a/tests/intel/i915_getparams_basic.c b/tests/intel/i915_getparams_basic.c
+index 3518a3b9f..507e9754f 100644
+--- a/tests/intel/i915_getparams_basic.c
++++ b/tests/intel/i915_getparams_basic.c
+@@ -32,11 +32,12 @@
+ #include <i915_drm.h>
+ /**
+  * TEST: i915 getparams basic
 - * Category: Infrastructure
-  * Description: Basic sanity check of Virtual GEM module (vGEM).
-- * Functionality: mock device
+  * Description: Tests the export of parameters via DRM_IOCTL_I915_GETPARAM
+- * Feature: gem_core
+- * Functionality: device topology
++ * Category: Infrastructure
++ * Mega feature: General Core features
+  * Sub-category: uapi
++ * Functionality: device topology
++ * Feature: gem_core
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-eu-total
+diff --git a/tests/intel/i915_hangman.c b/tests/intel/i915_hangman.c
+index 47bc4cdd2..4a03917dc 100644
+--- a/tests/intel/i915_hangman.c
++++ b/tests/intel/i915_hangman.c
+@@ -42,11 +42,12 @@
+ #include "sw_sync.h"
+ /**
+  * TEST: i915 hangman
+- * Category: Server
+  * Description: Tests for hang detection and recovery
+- * Feature: reset
+- * Functionality: error handling
++ * Category: Server
++ * Mega feature: General Core features
+  * Sub-category: Debugging
++ * Functionality: error handling
++ * Feature: reset
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: detector
+diff --git a/tests/intel/i915_module_load.c b/tests/intel/i915_module_load.c
+index 6cde9274e..4508b43de 100644
+--- a/tests/intel/i915_module_load.c
++++ b/tests/intel/i915_module_load.c
+@@ -25,11 +25,12 @@
+ #include <sys/utsname.h>
+ /**
+  * TEST: i915 module load
+- * Category: Infrastructure
+  * Description: Tests the i915 module loading.
+- * Feature: core
+- * Functionality: driver handler
++ * Category: Infrastructure
++ * Mega feature: General Core features
+  * Sub-category: driver
++ * Functionality: driver handler
++ * Feature: core
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: load
+diff --git a/tests/intel/i915_pciid.c b/tests/intel/i915_pciid.c
+index cc62b1947..a66bd5edd 100644
+--- a/tests/intel/i915_pciid.c
++++ b/tests/intel/i915_pciid.c
+@@ -30,11 +30,12 @@
+ #include "intel_chipset.h"
+ /**
+  * TEST: i915 pciid
+- * Category: Infrastructure
+  * Description: Check that igt/i915 know about this PCI-ID
+- * Feature: core
+- * Functionality: device management
 + * Category: Infrastructure
 + * Mega feature: General Core features
   * Sub-category: Core
-+ * Functionality: mock device
++ * Functionality: device management
++ * Feature: core
   * Test category: GEM_Legacy
-  * Feature: vgem
   *
-diff --git a/tests/vgem_slow.c b/tests/vgem_slow.c
-index 35761a4ee..d350da793 100644
---- a/tests/vgem_slow.c
-+++ b/tests/vgem_slow.c
-@@ -32,11 +32,12 @@
- #include <dirent.h>
+  * SUBTEST:
+diff --git a/tests/intel/i915_pm_freq_api.c b/tests/intel/i915_pm_freq_api.c
+index 7766be82d..bfcd02e25 100644
+--- a/tests/intel/i915_pm_freq_api.c
++++ b/tests/intel/i915_pm_freq_api.c
+@@ -12,6 +12,7 @@
+  * TEST: i915 pm freq api
+  * Description: Test SLPC freq API
+  * Category: Infrastructure
++ * Mega feature: General Core features
+  * Sub-category: uapi
+  * Functionality: slpc
+  *
+diff --git a/tests/intel/i915_query.c b/tests/intel/i915_query.c
+index 6da974fd1..a6e35804b 100644
+--- a/tests/intel/i915_query.c
++++ b/tests/intel/i915_query.c
+@@ -29,11 +29,12 @@
+ #include <limits.h>
  /**
-  * TEST: vgem slow
+  * TEST: i915 query
 - * Category: Infrastructure
-  * Description: Extended sanity check of Virtual GEM module (vGEM).
-- * Feature: vgem
-- * Functionality: mock device
+  * Description: Testing the i915 query uAPI.
+- * Feature: gem_core
+- * Functionality: device topology
 + * Category: Infrastructure
 + * Mega feature: General Core features
-  * Sub-category: DRM
-+ * Functionality: mock device
-+ * Feature: vgem
+  * Sub-category: uapi
++ * Functionality: device topology
++ * Feature: gem_core
   * Test category: GEM_Legacy
   *
-  * SUBTEST: nohang
+  * SUBTEST: engine-info
+diff --git a/tests/intel/i915_selftest.c b/tests/intel/i915_selftest.c
+index cdaaaf635..30864a981 100644
+--- a/tests/intel/i915_selftest.c
++++ b/tests/intel/i915_selftest.c
+@@ -29,15 +29,17 @@
+  *
+  * SUBTEST: live
+  * Category: Selftest
++ * Mega feature: General Core features
+  * Sub-category: Selftest subcategory
+  * Functionality: live selftest
+  * Feature: gem_core
+  *
+  * SUBTEST: live@active
+  * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Synchronization
+  * Functionality: semaphore
+  * Test category: i915
+- * Sub-category: Synchronization
+  *
+  * SUBTEST: live@blt
+  * Description: Blitter validation
+@@ -48,11 +50,12 @@
+  * Test category: i915 / HW
+  *
+  * SUBTEST: live@client
+- * Category: Selftest
+  * Description: Internal API over blitter
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: blitter api
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: live@coherency
+  * Description: Cache management
+@@ -64,9 +67,10 @@
+  *
+  * SUBTEST: live@debugger
+  * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Debugging
+  * Functionality: device management
+  * Test category: debugger
+- * Sub-category: Debugging
+  *
+  * SUBTEST: live@display
+  * Category: Selftest
+@@ -152,11 +156,12 @@
+  * Test category: HW
+  *
+  * SUBTEST: live@gt_heartbeat
+- * Category: Selftest
+  * Description: Stall detection interface validation
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Reset
+  * Functionality: heartbeat
+  * Test category: i915
+- * Sub-category: Reset
+  *
+  * SUBTEST: live@gt_lrc
+  * Description: HW isolation and HW context validation
+@@ -167,11 +172,12 @@
+  * Test category: HW
+  *
+  * SUBTEST: live@gt_mocs
+- * Category: Selftest
+  * Description: Verification of mocs registers
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Mocs
+  * Functionality: mocs registers
+  * Test category: i915 / HW
+- * Sub-category: Mocs
+  *
+  * SUBTEST: live@gt_pm
+  * Description: Basic i915 driver module selftests
+@@ -181,11 +187,12 @@
+  * Functionality: rps, rc6
+  *
+  * SUBTEST: live@gt_timelines
+- * Category: Selftest
+  * Description: semaphore tracking
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Synchronization
+  * Functionality: semaphore
+  * Test category: i915
+- * Sub-category: Synchronization
+  *
+  * SUBTEST: live@gt_tlb
+  * Category: Selftest
+@@ -203,43 +210,49 @@
+  * Test category: i915
+  *
+  * SUBTEST: live@gtt_l4wa
+- * Category: Selftest
+  * Description: Check the L4WA is enabled when it was required
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Workarounds
+  * Functionality: L4WA
+  * Test category: i915
+- * Sub-category: Workarounds
+  *
+  * SUBTEST: live@guc
+  * Category: Selftest
+- * Feature: firmware feature
++ * Mega feature: General Core features
+  * Sub-category: Firmware
+  * Functionality: GUC
++ * Feature: GuC
+  * Test category: GuC
+  *
+  * SUBTEST: live@guc_doorbells
+  * Category: Selftest
+- * Feature: firmware feature
++ * Mega feature: General Core features
+  * Sub-category: Firmware
+  * Functionality: GUC
++ * Feature: GuC
+  * Test category: GuC
+  *
+  * SUBTEST: live@guc_hang
+  * Category: Selftest
+- * Feature: firmware feature
++ * Mega feature: General Core features
+  * Sub-category: Firmware
+  * Functionality: GUC
++ * Feature: GuC
+  * Test category: GuC
+  *
+  * SUBTEST: live@guc_multi_lrc
+  * Category: Selftest
+- * Feature: firmware feature
++ * Mega feature: General Core features
+  * Sub-category: Firmware
+  * Functionality: GUC
++ * Feature: GuC
+  * Test category: GuC
+  *
+  * SUBTEST: live@hangcheck
+- * Category: Selftest
+  * Description: reset handling after stall detection
++ * Category: Selftest
++ * Mega feature: General Core features
+  * Functionality: hangcheck
+  * Test category: i915
+  * Sub-category: Reset
+@@ -293,18 +306,20 @@
+  * Test category: i915
+  *
+  * SUBTEST: live@obj_lock
+- * Category: Selftest
+  * Description: Validation of per-object locking patterns
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Core
+  * Functionality: per-object locking
+  * Test category: i915
+- * Sub-category: Core
+  *
+  * SUBTEST: live@objects
+- * Category: Selftest
+  * Description: User object allocation and isolation checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Core
+  * Functionality: buffer management
+  * Test category: i915
+- * Sub-category: Core
+  *
+  * SUBTEST: live@perf
+  * Category: Selftest
+@@ -314,10 +329,11 @@
+  * Sub-category: Performance
+  *
+  * SUBTEST: live@remote_tiles
+- * Category: Selftest
+  * Description: Tile meta data validation
+- * Functionality: meta data
++ * Category: Selftest
++ * Mega feature: General Core features
+  * Sub-category: MultiTile
++ * Functionality: meta data
+  *
+  * SUBTEST: live@requests
+  * Description: Validation of internal i915 command submission interface
+@@ -328,15 +344,17 @@
+  * Test category: i915
+  *
+  * SUBTEST: live@reset
+- * Category: Selftest
+  * Description: engine/GT resets
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Reset
+  * Functionality: engine/GT reset
+  * Test category: HW
+- * Sub-category: Reset
+  *
+  * SUBTEST: live@sanitycheck
+  * Description: Checks the selftest infrastructure itself
+  * Category: Selftest
++ * Mega feature: General Core features
+  * Sub-category: Core
+  * Functionality: sanitycheck
+  * Test category: i915
+@@ -348,11 +366,12 @@
+  * Functionality: scheduler
+  *
+  * SUBTEST: live@semaphores
+- * Category: Selftest
+  * Description: GuC semaphore management
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Synchronization
+  * Functionality: semaphore
+  * Test category: HW
+- * Sub-category: Synchronization
+  *
+  * SUBTEST: live@slpc
+  * Description: Basic i915 driver module selftests
+@@ -387,14 +406,17 @@
+  * Test category: i915 / HW
+  *
+  * SUBTEST: live@workarounds
+- * Category: Selftest
+  * Description: Check workarounds persist or are reapplied after resets and other power management events
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Workarounds
+  * Functionality: driver workarounds
+  * Test category: HW
+- * Sub-category: Workarounds
+  *
+  * SUBTEST: mock
+  * Category: Selftest
++ * Mega feature: General Core features
++ * Feature: gem_core
+  * Sub-category: Selftest subcategory
+  * Functionality: mock selftest
+  * Feature: gem_core
+@@ -408,123 +430,140 @@
+  * Test category: DRM
+  *
+  * SUBTEST: mock@contexts
+- * Category: Selftest
+  * Description: GEM context internal API checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: context
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@dmabuf
+- * Category: Selftest
+  * Description: dma-buf (buffer management) API checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: buffer management
+  * Test category: DRM
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@engine
+- * Category: Selftest
+  * Description: Engine topology API checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: engine topology
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@evict
+- * Category: Selftest
+  * Description: GTT eviction API checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: gtt eviction
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@fence
+- * Category: Selftest
+  * Description: semaphore API checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: semaphore
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@gtt
+- * Category: Selftest
+  * Description: Virtual address management API checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: gtt
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@hugepages
+- * Category: Selftest
+  * Description: Hugepage API checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: huge page
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@memory_region
+- * Category: Selftest
+  * Description: Memory region API checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: memory region
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@objects
+- * Category: Selftest
+  * Description: Buffer object API checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: buffer object
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@phys
+- * Category: Selftest
+  * Description: legacy physical object API checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: physical object
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@requests
+- * Category: Selftest
+  * Description: Internal command submission API checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: requests
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@ring
+- * Category: Selftest
+  * Description: Ringbuffer management API checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: ringbuffer
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@sanitycheck
+  * Description: Selftest for the selftest
+  * Category: Selftest
++ * Mega feature: General Core features
+  * Sub-category: Core
+  * Functionality: sanitycheck
+  * Test category: i915
+  *
+  * SUBTEST: mock@scatterlist
+- * Category: Selftest
+  * Description: Scatterlist API checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: scatterlist
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@shmem
+- * Category: Selftest
+  * Description: SHM utils API checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: shm
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@syncmap
+- * Category: Selftest
+  * Description: API checks for the contracted radixtree
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: contracted radixtree
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@timelines
+- * Category: Selftest
+  * Description: API checks for semaphore tracking
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: semaphore
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: mock@tlb
+  * Category: Selftest
+@@ -542,11 +581,12 @@
+  * Feature: forcewake
+  *
+  * SUBTEST: mock@vma
+- * Category: Selftest
+  * Description: API checks for virtual address management
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: uapi
+  * Functionality: virtual address
+  * Test category: i915
+- * Sub-category: uapi
+  *
+  * SUBTEST: perf
+  * Category: Selftest
+diff --git a/tests/intel/prime_mmap_kms.c b/tests/intel/prime_mmap_kms.c
+index 7759b9469..1f39ba79a 100644
+--- a/tests/intel/prime_mmap_kms.c
++++ b/tests/intel/prime_mmap_kms.c
+@@ -40,9 +40,10 @@ IGT_TEST_DESCRIPTION(
+ /**
+  * TEST: prime mmap kms
+  * Category: Infrastructure
+- * Feature: prime
+- * Functionality: prime
++ * Mega feature: General Core features
+  * Sub-category: DRM
++ * Functionality: memory management
++ * Feature: prime
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: buffer-sharing
+diff --git a/tests/intel/sysfs_defaults.c b/tests/intel/sysfs_defaults.c
+index 0be8232d5..5b37e038d 100644
+--- a/tests/intel/sysfs_defaults.c
++++ b/tests/intel/sysfs_defaults.c
+@@ -36,9 +36,10 @@
+ /**
+  * TEST: sysfs defaults
+  * Category: Infrastructure
+- * Feature: gem_core
+- * Functionality: sysfs
++ * Mega feature: General Core features
+  * Sub-category: uapi
++ * Functionality: sysfs
++ * Feature: gem_core
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: readonly
 -- 
 2.34.1
 
