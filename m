@@ -4,44 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08531C4345F
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 04:15:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7348CC4345F
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 04:21:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 924C3113071;
-	Tue, 23 Apr 2024 04:15:49 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
- [217.70.183.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1AA11113071
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 04:15:47 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A578640003
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 04:15:45 +0000 (UTC)
-Received: by mail-ej1-f42.google.com with SMTP id
- a640c23a62f3a-a58772187d8so60323866b.3
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Apr 2024 21:15:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1;
- AJvYcCXG8CgIyMK+Mzr9sEMQi3gsHu3pGaWvonjBzFN7PnMKW0coYRrt+rfpa2ecvKrDhLZwkzLN0hl+4FFcrQAk8GoWZ4C7lzZh1PT0nLLgzg==
-X-Gm-Message-State: AOJu0YwDiQrHFg46YnrXcksYibpAeyuEjfqIGnkLJ6jpqwKqON1InRYV
- 3k1S/Nsr5RGHuycJ7TD4ahuQQOLNAtEakHkU1tU0tnbZlYgi5xwL8rAmcTu0MA20b/ZMVFF/DOJ
- iyHYb728U0Xo7fYqwDAO6+jADdXc=
-X-Google-Smtp-Source: AGHT+IGSMCkyhmOYFgK/TLf1ymotrW8FAv9r3h1zvp2MnISAOdDkLgal4+n28MmNX571iHYXxPRLLULaDMhPHwZ4HZ4=
-X-Received: by 2002:a17:906:d89:b0:a55:b272:e90b with SMTP id
- m9-20020a1709060d8900b00a55b272e90bmr5671363eji.35.1713845744815; Mon, 22 Apr
- 2024 21:15:44 -0700 (PDT)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9E2A211307E;
+	Tue, 23 Apr 2024 04:21:57 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 91A3B11307E;
+ Tue, 23 Apr 2024 04:21:56 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0135773983726846503=="
 MIME-Version: 1.0
-References: <20240410174031.5840-1-me@petersenna.com>
- <20240411195348.10881-1-me@petersenna.com>
- <20240419150553.gpb33q7tw4absj3m@kamilkon-DESK.igk.intel.com>
-In-Reply-To: <20240419150553.gpb33q7tw4absj3m@kamilkon-DESK.igk.intel.com>
-From: Peter Senna Tschudin <me@petersenna.com>
-Date: Tue, 23 Apr 2024 06:15:32 +0200
-X-Gmail-Original-Message-ID: <CA+MoWDqYeojpjv0FztZEfMnc6Yg-9Pjcb302-EaZT2CnDnmZAQ@mail.gmail.com>
-Message-ID: <CA+MoWDqYeojpjv0FztZEfMnc6Yg-9Pjcb302-EaZT2CnDnmZAQ@mail.gmail.com>
-Subject: Re: [PATCH i-g-t v2] tests/intel/gem_exec_capture: Fix many-* subtests
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, 
- Peter Senna Tschudin <me@petersenna.com>, andi.shyti@linux.intel.com
-Content-Type: multipart/alternative; boundary="000000000000d1db300616bbcea9"
-X-GND-Sasl: me@petersenna.com
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_Update_compression_check_ba?=
+ =?utf-8?q?sed_on_platform_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Akshata Jahagirdar" <akshata.jahagirdar@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 23 Apr 2024 04:21:56 -0000
+Message-ID: <171384611659.1590396.15550745190640126128@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <cover.1713584014.git.akshata.jahagirdar@intel.com>
+In-Reply-To: <cover.1713584014.git.akshata.jahagirdar@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,140 +37,200 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: peter.senna@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---000000000000d1db300616bbcea9
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+--===============0135773983726846503==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Hi Kamil,
+== Series Details ==
 
-On Fri, Apr 19, 2024 at 5:05=E2=80=AFPM Kamil Konieczny <
-kamil.konieczny@linux.intel.com> wrote:
+Series: Update compression check based on platform (rev2)
+URL   : https://patchwork.freedesktop.org/series/132654/
+State : success
 
-> Hi Peter,
-> On 2024-04-11 at 21:53:34 +0200, Peter Senna Tschudin wrote:
-> > Currently trying to run `gem_exec_capture --run-subtest
-> > many-4K-incremental` or `gem_exec_capture --run-subtest many-4K-zero`
-> > will fail with:
-> >
-> >  (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: Test
-> >  assertion failure function gem_engine_properties_configure, file
-> >  ../lib/i915/gem_engine_topology.c:577:
-> >  (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: Failed
-> assertion: ret =3D=3D 1
-> >  (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: Last errno=
-:
-> 9, Bad file descriptor
-> >  (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: error: -1
-> !=3D 1
-> >
-> > This problem happens inside the macro find_first_available_engine()
-> > when:
-> >  1. for_each_ctx_engine() allocates an struct intel_engine_data 'ed'
-> >     inside a for loop. The core of the issue is that ed only exists
-> >     inside the for loop. As soon as the for loop ends, ed is out of sco=
-pe
-> >     and after it's lifetime.
-> >  2. intel_get_current_engine() sets '*e' to an address of ed. This is o=
-k
-> >     while inside the for loop, and is undefined behavior after the for
-> >     loop ends.
-> >  3. configure_hangs() uses '*e' after the lifetime of 'ed' has ended
-> >     leading to undefined behavior
-> >  4. After the call to find_first_available_engine() __captureN() will
-> >     fail as it expects '*e' to be valid. This is also undefined
-> >     behavior.
-> >
-> > Additionally, this patch sets 'e' to NULL early on at the macro, and at
-> > the end check if it is still NULL. If so it will skip the test to
-> > prevent downstream code from crashing.
->
-> Strictly speaking we are not preventing crash but catch a case
-> when test cannot proceed (as it needs capable engine),
-> so then we skip it. Btw I plan on re-testing it on Monday and
-> merge it next week with that small description correction.
->
+== Summary ==
 
-I guess that we need to reduce the test size to avoid the CI timeout we see
-after my fix. I made a patch for it:
+CI Bug Log - changes from CI_DRM_14630 -> IGTPW_11053
+====================================================
 
-https://patchwork.freedesktop.org/series/131845/
+Summary
+-------
 
-Thank you,
+  **SUCCESS**
 
-Peter
+  No regressions found.
 
-[...]
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/index.html
 
---000000000000d1db300616bbcea9
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Participating hosts (36 -> 30)
+------------------------------
 
-<div dir=3D"ltr"><div>Hi Kamil,</div><br><div class=3D"gmail_quote"><div di=
-r=3D"ltr" class=3D"gmail_attr">On Fri, Apr 19, 2024 at 5:05=E2=80=AFPM Kami=
-l Konieczny &lt;<a href=3D"mailto:kamil.konieczny@linux.intel.com">kamil.ko=
-nieczny@linux.intel.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
-quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
-204);padding-left:1ex">Hi Peter,<br>
-On 2024-04-11 at 21:53:34 +0200, Peter Senna Tschudin wrote:<br>
-&gt; Currently trying to run `gem_exec_capture --run-subtest<br>
-&gt; many-4K-incremental` or `gem_exec_capture --run-subtest many-4K-zero`<=
-br>
-&gt; will fail with:<br>
-&gt; <br>
-&gt;=C2=A0 (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: Test=
-<br>
-&gt;=C2=A0 assertion failure function gem_engine_properties_configure, file=
-<br>
-&gt;=C2=A0 ../lib/i915/gem_engine_topology.c:577:<br>
-&gt;=C2=A0 (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: Fail=
-ed assertion: ret =3D=3D 1<br>
-&gt;=C2=A0 (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: Last=
- errno: 9, Bad file descriptor<br>
-&gt;=C2=A0 (gem_exec_capture:81999) i915/gem_engine_topology-CRITICAL: erro=
-r: -1 !=3D 1<br>
-&gt; <br>
-&gt; This problem happens inside the macro find_first_available_engine()<br=
->
-&gt; when:<br>
-&gt;=C2=A0 1. for_each_ctx_engine() allocates an struct intel_engine_data &=
-#39;ed&#39;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0inside a for loop. The core of the issue is that ed=
- only exists<br>
-&gt;=C2=A0 =C2=A0 =C2=A0inside the for loop. As soon as the for loop ends, =
-ed is out of scope<br>
-&gt;=C2=A0 =C2=A0 =C2=A0and after it&#39;s lifetime.<br>
-&gt;=C2=A0 2. intel_get_current_engine() sets &#39;*e&#39; to an address of=
- ed. This is ok<br>
-&gt;=C2=A0 =C2=A0 =C2=A0while inside the for loop, and is undefined behavio=
-r after the for<br>
-&gt;=C2=A0 =C2=A0 =C2=A0loop ends.<br>
-&gt;=C2=A0 3. configure_hangs() uses &#39;*e&#39; after the lifetime of &#3=
-9;ed&#39; has ended<br>
-&gt;=C2=A0 =C2=A0 =C2=A0leading to undefined behavior<br>
-&gt;=C2=A0 4. After the call to find_first_available_engine() __captureN() =
-will<br>
-&gt;=C2=A0 =C2=A0 =C2=A0fail as it expects &#39;*e&#39; to be valid. This i=
-s also undefined<br>
-&gt;=C2=A0 =C2=A0 =C2=A0behavior.<br>
-&gt; <br>
-&gt; Additionally, this patch sets &#39;e&#39; to NULL early on at the macr=
-o, and at<br>
-&gt; the end check if it is still NULL. If so it will skip the test to<br>
-&gt; prevent downstream code from crashing.<br>
-<br>
-Strictly speaking we are not preventing crash but catch a case<br>
-when test cannot proceed (as it needs capable engine),<br>
-so then we skip it. Btw I plan on re-testing it on Monday and<br>
-merge it next week with that small description correction.<br></blockquote>=
-<div><br></div><div>I guess that we need to reduce the test size to avoid t=
-he CI timeout we see after my fix. I made a patch for it:</div><div><br></d=
-iv><div><a href=3D"https://patchwork.freedesktop.org/series/131845/">https:=
-//patchwork.freedesktop.org/series/131845/</a><br></div><div><br></div><div=
->Thank you,</div><div><br></div><div>Peter</div><div><br></div><div>[...]</=
-div><div><br></div></div></div>
+  Additional (1): fi-glk-j4005 
+  Missing    (7): bat-arls-4 bat-mtlp-8 fi-bsw-n3050 fi-cfl-8109u fi-kbl-8809g bat-jsl-1 bat-arls-3 
 
---000000000000d1db300616bbcea9--
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11053 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-glk-j4005:       NOTRUN -> [SKIP][1] ([i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-glk-j4005:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/fi-glk-j4005/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_lmem_swapping@basic@lmem0:
+    - bat-dg2-8:          [PASS][3] -> [FAIL][4] ([i915#10378])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14630/bat-dg2-8/igt@gem_lmem_swapping@basic@lmem0.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/bat-dg2-8/igt@gem_lmem_swapping@basic@lmem0.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-glk-j4005:       NOTRUN -> [SKIP][5] +10 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/fi-glk-j4005/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - {bat-mtlp-9}:       [CRASH][6] -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14630/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-adls-6:         [DMESG-WARN][8] ([i915#5591]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14630/bat-adls-6/igt@i915_selftest@live@hangcheck.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/bat-adls-6/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10378]: https://gitlab.freedesktop.org/drm/intel/issues/10378
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7815 -> IGTPW_11053
+
+  CI-20190529: 20190529
+  CI_DRM_14630: d3410a305a38ffffd42343c3beba610f2ceca377 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11053: 11053
+  IGT_7815: d5d516bfdf77898e934b4c7ed947a43711cfb226 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/index.html
+
+--===============0135773983726846503==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Update compression check based on platform (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132654/">https://patchwork.freedesktop.org/series/132654/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_14630 -&gt; IGTPW_11053</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/index.html</p>
+<h2>Participating hosts (36 -&gt; 30)</h2>
+<p>Additional (1): fi-glk-j4005 <br />
+  Missing    (7): bat-arls-4 bat-mtlp-8 fi-bsw-n3050 fi-cfl-8109u fi-kbl-8809g bat-jsl-1 bat-arls-3 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11053 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/fi-glk-j4005/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic@lmem0:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14630/bat-dg2-8/igt@gem_lmem_swapping@basic@lmem0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/bat-dg2-8/igt@gem_lmem_swapping@basic@lmem0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/10378">i915#10378</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/fi-glk-j4005/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> +10 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14630/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html">CRASH</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-adls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14630/bat-adls-6/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5591">i915#5591</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11053/bat-adls-6/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7815 -&gt; IGTPW_11053</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14630: d3410a305a38ffffd42343c3beba610f2ceca377 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11053: 11053<br />
+  IGT_7815: d5d516bfdf77898e934b4c7ed947a43711cfb226 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0135773983726846503==--
