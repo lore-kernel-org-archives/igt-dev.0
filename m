@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6993CC10F1A
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 14:33:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAD69C4345F
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 14:33:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 055AF10FCC3;
-	Tue, 23 Apr 2024 14:33:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 63273113407;
+	Tue, 23 Apr 2024 14:33:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="fiqgqMjy";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="CtyIMomA";
 	dkim-atps=neutral
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com
- [209.85.167.52])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 197ED10F372
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 14:33:00 +0000 (UTC)
-Received: by mail-lf1-f52.google.com with SMTP id
- 2adb3069b0e04-51ae315bb20so4291865e87.1
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 07:33:00 -0700 (PDT)
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com
+ [209.85.167.42])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F3DC610FC9D
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 14:33:01 +0000 (UTC)
+Received: by mail-lf1-f42.google.com with SMTP id
+ 2adb3069b0e04-5196c755e82so8082861e87.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 07:33:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=gmail.com; s=20230601; t=1713882779; x=1714487579; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nKNsIS8AQ47lafwYcqdkkRkj7m92SBrlfW2RV3bcI/Y=;
- b=fiqgqMjyGX1xDVJFdR2Tb5cWe7nurZaozVIJzZ4Sh+wqKSU0LfNQx/+4dkb/wdBwA3
- Ng9jKs1FKJBxLKVsG0f98dzN2PWgd7xxOMm2ELMn+uVMMMUAZM8JuAMmZj7doZCaT5mR
- lblhkN3bCgWce8UEqS9ODxOdf+1whACRtqaGBxrZDwNmP8IoobQhYrOct5vuWj/en+as
- QfqP27hmzrTgtDBJBJSikdU7vxmomEozgEkQSjPMFU2w+ReXtDyQodjpJHAKqntZ5yKa
- qu6uoRnunilREwMDg7GwLLrvYzrPRppzZV1RbyV+d04H/e+F5Bq2t9axD/P1i8zO1jfS
- X9yg==
+ bh=Pk+YTwWVBhVFqGdx609i5a1NopBqjnCjXrqG28rOUmc=;
+ b=CtyIMomAleNKhioAAicczLjq1VnshahKlgcgeza0xgwC9Fs4ds5bMKge5wtDkh5ffs
+ 6pH0IoN8lSerOuu6YLKad/LQv7SZyFZfreEIGkDTK9oNshJ0YuT/N1PnPsFucaPw/lMC
+ xQgR/fXHfpW0rL/UXGhWGKIQFAJhRnyZzDLDcAkdyVxRmcg1ZbJLLNX+SPcH0aNfrd4n
+ qov7LVo0qKztz/S4YmfabRq0evI8C+UUpXGB2IvJ2NoL7an02yU5ql4lwKIBeXlhtL+s
+ eOb0Suod+3rmnl/Qy8z2M7or98c1EwL0d6YM5g0BqodENN9x7xK9jy+RYDsAi310urvo
+ Om1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1713882779; x=1714487579;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nKNsIS8AQ47lafwYcqdkkRkj7m92SBrlfW2RV3bcI/Y=;
- b=tOrAe1qz/28WZZEJJwkegZnTV1Tw1OrmwMakqUqMOkORDne12rXH5saUjsX27X4waW
- zIueaEwLi0HNI7jz9Iq7Oxdd5cMy7ehNWTYNGPkjg8EpMdGLj+xWb2Gd3JKZ7XU9N5eQ
- Y4yFNhufqR67+r4a4pEFa/8xj2n70fBuvTeLtNThNzzjK024pbh1VYp/2HZnPdizrvzy
- 0oXN70cPubKp+0PSrMkcbqfoOEis686LUUZfDNMmhMQ8Wgii8hY7K0NxfHBF5XS4+wDU
- tWveulGgVsMDG8hDmg96A29McSYD2gmOlS42+iTBy/DKHxlqcPsnCNn/Tce+SebtO6nh
- hjEw==
-X-Gm-Message-State: AOJu0YwhlttTLTzobphwoJBgasP5QjqGQhJ8Bqd5htnOx/YbP4zFhqdx
- 8GU+oTCbA1RRumzrb23d6NYrPu+xexRZaigKYhpbrqNwOUKzCpEJT8d4XaF+yXY=
-X-Google-Smtp-Source: AGHT+IFwBYnnOskx3HwntYOJ7zEnTbKEAmJrM3rqeiIEALyRecj9CJQWHQMMc4pBE4CQKrY6vQSvVg==
-X-Received: by 2002:a05:6512:25e:b0:516:9e97:d3ee with SMTP id
- b30-20020a056512025e00b005169e97d3eemr8421035lfo.53.1713882778346; 
- Tue, 23 Apr 2024 07:32:58 -0700 (PDT)
+ bh=Pk+YTwWVBhVFqGdx609i5a1NopBqjnCjXrqG28rOUmc=;
+ b=Lc6aQZZx83DStQZ1Iigh9ygJh1O46OB3uk2H+pOSfwgDslC0+kxiSMpjXvVcShNbCJ
+ TlbxSQ/0tTVmPmM1DsQ/bPCj6KzLjqbLHS9rb5kbThvobHyMApiTshBbCEQ6UGnTF4sZ
+ z8bYYLnKN/m87dsIyM26By5pg/yECKKg5UMIazczPO+h08TGkmhtDnDxMkHvkkZOUS+O
+ 8Y/mwJkWq8FCvP/7LYC9oeGiPdJ+RXn2YkfB2JMmVOLhFlzAV1E6kvoLZlKyqbI2pT5i
+ y9V/2jLOh8/SmJ6LchdxGXTFviA9MNfcSP/CloKMIimU2TvQPVRfUsiSdfuNFyyCfU38
+ AW1w==
+X-Gm-Message-State: AOJu0YyLoOGD6AZjLCpdSUPpr77wUouVuygeOcIS+w6RAZd0i9dfg1Kw
+ APQstN3h01Z+nb9HTQU0KSi3MgMdGx5QwXoUjDL7HXIObgZhAsK8BY8SU60JcK0=
+X-Google-Smtp-Source: AGHT+IHCCwbi3USWPwwnCZqv5QIDBWlF2ufOZ4GJ/k9Waz55H06nAgiMFbmYK86zNyqXQEqTsxEilA==
+X-Received: by 2002:a05:6512:b88:b0:51b:b070:a55c with SMTP id
+ b8-20020a0565120b8800b0051bb070a55cmr1275826lfv.57.1713882779192; 
+ Tue, 23 Apr 2024 07:32:59 -0700 (PDT)
 Received: from jheikkil-mobl1.. (91-156-196-125.elisa-laajakaista.fi.
  [91.156.196.125]) by smtp.gmail.com with ESMTPSA id
- d25-20020a196b19000000b0051af5cba0f3sm988781lfa.11.2024.04.23.07.32.57
+ d25-20020a196b19000000b0051af5cba0f3sm988781lfa.11.2024.04.23.07.32.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 23 Apr 2024 07:32:58 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t v2 1/6] lib/igt_fb: fix intel modifiers for fb copying
- on xe driver
-Date: Tue, 23 Apr 2024 17:32:41 +0300
-Message-Id: <20240423143246.130884-2-juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t v2 2/6] lib/igt_fb: make blt_compression_format function
+ more readable
+Date: Tue, 23 Apr 2024 17:32:42 +0300
+Message-Id: <20240423143246.130884-3-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240423143246.130884-1-juhapekka.heikkila@gmail.com>
 References: <20240423143246.130884-1-juhapekka.heikkila@gmail.com>
@@ -81,70 +81,95 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-mc ccs need to go to vebox copy, blitter doesn't do mc ccs hence
-on all platforms with ccs modifiers use engine copy for those.
-Use render engine for x-tile on legacy platforms where x-tile
-would otherwise endup on fastblit patch which is known to have
-limitations.
+Intel blitter compression format getter sanitizing.
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/igt_fb.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ lib/igt_fb.c | 63 ++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 37 insertions(+), 26 deletions(-)
 
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index cc70cb91c..f6f280b13 100644
+index f6f280b13..f9868e269 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -2508,9 +2508,11 @@ static bool blitter_ok(const struct igt_fb *fb)
- 	if (!is_intel_device(fb->fd))
- 		return false;
+@@ -2824,6 +2824,32 @@ static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb)
+ #define BLT_TARGET_MC(x) (x.compression == COMPRESSION_ENABLED && \
+ 			  x.compression_type == COMPRESSION_TYPE_MEDIA)
  
--	if ((is_ccs_modifier(fb->modifier) &&
--	     !HAS_FLATCCS(intel_get_drm_devid(fb->fd))) ||
--	     is_gen12_mc_ccs_modifier(fb->modifier))
-+	if ((!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) &&
-+	    is_ccs_modifier(fb->modifier)) ||
-+	    is_gen12_mc_ccs_modifier(fb->modifier) ||
-+	    (!blt_uses_extended_block_copy(fb->fd) &&
-+	    fb->modifier == I915_FORMAT_MOD_X_TILED))
- 		return false;
++const struct {
++	uint32_t key;
++	enum blt_compression_type type;
++	uint32_t return_value;
++} compression_mappings[] = {
++	{ CD_32bit, COMPRESSION_TYPE_3D, 8 },
++	{ DRM_FORMAT_XRGB8888, COMPRESSION_TYPE_MEDIA, 8 },
++	{ DRM_FORMAT_XYUV8888, COMPRESSION_TYPE_MEDIA, 9 },
++	{ DRM_FORMAT_NV12, COMPRESSION_TYPE_MEDIA, 9 },
++	{ DRM_FORMAT_P010, COMPRESSION_TYPE_MEDIA, 8 },
++	{ DRM_FORMAT_P012, COMPRESSION_TYPE_MEDIA, 8 },
++	{ DRM_FORMAT_P016, COMPRESSION_TYPE_MEDIA, 8 },
++};
++
++static uint32_t get_compression_return_value(uint32_t key, enum  blt_compression_type type)
++{
++	for (int i = 0; i < ARRAY_SIZE(compression_mappings); i++) {
++		if (compression_mappings[i].key == key &&
++		    compression_mappings[i].type == type) {
++			return compression_mappings[i].return_value;
++		}
++	}
++	igt_assert_f(0, "Unknown compression type or format\n");
++	return 0; // This line is to avoid compilation warnings, it will not be reached.
++}
++
+ static uint32_t blt_compression_format(struct blt_copy_data *blt,
+ 				       const struct igt_fb *fb)
+ {
+@@ -2831,33 +2857,18 @@ static uint32_t blt_compression_format(struct blt_copy_data *blt,
+ 	    blt->dst.compression == COMPRESSION_DISABLED)
+ 		return 0;
  
- 	if (is_xe_device(fb->fd))
-@@ -2551,6 +2553,7 @@ static bool use_enginecopy(const struct igt_fb *fb)
- 		return false;
- 
- 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
-+	       fb->modifier == I915_FORMAT_MOD_X_TILED ||
- 	       (!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) && is_ccs_modifier(fb->modifier)) ||
- 	       is_gen12_mc_ccs_modifier(fb->modifier);
+-	if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst)) {
+-		switch (blt->color_depth) {
+-		case CD_32bit:
+-			return 8;
+-		default:
+-			igt_assert_f(0, "COMPRESSION_TYPE_3D unknown color depth\n");
+-		}
+-	} else if (BLT_TARGET_MC(blt->src)) {
+-		switch (fb->drm_format) {
+-		case DRM_FORMAT_XRGB8888:
+-			return 8;
+-		case DRM_FORMAT_XYUV8888:
+-			return 9;
+-		case DRM_FORMAT_NV12:
+-			return 9;
+-		case DRM_FORMAT_P010:
+-		case DRM_FORMAT_P012:
+-		case DRM_FORMAT_P016:
+-			return 8;
+-		default:
+-			igt_assert_f(0, "COMPRESSION_TYPE_MEDIA unknown format\n");
+-		}
+-	} else if (BLT_TARGET_MC(blt->dst)) {
++	if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst))
++		return get_compression_return_value(blt->color_depth,
++						    COMPRESSION_TYPE_3D);
++
++	if (BLT_TARGET_MC(blt->src))
++		return get_compression_return_value(fb->drm_format,
++						    COMPRESSION_TYPE_MEDIA);
++
++	if (BLT_TARGET_MC(blt->dst))
+ 		igt_assert_f(0, "Destination compression not supported on mc ccs\n");
+-	} else {
+-		igt_assert_f(0, "unknown compression\n");
+-	}
++
++	igt_assert_f(0, "unknown compression\n");
  }
-@@ -3062,7 +3065,12 @@ static void free_linear_mapping(struct fb_blit_upload *blit)
- 		igt_nouveau_delete_bo(&linear->fb);
- 	} else if (is_xe_device(fd)) {
- 		gem_munmap(linear->map, linear->fb.size);
--		blitcopy(fb, &linear->fb);
-+
-+		if (blit->ibb)
-+			copy_with_engine(blit, fb, &linear->fb);
-+		else
-+			blitcopy(fb, &linear->fb);
-+
- 		gem_close(fd, linear->fb.gem_handle);
- 	} else {
- 		gem_munmap(linear->map, linear->fb.size);
-@@ -3142,7 +3150,10 @@ static void setup_linear_mapping(struct fb_blit_upload *blit)
  
- 		linear->map = igt_nouveau_mmap_bo(&linear->fb, PROT_READ | PROT_WRITE);
- 	} else if (is_xe_device(fd)) {
--		blitcopy(&linear->fb, fb);
-+		if (blit->ibb)
-+			copy_with_engine(blit, &linear->fb, fb);
-+		else
-+			blitcopy(&linear->fb, fb);
- 
- 		linear->map = xe_bo_mmap_ext(fd, linear->fb.gem_handle,
- 					     linear->fb.size, PROT_READ | PROT_WRITE);
+ static void blitcopy(const struct igt_fb *dst_fb,
 -- 
 2.25.1
 
