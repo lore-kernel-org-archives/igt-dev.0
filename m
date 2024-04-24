@@ -4,67 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20D5FC19F4E
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Apr 2024 20:13:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68980C4345F
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Apr 2024 20:19:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B6FAA1120AD;
-	Wed, 24 Apr 2024 20:13:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1724C11222B;
+	Wed, 24 Apr 2024 20:19:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="Dd9wq/kA";
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="jzONS+sV";
 	dkim-atps=neutral
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com
- [209.85.214.176])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EEC9B1120AD
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Apr 2024 20:13:57 +0000 (UTC)
-Received: by mail-pl1-f176.google.com with SMTP id
- d9443c01a7336-1e651a9f3ffso1695755ad.1
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Apr 2024 13:13:57 -0700 (PDT)
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com
+ [209.85.218.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BB301131A1
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Apr 2024 20:19:18 +0000 (UTC)
+Received: by mail-ej1-f43.google.com with SMTP id
+ a640c23a62f3a-a55b10bfd30so17162466b.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Apr 2024 13:19:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1713989636; x=1714594436;
+ d=chromium.org; s=google; t=1713989957; x=1714594757;
  darn=lists.freedesktop.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DaAieBorHfhLSKjq+hgMOw9pRaPaw0j5H+8Of6HXicM=;
- b=Dd9wq/kAXhGy5p6NIsyRTekyhM8kWh29Kv2yRXM+ur1Jn/hDbfziK4RYmdgtUoHLNJ
- ehCdqQuQgyJUQ1cMDr1kA1suQYqU6VDYP+X7TXkFSF25hjGSnGJkrppEbGcoWezXHqV8
- Sj9IdGGVYsHL7/HIPhd/XcS0+qApji235WXSA=
+ bh=vve6iIRKn6X2unci+8R7fIDYAXIAYrsGlHXvry0RC1g=;
+ b=jzONS+sVRiMIezd6KWK6BfmgPTp3zUgE/gYibuWQX0nwva8X2t1DrvMPlGbHEHDN/f
+ BuWx8MUnpHRzeEL/e6viJDgeb2k2EDXoVJoPV1+6kGhACb4RFTmyBqaAv0aMgTnhXFsR
+ nxy/CClK/rcTfwZc7rLMLdBbXKSxWg24wLs5M=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713989636; x=1714594436;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1713989957; x=1714594757;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DaAieBorHfhLSKjq+hgMOw9pRaPaw0j5H+8Of6HXicM=;
- b=QNw6JCQiq4MMW1aGZNE1LMMOnTkIBp983NpXvi7ajt3Yxt5N8gEzCS4IJ9FPj5U8F1
- RS7g6sWgOWhVZQ1wHcmcXHK6VOZc/Ccqem9n268hsjczAx0WunIRhQufIhK8wj4bCX4J
- YRcbh3EZrev05rV0TD4yKz5V+GkNhf8MFM6CK8G4AdDzXsFLyZ9hJ2lOn/nwvTCXvJfW
- jsH2wvK1RSV9LX0tfB6yEZa2nL+u3uW4SHQT/OpVJa3qjCLa1iPbE+0P8KwmQcMxV81j
- CDL0s8zcgk5/IGDFg47dN65QFNlQnH2ih+sQbcJhe6obak8ftXoDZCE5BSyQxZeKimAA
- k95g==
-X-Gm-Message-State: AOJu0YwSCb6lQ5z8cYS9E6vZDQW0QqkorTZ6GOTrrD5GJJwe2cddGdTN
- jNgHKbVm3Ptg5KMloxZGkJ7qjAMbKHtMkvI8UcmA4GjaID2HssSj37C/W7v/TPNsQiQm9udPqkU
- =
-X-Google-Smtp-Source: AGHT+IGjtOG8EgRQWLos4lCvOJnkO56rIK0CcV3JOob2ANwIGD6Z/gowUVtGods4bQX2hp1JMh3BaA==
-X-Received: by 2002:a17:902:cccc:b0:1e4:7ca3:8a33 with SMTP id
- z12-20020a170902cccc00b001e47ca38a33mr4192509ple.17.1713989636130; 
- Wed, 24 Apr 2024 13:13:56 -0700 (PDT)
-Received: from navaremanasi.c.googlers.com.com
- (219.29.83.34.bc.googleusercontent.com. [34.83.29.219])
- by smtp.gmail.com with ESMTPSA id
- o4-20020a1709026b0400b001e81c778784sm12280334plk.67.2024.04.24.13.13.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 13:13:54 -0700 (PDT)
-From: Manasi Navare <navaremanasi@chromium.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Manasi Navare <navaremanasi@chromium.org>
-Subject: [PATCH v3 2/2] HAX: run kms_vrr tests in BAT
-Date: Wed, 24 Apr 2024 20:13:44 +0000
-Message-ID: <20240424201344.783935-2-navaremanasi@chromium.org>
-X-Mailer: git-send-email 2.44.0.769.g3c40516874-goog
-In-Reply-To: <20240424201344.783935-1-navaremanasi@chromium.org>
-References: <20240424201344.783935-1-navaremanasi@chromium.org>
+ bh=vve6iIRKn6X2unci+8R7fIDYAXIAYrsGlHXvry0RC1g=;
+ b=w5deWEbUuT6hXILNtp1D0cK6yN1QhZEnHzFfWDuXjKKmqoX/zbCDvqQDYAtxIRmKJa
+ +kcQAZtaSlBVLeSifrXaA0y+JfNgoGbS/hb0UTu7QmivzFEoogS+BvcsDlXmZJO7FMQQ
+ OT2JSPYNaGHPRnlrl0KvyppeUJzkN9ti+xC6I0M6XipiK/xEXzoCsq/1T2bjAkDp1QTS
+ AIU937bu+UkbSvu5F0q0MKYU2WQrfQVKmUdx/3I55L6plTSCffh5m6vp2vGAlXgb8gno
+ gut+L/IBK3jGfCVr8c7nlxQkMklPtlXqxdrn7bkuATeJKBGIcWppm425T+ArfbInFrKJ
+ S7Bw==
+X-Gm-Message-State: AOJu0YwrGfSsgnWuMyQavdcbBW4mWx29g3CwzA9N+rL0jJ9j5yL524cw
+ 9ZUeNRsYSSOlvW+rzAjpDRlWgPzkxYDxX0jls8DYLkhH6X7fwRqSlzscFEFbkig3PwnkfKzo/xO
+ BLuW0GTbsikWCkKo5h6+27Ln81kwXxEsSkU3qKg4vbH3bKLW9rw==
+X-Google-Smtp-Source: AGHT+IFmFHvcvtqe8Dx11SWIWDHsZ/+bRhmmF3KydPWMgXUmlYZm+/XGW4g4xPz+Prr5fAxLTmyNnuc+NyFiQX/+KR0=
+X-Received: by 2002:a50:bb6f:0:b0:56d:f3f3:f61f with SMTP id
+ y102-20020a50bb6f000000b0056df3f3f61fmr3230974ede.9.1713989956709; Wed, 24
+ Apr 2024 13:19:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240325230519.1787483-1-navaremanasi@chromium.org>
+ <d1dca10c-dc5c-4bd2-9f94-26ae032d35de@intel.com>
+In-Reply-To: <d1dca10c-dc5c-4bd2-9f94-26ae032d35de@intel.com>
+From: Manasi Navare <navaremanasi@chromium.org>
+Date: Wed, 24 Apr 2024 13:19:05 -0700
+Message-ID: <CAE72mNmWrjt6Br-HbtgdY+1YFuQ2=m3=iUSpiaBfqkJvbhaPrg@mail.gmail.com>
+Subject: Re: [PATCH v5] tests/kms_vrr: Add a subtest for seamless modeset to a
+ virtual LRR mode
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Drew Davenport <ddavenport@chromium.org>, 
+ =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
+ Sean Paul <seanpaul@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,23 +78,212 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Signed-off-by: Manasi Navare <navaremanasi@chromium.org>
----
- tests/intel-ci/fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+Hi Bhanu,
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index be0965110..53a364ae6 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -129,6 +129,7 @@ igt@kms_psr@psr-cursor-plane-move
- igt@kms_psr@psr-sprite-plane-onoff
- igt@kms_psr@psr-primary-mmap-gtt
- igt@kms_setmode@basic-clone-single-crtc
-+igt@kms_vrr
- igt@i915_pm_rps@basic-api
- igt@prime_self_import@basic-llseek-bad
- igt@prime_self_import@basic-llseek-size
--- 
-2.44.0.769.g3c40516874-goog
+I have created a HAX patch and addressed other comments, could you
+please take a look, hopefully we will get good BAT results this time:
+https://patchwork.freedesktop.org/series/132866/
 
+Manasi
+
+On Thu, Apr 4, 2024 at 11:37=E2=80=AFPM Modem, Bhanuprakash
+<bhanuprakash.modem@intel.com> wrote:
+>
+> Hi Manasi,
+>
+> Please find the comments inline, you can get my R-b once you fix those
+> minor comments.
+>
+> Also, I can recommend to add a HAX [*] patch (along with this patch) to
+> run VRR tests in BAT. So that we can get some CI results before we
+> actually merge this patch.
+>
+> [*]:
+> https://intel-gfx-ci.01.org/#forcing-tests-in-bat-and-changing-configurat=
+ion
+>
+> On 26-03-2024 04:35 am, Manasi Navare wrote:
+> > This subtest validates LRR fastset functionality by testing seamless sw=
+itching
+> > without full modeset to any of the virtual LRR mode within VRR range.
+> > Here we start from highest refresh rate mode and then switch to virtual=
+ LRR
+> > modes in the steps of 10Hz within the VRR range.
+> >
+> > This is used to test the LRR fastset functionality of the driver.
+> >
+> > v4:
+> > - Change the test name to align with drrs/vrr tests (Bhanu)
+> > - Fix some build warnings due to rebase
+> > - Use a local virtual_mode variable
+> >
+> > v3:
+> > - Fix build error due to rebase (Manasi)
+> >
+> > Cc: Drew Davenport <ddavenport@chromium.org>
+> > Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> > Cc: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> > Cc: Sean Paul <seanpaul@chromium.org>
+> > Signed-off-by: Manasi Navare <navaremanasi@chromium.org>
+> > ---
+> >   tests/kms_vrr.c | 72 ++++++++++++++++++++++++++++++++++++++++++++++--=
+-
+> >   1 file changed, 68 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+> > index 15c62b34b..d838647bd 100644
+> > --- a/tests/kms_vrr.c
+> > +++ b/tests/kms_vrr.c
+> > @@ -66,6 +66,11 @@
+> >    * Description: Test to switch RR seamlessly without modeset.
+> >    * Functionality: adaptive_sync, drrs
+> >    *
+> > + * SUBTEST: seamless-rr-switch-virtual
+> > + * Description: Test to create a Virtual Mode in VRR range and switch =
+to it
+> > + *           without a full modeset.
+> > + * Functionality: LRR
+> > + *
+> >    * SUBTEST: max-min
+> >    * Description: Oscillates between highest and lowest refresh each fr=
+ame for
+> >    *              manual flicker profiling
+> > @@ -89,9 +94,10 @@ enum {
+> >       TEST_FLIPLINE =3D 1 << 3,
+> >       TEST_SEAMLESS_VRR =3D 1 << 4,
+> >       TEST_SEAMLESS_DRRS =3D 1 << 5,
+> > -     TEST_FASTSET =3D 1 << 6,
+> > -     TEST_MAXMIN =3D 1 << 7,
+> > -     TEST_NEGATIVE =3D 1 << 8,
+> > +     TEST_SEAMLESS_VIRTUAL_RR =3D 1 << 6,
+> > +     TEST_FASTSET =3D 1 << 7,
+> > +     TEST_MAXMIN =3D 1 << 8,
+> > +     TEST_NEGATIVE =3D 1 << 9,
+> >   };
+> >
+> >   enum {
+> > @@ -214,6 +220,18 @@ low_rr_mode_with_same_res(igt_output_t *output, un=
+signed int vrr_min)
+> >       return mode;
+> >   }
+> >
+> > +static drmModeModeInfo
+> > +virtual_rr_vrr_range_mode(igt_output_t *output, unsigned int virtual_r=
+efresh_rate)
+> > +{
+> > +     drmModeModeInfo mode =3D *igt_output_get_mode(output);
+> > +     uint64_t clock_hz =3D mode.clock * 1000;
+> > +
+> > +     mode.vtotal =3D clock_hz / (mode.htotal * virtual_refresh_rate);
+> > +     mode.vrefresh =3D virtual_refresh_rate;
+> > +
+> > +     return mode;
+> > +}
+> > +
+> >   /* Read min and max vrr range from the connector debugfs. */
+> >   static range_t
+> >   get_vrr_range(data_t *data, igt_output_t *output)
+> > @@ -641,6 +659,48 @@ test_seamless_rr_basic(data_t *data, enum pipe pip=
+e, igt_output_t *output, uint3
+> >                    vrr ? "on" : "off", vrr ? "not reached" : "exceeded"=
+, result);
+> >   }
+> >
+> > +static void
+> > +test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe, igt_outpu=
+t_t *output, uint32_t flags)
+> > +{
+> > +     uint32_t result;
+> > +     unsigned int vrefresh;
+> > +     uint64_t rate[] =3D {0};
+> > +
+> > +     igt_info("Use HIGH_RR Mode as default\n");
+> > +     kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
+> > +
+> > +     prepare_test(data, output, pipe);
+> > +     rate[0] =3D rate_from_refresh(data->switch_modes[HIGH_RR_MODE].vr=
+efresh);
+> > +
+> > +     /*
+> > +      * Sink with DRR and VRR can be in downclock mode so
+> > +      * switch to highest refresh rate mode.
+> > +      */
+> > +     igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE=
+]);
+> > +     igt_assert(igt_display_try_commit_atomic(&data->display, DRM_MODE=
+_PAGE_FLIP_EVENT, NULL) =3D=3D 0);
+> > +
+> > +     result =3D flip_and_measure(data, output, pipe, rate, 1, TEST_DUR=
+ATION_NS);
+> > +     igt_assert_f(result > 75,
+> > +                  "Refresh rate (%u Hz) %"PRIu64"ns: Target threshold =
+not reached, result was %u%%\n",
+> > +                  data->switch_modes[HIGH_RR_MODE].vrefresh, rate[0], =
+result);
+> > +
+> > +     /* Switch to Virtual RR */
+> > +     for (vrefresh =3D data->range.min + 10; vrefresh < data->range.ma=
+x; vrefresh +=3D 10) {
+> > +             drmModeModeInfo virtual_mode =3D virtual_rr_vrr_range_mod=
+e(output, vrefresh);
+>
+> Nit: Please add a new line here to separate variable declarations from
+> actual logic.
+>
+> > +             igt_info("Requesting Virtual Mode with Refresh Rate (%u H=
+z): \n", vrefresh);
+> > +             kmstest_dump_mode(&virtual_mode);
+> > +
+> > +             igt_output_override_mode(output, &virtual_mode);
+> > +             igt_assert(igt_display_try_commit_atomic(&data->display, =
+0, NULL) =3D=3D 0);
+> > +
+> > +             rate[0] =3D rate_from_refresh(vrefresh);
+> > +             result =3D flip_and_measure(data, output, pipe, rate[0], =
+1, TEST_DURATION_NS);
+> ------------------------------------------------------------------^
+> We need to pass the reference.
+>
+> s/rate[0]/rate/
+>
+> - Bhanu
+>
+> > +             igt_assert_f(result > 75,
+> > +                          "Refresh rate (%u Hz) %"PRIu64"ns: Target th=
+reshold not reached, result was %u%%\n",
+> > +                          vrefresh, rate[0], result);
+> > +     }
+> > +}
+> > +
+> >   static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *=
+output)
+> >   {
+> >       if (vrr_capable(output))
+> > @@ -686,7 +746,7 @@ static bool output_constraint(data_t *data, igt_out=
+put_t *output, uint32_t flags
+> >       igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE=
+]);
+> >
+> >       /* Search for a low refresh rate mode. */
+> > -     if (!(flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS)))
+> > +     if (!(flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS | TEST_SEAM=
+LESS_VIRTUAL_RR)))
+> >               return true;
+> >
+> >       data->switch_modes[LOW_RR_MODE] =3D low_rr_mode_with_same_res(out=
+put, data->range.min);
+> > @@ -841,6 +901,10 @@ igt_main_args("drs:", long_opts, help_str, opt_han=
+dler, &data)
+> >                            "between flip timestamps converges to the re=
+quested rate");
+> >               igt_subtest_with_dynamic("flip-basic-fastset")
+> >                       run_vrr_test(&data, test_basic, TEST_FASTSET);
+> > +
+> > +             igt_describe("Test to switch to any custom virtual mode i=
+n VRR range without modeset.");
+> > +             igt_subtest_with_dynamic("seamless-rr-switch-virtual")
+> > +                     run_vrr_test(&data, test_seamless_virtual_rr_basi=
+c, TEST_SEAMLESS_VIRTUAL_RR);
+> >       }
+> >
+> >       igt_fixture {
