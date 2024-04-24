@@ -4,57 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E23FC4345F
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Apr 2024 16:33:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A462C4345F
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Apr 2024 16:51:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F22CF10E1AA;
-	Wed, 24 Apr 2024 16:33:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AF0AA113C79;
+	Wed, 24 Apr 2024 16:51:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KBbfTZeZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dNt8nLYk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 634F910E1AA
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Apr 2024 16:33:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 22759113054;
+ Wed, 24 Apr 2024 16:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713976418; x=1745512418;
+ t=1713977501; x=1745513501;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=/zH89vZnF3AyQxjcnPGTj7GBh71LfbDDOLdE0P8tC1U=;
- b=KBbfTZeZsc12u/X5p4t5XUDWr5hqgtUq3bY/Y8lI1g4nGlNKGHXzOSIm
- txmXiHqUz+lote2a7etIxWzxGa3CuPhSP0kg7hQB8gD04cHt+ebDI9kEj
- e/npm1gRZQMLim4zqJPooc4l1NoNgobYXSR6zrKDD3e10EPIyKaBZKBTg
- 6Su3+nNVSpdFBtYzCHCmpeijFpSd2BPo4q7SCRHMiI1IE+0dj5ipmrbG6
- EejHVt8YxYAy69dcfPqndVvfbiZkVMG5N8OG1KpN1cVDjd6D9309YyaSb
- nxRBmbNBdSJpLHSVXhp47LNP87T8+NIqYCjSt035NrESCdMFvHApMoguA w==;
-X-CSE-ConnectionGUID: xOsUd9JGQP+pUFKMjELJZg==
-X-CSE-MsgGUID: rfCV6l3eQU2l+pXzbgmS6w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="21043212"
-X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; d="scan'208";a="21043212"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Apr 2024 09:33:37 -0700
-X-CSE-ConnectionGUID: e9SBNT/KR+2VYruuGsxEiQ==
-X-CSE-MsgGUID: //HOCZiFTbuNpkhTaehR+g==
+ bh=pwrWLigiwDXNhWmXAXC6bQ2HQHe/Bu1OERravSL0yR0=;
+ b=dNt8nLYkAQ0NbY7voxhFOVfMrMeehwuCJ3icQIMzgauiIaF8TuqvwZEu
+ d7bt7XCL/28h/sstUi+Q2HR8VmluY+ZNi30GwLGYb3VEJoFDF3Rheizys
+ 85A0klIU/kOkGkUkAenm8hC/9TeLgALlcNvbat6gpMqzG6DCxDhSEMFaf
+ BVZFUFGgSCVUfOGdWE8lJhFF3Ya8jtF9B5NZtVpgqU/LSardWjNcRgwWK
+ tU58a+V8hxJIvVtgBzGcgZM20odgic4LoVu2qlavju6apMo75qiVnC3Ta
+ iXEVvDsbpEe6fVdDe0PG8Ebx8qObOohRNfX+5ZsdxACBhTWheJkfHg80y Q==;
+X-CSE-ConnectionGUID: Oq/MH4DWTQWtYyNCtgLpeA==
+X-CSE-MsgGUID: +gQS6ajzRWaSZ9nqC/3L9Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="9783046"
+X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
+   d="scan'208";a="9783046"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Apr 2024 09:51:08 -0700
+X-CSE-ConnectionGUID: 6ICrYoRcRtWCFNdI0Gwlmg==
+X-CSE-MsgGUID: VPO7KT+OQ66TXedyfcAWLQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; d="scan'208";a="29229824"
+X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; d="scan'208";a="29408055"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 09:33:36 -0700
-Date: Wed, 24 Apr 2024 18:33:33 +0200
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 09:51:04 -0700
+Date: Wed, 24 Apr 2024 18:50:48 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: peter.senna@gmail.com
-Subject: Re: tests/intel/gem_exec_capture: changing the test size breaks the
- run
-Message-ID: <20240424163333.hcjdut2ol36ugppf@kamilkon-DESK.igk.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>, I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?Q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_series_start?=
+ =?utf-8?Q?ing_with_=5Bi-g-t=2C1=2F4=5D_tests=2Fintel=2Fxe=5Fwedged?=
+ =?utf-8?Q?=3A?= Introduce a new test for Xe device wedged state
+Message-ID: <20240424165048.dlq2qbkgpusl6kvh@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, peter.senna@gmail.com
-References: <CA+MoWDqANoCnEUbZ1s+rbH=KMttjX+xobRze3EM-PLZMfSFHfg@mail.gmail.com>
+ igt-dev@lists.freedesktop.org,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+References: <20240423222220.1285742-1-rodrigo.vivi@intel.com>
+ <171391827529.1610961.6688357556192677636@8e613ede5ea5>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CA+MoWDqANoCnEUbZ1s+rbH=KMttjX+xobRze3EM-PLZMfSFHfg@mail.gmail.com>
+In-Reply-To: <171391827529.1610961.6688357556192677636@8e613ede5ea5>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,96 +75,101 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
+Hi igt-dev,
+On 2024-04-24 at 00:24:35 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: series starting with [i-g-t,1/4] tests/intel/xe_wedged: Introduce a new test for Xe device wedged state
+> URL   : https://patchwork.freedesktop.org/series/132799/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_14637 -> IGTPW_11062
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_11062 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_11062, please notify your bug team (&#x27;I915-ci-infra@lists.freedesktop.org&#x27;) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11062/index.html
+> 
+> Participating hosts (39 -> 37)
+> ------------------------------
+> 
+>   Missing    (2): fi-apl-guc fi-snb-2520m 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_11062:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_exec_fence@nb-await:
+>     - bat-arls-2:         NOTRUN -> [TIMEOUT][1]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11062/bat-arls-2/igt@gem_exec_fence@nb-await.html
+> 
+>   * igt@gem_exec_gttfill@basic:
+>     - bat-arls-2:         [PASS][2] -> [TIMEOUT][3] +1 other test timeout
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14637/bat-arls-2/igt@gem_exec_gttfill@basic.html
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11062/bat-arls-2/igt@gem_exec_gttfill@basic.html
+> 
+>   * igt@gem_exec_parallel@engines:
+>     - bat-arls-2:         NOTRUN -> [ABORT][4]
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11062/bat-arls-2/igt@gem_exec_parallel@engines.html
+>
 
-On 2024-04-11 at 21:41:11 +0200, Peter Senna Tschudin wrote:
-> Dear list,
-> 
-> After my change*, most of the subtests from gem_exec_capture work, but
-> only if called one by one using --run-subtest. Here is an example:
-> 
-> $ sudo ./builddir/tests/gem_exec_capture --run-subtest many-4k-incremental
-> IGT-Version: 1.28-gd54e42369 (x86_64) (Linux: 6.8.4-200.fc39.x86_64 x86_64)
-> Using IGT_SRANDOM=1712863518 for randomisation
-> Opened device: /dev/dri/card1
-> Starting subtest: many-4K-incremental
-> Target died after 20.010192s
-> Captured 0 1-blobs out of a total of 131072
-> Subtest many-4K-incremental: SUCCESS (22.813s)
-> 
-> $ sudo ./builddir/tests/gem_exec_capture --run-subtest many-2M-incremental
-> IGT-Version: 1.28-gd54e42369 (x86_64) (Linux: 6.8.4-200.fc39.x86_64 x86_64)
-> Using IGT_SRANDOM=1712863571 for randomisation
-> Opened device: /dev/dri/card1
-> Starting subtest: many-2M-incremental
-> Target died after 20.059585s
-> Captured 0 512-blobs out of a total of 256
-> Subtest many-2M-incremental: SUCCESS (20.443s)
-> 
-> When not specifying the sub-test the same tests will fail. Here is the
-> code that calls the tests when no sub-test is set:
-> 
->     igt_subtest_f("many-4K-incremental") {
->         igt_require(gem_can_store_dword(fd, 0));
->         many(fd, dir, 1<<12, INCREMENTAL);
->     }
-> 
->     igt_subtest_f("many-2M-incremental") {
->         igt_require(gem_can_store_dword(fd, 0));
->         many(fd, dir, 2<<20, INCREMENTAL);
->     }
-> 
-> The test many-4K-incremental will succeed and the test
-> many-2M-incremental will fail. I noticed that changing the parameter
-> size of the function many() is what causes the test to fail. This
-> means you can successfully call many() as many times as you want,
-> given all calls use the same value for size. Now see the following
-> code:
-> 
->     // This will succeed but "Captured 0 1-blobs out of a total of 131072"
->     igt_subtest_f("many-4K-incremental") {
->         igt_require(gem_can_store_dword(fd, 0));
->         many(fd, dir, 1<<12, INCREMENTAL);
->     }
-> 
->     // This will fail
->     igt_subtest_f("many-2M-incremental") {
->         igt_require(gem_can_store_dword(fd, 0));
->         many(fd, dir, 2<<20, INCREMENTAL);
->     }
-> 
->     // Captured 256 512-blobs out of a total of 256
->     igt_subtest_f("many-2M-incremental") {
->         igt_require(gem_can_store_dword(fd, 0));
->         many(fd, dir, 2<<20, INCREMENTAL);
->     }
-> 
-> There are two oddities:
->  - First: simply running the same test again makes it succeed.
->  - Second: Running the same test a second time changes the value of
-> Captured from 0 to max.
-> 
-> Besides calling the test twice, closing and reopening the fd will also
-> make the calls  succeed.
-> 
-> My first idea was that there was some memory content that was causing
-> the issue, but I found no evidence of that.
-> 
-> Do you have ideas I can explore to try to find out what is going on here?
-> 
-> Thank you,
-> 
-> Peter
-> 
+These are unrelated to Xe test, no need for respin as it is
+already merged.
 
-These looks like a candidate to GitLab issue, where you can add
-a story and descriptions. Did any of your other patches helped?
-
-Btw that 0 captured seems a bit odd, also tests times 20s is much
-too long.
-
-Regard,
+Regards,
 Kamil
 
+>   
+> Known issues
+> ------------
 > 
-> * - https://patchwork.freedesktop.org/series/132291/
+>   Here are the changes found in IGTPW_11062 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Possible fixes ####
+> 
+>   * igt@i915_selftest@live@execlists:
+>     - fi-bsw-nick:        [ABORT][5] ([i915#10594]) -> [PASS][6]
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14637/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11062/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+> 
+>   
+>   {name}: This element is suppressed. This means it is ignored when computing
+>           the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+>   [i915#10594]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10594
+>   [i915#10911]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10911
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7819 -> IGTPW_11062
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14637: b5b592a3902a51cc5747c625aa1898768d4ce79a @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_11062: a72f03b3feb0591c8cf0260253a8a04b9f6ea779 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   IGT_7819: 98e0d03839ce31141328a2935eb193361eca61e3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11062/index.html
