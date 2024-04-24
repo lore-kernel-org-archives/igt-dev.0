@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1084DC4345F
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Apr 2024 22:18:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35DBFC4345F
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Apr 2024 22:26:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B570810E2A6;
-	Wed, 24 Apr 2024 22:18:12 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4EE8910E2A6;
- Wed, 24 Apr 2024 22:18:11 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1555836482613508732=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9F524113E4B;
+	Wed, 24 Apr 2024 22:26:04 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c1maiibw";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 76945113E4B
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Apr 2024 22:26:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1713997563; x=1745533563;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=v0rAXtdlGkRLJAWfEpH2ImBb4SDiLQipLwMTiv+d7JY=;
+ b=c1maiibwRvCsAXHcKAVTZ9OcWTJMhkAqUe0QDwLNW+VK9H687kjKpcQ3
+ CTCm1V5hkw2b6MkhXJ1P45n99MdXXe5HrwdZl38yDWD/wKEEjNq9XuJkL
+ jJlahjHzHXzdecg4xBZ0YxhFptBwGSdKC85O0IB4wjbCiKtfeZMRbgj9s
+ JPSZx+aNKzLn6kxsQ2v81qu0nf5E3jBrUaX61QDyrf3r4QMohVxpPh+R3
+ m5+srQG7MTxUhEkjGoZd3iIDt0d45hRJz96Z8bosunFQxnbowKLDfxAx5
+ 5ogxBs6DVnafOC4JOZy5gCJxax/FfAbRx87JlgY3dWR+fGBOrgzZUyT4U g==;
+X-CSE-ConnectionGUID: oFjI/i6fR/GJLqpoK1kobw==
+X-CSE-MsgGUID: 4zPE743cQgm55wqQLykbHw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="20206166"
+X-IronPort-AV: E=Sophos;i="6.07,227,1708416000"; d="scan'208";a="20206166"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Apr 2024 15:26:02 -0700
+X-CSE-ConnectionGUID: yIBmHPHLR4+UgDZXg6Rqmg==
+X-CSE-MsgGUID: h57tqo2HTJ6Fdksc8Dbxqg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,227,1708416000"; d="scan'208";a="62329401"
+Received: from jrandhaw-desk.jf.intel.com ([10.24.12.119])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Apr 2024 15:26:01 -0700
+From: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+To: 
+Cc: igt-dev@lists.freedesktop.org, jonathan.cavitt@intel.com,
+ matthew.brost@intel.com, Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+Subject: [PATCH i-g-t,
+ v3] tests/intel/xe_vm: Always have at least 2 pages bound in mmap
+ hammer sections
+Date: Wed, 24 Apr 2024 15:26:00 -0700
+Message-Id: <975b205e7e6c88469a92afaa52817ac4475c3bcc.1713997476.git.jagmeet.randhawa@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fvm=3A_Always_?=
- =?utf-8?q?have_at_least_2_pages_bound_in_mmap_hammer_sections?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jagmeet Randhawa" <jagmeet.randhawa@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 24 Apr 2024 22:18:11 -0000
-Message-ID: <171399709132.1648713.3069362719890833534@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <f64507be1d789da9c6a22ece15e88d0f7d4a147c.1713994566.git.jagmeet.randhawa@intel.com>
-In-Reply-To: <f64507be1d789da9c6a22ece15e88d0f7d4a147c.1713994566.git.jagmeet.randhawa@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,129 +65,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1555836482613508732==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Extend ee0a9c8e30f6 ("tests/intel/xe_vm: Always have at least 2 pages
+bound in munmap hammer sections") to apply a similar fix to the mmap
+hammer sections.
 
-== Series Details ==
+Fixes: ee0a9c8e30f6 ("tests/intel/xe_vm: Always have at
+least 2 pages bound in munmap hammer sections")
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Suggested-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+---
+ tests/intel/xe_vm.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-Series: tests/intel/xe_vm: Always have at least 2 pages bound in mmap hammer sections
-URL   : https://patchwork.freedesktop.org/series/132869/
-State : success
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index de2b1a813..df56c90e8 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -1568,6 +1568,11 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
+ 	int exit = 0;
+ 	int n_page_per_2mb = 0x200000 / xe_get_default_alignment(fd);
+ 
++	/* Ensure prefetch will not fetch an unmapped page */
++	if (flags & MAP_FLAG_HAMMER_FIRST_PAGE)
++		igt_assert(unbind_n_page_offset * 0x1000 >
++			xe_cs_prefetch_size(fd));
++
+ 	if (flags & MAP_FLAG_LARGE_PAGE) {
+ 		bo_n_pages *= n_page_per_2mb;
+ 		unbind_n_pages *= n_page_per_2mb;
+@@ -1913,12 +1918,12 @@ igt_main
+ 		{ "one-partial", 4, 1, 1, 2, 0 },
+ 		{ "either-side-partial", 4, 2, 1, 2, 0 },
+ 		{ "either-side-full", 4, 4, 1, 2, 0 },
+-		{ "either-side-partial-hammer", 4, 2, 1, 2,
++		{ "either-side-partial-hammer", 6, 2, 2, 2,
+ 			MAP_FLAG_HAMMER_FIRST_PAGE },
+-		{ "either-side-partial-split-page-hammer", 4, 2, 1, 2,
++		{ "either-side-partial-split-page-hammer", 6, 2, 2, 2,
+ 			MAP_FLAG_HAMMER_FIRST_PAGE |
+ 			MAP_FLAG_LARGE_PAGE },
+-		{ "either-side-partial-large-page-hammer", 4, 2, 1, 2,
++		{ "either-side-partial-large-page-hammer", 6, 2, 2, 2,
+ 			MAP_FLAG_HAMMER_FIRST_PAGE |
+ 			MAP_FLAG_LARGE_PAGE |
+ 			MAP_FLAG_LARGE_PAGE_NO_SPLIT },
+@@ -1926,7 +1931,7 @@ igt_main
+ 		{ "front", 4, 2, 1, 3, 0 },
+ 		{ "many-all", 4 * 8, 2 * 8, 0 * 8, 4 * 8, 0 },
+ 		{ "many-either-side-partial", 4 * 8, 2 * 8, 1, 4 * 8 - 2, 0 },
+-		{ "many-either-side-partial-hammer", 4 * 8, 2 * 8, 1, 4 * 8 - 2,
++		{ "many-either-side-partial-hammer", 4 * 8, 2 * 8, 2, 4 * 8 - 4,
+ 			MAP_FLAG_HAMMER_FIRST_PAGE },
+ 		{ "userptr-all", 4, 2, 0, 4, MAP_FLAG_USERPTR },
+ 		{ "userptr-one-partial", 4, 1, 1, 2, MAP_FLAG_USERPTR },
+-- 
+2.25.1
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7823_BAT -> XEIGTPW_11066_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (5 -> 5)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11066_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_evict@evict-mixed-threads-small-multi-vm:
-    - bat-pvc-2:          [PASS][1] -> [INCOMPLETE][2] ([Intel XE#804])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7823/bat-pvc-2/igt@xe_evict@evict-mixed-threads-small-multi-vm.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11066/bat-pvc-2/igt@xe_evict@evict-mixed-threads-small-multi-vm.html
-
-  
-  [Intel XE#804]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/804
-
-
-Build changes
--------------
-
-  * IGT: IGT_7823 -> IGTPW_11066
-  * Linux: xe-1170-7ec59c2fcb5419f0d48b7918200be26e360388e7 -> xe-1171-ad654139fd5a7773f0310b5f745c105cdba520e8
-
-  IGTPW_11066: 9c620055b8229590a2316f11d8eb2a908bb0b195 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7823: 61121a2eac4d191ad9f3077948c8ba19686fbb16 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1170-7ec59c2fcb5419f0d48b7918200be26e360388e7: 7ec59c2fcb5419f0d48b7918200be26e360388e7
-  xe-1171-ad654139fd5a7773f0310b5f745c105cdba520e8: ad654139fd5a7773f0310b5f745c105cdba520e8
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11066/index.html
-
---===============1555836482613508732==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Always have at least 2 pages bound in mmap hammer sections</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132869/">https://patchwork.freedesktop.org/series/132869/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11066/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11066/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7823_BAT -&gt; XEIGTPW_11066_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (5 -&gt; 5)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11066_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_evict@evict-mixed-threads-small-multi-vm:<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7823/bat-pvc-2/igt@xe_evict@evict-mixed-threads-small-multi-vm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11066/bat-pvc-2/igt@xe_evict@evict-mixed-threads-small-multi-vm.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/804">Intel XE#804</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7823 -&gt; IGTPW_11066</li>
-<li>Linux: xe-1170-7ec59c2fcb5419f0d48b7918200be26e360388e7 -&gt; xe-1171-ad654139fd5a7773f0310b5f745c105cdba520e8</li>
-</ul>
-<p>IGTPW_11066: 9c620055b8229590a2316f11d8eb2a908bb0b195 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7823: 61121a2eac4d191ad9f3077948c8ba19686fbb16 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1170-7ec59c2fcb5419f0d48b7918200be26e360388e7: 7ec59c2fcb5419f0d48b7918200be26e360388e7<br />
-  xe-1171-ad654139fd5a7773f0310b5f745c105cdba520e8: ad654139fd5a7773f0310b5f745c105cdba520e8</p>
-
-</body>
-</html>
-
---===============1555836482613508732==--
