@@ -4,57 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6502CC04FFE
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Apr 2024 23:44:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 651A2C4345F
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Apr 2024 00:04:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B747113766;
-	Tue, 23 Apr 2024 23:44:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1D6CE10EBF3;
+	Wed, 24 Apr 2024 00:04:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ci6HpKTy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Otmn1TLV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 078B2113767
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Apr 2024 23:43:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42CCB10EBF3
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Apr 2024 00:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713915829; x=1745451829;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=uL5L+lepM7QxT2Mf6OBCRBTwH62oFHK8SwSb9MDrTF0=;
- b=Ci6HpKTyGX0r0bZRsJ3NNJf51i71vV2zlua8r2pIvTIn0V2Pxk54Umyh
- 7/YVPkhGEbAQPu0ACktzzLVlZrayJt3Uo5mwcS8sVBtYQYiRM+Nu/usvA
- yvTFpXpVWdFqjqVmqlSovm/9sdtonydeow6F8RmUzOBn+u7FkmVPEE5xe
- nkXQUMOj3IN57uvRHytYDTtr8QrxAYmqhqtKkUDf+y+h5k7PxogI/Ig8V
- siPVNNcuC8myts4Aa0SftkQ8949LW+KaApXIPxOCnhPk3pP7JQeAhuzIl
- x/ByBJKXxG3lQAMdXk2Jz3MY90Z3Yv2Tpf4Y+fjiOBfnGgRQmxi+uxj81 Q==;
-X-CSE-ConnectionGUID: bKxZNnU/Slm6dBvjje1+oQ==
-X-CSE-MsgGUID: A9n5bIPyQhqL+Tw99ozVgQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="13362001"
-X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="13362001"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2024 16:43:49 -0700
-X-CSE-ConnectionGUID: /l+GpfTSTVWgSnprqHstaA==
-X-CSE-MsgGUID: HHsaf+zwRYKKitNZd5B3Ig==
+ t=1713917078; x=1745453078;
+ h=date:from:to:subject:message-id:references:in-reply-to:
+ mime-version; bh=/ohZUIE39W1ViFv9tfUjnYtThc/mvj8Rc5F9JU5TJS0=;
+ b=Otmn1TLVC+VgsvlOssU9zJ9dlTV6f3fIhb6CXQfo5ju1sAjn1rTpxols
+ fMX9qNRb82yfbE+ZJHkeyhGtbCFSNafdC1zWeYgGj6SmL1UzgP/nx/ktP
+ Cm6dlFBV9jcOJqAG6THMvhJz6mjWxTahDGVckM7CGk4WpdRcfXqVegFso
+ G5lCsJ5SQpvbphSn33/h8b8RJs3KhhPoz3mUdrgqVXvTw6fdDXnhdU3N8
+ gGo9bw1zODwkCDeNrFiXB2DEoj1uK388a79DDrBuwhBAiCEhveeQFiFNe
+ 2bGAFN96LQyV5sebqu0RHCdRL2HwGhr4sc7Eg7w5xGpgRbrqrtTkRI6oX w==;
+X-CSE-ConnectionGUID: bOG26FPHTxy0U/C3T9ud7A==
+X-CSE-MsgGUID: Y6EF5WqcR7aT2kAjEMWpqg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="9636738"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
+   d="scan'208";a="9636738"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2024 17:04:37 -0700
+X-CSE-ConnectionGUID: OWNsBj/FTm2m0SQjGYsT1g==
+X-CSE-MsgGUID: EY4uCk1LR86jCuhNuR98ZA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="29180922"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2024 16:43:48 -0700
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="25044161"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 23 Apr 2024 17:04:37 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 23 Apr 2024 17:04:36 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 23 Apr 2024 17:04:36 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 23 Apr 2024 17:04:36 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.41) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 23 Apr 2024 17:04:34 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=V9WpMEzt61+kVOamztbQovJJMWYn7AEMv11R+MlYkQFiY4bpvbSyz7eeG5WAGOiUwM7/yxueJ9AFB3UrfFa+55gqFaJ78optFkGgFfOGq+i4O1WsZEC6/rFtPnreHPakW8JP/nviD3mx5RTxZXIwl587bsBxWEs5uN101UW9bz8Sz0y560kDzpTiaZ7RyRVtqUxdtOBl0uLJjwyisXsRWHMS+KHLufe1M3RUe8dWP5e7JfTOxg6SnU9nnpgiFTLV+lyW3UgkX71gq8Gz3HbsmrE/4eQqvvYjX5kEFArLTbU6zYdcEnQ0m8rCnHwBslDs1cpcAFOskeODUS6PPGiiVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/ohZUIE39W1ViFv9tfUjnYtThc/mvj8Rc5F9JU5TJS0=;
+ b=eLce6oUrxiFXKq9TvYMkYa66SlcEY4OP1OCGUZQYwd5kc2hGzqjJVaQHiRGue5vcsBza4rG8a4qJZJi+giBDizCbsCvOnhfZ2oiP0K+PNVB8pA9/PR/rhdiN2vRf5nChpVPMu16UAXBvTwqkoJYQM6xZDa7w8Vnc7sN4t4YeEcsEMcHHjdea5tCc613g65PZXGBKeXhYUxW2iiO6gyJ2WLUyJIuUJD4sixEzisjN5kkcF5rLSgfwdn/m8ptm63RCgsfYxSMxuZryx2NUGw/XMJ2g7c7WDluCs4YOp9AbzBYyig27aEzk/k+KNNDRMNTlOBcsTOpRecCumk/xxlqfFQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
+ by CY5PR11MB6317.namprd11.prod.outlook.com (2603:10b6:930:3f::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.22; Wed, 24 Apr
+ 2024 00:04:31 +0000
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::e9dd:320:976f:e257]) by CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::e9dd:320:976f:e257%4]) with mapi id 15.20.7519.020; Wed, 24 Apr 2024
+ 00:04:31 +0000
+Date: Tue, 23 Apr 2024 19:04:27 -0500
 From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v2 10/21] lib/igt_drm_fdinfo: Remove prefix arg from
- parse functions
-Date: Tue, 23 Apr 2024 16:44:20 -0700
-Message-ID: <20240423234431.1959354-11-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240423234431.1959354-1-lucas.demarchi@intel.com>
-References: <20240423234431.1959354-1-lucas.demarchi@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>, Matt Roper <matthew.d.roper@intel.com>, Jani
+ Nikula <jani.nikula@intel.com>, Ville Syrjala <ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH] intel_reg: Move decoding behind an option
+Message-ID: <wezp727amvjj7lkom4pxw45lzkjjjva525bgpd3xsspcyqxibq@opzpbbg7nmec>
+References: <20240416154338.102157-1-lucas.demarchi@intel.com>
+ <20240423194828.mk7gbfe25gmhomcm@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20240423194828.mk7gbfe25gmhomcm@kamilkon-DESK.igk.intel.com>
+X-ClientProxiedBy: BY3PR05CA0024.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::29) To CY5PR11MB6139.namprd11.prod.outlook.com
+ (2603:10b6:930:29::17)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|CY5PR11MB6317:EE_
+X-MS-Office365-Filtering-Correlation-Id: e5481c52-a880-469b-e792-08dc63f21de9
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|376005|1800799015|366007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?7grUbVWopv2QVNQ4LYJt69nr+Cn4Yi8LBy3id2hwIyTqTX0+76trOVHmw4iV?=
+ =?us-ascii?Q?xQsBnP2JmTALQHur52bnlBX1tXRY3mslOUx/wJYyDf2uh5SHokNIi9wqk/sO?=
+ =?us-ascii?Q?88KTI00nrMYI0TeQdNXQQ6dnmA/3BsqoBHLnydxiybhy7RNr2RwjX/oi7U+f?=
+ =?us-ascii?Q?5SXfh5Bd5pKJoEGfitHV6dNrJ5anO43QaF0Kvb139fSxoSv0snb1yHRb1A3e?=
+ =?us-ascii?Q?xwLQOefCzW0Lcfr/Aj4ML+feZch/DK1HSWDK40KN+2XvLvpOSIN0t2wBsf9b?=
+ =?us-ascii?Q?F5KRT00cCoh4C54byJAojK0+5uj2gwte795RNQrP+Gye2fvgjFATIizWCyq3?=
+ =?us-ascii?Q?VZqxN0i3cDs1iiIBi52SsVs/n8u6nqeO6+JvfAaAtdpmZu7PX/c3qAlTUpo0?=
+ =?us-ascii?Q?hPGK1vWGM1VTZdE4rcKv2WcNn90cfhhiSYby2MYjXxhX4sree6hwFeqWQUV6?=
+ =?us-ascii?Q?QufpqVXmc25YaeD3X6xCK3uwR6lSzsHilCDt+sDwxF7EjZp9Wgg1+IITrHoU?=
+ =?us-ascii?Q?RBMsJpz5a8RlyqTdyAHOtn2YMgb6zIhRYwSKNlciR6al4iopII/HsumMhmHV?=
+ =?us-ascii?Q?E40Syqk2eyLQsDc9zC/O6wogeOnuCPjelxi38qRUr9VHBV6zddIbLFz/oHQK?=
+ =?us-ascii?Q?AgJ+kBdsZVITevFoiJd/H0k4eRK6N6I4NGjQwhCSlYgRtRcTvjCEhbcC7Fot?=
+ =?us-ascii?Q?VFyR0Y6/qsLVSw2+OkBhfWIRKwOaIKrj6urz0o/NGd6Rc6HQIpVf2kBzjF6b?=
+ =?us-ascii?Q?M6Hgw76umLTV/7AuKcNfIeZlUjYlNfLI21BQbl4sVA2IWYrykYysKP+JrQET?=
+ =?us-ascii?Q?GdJK54MDaPUc+uQuwy+5Ijw4GtDLxFtBjeqhMddGDmWfP3ekiILJ0XfSuobH?=
+ =?us-ascii?Q?u+zf5AsbLtuZmDhsm8ttkYpnGzuOiksps1JLcVQ5U7HPTm5a0jocGRRLEap3?=
+ =?us-ascii?Q?flk7Tq5YdwdVlNNFUGgJvjqz9MSgo0KVNl4A4FGTF4b8d4PH2EQaZDNYkOfX?=
+ =?us-ascii?Q?d2OuAET5cnwHSfaPrEW8IglL9jn1m2wBc7czUR3naEZyk5O+WpUsuU786YPz?=
+ =?us-ascii?Q?V1P1Tg6RDqfrJ0CXiF+8r/uA/pJ5uTShhFAGfiTEx6ay+DN6PfMB/OLGVbnB?=
+ =?us-ascii?Q?OgyJwJLuhBmTvZ74q8WhCqq9gK9JbEp3KYxzFAhJK8LgujBfEB8yOS5nHF6p?=
+ =?us-ascii?Q?8kz9uTmLiCySJjtqvT+hKJtAvEyTKMrFAWR5RuLyaS/kOSUYhfN3aAK5v+OS?=
+ =?us-ascii?Q?O2CFSQbNOdv5G3xj14uyfAJq6MTg+om0ixsUdwlgeQ=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376005)(1800799015)(366007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?gRWFvWv2QZv1Wl7NgWV1AR32r7KajY6LWfz4aP73iOi2uDsdTkRzjNyz5t1m?=
+ =?us-ascii?Q?tTaimTPoKmyUnMh79BzRRIAUwedJU1RqR/KCnwEtOLWLAb4rRkfEcg0R+Stb?=
+ =?us-ascii?Q?ed0KnMU1u3C4McRcJXNcUGXACqnvA0ESnW0tbuo8EhUykaVxsekl0sJcG5f6?=
+ =?us-ascii?Q?fE4vYXtrnNxWoTXtQ8+mhuWmWwCKTZZiK9u4/FkZnTczQhu6FczZtz3ToE0s?=
+ =?us-ascii?Q?QlYHj02H21noYQDlZyJ7AcXTcQ5KyUgGRkaIZB/L5qYHO4AQiAQLw/1pghV5?=
+ =?us-ascii?Q?iU/U1QGaw/J0ggdIZDUi/s8S/BYql1DH/5xuAyBJ2cH8nhy30AhZJzQLSYaP?=
+ =?us-ascii?Q?jDgGeo3gjq78xJ/jKLYuXzK1yDchYpJiI6PWz0FmZeN8ELZBIRN8MEsF1KOO?=
+ =?us-ascii?Q?4xY82NFLlVjJjyiASbyICP3lM6xzT/eH8f3XABt714VunaQBZ0t5HiBH/iPD?=
+ =?us-ascii?Q?z3rDRNR5hPDYkPcSUaQVA3qNZmLB+OkqljYnrg0F28scpCh9IuR0fmSETsk3?=
+ =?us-ascii?Q?fGpokk9wd2J3ZEvitqrSz19LrqlUO+bVv6HywnNBK4KgmikI/vK8dKvKG9IE?=
+ =?us-ascii?Q?Tdo++eCIhwUurQk2JMQzI8W+InLfi0M0J1tgvHetZLCZpnaiC2BGKFGxFbcD?=
+ =?us-ascii?Q?2NRLZDUS9qr9a6AYeR7F2QdvXg/sksOdwxiy779ExfgoZe46tzNGRE9Lbq9g?=
+ =?us-ascii?Q?SF61Sc4H4W4GFlfkUfNNdslba5WlYg9QfQn/6o69hkpEWwXYMs7DPosoAW/1?=
+ =?us-ascii?Q?wyIdhg5aaxSv5MvAqQvM2Ifcs8OPSJufI0s6gaoZFpIcTxDkKNVGMNTwVf1S?=
+ =?us-ascii?Q?m7kI4B2smU3zoz0c6zCbzQwUCYLQRelaBW8D3Uqxy/2X7hnl3hMr9O5pxXEm?=
+ =?us-ascii?Q?KEvWVhC1Dp49GWffgykVa0qGTbrf3qLH+yAWKNOb4FnD+D75CbFRL83pNNkY?=
+ =?us-ascii?Q?KUTZSePfpbrUUA4D5cR34PxiGoOfQnEfzsrbpI5TNVaea8mfTI/1c2jVIRWb?=
+ =?us-ascii?Q?lteMzugdZudxhuD3BYbz0PupjxLZB6qinMXnyrXq2Kt1csElPLiyoTlBb1B+?=
+ =?us-ascii?Q?WLihQmEiVklC/xZbcVDBSqVPxwuf5mpuo/f3s2krlgx5OgT7SYrhSqvBjwh9?=
+ =?us-ascii?Q?K27l2UhkANGqWwxmCV75ZlqI5jnViy0lkavUJUiCc3meQm5klAGWqW75ohrd?=
+ =?us-ascii?Q?9qVe/r0RCRTNm62mVE52oFHaNgNt0kJsu3wTG+FTMAfS0c6URsZ0O0+hbPD5?=
+ =?us-ascii?Q?UXKo0Fk+kaD/3T1Ad+NnvQI8w5/I0rgQK/ts4R6Q2GnT5GL/5PuTe1D/K6hh?=
+ =?us-ascii?Q?sqNNBfW/0VvIZ0AIJBuz2+cdYNbay0oO14Ce9YMaGatpyGaUa5gfCyVX1Utr?=
+ =?us-ascii?Q?zoSmY3ju4bNcLhBk9L8zYt69hUN8cwq1Bl3z5pllu50UM+/mzv+je7Djffsr?=
+ =?us-ascii?Q?F3v1i730KnRKlWB/IZGHe9/5rhATBoyiLDiPbPwUxyEPLoXLR0RGDT9hgHTw?=
+ =?us-ascii?Q?w5PRfgIzcv4ooiEiTEB3CBYoB6Mp7ZeoV/pOsKSrMBWE8/5oVYtLpUId43CH?=
+ =?us-ascii?Q?uY+1W2E7/pkoxJYcfEhSc5efsT45urfI8Gw/2iI4sPfhP+Z9i1XjYRjUcxi4?=
+ =?us-ascii?Q?8Q=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e5481c52-a880-469b-e792-08dc63f21de9
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2024 00:04:31.7383 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RDA0GbsUfZwoKYME4bhtC/oD+t1gpzIh1FnKRLqeUguy+b+VkrGqTJUXNdTN8iWFqNy3rrfi4zo+Ca4Tt0sFjiF5jBYFY8s1XZK5FAVhURs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6317
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,135 +180,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The prefix is not really needed and __igt_parse_drm_fdinfo()
-can simply pass l + keylen as argument which simplifies the parse
-functions.
+On Tue, Apr 23, 2024 at 09:48:28PM GMT, Kamil Konieczny wrote:
+>Hi Lucas,
+>On 2024-04-16 at 10:42:07 -0500, Lucas De Marchi wrote:
+>
+>small nit, use prefix "tools/" in subject, so instead of
+>
+>[PATCH] intel_reg: Move decoding behind an option
+>
+>better:
+>[PATCH i-g-t] tools/intel_reg: Move decoding behind an option
 
-While refactoring this, it also replaces the remaining calls to index()
-to use strchr().
+I read this too late. Just submitted another patch series touching gputop
+without having the dir prefix... `git log -- tools/gputop.c` seems to
+agree about not using the tools/ dir although the same for intel_reg.c
+it seems we are not really consistent.
 
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- lib/igt_drm_fdinfo.c | 43 ++++++++++++++++++++-----------------------
- 1 file changed, 20 insertions(+), 23 deletions(-)
+As for --subject-prefix: it used to be important when we shared the
+same mailing list with i915. This is long gone and there isn't much reason
+to keep it anymore (unless when cross posting to other mailing lists).
 
-diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
-index e3a8ab0fd..71616773c 100644
---- a/lib/igt_drm_fdinfo.c
-+++ b/lib/igt_drm_fdinfo.c
-@@ -61,25 +61,23 @@ static const char *ignore_space(const char *s)
- 	return s;
- }
- 
--static int parse_engine(char *line, struct drm_client_fdinfo *info,
--			size_t prefix_len,
-+static int parse_engine(const char *name, struct drm_client_fdinfo *info,
- 			const char **name_map, unsigned int map_entries,
- 			uint64_t *val)
- {
--	ssize_t name_len;
--	char *name, *p;
-+	const char *p;
-+	size_t name_len;
- 	int found = -1;
- 	unsigned int i;
- 
--	p = index(line, ':');
--	if (!p || p == line)
-+	p = strchr(name, ':');
-+	if (!p)
- 		return -1;
- 
--	name_len = p - line - prefix_len;
-+	name_len = p - name;
- 	if (name_len < 1)
- 		return -1;
--
--	name = line + prefix_len;
-+	p++;
- 
- 	if (name_map) {
- 		for (i = 0; i < map_entries; i++) {
-@@ -112,26 +110,25 @@ static int parse_engine(char *line, struct drm_client_fdinfo *info,
- 	return found;
- }
- 
--static int parse_region(char *line, struct drm_client_fdinfo *info,
--			size_t prefix_len,
-+static int parse_region(const char *name, struct drm_client_fdinfo *info,
- 			const char **region_map, unsigned int region_entries,
- 			uint64_t *val)
- {
--	const char *name, *p, *unit = NULL;
-+	const char *p, *unit = NULL;
- 	char *end_ptr;
- 	ssize_t name_len;
- 	int found = -1;
- 	unsigned int i;
- 
--	p = index(line, ':');
--	if (!p || p == line)
-+	p = strchr(name, ':');
-+	if (!p)
- 		return -1;
- 
--	name_len = p - line - prefix_len;
-+	name_len = p - name;
- 	if (name_len < 1)
- 		return -1;
- 
--	name = line + prefix_len;
-+	p++;
- 
- 	if (region_map) {
- 		for (i = 0; i < region_entries; i++) {
-@@ -241,14 +238,14 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
- 			v = ignore_space(v);
- 			strncpy(info->pdev, v, sizeof(info->pdev) - 1);
- 		} else if (strstartswith(l, "drm-engine-capacity-", &keylen)) {
--			idx = parse_engine(l, info, keylen,
-+			idx = parse_engine(l + keylen, info,
- 					   name_map, map_entries, &val);
- 			if (idx >= 0) {
- 				info->capacity[idx] = val;
- 				num_capacity++;
- 			}
- 		} else if (strstartswith(l, "drm-engine-", &keylen)) {
--			idx = parse_engine(l, info, keylen,
-+			idx = parse_engine(l + keylen, info,
- 					   name_map, map_entries, &val);
- 			if (idx >= 0) {
- 				if (!info->capacity[idx])
-@@ -259,23 +256,23 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
- 					info->last_engine_index = idx;
- 			}
- 		} else if (strstartswith(l, "drm-total-", &keylen)) {
--			idx = parse_region(l, info, keylen,
-+			idx = parse_region(l + keylen, info,
- 					   region_map, region_entries, &val);
- 			UPDATE_REGION(idx, total, val);
- 		} else if (strstartswith(l, "drm-shared-", &keylen)) {
--			idx = parse_region(l, info, keylen,
-+			idx = parse_region(l + keylen, info,
- 					   region_map, region_entries, &val);
- 			UPDATE_REGION(idx, shared, val);
- 		} else if (strstartswith(l, "drm-resident-", &keylen)) {
--			idx = parse_region(l, info, keylen,
-+			idx = parse_region(l + keylen, info,
- 					   region_map, region_entries, &val);
- 			UPDATE_REGION(idx, resident, val);
- 		} else if (strstartswith(l, "drm-purgeable-", &keylen)) {
--			idx = parse_region(l, info, keylen,
-+			idx = parse_region(l + keylen, info,
- 					   region_map, region_entries, &val);
- 			UPDATE_REGION(idx, purgeable, val);
- 		} else if (strstartswith(l, "drm-active-", &keylen)) {
--			idx = parse_region(l, info, keylen,
-+			idx = parse_region(l + keylen, info,
- 					   region_map, region_entries, &val);
- 			UPDATE_REGION(idx, active, val);
- 		}
--- 
-2.43.0
+>
+>with that
+>Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+well... It seems I had missed Jani's reply... still a few things to fix.
+I will send a v2 later this week. Thanks.
+
+Lucas De Marchi
