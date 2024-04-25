@@ -4,74 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A378C4345F
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Apr 2024 12:26:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EBA0C4345F
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Apr 2024 12:28:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3033E11A41B;
-	Thu, 25 Apr 2024 12:26:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 01C2710EDA6;
+	Thu, 25 Apr 2024 12:28:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="kF+AFtbc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QjlmoFYL";
 	dkim-atps=neutral
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com
- [209.85.221.46])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E460B11A417
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Apr 2024 12:26:28 +0000 (UTC)
-Received: by mail-wr1-f46.google.com with SMTP id
- ffacd0b85a97d-343d2b20c4bso679390f8f.2
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Apr 2024 05:26:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1714047987; x=1714652787; darn=lists.freedesktop.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=6F8UVwPShOX2z9qRAUgdRjfmwwKLljmZL5CL/sYy1uY=;
- b=kF+AFtbcBPTXbcjkC9Bu0jp2uQKd26fPLK+5+hel0X0jDrrItWZDf1ZfAFwyGBAgJ7
- 1g6ZtIxWHpv0jgPEsx7HzpdqAuP93xLFy6IS0hT2lF0iVEk/i/3WvklLTAQyB4PAWqfg
- MXeSiR4zV3G59TiDt3y2CHYEwpLVQ37pGv4eFz07qBYjemZvzQiuqdUL7l9VClCZMB5N
- 3CN/DPaEdjK1UzQM12AcD7+HXvvNPSXNmGinNEDyXJwx1TdKnLvZuxBNFUE+nUwWK9Uh
- OpZvCTc9pUIR1QZ1/pJsVdEI8mHEP0jYXplaTl1DvNpKotXR2aVHs0WWotH2Arknlggb
- s4Fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714047987; x=1714652787;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=6F8UVwPShOX2z9qRAUgdRjfmwwKLljmZL5CL/sYy1uY=;
- b=guwNNpXOhvIJKOACCkO4WIGXwRhOcOobWYjmNMtC6e4lDsBis63m3Z7/vrweNujH8+
- tU//1ySRqjU4+TBevJsk2WjAfdptJhSvoMpeQdm57Cp+Wd1qPikQzVRAH8BQxZIf62Do
- l3rZJ9MtKwGrJ5/zpzwkpWS1fibb+6WkmPRKUHEuRBqs5HrUUqOMZnlKAEh5e6XIpsB0
- hO2AqaOTWhwNLiraYV3G2crrfMdSsucyKw4iaAAWfT+JK5Or40tBQUqlPXR57T/i4hNz
- TqFgozEFvWBYe2IKWdLN5S38bKRxmp2WscCl5uMQzyOYBUzcgwyhJMlQV141LSUWcVGx
- souw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXxSpiMJ1da4B9OWcE2fivObMwMQUFKGZ0dzBzLeZ/fWJvRn8oNAr4P55+LlCmHOCLNOoQskaFf+iLTz8gZx708xgIKuQPXm3Y8pM0zwA==
-X-Gm-Message-State: AOJu0YzFLSIE1e+jhDXZZ61CI/QSjDIl3+rNlxfV7/peF0jIgvqVqTtw
- WUlgyTHqk/K0CeYME5d9LUxfhqTnJAph4R6j6KD6DqS2yOC1e11N
-X-Google-Smtp-Source: AGHT+IERXpFgMEWwMpMX9dxnnys2Ey0m/FjgbMEZ4dR/0J9bTKS89YlGfrCfQ8EnJri16dB3D3slCA==
-X-Received: by 2002:a05:6000:711:b0:34b:dc52:265f with SMTP id
- bs17-20020a056000071100b0034bdc52265fmr3507491wrb.44.1714047986804; 
- Thu, 25 Apr 2024 05:26:26 -0700 (PDT)
-Received: from [0.0.0.0] ([134.134.139.78])
- by smtp.googlemail.com with ESMTPSA id
- d4-20020adfe2c4000000b0034a3a0a753asm18136977wrj.100.2024.04.25.05.26.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 Apr 2024 05:26:26 -0700 (PDT)
-Message-ID: <218a0925-015d-46ba-b7f3-e0545daf7f88@gmail.com>
-Date: Thu, 25 Apr 2024 15:26:12 +0300
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 11DE410EDA6
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Apr 2024 12:28:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1714048128; x=1745584128;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=qsx4vFCKIWKTdw/Bq7YkKjMCf728aolL7iVR3/kFKnY=;
+ b=QjlmoFYLawU1lhhOZU/FhNuPsF60KTrAgX/vtd4VNymEJklTaJi0YIhH
+ 1PI0ZqBYrNZT/QNgFG7uYzmOUMMJGnV93vshDR3NwbZOPFPTa8ftHczyy
+ 2xUJsxxzGRh08ufU2Ps2tEp/iwDOOzsD6EHUE3uk/Yn6eHgN0Lz7H/IT/
+ hdNd1YW0qFpAm26PZBFMUol9RKPXT7YUbUgkQ2Q9YbRjQ3HdMhScx5TkJ
+ rwJ6JqYSN3RU8Vhf3jyVGylqSbex1HfaCh/lkBTjUzhfjykysCbaZZ2xd
+ odUgHzvVsR2hBbPW8y3ypPx1KBZcAAWm0rxsAGK1gXNx/UJXopkCbL0Ds Q==;
+X-CSE-ConnectionGUID: 6AOwSlZNTW+FLUnVNp1Cjw==
+X-CSE-MsgGUID: prxBITT2QjOKZpLA/6D99A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="12663634"
+X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="12663634"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2024 05:28:47 -0700
+X-CSE-ConnectionGUID: 8ynkBzP2SNi5DtYnvhgf5Q==
+X-CSE-MsgGUID: rYtwZAf8S5CoBOhY4PDpjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="25683519"
+Received: from bgrzegor-mobl2.ger.corp.intel.com (HELO [10.213.21.50])
+ ([10.213.21.50])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2024 05:28:46 -0700
+Message-ID: <c81b7354-e123-4c15-99de-0c7627e5bef7@intel.com>
+Date: Thu, 25 Apr 2024 14:28:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 6/7] lib/rendercopy_gen9: Allow to use all tilings
- on flatccs platforms
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+Subject: Re: [PATCH i-g-t] lib/gpu_cmds: be ready to use xe2 gpgpu fill on
+ newer platforms
+To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
  igt-dev@lists.freedesktop.org
-References: <20240425104721.52376-1-zbigniew.kempczynski@intel.com>
- <20240425104721.52376-7-zbigniew.kempczynski@intel.com>
+References: <20240425121337.433948-1-dominik.grzegorzek@intel.com>
 Content-Language: en-US
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240425104721.52376-7-zbigniew.kempczynski@intel.com>
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20240425121337.433948-1-dominik.grzegorzek@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,52 +70,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 25.4.2024 13.47, Zbigniew Kempczyński wrote:
-> Instead of limiting compression to Tile4 lets enable it for any
-> tiling when platform has flatccs area.
+Hi Dominik,
+
+On 25.04.2024 14:13, Dominik Grzegorzek wrote:
+> Doing xe2 gpgpu pipeline implementation we mostly taken into account
+> possibility of reusing the implementation for future platforms.
+> But not everywhere. Make it common.
 > 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 > ---
->   lib/rendercopy_gen9.c | 4 ++--
+>   lib/gpu_cmds.c | 4 ++--
 >   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-> index 7c7563d50c..67bb7cfacd 100644
-> --- a/lib/rendercopy_gen9.c
-> +++ b/lib/rendercopy_gen9.c
-> @@ -175,6 +175,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
->   		case 64: ss->ss0.surface_format = SURFACEFORMAT_R16G16B16A16_FLOAT; break;
->   		default: igt_assert(0);
->   	}
-> +
->   	ss->ss0.vertical_alignment = 1; /* align 4 */
->   	ss->ss0.horizontal_alignment = 1; /* align 4 or HALIGN_32 on display ver >= 13*/
+> diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+> index f37e725e7..40522d58e 100644
+> --- a/lib/gpu_cmds.c
+> +++ b/lib/gpu_cmds.c
+> @@ -1030,7 +1030,7 @@ xehp_emit_state_base_address(struct intel_bb *ibb)
+>   	intel_bb_out(ibb, 0);
 >   
-> @@ -232,7 +233,6 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
->   		ss->ss6.aux_mode = 0x5; /* AUX_CCS_E */
+>   	/* stateless data port */
+> -	tmp = intel_graphics_ver(ibb->devid) == IP_VER(20, 0) ? 0 : BASE_ADDRESS_MODIFY;
+> +	tmp = intel_graphics_ver(ibb->devid) >= IP_VER(20, 0) ? 0 : BASE_ADDRESS_MODIFY;
+>   	intel_bb_out(ibb, 0 | tmp);                  //dw3
 >   
->   		if (buf->ccs[0].stride) {
-> -
->   			ss->ss6.aux_pitch = (buf->ccs[0].stride / 128) - 1;
->   
->   			address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-> @@ -268,7 +268,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
->   			ss->ss13.clear_address_hi = (address + buf->cc.offset) >> 32;
->   		}
->   
-> -		if (HAS_4TILE(ibb->devid)) {
-> +		if (HAS_FLATCCS(ibb->devid)) {
+>   	/* surface */
+> @@ -1056,7 +1056,7 @@ xehp_emit_state_base_address(struct intel_bb *ibb)
+>   	/* dynamic state buffer size */
+>   	intel_bb_out(ibb, 1 << 12 | 1);                             //dw13
+>   	/* indirect object buffer size */
+> -	if (intel_graphics_ver(ibb->devid) == IP_VER(20, 0))	    //dw14
+> +	if (intel_graphics_ver(ibb->devid) >= IP_VER(20, 0))	    //dw14
 
-This I suspect will break mtl. Those few above blank line changes 
-probably also here as not needed 'extra'.
+nice catch, should be like this from the start.
 
-/Juha-Pekka
+Acked-by: Christoph Manszewski <christoph.manszewski@intel.com>
 
->   			ss->ss7.dg2.memory_compression_type = 0;
->   			ss->ss7.dg2.memory_compression_enable = 0;
->   			ss->ss7.dg2.disable_support_for_multi_gpu_partial_writes = 1;
+Christoph
 
+>   		intel_bb_out(ibb, 0);
+>   	else
+>   		intel_bb_out(ibb, 0xfffff000 | 1);
