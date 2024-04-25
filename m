@@ -4,59 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AAF9C4345F
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Apr 2024 15:53:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1790DC4345F
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Apr 2024 16:43:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0F99911A595;
-	Thu, 25 Apr 2024 15:53:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3BB1311A626;
+	Thu, 25 Apr 2024 16:43:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jf7dThzk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PZF/GEk3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D383811A595
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Apr 2024 15:53:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C19B911A625;
+ Thu, 25 Apr 2024 16:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714060426; x=1745596426;
+ t=1714063392; x=1745599392;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=9Qvlf6g9GF9+sz8XKLV4yZ+nFZ8Fw0YH2jAkrLqq1Fo=;
- b=Jf7dThzk4Sat/3DYuq9l8U1Zrfb6UdqZNahx/xgGYSQDn9seO8YDwO4P
- AbIzjba8MLFpHcbG3qwsaghcRUlDlODv69agE8zTNfnRPxzB9bsaSdHyB
- oQJd432KzKYmOuUXjEbfMsqSetFLs2FjTT7tQLbfSQtGgxolxOAU3cCt8
- bx9hkS3Bx049XUEabMDB9cO2bP/yM0j2zNdZTKcSGV/t/omYCFq/9V9TW
- +mnRv7pynByXBV5zuPjGMLRD0Ld9OBSwYX1wiSqUqj9XjneCdl3Zb0ygj
- +jiAjLllabyoeNL3+VV2rewqF8eUAJbPjUk44OZ1EfAM/E+P/hrYDRBYX A==;
-X-CSE-ConnectionGUID: 3fVYD4XzQRqSGKVsvb1nAg==
-X-CSE-MsgGUID: w+gC4DclSPG4tJuK/Mu8hQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="21165978"
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="21165978"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2024 08:53:45 -0700
-X-CSE-ConnectionGUID: dMKbd2pcTKmJmOtqUk89+w==
-X-CSE-MsgGUID: Zs+Tv5EGSFa/0276Hyd82g==
+ mime-version:in-reply-to;
+ bh=b7I3qKd5/hetUU5VGfkX50xqGHaL7OgaeU9NR+SoBuE=;
+ b=PZF/GEk3b1mHYzk47nR9gJkH4/Y7ZFUXc3HOX9d5iN66kiUMD7dg3kG+
+ bmGGKtIvOuQA7Bi+/y1GzrAplzDrXmMm7kyfeZwyHIWSeeNzNASkZVggv
+ JnMlEerMsikWpyUAaBopq1C4V0Hyg/sXq5NrotlTKUyTJZbOAHWc6SpqI
+ drmpxR19yComqh06Q4yzR74k6sA6LDe+E/zv5FOyr+nZnPNpzdaP1bVS/
+ tlqBv4smEkvWKPigGvJRZWg+hXMyd/ezPq0IeMZ60GazitJX5Kr6FVEXW
+ 3MtbfXEnyq5jAHMpRHs9cBg+keH5yxzt4tnjGjsBRSYKyFzXxC7uiewZL w==;
+X-CSE-ConnectionGUID: 0kAqkbo9QuSaPKf6ml+AVA==
+X-CSE-MsgGUID: 4bnoc/fySw+DBdxV/nx5Ow==
+X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="9627100"
+X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; 
+   d="scan'208";a="9627100"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2024 09:43:10 -0700
+X-CSE-ConnectionGUID: np0gLJG+R06ib0ZllqhnSA==
+X-CSE-MsgGUID: X1IEM18MQVqjUWbbSc2tUw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="29581169"
-Received: from dhhellew-desk2.ger.corp.intel.com.ger.corp.intel.com (HELO
- localhost) ([10.245.246.50])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2024 08:53:44 -0700
-Date: Thu, 25 Apr 2024 17:53:41 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 6/7] lib/rendercopy_gen9: Allow to use all tilings
- on flatccs platforms
-Message-ID: <20240425155341.3v7id7tkxq6azljx@zkempczy-mobl2>
-References: <20240425104721.52376-1-zbigniew.kempczynski@intel.com>
- <20240425104721.52376-7-zbigniew.kempczynski@intel.com>
- <218a0925-015d-46ba-b7f3-e0545daf7f88@gmail.com>
+X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="29927851"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2024 09:43:09 -0700
+Date: Thu, 25 Apr 2024 18:42:49 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVA==?= =?utf-8?Q?=3A?= failure for
+ tools/intel_reg: Fix mchbar register write
+Message-ID: <20240425164249.2trzeygxavj73h3u@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+References: <20240418112633.2423-1-ville.syrjala@linux.intel.com>
+ <171405917601.1667640.17568260742913552249@8e613ede5ea5>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <218a0925-015d-46ba-b7f3-e0545daf7f88@gmail.com>
+In-Reply-To: <171405917601.1667640.17568260742913552249@8e613ede5ea5>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,51 +75,147 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Apr 25, 2024 at 03:26:12PM +0300, Juha-Pekka Heikkila wrote:
-> On 25.4.2024 13.47, Zbigniew Kempczyński wrote:
-> > Instead of limiting compression to Tile4 lets enable it for any
-> > tiling when platform has flatccs area.
-> > 
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > ---
-> >   lib/rendercopy_gen9.c | 4 ++--
-> >   1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-> > index 7c7563d50c..67bb7cfacd 100644
-> > --- a/lib/rendercopy_gen9.c
-> > +++ b/lib/rendercopy_gen9.c
-> > @@ -175,6 +175,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
-> >   		case 64: ss->ss0.surface_format = SURFACEFORMAT_R16G16B16A16_FLOAT; break;
-> >   		default: igt_assert(0);
-> >   	}
-> > +
-> >   	ss->ss0.vertical_alignment = 1; /* align 4 */
-> >   	ss->ss0.horizontal_alignment = 1; /* align 4 or HALIGN_32 on display ver >= 13*/
-> > @@ -232,7 +233,6 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
-> >   		ss->ss6.aux_mode = 0x5; /* AUX_CCS_E */
-> >   		if (buf->ccs[0].stride) {
-> > -
-> >   			ss->ss6.aux_pitch = (buf->ccs[0].stride / 128) - 1;
-> >   			address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
-> > @@ -268,7 +268,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
-> >   			ss->ss13.clear_address_hi = (address + buf->cc.offset) >> 32;
-> >   		}
-> > -		if (HAS_4TILE(ibb->devid)) {
-> > +		if (HAS_FLATCCS(ibb->devid)) {
+Hi igt-dev,
+On 2024-04-25 at 15:32:56 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> This I suspect will break mtl. Those few above blank line changes probably
-> also here as not needed 'extra'.
+> Series: tools/intel_reg: Fix mchbar register write
+> URL   : https://patchwork.freedesktop.org/series/132598/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_14606_full -> IGTPW_11040_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_11040_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_11040_full, please notify your bug team (&#x27;I915-ci-infra@lists.freedesktop.org&#x27;) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/index.html
+> 
+> Participating hosts (9 -> 8)
+> ------------------------------
+> 
+>   Missing    (1): shard-dg2-set2 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_11040_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@debugfs_test@read_all_entries_display_off:
+>     - shard-dg2:          NOTRUN -> [INCOMPLETE][1] +1 other test incomplete
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/shard-dg2-5/igt@debugfs_test@read_all_entries_display_off.html
+> 
+>   * igt@kms_cursor_crc@cursor-rapid-movement-128x42@pipe-b-hdmi-a-1:
+>     - shard-rkl:          NOTRUN -> [ABORT][2] +14 other tests abort
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/shard-rkl-5/igt@kms_cursor_crc@cursor-rapid-movement-128x42@pipe-b-hdmi-a-1.html
+> 
+>   * igt@kms_cursor_legacy@cursora-vs-flipa-atomic-transitions-varying-size:
+>     - shard-dg2:          NOTRUN -> [DMESG-WARN][3] +5 other tests dmesg-warn
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/shard-dg2-4/igt@kms_cursor_legacy@cursora-vs-flipa-atomic-transitions-varying-size.html
+> 
+>   * igt@kms_flip@basic-flip-vs-modeset@d-hdmi-a1:
+>     - shard-tglu:         NOTRUN -> [INCOMPLETE][4] +4 other tests incomplete
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/shard-tglu-2/igt@kms_flip@basic-flip-vs-modeset@d-hdmi-a1.html
+> 
+>   * igt@kms_invalid_mode@zero-vdisplay@pipe-b-hdmi-a-1:
+>     - shard-glk:          NOTRUN -> [ABORT][5] +4 other tests abort
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/shard-glk1/igt@kms_invalid_mode@zero-vdisplay@pipe-b-hdmi-a-1.html
+> 
+>   * igt@kms_invalid_mode@zero-vdisplay@pipe-c-hdmi-a-2:
+>     - shard-glk:          NOTRUN -> [DMESG-WARN][6] +2 other tests dmesg-warn
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/shard-glk1/igt@kms_invalid_mode@zero-vdisplay@pipe-c-hdmi-a-2.html
+> 
+>   * igt@kms_lease@simple-lease@pipe-c-hdmi-a-2:
+>     - shard-glk:          [PASS][7] -> [ABORT][8]
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14606/shard-glk4/igt@kms_lease@simple-lease@pipe-c-hdmi-a-2.html
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/shard-glk3/igt@kms_lease@simple-lease@pipe-c-hdmi-a-2.html
+> 
+>   * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-4:
+>     - shard-dg1:          NOTRUN -> [INCOMPLETE][9] +1 other test incomplete
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/shard-dg1-17/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-4.html
+> 
+>   * igt@kms_plane@plane-panning-bottom-right-suspend@pipe-b:
+>     - shard-dg1:          NOTRUN -> [ABORT][10] +1 other test abort
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/shard-dg1-13/igt@kms_plane@plane-panning-bottom-right-suspend@pipe-b.html
+> 
+>   * igt@kms_pm_dc@dc9-dpms:
+>     - shard-dg2:          NOTRUN -> [ABORT][11] +3 other tests abort
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/shard-dg2-7/igt@kms_pm_dc@dc9-dpms.html
+> 
+>   * igt@kms_psr@psr-cursor-plane-move@edp-1:
+>     - shard-mtlp:         NOTRUN -> [ABORT][12] +20 other tests abort
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/shard-mtlp-5/igt@kms_psr@psr-cursor-plane-move@edp-1.html
+> 
+>   * igt@kms_setmode@basic:
+>     - shard-snb:          NOTRUN -> [INCOMPLETE][13] +6 other tests incomplete
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/shard-snb4/igt@kms_setmode@basic.html
+> 
+>   * igt@kms_setmode@basic@pipe-b-hdmi-a-2:
+>     - shard-rkl:          NOTRUN -> [DMESG-WARN][14]
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/shard-rkl-1/igt@kms_setmode@basic@pipe-b-hdmi-a-2.html
+> 
+>   * igt@kms_setmode@invalid-clone-single-crtc:
+>     - shard-glk:          NOTRUN -> [INCOMPLETE][15] +3 other tests incomplete
+>    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/shard-glk4/igt@kms_setmode@invalid-clone-single-crtc.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@kms_plane_multiple@tiling-none@pipe-d-edp-1:
+>     - shard-mtlp:         [ABORT][16] ([i915#10875]) -> [ABORT][17] +2 other tests abort
+>    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14606/shard-mtlp-3/igt@kms_plane_multiple@tiling-none@pipe-d-edp-1.html
+>    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/shard-mtlp-7/igt@kms_plane_multiple@tiling-none@pipe-d-edp-1.html
+> 
 
-Thanks, I need to test this on MTL.
+All above are unrelated to tools/ change.
 
---
-Zbigniew
+Regards,
+Kamil
+
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_11040_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@api_intel_bb@object-reloc-purge-cache:
+>     - shard-mtlp:         NOTRUN -> [SKIP][18] ([i915#8411])
+
+...cut...
 
 > 
-> /Juha-Pekka
+> Build changes
+> -------------
 > 
-> >   			ss->ss7.dg2.memory_compression_type = 0;
-> >   			ss->ss7.dg2.memory_compression_enable = 0;
-> >   			ss->ss7.dg2.disable_support_for_multi_gpu_partial_writes = 1;
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7813 -> IGTPW_11040
+>   * Piglit: piglit_4509 -> None
 > 
+>   CI-20190529: 20190529
+>   CI_DRM_14606: 121bb3cb2e7ce2d6f5c35cea84c6ae308cf1da0a @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_11040: d591925568a45c97dc8484361a79e9d0b01636c3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   IGT_7813: 66841b7d9024447be4f4f5449aaf4f021e6323e5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11040/index.html
