@@ -4,56 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6F77C4345F
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Apr 2024 14:05:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF086C4345F
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Apr 2024 14:24:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5EF8E112072;
-	Thu, 25 Apr 2024 14:05:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7086F11A49F;
+	Thu, 25 Apr 2024 14:24:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AxMr4nDT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JPSALCpb";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D2BD112072
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Apr 2024 14:05:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3ECAA11A49F
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Apr 2024 14:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714053952; x=1745589952;
+ t=1714055062; x=1745591062;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=4CsjKMJUvp1HYQUHoqmoDK7VPRiAIDw88RyBBisSQa4=;
- b=AxMr4nDTFZADwd0QhgjFOp75IA/RaA+2BzKyLXFbPiM5loy+Z1GNSQUO
- zMm0giUgCdTQcNyheBsxMrdIGXQeShLGsbJzkBFG3FJlOmjDALvjVMj5M
- VGxmn0DCC8rHlfAxGEZv5DlPYVgt9Wh4zMBJoWtPbt5J3akBPLmRCGJHe
- yiLKVeWtVgo2VozjYH+AKZspOwMa4XrZo/CBKbXZuVubT1hwq9R2q9M2I
- DiK5xWWHobHBS2UmbmjaWuf2Z5Zq5fjkxdmUpDhDxSGUTQxfv3Z18l9Xp
- TVi2Z9ttsYazzcA7pyTEYZTZbwm2MqnsH+KbWUZgzx2D+cWgfbJKisIOU A==;
-X-CSE-ConnectionGUID: SdW9Cy9TSwuhd1I+KW4QCg==
-X-CSE-MsgGUID: URKmwJpwTU+iTmsxf0r2og==
-X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="20894739"
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="20894739"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2024 07:05:52 -0700
-X-CSE-ConnectionGUID: rHsoWE9qSRurUVQ2XyjAFA==
-X-CSE-MsgGUID: LiaUuYJsS8GaxAUye3dF4w==
+ bh=ewYAwY60rjvezbnUrBm39/rZksA1LRa9X6mBK5tmpfw=;
+ b=JPSALCpbsnQrLFYRKhzi/kWdaExk+Hhj/ZV5RFUlLEsXV1t3ziGN2Toq
+ sx0jsOYH5OCOfGpX+RNXiTQ9QsE85nQQKeXgQu4lnbhUwXAGlsJevQZgS
+ zI9mHqws6m/gWiQ2PAAMQX4S6/XntrL5pUvUClZOnP7YUn6juZ4dI+RUG
+ tre7lBar4eZknE5wSNE7NNN+yf+sui9ge/fKNVcqZkJYsEg1p94CaR45W
+ bzBSmklrFbHPkWTt90LRyQW6GYcJDg154FpI6nkXczwU5sXli7IqJZ7Qi
+ R9PsxWlSBE7JXLw9ILbNO2OfJge82q1rekqrS2P3Pk4FBXfqO8I3m/eCD A==;
+X-CSE-ConnectionGUID: hDMGfTWXSHumlYtlRwDkvA==
+X-CSE-MsgGUID: 8r5w58NtQ5CZBtVaGoao0Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="13577899"
+X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="13577899"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2024 07:24:22 -0700
+X-CSE-ConnectionGUID: XMnRHZdRSNWvjCZ+sAdz4A==
+X-CSE-MsgGUID: GRLUJB+9TGybuePyw2Ye9g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="25567888"
-Received: from mklonows-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.53])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2024 07:05:51 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="25114728"
+Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2024 07:24:20 -0700
+From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Sai Gowtham Ch <sai.gowtham.ch@intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t] tests/device_reset: move later skips into subtests
-Date: Thu, 25 Apr 2024 16:05:44 +0200
-Message-ID: <20240425140544.41750-1-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.42.0
+Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ Aditya Chauhan <aditya.chauhan@intel.com>
+Subject: [PATCH i-g-t 0/1] tests/intel: Put multiGPU tests in MultiGPU
+Date: Thu, 25 Apr 2024 14:24:11 +0000
+Message-Id: <20240425142412.3751980-1-katarzyna.piecielska@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,88 +66,19 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-It is safe to use skips just after igt_main() for skipping all
-subtests but later on they produce logs and even if CI will
-ignore that, such logs can mislead developers reading them.
+Some of multiGPU tests were having CMD submission subcategory. Let's fix
+that and have all multiGPU tests in one subcategory.
 
-Move a skip from middle of igt_main() code block into subtests
-which needed them.
+Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+Cc: Aditya Chauhan <aditya.chauhan@intel.com>
 
-v2: add space after while (Kamil)
-v3: remove macro in favor of function (Zbigniew)
+Katarzyna Piecielska (1):
+  tests/intel: Put multiGPU tests in MultiGPU subcategory
 
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/device_reset.c | 36 ++++++++++++++++++++++++++++++------
- 1 file changed, 30 insertions(+), 6 deletions(-)
+ tests/intel/xe_create.c     | 1 +
+ tests/intel/xe_exec_basic.c | 3 +++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index 583a59039..09558ff20 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -299,6 +299,29 @@ static bool is_sysfs_cold_reset_supported(int slot_fd)
- 	return true;
- }
- 
-+/**
-+ * cold_reset_not_supported:
-+ * @fd: opened sysfs pci slot descriptor
-+ *
-+ * Check if device supports cold reset based on slot dir or sysfs file presence.
-+ *
-+ * Returns:
-+ * NULL if device supports cold reset, otherwise a string description
-+ */
-+static const char *cold_reset_not_supported(int slot_dir)
-+{
-+	static const char *no_slot = "Gfx Card does not support any pcie slot for cold reset";
-+	static const char *not_supported = "Gfx Card does not support cold reset";
-+
-+	if (slot_dir < 0)
-+		return no_slot;
-+
-+	if (!is_sysfs_cold_reset_supported(slot_dir))
-+		return not_supported;
-+
-+	return NULL;
-+}
-+
- /* Unbind the driver from the device */
- static void driver_unbind(struct device_fds *dev)
- {
-@@ -424,22 +447,23 @@ igt_main
- 		healthcheck(&dev);
- 	}
- 
--	igt_subtest_group {
--		igt_fixture {
--			igt_skip_on_f(dev.fds.slot_dir < 0, "Gfx Card does not support any "
--				      "pcie slot for cold reset\n");
--			igt_skip_on(!is_sysfs_cold_reset_supported(dev.fds.slot_dir));
--		}
- 
-+	igt_subtest_group {
- 		igt_describe("Unbinds driver from device, initiates cold reset"
- 			     " then rebinds driver to device");
- 		igt_subtest("unbind-cold-reset-rebind") {
-+			const char *reason = cold_reset_not_supported(dev.fds.slot_dir);
-+
-+			igt_skip_on_f(reason, "%s\n", reason);
- 			unbind_reset_rebind(&dev, COLD_RESET);
- 			healthcheck(&dev);
- 		}
- 
- 		igt_describe("Cold Resets device with bound driver");
- 		igt_subtest("cold-reset-bound") {
-+			const char *reason = cold_reset_not_supported(dev.fds.slot_dir);
-+
-+			igt_skip_on_f(reason, "%s\n", reason);
- 			initiate_device_reset(&dev, COLD_RESET);
- 			/*
- 			 * Cold reset will initiate card boot sequence again,
 -- 
-2.42.0
+2.34.1
 
