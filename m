@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76B0DC4345F
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Apr 2024 13:55:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6F77C4345F
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Apr 2024 14:05:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1837C11A489;
-	Thu, 25 Apr 2024 13:55:59 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB19C1139A5;
- Thu, 25 Apr 2024 13:55:58 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3865036176356037240=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5EF8E112072;
+	Thu, 25 Apr 2024 14:05:54 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AxMr4nDT";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D2BD112072
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Apr 2024 14:05:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1714053952; x=1745589952;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=4CsjKMJUvp1HYQUHoqmoDK7VPRiAIDw88RyBBisSQa4=;
+ b=AxMr4nDTFZADwd0QhgjFOp75IA/RaA+2BzKyLXFbPiM5loy+Z1GNSQUO
+ zMm0giUgCdTQcNyheBsxMrdIGXQeShLGsbJzkBFG3FJlOmjDALvjVMj5M
+ VGxmn0DCC8rHlfAxGEZv5DlPYVgt9Wh4zMBJoWtPbt5J3akBPLmRCGJHe
+ yiLKVeWtVgo2VozjYH+AKZspOwMa4XrZo/CBKbXZuVubT1hwq9R2q9M2I
+ DiK5xWWHobHBS2UmbmjaWuf2Z5Zq5fjkxdmUpDhDxSGUTQxfv3Z18l9Xp
+ TVi2Z9ttsYazzcA7pyTEYZTZbwm2MqnsH+KbWUZgzx2D+cWgfbJKisIOU A==;
+X-CSE-ConnectionGUID: SdW9Cy9TSwuhd1I+KW4QCg==
+X-CSE-MsgGUID: URKmwJpwTU+iTmsxf0r2og==
+X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="20894739"
+X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="20894739"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2024 07:05:52 -0700
+X-CSE-ConnectionGUID: rHsoWE9qSRurUVQ2XyjAFA==
+X-CSE-MsgGUID: LiaUuYJsS8GaxAUye3dF4w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="25567888"
+Received: from mklonows-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.53])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2024 07:05:51 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Sai Gowtham Ch <sai.gowtham.ch@intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t] tests/device_reset: move later skips into subtests
+Date: Thu, 25 Apr 2024 16:05:44 +0200
+Message-ID: <20240425140544.41750-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/gpu=5Fcmds=3A_be_ready_to_?=
- =?utf-8?q?use_xe2_gpgpu_fill_on_newer_platforms?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Dominik Grzegorzek" <dominik.grzegorzek@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 25 Apr 2024 13:55:58 -0000
-Message-ID: <171405335889.1650662.7403899341693344248@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240425121337.433948-1-dominik.grzegorzek@intel.com>
-In-Reply-To: <20240425121337.433948-1-dominik.grzegorzek@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +67,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3865036176356037240==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+It is safe to use skips just after igt_main() for skipping all
+subtests but later on they produce logs and even if CI will
+ignore that, such logs can mislead developers reading them.
 
-== Series Details ==
+Move a skip from middle of igt_main() code block into subtests
+which needed them.
 
-Series: lib/gpu_cmds: be ready to use xe2 gpgpu fill on newer platforms
-URL   : https://patchwork.freedesktop.org/series/132905/
-State : success
+v2: add space after while (Kamil)
+v3: remove macro in favor of function (Zbigniew)
 
-== Summary ==
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/device_reset.c | 36 ++++++++++++++++++++++++++++++------
+ 1 file changed, 30 insertions(+), 6 deletions(-)
 
-CI Bug Log - changes from XEIGT_7824_BAT -> XEIGTPW_11070_BAT
-====================================================
+diff --git a/tests/device_reset.c b/tests/device_reset.c
+index 583a59039..09558ff20 100644
+--- a/tests/device_reset.c
++++ b/tests/device_reset.c
+@@ -299,6 +299,29 @@ static bool is_sysfs_cold_reset_supported(int slot_fd)
+ 	return true;
+ }
+ 
++/**
++ * cold_reset_not_supported:
++ * @fd: opened sysfs pci slot descriptor
++ *
++ * Check if device supports cold reset based on slot dir or sysfs file presence.
++ *
++ * Returns:
++ * NULL if device supports cold reset, otherwise a string description
++ */
++static const char *cold_reset_not_supported(int slot_dir)
++{
++	static const char *no_slot = "Gfx Card does not support any pcie slot for cold reset";
++	static const char *not_supported = "Gfx Card does not support cold reset";
++
++	if (slot_dir < 0)
++		return no_slot;
++
++	if (!is_sysfs_cold_reset_supported(slot_dir))
++		return not_supported;
++
++	return NULL;
++}
++
+ /* Unbind the driver from the device */
+ static void driver_unbind(struct device_fds *dev)
+ {
+@@ -424,22 +447,23 @@ igt_main
+ 		healthcheck(&dev);
+ 	}
+ 
+-	igt_subtest_group {
+-		igt_fixture {
+-			igt_skip_on_f(dev.fds.slot_dir < 0, "Gfx Card does not support any "
+-				      "pcie slot for cold reset\n");
+-			igt_skip_on(!is_sysfs_cold_reset_supported(dev.fds.slot_dir));
+-		}
+ 
++	igt_subtest_group {
+ 		igt_describe("Unbinds driver from device, initiates cold reset"
+ 			     " then rebinds driver to device");
+ 		igt_subtest("unbind-cold-reset-rebind") {
++			const char *reason = cold_reset_not_supported(dev.fds.slot_dir);
++
++			igt_skip_on_f(reason, "%s\n", reason);
+ 			unbind_reset_rebind(&dev, COLD_RESET);
+ 			healthcheck(&dev);
+ 		}
+ 
+ 		igt_describe("Cold Resets device with bound driver");
+ 		igt_subtest("cold-reset-bound") {
++			const char *reason = cold_reset_not_supported(dev.fds.slot_dir);
++
++			igt_skip_on_f(reason, "%s\n", reason);
+ 			initiate_device_reset(&dev, COLD_RESET);
+ 			/*
+ 			 * Cold reset will initiate card boot sequence again,
+-- 
+2.42.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (0 -> 0)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7824 -> IGTPW_11070
-  * Linux: xe-1175-67988afd596f307b6b7e849e6a246bca9a20e93d -> xe-1177-972738688dc48cf04e4aec9a39ef4703c78aa17b
-
-  IGTPW_11070: 6f63dcbf3aa286bd255f3491f9382612d47dd03d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7824: 7824
-  xe-1175-67988afd596f307b6b7e849e6a246bca9a20e93d: 67988afd596f307b6b7e849e6a246bca9a20e93d
-  xe-1177-972738688dc48cf04e4aec9a39ef4703c78aa17b: 972738688dc48cf04e4aec9a39ef4703c78aa17b
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11070/index.html
-
---===============3865036176356037240==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/gpu_cmds: be ready to use xe2 gpgpu fill on newer platforms</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132905/">https://patchwork.freedesktop.org/series/132905/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11070/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11070/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7824_BAT -&gt; XEIGTPW_11070_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (0 -&gt; 0)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7824 -&gt; IGTPW_11070</li>
-<li>Linux: xe-1175-67988afd596f307b6b7e849e6a246bca9a20e93d -&gt; xe-1177-972738688dc48cf04e4aec9a39ef4703c78aa17b</li>
-</ul>
-<p>IGTPW_11070: 6f63dcbf3aa286bd255f3491f9382612d47dd03d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7824: 7824<br />
-  xe-1175-67988afd596f307b6b7e849e6a246bca9a20e93d: 67988afd596f307b6b7e849e6a246bca9a20e93d<br />
-  xe-1177-972738688dc48cf04e4aec9a39ef4703c78aa17b: 972738688dc48cf04e4aec9a39ef4703c78aa17b</p>
-
-</body>
-</html>
-
---===============3865036176356037240==--
