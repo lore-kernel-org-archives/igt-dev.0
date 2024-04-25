@@ -4,58 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 237C7C10F15
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Apr 2024 15:53:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AAF9C4345F
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Apr 2024 15:53:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BCEE911A593;
-	Thu, 25 Apr 2024 15:53:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0F99911A595;
+	Thu, 25 Apr 2024 15:53:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jbcrGIo5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jf7dThzk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F38F611A593
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Apr 2024 15:53:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D383811A595
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Apr 2024 15:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714060385; x=1745596385;
+ t=1714060426; x=1745596426;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=tinx6M743xWlEg8d06FwxeEo8qjo4pCkOJBNG7LHc6k=;
- b=jbcrGIo58V87WO695RK59JDDKCItXQoerIalIHtcedPVwMmNYtBIehO3
- +O4jxoU9OzBouqM9GYoIO6gArLuTaAGqPUOtfwo4WTXkHnGSZkJ7k6Xwf
- ot4iYws2dzITvDJ9gqn3osSYRqulP1mtSk6oVTI1CGUvP60AvtE5ng7dR
- 7Dh6ekaO1/ayRuyFtggC2EYFRrlglcdxutEAZQkxxxxsvAMKiJevVJclT
- 4wcF8lfQgrdyxuaa8ifKX6N4mOW768UNS5nQszknTmurrAwMQJl3AdEXt
- jTo+gCpR33hUNxnDvbAi3LTRjoHpdJyD9+iEFliZFlxEtsNmfdAzDmVVw A==;
-X-CSE-ConnectionGUID: PBFaVnG3RcCE1FfuwrNOUQ==
-X-CSE-MsgGUID: In+pAKWBQTKNYaMIwTH76w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="13593460"
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="13593460"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2024 08:53:04 -0700
-X-CSE-ConnectionGUID: JhI5gEUsTlaVLmc7jexp+Q==
-X-CSE-MsgGUID: b7eCmru5RBSQzmJklm71Ig==
+ bh=9Qvlf6g9GF9+sz8XKLV4yZ+nFZ8Fw0YH2jAkrLqq1Fo=;
+ b=Jf7dThzk4Sat/3DYuq9l8U1Zrfb6UdqZNahx/xgGYSQDn9seO8YDwO4P
+ AbIzjba8MLFpHcbG3qwsaghcRUlDlODv69agE8zTNfnRPxzB9bsaSdHyB
+ oQJd432KzKYmOuUXjEbfMsqSetFLs2FjTT7tQLbfSQtGgxolxOAU3cCt8
+ bx9hkS3Bx049XUEabMDB9cO2bP/yM0j2zNdZTKcSGV/t/omYCFq/9V9TW
+ +mnRv7pynByXBV5zuPjGMLRD0Ld9OBSwYX1wiSqUqj9XjneCdl3Zb0ygj
+ +jiAjLllabyoeNL3+VV2rewqF8eUAJbPjUk44OZ1EfAM/E+P/hrYDRBYX A==;
+X-CSE-ConnectionGUID: 3fVYD4XzQRqSGKVsvb1nAg==
+X-CSE-MsgGUID: w+gC4DclSPG4tJuK/Mu8hQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="21165978"
+X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="21165978"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2024 08:53:45 -0700
+X-CSE-ConnectionGUID: dMKbd2pcTKmJmOtqUk89+w==
+X-CSE-MsgGUID: Zs+Tv5EGSFa/0276Hyd82g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="29742153"
+X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="29581169"
 Received: from dhhellew-desk2.ger.corp.intel.com.ger.corp.intel.com (HELO
  localhost) ([10.245.246.50])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2024 08:53:02 -0700
-Date: Thu, 25 Apr 2024 17:52:59 +0200
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2024 08:53:44 -0700
+Date: Thu, 25 Apr 2024 17:53:41 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 4/7] lib/intel_bufops: Drop tilings restrictions
-Message-ID: <20240425155259.yyuqzhlldbmtj7sx@zkempczy-mobl2>
+Subject: Re: [PATCH i-g-t 6/7] lib/rendercopy_gen9: Allow to use all tilings
+ on flatccs platforms
+Message-ID: <20240425155341.3v7id7tkxq6azljx@zkempczy-mobl2>
 References: <20240425104721.52376-1-zbigniew.kempczynski@intel.com>
- <20240425104721.52376-5-zbigniew.kempczynski@intel.com>
- <64cd3b16-55b8-42e5-8aa7-f417ecb4d5ec@gmail.com>
+ <20240425104721.52376-7-zbigniew.kempczynski@intel.com>
+ <218a0925-015d-46ba-b7f3-e0545daf7f88@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <64cd3b16-55b8-42e5-8aa7-f417ecb4d5ec@gmail.com>
+In-Reply-To: <218a0925-015d-46ba-b7f3-e0545daf7f88@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,35 +72,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Apr 25, 2024 at 04:08:23PM +0300, Juha-Pekka Heikkila wrote:
+On Thu, Apr 25, 2024 at 03:26:12PM +0300, Juha-Pekka Heikkila wrote:
 > On 25.4.2024 13.47, Zbigniew Kempczyński wrote:
-> > Different platforms supports different tilings so instead of asserting
-> > on buffer creation path move responsibility of passing valid data
-> > to the test. It can use intel_cmds_info to iterate over supported
-> > tilings so this is better extendible and requires fewer changes.
+> > Instead of limiting compression to Tile4 lets enable it for any
+> > tiling when platform has flatccs area.
 > > 
 > > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > > ---
-> >   lib/intel_bufops.c | 3 ---
-> >   1 file changed, 3 deletions(-)
+> >   lib/rendercopy_gen9.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
 > > 
-> > diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-> > index 007ccdb953..b96275e485 100644
-> > --- a/lib/intel_bufops.c
-> > +++ b/lib/intel_bufops.c
-> > @@ -898,9 +898,6 @@ static void __intel_buf_init(struct buf_ops *bops,
-> >   	if (compression) {
-> >   		igt_require(bops->intel_gen >= 9);
-> > -		igt_assert(req_tiling == I915_TILING_Y ||
-> > -			   req_tiling == I915_TILING_Yf ||
-> > -			   req_tiling == I915_TILING_4);
+> > diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+> > index 7c7563d50c..67bb7cfacd 100644
+> > --- a/lib/rendercopy_gen9.c
+> > +++ b/lib/rendercopy_gen9.c
+> > @@ -175,6 +175,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+> >   		case 64: ss->ss0.surface_format = SURFACEFORMAT_R16G16B16A16_FLOAT; break;
+> >   		default: igt_assert(0);
+> >   	}
+> > +
+> >   	ss->ss0.vertical_alignment = 1; /* align 4 */
+> >   	ss->ss0.horizontal_alignment = 1; /* align 4 or HALIGN_32 on display ver >= 13*/
+> > @@ -232,7 +233,6 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+> >   		ss->ss6.aux_mode = 0x5; /* AUX_CCS_E */
+> >   		if (buf->ccs[0].stride) {
+> > -
+> >   			ss->ss6.aux_pitch = (buf->ccs[0].stride / 128) - 1;
+> >   			address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
+> > @@ -268,7 +268,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+> >   			ss->ss13.clear_address_hi = (address + buf->cc.offset) >> 32;
+> >   		}
+> > -		if (HAS_4TILE(ibb->devid)) {
+> > +		if (HAS_FLATCCS(ibb->devid)) {
 > 
-> I'm wondering if it would make sense to flip this assert around instead of
-> removing it? I mean would check here will not arrive linear and x-tile? I
-> didn't check but I assume this compression flag will not be enabled for xe2?
+> This I suspect will break mtl. Those few above blank line changes probably
+> also here as not needed 'extra'.
 
-I'm using this path to create compressed on xe2 and render-copy works
-fine on linear/x/4/64 there.
+Thanks, I need to test this on MTL.
 
 --
 Zbigniew
@@ -107,7 +116,7 @@ Zbigniew
 > 
 > /Juha-Pekka
 > 
-> >   		/*
-> >   		 * On GEN12+ we align the main surface to 4 * 4 main surface
-> >   		 * tiles, which is 64kB. These 16 tiles are mapped by 4 AUX
+> >   			ss->ss7.dg2.memory_compression_type = 0;
+> >   			ss->ss7.dg2.memory_compression_enable = 0;
+> >   			ss->ss7.dg2.disable_support_for_multi_gpu_partial_writes = 1;
 > 
