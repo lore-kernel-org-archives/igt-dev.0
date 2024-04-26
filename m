@@ -4,64 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE451C04FFE
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Apr 2024 09:41:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ECABC4345F
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Apr 2024 09:57:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3FE2C10F448;
-	Fri, 26 Apr 2024 09:41:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B3E2E10F96C;
+	Fri, 26 Apr 2024 09:57:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="SyhJpvyX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ao0R9/I9";
 	dkim-atps=neutral
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com
- [209.85.208.179])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A1AC11AA06
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Apr 2024 04:30:31 +0000 (UTC)
-Received: by mail-lj1-f179.google.com with SMTP id
- 38308e7fff4ca-2def8e58471so21009441fa.0
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Apr 2024 21:30:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1714105829; x=1714710629; darn=lists.freedesktop.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=6V2hM+h6pS0gu/m4gL1FgRP8pL4W82EnInwVaM15E1Y=;
- b=SyhJpvyXvlb4OtZ/2cuySkimp+YytJSzWko20nCL51cC6AY4XCP5+to7J2qOJxzFhN
- rDy5LlzcL5moLFngAAmNIgTu7fheDbSBby22jCMTyxg5ml3336iMz9pBFhTpxF+3hjSz
- mTutuLGlLjubT74bsElzZ3zTjRkYdeqDexAumoSO4CdPGmERpzZzW8Lj8iSY7Uxa84nx
- OpF8zeEuVs4drLBtz3+Va36nqUibiQRE4nZKJGohicOTXt03Tw0xXDv7XfpEAiTX+eEJ
- vZqemTJgBYYsDsJyEu2bR6D0tNKRTgvsvT/KrE3aqmZTf9aJzxj2NdRZFFTwDBnuuS/C
- e2iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714105829; x=1714710629;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=6V2hM+h6pS0gu/m4gL1FgRP8pL4W82EnInwVaM15E1Y=;
- b=PHIrC56A8DHVQp8rq4q0e/kZk/1wGnYWZWqZY99zgRRQJpIR/TOvx4mCAz3+7Sd0vP
- 3Lx8kXDQrgIBqS+UKAPkcQEURKmyuNF2qcqcAeyXkwwuuWaJAWAcK3Xi1P7DxRsKlHsY
- 28nVFqYxYiDPUwxrzszR64kZ+cX7Rw0unQApeGDTzkPdQ2knw1rqQYhGZLriL3q4VJyv
- tvYniQa5Xj0Pkl/HmHsZhgHnxVZCNB/2jRI6RaDBZ/8sgWhByDqwL581pdwUdTHXwOnG
- g1RskvHIn+NOUtMNoj6fyETC74NKBq71eNV1J7YtPf7kwbgszukoIchWrT4stnQJWbSj
- x4Dg==
-X-Gm-Message-State: AOJu0Yym3l7K1WH9ZU3O4rYTI7ZVFWqiClV7PHGtHsi7CPM6Ae2GI38P
- yCDb50QR5PJvJIheb5FTBMvlhUcwed9yj2wXX4yOQjyvFTETnl0iQ8eSyGCPfyNNgeacJcoUIuc
- xPsAJgEtgWYXuQWBCqugYOszdMYo=
-X-Google-Smtp-Source: AGHT+IHgEUbLY8ASr33Uw3/WafAOT5cyauDPLnQ2JZkoSFlF0K3kFRp8ca/7JJ5t6ga0iGRClragBTa2RI4nuLvxdHw=
-X-Received: by 2002:a05:651c:11c7:b0:2de:3421:9ef6 with SMTP id
- z7-20020a05651c11c700b002de34219ef6mr744435ljo.33.1714105828799; Thu, 25 Apr
- 2024 21:30:28 -0700 (PDT)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B709310F96C;
+ Fri, 26 Apr 2024 09:57:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1714125427; x=1745661427;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=uUSAirgGPnNeZ8MVrWasaP0mNjKAa7gx1OnY2WzzBYY=;
+ b=Ao0R9/I9a2XNsaW4tQ39tsR95p/wNaE7equkoJ9OXmID7hRnDcOVQD3L
+ sySld0FVWeW+BEod5eXe10LokngP6oHVihSNy+LrOZFUBGLxpKUxiI75A
+ BWif9ZnORI7izy9AKT8n7RyyIG7BHuJIls/3vyP4NCN93AtzR+4AehO0x
+ j+talhfUMuiTCaRH/5xiQHpZb8dNbHfw+SUNnDjmaxq5dh6f26D9tWXV3
+ 97fLZ9OzZUMUmsF6uTfEVed8xNvjBJoNk+hPMDHMrqfrJLPO/3nITko6q
+ vq7TsxQxs0jiQO6fJMLXZue4E3wW5JQCraBDI5tGscAW5IUvJ8Ge08ll8 w==;
+X-CSE-ConnectionGUID: TsJ/YtVNR42OrwWHz4n8yw==
+X-CSE-MsgGUID: FO+EBJe2SzSs9fxrNXyi9g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="9722700"
+X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; 
+   d="scan'208";a="9722700"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Apr 2024 02:57:06 -0700
+X-CSE-ConnectionGUID: eHNTB1SSRWG50+VcBtp/SQ==
+X-CSE-MsgGUID: tMMc2bEhR9CWVlrU6TKUEA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; d="scan'208";a="56303288"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 02:57:05 -0700
+Date: Fri, 26 Apr 2024 11:56:46 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLkJBVDogZmFpbHVy?= =?utf-8?Q?e?= for
+ tests/intel/xe_gt_freq: Check for RPe freq updates
+Message-ID: <20240426095646.eb36vgw23d2zdlhw@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+References: <20240425195657.3638599-1-vinay.belgaumkar@intel.com>
+ <171407763556.1668155.12576594446513071033@8e613ede5ea5>
 MIME-Version: 1.0
-References: <CA+MoWDqANoCnEUbZ1s+rbH=KMttjX+xobRze3EM-PLZMfSFHfg@mail.gmail.com>
- <20240426035444.abkx3xo2mghlkurj@zkempczy-mobl2>
-In-Reply-To: <20240426035444.abkx3xo2mghlkurj@zkempczy-mobl2>
-From: Peter Senna Tschudin <peter.senna@gmail.com>
-Date: Fri, 26 Apr 2024 06:30:15 +0200
-Message-ID: <CA+MoWDq6SSC4pXOWdu268qg0+P5w2+2ssLWbXZ_Vs_eyuveQ0A@mail.gmail.com>
-Subject: Re: tests/intel/gem_exec_capture: changing the test size breaks the
- run
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Content-Type: multipart/alternative; boundary="000000000000087dd90616f85da5"
-X-Mailman-Approved-At: Fri, 26 Apr 2024 09:41:15 +0000
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <171407763556.1668155.12576594446513071033@8e613ede5ea5>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,93 +75,208 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---000000000000087dd90616f85da5
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi igt-dev,
+On 2024-04-25 at 20:40:35 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/intel/xe_gt_freq: Check for RPe freq updates
+> URL   : https://patchwork.freedesktop.org/series/132926/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_14657 -> IGTPW_11073
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_11073 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_11073, please notify your bug team (&#x27;I915-ci-infra@lists.freedesktop.org&#x27;) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/index.html
+> 
+> Participating hosts (41 -> 39)
+> ------------------------------
+> 
+>   Additional (1): bat-arls-3 
+>   Missing    (3): bat-adlm-1 fi-snb-2520m fi-bsw-n3050 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_11073:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_exec_parallel@engines@fds:
+>     - bat-arls-2:         NOTRUN -> [ABORT][1]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-2/igt@gem_exec_parallel@engines@fds.html
+> 
 
-On Fri, Apr 26, 2024 at 5:54=E2=80=AFAM Zbigniew Kempczy=C5=84ski <
-zbigniew.kempczynski@intel.com> wrote:
+Unrelated to Xe test,
 
-> On Thu, Apr 11, 2024 at 09:41:11PM +0200, Peter Senna Tschudin wrote:
-> > Dear list,
-> >
-> > After my change*, most of the subtests from gem_exec_capture work, but
-> > only if called one by one using --run-subtest. Here is an example:
->
-> <cut>
->
-> Unfortunately this is related to IGTs construction. I mean if one
-> subtest will allocate the memory and due some reason it won't free it
-> then next subtest doesn't start from scratch, but from some changed
-> state. Subtests which fail mostly left drm fd in some state which
-> might affect next subtests. We're using igt_runner to separate subtests
-> execution and make sure each runs in own process. I'm not saying subtests
-> shouldn't run fluently one by one, but in CI we won't rely on that.
->
+Regards,
+Kamil
 
-Thank you! I had this idea that there was some leftover in memory, but I
-failed to find it. I tried Valgrind, but it did not help much...
-
-I created an issue, and I took the liberty to copy your comment there.
-
-The issue is here:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/154
-
-[...]
-
-
->
-> --
-> Zbigniew
->
-
-
---=20
-                         Peter
-
---000000000000087dd90616f85da5
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>On Fri, Apr 26, 2024 at 5:54=E2=80=AFAM Zbigniew Kemp=
-czy=C5=84ski &lt;<a href=3D"mailto:zbigniew.kempczynski@intel.com">zbigniew=
-.kempczynski@intel.com</a>&gt; wrote:<br></div><div class=3D"gmail_quote"><=
-blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
-eft:1px solid rgb(204,204,204);padding-left:1ex">On Thu, Apr 11, 2024 at 09=
-:41:11PM +0200, Peter Senna Tschudin wrote:<br>
-&gt; Dear list,<br>
-&gt; <br>
-&gt; After my change*, most of the subtests from gem_exec_capture work, but=
-<br>
-&gt; only if called one by one using --run-subtest. Here is an example:<br>
-<br>
-&lt;cut&gt;<br>
-<br>
-Unfortunately this is related to IGTs construction. I mean if one<br>
-subtest will allocate the memory and due some reason it won&#39;t free it<b=
-r>
-then next subtest doesn&#39;t start from scratch, but from some changed<br>
-state. Subtests which fail mostly left drm fd in some state which<br>
-might affect next subtests. We&#39;re using igt_runner to separate subtests=
-<br>
-execution and make sure each runs in own process. I&#39;m not saying subtes=
-ts<br>
-shouldn&#39;t run fluently one by one, but in CI we won&#39;t rely on that.=
-<br></blockquote><div><br></div><div>Thank you! I had this idea that there =
-was some leftover in memory, but I failed to find it. I tried Valgrind, but=
- it did not help much...</div><div><br></div><div>I created an issue, and I=
- took the liberty to copy your comment there.</div><div><br></div><div>The =
-issue is here:=C2=A0<a href=3D"https://gitlab.freedesktop.org/drm/igt-gpu-t=
-ools/-/issues/154">https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issue=
-s/154</a></div><div><br></div><div>[...]</div><div>=C2=A0</div><blockquote =
-class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px sol=
-id rgb(204,204,204);padding-left:1ex">
-<br>
---<br>
-Zbigniew<br>
-</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
-gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
-iv dir=3D"ltr">=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0=C2=A0=C2=A0 =C2=A0 =C2=A0Peter</div></div></div>
-
---000000000000087dd90616f85da5--
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_11073 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@debugfs_test@basic-hwmon:
+>     - bat-arls-3:         NOTRUN -> [SKIP][2] ([i915#9318])
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@debugfs_test@basic-hwmon.html
+> 
+>   * igt@gem_lmem_swapping@parallel-random-engines:
+>     - bat-arls-3:         NOTRUN -> [SKIP][3] ([i915#10213]) +3 other tests skip
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@gem_lmem_swapping@parallel-random-engines.html
+> 
+>   * igt@gem_mmap@basic:
+>     - bat-arls-3:         NOTRUN -> [SKIP][4] ([i915#4083])
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@gem_mmap@basic.html
+> 
+>   * igt@gem_render_tiled_blits@basic:
+>     - bat-arls-3:         NOTRUN -> [SKIP][5] ([i915#10197] / [i915#10211] / [i915#4079])
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@gem_render_tiled_blits@basic.html
+> 
+>   * igt@gem_tiled_blits@basic:
+>     - bat-arls-3:         NOTRUN -> [SKIP][6] ([i915#10196] / [i915#4077]) +2 other tests skip
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@gem_tiled_blits@basic.html
+> 
+>   * igt@gem_tiled_pread_basic:
+>     - bat-arls-3:         NOTRUN -> [SKIP][7] ([i915#10206] / [i915#4079])
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@gem_tiled_pread_basic.html
+> 
+>   * igt@i915_pm_rpm@module-reload:
+>     - fi-kbl-7567u:       [PASS][8] -> [DMESG-WARN][9] ([i915#1982] / [i915#8585])
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14657/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
+> 
+>   * igt@i915_pm_rps@basic-api:
+>     - bat-arls-3:         NOTRUN -> [SKIP][10] ([i915#10209])
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@i915_pm_rps@basic-api.html
+> 
+>   * igt@kms_addfb_basic@addfb25-x-tiled-legacy:
+>     - bat-arls-3:         NOTRUN -> [SKIP][11] ([i915#10200]) +9 other tests skip
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
+> 
+>   * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+>     - bat-arls-3:         NOTRUN -> [SKIP][12] ([i915#10202]) +1 other test skip
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+> 
+>   * igt@kms_dsc@dsc-basic:
+>     - bat-arls-3:         NOTRUN -> [SKIP][13] ([i915#9886])
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@kms_dsc@dsc-basic.html
+> 
+>   * igt@kms_force_connector_basic@force-load-detect:
+>     - bat-arls-3:         NOTRUN -> [SKIP][14] ([i915#10207])
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@kms_force_connector_basic@force-load-detect.html
+> 
+>   * igt@kms_pm_backlight@basic-brightness:
+>     - bat-arls-3:         NOTRUN -> [SKIP][15] ([i915#9812])
+>    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@kms_pm_backlight@basic-brightness.html
+> 
+>   * igt@kms_pm_rpm@basic-pci-d3-state:
+>     - fi-kbl-7567u:       [PASS][16] -> [DMESG-WARN][17] ([i915#8585]) +82 other tests dmesg-warn
+>    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14657/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+>    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+> 
+>   * igt@kms_psr@psr-primary-mmap-gtt:
+>     - bat-arls-3:         NOTRUN -> [SKIP][18] ([i915#9732]) +3 other tests skip
+>    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@kms_psr@psr-primary-mmap-gtt.html
+> 
+>   * igt@kms_setmode@basic-clone-single-crtc:
+>     - bat-arls-3:         NOTRUN -> [SKIP][19] ([i915#10208] / [i915#8809])
+>    [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@kms_setmode@basic-clone-single-crtc.html
+> 
+>   * igt@prime_vgem@basic-fence-mmap:
+>     - bat-arls-3:         NOTRUN -> [SKIP][20] ([i915#10196] / [i915#3708] / [i915#4077]) +1 other test skip
+>    [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@prime_vgem@basic-fence-mmap.html
+> 
+>   * igt@prime_vgem@basic-fence-read:
+>     - bat-arls-3:         NOTRUN -> [SKIP][21] ([i915#10212] / [i915#3708])
+>    [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@prime_vgem@basic-fence-read.html
+> 
+>   * igt@prime_vgem@basic-read:
+>     - bat-arls-3:         NOTRUN -> [SKIP][22] ([i915#10214] / [i915#3708])
+>    [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@prime_vgem@basic-read.html
+> 
+>   * igt@prime_vgem@basic-write:
+>     - bat-arls-3:         NOTRUN -> [SKIP][23] ([i915#10216] / [i915#3708])
+>    [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-3/igt@prime_vgem@basic-write.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@gem_exec_fence@basic-busy@ccs0:
+>     - bat-arls-2:         [ABORT][24] -> [PASS][25]
+>    [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14657/bat-arls-2/igt@gem_exec_fence@basic-busy@ccs0.html
+>    [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-arls-2/igt@gem_exec_fence@basic-busy@ccs0.html
+> 
+>   * igt@gem_lmem_swapping@basic@lmem0:
+>     - bat-dg2-11:         [FAIL][26] ([i915#10378]) -> [PASS][27]
+>    [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14657/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html
+>    [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html
+> 
+>   * igt@i915_selftest@live@execlists:
+>     - fi-bsw-nick:        [ABORT][28] ([i915#10594]) -> [PASS][29]
+>    [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14657/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+>    [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+> 
+>   
+>   [i915#10196]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10196
+>   [i915#10197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10197
+>   [i915#10200]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10200
+>   [i915#10202]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10202
+>   [i915#10206]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10206
+>   [i915#10207]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10207
+>   [i915#10208]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10208
+>   [i915#10209]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10209
+>   [i915#10211]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10211
+>   [i915#10212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10212
+>   [i915#10213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10213
+>   [i915#10214]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10214
+>   [i915#10216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216
+>   [i915#10378]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10378
+>   [i915#10594]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10594
+>   [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
+>   [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
+>   [i915#4077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077
+>   [i915#4079]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079
+>   [i915#4083]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083
+>   [i915#8585]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8585
+>   [i915#8809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809
+>   [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
+>   [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+>   [i915#9812]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9812
+>   [i915#9886]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9886
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7824 -> IGTPW_11073
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14657: 92b848b529903fb99d21168491692474aae4872c @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_11073: fc14ad950ade7db2f9fe9a09f3dfee544644e969 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   IGT_7824: 7824
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11073/index.html
