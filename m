@@ -4,189 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63EE9C4345F
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Apr 2024 19:43:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98403C4345F
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Apr 2024 19:46:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D45D410F0DC;
-	Fri, 26 Apr 2024 19:43:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 14B8E11A9AF;
+	Fri, 26 Apr 2024 19:46:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WcrZEwfO";
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="AgKs/7Zo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 015CD10F0DC
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Apr 2024 19:43:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714160589; x=1745696589;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=c5qaRkSYfMIlG+/69AvqyFD/KSMkJ+s28hYEw/I2DW0=;
- b=WcrZEwfOXCwU6JDzn5VTd633Pexl3xPanCvWeKMehAzcI6M1dOvosbnn
- dOlhIUwa71gUu/n0zNyBOeUwRP7QQ+qJZaovFev8ZiIXLXiYUqaC0T5OS
- f57U77sapT6TMdWMbd86NYToI/p02Dy+cnqY7NtlBagVjTIUC0eITN+71
- hwxPk+EyFyW/yrDg+QjuZGume+DNFsfLokl5bUx036VF58uuxD56IYXZK
- +FjlA1Hghq2wSD56E63lgVw2PV5yNT1mISREpDO4d70ONzXCypF7qa8do
- OAo1pO87ZSrTsB02aPTCTxNNCMGXcbn7PBqIL12TP6jE9D+A0a3gBaSAx Q==;
-X-CSE-ConnectionGUID: +INCXPCZTAe/US7maTO9kg==
-X-CSE-MsgGUID: KjuMNRsxQ+ur0BZK8cq8Xw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11056"; a="10073600"
-X-IronPort-AV: E=Sophos;i="6.07,233,1708416000"; d="scan'208";a="10073600"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Apr 2024 12:42:52 -0700
-X-CSE-ConnectionGUID: Y4eU6jGZQWmraCXL7MrDvQ==
-X-CSE-MsgGUID: UeSjvum0RqajT+vDnbpHWw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,233,1708416000"; d="scan'208";a="30153113"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 26 Apr 2024 12:42:52 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 26 Apr 2024 12:42:51 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Fri, 26 Apr 2024 12:42:51 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.172)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 26 Apr 2024 12:42:51 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=daQfDzk6ALdsqJpSJnAxlseoSNpLuG5oHDAVYGT8H4f7VRVoDS6+K5X8kVX+vtOI9y1lpAJ082xxcDgQgW3NTJKQpJtjXUHOFz0WCQqB5t3Du1ZnzcUYhVAm5aMW01nSayeb/ky6yaolxXO126wtosisTOSS3vdjDpra07GT+jvHS7j9iPvkyl53zLe8OmwvozKBOiGkxECesPaehcp0V3bHdafKgtWXBAnv5OFf09CvnDe/2EE+M5rwzrDxVlJGw2Twf03QcHW7JVRedwWXJoF7E8Te3SZ/3cYSKGqppzZ855nSdpxouoDYOHLAaG/SNmTzHTJ+I58wnAogQPVQbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c5qaRkSYfMIlG+/69AvqyFD/KSMkJ+s28hYEw/I2DW0=;
- b=W3mHMq1fsi3qFZYZut4tDZtQ8P0lwx9bJOM63EdV/UWcXGWbru7Cy+7Lq29TCGxwy5XDnVqmAnv9no5FfdVpNID42xy/2F02Q9w83vZPVIqb0x+V1tG9yfB6S25JlOowVsqfeLrRYoMswcv6T4/TffLYEb/bn81nzaaU4bVbMn9GVXpX8UAB9PPPU/zY1IyoEqwrGRoqCbavtW8QQnDJy3DHO2ab2Q9gQN7OsNy7cyOdpq7Spu5h51PWfhU5GqOicO3ZrzivS1QNLyNMIv6g7LqeuUb+nuYRLoHfKKT+MT5nMLMHNVbmc09fRH9brnAd0PA9qt3Ny60F+TXXj4E8tw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM8PR11MB5655.namprd11.prod.outlook.com (2603:10b6:8:28::10) by
- SN7PR11MB7603.namprd11.prod.outlook.com (2603:10b6:806:32b::6) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7519.20; Fri, 26 Apr 2024 19:42:48 +0000
-Received: from DM8PR11MB5655.namprd11.prod.outlook.com
- ([fe80::5afc:274:3b02:f45]) by DM8PR11MB5655.namprd11.prod.outlook.com
- ([fe80::5afc:274:3b02:f45%4]) with mapi id 15.20.7519.021; Fri, 26 Apr 2024
- 19:42:48 +0000
-From: "Saarinen, Jani" <jani.saarinen@intel.com>
-To: Manasi Navare <navaremanasi@chromium.org>
-CC: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Drew
- Davenport" <ddavenport@chromium.org>, =?utf-8?B?VmlsbGUgU3lyasOkbMOk?=
- <ville.syrjala@linux.intel.com>, Sean Paul <seanpaul@chromium.org>
-Subject: RE: [PATCH v3 1/2] tests/kms_vrr: Add a subtest for seamless modeset
- to a virtual LRR mode
-Thread-Topic: [PATCH v3 1/2] tests/kms_vrr: Add a subtest for seamless modeset
- to a virtual LRR mode
-Thread-Index: AQHaloP2K8yy2wIZvUOn+U3OKqNmHLF4mkcAgACA/4CAAM+3AIAARCvggADCpoCAAAR48A==
-Date: Fri, 26 Apr 2024 19:42:48 +0000
-Message-ID: <DM8PR11MB5655787FEAEED06EDF0C14A4E0162@DM8PR11MB5655.namprd11.prod.outlook.com>
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com
+ [209.85.208.178])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D31C11A9AF
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Apr 2024 19:46:24 +0000 (UTC)
+Received: by mail-lj1-f178.google.com with SMTP id
+ 38308e7fff4ca-2da08b06e0dso27286821fa.2
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Apr 2024 12:46:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1714160782; x=1714765582;
+ darn=lists.freedesktop.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9S8MDB6u4NYD/RtATqOQHUocu3wKVnfYeskFnHjg1Tg=;
+ b=AgKs/7ZoiJqLEjFpH8YseP6XcdeL+AF+eg13oaJGnxLNWTtghn5phG2az2mgRVdJrz
+ YUgPbRxZhlD/EGzjnvzBoUTUwCFt/yhtRjHX+nBLZukTSyi7mffJugeuz9zWZoqcMVOT
+ xCQkXEH+z/nMENxLnTZb5+4PqznwuMOvnl3sw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714160782; x=1714765582;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=9S8MDB6u4NYD/RtATqOQHUocu3wKVnfYeskFnHjg1Tg=;
+ b=eAdWa6hR5RJWsoUUCiFsfKaxhV+0A/qehxudaK4SQyvKCbj64udYV8Cd7mKr8qcb5Y
+ +DS2jbrVxX4zMG7zdswFsibIajKIeJRz3Ym2QD//3OeeSOYOl298nJrCUGGy0ZFGoa5S
+ iQzfYVrFoRIr+1wZcMx42IjL463yMQ3g/XmFzQQFxoMQnpcOGsyVXvWFNOgMOP2GCFCo
+ n+smEzct2bjnnx1YYRJ13/02pJYjFKAT77+71PspAGJqkbDHk/lexW8EFbCCa6kB0WG5
+ uc22oeqtyAABW3RBcgdS4YGnjYlgJJ7c7OtJ4KlyE5ChPF5v715i4FKr1uXREBxAFvTL
+ Oajg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWqpnuec1ZKtQy7qTx7WZBzwwnfhsRiMCfC8CsLwWhcgTNrAeX5QN+Kb81M1jbe1JJqUFo9Kzc8c/10SmgPYSKQj4+zto+xi9B4QQkhqA==
+X-Gm-Message-State: AOJu0Yx5Ya6KEUOsTlEgmbS1LB+Ajk3Ak33fUDVFGaXaZzW2jZsLN1rM
+ KC3YF/70cv9nCQHPUllEAWPACkkT14bYb8VJbuySSEKGyNjP8zNFQu1W9wPaq3O6al+T5tOhGsS
+ FHfhm6Cp9vuCvrvPBfdvdzhz/jnNby1418rVW
+X-Google-Smtp-Source: AGHT+IGj9W9XZIezIKctihfPjbH42MBkUNKbOFj7IL8Bx/lKlZHrev9umKxkXsd3s+xuOK3entsKhopatRWbqmmhDRQ=
+X-Received: by 2002:a2e:330e:0:b0:2da:320a:68d9 with SMTP id
+ d14-20020a2e330e000000b002da320a68d9mr2178303ljc.13.1714160782147; Fri, 26
+ Apr 2024 12:46:22 -0700 (PDT)
+MIME-Version: 1.0
 References: <20240424201344.783935-1-navaremanasi@chromium.org>
  <64cef3df-1610-4d53-a44c-905220e09b76@intel.com>
  <CAE72mNmRsA-KcZ61F6d4Pg5_OQnpifO7AmivE2AkhN_0WT=eTw@mail.gmail.com>
  <682dccc4-c788-4bfd-b8ef-b24d60b488d6@intel.com>
  <DM8PR11MB565517E06CDBA9B389BA86BCE0162@DM8PR11MB5655.namprd11.prod.outlook.com>
  <CAE72mNkYFsViPR18xcT=WZyjNrMSJ6Gq14MUbMzUVHarDfDb6Q@mail.gmail.com>
-In-Reply-To: <CAE72mNkYFsViPR18xcT=WZyjNrMSJ6Gq14MUbMzUVHarDfDb6Q@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM8PR11MB5655:EE_|SN7PR11MB7603:EE_
-x-ms-office365-filtering-correlation-id: eea342a0-10cf-453e-0009-08dc66290d74
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230031|366007|376005|1800799015|38070700009;
-x-microsoft-antispam-message-info: =?utf-8?B?K0JiQTBaSHlMS201OFdpMW9FWDVDV0Z0eFRUanpMQW9lTUQyVFZDcHJ3UVZV?=
- =?utf-8?B?ZVowTFVWY2dITEM1SlRMWW9zUjRNcnZqM1I2M2h0cGlOTXlHcmtSSDNpY2FZ?=
- =?utf-8?B?ckdmemJaSVN4c3hHdXZ3eDR5aTRpOFpFVTdES2dDWkNJSXRwZWQ0eU9vbC9I?=
- =?utf-8?B?VGZHTnM2eVJRNHFlVnlsZVg1M2ppZmRYUFNuU21wSDFORWNNaG9PdVo4OUpT?=
- =?utf-8?B?UjNZT1o0UTNEOG4rNkZDUUEvM1RScnllUzVjTzlPcncyUkpUc2VKaWlaMlVZ?=
- =?utf-8?B?UnJ3bFFjU1Y3ZkI2ZjRJbEVxcGtDT0FEanZJYktVejZBMlJBNkFDbXpRNVo0?=
- =?utf-8?B?azM4bXRkR0ZXMEFTM2g2TitGMG9KTVhkcWdnUXRqVmZtVXJFUTNKa1NNUmV0?=
- =?utf-8?B?dnQreHluazNNaWt3OVRMcUJWNFF5bm9wdTNrSnQ1cE9FSmw4WFlPUnU4bGNT?=
- =?utf-8?B?eGpuQ2RiNFlBTjVReUJQM2N1SFZkcnpzdGMwaWxFWnBtSXFnUkhiNnh6VFpu?=
- =?utf-8?B?UGZ6a0hGSUxwcWdLN1lud2NTQXhFU2puQnBSV2kyVXZDakxPclhOMXFhL21S?=
- =?utf-8?B?dDFtRzN6cjFrbHRrSnpsRmE5WkV1TENhSEpDNThlSXNVMUs2WmNXRytyOWRh?=
- =?utf-8?B?N3IvNTcvREdrcHRMQW8wR0VHTHVmdDN5Qm81OUgwZWk5YkorOSs4YlZJV2lv?=
- =?utf-8?B?TVpVM2libGNadjZzVU5PMHpuK2RZTE1oYkJWbklRUmljOThZRXpBdWlYVHRs?=
- =?utf-8?B?UlNWcElHajRFbmljeERpeE9nakNMdU9BbjlzdFIxWkUremZLRFBmeCtVRFVJ?=
- =?utf-8?B?QTQ1ck8yWGJ6ZzVQQmxtWWhBTk1vZ3EyajQxcFNRNmJMN2lWVWwzSk5vZTVO?=
- =?utf-8?B?WC93bko0K0VtQ3dwbE0rZFQxVW9uNjhXeGNBLzgrYldHZ0RSR3htTVpZWHZl?=
- =?utf-8?B?TXlYMCtJWmoyYnRSMmF3TjhidUV0YXErWnVsdTZjZkd4K240Z3JZOWcyNmtV?=
- =?utf-8?B?QzFPclp4NVEvV21lMXQzaDhmdEFwT254Yk1WQXVsU0lYWnNkVlhWWUVNaWx2?=
- =?utf-8?B?S2FJclljNkJhZ0NmLzJYZkpJQnAzWDRramFMZzhtZGtOYW1YeU0yNnRBdUwx?=
- =?utf-8?B?Ry9SbEVZQkFQYVNnVFFtNVAvRURyMjMzaU8wTjhpNmorbFlPc0RtQTRUV2p1?=
- =?utf-8?B?bGZRRmxCdTZLNXBTdGVVK1RWNDUvZCtXT0x2MkVla0ZOTHI5YjFEYktZWVdO?=
- =?utf-8?B?Z1dRMU5DZk5QUVl0MnVkV1hIaGQ2d2FqZ0swY1ZlTXJLVmRhaHl6Wmg5Z3dB?=
- =?utf-8?B?NkpsMGxheThrQ1dZNmszRVhXd0xYMjY2MlZNdGFMa0lVWm5FbllIcEtaeStp?=
- =?utf-8?B?RUFNNkdETW40WlEzbGdqNkNldUdaNGlQR25SMUFvMUZVcis3ZnhXa2NFRWtu?=
- =?utf-8?B?d1NUaC9OWUJpRGhCWnJEQUw5d1J1OTFyWTNoamtWcXEydVowb3FBQUxZTEJN?=
- =?utf-8?B?bUdpUjdXL3Nmay8wWHYrVFlUV1hVaU5XL2ZXWEgwNkhwNk9EYzhxdWdGZlpM?=
- =?utf-8?B?aWRLbHVBS2draExMVDFuREhXeHZ1Z3FyRHMwOTEvRmMybGhUNUJDTm1GbG9x?=
- =?utf-8?B?ZnhtQ3IvR2RNbVN1ZDA3bm02cmF2Sm9pYWxKS1VHR3JSSlhHRS9ISGs0cG4r?=
- =?utf-8?B?Y1NWN3ZZMlF0TjBxUnJHQjFSbDdybHV1OEhuQW8wUVZEUTdJOGJ6bmtsZkxT?=
- =?utf-8?Q?uuuVwalXij2bG6Iaic=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM8PR11MB5655.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366007)(376005)(1800799015)(38070700009); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Z3BxSGRFVFBHNzhTVDNSWkpSUGVuUFErekRmbW9vWHlEelZEVG4xSDlEcnZx?=
- =?utf-8?B?NkQxOXhGYkwrUU1kQ2pjdjV2bWNidlpyd2owUHNkRzAxTmxQQXJiNDdnUjIz?=
- =?utf-8?B?K3pUeXRNY252SXpJQmk5cFBNd3pTZEhHdENnajc1VTRvYTZ3VTNuNUlDM0xj?=
- =?utf-8?B?NDI1QmdDMDd4TlBzb0JiUnRUbkNYcHdQNFFwelZqUitkUXZuWi9XRllFK2xD?=
- =?utf-8?B?VmpQWW1lWGxLZzlJNlh3UElJSVhGV2VpV0VaeU44eXFSUG5DWi8zb25WQVNm?=
- =?utf-8?B?WkpWMEV1TWxlMkp4THhRZ0l0SURMVlRZbjhWODdqWXdLWXU1WXVKQ0Nhc0Nv?=
- =?utf-8?B?UWRrOE43WGhaYXlXR1kzRmVUTTVJNVU5cStJa2VoMDRvanczcnYveXd5eUd0?=
- =?utf-8?B?M3dqRExqMHFmdkZVMFZYdjdiK0pDZkQ2Mm9DaHRGOTlSTzVxcVhwdjg5Qkpu?=
- =?utf-8?B?MzIyeUFuVHhPTHJJWEFSaE9wbmJhU0FaMUUvNERhSnE1WTZOeEdlQnYxRUZm?=
- =?utf-8?B?WkFQalUxYUNoYjFQL3M2K3BpSVhzVUxFSTVheUJUMDVFMlhwcnRtWko1RUht?=
- =?utf-8?B?NlBHeFhiUXR2MWgreWtpSmNEVmlZN0doOFQ5Ykp2eCtvaTBmaGVZRkRIVjMz?=
- =?utf-8?B?OHpsTGpwTkFPYnBORi9obWcwY3UrVVd2ZEluYzRITy9MQ1RrZjJHeUk0dUlk?=
- =?utf-8?B?Q3FoTVl6VUl6V2pNOVhBZ1ZaSzJxYUVzRWJBNGk0aEc1L0xRZGtmN2MyM2U0?=
- =?utf-8?B?V29Kb0JjUUpJZXRHcWdHeEdja3laeWRCRS9BSC9GRzBHYzdYVDM0Q0k5dktq?=
- =?utf-8?B?QkNIcUEva0VET05rSmRMa1l5ZHY5ZjBpdlRGRDYyeXhjakV1dERNd0JTWVZU?=
- =?utf-8?B?eEgycEtmaEFKaWl1U3JZT0VNblhWdE1BN0ZZcTdHNml2QWkzSDF0RXg0QVRU?=
- =?utf-8?B?TkVIMldVT0hGbkttTXQyZW1VNzNvRytvOU9SV21RZkxtU21xb3pBOG44Q3dN?=
- =?utf-8?B?ZHhQdnZHR1VXU3N6Q0dwNkdqdW5JV0FRai9kRjBINDU2aGVyK3U0RVhDdmUr?=
- =?utf-8?B?ajNpakh0MlpEdTdmZ0tCS3d2UlNnaG5DWERTQlN6NzdvU1Y2MmhVNExoZjJI?=
- =?utf-8?B?U0wzTlk3b1BXNDF2OGh0NUZjc0NFZGc4ZjA4d2RzeDB5M1pvcTc2UVlaSzRj?=
- =?utf-8?B?blNUS3BRMnJLS1VsWXp4bVh3MTk3anBzYXFZNFZUaldWajJxbHBCTXBzMHFT?=
- =?utf-8?B?aTUyMGNvY3VLZUNleHB3Z3F2eFlGc1E5ZFBYVVlaMW1oeFBEWUovdW9VODBv?=
- =?utf-8?B?WVZnUHpOOEdXaEl5SGE4MkhFS1Vwbks5dGdUS2ZjblBkSVBWZTlqcUhncVRP?=
- =?utf-8?B?b1orTEczeXdubkd5R2IzS1UwbzlZWXFFcFB5ZVArZDFKMnZhUjRRNTJrSjg1?=
- =?utf-8?B?eG56aGxNUkFZNFNvbXBzLy90SFRGTnRMcFcxYnFsSnpqelRrZE1hTytJWjNy?=
- =?utf-8?B?OHQvQTB1Z2dEaURmTmdEZ0xobTJ0ZTBOaVFBaHFuTnplZ0NJSzh4TUw2dlVI?=
- =?utf-8?B?a1Y1MzRIcmxGczNRbHBscjZYelBZcy9SaDREdVdTM3BTNnNzRlBFMHBTZ0xW?=
- =?utf-8?B?SnlkNlZJWFRYQmlPNFJRN3NNNENPN0hmUHlWS2ZZeTNoTFZVM3JGMkRsRUtt?=
- =?utf-8?B?dFExVXJLYjlWY1o5eXBaaGpOVWhsazJmU1V3d2poaTVmTjhFVnlTS2RReXdy?=
- =?utf-8?B?TFZnWWZUSUlnejYyRFlCVTljZEdqcFpvelVjNGxva3dKQlc0VXBNeUwxRmJP?=
- =?utf-8?B?Nnh0R1R5SWFhZlZQeVhkYXNoaTVhb2RFbzF4d0dXK3YzRWN2M3NQcnk1VjZI?=
- =?utf-8?B?bG9CeTc2QXk1c2JEb3VIU0wrVWh5eE5IQUJkRzFpR2pIZVdIa1czMDltQ0VU?=
- =?utf-8?B?TGNKUXNsRHBJeklkVEhqaXNlSytrd0NFTFpuaWFlb1AxblF6NEpMWVN5bmRI?=
- =?utf-8?B?TGw0dHZtS1RiK1QxOFpLTExlUDNPeWR6Q3BMaGlFRnQ2VWNTYUtZUUtueDRm?=
- =?utf-8?B?Q2RuSUNBZU9RVVRuYTZ0d2t3dy9KYzFOU3VGR2pSTG1XRkZSRnNwWXcrZDNR?=
- =?utf-8?Q?acvqWLBnKCw5yQimjYX7Y4Ybc?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5655.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eea342a0-10cf-453e-0009-08dc66290d74
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Apr 2024 19:42:48.4656 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Pzr40/qNQqTW3kEiHK7BvgUbAjt8K9D2kBENWduUeRHDEOVAWX2/hAEbl94q4DjrH3rEN10T9FZv3rTduCHw/A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7603
-X-OriginatorOrg: intel.com
+ <DM8PR11MB5655787FEAEED06EDF0C14A4E0162@DM8PR11MB5655.namprd11.prod.outlook.com>
+In-Reply-To: <DM8PR11MB5655787FEAEED06EDF0C14A4E0162@DM8PR11MB5655.namprd11.prod.outlook.com>
+From: Manasi Navare <navaremanasi@chromium.org>
+Date: Fri, 26 Apr 2024 12:46:10 -0700
+Message-ID: <CAE72mNnxKyjXLEHuZrEsEBfaD__m==s+rrpmjs=NC0Y=vEjCLg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] tests/kms_vrr: Add a subtest for seamless modeset
+ to a virtual LRR mode
+To: "Saarinen, Jani" <jani.saarinen@intel.com>
+Cc: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, 
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ Drew Davenport <ddavenport@chromium.org>, 
+ =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
+ Sean Paul <seanpaul@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -202,203 +87,320 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-SGksIA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IE1hbmFzaSBOYXZh
-cmUgPG5hdmFyZW1hbmFzaUBjaHJvbWl1bS5vcmc+DQo+IFNlbnQ6IEZyaWRheSwgMjYgQXByaWwg
-MjAyNCAyMi4yNQ0KPiBUbzogU2FhcmluZW4sIEphbmkgPGphbmkuc2FhcmluZW5AaW50ZWwuY29t
-Pg0KPiBDYzogTW9kZW0sIEJoYW51cHJha2FzaCA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNv
-bT47IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgRHJldyBEYXZlbnBvcnQgPGRk
-YXZlbnBvcnRAY2hyb21pdW0ub3JnPjsNCj4gVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxh
-QGxpbnV4LmludGVsLmNvbT47IFNlYW4gUGF1bA0KPiA8c2VhbnBhdWxAY2hyb21pdW0ub3JnPg0K
-PiBTdWJqZWN0OiBSZTogW1BBVENIIHYzIDEvMl0gdGVzdHMva21zX3ZycjogQWRkIGEgc3VidGVz
-dCBmb3Igc2VhbWxlc3MNCj4gbW9kZXNldCB0byBhIHZpcnR1YWwgTFJSIG1vZGUNCj4gDQo+IEhp
-IEJoYW51LCBKYW5pLA0KPiANCj4gSSBkbyBzZWUgdGhhdCBldmVuIHRoZSBvdGhlciB2cnIgdGVz
-dHMgOiBzZWFtbGVzcy1yci1zd2l0Y2gtdnJyIC9kcnJzLyBiYXNpYy0NCj4gZmFzdHNldCBhcmUg
-Z2V0dGluZyBza2lwcGVkIG9uIEJBVCwgc28gaXRzIG5vdCByZWxhdGVkIHRvIHRoaXMgdGVzdC4g
-SSBhbSBhYmxlIHRvDQo+IHJ1biBpdCBoZXJlIGxvY2FsbHkgYW5kIHRlc3QuDQpJIHdhcyBtYWlu
-bHkgbG9va2luZyBhdCBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzEz
-Mjg2Ni8gDQoJUG9zc2libGUgcmVncmVzc2lvbnMNCglpZ3RAZGVidWdmc190ZXN0QHJlYWRfYWxs
-X2VudHJpZXM6DQoNCgliYXQtYXJscy0yOiBQQVNTIC0+IEZBSUwgKzE4IG90aGVyIHRlc3RzIGZh
-aWwNCglpZ3RAZ2VtX2V4ZWNfZmVuY2VAbmItYXdhaXQ6DQoNCgliYXQtYXJscy0yOiBOT1RSVU4g
-LT4gSU5DT01QTEVURSArNyBvdGhlciB0ZXN0cyBpbmNvbXBsZXRlDQoJaWd0QGttc19hZGRmYl9i
-YXNpY0BhZGRmYjI1LW1vZGlmaWVyLW5vLWZsYWc6DQoNCgliYXQtYXJscy0yOiBQQVNTIC0+IElO
-Q09NUExFVEUgKzM3IG90aGVyIHRlc3RzIGluY29tcGxldGUNCglpZ3RAa21zX3ZyckBzZWFtbGVz
-cy1yci1zd2l0Y2gtdmlydHVhbCAoTkVXKToNCg0KYnV0IHRoZXJlIHdhcyBzb21lIGh3IG1haW50
-ZW5hbmNlIGRvbmUgdG9kYXkgdG8gdGhpcyBzZXR1cCAoYmFyLWFybHMtMikgc28gbWF5YmUgc2Fm
-ZXN0IHdvdWxkIGJlIHJlLXJ1biB0byBzZWUgbGF0ZXN0IA0KDQo+IENvdWxkIHlvdSBwbGVhc2Ug
-dGFrZSBhIGxvb2sgYW5kIHNlZSB3aHkgYWxsIG9mIHRoZXNlIHdvdWxkIGJlIHNraXBwZWQ/DQo+
-IFNlZW1zIHVucmVsYXRlZCB0byB0aGlzIGNoYW5nZS4NCj4gDQo+IFJlZ2FyZHMNCj4gTWFuYXNp
-DQo+IA0KPiBPbiBGcmksIEFwciAyNiwgMjAyNCBhdCAxMjo0OOKAr0FNIFNhYXJpbmVuLCBKYW5p
-IDxqYW5pLnNhYXJpbmVuQGludGVsLmNvbT4NCj4gd3JvdGU6DQo+ID4NCj4gPiBIaSwNCj4gPiA+
-IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2
-LWJvdW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YNCj4gPiA+IE1vZGVt
-LCBCaGFudXByYWthc2gNCj4gPiA+IFNlbnQ6IEZyaWRheSwgMjYgQXByaWwgMjAyNCA2LjQ0DQo+
-ID4gPiBUbzogTWFuYXNpIE5hdmFyZSA8bmF2YXJlbWFuYXNpQGNocm9taXVtLm9yZz4NCj4gPiA+
-IENjOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgRHJldyBEYXZlbnBvcnQNCj4gPiA+
-IDxkZGF2ZW5wb3J0QGNocm9taXVtLm9yZz47IFZpbGxlIFN5cmrDpGzDpA0KPiA+ID4gPHZpbGxl
-LnN5cmphbGFAbGludXguaW50ZWwuY29tPjsgU2VhbiBQYXVsIDxzZWFucGF1bEBjaHJvbWl1bS5v
-cmc+DQo+ID4gPiBTdWJqZWN0OiBSZTogW1BBVENIIHYzIDEvMl0gdGVzdHMva21zX3ZycjogQWRk
-IGEgc3VidGVzdCBmb3INCj4gPiA+IHNlYW1sZXNzIG1vZGVzZXQgdG8gYSB2aXJ0dWFsIExSUiBt
-b2RlDQo+ID4gPg0KPiA+ID4gSGkgTWFuYXNpLA0KPiA+ID4NCj4gPiA+IE9uIDI1LTA0LTIwMjQg
-MDg6NTAgcG0sIE1hbmFzaSBOYXZhcmUgd3JvdGU6DQo+ID4gPiA+IEhpIEJoYW51LA0KPiA+ID4g
-Pg0KPiA+ID4gPiBUaGFua3MgZm9yIHRoZSByZXZpZXcuDQo+ID4gPiA+IFRoaXMgaXMgbm90IHNw
-ZWNpZmljIHRvIGVkcCwgaXQgYXBwbGllcyB0byBhbGwgY29ubmVjdG9ycy4NCj4gPiA+ID4NCj4g
-PiA+ID4gSWYgdGhlIEJBVCByZXN1bHRzIGxvb2sgb2theSBhbmQgSSBoYXZlIHlvdXIgci1iLCBj
-b3VsZCB3ZSBnZXQgdGhpcw0KPiBtZXJnZWQ/DQo+ID4gRGlkIHlvdSBsb29rIHRob3NlLg0KPiA+
-DQo+ID4gPg0KPiA+ID4gTG9va3MsIEJBVCByZXN1bHRzIGFyZSBub3QgT0sgdG8gbWUuDQo+ID4g
-UmlnaHQuIFRvIG1lIGxvb2tzIHNvIHRvby4NCj4gPg0KPiA+ID4NCj4gPiA+IFRoZSBuZXdseSBh
-ZGRlZCB0ZXN0IGlzIGdldHRpbmcgc2tpcCBvbiBWUlIgY29uZmlnczoNCj4gPiA+IGh0dHBzOi8v
-aW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTEwNjUvYmF0LQ0KPiA+ID4g
-YWxsLmh0bWw/dGVzdGZpbHRlcj1rbXNfdnJyJmhvc3RzPWJhdC1hZGxwLTYlN0NiYXQtYWRscC05
-JTdDYmF0LXJwbHMNCj4gPiA+IC0NCj4gPiA+IDQlN0NiYXQtYWRscy02DQo+ID4gPg0KPiA+ID4g
-LSBCaGFudQ0KPiA+ID4NCj4gPiA+ID4NCj4gPiA+ID4gUmVnYXJkcw0KPiA+ID4gPiBNYW5hc2kN
-Cj4gPiA+ID4NCj4gPiA+ID4gT24gVGh1LCBBcHIgMjUsIDIwMjQgYXQgMTI6MznigK9BTSBNb2Rl
-bSwgQmhhbnVwcmFrYXNoDQo+ID4gPiA+IDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPiB3
-cm90ZToNCj4gPiA+ID4+DQo+ID4gPiA+PiBIaSBNYW5hc2ksDQo+ID4gPiA+Pg0KPiA+ID4gPj4g
-T24gMjUtMDQtMjAyNCAwMTo0MyBhbSwgTWFuYXNpIE5hdmFyZSB3cm90ZToNCj4gPiA+ID4+PiBU
-aGlzIHN1YnRlc3QgdmFsaWRhdGVzIExSUiBmYXN0c2V0IGZ1bmN0aW9uYWxpdHkgYnkgdGVzdGlu
-Zw0KPiA+ID4gPj4+IHNlYW1sZXNzIHN3aXRjaGluZyB3aXRob3V0IGZ1bGwgbW9kZXNldCB0byBh
-bnkgb2YgdGhlIHZpcnR1YWwNCj4gPiA+ID4+PiBMUlIgbW9kZSB3aXRoaW4gVlJSDQo+ID4gPiBy
-YW5nZS4NCj4gPiA+ID4+PiBIZXJlIHdlIHN0YXJ0IGZyb20gaGlnaGVzdCByZWZyZXNoIHJhdGUg
-bW9kZSBhbmQgdGhlbiBzd2l0Y2ggdG8NCj4gPiA+ID4+PiB2aXJ0dWFsIExSUiBtb2RlcyBpbiB0
-aGUgc3RlcHMgb2YgMTBIeiB3aXRoaW4gdGhlIFZSUiByYW5nZS4NCj4gPiA+ID4+Pg0KPiA+ID4g
-Pj4+IFRoaXMgaXMgdXNlZCB0byB0ZXN0IHRoZSBMUlIgZmFzdHNldCBmdW5jdGlvbmFsaXR5IG9m
-IHRoZSBkcml2ZXIuDQo+ID4gPiA+Pj4NCj4gPiA+ID4+PiB2NToNCj4gPiA+ID4+PiAtIFBhc3Mg
-YSByZWZlcmVuY2UgdG8gZmxpcF9hbmRfbWVhc3VyZSAoYmhhbnUpDQo+ID4gPiA+Pj4gLSBBZGQg
-YSBuZXcgbGluZSBiZXR3ZWVuIGJldHdlZW4gZGVjbGFyYXRpb24gYW5kIGNvZGUgbG9naWMNCj4g
-PiA+ID4+Pg0KPiA+ID4gPj4+IHY0Og0KPiA+ID4gPj4+IC0gQ2hhbmdlIHRoZSB0ZXN0IG5hbWUg
-dG8gYWxpZ24gd2l0aCBkcnJzL3ZyciB0ZXN0cyAoQmhhbnUpDQo+ID4gPiA+Pj4gLSBGaXggc29t
-ZSBidWlsZCB3YXJuaW5ncyBkdWUgdG8gcmViYXNlDQo+ID4gPiA+Pj4gLSBVc2UgYSBsb2NhbCB2
-aXJ0dWFsX21vZGUgdmFyaWFibGUNCj4gPiA+ID4+Pg0KPiA+ID4gPj4+IHYzOg0KPiA+ID4gPj4+
-IC0gRml4IGJ1aWxkIGVycm9yIGR1ZSB0byByZWJhc2UgKE1hbmFzaSkNCj4gPiA+ID4+Pg0KPiA+
-ID4gPj4+IENjOiBEcmV3IERhdmVucG9ydCA8ZGRhdmVucG9ydEBjaHJvbWl1bS5vcmc+DQo+ID4g
-PiA+Pj4gQ2M6IEJoYW51cHJha2FzaCBNb2RlbSA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNv
-bT4NCj4gPiA+ID4+PiBDYzogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4Lmlu
-dGVsLmNvbT4NCj4gPiA+ID4+PiBDYzogU2VhbiBQYXVsIDxzZWFucGF1bEBjaHJvbWl1bS5vcmc+
-DQo+ID4gPiA+Pj4gU2lnbmVkLW9mZi1ieTogTWFuYXNpIE5hdmFyZSA8bmF2YXJlbWFuYXNpQGNo
-cm9taXVtLm9yZz4NCj4gPiA+ID4+PiAtLS0NCj4gPiA+ID4+PiAgICB0ZXN0cy9rbXNfdnJyLmMg
-fCA3Mw0KPiA+ID4gKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-Ky0tLQ0KPiA+ID4gPj4+ICAgIDEgZmlsZSBjaGFuZ2VkLCA2OSBpbnNlcnRpb25zKCspLCA0IGRl
-bGV0aW9ucygtKQ0KPiA+ID4gPj4+DQo+ID4gPiA+Pj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc192
-cnIuYyBiL3Rlc3RzL2ttc192cnIuYyBpbmRleA0KPiA+ID4gPj4+IDE1YzYyYjM0Yi4uN2Y2NGQ2
-ODA2IDEwMDY0NA0KPiA+ID4gPj4+IC0tLSBhL3Rlc3RzL2ttc192cnIuYw0KPiA+ID4gPj4+ICsr
-KyBiL3Rlc3RzL2ttc192cnIuYw0KPiA+ID4gPj4+IEBAIC02Niw2ICs2NiwxMSBAQA0KPiA+ID4g
-Pj4+ICAgICAqIERlc2NyaXB0aW9uOiBUZXN0IHRvIHN3aXRjaCBSUiBzZWFtbGVzc2x5IHdpdGhv
-dXQgbW9kZXNldC4NCj4gPiA+ID4+PiAgICAgKiBGdW5jdGlvbmFsaXR5OiBhZGFwdGl2ZV9zeW5j
-LCBkcnJzDQo+ID4gPiA+Pj4gICAgICoNCj4gPiA+ID4+PiArICogU1VCVEVTVDogc2VhbWxlc3Mt
-cnItc3dpdGNoLXZpcnR1YWwNCj4gPiA+ID4+PiArICogRGVzY3JpcHRpb246IFRlc3QgdG8gY3Jl
-YXRlIGEgVmlydHVhbCBNb2RlIGluIFZSUiByYW5nZSBhbmQNCj4gPiA+ID4+PiArIHN3aXRjaCB0
-bw0KPiA+ID4gaXQNCj4gPiA+ID4+PiArICogICAgICAgICAgIHdpdGhvdXQgYSBmdWxsIG1vZGVz
-ZXQuDQo+ID4gPiA+Pj4gKyAqIEZ1bmN0aW9uYWxpdHk6IExSUg0KPiA+ID4gPj4+ICsgKg0KPiA+
-ID4gPj4+ICAgICAqIFNVQlRFU1Q6IG1heC1taW4NCj4gPiA+ID4+PiAgICAgKiBEZXNjcmlwdGlv
-bjogT3NjaWxsYXRlcyBiZXR3ZWVuIGhpZ2hlc3QgYW5kIGxvd2VzdCByZWZyZXNoDQo+ID4gPiA+
-Pj4gZWFjaA0KPiA+ID4gZnJhbWUgZm9yDQo+ID4gPiA+Pj4gICAgICogICAgICAgICAgICAgIG1h
-bnVhbCBmbGlja2VyIHByb2ZpbGluZw0KPiA+ID4gPj4+IEBAIC04OSw5ICs5NCwxMCBAQCBlbnVt
-IHsNCj4gPiA+ID4+PiAgICAgICAgVEVTVF9GTElQTElORSA9IDEgPDwgMywNCj4gPiA+ID4+PiAg
-ICAgICAgVEVTVF9TRUFNTEVTU19WUlIgPSAxIDw8IDQsDQo+ID4gPiA+Pj4gICAgICAgIFRFU1Rf
-U0VBTUxFU1NfRFJSUyA9IDEgPDwgNSwNCj4gPiA+ID4+PiAtICAgICBURVNUX0ZBU1RTRVQgPSAx
-IDw8IDYsDQo+ID4gPiA+Pj4gLSAgICAgVEVTVF9NQVhNSU4gPSAxIDw8IDcsDQo+ID4gPiA+Pj4g
-LSAgICAgVEVTVF9ORUdBVElWRSA9IDEgPDwgOCwNCj4gPiA+ID4+PiArICAgICBURVNUX1NFQU1M
-RVNTX1ZJUlRVQUxfUlIgPSAxIDw8IDYsDQo+ID4gPiA+Pj4gKyAgICAgVEVTVF9GQVNUU0VUID0g
-MSA8PCA3LA0KPiA+ID4gPj4+ICsgICAgIFRFU1RfTUFYTUlOID0gMSA8PCA4LA0KPiA+ID4gPj4+
-ICsgICAgIFRFU1RfTkVHQVRJVkUgPSAxIDw8IDksDQo+ID4gPiA+Pj4gICAgfTsNCj4gPiA+ID4+
-Pg0KPiA+ID4gPj4+ICAgIGVudW0gew0KPiA+ID4gPj4+IEBAIC0yMTQsNiArMjIwLDE4IEBAIGxv
-d19ycl9tb2RlX3dpdGhfc2FtZV9yZXMoaWd0X291dHB1dF90DQo+ID4gPiAqb3V0cHV0LCB1bnNp
-Z25lZCBpbnQgdnJyX21pbikNCj4gPiA+ID4+PiAgICAgICAgcmV0dXJuIG1vZGU7DQo+ID4gPiA+
-Pj4gICAgfQ0KPiA+ID4gPj4+DQo+ID4gPiA+Pj4gK3N0YXRpYyBkcm1Nb2RlTW9kZUluZm8NCj4g
-PiA+ID4+PiArdmlydHVhbF9ycl92cnJfcmFuZ2VfbW9kZShpZ3Rfb3V0cHV0X3QgKm91dHB1dCwg
-dW5zaWduZWQgaW50DQo+ID4gPiA+Pj4gK3ZpcnR1YWxfcmVmcmVzaF9yYXRlKSB7DQo+ID4gPiA+
-Pj4gKyAgICAgZHJtTW9kZU1vZGVJbmZvIG1vZGUgPSAqaWd0X291dHB1dF9nZXRfbW9kZShvdXRw
-dXQpOw0KPiA+ID4gPj4+ICsgICAgIHVpbnQ2NF90IGNsb2NrX2h6ID0gbW9kZS5jbG9jayAqIDEw
-MDA7DQo+ID4gPiA+Pj4gKw0KPiA+ID4gPj4+ICsgICAgIG1vZGUudnRvdGFsID0gY2xvY2tfaHog
-LyAobW9kZS5odG90YWwgKiB2aXJ0dWFsX3JlZnJlc2hfcmF0ZSk7DQo+ID4gPiA+Pj4gKyAgICAg
-bW9kZS52cmVmcmVzaCA9IHZpcnR1YWxfcmVmcmVzaF9yYXRlOw0KPiA+ID4gPj4+ICsNCj4gPiA+
-ID4+PiArICAgICByZXR1cm4gbW9kZTsNCj4gPiA+ID4+PiArfQ0KPiA+ID4gPj4+ICsNCj4gPiA+
-ID4+PiAgICAvKiBSZWFkIG1pbiBhbmQgbWF4IHZyciByYW5nZSBmcm9tIHRoZSBjb25uZWN0b3Ig
-ZGVidWdmcy4gKi8NCj4gPiA+ID4+PiAgICBzdGF0aWMgcmFuZ2VfdA0KPiA+ID4gPj4+ICAgIGdl
-dF92cnJfcmFuZ2UoZGF0YV90ICpkYXRhLCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCkgQEAgLTY0MSw2
-DQo+ID4gPiA+Pj4gKzY1OSw0OSBAQCB0ZXN0X3NlYW1sZXNzX3JyX2Jhc2ljKGRhdGFfdCAqZGF0
-YSwgZW51bSBwaXBlIHBpcGUsDQo+ID4gPiBpZ3Rfb3V0cHV0X3QgKm91dHB1dCwgdWludDMNCj4g
-PiA+ID4+PiAgICAgICAgICAgICAgICAgICAgIHZyciA/ICJvbiIgOiAib2ZmIiwgdnJyID8gIm5v
-dCByZWFjaGVkIiA6ICJleGNlZWRlZCIsIHJlc3VsdCk7DQo+ID4gPiA+Pj4gICAgfQ0KPiA+ID4g
-Pj4+DQo+ID4gPiA+Pj4gK3N0YXRpYyB2b2lkDQo+ID4gPiA+Pj4gK3Rlc3Rfc2VhbWxlc3Nfdmly
-dHVhbF9ycl9iYXNpYyhkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlLA0KPiA+ID4gPj4+ICtp
-Z3Rfb3V0cHV0X3QgKm91dHB1dCwgdWludDMyX3QgZmxhZ3MpIHsNCj4gPiA+ID4+PiArICAgICB1
-aW50MzJfdCByZXN1bHQ7DQo+ID4gPiA+Pj4gKyAgICAgdW5zaWduZWQgaW50IHZyZWZyZXNoOw0K
-PiA+ID4gPj4+ICsgICAgIHVpbnQ2NF90IHJhdGVbXSA9IHswfTsNCj4gPiA+ID4+PiArDQo+ID4g
-PiA+Pj4gKyAgICAgaWd0X2luZm8oIlVzZSBISUdIX1JSIE1vZGUgYXMgZGVmYXVsdFxuIik7DQo+
-ID4gPiA+Pj4gKyAgICAga21zdGVzdF9kdW1wX21vZGUoJmRhdGEtPnN3aXRjaF9tb2Rlc1tISUdI
-X1JSX01PREVdKTsNCj4gPiA+ID4+PiArDQo+ID4gPiA+Pj4gKyAgICAgcHJlcGFyZV90ZXN0KGRh
-dGEsIG91dHB1dCwgcGlwZSk7DQo+ID4gPiA+Pj4gKyAgICAgcmF0ZVswXSA9DQo+ID4gPiA+Pj4g
-KyByYXRlX2Zyb21fcmVmcmVzaChkYXRhLT5zd2l0Y2hfbW9kZXNbSElHSF9SUl9NT0RFXS52cmVm
-cmVzaCk7DQo+ID4gPiA+Pj4gKw0KPiA+ID4gPj4+ICsgICAgIC8qDQo+ID4gPiA+Pj4gKyAgICAg
-ICogU2luayB3aXRoIERSUiBhbmQgVlJSIGNhbiBiZSBpbiBkb3duY2xvY2sgbW9kZSBzbw0KPiA+
-ID4gPj4+ICsgICAgICAqIHN3aXRjaCB0byBoaWdoZXN0IHJlZnJlc2ggcmF0ZSBtb2RlLg0KPiA+
-ID4gPj4+ICsgICAgICAqLw0KPiA+ID4gPj4+ICsgICAgIGlndF9vdXRwdXRfb3ZlcnJpZGVfbW9k
-ZShvdXRwdXQsICZkYXRhLQ0KPiA+ID4gPnN3aXRjaF9tb2Rlc1tISUdIX1JSX01PREVdKTsNCj4g
-PiA+ID4+PiArICAgICBpZ3RfYXNzZXJ0KGlndF9kaXNwbGF5X3RyeV9jb21taXRfYXRvbWljKCZk
-YXRhLT5kaXNwbGF5LA0KPiA+ID4gPj4+ICsgRFJNX01PREVfUEFHRV9GTElQX0VWRU5ULCBOVUxM
-KSA9PSAwKTsNCj4gPiA+ID4+PiArDQo+ID4gPiA+Pj4gKyAgICAgcmVzdWx0ID0gZmxpcF9hbmRf
-bWVhc3VyZShkYXRhLCBvdXRwdXQsIHBpcGUsIHJhdGUsIDEsDQo+ID4gPiBURVNUX0RVUkFUSU9O
-X05TKTsNCj4gPiA+ID4+PiArICAgICBpZ3RfYXNzZXJ0X2YocmVzdWx0ID4gNzUsDQo+ID4gPiA+
-Pj4gKyAgICAgICAgICAgICAgICAgICJSZWZyZXNoIHJhdGUgKCV1IEh6KSAlIlBSSXU2NCJuczog
-VGFyZ2V0DQo+ID4gPiA+Pj4gKyB0aHJlc2hvbGQgbm90DQo+ID4gPiByZWFjaGVkLCByZXN1bHQg
-d2FzICV1JSVcbiIsDQo+ID4gPiA+Pj4gKyAgICAgICAgICAgICAgICAgIGRhdGEtPnN3aXRjaF9t
-b2Rlc1tISUdIX1JSX01PREVdLnZyZWZyZXNoLA0KPiA+ID4gPj4+ICsgcmF0ZVswXSwgcmVzdWx0
-KTsNCj4gPiA+ID4+PiArDQo+ID4gPiA+Pj4gKyAgICAgLyogU3dpdGNoIHRvIFZpcnR1YWwgUlIg
-Ki8NCj4gPiA+ID4+PiArICAgICBmb3IgKHZyZWZyZXNoID0gZGF0YS0+cmFuZ2UubWluICsgMTA7
-IHZyZWZyZXNoIDwNCj4gPiA+ID4+PiArIGRhdGEtPnJhbmdlLm1heDsNCj4gPiA+IHZyZWZyZXNo
-ICs9IDEwKSB7DQo+ID4gPiA+Pj4gKyAgICAgICAgICAgICBkcm1Nb2RlTW9kZUluZm8gdmlydHVh
-bF9tb2RlID0NCj4gPiA+ID4+PiArIHZpcnR1YWxfcnJfdnJyX3JhbmdlX21vZGUob3V0cHV0LCB2
-cmVmcmVzaCk7DQo+ID4gPiA+Pj4gKw0KPiA+ID4gPj4+ICsgICAgICAgICAgICAgaWd0X2luZm8o
-IlJlcXVlc3RpbmcgVmlydHVhbCBNb2RlIHdpdGggUmVmcmVzaA0KPiA+ID4gPj4+ICsgUmF0ZSAo
-JXUgSHopOiBcbiIsDQo+ID4gPiB2cmVmcmVzaCk7DQo+ID4gPiA+Pj4gKyAgICAgICAgICAgICBr
-bXN0ZXN0X2R1bXBfbW9kZSgmdmlydHVhbF9tb2RlKTsNCj4gPiA+ID4+PiArDQo+ID4gPiA+Pj4g
-KyAgICAgICAgICAgICBpZ3Rfb3V0cHV0X292ZXJyaWRlX21vZGUob3V0cHV0LCAmdmlydHVhbF9t
-b2RlKTsNCj4gPiA+ID4+PiArDQo+ID4gPiA+Pj4gKyBpZ3RfYXNzZXJ0KGlndF9kaXNwbGF5X3Ry
-eV9jb21taXRfYXRvbWljKCZkYXRhLT5kaXNwbGF5LCAwLA0KPiA+ID4gPj4+ICsgTlVMTCkgPT0g
-MCk7DQo+ID4gPiA+Pj4gKw0KPiA+ID4gPj4+ICsgICAgICAgICAgICAgcmF0ZVswXSA9IHJhdGVf
-ZnJvbV9yZWZyZXNoKHZyZWZyZXNoKTsNCj4gPiA+ID4+PiArICAgICAgICAgICAgIHJlc3VsdCA9
-IGZsaXBfYW5kX21lYXN1cmUoZGF0YSwgb3V0cHV0LCBwaXBlLA0KPiA+ID4gPj4+ICsgcmF0ZSwg
-MSwNCj4gPiA+IFRFU1RfRFVSQVRJT05fTlMpOw0KPiA+ID4gPj4+ICsgICAgICAgICAgICAgaWd0
-X2Fzc2VydF9mKHJlc3VsdCA+IDc1LA0KPiA+ID4gPj4+ICsgICAgICAgICAgICAgICAgICAgICAg
-ICAgICJSZWZyZXNoIHJhdGUgKCV1IEh6KSAlIlBSSXU2NCJuczoNCj4gPiA+ID4+PiArIFRhcmdl
-dCB0aHJlc2hvbGQgbm90DQo+ID4gPiByZWFjaGVkLCByZXN1bHQgd2FzICV1JSVcbiIsDQo+ID4g
-PiA+Pj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgdnJlZnJlc2gsIHJhdGVbMF0sIHJlc3Vs
-dCk7DQo+ID4gPiA+Pj4gKyAgICAgfQ0KPiA+ID4gPj4+ICt9DQo+ID4gPiA+Pj4gKw0KPiA+ID4g
-Pj4+ICAgIHN0YXRpYyB2b2lkIHRlc3RfY2xlYW51cChkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBw
-aXBlLA0KPiA+ID4gPj4+IGlndF9vdXRwdXRfdA0KPiA+ID4gKm91dHB1dCkNCj4gPiA+ID4+PiAg
-ICB7DQo+ID4gPiA+Pj4gICAgICAgIGlmICh2cnJfY2FwYWJsZShvdXRwdXQpKQ0KPiA+ID4gPj4+
-IEBAIC02ODYsNyArNzQ3LDcgQEAgc3RhdGljIGJvb2wgb3V0cHV0X2NvbnN0cmFpbnQoZGF0YV90
-ICpkYXRhLA0KPiA+ID4gaWd0X291dHB1dF90ICpvdXRwdXQsIHVpbnQzMl90IGZsYWdzDQo+ID4g
-PiA+Pj4gICAgICAgIGlndF9vdXRwdXRfb3ZlcnJpZGVfbW9kZShvdXRwdXQsDQo+ID4gPiA+Pj4g
-JmRhdGEtPnN3aXRjaF9tb2Rlc1tISUdIX1JSX01PREVdKTsNCj4gPiA+ID4+Pg0KPiA+ID4gPj4+
-ICAgICAgICAvKiBTZWFyY2ggZm9yIGEgbG93IHJlZnJlc2ggcmF0ZSBtb2RlLiAqLw0KPiA+ID4g
-Pj4+IC0gICAgIGlmICghKGZsYWdzICYgKFRFU1RfU0VBTUxFU1NfVlJSIHwgVEVTVF9TRUFNTEVT
-U19EUlJTKSkpDQo+ID4gPiA+Pj4gKyAgICAgaWYgKCEoZmxhZ3MgJiAoVEVTVF9TRUFNTEVTU19W
-UlIgfCBURVNUX1NFQU1MRVNTX0RSUlMgfA0KPiA+ID4gPj4+ICsgVEVTVF9TRUFNTEVTU19WSVJU
-VUFMX1JSKSkpDQo+ID4gPiA+Pg0KPiA+ID4gPj4gRG9lcyB0aGlzIHZpcnR1YWwgUlIgYXBwbGlj
-YWJsZSB0byBlRFAgb25seSBvciBzdXBwb3J0cyBvdGhlcg0KPiA+ID4gPj4gY29ubmVjdG9yIHR5
-cGVzIHRvbz8gSWYgaXQgaXMgZURQIHNwZWNpZmljIFsqXSwgdGhlbiB3ZSBtdXN0IGFkZA0KPiA+
-ID4gPj4gYSBjaGVjayBmb3INCj4gPiA+IHRoYXQuDQo+ID4gPiA+Pg0KPiA+ID4gPj4gWypdOg0K
-PiA+ID4gPj4gaHR0cHM6Ly9jZ2l0LmZyZWVkZXNrdG9wLm9yZy9kcm0vaWd0LWdwdS10b29scy90
-cmVlL3Rlc3RzL2ttc192cnINCj4gPiA+ID4+IC5jI24NCj4gPiA+ID4+IDY2MA0KPiA+ID4gPj4N
-Cj4gPiA+ID4+IFdpdGggYWJvdmUgY29tbWVudCBhZGRyZXNzZWQsIHRoaXMgcGF0Y2ggaXMNCj4g
-PiA+ID4+IFJldmlld2VkLWJ5OiBCaGFudXByYWthc2ggTW9kZW0NCj4gPGJoYW51cHJha2FzaC5t
-b2RlbUBpbnRlbC5jb20+DQo+ID4gPiA+Pg0KPiA+ID4gPj4gLSBCaGFudQ0KPiA+ID4gPj4NCj4g
-PiA+ID4+PiAgICAgICAgICAgICAgICByZXR1cm4gdHJ1ZTsNCj4gPiA+ID4+Pg0KPiA+ID4gPj4+
-ICAgICAgICBkYXRhLT5zd2l0Y2hfbW9kZXNbTE9XX1JSX01PREVdID0NCj4gPiA+ID4+PiBsb3df
-cnJfbW9kZV93aXRoX3NhbWVfcmVzKG91dHB1dCwgZGF0YS0+cmFuZ2UubWluKTsgQEAgLTg0MSw2
-DQo+ID4gPiArOTAyLDEwIEBAIGlndF9tYWluX2FyZ3MoImRyczoiLCBsb25nX29wdHMsIGhlbHBf
-c3RyLCBvcHRfaGFuZGxlciwNCj4gPiA+ICsmZGF0YSkNCj4gPiA+ID4+PiAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgImJldHdlZW4gZmxpcCB0aW1lc3RhbXBzIGNvbnZlcmdlcw0KPiA+ID4g
-Pj4+IHRvIHRoZSByZXF1ZXN0ZWQNCj4gPiA+IHJhdGUiKTsNCj4gPiA+ID4+PiAgICAgICAgICAg
-ICAgICBpZ3Rfc3VidGVzdF93aXRoX2R5bmFtaWMoImZsaXAtYmFzaWMtZmFzdHNldCIpDQo+ID4g
-PiA+Pj4gICAgICAgICAgICAgICAgICAgICAgICBydW5fdnJyX3Rlc3QoJmRhdGEsIHRlc3RfYmFz
-aWMsDQo+ID4gPiA+Pj4gVEVTVF9GQVNUU0VUKTsNCj4gPiA+ID4+PiArDQo+ID4gPiA+Pj4gKyAg
-ICAgICAgICAgICBpZ3RfZGVzY3JpYmUoIlRlc3QgdG8gc3dpdGNoIHRvIGFueSBjdXN0b20gdmly
-dHVhbA0KPiA+ID4gPj4+ICsgbW9kZSBpbiBWUlINCj4gPiA+IHJhbmdlIHdpdGhvdXQgbW9kZXNl
-dC4iKTsNCj4gPiA+ID4+PiArICAgICAgICAgICAgIGlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygi
-c2VhbWxlc3MtcnItc3dpdGNoLXZpcnR1YWwiKQ0KPiA+ID4gPj4+ICsgICAgICAgICAgICAgICAg
-ICAgICBydW5fdnJyX3Rlc3QoJmRhdGEsDQo+ID4gPiA+Pj4gKyB0ZXN0X3NlYW1sZXNzX3ZpcnR1
-YWxfcnJfYmFzaWMsIFRFU1RfU0VBTUxFU1NfVklSVFVBTF9SUik7DQo+ID4gPiA+Pj4gICAgICAg
-IH0NCj4gPiA+ID4+Pg0KPiA+ID4gPj4+ICAgICAgICBpZ3RfZml4dHVyZSB7DQo=
+Great thanks Jani,
+
+Could you please kick in a re run on your end?
+
+Regards
+Manasi
+
+On Fri, Apr 26, 2024 at 12:42=E2=80=AFPM Saarinen, Jani <jani.saarinen@inte=
+l.com> wrote:
+>
+> Hi,
+>
+> > -----Original Message-----
+> > From: Manasi Navare <navaremanasi@chromium.org>
+> > Sent: Friday, 26 April 2024 22.25
+> > To: Saarinen, Jani <jani.saarinen@intel.com>
+> > Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; igt-
+> > dev@lists.freedesktop.org; Drew Davenport <ddavenport@chromium.org>;
+> > Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>; Sean Paul
+> > <seanpaul@chromium.org>
+> > Subject: Re: [PATCH v3 1/2] tests/kms_vrr: Add a subtest for seamless
+> > modeset to a virtual LRR mode
+> >
+> > Hi Bhanu, Jani,
+> >
+> > I do see that even the other vrr tests : seamless-rr-switch-vrr /drrs/ =
+basic-
+> > fastset are getting skipped on BAT, so its not related to this test. I =
+am able to
+> > run it here locally and test.
+> I was mainly looking at https://patchwork.freedesktop.org/series/132866/
+>         Possible regressions
+>         igt@debugfs_test@read_all_entries:
+>
+>         bat-arls-2: PASS -> FAIL +18 other tests fail
+>         igt@gem_exec_fence@nb-await:
+>
+>         bat-arls-2: NOTRUN -> INCOMPLETE +7 other tests incomplete
+>         igt@kms_addfb_basic@addfb25-modifier-no-flag:
+>
+>         bat-arls-2: PASS -> INCOMPLETE +37 other tests incomplete
+>         igt@kms_vrr@seamless-rr-switch-virtual (NEW):
+>
+> but there was some hw maintenance done today to this setup (bar-arls-2) s=
+o maybe safest would be re-run to see latest
+>
+> > Could you please take a look and see why all of these would be skipped?
+> > Seems unrelated to this change.
+> >
+> > Regards
+> > Manasi
+> >
+> > On Fri, Apr 26, 2024 at 12:48=E2=80=AFAM Saarinen, Jani <jani.saarinen@=
+intel.com>
+> > wrote:
+> > >
+> > > Hi,
+> > > > -----Original Message-----
+> > > > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
+> > > > Modem, Bhanuprakash
+> > > > Sent: Friday, 26 April 2024 6.44
+> > > > To: Manasi Navare <navaremanasi@chromium.org>
+> > > > Cc: igt-dev@lists.freedesktop.org; Drew Davenport
+> > > > <ddavenport@chromium.org>; Ville Syrj=C3=A4l=C3=A4
+> > > > <ville.syrjala@linux.intel.com>; Sean Paul <seanpaul@chromium.org>
+> > > > Subject: Re: [PATCH v3 1/2] tests/kms_vrr: Add a subtest for
+> > > > seamless modeset to a virtual LRR mode
+> > > >
+> > > > Hi Manasi,
+> > > >
+> > > > On 25-04-2024 08:50 pm, Manasi Navare wrote:
+> > > > > Hi Bhanu,
+> > > > >
+> > > > > Thanks for the review.
+> > > > > This is not specific to edp, it applies to all connectors.
+> > > > >
+> > > > > If the BAT results look okay and I have your r-b, could we get th=
+is
+> > merged?
+> > > Did you look those.
+> > >
+> > > >
+> > > > Looks, BAT results are not OK to me.
+> > > Right. To me looks so too.
+> > >
+> > > >
+> > > > The newly added test is getting skip on VRR configs:
+> > > > https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11065/bat-
+> > > > all.html?testfilter=3Dkms_vrr&hosts=3Dbat-adlp-6%7Cbat-adlp-9%7Cbat=
+-rpls
+> > > > -
+> > > > 4%7Cbat-adls-6
+> > > >
+> > > > - Bhanu
+> > > >
+> > > > >
+> > > > > Regards
+> > > > > Manasi
+> > > > >
+> > > > > On Thu, Apr 25, 2024 at 12:39=E2=80=AFAM Modem, Bhanuprakash
+> > > > > <bhanuprakash.modem@intel.com> wrote:
+> > > > >>
+> > > > >> Hi Manasi,
+> > > > >>
+> > > > >> On 25-04-2024 01:43 am, Manasi Navare wrote:
+> > > > >>> This subtest validates LRR fastset functionality by testing
+> > > > >>> seamless switching without full modeset to any of the virtual
+> > > > >>> LRR mode within VRR
+> > > > range.
+> > > > >>> Here we start from highest refresh rate mode and then switch to
+> > > > >>> virtual LRR modes in the steps of 10Hz within the VRR range.
+> > > > >>>
+> > > > >>> This is used to test the LRR fastset functionality of the drive=
+r.
+> > > > >>>
+> > > > >>> v5:
+> > > > >>> - Pass a reference to flip_and_measure (bhanu)
+> > > > >>> - Add a new line between between declaration and code logic
+> > > > >>>
+> > > > >>> v4:
+> > > > >>> - Change the test name to align with drrs/vrr tests (Bhanu)
+> > > > >>> - Fix some build warnings due to rebase
+> > > > >>> - Use a local virtual_mode variable
+> > > > >>>
+> > > > >>> v3:
+> > > > >>> - Fix build error due to rebase (Manasi)
+> > > > >>>
+> > > > >>> Cc: Drew Davenport <ddavenport@chromium.org>
+> > > > >>> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> > > > >>> Cc: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> > > > >>> Cc: Sean Paul <seanpaul@chromium.org>
+> > > > >>> Signed-off-by: Manasi Navare <navaremanasi@chromium.org>
+> > > > >>> ---
+> > > > >>>    tests/kms_vrr.c | 73
+> > > > ++++++++++++++++++++++++++++++++++++++++++++++---
+> > > > >>>    1 file changed, 69 insertions(+), 4 deletions(-)
+> > > > >>>
+> > > > >>> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c index
+> > > > >>> 15c62b34b..7f64d6806 100644
+> > > > >>> --- a/tests/kms_vrr.c
+> > > > >>> +++ b/tests/kms_vrr.c
+> > > > >>> @@ -66,6 +66,11 @@
+> > > > >>>     * Description: Test to switch RR seamlessly without modeset=
+.
+> > > > >>>     * Functionality: adaptive_sync, drrs
+> > > > >>>     *
+> > > > >>> + * SUBTEST: seamless-rr-switch-virtual
+> > > > >>> + * Description: Test to create a Virtual Mode in VRR range and
+> > > > >>> + switch to
+> > > > it
+> > > > >>> + *           without a full modeset.
+> > > > >>> + * Functionality: LRR
+> > > > >>> + *
+> > > > >>>     * SUBTEST: max-min
+> > > > >>>     * Description: Oscillates between highest and lowest refres=
+h
+> > > > >>> each
+> > > > frame for
+> > > > >>>     *              manual flicker profiling
+> > > > >>> @@ -89,9 +94,10 @@ enum {
+> > > > >>>        TEST_FLIPLINE =3D 1 << 3,
+> > > > >>>        TEST_SEAMLESS_VRR =3D 1 << 4,
+> > > > >>>        TEST_SEAMLESS_DRRS =3D 1 << 5,
+> > > > >>> -     TEST_FASTSET =3D 1 << 6,
+> > > > >>> -     TEST_MAXMIN =3D 1 << 7,
+> > > > >>> -     TEST_NEGATIVE =3D 1 << 8,
+> > > > >>> +     TEST_SEAMLESS_VIRTUAL_RR =3D 1 << 6,
+> > > > >>> +     TEST_FASTSET =3D 1 << 7,
+> > > > >>> +     TEST_MAXMIN =3D 1 << 8,
+> > > > >>> +     TEST_NEGATIVE =3D 1 << 9,
+> > > > >>>    };
+> > > > >>>
+> > > > >>>    enum {
+> > > > >>> @@ -214,6 +220,18 @@ low_rr_mode_with_same_res(igt_output_t
+> > > > *output, unsigned int vrr_min)
+> > > > >>>        return mode;
+> > > > >>>    }
+> > > > >>>
+> > > > >>> +static drmModeModeInfo
+> > > > >>> +virtual_rr_vrr_range_mode(igt_output_t *output, unsigned int
+> > > > >>> +virtual_refresh_rate) {
+> > > > >>> +     drmModeModeInfo mode =3D *igt_output_get_mode(output);
+> > > > >>> +     uint64_t clock_hz =3D mode.clock * 1000;
+> > > > >>> +
+> > > > >>> +     mode.vtotal =3D clock_hz / (mode.htotal * virtual_refresh=
+_rate);
+> > > > >>> +     mode.vrefresh =3D virtual_refresh_rate;
+> > > > >>> +
+> > > > >>> +     return mode;
+> > > > >>> +}
+> > > > >>> +
+> > > > >>>    /* Read min and max vrr range from the connector debugfs. */
+> > > > >>>    static range_t
+> > > > >>>    get_vrr_range(data_t *data, igt_output_t *output) @@ -641,6
+> > > > >>> +659,49 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe,
+> > > > igt_output_t *output, uint3
+> > > > >>>                     vrr ? "on" : "off", vrr ? "not reached" : "=
+exceeded", result);
+> > > > >>>    }
+> > > > >>>
+> > > > >>> +static void
+> > > > >>> +test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe,
+> > > > >>> +igt_output_t *output, uint32_t flags) {
+> > > > >>> +     uint32_t result;
+> > > > >>> +     unsigned int vrefresh;
+> > > > >>> +     uint64_t rate[] =3D {0};
+> > > > >>> +
+> > > > >>> +     igt_info("Use HIGH_RR Mode as default\n");
+> > > > >>> +     kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
+> > > > >>> +
+> > > > >>> +     prepare_test(data, output, pipe);
+> > > > >>> +     rate[0] =3D
+> > > > >>> + rate_from_refresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
+> > > > >>> +
+> > > > >>> +     /*
+> > > > >>> +      * Sink with DRR and VRR can be in downclock mode so
+> > > > >>> +      * switch to highest refresh rate mode.
+> > > > >>> +      */
+> > > > >>> +     igt_output_override_mode(output, &data-
+> > > > >switch_modes[HIGH_RR_MODE]);
+> > > > >>> +     igt_assert(igt_display_try_commit_atomic(&data->display,
+> > > > >>> + DRM_MODE_PAGE_FLIP_EVENT, NULL) =3D=3D 0);
+> > > > >>> +
+> > > > >>> +     result =3D flip_and_measure(data, output, pipe, rate, 1,
+> > > > TEST_DURATION_NS);
+> > > > >>> +     igt_assert_f(result > 75,
+> > > > >>> +                  "Refresh rate (%u Hz) %"PRIu64"ns: Target
+> > > > >>> + threshold not
+> > > > reached, result was %u%%\n",
+> > > > >>> +                  data->switch_modes[HIGH_RR_MODE].vrefresh,
+> > > > >>> + rate[0], result);
+> > > > >>> +
+> > > > >>> +     /* Switch to Virtual RR */
+> > > > >>> +     for (vrefresh =3D data->range.min + 10; vrefresh <
+> > > > >>> + data->range.max;
+> > > > vrefresh +=3D 10) {
+> > > > >>> +             drmModeModeInfo virtual_mode =3D
+> > > > >>> + virtual_rr_vrr_range_mode(output, vrefresh);
+> > > > >>> +
+> > > > >>> +             igt_info("Requesting Virtual Mode with Refresh
+> > > > >>> + Rate (%u Hz): \n",
+> > > > vrefresh);
+> > > > >>> +             kmstest_dump_mode(&virtual_mode);
+> > > > >>> +
+> > > > >>> +             igt_output_override_mode(output, &virtual_mode);
+> > > > >>> +
+> > > > >>> + igt_assert(igt_display_try_commit_atomic(&data->display, 0,
+> > > > >>> + NULL) =3D=3D 0);
+> > > > >>> +
+> > > > >>> +             rate[0] =3D rate_from_refresh(vrefresh);
+> > > > >>> +             result =3D flip_and_measure(data, output, pipe,
+> > > > >>> + rate, 1,
+> > > > TEST_DURATION_NS);
+> > > > >>> +             igt_assert_f(result > 75,
+> > > > >>> +                          "Refresh rate (%u Hz) %"PRIu64"ns:
+> > > > >>> + Target threshold not
+> > > > reached, result was %u%%\n",
+> > > > >>> +                          vrefresh, rate[0], result);
+> > > > >>> +     }
+> > > > >>> +}
+> > > > >>> +
+> > > > >>>    static void test_cleanup(data_t *data, enum pipe pipe,
+> > > > >>> igt_output_t
+> > > > *output)
+> > > > >>>    {
+> > > > >>>        if (vrr_capable(output))
+> > > > >>> @@ -686,7 +747,7 @@ static bool output_constraint(data_t *data,
+> > > > igt_output_t *output, uint32_t flags
+> > > > >>>        igt_output_override_mode(output,
+> > > > >>> &data->switch_modes[HIGH_RR_MODE]);
+> > > > >>>
+> > > > >>>        /* Search for a low refresh rate mode. */
+> > > > >>> -     if (!(flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS)))
+> > > > >>> +     if (!(flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS |
+> > > > >>> + TEST_SEAMLESS_VIRTUAL_RR)))
+> > > > >>
+> > > > >> Does this virtual RR applicable to eDP only or supports other
+> > > > >> connector types too? If it is eDP specific [*], then we must add
+> > > > >> a check for
+> > > > that.
+> > > > >>
+> > > > >> [*]:
+> > > > >> https://cgit.freedesktop.org/drm/igt-gpu-tools/tree/tests/kms_vr=
+r
+> > > > >> .c#n
+> > > > >> 660
+> > > > >>
+> > > > >> With above comment addressed, this patch is
+> > > > >> Reviewed-by: Bhanuprakash Modem
+> > <bhanuprakash.modem@intel.com>
+> > > > >>
+> > > > >> - Bhanu
+> > > > >>
+> > > > >>>                return true;
+> > > > >>>
+> > > > >>>        data->switch_modes[LOW_RR_MODE] =3D
+> > > > >>> low_rr_mode_with_same_res(output, data->range.min); @@ -841,6
+> > > > +902,10 @@ igt_main_args("drs:", long_opts, help_str, opt_handler,
+> > > > +&data)
+> > > > >>>                             "between flip timestamps converges
+> > > > >>> to the requested
+> > > > rate");
+> > > > >>>                igt_subtest_with_dynamic("flip-basic-fastset")
+> > > > >>>                        run_vrr_test(&data, test_basic,
+> > > > >>> TEST_FASTSET);
+> > > > >>> +
+> > > > >>> +             igt_describe("Test to switch to any custom virtua=
+l
+> > > > >>> + mode in VRR
+> > > > range without modeset.");
+> > > > >>> +             igt_subtest_with_dynamic("seamless-rr-switch-virt=
+ual")
+> > > > >>> +                     run_vrr_test(&data,
+> > > > >>> + test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR);
+> > > > >>>        }
+> > > > >>>
+> > > > >>>        igt_fixture {
