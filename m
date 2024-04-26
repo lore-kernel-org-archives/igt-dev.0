@@ -4,58 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE8C8C4345F
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Apr 2024 09:02:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE451C04FFE
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Apr 2024 09:41:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E5FE10EF1B;
-	Fri, 26 Apr 2024 09:02:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3FE2C10F448;
+	Fri, 26 Apr 2024 09:41:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kIi/2y6w";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="SyhJpvyX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5903D10F0BF
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Apr 2024 09:02:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714122122; x=1745658122;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=cDG+lt4n3F6h+bhnqg8NGhBehepO+sc90lqNKkZopf8=;
- b=kIi/2y6wV/3SOEecqb+hQzMDnZPB+H2U1lDa1mYsf9mNaM9XFxO5W/Vu
- dZzscj3nKe4DhVu0BJeOyWIhtCgpmLq5l15uvdZTfw8hp2rhe8B/voE/F
- ZKNtmPu4Tp91hRkqpkzttyTNRyy5AH3FbUg0q7JL1inS/jxXddoB4TbER
- z6sED0dHMXDp0k/3moxvdU1NEA4FkK2JfL1w0eOaQJwJzPrWq038xUhTE
- 59D1AAiLnmvrZzW3u+wAVjL10c8Q4fgmHVFsU1eUOxhXEw+FvPbJtpe1L
- 13DMOx1fNcWOtyt9l7KwlEsBcSGTmW2W4XK0NPClSdkUpMRG3FhhAj5Y7 g==;
-X-CSE-ConnectionGUID: fa4nOjCcQ7OjqktXvMkukw==
-X-CSE-MsgGUID: NwbY336KRRyYjGhR1xhkIw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="9717837"
-X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; 
-   d="scan'208";a="9717837"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Apr 2024 02:02:01 -0700
-X-CSE-ConnectionGUID: XnIXjTPRSNutUyHutaGzZw==
-X-CSE-MsgGUID: xoUAjai0Tuql9BA/Wpp7bw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; d="scan'208";a="25402900"
-Received: from mklonows-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.61])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Apr 2024 02:02:00 -0700
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v2 10/10] tests/xe_render_copy: Add subtest which
- exercises compression
-Date: Fri, 26 Apr 2024 11:01:17 +0200
-Message-Id: <20240426090117.78060-11-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240426090117.78060-1-zbigniew.kempczynski@intel.com>
-References: <20240426090117.78060-1-zbigniew.kempczynski@intel.com>
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com
+ [209.85.208.179])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A1AC11AA06
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Apr 2024 04:30:31 +0000 (UTC)
+Received: by mail-lj1-f179.google.com with SMTP id
+ 38308e7fff4ca-2def8e58471so21009441fa.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Apr 2024 21:30:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1714105829; x=1714710629; darn=lists.freedesktop.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=6V2hM+h6pS0gu/m4gL1FgRP8pL4W82EnInwVaM15E1Y=;
+ b=SyhJpvyXvlb4OtZ/2cuySkimp+YytJSzWko20nCL51cC6AY4XCP5+to7J2qOJxzFhN
+ rDy5LlzcL5moLFngAAmNIgTu7fheDbSBby22jCMTyxg5ml3336iMz9pBFhTpxF+3hjSz
+ mTutuLGlLjubT74bsElzZ3zTjRkYdeqDexAumoSO4CdPGmERpzZzW8Lj8iSY7Uxa84nx
+ OpF8zeEuVs4drLBtz3+Va36nqUibiQRE4nZKJGohicOTXt03Tw0xXDv7XfpEAiTX+eEJ
+ vZqemTJgBYYsDsJyEu2bR6D0tNKRTgvsvT/KrE3aqmZTf9aJzxj2NdRZFFTwDBnuuS/C
+ e2iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714105829; x=1714710629;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6V2hM+h6pS0gu/m4gL1FgRP8pL4W82EnInwVaM15E1Y=;
+ b=PHIrC56A8DHVQp8rq4q0e/kZk/1wGnYWZWqZY99zgRRQJpIR/TOvx4mCAz3+7Sd0vP
+ 3Lx8kXDQrgIBqS+UKAPkcQEURKmyuNF2qcqcAeyXkwwuuWaJAWAcK3Xi1P7DxRsKlHsY
+ 28nVFqYxYiDPUwxrzszR64kZ+cX7Rw0unQApeGDTzkPdQ2knw1rqQYhGZLriL3q4VJyv
+ tvYniQa5Xj0Pkl/HmHsZhgHnxVZCNB/2jRI6RaDBZ/8sgWhByDqwL581pdwUdTHXwOnG
+ g1RskvHIn+NOUtMNoj6fyETC74NKBq71eNV1J7YtPf7kwbgszukoIchWrT4stnQJWbSj
+ x4Dg==
+X-Gm-Message-State: AOJu0Yym3l7K1WH9ZU3O4rYTI7ZVFWqiClV7PHGtHsi7CPM6Ae2GI38P
+ yCDb50QR5PJvJIheb5FTBMvlhUcwed9yj2wXX4yOQjyvFTETnl0iQ8eSyGCPfyNNgeacJcoUIuc
+ xPsAJgEtgWYXuQWBCqugYOszdMYo=
+X-Google-Smtp-Source: AGHT+IHgEUbLY8ASr33Uw3/WafAOT5cyauDPLnQ2JZkoSFlF0K3kFRp8ca/7JJ5t6ga0iGRClragBTa2RI4nuLvxdHw=
+X-Received: by 2002:a05:651c:11c7:b0:2de:3421:9ef6 with SMTP id
+ z7-20020a05651c11c700b002de34219ef6mr744435ljo.33.1714105828799; Thu, 25 Apr
+ 2024 21:30:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <CA+MoWDqANoCnEUbZ1s+rbH=KMttjX+xobRze3EM-PLZMfSFHfg@mail.gmail.com>
+ <20240426035444.abkx3xo2mghlkurj@zkempczy-mobl2>
+In-Reply-To: <20240426035444.abkx3xo2mghlkurj@zkempczy-mobl2>
+From: Peter Senna Tschudin <peter.senna@gmail.com>
+Date: Fri, 26 Apr 2024 06:30:15 +0200
+Message-ID: <CA+MoWDq6SSC4pXOWdu268qg0+P5w2+2ssLWbXZ_Vs_eyuveQ0A@mail.gmail.com>
+Subject: Re: tests/intel/gem_exec_capture: changing the test size breaks the
+ run
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Content-Type: multipart/alternative; boundary="000000000000087dd90616f85da5"
+X-Mailman-Approved-At: Fri, 26 Apr 2024 09:41:15 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,192 +77,93 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add subtest which iterates over all supported tilings and does
-render-copy to and from compressed surface.
+--000000000000087dd90616f85da5
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/intel/xe_render_copy.c | 91 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 86 insertions(+), 5 deletions(-)
+On Fri, Apr 26, 2024 at 5:54=E2=80=AFAM Zbigniew Kempczy=C5=84ski <
+zbigniew.kempczynski@intel.com> wrote:
 
-diff --git a/tests/intel/xe_render_copy.c b/tests/intel/xe_render_copy.c
-index ef75c4ce6d..6f6c2e39bf 100644
---- a/tests/intel/xe_render_copy.c
-+++ b/tests/intel/xe_render_copy.c
-@@ -37,6 +37,10 @@
-  *
-  * SUBTEST: render-full
-  * Description: Copy surface using 3d engine (1:1)
-+ *
-+ * SUBTEST: render-full-compressed
-+ * Description: Copy surface using 3d engine (1:1) when intermediate surface
-+ *              is compressed
-  */
- #define WIDTH	256
- #define HEIGHT	256
-@@ -56,9 +60,13 @@ static void scratch_buf_init(struct buf_ops *bops,
- {
- 	int fd = buf_ops_get_fd(bops);
- 	int bpp = 32;
-+	uint64_t region = system_memory(fd);
-+
-+	if (compression && xe_has_vram(fd))
-+		region = vram_memory(fd, 0);
- 
- 	intel_buf_init_in_region(bops, buf, width, height, bpp, 0,
--				 req_tiling, compression, system_memory(fd));
-+				 req_tiling, compression, region);
- 
- 	igt_assert(intel_buf_width(buf) == width);
- 	igt_assert(intel_buf_height(buf) == height);
-@@ -120,6 +128,67 @@ static int compare_bufs(struct intel_buf *buf1, struct intel_buf *buf2,
- 	return ret;
- }
- 
-+static bool buf_is_aux_compressed(struct buf_ops *bops, struct intel_buf *buf)
-+{
-+	int xe = buf_ops_get_fd(bops);
-+	unsigned int gen = intel_gen(buf_ops_get_devid(bops));
-+	uint32_t ccs_size;
-+	uint8_t *ptr;
-+	bool is_compressed = false;
-+
-+	igt_assert_neq(buf->ccs[0].offset, 0);
-+
-+	ccs_size = intel_buf_ccs_width(gen, buf) * intel_buf_ccs_height(gen, buf);
-+	ptr = xe_bo_map(xe, buf->handle, buf->size);
-+	for (int i = 0; i < ccs_size; i++)
-+		if (ptr[buf->ccs[0].offset + i] != 0) {
-+			is_compressed = true;
-+			break;
-+		}
-+	munmap(ptr, buf->size);
-+
-+	return is_compressed;
-+}
-+
-+static bool buf_is_compressed(struct buf_ops *bops, struct intel_buf *buf)
-+{
-+	struct drm_xe_engine_class_instance inst = {
-+		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-+	};
-+	int xe = buf_ops_get_fd(bops);
-+	struct blt_copy_object obj;
-+	uint64_t ahnd;
-+	uint32_t vm, exec_queue;
-+	uint32_t tiling = i915_tile_to_blt_tile(buf->tiling);
-+	uint32_t devid = buf_ops_get_devid(bops);
-+	intel_ctx_t *ctx;
-+	bool is_compressed;
-+
-+	if (!HAS_FLATCCS(devid))
-+		return buf_is_aux_compressed(bops, buf);
-+
-+	vm = xe_vm_create(xe, 0, 0);
-+	exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
-+	ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
-+	ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
-+
-+	blt_set_object(&obj, buf->handle,
-+		       buf->size, buf->region, buf->mocs_index,
-+		       buf->pat_index, tiling,
-+		       buf->compression ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
-+		       COMPRESSION_TYPE_3D);
-+	blt_set_geom(&obj, buf->surface[0].stride, 0, 0, buf->width, buf->height, 0, 0);
-+
-+	is_compressed = blt_surface_is_compressed(xe, ctx, NULL, ahnd, &obj);
-+
-+	xe_exec_queue_destroy(xe, exec_queue);
-+	xe_vm_destroy(xe, vm);
-+	put_ahnd(ahnd);
-+	free(ctx);
-+
-+	return is_compressed;
-+}
-+
- /*
-  *
-  * Scenarios implemented are presented below. We copy from linear to and forth
-@@ -176,6 +245,7 @@ enum render_copy_testtype {
- 	COPY_HSTRIPES,
- 	COPY_RANDOM,
- 	COPY_FULL,
-+	COPY_FULL_COMPRESSED,
- };
- 
- static const char * const testname[] = {
-@@ -184,6 +254,7 @@ static const char * const testname[] = {
- 	[COPY_HSTRIPES]	= "hstripes",
- 	[COPY_RANDOM]	= "random",
- 	[COPY_FULL]	= "full",
-+	[COPY_FULL_COMPRESSED] = "full-compressed",
- };
- 
- static int render(struct buf_ops *bops, uint32_t tiling,
-@@ -196,6 +267,9 @@ static int render(struct buf_ops *bops, uint32_t tiling,
- 	uint32_t fails = 0;
- 	uint32_t devid = intel_get_drm_devid(xe);
- 	igt_render_copyfunc_t render_copy = NULL;
-+	int compression = testtype == COPY_FULL_COMPRESSED ? I915_COMPRESSION_RENDER :
-+							     I915_COMPRESSION_NONE;
-+	bool is_compressed;
- 	struct posrc {
- 		uint32_t x0, y0;
- 		uint32_t x1, y1;
-@@ -241,7 +315,7 @@ static int render(struct buf_ops *bops, uint32_t tiling,
- 	scratch_buf_init(bops, &src, width, height, I915_TILING_NONE,
- 			 I915_COMPRESSION_NONE);
- 	scratch_buf_init(bops, &dst, width, height, tiling,
--			 I915_COMPRESSION_NONE);
-+			 compression);
- 	scratch_buf_init(bops, &final, width, height, I915_TILING_NONE,
- 			 I915_COMPRESSION_NONE);
- 	scratch_buf_init(bops, &grfs, 64, height * 4, I915_TILING_NONE,
-@@ -317,6 +391,7 @@ static int render(struct buf_ops *bops, uint32_t tiling,
- 
- 
- 	case COPY_FULL:
-+	case COPY_FULL_COMPRESSED:
- 		render_copy(ibb,
- 			    &src, 0, 0, width, height,
- 			    &dst, 0, 0);
-@@ -339,7 +414,9 @@ static int render(struct buf_ops *bops, uint32_t tiling,
- 					   tiling, width, height);
- 	}
- 
--	fails = compare_bufs(&src, &final, true);
-+	fails = compare_bufs(&src, &final, false);
-+	if (compression == I915_COMPRESSION_RENDER)
-+		is_compressed = buf_is_compressed(bops, &dst);
- 
- 	intel_buf_close(bops, &src);
- 	intel_buf_close(bops, &dst);
-@@ -347,6 +424,9 @@ static int render(struct buf_ops *bops, uint32_t tiling,
- 
- 	igt_assert_f(fails == 0, "%s: (tiling: %d) fails: %d\n",
- 		     __func__, tiling, fails);
-+	if (compression == I915_COMPRESSION_RENDER && blt_platform_has_flat_ccs_enabled(xe))
-+		igt_assert_f(is_compressed, "%s: (tiling: %d) buffer is not compressed\n",
-+			     __func__, tiling);
- 
- 	return fails;
- }
-@@ -398,12 +478,13 @@ igt_main_args("dpiW:H:", NULL, help_str, opt_handler, NULL)
- 		srand(time(NULL));
- 	}
- 
--	for (int id = 0; id <= COPY_FULL; id++) {
-+	for (int id = 0; id <= COPY_FULL_COMPRESSED; id++) {
- 		igt_subtest_with_dynamic_f("render-%s", testname[id]) {
- 			igt_require(xe_has_engine_class(xe, DRM_XE_ENGINE_CLASS_RENDER));
- 
- 			for_each_tiling(tiling) {
--				if (!blt_block_copy_supports_tiling(xe, tiling))
-+				if (!render_supports_tiling(xe, tiling,
-+							    id == COPY_FULL_COMPRESSED))
- 					continue;
- 
- 				tiling_name = blt_tiling_name(tiling);
--- 
-2.34.1
+> On Thu, Apr 11, 2024 at 09:41:11PM +0200, Peter Senna Tschudin wrote:
+> > Dear list,
+> >
+> > After my change*, most of the subtests from gem_exec_capture work, but
+> > only if called one by one using --run-subtest. Here is an example:
+>
+> <cut>
+>
+> Unfortunately this is related to IGTs construction. I mean if one
+> subtest will allocate the memory and due some reason it won't free it
+> then next subtest doesn't start from scratch, but from some changed
+> state. Subtests which fail mostly left drm fd in some state which
+> might affect next subtests. We're using igt_runner to separate subtests
+> execution and make sure each runs in own process. I'm not saying subtests
+> shouldn't run fluently one by one, but in CI we won't rely on that.
+>
 
+Thank you! I had this idea that there was some leftover in memory, but I
+failed to find it. I tried Valgrind, but it did not help much...
+
+I created an issue, and I took the liberty to copy your comment there.
+
+The issue is here:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/154
+
+[...]
+
+
+>
+> --
+> Zbigniew
+>
+
+
+--=20
+                         Peter
+
+--000000000000087dd90616f85da5
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>On Fri, Apr 26, 2024 at 5:54=E2=80=AFAM Zbigniew Kemp=
+czy=C5=84ski &lt;<a href=3D"mailto:zbigniew.kempczynski@intel.com">zbigniew=
+.kempczynski@intel.com</a>&gt; wrote:<br></div><div class=3D"gmail_quote"><=
+blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
+eft:1px solid rgb(204,204,204);padding-left:1ex">On Thu, Apr 11, 2024 at 09=
+:41:11PM +0200, Peter Senna Tschudin wrote:<br>
+&gt; Dear list,<br>
+&gt; <br>
+&gt; After my change*, most of the subtests from gem_exec_capture work, but=
+<br>
+&gt; only if called one by one using --run-subtest. Here is an example:<br>
+<br>
+&lt;cut&gt;<br>
+<br>
+Unfortunately this is related to IGTs construction. I mean if one<br>
+subtest will allocate the memory and due some reason it won&#39;t free it<b=
+r>
+then next subtest doesn&#39;t start from scratch, but from some changed<br>
+state. Subtests which fail mostly left drm fd in some state which<br>
+might affect next subtests. We&#39;re using igt_runner to separate subtests=
+<br>
+execution and make sure each runs in own process. I&#39;m not saying subtes=
+ts<br>
+shouldn&#39;t run fluently one by one, but in CI we won&#39;t rely on that.=
+<br></blockquote><div><br></div><div>Thank you! I had this idea that there =
+was some leftover in memory, but I failed to find it. I tried Valgrind, but=
+ it did not help much...</div><div><br></div><div>I created an issue, and I=
+ took the liberty to copy your comment there.</div><div><br></div><div>The =
+issue is here:=C2=A0<a href=3D"https://gitlab.freedesktop.org/drm/igt-gpu-t=
+ools/-/issues/154">https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issue=
+s/154</a></div><div><br></div><div>[...]</div><div>=C2=A0</div><blockquote =
+class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px sol=
+id rgb(204,204,204);padding-left:1ex">
+<br>
+--<br>
+Zbigniew<br>
+</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr">=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0=C2=A0=C2=A0 =C2=A0 =C2=A0Peter</div></div></div>
+
+--000000000000087dd90616f85da5--
