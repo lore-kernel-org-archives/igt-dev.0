@@ -4,28 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 972B7C4345F
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Apr 2024 17:25:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B30A8C4345F
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Apr 2024 17:36:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 35F96113BA3;
-	Fri, 26 Apr 2024 17:25:11 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0198D113BA3;
- Fri, 26 Apr 2024 17:25:10 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7127948458153369376=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 59792112530;
+	Fri, 26 Apr 2024 17:36:15 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c/ZupcsL";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F392A112530
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Apr 2024 17:36:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1714152973; x=1745688973;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=c9/7qrq7SCQWhFbgoI8reMRH9oVvfeSJh9fn/xt9gk0=;
+ b=c/ZupcsL4B398IOrydkZGLmosj2NNCuaDITwV4JzVXEoC7yTO3zfS0II
+ 2svOM4RCj3UdLbhRMXUXYhvNY6Bg5INgsd/aO++CGBnVzP8HN+/7kGea7
+ eZLDRDWfuEgaQ6/XVqlj29MupQ5HgZBdf5ObHaSqS+S+0y149LJFW4faX
+ OXOX1I+xXiLVyWIy2W7esmfwfArUMFbX5GsXa3dDUFBTEpTOdO4dwNmHt
+ jS7F1pH9D6jkRy1ODkUgF5ZXMR4/wWwqQ4hxt3rnZZRkrs5dOsxgEOSdJ
+ 3jhGwzOHhZJ9uBOwRexoOgH9VTtnVpGHFLAY+IX4Qn2G0nOY4FBqApUjk w==;
+X-CSE-ConnectionGUID: eWlse2C3TtmGeqcRHoo/FA==
+X-CSE-MsgGUID: RvaB1Vq1T++vMEGRJ95QAA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11056"; a="10057074"
+X-IronPort-AV: E=Sophos;i="6.07,233,1708416000"; d="scan'208";a="10057074"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Apr 2024 10:36:12 -0700
+X-CSE-ConnectionGUID: C85iREDGSDecmbdP3olssw==
+X-CSE-MsgGUID: cDezOSV5QjSD6Y8yL2Nzqg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,233,1708416000"; d="scan'208";a="26121256"
+Received: from mklonows-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.64])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Apr 2024 10:36:11 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Sai Gowtham Ch <sai.gowtham.ch@intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH v4 i-g-t] tests/device_reset: move later skips into subtests
+Date: Fri, 26 Apr 2024 19:35:59 +0200
+Message-ID: <20240426173559.46528-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
- =?utf-8?q?=2C1/2=5D_tests/kms=5Fasync=5Fflips=3A_Extend_the_=22async_flip_n?=
- =?utf-8?q?eeds_an_extra_frame=22_logic_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 26 Apr 2024 17:25:10 -0000
-Message-ID: <171415231000.1687463.7256816655439924124@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240322203726.16637-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20240322203726.16637-1-ville.syrjala@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,144 +67,102 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7127948458153369376==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+It is safe to use skips just after igt_main() for skipping all
+subtests but later on they produce logs and even if CI will
+ignore that, such logs can mislead developers reading them.
 
-== Series Details ==
+Move a skip from middle of igt_main() code block into subtests
+which needed them.
 
-Series: series starting with [i-g-t,1/2] tests/kms_async_flips: Extend the "async flip needs an extra frame" logic (rev2)
-URL   : https://patchwork.freedesktop.org/series/131518/
-State : success
+v2: add space after while (Kamil)
+v3: remove macro in favor of function (Zbigniew)
+v4: rename function and make it compact (Zbigniew)
 
-== Summary ==
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/device_reset.c | 46 ++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 40 insertions(+), 6 deletions(-)
 
-CI Bug Log - changes from XEIGT_7825_BAT -> XEIGTPW_11076_BAT
-====================================================
+diff --git a/tests/device_reset.c b/tests/device_reset.c
+index 583a59039..b8b292513 100644
+--- a/tests/device_reset.c
++++ b/tests/device_reset.c
+@@ -299,6 +299,39 @@ static bool is_sysfs_cold_reset_supported(int slot_fd)
+ 	return true;
+ }
+ 
++/**
++ * cold_reset_not_supported:
++ * @fd: opened sysfs pci slot descriptor
++ * @reason: fail description
++ *
++ * Check if device supports cold reset based on slot dir or sysfs file presence.
++ *
++ * Returns:
++ * false if cold reset not supported, also writes a reason for it
++ * true if supported
++ */
++static bool has_cold_reset(int slot_dir, const char **reason)
++{
++	static const char *no_slot = "Gfx Card does not support any pcie slot for cold reset";
++	static const char *not_supported = "Gfx Card does not support cold reset";
++
++	if (slot_dir < 0) {
++		if (reason)
++			*reason = no_slot;
++
++		return true;
++	}
++
++	if (!is_sysfs_cold_reset_supported(slot_dir)) {
++		if (reason)
++			*reason = not_supported;
++
++		return true;
++	}
++
++	return false;
++}
++
+ /* Unbind the driver from the device */
+ static void driver_unbind(struct device_fds *dev)
+ {
+@@ -424,22 +457,23 @@ igt_main
+ 		healthcheck(&dev);
+ 	}
+ 
+-	igt_subtest_group {
+-		igt_fixture {
+-			igt_skip_on_f(dev.fds.slot_dir < 0, "Gfx Card does not support any "
+-				      "pcie slot for cold reset\n");
+-			igt_skip_on(!is_sysfs_cold_reset_supported(dev.fds.slot_dir));
+-		}
+ 
++	igt_subtest_group {
+ 		igt_describe("Unbinds driver from device, initiates cold reset"
+ 			     " then rebinds driver to device");
+ 		igt_subtest("unbind-cold-reset-rebind") {
++			const char *reason;
++
++			igt_skip_on_f(!has_cold_reset(dev.fds.slot_dir, &reason), "%s\n", reason);
+ 			unbind_reset_rebind(&dev, COLD_RESET);
+ 			healthcheck(&dev);
+ 		}
+ 
+ 		igt_describe("Cold Resets device with bound driver");
+ 		igt_subtest("cold-reset-bound") {
++			const char *reason;
++
++			igt_skip_on_f(!has_cold_reset(dev.fds.slot_dir, &reason), "%s\n", reason);
+ 			initiate_device_reset(&dev, COLD_RESET);
+ 			/*
+ 			 * Cold reset will initiate card boot sequence again,
+-- 
+2.42.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (5 -> 5)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11076_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] ([Intel XE#288]) +32 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11076/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html
-
-  
-#### Possible fixes ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-dg2-oem2:       [INCOMPLETE][2] ([Intel XE#1451]) -> [PASS][3]
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7825/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11076/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
-
-  
-  [Intel XE#1451]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1451
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-
-
-Build changes
--------------
-
-  * IGT: IGT_7825 -> IGTPW_11076
-  * Linux: xe-1188-f39ba481e5873b7617afc2e8cf618ac9dc85123f -> xe-1192-098a032be5e189eb306b909c73ae79ca6645844f
-
-  IGTPW_11076: e11f9f4f1c7534449c1644412507a981ee15e4e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7825: 28b2a1b0be86e33a2fc04a022e04f07bd25b66d9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1188-f39ba481e5873b7617afc2e8cf618ac9dc85123f: f39ba481e5873b7617afc2e8cf618ac9dc85123f
-  xe-1192-098a032be5e189eb306b909c73ae79ca6645844f: 098a032be5e189eb306b909c73ae79ca6645844f
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11076/index.html
-
---===============7127948458153369376==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/kms_async_flips: Extend the &quot;async flip needs an extra frame&quot; logic (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131518/">https://patchwork.freedesktop.org/series/131518/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11076/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11076/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7825_BAT -&gt; XEIGTPW_11076_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (5 -&gt; 5)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11076_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate:<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11076/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7825/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1451">Intel XE#1451</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11076/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7825 -&gt; IGTPW_11076</li>
-<li>Linux: xe-1188-f39ba481e5873b7617afc2e8cf618ac9dc85123f -&gt; xe-1192-098a032be5e189eb306b909c73ae79ca6645844f</li>
-</ul>
-<p>IGTPW_11076: e11f9f4f1c7534449c1644412507a981ee15e4e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7825: 28b2a1b0be86e33a2fc04a022e04f07bd25b66d9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1188-f39ba481e5873b7617afc2e8cf618ac9dc85123f: f39ba481e5873b7617afc2e8cf618ac9dc85123f<br />
-  xe-1192-098a032be5e189eb306b909c73ae79ca6645844f: 098a032be5e189eb306b909c73ae79ca6645844f</p>
-
-</body>
-</html>
-
---===============7127948458153369376==--
