@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68F46C04FFE
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Apr 2024 09:02:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE8C8C4345F
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Apr 2024 09:02:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 26AD210F0AD;
-	Fri, 26 Apr 2024 09:02:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7E5FE10EF1B;
+	Fri, 26 Apr 2024 09:02:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FkjTy2fW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kIi/2y6w";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 498CB10F013
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Apr 2024 09:01:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5903D10F0BF
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Apr 2024 09:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714122118; x=1745658118;
+ t=1714122122; x=1745658122;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=4F/9of33bXJr1vohjdMXJm2KsPXFYZlzcJZXE6aeZ/8=;
- b=FkjTy2fW7q3RhFyxsV9xONjOPou2/DnSNij2/WvpJQa0lKA6fw8mxu9C
- q380S8ZecT/gStvhOwvmtJ0faqzX0yimBdz9vSPQ857R3+FfDnlX8DeTQ
- H7Kl21MJuNxtiNerbWiFsKzI83nTh1PzDnuKdPj5Yh1w9rQme22jR0WGo
- d37p2KcRvszAnRY7iWn9/nYeGIrcbBf+bghx0l36HNpOpTr0QqOSF/fJq
- MQiL5EGljHKcFf01QGOdSdoJ0qhJcHomU+B+swTwgWgKh85bFgP5SzKBG
- fbb1jXpYLXIb9I3oIDRM0SC9G8WGRoBDRQlx4Q1V1yladkyN/+wwJNfUP g==;
-X-CSE-ConnectionGUID: U3aDgbXnQKmQmy8PzfXLPA==
-X-CSE-MsgGUID: FA5ylcMRR+GGD7uMRy0YBg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="9717811"
+ bh=cDG+lt4n3F6h+bhnqg8NGhBehepO+sc90lqNKkZopf8=;
+ b=kIi/2y6wV/3SOEecqb+hQzMDnZPB+H2U1lDa1mYsf9mNaM9XFxO5W/Vu
+ dZzscj3nKe4DhVu0BJeOyWIhtCgpmLq5l15uvdZTfw8hp2rhe8B/voE/F
+ ZKNtmPu4Tp91hRkqpkzttyTNRyy5AH3FbUg0q7JL1inS/jxXddoB4TbER
+ z6sED0dHMXDp0k/3moxvdU1NEA4FkK2JfL1w0eOaQJwJzPrWq038xUhTE
+ 59D1AAiLnmvrZzW3u+wAVjL10c8Q4fgmHVFsU1eUOxhXEw+FvPbJtpe1L
+ 13DMOx1fNcWOtyt9l7KwlEsBcSGTmW2W4XK0NPClSdkUpMRG3FhhAj5Y7 g==;
+X-CSE-ConnectionGUID: fa4nOjCcQ7OjqktXvMkukw==
+X-CSE-MsgGUID: NwbY336KRRyYjGhR1xhkIw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="9717837"
 X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; 
-   d="scan'208";a="9717811"
+   d="scan'208";a="9717837"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Apr 2024 02:01:54 -0700
-X-CSE-ConnectionGUID: +w9oXg1MRpa+h5ua+hFnWw==
-X-CSE-MsgGUID: xxJ2q9HXTG6g385P9NDe4g==
+ 26 Apr 2024 02:02:01 -0700
+X-CSE-ConnectionGUID: XnIXjTPRSNutUyHutaGzZw==
+X-CSE-MsgGUID: xoUAjai0Tuql9BA/Wpp7bw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; d="scan'208";a="25402882"
+X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; d="scan'208";a="25402900"
 Received: from mklonows-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.61])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Apr 2024 02:01:53 -0700
+ 26 Apr 2024 02:02:00 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v2 08/10] lib/intel_cmds_info: Introduce render tilings
-Date: Fri, 26 Apr 2024 11:01:15 +0200
-Message-Id: <20240426090117.78060-9-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v2 10/10] tests/xe_render_copy: Add subtest which
+ exercises compression
+Date: Fri, 26 Apr 2024 11:01:17 +0200
+Message-Id: <20240426090117.78060-11-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240426090117.78060-1-zbigniew.kempczynski@intel.com>
 References: <20240426090117.78060-1-zbigniew.kempczynski@intel.com>
@@ -70,102 +71,192 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Due to hardware differences between blitter and render regarding
-supported tilings and compression add new fields in cmds-info
-to identify available tilings via render engine.
+Add subtest which iterates over all supported tilings and does
+render-copy to and from compressed surface.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/intel_cmds_info.c | 29 +++++++++++++++++++++++++----
- lib/intel_cmds_info.h |  6 ++++++
- 2 files changed, 31 insertions(+), 4 deletions(-)
+ tests/intel/xe_render_copy.c | 91 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 86 insertions(+), 5 deletions(-)
 
-diff --git a/lib/intel_cmds_info.c b/lib/intel_cmds_info.c
-index 2baac54c28..0e95cc226d 100644
---- a/lib/intel_cmds_info.c
-+++ b/lib/intel_cmds_info.c
-@@ -90,6 +90,23 @@ static const struct blt_cmd_info
- 						 BLT_CMD_EXTENDED);
+diff --git a/tests/intel/xe_render_copy.c b/tests/intel/xe_render_copy.c
+index ef75c4ce6d..6f6c2e39bf 100644
+--- a/tests/intel/xe_render_copy.c
++++ b/tests/intel/xe_render_copy.c
+@@ -37,6 +37,10 @@
+  *
+  * SUBTEST: render-full
+  * Description: Copy surface using 3d engine (1:1)
++ *
++ * SUBTEST: render-full-compressed
++ * Description: Copy surface using 3d engine (1:1) when intermediate surface
++ *              is compressed
+  */
+ #define WIDTH	256
+ #define HEIGHT	256
+@@ -56,9 +60,13 @@ static void scratch_buf_init(struct buf_ops *bops,
+ {
+ 	int fd = buf_ops_get_fd(bops);
+ 	int bpp = 32;
++	uint64_t region = system_memory(fd);
++
++	if (compression && xe_has_vram(fd))
++		region = vram_memory(fd, 0);
  
+ 	intel_buf_init_in_region(bops, buf, width, height, bpp, 0,
+-				 req_tiling, compression, system_memory(fd));
++				 req_tiling, compression, region);
  
-+#define RENDER_TILING(_tiling, _compress_tiling)  { \
-+		.supported_tiling = _tiling, \
-+		.supported_compressed_tiling = _compress_tiling, \
-+	}
+ 	igt_assert(intel_buf_width(buf) == width);
+ 	igt_assert(intel_buf_height(buf) == height);
+@@ -120,6 +128,67 @@ static int compare_bufs(struct intel_buf *buf1, struct intel_buf *buf2,
+ 	return ret;
+ }
+ 
++static bool buf_is_aux_compressed(struct buf_ops *bops, struct intel_buf *buf)
++{
++	int xe = buf_ops_get_fd(bops);
++	unsigned int gen = intel_gen(buf_ops_get_devid(bops));
++	uint32_t ccs_size;
++	uint8_t *ptr;
++	bool is_compressed = false;
 +
-+static const struct render_tiling_info
-+		render_tiling_gen12 = RENDER_TILING(TILE_L_X_4, TILE_4);
++	igt_assert_neq(buf->ccs[0].offset, 0);
 +
-+static const struct render_tiling_info
-+		render_tiling_mtl = RENDER_TILING(TILE_L_X_4_64, TILE_4);
++	ccs_size = intel_buf_ccs_width(gen, buf) * intel_buf_ccs_height(gen, buf);
++	ptr = xe_bo_map(xe, buf->handle, buf->size);
++	for (int i = 0; i < ccs_size; i++)
++		if (ptr[buf->ccs[0].offset + i] != 0) {
++			is_compressed = true;
++			break;
++		}
++	munmap(ptr, buf->size);
 +
-+static const struct render_tiling_info
-+		render_tiling_dg2 = RENDER_TILING(TILE_L_X_4_64, TILE_4_64);
++	return is_compressed;
++}
 +
-+static const struct render_tiling_info
-+		render_tiling_xe2 = RENDER_TILING(TILE_L_X_4_64, TILE_L_X_4_64);
++static bool buf_is_compressed(struct buf_ops *bops, struct intel_buf *buf)
++{
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++	};
++	int xe = buf_ops_get_fd(bops);
++	struct blt_copy_object obj;
++	uint64_t ahnd;
++	uint32_t vm, exec_queue;
++	uint32_t tiling = i915_tile_to_blt_tile(buf->tiling);
++	uint32_t devid = buf_ops_get_devid(bops);
++	intel_ctx_t *ctx;
++	bool is_compressed;
 +
- const struct intel_cmds_info pre_gen6_cmds_info = {
- 	.blt_cmds = {
- 		[SRC_COPY] = &src_copy,
-@@ -127,7 +144,8 @@ const struct intel_cmds_info gen12_cmds_info = {
- 		[XY_FAST_COPY] = &gen12_xy_fast_copy,
- 		[XY_BLOCK_COPY] = &gen12_xy_block_copy,
- 		[XY_COLOR_BLT] = &gen6_xy_color_blt,
--	}
-+	},
-+	.render_tilings = &render_tiling_gen12,
++	if (!HAS_FLATCCS(devid))
++		return buf_is_aux_compressed(bops, buf);
++
++	vm = xe_vm_create(xe, 0, 0);
++	exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++	ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++	ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
++
++	blt_set_object(&obj, buf->handle,
++		       buf->size, buf->region, buf->mocs_index,
++		       buf->pat_index, tiling,
++		       buf->compression ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
++		       COMPRESSION_TYPE_3D);
++	blt_set_geom(&obj, buf->surface[0].stride, 0, 0, buf->width, buf->height, 0, 0);
++
++	is_compressed = blt_surface_is_compressed(xe, ctx, NULL, ahnd, &obj);
++
++	xe_exec_queue_destroy(xe, exec_queue);
++	xe_vm_destroy(xe, vm);
++	put_ahnd(ahnd);
++	free(ctx);
++
++	return is_compressed;
++}
++
+ /*
+  *
+  * Scenarios implemented are presented below. We copy from linear to and forth
+@@ -176,6 +245,7 @@ enum render_copy_testtype {
+ 	COPY_HSTRIPES,
+ 	COPY_RANDOM,
+ 	COPY_FULL,
++	COPY_FULL_COMPRESSED,
  };
  
- const struct intel_cmds_info gen12_dg2_cmds_info = {
-@@ -136,14 +154,16 @@ const struct intel_cmds_info gen12_dg2_cmds_info = {
- 		[XY_FAST_COPY] = &dg2_xy_fast_copy,
- 		[XY_BLOCK_COPY] = &dg2_xy_block_copy,
- 		[XY_COLOR_BLT] = &gen6_xy_color_blt,
--	}
-+	},
-+	.render_tilings = &render_tiling_dg2,
+ static const char * const testname[] = {
+@@ -184,6 +254,7 @@ static const char * const testname[] = {
+ 	[COPY_HSTRIPES]	= "hstripes",
+ 	[COPY_RANDOM]	= "random",
+ 	[COPY_FULL]	= "full",
++	[COPY_FULL_COMPRESSED] = "full-compressed",
  };
  
- const struct intel_cmds_info gen12_mtl_cmds_info = {
- 	.blt_cmds = {
- 		[XY_FAST_COPY] = &dg2_xy_fast_copy,
- 		[XY_BLOCK_COPY] = &mtl_xy_block_copy,
--	}
-+	},
-+	.render_tilings = &render_tiling_mtl,
- };
+ static int render(struct buf_ops *bops, uint32_t tiling,
+@@ -196,6 +267,9 @@ static int render(struct buf_ops *bops, uint32_t tiling,
+ 	uint32_t fails = 0;
+ 	uint32_t devid = intel_get_drm_devid(xe);
+ 	igt_render_copyfunc_t render_copy = NULL;
++	int compression = testtype == COPY_FULL_COMPRESSED ? I915_COMPRESSION_RENDER :
++							     I915_COMPRESSION_NONE;
++	bool is_compressed;
+ 	struct posrc {
+ 		uint32_t x0, y0;
+ 		uint32_t x1, y1;
+@@ -241,7 +315,7 @@ static int render(struct buf_ops *bops, uint32_t tiling,
+ 	scratch_buf_init(bops, &src, width, height, I915_TILING_NONE,
+ 			 I915_COMPRESSION_NONE);
+ 	scratch_buf_init(bops, &dst, width, height, tiling,
+-			 I915_COMPRESSION_NONE);
++			 compression);
+ 	scratch_buf_init(bops, &final, width, height, I915_TILING_NONE,
+ 			 I915_COMPRESSION_NONE);
+ 	scratch_buf_init(bops, &grfs, 64, height * 4, I915_TILING_NONE,
+@@ -317,6 +391,7 @@ static int render(struct buf_ops *bops, uint32_t tiling,
  
- const struct intel_cmds_info gen12_pvc_cmds_info = {
-@@ -161,7 +181,8 @@ const struct intel_cmds_info xe2_cmds_info  = {
- 		[XY_BLOCK_COPY] = &xe2_xy_block_copy,
- 		[MEM_COPY] = &pvc_mem_copy,
- 		[MEM_SET] = &pvc_mem_set,
--	}
-+	},
-+	.render_tilings = &render_tiling_xe2,
- };
  
- const struct blt_cmd_info *blt_get_cmd_info(const struct intel_cmds_info *cmds_info,
-diff --git a/lib/intel_cmds_info.h b/lib/intel_cmds_info.h
-index 0a83b6a446..6f7d655083 100644
---- a/lib/intel_cmds_info.h
-+++ b/lib/intel_cmds_info.h
-@@ -43,8 +43,14 @@ struct blt_cmd_info {
- #define BLT_CMD_SUPPORTS_COMPRESSION   (1 << 1)
- };
+ 	case COPY_FULL:
++	case COPY_FULL_COMPRESSED:
+ 		render_copy(ibb,
+ 			    &src, 0, 0, width, height,
+ 			    &dst, 0, 0);
+@@ -339,7 +414,9 @@ static int render(struct buf_ops *bops, uint32_t tiling,
+ 					   tiling, width, height);
+ 	}
  
-+struct render_tiling_info {
-+	uint32_t supported_tiling;
-+	uint32_t supported_compressed_tiling;
-+};
-+
- struct intel_cmds_info {
- 	struct blt_cmd_info const *blt_cmds[__BLT_MAX_CMD];
-+	struct render_tiling_info const *render_tilings;
- };
+-	fails = compare_bufs(&src, &final, true);
++	fails = compare_bufs(&src, &final, false);
++	if (compression == I915_COMPRESSION_RENDER)
++		is_compressed = buf_is_compressed(bops, &dst);
  
- extern const struct intel_cmds_info pre_gen6_cmds_info;
+ 	intel_buf_close(bops, &src);
+ 	intel_buf_close(bops, &dst);
+@@ -347,6 +424,9 @@ static int render(struct buf_ops *bops, uint32_t tiling,
+ 
+ 	igt_assert_f(fails == 0, "%s: (tiling: %d) fails: %d\n",
+ 		     __func__, tiling, fails);
++	if (compression == I915_COMPRESSION_RENDER && blt_platform_has_flat_ccs_enabled(xe))
++		igt_assert_f(is_compressed, "%s: (tiling: %d) buffer is not compressed\n",
++			     __func__, tiling);
+ 
+ 	return fails;
+ }
+@@ -398,12 +478,13 @@ igt_main_args("dpiW:H:", NULL, help_str, opt_handler, NULL)
+ 		srand(time(NULL));
+ 	}
+ 
+-	for (int id = 0; id <= COPY_FULL; id++) {
++	for (int id = 0; id <= COPY_FULL_COMPRESSED; id++) {
+ 		igt_subtest_with_dynamic_f("render-%s", testname[id]) {
+ 			igt_require(xe_has_engine_class(xe, DRM_XE_ENGINE_CLASS_RENDER));
+ 
+ 			for_each_tiling(tiling) {
+-				if (!blt_block_copy_supports_tiling(xe, tiling))
++				if (!render_supports_tiling(xe, tiling,
++							    id == COPY_FULL_COMPRESSED))
+ 					continue;
+ 
+ 				tiling_name = blt_tiling_name(tiling);
 -- 
 2.34.1
 
