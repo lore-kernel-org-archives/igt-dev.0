@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EC17C4345F
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Apr 2024 16:39:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7863EC4345F
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Apr 2024 16:40:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E3B2410F189;
-	Fri, 26 Apr 2024 16:39:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 162B610F19B;
+	Fri, 26 Apr 2024 16:40:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AC/Khzx6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="azFAwMsB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B30B610F189
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Apr 2024 16:39:09 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D216F10F19B
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Apr 2024 16:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714149550; x=1745685550;
+ t=1714149637; x=1745685637;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=/rxsRKMMv8naUcH8/8YYfvFlv262ZOrAv7OnkuGR8J0=;
- b=AC/Khzx6kSjaU7dORQqwGeBprtYA64uKv9ijaDScr52G5SvQqsgVYvPJ
- 7dwCY0DXpJwLtI45iQuRG6CiEqpxeP8QKtzrRX6BTzgx/OrBzIzdUkRAW
- 8GVhYQyTx+hFmor7knC/7mfeIjSsIAkJdyBKyQ7nSqfSIsVhKpwUEv2jW
- hlQNbzdM27e4bDhjPoYS9mFIiX1LIc5HBISVMjZ5sd0sVzUFappHYgr2N
- eGJU4bXwBHMs/uJh5lE7aeKr2zq4FLQYTVlziZ2AKmyKUNwuDpwiEwR3o
- YZbiWCiyfc9n7eknAQjfwjOk8i2bgrH7a7D3B7jGjJpJmdWwf8dQV0ecw Q==;
-X-CSE-ConnectionGUID: w2+soSlLRaGecVJ8n5zq0Q==
-X-CSE-MsgGUID: uiVNQD36Q36O3jc/vAtgbw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11056"; a="9762043"
+ bh=aEMT7v6phWo8hZIKX1dvL9mQ2LymG4DVUcveYPkQuwU=;
+ b=azFAwMsBy4YgzIqdrRc7qEeL3ZWv39kyDlP6SHOZdmIgndqwkUJOcUcY
+ DRUxhuouzjZLN6ZhH0bL7AklqDpu4IJ0xsom9mvU2FsgT6wp8VKXIVQEh
+ dIxY/jvb8fW+nIMDKMe/vqODyS5+C3wXoAZ5Ojrx7paEv8WnDHfQWQwtJ
+ LcJVdwAxtSdZPhBqsaEgBhBlKsBlif14QjRGvJl0Esic+/HKw5qpKL5Nm
+ gcD1oAEEaUQrBWKXzLu4Gf9Ljl+rfWUvmUWVFiuMv+pU5rVgjFHYEgotS
+ WBi7jwi0fKP2XbPk8AUCdYi1HvagjtaAonp0j00pqOVlW6nDa2kpjkV4t w==;
+X-CSE-ConnectionGUID: g73A3a7WRPGMpTqzONDDDA==
+X-CSE-MsgGUID: JjoQD4zlSA2BSHvriWRZ4A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11056"; a="9742351"
 X-IronPort-AV: E=Sophos;i="6.07,233,1708416000"; 
-   d="scan'208";a="9762043"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Apr 2024 09:35:58 -0700
-X-CSE-ConnectionGUID: /KlBAZ5HT9KIYEFPohN14Q==
-X-CSE-MsgGUID: 0Zh2NHeQSg22j9akYQsmHA==
+   d="scan'208";a="9742351"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Apr 2024 09:40:36 -0700
+X-CSE-ConnectionGUID: LE0BpwrERTiuLVIKsRuZMg==
+X-CSE-MsgGUID: WET/EWEmSqOXnHcL6lEnDA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,233,1708416000"; d="scan'208";a="26101371"
+X-IronPort-AV: E=Sophos;i="6.07,233,1708416000"; d="scan'208";a="62950402"
 Received: from mklonows-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.61])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Apr 2024 09:35:56 -0700
-Date: Fri, 26 Apr 2024 18:35:53 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Apr 2024 09:40:34 -0700
+Date: Fri, 26 Apr 2024 18:40:30 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Subject: Re: [PATCH i-g-t] tests/device_reset: move later skips into subtests
-Message-ID: <20240426163527.2uqtu37kpeyapwbe@zkempczy-mobl2>
-References: <20240425140544.41750-1-kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Sai Gowtham Ch <sai.gowtham.ch@intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_queue_property: move skip into
+ subtest
+Message-ID: <20240426164030.s33sahee4dnw3pn6@zkempczy-mobl2>
+References: <20240425143946.62074-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240425140544.41750-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20240425143946.62074-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,101 +72,67 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Apr 25, 2024 at 04:05:44PM +0200, Kamil Konieczny wrote:
-> It is safe to use skips just after igt_main() for skipping all
-> subtests but later on they produce logs and even if CI will
-> ignore that, such logs can mislead developers reading them.
+On Thu, Apr 25, 2024 at 04:39:46PM +0200, Kamil Konieczny wrote:
+> Skips in fixture are safe to use just after begin of igt_main()
+> when they be working for all subtests. Later on, when used in
+> fixture they can mislead developers reading logs, so move one
+> into respective subtest.
 > 
-> Move a skip from middle of igt_main() code block into subtests
-> which needed them.
+> v2: use bool var instead of fd (Zbigniew)
 > 
-> v2: add space after while (Kamil)
-> v3: remove macro in favor of function (Zbigniew)
-> 
-> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 > Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 > Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
 > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->  tests/device_reset.c | 36 ++++++++++++++++++++++++++++++------
->  1 file changed, 30 insertions(+), 6 deletions(-)
+>  tests/intel/xe_exec_queue_property.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
 > 
-> diff --git a/tests/device_reset.c b/tests/device_reset.c
-> index 583a59039..09558ff20 100644
-> --- a/tests/device_reset.c
-> +++ b/tests/device_reset.c
-> @@ -299,6 +299,29 @@ static bool is_sysfs_cold_reset_supported(int slot_fd)
->  	return true;
->  }
+> diff --git a/tests/intel/xe_exec_queue_property.c b/tests/intel/xe_exec_queue_property.c
+> index 57baae305..c3a3751cb 100644
+> --- a/tests/intel/xe_exec_queue_property.c
+> +++ b/tests/intel/xe_exec_queue_property.c
+> @@ -203,7 +203,7 @@ igt_main
+>  	const char *property[][3] = { {"timeslice_duration_us", "timeslice_duration_min", "timeslice_duration_max"},
+>  	};
+>  	int count = sizeof(property) / sizeof(property[0]);
+> -	int sys_fd;
+> +	bool has_sysfs;
+>  	int xe;
+>  	int gt;
 >  
-> +/**
-> + * cold_reset_not_supported:
-> + * @fd: opened sysfs pci slot descriptor
-> + *
-> + * Check if device supports cold reset based on slot dir or sysfs file presence.
-> + *
-> + * Returns:
-> + * NULL if device supports cold reset, otherwise a string description
-> + */
-> +static const char *cold_reset_not_supported(int slot_dir)
-> +{
-> +	static const char *no_slot = "Gfx Card does not support any pcie slot for cold reset";
-> +	static const char *not_supported = "Gfx Card does not support cold reset";
-> +
-> +	if (slot_dir < 0)
-> +		return no_slot;
-> +
-> +	if (!is_sysfs_cold_reset_supported(slot_dir))
-> +		return not_supported;
-> +
-> +	return NULL;
-> +}
-> +
->  /* Unbind the driver from the device */
->  static void driver_unbind(struct device_fds *dev)
->  {
-> @@ -424,22 +447,23 @@ igt_main
->  		healthcheck(&dev);
->  	}
+> @@ -233,14 +233,20 @@ igt_main
 >  
-> -	igt_subtest_group {
-> -		igt_fixture {
-> -			igt_skip_on_f(dev.fds.slot_dir < 0, "Gfx Card does not support any "
-> -				      "pcie slot for cold reset\n");
-> -			igt_skip_on(!is_sysfs_cold_reset_supported(dev.fds.slot_dir));
-> -		}
->  
-> +	igt_subtest_group {
->  		igt_describe("Unbinds driver from device, initiates cold reset"
->  			     " then rebinds driver to device");
->  		igt_subtest("unbind-cold-reset-rebind") {
-> +			const char *reason = cold_reset_not_supported(dev.fds.slot_dir);
+>  	igt_subtest_group {
+>  		igt_fixture {
+> -			sys_fd = igt_sysfs_open(xe);
+> -			igt_require(sys_fd != -1);
+> -			close(sys_fd);
+> +			int sys_fd = igt_sysfs_open(xe);
 > +
-> +			igt_skip_on_f(reason, "%s\n", reason);
->  			unbind_reset_rebind(&dev, COLD_RESET);
->  			healthcheck(&dev);
->  		}
->  
->  		igt_describe("Cold Resets device with bound driver");
->  		igt_subtest("cold-reset-bound") {
-> +			const char *reason = cold_reset_not_supported(dev.fds.slot_dir);
-> +
-> +			igt_skip_on_f(reason, "%s\n", reason);
->  			initiate_device_reset(&dev, COLD_RESET);
->  			/*
->  			 * Cold reset will initiate card boot sequence again,
-> -- 
-> 2.42.0
-> 
+> +			if (sys_fd != -1) {
+> +				close(sys_fd);
+> +				has_sysfs = true;
+> +			} else {
+> +				has_sysfs = false;
+> +			}
 
-I understand you want to be verbose when cold reset is not supported
-and what's the reason. At the first glance cold_reset_not_supported()
-is a little bit confusing (returns NULL in case it is fine). But at
-least assignment is descriptive (reason = ...).
-
-So:
+Ok, you stop exposing stale fd outside, lgtm:
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
 --
 Zbigniew
 
+>  		}
+>  
+>  		for (int i = 0; i < count; i++) {
+>  			for (typeof(*tests) *t = tests; t->name; t++) {
+>  				igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
+> +					igt_require(has_sysfs);
+>  					xe_for_each_gt(xe, gt) {
+>  						int engines_fd = -1;
+>  						int gt_fd = -1;
+> -- 
+> 2.42.0
+> 
