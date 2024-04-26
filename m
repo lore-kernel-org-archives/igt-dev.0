@@ -4,56 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE279C4345F
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Apr 2024 03:54:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C97F3C04FFE
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Apr 2024 03:59:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EDE2C10ED64;
-	Fri, 26 Apr 2024 03:54:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 69B8611A9DA;
+	Fri, 26 Apr 2024 03:59:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VlwZCwQW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X5j1k6JV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6376C10ED64
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Apr 2024 03:54:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C47C11A9D9;
+ Fri, 26 Apr 2024 03:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714103688; x=1745639688;
+ t=1714103971; x=1745639971;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=ghZd6rzI6p8EkfUyzrpA4DbHmKQQtUYQeTEr88GFHPM=;
- b=VlwZCwQWlZ773N4sHtP8QclFKPWSGxtPw0/CBSgaHWjOXViDpBNBArai
- AF7dfuKDqjs8MQaEf84bKnv2oLC9SiiSEWNEH0Y2NpQVAW1xGVW+HaAFt
- OuC870qbCI6uzNCSjSBWC7ZfJeR7Jcn8m+qpXK7LkDuWMF4PmCDb056Qq
- ozZS7mRG8de1oP3DOREfmFYn5B8lIze181YcbomjF++Qdc3Ll88NLdCOX
- fESf/UffkojIyrEbb71PN18eXgNiGshvbMp0Rq9qyF40FLgH6R88N+EKv
- GjuBEcYrImsB7ZNuHN/25oh0kK3JZD4v/cbW/fSrqf8WrxHrpoqM9+Qsa Q==;
-X-CSE-ConnectionGUID: 7i8vq2kCTMyI3fV0l8Fmkw==
-X-CSE-MsgGUID: etp77DfdRS2vY9g3/oYA6Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="20381935"
-X-IronPort-AV: E=Sophos;i="6.07,231,1708416000"; d="scan'208";a="20381935"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2024 20:54:48 -0700
-X-CSE-ConnectionGUID: 4HKz48ytSwCn/iCfLHYhTA==
-X-CSE-MsgGUID: vC1jTMIUS/aGPTqXGqmWHg==
+ bh=zxjwc4NYJPceLL4TgNWZ6BH+gENxH/BbwbDHt6sED2o=;
+ b=X5j1k6JVBXh57WzQ4eQGQWC+ducI/AP6A1YWZ89Ped9r/4wd0qtKAWyL
+ RBIh1otQKBErQFGZWzG1od0ivCGmSfNTxpylNZa6oO0Nhn+RUc0o1+9Ei
+ vPADXEvG7/qt0C4O9seZKMwqpUb24NscnFiRpFjEG/MtfsMR5xTDB/10R
+ HycxxOVw1m3N3hJqj7C6+0Kg46VDgzvCp8mnADNt/3SjNvr45PlKpKJoI
+ ppOMGzR8zBVdWOiSrBNewYQgTw5+Kum6isQ7BL/unv309XrokgHfEv/iP
+ CrmfKTRkvFHo9dKfFAZ2pa1/ppymGI7igevvh+2coswAW73SrneFTRI2E Q==;
+X-CSE-ConnectionGUID: aj0axU5mQ1eaHxr35ohu0A==
+X-CSE-MsgGUID: IUTw36NMT76vvs+5Zfy+0Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="9942816"
+X-IronPort-AV: E=Sophos;i="6.07,231,1708416000"; 
+   d="scan'208";a="9942816"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2024 20:59:31 -0700
+X-CSE-ConnectionGUID: eOUT2B31SVqS0IN/AmXDjg==
+X-CSE-MsgGUID: syZXo7uXT7yvHqkFX6F9Gw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,231,1708416000"; d="scan'208";a="29740027"
+X-IronPort-AV: E=Sophos;i="6.07,231,1708416000"; d="scan'208";a="25371044"
 Received: from mklonows-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.61])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2024 20:54:46 -0700
-Date: Fri, 26 Apr 2024 05:54:44 +0200
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2024 20:59:29 -0700
+Date: Fri, 26 Apr 2024 05:59:26 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: peter.senna@gmail.com
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: tests/intel/gem_exec_capture: changing the test size breaks the
- run
-Message-ID: <20240426035444.abkx3xo2mghlkurj@zkempczy-mobl2>
-References: <CA+MoWDqANoCnEUbZ1s+rbH=KMttjX+xobRze3EM-PLZMfSFHfg@mail.gmail.com>
+To: igt-dev@lists.freedesktop.org
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLkJBVA==?= =?utf-8?Q?=3A?= failure for Add
+ render-copy compression on Xe+
+Message-ID: <20240426035926.kbl4pgzggp3u6z57@zkempczy-mobl2>
+References: <20240425104721.52376-1-zbigniew.kempczynski@intel.com>
+ <171404577247.1650497.11416675148226267361@8e613ede5ea5>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CA+MoWDqANoCnEUbZ1s+rbH=KMttjX+xobRze3EM-PLZMfSFHfg@mail.gmail.com>
+In-Reply-To: <171404577247.1650497.11416675148226267361@8e613ede5ea5>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,21 +71,160 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Apr 11, 2024 at 09:41:11PM +0200, Peter Senna Tschudin wrote:
-> Dear list,
+On Thu, Apr 25, 2024 at 11:49:32AM +0000, Patchwork wrote:
+>    Patch Details
 > 
-> After my change*, most of the subtests from gem_exec_capture work, but
-> only if called one by one using --run-subtest. Here is an example:
+>    Series:  Add render-copy compression on Xe+                              
+>    URL:     https://patchwork.freedesktop.org/series/132902/                
+>    State:   failure                                                         
+>    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11069/index.html 
+> 
+>                CI Bug Log - changes from IGT_7824 -> IGTPW_11069
+> 
+> Summary
+> 
+>    FAILURE
+> 
+>    Serious unknown changes coming with IGTPW_11069 absolutely need to be
+>    verified manually.
+> 
+>    If you think the reported changes have nothing to do with the changes
+>    introduced in IGTPW_11069, please notify your bug team
+>    ('I915-ci-infra@lists.freedesktop.org') to allow them
+>    to document this new failure mode, which will reduce false positives in
+>    CI.
+> 
+>    External URL:
+>    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11069/index.html
+> 
+> Participating hosts (33 -> 39)
+> 
+>    Additional (6): fi-kbl-7567u bat-kbl-2 bat-mtlp-9 fi-glk-j4005
+>    fi-cfl-8109u bat-arls-3
+> 
+> Possible new issues
+> 
+>    Here are the unknown changes that may have been introduced in IGTPW_11069:
+> 
+>   IGT changes
+> 
+>     Possible regressions
+> 
+>      * igt@i915_selftest@live@gt_mocs:
+>           * bat-adlp-11: PASS -> INCOMPLETE
 
-<cut>
-
-Unfortunately this is related to IGTs construction. I mean if one
-subtest will allocate the memory and due some reason it won't free it
-then next subtest doesn't start from scratch, but from some changed
-state. Subtests which fail mostly left drm fd in some state which
-might affect next subtests. We're using igt_runner to separate subtests
-execution and make sure each runs in own process. I'm not saying subtests
-shouldn't run fluently one by one, but in CI we won't rely on that.
+This failure is unrelated to the change.
 
 --
 Zbigniew
+
+
+
+> 
+> Known issues
+> 
+>    Here are the changes found in IGTPW_11069 that come from known issues:
+> 
+>   IGT changes
+> 
+>     Issues hit
+> 
+>      * igt@debugfs_test@basic-hwmon:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#9318)
+>      * igt@fbdev@info:
+> 
+>           * bat-kbl-2: NOTRUN -> SKIP (i915#1849)
+>      * igt@gem_huc_copy@huc-copy:
+> 
+>           * fi-cfl-8109u: NOTRUN -> SKIP (i915#2190)
+>           * fi-kbl-7567u: NOTRUN -> SKIP (i915#2190)
+>           * fi-glk-j4005: NOTRUN -> SKIP (i915#2190)
+>      * igt@gem_lmem_swapping@parallel-random-engines:
+> 
+>           * bat-kbl-2: NOTRUN -> SKIP +39 other tests skip
+>           * bat-arls-3: NOTRUN -> SKIP (i915#10213) +3 other tests skip
+>           * fi-glk-j4005: NOTRUN -> SKIP (i915#4613) +3 other tests skip
+>           * fi-kbl-7567u: NOTRUN -> SKIP (i915#4613) +3 other tests skip
+>      * igt@gem_lmem_swapping@verify-random:
+> 
+>           * fi-cfl-8109u: NOTRUN -> SKIP (i915#4613) +3 other tests skip
+>      * igt@gem_mmap@basic:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#4083)
+>      * igt@gem_render_tiled_blits@basic:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#10197 / i915#10211 / i915#4079)
+>      * igt@gem_tiled_blits@basic:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#10196 / i915#4077) +2 other
+>             tests skip
+>      * igt@gem_tiled_pread_basic:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#10206 / i915#4079)
+>      * igt@i915_pm_rps@basic-api:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#10209)
+>      * igt@kms_addfb_basic@basic-y-tiled-legacy:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#10200) +9 other tests skip
+>      * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#10202) +1 other test skip
+>      * igt@kms_dsc@dsc-basic:
+> 
+>           * fi-kbl-7567u: NOTRUN -> SKIP +11 other tests skip
+>           * fi-cfl-8109u: NOTRUN -> SKIP +11 other tests skip
+>           * bat-arls-3: NOTRUN -> SKIP (i915#9886)
+>      * igt@kms_force_connector_basic@force-load-detect:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#10207)
+>      * igt@kms_pm_backlight@basic-brightness:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#9812)
+>      * igt@kms_psr@psr-primary-mmap-gtt:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#9732) +3 other tests skip
+>      * igt@kms_psr@psr-primary-page-flip:
+> 
+>           * fi-glk-j4005: NOTRUN -> SKIP +10 other tests skip
+>      * igt@kms_setmode@basic-clone-single-crtc:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#10208 / i915#8809)
+>      * igt@prime_vgem@basic-fence-read:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#10212 / i915#3708)
+>      * igt@prime_vgem@basic-gtt:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#10196 / i915#3708 / i915#4077)
+>             +1 other test skip
+>      * igt@prime_vgem@basic-read:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#10214 / i915#3708)
+>      * igt@prime_vgem@basic-write:
+> 
+>           * bat-arls-3: NOTRUN -> SKIP (i915#10216 / i915#3708)
+> 
+>     Possible fixes
+> 
+>      * igt@i915_pm_rpm@module-reload:
+> 
+>           * {bat-rpls-4}: DMESG-WARN (i915#7507) -> PASS
+>      * igt@i915_selftest@live@gt_mocs:
+> 
+>           * bat-dg2-11: DMESG-FAIL (i915#10940) -> PASS
+> 
+>    {name}: This element is suppressed. This means it is ignored when
+>    computing
+>    the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+> Build changes
+> 
+>      * CI: CI-20190529 -> None
+>      * IGT: IGT_7824 -> IGTPW_11069
+> 
+>    CI-20190529: 20190529
+>    CI_DRM_14649: 67988afd596f307b6b7e849e6a246bca9a20e93d @
+>    git://anongit.freedesktop.org/gfx-ci/linux
+>    IGTPW_11069: 11069
+>    IGT_7824: 7824
