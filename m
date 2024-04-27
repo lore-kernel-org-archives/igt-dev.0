@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B041C4345F
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Apr 2024 06:21:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13617C04FFE
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Apr 2024 06:21:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 99EDD10FFA0;
-	Mon, 29 Apr 2024 06:21:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7FBE7112ADC;
+	Mon, 29 Apr 2024 06:21:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=ourmail.work header.i=@ourmail.work header.b="kEc+jJNi";
+	dkim=pass (1024-bit key; unprotected) header.d=ourmail.work header.i=@ourmail.work header.b="n+P2snu7";
 	dkim-atps=neutral
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com
- [91.218.175.174])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61D3C1127CB
- for <igt-dev@lists.freedesktop.org>; Sat, 27 Apr 2024 07:07:00 +0000 (UTC)
-Date: Sat, 27 Apr 2024 07:06:48 +0000
+Received: from out-175.mta0.migadu.com (out-175.mta0.migadu.com
+ [91.218.175.175])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 113E11127D2
+ for <igt-dev@lists.freedesktop.org>; Sat, 27 Apr 2024 07:11:22 +0000 (UTC)
+Date: Sat, 27 Apr 2024 07:11:17 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ourmail.work;
- s=default; t=1714201617;
+ s=default; t=1714201881;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=HfnoYtwRsdq8efeTLLJarbc0ji2AaIO2xjaMwarjWlE=;
- b=kEc+jJNiTFIw59esenPBMNc5bGeIcubAqyFAJ5bvuLp9ka7+vUrPF+T8Qt9Sc6Wy9Atbyg
- HQ3NU+Z0/5nAM/pQMAl0sjPP9eFG8iTNq7VMugWarWu1chNATGI9KuJ8/w6NmsOGryaemw
- fSGJxk0xmJODdtZ+YErnACxcsgL5Usc=
+ bh=LKN/Y/uAYc2xhX+tAC64+S77RgdPD/+TCKPctJ1abTw=;
+ b=n+P2snu7FmtNfxomtVC/Y3vh4jf8p/XX5N3dBWxCiNGwNfksJmZzKc0V2gACr+PPq+u7az
+ n9MI53mywP9iR2+H9LItG+Pfmr+gxLDFItgTs/StAwHFaCss1D0+XNALeL8RAesz+ZKNLf
+ 7AwcIKgnS0QirWlz6wPURlDS00u/sbQ=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
  include these headers.
 From: Reagan Bohan <reagan@ourmail.work>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org, Reagan Bohan <xbjfk.github@gmail.com>
-Subject: Re: [PATCH 2/3] Change sys/poll.h to poll.h
-Message-ID: <20240427070648.6wqhmo663su3mliv@reagan.home.arpa>
+Subject: Re: [PATCH 1/3] Define _LARGEFILE64_SOURCE for musl libc
+Message-ID: <20240427071117.5scno7yy6vdeh5xh@reagan.home.arpa>
 References: <20240421232204.31704-1-reagan@ourmail.work>
- <20240421232204.31704-3-reagan@ourmail.work>
- <20240422154810.tz7xjqkviqiaz5bj@kamilkon-DESK.igk.intel.com>
+ <20240421232204.31704-2-reagan@ourmail.work>
+ <20240422153633.nxt7bcjnznyiaglu@kamilkon-DESK.igk.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240422154810.tz7xjqkviqiaz5bj@kamilkon-DESK.igk.intel.com>
+In-Reply-To: <20240422153633.nxt7bcjnznyiaglu@kamilkon-DESK.igk.intel.com>
 X-Migadu-Flow: FLOW_OUT
 X-Mailman-Approved-At: Mon, 29 Apr 2024 06:21:21 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -59,14 +59,14 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Kamil,
 
-I am relatively inexperienced with email patches, so I appreciate your
-patience.
+> Why only in these two files? Maybe better place whould be to
+> detect musl libc compilation and add it into meson define?
 
-> In what project is it emitting this?
+Yes, I agree adding it to meson.build is a better approach, but I think
+doing so without a check for musl libc is best, because:
+a) musl developers have a policy against having an easy way of checking
+for musl libc - https://openwall.com/lists/musl/2013/03/29/13
+b) AFAICT, there should be no affect on glibc, and all tests still pass.
 
-musl libc installs sys/poll.h as a header which just includes poll.h and
-emits a warning (with #warning), so each usage of sys/poll.h emits a
-noisy compiler warning.
-
-I will take the rest of your feedback into account and send a new patch
-soon.
+Thanks,
+Reagan
