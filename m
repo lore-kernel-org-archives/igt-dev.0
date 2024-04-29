@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04177C4345F
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Apr 2024 09:16:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECAE8C4345F
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Apr 2024 09:43:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 898CB10FE18;
-	Mon, 29 Apr 2024 09:16:17 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y60H7S/D";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 893EF10FE34
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Apr 2024 09:16:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714382173; x=1745918173;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=m2jPi1hxvUt0q78OHFmZv+hR+KC4nOgVM+UjGaeFCxA=;
- b=Y60H7S/DoXB72GfZkTqK79Dg40npF+siM/fDg+x9AMGfT4orOAjPETB/
- I9fdOdFdtg0lyTj2VwzyzZXmX5+AVsSLVWAWjw404lmG8mzBxM9V8EyYu
- ZfM89zdp6hCd/ps6f9XxCeJUimFhhX9TohtHuZpSJv638552nwbejdOin
- idV0oSjyIciCCnP7RpQNyBxvRKxCFFbnu8mPRrFaJPQGUYl6iboa+qSWs
- aFNq8fGMF1EhfxGF0Jw7BX7HtBgP6+dzqGZPu8dJ1YGZXLVrpD+K1L080
- SngpdB2LjLEd0VxY3Fp1rj7kSAMvxVlfnVphWon2APDgDbTqZQauY/cjD Q==;
-X-CSE-ConnectionGUID: qfjOi5xUTIqtWEeg6laBCg==
-X-CSE-MsgGUID: C9Ung57IQH+oStB/9n0PHg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="35428330"
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="35428330"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2024 02:16:13 -0700
-X-CSE-ConnectionGUID: 9wnSE6azQqe1HANeK6Oukg==
-X-CSE-MsgGUID: M/oZhSM9T7qX1vp1wnDjVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="26059893"
-Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2024 02:16:12 -0700
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [i-g-t V5 8/8] HAX: Test force joiner on BAT
-Date: Mon, 29 Apr 2024 14:39:30 +0530
-Message-ID: <20240429090930.1905110-9-bhanuprakash.modem@intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240429090930.1905110-1-bhanuprakash.modem@intel.com>
-References: <20240429090930.1905110-1-bhanuprakash.modem@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9857210E248;
+	Mon, 29 Apr 2024 09:43:28 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8941C10E0EF;
+ Mon, 29 Apr 2024 09:43:27 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5980971409220428175=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Force_joiner_support_in_bigjoi?=
+ =?utf-8?q?ner_checks_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 29 Apr 2024 09:43:27 -0000
+Message-ID: <171438380755.1756580.17444657727085402901@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240429090930.1905110-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20240429090930.1905110-1-bhanuprakash.modem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,73 +37,158 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Expectation: All pipe-D tests should skip.
+--===============5980971409220428175==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_flip.c           | 9 ++++++++-
- tests/kms_pipe_crc_basic.c | 6 ++++++
- 2 files changed, 14 insertions(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index 57f6cff7a..b30a89715 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -1748,12 +1748,17 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
- 			 "%s-%d",
- 			 kmstest_connector_type_str(o->kconnector[i]->connector_type),
- 			 o->kconnector[i]->connector_type_id);
-+		if (igt_has_force_joiner_debugfs(drm_fd, conn_name))
-+			kmstest_force_connector_bigjoiner(drm_fd, o->kconnector[i]);
- 
--		if (i > 0)
-+		if (i > 0) {
- 			snprintf(prev_conn_name, sizeof(prev_conn_name),
- 				 "%s-%d",
- 				 kmstest_connector_type_str(o->kconnector[i - 1]->connector_type),
- 				 o->kconnector[i - 1]->connector_type_id);
-+			if (igt_has_force_joiner_debugfs(drm_fd, prev_conn_name))
-+				kmstest_force_connector_bigjoiner(drm_fd, o->kconnector[i - 1]);
-+		}
- 
- 		if (((igt_check_force_joiner_status(drm_fd, conn_name) ||
- 		      igt_bigjoiner_possible(&o->kmode[i], max_dotclock)) &&
-@@ -2124,6 +2129,8 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 	igt_stop_signal_helper();
- 
- 	igt_fixture {
-+		igt_reset_connectors();
-+
- 		igt_display_fini(&display);
- 		drm_close_driver(drm_fd);
- 	}
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index 0c19745bc..e5e5264b5 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -411,6 +411,11 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 
- 		data.debugfs = igt_debugfs_dir(data.drm_fd);
- 
-+		for_each_connected_output(&data.display, output) {
-+			if (igt_has_force_joiner_debugfs(data.drm_fd, output->name))
-+				kmstest_force_connector_bigjoiner(data.drm_fd, output->config.connector);
-+		}
-+
- 		/* Get active pipes. */
- 		for_each_pipe(&data.display, pipe)
- 			active_pipes[last_pipe++] = pipe;
-@@ -499,6 +504,7 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 	}
- 
- 	igt_fixture {
-+		igt_reset_connectors();
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
- 	}
--- 
-2.43.2
+Series: Force joiner support in bigjoiner checks (rev6)
+URL   : https://patchwork.freedesktop.org/series/132557/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7825_BAT -> XEIGTPW_11081_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11081_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc:
+    - bat-dg2-oem2:       [PASS][1] -> [DMESG-WARN][2] ([Intel XE#1033]) +8 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7825/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11081/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html
+
+  * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] ([Intel XE#288]) +32 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11081/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-dg2-oem2:       [INCOMPLETE][4] ([Intel XE#1451]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7825/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11081/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
+
+  
+  [Intel XE#1033]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033
+  [Intel XE#1451]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1451
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7825 -> IGTPW_11081
+  * Linux: xe-1188-f39ba481e5873b7617afc2e8cf618ac9dc85123f -> xe-1192-098a032be5e189eb306b909c73ae79ca6645844f
+
+  IGTPW_11081: 11081
+  IGT_7825: 28b2a1b0be86e33a2fc04a022e04f07bd25b66d9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1188-f39ba481e5873b7617afc2e8cf618ac9dc85123f: f39ba481e5873b7617afc2e8cf618ac9dc85123f
+  xe-1192-098a032be5e189eb306b909c73ae79ca6645844f: 098a032be5e189eb306b909c73ae79ca6645844f
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11081/index.html
+
+--===============5980971409220428175==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Force joiner support in bigjoiner checks (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132557/">https://patchwork.freedesktop.org/series/132557/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11081/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11081/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7825_BAT -&gt; XEIGTPW_11081_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11081_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7825/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11081/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1033">Intel XE#1033</a>) +8 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11081/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7825/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1451">Intel XE#1451</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11081/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7825 -&gt; IGTPW_11081</li>
+<li>Linux: xe-1188-f39ba481e5873b7617afc2e8cf618ac9dc85123f -&gt; xe-1192-098a032be5e189eb306b909c73ae79ca6645844f</li>
+</ul>
+<p>IGTPW_11081: 11081<br />
+  IGT_7825: 28b2a1b0be86e33a2fc04a022e04f07bd25b66d9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1188-f39ba481e5873b7617afc2e8cf618ac9dc85123f: f39ba481e5873b7617afc2e8cf618ac9dc85123f<br />
+  xe-1192-098a032be5e189eb306b909c73ae79ca6645844f: 098a032be5e189eb306b909c73ae79ca6645844f</p>
+
+</body>
+</html>
+
+--===============5980971409220428175==--
