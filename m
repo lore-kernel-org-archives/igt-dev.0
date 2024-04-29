@@ -4,56 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0CCAC4345F
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Apr 2024 09:06:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC28FC4345F
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Apr 2024 09:16:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 59B53112B5E;
-	Mon, 29 Apr 2024 09:06:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 525AA10FE2A;
+	Mon, 29 Apr 2024 09:16:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ijMj9w3j";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PeaCrjvE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 483D3112B5E
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Apr 2024 09:06:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8875310FE2A
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Apr 2024 09:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714381605; x=1745917605;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=SgWODzpa+qeaqI3k0yMGb6igsh3MV7Jgz8oZqPBfv5Y=;
- b=ijMj9w3jJTY4Px+ZGfWiCg1WzDjmmkdWkHw0bSFd5T4F+TnD2ZRmrLoB
- Wxl8W/JlFn1KRqOswjOvqF61RX2fkZqR63gYEphrJp+e7vgMOQE4VNrwR
- OjVA/ROD2qoACPP/ZTFvCAgC/3S7OnUH9Sxe0uvqgTXsjzQomtsuMAWUa
- s22F6mAEUyyKGegru7pZkBP+wlxyYnykgtIScgseeLQty2uvdKdgjdASu
- PQb95OFs00+IRStNMUQ7pTmWsmuwlYzcJ+pK0B77QpfKEW7ekvZXH5DdP
- +ISmiKk+enoQAqBJzUhizYDdVuymzFLgWJxJ34HO8EzsmfPGimFDllBEY g==;
-X-CSE-ConnectionGUID: Jc5TRSGeSJG8Ri4mkcgn8Q==
-X-CSE-MsgGUID: 2vrI1+V8Rt6DPOxz52Nq8g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="10571047"
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="10571047"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2024 02:06:44 -0700
-X-CSE-ConnectionGUID: DC0rLtp9TT2hQnzP3xattw==
-X-CSE-MsgGUID: NH1XPKfgTMm9L1iOJuFTxQ==
+ t=1714382161; x=1745918161;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=9eO+sQi4NC+iEFrVat5D3z79FAKs1A90EHSFVCF9YMk=;
+ b=PeaCrjvEyv30tD5hCxwyjJ4K2Mn/4DtW35CJY1vyftykD+hebFqJBglK
+ 4dSXc4boCM0k3ZcHk+yRpRVPwOf9UU04GmsdT/TtbUiuBKISLzW4osgWL
+ prhBFiU2d/A5Ju4CVSzBKcs94/UAmN67pmMRh90sNoLZp24Tdq6tEKKyZ
+ xCtGItOiULtFlfvdpEA80N+ao2lXTl7HoSLo90Mrax0du+0Fhe0zgfuoI
+ Nq4HRIE6ROxwfhIwcfyyVC63HGGNkv8XvIp9LbjLcjWqCrLndoBeHyKhh
+ m0edJdh7YoVRBHTnVK231tgKgHc9G4+qjZHrdG8xmm4oExZnnT241eKW4 w==;
+X-CSE-ConnectionGUID: MTNXqJloTvG8gX+NQfvFyg==
+X-CSE-MsgGUID: lrPY/4LtQIOWwGUKGcc7Ow==
+X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="35428311"
+X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="35428311"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2024 02:16:01 -0700
+X-CSE-ConnectionGUID: wydvMKlmSPumDQszdWL+YA==
+X-CSE-MsgGUID: zrKLh/8RTpqjzEiv/8xRnA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="26564480"
-Received: from aantonov-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.252.49.167])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2024 02:06:44 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: Re: [PATCH i-g-t 1/2] intel_reg: Reorder commands and annotate ones
- needing reg spec
-In-Reply-To: <20240426153352.3209972-1-lucas.demarchi@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20240426153352.3209972-1-lucas.demarchi@intel.com>
-Date: Mon, 29 Apr 2024 12:06:40 +0300
-Message-ID: <87mspc4jxb.fsf@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="26059815"
+Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2024 02:15:59 -0700
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [i-g-t V5 0/8] Force joiner support in bigjoiner checks
+Date: Mon, 29 Apr 2024 14:39:22 +0530
+Message-ID: <20240429090930.1905110-1-bhanuprakash.modem@intel.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,85 +65,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, 26 Apr 2024, Lucas De Marchi <lucas.demarchi@intel.com> wrote:
-> Group together the commands that operate with a reg spec and annotate
-> those that will implicitly enable a future --decode option.
+As we recently introduced the option (through debugfs) to
+force the bigjoiner, needs to extend the support in bigjoiner
+checks to handle the force joiner.
 
-The series LGTM,
+Bhanuprakash Modem (8):
+  lib/igt_kms: Split the bigjoiner check into multiple
+  lib/igt_kms: Update force joiner debugfs check
+  lib/igt_kms: New helper to check force joiner status
+  lib/igt_kms: Force joiner support in bigjoiner checks
+  tests/intel/kms_pm_lpsp: Force joiner support in bigjoiner checks
+  tests/kms_flip: Force joiner support in bigjoiner checks
+  tests/kms_setmode: Force joiner support in bigjoiner checks
+  HAX: Test force joiner on BAT
 
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-
-Please follow-up with an update to man/intel_reg.rst.
-
-Thanks,
-Jani.
-
->
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->  tools/intel_reg.c | 24 ++++++++++++++----------
->  1 file changed, 14 insertions(+), 10 deletions(-)
->
-> diff --git a/tools/intel_reg.c b/tools/intel_reg.c
-> index aae5a2395..8f585e4bd 100644
-> --- a/tools/intel_reg.c
-> +++ b/tools/intel_reg.c
-> @@ -967,10 +967,16 @@ struct command {
->  	const char *name;
->  	const char *description;
->  	const char *synopsis;
-> +	bool decode;
->  	int (*function)(struct config *config, int argc, char *argv[]);
->  };
->  
->  static const struct command commands[] = {
-> +	{
-> +		.name = "help",
-> +		.function = intel_reg_help,
-> +		.description = "show this help",
-> +	},
->  	{
->  		.name = "read",
->  		.function = intel_reg_read,
-> @@ -983,31 +989,29 @@ static const struct command commands[] = {
->  		.synopsis = "[--post] REGISTER VALUE [REGISTER VALUE ...]",
->  		.description = "write value(s) to specified register(s)",
->  	},
-> +	{
-> +		.name = "snapshot",
-> +		.function = intel_reg_snapshot,
-> +		.description = "create a snapshot of the MMIO bar to stdout",
-> +	},
->  	{
->  		.name = "dump",
->  		.function = intel_reg_dump,
->  		.description = "dump all known registers",
-> +		.decode = true,
->  	},
->  	{
->  		.name = "decode",
->  		.function = intel_reg_decode,
->  		.synopsis = "REGISTER VALUE [REGISTER VALUE ...]",
->  		.description = "decode value(s) for specified register(s)",
-> -	},
-> -	{
-> -		.name = "snapshot",
-> -		.function = intel_reg_snapshot,
-> -		.description = "create a snapshot of the MMIO bar to stdout",
-> +		.decode = true,
->  	},
->  	{
->  		.name = "list",
->  		.function = intel_reg_list,
->  		.description = "list all known register names",
-> -	},
-> -	{
-> -		.name = "help",
-> -		.function = intel_reg_help,
-> -		.description = "show this help",
-> +		.decode = true,
->  	},
->  };
+ lib/igt_kms.c                | 112 +++++++++++++++++++++++++++++------
+ lib/igt_kms.h                |   3 +-
+ tests/intel/kms_big_joiner.c |   2 +-
+ tests/intel/kms_pm_lpsp.c    |   3 +
+ tests/kms_flip.c             |  30 ++++++++--
+ tests/kms_pipe_crc_basic.c   |   6 ++
+ tests/kms_setmode.c          |  22 +++++--
+ 7 files changed, 151 insertions(+), 27 deletions(-)
 
 -- 
-Jani Nikula, Intel
+2.43.2
+
