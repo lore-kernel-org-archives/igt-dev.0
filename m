@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA2CFC4345F
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Apr 2024 19:01:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F936C10F16
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Apr 2024 19:01:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5A778112E6E;
-	Tue, 30 Apr 2024 19:01:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 13214112E6F;
+	Tue, 30 Apr 2024 19:01:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QpUsmHvy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AuLbYbD+";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEC3F112E6C
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Apr 2024 19:01:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B0F1112E6D
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Apr 2024 19:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714503688; x=1746039688;
+ t=1714503689; x=1746039689;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=zBjTvz7pNOpm68GZ4RHC3UXnfC2E3pOyuVFYdlInG8g=;
- b=QpUsmHvyoXuObLsmUrylnugOhD3hM6+v6KKHrqlLV5EnQZAJ4bDeI7r3
- SpLyuDLeTKOTmj+xl4JRCwscKzjHK8h82i3PY4ONVM9RWT26fucvUEgGv
- 1VlRqVST74r4E/aRakUJ1+1G62qRz1KLJR1/vGtHwETE9IveoqTE9TmBd
- wc/z6aPCw3xJ1vNwdAPbeQzG+QZW8vOIOfqIdqXTBa3rX7LB5W9wzZ0sb
- 2KUamR+MKzKzMcgmgbaYWI/+iW9oB01ItAjq/NJT2ZUILgc6NnwvwtxnR
- JBMfhQshICUJds/jjDBg6FOQv8QgmJBRcy9igSZxw8RYE/PIdL50ihCor g==;
-X-CSE-ConnectionGUID: 7Jg96UraSMm1swA+IS6RTw==
-X-CSE-MsgGUID: VM4RblXRRyexzXOPZB8nUQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11060"; a="14025092"
-X-IronPort-AV: E=Sophos;i="6.07,243,1708416000"; d="scan'208";a="14025092"
+ bh=jOEwbXMB4g1HfWZBUdq8PKIEPjFG1eMh8pO+/zUITEo=;
+ b=AuLbYbD+oxC30KYbnnoKLLJhuaUNQbflZD9iHXKSXd0S/mMYUZAC3tXI
+ TjWfSjzfp5AowS5FeUSUyQzLvvHhODajUQxM/tGoH8j2RhQwJUi1V6KPp
+ TGCtS2ZmiRmH+BpzyHa0GSe93fbrda0F3SBBZzOySdDoNQ//+YwUrRj3B
+ K3DkKcBaX4YwNpJAe0kVMSAXZViFwwOKxolbfV8MVeG4wFeATSCFX40Af
+ x8dOQhO7kG+StoCgl8deh/JLnaHdKPeRPG+DYc/eo9mX/DSy6PUi6vBzK
+ D60jbdOnteI8c2Jq5zw5JdIud+2Vtnfc2lNyaS4UWPavrxu9xONzYGWdx A==;
+X-CSE-ConnectionGUID: fKIV9JTCRcGDS8uczwPWiA==
+X-CSE-MsgGUID: GHNPbukESO26/0HYdvaXEQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11060"; a="14025098"
+X-IronPort-AV: E=Sophos;i="6.07,243,1708416000"; d="scan'208";a="14025098"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  30 Apr 2024 12:01:28 -0700
-X-CSE-ConnectionGUID: 16RkVpAtTHeKTM4UuFo6xw==
-X-CSE-MsgGUID: ChhGJuTdQ4OpPeXsOCbjeg==
+X-CSE-ConnectionGUID: JOxdi9fJQB63dXg4Hk4AQA==
+X-CSE-MsgGUID: YoGeZ/xSTRSizalEIGug3w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,243,1708416000"; d="scan'208";a="26570791"
+X-IronPort-AV: E=Sophos;i="6.07,243,1708416000"; d="scan'208";a="26570801"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  30 Apr 2024 12:01:28 -0700
@@ -45,9 +45,9 @@ From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
  Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: [CI 3/6] lib/igt_drm_fdinfo: Detect invalid drm-client-id
-Date: Tue, 30 Apr 2024 12:01:47 -0700
-Message-ID: <20240430190150.3654507-3-lucas.demarchi@intel.com>
+Subject: [CI 6/6] tools/gputop: Extract clrscr()
+Date: Tue, 30 Apr 2024 12:01:50 -0700
+Message-ID: <20240430190150.3654507-6-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240430190150.3654507-1-lucas.demarchi@intel.com>
 References: <20240430190150.3654507-1-lucas.demarchi@intel.com>
@@ -68,40 +68,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use strtol() for string to long conversion which allows us to detect if
-there was an invalid number. It also has the advantage that it already
-ignores leading spaces.
+Make it clear what the CSI is doing.
 
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- lib/igt_drm_fdinfo.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/gputop.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
-index bc3082d42..b700ec317 100644
---- a/lib/igt_drm_fdinfo.c
-+++ b/lib/igt_drm_fdinfo.c
-@@ -224,6 +224,7 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
- 	while ((l = strtok_r(_buf, "\n", &ctx))) {
- 		uint64_t val = 0;
- 		const char *v;
-+		char *end_ptr;
- 		int idx;
+diff --git a/tools/gputop.c b/tools/gputop.c
+index 455f77d0c..8cec951b4 100644
+--- a/tools/gputop.c
++++ b/tools/gputop.c
+@@ -285,6 +285,11 @@ static void update_console_size(int *w, int *h)
+ 	}
+ }
  
- 		_buf = NULL;
-@@ -233,8 +234,9 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
- 			good++;
- 		}  else if ((v = find_kv(l, "drm-client-id",
- 					 strlen("drm-client-id")))) {
--			info->id = atol(v);
--			good++;
-+			info->id = strtol(v, &end_ptr, 10);
-+			if (end_ptr != v)
-+				good++;
- 		} else if ((v = find_kv(l, "drm-pdev", strlen("drm-pdev")))) {
- 			/* optional */
- 			assert(strlen(v) < sizeof(info->pdev));
++static void clrscr(void)
++{
++	printf("\033[H\033[J");
++}
++
+ int main(int argc, char **argv)
+ {
+ 	unsigned int period_us = 2e6;
+@@ -301,12 +306,11 @@ int main(int argc, char **argv)
+ 		struct igt_drm_client *c, *prevc = NULL;
+ 		int i, engine_w = 0, lines = 0;
+ 
+-		update_console_size(&con_w, &con_h);
+-
+ 		igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
+ 		igt_drm_clients_sort(clients, client_cmp);
+ 
+-		printf("\033[H\033[J");
++		update_console_size(&con_w, &con_h);
++		clrscr();
+ 
+ 		igt_for_each_drm_client(clients, c, i) {
+ 			assert(c->status != IGT_DRM_CLIENT_PROBE);
 -- 
 2.43.0
 
