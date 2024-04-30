@@ -4,55 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA04EC19F4F
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Apr 2024 18:27:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36711C10F16
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Apr 2024 18:27:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 741F4112E11;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9C331112E17;
 	Tue, 30 Apr 2024 18:27:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M2/999J+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q1wz9azk";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA21E112E11
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Apr 2024 18:27:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 03549112E0F
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Apr 2024 18:27:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714501652; x=1746037652;
+ t=1714501650; x=1746037650;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=xlnyDTt5RBk1j9fmDn0t/KPuOjPuJCaHquch+jiPzuY=;
- b=M2/999J+Umn3RLYZ/zOcHoE7YfToHODNyaba0g5fmt7O/jDF8BQS6d1z
- yngf2lFJ96Nl2+KJXN60Eu50/fWj55kJyPRRwI2xrYa52j2kSu1aB8WOK
- 6d4wVkgp9TaC83Bp0GGsOdUTQYTRNzFSYV8jz7UYTvnxmDz3Aj2hUEP+5
- 8c7ZWrEvVk0JuRF09werEuW+dHJUgFlewY8zyE6gPaCwh8OowKbb63DPZ
- /futF4wbMbk53gMWIHeX4pgKG3ie/mz2CgaJpm2gPZItycIeV4ZUHRuXY
- j+2PMq8gM115vvb+gnaF2rLUP/DX86r1XQQfSVwpPf1TsrZFt3gZAG9kK A==;
-X-CSE-ConnectionGUID: nSktC3ERQgqgrdOHOnAySw==
-X-CSE-MsgGUID: gK7nb6FeSBOWxYsP1jzcYQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11060"; a="14052101"
-X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; d="scan'208";a="14052101"
+ bh=zAvg9MgATtNbvAATjjDWJndKkIqV+rn/rVlsVG6lpX8=;
+ b=Q1wz9azk/DO6f1WnxduvGOf4Uk/jMoFNJ5WbY+vdU0F3Re7UJoeChsYf
+ wHswy3+UgVvfeVxzlgWAIzbzQ82BXboWQJAYTnR/tCbKIl4W1x594s5LC
+ r/UjXE0pxV1igYdvolP2S4rFA7y7oUeeiXerZRQYgvqjtxavqsjG6I/Ca
+ 7KghWHPjIfoe9uAWxXbnfFV+KiXClI3pBUxocx65Xf4SxKLzRRnIMPHcU
+ CqFxLyQJ4ahG7xBouvQsqexEOv5X9BxhLVwqasW5NFtMvhAoy0VjKyBXq
+ pq8jtCli67/ZCryIzaNY+BOXoWLBdhedsaR/vttn7PjMIDiEP/bsi6IOI g==;
+X-CSE-ConnectionGUID: 63YrXGCkRV2OIaxjon26gg==
+X-CSE-MsgGUID: TmmfvhZKQ12qws+GRpIs/g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11060"; a="14052098"
+X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; d="scan'208";a="14052098"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Apr 2024 11:27:32 -0700
-X-CSE-ConnectionGUID: v4psuLMzSkOGBz9QfO5/tQ==
-X-CSE-MsgGUID: vMLHNQ56SGylWZ9c/Asq9w==
+ 30 Apr 2024 11:27:30 -0700
+X-CSE-ConnectionGUID: Usa/cTUqTMqZTkmFEXanaQ==
+X-CSE-MsgGUID: z/0+3MA7QLSBHWRK3og3AQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; d="scan'208";a="57726929"
+X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; d="scan'208";a="57726925"
 Received: from bommu-optiplex-5060.iind.intel.com ([10.145.169.63])
- by fmviesa001.fm.intel.com with ESMTP; 30 Apr 2024 11:27:30 -0700
+ by fmviesa001.fm.intel.com with ESMTP; 30 Apr 2024 11:27:28 -0700
 From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
  Oak Zeng <oak.zeng@intel.com>,
  Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Subject: [PATCH RFC i-g-t 2/2] tests/intel/xe_svm: basic xe_svm test
-Date: Tue, 30 Apr 2024 23:57:47 +0530
-Message-Id: <20240430182747.589234-3-krishnaiah.bommu@intel.com>
+Subject: [PATCH RFC i-g-t 1/2] lib/xe/xe_util: helper function
+Date: Tue, 30 Apr 2024 23:57:46 +0530
+Message-Id: <20240430182747.589234-2-krishnaiah.bommu@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240430182747.589234-1-krishnaiah.bommu@intel.com>
 References: <20240430182747.589234-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,136 +68,184 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add basic test to validate helper functions introduced in
-'lib/xe/xe_util: helper function'. This test writes values
-to the destination buffer using GPU (MI_STORE_DWORD_IMM_GEN4).
+Introduce helper functions for object creation, binding, submission, and
+destruction, applicable for SVM and other tests.
 
 Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 Cc: Oak Zeng <oak.zeng@intel.com>
 Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 ---
- tests/intel/xe_svm.c | 99 ++++++++++++++++++++++++++++++++++++++++++++
- tests/meson.build    |  1 +
- 2 files changed, 100 insertions(+)
- create mode 100644 tests/intel/xe_svm.c
+ lib/xe/xe_util.c | 113 +++++++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_util.h |  32 ++++++++++++++
+ 2 files changed, 145 insertions(+)
 
-diff --git a/tests/intel/xe_svm.c b/tests/intel/xe_svm.c
-new file mode 100644
-index 000000000..a954861bc
---- /dev/null
-+++ b/tests/intel/xe_svm.c
-@@ -0,0 +1,99 @@
-+// SPDX-License-Identifier: MIT
-+ /*
-+  * Copyright © 2023 Intel Corporation
-+  */
+diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
+index 050162b5e..3f1e8c052 100644
+--- a/lib/xe/xe_util.c
++++ b/lib/xe/xe_util.c
+@@ -10,6 +10,119 @@
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ #include "xe/xe_util.h"
++#include "lib/svga/vm_basic_types.h"
 +
-+/** @file xe_svm.c
-+ *
-+ * Test shared virtual memory.
-+ *
-+ * Shared virtual memory(svm in short) is a xe driver feature
-+ * which provide shared virtual address space b/t CPU and GPU
-+ * program. This means application writer can just malloc or mmap,
-+ * and use the returned ptr for both CPU and GPU program.
-+ *
-+ * This test the shared virtual memory functions. This includes
-+ * basic malloc, mmap test, an invalid va tess, a mprotect test and a
-+ * random access test.
-+ */
-+
-+/**
-+ * TEST: xe_svm
-+ * Description: Test shared virtual memory
-+ * Sub-category: Memory management
-+ * Functionality: svm
-+ * Run type: FULL
-+ *
-+ * SUBTEST: svm-basic-malloc
-+ */
-+
-+#include <fcntl.h>
-+
-+#include "igt.h"
-+#include "lib/igt_syncobj.h"
-+#include "lib/intel_reg.h"
-+#include "lib/xe/xe_util.h"
-+#include "xe_drm.h"
-+
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+#include <string.h>
-+
-+/**
-+ * Use malloc or mmap memory for direct GPU submission
-+ */
-+static void svm_basic(int fd, uint32_t vm, struct drm_xe_engine_class_instance *eci)
++/*submit a command
++* wait for cmmand to cmplete from gpu
++* verify ufence value*/
++void xe_submit_cmd(struct xe_buffer *cmdbuf)
 +{
-+	uint64_t gpu_va = 0x1a0000;
-+	uint32_t val = 0xc0ffee;
-+	size_t bo_size = xe_bb_size(fd, PAGE_ALIGN_UFENCE);
++	struct drm_xe_sync sync[1] = {
++		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
++			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++			.timeline_value = USER_FENCE_VALUE,
++			.addr = xe_cmdbuf_exec_ufence_gpuva(cmdbuf),},
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++		.exec_queue_id = cmdbuf->exec_queue,
++		.address = (uint64_t)cmdbuf->gpu_addr,
++	};
 +
-+	struct xe_buffer dst_buf = {
-+           .fd = fd,
-+           .gpu_addr = (uint64_t)gpu_va,
-+	   .vm = vm,
-+	   .size = bo_size,
-+	   .placement = vram_if_possible(fd, eci->gt_id),
-+	   .flag = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
-+     };
-+
-+     struct xe_buffer cmd_buf = {
-+           .fd = fd,
-+           .gpu_addr = (uint64_t)gpu_va + bo_size,
-+	   .vm = vm,
-+	   .size = bo_size,
-+	   .placement = vram_if_possible(fd, eci->gt_id),
-+	   .flag = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
-+     };
-+
-+     xe_create_buffer(&dst_buf);
-+     xe_create_cmdbuf(&cmd_buf, insert_store, (uint64_t)dst_buf.gpu_addr, val, eci);
-+     xe_submit_cmd(&cmd_buf);
-+     igt_assert_eq(*(uint32_t *)dst_buf.cpu_addr, val);
-+     xe_destroy_cmdbuf(&cmd_buf);
-+     xe_destroy_buffer(&dst_buf);
++	xe_exec(cmdbuf->fd, &exec);
++	xe_wait_ufence(cmdbuf->fd, xe_cmdbuf_exec_ufence_cpuva(cmdbuf), USER_FENCE_VALUE,
++	cmdbuf->exec_queue, ONE_SEC);
 +}
 +
-+igt_main
++/*create a buffer, map it to cpu and gpu */
++void xe_create_buffer(struct xe_buffer *buffer)
 +{
-+	int fd;
-+	uint32_t vm;
-+	struct drm_xe_engine_class_instance *hwe;
++#define ONE_SEC MS_TO_NS(1000)
++	struct drm_xe_sync sync[1] = {
++		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++			.timeline_value = USER_FENCE_VALUE },
++	};
 +
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_XE);
-+		igt_require(xe_supports_faults(fd));
-+		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE | DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
++	buffer->bind_queue = xe_bind_exec_queue_create(buffer->fd, buffer->vm, 0);
++	buffer->bind_ufence = aligned_alloc(xe_get_default_alignment(buffer->fd), buffer->size);
++	sync->addr = buffer->bind_ufence;
++
++	if (!buffer->is_userptr) {
++		buffer->bo = xe_bo_create(buffer->fd, 0, buffer->size, buffer->placement, buffer->flag);
++		buffer->cpu_addr = xe_bo_map(buffer->fd, buffer->bo, buffer->size);
++	} else {
++		buffer->bo = aligned_alloc(xe_get_default_alignment(buffer->fd), buffer->size);
 +	}
 +
++	xe_vm_bind_async(buffer->fd, buffer->vm, buffer->bind_queue, buffer->bo, 0, (uint64_t)buffer->gpu_addr, buffer->size, sync, 1);
 +
-+	igt_subtest_f("svm-basic-malloc")
-+		xe_for_each_engine(fd, hwe)
-+			svm_basic(fd, vm, hwe);
-+
-+	igt_fixture {
-+		xe_vm_destroy(fd, vm);
-+		drm_close_driver(fd);
-+	}
++	xe_wait_ufence(buffer->fd, buffer->bind_ufence, USER_FENCE_VALUE, buffer->bind_queue, ONE_SEC);
 +}
 +
-diff --git a/tests/meson.build b/tests/meson.build
-index 65b8bf23b..6bdd76343 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -316,6 +316,7 @@ intel_xe_progs = [
- 	'xe_spin_batch',
- 	'xe_sysfs_defaults',
- 	'xe_sysfs_scheduler',
-+	'xe_svm',
- ]
++void xe_destroy_buffer(struct xe_buffer *buffer)
++{
++	struct drm_xe_sync sync[1] = {
++		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++			.timeline_value = USER_FENCE_VALUE },
++	};
++	sync->addr = buffer->bind_ufence;
++
++	xe_vm_unbind_async(buffer->fd, buffer->vm, buffer->bind_queue, 0, (uint64_t)buffer->gpu_addr, buffer->size, sync, 1);
++	xe_wait_ufence(buffer->fd, buffer->bind_ufence, USER_FENCE_VALUE, buffer->bind_queue, ONE_SEC);
++
++	munmap(buffer->cpu_addr, buffer->size);
++	if (!buffer->is_userptr)
++		gem_close(buffer->fd, buffer->bo);
++	else
++		free(buffer->bo);
++
++	free(buffer->bind_ufence);
++	xe_exec_queue_destroy(buffer->fd, buffer->bind_queue);
++}
++
++/*
++a command buffer is a buffer in GT0's vram, filled with gpu commands,
++plus some memory for a ufence used to sync command submission
++*/
++void insert_store(uint32_t *batch, uint64_t dst_va, uint32_t val)
++{
++	int i = 0;
++
++	batch[i] = MI_STORE_DWORD_IMM_GEN4;
++	batch[++i] = dst_va;
++	batch[++i] = dst_va >> 32;
++	batch[++i] = val;
++	batch[++i] = MI_BATCH_BUFFER_END;
++}
++
++void xe_create_cmdbuf(struct xe_buffer *cmd_buf, cmdbuf_fill_func_t fill_func, uint64_t dst_va, uint32_t val, struct drm_xe_engine_class_instance *eci)
++{
++	//make some room for a exec_ufence, which will be used to sync the
++	//submission of this command....
++
++	cmd_buf->size = xe_bb_size(cmd_buf->fd, cmd_buf->size + PAGE_ALIGN_UFENCE);
++	xe_create_buffer(cmd_buf);
++	cmd_buf->exec_queue = xe_exec_queue_create(cmd_buf->fd, cmd_buf->vm, eci, 0);
++	fill_func(cmd_buf->cpu_addr, dst_va, val);
++}
++
++void xe_destroy_cmdbuf(struct xe_buffer *cmd_buf)
++{
++	xe_exec_queue_destroy(cmd_buf->fd, cmd_buf->exec_queue);
++	xe_destroy_buffer(cmd_buf);
++}
++
++uint64_t xe_cmdbuf_exec_ufence_gpuva(struct xe_buffer *cmd_buf)
++{
++	return (uint64_t)cmd_buf->gpu_addr + cmd_buf->size - 8;
++}
++
++uint64_t *xe_cmdbuf_exec_ufence_cpuva(struct xe_buffer *cmd_buf)
++{
++	return cmd_buf->cpu_addr + cmd_buf->size - 8;
++}
  
- msm_progs = [
+ static bool __region_belongs_to_regions_type(struct drm_xe_mem_region *region,
+ 					     uint32_t *mem_regions_type,
+diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
+index 6480ea01a..35f59cb6b 100644
+--- a/lib/xe/xe_util.h
++++ b/lib/xe/xe_util.h
+@@ -12,6 +12,38 @@
+ #include <stdint.h>
+ #include <xe_drm.h>
+ 
++#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
++#define ONE_SEC MS_TO_NS(1000)
++#define PAGE_ALIGN_UFENCE 4096
++
++struct xe_buffer {
++	void *cpu_addr;
++	void *gpu_addr;
++	/*the user fence used to vm bind this buffer*/
++	uint64_t bind_ufence;
++	uint64_t size;
++	uint32_t flag;
++	uint32_t vm;
++	uint32_t bo;
++	uint32_t placement;
++	uint32_t bind_queue;
++	/*only a cmd buffer has a exec queue*/
++	uint32_t exec_queue;
++	int fd;
++	bool is_userptr;
++};
++
++typedef void (*cmdbuf_fill_func_t) (uint32_t *batch, uint64_t dst_gpu_va, uint32_t val);
++void xe_create_buffer(struct xe_buffer *buffer);
++void xe_create_cmdbuf(struct xe_buffer *cmd_buf, cmdbuf_fill_func_t fill_func,
++		uint64_t dst_va, uint32_t val, struct drm_xe_engine_class_instance *eci);
++uint64_t xe_cmdbuf_exec_ufence_gpuva(struct xe_buffer *cmd_buf);
++uint64_t *xe_cmdbuf_exec_ufence_cpuva(struct xe_buffer *cmd_buf);
++void insert_store(uint32_t *batch, uint64_t dst_va, uint32_t val);
++void xe_submit_cmd(struct xe_buffer *cmdbuf);
++void xe_destroy_buffer(struct xe_buffer *buffer);
++void xe_destroy_cmdbuf(struct xe_buffer *cmd_buf);
++
+ #define XE_IS_SYSMEM_MEMORY_REGION(fd, region) \
+ 	(xe_region_class(fd, region) == DRM_XE_MEM_REGION_CLASS_SYSMEM)
+ #define XE_IS_VRAM_MEMORY_REGION(fd, region) \
 -- 
 2.25.1
 
