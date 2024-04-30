@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B869CC4345F
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Apr 2024 16:29:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F5F4C10F16
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Apr 2024 16:29:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6A9F5112AF9;
-	Tue, 30 Apr 2024 16:29:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 31C2B112C8A;
+	Tue, 30 Apr 2024 16:29:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="glCnQIRy";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="ImZzWNlr";
 	dkim-atps=neutral
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com
- [209.85.208.175])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF48C112BDD
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Apr 2024 16:29:50 +0000 (UTC)
-Received: by mail-lj1-f175.google.com with SMTP id
- 38308e7fff4ca-2d8b2389e73so71252331fa.3
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Apr 2024 09:29:50 -0700 (PDT)
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com
+ [209.85.208.172])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC104112BCE
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Apr 2024 16:29:49 +0000 (UTC)
+Received: by mail-lj1-f172.google.com with SMTP id
+ 38308e7fff4ca-2dd6c160eaaso72141711fa.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Apr 2024 09:29:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1714494589; x=1715099389; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1714494588; x=1715099388; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nEFM9m3PXTIht7y/k6VjQ7uVrq+80f1ckVWTaMQIMdI=;
- b=glCnQIRy0wEnS+0kBl2OAaJgrx3MleqGWXN41GD4mHMkMmeO+cYujLjQpbCB6Bd469
- ifsckE40mbHMJ3M2cYsv7zLSgZ7wxUgiTbtDXCPLBz33bqq/bAk7OgWpMUa00THwWDJ4
- 1Ujib/k3iDw5F/+TummBFURj3OAmm68+sKZ92NH1HZzbMrEkhi+Sfu8EHssNCvltHFl7
- SLUZcCJIrwIpsA1uALZxI0huVTo3AUFFm2daua4uBnje6lR96R9MGr1cyKVToCoXNq31
- x653SiiFsEDMRqFmh6aZaDFOa6xOiiUEA9jHWDjMTuz+GtAfIcK81Yv3CjjNc3EKtX7I
- +pCw==
+ bh=LhMfjRvaYRQm7IT0Q7ZD7Ws80RB8wj8JBcUKnHnjGWw=;
+ b=ImZzWNlrKxV50+DMct9c0TCo67TZIcWWAvfB+BEHWTPcfhxtD7Aux54D3H+8m+9N8t
+ GbDgsGB0+JDtBDKjFo8imYQGVLZQ15Q+N9zYuJatyiR81gIAYPlg9q872dX9N1b5LZkN
+ 8/0bFIRN02WvZWQe+vVAjm4ApZyzyvtrmLBfU0tqiJoLQgF6tjMNaf9zKPyLro0UjnM5
+ JyRBmZPKm+OlRNtSuLZ/2XX9ZA/l+124l/svY0lb1SE8/vaSTVND5QK6eWGJUc/Sx3V6
+ 35AswDPP0sUyZPnaTo0lMInXgnG21bO710zXDJd7nPg3PbJB/8M5WMS1gdP8UBUJSjxf
+ YZFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714494589; x=1715099389;
+ d=1e100.net; s=20230601; t=1714494588; x=1715099388;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nEFM9m3PXTIht7y/k6VjQ7uVrq+80f1ckVWTaMQIMdI=;
- b=MNeRK8GqZbbhO19lGiFE6rNWy4JsWlCEKjTzJ0cxD4F/TDoqUo4YaY+DkZCyYGwtnK
- 3bTsrWcj5EQZvQDdGoVTr1sDZUf1iWi7+AvwyUXLn/7TlRP6R+cEx0GHpedU+ak48M/F
- C8ScjJAg0G/ydeGuZ5+vqsYWxq2wsOjuvSkUK0vJVn6030Kf+u/7GStYMofCn5hgX63k
- 7QZ8hzEY5YbqNfa+opke9BJDHLFV+O/WwaJkwi5cwFqjksuoAnkd/Y1dJ34uJC1gwON/
- H8s9NuWSamx5x6Sb69omhAoDFCzbBnVOxzvExHyyVkrECjTOMWfevdpKNqkayAP/X/Iy
- cnFQ==
-X-Gm-Message-State: AOJu0Yzxu/DJsgokWrdrexhWw2EfZTY8SbeUOMpeAw7bSk5sTbtGOHdn
- XgArfy3dYXmrXNsa0POPf71Onm2f51DTnYG9bHK67BX+DTgkpKRxwIK+B2lAzUI=
-X-Google-Smtp-Source: AGHT+IEjud9IM/OCYeqfuFimbtamfWa1woDGy5dnawwgB1qvpWJ3G/d+Yvm6Yu8pY1HoRmtbZaZPUQ==
-X-Received: by 2002:a05:651c:10ca:b0:2d8:4158:fa64 with SMTP id
- l10-20020a05651c10ca00b002d84158fa64mr141077ljn.35.1714494588290; 
- Tue, 30 Apr 2024 09:29:48 -0700 (PDT)
+ bh=LhMfjRvaYRQm7IT0Q7ZD7Ws80RB8wj8JBcUKnHnjGWw=;
+ b=uaXb7lP91NatCg274TAtvQ04VvIr3qH4Jhetp8GhcZiSq6zgJJqtjDhpZ/ICLdMYDC
+ /9g13xA2v/TWZ8Ezngt3JzocJXnQ6FyOjrc8lwRc9D/CpHTwIWvxrmHWqigs/xRZpXhy
+ ku/YuCAEPv5Tkl/g8wP9JTWrwk9U33KSbHZEErWMGm6MzlXi9ZLahNo1eSTeIhtL+z0F
+ XSUHCifeK/9y3yEmZErLwbgV4J8HKXcpj5BTtpXx6kBFfKFTsL06Z2oPBcao6CLKCrAp
+ VMWE4pVRvDv+PSo+9sJ1zSRzwU3prYrOE0CxW/W5Rx+q3AQhLj9wzSHePP/D68AFj3Dw
+ 7MYA==
+X-Gm-Message-State: AOJu0Yy5yd4PXMwgqoTh8T/84X1dMIWqgWB0HA4ClIwpt1R8ArC/5ena
+ 2D1XiMmdmh91TuidUk2nEdsmiHnB8ckcaroBkmb5NWHZTD/Dc5iA7xMYdwXYSb4=
+X-Google-Smtp-Source: AGHT+IEVw0qcUR/tWNTk4Luqxd2GFfvhuePJ6Ta7Px8oraI1k0UMuo91Fvxedffr+cGPcczrTfcXgQ==
+X-Received: by 2002:a2e:720c:0:b0:2e0:e7a5:7209 with SMTP id
+ n12-20020a2e720c000000b002e0e7a57209mr181559ljc.26.1714494587347; 
+ Tue, 30 Apr 2024 09:29:47 -0700 (PDT)
 Received: from jheikkil-mobl1.. (91-156-196-125.elisa-laajakaista.fi.
  [91.156.196.125]) by smtp.gmail.com with ESMTPSA id
- z19-20020a2e9b93000000b002e0e410ad06sm302814lji.138.2024.04.30.09.29.47
+ z19-20020a2e9b93000000b002e0e410ad06sm302814lji.138.2024.04.30.09.29.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Apr 2024 09:29:47 -0700 (PDT)
+ Tue, 30 Apr 2024 09:29:46 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t v3 6/6] lib/igt_fb: unify intel blitter fb block copies
- between xe and i915
-Date: Tue, 30 Apr 2024 19:29:39 +0300
-Message-Id: <20240430162939.272990-7-juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t v3 5/6] lib/igt_fb: put intel blt cleanup into its own
+ function
+Date: Tue, 30 Apr 2024 19:29:38 +0300
+Message-Id: <20240430162939.272990-6-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240430162939.272990-1-juhapekka.heikkila@gmail.com>
 References: <20240430162939.272990-1-juhapekka.heikkila@gmail.com>
@@ -81,174 +81,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-block copies are almost the same. make them into one helper
+make blitcopy function bit easier to handle
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/igt_fb.c | 122 +++++++++++++++++++++------------------------------
- 1 file changed, 50 insertions(+), 72 deletions(-)
+ lib/igt_fb.c | 33 +++++++++++++++++++++------------
+ 1 file changed, 21 insertions(+), 12 deletions(-)
 
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 5b4670e8d..c46773c8e 100644
+index 1730f6394..5b4670e8d 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -2957,35 +2957,66 @@ static void cleanup_blt_resources(uint32_t ctx, uint64_t ahnd, bool is_xe,
- 	intel_ctx_destroy(fd, ictx);
+@@ -2938,6 +2938,25 @@ static void setup_context_and_memory_region(const struct igt_fb *fb, uint32_t *c
+ 	}
  }
  
-+static void do_block_copy(const struct igt_fb *src_fb,
-+			    const struct igt_fb *dst_fb,
-+			    uint32_t mem_region, uint32_t i, uint64_t ahnd,
-+			    uint32_t xe_bb, uint64_t bb_size,
-+			    const intel_ctx_t *ctx,
-+			    struct intel_execution_engine2 *e)
++static void cleanup_blt_resources(uint32_t ctx, uint64_t ahnd, bool is_xe,
++				  uint32_t xe_bb, uint32_t exec_queue,
++				  uint32_t vm, intel_ctx_t *xe_ctx,
++				  int fd, const intel_ctx_t *ictx)
 +{
-+	struct blt_copy_data blt = {};
-+	struct blt_copy_object *src = blt_fb_init(src_fb, i, mem_region);
-+	struct blt_copy_object *dst = blt_fb_init(dst_fb, i, mem_region);
-+	struct blt_block_copy_data_ext ext = {}, *pext = NULL;
++	if (ctx)
++		gem_context_destroy(fd, ctx);
++	put_ahnd(ahnd);
 +
-+	blt_copy_init(src_fb->fd, &blt);
-+	blt.color_depth = blt_get_bpp(src_fb);
-+	blt_set_copy_object(&blt.src, src);
-+	blt_set_copy_object(&blt.dst, dst);
-+
-+	if (blt_uses_extended_block_copy(src_fb->fd)) {
-+		blt_set_object_ext(&ext.src,
-+				blt_compression_format(&blt, src_fb),
-+				src_fb->width, src_fb->height,
-+				SURFACE_TYPE_2D);
-+
-+		blt_set_object_ext(&ext.dst,
-+				blt_compression_format(&blt, dst_fb),
-+				dst_fb->width, dst_fb->height,
-+				SURFACE_TYPE_2D);
-+		pext = &ext;
++	if(is_xe) {
++		gem_close(fd, xe_bb);
++		xe_exec_queue_destroy(fd, exec_queue);
++		xe_vm_destroy(fd, vm);
++		free(xe_ctx);
 +	}
 +
-+	blt_set_batch(&blt.bb, xe_bb, bb_size, mem_region);
-+	blt_block_copy(src_fb->fd, ctx, e, ahnd, &blt, pext);
-+
-+	if (e)
-+		gem_sync(src_fb->fd, blt.dst.handle);
-+
-+	blt_destroy_object(src_fb->fd, src);
-+	blt_destroy_object(dst_fb->fd, dst);
++	intel_ctx_destroy(fd, ictx);
 +}
 +
  static void blitcopy(const struct igt_fb *dst_fb,
  		     const struct igt_fb *src_fb)
  {
--	uint32_t src_tiling, dst_tiling;
--	uint32_t ctx = 0;
--	uint64_t ahnd = 0;
-+	uint32_t src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
-+	uint32_t dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
-+	uint32_t ctx = 0, bb, mem_region, vm, exec_queue;
-+	uint64_t ahnd = 0, bb_size = 4096;
- 	const intel_ctx_t *ictx = NULL;
-+	intel_ctx_t *xe_ctx = NULL;
- 	struct intel_execution_engine2 *e;
--	uint32_t bb, xe_bb;
--	uint64_t bb_size = 4096;
--	struct blt_copy_data blt = {};
--	struct blt_copy_object *src, *dst;
--	struct blt_block_copy_data_ext ext = {}, *pext = NULL;
--	uint32_t mem_region;
- 	/* To ignore CC plane */
- 	uint32_t src_cc = src_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
- 	uint32_t dst_cc = dst_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
--	intel_ctx_t *xe_ctx;
--	uint32_t vm, exec_queue;
- 	bool is_xe = is_xe_device(dst_fb->fd);
+@@ -3078,18 +3097,8 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 		}
+ 	}
  
- 	igt_assert_eq(dst_fb->fd, src_fb->fd);
- 	igt_assert_eq(dst_fb->num_planes - dst_cc, src_fb->num_planes - src_cc);
+-	if (ctx)
+-		gem_context_destroy(dst_fb->fd, ctx);
+-	put_ahnd(ahnd);
+-
+-	if(is_xe) {
+-		gem_close(dst_fb->fd, xe_bb);
+-		xe_exec_queue_destroy(dst_fb->fd, exec_queue);
+-		xe_vm_destroy(dst_fb->fd, vm);
+-		free(xe_ctx);
+-	}
+-
+-	intel_ctx_destroy(src_fb->fd, ictx);
++	cleanup_blt_resources(ctx, ahnd, is_xe, bb, exec_queue, vm, xe_ctx,
++			      src_fb->fd, ictx);
+ }
  
--	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
--	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
--
- 	setup_context_and_memory_region(dst_fb, &ctx, &ahnd, &mem_region,
--					&vm, &xe_bb, &bb_size, &ictx,
-+					&vm, &bb, &bb_size, &ictx,
- 					&exec_queue, &xe_ctx);
- 
- 	for (int i = 0; i < dst_fb->num_planes - dst_cc; i++) {
-@@ -2994,34 +3025,8 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
- 
- 		if (is_xe) {
--			src = blt_fb_init(src_fb, i, mem_region);
--			dst = blt_fb_init(dst_fb, i, mem_region);
--
--			blt_copy_init(src_fb->fd, &blt);
--			blt.color_depth = blt_get_bpp(src_fb);
--			blt_set_copy_object(&blt.src, src);
--			blt_set_copy_object(&blt.dst, dst);
--
--			if (blt_uses_extended_block_copy(src_fb->fd)) {
--				blt_set_object_ext(&ext.src,
--						blt_compression_format(&blt, src_fb),
--						src_fb->width, src_fb->height,
--						SURFACE_TYPE_2D);
--
--				blt_set_object_ext(&ext.dst,
--						blt_compression_format(&blt, dst_fb),
--						dst_fb->width, dst_fb->height,
--						SURFACE_TYPE_2D);
--
--				pext = &ext;
--			}
--
--			blt_set_batch(&blt.bb, xe_bb, bb_size, mem_region);
--
--			blt_block_copy(src_fb->fd, xe_ctx, NULL, ahnd, &blt, pext);
--
--			blt_destroy_object(src_fb->fd, src);
--			blt_destroy_object(dst_fb->fd, dst);
-+			do_block_copy(src_fb, dst_fb, mem_region, i, ahnd,
-+				      bb, bb_size, xe_ctx, NULL);
- 		} else if (fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
- 			igt_blitter_fast_copy__raw(dst_fb->fd,
- 						   ahnd, ctx, NULL,
-@@ -3047,35 +3052,8 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 			}
- 			igt_assert_f(e, "No block copy capable engine found!\n");
- 
--			src = blt_fb_init(src_fb, i, mem_region);
--			dst = blt_fb_init(dst_fb, i, mem_region);
--
--			blt_copy_init(src_fb->fd, &blt);
--			blt.color_depth = blt_get_bpp(src_fb);
--			blt_set_copy_object(&blt.src, src);
--			blt_set_copy_object(&blt.dst, dst);
--
--			if (HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))) {
--				blt_set_object_ext(&ext.src,
--						   blt_compression_format(&blt, src_fb),
--						   src_fb->width, src_fb->height,
--						   SURFACE_TYPE_2D);
--
--				blt_set_object_ext(&ext.dst,
--						   blt_compression_format(&blt, dst_fb),
--						   dst_fb->width, dst_fb->height,
--						   SURFACE_TYPE_2D);
--
--				pext = &ext;
--			}
--
--			blt_set_batch(&blt.bb, bb, bb_size, mem_region);
--
--			blt_block_copy(src_fb->fd, ictx, e, ahnd, &blt, pext);
--			gem_sync(src_fb->fd, blt.dst.handle);
--
--			blt_destroy_object(src_fb->fd, src);
--			blt_destroy_object(dst_fb->fd, dst);
-+			do_block_copy(src_fb, dst_fb, mem_region, i, ahnd,
-+				      bb, bb_size, ictx, e);
- 		} else {
- 			igt_blitter_src_copy(dst_fb->fd,
- 					     ahnd, ctx, NULL,
+ static void free_linear_mapping(struct fb_blit_upload *blit)
 -- 
 2.25.1
 
