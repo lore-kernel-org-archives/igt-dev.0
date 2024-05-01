@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F29CC41513
-	for <igt-dev@archiver.kernel.org>; Wed,  1 May 2024 17:33:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10F34C10F1A
+	for <igt-dev@archiver.kernel.org>; Wed,  1 May 2024 17:33:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 90F6C10F1D4;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6AC8510EF57;
 	Wed,  1 May 2024 17:33:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T7JhT+SA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U34mmztL";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98CBC10EF57
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5126510EF57
  for <igt-dev@lists.freedesktop.org>; Wed,  1 May 2024 17:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1714584791; x=1746120791;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=G0+7GjVqtDyAgjWkIYJ+ogZ+Sd8WsRyBgIparqxYSWc=;
- b=T7JhT+SAj410F922/FbPP1xpCI8s+D66NmaspWBRGaZtCl8du1qCQQrO
- cbGsMGkckEDtMbwTK2ZtIk0aAPmCQ2id77YKSWaqVCAGfQCOKgwhLXJAT
- KjO6dug9Se1lemjS70ioe6PA9Z2hagA3LOrdBGn5DavUZhfmDA7qktMhz
- rOKSwCylTFlrdcAfgxBqEbLVEvRdXu6GcnBAB1mqenkCkwFETBvG1Zjtd
- lbuj0Pz4YwoEQsLLPWSdczfSxonCIN3oF34AO45H1T/d4cA0r9YYe8mPe
- Kjpz7bufiFzWYmvpsqwIZ8/PFhsHJBQxqxRMldCdhWLxQ9+eFSmVst110 w==;
-X-CSE-ConnectionGUID: +2jrJCfnRUy1grdi2eoNhw==
-X-CSE-MsgGUID: rc9mzYIAR8KRhzexcSpNyg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11061"; a="10497103"
-X-IronPort-AV: E=Sophos;i="6.07,245,1708416000"; d="scan'208";a="10497103"
+ bh=23cqEnlQh0hP4FKPghEF44ZQHGe0/Lc6CB0lmnSYvGU=;
+ b=U34mmztLuYLKgkQf6XSdLY3Xz8JJdgDOfe5vPQWXjaaTt86R3oDSn2Pw
+ lajgNmO+2z8bITNg3UwJtUmsSQlbus/BtTjcurZ/nMw49NzPzCKn+yXSD
+ 376LJJapRxiNcooMhK7KYo/CJt2l7CwlaZ/B4R+5fCBgclsOJpgHZu310
+ 23QrfxZ/uoLyjl2H+feGboRA96By4y1s/rnbuC4UZAWQ0sPCSPHxwLiht
+ Pdskf+t1BZFKtxMmp99zf28PqUp45YKv+o1OertWag+AIsXR7GnccrlWj
+ cAIc2fKYFrnGhPq6IxAGguHszFIKLOCqIAPiNzL/qA8WSJS9FgIQgpoSn A==;
+X-CSE-ConnectionGUID: Ejlfi2c6T9qms3csipqeiA==
+X-CSE-MsgGUID: gt2Z/BZRS2qPy2c3Lbos0g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11061"; a="10497100"
+X-IronPort-AV: E=Sophos;i="6.07,245,1708416000"; d="scan'208";a="10497100"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  01 May 2024 10:33:11 -0700
-X-CSE-ConnectionGUID: QPwwpKmkT3i5vllFH23V5A==
-X-CSE-MsgGUID: eHDKHGD8RNSPgjHT5pyTbw==
+X-CSE-ConnectionGUID: k7ElQNXkTUCE/b8pC8a+Bg==
+X-CSE-MsgGUID: gCUMXX+mRVqEm0yo9v6PVg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,245,1708416000"; d="scan'208";a="26721818"
+X-IronPort-AV: E=Sophos;i="6.07,245,1708416000"; d="scan'208";a="26721813"
 Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2.lan)
  ([10.125.109.115])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 May 2024 10:33:11 -0700
+ 01 May 2024 10:33:10 -0700
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  Tvrtko Ursulin <tursulin@ursulin.net>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 2/4] gputop: Add option parsing
-Date: Wed,  1 May 2024 12:33:01 -0500
-Message-ID: <20240501173303.115737-3-lucas.demarchi@intel.com>
+Subject: [PATCH 1/4] gputop: print percentage number
+Date: Wed,  1 May 2024 12:33:00 -0500
+Message-ID: <20240501173303.115737-2-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240501173303.115737-1-lucas.demarchi@intel.com>
 References: <20240501173303.115737-1-lucas.demarchi@intel.com>
@@ -70,81 +70,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add skeleton for option parsing, with just a -h/--help to be used
-for additional options later.
+Besides printing the bar, also print the raw number for easy
+visualization of small quantities. While at it, make sure gputop still
+works with small console widths.
+
+v2: Use %5.1f instead of %.1f so it also aligns the non-decimal part
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tools/gputop.c | 51 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ tools/gputop.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/tools/gputop.c b/tools/gputop.c
-index 7fd9e9790..481e79753 100644
+index 8cec951b4..7fd9e9790 100644
 --- a/tools/gputop.c
 +++ b/tools/gputop.c
-@@ -292,11 +292,62 @@ static void clrscr(void)
- 	printf("\033[H\033[J");
- }
+@@ -42,17 +42,19 @@ static void n_spaces(const unsigned int n)
  
-+struct gputop_args {
-+};
-+
-+static void help(void)
-+{
-+	printf("Usage:\n"
-+	       "\t%s [options]\n\n"
-+	       "Options:\n"
-+	       "\t-h, --help                show this help\n"
-+	       , program_invocation_short_name);
-+}
-+
-+static int parse_args(int argc, char * const argv[], struct gputop_args *args)
-+{
-+	static const char cmdopts_s[] = "h";
-+	static const struct option cmdopts[] = {
-+	       {"help", no_argument, 0, 'h'},
-+	       { }
-+	};
-+
-+	/* defaults */
-+	memset(args, 0, sizeof(*args));
-+
-+	for (;;) {
-+		int c, idx = 0;
-+
-+		c = getopt_long(argc, argv, cmdopts_s, cmdopts, &idx);
-+		if (c == -1)
-+			break;
-+
-+		switch (c) {
-+		case 'h':
-+			help();
-+			return 0;
-+		default:
-+			fprintf(stderr, "Unkonwn option '%c'.\n", c);
-+			return -1;
-+		}
-+	}
-+
-+	return 1;
-+}
-+
- int main(int argc, char **argv)
+ static void print_percentage_bar(double percent, int max_len)
  {
-+	struct gputop_args args;
- 	unsigned int period_us = 2e6;
- 	struct igt_drm_clients *clients = NULL;
- 	int con_w = -1, con_h = -1;
-+	int ret;
-+
-+	ret = parse_args(argc, argv, &args);
-+	if (ret < 0)
-+		return EXIT_FAILURE;
-+	if (!ret)
-+		return EXIT_SUCCESS;
+-	int bar_len, i, len = max_len - 2;
++	int bar_len, i, len = max_len - 1;
+ 	const int w = 8;
  
- 	clients = igt_drm_clients_init(NULL);
- 	if (!clients)
+-	assert(max_len > 0);
++	len -= printf("|%5.1f%% ", percent);
++
++	/* no space left for bars, do what we can */
++	if (len < 0)
++		len = 0;
+ 
+ 	bar_len = ceil(w * percent * len / 100.0);
+ 	if (bar_len > w * len)
+ 		bar_len = w * len;
+ 
+-	putchar('|');
+-
+ 	for (i = bar_len; i >= w; i -= w)
+ 		printf("%s", bars[w]);
+ 	if (i)
 -- 
 2.45.0
 
