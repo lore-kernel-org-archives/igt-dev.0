@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D96BC25B5C
-	for <igt-dev@archiver.kernel.org>; Fri,  3 May 2024 22:47:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A543C10F16
+	for <igt-dev@archiver.kernel.org>; Fri,  3 May 2024 22:47:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3511D11330E;
-	Fri,  3 May 2024 22:47:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A490411330F;
+	Fri,  3 May 2024 22:47:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QTMWBVRn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dB1KeDwY";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D73E411330E
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFBDC11330C
  for <igt-dev@lists.freedesktop.org>; Fri,  3 May 2024 22:47:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714776425; x=1746312425;
+ t=1714776426; x=1746312426;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=4CAlgYsUA4CASs0gICrL7YOp5cHZDRjIOVbkUFk2w4I=;
- b=QTMWBVRnG7gIJ1e7COupmDG8aM/itXaQcmGNLhST/7Cg+zBKPNJnCo0G
- cMXzxOFOZYKg+HY10UMLco4yxIG+tIvfeFy9TLVnrbQarUpiB+vlKN84C
- 4JMrwNZaBOIzIayP8IztbwFCCr0RKVQHIJ/PtfUWFFRcYs0L8C7+ibK6Y
- w58L0Zeq5aCB0COZeYUGwCWIVJZVArFrEwamhFpzN+mDW4tW5gQ6jBrCG
- ZOayJVhcC0ihTZFbGfZ1EOXd4+Z95zXopXfA8KUxisUlnS/VkwnMMyE8o
- N4Ho7cqaXqA9Fz6JGpy6mCD/EeEOY0wMG9TzMe9YghoGqOfmmr19n/SW9 w==;
-X-CSE-ConnectionGUID: LsmTNIQdSYmbzs2v7EinNA==
-X-CSE-MsgGUID: L5duAs95QESyRy20KMDkGA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11063"; a="22010162"
-X-IronPort-AV: E=Sophos;i="6.07,252,1708416000"; d="scan'208";a="22010162"
+ bh=tY1enLXiQSsalvLAUrCaHfONHX1imPTz55aByto71N8=;
+ b=dB1KeDwYGueKcNPpKX4OEHon+NPq3T7MtVQgCIuXQVkhtjMTUjGw/Jvv
+ Z4cHjQwCdXCvQKDXH9s5/xE16d8sDH//M7NPReL7DN1eGXxmXL5I5vzg2
+ 7xhCMwhGIJMmmKb96e7Pjbxp4H45cmjQzxSu0ERPxlv+UfB2ZdsG/DkT/
+ ERYpXMGH4TXoyJbDiXMfFbU3cUA9+pOcnpd0N4Vpk4sYrAL25S04HuHH6
+ x+OfLlvdpOHqfr8Y2YzThnWWTMJ6TNpdnBVxDOdzZ0vdmXl12Avc3OrqJ
+ 7AoxKdKJMSExnlDTv0L80n4LEtbHeWC1w4+xjJLjDI8Ca83aGyaQ+9HOY A==;
+X-CSE-ConnectionGUID: MHgd2fNMQKWHv4t45ViVzg==
+X-CSE-MsgGUID: xA0rvnUDS5mnjbWSltiM2g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11063"; a="22010163"
+X-IronPort-AV: E=Sophos;i="6.07,252,1708416000"; d="scan'208";a="22010163"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  03 May 2024 15:47:02 -0700
-X-CSE-ConnectionGUID: 3tp8hs1NSby54psqFP5mmg==
-X-CSE-MsgGUID: jSXQICdpSWyn4Tko+zvICw==
+X-CSE-ConnectionGUID: XvxdZlB0TzuSwqh3Qm3lpQ==
+X-CSE-MsgGUID: JhYg7pU9RoaupzA1++izdw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,252,1708416000"; d="scan'208";a="27609360"
+X-IronPort-AV: E=Sophos;i="6.07,252,1708416000"; d="scan'208";a="27609364"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  03 May 2024 15:47:02 -0700
@@ -45,9 +45,9 @@ From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 2/3] lib/igt_aux: Name function according to sysfs file
-Date: Fri,  3 May 2024 15:47:44 -0700
-Message-ID: <20240503224745.14890-2-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 3/3] tests/intel/xe_pm: S4 to go up to devices only
+Date: Fri,  3 May 2024 15:47:45 -0700
+Message-ID: <20240503224745.14890-3-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240503224745.14890-1-lucas.demarchi@intel.com>
 References: <20240503224745.14890-1-lucas.demarchi@intel.com>
@@ -68,71 +68,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Let's follow the sysfs filename that is being written/read so it's not
-misinterpreted as something else: at first I thought it was dealing with
-/sys/power/state, which it's not.
+Testing S4 (hibernation) is typically painful as there's mixed support
+in OS versions and platforms in CI. Doing the entire dance of saving the
+image to swap (which sometimes is a swapfile) and communicate that to
+the kernel that is going to be booted (without initrd in the CI case) is
+often a case of problems.
 
+Main goal of xe_pm is to test if the xe driver and the graphics card are
+working correctly, not that all the farm of machines correctly handle
+all the corner cases (which is even more problematic as we test early
+rc kernels).
+
+Stop doing that and rather switch to going up to device shutdown +
+platform low power state (the default in /sys/power/disk). If that is
+acceptable and work out great, we may even do that unconditionally,
+passing SUSPEND_TEST_DEVICES as it should work in other cases too.
+
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1043
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- lib/igt_aux.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ tests/intel/xe_pm.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index d6aeb876b..398665999 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -732,7 +732,7 @@ static const char *mem_sleep_name[] = {
- 	[MEM_SLEEP_DEEP] = "deep"
- };
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index 5e79e80ec..9a0b362ab 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -414,9 +414,12 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
+ 					INT64_MAX, 0, NULL));
+ 		igt_assert_eq(data[i].data, 0xc0ffee);
  
--static enum igt_suspend_test get_suspend_test(int power_dir)
-+static enum igt_suspend_test get_pm_test(int power_dir)
- {
- 	char *test_line;
- 	char *test_name;
-@@ -765,10 +765,14 @@ static enum igt_suspend_test get_suspend_test(int power_dir)
- 	return test;
- }
- 
--static void set_suspend_test(int power_dir, enum igt_suspend_test test)
-+static void set_pm_test(int power_dir, enum igt_suspend_test test)
- {
- 	igt_assert(test < SUSPEND_TEST_NUM);
- 
-+	/*
-+	 * When pm_test is available, it needs to be cleared or set to specific
-+	 * test before /sys/power/state is written (which is also done by rtcwake
-+	 */
- 	if (faccessat(power_dir, "pm_test", W_OK, 0)) {
- 		igt_require(test == SUSPEND_TEST_NONE);
- 		return;
-@@ -1009,7 +1013,7 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
- 		      !igt_get_total_swap_mb(),
- 		      "Suspend to disk requires swap space.\n");
- 
--	orig_test = get_suspend_test(power_dir);
-+	orig_test = get_pm_test(power_dir);
- 	igt_aux_enable_pm_suspend_dbg(power_dir);
- 
- 	if (state == SUSPEND_STATE_S3) {
-@@ -1021,7 +1025,7 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
- 			      "S3 not possible in this system.\n");
+-		if (i == n_execs / 2 && s_state != NO_SUSPEND)
+-			igt_system_suspend_autoresume(s_state,
+-						      SUSPEND_TEST_NONE);
++		if (i == n_execs / 2 && s_state != NO_SUSPEND) {
++			enum igt_suspend_test test = s_state == SUSPEND_STATE_DISK ?
++				SUSPEND_TEST_DEVICES : SUSPEND_TEST_NONE;
++
++			igt_system_suspend_autoresume(s_state, test);
++		}
  	}
  
--	set_suspend_test(power_dir, test);
-+	set_pm_test(power_dir, test);
+ 	igt_assert(syncobj_wait(device.fd_xe, &sync[0].handle, 1, INT64_MAX, 0,
+@@ -662,8 +665,10 @@ igt_main
  
- 	if (test == SUSPEND_TEST_NONE)
- 		suspend_via_rtcwake(state);
-@@ -1031,7 +1035,7 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
- 	if (orig_mem_sleep)
- 		set_mem_sleep(power_dir, orig_mem_sleep);
+ 	for (const struct s_state *s = s_states; s->name; s++) {
+ 		igt_subtest_f("%s-basic", s->name) {
+-			igt_system_suspend_autoresume(s->state,
+-						      SUSPEND_TEST_NONE);
++			enum igt_suspend_test test = s->state == SUSPEND_STATE_DISK ?
++				SUSPEND_TEST_DEVICES : SUSPEND_TEST_NONE;
++
++			igt_system_suspend_autoresume(s->state, test);
+ 		}
  
--	set_suspend_test(power_dir, orig_test);
-+	set_pm_test(power_dir, orig_test);
- 	close(power_dir);
- }
+ 		igt_subtest_f("%s-basic-exec", s->name) {
+@@ -673,8 +678,10 @@ igt_main
+ 		}
  
+ 		igt_subtest_f("%s-exec-after", s->name) {
+-			igt_system_suspend_autoresume(s->state,
+-						      SUSPEND_TEST_NONE);
++			enum igt_suspend_test test = s->state == SUSPEND_STATE_DISK ?
++				SUSPEND_TEST_DEVICES : SUSPEND_TEST_NONE;
++
++			igt_system_suspend_autoresume(s->state, test);
+ 			xe_for_each_engine(device.fd_xe, hwe)
+ 				test_exec(device, hwe, 1, 2, NO_SUSPEND,
+ 					  NO_RPM, 0);
 -- 
 2.43.0
 
