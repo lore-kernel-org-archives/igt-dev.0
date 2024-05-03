@@ -4,161 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8F44C4345F
-	for <igt-dev@archiver.kernel.org>; Fri,  3 May 2024 13:07:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75629C4345F
+	for <igt-dev@archiver.kernel.org>; Fri,  3 May 2024 13:32:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3BEB210FEC8;
-	Fri,  3 May 2024 13:07:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D48FC10FC41;
+	Fri,  3 May 2024 13:32:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ilZ0GRW/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CFk1uJmv";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB44210FEC8
- for <igt-dev@lists.freedesktop.org>; Fri,  3 May 2024 13:07:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 188FB10EEA7
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 May 2024 13:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714741677; x=1746277677;
+ t=1714743177; x=1746279177;
  h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=yGi/MQ2f65zXcANKrFhKw71P/2iKMJfsD8mlw18SLbk=;
- b=ilZ0GRW/Xo7y2mu62cchnmToU8vpg6mkz/5sMsoLvewNXRZ7E1v8TAZY
- hpqQJdtCopRA06ZkiZ12v6NMnTirIC+1j05colndBCVnzP7DxtIGNkCDd
- eF5fCVa7Wftx0ZLgEB04rmeiwYCx/NIdlpl397fcmHwUNy347GliNpYDw
- F/rKXrxrlzxsMwhCzB89lDS+M6TsOjQ4gsjwMBeGkmIKeY3CBmJR29w7T
- 52OMwCa2FprLWpNBMm/7hfyscH/4BAgsmWgvVvfRW7+gqN5nZk7qOgRHV
- JuYCEXFPVYKmy6W6psDF9epPj55ZQk1mpWry0Jo+yzzT9zzdK6lw8G5N5 Q==;
-X-CSE-ConnectionGUID: d7LfOGlQTjiIdI+90YxwnA==
-X-CSE-MsgGUID: uiU+d51HSB+1uo6qn9OW9Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11063"; a="10674870"
-X-IronPort-AV: E=Sophos;i="6.07,251,1708416000"; d="scan'208";a="10674870"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 May 2024 06:07:57 -0700
-X-CSE-ConnectionGUID: 8ppwkWUIQnimDP584DZ9xQ==
-X-CSE-MsgGUID: tBKnpMZERkGRaMr8HyR10w==
+ content-transfer-encoding:in-reply-to:mime-version;
+ bh=Xk9cPAkYw+JsYrqpIRNnpTxJVj6fVGu9T5K9UkFoiNI=;
+ b=CFk1uJmv22GIRvGC4BeWmSmuhBBTnB/M4j/Jb3fUJGbaS+QrQismVUr7
+ 6N5b5i42jXauPfzscdKy36+63gr94YcbEpt4lqqf82dmtHdfbgG0/PpD4
+ Jcw1h9KOGGujNMCu4RX8s8+FjRxqke9k3fGkAuuF/TCGU+dWT33UCT5iR
+ QIzFwTjA+gEoeTtQ+S4VSPSD87xA7mGHxGJsz+qI1hpSHAXUXnAwZpPhz
+ udSxl80Uildd3JeU3Eg74UQzZRXT4D1m1BDnpPxkIDmuOVOTAgqLgrDzD
+ wAmkcTeYPB2PbqL4bOedrbOF2RVvOsgHog7GafoHkKR2omrceZ1JIYnuL w==;
+X-CSE-ConnectionGUID: np82tha5RRCrCwAx4L/02A==
+X-CSE-MsgGUID: 8cXRIrMxShurX/b5BjUhBw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11063"; a="28081338"
+X-IronPort-AV: E=Sophos;i="6.07,251,1708416000"; d="scan'208";a="28081338"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 May 2024 06:32:56 -0700
+X-CSE-ConnectionGUID: q6yIleGJTq2L3uRLVFMpnQ==
+X-CSE-MsgGUID: ZbrgjB0BSVyFg82wS1Nv/Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,251,1708416000"; d="scan'208";a="32063914"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 03 May 2024 06:07:57 -0700
-Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.07,251,1708416000"; d="scan'208";a="64902257"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by orviesa001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 03 May 2024 06:32:56 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 3 May 2024 06:07:56 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ 15.1.2507.35; Fri, 3 May 2024 06:32:55 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Fri, 3 May 2024 06:07:56 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.169)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ 15.1.2507.35; Fri, 3 May 2024 06:32:55 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Fri, 3 May 2024 06:32:55 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.100)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 3 May 2024 06:07:56 -0700
+ 15.1.2507.35; Fri, 3 May 2024 06:32:54 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YuNXFDXyNDqGyqLYRCMpq+dY0Q69qIee8S+fawUMFCFSRU5VrTzTgggZNA7tZ3DUYsD8PVB1kaEXBQYFHZ1FbL+TN98o5wb4SIxMWLbR90hUq5jQadqE0V3T3QSsRlrlhRkUXE4RukDtOUDJNvH2LE6cAt+9lp/ilfK4Gpxqsx+8atz/aqzQE1lqfbrTpN3FLivKl3osrZvFFaPaRpvZuA28kjabEOVYW6iUWhUeL96ka2Bv8PG/M9zmYkM3mBcK19uLyyk/ODipzHXpVcbtSIlqrZ72m+bXvZeORH/PDVhmaw+to30ECwNgJZYj/s+w7ZwAR/CmnG3LoTYKIKHHQg==
+ b=CWgJgFiZoq2pQAiP6/RE+oDCmqqp/DLedKLdHox85MMoiFLzVqssYxarynh7Ybj7Gihprg7yMNa9zQSRikF+pmBD1axwe54ZYYQKvFIqUkU2CS2b1xVqyPGktNi2F1+2jyF4RcRGEJbBLsRyxPvTM2XzQMFayaEaBApVJfxnX5RFvH7xyDDHhmBKRIbHnaw9cR9Sn/NtkBYTfJfW+jtWE0x4Mr1a5fBGNLbIk82QG/GgXzt71fLO8vMYRh1lbaDFV/hX5bt1Wpn9K1XlSLYHxa8/sFu2PCaJ//T5yNT4dsrbdVpub71bpGWNQQWPk6yLAyZ8Zv/j2Ltqm5kcQErRcg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kzbcGffUipPjP/twZeClA5Z98etPFyMmqjanHE4Pfj4=;
- b=OfN95h3Sw6rF+TjIvI6j7Um30asY/O+YPQ3PfZkQkBxURq4bQp0nCxtA+SRte9Ol2z71w1FEKqexiP1IUcSS8bUif57cwkAEmxPvMbfEutdXgFDUO5N6p4miFZFC1bjyy6fI3mxGBzJFkg+dq8308wGOAIAggRKTf4xUS3n4D8wkIUcDgDzj3rsmgipl2MX2LXoeKt65arjGReqhoca3/WS4wBIR6MkQT3kNeDuZXDugyJddchKRXXEhIsiC4cNm1jCHLqgEi804MgNVHNkmlDrVfRL4fZIqk/2oXIRpZrZYVpyyalysIBFKLS1Sm7Ee1ECKCDRQ/yJB79JNTkxvmg==
+ bh=DwEe1Zl8gAynpTHtcCdGRromevrE+1f0M8Ssz0+giyY=;
+ b=EF1l0JCnmQ6mtbtIcGm9/6hUeB91P60XKoyNh5jRQhXVuUKx1ynZGGvJE5i2IwmssaQbI3vj8ATi8TNn4ORn9p+UNetl5wMYkUz8KVwEOEmpNQnqzfxoihsqV0VXv1Pu0UjUBq0FO26832vC++PukGETeKdNjgfyoMUuTO7mizU8gMBqCpJ39r1IGCH4J+QBq1sgXolAxDNf68iPKBUSo9j+wBiHJcM7uyyzz2/KWTnkI8XlS42Ae5awRuCNUeL+9J0KQaDt/AHMEsZoC80bLj2k55mhOEii+Umf6jJekgL8sYklNjgCuKv2q5Av+qJOICk3LGzxgdXpSBznryfQYg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
- by SJ1PR11MB6178.namprd11.prod.outlook.com (2603:10b6:a03:45b::18)
+ by BL1PR11MB5956.namprd11.prod.outlook.com (2603:10b6:208:387::11)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.34; Fri, 3 May
- 2024 13:07:47 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.29; Fri, 3 May
+ 2024 13:32:52 +0000
 Received: from CY5PR11MB6139.namprd11.prod.outlook.com
  ([fe80::9365:d8e6:4e8d:8711]) by CY5PR11MB6139.namprd11.prod.outlook.com
  ([fe80::9365:d8e6:4e8d:8711%6]) with mapi id 15.20.7519.031; Fri, 3 May 2024
- 13:07:46 +0000
-Date: Fri, 3 May 2024 08:07:43 -0500
+ 13:32:52 +0000
+Date: Fri, 3 May 2024 08:32:49 -0500
 From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Tvrtko Ursulin <tursulin@ursulin.net>
-CC: <igt-dev@lists.freedesktop.org>, Umesh Nerlige Ramappa
- <umesh.nerlige.ramappa@intel.com>
-Subject: Re: [PATCH] lib/igt_drm_clients: lazy stat process
-Message-ID: <gz3jrzek5zgu25happzhneli2bl5pal75cmfsgrcy5n7j5uzyv@7yl7vvvafbpa>
-References: <20240501174001.121324-1-lucas.demarchi@intel.com>
- <238aa521-ba0d-47a7-aba5-67b88d75c758@ursulin.net>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
+To: Tvrtko Ursulin <tursulin@igalia.com>
+CC: <igt-dev@lists.freedesktop.org>, Tvrtko Ursulin
+ <tvrtko.ursulin@igalia.com>, Alex Deucher <alexander.deucher@amd.com>,
+ Christian =?utf-8?B?S8O2bmln?= <christian.keonig@amd.com>, Rob Clark
+ <robdclark@chromium.org>
+Subject: Re: [PATCH i-g-t] lib/igt_drm_fdinfo: Handle amdgpu memory stats
+Message-ID: <crxjiae2z6mwas6rxq7cwsekfw26llg5oqlk5motte6qt2kb33@6j6plap5mxu6>
+References: <20240503123731.9509-1-tursulin@igalia.com>
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
 Content-Disposition: inline
-In-Reply-To: <238aa521-ba0d-47a7-aba5-67b88d75c758@ursulin.net>
-X-ClientProxiedBy: MW4PR02CA0015.namprd02.prod.outlook.com
- (2603:10b6:303:16d::6) To CY5PR11MB6139.namprd11.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240503123731.9509-1-tursulin@igalia.com>
+X-ClientProxiedBy: MW4PR03CA0315.namprd03.prod.outlook.com
+ (2603:10b6:303:dd::20) To CY5PR11MB6139.namprd11.prod.outlook.com
  (2603:10b6:930:29::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|SJ1PR11MB6178:EE_
-X-MS-Office365-Filtering-Correlation-Id: a3920a76-fb30-4c0e-dfdc-08dc6b7206f3
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|BL1PR11MB5956:EE_
+X-MS-Office365-Filtering-Correlation-Id: 12e9a917-543c-418c-a6a2-08dc6b758852
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|366007;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?5nabs3aOXzS3e9TUj7Fjvga2rXSZrcMvvICgCNkU/mQ4W/bg5/oLROuTeG1S?=
- =?us-ascii?Q?VSNtaEwjPMOuzT9CGaH0I44Ez+lUnvqERDrhvVGIs+X+GIdowrdLn121r/yb?=
- =?us-ascii?Q?F+FviyHmJ+hOJPOviuONEMJmvwkyiPVhJMRe8C/ihWFzbd3zgpEq89EY7cx4?=
- =?us-ascii?Q?sZ7mFCp9goUEYKxkHo047ho2u/a6PLiMM4Xwc+KfuYKjfHy+LpFsQqpLZ+2r?=
- =?us-ascii?Q?X0Z/Gy4P4KHRkRYtcqBFGthSwn43YyqMqjm+H8wPism6UZlEXsADuR8p5TFo?=
- =?us-ascii?Q?jupXFGTjFd/qLo5n1BAdEGYs+t2CxWSmcpWdBzKwmIp6SxoI8MZnmULpuhpg?=
- =?us-ascii?Q?Pn1jGWLjitSY71Idz2jVtdGVrnb7Py03xOmUIbAq6C2kUmVlpicnnma08ToF?=
- =?us-ascii?Q?tUPJUZQ9GVjBaoX5nHsHbd+VPgbqG7lyG5Gfs3fqB1Ftg0ixOePykiJ0mWM5?=
- =?us-ascii?Q?aRzM8x9GYZlK37VKIArm/mCf4ngkD7l/LVwmHJSUqzcf79l9UK7rlr68+8A1?=
- =?us-ascii?Q?Lc7CxDjfPvNnWBRUghOXXs9euIx904GhzMM1gGVW6IoIabqK7+WsGr8oYrES?=
- =?us-ascii?Q?AtP3AUCiTBJo5bvMxIla1ZkKRM+q/ZRWLKP3ViQtSnzqc4PK4vR5WbapSVjC?=
- =?us-ascii?Q?fO1+W61Xv6NgyUVjpBhiRCg/S6Z0Dyw28EN4lYMBbyP/arCUWsFjwHSLMvlt?=
- =?us-ascii?Q?P4pJ+ptmMyfJ8dvf98rwmL6dsK2v9iP/vbIplCT1/cb7m7hlAo/5iLr6K2hg?=
- =?us-ascii?Q?sG4BdbFAAVEJFYDNxyV5XQWs3z4L5yOLnFfmKgpGGPNtKsXELnmZZCn/T6Fy?=
- =?us-ascii?Q?P66PwuhSKSayRuPUX8uGXRgCVEOaufgsL1YSCn3m9JrRBOpNuwCF1i6YFRCb?=
- =?us-ascii?Q?EXb4nrbVYTsqhfGzuqmydEX6qYDqkbXoFudMlXA0LR2U1C6kgSS9gX91G+kB?=
- =?us-ascii?Q?ym1t91A/DRtVRIAxdxnKHOnRcUfuOVXSZHimHkBL0BUFkYCBsSRasTqyBZBW?=
- =?us-ascii?Q?HOBXtIdg9zA2sotAu/KY4bUQx/Uv6cxi3xKi6OJTIgoJxuaFgdsSYhjyiY4/?=
- =?us-ascii?Q?d8WgDL8bqFwEOej0YX1wKc4jyEkw3XPuYjvJjYnifuoujWFmHv0EyZ+/WNsx?=
- =?us-ascii?Q?qMX9AlVU4KZUn3LxYuoSLDahPJwKkwMDQYiCtFEMbmLn2oqEuIfAP7Vo7yvE?=
- =?us-ascii?Q?Kf5UPVp95T1xx+dzYBf4jLmiRKA7q6IVxzRyupvfiZOYFJ2vWdKnDyD9GaY?=
- =?us-ascii?Q?=3D?=
+X-Microsoft-Antispam: BCL:0;ARA:13230031|376005|366007|1800799015;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?NVL1QNU1ApDD54kJf0fFhvAcb8WS1WnGviAVqLAiprW7ZS7EKZxXUm/W0M?=
+ =?iso-8859-1?Q?imiNvOU12t2RbeMsrP7DZXLMxw072MA2ZZ72wfVLiNVKo9gTg2MG206o3j?=
+ =?iso-8859-1?Q?x5HgSQ0kLf+Rs4zE+5klxP2xsqwAhrJtrAksrN7ZM2h/vEweJYG+fF+hQ7?=
+ =?iso-8859-1?Q?Lon9/IJ/2MlRXASIBQR5uEsxAtT9RmH6RVnAaMFnuzdCYUqocxd2EtpZrI?=
+ =?iso-8859-1?Q?J7wg9BsdINfIlb8pYILBoWduofBhq7x9vcdg28rZKAwUBga1lQP3AC3zhJ?=
+ =?iso-8859-1?Q?jVA5OSzC+rsDhMdhfCH3l9Xb82XVaP30KYOJfxzlnFHqlksuKuqGrRDyzn?=
+ =?iso-8859-1?Q?5WyQNntw07kVO7QR0esd9IZQxNO09snKCiW97rtuwrj63J7S65u2NlzQxo?=
+ =?iso-8859-1?Q?wKHUCK2Z2Y2fUa7BnrDIAkqXBgkByyzwCBg06J2cM+Ivm7LewkckOLO8et?=
+ =?iso-8859-1?Q?TT/ZTJIYKsY7Iz887RMMXuiO8OL/wws1lmZgO0epSYICFNIfBqeXwPEiDV?=
+ =?iso-8859-1?Q?5O82KNcpRl/eMgC8vCql78AnObWiuZEFzqhP2a+1al9Y0xVk6lK27n1dHc?=
+ =?iso-8859-1?Q?zvXdVIhEf97VokA7Goe+gCeQ4XtcBmm/PgR/u8jYOTwkQMa1GkbxJ67BIt?=
+ =?iso-8859-1?Q?XJyMKxR1B1T1BMWOu4FMTtCgQgoCJZFmbvPjjVpI0gZxa/X1MKhxaUgst1?=
+ =?iso-8859-1?Q?2nYtFoDSRHTSp1nP6WKe3Jcv7LH7KrqoO8HIbVE+0vE38CsxR/D0GBttiV?=
+ =?iso-8859-1?Q?ZiQZRiPF4xKO756bwvM3nKSUis+elockNJhKbQIenJhnSwOhqjgt5EcuHe?=
+ =?iso-8859-1?Q?+2wSzFRkWqAJENXYwLdynn5XnA2cTsZs8bM6QdYb7/AxpqBy3SAHSPQtoR?=
+ =?iso-8859-1?Q?LlPH+SP3z559Bzf/tq2bDc95OtbGtAI3kXM0cNUwMA103LvN/zrd2ZehEV?=
+ =?iso-8859-1?Q?x+C9y/SIdKrV8ex81xx0koqu275FBeRUfCgNYFU1VAf16hQMwryz786SAn?=
+ =?iso-8859-1?Q?0hV3X5zoA1zmtQCB8Yt7ISGy+o8z0IO8rw0qewCRJ3DnZ6gCj0CETexBiS?=
+ =?iso-8859-1?Q?q8cvmrimzM6Ub3O7C8XkzJpKxe744Vi70lC3B3HheVkPX0gYllQRTNEh6M?=
+ =?iso-8859-1?Q?zuyOCjL0IqRmJ6ldzLvXqKWIanxsonr7MmNgo4IpgT3jaYS/XCX3/MtgSX?=
+ =?iso-8859-1?Q?b595wj3bWwerQI6A6vSL+hFR7EdeQJoe7pD890VaWBCHjx0t100w/P+x5K?=
+ =?iso-8859-1?Q?PJiC9sQUvGf6KA43Qp9jr1RezpqtOVKtBbeM8F7gp9XpDqRAjTdOOiPS3U?=
+ =?iso-8859-1?Q?FeswWOb5LeqNQe9OZ9fdiMF3bQ=3D=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(1800799015)(376005)(366007); DIR:OUT; SFP:1101; 
+ SFS:(13230031)(376005)(366007)(1800799015); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?b0CBiOI+603HXLo21q8nPjhTyyMXFazr9SmveOXsi+FX/mcl1ovxfUuFsF6K?=
- =?us-ascii?Q?2lpKqefbKx+CX62mfGI36PmG7neu6mk3h6vsT0iqO+mQpeDO7q6nf4m7HuWs?=
- =?us-ascii?Q?EW0HcTjUPIOSTiFkjeTJJTSY4zwBuqBmE4KCBPRFob3vDFdP91a4Q30l7oVj?=
- =?us-ascii?Q?qut/rn0e/vFZ4W55O3M46iwxfobZeH2jJT+PIDJ9YsiYcG2RXzL8cvX06lN5?=
- =?us-ascii?Q?yMOSzANNvX0u8KUAJ07HjF81DYInaiImBlSOGfiOa97xju2ZED1BNq981B3+?=
- =?us-ascii?Q?anj/m7jJIJEMktvGaaMwp3OFZJoQ4xqCTbqY6993oyVYDdnWHZ/HUPjpUbjA?=
- =?us-ascii?Q?p/rfNewmRtcfBZfrYRgQnGQY/y/5fAY5edFj3NT0a8Z1+C0gjxSwSSXS97mG?=
- =?us-ascii?Q?mKtplb96kC6NNo4OUoUkQunORqqoJhuoGdQJWZWUAKXLfbNYHynOBqQGy4lW?=
- =?us-ascii?Q?tpGs1S6Q70Cgns0AwIs1hR+J8wHIYz9zs8OfPJcSVpXg5FFRf9uRsPTeZuLS?=
- =?us-ascii?Q?GrxljTPF34gGui7dKZjuDv77/7y+AViv+Y0oEDxLwUBtQ4WOm+lwvyXlPgHr?=
- =?us-ascii?Q?TQuWyFqxgf4BfipWz6eSPNg9zbOE8AYwsvYB8YCezrH89EjwxUTpqoGDKl2M?=
- =?us-ascii?Q?ImrjJ9hIoyYW0O87LssjVkgY3v8r64Gu/LZNEsnW4RIFkyoFUDIaQafeVenU?=
- =?us-ascii?Q?L+VEXWbzNFAIm3YFmiOrpoHzUv+q3v0pbF+CESt7GrnIcgQ7g5AEkzBnwfi/?=
- =?us-ascii?Q?TJRDB/1EqN+u6DwdtJbZs8y5r5NHb8SdIhkg7amMMysCB94aTdmZJm9XD9bf?=
- =?us-ascii?Q?3JZ3gV3tguY+lhDN8FzQOYzVrT4mGSmY658MBmdqf3ek/rMrpI/c3pUoFCfM?=
- =?us-ascii?Q?u8VOUP/QBFUHtJrlLti+IXW3YItuQMmjRzxF8a31aFN/ciAWIkEEky7l1ZE5?=
- =?us-ascii?Q?EgwW/Rsd5q9gqFs7BKd2hqcoDBV96PXixWJv6Cj9N6INHUoCukME1jCUzrLL?=
- =?us-ascii?Q?Cwl41Xl2A2JgA7fDaHX5Ax0y2uB10hJIWMapnJnavDjn8oVsLybwVTE2lsOV?=
- =?us-ascii?Q?C7XtjpYZeAXdoSKbRR+BJsPNAy7DXjztBmthjFqOekhT7MmSf7WQwM5lB2J+?=
- =?us-ascii?Q?cHAX128tenPB+hILtDsC+jbYZ678ijNtGU3rmc5J0I50CrW6Ad6PKfoHM0iy?=
- =?us-ascii?Q?xX6LUdpP9VjXTsHAfvqWIOOYlnZd4mU+8WccssjppKM/ZEqBFYVU9FI0fdKX?=
- =?us-ascii?Q?67dd5qcCitgEOuAuuh2lvhnBUaOwYfRL20rTYYyGFOsm0r+8gHayw+P0tisY?=
- =?us-ascii?Q?zone78LusXtJpx8f4aISnoh4+wKEqQWK3KEXxDXVAyGqjiLpO+JgPgV0f4+i?=
- =?us-ascii?Q?PRNVuiogRxKpVyKJOydKVz648No98Wgqwmn2KH6AHCP+SvFC5uHpeDk2mdUR?=
- =?us-ascii?Q?mQOZOkyXxOuc8MUSVYGdA2EcPGtjTgTr1AnnIVHlCWQrbyfOv5EdtICqwQgR?=
- =?us-ascii?Q?sJ3Fvg8mR9ormgx30waqo/Nu58PefxY6Zr+CMDB2VtW2xldAtFM023hiUfPe?=
- =?us-ascii?Q?x3Djbug7P+jJqCmK46cFUgpkDaFXHmNt7LsuyzMRaJgup+GRvLkf9yxSHh2N?=
- =?us-ascii?Q?qA=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3920a76-fb30-4c0e-dfdc-08dc6b7206f3
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?e/tiWCdNxnIMy6nr46RklTROFFAfv0x68iS9F4P97m3rdMH+/xDAAgyR3u?=
+ =?iso-8859-1?Q?aZ+aoZSXuVrYAq5jw5e5tmB6jntZPNzxYf7ZPlJyH5F96HIIWfN65mLsbx?=
+ =?iso-8859-1?Q?VhqmhtFfd7rruEPGIeIvg2WmfPxoobAr0Rpc6d8HsKrg0Uck5IHNQShuAP?=
+ =?iso-8859-1?Q?qca1u/ZviNeGbpB8wItE3VhzPw2/26Yl6M8v0QorPras0glMY0v5JHq0Yd?=
+ =?iso-8859-1?Q?O5WO7Vs3VfJG1l6K3ZM/YxcsT7NetZtUa0VJuQgT83OTut0e7u1Vc9sES8?=
+ =?iso-8859-1?Q?WOtslBNgJj8lWzJj5lNnbvQdR33gqWJFaVB7NKQ0ZvbafBlp235HD2hk6X?=
+ =?iso-8859-1?Q?GWvyrnPkd9UKhdgxRe0UtIz24mXuNeWqrk/S8o5c+gtSW7UzGf3Yr8/u58?=
+ =?iso-8859-1?Q?t7FTa8dZkSdC4mHzu8F4PbJSFKlgoU1wtNbo0Oo+nsrZ1IYzslAOx2kmhd?=
+ =?iso-8859-1?Q?GwrEma+DMGrQwTg/i9PBeGaJat1XI/+F0FRyLkyuWkA6kvFpkYKw8O0LJL?=
+ =?iso-8859-1?Q?sl2An7oAaz5S3KGOBHIEJBN8U0oq/Id347NFaJY0+KiksAStl7iWrfid5W?=
+ =?iso-8859-1?Q?bDUiSfQXR1wXmuRc8k9YbwJhXU66Hv/uIlLpJthirlRGWhWNw4W68XsDMX?=
+ =?iso-8859-1?Q?WFv/sUdW+jR0p45oqoDFhMrxn56Qw+PKypb/l7zOXfA728T7JhvGvnanAj?=
+ =?iso-8859-1?Q?xv+G/n0O1h3RTh6dpOQtyYyflhamAxzEaudHpz0zuK/KQMfNtH8RMXaDm0?=
+ =?iso-8859-1?Q?5Dq88n9YVlms9cRTeEfFq14Hin0UjIKCIJ6IowVoRDCB9BkdVavTLX0Ggf?=
+ =?iso-8859-1?Q?hinddPiSD32auN/3VAeWohJ3UHAua6rXXjGiW6w/1naXvfrFrc/C8PYce9?=
+ =?iso-8859-1?Q?HT48IMRkOR2ahz+9++ntz8GHuXNjyHEzR/OiPVk0iIVyaRXSltrTIEC9qH?=
+ =?iso-8859-1?Q?3BFATUZsvrnoPo8s8bgQQM0GoDWzIbukKW91wiN9zon5wvOW+aIbiEVDNV?=
+ =?iso-8859-1?Q?xO04SVbyJt1iK8De5NFtgv1YTgCgYf8wyXLc8Wk+VSiKoxbFBzLHv6JyRq?=
+ =?iso-8859-1?Q?rnZOdEFDA7lHDiJHKKbEoDOQLywOhFolieFW0mnh/2DY8pruc4vCDmCWCx?=
+ =?iso-8859-1?Q?OFFvIbU42z0xb3ITLdvgteMVwrJMR0WCO8C2PLeApdnJY+v90zVe3Rojvk?=
+ =?iso-8859-1?Q?ECMxpbIH0aSaDKTxBee9hzVBl/YvUPfdgXwB/vCAaQzin7F224rJaNbbNb?=
+ =?iso-8859-1?Q?HTRlauTJtlUmx6w25TOg07CC1lhuVzpYn94LrIjOwQVLSTJL0slkmkpX94?=
+ =?iso-8859-1?Q?H3KYQiBkW01J654Le8oBXftGtYfjH80nUyxUa2oleflI59A+qZshQhS45V?=
+ =?iso-8859-1?Q?MDSM6f8IxxTJKRwYiTA3jqcXHcKYYr/0uhixoQiydtqdrZbUwlH9pxMTwA?=
+ =?iso-8859-1?Q?I5sp/7u4JXg3T9kjqec15o4rkDf3hBCNq97N6Wx8NQWX2RVD+kjuO8EKa9?=
+ =?iso-8859-1?Q?bS9crMWh7j8FIkEZqXzDaDE2K5FAFwEAr0zi6kBpWDApG71hEwn5yC1tfX?=
+ =?iso-8859-1?Q?SW+zt77VSPGuxcIWwWA4/65CmuWdgltAY8JWTRBxhLcaxWIUxXVTYlrFrX?=
+ =?iso-8859-1?Q?/BDFkF6pbZknwMZO81CKnW63GFeYJDWs09/AB9NG88KoZ1W2t/18TzKg?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12e9a917-543c-418c-a6a2-08dc6b758852
 X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 May 2024 13:07:46.8772 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 May 2024 13:32:52.3979 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VjHWcr+A3gt9kKGImjk+0yp3lj1CgUwz8c4G7Oh1InhAiedi2puypKmPY2Ihr51ydWq17L7FC3CYzrr/fxL5qoCNVQG06Q7/b/W0MOK8WnI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR11MB6178
+X-MS-Exchange-CrossTenant-UserPrincipalName: UWygsmX937SliBmghABNLqBPJlr3mDrx1BHrCyb44e0l+rYXUGoGsYmaGHk2tfDQ/JE5B2prwdKsLm0rqW1JGQu3J/f3S8Cslig5H6bt69Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB5956
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -175,146 +183,68 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, May 02, 2024 at 11:20:48AM GMT, Tvrtko Ursulin wrote:
+On Fri, May 03, 2024 at 01:37:31PM GMT, Tvrtko Ursulin wrote:
+>From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 >
->On 01/05/2024 18:38, Lucas De Marchi wrote:
->>Only try to get task data like pid and name when that is required.
->>Typically most of the processes in a system don't have a drm fd open.
->>So only open and use /proc/<pid>/stat when it's needed.
->>
->>For the data below, system is running with just a single drm client:
->>
->>Before:
->>  Performance counter stats for './build/tools/gputop -d 0.1 -n 10':
->>
->>             507.19 msec task-clock                       #    0.334 CPUs utilized
->>                 29      context-switches                 #   57.178 /sec
->>                  4      cpu-migrations                   #    7.887 /sec
->>                 75      page-faults                      #  147.874 /sec
->>        (...)
->>        1.518253637 seconds time elapsed
->>        0.007989000 seconds user
->>        0.503351000 seconds sys
->>
->>After:
->>  Performance counter stats for './build/tools/gputop -d 0.1 -n 10':
->>
->>             384.01 msec task-clock                       #    0.275 CPUs utilized
->>                 17      context-switches                 #   44.270 /sec
->>                  1      cpu-migrations                   #    2.604 /sec
->>                 74      page-faults                      #  192.705 /sec
->>        (...)
->>        1.397640800 seconds time elapsed
->>        0.008106000 seconds user
->>        0.385048000 seconds sys
->>
->>Looking only at the execution time of igt_drm_clients_scan() over 10
->>runs.
->>Before: 47138890 nsec
->>After:  33978388 nsec
->>
->>So in both methods it shows a ~25% speedup. It is expected that in a
->>system with more clients this won't be as high.
->>
->>Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->>---
->>
->>Extracted as is from https://patchwork.freedesktop.org/series/132059/ as
->>not really related.
->>
->>  lib/igt_drm_clients.c | 50 +++++++++++++++++++++----------------------
->>  1 file changed, 25 insertions(+), 25 deletions(-)
->>
->>diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
->>index 40d494441..ab0c2cec2 100644
->>--- a/lib/igt_drm_clients.c
->>+++ b/lib/igt_drm_clients.c
->>@@ -368,26 +368,33 @@ static size_t readat2buf(int at, const char *name, char *buf, const size_t sz)
->>  	}
->>  }
->>-static bool get_task_name(const char *buffer, char *out, unsigned long sz)
->>+static void get_task_data(int pid_dir, unsigned int *pid, char *task, size_t tasksz)
->>  {
->>-	char *s = index(buffer, '(');
->>-	char *e = rindex(buffer, ')');
->>-	unsigned int len;
->>+	char buf[4096];
->>+	char *s, *e;
->>+	size_t len;
->>+	if (!readat2buf(pid_dir, "stat", buf, sizeof(buf)))
->>+		return;
->>+
->>+	s = strchr(buf, '(');
->>+	e = strchr(s, ')');
->>  	if (!s || !e)
->>-		return false;
->>-	assert(e >= s);
->>+		return;
->>  	len = e - ++s;
->>-	if(!len || (len + 1) >= sz)
->>-		return false;
->>+	if (!len)
->>+		return;
->>-	strncpy(out, s, len);
->>-	out[len] = 0;
->>+	if (len + 1 > tasksz)
->>+		len = tasksz - 1;
->>-	return true;
->>+	strncpy(task, s, len);
->>+	task[len] = 0;
->>+	*pid = atoi(buf);
->>  }
->>+
->>  static bool is_drm_fd(int fd_dir, const char *name, unsigned int *minor)
->>  {
->>  	struct stat stat;
->>@@ -481,13 +488,11 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
->>  		return clients;
->>  	while ((proc_dent = readdir(proc_dir)) != NULL) {
->>-		unsigned int client_pid, minor = 0;
->>+		unsigned int client_pid = 0, minor = 0;
->>  		int pid_dir = -1, fd_dir = -1;
->>  		struct dirent *fdinfo_dent;
->>  		char client_name[64] = { };
->>  		DIR *fdinfo_dir = NULL;
->>-		char buf[4096];
->>-		size_t count;
->>  		if (proc_dent->d_type != DT_DIR)
->>  			continue;
->>@@ -499,17 +504,6 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
->>  		if (pid_dir < 0)
->>  			continue;
->>-		count = readat2buf(pid_dir, "stat", buf, sizeof(buf));
->>-		if (!count)
->>-			goto next;
->>-
->>-		client_pid = atoi(buf);
->>-		if (!client_pid)
->>-			goto next;
->>-
->>-		if (!get_task_name(buf, client_name, sizeof(client_name)))
->>-			goto next;
->>-
->>  		fd_dir = openat(pid_dir, "fd", O_DIRECTORY | O_RDONLY);
->>  		if (fd_dir < 0)
->>  			goto next;
->>@@ -542,6 +536,12 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
->>  						 minor, info.id))
->>  				continue; /* Skip duplicate fds. */
->>+			if (!client_pid) {
->>+				get_task_data(pid_dir, &client_pid, client_name,
->>+					      sizeof(client_name));
->>+				assert(client_pid > 0);
->>+			}
->>+
->>  			c = igt_drm_clients_find(clients, IGT_DRM_CLIENT_PROBE,
->>  						 minor, info.id);
->>  			if (!c)
+>Code so far only handles the clients using the common DRM helper.
 >
->Nice improvement and well spotted!
+>Handle the amdgpu driver which uses a slightly different set of keys. More
+>specifically, outputs drm-memory-<region> instead of drm-total-<region>.
 >
->Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>With this added gputop starts showing total memory usage for amdgpu.
+>
+>Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>Cc: Alex Deucher <alexander.deucher@amd.com>
+>Cc: Christian König <christian.keonig@amd.com>
+>Cc: Rob Clark <robdclark@chromium.org>
+>Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+>---
+> lib/igt_drm_fdinfo.c | 4 ++++
+> 1 file changed, 4 insertions(+)
+>
+>diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
+>index cab677df29a9..89992f1477ec 100644
+>--- a/lib/igt_drm_fdinfo.c
+>+++ b/lib/igt_drm_fdinfo.c
+>@@ -262,6 +262,10 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
+> 			idx = parse_region(l, info, strlen("drm-total-"),
+> 					   region_map, region_entries, &val);
+> 			UPDATE_REGION(idx, total, val);
+>+		} else if (!strncmp(l, "drm-memory-", 11)) {
+>+			idx = parse_region(l, info, strlen("drm-memory-"),
+>+					   region_map, region_entries, &val);
+>+			UPDATE_REGION(idx, total, val);
 
-applied, thanks
+are they the same thing? Should we clarify the doc that a driver can't
+use both drm-memory- and drm-total-?
+
+	- drm-memory-<region>: <uint> [KiB|MiB]                                         
+											
+	Each possible memory type which can be used to store buffer objects by the      
+	GPU in question shall be given a stable and unique name to be returned as the   
+	string here.  The name "memory" is reserved to refer to normal system memory.   
+											
+	Value shall reflect the amount of storage currently consumed by the buffer      
+	objects belong to this client, in the respective memory region.                 
+											
+	Default unit shall be bytes with optional unit specifiers of 'KiB' or 'MiB'     
+	indicating kibi- or mebi-bytes.                                                 
+
+	- drm-total-<region>: <uint> [KiB|MiB]
+									
+	The total size of buffers that including shared and private memory.
+                                                                    
+
+If they are the same and the total field can just be re-used,
+
+
+	Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
 Lucas De Marchi
+
+> 		} else if (!strncmp(l, "drm-shared-", 11)) {
+> 			idx = parse_region(l, info, strlen("drm-shared-"),
+> 					   region_map, region_entries, &val);
+>-- 
+>2.44.0
+>
