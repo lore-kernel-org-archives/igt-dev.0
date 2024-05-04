@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79CC1C10F1A
-	for <igt-dev@archiver.kernel.org>; Sat,  4 May 2024 06:46:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB5FCC25B74
+	for <igt-dev@archiver.kernel.org>; Sat,  4 May 2024 06:46:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BE358112AD7;
+	by gabe.freedesktop.org (Postfix) with ESMTP id DCB9A112AD9;
 	Sat,  4 May 2024 06:45:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XrQYTqBL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UDumPqXa";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 527E8112AD7
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67955112AD8
  for <igt-dev@lists.freedesktop.org>; Sat,  4 May 2024 06:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1714805158; x=1746341158;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=zXO7NTwZX8pELy6zgWSH5mcEAh3bic8sf7chQEKxHe0=;
- b=XrQYTqBLTnhpapgvNR4iGfjiV8lzA5ukhM7O4CF3M9i2nvmR8fbT1XJY
- h/9O+f24AVvSTpl3a2L3q5G92jvUPxXa0Fk6FfC+dhWZ9BNDNjConzUZm
- zEzl9OO7s02yFHPDDyKbo4F6y7zqWsfrbFQoSYdl445a+j9IN8Wgms5w3
- oE+MTRfZOKlGptGdgJpjZfUXv01N7i+O8eL+maeS4XU3a1xPIu4hQiazu
- SAsQoT62/Bw44Obz3FNC2qoDTDfRgcwQUJF9v5dJEb0Vx/MV1wFzXn46B
- ZZKr1JnWKK6NXn1GA/bZcpFeObaehSlqBZCtKDtvyjuM/OuQYeyHUZFU6 w==;
-X-CSE-ConnectionGUID: l6E4M7tzSduqmNMxazlmpQ==
-X-CSE-MsgGUID: IgeeOTU9TtmLj7WY/3E+yg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11063"; a="10545745"
-X-IronPort-AV: E=Sophos;i="6.07,253,1708416000"; d="scan'208";a="10545745"
+ bh=t2F9bzVnOoNZ4mb2NAAHHL7JHMGICI82XLV7G3J8MYU=;
+ b=UDumPqXankCC+irxccTTePUqdtkAROzmgRQnp7bTHFS5zfZpNfwhkuAh
+ p3+oKzrxh5wbX+zY94YvAxRPwXyARNSbUv/lPgT+ScRsMup/SAvVw2Kj4
+ kOqrlJUsQr+yePJswfEm4UA+ZpdnL6dRgyZSOnR6a3jAn0ido4vaHRSPV
+ 6g1xL7HwM9FeM4cOTz1josrsbiZimvL7tIi9KmSeQxAhClvQlH2KwIgoq
+ WZ4HdPR/tIpDKWCr4td8kWXLfCt84dI8fNqDhWCtN7ERKitWvyBJdMQ22
+ OfxMM9qvmYN3FfYTMhd4sXHavvQawC15lcwRTLgs1XGn9LzWVIiWJn4Vw A==;
+X-CSE-ConnectionGUID: nZ7Enz3AQdu3UYq4hz9Cag==
+X-CSE-MsgGUID: VEHpWAZVR9qwfxJ1371P/g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11063"; a="10545747"
+X-IronPort-AV: E=Sophos;i="6.07,253,1708416000"; d="scan'208";a="10545747"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  03 May 2024 23:45:57 -0700
-X-CSE-ConnectionGUID: IhgUlAnHTsC5XHmvJ/UdDg==
-X-CSE-MsgGUID: Ol4VxXB0TUCnKRqMn/HsDA==
+X-CSE-ConnectionGUID: STcsU8kSR3yy46Ydd1FCIQ==
+X-CSE-MsgGUID: HPd9JbxMQSKNJrDRxXI38w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,253,1708416000"; d="scan'208";a="32169794"
+X-IronPort-AV: E=Sophos;i="6.07,253,1708416000"; d="scan'208";a="32169797"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  03 May 2024 23:45:57 -0700
@@ -46,9 +46,10 @@ To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  Tvrtko Ursulin <tursulin@ursulin.net>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v3 01/13] lib/igt_drm_fdinfo: Extract ignore_space()
-Date: Fri,  3 May 2024 23:46:31 -0700
-Message-ID: <20240504064643.25863-2-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t v3 02/13] lib/igt_drm_fdinfo: Allow any number of spaces
+ before unit
+Date: Fri,  3 May 2024 23:46:32 -0700
+Message-ID: <20240504064643.25863-3-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240504064643.25863-1-lucas.demarchi@intel.com>
 References: <20240504064643.25863-1-lucas.demarchi@intel.com>
@@ -69,43 +70,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extract ignore_space() to be used in other places.
+When parsing memory region, allow any number of spaces between value and
+unit by using ignore_space() and adjusting constness of the variables.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- lib/igt_drm_fdinfo.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ lib/igt_drm_fdinfo.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
-index cab677df2..b3f6fc35a 100644
+index b3f6fc35a..3b2778eee 100644
 --- a/lib/igt_drm_fdinfo.c
 +++ b/lib/igt_drm_fdinfo.c
-@@ -53,6 +53,14 @@ static size_t read_fdinfo(char *buf, const size_t sz, int at, const char *name)
- 	return count > 0 ? count : 0;
- }
+@@ -134,7 +134,8 @@ static int parse_region(char *line, struct drm_client_fdinfo *info,
+ 			const char **region_map, unsigned int region_entries,
+ 			uint64_t *val)
+ {
+-	char *name, *p, *unit = NULL;
++	const char *name, *p, *unit = NULL;
++	char *end_ptr;
+ 	ssize_t name_len;
+ 	int found = -1;
+ 	unsigned int i;
+@@ -180,9 +181,9 @@ static int parse_region(char *line, struct drm_client_fdinfo *info,
+ 		goto out;
  
-+static const char *ignore_space(const char *s)
-+{
-+	for (; *s && isspace(*s); s++)
-+		;
-+
-+	return s;
-+}
-+
- static int parse_engine(char *line, struct drm_client_fdinfo *info,
- 			size_t prefix_len,
- 			const char **name_map, unsigned int map_entries,
-@@ -115,8 +123,8 @@ static const char *find_kv(const char *buf, const char *key, size_t keylen)
- 	if (*p != ':')
- 		return NULL;
+ 	p++;
+-	*val = strtoull(p, &p, 10);
++	*val = strtoull(p, &end_ptr, 10);
  
--	for (p++; *p && isspace(*p); p++)
--		;
-+	p++;
-+	p = ignore_space(p);
+-	p = index(p, ' ');
++	p = ignore_space(end_ptr);
+ 	if (!p)
+ 		goto out;
  
- 	return *p ? p : NULL;
- }
 -- 
 2.43.0
 
