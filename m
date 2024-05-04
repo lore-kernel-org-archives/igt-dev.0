@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59F71C4345F
-	for <igt-dev@archiver.kernel.org>; Sat,  4 May 2024 06:46:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 770F1C25B5C
+	for <igt-dev@archiver.kernel.org>; Sat,  4 May 2024 06:46:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E9387112ADA;
-	Sat,  4 May 2024 06:45:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3D553112ADF;
+	Sat,  4 May 2024 06:46:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nKl6OZke";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Zg1M0uph";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9160E112AD9
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC9EE112AD7
  for <igt-dev@lists.freedesktop.org>; Sat,  4 May 2024 06:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1714805159; x=1746341159;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=pGr8MPJLBQwcNkRcut0agct/P4MqwJW72PP4JweaTDY=;
- b=nKl6OZkeWgASXL1zRtcBRIq72s7Pk5mh73ZImEJf5Rgosyhtge9qyXMS
- L2B4lFBNU3gbTjse5QY+ieI5mrW0iWY9VSK5zhyfiLaSfazeNvIYmobnX
- a1ReluNBO+JoK01o7SllAP0BaAZ69Rmec+Mt4y9K5v8ZayEOhCrrRCckt
- 5Ead0ijO52v1A6UkpNqZ75l0Pkw8M2+6LGc1KlG5kLVMh1HjfJ8paS8Sy
- eqqqXDX7ord6cFJm/QP1YxYNGxcTQNTROdDd6XWZ5acizeHm0XZPGPEb5
- X2nl9CFkX0yIEku24Z5PD278wasWAURIvOmO7beTakbI8nEBwvsp16Amd A==;
-X-CSE-ConnectionGUID: HsQjS15zQTSlM7cIM847MA==
-X-CSE-MsgGUID: pnwe0ZTcT5yILvM4nrRTuw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11063"; a="10545753"
-X-IronPort-AV: E=Sophos;i="6.07,253,1708416000"; d="scan'208";a="10545753"
+ bh=6rE8qpv8iAFc+yixL6MAAhQCUGe6gm0dPHcHw9bjfyA=;
+ b=Zg1M0uphbZ1BBKiD/J7y4drjHRSYcEZf/umiW0a6NoVVBvpcIaGSOAXg
+ mnMB2czDL9TgJibOv1RL2UXRJ8H8hQw2OgB2/lYT2jj/vjDZxrdl8aYrB
+ j7aVWZGDKjihqjlKAvBE85PtLIm03TFOZ76iPl4bIisJXPAWSZ7PjtPzv
+ d4qHFauBzJfNfp7RQNULL8U6oboqTXL4yumRW3wnJt5Pb6VAC7Gf9XWTB
+ qtT2Gq7XA2kFR3ryJDGsr98ApXQW0ofEBt2oxRyhNrqSMu0QCpZhjCu9H
+ hye5kOw05wFOxdG25ZTsrJO8tp2mISSmmcX+K9m3BhseGkOyeduwfvZzH g==;
+X-CSE-ConnectionGUID: k4Z4BWFMTICH9atxDckWBQ==
+X-CSE-MsgGUID: zX9Z+RqvTmanzmPY4DD2Lw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11063"; a="10545767"
+X-IronPort-AV: E=Sophos;i="6.07,253,1708416000"; d="scan'208";a="10545767"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 May 2024 23:45:58 -0700
-X-CSE-ConnectionGUID: zPp0Pm/6SuOM7MWlpVnkPQ==
-X-CSE-MsgGUID: +imxF7WZQEmO7I9P6/+c+w==
+ 03 May 2024 23:45:59 -0700
+X-CSE-ConnectionGUID: VIcvjHiqTniDfekl0NadpQ==
+X-CSE-MsgGUID: x6nudWlTTWuFe0XYpmvQzQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,253,1708416000"; d="scan'208";a="32169806"
+X-IronPort-AV: E=Sophos;i="6.07,253,1708416000"; d="scan'208";a="32169827"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 May 2024 23:45:57 -0700
+ 03 May 2024 23:45:58 -0700
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  Tvrtko Ursulin <tursulin@ursulin.net>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v3 05/13] lib/igt_drm_fdinfo: Remove prefix arg from
- parse functions
-Date: Fri,  3 May 2024 23:46:35 -0700
-Message-ID: <20240504064643.25863-6-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t v3 12/13] lib/igt_drm_clients: Record total cycles
+Date: Fri,  3 May 2024 23:46:42 -0700
+Message-ID: <20240504064643.25863-13-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240504064643.25863-1-lucas.demarchi@intel.com>
 References: <20240504064643.25863-1-lucas.demarchi@intel.com>
@@ -70,134 +69,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The prefix is not really needed and __igt_parse_drm_fdinfo()
-can simply pass l + keylen as argument which simplifies the parse
-functions.
+If the fdinfo data indicates there's drm-total-cycles, use it to
+propagate the engine utilization. Also add an assert in intel_gpu_top
+since it only knows how to deal with with engine time busyness.
 
-While refactoring this, it also replaces the remaining calls to index()
-to use strchr().
-
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- lib/igt_drm_fdinfo.c | 43 ++++++++++++++++++++-----------------------
- 1 file changed, 20 insertions(+), 23 deletions(-)
+ lib/igt_drm_clients.c | 13 +++++++++++++
+ lib/igt_drm_clients.h |  5 +++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
-index 254f4c52b..2d8ad8b81 100644
---- a/lib/igt_drm_fdinfo.c
-+++ b/lib/igt_drm_fdinfo.c
-@@ -61,25 +61,23 @@ static const char *ignore_space(const char *s)
- 	return s;
- }
+diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
+index fbbb763f7..105c7d298 100644
+--- a/lib/igt_drm_clients.c
++++ b/lib/igt_drm_clients.c
+@@ -107,10 +107,13 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
+ 	c->total_engine_time = 0;
+ 	c->agg_delta_cycles = 0;
+ 	c->total_cycles = 0;
++	c->agg_delta_total_cycles = 0;
++	c->total_total_cycles = 0;
  
--static int parse_engine(char *line, struct drm_client_fdinfo *info,
--			size_t prefix_len,
-+static int parse_engine(const char *name, struct drm_client_fdinfo *info,
- 			const char **name_map, unsigned int map_entries,
- 			uint64_t *val)
- {
--	ssize_t name_len;
--	char *name, *p;
-+	const char *p;
-+	size_t name_len;
- 	int found = -1;
- 	unsigned int i;
+ 	for (i = 0; i <= c->engines->max_engine_id; i++) {
+ 		assert(i < ARRAY_SIZE(info->engine_time));
+ 		assert(i < ARRAY_SIZE(info->cycles));
++		assert(i < ARRAY_SIZE(info->total_cycles));
  
--	p = index(line, ':');
--	if (!p || p == line)
-+	p = strchr(name, ':');
-+	if (!p)
- 		return -1;
- 
--	name_len = p - line - prefix_len;
-+	name_len = p - name;
- 	if (name_len < 1)
- 		return -1;
--
--	name = line + prefix_len;
-+	p++;
- 
- 	if (name_map) {
- 		for (i = 0; i < map_entries; i++) {
-@@ -112,25 +110,24 @@ static int parse_engine(char *line, struct drm_client_fdinfo *info,
- 	return found;
- }
- 
--static int parse_region(char *line, struct drm_client_fdinfo *info,
--			size_t prefix_len,
-+static int parse_region(const char *name, struct drm_client_fdinfo *info,
- 			const char **region_map, unsigned int region_entries,
- 			uint64_t *val)
- {
--	char *name, *p;
-+	char *p;
- 	ssize_t name_len;
- 	int found = -1;
- 	unsigned int i;
- 
--	p = index(line, ':');
--	if (!p || p == line)
-+	p = strchr(name, ':');
-+	if (!p)
- 		return -1;
- 
--	name_len = p - line - prefix_len;
-+	name_len = p - name;
- 	if (name_len < 1)
- 		return -1;
- 
--	name = line + prefix_len;
-+	p++;
- 
- 	if (region_map) {
- 		for (i = 0; i < region_entries; i++) {
-@@ -237,14 +234,14 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
- 			v = ignore_space(l + keylen);
- 			strncpy(info->pdev, v, sizeof(info->pdev) - 1);
- 		} else if (strstartswith(l, "drm-engine-capacity-", &keylen)) {
--			idx = parse_engine(l, info, keylen,
-+			idx = parse_engine(l + keylen, info,
- 					   name_map, map_entries, &val);
- 			if (idx >= 0) {
- 				info->capacity[idx] = val;
- 				num_capacity++;
- 			}
- 		} else if (strstartswith(l, "drm-engine-", &keylen)) {
--			idx = parse_engine(l, info, keylen,
-+			idx = parse_engine(l + keylen, info,
- 					   name_map, map_entries, &val);
- 			if (idx >= 0) {
- 				if (!info->capacity[idx])
-@@ -255,23 +252,23 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
- 					info->last_engine_index = idx;
- 			}
- 		} else if (strstartswith(l, "drm-total-", &keylen)) {
--			idx = parse_region(l, info, keylen,
-+			idx = parse_region(l + keylen, info,
- 					   region_map, region_entries, &val);
- 			UPDATE_REGION(idx, total, val);
- 		} else if (strstartswith(l, "drm-shared-", &keylen)) {
--			idx = parse_region(l, info, keylen,
-+			idx = parse_region(l + keylen, info,
- 					   region_map, region_entries, &val);
- 			UPDATE_REGION(idx, shared, val);
- 		} else if (strstartswith(l, "drm-resident-", &keylen)) {
--			idx = parse_region(l, info, keylen,
-+			idx = parse_region(l + keylen, info,
- 					   region_map, region_entries, &val);
- 			UPDATE_REGION(idx, resident, val);
- 		} else if (strstartswith(l, "drm-purgeable-", &keylen)) {
--			idx = parse_region(l, info, keylen,
-+			idx = parse_region(l + keylen, info,
- 					   region_map, region_entries, &val);
- 			UPDATE_REGION(idx, purgeable, val);
- 		} else if (strstartswith(l, "drm-active-", &keylen)) {
--			idx = parse_region(l, info, keylen,
-+			idx = parse_region(l + keylen, info,
- 					   region_map, region_entries, &val);
- 			UPDATE_REGION(idx, active, val);
+ 		if (info->utilization_mask & DRM_FDINFO_UTILIZATION_ENGINE_TIME &&
+ 		    info->engine_time[i] >= c->utilization[i].last_engine_time) {
+@@ -131,6 +134,16 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
+ 			c->agg_delta_cycles += c->utilization[i].delta_cycles;
+ 			c->utilization[i].last_cycles = info->cycles[i];
  		}
++
++		if (info->utilization_mask & DRM_FDINFO_UTILIZATION_CYCLES &&
++		    info->total_cycles[i] >= c->utilization[i].last_total_cycles) {
++			c->utilization_mask |= IGT_DRM_CLIENT_UTILIZATION_TOTAL_CYCLES;
++			c->total_total_cycles += info->total_cycles[i];
++			c->utilization[i].delta_total_cycles =
++				info->total_cycles[i] - c->utilization[i].last_total_cycles;
++			c->agg_delta_total_cycles += c->utilization[i].delta_total_cycles;
++			c->utilization[i].last_total_cycles = info->total_cycles[i];
++		}
+ 	}
+ 
+ 	/* Memory regions */
+diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
+index 514c09e71..946d709de 100644
+--- a/lib/igt_drm_clients.h
++++ b/lib/igt_drm_clients.h
+@@ -36,6 +36,7 @@ enum igt_drm_client_status {
+ enum igt_drm_client_utilization_type {
+ 	IGT_DRM_CLIENT_UTILIZATION_ENGINE_TIME	= 1U << 0,
+ 	IGT_DRM_CLIENT_UTILIZATION_CYCLES	= 1U << 1,
++	IGT_DRM_CLIENT_UTILIZATION_TOTAL_CYCLES	= 1U << 2,
+ };
+ 
+ struct igt_drm_client_engines {
+@@ -74,11 +75,15 @@ struct igt_drm_client {
+ 	unsigned long agg_delta_engine_time; /* Aggregate of @utilization.delta_engine_time, i.e. engine time on all engines since previous scan. */
+ 	unsigned long total_cycles; /* Aggregate of @utilization.agg_delta_cycles, i.e. engine time on all engines since client start. */
+ 	unsigned long agg_delta_cycles; /* Aggregate of @utilization.delta_cycles, i.e. engine time on all engines since previous scan. */
++	unsigned long total_total_cycles; /* Aggregate of @utilization.agg_delta_total_cycles, i.e. engine time on all engines since client start. */
++	unsigned long agg_delta_total_cycles; /* Aggregate of @utilization.delta_total_cycles, i.e. engine time on all engines since previous scan. */
+ 	struct igt_drm_client_utilization {
+ 		unsigned long delta_engine_time; /* Engine time data, relative to previous scan. */
+ 		unsigned long delta_cycles; /* Engine cycles data, relative to previous scan. */
++		unsigned long delta_total_cycles; /* Engine total cycles data, relative to previous scan. */
+ 		uint64_t last_engine_time; /* Engine time data as parsed from fdinfo. */
+ 		uint64_t last_cycles; /* Engine cycles data as parsed from fdinfo. */
++		uint64_t last_total_cycles; /* Engine total cycles data as parsed from fdinfo. */
+ 	} *utilization; /* Array of engine utilization */
+ 
+ 	struct drm_client_meminfo *memory; /* Array of region memory utilisation as parsed from fdinfo. */
 -- 
 2.43.0
 
