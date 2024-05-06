@@ -4,65 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 621B0C25B4F
-	for <igt-dev@archiver.kernel.org>; Mon,  6 May 2024 16:48:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29D43C25B4F
+	for <igt-dev@archiver.kernel.org>; Mon,  6 May 2024 16:55:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E384410F07B;
-	Mon,  6 May 2024 16:48:34 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EHU2Ms/H";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F65910F07B;
- Mon,  6 May 2024 16:48:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715014114; x=1746550114;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=KUEFI5qyq3fZ8OfEQwKVBXkQGF7khpdWIoMRjhn7GZ4=;
- b=EHU2Ms/HCuuqwgdfJYG84+6hIDE4dJmLLC3hWXTzMQGQWXvvzYp1oYLV
- msYGKB7GLjj0wsd0HA/L0BuraiUtEM9hX2Bw4Gmix2zTA4I27WePaVb9U
- pVaRgiAPhZaGuZXkQkQyW3UHsFNlQ6LE7xxSTun3eeAqQorzwUKEDCs62
- hrQtWYF/n/ItmywZmaETuBijsh1v5+1iaJIynGJUJQUrT4r0sQRKBknP6
- Y8OyN9u8B26js3OmM5Bh/D8XvbWSkqFAOLvKDS4XVz0H3PKlne8UF0QjQ
- bdXdwhA+g4oKSnArM60/nXVZ6dIYdoUlfu8OPJ1SjyuQZbFrbl34fZmdP w==;
-X-CSE-ConnectionGUID: mGeqdR2nTTG5W39AGOEDug==
-X-CSE-MsgGUID: afFylvdtSp6fDCrXCNwVCA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="10932501"
-X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; d="scan'208";a="10932501"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2024 09:48:33 -0700
-X-CSE-ConnectionGUID: bT7LmhwvRwyu59bKHzzmkQ==
-X-CSE-MsgGUID: ztEK2aPBT+OBGq/lAqWBCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; d="scan'208";a="59081731"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 09:48:32 -0700
-Date: Mon, 6 May 2024 18:48:28 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- I915-ci-infra@lists.freedesktop.org,
- Ewelina Musial <ewelina.musial@intel.com>,
- Kamil Konieczny <kamil.konieczny@intel.com>
-Subject: Re: =?utf-8?Q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_lib=2Fintel=5Fc?=
- =?utf-8?B?dHg6?= Propagate error from __intel_ctx_xe_exec wait timeout
-Message-ID: <20240506164828.drc2xe47kdtygk6w@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- I915-ci-infra@lists.freedesktop.org,
- Ewelina Musial <ewelina.musial@intel.com>,
- Kamil Konieczny <kamil.konieczny@intel.com>
-References: <20240506120827.5799-1-maarten.lankhorst@linux.intel.com>
- <171500039508.1939724.10998745899604035504@8e613ede5ea5>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B140510FF35;
+	Mon,  6 May 2024 16:55:12 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3148B10FF35;
+ Mon,  6 May 2024 16:55:11 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0213380898371790645=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <171500039508.1939724.10998745899604035504@8e613ede5ea5>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Fccs=3A_Test_XRGB21?=
+ =?utf-8?q?01010?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 06 May 2024 16:55:11 -0000
+Message-ID: <171501451119.1941770.13387051830944282658@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240506133748.30321-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20240506133748.30321-1-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,73 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-05-06 at 12:59:55 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: lib/intel_ctx: Propagate error from __intel_ctx_xe_exec wait timeout
-> URL   : https://patchwork.freedesktop.org/series/133230/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_7833_BAT -> XEIGTPW_11102_BAT
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_11102_BAT absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_11102_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (5 -> 0)
-> ------------------------------
-> 
->   ERROR: It appears as if the changes made in XEIGTPW_11102_BAT prevented too many machines from booting.
-> 
->   Missing    (5): bat-pvc-2 bat-lnl-1 bat-dg2-oem2 bat-adlp-7 bat-atsm-2 
+--===============0213380898371790645==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Looks like some other problem, not a simple fix in one lib.
+== Series Details ==
 
-> 
-> 
-> Changes
-> -------
-> 
->   No changes found
-> 
-> 
-> Build changes
-> -------------
-> 
->   * IGT: IGT_7833 -> IGTPW_11102
->   * Linux: xe-1238-ca96a1c62451ea534391d1eafe3a0b5691658c02 -> xe-1239-5a43da669cdb9b8df66e32a661b09cd9c52e35f2
+Series: tests/kms_ccs: Test XRGB2101010
+URL   : https://patchwork.freedesktop.org/series/133235/
+State : success
 
-Why is both igt and Xe driver changing?
-imho it should be one or the other, not both.
+== Summary ==
 
-Adding Ewelina to Cc.
+CI Bug Log - changes from XEIGT_7834_BAT -> XEIGTPW_11103_BAT
+====================================================
 
-Regards,
-Kamil
+Summary
+-------
 
-> 
->   IGTPW_11102: 11102
->   IGT_7833: 6f89cac1b180e7cd7cbac535e65843595b2bb5bd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   xe-1238-ca96a1c62451ea534391d1eafe3a0b5691658c02: ca96a1c62451ea534391d1eafe3a0b5691658c02
->   xe-1239-5a43da669cdb9b8df66e32a661b09cd9c52e35f2: 5a43da669cdb9b8df66e32a661b09cd9c52e35f2
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11102/index.html
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 4)
+------------------------------
+
+  Missing    (1): bat-lnl-1 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7834 -> IGTPW_11103
+
+  IGTPW_11103: 2f319edb85e92ec97149805753eafaccdbf31c7e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_7834: 008178acd533c33910d41fefc80462b3915c89fc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1240-a2e658aa302af6359a47b5758bce1c9018a068df: a2e658aa302af6359a47b5758bce1c9018a068df
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11103/index.html
+
+--===============0213380898371790645==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_ccs: Test XRGB2101010</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133235/">https://patchwork.freedesktop.org/series/133235/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11103/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11103/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7834_BAT -&gt; XEIGTPW_11103_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 4)</h2>
+<p>Missing    (1): bat-lnl-1 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7834 -&gt; IGTPW_11103</li>
+</ul>
+<p>IGTPW_11103: 2f319edb85e92ec97149805753eafaccdbf31c7e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7834: 008178acd533c33910d41fefc80462b3915c89fc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1240-a2e658aa302af6359a47b5758bce1c9018a068df: a2e658aa302af6359a47b5758bce1c9018a068df</p>
+
+</body>
+</html>
+
+--===============0213380898371790645==--
