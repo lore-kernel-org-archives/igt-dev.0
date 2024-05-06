@@ -4,58 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7E7DC10F16
-	for <igt-dev@archiver.kernel.org>; Mon,  6 May 2024 10:15:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F695C10F16
+	for <igt-dev@archiver.kernel.org>; Mon,  6 May 2024 10:37:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8FAB9112F52;
-	Mon,  6 May 2024 10:15:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ECE19112F61;
+	Mon,  6 May 2024 10:37:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ILVS1FGM";
+	dkim=pass (2048-bit key; unprotected) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="v/gCmeme";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D2A1112F51
- for <igt-dev@lists.freedesktop.org>; Mon,  6 May 2024 10:15:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714990512; x=1746526512;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=N6fHgU8JOznQaF2rnTmiG4LMSOvUTU68xGF81o0lEZs=;
- b=ILVS1FGMSEfzeFLjb1nDMq1yXOCl04FYqVPvvlQPn3BHMCKzdMCd7vxQ
- dSvuqVaTvMz8wpwe+fvvr9/uqdV52mlrlvduDP9T6Xh6tb43hXMGK5mZ4
- Y0RmN61Cbh8ZdCDBUSxqWs2LzrHfa5d8MwtP4SH88RTld/nBUBw6+AxtL
- okFJoSPc/PN+QJklcLznEhc6vhs01EUZZJvRRxTpIddP7vEnWMkXqwgym
- NIi20JTzf1dgymf/AFKh5Vet+juFT1/+q+lJk2gAAsV3KZ4SyLIV6MOEp
- KK3SQ1Ur91BsC6GgLwVEk0xXbLZbxSow5Y82UvS7kNayWciH6ia3E5feG A==;
-X-CSE-ConnectionGUID: lVS02ekiT8SnXn2PZEUxPg==
-X-CSE-MsgGUID: PHqrps+RSe+IPzxmM0ZmXQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="28254710"
-X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; d="scan'208";a="28254710"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2024 03:15:12 -0700
-X-CSE-ConnectionGUID: LJXRF21sQ3eHaNlvdvZ9yQ==
-X-CSE-MsgGUID: mEC6OoQsRgiO8GqPbtJ8GQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; d="scan'208";a="28083316"
-Received: from unknown (HELO intel.com) ([10.237.72.65])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2024 03:15:10 -0700
-Date: Mon, 6 May 2024 13:15:01 +0300
-From: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Cc: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>,
- igt-dev@lists.freedesktop.org, Thasleem@freedesktop.org
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_display_modes: Skip the
- negative test on MST Hub
-Message-ID: <ZjitpUBOPPn7QMrv@intel.com>
-References: <20230707153720.1478-1-mohammed.thasleem@intel.com>
- <ZN8vfGObzmdK5EKb@intel.com>
- <c15749c4-03f2-dffe-3c0a-6a3458863ddd@intel.com>
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com
+ [209.85.167.50])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5339D112F61
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 May 2024 10:37:17 +0000 (UTC)
+Received: by mail-lf1-f50.google.com with SMTP id
+ 2adb3069b0e04-51f45104ef0so1838532e87.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 06 May 2024 03:37:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1714991835; x=1715596635;
+ darn=lists.freedesktop.org; 
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NQFQ7IBid64XPWr5xbcYpiuXtx7IglDd51Wi8jsFRhM=;
+ b=v/gCmemegJSgxdpxJXbpfPrsUYPKAc+rtDhH2brFBNMZTjMsrL+T+cZIDwQ98rMcsc
+ b5Lj4HXJpNvMjsdQZR/qiOPu9cif8cuES16Zbntj/wDFCqL63uCvI3/cFUuoTTsJWAn+
+ G7glQFRSiEs+F1G49mcujlXmGLDN1K6jnOAaj/VrW7J7C9zqTBtfrXme9Qf7obZl2PQK
+ 4C3wZ34E1Y/nMDaYXlZ2ai+bW8eIj2W07b51lE+lWtg26fTQclOztpMKe7FGKKJGkJ1n
+ 10YyVinGscgQPIRSencju2O21xw6fb+MgsfofOd4lmjlUR8QO5UBZgZERwvahk/QjXf1
+ 468Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714991835; x=1715596635;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NQFQ7IBid64XPWr5xbcYpiuXtx7IglDd51Wi8jsFRhM=;
+ b=VqTw18346taplZN8Z5uVH/eWDJL6MsnH8Ppqz9zr1C5FLuEWVxOS8AIf0z74MtHVdp
+ laQDT+u/yZjsi8GdfIZEmntK+3H10ToA69DmT3LfYD/4CeVF8H0imXD3Rp63WU9ybZ0m
+ wt0eNhmXQ1b7cjbSwjGOIqv16IkBGEjKIdgrFDTUiDQwnv1XV4YrpZRXRl+MK2TFeI2O
+ 7eU3yXG353Aq/abwBkxK94mHaVhbNHV1C9KmvRlpky5zSbvRzIqb7OrCrxRYyFtxXd3B
+ AvynRgKpBaFzw7aXN7I5Z1vL+YW2cz/aA+o8n4yaTasiTQuQ+RZ2TKkJzHVBx6bhqOsw
+ E6zQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXlsgFJUXv++LVuWHVezGeLamwkrxsRW6go3uVYDbjkFDjnpNK3tRTWXOWTCP51M5AD0L5qm3xwXeMafwl/sE5hsgKaq6Npre8WLVaZ3w==
+X-Gm-Message-State: AOJu0YyqlL7M/amryksOJtFc2zyDcH8qz03hmRTlQ0vr7SVfhiHR6deF
+ LIXXP4vnLTObP8D+rNrpD32rFxALDrZ8jQ0s/Q+LvNY8GWklJ+V+7g0K5ZRs5ZA=
+X-Google-Smtp-Source: AGHT+IFKq7ayeH/ID+956s0NHLi6ebEtr/LMFWgQU2oI0cxc9VkeFJyJjkKTtvzxlB6lq9xb873jCA==
+X-Received: by 2002:a05:6512:32ac:b0:51e:543c:a45d with SMTP id
+ q12-20020a05651232ac00b0051e543ca45dmr6801780lfe.20.1714991835135; 
+ Mon, 06 May 2024 03:37:15 -0700 (PDT)
+Received: from [192.168.0.101] ([84.69.19.168])
+ by smtp.gmail.com with ESMTPSA id
+ j13-20020a05600c1c0d00b0041be58cdf83sm15629979wms.4.2024.05.06.03.37.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 06 May 2024 03:37:14 -0700 (PDT)
+Message-ID: <b1c38cda-2c62-401d-b5a5-dc518a600aa0@ursulin.net>
+Date: Mon, 6 May 2024 11:37:13 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c15749c4-03f2-dffe-3c0a-6a3458863ddd@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v3 00/12] gputop: Add support for xe
+Content-Language: en-GB
+To: Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+References: <20240504064643.25863-1-lucas.demarchi@intel.com>
+From: Tvrtko Ursulin <tursulin@ursulin.net>
+In-Reply-To: <20240504064643.25863-1-lucas.demarchi@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,53 +85,53 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Aug 23, 2023 at 12:07:52PM +0530, Modem, Bhanuprakash wrote:
-> 
-> 
-> On Fri-18-08-2023 02:14 pm, Lisovskiy, Stanislav wrote:
-> > On Fri, Jul 07, 2023 at 09:07:20PM +0530, Thasleem, Mohammed wrote:
-> > > Skip the test on which MST hub which support bandwidth for 2k-4k
-> > > and 4k-4k multi displays.
-> > > 
-> > > Signed-off-by: Thasleem, Mohammed <mohammed.thasleem@intel.com>
-> > 
-> > Okay I missed the MST check in the begining of the main function, so
-> > 
-> > Reviewed-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-> > 
-> > > ---
-> > >   tests/kms_display_modes.c | 1 +
-> > >   1 file changed, 1 insertion(+)
-> > > 
-> > > diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-> > > index 4bebb25e..8e117695 100644
-> > > --- a/tests/kms_display_modes.c
-> > > +++ b/tests/kms_display_modes.c
-> > > @@ -310,6 +310,7 @@ static void run_extendedmode_negative(data_t *data, int pipe1, int pipe2)
-> > >   	igt_require(i915_pipe_output_combo_valid(display));
-> > >   	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
-> > > +	igt_skip_on_f(ret == 0, "MST Hub supports bandwidth on multi display\n");
-> 
-> NACK
-> 
-> Failure reason can be anything, you need to check for the precise error
-> code.
 
-From my point of view, nack is for another reason: we can't skip the negative test case,
-if it just happens to potentially pass.
-Scenarios where it might pass and we dont consider that as a problem should
-be filtered out by using some other checks to distinguish those scenarios more
-explicitly.
-Otherwise here we will get the situation that this negative test case always succeeds,
-because we skip it always whenever it doesn't.
-
-Stan
-
+On 04/05/2024 07:46, Lucas De Marchi wrote:
+> v3 of https://lore.kernel.org/all/20240423234431.1959354-1-lucas.demarchi@intel.com
 > 
-> - Bhanu
+> I moved some gputop eye candy to a separate series:
+> https://lore.kernel.org/all/20240501173303.115737-1-lucas.demarchi@intel.com
 > 
-> > >   	igt_assert(ret != 0 && errno == ENOSPC);
-> > >   }
-> > > -- 
-> > > 2.34.1
-> > > 
+> This now also moves all the refactors to come as prep patches. The
+> drm-total-cycles addition is  in the last 3 patches.
+> 
+> As requested fdinfo and drm-clients libraries now don't take any
+> decision: they only read the fdinfo and calculate the deltas
+> respectively. The decision about what aproach to use to calculate the
+> client utilization is left to gputop.
+
+Approach LGTM so ack for the series. Hopefully someone else can do the 
+detailed review.
+
+Just two observations - 3/13 I don't know what the "fixup" is, supposed 
+to be and 12/13 incorrectly mentions it is adding some assert to 
+intel_gpu_top.
+
+Regards,
+
+Tvrtko
+
+> Lucas De Marchi (13):
+>    lib/igt_drm_fdinfo: Extract ignore_space()
+>    lib/igt_drm_fdinfo: Allow any number of spaces before unit
+>    fixup! lib/igt_drm_fdinfo: Allow any number of spaces before unit
+>    lib/igt_drm_fdinfo: Stop passing key twice
+>    lib/igt_drm_fdinfo: Remove prefix arg from parse functions
+>    lib/igt_drm_fdinfo: Parse drm-cycles
+>    lib/igt_drm_fdinfo: Start tracking available engine keys
+>    treewide: Rename engine busyness variables
+>    lib/igt_drm_clients: Move engine fields to substruct
+>    lib/igt_drm_clients: Record drm-cycles
+>    lib/igt_drm_fdinfo: Parse drm-total-cycles
+>    lib/igt_drm_clients: Record total cycles
+>    gputop: Add support to drm-cycles/drm-total-cycles
+> 
+>   lib/igt_drm_clients.c    |  55 ++++++++++----
+>   lib/igt_drm_clients.h    |  27 ++++++-
+>   lib/igt_drm_fdinfo.c     | 154 +++++++++++++++++++++------------------
+>   lib/igt_drm_fdinfo.h     |  17 ++++-
+>   tests/intel/drm_fdinfo.c |  44 +++++------
+>   tools/gputop.c           |  45 ++++++++++--
+>   tools/intel_gpu_top.c    |  24 +++---
+>   7 files changed, 235 insertions(+), 131 deletions(-)
+> 
