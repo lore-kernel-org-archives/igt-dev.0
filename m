@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6070DC25B4F
-	for <igt-dev@archiver.kernel.org>; Tue,  7 May 2024 07:59:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFC0FC10F1A
+	for <igt-dev@archiver.kernel.org>; Tue,  7 May 2024 07:59:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D86B51124A1;
-	Tue,  7 May 2024 07:59:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AEF2E112183;
+	Tue,  7 May 2024 07:59:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i+GKuyZX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HOook3ng";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2448F112420
- for <igt-dev@lists.freedesktop.org>; Tue,  7 May 2024 07:59:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7BC4D112420
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 May 2024 07:59:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715068749; x=1746604749;
+ t=1715068753; x=1746604753;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=FXFDt+EREC0Jl+SwX7ryTMkgrfwxE2Fw486aWcQ2l+M=;
- b=i+GKuyZX8Igix1Hni0dELhNlKpjoS6EmQV0j1xY56dJdO2AzOiFZHzXd
- vieFuSUGM94GSybGYfcg6/hKJ0NZFvhukz/EiuVZmbSqDUi3J4gbCL4pm
- +30dRN2+mBDTNjUjGwrsCEYRafiGQRGOddCUjZ8SZ8iqwMJwwD3qLYqiV
- anDyU/dyqhcKB+PTjYALyOBjyOuPvc7Uy4FAq37W5TwUzPK5PSwumSxyg
- Uo/pspWEU43FScZs+IdNsYrlOV35vcN3YyAVpYY1HalqsxTCHe1GhWO8q
- Uq4aWAmO0Kq3xvYddPz6T+e86LoS1Cv8b68uIbf7ylSdvxmFZFssJjGUY Q==;
-X-CSE-ConnectionGUID: 8PAcDDeUTrWskgOeotGCIQ==
-X-CSE-MsgGUID: mf778NW3SMitUlSQQ0D6UQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="22258370"
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="22258370"
+ bh=EL8U4X2FbPEH4REIlll5mo3GyVQvKYIf8EulJK0PVCU=;
+ b=HOook3ng6sbsefOB55zXZrrFvf5Dme1MY/lIYvUmZVbEe9lpbASuwAgv
+ 2WPkT9nGX6aY8ARyQHkls+vmX8PMbrINqbf/lUaNrBaWYbw52AurD+VJ5
+ ldJyBlDUghO5ItK1EDDjbPVmEYcW+GJ7tOmwEmPcrKe/SLZbSQOPMn8jE
+ pXax1MZCb3y2geT/DOaOt8I0UBD9P/1iUsNE16zU2s6ujvCWrUYQmbmyR
+ vzKenA3n/W7GBo/vNwGkpapVOhxNghXi8HSoiK709XJMj4VW4Q6Of9UWk
+ kYB8GqRjWdoUxJqIiQHAmOlde85Hr9domDPTFQymV8SKuGEbxMqjVisrw Q==;
+X-CSE-ConnectionGUID: mmo+SZrcRTuBjih/5ayBNA==
+X-CSE-MsgGUID: aK5Qp5qFTRy2WUYG6G/D+w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="22258373"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="22258373"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2024 00:59:09 -0700
-X-CSE-ConnectionGUID: CIeJUrd3T1GoxUh7YKyD0w==
-X-CSE-MsgGUID: g0fw6o7VTx+9JrPFuwfhlg==
+ 07 May 2024 00:59:13 -0700
+X-CSE-ConnectionGUID: DcLf/neISCCZpYCZe0YEJw==
+X-CSE-MsgGUID: qSPFpBc6Rf6uU9Z6Rk7lXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="33238157"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="33238169"
 Received: from maurocar-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.246.12])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2024 00:59:07 -0700
+ 07 May 2024 00:59:11 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v3 05/11] lib/intel_bufops: Start supporting compression
- on Xe2+
-Date: Tue,  7 May 2024 09:58:30 +0200
-Message-Id: <20240507075836.259581-6-zbigniew.kempczynski@intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Karolina Stolarek <karolina.stolarek@intel.com>
+Subject: [PATCH i-g-t v3 06/11] lib/rendercopy_gen9: Allow to use all tilings
+ on flatccs platforms
+Date: Tue,  7 May 2024 09:58:31 +0200
+Message-Id: <20240507075836.259581-7-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240507075836.259581-1-zbigniew.kempczynski@intel.com>
 References: <20240507075836.259581-1-zbigniew.kempczynski@intel.com>
@@ -70,69 +71,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Xe2+ uses unified compression where PAT index determines using
-compressed pages so lets add support of that to intel-buf. It is
-necessary to run render-copy with compression on those platforms.
+Instead of limiting compression to Tile4 lets enable it for any
+tiling when platform has flatccs area. For integrated leave Tile4
+condition to properly configure compression on those platforms.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
 ---
- lib/intel_bufops.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ lib/rendercopy_gen9.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 7118272e5f..f5611c037b 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -934,8 +934,14 @@ static void __intel_buf_init(struct buf_ops *bops,
- 			if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &bo_size, region))
- 				igt_assert_eq(__gem_create(bops->fd, &bo_size, &buf->handle), 0);
- 		} else {
-+			uint16_t cpu_caching = __xe_default_cpu_caching(bops->fd, region, 0);
-+
-+			if (AT_LEAST_GEN(bops->devid, 20) && compression)
-+				cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
-+
- 			bo_size = ALIGN(bo_size, xe_get_default_alignment(bops->fd));
--			buf->handle = xe_bo_create(bops->fd, 0, bo_size, region, 0);
-+			buf->handle = xe_bo_create_caching(bops->fd, 0, bo_size, region, 0,
-+							   cpu_caching);
+diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+index 7c7563d50c..c73f815efc 100644
+--- a/lib/rendercopy_gen9.c
++++ b/lib/rendercopy_gen9.c
+@@ -268,7 +268,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+ 			ss->ss13.clear_address_hi = (address + buf->cc.offset) >> 32;
  		}
- 	}
  
-@@ -970,11 +976,16 @@ void intel_buf_init(struct buf_ops *bops,
- 		    uint32_t tiling, uint32_t compression)
- {
- 	uint64_t region;
-+	uint8_t pat_index = DEFAULT_PAT_INDEX;
-+
-+	if (compression && AT_LEAST_GEN(bops->devid, 20))
-+		pat_index = intel_get_pat_idx_uc_comp(bops->fd);
- 
- 	region = bops->driver == INTEL_DRIVER_I915 ? I915_SYSTEM_MEMORY :
- 						     system_memory(bops->fd);
- 	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
--			 tiling, compression, 0, 0, region, DEFAULT_PAT_INDEX,
-+			 tiling, compression, 0, 0, region,
-+			 pat_index,
- 			 DEFAULT_MOCS_INDEX);
- 
- 	intel_buf_set_ownership(buf, true);
-@@ -991,8 +1002,14 @@ void intel_buf_init_in_region(struct buf_ops *bops,
- 			      uint32_t tiling, uint32_t compression,
- 			      uint64_t region)
- {
-+	uint8_t pat_index = DEFAULT_PAT_INDEX;
-+
-+	if (compression && AT_LEAST_GEN(bops->devid, 20))
-+		pat_index = intel_get_pat_idx_uc_comp(bops->fd);
-+
- 	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
--			 tiling, compression, 0, 0, region, DEFAULT_PAT_INDEX,
-+			 tiling, compression, 0, 0, region,
-+			 pat_index,
- 			 DEFAULT_MOCS_INDEX);
- 
- 	intel_buf_set_ownership(buf, true);
+-		if (HAS_4TILE(ibb->devid)) {
++		if (HAS_4TILE(ibb->devid) || HAS_FLATCCS(ibb->devid)) {
+ 			ss->ss7.dg2.memory_compression_type = 0;
+ 			ss->ss7.dg2.memory_compression_enable = 0;
+ 			ss->ss7.dg2.disable_support_for_multi_gpu_partial_writes = 1;
 -- 
 2.34.1
 
