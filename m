@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B2C3C25B75
-	for <igt-dev@archiver.kernel.org>; Tue,  7 May 2024 07:58:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2EEEC10F1A
+	for <igt-dev@archiver.kernel.org>; Tue,  7 May 2024 07:58:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2022A10FDAA;
-	Tue,  7 May 2024 07:58:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 854F310FDE1;
+	Tue,  7 May 2024 07:58:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n2Zao4dD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kz7x7x0o";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4223510FDAA
- for <igt-dev@lists.freedesktop.org>; Tue,  7 May 2024 07:58:53 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 927BD112040
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 May 2024 07:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715068734; x=1746604734;
+ t=1715068736; x=1746604736;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=zgVu2A3A0g8ysLMRjbwpaBAf2mefG16ngE5tkK7YqGI=;
- b=n2Zao4dDiUO4Q1ljON9roc+bwuIegZAVPS1xUq/wss+3UnMXT12YVbqg
- SKyncdvgProCGouTWus+3dt0M2fQQ3UmQ2Sn6DsGKJgCeYkze3NEhvmx6
- yZOlB8eUVU/N5Bsis45Kjs07eC0h86kWJljBaDm7KWMO56BEl0OV2lAFa
- b+uqpHgSjmQN3CpJhRMOhVAki7bNREixSz9ivyG2PolJmDjcICxbV1qea
- /6O4ryw5ngRWMHx6imxPmNBiB72SnTXBVOq1YgTAI4H5R699aGzBnrO0c
- WEfe7Ty3vbXdXlyfk/M9VX7xXDYvtcnR9se3tQD601KUqSAv98Wi/TfjK A==;
-X-CSE-ConnectionGUID: 5lmPBcI2TCOUGpaKQ4ohew==
-X-CSE-MsgGUID: JCzujMmFSxGViebJFSFeKg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="14662825"
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="14662825"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2024 00:58:53 -0700
-X-CSE-ConnectionGUID: y3b33YtnRxaoo9/SBKt75Q==
-X-CSE-MsgGUID: Letbiqo/R8ifzmpaqVTujw==
+ bh=Nv9w8NPLhnmNRhgwpTufWeQpyI+mHRVd+13o1C3UOyI=;
+ b=kz7x7x0oslsSanZcLHRITGyUJTBK9hq+N6WT9So+TCTfLgRMwKpoOCo5
+ cH6ck7nFH6wWM79iL2Opfr5Gxx05ImpYPgSrz97AFr9xGIdCaKlgJhqbT
+ oqQrMkYJ+sGOMk5W/5YSduchhaDCD+NI9/+MAvJui2nm1JhR9/nnpwK2o
+ gkgVpaXHG6P12sFuwp+PSjSbj/VfU8ZzCIbi6PjNF/UIDdBV5MEwm2fFn
+ StIB6OWzssnwUsjSOh9/70daRuA772B1FAuG5rZ4gzhyRnrM8CJI293CT
+ 3EUsWe7aPbvvJS5DGd8uPQgj4vahrqJIB9k1jz1UkJKmxRjyeqnvDRHmp Q==;
+X-CSE-ConnectionGUID: OdviYfG0SNyvVeuBh2jBhg==
+X-CSE-MsgGUID: LvW1bjFGSgKSS7CZLFHg1A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="14656307"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="14656307"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2024 00:58:56 -0700
+X-CSE-ConnectionGUID: cLv0nFC2SCqR57RSDIjH1g==
+X-CSE-MsgGUID: qrA7JSsXR5uGdncNH7Lg/A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="32999826"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="32943819"
 Received: from maurocar-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.246.12])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2024 00:58:51 -0700
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2024 00:58:55 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v3 01/11] lib/intel_bufops: Store devid on buffer ops
- creation
-Date: Tue,  7 May 2024 09:58:26 +0200
-Message-Id: <20240507075836.259581-2-zbigniew.kempczynski@intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Karolina Stolarek <karolina.stolarek@intel.com>
+Subject: [PATCH i-g-t v3 02/11] lib/intel_blt: Rename confusing fb tile to
+ i915 tile
+Date: Tue,  7 May 2024 09:58:27 +0200
+Message-Id: <20240507075836.259581-3-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240507075836.259581-1-zbigniew.kempczynski@intel.com>
 References: <20240507075836.259581-1-zbigniew.kempczynski@intel.com>
@@ -70,83 +71,65 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As I need devid to diverge intel-buf init code lets store it in
-bufops structure. This field is commonly used so add function which
-returns it.
+Fb tile is defacto drm modifier, thus blt_tile_to_fb_tile() name
+is confusing as it converts to I915_TILING*, not drm modifier.
+Lets rename it.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
 ---
- lib/intel_bufops.c | 20 +++++++++++++++++---
- lib/intel_bufops.h |  1 +
- 2 files changed, 18 insertions(+), 3 deletions(-)
+ lib/intel_blt.c              | 4 ++--
+ lib/intel_blt.h              | 2 +-
+ tests/intel/xe_render_copy.c | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 51fdf50adb..43d6dd5b43 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -114,6 +114,7 @@ struct buf_ops {
- 	int gen_start;
- 	int gen_end;
- 	unsigned int intel_gen;
-+	uint32_t devid;
- 	uint32_t supported_tiles;
- 	uint32_t supported_hw_tiles;
- 	uint32_t swizzle_x;
-@@ -1499,12 +1500,11 @@ static bool probe_hw_tiling(struct buf_ops *bops, uint32_t tiling,
- {
- 	uint64_t size = 256 * 256;
- 	uint32_t handle, buf_tiling, buf_swizzle, phys_swizzle;
--	uint32_t devid, stride;
-+	uint32_t stride;
- 	int ret;
- 	bool is_set = false;
- 
--	devid =  intel_get_drm_devid(bops->fd);
--	stride = get_stride(devid, tiling);
-+	stride = get_stride(bops->devid, tiling);
- 	handle = gem_create(bops->fd, size);
- 
- 	/* Single shot, if no fences are available we fail immediately */
-@@ -1616,6 +1616,7 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
- 
- 	bops->fd = fd;
- 	bops->intel_gen = generation;
-+	bops->devid = devid;
- 	bops->driver = is_i915_device(fd) ? INTEL_DRIVER_I915 :
- 					    is_xe_device(fd) ? INTEL_DRIVER_XE : 0;
- 	igt_assert(bops->driver);
-@@ -1785,6 +1786,19 @@ int buf_ops_get_fd(struct buf_ops *bops)
- 	return bops->fd;
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index 4da5cc855e..5a281036c4 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -536,14 +536,14 @@ static int __block_tiling(enum blt_tiling_type tiling)
  }
  
-+/**
-+ * buf_ops_get_devid
-+ * @bops: pointer to buf_ops
-+ *
-+ * Returns: device id
-+ */
-+uint32_t buf_ops_get_devid(struct buf_ops *bops)
-+{
-+	igt_assert(bops);
-+
-+	return bops->devid;
-+}
-+
  /**
-  * buf_ops_get_driver
-  * @bops: pointer to buf_ops
-diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-index b959a8cc8e..84e71d41a2 100644
---- a/lib/intel_bufops.h
-+++ b/lib/intel_bufops.h
-@@ -118,6 +118,7 @@ struct buf_ops *buf_ops_create(int fd);
- struct buf_ops *buf_ops_create_with_selftest(int fd);
- void buf_ops_destroy(struct buf_ops *bops);
- int buf_ops_get_fd(struct buf_ops *bops);
-+uint32_t buf_ops_get_devid(struct buf_ops *bops);
- enum intel_driver buf_ops_get_driver(struct buf_ops *bops);
+- * blt_tile_to_fb_tile:
++ * blt_tile_to_i915_tile:
+  * @tiling: tiling id
+  *
+  * Returns:
+  * id of tiling introduced in i915 like I915_TILING_* used for example
+  * in render-copy code.
+  */
+-int blt_tile_to_fb_tile(enum blt_tiling_type tiling)
++int blt_tile_to_i915_tile(enum blt_tiling_type tiling)
+ {
+ 	switch (tiling) {
+ 	case T_LINEAR: return I915_TILING_NONE;
+diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+index cc59666862..fcfce69bee 100644
+--- a/lib/intel_blt.h
++++ b/lib/intel_blt.h
+@@ -213,7 +213,7 @@ bool blt_platform_has_flat_ccs_enabled(int fd);
+ bool blt_uses_extended_block_copy(int fd);
  
- bool buf_ops_set_software_tiling(struct buf_ops *bops,
+ const char *blt_tiling_name(enum blt_tiling_type tiling);
+-int blt_tile_to_fb_tile(enum blt_tiling_type tiling);
++int blt_tile_to_i915_tile(enum blt_tiling_type tiling);
+ 
+ uint32_t blt_get_min_stride(uint32_t width, uint32_t bpp,
+ 			    enum blt_tiling_type tiling);
+diff --git a/tests/intel/xe_render_copy.c b/tests/intel/xe_render_copy.c
+index 4f98cb7dfa..ef75c4ce6d 100644
+--- a/tests/intel/xe_render_copy.c
++++ b/tests/intel/xe_render_copy.c
+@@ -407,7 +407,7 @@ igt_main_args("dpiW:H:", NULL, help_str, opt_handler, NULL)
+ 					continue;
+ 
+ 				tiling_name = blt_tiling_name(tiling);
+-				tiling = blt_tile_to_fb_tile(tiling);
++				tiling = blt_tile_to_i915_tile(tiling);
+ 				igt_dynamic_f("render-%s-%ux%u", tiling_name, surfwidth, surfheight)
+ 					render(bops, tiling, surfwidth, surfheight, id);
+ 			}
 -- 
 2.34.1
 
