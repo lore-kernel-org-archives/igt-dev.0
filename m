@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9CE3C10F1A
-	for <igt-dev@archiver.kernel.org>; Tue,  7 May 2024 18:27:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67ED1C10F1A
+	for <igt-dev@archiver.kernel.org>; Tue,  7 May 2024 18:29:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2E7161125BB;
-	Tue,  7 May 2024 18:27:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DB10F10E9B0;
+	Tue,  7 May 2024 18:29:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nJd5Iru8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n7Zj4CXU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 434301125C2
- for <igt-dev@lists.freedesktop.org>; Tue,  7 May 2024 18:27:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3546810E9B0
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 May 2024 18:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715106421; x=1746642421;
+ t=1715106547; x=1746642547;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=bdzPfvNw8wONNrtnv2DbQCKK9Izi66glHK9XfV0bW4I=;
- b=nJd5Iru8jXsJYqzcJlJjbj3DT1dF82U8AfBt90b0TNwzFOGXHRGfZwkb
- u52yxH2zrixULcYU4iGXKmWRnclUoDKxImmhHX4A4djm+8hAX5BcCQTb2
- pfS9Uvri2q3Ck/tClKVNb7ar/SYDaOEm8AkSMR3RIrgoTsOOJXdyHd04c
- Opi+6TrkoZVX6UMHbD1u2Z+jMiFytgJ4iyud97RZPoHso4nhvjOj20ekU
- gc6hNyI7yVGx10XhLX1OW/jfNZJsLxhiW0c6NGPoNxaoj0Ubgsm6lRtBe
- OecxZXP/6/ukbN6h5F3bZo4JuWhy8PpnwyDqluMZcyxRTp5vnUgya31yH Q==;
-X-CSE-ConnectionGUID: VLxSST0uS/WyLuyjTKD5zQ==
-X-CSE-MsgGUID: q+ymuMjYRBWl+PXWYuSIjg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11066"; a="14714501"
-X-IronPort-AV: E=Sophos;i="6.08,143,1712646000"; d="scan'208";a="14714501"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2024 11:27:01 -0700
-X-CSE-ConnectionGUID: sCuDzMYvTqW0nzbYtPSIWQ==
-X-CSE-MsgGUID: wpbyRplJSjKfJHm4BOontQ==
+ bh=ospkU/5dpjdlLTMirFsvw/BhBrnGUtWGzWFaE/temf4=;
+ b=n7Zj4CXUnyHS54R+dZXyLR2bp13LBFVwn50PoaWaQrPer8GHUxxLTFgW
+ y/eOeliPMDCaRmapAebXa0E/bYWVpYyBffWdljEfaJ8RX7x9KQDAyV5d/
+ rdULs3iE4SfBSg060uTJx83hAvyFVLF3G4oG3gjT+qAc5/2IbT/QZeeVj
+ XWwIkLNVfDICB+/IfFGUxf8zWofrIX2FTAd1vwzzYgJJAkJ1k/PGoq1O9
+ wWxHWH35tY2JjECnvBCjsIAmcmlw0xs4Ppk3jTx9Z3GP0QHHztvwtA6lD
+ VkcspnfYsd7sOF9jlaxhbmyBcfCmc5ctlrr4hzVWEI9gKFMtaSpTnYV2t A==;
+X-CSE-ConnectionGUID: DDzIlbDnSpedxzpvgFcz1g==
+X-CSE-MsgGUID: Pu56tz0hTi+vxSLAZ/WU6Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11066"; a="10781850"
+X-IronPort-AV: E=Sophos;i="6.08,143,1712646000"; d="scan'208";a="10781850"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2024 11:29:07 -0700
+X-CSE-ConnectionGUID: zy4e57LSSeK2gWNiYRJ24Q==
+X-CSE-MsgGUID: BtnQY1+cTMyU9brmqM14DQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,143,1712646000"; d="scan'208";a="51820425"
+X-IronPort-AV: E=Sophos;i="6.08,143,1712646000"; d="scan'208";a="28673849"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2024 11:26:59 -0700
-Date: Tue, 7 May 2024 20:26:56 +0200
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2024 11:29:06 -0700
+Date: Tue, 7 May 2024 20:29:03 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
  Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: Re: [PATCH 3/4] gputop: Allow to limit number of executions
-Message-ID: <20240507182656.mlmbxzctvotqmtwz@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH 4/4] gputop: Allow to set delay interval
+Message-ID: <20240507182903.6ltvs5ap5u6fug6w@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Lucas De Marchi <lucas.demarchi@intel.com>,
  Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  Tvrtko Ursulin <tursulin@ursulin.net>
 References: <20240501173303.115737-1-lucas.demarchi@intel.com>
- <20240501173303.115737-4-lucas.demarchi@intel.com>
+ <20240501173303.115737-5-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240501173303.115737-4-lucas.demarchi@intel.com>
+In-Reply-To: <20240501173303.115737-5-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,98 +76,116 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Lucas,
-On 2024-05-01 at 12:33:02 -0500, Lucas De Marchi wrote:
-> Add argument to limit number of executions, similar to the one accepted
-> by `top`. This allows testing changes and optimizations more easily.
+On 2024-05-01 at 12:33:03 -0500, Lucas De Marchi wrote:
+> Like `top` and `htop`, allow to pass -d, --delay =SEC[.TENTHS] as
+> argument.
 > 
 > Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  tools/gputop.c | 16 ++++++++++++++--
->  1 file changed, 14 insertions(+), 2 deletions(-)
+>  lib/igt_core.h |  1 +
+>  tools/gputop.c | 21 +++++++++++++++++++--
+>  2 files changed, 20 insertions(+), 2 deletions(-)
 > 
+> diff --git a/lib/igt_core.h b/lib/igt_core.h
+> index 26bb0cb68..084d94da7 100644
+> --- a/lib/igt_core.h
+> +++ b/lib/igt_core.h
+> @@ -1489,6 +1489,7 @@ void igt_kmsg(const char *format, ...);
+>  
+>  #define MSEC_PER_SEC (1000)
+>  #define USEC_PER_SEC (1000*MSEC_PER_SEC)
+> +#define USEC_PER_DECISEC (100*MSEC_PER_SEC)
+>  #define NSEC_PER_SEC (1000*USEC_PER_SEC)
+>  
+>  #define for_if(expr__) if (!(expr__)) {} else
 > diff --git a/tools/gputop.c b/tools/gputop.c
-> index 481e79753..1ac382a7e 100644
+> index 1ac382a7e..5634fa58a 100644
 > --- a/tools/gputop.c
 > +++ b/tools/gputop.c
-> @@ -293,6 +293,7 @@ static void clrscr(void)
->  }
+> @@ -26,6 +26,7 @@
+>  #include <sys/sysmacros.h>
+>  #include <stdbool.h>
+>  
+> +#include "igt_core.h"
+>  #include "igt_drm_clients.h"
+>  #include "igt_drm_fdinfo.h"
+>  #include "drmtest.h"
+> @@ -294,6 +295,7 @@ static void clrscr(void)
 >  
 >  struct gputop_args {
-> +	long n_iter;
+>  	long n_iter;
+> +	unsigned long delay_usec;
 >  };
 >  
 >  static void help(void)
-> @@ -301,19 +302,22 @@ static void help(void)
+> @@ -302,15 +304,17 @@ static void help(void)
 >  	       "\t%s [options]\n\n"
 >  	       "Options:\n"
 >  	       "\t-h, --help                show this help\n"
-> +	       "\t-n, --iterations =NUMBER  number of executions\n"
+> +	       "\t-d, --delay =SEC[.TENTHS] iterative delay as SECS [.TENTHS]\n"
+>  	       "\t-n, --iterations =NUMBER  number of executions\n"
 >  	       , program_invocation_short_name);
 >  }
 >  
 >  static int parse_args(int argc, char * const argv[], struct gputop_args *args)
 >  {
-> -	static const char cmdopts_s[] = "h";
-> +	static const char cmdopts_s[] = "hn:";
+> -	static const char cmdopts_s[] = "hn:";
+> +	static const char cmdopts_s[] = "hn:d:";
 >  	static const struct option cmdopts[] = {
 >  	       {"help", no_argument, 0, 'h'},
-> +	       {"iterations", required_argument, 0, 'n'},
+> +	       {"delay", required_argument, 0, 'd'},
+>  	       {"iterations", required_argument, 0, 'n'},
 >  	       { }
 >  	};
->  
+> @@ -318,9 +322,11 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
 >  	/* defaults */
 >  	memset(args, 0, sizeof(*args));
-> +	args->n_iter = -1;
+>  	args->n_iter = -1;
+> +	args->delay_usec = 2 * USEC_PER_SEC;
 >  
 >  	for (;;) {
 >  		int c, idx = 0;
-> @@ -323,6 +327,9 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
->  			break;
+> +		char *end_ptr = NULL;
 >  
->  		switch (c) {
-> +		case 'n':
-> +			args->n_iter = strtol(optarg, NULL, 10);
+>  		c = getopt_long(argc, argv, cmdopts_s, cmdopts, &idx);
+>  		if (c == -1)
+> @@ -330,6 +336,16 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
+>  		case 'n':
+>  			args->n_iter = strtol(optarg, NULL, 10);
+>  			break;
+> +		case 'd':
+> +			args->delay_usec = strtoul(optarg, &end_ptr, 10) * USEC_PER_SEC;
+> +			if (*end_ptr == '.')
+> +				args->delay_usec += strtoul(end_ptr + 1, &end_ptr, 10) * USEC_PER_DECISEC;
+> +
+> +			if (!args->delay_usec) {
+> +				fprintf(stderr, "Invalid delay value: %s\n", optarg);
+> +				return -1;
+> +			}
 > +			break;
 >  		case 'h':
 >  			help();
 >  			return 0;
-> @@ -342,6 +349,7 @@ int main(int argc, char **argv)
+> @@ -345,7 +361,7 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
+>  int main(int argc, char **argv)
+>  {
+>  	struct gputop_args args;
+> -	unsigned int period_us = 2e6;
+> +	unsigned int period_us;
 >  	struct igt_drm_clients *clients = NULL;
 >  	int con_w = -1, con_h = -1;
 >  	int ret;
-> +	long n;
->  
->  	ret = parse_args(argc, argv, &args);
->  	if (ret < 0)
-> @@ -349,13 +357,15 @@ int main(int argc, char **argv)
->  	if (!ret)
+> @@ -358,6 +374,7 @@ int main(int argc, char **argv)
 >  		return EXIT_SUCCESS;
 >  
-> +	n = args.n_iter;
-> +
+>  	n = args.n_iter;
+> +	period_us = args.delay_usec;
+>  
 >  	clients = igt_drm_clients_init(NULL);
 >  	if (!clients)
->  		exit(1);
->  
->  	igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
->  
-> -	for (;;) {
-> +	while (n != 0) {
->  		struct igt_drm_client *c, *prevc = NULL;
->  		int i, engine_w = 0, lines = 0;
->  
-> @@ -381,6 +391,8 @@ int main(int argc, char **argv)
->  			printf("\n");
->  
->  		usleep(period_us);
-> +		if (n > 0)
-> +			n--;
->  	}
->  
->  	igt_drm_clients_free(clients);
 > -- 
 > 2.45.0
 > 
