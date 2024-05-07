@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10988C25B4F
-	for <igt-dev@archiver.kernel.org>; Tue,  7 May 2024 07:58:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B2C3C25B75
+	for <igt-dev@archiver.kernel.org>; Tue,  7 May 2024 07:58:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9A5FE10ED3E;
-	Tue,  7 May 2024 07:58:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2022A10FDAA;
+	Tue,  7 May 2024 07:58:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HN0gtLRT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n2Zao4dD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5033A10FDAA
- for <igt-dev@lists.freedesktop.org>; Tue,  7 May 2024 07:58:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4223510FDAA
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 May 2024 07:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715068729; x=1746604729;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=2tG5KIZdKg/nFD5BtNUoLDIFM9Tu/bMzzVw14yCNFKI=;
- b=HN0gtLRToDVbnU6GKD2r5n+6Duy5nji3cR+hMmQg0XY6Su/0KJ/uglWV
- DWPRbA7wCB3Vh3UMXbgrP/ES2yX0JVLXCux37HQPezXZt4mrWPXBxJWlW
- keLGRokyviOc8cwouMzHSmigSBtnPN4JOMnob7BPjBacVrMeC3yqlAQCO
- 1rvW/0XWJtDX6tE+3I73z3voLsRlERoCJEr3TMW9ptnFJjugvLXTEfxpZ
- WXaeXGn8KpyWvIq4ffADS1dMomqD6ud23FKl8mo8xpIrfe0ucX/GPf3Uv
- P5d8HFSxNNsR1tEJ5cwfyHsNx4hAWLHP5+428z4cvPQXivqvFPTiyGMnV g==;
-X-CSE-ConnectionGUID: zfguqygFRs6dBWXKZT649A==
-X-CSE-MsgGUID: jpGq/UE9R36a5/Zy2i3Zbg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="14656296"
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="14656296"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2024 00:58:48 -0700
-X-CSE-ConnectionGUID: Vf0y7XLYSJed/5WpOzqN2w==
-X-CSE-MsgGUID: qH+RhE4NS0mejsz7vcvf6A==
+ t=1715068734; x=1746604734;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=zgVu2A3A0g8ysLMRjbwpaBAf2mefG16ngE5tkK7YqGI=;
+ b=n2Zao4dDiUO4Q1ljON9roc+bwuIegZAVPS1xUq/wss+3UnMXT12YVbqg
+ SKyncdvgProCGouTWus+3dt0M2fQQ3UmQ2Sn6DsGKJgCeYkze3NEhvmx6
+ yZOlB8eUVU/N5Bsis45Kjs07eC0h86kWJljBaDm7KWMO56BEl0OV2lAFa
+ b+uqpHgSjmQN3CpJhRMOhVAki7bNREixSz9ivyG2PolJmDjcICxbV1qea
+ /6O4ryw5ngRWMHx6imxPmNBiB72SnTXBVOq1YgTAI4H5R699aGzBnrO0c
+ WEfe7Ty3vbXdXlyfk/M9VX7xXDYvtcnR9se3tQD601KUqSAv98Wi/TfjK A==;
+X-CSE-ConnectionGUID: 5lmPBcI2TCOUGpaKQ4ohew==
+X-CSE-MsgGUID: JCzujMmFSxGViebJFSFeKg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="14662825"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="14662825"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2024 00:58:53 -0700
+X-CSE-ConnectionGUID: y3b33YtnRxaoo9/SBKt75Q==
+X-CSE-MsgGUID: Letbiqo/R8ifzmpaqVTujw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="32943806"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="32999826"
 Received: from maurocar-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.246.12])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2024 00:58:47 -0700
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2024 00:58:51 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v3 00/11] Add render-copy compression on Xe+
-Date: Tue,  7 May 2024 09:58:25 +0200
-Message-Id: <20240507075836.259581-1-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v3 01/11] lib/intel_bufops: Store devid on buffer ops
+ creation
+Date: Tue,  7 May 2024 09:58:26 +0200
+Message-Id: <20240507075836.259581-2-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240507075836.259581-1-zbigniew.kempczynski@intel.com>
+References: <20240507075836.259581-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -67,40 +70,83 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Fills the gap of testing render-copy compression with different
-tilings.
+As I need devid to diverge intel-buf init code lets store it in
+bufops structure. This field is commonly used so add function which
+returns it.
 
-v2: Extend cmds-info to collect supported tilings/compression for
-    render copy
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/intel_bufops.c | 20 +++++++++++++++++---
+ lib/intel_bufops.h |  1 +
+ 2 files changed, 18 insertions(+), 3 deletions(-)
 
-v3: Predefine simple tilings first, then complex (Karolina)
-    Drop static test array in xe_intel_bb to be another
-    helper function user (Karolina)
-
-Zbigniew Kempczyński (11):
-  lib/intel_bufops: Store devid on buffer ops creation
-  lib/intel_blt: Rename confusing fb tile to i915 tile
-  lib/intel_blt: Add i915 -> blt tile helper converter
-  lib/intel_bufops: Restrict tilings on non-flatccs platforms
-  lib/intel_bufops: Start supporting compression on Xe2+
-  lib/rendercopy_gen9: Allow to use all tilings on flatccs platforms
-  lib/intel_cmds_info: Define tiling macros
-  lib/intel_cmds_info: Introduce render tilings
-  lib/intel_blt: Add render tilings and compression support helper
-  tests/xe_render_copy: Add subtest which exercises compression
-  tests/xe_intel_bb: Use supported tilings instead hardcoded ones
-
- lib/intel_blt.c              |  54 +++++++++++++-
- lib/intel_blt.h              |   4 +-
- lib/intel_bufops.c           |  62 ++++++++++-----
- lib/intel_bufops.h           |   1 +
- lib/intel_cmds_info.c        | 141 ++++++++++++++++++-----------------
- lib/intel_cmds_info.h        |   6 ++
- lib/rendercopy_gen9.c        |   2 +-
- tests/intel/xe_intel_bb.c    |  25 +++----
- tests/intel/xe_render_copy.c |  93 +++++++++++++++++++++--
- 9 files changed, 278 insertions(+), 110 deletions(-)
-
+diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+index 51fdf50adb..43d6dd5b43 100644
+--- a/lib/intel_bufops.c
++++ b/lib/intel_bufops.c
+@@ -114,6 +114,7 @@ struct buf_ops {
+ 	int gen_start;
+ 	int gen_end;
+ 	unsigned int intel_gen;
++	uint32_t devid;
+ 	uint32_t supported_tiles;
+ 	uint32_t supported_hw_tiles;
+ 	uint32_t swizzle_x;
+@@ -1499,12 +1500,11 @@ static bool probe_hw_tiling(struct buf_ops *bops, uint32_t tiling,
+ {
+ 	uint64_t size = 256 * 256;
+ 	uint32_t handle, buf_tiling, buf_swizzle, phys_swizzle;
+-	uint32_t devid, stride;
++	uint32_t stride;
+ 	int ret;
+ 	bool is_set = false;
+ 
+-	devid =  intel_get_drm_devid(bops->fd);
+-	stride = get_stride(devid, tiling);
++	stride = get_stride(bops->devid, tiling);
+ 	handle = gem_create(bops->fd, size);
+ 
+ 	/* Single shot, if no fences are available we fail immediately */
+@@ -1616,6 +1616,7 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
+ 
+ 	bops->fd = fd;
+ 	bops->intel_gen = generation;
++	bops->devid = devid;
+ 	bops->driver = is_i915_device(fd) ? INTEL_DRIVER_I915 :
+ 					    is_xe_device(fd) ? INTEL_DRIVER_XE : 0;
+ 	igt_assert(bops->driver);
+@@ -1785,6 +1786,19 @@ int buf_ops_get_fd(struct buf_ops *bops)
+ 	return bops->fd;
+ }
+ 
++/**
++ * buf_ops_get_devid
++ * @bops: pointer to buf_ops
++ *
++ * Returns: device id
++ */
++uint32_t buf_ops_get_devid(struct buf_ops *bops)
++{
++	igt_assert(bops);
++
++	return bops->devid;
++}
++
+ /**
+  * buf_ops_get_driver
+  * @bops: pointer to buf_ops
+diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
+index b959a8cc8e..84e71d41a2 100644
+--- a/lib/intel_bufops.h
++++ b/lib/intel_bufops.h
+@@ -118,6 +118,7 @@ struct buf_ops *buf_ops_create(int fd);
+ struct buf_ops *buf_ops_create_with_selftest(int fd);
+ void buf_ops_destroy(struct buf_ops *bops);
+ int buf_ops_get_fd(struct buf_ops *bops);
++uint32_t buf_ops_get_devid(struct buf_ops *bops);
+ enum intel_driver buf_ops_get_driver(struct buf_ops *bops);
+ 
+ bool buf_ops_set_software_tiling(struct buf_ops *bops,
 -- 
 2.34.1
 
