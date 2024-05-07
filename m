@@ -4,124 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24C1AC10F1A
-	for <igt-dev@archiver.kernel.org>; Tue,  7 May 2024 19:56:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE160C10F1A
+	for <igt-dev@archiver.kernel.org>; Tue,  7 May 2024 19:56:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AE496112604;
-	Tue,  7 May 2024 19:56:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 52578112605;
+	Tue,  7 May 2024 19:56:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="1WUfJA1H";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="iuWuiZSm";
 	dkim-atps=neutral
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2063.outbound.protection.outlook.com [40.107.223.63])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7FAFE1125FF
- for <igt-dev@lists.freedesktop.org>; Tue,  7 May 2024 19:56:15 +0000 (UTC)
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam04on2089.outbound.protection.outlook.com [40.107.100.89])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F76F1125FF
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 May 2024 19:56:22 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Rf5n0TOJewg3xvDeKE5jb4zgN90gAbn5GCHOJYHPUKnHbqGB9oIzo6Fjj3ejM+3ezzmubWjrBf+f6VkEvqDZiQ2fub5n9yHDud+UKbF8GYtHMUJXdbynLgD0u2UQx+SpP64PrrXwlOuzZdbmpatYF/u2dIVmU6L/R1CoCJKu8jtrs0ZnzQcN1bXFgqcFrK/uItrlj8GVj9VQkHl8G0jJ7gmMYbSIBEzYnjE8loKyD0wFRVxx3put7011XZkb9qrs0Ovg1mI41xSkSXheyYqg89wssX0PR1tyoioAvFDg1kSJwMMeTB4j+0ULv/s/o4OBnzbd/D/Q1Ya/OxLxLyrdfg==
+ b=MJmMViwVCoD7F3EWN8TPnlcvEbFjNlc1iFz4tB0C0gb7eFoEcCe3ipZL5xqtXzH6q0eqtc/yIBvALhda5iOaLGV4wa2yDrHV22jSqWXDVjRIdO7rNZgm/jlskLDX7FHETXlZF7sehmDzgPfXtAZlY4Cx6sllxt6DSqEAyylbt3ZoE2hfh53e+EQs/5uS3U07J7N5NFRhPqFOJQA38Xx8fe/05B9/T76MnEJlSM+sQJ4Nozn3U+a6NLiK9NAKOe9ADBwlglh36R/0AMVN5+oNzqc74edTM9HziPXYDAHMtwtoecxL2cO5ImXDtpxtmCTTbXPWae6VJto63rsFUs86+g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Tp3XT0aLwnooW6DkTGM6Sslm7UtXu6TwN/BfmStipTg=;
- b=hZjtmhF84XPvbuzr02o3gWNs7r2qrQj/2j7a7M/GHgSo43ZmGEKS9/A//64DGyLGGG+tQG7mI86HHnXgnG0KHn7zZ14/aPamHlIwouuc5+hS7Tw/wurEl2s8Ok4vkcflsCmCExXZmqz1cMcWJ+Zz5RIQNy61eTLjy6MIYOLccuP5504BFR8h0GKUNLtEBEQWIHQ74OOLjDABp/nSJTt6B8YO9WCL7yOPqjToYoJQZDzNlIJ5wNqLcE5K4aZ3ynHaxL31ZNj9/pcYd7ZlOehrGQkYSZWmRtt21EKn+jv4AjxjsEDWNp/j8MlPfgIBr8b+4lst7xVKIcgTwuBPT46qNA==
+ bh=ad8TjaB1+w3uSWrPje1drGVG3RRdDYly9/42D5q/NQs=;
+ b=LVpXoaw9wTUEbrMT91FIKGLlf9CaZ7PN8WDzHSjNmnJjSICT7IgdLIsgZDGlXfImm9uqXfXLEjZhS/0fFzSLNlrDEsOkZpsRNzwbi2eEgNVEPw//GMIdFZgL70kE24hAaDv7ehW+M0QcxwMOjafjAnenobOQIDUzPkZXRuwq3S8Xr7m40njM41G+HHNH1iyiZAUxIOsiADVXPZD8YZEN4rqCXFbIVXn46erCDBCvfVd6eVVsUqInPY0GRJrxPZkk0swXi2ZZMBtHi6Mddjm0EcZHwvJeIW5clfNXi5QEvhkLvRH6aoPgyE1fx5+IySdNz2/UWSsFUvWlsXGkN9Aq9g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Tp3XT0aLwnooW6DkTGM6Sslm7UtXu6TwN/BfmStipTg=;
- b=1WUfJA1Hc9Sco/Q0l4vowTibAiqL96Wa5znpFG8cA1++oe1g8ULOsXJvqqTTHQHA4bIPlxqy7phLQcUIoV9/y3tYdcSyFQ31IQSiUt98ADVh8mGhSvs7uWbZTqXVvKYzqRBeCYGEQy4B7ZuSK1O0W3Mdjspgh2o4jllxDFKbIfo=
-Received: from PH0PR07CA0084.namprd07.prod.outlook.com (2603:10b6:510:f::29)
- by PH0PR12MB7863.namprd12.prod.outlook.com (2603:10b6:510:28b::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.41; Tue, 7 May
- 2024 19:56:12 +0000
-Received: from CY4PEPF0000FCC4.namprd03.prod.outlook.com
- (2603:10b6:510:f:cafe::a) by PH0PR07CA0084.outlook.office365.com
- (2603:10b6:510:f::29) with Microsoft SMTP Server (version=TLS1_2,
+ bh=ad8TjaB1+w3uSWrPje1drGVG3RRdDYly9/42D5q/NQs=;
+ b=iuWuiZSmXjnvcLNJikQgra5JKea0n/95uu0GRoFpnCNRCMG3EHiU74e66GdEf+qtse2IGEc5jfKNIr7Rev2ebHnuIvmmjOdIyg9Z78O+52mgAeHUTt7as4pslwbrMDm0Fr2lox9OHMb0l3zZt0V6y0MjH57a5l3t2yEEGtnH0Zo=
+Received: from MN2PR16CA0006.namprd16.prod.outlook.com (2603:10b6:208:134::19)
+ by SJ0PR12MB7066.namprd12.prod.outlook.com (2603:10b6:a03:4ae::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.42; Tue, 7 May
+ 2024 19:56:13 +0000
+Received: from BL02EPF0001A0FB.namprd03.prod.outlook.com
+ (2603:10b6:208:134:cafe::cb) by MN2PR16CA0006.outlook.office365.com
+ (2603:10b6:208:134::19) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.43 via Frontend
- Transport; Tue, 7 May 2024 19:56:12 +0000
+ Transport; Tue, 7 May 2024 19:56:11 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CY4PEPF0000FCC4.mail.protection.outlook.com (10.167.242.106) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL02EPF0001A0FB.mail.protection.outlook.com (10.167.242.102) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7544.18 via Frontend Transport; Tue, 7 May 2024 19:56:11 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.7544.18 via Frontend Transport; Tue, 7 May 2024 19:56:10 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 7 May
- 2024 14:56:11 -0500
+ 2024 14:56:10 -0500
 Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
  (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 7 May
  2024 14:56:10 -0500
 Received: from desktop-host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Tue, 7 May 2024 14:56:10 -0500
+ Transport; Tue, 7 May 2024 14:56:09 -0500
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Leo Liu <leo.liu@amd.com>,
  Ruijing Dong <ruijing.dong@amd.com>, Michael Strawbridge
  <michael.strawbridge@amd.com>
-Subject: [PATCH 2/2] tests/admgpu/vce_enc: disable motion vector test
-Date: Tue, 7 May 2024 15:56:07 -0400
-Message-ID: <20240507195607.197552-2-vitaly.prosyak@amd.com>
+Subject: [PATCH 1/2] tests/amdgpu/vce_enc: rename file
+Date: Tue, 7 May 2024 15:56:06 -0400
+Message-ID: <20240507195607.197552-1-vitaly.prosyak@amd.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240507195607.197552-1-vitaly.prosyak@amd.com>
-References: <20240507195607.197552-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC4:EE_|PH0PR12MB7863:EE_
-X-MS-Office365-Filtering-Correlation-Id: 21ebdf0b-2ef4-43ba-c2d6-08dc6ecfbedc
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FB:EE_|SJ0PR12MB7066:EE_
+X-MS-Office365-Filtering-Correlation-Id: ddd6ef4e-5eef-4f62-a811-08dc6ecfbe41
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230031|82310400017|36860700004|1800799015|376005; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?ks12d9Q11jkKEXuc18wx/AdX9E3yV4l19HusukKCn3lmdQQq0AupXme1kRu/?=
- =?us-ascii?Q?3bC1x//tE5GT8OgqqXAKqQ5jYxTo//oa2M+cqoQlCEqjy0L4nsaZ6dVMFdSI?=
- =?us-ascii?Q?W4uu/zdeGM7PqF2RI+aYja2aO01LcMgFxmuKoGiJS45X+CzEOFOJhHaQFfnd?=
- =?us-ascii?Q?Wvj3MqQYXT96knN41jMV1mna1O+UEj+WZzRtkDTLkcUkASUCXEw7lDQflIFZ?=
- =?us-ascii?Q?6wmhRt1WwJBFsQDFD6b7xq30mi2nXlxyVu0TxQn8VMCh0lnE9NnIz7Qe/nvu?=
- =?us-ascii?Q?KtOkCg9ndoCg8FoHriUqjS5yNZGnNfSs0MXhk5mMA2gbqdb7C/GfqUz4OCQj?=
- =?us-ascii?Q?e0C5/W2FUTazBdjyqDpUdiBE0q6U5UxV+NE+9GLaAnmXFY0PJsliY3rybm4U?=
- =?us-ascii?Q?EGEcwNY1TTd7F/kY54fftyCr2iNK+mLCdY8htZ/s+DyPf38Aqt+9cssIfpcf?=
- =?us-ascii?Q?kv6W9eAfr6GmhrHmqVAESDVY8hCLeAMbcupDazjUt7g4NBg4Yt4nXWCnauzz?=
- =?us-ascii?Q?edMn/lrAL26+vjZ1yhrnh0/fIfuTMToaEicDJGI8lf7C4BbpDqMSowp2Kv8d?=
- =?us-ascii?Q?bmf6QWw1ki7Yuoonpm+R+1YvTA/haFBfM1BaDmXe4GGrqPH5i80JmdPVf5d8?=
- =?us-ascii?Q?y7k/qweg2W/HGLOYaudIbqY1eIv6/64w6kM9gI8Cht4Y87/3iSCPdKoHjPuz?=
- =?us-ascii?Q?SLCHYqbYi5cYUOEQwBx5+xXPR+Aq+uZTZvOz/Fvlti6uI83Hx4rifs/o9Dnk?=
- =?us-ascii?Q?wXhHOk9oTNwwCx4EkZeOuedSGREXdveruL5UQPt9QP7jCaW6F0vX/yEnpQT/?=
- =?us-ascii?Q?3zlNTOyAZDI26x0ZXWfLa6+qIPKt/8EU3Goy8Spkof29dSWuZWvDzBZdBQfs?=
- =?us-ascii?Q?vakanhEnCHzXb4U/RFQ3M/jhRbPifxuBLwJh94YCoNKgVpaA88S67uRH9nAg?=
- =?us-ascii?Q?8S5pOxQ8d+oRbWQgV5jPo+drEJaVAKCKvJ42g81AxIM4uA8aQTxdyXBzHM2X?=
- =?us-ascii?Q?fQ/GfM2Tn7U6rj4/dv9oWr9PSiZT8XRHTESiOfEtL9pm6axzyBiTdPYQZlbI?=
- =?us-ascii?Q?pjIc+HPGmiaWWyzm5WCzgFvqjZPrqY3u9yQIJzdFcMk5NlIel8k70aKBFHwh?=
- =?us-ascii?Q?b4eO9kFL6fogzzHtL9i+zGltcjC9XTijDL+TOy32kk4qP1dsMot6KPSnOYjA?=
- =?us-ascii?Q?ILAx1pxzAjNd2iiuu9dH3vnxQoIB39QOQ0UKfY04jXuwXd7e9tQafLzozRGf?=
- =?us-ascii?Q?z3VVjQfjJwaYvhu7+PRSntt5GGdEmI9LyRu2fmTQFpv9Qr9Ts7FJxcXqak0H?=
- =?us-ascii?Q?LeEC54i1Alk6n77NyMurUFbviAwGpA5yKqr9uCbPfxAmWcW+Qd/o+Qla6zUc?=
- =?us-ascii?Q?AHSIePnS2PLvOc7ZPLg+ekpkgq6U?=
+ ARA:13230031|1800799015|376005|82310400017|36860700004; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?h+HDmZMoqtKhocyGmv/u6I1oKA2KdKi+FsK06W3IzbMieMkOpCjsOf5EES1t?=
+ =?us-ascii?Q?dKeu6vMJ/OLikvWPytnvoQ8Y2S+IJ+TC/qoIwH4izK8DN2eqyGVKMp3+QjFR?=
+ =?us-ascii?Q?0nYjWI7MFichJUTtXkJIdw09aKSNi4Et1vbPI65IQxVQYF/T8ao+dxvLqJH4?=
+ =?us-ascii?Q?SZmyFqK7WMlTo891/KchdPg6Xmmp7girktc2rQB2XPHprML4LOssOzZhsQk0?=
+ =?us-ascii?Q?SqNIQwWN9zLQD1rmUL9sTkxMLzU7ctn1LVBypbroD+B3LE0g7RbG7UOO+09P?=
+ =?us-ascii?Q?Wj4JcdFpf0USQBVBPeKYU03D9ogeeGE0h9B2y10CMpLg/Dq9DXBuXSpr2XGS?=
+ =?us-ascii?Q?lahCh59kUx+Rqi46YkBV0xMXjaerZgiKDVTbY5cpypGmh9djh12kBU0tHADW?=
+ =?us-ascii?Q?TzvFCOMpeQl3MRvfzn1xgPYwWZqIhsNmpH5puw4a39uyaTvZW7bQ33MleJY+?=
+ =?us-ascii?Q?6lFr8BIr4Riy+6VaTqfN4XW/fk6TWUdFYDpkw52bXro5d9M/Zgjn0jQlraWj?=
+ =?us-ascii?Q?G9iFZ16WG5sSbRjIxE6DH6MWu5R44K2w9qE6LKVSI4xz/7OvspNCDfe3a4KZ?=
+ =?us-ascii?Q?eILXk0gP6NcvP8VJHrNwSkY/d3P6pi6CRH+hVGjSYwPuxmmb+zlhzmvxRXYo?=
+ =?us-ascii?Q?UPN1XEivdBccg+4//t52sfjtlUOP4FYT+tG8O40pNS5/GxyDAPk/DDKLPOW6?=
+ =?us-ascii?Q?YR5Y3khYzboAFE9MRcdup0GHbGFKpw2/dnJ+cp4bHk7P63JHqPhERT2IgdlW?=
+ =?us-ascii?Q?yP4MIAyLiqpwLd02fz0sy2xiQtVeZP2CtiUJs4HfZSG2PQgsoNlN2BU2iPzy?=
+ =?us-ascii?Q?l3mAZ4FsfhbKCjeUMw7yXGsj88LVVVTADfcb01Z1kdXzNdbxhmiHUiGyqXiP?=
+ =?us-ascii?Q?nBdmYgVhbQR+SLqsWJ95uOMg/WV8mWSsEgs/000IRV6M2E3qZsriZpjnwVmf?=
+ =?us-ascii?Q?tEcTLkQFeo1f+cGzxrZvxvx7IOgJYCINZMqOSz9dp2BmDX7VyE2uEWjBOGL3?=
+ =?us-ascii?Q?klgheCZZlGLuDwciM+MT+Z5NJf6oQd5Xh6k7ceYprZFhk5QG0q5C/cb87UzS?=
+ =?us-ascii?Q?d+0A/vMJmN9iJXXMYb6Uf9ScwTwWuEuLoELiXHKtppCDn4bs0DOTx6Q1jWYe?=
+ =?us-ascii?Q?rJTPsdq9Y7ZPyEG/Xq999UnOEMJl2vCgSOthlfZ7130czvX2yROusY2lAVH4?=
+ =?us-ascii?Q?M1NaGf5/jqVRL+KCnS45XhWcPl/W2aqJYnWFF7Tt8HsJzZeRO2Fn1fKk1k4a?=
+ =?us-ascii?Q?QOmgc9SlHQQmn5XXHCBkIahQWt0h37hg/G6lw05fIwq560gmOliQy8yKGShI?=
+ =?us-ascii?Q?GSlnWJCSl21F+HAmZW/puWzSdFDGEUmI3U3Tjh4111cvXrUhAA8xtrepUpjC?=
+ =?us-ascii?Q?jkNzePTMuGwR+I1uqlN+nmmOOHVy?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(82310400017)(36860700004)(1800799015)(376005); DIR:OUT;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(1800799015)(376005)(82310400017)(36860700004); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2024 19:56:11.8098 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 21ebdf0b-2ef4-43ba-c2d6-08dc6ecfbedc
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2024 19:56:10.8558 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ddd6ef4e-5eef-4f62-a811-08dc6ecfbe41
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000FCC4.namprd03.prod.outlook.com
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A0FB.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7863
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7066
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -139,46 +137,36 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Temporarily disable verification due to ongoing investigation to
-figure out the root cause of the error.
-The comparison would continue, but assert is commented out.
+It was a typo , now rename amd_vce_dec.c to
+amd_vce_enc.c
 
 Cc: Leo Liu <leo.liu@amd.com>
 Cc: Ruijing Dong <ruijing.dong@amd.com>
 Cc: Michael Strawbridge <michael.strawbridge@amd.com>
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- tests/amdgpu/amd_vce_enc.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ tests/amdgpu/{amd_vce_dec.c => amd_vce_enc.c} | 0
+ tests/amdgpu/meson.build                      | 2 +-
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ rename tests/amdgpu/{amd_vce_dec.c => amd_vce_enc.c} (100%)
 
-diff --git a/tests/amdgpu/amd_vce_enc.c b/tests/amdgpu/amd_vce_enc.c
-index 842647e36..d2cf7e5ae 100644
---- a/tests/amdgpu/amd_vce_enc.c
-+++ b/tests/amdgpu/amd_vce_enc.c
-@@ -433,7 +433,7 @@ static void amdgpu_cs_vce_mv(amdgpu_device_handle device_handle,
- static void check_mv_result(struct amdgpu_vce_encode *enc)
- {
- 	uint64_t sum;
--	uint32_t s = 140790;
-+	/* uint32_t s = 140790;*/
- 	int j, r;
- 
- 	r = amdgpu_bo_cpu_map(enc->fb[0].handle, (void **)&enc->fb[0].ptr);
-@@ -444,7 +444,13 @@ static void check_mv_result(struct amdgpu_vce_encode *enc)
- 	igt_assert_eq(r, 0);
- 	for (j = 0, sum = 0; j < enc->mvbuf_size; ++j)
- 		sum += enc->mvb.ptr[j];
--	igt_assert_eq(sum, s);
-+	/*
-+	 * Temporarily disable verification due to ongoing investigation to figure out the root cause of the error.
-+	 * The comparison would continue, but assert is commented out.
-+	 * 128738 != 140790
-+	 * 131740 != 140790
-+	 */
-+	/* igt_assert_eq(sum, s); */
- 	r = amdgpu_bo_cpu_unmap(enc->mvb.handle);
- 	igt_assert_eq(r, 0);
- }
+diff --git a/tests/amdgpu/amd_vce_dec.c b/tests/amdgpu/amd_vce_enc.c
+similarity index 100%
+rename from tests/amdgpu/amd_vce_dec.c
+rename to tests/amdgpu/amd_vce_enc.c
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index d7152a356..3982a665f 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -33,7 +33,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_security',
+ 			  'amd_uvd_dec',
+ 			  'amd_uvd_enc',
+-			  'amd_vce_dec',
++			  'amd_vce_enc',
+ 			  'amd_vcn',
+ 			  'amd_vm',
+ 			  'amd_vrr_range',
 -- 
 2.25.1
 
