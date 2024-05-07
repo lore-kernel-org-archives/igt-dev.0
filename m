@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 256B6C10F1A
-	for <igt-dev@archiver.kernel.org>; Tue,  7 May 2024 07:59:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E29FFC25B4F
+	for <igt-dev@archiver.kernel.org>; Tue,  7 May 2024 07:59:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B8BE4112476;
-	Tue,  7 May 2024 07:59:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6BC75112420;
+	Tue,  7 May 2024 07:59:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BJrVDmn6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nbXyPwZ/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B4D40112420
- for <igt-dev@lists.freedesktop.org>; Tue,  7 May 2024 07:59:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F376811247E
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 May 2024 07:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715068758; x=1746604758;
+ t=1715068761; x=1746604761;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=cEegG2LIOe2tLOWDU5UIew1LDU77j32CEteQ+sGiIXo=;
- b=BJrVDmn676w4FQllD9rcFKzBNxVTzweIgdOqWKf1K0ajhdhXwwFFn6Qb
- W20KZ+8+/rA7YRY7/dfS7WW+aaNhvZV5L6anhv601JVoA3zsaZbkkvO3S
- eczP64CwvdlmBInjztIPzJcnn0UCztJPWDwlT9zHDViSR+V+bRuUs0UYU
- cVAXY8yvFSEYJUS/Xhm9v+IFfVBvt/0p82s+mRFbmw1YfJd9WGiGbJ0GZ
- OZSj1manOyqss+OL1i0Ban65J67VEXmhfUhvSd/Fi7cp30XCQbaSptODW
- lOck3RLnKTOpS9r9d0Mg6f00rubdOwY4Gxr1fgaRvkai2AO75Ol7WdhpY A==;
-X-CSE-ConnectionGUID: 2kopPUV1RXWnQo3DBKNlUA==
-X-CSE-MsgGUID: tbgXtJcrSNatfOyf21kiug==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="14662883"
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="14662883"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2024 00:59:18 -0700
-X-CSE-ConnectionGUID: rkpBUzwTQWKtJ6ndlFUtqw==
-X-CSE-MsgGUID: ECcdDhfNTBC7331VLUoCQg==
+ bh=7ejgCIRfj4cQoHbX3Ov5kmIQ8G6jaJiv2ulDWT9RFtM=;
+ b=nbXyPwZ/usN9IqhvIKkfAdVd2tu+wpc5YbAEfMw+LeFz7KHvHyPqw0en
+ VLVJUYAXgRjilLOTBb6z/X7H6eUD2spc/Fca8aX5uNVcyO56uzQ2KpmUG
+ 4c07FmC+PWQ0D5qkabuYvb7EOUmL1EFChXJLfrA42GBwyp9j8sP5s3Xo/
+ XWm5DnaqU9G+VS0Qhdk/0xn9cs1ztBdJHzsT22aOStixh+q70PjW9p/Ie
+ cfPyVvEE9w5TcLxFeJCsVPqCQBE+Vq40Kkq5shiEMY9+XuW6bF/eKFp0z
+ ANCbBfj4F7yQ/ScFKZp1zgeEbweV5vXzu4DFaUYcipYieI17stxYoO9Ur Q==;
+X-CSE-ConnectionGUID: 7RTjLuXhR/W/gjwMHEv+Tw==
+X-CSE-MsgGUID: AilEAeQ5SduOvd6yp5cEbA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="22258378"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="22258378"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2024 00:59:21 -0700
+X-CSE-ConnectionGUID: oTK4OhegRaeDk+as6tUmww==
+X-CSE-MsgGUID: b6QN3KVMRRiB751LcipICA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="32999863"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="33238179"
 Received: from maurocar-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.246.12])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2024 00:59:16 -0700
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2024 00:59:19 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v3 07/11] lib/intel_cmds_info: Define tiling macros
-Date: Tue,  7 May 2024 09:58:32 +0200
-Message-Id: <20240507075836.259581-8-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v3 08/11] lib/intel_cmds_info: Introduce render tilings
+Date: Tue,  7 May 2024 09:58:33 +0200
+Message-Id: <20240507075836.259581-9-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240507075836.259581-1-zbigniew.kempczynski@intel.com>
 References: <20240507075836.259581-1-zbigniew.kempczynski@intel.com>
@@ -69,163 +69,113 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Blitter tilings don't always matches supported render tilings so
-it is necessary to add separate fields for this purpose. To avoid
-multiple lines where supported tiling is glued with BIT(tiling)
-it is worth to predefine them, especially they will be used in next
-patch related to supported render copy tilings.
+Due to hardware differences between blitter and render regarding
+supported tilings and compression add new fields in cmds-info
+to identify available tilings via render engine.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
 ---
-v3: Predefine single tiling first, then complex (Karolina)
----
- lib/intel_cmds_info.c | 110 +++++++++++++++++-------------------------
- 1 file changed, 45 insertions(+), 65 deletions(-)
+ lib/intel_cmds_info.c | 31 +++++++++++++++++++++++++++----
+ lib/intel_cmds_info.h |  6 ++++++
+ 2 files changed, 33 insertions(+), 4 deletions(-)
 
 diff --git a/lib/intel_cmds_info.c b/lib/intel_cmds_info.c
-index 669d3e5006..e7aabf6bfb 100644
+index e7aabf6bfb..3f04f24f3c 100644
 --- a/lib/intel_cmds_info.c
 +++ b/lib/intel_cmds_info.c
-@@ -20,75 +20,59 @@
- 		.flags = _flags, \
- 	}
+@@ -27,8 +27,10 @@
+ #define TILE_Y		BIT(T_YMAJOR)
+ #define TILE_Yf		BIT(T_YFMAJOR)
  
--static const struct blt_cmd_info src_copy = BLT_INFO(SRC_COPY, BIT(T_LINEAR));
--static const struct blt_cmd_info
--		pre_gen6_xy_src_copy = BLT_INFO(XY_SRC_COPY,
--						BIT(T_LINEAR) |
--						BIT(T_XMAJOR));
--static const struct blt_cmd_info
--		gen6_xy_src_copy = BLT_INFO(XY_SRC_COPY,
--					    BIT(T_LINEAR) |
--					    BIT(T_XMAJOR) |
--					    BIT(T_YMAJOR));
--static const struct blt_cmd_info
--		gen11_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
--					      BIT(T_LINEAR)  |
--					      BIT(T_YMAJOR)  |
--					      BIT(T_YFMAJOR) |
--					      BIT(T_TILE64));
--static const struct blt_cmd_info
--		gen12_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
--					      BIT(T_LINEAR) |
--					      BIT(T_YMAJOR) |
--					      BIT(T_TILE4)  |
--					      BIT(T_TILE64));
--static const struct blt_cmd_info
--		dg2_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
--					    BIT(T_LINEAR) |
--					    BIT(T_XMAJOR) |
--					    BIT(T_TILE4)  |
--					    BIT(T_TILE64));
--static const struct blt_cmd_info
--		pvc_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
--					    BIT(T_LINEAR) |
--					    BIT(T_TILE4)  |
--					    BIT(T_TILE64));
--
--static const struct blt_cmd_info
--		gen12_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
--					       BIT(T_LINEAR) |
--					       BIT(T_YMAJOR));
--static const struct blt_cmd_info
--		dg2_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
--						 BIT(T_LINEAR) |
--						 BIT(T_XMAJOR) |
--						 BIT(T_TILE4)  |
--						 BIT(T_TILE64),
-+#define TILE_4		BIT(T_TILE4)
-+#define TILE_64		BIT(T_TILE64)
-+#define TILE_L		BIT(T_LINEAR)
-+#define TILE_X		BIT(T_XMAJOR)
-+#define TILE_Y		BIT(T_YMAJOR)
-+#define TILE_Yf		BIT(T_YFMAJOR)
-+
-+#define TILE_L_4_64	(TILE_L | TILE_4 | TILE_64)
-+#define TILE_L_X	(TILE_L | TILE_X)
-+#define TILE_L_X_Y	(TILE_L | TILE_X | TILE_Y)
-+#define TILE_L_X_4_64	(TILE_L | TILE_X | TILE_4 | TILE_64)
-+#define TILE_L_Y	(TILE_L | TILE_Y)
-+#define TILE_L_Y_4_64	(TILE_L | TILE_Y | TILE_4 | TILE_64)
-+#define TILE_L_Y_Yf_64	(TILE_L | TILE_Y | TILE_Yf | TILE_64)
-+
-+static const struct blt_cmd_info src_copy = BLT_INFO(SRC_COPY, TILE_L);
-+static const struct blt_cmd_info
-+		pre_gen6_xy_src_copy = BLT_INFO(XY_SRC_COPY, TILE_L_X);
-+
-+static const struct blt_cmd_info
-+		gen6_xy_src_copy = BLT_INFO(XY_SRC_COPY, TILE_L_X_Y);
-+
-+static const struct blt_cmd_info
-+		gen11_xy_fast_copy = BLT_INFO(XY_FAST_COPY, TILE_L_Y_Yf_64);
-+
-+static const struct blt_cmd_info
-+		gen12_xy_fast_copy = BLT_INFO(XY_FAST_COPY, TILE_L_Y_4_64);
-+
-+static const struct blt_cmd_info
-+		dg2_xy_fast_copy = BLT_INFO(XY_FAST_COPY, TILE_L_X_4_64);
-+
-+static const struct blt_cmd_info
-+		pvc_xy_fast_copy = BLT_INFO(XY_FAST_COPY, TILE_L_4_64);
-+
-+static const struct blt_cmd_info
-+		gen12_xy_block_copy = BLT_INFO(XY_BLOCK_COPY, TILE_L_Y);
-+
-+static const struct blt_cmd_info
-+		dg2_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY, TILE_L_X_4_64,
- 						 BLT_CMD_EXTENDED |
- 						 BLT_CMD_SUPPORTS_COMPRESSION);
- 
- static const struct blt_cmd_info
--		xe2_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
--						 BIT(T_LINEAR) |
--						 BIT(T_XMAJOR) |
--						 BIT(T_TILE4)  |
--						 BIT(T_TILE64),
-+		xe2_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY, TILE_L_X_4_64,
- 						 BLT_CMD_EXTENDED |
- 						 BLT_CMD_SUPPORTS_COMPRESSION);
- 
- static const struct blt_cmd_info
--		mtl_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
--						 BIT(T_LINEAR) |
--						 BIT(T_XMAJOR) |
--						 BIT(T_TILE4)  |
--						 BIT(T_TILE64),
-+		mtl_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY, TILE_L_X_4_64,
++#define TILE_4_64	(TILE_4 | TILE_64)
+ #define TILE_L_4_64	(TILE_L | TILE_4 | TILE_64)
+ #define TILE_L_X	(TILE_L | TILE_X)
++#define TILE_L_X_4	(TILE_L | TILE_X | TILE_4)
+ #define TILE_L_X_Y	(TILE_L | TILE_X | TILE_Y)
+ #define TILE_L_X_4_64	(TILE_L | TILE_X | TILE_4 | TILE_64)
+ #define TILE_L_Y	(TILE_L | TILE_Y)
+@@ -93,6 +95,23 @@ static const struct blt_cmd_info
  						 BLT_CMD_EXTENDED);
  
- static const struct blt_cmd_info
--		pvc_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
--						 BIT(T_LINEAR) |
--						 BIT(T_TILE4)  |
--						 BIT(T_TILE64),
-+		pvc_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY, TILE_L_4_64,
- 						 BLT_CMD_EXTENDED);
  
- static const struct blt_cmd_info
-@@ -102,17 +86,13 @@ static const struct blt_cmd_info
- 				       BIT(M_MATRIX));
- 
- static const struct blt_cmd_info
--		pre_gen6_xy_color_blt = BLT_INFO(XY_COLOR_BLT,
--						 BIT(T_LINEAR) |
--						 BIT(T_XMAJOR));
-+		pre_gen6_xy_color_blt = BLT_INFO(XY_COLOR_BLT, TILE_L_X);
- 
- static const struct blt_cmd_info
--		gen6_xy_color_blt = BLT_INFO_EXT(XY_COLOR_BLT,
--						 BIT(T_LINEAR) |
--						 BIT(T_YMAJOR) |
--						 BIT(T_XMAJOR),
-+		gen6_xy_color_blt = BLT_INFO_EXT(XY_COLOR_BLT, TILE_L_X_Y,
- 						 BLT_CMD_EXTENDED);
- 
++#define RENDER_TILING(_tiling, _compress_tiling)  { \
++		.supported_tiling = _tiling, \
++		.supported_compressed_tiling = _compress_tiling, \
++	}
++
++static const struct render_tiling_info
++		render_tiling_gen12 = RENDER_TILING(TILE_L_X_4, TILE_4);
++
++static const struct render_tiling_info
++		render_tiling_mtl = RENDER_TILING(TILE_L_X_4_64, TILE_4);
++
++static const struct render_tiling_info
++		render_tiling_dg2 = RENDER_TILING(TILE_L_X_4_64, TILE_4_64);
++
++static const struct render_tiling_info
++		render_tiling_xe2 = RENDER_TILING(TILE_L_X_4_64, TILE_L_X_4_64);
 +
  const struct intel_cmds_info pre_gen6_cmds_info = {
  	.blt_cmds = {
  		[SRC_COPY] = &src_copy,
+@@ -130,7 +149,8 @@ const struct intel_cmds_info gen12_cmds_info = {
+ 		[XY_FAST_COPY] = &gen12_xy_fast_copy,
+ 		[XY_BLOCK_COPY] = &gen12_xy_block_copy,
+ 		[XY_COLOR_BLT] = &gen6_xy_color_blt,
+-	}
++	},
++	.render_tilings = &render_tiling_gen12,
+ };
+ 
+ const struct intel_cmds_info gen12_dg2_cmds_info = {
+@@ -139,14 +159,16 @@ const struct intel_cmds_info gen12_dg2_cmds_info = {
+ 		[XY_FAST_COPY] = &dg2_xy_fast_copy,
+ 		[XY_BLOCK_COPY] = &dg2_xy_block_copy,
+ 		[XY_COLOR_BLT] = &gen6_xy_color_blt,
+-	}
++	},
++	.render_tilings = &render_tiling_dg2,
+ };
+ 
+ const struct intel_cmds_info gen12_mtl_cmds_info = {
+ 	.blt_cmds = {
+ 		[XY_FAST_COPY] = &dg2_xy_fast_copy,
+ 		[XY_BLOCK_COPY] = &mtl_xy_block_copy,
+-	}
++	},
++	.render_tilings = &render_tiling_mtl,
+ };
+ 
+ const struct intel_cmds_info gen12_pvc_cmds_info = {
+@@ -164,7 +186,8 @@ const struct intel_cmds_info xe2_cmds_info  = {
+ 		[XY_BLOCK_COPY] = &xe2_xy_block_copy,
+ 		[MEM_COPY] = &pvc_mem_copy,
+ 		[MEM_SET] = &pvc_mem_set,
+-	}
++	},
++	.render_tilings = &render_tiling_xe2,
+ };
+ 
+ const struct blt_cmd_info *blt_get_cmd_info(const struct intel_cmds_info *cmds_info,
+diff --git a/lib/intel_cmds_info.h b/lib/intel_cmds_info.h
+index 0a83b6a446..6f7d655083 100644
+--- a/lib/intel_cmds_info.h
++++ b/lib/intel_cmds_info.h
+@@ -43,8 +43,14 @@ struct blt_cmd_info {
+ #define BLT_CMD_SUPPORTS_COMPRESSION   (1 << 1)
+ };
+ 
++struct render_tiling_info {
++	uint32_t supported_tiling;
++	uint32_t supported_compressed_tiling;
++};
++
+ struct intel_cmds_info {
+ 	struct blt_cmd_info const *blt_cmds[__BLT_MAX_CMD];
++	struct render_tiling_info const *render_tilings;
+ };
+ 
+ extern const struct intel_cmds_info pre_gen6_cmds_info;
 -- 
 2.34.1
 
