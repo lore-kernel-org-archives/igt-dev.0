@@ -4,27 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D1EAC10F1A
-	for <igt-dev@archiver.kernel.org>; Tue,  7 May 2024 20:20:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41A99C10F1A
+	for <igt-dev@archiver.kernel.org>; Tue,  7 May 2024 20:31:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2FD97112621;
-	Tue,  7 May 2024 20:20:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D1FA8112633;
+	Tue,  7 May 2024 20:31:36 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3BEEA11261C;
- Tue,  7 May 2024 20:20:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BEBAD112633;
+ Tue,  7 May 2024 20:31:35 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3551201716698763339=="
+ boundary="===============5214106918506752834=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fdebugfs=3A?=
- =?utf-8?q?_Extend_gt_test_to_check_pat_entry?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bv3=2C1?=
+ =?utf-8?q?/2=5D_tests/kms=5Fvrr=3A_Add_a_subtest_for_seamless_modeset_to_a_?=
+ =?utf-8?q?virtual_LRR_mode_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: janga.rahul.kumar@intel.com
+To: "Manasi Navare" <navaremanasi@chromium.org>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 07 May 2024 20:20:50 -0000
-Message-ID: <171511325024.1963160.16170358768350489973@8e613ede5ea5>
+Date: Tue, 07 May 2024 20:31:35 -0000
+Message-ID: <171511389577.1963161.8251700475090935238@8e613ede5ea5>
 X-Patchwork-Hint: ignore
-References: <20240507134442.2246647-1-janga.rahul.kumar@intel.com>
-In-Reply-To: <20240507134442.2246647-1-janga.rahul.kumar@intel.com>
+References: <20240424201344.783935-1-navaremanasi@chromium.org>
+In-Reply-To: <20240424201344.783935-1-navaremanasi@chromium.org>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,125 +42,59 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3551201716698763339==
+--===============5214106918506752834==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_debugfs: Extend gt test to check pat entry
-URL   : https://patchwork.freedesktop.org/series/133281/
-State : failure
+Series: series starting with [v3,1/2] tests/kms_vrr: Add a subtest for seamless modeset to a virtual LRR mode (rev3)
+URL   : https://patchwork.freedesktop.org/series/132866/
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_14723 -> IGTPW_11109
+CI Bug Log - changes from XEIGT_7838_BAT -> XEIGTPW_11108_BAT
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_11109 absolutely need to be
-  verified manually.
+  No regressions found.
+
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_11109, please notify your bug team (&#x27;I915-ci-infra@lists.freedesktop.org&#x27;) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/index.html
-
-Participating hosts (41 -> 39)
+Participating hosts (4 -> 4)
 ------------------------------
 
-  Additional (1): bat-kbl-2 
-  Missing    (3): bat-arls-4 fi-snb-2520m fi-elk-e7500 
+  No changes in participating hosts
 
-Possible new issues
--------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_11109:
+Changes
+-------
 
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_module_load@load:
-    - bat-arls-3:         [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14723/bat-arls-3/igt@i915_module_load@load.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/bat-arls-3/igt@i915_module_load@load.html
-
-  
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@kms_flip@basic-flip-vs-dpms@d-dp6:
-    - {bat-mtlp-9}:       [PASS][3] -> [DMESG-WARN][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14723/bat-mtlp-9/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/bat-mtlp-9/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11109 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@fbdev@info:
-    - bat-kbl-2:          NOTRUN -> [SKIP][5] ([i915#1849])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/bat-kbl-2/igt@fbdev@info.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - bat-kbl-2:          NOTRUN -> [SKIP][6] +39 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-11:         [DMESG-FAIL][7] ([i915#9500]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14723/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-6:
-    - {bat-mtlp-9}:       [FAIL][9] -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14723/bat-mtlp-9/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-6.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/bat-mtlp-9/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-6.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10435
-  [i915#11009]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11009
-  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
-  [i915#6121]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6121
-  [i915#9500]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9500
+  No changes found
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7838 -> IGTPW_11109
+  * IGT: IGT_7838 -> IGTPW_11108
+  * Linux: xe-1248-0acac79849c88161fcceb75fdc56a438fa158324 -> xe-1250-9ba3c5b827bb4ad0418a182a5e0064edb6196820
 
-  CI-20190529: 20190529
-  CI_DRM_14723: f58676e47c12a99409b71f7d3bab9f89e14522b4 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11109: 0ff62675206492e1f93e699d79bef85f49d02199 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_11108: 70f39756b8310ef49e565789055cfab85b5cef58 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_7838: 155628bc9d0ee70c67c3612462a62f095609f152 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1248-0acac79849c88161fcceb75fdc56a438fa158324: 0acac79849c88161fcceb75fdc56a438fa158324
+  xe-1250-9ba3c5b827bb4ad0418a182a5e0064edb6196820: 9ba3c5b827bb4ad0418a182a5e0064edb6196820
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11108/index.html
 
---===============3551201716698763339==
+--===============5214106918506752834==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -179,92 +114,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_debugfs: Extend gt test to check pat entry</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133281/">https://patchwork.freedesktop.org/series/133281/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>series starting with [v3,1/2] tests/kms_vrr: Add a subtest for seamless modeset to a virtual LRR mode (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132866/">https://patchwork.freedesktop.org/series/132866/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11108/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11108/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_14723 -&gt; IGTPW_11109</h1>
+    <h1>CI Bug Log - changes from XEIGT_7838_BAT -&gt; XEIGTPW_11108_BAT</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_11109 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_11109, please notify your bug team (&#x27;I915-ci-infra@lists.freedesktop.org&#x27;) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/index.html</p>
-<h2>Participating hosts (41 -&gt; 39)</h2>
-<p>Additional (1): bat-kbl-2 <br />
-  Missing    (3): bat-arls-4 fi-snb-2520m fi-elk-e7500 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_11109:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_module_load@load:<ul>
-<li>bat-arls-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14723/bat-arls-3/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/bat-arls-3/igt@i915_module_load@load.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-dpms@d-dp6:<ul>
-<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14723/bat-mtlp-9/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/bat-mtlp-9/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11109 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@fbdev@info:</p>
-<ul>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/bat-kbl-2/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> +39 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14723/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9500">i915#9500</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-6:</p>
-<ul>
-<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14723/bat-mtlp-9/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-6.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11109/bat-mtlp-9/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-6.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7838 -&gt; IGTPW_11109</li>
+<li>IGT: IGT_7838 -&gt; IGTPW_11108</li>
+<li>Linux: xe-1248-0acac79849c88161fcceb75fdc56a438fa158324 -&gt; xe-1250-9ba3c5b827bb4ad0418a182a5e0064edb6196820</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14723: f58676e47c12a99409b71f7d3bab9f89e14522b4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11109: 0ff62675206492e1f93e699d79bef85f49d02199 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7838: 155628bc9d0ee70c67c3612462a62f095609f152 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_11108: 70f39756b8310ef49e565789055cfab85b5cef58 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7838: 155628bc9d0ee70c67c3612462a62f095609f152 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1248-0acac79849c88161fcceb75fdc56a438fa158324: 0acac79849c88161fcceb75fdc56a438fa158324<br />
+  xe-1250-9ba3c5b827bb4ad0418a182a5e0064edb6196820: 9ba3c5b827bb4ad0418a182a5e0064edb6196820</p>
 
 </body>
 </html>
 
---===============3551201716698763339==--
+--===============5214106918506752834==--
