@@ -4,62 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B11D6C04FFE
-	for <igt-dev@archiver.kernel.org>; Wed,  8 May 2024 15:13:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14583C04FFE
+	for <igt-dev@archiver.kernel.org>; Wed,  8 May 2024 15:57:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3605E10E541;
-	Wed,  8 May 2024 15:13:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 975D110FDEF;
+	Wed,  8 May 2024 15:57:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RpqyjYhX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aombhPDj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6987F10F07C
- for <igt-dev@lists.freedesktop.org>; Wed,  8 May 2024 15:13:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 562B910FDEF
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 May 2024 15:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715181185; x=1746717185;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=h+mPRGoc85XYX4hmlfyw/QnxWHLRqOgRbEwm/lLJHeQ=;
- b=RpqyjYhXDireH8u7YK5CpJJS9wr57XD6dwq4GFm2kbWkoVt//KyjoR7E
- aHePHxpKBRdqIx805Td8A5OXJHH03bHjD1U9668D7QYK+l5MMXgqjpJUy
- 6TGUObNqFrm8g8uWYP0TBuokgjO0Ojmn95PHbFlRje6fYQPNRv4xzMuwP
- AOVYx2r06H6hJJTMigsQuySmnl3Dt71oD3JOiXzq+rYWbNanZCCr8jyfG
- 23IkolXwBgntwi9MQHhWWvF55nBVulZt7Z/h27UPUuO1tooJsckD1KxFC
- V/rPTdtVCdxyF2YtiBuSzBQoEVDHzQHAPQKExHXp13SA3ycnY8FKy5Ukx Q==;
-X-CSE-ConnectionGUID: bCQCMXTXR1WuYIvYmi156w==
-X-CSE-MsgGUID: mm/5e5MhSgauYAlW907W/w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="21722853"
-X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="21722853"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2024 08:13:04 -0700
-X-CSE-ConnectionGUID: lhV/qSCgTCWb/RiLI8TyTg==
-X-CSE-MsgGUID: 3bN1uCIeTy2EQsaob7yIEQ==
+ t=1715183832; x=1746719832;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=tmfk1YF7XFvbM7ynBrDiTftkcuoJqdpOITlA/ql/ynw=;
+ b=aombhPDjKSqIhB8kAIaAFwWmG79/N+5YIR03EED7HPdVSjm7oGT3CYvg
+ aBoYq5azcYS9ib3qQMwsv6TGRCsmg16BggyEjrmLHuFLAVGoFfWQN0J43
+ WuguUn1h5vDU4veQh85guUOiON2H7DQ1psb28YnZGCBSLSf0cXQHwgKAe
+ H3pjBjSOr9pvlk/evlVN7Oi2xYam4cSG6PqlVMUuo/p24SPe4H2pYwWC7
+ wtmk3UIirqP5sldKqb+qCm0oSqzvl91EJgz5w5xLcSyzomQ1hx1rbf0sh
+ Dq8KiamUo2EIi7Lff4n+BHn14YcJmIN2dRlTq/dAEB1ys73I1pRWQjI2Z Q==;
+X-CSE-ConnectionGUID: GZ11AjSGSdeGPkOuB7vGzw==
+X-CSE-MsgGUID: r6yiZ5b+Rb+aCXZtu1R1zQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="11216394"
+X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="11216394"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 May 2024 08:57:11 -0700
+X-CSE-ConnectionGUID: 3yYxdeaISOi4l1ziE7Kqgg==
+X-CSE-MsgGUID: R+gc1bD9QsSJgIgLUYQBPA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="29315294"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2024 08:13:03 -0700
-Date: Wed, 8 May 2024 17:13:00 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Vinod Govindapillai <vinod.govindapillai@intel.com>,
- bhanuprakash.modem@intel.com, juha-pekka.heikkila@intel.com,
- jani.saarinen@intel.com
-Subject: Re: [PATCH i-g-t] tests/intel/kms_big_fb: Fix width calculation
- while creating the intel buf
-Message-ID: <20240508151300.it6pnyauxeq6tyed@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Vinod Govindapillai <vinod.govindapillai@intel.com>,
- bhanuprakash.modem@intel.com, juha-pekka.heikkila@intel.com,
- jani.saarinen@intel.com
-References: <20240507123026.57575-1-vinod.govindapillai@intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="33624526"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 May 2024 08:57:12 -0700
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org, Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH 0/4] Minor gputop improvements
+Date: Wed,  8 May 2024 08:57:25 -0700
+Message-ID: <171518377810.466820.1670689778020951049.b4-ty@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240501173303.115737-1-lucas.demarchi@intel.com>
+References: <20240501173303.115737-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240507123026.57575-1-vinod.govindapillai@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,49 +70,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Vinod,
-On 2024-05-07 at 15:30:26 +0300, Vinod Govindapillai wrote:
-> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> 
 
-Please add description here.
-
-Regards,
-Kamil
-
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
-> ---
->  lib/igt_draw.c           | 2 +-
->  tests/intel/kms_big_fb.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+On Wed, 01 May 2024 12:32:59 -0500, Lucas De Marchi wrote:
+> Extracted from https://patchwork.freedesktop.org/series/132059/ as not
+> really related.
 > 
-> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-> index 2c01d7b02..97a7e6b37 100644
-> --- a/lib/igt_draw.c
-> +++ b/lib/igt_draw.c
-> @@ -650,7 +650,7 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
->  	uint64_t region = driver == INTEL_DRIVER_XE ? vram_if_possible(fd, 0) : -1;
->  	uint64_t size = from->size;
->  
-> -	width = from->width;
-> +	width = from->stride / (from->bpp / 8);
->  	height = from->height;
->  	if (driver == INTEL_DRIVER_XE)
->  		size = ALIGN(size, xe_get_default_alignment(fd));
-> diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
-> index f7f303d41..1e45d8e42 100644
-> --- a/tests/intel/kms_big_fb.c
-> +++ b/tests/intel/kms_big_fb.c
-> @@ -199,7 +199,7 @@ static struct intel_buf *init_buf(data_t *data,
->  	tiling = igt_fb_mod_to_tiling(fb->modifier);
->  	bpp = fb->plane_bpp[0];
->  	size = fb->size;
-> -	width = fb->width;
-> +	width = fb->strides[0] / (bpp / 8);
->  	height = fb->height;
->  
->  	name = gem_flink(data->drm_fd, fb->gem_handle);
-> -- 
-> 2.34.1
+> Lucas De Marchi (4):
+>   gputop: print percentage number
+>   gputop: Add option parsing
+>   gputop: Allow to limit number of executions
+>   gputop: Allow to set delay interval
 > 
+> [...]
+
+Applied, thanks for the reviews!
+
+[1/4] gputop: print percentage number
+      commit: e8861cad28fdd4c9fe6ef712cb9ad16eb2fcaff5
+[2/4] gputop: Add option parsing
+      commit: 268e107e4eb5a321094f49501ea9a549e508543b
+[3/4] gputop: Allow to limit number of executions
+      commit: 7e0bf0a8f066d58a41c4a46c5fa4d9faf2f8a3a4
+[4/4] gputop: Allow to set delay interval
+      commit: 70f5f61440d0ea54c5d84b0da17b9e69244cd4cd
+
+Best regards,
+-- 
+Lucas De Marchi <lucas.demarchi@intel.com>
