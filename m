@@ -4,70 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1766AC04FFE
-	for <igt-dev@archiver.kernel.org>; Wed,  8 May 2024 11:45:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8E2FC04FFE
+	for <igt-dev@archiver.kernel.org>; Wed,  8 May 2024 11:53:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A2CDD1135E8;
-	Wed,  8 May 2024 11:45:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 51F7810F092;
+	Wed,  8 May 2024 11:53:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="CxP0Y3Cs";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="VnLZYrBy";
 	dkim-atps=neutral
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com
- [209.85.221.52])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 583E81135E8
- for <igt-dev@lists.freedesktop.org>; Wed,  8 May 2024 11:45:19 +0000 (UTC)
-Received: by mail-wr1-f52.google.com with SMTP id
- ffacd0b85a97d-34e663aa217so3191995f8f.1
- for <igt-dev@lists.freedesktop.org>; Wed, 08 May 2024 04:45:19 -0700 (PDT)
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
+ [209.85.221.47])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 17E9810F092
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 May 2024 11:53:06 +0000 (UTC)
+Received: by mail-wr1-f47.google.com with SMTP id
+ ffacd0b85a97d-34dc8d3fbf1so3139042f8f.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 08 May 2024 04:53:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715168717; x=1715773517; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1715169184; x=1715773984; darn=lists.freedesktop.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
+ :references:cc:to:subject:reply-to:user-agent:mime-version:date
  :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=v0YxuNRJchB/i09RBBbotZh/PIL6BeEDOUp2P0YpOkE=;
- b=CxP0Y3Cs5EYilgerJzNH1rnLzbukRk9Xd9Peu8sv/N86jjEeXtNjj90oth66e3mxsI
- IdPXsJm/yHDg0xEo9JX7Kiy/jFDw6eADpGAVC3RTAK5OMAA0rUBms5TFcM2IUDiAFCS0
- n5HOkp/cYHT4oJVJhhQV/LU/RhJejM+4pSPjsr8RsR9xnz8or4QtVQLood9fPtBxwR9N
- Kpgo2oymraAZwSKIqIjjsHiX9lteH/ZgcHtVTW1b3fAZNwISi+WByXFH3+3O7ufKF/LV
- B8OgK6id3bFlhWPFYfaDqJChyW7zjGxXyQtfe6kZpeOp08WxROoH012ev5TfUqXF468+
- WVSA==
+ bh=4KOBDrO4veviN4SdssfCmo1+2cBD9X7e82XvRs+LIq8=;
+ b=VnLZYrByuGJah16ZPU1609yYpVLZvJhcA/yyimgTs76GOlZoFAnEJzYeAZTTFLIyZU
+ cPIxiuKNmsOyfyu/PIRr+dEJpRLWKoxF9LdrY5/qSnSQBDE8py8a0IUKPft2sdJKo8WE
+ +SkAUSz1aJ27bOm0sxzruLtNe7tkZkQ7000o2XWspOJAh1P30DUqrvSzY9/jYISTuzys
+ Qo4neJJOQ+EtM8fjKI9LCg92PFicseGCfkBV8BIyKzCnRb6854hvOkk6ASqfCAZfTcBu
+ 6ku1RXh1hJU7umvao2wrq22GNuToYpmq5fcrSWccFj2izAwXMDZHTczIETIeS/y5SnRB
+ I91g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715168717; x=1715773517;
+ d=1e100.net; s=20230601; t=1715169184; x=1715773984;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
+ :references:cc:to:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=v0YxuNRJchB/i09RBBbotZh/PIL6BeEDOUp2P0YpOkE=;
- b=UJvg9bN181PADHkWOJJPwF8vV3QQq2JaWzoKGkiv5o0Y/xwqjKMOl8FzOKBV2tgIzM
- YQKCIiwsdda+lh0NSjE/gz44hSjfqts0W03gFK0UxWFakSgjgkm45A9JMPoM2g0BV7ez
- uTFXAuPLZO/G5fI49i7HPh7bQuJiz9EB+EK5Iaa48lo1OvHiIq+i12J138AYCDS0LuPS
- 5x99+0Y6XenIq/OcY23ynGr2yeYlKXG+zy7gKQW807H/VZQhnFoRU3bxWrgNC7s4q3OB
- oy4GcvTuJgfs0gXlSQGdruVjIsktjWLKCnYWYOMYgWL51ZCAGr8whor5JvZ4zIei7IRr
- V9TQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVCHQDItub8irE/i+t6wajPN4Fkr2Nwq+OYD5yNYipkEdxLaUMGF/0VBdLCHLRgZHrenU9p89KVRElNFTUR6WfICSsFw+aWZ3Kul8ez3A==
-X-Gm-Message-State: AOJu0YzBGFF28Kj2ZkB/mE9Bj1KhbMMBAnvle1APeCRzaycE1ogtmxAl
- hp9EUkyRkc/BeHHGCakn5i8EOQFeyv947oFGVrmZvxEdAb54pOaS
-X-Google-Smtp-Source: AGHT+IG7peKkEFwoIheR/dj2wnNJ13UTz/e3DxphZ7PXPeU6r61Wr1TPww1UZoEeuXiZ//NRmtDaSg==
-X-Received: by 2002:adf:ab19:0:b0:34c:925e:6c2c with SMTP id
- ffacd0b85a97d-34fcaddf714mr1767151f8f.6.1715168717239; 
- Wed, 08 May 2024 04:45:17 -0700 (PDT)
+ bh=4KOBDrO4veviN4SdssfCmo1+2cBD9X7e82XvRs+LIq8=;
+ b=gS0BEVw7s6nqEKEmp15tGz8V4IL+YtPPaTvU1BvHMuYnV7FE8HPUR1I6S/bkZdsdoA
+ /9KV7lUDeA6sIUjRgc3KBltWcWDZO1uC/p2iHyS09Ime2ijC7rzqr5nC1JDir1N5RWGU
+ AX7OKZk33L0G9Apk3B19xcHlW+QAePi/F9LZWl08IL6u97IpKM+BGCCyL32XiLjnb/W9
+ toLv/4CYrAghHl1Sl/SbK2FDU43eZFmi9B9B7mAQhqNp9iWKekSQ9H8k81ulNpHvloho
+ YhWTsA+KXz6HUtLZd4Y3qM5b4bXs8DWd4Lzs9TeIOGWHzmc+EuUrEmEF+I2b6QfOqP9K
+ RPWQ==
+X-Gm-Message-State: AOJu0YwBDp7eq9pskbOunbEoYTYCXt7CxLXGs5ILB+R05HlzieARh6Jl
+ wJTuTKfgfGbjdsUXO27JfLH+I+3hBy/P8rn7jykRt7lDU3JxC2dsszZnVyOqhIPybg==
+X-Google-Smtp-Source: AGHT+IGZStGdq/HvcxyMKhR9nf18UKdulJe7fEXUyT7s+xbHmSFWOhwaw6xUyYvI1DzSEvD/89zVCw==
+X-Received: by 2002:a05:6000:548:b0:34d:b73d:c62e with SMTP id
+ ffacd0b85a97d-34fca80ea2cmr1624675f8f.63.1715169184217; 
+ Wed, 08 May 2024 04:53:04 -0700 (PDT)
 Received: from [0.0.0.0] ([134.134.139.86])
  by smtp.googlemail.com with ESMTPSA id
- q27-20020adfab1b000000b0034e24be18a1sm15297345wrc.15.2024.05.08.04.45.14
+ l7-20020a5d5267000000b0034dd13d7a5esm15153393wrc.65.2024.05.08.04.53.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 May 2024 04:45:16 -0700 (PDT)
-Message-ID: <fcedb370-5a8e-41db-8371-77ba1cca1e81@gmail.com>
-Date: Wed, 8 May 2024 14:45:15 +0300
+ Wed, 08 May 2024 04:53:03 -0700 (PDT)
+Message-ID: <ee641ab8-041b-4f39-8e09-4be2aed1a17e@gmail.com>
+Date: Wed, 8 May 2024 14:53:02 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/kms_ccs: Test XRGB2101010
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20240506133748.30321-1-ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t v3 07/11] lib/intel_cmds_info: Define tiling macros
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+References: <20240507075836.259581-1-zbigniew.kempczynski@intel.com>
+ <20240507075836.259581-8-zbigniew.kempczynski@intel.com>
+ <cb5485b2-21ec-40a4-9df8-d9db860c9e86@gmail.com>
+ <20240508071346.rl4rgfilnlwaehuk@zkempczy-mobl2>
 Content-Language: en-US
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240506133748.30321-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20240508071346.rl4rgfilnlwaehuk@zkempczy-mobl2>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -86,58 +87,185 @@ Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 6.5.2024 16.37, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+On 8.5.2024 10.13, Zbigniew Kempczyński wrote:
+> On Tue, May 07, 2024 at 05:27:42PM +0300, Juha-Pekka Heikkila wrote:
+>> Hi Zbigniew,
+>>
+>> On 7.5.2024 10.58, Zbigniew Kempczyński wrote:
+>>> Blitter tilings don't always matches supported render tilings so
+>>> it is necessary to add separate fields for this purpose. To avoid
+>>> multiple lines where supported tiling is glued with BIT(tiling)
+>>> it is worth to predefine them, especially they will be used in next
+>>> patch related to supported render copy tilings.
+>>>
+>>> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+>>>
+>>> ---
+>>> v3: Predefine single tiling first, then complex (Karolina)
+>>> ---
+>>>    lib/intel_cmds_info.c | 110 +++++++++++++++++-------------------------
+>>>    1 file changed, 45 insertions(+), 65 deletions(-)
+>>>
+>>> diff --git a/lib/intel_cmds_info.c b/lib/intel_cmds_info.c
+>>> index 669d3e5006..e7aabf6bfb 100644
+>>> --- a/lib/intel_cmds_info.c
+>>> +++ b/lib/intel_cmds_info.c
+>>> @@ -20,75 +20,59 @@
+>>>    		.flags = _flags, \
+>>>    	}
+>>> -static const struct blt_cmd_info src_copy = BLT_INFO(SRC_COPY, BIT(T_LINEAR));
+>>> -static const struct blt_cmd_info
+>>> -		pre_gen6_xy_src_copy = BLT_INFO(XY_SRC_COPY,
+>>> -						BIT(T_LINEAR) |
+>>> -						BIT(T_XMAJOR));
+>>> -static const struct blt_cmd_info
+>>> -		gen6_xy_src_copy = BLT_INFO(XY_SRC_COPY,
+>>> -					    BIT(T_LINEAR) |
+>>> -					    BIT(T_XMAJOR) |
+>>> -					    BIT(T_YMAJOR));
+>>> -static const struct blt_cmd_info
+>>> -		gen11_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
+>>> -					      BIT(T_LINEAR)  |
+>>> -					      BIT(T_YMAJOR)  |
+>>> -					      BIT(T_YFMAJOR) |
+>>> -					      BIT(T_TILE64));
+>>> -static const struct blt_cmd_info
+>>> -		gen12_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
+>>> -					      BIT(T_LINEAR) |
+>>> -					      BIT(T_YMAJOR) |
+>>> -					      BIT(T_TILE4)  |
+>>> -					      BIT(T_TILE64));
+>>> -static const struct blt_cmd_info
+>>> -		dg2_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
+>>> -					    BIT(T_LINEAR) |
+>>> -					    BIT(T_XMAJOR) |
+>>> -					    BIT(T_TILE4)  |
+>>> -					    BIT(T_TILE64));
+>>> -static const struct blt_cmd_info
+>>> -		pvc_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
+>>> -					    BIT(T_LINEAR) |
+>>> -					    BIT(T_TILE4)  |
+>>> -					    BIT(T_TILE64));
+>>> -
+>>> -static const struct blt_cmd_info
+>>> -		gen12_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
+>>> -					       BIT(T_LINEAR) |
+>>> -					       BIT(T_YMAJOR));
+>>> -static const struct blt_cmd_info
+>>> -		dg2_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
+>>> -						 BIT(T_LINEAR) |
+>>> -						 BIT(T_XMAJOR) |
+>>> -						 BIT(T_TILE4)  |
+>>> -						 BIT(T_TILE64),
+>>> +#define TILE_4		BIT(T_TILE4)
+>>> +#define TILE_64		BIT(T_TILE64)
+>>> +#define TILE_L		BIT(T_LINEAR)
+>>> +#define TILE_X		BIT(T_XMAJOR)
+>>> +#define TILE_Y		BIT(T_YMAJOR)
+>>> +#define TILE_Yf		BIT(T_YFMAJOR)
+>>> +
+>>> +#define TILE_L_4_64	(TILE_L | TILE_4 | TILE_64)
+>>> +#define TILE_L_X	(TILE_L | TILE_X)
+>>> +#define TILE_L_X_Y	(TILE_L | TILE_X | TILE_Y)
+>>> +#define TILE_L_X_4_64	(TILE_L | TILE_X | TILE_4 | TILE_64)
+>>> +#define TILE_L_Y	(TILE_L | TILE_Y)
+>>> +#define TILE_L_Y_4_64	(TILE_L | TILE_Y | TILE_4 | TILE_64)
+>>
+>> I was wondering if this is intentional or a bug? I see this was already so
+>> in previous implementation so I guess it work.. but on above line is set
+>> bits for linear, y, 4 and 64tile. I think those y and 4 will never exist in
+>> same device? Should here 4 be x instead?
 > 
-> I want to enable 10bpc CCS support for i915. To that end start
-> testing it.
+> Looking at spec I see only Linear and Y are supported on TGL. I miss
+> tool which verifies what tile format are supported on given platform.
+> Unfortunately linear -> <intermediate surface> -> linear only proves
+> that operation is reversible, but we're not sure really what tiling
+> exists in <intermediate> surface.
 > 
-> Note that we are faking things a bit because rendercopy will
-> still use a 8:8:8:8 format here (plumbing the full pixel format,
-> as opposed to just bpp, would require quite a bit more work).
-> However this seems to work fine, I suspect due to:
-> - we only do 1:1: copies of data
-> - the compression is lossless
+> I've checked for fast-copy and on TGL technically we should have
+> L/X/Y/4/64 (Y/4 are switched by Dword1 bit[31]). But I can't prove at
+> the moment is it correct.
 > 
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> ---
->   tests/intel/kms_ccs.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
-> index a5cb3b3b4f27..c91370a9abe7 100644
-> --- a/tests/intel/kms_ccs.c
-> +++ b/tests/intel/kms_ccs.c
-> @@ -197,6 +197,7 @@ static const struct {
->   static const uint32_t formats[] = {
->   	DRM_FORMAT_XYUV8888,
->   	DRM_FORMAT_XRGB8888,
-> +	DRM_FORMAT_XRGB2101010,
->   	DRM_FORMAT_YUYV,
->   	DRM_FORMAT_NV12,
->   	DRM_FORMAT_P012,
-> @@ -635,6 +636,7 @@ static uint32_t blt_compression_format(struct blt_copy_data *blt,
->   {
->   	switch (fb->drm_format) {
->   	case DRM_FORMAT_XRGB8888:
-> +	case DRM_FORMAT_XRGB2101010:
 
-As discussed offline, here's unrelated issue which need to be fixed at 
-later time, but as lossless compression work lossless this is all ok.
+ack. Let's go with this and if there later come ideas we'll take another 
+look at this.
 
 Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
->   	case DRM_FORMAT_P010:
->   	case DRM_FORMAT_P012:
->   	case DRM_FORMAT_P016:
-> @@ -849,7 +851,8 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
->   		return false;
->   
->   	if (is_ccs_cc_modifier(data->ccs_modifier) &&
-> -	    data->format != DRM_FORMAT_XRGB8888)
-> +	    data->format != DRM_FORMAT_XRGB8888 &&
-> +	    data->format != DRM_FORMAT_XRGB2101010)
->   		return false;
->   
->   	if ((fb_flags & FB_MISALIGN_AUX_STRIDE) ||
+>>
+>> I see this is used for gen12_xy_fast_copy, could this play part in those
+>> failures I had with blitter on adlp w/ x-tile?
+>>
+>>> +#define TILE_L_Y_Yf_64	(TILE_L | TILE_Y | TILE_Yf | TILE_64)
+>>> +
+>>> +static const struct blt_cmd_info src_copy = BLT_INFO(SRC_COPY, TILE_L);
+>>> +static const struct blt_cmd_info
+>>> +		pre_gen6_xy_src_copy = BLT_INFO(XY_SRC_COPY, TILE_L_X);
+>>> +
+>>> +static const struct blt_cmd_info
+>>> +		gen6_xy_src_copy = BLT_INFO(XY_SRC_COPY, TILE_L_X_Y);
+>>> +
+>>> +static const struct blt_cmd_info
+>>> +		gen11_xy_fast_copy = BLT_INFO(XY_FAST_COPY, TILE_L_Y_Yf_64);
+>>> +
+>>> +static const struct blt_cmd_info
+>>> +		gen12_xy_fast_copy = BLT_INFO(XY_FAST_COPY, TILE_L_Y_4_64);
+>>> +
+>>> +static const struct blt_cmd_info
+>>> +		dg2_xy_fast_copy = BLT_INFO(XY_FAST_COPY, TILE_L_X_4_64);
+>>> +
+>>> +static const struct blt_cmd_info
+>>> +		pvc_xy_fast_copy = BLT_INFO(XY_FAST_COPY, TILE_L_4_64);
+>>> +
+>>> +static const struct blt_cmd_info
+>>> +		gen12_xy_block_copy = BLT_INFO(XY_BLOCK_COPY, TILE_L_Y);
+>>> +
+>>> +static const struct blt_cmd_info
+>>> +		dg2_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY, TILE_L_X_4_64,
+>>>    						 BLT_CMD_EXTENDED |
+>>>    						 BLT_CMD_SUPPORTS_COMPRESSION);
+>>>    static const struct blt_cmd_info
+>>> -		xe2_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
+>>> -						 BIT(T_LINEAR) |
+>>> -						 BIT(T_XMAJOR) |
+>>> -						 BIT(T_TILE4)  |
+>>> -						 BIT(T_TILE64),
+>>> +		xe2_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY, TILE_L_X_4_64,
+>>>    						 BLT_CMD_EXTENDED |
+>>>    						 BLT_CMD_SUPPORTS_COMPRESSION);
+>>>    static const struct blt_cmd_info
+>>> -		mtl_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
+>>> -						 BIT(T_LINEAR) |
+>>> -						 BIT(T_XMAJOR) |
+>>> -						 BIT(T_TILE4)  |
+>>> -						 BIT(T_TILE64),
+>>> +		mtl_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY, TILE_L_X_4_64,
+>>>    						 BLT_CMD_EXTENDED);
+>>>    static const struct blt_cmd_info
+>>> -		pvc_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
+>>> -						 BIT(T_LINEAR) |
+>>> -						 BIT(T_TILE4)  |
+>>> -						 BIT(T_TILE64),
+>>> +		pvc_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY, TILE_L_4_64,
+>>>    						 BLT_CMD_EXTENDED);
+>>>    static const struct blt_cmd_info
+>>> @@ -102,17 +86,13 @@ static const struct blt_cmd_info
+>>>    				       BIT(M_MATRIX));
+>>>    static const struct blt_cmd_info
+>>> -		pre_gen6_xy_color_blt = BLT_INFO(XY_COLOR_BLT,
+>>> -						 BIT(T_LINEAR) |
+>>> -						 BIT(T_XMAJOR));
+>>> +		pre_gen6_xy_color_blt = BLT_INFO(XY_COLOR_BLT, TILE_L_X);
+>>>    static const struct blt_cmd_info
+>>> -		gen6_xy_color_blt = BLT_INFO_EXT(XY_COLOR_BLT,
+>>> -						 BIT(T_LINEAR) |
+>>> -						 BIT(T_YMAJOR) |
+>>> -						 BIT(T_XMAJOR),
+>>> +		gen6_xy_color_blt = BLT_INFO_EXT(XY_COLOR_BLT, TILE_L_X_Y,
+>>>    						 BLT_CMD_EXTENDED);
+>>> +
+>>>    const struct intel_cmds_info pre_gen6_cmds_info = {
+>>>    	.blt_cmds = {
+>>>    		[SRC_COPY] = &src_copy,
+>>
 
