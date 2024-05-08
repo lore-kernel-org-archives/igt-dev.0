@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 799FDC04FFE
-	for <igt-dev@archiver.kernel.org>; Wed,  8 May 2024 14:33:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA8E2C19F4F
+	for <igt-dev@archiver.kernel.org>; Wed,  8 May 2024 14:54:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 23DBB10FF97;
-	Wed,  8 May 2024 14:33:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 562EE112418;
+	Wed,  8 May 2024 14:54:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eaPU8Kvy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IL1EJJww";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6291710FF97
- for <igt-dev@lists.freedesktop.org>; Wed,  8 May 2024 14:33:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A4D34112418
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 May 2024 14:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715178825; x=1746714825;
+ t=1715180046; x=1746716046;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=+beNBY0Yj9Lx7OW337KTBP3My3zNoHoxTsUz3G2cIOk=;
- b=eaPU8Kvy4212JLxxgEcNcU5DgzhFhvDHXIju3eLk3YYQBUjmNDadz8wy
- 1Jq/hA5eSI+H91+0Huh0dJQqD+KGXWwudcc22rfClj9cUigfeQj2qnouT
- 2nICr1ynDr8dfG7imYwTOnXNAT4Hl1BgCeY2qU3vAIY0VOVDLTv3zaJ8y
- 6eiW02u1ZEPPYZvML5vyLgIyujkm56IIxB9ysbnVO4Rckz2P3TN9u/SRl
- tI/5GINVKQGlLZWzS/Pn6Wv3kZC2CsZKB7f+a77ljuXCIqfdcyeObXiy1
- rnYmoAj5F2h2MgcujueZVo7jca+X8iQnuKHDEan7es3XZ9ASGBMn6bofO g==;
-X-CSE-ConnectionGUID: 6mcXSMD8SEyRC1NBwpFRpQ==
-X-CSE-MsgGUID: seTTO7bRTbif7iKpWg0slQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="10879337"
-X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="10879337"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2024 07:33:45 -0700
-X-CSE-ConnectionGUID: KCn5Vw7sQWaAyFtaACh7GQ==
-X-CSE-MsgGUID: qSTThgSpRZqkLCagmwxCyA==
+ bh=9TqoQGs/zDQhX2JZ2N2U7AAHgQPb1QvxVq1uvUePgiE=;
+ b=IL1EJJwwihQbmLtQ640CQOt8aT+KJTYlWOQocj3AxB4e6NBYyes/AWJW
+ JX5JHRj/JqE2GgVpKw0KY/HwNZpqkNZXj5ih0jruJVQIl+D/Pvy5n9s4S
+ RAqa26bvcB2zbOjasvknjBR5/zQQPayGKALqgZbX/tdrZnoEkSOxHC/Q2
+ vJcOQMQGxZGGTWnCfcMQ3rX1r3AWXFv86EK7XML4rr6wg31+PjhRqw5lz
+ cdFYM70et0oJBGiouTRA+hOKlEtu4bVPPyAdLFHjtFXXH8A1UnQpBH5wl
+ fU8lcqCz/TzEpv9PBjIIBUyED42Z7EiVq2CirMzNL/eCH8Bdu4mJl6gXG g==;
+X-CSE-ConnectionGUID: YTPSYMIfTGSzuX+7kS+28g==
+X-CSE-MsgGUID: acOrGNEFRKq8Kp9FlA3fjA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="11171360"
+X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="11171360"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 May 2024 07:54:05 -0700
+X-CSE-ConnectionGUID: siJZfsaPRfKRtfqr1X2ozQ==
+X-CSE-MsgGUID: aXV16sufSlGcE7nhaHW1LQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="28837935"
+X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="28895975"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2024 07:33:43 -0700
-Date: Wed, 8 May 2024 16:33:41 +0200
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2024 07:54:05 -0700
+Date: Wed, 8 May 2024 16:54:01 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Jagmeet Randhawa <jagmeet.randhawa@intel.com>,
-	jonathan.cavitt@intel.com
-Subject: Re: [PATCH i-g-t] lib/xe/xe_spin.c: Fix typo
-Message-ID: <20240508143341.nmbqzf2ziwcroqmq@kamilkon-DESK.igk.intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: Re: [PATCH i-g-t v3 1/6] lib/igt_fb: fix intel modifiers for fb
+ copying on xe driver
+Message-ID: <20240508145401.y6mng4gxv4rbsle7@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Jagmeet Randhawa <jagmeet.randhawa@intel.com>,
- jonathan.cavitt@intel.com
-References: <509c80865fe3460ba32ac25b49bb6ed1c40a6b33.1715109028.git.jagmeet.randhawa@intel.com>
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+References: <20240430162939.272990-1-juhapekka.heikkila@gmail.com>
+ <20240430162939.272990-2-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <509c80865fe3460ba32ac25b49bb6ed1c40a6b33.1715109028.git.jagmeet.randhawa@intel.com>
+In-Reply-To: <20240430162939.272990-2-juhapekka.heikkila@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,59 +72,85 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jagmeet,
-On 2024-05-07 at 12:23:12 -0700, Jagmeet Randhawa wrote:
-> Fix typos to follow proper format.
+Hi Juha-Pekka,
+On 2024-04-30 at 19:29:34 +0300, Juha-Pekka Heikkila wrote:
+> mc ccs need to go to vebox copy, blitter doesn't do mc ccs hence
+- ^^^^^^
+Could you decipher here (or even better as a comment in source and
+here) what does 'mc ccs' mean?
 
-Few more things, first is about subject:
+> on all platforms with ccs modifiers use engine copy for those.
+> Use render engine for x-tile on legacy platforms where x-tile
+> would otherwise endup on fastblit patch which is known to have
+> limitations.
+> 
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>  lib/igt_fb.c | 22 +++++++++++++++++-----
+>  1 file changed, 17 insertions(+), 5 deletions(-)
+> 
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index cc70cb91c..5df5cb08f 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -2508,9 +2508,12 @@ static bool blitter_ok(const struct igt_fb *fb)
+>  	if (!is_intel_device(fb->fd))
+>  		return false;
+>  
+> -	if ((is_ccs_modifier(fb->modifier) &&
+> -	     !HAS_FLATCCS(intel_get_drm_devid(fb->fd))) ||
+> -	     is_gen12_mc_ccs_modifier(fb->modifier))
+> +	if ((!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) &&
+> +	    is_ccs_modifier(fb->modifier)) ||
+> +	    is_gen12_mc_ccs_modifier(fb->modifier) ||
+> +	    (!blt_uses_extended_block_copy(fb->fd) &&
+> +	    fb->modifier == I915_FORMAT_MOD_X_TILED &&
+> +	    is_xe_device(fb->fd)))
+>  		return false;
+>  
+>  	if (is_xe_device(fb->fd))
+> @@ -2551,6 +2554,7 @@ static bool use_enginecopy(const struct igt_fb *fb)
+>  		return false;
+>  
+>  	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+> +	       fb->modifier == I915_FORMAT_MOD_X_TILED ||
+>  	       (!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) && is_ccs_modifier(fb->modifier)) ||
+>  	       is_gen12_mc_ccs_modifier(fb->modifier);
+>  }
+> @@ -3062,7 +3066,12 @@ static void free_linear_mapping(struct fb_blit_upload *blit)
+>  		igt_nouveau_delete_bo(&linear->fb);
+>  	} else if (is_xe_device(fd)) {
+>  		gem_munmap(linear->map, linear->fb.size);
+> -		blitcopy(fb, &linear->fb);
+> +
+> +		if (blit->ibb)
+> +			copy_with_engine(blit, fb, &linear->fb);
+> +		else
+> +			blitcopy(fb, &linear->fb);
+> +
+>  		gem_close(fd, linear->fb.gem_handle);
+>  	} else {
+>  		gem_munmap(linear->map, linear->fb.size);
+> @@ -3142,7 +3151,10 @@ static void setup_linear_mapping(struct fb_blit_upload *blit)
+>  
+>  		linear->map = igt_nouveau_mmap_bo(&linear->fb, PROT_READ | PROT_WRITE);
+>  	} else if (is_xe_device(fd)) {
+> -		blitcopy(&linear->fb, fb);
+> +		if (blit->ibb)
+> +			copy_with_engine(blit, &linear->fb, fb);
+> +		else
+> +			blitcopy(&linear->fb, fb);
 
-[PATCH i-g-t] lib/xe/xe_spin.c: Fix typo
-----------------------------^^
+This is repeated code, what about a function like:
 
-Drop s/xe_spin.c:/xe_spin:/
-
-Also if you will reword description, better would be:
-
-[PATCH i-g-t] lib/xe/xe_spin: Improve comments and fix typos
-
-Second one is about failures from CI, please reply to all
-and clarify that they are not replated (as you didn't touched
-any code).
+copy_with_engine_or_blit(blit, &linear->fb, fb);
 
 Regards,
 Kamil
 
-> 
-> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
-> ---
->  lib/xe/xe_spin.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index 381e5e950..2dbd51199 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -162,7 +162,7 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
->   * xe_spin_started:
->   * @spin: pointer to spinner mapped bo
->   *
-> - * Returns: true if spinner is running, othwerwise false.
-> + * Returns: true if spinner is running, otherwise false.
->   */
->  bool xe_spin_started(struct xe_spin *spin)
->  {
-> @@ -262,8 +262,8 @@ void xe_spin_sync_wait(int fd, struct igt_spin *spin)
->   * xe_spin_free:
->   * @spin: spin state from igt_spin_new()
->   *
-> - * Wrapper to free spinner whhich is triggered by xe_spin_create.
-> - * which distroys vm, exec_queue and unbinds the vm which is binded to
-> + * Wrapper to free spinner which is triggered by xe_spin_create.
-> + * which destroys vm, exec_queue and unbinds the vm which is binded to
->   * the exec_queue and bo.
->   *
->   */
+>  
+>  		linear->map = xe_bo_mmap_ext(fd, linear->fb.gem_handle,
+>  					     linear->fb.size, PROT_READ | PROT_WRITE);
 > -- 
 > 2.25.1
 > 
