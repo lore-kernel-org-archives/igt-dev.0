@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92973C04FFE
-	for <igt-dev@archiver.kernel.org>; Wed,  8 May 2024 14:23:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 799FDC04FFE
+	for <igt-dev@archiver.kernel.org>; Wed,  8 May 2024 14:33:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1015E10EA47;
-	Wed,  8 May 2024 14:23:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 23DBB10FF97;
+	Wed,  8 May 2024 14:33:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f2TQMDBf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eaPU8Kvy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ABF36112319
- for <igt-dev@lists.freedesktop.org>; Wed,  8 May 2024 14:23:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6291710FF97
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 May 2024 14:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715178195; x=1746714195;
+ t=1715178825; x=1746714825;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=itg0SpFzHAXKCy5MPWKOePr3yuw7qkDhO6H/QH0e4uM=;
- b=f2TQMDBfJOnVYBqJrD2MLzGcroHjWrliD4Np2n99tOKwKzfVXIQpCtii
- 70Glcv+YixYvkCPIKmr5O6kb5aOeydXwPvROnIXJxXEzZsBMcAlGGjTOQ
- 0Np1mvy8jL/7Goa6w0OAk5STYxnR3LLVQIcoVJPiI7AWm0Z2pPlC23Tv7
- JauqU0xiwEPN5639S7Wb2J1d0uxHylXdzHRcKvh+8v7CWNPfjuEduVXzC
- wNXTy3wFezrMdtVaZUCIuKumAxJNDnaSFzJYS2QBWi7UKf2NZMivrFjnY
- BnS0T1Wuz0GWpsYDYBGGT6if8H3fn9dg9mFj74Ql1n2ljJX4A/5SzxL/z w==;
-X-CSE-ConnectionGUID: 5ukDEJLRQLyezeejhQRLDQ==
-X-CSE-MsgGUID: bTaV1ls1SW6GNPvrJMhqOA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="10883246"
-X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="10883246"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2024 07:23:15 -0700
-X-CSE-ConnectionGUID: MGP6c/8UQaSJMg8D06oBXQ==
-X-CSE-MsgGUID: dwocr2CxSXSMuDMkEAX/2g==
+ bh=+beNBY0Yj9Lx7OW337KTBP3My3zNoHoxTsUz3G2cIOk=;
+ b=eaPU8Kvy4212JLxxgEcNcU5DgzhFhvDHXIju3eLk3YYQBUjmNDadz8wy
+ 1Jq/hA5eSI+H91+0Huh0dJQqD+KGXWwudcc22rfClj9cUigfeQj2qnouT
+ 2nICr1ynDr8dfG7imYwTOnXNAT4Hl1BgCeY2qU3vAIY0VOVDLTv3zaJ8y
+ 6eiW02u1ZEPPYZvML5vyLgIyujkm56IIxB9ysbnVO4Rckz2P3TN9u/SRl
+ tI/5GINVKQGlLZWzS/Pn6Wv3kZC2CsZKB7f+a77ljuXCIqfdcyeObXiy1
+ rnYmoAj5F2h2MgcujueZVo7jca+X8iQnuKHDEan7es3XZ9ASGBMn6bofO g==;
+X-CSE-ConnectionGUID: 6mcXSMD8SEyRC1NBwpFRpQ==
+X-CSE-MsgGUID: seTTO7bRTbif7iKpWg0slQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="10879337"
+X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="10879337"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 May 2024 07:33:45 -0700
+X-CSE-ConnectionGUID: KCn5Vw7sQWaAyFtaACh7GQ==
+X-CSE-MsgGUID: qSTThgSpRZqkLCagmwxCyA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="28863594"
+X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="28837935"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2024 07:23:14 -0700
-Date: Wed, 8 May 2024 16:22:55 +0200
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2024 07:33:43 -0700
+Date: Wed, 8 May 2024 16:33:41 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Jagmeet Randhawa <jagmeet.randhawa@intel.com>,
 	jonathan.cavitt@intel.com
 Subject: Re: [PATCH i-g-t] lib/xe/xe_spin.c: Fix typo
-Message-ID: <20240508142255.jo6pmyrpbzvbqtdh@kamilkon-DESK.igk.intel.com>
+Message-ID: <20240508143341.nmbqzf2ziwcroqmq@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Jagmeet Randhawa <jagmeet.randhawa@intel.com>,
@@ -76,11 +76,23 @@ Hi Jagmeet,
 On 2024-05-07 at 12:23:12 -0700, Jagmeet Randhawa wrote:
 > Fix typos to follow proper format.
 
-While at it could you also rephrase it somewhat?
-See below, no need for sending new version, just
-reply in this thread.
+Few more things, first is about subject:
 
-After agreement I could merge it with ack from Jonathan.
+[PATCH i-g-t] lib/xe/xe_spin.c: Fix typo
+----------------------------^^
+
+Drop s/xe_spin.c:/xe_spin:/
+
+Also if you will reword description, better would be:
+
+[PATCH i-g-t] lib/xe/xe_spin: Improve comments and fix typos
+
+Second one is about failures from CI, please reply to all
+and clarify that they are not replated (as you didn't touched
+any code).
+
+Regards,
+Kamil
 
 > 
 > Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
@@ -110,18 +122,6 @@ After agreement I could merge it with ack from Jonathan.
 > - * which distroys vm, exec_queue and unbinds the vm which is binded to
 > + * Wrapper to free spinner which is triggered by xe_spin_create.
 > + * which destroys vm, exec_queue and unbinds the vm which is binded to
-
-imho better would be:
-
- * Wrapper to free spinner created by xe_spin_create. It will
- * destroy vm, exec_queue and unbind the vm which was binded to
-
-What you think? Jonathan? Btw 'triggered by' could stay, no strong
-opinion for 'created by'.
-
-Regards,
-Kamil
-
 >   * the exec_queue and bo.
 >   *
 >   */
