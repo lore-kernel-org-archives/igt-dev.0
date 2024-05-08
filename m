@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E702C19F4F
-	for <igt-dev@archiver.kernel.org>; Wed,  8 May 2024 12:55:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69988C04FFE
+	for <igt-dev@archiver.kernel.org>; Wed,  8 May 2024 12:55:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AEFF01128C9;
-	Wed,  8 May 2024 12:55:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 076021128CE;
+	Wed,  8 May 2024 12:55:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dIMzbeGG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P4i14DUD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 873671128C9
- for <igt-dev@lists.freedesktop.org>; Wed,  8 May 2024 12:55:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 206401128CC
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 May 2024 12:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715172905; x=1746708905;
+ t=1715172910; x=1746708910;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=rWvsnYqdwJo8cwA+UuKxAFapslTzFSXsPYc5bx8RZFE=;
- b=dIMzbeGGVaZ/IDtEbUIvou8ody1YH4i08tR014f7tXyhDam9b0Q2m7qV
- LY8CRQughTiizHWeBAfZNy53CbA7JlndpWYtzTunRpmIqkN7Z09+0t8kO
- vw5em80LUZ8Kq6rCXD6Yt9VPKgjOYgOmyCEy9PcaIAULqgQZw7MSxSM38
- v2AacMBmSKkyuQekf1OL9ZbQaV0vStN7aEIpIcxwrK94OKNBZ9bhrXRM9
- OlY1hfM585AV2fLMC+I4bmTHpRCOUvXDFPZFWMmaMcpRX3LpUxLlr7tDf
- tFRfupz4G0vOj1eDZ7eMHt87NvKRVwnYKq0n7x3KSeiOlGbcqTjSidONq A==;
-X-CSE-ConnectionGUID: es4/BLcPS2a/ZbbUjUx8ww==
-X-CSE-MsgGUID: QpuiX0hbRpmMmoZPoj9H0A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11066"; a="10865083"
-X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="10865083"
+ bh=M1R/vENmYfPcV0pPP/Ldk8PqLyMiqSpIqXyDc31gY8Y=;
+ b=P4i14DUDZjio8p/tu2tzrDYXf78zmV7VJ787CSR00K1UVUEWX9T8Ahgp
+ IaATZ7UoaoCf1Jc99/SyyRHEVnJud7xvKW8Inp0OkwBAbHx4dO1AMpkdc
+ /n+3+g6RNnsClEAmdMhe6mq2MMTg/vfu09/qVeIuADtX/uR4c/DVoUFgD
+ zHO2FI91bCjqObWR/CHr3TyKB7z4fCK+xdsEJ8aADsA6HukLLDMsnWPmd
+ 0iV/g8Uo8ZhiupmSk2TuVdwHvspXNpv1FWEfqmpfxj2nONoJnLsR6zKCX
+ Y+Ps7czkAhzjB8W7CJsMJG1Y0+sCLSFEOLk+AfNCkdB7pIinGbe/nCmmS Q==;
+X-CSE-ConnectionGUID: tcCA7DdYRo6v40pufrlXZw==
+X-CSE-MsgGUID: TuhKin9DRGWJSriAyw0dsA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11066"; a="10865087"
+X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="10865087"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2024 05:55:05 -0700
-X-CSE-ConnectionGUID: WP0DXsZFSL+evKB3uV4gdw==
-X-CSE-MsgGUID: EFwHf6CdSgeBwr/LdOB7KA==
+ 08 May 2024 05:55:10 -0700
+X-CSE-ConnectionGUID: Qo+i9AHJReKTDJuh4ZSpDA==
+X-CSE-MsgGUID: hHzqP15sS9eYjuip1qqODw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="33716315"
+X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; d="scan'208";a="33716318"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.90])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2024 05:55:03 -0700
+ 08 May 2024 05:55:08 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Karolina Stolarek <karolina.stolarek@intel.com>
-Subject: [PATCH i-g-t v4 03/11] lib/intel_blt: Add i915 -> blt tile helper
- converter
-Date: Wed,  8 May 2024 14:54:35 +0200
-Message-Id: <20240508125443.404402-4-zbigniew.kempczynski@intel.com>
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t v4 04/11] lib/intel_bufops: Restrict tilings on
+ non-flatccs platforms
+Date: Wed,  8 May 2024 14:54:36 +0200
+Message-Id: <20240508125443.404402-5-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240508125443.404402-1-zbigniew.kempczynski@intel.com>
 References: <20240508125443.404402-1-zbigniew.kempczynski@intel.com>
@@ -71,63 +71,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-We have two kind of buffers in IGT - intel-buf for render and
-blt-object for blitter. intel-buf uses I915_TILING* whereas
-blt-object blt_tiling_type (T_*). To construct blt-object from
-intel-buf we need to convert I915_TILING* to T_*. Add function
-which does this conversion.
+JP noticed after last changes introduced in bufops we keep unnecessary
+two conditions instead of pack them to single one. This is refactor,
+no functional change.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
+Suggested-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/intel_blt.c | 21 +++++++++++++++++++++
- lib/intel_blt.h |  1 +
- 2 files changed, 22 insertions(+)
+ lib/intel_bufops.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 5a281036c4..946adc538b 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -560,6 +560,27 @@ int blt_tile_to_i915_tile(enum blt_tiling_type tiling)
- 	return 0;
- }
+diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+index 43d6dd5b43..7118272e5f 100644
+--- a/lib/intel_bufops.c
++++ b/lib/intel_bufops.c
+@@ -896,7 +896,9 @@ static void __intel_buf_init(struct buf_ops *bops,
  
-+/**
-+ * i915_tile_to_blt_tile:
-+ * @tiling: tiling id
-+ *
-+ * Returns:
-+ * id of blt tiling like T_LINEAR, T_XMAJOR, etc
-+ */
-+enum blt_tiling_type i915_tile_to_blt_tile(uint32_t tiling)
-+{
-+	switch (tiling) {
-+	case I915_TILING_NONE:	return T_LINEAR;
-+	case I915_TILING_X:	return T_XMAJOR;
-+	case I915_TILING_Y:	return T_YMAJOR;
-+	case I915_TILING_4:	return T_TILE4;
-+	case I915_TILING_64:	return T_TILE64;
-+	case I915_TILING_Yf:	return T_YFMAJOR;
-+	default:
-+		igt_assert_f(0, "Unknown tiling!\n");
-+	}
-+}
+ 	size = buf->surface[0].size = buf->surface[0].stride * aligned_height;
+ 
+-	if (compression) {
++	if (compression && !HAS_FLATCCS(buf_ops_get_devid(bops))) {
++		int aux_width, aux_height;
 +
- /**
-  * blt_get_min_stride
-  * @width: width in pixels
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index fcfce69bee..6daf46aea4 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -214,6 +214,7 @@ bool blt_uses_extended_block_copy(int fd);
+ 		igt_require(bops->intel_gen >= 9);
+ 		igt_assert(req_tiling == I915_TILING_Y ||
+ 			   req_tiling == I915_TILING_Yf ||
+@@ -907,17 +909,12 @@ static void __intel_buf_init(struct buf_ops *bops,
+ 		 * CCS units, that is 4 * 64 bytes. These 4 CCS units are in
+ 		 * turn mapped by one L1 AUX page table entry.
+ 		 */
++		aux_width = intel_buf_ccs_width(bops->intel_gen, buf);
++		aux_height = intel_buf_ccs_height(bops->intel_gen, buf);
  
- const char *blt_tiling_name(enum blt_tiling_type tiling);
- int blt_tile_to_i915_tile(enum blt_tiling_type tiling);
-+enum blt_tiling_type i915_tile_to_blt_tile(uint32_t tiling);
+-		if (!HAS_FLATCCS(intel_get_drm_devid(bops->fd))) {
+-			int aux_width, aux_height;
+-
+-			aux_width = intel_buf_ccs_width(bops->intel_gen, buf);
+-			aux_height = intel_buf_ccs_height(bops->intel_gen, buf);
+-
+-			buf->ccs[0].offset = buf->surface[0].stride * ALIGN(height, 32);
+-			buf->ccs[0].stride = aux_width;
+-			size = buf->ccs[0].offset + aux_width * aux_height;
+-		}
++		buf->ccs[0].offset = buf->surface[0].stride * ALIGN(height, 32);
++		buf->ccs[0].stride = aux_width;
++		size = buf->ccs[0].offset + aux_width * aux_height;
+ 	}
  
- uint32_t blt_get_min_stride(uint32_t width, uint32_t bpp,
- 			    enum blt_tiling_type tiling);
+ 	/* Store buffer size to avoid mistakes in calculating it again */
 -- 
 2.34.1
 
