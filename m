@@ -4,27 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6E4EC10F1A
-	for <igt-dev@archiver.kernel.org>; Thu,  9 May 2024 11:41:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8817C10F1A
+	for <igt-dev@archiver.kernel.org>; Thu,  9 May 2024 11:56:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 636BA10E09F;
-	Thu,  9 May 2024 11:41:38 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D42410E09F;
- Thu,  9 May 2024 11:41:37 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0807395113354407201=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4827410E039;
+	Thu,  9 May 2024 11:56:58 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NC16P45g";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48FAE10E039
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 May 2024 11:56:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1715255816; x=1746791816;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=CsK66BlVwJB/bPyGau0Cb+5AwyCf1WdVKY/7LouXIOY=;
+ b=NC16P45gNs3X5sG/5bfaoxrrZGH2R/rTFyrcszUKnrL20gKKmF9w9t6b
+ Xj2PH9z2E4toMYfQygnunFOeWvwc1zK7ala+g4ewOJGErzi3cAtrDA2cO
+ rudaUuXBV1Mv2D9Uoh9MjO8JFKn6yNd2cmCjnip/LAt3e8QBh78A0lNp8
+ USoZIz6jgVuZyq5hSfYCC/K1BVG6sA2H8tym9isWu3cMoMMcmytm7v6xu
+ w5tVlg27Tqbu9b8ryYvaXAy22zG9aMb7/oVltT5R/2n3DMBSES25ZFT9r
+ seJQT5p/P5JagVI13DvmbgyG5VHLMtME0110VwTLjb0CnMO7AgUuZ9xzt A==;
+X-CSE-ConnectionGUID: h/PfPpwXQuGjS/JKETJURA==
+X-CSE-MsgGUID: 9ceJXzT5Qv23C9qS4xNT/A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="36550926"
+X-IronPort-AV: E=Sophos;i="6.08,147,1712646000"; d="scan'208";a="36550926"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 May 2024 04:56:55 -0700
+X-CSE-ConnectionGUID: Yl4TNJBiTRmuKxp7d6CkNQ==
+X-CSE-MsgGUID: EPCfHa1NQEauQpXN9LSiYQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,147,1712646000"; d="scan'208";a="60395374"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+ by fmviesa001.fm.intel.com with ESMTP; 09 May 2024 04:56:55 -0700
+Received: from [10.245.96.165] (unknown [10.245.96.165])
+ by irvmail002.ir.intel.com (Postfix) with ESMTP id 1231E28789;
+ Thu,  9 May 2024 12:56:52 +0100 (IST)
+Message-ID: <9e997027-8539-4303-8b2b-6451bb801c94@intel.com>
+Date: Thu, 9 May 2024 13:56:52 +0200
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/sriov=5Fbasic=3A_Rest?=
- =?utf-8?q?ore_the_igt=5Fsriov=5Fis=5Fpf_check?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 09 May 2024 11:41:37 -0000
-Message-ID: <171525489718.2037450.8933973000480881766@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240509105956.4118226-1-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20240509105956.4118226-1-marcin.bernatowicz@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/sriov_basic: Skip tests if sriov_totalvfs is
+ zero
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@linux.intel.com, lukasz.laguna@intel.com
+References: <20240508193258.4069853-1-marcin.bernatowicz@linux.intel.com>
+Content-Language: en-US
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+In-Reply-To: <20240508193258.4069853-1-marcin.bernatowicz@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,181 +70,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0807395113354407201==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/sriov_basic: Restore the igt_sriov_is_pf check
-URL   : https://patchwork.freedesktop.org/series/133381/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_7844 -> IGTPW_11118
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11118/index.html
-
-Participating hosts (40 -> 37)
-------------------------------
-
-  Additional (2): bat-arls-4 fi-kbl-8809g 
-  Missing    (5): bat-mtlp-9 fi-snb-2520m fi-cfl-8109u fi-elk-e7500 bat-arls-3 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11118 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][1] ([i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11118/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11118/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][3] +30 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11118/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10196]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10196
-  [i915#10197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10197
-  [i915#10200]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10200
-  [i915#10202]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10202
-  [i915#10206]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10206
-  [i915#10207]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10207
-  [i915#10208]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10208
-  [i915#10209]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10209
-  [i915#10211]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10211
-  [i915#10212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10212
-  [i915#10213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10213
-  [i915#10214]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10214
-  [i915#10216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-  [i915#8809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809
-  [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
-  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
-  [i915#9812]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9812
-  [i915#9886]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9886
 
 
-Build changes
--------------
+On 08.05.2024 21:32, Marcin Bernatowicz wrote:
+> There is no point to run the tests if no VFs can be enabled.
+> Additionally, the `for_random_sriov_num_vfs` macro will lead
+> to undefined behavior if `sriov_totalvfs` is zero.
+> 
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> ---
+>  tests/sriov_basic.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
+> index f58b3b7ba..1bc082d76 100644
+> --- a/tests/sriov_basic.c
+> +++ b/tests/sriov_basic.c
+> @@ -120,7 +120,7 @@ igt_main
+>  
+>  	igt_fixture {
+>  		pf_fd = drm_open_driver(DRIVER_ANY);
+> -		igt_require(igt_sriov_is_pf(pf_fd));
+> +		igt_require(igt_sriov_vfs_supported(pf_fd));
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7844 -> IGTPW_11118
+shouldn't the check for supported_vfs > 0 be a part of is_pf ?
 
-  CI-20190529: 20190529
-  CI_DRM_14737: 92f877dd46245e4a44b6d24b5e303b8c03c40c75 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11118: 11118
-  IGT_7844: 7844
+IMO if a driver can't support any VF it's hard to name it a PF
 
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11118/index.html
-
---===============0807395113354407201==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/sriov_basic: Restore the igt_sriov_is_pf check</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133381/">https://patchwork.freedesktop.org/series/133381/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11118/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11118/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7844 -&gt; IGTPW_11118</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11118/index.html</p>
-<h2>Participating hosts (40 -&gt; 37)</h2>
-<p>Additional (2): bat-arls-4 fi-kbl-8809g <br />
-  Missing    (5): bat-mtlp-9 fi-snb-2520m fi-cfl-8109u fi-elk-e7500 bat-arls-3 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11118 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11118/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11118/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11118/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> +30 other tests skip</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7844 -&gt; IGTPW_11118</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14737: 92f877dd46245e4a44b6d24b5e303b8c03c40c75 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11118: 11118<br />
-  IGT_7844: 7844</p>
-
-</body>
-</html>
-
---===============0807395113354407201==--
+>  		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
+>  		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
+>  	}
