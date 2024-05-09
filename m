@@ -4,50 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13BBDC10F1A
-	for <igt-dev@archiver.kernel.org>; Thu,  9 May 2024 15:25:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 645E5C25B75
+	for <igt-dev@archiver.kernel.org>; Thu,  9 May 2024 15:25:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B33410E654;
-	Thu,  9 May 2024 15:25:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B0F1710E732;
+	Thu,  9 May 2024 15:25:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VE2119eM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nwzC15Js";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7844510E654
- for <igt-dev@lists.freedesktop.org>; Thu,  9 May 2024 15:25:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D788210E732
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 May 2024 15:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715268321; x=1746804321;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=8VYxYXoQiIF15hZFjzw16jTxvdJ3mmjbc/psoLBri30=;
- b=VE2119eMdF584N3Rxsw9GTA9OqROCBywO7pB5QdIAVHvu08mUfcHdUmD
- kvg/9iFeTKvLtfqvpzE7D10JKHqsYlue2iEM9acSTA8zHg9qox9ASTPPg
- CPOp93FUU3Om5whLCwjmZe2eBfjMkDLkORNEgxTkUYCWCsKnP+miGdB6h
- Ah1WXU+yRoIVb+zCy95Z7zX53E/CRIISWB5nV6y3f0T4srimog3SzIP1d
- LmVcuVhPK8utMNFV7HkdybfmQyUUsh3GroW1g211AYg4UIv2ZMQAz3+aC
- CyjL7sCXX9XQPTgPyMMiwVwmpAHe6mr4M9h+DMC/KDpU/1Qroy1GDF5Q4 g==;
-X-CSE-ConnectionGUID: P7YbQrjESiSQB8jiOeSHIQ==
-X-CSE-MsgGUID: vOre3CTXThuiaMoKP0dmGA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="11038979"
-X-IronPort-AV: E=Sophos;i="6.08,148,1712646000"; d="scan'208";a="11038979"
+ t=1715268323; x=1746804323;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=7SnmTmlGgIt6lpZaD4UljfVLE6EHfR2VnawQGia3tog=;
+ b=nwzC15JsidY5ZQ26ZyR4udMenP3d/zGYoQzuQwVdAVMGNr29NL7DCeeO
+ 91L2HojGUs85ps3bzgFJpfEuEUAoAVK11cc9CYGe6fScid/OZaG2xrbNj
+ XExQKHhdc3GFZqEfoZE1xt1/aRBKedYC3tsu1z8FM9PEDAGwyOeTq/bFd
+ yhGaJWe+5lv4EaPgmMxUKSIOFcre4er0DOgJTdVF0JN6XbHK7HvtjMArr
+ Gkmjze2EKgBPglPtNWp2GeCP75hSl4/hrCeaXWkOllvr7VL+vD5gxccwv
+ jvEzRA+Ymlk43QJ5TXEgER8FVAyfZp3yC1LItgLy8r6XH9Oplc5Zsh4Xd g==;
+X-CSE-ConnectionGUID: q1EZVRtqSwCxK2mT8jauPQ==
+X-CSE-MsgGUID: nFtgejgoShyJv+S+VjUN1Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="11038985"
+X-IronPort-AV: E=Sophos;i="6.08,148,1712646000"; d="scan'208";a="11038985"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 May 2024 08:25:21 -0700
-X-CSE-ConnectionGUID: aXHbP1csQUWSzaVjBJVHrw==
-X-CSE-MsgGUID: 0LDenP/xRXi5iDjMXyVQSg==
+ 09 May 2024 08:25:23 -0700
+X-CSE-ConnectionGUID: VSYTfcUnTZ2xJRYGrHQH8A==
+X-CSE-MsgGUID: EZK3Y3YRT4KkjVTXuX1pbw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,148,1712646000"; d="scan'208";a="66719265"
+X-IronPort-AV: E=Sophos;i="6.08,148,1712646000"; d="scan'208";a="66719268"
 Received: from bjrankin-mobl3.amr.corp.intel.com (HELO
  gjsousa-mobl2.intel.com) ([10.124.223.58])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 May 2024 08:25:20 -0700
+ 09 May 2024 08:25:23 -0700
 From: Gustavo Sousa <gustavo.sousa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 0/3] Add support for hook script
-Date: Thu,  9 May 2024 12:24:28 -0300
-Message-ID: <20240509152442.189166-1-gustavo.sousa@intel.com>
+Subject: [PATCH i-g-t 2/3] runner: Make it easier to extend argv
+Date: Thu,  9 May 2024 12:24:30 -0300
+Message-ID: <20240509152442.189166-3-gustavo.sousa@intel.com>
 X-Mailer: git-send-email 2.45.0
+In-Reply-To: <20240509152442.189166-1-gustavo.sousa@intel.com>
+References: <20240509152442.189166-1-gustavo.sousa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,43 +67,119 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-For development purposes, sometimes it is useful to have a way of
-running custom scripts at certain points of test executions. A
-real-world example I bumped into recently is to collect information from
-sysfs before and after running each entry of a testlist.
+In an upcoming change, we will be adding the option to forward the
+--hook option to the test cases, which will require updating
+execute_test_process() to add the option when asked by the user.
 
-While it is possible for the user to handcraft a script that calls each
-test with the correct actions before and after execution, we can provide
-a better experience by adding built-in support for running hooks during
-test execution.
+The current implementation makes that task not quite straightforward:
+filling of argv is already dependent on stuff like entry->subtest_count
+and dynbegin; if we want to keep on using constant indices, we would
+need several conditional branches for adding arguments for --hook.
 
-This series adds support for running a hook script during test
-execution. The feature is exposed to users via option --hook, which made
-available for regular test binaries as well as for igt_runner.
+One way of simplifying this is to treat argv as a stack and have a
+"head" index variable which is incremented after we are done setting the
+current value. However, we would lose the benefit of static array bounds
+analysis from the compiler, which we do have with the current code.
 
-Gustavo Sousa (3):
-  igt_hook: Add feature
-  runner: Make it easier to extend argv
-  runner: Add option --hook
+Let's instead define a static mapping in argv_refs of the possible
+arguments that execute_test_process() could define and then generate
+argv at the end with only those values that were set. With that, we keep
+benefits of static array bounds analysis and make it easier to extend
+argv, which is just a matter of adding more stuff into argv_refs and
+setting them when necessary.
 
- .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   1 +
- lib/igt_core.c                                | 116 +++-
- lib/igt_hook.c                                | 499 ++++++++++++++++++
- lib/igt_hook.h                                |  86 +++
- lib/meson.build                               |   1 +
- lib/tests/igt_hook.c                          | 187 +++++++
- lib/tests/igt_hook_integration.c              | 297 +++++++++++
- lib/tests/meson.build                         |   2 +
- runner/executor.c                             |  52 +-
- runner/runner_tests.c                         |   5 +
- runner/settings.c                             |  25 +-
- runner/settings.h                             |   1 +
- 12 files changed, 1248 insertions(+), 24 deletions(-)
- create mode 100644 lib/igt_hook.c
- create mode 100644 lib/igt_hook.h
- create mode 100644 lib/tests/igt_hook.c
- create mode 100644 lib/tests/igt_hook_integration.c
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+---
+ runner/executor.c | 44 ++++++++++++++++++++++++++++++--------------
+ 1 file changed, 30 insertions(+), 14 deletions(-)
 
+diff --git a/runner/executor.c b/runner/executor.c
+index 4b374d2235b2..e9b037ebcaf9 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -1506,7 +1506,18 @@ execute_test_process(int outfd, int errfd, int socketfd,
+ 		     struct settings *settings,
+ 		     struct job_list_entry *entry)
+ {
+-	char *argv[6] = {};
++	char *arg0;
++	char *arg_run_subtest[2] = {};
++	char *arg_dyn_subtest[2] = {};
++	char **argv_refs[] = {
++		&arg0,
++		&arg_run_subtest[0],
++		&arg_run_subtest[1],
++		&arg_dyn_subtest[0],
++		&arg_dyn_subtest[1],
++		NULL,
++	};
++	char *argv[sizeof(argv_refs) / sizeof(argv_refs[0])] = {};
+ 	size_t rootlen;
+ 
+ 	dup2(outfd, STDOUT_FILENO);
+@@ -1515,30 +1526,30 @@ execute_test_process(int outfd, int errfd, int socketfd,
+ 	setpgid(0, 0);
+ 
+ 	rootlen = strlen(settings->test_root);
+-	argv[0] = malloc(rootlen + strlen(entry->binary) + 2);
+-	strcpy(argv[0], settings->test_root);
+-	argv[0][rootlen] = '/';
+-	strcpy(argv[0] + rootlen + 1, entry->binary);
++	arg0 = malloc(rootlen + strlen(entry->binary) + 2);
++	strcpy(arg0, settings->test_root);
++	arg0[rootlen] = '/';
++	strcpy(arg0 + rootlen + 1, entry->binary);
+ 
+ 	if (entry->subtest_count) {
+ 		size_t argsize;
+ 		const char *dynbegin;
+ 		size_t i;
+ 
+-		argv[1] = strdup("--run-subtest");
++		arg_run_subtest[0] = strdup("--run-subtest");
+ 
+ 		if ((dynbegin = strchr(entry->subtests[0], '@')) != NULL)
+ 			argsize = dynbegin - entry->subtests[0];
+ 		else
+ 			argsize = strlen(entry->subtests[0]);
+ 
+-		argv[2] = malloc(argsize + 1);
+-		memcpy(argv[2], entry->subtests[0], argsize);
+-		argv[2][argsize] = '\0';
++		arg_run_subtest[1] = malloc(argsize + 1);
++		memcpy(arg_run_subtest[1], entry->subtests[0], argsize);
++		arg_run_subtest[1][argsize] = '\0';
+ 
+ 		if (dynbegin) {
+-			argv[3] = strdup("--dynamic-subtest");
+-			argv[4] = strdup(dynbegin + 1);
++			arg_dyn_subtest[0] = strdup("--dynamic-subtest");
++			arg_dyn_subtest[1] = strdup(dynbegin + 1);
+ 		}
+ 
+ 		for (i = 1; i < entry->subtest_count; i++) {
+@@ -1547,13 +1558,18 @@ execute_test_process(int outfd, int errfd, int socketfd,
+ 
+ 			assert(dynbegin == NULL);
+ 
+-			argv[2] = realloc(argv[2], argsize + sublen + 2);
+-			argv[2][argsize] = ',';
+-			strcpy(argv[2] + argsize + 1, sub);
++			arg_run_subtest[1] = realloc(arg_run_subtest[1], argsize + sublen + 2);
++			arg_run_subtest[1][argsize] = ',';
++			strcpy(arg_run_subtest[1] + argsize + 1, sub);
+ 			argsize += sublen + 1;
+ 		}
+ 	}
+ 
++	/* Build argv with only stuff that is set. */
++	for (size_t i = 0, j = 0; argv_refs[i]; i++)
++		if (*argv_refs[i])
++			argv[j++] = *argv_refs[i];
++
+ 	if (socketfd >= 0) {
+ 		struct runnerpacket *packet;
+ 
 -- 
 2.45.0
 
