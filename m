@@ -4,56 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C6A7C10F1A
-	for <igt-dev@archiver.kernel.org>; Thu,  9 May 2024 10:36:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAFB8C25B10
+	for <igt-dev@archiver.kernel.org>; Thu,  9 May 2024 11:00:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D61AD10E08C;
-	Thu,  9 May 2024 10:36:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6237610E08C;
+	Thu,  9 May 2024 11:00:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cnKKluer";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cL8iPrA9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E8D2D10E08C
- for <igt-dev@lists.freedesktop.org>; Thu,  9 May 2024 10:36:13 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EB4910E08C
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 May 2024 11:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715250974; x=1746786974;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=m+BpT/5aDO5DQhFfB9W9uVrdD95mAc04M5yOgr30SF8=;
- b=cnKKluer43KLV5L3xtLDVkkvv1UlvY7jXQmrB+zlF71mMcrx1ILr0NSC
- PP2RMUBNtR8KzmIXR/JGmn4blvm/1pMntNJn4AGesVp+8pGmdNhv2vVzd
- J+nn+2BqpMOGVIwbtjHWZxi9iKVZ562ucaqTXMXMKJE1sispSu3FEoLmS
- A5nrzb1iaZTFwB1u+1raeuBfMD7aUNTuZqXFIkBS+/p7u+zTB1IxwyLS8
- Q6JXyDolieK0P4Aju0JLFfQCNavsKCS/de8NPzGYk1nYD6rQsfbaCBXZ6
- UXGhuPLv7RRamfT9u4kQSeL05W5Ca7zYEuhIDFtKEfjsFup3UWYwU0jFW w==;
-X-CSE-ConnectionGUID: 8jNOE2piSDKe8p1Ust+c9w==
-X-CSE-MsgGUID: C/IUT87oRrCIN7dW1pPrkQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="11289106"
-X-IronPort-AV: E=Sophos;i="6.08,147,1712646000"; d="scan'208";a="11289106"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 May 2024 03:36:13 -0700
-X-CSE-ConnectionGUID: TgFMCr3TRMCx+ncE+O9prw==
-X-CSE-MsgGUID: EpAOiDu8QyS0wXnRUY9aYA==
+ t=1715252409; x=1746788409;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=VMTRWoa6NjaXBYRV3tb4UH8WZkZ1OI2ze+Rc3EDa6Uc=;
+ b=cL8iPrA9kTkICIgfS0sddfaaj2RfSegsT0fbWAD+8bcwMbTZWJ5bZPyO
+ 8YDoX8kirZhQKydIwKVI6fnb3ebQgqu+QhD0JQB5kcw1DSvUNfsEphDKc
+ AIe5gJE6DGH3rJM050zPHkqll3+JrVC0s7rue0HM9sImT1LltTlmVvNhF
+ 3Af3/W79J1W5K66DvqSWQc79SV7yN4O35q/H5JuzdhK/S4zrJ6jA7+e5g
+ RSPWWHQMiG3CUdFD3AHA7LEKgHNvz/6R8h2Qv4VIdec0bmP5jEKXuLGuT
+ URnmQZArahN6VzK09DaaGsZBQdHDNxE45GlCUKulaTaiPnwN/gl7Zb5MG g==;
+X-CSE-ConnectionGUID: lwMsQOUxSDGoeDRR3tFJKg==
+X-CSE-MsgGUID: Um6lLzrlQhK4JpfcNOTeDA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="11295276"
+X-IronPort-AV: E=Sophos;i="6.08,147,1712646000"; d="scan'208";a="11295276"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 May 2024 04:00:08 -0700
+X-CSE-ConnectionGUID: 40PWvLjfRnGrG9++YoHTkw==
+X-CSE-MsgGUID: cbOdPK9+RlKCs1B74J9MIg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,147,1712646000"; d="scan'208";a="29306165"
-Received: from unknown (HELO localhost) ([10.245.246.122])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 May 2024 03:36:12 -0700
-Date: Thu, 9 May 2024 12:36:08 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v3 6/6] lib/igt_fb: unify intel blitter fb block
- copies between xe and i915
-Message-ID: <20240509103608.pw2u452ztelqmik4@zkempczy-mobl2>
-References: <20240430162939.272990-1-juhapekka.heikkila@gmail.com>
- <20240430162939.272990-7-juhapekka.heikkila@gmail.com>
+X-IronPort-AV: E=Sophos;i="6.08,147,1712646000"; d="scan'208";a="33739905"
+Received: from mbernato-z370.igk.intel.com (HELO localhost) ([10.91.214.41])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 May 2024 04:00:06 -0700
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@linux.intel.com, lukasz.laguna@intel.com,
+ michal.wajdeczko@intel.com
+Subject: [PATCH i-g-t] tests/sriov_basic: Restore the igt_sriov_is_pf check
+Date: Thu,  9 May 2024 10:59:56 +0000
+Message-ID: <20240509105956.4118226-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240430162939.272990-7-juhapekka.heikkila@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,186 +66,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Apr 30, 2024 at 07:29:39PM +0300, Juha-Pekka Heikkila wrote:
-> block copies are almost the same. make them into one helper
-> 
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->  lib/igt_fb.c | 122 +++++++++++++++++++++------------------------------
->  1 file changed, 50 insertions(+), 72 deletions(-)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 5b4670e8d..c46773c8e 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -2957,35 +2957,66 @@ static void cleanup_blt_resources(uint32_t ctx, uint64_t ahnd, bool is_xe,
->  	intel_ctx_destroy(fd, ictx);
->  }
->  
-> +static void do_block_copy(const struct igt_fb *src_fb,
-> +			    const struct igt_fb *dst_fb,
-> +			    uint32_t mem_region, uint32_t i, uint64_t ahnd,
-> +			    uint32_t xe_bb, uint64_t bb_size,
-> +			    const intel_ctx_t *ctx,
-> +			    struct intel_execution_engine2 *e)
-> +{
-> +	struct blt_copy_data blt = {};
-> +	struct blt_copy_object *src = blt_fb_init(src_fb, i, mem_region);
-> +	struct blt_copy_object *dst = blt_fb_init(dst_fb, i, mem_region);
+The requirement `igt_sriov_is_pf` is essential for accurately skipping
+tests in scenarios where the `sriov_totalvfs` attribute is absent. This
+update restores the previously removed check to ensure proper test
+behavior under such conditions.
 
-This is dangerous if the blt_fb_init() will return NULL. I would
-assert here on in blt_fb_init(). 
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+---
+ tests/sriov_basic.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> +	struct blt_block_copy_data_ext ext = {}, *pext = NULL;
-> +
-> +	blt_copy_init(src_fb->fd, &blt);
-> +	blt.color_depth = blt_get_bpp(src_fb);
-> +	blt_set_copy_object(&blt.src, src);
-> +	blt_set_copy_object(&blt.dst, dst);
-> +
-> +	if (blt_uses_extended_block_copy(src_fb->fd)) {
-> +		blt_set_object_ext(&ext.src,
-> +				blt_compression_format(&blt, src_fb),
-> +				src_fb->width, src_fb->height,
-> +				SURFACE_TYPE_2D);
-> +
-> +		blt_set_object_ext(&ext.dst,
-> +				blt_compression_format(&blt, dst_fb),
-> +				dst_fb->width, dst_fb->height,
-> +				SURFACE_TYPE_2D);
-> +		pext = &ext;
-> +	}
-> +
-> +	blt_set_batch(&blt.bb, xe_bb, bb_size, mem_region);
-> +	blt_block_copy(src_fb->fd, ctx, e, ahnd, &blt, pext);
-> +
-> +	if (e)
-> +		gem_sync(src_fb->fd, blt.dst.handle);
-> +
-> +	blt_destroy_object(src_fb->fd, src);
-> +	blt_destroy_object(dst_fb->fd, dst);
-> +}
-> +
+diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
+index 1bc082d76..74f1ce41d 100644
+--- a/tests/sriov_basic.c
++++ b/tests/sriov_basic.c
+@@ -120,6 +120,7 @@ igt_main
+ 
+ 	igt_fixture {
+ 		pf_fd = drm_open_driver(DRIVER_ANY);
++		igt_require(igt_sriov_is_pf(pf_fd));
+ 		igt_require(igt_sriov_vfs_supported(pf_fd));
+ 		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
+ 		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
+-- 
+2.31.1
 
-Great, I always vote for reducing code duplication. Just provide
-safe guards for the NULL returns here or in blt_fb_init() and respin.
-
---
-Zbigniew
-
->  static void blitcopy(const struct igt_fb *dst_fb,
->  		     const struct igt_fb *src_fb)
->  {
-> -	uint32_t src_tiling, dst_tiling;
-> -	uint32_t ctx = 0;
-> -	uint64_t ahnd = 0;
-> +	uint32_t src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
-> +	uint32_t dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
-> +	uint32_t ctx = 0, bb, mem_region, vm, exec_queue;
-> +	uint64_t ahnd = 0, bb_size = 4096;
->  	const intel_ctx_t *ictx = NULL;
-> +	intel_ctx_t *xe_ctx = NULL;
->  	struct intel_execution_engine2 *e;
-> -	uint32_t bb, xe_bb;
-> -	uint64_t bb_size = 4096;
-> -	struct blt_copy_data blt = {};
-> -	struct blt_copy_object *src, *dst;
-> -	struct blt_block_copy_data_ext ext = {}, *pext = NULL;
-> -	uint32_t mem_region;
->  	/* To ignore CC plane */
->  	uint32_t src_cc = src_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
->  	uint32_t dst_cc = dst_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
-> -	intel_ctx_t *xe_ctx;
-> -	uint32_t vm, exec_queue;
->  	bool is_xe = is_xe_device(dst_fb->fd);
->  
->  	igt_assert_eq(dst_fb->fd, src_fb->fd);
->  	igt_assert_eq(dst_fb->num_planes - dst_cc, src_fb->num_planes - src_cc);
->  
-> -	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
-> -	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
-> -
->  	setup_context_and_memory_region(dst_fb, &ctx, &ahnd, &mem_region,
-> -					&vm, &xe_bb, &bb_size, &ictx,
-> +					&vm, &bb, &bb_size, &ictx,
->  					&exec_queue, &xe_ctx);
->  
->  	for (int i = 0; i < dst_fb->num_planes - dst_cc; i++) {
-> @@ -2994,34 +3025,8 @@ static void blitcopy(const struct igt_fb *dst_fb,
->  		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
->  
->  		if (is_xe) {
-> -			src = blt_fb_init(src_fb, i, mem_region);
-> -			dst = blt_fb_init(dst_fb, i, mem_region);
-> -
-> -			blt_copy_init(src_fb->fd, &blt);
-> -			blt.color_depth = blt_get_bpp(src_fb);
-> -			blt_set_copy_object(&blt.src, src);
-> -			blt_set_copy_object(&blt.dst, dst);
-> -
-> -			if (blt_uses_extended_block_copy(src_fb->fd)) {
-> -				blt_set_object_ext(&ext.src,
-> -						blt_compression_format(&blt, src_fb),
-> -						src_fb->width, src_fb->height,
-> -						SURFACE_TYPE_2D);
-> -
-> -				blt_set_object_ext(&ext.dst,
-> -						blt_compression_format(&blt, dst_fb),
-> -						dst_fb->width, dst_fb->height,
-> -						SURFACE_TYPE_2D);
-> -
-> -				pext = &ext;
-> -			}
-> -
-> -			blt_set_batch(&blt.bb, xe_bb, bb_size, mem_region);
-> -
-> -			blt_block_copy(src_fb->fd, xe_ctx, NULL, ahnd, &blt, pext);
-> -
-> -			blt_destroy_object(src_fb->fd, src);
-> -			blt_destroy_object(dst_fb->fd, dst);
-> +			do_block_copy(src_fb, dst_fb, mem_region, i, ahnd,
-> +				      bb, bb_size, xe_ctx, NULL);
->  		} else if (fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
->  			igt_blitter_fast_copy__raw(dst_fb->fd,
->  						   ahnd, ctx, NULL,
-> @@ -3047,35 +3052,8 @@ static void blitcopy(const struct igt_fb *dst_fb,
->  			}
->  			igt_assert_f(e, "No block copy capable engine found!\n");
->  
-> -			src = blt_fb_init(src_fb, i, mem_region);
-> -			dst = blt_fb_init(dst_fb, i, mem_region);
-> -
-> -			blt_copy_init(src_fb->fd, &blt);
-> -			blt.color_depth = blt_get_bpp(src_fb);
-> -			blt_set_copy_object(&blt.src, src);
-> -			blt_set_copy_object(&blt.dst, dst);
-> -
-> -			if (HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))) {
-> -				blt_set_object_ext(&ext.src,
-> -						   blt_compression_format(&blt, src_fb),
-> -						   src_fb->width, src_fb->height,
-> -						   SURFACE_TYPE_2D);
-> -
-> -				blt_set_object_ext(&ext.dst,
-> -						   blt_compression_format(&blt, dst_fb),
-> -						   dst_fb->width, dst_fb->height,
-> -						   SURFACE_TYPE_2D);
-> -
-> -				pext = &ext;
-> -			}
-> -
-> -			blt_set_batch(&blt.bb, bb, bb_size, mem_region);
-> -
-> -			blt_block_copy(src_fb->fd, ictx, e, ahnd, &blt, pext);
-> -			gem_sync(src_fb->fd, blt.dst.handle);
-> -
-> -			blt_destroy_object(src_fb->fd, src);
-> -			blt_destroy_object(dst_fb->fd, dst);
-> +			do_block_copy(src_fb, dst_fb, mem_region, i, ahnd,
-> +				      bb, bb_size, ictx, e);
->  		} else {
->  			igt_blitter_src_copy(dst_fb->fd,
->  					     ahnd, ctx, NULL,
-> -- 
-> 2.25.1
-> 
