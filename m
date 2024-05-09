@@ -4,179 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91027C10F1A
-	for <igt-dev@archiver.kernel.org>; Thu,  9 May 2024 06:41:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BCD7C10F1A
+	for <igt-dev@archiver.kernel.org>; Thu,  9 May 2024 07:34:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F1CB410E3EF;
-	Thu,  9 May 2024 06:41:10 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gZoD2vnO";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4133810E3EF
- for <igt-dev@lists.freedesktop.org>; Thu,  9 May 2024 06:41:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715236869; x=1746772869;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:mime-version;
- bh=Aw01fd6L+h6yqnC+Pz2MRjPJgyJ8nmm4HloogBMKnCU=;
- b=gZoD2vnOPTWtwKLTNL2cuHCUPBP+ywCp/gi9CcELc1SPpnW3pXdq5dAc
- fGl5543vvUWPDfhMqQkou9Z59STEOgXDN4zDA6ucT9M0uenGOoVQxIqyo
- lPTzj+KZp8ffOvIIEBHZx9emj7eCD3+Q/Dwjm1fL1mqoBLyYgLZjwYqEA
- Lt2ITi7068PbxcwqDsJ3jtePqpYgHg9kk+HB6EvAwgF3kNCsGQqDtRw8A
- MmMv2ZkZOT4xdetVY58h718C/wqRlod+UytQEZLGiqtPynuCBkQekSTn2
- ctJXFX/U1MSwiJKyOZEPy15cNJo3QCwjgMRNgIHhtT8WNVcuOnMnMdLYk w==;
-X-CSE-ConnectionGUID: 8wL0lw8sQBauZG2zahBVlg==
-X-CSE-MsgGUID: 7tiqhhVDS22F9gOalGS3hQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="10974374"
-X-IronPort-AV: E=Sophos;i="6.08,147,1712646000"; d="scan'208,217";a="10974374"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2024 23:41:09 -0700
-X-CSE-ConnectionGUID: aLPMrYKkQeuv/JEDU2msFQ==
-X-CSE-MsgGUID: jkiO8MRwStC8C99oZkYWAQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,147,1712646000"; d="scan'208,217";a="29200562"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by fmviesa006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 08 May 2024 23:41:08 -0700
-Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 8 May 2024 23:41:08 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Wed, 8 May 2024 23:41:08 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.41) by
- edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 8 May 2024 23:41:07 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SfL2pnAHOPghrMxuLyhmJW7k8kFjWCK7JCp6v6zTQrr4JDlJVst/qramm2KwdsxT65MW98wsPijSNYPLL/R27eOUfyUBkkv0LfIORyCue4Z9mk7a/nSJbvAGmuTSb4IOIRYkMfKi+P0axT9OCh370yzMm4/TmzZrLKlQ+vUh5jWZ+DDb0vNsGeHKLMz8+O8B82QTcLduRne6nmzRdjp68/Idla6dmRPTnoLhGdfZzDv+jJ00F3V/y6Ed0pyM0C8AzLjNiB2cuTye/HSTNJvQunaVoWpgG6MKQySrs0Qk40tsBZCQNnU9k3ZBGOHSyJbf9g9aT/4Akgc3m+Zupnz7Zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ueefLdDTnsK96wqpKL4vGyBh0iO6yRM4t9jAb1kIPT4=;
- b=L5yPziUV9D2OCXo1M8WQ4HR7BxDGmrMF9h3D0bPLDv/HwDfutkAfW/cabo+GEEPzkcSiRgz1+3BpbnfLFWJKGy2YXM8N76NauhXzku+qs0qAnxmfYinsiFGTUvpv7O8IpPXIDxWnEjMQxevTddqpBsjWY3jiD57A+m74dYjiqIgNY00egHid6UjBsr6oAzxad00Sl1kV/ojigZmCvQPgAnkC4jt9sbr3M/3bFlw9hqecciIaGl24VWGwCS3Mumtg2+ZRNcJXfBYJHrIu+or+WZIIB3Zy7WkpvdgWZ+uNt8kSz8uSSUCyRyx85ereLIVhw0ZyKYaPYXOPL4Q2wX5zpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BN9PR11MB5482.namprd11.prod.outlook.com (2603:10b6:408:103::16)
- by MW3PR11MB4587.namprd11.prod.outlook.com (2603:10b6:303:58::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.47; Thu, 9 May
- 2024 06:41:06 +0000
-Received: from BN9PR11MB5482.namprd11.prod.outlook.com
- ([fe80::158b:b258:5e7:c229]) by BN9PR11MB5482.namprd11.prod.outlook.com
- ([fe80::158b:b258:5e7:c229%6]) with mapi id 15.20.7544.041; Thu, 9 May 2024
- 06:41:05 +0000
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8C51610E1B2;
+	Thu,  9 May 2024 07:34:44 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 342C610E07F;
+ Thu,  9 May 2024 07:34:44 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="------------k2BiK5YDETNWa8RBWeWyE5Dp"
-Message-ID: <3a816e86-2a1d-433b-b004-a3e61c712b20@intel.com>
-Date: Thu, 9 May 2024 08:41:02 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/sriov_basic: Skip tests if sriov_totalvfs is
- zero
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>
-CC: <kamil.konieczny@linux.intel.com>, <michal.wajdeczko@intel.com>
-References: <20240508193258.4069853-1-marcin.bernatowicz@linux.intel.com>
-Content-Language: pl
-From: "Laguna, Lukasz" <lukasz.laguna@intel.com>
-In-Reply-To: <20240508193258.4069853-1-marcin.bernatowicz@linux.intel.com>
-X-ClientProxiedBy: DB8PR09CA0031.eurprd09.prod.outlook.com
- (2603:10a6:10:a0::44) To BN9PR11MB5482.namprd11.prod.outlook.com
- (2603:10b6:408:103::16)
+ boundary="===============3330608220991084100=="
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR11MB5482:EE_|MW3PR11MB4587:EE_
-X-MS-Office365-Filtering-Correlation-Id: 55ffa6ae-30f9-46e2-4e9b-08dc6ff30097
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|376005|366007|1800799015;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?TVpjejV6bFhmQlY2Vy9WSzhKTDlpSzR2MzN4ZWtvR2VRaW5CMkZpV3BCK1Qy?=
- =?utf-8?B?cnhFbld4cUpjN3VKU0pPQjZIckFYdHk4Q3EyWVdqakc0QkZ4bkpmZEs5NVJw?=
- =?utf-8?B?WW1FVW1jejR3THA4VmZ6d09nSlR5bDUycVJNUlBBRUNpZEQxTXYvajRSaWF3?=
- =?utf-8?B?KzM3U0V2ckNKRFpXb2ovaHNUQ0ptMkJMTWJ2UHBad0NTZWE0L0h3LzJ5dEQx?=
- =?utf-8?B?dTlCOXlSbDRJd1dnczFYd045RGlQdG9QZVZVMzk3WFoxdTRKUzJLSmNlZ2JD?=
- =?utf-8?B?Q0dqSit2TDJVVUFvZ1htYWpSN09UUlhjQloreFF2VGdkSmVyc2c0Q0U4M1JT?=
- =?utf-8?B?QnNXeTI0NklYUjhvQVJLd2s3QkdCaFdUOE9wNVJ4bWJCWVE1bjF5cG5vWlh5?=
- =?utf-8?B?MS96MG14UXRPUk1Td1RxWDBzQ3JIclliSGl2MVdJSlRkZU9NcCtGMHR2aDN3?=
- =?utf-8?B?NEhXOVR3N1RQMmNZUHFGVDFIc05KNnR4M0kxSStiL3o1YTNFbXJaanVwVjQw?=
- =?utf-8?B?ZmV5N0FSdnJOMXQ2TjVmTFZ4WUdpYXg0TTJZYlVDOVdGRHVpdTluNUhMbmRY?=
- =?utf-8?B?Rml5K2MvUldUcS9hb3AzeWtYVFBoN1BDMGs2ZUFUUWtJYnBTNzdoYnN0eldo?=
- =?utf-8?B?VVI5bUtSb1ZURUNPL1ZpYWgraDNVZXQrYnFVbHk4aUh4WFRjbDI4UkZFYk5F?=
- =?utf-8?B?N1BYcnZMcndUc3RhWmtrUFpJU3E2anQyclFZZnRsNXhWQ0h1cFJKM3BQMDRt?=
- =?utf-8?B?cTkwKzhEMStTN2xHSzZnN3ZrNXA1elFGWjRQczM2R1dNbU4rd0dNc3pndkVZ?=
- =?utf-8?B?Vjg4ZENqMk8vaUo1WmR1MWZDMk5RMzkvZmpoOENKVEJXWTRlSXFwY3kvQW9m?=
- =?utf-8?B?K1VnVHg5Qk5xd2ZBZEFPSEh2aUR3LzArUExGaTNEdDNWTTdnOWZqdkp3RW84?=
- =?utf-8?B?QjYySWxZNVVmNjhtQ2ZkNEVpeWJJekFrb3Fzdm43QUJ2cWI3ZTdTNEVzakRT?=
- =?utf-8?B?MHh1cVU5Njk5YnlScUxMUGZlaXFET1Jub09VWGJnckd5WG53KzZFZ2RNZktP?=
- =?utf-8?B?YUVVUnV0RC82TzJ0WDhTNjd1cUJYQzF3T1lRV2F3VHNWMnAyTllEbTA3WTFt?=
- =?utf-8?B?TXFMTHY1OXlxREJDM3hHQTI0N1BWeXZyMS9NdTNTOEVGdFJ5WUppcUVJUFlP?=
- =?utf-8?B?ZTZqUFhreGdUbVJQL0xobmtzWTNpVTAxVXJkYmI4Z2JtUmVXdWdzTGM1MnMr?=
- =?utf-8?B?WjI1WTU2SUZDNnFFN1NmMmo1Y043UG5PRjZYQ2wyS0RYK2YreUsvbGt3Si9q?=
- =?utf-8?B?aFh6ZnBEcjQ4UjBweWRxMFczQVZhOFlWdnB3Y1lLUjZheDhsOHlta2NSTFJw?=
- =?utf-8?B?UC9GQy9IWVVDQ3ZtODMyM2pDL080SGJXelRPejlpVHQ2SW5pQWEveVJEdXpS?=
- =?utf-8?B?blMvdkFFMlJIV0dtdXlTUVJ0V2FuazBFVmtRT2pRN2tTUXdoZXZmcDBUZnkx?=
- =?utf-8?B?YWxHYm4vWFlUNmxRU01BRGpnS1lPbStjVnNrZmtYVXdNVEFzWE1halloeVFa?=
- =?utf-8?B?V2xFSkFIbndMWWVPOWVqSTIzSCt5K2Q5TFpCYnZtZ1N3ZTNrYjdYM2w5WjBx?=
- =?utf-8?B?cnFreHRha1JteFR2cUFmV0d4S1dtYzViZk40blQvN3g3S3RDQ0cySmZ5KzN0?=
- =?utf-8?B?dWFZajREK2VZMWk2aGRabEFobGhIY0NTU3FoT0hpRVhvVlVWRzdHWWZ3PT0=?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BN9PR11MB5482.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376005)(366007)(1800799015); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y3FzUHlYTWNHbmhCdzlPcENZTUkvMGhjZld5MVNCZWJrMTZMMVl0Q0hkYXly?=
- =?utf-8?B?V2NlSUZKRDRHcWZRWUdvMFZIRVk2SXBHY0hjbnNHd0hPd0V1ZGxNL0MvVHZ0?=
- =?utf-8?B?K0ZHUjVQS3RCSmFmbVNpMDQ4QlBmSENnSUk5NDJSb3dtb3l3MUZ5RFFPcUhO?=
- =?utf-8?B?V3FLZThIUnJ4dEJWQXJYc2crTkFZN1hTZG1yMnlpbkVXOFJwVXZNa0tNQ2cy?=
- =?utf-8?B?eDMrc1RFNkw5V2lyOHU5eXowelN0S3RLTzVUY1I4K2tGclJhTE4zR05HNUE4?=
- =?utf-8?B?VVI1UERPcmNwK1FTWk5ld3FGK29oWVQ0dS92YzFkcndva2VlN3Q5TEVsOEpo?=
- =?utf-8?B?OE9Qbk5LNmlYdWtOZDk1bDUwejVId0YreUViME5QU2l2NHpOeWcyYmEyNEdo?=
- =?utf-8?B?Uk5KRXpPMEp0Z2w5bEcyUHpOZXQ0WWFDTS9leitqT3FPVjlxblVpU3haeHA5?=
- =?utf-8?B?NFhjZGZ0SlpsM2dGcDJhcWY2aXllK0djZWhqbWJ4anIyWVRidm1JZGdBTTVR?=
- =?utf-8?B?dmtIV2kyVjdkRzBFK2tHL2NhKzc3QXA4WS9CaThzb1VzTnowM1JETTNBQ3Fs?=
- =?utf-8?B?UGdTcDE0V0tBVU1kM1dCaFRSbzM3dkthZTI5RXJPbU1HT2dSS2N1WktaeGVx?=
- =?utf-8?B?R2dXekR4YWlwWC9LaTk4dFEyd0lGbmJQU01KV3RhNWhkdmI1OWIwK2Q3VTM5?=
- =?utf-8?B?QU1lS1ZreC9aT0ovREMxcURLcTg4ZlR6cXBldlB2blpDUmtmelVnN2k0RGRq?=
- =?utf-8?B?TDdDc0FXZStISmhld1F0SktOazFZVmp1SU14VC9iLzlkbm5aSFl0MWREUUVq?=
- =?utf-8?B?M0svbjArb2Q5cFIwVlpHWWhzQS91WWt2a011ejc2NlQ3bWtYZVVkbXloOTk4?=
- =?utf-8?B?M21pSmNqbC9oWEQ1d1JtZ0tnR2JuOFp4TE1vbllYWWtZeFhwOFNQTlArRnR0?=
- =?utf-8?B?TEFkbGIxbDNpTWFsTUdCY0dPdThRNFl5a2tXWHViMnNpbW90eWpNQ0RyQytu?=
- =?utf-8?B?OVRKTktPbGVTZWdCd1Z0SzVaYzNLSzJqR0VYaElFUmYxMTB0VlhLQzNWM2N0?=
- =?utf-8?B?VkU4eUkvalJzSkgrL0pLNEdaSit6L3VDUUU1Y0FpbmYzdk9YSXE0ckNyRjVy?=
- =?utf-8?B?WDJqTFpiYmpIOWdsOXRiQmI4ZlA2bkx6dlFjQ0Zmd2gzeXdoOE41VFBmT0JO?=
- =?utf-8?B?OVR6Y3lmdFl5Z0llMUlhRWRKcG5ZbHZjeXJCOHJuWGJOKzRRTFNaRGx2a0U4?=
- =?utf-8?B?MUg1eGVQRU8wSVpkRzNWQWZwU3lVZUdWN3RXcGRoSGI3SGk0bG9NSHhVUFZp?=
- =?utf-8?B?M2EreExYbXRZYlNyUjVTN0hoY1dncHFNV1poa2N3OUJNYWtuN0hCNVhGajRu?=
- =?utf-8?B?OGN3d05RdVY0Y0lJOU0xSi92WTJ5K2d4K3lwa1dFRHhQNkxvb01DRHBzTENV?=
- =?utf-8?B?NTVXeXVoaC8xUlNVdHhxcisvZW4wTTFFckFhUUpVZlVPaDhaZGxoUndBaDJR?=
- =?utf-8?B?ZE8vYzVNSVpSVCtENzROdDFFSHRWYXZkOUJGSVpGQUk2Y2NwUFYwSjkyNTha?=
- =?utf-8?B?TytPRmd5L1pDVm1PNzA4cUpPUTdEMEZWdDFnajBqZ0JjUjd3ZEo4TUJIcU5q?=
- =?utf-8?B?bDdSTHUxaURQWjVUZGV6VFplNHU5emRTUnVwN3hWNDF1ZkkvK2pmUFJzMlRt?=
- =?utf-8?B?dThlSytkR3R5MlRFTko3eGJZeFhBS0g1SWhXMTdmU1RleWRFd0tReHA0TDBC?=
- =?utf-8?B?V1FDODdNenZTN0tneUpobGdiQ0lZcHFFQXh4eXFPbFRFL2Z2VWZkQ3VYKzM5?=
- =?utf-8?B?djBmUFJqSlFsTDZJTkNRL0s4TVZLRVVFZlBVdThwSjVKZVBobVIvTnVMNGwy?=
- =?utf-8?B?R1FtcFhLb3QvTlpsZEs1anVWVUFOSFdNN1M0QWNZejcwd241Uk01NVZHM04r?=
- =?utf-8?B?aE9LUGJEQk45NS8rRXJtMGpUeUErVjR0RHYyc252TDBjcWZkbURLaVJ6VW04?=
- =?utf-8?B?T2lNR0lmaEVyWmVmei9oQkc2YVdJQVJwY2Z0dUhwZXhINjc5Vm80UGRIL0xR?=
- =?utf-8?B?RC9PdmdtcE4zRi81RGNseGpxVHpOZDg2T2lOTEhNYk9Kb1NvaGtOZUE3TDVX?=
- =?utf-8?Q?z1erG9dTpySpl7+lmrQQV4pyI?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 55ffa6ae-30f9-46e2-4e9b-08dc6ff30097
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5482.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2024 06:41:05.8799 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: e+6TRmGa5fVLv36WUPGNhHwWv3/uc0t3cNgpQwRhki2D/QKlgfwQFRbPr0lpvdzN1d2ZwCCL5Od1vo6g+DVCew==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4587
-X-OriginatorOrg: intel.com
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_render-copy_compression_on?=
+ =?utf-8?q?_Xe+_=28rev5=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 09 May 2024 07:34:44 -0000
+Message-ID: <171524008420.2037202.9955578386715028039@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240509053359.449885-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20240509053359.449885-1-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -189,82 +37,231 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------k2BiK5YDETNWa8RBWeWyE5Dp
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+--===============3330608220991084100==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-On 5/8/2024 21:32, Marcin Bernatowicz wrote:
-> There is no point to run the tests if no VFs can be enabled.
-> Additionally, the `for_random_sriov_num_vfs` macro will lead
-> to undefined behavior if `sriov_totalvfs` is zero.
->
-> Signed-off-by: Marcin Bernatowicz<marcin.bernatowicz@linux.intel.com>
-> ---
->   tests/sriov_basic.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
-> index f58b3b7ba..1bc082d76 100644
-> --- a/tests/sriov_basic.c
-> +++ b/tests/sriov_basic.c
-> @@ -120,7 +120,7 @@ igt_main
->   
->   	igt_fixture {
->   		pf_fd = drm_open_driver(DRIVER_ANY);
-> -		igt_require(igt_sriov_is_pf(pf_fd));
-> +		igt_require(igt_sriov_vfs_supported(pf_fd));
->   		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
->   		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
->   	}
+== Series Details ==
 
-LGTM,
+Series: Add render-copy compression on Xe+ (rev5)
+URL   : https://patchwork.freedesktop.org/series/132902/
+State : success
 
-Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com 
-<mailto:lukasz.laguna@intel.com>>
+== Summary ==
 
---------------k2BiK5YDETNWa8RBWeWyE5Dp
-Content-Type: text/html; charset="UTF-8"
+CI Bug Log - changes from XEIGT_7843_BAT -> XEIGTPW_11117_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 5)
+------------------------------
+
+  Additional (1): bat-lnl-1 
+
+New tests
+---------
+
+  New tests have been introduced between XEIGT_7843_BAT and XEIGTPW_11117_BAT:
+
+### New IGT tests (8) ###
+
+  * igt@xe_intel_bb@render@render-linear-1024:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.04, 0.10] s
+
+  * igt@xe_intel_bb@render@render-linear-512:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.01, 0.03] s
+
+  * igt@xe_intel_bb@render@render-tile4-1024:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.04, 0.10] s
+
+  * igt@xe_intel_bb@render@render-tile4-512:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.01, 0.03] s
+
+  * igt@xe_intel_bb@render@render-tile64-1024:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.05, 0.10] s
+
+  * igt@xe_intel_bb@render@render-tile64-512:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.01, 0.03] s
+
+  * igt@xe_intel_bb@render@render-xmajor-1024:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.04, 0.10] s
+
+  * igt@xe_intel_bb@render@render-xmajor-512:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.01, 0.02] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11117_BAT that come from known issues:
+
+### IGT changes ###
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1416]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416
+  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
+  [Intel XE#1442]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1442
+  [Intel XE#1446]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1446
+  [Intel XE#1462]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1462
+  [Intel XE#1466]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466
+  [Intel XE#1470]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470
+  [Intel XE#352]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/352
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7843 -> IGTPW_11117
+  * Linux: xe-1257-34d52122a69076639d526b035c8edd5b43201f84 -> xe-1263-92f877dd46245e4a44b6d24b5e303b8c03c40c75
+
+  IGTPW_11117: 11117
+  IGT_7843: 0df7b9b97f9da0e364f5ee30fe331004b8c86b56 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1257-34d52122a69076639d526b035c8edd5b43201f84: 34d52122a69076639d526b035c8edd5b43201f84
+  xe-1263-92f877dd46245e4a44b6d24b5e303b8c03c40c75: 92f877dd46245e4a44b6d24b5e303b8c03c40c75
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11117/index.html
+
+--===============3330608220991084100==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <div class="moz-cite-prefix">On 5/8/2024 21:32, Marcin Bernatowicz
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20240508193258.4069853-1-marcin.bernatowicz@linux.intel.com">
-      <pre class="moz-quote-pre" wrap="">There is no point to run the tests if no VFs can be enabled.
-Additionally, the `for_random_sriov_num_vfs` macro will lead
-to undefined behavior if `sriov_totalvfs` is zero.
 
-Signed-off-by: Marcin Bernatowicz <a class="moz-txt-link-rfc2396E" href="mailto:marcin.bernatowicz@linux.intel.com">&lt;marcin.bernatowicz@linux.intel.com&gt;</a>
----
- tests/sriov_basic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
-diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
-index f58b3b7ba..1bc082d76 100644
---- a/tests/sriov_basic.c
-+++ b/tests/sriov_basic.c
-@@ -120,7 +120,7 @@ igt_main
- 
- 	igt_fixture {
- 		pf_fd = drm_open_driver(DRIVER_ANY);
--		igt_require(igt_sriov_is_pf(pf_fd));
-+		igt_require(igt_sriov_vfs_supported(pf_fd));
- 		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
- 		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
- 	}</pre>
-    </blockquote>
-    <p><span style="white-space: pre-wrap">LGTM,
-</span></p>
-    <p><span lang="en-US">Reviewed-by: </span><span lang="pl">L</span><span lang="en-US">ukasz </span><span lang="pl">L</span><span lang="en-US">aguna &lt;</span><a href="mailto:lukasz.laguna@intel.com"><span lang="en-US">lukasz.laguna@intel.com</span></a><span lang="en-US">&gt;</span><span style="white-space: pre-wrap">
-</span></p>
-  </body>
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add render-copy compression on Xe+ (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132902/">https://patchwork.freedesktop.org/series/132902/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11117/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11117/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7843_BAT -&gt; XEIGTPW_11117_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 5)</h2>
+<p>Additional (1): bat-lnl-1 </p>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_7843_BAT and XEIGTPW_11117_BAT:</p>
+<h3>New IGT tests (8)</h3>
+<ul>
+<li>
+<p>igt@xe_intel_bb@render@render-linear-1024:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.04, 0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-linear-512:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.01, 0.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-tile4-1024:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.04, 0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-tile4-512:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.01, 0.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-tile64-1024:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.05, 0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-tile64-512:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.01, 0.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-xmajor-1024:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.04, 0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-xmajor-512:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.01, 0.02] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11117_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7843 -&gt; IGTPW_11117</li>
+<li>Linux: xe-1257-34d52122a69076639d526b035c8edd5b43201f84 -&gt; xe-1263-92f877dd46245e4a44b6d24b5e303b8c03c40c75</li>
+</ul>
+<p>IGTPW_11117: 11117<br />
+  IGT_7843: 0df7b9b97f9da0e364f5ee30fe331004b8c86b56 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1257-34d52122a69076639d526b035c8edd5b43201f84: 34d52122a69076639d526b035c8edd5b43201f84<br />
+  xe-1263-92f877dd46245e4a44b6d24b5e303b8c03c40c75: 92f877dd46245e4a44b6d24b5e303b8c03c40c75</p>
+
+</body>
 </html>
 
---------------k2BiK5YDETNWa8RBWeWyE5Dp--
+--===============3330608220991084100==--
