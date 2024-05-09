@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D392C10F1A
-	for <igt-dev@archiver.kernel.org>; Thu,  9 May 2024 05:34:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA883C10F1A
+	for <igt-dev@archiver.kernel.org>; Thu,  9 May 2024 05:34:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0FB7110E13E;
-	Thu,  9 May 2024 05:34:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7A1EF10E191;
+	Thu,  9 May 2024 05:34:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IYO4nizs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y6HJu/3m";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1407C10E13E
- for <igt-dev@lists.freedesktop.org>; Thu,  9 May 2024 05:34:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB97D10E191
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 May 2024 05:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715232869; x=1746768869;
+ t=1715232873; x=1746768873;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Szoq8idfA+CsZL7ej/jM44QgfhisHyPz05HrTD7h3yQ=;
- b=IYO4nizsZ/J7mfGDAipVqc82iJiLLDBhJr6r3GCyLgy97f2I3FLoO3/Q
- 4nTrzWXMR10JExiKmm949+aT8KBNs+cMA75kmEwb8HrgChXzQpC4uUTAL
- yQpZT2Y6EBG4998HveROHlOHobrTGvFsBhxEsHBcby/yQ4wCbiKIUxfka
- iYlUgyIjr8SBVTLZU+h6JAkc1wpy+evvSKNGdoLF93vsTogbtoMhZxToB
- iOKDHT18BWYY0pKzAz6ElVDgLNxFfRP1tu5jXZgTc+VahZUYGsaPKmeqJ
- rdiIyPu9oQ04uB8aLsaGBZErNk+pRkIKJdsiW+fkij9YHU63/jQNzbW31 A==;
-X-CSE-ConnectionGUID: yYlcY+ttRl6+q02L4DuFTg==
-X-CSE-MsgGUID: FOhtisSZQu6tCpXJDtNMYg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="21802900"
-X-IronPort-AV: E=Sophos;i="6.08,146,1712646000"; d="scan'208";a="21802900"
+ bh=RrhzmVqtg87Pftb+qGn4QjIykLUUPa8A4BlahOYJYFo=;
+ b=Y6HJu/3me9bQFljCLlviyw71OWs7/YWP6ixbviKbBwHK3UjdFMJ1zgs1
+ h8h56Ck1+1JUDX5bLWy7PHjIrQdWgHZZTiz+/ghc+lS11YoTKI6gQr6Jb
+ 42OjSrDvvP9ddCxABRSGQrCYnxBMV+LV1eKIieHWv5o2Yc9UWBFZkKr4u
+ 6N4buL8JvGB7/OSr8MSVDftawxquC4XuEgu8qG6GkOzFKsnkN35/HOOm9
+ P7qoFKj9sIHpEnHPCgyK2YH98H8Og7oO5rqXl+IPFxyF1Q0XaPhOJMDiS
+ TuuH24hgD+7sY/JTdBrxn2ubMeEh4N9a+I+3VZSlBxvqheZIEipLKLEZQ Q==;
+X-CSE-ConnectionGUID: QF5B+tXCS9agPeeiDIUamA==
+X-CSE-MsgGUID: IJemrhF3R5CXTPyz4JROqg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="21802925"
+X-IronPort-AV: E=Sophos;i="6.08,146,1712646000"; d="scan'208";a="21802925"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2024 22:34:29 -0700
-X-CSE-ConnectionGUID: tY+BCYdcQ6iUpR3st+Bs0A==
-X-CSE-MsgGUID: QMp51utHR5urgRVQA4kATQ==
+ 08 May 2024 22:34:33 -0700
+X-CSE-ConnectionGUID: xGwYVzcTTqORNN/1IX5zXQ==
+X-CSE-MsgGUID: XWqlVtTtQi2+qJzVG7YIiw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,146,1712646000"; d="scan'208";a="29187237"
+X-IronPort-AV: E=Sophos;i="6.08,146,1712646000"; d="scan'208";a="29187254"
 Received: from unknown (HELO localhost) ([10.245.246.122])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2024 22:34:28 -0700
+ 08 May 2024 22:34:32 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v5 05/11] lib/intel_bufops: Start supporting compression
- on Xe2+
-Date: Thu,  9 May 2024 07:33:53 +0200
-Message-Id: <20240509053359.449885-6-zbigniew.kempczynski@intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t v5 06/11] lib/rendercopy_gen9: Separate xe and xe2
+ compression format
+Date: Thu,  9 May 2024 07:33:54 +0200
+Message-Id: <20240509053359.449885-7-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240509053359.449885-1-zbigniew.kempczynski@intel.com>
 References: <20240509053359.449885-1-zbigniew.kempczynski@intel.com>
@@ -69,86 +70,101 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Xe2+ uses unified compression where PAT index determines using
-compressed pages so lets add support of that to intel-buf. It is
-necessary to run render-copy with compression on those platforms.
+Xe and beyond differ how compression format is handled. For Xe it
+is 5-bit long whereas for Xe2+ this is 4-bit long field. Instead of
+artifically packing 0-15 into 5-bit field lets separate this structures
+to conform with the documentation.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/intel_bufops.c | 31 +++++++++++++++++++++++++++----
- 1 file changed, 27 insertions(+), 4 deletions(-)
+ lib/gen9_render.h     | 31 +++++++++++++++++++++----------
+ lib/rendercopy_gen9.c | 24 ++++++++++++++++--------
+ 2 files changed, 37 insertions(+), 18 deletions(-)
 
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 7118272e5f..52a5f322ea 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -934,8 +934,14 @@ static void __intel_buf_init(struct buf_ops *bops,
- 			if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &bo_size, region))
- 				igt_assert_eq(__gem_create(bops->fd, &bo_size, &buf->handle), 0);
- 		} else {
-+			uint16_t cpu_caching = __xe_default_cpu_caching(bops->fd, region, 0);
+diff --git a/lib/gen9_render.h b/lib/gen9_render.h
+index 8ed60a2a54..4c1ed4726a 100644
+--- a/lib/gen9_render.h
++++ b/lib/gen9_render.h
+@@ -154,16 +154,27 @@ struct gen9_surface_state {
+ 		uint32_t aux_base_addr_hi;
+ 	} ss11;
+ 
+-	struct {
+-		/*
+-		 * compression_format is used only dg2 onward.
+-		 * prior to dg2 full ss12 is used for the address
+-		 * but due to alignments bits 0..6 will be zero
+-		 * and asserted in code to be so
+-		 */
+-		uint32_t compression_format:5;
+-		uint32_t pad0:1;
+-		uint32_t clear_address:26;
++	union {
++		struct {
++			/*
++			 * compression_format is used only dg2 onward.
++			 * prior to dg2 full ss12 is used for the address
++			 * but due to alignments bits 0..6 will be zero
++			 * and asserted in code to be so
++			 */
++			uint32_t compression_format:5;
++			uint32_t pad0:1;
++			uint32_t clear_address:26;
++		} xe;
 +
-+			if (AT_LEAST_GEN(bops->devid, 20) && compression)
-+				cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
-+
- 			bo_size = ALIGN(bo_size, xe_get_default_alignment(bops->fd));
--			buf->handle = xe_bo_create(bops->fd, 0, bo_size, region, 0);
-+			buf->handle = xe_bo_create_caching(bops->fd, 0, bo_size, region, 0,
-+							   cpu_caching);
++		struct {
++			/*
++			 * On Xe2+ compression format is 4-bit long.
++			 */
++			uint32_t compression_format:4;
++			uint32_t mip_region_depth_in_log:4;
++			uint32_t pad0:24;
++		} xe2;
+ 	} ss12;
+ 
+ 	struct {
+diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+index 7c7563d50c..35d79acbab 100644
+--- a/lib/rendercopy_gen9.c
++++ b/lib/rendercopy_gen9.c
+@@ -264,7 +264,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+ 			igt_assert(__builtin_ctzl(address + buf->cc.offset) >= 6 &&
+ 				   (__builtin_clzl(address + buf->cc.offset) >= 16));
+ 
+-			ss->ss12.clear_address = (address + buf->cc.offset) >> 6;
++			ss->ss12.xe.clear_address = (address + buf->cc.offset) >> 6;
+ 			ss->ss13.clear_address_hi = (address + buf->cc.offset) >> 32;
+ 		}
+ 
+@@ -274,13 +274,21 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+ 			ss->ss7.dg2.disable_support_for_multi_gpu_partial_writes = 1;
+ 			ss->ss7.dg2.disable_support_for_multi_gpu_atomics = 1;
+ 
+-			/*
+-			 * For now here is coming only 32bpp rgb format
+-			 * which is marked below as B8G8R8X8_UNORM = '8'
+-			 * If here ever arrive other formats below need to be
+-			 * fixed to take that into account.
+-			 */
+-			ss->ss12.compression_format = 8;
++			if (AT_LEAST_GEN(ibb->devid, 20)) {
++				/*
++				 * For Xe2+ R8G8B8A8 best compression ratio is
++				 * achieved with compression format = '2'
++				 */
++				ss->ss12.xe2.compression_format = 2;
++			} else {
++				/*
++				 * For now here is coming only 32bpp rgb format
++				 * which is marked below as B8G8R8X8_UNORM = '8'
++				 * If here ever arrive other formats below need to be
++				 * fixed to take that into account.
++				 */
++				ss->ss12.xe.compression_format = 8;
++			}
  		}
  	}
- 
-@@ -970,11 +976,16 @@ void intel_buf_init(struct buf_ops *bops,
- 		    uint32_t tiling, uint32_t compression)
- {
- 	uint64_t region;
-+	uint8_t pat_index = DEFAULT_PAT_INDEX;
-+
-+	if (compression && AT_LEAST_GEN(bops->devid, 20))
-+		pat_index = intel_get_pat_idx_uc_comp(bops->fd);
- 
- 	region = bops->driver == INTEL_DRIVER_I915 ? I915_SYSTEM_MEMORY :
- 						     system_memory(bops->fd);
- 	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
--			 tiling, compression, 0, 0, region, DEFAULT_PAT_INDEX,
-+			 tiling, compression, 0, 0, region,
-+			 pat_index,
- 			 DEFAULT_MOCS_INDEX);
- 
- 	intel_buf_set_ownership(buf, true);
-@@ -991,8 +1002,14 @@ void intel_buf_init_in_region(struct buf_ops *bops,
- 			      uint32_t tiling, uint32_t compression,
- 			      uint64_t region)
- {
-+	uint8_t pat_index = DEFAULT_PAT_INDEX;
-+
-+	if (compression && AT_LEAST_GEN(bops->devid, 20))
-+		pat_index = intel_get_pat_idx_uc_comp(bops->fd);
-+
- 	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
--			 tiling, compression, 0, 0, region, DEFAULT_PAT_INDEX,
-+			 tiling, compression, 0, 0, region,
-+			 pat_index,
- 			 DEFAULT_MOCS_INDEX);
- 
- 	intel_buf_set_ownership(buf, true);
-@@ -1053,10 +1070,16 @@ void intel_buf_init_using_handle_and_size(struct buf_ops *bops,
- 					  uint32_t req_tiling, uint32_t compression,
- 					  uint64_t size)
- {
-+	uint8_t pat_index = DEFAULT_PAT_INDEX;
-+
- 	igt_assert(handle);
- 	igt_assert(size);
-+
-+	if (compression && AT_LEAST_GEN(bops->devid, 20))
-+		pat_index = intel_get_pat_idx_uc_comp(bops->fd);
-+
- 	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
--			 req_tiling, compression, size, 0, -1, DEFAULT_PAT_INDEX,
-+			 req_tiling, compression, size, 0, -1, pat_index,
- 			 DEFAULT_MOCS_INDEX);
- }
  
 -- 
 2.34.1
