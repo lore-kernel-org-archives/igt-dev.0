@@ -4,27 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D3FDC25B10
-	for <igt-dev@archiver.kernel.org>; Fri, 10 May 2024 19:11:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEFD8C25B10
+	for <igt-dev@archiver.kernel.org>; Fri, 10 May 2024 19:17:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A414C10E0E7;
-	Fri, 10 May 2024 19:11:29 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F244510E0E7;
- Fri, 10 May 2024 19:11:27 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7346375508690909862=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 56C0410E0E7;
+	Fri, 10 May 2024 19:17:41 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="KZrAuvKM";
+	dkim-atps=neutral
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com
+ [46.235.227.194])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8F7A10E0E7
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 May 2024 19:17:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+ s=mail; t=1715368658;
+ bh=MvVe6XwtlD/07ErDGOqOnWe84Z6h42v294LGh1F/ywE=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=KZrAuvKMi/dBo8DoN5/+VU/t0s1IAIkSyY7RHUoviesVkkL52OmdqgBzVr4kADo5q
+ 8Z9ISsrNFmOLhu8mVnXrdZFmUkWwVMgyQVoc+c3XcRvzjSxwNYH19tl0jreffS72Th
+ /ezaqm1ZfLuFVFNghu9mTakmCYCKfWTo8YgcdLnhrZy8sLtdoHJLs8Dop96Oeda7PR
+ fSo1Db9U0KKzBIVei56JBjmCNdFBWMUcObLmNOYaDxKphiJcTLK4OYdn8bjQE5TgML
+ nobxPvK0yXg+LfDIkAfJFtnCCzwiGcIGVsdzte0hQa+Bt3X0KET9m1UAYIOOgfRaeu
+ 6Nez9EcUC1mnw==
+Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested) (Authenticated sender: alarumbe)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id 9B9B23782189;
+ Fri, 10 May 2024 19:17:37 +0000 (UTC)
+From: =?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>
+To: tvrtko.ursulin@intel.com, robdclark@chromium.org,
+ kamil.konieczny@linux.intel.com, lucas.demarchi@intel.com,
+ igt-dev@lists.freedesktop.org
+Cc: healych@amazon.com, adrian.larumbe@collabora.com, kernel@collabora.com,
+ Tvrtko Ursulin <tursulin@ursulin.net>, Daniel Vetter <daniel@ffwll.ch>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH v3 1/2] lib: Add DRM driver sysfs profiling knob toggling
+ functions
+Date: Fri, 10 May 2024 20:15:20 +0100
+Message-ID: <20240510191716.282644-2-adrian.larumbe@collabora.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240510191716.282644-1-adrian.larumbe@collabora.com>
+References: <20240510191716.282644-1-adrian.larumbe@collabora.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/i915/perf=3A_Accumulate_cl?=
- =?utf-8?q?ocks_for_MPEC_format_too?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ashutosh Dixit" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 10 May 2024 19:11:27 -0000
-Message-ID: <171536828797.2056296.8517857241818897335@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240510170450.2404385-1-ashutosh.dixit@intel.com>
-In-Reply-To: <20240510170450.2404385-1-ashutosh.dixit@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +61,227 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7346375508690909862==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Some DRM drivers need to have their accounting HW toggled on demand from
+user space so that fdinfo's drm-engine and drm-cycles tags can be updated
+upon job completion.
 
-== Series Details ==
+A profiler such as gputop should be able to check which DRM devices have
+such a sysfs knob, record its original state, toggle-enable it and revert
+this operation right before exiting.
 
-Series: lib/i915/perf: Accumulate clocks for MPEC format too
-URL   : https://patchwork.freedesktop.org/series/133460/
-State : success
+Also create a new static library dependency for this family of functions so
+that it can later be linked against gputop.
 
-== Summary ==
+Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+---
+ lib/igt_profiling.c | 141 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_profiling.h |  21 +++++++
+ lib/meson.build     |   8 +++
+ 3 files changed, 170 insertions(+)
+ create mode 100644 lib/igt_profiling.c
+ create mode 100644 lib/igt_profiling.h
 
-CI Bug Log - changes from XEIGT_7846_BAT -> XEIGTPW_11128_BAT
-====================================================
+diff --git a/lib/igt_profiling.c b/lib/igt_profiling.c
+new file mode 100644
+index 000000000000..f5ac40d072ac
+--- /dev/null
++++ b/lib/igt_profiling.c
+@@ -0,0 +1,141 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Collabora Ltd.
++ * Copyright © 2024 Adrian Larumbe <adrian.larumbe@collabora.com>
++ * Copyright © 2024 Amazon.com, Inc. or its affiliates.
++ *
++ */
++
++#include <fcntl.h>
++#include <unistd.h>
++#include <dirent.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <assert.h>
++#include <stdbool.h>
++
++#include "igt_profiling.h"
++
++#define SYSFS_DRM	"/sys/class/drm"
++#define NUM_DEVICES	10
++
++struct igt_profiled_device *igt_devices_profiled(void)
++{
++	struct igt_profiled_device *profiled_devices;
++	unsigned int devlist_len = NUM_DEVICES;
++	unsigned int i = 0;
++	struct dirent *entry;
++	DIR *dev_dir;
++
++	/* The return array will be resized in case there are too many devices */
++	profiled_devices = malloc(devlist_len * sizeof(struct igt_profiled_device));
++	if (!profiled_devices)
++		return NULL;
++
++	dev_dir = opendir(SYSFS_DRM);
++	if (!dev_dir) {
++		free(profiled_devices);
++		return NULL;
++	}
++
++	while ((entry = readdir(dev_dir)) != NULL) {
++		char path[PATH_MAX];
++		char orig_state;
++		int sysfs_fd;
++
++		/* All DRM device entries are symlinks to other paths within sysfs */
++		if (entry->d_type != DT_LNK)
++			continue;
++
++		/* We're only interested in render nodes */
++		if (strstr(entry->d_name, "render") != entry->d_name)
++			continue;
++
++		snprintf(path, sizeof(path), "%s/%s/device/%s",
++			 SYSFS_DRM, entry->d_name, "profiling");
++
++		if (access(path, F_OK))
++			continue;
++
++		sysfs_fd = open(path, O_RDONLY);
++		if (sysfs_fd == -1)
++			continue;
++
++		if (read(sysfs_fd, &orig_state, 1) <= 0) {
++			close(sysfs_fd);
++			continue;
++		}
++
++		if (i == (devlist_len - 1)) {
++			devlist_len += NUM_DEVICES;
++			profiled_devices = realloc(profiled_devices, devlist_len);
++		}
++
++		profiled_devices[i].syspath = strdup(path);
++		profiled_devices[i++].original_state = orig_state;
++
++		close(sysfs_fd);
++	}
++
++	if (i == 0) {
++		free(profiled_devices);
++		profiled_devices = NULL;
++	} else
++		profiled_devices[i].syspath = NULL; /* Array terminator */
++
++	return profiled_devices;
++}
++
++
++void igt_devices_toggle_profiling(struct igt_profiled_device *devices, bool enable)
++{
++	assert(devices);
++
++	for (unsigned int i = 0; devices[i].syspath; i++) {
++
++		int sysfs_fd = open(devices[i].syspath, O_WRONLY);
++
++		if (sysfs_fd < 0)
++			continue;
++
++		write(sysfs_fd, enable ? "1" : &devices[i].original_state, 1);
++		close(sysfs_fd);
++	}
++}
++
++void igt_devices_free_profiling(struct igt_profiled_device *devices)
++{
++	assert(devices);
++
++	for (unsigned int i = 0; devices[i].syspath; i++)
++		free(devices[i].syspath);
++
++	free(devices);
++}
++
++void igt_devices_update_original_profiling_state(struct igt_profiled_device *devices)
++{
++	assert(devices);
++
++	for (unsigned int i = 0; devices[i].syspath; i++) {
++		char new_state;
++		int sysfs_fd;
++
++		sysfs_fd = open(devices[i].syspath, O_RDWR);
++		if (sysfs_fd == -1)
++			continue;
++
++		if (!read(sysfs_fd, &new_state, 1)) {
++			close(sysfs_fd);
++			continue;
++		}
++
++		if (new_state == '0') {
++			write(sysfs_fd, "1", 1);
++			devices[i].original_state = new_state;
++		}
++
++		close(sysfs_fd);
++	}
++}
+diff --git a/lib/igt_profiling.h b/lib/igt_profiling.h
+new file mode 100644
+index 000000000000..fd0835d9a699
+--- /dev/null
++++ b/lib/igt_profiling.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2024 Collabora Ltd.
++ * Copyright © 2024 Adrian Larumbe <adrian.larumbe@collabora.com>
++ * Copyright © 2024 Amazon.com, Inc. or its affiliates.
++ */
++
++#ifndef IGT_PROFILING_H
++#define IGT_PROFILING_H
++
++struct igt_profiled_device {
++	char *syspath;
++	char original_state;
++};
++
++void igt_devices_toggle_profiling(struct igt_profiled_device *devices, bool enable);
++struct igt_profiled_device *igt_devices_profiled(void);
++void igt_devices_free_profiling(struct igt_profiled_device *devices);
++void igt_devices_update_original_profiling_state(struct igt_profiled_device *devices);
++
++#endif /* IGT_PROFILING_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index e2f740c116f8..6f61ed5c558b 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -291,6 +291,14 @@ lib_igt_drm_fdinfo_build = static_library('igt_drm_fdinfo',
+ 
+ lib_igt_drm_fdinfo = declare_dependency(link_with : lib_igt_drm_fdinfo_build,
+ 				  include_directories : inc)
++
++lib_igt_profiling_build = static_library('igt_profiling',
++	['igt_profiling.c'],
++	include_directories : inc)
++
++lib_igt_profiling = declare_dependency(link_with : lib_igt_profiling_build,
++				        include_directories : inc)
++
+ i915_perf_files = [
+   'igt_list.c',
+   'i915/perf.c',
+-- 
+2.44.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (5 -> 5)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7846 -> IGTPW_11128
-  * Linux: xe-1263-92f877dd46245e4a44b6d24b5e303b8c03c40c75 -> xe-1274-23ec6ba1c106dcbbc3bc85cafb1a01849460b08e
-
-  IGTPW_11128: 11128
-  IGT_7846: 4a5fd4e7cb2798636f6464e2bd61399f3242b322 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1263-92f877dd46245e4a44b6d24b5e303b8c03c40c75: 92f877dd46245e4a44b6d24b5e303b8c03c40c75
-  xe-1274-23ec6ba1c106dcbbc3bc85cafb1a01849460b08e: 23ec6ba1c106dcbbc3bc85cafb1a01849460b08e
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11128/index.html
-
---===============7346375508690909862==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/i915/perf: Accumulate clocks for MPEC format too</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133460/">https://patchwork.freedesktop.org/series/133460/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11128/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11128/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7846_BAT -&gt; XEIGTPW_11128_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (5 -&gt; 5)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7846 -&gt; IGTPW_11128</li>
-<li>Linux: xe-1263-92f877dd46245e4a44b6d24b5e303b8c03c40c75 -&gt; xe-1274-23ec6ba1c106dcbbc3bc85cafb1a01849460b08e</li>
-</ul>
-<p>IGTPW_11128: 11128<br />
-  IGT_7846: 4a5fd4e7cb2798636f6464e2bd61399f3242b322 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1263-92f877dd46245e4a44b6d24b5e303b8c03c40c75: 92f877dd46245e4a44b6d24b5e303b8c03c40c75<br />
-  xe-1274-23ec6ba1c106dcbbc3bc85cafb1a01849460b08e: 23ec6ba1c106dcbbc3bc85cafb1a01849460b08e</p>
-
-</body>
-</html>
-
---===============7346375508690909862==--
