@@ -4,48 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FEA3C25B75
-	for <igt-dev@archiver.kernel.org>; Fri, 10 May 2024 19:17:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB19FC25B74
+	for <igt-dev@archiver.kernel.org>; Fri, 10 May 2024 19:17:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D9EBF10E7B2;
-	Fri, 10 May 2024 19:17:41 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="SA3829Ni";
-	dkim-atps=neutral
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com
- [46.235.227.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D2B7910E5DE
- for <igt-dev@lists.freedesktop.org>; Fri, 10 May 2024 19:17:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1715368657;
- bh=34iPmHg7e3CvF7AgI6vpybEjnQcuqRgFyfvSkmtGhEg=;
- h=From:To:Cc:Subject:Date:From;
- b=SA3829NiIicLHx6B8knUnah+MIdDm8C4SD+eeZ9Z2PQh812oNigQ6vtIxTa6dUGJk
- 8HAOs5H8AtJoS2MssHym+RWNQ0jIsosPxOYfRvcH0qakX1HZvaPEB1d46u2E8N0qQL
- QbpNn2Ce0jLZHK963mmieS33hYDRorguV3WmQWPQlbfTgZapChlAvHkr2mhnhl6r1C
- pfNfTy3Lyn3FfxneAfZzV9ZrWisEeYw9oxo90Fykt28M+ZLg/FU00TNshwIFH7u5Bs
- M4ewF7EtZaoOL0yr/aRLGBwO9o1uc7HV7kxNZarXLVDwCN67E+eNonjy10qWXP+cFA
- iDG7S8cO+77ZA==
-Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested) (Authenticated sender: alarumbe)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id 05E8E378217A;
- Fri, 10 May 2024 19:17:36 +0000 (UTC)
-From: =?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>
-To: tvrtko.ursulin@intel.com, robdclark@chromium.org,
- kamil.konieczny@linux.intel.com, lucas.demarchi@intel.com,
- igt-dev@lists.freedesktop.org
-Cc: healych@amazon.com,
-	adrian.larumbe@collabora.com,
-	kernel@collabora.com
-Subject: [PATCH v3 0/2] Add gputop support for sysfs profiling knob
-Date: Fri, 10 May 2024 20:15:19 +0100
-Message-ID: <20240510191716.282644-1-adrian.larumbe@collabora.com>
-X-Mailer: git-send-email 2.44.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5DE2010E5DE;
+	Fri, 10 May 2024 19:17:55 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D3CE10E5DE;
+ Fri, 10 May 2024 19:17:54 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7208693808485739985=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_lib/i915/perf=3A_Accumulate?=
+ =?utf-8?q?_clocks_for_MPEC_format_too?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Ashutosh Dixit" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 10 May 2024 19:17:54 -0000
+Message-ID: <171536867418.2056296.7564313707638319801@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240510170450.2404385-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20240510170450.2404385-1-ashutosh.dixit@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,44 +37,127 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some GPUs like Panfrost need a sysfs file to be toggled before the HW can
-initiate the job accounting necessary to feed fdinfo with engine and cycle
-data. This sysfs knob has to be disabled when the profiler is done, to save
-power.
+--===============7208693808485739985==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Changelog:
+== Series Details ==
 
-v3:
- - Created separate lib_igt_profiling to avoid dynamic linking
- of gputop with igt_lib, which also meant isolating the functions
- therein from the rest of igt_lib.
- - Make gputop check the sysfs knob state at the end of every period
- in case other instances of itself or other profilers might have
- changed it, so that the knob can be returned to its original state.
-v2:
- - Added header file guards around igt_profiling.h
- - Modified licensing information to comply with SPDX format
- - Sorted included header files in alphabetic order
- - Added volatile qualifier to gputop stop variable
+Series: lib/i915/perf: Accumulate clocks for MPEC format too
+URL   : https://patchwork.freedesktop.org/series/133460/
+State : success
 
-Adrián Larumbe (2):
-  lib: Add DRM driver sysfs profiling knob toggling functions
-  tools/gputop: toggle sysfs profiling knob if available for device
+== Summary ==
 
- lib/igt_profiling.c | 141 ++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_profiling.h |  21 +++++++
- lib/meson.build     |   8 +++
- tools/gputop.c      |  33 ++++++++++-
- tools/meson.build   |   2 +-
- 5 files changed, 203 insertions(+), 2 deletions(-)
- create mode 100644 lib/igt_profiling.c
- create mode 100644 lib/igt_profiling.h
+CI Bug Log - changes from CI_DRM_14749 -> IGTPW_11128
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11128/index.html
+
+Participating hosts (40 -> 37)
+------------------------------
+
+  Missing    (3): bat-jsl-1 fi-snb-2520m fi-bsw-n3050 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11128 that come from known issues:
+
+### IGT changes ###
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10580]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10580
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#3637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637
+  [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
+  [i915#4213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4213
+  [i915#4342]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4342
+  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
+  [i915#9159]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9159
 
 
-base-commit: 4a5fd4e7cb2798636f6464e2bd61399f3242b322
--- 
-2.44.0
+Build changes
+-------------
 
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7846 -> IGTPW_11128
+
+  CI-20190529: 20190529
+  CI_DRM_14749: afd593c3e9f9218ececa93e30c33182346295ac9 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11128: 11128
+  IGT_7846: 4a5fd4e7cb2798636f6464e2bd61399f3242b322 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11128/index.html
+
+--===============7208693808485739985==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/i915/perf: Accumulate clocks for MPEC format too</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133460/">https://patchwork.freedesktop.org/series/133460/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11128/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11128/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_14749 -&gt; IGTPW_11128</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11128/index.html</p>
+<h2>Participating hosts (40 -&gt; 37)</h2>
+<p>Missing    (3): bat-jsl-1 fi-snb-2520m fi-bsw-n3050 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11128 that come from known issues:</p>
+<h3>IGT changes</h3>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7846 -&gt; IGTPW_11128</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14749: afd593c3e9f9218ececa93e30c33182346295ac9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11128: 11128<br />
+  IGT_7846: 4a5fd4e7cb2798636f6464e2bd61399f3242b322 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7208693808485739985==--
