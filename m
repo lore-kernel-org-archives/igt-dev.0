@@ -4,68 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A12FC25B5F
-	for <igt-dev@archiver.kernel.org>; Fri, 10 May 2024 11:18:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67882C25B10
+	for <igt-dev@archiver.kernel.org>; Fri, 10 May 2024 11:27:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B6A3310E37B;
-	Fri, 10 May 2024 11:18:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 02CEF10E933;
+	Fri, 10 May 2024 11:27:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EREDHRSG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eNxzVg/4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B5B1310E37B
- for <igt-dev@lists.freedesktop.org>; Fri, 10 May 2024 11:18:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4458C10E933
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 May 2024 11:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715339901; x=1746875901;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=N02293yn/A5JP/V2TQ5E5vcttDAqvmWoO9WoIEg9Wwk=;
- b=EREDHRSGBH0/4GClAc30TwCtLBAY5I+XIH89WRVlvxoxWpvQeiV7nK2f
- VAAawmXgTvGKwl/+71lb67r32Xu7gh1bh2954KUkCn4uWDi7PL0SnnFAq
- ZJYWMN6azYQ88KY//AHNmOG407oT38W9vCrzfE0MwrmQPcdCX02iJ95pf
- 9RWhf6HPKw5z55q2hBzUXXM73XebPmEUlB2dil0LbdwhLHfaflcRI8mly
- euQUBMXS9LUOO4oHknAq9ZZ7MvVmgN9EnRA1A04Tzqd//hNXup6HvMrUh
- fUDiWBQ8l/8fqGIA8oDL3/P70YnmvVU+pFqS93cWYXrDk00YsI+ZUN64X Q==;
-X-CSE-ConnectionGUID: BwWfxvWOQWaPEKPwefYm9g==
-X-CSE-MsgGUID: u8S0Zrx/QlGb/R9Q3+GpuA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="11152355"
-X-IronPort-AV: E=Sophos;i="6.08,150,1712646000"; d="scan'208";a="11152355"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 May 2024 04:18:21 -0700
-X-CSE-ConnectionGUID: mQ+hz/qTS8KuY9euo/jU+g==
-X-CSE-MsgGUID: EjZHdzswRTyqwZPM0jb8PQ==
+ t=1715340426; x=1746876426;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=sSMwDinLhMmbo4EI+R0li2vYtFTXKi9dWhP7e4IPyx8=;
+ b=eNxzVg/4tbEoz4lAWk5zvWox0bRMxVLLfvmRAy2BZlgqL93lddwWhEgk
+ jqyc+v2aF/m5/tnJgcTgKamOG1CmM0ZqMhuaFrTrUFpCl9C6jHbovUQR3
+ ULdM1GZah5RNtNxLI6Q84oSKBKUpxvP3WNrL2Tru+rAdkazF1GHSb3Ujb
+ QkxvkmtnWVdicmsgQNKjJFITWuh3+oRQx7YSLwWhf1+id7U570aq+Vz9j
+ /Zt1kGnMWUnR9EcluCQ4gCkWXnoM/BR19GPJMXFlSZv3WDlGgVgtLZ1bh
+ mFraRfoDy3Bwv/h/oMZdrYZIZUOtihjZr0L4u77EDNZTcd1gr8GRojYmn Q==;
+X-CSE-ConnectionGUID: zRZU4UQoQ8u5uI/2yEqENA==
+X-CSE-MsgGUID: ICcnTeFhSimObdx55kB5pg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="11526998"
+X-IronPort-AV: E=Sophos;i="6.08,150,1712646000"; d="scan'208";a="11526998"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 May 2024 04:27:06 -0700
+X-CSE-ConnectionGUID: H3o5XoOTRt66SGke9vsmsg==
+X-CSE-MsgGUID: t1VcfctqQRu2vzR9iunK5A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,150,1712646000"; d="scan'208";a="29694112"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 04:18:19 -0700
-Date: Fri, 10 May 2024 13:18:15 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,150,1712646000"; d="scan'208";a="29606730"
+Received: from kholubow-mobl.ger.corp.intel.com (HELO
+ vgovind2-mobl3.intel.com) ([10.252.51.238])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 May 2024 04:27:03 -0700
+From: Vinod Govindapillai <vinod.govindapillai@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>,
- Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH 3/4] lib/gpgpu_shader: add inline support for iga64
- assembly
-Message-ID: <20240510111815.hmw3jzjvcfjcarnt@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>,
- Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20240429-iga64_inline_ups-v1-0-2e9ac46cf6ba@intel.com>
- <20240429-iga64_inline_ups-v1-3-2e9ac46cf6ba@intel.com>
+Cc: vinod.govindapillai@intel.com, bhanuprakash.modem@intel.com,
+ juha-pekka.heikkila@intel.com, jani.saarinen@intel.com
+Subject: [PATCH i-g-t v2] tests/intel/kms_big_fb: Fix width calculation while
+ creating the intel buf
+Date: Fri, 10 May 2024 14:26:50 +0300
+Message-Id: <20240510112650.116711-1-vinod.govindapillai@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240429-iga64_inline_ups-v1-3-2e9ac46cf6ba@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,336 +69,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Andrzej,
-On 2024-04-29 at 14:08:19 +0200, Andrzej Hajda wrote:
-> With this patch adding iga64 assembly should be similar to
-> adding x86 assembly inline. Simple example:
->     emit_iga64_code(shdr, set_exception, R"ASM(
->         or (1|M0) cr0.1<1>:ud cr0.1<0;1,0>:ud ARG(0):ud
->     )ASM", value);
-> Note presence of 'ARG(0)', it will be replaced by 'value' argument,
-> multiple arguments are possible.
-> More sophisticated examples in following patches.
-> How does it works:
-> 1. Raw string literals (C++ feature available in gcc as extension):
->    R"ASM(...)ASM" allows to use multiline/unescaped string literals.
->    If for some reason they cannot be used we could always fallback to
->    old ugly way of handling multiline strings with escape characters:
->     emit_iga64_code(shdr, set_exception, "\n\
->         or (1|M0) cr0.1<1>:ud cr0.1<0;1,0>:ud ARG(0):ud\n\
->     ", value);
-> 2. emit_iga64_code puts the assembly string into special linker section,
->    and calls __emit_iga64_code with pointer to external variable
->    which will contain code templates generated from the assembly for all
->    supported platforms, remaining arguments are put to temporal array
->    to eventually patch the code with positional arguments.
-> 3. During build phase the linker section is scanned for assemblies.
->    Every assembly is preprocessed with cpp, to replace ARG(x) macros with
->    magic numbers, and to provide different code for different platforms
->    if needed. Then output file is compiled with iga64, and then .c file
->    is generated with global variables pointing to hexified iga64 codes.
-> 
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-+cc Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+This commit partially reverts bfa3db0cd9e9a - restores the changes done
+to the width calculation.
 
-> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-> ---
->  lib/generate_iga64_codes    | 104 ++++++++++++++++++++++++++++++++++++++++++++
->  lib/gpgpu_shader.c          |  39 +++++++++++++++++
->  lib/gpgpu_shader.h          |  25 +++++++++++
->  lib/iga64_generated_codes.c |   6 +++
->  lib/iga64_macros.h          |  10 +++++
->  lib/meson.build             |  18 ++++++++
->  6 files changed, 202 insertions(+)
-> 
-> diff --git a/lib/generate_iga64_codes b/lib/generate_iga64_codes
-> new file mode 100755
-> index 000000000000..efc2a29b409c
-> --- /dev/null
-> +++ b/lib/generate_iga64_codes
-> @@ -0,0 +1,104 @@
-> +#!/bin/bash
-> +# SPDX-License-Identifier: MIT
-> +# Copyright © 2024 Intel Corporation
-> +# Author: Andrzej Hajda <andrzej.hajda@intel.com>
-> +
-> +# List of supported platforms, in format gen100:platform, where gen100 equals
-> +# to minimal GPU generation supported by platform multiplied by 100 and platform
-> +# is one of platforms supported by -p switch of iga64.
-> +#
-> +# Must be in decreasing order, the last one must have gen100 equal 0"
-> +GEN_VERSIONS="2000:2 1272:12p72 1250:12p5 0:12p1"
-> +
-> +warn() {
-> +    echo -e "$1" >/dev/stderr
-> +}
-> +
-> +die() {
-> +    warn "DIE: $1"
-> +    exit 1
-> +}
-> +
-> +# parse args
-> +while getopts ':i:o:' opt; do
-> +    case $opt in
-> +    i) INPUT=$OPTARG;;
-> +    o) OUTPUT=$OPTARG;;
-> +    ?) die "Usage: $0 -i pre-generated-iga64-file -o generated-iga64-file libs-with-iga64-assembly [...]"
-> +    esac
-> +done
-> +LIBS=${@:OPTIND}
-> +
-> +# read all assemblies into ASMS array
-> +ASMS=()
-> +while  read -d $'\0' asm; do
-> +    test -z "$asm" && continue
-> +    ASMS+=( "$asm" )
-> +done < <(for f in $LIBS; do objcopy --dump-section .iga64_assembly=/dev/stdout $f.p/*.o; done)
-> +
-> +# check if we need to recompile - checksum difference and compiler present
-> +MD5_ASMS="$(for a in "${ASMS[@]}"; do echo "${a#*:}"; done | md5sum|cut -b1-32)"
-> +MD5_PRE="$(grep -Po '(?<=^#define MD5_SUM )\S{32,32}' $INPUT 2>/dev/null)"
-> +
-> +if [ "$MD5_ASMS" = "$MD5_PRE" ]; then
-> +    echo "iga64 assemblies not changed, reusing pre-compiled file $INPUT."
-> +    cp $INPUT $OUTPUT
-> +    exit 0
-> +fi
-> +
-> +type iga64 >/dev/null || {
-> +    warn "WARNING: iga64 assemblies changed, but iga64 compiler not present, CHANGES will have no effect. Install iga64 (libigc-tools package) to re-compile code."
-> +    cp $INPUT $OUTPUT
-> +    exit 0
-> +}
-> +
-> +# returns count of numbers in strings of format "0x1234, 0x23434, ..."
-> +dword_count() {
-> +    n=${1//[^x]}
-> +    echo ${#n}
-> +}
-> +
-> +# generate code file
-> +WD=$OUTPUT.d
-> +mkdir -p $WD
-> +
-> +echo "Generating new $OUTPUT"
-> +
-> +cat <<-EOF >$OUTPUT
-> +/* SPDX-License-Identifier: MIT */
-> +/* Generated using $(iga64 |& head -1) */
-> +
-> +#include "gpgpu_shader.h"
-> +
-> +#define MD5_SUM $MD5_ASMS
-> +EOF
-> +
-> +for asm in "${ASMS[@]}"; do
-> +    asm_name="${asm%%:*}"
-> +    asm_code="${asm_name/assembly/code}"
-> +    asm_body="${asm#*:}"
-> +    cur_code=""
-> +    cur_ver=""
-> +    echo -e "\nstruct iga64_template const $asm_code[] = {" >>$OUTPUT
-> +    for gen in $GEN_VERSIONS; do
-> +        gen_ver="${gen%%:*}"
-> +        gen_name="${gen#*:}"
-> +        warn "Generating $asm_code for platform $gen_name"
-> +        cmd="cpp -P - -o $WD/$asm_name.$gen_name.asm"
-> +        cmd+=" -DGEN_VER=$gen_ver -imacros ../lib/iga64_macros.h"
-> +        eval "$cmd" <<<"$asm_body" || die "cpp error for $asm_name.$gen_name\ncmd: $cmd"
-> +        cmd="iga64 -Xauto-deps -Wall -p=$gen_name"
-> +        cmd+=" $WD/$asm_name.$gen_name.asm -o $WD/$asm_name.$gen_name.bin"
-> +        eval "$cmd" || die "iga64 error for $asm_name.$gen_name\ncmd: $cmd"
-> +        code="$(hexdump -e '"\t\t" 4/4 "0x%08x, " "\n"' $WD/$asm_name.$gen_name.bin)"
-> +        [ -z "$cur_code" ] && cur_code="$code"
-> +        [ "$cur_code" != "$code" ] && {
-> +            echo -e "\t{ .gen_ver = $cur_ver, .size = $(dword_count "$cur_code"), .code = (const uint32_t []) {\n$cur_code\n\t}}," >>$OUTPUT
-> +            cur_code="$code"
-> +        }
-> +        cur_ver=$gen_ver
-> +    done
-> +    echo -e "\t{ .gen_ver = $cur_ver, .size = $(dword_count "$cur_code"), .code = (const uint32_t []) {\n$cur_code\n\t}}\n};" >>$OUTPUT
-> +done
-> +
-> +cp $OUTPUT $INPUT
-> diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
-> index d14301789421..3317e9e35c91 100644
-> --- a/lib/gpgpu_shader.c
-> +++ b/lib/gpgpu_shader.c
-> @@ -11,6 +11,9 @@
->  #include "gpgpu_shader.h"
->  #include "gpu_cmds.h"
->  
-> +#define IGA64_ARG0 0xc0ded000
-> +#define IGA64_ARG_MASK 0xffffff00
-> +
->  #define SUPPORTED_GEN_VER 1200 /* Support TGL and up */
->  
->  #define PAGE_SIZE 4096
-> @@ -22,6 +25,42 @@
->  #define GPGPU_CURBE_SIZE 0
->  #define GEN7_VFE_STATE_GPGPU_MODE 1
->  
-> +static void gpgpu_shader_extend(struct gpgpu_shader *shdr)
-> +{
-> +	shdr->max_size <<= 1;
-> +	shdr->code = realloc(shdr->code, 4 * shdr->max_size);
-> +}
-> +
-> +void
-> +__emit_iga64_code(struct gpgpu_shader *shdr, struct iga64_template const *tpls,
-> +		  int argc, uint32_t *argv)
-> +{
-> +	uint32_t *ptr;
-> +
-> +	igt_require_f(shdr->gen_ver >= SUPPORTED_GEN_VER,
-> +		      "No available shader templates for platforms older than XeLP\n");
-> +
-> +	while (shdr->gen_ver < tpls->gen_ver)
-> +		tpls++;
-> +
-> +	while (shdr->max_size < shdr->size + tpls->size)
-> +		gpgpu_shader_extend(shdr);
-> +
-> +	ptr = shdr->code + shdr->size;
-> +	memcpy(ptr, tpls->code, 4 * tpls->size);
-> +
-> +	/* patch the template */
-> +	for (int n, i = 0; i < tpls->size; ++i) {
-> +		if ((ptr[i] & IGA64_ARG_MASK) != IGA64_ARG0)
-> +			continue;
-> +		n = ptr[i] - IGA64_ARG0;
-> +		igt_assert(n < argc);
-> +		ptr[i] = argv[n];
-> +	}
-> +
-> +	shdr->size += tpls->size;
-> +}
-> +
->  static uint32_t fill_sip(struct intel_bb *ibb,
->  			 const uint32_t sip[][4],
->  			 const size_t size)
-> diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
-> index 02f6f1aad1e3..0b997deba8bb 100644
-> --- a/lib/gpgpu_shader.h
-> +++ b/lib/gpgpu_shader.h
-> @@ -23,6 +23,27 @@ struct gpgpu_shader {
->  	};
->  };
->  
-> +struct iga64_template {
-> +	uint32_t gen_ver;
-> +	uint32_t size;
-> +	const uint32_t *code;
-> +};
-> +
-> +#pragma GCC diagnostic ignored "-Wnested-externs"
-> +
-> +void
-> +__emit_iga64_code(struct gpgpu_shader *shdr, const struct iga64_template *tpls,
-> +		  int argc, uint32_t *argv);
-> +
-> +#define emit_iga64_code(__shdr, __name, __txt, __args...) \
-> +({ \
-> +	static const char t[] __attribute__ ((section(".iga64_assembly"),used)) \
-> +		="iga64_assembly_" #__name ":" __txt "\n"; \
-> +	extern struct iga64_template const iga64_code_ ## __name[]; \
-> +	u32 args[] = { __args }; \
-> +	__emit_iga64_code(__shdr, iga64_code_ ## __name, ARRAY_SIZE(args), args); \
-> +})
-> +
->  struct gpgpu_shader *gpgpu_shader_create(int fd);
->  void gpgpu_shader_destroy(struct gpgpu_shader *shdr);
->  
-> @@ -35,4 +56,8 @@ void gpgpu_shader_exec(struct intel_bb *ibb,
->  		       struct gpgpu_shader *sip,
->  		       uint64_t ring, bool explicit_engine);
->  
-> +void gpgpu_shader__eot(struct gpgpu_shader *shdr);
-> +void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
-> +			       uint32_t y_offset);
-> +
->  #endif /* GPGPU_SHADER_H */
-> diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
-> new file mode 100644
-> index 000000000000..449c5e9bcf31
-> --- /dev/null
-> +++ b/lib/iga64_generated_codes.c
-> @@ -0,0 +1,6 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/* Generated using Intel Graphics Assembler 1.1.0-int */
-> +
-> +#include "gpgpu_shader.h"
-> +
-> +#define MD5_SUM d41d8cd98f00b204e9800998ecf8427e
----------- ^^^^^^^
-This name is too much generic, what about MD5_SUM_IGA64_CODE ?
+v2: Add patch decription (Kamil / JP)
 
-> diff --git a/lib/iga64_macros.h b/lib/iga64_macros.h
-> new file mode 100644
-> index 000000000000..33375763a1d0
-> --- /dev/null
-> +++ b/lib/iga64_macros.h
-> @@ -0,0 +1,10 @@
-> +/* SPDX-License-Identifier: MIT */
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
+---
+ lib/igt_draw.c           | 2 +-
+ tests/intel/kms_big_fb.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Add Copyright here.
+diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+index 2c01d7b02..97a7e6b37 100644
+--- a/lib/igt_draw.c
++++ b/lib/igt_draw.c
+@@ -650,7 +650,7 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
+ 	uint64_t region = driver == INTEL_DRIVER_XE ? vram_if_possible(fd, 0) : -1;
+ 	uint64_t size = from->size;
+ 
+-	width = from->width;
++	width = from->stride / (from->bpp / 8);
+ 	height = from->height;
+ 	if (driver == INTEL_DRIVER_XE)
+ 		size = ALIGN(size, xe_get_default_alignment(fd));
+diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+index f7f303d41..1e45d8e42 100644
+--- a/tests/intel/kms_big_fb.c
++++ b/tests/intel/kms_big_fb.c
+@@ -199,7 +199,7 @@ static struct intel_buf *init_buf(data_t *data,
+ 	tiling = igt_fb_mod_to_tiling(fb->modifier);
+ 	bpp = fb->plane_bpp[0];
+ 	size = fb->size;
+-	width = fb->width;
++	width = fb->strides[0] / (bpp / 8);
+ 	height = fb->height;
+ 
+ 	name = gem_flink(data->drm_fd, fb->gem_handle);
+-- 
+2.34.1
 
-> +
-> +#define ARG(n) (0xc0ded000 + n)
-> +
-> +/* send instruction for DG2+ requires 0 length in case src1 is null, BSpec: 47443 */
-> +#if GEN_VER < 1271
-> +#define src1_null null
-> +#else
-> +#define src1_null null:0
-> +#endif
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 0a3084f8aea2..843c74e5187f 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -216,7 +216,10 @@ lib_version = vcs_tag(input : 'version.h.in', output : 'version.h',
->  		      fallback : 'NO-GIT',
->  		      command : vcs_command )
->  
-> +iga64_assembly_sources = [ 'gpgpu_shader.c' ]
-> +
->  lib_intermediates = []
-> +iga64_assembly_libs = []
->  foreach f: lib_sources
->      name = f.underscorify()
->      lib = static_library('igt-' + name,
-> @@ -230,8 +233,23 @@ foreach f: lib_sources
->  	])
->  
->      lib_intermediates += lib
-> +    if f in iga64_assembly_sources
-> +	iga64_assembly_libs += lib
-> +    endif
->  endforeach
->  
-> +iga64_generated_codes = custom_target(
-> +    'iga64_generated_codes.c',
-> +    output : 'iga64_generated_codes.c',
-> +    input : [ 'iga64_generated_codes.c' ] + iga64_assembly_libs,
-> +    command : [ './generate_iga64_codes', '-o', '@OUTPUT@', '-i', '@INPUT@' ],
-> +    depend_files: [ 'generate_iga64_codes' ]
-> +)
-> +
-> +lib_intermediates += static_library('igt-iga64_generated_codes.c',
-> +			[ iga64_generated_codes, lib_version ]
-> +		     )
-> +
->  lib_igt_build = shared_library('igt',
->      ['dummy.c'],
->      link_whole: lib_intermediates,
-> 
-
-Please look into CI.Build fails.
-
-Regards,
-Kamil
-
-> -- 
-> 2.34.1
-> 
