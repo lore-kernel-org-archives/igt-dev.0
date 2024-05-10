@@ -4,68 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 930E6C25B10
-	for <igt-dev@archiver.kernel.org>; Fri, 10 May 2024 15:58:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C4D7C25B5F
+	for <igt-dev@archiver.kernel.org>; Fri, 10 May 2024 16:02:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2CACA10E5BF;
-	Fri, 10 May 2024 15:58:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 179F310EE2C;
+	Fri, 10 May 2024 16:02:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UN1wdD1L";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HW/wgKgs";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FB8810E5BF
- for <igt-dev@lists.freedesktop.org>; Fri, 10 May 2024 15:58:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64B1E10E5BF;
+ Fri, 10 May 2024 16:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715356691; x=1746892691;
+ t=1715356945; x=1746892945;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=WK8hVW8YxLW+8+P01PhV8VGv0qVxh/Q/azNUgJ2iRH4=;
- b=UN1wdD1LUn83f3Gte+wTKw20sR/qnTxsR29fuQ/Ae+rJd/0VbFWUt5Af
- +qPhxSPnMFcpdkoxJjVCv1QhqT0tNcWSklxa5+rMcdVY2eACURdA2H5mR
- mEXMBIqUh28GHUB9AHAvwazS7oCeG+2NukDO/fbkExHQw3dfxy0s5TpMy
- kpZR6WLIzQTQmFluaiAqR2o+M/xwWTV1m1v2maxUeubOTdcdlu5YB1bjP
- xYEDLK4kkskr2IntS0ON4Jc2O+VcpvByKOVQL7IGMT7C0AhCzy3PSCHt1
- y5mazzY+paRQGgiHQaH5ZwP9SlvZ4N3EURPsdphwaUA6/kVNWgQIhGGz6 g==;
-X-CSE-ConnectionGUID: G9YCyHcSQtGbFxseyZuvDg==
-X-CSE-MsgGUID: C8sKxjFpRqCK7N5ijZeq6A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="11206985"
-X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; d="scan'208";a="11206985"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 May 2024 08:58:11 -0700
-X-CSE-ConnectionGUID: 9qL8LsdITvavONORXQtfXA==
-X-CSE-MsgGUID: xWUkCtx2Rw2Gnqael2KupA==
+ bh=ZGGztV8XYCEDhTNRmsDKCGVoioHNaSQtbfERqM0W+G0=;
+ b=HW/wgKgsLcvKMNUKf4SAToQrkXi79dCZMtLgO9RIGBerS5Q8Pe4XNpGI
+ 0WRhC5cVQuBQOZsXntWbtXsN5B+V72hTKiorzgxJEh29Lq+XG8D/zNgL/
+ DbDFe7BhtiE/ayvfRNT3s93geMAlHnpUCeoEoRFIBbU2dD4rcl6bWSGhf
+ vFHiu7h7JiXauk+JdMjL21Uk1OAGghrSw99AG/ehmklg31+e60twdF+g1
+ eQdPVkOkBkTThYwQpVBmn9iDXVBRLF1UpHEQlyUrGsmAOEAHto+Q9D+/D
+ rAmdcUj5FlYKIZFWy3G9Aru2MqWOzHyGS0LII5LIRfwm8IXh+npEdb+Bn w==;
+X-CSE-ConnectionGUID: FYMvph2dR+GAsc+coylIdg==
+X-CSE-MsgGUID: FtzUxDGwRxahRO8Hv9XIbA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="28829894"
+X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; d="scan'208";a="28829894"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 May 2024 09:02:25 -0700
+X-CSE-ConnectionGUID: FklmY0NvR4anw5VvPRJhrQ==
+X-CSE-MsgGUID: XVK/NEjiQgGLUHzaSNS0rw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; d="scan'208";a="29506072"
+X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; d="scan'208";a="60500122"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 08:58:09 -0700
-Date: Fri, 10 May 2024 17:58:05 +0200
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 09:02:24 -0700
+Date: Fri, 10 May 2024 18:02:21 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
- "Gupta, saurabhg" <saurabhg.gupta@intel.com>,
- "Welty, Brian" <brian.welty@intel.com>,
- "Mistat, Tomasz" <tomasz.mistat@intel.com>,
- "Girotra, Himanshu" <himanshu.girotra@intel.com>
-Subject: Re: [PATCH i-g-t 1/1] lib/xe/xe_query: Wait for xe_supports_faults
-Message-ID: <20240510155805.apesv22vyj35ximn@kamilkon-DESK.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>, intel-xe@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 1/4] tests/intel/xe_pm: Update runtime pm conditions
+Message-ID: <20240510160221.q3gzjngvl6ukgzzg@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
- "Gupta, saurabhg" <saurabhg.gupta@intel.com>,
- "Welty, Brian" <brian.welty@intel.com>,
- "Mistat, Tomasz" <tomasz.mistat@intel.com>,
- "Girotra, Himanshu" <himanshu.girotra@intel.com>
-References: <20240508193545.2735209-1-jonathan.cavitt@intel.com>
- <20240508193545.2735209-2-jonathan.cavitt@intel.com>
- <20240509162038.czrttaz6eosznh2c@kamilkon-DESK.igk.intel.com>
- <CH0PR11MB54444239130C8918DA7D8037E5E62@CH0PR11MB5444.namprd11.prod.outlook.com>
+ igt-dev@lists.freedesktop.org,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ intel-xe@lists.freedesktop.org
+References: <20240510122230.724229-1-rodrigo.vivi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CH0PR11MB54444239130C8918DA7D8037E5E62@CH0PR11MB5444.namprd11.prod.outlook.com>
+In-Reply-To: <20240510122230.724229-1-rodrigo.vivi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,166 +71,248 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Cavitt,,
-On 2024-05-09 at 16:30:46 +0000, Cavitt, Jonathan wrote:
-> -----Original Message-----
-> From: Kamil Konieczny <kamil.konieczny@linux.intel.com> 
-> Sent: Thursday, May 9, 2024 9:21 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Cavitt, Jonathan <jonathan.cavitt@intel.com>; Gupta, saurabhg <saurabhg.gupta@intel.com>; Welty, Brian <brian.welty@intel.com>; Mistat, Tomasz <tomasz.mistat@intel.com>; Girotra, Himanshu <himanshu.girotra@intel.com>
-> Subject: Re: [PATCH i-g-t 1/1] lib/xe/xe_query: Wait for xe_supports_faults
-> > 
-> > Hi Jonathan,
-> > On 2024-05-08 at 12:35:45 -0700, Jonathan Cavitt wrote:
-> > 
-> > could you update subject of the patch? Or split it into two
-> > patches.
+Hi Rodrigo,
+On 2024-05-10 at 08:22:27 -0400, Rodrigo Vivi wrote:
+> Xe is no longer holding a runtime pm reference for the life
+> of a VM or exec_queue.
 > 
-> How does "xe: Check xe_supports_faults for EBUSY" sound?
+> Also, IGT changes autosuspend time to a minimal time, so we
+> cannot guarantee that rpm is still suspended after the execution
+> has finished.
 > 
-
-tests/intel/xe_exec_fault_mode: account for EBUSY in support check
-
-looks ok. If you want to use lib/ something like:
-
-lib/xe/xe_query: return errno from xe_supports_faults check
-
-or some other better description...
-
-> > 
-> > > It's possible for xe_supports_faults to return false if the system is
-> > > busy with multiple running tests.  This is because the check looks for
-> > > all active VMs and searches for VMs that do not have faults enabled,
-> > > returning false if any exist.  Recently, this check has been changed to
-> > > return EBUSY when the check fails in this way, so wait for up to ten
-> > > seconds for all the active VMs to flush out before proceeding.
-> > > 
-> > > Suggested-by: Brian Welty <brian.welty@intel.com>
-> > > Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> > > ---
-> > >  lib/xe/xe_query.c                | 15 ++++++++-------
-> > >  lib/xe/xe_query.h                |  2 +-
-> > >  tests/intel/xe_exec_fault_mode.c |  9 ++++++++-
-> > >  3 files changed, 17 insertions(+), 9 deletions(-)
-> > > 
-> > > diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-> > > index 6df8f42649..145dee8142 100644
-> > > --- a/lib/xe/xe_query.c
-> > > +++ b/lib/xe/xe_query.c
-> > > @@ -300,27 +300,28 @@ void xe_device_put(int fd)
-> > >   * xe_supports_faults:
-> > >   * @fd: xe device fd
-> > >   *
-> > > - * Returns true if xe device @fd allows creating vm in fault mode otherwise
-> > > - * false.
-> > > + * Returns the return value of the ioctl.  This can either be 0 if the
-> > > + * xe device @fd allows creating a vm in fault mode, or an error value
-> > > + * if it does not.
-> > 
-> > It is not consistent with your description above, as you can get
-> > non-zero return -EBUSY and after a wait it will return 0.
-> > 
-
-Drop my comment from here.
-
-> > >   *
-> > >   * NOTE: This function temporarily creates a VM in fault mode. Hence, while
-> > >   * this function is executing, no non-fault mode VMs can be created.
-> > >   */
-> > > -bool xe_supports_faults(int fd)
-> > > +int xe_supports_faults(int fd)
-> > >  {
-> > > -	bool supports_faults;
-> > > +	int ret;
-> > >  
-> > >  	struct drm_xe_vm_create create = {
-> > >  		.flags = DRM_XE_VM_CREATE_FLAG_LR_MODE |
-> > >  			 DRM_XE_VM_CREATE_FLAG_FAULT_MODE,
-> > >  	};
-> > >  
-> > > -	supports_faults = !igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create);
-> > > +	ret = igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create);
-> > >  
-> > > -	if (supports_faults)
-> > > +	if (!ret)
-> > >  		xe_vm_destroy(fd, create.vm_id);
-> > >  
-> > > -	return supports_faults;
-> > > +	return ret;
-> > >  }
-> > 
-> > Above part looks ok.
-> > 
-> > >  
-> > >  static void xe_device_destroy_cache(void)
-> > > diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> > > index f91d16bdf5..54115f8f7c 100644
-> > > --- a/lib/xe/xe_query.h
-> > > +++ b/lib/xe/xe_query.h
-> > > @@ -94,7 +94,7 @@ uint64_t xe_visible_available_vram_size(int fd, int gt);
-> > >  uint32_t xe_get_default_alignment(int fd);
-> > >  uint32_t xe_va_bits(int fd);
-> > >  uint16_t xe_dev_id(int fd);
-> > > -bool xe_supports_faults(int fd);
-> > > +int xe_supports_faults(int fd);
-> > >  const char *xe_engine_class_string(uint32_t engine_class);
-> > >  bool xe_has_engine_class(int fd, uint16_t engine_class);
-> > >  bool xe_has_media_gt(int fd);
-> > > diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-> > > index 0b3f4cb8de..c1402889d9 100644
-> > > --- a/tests/intel/xe_exec_fault_mode.c
-> > > +++ b/tests/intel/xe_exec_fault_mode.c
-> > > @@ -406,8 +406,15 @@ igt_main
-> > >  	int fd;
-> > >  
-> > >  	igt_fixture {
-> > > +		struct timespec tv = {};
-> > > +		bool supports_faults;
-> > > +		int ret;
-> > 
-> > Add newline.
-> > 
-> > >  		fd = drm_open_driver(DRIVER_XE);
-> > > -		igt_require(xe_supports_faults(fd));
-> > > +		do {
-> > > +			ret = xe_supports_faults(fd);
-> > > +		} while (ret == -EBUSY && igt_seconds_elapsed(&tv) < 10);
-> > 
-> > Add newline. Btw 10 seconds seems a lot, could you make it
-> > lower (2 seconds?) or make it depend on simulation?
+> So, the reference usage is not a reliable reference.
 > 
-> I was under the impression that igt_run_in_simulation was not available
-> upstream.  I just checked and this is apparently false.  My bad.  I'll try to
-> remember this for the next revision.
+> Hence, start using runtime_active_time as the indicator
+> that runtime_pm resumed upon our actions.
 > 
-> > 
-> > > +		supports_faults = !ret;
-> > > +		igt_require(supports_faults);
-> > 
-> > This is also acceptable, I would prefer to fail in case
-> > hardware supports faults but test cannot proceed due to
-> > some background VM activity.
-> > 
-> > Regards,
-> > Kamil
+> v2: Usage of runtime_active_pm and inclusion of mmap tests.
 > 
-> Thank you for the revision notes.  I'll get to work on them soon, but I'm currently
-> waiting on a reply to some other revision notes before I proceed to make any major
-> changes.  I want to make sure everyone is okay with the changes before I proceed.
-> -Jonathan Cavitt
+> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> ---
+>  lib/igt_pm.c        | 18 +++++++++++
+>  lib/igt_pm.h        |  1 +
+>  tests/intel/xe_pm.c | 77 +++++++++++++++++----------------------------
+>  3 files changed, 47 insertions(+), 49 deletions(-)
 > 
+> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+> index fe7692960..98cc8d969 100644
+> --- a/lib/igt_pm.c
+> +++ b/lib/igt_pm.c
+> @@ -1412,6 +1412,24 @@ int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev)
+>  	return -1;
+>  }
+>  
 
-No problem, if you could link to lore.kernel.org for discussion
-(if there is some in drm/xe) it could help.
+Please describe each new public library function.
 
 Regards,
 Kamil
 
-> > 
-> > >  	}
-> > >  
-> > >  	for (const struct section *s = sections; s->name; s++) {
-> > > -- 
-> > > 2.25.1
-> > > 
-> > 
+> +int igt_pm_get_runtime_active_time(struct pci_device *pci_dev)
+> +{
+> +	char time_str[64];
+> +	int time, time_fd;
+> +
+> +	time_fd = igt_pm_get_power_attr_fd_rdonly(pci_dev, "runtime_active_time");
+> +	if (igt_pm_read_power_attr(time_fd, time_str, 64, false)) {
+> +		igt_assert(sscanf(time_str, "%d", &time) > 0);
+> +
+> +		igt_debug("runtime active time for PCI '%04x:%02x:%02x.%01x' = %d\n",
+> +			  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, time);
+> +
+> +		return time;
+> +	}
+> +
+> +	return -1;
+> +}
+> +
+>  /**
+>   * igt_pm_get_runtime_usage:
+>   * @pci_dev: pci device
+> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+> index 91ee05cd1..b71f7c440 100644
+> --- a/lib/igt_pm.h
+> +++ b/lib/igt_pm.h
+> @@ -94,6 +94,7 @@ void igt_pm_print_pci_card_runtime_status(void);
+>  bool i915_is_slpc_enabled_gt(int drm_fd, int gt);
+>  bool i915_is_slpc_enabled(int drm_fd);
+>  int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
+> +int igt_pm_get_runtime_active_time(struct pci_device *pci_dev);
+>  int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
+>  void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val);
+>  
+> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+> index e81a75d88..3f963bd9b 100644
+> --- a/tests/intel/xe_pm.c
+> +++ b/tests/intel/xe_pm.c
+> @@ -184,34 +184,6 @@ static bool in_d3(device_t device, enum igt_acpi_d_state state)
+>  	return true;
+>  }
+>  
+> -static bool out_of_d3(device_t device, enum igt_acpi_d_state state)
+> -{
+> -	uint16_t val;
+> -
+> -	/* Runtime resume needs to be immediate action without any wait */
+> -	if (runtime_usage_available(device.pci_xe) &&
+> -	    igt_pm_get_runtime_usage(device.pci_xe) <= 0)
+> -		return false;
+> -
+> -	if (igt_get_runtime_pm_status() != IGT_RUNTIME_PM_STATUS_ACTIVE)
+> -		return false;
+> -
+> -	switch (state) {
+> -	case IGT_ACPI_D3Hot:
+> -		igt_assert_eq(pci_device_cfg_read_u16(device.pci_xe,
+> -						      &val, 0xd4), 0);
+> -		return (val & 0x3) == 0;
+> -	case IGT_ACPI_D3Cold:
+> -		return igt_pm_get_acpi_real_d_state(device.pci_root) ==
+> -			IGT_ACPI_D0;
+> -	default:
+> -		igt_info("Invalid D3 State\n");
+> -		igt_assert(0);
+> -	}
+> -
+> -	return true;
+> -}
+> -
+>  static void close_fw_handle(int sig)
+>  {
+>  	if (fw_handle < 0)
+> @@ -326,27 +298,27 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
+>  		uint64_t pad;
+>  		uint32_t data;
+>  	} *data;
+> -	int i, b, rpm_usage;
+> +	int i, b, active_time;
+>  	bool check_rpm = (d_state == IGT_ACPI_D3Hot ||
+>  			  d_state == IGT_ACPI_D3Cold);
+>  
+>  	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
+>  	igt_assert(n_execs > 0);
+>  
+> -	if (check_rpm)
+> +	if (check_rpm) {
+>  		igt_assert(in_d3(device, d_state));
+> +		active_time = igt_pm_get_runtime_active_time(device.pci_xe);
+> +	}
+>  
+>  	vm = xe_vm_create(device.fd_xe, 0, 0);
+>  
+>  	if (check_rpm)
+> -		igt_assert(out_of_d3(device, d_state));
+> +		igt_assert(igt_pm_get_runtime_active_time(device.pci_xe) >
+> +			   active_time);
+>  
+>  	bo_size = sizeof(*data) * n_execs;
+>  	bo_size = xe_bb_size(device.fd_xe, bo_size);
+>  
+> -	if (check_rpm && runtime_usage_available(device.pci_xe))
+> -		rpm_usage = igt_pm_get_runtime_usage(device.pci_xe);
+> -
+>  	if (flags & USERPTR) {
+>  		data = aligned_alloc(xe_get_default_alignment(device.fd_xe), bo_size);
+>  		memset(data, 0, bo_size);
+> @@ -384,8 +356,10 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
+>  		xe_vm_prefetch_async(device.fd_xe, vm, bind_exec_queues[0], 0, addr,
+>  				     bo_size, sync, 1, 0);
+>  
+> -	if (check_rpm && runtime_usage_available(device.pci_xe))
+> -		igt_assert(igt_pm_get_runtime_usage(device.pci_xe) > rpm_usage);
+> +	if (check_rpm) {
+> +		igt_assert(in_d3(device, d_state));
+> +		active_time = igt_pm_get_runtime_active_time(device.pci_xe);
+> +	}
+>  
+>  	for (i = 0; i < n_execs; i++) {
+>  		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+> @@ -429,9 +403,6 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
+>  	igt_assert(syncobj_wait(device.fd_xe, &sync[0].handle, 1, INT64_MAX, 0,
+>  				NULL));
+>  
+> -	if (check_rpm && runtime_usage_available(device.pci_xe))
+> -		rpm_usage = igt_pm_get_runtime_usage(device.pci_xe);
+> -
+>  	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+>  	if (n_vmas > 1)
+>  		xe_vm_unbind_all_async(device.fd_xe, vm, 0, bo, sync, 1);
+> @@ -459,15 +430,13 @@ NULL));
+>  		free(data);
+>  	}
+>  
+> -	if (check_rpm && runtime_usage_available(device.pci_xe))
+> -		igt_assert(igt_pm_get_runtime_usage(device.pci_xe) < rpm_usage);
+> -	if (check_rpm)
+> -		igt_assert(out_of_d3(device, d_state));
+> -
+>  	xe_vm_destroy(device.fd_xe, vm);
+>  
+> -	if (check_rpm)
+> +	if (check_rpm) {
+> +		igt_assert(igt_pm_get_runtime_active_time(device.pci_xe) >
+> +			   active_time);
+>  		igt_assert(in_d3(device, d_state));
+> +	}
+>  }
+>  
+>  /**
+> @@ -561,10 +530,13 @@ static void test_mmap(device_t device, uint32_t placement, uint32_t flags)
+>  	size_t bo_size = 8192;
+>  	uint32_t *map = NULL;
+>  	uint32_t bo;
+> -	int i;
+> +	int i, active_time;
+>  
+>  	igt_require_f(placement, "Device doesn't support such memory region\n");
+>  
+> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+> +	active_time = igt_pm_get_runtime_active_time(device.pci_xe);
+> +
+>  	bo_size = ALIGN(bo_size, xe_get_default_alignment(device.fd_xe));
+>  
+>  	bo = xe_bo_create(device.fd_xe, 0, bo_size, placement, flags);
+> @@ -575,7 +547,8 @@ static void test_mmap(device_t device, uint32_t placement, uint32_t flags)
+>  	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
+>  
+>  	igt_assert(fw_handle >= 0);
+> -	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
+> +	igt_assert(igt_pm_get_runtime_active_time(device.pci_xe) >
+> +		   active_time);
+>  
+>  	for (i = 0; i < bo_size / sizeof(*map); i++)
+>  		map[i] = MAGIC_1;
+> @@ -585,22 +558,28 @@ static void test_mmap(device_t device, uint32_t placement, uint32_t flags)
+>  
+>  	/* Runtime suspend and validate the pattern and changed the pattern */
+>  	close(fw_handle);
+> +	sleep(1);
+> +
+>  	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+> +	active_time = igt_pm_get_runtime_active_time(device.pci_xe);
+>  
+>  	for (i = 0; i < bo_size / sizeof(*map); i++)
+>  		igt_assert(map[i] == MAGIC_1);
+>  
+>  	/* dgfx page-fault on mmaping should wake the gpu */
+>  	if (xe_has_vram(device.fd_xe) && flags & DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM)
+> -		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
+> +		igt_assert(igt_pm_get_runtime_active_time(device.pci_xe) >
+> +			   active_time);
+>  
+>  	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+> +	active_time = igt_pm_get_runtime_active_time(device.pci_xe);
+>  
+>  	for (i = 0; i < bo_size / sizeof(*map); i++)
+>  		map[i] = MAGIC_2;
+>  
+>  	if (xe_has_vram(device.fd_xe) && flags & DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM)
+> -		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
+> +		igt_assert(igt_pm_get_runtime_active_time(device.pci_xe) >
+> +			   active_time);
+>  
+>  	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+>  
+> -- 
+> 2.44.0
+> 
