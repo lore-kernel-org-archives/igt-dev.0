@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9229EC25B10
-	for <igt-dev@archiver.kernel.org>; Fri, 10 May 2024 18:39:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68AE4C25B75
+	for <igt-dev@archiver.kernel.org>; Fri, 10 May 2024 18:39:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DE1A010E0E7;
-	Fri, 10 May 2024 18:39:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A677410E305;
+	Fri, 10 May 2024 18:39:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Qfzc+3li";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aupGlbv9";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AFDE110E5DE
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 61D0710E0E7
  for <igt-dev@lists.freedesktop.org>; Fri, 10 May 2024 18:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1715366396; x=1746902396;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=M++R8npTxVIGBgjs7Ht3/sufiIqcqATtmfcovpQsw7w=;
- b=Qfzc+3liANo/TuCz3nYxI36chnmcyfHlTJzOPeQpLGBoX8mx8XOuh8Ix
- zlmXEsU9o4VBlMniaFQ6sQ2nKW+2fHWHo2JUBQSsZAqNyL0JpEcDMPrrG
- y0GhGYys1B0fKRPvkZaP7eoIb/orku6t3JAuxftUSKYojd/Hrb+lzc9rN
- ooKWaU4clY4F61I7yAdZsMR7KDn9cpHG9I8a8AJEG2Gj/UvBI6z9BFiNi
- FR8dMdj7Ic+yTouAgydidZvuiFwOYR4g2kcGoEhgaaqFnRNRYH76VW8Ns
- VmiI5Y0w5ioM3PPNIIMW3NNaTEt5ynnQ3ZsbZXp/k99p1A0Rc6k5R+4/v w==;
-X-CSE-ConnectionGUID: qXKGiWr7R9Oq7MIeI3lYQQ==
-X-CSE-MsgGUID: im09AsLrRby03RWKc0HYdQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11069"; a="11489597"
-X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; d="scan'208";a="11489597"
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=7oNGHoitG2GqCptdZXowgPDSsWSgedR3E8eTeHE3d7M=;
+ b=aupGlbv9zXc4LXAkKvTFBbT71aEwq+su1d6xhPUfmdf4i0GUKDbUemib
+ 3i0dw6nTijluGzeQ4xIAJqgzPL4nsvBg0Ug5X7ndKx7ZPtCuumW7NfKhr
+ KPnz46ZFDyeRVYJ0ljqstfxXp7Wt89J/xqf1ptoU859D6p1q3jB6umJ4K
+ NtFo3u6/6uPf3jEsI6bESJ0Mvmtfmffp8e49fsJacXJTp1lO7g6g7VOAe
+ E7wsPPl7PvWJiSKkjGg7SwZ1Rw9FRrRvG5eqr/D4KGyrBMvY4ki+rOUyA
+ fzkViHAjtQkehNLUkLRB8ZvLr7er9js3hNvZL0GNDjKvwlKjJ2E1SHzlw w==;
+X-CSE-ConnectionGUID: SV50XXd7QWWcpOVOfFyJMA==
+X-CSE-MsgGUID: xCG8pg7RTDe5YH0dkyCC9w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11069"; a="11489595"
+X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; d="scan'208";a="11489595"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  10 May 2024 11:39:55 -0700
-X-CSE-ConnectionGUID: SxBAAkiNRkaaQKIujqf/zg==
-X-CSE-MsgGUID: p9/E8Y5HQyiXn/E6dO39Qw==
+X-CSE-ConnectionGUID: bjoNbFVJQGmBeYnrN8CsHg==
+X-CSE-MsgGUID: sv+h9ARgTrutWQNVgyCmLw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; d="scan'208";a="29764434"
+X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; d="scan'208";a="29764425"
 Received: from dut-internal-9dd7.jf.intel.com ([10.165.21.194])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  10 May 2024 11:39:55 -0700
@@ -46,13 +46,10 @@ To: igt-dev@lists.freedesktop.org
 Cc: jonathan.cavitt@intel.com, saurabhg.gupta@intel.com, brian.welty@intel.com,
  tomasz.mistat@intel.com, himanshu.girotra@intel.com,
  kamil.konieczny@linux.intel.com
-Subject: [PATCH i-g-t v2 2/2] tests/intel/xe_exec_fault_mode: account for
- EBUSY in support check
-Date: Fri, 10 May 2024 11:24:38 -0700
-Message-Id: <20240510182438.3178575-3-jonathan.cavitt@intel.com>
+Subject: [PATCH i-g-t v2 0/2] lib/xe/xe_query: Wait for xe_supports_faults
+Date: Fri, 10 May 2024 11:24:36 -0700
+Message-Id: <20240510182438.3178575-1-jonathan.cavitt@intel.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240510182438.3178575-1-jonathan.cavitt@intel.com>
-References: <20240510182438.3178575-1-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -74,38 +71,36 @@ It's possible for xe_supports_faults to return false if the system is
 busy with multiple running tests.  This is because the check looks for
 all active VMs and searches for VMs that do not have faults enabled,
 returning false if any exist.  Recently, this check has been changed to
-return EBUSY when the check fails in this way, so wait for up to two
+return EBUSY when the check fails in this way, so wait for up to ten
 seconds for all the active VMs to flush out before proceeding.
 
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
----
- tests/intel/xe_exec_fault_mode.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+v2:
+- Remove loop from lib version of xe_supports_faults.
+- Change xe_supports_faults to instead return the return value of the
+  ioctl call used for the check.
+- Loop when xe_supports_faults is called instead if the return value is
+  -EBUSY.
 
-diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-index 0b3f4cb8de..4f55756e92 100644
---- a/tests/intel/xe_exec_fault_mode.c
-+++ b/tests/intel/xe_exec_fault_mode.c
-@@ -406,8 +406,18 @@ igt_main
- 	int fd;
- 
- 	igt_fixture {
-+		struct timespec tv = {};
-+		bool supports_faults;
-+		int ret;
-+		int timeout = igt_run_in_simulation() ? 20 : 2;
-+
- 		fd = drm_open_driver(DRIVER_XE);
--		igt_require(xe_supports_faults(fd));
-+		do {
-+			ret = xe_supports_faults(fd);
-+		} while (ret == -EBUSY && igt_seconds_elapsed(&tv) < timeout);
-+
-+		supports_faults = !ret;
-+		igt_require(supports_faults);
- 	}
- 
- 	for (const struct section *s = sections; s->name; s++) {
+v3:
+- Add missing newlines.
+- Split series into two patches.
+- Make timeout depend on simulation status.
+
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1562
+Test-with: 20240503190138.1958302-1-jonathan.cavitt@intel.com
+Suggested-by: Brian Welty <brian.welty@intel.com>
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+
+
+Jonathan Cavitt (2):
+  lib/xe/xe_query: return errno from xe_supports_faults check
+  tests/intel/xe_exec_fault_mode: account for EBUSY in support check
+
+ lib/xe/xe_query.c                | 15 ++++++++-------
+ lib/xe/xe_query.h                |  2 +-
+ tests/intel/xe_exec_fault_mode.c | 12 +++++++++++-
+ 3 files changed, 20 insertions(+), 9 deletions(-)
+
 -- 
 2.25.1
 
