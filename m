@@ -4,87 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A56EAC25B74
-	for <igt-dev@archiver.kernel.org>; Fri, 10 May 2024 18:10:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9229EC25B10
+	for <igt-dev@archiver.kernel.org>; Fri, 10 May 2024 18:39:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F315C10E483;
-	Fri, 10 May 2024 18:10:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DE1A010E0E7;
+	Fri, 10 May 2024 18:39:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.b="CsI0v3x5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Qfzc+3li";
 	dkim-atps=neutral
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
- [205.220.168.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5615710E483
- for <igt-dev@lists.freedesktop.org>; Fri, 10 May 2024 18:10:18 +0000 (UTC)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44AET7xt028441;
- Fri, 10 May 2024 18:10:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
- from:date:subject:mime-version:content-type
- :content-transfer-encoding:message-id:to:cc; s=qcppdkim1; bh=Ahy
- 4/J8qww7PBjh0PaZW1IV/Xbc2EDP6O1zJN/3bRBw=; b=CsI0v3x50wHqswp6C8n
- YpNwgNHrr4WBeL1fZzRREM3893ORPc1UQSCzWwHsgEJGZ62+Pkto/pNSe4YhZ7/8
- SzzYnUdPOvYztrJnRjePida3mvaPpamwbZjjBc9nL5UPoqS4zPHh4uoOCDeqjJHO
- hs7RK7zmanthYg6s86VpqoLhZyRo3rNqw58SZLPFwCA1mNRnHZudtUcNftx7lnK6
- Lm4XuNJN3Avn1ATLooCIBXphidNQ2dmVvBMm2MSeGYD6hCnKVHuQwRhBK+yRlv4h
- kzxbUqZRvggCBmipAkbJ6LbHlArsP+LyCg9b2G0eqwa4BIJKjWMJpsTwTnNqPMvS
- D4w==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y16w0t863-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 May 2024 18:10:12 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
- [10.47.209.196])
- by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44AIABPQ020397
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 May 2024 18:10:11 GMT
-Received: from abhinavk-linux1.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 10 May 2024 11:10:11 -0700
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Date: Fri, 10 May 2024 11:09:35 -0700
-Subject: [PATCH i-g-t v2] lib/igt_kms: move setting
- DRM_CLIENT_CAP_WRITEBACK_CONNECTORS to kms_writeback
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AFDE110E5DE
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 May 2024 18:39:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1715366396; x=1746902396;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=M++R8npTxVIGBgjs7Ht3/sufiIqcqATtmfcovpQsw7w=;
+ b=Qfzc+3liANo/TuCz3nYxI36chnmcyfHlTJzOPeQpLGBoX8mx8XOuh8Ix
+ zlmXEsU9o4VBlMniaFQ6sQ2nKW+2fHWHo2JUBQSsZAqNyL0JpEcDMPrrG
+ y0GhGYys1B0fKRPvkZaP7eoIb/orku6t3JAuxftUSKYojd/Hrb+lzc9rN
+ ooKWaU4clY4F61I7yAdZsMR7KDn9cpHG9I8a8AJEG2Gj/UvBI6z9BFiNi
+ FR8dMdj7Ic+yTouAgydidZvuiFwOYR4g2kcGoEhgaaqFnRNRYH76VW8Ns
+ VmiI5Y0w5ioM3PPNIIMW3NNaTEt5ynnQ3ZsbZXp/k99p1A0Rc6k5R+4/v w==;
+X-CSE-ConnectionGUID: qXKGiWr7R9Oq7MIeI3lYQQ==
+X-CSE-MsgGUID: im09AsLrRby03RWKc0HYdQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11069"; a="11489597"
+X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; d="scan'208";a="11489597"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 May 2024 11:39:55 -0700
+X-CSE-ConnectionGUID: SxBAAkiNRkaaQKIujqf/zg==
+X-CSE-MsgGUID: p9/E8Y5HQyiXn/E6dO39Qw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; d="scan'208";a="29764434"
+Received: from dut-internal-9dd7.jf.intel.com ([10.165.21.194])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 May 2024 11:39:55 -0700
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: jonathan.cavitt@intel.com, saurabhg.gupta@intel.com, brian.welty@intel.com,
+ tomasz.mistat@intel.com, himanshu.girotra@intel.com,
+ kamil.konieczny@linux.intel.com
+Subject: [PATCH i-g-t v2 2/2] tests/intel/xe_exec_fault_mode: account for
+ EBUSY in support check
+Date: Fri, 10 May 2024 11:24:38 -0700
+Message-Id: <20240510182438.3178575-3-jonathan.cavitt@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240510182438.3178575-1-jonathan.cavitt@intel.com>
+References: <20240510182438.3178575-1-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240510-wb_igt_fix-v2-1-e14eef87319b@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAN5iPmYC/22Oyw6CMBREf4V0bclty8O68j8MIaUUuDG02iJqC
- P9uYWNMXJ5J5swsJBiPJpBTshBvZgzobAR+SIgelO0NxTYy4cAzyEHSZ1NjP9UdvuixZIUscma
- gVSQWbt7EeJddCNKeTqSKcefdSKfBG/U1ZSCACQE85bwsJXDK6P2BulbNgFbN1/NGaHWq3bi5B
- wyT8+/958z2hX+XZhZFGet01jAhhYQfT7Wu6wdd/SYq8gAAAA==
-To: <igt-dev@lists.freedesktop.org>
-CC: <quic_jesszhan@quicinc.com>, Rob Clark <robdclark@gmail.com>, "Dmitry
- Baryshkov" <dmitry.baryshkov@linaro.org>, <adrinael@adrinael.net>, "Kamil
- Konieczny" <kamil.konieczny@linux.intel.com>, Abhinav Kumar
- <quic_abhinavk@quicinc.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1715364611; l=2949;
- i=quic_abhinavk@quicinc.com; s=20240509; h=from:subject:message-id;
- bh=XDYP2FjE+rj29lAjLFg0k8aVyAEpeYEaVtUykl28wc0=;
- b=VYZNztEi46Pps7re+s76oKvMcewtY0X62GHn4KMVtrJMJZEb9cygjBS/lgCAfqrYFFNYWTyt5
- X5tw4BYBK+6Bw7RpgpY0eRH+pjUrIAhioJeytUo1bT3fmA1DbWJHTm0
-X-Developer-Key: i=quic_abhinavk@quicinc.com; a=ed25519;
- pk=SD3D8dOKDDh6BoX3jEYjsHrTFwuIK8+o0cLPgQok9ys=
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: dAQyAfcFpsD7X_6MbQ1oqglQVXRvYMCV
-X-Proofpoint-ORIG-GUID: dAQyAfcFpsD7X_6MbQ1oqglQVXRvYMCV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-10_13,2024-05-10_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 mlxscore=0
- mlxlogscore=999 clxscore=1015 suspectscore=0 impostorscore=0
- malwarescore=0 lowpriorityscore=0 adultscore=0 bulkscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405100130
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,83 +70,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently DRM_CLIENT_CAP_WRITEBACK_CONNECTORS is set in the igt_display_require()
-which is invoked for all IGT tests irrespective of whether the rest of the
-writeback connector properties such as the FB_ID are set.
+It's possible for xe_supports_faults to return false if the system is
+busy with multiple running tests.  This is because the check looks for
+all active VMs and searches for VMs that do not have faults enabled,
+returning false if any exist.  Recently, this check has been changed to
+return EBUSY when the check fails in this way, so wait for up to two
+seconds for all the active VMs to flush out before proceeding.
 
-For the writeback connectors to function properly, additional setup steps are
-required (like setting up the output buffers and submitting the job). These steps
-are not a part of the default IGT setup, so there is no guarantee that the pipeline
-will be executed at all. This results in regressions for msm boards across multiple
-IGT tests on writeback connectors such as CTM related tests where CRC needs to
-be collected after the CTM has been applied in hardware.
-
-It is unclear whether this is intentional to be able to run all IGT tests even
-with writeback connector or it is only kms_writeback which is supposed to
-be the one.
-
-Lets try with the latter approach by setting DRM_CLIENT_CAP_WRITEBACK_CONNECTORS
-only within kms_writeback.
-
-changes since RFC:
-	- minor fixes to commit message
-
-changes in v2:
-	- use igt_require_f to print descriptive message
-	- add msm card failure details in commit text
-
-Reviewed-by: Rob Clark <robdclark@gmail.com>
-Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Acked-by: Petri Latvala <adrinael@adrinael.net>
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 ---
- lib/igt_kms.c         | 2 --
- tests/kms_writeback.c | 5 +++++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ tests/intel/xe_exec_fault_mode.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 98d3fb79cd22..f82102144ea1 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -2878,8 +2878,6 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
- 		display->is_atomic = 1;
+diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
+index 0b3f4cb8de..4f55756e92 100644
+--- a/tests/intel/xe_exec_fault_mode.c
++++ b/tests/intel/xe_exec_fault_mode.c
+@@ -406,8 +406,18 @@ igt_main
+ 	int fd;
  
--	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
--
- 	resources = drmModeGetResources(display->drm_fd);
- 	if (!resources)
- 		goto out;
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index 6cd685b37af2..f89b2d62fcc9 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -558,6 +558,7 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
- 	igt_fb_t input_fb, input_fb_10bit;
- 	drmModeModeInfo mode;
- 	unsigned int fb_id;
-+	int ret;
- 
- 	memset(&display, 0, sizeof(display));
- 
-@@ -570,6 +571,10 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
- 
- 		igt_require(display.is_atomic);
- 
-+		ret = drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
+ 	igt_fixture {
++		struct timespec tv = {};
++		bool supports_faults;
++		int ret;
++		int timeout = igt_run_in_simulation() ? 20 : 2;
 +
-+		igt_require_f(!ret, "error setting DRM_CLIENT_CAP_WRITEBACK_CONNECTORS\n");
+ 		fd = drm_open_driver(DRIVER_XE);
+-		igt_require(xe_supports_faults(fd));
++		do {
++			ret = xe_supports_faults(fd);
++		} while (ret == -EBUSY && igt_seconds_elapsed(&tv) < timeout);
 +
- 		output = kms_writeback_get_output(&display);
- 		igt_require(output);
++		supports_faults = !ret;
++		igt_require(supports_faults);
+ 	}
  
-
----
-base-commit: 4a5fd4e7cb2798636f6464e2bd61399f3242b322
-change-id: 20240509-wb_igt_fix-87169651e0da
-
-Best regards,
+ 	for (const struct section *s = sections; s->name; s++) {
 -- 
-Abhinav Kumar <quic_abhinavk@quicinc.com>
+2.25.1
 
