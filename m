@@ -4,146 +4,189 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 416C7C25B10
-	for <igt-dev@archiver.kernel.org>; Fri, 10 May 2024 07:23:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F062FC25B10
+	for <igt-dev@archiver.kernel.org>; Fri, 10 May 2024 07:35:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D7EB710E00C;
-	Fri, 10 May 2024 07:23:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 909FE10E0F5;
+	Fri, 10 May 2024 07:35:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="MK+37tzE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FuYcpA7Z";
 	dkim-atps=neutral
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2046.outbound.protection.outlook.com [40.107.94.46])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8601010E00C
- for <igt-dev@lists.freedesktop.org>; Fri, 10 May 2024 07:23:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4625D10E0F5;
+ Fri, 10 May 2024 07:35:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1715326550; x=1746862550;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=nAH9WGIoGeNe99gOJuACE6aVpawukVQ5HgRWbWhesWI=;
+ b=FuYcpA7Z3hnY3XLYQgO503VZy+gRu/vd5Buw5qwN+Dd5bKoUvEm5dh4H
+ vR6WmrMfFbxUp98v5uzcTtojkB7o0POaeDLqvV2jpDdFsRuRP9G4m5PAe
+ /mU85Gq4IhaRf8qTzrr8WXHmmm/R+B2PZXnLJU9QBypfLvZ//TuLptaOK
+ QCCZqrKd1NNh+djwbYUYWIdbRWfutbIIBPjpE5r80JX7szTQ2hnhDjWIZ
+ WW5sQN2KnAp7E0wSadbBkr6ZvJe+baT5qRbfY/fLVY3S4Ag4fHasHQGYL
+ TS/qrGb9iB6bd9HlgvnFDRjVTeqXY+hmKQ66/lgfrJWyAMEvJPPuPH9z3 A==;
+X-CSE-ConnectionGUID: uvzxpcqCQcO6PZzdBUnXeA==
+X-CSE-MsgGUID: wKhP6nTGS2C7ZLhn1aCrwQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="11172075"
+X-IronPort-AV: E=Sophos;i="6.08,150,1712646000"; d="scan'208";a="11172075"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 May 2024 00:35:49 -0700
+X-CSE-ConnectionGUID: NSYjZ74NTG+qp11c3xd/6g==
+X-CSE-MsgGUID: LXfu4EE1Tx2C5UREGLCUOg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,150,1712646000"; d="scan'208";a="29487649"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 10 May 2024 00:35:49 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Fri, 10 May 2024 00:35:48 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Fri, 10 May 2024 00:35:48 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.168)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 10 May 2024 00:35:48 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QjMzRiGbLjtkaAcNmayjWGSzTVz5NGgF7mewbIm3W+qPsmudH71RmEbZTgSv4fC0bpffIOvOBEv97uIqpyjHuIL2l2jAlSdUU12M26C4Zn7lNiZ/2PH0WGXzZ+w48x8KlWV4fKw99fgSJM3k2QDhQuv6/HdjhwuUH8/WUsGa2c265otYZh8gckjxqQgPVTMsji0hEBM0lNoFb1c6fHgIifmsuvkFPfJhK1lpeiN3zp2M15Opl9MPCgCbJDAqVsSeGyjyGN+OnnpyijHeBGOsMAWGkJS4AsgOqHpNhkptvWjddzmG9uL+Q42vyY+zrRBYwbzEVD4AARl79fIost9XXg==
+ b=aOUzDiW7YC5ROjBfRbd7GXHK81lzEV6GCLsUjMqbhn4SXEl0YzKzqGU2th5S0GmiLSxsIi++m4mAG4rYjmFaAPSwPdRWCt5lh/6BXcrLwX0i03MP3Z7kGDWaCrzD3KFEK6zMDzBA6qB7iMLKae4IOK+iW86XNr9MifldVbZaDtV0U71xdAtLt66vc35sh7/lF5Xow3Q9cn1MgdMRCZY7bCYjTlLhskN/fmPyG74rTcZ8fqTcab8fDodsOjOOkICxiWPv3aNgJONqftJmFpCruU3BbquKg4oC056T5VK6O6DtKAJkYICnTQmTzXLRZFcvwgX9t/OieLepoqrSnH5c9A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hRPbZrI7ezFuZ7E1fAKM7Yz38m1TWoJgO+f39G5bLM4=;
- b=TMULp0AqyaWKcneZTNOzO6tw5opG+pIFF6SRjTUf7ytyyEn6h4fatemQgXXTer3Bpw6XRhavbb5a4lSNhobP51z/vAU2hmBnsA3/HQi1/UNezwop7JkJoor6uqGZyp0g3Mj/EPpRWSmlzDdB5Jb1FV3Epb6EUsUTlbKxIttJlmCWqcvFdnE6sEsNLX6uqSbz6F4oma4roMTBqm7bozF8bszPz/+tQnPQt/I3R3JwscjqY+OciccC8MDpIuOjivE6YHtW3oU2sRjiYnKMpCA+z/rNO3A9QGczNuPhy1qGaECj63F+gJddomhWKP3N7LmtziJ7hmdnVRu9QaGiBvpYXg==
+ bh=nAH9WGIoGeNe99gOJuACE6aVpawukVQ5HgRWbWhesWI=;
+ b=Dkx34OXnNUod4Hy2Wn6qPfVdYMd8ms4eveuWHp5EVeWjXTEHHvGB1FUCnBaCV2pbBfi+qKcEyyPG1z6Yu1THwJIBfJQHSMTE8wZ+woawUHQUL6rFumn7diq6gQaETRzKDj2Vd5WPxVk/EyVQdKljUNBYFMooGC0t6yju4xisOP7suRaw5l5RG1gEVKCdpqEpy9DuCJ+ouBGQz/dUJ5wM4usk3Ymq4b6FrjL3TSkGkM5tHqZ1f5G5LBzTWm5DZjhq56mmTS1rLFg3PBHCFVLPWSeAlSqgpUO83mjazz+UnkoyvS/5pqEVFKAVQl03h+JSYTZb3QK1ISKrmph2frxHDA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hRPbZrI7ezFuZ7E1fAKM7Yz38m1TWoJgO+f39G5bLM4=;
- b=MK+37tzEaC+f/u5XP6wO4ZYpiAz8qYIdhp3V+q7mL/T/xcgtVqLBSbEkekGETahJyAQutuz65BFJnEvxrtJZCpECkm+LxR0Lbo4pFU3FDvve5jbOOmvUhc3/gqkCjFVrj17qTs/a+OxYsuG/sjwYmoInTFMs+PjQB4DLn06lzbU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB6611.namprd12.prod.outlook.com (2603:10b6:510:211::11)
- by DM4PR12MB9069.namprd12.prod.outlook.com (2603:10b6:8:b8::11) with
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM8PR11MB5655.namprd11.prod.outlook.com (2603:10b6:8:28::10) by
+ BL1PR11MB6051.namprd11.prod.outlook.com (2603:10b6:208:393::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.45; Fri, 10 May
- 2024 07:23:35 +0000
-Received: from PH7PR12MB6611.namprd12.prod.outlook.com
- ([fe80::76d1:e471:c215:4381]) by PH7PR12MB6611.namprd12.prod.outlook.com
- ([fe80::76d1:e471:c215:4381%4]) with mapi id 15.20.7544.047; Fri, 10 May 2024
- 07:23:35 +0000
-Content-Type: multipart/alternative;
- boundary="------------kpV36r0nUKBmH8yrW1wG7mSt"
-Message-ID: <3a8368a6-5001-4926-9df5-436f7511cf14@amd.com>
-Date: Fri, 10 May 2024 15:23:28 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/amdgpu/amd_replay: Add amd_replay IGT test
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.49; Fri, 10 May
+ 2024 07:35:38 +0000
+Received: from DM8PR11MB5655.namprd11.prod.outlook.com
+ ([fe80::5afc:274:3b02:f45]) by DM8PR11MB5655.namprd11.prod.outlook.com
+ ([fe80::5afc:274:3b02:f45%4]) with mapi id 15.20.7544.041; Fri, 10 May 2024
+ 07:35:38 +0000
+From: "Saarinen, Jani" <jani.saarinen@intel.com>
+To: Manasi Navare <navaremanasi@chromium.org>, "Modem, Bhanuprakash"
+ <bhanuprakash.modem@intel.com>, Sean Paul <seanpaul@chromium.org>, "Drew
+ Davenport" <ddavenport@chromium.org>, "I915-ci-infra@lists.freedesktop.org"
+ <I915-ci-infra@lists.freedesktop.org>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: =?utf-8?B?UkU6IOKclyBGaS5DSS5CQVQ6IGZhaWx1cmUgZm9yIHNlcmllcyBzdGFydGlu?=
+ =?utf-8?B?ZyB3aXRoIFt2MywxLzJdIHRlc3RzL2ttc192cnI6IEFkZCBhIHN1YnRlc3Qg?=
+ =?utf-8?B?Zm9yIHNlYW1sZXNzIG1vZGVzZXQgdG8gYSB2aXJ0dWFsIExSUiBtb2RlIChy?=
+ =?utf-8?Q?ev3)?=
+Thread-Topic: =?utf-8?B?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVzIHN0YXJ0aW5nIHdp?=
+ =?utf-8?B?dGggW3YzLDEvMl0gdGVzdHMva21zX3ZycjogQWRkIGEgc3VidGVzdCBmb3Ig?=
+ =?utf-8?Q?seamless_modeset_to_a_virtual_LRR_mode_(rev3)?=
+Thread-Index: AQHaoLgbcrUx5KXQo0Om/a89bk0bzLGM4UbQgAI33ICAAP6RwA==
+Date: Fri, 10 May 2024 07:35:38 +0000
+Message-ID: <DM8PR11MB56556F74F6C5C633C8D3C798E0E72@DM8PR11MB5655.namprd11.prod.outlook.com>
+References: <20240424201344.783935-1-navaremanasi@chromium.org>
+ <171511150704.1963160.10898754831133154623@8e613ede5ea5>
+ <DM8PR11MB5655FA40AC90E66F60532A98E0E52@DM8PR11MB5655.namprd11.prod.outlook.com>
+ <CAE72mNnZdxEFdMXrN0S1G4fx3btLWqEZzZjDFkvd4tmmtv7FXA@mail.gmail.com>
+In-Reply-To: <CAE72mNnZdxEFdMXrN0S1G4fx3btLWqEZzZjDFkvd4tmmtv7FXA@mail.gmail.com>
+Accept-Language: en-US
 Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Rodrigo.Siqueira@amd.com, alex.hung@amd.com,
- sunpeng.li@amd.com
-References: <20240503090854.13663-1-chiahsuan.chung@amd.com>
- <20240506170532.gekeyla3d2vd2x7n@kamilkon-DESK.igk.intel.com>
-From: "Chung, ChiaHsuan (Tom)" <chiahsuan.chung@amd.com>
-In-Reply-To: <20240506170532.gekeyla3d2vd2x7n@kamilkon-DESK.igk.intel.com>
-X-ClientProxiedBy: SG2PR06CA0212.apcprd06.prod.outlook.com
- (2603:1096:4:68::20) To PH7PR12MB6611.namprd12.prod.outlook.com
- (2603:10b6:510:211::11)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM8PR11MB5655:EE_|BL1PR11MB6051:EE_
+x-ms-office365-filtering-correlation-id: 5deaf60c-6468-483e-61f9-08dc70c3c9c2
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230031|366007|1800799015|376005|38070700009;
+x-microsoft-antispam-message-info: =?utf-8?B?RTd1TERXWlNZVk1EMDRxTTFWRkJOcWxMaHp3WGJsUnFSR1MzY0VuUU1nNFNO?=
+ =?utf-8?B?ZnBKNmk3MHNZM2NWanZ3d3BsMHJUa3htM2ZzSFFpakhKWVNTYy94Zkg3d0tu?=
+ =?utf-8?B?ZDMrdmo4ZzhISnE1QkFvUURLSmtrajE2TDBZaTlLR0wyaEdDTVFXYW5nam5s?=
+ =?utf-8?B?TTdCTkZTMjBTTmlrc3IrNEtiMWhJejdTRFNIY2NGQzVaU1YzUjMxb2xCWnNl?=
+ =?utf-8?B?NHJPZWJCbW9lWGJHVXl6Z0E0NFNwSEhDK0t0VWxCOTlVUHJhakMrSkcvcEQy?=
+ =?utf-8?B?WUtvUkJXcU11WGVQclhrQ0JGSmhCaFdFSDB1WXloWkdHMWRyTlBabTFablc3?=
+ =?utf-8?B?TzNoMmN5Z2s0OXR1MVVtL296VmdwN3NJWW42L1gxclpma3RnMXB0cUZaNUFW?=
+ =?utf-8?B?c1E5OTFzQXJxeDRQU2FmbmZRVjFhbWdhSGpuNDJsQjd3RjZpOFhJZHdYY2F1?=
+ =?utf-8?B?eHFkWDMxRGEzOHc2bXFYQWNBTWg2eXlHOEVuM056ajdnOTh6RzhjTzN6SkJR?=
+ =?utf-8?B?TityR1hMbmhJeE1VVlBYRzMwMWtZaElsRm8wV0d1MVc5bWQ1Zm1iWU16ZERl?=
+ =?utf-8?B?RDdCdkg0eUYvb2JwbkhHRWpTYVVQaU53NUdtTnNXYTRTVWgvUlIrSXkzZFlk?=
+ =?utf-8?B?L1FlV1RlS0lqNEJOTjFIRkZ6UnlZVk1QU1B1Wjl2allQUGF5Yi9JTGdUUC9G?=
+ =?utf-8?B?Tnd1WTluSVZIZmM4UElPb0VEeDRlY1lERG5rWnJObWNpVHkwdFNWWWNiMm5m?=
+ =?utf-8?B?ekF0ME9PY0d0M1MydUJjZUdWemx3TmRlZUN6d3JtWWc3dFVuVDlqRGxlNVRS?=
+ =?utf-8?B?L0hMMDJUR1paRDJqT1E1WXZLQ2JLeldRbUFhbnlHMjFuN0RhQ3lIWmM2b0sv?=
+ =?utf-8?B?Wjk1SU5BNXF5RUhoaG0xUXo5VmlBOWk0MitIWDhoc1M3VzZmTmorOW0xQTJl?=
+ =?utf-8?B?YlhFcG9jVFJsY0NFRHdkZ1VtYTM5by9NR2RVcnc2d2ZObGlJbGg4c1IxWkph?=
+ =?utf-8?B?dCtrK28zKzQrWEJja2FpaVNmVnVtT1JNYW9PMkdsR2hPbU9RaUxUeStrZGlv?=
+ =?utf-8?B?Q3QrVld2eGNRTFIrWUU3U2lVQXlFMXNnTjNCYmRUc3FSNDdETlQyUXZQQ3Q3?=
+ =?utf-8?B?bm5sQjliUXZ1TzN6THh1am1nTExpODc1MFRDM2VYK2tSS2JVbUZ4WDI5ek5U?=
+ =?utf-8?B?NnZoY1g1RnZaTktnSTZGRzd4MlVlQ2RBaUJsdm9lU0J0MGRsWW1CK1hxdGkz?=
+ =?utf-8?B?Z0JlSzlPTjY5dDE2dHhUQ2NMaFRYYUppWU10OUE0TGhXdVlQZHRvaTZ2aG9L?=
+ =?utf-8?B?WTMxVVdCZ3FnQkx0em1XenRwdVRqWVJvb00xTmQ3MVd0TFVJT0thamJZMkZD?=
+ =?utf-8?B?bkg1MWUyVHVUMUgwNHdidmZ2N1BMRjlNM0pIekVXdGZMRzYvWEVZdHRaS2Fk?=
+ =?utf-8?B?ZkNxMlQxMWtKamZsaGpSRmdVaTR4aWxic1lEaWd0RXJhVkJDcUtIVXBpTlox?=
+ =?utf-8?B?d2k5WlpEQnd4N2JjUEEwbTRiSm9yN3FVMS9tSGVub3ZXVFJZbGp2TXRkbU1w?=
+ =?utf-8?B?cnFGWE1QMmlUbDZqYXU1Y2d3czJNb3hDeW5yakZGRFlEbU1uOFlEUG9pcHZF?=
+ =?utf-8?B?VWVubWJKcnlkNW5aOGh1d2pQZGY1T2hIRmRsaDZTenFhbUE2SUpkZkxJN0pN?=
+ =?utf-8?B?azFUa0R1MHhhZmUvbG9adkVwTVhqUlh3MXB1U1hIVEd4cVFXL1RPL3N3PT0=?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM8PR11MB5655.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366007)(1800799015)(376005)(38070700009); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WkRyb29GdS94OG00TUg5S2h6dVFnYWpHNTJiNFovSW1sendyeVRLY2RSNmFw?=
+ =?utf-8?B?ZVhUYXlEek5McEZ3YXIybmhmK2VrZ3FMTVVyVVpPcVhtR1ozQS9ZN3FPNCtP?=
+ =?utf-8?B?QS9za25Sa1RMZXMrK1FONEdLcExpb05MbUJoSnRHWVFTT1RrT1Fnb3lycGtL?=
+ =?utf-8?B?WWIxV0t6TmswcWswVENLaVhoc2VQb1M4YU91QURzN2Z5WWFYSmdtZ1p0bHJq?=
+ =?utf-8?B?ekpIUnhvS1NUUmw1a0wrUkZkNWdwTUlTbHoyaWNqV3JNQ1l5YTZNaTV0WkxN?=
+ =?utf-8?B?UXRQNXJyaVYzd2NPZHhTeXk1ajhraWpaWlBCS0psS1dOQTIyZ0JIMWkxVHZ6?=
+ =?utf-8?B?b3E2WWg3K0hrL0M4UFZFR01OSU1pNXUyUzhCRmw1dFBjdGkwVzJTNUJyMVJT?=
+ =?utf-8?B?VlR4L3Rob2NzeGtMZEtYNTFuVTFEMlJMbnN4QVpLM0RUbWg0cElidG1nS2wx?=
+ =?utf-8?B?eTJucllTL0tmZ3hHWGkydWkzU0dHVFltKzRFVzZSTnhZNFFDN0FacUtsUVJw?=
+ =?utf-8?B?emsvcHV1ZFE0WW16KzloTnphNnZUdDZ0VE1NdkdTL21aaUJmZ1lwM25Ta2lo?=
+ =?utf-8?B?WDB5b0tXZ3k3dEt0T1FCT3U0eXRVWlYwWXNwNUpDMEFHSzJwVStNbjJLTHB5?=
+ =?utf-8?B?dmxlOWw3MUNuK3pYNWJ0WkhVN3BYWUZrOVp3b28wUUNLZU05azNnbVFiUTRt?=
+ =?utf-8?B?K3NhdGdCckF5M2lFbWN4VzVPR2ZMeWVwOUxoVFJpdTNMVjZXNEVvcGpsV3hy?=
+ =?utf-8?B?ZnVUV2JQVklCYUtyUzMveFJlWC9aQVBRN3FsWVRlVmZHQXBhR2pUUEViV0lO?=
+ =?utf-8?B?L1llcEVlMWFTZkNNbU82N0tHZ0VUQjgwOFZMaUhFMThUQkhKR3VnN1Q1ZGFG?=
+ =?utf-8?B?QXdzV1BNSmk4N1RSd2twNUdCOUd5VWpkRXBRUVNmbW9UakhCbG41MVdPSzhn?=
+ =?utf-8?B?dExkcWEwY2dFWHg0L09zUFgzWXR3cGlEZCtHQktOck1VQ2ZEeFpwQVE1RlNG?=
+ =?utf-8?B?ek4rYkNaWm9IS3JMUll1eU4rZjZVQml4Tk1nL1lnTElUQ0ZEbVVPMlk0dkh5?=
+ =?utf-8?B?MWlJTWkwODFQSlRpZ04ybGtqb2FGOEFWNmFvRzZwQUZVWU1UOEhYRmtpaVJO?=
+ =?utf-8?B?L2V0VHpTRXRmRHBpYnZWWGNvR0dGb2kzZDV5MVZYN09WKzhzR0QxZFRLV1Bt?=
+ =?utf-8?B?L2RtOTRqMnhSU2J0eWd3Z0xDV3Q5NkZMbTBOT2lOWGluVUxvM25rTkV3SUJO?=
+ =?utf-8?B?YVp0Ri9rYzg5UXRNYWloS2YvN2lKa3ovZmJMMHFmdys3dFAvL3hCUEdMYWU2?=
+ =?utf-8?B?czlXL0NjYW9LQlAxUDRpWW5ralJnbE9mZnZZbVNPem51dzJOMEs0V0ROOHNZ?=
+ =?utf-8?B?L05Vd0Z3T2ZlTGJpYnEvVjY3OTdUSk1vcDA4MUlySTh6QTRQbEg3ejRPV0xp?=
+ =?utf-8?B?WTlvRXdCT2NpZkM5czJ5NWdEZWI3WjU4ZkhvQUphMXJvSjVCazA3amZpMGNJ?=
+ =?utf-8?B?dUZYZzNGaWFyUUhEcCtNZ2JFMWg0ellJU213aVRtUnRlS0tiRlAwNlMxY25G?=
+ =?utf-8?B?bEtPWGovby9TVWVzRk1ML0Ixak5Pdk0xZUJWczhNeFZkU3BEdHI1c2wwOEsy?=
+ =?utf-8?B?WnVweXgyRUx3d2RSSmVzQWhoZW5uVUtBcG5pQ0QyNHFlRURRTFJKWnlaei9V?=
+ =?utf-8?B?aWwxSStQY09EN2kyZFloSXl3enN6SS92ZHJGM3c1S0RWSmY5cTFFRWVmZ3hN?=
+ =?utf-8?B?Q2ZybFNsb1k5Uk9CMWpaV255Z2IzZVpnSGxuVmNia3BhcnMvbnp4cUltaTBp?=
+ =?utf-8?B?UElONmJ1Y05nWE9Ib1NDb0dRZkFpcDVjM3BMKzFFd2R3ZE1wU2JNOUdnTktr?=
+ =?utf-8?B?enZxdHVhZjcvQ2dMY2ZoUE03Tm1PaWNUZnlaand3akEyeXJ0a3IwQXBJZFlh?=
+ =?utf-8?B?eDZhdWNEQkQwNk9BL0doQXBYZHFoNGpPMTVTeU0wdms3SmNNVXJxQjdzakdi?=
+ =?utf-8?B?andyd1l3Q3IyNW4zcy93blF3eG41Yzhmdzd1SVZkMlFhSlV4TFIyQy9JaVdM?=
+ =?utf-8?B?QXhpV1VzUUNSZFV6ZWNpdDI1TzQ2MCtjWDBtMFF5dEdjSms4SnF5QTNIMnEz?=
+ =?utf-8?Q?0HVbgbMLSqkskNVG5xZC37ADF?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB6611:EE_|DM4PR12MB9069:EE_
-X-MS-Office365-Filtering-Correlation-Id: 72d2ee51-c07f-4197-608f-08dc70c21aae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|366007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?RGY2bGg3eWZsZlhmOHNEcWUreStJb1IySlAzNTJBdDVZWTNXMms0dTZsU0kw?=
- =?utf-8?B?S255Z21SR1R4V21hcGhBNURnMy9aTE1XZDVIOEhibktKMXFYR0NNbzFUOXM1?=
- =?utf-8?B?NVBXZW9lN3NUOTNPbzl3RDNydFRUZkJTMUp3SEljN2Flc1FvSFBZNnJ2UmVv?=
- =?utf-8?B?eVd5b096TDgvKzVXZVN0alNvV05yRkN5M1Q1UFB1WnAzWUxOQmFlSGZ6bS90?=
- =?utf-8?B?bTZsQks3bVN2S1l5bG1GNVpnT05nOVRWckFwRlBWd3ordSs4RTE5cTNPc1pr?=
- =?utf-8?B?VXdsU0xpYXFTRGJmaGo2d3FuZE9aR2ZacnVqNTc0YzdKeUxmejloenRCUmFh?=
- =?utf-8?B?ZFRVN2cyTk1qWm8vSGgycWlMbWJMa0g2Y1c1eVhJSGRRUnd4RDdNS1BZeWdr?=
- =?utf-8?B?bk1FKy9MQk90RE1DRkRjWFJNZHNveHVHZWxwUjJUU1FVNUlTQ2Vsa3BwRmVQ?=
- =?utf-8?B?TGxFT29ZUUdQNmp0SkF4a0VadUgvcTRSZmFmczdvTlQ2RGE5M2I4N3U4YXR6?=
- =?utf-8?B?cEZXMm9hQlVtRkQyVjVRN2MzNWVKSEF2bnNZNU9xSUJmeGloNlV5eGJxVjZM?=
- =?utf-8?B?eW12OE42a2hwVHhsNi9vc3pGWHNSb0hFU1c5ZHFLbEcwRUxJNmQ2R2JHWGFZ?=
- =?utf-8?B?NVNwY0d5eHdkd0VOUjlVRHU5eUVrWkFKTUtoZWxMUlFyQU9rWGhIenBPT1My?=
- =?utf-8?B?aXpwTUpyaHFRMW8xa1BFVzgzRHIyUjBLaTJlWldXSXFMZ1FBeXFKdGx4RXNt?=
- =?utf-8?B?ZG5ZNXFZYVF2TXFzbisyekpvTHQzQXhoMEdLYzRUS2xvbEQ3TzJHWlh3Y2d5?=
- =?utf-8?B?d3dsWFNmRDdjWGNHamV5bzM1dGJNeTZqRWIrcEt5SVR5dGZ1cnNWNmgxdWZq?=
- =?utf-8?B?RWdvZFAwdWxKRGswZlFjRGs0MHhLSVQ3WWphdGZPOE1NTHlQQU5Pa243VDVW?=
- =?utf-8?B?R2lpN29WV3V0bHJCY0VBRWVUTzBQS0wvc2x5NGxIYjFjby9wR2Z5Z1FlSTVL?=
- =?utf-8?B?THBvNFI1VG4xRm9rOTZJQ3c0Yk9uU3VqU2NPa1RVcXpLU3Zrb0tNa3NqQjVl?=
- =?utf-8?B?UVUvbFFkd3NQTGtHeHUreE1nZjcyRGJzRC9VUldJWElrcTN0cFFVWjA1TTBX?=
- =?utf-8?B?V05hdVo2Tm1kMW5jQ3lQWjZrTzlUMjdidTMzZGx1aC93Vzl0UFVZVlc4QVIr?=
- =?utf-8?B?SlpXYUpKWER3NHc4V1J4eDZLL0ZiU3FBM0pSVUR6cmV0bjB5ZXIvL29tRitw?=
- =?utf-8?B?REdUVm8wK3R3eDNkQVgyb3ByY0JHVVVRUVhXMEFsZCtXeUdrUUh6VjZoakxH?=
- =?utf-8?B?WkIrQm1rdVd5eTVLbnFUbFUydDBlM1NTcG9pMXpkbEdJeVphY05YaWFtNFJ2?=
- =?utf-8?B?RGZ6dlNOSVM0cURuRWhORk1YZHVpZ2piMzIvUENOSW1KMnVhY0xRUk0zVDgx?=
- =?utf-8?B?Q2pZWkswSHN6Q3NrVmZmbU03VjY4TWllNkNpbFQ0RE8wQ2piNnFGMS93UHpO?=
- =?utf-8?B?bUllU01TV0c2eWdtSUVabTdQYmF4aU5Mc2hMMTMyd3RBdlhEazYwcy9TdjdE?=
- =?utf-8?B?eFpmTlNiVUY0U0t0WEhUMjkzTUgrQVZlMDg4NlRVVU1WQVZUa2UwSmhtUDNG?=
- =?utf-8?B?Q0pkQnhzbkNnTXRqbGIwdS9UamdieHY5K2VJdk9YYnlHYUJQd1lMbXdlb3pv?=
- =?utf-8?B?ZlIxSXVhMytlKzhZYW85TVRNSFN1RWVvVFJHdGwveEZaS2V3Q2pWTkFBPT0=?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR12MB6611.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(1800799015)(376005)(366007); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?U3d4R1VnTGFlZ0pqY0trbk02bkx1RS82QXovTWsyNkFwQm5mdWpkM2F4dDRG?=
- =?utf-8?B?V0lrS1gva3JxQ0NmOTg0UFQvbGZXQ1BURGMvT240bEJnbFJKZEpnWmluQ25y?=
- =?utf-8?B?NStGUktxRkFxYnh1R3MwZVZ6SEE2YXBUL2RxRjEzeU8yQ3hvSFhKYmRIQWJa?=
- =?utf-8?B?TnRyREh0bnRWSGhna05vUUdQa1F3MVB2L1JjZDdJRGdjRTRDeGE0dkdvTDdY?=
- =?utf-8?B?NU9kaGJYWmZMRmZMNk5NVlg0RzhsUWJ0VG81bndFdmo4bll5am42cnJ6UXcr?=
- =?utf-8?B?SHZNVVMrMHpvdElTdlFlenBEUWR4UUxRMUxlVUk2SmlIcitEM1hoaEtSV0Rt?=
- =?utf-8?B?bEhUZEFEemJNK0xBV0tIbnBPRjludkUxWXZ1b3hySWZNeWVlaVpxbVA3UC9o?=
- =?utf-8?B?M3ZsZW9SOFc5d0ZLL1lxQ2pYM3V1SVRGMmU0SERLT01WVzBLT2UraVFQM3Iv?=
- =?utf-8?B?aE5mbm4weW9kMDRjSFBYcFBwRVZNTFZpdzUzMFc4VjQzTktEMWxRZWhKMUl5?=
- =?utf-8?B?RXZGcHIyTkdqRDl5TEJKL0crRDlUN20xeG1Qc2U4bHJGSWZ0RGpLc2lCZ1Fr?=
- =?utf-8?B?M0VOeFloMytNSHBNWUt0ci9HTU5NSTZoZEZYbHl4WXh4N2dSYjRKWldaWCtB?=
- =?utf-8?B?ZG00SlByKzhuaXNhcThucUNlUVljelAxcWpNci9BK3hnZzltdVJwNXl1NFJR?=
- =?utf-8?B?cG0wMFpKeHc4K0U5OGpiRmppNmFxSGJ0R3Z0RGZNQXBXeS93QWNUV0UxVTFj?=
- =?utf-8?B?cmJidUdWd3ZhL21jWHhnOHlLVEN3TzJabHlOY0tGUkF4TTFSU0E5c3EvVHgy?=
- =?utf-8?B?ZnZ3Qmd4UnF0UVgvS1MwZnRmelpMZU9UcFA5bGw0M2Q0ZGJMZEhZQkhjZkk2?=
- =?utf-8?B?cWdPWWljMG1WdEE5QTdHRG5HN2dQcjdHNEJhMDZkQzRtRWhGRHpWMlQyZHI5?=
- =?utf-8?B?ODBWMmtaVzR0ZWFuTjRFTi9pYm9VenorRDRsSkZUTHlqekJrTzROLzIrcnd3?=
- =?utf-8?B?bld0bXhJM1VmN2QweXVqOW5vQXFNQUc1Z09kZ0hpQWtramJTa0xBOVgxNmhT?=
- =?utf-8?B?anlxaEVubUxHbSt0VXY3UmpnZXBleHdzQ2pjRldvSmltV3ZSSDhvUnJESkdu?=
- =?utf-8?B?QlpZN1VRQ1g5MFlCTWRFTGQ3UDFoSy9PVjhJYy9razdhNXJ1ZjVhaC9qOVRp?=
- =?utf-8?B?RG5ZMlJsa1FwbmtTU1JUUndxSVpqaEI0VUNxVDM1NWxzVjRlTlc3WnJvTUxq?=
- =?utf-8?B?engxbW5Jcm15THFiZ1BJR2s4OGpHa0RmZlpIRC9PSUpKcWNxZ2NIUjY0S0lF?=
- =?utf-8?B?QW5zbEUwRVd1YUhiRXIydFJXZnl0eVFoVGRybGN1ZmsvRzVBRE0zcm10TjFu?=
- =?utf-8?B?M21tbkFRbStXRlNBaE4xWDFpUWdVYlplYW9hQzc0QzlUajZJUlRZSDlFQUdx?=
- =?utf-8?B?alU2SVU0elN2OFE4RVNFeE1lZnFWSkYyNUhZaS9QazhpM01wVkRIUlhGWTdo?=
- =?utf-8?B?SmtTNm5MSm1WOUFwbkcxbW5tazF1OFBmaDJ3bkFLS2pjMUlQQllGOExKMHlW?=
- =?utf-8?B?K2ZEeUNDSElhUVZDU3AyZy91MkFNd0dFTnBocWFFNnIwTWtSMExYRkVQZVhw?=
- =?utf-8?B?SjFmYnFkcU1PREV3RmpKTTZYUVl3MGZQUFB2THFyZnJpKytZOCtOemhaRndG?=
- =?utf-8?B?ZkNXaWJsMkQ4Yjg4VlZLYWxyOVdKalAxMEhEUmR2bFNPMWNJQ0tMRUlOM1lK?=
- =?utf-8?B?RTkwRnZLSzBOSG9qLzZvdVZ5UUYxdXRkZm9DQ0UvRGdBZDVlYWhFMHdSNEJO?=
- =?utf-8?B?Ty9OVEsrYldwY05uLzVLZVJSVzVnUWQ4WThOS2taQVRBRS9iWXZLRGpsQUNh?=
- =?utf-8?B?QXRpVUQ1Y1J3cUpYQTRZeFNNTTd3TTcwa0N0NlpFRTR3VVR1akxES3BNcjd6?=
- =?utf-8?B?NnpSNERVdURWam9EWjV3YnQ4bVZPdUJHVG9ERWxrVDNvWGZpd0w0T3J4emQ4?=
- =?utf-8?B?NkxXL05tM3U3MndiUmJRc1BQaVBjZEZNRS8vRmVXNEk3Sy9uMThYbm5BSUNo?=
- =?utf-8?B?RkxwdDB5WGhkRWF2c3lkbDQvK1ZnbXZsMUF6aUU3RitaRmIwTjIxN0hsVi9x?=
- =?utf-8?Q?bubNGfCNEVkrji6Kisa7Kk9X3?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 72d2ee51-c07f-4197-608f-08dc70c21aae
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6611.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 May 2024 07:23:35.6114 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D1swldV+mR9w+xQT/J6GKIa6Vh9s7iJFCJsqTsM2mySMYU2JB5h1BhivO8pY4M3kIlJCFdVs6MJaHHxDL2AiWw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB9069
+X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5655.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5deaf60c-6468-483e-61f9-08dc70c3c9c2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 May 2024 07:35:38.5517 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: uanJuEMJmsUHCnjEJOxbhs8jiI6f+9rm8NZbHxBE6t5D92i9bJYDEzIbPLzheAyr4fuwscKGahhzfpsmusQyKA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB6051
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -159,1204 +202,387 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------kpV36r0nUKBmH8yrW1wG7mSt
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-HiKamil,
-
-Thanks for the comment. I just updated a v2 version to fix it.
-
-Regards,
-Tom
-
-On 5/7/2024 1:05 AM, Kamil Konieczny wrote:
-> Hi Tom,
-> On 2024-05-03 at 17:08:54 +0800, Tom Chung wrote:
->
-> I have few small nits, see below.
->
->> [why]
->> Add a basic IGT test for panel replay feature.
->>
->> [how]
->> Subtest case
->>
->> a. static screen
->>     1. Check if system support panel replay.
->>     2. Start video flip for a while.
->>     3. Stop video flip and wait for a while.
->>     4. Check if replay state is in Replay mode.
->>
->> b. Live mode (intermittent)
->>     1. Check if system support panel replay.
->>     2. Start video flip for a while.
->>     3. Check if replay state is in Live mode.
->>     4. Stop video flip and wait for a while.
->>     5. Check if replay state is in Replay mode.
->>     6. Repaet 2 to 5.
->>
->> c. Live mode (constant)
->>     1. Check if system support panel replay.
->>     2. Start video flip for a while.
->>     3. Check if replay state is in Live mode.
->>
->> Signed-off-by: Tom Chung<chiahsuan.chung@amd.com>
->> ---
->>   lib/igt_amd.c             | 102 ++++++++++++
->>   lib/igt_amd.h             |  39 ++++-
->>   tests/amdgpu/amd_replay.c | 325 ++++++++++++++++++++++++++++++++++++++
->>   tests/amdgpu/meson.build  |   1 +
->>   4 files changed, 466 insertions(+), 1 deletion(-)
->>   create mode 100755 tests/amdgpu/amd_replay.c
->>
->> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
->> index 149af5151..8bc6fdc6a 100644
->> --- a/lib/igt_amd.c
->> +++ b/lib/igt_amd.c
->> @@ -1014,6 +1014,108 @@ bool igt_amd_output_has_ilr_setting(int drm_fd, char *connector_name)
->>   	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_EDP_ILR_SETTING);
->>   }
->>   
->> +/**
->> + * igt_amd_output_has_replay_cap: check if eDP connector has replay_capability debugfs entry
->> + * @drm_fd: DRM file descriptor
->> + * @connector_name: The connector's name, on which we're reading the status
->> + */
->> +bool igt_amd_output_has_replay_cap(int drm_fd, char *connector_name)
->> +{
->> +	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_EDP_REPLAY_CAP);
->> +}
->> +
->> +/**
->> + * igt_amd_replay_support_sink: check if sink device support Panel Replay
->> + * @drm_fd: DRM file descriptor
->> + * @connector_name: The connector's name, on which we're reading the status
->> + */
->> +bool igt_amd_replay_support_sink(int drm_fd, char *connector_name)
->> +{
->> +	char buf[128];
->> +	int ret;
->> +	int fd;
->> +
->> +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
->> +	if (fd < 0) {
->> +		igt_info("output %s: debugfs not found\n", connector_name);
->> +		return false;
->> +	}
->> +
->> +	ret = igt_debugfs_simple_read(fd, DEBUGFS_EDP_REPLAY_CAP, buf, sizeof(buf));
->> +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
->> +		DEBUGFS_EDP_REPLAY_CAP, connector_name);
->> +	close(fd);
->> +
->> +	if (ret < 1)
->> +		return false;
->> +
->> +	return strstr(buf, "Sink support: yes");
->> +}
->> +
->> +/**
->> + * igt_amd_replay_support_drv: check if driver support Panel Replay
->> + * @drm_fd: DRM file descriptor
->> + * @connector_name: The connector's name, on which we're reading the status
->> + */
->> +bool igt_amd_replay_support_drv(int drm_fd, char *connector_name)
->> +{
->> +	char buf[128];
->> +	int ret;
->> +	int fd;
->> +
->> +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
->> +	if (fd < 0) {
->> +		igt_info("output %s: debugfs not found\n", connector_name);
->> +		return false;
->> +	}
->> +
->> +	ret = igt_debugfs_simple_read(fd, DEBUGFS_EDP_REPLAY_CAP, buf, sizeof(buf));
->> +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
->> +		DEBUGFS_EDP_REPLAY_CAP, connector_name);
->> +	close(fd);
->> +
->> +	if (ret < 1)
->> +		return false;
->> +
->> +	return strstr(buf, "Driver support: yes");
->> +}
->> +
->> +/**
->> + * igt_amd_output_has_replay_state: check if eDP connector has replay_state debugfs entry
->> + * @drm_fd: DRM file descriptor
->> + * @connector_name: The connector's name, on which we're reading the status
->> + */
->> +bool igt_amd_output_has_replay_state(int drm_fd, char *connector_name)
->> +{
->> +	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_EDP_REPLAY_STATE);
->> +}
->> +
->> +/**
->> + * @brief Read Panel Replay State from debugfs interface
->> + * @param drm_fd DRM file descriptor
->> + * @param connector_name The connector's name, on which we're reading the status
->> + * @return Panel Replay state as integer
->> + */
->> +int igt_amd_read_replay_state(int drm_fd, char *connector_name)
->> +{
->> +	char buf[4];
->> +	int fd, ret;
->> +
->> +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
->> +	if (fd < 0) {
->> +		igt_info("Couldn't open connector %s debugfs directory\n", connector_name);
->> +		return -1;
->> +	}
->> +
->> +	ret = igt_debugfs_simple_read(fd, DEBUGFS_EDP_REPLAY_STATE, buf, sizeof(buf));
->> +	close(fd);
->> +
->> +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
->> +		DEBUGFS_EDP_REPLAY_STATE, connector_name);
->> +
->> +	return strtol(buf, NULL, 10);
->> +}
->> +
->>   /**
->>    * igt_amd_output_has_psr_cap: check if eDP connector has psr_capability debugfs entry
->>    * @drm_fd: DRM file descriptor
->> diff --git a/lib/igt_amd.h b/lib/igt_amd.h
->> index 6780b99de..a41b423b7 100644
->> --- a/lib/igt_amd.h
->> +++ b/lib/igt_amd.h
->> @@ -47,6 +47,8 @@
->>   #define DEBUGFS_EDP_ILR_SETTING "ilr_setting"
->>   #define MAX_SUPPORTED_ILR 8
->>   #define MULTIPLIER_TO_LR 270000
->> +#define DEBUGFS_EDP_REPLAY_CAP "replay_capability"
->> +#define DEBUGFS_EDP_REPLAY_STATE "replay_state"
->>   #define DEBUGFS_EDP_PSR_CAP	"psr_capability"
->>   #define DEBUGFS_EDP_PSR_STATE	"psr_state"
->>   #define DEBUGFS_ALLOW_EDP_HOTPLUG_DETECT "allow_edp_hotplug_detection"
->> @@ -100,6 +102,35 @@ enum dc_link_training_type {
->>   	LINK_TRAINING_NO_PATTERN
->>   };
->>   
->> +/*
->> + * enumeration of REPLAY STATE below should be aligned to the upstreamed
->> + * amdgpu kernel driver 'enum replay_state' in dmub_cmd.h
->> + */
->> +enum replay_state {
->> +	REPLAY_STATE_0 = 0x0,
->> +	REPLAY_STATE_1 = 0x10,
->> +	REPLAY_STATE_1A = 0x11,
->> +	REPLAY_STATE_2 = 0x20,
->> +	REPLAY_STATE_3 = 0x30,
->> +	REPLAY_STATE_3INIT = 0x31,
->> +	REPLAY_STATE_4 = 0x40,
->> +	REPLAY_STATE_4A = 0x41,
->> +	REPLAY_STATE_4B = 0x42,
->> +	REPLAY_STATE_4C = 0x43,
->> +	REPLAY_STATE_4D = 0x44,
->> +	REPLAY_STATE_4B_LOCKED = 0x4A,
->> +	REPLAY_STATE_4C_UNLOCKED = 0x4B,
->> +	REPLAY_STATE_5 = 0x50,
->> +	REPLAY_STATE_5A = 0x51,
->> +	REPLAY_STATE_5B = 0x52,
->> +	REPLAY_STATE_5A_LOCKED = 0x5A,
->> +	REPLAY_STATE_5B_UNLOCKED = 0x5B,
->> +	REPLAY_STATE_6 = 0x60,
->> +	REPLAY_STATE_6A = 0x61,
->> +	REPLAY_STATE_6B = 0x62,
->> +	REPLAY_STATE_INVALID = 0xFF
->> +};
->> +
->>   /*
->>    * enumeration of PSR STATE below should be aligned to the upstreamed
->>    * amdgpu kernel driver 'enum dc_psr_state' in dc_type.h
->> @@ -135,7 +166,8 @@ enum amdgpu_debug_visual_confirm {
->>   	VISUAL_CONFIRM_HDR	= 2,
->>   	VISUAL_CONFIRM_MPCTREE	= 4,
->>   	VISUAL_CONFIRM_PSR	= 5,
->> -	VISUAL_CONFIRM_SWIZZLE	= 9
->> +	VISUAL_CONFIRM_SWIZZLE  = 9,
->> +	VISUAL_CONFIRM_REPLAY = 12
->>   };
->>   
->>   uint32_t igt_amd_create_bo(int fd, uint64_t size);
->> @@ -189,6 +221,11 @@ void igt_amd_write_ilr_setting(
->>   	int drm_fd, char *connector_name, enum dc_lane_count lane_count,
->>   	uint8_t link_rate_set);
->>   bool igt_amd_output_has_ilr_setting(int drm_fd, char *connector_name);
->> +bool igt_amd_output_has_replay_cap(int drm_fd, char *connector_name);
->> +bool igt_amd_replay_support_sink(int drm_fd, char *connector_name);
->> +bool igt_amd_replay_support_drv(int drm_fd, char *connector_name);
->> +bool igt_amd_output_has_replay_state(int drm_fd, char *connector_name);
->> +int  igt_amd_read_replay_state(int drm_fd, char *connector_name);
->>   bool igt_amd_output_has_psr_cap(int drm_fd, char *connector_name);
->>   bool igt_amd_psr_support_sink(int drm_fd, char *connector_name, enum psr_mode mode);
->>   bool igt_amd_psr_support_drv(int drm_fd, char *connector_name, enum psr_mode mode);
->> diff --git a/tests/amdgpu/amd_replay.c b/tests/amdgpu/amd_replay.c
->> new file mode 100755
->> index 000000000..61894cd84
->> --- /dev/null
->> +++ b/tests/amdgpu/amd_replay.c
->> @@ -0,0 +1,325 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright 2024 Advanced Micro Devices, Inc.
->> + */
->> +
->> +#include "drm_mode.h"
->> +#include "igt.h"
->> +#include "igt_core.h"
->> +#include "igt_kms.h"
->> +#include "igt_amd.h"
-> ------------- ^^^^^^
-> This should be before igt_core.h
->
->> +#include <stdint.h>
->> +#include <fcntl.h>
->> +#include <xf86drmMode.h>
-> These should be before igt headers.
->
-> Regards,
-> Kamil
->
->> +
->> +/* hardware requirements:
->> + * eDP panel that supports Panel Replay
->> + */
->> +IGT_TEST_DESCRIPTION("Basic test for enabling Panel Replay for eDP displays");
->> +
->> +#define REPLAY_SETTLE_DELAY 10
->> +
->> +/* Common test data. */
->> +struct test_data {
->> +	igt_display_t display;
->> +	igt_plane_t *primary;
->> +	igt_output_t *output;
->> +	igt_pipe_t *pipe;
->> +	drmModeModeInfo *mode;
->> +	enum pipe pipe_id;
->> +	int fd;
->> +	int debugfs_fd;
->> +	int w, h;
->> +};
->> +
->> +struct {
->> +	bool visual_confirm;
->> +} opt = {
->> +	.visual_confirm = false,	/* visual confirm debug option */
->> +};
->> +
->> +const char *help_str =
->> +"  --visual-confirm           Panel Replay visual confirm debug option enable\n";
->> +
->> +struct option long_options[] = {
->> +	{"visual-confirm",	required_argument, NULL, 'v'},
->> +	{ 0, 0, 0, 0 }
->> +};
->> +
->> +enum test_mode {
->> +	TEST_MODE_STATIC_SCREEN = 0,
->> +	TEST_MODE_INTERMITTENT_LIVE,
->> +	TEST_MODE_CONSTANT_LIVE,
->> +	TEST_MODE_COUNT
->> +};
->> +
->> +/* Common test setup. */
->> +static void test_init(struct test_data *data)
->> +{
->> +	igt_display_t *display = &data->display;
->> +
->> +	/* It doesn't matter which pipe we choose on amdpgu. */
->> +	data->pipe_id = PIPE_A;
->> +	data->pipe = &data->display.pipes[data->pipe_id];
->> +
->> +	igt_display_reset(display);
->> +
->> +	data->output = igt_get_single_output_for_pipe(display, data->pipe_id);
->> +	igt_require(data->output);
->> +	igt_info("output %s\n", data->output->name);
->> +
->> +	data->mode = igt_output_get_mode(data->output);
->> +	igt_assert(data->mode);
->> +	kmstest_dump_mode(data->mode);
->> +
->> +	data->primary =
->> +		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
->> +
->> +	igt_output_set_pipe(data->output, data->pipe_id);
->> +
->> +	data->w = data->mode->hdisplay;
->> +	data->h = data->mode->vdisplay;
->> +
->> +	if (opt.visual_confirm) {
->> +		/**
->> +		 * if visual confirm option is enabled, we'd trigger a full modeset before test run
->> +		 * to have Panel Replay visual confirm enable take effect. DPMS off -> ON transition
->> +		 * is one of many approaches.
->> +		 */
->> +		kmstest_set_connector_dpms(data->fd, data->output->config.connector,
->> +				DRM_MODE_DPMS_OFF);
->> +		kmstest_set_connector_dpms(data->fd, data->output->config.connector,
->> +				DRM_MODE_DPMS_ON);
->> +	}
->> +}
->> +
->> +/* Common test cleanup. */
->> +static void test_fini(struct test_data *data)
->> +{
->> +		igt_display_t *display = &data->display;
->> +
->> +		igt_display_reset(display);
->> +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
->> +}
->> +
->> +static int check_conn_type(struct test_data *data, uint32_t type)
->> +{
->> +	int i;
->> +
->> +	for (i = 0; i < data->display.n_outputs; i++) {
->> +		uint32_t conn_type = data->display.outputs[i].config.connector->connector_type;
->> +
->> +		if (conn_type == type)
->> +			return i;
->> +	}
->> +
->> +	return -1;
->> +}
->> +
->> +static bool replay_mode_supported(struct test_data *data)
->> +{
->> +	/* run Panel Replay test if eDP panel support Panel Replay */
->> +	if (!igt_amd_output_has_replay_cap(data->fd, data->output->name)) {
->> +		igt_warn(" driver does not have %s debugfs interface\n", DEBUGFS_EDP_REPLAY_CAP);
->> +		return false;
->> +	}
->> +
->> +	if (!igt_amd_output_has_replay_state(data->fd, data->output->name)) {
->> +		igt_warn(" driver does not have %s debugfs interface\n", DEBUGFS_EDP_REPLAY_STATE);
->> +		return false;
->> +	}
->> +
->> +	if (!igt_amd_replay_support_sink(data->fd, data->output->name)) {
->> +		igt_warn(" output %s not support Panel Replay mode\n", data->output->name);
->> +		return false;
->> +	}
->> +
->> +	if (!igt_amd_replay_support_drv(data->fd, data->output->name)) {
->> +		igt_warn(" kernel driver not support Panel Replay mode\n");
->> +		return false;
->> +	}
->> +
->> +	return true;
->> +}
->> +
->> +static void run_check_replay(struct test_data *data, enum test_mode test_mode)
->> +{
->> +	int edp_idx, ret, frame_count, replay_state;
->> +	igt_fb_t ref_fb, ref_fb2;
->> +	igt_fb_t *flip_fb;
->> +	igt_output_t *output;
->> +
->> +	test_init(data);
->> +
->> +	edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
->> +	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
->> +
->> +	/* check if eDP support Panel Replay. */
->> +	igt_skip_on(!replay_mode_supported(data));
->> +
->> +	for_each_connected_output(&data->display, output) {
->> +		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
->> +			continue;
->> +
->> +		igt_create_color_fb(data->fd, data->mode->hdisplay,
->> +				    data->mode->vdisplay, DRM_FORMAT_XRGB8888, 0, 0.6,
->> +				    0.6, 0.6, &ref_fb);
->> +		igt_create_color_fb(data->fd, data->mode->hdisplay,
->> +				    data->mode->vdisplay, DRM_FORMAT_XRGB8888, 0, 0.0,
->> +				    0.4, 0.14, &ref_fb2);
->> +
->> +		igt_plane_set_fb(data->primary, &ref_fb);
->> +		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
->> +		flip_fb = &ref_fb;
->> +		drmModePageFlip(data->fd, output->config.crtc->crtc_id,
->> +					flip_fb->fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
->> +		kmstest_wait_for_pageflip(data->fd);
->> +
->> +		/* Panel Replay state takes some time to settle its value on static screen */
->> +		sleep(REPLAY_SETTLE_DELAY);
->> +
->> +		/* Check Panel Replay state */
->> +		replay_state = igt_amd_read_replay_state(data->fd, output->name);
->> +		igt_debug("replay_state static mode before flip = 0x%X\n", replay_state);
->> +		igt_fail_on_f(replay_state < 0, "Open Panel Replay state debugfs failed\n");
->> +		igt_fail_on_f(replay_state < REPLAY_STATE_2,
->> +			"Panel Replay was not enabled for connector %s\n", output->name);
->> +
->> +		/* Do some page flip and let the replay go into live mode */
->> +		for (frame_count = 0; frame_count <= 20; frame_count++) {
->> +			ret = drmModePageFlip(data->fd, output->config.crtc->crtc_id,
->> +					flip_fb->fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
->> +			igt_require(ret == 0);
->> +			kmstest_wait_for_pageflip(data->fd);
->> +
->> +			if (test_mode == (TEST_MODE_CONSTANT_LIVE || TEST_MODE_INTERMITTENT_LIVE)
->> +						&& frame_count > 5) {
->> +				/* Panel Replay state needs few frame to enter the live mode */
->> +				replay_state = igt_amd_read_replay_state(data->fd, output->name);
->> +				igt_debug("replay_state live mode = 0x%X\n", replay_state);
->> +				igt_fail_on_f(replay_state < REPLAY_STATE_4 && replay_state >= REPLAY_STATE_5,
->> +						"State should be REPLAY_STATE_4 (Active with single frame update)\n");
->> +			}
->> +
->> +			if (frame_count % 2 == 0)
->> +				flip_fb = &ref_fb2;
->> +			else
->> +				flip_fb = &ref_fb;
->> +		}
->> +
->> +		/* Check Panel Replay state in static screen */
->> +		if (test_mode == TEST_MODE_STATIC_SCREEN || TEST_MODE_INTERMITTENT_LIVE) {
->> +			/* Panel Replay state takes some time to settle its value on static screen */
->> +			sleep(1);
->> +
->> +			replay_state = igt_amd_read_replay_state(data->fd, output->name);
->> +			igt_debug("replay_state static mode = 0x%X\n", replay_state);
->> +			igt_fail_on_f(replay_state < REPLAY_STATE_3 && replay_state >= REPLAY_STATE_4,
->> +					"State should be REPLAY_STATE_3 (Active)\n");
->> +		}
->> +
->> +		/* Do another page flip if we do the replay_intermittent_live test */
->> +		if (test_mode == TEST_MODE_INTERMITTENT_LIVE) {
->> +			for (frame_count = 0; frame_count <= 30; frame_count++) {
->> +				ret = drmModePageFlip(data->fd, output->config.crtc->crtc_id,
->> +						flip_fb->fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
->> +				igt_require(ret == 0);
->> +				kmstest_wait_for_pageflip(data->fd);
->> +
->> +				if (frame_count > 5) {
->> +					/* Needs few frames to let state enter the live mode */
->> +					replay_state = igt_amd_read_replay_state(data->fd, output->name);
->> +					igt_debug("replay_state TEST_MODE_INTERMITTENT_LIVE during flip = 0x%X\n",
->> +							replay_state);
->> +					igt_fail_on_f(replay_state < REPLAY_STATE_4 && replay_state >= REPLAY_STATE_5,
->> +							"State should be REPLAY_STATE_4 (Active with single frame update)\n");
->> +				}
->> +
->> +				if (frame_count % 2 == 0)
->> +					flip_fb = &ref_fb2;
->> +				else
->> +					flip_fb = &ref_fb;
->> +			}
->> +
->> +			/* Panel Replay state takes some time to settle its value on static screen */
->> +			sleep(1);
->> +
->> +			replay_state = igt_amd_read_replay_state(data->fd, output->name);
->> +			igt_debug("replay_state TEST_MODE_INTERMITTENT_LIVE after flip = 0x%X\n",
->> +					replay_state);
->> +			igt_fail_on_f(replay_state < REPLAY_STATE_3 && replay_state >= REPLAY_STATE_4,
->> +					"State should be REPLAY_STATE_3 (Active)\n");
->> +		}
->> +
->> +		igt_remove_fb(data->fd, &ref_fb);
->> +		igt_remove_fb(data->fd, &ref_fb2);
->> +	}
->> +
->> +	test_fini(data);
->> +}
->> +
->> +static int opt_handler(int option, int option_index, void *data)
->> +{
->> +	switch (option) {
->> +	case 'v':
->> +		opt.visual_confirm = strtol(optarg, NULL, 0);
->> +		igt_info("Panel Replay Visual Confirm %s\n", opt.visual_confirm ? "enabled" : "disabled");
->> +		break;
->> +	default:
->> +		return IGT_OPT_HANDLER_ERROR;
->> +	}
->> +
->> +	return IGT_OPT_HANDLER_SUCCESS;
->> +}
->> +
->> +igt_main_args("", long_options, help_str, opt_handler, NULL)
->> +{
->> +	struct test_data data;
->> +
->> +	igt_skip_on_simulation();
->> +	memset(&data, 0, sizeof(data));
->> +
->> +	igt_fixture
->> +	{
->> +		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
->> +
->> +		if (data.fd == -1)
->> +			igt_skip("Not an amdgpu driver.\n");
->> +
->> +		data.debugfs_fd = igt_debugfs_dir(data.fd);
->> +
->> +		kmstest_set_vt_graphics_mode();
->> +
->> +		igt_display_require(&data.display, data.fd);
->> +		igt_require(&data.display.is_atomic);
->> +		igt_display_require_output(&data.display);
->> +
->> +		/* check if visual confirm option available */
->> +		if (opt.visual_confirm) {
->> +			igt_skip_on(!igt_amd_has_visual_confirm(data.fd));
->> +			igt_skip_on_f(!igt_amd_set_visual_confirm(data.fd, VISUAL_CONFIRM_REPLAY),
->> +				      "set Panel Replay visual confirm failed\n");
->> +		}
->> +	}
->> +
->> +	igt_describe("Test whether Panel Replay can be enabled with static screen");
->> +	igt_subtest("replay_static_screen") run_check_replay(&data, TEST_MODE_STATIC_SCREEN);
->> +
->> +	igt_describe("Test whether Panel Replay can be enabled with intermittent live mdoe");
->> +	igt_subtest("replay_intermittent_live") run_check_replay(&data, TEST_MODE_INTERMITTENT_LIVE);
->> +
->> +	igt_describe("Test whether Panel Replay can be enabled with constant live mdoe");
->> +	igt_subtest("replay_constant_live") run_check_replay(&data, TEST_MODE_CONSTANT_LIVE);
->> +
->> +	igt_fixture
->> +	{
->> +		if (opt.visual_confirm) {
->> +			igt_skip_on(!igt_amd_has_visual_confirm(data.fd));
->> +			igt_require_f(igt_amd_set_visual_confirm(data.fd, VISUAL_CONFIRM_DISABLE),
->> +				      "reset Panel Replay visual confirm failed\n");
->> +		}
->> +		close(data.debugfs_fd);
->> +		igt_display_fini(&data.display);
->> +		drm_close_driver(data.fd);
->> +	}
->> +}
->> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
->> index d7152a356..e8854c5fa 100644
->> --- a/tests/amdgpu/meson.build
->> +++ b/tests/amdgpu/meson.build
->> @@ -30,6 +30,7 @@ if libdrm_amdgpu.found()
->>   			  'amd_prime',
->>   			  'amd_psr',
->>   			  'amd_ras',
->> +			  'amd_replay',
->>   			  'amd_security',
->>   			  'amd_uvd_dec',
->>   			  'amd_uvd_enc',
->> -- 
->> 2.34.1
->>
---------------kpV36r0nUKBmH8yrW1wG7mSt
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p>Hi<span style="white-space: pre-wrap"> Kamil,</span></p>
-    <p><span style="white-space: pre-wrap">Thanks for the comment. I just updated a v2 version to fix it.</span></p>
-    <pre class="moz-quote-pre" wrap="">Regards,
-Tom
-</pre>
-    <div class="moz-cite-prefix">On 5/7/2024 1:05 AM, Kamil Konieczny
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20240506170532.gekeyla3d2vd2x7n@kamilkon-DESK.igk.intel.com">
-      <pre class="moz-quote-pre" wrap="">Hi Tom,
-On 2024-05-03 at 17:08:54 +0800, Tom Chung wrote:
-
-I have few small nits, see below.
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">[why]
-Add a basic IGT test for panel replay feature.
-
-[how]
-Subtest case
-
-a. static screen
-   1. Check if system support panel replay.
-   2. Start video flip for a while.
-   3. Stop video flip and wait for a while.
-   4. Check if replay state is in Replay mode.
-
-b. Live mode (intermittent)
-   1. Check if system support panel replay.
-   2. Start video flip for a while.
-   3. Check if replay state is in Live mode.
-   4. Stop video flip and wait for a while.
-   5. Check if replay state is in Replay mode.
-   6. Repaet 2 to 5.
-
-c. Live mode (constant)
-   1. Check if system support panel replay.
-   2. Start video flip for a while.
-   3. Check if replay state is in Live mode.
-
-Signed-off-by: Tom Chung <a class="moz-txt-link-rfc2396E" href="mailto:chiahsuan.chung@amd.com">&lt;chiahsuan.chung@amd.com&gt;</a>
----
- lib/igt_amd.c             | 102 ++++++++++++
- lib/igt_amd.h             |  39 ++++-
- tests/amdgpu/amd_replay.c | 325 ++++++++++++++++++++++++++++++++++++++
- tests/amdgpu/meson.build  |   1 +
- 4 files changed, 466 insertions(+), 1 deletion(-)
- create mode 100755 tests/amdgpu/amd_replay.c
-
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index 149af5151..8bc6fdc6a 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -1014,6 +1014,108 @@ bool igt_amd_output_has_ilr_setting(int drm_fd, char *connector_name)
- 	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_EDP_ILR_SETTING);
- }
- 
-+/**
-+ * igt_amd_output_has_replay_cap: check if eDP connector has replay_capability debugfs entry
-+ * @drm_fd: DRM file descriptor
-+ * @connector_name: The connector's name, on which we're reading the status
-+ */
-+bool igt_amd_output_has_replay_cap(int drm_fd, char *connector_name)
-+{
-+	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_EDP_REPLAY_CAP);
-+}
-+
-+/**
-+ * igt_amd_replay_support_sink: check if sink device support Panel Replay
-+ * @drm_fd: DRM file descriptor
-+ * @connector_name: The connector's name, on which we're reading the status
-+ */
-+bool igt_amd_replay_support_sink(int drm_fd, char *connector_name)
-+{
-+	char buf[128];
-+	int ret;
-+	int fd;
-+
-+	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-+	if (fd &lt; 0) {
-+		igt_info(&quot;output %s: debugfs not found\n&quot;, connector_name);
-+		return false;
-+	}
-+
-+	ret = igt_debugfs_simple_read(fd, DEBUGFS_EDP_REPLAY_CAP, buf, sizeof(buf));
-+	igt_assert_f(ret &gt;= 0, &quot;Reading %s for connector %s failed.\n&quot;,
-+		DEBUGFS_EDP_REPLAY_CAP, connector_name);
-+	close(fd);
-+
-+	if (ret &lt; 1)
-+		return false;
-+
-+	return strstr(buf, &quot;Sink support: yes&quot;);
-+}
-+
-+/**
-+ * igt_amd_replay_support_drv: check if driver support Panel Replay
-+ * @drm_fd: DRM file descriptor
-+ * @connector_name: The connector's name, on which we're reading the status
-+ */
-+bool igt_amd_replay_support_drv(int drm_fd, char *connector_name)
-+{
-+	char buf[128];
-+	int ret;
-+	int fd;
-+
-+	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-+	if (fd &lt; 0) {
-+		igt_info(&quot;output %s: debugfs not found\n&quot;, connector_name);
-+		return false;
-+	}
-+
-+	ret = igt_debugfs_simple_read(fd, DEBUGFS_EDP_REPLAY_CAP, buf, sizeof(buf));
-+	igt_assert_f(ret &gt;= 0, &quot;Reading %s for connector %s failed.\n&quot;,
-+		DEBUGFS_EDP_REPLAY_CAP, connector_name);
-+	close(fd);
-+
-+	if (ret &lt; 1)
-+		return false;
-+
-+	return strstr(buf, &quot;Driver support: yes&quot;);
-+}
-+
-+/**
-+ * igt_amd_output_has_replay_state: check if eDP connector has replay_state debugfs entry
-+ * @drm_fd: DRM file descriptor
-+ * @connector_name: The connector's name, on which we're reading the status
-+ */
-+bool igt_amd_output_has_replay_state(int drm_fd, char *connector_name)
-+{
-+	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_EDP_REPLAY_STATE);
-+}
-+
-+/**
-+ * @brief Read Panel Replay State from debugfs interface
-+ * @param drm_fd DRM file descriptor
-+ * @param connector_name The connector's name, on which we're reading the status
-+ * @return Panel Replay state as integer
-+ */
-+int igt_amd_read_replay_state(int drm_fd, char *connector_name)
-+{
-+	char buf[4];
-+	int fd, ret;
-+
-+	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-+	if (fd &lt; 0) {
-+		igt_info(&quot;Couldn't open connector %s debugfs directory\n&quot;, connector_name);
-+		return -1;
-+	}
-+
-+	ret = igt_debugfs_simple_read(fd, DEBUGFS_EDP_REPLAY_STATE, buf, sizeof(buf));
-+	close(fd);
-+
-+	igt_assert_f(ret &gt;= 0, &quot;Reading %s for connector %s failed.\n&quot;,
-+		DEBUGFS_EDP_REPLAY_STATE, connector_name);
-+
-+	return strtol(buf, NULL, 10);
-+}
-+
- /**
-  * igt_amd_output_has_psr_cap: check if eDP connector has psr_capability debugfs entry
-  * @drm_fd: DRM file descriptor
-diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index 6780b99de..a41b423b7 100644
---- a/lib/igt_amd.h
-+++ b/lib/igt_amd.h
-@@ -47,6 +47,8 @@
- #define DEBUGFS_EDP_ILR_SETTING &quot;ilr_setting&quot;
- #define MAX_SUPPORTED_ILR 8
- #define MULTIPLIER_TO_LR 270000
-+#define DEBUGFS_EDP_REPLAY_CAP &quot;replay_capability&quot;
-+#define DEBUGFS_EDP_REPLAY_STATE &quot;replay_state&quot;
- #define DEBUGFS_EDP_PSR_CAP	&quot;psr_capability&quot;
- #define DEBUGFS_EDP_PSR_STATE	&quot;psr_state&quot;
- #define DEBUGFS_ALLOW_EDP_HOTPLUG_DETECT &quot;allow_edp_hotplug_detection&quot;
-@@ -100,6 +102,35 @@ enum dc_link_training_type {
- 	LINK_TRAINING_NO_PATTERN
- };
- 
-+/*
-+ * enumeration of REPLAY STATE below should be aligned to the upstreamed
-+ * amdgpu kernel driver 'enum replay_state' in dmub_cmd.h
-+ */
-+enum replay_state {
-+	REPLAY_STATE_0 = 0x0,
-+	REPLAY_STATE_1 = 0x10,
-+	REPLAY_STATE_1A = 0x11,
-+	REPLAY_STATE_2 = 0x20,
-+	REPLAY_STATE_3 = 0x30,
-+	REPLAY_STATE_3INIT = 0x31,
-+	REPLAY_STATE_4 = 0x40,
-+	REPLAY_STATE_4A = 0x41,
-+	REPLAY_STATE_4B = 0x42,
-+	REPLAY_STATE_4C = 0x43,
-+	REPLAY_STATE_4D = 0x44,
-+	REPLAY_STATE_4B_LOCKED = 0x4A,
-+	REPLAY_STATE_4C_UNLOCKED = 0x4B,
-+	REPLAY_STATE_5 = 0x50,
-+	REPLAY_STATE_5A = 0x51,
-+	REPLAY_STATE_5B = 0x52,
-+	REPLAY_STATE_5A_LOCKED = 0x5A,
-+	REPLAY_STATE_5B_UNLOCKED = 0x5B,
-+	REPLAY_STATE_6 = 0x60,
-+	REPLAY_STATE_6A = 0x61,
-+	REPLAY_STATE_6B = 0x62,
-+	REPLAY_STATE_INVALID = 0xFF
-+};
-+
- /*
-  * enumeration of PSR STATE below should be aligned to the upstreamed
-  * amdgpu kernel driver 'enum dc_psr_state' in dc_type.h
-@@ -135,7 +166,8 @@ enum amdgpu_debug_visual_confirm {
- 	VISUAL_CONFIRM_HDR	= 2,
- 	VISUAL_CONFIRM_MPCTREE	= 4,
- 	VISUAL_CONFIRM_PSR	= 5,
--	VISUAL_CONFIRM_SWIZZLE	= 9
-+	VISUAL_CONFIRM_SWIZZLE  = 9,
-+	VISUAL_CONFIRM_REPLAY = 12
- };
- 
- uint32_t igt_amd_create_bo(int fd, uint64_t size);
-@@ -189,6 +221,11 @@ void igt_amd_write_ilr_setting(
- 	int drm_fd, char *connector_name, enum dc_lane_count lane_count,
- 	uint8_t link_rate_set);
- bool igt_amd_output_has_ilr_setting(int drm_fd, char *connector_name);
-+bool igt_amd_output_has_replay_cap(int drm_fd, char *connector_name);
-+bool igt_amd_replay_support_sink(int drm_fd, char *connector_name);
-+bool igt_amd_replay_support_drv(int drm_fd, char *connector_name);
-+bool igt_amd_output_has_replay_state(int drm_fd, char *connector_name);
-+int  igt_amd_read_replay_state(int drm_fd, char *connector_name);
- bool igt_amd_output_has_psr_cap(int drm_fd, char *connector_name);
- bool igt_amd_psr_support_sink(int drm_fd, char *connector_name, enum psr_mode mode);
- bool igt_amd_psr_support_drv(int drm_fd, char *connector_name, enum psr_mode mode);
-diff --git a/tests/amdgpu/amd_replay.c b/tests/amdgpu/amd_replay.c
-new file mode 100755
-index 000000000..61894cd84
---- /dev/null
-+++ b/tests/amdgpu/amd_replay.c
-@@ -0,0 +1,325 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright 2024 Advanced Micro Devices, Inc.
-+ */
-+
-+#include &quot;drm_mode.h&quot;
-+#include &quot;igt.h&quot;
-+#include &quot;igt_core.h&quot;
-+#include &quot;igt_kms.h&quot;
-+#include &quot;igt_amd.h&quot;
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">------------- ^^^^^^
-This should be before igt_core.h
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">+#include &lt;stdint.h&gt;
-+#include &lt;fcntl.h&gt;
-+#include &lt;xf86drmMode.h&gt;
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-These should be before igt headers.
-
-Regards,
-Kamil
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">+
-+/* hardware requirements:
-+ * eDP panel that supports Panel Replay
-+ */
-+IGT_TEST_DESCRIPTION(&quot;Basic test for enabling Panel Replay for eDP displays&quot;);
-+
-+#define REPLAY_SETTLE_DELAY 10
-+
-+/* Common test data. */
-+struct test_data {
-+	igt_display_t display;
-+	igt_plane_t *primary;
-+	igt_output_t *output;
-+	igt_pipe_t *pipe;
-+	drmModeModeInfo *mode;
-+	enum pipe pipe_id;
-+	int fd;
-+	int debugfs_fd;
-+	int w, h;
-+};
-+
-+struct {
-+	bool visual_confirm;
-+} opt = {
-+	.visual_confirm = false,	/* visual confirm debug option */
-+};
-+
-+const char *help_str =
-+&quot;  --visual-confirm           Panel Replay visual confirm debug option enable\n&quot;;
-+
-+struct option long_options[] = {
-+	{&quot;visual-confirm&quot;,	required_argument, NULL, 'v'},
-+	{ 0, 0, 0, 0 }
-+};
-+
-+enum test_mode {
-+	TEST_MODE_STATIC_SCREEN = 0,
-+	TEST_MODE_INTERMITTENT_LIVE,
-+	TEST_MODE_CONSTANT_LIVE,
-+	TEST_MODE_COUNT
-+};
-+
-+/* Common test setup. */
-+static void test_init(struct test_data *data)
-+{
-+	igt_display_t *display = &amp;data-&gt;display;
-+
-+	/* It doesn't matter which pipe we choose on amdpgu. */
-+	data-&gt;pipe_id = PIPE_A;
-+	data-&gt;pipe = &amp;data-&gt;display.pipes[data-&gt;pipe_id];
-+
-+	igt_display_reset(display);
-+
-+	data-&gt;output = igt_get_single_output_for_pipe(display, data-&gt;pipe_id);
-+	igt_require(data-&gt;output);
-+	igt_info(&quot;output %s\n&quot;, data-&gt;output-&gt;name);
-+
-+	data-&gt;mode = igt_output_get_mode(data-&gt;output);
-+	igt_assert(data-&gt;mode);
-+	kmstest_dump_mode(data-&gt;mode);
-+
-+	data-&gt;primary =
-+		igt_pipe_get_plane_type(data-&gt;pipe, DRM_PLANE_TYPE_PRIMARY);
-+
-+	igt_output_set_pipe(data-&gt;output, data-&gt;pipe_id);
-+
-+	data-&gt;w = data-&gt;mode-&gt;hdisplay;
-+	data-&gt;h = data-&gt;mode-&gt;vdisplay;
-+
-+	if (opt.visual_confirm) {
-+		/**
-+		 * if visual confirm option is enabled, we'd trigger a full modeset before test run
-+		 * to have Panel Replay visual confirm enable take effect. DPMS off -&gt; ON transition
-+		 * is one of many approaches.
-+		 */
-+		kmstest_set_connector_dpms(data-&gt;fd, data-&gt;output-&gt;config.connector,
-+				DRM_MODE_DPMS_OFF);
-+		kmstest_set_connector_dpms(data-&gt;fd, data-&gt;output-&gt;config.connector,
-+				DRM_MODE_DPMS_ON);
-+	}
-+}
-+
-+/* Common test cleanup. */
-+static void test_fini(struct test_data *data)
-+{
-+		igt_display_t *display = &amp;data-&gt;display;
-+
-+		igt_display_reset(display);
-+		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-+}
-+
-+static int check_conn_type(struct test_data *data, uint32_t type)
-+{
-+	int i;
-+
-+	for (i = 0; i &lt; data-&gt;display.n_outputs; i++) {
-+		uint32_t conn_type = data-&gt;display.outputs[i].config.connector-&gt;connector_type;
-+
-+		if (conn_type == type)
-+			return i;
-+	}
-+
-+	return -1;
-+}
-+
-+static bool replay_mode_supported(struct test_data *data)
-+{
-+	/* run Panel Replay test if eDP panel support Panel Replay */
-+	if (!igt_amd_output_has_replay_cap(data-&gt;fd, data-&gt;output-&gt;name)) {
-+		igt_warn(&quot; driver does not have %s debugfs interface\n&quot;, DEBUGFS_EDP_REPLAY_CAP);
-+		return false;
-+	}
-+
-+	if (!igt_amd_output_has_replay_state(data-&gt;fd, data-&gt;output-&gt;name)) {
-+		igt_warn(&quot; driver does not have %s debugfs interface\n&quot;, DEBUGFS_EDP_REPLAY_STATE);
-+		return false;
-+	}
-+
-+	if (!igt_amd_replay_support_sink(data-&gt;fd, data-&gt;output-&gt;name)) {
-+		igt_warn(&quot; output %s not support Panel Replay mode\n&quot;, data-&gt;output-&gt;name);
-+		return false;
-+	}
-+
-+	if (!igt_amd_replay_support_drv(data-&gt;fd, data-&gt;output-&gt;name)) {
-+		igt_warn(&quot; kernel driver not support Panel Replay mode\n&quot;);
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+static void run_check_replay(struct test_data *data, enum test_mode test_mode)
-+{
-+	int edp_idx, ret, frame_count, replay_state;
-+	igt_fb_t ref_fb, ref_fb2;
-+	igt_fb_t *flip_fb;
-+	igt_output_t *output;
-+
-+	test_init(data);
-+
-+	edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
-+	igt_skip_on_f(edp_idx == -1, &quot;no eDP connector found\n&quot;);
-+
-+	/* check if eDP support Panel Replay. */
-+	igt_skip_on(!replay_mode_supported(data));
-+
-+	for_each_connected_output(&amp;data-&gt;display, output) {
-+		if (output-&gt;config.connector-&gt;connector_type != DRM_MODE_CONNECTOR_eDP)
-+			continue;
-+
-+		igt_create_color_fb(data-&gt;fd, data-&gt;mode-&gt;hdisplay,
-+				    data-&gt;mode-&gt;vdisplay, DRM_FORMAT_XRGB8888, 0, 0.6,
-+				    0.6, 0.6, &amp;ref_fb);
-+		igt_create_color_fb(data-&gt;fd, data-&gt;mode-&gt;hdisplay,
-+				    data-&gt;mode-&gt;vdisplay, DRM_FORMAT_XRGB8888, 0, 0.0,
-+				    0.4, 0.14, &amp;ref_fb2);
-+
-+		igt_plane_set_fb(data-&gt;primary, &amp;ref_fb);
-+		igt_display_commit_atomic(&amp;data-&gt;display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-+		flip_fb = &amp;ref_fb;
-+		drmModePageFlip(data-&gt;fd, output-&gt;config.crtc-&gt;crtc_id,
-+					flip_fb-&gt;fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
-+		kmstest_wait_for_pageflip(data-&gt;fd);
-+
-+		/* Panel Replay state takes some time to settle its value on static screen */
-+		sleep(REPLAY_SETTLE_DELAY);
-+
-+		/* Check Panel Replay state */
-+		replay_state = igt_amd_read_replay_state(data-&gt;fd, output-&gt;name);
-+		igt_debug(&quot;replay_state static mode before flip = 0x%X\n&quot;, replay_state);
-+		igt_fail_on_f(replay_state &lt; 0, &quot;Open Panel Replay state debugfs failed\n&quot;);
-+		igt_fail_on_f(replay_state &lt; REPLAY_STATE_2,
-+			&quot;Panel Replay was not enabled for connector %s\n&quot;, output-&gt;name);
-+
-+		/* Do some page flip and let the replay go into live mode */
-+		for (frame_count = 0; frame_count &lt;= 20; frame_count++) {
-+			ret = drmModePageFlip(data-&gt;fd, output-&gt;config.crtc-&gt;crtc_id,
-+					flip_fb-&gt;fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
-+			igt_require(ret == 0);
-+			kmstest_wait_for_pageflip(data-&gt;fd);
-+
-+			if (test_mode == (TEST_MODE_CONSTANT_LIVE || TEST_MODE_INTERMITTENT_LIVE)
-+						&amp;&amp; frame_count &gt; 5) {
-+				/* Panel Replay state needs few frame to enter the live mode */
-+				replay_state = igt_amd_read_replay_state(data-&gt;fd, output-&gt;name);
-+				igt_debug(&quot;replay_state live mode = 0x%X\n&quot;, replay_state);
-+				igt_fail_on_f(replay_state &lt; REPLAY_STATE_4 &amp;&amp; replay_state &gt;= REPLAY_STATE_5,
-+						&quot;State should be REPLAY_STATE_4 (Active with single frame update)\n&quot;);
-+			}
-+
-+			if (frame_count % 2 == 0)
-+				flip_fb = &amp;ref_fb2;
-+			else
-+				flip_fb = &amp;ref_fb;
-+		}
-+
-+		/* Check Panel Replay state in static screen */
-+		if (test_mode == TEST_MODE_STATIC_SCREEN || TEST_MODE_INTERMITTENT_LIVE) {
-+			/* Panel Replay state takes some time to settle its value on static screen */
-+			sleep(1);
-+
-+			replay_state = igt_amd_read_replay_state(data-&gt;fd, output-&gt;name);
-+			igt_debug(&quot;replay_state static mode = 0x%X\n&quot;, replay_state);
-+			igt_fail_on_f(replay_state &lt; REPLAY_STATE_3 &amp;&amp; replay_state &gt;= REPLAY_STATE_4,
-+					&quot;State should be REPLAY_STATE_3 (Active)\n&quot;);
-+		}
-+
-+		/* Do another page flip if we do the replay_intermittent_live test */
-+		if (test_mode == TEST_MODE_INTERMITTENT_LIVE) {
-+			for (frame_count = 0; frame_count &lt;= 30; frame_count++) {
-+				ret = drmModePageFlip(data-&gt;fd, output-&gt;config.crtc-&gt;crtc_id,
-+						flip_fb-&gt;fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
-+				igt_require(ret == 0);
-+				kmstest_wait_for_pageflip(data-&gt;fd);
-+
-+				if (frame_count &gt; 5) {
-+					/* Needs few frames to let state enter the live mode */
-+					replay_state = igt_amd_read_replay_state(data-&gt;fd, output-&gt;name);
-+					igt_debug(&quot;replay_state TEST_MODE_INTERMITTENT_LIVE during flip = 0x%X\n&quot;,
-+							replay_state);
-+					igt_fail_on_f(replay_state &lt; REPLAY_STATE_4 &amp;&amp; replay_state &gt;= REPLAY_STATE_5,
-+							&quot;State should be REPLAY_STATE_4 (Active with single frame update)\n&quot;);
-+				}
-+
-+				if (frame_count % 2 == 0)
-+					flip_fb = &amp;ref_fb2;
-+				else
-+					flip_fb = &amp;ref_fb;
-+			}
-+
-+			/* Panel Replay state takes some time to settle its value on static screen */
-+			sleep(1);
-+
-+			replay_state = igt_amd_read_replay_state(data-&gt;fd, output-&gt;name);
-+			igt_debug(&quot;replay_state TEST_MODE_INTERMITTENT_LIVE after flip = 0x%X\n&quot;,
-+					replay_state);
-+			igt_fail_on_f(replay_state &lt; REPLAY_STATE_3 &amp;&amp; replay_state &gt;= REPLAY_STATE_4,
-+					&quot;State should be REPLAY_STATE_3 (Active)\n&quot;);
-+		}
-+
-+		igt_remove_fb(data-&gt;fd, &amp;ref_fb);
-+		igt_remove_fb(data-&gt;fd, &amp;ref_fb2);
-+	}
-+
-+	test_fini(data);
-+}
-+
-+static int opt_handler(int option, int option_index, void *data)
-+{
-+	switch (option) {
-+	case 'v':
-+		opt.visual_confirm = strtol(optarg, NULL, 0);
-+		igt_info(&quot;Panel Replay Visual Confirm %s\n&quot;, opt.visual_confirm ? &quot;enabled&quot; : &quot;disabled&quot;);
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+igt_main_args(&quot;&quot;, long_options, help_str, opt_handler, NULL)
-+{
-+	struct test_data data;
-+
-+	igt_skip_on_simulation();
-+	memset(&amp;data, 0, sizeof(data));
-+
-+	igt_fixture
-+	{
-+		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
-+
-+		if (data.fd == -1)
-+			igt_skip(&quot;Not an amdgpu driver.\n&quot;);
-+
-+		data.debugfs_fd = igt_debugfs_dir(data.fd);
-+
-+		kmstest_set_vt_graphics_mode();
-+
-+		igt_display_require(&amp;data.display, data.fd);
-+		igt_require(&amp;data.display.is_atomic);
-+		igt_display_require_output(&amp;data.display);
-+
-+		/* check if visual confirm option available */
-+		if (opt.visual_confirm) {
-+			igt_skip_on(!igt_amd_has_visual_confirm(data.fd));
-+			igt_skip_on_f(!igt_amd_set_visual_confirm(data.fd, VISUAL_CONFIRM_REPLAY),
-+				      &quot;set Panel Replay visual confirm failed\n&quot;);
-+		}
-+	}
-+
-+	igt_describe(&quot;Test whether Panel Replay can be enabled with static screen&quot;);
-+	igt_subtest(&quot;replay_static_screen&quot;) run_check_replay(&amp;data, TEST_MODE_STATIC_SCREEN);
-+
-+	igt_describe(&quot;Test whether Panel Replay can be enabled with intermittent live mdoe&quot;);
-+	igt_subtest(&quot;replay_intermittent_live&quot;) run_check_replay(&amp;data, TEST_MODE_INTERMITTENT_LIVE);
-+
-+	igt_describe(&quot;Test whether Panel Replay can be enabled with constant live mdoe&quot;);
-+	igt_subtest(&quot;replay_constant_live&quot;) run_check_replay(&amp;data, TEST_MODE_CONSTANT_LIVE);
-+
-+	igt_fixture
-+	{
-+		if (opt.visual_confirm) {
-+			igt_skip_on(!igt_amd_has_visual_confirm(data.fd));
-+			igt_require_f(igt_amd_set_visual_confirm(data.fd, VISUAL_CONFIRM_DISABLE),
-+				      &quot;reset Panel Replay visual confirm failed\n&quot;);
-+		}
-+		close(data.debugfs_fd);
-+		igt_display_fini(&amp;data.display);
-+		drm_close_driver(data.fd);
-+	}
-+}
-diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-index d7152a356..e8854c5fa 100644
---- a/tests/amdgpu/meson.build
-+++ b/tests/amdgpu/meson.build
-@@ -30,6 +30,7 @@ if libdrm_amdgpu.found()
- 			  'amd_prime',
- 			  'amd_psr',
- 			  'amd_ras',
-+			  'amd_replay',
- 			  'amd_security',
- 			  'amd_uvd_dec',
- 			  'amd_uvd_enc',
--- 
-2.34.1
-
-</pre>
-      </blockquote>
-    </blockquote>
-  </body>
-</html>
-
---------------kpV36r0nUKBmH8yrW1wG7mSt--
+SGksDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWFuYXNpIE5hdmFy
+ZSA8bmF2YXJlbWFuYXNpQGNocm9taXVtLm9yZz4NCj4gU2VudDogVGh1cnNkYXksIDkgTWF5IDIw
+MjQgMTkuMjQNCj4gVG86IFNhYXJpbmVuLCBKYW5pIDxqYW5pLnNhYXJpbmVuQGludGVsLmNvbT47
+IE1vZGVtLCBCaGFudXByYWthc2gNCj4gPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+OyBT
+ZWFuIFBhdWwgPHNlYW5wYXVsQGNocm9taXVtLm9yZz47DQo+IERyZXcgRGF2ZW5wb3J0IDxkZGF2
+ZW5wb3J0QGNocm9taXVtLm9yZz47IEk5MTUtY2ktDQo+IGluZnJhQGxpc3RzLmZyZWVkZXNrdG9w
+Lm9yZw0KPiBDYzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogUmU6
+IOKclyBGaS5DSS5CQVQ6IGZhaWx1cmUgZm9yIHNlcmllcyBzdGFydGluZyB3aXRoIFt2MywxLzJd
+IHRlc3RzL2ttc192cnI6DQo+IEFkZCBhIHN1YnRlc3QgZm9yIHNlYW1sZXNzIG1vZGVzZXQgdG8g
+YSB2aXJ0dWFsIExSUiBtb2RlIChyZXYzKQ0KPiANCj4gSGkgSmFuaSwNCj4gDQo+IExvb2tzIGxp
+a2UgYWxsIHRoZSBWUlIgYmFzaWMgbGVnYWN5IHRlc3RzIGFyZSBza2lwcGluZyBhcyB3ZWxsLCBk
+byBub25lIG9mIHRoZXNlIGRldmljZXMgaGF2ZSBhIFZSUiBzaW5rIGNvbm5lY3RlZD8NCkkgd2ls
+bCB0cnkgdG8gZ2V0IHRoaXMgY29uZmlybWVkIGludGVybmFsbHkuIA0KDQo+IEl0IGlzIGV4cGVj
+dGVkIHRvIHNraXAgaW4gdGhhdCBjYXNlLiBJIHdpbGwgZG8gc29tZSBsb2NhbCB0ZXN0aW5nIG9u
+IG15IGRldmljZSBoZXJlIGFuZCBjb25maXJtLg0KT2suIA0KDQo+IEBCaGFudXByYWthc2ggTW9k
+ZW0gPG1haWx0bzpiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPiAgLCBhcmUgdGhlc2UgdnJy
+IGJhc2ljIHNraXBzIGV4cGVjdGVkPw0KPiANCj4gDQo+IFJlZ2FyZHMNCj4gTWFuYXNpDQo+IA0K
+PiBPbiBUdWUsIE1heSA3LCAyMDI0IGF0IDExOjMz4oCvUE0gU2FhcmluZW4sIEphbmkgPGphbmku
+c2FhcmluZW5AaW50ZWwuY29tDQo+IDxtYWlsdG86amFuaS5zYWFyaW5lbkBpbnRlbC5jb20+ID4g
+d3JvdGU6DQo+IA0KPiANCj4gCUhpIE1hbmFzaQ0KPiANCj4gCUFyZSB0aG9zZSBuZXcgcmVzdWx0
+cyBleHBlY3RlZCBza2lwcyBhbmQgdGh1cyBpc3N1ZSBjYW4gYmUgcmVwb3J0ZWQgPw0KPiANCj4g
+DQo+IA0KPiAJRnJvbTogaWd0LWRldiA8aWd0LWRldi1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9w
+Lm9yZyA8bWFpbHRvOmlndC0NCj4gZGV2LWJvdW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiA+
+IE9uIEJlaGFsZiBPZiBQYXRjaHdvcmsNCj4gCVNlbnQ6IFR1ZXNkYXksIDcgTWF5IDIwMjQgMjIu
+NTINCj4gCVRvOiBNYW5hc2kgTmF2YXJlIDxuYXZhcmVtYW5hc2lAY2hyb21pdW0ub3JnDQo+IDxt
+YWlsdG86bmF2YXJlbWFuYXNpQGNocm9taXVtLm9yZz4gPg0KPiAJQ2M6IGlndC1kZXZAbGlzdHMu
+ZnJlZWRlc2t0b3Aub3JnIDxtYWlsdG86aWd0LQ0KPiBkZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+Pg0KPiAJU3ViamVjdDog4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVzIHN0YXJ0aW5n
+IHdpdGggW3YzLDEvMl0NCj4gdGVzdHMva21zX3ZycjogQWRkIGEgc3VidGVzdCBmb3Igc2VhbWxl
+c3MgbW9kZXNldCB0byBhIHZpcnR1YWwgTFJSIG1vZGUNCj4gKHJldjMpDQo+IA0KPiANCj4gDQo+
+IAlQYXRjaCBEZXRhaWxzDQo+IA0KPiBTZXJpZXM6DQo+IA0KPiBzZXJpZXMgc3RhcnRpbmcgd2l0
+aCBbdjMsMS8yXSB0ZXN0cy9rbXNfdnJyOiBBZGQgYSBzdWJ0ZXN0IGZvciBzZWFtbGVzcw0KPiBt
+b2Rlc2V0IHRvIGEgdmlydHVhbCBMUlIgbW9kZSAocmV2MykNCj4gDQo+IFVSTDoNCj4gDQo+IGh0
+dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMTMyODY2Lw0KPiANCj4gU3Rh
+dGU6DQo+IA0KPiBmYWlsdXJlDQo+IA0KPiBEZXRhaWxzOg0KPiANCj4gaHR0cHM6Ly9pbnRlbC1n
+ZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9pbmRleC5odG1sDQo+IA0KPiAN
+Cj4gCUNJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20gQ0lfRFJNXzE0NzIzIC0+IElHVFBXXzExMTA4
+DQo+IA0KPiANCj4gCVN1bW1hcnkNCj4gDQo+IA0KPiAJRkFJTFVSRQ0KPiANCj4gCVNlcmlvdXMg
+dW5rbm93biBjaGFuZ2VzIGNvbWluZyB3aXRoIElHVFBXXzExMTA4IGFic29sdXRlbHkgbmVlZA0K
+PiB0byBiZQ0KPiAJdmVyaWZpZWQgbWFudWFsbHkuDQo+IA0KPiAJSWYgeW91IHRoaW5rIHRoZSBy
+ZXBvcnRlZCBjaGFuZ2VzIGhhdmUgbm90aGluZyB0byBkbyB3aXRoIHRoZSBjaGFuZ2VzDQo+IAlp
+bnRyb2R1Y2VkIGluIElHVFBXXzExMTA4LCBwbGVhc2Ugbm90aWZ5IHlvdXIgYnVnIHRlYW0gKCdJ
+OTE1LWNpLQ0KPiBpbmZyYUBsaXN0cy5mcmVlZGVza3RvcC5vcmcgPG1haWx0bzpJOTE1LWNpLWlu
+ZnJhQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gJykgdG8NCj4gYWxsb3cgdGhlbQ0KPiAJdG8gZG9j
+dW1lbnQgdGhpcyBuZXcgZmFpbHVyZSBtb2RlLCB3aGljaCB3aWxsIHJlZHVjZSBmYWxzZSBwb3Np
+dGl2ZXMNCj4gaW4gQ0kuDQo+IA0KPiAJRXh0ZXJuYWwgVVJMOiBodHRwczovL2ludGVsLWdmeC1j
+aS4wMS5vcmcvdHJlZS9kcm0tDQo+IHRpcC9JR1RQV18xMTEwOC9pbmRleC5odG1sIDxodHRwczov
+L2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tDQo+IHRpcC9JR1RQV18xMTEwOC9pbmRleC5o
+dG1sPg0KPiANCj4gDQo+IAlQYXJ0aWNpcGF0aW5nIGhvc3RzICg0MSAtPiA0MCkNCj4gDQo+IA0K
+PiAJQWRkaXRpb25hbCAoMyk6IGZpLWdsay1qNDAwNSBiYXQta2JsLTIgYmF0LWpzbC0xDQo+IAlN
+aXNzaW5nICg0KTogYmF0LWRnMi0xMSBiYXQtbXRscC05IGZpLXNuYi0yNTIwbSBmaS1ic3ctbjMw
+NTANCj4gDQo+IA0KPiAJUG9zc2libGUgbmV3IGlzc3Vlcw0KPiANCj4gDQo+IAlIZXJlIGFyZSB0
+aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQgbWF5IGhhdmUgYmVlbiBpbnRyb2R1Y2VkIGluDQo+IElH
+VFBXXzExMTA4Og0KPiANCj4gDQo+IAlJR1QgY2hhbmdlcw0KPiANCj4gDQo+IAlQb3NzaWJsZSBy
+ZWdyZXNzaW9ucw0KPiANCj4gDQo+IAkqCWlndEBrbXNfdnJyQG1heC1taW5AcGlwZS1hLWRwLTE6
+DQo+IA0KPiAJCSoJYmF0LWFkbHMtNjogTk9UUlVOIC0+IEZBSUwgPGh0dHBzOi8vaW50ZWwtZ2Z4
+LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2JhdC1hZGxzLTYvaWd0QGtt
+c192cnJAbWF4LQ0KPiBtaW5AcGlwZS1hLWRwLTEuaHRtbD4NCj4gDQo+IAkqCWlndEBrbXNfdnJy
+QHNlYW1sZXNzLXJyLXN3aXRjaC12aXJ0dWFsIChORVcpOg0KPiANCj4gCQkqCWJhdC1hcmxzLTI6
+IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC0NCj4gY2kuMDEub3JnL3RyZWUvZHJt
+LXRpcC9JR1RQV18xMTEwOC9iYXQtYXJscy0yL2lndEBrbXNfdnJyQHNlYW1sZXNzLXJyLQ0KPiBz
+d2l0Y2gtdmlydHVhbC5odG1sPg0KPiAJCSoJe2JhdC1hcmxzLTR9OiBOT1RSVU4gLT4gU0tJUCA8
+aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTExMDgv
+YmF0LWFybHMtNC9pZ3RAa21zX3ZyckBzZWFtbGVzcy1yci0NCj4gc3dpdGNoLXZpcnR1YWwuaHRt
+bD4NCj4gCQkqCWJhdC1hZGxwLTY6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC0N
+Cj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9iYXQtYWRscC02L2lndEBrbXNf
+dnJyQHNlYW1sZXNzLXJyLQ0KPiBzd2l0Y2gtdmlydHVhbC5odG1sPg0KPiAJCSoJYmF0LWRnMi0x
+NDogTk9UUlVOIC0+IFNLSVAgPGh0dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9k
+cm0tdGlwL0lHVFBXXzExMTA4L2JhdC1kZzItMTQvaWd0QGttc192cnJAc2VhbWxlc3MtDQo+IHJy
+LXN3aXRjaC12aXJ0dWFsLmh0bWw+DQo+IAkJKgliYXQtYXJscy0zOiBOT1RSVU4gLT4gU0tJUCA8
+aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTExMDgv
+YmF0LWFybHMtMy9pZ3RAa21zX3ZyckBzZWFtbGVzcy1yci0NCj4gc3dpdGNoLXZpcnR1YWwuaHRt
+bD4NCj4gCQkqCWJhdC1qc2wtMzogTk9UUlVOIC0+IFNLSVAgPGh0dHBzOi8vaW50ZWwtZ2Z4LQ0K
+PiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2JhdC1qc2wtMy9pZ3RAa21zX3Zy
+ckBzZWFtbGVzcy1yci0NCj4gc3dpdGNoLXZpcnR1YWwuaHRtbD4NCj4gCQkqCWJhdC1tdGxwLTg6
+IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC0NCj4gY2kuMDEub3JnL3RyZWUvZHJt
+LXRpcC9JR1RQV18xMTEwOC9iYXQtbXRscC04L2lndEBrbXNfdnJyQHNlYW1sZXNzLXJyLQ0KPiBz
+d2l0Y2gtdmlydHVhbC5odG1sPg0KPiAJCSoJYmF0LWFkbHMtNjogTk9UUlVOIC0+IFNLSVAgPGh0
+dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2Jh
+dC1hZGxzLTYvaWd0QGttc192cnJAc2VhbWxlc3MtcnItDQo+IHN3aXRjaC12aXJ0dWFsLmh0bWw+
+DQo+IAkJKgliYXQtanNsLTE6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC0NCj4g
+Y2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9iYXQtanNsLTEvaWd0QGttc192cnJA
+c2VhbWxlc3MtcnItDQo+IHN3aXRjaC12aXJ0dWFsLmh0bWw+DQo+IAkJKgliYXQtYXJscy0xOiBO
+T1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9yZy90cmVlL2RybS10
+aXAvSUdUUFdfMTExMDgvYmF0LWFybHMtMS9pZ3RAa21zX3ZyckBzZWFtbGVzcy1yci0NCj4gc3dp
+dGNoLXZpcnR1YWwuaHRtbD4NCj4gCQkqCWJhdC1kZzEtNzogTk9UUlVOIC0+IFNLSVAgPGh0dHBz
+Oi8vaW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2JhdC1k
+ZzEtNy9pZ3RAa21zX3ZyckBzZWFtbGVzcy1yci0NCj4gc3dpdGNoLXZpcnR1YWwuaHRtbD4NCj4g
+CQkqCWJhdC1hZGxwLTk6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC0NCj4gY2ku
+MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9iYXQtYWRscC05L2lndEBrbXNfdnJyQHNl
+YW1sZXNzLXJyLQ0KPiBzd2l0Y2gtdmlydHVhbC5odG1sPg0KPiAJCSoJe2JhdC1ycGxzLTR9OiBO
+T1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9yZy90cmVlL2RybS10
+aXAvSUdUUFdfMTExMDgvYmF0LXJwbHMtNC9pZ3RAa21zX3ZyckBzZWFtbGVzcy1yci0NCj4gc3dp
+dGNoLXZpcnR1YWwuaHRtbD4NCj4gCQkqCWJhdC1hZGxuLTE6IE5PVFJVTiAtPiBTS0lQIDxodHRw
+czovL2ludGVsLWdmeC0NCj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9iYXQt
+YWRsbi0xL2lndEBrbXNfdnJyQHNlYW1sZXNzLXJyLQ0KPiBzd2l0Y2gtdmlydHVhbC5odG1sPg0K
+PiAJCSoJe2JhdC10d2wtMX06IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC0NCj4g
+Y2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9iYXQtdHdsLTEvaWd0QGttc192cnJA
+c2VhbWxlc3MtcnItDQo+IHN3aXRjaC12aXJ0dWFsLmh0bWw+DQo+IAkJKgliYXQtcnBscC0xOiBO
+T1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9yZy90cmVlL2RybS10
+aXAvSUdUUFdfMTExMDgvYmF0LXJwbHAtMS9pZ3RAa21zX3ZyckBzZWFtbGVzcy1yci0NCj4gc3dp
+dGNoLXZpcnR1YWwuaHRtbD4NCj4gCQkqCWZpLXJrbC0xMTYwMDogTk9UUlVOIC0+IFNLSVAgPGh0
+dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2Zp
+LXJrbC0xMTYwMC9pZ3RAa21zX3ZyckBzZWFtbGVzcy0NCj4gcnItc3dpdGNoLXZpcnR1YWwuaHRt
+bD4NCj4gCQkqCWZpLXRnbC0xMTE1ZzQ6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdm
+eC0NCj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9maS10Z2wtMTExNWc0L2ln
+dEBrbXNfdnJyQHNlYW1sZXNzLQ0KPiByci1zd2l0Y2gtdmlydHVhbC5odG1sPg0KPiANCj4gDQo+
+IAlTdXBwcmVzc2VkDQo+IA0KPiANCj4gCVRoZSBmb2xsb3dpbmcgcmVzdWx0cyBjb21lIGZyb20g
+dW50cnVzdGVkIG1hY2hpbmVzLCB0ZXN0cywgb3INCj4gc3RhdHVzZXMuDQo+IAlUaGV5IGRvIG5v
+dCBhZmZlY3QgdGhlIG92ZXJhbGwgcmVzdWx0Lg0KPiANCj4gCSoJaWd0QGk5MTVfbW9kdWxlX2xv
+YWRAbG9hZDoNCj4gDQo+IAkJKgl7YmF0LWFwbC0xfTogUEFTUyA8aHR0cHM6Ly9pbnRlbC1nZngt
+DQo+IGNpLjAxLm9yZy90cmVlL2RybS10aXAvQ0lfRFJNXzE0NzIzL2JhdC1hcGwtDQo+IDEvaWd0
+QGk5MTVfbW9kdWxlX2xvYWRAbG9hZC5odG1sPiAgLT4gQUJPUlQgPGh0dHBzOi8vaW50ZWwtZ2Z4
+LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2JhdC1hcGwtDQo+IDEvaWd0
+QGk5MTVfbW9kdWxlX2xvYWRAbG9hZC5odG1sPg0KPiANCj4gCSoJaWd0QGttc192cnJAc2VhbWxl
+c3MtcnItc3dpdGNoLXZycjoNCj4gDQo+IAkJKgl7YmF0LXR3bC0xfTogTk9UUlVOIC0+IFNLSVAg
+PGh0dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4
+L2JhdC10d2wtMS9pZ3RAa21zX3ZyckBzZWFtbGVzcy1yci0NCj4gc3dpdGNoLXZyci5odG1sPiAg
+KzIgb3RoZXIgdGVzdHMgc2tpcA0KPiANCj4gDQo+IAlOZXcgdGVzdHMNCj4gDQo+IA0KPiAJTmV3
+IHRlc3RzIGhhdmUgYmVlbiBpbnRyb2R1Y2VkIGJldHdlZW4gQ0lfRFJNXzE0NzIzIGFuZA0KPiBJ
+R1RQV18xMTEwODoNCj4gDQo+IA0KPiAJTmV3IElHVCB0ZXN0cyAoMSkNCj4gDQo+IA0KPiAJKglp
+Z3RAa21zX3ZyckBzZWFtbGVzcy1yci1zd2l0Y2gtdmlydHVhbDoNCj4gDQo+IAkJKglTdGF0dXNl
+cyA6IDM4IHNraXAocykNCj4gCQkqCUV4ZWMgdGltZTogWzAuMCwgMC4wMF0gcw0KPiANCj4gDQo+
+IAlLbm93biBpc3N1ZXMNCj4gDQo+IA0KPiAJSGVyZSBhcmUgdGhlIGNoYW5nZXMgZm91bmQgaW4g
+SUdUUFdfMTExMDggdGhhdCBjb21lIGZyb20ga25vd24NCj4gaXNzdWVzOg0KPiANCj4gDQo+IAlJ
+R1QgY2hhbmdlcw0KPiANCj4gDQo+IAlJc3N1ZXMgaGl0DQo+IA0KPiANCj4gCSoJaWd0QGRlYnVn
+ZnNfdGVzdEBiYXNpYy1od21vbjoNCj4gDQo+IAkJKgliYXQtanNsLTE6IE5PVFJVTiAtPiBTS0lQ
+IDxodHRwczovL2ludGVsLWdmeC0NCj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEw
+OC9iYXQtanNsLTEvaWd0QGRlYnVnZnNfdGVzdEBiYXNpYy0NCj4gaHdtb24uaHRtbD4gIChpOTE1
+IzkzMTggPGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwvLQ0K
+PiAvaXNzdWVzLzkzMTg+ICkNCj4gDQo+IAkqCWlndEBmYmRldkBpbmZvOg0KPiANCj4gCQkqCWJh
+dC1rYmwtMjogTk9UUlVOIC0+IFNLSVAgPGh0dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcv
+dHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2JhdC1rYmwtMi9pZ3RAZmJkZXZAaW5mby5odG1sPg0K
+PiAoaTkxNSMxODQ5IDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2k5MTUva2Vy
+bmVsLy0vaXNzdWVzLzE4NDk+ICkNCj4gDQo+IAkqCWlndEBnZW1faHVjX2NvcHlAaHVjLWNvcHk6
+DQo+IA0KPiAJCSoJYmF0LWpzbC0xOiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngt
+DQo+IGNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTExMDgvYmF0LWpzbC0xL2lndEBnZW1f
+aHVjX2NvcHlAaHVjLQ0KPiBjb3B5Lmh0bWw+ICAoaTkxNSMyMTkwIDxodHRwczovL2dpdGxhYi5m
+cmVlZGVza3RvcC5vcmcvZHJtL2k5MTUva2VybmVsLy0NCj4gL2lzc3Vlcy8yMTkwPiApDQo+IAkJ
+KglmaS1nbGstajQwMDU6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC0NCj4gY2ku
+MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9maS1nbGstajQwMDUvaWd0QGdlbV9odWNf
+Y29weUBodWMtDQo+IGNvcHkuaHRtbD4gIChpOTE1IzIxOTAgPGh0dHBzOi8vZ2l0bGFiLmZyZWVk
+ZXNrdG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwvLQ0KPiAvaXNzdWVzLzIxOTA+ICkNCj4gDQo+IAkq
+CWlndEBnZW1fbG1lbV9zd2FwcGluZ0BwYXJhbGxlbC1yYW5kb20tZW5naW5lczoNCj4gDQo+IAkJ
+KgliYXQta2JsLTI6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC0NCj4gY2kuMDEu
+b3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9iYXQta2JsLQ0KPiAyL2lndEBnZW1fbG1lbV9z
+d2FwcGluZ0BwYXJhbGxlbC1yYW5kb20tZW5naW5lcy5odG1sPiAgKzQ5IG90aGVyDQo+IHRlc3Rz
+IHNraXANCj4gCQkqCWJhdC1qc2wtMTogTk9UUlVOIC0+IFNLSVAgPGh0dHBzOi8vaW50ZWwtZ2Z4
+LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2JhdC1qc2wtDQo+IDEvaWd0
+QGdlbV9sbWVtX3N3YXBwaW5nQHBhcmFsbGVsLXJhbmRvbS1lbmdpbmVzLmh0bWw+ICAoaTkxNSM0
+NjEzDQo+IDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2k5MTUva2VybmVsLy0v
+aXNzdWVzLzQ2MTM+ICkgKzMgb3RoZXINCj4gdGVzdHMgc2tpcA0KPiAJCSoJZmktZ2xrLWo0MDA1
+OiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9yZy90cmVlL2Ry
+bS10aXAvSUdUUFdfMTExMDgvZmktZ2xrLQ0KPiBqNDAwNS9pZ3RAZ2VtX2xtZW1fc3dhcHBpbmdA
+cGFyYWxsZWwtcmFuZG9tLWVuZ2luZXMuaHRtbD4NCj4gKGk5MTUjNDYxMyA8aHR0cHM6Ly9naXRs
+YWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy80NjEzPiApDQo+ICsz
+IG90aGVyIHRlc3RzIHNraXANCj4gDQo+IAkqCWlndEBpOTE1X3BtX3JwbUBtb2R1bGUtcmVsb2Fk
+Og0KPiANCj4gCQkqCWJhdC1hZGxwLTY6IFBBU1MgPGh0dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBjaS4w
+MS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV8xNDcyMy9iYXQtYWRscC0NCj4gNi9pZ3RAaTkxNV9w
+bV9ycG1AbW9kdWxlLXJlbG9hZC5odG1sPiAgLT4gRE1FU0ctV0FSTiA8aHR0cHM6Ly9pbnRlbC0N
+Cj4gZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTExMDgvYmF0LWFkbHAtDQo+IDYv
+aWd0QGk5MTVfcG1fcnBtQG1vZHVsZS1yZWxvYWQuaHRtbD4gIChpOTE1Izk0MjcNCj4gPGh0dHBz
+Oi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwvLS9pc3N1ZXMvOTQyNz4g
+KSArMiBvdGhlcg0KPiB0ZXN0cyBkbWVzZy13YXJuDQo+IA0KPiAJKglpZ3RAa21zX2N1cnNvcl9s
+ZWdhY3lAYmFzaWMtYnVzeS1mbGlwLWJlZm9yZS1jdXJzb3ItDQo+IGxlZ2FjeToNCj4gDQo+IAkJ
+KgliYXQtanNsLTE6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC0NCj4gY2kuMDEu
+b3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9iYXQtanNsLQ0KPiAxL2lndEBrbXNfY3Vyc29y
+X2xlZ2FjeUBiYXNpYy1idXN5LWZsaXAtYmVmb3JlLWN1cnNvci1sZWdhY3kuaHRtbD4NCj4gKGk5
+MTUjNDEwMyA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8t
+L2lzc3Vlcy80MTAzPiApDQo+ICsxIG90aGVyIHRlc3Qgc2tpcA0KPiANCj4gCSoJaWd0QGttc19k
+c2NAZHNjLWJhc2ljOg0KPiANCj4gCQkqCWJhdC1qc2wtMTogTk9UUlVOIC0+IFNLSVAgPGh0dHBz
+Oi8vaW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2JhdC1q
+c2wtMS9pZ3RAa21zX2RzY0Bkc2MtDQo+IGJhc2ljLmh0bWw+ICAoaTkxNSMzNTU1IDxodHRwczov
+L2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2k5MTUva2VybmVsLy0NCj4gL2lzc3Vlcy8zNTU1
+PiAgLyBpOTE1Izk4ODYgPGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaTkxNS9r
+ZXJuZWwvLQ0KPiAvaXNzdWVzLzk4ODY+ICkNCj4gDQo+IAkqCWlndEBrbXNfZm9yY2VfY29ubmVj
+dG9yX2Jhc2ljQGZvcmNlLWxvYWQtZGV0ZWN0Og0KPiANCj4gCQkqCWJhdC1qc2wtMTogTk9UUlVO
+IC0+IFNLSVAgPGh0dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lH
+VFBXXzExMTA4L2JhdC1qc2wtDQo+IDEvaWd0QGttc19mb3JjZV9jb25uZWN0b3JfYmFzaWNAZm9y
+Y2UtbG9hZC1kZXRlY3QuaHRtbD4NCj4gDQo+IAkqCWlndEBrbXNfcHNyQHBzci1wcmltYXJ5LXBh
+Z2UtZmxpcDoNCj4gDQo+IAkJKglmaS1nbGstajQwMDU6IE5PVFJVTiAtPiBTS0lQIDxodHRwczov
+L2ludGVsLWdmeC0NCj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9maS1nbGst
+ajQwMDUvaWd0QGttc19wc3JAcHNyLQ0KPiBwcmltYXJ5LXBhZ2UtZmxpcC5odG1sPiAgKzIwIG90
+aGVyIHRlc3RzIHNraXANCj4gDQo+IAkqCWlndEBrbXNfdnJyQGZsaXAtYmFzaWM6DQo+IA0KPiAJ
+CSoJYmF0LWF0c20tMTogTk9UUlVOIC0+IFNLSVAgPGh0dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBjaS4w
+MS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2JhdC1hdHNtLTEvaWd0QGttc192cnJAZmxp
+cC0NCj4gYmFzaWMuaHRtbD4gIChpOTE1IzYwNzggPGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9w
+Lm9yZy9kcm0vaTkxNS9rZXJuZWwvLQ0KPiAvaXNzdWVzLzYwNzg+ICkgKzkgb3RoZXIgdGVzdHMg
+c2tpcA0KPiAJCSoJYmF0LWpzbC0zOiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngt
+DQo+IGNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTExMDgvYmF0LWpzbC0zL2lndEBrbXNf
+dnJyQGZsaXAtDQo+IGJhc2ljLmh0bWw+ICAoaTkxNSMzNTU1IDxodHRwczovL2dpdGxhYi5mcmVl
+ZGVza3RvcC5vcmcvZHJtL2k5MTUva2VybmVsLy0NCj4gL2lzc3Vlcy8zNTU1PiApICszIG90aGVy
+IHRlc3RzIHNraXANCj4gCQkqCWZpLWl2Yi0zNzcwOiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9p
+bnRlbC1nZngtDQo+IGNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTExMDgvZmktaXZiLTM3
+NzAvaWd0QGttc192cnJAZmxpcC0NCj4gYmFzaWMuaHRtbD4gICs5IG90aGVyIHRlc3RzIHNraXAN
+Cj4gCQkqCWJhdC1tdGxwLTg6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC0NCj4g
+Y2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9iYXQtbXRscC04L2lndEBrbXNfdnJy
+QGZsaXAtDQo+IGJhc2ljLmh0bWw+ICAoaTkxNSMzNTU1IDxodHRwczovL2dpdGxhYi5mcmVlZGVz
+a3RvcC5vcmcvZHJtL2k5MTUva2VybmVsLy0NCj4gL2lzc3Vlcy8zNTU1PiAgLyBpOTE1Izg4MDgg
+PGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwvLQ0KPiAvaXNz
+dWVzLzg4MDg+ICkgKzMgb3RoZXIgdGVzdHMgc2tpcA0KPiAJCSoJZmktZWxrLWU3NTAwOiBOT1RS
+VU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9yZy90cmVlL2RybS10aXAv
+SUdUUFdfMTExMDgvZmktZWxrLWU3NTAwL2lndEBrbXNfdnJyQGZsaXAtDQo+IGJhc2ljLmh0bWw+
+ICArOSBvdGhlciB0ZXN0cyBza2lwDQo+IAkJKgliYXQtZGcyLTg6IE5PVFJVTiAtPiBTS0lQIDxo
+dHRwczovL2ludGVsLWdmeC0NCj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9i
+YXQtZGcyLTgvaWd0QGttc192cnJAZmxpcC0NCj4gYmFzaWMuaHRtbD4gIChpOTE1IzkxOTcgPGh0
+dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwvLQ0KPiAvaXNzdWVz
+LzkxOTc+ICkgKzkgb3RoZXIgdGVzdHMgc2tpcA0KPiAJCSoJZmkta2JsLWd1YzogTk9UUlVOIC0+
+IFNLSVAgPGh0dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBX
+XzExMTA4L2ZpLWtibC1ndWMvaWd0QGttc192cnJAZmxpcC0NCj4gYmFzaWMuaHRtbD4gICs5IG90
+aGVyIHRlc3RzIHNraXANCj4gCQkqCWJhdC1qc2wtMTogTk9UUlVOIC0+IFNLSVAgPGh0dHBzOi8v
+aW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2JhdC1qc2wt
+MS9pZ3RAa21zX3ZyckBmbGlwLQ0KPiBiYXNpYy5odG1sPiAgKGk5MTUjMzU1NSA8aHR0cHM6Ly9n
+aXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tDQo+IC9pc3N1ZXMvMzU1NT4g
+KSArNCBvdGhlciB0ZXN0cyBza2lwDQo+IA0KPiAJKglpZ3RAa21zX3ZyckBmbGlwLWJhc2ljLWZh
+c3RzZXQ6DQo+IA0KPiAJCSoJZmktcG52LWQ1MTA6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2lu
+dGVsLWdmeC0NCj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9maS1wbnYtZDUx
+MC9pZ3RAa21zX3ZyckBmbGlwLWJhc2ljLQ0KPiBmYXN0c2V0Lmh0bWw+ICArOSBvdGhlciB0ZXN0
+cyBza2lwDQo+IAkJKgliYXQtZGcxLTc6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdm
+eC0NCj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9iYXQtZGcxLTcvaWd0QGtt
+c192cnJAZmxpcC1iYXNpYy0NCj4gZmFzdHNldC5odG1sPiAgKGk5MTUjOTkwNiA8aHR0cHM6Ly9n
+aXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tDQo+IC9pc3N1ZXMvOTkwNj4g
+KSArMyBvdGhlciB0ZXN0cyBza2lwDQo+IAkJKglmaS1rYmwtNzU2N3U6IE5PVFJVTiAtPiBTS0lQ
+IDxodHRwczovL2ludGVsLWdmeC0NCj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEw
+OC9maS1rYmwtNzU2N3UvaWd0QGttc192cnJAZmxpcC1iYXNpYy0NCj4gZmFzdHNldC5odG1sPiAg
+Kzkgb3RoZXIgdGVzdHMgc2tpcA0KPiAJCSoJYmF0LWFkbG4tMTogTk9UUlVOIC0+IFNLSVAgPGh0
+dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2Jh
+dC1hZGxuLTEvaWd0QGttc192cnJAZmxpcC1iYXNpYy0NCj4gZmFzdHNldC5odG1sPiAgKGk5MTUj
+OTkwNiA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tDQo+
+IC9pc3N1ZXMvOTkwNj4gKSArMiBvdGhlciB0ZXN0cyBza2lwDQo+IAkJKgliYXQtcnBscC0xOiBO
+T1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9yZy90cmVlL2RybS10
+aXAvSUdUUFdfMTExMDgvYmF0LXJwbHAtMS9pZ3RAa21zX3ZyckBmbGlwLWJhc2ljLQ0KPiBmYXN0
+c2V0Lmh0bWw+ICAoaTkxNSM5OTA2IDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJt
+L2k5MTUva2VybmVsLy0NCj4gL2lzc3Vlcy85OTA2PiApICsyIG90aGVyIHRlc3RzIHNraXANCj4g
+CQkqCWZpLXRnbC0xMTE1ZzQ6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC0NCj4g
+Y2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9maS10Z2wtMTExNWc0L2lndEBrbXNf
+dnJyQGZsaXAtYmFzaWMtDQo+IGZhc3RzZXQuaHRtbD4gIChpOTE1Izk5MDYgPGh0dHBzOi8vZ2l0
+bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwvLQ0KPiAvaXNzdWVzLzk5MDY+ICkg
+KzMgb3RoZXIgdGVzdHMgc2tpcA0KPiAJCSoJZmktY2ZsLWd1YzogTk9UUlVOIC0+IFNLSVAgPGh0
+dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2Zp
+LWNmbC1ndWMvaWd0QGttc192cnJAZmxpcC1iYXNpYy0NCj4gZmFzdHNldC5odG1sPiAgKzkgb3Ro
+ZXIgdGVzdHMgc2tpcA0KPiAJCSoJYmF0LW10bHAtNjogTk9UUlVOIC0+IFNLSVAgPGh0dHBzOi8v
+aW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2JhdC1tdGxw
+LTYvaWd0QGttc192cnJAZmxpcC1iYXNpYy0NCj4gZmFzdHNldC5odG1sPiAgKGk5MTUjOTc5MiA8
+aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tDQo+IC9pc3N1
+ZXMvOTc5Mj4gKSArOSBvdGhlciB0ZXN0cyBza2lwDQo+IAkJKgliYXQtYWRscC02OiBOT1RSVU4g
+LT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdU
+UFdfMTExMDgvYmF0LWFkbHAtNi9pZ3RAa21zX3ZyckBmbGlwLWJhc2ljLQ0KPiBmYXN0c2V0Lmh0
+bWw+ICAoaTkxNSM5OTA2IDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2k5MTUv
+a2VybmVsLy0NCj4gL2lzc3Vlcy85OTA2PiApICsxIG90aGVyIHRlc3Qgc2tpcA0KPiANCj4gCSoJ
+aWd0QGttc192cnJAZmxpcC1zdXNwZW5kOg0KPiANCj4gCQkqCWJhdC1ycGxwLTE6IE5PVFJVTiAt
+PiBTS0lQIDxodHRwczovL2ludGVsLWdmeC0NCj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQ
+V18xMTEwOC9iYXQtcnBscC0xL2lndEBrbXNfdnJyQGZsaXAtDQo+IHN1c3BlbmQuaHRtbD4gIChp
+OTE1IzM1NTUgPGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwv
+LQ0KPiAvaXNzdWVzLzM1NTU+ICkgKzMgb3RoZXIgdGVzdHMgc2tpcA0KPiAJCSoJZmktcmtsLTEx
+NjAwOiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9yZy90cmVl
+L2RybS10aXAvSUdUUFdfMTExMDgvZmktcmtsLTExNjAwL2lndEBrbXNfdnJyQGZsaXAtDQo+IHN1
+c3BlbmQuaHRtbD4gIChpOTE1IzM1NTUgPGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9k
+cm0vaTkxNS9rZXJuZWwvLQ0KPiAvaXNzdWVzLzM1NTU+ICkgKzQgb3RoZXIgdGVzdHMgc2tpcA0K
+PiAJCSoJYmF0LWRnMS03OiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNp
+LjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTExMDgvYmF0LWRnMS03L2lndEBrbXNfdnJyQGZs
+aXAtDQo+IHN1c3BlbmQuaHRtbD4gIChpOTE1IzM1NTUgPGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNr
+dG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwvLQ0KPiAvaXNzdWVzLzM1NTU+ICkgKzQgb3RoZXIgdGVz
+dHMgc2tpcA0KPiAJCSoJYmF0LWFkbHAtMTE6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVs
+LWdmeC0NCj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9iYXQtYWRscC0xMS9p
+Z3RAa21zX3ZyckBmbGlwLQ0KPiBzdXNwZW5kLmh0bWw+ICAoaTkxNSMxMDQ3MA0KPiA8aHR0cHM6
+Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy8xMDQ3MD4g
+IC8NCj4gaTkxNSMxMDUwMSA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1
+L2tlcm5lbC8tL2lzc3Vlcy8xMDUwMT4NCj4gKSArNiBvdGhlciB0ZXN0cyBza2lwDQo+IAkJKgli
+YXQtYWRsbi0xOiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9y
+Zy90cmVlL2RybS10aXAvSUdUUFdfMTExMDgvYmF0LWFkbG4tMS9pZ3RAa21zX3ZyckBmbGlwLQ0K
+PiBzdXNwZW5kLmh0bWw+ICAoaTkxNSMzNTU1IDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5v
+cmcvZHJtL2k5MTUva2VybmVsLy0NCj4gL2lzc3Vlcy8zNTU1PiApICszIG90aGVyIHRlc3RzIHNr
+aXANCj4gCQkqCWZpLXRnbC0xMTE1ZzQ6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdm
+eC0NCj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9maS10Z2wtMTExNWc0L2ln
+dEBrbXNfdnJyQGZsaXAtDQo+IHN1c3BlbmQuaHRtbD4gIChpOTE1IzM1NTUgPGh0dHBzOi8vZ2l0
+bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwvLQ0KPiAvaXNzdWVzLzM1NTU+ICkg
+KzQgb3RoZXIgdGVzdHMgc2tpcA0KPiANCj4gCSoJaWd0QGttc192cnJAZmxpcGxpbmU6DQo+IA0K
+PiAJCSoJYmF0LWRnMi0xNDogTk9UUlVOIC0+IFNLSVAgPGh0dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBj
+aS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2JhdC1kZzItDQo+IDE0L2lndEBrbXNf
+dnJyQGZsaXBsaW5lLmh0bWw+ICAoaTkxNSMzNTU1DQo+IDxodHRwczovL2dpdGxhYi5mcmVlZGVz
+a3RvcC5vcmcvZHJtL2k5MTUva2VybmVsLy0vaXNzdWVzLzM1NTU+ICkgKzQgb3RoZXINCj4gdGVz
+dHMgc2tpcA0KPiANCj4gCSoJaWd0QGttc192cnJAbWF4LW1pbjoNCj4gDQo+IAkJKgliYXQtYWRs
+bS0xOiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9yZy90cmVl
+L2RybS10aXAvSUdUUFdfMTExMDgvYmF0LWFkbG0tMS9pZ3RAa21zX3ZyckBtYXgtDQo+IG1pbi5o
+dG1sPiAgKGk5MTUjOTkwMCA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1
+L2tlcm5lbC8tDQo+IC9pc3N1ZXMvOTkwMD4gKSArOSBvdGhlciB0ZXN0cyBza2lwDQo+IAkJKgli
+YXQtYXJscy0xOiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9y
+Zy90cmVlL2RybS10aXAvSUdUUFdfMTExMDgvYmF0LWFybHMtMS9pZ3RAa21zX3ZyckBtYXgtDQo+
+IG1pbi5odG1sPiAgKGk5MTUjODgwOCA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2Ry
+bS9pOTE1L2tlcm5lbC8tDQo+IC9pc3N1ZXMvODgwOD4gKSArOCBvdGhlciB0ZXN0cyBza2lwDQo+
+IAkJKgliYXQtYXJscy0zOiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNp
+LjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTExMDgvYmF0LWFybHMtMy9pZ3RAa21zX3ZyckBt
+YXgtDQo+IG1pbi5odG1sPiAgKGk5MTUjODgwOCA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Au
+b3JnL2RybS9pOTE1L2tlcm5lbC8tDQo+IC9pc3N1ZXMvODgwOD4gKSArNyBvdGhlciB0ZXN0cyBz
+a2lwDQo+IAkJKgliYXQtbXRscC04OiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngt
+DQo+IGNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTExMDgvYmF0LW10bHAtOC9pZ3RAa21z
+X3ZyckBtYXgtDQo+IG1pbi5odG1sPiAgKGk5MTUjODgwOCA8aHR0cHM6Ly9naXRsYWIuZnJlZWRl
+c2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tDQo+IC9pc3N1ZXMvODgwOD4gIC8gaTkxNSM5OTA2
+IDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2k5MTUva2VybmVsLy0NCj4gL2lz
+c3Vlcy85OTA2PiApICszIG90aGVyIHRlc3RzIHNraXANCj4gDQo+IAkqCWlndEBrbXNfdnJyQG5l
+Z2F0aXZlLWJhc2ljOg0KPiANCj4gCQkqCWJhdC1hZGxwLTk6IE5PVFJVTiAtPiBTS0lQIDxodHRw
+czovL2ludGVsLWdmeC0NCj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9iYXQt
+YWRscC05L2lndEBrbXNfdnJyQG5lZ2F0aXZlLQ0KPiBiYXNpYy5odG1sPiAgKGk5MTUjMzU1NSA8
+aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tDQo+IC9pc3N1
+ZXMvMzU1NT4gKQ0KPiAJCSoJYmF0LWFkbHMtNjogTk9UUlVOIC0+IFNLSVAgPGh0dHBzOi8vaW50
+ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2JhdC1hZGxzLTYv
+aWd0QGttc192cnJAbmVnYXRpdmUtDQo+IGJhc2ljLmh0bWw+ICAoaTkxNSMzNTU1IDxodHRwczov
+L2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2k5MTUva2VybmVsLy0NCj4gL2lzc3Vlcy8zNTU1
+PiApDQo+IA0KPiAJKglpZ3RAa21zX3ZyckBzZWFtbGVzcy1yci1zd2l0Y2gtZHJyczoNCj4gDQo+
+IAkJKglmaS1jZmwtODcwMGs6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC0NCj4g
+Y2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9maS1jZmwtODcwMGsvaWd0QGttc192
+cnJAc2VhbWxlc3MtDQo+IHJyLXN3aXRjaC1kcnJzLmh0bWw+ICArOSBvdGhlciB0ZXN0cyBza2lw
+DQo+IAkJKglmaS1ibGItZTY4NTA6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC0N
+Cj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9maS1ibGItZTY4NTAvaWd0QGtt
+c192cnJAc2VhbWxlc3MtDQo+IHJyLXN3aXRjaC1kcnJzLmh0bWw+ICArOSBvdGhlciB0ZXN0cyBz
+a2lwDQo+IAkJKgliYXQtZGcyLTE0OiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngt
+DQo+IGNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTExMDgvYmF0LWRnMi0xNC9pZ3RAa21z
+X3ZyckBzZWFtbGVzcy0NCj4gcnItc3dpdGNoLWRycnMuaHRtbD4gIChpOTE1Izk5MDYNCj4gPGh0
+dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwvLS9pc3N1ZXMvOTkw
+Nj4gKSArMyBvdGhlcg0KPiB0ZXN0cyBza2lwDQo+IAkJKglmaS1ic3ctbmljazogTk9UUlVOIC0+
+IFNLSVAgPGh0dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBX
+XzExMTA4L2ZpLWJzdy1uaWNrL2lndEBrbXNfdnJyQHNlYW1sZXNzLQ0KPiByci1zd2l0Y2gtZHJy
+cy5odG1sPiAgKzkgb3RoZXIgdGVzdHMgc2tpcA0KPiAJCSoJYmF0LWpzbC0zOiBOT1RSVU4gLT4g
+U0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdf
+MTExMDgvYmF0LWpzbC0zL2lndEBrbXNfdnJyQHNlYW1sZXNzLXJyLQ0KPiBzd2l0Y2gtZHJycy5o
+dG1sPiAgKGk5MTUjOTkwNg0KPiA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9p
+OTE1L2tlcm5lbC8tL2lzc3Vlcy85OTA2PiApICszIG90aGVyDQo+IHRlc3RzIHNraXANCj4gDQo+
+IAkqCWlndEBrbXNfdnJyQHNlYW1sZXNzLXJyLXN3aXRjaC12aXJ0dWFsIChORVcpOg0KPiANCj4g
+CQkqCWJhdC1kZzItOTogTk9UUlVOIC0+IFNLSVAgPGh0dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBjaS4w
+MS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2JhdC1kZzItOS9pZ3RAa21zX3ZyckBzZWFt
+bGVzcy1yci0NCj4gc3dpdGNoLXZpcnR1YWwuaHRtbD4gIChpOTE1IzkxOTcNCj4gPGh0dHBzOi8v
+Z2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwvLS9pc3N1ZXMvOTE5Nz4gKSAr
+OSBvdGhlcg0KPiB0ZXN0cyBza2lwDQo+IAkJKglmaS1rYmwteDEyNzU6IE5PVFJVTiAtPiBTS0lQ
+IDxodHRwczovL2ludGVsLWdmeC0NCj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEw
+OC9maS1rYmwteDEyNzUvaWd0QGttc192cnJAc2VhbWxlc3MtDQo+IHJyLXN3aXRjaC12aXJ0dWFs
+Lmh0bWw+ICArOSBvdGhlciB0ZXN0cyBza2lwDQo+IAkJKgliYXQtYWRscC0xMTogTk9UUlVOIC0+
+IFNLSVAgPGh0dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBX
+XzExMTA4L2JhdC1hZGxwLTExL2lndEBrbXNfdnJyQHNlYW1sZXNzLQ0KPiByci1zd2l0Y2gtdmly
+dHVhbC5odG1sPiAgKGk5MTUjMTA0NzANCj4gPGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9y
+Zy9kcm0vaTkxNS9rZXJuZWwvLS9pc3N1ZXMvMTA0NzA+ICkgKzIgb3RoZXINCj4gdGVzdHMgc2tp
+cA0KPiAJCSoJZmktY2ZsLTgxMDl1OiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngt
+DQo+IGNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTExMDgvZmktY2ZsLTgxMDl1L2lndEBr
+bXNfdnJyQHNlYW1sZXNzLQ0KPiByci1zd2l0Y2gtdmlydHVhbC5odG1sPiAgKzkgb3RoZXIgdGVz
+dHMgc2tpcA0KPiAJCSoJZmktaWxrLTY1MDogTk9UUlVOIC0+IFNLSVAgPGh0dHBzOi8vaW50ZWwt
+Z2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMTA4L2ZpLWlsay02NTAvaWd0
+QGttc192cnJAc2VhbWxlc3MtcnItDQo+IHN3aXRjaC12aXJ0dWFsLmh0bWw+ICArOSBvdGhlciB0
+ZXN0cyBza2lwDQo+IA0KPiAJKglpZ3RAa21zX3ZyckBzZWFtbGVzcy1yci1zd2l0Y2gtdnJyOg0K
+PiANCj4gCQkqCWJhdC1hZGxwLTk6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC0N
+Cj4gY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTEwOC9iYXQtYWRscC05L2lndEBrbXNf
+dnJyQHNlYW1sZXNzLXJyLQ0KPiBzd2l0Y2gtdnJyLmh0bWw+ICAoaTkxNSM5OTA2DQo+IDxodHRw
+czovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2k5MTUva2VybmVsLy0vaXNzdWVzLzk5MDY+
+ICkgKzEgb3RoZXINCj4gdGVzdCBza2lwDQo+IAkJKgliYXQtYWRscy02OiBOT1RSVU4gLT4gU0tJ
+UCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTEx
+MDgvYmF0LWFkbHMtNi9pZ3RAa21zX3ZyckBzZWFtbGVzcy1yci0NCj4gc3dpdGNoLXZyci5odG1s
+PiAgKGk5MTUjOTkwNg0KPiA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1
+L2tlcm5lbC8tL2lzc3Vlcy85OTA2PiApICsxIG90aGVyDQo+IHRlc3Qgc2tpcA0KPiAJCSoJYmF0
+LWpzbC0xOiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtDQo+IGNpLjAxLm9yZy90
+cmVlL2RybS10aXAvSUdUUFdfMTExMDgvYmF0LWpzbC0xL2lndEBrbXNfdnJyQHNlYW1sZXNzLXJy
+LQ0KPiBzd2l0Y2gtdnJyLmh0bWw+ICAoaTkxNSM5OTA2DQo+IDxodHRwczovL2dpdGxhYi5mcmVl
+ZGVza3RvcC5vcmcvZHJtL2k5MTUva2VybmVsLy0vaXNzdWVzLzk5MDY+ICkgKzMgb3RoZXINCj4g
+dGVzdHMgc2tpcA0KPiAJCSoJZmktcmtsLTExNjAwOiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9p
+bnRlbC1nZngtDQo+IGNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTExMDgvZmktcmtsLTEx
+NjAwL2lndEBrbXNfdnJyQHNlYW1sZXNzLQ0KPiByci1zd2l0Y2gtdnJyLmh0bWw+ICAoaTkxNSM5
+OTA2DQo+IDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2k5MTUva2VybmVsLy0v
+aXNzdWVzLzk5MDY+ICkgKzMgb3RoZXINCj4gdGVzdHMgc2tpcA0KPiAJCSoJYmF0LWFybHMtMjog
+Tk9UUlVOIC0+IFNLSVAgPGh0dHBzOi8vaW50ZWwtZ2Z4LQ0KPiBjaS4wMS5vcmcvdHJlZS9kcm0t
+dGlwL0lHVFBXXzExMTA4L2JhdC1hcmxzLTIvaWd0QGttc192cnJAc2VhbWxlc3MtcnItDQo+IHN3
+aXRjaC12cnIuaHRtbD4gIChpOTE1Izg4MDgNCj4gPGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9w
+Lm9yZy9kcm0vaTkxNS9rZXJuZWwvLS9pc3N1ZXMvODgwOD4gKSArMiBvdGhlcg0KPiB0ZXN0cyBz
+a2lwDQo+IA0KPiAJe25hbWV9OiBUaGlzIGVsZW1lbnQgaXMgc3VwcHJlc3NlZC4gVGhpcyBtZWFu
+cyBpdCBpcyBpZ25vcmVkIHdoZW4NCj4gY29tcHV0aW5nDQo+IAl0aGUgc3RhdHVzIG9mIHRoZSBk
+aWZmZXJlbmNlIChTVUNDRVNTLCBXQVJOSU5HLCBvciBGQUlMVVJFKS4NCj4gDQo+IA0KPiAJQnVp
+bGQgY2hhbmdlcw0KPiANCj4gDQo+IAkqCUNJOiBDSS0yMDE5MDUyOSAtPiBOb25lDQo+IAkqCUlH
+VDogSUdUXzc4MzggLT4gSUdUUFdfMTExMDgNCj4gDQo+IAlDSS0yMDE5MDUyOTogMjAxOTA1MjkN
+Cj4gCUNJX0RSTV8xNDcyMzogZjU4Njc2ZTQ3YzEyYTk5NDA5YjcxZjdkM2JhYjlmODllMTQ1MjJi
+NCBADQo+IGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL2dmeC1jaS9saW51eA0KPiA8aHR0
+cDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL2dmeC1jaS9saW51eD4NCj4gCUlHVFBXXzExMTA4
+OiA3MGYzOTc1NmI4MzEwZWY0OWU1NjU3ODkwNTVjZmFiODViNWNlZjU4IEANCj4gaHR0cHM6Ly9n
+aXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pZ3QtZ3B1LXRvb2xzLmdpdA0KPiA8aHR0cHM6Ly9n
+aXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pZ3QtZ3B1LXRvb2xzLmdpdD4NCj4gCUlHVF83ODM4
+OiAxNTU2MjhiYzlkMGVlNzBjNjdjMzYxMjQ2MmE2MmYwOTU2MDlmMTUyIEANCj4gaHR0cHM6Ly9n
+aXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pZ3QtZ3B1LXRvb2xzLmdpdA0KPiA8aHR0cHM6Ly9n
+aXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pZ3QtZ3B1LXRvb2xzLmdpdD4NCg0K
