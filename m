@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23B65C25B4F
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B406C25B77
 	for <igt-dev@archiver.kernel.org>; Sun, 12 May 2024 15:51:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C1A2A10E2CF;
-	Sun, 12 May 2024 15:51:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 059B210E2C4;
+	Sun, 12 May 2024 15:51:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dn4eZxKM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q649SPaG";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0284B10E28D
- for <igt-dev@lists.freedesktop.org>; Sun, 12 May 2024 15:51:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 51EFF10E2C4
+ for <igt-dev@lists.freedesktop.org>; Sun, 12 May 2024 15:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715529073; x=1747065073;
+ t=1715529074; x=1747065074;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=33xFSyWrFj2OM2kFMBjGjXk36DZRID2DciUboAeroq8=;
- b=dn4eZxKMtmkoLdbEf/YnOpHUTFs455JVHWFfZEzoSXA7XR0JOpP8pACO
- h+7g3cZuL9kk2ig4N8Qlhybm1/BoiWj/RXwlx4tsD7a57392oL+6ZvlOC
- arE/KtIeokz047NJmzT9c2QVWRLwlBtQhLUPqUeIKpY/7aYRDLbldStfi
- lcI1UfCHhR2EuJik1iB2TQWOJHXRFGNnHbLm94PXzBqq27fAF89l5dmIk
- DmgNixzQ2MA50xwkUGOmjg3dorp+Io62V+1MKBdYlwyudlWlZKoeuF9q/
- iZqXQ4xmaXgoC8umfdQl7AtAm3Thl8iq9EgAfS5bR0SAMmfkA3AeR32tA w==;
-X-CSE-ConnectionGUID: BY8H5gvJSJGEmTy27VsIfA==
-X-CSE-MsgGUID: EU3FedWTQxyZ9P62I9eQaQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="22137085"
-X-IronPort-AV: E=Sophos;i="6.08,156,1712646000"; d="scan'208";a="22137085"
+ bh=J1CEx7dX+yOEuWes44W7iBoQahnwa+6cknMH7LaFZ9M=;
+ b=Q649SPaGVGidaFKQALaefXNrwxa92DPgJPhVIEcWfxY36yrx46CQPMJ/
+ adLENqyh2Csk36+0xAHSqER8/KFsUjVWV2Dx8xsYBMY2WUdlPIY4GKnIN
+ BYWf8ZPnd7W1dsxdhW/QiEoceMLOZ4/ec7SohACX2N+0SCJxkLAT9Qp07
+ Jpdn1OtEzUm4mlIxJ7Ygwc5w1qnqyC1QtcUSTH2819LHhgc8sQaK8VOSo
+ mrqX090bFVC9XD6WbiOUzhUFSBYvSdIgl01US1EnjJAfqliOC2m8voZ1q
+ q+KpXwzG/OhE7SqgxHHE7Mi/pCIsl9GXbyZfB8cHZatPEDhnFZFFzjQps Q==;
+X-CSE-ConnectionGUID: x3XKKrn4Q0+ravu1KCMkYw==
+X-CSE-MsgGUID: 1hHKKIGbTp2gUafueVxZKw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="22137087"
+X-IronPort-AV: E=Sophos;i="6.08,156,1712646000"; d="scan'208";a="22137087"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2024 08:51:13 -0700
-X-CSE-ConnectionGUID: QyXeE7vrQmmt+El+8aloEA==
-X-CSE-MsgGUID: 4O3bjN/+RrOIBvkZYgeMLA==
+ 12 May 2024 08:51:14 -0700
+X-CSE-ConnectionGUID: MbhUsVE5QBOvow1YWSotGA==
+X-CSE-MsgGUID: gGET7OWuQGyRVzhfddOymQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,156,1712646000"; d="scan'208";a="34623211"
+X-IronPort-AV: E=Sophos;i="6.08,156,1712646000"; d="scan'208";a="34623215"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2024 08:51:12 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2024 08:51:13 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 1/3] tests/kms_bw: convert to dynamic subtest
-Date: Sun, 12 May 2024 21:31:56 +0530
-Message-Id: <20240512160158.3328235-2-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 2/3] tests/kms_bw: allow physically connected only
+Date: Sun, 12 May 2024 21:31:57 +0530
+Message-Id: <20240512160158.3328235-3-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240512160158.3328235-1-kunal1.joshi@intel.com>
 References: <20240512160158.3328235-1-kunal1.joshi@intel.com>
@@ -67,113 +67,135 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Convert the test structure from individual subtests for each
-display mode (1080, 2k, 4k...) and display count (1, 2... n)
-to a dynamic subtest structure. The change addresses the issue
-of high skip counts due to potentially missing configurations,
-which previously required blacklisting.
+modify kms_bw test to only run on physically connected displays,
+avoiding issues with forcing a 4K EDID on disconnected connectors.
 
-In the new structure, the display mode is set at the subtest level,
-while the number of displays is dynamic. This ensures that the subtest
-passes regardless of the number of connected displays.
-To cover all scenarios, it may be necessary to connect the
-maximum possible number of displays.
+For instance, consider a system with 2 DP and 2 HDMI connectors
+(DP-1, DP-2, HDMI-1, HDMI-2). Forcing EDID on DP is currently problematic,
+and we only support forcing for HDMI. However, if there's only one
+TMDS encoder, we can only drive one HDMI display, not two.
+
+For now, the test will only run on physically connected displays.
+Future improvements may consider the encoder count to handle such
+scenarios more gracefully.
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_bw.c | 38 ++++++++++++++++++++------------------
- 1 file changed, 20 insertions(+), 18 deletions(-)
+ tests/kms_bw.c | 43 ++++++++++++++++++-------------------------
+ 1 file changed, 18 insertions(+), 25 deletions(-)
 
 diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-index 05f7e79ad..b50f324af 100644
+index b50f324af..4aabb02b7 100644
 --- a/tests/kms_bw.c
 +++ b/tests/kms_bw.c
-@@ -37,12 +37,10 @@
- #include <xf86drmMode.h>
- 
- /**
-- * SUBTEST: linear-tiling-%d-displays-%s
-- * Description: bw test with %arg[2]
-+ * SUBTEST: linear-tiling-%s
-+ * Description: bw test with %arg[1]
-  *
-- * arg[1].values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-- *
-- * arg[2]:
-+ * arg[1]:
-  *
-  * @1920x1080p:       1920x1080 resolution
-  * @2560x1440p:       2560x1440 resolution
-@@ -62,6 +60,7 @@ typedef struct data {
-         int w[IGT_MAX_PIPES];
+@@ -61,6 +61,7 @@ typedef struct data {
          int h[IGT_MAX_PIPES];
          int fd;
-+	int num_pipes;
+ 	int num_pipes;
++	int num_outputs;
  } data_t;
  
  static drmModeModeInfo test_mode[] = {
-@@ -178,16 +177,10 @@ static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo
+@@ -105,8 +106,9 @@ static drmModeModeInfo test_mode[] = {
+ static void test_init(data_t *data)
+ {
+ 	igt_display_t *display = &data->display;
+-	int i, max_pipes = display->n_pipes;
++	int i;
+ 	igt_output_t *output;
++	data->num_outputs = 0;
+ 
+ 	for_each_pipe(display, i) {
+ 		data->pipe_id[i] = i;
+@@ -118,23 +120,22 @@ static void test_init(data_t *data)
+ 					 IGT_PIPE_CRC_SOURCE_AUTO);
+ 	}
+ 
+-	for (i = 0; i < display->n_outputs && i < max_pipes; i++) {
+-		if (!data->pipe[i])
+-			continue;
+-
+-		output = &display->outputs[i];
+-
+-		data->output[i] = output;
++	i = 0;
+ 
++	for_each_output(display, output) {
+ 		/* Only allow physically connected displays for the tests. */
+ 		if (!igt_output_is_connected(output))
+ 			continue;
+ 
++		data->output[i] = output;
++		data->num_outputs++;
++
+ 		igt_assert(kmstest_get_connector_default_mode(
+ 			data->fd, output->config.connector, &data->mode[i]));
+ 
+ 		data->w[i] = data->mode[i].hdisplay;
+ 		data->h[i] = data->mode[i].vdisplay;
++		i++;
+ 	}
+ 
+ 
+@@ -156,27 +157,12 @@ static void test_fini(data_t *data)
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+ }
+ 
+-/* Forces a mode for a connector. */
+-static void force_output_mode(data_t *d, igt_output_t *output,
+-			      const drmModeModeInfo *mode)
+-{
+-	/* This allows us to create a virtual sink. */
+-	if (!igt_output_is_connected(output)) {
+-		kmstest_force_edid(d->fd, output->config.connector,
+-				   igt_kms_get_4k_edid());
+-
+-		kmstest_force_connector(d->fd, output->config.connector,
+-					FORCE_CONNECTOR_DIGITAL);
+-	}
+-
+-	igt_output_override_mode(output, mode);
+-}
+-
+ static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo *mode) {
+ 	igt_display_t *display = &data->display;
  	igt_output_t *output;
  	struct igt_fb buffer[IGT_MAX_PIPES];
  	igt_crc_t zero, captured[IGT_MAX_PIPES];
--	int i = 0, num_pipes = 0;
--	enum pipe p;
++	int i = 0;
  	int ret;
  
--	/* Cannot use igt_display_get_n_pipes() due to fused pipes on i915 where they do
--	 * not give the numver of valid crtcs and always return IGT_MAX_PIPES */
--	for_each_pipe(display, p) num_pipes++;
--
--	igt_skip_on_f(pipe >= num_pipes,
--                      "ASIC does not have %d pipes\n", pipe);
-+	igt_skip_on_f(pipe >= data->num_pipes,
-+				  "ASIC does not have %d pipes\n", pipe);
+ 	igt_skip_on_f(pipe >= data->num_pipes,
+@@ -184,6 +170,10 @@ static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo
  
  	test_init(data);
  
-@@ -244,28 +237,37 @@ igt_main
- {
- 	data_t data;
- 	int i = 0, j = 0;
-+	enum pipe p;
- 
- 	memset(&data, 0, sizeof(data));
- 
- 	igt_fixture
- 	{
- 		data.fd = drm_open_driver_master(DRIVER_ANY);
-+		data.num_pipes = 0;
- 
- 		kmstest_set_vt_graphics_mode();
- 
- 		igt_display_require(&data.display, data.fd);
- 		igt_require(&data.display.is_atomic);
- 		igt_display_require_output(&data.display);
-+		/*
-+		 * Cannot use igt_display_get_n_pipes() due to fused pipes on i915 where they do
-+		 * not give the numver of valid crtcs and always return IGT_MAX_PIPES
-+		 */
-+		for_each_pipe(&data.display, p) data.num_pipes++;
- 
- 	}
- 
- 	/* We're not using for_each_pipe_static because we need the
- 	 * _amount_ of pipes */
--	for (i = 0; i < IGT_MAX_PIPES; i++) {
--		for (j = 0; j < ARRAY_SIZE(test_mode); j++) {
--			igt_subtest_f("linear-tiling-%d-displays-%s", i+1,
--			      test_mode[j].name)
--			run_test_linear_tiling(&data, i, &test_mode[j]);
-+	for (j = 0; j < ARRAY_SIZE(test_mode); j++) {
-+		igt_subtest_with_dynamic_f("linear-tiling-%s", test_mode[j].name)
-+		{
-+			for (i = 0; i < data.num_pipes; i++) {
-+				igt_dynamic_f("%d-display%s", i+1, i == 0 ? "" : "s")
-+					run_test_linear_tiling(&data, i, &test_mode[j]);
-+			}
++	igt_skip_on_f(pipe >= data->num_outputs,
++				  "%d connected outputs required but found %d\n",
++				  pipe+1, data->num_outputs+1);
++
+ 	/* create buffers */
+ 	for (i = 0; i <= pipe; i++) {
+ 		output = data->output[i];
+@@ -191,7 +181,7 @@ static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo
+ 			continue;
  		}
- 	}
  
+-		force_output_mode(data, output, mode);
++		igt_output_override_mode(output, mode);
+ 
+ 		igt_create_color_fb(display->drm_fd, mode->hdisplay,
+ 				    mode->vdisplay, DRM_FORMAT_XRGB8888,
+@@ -199,6 +189,9 @@ static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo
+ 				    &buffer[i]);
+ 
+ 		igt_output_set_pipe(output, i);
++		igt_info("Assigned output %s to pipe %s with mode %dx%d@%d\n",
++				 igt_output_name(output), kmstest_pipe_name(i),
++				 mode->hdisplay, mode->vdisplay, mode->vrefresh);
+ 
+ 		igt_plane_set_fb(data->primary[i], &buffer[i]);
+ 	}
 -- 
 2.34.1
 
