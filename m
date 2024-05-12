@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B406C25B77
-	for <igt-dev@archiver.kernel.org>; Sun, 12 May 2024 15:51:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FF3FC25B4F
+	for <igt-dev@archiver.kernel.org>; Sun, 12 May 2024 15:51:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 059B210E2C4;
-	Sun, 12 May 2024 15:51:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BF5D410E2EE;
+	Sun, 12 May 2024 15:51:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q649SPaG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XEOZMlC7";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 51EFF10E2C4
- for <igt-dev@lists.freedesktop.org>; Sun, 12 May 2024 15:51:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B0AA10E2C4
+ for <igt-dev@lists.freedesktop.org>; Sun, 12 May 2024 15:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715529074; x=1747065074;
+ t=1715529075; x=1747065075;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=J1CEx7dX+yOEuWes44W7iBoQahnwa+6cknMH7LaFZ9M=;
- b=Q649SPaGVGidaFKQALaefXNrwxa92DPgJPhVIEcWfxY36yrx46CQPMJ/
- adLENqyh2Csk36+0xAHSqER8/KFsUjVWV2Dx8xsYBMY2WUdlPIY4GKnIN
- BYWf8ZPnd7W1dsxdhW/QiEoceMLOZ4/ec7SohACX2N+0SCJxkLAT9Qp07
- Jpdn1OtEzUm4mlIxJ7Ygwc5w1qnqyC1QtcUSTH2819LHhgc8sQaK8VOSo
- mrqX090bFVC9XD6WbiOUzhUFSBYvSdIgl01US1EnjJAfqliOC2m8voZ1q
- q+KpXwzG/OhE7SqgxHHE7Mi/pCIsl9GXbyZfB8cHZatPEDhnFZFFzjQps Q==;
-X-CSE-ConnectionGUID: x3XKKrn4Q0+ravu1KCMkYw==
-X-CSE-MsgGUID: 1hHKKIGbTp2gUafueVxZKw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="22137087"
-X-IronPort-AV: E=Sophos;i="6.08,156,1712646000"; d="scan'208";a="22137087"
+ bh=lKH/ADCdWiW+/UbNNuKWX0qX98q2m5tIGdyFGxBYwQ8=;
+ b=XEOZMlC7ajY2QnPM7ziElCb9xaRUgTdRHjzGevbmxeIo7ojGPJq73mZi
+ cmwKp5J58XyjeqfCPKZ87dpMhUi3ovNpmwKFEniNWKIfNi9K1NNjSUOmL
+ h6pIFriz8w8nr1Ps5yS28LczGlmCoONxcJh9JPSSHU0EjuexAcSbmU+71
+ HR80mYWhR0tq3dYF8V+MzX0qj3v3a+iRO4El7cUbTAxamuYdiU0OflexF
+ bbxk3yDVDX0f/FbtLdR/zTiB3Mwo4UCYMrMljzAAhOw6WzfxMX2lJB6IE
+ ZY+rSoNwQBQ71lfS/8VtsKHd725V3tBmuVnG+J1p+sRIkEvQnDLNC9PG3 w==;
+X-CSE-ConnectionGUID: I1t31b42SZaWCexFSocRVQ==
+X-CSE-MsgGUID: ecLcPkrQQQm4ta7MASxarQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="22137092"
+X-IronPort-AV: E=Sophos;i="6.08,156,1712646000"; d="scan'208";a="22137092"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2024 08:51:14 -0700
-X-CSE-ConnectionGUID: MbhUsVE5QBOvow1YWSotGA==
-X-CSE-MsgGUID: gGET7OWuQGyRVzhfddOymQ==
+ 12 May 2024 08:51:15 -0700
+X-CSE-ConnectionGUID: zlysSi7gRzOTOEfL7JSulA==
+X-CSE-MsgGUID: Ave+c7u8QGuqGNPtoOtbqg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,156,1712646000"; d="scan'208";a="34623215"
+X-IronPort-AV: E=Sophos;i="6.08,156,1712646000"; d="scan'208";a="34623221"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2024 08:51:13 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2024 08:51:14 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 2/3] tests/kms_bw: allow physically connected only
-Date: Sun, 12 May 2024 21:31:57 +0530
-Message-Id: <20240512160158.3328235-3-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 3/3] HAX patch do not merge
+Date: Sun, 12 May 2024 21:31:58 +0530
+Message-Id: <20240512160158.3328235-4-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240512160158.3328235-1-kunal1.joshi@intel.com>
 References: <20240512160158.3328235-1-kunal1.joshi@intel.com>
@@ -67,135 +67,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-modify kms_bw test to only run on physically connected displays,
-avoiding issues with forcing a 4K EDID on disconnected connectors.
-
-For instance, consider a system with 2 DP and 2 HDMI connectors
-(DP-1, DP-2, HDMI-1, HDMI-2). Forcing EDID on DP is currently problematic,
-and we only support forcing for HDMI. However, if there's only one
-TMDS encoder, we can only drive one HDMI display, not two.
-
-For now, the test will only run on physically connected displays.
-Future improvements may consider the encoder count to handle such
-scenarios more gracefully.
+HAX patch do not merge
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_bw.c | 43 ++++++++++++++++++-------------------------
- 1 file changed, 18 insertions(+), 25 deletions(-)
+ tests/intel-ci/fast-feedback.testlist | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-index b50f324af..4aabb02b7 100644
---- a/tests/kms_bw.c
-+++ b/tests/kms_bw.c
-@@ -61,6 +61,7 @@ typedef struct data {
-         int h[IGT_MAX_PIPES];
-         int fd;
- 	int num_pipes;
-+	int num_outputs;
- } data_t;
- 
- static drmModeModeInfo test_mode[] = {
-@@ -105,8 +106,9 @@ static drmModeModeInfo test_mode[] = {
- static void test_init(data_t *data)
- {
- 	igt_display_t *display = &data->display;
--	int i, max_pipes = display->n_pipes;
-+	int i;
- 	igt_output_t *output;
-+	data->num_outputs = 0;
- 
- 	for_each_pipe(display, i) {
- 		data->pipe_id[i] = i;
-@@ -118,23 +120,22 @@ static void test_init(data_t *data)
- 					 IGT_PIPE_CRC_SOURCE_AUTO);
- 	}
- 
--	for (i = 0; i < display->n_outputs && i < max_pipes; i++) {
--		if (!data->pipe[i])
--			continue;
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index be0965110..10f54d516 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,6 +1,9 @@
+ # Try to load the driver if it's not available yet.
+ igt@i915_module_load@load
 -
--		output = &display->outputs[i];
--
--		data->output[i] = output;
-+	i = 0;
- 
-+	for_each_output(display, output) {
- 		/* Only allow physically connected displays for the tests. */
- 		if (!igt_output_is_connected(output))
- 			continue;
- 
-+		data->output[i] = output;
-+		data->num_outputs++;
-+
- 		igt_assert(kmstest_get_connector_default_mode(
- 			data->fd, output->config.connector, &data->mode[i]));
- 
- 		data->w[i] = data->mode[i].hdisplay;
- 		data->h[i] = data->mode[i].vdisplay;
-+		i++;
- 	}
- 
- 
-@@ -156,27 +157,12 @@ static void test_fini(data_t *data)
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
- }
- 
--/* Forces a mode for a connector. */
--static void force_output_mode(data_t *d, igt_output_t *output,
--			      const drmModeModeInfo *mode)
--{
--	/* This allows us to create a virtual sink. */
--	if (!igt_output_is_connected(output)) {
--		kmstest_force_edid(d->fd, output->config.connector,
--				   igt_kms_get_4k_edid());
--
--		kmstest_force_connector(d->fd, output->config.connector,
--					FORCE_CONNECTOR_DIGITAL);
--	}
--
--	igt_output_override_mode(output, mode);
--}
--
- static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo *mode) {
- 	igt_display_t *display = &data->display;
- 	igt_output_t *output;
- 	struct igt_fb buffer[IGT_MAX_PIPES];
- 	igt_crc_t zero, captured[IGT_MAX_PIPES];
-+	int i = 0;
- 	int ret;
- 
- 	igt_skip_on_f(pipe >= data->num_pipes,
-@@ -184,6 +170,10 @@ static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo
- 
- 	test_init(data);
- 
-+	igt_skip_on_f(pipe >= data->num_outputs,
-+				  "%d connected outputs required but found %d\n",
-+				  pipe+1, data->num_outputs+1);
-+
- 	/* create buffers */
- 	for (i = 0; i <= pipe; i++) {
- 		output = data->output[i];
-@@ -191,7 +181,7 @@ static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo
- 			continue;
- 		}
- 
--		force_output_mode(data, output, mode);
-+		igt_output_override_mode(output, mode);
- 
- 		igt_create_color_fb(display->drm_fd, mode->hdisplay,
- 				    mode->vdisplay, DRM_FORMAT_XRGB8888,
-@@ -199,6 +189,9 @@ static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo
- 				    &buffer[i]);
- 
- 		igt_output_set_pipe(output, i);
-+		igt_info("Assigned output %s to pipe %s with mode %dx%d@%d\n",
-+				 igt_output_name(output), kmstest_pipe_name(i),
-+				 mode->hdisplay, mode->vdisplay, mode->vrefresh);
- 
- 		igt_plane_set_fb(data->primary[i], &buffer[i]);
- 	}
++igt@kms_bw@linear-tiling-1920x1080p
++igt@kms_bw@linear-tiling-2560x1440p
++igt@kms_bw@linear-tiling-3840x2160p
++igt@kms_bw@linear-tiling-2160x1440p
+ # Keep alphabetically sorted by default
+ igt@core_auth@basic-auth
+ igt@debugfs_test@read_all_entries
 -- 
 2.34.1
 
