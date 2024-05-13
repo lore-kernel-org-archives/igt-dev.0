@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A193C25B75
-	for <igt-dev@archiver.kernel.org>; Mon, 13 May 2024 10:51:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7645C25B10
+	for <igt-dev@archiver.kernel.org>; Mon, 13 May 2024 10:51:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 36BC610E645;
-	Mon, 13 May 2024 10:51:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5056E10E636;
+	Mon, 13 May 2024 10:51:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WHqgF7DX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ol9PoQBs";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14EB510E645
- for <igt-dev@lists.freedesktop.org>; Mon, 13 May 2024 10:51:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 597E310E636
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 May 2024 10:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715597485; x=1747133485;
+ t=1715597494; x=1747133494;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=pxekVTwtpVMkPkEr9edVzakllVStSkKZVrU834FKs4o=;
- b=WHqgF7DXpuvXD0YOfzgVHocSp8QjHcmZXf9qEvxmrJc9irMpRX0ODbrK
- OVi8cFYD0w1E8zXew50fKu1bTjMQMBe9eiOI8rQDeTQSqpyiSP+TOro6x
- kM/qj8WukAXiVMbSM+jiJp6+JBD9dWOEzoOMCnNhPQ1DAkDVq5G2ioFcq
- 9nhMjnAwPNzOd2OAw5ZKStLMc9tf5q4lVela16DsKIzqGCaAfsGKvBzJV
- fNvjEObTTXWuYObj3XiijdtxEexc6rQNbLtaM/4n9dOTUIijDFxoH4CNk
- mGDeZiAS3Tdl2IjqWgtwIdlyCH+5VE4wnnbS923IeOvJ6n2VWXAkrT9vh w==;
-X-CSE-ConnectionGUID: WvV3aegJSLyudaRwMUHkGA==
-X-CSE-MsgGUID: ynarTStDRcGXAenIqKEkgA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="22193344"
-X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="22193344"
+ bh=Q75dS0iTY0RZSso6XMz6HANxL2PMw7uTwTZ7yYfP6ec=;
+ b=Ol9PoQBsXcNShy+ZVg4JGNnY6THtuvvOyaGhIoWPQvJ0RWWpbZqeybDy
+ cog/xJEQHlQ4MK2Vlzw4B8swsFNImJeyGwQWl3yWgdo+fzVQMtMXrkVAZ
+ qyP4/1rC/90LgNA12P3+B8/Lqnn0b0R+9NvjB/m4CZTS06k0oKZtH5GXm
+ yd8z+mQ0GF4lz6ITbv7flVvx8HUsh3ykj+drL7fbQjbTAjUrfUuPUydTp
+ B3U/lXecxME5evsyqwS648UW9AVztlU0WhbQYZlEfWxCESnrPI/012qP2
+ ffVEG1oPW28usC3+NQoSZ9Rk43l6JS0h/xar8pjRE7HmqPpUFJV9+/LR5 Q==;
+X-CSE-ConnectionGUID: IamnFCBRT1+Lq8EMmlj2EQ==
+X-CSE-MsgGUID: EVLKypePQ6miRoxFHppJOA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="22193353"
+X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="22193353"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2024 03:51:24 -0700
-X-CSE-ConnectionGUID: +lIlO7wSTKOCzYCC+eBElg==
-X-CSE-MsgGUID: gpPmnokEQp6GtaL/wf5/uw==
+ 13 May 2024 03:51:34 -0700
+X-CSE-ConnectionGUID: CdiySKk+Qzu+RStbV00StA==
+X-CSE-MsgGUID: k+gy5j0uQEKYFYChrn0vfQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="34994774"
+X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="34994789"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2024 03:51:22 -0700
+ 13 May 2024 03:51:32 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
@@ -49,9 +49,10 @@ Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Aditya Chauhan <aditya.chauhan@intel.com>,
  Girotra Himanshu <himanshu.girotra@intel.com>,
  Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
-Subject: [PATCH i-g-t v3 15/16] tests/intel: Introduce RAS Mega feature
-Date: Mon, 13 May 2024 10:48:45 +0000
-Message-Id: <20240513104846.362332-16-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v3 16/16] tests/intel: Add display tests to General
+ Display Features
+Date: Mon, 13 May 2024 10:48:46 +0000
+Message-Id: <20240513104846.362332-17-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240513104846.362332-1-katarzyna.piecielska@intel.com>
 References: <20240513104846.362332-1-katarzyna.piecielska@intel.com>
@@ -72,7 +73,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add mega feature to RAS tests.
+Add display tests to General Display Features.
 Group:
 	SUBTEST
 	Description
@@ -88,23 +89,46 @@ Cc: Aditya Chauhan <aditya.chauhan@intel.com>
 Cc: Girotra Himanshu <himanshu.girotra@intel.com>
 CC: Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
 ---
- tests/intel/intel_hwmon.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/intel/i915_pipe_stress.c | 4 ++--
+ tests/intel/i915_selftest.c    | 3 ++-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/intel_hwmon.c b/tests/intel/intel_hwmon.c
-index 7c6ee0100..448f780d4 100644
---- a/tests/intel/intel_hwmon.c
-+++ b/tests/intel/intel_hwmon.c
-@@ -12,7 +12,8 @@
-  * TEST: intel hwmon
-  * Description: Tests for intel hwmon
-  * Category: Software Building Block
-- * Sub-category: RAS
-+ * Mega feature: RAS
-+ * Sub-category: RAS tests
-  * Functionality: hwmon
-  * Test category: functionality
+diff --git a/tests/intel/i915_pipe_stress.c b/tests/intel/i915_pipe_stress.c
+index de4df830f..203eb46a3 100644
+--- a/tests/intel/i915_pipe_stress.c
++++ b/tests/intel/i915_pipe_stress.c
+@@ -20,13 +20,13 @@
+ #include "i915/gem.h"
+ /**
+  * TEST: i915 pipe stress
+- * Category: Display
+  * Description: Stress test how gpu and cpu behaves if maximum amount of
+  *              planes, cpu and gpu utilization is achieved in order to reveal
+  *              possible bandwidth/watermark and similar problems.
+- * Functionality: kms_core
++ * Category: Display
+  * Mega feature: General Display Features
+  * Sub-category: Display Tests
++ * Functionality: kms_core
+  * Test category: stress test
   *
+  * SUBTEST: stress-xrgb8888-untiled
+diff --git a/tests/intel/i915_selftest.c b/tests/intel/i915_selftest.c
+index e4354df5f..bdac64b29 100644
+--- a/tests/intel/i915_selftest.c
++++ b/tests/intel/i915_selftest.c
+@@ -74,9 +74,10 @@
+  *
+  * SUBTEST: live@display
+  * Category: Selftest
++ * Mega feature: General Display Features
++ * Sub-category: Display tests
+  * Functionality: display sanity
+  * Test category: i915
+- * Sub-category: Display tests
+  *
+  * SUBTEST: live@dmabuf
+  * Category: Selftest
 -- 
 2.34.1
 
