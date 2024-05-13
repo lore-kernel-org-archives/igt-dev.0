@@ -4,66 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FE0DC25B10
-	for <igt-dev@archiver.kernel.org>; Mon, 13 May 2024 14:02:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4D9BC25B5F
+	for <igt-dev@archiver.kernel.org>; Mon, 13 May 2024 14:13:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E974C10E7A9;
-	Mon, 13 May 2024 14:02:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4C64810E121;
+	Mon, 13 May 2024 14:13:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YYZRq+S7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EiwuVjyw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EECD710E7A9
- for <igt-dev@lists.freedesktop.org>; Mon, 13 May 2024 14:02:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C7FFF10E121;
+ Mon, 13 May 2024 14:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715608949; x=1747144949;
+ t=1715609614; x=1747145614;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=8dmtLJZpE6GhDE+wiFbtzYnLVZob3iood17a7kNpcB4=;
- b=YYZRq+S7xIwoMXKM0L/MqMxBjVIfx7T79bqcsPcRsIi+49wMq1THtJXo
- obM3mSLBAw9B2iuqppTh6KCbWHmD8j8H3EdPMI61pvJN69OnPZ+h8tWyk
- 6cX592B+H4g6q/u3K/AqZuo5aRZ9SpTWAM39m2UhGusQZhMuWJP9ADzGN
- 522YGNlSqQScdGcq5Q2cPV2VljfuCEFYibW6pSgy+r1+KsCB7EzzoeM8R
- kL6nAOc8yI+cnyb3NSH6ovj4DBSzkj7OkeF8GxM8NM3CzHcmGm3aka03B
- sGcv4HbLFKPotiTjwgfTx4bq7jYBR0pGydgfjaHxHE0O8s2FUAdFhVkxy Q==;
-X-CSE-ConnectionGUID: X/Mxrw9JSGajEkEY2fskIQ==
-X-CSE-MsgGUID: +FZJQMXWSwSy75YD5/RzPw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11072"; a="15335693"
-X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="15335693"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2024 07:02:27 -0700
-X-CSE-ConnectionGUID: KPtZ6aFOTKS0cXmJzxnbRw==
-X-CSE-MsgGUID: t/SWZKGTRmCwb4bORzlXsw==
+ bh=KR7yiHexJFYNqFsh09OA2b/la4j9oJWAFZa7m7+B6Yg=;
+ b=EiwuVjywE7/bLtH5itUw+vmSfwGA2tOxmHnETq9hS8O4cK2LZGK3K6BJ
+ +dUStTWhRXzK75lEHD/9NJZvZ5XWFdESXE1gIiuCafRUKAlNQkj+2JyoD
+ h1iMofWt3WkG6E6p/eRrb7XRytljdyjeuCUTUZooLnyHyOOiOD7o6HnJq
+ 2U3tg7nhnZTbG3ptxqbRlIUL3cLFDcwvrDRfDjwdRoiAi8irO981jHRJq
+ fr9EdsW6nixEzP88fqGXCd/zq7oXDEzw5zsQo0tHHAFnUGG7EFcOjcaul
+ A82c3Cnus+OGm0yhT/RVGPEz8rvLYoTZISEpZ9yrTp1nsEWSxRMwQ4pWx g==;
+X-CSE-ConnectionGUID: +y7QiOeqS6STP1tilWRS8Q==
+X-CSE-MsgGUID: hezU3juqT2yPOyHQTLeOGg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11072"; a="11678549"
+X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="11678549"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2024 07:13:34 -0700
+X-CSE-ConnectionGUID: /NkBuGLgQZyAs0QFN3DwMQ==
+X-CSE-MsgGUID: jefkVqiBRtCSgrNnER8pWQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="30372877"
+X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="35037824"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2024 07:02:25 -0700
-Date: Mon, 13 May 2024 16:01:55 +0200
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2024 07:13:32 -0700
+Date: Mon, 13 May 2024 16:13:29 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Zack Rusin <zack.rusin@broadcom.com>, ian.forbes@broadcom.com,
- martin.krastev@broadcom.com, maaz.mombasawala@broadcom.com,
- Maaz Mombasawala <mombasawalam@vmware.com>,
- Martin Krastev <krastevm@vmware.com>, Ian Forbes <iforbes@vmware.com>
-Subject: Re: [PATCH i-g-t 1/3] tests/vmwgfx: Removing incorrect assert in
- mob_repeated_unref
-Message-ID: <20240513140155.ythxuqxir5dtw3ao@kamilkon-DESK.igk.intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVDogZmFpbHVy?= =?utf-8?Q?e?= for
+ lib/i915/perf: Accumulate clocks for MPEC format too
+Message-ID: <20240513141329.yvo24ek7cucf3akl@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Zack Rusin <zack.rusin@broadcom.com>,
- ian.forbes@broadcom.com, martin.krastev@broadcom.com,
- maaz.mombasawala@broadcom.com,
- Maaz Mombasawala <mombasawalam@vmware.com>,
- Martin Krastev <krastevm@vmware.com>,
- Ian Forbes <iforbes@vmware.com>
-References: <20240509191529.3783796-1-zack.rusin@broadcom.com>
- <20240509191529.3783796-2-zack.rusin@broadcom.com>
+ igt-dev@lists.freedesktop.org,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+References: <20240510170450.2404385-1-ashutosh.dixit@intel.com>
+ <171549613754.2076247.10178397078084136771@8e613ede5ea5>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240509191529.3783796-2-zack.rusin@broadcom.com>
+In-Reply-To: <171549613754.2076247.10178397078084136771@8e613ede5ea5>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,57 +74,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zack,
-On 2024-05-09 at 15:15:27 -0400, Zack Rusin wrote:
-> From: Maaz Mombasawala <mombasawalam@vmware.com>
+Hi igt-dev,
+On 2024-05-12 at 06:42:17 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Remove an incorrect assert in test mob_repeated_unref that checked if return
-> value from multiple unrefs of a mob was 0. This was a bug in the vmwgfx driver,
-> since after the first unref it should return -EINVAL.
-> This bug was fixed with buffer rework in the vmwgfx driver and now the unref
-> ioctl behaves the correct way.
+> Series: lib/i915/perf: Accumulate clocks for MPEC format too
+> URL   : https://patchwork.freedesktop.org/series/133460/
+> State : failure
 > 
-> Signed-off-by: Maaz Mombasawala <mombasawalam@vmware.com>
-> Reviewed-by: Martin Krastev <krastevm@vmware.com>
-> Reviewed-by: Ian Forbes <iforbes@vmware.com>
-> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-> ---
->  tests/vmwgfx/vmw_ref_count.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+> == Summary ==
 > 
-> diff --git a/tests/vmwgfx/vmw_ref_count.c b/tests/vmwgfx/vmw_ref_count.c
-> index da4b41f89..92d49dbd0 100644
-> --- a/tests/vmwgfx/vmw_ref_count.c
-> +++ b/tests/vmwgfx/vmw_ref_count.c
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0 OR MIT
->  /**********************************************************
-> - * Copyright 2021-2022 VMware, Inc.
-> + * Copyright 2021-2023 VMware, Inc.
--------------------- ^^^^
-This should be 2024.
+> CI Bug Log - changes from CI_DRM_14749_full -> IGTPW_11128_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_11128_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_11128_full, please notify your bug team (&#x27;I915-ci-infra@lists.freedesktop.org&#x27;) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11128/index.html
+> 
+> Participating hosts (9 -> 9)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_11128_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_display_modes@extended-mode-basic@pipe-a-hdmi-a-1-pipe-b-vga-1:
+>     - shard-snb:          NOTRUN -> [FAIL][1] +3 other tests fail
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11128/shard-snb5/igt@kms_display_modes@extended-mode-basic@pipe-a-hdmi-a-1-pipe-b-vga-1.html
+> 
+>   * igt@kms_flip@plain-flip-ts-check@a-hdmi-a4:
+>     - shard-dg1:          [PASS][2] -> [FAIL][3]
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14749/shard-dg1-18/igt@kms_flip@plain-flip-ts-check@a-hdmi-a4.html
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11128/shard-dg1-15/igt@kms_flip@plain-flip-ts-check@a-hdmi-a4.html
+> 
+>   * igt@kms_vblank@ts-continuation-dpms-suspend@pipe-a-hdmi-a-1:
+>     - shard-snb:          [PASS][4] -> [DMESG-WARN][5]
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14749/shard-snb2/igt@kms_vblank@ts-continuation-dpms-suspend@pipe-a-hdmi-a-1.html
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11128/shard-snb2/igt@kms_vblank@ts-continuation-dpms-suspend@pipe-a-hdmi-a-1.html
+> 
+
+These are unrelated to i915/perf change.
 
 Regards,
 Kamil
 
->   *
->   * Permission is hereby granted, free of charge, to any person
->   * obtaining a copy of this software and associated documentation
-> @@ -256,13 +256,11 @@ igt_main
->  
->  		/* Shouldn't crash on multiple invocations */
->  		for (i = 0; i < 3; i++) {
-> -			int ret;
->  			struct drm_vmw_handle_close_arg arg = {
->  				.handle = mob->handle
->  			};
-> -			ret = drmCommandWrite(fd1, DRM_VMW_HANDLE_CLOSE, &arg,
-> +			drmCommandWrite(fd1, DRM_VMW_HANDLE_CLOSE, &arg,
->  					      sizeof(arg));
-> -			igt_assert_eq(ret, 0);
->  		}
->  		free(mob);
->  	}
-> -- 
-> 2.40.1
+>   
+> Known issues
+> ------------
 > 
+>   Here are the changes found in IGTPW_11128_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+
+
+...cut...
+
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7846 -> IGTPW_11128
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14749: afd593c3e9f9218ececa93e30c33182346295ac9 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_11128: 11128
+>   IGT_7846: 4a5fd4e7cb2798636f6464e2bd61399f3242b322 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11128/index.html
