@@ -4,62 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3EEAC25B10
-	for <igt-dev@archiver.kernel.org>; Mon, 13 May 2024 07:12:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA51AC25B10
+	for <igt-dev@archiver.kernel.org>; Mon, 13 May 2024 07:17:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 40E3510E3F3;
-	Mon, 13 May 2024 07:12:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F17E310E409;
+	Mon, 13 May 2024 07:17:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jgRvOozT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LmBmt9cG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9DE6F10E0CA
- for <igt-dev@lists.freedesktop.org>; Mon, 13 May 2024 07:12:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B916810E0CA
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 May 2024 07:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715584361; x=1747120361;
+ t=1715584651; x=1747120651;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=WER/Lb5ovkUBB8ST1UY3nhfPVZxI11C5y7JNZxqhR1c=;
- b=jgRvOozTzrws7O9wlFQo/QSAa5V5KB++5OCjYjKuGKiXObzuFg6iZyaq
- NsAYQ3uDIRBpodosuTJ7vhL1SY/1NUChuF0ZNowjma0c3TrL7WjC7UccY
- LO0kaohgsOnD84OS2lAT0/OwUqReuMKZ9ATGAHt3ftqWAY4/Lg3vYYMak
- XxXOPkoXxd8vT3lNj278MnJKioBqI94sqR4jx35pPesrw7UiWGh5CysUQ
- czXE+Cvfs1p35XOY+9HuEWAIEu/cdvCrGakd8WDMJmR/NuZhAp6sJn491
- aQwOy6t3BrSWZPbQdOq//6Ut1I2AdOoBRKh3inCiWZYmA3DUM9fW1jbVx w==;
-X-CSE-ConnectionGUID: XxraY0FZToylMHw10xOTcw==
-X-CSE-MsgGUID: K6hyBKOjRTO3ZvEvSIRjQg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="11721200"
-X-IronPort-AV: E=Sophos;i="6.08,157,1712646000"; d="scan'208";a="11721200"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2024 00:12:39 -0700
-X-CSE-ConnectionGUID: ApYvBevURX6bJbh0cQi0tQ==
-X-CSE-MsgGUID: /elIQG1GRfyYxRm0KyDzUg==
+ bh=prq9/8EswZ/TrCmisWgYNvCuUV4kLWGx6HWepuRC7rA=;
+ b=LmBmt9cGP3K4K2/r8C3EmIqS/OGj8MP2nWgLARhVY9V1PIX4xzgMQQt1
+ M6R2TQVOMEZ7xtjH6qNDHhY+4O/oVDPyj3/esjZOkwTH/Gtnj1tdQzRTz
+ ylar6XlDUw5pdMzzutPRXP9fGMsFOLZVHNIK260R4h65Ym6wv3D+iwKHy
+ G4ZW8Y/lOX4H3iIm2y1aDS3kgswHpI3b1zR2ARx4AcTod9KIKRu/h9QPT
+ lPWbkRiO0pPdpvy5c7U2iz6MPmSEUI1X0dYe43s6BHX+t3SRqydeM2rU6
+ adU/ZxffmnHdUhAQ+9gkPfhrqzLtbGjVS+1HIZ4EWf7nkgT1Ktw3Wzh6t w==;
+X-CSE-ConnectionGUID: aP4EAO7jS2O6Sj4OD2+cvQ==
+X-CSE-MsgGUID: XVRD61lQSM2MczgYEex91Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="14449708"
+X-IronPort-AV: E=Sophos;i="6.08,157,1712646000"; d="scan'208";a="14449708"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2024 00:17:29 -0700
+X-CSE-ConnectionGUID: pH33+p+tT9uO2zw58pszWw==
+X-CSE-MsgGUID: 0Khv1T/XSXmvLVXyC9uAQw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,157,1712646000"; d="scan'208";a="30090589"
+X-IronPort-AV: E=Sophos;i="6.08,157,1712646000"; d="scan'208";a="53469662"
 Received: from ettammin-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.246.237])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2024 00:12:36 -0700
-Date: Mon, 13 May 2024 09:12:33 +0200
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2024 00:17:26 -0700
+Date: Mon, 13 May 2024 09:17:24 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>
-Cc: tvrtko.ursulin@intel.com, robdclark@chromium.org,
+Cc: tursulin@ursulin.net, robdclark@chromium.org,
  kamil.konieczny@linux.intel.com, lucas.demarchi@intel.com,
  igt-dev@lists.freedesktop.org, healych@amazon.com,
- kernel@collabora.com, Tvrtko Ursulin <tursulin@ursulin.net>,
- Daniel Vetter <daniel@ffwll.ch>
-Subject: Re: [PATCH v3 1/2] lib: Add DRM driver sysfs profiling knob toggling
- functions
-Message-ID: <20240513071233.lhefjndjurne2pt7@zkempczy-mobl2>
-References: <20240510191716.282644-1-adrian.larumbe@collabora.com>
- <20240510191716.282644-2-adrian.larumbe@collabora.com>
+ kernel@collabora.com, Daniel Vetter <daniel@ffwll.ch>
+Subject: Re: [PATCH v3 2/2] tools/gputop: toggle sysfs profiling knob if
+ available for device
+Message-ID: <20240513071724.6p7fim6wk7jkcyvn@zkempczy-mobl2>
+References: <20240510192243.285457-1-adrian.larumbe@collabora.com>
+ <20240510192243.285457-3-adrian.larumbe@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240510191716.282644-2-adrian.larumbe@collabora.com>
+In-Reply-To: <20240510192243.285457-3-adrian.larumbe@collabora.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,17 +74,15 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, May 10, 2024 at 08:15:20PM +0100, Adrián Larumbe wrote:
-> Some DRM drivers need to have their accounting HW toggled on demand from
-> user space so that fdinfo's drm-engine and drm-cycles tags can be updated
-> upon job completion.
+On Fri, May 10, 2024 at 08:22:38PM +0100, Adrián Larumbe wrote:
+> For every DRM device that enables its job accounting HW from user space,
+> toggle it right before obtaining per-client fdinfo numbers.
 > 
-> A profiler such as gputop should be able to check which DRM devices have
-> such a sysfs knob, record its original state, toggle-enable it and revert
-> this operation right before exiting.
+> Make sure profiling status is returned to its original state before
+> exiting, by handling the SIGINT signal just like in intel_gpu_top.
 > 
-> Also create a new static library dependency for this family of functions so
-> that it can later be linked against gputop.
+> Also add the static IGT profiling library to gputop's list of build
+> dependencies.
 > 
 > Cc: Tvrtko Ursulin <tursulin@ursulin.net>
 > Cc: Daniel Vetter <daniel@ffwll.ch>
@@ -94,234 +91,105 @@ On Fri, May 10, 2024 at 08:15:20PM +0100, Adrián Larumbe wrote:
 > Cc: Lucas De Marchi <lucas.demarchi@intel.com>
 > Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
 > ---
->  lib/igt_profiling.c | 141 ++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_profiling.h |  21 +++++++
->  lib/meson.build     |   8 +++
->  3 files changed, 170 insertions(+)
->  create mode 100644 lib/igt_profiling.c
->  create mode 100644 lib/igt_profiling.h
+>  tools/gputop.c    | 33 ++++++++++++++++++++++++++++++++-
+>  tools/meson.build |  2 +-
+>  2 files changed, 33 insertions(+), 2 deletions(-)
 > 
-> diff --git a/lib/igt_profiling.c b/lib/igt_profiling.c
-> new file mode 100644
-> index 000000000000..f5ac40d072ac
-> --- /dev/null
-> +++ b/lib/igt_profiling.c
-> @@ -0,0 +1,141 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2024 Collabora Ltd.
-> + * Copyright © 2024 Adrian Larumbe <adrian.larumbe@collabora.com>
-> + * Copyright © 2024 Amazon.com, Inc. or its affiliates.
-> + *
-> + */
-> +
-> +#include <fcntl.h>
-> +#include <unistd.h>
-> +#include <dirent.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <assert.h>
-> +#include <stdbool.h>
-> +
+> diff --git a/tools/gputop.c b/tools/gputop.c
+> index 5634fa58a0c7..7ae3d6411cf1 100644
+> --- a/tools/gputop.c
+> +++ b/tools/gputop.c
+> @@ -29,6 +29,7 @@
+>  #include "igt_core.h"
+>  #include "igt_drm_clients.h"
+>  #include "igt_drm_fdinfo.h"
 > +#include "igt_profiling.h"
+>  #include "drmtest.h"
+>  
+>  static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
+> @@ -358,10 +359,19 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
+>  	return 1;
+>  }
+>  
+> +static volatile bool stop_top;
 > +
-> +#define SYSFS_DRM	"/sys/class/drm"
-> +#define NUM_DEVICES	10
-> +
-> +struct igt_profiled_device *igt_devices_profiled(void)
+> +static void sigint_handler(int sig)
 > +{
-> +	struct igt_profiled_device *profiled_devices;
-> +	unsigned int devlist_len = NUM_DEVICES;
-> +	unsigned int i = 0;
-> +	struct dirent *entry;
-> +	DIR *dev_dir;
-> +
-> +	/* The return array will be resized in case there are too many devices */
-> +	profiled_devices = malloc(devlist_len * sizeof(struct igt_profiled_device));
-> +	if (!profiled_devices)
-> +		return NULL;
-> +
-> +	dev_dir = opendir(SYSFS_DRM);
-> +	if (!dev_dir) {
-
-		goto end;
-
-> +		free(profiled_devices);
-> +		return NULL;
-> +	}
-> +
-> +	while ((entry = readdir(dev_dir)) != NULL) {
-> +		char path[PATH_MAX];
-> +		char orig_state;
-> +		int sysfs_fd;
-> +
-> +		/* All DRM device entries are symlinks to other paths within sysfs */
-> +		if (entry->d_type != DT_LNK)
-> +			continue;
-> +
-> +		/* We're only interested in render nodes */
-> +		if (strstr(entry->d_name, "render") != entry->d_name)
-> +			continue;
-> +
-> +		snprintf(path, sizeof(path), "%s/%s/device/%s",
-> +			 SYSFS_DRM, entry->d_name, "profiling");
-> +
-> +		if (access(path, F_OK))
-> +			continue;
-> +
-> +		sysfs_fd = open(path, O_RDONLY);
-> +		if (sysfs_fd == -1)
-> +			continue;
-> +
-> +		if (read(sysfs_fd, &orig_state, 1) <= 0) {
-> +			close(sysfs_fd);
-> +			continue;
-> +		}
-> +
-> +		if (i == (devlist_len - 1)) {
-> +			devlist_len += NUM_DEVICES;
-> +			profiled_devices = realloc(profiled_devices, devlist_len);
-> +		}
-> +
-> +		profiled_devices[i].syspath = strdup(path);
-
-According to realloc above - if it will fail we'll get segfault here.
-
-> +		profiled_devices[i++].original_state = orig_state;
-> +
-> +		close(sysfs_fd);
-> +	}
-> +
-
-end:
-
-> +	if (i == 0) {
-> +		free(profiled_devices);
-> +		profiled_devices = NULL;
-> +	} else
-> +		profiled_devices[i].syspath = NULL; /* Array terminator */
-> +
-> +	return profiled_devices;
+> +	(void) sig;
+> +	stop_top = true;
 > +}
 > +
+>  int main(int argc, char **argv)
+>  {
+>  	struct gputop_args args;
+>  	unsigned int period_us;
+> +	struct igt_profiled_device *profiled_devices = NULL;
+>  	struct igt_drm_clients *clients = NULL;
+>  	int con_w = -1, con_h = -1;
+>  	int ret;
+> @@ -380,9 +390,22 @@ int main(int argc, char **argv)
+>  	if (!clients)
+>  		exit(1);
+>  
 > +
-> +void igt_devices_toggle_profiling(struct igt_profiled_device *devices, bool enable)
-
-I think you should document this. Function sets profiling if enable == 1,
-for enable == 0 it restores original state. For me 'toggle' is a little
-bit confusing - I would rather expect 0 -> 1 and 1 -> 0 state change but
-you're restoring original state. Maybe 'set_profiling' would be better?
-
-> +{
-> +	assert(devices);
+> +	profiled_devices = igt_devices_profiled();
+> +	if (profiled_devices != NULL) {
+> +		igt_devices_toggle_profiling(profiled_devices, true);
 > +
-> +	for (unsigned int i = 0; devices[i].syspath; i++) {
-> +
-> +		int sysfs_fd = open(devices[i].syspath, O_WRONLY);
-> +
-> +		if (sysfs_fd < 0)
-> +			continue;
-> +
-> +		write(sysfs_fd, enable ? "1" : &devices[i].original_state, 1);
-> +		close(sysfs_fd);
-> +	}
-> +}
-> +
-> +void igt_devices_free_profiling(struct igt_profiled_device *devices)
-> +{
-> +	assert(devices);
-> +
-> +	for (unsigned int i = 0; devices[i].syspath; i++)
-> +		free(devices[i].syspath);
-> +
-> +	free(devices);
-> +}
-> +
-> +void igt_devices_update_original_profiling_state(struct igt_profiled_device *devices)
-
-You may use igt_devices_toggle_profiling(devices, true); to achieve
-the same effect (adding read() which checks on which devices profiling
-is still set to 0). I assume igt_devices_profiled() collects original
-state which should be restored so it's state should be const.
-
-> +{
-> +	assert(devices);
-> +
-> +	for (unsigned int i = 0; devices[i].syspath; i++) {
-> +		char new_state;
-> +		int sysfs_fd;
-> +
-> +		sysfs_fd = open(devices[i].syspath, O_RDWR);
-> +		if (sysfs_fd == -1)
-> +			continue;
-> +
-> +		if (!read(sysfs_fd, &new_state, 1)) {
-> +			close(sysfs_fd);
-> +			continue;
+> +		if (signal(SIGINT, sigint_handler) == SIG_ERR) {
+> +			fprintf(stderr, "Failed to install signal handler!\n");
+> +			igt_devices_toggle_profiling(profiled_devices, false);
+> +			igt_devices_free_profiling(profiled_devices);
+> +			profiled_devices = NULL;
 > +		}
+> +	}
+> +
+>  	igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
+>  
+> -	while (n != 0) {
+> +	while ((n != 0) && !stop_top) {
+>  		struct igt_drm_client *c, *prevc = NULL;
+>  		int i, engine_w = 0, lines = 0;
+>  
+> @@ -410,9 +433,17 @@ int main(int argc, char **argv)
+>  		usleep(period_us);
+>  		if (n > 0)
+>  			n--;
+> +
+> +		if (profiled_devices != NULL)
+> +			igt_devices_update_original_profiling_state(profiled_devices);
 
-Only reason I see new_state could be changed if external process
-would change it. Otherwise it is same to state from igt_devices_profiled().
+Only reason in which calling this function here makes sense to me is
+when external program which profiles some devices exits and switches
+from 1 -> 0. Is sth I don't see here?
 
 --
 Zbigniew
 
-> +
-> +		if (new_state == '0') {
-> +			write(sysfs_fd, "1", 1);
-> +			devices[i].original_state = new_state;
-> +		}
-> +
-> +		close(sysfs_fd);
-> +	}
-> +}
-> diff --git a/lib/igt_profiling.h b/lib/igt_profiling.h
-> new file mode 100644
-> index 000000000000..fd0835d9a699
-> --- /dev/null
-> +++ b/lib/igt_profiling.h
-> @@ -0,0 +1,21 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2024 Collabora Ltd.
-> + * Copyright © 2024 Adrian Larumbe <adrian.larumbe@collabora.com>
-> + * Copyright © 2024 Amazon.com, Inc. or its affiliates.
-> + */
-> +
-> +#ifndef IGT_PROFILING_H
-> +#define IGT_PROFILING_H
-> +
-> +struct igt_profiled_device {
-> +	char *syspath;
-> +	char original_state;
-> +};
-> +
-> +void igt_devices_toggle_profiling(struct igt_profiled_device *devices, bool enable);
-> +struct igt_profiled_device *igt_devices_profiled(void);
-> +void igt_devices_free_profiling(struct igt_profiled_device *devices);
-> +void igt_devices_update_original_profiling_state(struct igt_profiled_device *devices);
-> +
-> +#endif /* IGT_PROFILING_H */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index e2f740c116f8..6f61ed5c558b 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -291,6 +291,14 @@ lib_igt_drm_fdinfo_build = static_library('igt_drm_fdinfo',
+>  	}
 >  
->  lib_igt_drm_fdinfo = declare_dependency(link_with : lib_igt_drm_fdinfo_build,
->  				  include_directories : inc)
+>  	igt_drm_clients_free(clients);
+>  
+> +	if (profiled_devices != NULL) {
+> +		igt_devices_toggle_profiling(profiled_devices, false);
+> +		igt_devices_free_profiling(profiled_devices);
+> +	}
 > +
-> +lib_igt_profiling_build = static_library('igt_profiling',
-> +	['igt_profiling.c'],
-> +	include_directories : inc)
-> +
-> +lib_igt_profiling = declare_dependency(link_with : lib_igt_profiling_build,
-> +				        include_directories : inc)
-> +
->  i915_perf_files = [
->    'igt_list.c',
->    'i915/perf.c',
+>  	return 0;
+>  }
+> diff --git a/tools/meson.build b/tools/meson.build
+> index ac79d8b5840c..05138ee679cd 100644
+> --- a/tools/meson.build
+> +++ b/tools/meson.build
+> @@ -68,7 +68,7 @@ endif
+>  executable('gputop', 'gputop.c',
+>             install : true,
+>             install_rpath : bindir_rpathdir,
+> -           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,math])
+> +           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math])
+>  
+>  intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
+>  executable('intel_l3_parity', sources : intel_l3_parity_src,
 > -- 
 > 2.44.0
 > 
