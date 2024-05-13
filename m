@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96CEFC25B10
-	for <igt-dev@archiver.kernel.org>; Mon, 13 May 2024 10:51:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A193C25B75
+	for <igt-dev@archiver.kernel.org>; Mon, 13 May 2024 10:51:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3445B10E636;
-	Mon, 13 May 2024 10:51:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 36BC610E645;
+	Mon, 13 May 2024 10:51:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XO6D74on";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WHqgF7DX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 247C910E636
- for <igt-dev@lists.freedesktop.org>; Mon, 13 May 2024 10:51:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 14EB510E645
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 May 2024 10:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715597474; x=1747133474;
+ t=1715597485; x=1747133485;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=L8Ojz55tgTx0YPReCVYoScCHw7J+e+mPgRMWmqoDAF0=;
- b=XO6D74onnjOTXMUtjwGmluwgLA0b3G9YGDyiyGkiRZUOm6kxcfOULRkF
- wTQQOFzJl8K1U42Sg1nbdeTDw+FaYetXtBBTZU2wnk+UPw2QCJvFgZTMN
- h1Md5Vv/R1qW7MTV5OJgl5yei5USy8AZZvcbkqPX73C4OFA+ZF+2/pK3G
- KewfeUu7aOwDiBwLXA7QByvE0y41gus5lXLhczXLh0fpaQtE7SccP9xzO
- mUoyq6kWTIyvMCDpINdP4/PtjhlH3n3vvKJO7EnMWeT6b52a+wKATU7X1
- inoQHUi4BBGvXWoHsHvsChtE/r3cUwtQ+bOiw3ulosyp2daLBwfDghbee A==;
-X-CSE-ConnectionGUID: IaA1FfeIQ1m1tTnTts6Zuw==
-X-CSE-MsgGUID: IXqrmmDESn+PYJfGTjXing==
-X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="22125222"
-X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="22125222"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2024 03:51:13 -0700
-X-CSE-ConnectionGUID: Q5Led226Qy6IYHqu06ZtaA==
-X-CSE-MsgGUID: 7VKnzknBQqOKJo6N+im9KA==
+ bh=pxekVTwtpVMkPkEr9edVzakllVStSkKZVrU834FKs4o=;
+ b=WHqgF7DXpuvXD0YOfzgVHocSp8QjHcmZXf9qEvxmrJc9irMpRX0ODbrK
+ OVi8cFYD0w1E8zXew50fKu1bTjMQMBe9eiOI8rQDeTQSqpyiSP+TOro6x
+ kM/qj8WukAXiVMbSM+jiJp6+JBD9dWOEzoOMCnNhPQ1DAkDVq5G2ioFcq
+ 9nhMjnAwPNzOd2OAw5ZKStLMc9tf5q4lVela16DsKIzqGCaAfsGKvBzJV
+ fNvjEObTTXWuYObj3XiijdtxEexc6rQNbLtaM/4n9dOTUIijDFxoH4CNk
+ mGDeZiAS3Tdl2IjqWgtwIdlyCH+5VE4wnnbS923IeOvJ6n2VWXAkrT9vh w==;
+X-CSE-ConnectionGUID: WvV3aegJSLyudaRwMUHkGA==
+X-CSE-MsgGUID: ynarTStDRcGXAenIqKEkgA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="22193344"
+X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="22193344"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2024 03:51:24 -0700
+X-CSE-ConnectionGUID: +lIlO7wSTKOCzYCC+eBElg==
+X-CSE-MsgGUID: gpPmnokEQp6GtaL/wf5/uw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="34719936"
+X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="34994774"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2024 03:51:12 -0700
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2024 03:51:22 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
@@ -49,9 +49,9 @@ Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Aditya Chauhan <aditya.chauhan@intel.com>,
  Girotra Himanshu <himanshu.girotra@intel.com>,
  Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
-Subject: [PATCH i-g-t v3 14/16] tests/intel: Introduce Media Mega feature
-Date: Mon, 13 May 2024 10:48:44 +0000
-Message-Id: <20240513104846.362332-15-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v3 15/16] tests/intel: Introduce RAS Mega feature
+Date: Mon, 13 May 2024 10:48:45 +0000
+Message-Id: <20240513104846.362332-16-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240513104846.362332-1-katarzyna.piecielska@intel.com>
 References: <20240513104846.362332-1-katarzyna.piecielska@intel.com>
@@ -72,7 +72,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add mega feature to Media tests.
+Add mega feature to RAS tests.
 Group:
 	SUBTEST
 	Description
@@ -88,69 +88,23 @@ Cc: Aditya Chauhan <aditya.chauhan@intel.com>
 Cc: Girotra Himanshu <himanshu.girotra@intel.com>
 CC: Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
 ---
- tests/intel/gem_media_fill.c | 7 ++++---
- tests/intel/gem_media_vme.c  | 5 +++--
- tests/intel/xe_media_fill.c  | 9 +++++----
- 3 files changed, 12 insertions(+), 9 deletions(-)
+ tests/intel/intel_hwmon.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel/gem_media_fill.c b/tests/intel/gem_media_fill.c
-index e9455df9e..e22565b86 100644
---- a/tests/intel/gem_media_fill.c
-+++ b/tests/intel/gem_media_fill.c
-@@ -48,10 +48,11 @@
- /**
-  * TEST: gem media fill
-  * Description: Basic test for the media_fill() function, a very simple workload for the Media pipeline.
-- * Feature: media feature
-- * Sub-category: Media
-  * Category: Desktop client
-- * Functionality: fill media
-+ * Mega feature: Media
-+ * Sub-category: Media tests
-+ * Functionality: fill surface with media block
-+ * Feature: media
+diff --git a/tests/intel/intel_hwmon.c b/tests/intel/intel_hwmon.c
+index 7c6ee0100..448f780d4 100644
+--- a/tests/intel/intel_hwmon.c
++++ b/tests/intel/intel_hwmon.c
+@@ -12,7 +12,8 @@
+  * TEST: intel hwmon
+  * Description: Tests for intel hwmon
+  * Category: Software Building Block
+- * Sub-category: RAS
++ * Mega feature: RAS
++ * Sub-category: RAS tests
+  * Functionality: hwmon
+  * Test category: functionality
   *
-  * SUBTEST: media-fill
-  */
-diff --git a/tests/intel/gem_media_vme.c b/tests/intel/gem_media_vme.c
-index 89ce8c55d..1ec4d4492 100644
---- a/tests/intel/gem_media_vme.c
-+++ b/tests/intel/gem_media_vme.c
-@@ -38,10 +38,11 @@
- /**
-  * TEST: gem media vme
-  * Description: A very simple workload for the VME media block.
-- * Feature: media feature
-- * Sub-category: Media
-  * Category: Desktop client
-+ * Mega feature: Media
-+ * Sub-category: Media tests
-  * Functionality: vme media block
-+ * Feature: media
-  *
-  * SUBTEST:
-  */
-diff --git a/tests/intel/xe_media_fill.c b/tests/intel/xe_media_fill.c
-index e6b5aaf73..1adafee4f 100644
---- a/tests/intel/xe_media_fill.c
-+++ b/tests/intel/xe_media_fill.c
-@@ -27,11 +27,12 @@
- 
- /**
-  * TEST: xe media fill
-- * Category: Hardware building block
-- * Sub-category: Media
-- * Functionality: fill media
-  * Description: Basic tests for the media_fill() function.
-- * Feature: media feature
-+ * Category: Hardware building block
-+ * Mega feature: Media
-+ * Sub-category: Media tests
-+ * Functionality: fill surface with media block
-+ * Feature: media
-  * Test category: functionality test
-  *
-  * SUBTEST: media-fill
 -- 
 2.34.1
 
