@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95924C25B10
-	for <igt-dev@archiver.kernel.org>; Mon, 13 May 2024 16:09:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC838C25B10
+	for <igt-dev@archiver.kernel.org>; Mon, 13 May 2024 16:23:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0F60110E84D;
-	Mon, 13 May 2024 16:09:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 56AF110E3D2;
+	Mon, 13 May 2024 16:23:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kJieTyHF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AOWBOsDv";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C1BF010E84D
- for <igt-dev@lists.freedesktop.org>; Mon, 13 May 2024 16:09:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 59E4310E3D2
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 May 2024 16:23:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715616576; x=1747152576;
+ t=1715617434; x=1747153434;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=HhsGLgoOPh1MsdPDSJ2woSK8nOs+IZXC9L1/8elr5B0=;
- b=kJieTyHFK747k490EIDypAAKRKFMxYy6JxJiwAZswSsviQAlId3taNwc
- IQy08z60pADSXUHjil019j/K/0iuNThH1epz4Xii29SawI0ek4J2sNmZR
- T+WgTy9HrXf9OuIo3vubTV4pHXD/3OJazojmI6q9S1yVArcumISBjtAwU
- 5w/62Lc9xZc71KtPPQft+OeaGyRyCbbGDY6VPTeOdui9KxHM5CzGO3H8H
- bPaShwPtwTn9NdMvSteT4rG+Bwg4xCnJ3oJxq4n+UWBtZXsFMpdcU31l6
- WAphacC0+ISqHr63qoP2z3waP8uuI+kpx6tiNp6MnujYZKPdl8MUMpZIP A==;
-X-CSE-ConnectionGUID: qV6RbhUZRz+O9+TV9W6DEA==
-X-CSE-MsgGUID: M14ZYMTkT9yKfYUkhwqibg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11072"; a="36936345"
-X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="36936345"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2024 09:06:45 -0700
-X-CSE-ConnectionGUID: 745QaZ+6RBihd5fjsGIUtw==
-X-CSE-MsgGUID: +ODNFHu7S0Wp9yDHjbDlgA==
+ bh=OC82hO9fVfGkOiTOIDcA+VFOW5vdZStFLKiA3hYSTyQ=;
+ b=AOWBOsDvkmIejHK7r0YMIPetGJsGsq9eGwBPjY0hUTWdsW7nhUXLg7T3
+ a8mMTH8SSLyQ/qESccBMYhYKrxE/nPL5PCJqX0rZAKnHY0zkJk/NVpGBk
+ xXHPLdcfqGT3TbFrpV4Y59Zz5DMtlt912V8XHtgbo2MXd7eTocCNF87Hj
+ Fx6ffcY9zNuNvUL/IVHO9MKVx0zAJBuVvsfywvbFHcC/acarXs/kVGe96
+ 9kaydlce/aFzYNxcbB/DTCYwD8K9k5rqRgQRSlbMVwJ7CUBud4oU9YHc7
+ n6j5nA0VdYDVd8cEJY9F/XqvEVpxQyUHc+JeEzaXyC+JQpSsfeTJnjF3S Q==;
+X-CSE-ConnectionGUID: 7ETvLJx+SZ6n5Sxr1v2kiA==
+X-CSE-MsgGUID: w6Pq/yIDQxms2f54ZGO7Uw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11072"; a="11500845"
+X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="11500845"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2024 09:23:53 -0700
+X-CSE-ConnectionGUID: M+k7v5kBQAOtw7YeczcV1g==
+X-CSE-MsgGUID: eZQQ47rcTKWlBlqvMZHTog==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="34938803"
-Received: from monicael-mobl3 (HELO localhost) ([10.245.246.11])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2024 09:06:43 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="30424790"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2024 09:23:53 -0700
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH i-g-t] tests/intel/perf: move igt_require into subtests
-Date: Mon, 13 May 2024 18:06:38 +0200
-Message-ID: <20240513160638.137890-1-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.42.0
+Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>,
+ Badal Nilawar <badal.nilawar@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 1/3] tests/intel/xe_pm: Rename and clarify
+ mocs_suspend_resume
+Date: Mon, 13 May 2024 09:24:32 -0700
+Message-ID: <20240513162435.952578-1-lucas.demarchi@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,105 +68,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Using igt_require() and igt_skip() in second or later
-igt_fixture can confuse developers reading failure logs. Move all
-such igt_require() to subtest which needs them.
+mocs_suspend_resume is not really suspending/resuming the CPU. It's just
+checking rpm (GPU) goes back to suspended status after dropping the
+forcewake.
 
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Also drop the additional argument and just use the same "s_state",
+passing NO_SUSPEND in this case, like it's done in other tests in xe_pm.
+
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tests/intel/perf.c | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ tests/intel/xe_pm.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/tests/intel/perf.c b/tests/intel/perf.c
-index 7a63a3bdd..8ac48feca 100644
---- a/tests/intel/perf.c
-+++ b/tests/intel/perf.c
-@@ -6048,22 +6048,24 @@ igt_main
- 	}
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index e81a75d88..1215b5c2a 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -617,14 +617,14 @@ static void test_mmap(device_t device, uint32_t placement, uint32_t flags)
+ }
  
- 	igt_subtest_group {
--		igt_fixture igt_require(intel_gen(devid) >= 12);
--
- 		igt_describe("Test MI REPORT PERF COUNT for Gen 12");
- 		igt_subtest_with_dynamic("gen12-mi-rpc") {
-+			igt_require(intel_gen(devid) >= 12);
- 			igt_require(has_class_instance(drm_fd, I915_ENGINE_CLASS_RENDER, 0));
- 			__for_each_render_engine(drm_fd, e)
- 				gen12_test_mi_rpc(e);
+ /**
+- * SUBTEST: mocs_suspend_resume
++ * SUBTEST: mocs-rpm
+  * Description:
+  *     Validate mocs register contents over suspend resume
+  *
+  * Functionality: mocs
+  * Run type: FULL
+  */
+-static void test_mocs_suspend_resume(device_t device, bool runtime_sr, enum igt_suspend_state state)
++static void test_mocs_suspend_resume(device_t device, int s_state)
+ {
+ 	int gt;
+ 
+@@ -639,16 +639,16 @@ static void test_mocs_suspend_resume(device_t device, bool runtime_sr, enum igt_
+ 		igt_debugfs_dump(device.fd_xe, path);
+ 		igt_debugfs_read(device.fd_xe, path, mocs_content_pre);
+ 
+-		if (runtime_sr) {
++		if (s_state == NO_SUSPEND) {
+ 			fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
+ 			igt_assert(fw_handle >= 0);
+ 			igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
+ 
+-			/* Runtime suspend  */
++			/* Make sure runtime pm goes back to suspended status after closing forcewake_all */
+ 			close(fw_handle);
+ 			igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+ 		} else {
+-			igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE);
++			igt_system_suspend_autoresume(s_state, SUSPEND_TEST_NONE);
+ 		}
+ 		igt_assert(igt_debugfs_exists(device.fd_xe, path, O_RDONLY));
+ 		igt_debugfs_dump(device.fd_xe, path);
+@@ -758,7 +758,7 @@ igt_main
  		}
  
- 		igt_describe("Test OA TLB invalidate");
--		igt_subtest_with_dynamic("gen12-oa-tlb-invalidate")
-+		igt_subtest_with_dynamic("gen12-oa-tlb-invalidate") {
-+			igt_require(intel_gen(devid) >= 12);
- 			__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
- 				gen12_test_oa_tlb_invalidate(e);
-+		}
- 
- 		igt_describe("Measure performance for a specific context using OAR in Gen 12");
- 		igt_subtest_with_dynamic("gen12-unprivileged-single-ctx-counters") {
-+			igt_require(intel_gen(devid) >= 12);
- 			igt_require(has_class_instance(drm_fd, I915_ENGINE_CLASS_RENDER, 0));
- 			igt_require_f(render_copy, "no render-copy function\n");
- 			__for_each_render_engine(drm_fd, e)
-@@ -6072,11 +6074,11 @@ igt_main
+ 		igt_subtest_f("%s-mocs", s->name)
+-			test_mocs_suspend_resume(device, 0, s->state);
++			test_mocs_suspend_resume(device, s->state);
  	}
  
- 	igt_subtest_group {
--		igt_fixture igt_require(i915_perf_revision(drm_fd) >= 6);
--
- 		igt_describe("Verify invalid class instance");
--		igt_subtest("gen12-invalid-class-instance")
-+		igt_subtest("gen12-invalid-class-instance") {
-+			igt_require(i915_perf_revision(drm_fd) >= 6);
- 			test_invalid_class_instance();
-+		}
- 
- 		/*
- 		 * OAR and OAG use cases can be separately opened only on gen12
-@@ -6095,8 +6097,10 @@ igt_main
+ 	for (const struct d_state *d = d_states; d->name; d++) {
+@@ -824,8 +824,8 @@ igt_main
+ 			igt_pm_set_autosuspend_delay(device.pci_xe, delay_ms);
  		}
  
- 		igt_describe("Verify concurrent reads from OA buffers in different groups");
--		igt_subtest("gen12-group-concurrent-oa-buffer-read")
-+		igt_subtest("gen12-group-concurrent-oa-buffer-read") {
-+			igt_require(i915_perf_revision(drm_fd) >= 6);
- 			test_group_concurrent_oa_buffer_read();
-+		}
+-		igt_subtest("mocs_suspend_resume")
+-			test_mocs_suspend_resume(device, 1, 0);
++		igt_subtest("mocs-rpm")
++			test_mocs_suspend_resume(device, NO_SUSPEND);
  	}
  
- 	igt_subtest("rc6-disable")
-@@ -6108,20 +6112,23 @@ igt_main
- 			test_stress_open_close(e);
- 
- 	igt_subtest_group {
--		igt_fixture {
-+		igt_describe("Verify invalid SSEU opening parameters");
-+		igt_subtest_with_dynamic("global-sseu-config-invalid") {
- 			igt_require(i915_perf_revision(drm_fd) >= 4);
- 			igt_require(intel_graphics_ver(devid) < IP_VER(12, 50));
--		}
- 
--		igt_describe("Verify invalid SSEU opening parameters");
--		igt_subtest_with_dynamic("global-sseu-config-invalid")
- 			__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
- 				test_global_sseu_config_invalid(ctx, e);
-+		}
- 
- 		igt_describe("Verify specifying SSEU opening parameters");
--		igt_subtest_with_dynamic("global-sseu-config")
-+		igt_subtest_with_dynamic("global-sseu-config") {
-+			igt_require(i915_perf_revision(drm_fd) >= 4);
-+			igt_require(intel_graphics_ver(devid) < IP_VER(12, 50));
-+
- 			__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
- 				test_global_sseu_config(ctx, e);
-+		}
- 	}
- 
- 	igt_subtest("invalid-create-userspace-config")
+ 	igt_fixture {
 -- 
-2.42.0
+2.43.0
 
