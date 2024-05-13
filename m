@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49835C25B75
-	for <igt-dev@archiver.kernel.org>; Mon, 13 May 2024 10:49:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C123FC25B10
+	for <igt-dev@archiver.kernel.org>; Mon, 13 May 2024 10:49:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C8F8910E650;
-	Mon, 13 May 2024 10:49:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4CC0A10E636;
+	Mon, 13 May 2024 10:49:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HtejAPYT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U3Zz7/dY";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB9CC10E650
- for <igt-dev@lists.freedesktop.org>; Mon, 13 May 2024 10:49:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E8B610E65C
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 May 2024 10:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715597349; x=1747133349;
+ t=1715597358; x=1747133358;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=BFWjxK4rG7mJ6YSDkYxygur/cwKRm4lYM/1kgoDUCTM=;
- b=HtejAPYTFjMSw7C4JMS5XXSFmcTKcZ8NUn/HmQC99ct3wLNWayFuxWlW
- LmbyE0l17P4rHm0E5Mg+S6LmSCCvVcQ2I9WPtUslMpCz9iIK4smfoO0hM
- FLfCFb99xMH3thvS8TK3XmLa8+Xfgm71x1zp1splC2GG/GZui1kcRipaf
- RuZJtBPWetT+uR1k3LUMvC8zNCth7IC8V9VZAr9dwH7EI1F5VvB/SCNjw
- OXgz3B4eV1+tvR5N4cGLS5eKAGCSnAx6fKoUqSDP3so4KmE6Uqwa7AHlP
- hvBpONetUhIzB9kcl0ZrILeauPaNove7JUoEg27V+x3SQaCMle9y9TA16 A==;
-X-CSE-ConnectionGUID: 2YqzvIQeRFqy9FYS88owdw==
-X-CSE-MsgGUID: Uzxw2iyFQP2IJxDJcVKUiQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="11465672"
-X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="11465672"
+ bh=VSx/0itRV47675zIC9kUk7XVFUvYWWt4ZbJc3gENA6g=;
+ b=U3Zz7/dYLfEwKGd4v94ClYuMbUyhL0Ksj+T9t+nrLrfASmlMkkgiMbgM
+ r0ZUz1A448c0q4KqBRmU8F08uwhLLwNTIFSsK8AaxlKs2r8xLB+k8n0Rj
+ wdeVzwnVMsaV8tYrfswCo3Emy1crgIZYB8cnVN/dgMV5YbXpXkcuJRyt5
+ BOnOWUn0O5MIC81hV1UGBgAu11PsF7sP+RWdKv+sIS5ax5BTeM3bYxawp
+ YFlpUKAZPykRcCNNDyjzBaZNrtnerGkqH9vSXhYYWHeO4NhrIA7GiuIlW
+ LyKoNuzUvIJYkaziBwOHCcVovzfFuHpdbFRy0FSzod3qqjx2x/FAzY6RQ Q==;
+X-CSE-ConnectionGUID: CnL1Be1STJiRM/LuZTITjg==
+X-CSE-MsgGUID: cfkoM8U1RoW6uvFi3kmcvQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="11465686"
+X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="11465686"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2024 03:49:08 -0700
-X-CSE-ConnectionGUID: Qa/d2HkdR1ah4ps5fh8RNg==
-X-CSE-MsgGUID: R5fAcnzgSr6PO35W/APsSQ==
+ 13 May 2024 03:49:18 -0700
+X-CSE-ConnectionGUID: gK6GYMSnQbGM1fkIUhTlzQ==
+X-CSE-MsgGUID: QO4fRJ+MQSmPPnVibSOXwQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="30379574"
+X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="30379623"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2024 03:49:06 -0700
+ 13 May 2024 03:49:15 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
@@ -49,10 +49,10 @@ Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Aditya Chauhan <aditya.chauhan@intel.com>,
  Girotra Himanshu <himanshu.girotra@intel.com>,
  Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
-Subject: [PATCH i-g-t v3 01/16] tests/intel: Introduce General Core Mega
- feature
-Date: Mon, 13 May 2024 10:48:31 +0000
-Message-Id: <20240513104846.362332-2-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t v3 02/16] tests: Add Memory management tests to General
+ Core Mega feature
+Date: Mon, 13 May 2024 10:48:32 +0000
+Message-Id: <20240513104846.362332-3-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240513104846.362332-1-katarzyna.piecielska@intel.com>
 References: <20240513104846.362332-1-katarzyna.piecielska@intel.com>
@@ -73,7 +73,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add tests around Command Submission to General Core mega feature.
+Add Memory management tests to General Core mega feature
 Group:
 	SUBTEST
 	Description
@@ -81,6 +81,7 @@ Group:
 	Mega feature
 	Sub-category
 	Functionality
+	Feature
 
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
@@ -89,1308 +90,911 @@ Cc: Aditya Chauhan <aditya.chauhan@intel.com>
 Cc: Girotra Himanshu <himanshu.girotra@intel.com>
 CC: Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
 ---
- tests/intel/gem_bad_reloc.c               |  5 ++-
- tests/intel/gem_barrier_race.c            |  1 +
- tests/intel/gem_blits.c                   |  5 ++-
- tests/intel/gem_close.c                   |  5 ++-
- tests/intel/gem_close_race.c              |  5 ++-
- tests/intel/gem_ctx_bad_destroy.c         |  7 ++--
- tests/intel/gem_ctx_create.c              |  5 ++-
- tests/intel/gem_ctx_engines.c             |  5 ++-
- tests/intel/gem_ctx_exec.c                |  5 ++-
- tests/intel/gem_ctx_persistence.c         |  3 +-
- tests/intel/gem_ctx_shared.c              |  5 ++-
- tests/intel/gem_ctx_switch.c              |  1 +
- tests/intel/gem_evict_alignment.c         |  3 +-
- tests/intel/gem_evict_everything.c        |  3 +-
- tests/intel/gem_exec_alignment.c          |  7 ++--
- tests/intel/gem_exec_async.c              |  5 ++-
- tests/intel/gem_exec_await.c              |  5 ++-
- tests/intel/gem_exec_balancer.c           |  5 ++-
- tests/intel/gem_exec_basic.c              |  5 ++-
- tests/intel/gem_exec_big.c                |  3 +-
- tests/intel/gem_exec_create.c             |  5 ++-
- tests/intel/gem_exec_fair.c               |  5 ++-
- tests/intel/gem_exec_fence.c              |  5 ++-
- tests/intel/gem_exec_flush.c              |  1 +
- tests/intel/gem_exec_gttfill.c            |  8 ++--
- tests/intel/gem_exec_latency.c            |  3 +-
- tests/intel/gem_exec_lut_handle.c         |  3 +-
- tests/intel/gem_exec_nop.c                |  5 ++-
- tests/intel/gem_exec_parallel.c           |  6 +--
- tests/intel/gem_exec_params.c             |  5 ++-
- tests/intel/gem_exec_reloc.c              |  3 +-
- tests/intel/gem_exec_schedule.c           |  5 ++-
- tests/intel/gem_exec_store.c              |  7 ++--
- tests/intel/gem_exec_suspend.c            |  5 ++-
- tests/intel/gem_exec_whisper.c            |  3 +-
- tests/intel/gem_fd_exhaustion.c           |  3 +-
- tests/intel/gem_fence_thrash.c            |  5 ++-
- tests/intel/gem_fence_upload.c            |  3 +-
- tests/intel/gem_fenced_exec_thrash.c      |  1 +
- tests/intel/gem_lut_handle.c              |  3 +-
- tests/intel/gem_partial_pwrite_pread.c    |  5 ++-
- tests/intel/gem_pipe_control_store_loop.c |  5 ++-
- tests/intel/gem_pread.c                   |  5 ++-
- tests/intel/gem_pread_after_blit.c        |  3 +-
- tests/intel/gem_pwrite.c                  |  3 +-
- tests/intel/gem_pwrite_snooped.c          |  1 +
- tests/intel/gem_pxp.c                     |  7 ++--
- tests/intel/gem_render_linear_blits.c     |  5 ++-
- tests/intel/gem_render_tiled_blits.c      |  5 ++-
- tests/intel/gem_request_retire.c          |  7 ++--
- tests/intel/gem_ringfill.c                |  7 ++--
- tests/intel/gem_shrink.c                  |  3 +-
- tests/intel/gem_softpin.c                 |  7 ++--
- tests/intel/gem_stress.c                  |  1 +
- tests/intel/gem_tiling_max_stride.c       |  5 ++-
- tests/intel/gem_unref_active_buffers.c    |  7 ++--
- tests/intel/gem_vm_create.c               |  3 +-
- tests/intel/gem_watchdog.c                |  5 ++-
- tests/intel/gen7_exec_parse.c             |  5 ++-
- tests/intel/i915_selftest.c               | 46 ++++++++++++++---------
- tests/intel/xe_exec_balancer.c            |  2 +-
- tests/intel/xe_exec_basic.c               |  1 +
- tests/intel/xe_exec_compute_mode.c        |  1 +
- tests/intel/xe_exec_fault_mode.c          |  1 +
- tests/intel/xe_exec_reset.c               |  5 ++-
- tests/intel/xe_exec_store.c               |  1 +
- tests/intel/xe_exec_threads.c             |  1 +
- tests/intel/xe_wedged.c                   |  1 +
- 68 files changed, 198 insertions(+), 122 deletions(-)
+ tests/dmabuf.c                               |  6 +-
+ tests/drm_mm.c                               |  5 +-
+ tests/intel/gem_cs_tlb.c                     |  7 ++-
+ tests/intel/gem_gtt_cpu_tlb.c                |  8 ++-
+ tests/intel/gem_gtt_hog.c                    |  3 +-
+ tests/intel/gem_gtt_speed.c                  |  3 +-
+ tests/intel/gem_lmem_evict.c                 |  5 +-
+ tests/intel/gem_lmem_swapping.c              |  7 ++-
+ tests/intel/gem_madvise.c                    |  9 +--
+ tests/intel/gem_mmap.c                       |  7 ++-
+ tests/intel/gem_mmap_gtt.c                   |  5 +-
+ tests/intel/gem_mmap_offset.c                |  5 +-
+ tests/intel/gem_mmap_wc.c                    |  5 +-
+ tests/intel/gem_ppgtt.c                      |  7 ++-
+ tests/intel/gem_read_read_speed.c            |  3 +-
+ tests/intel/gem_readwrite.c                  |  5 +-
+ tests/intel/gem_set_tiling_vs_gtt.c          |  5 +-
+ tests/intel/gem_set_tiling_vs_pwrite.c       |  5 +-
+ tests/intel/gem_streaming_writes.c           |  3 +-
+ tests/intel/gem_tiled_blits.c                |  5 +-
+ tests/intel/gem_tiled_fence_blits.c          |  5 +-
+ tests/intel/gem_tiled_partial_pwrite_pread.c |  5 +-
+ tests/intel/gem_tiled_pread_basic.c          |  5 +-
+ tests/intel/gem_tiled_pread_pwrite.c         |  5 +-
+ tests/intel/gem_tiled_swapping.c             |  5 +-
+ tests/intel/gem_tiled_wb.c                   |  5 +-
+ tests/intel/gem_tiled_wc.c                   |  5 +-
+ tests/intel/gem_unfence_active_buffers.c     |  7 ++-
+ tests/intel/i915_fb_tiling.c                 |  7 ++-
+ tests/intel/i915_selftest.c                  | 66 ++++++++++++--------
+ tests/intel/prime_busy.c                     |  9 +--
+ tests/intel/prime_mmap.c                     |  7 ++-
+ tests/intel/prime_mmap_coherency.c           |  7 ++-
+ tests/intel/prime_mmap_kms.c                 |  5 +-
+ tests/intel/prime_self_import.c              |  9 +--
+ tests/intel/xe_evict.c                       |  2 +
+ tests/intel/xe_mmap.c                        |  3 +-
+ tests/intel/xe_pat.c                         |  1 +
+ tests/intel/xe_vm.c                          |  1 +
+ 39 files changed, 160 insertions(+), 107 deletions(-)
 
-diff --git a/tests/intel/gem_bad_reloc.c b/tests/intel/gem_bad_reloc.c
-index beb24c8b9..319c65583 100644
---- a/tests/intel/gem_bad_reloc.c
-+++ b/tests/intel/gem_bad_reloc.c
-@@ -45,10 +45,11 @@
-  * TEST: gem bad reloc
-  * Description: Simulates SNA behaviour using negative self-relocations for
-  *		STATE_BASE_ADDRESS command packets.
-- * Feature: cmd_submission
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: relocations
-+ * Feature: cmd_submission
-  *
-  * SUBTEST: negative-reloc
-  * Description: SNA behaviour is compressing batch buffer which leads to
-diff --git a/tests/intel/gem_barrier_race.c b/tests/intel/gem_barrier_race.c
-index 221579ad9..c05a2f3de 100644
---- a/tests/intel/gem_barrier_race.c
-+++ b/tests/intel/gem_barrier_race.c
-@@ -22,6 +22,7 @@
-  * Description: Exercise engine barriers and their interaction with other subsystems
-  * Feature: core
-  * Category: Desktop client
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-  * Functionality: barrier
-  * Test category: GEM_Legacy
-diff --git a/tests/intel/gem_blits.c b/tests/intel/gem_blits.c
-index c23ad528d..175c7f871 100644
---- a/tests/intel/gem_blits.c
-+++ b/tests/intel/gem_blits.c
-@@ -31,9 +31,10 @@
+diff --git a/tests/dmabuf.c b/tests/dmabuf.c
+index 71285ff0b..7d4e6e9aa 100644
+--- a/tests/dmabuf.c
++++ b/tests/dmabuf.c
+@@ -26,11 +26,11 @@
  /**
-  * TEST: gem blits
+  * TEST: dmabuf
+  * Description: Kernel selftests for the dmabuf API
+- * Feature: mapping, prime
   * Category: Infrastructure
-- * Feature: blitter
-- * Functionality: command streamer
+- * Description: drm_mm range manager SW validation
 + * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: command streamer
-+ * Feature: blitter
+  * Functionality: drm_mm
+- * Sub-category: Memory management
++ * Sub-category: Memory management tests
++ * Feature: mapping, prime
   * Test category: GEM_Legacy
   *
-  * SUBTEST: basic
-diff --git a/tests/intel/gem_close.c b/tests/intel/gem_close.c
-index b3c5cb108..4cdea4afd 100644
---- a/tests/intel/gem_close.c
-+++ b/tests/intel/gem_close.c
-@@ -28,9 +28,10 @@
+  * SUBTEST: all-tests
+diff --git a/tests/drm_mm.c b/tests/drm_mm.c
+index dcd4c7676..41b363cf0 100644
+--- a/tests/drm_mm.c
++++ b/tests/drm_mm.c
+@@ -26,10 +26,11 @@
  /**
-  * TEST: gem close
-  * Category: Infrastructure
+  * TEST: drm mm
+  * Description: Basic sanity check of DRM's range manager (struct drm_mm)
 - * Feature: mapping
+  * Category: Infrastructure
 + * Mega feature: General Core features
-+ * Sub-category: driver
-  * Functionality: driver handler
++ * Sub-category: Memory management tests
+  * Functionality: drm_mm
 - * Sub-category: Memory management
 + * Feature: mapping
   * Test category: GEM_Legacy
   *
-  * SUBTEST: basic
-diff --git a/tests/intel/gem_close_race.c b/tests/intel/gem_close_race.c
-index 11843170f..abfb27247 100644
---- a/tests/intel/gem_close_race.c
-+++ b/tests/intel/gem_close_race.c
-@@ -52,9 +52,10 @@
-  * TEST: gem close race
-  * Description: Test try to race gem_close against workload submission.
-  * Category: Infrastructure
-- * Feature: synchronization feature
-- * Functionality: driver handler
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: buffer management
-+ * Feature: synchronization
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic-process
-diff --git a/tests/intel/gem_ctx_bad_destroy.c b/tests/intel/gem_ctx_bad_destroy.c
-index 67a391f23..85a45a488 100644
---- a/tests/intel/gem_ctx_bad_destroy.c
-+++ b/tests/intel/gem_ctx_bad_destroy.c
-@@ -36,11 +36,12 @@
- 
- /**
-  * TEST: gem ctx bad destroy
-- * Category: Infrastructure
-  * Description: Negative test cases for destroy contexts.
-- * Feature: cmd_submission
-- * Functionality: context
-+ * Category: Infrastructure
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: context
-+ * Feature: context
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: double-destroy
-diff --git a/tests/intel/gem_ctx_create.c b/tests/intel/gem_ctx_create.c
-index 471070177..69f2783df 100644
---- a/tests/intel/gem_ctx_create.c
-+++ b/tests/intel/gem_ctx_create.c
-@@ -39,9 +39,10 @@
-  * TEST: gem ctx create
-  * Description: Test the context create ioctls
-  * Category: Infrastructure
-- * Feature: cmd_submission
-- * Functionality: context
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: context
-+ * Feature: context
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: active
-diff --git a/tests/intel/gem_ctx_engines.c b/tests/intel/gem_ctx_engines.c
-index 76fc05a36..6cf799912 100644
---- a/tests/intel/gem_ctx_engines.c
-+++ b/tests/intel/gem_ctx_engines.c
-@@ -46,9 +46,10 @@
- /**
-  * TEST: gem ctx engines
-  * Category: Infrastructure
-- * Feature: cmd_submission
-- * Functionality: context
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: context
-+ * Feature: context
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: execute-allforone
-diff --git a/tests/intel/gem_ctx_exec.c b/tests/intel/gem_ctx_exec.c
-index 70aa5413c..930724227 100644
---- a/tests/intel/gem_ctx_exec.c
-+++ b/tests/intel/gem_ctx_exec.c
-@@ -51,9 +51,10 @@
-  * TEST: gem ctx exec
-  * Description: Test context batch buffer execution.
-  * Category: Infrastructure
-- * Feature: cmd_submission
-- * Functionality: context
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: context
-+ * Feature: context
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic
-diff --git a/tests/intel/gem_ctx_persistence.c b/tests/intel/gem_ctx_persistence.c
-index 80ece13a7..57dd85b88 100644
---- a/tests/intel/gem_ctx_persistence.c
-+++ b/tests/intel/gem_ctx_persistence.c
-@@ -49,8 +49,9 @@
-  * TEST: gem ctx persistence
-  * Feature: context feature
-  * Category: Server
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: context
-- * Sub-category: Compute
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: engines-cleanup
-diff --git a/tests/intel/gem_ctx_shared.c b/tests/intel/gem_ctx_shared.c
-index f0005ead7..bbb9f19c8 100644
---- a/tests/intel/gem_ctx_shared.c
-+++ b/tests/intel/gem_ctx_shared.c
-@@ -51,9 +51,10 @@
-  * TEST: gem ctx shared
-  * Description: Test shared contexts.
-  * Category: Desktop client
-- * Feature: context feature
-- * Functionality: shared contex
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: shared contex
-+ * Feature: context
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: Q-in-order
-diff --git a/tests/intel/gem_ctx_switch.c b/tests/intel/gem_ctx_switch.c
-index 350efb69e..d87fcb46f 100644
---- a/tests/intel/gem_ctx_switch.c
-+++ b/tests/intel/gem_ctx_switch.c
-@@ -49,6 +49,7 @@
-  * TEST: gem ctx switch
-  * Feature: context feature
-  * Category: Desktop client
-+ * Mega feature: General Core features
-  * Sub-category: CMD Submission
-  * Functionality: context switching
-  *
-diff --git a/tests/intel/gem_evict_alignment.c b/tests/intel/gem_evict_alignment.c
-index 0ccddcfe3..d3f02c8ac 100644
---- a/tests/intel/gem_evict_alignment.c
-+++ b/tests/intel/gem_evict_alignment.c
-@@ -50,8 +50,9 @@
- /**
-  * TEST: gem evict alignment
-  * Description: Run a couple of big batches to force the unbind on misalignment code.
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: misalignment
-  *
-  * SUBTEST: major-hang
-diff --git a/tests/intel/gem_evict_everything.c b/tests/intel/gem_evict_everything.c
-index 87338506d..5d8f30bd6 100644
---- a/tests/intel/gem_evict_everything.c
-+++ b/tests/intel/gem_evict_everything.c
-@@ -51,8 +51,9 @@
- /**
-  * TEST: gem evict everything
-  * Description: Run a couple of big batches to force the eviction code.
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: eviction
-  *
-  * SUBTEST: forked-interruptible
-diff --git a/tests/intel/gem_exec_alignment.c b/tests/intel/gem_exec_alignment.c
-index 6e5496166..45237e4f4 100644
---- a/tests/intel/gem_exec_alignment.c
-+++ b/tests/intel/gem_exec_alignment.c
-@@ -47,11 +47,12 @@
- #include "igt_types.h"
- /**
-  * TEST: gem exec alignment
-- * Category: Desktop client
-  * Description: Exercises the basic execbuffer using object alignments
-- * Feature: cmd_submission
-- * Functionality: execbuf
-+ * Category: Desktop client
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: execbuf
-+ * Feature: cmd_submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: forked
-diff --git a/tests/intel/gem_exec_async.c b/tests/intel/gem_exec_async.c
-index f09bc8692..f61517e76 100644
---- a/tests/intel/gem_exec_async.c
-+++ b/tests/intel/gem_exec_async.c
-@@ -27,10 +27,11 @@
- /**
-  * TEST: gem exec async
-  * Category: Infrastructure
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-+ * Functionality: concurent writes
-  * Description: Check that we can issue concurrent writes across the engines.
-  * Feature: cmd_submission
-- * Functionality: concurent writes
-- * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: concurrent-writes
-diff --git a/tests/intel/gem_exec_await.c b/tests/intel/gem_exec_await.c
-index cc976f09d..ad089b35a 100644
---- a/tests/intel/gem_exec_await.c
-+++ b/tests/intel/gem_exec_await.c
-@@ -46,9 +46,10 @@
- /**
-  * TEST: gem exec await
-  * Category: Infrastructure
-- * Feature: cmd_submission
-- * Functionality: requests
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: requests
-+ * Feature: cmd_submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: wide-all
-diff --git a/tests/intel/gem_exec_balancer.c b/tests/intel/gem_exec_balancer.c
-index 83cc7eea4..536f72d20 100644
---- a/tests/intel/gem_exec_balancer.c
-+++ b/tests/intel/gem_exec_balancer.c
-@@ -42,9 +42,10 @@
-  * TEST: gem exec balancer
-  * Description: Exercise in-kernel load-balancing
-  * Category: Desktop \ Server
-- * Feature: cmd_submission, media_scalability
-- * Functionality: load balancing
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: load balancing
-+ * Feature: cmd_submission, media_scalability
-  * Test category: Media & Compute
-  *
-  * SUBTEST: bonded-chain
-diff --git a/tests/intel/gem_exec_basic.c b/tests/intel/gem_exec_basic.c
-index 3982bccc6..515c117cf 100644
---- a/tests/intel/gem_exec_basic.c
-+++ b/tests/intel/gem_exec_basic.c
-@@ -29,9 +29,10 @@
-  * TEST: gem exec basic
-  * Description: Basic sanity check of execbuf-ioctl rings.
-  * Category: Infrastructure
-- * Feature: cmd_submission
-- * Functionality: execbuf
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: execbuf
-+ * Feature: cmd_submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic
-diff --git a/tests/intel/gem_exec_big.c b/tests/intel/gem_exec_big.c
-index d464440e9..ffdfb650c 100644
---- a/tests/intel/gem_exec_big.c
-+++ b/tests/intel/gem_exec_big.c
-@@ -53,8 +53,9 @@
-  * Description: Run a large nop batch to stress test the error capture code.
-  * Feature: cmd_submission
-  * Category: Infrastructure
-- * Functionality: large nop batch
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: large nop batch
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: exhaustive
-diff --git a/tests/intel/gem_exec_create.c b/tests/intel/gem_exec_create.c
-index e9a3cdc04..0d4fa97ef 100644
---- a/tests/intel/gem_exec_create.c
-+++ b/tests/intel/gem_exec_create.c
-@@ -49,12 +49,13 @@
- /**
-  * TEST: gem exec create
-  * Category: Infrastructure
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-+ * Functionality: buffer management
-  * Description: This test overloads the driver with transient active objects
-  *		and checks if we don't kill the system under the memory pressure
-  *		some of the symptoms this test look for include mysterious hangs.
-  * Feature: cmd_submission
-- * Functionality: buffer management
-- * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic
-diff --git a/tests/intel/gem_exec_fair.c b/tests/intel/gem_exec_fair.c
-index 003cd1c4f..11d7648ed 100644
---- a/tests/intel/gem_exec_fair.c
-+++ b/tests/intel/gem_exec_fair.c
-@@ -29,10 +29,11 @@
- /**
-  * TEST: gem exec fair
-  * Description: Check that GPU time and execution order is fairly distributed across clients
-- * Feature: cmd_submission
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: multi-client systems
-+ * Feature: cmd_submission
-  *
-  * SUBTEST: basic-deadline
-  *
-diff --git a/tests/intel/gem_exec_fence.c b/tests/intel/gem_exec_fence.c
-index deff18abc..6ae30ca59 100644
---- a/tests/intel/gem_exec_fence.c
-+++ b/tests/intel/gem_exec_fence.c
-@@ -39,9 +39,10 @@
-  * TEST: gem exec fence
-  * Description: Check that execbuf waits for explicit fences
-  * Category: Infrastructure
-- * Feature: cmd_submission, synchronization feature
-+ * Mega feature: General Core features
-+ * Sub-category: Synchronization
-  * Functionality: semaphore
-- * Sub-category: CMD submission
-+ * Feature: cmd_submission, synchronization
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: await-hang
-diff --git a/tests/intel/gem_exec_flush.c b/tests/intel/gem_exec_flush.c
-index 5e2804f7d..1151628bd 100644
---- a/tests/intel/gem_exec_flush.c
-+++ b/tests/intel/gem_exec_flush.c
-@@ -31,6 +31,7 @@
- /**
-  * TEST: gem exec flush
-  * Description: Basic check of flushing after batches
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-  * Category: Desktop client
-  * Functionality: execbuf
-diff --git a/tests/intel/gem_exec_gttfill.c b/tests/intel/gem_exec_gttfill.c
-index e11580b40..65146bca6 100644
---- a/tests/intel/gem_exec_gttfill.c
-+++ b/tests/intel/gem_exec_gttfill.c
-@@ -30,9 +30,10 @@
-  * TEST: gem exec gttfill
-  * Description: Fill the GTT with batches.
-  * Category: Infrastructure
-- * Feature: cmd_submission, gtt
-- * Functionality: execbuf
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: execbuf
-+ * Feature: cmd_submission, gtt
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: all-engines
-@@ -45,8 +46,9 @@
-  * Description: Checks the correctness of handling enough batches to fill gtt for each engine
-  *
-  * SUBTEST: multigpu-basic
-+ * Sub-category: MultiGPU
-+ * Functionality: execbuf on multiGPU
-  * Feature: cmd_submission, gtt, multigpu
-- * Test category: MultiGPU
-  */
- 
- IGT_TEST_DESCRIPTION("Fill the GTT with batches.");
-diff --git a/tests/intel/gem_exec_latency.c b/tests/intel/gem_exec_latency.c
-index b802c2f31..0ada25824 100644
---- a/tests/intel/gem_exec_latency.c
-+++ b/tests/intel/gem_exec_latency.c
-@@ -50,9 +50,10 @@
- #include "i915/gem_create.h"
- /**
-  * TEST: gem exec latency
-+ * Category: Desktop client
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-  * Functionality: execbuf
-- * Category: Desktop client
-  *
-  * SUBTEST: context-preempt
-  *
-diff --git a/tests/intel/gem_exec_lut_handle.c b/tests/intel/gem_exec_lut_handle.c
-index ff37a9f0e..2aba9ffed 100644
---- a/tests/intel/gem_exec_lut_handle.c
-+++ b/tests/intel/gem_exec_lut_handle.c
-@@ -43,8 +43,9 @@
- /**
-  * TEST: gem exec lut handle
-  * Description: Exercises the basic execbuffer using the handle LUT interface.
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: execbuf
-  *
-  * SUBTEST:
-diff --git a/tests/intel/gem_exec_nop.c b/tests/intel/gem_exec_nop.c
-index 0f1da1a47..7219a0fd6 100644
---- a/tests/intel/gem_exec_nop.c
-+++ b/tests/intel/gem_exec_nop.c
-@@ -51,9 +51,10 @@
- /**
-  * TEST: gem exec nop
-  * Category: Infrastructure
-- * Feature: cmd_submission
-- * Functionality: execbuf
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: execbuf
-+ * Feature: cmd_submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic-parallel
-diff --git a/tests/intel/gem_exec_parallel.c b/tests/intel/gem_exec_parallel.c
-index cb9f0e33d..8d7a5a185 100644
---- a/tests/intel/gem_exec_parallel.c
-+++ b/tests/intel/gem_exec_parallel.c
-@@ -37,10 +37,10 @@
-  * TEST: gem exec parallel
-  * Description: Exercise filling buffers by many clients working in parallel.
-  * Category: Infrastructure
-- * Description: Check basic functionality per engine.
-- * Feature: cmd_submission
-- * Functionality: parallel clients
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: parallel clients
-+ * Feature: cmd_submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic
-diff --git a/tests/intel/gem_exec_params.c b/tests/intel/gem_exec_params.c
-index b2f8fb247..18651c9fb 100644
---- a/tests/intel/gem_exec_params.c
-+++ b/tests/intel/gem_exec_params.c
-@@ -47,9 +47,10 @@
- /**
-  * TEST: gem exec params
-  * Category: Desktop client
-- * Feature: cmd_submission
-- * Functionality: execbuf
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: execbuf
-+ * Feature: cmd_submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: DR1-dirt
-diff --git a/tests/intel/gem_exec_reloc.c b/tests/intel/gem_exec_reloc.c
-index c7f7db27a..692811057 100644
---- a/tests/intel/gem_exec_reloc.c
-+++ b/tests/intel/gem_exec_reloc.c
-@@ -34,8 +34,9 @@
- /**
-  * TEST: gem exec reloc
-  * Description: Basic sanity check of execbuf-ioctl relocations.
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: relocations
-  *
-  * SUBTEST: basic-active
-diff --git a/tests/intel/gem_exec_schedule.c b/tests/intel/gem_exec_schedule.c
-index cae846794..663c8782e 100644
---- a/tests/intel/gem_exec_schedule.c
-+++ b/tests/intel/gem_exec_schedule.c
-@@ -48,9 +48,10 @@
-  * TEST: gem exec schedule
-  * Description: Check that we can control the order of execution
-  * Category: Desktop \ Server
-- * Feature: cmd_submission
-- * Functionality: execution order
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: execution order
-+ * Feature: cmd_submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: deep
-diff --git a/tests/intel/gem_exec_store.c b/tests/intel/gem_exec_store.c
-index 3f44f2aa6..c480555e8 100644
---- a/tests/intel/gem_exec_store.c
-+++ b/tests/intel/gem_exec_store.c
-@@ -36,11 +36,12 @@
- #include "igt_gt.h"
- /**
-  * TEST: gem exec store
-- * Category: Infrastructure
-  * Description: Exercise store dword functionality using execbuf-ioctl
-- * Feature: cmd_submission
-- * Functionality: coherency
-+ * Category: Infrastructure
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: coherency
-+ * Feature: cmd_submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic
-diff --git a/tests/intel/gem_exec_suspend.c b/tests/intel/gem_exec_suspend.c
-index 28d51996e..8dd23ee8c 100644
---- a/tests/intel/gem_exec_suspend.c
-+++ b/tests/intel/gem_exec_suspend.c
-@@ -39,10 +39,11 @@
- /**
-  * TEST: gem exec suspend
-  * Description: Exercise simple execbufs runs across various suspend/resume cycles.
-- * Feature: cmd_submission, suspend feature
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: suspend
-+ * Feature: cmd_submission, suspend
-  *
-  * SUBTEST: basic
-  * Description: Check basic functionality without any suspend/resume cycle.
-diff --git a/tests/intel/gem_exec_whisper.c b/tests/intel/gem_exec_whisper.c
-index b813ea832..21ebc5b3e 100644
---- a/tests/intel/gem_exec_whisper.c
-+++ b/tests/intel/gem_exec_whisper.c
-@@ -41,8 +41,9 @@
-  * TEST: gem exec whisper
-  * Feature: cmd_submission
-  * Category: Infrastructure
-- * Functionality: execbuf
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: execbuf
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic-contexts
-diff --git a/tests/intel/gem_fd_exhaustion.c b/tests/intel/gem_fd_exhaustion.c
-index 14270897d..4b483863e 100644
---- a/tests/intel/gem_fd_exhaustion.c
-+++ b/tests/intel/gem_fd_exhaustion.c
-@@ -36,8 +36,9 @@
- #include "i915/gem_create.h"
- /**
-  * TEST: gem fd exhaustion
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: fd exhaustion
-  *
-  * SUBTEST:
-diff --git a/tests/intel/gem_fence_thrash.c b/tests/intel/gem_fence_thrash.c
-index c7c9460c6..0517c0316 100644
---- a/tests/intel/gem_fence_thrash.c
-+++ b/tests/intel/gem_fence_thrash.c
-@@ -45,10 +45,11 @@
- #include "igt_x86.h"
- /**
-  * TEST: gem fence thrash
-- * Feature: gtt, synchronization feature
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: fences
-+ * Feature: gtt, synchronization
-  *
-  * SUBTEST: bo-copy
-  *
-diff --git a/tests/intel/gem_fence_upload.c b/tests/intel/gem_fence_upload.c
-index 8b92d3976..46a62a7ee 100644
---- a/tests/intel/gem_fence_upload.c
-+++ b/tests/intel/gem_fence_upload.c
-@@ -43,8 +43,9 @@
- #include "i915/gem_create.h"
- /**
-  * TEST: gem fence upload
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: fences
-  *
-  * SUBTEST: performance
-diff --git a/tests/intel/gem_fenced_exec_thrash.c b/tests/intel/gem_fenced_exec_thrash.c
-index 614967615..94e5632c1 100644
---- a/tests/intel/gem_fenced_exec_thrash.c
-+++ b/tests/intel/gem_fenced_exec_thrash.c
-@@ -37,6 +37,7 @@
-  * TEST: gem fenced exec thrash
-  * Description: Test execbuf fence accounting.
-  * Category: Desktop client
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-  * Functionality: fences
-  * Feature: gtt, synchronization feature
-diff --git a/tests/intel/gem_lut_handle.c b/tests/intel/gem_lut_handle.c
-index b2911b3b6..be75154fc 100644
---- a/tests/intel/gem_lut_handle.c
-+++ b/tests/intel/gem_lut_handle.c
-@@ -42,8 +42,9 @@
- /**
-  * TEST: gem lut handle
-  * Description: Exercises the basic execbuffer using the handle LUT interface.
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: execbuf
-  *
-  * SUBTEST:
-diff --git a/tests/intel/gem_partial_pwrite_pread.c b/tests/intel/gem_partial_pwrite_pread.c
-index cb7737ffc..2787886ee 100644
---- a/tests/intel/gem_partial_pwrite_pread.c
-+++ b/tests/intel/gem_partial_pwrite_pread.c
-@@ -41,10 +41,11 @@
- /**
-  * TEST: gem partial pwrite pread
-  * Description: Test pwrite/pread consistency when touching partial cachelines.
-- * Feature: caching, mapping
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: pread/pwrite
-+ * Feature: caching, mapping
-  *
-  * SUBTEST: reads
-  * Description:
-diff --git a/tests/intel/gem_pipe_control_store_loop.c b/tests/intel/gem_pipe_control_store_loop.c
-index e79cef60f..0a16574af 100644
---- a/tests/intel/gem_pipe_control_store_loop.c
-+++ b/tests/intel/gem_pipe_control_store_loop.c
-@@ -46,10 +46,11 @@
- /**
-  * TEST: gem pipe control store loop
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-+ * Functionality: coherency
-  * Description: Test (TLB-)Coherency of pipe_control QW writes.
-  * Feature: cmd_submission
-- * Functionality: coherency
-- * Sub-category: CMD submission
-  * Test category: GEM_Legacy
-  *
-  * SUBTEST: fresh-buffer
-diff --git a/tests/intel/gem_pread.c b/tests/intel/gem_pread.c
-index e5a7b48d3..bf77049e1 100644
---- a/tests/intel/gem_pread.c
-+++ b/tests/intel/gem_pread.c
-@@ -47,10 +47,11 @@
- #include "igt_vgem.h"
- /**
-  * TEST: gem pread
-- * Feature: mapping
-- * Sub-category: CMD submission
-+ * Mega feature: General Core features
-  * Category: Desktop client
-+ * Sub-category: CMD submission
-  * Functionality: pread
-+ * Feature: mapping
-  *
-  * SUBTEST: bench
-  *
-diff --git a/tests/intel/gem_pread_after_blit.c b/tests/intel/gem_pread_after_blit.c
-index f6a1b625b..e30d2b467 100644
---- a/tests/intel/gem_pread_after_blit.c
-+++ b/tests/intel/gem_pread_after_blit.c
-@@ -50,8 +50,9 @@
- /**
-  * TEST: gem pread after blit
-  * Description: Test pread behavior when getting values out of just-drawn-to buffers.
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: pread
-  *
-  * SUBTEST: default-hang
-diff --git a/tests/intel/gem_pwrite.c b/tests/intel/gem_pwrite.c
-index a617a9999..3497b3932 100644
---- a/tests/intel/gem_pwrite.c
-+++ b/tests/intel/gem_pwrite.c
-@@ -49,8 +49,9 @@
- /**
-  * TEST: gem pwrite
-  * Feature: mapping
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: pwrite
-  *
-  * SUBTEST: basic-exhaustion
-diff --git a/tests/intel/gem_pwrite_snooped.c b/tests/intel/gem_pwrite_snooped.c
-index 19df2fd3d..be3595439 100644
---- a/tests/intel/gem_pwrite_snooped.c
-+++ b/tests/intel/gem_pwrite_snooped.c
-@@ -46,6 +46,7 @@
-  * Functionality: pwrite
-  *
-  * SUBTEST:
-+ * Mega feature: General Core features
-  */
- 
- IGT_TEST_DESCRIPTION(
-diff --git a/tests/intel/gem_pxp.c b/tests/intel/gem_pxp.c
-index f90e92abd..79d17f99c 100644
---- a/tests/intel/gem_pxp.c
-+++ b/tests/intel/gem_pxp.c
-@@ -10,10 +10,11 @@
- /**
-  * TEST: gem pxp
-  * Description: Test PXP that manages protected content through arbitrated HW-PXP-session
-- * Feature: Protected Xe Path
-- * Functionality: pxp
-- * Sub-category: Power management
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: driver
-+ * Functionality: pxp
-+ * Feature: Protected Xe Path
-  *
-  * SUBTEST: create-protected-buffer
-  *
-diff --git a/tests/intel/gem_render_linear_blits.c b/tests/intel/gem_render_linear_blits.c
-index 121d1b2a8..cace14843 100644
---- a/tests/intel/gem_render_linear_blits.c
-+++ b/tests/intel/gem_render_linear_blits.c
-@@ -51,10 +51,11 @@
+  * SUBTEST: drm_mm
+diff --git a/tests/intel/gem_cs_tlb.c b/tests/intel/gem_cs_tlb.c
+index f18a8fdaa..065d6b330 100644
+--- a/tests/intel/gem_cs_tlb.c
++++ b/tests/intel/gem_cs_tlb.c
+@@ -54,11 +54,12 @@
  #include "igt.h"
  /**
-  * TEST: gem render linear blits
-- * Feature: mapping
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: render blits
-+ * Feature: mapping
-  *
-  * SUBTEST: aperture-shrink
-  *
-diff --git a/tests/intel/gem_render_tiled_blits.c b/tests/intel/gem_render_tiled_blits.c
-index 4b49c2a36..14b06c181 100644
---- a/tests/intel/gem_render_tiled_blits.c
-+++ b/tests/intel/gem_render_tiled_blits.c
-@@ -54,10 +54,11 @@
-  *   Tests performs cyclic forward, backward and random blits on tiled buffer
-  *   objects using render engine with various working set sizes and compares
-  *   outputs with expected ones.
-- * Feature: mapping
-- * Sub-category: CMD submission
-  * Category: Desktop client
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: render blits
-+ * Feature: mapping
-  *
-  * SUBTEST: aperture-shrink
-  * Description:
-diff --git a/tests/intel/gem_request_retire.c b/tests/intel/gem_request_retire.c
-index d86972536..60975279d 100644
---- a/tests/intel/gem_request_retire.c
-+++ b/tests/intel/gem_request_retire.c
-@@ -51,12 +51,13 @@
- #include "igt_types.h"
- /**
-  * TEST: gem request retire
+  * TEST: gem cs tlb
 - * Category: Infrastructure
-  * Description: Collection of tests targeting request retirement code paths.
-- * Feature: cmd_submission
-- * Functionality: requests
+  * Description: Check whether we correctly invalidate the cs tlb.
+- * Feature: mapping
 + * Category: Infrastructure
 + * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: requests
++ * Sub-category: Memory management tests
+  * Functionality: tlb
+- * Sub-category: Memory management
++ * Feature: mapping
   * Test category: GEM_Legacy
-+ * Feature: cmd_submission
   *
-  * SUBTEST: retire-vma-not-inactive
+  * SUBTEST: engines
+diff --git a/tests/intel/gem_gtt_cpu_tlb.c b/tests/intel/gem_gtt_cpu_tlb.c
+index c7a1cbe63..7fd876e5c 100644
+--- a/tests/intel/gem_gtt_cpu_tlb.c
++++ b/tests/intel/gem_gtt_cpu_tlb.c
+@@ -46,10 +46,12 @@
+ /**
+  * TEST: gem gtt cpu tlb
+  * Description: Check whether gtt tlbs for cpu access are correctly invalidated.
+- * Feature: gtt, mapping
+- * Sub-category: Memory management
+  * Category: Desktop client
+- * Functionality: mmap
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
++ * Functionality: mapping
++ * Feature: gtt, mapping
++ *
+  *
+  * SUBTEST:
   */
-diff --git a/tests/intel/gem_ringfill.c b/tests/intel/gem_ringfill.c
-index 84060c474..e64c98b4b 100644
---- a/tests/intel/gem_ringfill.c
-+++ b/tests/intel/gem_ringfill.c
-@@ -43,14 +43,15 @@
- #include <sys/ioctl.h>
+diff --git a/tests/intel/gem_gtt_hog.c b/tests/intel/gem_gtt_hog.c
+index 12f291020..cfeea8ba1 100644
+--- a/tests/intel/gem_gtt_hog.c
++++ b/tests/intel/gem_gtt_hog.c
+@@ -44,8 +44,9 @@
+ #include "igt.h"
  /**
-  * TEST: gem ringfill
-- * Category: Infrastructure
-  * Description:
-  *   Exercise many tiny batchbuffer operations, in the hope of catching failure to manage the ring
-  *   properly near full.
-- * Feature: cmd_submission
-- * Functionality: execbuf
-+ * Category: Infrastructure
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: execbuf
-  * Test category: GEM_Legacy
-+ * Feature: cmd_submission
-  *
-  * SUBTEST: basic-all
-  * Description: Basic check to fill the ring up to maximum on all engines
-diff --git a/tests/intel/gem_shrink.c b/tests/intel/gem_shrink.c
-index f6df21c8d..ee373bf4d 100644
---- a/tests/intel/gem_shrink.c
-+++ b/tests/intel/gem_shrink.c
-@@ -37,8 +37,9 @@
-  * TEST: gem shrink
-  * Feature: mapping
+  * TEST: gem gtt hog
+- * Sub-category: Memory management
   * Category: Desktop client
-- * Functionality: buffer management
 + * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: buffer management
++ * Sub-category: Memory management tests
+  * Functionality: gtt
+  *
+  * SUBTEST:
+diff --git a/tests/intel/gem_gtt_speed.c b/tests/intel/gem_gtt_speed.c
+index 46ebafdd8..14f0ffa88 100644
+--- a/tests/intel/gem_gtt_speed.c
++++ b/tests/intel/gem_gtt_speed.c
+@@ -44,8 +44,9 @@
+ #include "i915/gem_create.h"
+ /**
+  * TEST: gem gtt speed
+- * Sub-category: Memory management
+  * Category: Desktop client
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: gtt
+  *
+  * SUBTEST:
+diff --git a/tests/intel/gem_lmem_evict.c b/tests/intel/gem_lmem_evict.c
+index f756565cb..2453f95b2 100644
+--- a/tests/intel/gem_lmem_evict.c
++++ b/tests/intel/gem_lmem_evict.c
+@@ -10,10 +10,11 @@
+ /**
+  * TEST: gem lmem evict
+  * Description: Force tiny lmem size for easily testing eviction scenarios.
+- * Feature: local_memory
+- * Sub-category: Memory management
+  * Category: Desktop client
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: local memory eviction
++ * Feature: local_memory
   * Test category: GEM_Legacy
   *
-  * SUBTEST: execbuf1
-diff --git a/tests/intel/gem_softpin.c b/tests/intel/gem_softpin.c
-index ab23ca7d5..9bea97d39 100644
---- a/tests/intel/gem_softpin.c
-+++ b/tests/intel/gem_softpin.c
-@@ -33,14 +33,15 @@
- #include "intel_allocator.h"
+  * SUBTEST: dontneed-evict-race
+diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+index a10a6e96e..d6cc93fcf 100644
+--- a/tests/intel/gem_lmem_swapping.c
++++ b/tests/intel/gem_lmem_swapping.c
+@@ -26,11 +26,12 @@
+ #include "intel_mocs.h"
  /**
-  * TEST: gem softpin
-- * Category: Infrastructure
-  * Description:
-  *   Tests softpin feature with normal usage, invalid inputs scenarios and couple of eviction
-  *   tests which copy buffers between CPU and GPU.
-- * Feature: mapping
-- * Functionality: softpin
-+ * Category: Infrastructure
+  * TEST: gem lmem swapping
+- * Category: Server
+  * Description: Exercise local memory swapping.
++ * Category: Server
 + * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: softpin
++ * Sub-category: Memory management tests
++ * Functionality: local memory
+  * Feature: local_memory
+- * Functionality: buffer management
+- * Sub-category: Memory management
   * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic
+diff --git a/tests/intel/gem_madvise.c b/tests/intel/gem_madvise.c
+index da5ac7d6d..101355322 100644
+--- a/tests/intel/gem_madvise.c
++++ b/tests/intel/gem_madvise.c
+@@ -40,12 +40,13 @@
+ #include "i915/gem_create.h"
+ /**
+  * TEST: gem madvise
+- * Category: Desktop client
+  * Description: Checks that the kernel reports EFAULT when trying to use purged bo.
+- * Feature: caching, mapping
+- * Functionality: buffer management
+- * Sub-category: Memory management
++ * Category: Desktop client
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
++ * Functionality: madvise
+  * Test category: GEM_Legacy
++ * Feature: caching, mapping
+  *
+  * SUBTEST: dontneed-after-mmap
+  * Description: Check signal for Segmentation Fault and bus error after
+diff --git a/tests/intel/gem_mmap.c b/tests/intel/gem_mmap.c
+index 179001a20..5e8a787d1 100644
+--- a/tests/intel/gem_mmap.c
++++ b/tests/intel/gem_mmap.c
+@@ -41,10 +41,11 @@
+ /**
+  * TEST: gem mmap
+  * Description: Basic MMAP IOCTL tests for memory regions.
+- * Feature: mapping
+- * Sub-category: Memory management
+  * Category: Desktop client
+- * Functionality: mmap
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
++ * Functionality: mapping
 + * Feature: mapping
   *
-  * SUBTEST: 32b-excludes-last-page
-  * Description: Check the last 32b page is excluded.
-diff --git a/tests/intel/gem_stress.c b/tests/intel/gem_stress.c
-index fc1ff2519..9ee7a4210 100644
---- a/tests/intel/gem_stress.c
-+++ b/tests/intel/gem_stress.c
-@@ -65,6 +65,7 @@
-  * TEST: gem stress
-  * Description: General gem coherency test.
+  * SUBTEST: bad-object
+  * Description: Verify mapping to invalid gem objects won't be created.
+diff --git a/tests/intel/gem_mmap_gtt.c b/tests/intel/gem_mmap_gtt.c
+index 7218ef9bc..79be68a22 100644
+--- a/tests/intel/gem_mmap_gtt.c
++++ b/tests/intel/gem_mmap_gtt.c
+@@ -49,10 +49,11 @@
+ /**
+  * TEST: gem mmap gtt
+  * Description: Ensure that all operations around MMAP_GTT ioctl works.
+- * Feature: gtt
+- * Sub-category: Memory management
   * Category: Desktop client
 + * Mega feature: General Core features
-  * Sub-category: CMD submission
-  * Functionality: coherency
++ * Sub-category: Memory management tests
+  * Functionality: map gtt
++ * Feature: gtt
   *
-diff --git a/tests/intel/gem_tiling_max_stride.c b/tests/intel/gem_tiling_max_stride.c
-index 5877b887c..2693a1eeb 100644
---- a/tests/intel/gem_tiling_max_stride.c
-+++ b/tests/intel/gem_tiling_max_stride.c
+  * SUBTEST: bad-object
+  * Description: Verify mapping to invalid gem objects fails.
+diff --git a/tests/intel/gem_mmap_offset.c b/tests/intel/gem_mmap_offset.c
+index 95d2158ca..90a4a0f1a 100644
+--- a/tests/intel/gem_mmap_offset.c
++++ b/tests/intel/gem_mmap_offset.c
+@@ -41,9 +41,10 @@
+  * TEST: gem mmap offset
+  * Description: Basic MMAP_OFFSET IOCTL tests for mem regions
+  * Category: Infrastructure
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
++ * Functionality: mapping
+  * Feature: mapping
+- * Functionality: mmap
+- * Sub-category: Memory management
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: bad-extensions
+diff --git a/tests/intel/gem_mmap_wc.c b/tests/intel/gem_mmap_wc.c
+index 0a1bef7a2..beecd0b3a 100644
+--- a/tests/intel/gem_mmap_wc.c
++++ b/tests/intel/gem_mmap_wc.c
+@@ -41,10 +41,11 @@
+ #include "i915/gem_create.h"
+ /**
+  * TEST: gem mmap wc
+- * Feature: caching, mapping
+- * Sub-category: Memory management
+  * Category: Desktop client
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: cache
++ * Feature: caching, mapping
+  *
+  * SUBTEST: bad-object
+  * SUBTEST: bad-offset
+diff --git a/tests/intel/gem_ppgtt.c b/tests/intel/gem_ppgtt.c
+index e6a4651da..a6ebeb01d 100644
+--- a/tests/intel/gem_ppgtt.c
++++ b/tests/intel/gem_ppgtt.c
 @@ -42,10 +42,11 @@
  /**
-  * TEST: gem tiling max stride
-  * Description: Check that max fence stride works.
+  * TEST: gem ppgtt
+  * Category: Desktop client
+- * Feature: mapping, xorg_dri2
+- * Functionality: buffer management
+- * Sub-category: Memory management
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
++ * Functionality: ppgtt
+  * Test category: GEM_Legacy
++ * Feature: mapping, xorg_dri2
+  *
+  * SUBTEST: blt-vs-render-ctx0
+  *
+diff --git a/tests/intel/gem_read_read_speed.c b/tests/intel/gem_read_read_speed.c
+index 47c3dfecd..f6834f74c 100644
+--- a/tests/intel/gem_read_read_speed.c
++++ b/tests/intel/gem_read_read_speed.c
+@@ -45,8 +45,9 @@
+ /**
+  * TEST: gem read read speed
+  * Description: Test speed of concurrent reads between engines.
+- * Sub-category: Memory management
+  * Category: Desktop client
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: read/write memory
+  *
+  * SUBTEST: read-read-1024x1024
+diff --git a/tests/intel/gem_readwrite.c b/tests/intel/gem_readwrite.c
+index 9970c5f33..b5c6e7a26 100644
+--- a/tests/intel/gem_readwrite.c
++++ b/tests/intel/gem_readwrite.c
+@@ -40,10 +40,11 @@
+ #include "i915/gem_create.h"
+ /**
+  * TEST: gem readwrite
+- * Feature: mapping
+- * Sub-category: Memory management
+  * Category: Desktop client
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: read/write memory
++ * Feature: mapping
+  *
+  * SUBTEST: beyond-EOB
+  *
+diff --git a/tests/intel/gem_set_tiling_vs_gtt.c b/tests/intel/gem_set_tiling_vs_gtt.c
+index 3305a2297..621dc6fbf 100644
+--- a/tests/intel/gem_set_tiling_vs_gtt.c
++++ b/tests/intel/gem_set_tiling_vs_gtt.c
+@@ -41,10 +41,11 @@
+ /**
+  * TEST: gem set tiling vs gtt
+  * Description: Check set_tiling vs gtt mmap coherency.
+- * Feature: gtt
+- * Sub-category: Memory management
+  * Category: Desktop client
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: tiling vs gtt coherency
++ * Feature: gtt
+  *
+  * SUBTEST:
+  */
+diff --git a/tests/intel/gem_set_tiling_vs_pwrite.c b/tests/intel/gem_set_tiling_vs_pwrite.c
+index 241e72ab8..10bfcb71f 100644
+--- a/tests/intel/gem_set_tiling_vs_pwrite.c
++++ b/tests/intel/gem_set_tiling_vs_pwrite.c
+@@ -41,10 +41,11 @@
+ /**
+  * TEST: gem set tiling vs pwrite
+  * Description: Check set_tiling vs pwrite coherency.
+- * Feature: gtt
+- * Sub-category: Memory management
+  * Category: Desktop client
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: tiling vs pwrite coherency
++ * Feature: gtt
+  *
+  * SUBTEST:
+  */
+diff --git a/tests/intel/gem_streaming_writes.c b/tests/intel/gem_streaming_writes.c
+index d707c703a..d80ac6fe1 100644
+--- a/tests/intel/gem_streaming_writes.c
++++ b/tests/intel/gem_streaming_writes.c
+@@ -43,8 +43,9 @@
+ /**
+  * TEST: gem streaming writes
+  * Description: Test of streaming writes into active GPU sources
+- * Sub-category: Memory management
+  * Category: Desktop client
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: barrier
+  *
+  * SUBTEST: batch-cpu
+diff --git a/tests/intel/gem_tiled_blits.c b/tests/intel/gem_tiled_blits.c
+index 73adadef4..f3845d213 100644
+--- a/tests/intel/gem_tiled_blits.c
++++ b/tests/intel/gem_tiled_blits.c
+@@ -57,10 +57,11 @@
+ /**
+  * TEST: gem tiled blits
+  * Description: Test doing many tiled blits, with a working set larger than the aperture size.
 - * Feature: gtt, mapping
 - * Sub-category: Memory management
   * Category: Desktop client
 + * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: fences
++ * Sub-category: Memory management tests
+  * Functionality: tiled blits
++ * Feature: gtt, mapping
+  *
+  * SUBTEST: basic
+  * Description: Check basic functionality.
+diff --git a/tests/intel/gem_tiled_fence_blits.c b/tests/intel/gem_tiled_fence_blits.c
+index faebe0efb..bf33b8d5f 100644
+--- a/tests/intel/gem_tiled_fence_blits.c
++++ b/tests/intel/gem_tiled_fence_blits.c
+@@ -50,10 +50,11 @@
+  * Description:
+  *   Tests fence management problems related to tiled blits by performing many blits on tiled
+  *   buffer objects with fences enabled and with working set larger than the aperture size.
+- * Feature: gtt, mapping
+- * Sub-category: Memory management
+  * Category: Desktop client
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: tiled blits
++ * Feature: gtt, mapping
+  *
+  * SUBTEST: basic
+  * Description: Check basic functionality.
+diff --git a/tests/intel/gem_tiled_partial_pwrite_pread.c b/tests/intel/gem_tiled_partial_pwrite_pread.c
+index 9c24f1901..551fb4306 100644
+--- a/tests/intel/gem_tiled_partial_pwrite_pread.c
++++ b/tests/intel/gem_tiled_partial_pwrite_pread.c
+@@ -41,10 +41,11 @@
+ /**
+  * TEST: gem tiled partial pwrite pread
+  * Description: Test pwrite/pread consistency when touching partial cachelines.
+- * Feature: gtt, mapping
+- * Sub-category: Memory management
+  * Category: Desktop client
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: tiled pread/pwrite
++ * Feature: gtt, mapping
+  *
+  * SUBTEST: reads
+  *
+diff --git a/tests/intel/gem_tiled_pread_basic.c b/tests/intel/gem_tiled_pread_basic.c
+index 913800880..f26db3592 100644
+--- a/tests/intel/gem_tiled_pread_basic.c
++++ b/tests/intel/gem_tiled_pread_basic.c
+@@ -51,10 +51,11 @@
+ /**
+  * TEST: gem tiled pread basic
+  * Description: Test pread behavior on tiled objects with respect to the reported swizzling value.
+- * Feature: gtt, mapping
+- * Sub-category: Memory management
+  * Category: Desktop client
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: tiled pread/pwrite
 + * Feature: gtt, mapping
   *
   * SUBTEST:
   */
-diff --git a/tests/intel/gem_unref_active_buffers.c b/tests/intel/gem_unref_active_buffers.c
-index 47f792738..a535b24a4 100644
---- a/tests/intel/gem_unref_active_buffers.c
-+++ b/tests/intel/gem_unref_active_buffers.c
-@@ -43,11 +43,12 @@
- #include "i915/gem_create.h"
+diff --git a/tests/intel/gem_tiled_pread_pwrite.c b/tests/intel/gem_tiled_pread_pwrite.c
+index 7ec6a9291..b65e0458a 100644
+--- a/tests/intel/gem_tiled_pread_pwrite.c
++++ b/tests/intel/gem_tiled_pread_pwrite.c
+@@ -61,10 +61,11 @@
  /**
-  * TEST: gem unref active buffers
-- * Category: Infrastructure
-  * Description: Test unreferencing of active buffers.
-- * Feature: cmd_submission
-- * Functionality: buffer management
-+ * Category: Infrastructure
+  * TEST: gem tiled pread pwrite
+  * Description: Test swizzling by testing pwrite does the inverse of pread.
+- * Feature: gtt, mapping
+- * Sub-category: Memory management
+  * Category: Desktop client
 + * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: buffer management
-+ * Feature: cmd_submission
-  * Test category: GEM_Legacy
++ * Sub-category: Memory management tests
+  * Functionality: tiled pread/pwrite
++ * Feature: gtt, mapping
   *
   * SUBTEST:
-diff --git a/tests/intel/gem_vm_create.c b/tests/intel/gem_vm_create.c
-index 2788e1745..6fff1a601 100644
---- a/tests/intel/gem_vm_create.c
-+++ b/tests/intel/gem_vm_create.c
-@@ -30,8 +30,9 @@
+  */
+diff --git a/tests/intel/gem_tiled_swapping.c b/tests/intel/gem_tiled_swapping.c
+index 1b5c4bd14..af8976a25 100644
+--- a/tests/intel/gem_tiled_swapping.c
++++ b/tests/intel/gem_tiled_swapping.c
+@@ -61,10 +61,11 @@
  /**
-  * TEST: gem vm create
-  * Category: Server
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: context
-- * Sub-category: Compute
-  * Feature: mapping
-  * Test category: GEM_Legacy
-  *
-diff --git a/tests/intel/gem_watchdog.c b/tests/intel/gem_watchdog.c
-index b66667f46..0d03c7f05 100644
---- a/tests/intel/gem_watchdog.c
-+++ b/tests/intel/gem_watchdog.c
-@@ -37,10 +37,11 @@
- #include "sw_sync.h"
- /**
-  * TEST: gem watchdog
-- * Feature: gem_core
-- * Sub-category: CMD submission
+  * TEST: gem tiled swapping
+  * Description: Exercise swizzle code for swapping.
+- * Feature: gtt, mapping
+- * Sub-category: Memory management
   * Category: Desktop client
 + * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: fences
-+ * Feature: gem_core
++ * Sub-category: Memory management tests
+  * Functionality: swapping
++ * Feature: gtt, mapping
   *
-  * SUBTEST: default-physical
+  * SUBTEST: non-threaded
   *
-diff --git a/tests/intel/gen7_exec_parse.c b/tests/intel/gen7_exec_parse.c
-index f670f9ce1..c0c01ae9e 100644
---- a/tests/intel/gen7_exec_parse.c
-+++ b/tests/intel/gen7_exec_parse.c
-@@ -37,9 +37,10 @@
- /**
-  * TEST: gen7 exec parse
-  * Feature: cmd_submission, command_parser
-- * Sub-category: CMD submission
+diff --git a/tests/intel/gem_tiled_wb.c b/tests/intel/gem_tiled_wb.c
+index 53c1ea217..6a61fcace 100644
+--- a/tests/intel/gem_tiled_wb.c
++++ b/tests/intel/gem_tiled_wb.c
+@@ -50,10 +50,11 @@
+  * Description:
+  *   This is a test of write-combining mmap's behavior on tiled objects with respect to the reported
+  *   swizzling value.
+- * Feature: caching, gtt
+- * Sub-category: Memory management
   * Category: Desktop client
-- * Functionality: command parser
 + * Mega feature: General Core features
-+ * Sub-category: CMD submission
-+ * Functionality: command submission
++ * Sub-category: Memory management tests
+  * Functionality: cache
++ * Feature: caching, gtt
   *
-  * SUBTEST: basic-allocation
+  * SUBTEST:
+  */
+diff --git a/tests/intel/gem_tiled_wc.c b/tests/intel/gem_tiled_wc.c
+index 7b8e88427..ca10ab02d 100644
+--- a/tests/intel/gem_tiled_wc.c
++++ b/tests/intel/gem_tiled_wc.c
+@@ -47,10 +47,11 @@
+ #include "i915/gem_create.h"
+ /**
+  * TEST: gem tiled wc
+- * Feature: caching, gtt
+- * Sub-category: Memory management
+  * Category: Desktop client
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: cache
++ * Feature: caching, gtt
   *
+  * SUBTEST:
+  */
+diff --git a/tests/intel/gem_unfence_active_buffers.c b/tests/intel/gem_unfence_active_buffers.c
+index cde4771c6..cf3c0a392 100644
+--- a/tests/intel/gem_unfence_active_buffers.c
++++ b/tests/intel/gem_unfence_active_buffers.c
+@@ -55,10 +55,11 @@
+ /**
+  * TEST: gem unfence active buffers
+  * Description: Check for use-after-free in the fence stealing code.
+- * Feature: synchronization feature
+- * Sub-category: Memory management
+  * Category: Desktop client
+- * Functionality: fences
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
++ * Functionality: use-after-free
++ * Feature: synchronization
+  *
+  * SUBTEST:
+  */
+diff --git a/tests/intel/i915_fb_tiling.c b/tests/intel/i915_fb_tiling.c
+index 1e42555b2..baaed8893 100644
+--- a/tests/intel/i915_fb_tiling.c
++++ b/tests/intel/i915_fb_tiling.c
+@@ -26,10 +26,11 @@
+ /**
+  * TEST: i915 fb tiling
+  * Description: Object tiling must be fixed after framebuffer creation.
+- * Feature: mapping
+- * Sub-category: Memory management
+  * Category: Desktop client
+- * Functionality: tiling
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
++ * Functionality: object tiling
++ * Feature: mapping
+  *
+  * SUBTEST:
+  */
 diff --git a/tests/intel/i915_selftest.c b/tests/intel/i915_selftest.c
-index 046c4004e..ce43042c8 100644
+index ce43042c8..95561f3a3 100644
 --- a/tests/intel/i915_selftest.c
 +++ b/tests/intel/i915_selftest.c
-@@ -85,53 +85,59 @@
-  * Sub-category: Memory management
+@@ -54,11 +54,12 @@
+  * Sub-category: uapi
+  *
+  * SUBTEST: live@coherency
+- * Category: Selftest
+  * Description: Cache management
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: cache
+  * Test category: i915 / HW
+- * Sub-category: Memory management
+  *
+  * SUBTEST: live@debugger
+  * Category: Selftest
+@@ -74,15 +75,17 @@
+  *
+  * SUBTEST: live@dmabuf
+  * Category: Selftest
+- * Functionality: buffer management
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
++ * Functionality: dmabuf test
+  * Test category: i915
+- * Sub-category: Memory management
+  *
+  * SUBTEST: live@evict
+  * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: GTT eviction
+  * Test category: i915
+- * Sub-category: Memory management
   *
   * SUBTEST: live@execlists
-- * Category: Selftest
   * Description: command submission backend
-+ * Category: Selftest
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: execlists
+@@ -140,11 +143,12 @@
   * Test category: i915
-- * Sub-category: CMD submission
-  *
-  * SUBTEST: live@gem
-  * Category: Selftest
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: execbuf
-  * Test category: i915
-- * Sub-category: CMD submission
-  *
-  * SUBTEST: live@gem_contexts
-- * Category: Selftest
-  * Description: User isolation and execution at the context level
-- * Functionality: context
-+ * Category: Selftest
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: context
-  * Test category: GEM_Legacy
-- * Test category: i915 / HW
-  *
-  * SUBTEST: live@gem_execbuf
-- * Category: Selftest
-  * Description: command submission support
-+ * Category: Selftest
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: execbuf
-  * Test category: i915
-- * Sub-category: CMD submission
-  *
-  * SUBTEST: live@gt_ccs_mode
-- * Category: Selftest
-  * Description: Multi-ccs internal validation
-+ * Category: Selftest
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: multii-ccs
-  * Test category: i915
-- * Sub-category: CMD submission
-  *
-  * SUBTEST: live@gt_contexts
-- * Category: Selftest
-  * Description: HW isolation and HW context validation
-- * Functionality: context
-+ * Category: Selftest
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: context
-  * Test category: HW
-  *
-  * SUBTEST: live@gt_engines
-- * Category: Selftest
-  * Description: command submission topology validation
-+ * Category: Selftest
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: command submission topology
-  * Test category: i915
-- * Sub-category: CMD submission
   *
   * SUBTEST: live@gt_gtt
-  * Category: Selftest
-@@ -148,10 +154,11 @@
-  * Sub-category: Reset
-  *
-  * SUBTEST: live@gt_lrc
 - * Category: Selftest
-  * Description: HW isolation and HW context validation
-- * Functionality: context
+  * Description: Validation of virtual address management and execution
 + * Category: Selftest
 + * Mega feature: General Core features
-  * Sub-category: CMD submission
-+ * Functionality: context
++ * Sub-category: Memory management tests
+  * Functionality: gtt
   * Test category: HW
+- * Sub-category: Memory management
   *
-  * SUBTEST: live@gt_mocs
-@@ -259,6 +266,7 @@
+  * SUBTEST: live@gt_heartbeat
+  * Category: Selftest
+@@ -183,16 +187,18 @@
+  *
+  * SUBTEST: live@gt_tlb
+  * Category: Selftest
+- * Test category: Memory Management
+- * Sub-category: Memory management
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: tlb
++ * Test category: Memory Management
+  *
+  * SUBTEST: live@gtt
+- * Category: Selftest
+  * Description: Virtual address management interface validation
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: virtual address
+  * Test category: i915
+- * Sub-category: Memory management
+  *
+  * SUBTEST: live@gtt_l4wa
+  * Category: Selftest
+@@ -237,11 +243,12 @@
+  * Sub-category: Reset
+  *
+  * SUBTEST: live@hugepages
+- * Category: Selftest
+  * Description: Large page support validation
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: large page
+  * Test category: i915
+- * Sub-category: Memory management
+  *
+  * SUBTEST: live@late_gt_pm
+  * Category: Selftest
+@@ -251,32 +258,36 @@
+  * Sub-category: Power management
+  *
+  * SUBTEST: live@lmem
++ * Description: Basic i915 driver module selftests
+  * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Feature: local_memory
+- * Description: Basic i915 driver module selftests
+  * Functionality: local memory
+- * Sub-category: Memory management
+  *
+  * SUBTEST: live@memory_region
+- * Category: Selftest
+  * Description: memory topology validation and migration checks
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: memory topology
+  * Test category: i915 / HW
+- * Sub-category: Memory management
   *
   * SUBTEST: live@memory_region_cross_tile
   * Category: Selftest
-+ * Mega feature: General Core features
+  * Mega feature: General Core features
   * Description: Multi-tile memory topology validation
-  * Functionality: memory topology
+- * Functionality: memory topology
++ * Category: Selftest
   * Sub-category: MultiTile
-@@ -298,11 +306,12 @@
-  * Sub-category: MultiTile
++ * Functionality: memory topology
   *
-  * SUBTEST: live@requests
+  * SUBTEST: live@mman
 - * Category: Selftest
-  * Description: Validation of internal i915 command submission interface
+  * Description: memory management validation
 + * Category: Selftest
 + * Mega feature: General Core features
-+ * Sub-category: CMD submission
-  * Functionality: command submission interface
++ * Sub-category: Memory management tests
+  * Functionality: mapping
   * Test category: i915
-- * Sub-category: CMD submission
+- * Sub-category: Memory management
   *
-  * SUBTEST: live@reset
+  * SUBTEST: live@obj_lock
   * Category: Selftest
-@@ -320,6 +329,7 @@
+@@ -357,11 +368,12 @@
+  * Sub-category: Power management
   *
-  * SUBTEST: live@scheduler
+  * SUBTEST: live@vma
+- * Category: Selftest
+  * Description: Per-object virtual address management
++ * Category: Selftest
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: virtual address
+  * Test category: i915
+- * Sub-category: Memory management
+  *
+  * SUBTEST: live@win_blt_copy
   * Category: Selftest
-+ * Mega feature: General Core features
-  * Sub-category: CMD Submission
-  * Functionality: scheduler
+@@ -384,11 +396,12 @@
+  * Feature: gem_core
   *
-diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-index 8ce8cbf7f..9d4de3206 100644
---- a/tests/intel/xe_exec_balancer.c
-+++ b/tests/intel/xe_exec_balancer.c
-@@ -6,6 +6,7 @@
- /**
-  * TEST: Basic tests for execbuf functionality for virtual and parallel exec_queues
-  * Category: Hardware building block
+  * SUBTEST: mock@buddy
+- * Category: Selftest
+  * Description: Buddy allocation
++ * Category: Selftest
 + * Mega feature: General Core features
-  * Sub-category: CMD submission
-  * Functionality: virtual and parallel exec_queues
-  * Test category: functionality test
-@@ -358,7 +359,6 @@ test_exec(int fd, int gt, int class, int n_exec_queues, int n_execs,
-  * Description: Run compute mode virtual exec_queue arg[1] test on many exec_queues
-  * Test category: stress test
++ * Sub-category: Memory management tests
+  * Functionality: buddy allocation
+  * Test category: DRM
+- * Sub-category: Memory management
   *
-- *
-  * SUBTEST: no-exec-cm-%s
-  * Description: Run compute mode virtual exec_queue arg[1] no-exec test
-  * Test category: functionality test
-diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
-index cc2d2b8b6..238785c38 100644
---- a/tests/intel/xe_exec_basic.c
-+++ b/tests/intel/xe_exec_basic.c
+  * SUBTEST: mock@contexts
+  * Category: Selftest
+@@ -511,9 +524,10 @@
+  *
+  * SUBTEST: mock@tlb
+  * Category: Selftest
+- * Test category: Memory Management
+- * Sub-category: Memory management
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
+  * Functionality: tlb
++ * Test category: Memory Management
+  *
+  * SUBTEST: mock@uncore
+  * Category: Selftest
+diff --git a/tests/intel/prime_busy.c b/tests/intel/prime_busy.c
+index 351b16138..96fbac760 100644
+--- a/tests/intel/prime_busy.c
++++ b/tests/intel/prime_busy.c
+@@ -28,12 +28,13 @@
+ #include "igt.h"
+ /**
+  * TEST: prime busy
+- * Category: Infrastructure
+  * Description: Basic check of polling for prime fences.
+- * Feature: prime
+- * Functionality: buffer management
+- * Sub-category: Memory management
++ * Category: Infrastructure
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
++ * Functionality: prime
+  * Test category: GEM_Legacy
++ * Feature: prime
+  *
+  * SUBTEST: after
+  *
+diff --git a/tests/intel/prime_mmap.c b/tests/intel/prime_mmap.c
+index 3c0a0c0e5..c874bbd1f 100644
+--- a/tests/intel/prime_mmap.c
++++ b/tests/intel/prime_mmap.c
+@@ -53,10 +53,11 @@
+ /**
+  * TEST: prime mmap
+  * Category: Infrastructure
+- * Feature: prime
+- * Functionality: prime mmap
+- * Sub-category: Memory management
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
++ * Functionality: prime
+  * Test category: GEM_Legacy
++ * Feature: prime
+  *
+  * SUBTEST: test_aperture_limit
+  *
+diff --git a/tests/intel/prime_mmap_coherency.c b/tests/intel/prime_mmap_coherency.c
+index 3db79156d..73449d8bb 100644
+--- a/tests/intel/prime_mmap_coherency.c
++++ b/tests/intel/prime_mmap_coherency.c
+@@ -33,13 +33,14 @@
+ #include "igt.h"
+ /**
+  * TEST: prime mmap coherency
+- * Category: Infrastructure
+  * Description:
+  *   Test dma-buf mmap on !llc platforms mostly and provoke coherency bugs so we know for sure where
+  *   we need the sync ioctls.
++ * Category: Infrastructure
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
++ * Functionality: prime
+  * Feature: prime
+- * Functionality: prime mmap
+- * Sub-category: Memory management
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: ioctl-errors
+diff --git a/tests/intel/prime_mmap_kms.c b/tests/intel/prime_mmap_kms.c
+index 7759b9469..ac476d874 100644
+--- a/tests/intel/prime_mmap_kms.c
++++ b/tests/intel/prime_mmap_kms.c
+@@ -40,9 +40,10 @@ IGT_TEST_DESCRIPTION(
+ /**
+  * TEST: prime mmap kms
+  * Category: Infrastructure
+- * Feature: prime
+- * Functionality: prime
++ * Mega feature: General Core features
+  * Sub-category: DRM
++ * Functionality: prime
++ * Feature: prime
+  * Test category: GEM_Legacy
+  *
+  * SUBTEST: buffer-sharing
+diff --git a/tests/intel/prime_self_import.c b/tests/intel/prime_self_import.c
+index 7bf947cf4..46107045b 100644
+--- a/tests/intel/prime_self_import.c
++++ b/tests/intel/prime_self_import.c
+@@ -47,12 +47,13 @@
+ #include "i915/gem_create.h"
+ /**
+  * TEST: prime self import
+- * Category: Infrastructure
+  * Description: Check whether prime import/export works on the same device... but with different fds.
+- * Feature: prime
+- * Functionality: buffer management
+- * Sub-category: Memory management
++ * Category: Infrastructure
++ * Mega feature: General Core features
++ * Sub-category: Memory management tests
++ * Functionality: prime import/export
+  * Test category: GEM_Legacy
++ * Feature: prime
+  *
+  * SUBTEST: basic-llseek-bad
+  * Description: Check dmabuf llseek support with invalid values.
+diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
+index 5994ebb14..d5f6cea32 100644
+--- a/tests/intel/xe_evict.c
++++ b/tests/intel/xe_evict.c
 @@ -6,6 +6,7 @@
  /**
-  * TEST: Basic tests for execbuf functionality
-  * Category: Hardware building block
+  * TEST: Check VMA eviction
+  * Category: Software building block
 + * Mega feature: General Core features
-  * Sub-category: CMD submission
-  * Functionality: exec_queues
+  * Sub-category: VMA
+  * Functionality: eviction
+  * GPU requirements: GPU needs to have dedicated VRAM
+@@ -486,6 +487,7 @@ static uint64_t calc_bo_size(uint64_t vram_size, int mul, int div)
+  * @beng-large-multi-vm:	large multi VM bind exec_queue
   */
-diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-index a73a7343c..13265b9c0 100644
---- a/tests/intel/xe_exec_compute_mode.c
-+++ b/tests/intel/xe_exec_compute_mode.c
-@@ -6,6 +6,7 @@
  /**
-  * TEST: Basic tests for execbuf compute machine functionality
-  * Category: Hardware building block
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-  * Functionality: compute test
-  */
-diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-index 0b3f4cb8d..dac7facec 100644
---- a/tests/intel/xe_exec_fault_mode.c
-+++ b/tests/intel/xe_exec_fault_mode.c
-@@ -6,6 +6,7 @@
++ *
+  * SUBTEST: evict-%s
+  * Description:  %arg[1] evict test.
+  * Feature: compute machine
+diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
+index dcd36a50d..353d157da 100644
+--- a/tests/intel/xe_mmap.c
++++ b/tests/intel/xe_mmap.c
+@@ -6,7 +6,8 @@
  /**
-  * TEST: Basic tests for execbuf functionality for virtual and parallel exec_queues
-  * Category: Hardware building block
+  * TEST: Test if the driver is capable of doing mmap on different memory regions
+  * Category: Software building block
+- * Sub-category: Memory management
 + * Mega feature: General Core features
-  * Sub-category: CMD submission
-  * Functionality: fault mode
-  * GPU requirements: GPU needs support for DRM_XE_VM_CREATE_FLAG_FAULT_MODE
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index 8d731e689..291ca4942 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -6,8 +6,9 @@
- /**
-  * TEST: Basic tests for execbuf functionality for virtual and parallel exec_queues
-  * Category: Hardware building block
-- * Sub-category: Reset
-- * Functionality: gt reset
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-+ * Functionality: reset
-  * Test category: functionality test
++ * Sub-category: Memory management tests
+  * Functionality: mmap
   */
  
-diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-index 728ce826b..4d4495791 100644
---- a/tests/intel/xe_exec_store.c
-+++ b/tests/intel/xe_exec_store.c
-@@ -15,6 +15,7 @@
- /**
-  * TEST: Tests to verify store dword functionality.
-  * Category: Software building block
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-  * Functionality: intel-bb
-  * Test category: functionality test
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index 1e80842b9..0c6150480 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
+diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+index d20100d7e..a48cd084b 100644
+--- a/tests/intel/xe_pat.c
++++ b/tests/intel/xe_pat.c
 @@ -6,6 +6,7 @@
  /**
-  * TEST: Basic tests for execbuf functionality
-  * Category: Hardware building block
-+ * Mega feature: General Core features
-  * Sub-category: CMD submission
-  * Functionality: multi-threads
-  * Test category: functionality test
-diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
-index b9bd49fad..67fe2249b 100644
---- a/tests/intel/xe_wedged.c
-+++ b/tests/intel/xe_wedged.c
-@@ -6,6 +6,7 @@
- /**
-  * TEST: cause fake gt reset failure which put Xe device in wedged state
+  * TEST: Test for selecting per-VMA pat_index
   * Category: Software building block
 + * Mega feature: General Core features
-  * Sub-category: driver
-  * Functionality: wedged
-  * Test category: functionality test
+  * Sub-category: VMA
+  * Functionality: pat_index
+  */
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index de2b1a813..b2cfca235 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -6,6 +6,7 @@
+ /**
+  * TEST: Check if VMA functionality is working
+  * Category: Software building block
++ * Mega feature: General Core features
+  * Sub-category: VMA
+  */
+ 
 -- 
 2.34.1
 
