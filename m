@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64009C25B78
-	for <igt-dev@archiver.kernel.org>; Tue, 14 May 2024 07:10:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F7CEC04FFE
+	for <igt-dev@archiver.kernel.org>; Tue, 14 May 2024 07:52:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 11D2B10E3BE;
-	Tue, 14 May 2024 07:10:20 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W2mlcJnQ";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8144110E3BE
- for <igt-dev@lists.freedesktop.org>; Tue, 14 May 2024 07:10:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715670619; x=1747206619;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=ovgqaBQjTZRDBgz3YnQGziPzQW9AhfjWz6gMEeTnpew=;
- b=W2mlcJnQIuXs2x+B5SfWOSJ0dQBU5YmZWZrpr3NJKt2N1AGe1UALMj9U
- b31gmcTH77ldYdTGlyOti3qHTQJ9gQ20GYgiwHVzgeovRu1Uac5vzHWSS
- qWGf1PqMRA8H8O03Yu6cuhf+dGHPfXskA19jhis34w5R1We+C84hdFdly
- zGbpl4TP/e7ooyuVrmLwKXheBkiCS2PmDjcUOjn3TBLlNk4/jMxg42gmU
- 7m8G6+x5GE3UwyacxTD8kFiUP60J49kh39EXRRwwtGh3olpZLvc3NbXhS
- tLY1jpy3Bfqkz+rW1TmpP8t1icPVpFiUPhJsTe1L7t/p/ksljjH0+8Ftv A==;
-X-CSE-ConnectionGUID: P1RSFMEuTNScWrelPXAbNg==
-X-CSE-MsgGUID: 91PE58UcQMmJE8rYOW/70A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11072"; a="15473035"
-X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="15473035"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2024 00:10:19 -0700
-X-CSE-ConnectionGUID: 4tsHyaa2Q0CRnPS+ewJsaw==
-X-CSE-MsgGUID: aV0ZnEybRwaxvKU4k5EbNw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="30428040"
-Received: from bommu-optiplex-5060.iind.intel.com ([10.145.169.63])
- by orviesa010.jf.intel.com with ESMTP; 14 May 2024 00:10:18 -0700
-From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
- Oak Zeng <oak.zeng@intel.com>,
- Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Subject: [PATCH i-g-t v2 10/10] tests/intel/xe_svm: svm-sparse-access
-Date: Tue, 14 May 2024 12:40:26 +0530
-Message-Id: <20240514071026.748257-11-krishnaiah.bommu@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240514071026.748257-1-krishnaiah.bommu@intel.com>
-References: <20240514071026.748257-1-krishnaiah.bommu@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id CE72910E063;
+	Tue, 14 May 2024 07:52:29 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC7E910E063;
+ Tue, 14 May 2024 07:52:28 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_helper_function_=28rev2?=
+ =?utf-8?q?=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bommu Krishnaiah" <krishnaiah.bommu@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 14 May 2024 07:52:28 -0000
+Message-ID: <171567314876.2114222.5188538755193425372@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240514071026.748257-1-krishnaiah.bommu@intel.com>
+In-Reply-To: <20240514071026.748257-1-krishnaiah.bommu@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,122 +37,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Verify Sparsely access two memory locations with svm
+== Series Details ==
 
-Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Cc: Oak Zeng <oak.zeng@intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
----
- lib/xe/xe_util.c     | 15 +++++++++++++++
- lib/xe/xe_util.h     |  1 +
- tests/intel/xe_svm.c | 39 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 55 insertions(+)
+Series: helper function (rev2)
+URL   : https://patchwork.freedesktop.org/series/133096/
+State : failure
 
-diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
-index a02ee5324..fc07c14b7 100644
---- a/lib/xe/xe_util.c
-+++ b/lib/xe/xe_util.c
-@@ -142,6 +142,21 @@ void insert_memset(uint32_t *batch, uint64_t dst_va, uint64_t size, uint32_t val
- 	*batch++ = MI_BATCH_BUFFER_END;
- }
- 
-+void insert_two_stores(uint32_t *batch, uint64_t dst_va, uint64_t dst_va1, uint32_t val)
-+{
-+	int i = 0;
-+
-+	batch[i] = MI_STORE_DWORD_IMM;
-+	batch[++i] = dst_va;
-+	batch[++i] = dst_va >> 32;
-+	batch[++i] = val;
-+	batch[++i] = MI_STORE_DWORD_IMM;
-+	batch[++i] = dst_va1;
-+	batch[++i] = dst_va1 >> 32;
-+	batch[++i] = val;
-+	batch[++i] = MI_BATCH_BUFFER_END;
-+}
-+
- void xe_create_cmdbuf(struct xe_buffer *cmd_buf, cmdbuf_fill_func_t fill_func, uint64_t dst_va, uint32_t val, struct drm_xe_engine_class_instance *eci)
- {
- 	//make some room for a exec_ufence, which will be used to sync the
-diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
-index 50f2a4bc4..f463cca3b 100644
---- a/lib/xe/xe_util.h
-+++ b/lib/xe/xe_util.h
-@@ -46,6 +46,7 @@ uint64_t *xe_cmdbuf_exec_ufence_cpuva(struct xe_buffer *cmd_buf);
- void insert_store(uint32_t *batch, uint64_t dst_va, uint32_t val);
- void insert_atomic_inc(uint32_t *batch, uint64_t dst_va, uint32_t val);
- void insert_memset(uint32_t *batch, uint64_t dst_va, uint64_t size, uint32_t val);
-+void insert_two_stores(uint32_t *batch, uint64_t dst_va, uint64_t dst_va1, uint32_t val);
- void xe_submit_cmd(struct xe_buffer *cmdbuf);
- int64_t __xe_submit_cmd(struct xe_buffer *cmdbuf);
- void xe_destroy_buffer(struct xe_buffer *buffer);
-diff --git a/tests/intel/xe_svm.c b/tests/intel/xe_svm.c
-index e8989afaa..fbda6aaea 100644
---- a/tests/intel/xe_svm.c
-+++ b/tests/intel/xe_svm.c
-@@ -38,6 +38,8 @@
-  * Description: verify SVM functionality while accessing read only memory
-  * SUBTEST: svm-benchmark
-  * Description: verify SVM performance with simple benchmark test
-+ * SUBTEST: svm-sparse-access
-+ * Description: verify Sparsely access two memory locations with svm
-  */
- 
- #include <fcntl.h>
-@@ -330,6 +332,39 @@ static void svm_benchmark(int fd, uint32_t vm, struct drm_xe_engine_class_instan
- 	igt_info("engine class %d, engine id %d memset E2E bandwidth(include sync overhead) %.3f MiB/s\n", eci->engine_class, eci->engine_instance, bandwidth);
- }
- 
-+/**
-+ *  Sparsely access two memory locations
-+ */
-+static void svm_sparse_access(int fd, uint32_t vm, struct drm_xe_engine_class_instance *eci)
-+{
-+	uint64_t gpu_va = 0x1a0000;
-+	size_t bo_size = xe_bb_size(fd, PAGE_ALIGN_UFENCE);
-+	uint32_t size = 1024*1024, sz_dw = size/4;
-+	uint32_t *dst, *dst_to_access, *dst_to_access1;
-+
-+	struct xe_buffer cmd_buf = {
-+		.fd = fd,
-+		.gpu_addr = (void *)(uintptr_t)gpu_va,
-+		.vm = vm,
-+		.size = bo_size,
-+		.placement = vram_if_possible(fd, eci->gt_id),
-+		.flag = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
-+	};
-+
-+	dst = malloc(size);
-+	dst_to_access = dst + (sz_dw>>1);
-+	dst_to_access1 = dst + (sz_dw>>2);
-+
-+	xe_create_cmdbuf_fill_two_dw(&cmd_buf, insert_two_stores, (uint64_t)dst_to_access, (uint64_t)dst_to_access1, 0xc0ffee, eci);
-+	xe_submit_cmd(&cmd_buf);
-+
-+	igt_assert_eq(*dst_to_access, 0xc0ffee);
-+	igt_assert_eq(*dst_to_access1, 0xc0ffee);
-+
-+	xe_destroy_cmdbuf(&cmd_buf);
-+	free(dst);
-+}
-+
- igt_main
- {
- 	int fd;
-@@ -380,6 +415,10 @@ igt_main
- 		xe_for_each_engine(fd, hwe)
- 			svm_benchmark(fd, vm, hwe);
- 
-+	igt_subtest_f("svm-sparse-access")
-+		xe_for_each_engine(fd, hwe)
-+			svm_sparse_access(fd, vm, hwe);
-+
- 	igt_fixture {
- 		xe_vm_destroy(fd, vm);
- 		drm_close_driver(fd);
--- 
-2.25.1
+== Summary ==
+
+IGT patchset build failed on latest successful build
+be9b9992805df48e785b40ac2c4d001fb680a2c1 tests/kms_ccs: Test XRGB2101010
+
+Tail of build.log:
+[1647/1682] Linking target runner/igt_results.
+[1648/1682] Linking target tools/lsgpu.
+[1649/1682] Linking target tools/msm_dp_compliance.
+[1650/1682] Linking target runner/testdata/no-subtests.
+[1651/1682] Linking target runner/testdata/successtest.
+[1652/1682] Linking target runner/testdata/abort-simple.
+[1653/1682] Generating gem_stress.testlist with a meson_exe.py custom command.
+[1654/1682] Linking target runner/testdata/dynamic.
+[1655/1682] Linking target runner/igt_resume.
+[1656/1682] Linking target runner/igt_runner.
+[1657/1682] Linking target runner/runner_json_test.
+[1658/1682] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_mtlgt3.c.o'.
+[1659/1682] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt1.c.o'.
+[1660/1682] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+[1661/1682] Linking target runner/runner_test.
+[1662/1682] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt2.c.o'.
+[1663/1682] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt3.c.o'.
+[1664/1682] Linking target lib/libi915_perf.so.1.5.
+[1665/1682] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
+[1666/1682] Linking target tools/i915-perf/i915-perf-configs.
+[1667/1682] Linking target tools/i915-perf/i915-perf-recorder.
+[1668/1682] Linking target tools/i915-perf/i915-perf-reader.
+[1669/1682] Linking target tests/core_hotunplug.
+[1670/1682] Linking target tests/gem_barrier_race.
+[1671/1682] Linking target tests/perf.
+[1672/1682] Generating core_hotunplug.testlist with a meson_exe.py custom command.
+[1673/1682] Generating gem_barrier_race.testlist with a meson_exe.py custom command.
+[1674/1682] Generating perf.testlist with a meson_exe.py custom command.
+[1675/1682] Generating xe_tests.rst with a custom command.
+FAILED: docs/testplan/xe_tests.rst 
+/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst --check-testlist --igt-build-path /opt/igt/build
+Warning: igt@xe_svm@svm-atomic-access Category documentation is missing
+Warning: igt@xe_svm@svm-basic-malloc Category documentation is missing
+Warning: igt@xe_svm@svm-basic-mmap Category documentation is missing
+Warning: igt@xe_svm@svm-benchmark Category documentation is missing
+Warning: igt@xe_svm@svm-huge-page Category documentation is missing
+Warning: igt@xe_svm@svm-mprotect Category documentation is missing
+Warning: igt@xe_svm@svm-random-access Category documentation is missing
+Warning: igt@xe_svm@svm-sparse-access Category documentation is missing
+Warning: igt@xe_svm@svm_invalid_va Category documentation is missing
+Warning: igt@xe_svm@xe_basic Category documentation is missing
+Warning: Documented igt@xe_svm@svm_invalid_va doesn't exist on source files
+Warning: Documented igt@xe_svm@xe_basic doesn't exist on source files
+Warning: Missing documentation for igt@xe_svm@svm-invalid-va
+Warning: Missing documentation for igt@xe_svm@xe-basic
+Please refer: docs/test_documentation.md for more details
+[1676/1682] Generating i915_tests.rst with a custom command.
+[1677/1682] Generating kms_tests.rst with a custom command.
+[1678/1682] Generating intel-ci-tests with a custom command.
+ninja: build stopped: subcommand failed.
+
 
