@@ -4,65 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58045C25B75
-	for <igt-dev@archiver.kernel.org>; Tue, 14 May 2024 09:42:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC3A0C04FFE
+	for <igt-dev@archiver.kernel.org>; Tue, 14 May 2024 09:49:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E538D10E0CE;
-	Tue, 14 May 2024 09:42:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5743910E279;
+	Tue, 14 May 2024 09:49:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Eejx8WPu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nsc2g8Of";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8831610E0CE
- for <igt-dev@lists.freedesktop.org>; Tue, 14 May 2024 09:42:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C15E610E279
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 May 2024 09:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715679758; x=1747215758;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=ZySzoDLztEiMYNQrKwvCRj/Af6bh9haEHL9Xj1KJA3Q=;
- b=Eejx8WPua5PBY/J0WDoWv9u3ZPAr4svraJNFNqLB6MW2SojdkeJxdJsg
- o3sP2wmewzDgWroxga/wBOL5TOp803guseE6ruQfWuBQAxC2Rv5NVxt/W
- XbR+nQ8CShYB3dEsZFcrMezWbsJNnsd0Y9wBu218Vhxpd6Lxfv5+REvsR
- jRveiLE/wuBuKhtiF2Xl1wBU+n+jwPJo68257BD356A+DntKOiFKFD0Hc
- CcEaHaA/kgl2PWVq1cZyJujVq4a1ujfEGWM+y3Saouv86ZgrusR6p7Pds
- n4yrirHU0U7Q/IKhCg7eLRu+Z32nq5IkSPolEgXIKf7eD5KezkWL8y1pb g==;
-X-CSE-ConnectionGUID: vJiXRV4wQdqSVb6TxePNyQ==
-X-CSE-MsgGUID: +jZPO3pCQA2AuH4WhTvCLg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11072"; a="22797838"
-X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="22797838"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2024 02:42:37 -0700
-X-CSE-ConnectionGUID: AwSPIeZ3QlCQtKsCWQcGDg==
-X-CSE-MsgGUID: yj+NP2BBReuIlSPO8lzPGA==
+ t=1715680159; x=1747216159;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=Vr6DBu6EZWBK7DUwh2L7EnzXN7d7FZ11nDXYP1hwm9E=;
+ b=nsc2g8OfS+vIaktrA+us9nvPlQQk41/a1yMuHyrpBAZHGDKLFW3GmkWP
+ 7jMI9DHXOG5LuAFxizqgnn3A2ZyOjSKOAKp1rlrRkzAU49B1lge3NJ1on
+ Vz+o3wwLyN8DmexDgD/caWQfIyXI92tSjEmcRWZiedLJNqC2fHdgaNLAS
+ US1zZ31h8PgDrQ8/pkM5n1vlqsZEFB7PILiG2mo4BKk1Gd/oEsbWiFBhW
+ RDemI4dZHv8CFyMNXZPTqEpLhg9w/dJ6tiIqqIYox1s321RNDiMI0KcKe
+ JsPSjPwtInK84gOZF4Pj3XHxvnupNieGXXJhl/swy5/f6tOqpCTYOX5tg g==;
+X-CSE-ConnectionGUID: oZct/24GSPWsKbOBp8Q4SQ==
+X-CSE-MsgGUID: 8WFarDOUSIGaM0YuiCD0zQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11072"; a="15440978"
+X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="15440978"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2024 02:49:19 -0700
+X-CSE-ConnectionGUID: ill77oSuT/uIyU3aMRjoaQ==
+X-CSE-MsgGUID: rJVMwRh6SlWSHQK7A0zUuQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="61457122"
+X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="53837540"
 Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.246.30.61])
  ([10.246.30.61])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2024 02:42:35 -0700
-Message-ID: <a96fa6bc-67cc-46bc-94dc-493887be8caa@intel.com>
-Date: Tue, 14 May 2024 11:42:32 +0200
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2024 02:49:16 -0700
+Message-ID: <95f762e7-46e5-42ac-a3e8-e3c0871633c1@intel.com>
+Date: Tue, 14 May 2024 11:49:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] lib/gpgpu_shader: add inline support for iga64
- assembly
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
+Subject: Re: [PATCH 4/4] intel/xe_exec_sip: port test for shader sanity check
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>,
  =?UTF-8?Q?Dominik_Karol_Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>,
- =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+ <dominik.karol.piatkowski@intel.com>
 References: <20240429-iga64_inline_ups-v1-0-2e9ac46cf6ba@intel.com>
- <20240429-iga64_inline_ups-v1-3-2e9ac46cf6ba@intel.com>
- <20240510111815.hmw3jzjvcfjcarnt@kamilkon-DESK.igk.intel.com>
+ <20240429-iga64_inline_ups-v1-4-2e9ac46cf6ba@intel.com>
+ <20240510104454.kz2vz3aubuuu4rby@zkempczy-mobl2>
 Content-Language: en-US
 From: Andrzej Hajda <andrzej.hajda@intel.com>
 Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
  Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20240510111815.hmw3jzjvcfjcarnt@kamilkon-DESK.igk.intel.com>
+In-Reply-To: <20240510104454.kz2vz3aubuuu4rby@zkempczy-mobl2>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -81,342 +80,454 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 10.05.2024 13:18, Kamil Konieczny wrote:
-> Hi Andrzej,
-> On 2024-04-29 at 14:08:19 +0200, Andrzej Hajda wrote:
->> With this patch adding iga64 assembly should be similar to
->> adding x86 assembly inline. Simple example:
->>      emit_iga64_code(shdr, set_exception, R"ASM(
->>          or (1|M0) cr0.1<1>:ud cr0.1<0;1,0>:ud ARG(0):ud
->>      )ASM", value);
->> Note presence of 'ARG(0)', it will be replaced by 'value' argument,
->> multiple arguments are possible.
->> More sophisticated examples in following patches.
->> How does it works:
->> 1. Raw string literals (C++ feature available in gcc as extension):
->>     R"ASM(...)ASM" allows to use multiline/unescaped string literals.
->>     If for some reason they cannot be used we could always fallback to
->>     old ugly way of handling multiline strings with escape characters:
->>      emit_iga64_code(shdr, set_exception, "\n\
->>          or (1|M0) cr0.1<1>:ud cr0.1<0;1,0>:ud ARG(0):ud\n\
->>      ", value);
->> 2. emit_iga64_code puts the assembly string into special linker section,
->>     and calls __emit_iga64_code with pointer to external variable
->>     which will contain code templates generated from the assembly for all
->>     supported platforms, remaining arguments are put to temporal array
->>     to eventually patch the code with positional arguments.
->> 3. During build phase the linker section is scanned for assemblies.
->>     Every assembly is preprocessed with cpp, to replace ARG(x) macros with
->>     magic numbers, and to provide different code for different platforms
->>     if needed. Then output file is compiled with iga64, and then .c file
->>     is generated with global variables pointing to hexified iga64 codes.
+
+On 10.05.2024 12:44, Zbigniew Kempczyński wrote:
+> On Mon, Apr 29, 2024 at 02:08:20PM +0200, Andrzej Hajda wrote:
+>> xe_exec_sip will contain tests for shader and SIP interaction.
+>> For starters let's implement test checking if shader is run correctly.
+>> The patch also demostrates usage of inline iga64 assembly.
 >>
-> +cc Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
->
 >> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 >> ---
->>   lib/generate_iga64_codes    | 104 ++++++++++++++++++++++++++++++++++++++++++++
->>   lib/gpgpu_shader.c          |  39 +++++++++++++++++
->>   lib/gpgpu_shader.h          |  25 +++++++++++
->>   lib/iga64_generated_codes.c |   6 +++
->>   lib/iga64_macros.h          |  10 +++++
->>   lib/meson.build             |  18 ++++++++
->>   6 files changed, 202 insertions(+)
+>>   lib/gpgpu_shader.c          |  63 ++++++++++++
+>>   lib/iga64_generated_codes.c |  83 ++++++++++++++-
+>>   tests/intel/xe_exec_sip.c   | 239 ++++++++++++++++++++++++++++++++++++++++++++
+>>   tests/meson.build           |   1 +
+>>   4 files changed, 385 insertions(+), 1 deletion(-)
 >>
->> diff --git a/lib/generate_iga64_codes b/lib/generate_iga64_codes
->> new file mode 100755
->> index 000000000000..efc2a29b409c
->> --- /dev/null
->> +++ b/lib/generate_iga64_codes
->> @@ -0,0 +1,104 @@
->> +#!/bin/bash
->> +# SPDX-License-Identifier: MIT
->> +# Copyright © 2024 Intel Corporation
->> +# Author: Andrzej Hajda <andrzej.hajda@intel.com>
->> +
->> +# List of supported platforms, in format gen100:platform, where gen100 equals
->> +# to minimal GPU generation supported by platform multiplied by 100 and platform
->> +# is one of platforms supported by -p switch of iga64.
->> +#
->> +# Must be in decreasing order, the last one must have gen100 equal 0"
->> +GEN_VERSIONS="2000:2 1272:12p72 1250:12p5 0:12p1"
->> +
->> +warn() {
->> +    echo -e "$1" >/dev/stderr
->> +}
->> +
->> +die() {
->> +    warn "DIE: $1"
->> +    exit 1
->> +}
->> +
->> +# parse args
->> +while getopts ':i:o:' opt; do
->> +    case $opt in
->> +    i) INPUT=$OPTARG;;
->> +    o) OUTPUT=$OPTARG;;
->> +    ?) die "Usage: $0 -i pre-generated-iga64-file -o generated-iga64-file libs-with-iga64-assembly [...]"
->> +    esac
->> +done
->> +LIBS=${@:OPTIND}
->> +
->> +# read all assemblies into ASMS array
->> +ASMS=()
->> +while  read -d $'\0' asm; do
->> +    test -z "$asm" && continue
->> +    ASMS+=( "$asm" )
->> +done < <(for f in $LIBS; do objcopy --dump-section .iga64_assembly=/dev/stdout $f.p/*.o; done)
->> +
->> +# check if we need to recompile - checksum difference and compiler present
->> +MD5_ASMS="$(for a in "${ASMS[@]}"; do echo "${a#*:}"; done | md5sum|cut -b1-32)"
->> +MD5_PRE="$(grep -Po '(?<=^#define MD5_SUM )\S{32,32}' $INPUT 2>/dev/null)"
->> +
->> +if [ "$MD5_ASMS" = "$MD5_PRE" ]; then
->> +    echo "iga64 assemblies not changed, reusing pre-compiled file $INPUT."
->> +    cp $INPUT $OUTPUT
->> +    exit 0
->> +fi
->> +
->> +type iga64 >/dev/null || {
->> +    warn "WARNING: iga64 assemblies changed, but iga64 compiler not present, CHANGES will have no effect. Install iga64 (libigc-tools package) to re-compile code."
->> +    cp $INPUT $OUTPUT
->> +    exit 0
->> +}
->> +
->> +# returns count of numbers in strings of format "0x1234, 0x23434, ..."
->> +dword_count() {
->> +    n=${1//[^x]}
->> +    echo ${#n}
->> +}
->> +
->> +# generate code file
->> +WD=$OUTPUT.d
->> +mkdir -p $WD
->> +
->> +echo "Generating new $OUTPUT"
->> +
->> +cat <<-EOF >$OUTPUT
->> +/* SPDX-License-Identifier: MIT */
->> +/* Generated using $(iga64 |& head -1) */
->> +
->> +#include "gpgpu_shader.h"
->> +
->> +#define MD5_SUM $MD5_ASMS
->> +EOF
->> +
->> +for asm in "${ASMS[@]}"; do
->> +    asm_name="${asm%%:*}"
->> +    asm_code="${asm_name/assembly/code}"
->> +    asm_body="${asm#*:}"
->> +    cur_code=""
->> +    cur_ver=""
->> +    echo -e "\nstruct iga64_template const $asm_code[] = {" >>$OUTPUT
->> +    for gen in $GEN_VERSIONS; do
->> +        gen_ver="${gen%%:*}"
->> +        gen_name="${gen#*:}"
->> +        warn "Generating $asm_code for platform $gen_name"
->> +        cmd="cpp -P - -o $WD/$asm_name.$gen_name.asm"
->> +        cmd+=" -DGEN_VER=$gen_ver -imacros ../lib/iga64_macros.h"
->> +        eval "$cmd" <<<"$asm_body" || die "cpp error for $asm_name.$gen_name\ncmd: $cmd"
->> +        cmd="iga64 -Xauto-deps -Wall -p=$gen_name"
->> +        cmd+=" $WD/$asm_name.$gen_name.asm -o $WD/$asm_name.$gen_name.bin"
->> +        eval "$cmd" || die "iga64 error for $asm_name.$gen_name\ncmd: $cmd"
->> +        code="$(hexdump -e '"\t\t" 4/4 "0x%08x, " "\n"' $WD/$asm_name.$gen_name.bin)"
->> +        [ -z "$cur_code" ] && cur_code="$code"
->> +        [ "$cur_code" != "$code" ] && {
->> +            echo -e "\t{ .gen_ver = $cur_ver, .size = $(dword_count "$cur_code"), .code = (const uint32_t []) {\n$cur_code\n\t}}," >>$OUTPUT
->> +            cur_code="$code"
->> +        }
->> +        cur_ver=$gen_ver
->> +    done
->> +    echo -e "\t{ .gen_ver = $cur_ver, .size = $(dword_count "$cur_code"), .code = (const uint32_t []) {\n$cur_code\n\t}}\n};" >>$OUTPUT
->> +done
->> +
->> +cp $OUTPUT $INPUT
 >> diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
->> index d14301789421..3317e9e35c91 100644
+>> index 3317e9e35c91..cd8c82ff9c8c 100644
 >> --- a/lib/gpgpu_shader.c
 >> +++ b/lib/gpgpu_shader.c
->> @@ -11,6 +11,9 @@
+>> @@ -248,3 +248,66 @@ void gpgpu_shader_destroy(struct gpgpu_shader *shdr)
+>>   	free(shdr->code);
+>>   	free(shdr);
+>>   }
+>> +
+>> +/**
+>> + * gpgpu_shader__eot:
+>> + * @shdr: shader to be modified
+>> + *
+>> + * Append end of thread instruction to @shdr.
+>> + */
+>> +void gpgpu_shader__eot(struct gpgpu_shader *shdr)
+>> +{
+>> +	emit_iga64_code(shdr, eot, R"ASM(
+>> +(W)     mov (8|M0)               r112.0<1>:ud  r0.0<8;8,1>:ud
+>> +#if GEN_VER < 1250
+>> +(W)     send.ts (16|M0)          null r112 null 0x10000000 0x02000010 {EOT,@1} // wr:1+0, rd:0; end of thread
+>> +#else
+>> +(W)     send.gtwy (8|M0)         null r112 src1_null     0 0x02000000 {EOT}
+>> +#endif
+>> +	)ASM");
+>> +}
+>> +
+>> +/**
+>> + * gpgpu_shader__write_dword:
+>> + * @shdr: shader to be modified
+>> + * @value: dword to be written
+>> + * @y_offset: write target offset within the surface in rows
+>> + *
+>> + * Fill dword in (row, column/dword) == (tg_id_y + @y_offset, tg_id_x).
+>> + */
+>> +void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
+>> +			       uint32_t y_offset)
+>> +{
+>> +	emit_iga64_code(shdr, media_block_write, R"ASM(
+>> +	// Payload
+>> +(W)     mov (1|M0)               r5.0<1>:ud    ARG(3):ud
+>> +(W)     mov (1|M0)               r5.1<1>:ud    ARG(4):ud
+>> +(W)     mov (1|M0)               r5.2<1>:ud    ARG(5):ud
+>> +(W)     mov (1|M0)               r5.3<1>:ud    ARG(6):ud
+>> +#if GEN_VER < 2000 // Media Block Write
+>> +        // X offset of the block in bytes := (thread group id X << ARG(0))
+>> +(W)     shl (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud
+>> +        // Y offset of the block in rows := thread group id Y
+>> +(W)     mov (1|M0)               r4.1<1>:ud    r0.6<0;1,0>:ud
+>> +(W)     add (1|M0)               r4.1<1>:ud    r4.1<0;1,0>:ud   ARG(1):ud
+>> +        // block width [0,63] representing 1 to 64 bytes
+>> +(W)     mov (1|M0)               r4.2<1>:ud    ARG(2):ud
+>> +        // FFTID := FFTID from R0 header
+>> +(W)     mov (1|M0)               r4.4<1>:ud    r0.5<0;1,0>:ud
+>> +(W)     send.dc1 (16|M0)         null     r4   src1_null 0    0x40A8000
+>> +#else // Typed 2D Block Store
+>> +        // Load r2.0-3 with tg id X << ARG(0)
+>> +(W)     shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud
+>> +        // Load r2.4-7 with tg id Y + ARG(1):ud
+>> +(W)     mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud
+>> +(W)     add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(1):ud
+>> +        // payload setup
+>> +(W)     mov (16|M0)              r4.0<1>:ud    0x0:ud
+>> +        // Store X and Y block start (160:191 and 192:223)
+>> +(W)     mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud
+>> +        // Store X and Y block max_size (224:231 and 232:239)
+>> +(W)     mov (1|M0)               r4.7<1>:ud    ARG(2):ud
+>> +(W)     send.tgm (16|M0)         null     r4   null:0    0    0x64000007
+>> +#endif
+>> +	)ASM", 2, y_offset, 3, value, value, value, value);
+>> +}
+>> diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
+>> index 449c5e9bcf31..f06362d806cd 100644
+>> --- a/lib/iga64_generated_codes.c
+>> +++ b/lib/iga64_generated_codes.c
+>> @@ -3,4 +3,85 @@
+>>   
 >>   #include "gpgpu_shader.h"
->>   #include "gpu_cmds.h"
 >>   
->> +#define IGA64_ARG0 0xc0ded000
->> +#define IGA64_ARG_MASK 0xffffff00
+>> -#define MD5_SUM d41d8cd98f00b204e9800998ecf8427e
+>> +#define MD5_SUM 1a47442138fa63fddb0f260694ef9edb
 >> +
->>   #define SUPPORTED_GEN_VER 1200 /* Support TGL and up */
->>   
->>   #define PAGE_SIZE 4096
->> @@ -22,6 +25,42 @@
->>   #define GPGPU_CURBE_SIZE 0
->>   #define GEN7_VFE_STATE_GPGPU_MODE 1
->>   
->> +static void gpgpu_shader_extend(struct gpgpu_shader *shdr)
->> +{
->> +	shdr->max_size <<= 1;
->> +	shdr->code = realloc(shdr->code, 4 * shdr->max_size);
->> +}
->> +
->> +void
->> +__emit_iga64_code(struct gpgpu_shader *shdr, struct iga64_template const *tpls,
->> +		  int argc, uint32_t *argv)
->> +{
->> +	uint32_t *ptr;
->> +
->> +	igt_require_f(shdr->gen_ver >= SUPPORTED_GEN_VER,
->> +		      "No available shader templates for platforms older than XeLP\n");
->> +
->> +	while (shdr->gen_ver < tpls->gen_ver)
->> +		tpls++;
->> +
->> +	while (shdr->max_size < shdr->size + tpls->size)
->> +		gpgpu_shader_extend(shdr);
->> +
->> +	ptr = shdr->code + shdr->size;
->> +	memcpy(ptr, tpls->code, 4 * tpls->size);
->> +
->> +	/* patch the template */
->> +	for (int n, i = 0; i < tpls->size; ++i) {
->> +		if ((ptr[i] & IGA64_ARG_MASK) != IGA64_ARG0)
->> +			continue;
->> +		n = ptr[i] - IGA64_ARG0;
->> +		igt_assert(n < argc);
->> +		ptr[i] = argv[n];
->> +	}
->> +
->> +	shdr->size += tpls->size;
->> +}
->> +
->>   static uint32_t fill_sip(struct intel_bb *ibb,
->>   			 const uint32_t sip[][4],
->>   			 const size_t size)
->> diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
->> index 02f6f1aad1e3..0b997deba8bb 100644
->> --- a/lib/gpgpu_shader.h
->> +++ b/lib/gpgpu_shader.h
->> @@ -23,6 +23,27 @@ struct gpgpu_shader {
->>   	};
->>   };
->>   
->> +struct iga64_template {
->> +	uint32_t gen_ver;
->> +	uint32_t size;
->> +	const uint32_t *code;
+>> +struct iga64_template const iga64_code_media_block_write[] = {
+>> +	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> +		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
+>> +		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
+>> +		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
+>> +		0x80000069, 0x02058220, 0x02000014, 0xc0ded000,
+>> +		0x80000061, 0x02150220, 0x00000064, 0x00000000,
+>> +		0x80001940, 0x02158220, 0x02000214, 0xc0ded001,
+>> +		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80041a61, 0x04550220, 0x00220205, 0x00000000,
+>> +		0x80000061, 0x04754220, 0x00000000, 0xc0ded002,
+>> +		0x80132031, 0x00000000, 0xd00e0494, 0x04000000,
+>> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>> +	}},
+>> +	{ .gen_ver = 1272, .size = 52, .code = (const uint32_t []) {
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> +		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
+>> +		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
+>> +		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
+>> +		0x80000069, 0x04058220, 0x02000014, 0xc0ded000,
+>> +		0x80000061, 0x04150220, 0x00000064, 0x00000000,
+>> +		0x80001940, 0x04158220, 0x02000414, 0xc0ded001,
+>> +		0x80000061, 0x04254220, 0x00000000, 0xc0ded002,
+>> +		0x80000061, 0x04450220, 0x00000054, 0x00000000,
+>> +		0x80132031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>> +	}},
+>> +	{ .gen_ver = 1250, .size = 56, .code = (const uint32_t []) {
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> +		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
+>> +		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
+>> +		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
+>> +		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+>> +		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>> +		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
+>> +		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
+>> +		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>> +		0x80001901, 0x00010000, 0x00000000, 0x00000000,
+>> +		0x80044031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>> +	}},
+>> +	{ .gen_ver = 0, .size = 52, .code = (const uint32_t []) {
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> +		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
+>> +		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
+>> +		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
+>> +		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+>> +		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>> +		0x80000140, 0x04258220, 0x02000424, 0xc0ded001,
+>> +		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
+>> +		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>> +		0x80049031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>> +		0x80000101, 0x00010000, 0x00000000, 0x00000000,
+>> +	}}
 >> +};
 >> +
->> +#pragma GCC diagnostic ignored "-Wnested-externs"
->> +
->> +void
->> +__emit_iga64_code(struct gpgpu_shader *shdr, const struct iga64_template *tpls,
->> +		  int argc, uint32_t *argv);
->> +
->> +#define emit_iga64_code(__shdr, __name, __txt, __args...) \
->> +({ \
->> +	static const char t[] __attribute__ ((section(".iga64_assembly"),used)) \
->> +		="iga64_assembly_" #__name ":" __txt "\n"; \
->> +	extern struct iga64_template const iga64_code_ ## __name[]; \
->> +	u32 args[] = { __args }; \
->> +	__emit_iga64_code(__shdr, iga64_code_ ## __name, ARRAY_SIZE(args), args); \
->> +})
->> +
->>   struct gpgpu_shader *gpgpu_shader_create(int fd);
->>   void gpgpu_shader_destroy(struct gpgpu_shader *shdr);
->>   
->> @@ -35,4 +56,8 @@ void gpgpu_shader_exec(struct intel_bb *ibb,
->>   		       struct gpgpu_shader *sip,
->>   		       uint64_t ring, bool explicit_engine);
->>   
->> +void gpgpu_shader__eot(struct gpgpu_shader *shdr);
->> +void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
->> +			       uint32_t y_offset);
->> +
->>   #endif /* GPGPU_SHADER_H */
->> diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
->> new file mode 100644
->> index 000000000000..449c5e9bcf31
->> --- /dev/null
->> +++ b/lib/iga64_generated_codes.c
->> @@ -0,0 +1,6 @@
->> +/* SPDX-License-Identifier: MIT */
->> +/* Generated using Intel Graphics Assembler 1.1.0-int */
->> +
->> +#include "gpgpu_shader.h"
->> +
->> +#define MD5_SUM d41d8cd98f00b204e9800998ecf8427e
-> ---------- ^^^^^^^
-> This name is too much generic, what about MD5_SUM_IGA64_CODE ?
->
->> diff --git a/lib/iga64_macros.h b/lib/iga64_macros.h
->> new file mode 100644
->> index 000000000000..33375763a1d0
->> --- /dev/null
->> +++ b/lib/iga64_macros.h
->> @@ -0,0 +1,10 @@
->> +/* SPDX-License-Identifier: MIT */
-> Add Copyright here.
->
->> +
->> +#define ARG(n) (0xc0ded000 + n)
->> +
->> +/* send instruction for DG2+ requires 0 length in case src1 is null, BSpec: 47443 */
->> +#if GEN_VER < 1271
->> +#define src1_null null
->> +#else
->> +#define src1_null null:0
->> +#endif
->> diff --git a/lib/meson.build b/lib/meson.build
->> index 0a3084f8aea2..843c74e5187f 100644
->> --- a/lib/meson.build
->> +++ b/lib/meson.build
->> @@ -216,7 +216,10 @@ lib_version = vcs_tag(input : 'version.h.in', output : 'version.h',
->>   		      fallback : 'NO-GIT',
->>   		      command : vcs_command )
->>   
->> +iga64_assembly_sources = [ 'gpgpu_shader.c' ]
->> +
->>   lib_intermediates = []
->> +iga64_assembly_libs = []
->>   foreach f: lib_sources
->>       name = f.underscorify()
->>       lib = static_library('igt-' + name,
->> @@ -230,8 +233,23 @@ foreach f: lib_sources
->>   	])
->>   
->>       lib_intermediates += lib
->> +    if f in iga64_assembly_sources
->> +	iga64_assembly_libs += lib
->> +    endif
->>   endforeach
->>   
->> +iga64_generated_codes = custom_target(
->> +    'iga64_generated_codes.c',
->> +    output : 'iga64_generated_codes.c',
->> +    input : [ 'iga64_generated_codes.c' ] + iga64_assembly_libs,
->> +    command : [ './generate_iga64_codes', '-o', '@OUTPUT@', '-i', '@INPUT@' ],
->> +    depend_files: [ 'generate_iga64_codes' ]
->> +)
->> +
->> +lib_intermediates += static_library('igt-iga64_generated_codes.c',
->> +			[ iga64_generated_codes, lib_version ]
->> +		     )
->> +
->>   lib_igt_build = shared_library('igt',
->>       ['dummy.c'],
->>       link_whole: lib_intermediates,
->>
-> Please look into CI.Build fails.
+>> +struct iga64_template const iga64_code_eot[] = {
+> Where's .gen_ver = 2000?
 
-Yep, another meson/ninja tutorial to grep.
-
-Thanks for comments, all will be addressed.
+Apparently 2000 and 1272 have the same binary code, in such case we keep 
+only the lower one.
+Nice way to check which gens introduce changes.
 
 Regards
 Andrzej
 
 >
-> Regards,
-> Kamil
+> --
+> Zbigniew
 >
+>> +	{ .gen_ver = 1272, .size = 8, .code = (const uint32_t []) {
+>> +		0x800c0061, 0x70050220, 0x00460005, 0x00000000,
+>> +		0x800f2031, 0x00000004, 0x3000700c, 0x00000000,
+>> +	}},
+>> +	{ .gen_ver = 1250, .size = 12, .code = (const uint32_t []) {
+>> +		0x80030061, 0x70050220, 0x00460005, 0x00000000,
+>> +		0x80001901, 0x00010000, 0x00000000, 0x00000000,
+>> +		0x80034031, 0x00000004, 0x3000700c, 0x00000000,
+>> +	}},
+>> +	{ .gen_ver = 0, .size = 8, .code = (const uint32_t []) {
+>> +		0x80030061, 0x70050220, 0x00460005, 0x00000000,
+>> +		0x80049031, 0x00000004, 0x7020700c, 0x10000000,
+>> +	}}
+>> +};
+>> diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
+>> new file mode 100644
+>> index 000000000000..af0eaf8cbda6
+>> --- /dev/null
+>> +++ b/tests/intel/xe_exec_sip.c
+>> @@ -0,0 +1,239 @@
+>> +// SPDX-License-Identifier: MIT
+>> +/*
+>> + * Copyright © 2024 Intel Corporation
+>> + */
+>> +
+>> +/**
+>> + * TEST: Tests for gpgpu shader and system routine execution
+>> + * Category: Software building block
+>> + * Sub-category: gpgpu
+>> + * Functionality: system routine
+>> + * Test category: functionality test
+>> + */
+>> +
+>> +#include <dirent.h>
+>> +#include <fcntl.h>
+>> +#include <stdio.h>
+>> +#include "gpgpu_shader.h"
+>> +#include "igt.h"
+>> +#include "igt_sysfs.h"
+>> +#include "xe/xe_ioctl.h"
+>> +#include "xe/xe_query.h"
+>> +
+>> +#define WIDTH 64
+>> +#define HEIGHT 64
+>> +
+>> +#define COLOR_C4 0xc4
+>> +
+>> +#define SHADER_CANARY 0x01010101
+>> +
+>> +#define NSEC_PER_MSEC (1000 * 1000ull)
+>> +
+>> +static struct intel_buf *
+>> +create_fill_buf(int fd, int width, int height, uint8_t color)
+>> +{
+>> +	struct intel_buf *buf;
+>> +	uint8_t *ptr;
+>> +
+>> +	buf = calloc(1, sizeof(*buf));
+>> +	igt_assert(buf);
+>> +
+>> +	intel_buf_init(buf_ops_create(fd), buf, width / 4, height, 32, 0,
+>> +		       I915_TILING_NONE, 0);
+>> +
+>> +	ptr = xe_bo_map(fd, buf->handle, buf->surface[0].size);
+>> +	memset(ptr, color, buf->surface[0].size);
+>> +	munmap(ptr, buf->surface[0].size);
+>> +
+>> +	return buf;
+>> +}
+>> +
+>> +static struct gpgpu_shader *get_shader(int fd)
+>> +{
+>> +	static struct gpgpu_shader *shader;
+>> +
+>> +	shader = gpgpu_shader_create(fd);
+>> +	gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
+>> +	gpgpu_shader__eot(shader);
+>> +	return shader;
+>> +}
+>> +
+>> +static uint32_t gpgpu_shader(int fd, struct intel_bb *ibb, unsigned int threads,
+>> +			     unsigned int width, unsigned int height)
+>> +{
+>> +	struct intel_buf *buf = create_fill_buf(fd, width, height, COLOR_C4);
+>> +	struct gpgpu_shader *shader = get_shader(fd);
+>> +
+>> +	gpgpu_shader_exec(ibb, buf, 1, threads, shader, NULL, 0, 0);
+>> +	gpgpu_shader_destroy(shader);
+>> +	return buf->handle;
+>> +}
+>> +
+>> +static void check_fill_buf(uint8_t *ptr, const int width, const int x,
+>> +			   const int y, const uint8_t color)
+>> +{
+>> +	const uint8_t val = ptr[y * width + x];
+>> +
+>> +	igt_assert_f(val == color,
+>> +		     "Expected 0x%02x, found 0x%02x at (%d,%d)\n",
+>> +		     color, val, x, y);
+>> +}
+>> +
+>> +static void check_buf(int fd, uint32_t handle, int width, int height,
+>> +		      uint8_t poison_c)
+>> +{
+>> +	unsigned int sz = ALIGN(width * height, 4096);
+>> +	int thread_count = 0;
+>> +	uint32_t *ptr;
+>> +	int i, j;
+>> +
+>> +	ptr = xe_bo_mmap_ext(fd, handle, sz, PROT_READ);
+>> +
+>> +	for (i = 0, j = 0; j < height / 2; ++j) {
+>> +		if (ptr[j * width / 4] == SHADER_CANARY) {
+>> +			++thread_count;
+>> +			i = 4;
+>> +		}
+>> +
+>> +		for (; i < width; i++)
+>> +			check_fill_buf((uint8_t *)ptr, width, i, j, poison_c);
+>> +
+>> +		i = 0;
+>> +	}
+>> +
+>> +	igt_assert(thread_count);
+>> +
+>> +	munmap(ptr, sz);
+>> +}
+>> +
+>> +static const char *class_to_str(int class)
+>> +{
+>> +        const char *str[] = {
+>> +                [DRM_XE_ENGINE_CLASS_RENDER] = "rcs",
+>> +                [DRM_XE_ENGINE_CLASS_COPY] = "bcs",
+>> +                [DRM_XE_ENGINE_CLASS_VIDEO_DECODE] = "vcs",
+>> +                [DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE] = "vecs",
+>> +		[DRM_XE_ENGINE_CLASS_COMPUTE] = "ccs",
+>> +        };
+>> +
+>> +        if (class < ARRAY_SIZE(str))
+>> +                return str[class];
+>> +
+>> +        return "unk";
+>> +}
+>> +
+>> +static uint64_t xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
+>> +{
+>> +	struct dirent *de;
+>> +	int engines_fd = -1;
+>> +	int gt_fd = -1;
+>> +	DIR *dir;
+>> +	/* Default timeout is 5s */
+>> +	uint64_t ret = 5ULL * MSEC_PER_SEC;
+>> +
+>> +	gt_fd = xe_sysfs_gt_open(fd, eci->gt_id);
+>> +	if (gt_fd == -1)
+>> +		return ret;
+>> +
+>> +	engines_fd = openat(gt_fd, "engines", O_RDONLY);
+>> +	if (engines_fd == -1) {
+>> +		close(gt_fd);
+>> +		return ret;
+>> +	}
+>> +
+>> +	lseek(engines_fd, 0, SEEK_SET);
+>> +	dir = fdopendir(engines_fd);
+>> +	while (dir && (de = readdir(dir))) {
+>> +		int engine_fd;
+>> +		if (strcmp(de->d_name, class_to_str(eci->engine_class)))
+>> +			continue;
+>> +
+>> +		engine_fd = openat(engines_fd, de->d_name, O_RDONLY);
+>> +		if (engine_fd < 0)
+>> +			break;
+>> +
+>> +		ret = igt_sysfs_get_u64(engine_fd, "job_timeout_ms");
+>> +		close(engine_fd);
+>> +		break;
+>> +	}
+>> +
+>> +	close(engines_fd);
+>> +	close(gt_fd);
+>> +	return ret;
+>> +}
+>> +
+>> +/**
+>> + * SUBTEST: sanity
+>> + * Description: check basic shader with write operation
+>> + * Run type: BAT
+>> + *
+>> + */
+>> +static void test_sip(struct drm_xe_engine_class_instance *eci, uint32_t flags)
+>> +{
+>> +	unsigned int threads = 512;
+>> +	unsigned int height = max_t(threads, HEIGHT, threads * 2);
+>> +	uint32_t exec_queue_id, handle, vm_id;
+>> +	unsigned int width = WIDTH;
+>> +	struct timespec ts = { };
+>> +	uint64_t timeout;
+>> +	struct intel_bb *ibb;
+>> +	int fd;
+>> +
+>> +	igt_debug("Using %s\n", xe_engine_class_string(eci->engine_class));
+>> +
+>> +	fd = drm_open_driver(DRIVER_XE);
+>> +	xe_device_get(fd);
+>> +
+>> +	vm_id = xe_vm_create(fd, 0, 0);
+>> +
+>> +	/* Get timeout for job, and add 4s to ensure timeout processes in subtest. */
+>> +	timeout = xe_sysfs_get_job_timeout_ms(fd, eci) + 4ull * MSEC_PER_SEC;
+>> +	timeout *= NSEC_PER_MSEC;
+>> +	timeout *= igt_run_in_simulation() ? 10 : 1;
+>> +
+>> +	exec_queue_id = xe_exec_queue_create(fd, vm_id, eci, 0);
+>> +	ibb = intel_bb_create_with_context(fd, exec_queue_id, vm_id, NULL, 4096);
+>> +
+>> +	igt_nsec_elapsed(&ts);
+>> +	handle = gpgpu_shader(fd, ibb, threads, width, height);
+>> +
+>> +	intel_bb_sync(ibb);
+>> +	igt_assert_lt_u64(igt_nsec_elapsed(&ts), timeout);
+>> +
+>> +	check_buf(fd, handle, width, height, COLOR_C4);
+>> +
+>> +	gem_close(fd, handle);
+>> +	intel_bb_destroy(ibb);
+>> +
+>> +	xe_exec_queue_destroy(fd, exec_queue_id);
+>> +	xe_vm_destroy(fd, vm_id);
+>> +	xe_device_put(fd);
+>> +	close(fd);
+>> +}
+>> +
+>> +#define test_render_and_compute(t, __fd, __eci) \
+>> +	igt_subtest_with_dynamic(t) \
+>> +		xe_for_each_engine(__fd, __eci) \
+>> +			if (__eci->engine_class == DRM_XE_ENGINE_CLASS_RENDER || \
+>> +			    __eci->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) \
+>> +				igt_dynamic_f("%s%d", xe_engine_class_string(__eci->engine_class), \
+>> +					      __eci->engine_instance)
+>> +
+>> +igt_main
+>> +{
+>> +	struct drm_xe_engine_class_instance *eci;
+>> +	int fd;
+>> +
+>> +	igt_fixture {
+>> +		fd = drm_open_driver(DRIVER_XE);
+>> +		xe_device_get(fd);
+>> +	}
+>> +
+>> +	test_render_and_compute("sanity", fd, eci)
+>> +		test_sip(eci, 0);
+>> +
+>> +	igt_fixture {
+>> +		xe_device_put(fd);
+>> +		close(fd);
+>> +	}
+>> +}
+>> diff --git a/tests/meson.build b/tests/meson.build
+>> index 65b8bf23b972..63588e473616 100644
+>> --- a/tests/meson.build
+>> +++ b/tests/meson.build
+>> @@ -292,6 +292,7 @@ intel_xe_progs = [
+>>   	'xe_exec_fault_mode',
+>>   	'xe_exec_queue_property',
+>>   	'xe_exec_reset',
+>> +	'xe_exec_sip',
+>>   	'xe_exec_store',
+>>   	'xe_exec_threads',
+>>   	'xe_exercise_blt',
+>>
 >> -- 
 >> 2.34.1
 >>
