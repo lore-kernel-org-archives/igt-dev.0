@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF288C04FFE
-	for <igt-dev@archiver.kernel.org>; Tue, 14 May 2024 09:50:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CD5FC25B75
+	for <igt-dev@archiver.kernel.org>; Tue, 14 May 2024 10:31:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 70C5810E279;
-	Tue, 14 May 2024 09:50:09 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oH1YMaL3";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D68310E279
- for <igt-dev@lists.freedesktop.org>; Tue, 14 May 2024 09:50:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715680209; x=1747216209;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=oJQ28oBY55s+TnDv/8Szhv/IREuBA4fi8/+onWCPmOg=;
- b=oH1YMaL3UtV0j9s55iz7zl0oiHAUSFfQiCG5n5U3utWX75BO6sY5SwJ8
- ypIuDgKewqnQLpEP04NTn1/JlmyeCgOplDWZR6xRCOludW+/VgOFL/CSy
- yjhe31Mm0yWTG6fuRAEKd7pPk76xp6wpFyNrXIMsEA+je+09VL466yohw
- CANwcnp98OncrzIG/GTThMpgOwBHYXOtYWLC7xElsThRCVIvIm60jRZIu
- d5+ev+cZIdgC5577lsY7e65FVI7hTDUwc3jd7kXCfFpsjxedD+Uhj4lOR
- m4R8h6SKTbCZJ0GPjKgkhcpeCRcv9aH9Kk3utgGouFCULOaynqu+EqhHx g==;
-X-CSE-ConnectionGUID: VU16C60lTB+w6YLVNTiipA==
-X-CSE-MsgGUID: u4ADwYs2SbGCkpj1F2WScg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11072"; a="15486964"
-X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="15486964"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2024 02:50:08 -0700
-X-CSE-ConnectionGUID: YCKg8ws/QcmVS4Ea9REDXw==
-X-CSE-MsgGUID: R5lQERIXQhyDz8MTV+b1pw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="30668294"
-Received: from ebrown1-mobl1.ger.corp.intel.com (HELO hazy.ger.corp.intel.com)
- ([10.249.34.212])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2024 02:50:06 -0700
-From: Luca Coelho <luciano.coelho@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] lib/igt_kms: add retry loop in igt_enable_connectors()
-Date: Tue, 14 May 2024 12:49:57 +0300
-Message-Id: <20240514094957.862770-1-luciano.coelho@intel.com>
-X-Mailer: git-send-email 2.39.2
+	by gabe.freedesktop.org (Postfix) with ESMTP id D606310E20C;
+	Tue, 14 May 2024 10:31:08 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DBB3710E20C;
+ Tue, 14 May 2024 10:31:07 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0525000214206148454=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/igt=5Fkms=3A_add_retry_loo?=
+ =?utf-8?q?p_in_igt=5Fenable=5Fconnectors=28=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Luca Coelho" <luciano.coelho@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 14 May 2024 10:31:07 -0000
+Message-ID: <171568266789.2114759.3881525297754203566@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240514094957.862770-1-luciano.coelho@intel.com>
+In-Reply-To: <20240514094957.862770-1-luciano.coelho@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,79 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Sometimes the connector is not fully initialized yet when we try to
-read it in igt_enable_connectors() and this causes a warning to be
-issued and the test to fail.  This can happen in normal situations,
-because there's no synchronization between the driver and IGT.  In
-some tests we load the module and immediately start reading the
-information, but the driver may not be fully initialized at that
-point, causing the problem.
+--===============0525000214206148454==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-To prevent this, add a retry loop in igt_enable_connectors() so we
-retry a few times, after a small delay, to wait for the initialization
-to complete.
+== Series Details ==
 
-The number of retries and the delay between retries were chose after
-running lots of tests, but these values may have to be adjusted after
-running more tests on different machines.
+Series: lib/igt_kms: add retry loop in igt_enable_connectors()
+URL   : https://patchwork.freedesktop.org/series/133597/
+State : success
 
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10436
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- lib/igt_kms.c | 29 +++++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+== Summary ==
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index f82102144ea1..3832bf54a2fc 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -5386,7 +5386,10 @@ void igt_wait_for_vblank(int drm_fd, int crtc_offset)
-  */
- void igt_enable_connectors(int drm_fd)
- {
-+#define MAX_TRIES	10
-+#define SLEEP_DURATION	50000
- 	drmModeRes *res;
-+	int tries;
- 
- 	res = drmModeGetResources(drm_fd);
- 	if (!res)
-@@ -5395,10 +5398,28 @@ void igt_enable_connectors(int drm_fd)
- 	for (int i = 0; i < res->count_connectors; i++) {
- 		drmModeConnector *c;
- 
--		/* Do a probe. This may be the first action after booting */
--		c = drmModeGetConnector(drm_fd, res->connectors[i]);
--		if (!c) {
--			igt_warn("Could not read connector %u: %m\n", res->connectors[i]);
-+		/*
-+		 * The kernel returns the count of connectors before
-+		 * they're all fully set up, so we can have a race
-+		 * condition where we try to get the connector when
-+		 * it's not fully set up yet.  To avoid failing here
-+		 * in these cases, retry a few times.
-+		 */
-+		for (tries = 0; tries < MAX_TRIES; tries++) {
-+			/* Do a probe. This may be the first action after booting */
-+			c = drmModeGetConnector(drm_fd, res->connectors[i]);
-+			if (c)
-+				break;
-+
-+			igt_info("Could not read connector %u: %m (try %d of %d)\n",
-+				  res->connectors[i], tries, MAX_TRIES);
-+
-+			usleep(SLEEP_DURATION);
-+		}
-+
-+		if (tries == MAX_TRIES) {
-+			igt_warn("Could not read connector %u after %d tries, skipping\n",
-+				 res->connectors[i], MAX_TRIES);
- 			continue;
- 		}
- 
--- 
-2.39.2
+CI Bug Log - changes from XEIGT_7850_BAT -> XEIGTPW_11140_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7850 -> IGTPW_11140
+  * Linux: xe-1280-3d00e04692d45ab076e9e493252361bb18373a0e -> xe-1283-b27285c06de4a6ca7b065e035f0bb06887de2f27
+
+  IGTPW_11140: 11140
+  IGT_7850: 7850
+  xe-1280-3d00e04692d45ab076e9e493252361bb18373a0e: 3d00e04692d45ab076e9e493252361bb18373a0e
+  xe-1283-b27285c06de4a6ca7b065e035f0bb06887de2f27: b27285c06de4a6ca7b065e035f0bb06887de2f27
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11140/index.html
+
+--===============0525000214206148454==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_kms: add retry loop in igt_enable_connectors()</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133597/">https://patchwork.freedesktop.org/series/133597/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11140/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11140/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7850_BAT -&gt; XEIGTPW_11140_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7850 -&gt; IGTPW_11140</li>
+<li>Linux: xe-1280-3d00e04692d45ab076e9e493252361bb18373a0e -&gt; xe-1283-b27285c06de4a6ca7b065e035f0bb06887de2f27</li>
+</ul>
+<p>IGTPW_11140: 11140<br />
+  IGT_7850: 7850<br />
+  xe-1280-3d00e04692d45ab076e9e493252361bb18373a0e: 3d00e04692d45ab076e9e493252361bb18373a0e<br />
+  xe-1283-b27285c06de4a6ca7b065e035f0bb06887de2f27: b27285c06de4a6ca7b065e035f0bb06887de2f27</p>
+
+</body>
+</html>
+
+--===============0525000214206148454==--
