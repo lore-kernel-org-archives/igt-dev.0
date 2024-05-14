@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C838FC25B75
-	for <igt-dev@archiver.kernel.org>; Tue, 14 May 2024 07:10:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B332C04FFE
+	for <igt-dev@archiver.kernel.org>; Tue, 14 May 2024 07:10:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5024310E25A;
-	Tue, 14 May 2024 07:10:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DC48710E2F4;
+	Tue, 14 May 2024 07:10:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f9h9hSuX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C16rZJhs";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DBFAD10E25A
- for <igt-dev@lists.freedesktop.org>; Tue, 14 May 2024 07:10:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BDC7810E2F4
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 May 2024 07:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715670605; x=1747206605;
+ t=1715670606; x=1747206606;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Lc1urhugeUUP6zQDk2TCxJ+Dw0aD81qDygdmW2anh2w=;
- b=f9h9hSuX6xOdq4mNsKa+nCHSgO5DpXHVSra7OniwKiYS7tRm/UZl39VU
- 3u8RFMW++AtqBGGuvlpDEVpcigTZM9j+pW0tXwmsClqQTr+21FIbtU1BH
- 2qtrfUwDwpy5l+xfFMsguKUN3MRDmEvctm2XaSqL3sJdjy+Cz4KSVd7r6
- 7g9NVD5Pj5gHoqjnevmWJY/D90eSZh7fTp1PERJAFj4nTvn5WwsGm7Kcb
- 0GWKtIjmcoY1j4N11y0nUO2q8jQaUNqlrFOhzTuUOrE56NwU90s1QfFfo
- hHmfTIyYVC0AfXbo5YHqh0Crm2vc2ntpklKal2d5fbED7S2wsEAZvryaf A==;
-X-CSE-ConnectionGUID: cX/s/bqzRliwUDiPzUDTdA==
-X-CSE-MsgGUID: JGcJODZURtaSvjunqsBdUw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11072"; a="15473012"
-X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="15473012"
+ bh=NaLwcqZU0xlQuaQ6so2FvufLSsTdv/RgySh5BLfsh1Y=;
+ b=C16rZJhsS0A2MMip5vJ6JSScH6DSbWaUBBcat9Zg5PSDOoscMG2SGV1l
+ 6ov7MYWjx458keA28GCIEccboCB0HNUNu0+zAPtgujXhailcU8Paxis+B
+ Uoc/M39a04sT/16nrJORJlCgizgQIXudO9+nsDMPDq2RBmBo9CAdCV5iN
+ kAHVbjvesGWcBArSk5OGQE2juZvOChbbugwk8+KxhfjXBKa6BS2P+q8QA
+ MDdvQnoB+qzj21UUdJbAFuX72hT9TufUsTObf90jI7NswX6PS44NVglJR
+ 9uIc0e2dxEWcqZbUCdLYI0sWoojaCoPkwMs5qEeapWm4E4xTnAz6DGKLG A==;
+X-CSE-ConnectionGUID: KndKad6KTz6JzL7zRyjwDw==
+X-CSE-MsgGUID: E44WePk7QEWqruHI0MUJfg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11072"; a="15473016"
+X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="15473016"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2024 00:10:05 -0700
-X-CSE-ConnectionGUID: /YZDwwmxQemc9hQNk4e33g==
-X-CSE-MsgGUID: Pb/JlRVSR06vqO3EBzGnyg==
+ 14 May 2024 00:10:06 -0700
+X-CSE-ConnectionGUID: Pi8vjswNQgyN5yTQRMyxVA==
+X-CSE-MsgGUID: kTMCCv82RsCFklQPBnwBAg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="30427710"
+X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="30427752"
 Received: from bommu-optiplex-5060.iind.intel.com ([10.145.169.63])
- by orviesa010.jf.intel.com with ESMTP; 14 May 2024 00:10:04 -0700
+ by orviesa010.jf.intel.com with ESMTP; 14 May 2024 00:10:06 -0700
 From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
  Oak Zeng <oak.zeng@intel.com>,
  Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Subject: [PATCH i-g-t v2 03/10] tests/xe_svm: basic svm test
-Date: Tue, 14 May 2024 12:40:19 +0530
-Message-Id: <20240514071026.748257-4-krishnaiah.bommu@intel.com>
+Subject: [PATCH i-g-t v2 04/10] tests/intel/xe_svm: svm_random_access
+Date: Tue, 14 May 2024 12:40:20 +0530
+Message-Id: <20240514071026.748257-5-krishnaiah.bommu@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240514071026.748257-1-krishnaiah.bommu@intel.com>
 References: <20240514071026.748257-1-krishnaiah.bommu@intel.com>
@@ -68,66 +68,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Test will verify SVM basic functionality, by allocating a memory with
-system allocator(malloc() or mmap()) and accessing in GPU.
+Verify GPU can randomly access any location in malloc'ed memory by using svm.
 
 Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 Cc: Oak Zeng <oak.zeng@intel.com>
 Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 ---
- include/drm-uapi/xe_drm.h |  2 ++
- tests/intel/xe_svm.c      | 57 +++++++++++++++++++++++++++++++++++++--
- 2 files changed, 57 insertions(+), 2 deletions(-)
+ tests/intel/xe_svm.c | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 0b709b374..228bc2974 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -973,6 +973,8 @@ struct drm_xe_vm_bind_op {
- #define DRM_XE_VM_BIND_FLAG_IMMEDIATE	(1 << 1)
- #define DRM_XE_VM_BIND_FLAG_NULL	(1 << 2)
- #define DRM_XE_VM_BIND_FLAG_DUMPABLE	(1 << 3)
-+#define DRM_XE_VM_BIND_FLAG_SYSTEM_ALLOCATOR	(1 << 4)
-+
- 	/** @flags: Bind flags */
- 	__u32 flags;
- 
 diff --git a/tests/intel/xe_svm.c b/tests/intel/xe_svm.c
-index 7d0892a3d..2daed1eff 100644
+index 2daed1eff..1c90d2e10 100644
 --- a/tests/intel/xe_svm.c
 +++ b/tests/intel/xe_svm.c
-@@ -14,8 +14,18 @@
-  */
- 
- /**
-- * TEST: xe_basic
-+ * TEST: xe_svm
-+ * Description: Test shared virtual memory
-+ * Sub-category: Memory management
-+ * Functionality: svm
-+ * Run type: FULL
-+ *
-+ * SUBTEST: xe_basic
-  * Description: Basic test to verify store dword by using helper funtions
-+ * SUBTEST: svm-basic-malloc
-+ * Description: verify SVM basic functionality by using malloc
-+ * SUBTEST: svm-basic-mmap
-+ * Description: verify SVM basic functionality by using mmap
+@@ -26,6 +26,9 @@
+  * Description: verify SVM basic functionality by using malloc
+  * SUBTEST: svm-basic-mmap
+  * Description: verify SVM basic functionality by using mmap
++ * SUBTEST: svm-random-access
++ * Description: verify SVM basic functionality by using
++ * randomly access any location in malloc'ed memory
   */
  
  #include <fcntl.h>
-@@ -67,6 +77,40 @@ static void xe_basic(int fd, uint32_t vm, struct drm_xe_engine_class_instance *e
- 	xe_destroy_buffer(&dst_buf);
+@@ -111,6 +114,37 @@ static void svm_basic(int fd, uint32_t vm, struct drm_xe_engine_class_instance *
+ 		free(dst);
  }
  
 +/**
-+ *  Use malloc or mmap memory for direct GPU submission
++ *  Verify GPU can randomly access any location in malloc'ed memory
 + */
-+static void svm_basic(int fd, uint32_t vm, struct drm_xe_engine_class_instance *eci, bool test_mmap)
++static void svm_random_access(int fd, uint32_t vm, struct drm_xe_engine_class_instance *eci)
 +{
 +	uint64_t gpu_va = 0x1a0000;
 +	size_t bo_size = xe_bb_size(fd, PAGE_ALIGN_UFENCE);
-+	uint32_t *dst;
++	uint32_t *dst, *dst_to_access;
++	uint32_t size = 1024*1024, sz_dw = size/4;
 +
 +	struct xe_buffer cmd_buf = {
 +		.fd = fd,
@@ -138,45 +114,28 @@ index 7d0892a3d..2daed1eff 100644
 +		.flag = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
 +	};
 +
-+	if (test_mmap)
-+		dst = mmap(NULL, 4, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
-+	else
-+		dst = aligned_alloc(xe_get_default_alignment(fd), 4);
++	dst = malloc(size);
++	dst_to_access = dst + random()%sz_dw;
 +
-+	xe_create_cmdbuf(&cmd_buf, insert_store, (uint64_t)dst, 0xc0ffee, eci);
++	xe_create_cmdbuf(&cmd_buf, insert_store, (uint64_t)dst_to_access, 0xc0ffee, eci);
 +	xe_submit_cmd(&cmd_buf);
-+	igt_assert_eq(*dst, 0xc0ffee);
-+	xe_destroy_cmdbuf(&cmd_buf);
 +
-+	if (test_mmap)
-+		munmap(dst, 4);
-+	else
-+		free(dst);
++	igt_assert_eq(*dst, 0xc0ffee);
++
++	xe_destroy_cmdbuf(&cmd_buf);
++	free(dst);
 +}
 +
  igt_main
  {
  	int fd;
-@@ -77,13 +121,22 @@ igt_main
- 		fd = drm_open_driver(DRIVER_XE);
- 		igt_require(xe_supports_faults(fd));
- 		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE | DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-+		__xe_vm_bind_assert(fd, vm, 0, 0, 0, 0, 0x1ull << 47, DRM_XE_VM_BIND_OP_MAP,
-+				DRM_XE_VM_BIND_FLAG_SYSTEM_ALLOCATOR, 0, 0, 0, 0);
- 	}
- 
--
- 	igt_subtest_f("xe-basic")
+@@ -137,6 +171,10 @@ igt_main
  		xe_for_each_engine(fd, hwe)
- 			xe_basic(fd, vm, hwe);
+ 			svm_basic(fd, vm, hwe, true);
  
-+	igt_subtest_f("svm-basic-malloc")
++	igt_subtest_f("svm-random-access")
 +		xe_for_each_engine(fd, hwe)
-+			svm_basic(fd, vm, hwe, false);
-+
-+	igt_subtest_f("svm-basic-mmap")
-+		xe_for_each_engine(fd, hwe)
-+			svm_basic(fd, vm, hwe, true);
++			svm_random_access(fd, vm, hwe);
 +
  	igt_fixture {
  		xe_vm_destroy(fd, vm);
