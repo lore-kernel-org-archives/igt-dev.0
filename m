@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B332C04FFE
-	for <igt-dev@archiver.kernel.org>; Tue, 14 May 2024 07:10:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CC12C04FFE
+	for <igt-dev@archiver.kernel.org>; Tue, 14 May 2024 07:10:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DC48710E2F4;
-	Tue, 14 May 2024 07:10:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F397A10E3BD;
+	Tue, 14 May 2024 07:10:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C16rZJhs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kAzkNsEZ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDC7810E2F4
- for <igt-dev@lists.freedesktop.org>; Tue, 14 May 2024 07:10:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D552E10E3BD
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 May 2024 07:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715670606; x=1747206606;
+ t=1715670609; x=1747206609;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=NaLwcqZU0xlQuaQ6so2FvufLSsTdv/RgySh5BLfsh1Y=;
- b=C16rZJhsS0A2MMip5vJ6JSScH6DSbWaUBBcat9Zg5PSDOoscMG2SGV1l
- 6ov7MYWjx458keA28GCIEccboCB0HNUNu0+zAPtgujXhailcU8Paxis+B
- Uoc/M39a04sT/16nrJORJlCgizgQIXudO9+nsDMPDq2RBmBo9CAdCV5iN
- kAHVbjvesGWcBArSk5OGQE2juZvOChbbugwk8+KxhfjXBKa6BS2P+q8QA
- MDdvQnoB+qzj21UUdJbAFuX72hT9TufUsTObf90jI7NswX6PS44NVglJR
- 9uIc0e2dxEWcqZbUCdLYI0sWoojaCoPkwMs5qEeapWm4E4xTnAz6DGKLG A==;
-X-CSE-ConnectionGUID: KndKad6KTz6JzL7zRyjwDw==
-X-CSE-MsgGUID: E44WePk7QEWqruHI0MUJfg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11072"; a="15473016"
-X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="15473016"
+ bh=eIaG+8EVikv1gBhYRnTNp45xRA7XgIdRQt8lU2CjIqs=;
+ b=kAzkNsEZTC4LAeUnPryk+YmV0qKENCK+R9xv40Zd3tiC2FFq8d0EDKIc
+ R9gIji0TanQI4NErhMArbIcp17PTG0PGBiS3x1fIQcAbRsy+hs9o6MrnK
+ M7FvAcMBxsRrwhQamBAdaipIU/jtzZqIG4yCXerYK8YOKfKvx3eqYXmG3
+ J2Xfbws0dSqXUYzVvtMUbR9cB8Z5gJie6z1j4V8KUXY5qooLlxrHvBz4I
+ oG7S2l95T6r38OEN3DhxdSmbMJiiD2bC1HO0V52/5VRIKOVKVelCCYJb/
+ /e4xs5Pq+jULvvBWEE06vs86xFd7O/ZEOfLYy9wDPg/lPvC6BKbltbpoD w==;
+X-CSE-ConnectionGUID: tVwR5gjfTQKvyhSWAqAbhA==
+X-CSE-MsgGUID: azQ3IKtVRwa3tkNZ7QLjOg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11072"; a="15473019"
+X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="15473019"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2024 00:10:06 -0700
-X-CSE-ConnectionGUID: Pi8vjswNQgyN5yTQRMyxVA==
-X-CSE-MsgGUID: kTMCCv82RsCFklQPBnwBAg==
+ 14 May 2024 00:10:09 -0700
+X-CSE-ConnectionGUID: +QIwDeh8T12FUAfLOBW0Sw==
+X-CSE-MsgGUID: gJ1hzP9+SKOqTJ9rgeaSgA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="30427752"
+X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; d="scan'208";a="30427799"
 Received: from bommu-optiplex-5060.iind.intel.com ([10.145.169.63])
- by orviesa010.jf.intel.com with ESMTP; 14 May 2024 00:10:06 -0700
+ by orviesa010.jf.intel.com with ESMTP; 14 May 2024 00:10:08 -0700
 From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
  Oak Zeng <oak.zeng@intel.com>,
  Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Subject: [PATCH i-g-t v2 04/10] tests/intel/xe_svm: svm_random_access
-Date: Tue, 14 May 2024 12:40:20 +0530
-Message-Id: <20240514071026.748257-5-krishnaiah.bommu@intel.com>
+Subject: [PATCH i-g-t v2 05/10] tests/intel/xe_svm: svm-huge-page
+Date: Tue, 14 May 2024 12:40:21 +0530
+Message-Id: <20240514071026.748257-6-krishnaiah.bommu@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240514071026.748257-1-krishnaiah.bommu@intel.com>
 References: <20240514071026.748257-1-krishnaiah.bommu@intel.com>
@@ -68,42 +68,52 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Verify GPU can randomly access any location in malloc'ed memory by using svm.
+Verify GPU can huge page access by using svm.
 
 Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 Cc: Oak Zeng <oak.zeng@intel.com>
 Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 ---
- tests/intel/xe_svm.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ tests/intel/xe_svm.c | 52 ++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 50 insertions(+), 2 deletions(-)
 
 diff --git a/tests/intel/xe_svm.c b/tests/intel/xe_svm.c
-index 2daed1eff..1c90d2e10 100644
+index 1c90d2e10..4f2818cc8 100644
 --- a/tests/intel/xe_svm.c
 +++ b/tests/intel/xe_svm.c
-@@ -26,6 +26,9 @@
-  * Description: verify SVM basic functionality by using malloc
+@@ -27,8 +27,9 @@
   * SUBTEST: svm-basic-mmap
   * Description: verify SVM basic functionality by using mmap
-+ * SUBTEST: svm-random-access
-+ * Description: verify SVM basic functionality by using
-+ * randomly access any location in malloc'ed memory
+  * SUBTEST: svm-random-access
+- * Description: verify SVM basic functionality by using
+- * randomly access any location in malloc'ed memory
++ * Description: verify SVM basic functionality by using randomly access any location in malloc'ed memory
++ * SUBTEST: svm-huge-page
++ * Description: verify SVM basic functionality by using huge page access
   */
  
  #include <fcntl.h>
-@@ -111,6 +114,37 @@ static void svm_basic(int fd, uint32_t vm, struct drm_xe_engine_class_instance *
- 		free(dst);
+@@ -145,6 +146,49 @@ static void svm_random_access(int fd, uint32_t vm, struct drm_xe_engine_class_in
+ 	free(dst);
  }
  
 +/**
-+ *  Verify GPU can randomly access any location in malloc'ed memory
++ * Test the behavior of transparent huge page.
++ * Allocate 2MB of aligned memory so huge page
++ * is used. What happens if driver only migrate
++ * 1 4k page of that buffer to GPU?
++ *
++ * Test result shows that the huge page is splitted
++ * into small pages and only one 4k page is
++ * migrated.
 + */
-+static void svm_random_access(int fd, uint32_t vm, struct drm_xe_engine_class_instance *eci)
++static void svm_thp(int fd, uint32_t vm, struct drm_xe_engine_class_instance *eci)
 +{
 +	uint64_t gpu_va = 0x1a0000;
 +	size_t bo_size = xe_bb_size(fd, PAGE_ALIGN_UFENCE);
-+	uint32_t *dst, *dst_to_access;
-+	uint32_t size = 1024*1024, sz_dw = size/4;
++	uint32_t size = 1<<21;
++	uint32_t *dst;
++	int ret;
 +
 +	struct xe_buffer cmd_buf = {
 +		.fd = fd,
@@ -114,10 +124,14 @@ index 2daed1eff..1c90d2e10 100644
 +		.flag = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
 +	};
 +
-+	dst = malloc(size);
-+	dst_to_access = dst + random()%sz_dw;
++	ret = posix_memalign((void **)&dst, size, size);
++	igt_assert_eq(ret, 0);
++	/** TODO huge page advice cause the system hang
++	* when process exit...Very possible a hmm bug
++	**/
++	memset(dst, 0xbe, size);
 +
-+	xe_create_cmdbuf(&cmd_buf, insert_store, (uint64_t)dst_to_access, 0xc0ffee, eci);
++	xe_create_cmdbuf(&cmd_buf, insert_store, (uint64_t)dst, 0xc0ffee, eci);
 +	xe_submit_cmd(&cmd_buf);
 +
 +	igt_assert_eq(*dst, 0xc0ffee);
@@ -129,13 +143,13 @@ index 2daed1eff..1c90d2e10 100644
  igt_main
  {
  	int fd;
-@@ -137,6 +171,10 @@ igt_main
+@@ -175,6 +219,10 @@ igt_main
  		xe_for_each_engine(fd, hwe)
- 			svm_basic(fd, vm, hwe, true);
+ 			svm_random_access(fd, vm, hwe);
  
-+	igt_subtest_f("svm-random-access")
++	igt_subtest_f("svm-huge-page")
 +		xe_for_each_engine(fd, hwe)
-+			svm_random_access(fd, vm, hwe);
++			svm_thp(fd, vm, hwe);
 +
  	igt_fixture {
  		xe_vm_destroy(fd, vm);
