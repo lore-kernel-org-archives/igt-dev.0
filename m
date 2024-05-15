@@ -4,73 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C63ABC25B75
-	for <igt-dev@archiver.kernel.org>; Wed, 15 May 2024 13:20:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8020C25B75
+	for <igt-dev@archiver.kernel.org>; Wed, 15 May 2024 14:58:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 802A710E83D;
-	Wed, 15 May 2024 13:20:13 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="aShXbiOQ";
-	dkim-atps=neutral
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com
- [209.85.221.46])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A1F9810E83D
- for <igt-dev@lists.freedesktop.org>; Wed, 15 May 2024 13:20:12 +0000 (UTC)
-Received: by mail-wr1-f46.google.com with SMTP id
- ffacd0b85a97d-34dc8d3fbf1so5655712f8f.1
- for <igt-dev@lists.freedesktop.org>; Wed, 15 May 2024 06:20:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715779210; x=1716384010; darn=lists.freedesktop.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=OhgtcP9DGHIq8Qbviz+/SaVSpmFq6LPzIVPbB2aKQQY=;
- b=aShXbiOQAncCsQXn9nEK//aiE9u7mAxB/VqoXG0XNPXeVilAEkN6ddGDMErc1Dhg+R
- gi/jYNN3j5FR922F031UXHhXIj5a4sFXPxOVSoVQImC/9m3y3skdaV8VV7jmXxANKfXB
- +LnQF+0JSSAsiBgx+q7c4CLOq7b1AfV3m/4eJm7S5TE2urw2Y4W0gf8yyEpagKKcshHf
- PPAsPg3VGidH5HGl7c9++WVupQfl8KAQbiHQ8HVYCqEfcPY79KbEuXjwfdZfSwp0fTg5
- 0qdk85ye9xjObVTcR1rGOpc/sBfYVkOaSXEYI9vKn8YMQl8I9y6LUbxQSe6AfT+Yyze5
- fxTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715779210; x=1716384010;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OhgtcP9DGHIq8Qbviz+/SaVSpmFq6LPzIVPbB2aKQQY=;
- b=aysZWwVCzLin+sKSNZ4d00JoHE/e9xKcX/mRfqePg6Eqwwa6VLw5/4zoNafmImgXZz
- mKkM2QhuH+NK974Dr/7Ehi4hoNXwWF1UarbHfWWFOy6qr6Y3HrrUdxFw6aLeF+Ss6/i1
- +RsyHqAoAGKys9Ch3GBruFBjW3UQ5I1f7inv8Nu1Yq89FrAucP8r3oj20qoddy8QbAwG
- cXAIYVAGVe+5I+UqSY/1oz+GaaeBlibHKb/7tz70Ieh/zm4i9r3ECEaZXY9L3X9/P/Gj
- fZyIyset1xHGHaz7GSVJaShtfdQ4Zrn+TeHp3NeLHmbosaxmme7DIFm6epfmk2fcn0d4
- c/5A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUBs+1lJGfIPzeIYneXqp1QVzOyySHjtBRvod+T9yZbmCovs0PTUgbIapFfJke+znJ9pro7EDeCR4QgOeyr8AccSa5gb/xjF5f/XbU1NQ==
-X-Gm-Message-State: AOJu0YxAGpL6GoQFjkQEdn0p79Ydw1d5Bh9AMAxZ7+KydP8X7zfWmyy0
- /vwT44fFcth/eJyN9UnN1A9QbL7UpFQRAcHmF2SZbxcxabPLj6QN
-X-Google-Smtp-Source: AGHT+IFuyM+8CY6kXQ/MCEiiSDdos4mzcUiZT8x4srkyI/a8Qb3GB12JN/GDqK7DHGuGtTUnk6kqTw==
-X-Received: by 2002:adf:eb87:0:b0:34f:5d07:ebcd with SMTP id
- ffacd0b85a97d-3504a954ec6mr11486685f8f.55.1715779210166; 
- Wed, 15 May 2024 06:20:10 -0700 (PDT)
-Received: from [0.0.0.0] ([134.134.137.89])
- by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-351d21c8106sm146855f8f.60.2024.05.15.06.20.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 May 2024 06:20:09 -0700 (PDT)
-Message-ID: <fd50d789-c6ef-4421-ac73-506644857ccd@gmail.com>
-Date: Wed, 15 May 2024 16:20:08 +0300
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7D33B10E04B;
+	Wed, 15 May 2024 14:58:04 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3032310E04B;
+ Wed, 15 May 2024 14:58:03 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4366133204272494433=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v6 6/9] lib/intel_cmds_info: Introduce render tilings
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_render-copy_compression_on?=
+ =?utf-8?q?_Xe+_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 15 May 2024 14:58:03 -0000
+Message-ID: <171578508319.2118792.14782647426222220332@8e613ede5ea5>
+X-Patchwork-Hint: ignore
 References: <20240515121949.245280-1-zbigniew.kempczynski@intel.com>
- <20240515121949.245280-7-zbigniew.kempczynski@intel.com>
-Content-Language: en-US
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240515121949.245280-7-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240515121949.245280-1-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,121 +37,230 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+--===============4366133204272494433==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 15.5.2024 15.19, Zbigniew Kempczyński wrote:
-> Due to hardware differences between blitter and render regarding
-> supported tilings and compression add new fields in cmds-info
-> to identify available tilings via render engine.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> 
-> ---
-> v6: Fix tilings for gen12 (JP)
-> ---
->   lib/intel_cmds_info.c | 31 +++++++++++++++++++++++++++----
->   lib/intel_cmds_info.h |  6 ++++++
->   2 files changed, 33 insertions(+), 4 deletions(-)
-> 
-> diff --git a/lib/intel_cmds_info.c b/lib/intel_cmds_info.c
-> index e7aabf6bfb..1416e02cd4 100644
-> --- a/lib/intel_cmds_info.c
-> +++ b/lib/intel_cmds_info.c
-> @@ -27,8 +27,10 @@
->   #define TILE_Y		BIT(T_YMAJOR)
->   #define TILE_Yf		BIT(T_YFMAJOR)
->   
-> +#define TILE_4_64	(TILE_4 | TILE_64)
->   #define TILE_L_4_64	(TILE_L | TILE_4 | TILE_64)
->   #define TILE_L_X	(TILE_L | TILE_X)
-> +#define TILE_L_X_4	(TILE_L | TILE_X | TILE_4)
->   #define TILE_L_X_Y	(TILE_L | TILE_X | TILE_Y)
->   #define TILE_L_X_4_64	(TILE_L | TILE_X | TILE_4 | TILE_64)
->   #define TILE_L_Y	(TILE_L | TILE_Y)
-> @@ -93,6 +95,23 @@ static const struct blt_cmd_info
->   						 BLT_CMD_EXTENDED);
->   
->   
-> +#define RENDER_TILING(_tiling, _compress_tiling)  { \
-> +		.supported_tiling = _tiling, \
-> +		.supported_compressed_tiling = _compress_tiling, \
-> +	}
-> +
-> +static const struct render_tiling_info
-> +		render_tiling_gen12 = RENDER_TILING(TILE_L_X_Y, TILE_Y);
-> +
-> +static const struct render_tiling_info
-> +		render_tiling_mtl = RENDER_TILING(TILE_L_X_4_64, TILE_4);
-> +
-> +static const struct render_tiling_info
-> +		render_tiling_dg2 = RENDER_TILING(TILE_L_X_4_64, TILE_4_64);
-> +
-> +static const struct render_tiling_info
-> +		render_tiling_xe2 = RENDER_TILING(TILE_L_X_4_64, TILE_L_X_4_64);
-> +
->   const struct intel_cmds_info pre_gen6_cmds_info = {
->   	.blt_cmds = {
->   		[SRC_COPY] = &src_copy,
-> @@ -130,7 +149,8 @@ const struct intel_cmds_info gen12_cmds_info = {
->   		[XY_FAST_COPY] = &gen12_xy_fast_copy,
->   		[XY_BLOCK_COPY] = &gen12_xy_block_copy,
->   		[XY_COLOR_BLT] = &gen6_xy_color_blt,
-> -	}
-> +	},
-> +	.render_tilings = &render_tiling_gen12,
->   };
->   
->   const struct intel_cmds_info gen12_dg2_cmds_info = {
-> @@ -139,14 +159,16 @@ const struct intel_cmds_info gen12_dg2_cmds_info = {
->   		[XY_FAST_COPY] = &dg2_xy_fast_copy,
->   		[XY_BLOCK_COPY] = &dg2_xy_block_copy,
->   		[XY_COLOR_BLT] = &gen6_xy_color_blt,
-> -	}
-> +	},
-> +	.render_tilings = &render_tiling_dg2,
->   };
->   
->   const struct intel_cmds_info gen12_mtl_cmds_info = {
->   	.blt_cmds = {
->   		[XY_FAST_COPY] = &dg2_xy_fast_copy,
->   		[XY_BLOCK_COPY] = &mtl_xy_block_copy,
-> -	}
-> +	},
-> +	.render_tilings = &render_tiling_mtl,
->   };
->   
->   const struct intel_cmds_info gen12_pvc_cmds_info = {
-> @@ -164,7 +186,8 @@ const struct intel_cmds_info xe2_cmds_info  = {
->   		[XY_BLOCK_COPY] = &xe2_xy_block_copy,
->   		[MEM_COPY] = &pvc_mem_copy,
->   		[MEM_SET] = &pvc_mem_set,
-> -	}
-> +	},
-> +	.render_tilings = &render_tiling_xe2,
->   };
->   
->   const struct blt_cmd_info *blt_get_cmd_info(const struct intel_cmds_info *cmds_info,
-> diff --git a/lib/intel_cmds_info.h b/lib/intel_cmds_info.h
-> index 0a83b6a446..6f7d655083 100644
-> --- a/lib/intel_cmds_info.h
-> +++ b/lib/intel_cmds_info.h
-> @@ -43,8 +43,14 @@ struct blt_cmd_info {
->   #define BLT_CMD_SUPPORTS_COMPRESSION   (1 << 1)
->   };
->   
-> +struct render_tiling_info {
-> +	uint32_t supported_tiling;
-> +	uint32_t supported_compressed_tiling;
-> +};
-> +
->   struct intel_cmds_info {
->   	struct blt_cmd_info const *blt_cmds[__BLT_MAX_CMD];
-> +	struct render_tiling_info const *render_tilings;
->   };
->   
->   extern const struct intel_cmds_info pre_gen6_cmds_info;
+== Series Details ==
 
+Series: Add render-copy compression on Xe+ (rev6)
+URL   : https://patchwork.freedesktop.org/series/132902/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7855_BAT -> XEIGTPW_11146_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+New tests
+---------
+
+  New tests have been introduced between XEIGT_7855_BAT and XEIGTPW_11146_BAT:
+
+### New IGT tests (10) ###
+
+  * igt@xe_intel_bb@render@render-linear-1024:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.04, 0.11] s
+
+  * igt@xe_intel_bb@render@render-linear-512:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.01, 0.03] s
+
+  * igt@xe_intel_bb@render@render-tile4-1024:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.04, 0.10] s
+
+  * igt@xe_intel_bb@render@render-tile4-512:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.01, 0.02] s
+
+  * igt@xe_intel_bb@render@render-tile64-1024:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.04, 0.10] s
+
+  * igt@xe_intel_bb@render@render-tile64-512:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.01, 0.02] s
+
+  * igt@xe_intel_bb@render@render-xmajor-1024:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.04, 0.10] s
+
+  * igt@xe_intel_bb@render@render-xmajor-512:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.01, 0.03] s
+
+  * igt@xe_intel_bb@render@render-ymajor-1024:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.04] s
+
+  * igt@xe_intel_bb@render@render-ymajor-512:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7855 -> IGTPW_11146
+
+  IGTPW_11146: 11146
+  IGT_7855: 7855
+  xe-1292-d98c9eae84056cb2d86293c145234017681f09f4: d98c9eae84056cb2d86293c145234017681f09f4
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11146/index.html
+
+--===============4366133204272494433==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add render-copy compression on Xe+ (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132902/">https://patchwork.freedesktop.org/series/132902/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11146/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11146/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7855_BAT -&gt; XEIGTPW_11146_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_7855_BAT and XEIGTPW_11146_BAT:</p>
+<h3>New IGT tests (10)</h3>
+<ul>
+<li>
+<p>igt@xe_intel_bb@render@render-linear-1024:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.04, 0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-linear-512:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.01, 0.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-tile4-1024:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.04, 0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-tile4-512:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.01, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-tile64-1024:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.04, 0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-tile64-512:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.01, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-xmajor-1024:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.04, 0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-xmajor-512:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.01, 0.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-ymajor-1024:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render@render-ymajor-512:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+</ul>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7855 -&gt; IGTPW_11146</li>
+</ul>
+<p>IGTPW_11146: 11146<br />
+  IGT_7855: 7855<br />
+  xe-1292-d98c9eae84056cb2d86293c145234017681f09f4: d98c9eae84056cb2d86293c145234017681f09f4</p>
+
+</body>
+</html>
+
+--===============4366133204272494433==--
