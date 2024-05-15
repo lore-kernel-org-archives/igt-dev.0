@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18945C25B75
-	for <igt-dev@archiver.kernel.org>; Wed, 15 May 2024 09:15:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94335C25B77
+	for <igt-dev@archiver.kernel.org>; Wed, 15 May 2024 09:15:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B3F2B10E4E1;
-	Wed, 15 May 2024 09:15:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2D8C610E4FC;
+	Wed, 15 May 2024 09:15:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PQCyTVX0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b/Wgtz4J";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFC8A10E4E1
- for <igt-dev@lists.freedesktop.org>; Wed, 15 May 2024 09:15:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B930D10E4FC
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 May 2024 09:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715764525; x=1747300525;
+ t=1715764526; x=1747300526;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=AIJomWTUGwFXAw4IA9bOE77H/XSqZN9E+G6fWSPoFRM=;
- b=PQCyTVX0Pn7NBCVYHndFiDhTku1scHGD2IpqfLmwKPVpGpYl9aah9rDd
- 6nNE6RvCUoumqv05jMkClEOFZtqZERD8VNFf/VH2Jo8RWHf5jqjMO0Dn3
- Wx8YOxHGv9OKLejaYk0cOSZlgFSNBD2wUg712bcjTXpzbKIBu0GKE+4jZ
- zrtKmQ89eGnCuUrwFc5sUWNGksJv4CoqlefxxxIsOQidC44x9z/hUMILE
- y4qLGuegT15/uuSrWtsI/4Fr0pOrHeAHUpw2mct+P7bA7JpztXPbhD1uZ
- wkvhgVzAOB0t/HyEG1R0Q1jLwT9AkH5cAb7vu/q9UepirwJjgU5EYgGzd A==;
-X-CSE-ConnectionGUID: PV1AA06OSnO7lGpQBhsTqQ==
-X-CSE-MsgGUID: EHe5n+ozQyao0DhqdWGyuA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="11632068"
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="11632068"
+ bh=aIi9c7/b1qVTuqxad4xm1L4JFaeMJ3bpHkA2pxnbzM4=;
+ b=b/Wgtz4Jghj5K7EdcEdz1FZIQ7nNZauEleyrZL4YQ1dA7e3UUOazioR4
+ 6C59zPVlnwp63peromcSB2mlrBjtHVXKOxIzvAYaKFsNNbwLtQ5q9zZnB
+ ZycbxHI9NSG4jTIzaO5i9w7yoC03gLQZV+f9CWy6Y2E/J1gIXM4mxVWu2
+ YtLVXE9clEBO8uzU6sNJsmWjPwggoqfQsib5t/fLOU8XqoIja/3OuRG+a
+ 6fhE6QBPvl3H398NUu0hYzW93C6MRITabBrI98aj+cpAD4WN+rIa8QqRh
+ aJ+LC+HhZTqX7aDUm7XO5B20AukSHHI7xtwQpl3tmL0LmWO9DCMS7nc1m w==;
+X-CSE-ConnectionGUID: iV9amsm7Sb67R1d3S6uyAQ==
+X-CSE-MsgGUID: Sur1qPASTm6iCZXcXiqPfA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="11632072"
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="11632072"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2024 02:15:24 -0700
-X-CSE-ConnectionGUID: moucyiuwSl6UETPbHH0xNA==
-X-CSE-MsgGUID: cwguO0xPRUqzaX4WmBVmGA==
+ 15 May 2024 02:15:26 -0700
+X-CSE-ConnectionGUID: laqI+154RQyJ7j0ocx5/5w==
+X-CSE-MsgGUID: ltcjgIw/TNixVaprPyaINw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="35776220"
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="35776231"
 Received: from lab-ah.igk.intel.com ([10.102.138.202])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2024 02:15:22 -0700
+ 15 May 2024 02:15:24 -0700
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Wed, 15 May 2024 11:15:03 +0200
-Subject: [PATCH v2 4/5] lib/igt_sysfs: add helpers to access engine sysfs
- directory
+Date: Wed, 15 May 2024 11:15:04 +0200
+Subject: [PATCH v2 5/5] intel/xe_exec_sip: port test for shader sanity
+ check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240515-iga64_inline_ups-v2-4-693743cb0985@intel.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240515-iga64_inline_ups-v2-5-693743cb0985@intel.com>
 References: <20240515-iga64_inline_ups-v2-0-693743cb0985@intel.com>
 In-Reply-To: <20240515-iga64_inline_ups-v2-0-693743cb0985@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -58,18 +58,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3077;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13532;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=AIJomWTUGwFXAw4IA9bOE77H/XSqZN9E+G6fWSPoFRM=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBmRH0i4WZB3yTuldjeEop2gLv0KvSAV1K9kE5OR9mF
- hIej4WeJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCZkR9IgAKCRAjYrKT3hD918IcC/
- 9Oc3PEqvW60Qecjzzn0SxYkrL1E+z1GJySGq4pZGRG/oPdxmyb6VFtCqyeamGf4gFod6WVVFfCdfrZ
- BYZwhtfgplPvv7vjPOXvVoxYlCZZI5nZyw1fUAdHqJdV6cyFLaQX1KefWM94iILVFVyCWdHE1ZkOIy
- ww488/o1een153oKrvtNsUFV+MfvMilBDOITnykdm0sAQOdAR+dVx5QmCin6ZsLfgllc1ULBPLU8Yb
- KGj9OMdTgcIC9ixYNj6ajRUVFO01WJqz9idg5/N1DsogkoZE14Z5iaCRS2U47KgG6Lwx9MOWKQwC/+
- 00f7QAeF9TcZRinISvSMKDzSkQJNTC9Q1FLXOu0J3OVSYHDISKp0KFKpE+iTYtTdnNyIabD9n5fPZB
- VYlhs5fHYP8DXFejwS+0Uxt8h7PDDqNLwFqfbwRctK62IKTGXEjICdYGqRXv3TXKFwwlt9Ys09ibSu
- SA6psD+Sr9YUv7vEfpyfFmcTFpe7806W1Fmp01uZCgLuk=
+ bh=aIi9c7/b1qVTuqxad4xm1L4JFaeMJ3bpHkA2pxnbzM4=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBmRH0janymFQnG3NiohSIkLtsAcPf5IW7MeHy3DMmt
+ bOH/ZTqJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCZkR9IwAKCRAjYrKT3hD911TLC/
+ 9TfsW0v6c3DSZQAkJh/3hRwIsiRsu4a/kD2RIRlbQGyM+5yP32WOKmS6MFgwFeCfA3isKp2Yynf5B2
+ QSdZ1Ix4DgcHep1BeZBEcWueWLrsdc2mtRXM/vBeedHY9iFo1nRQwQKB6QjxnagPvhNX+FXTrFt08a
+ tS5TBVRhOvqijtKNC1yUSzTusqC5qeJn0y3FXPTD8VICZlNnXS/C9xypWEWrKC2u1Kmgtj0PLXZ/Vy
+ ZglMWTRFZJ6X6cEFuDqe7MEppM4THki/CLz21+N1fjgYoVHUFJugD6p+bqtsgPlYrCjxSjYNL1INW6
+ b5oyN4RZWGbCIfKID9+fKCaYkjUJf1qNfFXr8GO77ivVhusJQDYGcjO/mXdLZnPeRimLCfW7ry6Z2v
+ rVbECUdEceqBz5pyRJtVKImF9YI2CVGXkDfIeWKs8Il2ES5lhxo0GyBGZ5TzrH5EnH3Ua30bQkUDn5
+ fjBPvPx7u3ZoMrxYfX/3f4IMed5MOoWZt/spG3r1LODPs=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -87,116 +87,400 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Helpers follow convention of xe_sysfs_gt_(path|open).
+xe_exec_sip will contain tests for shader and system routine (SIP)
+interaction. Shaders (also called kernels) are programs runing on
+execution units(EUs).
+They can generate exceptions, which should be handled by SIP.
+For starters let's implement test checking if shader runs correctly.
+
+v2:
+ - use introduced helper to access sysfs attributes,
+ - remove redundant xe_device_get,
+ - use drm_close_driver
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- lib/igt_sysfs.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_sysfs.h |  3 +++
- 2 files changed, 74 insertions(+)
+ lib/gpgpu_shader.c          |  63 ++++++++++++++
+ lib/iga64_generated_codes.c |  83 ++++++++++++++++++-
+ tests/intel/xe_exec_sip.c   | 195 ++++++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build           |   1 +
+ 4 files changed, 341 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index 0c5817eb1580..e11eecc25aa1 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -40,7 +40,9 @@
- #include <dirent.h>
- #include <unistd.h>
- #include <fcntl.h>
-+#include <xe_drm.h>
- 
-+#include "drmtest.h"
- #include "igt_core.h"
- #include "igt_sysfs.h"
- #include "igt_device.h"
-@@ -263,6 +265,75 @@ int xe_sysfs_gt_open(int xe_device, int gt)
- 	return open(path, O_RDONLY);
+diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
+index 3317e9e35c91..cd8c82ff9c8c 100644
+--- a/lib/gpgpu_shader.c
++++ b/lib/gpgpu_shader.c
+@@ -248,3 +248,66 @@ void gpgpu_shader_destroy(struct gpgpu_shader *shdr)
+ 	free(shdr->code);
+ 	free(shdr);
  }
++
++/**
++ * gpgpu_shader__eot:
++ * @shdr: shader to be modified
++ *
++ * Append end of thread instruction to @shdr.
++ */
++void gpgpu_shader__eot(struct gpgpu_shader *shdr)
++{
++	emit_iga64_code(shdr, eot, R"ASM(
++(W)     mov (8|M0)               r112.0<1>:ud  r0.0<8;8,1>:ud
++#if GEN_VER < 1250
++(W)     send.ts (16|M0)          null r112 null 0x10000000 0x02000010 {EOT,@1} // wr:1+0, rd:0; end of thread
++#else
++(W)     send.gtwy (8|M0)         null r112 src1_null     0 0x02000000 {EOT}
++#endif
++	)ASM");
++}
++
++/**
++ * gpgpu_shader__write_dword:
++ * @shdr: shader to be modified
++ * @value: dword to be written
++ * @y_offset: write target offset within the surface in rows
++ *
++ * Fill dword in (row, column/dword) == (tg_id_y + @y_offset, tg_id_x).
++ */
++void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
++			       uint32_t y_offset)
++{
++	emit_iga64_code(shdr, media_block_write, R"ASM(
++	// Payload
++(W)     mov (1|M0)               r5.0<1>:ud    ARG(3):ud
++(W)     mov (1|M0)               r5.1<1>:ud    ARG(4):ud
++(W)     mov (1|M0)               r5.2<1>:ud    ARG(5):ud
++(W)     mov (1|M0)               r5.3<1>:ud    ARG(6):ud
++#if GEN_VER < 2000 // Media Block Write
++        // X offset of the block in bytes := (thread group id X << ARG(0))
++(W)     shl (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud
++        // Y offset of the block in rows := thread group id Y
++(W)     mov (1|M0)               r4.1<1>:ud    r0.6<0;1,0>:ud
++(W)     add (1|M0)               r4.1<1>:ud    r4.1<0;1,0>:ud   ARG(1):ud
++        // block width [0,63] representing 1 to 64 bytes
++(W)     mov (1|M0)               r4.2<1>:ud    ARG(2):ud
++        // FFTID := FFTID from R0 header
++(W)     mov (1|M0)               r4.4<1>:ud    r0.5<0;1,0>:ud
++(W)     send.dc1 (16|M0)         null     r4   src1_null 0    0x40A8000
++#else // Typed 2D Block Store
++        // Load r2.0-3 with tg id X << ARG(0)
++(W)     shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud
++        // Load r2.4-7 with tg id Y + ARG(1):ud
++(W)     mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud
++(W)     add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(1):ud
++        // payload setup
++(W)     mov (16|M0)              r4.0<1>:ud    0x0:ud
++        // Store X and Y block start (160:191 and 192:223)
++(W)     mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud
++        // Store X and Y block max_size (224:231 and 232:239)
++(W)     mov (1|M0)               r4.7<1>:ud    ARG(2):ud
++(W)     send.tgm (16|M0)         null     r4   null:0    0    0x64000007
++#endif
++	)ASM", 2, y_offset, 3, value, value, value, value);
++}
+diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
+index 219436983585..36473fdee9f6 100644
+--- a/lib/iga64_generated_codes.c
++++ b/lib/iga64_generated_codes.c
+@@ -3,4 +3,85 @@
  
-+static const char *engine_class_to_str(__u16 class)
+ #include "gpgpu_shader.h"
+ 
+-#define MD5_SUM_IGA64_ASMS 68b329da9893e34099c7d8ad5cb9c940
++#define MD5_SUM_IGA64_ASMS 70d7b09619efcfedd95aa36046be8bf7
++
++struct iga64_template const iga64_code_media_block_write[] = {
++	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
++		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
++		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
++		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
++		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
++		0x80000069, 0x02058220, 0x02000014, 0xc0ded000,
++		0x80000061, 0x02150220, 0x00000064, 0x00000000,
++		0x80001940, 0x02158220, 0x02000214, 0xc0ded001,
++		0x80100061, 0x04054220, 0x00000000, 0x00000000,
++		0x80041a61, 0x04550220, 0x00220205, 0x00000000,
++		0x80000061, 0x04754220, 0x00000000, 0xc0ded002,
++		0x80132031, 0x00000000, 0xd00e0494, 0x04000000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1272, .size = 52, .code = (const uint32_t []) {
++		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
++		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
++		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
++		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
++		0x80000069, 0x04058220, 0x02000014, 0xc0ded000,
++		0x80000061, 0x04150220, 0x00000064, 0x00000000,
++		0x80001940, 0x04158220, 0x02000414, 0xc0ded001,
++		0x80000061, 0x04254220, 0x00000000, 0xc0ded002,
++		0x80000061, 0x04450220, 0x00000054, 0x00000000,
++		0x80132031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1250, .size = 56, .code = (const uint32_t []) {
++		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
++		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
++		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
++		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
++		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
++		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
++		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
++		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
++		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
++		0x80001901, 0x00010000, 0x00000000, 0x00000000,
++		0x80044031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 52, .code = (const uint32_t []) {
++		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
++		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
++		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
++		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
++		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
++		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
++		0x80000140, 0x04258220, 0x02000424, 0xc0ded001,
++		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
++		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
++		0x80049031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000101, 0x00010000, 0x00000000, 0x00000000,
++	}}
++};
++
++struct iga64_template const iga64_code_eot[] = {
++	{ .gen_ver = 1272, .size = 8, .code = (const uint32_t []) {
++		0x800c0061, 0x70050220, 0x00460005, 0x00000000,
++		0x800f2031, 0x00000004, 0x3000700c, 0x00000000,
++	}},
++	{ .gen_ver = 1250, .size = 12, .code = (const uint32_t []) {
++		0x80030061, 0x70050220, 0x00460005, 0x00000000,
++		0x80001901, 0x00010000, 0x00000000, 0x00000000,
++		0x80034031, 0x00000004, 0x3000700c, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 8, .code = (const uint32_t []) {
++		0x80030061, 0x70050220, 0x00460005, 0x00000000,
++		0x80049031, 0x00000004, 0x7020700c, 0x10000000,
++	}}
++};
+diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
+new file mode 100644
+index 000000000000..98ae61a5e12a
+--- /dev/null
++++ b/tests/intel/xe_exec_sip.c
+@@ -0,0 +1,195 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++/**
++ * TEST: Tests for gpgpu shader and system routine (SIP) execution
++ * Category: Software building block
++ * Sub-category: gpgpu
++ * Functionality: system routine
++ * Test category: functionality test
++ * Description: Exercise interaction between gpgpu shader and system routine
++ *              (SIP), which should handle exceptions raised on Execution Unit.
++ */
++
++#include <dirent.h>
++#include <fcntl.h>
++#include <stdio.h>
++
++#include "gpgpu_shader.h"
++#include "igt.h"
++#include "igt_sysfs.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++
++#define WIDTH 64
++#define HEIGHT 64
++
++#define COLOR_C4 0xc4
++
++#define SHADER_CANARY 0x01010101
++
++#define NSEC_PER_MSEC (1000 * 1000ull)
++
++static struct intel_buf *
++create_fill_buf(int fd, int width, int height, uint8_t color)
 +{
-+	const char *str[] = {
-+		[DRM_XE_ENGINE_CLASS_RENDER] = "rcs",
-+		[DRM_XE_ENGINE_CLASS_COPY] = "bcs",
-+		[DRM_XE_ENGINE_CLASS_VIDEO_DECODE] = "vcs",
-+		[DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE] = "vecs",
-+		[DRM_XE_ENGINE_CLASS_COMPUTE] = "ccs",
-+	};
++	struct intel_buf *buf;
++	uint8_t *ptr;
 +
-+	if (class < ARRAY_SIZE(str))
-+		return str[class];
++	buf = calloc(1, sizeof(*buf));
++	igt_assert(buf);
 +
-+	return "unk";
++	intel_buf_init(buf_ops_create(fd), buf, width / 4, height, 32, 0,
++		       I915_TILING_NONE, 0);
++
++	ptr = xe_bo_map(fd, buf->handle, buf->surface[0].size);
++	memset(ptr, color, buf->surface[0].size);
++	munmap(ptr, buf->surface[0].size);
++
++	return buf;
++}
++
++static struct gpgpu_shader *get_shader(int fd)
++{
++	static struct gpgpu_shader *shader;
++
++	shader = gpgpu_shader_create(fd);
++	gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
++	gpgpu_shader__eot(shader);
++	return shader;
++}
++
++static uint32_t gpgpu_shader(int fd, struct intel_bb *ibb, unsigned int threads,
++			     unsigned int width, unsigned int height)
++{
++	struct intel_buf *buf = create_fill_buf(fd, width, height, COLOR_C4);
++	struct gpgpu_shader *shader = get_shader(fd);
++
++	gpgpu_shader_exec(ibb, buf, 1, threads, shader, NULL, 0, 0);
++	gpgpu_shader_destroy(shader);
++	return buf->handle;
++}
++
++static void check_fill_buf(uint8_t *ptr, const int width, const int x,
++			   const int y, const uint8_t color)
++{
++	const uint8_t val = ptr[y * width + x];
++
++	igt_assert_f(val == color,
++		     "Expected 0x%02x, found 0x%02x at (%d,%d)\n",
++		     color, val, x, y);
++}
++
++static void check_buf(int fd, uint32_t handle, int width, int height,
++		      uint8_t poison_c)
++{
++	unsigned int sz = ALIGN(width * height, 4096);
++	int thread_count = 0;
++	uint32_t *ptr;
++	int i, j;
++
++	ptr = xe_bo_mmap_ext(fd, handle, sz, PROT_READ);
++
++	for (i = 0, j = 0; j < height / 2; ++j) {
++		if (ptr[j * width / 4] == SHADER_CANARY) {
++			++thread_count;
++			i = 4;
++		}
++
++		for (; i < width; i++)
++			check_fill_buf((uint8_t *)ptr, width, i, j, poison_c);
++
++		i = 0;
++	}
++
++	igt_assert(thread_count);
++
++	munmap(ptr, sz);
++}
++
++static uint64_t
++xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
++{
++	int engine_fd = -1;
++	uint64_t ret;
++
++	engine_fd = xe_sysfs_engine_open(fd, eci->gt_id, eci->engine_class);
++	ret = igt_sysfs_get_u64(engine_fd, "job_timeout_ms");
++	close(engine_fd);
++
++	return ret;
 +}
 +
 +/**
-+ * xe_sysfs_engine_path:
-+ * @xe_device: fd of the device
-+ * @gt: gt number
-+ * @class: engine class
-+ * @path: buffer to fill with the sysfs gt path to the device
-+ * @pathlen: length of @path buffer
++ * SUBTEST: sanity
++ * Description: check basic shader with write operation
++ * Run type: BAT
 + *
-+ * Returns:
-+ * The directory path, or NULL on failure.
 + */
-+char *
-+xe_sysfs_engine_path(int xe_device, int gt, int class, char *path, int pathlen)
++static void test_sip(struct drm_xe_engine_class_instance *eci, uint32_t flags)
 +{
-+	struct stat st;
-+	int tile = IS_PONTEVECCHIO(intel_get_drm_devid(xe_device)) ? gt : 0;
++	unsigned int threads = 512;
++	unsigned int height = max_t(threads, HEIGHT, threads * 2);
++	uint32_t exec_queue_id, handle, vm_id;
++	unsigned int width = WIDTH;
++	struct timespec ts = { };
++	uint64_t timeout;
++	struct intel_bb *ibb;
++	int fd;
 +
-+	if (xe_device < 0)
-+		return NULL;
++	igt_debug("Using %s\n", xe_engine_class_string(eci->engine_class));
 +
-+	if (igt_debug_on(fstat(xe_device, &st)) || igt_debug_on(!S_ISCHR(st.st_mode)))
-+		return NULL;
++	fd = drm_open_driver(DRIVER_XE);
++	xe_device_get(fd);
 +
-+	snprintf(path, pathlen, "/sys/dev/char/%d:%d/device/tile%d/gt%d/engines/%s",
-+		 major(st.st_rdev), minor(st.st_rdev), tile, gt, engine_class_to_str(class));
++	vm_id = xe_vm_create(fd, 0, 0);
 +
-+	if (!access(path, F_OK))
-+		return path;
++	/* Get timeout for job, and add 4s to ensure timeout processes in subtest. */
++	timeout = xe_sysfs_get_job_timeout_ms(fd, eci) + 4ull * MSEC_PER_SEC;
++	timeout *= NSEC_PER_MSEC;
++	timeout *= igt_run_in_simulation() ? 10 : 1;
 +
-+	return NULL;
++	exec_queue_id = xe_exec_queue_create(fd, vm_id, eci, 0);
++	ibb = intel_bb_create_with_context(fd, exec_queue_id, vm_id, NULL, 4096);
++
++	igt_nsec_elapsed(&ts);
++	handle = gpgpu_shader(fd, ibb, threads, width, height);
++
++	intel_bb_sync(ibb);
++	igt_assert_lt_u64(igt_nsec_elapsed(&ts), timeout);
++
++	check_buf(fd, handle, width, height, COLOR_C4);
++
++	gem_close(fd, handle);
++	intel_bb_destroy(ibb);
++
++	xe_exec_queue_destroy(fd, exec_queue_id);
++	xe_vm_destroy(fd, vm_id);
++	xe_device_put(fd);
++	close(fd);
 +}
 +
-+/**
-+ * xe_sysfs_engine_open:
-+ * @xe_device: fd of the device
-+ * @gt: gt number
-+ * @class: engine class
-+ *
-+ * This opens the sysfs gt directory corresponding to device and tile for use
-+ *
-+ * Returns:
-+ * The directory fd, or -1 on failure.
-+ */
-+int xe_sysfs_engine_open(int xe_device, int gt, int class)
++#define test_render_and_compute(t, __fd, __eci) \
++	igt_subtest_with_dynamic(t) \
++		xe_for_each_engine(__fd, __eci) \
++			if (__eci->engine_class == DRM_XE_ENGINE_CLASS_RENDER || \
++			    __eci->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) \
++				igt_dynamic_f("%s%d", xe_engine_class_string(__eci->engine_class), \
++					      __eci->engine_instance)
++
++igt_main
 +{
-+	char path[96];
++	struct drm_xe_engine_class_instance *eci;
++	int fd;
 +
-+	if (!xe_sysfs_engine_path(xe_device, gt, class, path, sizeof(path)))
-+		return -1;
++	igt_fixture
++		fd = drm_open_driver(DRIVER_XE);
 +
-+	return open(path, O_RDONLY);
++	test_render_and_compute("sanity", fd, eci)
++		test_sip(eci, 0);
++
++	igt_fixture
++		drm_close_driver(fd);
 +}
-+
- /**
-  * igt_sysfs_gt_path:
-  * @device: fd of the device
-diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index f37d80ec130e..6c604d939013 100644
---- a/lib/igt_sysfs.h
-+++ b/lib/igt_sysfs.h
-@@ -166,4 +166,7 @@ int xe_sysfs_gt_open(int xe_device, int gt);
- char *xe_sysfs_tile_path(int xe_device, int tile, char *path, int pathlen);
- int xe_sysfs_tile_open(int xe_device, int tile);
- int xe_sysfs_get_num_tiles(int xe_device);
-+char *xe_sysfs_engine_path(int xe_device, int gt, int class, char *path, int pathlen);
-+int xe_sysfs_engine_open(int xe_device, int gt, int class);
-+
- #endif /* __IGT_SYSFS_H__ */
+diff --git a/tests/meson.build b/tests/meson.build
+index 758ae090c927..021421cfe92b 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -292,6 +292,7 @@ intel_xe_progs = [
+ 	'xe_exec_fault_mode',
+ 	'xe_exec_queue_property',
+ 	'xe_exec_reset',
++	'xe_exec_sip',
+ 	'xe_exec_store',
+ 	'xe_exec_threads',
+ 	'xe_exercise_blt',
 
 -- 
 2.34.1
