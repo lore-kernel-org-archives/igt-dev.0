@@ -4,61 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0EACC25B78
-	for <igt-dev@archiver.kernel.org>; Wed, 15 May 2024 17:14:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1F8BC25B75
+	for <igt-dev@archiver.kernel.org>; Wed, 15 May 2024 17:16:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6493C10E2F2;
-	Wed, 15 May 2024 17:14:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 975D810E1BE;
+	Wed, 15 May 2024 17:16:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cJTFIuQi";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SbD7z8Am";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4FD5C10E1BE;
- Wed, 15 May 2024 17:14:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC33310E1BE
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 May 2024 17:16:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715793276; x=1747329276;
+ t=1715793402; x=1747329402;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=uTR6sxAEABbl479zvP6k/HptB9z5XmFP2ONWxSpSNWE=;
- b=cJTFIuQiI/Bt8I4FmfmOn1OZa6xCZJ7Ol2mF5B4uJ1XRcCyXOzSg5Zm2
- aZjnWLF/Ppo0odOK8q/CsfLSz1DRHMFLLU5yeWfPJRy3gsvOXOvgdTaIu
- cgpsgnkuAmyQIA5/xgKt96peoEPE7AHrVWEbxyeZnP5IQmCxJHnIRzjd8
- rqLglLSrZ/p7aP2irjNybB3el3UTwn89NP/We0bqPCNA7oeDArwPoO8lY
- uMP/AqQztXrX5cuOTPl1El5khZmEnPqy/fh6VTeblkHcXrOsEBSVKkPXD
- sQK5GMX4S/sNHqOTCG7d+84vXpMZ9Fta1ikq9cPQQaRtenwGl1wwkI5aG Q==;
-X-CSE-ConnectionGUID: Wfk8mE31Qt6cC3KX9WtC9w==
-X-CSE-MsgGUID: VYpUxLZWRzqR4253ZqW4Cw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="12032168"
-X-IronPort-AV: E=Sophos;i="6.08,162,1712646000"; d="scan'208";a="12032168"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2024 10:14:36 -0700
-X-CSE-ConnectionGUID: kNFdABIPSYKz8T0OqFqUYg==
-X-CSE-MsgGUID: tpBFpBOIRuK+nt536wwY3Q==
+ bh=WegoNEjqLkQisRymSvy31fLRhOxhRLaBfqHk93xJECM=;
+ b=SbD7z8AmbhYuk9+LCa89bZXz7aoCaRjt7M25askflU2g3wrRitrpP3e4
+ +NINXxV5ey9GPb01u57A9YdN9wahxqeuwTRDIhQ4VUGlNezxjiHE4StpN
+ Du8XQqvL/0VyU6ER6lo43NwXcXLc1cfZgc9sBPDQmgrXDfufegVUYMuDh
+ GCDyJJtwDWEV6Oue2ktufni1m3Nl0Tz5iLiSdX619K9WkZlhPQAG61fHc
+ YujuD8fIy/j+2lYewedOQI07+uUSJ4fI+cli/FnZ8+dhWQrlCgNmMbHhU
+ FplPjSK/HMe0VonXYZHmKjK4CGtZ93SRTZpkMFzJNM2zoGMe/3SixaIhm A==;
+X-CSE-ConnectionGUID: d51XQXQKSGeMumfMbWMPXw==
+X-CSE-MsgGUID: QrZ12J7nQFScbMpH0W/khw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="11732568"
+X-IronPort-AV: E=Sophos;i="6.08,162,1712646000"; d="scan'208";a="11732568"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2024 10:16:37 -0700
+X-CSE-ConnectionGUID: QaZJdnhfRiuGHQ0wfHZGUA==
+X-CSE-MsgGUID: TguZyQL4QtC2IzThGu27Vw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,162,1712646000"; d="scan'208";a="54332475"
+X-IronPort-AV: E=Sophos;i="6.08,162,1712646000"; d="scan'208";a="31196749"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2024 10:14:34 -0700
-Date: Wed, 15 May 2024 19:14:31 +0200
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2024 10:16:36 -0700
+Date: Wed, 15 May 2024 19:16:32 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Sathishkumar S <sathishkumar.sundararaju@amd.com>,
- I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?Q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_series_start?=
- =?utf-8?Q?ing?= with [i-g-t,1/2] tests/amdgpu: support jpeg test on gfx940
-Message-ID: <20240515171431.xu53ass433qstlcw@kamilkon-DESK.igk.intel.com>
+ Leo Liu <leo.liu@amd.com>
+Subject: Re: [PATCH i-g-t 1/2] tests/amdgpu: support jpeg test on gfx940
+Message-ID: <20240515171632.6qavel4ojvvtwcck@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Sathishkumar S <sathishkumar.sundararaju@amd.com>,
- I915-ci-infra@lists.freedesktop.org
+ Leo Liu <leo.liu@amd.com>
 References: <20240513135705.2399645-1-sathishkumar.sundararaju@amd.com>
- <171561191998.2095830.14917336101853323410@8e613ede5ea5>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <171561191998.2095830.14917336101853323410@8e613ede5ea5>
+In-Reply-To: <20240513135705.2399645-1-sathishkumar.sundararaju@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,138 +72,269 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-05-13 at 14:51:59 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: series starting with [i-g-t,1/2] tests/amdgpu: support jpeg test on gfx940
-> URL   : https://patchwork.freedesktop.org/series/133544/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from IGT_7848 -> IGTPW_11133
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_11133 absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_11133, please notify your bug team (&#x27;I915-ci-infra@lists.freedesktop.org&#x27;) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11133/index.html
-> 
-> Participating hosts (43 -> 40)
-> ------------------------------
-> 
->   Additional (1): bat-mtlp-9 
->   Missing    (4): bat-mtlp-8 bat-arls-2 bat-jsl-1 fi-snb-2520m 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_11133:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_selftest@live@active:
->     - fi-glk-j4005:       [PASS][1] -> [DMESG-FAIL][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7848/fi-glk-j4005/igt@i915_selftest@live@active.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11133/fi-glk-j4005/igt@i915_selftest@live@active.html
-> 
->   
+Hi Sathishkumar,
+On 2024-05-13 at 19:27:04 +0530, Sathishkumar S wrote:
+> update jpeg specific register offsets
+--^
 
-Unrelated to amdgpu.
+Start sentence with uppercase. No need for resend,
+this can be corrected at merge.
 
-Regards
+Regards,
 Kamil
 
-> #### Suppressed ####
 > 
->   The following results come from untrusted machines, tests, or statuses.
->   They do not affect the overall result.
+> Signed-off-by: Sathishkumar S <sathishkumar.sundararaju@amd.com>
+> Acked-by: Leo Liu <leo.liu@amd.com>
+> ---
+>  tests/amdgpu/amd_jpeg_dec.c | 167 +++++++++++++++++++++++++++---------
+>  1 file changed, 127 insertions(+), 40 deletions(-)
 > 
->   * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dp-6:
->     - {bat-mtlp-9}:       NOTRUN -> [FAIL][3] +2 other tests fail
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11133/bat-mtlp-9/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dp-6.html
+> diff --git a/tests/amdgpu/amd_jpeg_dec.c b/tests/amdgpu/amd_jpeg_dec.c
+> index bb2a8e97e530..12f5bfcff556 100644
+> --- a/tests/amdgpu/amd_jpeg_dec.c
+> +++ b/tests/amdgpu/amd_jpeg_dec.c
+> @@ -53,6 +53,47 @@
+>  #define vcnipUVD_JPEG_RB_RPTR			0x4003
+>  #define vcnipUVD_JPEG_OUTBUF_WPTR		0x401d
+>  
+> +#define vcnipUVD_JPEG_DEC_SOFT_RST_1             0x4051
+> +#define vcnipUVD_JPEG_PITCH_1                    0x4043
+> +#define vcnipUVD_JPEG_UV_PITCH_1                 0x4044
+> +#define vcnipJPEG_DEC_ADDR_MODE_1                0x404B
+> +#define vcnipUVD_JPEG_TIER_CNTL2_1               0x400E
+> +#define vcnipUVD_JPEG_OUTBUF_CNTL_1              0x4040
+> +#define vcnipUVD_JPEG_OUTBUF_WPTR_1              0x4041
+> +#define vcnipUVD_JPEG_OUTBUF_RPTR_1              0x4042
+> +#define vcnipUVD_JPEG_LUMA_BASE0_0               0x41C0
+> +#define vcnipUVD_JPEG_CHROMA_BASE0_0             0x41C1
+> +#define vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE_1   0x4048
+> +#define vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE_1  0x4049
+> +#define vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH_1 0x40B5
+> +#define vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW_1  0x40B4
+> +#define vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH_1  0x40B3
+> +#define vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW_1   0x40B2
+> +
+> +static uint32_t jpeg_dec_soft_rst;
+> +static uint32_t jrbc_ib_cond_rd_timer;
+> +static uint32_t jrbc_ib_ref_data;
+> +static uint32_t lmi_jpeg_read_64bit_bar_high;
+> +static uint32_t lmi_jpeg_read_64bit_bar_low;
+> +static uint32_t jpeg_rb_base;
+> +static uint32_t jpeg_rb_size;
+> +static uint32_t jpeg_rb_wptr;
+> +static uint32_t jpeg_pitch;
+> +static uint32_t jpeg_uv_pitch;
+> +static uint32_t dec_addr_mode;
+> +static uint32_t dec_y_gfx10_tiling_surface;
+> +static uint32_t dec_uv_gfx10_tiling_surface;
+> +static uint32_t lmi_jpeg_write_64bit_bar_high;
+> +static uint32_t lmi_jpeg_write_64bit_bar_low;
+> +static uint32_t jpeg_tier_cntl2;
+> +static uint32_t jpeg_outbuf_rptr;
+> +static uint32_t jpeg_outbuf_cntl;
+> +static uint32_t jpeg_int_en;
+> +static uint32_t jpeg_cntl;
+> +static uint32_t jpeg_rb_rptr;
+> +static uint32_t jpeg_outbuf_wptr;
+> +static uint32_t jpeg_luma_base0_0;
+> +static uint32_t jpeg_chroma_base0_0;
+>  
+>  #define RDECODE_PKT_REG_J(x)		((unsigned int)(x)&0x3FFFF)
+>  #define RDECODE_PKT_RES_J(x)		(((unsigned int)(x)&0x3F) << 18)
+> @@ -104,6 +145,50 @@ is_jpeg_tests_enable(amdgpu_device_handle device_handle,
+>  	else
+>  		return false;
+>  
+> +	jrbc_ib_cond_rd_timer = vcnipUVD_JRBC_IB_COND_RD_TIMER;
+> +	jrbc_ib_ref_data = vcnipUVD_JRBC_IB_REF_DATA;
+> +	jpeg_rb_base = vcnipUVD_JPEG_RB_BASE;
+> +	jpeg_rb_size = vcnipUVD_JPEG_RB_SIZE;
+> +	jpeg_rb_wptr = vcnipUVD_JPEG_RB_WPTR;
+> +	jpeg_int_en = vcnipUVD_JPEG_INT_EN;
+> +	jpeg_cntl = vcnipUVD_JPEG_CNTL;
+> +	jpeg_rb_rptr = vcnipUVD_JPEG_RB_RPTR;
+> +
+> +	if (context->family_id == AMDGPU_FAMILY_AI &&
+> +		(context->chip_id - context->chip_rev) > 0x3c) { /* gfx940 */
+> +		jpeg_dec_soft_rst = vcnipUVD_JPEG_DEC_SOFT_RST_1;
+> +		lmi_jpeg_read_64bit_bar_high = vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH_1;
+> +		lmi_jpeg_read_64bit_bar_low = vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW_1;
+> +		jpeg_pitch = vcnipUVD_JPEG_PITCH_1;
+> +		jpeg_uv_pitch = vcnipUVD_JPEG_UV_PITCH_1;
+> +		dec_addr_mode = vcnipJPEG_DEC_ADDR_MODE_1;
+> +		dec_y_gfx10_tiling_surface = vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE_1;
+> +		dec_uv_gfx10_tiling_surface = vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE_1;
+> +		lmi_jpeg_write_64bit_bar_high = vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH_1;
+> +		lmi_jpeg_write_64bit_bar_low = vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW_1;
+> +		jpeg_tier_cntl2 = vcnipUVD_JPEG_TIER_CNTL2_1;
+> +		jpeg_outbuf_cntl = vcnipUVD_JPEG_OUTBUF_CNTL_1;
+> +		jpeg_outbuf_rptr = vcnipUVD_JPEG_OUTBUF_RPTR_1;
+> +		jpeg_outbuf_wptr = vcnipUVD_JPEG_OUTBUF_WPTR_1;
+> +		jpeg_luma_base0_0 = vcnipUVD_JPEG_LUMA_BASE0_0;
+> +		jpeg_chroma_base0_0 = vcnipUVD_JPEG_CHROMA_BASE0_0;
+> +	} else {
+> +		jpeg_dec_soft_rst = vcnipUVD_JPEG_DEC_SOFT_RST;
+> +		lmi_jpeg_read_64bit_bar_high = vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH;
+> +		lmi_jpeg_read_64bit_bar_low = vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW;
+> +		jpeg_pitch = vcnipUVD_JPEG_PITCH;
+> +		jpeg_uv_pitch = vcnipUVD_JPEG_UV_PITCH;
+> +		dec_addr_mode = vcnipJPEG_DEC_ADDR_MODE;
+> +		dec_y_gfx10_tiling_surface = vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE;
+> +		dec_uv_gfx10_tiling_surface = vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE;
+> +		lmi_jpeg_write_64bit_bar_high = vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH;
+> +		lmi_jpeg_write_64bit_bar_low = vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW;
+> +		jpeg_tier_cntl2 = vcnipUVD_JPEG_TIER_CNTL2;
+> +		jpeg_outbuf_cntl = vcnipUVD_JPEG_OUTBUF_CNTL;
+> +		jpeg_outbuf_rptr = vcnipUVD_JPEG_OUTBUF_RPTR;
+> +		jpeg_outbuf_wptr = vcnipUVD_JPEG_OUTBUF_WPTR;
+> +	}
+> +
+>  	return true;
+>  }
+>  
+> @@ -277,39 +362,34 @@ send_cmd_bitstream_direct(struct mmd_context *context, uint64_t addr,
+>  {
+>  
+>  	/* jpeg soft reset */
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND0, TYPE0, 1, idx);
+> +	set_reg_jpeg(context, jpeg_dec_soft_rst, COND0, TYPE0, 1, idx);
+>  
+>  	/* ensuring the Reset is asserted in SCLK domain */
+> -	set_reg_jpeg(context, vcnipUVD_JRBC_IB_COND_RD_TIMER, COND0, TYPE0,
+> -			0x01400200, idx);
+> -	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0,
+> -			(0x1 << 0x10), idx);
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND3, TYPE3,
+> -			(0x1 << 0x10), idx);
+> +	set_reg_jpeg(context, jrbc_ib_cond_rd_timer, COND0, TYPE0, 0x01400200, idx);
+> +	set_reg_jpeg(context, jrbc_ib_ref_data, COND0, TYPE0, (0x1 << 0x10), idx);
+> +	set_reg_jpeg(context, jpeg_dec_soft_rst, COND3, TYPE3, (0x1 << 0x10), idx);
+>  
+>  	/* wait mem */
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND0, TYPE0, 0, idx);
+> +	set_reg_jpeg(context, jpeg_dec_soft_rst, COND0, TYPE0, 0, idx);
+>  
+>  	/* ensuring the Reset is de-asserted in SCLK domain */
+> -	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0, (0 << 0x10),
+> -			idx);
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND3, TYPE3,
+> -			(0x1 << 0x10), idx);
+> +	set_reg_jpeg(context, jrbc_ib_ref_data, COND0, TYPE0, (0 << 0x10), idx);
+> +	set_reg_jpeg(context, jpeg_dec_soft_rst, COND3, TYPE3, (0x1 << 0x10), idx);
+>  
+>  	/* set UVD_LMI_JPEG_READ_64BIT_BAR_LOW/HIGH based on bitstream buffer address */
+> -	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH, COND0, TYPE0,
+> +	set_reg_jpeg(context, lmi_jpeg_read_64bit_bar_high, COND0, TYPE0,
+>  			(addr >> 32), idx);
+> -	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW, COND0, TYPE0,
+> +	set_reg_jpeg(context, lmi_jpeg_read_64bit_bar_low, COND0, TYPE0,
+>  			addr, idx);
+>  
+>  	/* set jpeg_rb_base */
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_RB_BASE, COND0, TYPE0, 0, idx);
+> +	set_reg_jpeg(context, jpeg_rb_base, COND0, TYPE0, 0, idx);
+>  
+>  	/* set jpeg_rb_base */
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_RB_SIZE, COND0, TYPE0, 0xFFFFFFF0, idx);
+> +	set_reg_jpeg(context, jpeg_rb_size, COND0, TYPE0, 0xFFFFFFF0, idx);
+>  
+>  	/* set jpeg_rb_wptr */
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_RB_WPTR, COND0, TYPE0,
+> +	set_reg_jpeg(context, jpeg_rb_wptr, COND0, TYPE0,
+>  			(JPEG_DEC_BSD_SIZE >> 2), idx);
+>  }
+>  
+> @@ -319,59 +399,66 @@ send_cmd_target_direct(struct mmd_context *context, uint64_t addr,
+>  		uint32_t *idx)
+>  {
+>  
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_PITCH, COND0, TYPE0,
+> +	set_reg_jpeg(context, jpeg_pitch, COND0, TYPE0,
+>  			(JPEG_DEC_DT_PITCH >> 4), idx);
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_UV_PITCH, COND0, TYPE0,
+> +	set_reg_jpeg(context, jpeg_uv_pitch, COND0, TYPE0,
+>  			(JPEG_DEC_DT_PITCH >> 4), idx);
+>  
+> -	set_reg_jpeg(context, vcnipJPEG_DEC_ADDR_MODE, COND0, TYPE0, 0, idx);
+> -	set_reg_jpeg(context, vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE, COND0, TYPE0,
+> +	set_reg_jpeg(context, dec_addr_mode, COND0, TYPE0, 0, idx);
+> +	set_reg_jpeg(context, dec_y_gfx10_tiling_surface, COND0, TYPE0,
+>  			0, idx);
+> -	set_reg_jpeg(context, vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE, COND0, TYPE0,
+> +	set_reg_jpeg(context, dec_uv_gfx10_tiling_surface, COND0, TYPE0,
+>  			0, idx);
+>  
+>  	/* set UVD_LMI_JPEG_WRITE_64BIT_BAR_LOW/HIGH based on target buffer address */
+> -	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH, COND0, TYPE0,
+> +	set_reg_jpeg(context, lmi_jpeg_write_64bit_bar_high, COND0, TYPE0,
+>  			(addr >> 32), idx);
+> -	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW, COND0, TYPE0,
+> +	set_reg_jpeg(context, lmi_jpeg_write_64bit_bar_low, COND0, TYPE0,
+>  			addr, idx);
+>  
+>  	/* set output buffer data address */
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_INDEX, COND0, TYPE0, 0, idx);
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_DATA, COND0, TYPE0, JPEG_DEC_LUMA_OFFSET,
+> -			idx);
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_INDEX, COND0, TYPE0, 1, idx);
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_DATA, COND0, TYPE0,
+> +	if (jpeg_luma_base0_0) {
+> +		set_reg_jpeg(context, jpeg_luma_base0_0, COND0, TYPE0,
+> +			JPEG_DEC_LUMA_OFFSET, idx);
+> +		set_reg_jpeg(context, jpeg_chroma_base0_0, COND0, TYPE0,
+>  			JPEG_DEC_CHROMA_OFFSET, idx);
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_TIER_CNTL2, COND0, 0, 0, idx);
+> +	} else {
+> +		set_reg_jpeg(context, vcnipUVD_JPEG_INDEX, COND0, TYPE0, 0, idx);
+> +		set_reg_jpeg(context, vcnipUVD_JPEG_DATA, COND0, TYPE0,
+> +			JPEG_DEC_LUMA_OFFSET, idx);
+> +		set_reg_jpeg(context, vcnipUVD_JPEG_INDEX, COND0, TYPE0, 1, idx);
+> +		set_reg_jpeg(context, vcnipUVD_JPEG_DATA, COND0, TYPE0,
+> +			JPEG_DEC_CHROMA_OFFSET, idx);
+> +	}
+> +	set_reg_jpeg(context, jpeg_tier_cntl2, COND0, 0, 0, idx);
+>  
+>  	/* set output buffer read pointer */
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_OUTBUF_RPTR, COND0, TYPE0, 0, idx);
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_OUTBUF_CNTL, COND0, TYPE0,
+> +	set_reg_jpeg(context, jpeg_outbuf_rptr, COND0, TYPE0, 0, idx);
+> +	set_reg_jpeg(context, jpeg_outbuf_cntl, COND0, TYPE0,
+>  				((0x00001587 & (~0x00000180L)) | (0x1 << 0x7) | (0x1 << 0x6)),
+>  				 idx);
+>  
+>  	/* enable error interrupts */
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_INT_EN, COND0, TYPE0, 0xFFFFFFFE, idx);
+> +	set_reg_jpeg(context, jpeg_int_en, COND0, TYPE0, 0xFFFFFFFE, idx);
+>  
+>  	/* start engine command */
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_CNTL, COND0, TYPE0, 0xE, idx);
+> +	set_reg_jpeg(context, jpeg_cntl, COND0, TYPE0, 0xE, idx);
+>  
+>  	/* wait for job completion, wait for job JBSI fetch done */
+> -	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0,
+> +	set_reg_jpeg(context, jrbc_ib_ref_data, COND0, TYPE0,
+>  			(JPEG_DEC_BSD_SIZE >> 2), idx);
+> -	set_reg_jpeg(context, vcnipUVD_JRBC_IB_COND_RD_TIMER, COND0, TYPE0,
+> +	set_reg_jpeg(context, jrbc_ib_cond_rd_timer, COND0, TYPE0,
+>  			0x01400200, idx);
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_RB_RPTR, COND3, TYPE3, 0xFFFFFFFF, idx);
+> +	set_reg_jpeg(context, jpeg_rb_rptr, COND3, TYPE3, 0xFFFFFFFF, idx);
+>  
+>  	/* wait for job jpeg outbuf idle */
+> -	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0, 0xFFFFFFFF,
+> +	set_reg_jpeg(context, jrbc_ib_ref_data, COND0, TYPE0, 0xFFFFFFFF,
+>  			idx);
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_OUTBUF_WPTR, COND3, TYPE3, 0x00000001,
+> +	set_reg_jpeg(context, jpeg_outbuf_wptr, COND3, TYPE3, 0x00000001,
+>  			idx);
+>  
+>  	/* stop engine */
+> -	set_reg_jpeg(context, vcnipUVD_JPEG_CNTL, COND0, TYPE0, 0x4, idx);
+> +	set_reg_jpeg(context, jpeg_cntl, COND0, TYPE0, 0x4, idx);
+>  }
+>  
+>  static void
+> -- 
+> 2.25.1
 > 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_11133 that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@gem_lmem_swapping@basic@lmem0:
->     - bat-dg2-9:          [PASS][4] -> [FAIL][5] ([i915#10378])
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7848/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11133/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html
-> 
->   * igt@i915_module_load@load:
->     - bat-arls-3:         [PASS][6] -> [ABORT][7] ([i915#11041])
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7848/bat-arls-3/igt@i915_module_load@load.html
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11133/bat-arls-3/igt@i915_module_load@load.html
-> 
->   * igt@i915_selftest@live@execlists:
->     - fi-bsw-nick:        [PASS][8] -> [ABORT][9] ([i915#10594])
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7848/fi-bsw-nick/igt@i915_selftest@live@execlists.html
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11133/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-> 
->   
->   {name}: This element is suppressed. This means it is ignored when computing
->           the status of the difference (SUCCESS, WARNING, or FAILURE).
-> 
->   [i915#10216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216
->   [i915#10378]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10378
->   [i915#10580]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10580
->   [i915#10594]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10594
->   [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
->   [i915#10911]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10911
->   [i915#11009]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11009
->   [i915#11041]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11041
->   [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
->   [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
->   [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
->   [i915#4077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077
->   [i915#4079]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079
->   [i915#4083]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083
->   [i915#4212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4212
->   [i915#4213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4213
->   [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
->   [i915#5190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190
->   [i915#5274]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5274
->   [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
->   [i915#6621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621
->   [i915#8809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809
->   [i915#9159]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9159
->   [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
->   [i915#9673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9673
->   [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
->   [i915#9970]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9970
-> 
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7848 -> IGTPW_11133
-> 
->   CI-20190529: 20190529
->   CI_DRM_14754: 7def831e1e6b6d95c92e0a4fad9539a95141403d @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_11133: 11133
->   IGT_7848: dc2d7fb4f978048b87707ea9ec32da748b01b378 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11133/index.html
