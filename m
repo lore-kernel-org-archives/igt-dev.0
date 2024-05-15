@@ -4,57 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68040C25B75
-	for <igt-dev@archiver.kernel.org>; Wed, 15 May 2024 12:20:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C63ABC25B75
+	for <igt-dev@archiver.kernel.org>; Wed, 15 May 2024 13:20:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0517010E5C7;
-	Wed, 15 May 2024 12:20:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 802A710E83D;
+	Wed, 15 May 2024 13:20:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mLcVFhCd";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="aShXbiOQ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B376C10E5C7
- for <igt-dev@lists.freedesktop.org>; Wed, 15 May 2024 12:20:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715775632; x=1747311632;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=S/Mb9kSzGssRQrFF+jabf3JafCG2xYgcw9/T92ZOvrw=;
- b=mLcVFhCdUvXSDX2OP6zuOg9HPTq8SOAStsH7RNcGiH0mz417XGBBIxyf
- rjJWc7k0IZrDnbSBB5sJuAyNTH2Ig5Of39YEn9NzX33gDZhIb4B9ewUZL
- /94SzsQZ6KgJRocmSIFkHfsF/jSGpfqPmKefoxr2dZ5zI8tcUIsQa4QFh
- udl/fFles/X5KhjvSlq5V3RYA453l69HNsyPIwBm9jxrJ6/C5omywD0Zp
- jsWmKeT3u51krnn2Ky2xbI4sUXEpShRewYVY5aMy2lEV60YSWWewv6Jq+
- tKQV3nIATWBvZRUgjqajC59UXHgwBX5XdEviCxEhLtgiE8l6k+TFm7UTf Q==;
-X-CSE-ConnectionGUID: Usu1sSULTl6PFoo+xUsQBA==
-X-CSE-MsgGUID: Qu9H3LuNQcG4UEwbjjoBCg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="11764294"
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="11764294"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2024 05:20:32 -0700
-X-CSE-ConnectionGUID: ug/8PPdzR9K3fqx4KuxriA==
-X-CSE-MsgGUID: Cucn34OfRB6CKs/U5wxbtA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="31161804"
-Received: from unknown (HELO localhost) ([10.245.246.122])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2024 05:20:30 -0700
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Karolina Stolarek <karolina.stolarek@intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t v6 9/9] tests/xe_intel_bb: Use supported tilings instead
- hardcoded ones
-Date: Wed, 15 May 2024 14:19:49 +0200
-Message-Id: <20240515121949.245280-10-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240515121949.245280-1-zbigniew.kempczynski@intel.com>
-References: <20240515121949.245280-1-zbigniew.kempczynski@intel.com>
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com
+ [209.85.221.46])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A1F9810E83D
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 May 2024 13:20:12 +0000 (UTC)
+Received: by mail-wr1-f46.google.com with SMTP id
+ ffacd0b85a97d-34dc8d3fbf1so5655712f8f.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 May 2024 06:20:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1715779210; x=1716384010; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=OhgtcP9DGHIq8Qbviz+/SaVSpmFq6LPzIVPbB2aKQQY=;
+ b=aShXbiOQAncCsQXn9nEK//aiE9u7mAxB/VqoXG0XNPXeVilAEkN6ddGDMErc1Dhg+R
+ gi/jYNN3j5FR922F031UXHhXIj5a4sFXPxOVSoVQImC/9m3y3skdaV8VV7jmXxANKfXB
+ +LnQF+0JSSAsiBgx+q7c4CLOq7b1AfV3m/4eJm7S5TE2urw2Y4W0gf8yyEpagKKcshHf
+ PPAsPg3VGidH5HGl7c9++WVupQfl8KAQbiHQ8HVYCqEfcPY79KbEuXjwfdZfSwp0fTg5
+ 0qdk85ye9xjObVTcR1rGOpc/sBfYVkOaSXEYI9vKn8YMQl8I9y6LUbxQSe6AfT+Yyze5
+ fxTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715779210; x=1716384010;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=OhgtcP9DGHIq8Qbviz+/SaVSpmFq6LPzIVPbB2aKQQY=;
+ b=aysZWwVCzLin+sKSNZ4d00JoHE/e9xKcX/mRfqePg6Eqwwa6VLw5/4zoNafmImgXZz
+ mKkM2QhuH+NK974Dr/7Ehi4hoNXwWF1UarbHfWWFOy6qr6Y3HrrUdxFw6aLeF+Ss6/i1
+ +RsyHqAoAGKys9Ch3GBruFBjW3UQ5I1f7inv8Nu1Yq89FrAucP8r3oj20qoddy8QbAwG
+ cXAIYVAGVe+5I+UqSY/1oz+GaaeBlibHKb/7tz70Ieh/zm4i9r3ECEaZXY9L3X9/P/Gj
+ fZyIyset1xHGHaz7GSVJaShtfdQ4Zrn+TeHp3NeLHmbosaxmme7DIFm6epfmk2fcn0d4
+ c/5A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUBs+1lJGfIPzeIYneXqp1QVzOyySHjtBRvod+T9yZbmCovs0PTUgbIapFfJke+znJ9pro7EDeCR4QgOeyr8AccSa5gb/xjF5f/XbU1NQ==
+X-Gm-Message-State: AOJu0YxAGpL6GoQFjkQEdn0p79Ydw1d5Bh9AMAxZ7+KydP8X7zfWmyy0
+ /vwT44fFcth/eJyN9UnN1A9QbL7UpFQRAcHmF2SZbxcxabPLj6QN
+X-Google-Smtp-Source: AGHT+IFuyM+8CY6kXQ/MCEiiSDdos4mzcUiZT8x4srkyI/a8Qb3GB12JN/GDqK7DHGuGtTUnk6kqTw==
+X-Received: by 2002:adf:eb87:0:b0:34f:5d07:ebcd with SMTP id
+ ffacd0b85a97d-3504a954ec6mr11486685f8f.55.1715779210166; 
+ Wed, 15 May 2024 06:20:10 -0700 (PDT)
+Received: from [0.0.0.0] ([134.134.137.89])
+ by smtp.googlemail.com with ESMTPSA id
+ ffacd0b85a97d-351d21c8106sm146855f8f.60.2024.05.15.06.20.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 15 May 2024 06:20:09 -0700 (PDT)
+Message-ID: <fd50d789-c6ef-4421-ac73-506644857ccd@gmail.com>
+Date: Wed, 15 May 2024 16:20:08 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v6 6/9] lib/intel_cmds_info: Introduce render tilings
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20240515121949.245280-1-zbigniew.kempczynski@intel.com>
+ <20240515121949.245280-7-zbigniew.kempczynski@intel.com>
+Content-Language: en-US
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20240515121949.245280-7-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,76 +83,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use introduced render tilings in cmds-info to select appropriate one
-on which render subtest is executed.
-
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
 Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/intel/xe_intel_bb.c | 25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
-index 6905765863..c712d04ba7 100644
---- a/tests/intel/xe_intel_bb.c
-+++ b/tests/intel/xe_intel_bb.c
-@@ -18,6 +18,7 @@
- 
- #include "igt.h"
- #include "igt_crc.h"
-+#include "intel_blt.h"
- #include "intel_bufops.h"
- #include "intel_mocs.h"
- #include "intel_pat.h"
-@@ -979,19 +980,10 @@ const char *help_str =
- 
- igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
- {
--	int xe, i;
-+	int xe;
- 	struct buf_ops *bops;
- 	uint32_t width;
- 
--	struct test {
--		uint32_t tiling;
--		const char *tiling_name;
--	} tests[] = {
--		{ I915_TILING_NONE, "none" },
--		{ I915_TILING_X, "x" },
--		{ I915_TILING_4, "4" },
--	};
--
- 	igt_fixture {
- 		xe = drm_open_driver(DRIVER_XE);
- 		bops = buf_ops_create(xe);
-@@ -1054,14 +1046,19 @@ igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
- 		delta_check(bops);
- 
- 	igt_subtest_with_dynamic("render") {
-+		int tiling;
-+
- 		igt_require(xe_has_engine_class(xe, DRM_XE_ENGINE_CLASS_RENDER));
- 
--		for (i = 0; i < ARRAY_SIZE(tests); i++) {
--			const struct test *t = &tests[i];
-+		for_each_tiling(tiling) {
-+			if (!render_supports_tiling(xe, tiling, false))
-+				continue;
- 
- 			for (width = 512; width <= 1024; width += 512)
--				igt_dynamic_f("render-%s-%u", t->tiling_name, width)
--					render(bops, t->tiling, width, width);
-+				igt_dynamic_f("render-%s-%u",
-+					      blt_tiling_name(tiling), width)
-+					render(bops, blt_tile_to_i915_tile(tiling),
-+					       width, width);
- 		}
- 	}
- 
--- 
-2.34.1
+On 15.5.2024 15.19, Zbigniew Kempczyński wrote:
+> Due to hardware differences between blitter and render regarding
+> supported tilings and compression add new fields in cmds-info
+> to identify available tilings via render engine.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> 
+> ---
+> v6: Fix tilings for gen12 (JP)
+> ---
+>   lib/intel_cmds_info.c | 31 +++++++++++++++++++++++++++----
+>   lib/intel_cmds_info.h |  6 ++++++
+>   2 files changed, 33 insertions(+), 4 deletions(-)
+> 
+> diff --git a/lib/intel_cmds_info.c b/lib/intel_cmds_info.c
+> index e7aabf6bfb..1416e02cd4 100644
+> --- a/lib/intel_cmds_info.c
+> +++ b/lib/intel_cmds_info.c
+> @@ -27,8 +27,10 @@
+>   #define TILE_Y		BIT(T_YMAJOR)
+>   #define TILE_Yf		BIT(T_YFMAJOR)
+>   
+> +#define TILE_4_64	(TILE_4 | TILE_64)
+>   #define TILE_L_4_64	(TILE_L | TILE_4 | TILE_64)
+>   #define TILE_L_X	(TILE_L | TILE_X)
+> +#define TILE_L_X_4	(TILE_L | TILE_X | TILE_4)
+>   #define TILE_L_X_Y	(TILE_L | TILE_X | TILE_Y)
+>   #define TILE_L_X_4_64	(TILE_L | TILE_X | TILE_4 | TILE_64)
+>   #define TILE_L_Y	(TILE_L | TILE_Y)
+> @@ -93,6 +95,23 @@ static const struct blt_cmd_info
+>   						 BLT_CMD_EXTENDED);
+>   
+>   
+> +#define RENDER_TILING(_tiling, _compress_tiling)  { \
+> +		.supported_tiling = _tiling, \
+> +		.supported_compressed_tiling = _compress_tiling, \
+> +	}
+> +
+> +static const struct render_tiling_info
+> +		render_tiling_gen12 = RENDER_TILING(TILE_L_X_Y, TILE_Y);
+> +
+> +static const struct render_tiling_info
+> +		render_tiling_mtl = RENDER_TILING(TILE_L_X_4_64, TILE_4);
+> +
+> +static const struct render_tiling_info
+> +		render_tiling_dg2 = RENDER_TILING(TILE_L_X_4_64, TILE_4_64);
+> +
+> +static const struct render_tiling_info
+> +		render_tiling_xe2 = RENDER_TILING(TILE_L_X_4_64, TILE_L_X_4_64);
+> +
+>   const struct intel_cmds_info pre_gen6_cmds_info = {
+>   	.blt_cmds = {
+>   		[SRC_COPY] = &src_copy,
+> @@ -130,7 +149,8 @@ const struct intel_cmds_info gen12_cmds_info = {
+>   		[XY_FAST_COPY] = &gen12_xy_fast_copy,
+>   		[XY_BLOCK_COPY] = &gen12_xy_block_copy,
+>   		[XY_COLOR_BLT] = &gen6_xy_color_blt,
+> -	}
+> +	},
+> +	.render_tilings = &render_tiling_gen12,
+>   };
+>   
+>   const struct intel_cmds_info gen12_dg2_cmds_info = {
+> @@ -139,14 +159,16 @@ const struct intel_cmds_info gen12_dg2_cmds_info = {
+>   		[XY_FAST_COPY] = &dg2_xy_fast_copy,
+>   		[XY_BLOCK_COPY] = &dg2_xy_block_copy,
+>   		[XY_COLOR_BLT] = &gen6_xy_color_blt,
+> -	}
+> +	},
+> +	.render_tilings = &render_tiling_dg2,
+>   };
+>   
+>   const struct intel_cmds_info gen12_mtl_cmds_info = {
+>   	.blt_cmds = {
+>   		[XY_FAST_COPY] = &dg2_xy_fast_copy,
+>   		[XY_BLOCK_COPY] = &mtl_xy_block_copy,
+> -	}
+> +	},
+> +	.render_tilings = &render_tiling_mtl,
+>   };
+>   
+>   const struct intel_cmds_info gen12_pvc_cmds_info = {
+> @@ -164,7 +186,8 @@ const struct intel_cmds_info xe2_cmds_info  = {
+>   		[XY_BLOCK_COPY] = &xe2_xy_block_copy,
+>   		[MEM_COPY] = &pvc_mem_copy,
+>   		[MEM_SET] = &pvc_mem_set,
+> -	}
+> +	},
+> +	.render_tilings = &render_tiling_xe2,
+>   };
+>   
+>   const struct blt_cmd_info *blt_get_cmd_info(const struct intel_cmds_info *cmds_info,
+> diff --git a/lib/intel_cmds_info.h b/lib/intel_cmds_info.h
+> index 0a83b6a446..6f7d655083 100644
+> --- a/lib/intel_cmds_info.h
+> +++ b/lib/intel_cmds_info.h
+> @@ -43,8 +43,14 @@ struct blt_cmd_info {
+>   #define BLT_CMD_SUPPORTS_COMPRESSION   (1 << 1)
+>   };
+>   
+> +struct render_tiling_info {
+> +	uint32_t supported_tiling;
+> +	uint32_t supported_compressed_tiling;
+> +};
+> +
+>   struct intel_cmds_info {
+>   	struct blt_cmd_info const *blt_cmds[__BLT_MAX_CMD];
+> +	struct render_tiling_info const *render_tilings;
+>   };
+>   
+>   extern const struct intel_cmds_info pre_gen6_cmds_info;
 
