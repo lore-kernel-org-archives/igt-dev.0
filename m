@@ -4,61 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78428C25B74
-	for <igt-dev@archiver.kernel.org>; Thu, 16 May 2024 09:25:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 832A4C25B74
+	for <igt-dev@archiver.kernel.org>; Thu, 16 May 2024 10:28:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 052A410E49E;
-	Thu, 16 May 2024 09:25:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 237DE10E502;
+	Thu, 16 May 2024 10:28:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nSojCw3E";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hIIS0yD0";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B00C810E1A4;
- Thu, 16 May 2024 09:25:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B1DAC10E502
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 May 2024 10:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715851538; x=1747387538;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=BZurPf4h10aBr7HYISyArNUXNwlS1MhNQr7nzfcARa4=;
- b=nSojCw3Ew55YE1nTOJ+3u8niLmmNvnAVUcqYX7BxPm+bYXoSlFuQehbn
- lSixS9HT33ve50dT3zkHwgV7eJcwRhg+mtm0qTmOx4SYGobL5fJ5NiUsH
- /XxfXT77QlVAVP1yDtFoA9kPwEAxqBrfsF1d65Uv68c8sXDDpdsBRRGjs
- E63K1ZR/9zFSukR0surY8/eULJLkqHrqNVmhQT6drUK6ltJ0eAoH7om/I
- PqeSOj8yE0UNuvFo6FXQu2EqTEEIOK9ONn2UrCbO6UBsxZ8bMVpNSbPWO
- 6NbXyh6Usv11QbNt52VhgqTF+PhWVDf6DD0ofcjQZs50LlfPlsaelHoRy A==;
-X-CSE-ConnectionGUID: XyTYXwm4Qke5iH8oU9MsZg==
-X-CSE-MsgGUID: pE7Hp5y5SSS3f9TYm2fFfQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="12061247"
-X-IronPort-AV: E=Sophos;i="6.08,164,1712646000"; d="scan'208";a="12061247"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 May 2024 02:25:37 -0700
-X-CSE-ConnectionGUID: YFxRD6QjSA2H2Qz8ocCtHg==
-X-CSE-MsgGUID: BEZ4v08jRsC6MRjdECwUgw==
+ t=1715855306; x=1747391306;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Rkaq7xok3QPGvUPNkb7ZHI8bY2QlO7LmXWA7fmdol1Y=;
+ b=hIIS0yD05qDzQI7gnBrfrn9vLXTRxq7NLZg/rrMq91Rl9BkOwrj4Ac4d
+ fgLSojun0DtkJ69yixqYQM5Z4sCWLsirpv9AbO+3a3uqUjiokUdbx0CEl
+ aeFrshxv8KjctJH9S3T9J+M303GeUMSh52lflRqDjx7/3qtp9UYLhWPTa
+ ggXq8XwfRQnYvJNllwnP6VRJ2qmi5pH4fMoBzxwmxXafRLFv8jNFi7cin
+ nmiSepwv2tM3xBHo5El4qoC6jcJiq5zdpdEn+NN6clPLNAPdI6v11srWU
+ DB5qhDwAtGi8bqiVqDEEPR4XFbk5CrtA331moqk+emg7rSTEik4x7RD+i w==;
+X-CSE-ConnectionGUID: UsJ8/I/vTXict6xnjydrZA==
+X-CSE-MsgGUID: ecQUYYyFTEe1N8NPlhYVfw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="12119551"
+X-IronPort-AV: E=Sophos;i="6.08,164,1712646000"; d="scan'208";a="12119551"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 May 2024 03:28:25 -0700
+X-CSE-ConnectionGUID: 9G/p9SNYSYyv34/TSwjLbg==
+X-CSE-MsgGUID: PeGED0VSSj671iv6V2EGgw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,164,1712646000"; d="scan'208";a="36149685"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2024 02:25:36 -0700
-Date: Thu, 16 May 2024 11:25:33 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,164,1712646000"; d="scan'208";a="31313606"
+Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
+ by fmviesa007.fm.intel.com with ESMTP; 16 May 2024 03:28:22 -0700
+From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>, I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?Q?=E2=9C=97_Fi=2ECI=2EIGT=3A_failure_for_series_start?=
- =?utf-8?Q?ing_wit?= =?utf-8?Q?h?= [i-g-t,1/5] tests/intel/xe_pm: Update
- runtime pm conditions
-Message-ID: <20240516092533.ukshymx4ycew3qex@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- I915-ci-infra@lists.freedesktop.org
-References: <20240515171317.84811-1-rodrigo.vivi@intel.com>
- <171583883134.2120091.18437100090578620962@8e613ede5ea5>
+Cc: karthik.b.s@intel.com, jeevan.b@intel.com, sameer.lattannavar@intel.com,
+ pranay.samala@intel.com
+Subject: [PATCH i-g-t v2] tests/intel/kms_big_fb: Introducing this restriction
+ to optimize the test execution time on simulation
+Date: Thu, 16 May 2024 15:58:17 +0530
+Message-Id: <20240516102817.424967-1-pranay.samala@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <171583883134.2120091.18437100090578620962@8e613ede5ea5>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,85 +66,69 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-05-16 at 05:53:51 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: series starting with [i-g-t,1/5] tests/intel/xe_pm: Update runtime pm conditions
-> URL   : https://patchwork.freedesktop.org/series/133665/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from IGT_7856_full -> IGTPW_11148_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_11148_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_11148_full, please notify your bug team (&#x27;I915-ci-infra@lists.freedesktop.org&#x27;) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11148/index.html
-> 
-> Participating hosts (9 -> 9)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_11148_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_async_flips@alternate-sync-async-flip@pipe-a-hdmi-a-1:
->     - shard-rkl:          NOTRUN -> [FAIL][1]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11148/shard-rkl-5/igt@kms_async_flips@alternate-sync-async-flip@pipe-a-hdmi-a-1.html
-> 
+This test executes on only one pipe and all the availble planes with
+set of 6 coordinates. Due to this, test takes long duration to execute
+on simulation and gets timeout.
 
-This is unrelated to Xe test changes,
+Restricting the test to execute only on primary plane with one of the
+coordinates for simulation.
 
-Regards,
-Kamil
+v2:
+- Breaking the loop instead of using variable m to test only one
+  coordinate for simulation (Kamil)
+- Removed the variable m (Kamil)
+- By default the test is running on only one pipe (Kamil)
+- Testing on (0,0) coordinate (Kamil)
 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_11148_full that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@api_intel_bb@object-reloc-purge-cache:
->     - shard-mtlp:         NOTRUN -> [SKIP][2] ([i915#8411])
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11148/shard-mtlp-1/igt@api_intel_bb@object-reloc-purge-cache.html
-> 
+Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+---
+ tests/intel/kms_big_fb.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-...cut...
+diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+index 1e45d8e42..f1207e21f 100644
+--- a/tests/intel/kms_big_fb.c
++++ b/tests/intel/kms_big_fb.c
+@@ -455,6 +455,11 @@ static bool test_plane(data_t *data)
+ 		{ w, h, },
+ 	};
+ 
++	if (igt_run_in_simulation()) {
++		plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
++		igt_plane_set_fb(plane, NULL);
++	}
++
+ 	if (!igt_plane_has_format_mod(plane, data->format, data->modifier))
+ 		return false;
+ 
+@@ -529,6 +534,9 @@ static bool test_plane(data_t *data)
+ 
+ 		igt_assert_crc_equal(&big_crc, &small_crc);
+ 		igt_pipe_crc_stop(data->pipe_crc);
++
++		if (igt_run_in_simulation())
++			break;
+ 	}
+ 
+ 	return true;
+@@ -595,10 +603,14 @@ static bool test_pipe(data_t *data)
+ 	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+-	for_each_plane_on_pipe(&data->display, data->pipe, data->plane) {
++	if (igt_run_in_simulation())
+ 		ret = test_plane(data);
+-		if (ret)
+-			break;
++	else {
++		for_each_plane_on_pipe(&data->display, data->pipe, data->plane) {
++			ret = test_plane(data);
++			if (ret)
++				break;
++		}
+ 	}
+ 
+ 	if (data->format == DRM_FORMAT_C8)
+-- 
+2.34.1
 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7856 -> IGTPW_11148
-> 
->   CI-20190529: 20190529
->   CI_DRM_14768: 26a52a7b24c1f334d92f5deac9f3eaf3224f3864 @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_11148: 11148
->   IGT_7856: 280f66b4d83048ea76bea6fd31af648c51996486 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11148/index.html
